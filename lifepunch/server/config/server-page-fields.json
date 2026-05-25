@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 1,
+  "source": "DXRP portal Servers page",
+  "purpose": "Track visible fields and actions so LifePunch can audit changes made by developers or admins.",
+  "servers": [
+    "lifepunchmainserver",
+    "lifepunchdevelopment"
+  ],
+  "controls": [
+    "Search by ID or Name",
+    "Clear",
+    "Refresh",
+    "Add",
+    "Pagination",
+    "Rows per page"
+  ],
+  "tableColumns": [
+    "Name",
+    "Version",
+    "Players",
+    "Uptime",
+    "Created",
+    "Last Pulsed",
+    "Actions"
+  ],
+  "actions": [
+    {
+      "name": "Edit",
+      "icon": "pencil",
+      "risk": "high",
+      "ownerApprovalRequired": true
+    },
+    {
+      "name": "View/Search",
+      "icon": "magnifier",
+      "risk": "low",
+      "ownerApprovalRequired": false
+    }
+  ],
+  "pagination": {
+    "observedSummary": "Showing 1 to 2 of 2 servers",
+    "observedRowsPerPage": 9
+  },
+  "fieldGroups": [
+    {
+      "name": "identity",
+      "risk": "medium",
+      "fields": [
+        "server name",
+        "server id",
+        "description",
+        "visibility",
+        "region",
+        "connection address"
+      ]
+    },
+    {
+      "name": "runtime",
+      "risk": "medium",
+      "fields": [
+        "version",
+        "players",
+        "uptime",
+        "online status",
+        "player count",
+        "current map",
+        "current gamemode",
+        "current ruleset",
+        "last heartbeat"
+      ]
+    },
+    {
+      "name": "configuration",
+      "risk": "high",
+      "fields": [
+        "assigned gamemode",
+        "assigned ruleset",
+        "assigned map",
+        "max players",
+        "server tags",
+        "enabled features"
+      ]
+    },
+    {
+      "name": "release-state",
+      "risk": "high",
+      "fields": [
+        "created",
+        "last pulsed",
+        "addon revision pins",
+        "gamemode revision/import",
+        "sync status",
+        "last synced at",
+        "last synced by"
+      ]
+    },
+    {
+      "name": "operations",
+      "risk": "critical",
+      "fields": [
+        "add button",
+        "edit action",
+        "refresh button",
+        "sync button",
+        "restart button",
+        "stop/start controls",
+        "delete controls",
+        "save button"
+      ]
+    }
+  ],
+  "ownerApprovalRequiredFor": [
+    "add server",
+    "edit server",
+    "sync",
+    "restart",
+    "stop",
+    "start",
+    "delete",
+    "save configuration",
+    "gamemode assignment",
+    "ruleset assignment",
+    "map assignment",
+    "addon revision pin change"
+  ],
+  "portalConfirmationNeeded": [
+    "Exact edit modal fields",
+    "Whether Add is enabled for non-owner roles",
+    "Whether View/Search opens a detail page or logs",
+    "Which fields are editable",
+    "Whether server actions affect only one server or both hosted servers"
+  ]
+}

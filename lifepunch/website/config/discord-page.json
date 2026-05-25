@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "source": "LifePunch website Discord page screenshots",
+  "page": {
+    "url": "https://lifepunch.co/discord",
+    "title": "Join The Community",
+    "subtitle": "Join Our Community",
+    "purpose": "Public Discord community entry point."
+  },
+  "loggedOutState": {
+    "headerControl": "Login",
+    "actions": [
+      "Join Server",
+      "Copy Invite Link"
+    ]
+  },
+  "loggedInState": {
+    "authenticatedControls": [
+      "Panel",
+      "Profile",
+      "Logout"
+    ],
+    "actions": [
+      "Join Server",
+      "Copy Invite Link"
+    ]
+  },
+  "observedCopy": {
+    "description": "Stay updated, report rulebreakers, and chat with the community."
+  },
+  "integrationNotes": [
+    "This page is the public Discord invite/join surface.",
+    "Discord verification for Members rank is separate from this page.",
+    "Rewards that require Discord authorization are tracked in website/config/rewards-page.json.",
+    "Discord operations and bot/webhook plans are tracked in lifepunch/discord and lifepunch/webhooks."
+  ],
+  "securityRules": [
+    "Do not store Discord bot tokens in Git.",
+    "Do not store private Discord IDs or raw member exports in Git.",
+    "Do not store private invite management credentials in Git."
+  ]
+}

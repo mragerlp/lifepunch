@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 1,
+  "source": "LifePunch website donation/store screenshots",
+  "page": {
+    "url": "https://lifepunch.co/store",
+    "title": "LifePunch Store & Donations",
+    "paymentProcessor": "Stripe",
+    "stablePlayerIdentifier": "SteamID64"
+  },
+  "observedPanels": [
+    "My Transactions",
+    "Select Package",
+    "Finalize",
+    "Stripe Checkout"
+  ],
+  "storeNotice": "Support LifePunch and unlock exclusive perks! Your purchases help keep our servers running and allow us to add new features. All donations are non-refundable but carry immense value.",
+  "packages": [
+    {
+      "name": "VIP",
+      "type": "supporter-rank",
+      "priceUsd": 10.0,
+      "rankBaseline": "players/ranks/vip-rank.json",
+      "notes": "Standard rank."
+    },
+    {
+      "name": "EVIP",
+      "type": "supporter-rank",
+      "priceUsd": 25.0,
+      "rankBaseline": "players/ranks/evip-rank.json",
+      "notes": "Premium rank."
+    },
+    {
+      "name": "SLP - Work In Progress",
+      "type": "currency",
+      "status": "work-in-progress",
+      "notes": "In-game currency package shown on the store. Requires economy review before automation."
+    },
+    {
+      "name": "SLP Currency ($)",
+      "type": "currency",
+      "observedTransactionPriceUsd": 5.0,
+      "notes": "Observed in My Transactions history."
+    }
+  ],
+  "observedPackagePerks": [
+    "Builder Status",
+    "Prop Limit +500",
+    "Queue Skip",
+    "Minigame Starts (DXRP VIP)",
+    "Exclusive Jobs (DXRP VIP)"
+  ],
+  "fulfillmentReview": {
+    "vipRankBaseline": "players/ranks/vip-rank.json",
+    "evipRankBaseline": "players/ranks/evip-rank.json",
+    "supporterRolesGrantCommandsOrAdministrativePermissions": false,
+    "reviewRequired": [
+      "SLP currency fulfillment",
+      "VIP/EVIP rank assignment",
+      "VIP/EVIP rank removal or expiration",
+      "Referral discount handling",
+      "Transaction refund handling",
+      "Stripe webhook processing"
+    ],
+    "notes": [
+      "Supporter ranks are not administrative roles.",
+      "VIP and EVIP do not grant moderation powers, in-game commands, portal permissions, or administrative tools.",
+      "Supporter fulfillment should grant only the approved in-game supporter role/perks from the rank baselines.",
+      "Do not grant portal/moderation/server/economy/admin tools from donation fulfillment."
+    ]
+  },
+  "checkout": {
+    "finalizeFields": [
+      "Account",
+      "Package",
+      "Referral Code",
+      "Total"
+    ],
+    "actions": [
+      "Apply referral code",
+      "Back",
+      "Pay Securely"
+    ],
+    "stripePaymentMethodsObserved": [
+      "Card",
+      "Cash App Pay",
+      "Klarna",
+      "Afterpay",
+      "Crypto",
+      "Amazon Pay"
+    ]
+  },
+  "transactionHistory": {
+    "observed": true,
+    "doNotStoreRawTransactionsInGit": true,
+    "visibleFields": [
+      "Package",
+      "Amount",
+      "Transaction identifier preview",
+      "Date"
+    ]
+  },
+  "secrets": [
+    "Stripe secret key",
+    "Stripe webhook signing secret",
+    "Stripe checkout session URLs",
+    "Payment processor account credentials",
+    "Customer email/payment details"
+  ],
+  "notes": [
+    "Store is connected to Stripe.",
+    "The page is part of LifePunch website operations, not DXRP portal operations.",
+    "Use secure local files for Stripe credentials and webhook secrets."
+  ]
+}

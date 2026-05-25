@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "community": "LifePunch",
+  "website": "https://lifepunch.co/",
+  "dxrpNetwork": "https://dxrp.net/",
+  "gamemode": {
+    "name": "LifePunch",
+    "description": "The LifePunch DXRP Gamemode experience. Tweaked and tuned to the LifePunch Community DXRP server.",
+    "dxrpGamemodeId": "019e36c0-a67f-701c-90f2-460e0b0f1487",
+    "visibility": "Private",
+    "canonicalExport": "gamemodes/lifepunch.gamemode"
+  },
+  "environments": [
+    {
+      "name": "lifepunchdevelopment",
+      "displayName": "Development",
+      "purpose": "Validate addon and gamemode changes before public release.",
+      "serverName": null,
+      "serverConfig": "servers.json#lifepunchdevelopment"
+    },
+    {
+      "name": "lifepunchmainserver",
+      "displayName": "70p",
+      "purpose": "Vanilla-style LifePunch main server that mirrors official DXRP limitations.",
+      "serverName": null,
+      "serverConfig": "servers.json#lifepunchmainserver"
+    }
+  ],
+  "notes": [
+    "Keep addon package source in ../addons.",
+    "Keep hosted server records and server-page audits in ../server.",
+    "Keep gamemode imports, revision pins, equipment rows, and market rows in this folder."
+  ]
+}

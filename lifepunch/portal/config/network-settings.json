@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "source": "DXRP portal Settings > Network panel",
+  "network": {
+    "name": "LifePunch",
+    "identifier": "lifepunch",
+    "portalNote": "Requires relog to appear everywhere."
+  },
+  "tabs": [
+    "Network",
+    "API Keys"
+  ],
+  "discordWebhooks": [
+    {
+      "name": "Mod Log",
+      "envVar": "DXRP_DISCORD_WEBHOOK_MOD_LOG",
+      "purpose": "Moderation actions, sanctions, bans, automated checks.",
+      "trackedSecret": false
+    },
+    {
+      "name": "Media",
+      "envVar": "DXRP_DISCORD_WEBHOOK_MEDIA",
+      "purpose": "Screenshots and media uploads.",
+      "trackedSecret": false
+    },
+    {
+      "name": "Chat Log",
+      "envVar": "DXRP_DISCORD_WEBHOOK_CHAT_LOG",
+      "purpose": "Server and chat log output.",
+      "trackedSecret": false
+    }
+  ],
+  "actions": [
+    {
+      "name": "Save Changes",
+      "risk": "high",
+      "ownerApprovalRequired": true
+    }
+  ],
+  "portalConfirmationNeeded": [
+    "API Keys tab fields",
+    "Webhook update behavior",
+    "Network identifier change impact"
+  ]
+}

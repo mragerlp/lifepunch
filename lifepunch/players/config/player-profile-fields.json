@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "source": "DXRP portal player profile pages",
+  "urlPattern": "https://dxrp.net/portal/players/{steamId64}",
+  "identifier": {
+    "type": "SteamID64",
+    "exampleOwnerSteamId64": "76561198103223564"
+  },
+  "profileFields": [
+    "avatar",
+    "display name",
+    "RP name",
+    "balance",
+    "level",
+    "play time",
+    "staff notes",
+    "rank dropdown",
+    "joined",
+    "last seen"
+  ],
+  "actions": [
+    {
+      "name": "Edit balance",
+      "risk": "high",
+      "ownerApprovalRequired": true
+    },
+    {
+      "name": "Edit level",
+      "risk": "medium",
+      "ownerApprovalRequired": false
+    },
+    {
+      "name": "Open inventory",
+      "risk": "high",
+      "ownerApprovalRequired": false
+    },
+    {
+      "name": "Change rank",
+      "risk": "high",
+      "ownerApprovalRequired": true
+    },
+    {
+      "name": "Sanction",
+      "risk": "high",
+      "ownerApprovalRequired": false
+    },
+    {
+      "name": "Get Age",
+      "risk": "low",
+      "ownerApprovalRequired": false
+    }
+  ],
+  "sanctionsPanel": {
+    "columns": [
+      "Issued",
+      "Type",
+      "Reason",
+      "Active"
+    ],
+    "controls": [
+      "Show All",
+      "Sanction",
+      "Pagination"
+    ]
+  },
+  "auditLog": {
+    "columns": [
+      "When",
+      "Action",
+      "Description"
+    ],
+    "observedActions": [
+      "Death",
+      "Kill",
+      "Job",
+      "PocketPickup",
+      "ClearAllEntities",
+      "JobForce",
+      "Vote",
+      "SetHealth"
+    ],
+    "controls": [
+      "Actions filter",
+      "Refresh"
+    ]
+  },
+  "rankDisplay": {
+    "visibleServerRankExample": "Super Admin",
+    "ownerRankMayBeHidden": true,
+    "note": "Do not infer owner authority from visible server rank display."
+  }
+}

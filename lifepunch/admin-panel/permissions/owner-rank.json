@@ -1,0 +1,131 @@
+{
+  "schemaVersion": 1,
+  "source": "DXRP portal Owner rank detail/edit screenshots",
+  "rank": {
+    "name": "Owner",
+    "rankId": "64367f56-9492-4340-91e4-e2866d1b653a",
+    "url": "https://dxrp.net/portal/ranks/64367f56-9492-4340-91e4-e2866d1b653a",
+    "order": 69,
+    "serverRestriction": "All Servers",
+    "inheritsFrom": "None",
+    "grantAllPermissionsWildcard": true,
+    "flags": {
+      "hideOnPlayerList": false,
+      "showOnNameplate": false,
+      "showInChat": false
+    }
+  },
+  "permissionGroups": {
+    "portal": [
+      "portal.access",
+      "portal.rank.view",
+      "portal.map.edit",
+      "portal.faction.view",
+      "portal.sanction.pardon",
+      "portal.announcement.edit",
+      "portal.addon.view",
+      "portal.gamemode.edit",
+      "portal.players.view.incognito",
+      "portal.player.notes.manage",
+      "portal.backups.manage",
+      "portal.server.view",
+      "portal.rank.edit",
+      "portal.ruleset.view",
+      "portal.sanction.view",
+      "portal.audit.view",
+      "portal.items.view",
+      "portal.addon.edit",
+      "portal.server.snapshot",
+      "portal.player.view",
+      "portal.rank.assign",
+      "portal.apikeys.manage",
+      "portal.server.edit",
+      "portal.map.view",
+      "portal.ruleset.edit",
+      "portal.sanction.issue",
+      "portal.network.edit",
+      "portal.items.manage",
+      "portal.gamemode.view",
+      "portal.players.view",
+      "portal.player.view.alt",
+      "portal.store.manage"
+    ],
+    "moderation": [
+      "player.kick",
+      "player.gag",
+      "player.sanctions.view.other",
+      "player.spectate",
+      "player.ban",
+      "player.warn",
+      "player.sanctions.view.notes",
+      "player.tickets.handle",
+      "player.jail",
+      "player.sanctions.view.self",
+      "player.screenshot"
+    ],
+    "serverManagement": [
+      "server.restart",
+      "level.manage",
+      "inventory.manage",
+      "server.broadcast",
+      "recovery.manage",
+      "inventory.manage.bulk",
+      "economy.manage",
+      "inventory.view"
+    ],
+    "commands": [
+      "command.god",
+      "command.clearentities",
+      "command.fakedisconnect",
+      "command.votebet.participate",
+      "command.minigame.manage",
+      "command.freeze",
+      "command.forceselldoor",
+      "command.dropitem",
+      "command.waypoint.use",
+      "command.clearprops",
+      "command.clearallentities",
+      "command.sethealth",
+      "command.votebet.manage",
+      "command.rpname",
+      "command.arrest",
+      "command.job.manage",
+      "command.spawnitem",
+      "command.waypoint.edit",
+      "command.clearallprops",
+      "command.incognito",
+      "command.cloak",
+      "command.minigame.participate",
+      "command.forcerpname",
+      "command.unarrest",
+      "command.canceldemote",
+      "command.title",
+      "command.xray"
+    ],
+    "ability": [
+      "ability.teleport",
+      "ability.playergrab",
+      "ability.teleportall",
+      "ability.bypass.maxplayers",
+      "ability.noclip"
+    ],
+    "building": [
+      "construct.unlimited",
+      "construct.propsize.bypass",
+      "construct.dupe.bypass",
+      "construct.spawn.bypass",
+      "construct.remover.bypass",
+      "construct.permanent"
+    ],
+    "misc": [
+      "chat.staff",
+      "debug.access",
+      "debug.full"
+    ]
+  },
+  "notes": [
+    "Owner rank is unrestricted via wildcard.",
+    "This baseline should be used to compare all future staff rank screenshots.",
+    "Owner display may be intentionally hidden from player-facing rank surfaces."
+  ]
+}

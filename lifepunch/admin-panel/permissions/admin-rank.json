@@ -1,0 +1,173 @@
+{
+  "schemaVersion": 1,
+  "source": "DXRP portal Admin rank detail/edit screenshots",
+  "rank": {
+    "name": "Admin",
+    "rankId": "019db2da-0c97-78a1-abca-78203b56daad",
+    "url": "https://dxrp.net/portal/ranks/019db2da-0c97-78a1-abca-78203b56daad",
+    "order": 5,
+    "serverRestriction": "All Servers",
+    "inheritsFrom": "None",
+    "grantAllPermissionsWildcard": false,
+    "flags": {
+      "hideOnPlayerList": false,
+      "showOnNameplate": false,
+      "showInChat": true
+    }
+  },
+  "permissionMeaning": {
+    "granted": "Access is allowed.",
+    "denied": "Access is explicitly denied.",
+    "none": "No access."
+  },
+  "permissionGroups": {
+    "portal": {
+      "granted": [
+        "portal.access",
+        "portal.rank.view",
+        "portal.faction.view",
+        "portal.sanction.pardon",
+        "portal.announcement.edit",
+        "portal.addon.view",
+        "portal.server.view",
+        "portal.ruleset.view",
+        "portal.sanction.view",
+        "portal.audit.view",
+        "portal.player.view",
+        "portal.map.view",
+        "portal.sanction.issue",
+        "portal.gamemode.view",
+        "portal.players.view",
+        "portal.player.view.alt"
+      ],
+      "denied": [
+        "portal.map.edit",
+        "portal.gamemode.edit",
+        "portal.rank.edit",
+        "portal.addon.edit",
+        "portal.server.snapshot",
+        "portal.rank.assign",
+        "portal.server.edit",
+        "portal.ruleset.edit",
+        "portal.network.edit",
+        "portal.items.manage",
+        "portal.store.manage"
+      ],
+      "none": [
+        "portal.players.view.incognito",
+        "portal.player.notes.manage",
+        "portal.backups.manage",
+        "portal.items.view",
+        "portal.apikeys.manage"
+      ]
+    },
+    "moderation": {
+      "granted": [
+        "player.kick",
+        "player.gag",
+        "player.sanctions.view.other",
+        "player.spectate",
+        "player.ban",
+        "player.warn",
+        "player.sanctions.view.notes",
+        "player.tickets.handle",
+        "player.jail",
+        "player.sanctions.view.self",
+        "player.screenshot"
+      ],
+      "denied": [],
+      "none": []
+    },
+    "serverManagement": {
+      "granted": [
+        "server.broadcast",
+        "inventory.view"
+      ],
+      "denied": [
+        "server.restart",
+        "inventory.manage",
+        "recovery.manage",
+        "inventory.manage.bulk",
+        "economy.manage"
+      ],
+      "none": [
+        "level.manage"
+      ]
+    },
+    "commands": {
+      "granted": [
+        "command.god",
+        "command.fakedisconnect",
+        "command.votebet.participate",
+        "command.freeze",
+        "command.forceselldoor",
+        "command.dropitem",
+        "command.waypoint.use",
+        "command.clearprops",
+        "command.sethealth",
+        "command.rpname",
+        "command.arrest",
+        "command.job.manage",
+        "command.spawnitem",
+        "command.waypoint.edit",
+        "command.incognito",
+        "command.cloak",
+        "command.minigame.participate",
+        "command.unarrest",
+        "command.title"
+      ],
+      "denied": [
+        "command.clearentities",
+        "command.minigame.manage",
+        "command.clearallentities",
+        "command.votebet.manage",
+        "command.clearallprops"
+      ],
+      "none": [
+        "command.forcerpname",
+        "command.canceldemote",
+        "command.xray"
+      ]
+    },
+    "ability": {
+      "granted": [
+        "ability.teleport",
+        "ability.playergrab",
+        "ability.bypass.maxplayers",
+        "ability.noclip"
+      ],
+      "denied": [
+        "ability.teleportall"
+      ],
+      "none": []
+    },
+    "building": {
+      "granted": [
+        "construct.propsize.bypass",
+        "construct.remover.bypass"
+      ],
+      "denied": [
+        "construct.unlimited",
+        "construct.dupe.bypass",
+        "construct.spawn.bypass",
+        "construct.permanent"
+      ],
+      "none": []
+    },
+    "misc": {
+      "granted": [
+        "chat.staff"
+      ],
+      "denied": [
+        "debug.access",
+        "debug.full"
+      ],
+      "none": []
+    }
+  },
+  "notes": [
+    "Admin rank is not wildcard in the portal screenshots.",
+    "None means no access.",
+    "Admin and lower ranks should remain non-wildcard."
+  ]
+}

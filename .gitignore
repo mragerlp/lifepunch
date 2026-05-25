@@ -1,0 +1,24 @@
+# S&box / DXRP generated output
+.dxrp-publish/
+**/.dxrp-publish/
+upload-assets/
+upload-code/
+**/upload-assets/
+**/upload-code/
+
+# Build and editor noise
+bin/
+obj/
+.vs/
+.vscode/
+
+# Local sensitive information
+lifepunch/secure/*
+!lifepunch/secure/.gitignore
+!lifepunch/secure/README.md
+!lifepunch/secure/templates/
+!lifepunch/secure/templates/**
+
+# OS files
+Thumbs.db
+desktop.ini

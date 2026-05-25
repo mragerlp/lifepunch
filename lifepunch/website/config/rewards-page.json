@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "source": "LifePunch website rewards screenshots",
+  "page": {
+    "url": "https://lifepunch.co/rewards",
+    "title": "Unlock Bonuses",
+    "authProvider": "Steam",
+    "discordAuthorizationRequired": true,
+    "stablePlayerIdentifier": "SteamID64"
+  },
+  "loggedInState": {
+    "authenticatedControls": [
+      "Panel",
+      "Profile",
+      "Logout"
+    ],
+    "observedStatuses": [
+      "Claimed",
+      "Cooldown timer",
+      "Claim Entry"
+    ]
+  },
+  "loggedOutState": {
+    "control": "Login",
+    "message": "You must be logged into Steam and authorize your Discord for rewards.",
+    "observedActions": [
+      "Claim Reward",
+      "Login To Enter"
+    ]
+  },
+  "rewardCards": [
+    {
+      "name": "Join Discord Reward",
+      "type": "discord-link-bonus",
+      "amount": "$10,000",
+      "currency": "in-game",
+      "frequency": "one-time",
+      "requiresSteamLogin": true,
+      "requiresDiscordAuthorization": true,
+      "notes": "Link Discord and join the community server to claim a one-time bonus."
+    },
+    {
+      "name": "Weekend Bonus",
+      "type": "recurring-currency-bonus",
+      "amount": "$10,000",
+      "currency": "in-game",
+      "frequency": "weekly",
+      "window": "Friday 8pm through Sunday night",
+      "requiresSteamLogin": true,
+      "requiresDiscordAuthorization": true,
+      "notes": "Observed with a timer/cooldown state."
+    },
+    {
+      "name": "Monthly $100,000 Giveaway",
+      "type": "monthly-giveaway",
+      "prizes": [
+        "$100,000",
+        "EVIP Rank",
+        "Builder"
+      ],
+      "frequency": "monthly",
+      "requiresSteamLogin": true,
+      "requiresDiscordAuthorization": true,
+      "notes": "Winner is drawn automatically."
+    }
+  ],
+  "giveawayStatus": {
+    "observed": true,
+    "fields": [
+      "Ends in",
+      "Monthly entry count",
+      "Participant avatars",
+      "Last month's winner"
+    ],
+    "doNotStoreRawParticipantsInGit": true
+  },
+  "integrationRisks": [
+    "Discord authorization and unlink flow",
+    "Reward claim idempotency",
+    "Weekend cooldown calculation",
+    "Monthly giveaway entry eligibility",
+    "Automatic winner draw",
+    "Currency fulfillment",
+    "EVIP/Builder prize fulfillment",
+    "Reward claim reset from website admin panel"
+  ],
+  "securityRules": [
+    "Do not store raw participant lists, Discord IDs, claim records, or private player data in Git.",
+    "Do not store reward automation tokens in Git.",
+    "Currency and rank reward fulfillment requires owner review before automation changes."
+  ],
+  "notes": [
+    "Rewards page is part of LifePunch website operations.",
+    "Rewards depend on Steam login and Discord authorization.",
+    "Reward claims are connected to website admin panel Reward Claims."
+  ]
+}

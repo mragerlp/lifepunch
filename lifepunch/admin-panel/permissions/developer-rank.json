@@ -1,0 +1,144 @@
+{
+  "schemaVersion": 1,
+  "source": "DXRP portal Developer rank detail/edit screenshots",
+  "rank": {
+    "name": "Developer",
+    "rankId": "019dee95-9eb9-7e04-99ce-b70562842e08",
+    "url": "https://dxrp.net/portal/ranks/019dee95-9eb9-7e04-99ce-b70562842e08",
+    "order": 10,
+    "serverRestriction": "All Servers",
+    "inheritsFrom": "None",
+    "grantAllPermissionsWildcard": true,
+    "flags": {
+      "hideOnPlayerList": false,
+      "showOnNameplate": true,
+      "showInChat": true
+    }
+  },
+  "permissionGroups": {
+    "portal": [
+      "portal.access",
+      "portal.rank.view",
+      "portal.map.edit",
+      "portal.faction.view",
+      "portal.sanction.pardon",
+      "portal.announcement.edit",
+      "portal.addon.view",
+      "portal.gamemode.edit",
+      "portal.players.view.incognito",
+      "portal.player.notes.manage",
+      "portal.backups.manage",
+      "portal.server.view",
+      "portal.rank.edit",
+      "portal.ruleset.view",
+      "portal.sanction.view",
+      "portal.audit.view",
+      "portal.items.view",
+      "portal.addon.edit",
+      "portal.server.snapshot",
+      "portal.player.view",
+      "portal.rank.assign",
+      "portal.apikeys.manage",
+      "portal.server.edit",
+      "portal.map.view",
+      "portal.ruleset.edit",
+      "portal.sanction.issue",
+      "portal.network.edit",
+      "portal.items.manage",
+      "portal.gamemode.view",
+      "portal.players.view",
+      "portal.player.view.alt",
+      "portal.store.manage"
+    ],
+    "moderation": [
+      "player.kick",
+      "player.gag",
+      "player.sanctions.view.other",
+      "player.spectate",
+      "player.ban",
+      "player.warn",
+      "player.sanctions.view.notes",
+      "player.tickets.handle",
+      "player.jail",
+      "player.sanctions.view.self",
+      "player.screenshot"
+    ],
+    "serverManagement": [
+      "server.restart",
+      "level.manage",
+      "inventory.manage",
+      "server.broadcast",
+      "recovery.manage",
+      "inventory.manage.bulk",
+      "economy.manage",
+      "inventory.view"
+    ],
+    "commands": [
+      "command.god",
+      "command.clearentities",
+      "command.fakedisconnect",
+      "command.votebet.participate",
+      "command.minigame.manage",
+      "command.freeze",
+      "command.forceselldoor",
+      "command.dropitem",
+      "command.waypoint.use",
+      "command.clearprops",
+      "command.clearallentities",
+      "command.sethealth",
+      "command.votebet.manage",
+      "command.rpname",
+      "command.arrest",
+      "command.job.manage",
+      "command.spawnitem",
+      "command.waypoint.edit",
+      "command.clearallprops",
+      "command.incognito",
+      "command.cloak",
+      "command.minigame.participate",
+      "command.forcerpname",
+      "command.unarrest",
+      "command.canceldemote",
+      "command.title",
+      "command.xray"
+    ],
+    "ability": [
+      "ability.teleport",
+      "ability.playergrab",
+      "ability.teleportall",
+      "ability.bypass.maxplayers",
+      "ability.noclip"
+    ],
+    "building": [
+      "construct.unlimited",
+      "construct.propsize.bypass",
+      "construct.dupe.bypass",
+      "construct.spawn.bypass",
+      "construct.remover.bypass",
+      "construct.permanent"
+    ],
+    "misc": [
+      "chat.staff",
+      "debug.access",
+      "debug.full"
+    ]
+  },
+  "policyTarget": {
+    "removeWildcardBeforeDelegation": true,
+    "preferredServerScope": "lifepunchdevelopment",
+    "requiresOwnerApprovalFor": [
+      "lifepunchmainserver technical access",
+      "server restart or sync",
+      "gamemode import or save",
+      "addon publish",
+      "economy or inventory changes",
+      "rank or staff permission changes",
+      "API key management"
+    ]
+  },
+  "notes": [
+    "Developer rank is currently unrestricted via wildcard in the portal screenshots.",
+    "This is broader than the LifePunch least-privilege policy target.",
+    "Use this file as observed-state evidence before narrowing Developer permissions."
+  ]
+}

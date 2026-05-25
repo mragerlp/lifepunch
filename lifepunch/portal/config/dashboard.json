@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "source": "DXRP portal Dashboard for LifePunch",
+  "refreshInterval": "15s",
+  "observedMetricCards": [
+    "Online Players",
+    "Recent Players (24H)",
+    "Total Players",
+    "Player Lookup"
+  ],
+  "observedPanels": [
+    "Global Balance",
+    "Announcements",
+    "Live Overview"
+  ],
+  "observedTopNavigation": [
+    "Dashboard",
+    "Servers",
+    "Players",
+    "Game Modes",
+    "Audit",
+    "More menu (...)",
+    "Network selector"
+  ],
+  "observedOverflowMenu": [
+    "Maps",
+    "Rulesets",
+    "Ranks",
+    "Inventory",
+    "Addons",
+    "Factions",
+    "Sanctions"
+  ],
+  "liveOverviewColumns": [
+    "Name",
+    "Status",
+    "Players",
+    "Peak",
+    "Uptime",
+    "Health"
+  ],
+  "serverRows": [
+    {
+      "serverId": "lifepunchmainserver",
+      "portalName": "LifePunch Official | 70p"
+    },
+    {
+      "serverId": "lifepunchdevelopment",
+      "portalName": "LifePunch Official | DEVELOPMENT SERVER"
+    }
+  ],
+  "actions": [
+    {
+      "name": "Save announcement",
+      "risk": "high",
+      "ownerApprovalRequired": true
+    },
+    {
+      "name": "Preview announcement",
+      "risk": "low",
+      "ownerApprovalRequired": false
+    }
+  ],
+  "notes": [
+    "Dashboard metrics are snapshots, not static config.",
+    "Do not store player lookup results unless needed for an approved incident/audit record."
+  ]
+}

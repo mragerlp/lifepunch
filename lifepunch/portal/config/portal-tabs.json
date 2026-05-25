@@ -1,0 +1,162 @@
+{
+  "schemaVersion": 1,
+  "source": "DXRP portal visible navigation for LifePunch",
+  "publicNavigation": [
+    {
+      "name": "Servers",
+      "folder": "portal/public",
+      "notes": "Public DXRP server discovery page with search, filters, refresh, server names, descriptions, player counts, tags, and connect/detail actions."
+    },
+    {
+      "name": "Addons",
+      "folder": "portal/public",
+      "notes": "Public DXRP addon marketplace/discovery page with search, sort, refresh, and addon cards."
+    },
+    {
+      "name": "Portal",
+      "folder": "portal/public",
+      "notes": "Authenticated portal entry point."
+    },
+    {
+      "name": "Terms",
+      "folder": "portal/public",
+      "notes": "Public DXRP terms page."
+    },
+    {
+      "name": "Docs",
+      "folder": "portal/public",
+      "notes": "Public DXRP documentation entry point."
+    }
+  ],
+  "overflowMenu": [
+    {
+      "name": "Maps",
+      "folder": "portal/maps",
+      "risk": "medium",
+      "status": "observed-menu-item",
+      "notes": "Accessible through Dashboard ... dropdown; page details pending deeper review."
+    },
+    {
+      "name": "Rulesets",
+      "folder": "portal/rulesets",
+      "risk": "medium",
+      "status": "observed-menu-item",
+      "notes": "Accessible through Dashboard ... dropdown; page details pending deeper review."
+    },
+    {
+      "name": "Ranks",
+      "folder": "portal/ranks",
+      "risk": "high",
+      "status": "observed-menu-item",
+      "notes": "Accessible through Dashboard ... dropdown; rank baselines are being captured from screenshots."
+    },
+    {
+      "name": "Inventory",
+      "folder": "portal/inventory",
+      "risk": "high",
+      "status": "observed-menu-item",
+      "notes": "Accessible through Dashboard ... dropdown; economy/inventory details pending deeper review."
+    },
+    {
+      "name": "Addons",
+      "folder": "portal/addons",
+      "risk": "high",
+      "status": "observed-menu-item",
+      "notes": "Accessible through Dashboard ... dropdown; addon publish/edit actions require owner approval."
+    },
+    {
+      "name": "Factions",
+      "folder": "portal/factions",
+      "risk": "medium",
+      "status": "observed-menu-item",
+      "notes": "Accessible through Dashboard ... dropdown; page details pending deeper review."
+    },
+    {
+      "name": "Sanctions",
+      "folder": "portal/sanctions",
+      "risk": "high",
+      "status": "observed-menu-item",
+      "notes": "Accessible through Dashboard ... dropdown; moderation actions must remain auditable."
+    }
+  ],
+  "tabs": [
+    {
+      "name": "Network Settings",
+      "folder": "portal/network",
+      "risk": "high",
+      "notes": "Network name, identifier, API keys, and Discord webhooks."
+    },
+    {
+      "name": "Dashboard",
+      "folder": "portal/dashboard",
+      "risk": "medium",
+      "notes": "Includes metric cards, player lookup, global balance graph, announcements editor, and live server overview."
+    },
+    {
+      "name": "Servers",
+      "folder": "server",
+      "risk": "high",
+      "notes": "Server sync/restart actions require owner approval."
+    },
+    {
+      "name": "Players",
+      "folder": "portal/players",
+      "risk": "medium",
+      "notes": "Do not bulk-store private player data."
+    },
+    {
+      "name": "Game Modes",
+      "folder": "portal/game-modes",
+      "risk": "high",
+      "notes": "Gamemode import/save and revision pins require owner approval."
+    },
+    {
+      "name": "Audit",
+      "folder": "portal/audit",
+      "risk": "high",
+      "notes": "Accountability data; do not delete or hide."
+    },
+    {
+      "name": "Maps",
+      "folder": "portal/maps",
+      "risk": "medium",
+      "notes": "Map changes should be tested on lifepunchdevelopment before lifepunchmainserver."
+    },
+    {
+      "name": "Rulesets",
+      "folder": "portal/rulesets",
+      "risk": "medium",
+      "notes": "Ruleset changes may affect gameplay balance."
+    },
+    {
+      "name": "Ranks",
+      "folder": "portal/ranks",
+      "risk": "high",
+      "notes": "Rank display and portal authority must remain separate."
+    },
+    {
+      "name": "Inventory",
+      "folder": "portal/inventory",
+      "risk": "high",
+      "notes": "Economy/inventory edits require strict controls."
+    },
+    {
+      "name": "Addons",
+      "folder": "portal/addons",
+      "risk": "high",
+      "notes": "Addon publish/edit actions require owner approval."
+    },
+    {
+      "name": "Factions",
+      "folder": "portal/factions",
+      "risk": "medium",
+      "notes": "Faction changes may affect jobs or gameplay structure."
+    },
+    {
+      "name": "Sanctions",
+      "folder": "portal/sanctions",
+      "risk": "high",
+      "notes": "Moderation actions must remain auditable."
+    }
+  ]
+}

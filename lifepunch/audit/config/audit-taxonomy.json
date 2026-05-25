@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "source": "DXRP portal Audit page for LifePunch",
+  "identifier": {
+    "playerIdType": "SteamID64",
+    "entityIdType": "DXRP entity/server/action id"
+  },
+  "filters": [
+    "Player ID",
+    "Actions",
+    "Entity ID"
+  ],
+  "columns": [
+    "When",
+    "Action",
+    "Player",
+    "Entity",
+    "Description"
+  ],
+  "observedActions": [
+    "Chat",
+    "DispatchAction",
+    "Update",
+    "GenerateToken"
+  ],
+  "observedEntities": [
+    "Server",
+    "ServerAction"
+  ],
+  "roleBuckets": [
+    {
+      "group": "staff",
+      "folders": [
+        "owner",
+        "moderator",
+        "admin",
+        "super-admin",
+        "community-manager",
+        "developer"
+      ]
+    },
+    {
+      "group": "players",
+      "folders": [
+        "none",
+        "members"
+      ]
+    },
+    {
+      "group": "supporters",
+      "folders": [
+        "vip",
+        "evip"
+      ]
+    }
+  ],
+  "notes": [
+    "Do not bulk-copy raw audit logs into the repo.",
+    "Use role folders for curated summaries, incident reviews, and permission audits.",
+    "SteamID64 values identify players in audit entries.",
+    "Supporter folders are for future donation/supporter automation review, not payment secrets."
+  ]
+}

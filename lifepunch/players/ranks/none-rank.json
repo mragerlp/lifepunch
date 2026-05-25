@@ -1,0 +1,190 @@
+{
+  "schemaVersion": 1,
+  "source": "DXRP portal None rank detail/edit screenshots",
+  "rank": {
+    "name": "None",
+    "category": "regular-player",
+    "defaultRank": true,
+    "administrative": false,
+    "rankId": "100547a0-3f91-42af-b8ec-e5e3a188c045",
+    "url": "https://dxrp.net/portal/ranks/100547a0-3f91-42af-b8ec-e5e3a188c045",
+    "order": 0,
+    "serverRestriction": "All Servers",
+    "inheritsFrom": "None",
+    "grantAllPermissionsWildcard": false,
+    "flags": {
+      "hideOnPlayerList": true,
+      "showOnNameplate": false,
+      "showInChat": false
+    }
+  },
+  "permissionMeaning": {
+    "granted": "Access is allowed.",
+    "denied": "Access is explicitly denied.",
+    "none": "No access.",
+    "inherited": "Portal displays inherited access; verify effective behavior before relying on it."
+  },
+  "permissionGroups": {
+    "portal": {
+      "granted": [],
+      "denied": [],
+      "none": [
+        "portal.access",
+        "portal.rank.view",
+        "portal.map.edit",
+        "portal.faction.view",
+        "portal.sanction.pardon",
+        "portal.announcement.edit",
+        "portal.addon.view",
+        "portal.gamemode.edit",
+        "portal.players.view.incognito",
+        "portal.player.notes.manage",
+        "portal.backups.manage",
+        "portal.server.view",
+        "portal.rank.edit",
+        "portal.ruleset.view",
+        "portal.sanction.view",
+        "portal.audit.view",
+        "portal.items.view",
+        "portal.addon.edit",
+        "portal.server.snapshot",
+        "portal.player.view",
+        "portal.rank.assign",
+        "portal.apikeys.manage",
+        "portal.server.edit",
+        "portal.map.view",
+        "portal.ruleset.edit",
+        "portal.sanction.issue",
+        "portal.network.edit",
+        "portal.items.manage",
+        "portal.gamemode.view",
+        "portal.players.view",
+        "portal.player.view.alt",
+        "portal.store.manage"
+      ],
+      "inherited": []
+    },
+    "moderation": {
+      "granted": [],
+      "denied": [],
+      "none": [
+        "player.kick",
+        "player.gag",
+        "player.sanctions.view.other",
+        "player.spectate",
+        "player.ban",
+        "player.warn",
+        "player.sanctions.view.notes",
+        "player.tickets.handle",
+        "player.jail",
+        "player.sanctions.view.self",
+        "player.screenshot"
+      ],
+      "inherited": []
+    },
+    "serverManagement": {
+      "granted": [],
+      "denied": [],
+      "none": [
+        "server.restart",
+        "level.manage",
+        "inventory.manage",
+        "server.broadcast",
+        "recovery.manage",
+        "inventory.manage.bulk",
+        "economy.manage",
+        "inventory.view"
+      ],
+      "inherited": []
+    },
+    "commands": {
+      "granted": [
+        "command.title"
+      ],
+      "denied": [],
+      "none": [
+        "command.god",
+        "command.clearentities",
+        "command.fakedisconnect",
+        "command.votebet.participate",
+        "command.minigame.manage",
+        "command.minigame.participate",
+        "command.rpname",
+        "command.freeze",
+        "command.forceselldoor",
+        "command.dropitem",
+        "command.waypoint.use",
+        "command.clearprops",
+        "command.clearallentities",
+        "command.sethealth",
+        "command.votebet.manage",
+        "command.arrest",
+        "command.job.manage",
+        "command.spawnitem",
+        "command.waypoint.edit",
+        "command.clearallprops",
+        "command.incognito",
+        "command.cloak",
+        "command.forcerpname",
+        "command.unarrest",
+        "command.canceldemote",
+        "command.xray"
+      ],
+      "inherited": []
+    },
+    "ability": {
+      "granted": [],
+      "denied": [],
+      "none": [
+        "ability.teleport",
+        "ability.playergrab",
+        "ability.teleportall",
+        "ability.bypass.maxplayers",
+        "ability.noclip"
+      ],
+      "inherited": []
+    },
+    "building": {
+      "granted": [],
+      "denied": [],
+      "none": [
+        "construct.unlimited",
+        "construct.propsize.bypass",
+        "construct.dupe.bypass",
+        "construct.spawn.bypass",
+        "construct.remover.bypass",
+        "construct.permanent"
+      ],
+      "inherited": []
+    },
+    "misc": {
+      "granted": [],
+      "denied": [],
+      "none": [
+        "chat.staff",
+        "debug.access",
+        "debug.full"
+      ],
+      "inherited": []
+    }
+  },
+  "playerPolicy": {
+    "regularPlayerRole": true,
+    "defaultPlayerRole": true,
+    "administrativeAccessAllowed": false,
+    "normalGameplayInventoryAccess": true,
+    "ownerReviewRequiredForAutomation": [
+      "default rank changes",
+      "perk changes",
+      "economy-impacting benefits"
+    ]
+  },
+  "notes": [
+    "None is the default normal player rank.",
+    "The rank name None is separate from the permission state none.",
+    "None has no real administrative permissions.",
+    "Normal in-game inventory item usage is a gameplay capability, not portal inventory-management access.",
+    "None means no access when used as a permission state.",
+    "None rank must remain non-wildcard."
+  ]
+}

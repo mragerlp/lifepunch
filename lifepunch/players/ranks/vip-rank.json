@@ -1,0 +1,190 @@
+{
+  "schemaVersion": 1,
+  "source": "DXRP portal VIP rank detail/edit screenshots",
+  "rank": {
+    "name": "VIP",
+    "category": "supporter",
+    "administrative": false,
+    "rankId": "019db2da-c303-7c94-99e9-f3dbb6efb525",
+    "url": "https://dxrp.net/portal/ranks/019db2da-c303-7c94-99e9-f3dbb6efb525",
+    "order": 2,
+    "serverRestriction": "All Servers",
+    "inheritsFrom": "None",
+    "grantAllPermissionsWildcard": false,
+    "flags": {
+      "hideOnPlayerList": false,
+      "showOnNameplate": true,
+      "showInChat": true
+    }
+  },
+  "permissionMeaning": {
+    "granted": "Access is allowed.",
+    "denied": "Access is explicitly denied.",
+    "none": "No access.",
+    "inherited": "Portal displays inherited access; verify effective behavior before relying on it."
+  },
+  "permissionGroups": {
+    "portal": {
+      "granted": [],
+      "denied": [],
+      "none": [
+        "portal.access",
+        "portal.rank.view",
+        "portal.map.edit",
+        "portal.faction.view",
+        "portal.sanction.pardon",
+        "portal.announcement.edit",
+        "portal.addon.view",
+        "portal.gamemode.edit",
+        "portal.players.view.incognito",
+        "portal.player.notes.manage",
+        "portal.backups.manage",
+        "portal.server.view",
+        "portal.rank.edit",
+        "portal.ruleset.view",
+        "portal.sanction.view",
+        "portal.audit.view",
+        "portal.items.view",
+        "portal.addon.edit",
+        "portal.server.snapshot",
+        "portal.player.view",
+        "portal.rank.assign",
+        "portal.apikeys.manage",
+        "portal.server.edit",
+        "portal.map.view",
+        "portal.ruleset.edit",
+        "portal.sanction.issue",
+        "portal.network.edit",
+        "portal.items.manage",
+        "portal.gamemode.view",
+        "portal.players.view",
+        "portal.player.view.alt",
+        "portal.store.manage"
+      ],
+      "inherited": []
+    },
+    "moderation": {
+      "granted": [],
+      "denied": [],
+      "none": [
+        "player.kick",
+        "player.gag",
+        "player.sanctions.view.other",
+        "player.spectate",
+        "player.ban",
+        "player.warn",
+        "player.sanctions.view.notes",
+        "player.tickets.handle",
+        "player.jail",
+        "player.sanctions.view.self",
+        "player.screenshot"
+      ],
+      "inherited": []
+    },
+    "serverManagement": {
+      "granted": [],
+      "denied": [],
+      "none": [
+        "server.restart",
+        "level.manage",
+        "inventory.manage",
+        "server.broadcast",
+        "recovery.manage",
+        "inventory.manage.bulk",
+        "economy.manage",
+        "inventory.view"
+      ],
+      "inherited": []
+    },
+    "commands": {
+      "granted": [
+        "command.minigame.manage",
+        "command.rpname",
+        "command.minigame.participate"
+      ],
+      "denied": [],
+      "none": [
+        "command.god",
+        "command.clearentities",
+        "command.fakedisconnect",
+        "command.votebet.participate",
+        "command.freeze",
+        "command.forceselldoor",
+        "command.dropitem",
+        "command.waypoint.use",
+        "command.clearprops",
+        "command.clearallentities",
+        "command.sethealth",
+        "command.votebet.manage",
+        "command.arrest",
+        "command.job.manage",
+        "command.spawnitem",
+        "command.waypoint.edit",
+        "command.clearallprops",
+        "command.incognito",
+        "command.cloak",
+        "command.forcerpname",
+        "command.unarrest",
+        "command.canceldemote",
+        "command.xray"
+      ],
+      "inherited": [
+        "command.title"
+      ]
+    },
+    "ability": {
+      "granted": [
+        "ability.bypass.maxplayers"
+      ],
+      "denied": [],
+      "none": [
+        "ability.teleport",
+        "ability.playergrab",
+        "ability.teleportall",
+        "ability.noclip"
+      ],
+      "inherited": []
+    },
+    "building": {
+      "granted": [],
+      "denied": [],
+      "none": [
+        "construct.unlimited",
+        "construct.propsize.bypass",
+        "construct.dupe.bypass",
+        "construct.spawn.bypass",
+        "construct.remover.bypass",
+        "construct.permanent"
+      ],
+      "inherited": []
+    },
+    "misc": {
+      "granted": [],
+      "denied": [],
+      "none": [
+        "chat.staff",
+        "debug.access",
+        "debug.full"
+      ],
+      "inherited": []
+    }
+  },
+  "supporterPolicy": {
+    "donatorRole": true,
+    "administrativeAccessAllowed": false,
+    "paymentDataAllowedInRepo": false,
+    "ownerReviewRequiredForAutomation": [
+      "payment fulfillment",
+      "rank assignment",
+      "rank removal",
+      "perk changes",
+      "economy-impacting benefits"
+    ]
+  },
+  "notes": [
+    "VIP is a supporter/donator role, not an administrative role.",
+    "VIP has no portal, moderation, server management, building, or misc administrative permissions in the screenshots.",
+    "None means no access.",
+    "VIP must remain non-wildcard."
+  ]
+}

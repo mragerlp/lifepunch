@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "source": "https://lifepunch.co/rules",
+  "page": {
+    "url": "https://lifepunch.co/rules",
+    "title": "LifePunch | Official Rules",
+    "purpose": "Public searchable rules and guidelines for LifePunch players.",
+    "rulesSnapshot": "website/rules/current-rules.md"
+  },
+  "features": {
+    "searchable": true,
+    "copyRuleText": true,
+    "directRuleLinks": true,
+    "shareIcons": true
+  },
+  "exampleDirectLinks": [
+    {
+      "rule": "No Staff Impersonation",
+      "slug": "no-staff-impersonation",
+      "url": "https://lifepunch.co/rules#no-staff-impersonation"
+    }
+  ],
+  "observedSections": [
+    "Serverwide Rules",
+    "Basic RP Rules",
+    "Common Sense & Behavior",
+    "Building Rules",
+    "Job Specific Rules",
+    "Raiding & Mugging",
+    "Cooldowns & Reporting"
+  ],
+  "reviewPolicy": {
+    "stableSlugsRequired": true,
+    "ownerReviewRequiredFor": [
+      "permanent ban wording",
+      "staff authority wording",
+      "donator/supporter perk wording",
+      "economy-impacting rules",
+      "raiding/building restrictions",
+      "website search/copy/link behavior"
+    ],
+    "doNotStore": [
+      "private player reports",
+      "raw staff-only evidence",
+      "private Discord data"
+    ]
+  },
+  "notes": [
+    "The rules page should be treated as public policy.",
+    "Use current-rules.md as a public snapshot, not as an automatic source of truth for enforcement changes.",
+    "Direct rule links should remain stable so staff can cite exact rules."
+  ]
+}

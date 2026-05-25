@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "source": "DXRP portal Game Modes page for LifePunch",
+  "gamemode": {
+    "id": "019e36c0-a67f-701c-90f2-460e0b0f1487",
+    "name": "LifePunch",
+    "description": "The LifePunch DXRP Gamemode experience. Tweaked and tuned to the LifePunch Community DXRP server.",
+    "visibility": "Private",
+    "jobs": 26,
+    "addons": 8,
+    "createdListValue": "17/05/26, 12:24 PM",
+    "createdDetailValue": "1 week ago",
+    "lastModified": "2 days ago"
+  },
+  "listView": {
+    "warning": "Work In Progress",
+    "subtitle": "Manage game modes that define server content and jobs",
+    "controls": [
+      "Search by name or description",
+      "Clear",
+      "Refresh",
+      "Add",
+      "Pagination",
+      "Rows per page"
+    ],
+    "columns": [
+      "Name",
+      "Visibility",
+      "Jobs",
+      "Addons",
+      "Created"
+    ],
+    "pagination": "Showing 1 to 1 of 1 game modes"
+  },
+  "detailView": {
+    "actions": [
+      "Edit",
+      "Back",
+      "Sync Servers",
+      "Delete Game Mode"
+    ],
+    "tabs": [
+      "General",
+      "Addons (8)",
+      "Content",
+      "Jobs",
+      "Market",
+      "Minigames"
+    ],
+    "general": {
+      "defaultJob": "Citizen",
+      "startingBalance": "$15,000",
+      "defaultLoadout": [
+        "Hands",
+        "Fists",
+        "Tool",
+        "Camera",
+        "Build"
+      ]
+    }
+  },
+  "editMode": {
+    "actions": [
+      "Cancel",
+      "Save",
+      "Sync Servers",
+      "Export",
+      "Import",
+      "Reset to Vanilla",
+      "Delete Game Mode"
+    ],
+    "toggles": [
+      "UI",
+      "JSON"
+    ],
+    "editableFields": [
+      "name",
+      "description",
+      "visibility",
+      "defaultJob",
+      "startingBalance",
+      "defaultLoadout"
+    ]
+  },
+  "ownerApprovalRequiredFor": [
+    "Save",
+    "Sync Servers",
+    "Import",
+    "Reset to Vanilla",
+    "Delete Game Mode",
+    "Add",
+    "visibility change",
+    "default job change",
+    "starting balance change",
+    "default loadout change",
+    "addon revision pin change",
+    "jobs/content/market/minigames change"
+  ],
+  "canonicalImportFile": "gamemodes/lifepunch.gamemode",
+  "notes": [
+    "Future lifepunch.gamemode imports happen from the edit-mode Import action.",
+    "Export should be used before risky edits to capture a rollback point.",
+    "Sync Servers should only happen after the gamemode is validated and owner-approved."
+  ]
+}

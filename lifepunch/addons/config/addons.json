@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "org": "lifepunch",
+  "contentReferenceRoot": "addons/lifepunch",
+  "addons": [
+    {
+      "ident": "ak47",
+      "title": "AK-47",
+      "kind": "weapon",
+      "hasAssets": true,
+      "hasCode": true,
+      "dxrpAddonId": "019e44aa-1d30-76fe-87f9-8a9f904bff9f",
+      "status": "foundation-only",
+      "contents": []
+    },
+    {
+      "ident": "doublebarrelshotgun",
+      "title": "Double-Barreled Shotgun",
+      "kind": "weapon",
+      "hasAssets": true,
+      "hasCode": false,
+      "dxrpAddonId": "019e44a4-be1e-77f8-b1a3-82e9b365dc36",
+      "status": "foundation-only",
+      "contents": []
+    },
+    {
+      "ident": "bitcoinmining",
+      "title": "Bitcoin Mining",
+      "kind": "simple-entity",
+      "hasAssets": true,
+      "hasCode": false,
+      "dxrpAddonId": "019e4420-8c6f-7527-98e0-4dbfdb344ca4",
+      "status": "foundation-only",
+      "contents": []
+    },
+    {
+      "ident": "hackerjob",
+      "title": "Hacker Job",
+      "kind": "simple-entity",
+      "hasAssets": true,
+      "hasCode": false,
+      "dxrpAddonId": "019e448c-4958-77d1-84b7-c7ec3f1bc328",
+      "status": "foundation-only",
+      "contents": []
+    },
+    {
+      "ident": "advanceddrugprocessing",
+      "title": "Advanced Drug Processing",
+      "kind": "simple-entity",
+      "hasAssets": true,
+      "hasCode": false,
+      "dxrpAddonId": "019e36bf-31bf-7b2a-a56f-1ab4467cec29",
+      "status": "foundation-only",
+      "contents": []
+    }
+  ]
+}

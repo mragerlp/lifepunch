@@ -1,0 +1,21 @@
+---
+description: LifePunch DXRP addon foundation rules
+alwaysApply: true
+---
+
+# LifePunch DXRP Foundation
+
+- Treat this repo as the LifePunch DXRP server workspace.
+- Keep all community work under the main `lifepunch/` folder.
+- Keep addon package work in `lifepunch/addons/`.
+- Keep gamemode work in `lifepunch/gamemode/`.
+- Keep hosted server records and audits in `lifepunch/server/`.
+- Keep DXRP portal tab documentation in `lifepunch/portal/`.
+- Keep staff role and permission policy in `lifepunch/admin-panel/`.
+- Treat `lifepunch/addons/config/addons.json` as the source of truth for LifePunch addon packages.
+- Keep addon assets under `lifepunch/addons/Assets/addons/lifepunch/<ident>/`.
+- Keep addon code under `lifepunch/addons/Code/Addons/lifepunch/<ident>/`.
+- Do not use flat `upload-assets/` or `upload-code/` folders as canonical source.
+- Separate addon package data, content row data, and gamemode attachment data.
+- Validate with `scripts/validate-workspace.ps1` at the repo root and `lifepunch/addons/scripts/validate-layout.ps1` for addon work.
+- Rebuild AK47 only through the reusable pipeline; do not make it a one-off exception.

@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "source": "DXRP portal Servers page for LifePunch",
+  "expectedHostedServers": 2,
+  "servers": [
+    {
+      "id": "lifepunchdevelopment",
+      "environment": "development",
+      "displayName": "Development",
+      "portalName": "LifePunch Official | DEVELOPMENT SERVER",
+      "dxrpServerId": null,
+      "version": "26.05.20",
+      "created": "3 weeks ago",
+      "lastPulsed": "2 days ago",
+      "purpose": "Test LifePunch addons, gamemode changes, and newer beta features before public release.",
+      "profile": "beta-testing",
+      "risk": "testing",
+      "addonPolicy": "Custom LifePunch addons and experimental DXRP features are tested here first.",
+      "ownerApprovalRequiredFor": [
+        "sync",
+        "restart",
+        "gamemode change",
+        "ruleset change",
+        "map change"
+      ]
+    },
+    {
+      "id": "lifepunchmainserver",
+      "environment": "vanilla",
+      "displayName": "70p",
+      "portalName": "LifePunch Official | 70p",
+      "dxrpServerId": null,
+      "version": "26.05.20",
+      "created": "1 month ago",
+      "lastPulsed": "9 minutes ago",
+      "purpose": "70-player vanilla-style DXRP server that mirrors official DXRP limitations.",
+      "profile": "official-limits",
+      "risk": "live-community",
+      "addonPolicy": "Do not deploy custom addon or beta feature changes here until they are proven safe and compatible with official DXRP limitations.",
+      "ownerApprovalRequiredFor": [
+        "sync",
+        "restart",
+        "gamemode change",
+        "ruleset change",
+        "map change"
+      ]
+    }
+  ],
+  "notes": [
+    "The DXRP Servers page should be treated as a two-server operational surface for LifePunch.",
+    "Do not design workflows around unmanaged or external servers unless the owner adds them later.",
+    "Do not add .bat launch scripts or server start arguments until hosting/security details are provided later.",
+    "Internal server ids are lifepunchdevelopment and lifepunchmainserver.",
+    "Development and 70p procedures must remain separate."
+  ]
+}

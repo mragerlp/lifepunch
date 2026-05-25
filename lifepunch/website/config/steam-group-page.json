@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "source": "LifePunch website Steam Group navigation screenshot",
+  "currentBehavior": {
+    "navigationLabel": "Steam Group",
+    "type": "external-direct-link",
+    "externalUrl": "https://steamcommunity.com/groups/lifepunchofficial"
+  },
+  "desiredFuturePage": {
+    "priority": "low",
+    "similarTo": "website/discord",
+    "purpose": "Ask users to join the LifePunch Steam Group before opening Steam Community.",
+    "suggestedUrl": "https://lifepunch.co/steam-group",
+    "suggestedActions": [
+      "Join Steam Group",
+      "Copy Steam Group Link"
+    ],
+    "branding": [
+      "Steam logo",
+      "LifePunch Steam Group"
+    ]
+  },
+  "identityNotes": [
+    "Steam login remains the source of SteamID64 identity.",
+    "Steam Group membership should not replace Steam login identity.",
+    "Any future Steam Group membership check must be tied to SteamID64 and documented before automation."
+  ],
+  "securityRules": [
+    "Do not store private Steam account data in Git.",
+    "Do not store Steam group member exports in Git.",
+    "Do not store Steam API keys in Git."
+  ],
+  "foundationReadiness": {
+    "blocksCoreInfrastructure": false,
+    "notes": "This is a website polish/community conversion item, not a blocker for server/addon/API foundations."
+  }
+}

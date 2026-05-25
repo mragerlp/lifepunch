@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "source": "LifePunch website logged-in screenshots",
+  "site": {
+    "baseUrl": "https://lifepunch.co",
+    "loginUrl": "https://lifepunch.co/login?return=/",
+    "authProvider": "Steam",
+    "stablePlayerIdentifier": "SteamID64"
+  },
+  "publicNavigation": [
+    "Home",
+    "Rules",
+    "Store",
+    "Rewards",
+    "Discord",
+    "Steam Group"
+  ],
+  "authenticatedControls": [
+    "Panel",
+    "Profile",
+    "Logout"
+  ],
+  "profilePage": {
+    "url": "https://lifepunch.co/profile",
+    "observedSections": [
+      "Steam/profile card",
+      "Discord Integration",
+      "Referral Program"
+    ],
+    "observedFields": [
+      "Steam display name",
+      "SteamID64",
+      "Account created date",
+      "Linked Discord account",
+      "Total referrals",
+      "Earned credit"
+    ],
+    "actions": [
+      {
+        "name": "Unlink Discord",
+        "risk": "medium",
+        "ownerApprovalRequired": false,
+        "notes": "May affect Discord verification and Members rank sync."
+      }
+    ]
+  },
+  "adminPanel": {
+    "url": "https://lifepunch.co/admin",
+    "ownerOnlyObserved": true,
+    "modules": [
+      {
+        "name": "Ban Management",
+        "risk": "medium",
+        "notes": "Manage website bans for users."
+      },
+      {
+        "name": "Transactions",
+        "risk": "high",
+        "notes": "View and search store purchases."
+      },
+      {
+        "name": "Reward Claims",
+        "risk": "high",
+        "notes": "Manage and reset Discord reward claims."
+      },
+      {
+        "name": "Email Inbox",
+        "risk": "high",
+        "notes": "View and manage login/auth emails."
+      },
+      {
+        "name": "System Settings",
+        "risk": "critical",
+        "notes": "Manage automation tokens and global config."
+      }
+    ]
+  },
+  "verificationConcerns": [
+    "Steam login callback behavior",
+    "SteamID64 capture and lookup",
+    "Discord account linking and unlinking",
+    "Discord invite page behavior",
+    "Steam Group landing page behavior",
+    "Members rank sync",
+    "VIP/EVIP fulfillment",
+    "Reward claim reset behavior",
+    "Reward claim idempotency",
+    "Weekend reward cooldown",
+    "Monthly giveaway entry and winner draw",
+    "Stripe checkout fulfillment",
+    "Referral code handling",
+    "Store transaction lookup",
+    "Outdated API routes or webhooks",
+    "Automation token rotation"
+  ],
+  "securityRules": [
+    "Do not store raw tokens, emails, Discord IDs, purchase records, or session data in Git.",
+    "Store local secrets only under lifepunch/secure.",
+    "Review API and webhook routes before changing verification automation."
+  ]
+}
