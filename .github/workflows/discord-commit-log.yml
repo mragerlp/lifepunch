@@ -1,10 +1,9 @@
-name: fancier-discord-webhooks
+name: Discord Commit Log
 
 on:
   push:
     branches:
       - main
-      - master
   workflow_dispatch:
 
 permissions:
@@ -12,72 +11,63 @@ permissions:
 
 jobs:
   notify:
-    name: Notify Discord
+    name: Send commit summary
     runs-on: ubuntu-latest
     env:
       DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_COMMIT_WEBHOOK_URL }}
-
     steps:
-      - name: Build Discord payload
-        id: payload
-        uses: baked-libs/maven-discord-integration@1.5.1
+      - name: Send Discord notification
+        uses: actions/github-script@v7
         with:
           script: |
-            const isManual = context.eventName === 'workflow_dispatch';
+            const webhookUrl = process.env.DISCORD_WEBHOOK_URL;
+
+            if (!webhookUrl) {
+              core.setFailed('DISCORD_COMMIT_WEBHOOK_URL secret is not configured.');
+              return;
+            }
+
             const repo = `${context.repo.owner}/${context.repo.repo}`;
             const branch = context.ref.replace('refs/heads/', '');
             const sender = context.payload.sender?.login ?? 'unknown';
-            const serverUrl = process.env.GITHUB_SERVER_URL || 'https://github.com';
-            const compareUrl = context.payload.compare ?? `${serverUrl}/${repo}/actions/runs/${context.runId}`;
             const commits = context.payload.commits ?? [];
+            const compareUrl = context.payload.compare;
 
-            const maxShown = 5;
-            const commitLines = commits.slice(0, maxShown).map((commit) => {
-              const sha = commit.id.slice(0, 7);
-              const message = commit.message.split('\n')[0];
-              const author = commit.author?.name ?? sender;
-              return `[\`${sha}\`](${commit.url}) ${message} - ${author}`;
-            });
-
-            if (commits.length > maxShown) {
-              commitLines.push(`...and ${commits.length - maxShown} more commit(s).`);
-            }
-
-            const description = isManual
-              ? `Manual webhook test from ${sender}.`
-              : (commitLines.length ? commitLines.join('\n') : `Push event from ${sender}.`);
+            const commitLines = commits.length
+              ? commits.slice(0, 10).map((commit) => {
+                  const sha = commit.id.substring(0, 7);
+                  const message = commit.message.split('\n')[0];
+                  const author = commit.author?.name ?? 'unknown';
+                  return `[\`${sha}\`](${commit.url}) ${message} - ${author}`;
+                }).join('\n')
+              : `Manual workflow run by ${sender}.`;
 
             const payload = {
               username: 'LifePunch GitHub',
               embeds: [
                 {
-                  title: isManual ? 'Webhook test' : `Push to ${repo}`,
-                  url: compareUrl,
-                  description,
-                  color: isManual ? 3447003 : 5763719,
+                  title: commits.length === 1
+                    ? `1 new commit pushed to ${repo}`
+                    : `${commits.length || 'Manual'} commit update for ${repo}`,
+                  url: compareUrl || `https://github.com/${repo}/actions/runs/${context.runId}`,
+                  color: 0x7c3aed,
                   fields: [
                     { name: 'Branch', value: branch || 'manual', inline: true },
-                    { name: 'Sender', value: sender, inline: true },
-                    { name: 'Commits', value: String(commits.length), inline: true }
+                    { name: 'Pushed by', value: sender, inline: true },
+                    { name: 'Commits', value: commitLines.slice(0, 3900) }
                   ],
-                  footer: { text: repo },
                   timestamp: new Date().toISOString()
                 }
               ]
             };
 
-            core.setOutput('json', JSON.stringify(payload));
+            const response = await fetch(webhookUrl, {
+              method: 'POST',
+              headers: { 'content-type': 'application/json' },
+              body: JSON.stringify(payload)
+            });
 
-      - name: Send Discord notification
-        env:
-          DISCORD_PAYLOAD: ${{ steps.payload.outputs.json }}
-        run: |
-          if [ -z "$DISCORD_WEBHOOK_URL" ]; then
-            echo "DISCORD_COMMIT_WEBHOOK_URL secret is not configured."
-            exit 1
-          fi
-
-          curl --fail-with-body \
-            -H "Content-Type: application/json" \
-            -d "$DISCORD_PAYLOAD" \
-            "$DISCORD_WEBHOOK_URL"
+            if (!response.ok) {
+              const body = await response.text();
+              core.setFailed(`Discord webhook returned ${response.status}: ${body}`);
+            }
