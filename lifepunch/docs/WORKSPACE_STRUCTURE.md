@@ -28,10 +28,10 @@ The folders are separate because DXRP addon publishing, gamemode integration, se
 
 ## Local Reference Mirror
 
-Local raw/testing material can be organized outside the Git repo at:
+Local raw/testing material can be organized outside the Git repo at an owner-managed reference location:
 
 ```text
-C:\Users\jared\OneDrive\Desktop\lifepunch reference folder\reference
+<local reference>/lifepunch/reference
 ```
 
 That folder is a mirrored reference/test environment for more than addons. Use it for raw downloads, Blender files, screenshots, local exports, portal observations, server experiments, gamemode drafts, website/API tests, Discord/webhook tests, and other material that should not yet be clean tracked source.

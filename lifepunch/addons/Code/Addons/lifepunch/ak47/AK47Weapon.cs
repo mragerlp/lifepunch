@@ -2,10 +2,6 @@ using Sandbox;
 
 namespace LifePunch.DXRP.Addons.AK47;
 
-/// <summary>
-/// LifePunch AK47 runtime contract.
-/// This compiles as a local component until the DXRP weapon base reference is available to the addon project.
-/// </summary>
 public sealed class AK47Weapon : Component
 {
 	public int ClipContents { get; private set; }

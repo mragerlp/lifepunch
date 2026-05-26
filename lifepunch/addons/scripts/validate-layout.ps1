@@ -200,8 +200,8 @@ if ($null -ne $Manifest) {
                     Add-LayoutError "$ContentContext must use DXRP type 1 for weapon content"
                 }
 
-                Test-ContentReference ([string]$Content.primaryReference) "$ContentContext primaryReference" "addons/lifepunch/$Ident/equipment/"
-                Test-ContentReference ([string]$Content.secondaryReference) "$ContentContext secondaryReference" "addons/lifepunch/$Ident/equipment/"
+                Test-ContentReference ([string]$Content.primaryReference) "$ContentContext primaryReference" "equipment/"
+                Test-ContentReference ([string]$Content.secondaryReference) "$ContentContext secondaryReference" "equipment/"
                 Test-ContentReference ([string]$Content.worldModelPath) "$ContentContext worldModelPath" "models/lifepunch/$Ident/"
 
                 if ([string]::IsNullOrWhiteSpace([string]$Content.grouping) -or [string]$Content.grouping -notin $ValidWeaponGroupings) {

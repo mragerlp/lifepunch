@@ -51,10 +51,10 @@ templates/
 
 Do not mix folder responsibilities. For example, addon assets belong in `addons/Assets`, server records belong in `server/`, mapping work belongs in `maps/`, player support belongs in `players/`, economy policy belongs in `economy/`, audits belong in `audit/`, website work belongs in `website/`, Discord work belongs in `discord/`, webhook routing belongs in `webhooks/`, API contracts belong in `API/`, and staff permissions belong in `admin-panel/`.
 
-Local raw/testing material belongs in the mirrored reference folder before it is promoted into this clean repo:
+Local raw/testing material belongs in an owner-managed reference folder outside this repository before it is promoted into clean tracked source:
 
 ```text
-C:\Users\jared\OneDrive\Desktop\lifepunch reference folder\reference
+<local reference>/lifepunch/reference
 ```
 
 Use it for addon experiments, gamemode drafts, server launch notes, portal screenshots, website/API tests, Discord/webhook testing, and other local work that is not yet clean source.

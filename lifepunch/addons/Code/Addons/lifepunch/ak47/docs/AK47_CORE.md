@@ -8,13 +8,13 @@ The AK47 starts from the LifePunch foundation, not the old scratch package.
 - Manifest ident: `ak47`
 - Archetype: `weapon`
 - DXRP content type: `1`
-- Grouping: `Primary`
+- Grouping: `Secondary`
 
 ## Planned References
 
 ```text
-primaryReference: addons/lifepunch/ak47/equipment/w_ak47/w_ak47.prefab
-secondaryReference: addons/lifepunch/ak47/equipment/vm_ak47/vm_ak47.prefab
+primaryReference: equipment/w_ak47/w_ak47.prefab
+secondaryReference: equipment/vm_ak47/vm_ak47.prefab
 worldModelPath: models/lifepunch/ak47/w_ak47/w_ak47.vmdl
 ```
 
@@ -42,7 +42,7 @@ Step 1 source review lives in:
 Code/Addons/lifepunch/ak47/docs/SOURCE_INTAKE.md
 ```
 
-The scratch S&box project was reviewed as a template/reference only. The current local AK47 reference source is `C:\Users\jared\OneDrive\Desktop\lifepunch reference folder\reference\addons\weapons\ak47`, which includes the raw FBX source, cleaned FBX, PBR textures, Blender file, and raw WAV sound files. Approved source files have been copied into the clean LifePunch addon lane.
+The scratch S&box project was reviewed as a template/reference only. The current AK47 reference source is an owner-provided local folder outside this repository. Approved source files have been copied into the clean LifePunch addon lane.
 
 Active cleaned model source:
 

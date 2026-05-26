@@ -36,7 +36,7 @@ config/market.json            # market/shipments that expose equipment/entities
 gamemodes/lifepunch.gamemode  # canonical import/export file
 ```
 
-AK47 is tracked as `staged-not-published` / `pending-development-test` until a DXRP addon revision exists and passes on `lifepunchdevelopment`.
+AK47 is tracked through separate addon, equipment, and market states. A published addon revision must be pinned first, then the AK47 equipment content must be exposed through the LifePunch gamemode Market tab before it appears in the in-game Market section on `lifepunchdevelopment`.
 
 ## Portal Workflow
 

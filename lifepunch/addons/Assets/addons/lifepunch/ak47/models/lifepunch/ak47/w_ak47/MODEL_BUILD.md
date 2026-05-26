@@ -46,7 +46,7 @@ materials/ak47_body.vmat
 - `equipment/w_ak47/w_ak47.prefab` was reopened in S&box after wiring and saved with adjusted `Muzzle` and `EjectionPort` positions.
 - `equipment/vm_ak47/vm_ak47.prefab` has been created with `Sandbox.SkinnedModelRenderer` using the same model as a first pass.
 - `equipment/vm_ak47/vm_ak47.prefab` now has first-pass DXRP `ViewModel`, `Muzzle`, and `EjectionPort` wiring.
-- Material references should stay mounted/relative, not absolute local `C:\Users\...` paths.
+- Material references should stay mounted/relative, not absolute local filesystem paths.
 
 ## Build Notes
 

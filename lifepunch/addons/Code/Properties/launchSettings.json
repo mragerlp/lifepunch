@@ -2,8 +2,8 @@
   "profiles": {
     "Editor": {
       "commandName": "Executable",
-      "executablePath": "D:/Steam/steamapps/common/sbox/sbox-dev.exe",
-      "commandLineArgs": "-project \u0022C:\\Users\\jared\\Projects\\lifepunchaddons\\lifepunch\\addons\\addons.sbproj\u0022"
+      "executablePath": "sbox-dev.exe",
+      "commandLineArgs": "-project \u0022..\\addons.sbproj\u0022"
     }
   }
 }

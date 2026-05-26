@@ -1,4 +1,4 @@
-{
+﻿{
   "RootObject": {
     "__guid": "fe46b2c0-e947-4b2d-a289-7b75c713f0c9",
     "__version": 2,
@@ -27,9 +27,9 @@
         "CreateBoneObjects": false,
         "LodOverride": null,
         "MaterialGroup": null,
-        "MaterialOverride": "addons/lifepunch/ak47/models/lifepunch/ak47/w_ak47/materials/ak47_body.vmat",
+        "MaterialOverride": "models/lifepunch/ak47/w_ak47/materials/ak47_body.vmat",
         "Materials": null,
-        "Model": "addons/lifepunch/ak47/models/lifepunch/ak47/w_ak47/w_ak47.vmdl",
+        "Model": "models/lifepunch/ak47/w_ak47/w_ak47.vmdl",
         "Morphs": {},
         "OnComponentDestroy": null,
         "OnComponentDisabled": null,

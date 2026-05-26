@@ -1,4 +1,4 @@
-{
+﻿{
   "RootObject": {
     "__guid": "b6b28d7a-a008-43b2-9abb-ddc9461d81f2",
     "__version": 2,
@@ -27,9 +27,9 @@
         "CreateBoneObjects": false,
         "LodOverride": null,
         "MaterialGroup": null,
-        "MaterialOverride": "addons/lifepunch/ak47/models/lifepunch/ak47/w_ak47/materials/ak47_body.vmat",
+        "MaterialOverride": "models/lifepunch/ak47/w_ak47/materials/ak47_body.vmat",
         "Materials": null,
-        "Model": "addons/lifepunch/ak47/models/lifepunch/ak47/w_ak47/w_ak47.vmdl",
+        "Model": "models/lifepunch/ak47/w_ak47/w_ak47.vmdl",
         "Morphs": {},
         "OnComponentDestroy": null,
         "OnComponentDisabled": null,
@@ -65,7 +65,7 @@
         "__guid": "b5d4a297-ee8b-443b-9e2f-9172b1f7d9bc",
         "__enabled": true,
         "Flags": 0,
-        "DeploySound": "addons/lifepunch/ak47/sounds/ak47_draw.sound",
+        "DeploySound": "sounds/ak47_draw.sound",
         "EjectionPort": {
           "_type": "gameobject",
           "go": "7fd7020e-1f02-4e68-9fb7-1b9923fd18c9"
@@ -239,7 +239,7 @@
             "PlayerVelocityLimit": 300,
             "RequiresAllInputActions": false,
             "RequiresAmmoComponent": true,
-            "ShootSound": "addons/lifepunch/ak47/sounds/ak47_shot.sound",
+            "ShootSound": "sounds/ak47_shot.sound",
             "SupportedFireModes": [
               "Automatic"
             ],
@@ -257,9 +257,9 @@
               "component_type": "AmmoComponent"
             },
             "EmptyReloadSounds": {
-              "0": "addons/lifepunch/ak47/sounds/ak47_reload_clipout.sound",
-              "1.2": "addons/lifepunch/ak47/sounds/ak47_reload_clipin.sound",
-              "2.1": "addons/lifepunch/ak47/sounds/ak47_cock.sound"
+              "0": "sounds/ak47_reload_clipout.sound",
+              "1.2": "sounds/ak47_reload_clipin.sound",
+              "2.1": "sounds/ak47_cock.sound"
             },
             "EmptyReloadTime": 2.4,
             "InputActions": [
@@ -275,9 +275,9 @@
             "RequiresAllInputActions": false,
             "SingleReload": false,
             "TimedReloadSounds": {
-              "0": "addons/lifepunch/ak47/sounds/ak47_reload_clipout.sound",
-              "1.2": "addons/lifepunch/ak47/sounds/ak47_reload_clipin.sound",
-              "2.1": "addons/lifepunch/ak47/sounds/ak47_cock.sound"
+              "0": "sounds/ak47_reload_clipout.sound",
+              "1.2": "sounds/ak47_reload_clipin.sound",
+              "2.1": "sounds/ak47_cock.sound"
             }
           },
           {

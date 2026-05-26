@@ -4,14 +4,5 @@
   </Configurations>
   <Folder Name="/Addons/">
     <Project Path="Code/addons.csproj" />
-    <Project Path="D:/Steam/steamapps/common/sbox/addons/base/code/Base Library.csproj" />
-  </Folder>
-  <Folder Name="/Tools/">
-    <Project Path="D:/Steam/steamapps/common/sbox/addons/tools/Code/Base Editor Library.csproj" />
-    <Project Path="D:/Steam/steamapps/common/sbox/editor/ActionGraph/Code/actiongraph.csproj" />
-    <Project Path="D:/Steam/steamapps/common/sbox/editor/DooEditor/Code/dooeditor.csproj" />
-    <Project Path="D:/Steam/steamapps/common/sbox/editor/Hammer/Code/hammer.csproj" />
-    <Project Path="D:/Steam/steamapps/common/sbox/editor/MovieMaker/Code/moviemaker.csproj" />
-    <Project Path="D:/Steam/steamapps/common/sbox/editor/ShaderGraph/Code/shadergraph.csproj" />
   </Folder>
 </Solution>

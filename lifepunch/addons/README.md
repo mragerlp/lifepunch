@@ -26,6 +26,8 @@ addons.sbproj
 
 This project file is the local S&box editor entry point for the LifePunch addon workspace. It does not replace the manifest-driven DXRP package structure.
 
+For command-line builds, set `SBOX_DIR` to your local S&box install root so `Code/addons.csproj` can resolve Sandbox references without storing machine-specific paths in Git.
+
 Start with the foundation docs:
 
 - `docs/DXRP_LAYOUT.md` explains the DXRP mount layout.
@@ -34,6 +36,7 @@ Start with the foundation docs:
 - `docs/REUSABLE_ADDON_FRAMEWORK.md` explains what should carry forward from AK47 to future LifePunch addons.
 - `docs/OFFICIAL_ADDON_REFERENCE.md` tracks official/public DXRP addon page examples.
 - `docs/PUBLISHING.md` explains generated publish staging.
+- `docs/AK47_PORTAL_DEV_TEST.md` tracks the AK47 portal and development-server test preflight.
 - `config/addons.json` is the source of truth for LifePunch addon packages.
 
 Validate the addon lane with:

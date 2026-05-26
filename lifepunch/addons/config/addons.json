@@ -1,4 +1,4 @@
-{
+﻿{
   "schemaVersion": 1,
   "org": "lifepunch",
   "contentReferenceRoot": "addons/lifepunch",
@@ -16,13 +16,13 @@
           "slug": "ak47",
           "label": "AK-47",
           "type": 1,
-          "primaryReference": "addons/lifepunch/ak47/equipment/w_ak47/w_ak47.prefab",
-          "secondaryReference": "addons/lifepunch/ak47/equipment/vm_ak47/vm_ak47.prefab",
+          "primaryReference": "equipment/w_ak47/w_ak47.prefab",
+          "secondaryReference": "equipment/vm_ak47/vm_ak47.prefab",
           "worldModelPath": "models/lifepunch/ak47/w_ak47/w_ak47.vmdl",
           "grouping": "Primary",
           "implementationStatus": "world-and-viewmodel-dxrp-components-wired",
           "sourceIntake": "Code/Addons/lifepunch/ak47/docs/SOURCE_INTAKE.md",
-          "activeModelSource": "Assets/addons/lifepunch/ak47/models/lifepunch/ak47/w_ak47/source/ak47.fbx",
+          "activeModelSource": "Assets/models/lifepunch/ak47/w_ak47/source/ak47.fbx",
           "modelBuild": "Assets/addons/lifepunch/ak47/models/lifepunch/ak47/w_ak47/MODEL_BUILD.md",
           "materialMap": "Assets/addons/lifepunch/ak47/models/lifepunch/ak47/w_ak47/material-map.json",
           "runtimePattern": "Code/Addons/lifepunch/ak47/docs/RUNTIME_PATTERN.md",
@@ -41,12 +41,12 @@
             "dxrpWeaponComponentsConfirmed": false
           },
           "soundReferences": {
-            "fire": "addons/lifepunch/ak47/sounds/ak47_shot.sound",
-            "fireDistant": "addons/lifepunch/ak47/sounds/ak47_shot_distant.sound",
-            "reloadClipOut": "addons/lifepunch/ak47/sounds/ak47_reload_clipout.sound",
-            "reloadClipIn": "addons/lifepunch/ak47/sounds/ak47_reload_clipin.sound",
-            "cock": "addons/lifepunch/ak47/sounds/ak47_cock.sound",
-            "draw": "addons/lifepunch/ak47/sounds/ak47_draw.sound"
+            "fire": "sounds/ak47_shot.sound",
+            "fireDistant": "sounds/ak47_shot_distant.sound",
+            "reloadClipOut": "sounds/ak47_reload_clipout.sound",
+            "reloadClipIn": "sounds/ak47_reload_clipin.sound",
+            "cock": "sounds/ak47_cock.sound",
+            "draw": "sounds/ak47_draw.sound"
           },
           "notes": "Clean core row for the rebuilt LifePunch AK47. Do not import old scratch assets/code without review."
         }

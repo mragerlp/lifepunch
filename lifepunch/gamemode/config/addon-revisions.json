@@ -10,15 +10,19 @@
       "addonIdent": "ak47",
       "dxrpAddonId": "019e44aa-1d30-76fe-87f9-8a9f904bff9f",
       "targetEnvironment": "lifepunchdevelopment",
-      "publishStatus": "staged-not-published",
+      "publishStatus": "published-and-pinned",
       "revisionId": null,
-      "revisionNumber": null,
+      "revisionNumber": 26,
       "stagingRoot": "../addons/.dxrp-publish/upload",
       "packageExport": "../addons/.dxrp-publish/package-ak47.json",
       "notes": [
-        "Publish the AK47 addon package revision before pinning it to the LifePunch gamemode.",
-        "Pin first on lifepunchdevelopment only.",
-        "Do not sync lifepunchmainserver until a development server test passes."
+        "AK47 Rev 26 was published with package-root content row prefab references.",
+        "Rev 22 was an intermediate no-changelog publish and should not be treated as the active target.",
+        "Rev 23 included sanitized model source but still showed orange ERROR models in-game.",
+        "Rev 24/25 did not fully resolve the runtime path mismatch.",
+        "Pin Rev 26 on the LifePunch gamemode before retesting.",
+        "Development server uses the LifePunch gamemode and is the only target for AK47 runtime testing.",
+        "Do not sync lifepunchmainserver; it must remain on the vanilla gamemode."
       ]
     }
   ]

@@ -9,38 +9,38 @@ Do not copy old scratch files directly. Use this record to decide what is safe t
 Scratch project:
 
 ```text
-C:\Users\jared\Downloads\ak classic\ak47
+<local downloads>/ak-classic/ak47
 ```
 
 Model ZIPs:
 
 ```text
-C:\Users\jared\Downloads\ak47 (1).zip
-C:\Users\jared\Downloads\ak47.zip
-C:\Users\jared\Downloads\rifle-ak-47-weapon-model-cs2.zip
+<local downloads>/ak47 (1).zip
+<local downloads>/ak47.zip
+<local downloads>/rifle-ak-47-weapon-model-cs2.zip
 ```
 
 Sound ZIP:
 
 ```text
-C:\Users\jared\Downloads\ak47_weapon_sounds.zip
+<local downloads>/ak47_weapon_sounds.zip
 ```
 
 Current AK47 local reference folder:
 
 ```text
-C:\Users\jared\OneDrive\Desktop\lifepunch reference folder\reference\addons\weapons\ak47
+<local reference>/addons/weapons/ak47
 ```
 
 Current AK47 foundation source folder:
 
 ```text
-C:\Users\jared\OneDrive\Desktop\lifepunch reference folder\reference\addons\weapons\ak47
+<local reference>/addons/weapons/ak47
 ```
 
 This is the current local reference source of truth for AK47 testing files unless replaced by a newer owner-provided folder.
 
-Note: `C:\Users\jared\Downloads\ak47 (1)` was not an extracted folder during intake. The matching item was `ak47 (1).zip`.
+Note: `<local downloads>/ak47 (1)` was not an extracted folder during intake. The matching item was `ak47 (1).zip`.
 
 ## Scratch Project Finding
 
@@ -87,12 +87,12 @@ Attribution requirement:
 The local AK47 reference folder contains:
 
 ```text
-C:\Users\jared\OneDrive\Desktop\lifepunch reference folder\reference\addons\weapons\ak47\source\raw\ak47-animated.fbx
-C:\Users\jared\OneDrive\Desktop\lifepunch reference folder\reference\addons\weapons\ak47\source\cleaned\ak47.fbx
-C:\Users\jared\OneDrive\Desktop\lifepunch reference folder\reference\addons\weapons\ak47\textures\ak47_BaseColor.tga.png
-C:\Users\jared\OneDrive\Desktop\lifepunch reference folder\reference\addons\weapons\ak47\textures\ak47_Normal.tga.png
-C:\Users\jared\OneDrive\Desktop\lifepunch reference folder\reference\addons\weapons\ak47\textures\ak47_Metalness.tga.png
-C:\Users\jared\OneDrive\Desktop\lifepunch reference folder\reference\addons\weapons\ak47\textures\ak47_Roughness.tga.png
+<local reference>/addons/weapons/ak47/source/raw/ak47-animated.fbx
+<local reference>/addons/weapons/ak47/source/cleaned/ak47.fbx
+<local reference>/addons/weapons/ak47/textures/ak47_BaseColor.tga.png
+<local reference>/addons/weapons/ak47/textures/ak47_Normal.tga.png
+<local reference>/addons/weapons/ak47/textures/ak47_Metalness.tga.png
+<local reference>/addons/weapons/ak47/textures/ak47_Roughness.tga.png
 ```
 
 Decision:
@@ -127,7 +127,7 @@ textures/ak47_Roughness.tga.png
 
 Decision:
 
-- `reference-only`: superseded by the extracted Desktop foundation folder.
+- `reference-only`: superseded by the current owner-provided reference folder.
 - Use only one of the duplicate ZIPs.
 
 `rifle-ak-47-weapon-model-cs2.zip` contains:
@@ -150,14 +150,14 @@ Decision:
 The local AK47 reference folder contains raw WAV sources:
 
 ```text
-C:\Users\jared\OneDrive\Desktop\lifepunch reference folder\reference\addons\weapons\ak47\sounds\raw\ak47-1.wav
-C:\Users\jared\OneDrive\Desktop\lifepunch reference folder\reference\addons\weapons\ak47\sounds\raw\ak47-1-distant.wav
-C:\Users\jared\OneDrive\Desktop\lifepunch reference folder\reference\addons\weapons\ak47\sounds\raw\ak47_01.wav
-C:\Users\jared\OneDrive\Desktop\lifepunch reference folder\reference\addons\weapons\ak47\sounds\raw\ak47_boltpull.wav
-C:\Users\jared\OneDrive\Desktop\lifepunch reference folder\reference\addons\weapons\ak47\sounds\raw\ak47_clipin.wav
-C:\Users\jared\OneDrive\Desktop\lifepunch reference folder\reference\addons\weapons\ak47\sounds\raw\ak47_clipout.wav
-C:\Users\jared\OneDrive\Desktop\lifepunch reference folder\reference\addons\weapons\ak47\sounds\raw\ak47_distant.wav
-C:\Users\jared\OneDrive\Desktop\lifepunch reference folder\reference\addons\weapons\ak47\sounds\raw\ak47_draw.wav
+<local reference>/addons/weapons/ak47/sounds/raw/ak47-1.wav
+<local reference>/addons/weapons/ak47/sounds/raw/ak47-1-distant.wav
+<local reference>/addons/weapons/ak47/sounds/raw/ak47_01.wav
+<local reference>/addons/weapons/ak47/sounds/raw/ak47_boltpull.wav
+<local reference>/addons/weapons/ak47/sounds/raw/ak47_clipin.wav
+<local reference>/addons/weapons/ak47/sounds/raw/ak47_clipout.wav
+<local reference>/addons/weapons/ak47/sounds/raw/ak47_distant.wav
+<local reference>/addons/weapons/ak47/sounds/raw/ak47_draw.wav
 ```
 
 Observed mapping candidates:
@@ -226,7 +226,7 @@ ak47_gun_cocked.wav
 
 Decision:
 
-- `reference-only`: superseded by the current Desktop foundation folder.
+- `reference-only`: superseded by the current owner-provided reference folder.
 - If the WAV source ZIP is used later, normalize the source into the same event names:
 
 ```text

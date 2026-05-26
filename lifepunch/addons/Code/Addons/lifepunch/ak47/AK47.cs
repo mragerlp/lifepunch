@@ -1,9 +1,5 @@
-namespace LifePunch.DXRP.Addons.AK47;
+﻿namespace LifePunch.DXRP.Addons.AK47;
 
-/// <summary>
-/// Core LifePunch AK47 definition.
-/// Keep this file free of DXRP-specific inheritance until the official weapon base API is confirmed.
-/// </summary>
 public static class AK47
 {
 	public const string Package = "lifepunch.ak47";
@@ -11,15 +7,15 @@ public static class AK47
 	public const string DisplayName = "AK-47";
 	public const string Grouping = "Primary";
 
-	public const string WorldPrefabPath = "addons/lifepunch/ak47/equipment/w_ak47/w_ak47.prefab";
-	public const string ViewModelPrefabPath = "addons/lifepunch/ak47/equipment/vm_ak47/vm_ak47.prefab";
+	public const string WorldPrefabPath = "equipment/w_ak47/w_ak47.prefab";
+	public const string ViewModelPrefabPath = "equipment/vm_ak47/vm_ak47.prefab";
 	public const string WorldModelPath = "models/lifepunch/ak47/w_ak47/w_ak47.vmdl";
-	public const string FireSoundPath = "addons/lifepunch/ak47/sounds/ak47_shot.sound";
-	public const string FireDistantSoundPath = "addons/lifepunch/ak47/sounds/ak47_shot_distant.sound";
-	public const string ReloadClipOutSoundPath = "addons/lifepunch/ak47/sounds/ak47_reload_clipout.sound";
-	public const string ReloadClipInSoundPath = "addons/lifepunch/ak47/sounds/ak47_reload_clipin.sound";
-	public const string CockSoundPath = "addons/lifepunch/ak47/sounds/ak47_cock.sound";
-	public const string DrawSoundPath = "addons/lifepunch/ak47/sounds/ak47_draw.sound";
+	public const string FireSoundPath = "sounds/ak47_shot.sound";
+	public const string FireDistantSoundPath = "sounds/ak47_shot_distant.sound";
+	public const string ReloadClipOutSoundPath = "sounds/ak47_reload_clipout.sound";
+	public const string ReloadClipInSoundPath = "sounds/ak47_reload_clipin.sound";
+	public const string CockSoundPath = "sounds/ak47_cock.sound";
+	public const string DrawSoundPath = "sounds/ak47_draw.sound";
 
 	public static AK47WeaponStats Stats { get; } = new()
 	{

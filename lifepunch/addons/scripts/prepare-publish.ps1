@@ -23,7 +23,14 @@ function Copy-PublishItems {
 
     $SourceRoot = (Resolve-Path -LiteralPath $Source).Path
     Get-ChildItem -LiteralPath $SourceRoot -Recurse -File -Force |
-        Where-Object { $_.Name -notin @('.gitkeep', 'desktop.ini', 'Thumbs.db') } |
+        Where-Object {
+            $Relative = $_.FullName.Substring($SourceRoot.Length).TrimStart('\', '/')
+            $RelativeParts = $Relative -split '[\\/]'
+
+            $_.Name -notin @('.gitkeep', 'desktop.ini', 'Thumbs.db', 'material-map.json') `
+                -and $_.Extension -ne '.md' `
+                -and $RelativeParts -notcontains 'docs'
+        } |
         ForEach-Object {
             $Relative = $_.FullName.Substring($SourceRoot.Length).TrimStart('\', '/')
             $Target = Join-Path $Destination $Relative
@@ -34,7 +41,40 @@ function Copy-PublishItems {
             }
 
             Copy-Item -LiteralPath $_.FullName -Destination $Target -Force
+
+            if ($_.Extension -eq '.fbx') {
+                Clear-SensitiveBinaryStrings -Path $Target
+            }
         }
+}
+
+function Clear-SensitiveBinaryStrings {
+    param(
+        [string]$Path
+    )
+
+    $Encoding = [System.Text.Encoding]::GetEncoding(28591)
+    $Bytes = [System.IO.File]::ReadAllBytes($Path)
+    $Text = $Encoding.GetString($Bytes)
+
+    $SensitivePathPatterns = @(
+        '[A-Za-z]:\\Users\\[^\\]+\\.*?ak47\.blend'
+    )
+
+    foreach ($Pattern in $SensitivePathPatterns) {
+        $Text = [System.Text.RegularExpressions.Regex]::Replace($Text, $Pattern, {
+            param($Match)
+
+            $Replacement = 'addons/lifepunch/ak47/source/ak47.blend'
+            if ($Replacement.Length -gt $Match.Value.Length) {
+                return 'ak47.blend'.PadRight($Match.Value.Length, ' ')
+            }
+
+            return $Replacement.PadRight($Match.Value.Length, ' ')
+        })
+    }
+
+    [System.IO.File]::WriteAllBytes($Path, $Encoding.GetBytes($Text))
 }
 
 & (Join-Path $PSScriptRoot 'validate-layout.ps1')

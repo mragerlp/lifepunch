@@ -1,4 +1,4 @@
-{
+﻿{
   "schemaVersion": 1,
   "gamemode": {
     "name": "LifePunch",
@@ -11,20 +11,22 @@
       "package": "lifepunch.ak47",
       "addonIdent": "ak47",
       "dxrpAddonId": "019e44aa-1d30-76fe-87f9-8a9f904bff9f",
-      "status": "pending-development-test",
+      "status": "published-and-pinned-pending-runtime-test",
       "content": {
         "type": 1,
-        "primaryReference": "addons/lifepunch/ak47/equipment/w_ak47/w_ak47.prefab",
-        "secondaryReference": "addons/lifepunch/ak47/equipment/vm_ak47/vm_ak47.prefab",
+        "primaryReference": "equipment/w_ak47/w_ak47.prefab",
+        "secondaryReference": "equipment/vm_ak47/vm_ak47.prefab",
         "worldModelPath": "models/lifepunch/ak47/w_ak47/w_ak47.vmdl",
         "grouping": "Primary"
       },
       "testPlan": [
-        "Attach the staged addon revision to lifepunchdevelopment.",
+        "AK47 Rev 26 is published with package-root content row prefab references and should be pinned to the LifePunch gamemode.",
         "Confirm AK47 appears as equipment/content in the gamemode.",
+        "Confirm AK47 is added on the LifePunch gamemode Market tab so it appears in the in-game Market section.",
         "Spawn or grant AK47 in a development test session.",
         "Confirm equip, world model, viewmodel, fire, reload, ammo, muzzle effect, ejection effect, and sounds.",
-        "Record runtime errors before considering a main server sync."
+        "Record runtime errors before considering any wider rollout.",
+        "Do not sync lifepunchmainserver because it must remain on the vanilla gamemode."
       ]
     }
   ]

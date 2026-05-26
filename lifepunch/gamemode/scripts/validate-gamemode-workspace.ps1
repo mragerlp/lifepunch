@@ -97,8 +97,12 @@ if ($null -ne $AddonRevisions) {
         if ($Ak47Revision.targetEnvironment -ne 'lifepunchdevelopment') {
             Add-ValidationError 'config\addon-revisions.json AK47 target environment must be lifepunchdevelopment'
         }
-        if ($Ak47Revision.publishStatus -ne 'staged-not-published') {
-            Add-ValidationError 'config\addon-revisions.json AK47 status must be staged-not-published until a revision is published'
+        $AllowedAk47Statuses = @('staged-not-published', 'published-and-pinned')
+        if ($Ak47Revision.publishStatus -notin $AllowedAk47Statuses) {
+            Add-ValidationError 'config\addon-revisions.json AK47 status must be staged-not-published or published-and-pinned'
+        }
+        if ($Ak47Revision.publishStatus -eq 'published-and-pinned' -and $Ak47Revision.revisionNumber -lt 1) {
+            Add-ValidationError 'config\addon-revisions.json AK47 published revision must include a revision number'
         }
     }
 }
@@ -118,11 +122,14 @@ if ($null -ne $Equipment) {
         if ($Ak47Equipment.content.type -ne 1) {
             Add-ValidationError 'config\equipment.json AK47 content type must be 1'
         }
-        if ($Ak47Equipment.content.primaryReference -ne 'addons/lifepunch/ak47/equipment/w_ak47/w_ak47.prefab') {
+        if ($Ak47Equipment.content.primaryReference -ne 'equipment/w_ak47/w_ak47.prefab') {
             Add-ValidationError 'config\equipment.json AK47 primary reference mismatch'
         }
-        if ($Ak47Equipment.content.secondaryReference -ne 'addons/lifepunch/ak47/equipment/vm_ak47/vm_ak47.prefab') {
+        if ($Ak47Equipment.content.secondaryReference -ne 'equipment/vm_ak47/vm_ak47.prefab') {
             Add-ValidationError 'config\equipment.json AK47 secondary reference mismatch'
+        }
+        if ($Ak47Equipment.content.worldModelPath -ne 'models/lifepunch/ak47/w_ak47/w_ak47.vmdl') {
+            Add-ValidationError 'config\equipment.json AK47 world model path mismatch'
         }
         if ($Ak47Equipment.content.grouping -ne 'Primary') {
             Add-ValidationError 'config\equipment.json AK47 grouping must be Primary'
@@ -137,7 +144,15 @@ if ($null -ne $Market) {
 
     $Ak47Market = @($Market.marketRows) | Where-Object { $_.slug -eq 'ak47' } | Select-Object -First 1
     if ($null -ne $Ak47Market) {
-        Add-ValidationError 'config\market.json must not expose AK47 before development test passes'
+        if ($Ak47Market.environment -ne 'lifepunchdevelopment') {
+            Add-ValidationError 'config\market.json AK47 market row must target lifepunchdevelopment'
+        }
+        if ($Ak47Market.revisionNumber -ne 26) {
+            Add-ValidationError 'config\market.json AK47 market row must target revision 26'
+        }
+        if ($Ak47Market.type -ne 'Equipment') {
+            Add-ValidationError 'config\market.json AK47 market row must be Equipment'
+        }
     }
 }
 

@@ -1,10 +1,10 @@
-{
+﻿{
   "SelectionMode": "Random",
   "DistanceAttenuation": true,
   "UI": false,
   "Volume": "1",
   "Sounds": [
-    "addons/lifepunch/ak47/sounds/ak47_cock.vsnd"
+    "sounds/ak47_cock.vsnd"
   ],
   "Transmission": true,
   "Pitch": "1",

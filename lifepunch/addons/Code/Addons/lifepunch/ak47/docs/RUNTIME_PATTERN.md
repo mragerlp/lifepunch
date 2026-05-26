@@ -222,7 +222,7 @@ LifePunch AK47 should translate these into a smaller first-pass config:
 - `Category`: LifePunch weapon/equipment category, not SWB/SWE.
 - `WorldPrefabPath`: `addons/lifepunch/ak47/equipment/w_ak47/w_ak47.prefab`
 - `ViewModelPrefabPath`: `addons/lifepunch/ak47/equipment/vm_ak47/vm_ak47.prefab`
-- `WorldModelPath`: `models/lifepunch/ak47/w_ak47/w_ak47.vmdl`
+- `WorldModelPath`: `addons/lifepunch/ak47/models/lifepunch/ak47/w_ak47/w_ak47.vmdl`
 - Clip/ammo/reload/fire-rate values from `AK47.cs`.
 - Fire/distant/reload/cock/draw sounds from LifePunch sound resources.
 

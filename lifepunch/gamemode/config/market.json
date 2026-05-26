@@ -4,13 +4,25 @@
     "name": "LifePunch",
     "dxrpGamemodeId": "019e36c0-a67f-701c-90f2-460e0b0f1487"
   },
-  "marketRows": [],
-  "deferredRows": [
+  "marketRows": [
     {
       "slug": "ak47",
       "label": "AK-47",
       "package": "lifepunch.ak47",
-      "reason": "Do not expose AK47 in jobs, market, shipments, or shop rows until the development server equipment test passes."
+      "addonIdent": "ak47",
+      "dxrpAddonId": "019e44aa-1d30-76fe-87f9-8a9f904bff9f",
+      "revisionNumber": 26,
+      "environment": "lifepunchdevelopment",
+      "type": "Equipment",
+      "grouping": "*",
+      "cost": 100,
+      "status": "market-row-added-pending-runtime-test",
+      "notes": [
+        "AK47 must be added to the LifePunch gamemode Market tab before it appears in the in-game Market section.",
+        "This row is for lifepunchdevelopment runtime testing only.",
+        "Do not sync or apply the LifePunch gamemode to lifepunchmainserver because server 1 must remain vanilla."
+      ]
     }
-  ]
+  ],
+  "deferredRows": []
 }
