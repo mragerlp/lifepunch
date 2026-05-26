@@ -4,7 +4,7 @@
   "UI": false,
   "Volume": "1",
   "Sounds": [
-    "sounds/ak47_draw.vsnd"
+    "addons/lifepunch/ak47/sounds/ak47_draw.vsnd"
   ],
   "Transmission": true,
   "Pitch": "1",

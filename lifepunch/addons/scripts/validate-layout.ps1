@@ -202,7 +202,7 @@ if ($null -ne $Manifest) {
 
                 Test-ContentReference ([string]$Content.primaryReference) "$ContentContext primaryReference" "equipment/"
                 Test-ContentReference ([string]$Content.secondaryReference) "$ContentContext secondaryReference" "equipment/"
-                Test-ContentReference ([string]$Content.worldModelPath) "$ContentContext worldModelPath" "models/lifepunch/$Ident/"
+                Test-ContentReference ([string]$Content.worldModelPath) "$ContentContext worldModelPath" "addons/lifepunch/$Ident/models/"
 
                 if ([string]::IsNullOrWhiteSpace([string]$Content.grouping) -or [string]$Content.grouping -notin $ValidWeaponGroupings) {
                     Add-LayoutError "$ContentContext grouping must be one of: $($ValidWeaponGroupings -join ', ')"

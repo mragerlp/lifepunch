@@ -1,4 +1,4 @@
-# AK47 Core Build Notes
+﻿# AK47 Core Build Notes
 
 The AK47 starts from the LifePunch foundation, not the old scratch package.
 
@@ -15,7 +15,7 @@ The AK47 starts from the LifePunch foundation, not the old scratch package.
 ```text
 primaryReference: equipment/w_ak47/w_ak47.prefab
 secondaryReference: equipment/vm_ak47/vm_ak47.prefab
-worldModelPath: models/lifepunch/ak47/w_ak47/w_ak47.vmdl
+worldModelPath: addons/lifepunch/ak47/models/lifepunch/ak47/w_ak47/w_ak47.vmdl
 ```
 
 ## Core Code

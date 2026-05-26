@@ -44,7 +44,7 @@ Weapon content rows use:
 
 These choices should not automatically leak into every future weapon:
 
-- AK47 grouping is `Primary`.
+- AK47 grouping is `Secondary`.
 - AK47 uses `w_ak47` and `vm_ak47`.
 - AK47 first-pass viewmodel prefab currently uses the same `w_ak47.vmdl` as the world prefab.
 - AK47 damage, recoil, spread, reload, ammo, and sound names are weapon-specific tuning.

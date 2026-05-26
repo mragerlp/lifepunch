@@ -16,11 +16,11 @@
         "type": 1,
         "primaryReference": "equipment/w_ak47/w_ak47.prefab",
         "secondaryReference": "equipment/vm_ak47/vm_ak47.prefab",
-        "worldModelPath": "models/lifepunch/ak47/w_ak47/w_ak47.vmdl",
-        "grouping": "Primary"
+        "worldModelPath": "addons/lifepunch/ak47/models/lifepunch/ak47/w_ak47/w_ak47.vmdl",
+        "grouping": "Secondary"
       },
       "testPlan": [
-        "AK47 Rev 26 is published with package-root content row prefab references and should be pinned to the LifePunch gamemode.",
+        "AK47 Rev 26 is published and pinned with package-root content row prefab references.",
         "Confirm AK47 appears as equipment/content in the gamemode.",
         "Confirm AK47 is added on the LifePunch gamemode Market tab so it appears in the in-game Market section.",
         "Spawn or grant AK47 in a development test session.",

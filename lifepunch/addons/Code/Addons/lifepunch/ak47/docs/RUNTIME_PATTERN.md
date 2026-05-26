@@ -1,4 +1,4 @@
-# AK47 Runtime Pattern
+﻿# AK47 Runtime Pattern
 
 This document tracks the AK47 code/runtime step after both prefabs have been created.
 

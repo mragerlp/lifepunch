@@ -17,5 +17,8 @@ alwaysApply: true
 - Keep addon code under `lifepunch/addons/Code/Addons/lifepunch/<ident>/`.
 - Do not use flat `upload-assets/` or `upload-code/` folders as canonical source.
 - Separate addon package data, content row data, and gamemode attachment data.
+- Refer to `https://github.com/dxura/dxrp/tree/develop` when evaluating compatibility with the official DXRP gamemode.
+- Refer especially to `https://github.com/dxura/dxrp/tree/develop/game` when shaping LifePunch's main repository and gamemode structure.
+- If LifePunch infrastructure improvements do not conflict with DXRP's project direction, consider whether they can be proposed upstream to the official DXRP project.
 - Validate with `scripts/validate-workspace.ps1` at the repo root and `lifepunch/addons/scripts/validate-layout.ps1` for addon work.
 - Rebuild AK47 only through the reusable pipeline; do not make it a one-off exception.

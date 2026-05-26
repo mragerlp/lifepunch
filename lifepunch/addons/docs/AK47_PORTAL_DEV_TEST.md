@@ -1,4 +1,4 @@
-# AK47 Portal And Development Test
+﻿# AK47 Portal And Development Test
 
 Date: 2026-05-26
 
@@ -50,7 +50,7 @@ Portal content row values from the package export:
   "type": 1,
   "primaryReference": "equipment/w_ak47/w_ak47.prefab",
   "secondaryReference": "equipment/vm_ak47/vm_ak47.prefab",
-  "worldModelPath": "models/lifepunch/ak47/w_ak47/w_ak47.vmdl",
+  "worldModelPath": "addons/lifepunch/ak47/models/lifepunch/ak47/w_ak47/w_ak47.vmdl",
   "grouping": "Secondary"
 }
 ```
@@ -92,7 +92,7 @@ Servers:
 
 - AK47 and AK47 Shipment appeared in the in-game Market on the development server.
 - Purchasing/spawning showed a large orange `ERROR` model around the AK47 shipment.
-- Likely cause: `w_ak47.vmdl` references `models/lifepunch/ak47/w_ak47/source/ak47.fbx`, but the first sanitized upload excluded the `source` folder.
+- Likely cause: `w_ak47.vmdl` references `addons/lifepunch/ak47/models/lifepunch/ak47/w_ak47/source/ak47.fbx`, but the first sanitized upload excluded the `source` folder.
 - Remediation: publish a new revision from regenerated staging that includes `source/ak47.fbx` after sanitizing embedded local path metadata in the generated upload copy.
 - Expected fixed upload counts: code `2` files, assets `56` files.
 - Follow-up publish result: `Rev 23` includes the sanitized AK47 model source and has the intended changelog.
@@ -107,17 +107,22 @@ Servers:
   - `primaryReference`: `equipment/w_ak47/w_ak47.prefab`
   - `secondaryReference`: `equipment/vm_ak47/vm_ak47.prefab`
   - `worldModelPath`: `models/lifepunch/ak47/w_ak47/w_ak47.vmdl`
+- Follow-up gamemode result: `Rev 26` is pinned on the LifePunch gamemode for `lifepunchdevelopment`.
+- `Rev 26` still showed a large orange `ERROR` model around the AK47 shipment.
+- Next likely cause: DXRP loads shipment and dropped-equipment previews through `GameModeEquipmentDto.GetWorldModel()`, which passes `worldModelPath` directly to `Model.Load`. Unlike `primaryReference` and `secondaryReference`, `worldModelPath` likely needs the full addon-mounted path.
+- Next publish target: keep prefab references package-root, but set `worldModelPath` to `addons/lifepunch/ak47/models/lifepunch/ak47/w_ak47/w_ak47.vmdl`.
+- AK47 content grouping is `Secondary`.
+- AK47 market row is a shipment-style equipment row:
+  - `grouping`: `#entity.category.shipment`
+  - `cost`: `5000`
+  - `limit`: `5`
+  - `quantity`: `5`
 
-## Remaining Approval-Gated Sequence
+## Current Development Test Gate
 
-Do not perform these without owner approval:
-
-1. Pin AK47 `Rev 26` on the LifePunch gamemode.
-2. Re-add or confirm AK47 Market rows if the portal removed them during the revision change.
-3. Save the gamemode pin change without using global server sync.
-4. Confirm the development server can load the saved LifePunch gamemode state without affecting server 1.
-5. Confirm AK47 appears in the in-game Market section on the development server.
-6. Runtime test AK47 purchase/grant, equip, world model, viewmodel, fire, reload, ammo, muzzle/ejection effects, and sounds.
-7. Record runtime errors before considering any wider rollout.
+1. Confirm the development server loads the saved LifePunch gamemode state without affecting server 1.
+2. Confirm AK47 appears in the in-game Market section on the development server.
+3. Runtime test AK47 purchase/grant, equip, world model, viewmodel, fire, reload, ammo, muzzle/ejection effects, and sounds.
+4. Record runtime errors before considering any wider rollout.
 
 Do not sync `lifepunchmainserver`; it must remain on the vanilla gamemode.

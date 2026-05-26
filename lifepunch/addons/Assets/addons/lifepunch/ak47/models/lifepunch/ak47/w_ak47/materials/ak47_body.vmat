@@ -16,7 +16,7 @@ Layer0
 	//---- Color ----
 	g_flModelTintAmount "1.000"
 	g_vColorTint "[1.000000 1.000000 1.000000 0.000000]"
-	TextureColor "models/lifepunch/ak47/w_ak47/textures/ak47_BaseColor.tga.png"
+	TextureColor "addons/lifepunch/ak47/models/lifepunch/ak47/w_ak47/textures/ak47_BaseColor.tga.png"
 
 	//---- Fade ----
 	g_flFadeExponent "1.000"
@@ -25,14 +25,14 @@ Layer0
 	g_bFogEnabled "1"
 
 	//---- Metalness ----
-	TextureMetalness "models/lifepunch/ak47/w_ak47/textures/ak47_Metalness.tga.png"
+	TextureMetalness "addons/lifepunch/ak47/models/lifepunch/ak47/w_ak47/textures/ak47_Metalness.tga.png"
 
 	//---- Normal ----
-	TextureNormal "models/lifepunch/ak47/w_ak47/textures/ak47_Normal.tga.png"
+	TextureNormal "addons/lifepunch/ak47/models/lifepunch/ak47/w_ak47/textures/ak47_Normal.tga.png"
 
 	//---- Roughness ----
 	g_flRoughnessScaleFactor "1.000"
-	TextureRoughness "models/lifepunch/ak47/w_ak47/textures/ak47_Roughness.tga.png"
+	TextureRoughness "addons/lifepunch/ak47/models/lifepunch/ak47/w_ak47/textures/ak47_Roughness.tga.png"
 
 	//---- Texture Coordinates ----
 	g_vTexCoordOffset "[0.000 0.000]"

@@ -4,7 +4,7 @@
   "UI": false,
   "Volume": "1",
   "Sounds": [
-    "sounds/ak47_shot_distant.vsnd"
+    "addons/lifepunch/ak47/sounds/ak47_shot_distant.vsnd"
   ],
   "Transmission": true,
   "Pitch": "1",

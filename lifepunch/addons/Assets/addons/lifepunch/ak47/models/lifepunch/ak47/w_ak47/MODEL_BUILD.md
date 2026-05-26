@@ -1,4 +1,4 @@
-# AK47 Model Build
+﻿# AK47 Model Build
 
 This folder is the model build area for the LifePunch AK47 world model.
 
@@ -52,7 +52,7 @@ materials/ak47_body.vmat
 
 - Create the S&box model resource from `source/ak47.fbx`.
 - Create the material from the imported PBR texture channels.
-- Keep the world model mounted path stable: `models/lifepunch/ak47/w_ak47/w_ak47.vmdl`.
+- Keep the world model mounted path stable: `addons/lifepunch/ak47/models/lifepunch/ak47/w_ak47/w_ak47.vmdl`.
 - Do not add raw Blender exports, loose bullet variants, or old model names here.
 - Do not mark this model ready until S&box opens/compiles the resource cleanly.
 

@@ -1,4 +1,4 @@
-# AK47 Assets
+﻿# AK47 Assets
 
 This is the clean asset lane for the LifePunch AK47 addon package.
 
@@ -13,7 +13,7 @@ Planned DXRP content references:
 ```text
 addons/lifepunch/ak47/equipment/w_ak47/w_ak47.prefab
 addons/lifepunch/ak47/equipment/vm_ak47/vm_ak47.prefab
-models/lifepunch/ak47/w_ak47/w_ak47.vmdl
+addons/lifepunch/ak47/models/lifepunch/ak47/w_ak47/w_ak47.vmdl
 ```
 
 Core rule:
@@ -26,7 +26,7 @@ Core rule:
 Imported source assets:
 
 - FBX model sources live under `models/lifepunch/ak47/w_ak47/source/`.
-- Active ready FBX: `models/lifepunch/ak47/w_ak47/source/ak47.fbx`.
+- Active ready FBX: `addons/lifepunch/ak47/models/lifepunch/ak47/w_ak47/source/ak47.fbx`.
 - Original unclean FBX files are not kept in the LifePunch addon lane.
 - PBR texture source lives under `models/lifepunch/ak47/w_ak47/textures/`.
 - Raw WAV sound sources live under `sounds/source/`.

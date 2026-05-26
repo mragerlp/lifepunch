@@ -1,4 +1,4 @@
-# AK47 Source Intake
+﻿# AK47 Source Intake
 
 This is Step 1 for rebuilding AK47 from the core LifePunch addon structure.
 

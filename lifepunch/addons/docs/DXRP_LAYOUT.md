@@ -1,4 +1,4 @@
-# DXRP Layout Contract
+﻿# DXRP Layout Contract
 
 This folder is the clean source of truth for LifePunch DXRP addon packages. It mirrors a DXRP game project instead of storing each addon in its own package-shaped folder.
 
@@ -33,7 +33,7 @@ Weapon example:
 ```text
 addons/lifepunch/ak47/equipment/w_ak47/w_ak47.prefab
 addons/lifepunch/ak47/equipment/vm_ak47/vm_ak47.prefab
-models/lifepunch/ak47/w_ak47/w_ak47.vmdl
+addons/lifepunch/ak47/models/lifepunch/ak47/w_ak47/w_ak47.vmdl
 ```
 
 Entity example:

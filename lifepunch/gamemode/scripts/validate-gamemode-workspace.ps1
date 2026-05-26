@@ -1,4 +1,4 @@
-$ErrorActionPreference = 'Stop'
+﻿$ErrorActionPreference = 'Stop'
 
 $Root = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 $Errors = New-Object System.Collections.Generic.List[string]
@@ -128,11 +128,11 @@ if ($null -ne $Equipment) {
         if ($Ak47Equipment.content.secondaryReference -ne 'equipment/vm_ak47/vm_ak47.prefab') {
             Add-ValidationError 'config\equipment.json AK47 secondary reference mismatch'
         }
-        if ($Ak47Equipment.content.worldModelPath -ne 'models/lifepunch/ak47/w_ak47/w_ak47.vmdl') {
+        if ($Ak47Equipment.content.worldModelPath -ne 'addons/lifepunch/ak47/models/lifepunch/ak47/w_ak47/w_ak47.vmdl') {
             Add-ValidationError 'config\equipment.json AK47 world model path mismatch'
         }
-        if ($Ak47Equipment.content.grouping -ne 'Primary') {
-            Add-ValidationError 'config\equipment.json AK47 grouping must be Primary'
+        if ($Ak47Equipment.content.grouping -ne 'Secondary') {
+            Add-ValidationError 'config\equipment.json AK47 grouping must be Secondary'
         }
     }
 }
@@ -152,6 +152,18 @@ if ($null -ne $Market) {
         }
         if ($Ak47Market.type -ne 'Equipment') {
             Add-ValidationError 'config\market.json AK47 market row must be Equipment'
+        }
+        if ($Ak47Market.grouping -ne '#entity.category.shipment') {
+            Add-ValidationError 'config\market.json AK47 market row must use shipment grouping'
+        }
+        if ($Ak47Market.cost -ne 5000) {
+            Add-ValidationError 'config\market.json AK47 market row cost must be 5000'
+        }
+        if ($Ak47Market.limit -ne 5) {
+            Add-ValidationError 'config\market.json AK47 market row limit must be 5'
+        }
+        if ($Ak47Market.quantity -ne 5) {
+            Add-ValidationError 'config\market.json AK47 market row quantity must be 5'
         }
     }
 }

@@ -14,8 +14,13 @@
       "revisionNumber": 26,
       "environment": "lifepunchdevelopment",
       "type": "Equipment",
-      "grouping": "*",
-      "cost": 100,
+      "grouping": "#entity.category.shipment",
+      "cost": 5000,
+      "limit": 5,
+      "quantity": 5,
+      "whitelistJobIds": [
+        "1c248531-1cd5-5f0e-a0ad-1bc931c3f4a1"
+      ],
       "status": "market-row-added-pending-runtime-test",
       "notes": [
         "AK47 must be added to the LifePunch gamemode Market tab before it appears in the in-game Market section.",
