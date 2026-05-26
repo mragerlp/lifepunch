@@ -26,6 +26,18 @@ lifepunch/
 
 The folders are separate because DXRP addon publishing, gamemode integration, server management, mapping, portal administration, staff hierarchy, player support, economy management, audit/accountability, website work, Discord operations, webhooks, and API contracts are separate responsibilities.
 
+## Local Reference Mirror
+
+Local raw/testing material can be organized outside the Git repo at:
+
+```text
+C:\Users\jared\OneDrive\Desktop\lifepunch reference folder\reference
+```
+
+That folder is a mirrored reference/test environment for more than addons. Use it for raw downloads, Blender files, screenshots, local exports, portal observations, server experiments, gamemode drafts, website/API tests, Discord/webhook tests, and other material that should not yet be clean tracked source.
+
+Promote files into this repo only after they are cleaned, named, reviewed, and ready to become LifePunch source of truth.
+
 ## `addons`
 
 Use this folder for package source:

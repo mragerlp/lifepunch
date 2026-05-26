@@ -46,6 +46,9 @@ function Test-JsonFile {
 
 $Config = Test-JsonFile 'config\gamemode.json'
 $GamemodePage = Test-JsonFile 'config\gamemode-page.json'
+$AddonRevisions = Test-JsonFile 'config\addon-revisions.json'
+$Equipment = Test-JsonFile 'config\equipment.json'
+$Market = Test-JsonFile 'config\market.json'
 
 foreach ($File in @(
     'README.md',
@@ -79,6 +82,62 @@ if ($null -ne $GamemodePage) {
         if ($Action -notin @($GamemodePage.editMode.actions)) {
             Add-ValidationError "config\gamemode-page.json is missing edit action '$Action'"
         }
+    }
+}
+
+if ($null -ne $AddonRevisions) {
+    if ($AddonRevisions.gamemode.dxrpGamemodeId -ne '019e36c0-a67f-701c-90f2-460e0b0f1487') {
+        Add-ValidationError 'config\addon-revisions.json has unexpected LifePunch gamemode id'
+    }
+
+    $Ak47Revision = @($AddonRevisions.revisionPins) | Where-Object { $_.package -eq 'lifepunch.ak47' } | Select-Object -First 1
+    if ($null -eq $Ak47Revision) {
+        Add-ValidationError 'config\addon-revisions.json must track lifepunch.ak47'
+    } else {
+        if ($Ak47Revision.targetEnvironment -ne 'lifepunchdevelopment') {
+            Add-ValidationError 'config\addon-revisions.json AK47 target environment must be lifepunchdevelopment'
+        }
+        if ($Ak47Revision.publishStatus -ne 'staged-not-published') {
+            Add-ValidationError 'config\addon-revisions.json AK47 status must be staged-not-published until a revision is published'
+        }
+    }
+}
+
+if ($null -ne $Equipment) {
+    if ($Equipment.gamemode.dxrpGamemodeId -ne '019e36c0-a67f-701c-90f2-460e0b0f1487') {
+        Add-ValidationError 'config\equipment.json has unexpected LifePunch gamemode id'
+    }
+
+    $Ak47Equipment = @($Equipment.equipmentRows) | Where-Object { $_.slug -eq 'ak47' } | Select-Object -First 1
+    if ($null -eq $Ak47Equipment) {
+        Add-ValidationError 'config\equipment.json must track AK47 equipment row'
+    } else {
+        if ($Ak47Equipment.package -ne 'lifepunch.ak47') {
+            Add-ValidationError 'config\equipment.json AK47 package must be lifepunch.ak47'
+        }
+        if ($Ak47Equipment.content.type -ne 1) {
+            Add-ValidationError 'config\equipment.json AK47 content type must be 1'
+        }
+        if ($Ak47Equipment.content.primaryReference -ne 'addons/lifepunch/ak47/equipment/w_ak47/w_ak47.prefab') {
+            Add-ValidationError 'config\equipment.json AK47 primary reference mismatch'
+        }
+        if ($Ak47Equipment.content.secondaryReference -ne 'addons/lifepunch/ak47/equipment/vm_ak47/vm_ak47.prefab') {
+            Add-ValidationError 'config\equipment.json AK47 secondary reference mismatch'
+        }
+        if ($Ak47Equipment.content.grouping -ne 'Primary') {
+            Add-ValidationError 'config\equipment.json AK47 grouping must be Primary'
+        }
+    }
+}
+
+if ($null -ne $Market) {
+    if ($Market.gamemode.dxrpGamemodeId -ne '019e36c0-a67f-701c-90f2-460e0b0f1487') {
+        Add-ValidationError 'config\market.json has unexpected LifePunch gamemode id'
+    }
+
+    $Ak47Market = @($Market.marketRows) | Where-Object { $_.slug -eq 'ak47' } | Select-Object -First 1
+    if ($null -ne $Ak47Market) {
+        Add-ValidationError 'config\market.json must not expose AK47 before development test passes'
     }
 }
 

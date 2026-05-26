@@ -18,12 +18,21 @@ Code/Addons/lifepunch/
 
 The `official` / `Official` folders are reference lanes for DXRP or official gamemode structure only. Do not place LifePunch addon work there.
 
-Current addon lanes are empty on purpose. Build each addon back one step at a time after the folder and manifest contract validates.
+Open this folder in S&box through:
+
+```text
+addons.sbproj
+```
+
+This project file is the local S&box editor entry point for the LifePunch addon workspace. It does not replace the manifest-driven DXRP package structure.
 
 Start with the foundation docs:
 
 - `docs/DXRP_LAYOUT.md` explains the DXRP mount layout.
 - `docs/ADDON_PIPELINE.md` explains addon archetypes and the manifest-first workflow.
+- `docs/WEAPON_INTAKE.md` explains the repeatable source intake process for weapons.
+- `docs/REUSABLE_ADDON_FRAMEWORK.md` explains what should carry forward from AK47 to future LifePunch addons.
+- `docs/OFFICIAL_ADDON_REFERENCE.md` tracks official/public DXRP addon page examples.
 - `docs/PUBLISHING.md` explains generated publish staging.
 - `config/addons.json` is the source of truth for LifePunch addon packages.
 

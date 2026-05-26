@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "gamemode": {
+    "name": "LifePunch",
+    "dxrpGamemodeId": "019e36c0-a67f-701c-90f2-460e0b0f1487"
+  },
+  "marketRows": [],
+  "deferredRows": [
+    {
+      "slug": "ak47",
+      "label": "AK-47",
+      "package": "lifepunch.ak47",
+      "reason": "Do not expose AK47 in jobs, market, shipments, or shop rows until the development server equipment test passes."
+    }
+  ]
+}

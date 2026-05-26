@@ -21,10 +21,19 @@ function Copy-PublishItems {
         return
     }
 
-    Get-ChildItem -LiteralPath $Source -Force |
-        Where-Object { $_.Name -ne '.gitkeep' } |
+    $SourceRoot = (Resolve-Path -LiteralPath $Source).Path
+    Get-ChildItem -LiteralPath $SourceRoot -Recurse -File -Force |
+        Where-Object { $_.Name -notin @('.gitkeep', 'desktop.ini', 'Thumbs.db') } |
         ForEach-Object {
-            Copy-Item -LiteralPath $_.FullName -Destination $Destination -Recurse -Force
+            $Relative = $_.FullName.Substring($SourceRoot.Length).TrimStart('\', '/')
+            $Target = Join-Path $Destination $Relative
+            $TargetParent = Split-Path -Parent $Target
+
+            if (-not (Test-Path -LiteralPath $TargetParent -PathType Container)) {
+                New-Item -ItemType Directory -Force -Path $TargetParent | Out-Null
+            }
+
+            Copy-Item -LiteralPath $_.FullName -Destination $Target -Force
         }
 }
 
@@ -58,6 +67,19 @@ if ($Package.hasCode) {
     Copy-PublishItems -Source $CodeSource -Destination $CodeStage
 }
 
+$ContentRows = @(@($Package.contents) | ForEach-Object {
+    [ordered]@{
+        slug = $_.slug
+        label = $_.label
+        type = $_.type
+        primaryReference = $_.primaryReference
+        secondaryReference = $_.secondaryReference
+        worldModelPath = $_.worldModelPath
+        grouping = $_.grouping
+        implementationStatus = $_.implementationStatus
+    }
+})
+
 $Readme = @"
 DXRP publish staging for $Org.$($Package.ident)
 =============================================
@@ -78,12 +100,48 @@ Expected DXRP paths:
   Assets/addons/$Org/$($Package.ident)/
   Code/Addons/$Org/$($Package.ident)/
 
+Content rows:
+$(
+    if ($ContentRows.Count -eq 0) {
+        '  (none declared)'
+    } else {
+        ($ContentRows | ForEach-Object {
+            @"
+  - $($_.label) [$($_.slug)]
+    Type:               $($_.type)
+    Primary Reference:  $($_.primaryReference)
+    Secondary Reference: $($_.secondaryReference)
+    World Model Path:   $($_.worldModelPath)
+    Grouping:           $($_.grouping)
+"@
+        }) -join "`r`n"
+    }
+)
+
 Do not move files into upload-assets or upload-code. Keep the Assets and Code roots intact.
 "@
 
 $StagingRoot = Join-Path $Root '.dxrp-publish'
 New-Item -ItemType Directory -Force -Path $StagingRoot | Out-Null
 Set-Content -LiteralPath (Join-Path $StagingRoot 'README.txt') -Value $Readme -Encoding UTF8
+
+$PackageExport = [ordered]@{
+    schemaVersion = 1
+    package = [ordered]@{
+        org = $Org
+        ident = $Package.ident
+        title = $Package.title
+        kind = $Package.kind
+        dxrpAddonId = $Package.dxrpAddonId
+        hasAssets = [bool]$Package.hasAssets
+        hasCode = [bool]$Package.hasCode
+    }
+    contentRows = $ContentRows
+}
+
+$PackageExport |
+    ConvertTo-Json -Depth 8 |
+    Set-Content -LiteralPath (Join-Path $StagingRoot "package-$($Package.ident).json") -Encoding UTF8
 
 Write-Host "Prepared DXRP publish staging for $Org.$($Package.ident)" -ForegroundColor Green
 Write-Host "Upload root: $UploadRoot"

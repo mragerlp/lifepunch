@@ -32,6 +32,8 @@ upload-code/
 
 The script reads `config/addons.json`, validates the repo, creates `.dxrp-publish/upload`, and copies only the selected addon's mounted asset/code folders.
 
+It also writes `.dxrp-publish/package-<ident>.json` with the package identity and content-row values to use when checking the DXRP portal fields.
+
 For `hasCode=false` addons, publish assets and reuse the previous code revision on DXRP if the portal asks for code.
 
 For `hasAssets=false` addons, publish code only.

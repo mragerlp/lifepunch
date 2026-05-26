@@ -2,6 +2,28 @@
 
 Purpose: manage DXRP addon packages and their revisions.
 
+Public addon browser:
+
+```text
+https://dxrp.net/addons
+```
+
+Observed official/published addon example:
+
+```text
+https://dxrp.net/addons/019e4013-08a5-77d0-975c-df132345045e
+```
+
+Example package: `Kevlar`.
+
+Observed addon detail areas:
+
+- Media/about area.
+- `Add to Server` action.
+- Metadata for content item count, servers using the addon, published time, updated time, package identifier, and revision/source links.
+- Tabs for `About`, `Contents`, and `Code Explorer`.
+- Code Explorer files such as `KevlarEntity.cs` and `KevlarService.cs`.
+
 Observed Addons list fields:
 
 - Name
@@ -38,3 +60,4 @@ Portal confirmation needed:
 - Content row editor fields.
 - Whether one addon package can safely own multiple content rows.
 - Visibility/release requirements before public DXRP network release.
+

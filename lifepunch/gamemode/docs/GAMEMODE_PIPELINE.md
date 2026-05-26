@@ -24,9 +24,9 @@ lifepunch/gamemode/gamemodes/
 
 Do not copy `Assets/addons/lifepunch/<ident>` or `Code/Addons/lifepunch/<ident>` into this folder.
 
-## Future Files
+## Tracking Files
 
-Use these names when we are ready to add real data:
+Use these files for gamemode-side integration data:
 
 ```text
 config/gamemode.json          # LifePunch gamemode id, environment, server names
@@ -35,6 +35,8 @@ config/equipment.json         # equipment rows linked to addon content rows
 config/market.json            # market/shipments that expose equipment/entities
 gamemodes/lifepunch.gamemode  # canonical import/export file
 ```
+
+AK47 is tracked as `staged-not-published` / `pending-development-test` until a DXRP addon revision exists and passes on `lifepunchdevelopment`.
 
 ## Portal Workflow
 

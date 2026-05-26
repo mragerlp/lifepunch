@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "gamemode": {
+    "name": "LifePunch",
+    "dxrpGamemodeId": "019e36c0-a67f-701c-90f2-460e0b0f1487"
+  },
+  "revisionPins": [
+    {
+      "package": "lifepunch.ak47",
+      "addonIdent": "ak47",
+      "dxrpAddonId": "019e44aa-1d30-76fe-87f9-8a9f904bff9f",
+      "targetEnvironment": "lifepunchdevelopment",
+      "publishStatus": "staged-not-published",
+      "revisionId": null,
+      "revisionNumber": null,
+      "stagingRoot": "../addons/.dxrp-publish/upload",
+      "packageExport": "../addons/.dxrp-publish/package-ak47.json",
+      "notes": [
+        "Publish the AK47 addon package revision before pinning it to the LifePunch gamemode.",
+        "Pin first on lifepunchdevelopment only.",
+        "Do not sync lifepunchmainserver until a development server test passes."
+      ]
+    }
+  ]
+}

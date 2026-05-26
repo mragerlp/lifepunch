@@ -38,3 +38,6 @@ Start here:
 
 - `docs/NETWORK_OPERATIONS.md`
 - `docs/GAMEMODE_PIPELINE.md`
+- `config/addon-revisions.json`
+- `config/equipment.json`
+- `config/market.json`

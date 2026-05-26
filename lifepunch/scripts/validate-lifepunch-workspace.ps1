@@ -791,6 +791,25 @@ foreach ($Forbidden in @('Assets', 'Code', 'config', 'gamemodes')) {
     }
 }
 
+$AddonCodeRoot = Join-Path $Root 'addons\Code\Addons\lifepunch'
+if (Test-Path -LiteralPath $AddonCodeRoot -PathType Container) {
+    $ForbiddenReferenceIdentifiers = @('SWB', 'SWE', 'BeCreativeRP')
+    Get-ChildItem -LiteralPath $AddonCodeRoot -Recurse -File -Filter '*.cs' -Force -ErrorAction SilentlyContinue | ForEach-Object {
+        $Relative = $_.FullName.Substring($Root.Length + 1)
+        $Content = Get-Content -LiteralPath $_.FullName -Raw
+
+        foreach ($Identifier in $ForbiddenReferenceIdentifiers) {
+            if ($Content -match [regex]::Escape($Identifier)) {
+                Add-WorkspaceError "Addon code must not contain public reference identifier '$Identifier': $Relative"
+            }
+        }
+
+        if ($Content -match 'namespace\s+' -and $Content -notmatch 'namespace\s+LifePunch\.') {
+            Add-WorkspaceError "Addon code namespace must be LifePunch-owned: $Relative"
+        }
+    }
+}
+
 $LegacyFolders = Get-ChildItem -LiteralPath $Root -Directory -Recurse -Force -ErrorAction SilentlyContinue |
     Where-Object { $_.Name -in @('upload-assets', 'upload-code') }
 

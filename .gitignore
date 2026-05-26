@@ -5,6 +5,7 @@ upload-assets/
 upload-code/
 **/upload-assets/
 **/upload-code/
+**/.sbox/
 
 # Build and editor noise
 bin/

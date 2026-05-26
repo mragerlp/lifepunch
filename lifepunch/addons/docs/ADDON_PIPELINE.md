@@ -13,6 +13,8 @@ Code/Addons/lifepunch/<ident>/
 
 The central manifest at `config/addons.json` describes every LifePunch addon package. Scripts and validation should read that manifest instead of hard-coding addon names in multiple places.
 
+Public DXRP addon pages are the reference for the finished publish shape. Track observed examples in `docs/OFFICIAL_ADDON_REFERENCE.md`, including the addon detail page, content tab, server usage metadata, and Code Explorer layout.
+
 ## Addon Package Vs Content Row
 
 An addon package is the published DXRP package, such as `lifepunch.ak47` or `lifepunch.bitcoinmining`.
@@ -105,5 +107,6 @@ addons\lifepunch\ak47\equipment\w_ak47\w_ak47.prefab
 1. Keep `config/addons.json` accurate.
 2. Run `scripts/validate-layout.ps1`.
 3. Generate publish staging only when needed.
-4. Rebuild AK47 as the first `weapon`.
-5. Reuse the same manifest and validation pattern for entities and future tools.
+4. Compare the expected publish shape against official DXRP addon pages.
+5. Rebuild AK47 as the first `weapon`.
+6. Reuse the same manifest and validation pattern for entities and future tools.

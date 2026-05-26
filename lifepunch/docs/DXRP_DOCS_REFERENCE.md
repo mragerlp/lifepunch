@@ -8,6 +8,20 @@ Observed docs site:
 https://docs.dxrp.net/
 ```
 
+Observed public addon browser:
+
+```text
+https://dxrp.net/addons
+```
+
+Observed published addon example:
+
+```text
+https://dxrp.net/addons/019e4013-08a5-77d0-975c-df132345045e
+```
+
+Use public addon pages as examples for the finished publish presentation: detail page, metadata, `Add to Server`, content rows, and Code Explorer. Implementation details still need confirmation from source code or trusted DXRP references before copying patterns.
+
 Observed page heading:
 
 ```text
