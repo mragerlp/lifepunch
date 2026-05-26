@@ -145,8 +145,8 @@ LifePunch upstream workflow should follow this shape:
 
 Use two repositories locally:
 
-- `C:\Users\jared\Projects\lifepunchaddons` remains the private LifePunch workspace.
-- `C:\Users\jared\Projects\dxrp-public` is the public DXRP fork checkout.
+- The LifePunch private checkout remains the server/community workspace.
+- The DXRP public fork checkout remains the upstream-contribution workspace.
 
 The fork checkout is wired as:
 

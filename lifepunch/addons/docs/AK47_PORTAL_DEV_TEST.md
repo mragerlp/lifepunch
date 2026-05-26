@@ -48,8 +48,8 @@ Portal content row values from the package export:
   "slug": "ak47",
   "label": "AK-47",
   "type": 1,
-  "primaryReference": "equipment/w_ak47/w_ak47.prefab",
-  "secondaryReference": "equipment/vm_ak47/vm_ak47.prefab",
+  "primaryReference": "addons/lifepunch/ak47/equipment/w_ak47/w_ak47.prefab",
+  "secondaryReference": "addons/lifepunch/ak47/equipment/vm_ak47/vm_ak47.prefab",
   "worldModelPath": "addons/lifepunch/ak47/models/lifepunch/ak47/w_ak47/w_ak47.vmdl",
   "grouping": "Secondary"
 }
@@ -100,17 +100,17 @@ Servers:
 - `Rev 23` still showed orange `ERROR` models in-game after the sanitized source was included.
 - `Rev 24` still showed orange `ERROR` models in-game.
 - Portal Rev 24 asset ZIP inspection confirmed DXRP stores uploaded asset packages relative to the selected `ak47` folder root: `equipment/`, `models/`, and `sounds/`.
-- `Rev 25` updated the local package-root asset references, but the live portal content JSON still showed `primaryReference` and `secondaryReference` as `addons/lifepunch/ak47/equipment/...`.
+- `Rev 25` updated the local package-root asset references, but runtime testing later showed DXRP addon content paths need full addon-mounted prefab references.
 - Current likely cause: the runtime is still loading the world/viewmodel prefabs from content-row paths that do not exist in the published asset ZIP.
-- Remediation: publish a follow-up revision after changing the live portal content JSON to package-root `primaryReference` and `secondaryReference` values.
+- Remediation: publish a follow-up revision after changing the live portal content JSON to full addon-mounted `primaryReference` and `secondaryReference` values.
 - Follow-up publish result: `Rev 26` has package-root content row references in the live portal JSON:
-  - `primaryReference`: `equipment/w_ak47/w_ak47.prefab`
-  - `secondaryReference`: `equipment/vm_ak47/vm_ak47.prefab`
+  - `primaryReference`: `addons/lifepunch/ak47/equipment/w_ak47/w_ak47.prefab`
+  - `secondaryReference`: `addons/lifepunch/ak47/equipment/vm_ak47/vm_ak47.prefab`
   - `worldModelPath`: `models/lifepunch/ak47/w_ak47/w_ak47.vmdl`
 - Follow-up gamemode result: `Rev 26` is pinned on the LifePunch gamemode for `lifepunchdevelopment`.
 - `Rev 26` still showed a large orange `ERROR` model around the AK47 shipment.
-- Next likely cause: DXRP loads shipment and dropped-equipment previews through `GameModeEquipmentDto.GetWorldModel()`, which passes `worldModelPath` directly to `Model.Load`. Unlike `primaryReference` and `secondaryReference`, `worldModelPath` likely needs the full addon-mounted path.
-- Next publish target: keep prefab references package-root, but set `worldModelPath` to `addons/lifepunch/ak47/models/lifepunch/ak47/w_ak47/w_ak47.vmdl`.
+- Rev 27 confirmed `worldModelPath` must be full addon-mounted, and console testing then showed `equipment/w_ak47/w_ak47.prefab` also fails when package-root.
+- Next publish target: set prefab references and `worldModelPath` to full addon-mounted paths.
 - AK47 content grouping is `Secondary`.
 - AK47 market row is a shipment-style equipment row:
   - `grouping`: `#entity.category.shipment`

@@ -13,8 +13,8 @@ The AK47 starts from the LifePunch foundation, not the old scratch package.
 ## Planned References
 
 ```text
-primaryReference: equipment/w_ak47/w_ak47.prefab
-secondaryReference: equipment/vm_ak47/vm_ak47.prefab
+primaryReference: addons/lifepunch/ak47/equipment/w_ak47/w_ak47.prefab
+secondaryReference: addons/lifepunch/ak47/equipment/vm_ak47/vm_ak47.prefab
 worldModelPath: addons/lifepunch/ak47/models/lifepunch/ak47/w_ak47/w_ak47.vmdl
 ```
 

@@ -122,10 +122,10 @@ if ($null -ne $Equipment) {
         if ($Ak47Equipment.content.type -ne 1) {
             Add-ValidationError 'config\equipment.json AK47 content type must be 1'
         }
-        if ($Ak47Equipment.content.primaryReference -ne 'equipment/w_ak47/w_ak47.prefab') {
+        if ($Ak47Equipment.content.primaryReference -ne 'addons/lifepunch/ak47/equipment/w_ak47/w_ak47.prefab') {
             Add-ValidationError 'config\equipment.json AK47 primary reference mismatch'
         }
-        if ($Ak47Equipment.content.secondaryReference -ne 'equipment/vm_ak47/vm_ak47.prefab') {
+        if ($Ak47Equipment.content.secondaryReference -ne 'addons/lifepunch/ak47/equipment/vm_ak47/vm_ak47.prefab') {
             Add-ValidationError 'config\equipment.json AK47 secondary reference mismatch'
         }
         if ($Ak47Equipment.content.worldModelPath -ne 'addons/lifepunch/ak47/models/lifepunch/ak47/w_ak47/w_ak47.vmdl') {
