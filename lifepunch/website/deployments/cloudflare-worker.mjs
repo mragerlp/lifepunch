@@ -45,6 +45,425 @@ export default {
                 .replace(/</g, "&lt;")
                 .replace(/"/g, "&quot;")
                 .replace(/'/g, "&#39;");
+        // --- LIFE PUNCH RULES CATALOG (single source of truth) ---
+        // Edit rule text here only — both /rules and /rules/raw render from this data.
+        const LP_RULES = [
+            {
+                num: 1,
+                title: "Serverwide Rules",
+                icon: "fa-globe",
+                open: true,
+                rules: [
+                    { id: "en-only", html: "<b>English Only</b> — English speaking community. RP in English." },
+                    { id: "no-cheat", html: "<b>No Cheating</b> — 3rd party software, cheats, macros, or autoclickers result in a PERMANENT ban." },
+                    { id: "no-exploit", html: "<b>No Exploiting</b> — Map, item, or tool exploits for unfair advantage. (Excludes drug creation/gunshops). You may not base outside of the map. The rocks are the barrier." },
+                    { id: "no-mic-spam", html: "<b>No Mic Spam</b> — Purposely being disruptive to RP." },
+                    { id: "no-staff-impersonation", html: "<b>No Staff Impersonation</b> — Results in a PERMANENT ban." },
+                    { id: "no-lie-staff", html: "<b>Do Not Lie to Staff</b> — False reporting or deleting ticket evidence is punishable." },
+                    { id: "no-staff-baiting", html: "<b>No Staff Baiting</b> — Saying you will break a rule = breaking a rule." },
+                    { id: "no-minimodding", html: "<b>No Minimodding</b> — Don't threaten reports. Report properly and move on." },
+                    { id: "admin-final-say", html: "<b>Admin Final Say</b> — Do not argue with staff about rules & punishments." },
+                    { id: "no-begging", html: "<b>No Begging</b> — No solicitation of real money or IRL items." },
+                    { id: "no-bullying", html: "<b>No Bullying</b> — Targeting/harassing outside of RP is never tolerated." },
+                    { id: "no-politics", html: "<b>No Politics/War/Religion</b> — No political arguments. Jokes okay, arguments not." },
+                    { id: "no-racism", html: "<b>No Racism/Homophobia</b> — Zero tolerance. Results in PERMANENT ban." },
+                    { id: "no-nsfw", html: "<b>No Sexual/NSFW Content</b> — Media must stay PG. Includes ERP/Porn." },
+                    { id: "no-doxing", html: "<b>No Doxing</b> — Posting IRL pictures without permission is a PERMANENT ban." },
+                    { id: "no-cybercrime", html: "<b>Cybercrime Threats</b> — DDoS or Doxing threats result in a PERMANENT ban." },
+                    { id: "no-advertising", html: "<b>No Advertising</b> — Only official DXRP or S&box links allowed." },
+                    { id: "no-irl-illegal", html: "<b>No IRL Illegal Activity</b> — Encouraging illegal activity = Permanent ban." }
+                ],
+                footer: '<div class="important">❗ Staff always have final say in situations not listed!</div>'
+            },
+            {
+                num: 2,
+                title: "Basic RP Rules",
+                icon: "fa-lightbulb",
+                subcategories: [
+                    {
+                        rawTitle: "SUB-CATEGORY 2A: RDM / RDA",
+                        webBtn: "🔺 RDM / RDA",
+                        rules: [
+                            { id: "rdm-definition", html: "<b>RDM Definition</b> —  Random Deathmatch: Killing or arresting without a valid RP reason." },
+                            { id: "rdm-reason", html: "<b>RDM Reasoning</b> —  Disrespect/threats aren't reasons to kill. Taking damage/stealing are." },
+                            { id: "rdm-kos", html: "<b>KOS Line</b> — Crossing a clearly marked KOS line is NOT RDM." },
+                            { id: "rdm-warnings", html: "<b>Warnings</b> — You can kill someone after warning them 3 times in chat to step away." },
+                            { id: "rdm-police", html: "<b>Police</b> — You can be killed by the person you're trying to arrest if the situation escalates." },
+                            { id: "rdm-mayor", html: "<b>Mayor</b> — Killing the Mayor requires a valid RP reason (PD raid, mug, kidnap/hostage)." }
+                        ]
+                    },
+                    {
+                        rawTitle: "SUB-CATEGORY 2B: NLR (New Life Rule)",
+                        webBtn: "🔺 NLR (New Life Rule)",
+                        rules: [
+                            { id: "nlr-definition", html: "<b>NLR Definition</b> — New Life Rule: You can remember past events, but can't act on them." },
+                            { id: "nlr-trigger", html: "<b>NLR Trigger</b> — Applies on death, job change, and jail release (unless escaped)." },
+                            { id: "nlr-raid", html: "<b>Raid</b> — You may not return to a raid after death." },
+                            { id: "nlr-revive", html: "<b>Revives</b> — Revived players may continue their raid/scenario." },
+                            { id: "nlr-hitman", html: "<b>Hitmen</b> — Hitmen cannot re-attempt failed hits (Hit is failed upon death)." }
+                        ]
+                    },
+                    {
+                        rawTitle: "SUB-CATEGORY 2C: Fail RP",
+                        webBtn: "🔺 Fail RP",
+                        rules: [
+                            { id: "fail-rp", html: "<b>Fail RP Logic</b> — Actions that break character, violate the established setting's logic, or disregard server rules, resulting in poor-quality, unrealistic, or disruptive play. Examples include stealing base mate valuables and starting a new base; mugging then killing your partner; police colluding with criminals; door camping/blocking; merchant scamming." }
+                        ]
+                    }
+                ]
+            },
+            {
+                num: 3,
+                title: "Common Sense & Behavior",
+                icon: "fa-brain",
+                subcategories: [
+                    {
+                        rawTitle: "SUB-CATEGORY 3A: BASIC GUIDELINES",
+                        webBtn: "🔹 Basic Guidelines",
+                        rules: [
+                            { id: "fearrp", html: "<b>FearRP</b> — Not enforced, but value your life reasonably." },
+                            { id: "gov-raid", html: "<b>Government Raid</b> — Government cannot raid with Criminals (except Hitman)." },
+                            { id: "no-suicide-rp", html: "<b>No Suicide RP</b> — No suicide to avoid RP scenarios (kidnaps, mugs)." },
+                            { id: "job-arrest", html: "<b>Job Arrest</b> — Government cannot raid/arrest just because of someone's Job." },
+                            { id: "job-desc", html: "<b>Job Description</b> — Must follow job descriptions (Medics heal, Merchants/Dealers sell, Cops protect)." },
+                            { id: "merchant-deny", html: "<b>Merchant Deny</b> — Denying Merchant service for non-RP reasons is forbidden (e.g., denying gun sales to a potential raider)." }
+                        ]
+                    },
+                    {
+                        rawTitle: "SUB-CATEGORY 3B: CONDUCT RULES",
+                        webBtn: "🔹 Conduct Rules",
+                        rules: [
+                            { id: "no-job-change", html: "<b>No Job Change</b> — No changing jobs during active RP." },
+                            { id: "demote-reasons", html: "<b>Demote Reasons</b> — AFK (30m+), not doing job, police corruption, scamming." },
+                            { id: "no-vigilante", html: "<b>No Vigilante</b> — Do not punish rulebreakers yourself (AOS/KOS/Propblock)." },
+                            { id: "scamming", html: "<b>Scamming</b> — Merchants cannot scam." }
+                        ]
+                    }
+                ]
+            },
+            {
+                num: 4,
+                title: "Building Rules",
+                icon: "fa-hammer",
+                subcategories: [
+                    {
+                        rawTitle: "SUB-CATEGORY 4A: PROP & WIRE",
+                        webBtn: "🔐 Prop & Wire",
+                        rules: [
+                            { id: "spawn-build", html: "<b>Spawn Build</b> — No building in spawn. No prop climbing, flying, or blocking." },
+                            { id: "wire-abuse", html: "<b>Wire Abuse</b> — No Wire abuse (auto-stealing money, loud sounds, stealing shipments)." },
+                            { id: "prop-permission", html: "<b>Prop Permission</b> — No props in other players' property without permission." }
+                        ]
+                    },
+                    {
+                        rawTitle: "SUB-CATEGORY 4B: FADING DOORS",
+                        webBtn: "🚪 Fading Doors",
+                        rules: [
+                            { id: "fd-limit", html: "<b>Fading Door Limit</b> — Max 2 fading doors to get access to your raidables." },
+                            { id: "fd-utility", html: "<b>Fading Door Utility</b> — Utility doors (one-way exits, peeks) are allowed." },
+                            { id: "fd-airlocks", html: "<b>Fading Door Airlocks</b> — Airlocks must be identifiable and distinct (color/material)." }
+                        ]
+                    },
+                    {
+                        rawTitle: "SUB-CATEGORY 4C: BASE LAYOUT & FAIRNESS",
+                        webBtn: "🏠 Base Layout & Fairness",
+                        rules: [
+                            { id: "base-reachable", html: "<b>Base Reachable</b> — Bases must be reachable/accessible at all times." },
+                            { id: "base-entrance", html: "<b>Base Entrance</b> — Min/Max 1 entrance. Unused map doors must be blocked." },
+                            { id: "base-crouch", html: "<b>Base Jump/Crouch</b> — Raiders must never be forced to crouch or jump at any time inside/outside OR to gain access to a base." },
+                            { id: "base-mazes", html: "<b>Base Mazes</b> — No Mazes. A maze is defined as more than 1×180° turn OR 2×90° turns OR multiple disorienting/excessive pathways used to artificially extend raid duration. Artificial raid hallways/airlocks start at your KoS sign & must not exceed 25 total 1×1 props (1000 units) excluding natural map layouts." },
+                            { id: "base-kos-line", html: "<b>Base KOS Line</b> — KOS zones must start at a base's purchasable front/fading door or at the start of an airlock. KOS lines must have a text sign that says 'KOS past'." },
+                            { id: "base-shooting", html: "<b>Base Shooting</b> — Raiders must be able to clearly see you and shoot back. Cannot use tiny hitboxes for unfair advantage." },
+                            { id: "base-crowbar", html: "<b>Base Crowbar</b> — Bases must be crowbar-raidable (no code-only)." },
+                            { id: "base-damage", html: "<b>Base Damage</b> — Bases cannot damage players." },
+                            { id: "base-movement", html: "<b>Base Movement</b> — No slowing/impeding movement." },
+                            { id: "base-entrances", html: "<b>Base Entrances</b> — Entrances must be reasonably easy to find, visible & distinct from surrounding walls; minimum 2×2 standing area (80×80 units)." },
+                            { id: "base-walkways", html: "<b>Base Walkways</b> — Walkways must be at least 1×1 prop (40 units) wide (includes ramps)." },
+                            { id: "base-no-collide", html: "<b>Base No Collide</b> — No-collide props must not be confusing for raiders; they should be visually distinct." },
+                            { id: "entity-ladders", html: "<b>Entity Ladders</b> — Bases must not require the use of entity ladders at any time." }
+                        ]
+                    },
+                    {
+                        rawTitle: "SUB-CATEGORY 4D: PLACEMENT & MAP RULES",
+                        webBtn: "🗺 Placement & Map Rules",
+                        rules: [
+                            { id: "public-space", html: "<b>Public Space</b> — Do not take up excessive public space." },
+                            { id: "others-property", html: "<b>Other's Property</b> — Do not build into other people’s property." },
+                            { id: "pd-building", html: "<b>PD Building</b> — Do not build in PD if not Government." },
+                            { id: "blocking-off", html: "<b>Blocking Off</b> — Do not block weed drop-off, ATMs, trash cans, recycler." },
+                            { id: "drop-offs", html: "<b>Drop-Offs</b> — Weed drop-off must be fully walkable." }
+                        ]
+                    },
+                    {
+                        rawTitle: "SUB-CATEGORY 4E: SPECIAL BUILDING RESTRICTIONS",
+                        webBtn: "🚧 Special Building Restrictions",
+                        rules: [
+                            { id: "special-doors", html: "Only buy doors you intend to use." },
+                            { id: "no-skybases", html: "No skybases or excessive aerial builds." },
+                            { id: "drop-connection", html: "Max 1 connection to a drug drop-off location." },
+                            { id: "decorative-aerial", html: "Decorative aerial builds allowed." },
+                            { id: "no-blackout", html: "No blackout bases." },
+                            { id: "kos-understandable", html: "KOS zones must be understandable and never deceptive." }
+                        ]
+                    }
+                ]
+            },
+            {
+                num: 5,
+                title: "Job Specific Rules",
+                icon: "fa-briefcase",
+                subcategories: [
+                    {
+                        rawTitle: "SUB-CATEGORY 5A: MAYOR & CP",
+                        webBtn: "👑 Mayor & CP",
+                        rules: [
+                            { id: "mayor-base", html: "<b>Mayor</b> — Must base in PD. Gun licenses: can charge fee, not obligated for criminals. Can build outside only for government or RP use (checkpoints/toll booths). Announce major law changes before enforcing." },
+                            { id: "police-base", html: "<b>Police</b> — Must base in PD. Must allow all members of Government to base/RP with you. Follow hierarchy. Attempt to arrest before killing (unless weapon present)." },
+                            { id: "laws", html: "<b>Laws</b> — Must be reasonable. Not contradict server rules. No text-only disrespect laws. AoS laws allowed; KoS laws not allowed. Laws cannot target specific individuals or jobs." },
+                            { id: "arrests", html: "<b>Arrests</b> — Only for lawbreakers. Cannot arrest innocents (even if bribed)." },
+                            { id: "lockdowns", html: "<b>Lockdowns</b> — Outdoors only. You may arrest, not KOS. Valid reason needed (Bank raid/shooting)." },
+                            { id: "corruption", html: "<b>Corruption</b> — Allowed in RP. Not allowed against other government members. Bribes are okay. Helping criminals raid PD or killing Government is forbidden." },
+                            { id: "warrants", html: "<b>Warrants</b> — Require valid RP evidence. Must SEE illegal activity. No metagaming. Expire on death, jail, or successful raid defense." },
+                            { id: "checkpoints", html: "<b>Checkpoints and Tolls</b> — Must not block any spawn-area entrance/exits. Must not extend raid-durations. Tolls cannot exceed $50. 2 Checkpoints/Toll-booths MAX." },
+                            { id: "searches", html: "<b>Searches</b> — Require RP reason (e.g., gunshots nearby, loitering near drug drop)." }
+                        ]
+                    },
+                    {
+                        rawTitle: "SUB-CATEGORY 5B: CIVILIAN",
+                        webBtn: "👨‍🔧 Civilian",
+                        rules: [
+                            { id: "gun-dealer", html: "<b>Gun Dealer</b> — Must intend to sell. Cannot base with another gun dealer. Can defend a criminal base. Must sell individual weapons (not only shipments)." },
+                            { id: "medic", html: "<b>Medic</b> — Only 1 per raid party." },
+                            { id: "theatre-manager", html: "<b>Theatre Manager</b> — Must base in the Theatre." }
+                        ]
+                    },
+                    {
+                        rawTitle: "SUB-CATEGORY 5C: CRIMINAL",
+                        webBtn: "🔫 Criminal",
+                        rules: [
+                            { id: "hitman", html: "<b>Hitman</b> — No metagaming hits. Only Hitman can perform hits. Doesn't need a valid RP reason unless it is the Mayor. Hitman may only raid active target locations; max one Hitman per raid." }
+                        ]
+                    }
+                ]
+            },
+            {
+                num: 6,
+                title: "Raiding & Mugging",
+                icon: "fa-bomb",
+                blocks: [
+                    { type: "heading", raw: "BASIC RAID RULES", web: "Basic Raid Rules" },
+                    {
+                        type: "rules",
+                        rules: [
+                            { id: "raid-guidelines", html: "<b>Raiding Guidelines</b> — Raid starts: Prybar out, damaging base member, weapon out on property, refusal to leave property. Raid ends: No raiders remain inside or on property." },
+                            { id: "mid-raid", html: "<b>Mid-Raid</b> — No props can be moved, changed, deleted or added during raids. You can use an entity ladder to get into a flawed/open base." },
+                            { id: "pd-raid", html: "<b>Police Raid</b> — Ends when all Police attending raid die. Returning to a Police raid after death breaks NLR." }
+                        ]
+                    },
+                    {
+                        type: "guide",
+                        rawHeading: "RAID GUIDE (✅ Can Raid)",
+                        webHeading: "Raid Guide (✅ Can Raid)",
+                        items: [
+                            "Medic (1 per raid)",
+                            "Drug Dealer",
+                            "Gangster",
+                            "Mob Boss",
+                            "Hitman (Hit required on raid target)",
+                            "Thief",
+                            "Government"
+                        ]
+                    },
+                    { type: "heading", raw: "MUGGING RULES", web: "Mugging Rules" },
+                    {
+                        type: "rules",
+                        rules: [
+                            { id: "mug-limit", html: "<b>$ Limit</b> — Max mug $1,000. Must type mug warning. 10s response time required." },
+                            { id: "mug-cooldown", html: "<b>Cooldown</b> — 5-minute cooldown per different target; 10-minute cooldown for the same person." },
+                            { id: "mug-defense", html: "<b>Defense</b> — A victim of a mugging/kidnapping is always allowed to defend themselves without warning." },
+                            { id: "mug-shipments", html: "<b>Shipments</b> — Can mug shipments/guns if you see someone collect it; same warning rules apply." }
+                        ]
+                    },
+                    {
+                        type: "guide",
+                        rawHeading: "MUG GUIDE (✅ Can Mug)",
+                        webHeading: "Mug Guide (✅ Can Mug)",
+                        items: ["Hobo", "Drug Dealer", "Gangster", "Mob Boss", "Thief"]
+                    }
+                ]
+            },
+            {
+                num: 7,
+                title: "Minging / Trolling",
+                icon: "fa-mask",
+                rules: [
+                    { id: "minging-prohibited", html: "<b>Prohibited</b> — Baiting RDM/RDA, text/mic spam, excessive trolling, wire abuse to annoy players, preventing others from building, prop blocking, building in other people's bases, prop abuse (flying, climbing), preventing new players from learning, repeatedly raiding someone with no valuables, kidnapping without RP reason, disobeying staff or reasonable requests." }
+                ]
+            },
+            {
+                num: 8,
+                title: "Cooldowns & Reporting",
+                icon: "fa-clock",
+                blocks: [
+                    { type: "heading", raw: "COOLDOWNS", web: "Cooldowns" },
+                    {
+                        type: "cooldowns",
+                        rawItems: [
+                            "Mugging (different people): 5 minutes",
+                            "Mugging (same person): 15 minutes",
+                            "Hits (same person): 10 minutes",
+                            "Raiding (same person): 30 minutes",
+                            "PD Raid: 10 minutes",
+                            "Mayor: 10 minute grace before they can be raided/killed after certain events",
+                            "Mayor Kidnap: 20 minutes",
+                            "No raiding for 10 minutes after server crash"
+                        ],
+                        webRule: { id: "cooldowns", html: "<b>Cooldowns</b> — Mugging: Different people - 5 minutes; Mugging: Same person - 15 minutes; Hits: Same person - 10 minutes; Raiding: Same person - 30 minutes; PD Raid: 10 minutes; Mayor: 10 minute grace before they can be raided or killed; Mayor Kidnap: 20 minutes; No raiding for 10m after server crash." }
+                    },
+                    { type: "heading", raw: "REPORTING RULES", web: "Reporting Rules" },
+                    {
+                        type: "rules",
+                        rules: [
+                            { id: "report-respect", html: "<b>Report Respect</b> — Be respectful. Do not spam reports. Provide proof (Medal/OBS/Steam)." },
+                            { id: "report-lying", html: "<b>Report Lying</b> — Lying to staff results in a PERMANENT ban." },
+                            { id: "report-use", html: "<b>Report Use</b> — Use @ or /Staff in-game. EVIPs can jail in severe cases." }
+                        ]
+                    }
+                ]
+            }
+        ];
+
+        const renderRawRulesList = (rules) =>
+            (rules || []).map((r) => `<li>${r.html}</li>`).join("\n                            ");
+
+        const renderRawSubcategory = (sub) => `
+                        <h4>${sub.rawTitle}</h4>
+                        <ul>
+                            ${renderRawRulesList(sub.rules)}
+                        </ul>`;
+
+        const renderRawGuide = (block) => `
+                        <h4>${block.rawHeading}</h4>
+                        <ul>
+                            ${block.items.map((item) => `<li>${item} — ✅</li>`).join("\n                            ")}
+                        </ul>`;
+
+        const renderRawBlock = (block) => {
+            if (block.type === "heading") return `<h4>${block.raw}</h4>`;
+            if (block.type === "rules") return `<ul>\n                            ${renderRawRulesList(block.rules)}\n                        </ul>`;
+            if (block.type === "guide") return renderRawGuide(block);
+            if (block.type === "cooldowns") {
+                return `<ul>\n                            ${block.rawItems.map((item) => `<li>${item}</li>`).join("\n                            ")}\n                        </ul>`;
+            }
+            return "";
+        };
+
+        const renderRawCategoryBody = (cat) => {
+            let html = "";
+            if (cat.rules) {
+                html += `<ul>\n                            ${renderRawRulesList(cat.rules)}\n                        </ul>`;
+                if (cat.footer) html += cat.footer;
+            }
+            if (cat.subcategories) html += cat.subcategories.map(renderRawSubcategory).join("");
+            if (cat.blocks) html += cat.blocks.map(renderRawBlock).join("");
+            return html;
+        };
+
+        const renderRawRulesDocument = () => `
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="UTF-8">
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+                <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+                <style>
+                    :root { --lp-blue: #0076E3; --bg: #02040a; --surface: rgba(255, 255, 255, 0.05); --border: rgba(255, 255, 255, 0.1); }
+                    body { font-family: 'Inter', sans-serif; background: var(--bg); color: #fff; margin: 0; padding: 20px; line-height: 1.6; }
+                    .header { text-align: center; margin-bottom: 30px; }
+                    .header h1 { font-family: 'Montserrat', sans-serif; font-size: 32px; text-transform: uppercase; margin: 0; color: var(--lp-blue); }
+                    .header p { color: #a0a8b5; font-size: 14px; }
+                    details { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 10px; overflow: hidden; }
+                    summary { padding: 15px 20px; cursor: pointer; font-weight: bold; list-style: none; display: flex; justify-content: space-between; align-items: center; text-transform: uppercase; font-size: 14px; letter-spacing: 1px; }
+                    summary::-webkit-details-marker { display: none; }
+                    summary::after { content: '➔'; color: var(--lp-blue); transition: 0.3s; }
+                    details[open] summary::after { transform: rotate(90deg); }
+                    details[open] summary { border-bottom: 1px solid var(--border); background: rgba(0, 118, 227, 0.1); }
+                    .content { padding: 20px; font-size: 14px; color: #f0f2f5; }
+                    .content ul { list-style: none; padding: 0; margin: 0; }
+                    .content li { margin-bottom: 12px; padding-left: 15px; border-left: 2px solid var(--lp-blue); }
+                    .content b { color: var(--lp-blue); }
+                    .important { color: #ff4d4d; font-weight: bold; margin-top: 15px; display: block; }
+                    .footer { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); color: #a0a8b5; font-size: 12px; }
+                </style>
+            </head>
+            <body>
+                <div class="header">
+                    <h1>LifePunch Rules</h1>
+                    <p>Official s&box DXRP Guidelines</p>
+                </div>
+                ${LP_RULES.map((cat) => `
+                <details${cat.open ? " open" : ""}>
+                    <summary>${cat.num}. ${cat.title}</summary>
+                    <div class="content">${renderRawCategoryBody(cat)}</div>
+                </details>`).join("")}
+                <div class="footer">
+                    Searchable rules available at lifepunch.co/rules<br>
+                    &copy; 2026 LifePunch Network
+                </div>
+            </body>
+            </html>`;
+
+        const renderWebRulesList = (rules, rule) =>
+            (rules || []).map((r) => rule(r.id, r.html)).join("\n                          ");
+
+        const renderWebSubcategory = (sub, rule) => `
+                          <div class="sub-cat">
+                              <button class="sub-btn">${sub.webBtn} <i class="fa-solid fa-chevron-down chevron"></i></button>
+                              <div class="content-wrapper"><div class="content">
+                                  ${renderWebRulesList(sub.rules, rule)}
+                              </div></div>
+                          </div>`;
+
+        const renderWebGuide = (block) => `
+                          <div class="sub-title">${block.webHeading}</div>
+                          <div class="guide-grid">
+                              ${block.items.map((item) => `<div class="guide-item">${item}<span>✅</span></div>`).join("\n                              ")}
+                          </div>`;
+
+        const renderWebBlock = (block, rule) => {
+            if (block.type === "heading") return `<div class="sub-title">${block.web}</div>`;
+            if (block.type === "rules") return renderWebRulesList(block.rules, rule);
+            if (block.type === "guide") return renderWebGuide(block);
+            if (block.type === "cooldowns") return rule(block.webRule.id, block.webRule.html);
+            return "";
+        };
+
+        const renderWebCategoryBody = (cat, rule) => {
+            let html = "";
+            if (cat.rules) {
+                html += renderWebRulesList(cat.rules, rule);
+                if (cat.footer) html += cat.footer;
+            }
+            if (cat.subcategories) html += cat.subcategories.map((sub) => renderWebSubcategory(sub, rule)).join("");
+            if (cat.blocks) html += cat.blocks.map((block) => renderWebBlock(block, rule)).join("");
+            return html;
+        };
+
+        const renderWebRulesRoot = (rule) =>
+            LP_RULES.map((cat) => `
+              <div class="category">
+                  <button class="cat-btn">
+                      <div class="icon-box"><i class="fa-solid ${cat.icon}"></i></div>
+                      ${cat.title}
+                      <i class="fa-solid fa-chevron-down chevron"></i>
+                  </button>
+                  <div class="content-wrapper">
+                      <div class="content">
+                          ${renderWebCategoryBody(cat, rule)}
+                      </div>
+                  </div>
+              </div>`).join("");
+
 
         const STORE_PACKAGES = Object.freeze({
             VIP: { label: "VIP", price: 10.00 },
@@ -906,265 +1325,7 @@ export default {
 
         // Handle rules/raw for DXRP (High-Performance In-Game HTML)
         if (path === "/rules/raw") {
-            const rulesHtml = `
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <meta charset="UTF-8">
-                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-                <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Inter:wght@400;600&display=swap" rel="stylesheet">
-                <style>
-                    :root { --lp-blue: #0076E3; --bg: #02040a; --surface: rgba(255, 255, 255, 0.05); --border: rgba(255, 255, 255, 0.1); }
-                    body { font-family: 'Inter', sans-serif; background: var(--bg); color: #fff; margin: 0; padding: 20px; line-height: 1.6; }
-                    .header { text-align: center; margin-bottom: 30px; }
-                    .header h1 { font-family: 'Montserrat', sans-serif; font-size: 32px; text-transform: uppercase; margin: 0; color: var(--lp-blue); }
-                    .header p { color: #a0a8b5; font-size: 14px; }
-                    
-                    details { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 10px; overflow: hidden; }
-                    summary { padding: 15px 20px; cursor: pointer; font-weight: bold; list-style: none; display: flex; justify-content: space-between; align-items: center; text-transform: uppercase; font-size: 14px; letter-spacing: 1px; }
-                    summary::-webkit-details-marker { display: none; }
-                    summary::after { content: '➔'; color: var(--lp-blue); transition: 0.3s; }
-                    details[open] summary::after { transform: rotate(90deg); }
-                    details[open] summary { border-bottom: 1px solid var(--border); background: rgba(0, 118, 227, 0.1); }
-                    
-                    .content { padding: 20px; font-size: 14px; color: #f0f2f5; }
-                    .content ul { list-style: none; padding: 0; margin: 0; }
-                    .content li { margin-bottom: 12px; padding-left: 15px; border-left: 2px solid var(--lp-blue); }
-                    .content b { color: var(--lp-blue); }
-                    
-                    .footer { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); color: #a0a8b5; font-size: 12px; }
-                </style>
-            </head>
-            <body>
-                <div class="header">
-                    <h1>LifePunch Rules</h1>
-                    <p>Official s&box DXRP Guidelines</p>
-                </div>
-                <details open>
-                    <summary>1. Serverwide Rules</summary>
-                    <div class="content">
-                        <ul>
-                            <li><b>English Only</b> — English speaking community. RP in English.</li>
-                            <li><b>No Cheating</b> — 3rd party software, cheats, macros, or autoclickers result in a PERMANENT ban.</li>
-                            <li><b>No Exploiting</b> — Map, item, or tool exploits for unfair advantage. (Excludes drug creation/gunshops). You may not base outside of the map. The rocks are the barrier.</li>
-                            <li><b>No Mic Spam</b> — Purposely being disruptive to RP.</li>
-                            <li><b>No Staff Impersonation</b> — Results in a PERMANENT ban.</li>
-                            <li><b>Do Not Lie to Staff</b> — False reporting or deleting ticket evidence is punishable.</li>
-                            <li><b>No Staff Baiting</b> — Saying you will break a rule = breaking a rule.</li>
-                            <li><b>No Minimodding</b> — Don't threaten reports. Report properly and move on.</li>
-                            <li><b>Admin Final Say</b> — Do not argue with staff about rules & punishments.</li>
-                            <li><b>No Begging</b> — No solicitation of real money or IRL items.</li>
-                            <li><b>No Bullying</b> — Targeting/harassing outside of RP is never tolerated.</li>
-                            <li><b>No Politics/War/Religion</b> — No political arguments. Jokes okay, arguments not.</li>
-                            <li><b>No Racism/Homophobia</b> — Zero tolerance. Results in PERMANENT ban.</li>
-                            <li><b>No Sexual/NSFW Content</b> — Media must stay PG. Includes ERP/Porn.</li>
-                            <li><b>No Doxing</b> — Posting IRL pictures without permission is a PERMANENT ban.</li>
-                            <li><b>Cybercrime Threats</b> — DDoS or Doxing threats result in a PERMANENT ban.</li>
-                            <li><b>No Advertising</b> — Only official DXRP or S&box links allowed.</li>
-                            <li><b>No IRL Illegal Activity</b> — Encouraging illegal activity = Permanent ban.</li>
-                        </ul>
-                        <div class="important">❗ Staff always have final say in situations not listed!</div>
-                    </div>
-                </details>
-                <details>
-                    <summary>2. Basic RP Rules</summary>
-                    <div class="content">
-                        <h4>SUB-CATEGORY 2A: RDM / RDA</h4>
-                        <ul>
-                            <li><b>RDM Definition</b> —  Random Deathmatch: Killing or arresting without a valid RP reason.</li>
-                            <li><b>RDM Reasoning</b> —  Disrespect/threats aren't reasons to kill. Taking damage/stealing are.</li>
-                            <li><b>KOS Line</b> — Crossing a clearly marked KOS line is NOT RDM.</li>
-                            <li><b>Warnings</b> — You can kill someone after warning them 3 times in chat to step away.</li>
-                            <li><b>Police</b> — You can be killed by the person you're trying to arrest if the situation escalates.</li>
-                            <li><b>Mayor</b> — Killing the Mayor requires a valid RP reason (PD raid, mug, kidnap/hostage).</li>
-                        </ul>
-                        <h4>SUB-CATEGORY 2B: NLR (New Life Rule)</h4>
-                        <ul>
-                            <li><b>NLR Trigger</b> — Applies on death, job change, and jail release (unless escaped).</li>
-                            <li><b>NLR Definition</b> — New Life Rule: You can remember past events, but can't act on them.</li>
-                            <li><b>Raid</b> — You may not return to a raid after death” </li>
-                            <li><b>Revive</b> — Revived players may continue their raid/scenario.</li>
-                            <li><b>Hitman</b> — Hitmen cannot re-attempt failed hits (a failed hit cannot be retried after death).</li>
-                        </ul>
-                        <h4>SUB-CATEGORY 2C: Fail RP</h4>
-                        <ul>
-                            <li><b>Fail RP Logic</b> — Actions that break character, violate the established setting's logic, or disregard server rules, resulting in poor-quality, unrealistic, or disruptive play.</li>
-                            <li><b>Examples</b> — Stealing your base mate's valuables and then starting a new base; Mugging someone together, then killing your partner; Police working with Thieves or Gangsters; Door camping/blocking doors; Merchants scamming.</li>
-                        </ul>
-                    </div>
-                </details>
-                <details>
-                    <summary>3. Common Sense & Behavior</summary>
-                    <div class="content">
-                        <h4>SUB-CATEGORY 3A: BASIC GUIDELINES</h4>
-                        <ul>
-                            <li><b>FearRP</b> — Not enforced, but value your life reasonably.</li>
-                            <li><b>Government Raid</b> — Government cannot raid with Criminals (except Hitman).</li>
-                            <li><b>No Suicide RP</b> — No suicide to avoid RP scenarios (kidnaps, mugs).</li>
-                            <li><b>Job Arrest</b> — Government cannot raid/arrest just because of someone's Job.</li>
-                            <li><b>Job Description</b> — Must follow job descriptions (Medics heal, Merchants/Dealers sell, Cops protect).</li>
-                            <li><b>Merchant Deny</b> — Denying Merchant service for non-RP reasons is forbidden (example: denying gun sales to a potential raider).</li>
-                        </ul>
-                        <h4>SUB-CATEGORY 3B: CONDUCT RULES</h4>
-                        <ul>
-                            <li><b>No Job Change</b> — No changing jobs during active RP.</li>
-                            <li><b>Demote Reasons</b> — AFK (30m+), not doing job, police corruption, scamming.</li>
-                            <li><b>No Vigilante</b> — Do not punish rulebreakers yourself (AOS/KOS/Propblock).</li>
-                            <li><b>Scamming</b> — Merchants cannot scam.</li>
-                        </ul>
-                    </div>
-                </details>
-                <details>
-                    <summary>4. Building Rules</summary>
-                    <div class="content">
-                        <h4>SUB-CATEGORY 4A: PROP & WIRE</h4>
-                        <ul>
-                            <li><b>Spawn Build</b> — No building in spawn. No prop climbing, flying, or blocking.</li>
-                            <li><b>Wire Abuse</b> — No Wire abuse (auto-stealing money, loud sounds, stealing shipments).</li>
-                            <li><b>Prop Permission</b> — No props in other players' property without permission.</li>
-                        </ul>
-                        <h4>SUB-CATEGORY 4B: FADING DOORS</h4>
-                        <ul>
-                            <li><b>Fading Door Limit</b> — Max 2 fading doors to get access to your raidables.</li>
-                            <li><b>Fading Door Utility</b> — Utility doors (one-way exits, peeks) are allowed.</li>
-                            <li><b>Fading Door Airlocks</b> — Airlocks must be identifiable and distinct (color/material).</li>
-                        </ul>
-                        <h4>SUB-CATEGORY 4C: BASE LAYOUT & FAIRNESS</h4>
-                        <ul>
-                            <li><b>Base Reachable</b> — Bases must be reachable/accessible at all times.</li>
-                            <li><b>Base Entrance</b> — Min/Max 1 entrance. Unused map doors must be blocked.</li>
-                            <li><b>Base Jump/Crouch</b> — Raiders must never be forced to crouch or jump at any time inside/outside or to gain access to a base.</li>
-                            <li><b>Base Mazes</b> — No mazes: defined as more than 1×180° turn OR 2×90° turns OR multiple disorienting pathways. Artificial raid hallways/airlocks start at your KoS sign & must not exceed 25 total 1×1 props (1000 units) excluding natural map layouts</li>
-                            <li><b>Base KOS Line</b> — KOS zones must start at a base's purchasable front/fading door or at the start of an airlock and must include a sign saying 'KOS past'.</li>
-                            <li><b>Base Shooting</b> — Raiders must be able to clearly see you and shoot back. Cannot use tiny hitboxes for unfair advantage.</li>
-                            <li><b>Base Crowbar</b> — Bases must be crowbar-raidable (no code-only).</li>
-                            <li><b>Base Damage</b> — Bases cannot damage players.</li>
-                            <li><b>Base Movement</b> — No slowing/impeding movement.</li>
-                            <li><b>Base Entrances</b> — Entrances must be visible & distinct with a minimum 2×2 standing area (80×80 units).</li>
-                            <li><b>Base Walkways</b> — Walkways must be at least 1×1 prop (40 units) wide (includes ramps).</li>
-                            <li><b>Base No Collide</b> — No-collide props must not be confusing to raiders and should be visually distinct.</li>
-                            <li><b>Entity Ladders</b> — Bases must not require entity ladders to access at any time.</li>
-                        </ul>
-                        <h4>SUB-CATEGORY 4D: PLACEMENT & MAP RULES</h4>
-                        <ul>
-                            <li><b>Public Space</b> — Do not take up excessive public space.</li>
-                            <li><b>Other's Property</b> — Do not build into other people’s property.</li>
-                            <li><b>PD Building</b> — Do not build in PD if not Government.</li>
-                            <li><b>Blocking Off</b> — Do not block weed drop-off, ATMs, trash cans, recycler.</li>
-                            <li><b>Drop-Offs</b> — Weed drop-off must be fully walkable.</li>
-                        </ul>
-                        <h4>SUB-CATEGORY 4E: SPECIAL BUILDING RESTRICTIONS</h4>
-                        <ul>
-                            <li>Only buy doors you intend to use.</li>
-                            <li>No skybases or excessive aerial builds.</li>
-                            <li>Max 1 connection to a drug drop-off location.</li>
-                            <li>Decorative aerial builds allowed.</li>
-                            <li>No blackout bases.</li>
-                            <li>KOS zones must be understandable and never deceptive.</li>
-                        </ul>
-                    </div>
-                </details>
-                <details>
-                    <summary>5. Job Specific Rules</summary>
-                    <div class="content">
-                        <h4>SUB-CATEGORY 5A: MAYOR & CP</h4>
-                        <ul>
-                            <li><b>Mayor</b> — Must base in PD. Gun licenses: can charge fee, not obligated to provide to criminals. Can build outside only for government or RP use (checkpoints/toll booths). Announce major law changes before enforcing.</li>
-                            <li><b>Police</b> — Must base in PD. Allow Government members to base/RP with you. Follow hierarchy: Mayor > Chief > Officer. Attempt arrest before killing (unless weapon present). Can build outside only for government or RP use.</li>
-                            <li><b>Laws</b> — Must be reasonable, not contradict server rules, cannot be text-only disrespect laws. AoS laws allowed; KoS laws not allowed. Laws cannot target specific individuals or jobs.</li>
-                            <li><b>Arrests</b> — Only for lawbreakers; cannot arrest innocents even if bribed.</li>
-                            <li><b>Lockdowns</b> — Outdoors only. Arrests allowed, not KOS. Valid reason required.</li>
-                            <li><b>Corruption</b> — Allowed in RP but not against government members. Bribes okay. Helping criminals raid PD or killing government is forbidden.</li>
-                            <li><b>Warrants</b> — Require valid RP evidence and expire on death, jail, or successful raid defense.</li>
-                            <li><b>Checkpoints & Tolls</b> — Must not block spawns, not extend raids, tolls cannot exceed $50, max 2 checkpoints/toll-booths.</li>
-                            <li><b>Searches</b> — Require RP reason (e.g., gunshots nearby, loitering near drug drop).</li>
-                        </ul>
-                        <h4>SUB-CATEGORY 5B: CIVILIAN</h4>
-                        <ul>
-                            <li><b>Gun Dealer</b> — Must intend to sell, cannot base with another gun dealer, can defend a criminal base, must sell individual weapons (not only shipments).</li>
-                            <li><b>Medic</b> — Only 1 per raid party.</li>
-                            <li><b>Theatre Manager</b> — Must base in the Theatre.</li>
-                        </ul>
-                        <h4>SUB-CATEGORY 5C: CRIMINAL</h4>
-                        <ul>
-                            <li><b>Hitman</b> — No metagaming hits. Only Hitman can perform hits. Does not need a valid RP reason unless the target is the Mayor. Max one Hitman per raid; Hitman may only raid active target locations.</li>
-                        </ul>
-                    </div>
-                </details>
-                <details>
-                    <summary>6. Raiding & Mugging</summary>
-                    <div class="content">
-                        <h4>BASIC RAID RULES</h4>
-                        <ul>
-                            <li><b>Raiding Guidelines</b> — Raid starts when prybar is out, damaging a base member, weapon present on property, or refusal to leave. Raid ends when no raiders remain on the property.</li>
-                            <li><b>Mid-Raid</b> — No props can be moved, changed, deleted, or added during raids. Entity ladders allowed to enter flawed/open bases.</li>
-                            <li><b>Police Raid</b> — Ends when all Police attending the raid die. Returning to a Police raid after death breaks NLR.</li>
-                        </ul>
-                        <h4>RAID GUIDE (✅ Can Raid)</h4>
-                        <ul>
-                              <li>Medic — ✅</li>
-                              <li>Drug Dealer — ✅</li>
-                              <li>Gangster — ✅</li>
-                              <li>Mob Boss — ✅</li>
-                              <li>Hitman (Hit required on raid target)— ✅</li>
-                              <li>Thief — ✅</li>
-                              <li>>Government — ✅</li>
-
-                        </ul>
-                        <h4>MUGGING RULES</h4>
-                        <ul>
-                            <li><b>$ Limit</b> — Max mug $1,000. Must type a warning (not voice only). 10s response time required.</li>
-                            <li><b>Cooldown</b> — 5-minute cooldown per different target; 10-minute cooldown for the same person.</li>
-                            <li><b>Defense</b> — Victims of a mugging/kidnapping are always allowed to defend themselves without warning.</li>
-                            <li><b>Shipments</b> — Can mug shipments/guns if you see someone collect them; same warning rules apply.</li>
-                        </ul>
-                        <h4>MUG GUIDE (✅ Can Mug)</h4>
-                        <ul>
-                            <li>Hobo — ✅</li>
-                            <li>Drug Dealer — ✅</li>
-                            <li>Gangster — ✅</li>
-                            <li>Mob Boss — ✅</li>
-                            <li>Thief — ✅</li>
-                        </ul>
-                    </div>
-                </details>
-                <details>
-                    <summary>7. Minging / Trolling</summary>
-                    <div class="content">
-                        <ul>
-                            <li><b>Prohibited</b> — Baiting RDM/RDA, text/mic spam, excessive trolling, wire abuse to annoy players, preventing others from building, prop blocking, building in other people's bases, prop abuse (flying, climbing), preventing new players from learning, repeatedly raiding someone with no valuables, kidnapping without RP reason, disobeying staff or reasonable requests.</li>
-                        </ul>
-                    </div>
-                </details>
-                <details>
-                    <summary>8. Cooldowns & Reporting</summary>
-                    <div class="content">
-                        <h4>COOLDOWNS</h4>
-                        <ul>
-                            <li>Mugging (different people): 5 minutes</li>
-                            <li>Mugging (same person): 15 minutes</li>
-                            <li>Hits (same person): 10 minutes</li>
-                            <li>Raiding (same person): 30 minutes</li>
-                            <li>PD Raid: 10 minutes</li>
-                            <li>Mayor: 10 minute grace before they can be raided/killed after certain events</li>
-                            <li>Mayor Kidnap: 20 minutes</li>
-                            <li>No raiding for 10 minutes after server crash</li>
-                        </ul>
-                        <h4>REPORTING RULES</h4>
-                        <ul>
-                            <li><b>Report Respect</b> — Be respectful. Do not spam reports. Provide proof (Medal/OBS/Steam).</li>
-                            <li><b>Report Lying</b> — Lying to staff results in a PERMANENT ban.</li>
-                            <li><b>Report Use</b> — Use @ or /Staff in-game. EVIPs can jail in severe cases.</li>
-                        </ul>
-                    </div>
-                </details>
-                <div class="footer">
-                    Searchable rules available at lifepunch.co/rules<br>
-                    &copy; 2026 LifePunch Network
-                </div>
-            </body>
-            </html>`;
-            return new Response(rulesHtml, {
+            return new Response(renderRawRulesDocument(), {
                 headers: { "Content-Type": "text/html;charset=UTF-8" }
             });
         }
@@ -4111,275 +4272,7 @@ export default {
           </div>
 
           <div id="rules-root">
-              <div class="category">
-                  <button class="cat-btn">
-                      <div class="icon-box"><i class="fa-solid fa-globe"></i></div>
-                      Serverwide Rules
-                      <i class="fa-solid fa-chevron-down chevron"></i>
-                  </button>
-                  <div class="content-wrapper">
-                      <div class="content">
-                          ${rule('en-only', "<b>English Only</b> — English speaking community. RP in English.")}
-                          ${rule('no-cheat', "<b>No Cheating</b> — 3rd party software, cheats, macros, or autoclickers result in a PERMANENT ban.")}
-                          ${rule('no-exploit', "<b>No Exploiting</b> — Map, item, or tool exploits for unfair advantage. (Excludes drug creation/gunshops). You may not base outside of the map. The rocks are the barrier.")}
-                          ${rule('no-mic-spam', "<b>No Mic Spam</b> — Purposely being disruptive to RP.")}
-                          ${rule('no-staff-impersonation', "<b>No Staff Impersonation</b> — Results in a PERMANENT ban.")}
-                          ${rule('no-lie-staff', "<b>Do Not Lie to Staff</b> — False reporting or deleting ticket evidence is punishable.")}
-                          ${rule('no-staff-baiting', "<b>No Staff Baiting</b> — Saying you will break a rule = breaking a rule.")}
-                          ${rule('no-minimodding', "<b>No Minimodding</b> — Don't threaten reports. Report properly and move on.")}
-                          ${rule('admin-final-say', "<b>Admin Final Say</b> — Do not argue with staff about rules & punishments.")}
-                          ${rule('no-begging', "<b>No Begging</b> — No solicitation of real money or IRL items.")}
-                          ${rule('no-bullying', "<b>No Bullying</b> — Targeting/harassing outside of RP is never tolerated.")}
-                          ${rule('no-politics', "<b>No Politics/War/Religion</b> — No political arguments. Jokes okay, arguments not.")}
-                          ${rule('no-racism', "<b>No Racism/Homophobia</b> — Zero tolerance. Results in PERMANENT ban.")}
-                          ${rule('no-nsfw', "<b>No Sexual/NSFW Content</b> — Media must stay PG. Includes ERP/Porn.")}
-                          ${rule('no-doxing', "<b>No Doxing</b> — Posting IRL pictures without permission is a PERMANENT ban.")}
-                          ${rule('no-cybercrime', "<b>Cybercrime Threats</b> — DDoS or Doxing threats result in a PERMANENT ban.")}
-                          ${rule('no-advertising', "<b>No Advertising</b> — Only official DXRP or S&box links allowed.")}
-                          ${rule('no-irl-illegal', "<b>No IRL Illegal Activity</b> — Encouraging illegal activity = Permanent ban.")}
-                          <div class="important">❗ Staff always have final say in situations not listed!</div>
-                      </div>
-                  </div>
-              </div>
-
-              <div class="category">
-                  <button class="cat-btn">
-                      <div class="icon-box"><i class="fa-solid fa-lightbulb"></i></div>
-                      Basic RP Rules
-                      <i class="fa-solid fa-chevron-down chevron"></i>
-                  </button>
-                  <div class="content-wrapper">
-                      <div class="content">
-                          <div class="sub-cat">
-                              <button class="sub-btn">🔺 RDM / RDA <i class="fa-solid fa-chevron-down chevron"></i></button>
-                              <div class="content-wrapper"><div class="content">
-                                  ${rule('rdm-definition', "<b>RDM Definition</b> —  Random Deathmatch: Killing or arresting without a valid RP reason.")}
-                                  ${rule('rdm-reason', "<b>RDM Reasoning</b> —  Disrespect/threats aren't reasons to kill. Taking damage/stealing are.")}
-                                  ${rule('rdm-kos', "<b>KOS Line</b> — Crossing a clearly marked KOS line is NOT RDM.")}
-                                  ${rule('rdm-warnings', "<b>Warnings</b> — You can kill someone after warning them 3 times in chat to step away.")}
-                                  ${rule('rdm-police', "<b>Police</b> — You can be killed by the person you're trying to arrest if the situation escalates.")}
-                                  ${rule('rdm-mayor', "<b>Mayor</b> — Killing the Mayor requires a valid RP reason (PD raid, mug, kidnap/hostage).")}
-                              </div></div>
-                          </div>
-                          <div class="sub-cat">
-                              <button class="sub-btn">🔺 NLR (New Life Rule) <i class="fa-solid fa-chevron-down chevron"></i></button>
-                              <div class="content-wrapper"><div class="content">
-                                  ${rule('nlr-definition', "<b>NLR Definition</b> — New Life Rule: You can remember past events, but can't act on them.")}
-                                  ${rule('nlr-trigger', "<b>NLR Trigger</b> — Applies on death, job change, and jail release (unless escaped).")}
-                                  ${rule('nlr-raid', "<b>Raid</b> — You may not return to a raid after death.")}
-                                  ${rule('nlr-revive', "<b>Revives</b> — Revived players may continue their raid/scenario.")}
-                                  ${rule('nlr-hitman', "<b>Hitmen</b> — Hitmen cannot re-attempt failed hits (Hit is failed upon death).")}
-                              </div></div>
-                          </div>
-                          <div class="sub-cat">
-                              <button class="sub-btn">🔺 Fail RP <i class="fa-solid fa-chevron-down chevron"></i></button>
-                              <div class="content-wrapper"><div class="content">
-                                  ${rule('fail-rp', "<b>Fail RP Logic</b> — Actions that break character, violate the established setting's logic, or disregard server rules, resulting in poor-quality, unrealistic, or disruptive play. Examples include stealing base mate valuables and starting a new base; mugging then killing your partner; police colluding with criminals; door camping/blocking; merchant scamming.")}
-                              </div></div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-
-              <div class="category">
-                  <button class="cat-btn">
-                      <div class="icon-box"><i class="fa-solid fa-brain"></i></div>
-                      Common Sense & Behavior
-                      <i class="fa-solid fa-chevron-down chevron"></i>
-                  </button>
-                  <div class="content-wrapper">
-                      <div class="content">
-                          <div class="sub-cat">
-                              <button class="sub-btn">🔹 Basic Guidelines <i class="fa-solid fa-chevron-down chevron"></i></button>
-                              <div class="content-wrapper"><div class="content">
-                                  ${rule('fearrp', "<b>FearRP</b> — Not enforced, but value your life reasonably.")}
-                                  ${rule('gov-raid', "<b>Government Raid</b> — Government cannot raid with Criminals (except Hitman).")}
-                                  ${rule('no-suicide-rp', "<b>No Suicide RP</b> — No suicide to avoid RP scenarios (kidnaps, mugs).")}
-                                  ${rule('job-arrest', "<b>Job Arrest</b> — Government cannot raid/arrest just because of someone's Job.")}
-                                  ${rule('job-desc', "<b>Job Description</b> — Must follow job descriptions (Medics heal, Merchants/Dealers sell, Cops protect).")}
-                                  ${rule('merchant-deny', "<b>Merchant Deny</b> — Denying Merchant service for non-RP reasons is forbidden (e.g., denying gun sales to a potential raider).")}
-                              </div></div>
-                          </div>
-                          <div class="sub-cat">
-                              <button class="sub-btn">🔹 Conduct Rules <i class="fa-solid fa-chevron-down chevron"></i></button>
-                              <div class="content-wrapper"><div class="content">
-                                  ${rule('no-job-change', "<b>No Job Change</b> — No changing jobs during active RP.")}
-                                  ${rule('demote-reasons', "<b>Demote Reasons</b> — AFK (30m+), not doing job, police corruption, scamming.")}
-                                  ${rule('no-vigilante', "<b>No Vigilante</b> — Do not punish rulebreakers yourself (AOS/KOS/Propblock).")}
-                                  ${rule('scamming', "<b>Scamming</b> — Merchants cannot scam.")}
-                              </div></div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-
-              <div class="category">
-                  <button class="cat-btn">
-                      <div class="icon-box"><i class="fa-solid fa-hammer"></i></div>
-                      Building Rules
-                      <i class="fa-solid fa-chevron-down chevron"></i>
-                  </button>
-                  <div class="content-wrapper">
-                      <div class="content">
-                          <div class="sub-cat">
-                              <button class="sub-btn">🔐 Prop & Wire <i class="fa-solid fa-chevron-down chevron"></i></button>
-                              <div class="content-wrapper"><div class="content">
-                                  ${rule('spawn-build', "<b>Spawn Build</b> — No building in spawn. No prop climbing, flying, or blocking.")}
-                                  ${rule('wire-abuse', "<b>Wire Abuse</b> — No Wire abuse (auto-stealing money, loud sounds, stealing shipments).")}
-                                  ${rule('prop-permission', "<b>Prop Permission</b> — No props in other players' property without permission.")}
-                              </div></div>
-                          </div>
-                          <div class="sub-cat">
-                              <button class="sub-btn">🚪 Fading Doors <i class="fa-solid fa-chevron-down chevron"></i></button>
-                              <div class="content-wrapper"><div class="content">
-                                  ${rule('fd-limit', "<b>Fading Door Limit</b> — Max 2 fading doors to get access to your raidables.")}
-                                  ${rule('fd-utility', "<b>Fading Door Utility</b> — Utility doors (one-way exits, peeks) are allowed.")}
-                                  ${rule('fd-airlocks', "<b>Fading Door Airlocks</b> — Airlocks must be identifiable and distinct (color/material).")}
-                              </div></div>
-                          </div>
-                          <div class="sub-cat">
-                              <button class="sub-btn">🏠 Base Layout & Fairness <i class="fa-solid fa-chevron-down chevron"></i></button>
-                              <div class="content-wrapper"><div class="content">
-                                  ${rule('base-reachable', "<b>Base Reachable</b> — Bases must be reachable/accessible at all times.")}
-                                  ${rule('base-entrance', "<b>Base Entrance</b> — Min/Max 1 entrance. Unused map doors must be blocked.")}
-                                  ${rule('base-crouch', "<b>Base Jump/Crouch</b> — Raiders must never be forced to crouch or jump at any time inside/outside OR to gain access to a base.")}
-                                  ${rule('base-mazes', "<b>Base Mazes</b> — No Mazes. A maze is defined as more than 1×180° turn OR 2×90° turns OR multiple disorienting/excessive pathways used to artificially extend raid duration. Artificial raid hallways/airlocks start at your KoS sign & must not exceed 25 total 1×1 props (1000 units) excluding natural map layouts.")}
-                                  ${rule('base-kos-line', "<b>Base KOS Line</b> — KOS zones must start at a base's purchasable front/fading door or at the start of an airlock. KOS lines must have a text sign that says 'KOS past'.")}
-                                  ${rule('base-shooting', "<b>Base Shooting</b> — Raiders must be able to clearly see you and shoot back. Cannot use tiny hitboxes for unfair advantage.")}
-                                  ${rule('base-crowbar', "<b>Base Crowbar</b> — Bases must be crowbar-raidable (no code-only).")}
-                                  ${rule('base-damage', "<b>Base Damage</b> — Bases cannot damage players.")}
-                                  ${rule('base-movement', "<b>Base Movement</b> — No slowing/impeding movement.")}
-                                  ${rule('base-entrances', "<b>Base Entrances</b> — Entrances must be reasonably easy to find, visible & distinct from surrounding walls; minimum 2×2 standing area (80×80 units).")}
-                                  ${rule('base-walkways', "<b>Base Walkways</b> — Walkways must be at least 1×1 prop (40 units) wide (includes ramps).")}
-                                  ${rule('base-no-collide', "<b>Base No Collide</b> — No-collide props must not be confusing for raiders; they should be visually distinct.")}
-                                  ${rule('entity-ladders', "<b>Entity Ladders</b> — Bases must not require the use of entity ladders at any time.")}
-                              </div></div>
-                          </div>
-                          <div class="sub-cat">
-                              <button class="sub-btn">🗺 Placement & Map Rules <i class="fa-solid fa-chevron-down chevron"></i></button>
-                              <div class="content-wrapper"><div class="content">
-                                  ${rule('public-space', "<b>Public Space</b> — Do not take up excessive public space.")}
-                                  ${rule('others-property', "<b>Other's Property</b> — Do not build into other people’s property.")}
-                                  ${rule('pd-building', "<b>PD Building</b> — Do not build in PD if not Government.")}
-                                  ${rule('blocking-off', "<b>Blocking Off</b> — Do not block weed drop-off, ATMs, trash cans, recycler.")}
-                                  ${rule('drop-offs', "<b>Drop-Offs</b> — Weed drop-off must be fully walkable.")}
-                              </div></div>
-                          </div>
-                          <div class="sub-cat">
-                              <button class="sub-btn">🚧 Special Building Restrictions <i class="fa-solid fa-chevron-down chevron"></i></button>
-                              <div class="content-wrapper"><div class="content">
-                                  ${rule('special-doors', "Only buy doors you intend to use.")}
-                                  ${rule('no-skybases', "No skybases or excessive aerial builds.")}
-                                  ${rule('drop-connection', "Max 1 connection to a drug drop-off location.")}
-                                  ${rule('decorative-aerial', "Decorative aerial builds allowed.")}
-                                  ${rule('no-blackout', "No blackout bases.")}
-                                  ${rule('kos-understandable', "KOS zones must be understandable and never deceptive.")}
-                              </div></div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-
-              <div class="category">
-                  <button class="cat-btn">
-                      <div class="icon-box"><i class="fa-solid fa-briefcase"></i></div>
-                      Job Specific Rules
-                      <i class="fa-solid fa-chevron-down chevron"></i>
-                  </button>
-                  <div class="content-wrapper">
-                      <div class="content">
-                          <div class="sub-cat">
-                              <button class="sub-btn">👑 Mayor & CP <i class="fa-solid fa-chevron-down chevron"></i></button>
-                              <div class="content-wrapper"><div class="content">
-                                  ${rule('mayor-base', "<b>Mayor</b> — Must base in PD. Gun licenses: can charge fee, not obligated for criminals. Can build outside only for government or RP use (checkpoints/toll booths). Announce major law changes before enforcing.")}
-                                  ${rule('police-base', "<b>Police</b> — Must base in PD. Must allow all members of Government to base/RP with you. Follow hierarchy. Attempt to arrest before killing (unless weapon present).")}
-                                  ${rule('laws', "<b>Laws</b> — Must be reasonable. Not contradict server rules. No text-only disrespect laws. AoS laws allowed; KoS laws not allowed. Laws cannot target specific individuals or jobs.")}
-                                  ${rule('arrests', "<b>Arrests</b> — Only for lawbreakers. Cannot arrest innocents (even if bribed).")}
-                                  ${rule('lockdowns', "<b>Lockdowns</b> — Outdoors only. You may arrest, not KOS. Valid reason needed (Bank raid/shooting).")}
-                                  ${rule('corruption', "<b>Corruption</b> — Allowed in RP. Not allowed against other government members. Bribes are okay. Helping criminals raid PD or killing Government is forbidden.")}
-                                  ${rule('warrants', "<b>Warrants</b> — Require valid RP evidence. Must SEE illegal activity. No metagaming. Expire on death, jail, or successful raid defense.")}
-                                  ${rule('checkpoints', "<b>Checkpoints and Tolls</b> — Must not block any spawn-area entrance/exits. Must not extend raid-durations. Tolls cannot exceed $50. 2 Checkpoints/Toll-booths MAX.")}
-                                  ${rule('searches', "<b>Searches</b> — Require RP reason (e.g., gunshots nearby, loitering near drug drop).")}
-                              </div></div>
-                          </div>
-                          <div class="sub-cat">
-                              <button class="sub-btn">👨‍🔧 Civilian <i class="fa-solid fa-chevron-down chevron"></i></button>
-                              <div class="content-wrapper"><div class="content">
-                                  ${rule('gun-dealer', "<b>Gun Dealer</b> — Must intend to sell. Cannot base with another gun dealer. Can defend a criminal base. Must sell individual weapons (not only shipments).")}
-                                  ${rule('medic', "<b>Medic</b> — Only 1 per raid party.")}
-                                  ${rule('theatre-manager', "<b>Theatre Manager</b> — Must base in the Theatre.")}
-                              </div></div>
-                          </div>
-                          <div class="sub-cat">
-                              <button class="sub-btn">🔫 Criminal <i class="fa-solid fa-chevron-down chevron"></i></button>
-                              <div class="content-wrapper"><div class="content">
-                                  ${rule('hitman', "<b>Hitman</b> — No metagaming hits. Only Hitman can perform hits. Doesn't need a valid RP reason unless it is the Mayor. Hitman may only raid active target locations; max one Hitman per raid.")}
-                              </div></div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-
-              <div class="category">
-                  <button class="cat-btn">
-                      <div class="icon-box"><i class="fa-solid fa-bomb"></i></div>
-                      Raiding & Mugging
-                      <i class="fa-solid fa-chevron-down chevron"></i>
-                  </button>
-                  <div class="content-wrapper">
-                      <div class="content">
-                          <div class="sub-title">Basic Raid Rules</div>
-                          ${rule('raid-guidelines', "<b>Raiding Guidelines</b> — Raid starts: Prybar out, damaging base member, weapon out on property, refusal to leave property. Raid ends: No raiders remain inside or on property.")}
-                          ${rule('mid-raid', "<b>Mid-Raid</b> — No props can be moved, changed, deleted or added during raids. You can use an entity ladder to get into a flawed/open base.")}
-                          ${rule('pd-raid', "<b>Police Raid</b> — Ends when all Police attending raid die. Returning to a Police raid after death breaks NLR.")}
-
-                          <div class="sub-title">Raid Guide (✅ Can Raid)</div>
-                          <div class="guide-grid">
-                              <div class="guide-item">Medic (1 per raid)<span>✅</span></div>
-                              <div class="guide-item">Drug Dealer<span>✅</span></div>
-                              <div class="guide-item">Gangster<span>✅</span></div>
-                              <div class="guide-item">Mob Boss<span>✅</span></div>
-                              <div class="guide-item">Hitman (Hit required on raid target)<span>✅</span></div>
-                              <div class="guide-item">Thief<span>✅</span></div>
-                              <div class="guide-item">Government<span>✅</span></div>
-                          </div>
-
-                          <div class="sub-title">Mugging Rules</div>
-                          ${rule('mug-limit', "<b>$ Limit</b> — Max mug $1,000. Must type mug warning. 10s response time required.")}
-                          ${rule('mug-cooldown', "<b>Cooldown</b> — 5-minute cooldown per different target; 10-minute cooldown for the same person.")}
-                          ${rule('mug-defense', "<b>Defense</b> — A victim of a mugging/kidnapping is always allowed to defend themselves without warning.")}
-                          ${rule('mug-shipments', "<b>Shipments</b> — Can mug shipments/guns if you see someone collect it; same warning rules apply.")}
-
-                          <div class="sub-title">Mug Guide (✅ Can Mug)</div>
-                          <div class="guide-grid">
-                              <div class="guide-item">Hobo<span>✅</span></div>
-                              <div class="guide-item">Drug Dealer<span>✅</span></div>
-                              <div class="guide-item">Gangster<span>✅</span></div>
-                              <div class="guide-item">Mob Boss<span>✅</span></div>
-                              <div class="guide-item">Thief<span>✅</span></div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-
-              <div class="category">
-                  <button class="cat-btn">
-                      <div class="icon-box"><i class="fa-solid fa-clock"></i></div>
-                      Cooldowns & Reporting
-                      <i class="fa-solid fa-chevron-down chevron"></i>
-                  </button>
-                  <div class="content-wrapper">
-                      <div class="content">
-                          <div class="sub-title">Cooldowns</div>
-                          ${rule('cooldowns', "<b>Cooldowns</b> — Mugging: Different people - 5 minutes; Mugging: Same person - 15 minutes; Hits: Same person - 10 minutes; Raiding: Same person - 30 minutes; PD Raid: 10 minutes; Mayor: 10 minute grace before they can be raided or killed; Mayor Kidnap: 20 minutes; No raiding for 10m after server crash.")}
-
-                          <div class="sub-title">Reporting Rules</div>
-                          ${rule('report-respect', "<b>Report Respect</b> — Be respectful. Do not spam reports. Provide proof (Medal/OBS/Steam).")}
-                          ${rule('report-lying', "<b>Report Lying</b> — Lying to staff results in a PERMANENT ban.")}
-                          ${rule('report-use', "<b>Report Use</b> — Use @ or /Staff in-game. EVIPs can jail in severe cases.")}
-                      </div>
-                  </div>
-              </div>
+              ${renderWebRulesRoot(rule)}
           </div>
 
           <script>
