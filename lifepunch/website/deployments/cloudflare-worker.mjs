@@ -85,7 +85,8 @@ export default {
                         rules: [
                             { id: "rdm-definition", html: "<b>RDM Definition</b> —  Random Deathmatch: Killing or arresting without a valid RP reason." },
                             { id: "rdm-reason", html: "<b>RDM Reasoning</b> —  Disrespect/threats aren't reasons to kill. Taking damage/stealing are." },
-                            { id: "rdm-kos", html: "<b>KOS Line</b> — Crossing a clearly marked KOS line is NOT RDM." },
+                            { id: "rdm-kos", html: "<b>KOS Line</b> — Crossing a clearly marked KOS line is not considered RDM." },
+                            { id: "rdm-kos2", html: "<b>KOS Line Boundaries</b> — KOS lines are general markers for where KOS begins. Once a KOS line is placed, that entire base is considered KOS." },
                             { id: "rdm-warnings", html: "<b>Warnings</b> — You can kill someone after warning them 3 times in chat to step away." },
                             { id: "rdm-police", html: "<b>Police</b> — You can be killed by the person you're trying to arrest if the situation escalates." },
                             { id: "rdm-mayor", html: "<b>Mayor</b> — Killing the Mayor requires a valid RP reason (PD raid, mug, kidnap/hostage)." }
@@ -97,7 +98,7 @@ export default {
                         rules: [
                             { id: "nlr-definition", html: "<b>NLR Definition</b> — New Life Rule: You can remember past events, but can't act on them." },
                             { id: "nlr-trigger", html: "<b>NLR Trigger</b> — Applies on death, job change, and jail release (unless escaped)." },
-                            { id: "nlr-raid", html: "<b>Raid</b> — You may not return to a raid after death." },
+                            { id: "nlr-raid", html: "<b>Raid</b> — You may not return to a raid after death. You must wait until the raid is completed to return to your base as a defender." },
                             { id: "nlr-revive", html: "<b>Revives</b> — Revived players may continue their raid/scenario." },
                             { id: "nlr-hitman", html: "<b>Hitmen</b> — Hitmen cannot re-attempt failed hits (Hit is failed upon death)." }
                         ]
@@ -140,7 +141,7 @@ export default {
                         webBtn: "🔹 Conduct Rules",
                         rules: [
                             { id: "no-job-change", html: "<b>No Job Change</b> — No changing jobs during active RP." },
-                            { id: "demote-reasons", html: "<b>Demote Reasons</b> — AFK (30m+), not doing job, police corruption, scamming." },
+                            { id: "demote-reasons", html: "<b>Demote Reasons</b> — Valid demote reasons include being AFK for 30+ minutes, not doing your job, and police corruption." },
                             { id: "no-vigilante", html: "<b>No Vigilante</b> — Do not punish rulebreakers yourself (AOS/KOS/Propblock)." },
                             { id: "scamming", html: "<b>Scamming</b> — Merchants cannot scam." }
                         ]
@@ -224,7 +225,7 @@ export default {
                         rules: [
                             { id: "mayor-base", html: "<b>Mayor</b> — Must base in PD. Gun licenses: can charge fee, not obligated for criminals. Can build outside only for government or RP use (checkpoints/toll booths). Announce major law changes before enforcing." },
                             { id: "police-base", html: "<b>Police</b> — Must base in PD. Must allow all members of Government to base/RP with you. Follow hierarchy. Attempt to arrest before killing (unless weapon present)." },
-                            { id: "laws", html: "<b>Laws</b> — Must be reasonable. Not contradict server rules. No text-only disrespect laws. AoS laws allowed; KoS laws not allowed. Laws cannot target specific individuals or jobs." },
+                            { id: "laws", html: "<b>Laws</b> — Laws must be reasonable and must not contradict server rules. You cannot make things said in text/voice chat illegal (i.e. Police Disrespect). AoS laws are allowed; KOS laws are not. Laws may not target specific individuals or jobs." },
                             { id: "arrests", html: "<b>Arrests</b> — Only for lawbreakers. Cannot arrest innocents (even if bribed)." },
                             { id: "lockdowns", html: "<b>Lockdowns</b> — Outdoors only. You may arrest, not KOS. Valid reason needed (Bank raid/shooting)." },
                             { id: "corruption", html: "<b>Corruption</b> — Allowed in RP. Not allowed against other government members. Bribes are okay. Helping criminals raid PD or killing Government is forbidden." },
@@ -260,7 +261,7 @@ export default {
                     {
                         type: "rules",
                         rules: [
-                            { id: "raid-guidelines", html: "<b>Raiding Guidelines</b> — Raid starts: Prybar out, damaging base member, weapon out on property, refusal to leave property. Raid ends: No raiders remain inside or on property." },
+                            { id: "raid-guidelines", html: "<b>Raiding Guidelines</b> — A raid starts when a prybar is out, a base member is damaged, or when a weapon is drawn on the property. A raid ends when no raiders remain inside or on the property." },
                             { id: "mid-raid", html: "<b>Mid-Raid</b> — No props can be moved, changed, deleted or added during raids. You can use an entity ladder to get into a flawed/open base." },
                             { id: "pd-raid", html: "<b>Police Raid</b> — Ends when all Police attending raid die. Returning to a Police raid after death breaks NLR." }
                         ]
@@ -275,8 +276,7 @@ export default {
                             "Gangster",
                             "Mob Boss",
                             "Hitman (Hit required on raid target)",
-                            "Thief",
-                            "Government"
+                            "Thief"
                         ]
                     },
                     { type: "heading", raw: "MUGGING RULES", web: "Mugging Rules", underline: true },
@@ -284,7 +284,7 @@ export default {
                         type: "rules",
                         rules: [
                             { id: "mug-limit", html: "<b>$ Limit</b> — Max mug $1,000. Must type mug warning. 10s response time required." },
-                            { id: "mug-cooldown", html: "<b>Cooldown</b> — 5-minute cooldown per different target; 10-minute cooldown for the same person." },
+                            { id: "mug-cooldown", html: "<b>Cooldown</b> — There is a 5-minute cooldown between mugs. Don't mug the same person repeatedly." },
                             { id: "mug-defense", html: "<b>Defense</b> — A victim of a mugging/kidnapping is always allowed to defend themselves without warning." },
                             { id: "mug-shipments", html: "<b>Shipments</b> — Can mug shipments/guns if you see someone collect it; same warning rules apply." }
                         ]
@@ -319,7 +319,7 @@ export default {
                         rules: [
                             {
                                 id: "cooldowns",
-                                html: `<b>Cooldowns</b> — The following timers apply between repeated actions.<ul class="rule-sublist"><li>Mugging (different people): 5 minutes</li><li>Mugging (same person): 15 minutes</li><li>Hits (same person): 10 minutes</li><li>Raiding (same person): 30 minutes</li><li>PD Raid: 10 minutes</li><li>Mayor: 10 minute grace before they can be raided/killed after certain events</li><li>Mayor Kidnap: 20 minutes</li><li>No raiding for 10 minutes after server crash</li></ul>`
+                                html: `<b>Cooldowns</b> — The following timers apply between repeated actions.<ul class="rule-sublist"><li>You may not spam-mug, spam-hit, or spam-raid the same person after successful attempts. Space things out and RP with other people or it could be considered harassment.</li><li>Mugging: 5 minutes between mugs</li><li>Hits: 15 minute cooldown for placing hits on the same person</li><li>Raiding the same base after a failed attempt: 10 minutes</li><li>Raiding the same base after a successful attempt: 25 minutes</li><li>PD raid: 10 minutes</li><li>Mayor: 10-minute grace period before they can be raided or killed after they're elected</li><li>Mayor kidnapping: 30 minutes</li><li>No raiding for 10 minutes after a server crash</li></ul>`
                             }
                         ]
                     },
@@ -329,7 +329,7 @@ export default {
                         rules: [
                             {
                                 id: "report-respect",
-                                html: `<b>Report Respect</b> — When submitting a report:<br><ul class="rule-sublist"><li>Be respectful</li><li>Do not spam reports</li><li>Provide proof (Medal/OBS/Steam)</li></ul>`
+                                html: `<b>Reporting</b> — When submitting a report:<ul class="rule-sublist"><li>Be respectful</li><li>Do not spam reports</li><li>Provide proof (Medal, OBS, or Steam)</li></ul>`
                             },
                             { id: "report-lying", html: "<b>Report Lying</b> — Lying to staff results in a PERMANENT ban." },
                             { id: "report-use", html: "<b>Report Use</b> — Use @ or /Staff in-game. EVIPs can jail in severe cases." }
