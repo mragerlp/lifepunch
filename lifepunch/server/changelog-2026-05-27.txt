@@ -1,0 +1,13 @@
+LifePunch — May 27, 2026
+
++ KOS rules were moved back under RDM / RDA; map boundary, government raid/job arrest, and raid hallway limits were placed under building/placement sections.
++ Sub-section nav emojis were added (category titles stay plain text).
++ Metagaming section and Fail RP definition were added under Basic RP Rules.
++ Basic Guidelines and Conduct Rules were renamed Roleplay Guidelines and Roleplay Conduct.
++ Checkpoint rules were split: shared map limits, Hobo Checkpoints & Toll Booths ($50 max), and Police Checkpoints (search-only, no fees).
++ New or expanded rules: no counter raiding/base defense, failed vs successful raids, building sign, prop blocking/spamming, medic per base, hobo excrement, public building, PD default AOS, PD two fading door cap, and police raid wording polish.
++ Raiding/Mugging section headings now underline text only (not emojis).
+
+- KOS Lines building subcategory was removed after consolidation into RDM / RDA.
+
++Next time: Deploy the updated rules worker to Cloudflare (full paste from SeperationRules.txt, not partial).
