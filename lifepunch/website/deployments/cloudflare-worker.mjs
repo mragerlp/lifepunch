@@ -46,6 +46,7 @@ export default {
                 .replace(/"/g, "&quot;")
                 .replace(/'/g, "&#39;");
 
+
         // --- LIFE PUNCH RULES CATALOG (single source of truth) ---
         // Edit rule text here only — both /rules and /rules/raw render from this data.
         const LP_RULES = [
@@ -57,7 +58,7 @@ export default {
                 rules: [
                     { id: "en-only", html: "<b>English Only</b> — We're an English-speaking community. Please keep all roleplay in English." },
                     { id: "no-cheat", html: "<b>No Cheating</b> — Using third-party software, cheats, macros, or autoclickers will result in a permanent ban." },
-                    { id: "no-exploit", html: "<b>No Exploiting</b> — Exploiting maps, items, or tools for an unfair advantage is not allowed (drug creation and gun shops are excluded). You may not base outside the map; the rock boundary is the limit." },
+                    { id: "no-exploit", html: "<b>No Exploiting</b> — Exploiting maps, items, or tools for an unfair advantage is not allowed (drug creation and gun shops are excluded)." },
                     { id: "no-mic-spam", html: "<b>No Mic or Text Spam</b> — Intentionally disrupting roleplay through your microphone or chat spam is not allowed." },
                     { id: "no-staff-impersonation", html: "<b>No Staff Impersonation</b> — Impersonating staff will result in a permanent ban." },
                     { id: "no-lie-staff", html: "<b>Do Not Lie to Staff</b> — False reporting or deleting ticket evidence is punishable." },
@@ -82,10 +83,14 @@ export default {
                 subcategories: [
                     {
                         rawTitle: "SUB-CATEGORY 2A: RDM / RDA",
-                        webBtn: "RDM / RDA",
+                        webBtn: "🔫 RDM / RDA",
                         rules: [
                             { id: "rdm-definition", html: `<b>RDM Definition</b><ul class="rule-sublist"><li>Random Deathmatch (RDM) is killing or arresting someone without a valid roleplay reason.</li></ul>` },
                             { id: "rdm-reason", html: `<b>RDM Reasoning</b><ul class="rule-sublist"><li>Disrespect or threats alone are not valid reasons to kill someone.</li><li>Taking damage or having items stolen are valid reasons.</li></ul>` },
+                            { id: "base-kos-line", html: `<b>KOS Placement</b><ul class="rule-sublist"><li>KOS zones must start at a base's purchasable front door, fading door, or the start of an airlock.</li><li>KOS lines must include a text sign that says 'KOS past.'</li></ul>` },
+                            { id: "rdm-kos2", html: `<b>KOS Boundaries</b><ul class="rule-sublist"><li>KOS lines are general markers for where KOS begins.</li><li>Once a KOS line is placed, the space behind that line is considered KOS.</li><li>Example: If a KOS sign is at the front of a door, but you enter through a different way, you may still be killed.</li></ul>` },
+                            { id: "rdm-kos", html: `<b>KOS & RDM</b><ul class="rule-sublist"><li>Crossing a clearly marked KOS line is not considered RDM.</li></ul>` },
+                            { id: "kos-understandable", html: `<b>KOS Clarity</b><ul class="rule-sublist"><li>KOS zones must be easy to understand and must never be deceptive.</li></ul>` },
                             { id: "rdm-warnings", html: `<b>Warnings</b><ul class="rule-sublist"><li>You may kill someone after warning them three times in chat to step away or to leave your property.</li></ul>` },
                             { id: "rdm-police", html: `<b>Police</b><ul class="rule-sublist"><li>You may be killed by the person you are trying to arrest if the situation escalates.</li></ul>` },
                             { id: "rdm-mayor", html: `<b>Mayor</b><ul class="rule-sublist"><li>Killing the Mayor requires a valid roleplay reason, such as a PD raid, mugging, kidnapping, or hostage situation.</li></ul>` }
@@ -93,7 +98,7 @@ export default {
                     },
                     {
                         rawTitle: "SUB-CATEGORY 2B: NLR",
-                        webBtn: "NLR",
+                        webBtn: "💀 NLR",
                         rules: [
                             { id: "nlr-definition", html: `<b>NLR Definition</b><ul class="rule-sublist"><li>The New Life Rule (NLR) means you may remember past events, but you cannot act on them.</li></ul>` },
                             { id: "nlr-trigger", html: `<b>NLR Trigger</b><ul class="rule-sublist"><li>NLR applies on death, job change, and jail release (unless you escaped).</li></ul>` },
@@ -104,15 +109,25 @@ export default {
                     },
                     {
                         rawTitle: "SUB-CATEGORY 2C: Fail RP",
-                        webBtn: "Fail RP",
+                        webBtn: "🎭 Fail RP",
                         rules: [
                             {
                                 id: "fail-rp",
-                                html: `<b>Fail RP Logic</b><ul class="rule-sublist"><li>Fail RP includes actions that break character, violate the setting's logic, or disregard server rules, resulting in poor-quality, unrealistic, or disruptive play.</li></ul>`
+                                html: `<b>Fail RP Definition</b><ul class="rule-sublist"><li>Fail RP is roleplay that breaks character, violates the setting's logic, or disregards server rules, resulting in poor-quality, unrealistic, or disruptive play.</li></ul>`
                             },
                             {
                                 id: "fail-rp-examples",
                                 html: `<b>Examples</b><ul class="rule-sublist"><li>Stealing your base mate's valuables and then starting a new base</li><li>Mugging someone with a partner, then killing that partner</li><li>Police working with thieves or gangsters</li><li>Door camping or blocking doors</li></ul>`
+                            }
+                        ]
+                    },
+                    {
+                        rawTitle: "SUB-CATEGORY 2D: METAGAMING",
+                        webBtn: "🔍 Metagaming",
+                        rules: [
+                            {
+                                id: "metagaming",
+                                html: `<b>Metagaming Definition</b><ul class="rule-sublist"><li>Metagaming is using out-of-character (OOC) knowledge to influence your character's in-game decisions.</li><li>It occurs when your character acts on information they realistically should not know, bridging the gap between what you know and what your character knows.</li></ul>`
                             }
                         ]
                     }
@@ -124,20 +139,18 @@ export default {
                 icon: "fa-brain",
                 subcategories: [
                     {
-                        rawTitle: "SUB-CATEGORY 3A: BASIC GUIDELINES",
-                        webBtn: "Basic Guidelines",
+                        rawTitle: "SUB-CATEGORY 3A: ROLEPLAY GUIDELINES",
+                        webBtn: "📋 Roleplay Guidelines",
                         rules: [
                             { id: "fearrp", html: `<b>FearRP</b><ul class="rule-sublist"><li>FearRP is not enforced, but you should still value your life reasonably.</li></ul>` },
-                            { id: "gov-raid", html: `<b>Government Raid</b><ul class="rule-sublist"><li>Government players cannot raid with criminals, except for Hitmen.</li></ul>` },
                             { id: "no-suicide-rp", html: `<b>No Suicide RP</b><ul class="rule-sublist"><li>You may not commit suicide to avoid roleplay scenarios such as kidnappings or muggings.</li></ul>` },
-                            { id: "job-arrest", html: `<b>Job Arrest</b><ul class="rule-sublist"><li>Government players cannot raid or arrest someone solely because of their job.</li></ul>` },
                             { id: "job-desc", html: `<b>Job Description</b><ul class="rule-sublist"><li>You must follow your job description (Medics heal, Merchants/Dealers sell, and Cops protect).</li></ul>` },
                             { id: "merchant-deny", html: `<b>Merchant Deny</b><ul class="rule-sublist"><li>Merchants may not deny service for non-roleplay reasons (for example, refusing to sell guns to a potential raider).</li></ul>` }
                         ]
                     },
                     {
-                        rawTitle: "SUB-CATEGORY 3B: CONDUCT RULES",
-                        webBtn: "Conduct Rules",
+                        rawTitle: "SUB-CATEGORY 3B: ROLEPLAY CONDUCT",
+                        webBtn: "🤝 Roleplay Conduct",
                         rules: [
                             { id: "no-job-change", html: `<b>No Job Change</b><ul class="rule-sublist"><li>You may not change jobs during active roleplay.</li></ul>` },
                             { id: "demote-reasons", html: `<b>Demote Reasons</b><ul class="rule-sublist"><li>Being AFK for 30+ minutes</li><li>Not doing your job</li><li>Police corruption</li></ul>` },
@@ -154,12 +167,13 @@ export default {
                 subcategories: [
                     {
                         rawTitle: "SUB-CATEGORY 4A: BASE LAYOUT & FAIRNESS",
-                        webBtn: "Base Layout & Fairness",
+                        webBtn: "🏠 Base Layout & Fairness",
                         rules: [
                             { id: "base-reachable", html: `<b>Base Reachable</b><ul class="rule-sublist"><li>Bases must remain reachable and accessible at all times.</li></ul>` },
                             { id: "base-entrance", html: `<b>Base Entrance</b><ul class="rule-sublist"><li>Bases must have exactly one entrance.</li><li>Unused map doors must be blocked off.</li></ul>` },
                             { id: "base-crouch", html: `<b>Base Jump/Crouch</b><ul class="rule-sublist"><li>Raiders must never be forced to crouch or jump inside, outside, or to gain access to a base.</li></ul>` },
                             { id: "base-mazes", html: `<b>Base Mazes</b><ul class="rule-sublist"><li>Mazes are not allowed.</li><li>A maze is more than one 180° turn, more than two 90° turns, or multiple disorienting pathways used to artificially extend raid duration.</li></ul>` },
+                            { id: "kos-airlocks", html: `<b>Raid Hallways & Airlocks</b><ul class="rule-sublist"><li>Artificial raid hallways and airlocks start at your KOS sign and must not exceed 25 total 1×1 props (1000 units), excluding natural map layouts.</li></ul>` },
                             { id: "base-shooting", html: `<b>Base Shooting</b><ul class="rule-sublist"><li>Raiders must be able to clearly see you and shoot back.</li><li>You may not use tiny hitboxes for an unfair advantage.</li></ul>` },
                             { id: "base-crowbar", html: `<b>Base Crowbar</b><ul class="rule-sublist"><li>Bases must be crowbar-raidable.</li><li>Code-only bases are not allowed.</li></ul>` },
                             { id: "base-damage", html: `<b>Base Damage</b><ul class="rule-sublist"><li>Bases may not damage players.</li></ul>` },
@@ -172,7 +186,7 @@ export default {
                     },
                     {
                         rawTitle: "SUB-CATEGORY 4B: FADING DOORS",
-                        webBtn: "Fading Doors",
+                        webBtn: "🚪 Fading Doors",
                         rules: [
                             { id: "fd-limit", html: `<b>Fading Door Limit</b><ul class="rule-sublist"><li>You may use a maximum of two fading doors to access your raidables.</li></ul>` },
                             { id: "fd-utility", html: `<b>Fading Door Utility</b><ul class="rule-sublist"><li>Utility fading doors, such as one-way exits and peeks, are allowed.</li></ul>` },
@@ -180,44 +194,41 @@ export default {
                         ]
                     },
                     {
-                        rawTitle: "SUB-CATEGORY 4C: KOS LINES",
-                        webBtn: "KOS Lines",
-                        rules: [
-                            { id: "base-kos-line", html: `<b>KOS Placement</b><ul class="rule-sublist"><li>KOS zones must start at a base's purchasable front door, fading door, or the start of an airlock.</li><li>KOS lines must include a text sign that says 'KOS past.'</li></ul>` },
-                            { id: "rdm-kos2", html: `<b>KOS Boundaries</b><ul class="rule-sublist"><li>KOS lines are general markers for where KOS begins.</li><li>Once a KOS line is placed, the space behind that line is considered KOS.</li><li>Example: If a KOS sign is at the front of a door, but you enter through a different way, you may still be killed.</li></ul>` },
-                            { id: "rdm-kos", html: `<b>KOS & RDM</b><ul class="rule-sublist"><li>Crossing a clearly marked KOS line is not considered RDM.</li></ul>` },
-                            { id: "kos-understandable", html: `<b>KOS Clarity</b><ul class="rule-sublist"><li>KOS zones must be easy to understand and must never be deceptive.</li></ul>` },
-                            { id: "kos-airlocks", html: `<b>Raid Hallways & Airlocks</b><ul class="rule-sublist"><li>Artificial raid hallways and airlocks start at your KOS sign and must not exceed 25 total 1×1 props (1000 units), excluding natural map layouts.</li></ul>` }
-                        ]
-                    },
-                    {
-                        rawTitle: "SUB-CATEGORY 4D: PROP & WIRE",
-                        webBtn: "Prop & Wire",
+                        rawTitle: "SUB-CATEGORY 4C: PROP & WIRE",
+                        webBtn: "🔌 Prop & Wire",
                         rules: [
                             { id: "spawn-build", html: `<b>Spawn Build</b><ul class="rule-sublist"><li>You may not build in spawn.</li><li>Prop climbing, flying, and blocking are not allowed.</li></ul>` },
+                            { id: "prop-blocking", html: `<b>Prop Blocking</b><ul class="rule-sublist"><li>Prop blocking and prop spamming are not allowed.</li></ul>` },
                             { id: "wire-abuse", html: `<b>Wire Abuse</b><ul class="rule-sublist"><li>Wire abuse is not allowed.</li><li>This includes auto-stealing money, loud sounds, stealing shipments, and using wire to annoy other players.</li></ul>` },
                             { id: "prop-permission", html: `<b>Property Respect</b><ul class="rule-sublist"><li>You may not place props on, build into, or occupy another player's property or base without permission.</li></ul>` }
                         ]
                     },
                     {
-                        rawTitle: "SUB-CATEGORY 4E: PLACEMENT & MAP RULES",
-                        webBtn: "Placement & Map Rules",
+                        rawTitle: "SUB-CATEGORY 4D: PLACEMENT & MAP RULES",
+                        webBtn: "🗺️ Placement & Map Rules",
                         rules: [
+                            { id: "map-boundary", html: `<b>Map Boundary</b><ul class="rule-sublist"><li>You may not base outside the map; the rock boundary is the limit.</li></ul>` },
                             { id: "public-space", html: `<b>Public Space</b><ul class="rule-sublist"><li>Do not take up excessive public space.</li></ul>` },
-                            { id: "pd-building", html: `<b>PD Building</b><ul class="rule-sublist"><li>Non-government players may not build in the PD.</li></ul>` },
+                            { id: "public-building", html: `<b>Public Building</b><ul class="rule-sublist"><li>Only Hobos, Merchants, and Police may build in public.</li></ul>` },
+                            {
+                                id: "checkpoints",
+                                html: `<b>Checkpoints</b><ul class="rule-sublist"><li>Checkpoints must not block spawn-area entrances or exits, and must not extend raid duration.</li><li>All checkpoints must leave another way around that does not require payment to reach the destination.</li><li>Only two checkpoints are allowed on the entire map at a time.</li><li>There may only be one police checkpoint and one hobo checkpoint or toll booth at a time.</li><li>This limit is intended to encourage Hobos and Police to roleplay together at checkpoints.</li></ul>`
+                            },
+                            { id: "pd-building", html: `<b>PD Building</b><ul class="rule-sublist"><li>Non-government players may not build in the PD.</li><li>Only two fading doors are allowed inside of the PD.</li><li>Being behind the doors of the police department is AOS by default.</li><li>No law is required to enforce this.</li></ul>` },
                             { id: "blocking-off", html: `<b>Blocking Off</b><ul class="rule-sublist"><li>Do not block weed drop-offs, ATMs, trash cans, or the recycler.</li></ul>` },
                             { id: "drop-offs", html: `<b>Drop-Offs</b><ul class="rule-sublist"><li>Weed drop-off areas must be fully walkable.</li></ul>` }
                         ]
                     },
                     {
-                        rawTitle: "SUB-CATEGORY 4F: SPECIAL BUILDING RESTRICTIONS",
-                        webBtn: "Special Building Restrictions",
+                        rawTitle: "SUB-CATEGORY 4E: SPECIAL BUILDING RESTRICTIONS",
+                        webBtn: "🚧 Special Building Restrictions",
                         rules: [
                             { id: "special-doors", html: `<b>Doors</b><ul class="rule-sublist"><li>Only buy doors you intend to use.</li></ul>` },
                             { id: "no-skybases", html: `<b>Skybases</b><ul class="rule-sublist"><li>Skybases and excessive aerial builds are not allowed.</li></ul>` },
                             { id: "drop-connection", html: `<b>Drop-Off Connections</b><ul class="rule-sublist"><li>You may have only one connection to a drug drop-off location.</li></ul>` },
                             { id: "decorative-aerial", html: `<b>Decorative Builds</b><ul class="rule-sublist"><li>Decorative aerial builds are allowed.</li></ul>` },
-                            { id: "no-blackout", html: `<b>Blackout Bases</b><ul class="rule-sublist"><li>Blackout bases are not allowed.</li></ul>` }
+                            { id: "no-blackout", html: `<b>Blackout Bases</b><ul class="rule-sublist"><li>Blackout bases are not allowed.</li></ul>` },
+                            { id: "building-sign", html: `<b>Building Sign</b><ul class="rule-sublist"><li>You may not raid a base that has a building sign placed.</li><li>You may not place a building sign with valuables in your base.</li></ul>` }
                         ]
                     }
                 ]
@@ -229,7 +240,7 @@ export default {
                 subcategories: [
                     {
                         rawTitle: "SUB-CATEGORY 5A: CIVILIAN",
-                        webBtn: "Civilian",
+                        webBtn: "👷 Civilian",
                         rules: [
                             {
                                 id: "gun-dealer",
@@ -237,17 +248,25 @@ export default {
                             },
                             {
                                 id: "medic",
-                                html: `<b>Medic</b><ul class="rule-sublist"><li>Only one Medic is allowed per raid party.</li></ul>`
+                                html: `<b>Medic</b><ul class="rule-sublist"><li>Only one Medic is allowed per raid party.</li><li>Only one Medic is allowed per base.</li></ul>`
                             },
                             {
                                 id: "theatre-manager",
                                 html: `<b>Theatre Manager</b><ul class="rule-sublist"><li>The Theatre Manager must base in the Theatre.</li></ul>`
+                            },
+                            {
+                                id: "hobo",
+                                html: `<b>Hobo</b><ul class="rule-sublist"><li>Hitting players with excrement can lead to a valid kill or arrest.</li></ul>`
+                            },
+                            {
+                                id: "hobo-checkpoints",
+                                html: `<b>Hobo Checkpoints & Toll Booths</b><ul class="rule-sublist"><li>Hobos may create checkpoints or toll booths.</li><li>Hobo checkpoint and toll booth fees may not exceed $50.</li></ul>`
                             }
                         ]
                     },
                     {
                         rawTitle: "SUB-CATEGORY 5B: CRIMINAL",
-                        webBtn: "Criminal",
+                        webBtn: "🕶️ Criminal",
                         rules: [
                             {
                                 id: "hitman",
@@ -257,7 +276,7 @@ export default {
                     },
                     {
                         rawTitle: "SUB-CATEGORY 5C: MAYOR & POLICE",
-                        webBtn: "Mayor & Police",
+                        webBtn: "👮 Mayor & Police",
                         rules: [
                             {
                                 id: "mayor-base",
@@ -268,8 +287,14 @@ export default {
                                 html: `<b>Police</b><ul class="rule-sublist"><li>Police must base in the PD and allow all government members to base and roleplay with them.</li><li>Follow the command hierarchy.</li><li>Attempt to arrest before killing, unless the suspect has a weapon drawn.</li></ul>`
                             },
                             {
+                                id: "police-checkpoints",
+                                html: `<b>Police Checkpoints</b><ul class="rule-sublist"><li>Police may only build checkpoints in public.</li><li>Police do not use toll booths, as their checkpoints cannot require a fee.</li><li>Police checkpoints may only enforce that a search is required to pass.</li></ul>`
+                            },
+                            { id: "gov-raid", html: `<b>Government Raid</b><ul class="rule-sublist"><li>Government players cannot raid with criminals, except for Hitmen.</li></ul>` },
+                            { id: "job-arrest", html: `<b>Job Arrest</b><ul class="rule-sublist"><li>Government players cannot raid or arrest someone solely because of their job.</li></ul>` },
+                            {
                                 id: "laws",
-                                html: `<b>Laws</b><ul class="rule-sublist"><li>Laws must be reasonable and must not contradict server rules.</li><li>You cannot make things said in text/voice chat illegal (i.e. Police Disrespect).</li><li>AoS laws are allowed; KOS laws are not.</li><li>Laws may not target specific individuals or jobs.</li></ul>`
+                                html: `<b>Laws</b><ul class="rule-sublist"><li>Laws must be reasonable and must not contradict server rules.</li><li>You cannot make things said in text/voice chat illegal (i.e. Police Disrespect).</li><li>AOS laws are allowed; KOS laws are not.</li><li>Laws may not target specific individuals or jobs.</li></ul>`
                             },
                             {
                                 id: "arrests",
@@ -288,10 +313,6 @@ export default {
                                 html: `<b>Warrants</b><ul class="rule-sublist"><li>Warrants require valid roleplay evidence.</li><li>You must witness illegal activity.</li><li>Metagaming is not allowed.</li><li>Warrants expire on death, jail, or successful raid defense.</li></ul>`
                             },
                             {
-                                id: "checkpoints",
-                                html: `<b>Checkpoints and Tolls</b><ul class="rule-sublist"><li>Checkpoints and toll booths must not block spawn-area entrances or exits, and must not extend raid duration.</li><li>Tolls may not exceed $50.</li><li>A maximum of two checkpoints or toll booths is allowed.</li></ul>`
-                            },
-                            {
                                 id: "searches",
                                 html: `<b>Searches</b><ul class="rule-sublist"><li>Searches require a roleplay reason, such as nearby gunshots or loitering near a drug drop-off.</li></ul>`
                             }
@@ -304,13 +325,15 @@ export default {
                 title: "Raiding & Mugging",
                 icon: "fa-bomb",
                 blocks: [
-                    { type: "heading", raw: "RAID RULES", web: "Raid Rules", underline: true },
+                    { type: "heading", raw: "RAIDING RULES", webEmoji: "⚔️", web: "Raiding Rules", underline: true },
                     {
                         type: "rules",
                         rules: [
                             { id: "raid-guidelines", html: `<b>Raiding Guidelines</b><ul class="rule-sublist"><li>A raid starts when a prybar is out, a base member is damaged, or when a weapon is drawn on the property.</li><li>A raid ends when no raiders remain inside or on the property.</li></ul>` },
+                            { id: "raid-outcome", html: `<b>Failed vs Successful Raids</b><ul class="rule-sublist"><li>A failed raid is a raid where no valuables are taken.</li><li>A successful raid is a raid where valuables are taken.</li><li>You may not repeatedly raid a base and kill players without taking valuables.</li></ul>` },
                             { id: "mid-raid", html: `<b>Mid-Raid</b><ul class="rule-sublist"><li>Props may not be moved, changed, deleted, or added during a raid.</li><li>You may use an entity ladder to enter a flawed or open base.</li></ul>` },
-                            { id: "pd-raid", html: `<b>Police Raid</b><ul class="rule-sublist"><li>A police raid ends when all attending police die.</li><li>Returning to a police raid after death breaks NLR.</li></ul>` }
+                            { id: "pd-raid", html: `<b>Police Raids</b><ul class="rule-sublist"><li>A police raid ends when all attending police die.</li><li>Returning to a police raid after death breaks NLR.</li></ul>` },
+                            { id: "no-counter-raid", html: `<b>No Counter Raiding</b><ul class="rule-sublist"><li>Counter raiding is not allowed.</li><li>You may not defend someone else's base unless you are actively basing with them.</li></ul>` }
                         ]
                     },
                     {
@@ -326,7 +349,7 @@ export default {
                             "Thief"
                         ]
                     },
-                    { type: "heading", raw: "MUGGING RULES", web: "Mugging Rules", underline: true },
+                    { type: "heading", raw: "MUGGING RULES", webEmoji: "💰", web: "Mugging Rules", underline: true },
                     {
                         type: "rules",
                         rules: [
@@ -360,7 +383,7 @@ export default {
                 title: "Cooldowns & Reporting",
                 icon: "fa-clock",
                 blocks: [
-                    { type: "heading", raw: "COOLDOWNS", web: "Cooldowns" },
+                    { type: "heading", raw: "COOLDOWNS", web: "⏳ Cooldowns" },
                     {
                         type: "rules",
                         rules: [
@@ -370,7 +393,7 @@ export default {
                             }
                         ]
                     },
-                    { type: "heading", raw: "REPORTING RULES", web: "Reporting Rules" },
+                    { type: "heading", raw: "REPORTING RULES", web: "📝 Reporting Rules" },
                     {
                         type: "rules",
                         rules: [
@@ -488,7 +511,12 @@ export default {
                           </div>`;
 
         const renderWebBlock = (block, rule) => {
-            if (block.type === "heading") return `<div class="sub-title${block.underline ? " sub-title--underline" : ""}">${block.web}</div>`;
+            if (block.type === "heading") {
+                const label = block.webEmoji
+                    ? `<span class="sub-title-emoji">${block.webEmoji}</span><span${block.underline ? ' class="sub-title--underline"' : ""}>${block.web}</span>`
+                    : block.web;
+                return `<div class="sub-title${block.underline && !block.webEmoji ? " sub-title--underline" : ""}">${label}</div>`;
+            }
             if (block.type === "rules") return renderWebRulesList(block.rules, rule);
             if (block.type === "guide") return renderWebGuide(block);
             if (block.type === "cooldowns") return rule(block.webRule.id, block.webRule.html);
@@ -4318,6 +4346,7 @@ export default {
               .rule-text b + ul.rule-sublist { margin-top: 2px; }
               .rule-text ul.rule-sublist li { margin-bottom: 6px; line-height: 1.5; }
               .sub-title { color: var(--lp-blue); font-weight: 800; text-transform: uppercase; margin: 15px 0 10px 0; font-size: 12px; letter-spacing: 1px; }
+              .sub-title-emoji { margin-right: 0.35em; text-decoration: none; }
               .sub-title--underline { text-decoration: underline; }
               .important { color: #ff4d4d; font-weight: bold; margin-top: 15px; display: block;}
               .guide-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
