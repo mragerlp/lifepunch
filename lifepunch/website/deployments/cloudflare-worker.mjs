@@ -112,7 +112,7 @@ export default {
                             },
                             {
                                 id: "fail-rp-examples",
-                                html: `<b>Examples</b><ul class="rule-sublist"><li>Stealing your base mate's valuables and then starting a new base</li><li>Mugging someone together, then killing your partner</li><li>Police working with Thieves or Gangsters</li><li>Door camping or blocking doors</li><li>Merchants scamming</li></ul>`
+                                html: `<b>Examples</b><ul class="rule-sublist"><li>Stealing your base mate's valuables and then starting a new base</li><li>Mugging someone with a partner, then killing that partner</li><li>Police working with thieves or gangsters</li><li>Door camping or blocking doors</li></ul>`
                             }
                         ]
                     }
@@ -157,8 +157,8 @@ export default {
                         webBtn: "🔐 Prop & Wire",
                         rules: [
                             { id: "spawn-build", html: "<b>Spawn Build</b> — No building in spawn. No prop climbing, flying, or blocking." },
-                            { id: "wire-abuse", html: "<b>Wire Abuse</b> — No Wire abuse (auto-stealing money, loud sounds, stealing shipments)." },
-                            { id: "prop-permission", html: "<b>Prop Permission</b> — No props in other players' property without permission." }
+                            { id: "wire-abuse", html: "<b>Wire Abuse</b> — Wire abuse is not allowed, including auto-stealing money, loud sounds, stealing shipments, and using wire to annoy other players." },
+                            { id: "prop-permission", html: "<b>Property Respect</b> — You may not place props on, build into, or occupy another player's property or base without permission." }
                         ]
                     },
                     {
@@ -194,8 +194,7 @@ export default {
                         webBtn: "🗺 Placement & Map Rules",
                         rules: [
                             { id: "public-space", html: "<b>Public Space</b> — Do not take up excessive public space." },
-                            { id: "others-property", html: "<b>Other's Property</b> — Do not build into other people’s property." },
-                            { id: "pd-building", html: "<b>PD Building</b> — Do not build in PD if not Government." },
+                                                        { id: "pd-building", html: "<b>PD Building</b> — Do not build in PD if not Government." },
                             { id: "blocking-off", html: "<b>Blocking Off</b> — Do not block weed drop-off, ATMs, trash cans, recycler." },
                             { id: "drop-offs", html: "<b>Drop-Offs</b> — Weed drop-off must be fully walkable." }
                         ]
@@ -305,7 +304,7 @@ export default {
                 rules: [
                     {
                         id: "minging-prohibited",
-                        html: `<b>Prohibited</b> — The following actions are considered minging or trolling.<ul class="rule-sublist"><li>Baiting RDM/RDA</li><li>Text/mic spam</li><li>Excessive trolling</li><li>Wire abuse to annoy players</li><li>Preventing others from building</li><li>Prop blocking</li><li>Building in other people's bases</li><li>Prop abuse (flying, climbing)</li><li>Preventing new players from learning</li><li>Repeatedly raiding someone with no valuables</li><li>Kidnapping without RP reason</li><li>Disobeying staff or reasonable requests</li></ul>`
+                        html: `<b>Prohibited</b> — The following actions are considered minging or trolling:<ul class="rule-sublist"><li>Baiting RDM or RDA</li><li>Excessive trolling</li><li>Preventing others from building</li><li>Preventing new players from learning</li><li>Repeatedly raiding someone with no valuables</li><li>Kidnapping without a roleplay reason</li><li>Disobeying staff or reasonable requests</li></ul>`
                     }
                 ]
             },
