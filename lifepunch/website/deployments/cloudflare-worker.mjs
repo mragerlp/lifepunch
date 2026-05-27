@@ -258,7 +258,7 @@ export default {
                 title: "Raiding & Mugging",
                 icon: "fa-bomb",
                 blocks: [
-                    { type: "heading", raw: "BASIC RAID RULES", web: "Basic Raid Rules" },
+                    { type: "heading", raw: "RAID RULES", web: "Raid Rules", underline: true },
                     {
                         type: "rules",
                         rules: [
@@ -281,7 +281,7 @@ export default {
                             "Government"
                         ]
                     },
-                    { type: "heading", raw: "MUGGING RULES", web: "Mugging Rules" },
+                    { type: "heading", raw: "MUGGING RULES", web: "Mugging Rules", underline: true },
                     {
                         type: "rules",
                         rules: [
@@ -304,7 +304,10 @@ export default {
                 title: "Minging / Trolling",
                 icon: "fa-mask",
                 rules: [
-                    { id: "minging-prohibited", html: "<b>Prohibited</b> — Baiting RDM/RDA, text/mic spam, excessive trolling, wire abuse to annoy players, preventing others from building, prop blocking, building in other people's bases, prop abuse (flying, climbing), preventing new players from learning, repeatedly raiding someone with no valuables, kidnapping without RP reason, disobeying staff or reasonable requests." }
+                    {
+                        id: "minging-prohibited",
+                        html: `<b>Prohibited</b> — The following actions are considered minging or trolling.<ul class="rule-sublist"><li>Baiting RDM/RDA</li><li>Text/mic spam</li><li>Excessive trolling</li><li>Wire abuse to annoy players</li><li>Preventing others from building</li><li>Prop blocking</li><li>Building in other people's bases</li><li>Prop abuse (flying, climbing)</li><li>Preventing new players from learning</li><li>Repeatedly raiding someone with no valuables</li><li>Kidnapping without RP reason</li><li>Disobeying staff or reasonable requests</li></ul>`
+                    }
                 ]
             },
             {
@@ -314,24 +317,22 @@ export default {
                 blocks: [
                     { type: "heading", raw: "COOLDOWNS", web: "Cooldowns" },
                     {
-                        type: "cooldowns",
-                        rawItems: [
-                            "Mugging (different people): 5 minutes",
-                            "Mugging (same person): 15 minutes",
-                            "Hits (same person): 10 minutes",
-                            "Raiding (same person): 30 minutes",
-                            "PD Raid: 10 minutes",
-                            "Mayor: 10 minute grace before they can be raided/killed after certain events",
-                            "Mayor Kidnap: 20 minutes",
-                            "No raiding for 10 minutes after server crash"
-                        ],
-                        webRule: { id: "cooldowns", html: "<b>Cooldowns</b> — Mugging: Different people - 5 minutes; Mugging: Same person - 15 minutes; Hits: Same person - 10 minutes; Raiding: Same person - 30 minutes; PD Raid: 10 minutes; Mayor: 10 minute grace before they can be raided or killed; Mayor Kidnap: 20 minutes; No raiding for 10m after server crash." }
+                        type: "rules",
+                        rules: [
+                            {
+                                id: "cooldowns",
+                                html: `<b>Cooldowns</b> — The following timers apply between repeated actions.<ul class="rule-sublist"><li>Mugging (different people): 5 minutes</li><li>Mugging (same person): 15 minutes</li><li>Hits (same person): 10 minutes</li><li>Raiding (same person): 30 minutes</li><li>PD Raid: 10 minutes</li><li>Mayor: 10 minute grace before they can be raided/killed after certain events</li><li>Mayor Kidnap: 20 minutes</li><li>No raiding for 10 minutes after server crash</li></ul>`
+                            }
+                        ]
                     },
                     { type: "heading", raw: "REPORTING RULES", web: "Reporting Rules" },
                     {
                         type: "rules",
                         rules: [
-                            { id: "report-respect", html: "<b>Report Respect</b> — Be respectful. Do not spam reports. Provide proof (Medal/OBS/Steam)." },
+                            {
+                                id: "report-respect",
+                                html: `<b>Report Respect</b> — When submitting a report:<br><ul class="rule-sublist"><li>Be respectful</li><li>Do not spam reports</li><li>Provide proof (Medal/OBS/Steam)</li></ul>`
+                            },
                             { id: "report-lying", html: "<b>Report Lying</b> — Lying to staff results in a PERMANENT ban." },
                             { id: "report-use", html: "<b>Report Use</b> — Use @ or /Staff in-game. EVIPs can jail in severe cases." }
                         ]
@@ -356,7 +357,7 @@ export default {
                         </ul>`;
 
         const renderRawBlock = (block) => {
-            if (block.type === "heading") return `<h4>${block.raw}</h4>`;
+            if (block.type === "heading") return `<h4${block.underline ? ' class="rule-heading-underline"' : ""}>${block.raw}</h4>`;
             if (block.type === "rules") return `<ul>\n                            ${renderRawRulesList(block.rules)}\n                        </ul>`;
             if (block.type === "guide") return renderRawGuide(block);
             if (block.type === "cooldowns") {
@@ -402,6 +403,7 @@ export default {
                     .content li ul.rule-sublist li { border-left: none; padding-left: 0; margin-bottom: 6px; }
                     .content li b + ul.rule-sublist { margin-top: 2px; }
                     .content b { color: var(--lp-blue); }
+                    .content h4.rule-heading-underline { text-decoration: underline; }
                     .important { color: #ff4d4d; font-weight: bold; margin-top: 15px; display: block; }
                     .footer { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); color: #a0a8b5; font-size: 12px; }
                 </style>
@@ -441,7 +443,7 @@ export default {
                           </div>`;
 
         const renderWebBlock = (block, rule) => {
-            if (block.type === "heading") return `<div class="sub-title">${block.web}</div>`;
+            if (block.type === "heading") return `<div class="sub-title${block.underline ? " sub-title--underline" : ""}">${block.web}</div>`;
             if (block.type === "rules") return renderWebRulesList(block.rules, rule);
             if (block.type === "guide") return renderWebGuide(block);
             if (block.type === "cooldowns") return rule(block.webRule.id, block.webRule.html);
@@ -4126,14 +4128,17 @@ export default {
             pageTitle = "LifePunch | Official Rules";
             subHeaderTitle = "RULES & CONDUCT";
 
-            const rule = (id, html) => `
-            <div class="rule-line" id="${id}">
+            const rule = (id, html) => {
+                const hasSublist = html.includes("rule-sublist");
+                return `
+            <div class="rule-line${hasSublist ? " rule-line--with-sublist" : ""}" id="${id}">
                 <div class="rule-text">${html}</div>
                 <div class="rule-actions">
                     <button class="action-btn" data-tooltip="Copy Rule" onclick="copyRuleText('${id}')" title="Copy Text"><i class="fa-solid fa-copy"></i></button>
                     <button class="action-btn" data-tooltip="Share Link" onclick="shareRuleLink('${id}')" title="Share Link"><i class="fa-solid fa-share-nodes"></i></button>
                 </div>
             </div>`;
+            };
 
             bodyContent = `
           <style>
@@ -4220,6 +4225,8 @@ export default {
                   border-radius: 0 4px 4px 0;
               }
               .content-wrapper.open .rule-line { display: flex; border-left-color: var(--lp-blue); }
+              .rule-line--with-sublist { align-items: flex-start; }
+              .rule-line--with-sublist .rule-actions { padding-top: 2px; }
               .content-wrapper:not(.open) .rule-line,
               .content-wrapper:not(.open) .rule-line:target { display: none; border-left: none; margin: 0; padding: 0; }
               .rule-line:hover { background: rgba(255,255,255,0.03); }
@@ -4262,10 +4269,11 @@ export default {
               }
 
               .rule-line b { color: var(--lp-blue); }
-              .rule-text ul.rule-sublist { margin: 0; padding-left: 20px; list-style: disc; }
+              .rule-text ul.rule-sublist { margin: 6px 0 0 0; padding-left: 20px; list-style: disc; display: block; width: 100%; }
               .rule-text b + ul.rule-sublist { margin-top: 2px; }
               .rule-text ul.rule-sublist li { margin-bottom: 6px; line-height: 1.5; }
               .sub-title { color: var(--lp-blue); font-weight: 800; text-transform: uppercase; margin: 15px 0 10px 0; font-size: 12px; letter-spacing: 1px; }
+              .sub-title--underline { text-decoration: underline; }
               .important { color: #ff4d4d; font-weight: bold; margin-top: 15px; display: block;}
               .guide-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
               .guide-item { background: rgba(255,255,255,0.05); padding: 5px 10px; border-radius: 4px; font-size: 12px; display: flex; justify-content: space-between; }
