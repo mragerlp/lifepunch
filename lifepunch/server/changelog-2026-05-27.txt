@@ -10,4 +10,4 @@ LifePunch — May 27, 2026
 
 - KOS Lines building subcategory was removed after consolidation into RDM / RDA.
 
-+Next time: Deploy the updated rules worker to Cloudflare (full paste from SeperationRules.txt, not partial).
++Next time: Deploy from Lifepunch/Rules/Rules-V1.txt after promoting Rules-Test1.txt (full paste, not partial).

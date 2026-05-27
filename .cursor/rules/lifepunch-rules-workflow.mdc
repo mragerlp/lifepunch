@@ -1,0 +1,16 @@
+---
+description: LifePunch website rules deploy files — edit Test1, not V1
+alwaysApply: true
+---
+
+# LifePunch Rules Workflow
+
+- Rule content and worker deploy edits happen in **Rules-Test1.txt** (sandbox), not Rules-V1.txt.
+- Canonical paths:
+  - Repo: `lifepunch/website/deployments/Rules/Rules-Test1.txt`
+  - OneDrive deploy paste: `OneDrive/Documents/Lifepunch/Rules/Rules-Test1.txt`
+- Keep the repo and OneDrive copies of Rules-Test1.txt in sync when changing rules.
+- **Rules-V1.txt** is production — only update when promoting Test1 for live deploy (copy Test1 → V1), unless the user explicitly asks otherwise.
+- **Rules-V2.txt** is generated from Test1 — do not hand-edit. Regenerate with `lifepunch/website/deployments/scripts/build-rules-v2-copy.mjs`.
+- `LP_RULES` lives inside the worker source in Rules-Test1.txt. Prefer editing Test1 over Rules-V1 or duplicate one-off worker copies.
+- When promoting to production: copy Rules-Test1.txt → Rules-V1.txt (both locations) before Cloudflare paste deploy.

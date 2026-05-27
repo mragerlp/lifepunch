@@ -61,7 +61,7 @@ This is a public rules snapshot for review and website maintenance. Direct websi
 ### Conduct Rules
 
 - No Job Change: No changing jobs during active RP.
-- Demote Reasons: AFK 30 minutes or more, not doing job, police corruption, scamming.
+- Demotions: Valid reasons include not doing job, 30+ min AFK, police corruption.
 - No Vigilante: Do not punish rulebreakers yourself with AOS, KOS, or propblock.
 - Scamming: Merchants cannot scam.
 
@@ -123,7 +123,7 @@ This is a public rules snapshot for review and website maintenance. Direct websi
 - Lockdowns: Outdoors only. You may arrest, not KOS. Valid reason needed, such as bank raid or shooting.
 - Corruption: Allowed in RP. Not allowed against other government members. Bribes are okay. Helping criminals raid PD or killing Government is forbidden.
 - Warrants: Require valid RP evidence. Must see illegal activity. No metagaming. Expire on death, jail, or successful raid defense.
-- Checkpoints and Tolls: Must not block any spawn-area entrance/exits. Must not extend raid durations. Tolls cannot exceed $50. Two checkpoints/toll booths maximum.
+- Checkpoints and Tolls: Must not block any spawn-area entrance/exits. Must not extend raid durations. Tolls cannot exceed $20. Two checkpoints/toll booths maximum.
 - Searches: Require RP reason, such as gunshots nearby or loitering near drug drop.
 
 ### Civilian

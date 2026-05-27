@@ -45,8 +45,6 @@ export default {
                 .replace(/</g, "&lt;")
                 .replace(/"/g, "&quot;")
                 .replace(/'/g, "&#39;");
-
-
         // --- LIFE PUNCH RULES CATALOG (single source of truth) ---
         // Edit rule text here only — both /rules and /rules/raw render from this data.
         const LP_RULES = [
@@ -549,6 +547,7 @@ export default {
                     .content .rule-num { color: #6b8499; font-weight: 600; font-size: 0.92em; margin-right: 0.35em; font-variant-numeric: tabular-nums; letter-spacing: 0.03em; }
                     .content b { color: var(--lp-blue); }
                     .content h4.rule-heading-underline { text-decoration: underline; }
+                    .content li > b + ul.rule-sublist { margin-top: 6px; }
                     .important { color: #ff4d4d; font-weight: bold; margin-top: 15px; display: block; }
                     .footer { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); color: #a0a8b5; font-size: 12px; }
                 </style>
@@ -643,16 +642,6 @@ export default {
                   </div>
               </div>`).join("");
 
-
-        const STORE_PACKAGES = Object.freeze({
-            VIP: { label: "VIP", price: 10.00 },
-            EVIP: { label: "EVIP", price: 25.00 }
-        });
-
-        const resolveStorePackage = (packageName) => {
-            const key = String(packageName ?? "").trim().toUpperCase();
-            return STORE_PACKAGES[key] ? { key, ...STORE_PACKAGES[key] } : null;
-        };
 
         // --- DXRP AUTOMATION HELPERS ---
         async function updateDxrpBalance(steamid, newBalance, reason = "Automated Store Purchase") {
@@ -921,7 +910,7 @@ export default {
                 status: 302,
                 headers: {
                     "Location": safeReturn,
-                    "Set-Cookie": "lp_session=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax"
+                    "Set-Cookie": "lp_session=; Path=/; Max-Age=0; HttpOnly; SameSite=Lax"
                 }
             });
         }
@@ -942,11 +931,8 @@ export default {
             const text = await verifyRes.text();
 
             if (text.includes("is_valid:true")) {
-                const claimedId = originalParams.get("openid.claimed_id") || "";
+                const claimedId = originalParams.get("openid.claimed_id");
                 const authSteamId = claimedId.split("/").pop();
-                if (!/^\d{17}$/.test(authSteamId)) {
-                    return new Response("Authentication Failed.", { status: 401 });
-                }
                 
                 // --- SECURE KV SESSION ---
                 
@@ -979,7 +965,7 @@ export default {
                     status: 302,
                     headers: {
                         "Location": safeReturn,
-                        "Set-Cookie": `lp_session=${newSessionToken}; Path=/; Max-Age=2592000; HttpOnly; Secure; SameSite=Lax`
+                        "Set-Cookie": `lp_session=${newSessionToken}; Path=/; Max-Age=2592000; HttpOnly; SameSite=Lax` 
                     }
                 });
             }
@@ -1038,8 +1024,11 @@ export default {
             }
             if (!discordLink?.id) return { ok: false, reason: "not_linked" };
 
+            const LEGACY_REWARDS_WEBHOOK =
+                "https://discord.com/api/webhooks/1500544505374576710/-rdBS4Qe5gRoDAo8YIkznR4IYME1LzEG4zFGr3Qeb_XaXvkPVw-erl6FVQc6QtOgQX3t";
             const rewardsHook =
                 (env.DISCORD_REWARDS_WEBHOOK_URL || "").trim() ||
+                LEGACY_REWARDS_WEBHOOK ||
                 (env.DISCORD_WEBHOOK_URL || "").trim();
 
             if (!rewardsHook) return { ok: false, reason: "no_webhook" };
@@ -1195,7 +1184,8 @@ export default {
             }));
 
             // Notify Staff via Webhook
-            const rewardsHook = (env.DISCORD_REWARDS_WEBHOOK_URL || "").trim() ||
+            const rewardsHook = (env.DISCORD_REWARDS_WEBHOOK_URL || "").trim() || 
+                              "https://discord.com/api/webhooks/1500544505374576710/-rdBS4Qe5gRoDAo8YIkznR4IYME1LzEG4zFGr3Qeb_XaXvkPVw-erl6FVQc6QtOgQX3t" ||
                               (env.DISCORD_WEBHOOK_URL || "").trim();
 
             if (rewardsHook) {
@@ -1637,18 +1627,12 @@ export default {
 
         if (path === "/create-checkout-session" && request.method === "POST") {
             try {
-                if (!steamid) {
-                    return new Response(JSON.stringify({ error: "Authentication required" }), { status: 401, headers: { 'Content-Type': 'application/json' } });
+                const { packageName, price, steamid, referralCode, creditUsed } = await request.json();
+                if (!steamid || !packageName || !price) {
+                    return new Response(JSON.stringify({ error: "Missing parameters" }), { status: 400, headers: { 'Content-Type': 'application/json' } });
                 }
 
-                const { packageName: requestedPackageName, referralCode, creditUsed } = await request.json();
-                const storePackage = resolveStorePackage(requestedPackageName);
-                if (!storePackage) {
-                    return new Response(JSON.stringify({ error: "Invalid package selection" }), { status: 400, headers: { 'Content-Type': 'application/json' } });
-                }
-
-                const packageName = storePackage.label;
-                let finalPrice = storePackage.price;
+                let finalPrice = parseFloat(price);
                 let usedReferral = null;
                 let appliedCredit = Math.max(0, parseFloat(creditUsed) || 0);
 
@@ -1823,19 +1807,6 @@ export default {
                 return new Response("Invalid JSON", { status: 400 });
             }
 
-            const eventId = event.id ? String(event.id) : "";
-            const processedStripeEventKey = eventId ? `stripe:event:${eventId}` : "";
-            if (linksKv && processedStripeEventKey) {
-                const existingEventState = await linksKv.get(processedStripeEventKey);
-                if (existingEventState) {
-                    return new Response(JSON.stringify({ received: true, duplicate: true }), {
-                        headers: { "Content-Type": "application/json" }
-                    });
-                }
-
-                await linksKv.put(processedStripeEventKey, "processing", { expirationTtl: 86400 });
-            }
-
             if (event.type === "checkout.session.completed") {
                 const session = event.data?.object ?? {};
                 const meta = session.metadata ?? {};
@@ -1963,10 +1934,6 @@ export default {
                     console.error("Stripe webhook: Discord notification failed:", e);
                     // Don't return 500 here if we already saved the KV record
                 }
-            }
-
-            if (linksKv && processedStripeEventKey) {
-                await linksKv.put(processedStripeEventKey, "completed", { expirationTtl: 7776000 });
             }
 
             return new Response(JSON.stringify({ received: true }), {
@@ -2187,47 +2154,14 @@ export default {
                     headers: {
                         "Access-Control-Allow-Origin": corsOrigin,
                         "Access-Control-Allow-Methods": "POST, OPTIONS",
-                        "Access-Control-Allow-Headers": "Content-Type, X-LifePunch-Sync-Secret",
+                        "Access-Control-Allow-Headers": "Content-Type",
                         "Access-Control-Max-Age": "86400",
                     }
                 });
             }
             if (request.method === "POST") {
                 try {
-                    if (!isAllowedOrigin) {
-                        return new Response(JSON.stringify({ success: false, error: "origin_not_allowed" }), {
-                            status: 403,
-                            headers: {
-                                'Content-Type': 'application/json',
-                                "Access-Control-Allow-Origin": corsOrigin
-                            }
-                        });
-                    }
-
-                    const configuredSecret = (env.DXRP_TOKEN_SYNC_SECRET || "").trim();
-                    if (!configuredSecret) {
-                        return new Response(JSON.stringify({ success: false, error: "sync_secret_not_configured" }), {
-                            status: 503,
-                            headers: {
-                                'Content-Type': 'application/json',
-                                "Access-Control-Allow-Origin": corsOrigin
-                            }
-                        });
-                    }
-
-                    const body = await request.json();
-                    const providedSecret = (request.headers.get("X-LifePunch-Sync-Secret") || body.secret || "").trim();
-                    if (providedSecret !== configuredSecret) {
-                        return new Response(JSON.stringify({ success: false, error: "unauthorized" }), {
-                            status: 401,
-                            headers: {
-                                'Content-Type': 'application/json',
-                                "Access-Control-Allow-Origin": corsOrigin
-                            }
-                        });
-                    }
-
-                    const { token } = body;
+                    const { token } = await request.json();
                     if (!token) throw new Error("No token provided");
                     await linksKv.put("config:dxrp_token", token.trim());
                     await linksKv.put("config:dxrp_token_timestamp", Date.now().toString());
@@ -4348,25 +4282,13 @@ export default {
                 background: rgba(2, 4, 10, 0.85); 
                 border: 1px solid var(--lp-blue); 
                 border-radius: 8px;
+                backdrop-filter: null;
                 box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
-              }
-
-              .search-container::before {
-                content: '>';
-                position: absolute;
-                left: 18px;
-                top: 50%;
-                transform: translateY(-50%);
-                color: var(--lp-blue);
-                font-weight: 900;
-                font-size: 18px;
-                pointer-events: none;
-                animation: blink 1s step-end infinite;
-                z-index: 1;
+                display: flex;
+                align-items: center;
               }
 
               #search { 
-                  display: block;
                   width: 100%;
                   padding: 18px 18px 18px 45px; 
                   background: transparent; 
@@ -4375,6 +4297,16 @@ export default {
                   font-family: inherit; outline: none; box-sizing: border-box; 
                   font-weight: 600;
                   caret-color: transparent; 
+              }
+
+              .custom-cursor {
+                position: absolute;
+                left: 18px;
+                color: var(--lp-blue);
+                font-weight: 900;
+                font-size: 18px;
+                pointer-events: none;
+                animation: blink 1s step-end infinite;
               }
 
               @keyframes blink {
@@ -4387,8 +4319,7 @@ export default {
                 transition: 0.2s;
               }
 
-              #search:focus::placeholder,
-              #search:not(:placeholder-shown)::placeholder {
+              #search:focus::placeholder {
                 opacity: 0;
               }
 
@@ -4537,6 +4468,7 @@ export default {
               }
 
               .rule-line b { color: var(--lp-blue); }
+              .rule-text > b + b { display: block; margin-top: 12px; }
               .sub-title { color: var(--lp-blue); font-weight: 800; text-transform: uppercase; margin: 15px 0 10px 0; font-size: 12px; letter-spacing: 1px; }
               .sub-title-emoji { margin-right: 0.35em; text-decoration: none; }
               .sub-title--underline { text-decoration: underline; }
@@ -4554,7 +4486,8 @@ export default {
 
           <div class="search-wrapper">
               <div class="search-container">
-                  <input type="text" id="search" placeholder="SEARCH RULES..." autocomplete="off" spellcheck="false">
+                  <div class="custom-cursor">></div>
+                  <input type="text" id="search" placeholder="SEARCH RULES...">
               </div>
           </div>
 
@@ -4689,14 +4622,6 @@ export default {
                   });
               }
 
-              function shouldSkipHighlightNode(node) {
-                  const parent = node.parentNode;
-                  if (!parent) return true;
-                  if (['SCRIPT', 'STYLE', 'MARK', 'INPUT', 'TEXTAREA'].includes(parent.tagName)) return true;
-                  if (parent.closest('.search-wrapper, .search-container, #search')) return true;
-                  return false;
-              }
-
               function applyHighlights(root, term) {
                   if (!term) return;
                   const safeTerm = term.replace(/[.*+?^\${}()|[\\]\\\\]/g, '\\\\$&');
@@ -4706,12 +4631,11 @@ export default {
                   let node;
                   
                   while ((node = walker.nextNode())) {
-                      if (shouldSkipHighlightNode(node)) continue;
+                      if (['SCRIPT', 'STYLE', 'MARK'].includes(node.parentNode.tagName)) continue;
                       if (node.nodeValue.trim() !== '') {
                           textNodes.push(node);
                       }
                   }
-
                   textNodes.forEach(textNode => {
                       const text = textNode.nodeValue;
                       if (regex.test(text)) {
@@ -4740,7 +4664,7 @@ export default {
                       }
                   });
               }
-
+                  
               let debounceTimer;
               const searchInput = document.getElementById('search');
               const rulesRoot = document.getElementById('rules-root');
@@ -4769,7 +4693,7 @@ export default {
                               sub.querySelector('.sub-btn').classList.remove('active');
                               sub.querySelector('.content-wrapper').classList.remove('open');
                           });
-                          ruleLines.forEach(line => line.style.removeProperty('display'));
+                          ruleLines.forEach(line => line.style.display = 'flex');
                           document.querySelectorAll('.rule-intro').forEach((intro) => intro.style.removeProperty('display'));
                           return;
                       }
