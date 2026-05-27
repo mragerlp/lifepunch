@@ -4,10 +4,22 @@ LifePunch — May 27, 2026
 + Sub-section nav emojis were added (category titles stay plain text).
 + Metagaming section and Fail RP definition were added under Basic RP Rules.
 + Basic Guidelines and Conduct Rules were renamed Roleplay Guidelines and Roleplay Conduct.
-+ Checkpoint rules were split: shared map limits, Hobo Checkpoints & Toll Booths ($50 max), and Police Checkpoints (search-only, no fees).
++ Checkpoint rules were split: shared map limits, Hobo Checkpoints & Toll Booths ($20 max), and Police Checkpoints (search-only, no fees).
 + New or expanded rules: no counter raiding/base defense, failed vs successful raids, building sign, prop blocking/spamming, medic per base, hobo excrement, public building, PD default AOS, PD two fading door cap, and police raid wording polish.
 + Raiding/Mugging section headings now underline text only (not emojis).
++ Demotions rule renamed from Demote Reasons; valid reasons are not doing job, 30+ min AFK, and police corruption.
+
+Website /rules (cloudflare-worker.mjs):
++ Fixed rule copy/share buttons: event delegation on #rules-root, buildRuleCopyText(), and legacy clipboard fallback (removed broken data-copy-text attributes).
++ Fixed accordion expand white flash/bleed using content-inner wrapper; restored darker tab styling and category header divider.
++ Rule numeral styling: muted blue-gray numbers (#6b8499) with blue bold titles for clearer hierarchy.
+
+Deploy files (Lifepunch/Rules/):
++ Rules-V1.txt — production numbered-rules worker paste.
++ Rules-V2.txt — alternate layout: no rule numerals, nested disc bullet lists.
++ Rules-Test1.txt — sandbox copy for rule edits before promoting to V1.
++ build-rules-v2-copy.mjs regenerates V2 from Test1.
 
 - KOS Lines building subcategory was removed after consolidation into RDM / RDA.
 
-+Next time: Deploy from Lifepunch/Rules/Rules-V1.txt after promoting Rules-Test1.txt (full paste, not partial).
+Next: Edit Rules-Test1.txt, promote to Rules-V1.txt when ready, then full paste deploy to Cloudflare (not partial).
