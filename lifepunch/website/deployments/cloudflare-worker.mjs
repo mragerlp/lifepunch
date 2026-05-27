@@ -83,24 +83,24 @@ export default {
                         rawTitle: "SUB-CATEGORY 2A: RDM / RDA",
                         webBtn: "🔺 RDM / RDA",
                         rules: [
-                            { id: "rdm-definition", html: "<b>RDM Definition</b> —  Random Deathmatch: Killing or arresting without a valid RP reason." },
-                            { id: "rdm-reason", html: "<b>RDM Reasoning</b> —  Disrespect/threats aren't reasons to kill. Taking damage/stealing are." },
-                            { id: "rdm-kos", html: "<b>KOS Line</b> — Crossing a clearly marked KOS line is not considered RDM." },
-                            { id: "rdm-kos2", html: "<b>KOS Line Boundaries</b> — KOS lines are general markers for where KOS begins. Once a KOS line is placed, that entire base is considered KOS." },
-                            { id: "rdm-warnings", html: "<b>Warnings</b> — You can kill someone after warning them 3 times in chat to step away." },
-                            { id: "rdm-police", html: "<b>Police</b> — You can be killed by the person you're trying to arrest if the situation escalates." },
-                            { id: "rdm-mayor", html: "<b>Mayor</b> — Killing the Mayor requires a valid RP reason (PD raid, mug, kidnap/hostage)." }
+                            { id: "rdm-definition", html: `<b>RDM Definition</b><ul class="rule-sublist"><li>Random Deathmatch (RDM) is killing or arresting someone without a valid roleplay reason.</li></ul>` },
+                            { id: "rdm-reason", html: `<b>RDM Reasoning</b><ul class="rule-sublist"><li>Disrespect or threats alone are not valid reasons to kill someone.</li><li>Taking damage or having items stolen are valid reasons.</li></ul>` },
+                            { id: "rdm-kos", html: `<b>KOS Line</b><ul class="rule-sublist"><li>Crossing a clearly marked KOS line is not considered RDM.</li></ul>` },
+                            { id: "rdm-kos2", html: `<b>KOS Line Boundaries</b><ul class="rule-sublist"><li>KOS lines are general markers for where KOS begins.</li><li>Once a KOS line is placed, that entire base is considered KOS.</li></ul>` },
+                            { id: "rdm-warnings", html: `<b>Warnings</b><ul class="rule-sublist"><li>You may kill someone after warning them three times in chat to step away.</li></ul>` },
+                            { id: "rdm-police", html: `<b>Police</b><ul class="rule-sublist"><li>You may be killed by the person you are trying to arrest if the situation escalates.</li></ul>` },
+                            { id: "rdm-mayor", html: `<b>Mayor</b><ul class="rule-sublist"><li>Killing the Mayor requires a valid roleplay reason, such as a PD raid, mugging, kidnapping, or hostage situation.</li></ul>` }
                         ]
                     },
                     {
                         rawTitle: "SUB-CATEGORY 2B: NLR (New Life Rule)",
                         webBtn: "🔺 NLR (New Life Rule)",
                         rules: [
-                            { id: "nlr-definition", html: "<b>NLR Definition</b> — New Life Rule: You can remember past events, but can't act on them." },
-                            { id: "nlr-trigger", html: "<b>NLR Trigger</b> — Applies on death, job change, and jail release (unless escaped)." },
-                            { id: "nlr-raid", html: "<b>Raid</b> — You may not return to a raid after death. You must wait until the raid is completed to return to your base as a defender." },
-                            { id: "nlr-revive", html: "<b>Revives</b> — Revived players may continue their raid/scenario." },
-                            { id: "nlr-hitman", html: "<b>Hitmen</b> — Hitmen cannot re-attempt failed hits (Hit is failed upon death)." }
+                            { id: "nlr-definition", html: `<b>NLR Definition</b><ul class="rule-sublist"><li>The New Life Rule (NLR) means you may remember past events, but you cannot act on them.</li></ul>` },
+                            { id: "nlr-trigger", html: `<b>NLR Trigger</b><ul class="rule-sublist"><li>NLR applies on death, job change, and jail release (unless you escaped).</li></ul>` },
+                            { id: "nlr-raid", html: `<b>Raid</b><ul class="rule-sublist"><li>You may not return to a raid after death.</li><li>You must wait until the raid is completed to return to your base as a defender.</li></ul>` },
+                            { id: "nlr-revive", html: `<b>Revives</b><ul class="rule-sublist"><li>Revived players may continue their raid or scenario.</li></ul>` },
+                            { id: "nlr-hitman", html: `<b>Hitmen</b><ul class="rule-sublist"><li>Hitmen cannot re-attempt failed hits.</li><li>A hit fails upon death.</li></ul>` }
                         ]
                     },
                     {
@@ -109,7 +109,7 @@ export default {
                         rules: [
                             {
                                 id: "fail-rp",
-                                html: "<b>Fail RP Logic</b> — Actions that break character, violate the established setting's logic, or disregard server rules, resulting in poor-quality, unrealistic, or disruptive play."
+                                html: `<b>Fail RP Logic</b><ul class="rule-sublist"><li>Fail RP includes actions that break character, violate the setting's logic, or disregard server rules, resulting in poor-quality, unrealistic, or disruptive play.</li></ul>`
                             },
                             {
                                 id: "fail-rp-examples",
@@ -128,22 +128,22 @@ export default {
                         rawTitle: "SUB-CATEGORY 3A: BASIC GUIDELINES",
                         webBtn: "🔹 Basic Guidelines",
                         rules: [
-                            { id: "fearrp", html: "<b>FearRP</b> — Not enforced, but value your life reasonably." },
-                            { id: "gov-raid", html: "<b>Government Raid</b> — Government cannot raid with Criminals (except Hitman)." },
-                            { id: "no-suicide-rp", html: "<b>No Suicide RP</b> — No suicide to avoid RP scenarios (kidnaps, mugs)." },
-                            { id: "job-arrest", html: "<b>Job Arrest</b> — Government cannot raid/arrest just because of someone's Job." },
-                            { id: "job-desc", html: "<b>Job Description</b> — Must follow job descriptions (Medics heal, Merchants/Dealers sell, Cops protect)." },
-                            { id: "merchant-deny", html: "<b>Merchant Deny</b> — Denying Merchant service for non-RP reasons is forbidden (e.g., denying gun sales to a potential raider)." }
+                            { id: "fearrp", html: `<b>FearRP</b><ul class="rule-sublist"><li>FearRP is not enforced, but you should still value your life reasonably.</li></ul>` },
+                            { id: "gov-raid", html: `<b>Government Raid</b><ul class="rule-sublist"><li>Government players cannot raid with criminals, except for Hitmen.</li></ul>` },
+                            { id: "no-suicide-rp", html: `<b>No Suicide RP</b><ul class="rule-sublist"><li>You may not commit suicide to avoid roleplay scenarios such as kidnappings or muggings.</li></ul>` },
+                            { id: "job-arrest", html: `<b>Job Arrest</b><ul class="rule-sublist"><li>Government players cannot raid or arrest someone solely because of their job.</li></ul>` },
+                            { id: "job-desc", html: `<b>Job Description</b><ul class="rule-sublist"><li>You must follow your job description (Medics heal, Merchants/Dealers sell, and Cops protect).</li></ul>` },
+                            { id: "merchant-deny", html: `<b>Merchant Deny</b><ul class="rule-sublist"><li>Merchants may not deny service for non-roleplay reasons (for example, refusing to sell guns to a potential raider).</li></ul>` }
                         ]
                     },
                     {
                         rawTitle: "SUB-CATEGORY 3B: CONDUCT RULES",
                         webBtn: "🔹 Conduct Rules",
                         rules: [
-                            { id: "no-job-change", html: "<b>No Job Change</b> — No changing jobs during active RP." },
-                            { id: "demote-reasons", html: "<b>Demote Reasons</b> — Valid demote reasons include being AFK for 30+ minutes, not doing your job, and police corruption." },
-                            { id: "no-vigilante", html: "<b>No Vigilante</b> — Do not punish rulebreakers yourself (AOS/KOS/Propblock)." },
-                            { id: "scamming", html: "<b>Scamming</b> — Merchants cannot scam." }
+                            { id: "no-job-change", html: `<b>No Job Change</b><ul class="rule-sublist"><li>You may not change jobs during active roleplay.</li></ul>` },
+                            { id: "demote-reasons", html: `<b>Demote Reasons</b><ul class="rule-sublist"><li>Being AFK for 30+ minutes</li><li>Not doing your job</li><li>Police corruption</li></ul>` },
+                            { id: "no-vigilante", html: `<b>No Vigilante</b><ul class="rule-sublist"><li>Do not punish rulebreakers yourself through AOS, KOS, or prop blocking.</li></ul>` },
+                            { id: "scamming", html: `<b>Scamming</b><ul class="rule-sublist"><li>Merchants may not scam other players.</li></ul>` }
                         ]
                     }
                 ]
@@ -157,59 +157,59 @@ export default {
                         rawTitle: "SUB-CATEGORY 4A: PROP & WIRE",
                         webBtn: "🔐 Prop & Wire",
                         rules: [
-                            { id: "spawn-build", html: "<b>Spawn Build</b> — No building in spawn. No prop climbing, flying, or blocking." },
-                            { id: "wire-abuse", html: "<b>Wire Abuse</b> — Wire abuse is not allowed, including auto-stealing money, loud sounds, stealing shipments, and using wire to annoy other players." },
-                            { id: "prop-permission", html: "<b>Property Respect</b> — You may not place props on, build into, or occupy another player's property or base without permission." }
+                            { id: "spawn-build", html: `<b>Spawn Build</b><ul class="rule-sublist"><li>You may not build in spawn.</li><li>Prop climbing, flying, and blocking are not allowed.</li></ul>` },
+                            { id: "wire-abuse", html: `<b>Wire Abuse</b><ul class="rule-sublist"><li>Wire abuse is not allowed.</li><li>This includes auto-stealing money, loud sounds, stealing shipments, and using wire to annoy other players.</li></ul>` },
+                            { id: "prop-permission", html: `<b>Property Respect</b><ul class="rule-sublist"><li>You may not place props on, build into, or occupy another player's property or base without permission.</li></ul>` }
                         ]
                     },
                     {
                         rawTitle: "SUB-CATEGORY 4B: FADING DOORS",
                         webBtn: "🚪 Fading Doors",
                         rules: [
-                            { id: "fd-limit", html: "<b>Fading Door Limit</b> — Max 2 fading doors to get access to your raidables." },
-                            { id: "fd-utility", html: "<b>Fading Door Utility</b> — Utility doors (one-way exits, peeks) are allowed." },
-                            { id: "fd-airlocks", html: "<b>Fading Door Airlocks</b> — Airlocks must be identifiable and distinct (color/material)." }
+                            { id: "fd-limit", html: `<b>Fading Door Limit</b><ul class="rule-sublist"><li>You may use a maximum of two fading doors to access your raidables.</li></ul>` },
+                            { id: "fd-utility", html: `<b>Fading Door Utility</b><ul class="rule-sublist"><li>Utility fading doors, such as one-way exits and peeks, are allowed.</li></ul>` },
+                            { id: "fd-airlocks", html: `<b>Fading Door Airlocks</b><ul class="rule-sublist"><li>Airlocks must be identifiable and distinct through color or material.</li></ul>` }
                         ]
                     },
                     {
                         rawTitle: "SUB-CATEGORY 4C: BASE LAYOUT & FAIRNESS",
                         webBtn: "🏠 Base Layout & Fairness",
                         rules: [
-                            { id: "base-reachable", html: "<b>Base Reachable</b> — Bases must be reachable/accessible at all times." },
-                            { id: "base-entrance", html: "<b>Base Entrance</b> — Min/Max 1 entrance. Unused map doors must be blocked." },
-                            { id: "base-crouch", html: "<b>Base Jump/Crouch</b> — Raiders must never be forced to crouch or jump at any time inside/outside OR to gain access to a base." },
-                            { id: "base-mazes", html: "<b>Base Mazes</b> — No Mazes. A maze is defined as more than 1×180° turn OR 2×90° turns OR multiple disorienting/excessive pathways used to artificially extend raid duration. Artificial raid hallways/airlocks start at your KoS sign & must not exceed 25 total 1×1 props (1000 units) excluding natural map layouts." },
-                            { id: "base-kos-line", html: "<b>Base KOS Line</b> — KOS zones must start at a base's purchasable front/fading door or at the start of an airlock. KOS lines must have a text sign that says 'KOS past'." },
-                            { id: "base-shooting", html: "<b>Base Shooting</b> — Raiders must be able to clearly see you and shoot back. Cannot use tiny hitboxes for unfair advantage." },
-                            { id: "base-crowbar", html: "<b>Base Crowbar</b> — Bases must be crowbar-raidable (no code-only)." },
-                            { id: "base-damage", html: "<b>Base Damage</b> — Bases cannot damage players." },
-                            { id: "base-movement", html: "<b>Base Movement</b> — No slowing/impeding movement." },
-                            { id: "base-entrances", html: "<b>Base Entrances</b> — Entrances must be reasonably easy to find, visible & distinct from surrounding walls; minimum 2×2 standing area (80×80 units)." },
-                            { id: "base-walkways", html: "<b>Base Walkways</b> — Walkways must be at least 1×1 prop (40 units) wide (includes ramps)." },
-                            { id: "base-no-collide", html: "<b>Base No Collide</b> — No-collide props must not be confusing for raiders; they should be visually distinct." },
-                            { id: "entity-ladders", html: "<b>Entity Ladders</b> — Bases must not require the use of entity ladders at any time." }
+                            { id: "base-reachable", html: `<b>Base Reachable</b><ul class="rule-sublist"><li>Bases must remain reachable and accessible at all times.</li></ul>` },
+                            { id: "base-entrance", html: `<b>Base Entrance</b><ul class="rule-sublist"><li>Bases must have exactly one entrance.</li><li>Unused map doors must be blocked off.</li></ul>` },
+                            { id: "base-crouch", html: `<b>Base Jump/Crouch</b><ul class="rule-sublist"><li>Raiders must never be forced to crouch or jump inside, outside, or to gain access to a base.</li></ul>` },
+                            { id: "base-mazes", html: `<b>Base Mazes</b><ul class="rule-sublist"><li>Mazes are not allowed.</li><li>A maze is more than one 180° turn, more than two 90° turns, or multiple disorienting pathways used to artificially extend raid duration.</li><li>Artificial raid hallways and airlocks start at your KOS sign and must not exceed 25 total 1×1 props (1000 units), excluding natural map layouts.</li></ul>` },
+                            { id: "base-kos-line", html: `<b>Base KOS Line</b><ul class="rule-sublist"><li>KOS zones must start at a base's purchasable front door, fading door, or the start of an airlock.</li><li>KOS lines must include a text sign that says 'KOS past.'</li></ul>` },
+                            { id: "base-shooting", html: `<b>Base Shooting</b><ul class="rule-sublist"><li>Raiders must be able to clearly see you and shoot back.</li><li>You may not use tiny hitboxes for an unfair advantage.</li></ul>` },
+                            { id: "base-crowbar", html: `<b>Base Crowbar</b><ul class="rule-sublist"><li>Bases must be crowbar-raidable.</li><li>Code-only bases are not allowed.</li></ul>` },
+                            { id: "base-damage", html: `<b>Base Damage</b><ul class="rule-sublist"><li>Bases may not damage players.</li></ul>` },
+                            { id: "base-movement", html: `<b>Base Movement</b><ul class="rule-sublist"><li>Bases may not slow down or impede player movement.</li></ul>` },
+                            { id: "base-entrances", html: `<b>Base Entrances</b><ul class="rule-sublist"><li>Entrances must be reasonably easy to find, visible, and distinct from surrounding walls, with a minimum 2×2 standing area (80×80 units).</li></ul>` },
+                            { id: "base-walkways", html: `<b>Base Walkways</b><ul class="rule-sublist"><li>Walkways must be at least one 1×1 prop wide (40 units), including ramps.</li></ul>` },
+                            { id: "base-no-collide", html: `<b>Base No Collide</b><ul class="rule-sublist"><li>No-collide props must not confuse raiders and should be visually distinct.</li></ul>` },
+                            { id: "entity-ladders", html: `<b>Entity Ladders</b><ul class="rule-sublist"><li>Bases must not require entity ladders to access at any time.</li></ul>` }
                         ]
                     },
                     {
                         rawTitle: "SUB-CATEGORY 4D: PLACEMENT & MAP RULES",
                         webBtn: "🗺 Placement & Map Rules",
                         rules: [
-                            { id: "public-space", html: "<b>Public Space</b> — Do not take up excessive public space." },
-                                                        { id: "pd-building", html: "<b>PD Building</b> — Do not build in PD if not Government." },
-                            { id: "blocking-off", html: "<b>Blocking Off</b> — Do not block weed drop-off, ATMs, trash cans, recycler." },
-                            { id: "drop-offs", html: "<b>Drop-Offs</b> — Weed drop-off must be fully walkable." }
+                            { id: "public-space", html: `<b>Public Space</b><ul class="rule-sublist"><li>Do not take up excessive public space.</li></ul>` },
+                            { id: "pd-building", html: `<b>PD Building</b><ul class="rule-sublist"><li>Non-government players may not build in the PD.</li></ul>` },
+                            { id: "blocking-off", html: `<b>Blocking Off</b><ul class="rule-sublist"><li>Do not block weed drop-offs, ATMs, trash cans, or the recycler.</li></ul>` },
+                            { id: "drop-offs", html: `<b>Drop-Offs</b><ul class="rule-sublist"><li>Weed drop-off areas must be fully walkable.</li></ul>` }
                         ]
                     },
                     {
                         rawTitle: "SUB-CATEGORY 4E: SPECIAL BUILDING RESTRICTIONS",
                         webBtn: "🚧 Special Building Restrictions",
                         rules: [
-                            { id: "special-doors", html: "Only buy doors you intend to use." },
-                            { id: "no-skybases", html: "No skybases or excessive aerial builds." },
-                            { id: "drop-connection", html: "Max 1 connection to a drug drop-off location." },
-                            { id: "decorative-aerial", html: "Decorative aerial builds allowed." },
-                            { id: "no-blackout", html: "No blackout bases." },
-                            { id: "kos-understandable", html: "KOS zones must be understandable and never deceptive." }
+                            { id: "special-doors", html: `<b>Doors</b><ul class="rule-sublist"><li>Only buy doors you intend to use.</li></ul>` },
+                            { id: "no-skybases", html: `<b>Skybases</b><ul class="rule-sublist"><li>Skybases and excessive aerial builds are not allowed.</li></ul>` },
+                            { id: "drop-connection", html: `<b>Drop-Off Connections</b><ul class="rule-sublist"><li>You may have only one connection to a drug drop-off location.</li></ul>` },
+                            { id: "decorative-aerial", html: `<b>Decorative Builds</b><ul class="rule-sublist"><li>Decorative aerial builds are allowed.</li></ul>` },
+                            { id: "no-blackout", html: `<b>Blackout Bases</b><ul class="rule-sublist"><li>Blackout bases are not allowed.</li></ul>` },
+                            { id: "kos-understandable", html: `<b>KOS Zones</b><ul class="rule-sublist"><li>KOS zones must be easy to understand and must never be deceptive.</li></ul>` }
                         ]
                     }
                 ]
@@ -300,9 +300,9 @@ export default {
                     {
                         type: "rules",
                         rules: [
-                            { id: "raid-guidelines", html: "<b>Raiding Guidelines</b> — A raid starts when a prybar is out, a base member is damaged, or when a weapon is drawn on the property. A raid ends when no raiders remain inside or on the property." },
-                            { id: "mid-raid", html: "<b>Mid-Raid</b> — No props can be moved, changed, deleted or added during raids. You can use an entity ladder to get into a flawed/open base." },
-                            { id: "pd-raid", html: "<b>Police Raid</b> — Ends when all Police attending raid die. Returning to a Police raid after death breaks NLR." }
+                            { id: "raid-guidelines", html: `<b>Raiding Guidelines</b><ul class="rule-sublist"><li>A raid starts when a prybar is out, a base member is damaged, or when a weapon is drawn on the property.</li><li>A raid ends when no raiders remain inside or on the property.</li></ul>` },
+                            { id: "mid-raid", html: `<b>Mid-Raid</b><ul class="rule-sublist"><li>Props may not be moved, changed, deleted, or added during a raid.</li><li>You may use an entity ladder to enter a flawed or open base.</li></ul>` },
+                            { id: "pd-raid", html: `<b>Police Raid</b><ul class="rule-sublist"><li>A police raid ends when all attending police die.</li><li>Returning to a police raid after death breaks NLR.</li></ul>` }
                         ]
                     },
                     {
@@ -322,10 +322,10 @@ export default {
                     {
                         type: "rules",
                         rules: [
-                            { id: "mug-limit", html: "<b>$ Limit</b> — Max mug $1,000. Must type mug warning. 10s response time required." },
-                            { id: "mug-cooldown", html: "<b>Cooldown</b> — There is a 5-minute cooldown between mugs. Don't mug the same person repeatedly." },
-                            { id: "mug-defense", html: "<b>Defense</b> — A victim of a mugging/kidnapping is always allowed to defend themselves without warning." },
-                            { id: "mug-shipments", html: "<b>Shipments</b> — Can mug shipments/guns if you see someone collect it; same warning rules apply." }
+                            { id: "mug-limit", html: `<b>$ Limit</b><ul class="rule-sublist"><li>The maximum mug amount is $1,000.</li><li>You must type a mug warning, and the victim must be given 10 seconds to respond.</li></ul>` },
+                            { id: "mug-cooldown", html: `<b>Cooldown</b><ul class="rule-sublist"><li>There is a 5-minute cooldown between mugs.</li><li>Don't mug the same person repeatedly.</li></ul>` },
+                            { id: "mug-defense", html: `<b>Defense</b><ul class="rule-sublist"><li>Victims of a mugging or kidnapping may always defend themselves without warning.</li></ul>` },
+                            { id: "mug-shipments", html: `<b>Shipments</b><ul class="rule-sublist"><li>You may mug shipments or guns if you see someone collect them.</li><li>The same warning rules apply.</li></ul>` }
                         ]
                     },
                     {
@@ -370,8 +370,8 @@ export default {
                                 id: "report-respect",
                                 html: `<b>Reporting</b> — When submitting a report:<ul class="rule-sublist"><li>Be respectful</li><li>Do not spam reports</li><li>Provide proof (Medal, OBS, or Steam)</li></ul>`
                             },
-                            { id: "report-lying", html: "<b>Report Lying</b> — Lying to staff results in a PERMANENT ban." },
-                            { id: "report-use", html: "<b>Report Use</b> — Use @ or /Staff in-game. EVIPs can jail in severe cases." }
+                            { id: "report-lying", html: `<b>Report Lying</b><ul class="rule-sublist"><li>Lying to staff will result in a permanent ban.</li></ul>` },
+                            { id: "report-use", html: `<b>Report Use</b><ul class="rule-sublist"><li>Use @ or /Staff in-game to report issues.</li><li>EVIPs may jail players in severe cases.</li></ul>` }
                         ]
                     }
                 ]
