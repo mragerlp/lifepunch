@@ -3961,6 +3961,7 @@ export default {
 
               .category { margin-bottom: 10px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); overflow: hidden; backdrop-filter: blur(16px); transition: 0.3s; }
               .cat-btn { width: 100%; padding: 18px 25px; background: transparent; border: none; color: #fff; text-align: left; font-family: 'Montserrat', sans-serif; font-size: 16px; font-weight: 700; cursor: pointer; display: flex; align-items: center; text-transform: uppercase; gap: 20px; }
+              .cat-btn .btn-label, .sub-btn .btn-label { flex: 1; min-width: 0; }
               .sub-cat { margin: 10px 20px; border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; background: rgba(255,255,255,0.02); overflow: hidden; }
               .sub-btn { width: 100%; padding: 12px 20px; background: rgba(0, 118, 227, 0.05); border: none; color: #fff; text-align: left; font-weight: 600; cursor: pointer; display: flex; align-items: center; font-size: 14px; }
               .icon-box { width: 35px; height: 35px; background: rgba(0,118,227,0.2); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: var(--lp-blue); font-size: 18px; flex-shrink: 0; }
@@ -4403,7 +4404,15 @@ export default {
                           });
                           
                           fragment.appendChild(document.createTextNode(text.slice(lastIndex)));
-                          textNode.parentNode.replaceChild(fragment, textNode);
+                          const parent = textNode.parentNode;
+                          if (parent.matches('.cat-btn, .sub-btn')) {
+                              const wrapper = document.createElement('span');
+                              wrapper.className = 'btn-label';
+                              wrapper.appendChild(fragment);
+                              parent.replaceChild(wrapper, textNode);
+                          } else {
+                              parent.replaceChild(fragment, textNode);
+                          }
                       }
                   });
               }
