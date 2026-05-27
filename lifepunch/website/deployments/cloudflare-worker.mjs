@@ -223,31 +223,70 @@ export default {
                         rawTitle: "SUB-CATEGORY 5A: MAYOR & CP",
                         webBtn: "👑 Mayor & CP",
                         rules: [
-                            { id: "mayor-base", html: "<b>Mayor</b> — Must base in PD. Gun licenses: can charge fee, not obligated for criminals. Can build outside only for government or RP use (checkpoints/toll booths). Announce major law changes before enforcing." },
-                            { id: "police-base", html: "<b>Police</b> — Must base in PD. Must allow all members of Government to base/RP with you. Follow hierarchy. Attempt to arrest before killing (unless weapon present)." },
-                            { id: "laws", html: "<b>Laws</b> — Laws must be reasonable and must not contradict server rules. You cannot make things said in text/voice chat illegal (i.e. Police Disrespect). AoS laws are allowed; KOS laws are not. Laws may not target specific individuals or jobs." },
-                            { id: "arrests", html: "<b>Arrests</b> — Only for lawbreakers. Cannot arrest innocents (even if bribed)." },
-                            { id: "lockdowns", html: "<b>Lockdowns</b> — Outdoors only. You may arrest, not KOS. Valid reason needed (Bank raid/shooting)." },
-                            { id: "corruption", html: "<b>Corruption</b> — Allowed in RP. Not allowed against other government members. Bribes are okay. Helping criminals raid PD or killing Government is forbidden." },
-                            { id: "warrants", html: "<b>Warrants</b> — Require valid RP evidence. Must SEE illegal activity. No metagaming. Expire on death, jail, or successful raid defense." },
-                            { id: "checkpoints", html: "<b>Checkpoints and Tolls</b> — Must not block any spawn-area entrance/exits. Must not extend raid-durations. Tolls cannot exceed $50. 2 Checkpoints/Toll-booths MAX." },
-                            { id: "searches", html: "<b>Searches</b> — Require RP reason (e.g., gunshots nearby, loitering near drug drop)." }
+                            {
+                                id: "mayor-base",
+                                html: `<b>Mayor</b><ul class="rule-sublist"><li>The Mayor must base in the PD.</li><li>Gun licenses may include a fee, but the Mayor is not obligated to provide them to criminals.</li><li>The Mayor may build outside the PD only for government or roleplay use, such as checkpoints or toll booths.</li><li>Major law changes must be announced before enforcement.</li></ul>`
+                            },
+                            {
+                                id: "police-base",
+                                html: `<b>Police</b><ul class="rule-sublist"><li>Police must base in the PD and allow all government members to base and roleplay with them.</li><li>Follow the command hierarchy.</li><li>Attempt to arrest before killing, unless the suspect has a weapon drawn.</li></ul>`
+                            },
+                            {
+                                id: "laws",
+                                html: `<b>Laws</b><ul class="rule-sublist"><li>Laws must be reasonable and must not contradict server rules.</li><li>You cannot make things said in text/voice chat illegal (i.e. Police Disrespect).</li><li>AoS laws are allowed; KOS laws are not.</li><li>Laws may not target specific individuals or jobs.</li></ul>`
+                            },
+                            {
+                                id: "arrests",
+                                html: `<b>Arrests</b><ul class="rule-sublist"><li>Arrests may only be made against lawbreakers.</li><li>You may not arrest innocent players, even if bribed.</li></ul>`
+                            },
+                            {
+                                id: "lockdowns",
+                                html: `<b>Lockdowns</b><ul class="rule-sublist"><li>Lockdowns may only be used outdoors.</li><li>You may arrest during a lockdown, but KOS is not allowed.</li><li>A valid reason is required, such as a bank raid or active shooting.</li></ul>`
+                            },
+                            {
+                                id: "corruption",
+                                html: `<b>Corruption</b><ul class="rule-sublist"><li>Corruption is allowed in roleplay, but not against other government members.</li><li>Bribes are allowed.</li><li>Helping criminals raid the PD or killing government members is forbidden.</li></ul>`
+                            },
+                            {
+                                id: "warrants",
+                                html: `<b>Warrants</b><ul class="rule-sublist"><li>Warrants require valid roleplay evidence.</li><li>You must witness illegal activity.</li><li>Metagaming is not allowed.</li><li>Warrants expire on death, jail, or successful raid defense.</li></ul>`
+                            },
+                            {
+                                id: "checkpoints",
+                                html: `<b>Checkpoints and Tolls</b><ul class="rule-sublist"><li>Checkpoints and toll booths must not block spawn-area entrances or exits, and must not extend raid duration.</li><li>Tolls may not exceed $50.</li><li>A maximum of two checkpoints or toll booths is allowed.</li></ul>`
+                            },
+                            {
+                                id: "searches",
+                                html: `<b>Searches</b><ul class="rule-sublist"><li>Searches require a roleplay reason, such as nearby gunshots or loitering near a drug drop-off.</li></ul>`
+                            }
                         ]
                     },
                     {
                         rawTitle: "SUB-CATEGORY 5B: CIVILIAN",
                         webBtn: "👨‍🔧 Civilian",
                         rules: [
-                            { id: "gun-dealer", html: "<b>Gun Dealer</b> — Must intend to sell. Cannot base with another gun dealer. Can defend a criminal base. Must sell individual weapons (not only shipments)." },
-                            { id: "medic", html: "<b>Medic</b> — Only 1 per raid party." },
-                            { id: "theatre-manager", html: "<b>Theatre Manager</b> — Must base in the Theatre." }
+                            {
+                                id: "gun-dealer",
+                                html: `<b>Gun Dealer</b><ul class="rule-sublist"><li>Gun Dealers must intend to sell weapons.</li><li>They may not base with another Gun Dealer.</li><li>They may defend a criminal base.</li><li>They must sell individual weapons, not only shipments.</li></ul>`
+                            },
+                            {
+                                id: "medic",
+                                html: `<b>Medic</b><ul class="rule-sublist"><li>Only one Medic is allowed per raid party.</li></ul>`
+                            },
+                            {
+                                id: "theatre-manager",
+                                html: `<b>Theatre Manager</b><ul class="rule-sublist"><li>The Theatre Manager must base in the Theatre.</li></ul>`
+                            }
                         ]
                     },
                     {
                         rawTitle: "SUB-CATEGORY 5C: CRIMINAL",
                         webBtn: "🔫 Criminal",
                         rules: [
-                            { id: "hitman", html: "<b>Hitman</b> — No metagaming hits. Only Hitman can perform hits. Doesn't need a valid RP reason unless it is the Mayor. Hitman may only raid active target locations; max one Hitman per raid." }
+                            {
+                                id: "hitman",
+                                html: `<b>Hitman</b><ul class="rule-sublist"><li>Hitmen may not metagame hits.</li><li>Only Hitmen may perform hits.</li><li>A valid roleplay reason is not required unless the target is the Mayor.</li><li>Hitmen may only raid active target locations, and only one Hitman is allowed per raid.</li></ul>`
+                            }
                         ]
                     }
                 ]
