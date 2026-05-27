@@ -3970,7 +3970,7 @@ export default {
               
               .content-wrapper { display: grid; grid-template-rows: 0fr; transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); overflow: hidden; }
               .content-wrapper.open { grid-template-rows: 1fr; border-top: 1px solid var(--border); }
-              .content { min-height: 0; padding: 0 25px; visibility: hidden; transition: 0.5s; }
+              .content { min-height: 0; overflow: hidden; padding: 0 25px; visibility: hidden; transition: 0.5s; }
               .content-wrapper.open > .content { padding: 20px; visibility: visible; }
               
               .rule-line { 
@@ -3979,8 +3979,10 @@ export default {
                   align-items: center; transition: background 0.3s;
                   border-radius: 0 4px 4px 0;
               }
+              .content-wrapper:not(.open) .rule-line,
+              .content-wrapper:not(.open) .rule-line:target { border-left-color: transparent; }
               .rule-line:hover { background: rgba(255,255,255,0.03); }
-              .rule-line:target { background: rgba(0, 118, 227, 0.15); border-left: 4px solid #fff; }
+              .content-wrapper.open .rule-line:target { background: rgba(0, 118, 227, 0.15); border-left: 4px solid #fff; }
               .rule-text { flex: 1; padding-right: 20px; }
               .rule-actions { display: flex; gap: 8px; opacity: 0.4; transition: 0.3s; }
               .rule-line:hover .rule-actions { opacity: 1; }
