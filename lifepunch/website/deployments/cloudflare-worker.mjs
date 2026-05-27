@@ -107,7 +107,14 @@ export default {
                         rawTitle: "SUB-CATEGORY 2C: Fail RP",
                         webBtn: "🔺 Fail RP",
                         rules: [
-                            { id: "fail-rp", html: "<b>Fail RP Logic</b> — Actions that break character, violate the established setting's logic, or disregard server rules, resulting in poor-quality, unrealistic, or disruptive play. Examples include stealing base mate valuables and starting a new base; mugging then killing your partner; police colluding with criminals; door camping/blocking; merchant scamming." }
+                            {
+                                id: "fail-rp",
+                                html: "<b>Fail RP Logic</b> — Actions that break character, violate the established setting's logic, or disregard server rules, resulting in poor-quality, unrealistic, or disruptive play."
+                            },
+                            {
+                                id: "fail-rp-examples",
+                                html: `<b>Examples</b><ul class="rule-sublist"><li>Stealing your base mate's valuables and then starting a new base</li><li>Mugging someone together, then killing your partner</li><li>Police working with Thieves or Gangsters</li><li>Door camping or blocking doors</li><li>Merchants scamming</li></ul>`
+                            }
                         ]
                     }
                 ]
@@ -391,6 +398,9 @@ export default {
                     .content { padding: 20px; font-size: 14px; color: #f0f2f5; }
                     .content ul { list-style: none; padding: 0; margin: 0; }
                     .content li { margin-bottom: 12px; padding-left: 15px; border-left: 2px solid var(--lp-blue); }
+                    .content li ul.rule-sublist { list-style: disc; margin: 0; padding-left: 20px; }
+                    .content li ul.rule-sublist li { border-left: none; padding-left: 0; margin-bottom: 6px; }
+                    .content li b + ul.rule-sublist { margin-top: 2px; }
                     .content b { color: var(--lp-blue); }
                     .important { color: #ff4d4d; font-weight: bold; margin-top: 15px; display: block; }
                     .footer { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); color: #a0a8b5; font-size: 12px; }
@@ -4252,6 +4262,9 @@ export default {
               }
 
               .rule-line b { color: var(--lp-blue); }
+              .rule-text ul.rule-sublist { margin: 0; padding-left: 20px; list-style: disc; }
+              .rule-text b + ul.rule-sublist { margin-top: 2px; }
+              .rule-text ul.rule-sublist li { margin-bottom: 6px; line-height: 1.5; }
               .sub-title { color: var(--lp-blue); font-weight: 800; text-transform: uppercase; margin: 15px 0 10px 0; font-size: 12px; letter-spacing: 1px; }
               .important { color: #ff4d4d; font-weight: bold; margin-top: 15px; display: block;}
               .guide-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
