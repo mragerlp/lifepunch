@@ -46,6 +46,16 @@ export default {
                 .replace(/"/g, "&quot;")
                 .replace(/'/g, "&#39;");
 
+        const STORE_PACKAGES = Object.freeze({
+            VIP: { label: "VIP", price: 10.00 },
+            EVIP: { label: "EVIP", price: 25.00 }
+        });
+
+        const resolveStorePackage = (packageName) => {
+            const key = String(packageName ?? "").trim().toUpperCase();
+            return STORE_PACKAGES[key] ? { key, ...STORE_PACKAGES[key] } : null;
+        };
+
         // --- DXRP AUTOMATION HELPERS ---
         async function updateDxrpBalance(steamid, newBalance, reason = "Automated Store Purchase") {
             const token = await linksKv.get("config:dxrp_token");
@@ -313,7 +323,7 @@ export default {
                 status: 302,
                 headers: {
                     "Location": safeReturn,
-                    "Set-Cookie": "lp_session=; Path=/; Max-Age=0; HttpOnly; SameSite=Lax"
+                    "Set-Cookie": "lp_session=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax"
                 }
             });
         }
@@ -334,8 +344,11 @@ export default {
             const text = await verifyRes.text();
 
             if (text.includes("is_valid:true")) {
-                const claimedId = originalParams.get("openid.claimed_id");
+                const claimedId = originalParams.get("openid.claimed_id") || "";
                 const authSteamId = claimedId.split("/").pop();
+                if (!/^\d{17}$/.test(authSteamId)) {
+                    return new Response("Authentication Failed.", { status: 401 });
+                }
                 
                 // --- SECURE KV SESSION ---
                 
@@ -368,7 +381,7 @@ export default {
                     status: 302,
                     headers: {
                         "Location": safeReturn,
-                        "Set-Cookie": `lp_session=${newSessionToken}; Path=/; Max-Age=2592000; HttpOnly; SameSite=Lax` 
+                        "Set-Cookie": `lp_session=${newSessionToken}; Path=/; Max-Age=2592000; HttpOnly; Secure; SameSite=Lax`
                     }
                 });
             }
@@ -427,11 +440,8 @@ export default {
             }
             if (!discordLink?.id) return { ok: false, reason: "not_linked" };
 
-            const LEGACY_REWARDS_WEBHOOK =
-                "https://discord.com/api/webhooks/1500544505374576710/-rdBS4Qe5gRoDAo8YIkznR4IYME1LzEG4zFGr3Qeb_XaXvkPVw-erl6FVQc6QtOgQX3t";
             const rewardsHook =
                 (env.DISCORD_REWARDS_WEBHOOK_URL || "").trim() ||
-                LEGACY_REWARDS_WEBHOOK ||
                 (env.DISCORD_WEBHOOK_URL || "").trim();
 
             if (!rewardsHook) return { ok: false, reason: "no_webhook" };
@@ -587,8 +597,7 @@ export default {
             }));
 
             // Notify Staff via Webhook
-            const rewardsHook = (env.DISCORD_REWARDS_WEBHOOK_URL || "").trim() || 
-                              "https://discord.com/api/webhooks/1500544505374576710/-rdBS4Qe5gRoDAo8YIkznR4IYME1LzEG4zFGr3Qeb_XaXvkPVw-erl6FVQc6QtOgQX3t" ||
+            const rewardsHook = (env.DISCORD_REWARDS_WEBHOOK_URL || "").trim() ||
                               (env.DISCORD_WEBHOOK_URL || "").trim();
 
             if (rewardsHook) {
@@ -1288,12 +1297,18 @@ export default {
 
         if (path === "/create-checkout-session" && request.method === "POST") {
             try {
-                const { packageName, price, steamid, referralCode, creditUsed } = await request.json();
-                if (!steamid || !packageName || !price) {
-                    return new Response(JSON.stringify({ error: "Missing parameters" }), { status: 400, headers: { 'Content-Type': 'application/json' } });
+                if (!steamid) {
+                    return new Response(JSON.stringify({ error: "Authentication required" }), { status: 401, headers: { 'Content-Type': 'application/json' } });
                 }
 
-                let finalPrice = parseFloat(price);
+                const { packageName: requestedPackageName, referralCode, creditUsed } = await request.json();
+                const storePackage = resolveStorePackage(requestedPackageName);
+                if (!storePackage) {
+                    return new Response(JSON.stringify({ error: "Invalid package selection" }), { status: 400, headers: { 'Content-Type': 'application/json' } });
+                }
+
+                const packageName = storePackage.label;
+                let finalPrice = storePackage.price;
                 let usedReferral = null;
                 let appliedCredit = Math.max(0, parseFloat(creditUsed) || 0);
 
@@ -1468,6 +1483,19 @@ export default {
                 return new Response("Invalid JSON", { status: 400 });
             }
 
+            const eventId = event.id ? String(event.id) : "";
+            const processedStripeEventKey = eventId ? `stripe:event:${eventId}` : "";
+            if (linksKv && processedStripeEventKey) {
+                const existingEventState = await linksKv.get(processedStripeEventKey);
+                if (existingEventState) {
+                    return new Response(JSON.stringify({ received: true, duplicate: true }), {
+                        headers: { "Content-Type": "application/json" }
+                    });
+                }
+
+                await linksKv.put(processedStripeEventKey, "processing", { expirationTtl: 86400 });
+            }
+
             if (event.type === "checkout.session.completed") {
                 const session = event.data?.object ?? {};
                 const meta = session.metadata ?? {};
@@ -1595,6 +1623,10 @@ export default {
                     console.error("Stripe webhook: Discord notification failed:", e);
                     // Don't return 500 here if we already saved the KV record
                 }
+            }
+
+            if (linksKv && processedStripeEventKey) {
+                await linksKv.put(processedStripeEventKey, "completed", { expirationTtl: 7776000 });
             }
 
             return new Response(JSON.stringify({ received: true }), {
@@ -1815,14 +1847,47 @@ export default {
                     headers: {
                         "Access-Control-Allow-Origin": corsOrigin,
                         "Access-Control-Allow-Methods": "POST, OPTIONS",
-                        "Access-Control-Allow-Headers": "Content-Type",
+                        "Access-Control-Allow-Headers": "Content-Type, X-LifePunch-Sync-Secret",
                         "Access-Control-Max-Age": "86400",
                     }
                 });
             }
             if (request.method === "POST") {
                 try {
-                    const { token } = await request.json();
+                    if (!isAllowedOrigin) {
+                        return new Response(JSON.stringify({ success: false, error: "origin_not_allowed" }), {
+                            status: 403,
+                            headers: {
+                                'Content-Type': 'application/json',
+                                "Access-Control-Allow-Origin": corsOrigin
+                            }
+                        });
+                    }
+
+                    const configuredSecret = (env.DXRP_TOKEN_SYNC_SECRET || "").trim();
+                    if (!configuredSecret) {
+                        return new Response(JSON.stringify({ success: false, error: "sync_secret_not_configured" }), {
+                            status: 503,
+                            headers: {
+                                'Content-Type': 'application/json',
+                                "Access-Control-Allow-Origin": corsOrigin
+                            }
+                        });
+                    }
+
+                    const body = await request.json();
+                    const providedSecret = (request.headers.get("X-LifePunch-Sync-Secret") || body.secret || "").trim();
+                    if (providedSecret !== configuredSecret) {
+                        return new Response(JSON.stringify({ success: false, error: "unauthorized" }), {
+                            status: 401,
+                            headers: {
+                                'Content-Type': 'application/json',
+                                "Access-Control-Allow-Origin": corsOrigin
+                            }
+                        });
+                    }
+
+                    const { token } = body;
                     if (!token) throw new Error("No token provided");
                     await linksKv.put("config:dxrp_token", token.trim());
                     await linksKv.put("config:dxrp_token_timestamp", Date.now().toString());
