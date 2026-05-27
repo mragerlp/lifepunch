@@ -3911,13 +3911,25 @@ export default {
                 background: rgba(2, 4, 10, 0.85); 
                 border: 1px solid var(--lp-blue); 
                 border-radius: 8px;
-                backdrop-filter: null;
                 box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
-                display: flex;
-                align-items: center;
+              }
+
+              .search-container::before {
+                content: '>';
+                position: absolute;
+                left: 18px;
+                top: 50%;
+                transform: translateY(-50%);
+                color: var(--lp-blue);
+                font-weight: 900;
+                font-size: 18px;
+                pointer-events: none;
+                animation: blink 1s step-end infinite;
+                z-index: 1;
               }
 
               #search { 
+                  display: block;
                   width: 100%;
                   padding: 18px 18px 18px 45px; 
                   background: transparent; 
@@ -3926,16 +3938,6 @@ export default {
                   font-family: inherit; outline: none; box-sizing: border-box; 
                   font-weight: 600;
                   caret-color: transparent; 
-              }
-
-              .custom-cursor {
-                position: absolute;
-                left: 18px;
-                color: var(--lp-blue);
-                font-weight: 900;
-                font-size: 18px;
-                pointer-events: none;
-                animation: blink 1s step-end infinite;
               }
 
               @keyframes blink {
@@ -3948,7 +3950,8 @@ export default {
                 transition: 0.2s;
               }
 
-              #search:focus::placeholder {
+              #search:focus::placeholder,
+              #search:not(:placeholder-shown)::placeholder {
                 opacity: 0;
               }
 
@@ -3979,8 +3982,9 @@ export default {
                   align-items: center; transition: background 0.3s;
                   border-radius: 0 4px 4px 0;
               }
+              .content-wrapper.open .rule-line { border-left: 2px solid var(--lp-blue); }
               .content-wrapper:not(.open) .rule-line,
-              .content-wrapper:not(.open) .rule-line:target { border-left-color: transparent; }
+              .content-wrapper:not(.open) .rule-line:target { border-left: none; }
               .rule-line:hover { background: rgba(255,255,255,0.03); }
               .content-wrapper.open .rule-line:target { background: rgba(0, 118, 227, 0.15); border-left: 4px solid #fff; }
               .rule-text { flex: 1; padding-right: 20px; }
@@ -4036,8 +4040,7 @@ export default {
 
           <div class="search-wrapper">
               <div class="search-container">
-                  <div class="custom-cursor">></div>
-                  <input type="text" id="search" placeholder="SEARCH RULES...">
+                  <input type="text" id="search" placeholder="SEARCH RULES..." autocomplete="off" spellcheck="false">
               </div>
           </div>
 
@@ -4375,6 +4378,14 @@ export default {
                   });
               }
 
+              function shouldSkipHighlightNode(node) {
+                  const parent = node.parentNode;
+                  if (!parent) return true;
+                  if (['SCRIPT', 'STYLE', 'MARK', 'INPUT', 'TEXTAREA'].includes(parent.tagName)) return true;
+                  if (parent.closest('.search-wrapper, .search-container, #search')) return true;
+                  return false;
+              }
+
               function applyHighlights(root, term) {
                   if (!term) return;
                   const safeTerm = term.replace(/[.*+?^\${}()|[\\]\\\\]/g, '\\\\$&');
@@ -4384,7 +4395,7 @@ export default {
                   let node;
                   
                   while ((node = walker.nextNode())) {
-                      if (['SCRIPT', 'STYLE', 'MARK'].includes(node.parentNode.tagName)) continue;
+                      if (shouldSkipHighlightNode(node)) continue;
                       if (node.nodeValue.trim() !== '') {
                           textNodes.push(node);
                       }
