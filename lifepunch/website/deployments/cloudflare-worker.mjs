@@ -4039,17 +4039,18 @@ export default {
               .content-wrapper { display: grid; grid-template-rows: 0fr; transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); overflow: hidden; }
               .content-wrapper.open { grid-template-rows: 1fr; border-top: 1px solid var(--border); }
               .content { min-height: 0; overflow: hidden; padding: 0 25px; visibility: hidden; transition: 0.5s; }
+              .content-wrapper:not(.open) > .content { padding: 0; }
               .content-wrapper.open > .content { padding: 20px; visibility: visible; }
               
               .rule-line { 
-                  margin-bottom: 10px; font-size: 14px; border-left: 2px solid var(--lp-blue); 
-                  padding: 8px 15px; color: #fff; display: flex; justify-content: space-between; 
+                  margin-bottom: 10px; font-size: 14px; border-left: 2px solid transparent; 
+                  padding: 8px 15px; color: #fff; display: none; justify-content: space-between; 
                   align-items: center; transition: background 0.3s;
                   border-radius: 0 4px 4px 0;
               }
-              .content-wrapper.open .rule-line { border-left: 2px solid var(--lp-blue); }
+              .content-wrapper.open .rule-line { display: flex; border-left-color: var(--lp-blue); }
               .content-wrapper:not(.open) .rule-line,
-              .content-wrapper:not(.open) .rule-line:target { border-left: none; }
+              .content-wrapper:not(.open) .rule-line:target { display: none; border-left: none; margin: 0; padding: 0; }
               .rule-line:hover { background: rgba(255,255,255,0.03); }
               .content-wrapper.open .rule-line:target { background: rgba(0, 118, 227, 0.15); border-left: 4px solid #fff; }
               .rule-text { flex: 1; padding-right: 20px; }
@@ -4523,7 +4524,7 @@ export default {
                               sub.querySelector('.sub-btn').classList.remove('active');
                               sub.querySelector('.content-wrapper').classList.remove('open');
                           });
-                          ruleLines.forEach(line => line.style.display = 'flex');
+                          ruleLines.forEach(line => line.style.removeProperty('display'));
                           return;
                       }
 
