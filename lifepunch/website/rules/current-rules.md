@@ -78,7 +78,7 @@ Generated from `Rules-V1.txt`. This is a public rules snapshot for review and we
 - Base Reachable: Bases must remain reachable and accessible at all times
 - Base Entrance: Bases must have exactly one entrance; Unused map doors must be blocked off; You must own every door that is part of your base; You may only own doors in areas where you are actively basing
 - Entrance Visibility: Entrances must be reasonably easy to find, visible, and distinct from surrounding walls, with a minimum 2×2 standing area (80×80 units)
-- Base Walkways: Walkways must be at least one 1×1 prop wide (40 units), including ramps
+- Base Walkways: Walkways must be at least one 1×1 prop wide (40 units), including ramps; You may not build aerial walkways from roof to roof
 - Entity Ladders: Bases must not require entity ladders to access at any time; Entity ladders may be used to get over public obstacles such as a toll booth or an open roof on a base
 - Base Jump/Crouch: Raiders must never be forced to crouch or jump inside, outside, or to gain access to a base
 - Base Mazes: Mazes are not allowed; A maze is more than one 180° turn, more than two 90° turns, or multiple disorienting pathways used to artificially extend raid duration
@@ -96,7 +96,7 @@ Generated from `Rules-V1.txt`. This is a public rules snapshot for review and we
 ### 🔌 Prop & Wire
 
 - Spawn Build: You may not build in spawn; Prop climbing, flying, and blocking are not allowed
-- Prop Blocking: Prop blocking and prop spamming are not allowed
+- Prop Blocking: Prop blocking and prop spamming are not allowed; You may not spam props in the street or other public areas
 - Wire Abuse: Wire abuse is not allowed; This includes auto-stealing money, loud sounds, stealing shipments, and using wire to annoy other players
 - Property Respect: You may not place props on, build into, or occupy another player's property or base without permission
 

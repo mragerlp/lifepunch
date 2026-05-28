@@ -164,7 +164,7 @@ export default {
                             { id: "base-reachable", html: `<b>Base Reachable</b><ul class="rule-sublist"><li>Bases must remain reachable and accessible at all times</li></ul>` },
                             { id: "base-entrance", html: `<b>Base Entrance</b><ul class="rule-sublist"><li>Bases must have exactly one entrance</li><li>Unused map doors must be blocked off</li><li>You must own every door that is part of your base</li><li>You may only own doors in areas where you are actively basing</li></ul>` },
                             { id: "base-entrance-visibility", html: `<b>Entrance Visibility</b><ul class="rule-sublist"><li>Entrances must be reasonably easy to find, visible, and distinct from surrounding walls, with a minimum 2×2 standing area (80×80 units)</li></ul>` },
-                            { id: "base-walkways", html: `<b>Base Walkways</b><ul class="rule-sublist"><li>Walkways must be at least one 1×1 prop wide (40 units), including ramps</li></ul>` },
+                            { id: "base-walkways", html: `<b>Base Walkways</b><ul class="rule-sublist"><li>Walkways must be at least one 1×1 prop wide (40 units), including ramps</li><li>You may not build aerial walkways from roof to roof</li></ul>` },
                             { id: "entity-ladders", html: `<b>Entity Ladders</b><ul class="rule-sublist"><li>Bases must not require entity ladders to access at any time</li><li>Entity ladders may be used to get over public obstacles such as a toll booth or an open roof on a base</li></ul>` },
                             { id: "base-crouch", html: `<b>Base Jump/Crouch</b><ul class="rule-sublist"><li>Raiders must never be forced to crouch or jump inside, outside, or to gain access to a base</li></ul>` },
                             { id: "base-mazes", html: `<b>Base Mazes</b><ul class="rule-sublist"><li>Mazes are not allowed</li><li>A maze is more than one 180° turn, more than two 90° turns, or multiple disorienting pathways used to artificially extend raid duration</li></ul>` },
@@ -191,7 +191,7 @@ export default {
                         webBtn: "🔌 Prop & Wire",
                         rules: [
                             { id: "spawn-build", html: `<b>Spawn Build</b><ul class="rule-sublist"><li>You may not build in spawn</li><li>Prop climbing, flying, and blocking are not allowed</li></ul>` },
-                            { id: "prop-blocking", html: `<b>Prop Blocking</b><ul class="rule-sublist"><li>Prop blocking and prop spamming are not allowed</li></ul>` },
+                            { id: "prop-blocking", html: `<b>Prop Blocking</b><ul class="rule-sublist"><li>Prop blocking and prop spamming are not allowed</li><li>You may not spam props in the street or other public areas</li></ul>` },
                             { id: "wire-abuse", html: `<b>Wire Abuse</b><ul class="rule-sublist"><li>Wire abuse is not allowed</li><li>This includes auto-stealing money, loud sounds, stealing shipments, and using wire to annoy other players</li></ul>` },
                             { id: "prop-permission", html: `<b>Property Respect</b><ul class="rule-sublist"><li>You may not place props on, build into, or occupy another player's property or base without permission</li></ul>` }
                         ]
