@@ -6,13 +6,13 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRulesDir = path.resolve(__dirname, "..", "Rules");
 const rulesDir = path.resolve(process.env.USERPROFILE || "", "OneDrive", "Documents", "Lifepunch", "Rules");
 const v1Candidates = [
-    path.join(repoRulesDir, "Rules-V1.txt"),
     path.join(rulesDir, "Rules-V1.txt"),
+    path.join(repoRulesDir, "Rules-V1.txt"),
 ];
 const sourcePath =
     process.argv[2] ||
     v1Candidates.find((candidate) => fs.existsSync(candidate)) ||
-    path.join(repoRulesDir, "Rules-V1.txt");
+    path.join(rulesDir, "Rules-V1.txt");
 const outPath =
     process.argv[3] ||
     path.resolve(__dirname, "..", "..", "rules", "current-rules.md");

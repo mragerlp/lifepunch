@@ -2,7 +2,7 @@
 
 Source: `https://lifepunch.co/rules`
 
-Generated from `Rules-V1.txt`. This is a public rules snapshot for review and website maintenance. Direct website links should use stable rule anchors where possible.
+Generated from OneDrive `Rules-V1.txt` (canonical edit copy). This is a public rules snapshot for review and website maintenance. Direct website links should use stable rule anchors where possible.
 
 ## Serverwide Rules
 
@@ -104,7 +104,7 @@ Generated from `Rules-V1.txt`. This is a public rules snapshot for review and we
 
 - Map Boundary: You may not base outside the map; the rock boundary is the limit
 - Public Space: Do not take up excessive public space
-- Checkpoints: Checkpoints must not block spawn-area entrances or exits, and must not extend raid duration; All checkpoints must leave another way around that does not require payment to reach the destination; Only two checkpoints are allowed on the entire map at a time; There may only be one police checkpoint and one hobo checkpoint or toll booth at a time; This limit is intended to encourage Hobos and Police to roleplay together at checkpoints; Trying to directly bypass a Hobo checkpoint can result in death; Trying to directly bypass a Police checkpoint can result in AOS
+- Checkpoints: Checkpoints must not block spawn-area entrances or exits, and must not extend raid duration; All checkpoints must leave another way around that does not require payment to reach the destination; Only two checkpoints are allowed on the entire map at a time; There may only be one police checkpoint and one hobo checkpoint or toll booth at a time; This limit is intended to encourage Hobos and Police to roleplay at their own checkpoints; Trying to directly bypass a Hobo checkpoint can result in death; Trying to directly bypass a Police checkpoint can result in AOS
 - Police Department Building: Non-government players may not build in the Police Department; Only two fading doors are allowed inside of the Police Department
 - Blocking Off: Do not block ATMs, trash cans, or the recycler; Props must not touch or obstruct ATMs; ATMs must be exposed on all sides; You cannot access an ATM from your base
 - Drop-Offs: Do not block weed drop-offs; Weed drop-off areas must be fully walkable; Your base may have only one connection to a drug drop-off location

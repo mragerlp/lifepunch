@@ -1,19 +1,21 @@
 ---
-description: LifePunch website rules deploy files — Rules-V1 is canonical
+description: LifePunch website rules deploy files — OneDrive Rules-V1 is canonical for edits
 alwaysApply: true
 ---
 
 # LifePunch Rules Workflow
 
-- Rule content and worker deploy edits happen in **Rules-V1.txt** (production).
-- Canonical paths:
-  - Repo: `lifepunch/website/deployments/Rules/Rules-V1.txt`
-  - OneDrive deploy paste: `OneDrive/Documents/Lifepunch/Rules/Rules-V1.txt`
-- Keep the repo and OneDrive copies of Rules-V1.txt in sync when changing rules.
-- **`cloudflare-worker.mjs`** should stay aligned with Rules-V1.txt for rules and rules UI; merge in worker-only code (auth, store, webhooks) — do not blind-overwrite.
-- Regenerate **`current-rules.md`** from V1 with `lifepunch/website/deployments/scripts/build-current-rules-md.mjs` when rule content changes.
-- **Rules-Test1.txt** is an optional sandbox — copy V1 → Test1 before risky experiments; copy Test1 → V1 only when promoting validated changes.
-- **Rules-V2.txt** is a layout comparison prototype only — numbered rules (V1) vs bullet/no-numeral layout. Use it to show someone both options and pick a direction. Do not hand-edit V2. Regenerate from V1 with `lifepunch/website/deployments/scripts/build-rules-v2-copy.mjs` only when actively refreshing that side-by-side comparison.
-- V2 is not part of the normal promote/deploy path unless you decide to adopt that layout as production.
-- `LP_RULES` lives inside the worker source in Rules-V1.txt. Prefer editing V1 over duplicate one-off worker copies.
-- Cloudflare paste deploy uses Rules-V1.txt (full worker, not partial).
+- **Edit OneDrive first.** You paste from OneDrive into Cloudflare — if OneDrive is not updated, deploy will miss the change even when the repo is correct.
+- Edit paths (in order):
+  1. **OneDrive:** `OneDrive/Documents/Lifepunch/Rules/Rules-V1.txt` (production paste file)
+  2. **OneDrive sandbox (optional):** `OneDrive/Documents/Lifepunch/Rules/Rules-Test1.txt`
+  3. **Repo mirror:** `lifepunch/website/deployments/Rules/Rules-V1.txt` — sync after OneDrive edits
+- After OneDrive changes, run `lifepunch/website/deployments/scripts/sync-rules-from-onedrive.ps1` to copy V1/Test1 into the repo and align `cloudflare-worker.mjs`.
+- Do not edit repo rules only and stop — always update OneDrive first, or copy repo → OneDrive immediately so paste deploy stays current.
+- Regenerate **`current-rules.md`** from OneDrive V1 with `lifepunch/website/deployments/scripts/build-current-rules-md.mjs` after rule content changes.
+- **`cloudflare-worker.mjs`** should stay aligned with OneDrive `Rules-V1.txt` for rules and rules UI; merge in worker-only code (auth, store, webhooks) — do not blind-overwrite worker-only sections without checking diff.
+- **Rules-Test1.txt** is an optional sandbox on OneDrive — copy V1 → Test1 before risky experiments; copy Test1 → V1 only when promoting validated changes.
+- **Rules-V2.txt** is a layout comparison prototype only. Do not hand-edit V2. Regenerate from V1 with `lifepunch/website/deployments/scripts/build-rules-v2-copy.mjs` only when refreshing that comparison.
+- V2 is not part of the normal promote/deploy path unless you adopt that layout as production.
+- `LP_RULES` lives inside the worker source in Rules-V1.txt. Prefer editing OneDrive V1 over duplicate one-off worker copies.
+- Cloudflare paste deploy uses OneDrive `Rules-V1.txt` (full worker, not partial).
