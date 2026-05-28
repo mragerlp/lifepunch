@@ -94,9 +94,9 @@ export default {
                         rawTitle: "SUB-CATEGORY 2B: KOS",
                         webBtn: "⚠️ KOS",
                         rules: [
-                            { id: "rdm-kos", html: `<b>KOS & RDM</b><ul class="rule-sublist"><li>Crossing a clearly marked KOS line is not considered RDM.</li></ul>` },
+                            { id: "rdm-kos", html: `<b>KOS General</b><ul class="rule-sublist"><li>Crossing a clearly marked KOS line is not considered RDM.</li></ul>` },
                             { id: "base-kos-line", html: `<b>KOS Line Placement</b><ul class="rule-sublist"><li>KOS zones must start at a base's purchasable front door, fading door, or the start of an airlock.</li><li>KOS lines must include a text sign that says 'KOS past.'</li><li>Government jobs cannot have KOS lines.</li></ul>` },
-                            { id: "rdm-kos2", html: `<b>KOS Boundaries</b><ul class="rule-sublist"><li>KOS lines are general markers for where KOS begins for the inside of a base.</li><li>Once a KOS line is placed, the space behind that line is considered KOS.</li><li>Example: If a KOS sign is at the front door, but you enter the base through a window, you may still be killed.</li></ul>` },
+                            { id: "rdm-kos2", html: `<b>KOS Boundaries</b><ul class="rule-sublist"><li>KOS lines are markers for where KOS begins at a base.</li><li>Once a KOS line is placed, the space behind that line is considered KOS.</li><li>Example: If a KOS line is at a front door and you enter through a window, you may still be killed.</li></ul>` },
                             { id: "kos-understandable", html: `<b>KOS Clarity</b><ul class="rule-sublist"><li>KOS zones must be easy to understand and must never be deceptive.</li></ul>` }
                         ]
                     },
@@ -174,6 +174,7 @@ export default {
                         webBtn: "🏠 Base Layout & Fairness",
                         rules: [
                             { id: "base-reachable", html: `<b>Base Reachable</b><ul class="rule-sublist"><li>Bases must remain reachable and accessible at all times.</li></ul>` },
+                            { id: "base-rooftop", html: `<b>Rooftop Bases</b><ul class="rule-sublist"><li>Rooftop bases are allowed.</li><li>You must have a ramp or other clear method of getting to the first fading door.</li></ul>` },
                             { id: "base-entrance", html: `<b>Base Entrance</b><ul class="rule-sublist"><li>Bases must have exactly one entrance.</li><li>Unused map doors must be blocked off.</li></ul>` },
                             { id: "base-crouch", html: `<b>Base Jump/Crouch</b><ul class="rule-sublist"><li>Raiders must never be forced to crouch or jump inside, outside, or to gain access to a base.</li></ul>` },
                             { id: "base-mazes", html: `<b>Base Mazes</b><ul class="rule-sublist"><li>Mazes are not allowed.</li><li>A maze is more than one 180° turn, more than two 90° turns, or multiple disorienting pathways used to artificially extend raid duration.</li></ul>` },

@@ -38,9 +38,9 @@ Generated from `Rules-V1.txt`. This is a public rules snapshot for review and we
 
 ### ⚠️ KOS
 
-- KOS & RDM: Crossing a clearly marked KOS line is not considered RDM.
+- KOS General: Crossing a clearly marked KOS line is not considered RDM.
 - KOS Line Placement: KOS zones must start at a base's purchasable front door, fading door, or the start of an airlock.; KOS lines must include a text sign that says 'KOS past.'; Government jobs cannot have KOS lines.
-- KOS Boundaries: KOS lines are general markers for where KOS begins for the inside of a base.; Once a KOS line is placed, the space behind that line is considered KOS.; Example: If a KOS sign is at the front door, but you enter the base through a window, you may still be killed.
+- KOS Boundaries: KOS lines are markers for where KOS begins at a base.; Once a KOS line is placed, the space behind that line is considered KOS.; Example: If a KOS line is at a front door and you enter through a window, you may still be killed.
 - KOS Clarity: KOS zones must be easy to understand and must never be deceptive.
 
 ### 💀 NLR
@@ -81,6 +81,7 @@ Generated from `Rules-V1.txt`. This is a public rules snapshot for review and we
 ### 🏠 Base Layout & Fairness
 
 - Base Reachable: Bases must remain reachable and accessible at all times.
+- Rooftop Bases: Rooftop bases are allowed.; You must have a ramp or other clear method of getting to the first fading door.
 - Base Entrance: Bases must have exactly one entrance.; Unused map doors must be blocked off.
 - Base Jump/Crouch: Raiders must never be forced to crouch or jump inside, outside, or to gain access to a base.
 - Base Mazes: Mazes are not allowed.; A maze is more than one 180° turn, more than two 90° turns, or multiple disorienting pathways used to artificially extend raid duration.
