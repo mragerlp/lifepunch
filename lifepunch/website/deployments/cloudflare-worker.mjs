@@ -45,8 +45,6 @@ export default {
                 .replace(/</g, "&lt;")
                 .replace(/"/g, "&quot;")
                 .replace(/'/g, "&#39;");
-
-
         // --- LIFE PUNCH RULES CATALOG (single source of truth) ---
         // Edit rule text here only — both /rules and /rules/raw render from this data.
         const LP_RULES = [
@@ -54,7 +52,6 @@ export default {
                 num: 1,
                 title: "Serverwide Rules",
                 icon: "fa-globe",
-                open: true,
                 rules: [
                     { id: "en-only", html: "<b>English Only</b> — We're an English-speaking community. Please keep all roleplay in English." },
                     { id: "no-cheat", html: "<b>No Cheating</b> — Using third-party software, cheats, macros, or autoclickers will result in a permanent ban." },
@@ -93,7 +90,7 @@ export default {
                             { id: "kos-understandable", html: `<b>KOS Clarity</b><ul class="rule-sublist"><li>KOS zones must be easy to understand and must never be deceptive.</li></ul>` },
                             { id: "rdm-warnings", html: `<b>Warnings</b><ul class="rule-sublist"><li>You may kill someone after warning them three times in chat to step away or to leave your property.</li></ul>` },
                             { id: "rdm-police", html: `<b>Police</b><ul class="rule-sublist"><li>You may be killed by the person you are trying to arrest if the situation escalates.</li></ul>` },
-                            { id: "rdm-mayor", html: `<b>Mayor</b><ul class="rule-sublist"><li>Killing the Mayor requires a valid roleplay reason, such as a PD raid, mugging, kidnapping, or hostage situation.</li></ul>` }
+                            { id: "rdm-mayor", html: `<b>Mayor</b><ul class="rule-sublist"><li>Killing the Mayor requires a valid roleplay reason, such as a PD raid or mugging.</li></ul>` }
                         ]
                     },
                     {
@@ -104,7 +101,7 @@ export default {
                             { id: "nlr-trigger", html: `<b>NLR Trigger</b><ul class="rule-sublist"><li>NLR applies on death, job change, and jail release (unless you escaped).</li></ul>` },
                             { id: "nlr-raid", html: `<b>Raid</b><ul class="rule-sublist"><li>You may not return to a raid after death.</li><li>You must wait until the raid is completed to return to your base as a defender.</li></ul>` },
                             { id: "nlr-revive", html: `<b>Revives</b><ul class="rule-sublist"><li>Revived players may continue their raid or scenario.</li></ul>` },
-                            { id: "nlr-hitman", html: `<b>Hitmen</b><ul class="rule-sublist"><li>Hitmen cannot re-attempt failed hits.</li><li>A hit fails upon death.</li></ul>` }
+                            { id: "nlr-hitman", html: `<b>Hitman</b><ul class="rule-sublist"><li>A failed hit cannot be re-attempted.</li><li>A hit fails upon death.</li></ul>` }
                         ]
                     },
                     {
@@ -143,7 +140,7 @@ export default {
                         webBtn: "📋 Roleplay Guidelines",
                         rules: [
                             { id: "fearrp", html: `<b>FearRP</b><ul class="rule-sublist"><li>FearRP is not enforced, but you should still value your life reasonably.</li></ul>` },
-                            { id: "no-suicide-rp", html: `<b>No Suicide RP</b><ul class="rule-sublist"><li>You may not commit suicide to avoid roleplay scenarios such as kidnappings or muggings.</li></ul>` },
+                            { id: "no-suicide-rp", html: `<b>No Suicide RP</b><ul class="rule-sublist"><li>You may not commit suicide to avoid roleplay scenarios such as muggings.</li></ul>` },
                             { id: "job-desc", html: `<b>Job Description</b><ul class="rule-sublist"><li>You must follow your job description (Medics heal, Merchants/Dealers sell, and Cops protect).</li></ul>` },
                             { id: "merchant-deny", html: `<b>Merchant Deny</b><ul class="rule-sublist"><li>Merchants may not deny service for non-roleplay reasons (for example, refusing to sell guns to a potential raider).</li></ul>` }
                         ]
@@ -260,7 +257,7 @@ export default {
                             },
                             {
                                 id: "hobo-checkpoints",
-                                html: `<b>Hobo Checkpoints & Toll Booths</b><ul class="rule-sublist"><li>Hobos may create checkpoints or toll booths.</li><li>Hobo checkpoint and toll booth fees may not exceed $20.</li></ul>`
+                                html: `<b>Hobo Checkpoints & Toll Booths</b><ul class="rule-sublist"><li>Hobos may create a checkpoint or toll booth.</li><li>Hobo checkpoint and toll booth fees may not exceed $50.</li></ul>`
                             }
                         ]
                     },
@@ -270,7 +267,7 @@ export default {
                         rules: [
                             {
                                 id: "hitman",
-                                html: `<b>Hitman</b><ul class="rule-sublist"><li>Hitmen may not metagame hits.</li><li>Only Hitmen may perform hits.</li><li>A valid roleplay reason is not required unless the target is the Mayor.</li><li>Hitmen may only raid active target locations, and only one Hitman is allowed per raid.</li></ul>`
+                                html: `<b>Hitman</b><ul class="rule-sublist"><li>Hitmen may not metagame hits.</li><li>Only Hitmen may perform hits.</li><li>A valid roleplay reason is not required unless the target is the Mayor.</li><li>Hitmen may only raid active target locations.</li><li>Only one Hitman is allowed per raid.</li></ul>`
                             }
                         ]
                     },
@@ -288,9 +285,9 @@ export default {
                             },
                             {
                                 id: "police-checkpoints",
-                                html: `<b>Police Checkpoints</b><ul class="rule-sublist"><li>Police may only build checkpoints in public.</li><li>Police do not use toll booths, as their checkpoints cannot require a fee.</li><li>Police checkpoints may only enforce that a search is required to pass.</li></ul>`
+                                html: `<b>Police Checkpoints</b><ul class="rule-sublist"><li>Police may create a checkpoint in public.</li><li>Police do not use toll booths, as their checkpoints cannot require a fee.</li><li>A police checkpoint may only enforce that a search is required to pass.</li></ul>`
                             },
-                            { id: "gov-raid", html: `<b>Government Raid</b><ul class="rule-sublist"><li>Government players cannot raid with criminals, except for Hitmen.</li></ul>` },
+                            { id: "gov-raid", html: `<b>Government Raid</b><ul class="rule-sublist"><li>Government players cannot raid with criminals, except alongside a Hitman.</li></ul>` },
                             { id: "job-arrest", html: `<b>Job Arrest</b><ul class="rule-sublist"><li>Government players cannot raid or arrest someone solely because of their job.</li></ul>` },
                             {
                                 id: "laws",
@@ -330,7 +327,6 @@ export default {
                         type: "rules",
                         rules: [
                             { id: "raid-guidelines", html: `<b>Raiding Guidelines</b><ul class="rule-sublist"><li>A raid starts when a prybar is out, a base member is damaged, or when a weapon is drawn on the property.</li><li>A raid ends when no raiders remain inside or on the property.</li></ul>` },
-                            { id: "raid-outcome", html: `<b>Failed vs Successful Raids</b><ul class="rule-sublist"><li>A failed raid is a raid where no valuables are taken.</li><li>A successful raid is a raid where valuables are taken.</li><li>You may not repeatedly raid a base and kill players without taking valuables.</li></ul>` },
                             { id: "mid-raid", html: `<b>Mid-Raid</b><ul class="rule-sublist"><li>Props may not be moved, changed, deleted, or added during a raid.</li><li>You may use an entity ladder to enter a flawed or open base.</li></ul>` },
                             { id: "pd-raid", html: `<b>Police Raids</b><ul class="rule-sublist"><li>A police raid ends when all attending police die.</li><li>Returning to a police raid after death breaks NLR.</li></ul>` },
                             { id: "no-counter-raid", html: `<b>No Counter Raiding</b><ul class="rule-sublist"><li>Counter raiding is not allowed.</li><li>You may not defend someone else's base unless you are actively basing with them.</li></ul>` }
@@ -345,7 +341,7 @@ export default {
                             "Drug Dealer",
                             "Gangster",
                             "Mob Boss",
-                            "Hitman (Hit required on raid target)",
+                            "Hitman (active hit required)",
                             "Thief"
                         ]
                     },
@@ -355,7 +351,7 @@ export default {
                         rules: [
                             { id: "mug-limit", html: `<b>$ Limit</b><ul class="rule-sublist"><li>The maximum mug amount is $1,000.</li><li>You must type a mug warning, and the victim must be given 10 seconds to respond.</li></ul>` },
                             { id: "mug-cooldown", html: `<b>Cooldown</b><ul class="rule-sublist"><li>There is a 5-minute cooldown between mugs.</li><li>Don't mug the same person repeatedly.</li></ul>` },
-                            { id: "mug-defense", html: `<b>Defense</b><ul class="rule-sublist"><li>Victims of a mugging or kidnapping may always defend themselves without warning.</li></ul>` },
+                            { id: "mug-defense", html: `<b>Defense</b><ul class="rule-sublist"><li>Victims of a mugging may always defend themselves without warning.</li></ul>` },
                             { id: "mug-shipments", html: `<b>Shipments</b><ul class="rule-sublist"><li>You may mug shipments or guns if you see someone collect them.</li><li>The same warning rules apply.</li></ul>` }
                         ]
                     },
@@ -374,7 +370,7 @@ export default {
                 rules: [
                     {
                         id: "minging-prohibited",
-                        html: `<b>Prohibited</b> — The following actions are considered minging or trolling:<ul class="rule-sublist"><li>Baiting RDM or RDA</li><li>Excessive trolling</li><li>Preventing others from building</li><li>Preventing new players from learning</li><li>Repeatedly raiding someone with no valuables</li><li>Kidnapping without a roleplay reason</li><li>Disobeying staff or reasonable requests</li></ul>`
+                        html: `<b>Prohibited</b> — The following actions are considered minging or trolling:<ul class="rule-sublist"><li>Baiting RDM or RDA</li><li>Excessive trolling</li><li>Preventing others from building</li><li>Preventing new players from learning</li><li>Repeatedly raiding someone with no valuables</li><li>Disobeying staff or reasonable requests</li></ul>`
                     }
                 ]
             },
@@ -383,17 +379,17 @@ export default {
                 title: "Cooldowns & Reporting",
                 icon: "fa-clock",
                 blocks: [
-                    { type: "heading", raw: "COOLDOWNS", web: "⏳ Cooldowns" },
+                    { type: "heading", raw: "COOLDOWNS", webEmoji: "⏳", web: "Cooldowns", underline: true },
                     {
                         type: "rules",
                         rules: [
                             {
                                 id: "cooldowns",
-                                html: `<b>Cooldowns</b> — The following timers apply between repeated actions.<ul class="rule-sublist"><li>You may not spam-mug, spam-hit, or spam-raid the same person after successful attempts. Space things out and RP with other people or it could be considered harassment.</li><li>Mugging: 5 minutes between mugs</li><li>Hits: 15 minute cooldown for placing hits on the same person</li><li>Raiding the same base after a failed attempt: 10 minutes</li><li>Raiding the same base after a successful attempt: 25 minutes</li><li>PD raid: 10 minutes</li><li>Mayor: 10-minute grace period before they can be raided or killed after they're elected</li><li>Mayor kidnapping: 30 minutes</li><li>No raiding for 10 minutes after a server crash</li></ul>`
+                                html: `<ul class="rule-sublist"><li>You may not spam-mug, spam-hit, or spam-raid the same person after successful attempts. Space things out and RP with other people or it could be considered harassment.</li><li>Mugging: 5 Minute Cooldown</li><li>Hits: 15 minutes (Same Player)</li><li>Raiding (Same Base): 10 minutes</li><li>PD Raid: 10 minutes</li><li>Mayor Grace Period: 10 minutes (After election)</li><li>No raiding for 10 minutes after a server crash</li></ul>`
                             }
                         ]
                     },
-                    { type: "heading", raw: "REPORTING RULES", web: "📝 Reporting Rules" },
+                    { type: "heading", raw: "REPORTING RULES", webEmoji: "📝", web: "Reporting Rules", underline: true },
                     {
                         type: "rules",
                         rules: [
@@ -549,6 +545,7 @@ export default {
                     .content .rule-num { color: #6b8499; font-weight: 600; font-size: 0.92em; margin-right: 0.35em; font-variant-numeric: tabular-nums; letter-spacing: 0.03em; }
                     .content b { color: var(--lp-blue); }
                     .content h4.rule-heading-underline { text-decoration: underline; }
+                    .content li > b + ul.rule-sublist { margin-top: 6px; }
                     .important { color: #ff4d4d; font-weight: bold; margin-top: 15px; display: block; }
                     .footer { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); color: #a0a8b5; font-size: 12px; }
                 </style>
@@ -559,7 +556,7 @@ export default {
                     <p>Official s&box DXRP Guidelines</p>
                 </div>
                 ${LP_RULES.map((cat) => `
-                <details${cat.open ? " open" : ""}>
+                <details>
                     <summary>${cat.num}. ${cat.title}</summary>
                     <div class="content">${renderRawCategoryBody(cat)}</div>
                 </details>`).join("")}
@@ -643,16 +640,6 @@ export default {
                   </div>
               </div>`).join("");
 
-
-        const STORE_PACKAGES = Object.freeze({
-            VIP: { label: "VIP", price: 10.00 },
-            EVIP: { label: "EVIP", price: 25.00 }
-        });
-
-        const resolveStorePackage = (packageName) => {
-            const key = String(packageName ?? "").trim().toUpperCase();
-            return STORE_PACKAGES[key] ? { key, ...STORE_PACKAGES[key] } : null;
-        };
 
         // --- DXRP AUTOMATION HELPERS ---
         async function updateDxrpBalance(steamid, newBalance, reason = "Automated Store Purchase") {
@@ -921,7 +908,7 @@ export default {
                 status: 302,
                 headers: {
                     "Location": safeReturn,
-                    "Set-Cookie": "lp_session=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax"
+                    "Set-Cookie": "lp_session=; Path=/; Max-Age=0; HttpOnly; SameSite=Lax"
                 }
             });
         }
@@ -942,11 +929,8 @@ export default {
             const text = await verifyRes.text();
 
             if (text.includes("is_valid:true")) {
-                const claimedId = originalParams.get("openid.claimed_id") || "";
+                const claimedId = originalParams.get("openid.claimed_id");
                 const authSteamId = claimedId.split("/").pop();
-                if (!/^\d{17}$/.test(authSteamId)) {
-                    return new Response("Authentication Failed.", { status: 401 });
-                }
                 
                 // --- SECURE KV SESSION ---
                 
@@ -979,7 +963,7 @@ export default {
                     status: 302,
                     headers: {
                         "Location": safeReturn,
-                        "Set-Cookie": `lp_session=${newSessionToken}; Path=/; Max-Age=2592000; HttpOnly; Secure; SameSite=Lax`
+                        "Set-Cookie": `lp_session=${newSessionToken}; Path=/; Max-Age=2592000; HttpOnly; SameSite=Lax` 
                     }
                 });
             }
@@ -1038,8 +1022,11 @@ export default {
             }
             if (!discordLink?.id) return { ok: false, reason: "not_linked" };
 
+            const LEGACY_REWARDS_WEBHOOK =
+                "https://discord.com/api/webhooks/1500544505374576710/-rdBS4Qe5gRoDAo8YIkznR4IYME1LzEG4zFGr3Qeb_XaXvkPVw-erl6FVQc6QtOgQX3t";
             const rewardsHook =
                 (env.DISCORD_REWARDS_WEBHOOK_URL || "").trim() ||
+                LEGACY_REWARDS_WEBHOOK ||
                 (env.DISCORD_WEBHOOK_URL || "").trim();
 
             if (!rewardsHook) return { ok: false, reason: "no_webhook" };
@@ -1195,7 +1182,8 @@ export default {
             }));
 
             // Notify Staff via Webhook
-            const rewardsHook = (env.DISCORD_REWARDS_WEBHOOK_URL || "").trim() ||
+            const rewardsHook = (env.DISCORD_REWARDS_WEBHOOK_URL || "").trim() || 
+                              "https://discord.com/api/webhooks/1500544505374576710/-rdBS4Qe5gRoDAo8YIkznR4IYME1LzEG4zFGr3Qeb_XaXvkPVw-erl6FVQc6QtOgQX3t" ||
                               (env.DISCORD_WEBHOOK_URL || "").trim();
 
             if (rewardsHook) {
@@ -1637,18 +1625,12 @@ export default {
 
         if (path === "/create-checkout-session" && request.method === "POST") {
             try {
-                if (!steamid) {
-                    return new Response(JSON.stringify({ error: "Authentication required" }), { status: 401, headers: { 'Content-Type': 'application/json' } });
+                const { packageName, price, steamid, referralCode, creditUsed } = await request.json();
+                if (!steamid || !packageName || !price) {
+                    return new Response(JSON.stringify({ error: "Missing parameters" }), { status: 400, headers: { 'Content-Type': 'application/json' } });
                 }
 
-                const { packageName: requestedPackageName, referralCode, creditUsed } = await request.json();
-                const storePackage = resolveStorePackage(requestedPackageName);
-                if (!storePackage) {
-                    return new Response(JSON.stringify({ error: "Invalid package selection" }), { status: 400, headers: { 'Content-Type': 'application/json' } });
-                }
-
-                const packageName = storePackage.label;
-                let finalPrice = storePackage.price;
+                let finalPrice = parseFloat(price);
                 let usedReferral = null;
                 let appliedCredit = Math.max(0, parseFloat(creditUsed) || 0);
 
@@ -1823,19 +1805,6 @@ export default {
                 return new Response("Invalid JSON", { status: 400 });
             }
 
-            const eventId = event.id ? String(event.id) : "";
-            const processedStripeEventKey = eventId ? `stripe:event:${eventId}` : "";
-            if (linksKv && processedStripeEventKey) {
-                const existingEventState = await linksKv.get(processedStripeEventKey);
-                if (existingEventState) {
-                    return new Response(JSON.stringify({ received: true, duplicate: true }), {
-                        headers: { "Content-Type": "application/json" }
-                    });
-                }
-
-                await linksKv.put(processedStripeEventKey, "processing", { expirationTtl: 86400 });
-            }
-
             if (event.type === "checkout.session.completed") {
                 const session = event.data?.object ?? {};
                 const meta = session.metadata ?? {};
@@ -1963,10 +1932,6 @@ export default {
                     console.error("Stripe webhook: Discord notification failed:", e);
                     // Don't return 500 here if we already saved the KV record
                 }
-            }
-
-            if (linksKv && processedStripeEventKey) {
-                await linksKv.put(processedStripeEventKey, "completed", { expirationTtl: 7776000 });
             }
 
             return new Response(JSON.stringify({ received: true }), {
@@ -2187,47 +2152,14 @@ export default {
                     headers: {
                         "Access-Control-Allow-Origin": corsOrigin,
                         "Access-Control-Allow-Methods": "POST, OPTIONS",
-                        "Access-Control-Allow-Headers": "Content-Type, X-LifePunch-Sync-Secret",
+                        "Access-Control-Allow-Headers": "Content-Type",
                         "Access-Control-Max-Age": "86400",
                     }
                 });
             }
             if (request.method === "POST") {
                 try {
-                    if (!isAllowedOrigin) {
-                        return new Response(JSON.stringify({ success: false, error: "origin_not_allowed" }), {
-                            status: 403,
-                            headers: {
-                                'Content-Type': 'application/json',
-                                "Access-Control-Allow-Origin": corsOrigin
-                            }
-                        });
-                    }
-
-                    const configuredSecret = (env.DXRP_TOKEN_SYNC_SECRET || "").trim();
-                    if (!configuredSecret) {
-                        return new Response(JSON.stringify({ success: false, error: "sync_secret_not_configured" }), {
-                            status: 503,
-                            headers: {
-                                'Content-Type': 'application/json',
-                                "Access-Control-Allow-Origin": corsOrigin
-                            }
-                        });
-                    }
-
-                    const body = await request.json();
-                    const providedSecret = (request.headers.get("X-LifePunch-Sync-Secret") || body.secret || "").trim();
-                    if (providedSecret !== configuredSecret) {
-                        return new Response(JSON.stringify({ success: false, error: "unauthorized" }), {
-                            status: 401,
-                            headers: {
-                                'Content-Type': 'application/json',
-                                "Access-Control-Allow-Origin": corsOrigin
-                            }
-                        });
-                    }
-
-                    const { token } = body;
+                    const { token } = await request.json();
                     if (!token) throw new Error("No token provided");
                     await linksKv.put("config:dxrp_token", token.trim());
                     await linksKv.put("config:dxrp_token_timestamp", Date.now().toString());
@@ -4348,25 +4280,13 @@ export default {
                 background: rgba(2, 4, 10, 0.85); 
                 border: 1px solid var(--lp-blue); 
                 border-radius: 8px;
+                backdrop-filter: null;
                 box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
-              }
-
-              .search-container::before {
-                content: '>';
-                position: absolute;
-                left: 18px;
-                top: 50%;
-                transform: translateY(-50%);
-                color: var(--lp-blue);
-                font-weight: 900;
-                font-size: 18px;
-                pointer-events: none;
-                animation: blink 1s step-end infinite;
-                z-index: 1;
+                display: flex;
+                align-items: center;
               }
 
               #search { 
-                  display: block;
                   width: 100%;
                   padding: 18px 18px 18px 45px; 
                   background: transparent; 
@@ -4375,6 +4295,16 @@ export default {
                   font-family: inherit; outline: none; box-sizing: border-box; 
                   font-weight: 600;
                   caret-color: transparent; 
+              }
+
+              .custom-cursor {
+                position: absolute;
+                left: 18px;
+                color: var(--lp-blue);
+                font-weight: 900;
+                font-size: 18px;
+                pointer-events: none;
+                animation: blink 1s step-end infinite;
               }
 
               @keyframes blink {
@@ -4387,8 +4317,7 @@ export default {
                 transition: 0.2s;
               }
 
-              #search:focus::placeholder,
-              #search:not(:placeholder-shown)::placeholder {
+              #search:focus::placeholder {
                 opacity: 0;
               }
 
@@ -4453,6 +4382,15 @@ export default {
                   grid-template-rows: 0fr;
                   transition: grid-template-rows 0.5s cubic-bezier(0.4, 0, 0.2, 1);
                   overflow: hidden;
+              }
+              #rules-root .content-wrapper:not(.open):not(.search-open) {
+                  grid-template-rows: 0fr !important;
+                  border-top: none !important;
+              }
+              #rules-root .content-wrapper:not(.open):not(.search-open) > .content > .content-inner {
+                  opacity: 0 !important;
+                  padding: 0 25px !important;
+                  transform: translateY(-8px) !important;
               }
               .content-wrapper.open { grid-template-rows: 1fr; border-top: 1px solid var(--border); }
               .content { min-height: 0; overflow: hidden; }
@@ -4537,6 +4475,7 @@ export default {
               }
 
               .rule-line b { color: var(--lp-blue); }
+              .rule-text > b + b { display: block; margin-top: 12px; }
               .sub-title { color: var(--lp-blue); font-weight: 800; text-transform: uppercase; margin: 15px 0 10px 0; font-size: 12px; letter-spacing: 1px; }
               .sub-title-emoji { margin-right: 0.35em; text-decoration: none; }
               .sub-title--underline { text-decoration: underline; }
@@ -4544,7 +4483,44 @@ export default {
               .guide-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
               .guide-item { background: rgba(255,255,255,0.05); padding: 5px 10px; border-radius: 4px; font-size: 12px; display: flex; justify-content: space-between; }
               
-              .searching .category, .searching .sub-cat { animation: slideUpFade 0.3s ease forwards; }
+              .searching .category.search-match, .searching .sub-cat.search-match { animation: slideUpFade 0.3s ease forwards; }
+              #rules-root.search-mode .category:not(.search-match),
+              #rules-root.search-mode .sub-cat:not(.search-match) {
+                  display: none !important;
+              }
+              #rules-root.search-mode .content-wrapper {
+                  grid-template-rows: 0fr !important;
+                  border-top: none !important;
+              }
+              #rules-root.search-mode .category.search-match > .content-wrapper.search-open,
+              #rules-root.search-mode .sub-cat.search-match > .content-wrapper.search-open {
+                  grid-template-rows: 1fr !important;
+              }
+              #rules-root.search-mode .category.search-match > .content-wrapper.search-open {
+                  border-top: 1px solid var(--border);
+              }
+              #rules-root.search-mode .rule-line:not(.search-match),
+              #rules-root.search-mode .rule-intro:not(.search-match) {
+                  display: none !important;
+              }
+              #rules-root.search-mode .sub-title:not(.search-match),
+              #rules-root.search-mode .guide-grid:not(.search-match),
+              #rules-root.search-mode .guide-item:not(.search-match) {
+                  display: none !important;
+              }
+              #rules-root.search-mode .content-wrapper > .content > .content-inner {
+                  opacity: 0;
+                  padding: 0 25px;
+                  transform: translateY(-8px);
+              }
+              #rules-root.search-mode .content-wrapper.search-open > .content > .content-inner {
+                  opacity: 1;
+                  padding: 20px 25px 24px;
+                  transform: translateY(0);
+              }
+              #rules-root.search-mode .sub-cat .content-wrapper.search-open > .content > .content-inner {
+                  padding: 16px 20px 18px;
+              }
               @keyframes slideUpFade { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
           </style>
 
@@ -4554,15 +4530,31 @@ export default {
 
           <div class="search-wrapper">
               <div class="search-container">
-                  <input type="text" id="search" placeholder="SEARCH RULES..." autocomplete="off" spellcheck="false">
+                  <div class="custom-cursor">></div>
+                  <input type="text" id="search" placeholder="SEARCH RULES...">
               </div>
           </div>
 
           <div id="rules-root">
               ${renderWebRulesRoot(createRule)}
           </div>
+          <!-- rules-ui-build: collapsed-by-default-v3 -->
 
           <script>
+              const rulesRoot = document.getElementById('rules-root');
+              const searchInput = document.getElementById('search');
+
+              (function collapseRulesAccordionsImmediately() {
+                  if (!rulesRoot) return;
+                  rulesRoot.querySelectorAll(".category[data-default-open]").forEach((cat) => {
+                      cat.removeAttribute("data-default-open");
+                  });
+                  rulesRoot.querySelectorAll(".cat-btn, .sub-btn").forEach((btn) => btn.classList.remove("active"));
+                  rulesRoot.querySelectorAll(".content-wrapper").forEach((wrapper) => {
+                      wrapper.classList.remove("open", "search-open");
+                  });
+              })();
+
               function legacyCopyToClipboard(text) {
                   return new Promise(function (resolve, reject) {
                       var ta = document.createElement("textarea");
@@ -4616,7 +4608,7 @@ export default {
               }
 
               function shareRuleLink(id) {
-                  var url = window.location.origin + window.location.pathname + "#" + id;
+                  var url = "https://lifepunch.co/rules#" + id;
                   copyTextToClipboard(url).then(function () {
                       showFeedback(id, "fa-link");
                   }).catch(function () {
@@ -4652,24 +4644,34 @@ export default {
                   }
               });
 
-              window.addEventListener('load', () => {
-                  if (window.location.hash) {
-                      const id = window.location.hash.substring(1);
-                      const target = document.getElementById(id);
-                      if (target) {
-                          let parent = target.parentElement;
-                          while (parent && parent !== document.body) {
-                              if (parent.classList.contains('content-wrapper')) {
-                                  parent.classList.add('open');
-                                  const btn = parent.previousElementSibling;
-                                  if (btn) btn.classList.add('active');
-                              }
-                              parent = parent.parentElement;
-                          }
-                          setTimeout(() => target.scrollIntoView({ behavior: 'smooth', block: 'center' }), 500);
+              function openRulesHashTarget() {
+                  if (!window.location.hash) return;
+                  const id = window.location.hash.substring(1);
+                  if (!id) return;
+                  const target = document.getElementById(id);
+                  if (!target) return;
+                  let parent = target.parentElement;
+                  while (parent && parent !== document.body) {
+                      if (parent.classList.contains('content-wrapper')) {
+                          parent.classList.add('open');
+                          const btn = parent.previousElementSibling;
+                          if (btn) btn.classList.add('active');
                       }
+                      parent = parent.parentElement;
                   }
-              });
+                  setTimeout(() => target.scrollIntoView({ behavior: 'smooth', block: 'center' }), 500);
+              }
+
+              function initRulesPageState() {
+                  if (!rulesRoot) return;
+                  if (searchInput) searchInput.value = "";
+                  clearSearchState();
+                  resetAllAccordionState(rulesRoot);
+                  openRulesHashTarget();
+              }
+
+              window.addEventListener('load', initRulesPageState);
+              window.addEventListener('pageshow', initRulesPageState);
 
               document.querySelectorAll('.cat-btn, .sub-btn').forEach(btn => {
                   btn.addEventListener('click', function(e) {
@@ -4689,16 +4691,41 @@ export default {
                   });
               }
 
-              function shouldSkipHighlightNode(node) {
-                  const parent = node.parentNode;
-                  if (!parent) return true;
-                  if (['SCRIPT', 'STYLE', 'MARK', 'INPUT', 'TEXTAREA'].includes(parent.tagName)) return true;
-                  if (parent.closest('.search-wrapper, .search-container, #search')) return true;
-                  return false;
+              function getSectionToggle(sectionEl) {
+                  if (!sectionEl) return null;
+                  for (const child of sectionEl.children) {
+                      if (!child.classList.contains("cat-btn") && !child.classList.contains("sub-btn")) continue;
+                      const wrapper = child.nextElementSibling;
+                      if (wrapper && wrapper.classList.contains("content-wrapper")) {
+                          return { btn: child, wrapper: wrapper };
+                      }
+                  }
+                  return null;
+              }
+
+              function setAccordionOpen(sectionEl, open) {
+                  const toggle = getSectionToggle(sectionEl);
+                  if (!toggle) return;
+                  toggle.btn.classList.toggle("active", open);
+                  toggle.wrapper.classList.toggle("open", open);
+              }
+
+              function resetAllAccordionState(root) {
+                  root.querySelectorAll(".cat-btn, .sub-btn").forEach((btn) => btn.classList.remove("active"));
+                  root.querySelectorAll(".content-wrapper").forEach((wrapper) => {
+                      wrapper.classList.remove("open", "search-open");
+                  });
+              }
+
+              function setSearchAccordionOpen(sectionEl, open) {
+                  const toggle = getSectionToggle(sectionEl);
+                  if (!toggle) return;
+                  toggle.btn.classList.toggle("active", open);
+                  toggle.wrapper.classList.toggle("search-open", open);
               }
 
               function applyHighlights(root, term) {
-                  if (!term) return;
+                  if (!term || !root) return;
                   const safeTerm = term.replace(/[.*+?^\${}()|[\\]\\\\]/g, '\\\\$&');
                   const regex = new RegExp("(" + safeTerm + ")", "gi");
                   const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
@@ -4706,12 +4733,12 @@ export default {
                   let node;
                   
                   while ((node = walker.nextNode())) {
-                      if (shouldSkipHighlightNode(node)) continue;
+                      if (['SCRIPT', 'STYLE', 'MARK'].includes(node.parentNode.tagName)) continue;
+                      if (node.parentElement && node.parentElement.closest(".cat-btn, .sub-btn")) continue;
                       if (node.nodeValue.trim() !== '') {
                           textNodes.push(node);
                       }
                   }
-
                   textNodes.forEach(textNode => {
                       const text = textNode.nodeValue;
                       if (regex.test(text)) {
@@ -4729,161 +4756,313 @@ export default {
                           
                           fragment.appendChild(document.createTextNode(text.slice(lastIndex)));
                           const parent = textNode.parentNode;
-                          if (parent.matches('.cat-btn, .sub-btn')) {
-                              const wrapper = document.createElement('span');
-                              wrapper.className = 'btn-label';
-                              wrapper.appendChild(fragment);
-                              parent.replaceChild(wrapper, textNode);
-                          } else {
-                              parent.replaceChild(fragment, textNode);
-                          }
+                          parent.replaceChild(fragment, textNode);
                       }
                   });
               }
 
-              let debounceTimer;
-              const searchInput = document.getElementById('search');
-              const rulesRoot = document.getElementById('rules-root');
+              function applyHighlightsToMatches(term) {
+                  rulesRoot.querySelectorAll(".rule-line.search-match .rule-text, .rule-line.search-match .rule-num, .rule-intro.search-match").forEach((el) => {
+                      applyHighlights(el, term);
+                  });
+              }
 
-              searchInput.addEventListener('input', function(e) {
+              function normalizeSearchTerm(term) {
+                  let value = String(term || "");
+                  while (value.endsWith(".")) value = value.slice(0, -1);
+                  return value;
+              }
+
+              function getIntroSearchText(intro) {
+                  return intro.textContent.trim().toLowerCase();
+              }
+
+              function ruleIntroMatchesTerm(intro, term) {
+                  if (!term) return false;
+                  const normalizedTerm = normalizeSearchTerm(term);
+                  if (!normalizedTerm) return false;
+                  return getIntroSearchText(intro).indexOf(normalizedTerm) !== -1;
+              }
+                  
+              function getRuleLineNumber(line) {
+                  const numEl = line.querySelector(".rule-num");
+                  return numEl ? numEl.textContent.trim().toLowerCase() : "";
+              }
+
+              function getRuleLineSearchText(line) {
+                  const num = getRuleLineNumber(line);
+                  const ruleTxtEl = line.querySelector(".rule-text");
+                  const body = (ruleTxtEl ? ruleTxtEl.textContent : "").trim().toLowerCase();
+                  return (num + " " + body).trim();
+              }
+
+              function isRuleNumberSearch(term) {
+                  const value = normalizeSearchTerm(term);
+                  if (!value) return false;
+                  var parts = value.split(".");
+                  if (parts.length < 2) return false;
+                  for (var i = 0; i < parts.length; i++) {
+                      if (!/^[0-9]+$/.test(parts[i])) return false;
+                  }
+                  return true;
+              }
+
+              function isDigitsOnlySearch(term) {
+                  const value = normalizeSearchTerm(term);
+                  return !!value && /^[0-9]+$/.test(value);
+              }
+
+              function getMinSearchLength(term) {
+                  const normalizedTerm = normalizeSearchTerm(term);
+                  if (!normalizedTerm) return 3;
+                  if (isRuleNumberSearch(normalizedTerm) || isDigitsOnlySearch(normalizedTerm)) return 1;
+                  return 3;
+              }
+
+              function ruleNumberMatchesDigitsOnly(num, term) {
+                  if (!num || !term) return false;
+                  if (num === term) return true;
+                  if (num.indexOf(term + ".") === 0) return true;
+                  if (term.length >= 2) {
+                      return num.split(".").some((segment) => segment === term);
+                  }
+                  return false;
+              }
+
+              function categoryNumberMatchesTerm(sectionEl, term) {
+                  if (!term || term.length !== 1 || !/^[0-9]$/.test(term)) return false;
+                  const toggle = getSectionToggle(sectionEl);
+                  if (!toggle || !toggle.btn) return false;
+                  const text = toggle.btn.textContent.trim();
+                  const match = text.match(/^(\d+)\./);
+                  return !!(match && match[1] === term);
+              }
+
+              function ruleNumberMatchesLine(line, term) {
+                  const num = getRuleLineNumber(line);
+                  if (!num) return false;
+                  return num === term || num.indexOf(term + ".") === 0;
+              }
+
+              function ruleLineMatchesTerm(line, term) {
+                  if (!term) return false;
+                  const normalizedTerm = normalizeSearchTerm(term);
+                  if (!normalizedTerm) return false;
+                  if (isRuleNumberSearch(normalizedTerm)) {
+                      return ruleNumberMatchesLine(line, normalizedTerm);
+                  }
+                  const num = getRuleLineNumber(line);
+                  const ruleTxtEl = line.querySelector(".rule-text");
+                  const body = (ruleTxtEl ? ruleTxtEl.textContent : "").trim().toLowerCase();
+                  if (isDigitsOnlySearch(normalizedTerm)) {
+                      if (ruleNumberMatchesDigitsOnly(num, normalizedTerm)) return true;
+                      if (normalizedTerm.length >= 2 && body.indexOf(normalizedTerm) !== -1) return true;
+                      return false;
+                  }
+                  const haystack = (num + " " + body).trim();
+                  return haystack.indexOf(normalizedTerm) !== -1;
+              }
+
+              function getSectionButtonText(sectionEl) {
+                  const toggle = getSectionToggle(sectionEl);
+                  if (!toggle || !toggle.btn) return "";
+                  return toggle.btn.textContent.trim().toLowerCase();
+              }
+
+              function sectionLabelMatchesTerm(sectionEl, term) {
+                  if (!term) return false;
+                  const normalizedTerm = normalizeSearchTerm(term);
+                  if (!normalizedTerm || isRuleNumberSearch(normalizedTerm) || isDigitsOnlySearch(normalizedTerm)) return false;
+                  return getSectionButtonText(sectionEl).indexOf(normalizedTerm) !== -1;
+              }
+
+              function elementTextMatchesTerm(el, term) {
+                  if (!term || !el) return false;
+                  const normalizedTerm = normalizeSearchTerm(term);
+                  if (!normalizedTerm || isRuleNumberSearch(normalizedTerm) || isDigitsOnlySearch(normalizedTerm)) return false;
+                  return el.textContent.trim().toLowerCase().indexOf(normalizedTerm) !== -1;
+              }
+
+              function syncGuideHeaderForGrid(grid) {
+                  if (!grid || !grid.classList.contains("guide-grid")) return;
+                  const title = grid.previousElementSibling;
+                  if (title && title.classList.contains("sub-title")) {
+                      title.classList.add("search-match");
+                  }
+              }
+
+              function trackSectionParents(el, visibleCats, visibleSubs) {
+                  const sub = el.closest('.sub-cat');
+                  if (sub) {
+                      visibleSubs.add(sub);
+                      const cat = sub.closest('.category');
+                      if (cat) visibleCats.add(cat);
+                  } else {
+                      const cat = el.closest('.category');
+                      if (cat) visibleCats.add(cat);
+                  }
+              }
+
+              function trackSectionLabel(sectionEl, visibleCats, visibleSubs) {
+                  if (sectionEl.classList.contains('sub-cat')) {
+                      visibleSubs.add(sectionEl);
+                      const cat = sectionEl.closest('.category');
+                      if (cat) visibleCats.add(cat);
+                  } else if (sectionEl.classList.contains('category')) {
+                      visibleCats.add(sectionEl);
+                  }
+              }
+
+              function clearSearchState() {
+                  if (!rulesRoot) return;
+                  rulesRoot.classList.remove('searching');
+                  rulesRoot.classList.remove('search-mode');
+                  removeHighlights(rulesRoot);
+                  rulesRoot.querySelectorAll('.category, .sub-cat').forEach((section) => {
+                      section.classList.remove('search-match');
+                      section.style.removeProperty('display');
+                  });
+                  rulesRoot.querySelectorAll('.rule-line').forEach((line) => {
+                      line.classList.remove('search-match');
+                      line.style.removeProperty('display');
+                  });
+                  rulesRoot.querySelectorAll('.rule-intro').forEach((intro) => {
+                      intro.classList.remove('search-match');
+                      intro.style.removeProperty('display');
+                  });
+                  rulesRoot.querySelectorAll('.sub-title, .guide-grid, .guide-item').forEach((el) => {
+                      el.classList.remove('search-match');
+                      el.style.removeProperty('display');
+                  });
+                  rulesRoot.querySelectorAll('.content-wrapper').forEach((wrapper) => {
+                      wrapper.classList.remove('search-open');
+                  });
+              }
+
+              function resetSearchUiToDefault() {
+                  clearSearchState();
+                  resetAllAccordionState(rulesRoot);
+              }
+
+              let debounceTimer;
+
+              if (rulesRoot && searchInput) searchInput.addEventListener('input', function(e) {
                   const term = e.target.value.trim().toLowerCase();
                   
                   clearTimeout(debounceTimer);
                   debounceTimer = setTimeout(() => {
-                      const categories = document.querySelectorAll('.category');
-                      const subCategories = document.querySelectorAll('.sub-cat');
-                      const ruleLines = document.querySelectorAll('.rule-line');
-                      
-                      if (term.length < 3) {
-                          rulesRoot.classList.remove('searching');
-                          removeHighlights(rulesRoot);
-                          
-                          // Reset everything to default
-                          categories.forEach(cat => {
-                              cat.style.display = 'block';
-                              cat.querySelector('.cat-btn').classList.remove('active');
-                              cat.querySelector('.content-wrapper').classList.remove('open');
-                          });
-                          subCategories.forEach(sub => {
-                              sub.style.display = 'block';
-                              sub.querySelector('.sub-btn').classList.remove('active');
-                              sub.querySelector('.content-wrapper').classList.remove('open');
-                          });
-                          ruleLines.forEach(line => line.style.removeProperty('display'));
-                          document.querySelectorAll('.rule-intro').forEach((intro) => intro.style.removeProperty('display'));
+                      if (term.length < getMinSearchLength(term)) {
+                          resetSearchUiToDefault();
                           return;
                       }
 
+                      clearSearchState();
+                      resetAllAccordionState(rulesRoot);
                       rulesRoot.classList.add('searching');
-                      removeHighlights(rulesRoot);
+                      rulesRoot.classList.add('search-mode');
 
-                      // Track what needs to be shown
                       const visibleCats = new Set();
                       const visibleSubs = new Set();
+                      let firstMatch = null;
 
-                      const syncRuleIntroVisibility = () => {
-                          document.querySelectorAll('.rule-intro[data-rule-group]').forEach((intro) => {
-                              const group = intro.dataset.ruleGroup;
-                              const hasVisible = Array.from(
-                                  document.querySelectorAll('.rule-line[data-rule-group="' + group + '"]')
-                              ).some((line) => line.style.display !== 'none');
-                              intro.style.display = hasVisible ? 'block' : 'none';
+                      rulesRoot.querySelectorAll('.rule-line').forEach((line) => {
+                          line.classList.remove('search-match');
+                      });
+                      rulesRoot.querySelectorAll('.rule-intro').forEach((intro) => {
+                          intro.classList.remove('search-match');
+                      });
+                      rulesRoot.querySelectorAll('.category, .sub-cat').forEach((section) => {
+                          section.classList.remove('search-match');
+                      });
+                      rulesRoot.querySelectorAll('.sub-title, .guide-grid, .guide-item').forEach((el) => {
+                          el.classList.remove('search-match');
+                      });
+
+                      rulesRoot.querySelectorAll('.rule-intro[data-rule-group]').forEach((intro) => {
+                          if (!ruleIntroMatchesTerm(intro, term)) return;
+                          intro.classList.add('search-match');
+                          if (!firstMatch) firstMatch = intro;
+                          trackSectionParents(intro, visibleCats, visibleSubs);
+                      });
+
+                      rulesRoot.querySelectorAll('.rule-line').forEach((line) => {
+                          if (!ruleLineMatchesTerm(line, term)) return;
+                          line.classList.add('search-match');
+                          if (!firstMatch) firstMatch = line;
+                          trackSectionParents(line, visibleCats, visibleSubs);
+                      });
+
+                      rulesRoot.querySelectorAll('.rule-intro[data-rule-group]').forEach((intro) => {
+                          if (intro.classList.contains('search-match')) return;
+                          const group = intro.dataset.ruleGroup;
+                          const hasVisible = Array.from(
+                              rulesRoot.querySelectorAll('.rule-line[data-rule-group="' + group + '"]')
+                          ).some((line) => line.classList.contains('search-match'));
+                          if (!hasVisible) return;
+                          intro.classList.add('search-match');
+                          if (!firstMatch) firstMatch = intro;
+                          trackSectionParents(intro, visibleCats, visibleSubs);
+                      });
+
+                      rulesRoot.querySelectorAll('.sub-cat').forEach((sub) => {
+                          if (!sectionLabelMatchesTerm(sub, term)) return;
+                          trackSectionLabel(sub, visibleCats, visibleSubs);
+                      });
+                      rulesRoot.querySelectorAll('.category').forEach((cat) => {
+                          if (!sectionLabelMatchesTerm(cat, term)) return;
+                          trackSectionLabel(cat, visibleCats, visibleSubs);
+                      });
+
+                      const normalizedSearchTerm = normalizeSearchTerm(term);
+                      if (isDigitsOnlySearch(normalizedSearchTerm) && normalizedSearchTerm.length === 1) {
+                          rulesRoot.querySelectorAll('.category').forEach((cat) => {
+                              if (!categoryNumberMatchesTerm(cat, normalizedSearchTerm)) return;
+                              trackSectionLabel(cat, visibleCats, visibleSubs);
                           });
-                      };
+                      }
 
-                      // Check every rule
-                      ruleLines.forEach(line => {
-                          const ruleTxtEl = line.querySelector('.rule-text');
-                          const text = (ruleTxtEl ? ruleTxtEl.textContent : '').toLowerCase();
-                          
-                          if (text.indexOf(term) !== -1) {
-                              line.style.display = 'flex';
-                              
-                              // Track parents
-                              let sub = line.closest('.sub-cat');
-                              if (sub) {
-                                  visibleSubs.add(sub);
-                                  let cat = sub.closest('.category');
-                                  if (cat) visibleCats.add(cat);
-                              } else {
-                                  let cat = line.closest('.category');
-                                  if (cat) visibleCats.add(cat);
-                              }
-                          } else {
-                              line.style.display = 'none';
+                      rulesRoot.querySelectorAll('.guide-item').forEach((item) => {
+                          if (!elementTextMatchesTerm(item, term)) return;
+                          item.classList.add('search-match');
+                          const grid = item.closest('.guide-grid');
+                          if (grid) {
+                              grid.classList.add('search-match');
+                              syncGuideHeaderForGrid(grid);
                           }
+                          if (!firstMatch) firstMatch = item;
+                          trackSectionParents(item, visibleCats, visibleSubs);
                       });
 
-                      document.querySelectorAll('.rule-intro[data-rule-group]').forEach((intro) => {
-                          const text = intro.textContent.toLowerCase();
-                          if (text.indexOf(term) !== -1) {
-                              intro.style.display = 'block';
-                              const group = intro.dataset.ruleGroup;
-                              document.querySelectorAll('.rule-line[data-rule-group="' + group + '"]').forEach((line) => {
-                                  line.style.display = 'flex';
-                                  let sub = line.closest('.sub-cat');
-                                  if (sub) {
-                                      visibleSubs.add(sub);
-                                      let cat = sub.closest('.category');
-                                      if (cat) visibleCats.add(cat);
-                                  } else {
-                                      let cat = line.closest('.category');
-                                      if (cat) visibleCats.add(cat);
-                                  }
+                      rulesRoot.querySelectorAll('.sub-title').forEach((title) => {
+                          if (!elementTextMatchesTerm(title, term)) return;
+                          title.classList.add('search-match');
+                          const next = title.nextElementSibling;
+                          if (next && next.classList.contains('guide-grid')) {
+                              next.classList.add('search-match');
+                              next.querySelectorAll('.guide-item').forEach((item) => {
+                                  item.classList.add('search-match');
                               });
                           }
+                          if (!firstMatch) firstMatch = title;
+                          trackSectionParents(title, visibleCats, visibleSubs);
                       });
 
-                      // Also check sub-category and category buttons (headers)
-                      subCategories.forEach(sub => {
-                          const btn = sub.querySelector('.sub-btn');
-                          const btnText = (btn ? btn.textContent : '').toLowerCase();
-                          if (btnText.indexOf(term) !== -1) {
-                              visibleSubs.add(sub);
-                              let cat = sub.closest('.category');
-                              if (cat) visibleCats.add(cat);
-                              // If header matches, show its rules
-                              sub.querySelectorAll('.rule-line').forEach(l => l.style.display = 'flex');
-                          }
+                      visibleSubs.forEach((sub) => {
+                          sub.classList.add('search-match');
+                          setSearchAccordionOpen(sub, true);
+                      });
+                      visibleCats.forEach((cat) => {
+                          cat.classList.add('search-match');
+                          setSearchAccordionOpen(cat, true);
                       });
 
-                      categories.forEach(cat => {
-                          const btn = cat.querySelector('.cat-btn');
-                          const btnText = (btn ? btn.textContent : '').toLowerCase();
-                          if (btnText.indexOf(term) !== -1) {
-                              visibleCats.add(cat);
-                              // If main header matches, show everything inside
-                              cat.querySelectorAll('.rule-line').forEach(l => l.style.display = 'flex');
-                              cat.querySelectorAll('.sub-cat').forEach(s => {
-                                  visibleSubs.add(s);
-                                  s.style.display = 'block';
-                              });
-                          }
-                      });
+                      applyHighlightsToMatches(term);
 
-                      // Apply visibility and open states
-                      categories.forEach(cat => {
-                          if (visibleCats.has(cat)) {
-                              cat.style.display = 'block';
-                              cat.querySelector('.cat-btn').classList.add('active');
-                              cat.querySelector('.content-wrapper').classList.add('open');
-                          } else {
-                              cat.style.display = 'none';
-                          }
-                      });
-
-                      subCategories.forEach(sub => {
-                          if (visibleSubs.has(sub)) {
-                              sub.style.display = 'block';
-                              sub.querySelector('.sub-btn').classList.add('active');
-                              sub.querySelector('.content-wrapper').classList.add('open');
-                          } else {
-                              sub.style.display = 'none';
-                          }
-                      });
-
-                      syncRuleIntroVisibility();
-                      applyHighlights(rulesRoot, term);
+                      if (firstMatch) {
+                          setTimeout(() => {
+                              firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                          }, 150);
+                      }
                   }, 60);
               });
           </script>
