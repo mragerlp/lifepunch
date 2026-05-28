@@ -111,11 +111,11 @@ Generated from `Rules-V1.txt`. This is a public rules snapshot for review and we
 
 ### 🚧 Special Building Restrictions
 
-- Doors: Only buy doors you intend to use
-- Rooftop Bases: Rooftop bases are built on top of an existing map structure; this is not considered a skybase; Rooftop bases are allowed; You must have a ramp or other clear method of getting to the first fading door
-- Hobo Aerial Builds: Hobos may build aerial structures for roleplay features such as ramps and slides
+- Doors: If you buy doors, you must actively use the space behind them as part of your base; You may not purchase interior doors and leave that area unused while basing on the roof or elsewhere
+- Rooftop Bases: Rooftop bases are built on top of an existing map structure; this is not considered a skybase; Rooftop bases are allowed; You must have a ramp or other clear method of getting to the first fading door; Rooftop-only bases do not need to own the interior doors below; your base entrance must be on the roof; Rooftop bases must not obstruct or interfere with property on lower floors
 - Sky Bases: A skybase is a base over 550 units tall measured with the Ruler tool from the floor to the top of the base; Skybases are not allowed
 - Blackout Bases: Blackout bases are not allowed
+- Hobo Aerial Builds: Hobos may build aerial structures for roleplay features such as ramps and slides
 
 ## Job Rules
 

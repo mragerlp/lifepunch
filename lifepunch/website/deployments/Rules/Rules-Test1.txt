@@ -215,11 +215,11 @@ export default {
                         rawTitle: "SUB-CATEGORY 4E: SPECIAL BUILDING RESTRICTIONS",
                         webBtn: "🚧 Special Building Restrictions",
                         rules: [
-                            { id: "special-doors", html: `<b>Doors</b><ul class="rule-sublist"><li>Only buy doors you intend to use</li></ul>` },
-                            { id: "base-rooftop", html: `<b>Rooftop Bases</b><ul class="rule-sublist"><li>Rooftop bases are built on top of an existing map structure; this is not considered a skybase</li><li>Rooftop bases are allowed</li><li>You must have a ramp or other clear method of getting to the first fading door</li></ul>` },
-                            { id: "hobo-aerial", html: `<b>Hobo Aerial Builds</b><ul class="rule-sublist"><li>Hobos may build aerial structures for roleplay features such as ramps and slides</li></ul>` },
+                            { id: "special-doors", html: `<b>Doors</b><ul class="rule-sublist"><li>If you buy doors, you must actively use the space behind them as part of your base</li><li>You may not purchase interior doors and leave that area unused while basing on the roof or elsewhere</li></ul>` },
+                            { id: "base-rooftop", html: `<b>Rooftop Bases</b><ul class="rule-sublist"><li>Rooftop bases are built on top of an existing map structure; this is not considered a skybase</li><li>Rooftop bases are allowed</li><li>You must have a ramp or other clear method of getting to the first fading door</li><li>Rooftop-only bases do not need to own the interior doors below; your base entrance must be on the roof</li><li>Rooftop bases must not obstruct or interfere with property on lower floors</li></ul>` },
                             { id: "no-skybases", html: `<b>Sky Bases</b><ul class="rule-sublist"><li>A skybase is a base over 550 units tall measured with the Ruler tool from the floor to the top of the base</li><li>Skybases are not allowed</li></ul>` },
-                            { id: "no-blackout", html: `<b>Blackout Bases</b><ul class="rule-sublist"><li>Blackout bases are not allowed</li></ul>` }
+                            { id: "no-blackout", html: `<b>Blackout Bases</b><ul class="rule-sublist"><li>Blackout bases are not allowed</li></ul>` },
+                            { id: "hobo-aerial", html: `<b>Hobo Aerial Builds</b><ul class="rule-sublist"><li>Hobos may build aerial structures for roleplay features such as ramps and slides</li></ul>` }
                         ]
                     }
                 ]
