@@ -17,9 +17,9 @@ Website /rules (cloudflare-worker.mjs):
 Deploy files (Lifepunch/Rules/):
 + Rules-V1.txt — production numbered-rules worker paste.
 + Rules-V2.txt — alternate layout: no rule numerals, nested disc bullet lists.
-+ Rules-Test1.txt — sandbox copy for rule edits before promoting to V1.
-+ build-rules-v2-copy.mjs regenerates V2 from Test1.
++ Rules-Test1.txt — optional sandbox (copy V1 → Test1 before risky experiments).
++ build-rules-v2-copy.mjs regenerates V2 from V1.
 
 - KOS Lines building subcategory was removed after consolidation into RDM / RDA.
 
-Next: Edit Rules-Test1.txt, promote to Rules-V1.txt when ready, then full paste deploy to Cloudflare (not partial).
+Next: Edit Rules-V1.txt, keep cloudflare-worker.mjs aligned, regen V2 when needed, then full paste deploy to Cloudflare (not partial).

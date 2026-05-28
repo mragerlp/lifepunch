@@ -258,7 +258,7 @@ export default {
                             },
                             {
                                 id: "hobo-checkpoints",
-                                html: `<b>Hobo Checkpoints & Toll Booths</b><ul class="rule-sublist"><li>Hobos may create checkpoints or toll booths.</li><li>Hobo checkpoint and toll booth fees may not exceed $20.</li></ul>`
+                                html: `<b>Hobo Checkpoints & Toll Booths</b><ul class="rule-sublist"><li>Hobos may create a checkpoint or toll booth.</li><li>Hobo checkpoint and toll booth fees may not exceed $50.</li></ul>`
                             }
                         ]
                     },
@@ -286,7 +286,7 @@ export default {
                             },
                             {
                                 id: "police-checkpoints",
-                                html: `<b>Police Checkpoints</b><ul class="rule-sublist"><li>Police may only build checkpoints in public.</li><li>Police do not use toll booths, as their checkpoints cannot require a fee.</li><li>Police checkpoints may only enforce that a search is required to pass.</li></ul>`
+                                html: `<b>Police Checkpoints</b><ul class="rule-sublist"><li>Police may create a checkpoint in public.</li><li>Police do not use toll booths, as their checkpoints cannot require a fee.</li><li>A police checkpoint may only enforce that a search is required to pass.</li></ul>`
                             },
                             { id: "gov-raid", html: `<b>Government Raid</b> — Government players cannot raid with criminals, except for Hitmen.` },
                             { id: "job-arrest", html: `<b>Job Arrest</b> — Government players cannot raid or arrest someone solely because of their job.` },
@@ -387,7 +387,7 @@ export default {
                         rules: [
                             {
                                 id: "cooldowns",
-                                html: `<b>Cooldowns</b> — The following timers apply between repeated actions.<ul class="rule-sublist"><li>You may not spam-mug, spam-hit, or spam-raid the same person after successful attempts. Space things out and RP with other people or it could be considered harassment.</li><li>Mugging: 5 minutes between mugs</li><li>Hits: 15 minute cooldown for placing hits on the same person</li><li>Raiding the same base after a failed attempt: 10 minutes</li><li>Raiding the same base after a successful attempt: 25 minutes</li><li>PD raid: 10 minutes</li><li>Mayor: 10-minute grace period before they can be raided or killed after they're elected</li><li>Mayor kidnapping: 30 minutes</li><li>No raiding for 10 minutes after a server crash</li></ul>`
+                                html: `<ul class="rule-sublist"><li>You may not spam-mug, spam-hit, or spam-raid the same person after successful attempts. Space things out and RP with other people or it could be considered harassment.</li><li>Mugging: 5 Minute Cooldown</li><li>Hits: 15 minutes (Same Player)</li><li>Raiding (Same Base): 10 minutes</li><li>PD Raid: 10 minutes</li><li>Mayor Grace Period: 10 minutes (After election)</li><li>Mayor kidnapping: 30 minutes</li><li>No raiding for 10 minutes after a server crash</li></ul>`
                             }
                         ]
                     },
@@ -443,6 +443,8 @@ export default {
             if (bullets.length === 0) return null;
             return { intro, bullets };
         };
+
+        const isSkippedNumberBullet = (bullet) => bullet.trim() === "[[skip-num]]";
 
         const makeRuleNumberStream = (catNum, sectionNum = null) => {
             let n = 0;
@@ -4524,7 +4526,7 @@ export default {
               }
 
               function shareRuleLink(id) {
-                  var url = window.location.origin + window.location.pathname + "#" + id;
+                  var url = "https://lifepunch.co/rules#" + id;
                   copyTextToClipboard(url).then(function () {
                       showFeedback(id, "fa-link");
                   }).catch(function () {

@@ -82,19 +82,26 @@ export default {
                         rawTitle: "SUB-CATEGORY 2A: RDM / RDA",
                         webBtn: "🔫 RDM / RDA",
                         rules: [
-                            { id: "rdm-definition", html: `<b>RDM Definition</b><ul class="rule-sublist"><li>Random Deathmatch (RDM) is killing or arresting someone without a valid roleplay reason.</li></ul>` },
+                            { id: "rdm-definition", html: `<b>RDM Definition</b><ul class="rule-sublist"><li>Random Deathmatch (RDM) is killing someone without a valid roleplay reason.</li></ul>` },
+                            { id: "rda-definition", html: `<b>RDA Definition</b><ul class="rule-sublist"><li>Random Death Arrest (RDA) is arresting someone without a valid roleplay reason.</li></ul>` },
                             { id: "rdm-reason", html: `<b>RDM Reasoning</b><ul class="rule-sublist"><li>Disrespect or threats alone are not valid reasons to kill someone.</li><li>Taking damage or having items stolen are valid reasons.</li></ul>` },
-                            { id: "base-kos-line", html: `<b>KOS Placement</b><ul class="rule-sublist"><li>KOS zones must start at a base's purchasable front door, fading door, or the start of an airlock.</li><li>KOS lines must include a text sign that says 'KOS past.'</li></ul>` },
-                            { id: "rdm-kos2", html: `<b>KOS Boundaries</b><ul class="rule-sublist"><li>KOS lines are general markers for where KOS begins.</li><li>Once a KOS line is placed, the space behind that line is considered KOS.</li><li>Example: If a KOS sign is at the front of a door, but you enter through a different way, you may still be killed.</li></ul>` },
-                            { id: "rdm-kos", html: `<b>KOS & RDM</b><ul class="rule-sublist"><li>Crossing a clearly marked KOS line is not considered RDM.</li></ul>` },
-                            { id: "kos-understandable", html: `<b>KOS Clarity</b><ul class="rule-sublist"><li>KOS zones must be easy to understand and must never be deceptive.</li></ul>` },
                             { id: "rdm-warnings", html: `<b>Warnings</b><ul class="rule-sublist"><li>You may kill someone after warning them three times in chat to step away or to leave your property.</li></ul>` },
-                            { id: "rdm-police", html: `<b>Police</b><ul class="rule-sublist"><li>You may be killed by the person you are trying to arrest if the situation escalates.</li></ul>` },
+                            { id: "rdm-police", html: `<b>Police</b><ul class="rule-sublist"><li>You may be killed by the person you are trying to arrest or their basemates.</li></ul>` },
                             { id: "rdm-mayor", html: `<b>Mayor</b><ul class="rule-sublist"><li>Killing the Mayor requires a valid roleplay reason, such as a PD raid or mugging.</li></ul>` }
                         ]
                     },
                     {
-                        rawTitle: "SUB-CATEGORY 2B: NLR",
+                        rawTitle: "SUB-CATEGORY 2B: KOS",
+                        webBtn: "⚠️ KOS",
+                        rules: [
+                            { id: "rdm-kos", html: `<b>KOS & RDM</b><ul class="rule-sublist"><li>Crossing a clearly marked KOS line is not considered RDM.</li></ul>` },
+                            { id: "base-kos-line", html: `<b>KOS Line Placement</b><ul class="rule-sublist"><li>KOS zones must start at a base's purchasable front door, fading door, or the start of an airlock.</li><li>KOS lines must include a text sign that says 'KOS past.'</li><li>Government jobs cannot have KOS lines.</li></ul>` },
+                            { id: "rdm-kos2", html: `<b>KOS Boundaries</b><ul class="rule-sublist"><li>KOS lines are general markers for where KOS begins for the inside of a base.</li><li>Once a KOS line is placed, the space behind that line is considered KOS.</li><li>Example: If a KOS sign is at the front door, but you enter the base through a window, you may still be killed.</li></ul>` },
+                            { id: "kos-understandable", html: `<b>KOS Clarity</b><ul class="rule-sublist"><li>KOS zones must be easy to understand and must never be deceptive.</li></ul>` }
+                        ]
+                    },
+                    {
+                        rawTitle: "SUB-CATEGORY 2C: NLR",
                         webBtn: "💀 NLR",
                         rules: [
                             { id: "nlr-definition", html: `<b>NLR Definition</b><ul class="rule-sublist"><li>The New Life Rule (NLR) means you may remember past events, but you cannot act on them.</li></ul>` },
@@ -105,7 +112,7 @@ export default {
                         ]
                     },
                     {
-                        rawTitle: "SUB-CATEGORY 2C: Fail RP",
+                        rawTitle: "SUB-CATEGORY 2D: Fail RP",
                         webBtn: "🎭 Fail RP",
                         rules: [
                             {
@@ -119,7 +126,7 @@ export default {
                         ]
                     },
                     {
-                        rawTitle: "SUB-CATEGORY 2D: METAGAMING",
+                        rawTitle: "SUB-CATEGORY 2E: METAGAMING",
                         webBtn: "🔍 Metagaming",
                         rules: [
                             {
@@ -186,8 +193,10 @@ export default {
                         webBtn: "🚪 Fading Doors",
                         rules: [
                             { id: "fd-limit", html: `<b>Fading Door Limit</b><ul class="rule-sublist"><li>You may use a maximum of two fading doors to access your raidables.</li></ul>` },
-                            { id: "fd-utility", html: `<b>Fading Door Utility</b><ul class="rule-sublist"><li>Utility fading doors, such as one-way exits and peeks, are allowed.</li></ul>` },
-                            { id: "fd-airlocks", html: `<b>Fading Door Airlocks</b><ul class="rule-sublist"><li>Airlocks must be identifiable and distinct through color or material.</li></ul>` }
+                            {
+                                id: "fd-utility",
+                                html: `<b>Utility Fading Doors</b><ul class="rule-sublist"><li>Utility fading doors are allowed (examples: one-way exits, peeking holes, merchant airlocks).</li><li>Airlocks/fading door entrances must be identifiable and distinct through color or material.</li><li>Merchant or Dealer "airlock" doors are permitted, provided they are publicly accessible and are not part of a base's main entrance or raidable area (2 Max).</li><li>Merchants include: Gun Dealer, Medic, Cook, Drug Dealers.</li></ul>`
+                            }
                         ]
                     },
                     {
@@ -280,6 +289,10 @@ export default {
                                 html: `<b>Mayor</b><ul class="rule-sublist"><li>The Mayor must base in the PD.</li><li>Gun licenses may include a fee, but the Mayor is not obligated to provide them to criminals.</li><li>The Mayor may build outside the PD only for government or roleplay use, such as checkpoints or toll booths.</li><li>Major law changes must be announced before enforcement.</li></ul>`
                             },
                             {
+                                id: "mayor-grace",
+                                html: `<b>Mayor Grace Period</b><ul class="rule-sublist"><li>For 10 minutes after a Mayor is elected, the Mayor may not be raided, mugged, or killed.</li></ul>`
+                            },
+                            {
                                 id: "police-base",
                                 html: `<b>Police</b><ul class="rule-sublist"><li>Police must base in the PD and allow all government members to base and roleplay with them.</li><li>Follow the command hierarchy.</li><li>Attempt to arrest before killing, unless the suspect has a weapon drawn.</li></ul>`
                             },
@@ -321,45 +334,43 @@ export default {
                 num: 6,
                 title: "Raiding & Mugging",
                 icon: "fa-bomb",
-                blocks: [
-                    { type: "heading", raw: "RAIDING RULES", webEmoji: "⚔️", web: "Raiding Rules", underline: true },
+                subcategories: [
                     {
-                        type: "rules",
+                        rawTitle: "SUB-CATEGORY 6A: RAIDING RULES",
+                        webBtn: "⚔️ Raiding Rules",
                         rules: [
                             { id: "raid-guidelines", html: `<b>Raiding Guidelines</b><ul class="rule-sublist"><li>A raid starts when a prybar is out, a base member is damaged, or when a weapon is drawn on the property.</li><li>A raid ends when no raiders remain inside or on the property.</li></ul>` },
                             { id: "mid-raid", html: `<b>Mid-Raid</b><ul class="rule-sublist"><li>Props may not be moved, changed, deleted, or added during a raid.</li><li>You may use an entity ladder to enter a flawed or open base.</li></ul>` },
                             { id: "pd-raid", html: `<b>Police Raids</b><ul class="rule-sublist"><li>A police raid ends when all attending police die.</li><li>Returning to a police raid after death breaks NLR.</li></ul>` },
                             { id: "no-counter-raid", html: `<b>No Counter Raiding</b><ul class="rule-sublist"><li>Counter raiding is not allowed.</li><li>You may not defend someone else's base unless you are actively basing with them.</li></ul>` }
-                        ]
+                        ],
+                        guide: {
+                            rawHeading: "RAID GUIDE (✅ Can Raid)",
+                            webHeading: "Raid Guide (✅ Can Raid)",
+                            items: [
+                                "Medic (1 per raid)",
+                                "Drug Dealer",
+                                "Gangster",
+                                "Mob Boss",
+                                "Hitman (active hit required)",
+                                "Thief"
+                            ]
+                        }
                     },
                     {
-                        type: "guide",
-                        rawHeading: "RAID GUIDE (✅ Can Raid)",
-                        webHeading: "Raid Guide (✅ Can Raid)",
-                        items: [
-                            "Medic (1 per raid)",
-                            "Drug Dealer",
-                            "Gangster",
-                            "Mob Boss",
-                            "Hitman (active hit required)",
-                            "Thief"
-                        ]
-                    },
-                    { type: "heading", raw: "MUGGING RULES", webEmoji: "💰", web: "Mugging Rules", underline: true },
-                    {
-                        type: "rules",
+                        rawTitle: "SUB-CATEGORY 6B: MUGGING RULES",
+                        webBtn: "💰 Mugging Rules",
                         rules: [
                             { id: "mug-limit", html: `<b>$ Limit</b><ul class="rule-sublist"><li>The maximum mug amount is $1,000.</li><li>You must type a mug warning, and the victim must be given 10 seconds to respond.</li></ul>` },
                             { id: "mug-cooldown", html: `<b>Cooldown</b><ul class="rule-sublist"><li>There is a 5-minute cooldown between mugs.</li><li>Don't mug the same person repeatedly.</li></ul>` },
                             { id: "mug-defense", html: `<b>Defense</b><ul class="rule-sublist"><li>Victims of a mugging may always defend themselves without warning.</li></ul>` },
                             { id: "mug-shipments", html: `<b>Shipments</b><ul class="rule-sublist"><li>You may mug shipments or guns if you see someone collect them.</li><li>The same warning rules apply.</li></ul>` }
-                        ]
-                    },
-                    {
-                        type: "guide",
-                        rawHeading: "MUG GUIDE (✅ Can Mug)",
-                        webHeading: "Mug Guide (✅ Can Mug)",
-                        items: ["Hobo", "Drug Dealer", "Gangster", "Mob Boss", "Thief"]
+                        ],
+                        guide: {
+                            rawHeading: "MUG GUIDE (✅ Can Mug)",
+                            webHeading: "Mug Guide (✅ Can Mug)",
+                            items: ["Hobo", "Drug Dealer", "Gangster", "Mob Boss", "Thief"]
+                        }
                     }
                 ]
             },
@@ -370,7 +381,7 @@ export default {
                 rules: [
                     {
                         id: "minging-prohibited",
-                        html: `<b>Prohibited</b> — The following actions are considered minging or trolling:<ul class="rule-sublist"><li>Baiting RDM or RDA</li><li>Excessive trolling</li><li>Preventing others from building</li><li>Preventing new players from learning</li><li>Repeatedly raiding someone with no valuables</li><li>Disobeying staff or reasonable requests</li></ul>`
+                        html: `<b>The following is not allowed:</b><ul class="rule-sublist"><li>Baiting RDM or RDA</li><li>Excessive trolling</li><li>Preventing others from building</li><li>Preventing new players from learning</li><li>Repeatedly raiding someone with no valuables</li><li>Disobeying staff or reasonable requests</li></ul>`
                     }
                 ]
             },
@@ -378,20 +389,24 @@ export default {
                 num: 8,
                 title: "Cooldowns & Reporting",
                 icon: "fa-clock",
-                blocks: [
-                    { type: "heading", raw: "COOLDOWNS", webEmoji: "⏳", web: "Cooldowns", underline: true },
+                subcategories: [
                     {
-                        type: "rules",
+                        rawTitle: "SUB-CATEGORY 8A: COOLDOWNS",
+                        webBtn: "⏳ Cooldowns",
                         rules: [
                             {
+                                id: "targeting",
+                                html: `<b>Targeting</b><ul class="rule-sublist"><li>You may not spam-mug, spam-hit, or spam-raid the same person after successful attempts. Space things out and RP with other people or it could be considered harassment.</li></ul>`
+                            },
+                            {
                                 id: "cooldowns",
-                                html: `<ul class="rule-sublist"><li>You may not spam-mug, spam-hit, or spam-raid the same person after successful attempts. Space things out and RP with other people or it could be considered harassment.</li><li>Mugging: 5 Minute Cooldown</li><li>Hits: 15 minutes (Same Player)</li><li>Raiding (Same Base): 10 minutes</li><li>PD Raid: 10 minutes</li><li>Mayor Grace Period: 10 minutes (After election)</li><li>No raiding for 10 minutes after a server crash</li></ul>`
+                                html: `<b>Cooldowns</b> — The following timers apply between repeated actions:<ul class="rule-sublist"><li>Mugging: 5 Minute Cooldown</li><li>Hits: 15 minutes (Same Player)</li><li>Raiding (Same Base): 10 minutes</li><li>PD Raid: 10 minutes</li><li>Mayor Grace Period: 10 minutes (After election)</li><li>No raiding for 10 minutes after a server crash</li></ul>`
                             }
                         ]
                     },
-                    { type: "heading", raw: "REPORTING RULES", webEmoji: "📝", web: "Reporting Rules", underline: true },
                     {
-                        type: "rules",
+                        rawTitle: "SUB-CATEGORY 8B: REPORTING RULES",
+                        webBtn: "📝 Reporting Rules",
                         rules: [
                             {
                                 id: "report-respect",
@@ -470,11 +485,12 @@ export default {
         const renderRawRulesList = (rules, stream) =>
             (rules || []).map((r) => renderRawRuleEntry(r.id, r.html, stream)).join("\n                            ");
 
-        const renderRawSubcategory = (sub, stream) => `
-                        <h4>${sub.rawTitle}</h4>
-                        <ul>
-                            ${renderRawRulesList(sub.rules, stream)}
-                        </ul>`;
+        const renderRawSubcategory = (sub, stream) => {
+            let html = `<h4>${sub.rawTitle}</h4>`;
+            html += `<ul>\n                            ${renderRawRulesList(sub.rules, stream)}\n                        </ul>`;
+            if (sub.guide) html += renderRawGuide(sub.guide);
+            return html;
+        };
 
         const renderRawGuide = (block) => `
                         <h4>${block.rawHeading}</h4>
@@ -570,13 +586,17 @@ export default {
         const renderWebRulesList = (rules, rule) =>
             (rules || []).map((r) => rule(r.id, r.html)).join("\n                          ");
 
-        const renderWebSubcategory = (sub, rule) => `
+        const renderWebSubcategory = (sub, rule) => {
+            let inner = renderWebRulesList(sub.rules, rule);
+            if (sub.guide) inner += renderWebGuide(sub.guide);
+            return `
                           <div class="sub-cat">
                               <button class="sub-btn">${sub.webBtn} <i class="fa-solid fa-chevron-down chevron"></i></button>
                               <div class="content-wrapper"><div class="content"><div class="content-inner">
-                                  ${renderWebRulesList(sub.rules, rule)}
+                                  ${inner}
                               </div></div></div>
                           </div>`;
+        };
 
         const renderWebGuide = (block) => `
                           <div class="sub-title">${block.webHeading}</div>
@@ -1984,6 +2004,9 @@ export default {
             * {
                 scrollbar-width: thin;
                 scrollbar-color: var(--lp-blue) rgba(255, 255, 255, 0.02);
+            }
+            html {
+                scrollbar-gutter: stable;
             }
             body { 
                 font-family: 'Inter', sans-serif;
@@ -4387,36 +4410,24 @@ export default {
                   grid-template-rows: 0fr !important;
                   border-top: none !important;
               }
-              #rules-root .content-wrapper:not(.open):not(.search-open) > .content > .content-inner {
-                  opacity: 0 !important;
-                  padding: 0 25px !important;
-                  transform: translateY(-8px) !important;
-              }
               .content-wrapper.open { grid-template-rows: 1fr; border-top: 1px solid var(--border); }
               .content { min-height: 0; overflow: hidden; }
               .content-inner {
-                  padding: 0 25px;
-                  opacity: 0;
-                  transform: translateY(-8px);
-                  transition:
-                      opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-                      transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-                      padding 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-              }
-              .content-wrapper.open > .content > .content-inner {
                   padding: 20px 25px 24px;
                   opacity: 1;
-                  transform: translateY(0);
+                  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
               }
-              .sub-cat .content-inner { padding-left: 20px; padding-right: 20px; }
-              .sub-cat .content-wrapper.open > .content > .content-inner {
+              .content-wrapper:not(.open):not(.search-open) > .content > .content-inner {
+                  opacity: 0;
+              }
+              .sub-cat .content-inner {
                   padding: 16px 20px 18px;
               }
               
               .rule-line { 
                   margin-bottom: 10px; font-size: 14px; border-left: 2px solid var(--lp-blue); 
                   padding: 8px 15px; color: #fff; display: flex; justify-content: space-between; 
-                  align-items: center; transition: background 0.3s;
+                  align-items: flex-start; gap: 12px;
                   border-radius: 0 4px 4px 0;
               }
               .rule-intro {
@@ -4430,15 +4441,16 @@ export default {
               .rule-line:target { background: rgba(0, 118, 227, 0.15); border-left: 4px solid var(--lp-blue); }
               .rule-num {
                   flex-shrink: 0;
-                  min-width: 3.25rem;
+                  min-width: 4.25rem;
                   color: #6b8499;
                   font-weight: 600;
                   font-size: 11px;
                   font-variant-numeric: tabular-nums;
                   letter-spacing: 0.03em;
+                  line-height: 1.5;
               }
-              .rule-text { flex: 1; padding-right: 20px; min-width: 0; }
-              .rule-actions { display: flex; gap: 8px; opacity: 0.4; transition: 0.3s; }
+              .rule-text { flex: 1; padding-right: 20px; min-width: 0; line-height: 1.5; }
+              .rule-actions { display: flex; gap: 8px; opacity: 0.4; flex-shrink: 0; align-self: flex-start; margin-top: 1px; transition: opacity 0.3s; }
               .rule-line:hover .rule-actions { opacity: 1; }
               .action-btn { 
                   background: transparent; border: 1px solid var(--border); color: var(--text-dim); 
@@ -4508,18 +4520,11 @@ export default {
               #rules-root.search-mode .guide-item:not(.search-match) {
                   display: none !important;
               }
-              #rules-root.search-mode .content-wrapper > .content > .content-inner {
+              #rules-root.search-mode .content-wrapper:not(.search-open) > .content > .content-inner {
                   opacity: 0;
-                  padding: 0 25px;
-                  transform: translateY(-8px);
               }
               #rules-root.search-mode .content-wrapper.search-open > .content > .content-inner {
                   opacity: 1;
-                  padding: 20px 25px 24px;
-                  transform: translateY(0);
-              }
-              #rules-root.search-mode .sub-cat .content-wrapper.search-open > .content > .content-inner {
-                  padding: 16px 20px 18px;
               }
               @keyframes slideUpFade { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
           </style>
@@ -4677,6 +4682,11 @@ export default {
                   btn.addEventListener('click', function(e) {
                       e.stopPropagation();
                       const wrapper = this.nextElementSibling;
+                      if (rulesRoot && rulesRoot.classList.contains('search-mode')) {
+                          this.classList.toggle('active');
+                          wrapper.classList.toggle('search-open');
+                          return;
+                      }
                       this.classList.toggle('active');
                       wrapper.classList.toggle('open');
                   });
@@ -4791,9 +4801,10 @@ export default {
 
               function getRuleLineSearchText(line) {
                   const num = getRuleLineNumber(line);
+                  const prefix = (line.getAttribute("data-copy-prefix") || "").trim().toLowerCase();
                   const ruleTxtEl = line.querySelector(".rule-text");
                   const body = (ruleTxtEl ? ruleTxtEl.textContent : "").trim().toLowerCase();
-                  return (num + " " + body).trim();
+                  return [num, prefix, body].filter(Boolean).join(" ").trim();
               }
 
               function isRuleNumberSearch(term) {
@@ -4859,8 +4870,7 @@ export default {
                       if (normalizedTerm.length >= 2 && body.indexOf(normalizedTerm) !== -1) return true;
                       return false;
                   }
-                  const haystack = (num + " " + body).trim();
-                  return haystack.indexOf(normalizedTerm) !== -1;
+                  return getRuleLineSearchText(line).indexOf(normalizedTerm) !== -1;
               }
 
               function getSectionButtonText(sectionEl) {
@@ -5002,6 +5012,15 @@ export default {
                           intro.classList.add('search-match');
                           if (!firstMatch) firstMatch = intro;
                           trackSectionParents(intro, visibleCats, visibleSubs);
+                      });
+
+                      rulesRoot.querySelectorAll('.rule-intro.search-match[data-rule-group]').forEach((intro) => {
+                          const group = intro.dataset.ruleGroup;
+                          rulesRoot.querySelectorAll('.rule-line[data-rule-group="' + group + '"]').forEach((line) => {
+                              if (line.classList.contains('search-match')) return;
+                              line.classList.add('search-match');
+                              trackSectionParents(line, visibleCats, visibleSubs);
+                          });
                       });
 
                       rulesRoot.querySelectorAll('.sub-cat').forEach((sub) => {

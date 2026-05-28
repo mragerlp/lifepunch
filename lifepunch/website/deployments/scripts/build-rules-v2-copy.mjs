@@ -5,14 +5,14 @@ import { fileURLToPath } from "node:url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rulesDir = path.resolve(process.env.USERPROFILE || "", "OneDrive", "Documents", "Lifepunch", "Rules");
 const repoRulesDir = path.resolve(__dirname, "..", "Rules");
-const test1Candidates = [
-    path.join(repoRulesDir, "Rules-Test1.txt"),
-    path.join(rulesDir, "Rules-Test1.txt"),
+const v1Candidates = [
+    path.join(repoRulesDir, "Rules-V1.txt"),
+    path.join(rulesDir, "Rules-V1.txt"),
 ];
 const sourcePath =
     process.argv[2] ||
-    test1Candidates.find((candidate) => fs.existsSync(candidate)) ||
-    path.join(repoRulesDir, "Rules-Test1.txt");
+    v1Candidates.find((candidate) => fs.existsSync(candidate)) ||
+    path.join(repoRulesDir, "Rules-V1.txt");
 const fallbackSource = path.resolve(__dirname, "..", "cloudflare-worker.mjs");
 const outPath = process.argv[3] || path.join(
     fs.existsSync(rulesDir) ? rulesDir : repoRulesDir,
@@ -34,6 +34,8 @@ const collapseSingleBulletSublist = (input) =>
     );
 
 text = collapseSingleBulletSublist(text);
+
+text = text.replace(/<li>\[\[skip-num\]\]<\/li>\s*/g, "");
 
 text = text.replace(
     /\{ id: "demote-reasons", html: `[^`]+` \},/,
@@ -79,5 +81,6 @@ const splitCreates = (text.match(/parsed = parseRuleSublist\(html\)/g) || []).le
 const singleLiLeft = (text.match(/<ul class="rule-sublist">\s*<li>[^<]*<\/li>\s*<\/ul>/g) || []).length;
 
 console.log(`Wrote ${outPath}`);
+console.log(`Source: ${sourcePath}`);
 console.log(`parseRuleSublist calls remaining: ${splitCreates}`);
 console.log(`Single-item sublists remaining: ${singleLiLeft}`);

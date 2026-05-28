@@ -29,15 +29,19 @@ Generated from `Rules-V1.txt`. This is a public rules snapshot for review and we
 
 ### 🔫 RDM / RDA
 
-- RDM Definition: Random Deathmatch (RDM) is killing or arresting someone without a valid roleplay reason.
+- RDM Definition: Random Deathmatch (RDM) is killing someone without a valid roleplay reason.
+- RDA Definition: Random Death Arrest (RDA) is arresting someone without a valid roleplay reason.
 - RDM Reasoning: Disrespect or threats alone are not valid reasons to kill someone.; Taking damage or having items stolen are valid reasons.
-- KOS Placement: KOS zones must start at a base's purchasable front door, fading door, or the start of an airlock.; KOS lines must include a text sign that says 'KOS past.'
-- KOS Boundaries: KOS lines are general markers for where KOS begins.; Once a KOS line is placed, the space behind that line is considered KOS.; Example: If a KOS sign is at the front of a door, but you enter through a different way, you may still be killed.
-- KOS & RDM: Crossing a clearly marked KOS line is not considered RDM.
-- KOS Clarity: KOS zones must be easy to understand and must never be deceptive.
 - Warnings: You may kill someone after warning them three times in chat to step away or to leave your property.
-- Police: You may be killed by the person you are trying to arrest if the situation escalates.
+- Police: You may be killed by the person you are trying to arrest or their basemates.
 - Mayor: Killing the Mayor requires a valid roleplay reason, such as a PD raid or mugging.
+
+### ⚠️ KOS
+
+- KOS & RDM: Crossing a clearly marked KOS line is not considered RDM.
+- KOS Line Placement: KOS zones must start at a base's purchasable front door, fading door, or the start of an airlock.; KOS lines must include a text sign that says 'KOS past.'; Government jobs cannot have KOS lines.
+- KOS Boundaries: KOS lines are general markers for where KOS begins for the inside of a base.; Once a KOS line is placed, the space behind that line is considered KOS.; Example: If a KOS sign is at the front door, but you enter the base through a window, you may still be killed.
+- KOS Clarity: KOS zones must be easy to understand and must never be deceptive.
 
 ### 💀 NLR
 
@@ -93,8 +97,7 @@ Generated from `Rules-V1.txt`. This is a public rules snapshot for review and we
 ### 🚪 Fading Doors
 
 - Fading Door Limit: You may use a maximum of two fading doors to access your raidables.
-- Fading Door Utility: Utility fading doors, such as one-way exits and peeks, are allowed.
-- Fading Door Airlocks: Airlocks must be identifiable and distinct through color or material.
+- Utility Fading Doors: Utility fading doors are allowed (examples: one-way exits, peeking holes, merchant airlocks).; Airlocks/fading door entrances must be identifiable and distinct through color or material.; Merchant or Dealer "airlock" doors are permitted, provided they are publicly accessible and are not part of a base's main entrance or raidable area (2 Max).; Merchants include: Gun Dealer, Medic, Cook, Drug Dealers.
 
 ### 🔌 Prop & Wire
 
@@ -139,6 +142,7 @@ Generated from `Rules-V1.txt`. This is a public rules snapshot for review and we
 ### 👮 Mayor & Police
 
 - Mayor: The Mayor must base in the PD.; Gun licenses may include a fee, but the Mayor is not obligated to provide them to criminals.; The Mayor may build outside the PD only for government or roleplay use, such as checkpoints or toll booths.; Major law changes must be announced before enforcement.
+- Mayor Grace Period: For 10 minutes after a Mayor is elected, the Mayor may not be raided, mugged, or killed.
 - Police: Police must base in the PD and allow all government members to base and roleplay with them.; Follow the command hierarchy.; Attempt to arrest before killing, unless the suspect has a weapon drawn.
 - Police Checkpoints: Police may create a checkpoint in public.; Police do not use toll booths, as their checkpoints cannot require a fee.; A police checkpoint may only enforce that a search is required to pass.
 - Government Raid: Government players cannot raid with criminals, except alongside a Hitman.
@@ -152,47 +156,32 @@ Generated from `Rules-V1.txt`. This is a public rules snapshot for review and we
 
 ## Raiding & Mugging
 
-### Raiding Rules
+### ⚔️ Raiding Rules
 
 - Raiding Guidelines: A raid starts when a prybar is out, a base member is damaged, or when a weapon is drawn on the property.; A raid ends when no raiders remain inside or on the property.
 - Mid-Raid: Props may not be moved, changed, deleted, or added during a raid.; You may use an entity ladder to enter a flawed or open base.
 - Police Raids: A police raid ends when all attending police die.; Returning to a police raid after death breaks NLR.
 - No Counter Raiding: Counter raiding is not allowed.; You may not defend someone else's base unless you are actively basing with them.
 
-### Raid Guide (✅ Can Raid)
-
-- Medic (1 per raid)
-- Drug Dealer
-- Gangster
-- Mob Boss
-- Hitman (active hit required)
-- Thief
-
-### Mugging Rules
+### 💰 Mugging Rules
 
 - $ Limit: The maximum mug amount is $1,000.; You must type a mug warning, and the victim must be given 10 seconds to respond.
 - Cooldown: There is a 5-minute cooldown between mugs.; Don't mug the same person repeatedly.
 - Defense: Victims of a mugging may always defend themselves without warning.
 - Shipments: You may mug shipments or guns if you see someone collect them.; The same warning rules apply.
 
-### Mug Guide (✅ Can Mug)
-
-- Hobo
-- Drug Dealer
-- Gangster
-- Mob Boss
-- Thief
-
 ## Minging & Trolling
 
-- Prohibited: The following actions are considered minging or trolling; Baiting RDM or RDA; Excessive trolling; Preventing others from building; Preventing new players from learning; Repeatedly raiding someone with no valuables; Disobeying staff or reasonable requests
+- The following is not allowed:: Baiting RDM or RDA; Excessive trolling; Preventing others from building; Preventing new players from learning; Repeatedly raiding someone with no valuables; Disobeying staff or reasonable requests
 
 ## Cooldowns & Reporting
 
-### Cooldowns
+### ⏳ Cooldowns
 
-- You may not spam-mug, spam-hit, or spam-raid the same person after successful attempts. Space things out and RP with other people or it could be considered harassment.; Mugging: 5 Minute Cooldown; Hits: 15 minutes (Same Player); Raiding (Same Base): 10 minutes; PD Raid: 10 minutes; Mayor Grace Period: 10 minutes (After election); No raiding for 10 minutes after a server crash
-### Reporting Rules
+- Targeting: You may not spam-mug, spam-hit, or spam-raid the same person after successful attempts. Space things out and RP with other people or it could be considered harassment.
+- Cooldowns: The following timers apply between repeated actions; Mugging: 5 Minute Cooldown; Hits: 15 minutes (Same Player); Raiding (Same Base): 10 minutes; PD Raid: 10 minutes; Mayor Grace Period: 10 minutes (After election); No raiding for 10 minutes after a server crash
+
+### 📝 Reporting Rules
 
 - Reporting: When submitting a report; Be respectful; Do not spam reports; Provide proof (Medal, OBS, or Steam)
 - Report Lying: Lying to staff will result in a permanent ban.
