@@ -23,11 +23,11 @@
   "observedSections": [
     "Serverwide Rules",
     "Basic RP Rules",
-    "Common Sense & Behavior",
+    "Basic RP Guidelines",
     "Building Rules",
-    "Job Specific Rules",
-    "Raiding & Mugging",
-    "Cooldowns & Reporting"
+    "Job Rules",
+    "Raiding, Mugging, & Cooldowns",
+    "Minging & Trolling"
   ],
   "reviewPolicy": {
     "stableSlugsRequired": true,

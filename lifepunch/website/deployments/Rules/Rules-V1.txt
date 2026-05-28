@@ -58,7 +58,7 @@ export default {
                     { id: "no-exploit", html: "<b>No Exploiting</b> — Exploiting maps, items, or tools for an unfair advantage is not allowed (drug creation and gun shops are excluded)." },
                     { id: "no-mic-spam", html: "<b>No Mic or Text Spam</b> — Intentionally disrupting roleplay through your microphone or chat spam is not allowed." },
                     { id: "no-staff-impersonation", html: "<b>No Staff Impersonation</b> — Impersonating staff will result in a permanent ban." },
-                    { id: "no-lie-staff", html: "<b>Do Not Lie to Staff</b> — False reporting or deleting ticket evidence is punishable." },
+                    { id: "no-lie-staff", html: "<b>Do Not Lie to Staff</b> — Lying to staff will result in a permanent ban. This includes false reporting, deleting ticket evidence, or misleading staff during a report." },
                     { id: "no-staff-baiting", html: "<b>No Staff Baiting</b> — Saying you will break a rule counts as breaking that rule." },
                     { id: "no-minimodding", html: "<b>No Minimodding</b> — Do not threaten others with reports. Submit reports properly and move on." },
                     { id: "admin-final-say", html: "<b>Admin Final Say</b> — Do not argue with staff about rules or punishments. Staff always have the final say in situations not listed." },
@@ -82,33 +82,34 @@ export default {
                         rawTitle: "SUB-CATEGORY 2A: RDM / RDA",
                         webBtn: "🔫 RDM / RDA",
                         rules: [
-                            { id: "rdm-definition", html: `<b>RDM Definition</b><ul class="rule-sublist"><li>Random Deathmatch (RDM) is killing someone without a valid roleplay reason.</li></ul>` },
-                            { id: "rda-definition", html: `<b>RDA Definition</b><ul class="rule-sublist"><li>Random Death Arrest (RDA) is arresting someone without a valid roleplay reason.</li></ul>` },
-                            { id: "rdm-reason", html: `<b>RDM Reasoning</b><ul class="rule-sublist"><li>Disrespect or threats alone are not valid reasons to kill someone.</li><li>Taking damage or having items stolen are valid reasons.</li></ul>` },
-                            { id: "rdm-warnings", html: `<b>Warnings</b><ul class="rule-sublist"><li>You may kill someone after warning them three times in chat to step away or to leave your property.</li></ul>` },
-                            { id: "rdm-police", html: `<b>Police</b><ul class="rule-sublist"><li>You may be killed by the person you are trying to arrest or their basemates.</li></ul>` },
-                            { id: "rdm-mayor", html: `<b>Mayor</b><ul class="rule-sublist"><li>Killing the Mayor requires a valid roleplay reason, such as a PD raid or mugging.</li></ul>` }
+                            { id: "rdm-definition", html: `<b>RDM Definition</b><ul class="rule-sublist"><li>Random Deathmatch (RDM) is killing someone without a valid roleplay reason</li></ul>` },
+                            { id: "rda-definition", html: `<b>RDA Definition</b><ul class="rule-sublist"><li>Random Death Arrest (RDA) is arresting someone without a valid roleplay reason</li></ul>` },
+                            { id: "rdm-reason", html: `<b>RDM Reasoning</b><ul class="rule-sublist"><li>Disrespect or threats alone are not valid reasons to kill someone</li><li>Taking damage or having items stolen are valid reasons</li></ul>` },
+                            { id: "rdm-warnings", html: `<b>Warnings</b><ul class="rule-sublist"><li>You may kill someone after warning them three times in chat to step away or to leave your property</li></ul>` },
+                            { id: "rdm-mayor", html: `<b>Killing the Mayor</b><ul class="rule-sublist"><li>Killing the Mayor requires a valid roleplay reason, such as a Police Department raid or mugging</li></ul>` }
                         ]
                     },
                     {
                         rawTitle: "SUB-CATEGORY 2B: KOS",
                         webBtn: "⚠️ KOS",
                         rules: [
-                            { id: "rdm-kos", html: `<b>KOS General</b><ul class="rule-sublist"><li>Crossing a clearly marked KOS line is not considered RDM.</li></ul>` },
-                            { id: "base-kos-line", html: `<b>KOS Line Placement</b><ul class="rule-sublist"><li>KOS zones must start at a base's purchasable front door, fading door, or the start of an airlock.</li><li>KOS lines must include a text sign that says 'KOS past.'</li><li>Government jobs cannot have KOS lines.</li></ul>` },
-                            { id: "rdm-kos2", html: `<b>KOS Boundaries</b><ul class="rule-sublist"><li>KOS lines are markers for where KOS begins at a base.</li><li>Once a KOS line is placed, the space behind that line is considered KOS.</li><li>Example: If a KOS line is at a front door and you enter through a window, you may still be killed.</li></ul>` },
-                            { id: "kos-understandable", html: `<b>KOS Clarity</b><ul class="rule-sublist"><li>KOS zones must be easy to understand and must never be deceptive.</li></ul>` }
+                            { id: "kos-line-definition", html: `<b>KOS Line Definition</b><ul class="rule-sublist"><li>An indicator that states moving past a certain point results in being killed on sight</li></ul>` },
+                            { id: "base-kos-line", html: `<b>KOS Line Placement</b><ul class="rule-sublist"><li>KOS zones must start at a base's purchasable front door, fading door, or the start of an airlock</li><li>KOS lines must be a text sign that implies crossing it results in death</li><li>Government jobs cannot have KOS lines</li></ul>` },
+                            { id: "kos-understandable", html: `<b>KOS Clarity</b><ul class="rule-sublist"><li>KOS zones must be easy to understand and must never be deceptive</li></ul>` },
+                            { id: "rdm-kos2", html: `<b>KOS Boundaries</b><ul class="rule-sublist"><li>KOS lines are markers for where KOS begins at a base</li><li>Once a KOS line is placed, the intended base behind that line is considered KOS</li><li>Example: If a KOS line is at a front door and you enter through a window, you may still be killed</li></ul>` },
+                            { id: "kos-airlocks", html: `<b>Raid Hallways & Airlocks</b><ul class="rule-sublist"><li>Artificial raid hallways and airlocks start at your KOS sign and must not exceed 25 total 1×1 props (1000 units), excluding natural map layouts</li></ul>` },
+                            { id: "rdm-kos", html: `<b>KOS General</b><ul class="rule-sublist"><li>Crossing a clearly marked KOS line is not considered RDM</li></ul>` }
                         ]
                     },
                     {
                         rawTitle: "SUB-CATEGORY 2C: NLR",
                         webBtn: "💀 NLR",
                         rules: [
-                            { id: "nlr-definition", html: `<b>NLR Definition</b><ul class="rule-sublist"><li>The New Life Rule (NLR) means you may remember past events, but you cannot act on them.</li></ul>` },
-                            { id: "nlr-trigger", html: `<b>NLR Trigger</b><ul class="rule-sublist"><li>NLR applies on death, job change, and jail release (unless you escaped).</li></ul>` },
-                            { id: "nlr-raid", html: `<b>Raid</b><ul class="rule-sublist"><li>You may not return to a raid after death.</li><li>You must wait until the raid is completed to return to your base as a defender.</li></ul>` },
-                            { id: "nlr-revive", html: `<b>Revives</b><ul class="rule-sublist"><li>Revived players may continue their raid or scenario.</li></ul>` },
-                            { id: "nlr-hitman", html: `<b>Hitman</b><ul class="rule-sublist"><li>A failed hit cannot be re-attempted.</li><li>A hit fails upon death.</li></ul>` }
+                            { id: "nlr-definition", html: `<b>NLR Definition</b><ul class="rule-sublist"><li>The New Life Rule (NLR) means you may remember past events, but you cannot act on them</li></ul>` },
+                            { id: "nlr-trigger", html: `<b>NLR Trigger</b><ul class="rule-sublist"><li>NLR applies on death, job change, and jail release (unless you escaped)</li></ul>` },
+                            { id: "nlr-raid", html: `<b>Raid</b><ul class="rule-sublist"><li>You may not return to a raid after death</li><li>You must wait until the raid is completed to return to your base as a defender</li></ul>` },
+                            { id: "nlr-revive", html: `<b>Revives</b><ul class="rule-sublist"><li>Revived players may continue their raid or scenario</li></ul>` },
+                            { id: "nlr-hitman", html: `<b>Hitman</b><ul class="rule-sublist"><li>A failed hit cannot be re-attempted</li><li>A hit fails upon death</li></ul>` }
                         ]
                     },
                     {
@@ -117,7 +118,7 @@ export default {
                         rules: [
                             {
                                 id: "fail-rp",
-                                html: `<b>Fail RP Definition</b><ul class="rule-sublist"><li>Fail RP is roleplay that breaks character, violates the setting's logic, or disregards server rules, resulting in poor-quality, unrealistic, or disruptive play.</li></ul>`
+                                html: `<b>Fail RP Definition</b><ul class="rule-sublist"><li>Fail RP is roleplay that breaks character, violates the setting's logic, or disregards server rules, resulting in poor-quality, unrealistic, or disruptive play</li></ul>`
                             },
                             {
                                 id: "fail-rp-examples",
@@ -131,7 +132,7 @@ export default {
                         rules: [
                             {
                                 id: "metagaming",
-                                html: `<b>Metagaming Definition</b><ul class="rule-sublist"><li>Metagaming is using out-of-character (OOC) knowledge to influence your character's in-game decisions.</li><li>It occurs when your character acts on information they realistically should not know, bridging the gap between what you know and what your character knows.</li></ul>`
+                                html: `<b>Metagaming Definition</b><ul class="rule-sublist"><li>Metagaming is using out-of-character (OOC) knowledge to influence your character's in-game decisions</li><li>It occurs when your character acts on information they realistically should not know, bridging the gap between what you know and what your character knows</li></ul>`
                             }
                         ]
                     }
@@ -139,29 +140,16 @@ export default {
             },
             {
                 num: 3,
-                title: "Common Sense & Behavior",
+                title: "Basic RP Guidelines",
                 icon: "fa-brain",
-                subcategories: [
-                    {
-                        rawTitle: "SUB-CATEGORY 3A: ROLEPLAY GUIDELINES",
-                        webBtn: "📋 Roleplay Guidelines",
-                        rules: [
-                            { id: "fearrp", html: `<b>FearRP</b><ul class="rule-sublist"><li>FearRP is not enforced, but you should still value your life reasonably.</li></ul>` },
-                            { id: "no-suicide-rp", html: `<b>No Suicide RP</b><ul class="rule-sublist"><li>You may not commit suicide to avoid roleplay scenarios such as muggings.</li></ul>` },
-                            { id: "job-desc", html: `<b>Job Description</b><ul class="rule-sublist"><li>You must follow your job description (Medics heal, Merchants/Dealers sell, and Cops protect).</li></ul>` },
-                            { id: "merchant-deny", html: `<b>Merchant Deny</b><ul class="rule-sublist"><li>Merchants may not deny service for non-roleplay reasons (for example, refusing to sell guns to a potential raider).</li></ul>` }
-                        ]
-                    },
-                    {
-                        rawTitle: "SUB-CATEGORY 3B: ROLEPLAY CONDUCT",
-                        webBtn: "🤝 Roleplay Conduct",
-                        rules: [
-                            { id: "no-job-change", html: `<b>No Job Change</b><ul class="rule-sublist"><li>You may not change jobs during active roleplay.</li></ul>` },
-                            { id: "demote-reasons", html: `<b>Demotions</b><ul class="rule-sublist"><li>Valid reasons include: not doing job, 30+ min AFK, police corruption</li></ul>` },
-                            { id: "no-vigilante", html: `<b>No Vigilante</b><ul class="rule-sublist"><li>Do not punish rulebreakers yourself through AOS, KOS, or prop blocking.</li></ul>` },
-                            { id: "scamming", html: `<b>Scamming</b><ul class="rule-sublist"><li>Merchants may not scam other players.</li></ul>` }
-                        ]
-                    }
+                rules: [
+                    { id: "fearrp", html: `<b>FearRP</b><ul class="rule-sublist"><li>FearRP is not enforced, but you should still value your life reasonably</li></ul>` },
+                    { id: "no-suicide-rp", html: `<b>No Suicide RP</b><ul class="rule-sublist"><li>You may not commit suicide to avoid roleplay scenarios such as muggings</li></ul>` },
+                    { id: "job-desc", html: `<b>Job Description</b><ul class="rule-sublist"><li>You must follow your job description (Medics heal, Merchants/Dealers sell, and Cops protect)</li></ul>` },
+                    { id: "merchants", html: `<b>Merchants</b><ul class="rule-sublist"><li>Merchants may not deny service for non-roleplay reasons (for example, refusing to sell guns to a potential raider)</li><li>Merchants may not scam other players</li></ul>` },
+                    { id: "no-job-change", html: `<b>No Job Change</b><ul class="rule-sublist"><li>You may not change jobs during active roleplay</li></ul>` },
+                    { id: "demote-reasons", html: `<b>Demotions</b><ul class="rule-sublist"><li>Valid reasons include: not doing job, 30+ min AFK, police corruption</li></ul>` },
+                    { id: "no-vigilante", html: `<b>No Vigilante</b><ul class="rule-sublist"><li>Do not punish rulebreakers yourself through AOS, KOS, or prop blocking</li></ul>` }
                 ]
             },
             {
@@ -173,30 +161,28 @@ export default {
                         rawTitle: "SUB-CATEGORY 4A: BASE LAYOUT & FAIRNESS",
                         webBtn: "🏠 Base Layout & Fairness",
                         rules: [
-                            { id: "base-reachable", html: `<b>Base Reachable</b><ul class="rule-sublist"><li>Bases must remain reachable and accessible at all times.</li></ul>` },
-                            { id: "base-rooftop", html: `<b>Rooftop Bases</b><ul class="rule-sublist"><li>Rooftop bases are allowed.</li><li>You must have a ramp or other clear method of getting to the first fading door.</li></ul>` },
-                            { id: "base-entrance", html: `<b>Base Entrance</b><ul class="rule-sublist"><li>Bases must have exactly one entrance.</li><li>Unused map doors must be blocked off.</li></ul>` },
-                            { id: "base-crouch", html: `<b>Base Jump/Crouch</b><ul class="rule-sublist"><li>Raiders must never be forced to crouch or jump inside, outside, or to gain access to a base.</li></ul>` },
-                            { id: "base-mazes", html: `<b>Base Mazes</b><ul class="rule-sublist"><li>Mazes are not allowed.</li><li>A maze is more than one 180° turn, more than two 90° turns, or multiple disorienting pathways used to artificially extend raid duration.</li></ul>` },
-                            { id: "kos-airlocks", html: `<b>Raid Hallways & Airlocks</b><ul class="rule-sublist"><li>Artificial raid hallways and airlocks start at your KOS sign and must not exceed 25 total 1×1 props (1000 units), excluding natural map layouts.</li></ul>` },
-                            { id: "base-shooting", html: `<b>Base Shooting</b><ul class="rule-sublist"><li>Raiders must be able to clearly see you and shoot back.</li><li>You may not use tiny hitboxes for an unfair advantage.</li></ul>` },
-                            { id: "base-crowbar", html: `<b>Base Crowbar</b><ul class="rule-sublist"><li>Bases must be crowbar-raidable.</li><li>Code-only bases are not allowed.</li></ul>` },
-                            { id: "base-damage", html: `<b>Base Damage</b><ul class="rule-sublist"><li>Bases may not damage players.</li></ul>` },
-                            { id: "base-movement", html: `<b>Base Movement</b><ul class="rule-sublist"><li>Bases may not slow down or impede player movement.</li></ul>` },
-                            { id: "base-entrances", html: `<b>Base Entrances</b><ul class="rule-sublist"><li>Entrances must be reasonably easy to find, visible, and distinct from surrounding walls, with a minimum 2×2 standing area (80×80 units).</li></ul>` },
-                            { id: "base-walkways", html: `<b>Base Walkways</b><ul class="rule-sublist"><li>Walkways must be at least one 1×1 prop wide (40 units), including ramps.</li></ul>` },
-                            { id: "base-no-collide", html: `<b>Base No Collide</b><ul class="rule-sublist"><li>No-collide props must not confuse raiders and should be visually distinct.</li></ul>` },
-                            { id: "entity-ladders", html: `<b>Entity Ladders</b><ul class="rule-sublist"><li>Bases must not require entity ladders to access at any time.</li></ul>` }
+                            { id: "base-reachable", html: `<b>Base Reachable</b><ul class="rule-sublist"><li>Bases must remain reachable and accessible at all times</li></ul>` },
+                            { id: "base-entrance", html: `<b>Base Entrance</b><ul class="rule-sublist"><li>Bases must have exactly one entrance</li><li>Unused map doors must be blocked off</li><li>You must own every door that is part of your base</li><li>You may only own doors in areas where you are actively basing</li></ul>` },
+                            { id: "base-entrance-visibility", html: `<b>Entrance Visibility</b><ul class="rule-sublist"><li>Entrances must be reasonably easy to find, visible, and distinct from surrounding walls, with a minimum 2×2 standing area (80×80 units)</li></ul>` },
+                            { id: "base-walkways", html: `<b>Base Walkways</b><ul class="rule-sublist"><li>Walkways must be at least one 1×1 prop wide (40 units), including ramps</li></ul>` },
+                            { id: "entity-ladders", html: `<b>Entity Ladders</b><ul class="rule-sublist"><li>Bases must not require entity ladders to access at any time</li><li>Entity ladders may be used to get over public obstacles such as a toll booth or an open roof on a base</li></ul>` },
+                            { id: "base-crouch", html: `<b>Base Jump/Crouch</b><ul class="rule-sublist"><li>Raiders must never be forced to crouch or jump inside, outside, or to gain access to a base</li></ul>` },
+                            { id: "base-mazes", html: `<b>Base Mazes</b><ul class="rule-sublist"><li>Mazes are not allowed</li><li>A maze is more than one 180° turn, more than two 90° turns, or multiple disorienting pathways used to artificially extend raid duration</li></ul>` },
+                            { id: "base-shooting", html: `<b>Base Shooting</b><ul class="rule-sublist"><li>Raiders must be able to clearly see you and shoot back</li><li>You may not use tiny hitboxes for an unfair advantage</li></ul>` },
+                            { id: "base-crowbar", html: `<b>Base Crowbar</b><ul class="rule-sublist"><li>Bases must be crowbar-raidable</li><li>Code-only bases are not allowed</li></ul>` },
+                            { id: "base-damage", html: `<b>Base Damage</b><ul class="rule-sublist"><li>Bases may not damage players</li></ul>` },
+                            { id: "base-movement", html: `<b>Base Movement</b><ul class="rule-sublist"><li>Bases may not slow down or impede player movement</li></ul>` },
+                            { id: "base-no-collide", html: `<b>Base No Collide</b><ul class="rule-sublist"><li>No-collide props must not confuse raiders and should be visually distinct</li></ul>` }
                         ]
                     },
                     {
                         rawTitle: "SUB-CATEGORY 4B: FADING DOORS",
                         webBtn: "🚪 Fading Doors",
                         rules: [
-                            { id: "fd-limit", html: `<b>Fading Door Limit</b><ul class="rule-sublist"><li>You may use a maximum of two fading doors to access your raidables.</li></ul>` },
+                            { id: "fd-limit", html: `<b>Fading Door Limit</b><ul class="rule-sublist"><li>You may use a maximum of two fading doors to access your raidables</li></ul>` },
                             {
                                 id: "fd-utility",
-                                html: `<b>Utility Fading Doors</b><ul class="rule-sublist"><li>Utility fading doors are allowed (examples: one-way exits, peeking holes, merchant airlocks).</li><li>Airlocks/fading door entrances must be identifiable and distinct through color or material.</li><li>Merchant or Dealer "airlock" doors are permitted, provided they are publicly accessible and are not part of a base's main entrance or raidable area (2 Max).</li><li>Merchants include: Gun Dealer, Medic, Cook, Drug Dealers.</li></ul>`
+                                html: `<b>Utility Fading Doors</b><ul class="rule-sublist"><li>Utility fading doors are allowed (examples: one-way exits, peeking holes, merchant airlocks)</li><li>Airlocks/fading door entrances must be identifiable and distinct through color or material</li><li>Merchant or Dealer "airlock" doors are permitted, provided they are publicly accessible and are not part of a base's main entrance or raidable area (2 Max)</li><li>Merchants include: Gun Dealer, Medic, Cook</li></ul>`
                             }
                         ]
                     },
@@ -204,128 +190,96 @@ export default {
                         rawTitle: "SUB-CATEGORY 4C: PROP & WIRE",
                         webBtn: "🔌 Prop & Wire",
                         rules: [
-                            { id: "spawn-build", html: `<b>Spawn Build</b><ul class="rule-sublist"><li>You may not build in spawn.</li><li>Prop climbing, flying, and blocking are not allowed.</li></ul>` },
-                            { id: "prop-blocking", html: `<b>Prop Blocking</b><ul class="rule-sublist"><li>Prop blocking and prop spamming are not allowed.</li></ul>` },
-                            { id: "wire-abuse", html: `<b>Wire Abuse</b><ul class="rule-sublist"><li>Wire abuse is not allowed.</li><li>This includes auto-stealing money, loud sounds, stealing shipments, and using wire to annoy other players.</li></ul>` },
-                            { id: "prop-permission", html: `<b>Property Respect</b><ul class="rule-sublist"><li>You may not place props on, build into, or occupy another player's property or base without permission.</li></ul>` }
+                            { id: "spawn-build", html: `<b>Spawn Build</b><ul class="rule-sublist"><li>You may not build in spawn</li><li>Prop climbing, flying, and blocking are not allowed</li></ul>` },
+                            { id: "prop-blocking", html: `<b>Prop Blocking</b><ul class="rule-sublist"><li>Prop blocking and prop spamming are not allowed</li></ul>` },
+                            { id: "wire-abuse", html: `<b>Wire Abuse</b><ul class="rule-sublist"><li>Wire abuse is not allowed</li><li>This includes auto-stealing money, loud sounds, stealing shipments, and using wire to annoy other players</li></ul>` },
+                            { id: "prop-permission", html: `<b>Property Respect</b><ul class="rule-sublist"><li>You may not place props on, build into, or occupy another player's property or base without permission</li></ul>` }
                         ]
                     },
                     {
                         rawTitle: "SUB-CATEGORY 4D: PLACEMENT & MAP RULES",
                         webBtn: "🗺️ Placement & Map Rules",
                         rules: [
-                            { id: "map-boundary", html: `<b>Map Boundary</b><ul class="rule-sublist"><li>You may not base outside the map; the rock boundary is the limit.</li></ul>` },
-                            { id: "public-space", html: `<b>Public Space</b><ul class="rule-sublist"><li>Do not take up excessive public space.</li></ul>` },
-                            { id: "public-building", html: `<b>Public Building</b><ul class="rule-sublist"><li>Only Hobos, Merchants, and Police may build in public.</li></ul>` },
+                            { id: "map-boundary", html: `<b>Map Boundary</b><ul class="rule-sublist"><li>You may not base outside the map; the rock boundary is the limit</li></ul>` },
+                            { id: "public-space", html: `<b>Public Space</b><ul class="rule-sublist"><li>Do not take up excessive public space</li></ul>` },
                             {
                                 id: "checkpoints",
-                                html: `<b>Checkpoints</b><ul class="rule-sublist"><li>Checkpoints must not block spawn-area entrances or exits, and must not extend raid duration.</li><li>All checkpoints must leave another way around that does not require payment to reach the destination.</li><li>Only two checkpoints are allowed on the entire map at a time.</li><li>There may only be one police checkpoint and one hobo checkpoint or toll booth at a time.</li><li>This limit is intended to encourage Hobos and Police to roleplay together at checkpoints.</li></ul>`
+                                html: `<b>Checkpoints</b><ul class="rule-sublist"><li>Checkpoints must not block spawn-area entrances or exits, and must not extend raid duration</li><li>All checkpoints must leave another way around that does not require payment to reach the destination</li><li>Only two checkpoints are allowed on the entire map at a time</li><li>There may only be one police checkpoint and one hobo checkpoint or toll booth at a time</li><li>This limit is intended to encourage Hobos and Police to roleplay together at checkpoints</li><li>Trying to directly bypass a Hobo checkpoint can result in death</li><li>Trying to directly bypass a Police checkpoint can result in AOS</li></ul>`
                             },
-                            { id: "pd-building", html: `<b>PD Building</b><ul class="rule-sublist"><li>Non-government players may not build in the PD.</li><li>Only two fading doors are allowed inside of the PD.</li><li>Being behind the doors of the police department is AOS by default.</li><li>No law is required to enforce this.</li></ul>` },
-                            { id: "blocking-off", html: `<b>Blocking Off</b><ul class="rule-sublist"><li>Do not block weed drop-offs, ATMs, trash cans, or the recycler.</li></ul>` },
-                            { id: "drop-offs", html: `<b>Drop-Offs</b><ul class="rule-sublist"><li>Weed drop-off areas must be fully walkable.</li></ul>` }
+                            { id: "pd-building", html: `<b>Police Department Building</b><ul class="rule-sublist"><li>Non-government players may not build in the Police Department</li><li>Only two fading doors are allowed inside of the Police Department</li></ul>` },
+                            { id: "blocking-off", html: `<b>Blocking Off</b><ul class="rule-sublist"><li>Do not block ATMs, trash cans, or the recycler</li><li>Props must not touch or obstruct ATMs</li><li>ATMs must be exposed on all sides</li><li>You cannot access an ATM from your base</li></ul>` },
+                            { id: "drop-offs", html: `<b>Drop-Offs</b><ul class="rule-sublist"><li>Do not block weed drop-offs</li><li>Weed drop-off areas must be fully walkable</li><li>Your base may have only one connection to a drug drop-off location</li></ul>` }
                         ]
                     },
                     {
                         rawTitle: "SUB-CATEGORY 4E: SPECIAL BUILDING RESTRICTIONS",
                         webBtn: "🚧 Special Building Restrictions",
                         rules: [
-                            { id: "special-doors", html: `<b>Doors</b><ul class="rule-sublist"><li>Only buy doors you intend to use.</li></ul>` },
-                            { id: "no-skybases", html: `<b>Skybases</b><ul class="rule-sublist"><li>Skybases and excessive aerial builds are not allowed.</li></ul>` },
-                            { id: "drop-connection", html: `<b>Drop-Off Connections</b><ul class="rule-sublist"><li>You may have only one connection to a drug drop-off location.</li></ul>` },
-                            { id: "decorative-aerial", html: `<b>Decorative Builds</b><ul class="rule-sublist"><li>Decorative aerial builds are allowed.</li></ul>` },
-                            { id: "no-blackout", html: `<b>Blackout Bases</b><ul class="rule-sublist"><li>Blackout bases are not allowed.</li></ul>` },
-                            { id: "building-sign", html: `<b>Building Sign</b><ul class="rule-sublist"><li>You may not raid a base that has a building sign placed.</li><li>You may not place a building sign with valuables in your base.</li></ul>` }
+                            { id: "special-doors", html: `<b>Doors</b><ul class="rule-sublist"><li>Only buy doors you intend to use</li></ul>` },
+                            { id: "base-rooftop", html: `<b>Rooftop Bases</b><ul class="rule-sublist"><li>Rooftop bases are built on top of an existing map structure; this is not considered a skybase</li><li>Rooftop bases are allowed</li><li>You must have a ramp or other clear method of getting to the first fading door</li></ul>` },
+                            { id: "hobo-aerial", html: `<b>Hobo Aerial Builds</b><ul class="rule-sublist"><li>Hobos may build aerial structures for roleplay features such as ramps and slides</li></ul>` },
+                            { id: "no-skybases", html: `<b>Sky Bases</b><ul class="rule-sublist"><li>A skybase is a base over 550 units tall measured with the Ruler tool from the floor to the top of the base</li><li>Skybases are not allowed</li></ul>` },
+                            { id: "no-blackout", html: `<b>Blackout Bases</b><ul class="rule-sublist"><li>Blackout bases are not allowed</li></ul>` }
                         ]
                     }
                 ]
             },
             {
                 num: 5,
-                title: "Job Specific Rules",
+                title: "Job Rules",
                 icon: "fa-briefcase",
                 subcategories: [
                     {
-                        rawTitle: "SUB-CATEGORY 5A: CIVILIAN",
-                        webBtn: "👷 Civilian",
-                        rules: [
-                            {
-                                id: "gun-dealer",
-                                html: `<b>Gun Dealer</b><ul class="rule-sublist"><li>Gun Dealers must intend to sell weapons.</li><li>They may not base with another Gun Dealer.</li><li>They may defend a criminal base.</li><li>They must sell individual weapons, not only shipments.</li></ul>`
-                            },
-                            {
-                                id: "medic",
-                                html: `<b>Medic</b><ul class="rule-sublist"><li>Only one Medic is allowed per raid party.</li><li>Only one Medic is allowed per base.</li></ul>`
-                            },
-                            {
-                                id: "theatre-manager",
-                                html: `<b>Theatre Manager</b><ul class="rule-sublist"><li>The Theatre Manager must base in the Theatre.</li></ul>`
-                            },
-                            {
-                                id: "hobo",
-                                html: `<b>Hobo</b><ul class="rule-sublist"><li>Hitting players with excrement can lead to a valid kill or arrest.</li></ul>`
-                            },
-                            {
-                                id: "hobo-checkpoints",
-                                html: `<b>Hobo Checkpoints & Toll Booths</b><ul class="rule-sublist"><li>Hobos may create a checkpoint or toll booth.</li><li>Hobo checkpoint and toll booth fees may not exceed $50.</li></ul>`
-                            }
-                        ]
-                    },
-                    {
-                        rawTitle: "SUB-CATEGORY 5B: CRIMINAL",
-                        webBtn: "🕶️ Criminal",
-                        rules: [
-                            {
-                                id: "hitman",
-                                html: `<b>Hitman</b><ul class="rule-sublist"><li>Hitmen may not metagame hits.</li><li>Only Hitmen may perform hits.</li><li>A valid roleplay reason is not required unless the target is the Mayor.</li><li>Hitmen may only raid active target locations.</li><li>Only one Hitman is allowed per raid.</li></ul>`
-                            }
-                        ]
-                    },
-                    {
-                        rawTitle: "SUB-CATEGORY 5C: MAYOR & POLICE",
+                        rawTitle: "SUB-CATEGORY 5A: MAYOR & POLICE",
                         webBtn: "👮 Mayor & Police",
                         rules: [
                             {
                                 id: "mayor-base",
-                                html: `<b>Mayor</b><ul class="rule-sublist"><li>The Mayor must base in the PD.</li><li>Gun licenses may include a fee, but the Mayor is not obligated to provide them to criminals.</li><li>The Mayor may build outside the PD only for government or roleplay use, such as checkpoints or toll booths.</li><li>Major law changes must be announced before enforcement.</li></ul>`
-                            },
-                            {
-                                id: "mayor-grace",
-                                html: `<b>Mayor Grace Period</b><ul class="rule-sublist"><li>For 10 minutes after a Mayor is elected, the Mayor may not be raided, mugged, or killed.</li></ul>`
+                                html: `<b>Mayor</b><ul class="rule-sublist"><li>The Mayor must base in the Police Department</li><li>Gun licenses may include a fee, but the Mayor is not obligated to provide them to criminals</li><li>The Mayor may build outside the Police Department only for government or roleplay use, such as checkpoints or toll booths</li><li>Major law changes must be announced before enforcement</li><li>Laws must be reasonable and must not contradict server rules</li><li>You cannot make things said in text/voice chat illegal (i.e. Police Disrespect)</li><li>AOS laws are allowed; KOS laws are not</li><li>Laws may not target specific individuals or jobs</li><li>Lockdowns may only be enforced outdoors</li><li>A valid reason is required for a lockdown, such as a bank raid or active shooting</li></ul>`
                             },
                             {
                                 id: "police-base",
-                                html: `<b>Police</b><ul class="rule-sublist"><li>Police must base in the PD and allow all government members to base and roleplay with them.</li><li>Follow the command hierarchy.</li><li>Attempt to arrest before killing, unless the suspect has a weapon drawn.</li></ul>`
+                                html: `<b>Police</b><ul class="rule-sublist"><li>Police must base in the Police Department and allow all government members to base and roleplay with them</li><li>Follow the command hierarchy</li><li>Attempt to arrest before killing, unless the suspect has a weapon drawn</li><li>The Police Department cannot be KOS</li><li>The Police Department lobby is not AOS; only areas behind government-owned doors are AOS by default</li><li>No law is required to enforce Police Department trespassing as AOS</li><li>Police may create a checkpoint in public</li><li>Police do not use toll booths, as their checkpoints cannot require a fee</li><li>A police checkpoint may only enforce that a search is required to pass</li><li>Searches require a roleplay reason, such as being a police checkpoint, being near gunshots, or loitering near a drug drop-off</li><li>Government players cannot raid with criminals, except alongside a Hitman</li></ul>`
                             },
                             {
-                                id: "police-checkpoints",
-                                html: `<b>Police Checkpoints</b><ul class="rule-sublist"><li>Police may create a checkpoint in public.</li><li>Police do not use toll booths, as their checkpoints cannot require a fee.</li><li>A police checkpoint may only enforce that a search is required to pass.</li></ul>`
-                            },
-                            { id: "gov-raid", html: `<b>Government Raid</b><ul class="rule-sublist"><li>Government players cannot raid with criminals, except alongside a Hitman.</li></ul>` },
-                            { id: "job-arrest", html: `<b>Job Arrest</b><ul class="rule-sublist"><li>Government players cannot raid or arrest someone solely because of their job.</li></ul>` },
-                            {
-                                id: "laws",
-                                html: `<b>Laws</b><ul class="rule-sublist"><li>Laws must be reasonable and must not contradict server rules.</li><li>You cannot make things said in text/voice chat illegal (i.e. Police Disrespect).</li><li>AOS laws are allowed; KOS laws are not.</li><li>Laws may not target specific individuals or jobs.</li></ul>`
-                            },
-                            {
-                                id: "arrests",
-                                html: `<b>Arrests</b><ul class="rule-sublist"><li>Arrests may only be made against lawbreakers.</li><li>You may not arrest innocent players, even if bribed.</li></ul>`
-                            },
-                            {
-                                id: "lockdowns",
-                                html: `<b>Lockdowns</b><ul class="rule-sublist"><li>Lockdowns may only be used outdoors.</li><li>You may arrest during a lockdown, but KOS is not allowed.</li><li>A valid reason is required, such as a bank raid or active shooting.</li></ul>`
+                                id: "arrests-warrants",
+                                html: `<b>Arrests & Warrants</b><ul class="rule-sublist"><li>Government players cannot raid or arrest someone solely because of their job</li><li>Arrests may only be made against lawbreakers</li><li>You may not arrest innocent players, even if bribed</li><li>You may arrest during a lockdown, but KOS is not allowed</li><li>Warrants require valid roleplay evidence</li><li>You must witness illegal activity; you cannot arrest or warrant based off of sound</li><li>Warrants expire on death, jail, or successful raid defense</li><li>You may be killed by the person you are trying to arrest or their basemates</li></ul>`
                             },
                             {
                                 id: "corruption",
-                                html: `<b>Corruption</b><ul class="rule-sublist"><li>Corruption is allowed in roleplay, but not against other government members.</li><li>Bribes are allowed.</li><li>Helping criminals raid the PD or killing government members is forbidden.</li></ul>`
+                                html: `<b>Police Corruption</b><ul class="rule-sublist"><li>Corruption is allowed in roleplay, but not against other government members</li><li>Bribes are allowed</li><li>Helping criminals raid the Police Department or killing government members is forbidden</li></ul>`
+                            }
+                        ]
+                    },
+                    {
+                        rawTitle: "SUB-CATEGORY 5B: CIVILIAN",
+                        webBtn: "👷 Civilian",
+                        rules: [
+                            {
+                                id: "gun-dealer",
+                                html: `<b>Gun Dealer</b><ul class="rule-sublist"><li>Gun Dealers must intend to sell weapons</li><li>They may not base with another Gun Dealer</li><li>They may defend a criminal base</li><li>They must sell individual weapons, not only shipments</li></ul>`
                             },
                             {
-                                id: "warrants",
-                                html: `<b>Warrants</b><ul class="rule-sublist"><li>Warrants require valid roleplay evidence.</li><li>You must witness illegal activity.</li><li>Metagaming is not allowed.</li><li>Warrants expire on death, jail, or successful raid defense.</li></ul>`
+                                id: "medic",
+                                html: `<b>Medic</b><ul class="rule-sublist"><li>Medics must actively provide service</li><li>Only one Medic is allowed per raid party</li><li>Only one Medic is allowed per base</li></ul>`
                             },
                             {
-                                id: "searches",
-                                html: `<b>Searches</b><ul class="rule-sublist"><li>Searches require a roleplay reason, such as nearby gunshots or loitering near a drug drop-off.</li></ul>`
+                                id: "theatre-manager",
+                                html: `<b>Theatre Manager</b><ul class="rule-sublist"><li>The Theatre Manager must base in the Theatre</li></ul>`
+                            },
+                            {
+                                id: "hobo",
+                                html: `<b>Hobo</b><ul class="rule-sublist"><li>Hobos may create a checkpoint or toll booth</li><li>Hobo checkpoint and toll booth fees may not exceed $50</li><li>Hitting players with excrement can lead to a valid kill or arrest</li></ul>`
+                            }
+                        ]
+                    },
+                    {
+                        rawTitle: "SUB-CATEGORY 5C: CRIMINAL",
+                        webBtn: "🕶️ Criminal",
+                        rules: [
+                            {
+                                id: "hitman",
+                                html: `<b>Hitman</b><ul class="rule-sublist"><li>Only Hitmen may perform hits</li><li>Hitmen may not metagame hits</li><li>Hitmen may only raid active target locations</li><li>A valid roleplay reason is not required unless the target is the Mayor</li><li>Only one Hitman is allowed per raid</li></ul>`
                             }
                         ]
                     }
@@ -333,17 +287,18 @@ export default {
             },
             {
                 num: 6,
-                title: "Raiding & Mugging",
+                title: "Raiding, Mugging, & Cooldowns",
                 icon: "fa-bomb",
                 subcategories: [
                     {
                         rawTitle: "SUB-CATEGORY 6A: RAIDING RULES",
                         webBtn: "⚔️ Raiding Rules",
                         rules: [
-                            { id: "raid-guidelines", html: `<b>Raiding Guidelines</b><ul class="rule-sublist"><li>A raid starts when a prybar is out, a base member is damaged, or when a weapon is drawn on the property.</li><li>A raid ends when no raiders remain inside or on the property.</li></ul>` },
-                            { id: "mid-raid", html: `<b>Mid-Raid</b><ul class="rule-sublist"><li>Props may not be moved, changed, deleted, or added during a raid.</li><li>You may use an entity ladder to enter a flawed or open base.</li></ul>` },
-                            { id: "pd-raid", html: `<b>Police Raids</b><ul class="rule-sublist"><li>A police raid ends when all attending police die.</li><li>Returning to a police raid after death breaks NLR.</li></ul>` },
-                            { id: "no-counter-raid", html: `<b>No Counter Raiding</b><ul class="rule-sublist"><li>Counter raiding is not allowed.</li><li>You may not defend someone else's base unless you are actively basing with them.</li></ul>` }
+                            { id: "raid-guidelines", html: `<b>Raiding Guidelines</b><ul class="rule-sublist"><li>A raid starts when a prybar is out, a base member is damaged, or when a weapon is drawn on the property</li><li>A raid ends when no raiders remain inside or on the property</li></ul>` },
+                            { id: "building-sign", html: `<b>Building Sign</b><ul class="rule-sublist"><li>You may not raid a base that has a building sign placed</li><li>You may not place a building sign with valuables in your base</li></ul>` },
+                            { id: "mid-raid", html: `<b>Mid-Raid</b><ul class="rule-sublist"><li>Props may not be moved, changed, deleted, or added during a raid</li><li>During a raid, you may use an entity ladder to enter a flawed or open base as allowed under Entity Ladders</li></ul>` },
+                            { id: "pd-raid", html: `<b>Police Raids</b><ul class="rule-sublist"><li>A police raid ends when all attending police die</li><li>Returning to a police raid after death breaks NLR</li></ul>` },
+                            { id: "no-counter-raid", html: `<b>No Counter Raiding</b><ul class="rule-sublist"><li>Counter raiding is joining a raid while not being a part of the original group; this may also be called third-party raiding</li><li>Counter raiding is not allowed</li><li>To defend a base, you must own valuables inside that base (such as your printers or weed stations)</li><li>You may not defend someone else's base unless you are actively basing with them</li></ul>` }
                         ],
                         guide: {
                             rawHeading: "RAID GUIDE (✅ Can Raid)",
@@ -362,16 +317,35 @@ export default {
                         rawTitle: "SUB-CATEGORY 6B: MUGGING RULES",
                         webBtn: "💰 Mugging Rules",
                         rules: [
-                            { id: "mug-limit", html: `<b>$ Limit</b><ul class="rule-sublist"><li>The maximum mug amount is $1,000.</li><li>You must type a mug warning, and the victim must be given 10 seconds to respond.</li></ul>` },
-                            { id: "mug-cooldown", html: `<b>Cooldown</b><ul class="rule-sublist"><li>There is a 5-minute cooldown between mugs.</li><li>Don't mug the same person repeatedly.</li></ul>` },
-                            { id: "mug-defense", html: `<b>Defense</b><ul class="rule-sublist"><li>Victims of a mugging may always defend themselves without warning.</li></ul>` },
-                            { id: "mug-shipments", html: `<b>Shipments</b><ul class="rule-sublist"><li>You may mug shipments or guns if you see someone collect them.</li><li>The same warning rules apply.</li></ul>` }
+                            { id: "mug-limit", html: `<b>Money Limit</b><ul class="rule-sublist"><li>The maximum mug amount is $1,000</li><li>You must type a mug warning, and the victim must be given 10 seconds to respond</li></ul>` },
+                            { id: "mug-defense", html: `<b>Defense</b><ul class="rule-sublist"><li>Victims of a mugging may always defend themselves without warning</li></ul>` },
+                            { id: "mug-base", html: `<b>Base Mugging</b><ul class="rule-sublist"><li>You may not mug people from your base</li></ul>` },
+                            { id: "mug-shipments", html: `<b>Shipments</b><ul class="rule-sublist"><li>You may mug shipments or guns if you see someone collect them</li><li>The same warning rules apply</li></ul>` },
+                            { id: "mug-cooldown", html: `<b>Cooldown</b><ul class="rule-sublist"><li>There is a 5-minute cooldown between mugs</li><li>Don't mug the same person repeatedly</li></ul>` }
                         ],
                         guide: {
                             rawHeading: "MUG GUIDE (✅ Can Mug)",
                             webHeading: "Mug Guide (✅ Can Mug)",
                             items: ["Hobo", "Drug Dealer", "Gangster", "Mob Boss", "Thief"]
                         }
+                    },
+                    {
+                        rawTitle: "SUB-CATEGORY 6C: COOLDOWNS",
+                        webBtn: "⏳ Cooldowns",
+                        rules: [
+                            {
+                                id: "targeting",
+                                html: `<b>Targeting</b><ul class="rule-sublist"><li>You may not spam-mug, spam-hit, or spam-raid the same person after successful attempts. Space things out and RP with other people or it could be considered harassment</li><li>Three or more repeated actions on the same person is considered spam</li></ul>`
+                            },
+                            {
+                                id: "cooldowns",
+                                html: `<b>Cooldowns</b> — The following timers apply between repeated actions:<ul class="rule-sublist"><li>Mugging: 5 Minute Cooldown</li><li>Hits: 15 minutes (Same Player)</li><li>Raiding (Same Base): 10 minutes</li><li>Police Department Raid: 10 minutes (Serverwide)</li><li>No raiding for 10 minutes after a server crash</li></ul>`
+                            },
+                            {
+                                id: "mayor-grace",
+                                html: `<b>Mayor Grace Period</b><ul class="rule-sublist"><li>For 10 minutes after a Mayor is elected, the Mayor may not be raided, mugged, or killed</li></ul>`
+                            }
+                        ]
                     }
                 ]
             },
@@ -379,42 +353,25 @@ export default {
                 num: 7,
                 title: "Minging & Trolling",
                 icon: "fa-mask",
-                rules: [
-                    {
-                        id: "minging-prohibited",
-                        html: `<b>The following is not allowed:</b><ul class="rule-sublist"><li>Baiting RDM or RDA</li><li>Excessive trolling</li><li>Preventing others from building</li><li>Preventing new players from learning</li><li>Repeatedly raiding someone with no valuables</li><li>Disobeying staff or reasonable requests</li></ul>`
-                    }
-                ]
-            },
-            {
-                num: 8,
-                title: "Cooldowns & Reporting",
-                icon: "fa-clock",
                 subcategories: [
                     {
-                        rawTitle: "SUB-CATEGORY 8A: COOLDOWNS",
-                        webBtn: "⏳ Cooldowns",
+                        rawTitle: "SUB-CATEGORY 7A: MINGING & TROLLING",
+                        webBtn: "🎭 Minging & Trolling",
                         rules: [
                             {
-                                id: "targeting",
-                                html: `<b>Targeting</b><ul class="rule-sublist"><li>You may not spam-mug, spam-hit, or spam-raid the same person after successful attempts. Space things out and RP with other people or it could be considered harassment.</li></ul>`
-                            },
-                            {
-                                id: "cooldowns",
-                                html: `<b>Cooldowns</b> — The following timers apply between repeated actions:<ul class="rule-sublist"><li>Mugging: 5 Minute Cooldown</li><li>Hits: 15 minutes (Same Player)</li><li>Raiding (Same Base): 10 minutes</li><li>PD Raid: 10 minutes</li><li>Mayor Grace Period: 10 minutes (After election)</li><li>No raiding for 10 minutes after a server crash</li></ul>`
+                                id: "minging-prohibited",
+                                html: `<b>The following is not allowed:</b><ul class="rule-sublist"><li>Baiting RDM or RDA</li><li>Excessive trolling</li><li>Preventing others from building</li><li>Preventing new players from learning</li><li>Repeatedly raiding someone with no valuables</li><li>Disobeying staff or reasonable requests</li></ul>`
                             }
                         ]
                     },
                     {
-                        rawTitle: "SUB-CATEGORY 8B: REPORTING RULES",
+                        rawTitle: "SUB-CATEGORY 7B: REPORTING RULES",
                         webBtn: "📝 Reporting Rules",
                         rules: [
                             {
                                 id: "report-respect",
-                                html: `<b>Reporting</b> — When submitting a report:<ul class="rule-sublist"><li>Be respectful</li><li>Do not spam reports</li><li>Provide proof (Medal, OBS, or Steam)</li></ul>`
-                            },
-                            { id: "report-lying", html: `<b>Report Lying</b><ul class="rule-sublist"><li>Lying to staff will result in a permanent ban.</li></ul>` },
-                            { id: "report-use", html: `<b>Report Use</b><ul class="rule-sublist"><li>Use @ or /Staff in-game to report issues.</li><li>EVIPs may jail players in severe cases.</li></ul>` }
+                                html: `<b>Reporting</b> — When submitting a report:<ul class="rule-sublist"><li>Be respectful</li><li>Do not spam reports</li><li>Provide proof (Medal, OBS, or Steam)</li><li>Use @ or /Staff in-game to report issues</li></ul>`
+                            }
                         ]
                     }
                 ]

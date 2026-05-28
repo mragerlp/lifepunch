@@ -290,7 +290,7 @@ if ($null -ne $RulesPage) {
     } elseif ($NoStaffImpersonation.url -ne 'https://lifepunch.co/rules#no-staff-impersonation') {
         Add-WorkspaceError "website\config\rules-page.json no-staff-impersonation URL mismatch"
     }
-    foreach ($Section in @('Serverwide Rules', 'Basic RP Rules', 'Common Sense & Behavior', 'Building Rules', 'Job Specific Rules', 'Raiding & Mugging', 'Cooldowns & Reporting')) {
+    foreach ($Section in @('Serverwide Rules', 'Basic RP Rules', 'Basic RP Guidelines', 'Building Rules', 'Job Rules', 'Raiding, Mugging, & Cooldowns', 'Minging & Trolling')) {
         if ($Section -notin @($RulesPage.observedSections)) {
             Add-WorkspaceError "website\config\rules-page.json observed sections missing '$Section'"
         }
