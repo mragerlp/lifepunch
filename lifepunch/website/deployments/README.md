@@ -28,3 +28,24 @@ Required bindings:
 - Keep package names and prices validated server-side in `cloudflare-worker.mjs`.
 - Keep Stripe webhook fulfillment idempotent by checking processed event IDs before awarding perks.
 - Do not add fallback production secrets to the Worker source.
+
+## OneDrive deploy files (Cloudflare paste)
+
+Canonical edit location on this machine:
+
+```text
+%USERPROFILE%\OneDrive\Lifepunch\Rules\
+  Rules-V1.txt    — production paste (full worker)
+  Rules-Test1.txt — sandbox (optional experiments)
+  Rules-V2.txt    — layout comparison copy (regenerate from V1)
+```
+
+Repo mirror: `lifepunch/website/deployments/Rules/` and `cloudflare-worker.mjs`.
+
+Sync scripts (`lifepunch/website/deployments/scripts/`):
+
+- **Push** (repo worker → **Test1 only**): `sync-rules-from-onedrive.ps1 -Direction Push`
+- **Pull** (OneDrive Test1 → repo worker): `sync-rules-from-onedrive.ps1 -Direction Pull`
+- **Promote** (Test1 → **V1** production paste): `sync-rules-from-onedrive.ps1 -Direction Promote`
+
+Active testing paste: `Rules-Test1.txt`. Production paste: `Rules-V1.txt` (only after Promote).

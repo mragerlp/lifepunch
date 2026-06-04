@@ -1,9 +1,10 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { resolveOneDriveRulesDir } from "./resolve-onedrive-rules-dir.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const rulesDir = path.resolve(process.env.USERPROFILE || "", "OneDrive", "Documents", "Lifepunch", "Rules");
+const rulesDir = resolveOneDriveRulesDir();
 const repoRulesDir = path.resolve(__dirname, "..", "Rules");
 const v1Candidates = [
     path.join(rulesDir, "Rules-V1.txt"),

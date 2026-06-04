@@ -53,24 +53,24 @@ export default {
                 title: "Serverwide Rules",
                 icon: "fa-globe",
                 rules: [
-                    { id: "en-only", html: "<b>English Only</b> — We're an English-speaking community. Please keep all roleplay in English." },
-                    { id: "no-cheat", html: "<b>No Cheating</b> — Using third-party software, cheats, macros, or autoclickers will result in a permanent ban." },
-                    { id: "no-exploit", html: "<b>No Exploiting</b> — Exploiting maps, items, or tools for an unfair advantage is not allowed (drug creation and gun shops are excluded)." },
-                    { id: "no-mic-spam", html: "<b>No Mic or Text Spam</b> — Intentionally disrupting roleplay through your microphone or chat spam is not allowed." },
-                    { id: "no-staff-impersonation", html: "<b>No Staff Impersonation</b> — Impersonating staff will result in a permanent ban." },
-                    { id: "no-lie-staff", html: "<b>Do Not Lie to Staff</b> — Lying to staff will result in a permanent ban. This includes false reporting, deleting ticket evidence, or misleading staff during a report." },
-                    { id: "no-staff-baiting", html: "<b>No Staff Baiting</b> — Saying you will break a rule counts as breaking that rule." },
-                    { id: "no-minimodding", html: "<b>No Minimodding</b> — Do not threaten others with reports. Submit reports properly and move on." },
-                    { id: "admin-final-say", html: "<b>Admin Final Say</b> — Do not argue with staff about rules or punishments. Staff always have the final say in situations not listed." },
-                    { id: "no-begging", html: "<b>No Begging</b> — Soliciting real money or real-life items is not allowed." },
-                    { id: "no-bullying", html: "<b>No Bullying</b> — Targeting or harassing players outside of roleplay is never tolerated." },
-                    { id: "no-politics", html: "<b>No Politics/War/Religion</b> — Political arguments are not allowed. Jokes are fine; arguments are not." },
-                    { id: "no-racism", html: "<b>No Racism/Homophobia</b> — There is zero tolerance for racism or homophobia. Violations will result in a permanent ban." },
-                    { id: "no-nsfw", html: "<b>No Sexual/NSFW Content</b> — All media must remain PG-rated. This includes ERP and pornographic content." },
-                    { id: "no-doxing", html: "<b>No Doxing</b> — Posting real-life pictures of someone without permission will result in a permanent ban." },
-                    { id: "no-cybercrime", html: "<b>Cybercrime Threats</b> — Threatening DDoS attacks or doxing will result in a permanent ban." },
-                    { id: "no-advertising", html: "<b>No Advertising</b> — Only official DXRP or S&box links are allowed." },
-                    { id: "no-irl-illegal", html: "<b>No IRL Illegal Activity</b> — Encouraging illegal real-life activity will result in a permanent ban." }
+                    { id: "en-only", html: `<b>English Only</b><ul class="rule-sublist"><li>We're an English-speaking community. Please keep all roleplay in English.</li></ul>` },
+                    { id: "no-cheat", html: `<b>No Cheating</b><ul class="rule-sublist"><li>Using third-party software, cheats, macros, or autoclickers will result in a permanent ban.</li></ul>` },
+                    { id: "no-exploit", html: `<b>No Exploiting</b><ul class="rule-sublist"><li>Exploiting maps, items, or tools for an unfair advantage is not allowed (drug creation and gun shops are excluded).</li></ul>` },
+                    { id: "no-mic-spam", html: `<b>No Mic or Text Spam</b><ul class="rule-sublist"><li>Intentionally disrupting roleplay through your microphone or chat spam is not allowed.</li></ul>` },
+                    { id: "no-staff-impersonation", html: `<b>No Staff Impersonation</b><ul class="rule-sublist"><li>Impersonating staff will result in a permanent ban.</li></ul>` },
+                    { id: "no-lie-staff", html: `<b>Do Not Lie to Staff</b><ul class="rule-sublist"><li>Lying to staff will result in a permanent ban.</li><li>This includes false reporting, deleting ticket evidence, or misleading staff during a report.</li></ul>` },
+                    { id: "no-staff-baiting", html: `<b>No Staff Baiting</b><ul class="rule-sublist"><li>Saying you will break a rule counts as breaking that rule.</li></ul>` },
+                    { id: "no-minimodding", html: `<b>No Minimodding</b><ul class="rule-sublist"><li>Do not threaten others with reports.</li><li>Submit reports properly and move on.</li></ul>` },
+                    { id: "admin-final-say", html: `<b>Admin Final Say</b><ul class="rule-sublist"><li>Do not argue with staff about rules or punishments.</li><li>Staff always have the final say in situations not listed.</li></ul>` },
+                    { id: "no-begging", html: `<b>No Begging</b><ul class="rule-sublist"><li>Soliciting real money or real-life items is not allowed.</li></ul>` },
+                    { id: "no-bullying", html: `<b>No Bullying</b><ul class="rule-sublist"><li>Targeting or harassing players outside of roleplay is never tolerated.</li></ul>` },
+                    { id: "no-politics", html: `<b>No Politics/War/Religion</b><ul class="rule-sublist"><li>Political arguments are not allowed.</li><li>Jokes are fine; arguments are not.</li></ul>` },
+                    { id: "no-racism", html: `<b>No Racism/Homophobia</b><ul class="rule-sublist"><li>There is zero tolerance for racism or homophobia.</li><li>Violations will result in a permanent ban.</li></ul>` },
+                    { id: "no-nsfw", html: `<b>No Sexual/NSFW Content</b><ul class="rule-sublist"><li>All media must remain PG-rated.</li><li>This includes ERP and pornographic content.</li></ul>` },
+                    { id: "no-doxing", html: `<b>No Doxing</b><ul class="rule-sublist"><li>Posting real-life pictures of someone without permission will result in a permanent ban.</li></ul>` },
+                    { id: "no-cybercrime", html: `<b>Cybercrime Threats</b><ul class="rule-sublist"><li>Threatening DDoS attacks or doxing will result in a permanent ban.</li></ul>` },
+                    { id: "no-advertising", html: `<b>No Advertising</b><ul class="rule-sublist"><li>Only official DXRP or S&box links are allowed.</li></ul>` },
+                    { id: "no-irl-illegal", html: `<b>No IRL Illegal Activity</b><ul class="rule-sublist"><li>Encouraging illegal real-life activity will result in a permanent ban.</li></ul>` }
                 ]
             },
             {
@@ -94,7 +94,7 @@ export default {
                         webBtn: "⚠️ KOS",
                         rules: [
                             { id: "kos-line-definition", html: `<b>KOS Line Definition</b><ul class="rule-sublist"><li>An indicator that states moving past a certain point results in being killed on sight</li></ul>` },
-                            { id: "base-kos-line", html: `<b>KOS Line Placement</b><ul class="rule-sublist"><li>KOS zones must start at a base's purchasable front door, fading door, or the start of an airlock</li><li>KOS lines must be a text sign that implies crossing it results in death</li><li>Government jobs cannot have KOS lines</li></ul>` },
+                            { id: "base-kos-line", html: `<b>KOS Line Placement</b><ul class="rule-sublist"><li>KOS zones must start at a base's purchasable front door, fading door, or the start of an airlock</li><li>KOS lines must be a text sign that implies crossing it results in death</li><li>Government jobs cannot have KOS lines (see Job Rules — Police Department — Lobby & KOS for Police Department exceptions)</li></ul>` },
                             { id: "kos-understandable", html: `<b>KOS Clarity</b><ul class="rule-sublist"><li>KOS zones must be easy to understand and must never be deceptive</li></ul>` },
                             { id: "rdm-kos2", html: `<b>KOS Boundaries</b><ul class="rule-sublist"><li>KOS lines are markers for where KOS begins at a base</li><li>Once a KOS line is placed, the intended base behind that line is considered KOS</li><li>Example: If a KOS line is at a front door and you enter through a window, you may still be killed</li></ul>` },
                             { id: "kos-airlocks", html: `<b>Raid Hallways & Airlocks</b><ul class="rule-sublist"><li>Artificial raid hallways and airlocks start at your KOS sign and must not exceed 25 total 1×1 props (1000 units), excluding natural map layouts</li></ul>` },
@@ -107,7 +107,7 @@ export default {
                         rules: [
                             { id: "nlr-definition", html: `<b>NLR Definition</b><ul class="rule-sublist"><li>The New Life Rule (NLR) means you may remember past events, but you cannot act on them</li></ul>` },
                             { id: "nlr-trigger", html: `<b>NLR Trigger</b><ul class="rule-sublist"><li>NLR applies on death, job change, and jail release (unless you escaped)</li></ul>` },
-                            { id: "nlr-raid", html: `<b>Raid</b><ul class="rule-sublist"><li>You may not return to a raid after death</li><li>You must wait until the raid is completed to return to your base as a defender</li></ul>` },
+                            { id: "nlr-raid", html: `<b>Raid</b><ul class="rule-sublist"><li>You may not return to a raid after death</li><li>You must wait until the raid is completed to return to your base as a defender</li><li>See Job Rules — Police & Raids for government exceptions; see Raiding Rules — Warrant Raids for warrant raid NLR</li></ul>` },
                             { id: "nlr-revive", html: `<b>Revives</b><ul class="rule-sublist"><li>Revived players may continue their raid or scenario</li></ul>` },
                             { id: "nlr-hitman", html: `<b>Hitman</b><ul class="rule-sublist"><li>A failed hit cannot be re-attempted</li><li>A hit fails upon death</li></ul>` }
                         ]
@@ -122,7 +122,7 @@ export default {
                             },
                             {
                                 id: "fail-rp-examples",
-                                html: `<b>Examples</b><ul class="rule-sublist"><li>Stealing your base mate's valuables and then starting a new base</li><li>Mugging someone with a partner, then killing that partner</li><li>Police working with thieves or gangsters</li><li>Door camping or blocking doors</li></ul>`
+                                html: `<b>Examples</b><ul class="rule-sublist"><li>Stealing your base mate's valuables and then starting a new base</li><li>Mugging someone with a partner, then killing that partner</li><li>Door camping or blocking doors</li></ul>`
                             }
                         ]
                     },
@@ -158,14 +158,42 @@ export default {
                 icon: "fa-hammer",
                 subcategories: [
                     {
-                        rawTitle: "SUB-CATEGORY 4A: BASE LAYOUT & FAIRNESS",
+                        rawTitle: "SUB-CATEGORY 4A: BUILDING GUIDELINES",
+                        webBtn: "📐 Building Guidelines",
+                        rules: [
+                            { id: "special-doors", html: `<b>Doors</b><ul class="rule-sublist"><li>If you buy doors, you must actively use the space behind them as part of your base</li><li>You may not purchase interior doors and leave that area unused while basing on the roof or elsewhere</li></ul>` },
+                            { id: "base-size-limits", html: `<b>Base Size Limits</b><ul class="rule-sublist"><li>A base's length and width must not exceed 1500×1500 units, measured with the Ruler tool</li><li>A base must not be over 750 units tall from its floor, measured with the Ruler tool</li></ul>` },
+                            { id: "base-rooftop", html: `<b>Rooftop Bases</b><ul class="rule-sublist"><li>Rooftop bases are built on top of an existing map structure; this is not considered a skybase</li><li>Rooftop bases are allowed</li><li>You must have a ramp or other clear method of getting to the first fading door</li><li>Rooftop-only bases do not need to own the interior doors below</li><li>Rooftop base's first fading door must be located on the roof level</li><li>Rooftop bases must not obstruct or interfere with property on lower floors</li><li>If you do not own the property below, you may not hide or make it difficult for others to access its doors</li></ul>` },
+                            { id: "no-skybases", html: `<b>Sky Bases</b><ul class="rule-sublist"><li>A skybase is a base over 750 units tall measured with the Ruler tool from the ground of the map to the top of the base</li><li>Skybases are not allowed</li></ul>` },
+                            { id: "no-blackout", html: `<b>Blackout Bases</b><ul class="rule-sublist"><li>Blackout bases are not allowed</li></ul>` },
+                            { id: "hobo-aerial", html: `<b>Hobo Aerial Builds</b><ul class="rule-sublist"><li>Hobos may build aerial structures for roleplay features such as ramps and slides</li></ul>` }
+                        ]
+                    },
+                    {
+                        rawTitle: "SUB-CATEGORY 4B: PLACEMENT & MAP RULES",
+                        webBtn: "🗺️ Placement & Map Rules",
+                        rules: [
+                            { id: "map-boundary", html: `<b>Map Boundary</b><ul class="rule-sublist"><li>You may not base outside the map; the rock boundary is the limit</li></ul>` },
+                            { id: "public-space", html: `<b>Public Space</b><ul class="rule-sublist"><li>Do not take up excessive public space</li></ul>` },
+                            {
+                                id: "checkpoints",
+                                html: `<b>Checkpoints</b><ul class="rule-sublist"><li>Checkpoints must not block spawn-area entrances or exits, and must not extend raid duration</li><li>All checkpoints must leave another way around that does not require payment to reach the destination</li><li>Only two checkpoints are allowed on the entire map at a time</li><li>There may only be one police checkpoint and one hobo checkpoint or toll booth at a time</li><li>This limit is intended to encourage Hobos and Police to roleplay at their own respective checkpoints</li><li>Trying to directly bypass a Hobo checkpoint can result in death</li><li>Trying to directly bypass a Police checkpoint can result in AOS</li></ul>`
+                            },
+                            { id: "pd-building", html: `<b>Police Department Building</b><ul class="rule-sublist"><li>Non-government players may not build in the Police Department, including the lobby, without the Mayor's permission</li><li>Only two fading doors are allowed inside of the Police Department</li></ul>` },
+                            { id: "blocking-off", html: `<b>Blocking Off</b><ul class="rule-sublist"><li>Do not block ATMs, drop-offs, trash cans, or the recycler</li></ul>` },
+                            { id: "atm-rules", html: `<b>ATMs</b><ul class="rule-sublist"><li>Props must not touch or obstruct an ATM</li><li>ATMs must be exposed on all sides and be fully walkable</li><li>You cannot access an ATM from your base</li></ul>` },
+                            { id: "drop-offs", html: `<b>Drop-Offs</b><ul class="rule-sublist"><li>Do not block weed drop-offs</li><li>Weed drop-off areas must be fully walkable</li><li>Your base may have only one connection to a drug drop-off location</li></ul>` }
+                        ]
+                    },
+                    {
+                        rawTitle: "SUB-CATEGORY 4C: BASE LAYOUT & FAIRNESS",
                         webBtn: "🏠 Base Layout & Fairness",
                         rules: [
                             { id: "base-reachable", html: `<b>Base Reachable</b><ul class="rule-sublist"><li>Bases must remain reachable and accessible at all times</li></ul>` },
                             { id: "base-entrance", html: `<b>Base Entrance</b><ul class="rule-sublist"><li>Bases must have exactly one entrance</li><li>Unused map doors must be blocked off</li><li>You must own every door that is part of your base</li><li>You may only own doors in areas where you are actively basing</li></ul>` },
                             { id: "base-entrance-visibility", html: `<b>Entrance Visibility</b><ul class="rule-sublist"><li>Entrances must be reasonably easy to find, visible, and distinct from surrounding walls, with a minimum 2×2 standing area (80×80 units)</li></ul>` },
                             { id: "base-walkways", html: `<b>Base Walkways</b><ul class="rule-sublist"><li>Walkways must be at least one 1×1 prop wide (40 units), including ramps</li><li>You may not build aerial walkways from roof to roof</li></ul>` },
-                            { id: "entity-ladders", html: `<b>Entity Ladders</b><ul class="rule-sublist"><li>Bases must not require entity ladders to access at any time</li><li>Entity ladders may be used to get over public obstacles such as a toll booth or an open roof on a base</li></ul>` },
+                            { id: "entity-ladders", html: `<b>Entity Ladders</b><ul class="rule-sublist"><li>Bases must not require entity ladders to access at any time</li><li>Entity ladders may be used to get over public obstacles such as a toll booth or the open roof of a base</li></ul>` },
                             { id: "base-crouch", html: `<b>Base Jump/Crouch</b><ul class="rule-sublist"><li>Raiders must never be forced to crouch or jump inside, outside, or to gain access to a base</li></ul>` },
                             { id: "base-mazes", html: `<b>Base Mazes</b><ul class="rule-sublist"><li>Mazes are not allowed</li><li>A maze is more than one 180° turn, more than two 90° turns, or multiple disorienting pathways used to artificially extend raid duration</li></ul>` },
                             { id: "base-shooting", html: `<b>Base Shooting</b><ul class="rule-sublist"><li>Raiders must be able to clearly see you and shoot back</li><li>You may not use tiny hitboxes for an unfair advantage</li></ul>` },
@@ -176,7 +204,7 @@ export default {
                         ]
                     },
                     {
-                        rawTitle: "SUB-CATEGORY 4B: FADING DOORS",
+                        rawTitle: "SUB-CATEGORY 4D: FADING DOORS",
                         webBtn: "🚪 Fading Doors",
                         rules: [
                             { id: "fd-limit", html: `<b>Fading Door Limit</b><ul class="rule-sublist"><li>You may use a maximum of two fading doors to access your raidables</li></ul>` },
@@ -187,39 +215,13 @@ export default {
                         ]
                     },
                     {
-                        rawTitle: "SUB-CATEGORY 4C: PROP & WIRE",
+                        rawTitle: "SUB-CATEGORY 4E: PROP & WIRE",
                         webBtn: "🔌 Prop & Wire",
                         rules: [
                             { id: "spawn-build", html: `<b>Spawn Build</b><ul class="rule-sublist"><li>You may not build in spawn</li><li>Prop climbing, flying, and blocking are not allowed</li></ul>` },
                             { id: "prop-blocking", html: `<b>Prop Blocking</b><ul class="rule-sublist"><li>Prop blocking and prop spamming are not allowed</li><li>You may not spam props in the street or other public areas</li></ul>` },
                             { id: "wire-abuse", html: `<b>Wire Abuse</b><ul class="rule-sublist"><li>Wire abuse is not allowed</li><li>This includes auto-stealing money, loud sounds, stealing shipments, and using wire to annoy other players</li></ul>` },
                             { id: "prop-permission", html: `<b>Property Respect</b><ul class="rule-sublist"><li>You may not place props on, build into, or occupy another player's property or base without permission</li></ul>` }
-                        ]
-                    },
-                    {
-                        rawTitle: "SUB-CATEGORY 4D: PLACEMENT & MAP RULES",
-                        webBtn: "🗺️ Placement & Map Rules",
-                        rules: [
-                            { id: "map-boundary", html: `<b>Map Boundary</b><ul class="rule-sublist"><li>You may not base outside the map; the rock boundary is the limit</li></ul>` },
-                            { id: "public-space", html: `<b>Public Space</b><ul class="rule-sublist"><li>Do not take up excessive public space</li></ul>` },
-                            {
-                                id: "checkpoints",
-                                html: `<b>Checkpoints</b><ul class="rule-sublist"><li>Checkpoints must not block spawn-area entrances or exits, and must not extend raid duration</li><li>All checkpoints must leave another way around that does not require payment to reach the destination</li><li>Only two checkpoints are allowed on the entire map at a time</li><li>There may only be one police checkpoint and one hobo checkpoint or toll booth at a time</li><li>This limit is intended to encourage Hobos and Police to roleplay at their own checkpoints</li><li>Trying to directly bypass a Hobo checkpoint can result in death</li><li>Trying to directly bypass a Police checkpoint can result in AOS</li></ul>`
-                            },
-                            { id: "pd-building", html: `<b>Police Department Building</b><ul class="rule-sublist"><li>Non-government players may not build in the Police Department</li><li>Only two fading doors are allowed inside of the Police Department</li></ul>` },
-                            { id: "blocking-off", html: `<b>Blocking Off</b><ul class="rule-sublist"><li>Do not block ATMs, trash cans, or the recycler</li><li>Props must not touch or obstruct ATMs</li><li>ATMs must be exposed on all sides</li><li>You cannot access an ATM from your base</li></ul>` },
-                            { id: "drop-offs", html: `<b>Drop-Offs</b><ul class="rule-sublist"><li>Do not block weed drop-offs</li><li>Weed drop-off areas must be fully walkable</li><li>Your base may have only one connection to a drug drop-off location</li></ul>` }
-                        ]
-                    },
-                    {
-                        rawTitle: "SUB-CATEGORY 4E: SPECIAL BUILDING RESTRICTIONS",
-                        webBtn: "🚧 Special Building Restrictions",
-                        rules: [
-                            { id: "special-doors", html: `<b>Doors</b><ul class="rule-sublist"><li>If you buy doors, you must actively use the space behind them as part of your base</li><li>You may not purchase interior doors and leave that area unused while basing on the roof or elsewhere</li></ul>` },
-                            { id: "base-rooftop", html: `<b>Rooftop Bases</b><ul class="rule-sublist"><li>Rooftop bases are built on top of an existing map structure; this is not considered a skybase</li><li>Rooftop bases are allowed</li><li>You must have a ramp or other clear method of getting to the first fading door</li><li>Rooftop-only bases do not need to own the interior doors below; your base entrance must be on the roof</li><li>Rooftop bases must not obstruct or interfere with property on lower floors</li></ul>` },
-                            { id: "no-skybases", html: `<b>Sky Bases</b><ul class="rule-sublist"><li>A skybase is a base over 550 units tall measured with the Ruler tool from the floor to the top of the base</li><li>Skybases are not allowed</li></ul>` },
-                            { id: "no-blackout", html: `<b>Blackout Bases</b><ul class="rule-sublist"><li>Blackout bases are not allowed</li></ul>` },
-                            { id: "hobo-aerial", html: `<b>Hobo Aerial Builds</b><ul class="rule-sublist"><li>Hobos may build aerial structures for roleplay features such as ramps and slides</li></ul>` }
                         ]
                     }
                 ]
@@ -239,15 +241,23 @@ export default {
                             },
                             {
                                 id: "police-base",
-                                html: `<b>Police</b><ul class="rule-sublist"><li>Police must base in the Police Department and allow all government members to base and roleplay with them</li><li>Follow the command hierarchy</li><li>Attempt to arrest before killing, unless the suspect has a weapon drawn</li><li>The Police Department cannot be KOS</li><li>The Police Department lobby is not AOS; only areas behind government-owned doors are AOS by default</li><li>No law is required to enforce Police Department trespassing as AOS</li><li>Police may create a checkpoint in public</li><li>Police do not use toll booths, as their checkpoints cannot require a fee</li><li>A police checkpoint may only enforce that a search is required to pass</li><li>Searches require a roleplay reason, such as being a police checkpoint, being near gunshots, or loitering near a drug drop-off</li><li>Government players cannot raid with criminals, except alongside a Hitman</li></ul>`
+                                html: `<b>Police</b><ul class="rule-sublist"><li>Police must base in the Police Department and allow all government members to base and roleplay with them</li><li>Follow the command hierarchy: Mayor>Police Chief>Police Officers</li><li>Attempt to arrest before killing, unless the suspect has a weapon drawn or you are defending an active raid</li><li>Police may create a checkpoint in public</li><li>Police do not use toll booths, as their checkpoints cannot require a fee</li><li>A police checkpoint may only enforce that a search is required to pass</li><li>Searches require a roleplay reason, such as being a police checkpoint, being near gunshots, or loitering near a drug drop-off</li><li>Government may raid alongside a Hitman on an active hit</li><li>Government may not raid with other criminals</li></ul>`
+                            },
+                            {
+                                id: "police-raids",
+                                html: `<b>Police & Raids</b><ul class="rule-sublist"><li>While a Police Department raid is active, Government players may respawn and return to defend it; this does not count as breaking NLR</li><li>Police responding to an active raid to defend a base are not considered counter raiding</li><li>Police may kill active raiders to defend someone's base during an active raid</li></ul>`
+                            },
+                            {
+                                id: "pd-lobby-kos",
+                                html: `<b>Police Department — Lobby & KOS</b><ul class="rule-sublist"><li>The Police Department lobby is the front room from the main entrance (the area past the front doors), including the public speaking window and ATM</li><li>Entering or being in the PD lobby is never AOS or KOS, and the lobby cannot be made AOS or KOS; KOS cannot start in the lobby</li><li>Only areas behind government-owned interior doors are AOS by default</li><li>The Mayor or Chief of Police may place a valid KOS line at any Police Department entrance except the lobby; areas beyond that line may be KOS</li><li>No law is required to enforce Police Department trespassing as AOS</li></ul>`
                             },
                             {
                                 id: "arrests-warrants",
-                                html: `<b>Arrests & Warrants</b><ul class="rule-sublist"><li>Government players cannot raid or arrest someone solely because of their job</li><li>Arrests may only be made against lawbreakers</li><li>You may not arrest innocent players, even if bribed</li><li>You may arrest during a lockdown, but KOS is not allowed</li><li>Warrants require valid roleplay evidence</li><li>You must witness illegal activity; you cannot arrest or warrant based off of sound</li><li>Warrants expire on death, jail, or successful raid defense</li><li>You may be killed by the person you are trying to arrest or their basemates</li></ul>`
+                                html: `<b>Arrests & Warrants</b><ul class="rule-sublist"><li>Government players cannot raid or arrest someone solely because of their job</li><li>Arrests may only be made against lawbreakers</li><li>You may not arrest innocent players, even if bribed</li><li>You may arrest during a lockdown, but KOS is not allowed</li><li>Warrants require valid roleplay evidence</li><li>You must witness illegal activity; you cannot arrest or warrant based off of sound</li><li>Warrants expire when the target is jailed or dies</li><li>Warrants expire on successful raid defense, including when all attending police die</li><li>An individual officer's death does not expire the warrant for other attending police</li><li>You may be killed by the person you are trying to arrest or their basemates</li></ul>`
                             },
                             {
                                 id: "corruption",
-                                html: `<b>Police Corruption</b><ul class="rule-sublist"><li>Corruption is allowed in roleplay, but not against other government members</li><li>Bribes are allowed</li><li>Helping criminals raid the Police Department or killing government members is forbidden</li></ul>`
+                                html: `<b>Police Corruption</b><ul class="rule-sublist"><li>Corruption is allowed in roleplay, but not against other government members</li><li>Bribes are allowed</li><li>Cannot raid with criminals, except alongside a Hitman on an active hit</li><li>Cannot allow the Police Department to be raided</li><li>Cannot kill government officials or allow them to be killed</li></ul>`
                             }
                         ]
                     },
@@ -257,7 +267,7 @@ export default {
                         rules: [
                             {
                                 id: "gun-dealer",
-                                html: `<b>Gun Dealer</b><ul class="rule-sublist"><li>Gun Dealers must intend to sell weapons</li><li>They may not base with another Gun Dealer</li><li>They may defend a criminal base</li><li>They must sell individual weapons, not only shipments</li></ul>`
+                                html: `<b>Gun Dealer</b><ul class="rule-sublist"><li>Gun Dealers must intend to sell weapons</li><li>They may not base with another Gun Dealer</li><li>They must sell individual weapons, not only shipments</li></ul>`
                             },
                             {
                                 id: "medic",
@@ -297,19 +307,20 @@ export default {
                             { id: "raid-guidelines", html: `<b>Raiding Guidelines</b><ul class="rule-sublist"><li>A raid starts when a prybar is out, a base member is damaged, or when a weapon is drawn on the property</li><li>A raid ends when no raiders remain inside or on the property</li></ul>` },
                             { id: "building-sign", html: `<b>Building Sign</b><ul class="rule-sublist"><li>You may not raid a base that has a building sign placed</li><li>You may not place a building sign with valuables in your base</li></ul>` },
                             { id: "mid-raid", html: `<b>Mid-Raid</b><ul class="rule-sublist"><li>Props may not be moved, changed, deleted, or added during a raid</li><li>During a raid, you may use an entity ladder to enter a flawed or open base as allowed under Entity Ladders</li></ul>` },
-                            { id: "pd-raid", html: `<b>Police Raids</b><ul class="rule-sublist"><li>A police raid ends when all attending police die</li><li>Returning to a police raid after death breaks NLR</li></ul>` },
-                            { id: "no-counter-raid", html: `<b>No Counter Raiding</b><ul class="rule-sublist"><li>Counter raiding is joining a raid while not being a part of the original group; this may also be called third-party raiding</li><li>Counter raiding is not allowed</li><li>To defend a base, you must own valuables inside that base (such as your printers or weed stations)</li><li>You may not defend someone else's base unless you are actively basing with them</li></ul>` }
+                            { id: "warrant-raid", html: `<b>Warrant Raids</b><ul class="rule-sublist"><li>A police raid with a warrant ends when all attending police die</li><li>Returning to a location with an active warrant after death breaks NLR</li></ul>` },
+                            { id: "no-counter-raid", html: `<b>No Counter Raiding</b><ul class="rule-sublist"><li>Counter raiding is joining a raid while not being a part of the original group; this may also be called third-party raiding</li><li>Counter raiding is not allowed</li><li>See Job Rules — Police & Raids for police exceptions</li></ul>` },
+                            { id: "base-defense", html: `<b>Base Defense</b><ul class="rule-sublist"><li>To defend a base, you must own valuables inside that base (such as your printers or weed stations)</li><li>You may not defend someone else's base unless you are actively basing with them</li><li>See Job Rules — Police & Raids for police exceptions</li></ul>` }
                         ],
                         guide: {
                             rawHeading: "RAID GUIDE (✅ Can Raid)",
                             webHeading: "Raid Guide (✅ Can Raid)",
                             items: [
-                                "Medic (1 per raid)",
                                 "Drug Dealer",
+                                "Thief",
                                 "Gangster",
                                 "Mob Boss",
                                 "Hitman (active hit required)",
-                                "Thief"
+                                "Medic (1 per raid)",
                             ]
                         }
                     },
@@ -326,7 +337,7 @@ export default {
                         guide: {
                             rawHeading: "MUG GUIDE (✅ Can Mug)",
                             webHeading: "Mug Guide (✅ Can Mug)",
-                            items: ["Hobo", "Drug Dealer", "Gangster", "Mob Boss", "Thief"]
+                            items: ["Drug Dealer", "Thief", "Gangster", "Mob Boss", "Hobo"]
                         }
                     },
                     {
@@ -339,7 +350,7 @@ export default {
                             },
                             {
                                 id: "cooldowns",
-                                html: `<b>Cooldowns</b> — The following timers apply between repeated actions:<ul class="rule-sublist"><li>Mugging: 5 Minute Cooldown</li><li>Hits: 15 minutes (Same Player)</li><li>Raiding (Same Base): 10 minutes</li><li>Police Department Raid: 10 minutes (Serverwide)</li><li>No raiding for 10 minutes after a server crash</li></ul>`
+                                html: `<b>Cooldowns —</b> The following timers apply between repeated actions:<ul class="rule-sublist"><li>Mugging: 5 Minute Cooldown</li><li>Hits: 15 minutes (Same Player)</li><li>Raiding (Same Base): 10 minutes</li><li>Police Department Raid: 10 minutes (Serverwide)</li><li>No raiding for 10 minutes after a server crash</li></ul>`
                             },
                             {
                                 id: "mayor-grace",
@@ -360,7 +371,7 @@ export default {
                         rules: [
                             {
                                 id: "minging-prohibited",
-                                html: `<b>The following is not allowed:</b><ul class="rule-sublist"><li>Baiting RDM or RDA</li><li>Excessive trolling</li><li>Preventing others from building</li><li>Preventing new players from learning</li><li>Repeatedly raiding someone with no valuables</li><li>Disobeying staff or reasonable requests</li></ul>`
+                                html: `<b>The following is not allowed —</b><ul class="rule-sublist"><li>Baiting RDM or RDA</li><li>Excessive trolling</li><li>Preventing others from building</li><li>Preventing new players from learning</li><li>Repeatedly raiding someone with no valuables</li><li>Disobeying staff or reasonable requests</li></ul>`
                             }
                         ]
                     },
@@ -370,7 +381,7 @@ export default {
                         rules: [
                             {
                                 id: "report-respect",
-                                html: `<b>Reporting</b> — When submitting a report:<ul class="rule-sublist"><li>Be respectful</li><li>Do not spam reports</li><li>Provide proof (Medal, OBS, or Steam)</li><li>Use @ or /Staff in-game to report issues</li></ul>`
+                                html: `<b>Reporting —</b> When submitting a report:<ul class="rule-sublist"><li>Be respectful</li><li>Do not spam reports</li><li>Provide proof (Medal, OBS, or Steam)</li><li>Use @ or /Staff in-game to report issues</li></ul>`
                             }
                         ]
                     }
@@ -399,7 +410,9 @@ export default {
         const parseRuleSublist = (html) => {
             const marker = '<ul class="rule-sublist">';
             if (!html || !html.includes(marker)) return null;
-            const start = html.indexOf(marker);
+            const first = html.indexOf(marker);
+            if (html.indexOf(marker, first + marker.length) !== -1) return null;
+            const start = first;
             const end = html.indexOf("</ul>", start);
             if (start === -1 || end === -1) return null;
             const intro = html.slice(0, start).trim();
@@ -445,8 +458,8 @@ export default {
 
         const renderRawSubcategory = (sub, stream) => {
             let html = `<h4>${sub.rawTitle}</h4>`;
-            html += `<ul>\n                            ${renderRawRulesList(sub.rules, stream)}\n                        </ul>`;
             if (sub.guide) html += renderRawGuide(sub.guide);
+            html += `<ul>\n                            ${renderRawRulesList(sub.rules, stream)}\n                        </ul>`;
             return html;
         };
 
@@ -545,8 +558,9 @@ export default {
             (rules || []).map((r) => rule(r.id, r.html)).join("\n                          ");
 
         const renderWebSubcategory = (sub, rule) => {
-            let inner = renderWebRulesList(sub.rules, rule);
+            let inner = "";
             if (sub.guide) inner += renderWebGuide(sub.guide);
+            inner += renderWebRulesList(sub.rules, rule);
             return `
                           <div class="sub-cat">
                               <button class="sub-btn">${sub.webBtn} <i class="fa-solid fa-chevron-down chevron"></i></button>
@@ -646,6 +660,38 @@ export default {
             }
             await linksKv.delete("status:dxrp_error");
             return true;
+        }
+
+        async function testDxrpConnection() {
+            const token = await linksKv.get("config:dxrp_token");
+            const tenant = await linksKv.get("config:dxrp_tenant") || "019db2d6-fc3d-743f-9dc6-2620c69078c2";
+            if (!token) return { ok: false, error: "No Bearer token saved. Paste your DXRP session token and click Update Config first." };
+            if (!token.trim().startsWith("eyJ")) {
+                return { ok: false, error: "This looks like a portal API key, not a Bearer token. The Automation Bridge requires the long JWT from dxrp.net (DevTools or Update Token bookmark)." };
+            }
+
+            const res = await fetch(`https://api.dxrp.net/v1/me`, {
+                headers: {
+                    'authorization': `Bearer ${token.trim()}`,
+                    'x-tenant': tenant,
+                    'user-agent': 'LifePunch-Bridge/1.0'
+                }
+            });
+
+            if (res.status === 401) {
+                return { ok: false, error: "Bearer token rejected (401). Log into dxrp.net and refresh it with the Update Token bookmark or copy a new token from DevTools." };
+            }
+            if (!res.ok) {
+                const text = await res.text();
+                return { ok: false, error: `DXRP API error (${res.status}): ${text || res.statusText}` };
+            }
+
+            const me = await res.json();
+            return {
+                ok: true,
+                name: me.name || me.displayName || "Connected",
+                balance: me.balance ?? null
+            };
         }
 
         async function getDxrpPlayer(steamid) {
@@ -854,6 +900,7 @@ export default {
         let bodyContent = "";
         let pageTitle = "LIFEPUNCH";
         let subHeaderTitle = "WELCOME TO THE PUNCH"; // Default subheader
+        let bodyClass = "";
 
         // --- AUTH ROUTES ---
         if (path === "/login") {
@@ -1471,7 +1518,10 @@ export default {
         // Handle rules/raw for DXRP (High-Performance In-Game HTML)
         if (path === "/rules/raw") {
             return new Response(renderRawRulesDocument(), {
-                headers: { "Content-Type": "text/html;charset=UTF-8" }
+                headers: {
+                    "Content-Type": "text/html;charset=UTF-8",
+                    "Cache-Control": "public, max-age=120, stale-while-revalidate=600"
+                }
             });
         }
 
@@ -1918,12 +1968,16 @@ export default {
         }
 
         // --- SHARED CSS AND HTML HEAD ---
+        const isSboxRules = isSbox && path === "/rules";
         const sharedHead = `
         <meta charset="UTF-8">
-        <meta name="view-transition" content="same-origin">
+        ${isSboxRules ? "" : `<meta name="view-transition" content="same-origin">`}
         <link rel="icon" type="image/png" href="https://i.imgur.com/WTosTpq.png">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+        ${isSboxRules ? `<link rel="preload" as="image" href="https://assets.lifepunch.co/logo.png">` : ""}
+        ${isSboxRules
+            ? `<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"></noscript>`
+            : `<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">`}
+        ${isSboxRules ? "" : `<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Inter:wght@400;600&display=swap" rel="stylesheet">`}
         <style>
             :root { 
                 --lp-blue: #0076E3; 
@@ -2363,6 +2417,8 @@ export default {
                 pageTitle = "LifePunch | System Settings";
                 subHeaderTitle = "SYSTEM CONFIGURATION";
 
+                const dxrpTokenBookmark = "javascript:(async function(){const n=v=>{if(!v||typeof v!=='string')return null;let s=v.trim();if(s.startsWith('Bearer '))s=s.slice(7).trim();return s.startsWith('eyJ')?s:null;};const e=v=>{if(typeof v==='string')return n(v);if(!v||typeof v!=='object')return null;for(const k of['access_token','accessToken','token','bearer','id_token','idToken']){const h=n(v[k]);if(h)return h}if(Array.isArray(v)){for(const i of v){const h=e(i);if(h)return h}}else{for(const k of Object.keys(v)){const h=e(v[k]);if(h)return h}}return null;};const f=()=>{if(!location.hostname.endsWith('dxrp.net'))return null;for(const s of[localStorage,sessionStorage]){for(let i=0;i<s.length;i++){const r=s.getItem(s.key(i));const d=n(r);if(d)return d;try{const h=e(JSON.parse(r));if(h)return h}catch(_){}}}return null};const t=f();if(!t){alert('Could not find a DXRP Bearer token. Stay logged into dxrp.net, refresh the page, then try again.');return}try{const r=await fetch('https://lifepunch.co/api/v1/sync-auth-token',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token:t})});const d=await r.json().catch(()=>({}));if(r.ok&&d.success)alert('LifePunch DXRP token updated successfully!');else alert('Failed: '+(d.error||r.status))}catch(err){alert('Request failed: '+err.message)}})();";
+
                 bodyContent = `
                 <style>
                     .settings-grid { display: grid; gap: 30px; max-width: 800px; margin: 30px auto; }
@@ -2382,7 +2438,7 @@ export default {
                     
                     <div class="settings-card">
                         <div class="card-title">DXRP Automation Bridge</div>
-                        <p style="font-size: 12px; color: var(--text-dim); margin-bottom: 25px;">Paste your Bearer Token from DXRP DevTools here. This token is required for **automatic** store and reward payouts.</p>
+                        <p style="font-size: 12px; color: var(--text-dim); margin-bottom: 25px;">Paste your <b>Bearer token</b> from dxrp.net here. This is the long JWT from DevTools or the <b>Update Token</b> bookmark — <b>not</b> a portal API key. It expires in ~24 hours and is required for automatic store and reward payouts.</p>
                         
                         <div class="form-group">
                             <label>Bearer Token</label>
@@ -2402,6 +2458,20 @@ export default {
                             <button onclick="testConnection()" class="btn-save" style="background:transparent; border: 1px solid var(--border);">Test Connection</button>
                         </div>
                     </div>
+
+                    <div class="settings-card">
+                        <div class="card-title">Update Token Bookmark</div>
+                        <p style="font-size: 12px; color: var(--text-dim); margin-bottom: 20px; line-height: 1.6;">
+                            One-click refresh while logged into dxrp.net. Drag the button below to your bookmarks bar, then click it on dxrp.net about once per day.
+                        </p>
+                        <ol style="font-size: 12px; color: var(--text-dim); margin: 0 0 20px 20px; line-height: 1.8;">
+                            <li>Show your bookmarks bar (<kbd style="background:#222;padding:2px 6px;border-radius:4px;">Ctrl+Shift+B</kbd> in Chrome/Edge).</li>
+                            <li>Drag <a id="dxrp-token-bookmark" href="${dxrpTokenBookmark}" style="display:inline-block;background:var(--lp-blue);color:#fff;padding:8px 14px;border-radius:6px;font-weight:900;text-decoration:none;">Update Token</a> to the bar.</li>
+                            <li>Log into <a href="https://dxrp.net" target="_blank" rel="noopener">dxrp.net</a>.</li>
+                            <li>Click the bookmark. You should see <b>LifePunch DXRP token updated successfully!</b></li>
+                        </ol>
+                        <p style="font-size: 11px; color: var(--text-dim); margin: 0;">If the bookmark cannot find a token, copy it manually from DevTools → Network → any api.dxrp.net request → Headers → authorization.</p>
+                    </div>
                 </div>
 
                 <script>
@@ -2411,12 +2481,19 @@ export default {
                         const timerEl = document.getElementById('token-timer');
                         if (!timerEl) return;
 
+                        const tokenVal = document.getElementById('dxrp-token')?.value?.trim() || '';
+                        if (tokenVal && !tokenVal.startsWith('eyJ')) {
+                            timerEl.innerHTML = '⚠️ NOT A BEARER TOKEN — Portal API keys do not work here';
+                            timerEl.style.color = '#ff5252';
+                            return;
+                        }
+
                         const now = Date.now();
                         const expiry = lastTokenUpdate + (24 * 60 * 60 * 1000); // 24 Hours
                         const diff = expiry - now;
 
                         if (diff <= 0) {
-                            timerEl.innerHTML = '⚠️ TOKEN EXPIRED - REFRESH NOW';
+                            timerEl.innerHTML = '⚠️ BEARER TOKEN EXPIRED — REFRESH WITH UPDATE TOKEN BOOKMARK';
                             timerEl.style.color = '#ff5252';
                             return;
                         }
@@ -2426,7 +2503,7 @@ export default {
                         const secs = Math.floor((diff % (1000 * 60)) / 1000);
                         
                         const pad = (n) => n.toString().padStart(2, '0');
-                        timerEl.innerHTML = 'TOKEN EXPIRES IN: ' + pad(hours) + ':' + pad(mins) + ':' + pad(secs);
+                        timerEl.innerHTML = 'BEARER TOKEN EXPIRES IN: ' + pad(hours) + ':' + pad(mins) + ':' + pad(secs);
                         
                         if (hours < 2) {
                             timerEl.style.color = '#ffb300';
@@ -2441,8 +2518,12 @@ export default {
                     async function testConnection() {
                         const res = await fetch('/api/admin/test-dxrp');
                         const data = await res.json();
-                        if (data.ok) alert('Success! Found player: ' + data.name + ' (Balance: $' + data.balance + ')');
-                        else alert('Failed: ' + data.error);
+                        if (data.ok) {
+                            const balance = data.balance != null ? ' (Balance: $' + data.balance + ')' : '';
+                            alert('Success! Bearer token accepted by DXRP.' + balance);
+                        } else {
+                            alert('Failed: ' + data.error);
+                        }
                     }
                     async function saveSettings() {
                         const token = document.getElementById('dxrp-token').value;
@@ -2892,13 +2973,10 @@ export default {
             }
             else if (path === "/api/admin/test-dxrp") {
                 try {
-                    const player = await getDxrpPlayer(steamid);
-                    if (player) {
-                        return new Response(JSON.stringify({ ok: true, name: player.name || "Unknown", balance: player.balance || 0 }));
-                    }
-                    return new Response(JSON.stringify({ ok: false, error: "Player not found or Token invalid" }));
+                    const result = await testDxrpConnection();
+                    return new Response(JSON.stringify(result), { headers: { 'Content-Type': 'application/json' } });
                 } catch (e) {
-                    return new Response(JSON.stringify({ ok: false, error: e.message }));
+                    return new Response(JSON.stringify({ ok: false, error: e.message }), { headers: { 'Content-Type': 'application/json' } });
                 }
             }
             else if (path === "/api/admin/giveaway-pick-winner" && request.method === "POST") {
@@ -2979,7 +3057,7 @@ export default {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({
-                            content: "<@1179604826997411924> ⚠️ **DXRP Token Expiry Warning**\nYour token is about to expire in 1 hour. Please visit dxrp.net and click your **Update Token** bookmark to refresh it!"
+                            content: "<@146055950363525120> ⚠️ **DXRP Token Expiry Warning**\nYour token is about to expire in 1 hour. Please visit dxrp.net and click your **Update Token** bookmark to refresh it!"
                         })
                     });
                     await linksKv.put("status:dxrp_notified", "true", { expirationTtl: 3600 });
@@ -4207,6 +4285,7 @@ export default {
         if (path === "/rules") {
             pageTitle = "LifePunch | Official Rules";
             subHeaderTitle = "RULES & CONDUCT";
+            if (isSbox) bodyClass = "sbox-rules";
 
             const escAttr = (value) =>
                 String(value ?? "")
@@ -4446,6 +4525,9 @@ export default {
 
               .rule-line b { color: var(--lp-blue); }
               .rule-text > b + b { display: block; margin-top: 12px; }
+              .rule-text ul.rule-sublist { margin: 6px 0 0 0; padding-left: 20px; list-style: disc; }
+              .rule-text b + ul.rule-sublist { margin-top: 2px; }
+              .rule-text ul.rule-sublist li { margin-bottom: 6px; line-height: 1.5; }
               .sub-title { color: var(--lp-blue); font-weight: 800; text-transform: uppercase; margin: 15px 0 10px 0; font-size: 12px; letter-spacing: 1px; }
               .sub-title-emoji { margin-right: 0.35em; text-decoration: none; }
               .sub-title--underline { text-decoration: underline; }
@@ -4485,6 +4567,20 @@ export default {
                   opacity: 1;
               }
               @keyframes slideUpFade { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+              body.sbox-rules .container { padding: 16px 18px 24px; animation: none !important; opacity: 1 !important; transform: none !important; }
+              body.sbox-rules header { margin-bottom: 8px !important; padding-bottom: 0; }
+              body.sbox-rules .logo { width: 96px; margin-bottom: 10px; animation: none !important; }
+              body.sbox-rules, body.sbox-rules .cat-btn { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+              body.sbox-rules h1 { font-size: 36px; letter-spacing: -1.5px; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; font-weight: 800; }
+              body.sbox-rules .sub-h { font-size: 12px; letter-spacing: 1.5px; margin-bottom: 10px; }
+              body.sbox-rules .intro-text { padding: 14px 18px; margin-bottom: 14px; font-size: 13px; line-height: 1.5; }
+              body.sbox-rules .search-wrapper { margin-bottom: 16px; }
+              body.sbox-rules #search { padding: 12px 12px 12px 40px; font-size: 14px; }
+              body.sbox-rules .custom-cursor { left: 16px; font-size: 16px; }
+              body.sbox-rules .cat-btn { padding: 14px 20px; font-size: 15px; gap: 16px; }
+              body.sbox-rules .icon-box { width: 34px; height: 34px; font-size: 16px; }
+              body.sbox-rules .category { margin-bottom: 9px; }
           </style>
 
           <div class="intro-text">
@@ -4635,6 +4731,17 @@ export default {
 
               window.addEventListener('load', initRulesPageState);
               window.addEventListener('pageshow', initRulesPageState);
+
+              if (document.body.classList.contains("sbox-rules")) {
+                  document.addEventListener("keydown", function (e) {
+                      if (e.key !== "Tab") return;
+                      e.preventDefault();
+                      e.stopPropagation();
+                      if (document.activeElement && document.activeElement !== document.body) {
+                          document.activeElement.blur();
+                      }
+                  }, true);
+              }
 
               document.querySelectorAll('.cat-btn, .sub-btn').forEach(btn => {
                   btn.addEventListener('click', function(e) {
@@ -5681,7 +5788,6 @@ export default {
                           <ul style="margin:0;">
                               <li>Builder+ Status</li>
                               <li>Prop Limit +600</li>
-                              <li>Moderation Powers (DXRP WIP)</li>
                               <li>Queue Skip </li>
                               <li>Minigame Starts (DXRP WIP)</li>
                               <li>Exclusive Jobs (DXRP WIP)</li>
@@ -5730,7 +5836,6 @@ export default {
                           <ul style="margin:0;">
                               <li>Builder+ Status</li>
                               <li>Prop Limit +600</li>
-                              <li>Moderation Powers (DXRP WIP)</li>
                               <li>Queue Skip </li>
                               <li>Minigame Starts (DXRP WIP)</li>
                               <li>Exclusive Jobs (DXRP WIP)</li>
@@ -6072,8 +6177,16 @@ export default {
                 console.error("Failed to fetch server data:", e);
             }
 
-            const s1 = serverData.find(s => s.name && s.name.includes("LifePunch #1"));
-            const s2 = serverData.find(s => s.name && s.name.includes("LifePunch #2"));
+            const isLifePunchServer = (s) =>
+                s && (s.network === "LifePunch" || (s.name && s.name.includes("LifePunch Official")));
+            const s1 = serverData.find(
+                (s) => isLifePunchServer(s) && s.name && s.name.includes("70p") && !/DEVELOPMENT/i.test(s.name)
+            );
+            const s2 = serverData.find(
+                (s) => isLifePunchServer(s) && s.name && /DEVELOPMENT/i.test(s.name)
+            );
+            const c1 = s1?.playerCount ?? 0;
+            const c2 = s2?.playerCount ?? 0;
 
             bodyContent = `
             <style>
@@ -6093,26 +6206,67 @@ export default {
             <div class="server-card">
                 <div class="server-info">
                     <h3>LifePunch Official | 70p | DXRP</h3>
-                    <p>DXRP | ${s1 ? `${s1.playerCount || 0}/70` : "Offline"} Players </p>
+                    <p>${c1}/70 players</p>
                 </div>
-                <button class="copy-btn" onclick="copyIP('connect 90285428148008983', this)">COPY IP</button>
+                <button type="button" class="copy-btn" data-connect="90285428148008983">COPY IP</button>
             </div>
 
             <div class="server-card">
                 <div class="server-info">
-                    <h3>LifePunch Official | 70p | DarkRP OG</h3>
-                    <p>DarkRP OG | ${s2 ? `${s2.playerCount || 0}/40` : "Offline"} Players</p>
+                    <h3>LifePunch Official | DEVELOPMENT SERVER</h3>
+                    <p>${c2}/70 players</p>
                 </div>
-                <button class="copy-btn" onclick="copyIP('connect 1692541414016496', this)">COPY IP</button>
+                <button type="button" class="copy-btn" data-connect="1692541414016496">COPY IP</button>
             </div>
 
             <script>
-                function copyIP(text, btn) {
-                    navigator.clipboard.writeText(text);
-                    btn.innerText = "COPIED!";
-                    btn.classList.add('copied');
-                    setTimeout(() => { btn.innerText = "COPY IP"; btn.classList.remove('copied'); }, 2000);
+                function legacyCopyToClipboard(text) {
+                    return new Promise(function (resolve, reject) {
+                        var ta = document.createElement("textarea");
+                        ta.value = text;
+                        ta.setAttribute("readonly", "");
+                        ta.style.cssText = "position:fixed;left:-9999px;top:0;opacity:0";
+                        document.body.appendChild(ta);
+                        ta.focus();
+                        ta.select();
+                        ta.setSelectionRange(0, text.length);
+                        var ok = false;
+                        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+                        document.body.removeChild(ta);
+                        if (ok) resolve();
+                        else reject(new Error("Copy failed"));
+                    });
                 }
+                function copyTextToClipboard(text) {
+                    if (text == null || text === "") return Promise.reject(new Error("Nothing to copy"));
+                    if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
+                        return navigator.clipboard.writeText(text).catch(function () {
+                            return legacyCopyToClipboard(text);
+                        });
+                    }
+                    return legacyCopyToClipboard(text);
+                }
+                function copyConnect(btn) {
+                    var id = btn.getAttribute("data-connect");
+                    if (!id) return;
+                    var text = "connect " + id;
+                    var label = btn.innerText;
+                    copyTextToClipboard(text).then(function () {
+                        btn.innerText = "COPIED!";
+                        btn.classList.add("copied");
+                        setTimeout(function () {
+                            btn.innerText = label;
+                            btn.classList.remove("copied");
+                        }, 2000);
+                    }).catch(function () {
+                        btn.innerText = "COPY FAILED";
+                        btn.classList.remove("copied");
+                        setTimeout(function () { btn.innerText = label; }, 2000);
+                    });
+                }
+                document.querySelectorAll(".copy-btn[data-connect]").forEach(function (btn) {
+                    btn.addEventListener("click", function () { copyConnect(btn); });
+                });
             </script>
           `;        }
 
@@ -6124,7 +6278,7 @@ export default {
             <title>${pageTitle}</title>
             ${sharedHead}
         </head>
-        <body>
+        <body${bodyClass ? ` class="${bodyClass}"` : ""}>
             <div class="container">
                 ${getHeader(subHeaderTitle)}
                 ${bodyContent}
@@ -6145,6 +6299,10 @@ export default {
             responseHeaders["Content-Security-Policy"] = "frame-ancestors *;";
         } else {
             responseHeaders["X-Frame-Options"] = "DENY";
+        }
+
+        if (path === "/rules" || path === "/rules/raw") {
+            responseHeaders["Cache-Control"] = "public, max-age=120, stale-while-revalidate=600";
         }
 
         return new Response(finalHtml, { headers: responseHeaders });
