@@ -1,5 +1,61 @@
 # AK-47 Viewmodel Build (S&box)
 
+---
+
+## ⚡ STATUS — background rebuild done (2026-06-03), NO Blender required
+
+The first-person viewmodel was rebuilt automatically using the **M4 rig as an
+invisible driver** (the s&box first-person doc approach), so we don't need to add
+a `camera` bone in Blender to ship a working FP view.
+
+**What changed (DXRP project only — not yet synced to repo / published):**
+
+- `equipment/vm_ak47/vm_ak47.prefab` was **replaced** with a clone of the working
+  `vm_m4a1.prefab`. Old file backed up as `vm_ak47.prefab.preM4clone.bak`.
+  - Component 1: `ViewModel` (camera bone read = M4's `camera`, animgraph = M4's).
+  - Component 2: **M4 master** `v_m4a1.vmdl`, `CreateBoneObjects: true`,
+    `UseAnimGraph: true`, `MaterialOverride = invisible.vmat` → drives everything
+    but renders nothing.
+  - Component 3: **arms** `v_first_person_arms_human.vmdl`, bonemerged to master.
+  - Component 4: **textured AK** `v_ak47.vmdl`, bonemerged to master. The AK rig
+    reuses the M4 bone names (`weapon_root`, `muzzle`, `stock`, `trigger`,
+    `magazine`…) so it should ride the M4 skeleton.
+- `equipment/vm_ak47/invisible.vmat` — new fully-transparent material (opacity 0 +
+  tint alpha 0). Needed because `ViewModel.cs` forces the renderer Tint alpha back
+  to 1 each frame, so the mesh must be hidden at the material level.
+- `equipment/w_ak47/w_ak47.prefab` — `ViewModelPrefab` repointed from the M4
+  placeholder back to `addons/lifepunch/ak47/equipment/vm_ak47/vm_ak47.prefab`.
+
+**Verify in editor (5 min), in this order:**
+
+1. Open the DXRP project. Let it compile `invisible.vmat` + `vm_ak47.prefab`.
+2. Open `vm_ak47.prefab`. You should see **arms + textured AK only** (no M4).
+   - If the **M4 is still visible**: select the `v_m4a1.vmdl` renderer →
+     `MaterialOverride` should be `invisible.vmat`. If it still shows, open
+     `invisible.vmat` and confirm **Translucent** is on and opacity = 0.
+3. `lp_give_ak` in play mode → first person should sit lower-right like the M4
+   (NOT giant/filling screen). Arms should grip it.
+   - If the **AK mesh is distorted** (bonemerge mismatch), switch component 4 from
+     bonemerge to a static child: parent it under the `weapon_root` bone object and
+     zero its local transform, then nudge to align. (Mesh won't animate on reload
+     but won't distort.)
+   - If the AK is **offset from the hands**, nudge the AK renderer's local
+     position/rotation a little until it overlaps where the M4 sat.
+4. Muzzle flash / ejection already use the M4 `muzzle` / `bolt_flap` bone objects —
+   should be correct out of the box.
+
+**Third-person hold (separate, still TODO — needs live editor tweak):**
+`w_ak47.prefab` → `Model` child currently `Rotation: 0,0,1,0` (180° flip) and
+`Muzzle` at `-459 X` (clearly wrong). Reference values from working M4 `w_m4a1.prefab`:
+- Model child rotation: `0.0000000056,0.00000012,0.1164025,0.9932021` (~13° roll, no flip)
+- Muzzle: `20.07571,0,7.212921`  •  EjectionPort: `1.774985,-0.4210945,7.672482`
+(Held position already matches M4: `2.888188,1.646453,-6.576477`.)
+
+**After editor verification passes:** sync DXRP → repo, remove the `lp_give_ak`
+dev command, then publish a new AK revision and re-pin it on the LifePunch gamemode.
+
+---
+
 **New to S&box?** Use the full click-by-click guide first:
 
 ```text

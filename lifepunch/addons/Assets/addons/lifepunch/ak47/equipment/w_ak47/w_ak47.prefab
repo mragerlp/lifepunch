@@ -46,7 +46,11 @@
         "OnlyShowCrosshairDot": false,
         "Resource": null,
         "SpeedPenalty": 40,
-        "UseCrosshair": true
+        "UseCrosshair": true,
+        "ViewModelPrefab": {
+          "_type": "gameobject",
+          "prefab": "addons/lifepunch/ak47/equipment/vm_ak47/vm_ak47.prefab"
+        }
       },
       {
         "__type": "Dxura.RP.Game.TagBinder",
