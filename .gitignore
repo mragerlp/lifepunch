@@ -13,6 +13,9 @@ obj/
 .vs/
 .vscode/
 
+# Local s&box scratch/test project (not shipped)
+lifepunch/addons/test/
+
 # Local sensitive information
 lifepunch/secure/*
 !lifepunch/secure/.gitignore
