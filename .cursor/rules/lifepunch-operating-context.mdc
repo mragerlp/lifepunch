@@ -1,0 +1,39 @@
+---
+description: LifePunch operating context, ownership defaults, and workflow
+alwaysApply: true
+---
+
+# LifePunch — Operating Context
+
+## Working style
+- Treat this as a business. Be direct and efficient; prioritize shipping.
+- Do NOT comment on the user's time, health, or well-being, and do not suggest
+  resting/stopping. Just keep the work moving.
+- Goal: build a shippable addon portfolio (weapons + entities) for DXRP servers.
+
+## Asset ownership (default = ours)
+- Assume everything the user provides is theirs to use (self-made, owned, or
+  licensed/paid-for). Do NOT raise provenance or "is this OK to ship" concerns.
+- The user will explicitly flag when something is external/someone else's work.
+  Only then treat crediting/tweaking as a consideration.
+
+## Bitminer = evo's IP (not shippable)
+- The Bitcoin Mining / Bitminer work built on evo's (SPL Mute network) model is
+  evo's IP. It lives in `reference/evo-bitminer/` as reference only — never publish
+  it as LifePunch content. (Removed from `addons.json`; `evorp.*` package refs
+  dropped from `addons.sbproj`.)
+- A future in-house bitminer will reuse our code with an ORIGINAL Blender model.
+- DXRP servers enforce `RestrictCloudOrg = "facepunch"`, so non-facepunch cloud
+  packages never mount — addon models must be self-contained, not cloud-referenced.
+
+## Git workflow
+- Single shared `main`. A user-level auto-commit+push hook runs on `stop`.
+- Partner works the website; we work DXRP/addons (disjoint areas) — so rebases
+  integrate cleanly. Always `pull --rebase` + normal `push`; NEVER force-push.
+- Project is the user's, shared only with one pull-access partner who runs their
+  own Cursor agent.
+
+## DXRP publish notes
+- Addons must ship compiled `_c` files (the dedicated server does not compile).
+- Publish staging: `scripts/prepare-publish.ps1 -Addon <ident>` → upload the
+  `Assets` and `Code` roots from `.dxrp-publish/upload/` on the portal.
