@@ -38,6 +38,7 @@ Weapon content rows use:
 - `primaryReference`: world prefab
 - `secondaryReference`: viewmodel prefab
 - `worldModelPath`: mounted model path
+- `iconPath`: optional mounted UI image path for kill-feed/display icons; use a leading `/` when the path is passed into DXRP `<Icon>` UI components
 - `grouping`: `Primary`, `Secondary`, `Utility`, or `Melee`
 
 ## AK47-Specific Choices

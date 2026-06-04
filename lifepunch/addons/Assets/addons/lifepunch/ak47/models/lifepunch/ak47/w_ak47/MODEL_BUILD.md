@@ -1,4 +1,4 @@
-﻿# AK47 Model Build
+# AK47 Model Build
 
 This folder is the model build area for the LifePunch AK47 world model.
 
@@ -56,8 +56,28 @@ materials/ak47_body.vmat
 - Do not add raw Blender exports, loose bullet variants, or old model names here.
 - Do not mark this model ready until S&box opens/compiles the resource cleanly.
 
-## Next Manual S&box Step
+## Viewmodel (required before next publish)
 
-1. Reopen `equipment/vm_ak47/vm_ak47.prefab` in S&box and confirm the `ViewModel` component loads cleanly.
-2. Save the viewmodel prefab from the editor after confirming the patched references.
-3. Do not publish until the world prefab and viewmodel prefab both load cleanly in a DXRP test context.
+First-person work is **not** part of this world-model doc. Follow:
+
+```text
+../v_ak47/VIEWMODEL_BUILD.md
+```
+
+Do not publish another DXRP revision until `v_ak47.vmdl` exists and `vm_ak47.prefab` is rebuilt in S&box to match the M4A1 viewmodel pattern.
+
+## Shipment height (crate display)
+
+See also [`lifepunch/addons/docs/M4A1_REFERENCE.md`](../../../../../../../docs/M4A1_REFERENCE.md) (M4A1 shipment vs first-person split).
+
+Shipments spawn `worldModelPath` directly (`w_ak47.vmdl`), not the world prefab child offsets.
+
+- Tune **`import_translation` Z** on the `ak47.fbx` node in `w_ak47.vmdl` until the rifle lines up with official M4A1 shipment height in a gun-dealer crate test.
+- Current repo value: **`[0, 0, 8]`** (raise AK in crate; was sitting low vs M4A1).
+- Do not rely on `w_ak47.prefab` → `Model` child position for shipment height.
+
+## World model verification
+
+1. Open `w_ak47.vmdl` in S&box and confirm it compiles cleanly.
+2. Compare AK-47 vs M4A1 shipment crates on the dev server (same crate type).
+3. Publish only after the viewmodel checklist in `VIEWMODEL_BUILD.md` is complete.

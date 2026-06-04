@@ -1,4 +1,4 @@
-﻿{
+{
   "schemaVersion": 1,
   "org": "lifepunch",
   "contentReferenceRoot": "addons/lifepunch",
@@ -14,13 +14,16 @@
       "contents": [
         {
           "slug": "ak47",
+          "name": "AK-47",
           "label": "AK-47",
           "type": 1,
           "primaryReference": "addons/lifepunch/ak47/equipment/w_ak47/w_ak47.prefab",
           "secondaryReference": "addons/lifepunch/ak47/equipment/vm_ak47/vm_ak47.prefab",
+          "secondaryReferencePlaceholder": "gameplay/equipment/weapons/m4a1/vm_m4a1.prefab",
           "worldModelPath": "addons/lifepunch/ak47/models/lifepunch/ak47/w_ak47/w_ak47.vmdl",
+          "iconPath": "/addons/lifepunch/ak47/ui/ak47_killfeed.png",
           "grouping": "Secondary",
-          "implementationStatus": "world-and-viewmodel-dxrp-components-wired",
+          "implementationStatus": "world-custom-viewmodel-m4rig",
           "sourceIntake": "Code/Addons/lifepunch/ak47/docs/SOURCE_INTAKE.md",
           "activeModelSource": "Assets/addons/lifepunch/ak47/models/lifepunch/ak47/w_ak47/source/ak47.fbx",
           "modelBuild": "Assets/addons/lifepunch/ak47/models/lifepunch/ak47/w_ak47/MODEL_BUILD.md",
@@ -30,7 +33,7 @@
           "prefabStatus": {
             "worldPrefabCreated": true,
             "viewModelPrefabCreated": true,
-            "viewModelUsesWorldModelFirstPass": true,
+            "viewModelUsesWorldModelFirstPass": false,
             "officialDxrpWeaponPatternIdentified": true,
             "worldPrefabDxrpComponentsAdded": true,
             "worldPrefabAttachmentPointsAdded": true,
@@ -48,7 +51,7 @@
             "cock": "addons/lifepunch/ak47/sounds/ak47_cock.sound",
             "draw": "addons/lifepunch/ak47/sounds/ak47_draw.sound"
           },
-          "notes": "Clean core row for the rebuilt LifePunch AK47. Do not import old scratch assets/code without review."
+          "notes": "VIEWMODEL STRATEGY (M4-RIG DRIVER, 2026-06-03): secondaryReference now points to the CUSTOM vm_ak47.prefab, which was rebuilt by cloning the working vm_m4a1 rig. The M4 viewmodel model (v_m4a1.vmdl) is the master SkinnedModelRenderer (CreateBoneObjects + UseAnimGraph) so it supplies the real 'camera' bone, animgraph, and hand IK that the custom AK model lacked; it is rendered with equipment/vm_ak47/invisible.vmat (Complex shader, F_TRANSLUCENT, opacity 0 + tint alpha 0) so the M4 mesh is never seen. The textured AK (v_ak47.vmdl) is bonemerged on top of the M4 master (the AK rig reuses M4 bone names: weapon_root/muzzle/stock/trigger/magazine...). Arms (v_first_person_arms_human) bonemerge to the master, same as M4. __references pin facepunch.v_m4a1#152506 + facepunch.v_first_person_arms_human#205798. CONTINGENT ON EDITOR VERIFICATION: open the DXRP project, confirm invisible.vmat hides the M4 and the AK sits in-hand (lp_give_ak), then sync DXRP->repo and publish. FALLBACK (Option A): if the custom VM fails verification, set secondaryReference back to secondaryReferencePlaceholder (gameplay/equipment/weapons/m4a1/vm_m4a1.prefab) to ship the functional M4-placeholder VM. 3rd-person hold (w_ak47.prefab Model child) still needs a live editor nudge: remove the 0,0,1,0 180-flip and move the Muzzle/EjectionPort empties off the -459 X leftover (M4 ref: Muzzle 20.07571,0,7.212921 / Ejection 1.774985,-0.4210945,7.672482). Remove Code/Addons/lifepunch/ak47/Ak47DevGive.cs (lp_give_ak) before publish."
         }
       ]
     },
@@ -65,12 +68,27 @@
     {
       "ident": "bitcoinmining",
       "title": "Bitcoin Mining",
-      "kind": "simple-entity",
+      "kind": "interactive-entity",
       "hasAssets": true,
-      "hasCode": false,
+      "hasCode": true,
       "dxrpAddonId": "019e4420-8c6f-7527-98e0-4dbfdb344ca4",
-      "status": "foundation-only",
-      "contents": []
+      "status": "core-scaffold",
+      "contents": [
+        {
+          "slug": "bitminer",
+          "name": "Bitminer",
+          "label": "Bitminer",
+          "type": 0,
+          "primaryReference": "addons/lifepunch/bitcoinmining/entities/bitminer/bitminer.prefab",
+          "worldModelPath": "models/bitminer/bitminer.vmdl",
+          "grouping": "#Bitcoin",
+          "implementationStatus": "bitminer-shipping",
+          "dxrpAddonContentId": "019e44d3-95b9-7fba-907f-d04c32584034",
+          "runtimeCode": "Code/Addons/lifepunch/bitcoinmining/BitminerEntity.cs",
+          "runtimePattern": "Code/Addons/lifepunch/bitcoinmining/docs/RUNTIME_PATTERN.md",
+          "notes": "SINGLE ENTITY (Bitminer). GPU Rack deferred to a future separate package; do not ship it. Content row reuses the real pinned portal content ID (019e44d3-95b9-7fba-907f-d04c32584034) so the gamemode mapping is preserved. CLOUD MODEL APPROACH (chosen 2026-06-03): body + fans are served by evo's published cloud packages (fully textured), NOT local addon models. Body ModelRenderer + worldModelPath -> 'models/bitminer/bitminer.vmdl' (evorp.bitminer1). Fans -> 'models/crypto_miners/crypto_miner_fan_big.vmdl' (evorp.cryptominerfanbig) + 'crypto_miner_fan_small.vmdl' (evorp.cryptominerfansmall). All three evorp packages MUST be in the project PackageReferences (standalone addons.sbproj AND the DXRP rp.sbproj), in the prefab __references, AND in the dedicated server's CloudPackages, or the rig renders gray/ERROR. The local bitminer.vmdl is still shipped but is UNUSED for rendering (kept for a future self-contained texture bake). We now develop + recompile this addon INSIDE the DXRP project (rp.sbproj) so _c compiles in-context. CODE: BitminerEntity is dual-build (#if LIFEPUNCH_LOCAL -> Sandbox.Component stub; #else -> Dxura.RP.Game.BaseEntity, which is what the DXRP project compiles). NOTE: the prior 'File not found' _c errors were a SERVER-SIDE stale-cache issue (the pinned packages already contained the _c), NOT a model-reference problem."
+        }
+      ]
     },
     {
       "ident": "hackerjob",

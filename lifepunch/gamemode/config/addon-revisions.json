@@ -12,15 +12,13 @@
       "targetEnvironment": "lifepunchdevelopment",
       "publishStatus": "published-and-pinned",
       "revisionId": null,
-      "revisionNumber": 26,
+      "revisionNumber": 35,
       "stagingRoot": "../addons/.dxrp-publish/upload",
       "packageExport": "../addons/.dxrp-publish/package-ak47.json",
       "notes": [
-        "AK47 Rev 26 was published with package-root content row prefab references.",
-        "Rev 22 was an intermediate no-changelog publish and should not be treated as the active target.",
-        "Rev 23 included sanitized model source but still showed orange ERROR models in-game.",
-        "Rev 24/25 did not fully resolve the runtime path mismatch.",
-        "Rev 26 is pinned on the LifePunch gamemode for development-server runtime testing.",
+        "AK47 Rev 35: dedicated v_ak47 viewmodel (camera bone), vm_ak47 prefab wired to v_ak47.vmdl, first-person orientation fix plus tuned muzzle/ejection attachment points.",
+        "Rev 26–33: world/view prefab path fixes, kill-feed icon, w_ak47 scale; first-person blocked until v_ak47 shipped.",
+        "Pin Rev 35 on LifePunch gamemode for development-server runtime testing.",
         "Development server uses the LifePunch gamemode and is the only target for AK47 runtime testing.",
         "Do not sync lifepunchmainserver; it must remain on the vanilla gamemode."
       ]

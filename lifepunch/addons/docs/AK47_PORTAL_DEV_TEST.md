@@ -1,4 +1,4 @@
-﻿# AK47 Portal And Development Test
+# AK47 Portal And Development Test
 
 Date: 2026-05-26
 
@@ -46,11 +46,13 @@ Portal content row values from the package export:
 ```json
 {
   "slug": "ak47",
+  "name": "AK-47",
   "label": "AK-47",
   "type": 1,
   "primaryReference": "addons/lifepunch/ak47/equipment/w_ak47/w_ak47.prefab",
   "secondaryReference": "addons/lifepunch/ak47/equipment/vm_ak47/vm_ak47.prefab",
   "worldModelPath": "addons/lifepunch/ak47/models/lifepunch/ak47/w_ak47/w_ak47.vmdl",
+  "iconPath": "/addons/lifepunch/ak47/ui/ak47_killfeed.png",
   "grouping": "Secondary"
 }
 ```
@@ -117,6 +119,26 @@ Servers:
   - `cost`: `5000`
   - `limit`: `5`
   - `quantity`: `5`
+- Rev 30 was published with `iconPath` set to `addons/lifepunch/ak47/ui/ak47_killfeed.svg`.
+- Rev 30 changelog text was omitted in the portal, but the revision content includes the mounted kill-feed icon asset.
+- Rev 30 runtime test confirmed `iconPath` is being read, but the SVG rendered as a blank icon in the kill feed.
+- Rev 31 switched `iconPath` to `addons/lifepunch/ak47/ui/ak47_killfeed.png`, added a required content `name`, and moved the first-person/world renderers under `Model` children like the M4A1 prefab.
+- Rev 31 runtime test: shipment/world appearance is close enough for the next pass; first-person view is still too large and too close to the camera.
+- Rev 32 runtime test: first-person still appears end-on in the camera, and the world/shipment model is too large relative to M4A1.
+- Next publish target: Rev 33 rotates the first-person `Model` child 90 degrees around the camera axis (`0,0,0.7071068,0.7071068`), keeps it small at `0.1` scale, and scales the world/shipment `Model` child to `0.78`.
+- Follow-up correction: shipment display uses `worldModelPath` directly, so the size correction belongs in `w_ak47.vmdl` (`import_scale` `0.039`) rather than only the `w_ak47.prefab` child transform.
+- Follow-up correction: kill-feed `<Icon>` paths match stock DXRP usage when rooted with a leading slash, so AK47 `iconPath` is now `/addons/lifepunch/ak47/ui/ak47_killfeed.png`.
+- Next publish target (Rev 34): `iconPath` leading slash, `w_ak47.vmdl` `import_scale` `0.039`, viewmodel child rotation aligned to M4A1 world-model yaw (`0,0,0.1164025,0.9932021`) at `0.085` scale with `UseAnimGraph` disabled until a dedicated `v_ak47` exists.
+
+## Publish Gate (current)
+
+Do **not** publish Rev 34+ for first-person prefab tweaks until S&box viewmodel work is complete:
+
+- Guide: `Assets/addons/lifepunch/ak47/models/lifepunch/ak47/v_ak47/VIEWMODEL_BUILD.md`
+- Open project: `lifepunch/addons/addons.sbproj`
+- Target: `v_ak47.vmdl` + M4A1-style `vm_ak47.prefab` (root renderers, `camera` bone, arms bone merge)
+
+Kill-feed (`iconPath` with leading `/`) and world `import_scale` can ship in the same revision **after** first person passes a local S&box test.
 
 ## Current Development Test Gate
 

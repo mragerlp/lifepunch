@@ -1,0 +1,25 @@
+<Project>
+
+  <!--
+    LIFEPUNCH_LOCAL marks the local / S&box editor build, where the shared addons.csproj
+    references only the Sandbox engine DLLs and Dxura.RP.Game is NOT compile-available.
+
+    Code that needs DXRP gamemode APIs is written as:
+
+        #if LIFEPUNCH_LOCAL
+            // compile-safe Sandbox-only stub (local + editor build)
+        #else
+            // real Dxura.RP.Game implementation (dxrp.net gamemode-context build)
+        #endif
+
+    dxrp.net compiles uploaded addon code inside the gamemode context (Dxura.RP.Game available)
+    and does NOT define this symbol, so it selects the real branch.
+
+    This lives in Directory.Build.targets (imported AFTER the project body) so the symbol is
+    re-appended even if S&box regenerates addons.csproj and resets DefineConstants.
+  -->
+  <PropertyGroup>
+    <DefineConstants>$(DefineConstants);LIFEPUNCH_LOCAL</DefineConstants>
+  </PropertyGroup>
+
+</Project>

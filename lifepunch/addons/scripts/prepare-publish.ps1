@@ -57,20 +57,30 @@ function Clear-SensitiveBinaryStrings {
     $Bytes = [System.IO.File]::ReadAllBytes($Path)
     $Text = $Encoding.GetString($Bytes)
 
+    # Strip any embedded local "<drive>:\Users\<name>\..." path (e.g. baked-in texture
+    # references from the source artist's machine). The match is bounded by a control char
+    # or quote so it only consumes the printable path string. We keep the trailing basename
+    # and left-pad with spaces so the byte length is preserved (binary FBX string properties
+    # are length-prefixed, so the byte count must not change).
     $SensitivePathPatterns = @(
-        '[A-Za-z]:\\Users\\[^\\]+\\.*?ak47\.blend'
+        '[A-Za-z]:[\\/]Users[\\/][ -~]*?(?=[\x00-\x1f"])'
     )
 
     foreach ($Pattern in $SensitivePathPatterns) {
         $Text = [System.Text.RegularExpressions.Regex]::Replace($Text, $Pattern, {
             param($Match)
 
-            $Replacement = 'addons/lifepunch/ak47/source/ak47.blend'
-            if ($Replacement.Length -gt $Match.Value.Length) {
-                return 'ak47.blend'.PadRight($Match.Value.Length, ' ')
+            $Value = $Match.Value
+            $BaseName = ($Value -split '[\\/]')[-1]
+            if ([string]::IsNullOrWhiteSpace($BaseName)) {
+                $BaseName = 'asset'
             }
 
-            return $Replacement.PadRight($Match.Value.Length, ' ')
+            if ($BaseName.Length -ge $Value.Length) {
+                return $BaseName.Substring(0, $Value.Length)
+            }
+
+            return (' ' * ($Value.Length - $BaseName.Length)) + $BaseName
         })
     }
 
@@ -110,11 +120,13 @@ if ($Package.hasCode) {
 $ContentRows = @(@($Package.contents) | ForEach-Object {
     [ordered]@{
         slug = $_.slug
+        name = $_.name
         label = $_.label
         type = $_.type
         primaryReference = $_.primaryReference
         secondaryReference = $_.secondaryReference
         worldModelPath = $_.worldModelPath
+        iconPath = $_.iconPath
         grouping = $_.grouping
         implementationStatus = $_.implementationStatus
     }
@@ -148,10 +160,12 @@ $(
         ($ContentRows | ForEach-Object {
             @"
   - $($_.label) [$($_.slug)]
+    Name:               $($_.name)
     Type:               $($_.type)
     Primary Reference:  $($_.primaryReference)
     Secondary Reference: $($_.secondaryReference)
     World Model Path:   $($_.worldModelPath)
+    Icon Path:          $($_.iconPath)
     Grouping:           $($_.grouping)
 "@
         }) -join "`r`n"

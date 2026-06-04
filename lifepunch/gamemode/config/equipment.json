@@ -1,4 +1,4 @@
-﻿{
+{
   "schemaVersion": 1,
   "gamemode": {
     "name": "LifePunch",
@@ -20,7 +20,7 @@
         "grouping": "Secondary"
       },
       "testPlan": [
-        "AK47 Rev 26 is published and pinned with package-root content row prefab references.",
+        "AK47 Rev 34 is published; pin on LifePunch gamemode and verify v_ak47 first-person (orientation, muzzle, ejection).",
         "Confirm AK47 appears as equipment/content in the gamemode.",
         "Confirm AK47 is added on the LifePunch gamemode Market tab so it appears in the in-game Market section.",
         "Spawn or grant AK47 in a development test session.",

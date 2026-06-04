@@ -64,6 +64,20 @@ function Test-ContentReference {
     }
 }
 
+function Test-MountedAssetReferenceFile {
+    param(
+        [string]$Reference,
+        [string]$Context
+    )
+
+    if ([string]::IsNullOrWhiteSpace($Reference) -or -not $Reference.StartsWith('addons/')) {
+        return
+    }
+
+    $RelativePath = Join-Path 'Assets' ($Reference -replace '/', '\')
+    Test-RequiredFile $RelativePath
+}
+
 $RequiredDirectories = @(
     'Assets',
     'Assets\addons',
@@ -201,8 +215,27 @@ if ($null -ne $Manifest) {
                 }
 
                 Test-ContentReference ([string]$Content.primaryReference) "$ContentContext primaryReference" "addons/lifepunch/$Ident/equipment/"
-                Test-ContentReference ([string]$Content.secondaryReference) "$ContentContext secondaryReference" "addons/lifepunch/$Ident/equipment/"
+
+                # secondaryReference (viewmodel) may be either this addon's own equipment prefab,
+                # or a base-game/shared viewmodel (e.g. gameplay/equipment/weapons/m4a1/vm_m4a1.prefab)
+                # used as an intentional placeholder. Base-content refs are not in this repo, so they
+                # are validated for shape only (no file-existence / addon-prefix requirement).
+                $SecondaryRef = [string]$Content.secondaryReference
+                if ([string]::IsNullOrWhiteSpace($SecondaryRef)) {
+                    Add-LayoutError "$ContentContext secondaryReference is empty"
+                } elseif ($SecondaryRef.StartsWith('addons/')) {
+                    Test-ContentReference $SecondaryRef "$ContentContext secondaryReference" "addons/lifepunch/$Ident/equipment/"
+                } else {
+                    Test-ContentReference $SecondaryRef "$ContentContext secondaryReference" ''
+                }
+
                 Test-ContentReference ([string]$Content.worldModelPath) "$ContentContext worldModelPath" "addons/lifepunch/$Ident/models/"
+
+                if (Test-ManifestProperty $Content 'iconPath' -and -not [string]::IsNullOrWhiteSpace([string]$Content.iconPath)) {
+                    $IconPathForValidation = ([string]$Content.iconPath).TrimStart('/')
+                    Test-ContentReference $IconPathForValidation "$ContentContext iconPath" "addons/lifepunch/$Ident/ui/"
+                    Test-MountedAssetReferenceFile $IconPathForValidation "$ContentContext iconPath"
+                }
 
                 if ([string]::IsNullOrWhiteSpace([string]$Content.grouping) -or [string]$Content.grouping -notin $ValidWeaponGroupings) {
                     Add-LayoutError "$ContentContext grouping must be one of: $($ValidWeaponGroupings -join ', ')"

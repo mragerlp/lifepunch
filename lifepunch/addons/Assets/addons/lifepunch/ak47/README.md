@@ -1,4 +1,6 @@
-﻿# AK47 Assets
+# AK47 Assets
+
+**Fix first person / shipment:** [`../../../../docs/AK47_FIX_CHECKLIST.md`](../../../../docs/AK47_FIX_CHECKLIST.md)
 
 This is the clean asset lane for the LifePunch AK47 addon package.
 

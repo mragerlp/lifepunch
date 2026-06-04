@@ -1,4 +1,4 @@
-﻿# AK47 Runtime Pattern
+# AK47 Runtime Pattern
 
 This document tracks the AK47 code/runtime step after both prefabs have been created.
 
@@ -14,10 +14,10 @@ Assets/addons/lifepunch/ak47/models/lifepunch/ak47/w_ak47/materials/ak47_body.vm
 Code/Addons/lifepunch/ak47/AK47Weapon.cs
 ```
 
-First-pass note:
+Blocking note (2026-05-26):
 
-- `vm_ak47.prefab` currently uses the same `w_ak47.vmdl` as the world prefab.
-- Do not tune first-person transforms or viewmodel-specific behavior until the DXRP weapon/viewmodel pattern is confirmed.
+- `vm_ak47.prefab` still uses `w_ak47.vmdl` as a temporary stand-in. DXRP first person requires a dedicated viewmodel with a `camera` bone (see M4A1 `v_m4a1.vmdl` + `vm_m4a1.prefab`).
+- Do **not** publish another revision for prefab offset tweaks. Complete `Assets/addons/lifepunch/ak47/models/lifepunch/ak47/v_ak47/VIEWMODEL_BUILD.md` in S&box first.
 
 ## Observed Local S&box API
 

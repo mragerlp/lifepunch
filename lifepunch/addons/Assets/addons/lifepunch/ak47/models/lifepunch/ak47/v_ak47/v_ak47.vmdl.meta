@@ -1,0 +1,21 @@
+{
+  "publish": {
+    "Enabled": false,
+    "ProjectConfig": {
+      "Title": "V Ak 47",
+      "Type": "model",
+      "Org": "local",
+      "Ident": "vak47",
+      "Schema": 0,
+      "IncludeSourceFiles": false,
+      "Resources": null,
+      "PackageReferences": null,
+      "EditorReferences": [],
+      "Mounts": null,
+      "IsStandaloneOnly": false,
+      "Metadata": {
+        "SingleAssetSource": "addons/lifepunch/ak47/models/lifepunch/ak47/v_ak47/v_ak47.vmdl"
+      }
+    }
+  }
+}

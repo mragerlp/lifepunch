@@ -1,0 +1,23 @@
+{
+  "publish": {
+    "Enabled": false,
+    "ProjectConfig": {
+      "Title": "Bitminer",
+      "Type": "model",
+      "Org": "local",
+      "Ident": "bitminer",
+      "Schema": 0,
+      "IncludeSourceFiles": false,
+      "Resources": null,
+      "PackageReferences": null,
+      "EditorReferences": [
+        "dxura.rp#240635"
+      ],
+      "Mounts": null,
+      "IsStandaloneOnly": false,
+      "Metadata": {
+        "SingleAssetSource": "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitminer/bitminer.vmdl"
+      }
+    }
+  }
+}
