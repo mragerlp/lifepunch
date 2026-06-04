@@ -66,31 +66,6 @@
       "contents": []
     },
     {
-      "ident": "bitcoinmining",
-      "title": "Bitcoin Mining",
-      "kind": "interactive-entity",
-      "hasAssets": true,
-      "hasCode": true,
-      "dxrpAddonId": "019e4420-8c6f-7527-98e0-4dbfdb344ca4",
-      "status": "core-scaffold",
-      "contents": [
-        {
-          "slug": "bitminer",
-          "name": "Bitminer",
-          "label": "Bitminer",
-          "type": 0,
-          "primaryReference": "addons/lifepunch/bitcoinmining/entities/bitminer/bitminer.prefab",
-          "worldModelPath": "models/bitminer/bitminer.vmdl",
-          "grouping": "#Bitcoin",
-          "implementationStatus": "bitminer-shipping",
-          "dxrpAddonContentId": "019e44d3-95b9-7fba-907f-d04c32584034",
-          "runtimeCode": "Code/Addons/lifepunch/bitcoinmining/BitminerEntity.cs",
-          "runtimePattern": "Code/Addons/lifepunch/bitcoinmining/docs/RUNTIME_PATTERN.md",
-          "notes": "SINGLE ENTITY (Bitminer). GPU Rack deferred to a future separate package; do not ship it. Content row reuses the real pinned portal content ID (019e44d3-95b9-7fba-907f-d04c32584034) so the gamemode mapping is preserved. CLOUD MODEL APPROACH (chosen 2026-06-03): body + fans are served by evo's published cloud packages (fully textured), NOT local addon models. Body ModelRenderer + worldModelPath -> 'models/bitminer/bitminer.vmdl' (evorp.bitminer1). Fans -> 'models/crypto_miners/crypto_miner_fan_big.vmdl' (evorp.cryptominerfanbig) + 'crypto_miner_fan_small.vmdl' (evorp.cryptominerfansmall). All three evorp packages MUST be in the project PackageReferences (standalone addons.sbproj AND the DXRP rp.sbproj), in the prefab __references, AND in the dedicated server's CloudPackages, or the rig renders gray/ERROR. The local bitminer.vmdl is still shipped but is UNUSED for rendering (kept for a future self-contained texture bake). We now develop + recompile this addon INSIDE the DXRP project (rp.sbproj) so _c compiles in-context. CODE: BitminerEntity is dual-build (#if LIFEPUNCH_LOCAL -> Sandbox.Component stub; #else -> Dxura.RP.Game.BaseEntity, which is what the DXRP project compiles). NOTE: the prior 'File not found' _c errors were a SERVER-SIDE stale-cache issue (the pinned packages already contained the _c), NOT a model-reference problem."
-        }
-      ]
-    },
-    {
       "ident": "hackerjob",
       "title": "Hacker Job",
       "kind": "simple-entity",
