@@ -5968,7 +5968,7 @@ export default {
 
                   const perks = {
                   "VIP": ["Builder Status", "Prop Limit +300", "Queue Skip", "Minigame Starts (DXRP WIP)", "Exclusive Jobs (DXRP WIP)"],
-                  "EVIP": ["Builder+ Status", "Prop Limit +600", "Moderation Powers (DXRP WIP)", "Queue Skip", "Minigame Starts (DXRP WIP)", "Exclusive Jobs (DXRP WIP)"],
+                  "EVIP": ["Builder+ Status", "Prop Limit +600", "Queue Skip", "Minigame Starts (DXRP WIP)", "Exclusive Jobs (DXRP WIP)"],
                   "$LP": ["Universal Currency", "Works on All Servers", "Never Expires", "In-game Store Purchases"]
               };
 
@@ -6216,7 +6216,7 @@ export default {
                     <h3>LifePunch Official | DEVELOPMENT SERVER</h3>
                     <p>${c2}/70 players</p>
                 </div>
-                <button type="button" class="copy-btn" data-connect="1692541414016496">COPY IP</button>
+                <button type="button" class="copy-btn" data-connect="90286578983366679">COPY IP</button>
             </div>
 
             <script>
