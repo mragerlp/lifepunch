@@ -5153,7 +5153,7 @@ export default {
         `;
         } else if (path === "/rewards") {
             pageTitle = "LifePunch | Rewards";
-            subHeaderTitle = "UNLOCk BONUSES";
+            subHeaderTitle = "UNLOCK BONUSES";
 
             let drDiscordLinked = false;
             let drRewardClaimed = false;
