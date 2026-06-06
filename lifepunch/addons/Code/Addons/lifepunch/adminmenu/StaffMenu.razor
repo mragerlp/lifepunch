@@ -66,6 +66,7 @@
 						@foreach ( var player in group.Players )
 						{
 							<button class="player-row @( _selectedSteamId == player.SteamId ? "selected" : "" )"
+							        tooltip="Select player"
 							        onclick="@(() => Select( player.SteamId ))">
 								<i class="material-icons avatar">person</i>
 								<span class="name">@player.Name</span>
@@ -81,6 +82,7 @@
 					@foreach ( var player in allPlayers )
 					{
 						<button class="player-row @( _selectedSteamId == player.SteamId ? "selected" : "" )"
+						        tooltip="Select player"
 						        onclick="@(() => Select( player.SteamId ))">
 							<i class="material-icons avatar">person</i>
 							<span class="name">@player.Name</span>
@@ -249,6 +251,7 @@
 					{
 						var enabled = IsEnabled( action, selected, hasTarget );
 						<button class="action-btn @( enabled ? "" : "disabled" )"
+						        tooltip="@( string.IsNullOrEmpty( action.Tooltip ) ? action.Label : action.Tooltip )"
 						        onclick="@(() => OnActionClick( action, selected, enabled ))">
 							<i class="material-icons">@action.Icon</i>
 							<span>@action.Label</span>
