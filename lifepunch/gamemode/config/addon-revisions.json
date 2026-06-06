@@ -22,6 +22,29 @@
         "Development server uses the LifePunch gamemode and is the only target for AK47 runtime testing.",
         "Do not sync lifepunchmainserver; it must remain on the vanilla gamemode."
       ]
+    },
+    {
+      "package": "lifepunch.adminmenu",
+      "addonIdent": "adminmenu",
+      "dxrpAddonId": "019e4cfa-3141-723c-a430-1a0e286472eb",
+      "dxrpAddonIdentifier": "dxrpadminmenu",
+      "targetEnvironment": "lifepunchdevelopment",
+      "publishStatus": "ui-pass-complete-editor-verified-ready-to-publish",
+      "revisionId": null,
+      "revisionNumber": 2,
+      "stagingRoot": "../addons/.dxrp-publish/upload",
+      "packageExport": "../addons/.dxrp-publish/package-adminmenu.json",
+      "notes": [
+        "Portal package 'DXRP Admin Menu' (identifier dxrpadminmenu) created 2026-06-06.",
+        "Rev 1: menu rendered in-game but was NOT clickable. Root cause: it mounted on its own ScreenPanel, which the engine never routes the cursor/clicks to while DXRP's HUD owns input.",
+        "Click fix (verified clickable via the editor bridge on the API-connected dev server): StaffMenuHost.Mount uses GameManager.ShowUi<StaffMenu>() on the DXRP build (HUD root, the BitminerTerminal pattern); raw ScreenPanel only in the LIFEPUNCH_LOCAL editor build. Root SCSS sets pointer-events:all. Player.LockCamera toggled to suppress look while open.",
+        "Roster grouping: SanitizeRankName strips control/format chars so the real 'Owner' rank matches its canonical tier (no double-'Owner'). Empty reference tiers (Owner/Super Admin/Admin/Mod) always shown for context.",
+        "Profile pane: selected/typed player shows Steam ID, Role (rank color), Job (job color), Time played, Health (red), Armor (cyan #08B2E3), Cash/Bank (green, comma-formatted), Kills, Deaths — live via StaffMenuHost.GetPlayerDetail; fields scroll, avatar pinned. Re-click or banner X deselects. Sanction history still TODO (async API — TECH_DEBT STAFF-06).",
+        "UI: 4-per-row uniform action grid filling to the inner border (spacers pad short rows), 900x600 window, active-tab highlight, 'Online Players' label, compact rows, enlarged red-hover close X.",
+        "code-only addon: upload the Code/Addons/lifepunch/adminmenu folder; no Assets, no content rows.",
+        "NEXT: publish this revision, re-pin on the LifePunch gamemode (019e36c0-a67f-701c-90f2-460e0b0f1487), sync lifepunchdevelopment only.",
+        "Do not sync lifepunchmainserver; it must remain on the vanilla gamemode."
+      ]
     }
   ]
 }

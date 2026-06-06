@@ -1,0 +1,536 @@
+@namespace LifePunch.DXRP.Addons.StaffMenu
+@inherits PanelComponent
+@attribute [StyleSheet]
+
+@using System
+@using System.Collections.Generic
+@using System.Linq
+
+<root class="staffmenu">
+	<div class="window">
+		<div class="header">
+			<div class="title">
+				<i class="material-icons">shield</i>
+				<span>Staff Menu</span>
+			</div>
+			<button class="icon-btn close" tooltip="Close Menu" onclick="@CloseMenu">
+				<i class="material-icons">close</i>
+			</button>
+		</div>
+
+		<div class="body">
+			<div class="players">
+				<div class="pane-label">Online Players (@_players.Count)</div>
+
+				<div class="search-row">
+					<i class="material-icons">search</i>
+					<TextEntry class="search-input" Placeholder="Steam ID (ex. 765XXXXXXXXXXXXXX)" Value:bind="@_searchText"/>
+					@if ( !string.IsNullOrEmpty( _searchText ) )
+					{
+						<button class="icon-btn" onclick="@ClearSearch"><i class="material-icons">close</i></button>
+					}
+				</div>
+
+				@if ( IsSteamId( _searchText ) )
+				{
+					<button class="steamid-pick" onclick="@SelectTypedSteamId">
+						<i class="material-icons">person_search</i>
+						<span>Select SteamID @_searchText.Trim()</span>
+					</button>
+				}
+
+				<div class="player-scroll">
+					@{
+						var staffGroups = StaffTierGroups();
+						var staffCount = staffGroups.Sum( g => g.Players.Count );
+						// The bottom "Players" list is the full roster (staff included) so any player is
+						// selectable there; staff intentionally also appear under their tier above.
+						var allPlayers = FilteredPlayers()
+							.OrderBy( p => p.Name )
+							.ToList();
+					}
+
+					<div class="parent-label">Staff (@staffCount)</div>
+					@foreach ( var group in staffGroups )
+					{
+						<div class="group-label">@group.Name (@group.Players.Count)</div>
+						@foreach ( var player in group.Players )
+						{
+							<button class="player-row @( _selectedSteamId == player.SteamId ? "selected" : "" )"
+							        onclick="@(() => Select( player.SteamId ))">
+								<i class="material-icons avatar">person</i>
+								<span class="name">@player.Name</span>
+								@if ( !player.CanTarget )
+								{
+									<i class="material-icons lock" tooltip="Equal or higher rank — cannot target">lock</i>
+								}
+							</button>
+						}
+					}
+
+					<div class="parent-label">Players (@allPlayers.Count)</div>
+					@foreach ( var player in allPlayers )
+					{
+						<button class="player-row @( _selectedSteamId == player.SteamId ? "selected" : "" )"
+						        onclick="@(() => Select( player.SteamId ))">
+							<i class="material-icons avatar">person</i>
+							<span class="name">@player.Name</span>
+							@if ( !player.CanTarget )
+							{
+								<i class="material-icons lock" tooltip="Equal or higher rank — cannot target">lock</i>
+							}
+						</button>
+					}
+				</div>
+			</div>
+
+			<div class="actions">
+				@{
+					var selected = _players.FirstOrDefault( p => p.SteamId == _selectedSteamId );
+					var hasTarget = selected.SteamId != 0;
+					var profileSteamId = _selectedSteamId ?? 0;
+				}
+
+				@if ( _showProfile && profileSteamId != 0 )
+				{
+					var detail = StaffMenuHost.GetPlayerDetail( profileSteamId );
+					<div class="profile">
+						<div class="profile-head">
+							<button class="icon-btn" onclick="@CloseProfile"><i class="material-icons">arrow_back</i></button>
+							<span>Player Profile</span>
+						</div>
+
+						<div class="profile-card">
+							<img class="profile-avatar" src="avatar:@profileSteamId"/>
+							<div class="profile-name">@( detail.Found ? detail.Name : "Off-roster target" )</div>
+
+							<div class="profile-fields">
+								<div class="field">
+									<span class="k">Steam ID</span>
+									<span class="v">@profileSteamId</span>
+								</div>
+								<div class="field">
+									<span class="k">Role</span>
+									<span class="v" style="color: @( string.IsNullOrEmpty( detail.RankColorHex ) ? "#ffffff" : detail.RankColorHex )">@detail.Role</span>
+								</div>
+								<div class="field">
+									<span class="k">Time played</span>
+									<span class="v">@( detail.Found ? $"{detail.PlayTimeMinutes / 60}h" : "—" )</span>
+								</div>
+
+								@if ( detail.Found )
+								{
+									<div class="field">
+										<span class="k">Job</span>
+										<span class="v" style="color: @( string.IsNullOrEmpty( detail.JobColorHex ) ? "#ffffff" : detail.JobColorHex )">@detail.Job</span>
+									</div>
+									<div class="field">
+										<span class="k">Health</span>
+										<span class="v" style="color: #f87171">@detail.Health / @detail.MaxHealth</span>
+									</div>
+									<div class="field">
+										<span class="k">Armor</span>
+										<span class="v" style="color: #08B2E3">@detail.Armor</span>
+									</div>
+									<div class="field">
+										<span class="k">Cash</span>
+										<span class="v" style="color: #199c3b">$@( detail.Wallet.ToString( "N0", System.Globalization.CultureInfo.InvariantCulture ) )</span>
+									</div>
+									<div class="field">
+										<span class="k">Bank</span>
+										<span class="v" style="color: #199c3b">$@( detail.Bank.ToString( "N0", System.Globalization.CultureInfo.InvariantCulture ) )</span>
+									</div>
+									<div class="field">
+										<span class="k">Kills</span>
+										<span class="v">@detail.Kills</span>
+									</div>
+									<div class="field">
+										<span class="k">Deaths</span>
+										<span class="v">@detail.Deaths</span>
+									</div>
+								}
+							</div>
+
+							<button class="confirm-btn" onclick="@CloseProfile">
+								<i class="material-icons">bolt</i> Actions for this player
+							</button>
+						</div>
+					</div>
+				}
+				else
+				{
+				<div class="tabs">
+					@foreach ( var category in StaffMenuActions.Categories )
+					{
+						<button class="tab @( _activeCategory == category ? "active" : "" )"
+						        onclick="@(() => SelectCategory( category ))">
+							@category
+						</button>
+					}
+				</div>
+
+				<div class="target-banner @( _selectedSteamId != null ? "active" : "" )">
+					<i class="material-icons">@( _selectedSteamId != null ? "person" : "public" )</i>
+					<span class="target-name">@( hasTarget ? selected.Name : ( _selectedSteamId != null ? $"SteamID {_selectedSteamId}" : "No player selected — self & server actions only" ) )</span>
+					@if ( _selectedSteamId != null )
+					{
+						<button class="icon-btn clear-target" tooltip="Deselect player" onclick="@Deselect">
+							<i class="material-icons">close</i>
+						</button>
+					}
+				</div>
+
+				@{
+					var visible = StaffMenuActions.All
+						.Where( a => a.Category == _activeCategory && StaffMenuHost.CanView( a.PermissionId ) )
+						.ToList();
+				}
+
+				@if ( _pendingAction is { } pending )
+				{
+					<div class="arg-form">
+						<div class="arg-form-head">
+							<span>@pending.Label@( hasTarget && pending.TargetMode == StaffActionTarget.OtherPlayer ? $" — {selected.Name}" : "" )</span>
+							<button class="icon-btn" onclick="@CancelArgs"><i class="material-icons">close</i></button>
+						</div>
+
+						@foreach ( var arg in pending.Args )
+						{
+							<div class="arg-row">
+								<label>@arg.Label@( arg.Required ? "" : " (optional)" )</label>
+
+								@if ( arg.Kind == StaffArgKind.Duration )
+								{
+									<div class="chips">
+										@foreach ( var preset in StaffMenuConfig.BanDurations )
+										{
+											var allowed = pending.Key != "ban"
+												|| StaffMenuConfig.IsBanDurationAllowed( StaffMenuHost.LocalRankOrder, preset.Hours );
+											<button class="chip @( _duration == preset.Token ? "active" : "" ) @( allowed ? "" : "disabled" )"
+											        onclick="@(() => SetDuration( preset.Token, allowed ))">
+												@preset.Label
+											</button>
+										}
+									</div>
+									<TextEntry class="arg-input" Placeholder="@arg.Placeholder" Value:bind="@_duration"/>
+								}
+								else if ( arg.Kind == StaffArgKind.Number )
+								{
+									<TextEntry class="arg-input" Numeric="@true" Placeholder="@arg.Placeholder" Value:bind="@_amount"/>
+								}
+								else if ( arg.Name == "name" )
+								{
+									<TextEntry class="arg-input" Placeholder="@arg.Placeholder" Value:bind="@_name"/>
+								}
+								else
+								{
+									<TextEntry class="arg-input" Placeholder="@arg.Placeholder" Value:bind="@_reason"/>
+								}
+							</div>
+						}
+
+						<button class="confirm-btn" onclick="@(() => ConfirmArgs( selected ))">
+							<i class="material-icons">check</i> Confirm @pending.Label
+						</button>
+					</div>
+				}
+
+				<div class="action-grid">
+					@foreach ( var action in visible )
+					{
+						var enabled = IsEnabled( action, selected, hasTarget );
+						<button class="action-btn @( enabled ? "" : "disabled" )"
+						        onclick="@(() => OnActionClick( action, selected, enabled ))">
+							<i class="material-icons">@action.Icon</i>
+							<span>@action.Label</span>
+						</button>
+					}
+
+					@* Invisible spacers pad the final row to a multiple of 4 so real boxes keep their
+					   1/4 width (uniform) instead of flex-growing to fill the leftover space. *@
+					@for ( var i = 0; i < (4 - visible.Count % 4) % 4; i++ )
+					{
+						<div class="action-spacer"></div>
+					}
+				</div>
+
+				@if ( visible.Count == 0 )
+				{
+					<div class="empty">No @_activeCategory.ToLower() actions available to your rank.</div>
+				}
+				}
+			</div>
+		</div>
+	</div>
+</root>
+
+@code {
+	private IReadOnlyList<StaffMenuPlayer> _players = Array.Empty<StaffMenuPlayer>();
+	private long? _selectedSteamId;
+	// A Steam ID typed into the search box (may not be on the roster); kept selected so commands can
+	// still target it, and exempt from the roster-presence auto-clear in RefreshRoster.
+	private long? _manualSteamId;
+	private bool _showProfile;
+	private string _searchText = "";
+	private string _activeCategory = StaffMenuActions.CategoryModeration;
+
+	private StaffAction? _pendingAction;
+	private string _reason = "";
+	private string _duration = "";
+	private string _amount = "";
+	private string _name = "";
+
+	protected override void OnStart() => RefreshRoster();
+
+	protected override void OnUpdate() => RefreshRoster();
+
+	private void RefreshRoster()
+	{
+		_players = StaffMenuHost.OnlinePlayers();
+
+		// Drop a selection whose player left — unless it was a manually typed Steam ID (off-roster target).
+		if ( _selectedSteamId.HasValue
+		     && _selectedSteamId != _manualSteamId
+		     && _players.All( p => p.SteamId != _selectedSteamId.Value ) )
+		{
+			_selectedSteamId = null;
+			_showProfile = false;
+		}
+	}
+
+	/// <summary>The roster filtered by the search box (by name); unfiltered when empty or a Steam ID.</summary>
+	private IEnumerable<StaffMenuPlayer> FilteredPlayers()
+	{
+		var query = _searchText?.Trim() ?? "";
+		if ( query.Length == 0 || IsSteamId( query ) )
+		{
+			return _players;
+		}
+
+		return _players.Where( p => p.Name.Contains( query, StringComparison.OrdinalIgnoreCase ) );
+	}
+
+	/// <summary>A typed value looks like a SteamID64 (17 digits; accept 16–20 to be lenient).</summary>
+	private static bool IsSteamId( string? text )
+	{
+		text = text?.Trim() ?? "";
+		return text.Length is >= 16 and <= 20 && text.All( char.IsDigit );
+	}
+
+	/// <summary>
+	/// Ordered staff sub-groups under the "Staff" parent. The configurable reference ladder
+	/// (<see cref="StaffMenuConfig.ReferenceTiers"/>) is always shown — even empty, as "(0)" — for at-a-
+	/// glance context. Online staff are merged into the matching tier by their real portal rank name
+	/// (case/whitespace-insensitive); any online staff whose rank doesn't match a reference tier (another
+	/// server's custom ranks) is appended afterwards, highest rank order first.
+	/// </summary>
+	private List<(string Name, List<StaffMenuPlayer> Players)> StaffTierGroups()
+	{
+		var staff = FilteredPlayers().Where( p => p.GroupName != StaffMenuHost.NonStaffGroup ).ToList();
+		var groups = new List<(string Name, List<StaffMenuPlayer> Players)>();
+
+		foreach ( var tier in StaffMenuConfig.ReferenceTiers )
+		{
+			groups.Add( ( tier.Name, staff
+				.Where( p => string.Equals( p.GroupName.Trim(), tier.Name.Trim(), StringComparison.OrdinalIgnoreCase ) )
+				.OrderBy( p => p.Name )
+				.ToList() ) );
+		}
+
+		foreach ( var extra in staff
+			.Where( p => !StaffMenuConfig.ReferenceTiers.Any( t => string.Equals( t.Name.Trim(), p.GroupName.Trim(), StringComparison.OrdinalIgnoreCase ) ) )
+			.GroupBy( p => p.GroupName )
+			.OrderByDescending( g => g.Max( p => p.GroupOrder ) )
+			.ThenBy( g => g.Key ) )
+		{
+			groups.Add( ( extra.Key, extra.OrderBy( p => p.Name ).ToList() ) );
+		}
+
+		return groups;
+	}
+
+	private void Select( long steamId )
+	{
+		// Re-clicking the already-highlighted player de-selects (clears highlight + closes profile).
+		if ( _selectedSteamId == steamId )
+		{
+			_selectedSteamId = null;
+			_manualSteamId = null;
+			_showProfile = false;
+			CancelArgs();
+			return;
+		}
+
+		_selectedSteamId = steamId;
+		_manualSteamId = null;
+		_showProfile = true;
+		CancelArgs();
+	}
+
+	/// <summary>Select the Steam ID typed into the search box (an off-roster target is allowed).</summary>
+	private void SelectTypedSteamId()
+	{
+		var text = _searchText?.Trim() ?? "";
+		if ( !IsSteamId( text ) || !long.TryParse( text, out var steamId ) )
+		{
+			return;
+		}
+
+		_selectedSteamId = steamId;
+		_manualSteamId = steamId;
+		_showProfile = true;
+		CancelArgs();
+	}
+
+	/// <summary>Clear the active target from the banner (the "X"); drops both roster and typed selections.</summary>
+	private void Deselect()
+	{
+		_selectedSteamId = null;
+		_manualSteamId = null;
+		_showProfile = false;
+		CancelArgs();
+	}
+
+	private void CloseProfile()
+	{
+		_showProfile = false;
+		StateHasChanged();
+	}
+
+	private void ClearSearch()
+	{
+		_searchText = "";
+		StateHasChanged();
+	}
+
+	private void SelectCategory( string category )
+	{
+		_activeCategory = category;
+		CancelArgs();
+	}
+
+	private static bool IsEnabled( StaffAction action, StaffMenuPlayer selected, bool hasTarget )
+	{
+		if ( action.TargetMode != StaffActionTarget.OtherPlayer )
+		{
+			return true;
+		}
+
+		return hasTarget && selected.CanTarget;
+	}
+
+	private void OnActionClick( StaffAction action, StaffMenuPlayer selected, bool enabled )
+	{
+		if ( !enabled )
+		{
+			return;
+		}
+
+		if ( action.Args.Count > 0 )
+		{
+			BeginArgs( action );
+			return;
+		}
+
+		Dispatch( action, selected );
+	}
+
+	private void BeginArgs( StaffAction action )
+	{
+		_pendingAction = action;
+		_reason = "";
+		_duration = "";
+		_amount = "";
+		_name = "";
+		StateHasChanged();
+	}
+
+	private void CancelArgs()
+	{
+		_pendingAction = null;
+		StateHasChanged();
+	}
+
+	private void SetDuration( string token, bool allowed )
+	{
+		if ( !allowed )
+		{
+			return;
+		}
+
+		_duration = token;
+		StateHasChanged();
+	}
+
+	private void ConfirmArgs( StaffMenuPlayer selected )
+	{
+		if ( _pendingAction is not { } action )
+		{
+			return;
+		}
+
+		var args = new Dictionary<string, string>();
+		foreach ( var arg in action.Args )
+		{
+			var value = ValueFor( arg.Name );
+			if ( arg.Required && string.IsNullOrWhiteSpace( value ) )
+			{
+				return; // missing required input — keep the form open
+			}
+
+			args[arg.Name] = value;
+		}
+
+		Dispatch( action, selected, args );
+		CancelArgs();
+	}
+
+	private string ValueFor( string argName ) => argName switch
+	{
+		"reason" => _reason,
+		"duration" => _duration,
+		"amount" => _amount,
+		"name" => _name,
+		_ => ""
+	};
+
+	private void Dispatch( StaffAction action, StaffMenuPlayer selected, IReadOnlyDictionary<string, string>? args = null )
+	{
+		args ??= new Dictionary<string, string>();
+
+		if ( action.TargetMode != StaffActionTarget.OtherPlayer )
+		{
+			StaffMenuHost.Dispatch( action, StaffMenuHost.LocalSteamId, args );
+			return;
+		}
+
+		if ( selected.SteamId == 0 || !selected.CanTarget )
+		{
+			return;
+		}
+
+		StaffMenuHost.Dispatch( action, selected.SteamId, args );
+	}
+
+	private void CloseMenu() => StaffMenuHost.RequestClose();
+
+	protected override int BuildHash()
+	{
+		// While the profile is open, fold in the selected player's volatile stats so live changes
+		// (health, armor, balance, kills/deaths) re-render the pane.
+		var detailHash = 0;
+		if ( _showProfile && _selectedSteamId is { } sid && sid != 0 )
+		{
+			var d = StaffMenuHost.GetPlayerDetail( sid );
+			detailHash = HashCode.Combine( d.Health, d.Armor, d.Wallet, d.Bank, d.Kills, d.Deaths, d.Job );
+		}
+
+		return HashCode.Combine(
+			HashCode.Combine( _selectedSteamId, _showProfile, _searchText ),
+			_players.Count,
+			_activeCategory,
+			_pendingAction?.Key,
+			HashCode.Combine( _reason, _duration, _amount, _name ),
+			detailHash );
+	}
+}

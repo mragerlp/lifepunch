@@ -1,0 +1,574 @@
+$bg: #16181d;
+$bg-raised: #1f2229;
+$bg-row: #262a33;
+$accent: #4f8cff;
+$danger: #e7544a;
+$text: #e8eaed;
+$text-dim: #9aa0ab;
+$border: rgba(255, 255, 255, 0.06);
+
+.staffmenu {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	// Opt into pointer input: when mounted in DXRP's HUD root the parent defaults children to
+	// pointer-events:none, so the menu must explicitly capture clicks (matches BitminerTerminal).
+	pointer-events: all;
+	align-items: center;
+	justify-content: center;
+	background-color: rgba(0, 0, 0, 0.55);
+	font-family: Poppins, Arial, sans-serif;
+
+	.window {
+		flex-direction: column;
+		width: 900px;
+		height: 600px;
+		max-width: 94%;
+		max-height: 92%;
+		background-color: $bg;
+		border-radius: 12px;
+		border: 1px solid $border;
+		overflow: hidden;
+		box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+	}
+
+	.header {
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		padding: 16px 20px;
+		background-color: $bg-raised;
+		border-bottom: 1px solid $border;
+
+		.title {
+			flex-direction: row;
+			align-items: center;
+			gap: 10px;
+			color: $text;
+			font-size: 20px;
+			font-weight: 600;
+
+			.material-icons {
+				color: $accent;
+				font-size: 24px;
+			}
+		}
+	}
+
+	.icon-btn {
+		align-items: center;
+		justify-content: center;
+		width: 34px;
+		height: 34px;
+		border-radius: 8px;
+		color: $text-dim;
+		background-color: transparent;
+		cursor: pointer;
+		transition: all 0.12s ease-out;
+
+		&:hover {
+			background-color: $bg-row;
+			color: $text;
+		}
+
+		// Header close button: larger, more noticeable X with a red hover (matches the banner's
+		// clear-target "X").
+		&.close {
+			.material-icons {
+				font-size: 26px;
+			}
+
+			&:hover {
+				background-color: $danger;
+				color: #fff;
+
+				.material-icons {
+					color: #fff;
+				}
+			}
+		}
+	}
+
+	.body {
+		flex-direction: row;
+		flex-grow: 1;
+		min-height: 0;
+	}
+
+	.pane-label {
+		color: $text-dim;
+		font-size: 12px;
+		font-weight: 600;
+		letter-spacing: 1px;
+		text-transform: uppercase;
+		padding: 14px 16px 8px 16px;
+	}
+
+	.players {
+		flex-direction: column;
+		width: 300px;
+		background-color: $bg-raised;
+		border-right: 1px solid $border;
+		min-height: 0;
+
+		.player-scroll {
+			flex-direction: column;
+			flex-grow: 1;
+			// min-height:0 lets this region shrink below content size so it scrolls instead of
+			// expanding the panel when many players are listed below the staff tiers.
+			min-height: 0;
+			overflow-y: scroll;
+			padding: 0 8px 12px 8px;
+			gap: 2px;
+		}
+
+		.parent-label {
+			color: $text;
+			font-size: 12px;
+			font-weight: 700;
+			letter-spacing: 1px;
+			text-transform: uppercase;
+			padding: 14px 8px 4px 8px;
+			margin-top: 4px;
+			border-bottom: 1px solid $border;
+		}
+
+		.group-label {
+			color: $accent;
+			font-size: 11px;
+			font-weight: 600;
+			letter-spacing: 1px;
+			text-transform: uppercase;
+			padding: 8px 8px 2px 16px;
+		}
+	}
+
+	.player-row {
+		flex-direction: row;
+		align-items: center;
+		gap: 9px;
+		padding: 6px 10px;
+		border-radius: 7px;
+		color: $text;
+		background-color: transparent;
+		cursor: pointer;
+		transition: background-color 0.12s ease-out;
+
+		.avatar {
+			font-size: 17px;
+			color: $text-dim;
+		}
+
+		.name {
+			flex-grow: 1;
+			font-size: 13px;
+		}
+
+		.lock {
+			font-size: 16px;
+			color: $danger;
+		}
+
+		&:hover {
+			background-color: $bg-row;
+		}
+
+		&.selected {
+			background-color: $accent;
+			color: #fff;
+
+			.avatar {
+				color: #fff;
+			}
+		}
+	}
+
+	.actions {
+		flex-direction: column;
+		flex-grow: 1;
+		min-height: 0;
+		overflow-y: scroll;
+		padding-bottom: 16px;
+	}
+
+	.tabs {
+		flex-direction: row;
+		gap: 4px;
+		padding: 14px 16px 0 16px;
+		border-bottom: 1px solid $border;
+
+		.tab {
+			padding: 9px 18px;
+			border-radius: 8px 8px 0 0;
+			color: $text-dim;
+			font-size: 14px;
+			font-weight: 500;
+			cursor: pointer;
+			background-color: transparent;
+			border-bottom: 2px solid transparent;
+			transition: all 0.12s ease-out;
+
+			&:hover {
+				color: $text;
+				background-color: rgba(255, 255, 255, 0.04);
+			}
+
+			&.active {
+				color: #fff;
+				font-weight: 600;
+				background-color: rgba(79, 140, 255, 0.18);
+				border-bottom: 2px solid $accent;
+			}
+		}
+	}
+
+	.target-banner {
+		flex-direction: row;
+		align-items: center;
+		gap: 8px;
+		margin: 12px 16px;
+		padding: 9px 12px;
+		border-radius: 8px;
+		background-color: $bg-raised;
+		border: 1px solid $border;
+		color: $text-dim;
+		font-size: 13px;
+
+		.material-icons {
+			font-size: 18px;
+			color: $accent;
+		}
+
+		.target-name {
+			flex-grow: 1;
+		}
+
+		// Clearer "a player is selected" state: accent border + tint + full-strength text.
+		&.active {
+			background-color: rgba(79, 140, 255, 0.14);
+			border: 1px solid $accent;
+			color: $text;
+			font-weight: 500;
+		}
+
+		.clear-target {
+			width: 24px;
+			height: 24px;
+			color: $text-dim;
+
+			.material-icons {
+				font-size: 16px;
+				color: $text-dim;
+			}
+
+			&:hover {
+				background-color: $danger;
+				color: #fff;
+
+				.material-icons {
+					color: #fff;
+				}
+			}
+		}
+	}
+
+	.arg-form {
+		flex-direction: column;
+		margin: 0 16px 12px 16px;
+		padding: 12px;
+		border-radius: 10px;
+		background-color: $bg-raised;
+		border: 1px solid $accent;
+
+		.arg-form-head {
+			flex-direction: row;
+			align-items: center;
+			justify-content: space-between;
+			color: $text;
+			font-size: 15px;
+			font-weight: 600;
+			padding-bottom: 8px;
+		}
+	}
+
+	.arg-row {
+		flex-direction: column;
+		gap: 6px;
+		padding-bottom: 10px;
+
+		label {
+			color: $text-dim;
+			font-size: 12px;
+		}
+
+		.arg-input {
+			background-color: $bg-row;
+			color: $text;
+			border: 1px solid $border;
+			border-radius: 8px;
+			padding: 8px 12px;
+			font-size: 14px;
+		}
+	}
+
+	.chips {
+		flex-direction: row;
+		flex-wrap: wrap;
+		gap: 6px;
+		margin-bottom: 6px;
+
+		.chip {
+			padding: 6px 12px;
+			border-radius: 14px;
+			background-color: $bg-row;
+			color: $text;
+			font-size: 12px;
+			cursor: pointer;
+			transition: all 0.12s ease-out;
+
+			&:hover {
+				background-color: $accent;
+				color: #fff;
+			}
+
+			&.active {
+				background-color: $accent;
+				color: #fff;
+			}
+
+			&.disabled {
+				opacity: 0.3;
+				pointer-events: none;
+			}
+		}
+	}
+
+	.confirm-btn {
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		gap: 6px;
+		margin-top: 4px;
+		padding: 10px;
+		border-radius: 8px;
+		background-color: $accent;
+		color: #fff;
+		font-size: 14px;
+		font-weight: 600;
+		cursor: pointer;
+
+		.material-icons {
+			font-size: 18px;
+		}
+
+		&:hover {
+			background-color: #3d7af0;
+		}
+	}
+
+	.action-grid {
+		flex-direction: row;
+		flex-wrap: wrap;
+		gap: 10px;
+		padding: 0 16px;
+	}
+
+	// Spacers fill the final row's empty columns so real boxes keep their uniform 1/4 width.
+	.action-spacer {
+		flex-grow: 1;
+		flex-basis: 0;
+		min-width: 120px;
+		height: 0;
+	}
+
+	.action-btn {
+		flex-direction: column;
+		// Grow to fill the row edge-to-edge (flush with the inner border). flex-basis:0 + grow makes
+		// every box an equal 1/4 share; min-width forces exactly 4 per row. Short rows are padded with
+		// .action-spacer so boxes never stretch beyond 1/4.
+		flex-grow: 1;
+		flex-basis: 0;
+		min-width: 120px;
+		align-items: center;
+		justify-content: center;
+		gap: 6px;
+		height: 86px;
+		padding: 6px;
+		border-radius: 10px;
+		background-color: $bg-row;
+		color: $text;
+		font-size: 13px;
+		font-weight: 500;
+		cursor: pointer;
+		transition: all 0.12s ease-out;
+
+		span {
+			text-align: center;
+			white-space: normal;
+			line-height: 15px;
+		}
+
+		.material-icons {
+			font-size: 24px;
+			color: $accent;
+		}
+
+		&:hover {
+			background-color: $accent;
+			color: #fff;
+
+			.material-icons {
+				color: #fff;
+			}
+		}
+
+		&.disabled {
+			opacity: 0.3;
+			pointer-events: none;
+		}
+	}
+
+	.empty {
+		color: $text-dim;
+		font-size: 13px;
+		padding: 8px 16px 0 16px;
+	}
+
+	.search-row {
+		flex-direction: row;
+		align-items: center;
+		gap: 6px;
+		margin: 0 12px 8px 12px;
+		padding: 1px 10px;
+		border-radius: 7px;
+		background-color: $bg-row;
+		border: 1px solid $border;
+
+		.material-icons {
+			font-size: 16px;
+			color: $text-dim;
+		}
+
+		.search-input {
+			flex-grow: 1;
+			height: 28px;
+			background-color: transparent;
+			color: $text;
+			font-size: 12px;
+			border: 0;
+		}
+
+		.icon-btn {
+			width: 22px;
+			height: 22px;
+		}
+	}
+
+	.steamid-pick {
+		flex-direction: row;
+		align-items: center;
+		gap: 8px;
+		margin: 0 12px 8px 12px;
+		padding: 8px 10px;
+		border-radius: 8px;
+		background-color: $accent;
+		color: #fff;
+		font-size: 12px;
+		font-weight: 500;
+		cursor: pointer;
+
+		.material-icons {
+			font-size: 18px;
+		}
+
+		&:hover {
+			background-color: #3d7af0;
+		}
+	}
+
+	.profile {
+		flex-direction: column;
+		flex-grow: 1;
+		min-height: 0;
+		padding: 16px;
+		gap: 14px;
+
+		.profile-head {
+			flex-direction: row;
+			flex-shrink: 0;
+			align-items: center;
+			gap: 10px;
+			color: $text;
+			font-size: 16px;
+			font-weight: 600;
+		}
+
+		.profile-card {
+			flex-direction: column;
+			flex-grow: 1;
+			min-height: 0;
+			align-items: center;
+			gap: 12px;
+			padding: 18px;
+			border-radius: 12px;
+			background-color: $bg-raised;
+			border: 1px solid $border;
+
+			.profile-avatar {
+				flex-shrink: 0;
+				width: 64px;
+				height: 64px;
+				border-radius: 50%;
+				border: 2px solid $border;
+			}
+
+			.profile-name {
+				flex-shrink: 0;
+				color: $text;
+				font-size: 18px;
+				font-weight: 600;
+			}
+
+			// The fields are the only scrollable region — avatar, name and the action button stay
+			// pinned (flex-shrink: 0) so adding fields never reflows or squishes them.
+			.profile-fields {
+				flex-direction: column;
+				flex-grow: 1;
+				min-height: 0;
+				overflow-y: scroll;
+				width: 100%;
+				gap: 2px;
+
+				.field {
+					flex-direction: row;
+					flex-shrink: 0;
+					align-items: center;
+					justify-content: space-between;
+					gap: 12px;
+					padding: 10px 4px;
+					border-bottom: 1px solid $border;
+
+					.k {
+						flex-shrink: 0;
+						color: $text-dim;
+						font-size: 13px;
+					}
+
+					.v {
+						color: $text;
+						font-size: 14px;
+						font-weight: 600;
+						text-align: right;
+					}
+				}
+			}
+
+			.confirm-btn {
+				flex-shrink: 0;
+				width: 100%;
+			}
+		}
+	}
+}
