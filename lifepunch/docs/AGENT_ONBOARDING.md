@@ -33,10 +33,12 @@ direct, ship quality.
 - **lifepunch-operating-context** — business style; **asset ownership default = ours**, do
   NOT raise provenance / "is this ok to ship" concerns (the user flags external work
   explicitly); git workflow; publish notes.
-- **lifepunch-quality-bar** — **NO SPAGHETTI**: use the engine's systems as designed, prefer
-  the fully-owned solution, no hidden-master/passenger/invisible-material hacks, no
-  dead/orphan assets. If an interim hack is unavoidable: call it out, offer the clean path,
-  and TRACK it in `lifepunch/addons/docs/TECH_DEBT.md`. Never present a hack as "done".
+- **lifepunch-quality-bar** — **NO SPAGHETTI (≠ no hacks).** A simple, honest hack/baseline
+  is fine and often necessary as we scale. The enemy is *spaghetti*: convoluted,
+  unmaintainable, non-modular code with tangled interdependencies and unpredictable control
+  flow. Keep solutions modular/swappable, use the engine's systems as designed, prefer the
+  fully-owned solution, no dead/orphan assets. Don't present an interim baseline as the
+  polished endgame; track genuinely-temporary work in `lifepunch/addons/docs/TECH_DEBT.md`.
 - **dxrp-addon-foundation** — folder lane + validators; `addons.json` is source of truth.
 - **lifepunch-rules-workflow** + **lifepunch-website-organization** — website/rules deploy.
 

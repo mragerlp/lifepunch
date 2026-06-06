@@ -1,38 +1,49 @@
 ---
-description: LifePunch quality bar — no spaghetti/hacky setups; flag temporary work
+description: LifePunch quality bar — no spaghetti; honest hacks/baselines are fine
 alwaysApply: true
 ---
 
 # LifePunch — Quality Bar (No Spaghetti)
 
 This repo is a **reference** others will copy, and it will get much larger. Quality and
-security beat speed. We take the time; that is what players recognize. Maintain this across
-ALL of LifePunch (weapons, entities, website, code) — not just the current task.
+security beat speed. Maintain this across ALL of LifePunch (weapons, entities, website,
+code) — not just the current task.
 
-## What counts as spaghetti / hacky (AVOID)
-- Fighting the engine's intended system instead of using it (invisible materials to hide a
-  master mesh, "passenger" renderers, raw `.vmdl` `base_model_name` hacks, hidden masters).
-- Dead/disabled components or orphaned assets left in files "just in case".
-- Workarounds stacked on workarounds; anything you'd be embarrassed to have copied.
-- One-off fixes that don't generalize to the next weapon/entity of the same class.
+## Hack ≠ spaghetti (know the difference)
+- A **hack / baseline** is a simple, pragmatic, *honest* shortcut or foundational stand-in.
+  These are FINE — often necessary as we scale. Use them; just don't pretend an interim
+  baseline is the polished endgame.
+- **Spaghetti** is the real enemy: convoluted, unmaintainable code with a twisted, tangled
+  control structure — complex interdependencies, no modular design, execution paths that
+  jump unpredictably. A clean hack is contained and easy to swap; spaghetti is tangled and
+  spreads. Avoid spaghetti.
 
-## The clean alternative
-- Use the system as designed (e.g. a real viewmodel rig with a `camera` bone + animgraph;
-  config over forked systems; one class template reused as data).
-- Prefer the fully-owned solution over one that depends on a third party shipping something.
+## What counts as spaghetti (AVOID)
+- Tangled interdependencies with no clear module boundary — you can't change one piece
+  without breaking others.
+- Workarounds stacked on workarounds (e.g. hidden-master + bonemerged passenger + invisible
+  material all propping up one broken thing) — convoluted AND fragile.
+- Dead/disabled components or orphaned assets left "just in case" that confuse the next reader.
+- Wiring/control flow you'd be embarrassed to have copied because no one could follow it.
 
-## Mandatory: flag it, don't bury it
-1. **Call it out the moment it appears.** If a step needs a hack, say so explicitly and
-   label it temporary — never present a hack as "done".
-2. **Offer the clean path** (even if slower) and let the user choose clean-now vs. interim.
-3. **If an interim is accepted, TRACK it** in `lifepunch/addons/docs/TECH_DEBT.md` with:
-   what's temporary, why, the clean endgame, and the single swap point to fix it.
-   A placeholder must never silently become permanent.
+## The clean bar
+- Prefer the engine's intended system in a **modular, swappable** shape (e.g. a real
+  viewmodel rig with a `camera` bone + animgraph; config over forked systems; one class
+  template reused as data). Prefer the fully-owned solution over depending on a third party
+  shipping something.
+- A baseline is acceptable when it is **simple, isolated, and has one obvious swap point.**
+
+## Be honest; track the temporary
+1. Never present an interim baseline (or an unmaintainable mess) as the finished thing.
+2. Offer the clean endgame so the user can choose baseline-now vs. clean-now.
+3. If something is genuinely temporary, TRACK it in `lifepunch/addons/docs/TECH_DEBT.md`:
+   what's temporary, why, the clean endgame, and the single swap point. A placeholder must
+   never silently become permanent.
 
 ## Examples from this project
 - ❌ vm_ak47 invisible-M4-master + bonemerged static AK + 3rd "passenger" renderer → empty
-  hands. Spaghetti.
-- ⚠️ vm_ak47 running the real M4 viewmodel as an honest, labeled **placeholder** → clean
-  *only if* tracked in TECH_DEBT.md and the AK passenger/orphan assets are removed.
+  hands: tangled, fragile, interdependent — that's **spaghetti**.
+- ⚠️ vm_ak47 running the real M4 viewmodel as an honest, labeled **baseline** → fine *if*
+  tracked in TECH_DEBT.md and orphan AK assets are removed. That's a hack, not spaghetti.
 - ✅ Endgame: own a per-class viewmodel rig (camera bone + animgraph) and skin each weapon
   mesh to it — no dependency on Facepunch shipping source.
