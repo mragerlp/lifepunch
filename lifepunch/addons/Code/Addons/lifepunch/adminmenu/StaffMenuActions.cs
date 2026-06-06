@@ -1,3 +1,13 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// PROPRIETARY & CONFIDENTIAL — © 2026 mragerlp (Mr. Rager). All rights reserved.
+//
+// "DXRP Admin Menu" (addon ident: adminmenu / dxrpadminmenu) is the sole-owned
+// intellectual property of mragerlp. It is NOT licensed for resale, redistribution,
+// sublicensing, copying, or reuse by ANY person or entity — including DXRP and
+// LifePunch staff, contributors, or community — EXCEPT the owner (mragerlp).
+// Presence in this repository or on the DXRP portal grants no rights to anyone else.
+// ─────────────────────────────────────────────────────────────────────────────
+
 using System;
 using System.Collections.Generic;
 
@@ -190,13 +200,24 @@ public static class StaffMenuActions
 public static class StaffMenuConfig
 {
 	/// <summary>
-	/// Server-owner-configurable reference ladder. These staff tiers are ALWAYS rendered as sub-headers
-	/// under the "Staff" parent — even with nobody of that rank online (shown as "(0)") — so staff can see
-	/// the full ladder at a glance. Online staff are merged into the matching tier by their real portal
-	/// rank name (case/whitespace-insensitive); any online staff whose rank name doesn't match a reference
-	/// tier (a different server's custom ranks) is appended afterwards as its own real category. Edit this
-	/// list per server so the names line up with that server's portal ranks; Order only drives display
-	/// sort (highest first).
+	/// Server-owner-configurable reference ladder (the ONLY per-server config in the whole addon).
+	///
+	/// What's always automatic, regardless of this list:
+	///  • Which ACTIONS each viewer sees — gated purely by RankSystem.HasPermission against that server's
+	///    real portal ranks (by permission, not rank name). Fully server-agnostic, zero config.
+	///  • Online staff GROUPING — every online staffer is filed under their real portal rank name
+	///    (sanitized), so custom ranks ("Trial Mod", "Head Admin", …) appear automatically.
+	///
+	/// What this list controls: the ALWAYS-shown placeholder tiers under "Staff" (rendered even when nobody
+	/// of that rank is online, as "(0)") so staff see the ladder at a glance. Online staff are merged into a
+	/// matching placeholder by rank name (case/whitespace-insensitive); any online rank that doesn't match a
+	/// placeholder is appended afterwards as its own real category. Order only drives display sort.
+	///
+	/// Per-server / resale guidance (hybrid model):
+	///  • Default below = the DXRP.net ladder, so it works out-of-box on DXRP.net.
+	///  • Other servers: edit the names to match their portal ranks, OR clear this list entirely
+	///    (Array.Empty) for FULLY DYNAMIC behaviour — then only the ranks of players actually online are
+	///    shown, with no empty placeholders. Both degrade gracefully.
 	///
 	/// NOTE: DXRP doesn't expose the full rank ladder client-side (RankSystem.Ranks is private + host-only),
 	/// so we can't auto-derive empty tiers from the backend — this curated reference list is the clean

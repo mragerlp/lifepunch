@@ -94,6 +94,7 @@
       "dxrpAddonId": "019e4cfa-3141-723c-a430-1a0e286472eb",
       "dxrpAddonIdentifier": "dxrpadminmenu",
       "status": "v1-vertical-slice",
+      "ownership": "PROPRIETARY — sole-owned IP of mragerlp (Mr. Rager). NOT for resale, redistribution, sublicensing, or reuse by any party, including DXRP and LifePunch staff/contributors/community, except the owner (mragerlp). No rights granted to anyone else by presence in this repo or on the DXRP portal.",
       "notes": "Server-agnostic in-game staff/admin menu (portal package 'DXRP Admin Menu', network identifier 'dxrpadminmenu'; repo ident 'adminmenu'). Thin UX + dispatch layer over DXRP's existing admin backend: gates each action on Dxura.RP.Shared.Permission via RankSystem.HasLocalPermission, respects RankSystem.CanLocalTarget, and dispatches to AdminSystem [Rpc.Host] actions where one exists (Kick) else Chat.ExecuteCommandHost into the registered ICommand (Freeze/Goto/Bring/Spectate/God). Opens via the 'adminmenu' (and legacy 'staffmenu') console + chat command (staff bind any key to it). code-only kind: V1 uses the material-icons font, ships no image assets. LIFEPUNCH_LOCAL stubs keep it editor-compilable. Permission Id strings reconcile 1:1 with admin-panel/permissions/*.json. Code namespace/class names remain LifePunch.DXRP.Addons.StaffMenu (StaffMenu*.cs) — functional, not renamed with the package ident.",
       "contents": []
     }
