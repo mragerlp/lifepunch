@@ -1,15 +1,26 @@
 {
   "schemaVersion": 1,
-  "source": "DXRP portal Audit page for LifePunch",
+  "source": "DXRP portal Audit page for LifePunch (verified live 2026-06-07)",
+  "endpoint": {
+    "method": "GET",
+    "url": "https://api.dxrp.net/v1/audit/events",
+    "query": [
+      "pageIndex",
+      "pageSize"
+    ],
+    "auth": "Bearer token (tenant-scoped)",
+    "pagination": "server-side (pageIndex/pageSize; portal default pageSize 50)",
+    "note": "REST read exists at the portal/API layer; the in-game ServerApiClient does not yet expose it (TECH_DEBT STAFF-07)."
+  },
   "identifier": {
-    "playerIdType": "SteamID64",
+    "playerIdType": "SteamID64 (or 'system' for server/automated actors)",
     "entityIdType": "DXRP entity/server/action id"
   },
   "filters": [
     "Player ID",
-    "Actions",
     "Entity ID"
   ],
+  "filtersNote": "Verified live: the portal Audit page has only these two free-text filters. There is NO Actions dropdown — the in-game menu mirrors this 1:1.",
   "columns": [
     "When",
     "Action",
@@ -19,12 +30,14 @@
   ],
   "observedActions": [
     "Chat",
+    "ModifyBalance",
     "DispatchAction",
     "Update",
     "GenerateToken"
   ],
   "observedEntities": [
     "Server",
+    "Player",
     "ServerAction"
   ],
   "roleBuckets": [

@@ -41,25 +41,29 @@ audit/
   approvals/
 ```
 
-## DXRP Audit Page
+## DXRP Audit Page (verified live 2026-06-07)
 
-Observed filters:
+Backed by `GET https://api.dxrp.net/v1/audit/events?pageIndex=&pageSize=` (Bearer, tenant-scoped,
+server-side pagination — portal default `pageSize` 50). The REST read exists at the API layer; the
+in-game `ServerApiClient` does not yet expose it (see `TECH_DEBT.md` STAFF-07).
 
-- `Player ID`
-- `Actions`
+Filters (only these two — there is **no** Actions dropdown on the live page):
+
+- `Player ID` (SteamID64, or `system` for server/automated actors)
 - `Entity ID`
 
 Observed columns:
 
 - `When`
-- `Action`
-- `Player`
-- `Entity`
-- `Description`
+- `Action` (rendered as a coloured pill)
+- `Player` (`system`, dimmed, for server/automated entries; otherwise a SteamID64 link)
+- `Entity` (`Server`, `Player`)
+- `Description` (free text; may contain localisation keys, e.g. `#system.automessage.rulebreakers`)
 
 Observed action examples:
 
 - `Chat`
+- `ModifyBalance`
 - `DispatchAction`
 - `Update`
 - `GenerateToken`

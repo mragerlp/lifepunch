@@ -105,8 +105,9 @@ models/.../v_<name>/
    - Tune the `Model` child Position/Rotation to seat the gun in the hands; copy
      Muzzle/EjectionPort from the class reference.
 3. **Viewmodel (1st person):**
-   - `v_*.vmdl` = your mesh **rigged to the class skeleton** (camera bone + arm bones +
-     shared animgraph). *(See the constraint in §4.)*
+   - `v_*.vmdl` = your mesh **bound to the shared first-person rig** (`weapon_root` + arm bones
+     + `camera` + shared animgraph). Extract the rig via ModelDoc **Export As… FBX** from
+     `v_m700` and author from the `v_m700.vmdl` template. *(See §4 and `VIEWMODEL_RIG_PIPELINE.md`.)*
    - `vm_*.prefab` mirrors the class's `vm_*` 1:1: `ViewModel.ModelRenderer` = your weapon
      renderer, `Arms` bonemerged to it. **No invisible master, no passenger renderers.**
 4. **Functions:** copy ammo/shoot/reload/recoil components from the class reference's
@@ -118,28 +119,49 @@ Once step 3's rig exists for a class, weapon #2 in that class is a copy-paste + 
 
 ---
 
-## 4. The first-person rig constraint (IMPORTANT, current)
+## 4. The first-person rig — how to get it (CORRECTED 2026-06-04)
 
-Step 3 requires the **class rig source (FBX/skeleton/animgraph)** to skin a custom mesh onto.
-Per Facepunch's own first-person-weapons docs, that **source is currently NOT shipped** while
-they re-implement the system (cloud `v_*` models exist, but their editable source does not).
+> ⚠️ **Correction.** An earlier version of this doc said the weapon rig source "isn't shipped"
+> and that first person was **blocked**. That was wrong and is retracted. The rig **is**
+> available and first person is **doable now**. See `VIEWMODEL_RIG_PIPELINE.md` for full steps.
 
-**Implication — this is general, not AK-specific:** first person for **any custom weapon** is
-gated until Facepunch re-releases the weapon source. Third person has **no** such gate.
+Step 3's viewmodel rides the **shared first-person arms rig** — *not* a per-weapon rig you
+invent. That shared rig (skeleton: `weapon_root` + `weapon_root_children`, arm bones, `camera`;
+plus IK, constraints, and shareable animations) is Facepunch's.
+
+**Accurate source status (don't overclaim either way):**
+- Facepunch's weapon **FBX source is currently NOT shipped** (per the first-person-weapons doc;
+  being re-implemented). So we can't just grab a ready FBX.
+- **But the `.vmdl` + `.vanmgrph` DO cache locally** — you have `v_m700`'s on disk — so the
+  structure is fully readable, and ModelDoc's **Export As… FBX** can *regenerate* a mesh +
+  skeleton from the compiled model (decompile, may need cleanup; quality TBD until tested).
+- There's also Facepunch's **official "hide the original weapon mesh + bonemerge/parent yours
+  on top"** method (no FBX export needed) — see `SBOX_EDITOR_REFERENCE.md §5`.
+
+So there are **two** candidate paths to a real first person (see `VIEWMODEL_RIG_PIPELINE.md`);
+neither is blocked. `v_m700` (a two-handed long gun) is the on-disk study template; the
+class-correct animations for the AK come from `v_m4a1` (Assault Rifle).
+
+**The only custom layer is MODEL / MATERIAL / SOUND.** The rig, IK, animgraph, and animations
+are reused from DXRP/Facepunch as-is. The one-time per-weapon work is: bind your weapon mesh to
+`weapon_root` (+ moving parts to `weapon_root_children`) and align its iron sights. That's a
+contained Blender bind job, **not** a rig-from-scratch.
 
 Things we already proved do **not** work (do not retry):
 - **Passenger renderer:** DXRP's `ViewModel` draws only 2 renderers (weapon + arms). A 3rd
   "passenger" mesh does not render even with `RenderType: On`. → empty hands.
 - **Raw `base_model_name` edit** pointing a static `v_*.vmdl` at the cloud `v_m4a1.vmdl`
   (+ `parent_bone = "weapon_root"`): **crashes ModelDoc (heap corruption).** Reverted.
+  *(This failed because it referenced a cloud model with no local source — not because the
+  rig is unavailable. The supported path is Export As… FBX, then author a fresh `v_*.vmdl`.)*
 
-### Interim strategy until source ships
-- **Now:** finish **third person** to the ideal (correct world model + tuned grip), and use a
-  **clean class-matched placeholder** for first person (e.g. AK shows the M4A1 viewmodel in
-  your own hands — stable, shippable). The placeholder must be a *clean* class viewmodel, NOT
-  the empty-hands invisible-master setup.
-- **When source ships:** do the one-time `v_*` rig per class → first person snaps into the
-  same clean template, **no wipe**, no asset rework.
+### Strategy
+- **Placeholder (optional, only if you want to ship before the bind):** a **clean
+  class-matched** viewmodel (AK shows the M4A1 viewmodel in your hands — stable, shippable).
+  Must be a *clean* class viewmodel, NOT the empty-hands invisible-master setup.
+- **Real first person (the actual plan):** do the one-time bind per class → first person snaps
+  into the same clean template, **no wipe**, no asset rework. Because most animations move only
+  `weapon_root`, weapon #2+ in a class is a model swap.
 
 ---
 
@@ -164,8 +186,10 @@ Things we already proved do **not** work (do not retry):
 | World model (3rd person) | ✅ Correct AK; works on Dev server. Grip offset = remaining tune. |
 | Muzzle / EjectionPort (`w_ak47`) | ✅ Corrected to M4A1 values. |
 | Sounds / recoil / spray / fire modes | ✅ Done, matched to class. |
-| Viewmodel (1st person) | ⛔ Blocked — `v_ak47` is a static mesh; needs class rig, source not shipped. Use clean M4A1 placeholder until then. |
+| Viewmodel (1st person) | 🔜 Doable now — `v_ak47` is still a static mesh; needs the one-time bind to the shared rig (Export As… FBX from `v_m700` → Blender bind → author `v_ak47.vmdl`). M4A1 placeholder is optional in the meantime. |
 
-**AK first-person endgame (when source ships):** skin `v_ak47` to the M4A1 viewmodel
-skeleton → `vm_ak47` becomes a 1:1 mirror of `vm_m4a1` → "AK in place of the M4 with minor
-geometry adjustments," exactly the target.
+**AK first-person endgame (the plan):** extract the shared rig via ModelDoc **Export As… FBX**
+from `v_m700`, bind the AK mesh to `weapon_root` (+ moving parts) and align sights in Blender,
+author `v_ak47.vmdl` from the `v_m700.vmdl` template (reuse shared/long-gun anims) →
+`vm_ak47` becomes a 1:1 mirror of `vm_m4a1` → real AK in your hands, real ADS on its own sights.
+See `VIEWMODEL_RIG_PIPELINE.md`.
