@@ -51,7 +51,7 @@
 					Audit
 				</button>
 			}
-			<button class="network-block @( StaffMenuHost.HasWebsite ? "linkable" : "" ) @( _websiteCopied ? "copied" : "" )"
+			<button class="network-block @( StaffMenuHost.HasWebsite ? "network-block-link" : "" ) @( _websiteCopied ? "network-block-copied" : "" )"
 			        tooltip="@( StaffMenuHost.HasWebsite ? $"Copy link: {StaffMenuHost.WebsiteUrl}" : "" )"
 			        onclick="@CopyWebsite">
 				<span class="network-block-label">Network</span>
@@ -227,9 +227,19 @@
 						</div>
 
 						<div class="settings-current">
-							@( StaffMenuHost.HasWebsite
-								? $"Current: {StaffMenuHost.WebsiteUrl}"
-								: "No website set yet — leave the field empty and Save to clear it." )
+							@if ( StaffMenuHost.HasWebsite )
+							{
+								<span class="settings-current-text">@( $"Current: {StaffMenuHost.WebsiteUrl}" )</span>
+								<button class="copy-btn"
+								        tooltip="@( _currentCopied ? "Copied!" : "Copy link" )"
+								        onclick="@CopyCurrentWebsite">
+									<i class="material-icons">@( _currentCopied ? "check" : "content_copy" )</i>
+								</button>
+							}
+							else
+							{
+								<span class="settings-current-text">No website set yet — leave the field empty and Save to clear it.</span>
+							}
 						</div>
 					}
 					else
@@ -247,23 +257,29 @@
 			<div class="players @( _playersCollapsed ? "collapsed" : "" )">
 				@if ( _playersCollapsed )
 				{
-					<button class="players-rail" tooltip="Open sidebar — players & settings" onclick="@TogglePlayers">
-						<i class="material-icons expand-icon">chevron_right</i>
-						<i class="material-icons people">group</i>
-						<span class="count">@_players.Count</span>
-					</button>
+					<div class="players-rail">
+						<button class="expand-btn" tooltip="Open sidebar — players & settings" onclick="@TogglePlayers">
+							<i class="material-icons">chevron_right</i>
+						</button>
+						<div class="rail-stat">
+							<i class="material-icons">group</i>
+							<span class="count">@_players.Count</span>
+						</div>
+						<div class="rail-stat">
+							<i class="material-icons">shield</i>
+							<span class="count">@( StaffTierGroups().Sum( g => g.Players.Count ) )</span>
+						</div>
+					</div>
 				}
 
 				@if ( !_playersCollapsed )
 				{
 					var staffGroups = StaffTierGroups();
 					var staffCount = staffGroups.Sum( g => g.Players.Count );
-					// Each player appears exactly ONCE: staff under their rank tier (Staff), everyone else
-					// under Players. Complementary sections (staffCount + others == roster total) so the
-					// bottom list no longer re-lists the staff already shown above — which looked
-					// redundant/uneven once the roster filled up.
-					var otherPlayers = FilteredPlayers()
-						.Where( p => p.GroupName == StaffMenuHost.NonStaffGroup )
+					// "Players" is the live server head-count: EVERYONE online (staff + non-staff), because
+					// everyone is a player at all times. Staff are also surfaced in their own tiered section
+					// above for quick targeting, so they intentionally appear in both places.
+					var allPlayers = FilteredPlayers()
 						.OrderBy( p => p.Name )
 						.ToList();
 
@@ -311,31 +327,32 @@
 							}
 						}
 
-						@if ( otherPlayers.Count > 0 )
+						<div class="parent-label">Players (@allPlayers.Count)</div>
+						@foreach ( var player in allPlayers )
 						{
-							<div class="parent-label">Players (@otherPlayers.Count)</div>
-							@foreach ( var player in otherPlayers )
-							{
-								<button class="player-row @( ( _showProfile ? _profileSteamId : _selectedSteamId ) == player.SteamId ? "selected" : "" )"
-								        tooltip="View player profile"
-								        onclick="@(() => Select( player.SteamId ))">
-									<i class="material-icons avatar">person</i>
-									<span class="name">@player.Name</span>
-									@if ( !player.CanTarget )
-									{
-										<i class="material-icons lock" tooltip="Equal or higher rank — cannot target">lock</i>
-									}
-								</button>
-							}
+							<button class="player-row @( ( _showProfile ? _profileSteamId : _selectedSteamId ) == player.SteamId ? "selected" : "" )"
+							        tooltip="View player profile"
+							        onclick="@(() => Select( player.SteamId ))">
+								<i class="material-icons avatar">person</i>
+								<span class="name">@player.Name</span>
+								@if ( !player.CanTarget )
+								{
+									<i class="material-icons lock" tooltip="Equal or higher rank — cannot target">lock</i>
+								}
+							</button>
 						}
 					</div>
 				}
 
 				<div class="players-footer">
-					<button class="icon-btn settings-cog @( _activeTab == TabSettings ? "active" : "" )"
-					        tooltip="Owner settings — server customization"
+					<button class="settings-entry @( _activeTab == TabSettings ? "settings-entry-on" : "" )"
+					        tooltip="@( _playersCollapsed ? "Player & Staff Management" : "" )"
 					        onclick="@OpenSettings">
 						<i class="material-icons">settings</i>
+						@if ( !_playersCollapsed )
+						{
+							<span class="settings-entry-label">@("Player & Staff Management")</span>
+						}
 					</button>
 				</div>
 			</div>
@@ -389,7 +406,14 @@
 							<div class="profile-fields">
 								<div class="field">
 									<span class="k">Steam ID</span>
-									<span class="v">@profileSteamId</span>
+									<span class="v v-copy">
+										<span class="@( _steamIdCopied ? "copied-text" : "" )">@( _steamIdCopied ? "Copied!" : profileSteamId.ToString() )</span>
+										<button class="copy-btn"
+										        tooltip="@( _steamIdCopied ? "Copied!" : "Copy Steam ID" )"
+										        onclick="@(() => CopySteamId( profileSteamId ))">
+											<i class="material-icons">@( _steamIdCopied ? "check" : "content_copy" )</i>
+										</button>
+									</span>
 								</div>
 								<div class="field">
 									<span class="k">Role</span>
@@ -569,6 +593,15 @@
 	// area. Pure view state (no backend), folded into BuildHash so the toggle re-renders.
 	private bool _playersCollapsed;
 
+	// Rebuild throttle. The menu used to re-sample the roster AND fold live player stats into
+	// BuildHash every single frame, so any volatile value (e.g. the periodic salary bumping Bank)
+	// rebuilt the WHOLE menu — including the sidebar/cog — which replayed their hover state and read
+	// as a flicker. We now refresh on a fixed cadence and cache the volatile stat hash, so the menu
+	// only rebuilds when something actually changed at most a few times a second.
+	private TimeSince _sinceRefresh;
+	private int _detailHash;
+	private const float RefreshInterval = 0.2f;
+
 	// The public addon page. The footer signature copies this to the clipboard on click (no in-game
 	// text selection), flashing a "copied" confirmation via _linkCopied.
 	private const string SignatureUrl = "https://dxrp.net/addons/019e9cfa-3141-723c-a430-1a0e256472eb";
@@ -618,6 +651,8 @@
 	private string _websiteDraft = "";
 	private bool _websiteCopied;
 	private bool _websiteSaved;
+	private bool _steamIdCopied;
+	private bool _currentCopied;
 
 	private StaffAction? _pendingAction;
 	private string _reason = "";
@@ -634,7 +669,19 @@
 		StaffMenuHost.RefreshSettings();
 	}
 
-	protected override void OnUpdate() => RefreshRoster();
+	protected override void OnUpdate()
+	{
+		// Throttle: re-sampling every frame churned BuildHash and rebuilt the whole menu (sidebar/cog
+		// hover would flicker). A few refreshes a second is plenty for a staff roster + live stats.
+		if ( _sinceRefresh < RefreshInterval )
+		{
+			return;
+		}
+
+		_sinceRefresh = 0;
+		RefreshRoster();
+		RecomputeDetailHash();
+	}
 
 	private void RefreshRoster()
 	{
@@ -647,6 +694,22 @@
 		{
 			_selectedSteamId = null;
 			_showProfile = false;
+		}
+	}
+
+	// Snapshot the open profile's volatile stats into a single hash on the refresh cadence (not every
+	// frame), so BuildHash only flips the menu when a value really changed — keeping the surrounding
+	// chrome (sidebar, cog) stable between updates.
+	private void RecomputeDetailHash()
+	{
+		if ( _showProfile && _profileSteamId is { } sid && sid != 0 )
+		{
+			var d = StaffMenuHost.GetPlayerDetail( sid );
+			_detailHash = HashCode.Combine( d.Health, d.Armor, d.Wallet, d.Bank, d.Kills, d.Deaths, d.Job );
+		}
+		else
+		{
+			_detailHash = 0;
 		}
 	}
 
@@ -1076,25 +1139,56 @@
 		StateHasChanged();
 	}
 
-	protected override int BuildHash()
+	/// <summary>Copy a player's SteamID64 from the profile pane to the OS clipboard.</summary>
+	private void CopySteamId( long steamId )
 	{
-		// While the profile is open, fold in the selected player's volatile stats so live changes
-		// (health, armor, balance, kills/deaths) re-render the pane.
-		var detailHash = 0;
-		if ( _showProfile && _profileSteamId is { } sid && sid != 0 )
+		Clipboard.SetText( steamId.ToString() );
+		_steamIdCopied = true;
+		StateHasChanged();
+		_ = RevertSteamIdLabel();
+	}
+
+	private async System.Threading.Tasks.Task RevertSteamIdLabel()
+	{
+		await GameTask.DelayRealtimeSeconds( 1.8f );
+		_steamIdCopied = false;
+		StateHasChanged();
+	}
+
+	/// <summary>Copy the saved network website from the Settings "Current" line to the clipboard.</summary>
+	private void CopyCurrentWebsite()
+	{
+		if ( !StaffMenuHost.HasWebsite )
 		{
-			var d = StaffMenuHost.GetPlayerDetail( sid );
-			detailHash = HashCode.Combine( d.Health, d.Armor, d.Wallet, d.Bank, d.Kills, d.Deaths, d.Job );
+			return;
 		}
 
+		Clipboard.SetText( StaffMenuHost.WebsiteUrl );
+		_currentCopied = true;
+		StateHasChanged();
+		_ = RevertCurrentLabel();
+	}
+
+	private async System.Threading.Tasks.Task RevertCurrentLabel()
+	{
+		await GameTask.DelayRealtimeSeconds( 1.8f );
+		_currentCopied = false;
+		StateHasChanged();
+	}
+
+	protected override int BuildHash()
+	{
+		// _detailHash is refreshed on the throttled cadence (RecomputeDetailHash), NOT recomputed here
+		// every frame — otherwise a live stat change would rebuild the whole menu continuously and the
+		// sidebar/cog hover would flicker.
 		return HashCode.Combine(
 			HashCode.Combine( _selectedSteamId, _profileSteamId, _showProfile, _searchText ),
 			HashCode.Combine( _players.Count, _playersCollapsed, _linkCopied ),
 			_activeTab,
 			_pendingAction?.Key,
 			HashCode.Combine( _reason, _duration, _amount, _name ),
-			HashCode.Combine( _auditPlayerId, _auditEntity, _websiteDraft, _websiteCopied, _websiteSaved, StaffMenuHost.SettingsVersion ),
+			HashCode.Combine( _auditPlayerId, _auditEntity, _websiteDraft, _websiteCopied, _websiteSaved, _steamIdCopied, _currentCopied, StaffMenuHost.SettingsVersion ),
 			HashCode.Combine( _waypointName, StaffMenuHost.WaypointVersion, _returnSteamId ),
-			detailHash );
+			_detailHash );
 	}
 }

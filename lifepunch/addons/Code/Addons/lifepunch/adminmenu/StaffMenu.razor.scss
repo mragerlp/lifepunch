@@ -85,7 +85,10 @@ $border: rgba(255, 255, 255, 0.06);
 		color: $text-dim;
 		background-color: transparent;
 		cursor: pointer;
-		transition: background-color 0.12s ease-out, color 0.12s ease-out, border-bottom-color 0.12s ease-out;
+		// Instant hover (no colour fade). The cog and other icon buttons sit inside the window's
+		// rounded-corner overflow clip; a transitioned background repaints against that clip across the
+		// fade's frames and reads as a hover "flicker". Snapping the colour repaints once. (Same reason
+		// the dense player rows are transition-free.)
 
 		&:hover {
 			background-color: $bg-row;
@@ -119,16 +122,35 @@ $border: rgba(255, 255, 255, 0.06);
 			}
 		}
 
-		// Settings cog in the sidebar footer: a touch larger square with a bigger glyph so it reads
-		// as a real control, and flex-shrink:0 keeps it from being squeezed by the footer row.
-		&.settings-cog {
-			flex-shrink: 0;
-			width: 36px;
-			height: 36px;
+	}
 
-			.material-icons {
-				font-size: 22px;
-			}
+	// Copy-confirmation text tint. Keeps the profile "Copied!" uniform with the other copy
+	// confirmations (footer "Addon link copied!", network tag) which all use the accent blue.
+	.copied-text {
+		color: $accent;
+	}
+
+	// Small inline clipboard button used next to copyable text (profile Steam ID, settings link).
+	// Flips its glyph to a check via the razor while the brief copied-state is active.
+	.copy-btn {
+		align-items: center;
+		justify-content: center;
+		flex-shrink: 0;
+		width: 22px;
+		height: 22px;
+		border-radius: 6px;
+		color: $text-dim;
+		background-color: transparent;
+		cursor: pointer;
+		transition: background-color 0.12s ease-out, color 0.12s ease-out;
+
+		.material-icons {
+			font-size: 15px;
+		}
+
+		&:hover {
+			background-color: $bg-row;
+			color: $text;
 		}
 	}
 
@@ -191,7 +213,7 @@ $border: rgba(255, 255, 255, 0.06);
 			color: $text-dim;
 			background-color: transparent;
 			cursor: pointer;
-			transition: background-color 0.12s ease-out, color 0.12s ease-out;
+			// Instant hover — see .icon-btn note (rounded-corner clip repaint flicker).
 
 			.material-icons {
 				font-size: 20px;
@@ -231,45 +253,58 @@ $border: rgba(255, 255, 255, 0.06);
 			width: 40px;
 		}
 
-		// The whole slim strip is the expand button when collapsed.
+		// Slim collapsed strip. The strip itself is passive (no click, no tooltip) — only the chevron
+		// button opens the sidebar, mirroring how the expanded .collapse-btn closes it. The group icon
+		// and count below are just a non-interactive online indicator.
 		.players-rail {
 			flex-direction: column;
 			align-items: center;
 			flex-grow: 1;
-			gap: 8px;
+			gap: 10px;
 			padding: 12px 0;
 			color: $text-dim;
 			background-color: transparent;
-			cursor: pointer;
 
-			.material-icons {
-				font-size: 20px;
+			// Passive online indicators stacked under the chevron: total players (group icon) and staff
+			// (shield), each with its count below. No hover / tooltip — purely informational.
+			.rail-stat {
+				flex-direction: column;
+				align-items: center;
+				gap: 2px;
+
+				.material-icons {
+					font-size: 18px;
+					color: $text-dim;
+				}
+
+				.count {
+					font-size: 12px;
+					font-weight: 700;
+					color: $text;
+				}
 			}
 
-			.people {
-				font-size: 18px;
-			}
-
-			.count {
-				font-size: 12px;
-				font-weight: 700;
-				color: $text;
-			}
-
-			// Only the expand chevron reacts to hover — a contained rounded square like the collapse
-			// control. The whole rail stays clickable, but there's no full-column background fade: that
-			// repaint over the slim strip was the hover "flicker".
-			.expand-icon {
-				padding: 3px;
+			// The only control on the rail: opens the sidebar and owns the tooltip. Same footprint and
+			// instant hover as the .collapse-btn chevron.
+			.expand-btn {
+				align-items: center;
+				justify-content: center;
+				width: 26px;
+				height: 26px;
 				border-radius: 7px;
 				color: $text-dim;
 				background-color: transparent;
-				transition: background-color 0.12s ease-out, color 0.12s ease-out;
-			}
+				cursor: pointer;
+				// Instant hover — see .icon-btn note (rounded-corner clip repaint flicker).
 
-			&:hover .expand-icon {
-				background-color: $bg-row;
-				color: $text;
+				.material-icons {
+					font-size: 20px;
+				}
+
+				&:hover {
+					background-color: $bg-row;
+					color: $text;
+				}
 			}
 		}
 
@@ -318,6 +353,54 @@ $border: rgba(255, 255, 255, 0.06);
 		&.collapsed .players-footer {
 			justify-content: center;
 			padding: 8px 0;
+		}
+
+		// Footer entry that opens the Player & Staff Management page (currently the Settings view). A
+		// full-width row (cog + label) when the sidebar is expanded; collapses to just the centered cog.
+		.settings-entry {
+			flex-direction: row;
+			align-items: center;
+			gap: 10px;
+			flex-grow: 1;
+			padding: 8px;
+			border-radius: 8px;
+			color: $text-dim;
+			background-color: transparent;
+			cursor: pointer;
+			// Instant hover — see .icon-btn note (rounded-corner clip repaint flicker).
+
+			.material-icons {
+				font-size: 22px;
+			}
+
+			.settings-entry-label {
+				font-size: 13px;
+				font-weight: 500;
+			}
+
+			&:hover {
+				background-color: $bg-row;
+				color: $text;
+			}
+		}
+
+		// Active state (the management page is open). Standalone class — see .tab-sel note — so it
+		// reliably wins over the base .settings-entry on equal specificity.
+		.settings-entry-on {
+			color: $text;
+
+			.material-icons {
+				color: $accent;
+			}
+		}
+
+		// Collapsed rail: shrink the entry to just the centered cog (the label is omitted in the razor).
+		&.collapsed .settings-entry {
+			flex-grow: 0;
+			justify-content: center;
+			width: 36px;
+			height: 36px;
+			padding: 0;
 		}
 	}
 
@@ -442,7 +525,7 @@ $border: rgba(255, 255, 255, 0.06);
 			padding: 4px 8px;
 			border-radius: 8px;
 			background-color: transparent;
-			// Label-only until an owner configures a website; .linkable then re-enables clicks.
+			// Label-only until an owner configures a website; .network-block-link then re-enables clicks.
 			pointer-events: none;
 
 			.network-block-label {
@@ -459,35 +542,38 @@ $border: rgba(255, 255, 255, 0.06);
 				font-weight: 600;
 			}
 
-			// Once a website is set the block becomes a click-to-copy control (mirrors the signature).
-			// The identifier is accent-tinted so it reads as a link, and hover gives a clear surface +
-			// brighter text so the affordance is obvious (the old 4%-white hover was invisible).
-			&.linkable {
-				pointer-events: auto;
-				cursor: pointer;
-				transition: background-color 0.12s ease-out;
+		}
 
-				.network-block-value {
-					color: $accent;
-				}
+		// Once a website is set the block becomes a click-to-copy control (mirrors the signature).
+		// STANDALONE class (compiles to `.tabs .network-block-link`), NOT a `.network-block.linkable`
+		// compound class+class rule — s&box's CSS subset won't reliably match those, so pointer-events
+		// would never flip and the tag would stay unclickable. Defined after .network-block so it wins
+		// on equal specificity (same trick as .tab-sel). Toggled from the razor when a URL is saved.
+		.network-block-link {
+			pointer-events: auto;
+			cursor: pointer;
+			transition: background-color 0.12s ease-out;
 
-				&:hover {
-					background-color: $bg-row;
-
-					.network-block-label {
-						color: $text;
-					}
-
-					.network-block-value {
-						color: #6ea2ff;
-					}
-				}
-			}
-
-			// Brief confirmation tint after copying the link.
-			&.copied .network-block-value {
+			.network-block-value {
 				color: $accent;
 			}
+
+			&:hover {
+				background-color: $bg-row;
+
+				.network-block-label {
+					color: $text;
+				}
+
+				.network-block-value {
+					color: #6ea2ff;
+				}
+			}
+		}
+
+		// Brief confirmation tint after copying the link.
+		.network-block-copied .network-block-value {
+			color: $accent;
 		}
 	}
 
@@ -872,6 +958,15 @@ $border: rgba(255, 255, 255, 0.06);
 						font-weight: 600;
 						text-align: right;
 					}
+
+					// Steam ID value + inline copy button. Standalone class (not `.v.v-copy`) so the
+					// s&box CSS subset matches it reliably; flex row keeps the glyph beside the number.
+					.v-copy {
+						flex-direction: row;
+						align-items: center;
+						justify-content: flex-end;
+						gap: 6px;
+					}
 				}
 			}
 
@@ -1178,8 +1273,16 @@ $border: rgba(255, 255, 255, 0.06);
 		}
 
 		.settings-current {
+			flex-direction: row;
+			align-items: center;
+			gap: 6px;
 			color: $text-dim;
 			font-size: 11px;
+
+			.settings-current-text {
+				color: $text-dim;
+				font-size: 11px;
+			}
 		}
 
 		.settings-readonly {
