@@ -22,11 +22,180 @@
 				<i class="material-icons">shield</i>
 				<span>Staff Menu</span>
 			</div>
-			<button class="icon-btn close" tooltip="Close Menu" onclick="@CloseMenu">
-				<i class="material-icons">close</i>
-			</button>
+			<div class="header-actions">
+				<button class="icon-btn close" tooltip="Close Menu" onclick="@CloseMenu">
+					<i class="material-icons">close</i>
+				</button>
+			</div>
 		</div>
 
+		<div class="tabs">
+			@foreach ( var category in StaffMenuActions.Categories )
+			{
+				<button class="@TabClass( category )"
+				        onclick="@(() => SelectTab( category ))">
+					@category
+				</button>
+			}
+			@if ( StaffMenuHost.CanUseWaypoints() )
+			{
+				<button class="@TabClass( TabWaypoints )"
+				        onclick="@(() => SelectTab( TabWaypoints ))">
+					Waypoints
+				</button>
+			}
+			@if ( StaffMenuHost.CanViewAudit() )
+			{
+				<button class="@TabClass( TabAudit )"
+				        onclick="@(() => SelectTab( TabAudit ))">
+					Audit
+				</button>
+			}
+		</div>
+
+		@if ( _activeTab == TabAudit )
+		{
+			<div class="audit">
+				<div class="audit-head">
+					<i class="material-icons">history</i>
+					<span>Audit Log</span>
+				</div>
+
+				<div class="audit-filters">
+					<div class="audit-filter">
+						<i class="material-icons">person_search</i>
+						<TextEntry class="audit-input" Placeholder="Player ID or name" Value:bind="@_auditPlayerId"/>
+						@if ( !string.IsNullOrEmpty( _auditPlayerId ) )
+						{
+							<button class="icon-btn" tooltip="Clear" onclick="@ClearAuditPlayer"><i class="material-icons">close</i></button>
+						}
+					</div>
+					<div class="audit-filter">
+						<i class="material-icons">category</i>
+						<TextEntry class="audit-input" Placeholder="Entity ID" Value:bind="@_auditEntity"/>
+						@if ( !string.IsNullOrEmpty( _auditEntity ) )
+						{
+							<button class="icon-btn" tooltip="Clear" onclick="@ClearAuditEntity"><i class="material-icons">close</i></button>
+						}
+					</div>
+				</div>
+
+				@{
+					var entries = StaffMenuHost.GetAuditEntries( _auditPlayerId, _auditEntity );
+				}
+
+				<div class="audit-table">
+					<div class="audit-row audit-row-head">
+						<span class="c-when">When</span>
+						<span class="c-action">Action</span>
+						<span class="c-player">Player</span>
+						<span class="c-entity">Entity</span>
+						<span class="c-desc">Description</span>
+					</div>
+
+					<div class="audit-scroll">
+						@foreach ( var entry in entries )
+						{
+							<div class="audit-row">
+								<span class="c-when">@entry.When</span>
+								<span class="c-action"><span class="action-pill">@entry.Action</span></span>
+								<span class="c-player @( entry.PlayerSteamId == 0 ? "system" : "" )">@entry.Player</span>
+								<span class="c-entity">@entry.Entity</span>
+								<span class="c-desc">@entry.Description</span>
+							</div>
+						}
+
+						@if ( entries.Count == 0 )
+						{
+							<div class="audit-empty">No audit entries match these filters.</div>
+						}
+					</div>
+				</div>
+			</div>
+		}
+		else if ( _activeTab == TabWaypoints )
+		{
+			<div class="waypoints">
+				<div class="wp-head">
+					<i class="material-icons">place</i>
+					<span>Waypoints</span>
+				</div>
+
+				<div class="wp-bar">
+					<i class="material-icons">place</i>
+					<TextEntry class="wp-input" Placeholder="Waypoint name" Value:bind="@_waypointName"/>
+					<button class="wp-btn go @( string.IsNullOrWhiteSpace( _waypointName ) ? "disabled" : "" )"
+					        tooltip="Teleport to this waypoint"
+					        onclick="@GoToTypedWaypoint">
+						<i class="material-icons">my_location</i> Go
+					</button>
+					@if ( StaffMenuHost.CanEditWaypoints() )
+					{
+						<button class="wp-btn set @( string.IsNullOrWhiteSpace( _waypointName ) ? "disabled" : "" )"
+						        tooltip="Save a waypoint at your current position + view angle"
+						        onclick="@SetWaypointFromInput">
+							<i class="material-icons">push_pin</i> Set here
+						</button>
+					}
+				</div>
+
+				@{
+					var waypoints = StaffMenuHost.GetWaypoints();
+				}
+
+				<div class="wp-list">
+					@foreach ( var name in waypoints )
+					{
+						<div class="wp-row">
+							<i class="material-icons">place</i>
+							<span class="wp-name">@name</span>
+							<button class="wp-go-row" tooltip="Teleport here" onclick="@(() => GoToWaypoint( name ))">
+								<i class="material-icons">my_location</i> Go
+							</button>
+							@if ( StaffMenuHost.CanEditWaypoints() )
+							{
+								<button class="wp-clear" tooltip="Delete waypoint" onclick="@(() => ClearWaypoint( name ))">
+									<i class="material-icons">delete</i>
+								</button>
+							}
+						</div>
+					}
+
+					@if ( waypoints.Count == 0 )
+					{
+						<div class="wp-empty">
+							Saved waypoints aren't listed in-menu yet — type a name above to Go or Set.
+						</div>
+					}
+				</div>
+
+				@if ( StaffMenuHost.CanView( "ability.teleport" ) )
+				{
+					<div class="wp-return-section">
+						<div class="wp-head">
+							<i class="material-icons">undo</i>
+							<span>Return a player</span>
+						</div>
+
+						<div class="wp-sit-hint">
+							Return a player back to where they were brought from.
+						</div>
+
+						<div class="wp-bar wp-return-bar">
+							<i class="material-icons">person</i>
+							<TextEntry class="wp-input" Placeholder="SteamID64" Value:bind="@_returnSteamId"/>
+							<button class="wp-btn go @( string.IsNullOrWhiteSpace( _returnSteamId ) ? "disabled" : "" )"
+							        tooltip="Return this player to their previous position"
+							        onclick="@ReturnTypedPlayer">
+								<i class="material-icons">undo</i> Return
+							</button>
+						</div>
+					</div>
+				}
+			</div>
+		}
+		else
+		{
 		<div class="body">
 			<div class="players">
 				<div class="pane-label">Online Players (@_players.Count)</div>
@@ -65,8 +234,8 @@
 						<div class="group-label">@group.Name (@group.Players.Count)</div>
 						@foreach ( var player in group.Players )
 						{
-							<button class="player-row @( _selectedSteamId == player.SteamId ? "selected" : "" )"
-							        tooltip="Select player"
+							<button class="player-row @( ( _showProfile ? _profileSteamId : _selectedSteamId ) == player.SteamId ? "selected" : "" )"
+							        tooltip="View player profile"
 							        onclick="@(() => Select( player.SteamId ))">
 								<i class="material-icons avatar">person</i>
 								<span class="name">@player.Name</span>
@@ -81,8 +250,8 @@
 					<div class="parent-label">Players (@allPlayers.Count)</div>
 					@foreach ( var player in allPlayers )
 					{
-						<button class="player-row @( _selectedSteamId == player.SteamId ? "selected" : "" )"
-						        tooltip="Select player"
+						<button class="player-row @( ( _showProfile ? _profileSteamId : _selectedSteamId ) == player.SteamId ? "selected" : "" )"
+						        tooltip="View player profile"
 						        onclick="@(() => Select( player.SteamId ))">
 							<i class="material-icons avatar">person</i>
 							<span class="name">@player.Name</span>
@@ -99,7 +268,9 @@
 				@{
 					var selected = _players.FirstOrDefault( p => p.SteamId == _selectedSteamId );
 					var hasTarget = selected.SteamId != 0;
-					var profileSteamId = _selectedSteamId ?? 0;
+					// The profile pane previews whoever was clicked (_profileSteamId); it does NOT
+					// imply selection — only "Actions for this player" commits a command target.
+					var profileSteamId = _profileSteamId ?? 0;
 				}
 
 				@if ( _showProfile && profileSteamId != 0 )
@@ -112,6 +283,29 @@
 						</div>
 
 						<div class="profile-card">
+							@if ( StaffMenuHost.CanView( "ability.teleport" ) )
+							{
+								var tpTarget = _players.FirstOrDefault( p => p.SteamId == profileSteamId );
+								var canTp = tpTarget.SteamId != 0 && tpTarget.CanTarget && profileSteamId != StaffMenuHost.LocalSteamId;
+								<div class="profile-tp">
+									<button class="tp-btn @( canTp ? "" : "disabled" )"
+									        tooltip="Go to Player"
+									        onclick="@(() => QuickTeleport( "goto", tpTarget ))">
+										<i class="material-icons">my_location</i>
+									</button>
+									<button class="tp-btn @( canTp ? "" : "disabled" )"
+									        tooltip="Bring Player"
+									        onclick="@(() => QuickTeleport( "bring", tpTarget ))">
+										<i class="material-icons">pan_tool</i>
+									</button>
+									<button class="tp-btn @( canTp ? "" : "disabled" )"
+									        tooltip="Return Player"
+									        onclick="@(() => QuickTeleport( "return", tpTarget ))">
+										<i class="material-icons">undo</i>
+									</button>
+								</div>
+							}
+
 							<img class="profile-avatar" src="avatar:@profileSteamId"/>
 							<div class="profile-name">@( detail.Found ? detail.Name : "Off-roster target" )</div>
 
@@ -162,24 +356,21 @@
 								}
 							</div>
 
-							<button class="confirm-btn" onclick="@CloseProfile">
+							<button class="confirm-btn" onclick="@(() => ConfirmTarget( profileSteamId ))">
 								<i class="material-icons">bolt</i> Actions for this player
 							</button>
+
+							@if ( StaffMenuHost.CanViewAudit() )
+							{
+								<button class="confirm-btn secondary" onclick="@(() => OpenAuditForPlayer( profileSteamId ))">
+									<i class="material-icons">history</i> View audit log
+								</button>
+							}
 						</div>
 					</div>
 				}
 				else
 				{
-				<div class="tabs">
-					@foreach ( var category in StaffMenuActions.Categories )
-					{
-						<button class="tab @( _activeCategory == category ? "active" : "" )"
-						        onclick="@(() => SelectCategory( category ))">
-							@category
-						</button>
-					}
-				</div>
-
 				<div class="target-banner @( _selectedSteamId != null ? "active" : "" )">
 					<i class="material-icons">@( _selectedSteamId != null ? "person" : "public" )</i>
 					<span class="target-name">@( hasTarget ? selected.Name : ( _selectedSteamId != null ? $"SteamID {_selectedSteamId}" : "No player selected — self & server actions only" ) )</span>
@@ -193,7 +384,7 @@
 
 				@{
 					var visible = StaffMenuActions.All
-						.Where( a => a.Category == _activeCategory && StaffMenuHost.CanView( a.PermissionId ) )
+						.Where( a => a.Category == _activeTab && StaffMenuHost.CanView( a.PermissionId ) )
 						.ToList();
 				}
 
@@ -268,11 +459,12 @@
 
 				@if ( visible.Count == 0 )
 				{
-					<div class="empty">No @_activeCategory.ToLower() actions available to your rank.</div>
+					<div class="empty">No @_activeTab.ToLower() actions available to your rank.</div>
 				}
 				}
 			</div>
 		</div>
+		}
 
 		<div class="signature">DXRP Admin Menu v1 — lifepunch.co</div>
 	</div>
@@ -284,9 +476,42 @@
 	// A Steam ID typed into the search box (may not be on the roster); kept selected so commands can
 	// still target it, and exempt from the roster-presence auto-clear in RefreshRoster.
 	private long? _manualSteamId;
+	// The player whose profile is currently being PREVIEWED (clicking a roster row / typed id). This
+	// is independent of _selectedSteamId — previewing never targets; only "Actions for this player"
+	// commits a target via ConfirmTarget.
+	private long? _profileSteamId;
 	private bool _showProfile;
 	private string _searchText = "";
-	private string _activeCategory = StaffMenuActions.CategoryModeration;
+
+	// Non-category tab ids. The tab strip is Moderation / Commands / Ability (action catalog
+	// categories) plus these two full-window views, all driven by a single _activeTab.
+	private const string TabWaypoints = "Waypoints";
+	private const string TabAudit = "Audit";
+
+	// The selected top-level tab: a StaffMenuActions category, TabWaypoints, or TabAudit.
+	private string _activeTab = StaffMenuActions.CategoryModeration;
+
+	// Active-tab highlight uses a STANDALONE class (`tab-sel`), styled in the SCSS. Why not the
+	// obvious approaches:
+	//  - `.tab.active` (compound class+class) — s&box's CSS subset doesn't match it, so it never applied.
+	//  - inline style — s&box doesn't clear an inline `style` on re-render (every clicked tab stayed
+	//    lit) and inline outranks `.tab:hover`, which killed hover feedback.
+	// A method (not an inline `@( ... ? "x" : "" )` with nested quotes) keeps the class binding clean,
+	// and toggling a class reliably applies AND clears while `.tab:hover` keeps working on the rest.
+	private string TabClass( string tab ) => _activeTab == tab ? "tab tab-sel" : "tab";
+
+	// Audit viewer state: a full-window tab mirroring the portal Audit page — its two live filters
+	// (player id/name, entity id) are applied host-side.
+	private string _auditPlayerId = "";
+	private string _auditEntity = "";
+
+	// Waypoints tab state: a full-window view over DXRP's /waypoint command. The list is live in the
+	// editor stub; on the server it's name-driven until a client-readable list lands.
+	private string _waypointName = "";
+
+	// Waypoints-tab "Return a player": a SteamID64 typed straight in — no roster carry-over — so staff
+	// can return anyone they just brought (the id is the ultimate player handle, one-click copyable).
+	private string _returnSteamId = "";
 
 	private StaffAction? _pendingAction;
 	private string _reason = "";
@@ -363,25 +588,28 @@
 		return groups;
 	}
 
+	/// <summary>
+	/// Clicking a roster row PREVIEWS that player's profile — it does not target them. Re-clicking the
+	/// open preview closes it. Targeting only happens via <see cref="ConfirmTarget"/> ("Actions for
+	/// this player"), so a click never silently arms a command.
+	/// </summary>
 	private void Select( long steamId )
 	{
-		// Re-clicking the already-highlighted player de-selects (clears highlight + closes profile).
-		if ( _selectedSteamId == steamId )
+		// Re-clicking the player whose profile is already open closes the preview.
+		if ( _showProfile && _profileSteamId == steamId )
 		{
-			_selectedSteamId = null;
-			_manualSteamId = null;
+			_profileSteamId = null;
 			_showProfile = false;
 			CancelArgs();
 			return;
 		}
 
-		_selectedSteamId = steamId;
-		_manualSteamId = null;
+		_profileSteamId = steamId;
 		_showProfile = true;
 		CancelArgs();
 	}
 
-	/// <summary>Select the Steam ID typed into the search box (an off-roster target is allowed).</summary>
+	/// <summary>Preview the profile for a Steam ID typed into the search box (off-roster allowed).</summary>
 	private void SelectTypedSteamId()
 	{
 		var text = _searchText?.Trim() ?? "";
@@ -390,9 +618,27 @@
 			return;
 		}
 
-		_selectedSteamId = steamId;
-		_manualSteamId = steamId;
+		_profileSteamId = steamId;
 		_showProfile = true;
+		CancelArgs();
+	}
+
+	/// <summary>
+	/// Commit the previewed player as the active command target ("Actions for this player"), close the
+	/// profile, and land on the action grid. Off-roster (typed) ids are flagged manual so the
+	/// roster-presence auto-clear leaves them alone.
+	/// </summary>
+	private void ConfirmTarget( long steamId )
+	{
+		if ( steamId == 0 )
+		{
+			return;
+		}
+
+		_selectedSteamId = steamId;
+		_manualSteamId = _players.All( p => p.SteamId != steamId ) ? steamId : null;
+		_showProfile = false;
+		_profileSteamId = null;
 		CancelArgs();
 	}
 
@@ -402,12 +648,14 @@
 		_selectedSteamId = null;
 		_manualSteamId = null;
 		_showProfile = false;
+		_profileSteamId = null;
 		CancelArgs();
 	}
 
 	private void CloseProfile()
 	{
 		_showProfile = false;
+		_profileSteamId = null;
 		StateHasChanged();
 	}
 
@@ -417,10 +665,20 @@
 		StateHasChanged();
 	}
 
-	private void SelectCategory( string category )
+	private void SelectTab( string tab )
 	{
-		_activeCategory = category;
+		_activeTab = tab;
 		CancelArgs();
+
+		// Leaving the profile via a tab just drops the preview — it never targets. Any already-confirmed
+		// target (_selectedSteamId) is untouched, so tabs never feel "stuck" behind the back arrow.
+		_showProfile = false;
+		_profileSteamId = null;
+
+		if ( tab == TabWaypoints )
+		{
+			StaffMenuHost.RefreshWaypoints();
+		}
 	}
 
 	private static bool IsEnabled( StaffAction action, StaffMenuPlayer selected, bool hasTarget )
@@ -526,6 +784,112 @@
 		StaffMenuHost.Dispatch( action, selected.SteamId, args );
 	}
 
+	private void ClearAuditPlayer()
+	{
+		_auditPlayerId = "";
+		StateHasChanged();
+	}
+
+	private void ClearAuditEntity()
+	{
+		_auditEntity = "";
+		StateHasChanged();
+	}
+
+	/// <summary>Open the Audit viewer pre-filtered to one player (from their profile pane).</summary>
+	private void OpenAuditForPlayer( long steamId )
+	{
+		_auditPlayerId = steamId.ToString();
+		_auditEntity = "";
+		_activeTab = TabAudit;
+		_showProfile = false;
+		_profileSteamId = null;
+		StateHasChanged();
+	}
+
+	/// <summary>Teleport to a named waypoint from the saved list.</summary>
+	private void GoToWaypoint( string name )
+	{
+		StaffMenuHost.GoToWaypoint( name );
+		StateHasChanged();
+	}
+
+	/// <summary>Teleport to the waypoint typed into the bar (works even when the list isn't readable).</summary>
+	private void GoToTypedWaypoint()
+	{
+		if ( string.IsNullOrWhiteSpace( _waypointName ) )
+		{
+			return;
+		}
+
+		StaffMenuHost.GoToWaypoint( _waypointName );
+	}
+
+	/// <summary>Save a waypoint at the caller's current position under the typed name.</summary>
+	private void SetWaypointFromInput()
+	{
+		if ( string.IsNullOrWhiteSpace( _waypointName ) )
+		{
+			return;
+		}
+
+		StaffMenuHost.SetWaypoint( _waypointName );
+		_waypointName = "";
+		StateHasChanged();
+	}
+
+	private void ClearWaypoint( string name )
+	{
+		StaffMenuHost.ClearWaypoint( name );
+		StateHasChanged();
+	}
+
+	/// <summary>
+	/// Return the player whose SteamID64 was typed in, to where they were brought from. Routes through
+	/// the SAME re-validated host dispatch as the Ability-tab "Return" (the <c>return</c> action /
+	/// <c>/return</c>, gated by ability.teleport), so the Waypoints tab carries no extra authority and
+	/// the host re-checks permission + CanTarget regardless of what's typed here.
+	/// </summary>
+	private void ReturnTypedPlayer()
+	{
+		if ( !long.TryParse( _returnSteamId?.Trim(), out var steamId ) || steamId == 0 )
+		{
+			return;
+		}
+
+		var action = StaffMenuActions.All.FirstOrDefault( a => a.Key == "return" );
+		if ( action is null )
+		{
+			return;
+		}
+
+		StaffMenuHost.Dispatch( action, steamId, new Dictionary<string, string>() );
+		_returnSteamId = "";
+		StateHasChanged();
+	}
+
+	/// <summary>
+	/// Profile-pane quick teleport (Goto/Bring/Return) on the previewed player, routed through the
+	/// same re-validated <see cref="Dispatch"/> as the Ability tab (ability.teleport) — no extra
+	/// authority. The buttons are disabled in-UI for non-targetable/self; Dispatch re-checks anyway.
+	/// </summary>
+	private void QuickTeleport( string key, StaffMenuPlayer target )
+	{
+		if ( target.SteamId == 0 || !target.CanTarget )
+		{
+			return;
+		}
+
+		var action = StaffMenuActions.All.FirstOrDefault( a => a.Key == key );
+		if ( action is null )
+		{
+			return;
+		}
+
+		Dispatch( action, target );
+		StateHasChanged();
+	}
+
 	private void CloseMenu() => StaffMenuHost.RequestClose();
 
 	protected override int BuildHash()
@@ -533,18 +897,20 @@
 		// While the profile is open, fold in the selected player's volatile stats so live changes
 		// (health, armor, balance, kills/deaths) re-render the pane.
 		var detailHash = 0;
-		if ( _showProfile && _selectedSteamId is { } sid && sid != 0 )
+		if ( _showProfile && _profileSteamId is { } sid && sid != 0 )
 		{
 			var d = StaffMenuHost.GetPlayerDetail( sid );
 			detailHash = HashCode.Combine( d.Health, d.Armor, d.Wallet, d.Bank, d.Kills, d.Deaths, d.Job );
 		}
 
 		return HashCode.Combine(
-			HashCode.Combine( _selectedSteamId, _showProfile, _searchText ),
+			HashCode.Combine( _selectedSteamId, _profileSteamId, _showProfile, _searchText ),
 			_players.Count,
-			_activeCategory,
+			_activeTab,
 			_pendingAction?.Key,
 			HashCode.Combine( _reason, _duration, _amount, _name ),
+			HashCode.Combine( _auditPlayerId, _auditEntity ),
+			HashCode.Combine( _waypointName, StaffMenuHost.WaypointVersion, _returnSteamId ),
 			detailHash );
 	}
 }

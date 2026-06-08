@@ -61,6 +61,22 @@ public readonly record struct StaffPlayerDetail(
 	bool Found );
 
 /// <summary>
+/// One row of the DXRP portal Audit log, define-free so it flows through the Dxura-free razor.
+/// Mirrors the portal Audit page columns 1:1 (<c>When</c> / <c>Action</c> / <c>Player</c> /
+/// <c>Entity</c> / <c>Description</c>). <see cref="When"/> is a pre-formatted, display-ready string
+/// (the host owns timestamp formatting so the razor stays logic-light). <see cref="PlayerSteamId"/>
+/// is the raw SteamID64 (0 when the actor is the server/system) so the UI can resolve an avatar and
+/// match the Player-ID filter without re-parsing <see cref="Player"/>.
+/// </summary>
+public readonly record struct StaffAuditEntry(
+	string When,
+	string Action,
+	string Player,
+	long PlayerSteamId,
+	string Entity,
+	string Description );
+
+/// <summary>
 /// Dual-build host bindings for the staff menu.
 ///
 /// All DXRP coupling lives here behind <c>#if !LIFEPUNCH_LOCAL</c> so <c>StaffMenu.razor</c> and
@@ -325,6 +341,217 @@ internal static class StaffMenuHost
 			player.Kills,
 			player.Deaths,
 			true );
+#endif
+	}
+
+	// --- Audit log (read-side, portal-mirrored) ---------------------------
+
+	/// <summary>
+	/// Permission Id that gates the in-menu Audit viewer. Hardcoded string (define-free editor build,
+	/// see TECH_DEBT STAFF-01) — reconciles with the portal's audit-visibility grant. The portal's
+	/// recommended tiers (Mod: own-action only → Super Admin / Community Manager: broad) are enforced
+	/// server-side when the real read API is wired (TECH_DEBT STAFF-07).
+	/// </summary>
+	public const string AuditPermissionId = "audit.view";
+
+	/// <summary>True if the local viewer may open the Audit log. UX gating only; host re-checks the fetch.</summary>
+	public static bool CanViewAudit() => CanView( AuditPermissionId );
+
+	/// <summary>
+	/// Audit entries for the viewer, newest first, pre-filtered by the portal's two live filters:
+	/// free-text <paramref name="playerId"/> (matches SteamID64 or actor name; <c>system</c> for
+	/// server/automated entries) and free-text <paramref name="entityId"/>. The live portal Audit page
+	/// has exactly these two filters — there is no Action dropdown — so the menu mirrors it 1:1.
+	///
+	/// Mirrors the portal's <c>GET /v1/audit/events</c> (pageIndex/pageSize, Bearer, tenant-scoped).
+	/// Editor build returns a representative stub set so the whole UX renders and filters live. The real
+	/// dxrp.net read path is portal/HTTP-backed and async; the in-game <c>ServerApiClient</c> doesn't yet
+	/// expose the audit read, so the server branch returns empty until that lands (TECH_DEBT STAFF-07) —
+	/// the UI degrades to a clean "no entries" state rather than blocking a per-frame read.
+	/// </summary>
+	public static IReadOnlyList<StaffAuditEntry> GetAuditEntries( string playerId, string entityId )
+	{
+#if LIFEPUNCH_LOCAL
+		var source = AuditStub();
+#else
+		// TODO(STAFF-07): bind to the DXRP portal audit read API — GET /v1/audit/events
+		// (pageIndex/pageSize, Bearer, tenant-scoped; player/entity filter params) via ServerApiClient,
+		// async + cached by filter with a short TTL, with the portal's per-rank visibility server-side.
+		var source = (IReadOnlyList<StaffAuditEntry>)System.Array.Empty<StaffAuditEntry>();
+#endif
+		return FilterAudit( source, playerId, entityId );
+	}
+
+	private static IReadOnlyList<StaffAuditEntry> FilterAudit(
+		IReadOnlyList<StaffAuditEntry> source, string playerId, string entityId )
+	{
+		var player = playerId?.Trim() ?? "";
+		var entity = entityId?.Trim() ?? "";
+
+		return source.Where( e =>
+		{
+			if ( player.Length > 0
+			     && !e.PlayerSteamId.ToString().Contains( player, System.StringComparison.OrdinalIgnoreCase )
+			     && !e.Player.Contains( player, System.StringComparison.OrdinalIgnoreCase ) )
+			{
+				return false;
+			}
+
+			if ( entity.Length > 0
+			     && !e.Entity.Contains( entity, System.StringComparison.OrdinalIgnoreCase ) )
+			{
+				return false;
+			}
+
+			return true;
+		} ).ToList();
+	}
+
+#if LIFEPUNCH_LOCAL
+	// Representative editor-only audit rows mirroring the live portal Audit page: real action types
+	// (Chat / ModifyBalance / DispatchAction / Update / GenerateToken) shown as coloured pills, the
+	// "system" actor (SteamId 0) for server/automated entries, and Server/Player entities. Lets the
+	// viewer, filters and empty-states all be designed without the live backend.
+	private static IReadOnlyList<StaffAuditEntry> AuditStub() => new List<StaffAuditEntry>
+	{
+		new( "just now", "Chat", "system", 0L, "Server", "[System] #system.automessage.rulebreakers" ),
+		new( "just now", "ModifyBalance", "Regular Rick", 1L, "Player", "$6 for Salary" ),
+		new( "2m ago", "DispatchAction", "Mod Maddie", 6L, "ServerAction", "Kicked Suspicious Sammy — reason: RDM" ),
+		new( "14m ago", "DispatchAction", "Admin Andy", 3L, "ServerAction", "Banned Regular Rick — 3d, reason: cheating" ),
+		new( "38m ago", "Chat", "Suspicious Sammy", 2L, "Server", "/advert WTS printers cheap" ),
+		new( "1h ago", "Update", "Super Sam", 4L, "Player", "Changed Regular Rick rank → VIP" ),
+		new( "2h ago", "ModifyBalance", "Regular Rick", 1L, "Player", "$12 for Salary" ),
+		new( "3h ago", "GenerateToken", "Owner Olivia", 5L, "Server", "Generated server automation token" ),
+		new( "Yesterday", "Update", "Owner Olivia", 5L, "Server", "Pinned gamemode revision dxura.rp@latest" )
+	};
+#endif
+
+	// --- Waypoints (admin teleport bookmarks) -----------------------------
+
+	/// <summary>
+	/// Permission Ids gating the in-menu Waypoints panel, matching DXRP's
+	/// <c>Dxura.RP.Game.Commands.WaypointCommand</c>: <c>command.waypoint.use</c> lists + teleports,
+	/// <c>command.waypoint.edit</c> sets + clears. UX gating only — <c>/waypoint</c> re-checks host-side.
+	/// </summary>
+	public const string WaypointUsePermissionId = "command.waypoint.use";
+
+	public const string WaypointEditPermissionId = "command.waypoint.edit";
+
+	public static bool CanUseWaypoints() => CanView( WaypointUsePermissionId );
+
+	public static bool CanEditWaypoints() => CanView( WaypointEditPermissionId );
+
+	// The registered chat command every op routes through (mirrors WaypointCommand.Command). Going
+	// through /waypoint keeps the host owning validation, the portal store write and the audit entry —
+	// the menu stays a thin dispatch layer and never touches the store directly.
+	private const string WaypointCommandName = "waypoint";
+
+	/// <summary>
+	/// Bumped whenever the cached waypoint list changes, so the razor's <c>BuildHash</c> re-renders the
+	/// panel after a (editor) set/clear.
+	/// </summary>
+	public static int WaypointVersion { get; private set; }
+
+#if LIFEPUNCH_LOCAL
+	// Editor build: a live in-memory list so set/clear visibly update the panel with no backend.
+	private static readonly List<string> _waypoints = new() { "bank", "nlr cave", "pd", "spawn" };
+#else
+	// dxrp.net build: host-synced. The waypoint store is host/token-scoped (ServerApiClient needs the
+	// server authorization key), so the client can't read it directly — RefreshWaypoints asks the host
+	// to read its own per-server store and push the names back via AdminSystem (OnWaypointsReceived).
+	private static readonly List<string> _waypoints = new();
+#endif
+
+	/// <summary>Saved waypoint names (alphabetical). Editor: live stub; server: host-synced via RefreshWaypoints.</summary>
+	public static IReadOnlyList<string> GetWaypoints() => _waypoints;
+
+	/// <summary>
+	/// Refresh the cached waypoint list. Editor build is already in-memory (no-op). Server build asks the
+	/// host to read its token-scoped store and push the real names back, so the panel shows each server's
+	/// own waypoints with zero per-server config (retires the STAFF-08 read limitation).
+	/// </summary>
+	public static void RefreshWaypoints()
+	{
+#if !LIFEPUNCH_LOCAL
+		if ( AdminSystem.Instance.IsValid() )
+		{
+			AdminSystem.Instance.RequestWaypointsHost();
+		}
+#endif
+	}
+
+#if !LIFEPUNCH_LOCAL
+	/// <summary>
+	/// Host→client callback (invoked by AdminSystem's filtered RPC): replace the cached list with the
+	/// server's real waypoint names and bump the version so the razor's <c>BuildHash</c> re-renders.
+	/// </summary>
+	internal static void OnWaypointsReceived( string[] names )
+	{
+		_waypoints.Clear();
+		if ( names != null )
+		{
+			_waypoints.AddRange( names );
+		}
+
+		WaypointVersion++;
+	}
+
+	// A /waypoint set|clear store write is async host-side; wait briefly, then re-read so the panel
+	// reflects the change. The tab also refreshes on open, so this is a best-effort immediate update.
+	private static async System.Threading.Tasks.Task RefreshAfterWrite()
+	{
+		await GameTask.DelayRealtimeSeconds( 0.4f );
+		RefreshWaypoints();
+	}
+#endif
+
+	/// <summary>Teleport the caller to a saved waypoint (host re-checks <c>command.waypoint.use</c>).</summary>
+	public static void GoToWaypoint( string name ) => DispatchWaypoint( "go", name );
+
+	/// <summary>Save a waypoint at the caller's position + aim (host re-checks <c>command.waypoint.edit</c>).</summary>
+	public static void SetWaypoint( string name ) => DispatchWaypoint( "set", name );
+
+	/// <summary>Delete a saved waypoint (host re-checks <c>command.waypoint.edit</c>).</summary>
+	public static void ClearWaypoint( string name ) => DispatchWaypoint( "clear", name );
+
+	private static void DispatchWaypoint( string op, string name )
+	{
+		name = name?.Trim() ?? "";
+		if ( name.Length == 0 )
+		{
+			return;
+		}
+
+#if LIFEPUNCH_LOCAL
+		var norm = name.ToLowerInvariant();
+		switch ( op )
+		{
+			case "set" when !_waypoints.Contains( norm ):
+				_waypoints.Add( norm );
+				_waypoints.Sort( System.StringComparer.OrdinalIgnoreCase );
+				WaypointVersion++;
+				break;
+			case "clear" when _waypoints.Remove( norm ):
+				WaypointVersion++;
+				break;
+		}
+
+		Log.Info( $"[StaffMenu] (local stub) waypoint {op} '{name}'" );
+#else
+		// /waypoint grammar: "set <name>", "clear <name>", or a bare <name> to teleport.
+		var argv = op switch
+		{
+			"set" => new[] { "set", name },
+			"clear" => new[] { "clear", name },
+			_ => new[] { name }
+		};
+
+		Chat.Current?.ExecuteCommandHost( WaypointCommandName, argv );
+
+		if ( op is "set" or "clear" )
+		{
+			_ = RefreshAfterWrite();
+		}
 #endif
 	}
 

@@ -33,8 +33,8 @@ $border: rgba(255, 255, 255, 0.06);
 
 	.window {
 		flex-direction: column;
-		width: 900px;
-		height: 600px;
+		width: 1080px;
+		height: 720px;
 		max-width: 94%;
 		max-height: 92%;
 		background-color: $bg;
@@ -46,6 +46,9 @@ $border: rgba(255, 255, 255, 0.06);
 
 	.header {
 		flex-direction: row;
+		// Lock the title bar height: as a flex child of the column .window it would otherwise be
+		// allowed to compress when the body content is tall, subtly shifting the bar across tabs.
+		flex-shrink: 0;
 		align-items: center;
 		justify-content: space-between;
 		padding: 16px 20px;
@@ -67,6 +70,12 @@ $border: rgba(255, 255, 255, 0.06);
 		}
 	}
 
+	.header-actions {
+		flex-direction: row;
+		align-items: center;
+		gap: 4px;
+	}
+
 	.icon-btn {
 		align-items: center;
 		justify-content: center;
@@ -76,11 +85,21 @@ $border: rgba(255, 255, 255, 0.06);
 		color: $text-dim;
 		background-color: transparent;
 		cursor: pointer;
-		transition: all 0.12s ease-out;
+		transition: background-color 0.12s ease-out, color 0.12s ease-out, border-bottom-color 0.12s ease-out;
 
 		&:hover {
 			background-color: $bg-row;
 			color: $text;
+		}
+
+		// Toggled-on state (e.g. the header Audit-log button while the viewer is open).
+		&.active {
+			background-color: rgba(79, 140, 255, 0.18);
+			color: #fff;
+
+			.material-icons {
+				color: $accent;
+			}
 		}
 
 		// Header close button: larger, more noticeable X with a red hover (matches the banner's
@@ -174,7 +193,10 @@ $border: rgba(255, 255, 255, 0.06);
 		color: $text;
 		background-color: transparent;
 		cursor: pointer;
-		transition: background-color 0.12s ease-out;
+		// No transition on this dense list: a background fade trails as the cursor sweeps rows
+		// (the row you just left is still fading out while the next fades in), which reads as a
+		// hover "smear"/flicker. Instant hover snaps cleanly, like native list UIs. Sparse,
+		// spaced controls (the tabs) keep their transition since they can't smear.
 
 		.avatar {
 			font-size: 17px;
@@ -202,6 +224,15 @@ $border: rgba(255, 255, 255, 0.06);
 			.avatar {
 				color: #fff;
 			}
+
+			// Pin the accent while hovering an already-selected row. Without this the :hover
+			// and .selected rules both animate background-color over the 0.12s transition and
+			// briefly blend, so the row flickers between solid accent and the faint hover grey.
+			// Nested → compiles to a separate `.player-row.selected:hover` rule, so even if
+			// s&box's CSS subset drops it the base `.selected` accent is unaffected.
+			&:hover {
+				background-color: $accent;
+			}
 		}
 	}
 
@@ -215,11 +246,18 @@ $border: rgba(255, 255, 255, 0.06);
 
 	.tabs {
 		flex-direction: row;
+		// Lock the tab-bar height too, for the same reason as .header — it must never compress
+		// under a tall body, or the tab text drifts within the row between views.
+		flex-shrink: 0;
 		gap: 4px;
 		padding: 14px 16px 0 16px;
 		border-bottom: 1px solid $border;
 
 		.tab {
+			// Center the label so it never sits low in the bar (the bar's padding is top-only for
+			// the active-underline overlap, which would otherwise float the text toward the bottom).
+			align-items: center;
+			justify-content: center;
 			padding: 9px 18px;
 			border-radius: 8px 8px 0 0;
 			color: $text-dim;
@@ -227,19 +265,32 @@ $border: rgba(255, 255, 255, 0.06);
 			font-weight: 500;
 			cursor: pointer;
 			background-color: transparent;
-			border-bottom: 2px solid transparent;
-			transition: all 0.12s ease-out;
+			// 3px reserved on every tab so the active accent bar doesn't shift layout when it appears.
+			border-bottom: 3px solid transparent;
+			// Pull down 1px so the accent bar overlaps the .tabs container border, reading as one
+			// continuous underline tying the selected tab to the content below it.
+			margin-bottom: -1px;
+			transition: background-color 0.12s ease-out, color 0.12s ease-out, border-bottom-color 0.12s ease-out;
 
 			&:hover {
 				color: $text;
 				background-color: rgba(255, 255, 255, 0.04);
 			}
+		}
 
-			&.active {
+		// Selected tab: a STANDALONE class (compiles to `.tabs .tab-sel`), NOT a `.tab.active`
+		// compound class+class rule — s&box's CSS subset doesn't match those. The `:hover` variant
+		// re-asserts the accent so the active tab never flickers to the plain hover style, while
+		// non-active tabs keep their normal `.tab:hover` feedback. Toggled via TabClass() in the razor.
+		.tab-sel {
+			color: #fff;
+			font-weight: 600;
+			background-color: $accent;
+			border-bottom: 3px solid $accent;
+
+			&:hover {
 				color: #fff;
-				font-weight: 600;
-				background-color: rgba(79, 140, 255, 0.18);
-				border-bottom: 2px solid $accent;
+				background-color: $accent;
 			}
 		}
 	}
@@ -346,7 +397,7 @@ $border: rgba(255, 255, 255, 0.06);
 			color: $text;
 			font-size: 12px;
 			cursor: pointer;
-			transition: all 0.12s ease-out;
+			transition: background-color 0.12s ease-out, color 0.12s ease-out, border-bottom-color 0.12s ease-out;
 
 			&:hover {
 				background-color: $accent;
@@ -422,7 +473,7 @@ $border: rgba(255, 255, 255, 0.06);
 		font-size: 13px;
 		font-weight: 500;
 		cursor: pointer;
-		transition: all 0.12s ease-out;
+		transition: background-color 0.12s ease-out, color 0.12s ease-out, border-bottom-color 0.12s ease-out;
 
 		span {
 			text-align: center;
@@ -526,6 +577,7 @@ $border: rgba(255, 255, 255, 0.06);
 		}
 
 		.profile-card {
+			position: relative;
 			flex-direction: column;
 			flex-grow: 1;
 			min-height: 0;
@@ -535,6 +587,48 @@ $border: rgba(255, 255, 255, 0.06);
 			border-radius: 12px;
 			background-color: $bg-raised;
 			border: 1px solid $border;
+
+			// Quick-teleport box (Goto / Bring / Return) pinned to the card's top-right corner so it
+			// reads as part of the player it acts on, not a floating control up by the header.
+			.profile-tp {
+				position: absolute;
+				top: 14px;
+				right: 14px;
+				flex-direction: row;
+				align-items: center;
+				gap: 6px;
+
+				// Matches the command-grid .action-btn: rest = bg-row tile with an accent icon,
+				// hover = accent fill with a white icon — same highlight language across the menu.
+				.tp-btn {
+					align-items: center;
+					justify-content: center;
+					width: 32px;
+					height: 32px;
+					border-radius: 7px;
+					background-color: $bg-row;
+					cursor: pointer;
+					transition: background-color 0.12s ease-out, color 0.12s ease-out;
+
+					.material-icons {
+						font-size: 17px;
+						color: $accent;
+					}
+
+					&:hover {
+						background-color: $accent;
+
+						.material-icons {
+							color: #fff;
+						}
+					}
+
+					&.disabled {
+						opacity: 0.4;
+						pointer-events: none;
+					}
+				}
+			}
 
 			.profile-avatar {
 				flex-shrink: 0;
@@ -588,6 +682,437 @@ $border: rgba(255, 255, 255, 0.06);
 			.confirm-btn {
 				flex-shrink: 0;
 				width: 100%;
+			}
+		}
+	}
+
+	// Lower-emphasis sibling of .confirm-btn (e.g. the profile's "View audit log" shortcut).
+	.confirm-btn.secondary {
+		background-color: $bg-row;
+		color: $text;
+
+		.material-icons {
+			color: $accent;
+		}
+
+		&:hover {
+			background-color: $accent;
+			color: #fff;
+
+			.material-icons {
+				color: #fff;
+			}
+		}
+	}
+
+	// --- Audit viewer: full-window pane mirroring the DXRP portal Audit page ---
+	.audit {
+		flex-direction: column;
+		flex-grow: 1;
+		min-height: 0;
+		padding: 16px;
+		gap: 12px;
+
+		.audit-head {
+			flex-direction: row;
+			flex-shrink: 0;
+			align-items: center;
+			gap: 10px;
+			color: $text;
+			font-size: 16px;
+			font-weight: 600;
+
+			.material-icons {
+				color: $accent;
+				font-size: 20px;
+			}
+		}
+
+		.audit-filters {
+			flex-direction: row;
+			flex-shrink: 0;
+			gap: 10px;
+
+			.audit-filter {
+				flex-direction: row;
+				flex-grow: 1;
+				flex-basis: 0;
+				align-items: center;
+				gap: 6px;
+				padding: 1px 10px;
+				border-radius: 7px;
+				background-color: $bg-row;
+				border: 1px solid $border;
+
+				.material-icons {
+					font-size: 16px;
+					color: $text-dim;
+				}
+
+				.audit-input {
+					flex-grow: 1;
+					height: 30px;
+					background-color: transparent;
+					color: $text;
+					font-size: 12px;
+					border: 0;
+				}
+
+				.icon-btn {
+					width: 22px;
+					height: 22px;
+				}
+			}
+		}
+
+		.audit-table {
+			flex-direction: column;
+			flex-grow: 1;
+			min-height: 0;
+			border-radius: 10px;
+			border: 1px solid $border;
+			background-color: $bg-raised;
+			overflow: hidden;
+		}
+
+		.audit-scroll {
+			flex-direction: column;
+			flex-grow: 1;
+			min-height: 0;
+			overflow-y: scroll;
+		}
+
+		.audit-row {
+			flex-direction: row;
+			flex-shrink: 0;
+			align-items: center;
+			gap: 10px;
+			padding: 9px 12px;
+			border-bottom: 1px solid $border;
+			color: $text;
+			font-size: 12px;
+
+			&:hover {
+				background-color: rgba(255, 255, 255, 0.03);
+			}
+
+			.c-when {
+				flex-shrink: 0;
+				width: 78px;
+				color: $text-dim;
+			}
+
+			.c-action {
+				flex-shrink: 0;
+				width: 116px;
+			}
+
+			.c-player {
+				flex-grow: 1;
+				flex-basis: 0;
+				min-width: 0;
+				font-weight: 500;
+
+				// Server/automated entries (SteamId 0) read as "system" — dimmed + italic, matching
+				// the portal Audit page where non-player actors are de-emphasised.
+				&.system {
+					color: $text-dim;
+					font-weight: 400;
+					font-style: italic;
+				}
+			}
+
+			.c-entity {
+				flex-shrink: 0;
+				width: 96px;
+				color: $text-dim;
+			}
+
+			.c-desc {
+				flex-grow: 2;
+				flex-basis: 0;
+				min-width: 0;
+				color: $text;
+			}
+		}
+
+		// Sticky-feeling header row: raised tint, uppercase labels, no hover.
+		.audit-row-head {
+			flex-shrink: 0;
+			background-color: $bg-row;
+			color: $text-dim;
+			font-size: 11px;
+			font-weight: 700;
+			letter-spacing: 0.6px;
+			text-transform: uppercase;
+
+			&:hover {
+				background-color: $bg-row;
+			}
+
+			.c-when,
+			.c-entity {
+				color: $text-dim;
+			}
+		}
+
+		.action-pill {
+			padding: 3px 8px;
+			border-radius: 10px;
+			background-color: rgba(79, 140, 255, 0.16);
+			color: $accent;
+			font-size: 11px;
+			font-weight: 600;
+		}
+
+		.audit-empty {
+			color: $text-dim;
+			font-size: 13px;
+			padding: 16px;
+		}
+	}
+
+	.waypoints {
+		flex-direction: column;
+		flex-grow: 1;
+		min-height: 0;
+		padding: 16px;
+		gap: 12px;
+
+		.wp-head {
+			flex-direction: row;
+			flex-shrink: 0;
+			align-items: center;
+			gap: 10px;
+			color: $text;
+			font-size: 16px;
+			font-weight: 600;
+
+			.material-icons {
+				color: $accent;
+				font-size: 20px;
+			}
+		}
+
+		.wp-bar {
+			flex-direction: row;
+			flex-shrink: 0;
+			align-items: center;
+			gap: 8px;
+			padding: 1px 10px;
+			border-radius: 7px;
+			background-color: $bg-row;
+			border: 1px solid $border;
+
+			> .material-icons {
+				font-size: 16px;
+				color: $text-dim;
+			}
+
+			.wp-input {
+				flex-grow: 1;
+				height: 32px;
+				background-color: transparent;
+				color: $text;
+				font-size: 12px;
+				border: 0;
+			}
+
+			.wp-btn {
+				flex-direction: row;
+				align-items: center;
+				justify-content: center;
+				gap: 5px;
+				flex-shrink: 0;
+				height: 30px;
+				padding: 0 12px;
+				border-radius: 7px;
+				font-size: 12px;
+				font-weight: 600;
+				cursor: pointer;
+
+				.material-icons {
+					font-size: 15px;
+				}
+
+				&.go {
+					background-color: $accent;
+					color: #fff;
+
+					&:hover {
+						background-color: #3d7af0;
+					}
+				}
+
+				&.set {
+					background-color: $bg-raised;
+					color: $text;
+					border: 1px solid $border;
+
+					&:hover {
+						background-color: #2d313b;
+					}
+				}
+
+				&.disabled {
+					opacity: 0.4;
+					pointer-events: none;
+				}
+			}
+		}
+
+		.wp-list {
+			flex-direction: column;
+			// Hug the rows instead of flex-grow:1 (which ballooned the box to fill the tab, leaving a big
+			// empty area below the waypoints). Cap the height so a long list scrolls rather than pushing
+			// the Return bar off-screen.
+			flex-shrink: 0;
+			max-height: 320px;
+			min-height: 0;
+			border-radius: 10px;
+			border: 1px solid $border;
+			background-color: $bg-raised;
+			overflow-y: scroll;
+		}
+
+		.wp-row {
+			flex-direction: row;
+			flex-shrink: 0;
+			align-items: center;
+			gap: 10px;
+			padding: 8px 12px;
+			border-bottom: 1px solid $border;
+			color: $text;
+			font-size: 13px;
+
+			&:hover {
+				background-color: rgba(255, 255, 255, 0.03);
+			}
+
+			> .material-icons {
+				font-size: 16px;
+				color: $accent;
+			}
+
+			.wp-name {
+				flex-grow: 1;
+				flex-basis: 0;
+				min-width: 0;
+				font-weight: 500;
+			}
+
+			.wp-go-row {
+				flex-direction: row;
+				align-items: center;
+				justify-content: center;
+				gap: 5px;
+				flex-shrink: 0;
+				height: 28px;
+				padding: 0 12px;
+				border-radius: 6px;
+				background-color: $accent;
+				color: #fff;
+				font-size: 12px;
+				font-weight: 600;
+				cursor: pointer;
+
+				.material-icons {
+					font-size: 15px;
+				}
+
+				&:hover {
+					background-color: #3d7af0;
+				}
+			}
+
+			.wp-clear {
+				flex-shrink: 0;
+				align-items: center;
+				justify-content: center;
+				width: 28px;
+				height: 28px;
+				border-radius: 6px;
+				background-color: $bg-row;
+				color: $text-dim;
+				cursor: pointer;
+
+				.material-icons {
+					font-size: 16px;
+				}
+
+				&:hover {
+					background-color: rgba(231, 84, 74, 0.16);
+					color: $danger;
+				}
+			}
+		}
+
+		.wp-empty {
+			color: $text-dim;
+			font-size: 13px;
+			padding: 16px;
+		}
+
+		// --- "Return a player" — compact block pinned bottom-right --------
+		// Header, hint and the SteamID64 bar share one fixed-width column aligned to the right, so the
+		// whole block is uniform with the field instead of spanning the full window (a SteamID64 is only
+		// 17 digits). The bar inside fills this width via the base .wp-bar rule (.wp-input flex-grow:1).
+		.wp-return-section {
+			flex-direction: column;
+			align-self: flex-end;
+			flex-shrink: 0;
+			// Small drop below the waypoint list so the section isn't crowding the list above it.
+			margin-top: 10px;
+			// Tight 8px rhythm so the header, hint and bar read as one compact block (hint→bar = 8px).
+			gap: 8px;
+			// Match the bar's width so the header + hint line up with it (left edges flush) instead of
+			// sticking out ~20px to the left. Text stays left-aligned; the hint just wraps a little more.
+			width: 300px;
+
+			// Smaller header, pulled down to sit right on top of the hint line (the negative margin
+			// tightens the header→hint gap to ~3px on top of the section's 8px).
+			.wp-head {
+				// Indent the text a bit further right than the bar's left edge so the block reads
+				// naturally rather than pixel-locked to the SteamID64 bar (the bar stays put — it's a
+				// separate right-aligned element).
+				padding-left: 16px;
+				font-size: 14px;
+				gap: 8px;
+
+				.material-icons {
+					font-size: 17px;
+				}
+			}
+
+			.wp-sit-hint {
+				flex-shrink: 0;
+				margin-top: -5px;
+				padding-left: 16px;
+				color: $text-dim;
+				font-size: 10px;
+			}
+		}
+
+		// Return bar kept SHALLOW (a direct .waypoints descendant, not nested under .wp-return-section):
+		// s&box's SCSS silently drops 4-deep rules, so `.waypoints .wp-return-section .wp-bar .wp-input`
+		// never applied and the field kept flex-grow:1, stretching the bar full width with a trailing gap
+		// past Return. At this depth the field is fixed-width and the bar hugs it, flush-right.
+		.wp-return-bar {
+			align-self: flex-end;
+			flex-grow: 0;
+			width: auto;
+			// More vertical padding (and a touch less on the right) so the Return button floats inset
+			// from the bar edges, matching the natural look of the list's "Go" button.
+			padding: 4px 6px;
+
+			.wp-input {
+				flex-grow: 0;
+				width: 160px;
+			}
+
+			.wp-btn {
+				height: 28px;
+				border-radius: 6px;
 			}
 		}
 	}
