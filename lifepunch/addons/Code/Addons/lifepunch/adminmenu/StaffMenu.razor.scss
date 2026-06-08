@@ -122,6 +122,14 @@ $border: rgba(255, 255, 255, 0.06);
 			}
 		}
 
+		// Header settings cog: match the close "X" exactly (same 26px glyph in the same 34x34 button)
+		// so the two header actions are pixel-aligned, not a small cog sitting low beside a big X.
+		&.settings {
+			.material-icons {
+				font-size: 26px;
+			}
+		}
+
 	}
 
 	// Copy-confirmation text tint. Keeps the profile "Copied!" uniform with the other copy
@@ -360,6 +368,7 @@ $border: rgba(255, 255, 255, 0.06);
 		.settings-entry {
 			flex-direction: row;
 			align-items: center;
+			justify-content: center;
 			gap: 10px;
 			flex-grow: 1;
 			padding: 8px;
@@ -371,6 +380,8 @@ $border: rgba(255, 255, 255, 0.06);
 
 			.material-icons {
 				font-size: 22px;
+				// Nudge the cog a touch left of the centered label for a more natural balance.
+				margin-left: -10px;
 			}
 
 			.settings-entry-label {
@@ -401,6 +412,11 @@ $border: rgba(255, 255, 255, 0.06);
 			width: 36px;
 			height: 36px;
 			padding: 0;
+
+			// No label to balance against here — keep the cog dead-centered.
+			.material-icons {
+				margin-left: 0;
+			}
 		}
 	}
 
@@ -1288,6 +1304,32 @@ $border: rgba(255, 255, 255, 0.06);
 		.settings-readonly {
 			color: $text;
 			font-size: 12px;
+		}
+
+		// Placeholder body for menus that aren't built yet (Player & Staff Management).
+		.coming-soon {
+			flex-grow: 1;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			gap: 10px;
+			color: $text-dim;
+
+			.material-icons {
+				font-size: 44px;
+				color: $text-dim;
+			}
+
+			.coming-soon-title {
+				font-size: 18px;
+				font-weight: 600;
+				color: $text;
+			}
+
+			.coming-soon-hint {
+				font-size: 12px;
+				color: $text-dim;
+			}
 		}
 	}
 

@@ -23,6 +23,9 @@
 				<span>Staff Menu</span>
 			</div>
 			<div class="header-actions">
+				<button class="icon-btn settings" tooltip="Settings" onclick="@OpenSettings">
+					<i class="material-icons">settings</i>
+				</button>
 				<button class="icon-btn close" tooltip="Close Menu" onclick="@CloseMenu">
 					<i class="material-icons">close</i>
 				</button>
@@ -209,7 +212,7 @@
 				</div>
 
 				<div class="settings-group">
-					<div class="settings-label">Network website</div>
+					<div class="settings-label">Network Management</div>
 					<div class="settings-hint">
 						@($"Linked from the “{NetworkIdentifier}” tag in the tab bar — staff click it to copy your link.")
 					</div>
@@ -251,6 +254,21 @@
 				</div>
 			</div>
 		}
+		else if ( _activeTab == TabPlayerMgmt )
+		{
+			<div class="settings">
+				<div class="settings-head">
+					<i class="material-icons">groups</i>
+					<span>Player &amp; Staff Management</span>
+				</div>
+
+				<div class="coming-soon">
+					<i class="material-icons">construction</i>
+					<span class="coming-soon-title">Coming Soon</span>
+					<span class="coming-soon-hint">Tools for managing players and staff will live here.</span>
+				</div>
+			</div>
+		}
 		else
 		{
 		<div class="body">
@@ -276,10 +294,12 @@
 				{
 					var staffGroups = StaffTierGroups();
 					var staffCount = staffGroups.Sum( g => g.Players.Count );
-					// "Players" is the live server head-count: EVERYONE online (staff + non-staff), because
-					// everyone is a player at all times. Staff are also surfaced in their own tiered section
-					// above for quick targeting, so they intentionally appear in both places.
-					var allPlayers = FilteredPlayers()
+					// "Players" lists ONLY non-staff. Staff already appear in the tiered Staff section above,
+					// so re-listing them here produced a duplicate row that highlighted in both places on
+					// select. The full live head-count (everyone) still shows in the "Online Players (N)"
+					// header and the collapsed rail's group count, so nothing is lost.
+					var nonStaff = FilteredPlayers()
+						.Where( p => p.GroupName == StaffMenuHost.NonStaffGroup )
 						.OrderBy( p => p.Name )
 						.ToList();
 
@@ -327,8 +347,8 @@
 							}
 						}
 
-						<div class="parent-label">Players (@allPlayers.Count)</div>
-						@foreach ( var player in allPlayers )
+						<div class="parent-label">Players (@nonStaff.Count)</div>
+						@foreach ( var player in nonStaff )
 						{
 							<button class="player-row @( ( _showProfile ? _profileSteamId : _selectedSteamId ) == player.SteamId ? "selected" : "" )"
 							        tooltip="View player profile"
@@ -345,9 +365,9 @@
 				}
 
 				<div class="players-footer">
-					<button class="settings-entry @( _activeTab == TabSettings ? "settings-entry-on" : "" )"
+					<button class="settings-entry @( _activeTab == TabPlayerMgmt ? "settings-entry-on" : "" )"
 					        tooltip="@( _playersCollapsed ? "Player & Staff Management" : "" )"
-					        onclick="@OpenSettings">
+					        onclick="@OpenPlayerMgmt">
 						<i class="material-icons">settings</i>
 						@if ( !_playersCollapsed )
 						{
@@ -619,6 +639,7 @@
 	private const string TabAudit = "Audit";
 	// Opened by the sidebar cog (not a strip tab): the owner-customization view.
 	private const string TabSettings = "Settings";
+	private const string TabPlayerMgmt = "PlayerMgmt";
 
 	// The selected top-level tab: a StaffMenuActions category, TabWaypoints, or TabAudit.
 	private string _activeTab = StaffMenuActions.CategoryModeration;
@@ -1095,11 +1116,17 @@
 		StateHasChanged();
 	}
 
-	/// <summary>Open the Settings view (sidebar cog), seeding the editor field with the current saved value.</summary>
+	/// <summary>Open the Network Management view (header cog), seeding the editor field with the current saved value.</summary>
 	private void OpenSettings()
 	{
 		_websiteDraft = StaffMenuHost.WebsiteUrl;
 		SelectTab( TabSettings );
+	}
+
+	/// <summary>Open the Player &amp; Staff Management view (sidebar footer entry) — placeholder for now.</summary>
+	private void OpenPlayerMgmt()
+	{
+		SelectTab( TabPlayerMgmt );
 	}
 
 	/// <summary>Save the typed network website URL (host re-checks the owner grant). Empty clears it.</summary>
