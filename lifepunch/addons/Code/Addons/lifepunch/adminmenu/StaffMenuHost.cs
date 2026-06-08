@@ -458,7 +458,8 @@ internal static class StaffMenuHost
 #else
 	// dxrp.net build: host-synced. The waypoint store is host/token-scoped (ServerApiClient needs the
 	// server authorization key), so the client can't read it directly — RefreshWaypoints asks the host
-	// to read its own per-server store and push the names back via AdminSystem (OnWaypointsReceived).
+	// (via the addon-owned WaypointSyncService) to read its own per-server store and push the names back
+	// (OnWaypointsReceived). Self-contained in the addon: no DXRP core changes needed to drop it in.
 	private static readonly List<string> _waypoints = new();
 #endif
 
@@ -473,17 +474,20 @@ internal static class StaffMenuHost
 	public static void RefreshWaypoints()
 	{
 #if !LIFEPUNCH_LOCAL
-		if ( AdminSystem.Instance.IsValid() )
+		// Routes through the addon's OWN host bridge (WaypointSyncService), not DXRP core — so the saved
+		// list works on any server the addon is dropped into with zero core edits.
+		if ( WaypointSyncService.Instance.IsValid() )
 		{
-			AdminSystem.Instance.RequestWaypointsHost();
+			WaypointSyncService.Instance.RequestWaypointsHost();
 		}
 #endif
 	}
 
 #if !LIFEPUNCH_LOCAL
 	/// <summary>
-	/// Host→client callback (invoked by AdminSystem's filtered RPC): replace the cached list with the
-	/// server's real waypoint names and bump the version so the razor's <c>BuildHash</c> re-renders.
+	/// Host→client callback (invoked by the addon-owned <see cref="WaypointSyncService"/> filtered RPC):
+	/// replace the cached list with the server's real waypoint names and bump the version so the razor's
+	/// <c>BuildHash</c> re-renders.
 	/// </summary>
 	internal static void OnWaypointsReceived( string[] names )
 	{
@@ -620,6 +624,74 @@ internal static class StaffMenuHost
 	{
 		var color = RankSystem.Instance.IsValid() ? RankSystem.Instance.GetRankColor( steamId ) : 0xFFFFFFu;
 		return $"#{color & 0xFFFFFFu:X6}";
+	}
+#endif
+
+	// --- Settings (owner customizations) ----------------------------------
+
+	/// <summary>
+	/// Owner-grant permission gating edits to the menu's owner customizations (currently the network
+	/// website link). The Owner rank's <c>"*"</c> wildcard satisfies it automatically; an owner may also
+	/// grant <c>staffmenu.settings.edit</c> to other ranks in the portal. UX gating only — the host
+	/// (<see cref="StaffSettingsService"/>) re-checks every write.
+	/// </summary>
+	public const string SettingsEditPermissionId = "staffmenu.settings.edit";
+
+	/// <summary>True if the local viewer may edit owner settings. UX gating only; host re-checks the write.</summary>
+	public static bool CanEditSettings() => CanView( SettingsEditPermissionId );
+
+	/// <summary>Bumped whenever cached settings change, so the razor's <c>BuildHash</c> re-renders.</summary>
+	public static int SettingsVersion { get; private set; }
+
+#if LIFEPUNCH_LOCAL
+	// Editor build: a live in-memory value so the input + click-to-copy work with no backend.
+	private static string _websiteUrl = "https://lifepunch.co";
+#else
+	// dxrp.net build: host-synced from the token-scoped store via StaffSettingsService (RefreshSettings).
+	private static string _websiteUrl = string.Empty;
+#endif
+
+	/// <summary>The owner-configured network website URL ("" when unset). Editor: stub; server: host-synced.</summary>
+	public static string WebsiteUrl => _websiteUrl;
+
+	/// <summary>True when a website URL is configured — the network tag then becomes a click-to-copy link.</summary>
+	public static bool HasWebsite => !string.IsNullOrWhiteSpace( _websiteUrl );
+
+	/// <summary>Ask the host for the current owner settings (mirrors <see cref="RefreshWaypoints"/>). No-op in editor.</summary>
+	public static void RefreshSettings()
+	{
+#if !LIFEPUNCH_LOCAL
+		if ( StaffSettingsService.Instance.IsValid() )
+		{
+			StaffSettingsService.Instance.RequestSettingsHost();
+		}
+#endif
+	}
+
+	/// <summary>Save the network website URL (host re-checks the owner grant). An empty value clears it.</summary>
+	public static void SaveWebsite( string url )
+	{
+#if LIFEPUNCH_LOCAL
+		_websiteUrl = ( url ?? string.Empty ).Trim();
+		SettingsVersion++;
+		Log.Info( $"[StaffMenu] (local stub) website set '{_websiteUrl}'" );
+#else
+		if ( StaffSettingsService.Instance.IsValid() )
+		{
+			StaffSettingsService.Instance.SetWebsiteHost( url ?? string.Empty );
+		}
+#endif
+	}
+
+#if !LIFEPUNCH_LOCAL
+	/// <summary>
+	/// Host→client callback (invoked by the addon-owned <see cref="StaffSettingsService"/>): replace the
+	/// cached website with the server's stored value and bump the version so the razor re-renders.
+	/// </summary>
+	internal static void OnSettingsReceived( string website )
+	{
+		_websiteUrl = website ?? string.Empty;
+		SettingsVersion++;
 	}
 #endif
 

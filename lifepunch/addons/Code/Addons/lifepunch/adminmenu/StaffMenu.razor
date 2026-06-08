@@ -51,6 +51,12 @@
 					Audit
 				</button>
 			}
+			<button class="network-block @( StaffMenuHost.HasWebsite ? "linkable" : "" ) @( _websiteCopied ? "copied" : "" )"
+			        tooltip="@( StaffMenuHost.HasWebsite ? $"Copy link: {StaffMenuHost.WebsiteUrl}" : "" )"
+			        onclick="@CopyWebsite">
+				<span class="network-block-label">Network</span>
+				<span class="network-block-value">@( _websiteCopied ? "Link copied!" : NetworkIdentifier )</span>
+			</button>
 		</div>
 
 		@if ( _activeTab == TabAudit )
@@ -194,76 +200,147 @@
 				}
 			</div>
 		}
-		else
+		else if ( _activeTab == TabSettings )
 		{
-		<div class="body">
-			<div class="players">
-				<div class="pane-label">Online Players (@_players.Count)</div>
-
-				<div class="search-row">
-					<i class="material-icons">search</i>
-					<TextEntry class="search-input" Placeholder="Steam ID (ex. 765XXXXXXXXXXXXXX)" Value:bind="@_searchText"/>
-					@if ( !string.IsNullOrEmpty( _searchText ) )
-					{
-						<button class="icon-btn" onclick="@ClearSearch"><i class="material-icons">close</i></button>
-					}
+			<div class="settings">
+				<div class="settings-head">
+					<i class="material-icons">settings</i>
+					<span>Settings</span>
 				</div>
 
-				@if ( IsSteamId( _searchText ) )
-				{
-					<button class="steamid-pick" onclick="@SelectTypedSteamId">
-						<i class="material-icons">person_search</i>
-						<span>Select SteamID @_searchText.Trim()</span>
-					</button>
-				}
+				<div class="settings-group">
+					<div class="settings-label">Network website</div>
+					<div class="settings-hint">
+						@($"Linked from the “{NetworkIdentifier}” tag in the tab bar — staff click it to copy your link.")
+					</div>
 
-				<div class="player-scroll">
-					@{
-						var staffGroups = StaffTierGroups();
-						var staffCount = staffGroups.Sum( g => g.Players.Count );
-						// The bottom "Players" list is the full roster (staff included) so any player is
-						// selectable there; staff intentionally also appear under their tier above.
-						var allPlayers = FilteredPlayers()
-							.OrderBy( p => p.Name )
-							.ToList();
-					}
-
-					<div class="parent-label">Staff (@staffCount)</div>
-					@foreach ( var group in staffGroups )
+					@if ( StaffMenuHost.CanEditSettings() )
 					{
-						<div class="group-label">@group.Name (@group.Players.Count)</div>
-						@foreach ( var player in group.Players )
-						{
-							<button class="player-row @( ( _showProfile ? _profileSteamId : _selectedSteamId ) == player.SteamId ? "selected" : "" )"
-							        tooltip="View player profile"
-							        onclick="@(() => Select( player.SteamId ))">
-								<i class="material-icons avatar">person</i>
-								<span class="name">@player.Name</span>
-								@if ( !player.CanTarget )
-								{
-									<i class="material-icons lock" tooltip="Equal or higher rank — cannot target">lock</i>
-								}
+						<div class="settings-bar">
+							<i class="material-icons">link</i>
+							<TextEntry class="settings-input" Placeholder="https://your-network.com" Value:bind="@_websiteDraft"/>
+							<button class="settings-btn save @( _websiteSaved ? "saved" : "" )"
+							        tooltip="Save the network website link"
+							        onclick="@SaveWebsiteFromInput">
+								<i class="material-icons">@( _websiteSaved ? "check" : "save" )</i> @( _websiteSaved ? "Saved!" : "Save" )
 							</button>
-						}
-					}
+						</div>
 
-					<div class="parent-label">Players (@allPlayers.Count)</div>
-					@foreach ( var player in allPlayers )
+						<div class="settings-current">
+							@( StaffMenuHost.HasWebsite
+								? $"Current: {StaffMenuHost.WebsiteUrl}"
+								: "No website set yet — leave the field empty and Save to clear it." )
+						</div>
+					}
+					else
 					{
-						<button class="player-row @( ( _showProfile ? _profileSteamId : _selectedSteamId ) == player.SteamId ? "selected" : "" )"
-						        tooltip="View player profile"
-						        onclick="@(() => Select( player.SteamId ))">
-							<i class="material-icons avatar">person</i>
-							<span class="name">@player.Name</span>
-							@if ( !player.CanTarget )
-							{
-								<i class="material-icons lock" tooltip="Equal or higher rank — cannot target">lock</i>
-							}
-						</button>
+						<div class="settings-readonly">
+							@( StaffMenuHost.HasWebsite ? StaffMenuHost.WebsiteUrl : "No website set." )
+						</div>
 					}
 				</div>
 			</div>
+		}
+		else
+		{
+		<div class="body">
+			<div class="players @( _playersCollapsed ? "collapsed" : "" )">
+				@if ( _playersCollapsed )
+				{
+					<button class="players-rail" tooltip="Open sidebar — players & settings" onclick="@TogglePlayers">
+						<i class="material-icons expand-icon">chevron_right</i>
+						<i class="material-icons people">group</i>
+						<span class="count">@_players.Count</span>
+					</button>
+				}
 
+				@if ( !_playersCollapsed )
+				{
+					var staffGroups = StaffTierGroups();
+					var staffCount = staffGroups.Sum( g => g.Players.Count );
+					// Each player appears exactly ONCE: staff under their rank tier (Staff), everyone else
+					// under Players. Complementary sections (staffCount + others == roster total) so the
+					// bottom list no longer re-lists the staff already shown above — which looked
+					// redundant/uneven once the roster filled up.
+					var otherPlayers = FilteredPlayers()
+						.Where( p => p.GroupName == StaffMenuHost.NonStaffGroup )
+						.OrderBy( p => p.Name )
+						.ToList();
+
+					<div class="pane-label">
+						<span class="pane-title">Online Players (@_players.Count)</span>
+						<button class="collapse-btn" tooltip="Hide sidebar" onclick="@TogglePlayers">
+							<i class="material-icons">chevron_left</i>
+						</button>
+					</div>
+
+					<div class="search-row">
+						<i class="material-icons">search</i>
+						<TextEntry class="search-input" Placeholder="Steam ID (ex. 765XXXXXXXXXXXXXX)" Value:bind="@_searchText"/>
+						@if ( !string.IsNullOrEmpty( _searchText ) )
+						{
+							<button class="icon-btn" onclick="@ClearSearch"><i class="material-icons">close</i></button>
+						}
+					</div>
+
+					@if ( IsSteamId( _searchText ) )
+					{
+						<button class="steamid-pick" onclick="@SelectTypedSteamId">
+							<i class="material-icons">person_search</i>
+							<span>Select SteamID @_searchText.Trim()</span>
+						</button>
+					}
+
+					<div class="player-scroll">
+						<div class="parent-label">Staff (@staffCount)</div>
+						@foreach ( var group in staffGroups )
+						{
+							<div class="group-label">@group.Name (@group.Players.Count)</div>
+							@foreach ( var player in group.Players )
+							{
+								<button class="player-row @( ( _showProfile ? _profileSteamId : _selectedSteamId ) == player.SteamId ? "selected" : "" )"
+								        tooltip="View player profile"
+								        onclick="@(() => Select( player.SteamId ))">
+									<i class="material-icons avatar">person</i>
+									<span class="name">@player.Name</span>
+									@if ( !player.CanTarget )
+									{
+										<i class="material-icons lock" tooltip="Equal or higher rank — cannot target">lock</i>
+									}
+								</button>
+							}
+						}
+
+						@if ( otherPlayers.Count > 0 )
+						{
+							<div class="parent-label">Players (@otherPlayers.Count)</div>
+							@foreach ( var player in otherPlayers )
+							{
+								<button class="player-row @( ( _showProfile ? _profileSteamId : _selectedSteamId ) == player.SteamId ? "selected" : "" )"
+								        tooltip="View player profile"
+								        onclick="@(() => Select( player.SteamId ))">
+									<i class="material-icons avatar">person</i>
+									<span class="name">@player.Name</span>
+									@if ( !player.CanTarget )
+									{
+										<i class="material-icons lock" tooltip="Equal or higher rank — cannot target">lock</i>
+									}
+								</button>
+							}
+						}
+					</div>
+				}
+
+				<div class="players-footer">
+					<button class="icon-btn settings-cog @( _activeTab == TabSettings ? "active" : "" )"
+					        tooltip="Owner settings — server customization"
+					        onclick="@OpenSettings">
+						<i class="material-icons">settings</i>
+					</button>
+				</div>
+			</div>
+
+			<div class="main">
 			<div class="actions">
 				@{
 					var selected = _players.FirstOrDefault( p => p.SteamId == _selectedSteamId );
@@ -463,10 +540,15 @@
 				}
 				}
 			</div>
+
+			<button class="signature @( _linkCopied ? "copied" : "" )"
+			        tooltip="Copy the public addon-page link"
+			        onclick="@CopyAddonLink">
+				@( _linkCopied ? "Addon link copied!" : "DXRP Admin Menu v1 — lifepunch.co" )
+			</button>
+			</div>
 		</div>
 		}
-
-		<div class="signature">DXRP Admin Menu v1 — lifepunch.co</div>
 	</div>
 </root>
 
@@ -483,10 +565,27 @@
 	private bool _showProfile;
 	private string _searchText = "";
 
+	// Collapsed = the Online Players sidebar shrinks to a slim rail, handing its width to the action
+	// area. Pure view state (no backend), folded into BuildHash so the toggle re-renders.
+	private bool _playersCollapsed;
+
+	// The public addon page. The footer signature copies this to the clipboard on click (no in-game
+	// text selection), flashing a "copied" confirmation via _linkCopied.
+	private const string SignatureUrl = "https://dxrp.net/addons/019e9cfa-3141-723c-a430-1a0e256472eb";
+	private bool _linkCopied;
+
+	// Network/brand identifier shown centered in the header. Mirrors the portal's "Network Identifier"
+	// (Settings → Network). It is server-AGNOSTIC: the stable, lowercase brand key that is identical
+	// across every server in the network — NOT the per-server Networking.ServerName. The portal value
+	// isn't plumbed into the game's server-config API, so this one line is the single rebrand point.
+	private const string NetworkIdentifier = "lifepunch";
+
 	// Non-category tab ids. The tab strip is Moderation / Commands / Ability (action catalog
 	// categories) plus these two full-window views, all driven by a single _activeTab.
 	private const string TabWaypoints = "Waypoints";
 	private const string TabAudit = "Audit";
+	// Opened by the sidebar cog (not a strip tab): the owner-customization view.
+	private const string TabSettings = "Settings";
 
 	// The selected top-level tab: a StaffMenuActions category, TabWaypoints, or TabAudit.
 	private string _activeTab = StaffMenuActions.CategoryModeration;
@@ -513,13 +612,27 @@
 	// can return anyone they just brought (the id is the ultimate player handle, one-click copyable).
 	private string _returnSteamId = "";
 
+	// Settings tab (opened by the sidebar cog): owner-configurable network website. _websiteDraft backs
+	// the editable input (seeded from the saved value on open); _websiteCopied flashes the network-tag
+	// "Link copied!" confirmation after a click-to-copy.
+	private string _websiteDraft = "";
+	private bool _websiteCopied;
+	private bool _websiteSaved;
+
 	private StaffAction? _pendingAction;
 	private string _reason = "";
 	private string _duration = "";
 	private string _amount = "";
 	private string _name = "";
 
-	protected override void OnStart() => RefreshRoster();
+	protected override void OnStart()
+	{
+		RefreshRoster();
+
+		// Fetch owner settings on open so the network tag is click-to-copy immediately (not only after
+		// the Settings view is visited).
+		StaffMenuHost.RefreshSettings();
+	}
 
 	protected override void OnUpdate() => RefreshRoster();
 
@@ -678,6 +791,10 @@
 		if ( tab == TabWaypoints )
 		{
 			StaffMenuHost.RefreshWaypoints();
+		}
+		else if ( tab == TabSettings )
+		{
+			StaffMenuHost.RefreshSettings();
 		}
 	}
 
@@ -892,6 +1009,73 @@
 
 	private void CloseMenu() => StaffMenuHost.RequestClose();
 
+	/// <summary>Collapse / expand the Online Players sidebar to a slim rail.</summary>
+	private void TogglePlayers()
+	{
+		_playersCollapsed = !_playersCollapsed;
+		StateHasChanged();
+	}
+
+	/// <summary>Copy the public addon-page link to the clipboard, with a brief "copied" confirmation.</summary>
+	private void CopyAddonLink()
+	{
+		Clipboard.SetText( SignatureUrl );
+		_linkCopied = true;
+		StateHasChanged();
+		_ = RevertSignatureLabel();
+	}
+
+	private async System.Threading.Tasks.Task RevertSignatureLabel()
+	{
+		await GameTask.DelayRealtimeSeconds( 1.8f );
+		_linkCopied = false;
+		StateHasChanged();
+	}
+
+	/// <summary>Open the Settings view (sidebar cog), seeding the editor field with the current saved value.</summary>
+	private void OpenSettings()
+	{
+		_websiteDraft = StaffMenuHost.WebsiteUrl;
+		SelectTab( TabSettings );
+	}
+
+	/// <summary>Save the typed network website URL (host re-checks the owner grant). Empty clears it.</summary>
+	private void SaveWebsiteFromInput()
+	{
+		StaffMenuHost.SaveWebsite( _websiteDraft );
+		_websiteSaved = true;
+		StateHasChanged();
+		_ = RevertSavedLabel();
+	}
+
+	private async System.Threading.Tasks.Task RevertSavedLabel()
+	{
+		await GameTask.DelayRealtimeSeconds( 1.8f );
+		_websiteSaved = false;
+		StateHasChanged();
+	}
+
+	/// <summary>Copy the owner-configured website link to the clipboard, with a brief "copied" confirmation.</summary>
+	private void CopyWebsite()
+	{
+		if ( !StaffMenuHost.HasWebsite )
+		{
+			return;
+		}
+
+		Clipboard.SetText( StaffMenuHost.WebsiteUrl );
+		_websiteCopied = true;
+		StateHasChanged();
+		_ = RevertWebsiteLabel();
+	}
+
+	private async System.Threading.Tasks.Task RevertWebsiteLabel()
+	{
+		await GameTask.DelayRealtimeSeconds( 1.8f );
+		_websiteCopied = false;
+		StateHasChanged();
+	}
+
 	protected override int BuildHash()
 	{
 		// While the profile is open, fold in the selected player's volatile stats so live changes
@@ -905,11 +1089,11 @@
 
 		return HashCode.Combine(
 			HashCode.Combine( _selectedSteamId, _profileSteamId, _showProfile, _searchText ),
-			_players.Count,
+			HashCode.Combine( _players.Count, _playersCollapsed, _linkCopied ),
 			_activeTab,
 			_pendingAction?.Key,
 			HashCode.Combine( _reason, _duration, _amount, _name ),
-			HashCode.Combine( _auditPlayerId, _auditEntity ),
+			HashCode.Combine( _auditPlayerId, _auditEntity, _websiteDraft, _websiteCopied, _websiteSaved, StaffMenuHost.SettingsVersion ),
 			HashCode.Combine( _waypointName, StaffMenuHost.WaypointVersion, _returnSteamId ),
 			detailHash );
 	}
