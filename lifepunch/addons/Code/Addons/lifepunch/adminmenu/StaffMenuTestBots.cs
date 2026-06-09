@@ -16,8 +16,9 @@ namespace Dxura.RP.Game;
 /// Usage (in-game console during play):
 ///   lifepunch_spawn_testbot          → spawns "Test Dummy N" near the local player (fake id, no rank)
 ///   lifepunch_spawn_testbot Greg     → spawns a bot named "Greg"
-///   lifepunch_spawn_rankbots         → spawns one bot per rank (None/VIP/EVIP/Mod/Admin/Super Admin)
-///                                      plus "Greg" as an Owner-mirror, each with a real public avatar
+///   lifepunch_spawn_rankbots         → spawns one bot per rank (Regular/VIP/EVIP/Mod/Admin/Super Admin)
+///                                      plus "Greg" as an Owner-mirror, each with a real public avatar.
+///                                      Pass `lifepunch_spawn_rankbots false` to skip Greg (targetable only).
 ///   lifepunch_list_ranks             → logs which rank names resolve (confirms the live portal strings)
 ///   lifepunch_botsay "Greg hi there" → makes a spawned bot talk in chat (first token = bot, rest = msg)
 ///   lifepunch_clear_testbots         → removes all spawned bots and clears their rank assignments
@@ -181,7 +182,7 @@ public static class StaffMenuTestBots
 	};
 
 	[ConCmd( "lifepunch_spawn_rankbots" )]
-	public static void SpawnRankBots()
+	public static void SpawnRankBots( bool includeOwner = true )
 	{
 		if ( !Application.IsEditor )
 		{
@@ -205,6 +206,13 @@ public static class StaffMenuTestBots
 		var index = 0;
 		foreach ( var def in RankBots )
 		{
+			// The Owner-mirror ("Greg") can't be targeted by the owner and is only for killswitch/owner
+			// tests, so skip it unless explicitly requested (lifepunch_spawn_rankbots true).
+			if ( !includeOwner && def.Rank == "Owner" )
+			{
+				continue;
+			}
+
 			var player = SpawnBot( def.Name, def.SteamId, SpawnFannedOut( index++ ) );
 			if ( !player.IsValid() )
 			{

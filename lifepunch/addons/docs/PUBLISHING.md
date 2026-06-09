@@ -38,6 +38,18 @@ For `hasCode=false` addons, publish assets and reuse the previous code revision 
 
 For `hasAssets=false` addons, publish code only.
 
+## YouTube Showcase Copy
+
+The YouTube description for each showcase video is kept in the repo, not improvised per upload:
+
+```text
+../../marketing/youtube/TEMPLATE.md          # reusable template + fixed footer/links/IP notice
+../../marketing/youtube/<ident>-v<version>.md # filled, paste-ready description per video
+```
+
+Every description must carry the fixed footer blocks and the proprietary / IP notice (the public-facing
+counterpart to the in-code proprietary header). See `../../marketing/youtube/README.md`.
+
 ## Portal Separation
 
 Publishing an addon package revision is not the same thing as attaching it to a gamemode.
