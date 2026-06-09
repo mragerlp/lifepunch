@@ -505,19 +505,22 @@ export default {
             return html;
         };
 
-        const renderRawRulesDocument = () => `
+        const renderRawRulesDocument = (options = {}) => {
+            const lite = options.lite === true;
+            return `
             <!DOCTYPE html>
             <html>
             <head>
                 <meta charset="UTF-8">
-                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-                <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+                ${lite ? "" : `<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">`}
+                ${lite ? "" : `<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Inter:wght@400;600&display=swap" rel="stylesheet">`}
                 <style>
                     :root { --lp-blue: #017AEF; --lp-blue-hover: #33A0FF; --lp-blue-rgb: 1, 122, 239; --bg: #000000; --surface: #1a1d23; --surface-inset: #12151a; --border: #374151; }
-                    body { font-family: 'Inter', sans-serif; background: var(--bg); color: #fff; margin: 0; padding: 20px; line-height: 1.6; }
+                    body { font-family: ${lite ? "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" : "'Inter', sans-serif"}; background: var(--bg); color: #fff; margin: 0; padding: 20px; line-height: 1.6; }
                     .header { text-align: center; margin-bottom: 30px; }
-                    .header h1 { font-family: 'Montserrat', sans-serif; font-size: 32px; text-transform: uppercase; margin: 0; color: var(--lp-blue); }
+                    .header h1 { font-family: ${lite ? "inherit" : "'Montserrat', sans-serif"}; font-size: 32px; text-transform: uppercase; margin: 0; color: var(--lp-blue); font-weight: 800; }
                     .header p { color: #9ca3af; font-size: 14px; }
+                    ${lite ? `.sbox-hint { text-align: center; color: #9ca3af; font-size: 12px; font-weight: 600; margin: 0 0 18px; padding: 10px 14px; border: 1px solid rgba(1, 122, 239, 0.35); border-radius: 8px; background: rgba(1, 122, 239, 0.08); }` : ""}
                     details { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 10px; overflow: hidden; }
                     summary { padding: 15px 20px; cursor: pointer; font-weight: bold; list-style: none; display: flex; justify-content: space-between; align-items: center; text-transform: uppercase; font-size: 14px; letter-spacing: 1px; }
                     summary::-webkit-details-marker { display: none; }
@@ -542,6 +545,7 @@ export default {
                     <h1>LifePunch Rules</h1>
                     <p>Official s&box DXRP Guidelines</p>
                 </div>
+                ${lite ? `<p class="sbox-hint">Press Tab to close the dashboard. Expand a section below to read rules.</p>` : ""}
                 ${LP_RULES.map((cat) => `
                 <details>
                     <summary>${cat.num}. ${cat.title}</summary>
@@ -553,6 +557,7 @@ export default {
                 </div>
             </body>
             </html>`;
+        };
 
         const renderWebRulesList = (rules, rule) =>
             (rules || []).map((r) => rule(r.id, r.html)).join("\n                          ");
@@ -4583,7 +4588,23 @@ export default {
               body.sbox-rules .cat-btn { padding: 14px 20px; font-size: 15px; gap: 16px; }
               body.sbox-rules .icon-box { width: 34px; height: 34px; font-size: 16px; }
               body.sbox-rules .category { margin-bottom: 9px; }
+              body.sbox-rules .sbox-tab-banner {
+                  margin-bottom: 14px;
+                  padding: 0;
+                  color: rgba(255, 255, 255, 0.85);
+                  font-size: 13px;
+                  font-weight: 600;
+                  line-height: 1.5;
+                  text-align: center;
+              }
+              body.sbox-rules .sbox-tab-banner strong { color: var(--lp-blue); }
           </style>
+
+          ${isSbox ? `
+          <div class="sbox-tab-banner" role="note">
+              To leave this screen, click a <strong>different tab</strong> on the <strong>left vertical menu</strong>, and then press <strong>Tab</strong>.
+          </div>
+          ` : ""}
 
           <div class="intro-text">
               Below you will find our official rules and guidelines. Please read them carefully to ensure a fair and fun environment for everyone. Click the icons next to a rule to share it.
@@ -4592,7 +4613,7 @@ export default {
           <div class="search-wrapper">
               <div class="search-container">
                   <div class="custom-cursor">></div>
-                  <input type="text" id="search" placeholder="SEARCH RULES...">
+                  <input type="text" id="search" placeholder="SEARCH RULES..."${isSbox ? ' autocomplete="off"' : ""}>
               </div>
           </div>
 
@@ -4604,6 +4625,72 @@ export default {
           <script>
               const rulesRoot = document.getElementById('rules-root');
               const searchInput = document.getElementById('search');
+              const isSboxRulesPage = document.body.classList.contains("sbox-rules");
+              var sboxPasteWaiters = [];
+
+              if (isSboxRulesPage) {
+                  window.addEventListener("message", function (e) {
+                      if (!e.data || e.data.type !== "lifepunch:clipboard-read-result") return;
+                      var text = e.data.text == null ? "" : String(e.data.text);
+                      while (sboxPasteWaiters.length) {
+                          sboxPasteWaiters.shift()(text);
+                      }
+                  });
+              }
+
+              function notifySboxClipboardWrite(text) {
+                  var payload = { type: "lifepunch:clipboard-write", text: String(text) };
+                  try {
+                      if (window.top && window.top !== window) window.top.postMessage(payload, "*");
+                      if (window.parent && window.parent !== window) window.parent.postMessage(payload, "*");
+                  } catch (err) {}
+              }
+
+              function requestSboxClipboardRead() {
+                  return new Promise(function (resolve, reject) {
+                      var done = false;
+                      var timer = setTimeout(function () {
+                          if (done) return;
+                          done = true;
+                          reject(new Error("Clipboard read timeout"));
+                      }, 300);
+                      sboxPasteWaiters.push(function (text) {
+                          if (done) return;
+                          done = true;
+                          clearTimeout(timer);
+                          resolve(text);
+                      });
+                      try {
+                          var payload = { type: "lifepunch:clipboard-read" };
+                          if (window.top && window.top !== window) window.top.postMessage(payload, "*");
+                          if (window.parent && window.parent !== window) window.parent.postMessage(payload, "*");
+                      } catch (err) {
+                          clearTimeout(timer);
+                          reject(err);
+                      }
+                  });
+              }
+
+              function insertTextAtCursor(input, text) {
+                  if (!input || text == null) return;
+                  var start = input.selectionStart == null ? input.value.length : input.selectionStart;
+                  var end = input.selectionEnd == null ? input.value.length : input.selectionEnd;
+                  input.value = input.value.slice(0, start) + text + input.value.slice(end);
+                  var pos = start + text.length;
+                  input.setSelectionRange(pos, pos);
+                  input.dispatchEvent(new Event("input", { bubbles: true }));
+              }
+
+              function readTextFromClipboard() {
+                  if (navigator.clipboard && typeof navigator.clipboard.readText === "function") {
+                      return navigator.clipboard.readText().catch(function () {
+                          if (isSboxRulesPage) return requestSboxClipboardRead();
+                          throw new Error("Clipboard read failed");
+                      });
+                  }
+                  if (isSboxRulesPage) return requestSboxClipboardRead();
+                  return Promise.reject(new Error("Clipboard read unavailable"));
+              }
 
               (function collapseRulesAccordionsImmediately() {
                   if (!rulesRoot) return;
@@ -4621,9 +4708,11 @@ export default {
                       var ta = document.createElement("textarea");
                       ta.value = text;
                       ta.setAttribute("readonly", "");
-                      ta.style.cssText = "position:fixed;left:-9999px;top:0;opacity:0";
+                      ta.style.cssText = isSboxRulesPage
+                          ? "position:fixed;top:50%;left:50%;width:2px;height:2px;opacity:0.01;z-index:9999;"
+                          : "position:fixed;left:-9999px;top:0;opacity:0";
                       document.body.appendChild(ta);
-                      ta.focus();
+                      ta.focus({ preventScroll: true });
                       ta.select();
                       ta.setSelectionRange(0, text.length);
                       var ok = false;
@@ -4636,12 +4725,15 @@ export default {
 
               function copyTextToClipboard(text) {
                   if (text == null || text === "") return Promise.reject(new Error("Nothing to copy"));
+                  var chain = legacyCopyToClipboard(text);
                   if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
-                      return navigator.clipboard.writeText(text).catch(function () {
-                          return legacyCopyToClipboard(text);
+                      chain = chain.catch(function () {
+                          return navigator.clipboard.writeText(text);
                       });
                   }
-                  return legacyCopyToClipboard(text);
+                  return chain.then(function () {
+                      if (isSboxRulesPage) notifySboxClipboardWrite(text);
+                  });
               }
 
               function buildRuleCopyText(el) {
@@ -4734,15 +4826,41 @@ export default {
               window.addEventListener('load', initRulesPageState);
               window.addEventListener('pageshow', initRulesPageState);
 
-              if (document.body.classList.contains("sbox-rules")) {
-                  document.addEventListener("keydown", function (e) {
-                      if (e.key !== "Tab") return;
-                      e.preventDefault();
-                      e.stopPropagation();
-                      if (document.activeElement && document.activeElement !== document.body) {
-                          document.activeElement.blur();
+              if (isSboxRulesPage && searchInput) {
+                  var searchOpenedByPointer = false;
+                  searchInput.addEventListener("pointerdown", function () {
+                      searchOpenedByPointer = true;
+                  });
+                  searchInput.addEventListener("focus", function () {
+                      if (!searchOpenedByPointer) {
+                          searchInput.blur();
                       }
-                  }, true);
+                      searchOpenedByPointer = false;
+                  });
+                  searchInput.addEventListener("keydown", function (e) {
+                      if (!e.ctrlKey && !e.metaKey) return;
+                      var key = e.key.toLowerCase();
+                      if (key === "c" || key === "x") {
+                          var start = searchInput.selectionStart;
+                          var end = searchInput.selectionEnd;
+                          if (start == null || end == null || start === end) return;
+                          var selected = searchInput.value.slice(start, end);
+                          copyTextToClipboard(selected).catch(function () {});
+                          if (key === "x") {
+                              e.preventDefault();
+                              searchInput.value = searchInput.value.slice(0, start) + searchInput.value.slice(end);
+                              searchInput.setSelectionRange(start, start);
+                              searchInput.dispatchEvent(new Event("input", { bubbles: true }));
+                          }
+                          return;
+                      }
+                      if (key === "v") {
+                          e.preventDefault();
+                          readTextFromClipboard().then(function (clip) {
+                              insertTextAtCursor(searchInput, clip);
+                          }).catch(function () {});
+                      }
+                  });
               }
 
               document.querySelectorAll('.cat-btn, .sub-btn').forEach(btn => {
