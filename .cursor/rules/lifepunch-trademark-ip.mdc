@@ -53,6 +53,22 @@ for profit. Build so the trademark is supportable up front — never band-aid th
 - Whether others may resell is a **copyright / EULA** matter, NOT trademark use. "Use on your own
   server; no copy, redistribution, or resale" *strengthens* single-source — keep that clause.
 
+## Operating under ™ while pending (™ now; ® only after registration)
+- **We can run the business under LIFEPUNCH right now.** Trademark rights arise from **use in
+  commerce**, not registration — LIFEPUNCH already has common-law rights from live use (servers,
+  site, community). Filing is pending (#402997 + #397871), not required to operate.
+- **Use `™`, never `®`, until the USPTO actually issues a registration.** `™` asserts an unregistered
+  /common-law claim and is correct while pending. Using `®` before registration is unlawful and can
+  jeopardize the application. When both marks register, switch to `®`.
+- **Spell it `LIFEPUNCH™`** (consistent all-caps source identifier per the brand-integrity rule).
+  Avoid drifting to `LifePunch™` styling — consistency protects the wordmark.
+- **Class nuance:** Class 41 (services) is in actual use → `™` clearly proper. Class 9 (downloadable
+  addons) is intent-to-use/not yet shipped → branding the project/site LIFEPUNCH™ is fine, but do
+  **not** represent an addon as an established/registered Class 9 good, and never put `®` on it,
+  until it ships with a valid specimen (see "Use in commerce" above).
+- **Keep dated evidence of use** (git commits, launch dates, screenshots, listings) — it supports
+  common-law priority and the recorded first-use dates (Class 41 first use 04/26/2026).
+
 ## Finishing the filings
 - **To complete a trademark filing, START at `lifepunch/legal/FINALIZE_TRADEMARK.md`** — the
   action-ordered runbook (copy-paste TE-support messages, exact per-order field values, definition of

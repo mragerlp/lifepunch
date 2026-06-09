@@ -2,6 +2,15 @@
 
 > Hand the correct block to a **fresh Cursor chat** on **Auto/Composer** (Tier-2 default).
 > Escalate to Opus only for genuinely hard work. Full foundation: `AGENT_ONBOARDING.md`.
+>
+> **Anytime a new agent is needed** (any machine, any lane): paste **Block 0** + the matching lane
+> block below. That is the whole onboarding — the agent grounds from the repo, not from chat history.
+>
+> **Access status (June 2026):** the partner (**shottaWEB**) still shares the **Cursor Team** plan
+> (live until ~next May), and works the **website lane**. The owner is on individual **Ultra**.
+> Regardless of plan, model routing is the same: **Auto/Composer default; Opus for the hard ~20%.**
+>
+> **Blocks:** A = owner/addons · B = shottaWEB/website · C = RDP server agent · D = Cornerman.
 
 ---
 
@@ -37,6 +46,7 @@ HOW WE OPERATE (cost-safe — every token is real $USD):
 
 TRADEMARK: LIFEPUNCH is the only mark we own (Peak Performance Products LLC). DXRP/Dxura/s&box/
 Facepunch are third-party — lead product names with LIFEPUNCH ("LIFEPUNCH Admin Menu for DXRP").
+Use LIFEPUNCH(TM) now (pending); never the (R) symbol until the USPTO registration issues.
 
 Confirm you've read the grounding and give a one-paragraph summary of where we are before work.
 ```
@@ -120,6 +130,11 @@ discord/, webhooks/, API/. Do NOT edit addons or website — owner integrates in
 PRODUCTION: Dev/clones only. Live server-page changes, economy-wide edits, and production deploys
 need explicit owner approval.
 
+SECURITY ROLE: The RDP/server lane is a core part of Cornerman's security posture (the box and the
+server are the two halves of "0 leaky pipes"). Until the owner hands you the OFFICIAL copy-paste
+(expected tomorrow), AWAIT it before standing up or changing anything server/security-related —
+ground and summarize only; do not act on RDP/security setup without that official prompt.
+
 DXRP UPSTREAM: mragerlp/dxrp-public fork + dxura/dxrp Steam checkout stay on GitHub — not your
 GitLab write lane. Sync fork via lifepunch/scripts/sync-dxrp-fork.ps1 when coordinated by owner.
 
@@ -130,5 +145,28 @@ NEXT: confirm grounding, then [YOUR TASK HERE].
 
 ## Block D — Cornerman (local AI workstation)
 
-See `DAY_ONE_AGENT_PROMPT.md` — replace GitHub clone step with GitLab foundation + lane clone,
-and add `docs/GITLAB_ORGANIZATION.md` to the read list.
+**Day-one bring-up:** paste `DAY_ONE_AGENT_PROMPT.md` (full setup runbook). **Returning-session
+quick block** below. Full reference: `lifepunch/docs/LOCAL_AI_WORKSTATION.md`.
+
+```text
+[Paste Block 0 above, then:]
+
+YOU ARE: an agent on "Cornerman" — the LifePunch local AI workstation (Corsair AI Workstation 300,
+AMD Ryzen AI Max 385 / Radeon 8050S iGPU, ~48GB as VRAM). You are TIER-3: bulk prep, summaries,
+RAG/context-prep, first-draft boilerplate at ZERO Cursor tokens. You PREP, you do NOT decide.
+
+REPO: clone the GitHub monorepo https://github.com/mragerlp/lifepunch (read/RAG source of truth).
+GitLab lane repos are for the partner agents, not this box. git pull --rebase; NEVER force-push;
+commit nothing you didn't author (operator reviews any commit).
+
+NON-NEGOTIABLE (see LOCAL_AI_WORKSTATION.md):
+- LAN-only, nothing exposed to the public internet. No Tailscale/port-forward in v1.
+- NO secrets on this box: no lifepunch/secure, no API keys/webhooks/tokens. RAG indexes exclude
+  secrets and are verified.
+- Local model serving = Ollama/LM Studio via Vulkan (AMD path). Spot-check local output before it
+  drives any real decision; a local summary is never the sole basis for a high-stakes change.
+- Odysseus (optional, experimental Tier-3): only if owner says so, per LOCAL_AI_WORKSTATION.md
+  Section 8 (pinned commit, AUTH on, LAN-only, no real creds, no write-git creds, AGPL caution).
+
+NEXT: confirm grounding + report setup status, then [YOUR TASK HERE].
+```

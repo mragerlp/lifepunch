@@ -206,6 +206,36 @@ knockout can still be run, but the exact mark and the obvious spaced variant are
 
 ---
 
+## 7b. Operating under ™ while the filings are pending
+
+We do **not** need a federal registration to operate LIFEPUNCH as a business. The practical posture
+while #402997 / #397871 are pending:
+
+- **Common-law rights already exist from use.** Live LIFEPUNCH servers, `lifepunch.co`, the Discord/
+  community, and dated development logs give LIFEPUNCH protectable common-law rights in our markets.
+  Filing adds a constructive nationwide priority date *if/when it registers* — it doesn't gate
+  day-to-day operation.
+- **Symbol rule: `™` now, `®` only after registration issues.**
+  - Use **`LIFEPUNCH™`** on the site, storefront, GitLab/GitHub, Discord, social, and in/around
+    products. `™` is the correct claim symbol for an unregistered/pending mark.
+  - Do **NOT** use `®` until the USPTO actually issues the registration for the relevant mark.
+    Premature `®` is unlawful and can damage the application. Flip to `®` per-mark once each registers.
+- **Styling = consistency.** Spell it `LIFEPUNCH™` (all-caps wordmark) consistently so the mark stays
+  a strong single-source identifier. Generic advice that writes "LifePunch™" mixed-case is fine
+  legally but weaker for brand integrity — prefer the consistent form.
+- **Class precision (don't over-claim).** Our filings cover exactly **Class 41** (online video-game
+  services — in use) and **Class 9** (downloadable game software — intent-to-use). Generic guidance
+  that lumps in "consulting / merchandise / subscriptions" describes *possible* common-law uses, not
+  our filed scope. Operate under ™ broadly, but never represent a class/registration we haven't filed
+  or shipped (esp. no `®` and no "registered Class 9 good" until the addon ships with a specimen).
+- **Evidence discipline.** Keep dated proof of use (commits, launch screenshots, listings, business
+  records) to back common-law priority and the recorded first-use dates.
+
+> Source note: distilled from owner-supplied trademark guidance (`lifepunchtm.txt`, 2026-06). That
+> file's general ™/® and common-law points are adopted here; its "if you have not yet filed" framing
+> is **outdated for us** (we have filed — see §2/§8), and its broad goods list is narrowed to our two
+> filed classes above.
+
 ## 8. Filing progress log
 
 ### 2026-06-09 — #402997 intake corrected & applicant set (browser session)

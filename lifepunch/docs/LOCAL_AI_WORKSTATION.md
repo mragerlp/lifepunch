@@ -220,6 +220,31 @@ never track `dev` on this box.** Re-pin only after reviewing the diff.
 - If it doesn't earn its place over the plain LM Studio/Ollama + scripted RAG plan, **drop it** —
   don't run two competing stacks (infra-level spaghetti).
 
+## 8b. Scope guardrails — common "AI box" advice to REJECT
+
+Generic setup guides (and some LLM answers) push steps that conflict with Cornerman's role as a
+**Tier-3 clone/prep node**. Hold the line:
+
+- **Do NOT make Cornerman the s&box editor / primary dev box.** No Steam + s&box SDK + ModelDoc +
+  Source2Viewer build-out here. The editor runs on the Primary PC / Steam checkout
+  (`D:\Steam\steamapps\common\sbox\dxrp`). Cornerman gets the **repo clone for RAG/codegen only**.
+- **Do NOT wire raw cloud API keys (Anthropic/OpenAI) into tools on this box.** That's a secret on a
+  no-secrets box *and* separate spend outside the Cursor Ultra pool. Cursor here uses the Cursor
+  account; local serving uses local models.
+- **Do NOT fork per-project `/AI` doc trees.** Grounding already lives once in `.cursor/rules` +
+  `lifepunch/docs`. Adding parallel `AI/README.md` etc. violates the single-source-of-truth rule.
+- **Win11 Home (preinstalled) is fine** — no mandatory fresh "Win11 Pro" reinstall. Pro is optional
+  only if we later want managed BitLocker/remote policy (Section 2.5).
+- **Prefer native Odysseus + host Ollama over Docker-GPU on this AMD box.** Docker GPU passthrough
+  for the Radeon iGPU on Windows is weak/ROCm-immature; the native launcher pointing at the host
+  Ollama endpoint is the reliable path (Section 8).
+- **`mistral-medium` is an API model, not a local Ollama pull** — use real local models (Section 5).
+
+**Worth adopting from generic guides:** update-everything-first (Windows/AMD/BIOS — Section 2–3),
+install **Git + Git LFS + Git Credential Manager** (the monorepo uses LFS), the **local-vs-Opus work
+split** (already our routing law), and the "treat it as another developer / dedicated AI appliance"
+framing — that's exactly the Cornerman concept.
+
 ## 9. Acceptance check (done = all true)
 
 - [ ] Win11 updated, firmware updated, Device Encryption ON, recovery key backed up offline.

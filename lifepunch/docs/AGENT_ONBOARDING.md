@@ -147,13 +147,22 @@ The `lifepunch-operating-context` rule is law here; this is the orientation. We 
   Auto-Composer default / T3 Cornerman), session hygiene, knowledge-capture, and the multi-agent
   safeguards live in `lifepunch-operating-context`; mirror above. On Ultra, **Auto/Composer
   don't draw the $400 pool** — default there, reserve the pool for Tier-1 Opus.
-- **GitLab lane organization — documented.** `GITLAB_ORGANIZATION.md`, `gitlab-projects.json`,
-  `AGENT_PROMPT.md`, `setup-gitlab-projects.ps1`. GitHub monorepo stays canonical; GitLab is
-  per-lane partner workspaces. Cursor GitLab linked; **lane projects not created yet**.
+- **GitLab lane organization — LIVE (lanes-synced).** Four projects under `gitlab.com/mragerlp`
+  (`lifepunch-foundation`, `-addons`, `-website`, `-rdp-server`) created + pushed + protected `main`.
+  GitHub monorepo stays canonical; GitLab is per-lane partner workspaces.
+  Map: `GITLAB_ORGANIZATION.md` + `gitlab-projects.json`. Copy-paste: `AGENT_PROMPT.md`.
+- **Trademark — operate under `™` now.** LIFEPUNCH runs on common-law rights while #402997/#397871
+  are pending; use `LIFEPUNCH™`, never `®` until registration issues (see `lifepunch-trademark-ip`
+  rule + `legal/TRADEMARK_AND_IP.md §7b`). Business wrapper: `docs/BUSINESS_CONTEXT.md`.
 
 **Operational state:**
-- Billing on individual **Ultra** (hard-stop at $400 API pool). shottaWEB on own plan (website lane).
-- Canonical repo: `https://github.com/mragerlp/lifepunch`. GitLab lane projects pending creation.
+- Billing on individual **Ultra** (hard-stop at $400 API pool). **shottaWEB still on the shared
+  Cursor Team plan** (live until ~next May), website lane. Routing unchanged: Auto/Composer default.
+- Canonical repo: `https://github.com/mragerlp/lifepunch`. GitLab lanes synced.
+- **Cornerman** (local AI box) arriving imminently — bring-up via `DAY_ONE_AGENT_PROMPT.md`;
+  reference `LOCAL_AI_WORKSTATION.md`; optional experimental Odysseus layer documented (§8).
+- **RDP server agent:** must **await the owner's official copy-paste (expected tomorrow)** before
+  acting on server/security setup — the RDP/server lane is core to Cornerman's security posture.
 
 **Open tracked items (see `lifepunch/addons/docs/TECH_DEBT.md`):**
 - **STAFF-09** — `StaffMenuTestBots.cs` is in `namespace Dxura.RP.Game;` (must move to a
