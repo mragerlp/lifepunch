@@ -26,10 +26,11 @@
     {
       "package": "lifepunch.adminmenu",
       "addonIdent": "adminmenu",
-      "dxrpAddonId": "019e4cfa-3141-723c-a430-1a0e286472eb",
+      "dxrpAddonId": "019e9cfa-3141-723c-a430-1a0e256472eb",
       "dxrpAddonIdentifier": "dxrpadminmenu",
       "targetEnvironment": "lifepunchdevelopment",
       "publishStatus": "ui-pass-complete-editor-verified-ready-to-publish",
+      "marketingVersion": "2.0.0",
       "revisionId": null,
       "revisionNumber": 2,
       "stagingRoot": "../addons/.dxrp-publish/upload",
