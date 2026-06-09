@@ -168,7 +168,59 @@ Principles: **LAN-only by default, encrypted in transit, one source of truth, se
   custom base URL.
 - Keep a short note of the endpoint URL + loaded model in dev docs (**not** in secrets).
 
-## 8. Acceptance check (done = all true)
+## 8. Optional layer — Odysseus AI workspace (EXPERIMENTAL, Tier-3)
+
+[Odysseus](https://github.com/pewdiepie-archdaemon/odysseus) is a self-hosted AI workspace
+(chat + agent + RAG/memory + "Cookbook" model-fit + deep research). It is a candidate **UI/agent
+layer on top of** the local runtime in Section 4 — **not** a replacement for LM Studio/Lemonade/
+Ollama, and **not** core infra. Treat it as an experimental Tier-3 prep tool until proven.
+
+**Status:** trial-only (added June 2026). It is ~days old and its default `dev` branch is
+explicitly unstable. **Pin the reviewed `main` commit `7690860ab1a7b50afd1887b5a61ca60f38961847`;
+never track `dev` on this box.** Re-pin only after reviewing the diff.
+
+### Hard constraints (do not relax without owner sign-off)
+
+1. **LAN-only, no public exposure.** Keep `AUTH_ENABLED=true`, `LOCALHOST_BYPASS=false`. Bind to
+   `127.0.0.1` (or a LAN IP with an mkcert cert per the README's HTTPS section). Never port-forward
+   to the public internet. Same rule as the model endpoint (Section 6).
+2. **Secrets stay quarantined (Section 6.3 still governs).** Do **NOT** configure Odysseus's
+   email (IMAP/SMTP), API tokens, webhooks, or CalDAV with **real** LifePunch credentials. Those
+   features are the whole tension with our "no secrets on this box" rule — leave them off or use
+   throwaway test creds only. Point its model backend at the **local** Ollama/LM Studio endpoint,
+   not a paid cloud key.
+3. **Agent is sandboxed; it preps, it does not decide.** Do **not** give Odysseus's agent
+   write-git credentials. Repo access is a **read-only / dev clone** for RAG + drafting only; any
+   commit is human-reviewed and pushed by the operator, never by the agent (mirrors the
+   operating-context "commit only your own lane / commits nothing it didn't author" rule).
+4. **RAG = non-secret content only.** Build its ChromaDB/memory index over the same allow-listed,
+   secret-excluded repo content as Section 6.3, and verify the exclusions once.
+5. **License — AGPL-3.0-or-later.** Unmodified internal use is fine. **Do NOT modify Odysseus and
+   then expose it over any network** (even LAN/Tailscale to the partner) without first resolving
+   AGPL §13 — the network-use clause can obligate us to publish our modified source. Flag to the
+   owner before any fork-and-serve. (Repo metadata is contradictory — sidebar shows MIT, README
+   footer shows AGPL; treat the stricter AGPL as binding until confirmed.)
+
+### Windows / AMD reality on this box
+
+- GPU **serving** via Odysseus (vLLM/SGLang) is CUDA/ROCm and needs Linux/WSL2; ROCm on `gfx1151`
+  is immature (Section 3.4). So run Odysseus as the **UI/agent over the existing Ollama-Vulkan
+  endpoint** (`http://localhost:11434/v1` in its Settings), and use **Cookbook only as advisory**
+  model-fit, not as the serving path.
+- Native Windows launcher (pinned commit):
+
+  ```powershell
+  git clone https://github.com/pewdiepie-archdaemon/odysseus.git
+  cd odysseus
+  git checkout 7690860ab1a7b50afd1887b5a61ca60f38961847
+  powershell -ExecutionPolicy Bypass -File .\launch-windows.ps1
+  # open http://localhost:7000 ; grab the admin password from the terminal; change it in Settings
+  ```
+
+- If it doesn't earn its place over the plain LM Studio/Ollama + scripted RAG plan, **drop it** —
+  don't run two competing stacks (infra-level spaghetti).
+
+## 9. Acceptance check (done = all true)
 
 - [ ] Win11 updated, firmware updated, Device Encryption ON, recovery key backed up offline.
 - [ ] AMD driver updated; **Variable Graphics Memory set to ~48 GB**; iGPU visible as Vulkan.
@@ -178,6 +230,9 @@ Principles: **LAN-only by default, encrypted in transit, one source of truth, se
 - [ ] Monorepo cloned over SSH; `pull --rebase` works; secrets lane absent from this box.
 - [ ] RAG index (if built) **enforces** the secret-exclude list and is **verified** (no `secure/`
       path or known secret appears in the index/manifest).
+- [ ] If Odysseus is trialed: pinned `main` commit, `AUTH_ENABLED=true`, bound LAN/loopback only,
+      **no real email/API/webhook/CalDAV creds**, agent has **no write-git creds**, backend points
+      at the local Ollama/LM Studio endpoint.
 
 ## Sources (verified June 2026)
 

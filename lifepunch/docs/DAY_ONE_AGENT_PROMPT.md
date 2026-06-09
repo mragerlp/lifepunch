@@ -61,32 +61,40 @@ Phase 4 — Serve it on the LAN
 10. From my primary PC I'll open http://<LAN-IP>:1234/v1/models to confirm it's reachable.
     Help me find this box's LAN IP and verify.
 
-Phase 5 — Secure pipeline to GitLab
+Phase 5 — Secure pipeline to the repo (GitHub monorepo = source of truth)
 11. Confirm Git is installed (CORSAIR stack or git-scm).
-12. Generate a new SSH key on this box; I'll add it to GitLab. Clone:
-    - `gitlab.com/mragerlp/lifepunch-foundation` (read grounding)
-    - plus the lane project the owner assigns (addons / website / rdp-server)
-13. Verify `git pull --rebase` works on each. Re-confirm: never force-push.
+12. Generate a new SSH key on this box; I'll add it to GitHub. Clone the canonical monorepo:
+    - `git@github.com:mragerlp/lifepunch.git`  (full grounding + RAG source; READ/clone)
+    - GitLab lane repos (gitlab.com/mragerlp/lifepunch-*) are for the partner agents, not this box.
+      Only clone a GitLab lane if I explicitly assign this box write work in one.
+13. Verify `git pull --rebase` works. Re-confirm: never force-push. This box does not commit
+    work it didn't author; any commit is operator-reviewed.
 14. Confirm `lifepunch/secure/` and any secrets are NOT present/used on this box.
 
 Phase 6 — Adopt project grounding
 15. After cloning, READ these and follow them as law going forward:
-    - Foundation checkout: `.cursor/rules` (alwaysApply)
-    - `docs/AGENT_ONBOARDING.md`
-    - `docs/WORKSPACE_STRUCTURE.md`
-    - `docs/GITLAB_ORGANIZATION.md`
-    - `docs/LOCAL_AI_WORKSTATION.md`  (the full reference for THIS machine)
+    - `.cursor/rules` (alwaysApply)
+    - `lifepunch/docs/AGENT_ONBOARDING.md`
+    - `lifepunch/docs/WORKSPACE_STRUCTURE.md`
+    - `lifepunch/docs/GITLAB_ORGANIZATION.md`
+    - `lifepunch/docs/LOCAL_AI_WORKSTATION.md`  (the full reference for THIS machine)
 16. Report: a short status of each phase, the endpoint URL + loaded model, and anything that
     failed or needs my decision.
 
-Ask me for: the GitLab namespace + which lane project to clone, and anything you can't determine
-yourself. Don't guess.
+Phase 7 (OPTIONAL) — Odysseus AI workspace (experimental, only if I ask)
+17. Only if I tell you to trial it: follow LOCAL_AI_WORKSTATION.md Section 8 EXACTLY — pin the
+    reviewed `main` commit, AUTH on, bind LAN/loopback only, point its backend at the local
+    Ollama/LM Studio endpoint, and set NO real email/API/webhook/CalDAV creds and NO write-git
+    creds for its agent. It is Tier-3 prep, not core infra, and AGPL-3.0 (no modify-and-expose
+    without owner sign-off). Default: skip unless I say otherwise.
+
+Ask me for: the GitHub repo SSH URL, and anything you can't determine yourself. Don't guess.
 ```
 
 ## Human-in-the-loop handshakes (only two)
 
-1. You confirm the **GitLab namespace** (`mragerlp`) and **lane project** for this box.
-2. You **add this box's generated SSH key to GitLab** (Phase 5).
+1. You provide the **GitHub repo SSH URL** (`git@github.com:mragerlp/lifepunch.git`).
+2. You **add this box's generated SSH key to GitHub** (Phase 5).
 
 Everything else the agent either runs or walks you through. No secrets, no public exposure —
 "0 leaky pipes."
