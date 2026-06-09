@@ -25,7 +25,7 @@ RDP server agent work in focused workspaces without the full monorepo.
 | GitLab lane projects | **Live + synced** — all four created (private), seeded from the monorepo (`migrationStatus: lanes-synced`) |
 | Branch protection | `lifepunch-website` + `lifepunch-rdp-server` `main`: **Developer push allowed, force-push BANNED**. `lifepunch-foundation` + `lifepunch-addons`: owner/Maintainer push only |
 | shottaWEB access | Email-invited (`br.black4022@gmail.com`): **Developer** on `lifepunch-website`, **Reporter/read** on `lifepunch-foundation`. Pending: shottaWEB must create/sign in to a GitLab account on that email and accept |
-| RDP agent access | Provisioned via **project access token** (read/write `lifepunch-rdp-server`) + **deploy token** (read `lifepunch-foundation`). Secrets in `lifepunch/secure/rdp-gitlab-access.txt` (local, gitignored). **Verified:** clone + push + branch-delete OK |
+| RDP agent access | Provisioned via an **SSH deploy key** generated on the box: public key added to `lifepunch-rdp-server` (**write enabled**) and the same key enabled on `lifepunch-foundation` (read). Only the **public** key leaves the box — no secret/token transfer. **Verified:** clone + grounding OK |
 | Lane sync | Owner exports lane slices from the GitHub monorepo → GitLab; partner lane commits land on GitLab first, then owner integrates back into the monorepo |
 
 ## GitLab lane projects (target layout)
@@ -91,10 +91,11 @@ self-contained and the rules auto-apply at the lane root — no separate foundat
 - **People (e.g. shottaWEB)** → GitLab **user membership** by email invite. Developer on their write
   lane, Reporter (read) on `lifepunch-foundation`. They accept after creating/signing into a GitLab
   account on the invited email. (Invite API: `POST /projects/:id/invitations`.)
-- **Headless agents (e.g. RDP server agent)** → a **project access token** (read/write, Developer
-  role, ~1yr expiry) on the write lane + a read-only **deploy token** on `lifepunch-foundation`. The
-  token values live ONLY in `lifepunch/secure/rdp-gitlab-access.txt` (gitignored) and are transferred
-  to the box over an encrypted channel — never in chat, never committed. Revoke + recreate if exposed.
+- **Headless agents (e.g. RDP server agent)** → an **SSH deploy key** generated ON the box
+  (`~/.ssh/lifepunch_rdp`). Add the **public** key to the write lane (`lifepunch-rdp-server`) with
+  **write access enabled**, and enable the same key on `lifepunch-foundation` (read-only). Only the
+  public key ever leaves the box — the private key never moves, and no token/secret crosses chat or
+  git ("0 leaky pipes"). Revoke the key in GitLab if the box is decommissioned or the key is exposed.
 - **Branch protection** on writable lanes allows Developer push but **bans force-push**, enforcing the
   "normal push, never force-push" rule at the server.
 

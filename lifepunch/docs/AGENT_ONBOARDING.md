@@ -164,17 +164,22 @@ The `lifepunch-operating-context` rule is law here; this is the orientation. We 
 - Canonical repo: `https://github.com/mragerlp/lifepunch`. GitLab lanes synced.
 - **Cornerman** (local AI box) arriving imminently — bring-up via `DAY_ONE_AGENT_PROMPT.md`;
   reference `LOCAL_AI_WORKSTATION.md`; optional experimental Odysseus layer documented (§8).
-- **RDP server agent:** must **await the owner's official copy-paste (expected tomorrow)** before
-  acting on server/security setup — the RDP/server lane is core to Cornerman's security posture.
+- **RDP server agent:** **ACTIVE** — grounded and working its `lifepunch-rdp-server` lane, cloned over
+  an SSH deploy key (clone + grounding verified). The RDP/server lane is core to Cornerman's security
+  posture ("0 leaky pipes"). Its official prompt is Block C in `AGENT_PROMPT.md`.
 
 **Open tracked items (see `lifepunch/addons/docs/TECH_DEBT.md`):**
-- **STAFF-09** — `StaffMenuTestBots.cs` is in `namespace Dxura.RP.Game;` (must move to a
-  LifePunch namespace); the workspace validator is green except for this one item.
+- **STAFF-09** — `StaffMenuTestBots.cs` (dev-only test helper) is in `namespace Dxura.RP.Game;`
+  (should move to a LifePunch namespace). It is now **excluded from publish staging**
+  (`prepare-publish` skips `*TestBots.cs` / `*DevGive.cs` / `_dev/`), so it no longer blocks shipping;
+  the namespace cleanup stays tracked.
 - **EFF-01** — full validate-before-push hook gate is deferred until the validator is green
   (STAFF-09). The merge-conflict-marker guard in the stop hook is **active** now.
 
-**Next foundation build:**
-- AK-47 weapon work is **paused**. Next: an **in-game staff/admin menu** addon that works on
-  ANY DXRP server, driven by the policy in `lifepunch/admin-panel/` (roles +
-  `permissions/matrix.md`). Server-agnostic, config-driven, LifePunch-owned IP.
-- Propose feature set + architecture + permission mapping for sign-off **before** building.
+**Current / next build:**
+- The **in-game staff/admin menu** (server-agnostic, driven by `lifepunch/admin-panel/` roles +
+  `permissions/matrix.md`, LifePunch-owned IP, branded `lifepunch.ulx`) is **built and shipping its
+  v1** to the DXRP portal.
+- AK-47 weapon work remains **paused**.
+- For any new addon: propose feature set + architecture + permission mapping for sign-off **before**
+  building.

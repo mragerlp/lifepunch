@@ -11,7 +11,7 @@
 > Regardless of plan, model routing is the same: **Auto/Composer default; Opus for the hard ~20%.**
 >
 > **Provisioning (verified June 9 2026):** GitLab lanes live + synced. **shottaWEB** email-invited
-> (must create/accept a GitLab account). **RDP agent** provisioned via project access token + ACTIVE
+> (must create/accept a GitLab account). **RDP agent** provisioned via an SSH deploy key + ACTIVE
 > (Block C is its official prompt). **Cornerman** launches via `DAY_ONE_AGENT_PROMPT.md`.
 >
 > **Blocks:** A = owner/addons · B = shottaWEB/website · C = RDP server agent · D = Cornerman.
@@ -76,7 +76,8 @@ Do NOT let shottaWEB or RDP agent paths drift — they commit on GitLab lanes, y
 
 CURRENT STATE (June 2026):
 - Trademark/IP doctrine is law. Billing on Individual Ultra (Auto default).
-- Staff/admin menu (adminmenu) substantially built; STAFF-09 blocks full validator green.
+- Admin menu (adminmenu) = v1 publish-ready, branded `lifepunch.ulx` (credits ULX; DXRP nominative),
+  dxrpAddonId reconciled to the live portal listing; dev-only test-bots excluded from publish staging.
 - AK-47 paused. GitLab lanes LIVE + synced (lanes-synced); shottaWEB + RDP agent provisioned.
   Re-export a lane after changes via setup-gitlab-projects.ps1.
 
@@ -123,15 +124,16 @@ NEXT: confirm grounding, then [YOUR TASK HERE].
 ## Block C — RDP server agent
 
 **GitLab projects:** `lifepunch-foundation` (read) + `lifepunch-rdp-server` (write)  
-**Access:** headless **tokens** (NOT a user login). Owner transfers `rdp-gitlab-access.txt` from
-`lifepunch/secure/` to the box over an encrypted channel — values never go in chat or git. The file
-holds ready-to-use HTTPS clone URLs (token embedded). `main` allows normal push; **force-push banned**.
-**Verified:** clone + push + branch-delete all work.
+**Access:** an **SSH deploy key** generated ON the box (`~/.ssh/lifepunch_rdp`) — NOT a user login.
+The owner adds the **public** key to GitLab: to `lifepunch-rdp-server` with **write access enabled**,
+and enables the same key on `lifepunch-foundation` (read). Only the public key ever leaves the box —
+no token or secret is transferred. `main` allows normal push; **force-push banned**. **Verified:**
+clone + grounding work.
 
 ```powershell
-# Use the exact URLs from lifepunch/secure/rdp-gitlab-access.txt (token embedded), e.g.:
-git clone https://<deploy-token-user>:<token>@gitlab.com/mragerlp/lifepunch-foundation.git
-git clone https://rdp-agent:<token>@gitlab.com/mragerlp/lifepunch-rdp-server.git
+# Clone over SSH using the on-box deploy key (point git at it via ~/.ssh/config or GIT_SSH_COMMAND):
+git clone git@gitlab.com:mragerlp/lifepunch-foundation.git
+git clone git@gitlab.com:mragerlp/lifepunch-rdp-server.git
 ```
 
 ```text
