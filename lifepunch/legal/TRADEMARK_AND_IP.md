@@ -11,6 +11,10 @@ others **will** try to clone them for profit. Everything below is structured so 
 > Not legal advice. Trademark Engine's attorney/paralegal performs the final legal review and filing.
 > This doc keeps our application data accurate and internally consistent so that review is clean.
 
+> 🎯 **To finish the filings (when TE support responds), START at `FINALIZE_TRADEMARK.md`** — the
+> action-ordered runbook (copy-paste TE messages, exact field values, definition of done, post-filing
+> repo updates). This document is the *why*; the runbook is the *do*.
+
 ---
 
 ## 1. Brand architecture — what we own vs. third parties

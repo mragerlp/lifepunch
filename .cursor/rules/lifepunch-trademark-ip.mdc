@@ -53,6 +53,11 @@ for profit. Build so the trademark is supportable up front — never band-aid th
 - Whether others may resell is a **copyright / EULA** matter, NOT trademark use. "Use on your own
   server; no copy, redistribution, or resale" *strengthens* single-source — keep that clause.
 
+## Finishing the filings
+- **To complete a trademark filing, START at `lifepunch/legal/FINALIZE_TRADEMARK.md`** — the
+  action-ordered runbook (copy-paste TE-support messages, exact per-order field values, definition of
+  done, and the post-filing repo updates). Both #402997 and #397871 are blocked on the same TE contact.
+
 ## Filing assets & current state (where things live)
 - **Specimens:** `lifepunch/legal/specimens/` (`SPECIMEN_NOTES.md`). Class 041 specimen = live
   `lifepunch.co` screenshot (LIFEPUNCH mark + joinable server list). **Class 009 has only a PLACEHOLDER
