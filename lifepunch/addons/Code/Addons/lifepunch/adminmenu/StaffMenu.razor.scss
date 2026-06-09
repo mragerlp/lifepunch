@@ -90,6 +90,12 @@ $border: rgba(255, 255, 255, 0.06);
 		// fade's frames and reads as a hover "flicker". Snapping the colour repaints once. (Same reason
 		// the dense player rows are transition-free.)
 
+		// Normalise the glyph box so different Material Icons (settings vs close) center identically in
+		// the 34x34 button — otherwise their differing font metrics make one sit slightly lower.
+		.material-icons {
+			line-height: 1;
+		}
+
 		&:hover {
 			background-color: $bg-row;
 			color: $text;
