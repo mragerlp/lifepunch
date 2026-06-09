@@ -133,8 +133,10 @@ $border: rgba(255, 255, 255, 0.06);
 		// because the top-level `.settings` rule is the Settings VIEW panel (padding/column/grow) and
 		// would otherwise leak onto this button via equal specificity and knock it out of line.
 		&.cog {
+			// Gear glyph reads heavier than the close "X" at the same size, so nudge it down a
+			// touch (24 vs 26) for matching optical scale; the 34x34 button still aligns with the X.
 			.material-icons {
-				font-size: 26px;
+				font-size: 24px;
 			}
 		}
 
