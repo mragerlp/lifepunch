@@ -28,10 +28,13 @@ READ FIRST (in this order), then follow them as law:
 1. The project's `.cursor/rules` (all alwaysApply): lifepunch-operating-context,
    lifepunch-quality-bar, dxrp-addon-foundation, lifepunch-trademark-ip,
    lifepunch-rules-workflow, lifepunch-website-organization.
-2. `lifepunch/docs/AGENT_ONBOARDING.md` (GitHub monorepo) or `docs/AGENT_ONBOARDING.md` (GitLab lane)
-   ← foundation + current state. Start here.
-3. `lifepunch/docs/WORKSPACE_STRUCTURE.md` or `docs/WORKSPACE_STRUCTURE.md`.
+2. `lifepunch/docs/AGENT_ONBOARDING.md` ← foundation + current state. Start here.
+3. `lifepunch/docs/WORKSPACE_STRUCTURE.md`.
 4. `lifepunch/docs/GITLAB_ORGANIZATION.md` ← GitLab lane map (GitHub monorepo stays canonical).
+
+NOTE: every GitLab lane bundles a SYNCED MIRROR of `.cursor/rules` + `lifepunch/docs` at its root,
+so the rules auto-apply and grounding is local. NEVER edit grounding in a lane — it regenerates from
+the monorepo on each export; change rules/docs in GitHub only.
 
 WHAT THIS IS: LifePunch builds custom, LifePunch-owned content for DXRP (a DarkRP-style game
 on s&box / Facepunch). Treat it as a business: direct, ship quality, no spaghetti (honest

@@ -67,14 +67,23 @@ function New-GitLabProject {
 function Push-LaneExport {
     param(
         [string]$Slug,
-        [string[]]$Paths
+        [string[]]$Paths,
+        [string[]]$GroundingPaths = @()
     )
+
+    # Self-grounding: union the lane's own paths with the grounding bundle (rules + docs), deduped.
+    # Foundation already lists these, so the dedup makes the injection a no-op there.
+    $AllPaths = @($Paths) + @($GroundingPaths) | Where-Object { $_ } | Select-Object -Unique
 
     Write-Host "`n=== $Slug ===" -ForegroundColor Cyan
     Write-Host "Paths: $($Paths -join ', ')"
+    $injected = @($GroundingPaths | Where-Object { $Paths -notcontains $_ })
+    if ($injected.Count -gt 0) {
+        Write-Host "Grounding injected: $($injected -join ', ')" -ForegroundColor DarkCyan
+    }
 
     if ($WhatIf) {
-        Write-Host "  WHATIF: export $($Paths.Count) path(s) and push to $Slug" -ForegroundColor Yellow
+        Write-Host "  WHATIF: export $($AllPaths.Count) path(s) and push to $Slug" -ForegroundColor Yellow
         return $true
     }
 
@@ -84,7 +93,7 @@ function Push-LaneExport {
     }
     New-Item -ItemType Directory -Path $TempRoot | Out-Null
 
-    foreach ($Path in $Paths) {
+    foreach ($Path in $AllPaths) {
         $Source = Join-Path $RepoRoot $Path
         if (-not (Test-Path -LiteralPath $Source)) {
             Write-Host "  WARN: missing path skipped: $Path" -ForegroundColor Yellow
@@ -98,7 +107,7 @@ function Push-LaneExport {
         Copy-Item -LiteralPath $Source -Destination $Dest -Recurse -Force
     }
 
-    $Readme = "# $Slug`n`nLifePunch lane export. Canonical monorepo: https://github.com/mragerlp/lifepunch`n`nThis repo is a partner lane workspace, NOT the sole source of truth.`nSee lifepunch/docs/GITLAB_ORGANIZATION.md in the GitHub monorepo.`n"
+    $Readme = "# $Slug`n`nLifePunch lane export. Canonical monorepo: https://github.com/mragerlp/lifepunch`n`nThis repo is a partner lane workspace, NOT the sole source of truth.`n`n## Grounding (read first)`n`nThis lane bundles a SYNCED MIRROR of the project grounding so it is self-contained:`n- ` + '`.cursor/rules`' + ` (auto-applies in Cursor at this lane root)`n- ` + '`lifepunch/docs/`' + ` (AGENT_ONBOARDING, WORKSPACE_STRUCTURE, GITLAB_ORGANIZATION, etc.)`n`nThe grounding is a READ-ONLY mirror of the GitHub monorepo. Do NOT edit ` + '`.cursor/rules`' + ` or`n` + '`lifepunch/docs/`' + ` here - change them in the monorepo; they are regenerated on each export.`nSee lifepunch/docs/GITLAB_ORGANIZATION.md.`n"
     Set-Content -LiteralPath (Join-Path $TempRoot 'README.md') -Value $Readme -Encoding UTF8
 
     $PushUrl = Get-PushUrl -Slug $Slug
@@ -128,7 +137,7 @@ function Push-LaneExport {
             $pushOut | ForEach-Object { Write-Host "    $_" -ForegroundColor DarkGray }
             return $false
         }
-        Write-Host "  Pushed $($Paths.Count) path(s) -> $Slug main" -ForegroundColor Green
+        Write-Host "  Pushed $($AllPaths.Count) path(s) -> $Slug main" -ForegroundColor Green
         return $true
     }
     finally {
@@ -150,9 +159,18 @@ try {
         }
     }
 
+    $Grounding = @()
+    if ($Map.PSObject.Properties.Name -contains 'groundingBundle' -and $Map.groundingBundle) {
+        $Grounding = @($Map.groundingBundle)
+    }
+    else {
+        $Grounding = @('.cursor/rules', 'lifepunch/docs')
+    }
+    Write-Host "Grounding bundle (injected into every lane): $($Grounding -join ', ')" -ForegroundColor DarkCyan
+
     $pushed = 0
     foreach ($Project in $Map.projects) {
-        if (Push-LaneExport -Slug $Project.slug -Paths $Project.monorepoPaths) {
+        if (Push-LaneExport -Slug $Project.slug -Paths $Project.monorepoPaths -GroundingPaths $Grounding) {
             $pushed++
         }
     }

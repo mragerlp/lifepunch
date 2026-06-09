@@ -50,6 +50,17 @@ Machine-readable map: `lifepunch/docs/gitlab-projects.json`.
 | **RDP server agent** | GitLab `lifepunch-rdp-server` (+ read foundation) | GitLab `lifepunch-rdp-server`; owner merges into GitHub |
 | **Cornerman** | Read-only clone of GitHub monorepo or foundation | Never push |
 
+### Self-grounding lanes (grounding bundle)
+
+Every lane export injects a **synced mirror** of the grounding bundle so each clone is
+self-contained and the rules auto-apply at the lane root — no separate foundation clone needed:
+
+- Bundle (from `gitlab-projects.json` → `groundingBundle`): **`.cursor/rules`** + **`lifepunch/docs`**.
+- It is injected into **all** lanes by `setup-gitlab-projects.ps1` (deduped — foundation already
+  lists it, so it's a no-op there; addons/website/rdp-server get it added).
+- It is **READ-ONLY mirror content**: agents must **not** edit `.cursor/rules` or `lifepunch/docs`
+  inside a lane. Change grounding in the **GitHub monorepo**, then re-export (it regenerates).
+
 ### Lane rules
 
 - **Commit only your lane** on whichever remote you push to.
