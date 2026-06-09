@@ -82,8 +82,8 @@ export default {
                         rawTitle: "SUB-CATEGORY 2A: RDM / RDA",
                         webBtn: "🔫 RDM / RDA",
                         rules: [
-                            { id: "rdm-definition", html: `<b>RDM Definition</b><ul class="rule-sublist"><li>Random Deathmatch (RDM) is killing someone without a valid roleplay reason</li></ul>` },
-                            { id: "rda-definition", html: `<b>RDA Definition</b><ul class="rule-sublist"><li>Random Death Arrest (RDA) is arresting someone without a valid roleplay reason</li></ul>` },
+                            { id: "rdm-definition", html: `<b>RDM Definition</b><ul class="rule-sublist"><li>Random Deathmatch (RDM) is killing someone without a valid roleplay reason</li><li>RDM is not allowed</li></ul>` },
+                            { id: "rda-definition", html: `<b>RDA Definition</b><ul class="rule-sublist"><li>Random Death Arrest (RDA) is arresting someone without a valid roleplay reason</li><li>RDA is not allowed</li></ul>` },
                             { id: "rdm-reason", html: `<b>RDM Reasoning Rules</b><ul class="rule-sublist"><li>Disrespect or threats alone are not valid reasons to kill someone</li><li>Taking damage or having items stolen are valid reasons</li></ul>` },
                             { id: "rdm-warnings", html: `<b>Warning Rules</b><ul class="rule-sublist"><li>You may kill someone after warning them three times in chat to step away or to leave your property</li></ul>` },
                             { id: "rdm-mayor", html: `<b>Killing the Mayor Rules</b><ul class="rule-sublist"><li>Killing the Mayor requires a valid roleplay reason, such as a Police Department raid or mugging</li></ul>` }
@@ -104,7 +104,7 @@ export default {
                         rawTitle: "SUB-CATEGORY 2C: NLR",
                         webBtn: "💀 NLR",
                         rules: [
-                            { id: "nlr-definition", html: `<b>NLR Definition</b><ul class="rule-sublist"><li>The New Life Rule (NLR) means you may remember past events, but you cannot act on them</li></ul>` },
+                            { id: "nlr-definition", html: `<b>NLR Definition</b><ul class="rule-sublist"><li>The New Life Rule (NLR) means you may remember past events, but you cannot act on them</li><li>You must adhere to NLR on our server</li></ul>` },
                             { id: "nlr-trigger", html: `<b>NLR Trigger Rules</b><ul class="rule-sublist"><li>NLR applies on death, job change, and jail release (unless you escaped)</li></ul>` },
                             { id: "nlr-raid", html: `<b>NLR Raid Rules</b><ul class="rule-sublist"><li>You may not return to a raid after death</li><li>You must wait until the raid is completed to return to your base as a defender</li></ul>` },
                             { id: "nlr-revive", html: `<b>NLR Revive Rules</b><ul class="rule-sublist"><li>Revived players may continue their raid or scenario</li></ul>` },
@@ -117,7 +117,7 @@ export default {
                         rules: [
                             {
                                 id: "fail-rp",
-                                html: `<b>Fail RP Definition</b><ul class="rule-sublist"><li>Fail RP is roleplay that breaks character, violates the setting's logic, or disregards server rules, resulting in poor-quality, unrealistic, or disruptive play</li></ul>`
+                                html: `<b>Fail RP Definition</b><ul class="rule-sublist"><li>Fail RP is roleplay that breaks character, violates the setting's logic, or disregards server rules, resulting in poor-quality, unrealistic, or disruptive play</li><li>Fail RP is not allowed</li></ul>`
                             },
                             {
                                 id: "fail-rp-examples",
@@ -131,7 +131,7 @@ export default {
                         rules: [
                             {
                                 id: "metagaming",
-                                html: `<b>Metagaming Definition</b><ul class="rule-sublist"><li>Metagaming is using out-of-character (OOC) knowledge to influence your character's in-game decisions</li><li>It occurs when your character acts on information they realistically should not know, bridging the gap between what you know and what your character knows</li></ul>`
+                                html: `<b>Metagaming Definition</b><ul class="rule-sublist"><li>Metagaming is using out-of-character (OOC) knowledge to influence your character's in-game decisions</li><li>It occurs when your character acts on information they realistically should not know, bridging the gap between what you know and what your character knows</li><li>Metagaming is not allowed</li></ul>`
                             }
                         ]
                     }
