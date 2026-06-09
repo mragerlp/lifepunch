@@ -12,17 +12,27 @@ alwaysApply: true
 - Goal: build a shippable addon portfolio (weapons + entities) for DXRP servers.
 
 ## Efficiency & cost discipline (owner-funded startup)
-- The owner personally funds this LLC (cash + credit) for best-in-class models (e.g. Opus 4.8).
-  Best-in-class is worth it — but every token is real $USD. Deliver max capability per dollar.
+- The owner personally funds this LLC for best-in-class models (e.g. Opus 4.8). Best-in-class is
+  worth it — but usage is real $USD. Deliver max capability per dollar.
+- **Plan = Individual Ultra ($200/mo).** Two separate monthly pools, both reset monthly with **no
+  rollover** (verified against Cursor pricing docs, 2026-06):
+  - **API pool — $400/mo (20× Pro):** drained by **manually selected frontier models** (Opus,
+    premium Sonnet) at provider API rates; **Max Mode burns it fastest** (full API token rate).
+    Overage continues only via on-demand pay-as-you-go at the same API rates. **This is the scarce
+    resource — spend it on the hard ~20%.**
+  - **Auto + Composer pool — separate & generous (effectively unlimited):** does NOT touch the $400
+    API pool. Routine work here is effectively free against quota → **make it the default.**
 - **Model routing (default down, escalate up; quality floor always protected):**
-  - **Tier 1 — Opus / high-reasoning:** architecture, multi-file C# systems, subtle or
-    cross-system debugging, security/legal/structural synthesis. The ~20% that's genuinely hard.
-  - **Tier 2 — Sonnet / auto (default):** scoped edits/refactors, boilerplate, docs, search,
-    validators, commit messages, straightforward Q&A. The routine ~80%.
+  - **Tier 1 — Opus / high-reasoning (spends the $400 API pool):** architecture, multi-file C#
+    systems, subtle or cross-system debugging, security/legal/structural synthesis. The ~20% that's
+    genuinely hard. Worth the spend; never gamble a hard problem on a weak model to save cost.
+  - **Tier 2 — Auto / Composer (default; separate pool):** scoped edits/refactors, boilerplate,
+    docs, search, validators, commit messages, straightforward Q&A. The routine ~80% — effectively
+    free, so default here and reserve the API pool for Tier 1.
   - **Tier 3 — Cornerman (local, when live):** bulk summarize, log/RAG context-prep, first-draft
-    boilerplate, classification — zero Cursor tokens. Feed Cursor distilled context, not raw dumps.
+    boilerplate, classification — zero Cursor usage. Feed Cursor distilled context, not raw dumps.
   - **Escalation:** start at the lowest tier that fits; jump to Opus the moment real complexity
-    appears; when unsure, use Opus. Never gamble a hard problem on a weak model to save cost.
+    appears; when unsure on something genuinely hard, use Opus.
 - **Session hygiene (kills the cache-read tax):** one focused chat per task; start fresh often;
   continue via a short summary into a NEW chat, not a multi-million-token context drag. Attach
   specific files/ranges, not whole folders. Ground once; reference by path.
