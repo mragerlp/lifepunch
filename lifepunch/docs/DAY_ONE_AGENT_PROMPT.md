@@ -15,7 +15,7 @@ WHO/WHAT
   business: be direct, ship quality, no spaghetti (honest simple baselines are fine).
 - THIS MACHINE (codename "Cornerman") is a Corsair AI Workstation 300: AMD Ryzen AI Max 385,
   Radeon 8050S iGPU ("Strix Halo", gfx1151), 64GB unified LPDDR5X (up to ~48GB as VRAM),
-  1TB NVMe, Windows 11 Home. Its job: a PRIVATE LOCAL INFERENCE + RAG node.
+  1TB NVMe, Windows 11 Pro. Its job: a PRIVATE LOCAL INFERENCE + RAG node.
 
 NON-NEGOTIABLE GUARDRAILS
 - This box is NOT the source of truth. Source of truth is the GitHub monorepo
@@ -82,11 +82,12 @@ Phase 1 — Secure the OS (verify the account/sync posture, then harden)
    Downloads; an Adrenalin "Preview/Press" driver may be provided for large-model loads).
 4. Rename the PC to "Cornerman" (Settings > System > About > Rename) if not already.
 5. Account hardening: strong password + Windows Hello PIN; no shared/blank admin.
-6. Storage encryption: enable BitLocker/Device Encryption (Settings > Privacy & security > Device
-   encryption). Microsoft account: recovery key auto-escrows to account.microsoft.com (MFA-protected)
-   — also keep an OFFLINE copy (USB + password manager). Local account: no escrow — guide me to turn
-   on BitLocker and SAVE the key myself (USB + password manager, never the cloud). Win11 Home =
-   Device Encryption only; Win11 Pro is optional for managed BitLocker.
+6. Storage encryption (this box is Win11 PRO = full managed BitLocker): turn on BitLocker for the
+   OS drive (Control Panel > System and Security > BitLocker Drive Encryption, or search "BitLocker").
+   Microsoft account: recovery key auto-escrows to account.microsoft.com (MFA-protected) — ALSO keep
+   an OFFLINE copy (USB + password manager). Local account: no escrow — guide me to SAVE the key
+   myself (USB + password manager, never the cloud). Pro also lets us encrypt any second/data drive
+   and pick XTS-AES 256 — do the OS drive now; only add data-drive encryption if I attach one.
 7. Firewall: Windows Firewall ON, default-deny inbound (ports get opened later, LAN-scoped only).
 
 Phase 2 — Unlock GPU memory (unified-memory split; do before loading big models)

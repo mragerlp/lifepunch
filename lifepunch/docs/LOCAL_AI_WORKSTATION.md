@@ -84,12 +84,14 @@ tooling/MCP can use, and RAG over the repo with secrets excluded. Sections 6–7
    - **Diagnostics:** Required only; tailored experiences + advertising ID → **Off**.
    - **Office / 365 apps (if installed):** default Save = **This PC**; don't connect cloud storage.
 5. Rename the PC to the codename (Settings → System → About → Rename).
-6. Storage encryption: enable **BitLocker / Device Encryption** (Settings → Privacy & security →
-   Device encryption). **Microsoft account:** the recovery key auto-escrows to account.microsoft.com
+6. Storage encryption: this box runs **Win11 Pro = full managed BitLocker**. Turn on **BitLocker**
+   for the OS drive (Control Panel → System and Security → **BitLocker Drive Encryption**, or search
+   "BitLocker"). **Microsoft account:** the recovery key auto-escrows to account.microsoft.com
    (MFA-protected) — fine; also keep an **offline copy** (USB + password manager). **Local account:**
-   no escrow → **save the key yourself** (USB + password manager, never the cloud). Win11 Home only
-   has Device Encryption, not managed BitLocker — upgrade to **Win11 Pro** only if you want managed
-   full-disk encryption + remote policy. (Lockout isn't catastrophic — the box is a clone.)
+   no escrow → **save the key yourself** (USB + password manager, never the cloud). Pro also lets you
+   pick **XTS-AES 256** and encrypt any second/data drive — do the OS drive now, add data-drive
+   encryption only if one is attached. (Win11 Home would give *Device Encryption* only; lockout isn't
+   catastrophic anyway — the box is a clone.)
 7. Firewall: keep Windows Firewall ON, default-deny inbound. Ports are opened later, **LAN-scoped only**.
 8. Disable what you won't use (WAN-facing RDP, internet-facing SMB, etc.).
 9. Review preinstalled AI apps (Jan.ai, Amuse.ai, Corsair AI Software Stack). Keep what we use;
