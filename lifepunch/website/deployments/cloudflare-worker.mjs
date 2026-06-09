@@ -61,7 +61,7 @@ export default {
                     { id: "no-lie-staff", html: `<b>Lying to Staff Rules</b><ul class="rule-sublist"><li>Lying to staff will result in a permanent ban.</li><li>This includes false reporting, deleting ticket evidence, or misleading staff during a report.</li></ul>` },
                     { id: "no-staff-baiting", html: `<b>Staff Baiting Rules</b><ul class="rule-sublist"><li>Saying you will break a rule counts as breaking that rule.</li></ul>` },
                     { id: "no-minimodding", html: `<b>Minimodding Rules</b><ul class="rule-sublist"><li>Do not threaten others with reports.</li><li>Submit reports properly and move on.</li></ul>` },
-                    { id: "admin-final-say", html: `<b>Admin Final Say</b><ul class="rule-sublist"><li>Do not argue with staff about rules or punishments.</li><li>Staff always have the final say in situations not listed.</li></ul>` },
+                    { id: "admin-final-say", html: `<b>Admin Judgement Rules</b><ul class="rule-sublist"><li>Do not argue with staff about rules or punishments.</li><li>Staff always have the final say in situations not listed.</li></ul>` },
                     { id: "no-begging", html: `<b>Begging Rules</b><ul class="rule-sublist"><li>Soliciting real money or real-life items is not allowed.</li></ul>` },
                     { id: "no-bullying", html: `<b>Bullying Rules</b><ul class="rule-sublist"><li>Targeting or harassing players outside of roleplay is never tolerated.</li></ul>` },
                     { id: "no-politics", html: `<b>Politics, War & Religion Rules</b><ul class="rule-sublist"><li>Political arguments are not allowed.</li><li>Jokes are fine; arguments are not.</li></ul>` },
@@ -93,7 +93,7 @@ export default {
                         rawTitle: "SUB-CATEGORY 2B: KOS",
                         webBtn: "⚠️ KOS",
                         rules: [
-                            { id: "kos-line-definition", html: `<b>KOS Line Definition</b><ul class="rule-sublist"><li>An indicator that states moving past a certain point results in being killed on sight</li></ul>` },
+                            { id: "kos-line-definition", html: `<b>KOS Line Definition</b><ul class="rule-sublist"><li>An indicator that implies that moving past a certain point results in being killed</li></ul>` },
                             { id: "base-kos-line", html: `<b>KOS Line Placement Rules</b><ul class="rule-sublist"><li>KOS zones must start at a base's purchasable front door, fading door, or the start of an airlock</li><li>KOS lines must be a text sign that implies crossing it results in death</li></ul>` },
                             { id: "kos-understandable", html: `<b>KOS Clarity Rules</b><ul class="rule-sublist"><li>KOS zones must be easy to understand and must never be deceptive</li></ul>` },
                             { id: "rdm-kos2", html: `<b>KOS Boundaries Rules</b><ul class="rule-sublist"><li>KOS lines are markers for where KOS begins at a base</li><li>Once a KOS line is placed, the intended base behind that line is considered KOS</li><li>Example: If a KOS line is at a front door and you enter through a window, you may still be killed</li></ul>` },
@@ -106,9 +106,9 @@ export default {
                         rules: [
                             { id: "nlr-definition", html: `<b>NLR Definition</b><ul class="rule-sublist"><li>The New Life Rule (NLR) means you may remember past events, but you cannot act on them</li></ul>` },
                             { id: "nlr-trigger", html: `<b>NLR Trigger Rules</b><ul class="rule-sublist"><li>NLR applies on death, job change, and jail release (unless you escaped)</li></ul>` },
-                            { id: "nlr-raid", html: `<b>Raid Rules</b><ul class="rule-sublist"><li>You may not return to a raid after death</li><li>You must wait until the raid is completed to return to your base as a defender</li></ul>` },
-                            { id: "nlr-revive", html: `<b>Revive Rules</b><ul class="rule-sublist"><li>Revived players may continue their raid or scenario</li></ul>` },
-                            { id: "nlr-hitman", html: `<b>Hitman Rules</b><ul class="rule-sublist"><li>A failed hit cannot be re-attempted</li><li>A hit fails upon death</li></ul>` }
+                            { id: "nlr-raid", html: `<b>NLR Raid Rules</b><ul class="rule-sublist"><li>You may not return to a raid after death</li><li>You must wait until the raid is completed to return to your base as a defender</li></ul>` },
+                            { id: "nlr-revive", html: `<b>NLR Revive Rules</b><ul class="rule-sublist"><li>Revived players may continue their raid or scenario</li></ul>` },
+                            { id: "nlr-hitman", html: `<b>NLR Hitman Rules</b><ul class="rule-sublist"><li>A failed hit cannot be re-attempted</li><li>A hit fails upon death</li></ul>` }
                         ]
                     },
                     {
@@ -121,7 +121,7 @@ export default {
                             },
                             {
                                 id: "fail-rp-examples",
-                                html: `<b>Examples</b><ul class="rule-sublist"><li>Stealing your base mate's valuables and then starting a new base</li><li>Mugging someone with a partner, then killing that partner</li><li>Door camping or blocking doors</li></ul>`
+                                html: `<b>Fail RP Examples</b><ul class="rule-sublist"><li>Stealing your base mate's valuables and then starting a new base</li><li>Mugging someone with a partner, then killing that partner</li><li>Door camping or blocking doors</li></ul>`
                             }
                         ]
                     },
@@ -350,7 +350,7 @@ export default {
                             },
                             {
                                 id: "cooldowns",
-                                html: `<b>Cooldowns —</b> The following timers apply between repeated actions:<ul class="rule-sublist"><li>Mugging: 5 Minute Cooldown</li><li>Hits: 15 minutes (Same Player)</li><li>Raiding (Same Base): 10 minutes</li><li>Police Department Raid: 10 minutes (Serverwide)</li><li>No raiding for 10 minutes after a server crash</li></ul>`
+                                html: `<b>Cooldowns</b><ul class="rule-sublist"><li>Mugging: 5 Minute Cooldown</li><li>Hits: 15 minutes (Same Player)</li><li>Raiding (Same Base): 10 minutes</li><li>Police Department Raid: 10 minutes (Serverwide)</li><li>No raiding for 10 minutes after a server crash</li></ul>`
                             },
                             {
                                 id: "mayor-grace",
@@ -371,17 +371,17 @@ export default {
                         rules: [
                             {
                                 id: "minging-prohibited",
-                                html: `<b>The following is not allowed —</b><ul class="rule-sublist"><li>Baiting RDM or RDA</li><li>Excessive trolling</li><li>Preventing others from building</li><li>Preventing new players from learning</li><li>Repeatedly raiding someone with no valuables</li><li>Disobeying staff or reasonable requests</li></ul>`
+                                html: `<b>Minging & Trolling Rules</b><ul class="rule-sublist"><li>Baiting RDM or RDA is not allowed</li><li>Excessive trolling is not allowed</li><li>Preventing others from building is not allowed</li><li>Preventing new players from learning is not allowed</li><li>Repeatedly raiding someone with no valuables is not allowed</li><li>Disobeying staff or reasonable requests is not allowed</li></ul>`
                             }
                         ]
                     },
                     {
                         rawTitle: "SUB-CATEGORY 7B: REPORTING RULES",
-                        webBtn: "📝 Reporting Rules",
+                        webBtn: "📝 Reporting",
                         rules: [
                             {
                                 id: "report-respect",
-                                html: `<b>Reporting —</b> When submitting a report:<ul class="rule-sublist"><li>Be respectful</li><li>Do not spam reports</li><li>Provide proof (Medal, OBS, or Steam)</li><li>Use @ or /Staff in-game to report issues</li></ul>`
+                                html: `<b>Reporting Rules</b><ul class="rule-sublist"><li>Be respectful when submitting a report</li><li>Do not spam reports</li><li>Provide proof with your reports (Medal, OBS, or Steam)</li><li>Use @ or /Staff in-game to report issues</li></ul>`
                             }
                         ]
                     }
