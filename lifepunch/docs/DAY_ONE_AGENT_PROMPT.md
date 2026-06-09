@@ -57,25 +57,36 @@ MINDSET & SEQUENCE (start simple — small wins build a stable platform)
 DO THIS, START TO FINISH (confirm each phase before moving on):
 
 PHASE 0 (operator, during Windows first-run — likely already done before you exist):
-- Account = LOCAL, no Microsoft account / no email: at the OOBE sign-in screen, Shift+F10 >
-  `start ms-cxh:localonly` > create the local user (codename, strong password). Fallback: stay
-  offline during OOBE (unplug Ethernet / skip Wi-Fi). Decline location/diagnostics(Required only)/
-  ad-ID/activity-history/Find-My-Device/phone-link. Don't sign into OneDrive.
+- Account: owner's policy = a Microsoft/Outlook-tied admin is fine and PREFERRED (ties the encrypted
+  box to the owner's identity for ownership/chain-of-custody), PROVIDED it has MFA + a strong password
+  and ALL Windows sync is disabled (see Phase 1.1). A local account (Shift+F10 > `start ms-cxh:localonly`,
+  or stay offline during OOBE) is the equally-valid alternative. Decline location/optional-diagnostics/
+  ad-ID/activity-history/Find-My-Device/phone-link at OOBE. Don't sign into OneDrive.
 
-Phase 1 — Secure the OS (verify the first-run choices, then harden)
-1. VERIFY the Phase 0 choices and remediate post-boot: confirm this is a LOCAL account, no Microsoft
-   account/email (Settings > Accounts); confirm OneDrive is uninstalled/unlinked (Settings > Apps)
-   and Documents/Desktop are LOCAL, not redirected; confirm OOBE privacy toggles are off. Fix what's
-   fixable now; flag anything that would need a reinstall.
+Phase 1 — Secure the OS (verify the account/sync posture, then harden)
+1. VERIFY + remediate the account/sync posture. If a Microsoft/Outlook account is in use, confirm it
+   has MFA + a strong password. Then DISABLE ALL WINDOWS SYNC (the Outlook mailbox still syncs — that's
+   data, not what we kill; we kill system/file/settings sync):
+   - OneDrive: Settings > Apps > uninstall Microsoft OneDrive (or unlink + disable run-at-login);
+     confirm Documents/Desktop/Pictures are LOCAL, not redirected.
+   - Settings > Accounts > Windows backup > "Remember my apps" + "Remember my preferences" + OneDrive
+     folder syncing > OFF.
+   - Edge > Settings > Profiles > Sync > OFF. System > Clipboard > sync across devices > OFF.
+   - Privacy & security: Cloud content search OFF, Activity history OFF, Find My Device OFF;
+     Diagnostics = Required only, tailored experiences + advertising ID OFF.
+   - Phone Link / Nearby sharing OFF. Office/365 apps (if installed): default Save = This PC, no cloud
+     storage connected.
+   Fix what's fixable now; flag anything that would need a reinstall.
 2. Confirm Windows is fully updated (Windows Update) and rebooted clean.
 3. Confirm AMD Adrenalin driver + Corsair BIOS/firmware are updated (Corsair.com product support >
    Downloads; an Adrenalin "Preview/Press" driver may be provided for large-model loads).
 4. Rename the PC to "Cornerman" (Settings > System > About > Rename) if not already.
 5. Account hardening: strong password + Windows Hello PIN; no shared/blank admin.
-6. Storage encryption: enable Device Encryption (Settings > Privacy & security > Device encryption).
-   LOCAL-ACCOUNT CAVEAT: no Microsoft account = no automatic key escrow, so it may not self-enable —
-   guide me to turn on BitLocker and SAVE the recovery key to a USB stick + password manager (NOT the
-   cloud). Win11 Home = Device Encryption only; Win11 Pro is optional for managed BitLocker.
+6. Storage encryption: enable BitLocker/Device Encryption (Settings > Privacy & security > Device
+   encryption). Microsoft account: recovery key auto-escrows to account.microsoft.com (MFA-protected)
+   — also keep an OFFLINE copy (USB + password manager). Local account: no escrow — guide me to turn
+   on BitLocker and SAVE the key myself (USB + password manager, never the cloud). Win11 Home =
+   Device Encryption only; Win11 Pro is optional for managed BitLocker.
 7. Firewall: Windows Firewall ON, default-deny inbound (ports get opened later, LAN-scoped only).
 
 Phase 2 — Unlock GPU memory (unified-memory split; do before loading big models)
@@ -132,6 +143,14 @@ Phase 7 (OPTIONAL) — Odysseus AI workspace (experimental, only if I ask)
     Ollama/LM Studio endpoint, and set NO real email/API/webhook/CalDAV creds and NO write-git
     creds for its agent. It is Tier-3 prep, not core infra, and AGPL-3.0 (no modify-and-expose
     without owner sign-off). Default: skip unless I say otherwise.
+
+Phase 8 (OPTIONAL, cosmetic) — "Operations Console" branding
+23. If I ask, apply the Cornerman theme from `lifepunch/branding/cornerman/` (after the repo is
+    cloned): Dark mode + accent `#00FF7F`, wallpaper + lock screen to `cornerman-wallpaper.png`,
+    add the `Cornerman Ops` scheme from `windows-terminal-cornerman.json` to Windows Terminal
+    (font Cascadia Code / JetBrains Mono / Fira Code), Teams background to `cornerman-teams-bg.png`,
+    and dark Edge. Follow `lifepunch/branding/cornerman/THEME.md` step-by-step. Cosmetic only —
+    it changes NOTHING about the security posture.
 
 Ask me for: the GitHub repo SSH URL, and anything you can't determine yourself. Don't guess.
 ```

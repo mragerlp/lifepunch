@@ -50,8 +50,10 @@ tooling/MCP can use, and RAG over the repo with secrets excluded. Sections 6–7
 ## 1. Prep (have ready before/at first boot)
 
 - A wired CAT6 run to the same LAN as the primary machine (use the 2.5 GbE port, not Wi-Fi).
-- A **local-account plan (no Microsoft account / no email)** + a password-manager entry for this box
-  (method in §2.3). Keeps the box off cloud sync and matches the no-secrets posture.
+- The account plan + a password-manager entry for this box (§2.3). **Owner's choice: a
+  Microsoft/Outlook-tied admin** (ties the encrypted box to the owner's own identity for clear
+  ownership / chain-of-custody of the IP) **with MFA on and all Windows sync disabled** — a local
+  account (no email) is the equally-valid alternative.
 - A USB stick for an offline recovery-key backup (Device Encryption / BitLocker).
 - Keyboard, mouse, and a DisplayPort/HDMI or USB-C cable to a monitor (none are included).
 - Confirm the codename (used for hostname + git author; and Tailscale if remote is ever added).
@@ -60,28 +62,38 @@ tooling/MCP can use, and RAG over the repo with secrets excluded. Sections 6–7
 
 1. Windows Update → install everything, reboot until clean.
 2. BIOS/firmware: update to latest Corsair/AMD firmware (Strix Halo perf + security fixes).
-3. **Account = LOCAL, no Microsoft account / no email.** At the Windows OOBE sign-in screen press
-   **Shift+F10** → run `start ms-cxh:localonly` → create the local user (codename, strong password,
-   security questions); add a **Windows Hello PIN** after. Fallback if that's ever patched out: stay
-   **offline** during OOBE (unplug Ethernet / skip Wi-Fi) to reveal the local-account path. No
-   shared/blank admin; store the password in the password manager (no email = recovery is on you).
-4. **Decline cloud/telemetry at OOBE:** location, Find My Device, full diagnostics (leave **Required**
-   only), tailored experiences, advertising ID, activity history, phone-link — all off. Don't sign
-   into OneDrive.
-5. **Remove OneDrive:** Settings → Apps → uninstall **Microsoft OneDrive** (or unlink + disable
-   run-at-login); confirm Documents/Desktop are **local** paths, not redirected. No cloud folder sync
-   for the repo — the same rule that retired the OneDrive clone (§6.2).
-6. Rename the PC to the codename (Settings → System → About → Rename).
-7. Storage encryption: enable **Device Encryption** (Settings → Privacy & security → Device
-   encryption). **Local-account caveat:** with no Microsoft account there is **no automatic key
-   escrow**, so it may not self-enable — turn on BitLocker yourself and **back up the recovery key to
-   the USB stick + password manager (NOT the cloud).** Win11 Home only has Device Encryption, not
-   managed BitLocker — upgrade to **Win11 Pro** only if you want managed full-disk encryption + remote
-   policy. (Lockout isn't catastrophic — the box is a clone; source of truth is the monorepo.)
-8. Firewall: keep Windows Firewall ON, default-deny inbound. Ports are opened later, **LAN-scoped only**.
-9. Disable what you won't use (WAN-facing RDP, internet-facing SMB, etc.).
-10. Review preinstalled AI apps (Jan.ai, Amuse.ai, Corsair AI Software Stack). Keep what we use;
-    nothing here phones sensitive data out by default, but treat all models as local-only.
+3. **Account — owner's policy: a Microsoft/Outlook-tied admin is acceptable and preferred** (it ties
+   the encrypted box to the owner's own identity, which supports ownership / chain-of-custody of the
+   IP). **Required when using a Microsoft account:** turn on **MFA** + a strong unique password (that
+   account now both unlocks the box and escrows the BitLocker key), and disable every sync surface in
+   step 4. A **local account** is the equally-valid alternative — OOBE: **Shift+F10** →
+   `start ms-cxh:localonly`, or stay offline during setup; no email, so recovery is on you. Either
+   way: add a **Windows Hello PIN**; no shared/blank admin. *The security that matters is identity
+   isolation + no project secrets on the box (below), not the account type.*
+4. **Disable ALL Windows sync.** (Your Outlook **mailbox** still syncs — that's your data; what we
+   kill is system/file/settings sync.)
+   - **OneDrive:** Settings → Apps → uninstall **Microsoft OneDrive** (or unlink + disable
+     run-at-login); confirm Documents/Desktop/Pictures are **local**, not redirected. (Same rule that
+     retired the OneDrive clone, §6.2.)
+   - **Windows Backup:** Settings → Accounts → Windows backup → "Remember my apps" + "Remember my
+     preferences" + OneDrive folder syncing → **Off**.
+   - **Edge:** Settings → Profiles → **Sync → Off**.
+   - **Clipboard:** Settings → System → Clipboard → sync across devices → **Off**.
+   - **Cloud search:** Privacy & security → Search permissions → Cloud content search → **Off**.
+   - **Activity history / Find My Device / Phone Link / Nearby sharing → Off.**
+   - **Diagnostics:** Required only; tailored experiences + advertising ID → **Off**.
+   - **Office / 365 apps (if installed):** default Save = **This PC**; don't connect cloud storage.
+5. Rename the PC to the codename (Settings → System → About → Rename).
+6. Storage encryption: enable **BitLocker / Device Encryption** (Settings → Privacy & security →
+   Device encryption). **Microsoft account:** the recovery key auto-escrows to account.microsoft.com
+   (MFA-protected) — fine; also keep an **offline copy** (USB + password manager). **Local account:**
+   no escrow → **save the key yourself** (USB + password manager, never the cloud). Win11 Home only
+   has Device Encryption, not managed BitLocker — upgrade to **Win11 Pro** only if you want managed
+   full-disk encryption + remote policy. (Lockout isn't catastrophic — the box is a clone.)
+7. Firewall: keep Windows Firewall ON, default-deny inbound. Ports are opened later, **LAN-scoped only**.
+8. Disable what you won't use (WAN-facing RDP, internet-facing SMB, etc.).
+9. Review preinstalled AI apps (Jan.ai, Amuse.ai, Corsair AI Software Stack). Keep what we use;
+   nothing here phones sensitive data out by default, but treat all models as local-only.
 
 ## 3. AMD graphics stack + Variable Graphics Memory (do this before loading big models)
 
@@ -280,6 +292,14 @@ framing — that's exactly the Cornerman concept.
 - [ ] If Odysseus is trialed: pinned `main` commit, `AUTH_ENABLED=true`, bound LAN/loopback only,
       **no real email/API/webhook/CalDAV creds**, agent has **no write-git creds**, backend points
       at the local Ollama/LM Studio endpoint.
+
+## 10. Branding (OPTIONAL, cosmetic — does not affect security)
+
+A "Cornerman // Operations Console" theme pack lives in `lifepunch/branding/cornerman/`
+(wallpaper, Teams background, Windows Terminal `Cornerman Ops` scheme) with a step-by-step
+apply checklist in `THEME.md`. Palette: bg `#0A0D0A`, primary green `#00FF7F`, secondary
+`#19C37D`, warning red `#C1121F`, mint text `#D8FFE8`. Apply it only if you want the look;
+it changes nothing about the LAN-only / no-secrets posture above.
 
 ## Sources (verified June 2026)
 
