@@ -95,11 +95,15 @@ function Push-LaneExport {
 
     # If the lane already has content, UPDATE it in place (clone -> resync -> fast-forward push),
     # which respects protected main / never-force-push. If it's empty, fall back to a fresh init.
+    # git writes "Cloning into..." to stderr; relax Stop here and gate on $LASTEXITCODE instead.
+    $prevEAP0 = $ErrorActionPreference
     $prevPrompt0 = $env:GIT_TERMINAL_PROMPT
+    $ErrorActionPreference = 'Continue'
     $env:GIT_TERMINAL_PROMPT = '0'
     git -c credential.helper= -c core.askpass= clone --depth 1 $PushUrl $TempRoot 2>&1 | Out-Null
     $cloneOk = ($LASTEXITCODE -eq 0) -and (Test-Path -LiteralPath (Join-Path $TempRoot '.git'))
     $env:GIT_TERMINAL_PROMPT = $prevPrompt0
+    $ErrorActionPreference = $prevEAP0
 
     if ($cloneOk) {
         $LaneMode = 'update'
