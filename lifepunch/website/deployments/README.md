@@ -35,17 +35,25 @@ Canonical edit location on this machine:
 
 ```text
 %USERPROFILE%\OneDrive\Lifepunch\Rules\
-  Rules-V1.txt    — production paste (full worker)
-  Rules-Test1.txt — sandbox (optional experiments)
-  Rules-V2.txt    — layout comparison copy (regenerate from V1)
+  Rules-V1.txt           — production paste (full worker)
+  Rules-Test1.txt        — rules/content sandbox
+  WebsiteColorTest.txt   — color/theme sandbox (paste into Cloudflare while tuning colors)
+  Rules-V2.txt           — layout comparison copy (regenerate from V1)
 ```
 
 Repo mirror: `lifepunch/website/deployments/Rules/` and `cloudflare-worker.mjs`.
 
 Sync scripts (`lifepunch/website/deployments/scripts/`):
 
-- **Push** (repo worker → **Test1 only**): `sync-rules-from-onedrive.ps1 -Direction Push`
-- **Pull** (OneDrive Test1 → repo worker): `sync-rules-from-onedrive.ps1 -Direction Pull`
-- **Promote** (Test1 → **V1** production paste): `sync-rules-from-onedrive.ps1 -Direction Promote`
+- **Push** (repo worker → sandbox `.txt`): `sync-rules-from-onedrive.ps1 -Direction Push`
+- **Pull** (OneDrive sandbox → repo worker): `sync-rules-from-onedrive.ps1 -Direction Pull`
+- **Promote** (Rules-Test1 → **V1** production paste): `sync-rules-from-onedrive.ps1 -Direction Promote`
 
-Active testing paste: `Rules-Test1.txt`. Production paste: `Rules-V1.txt` (only after Promote).
+Use `-SandboxFile WebsiteColorTest.txt` for color work (does not touch Rules-Test1 or V1):
+
+```powershell
+sync-rules-from-onedrive.ps1 -Direction Pull -SandboxFile WebsiteColorTest.txt
+sync-rules-from-onedrive.ps1 -Direction Push -SandboxFile WebsiteColorTest.txt
+```
+
+Active rules sandbox: `Rules-Test1.txt`. Color sandbox: `WebsiteColorTest.txt`. Production paste: `Rules-V1.txt` (only after Promote).
