@@ -1,0 +1,106 @@
+========================================================================
+LIFEPUNCH — WEBSITE LANE SETUP (for shottaWEB)
+Send this whole file. It's everything you need to start, in order.
+========================================================================
+
+Hey — you're the website partner on LifePunch (the lifepunch.co site + Cloudflare
+worker). You work in your OWN GitLab lane; the owner integrates your commits into the
+main GitHub repo. You never touch addons / server / gamemode — just the website.
+
+Do the three steps below in order. Steps 1-2 are one-time. Step 3 is what you paste
+into Cursor every time you start a new website task.
+
+------------------------------------------------------------------------
+STEP 1 — LINK GITLAB (one time — nothing works until this is done)
+------------------------------------------------------------------------
+1. Go to https://gitlab.com and create / sign in to an account using THIS email:
+      br.black4022@gmail.com
+   (It MUST be that email — your project invites are pinned to it.)
+2. Check that inbox for two GitLab invitation emails and ACCEPT both:
+      - lifepunch-foundation   (read-only grounding)
+      - lifepunch-website      (your write lane — Developer)
+
+------------------------------------------------------------------------
+STEP 2 — CLONE YOUR REPOS (one time)
+------------------------------------------------------------------------
+Run these in a terminal where you keep your projects:
+
+      git clone https://gitlab.com/mragerlp/lifepunch-foundation.git
+      git clone https://gitlab.com/mragerlp/lifepunch-website.git
+
+Open the lifepunch-website folder in Cursor — that's your workspace root.
+
+WORKFLOW (always):
+      git pull --rebase
+      ...do your work...
+      git push
+Force-push is blocked on main. Always pull --rebase before you push.
+
+------------------------------------------------------------------------
+STEP 3 — START A TASK IN CURSOR
+------------------------------------------------------------------------
+Open a FRESH Cursor chat (Auto/Composer is the default model — don't burn Opus on
+routine site work). Paste the whole block below, replace [YOUR TASK HERE] with what
+you're doing, and send it. The agent will read the project grounding and summarize
+where things stand before it touches anything.
+
+================= PASTE EVERYTHING BELOW THIS LINE =================
+
+You are an agent on the LifePunch project. Before doing anything, ground yourself in the
+single source of truth — do NOT re-derive or diverge from it.
+
+READ FIRST (in this order), then follow them as law:
+1. The project's `.cursor/rules` (all alwaysApply): lifepunch-operating-context,
+   lifepunch-quality-bar, dxrp-addon-foundation, lifepunch-trademark-ip,
+   lifepunch-rules-workflow, lifepunch-website-organization.
+2. `lifepunch/docs/AGENT_ONBOARDING.md` ← foundation + current state. Start here.
+3. `lifepunch/docs/WORKSPACE_STRUCTURE.md`.
+4. `lifepunch/docs/GITLAB_ORGANIZATION.md` ← GitLab lane map (GitHub monorepo stays canonical).
+
+NOTE: every GitLab lane bundles a SYNCED MIRROR of `.cursor/rules` + `lifepunch/docs` at its root,
+so the rules auto-apply and grounding is local. NEVER edit grounding in a lane — it regenerates from
+the monorepo on each export; change rules/docs in GitHub only.
+
+WHAT THIS IS: LifePunch builds custom, LifePunch-owned content for DXRP (a DarkRP-style game
+on s&box / Facepunch). Treat it as a business: direct, ship quality, no spaghetti (honest
+simple baselines are fine; tracked in addons/docs/TECH_DEBT.md when in the addons lane).
+
+SOURCE OF TRUTH: https://github.com/mragerlp/lifepunch (GitHub monorepo). Owner works here.
+GITLAB (June 2026+): Per-lane partner repos under gitlab.com/mragerlp — NOT a GitHub replacement.
+Commit ONLY your lane. Always `git pull --rebase`; never force-push. See GITLAB_ORGANIZATION.md.
+COMMIT CONSENT: never commit unprompted — when work hits a natural commit point, ASK the owner
+whether to commit (propose scope + message) and commit only on an explicit yes.
+
+HOW WE OPERATE (cost-safe — every token is real $USD):
+- Default model: Auto/Composer (Tier-2). Opus (Tier-1) only for architecture / multi-file C# /
+  subtle debugging / legal-structural work.
+- Session hygiene: one focused chat per task; attach specific files/ranges, not whole folders.
+- Guardrails: verify by stakes not model; commit only your lane; dev/clones only (production
+  needs owner approval).
+
+TRADEMARK: LIFEPUNCH is the only mark we own (Peak Performance Products LLC). DXRP/Dxura/s&box/
+Facepunch are third-party — lead product names with LIFEPUNCH ("LIFEPUNCH Admin Menu for DXRP").
+Use LIFEPUNCH(TM) now (pending); never the (R) symbol until the USPTO registration issues.
+
+Confirm you've read the grounding and give a one-paragraph summary of where we are before work.
+
+---
+
+YOUR LANE: GitLab lifepunch-website ONLY. You are shottaWEB — website partner for lifepunch.co.
+Canonical monorepo (read grounding): https://github.com/mragerlp/lifepunch
+Workspace root: your lifepunch-website GitLab checkout.
+Paths you own: website/** — Cloudflare worker, rules deploy scripts, site integrations, public copy.
+Do NOT edit addons, server, portal, or gamemode — owner integrates your GitLab commits into GitHub.
+
+RULES WORKFLOW (law): OneDrive Rules-Test1.txt is canonical for active rules work. Pull from
+OneDrive before editing (sync-rules-from-onedrive.ps1 -Direction Pull). Never Push or Promote
+unless the owner explicitly asks. See lifepunch-rules-workflow rule.
+
+WEBSITE ORGANIZATION: Keep all site work under website/. No API keys or secrets in git —
+use ../secure locally. Partner uses own Cursor plan (Pro/Pro+); default Auto.
+
+NEXT: confirm grounding, then [YOUR TASK HERE].
+
+================= PASTE EVERYTHING ABOVE THIS LINE =================
+
+Questions? Ping the owner. Welcome aboard.
