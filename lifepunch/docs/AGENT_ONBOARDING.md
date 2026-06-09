@@ -40,6 +40,12 @@ direct, ship quality.
   fully-owned solution, no dead/orphan assets. Don't present an interim baseline as the
   polished endgame; track genuinely-temporary work in `lifepunch/addons/docs/TECH_DEBT.md`.
 - **dxrp-addon-foundation** — folder lane + validators; `addons.json` is source of truth.
+- **lifepunch-trademark-ip** — trademark, brand-architecture, and proprietary-IP doctrine
+  (repo-wide). **LIFEPUNCH** is the only mark we own (owner: **Peak Performance Products LLC**);
+  **DXRP / Dxura / s&box / Facepunch are third-party** — reference nominatively only, and
+  **lead product names with LIFEPUNCH** ("LIFEPUNCH Admin Menu for DXRP", not "DXRP Admin Menu").
+  Canonical detail: `lifepunch/legal/TRADEMARK_AND_IP.md`. Never commit sensitive identifiers
+  (EIN, domicile address) — those stay off the repo.
 - **lifepunch-rules-workflow** + **lifepunch-website-organization** — website/rules deploy.
 
 Also read `lifepunch/docs/WORKSPACE_STRUCTURE.md`. Don't fork parallel grounding/docs —
@@ -89,7 +95,10 @@ The `lifepunch-operating-context` rule is law here; this is the orientation. We 
   servers and is defended (anti-clone + DMCA; see `lifepunch.co/tos` §5–6). Third-party/ported
   assets (Valve/CS2, s&box, community models) stay their owners' — used with attribution,
   never sold/redistributed. evo's Bitminer is reference-only, never published.
-- Legal/licensing terms live in the **website ToS**, not in agent rules or code comments.
+- Trademark / brand-architecture / proprietary-IP doctrine is now **law** in the
+  **lifepunch-trademark-ip** rule (canonical: `lifepunch/legal/TRADEMARK_AND_IP.md`); licensing /
+  EULA terms surface in the **website ToS** (`lifepunch.co/tos` §5–6). Keep legal boilerplate out
+  of code comments — point to the rule/ToS instead.
 
 ## Architecture patterns
 
@@ -110,8 +119,30 @@ The `lifepunch-operating-context` rule is law here; this is the orientation. We 
 
 ## Current direction (June 2026)
 
-- AK-47 weapon work is **paused**. Next foundation build: an **in-game staff/admin menu**
-  addon that works on ANY DXRP server, driven by the existing policy in
-  `lifepunch/admin-panel/` (roles + `permissions/matrix.md`). Server-agnostic, config-driven,
-  LifePunch-owned IP.
+**Recently landed (foundation is current as of this note):**
+- **Trademark / IP doctrine — finalized + law.** `lifepunch-trademark-ip` rule + the full
+  `lifepunch/legal/` tree (`TRADEMARK_AND_IP.md`, marks, specimens, clearance evidence) are in.
+- **Efficiency & cost discipline + Cornerman — merged.** Model-routing tiers (T1 Opus / T2
+  Sonnet-auto default / T3 Cornerman), session hygiene, knowledge-capture, and the multi-agent
+  safeguards live in `lifepunch-operating-context`; mirror above. Cornerman setup +
+  day-one prompt in `lifepunch/docs/`. On Ultra, **Auto/Composer don't draw the $400 pool** —
+  default there, reserve the pool for Tier-1 Opus.
+
+**Operational state (Cursor billing migration in progress):**
+- Owner is moving from the locked annual **Team** plan to an individual **Ultra** plan
+  (hard-stop at the $400 pool, on-demand off). Partner moves to their own individual plan
+  (Pro/Pro+, website lane). The old Team plan: usage-based **off** + auto-renew **cancelled**
+  once the owner is signed into Ultra; it lapses to free at term end. Source of truth is the
+  repo, so the account switch loses nothing but chat history.
+
+**Open tracked items (see `lifepunch/addons/docs/TECH_DEBT.md`):**
+- **STAFF-09** — `StaffMenuTestBots.cs` is in `namespace Dxura.RP.Game;` (must move to a
+  LifePunch namespace); the workspace validator is green except for this one item.
+- **EFF-01** — full validate-before-push hook gate is deferred until the validator is green
+  (STAFF-09). The merge-conflict-marker guard in the stop hook is **active** now.
+
+**Next foundation build:**
+- AK-47 weapon work is **paused**. Next: an **in-game staff/admin menu** addon that works on
+  ANY DXRP server, driven by the policy in `lifepunch/admin-panel/` (roles +
+  `permissions/matrix.md`). Server-agnostic, config-driven, LifePunch-owned IP.
 - Propose feature set + architecture + permission mapping for sign-off **before** building.
