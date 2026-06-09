@@ -56,54 +56,78 @@ MINDSET & SEQUENCE (start simple — small wins build a stable platform)
 
 DO THIS, START TO FINISH (confirm each phase before moving on):
 
-Phase 1 — Secure the OS
-1. Confirm Windows is fully updated (Windows Update) and rebooted clean.
-2. Confirm the AMD Adrenalin driver + Corsair firmware are updated from Corsair support.
-3. Guide me to enable Device Encryption (Settings > Privacy & security > Device encryption) and
-   to back up the recovery key to a USB stick + password manager (NOT the cloud).
-4. Confirm Windows Firewall is ON with default-deny inbound.
+PHASE 0 (operator, during Windows first-run — likely already done before you exist):
+- Account = LOCAL, no Microsoft account / no email: at the OOBE sign-in screen, Shift+F10 >
+  `start ms-cxh:localonly` > create the local user (codename, strong password). Fallback: stay
+  offline during OOBE (unplug Ethernet / skip Wi-Fi). Decline location/diagnostics(Required only)/
+  ad-ID/activity-history/Find-My-Device/phone-link. Don't sign into OneDrive.
 
-Phase 2 — Unlock GPU memory
-5. Guide me: right-click desktop > AMD Software: Adrenalin > Performance > Tuning >
-   Variable Graphics Memory > set to max (~48GB) > Restart.
+Phase 1 — Secure the OS (verify the first-run choices, then harden)
+1. VERIFY the Phase 0 choices and remediate post-boot: confirm this is a LOCAL account, no Microsoft
+   account/email (Settings > Accounts); confirm OneDrive is uninstalled/unlinked (Settings > Apps)
+   and Documents/Desktop are LOCAL, not redirected; confirm OOBE privacy toggles are off. Fix what's
+   fixable now; flag anything that would need a reinstall.
+2. Confirm Windows is fully updated (Windows Update) and rebooted clean.
+3. Confirm AMD Adrenalin driver + Corsair BIOS/firmware are updated (Corsair.com product support >
+   Downloads; an Adrenalin "Preview/Press" driver may be provided for large-model loads).
+4. Rename the PC to "Cornerman" (Settings > System > About > Rename) if not already.
+5. Account hardening: strong password + Windows Hello PIN; no shared/blank admin.
+6. Storage encryption: enable Device Encryption (Settings > Privacy & security > Device encryption).
+   LOCAL-ACCOUNT CAVEAT: no Microsoft account = no automatic key escrow, so it may not self-enable —
+   guide me to turn on BitLocker and SAVE the recovery key to a USB stick + password manager (NOT the
+   cloud). Win11 Home = Device Encryption only; Win11 Pro is optional for managed BitLocker.
+7. Firewall: Windows Firewall ON, default-deny inbound (ports get opened later, LAN-scoped only).
+
+Phase 2 — Unlock GPU memory (unified-memory split; do before loading big models)
+8. Set the unified-memory split (Corsair quick-start — two ways):
+   - AMD Adrenalin (dynamic): right-click desktop > AMD Software: Adrenalin Edition > Performance >
+     Tuning > Variable Graphics Memory > Custom (or High) > set to the MAX this 64GB SKU offers
+     (~48GB; Medium 32GB is the safe fallback) > accept the Restart prompt.
+   - BIOS UMA Frame Buffer (firmware floor): at the CORSAIR boot logo press DEL > Advanced > GFX
+     Configuration > UMA Frame Buffer Size > choose size > F10 > Save > restart. Leave Resizable BAR
+     and Above 4G Decoding at their preconfigured (enabled) values. BIOS is GUI-only — give me the
+     exact key/click path and wait for me; don't guess.
+9. Set the front-panel Performance Level Selector to Max while serving models (Quiet/Balanced/Max;
+   an on-screen toast confirms the mode).
 
 Phase 3 — First local model
-6. Guide me to open the CORSAIR AI Software Stack and install LM Studio.
-7. Guide me in LM Studio: Skip onboarding; enable Developer Mode + "Start LLM service on login";
-   Discover > Runtime > update; select the Vulkan backend.
-8. Guide me to download a ~30B coding model (Q5/Q6), load it with GPU Offload = MAX,
-   Flash Attention = ON, high context, Remember settings. Confirm a test prompt answers.
+10. Guide me to open the CORSAIR AI Software Stack and install LM Studio.
+11. Guide me in LM Studio: Skip onboarding; enable Developer Mode + "Start LLM service on login";
+    Discover > Runtime > update; select the Vulkan backend.
+12. Guide me to download a ~30B coding model (Q5/Q6), load it with GPU Offload = MAX,
+    Flash Attention = ON, high context, Remember settings. Confirm a test prompt answers.
 
 Phase 4 — Serve it on the LAN
-9. Guide me to enable LM Studio's local server (OpenAI-compatible, port 1234) bound to the LAN IP.
-10. From my primary PC I'll open http://<LAN-IP>:1234/v1/models to confirm it's reachable.
+13. Guide me to enable LM Studio's local server (OpenAI-compatible, port 1234) bound to the LAN IP.
+14. From my primary PC I'll open http://<LAN-IP>:1234/v1/models to confirm it's reachable.
     Help me find this box's LAN IP and verify.
 
 Phase 5 — Secure pipeline to the repo (GitHub monorepo = source of truth)
-11. Confirm Git is installed (CORSAIR stack or git-scm).
-12. Generate a new SSH key on this box; I'll add it to GitHub. Clone the canonical monorepo:
+15. Confirm Git is installed (CORSAIR stack or git-scm) + Git LFS + Git Credential Manager (the
+    monorepo uses LFS).
+16. Generate a new SSH key on this box; I'll add it to GitHub. Clone the canonical monorepo:
     - `git@github.com:mragerlp/lifepunch.git`  (full grounding + RAG source; READ/clone)
     - GitLab lane repos (gitlab.com/mragerlp/lifepunch-*) are for the partner agents, not this box.
       Only clone a GitLab lane if I explicitly assign this box write work in one.
-13. Verify `git pull --rebase` works. Re-confirm: never force-push. This box does not commit
+17. Verify `git pull --rebase` works. Re-confirm: never force-push. This box does not commit
     work it didn't author, and never commits unprompted — ask the owner first; any commit is
     operator-reviewed.
-14. Confirm `lifepunch/secure/` and any secrets are NOT present/used on this box.
+18. Confirm `lifepunch/secure/` and any secrets are NOT present/used on this box.
 
 Phase 6 — Adopt project grounding
-15. After cloning, READ these and follow them as law going forward:
+19. After cloning, READ these and follow them as law going forward:
     - `.cursor/rules` (alwaysApply)
     - `lifepunch/docs/AGENT_ONBOARDING.md`
     - `lifepunch/docs/WORKSPACE_STRUCTURE.md`
     - `lifepunch/docs/GITLAB_ORGANIZATION.md`
     - `lifepunch/docs/LOCAL_AI_WORKSTATION.md`  (the full reference for THIS machine)
-16. Start a LOCAL on-box SETUP.md log (local only, never committed, no secrets): installed tools,
+20. Start a LOCAL on-box SETUP.md log (local only, never committed, no secrets): installed tools,
     ports in use, models pulled, and known issues. Keep it updated as we go.
-17. Report: a short status of each phase, the endpoint URL + loaded model, and anything that
+21. Report: a short status of each phase, the endpoint URL + loaded model, and anything that
     failed or needs my decision.
 
 Phase 7 (OPTIONAL) — Odysseus AI workspace (experimental, only if I ask)
-18. Only if I tell you to trial it: follow LOCAL_AI_WORKSTATION.md Section 8 EXACTLY — pin the
+22. Only if I tell you to trial it: follow LOCAL_AI_WORKSTATION.md Section 8 EXACTLY — pin the
     reviewed `main` commit, AUTH on, bind LAN/loopback only, point its backend at the local
     Ollama/LM Studio endpoint, and set NO real email/API/webhook/CalDAV creds and NO write-git
     creds for its agent. It is Tier-3 prep, not core infra, and AGPL-3.0 (no modify-and-expose

@@ -50,7 +50,8 @@ tooling/MCP can use, and RAG over the repo with secrets excluded. Sections 6–7
 ## 1. Prep (have ready before/at first boot)
 
 - A wired CAT6 run to the same LAN as the primary machine (use the 2.5 GbE port, not Wi-Fi).
-- The Microsoft/local account credentials you want; a password-manager entry for this box.
+- A **local-account plan (no Microsoft account / no email)** + a password-manager entry for this box
+  (method in §2.3). Keeps the box off cloud sync and matches the no-secrets posture.
 - A USB stick for an offline recovery-key backup (Device Encryption / BitLocker).
 - Keyboard, mouse, and a DisplayPort/HDMI or USB-C cable to a monitor (none are included).
 - Confirm the codename (used for hostname + git author; and Tailscale if remote is ever added).
@@ -59,25 +60,46 @@ tooling/MCP can use, and RAG over the repo with secrets excluded. Sections 6–7
 
 1. Windows Update → install everything, reboot until clean.
 2. BIOS/firmware: update to latest Corsair/AMD firmware (Strix Halo perf + security fixes).
-3. Rename the PC to the codename (Settings → System → About → Rename).
-4. Accounts: strong password + Windows Hello PIN. No shared/blank local admin.
-5. Storage encryption: enable **Device Encryption** (Settings → Privacy & security → Device
-   encryption). Win11 Home only has Device Encryption, not full BitLocker management — if you
-   want manageable full-disk encryption + remote policy, upgrade this box to **Win11 Pro**.
-   Back up the recovery key to the USB stick + password manager (**not** to the cloud).
-6. Firewall: keep Windows Firewall ON, default-deny inbound. Ports are opened later, **LAN-scoped only**.
-7. Disable what you won't use (WAN-facing RDP, internet-facing SMB, etc.).
-8. Review preinstalled AI apps (Jan.ai, Amuse.ai, Corsair AI Software Stack). Keep what we use;
-   nothing here phones sensitive data out by default, but treat all models as local-only.
+3. **Account = LOCAL, no Microsoft account / no email.** At the Windows OOBE sign-in screen press
+   **Shift+F10** → run `start ms-cxh:localonly` → create the local user (codename, strong password,
+   security questions); add a **Windows Hello PIN** after. Fallback if that's ever patched out: stay
+   **offline** during OOBE (unplug Ethernet / skip Wi-Fi) to reveal the local-account path. No
+   shared/blank admin; store the password in the password manager (no email = recovery is on you).
+4. **Decline cloud/telemetry at OOBE:** location, Find My Device, full diagnostics (leave **Required**
+   only), tailored experiences, advertising ID, activity history, phone-link — all off. Don't sign
+   into OneDrive.
+5. **Remove OneDrive:** Settings → Apps → uninstall **Microsoft OneDrive** (or unlink + disable
+   run-at-login); confirm Documents/Desktop are **local** paths, not redirected. No cloud folder sync
+   for the repo — the same rule that retired the OneDrive clone (§6.2).
+6. Rename the PC to the codename (Settings → System → About → Rename).
+7. Storage encryption: enable **Device Encryption** (Settings → Privacy & security → Device
+   encryption). **Local-account caveat:** with no Microsoft account there is **no automatic key
+   escrow**, so it may not self-enable — turn on BitLocker yourself and **back up the recovery key to
+   the USB stick + password manager (NOT the cloud).** Win11 Home only has Device Encryption, not
+   managed BitLocker — upgrade to **Win11 Pro** only if you want managed full-disk encryption + remote
+   policy. (Lockout isn't catastrophic — the box is a clone; source of truth is the monorepo.)
+8. Firewall: keep Windows Firewall ON, default-deny inbound. Ports are opened later, **LAN-scoped only**.
+9. Disable what you won't use (WAN-facing RDP, internet-facing SMB, etc.).
+10. Review preinstalled AI apps (Jan.ai, Amuse.ai, Corsair AI Software Stack). Keep what we use;
+    nothing here phones sensitive data out by default, but treat all models as local-only.
 
 ## 3. AMD graphics stack + Variable Graphics Memory (do this before loading big models)
 
-1. The AMD Adrenalin / Ryzen AI driver ships preinstalled; update it from Corsair/AMD support.
-2. **Set Variable Graphics Memory:** right-click desktop → **AMD Software: Adrenalin Edition →
-   Performance → Tuning → Variable Graphics Memory → set to max (~48 GB on this SKU) → Restart.**
-   This is what lets large models load fully on the iGPU.
-3. Confirm the iGPU is seen as a **Vulkan** device (RADV/AMD) — the llama.cpp inference path.
-4. (Advanced, optional) ROCm on Windows for `gfx1151` is still maturing — skip for v1; revisit
+1. The AMD Adrenalin / Ryzen AI driver ships preinstalled; update it from Corsair.com product support
+   → **Downloads** (for big-model loads AMD/Corsair may provide an Adrenalin **Preview/Press** driver).
+2. **Set the unified-memory split — two ways (per the Corsair quick-start):**
+   - **AMD Adrenalin (easy, dynamic):** right-click desktop → **AMD Software: Adrenalin Edition →
+     Performance → Tuning → Variable Graphics Memory** → presets **Minimum 0.5 GB / Medium 32 GB /
+     High (max)**, or **Custom** → set to the **max this SKU offers (~48 GB on the 64 GB box)** →
+     accept the **restart** prompt. (Medium 32 GB is the safe fallback if ~48 GB causes instability.)
+   - **BIOS UMA Frame Buffer (firmware floor):** at the **CORSAIR** boot logo press **DEL** →
+     **Advanced** → **GFX Configuration** → **UMA Frame Buffer Size** → choose the size → **F10 →
+     Save → restart.** Leave **iGPU Configuration**, **Resizable BAR (PCIE)**, and **Above 4G
+     Decoding** at their preconfigured (enabled) values.
+3. **Performance Level Selector (front-panel button):** cycles **Quiet / Balanced / Max** (on-screen
+   toast confirms). Run in **Max** when serving models; Quiet/Balanced for idle.
+4. Confirm the iGPU is seen as a **Vulkan** device (RADV/AMD) — the llama.cpp inference path.
+5. (Advanced, optional) ROCm on Windows for `gfx1151` is still maturing — skip for v1; revisit
    via AMD's native `gfx1151` builds or Lemonade's ROCm backend if we later need max throughput.
 
 ## 4. Local LLM runtime (fastest path first)
