@@ -129,8 +129,10 @@ $border: rgba(255, 255, 255, 0.06);
 		}
 
 		// Header settings cog: match the close "X" exactly (same 26px glyph in the same 34x34 button)
-		// so the two header actions are pixel-aligned, not a small cog sitting low beside a big X.
-		&.settings {
+		// so the two header actions are pixel-aligned. Uses its own `.cog` class (NOT `.settings`)
+		// because the top-level `.settings` rule is the Settings VIEW panel (padding/column/grow) and
+		// would otherwise leak onto this button via equal specificity and knock it out of line.
+		&.cog {
 			.material-icons {
 				font-size: 26px;
 			}
