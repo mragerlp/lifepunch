@@ -87,11 +87,31 @@ function Push-LaneExport {
         return $true
     }
 
+    $PushUrl = Get-PushUrl -Slug $Slug
     $TempRoot = Join-Path $env:TEMP "lifepunch-export-$Slug"
     if (Test-Path -LiteralPath $TempRoot) {
         Remove-Item -LiteralPath $TempRoot -Recurse -Force
     }
-    New-Item -ItemType Directory -Path $TempRoot | Out-Null
+
+    # If the lane already has content, UPDATE it in place (clone -> resync -> fast-forward push),
+    # which respects protected main / never-force-push. If it's empty, fall back to a fresh init.
+    $prevPrompt0 = $env:GIT_TERMINAL_PROMPT
+    $env:GIT_TERMINAL_PROMPT = '0'
+    git -c credential.helper= -c core.askpass= clone --depth 1 $PushUrl $TempRoot 2>&1 | Out-Null
+    $cloneOk = ($LASTEXITCODE -eq 0) -and (Test-Path -LiteralPath (Join-Path $TempRoot '.git'))
+    $env:GIT_TERMINAL_PROMPT = $prevPrompt0
+
+    if ($cloneOk) {
+        $LaneMode = 'update'
+        # Clear tracked working tree (keep .git) so removals propagate as a clean delta.
+        Get-ChildItem -LiteralPath $TempRoot -Force | Where-Object { $_.Name -ne '.git' } | Remove-Item -Recurse -Force
+    }
+    else {
+        $LaneMode = 'fresh'
+        if (Test-Path -LiteralPath $TempRoot) { Remove-Item -LiteralPath $TempRoot -Recurse -Force }
+        New-Item -ItemType Directory -Path $TempRoot | Out-Null
+    }
+    Write-Host "  mode: $LaneMode" -ForegroundColor DarkGray
 
     foreach ($Path in $AllPaths) {
         $Source = Join-Path $RepoRoot $Path
@@ -110,8 +130,6 @@ function Push-LaneExport {
     $Readme = "# $Slug`n`nLifePunch lane export. Canonical monorepo: https://github.com/mragerlp/lifepunch`n`nThis repo is a partner lane workspace, NOT the sole source of truth.`n`n## Grounding (read first)`n`nThis lane bundles a SYNCED MIRROR of the project grounding so it is self-contained:`n- ` + '`.cursor/rules`' + ` (auto-applies in Cursor at this lane root)`n- ` + '`lifepunch/docs/`' + ` (AGENT_ONBOARDING, WORKSPACE_STRUCTURE, GITLAB_ORGANIZATION, etc.)`n`nThe grounding is a READ-ONLY mirror of the GitHub monorepo. Do NOT edit ` + '`.cursor/rules`' + ` or`n` + '`lifepunch/docs/`' + ` here - change them in the monorepo; they are regenerated on each export.`nSee lifepunch/docs/GITLAB_ORGANIZATION.md.`n"
     Set-Content -LiteralPath (Join-Path $TempRoot 'README.md') -Value $Readme -Encoding UTF8
 
-    $PushUrl = Get-PushUrl -Slug $Slug
-
     Push-Location $TempRoot
     try {
         # git writes progress to stderr; relax Stop here and gate on $LASTEXITCODE instead.
@@ -122,11 +140,16 @@ function Push-LaneExport {
         $env:GIT_TERMINAL_PROMPT = '0'
         $gitNoCred = @('-c', 'credential.helper=', '-c', 'core.askpass=')
 
-        git init -q 2>&1 | Out-Null
-        git symbolic-ref HEAD refs/heads/main 2>&1 | Out-Null
+        if ($LaneMode -eq 'fresh') {
+            git init -q 2>&1 | Out-Null
+            git symbolic-ref HEAD refs/heads/main 2>&1 | Out-Null
+        }
         git add -A 2>&1 | Out-Null
-        git -c user.name='LifePunch Setup' -c user.email='mragerlp@gmail.com' commit -q -m "Lane export from GitHub monorepo (canonical: mragerlp/lifepunch)" 2>&1 | Out-Null
-        # No --force: protected main rejects it (matches our never-force-push rule). Initial push to an empty repo still succeeds.
+        # commit is a no-op if nothing changed (update mode, lane already current); we gate on push exit.
+        $commitMsg = "Lane export from GitHub monorepo (canonical: mragerlp/lifepunch)"
+        git -c user.name='LifePunch Setup' -c user.email='mragerlp@gmail.com' commit -q -m $commitMsg 2>&1 | Out-Null
+        # No --force: protected main rejects it (matches our never-force-push rule). Fresh push to an
+        # empty repo and a fast-forward update of an existing lane both succeed.
         $pushOut = git @gitNoCred push $PushUrl HEAD:main 2>&1
         $pushExit = $LASTEXITCODE
         $ErrorActionPreference = $prevEAP
