@@ -261,3 +261,42 @@ Completed and **saved** ("Save for later") on Trademark Engine order #402997:
 **Discovered:** the specimen step requests an upload for **both** 041 and 009 → reinforces the §1(a)/
 §1(b) split must be set by TE's paralegal. **Pending:** order-expiry status, class-basis split,
 Class 41 specimen upload, #397871 alignment, LLC-name-suffix confirmation. See §7.
+
+### 2026-06-09 (session 2) — specimen fixed + work handed to TE support; logo restarting from scratch
+- **#402997 specimen rejection resolved.** TE/Swyft flagged BOTH specimens ("not proper / not in
+  commerce"; Class 9 also "no playable software / no sale of software"). Replaced the Class 041
+  specimen with a live **`lifepunch.co/store`** capture (LIFEPUNCH mark + paid VIP $10 / EVIP $25
+  packages = use in commerce); entered description, URL, and access date (06/09/2026); "webpage = Yes".
+  Class-review descriptions were accepted as-is (041/009 match the Swyft IDs).
+- **Class 009** left with **no specimen** — to be filed **§1(b) intent-to-use** (confirmed correct by
+  the rejection note). `dxrp.net/addons` was rejected as an option (third-party DXRP brand; not a
+  software specimen) — see `specimens/SPECIMEN_NOTES.md`.
+- **Wordmark finishing handed to a TE support agent** (the §1 message) to clear the expired-timeframe
+  banner, set the per-class basis, and file. **Awaiting TE.**
+- **Logo (#397871) is being re-filed as a NEW order** per TE. The "logo must match the name exactly"
+  rejection was answered by filing the logo as a **pure design mark with the literal name deleted**
+  (the word LIFEPUNCH stays covered by #402997). New order to use the §3 / `marks/MARK_DRAWINGS.md`
+  values (color drawing, blue color claim, mark description).
+
+### 2026-06-09 (session 3) — full audit of the dead #397871 order
+Read the entire `myaccount/orders/397871` (DETAIL + DOCUMENTS + STATUS). The order was **never filed**
+(no USPTO serial/registration; stuck in "Paralegal Review 4," placed 05/02/2026, Priority/Basic,
+Certified Copy: Yes). It carried several defects — all now flagged for the new order in
+`FINALIZE_TRADEMARK.md` §3/§3a:
+- **Wrong class:** filed in **Class 042** ("Computer and Software services and Scientific Services -
+  Hosting an on-line community web site featuring online gaming communities, player challenges and
+  competitions, custom gaming content creation, and online game server interaction") — earlier it had
+  been **038**. New order must be **041 + 009**, never 042/038.
+- **Owner name truncated/wrong:** recorded as **"PERFORMANCE PRODUCTS LLC" (missing "PEAK")**, position
+  **"Founder & CEO"**, state NJ. Correct = **PEAK PERFORMANCE PRODUCTS LLC**, member-managed ("Member").
+  (The owner email on file, `PEAKPERFORMANCEPRODUCT@…`, confirms the intended entity.)
+- **First-use mismatch:** first use *anywhere* showed **04/28/2026** (canonical is 04/26/2026); first use
+  in commerce 04/30/2026 matched. Confirm the true earliest provable date and use it on BOTH orders.
+- **Logo description + blue color claim** matched ours verbatim — reuse as-is.
+- **Rejection root cause (STATUS tab):** repeated paralegal note — *"Logo is not showing the name of the
+  mark, and both logo and name applied for must match EXACTLY. Do you wish to use this logo and delete
+  the name applied for?"* This is exactly the design-mark/literal-element mismatch; resolved by the
+  pure-design-mark refile. Multiple specimens (final-logo transparent, disc welcome banner, two 05-08
+  screenshots, `logo_img_*`) were uploaded and rejected/superseded — none reused.
+- **PII note:** the order also exposes domicile street address / phone / personal email — per doctrine
+  these are **kept in OneDrive only** and were intentionally NOT copied into the repo.

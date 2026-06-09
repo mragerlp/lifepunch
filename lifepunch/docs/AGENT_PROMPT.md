@@ -43,6 +43,8 @@ simple baselines are fine; tracked in addons/docs/TECH_DEBT.md when in the addon
 SOURCE OF TRUTH: https://github.com/mragerlp/lifepunch (GitHub monorepo). Owner works here.
 GITLAB (June 2026+): Per-lane partner repos under gitlab.com/mragerlp — NOT a GitHub replacement.
 Commit ONLY your lane. Always `git pull --rebase`; never force-push. See GITLAB_ORGANIZATION.md.
+COMMIT CONSENT: never commit unprompted — when work hits a natural commit point, ASK the owner
+whether to commit (propose scope + message) and commit only on an explicit yes.
 
 HOW WE OPERATE (cost-safe — every token is real $USD):
 - Default model: Auto/Composer (Tier-2). Opus (Tier-1) only for architecture / multi-file C# /

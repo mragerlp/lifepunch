@@ -49,7 +49,8 @@ alwaysApply: true
 - **Local preps, doesn't decide:** Cornerman/local models do distillation/drafts; spot-check
   critical context before it drives a real decision. A local summary is never the sole basis.
 - **Lanes + clean commits:** agents commit only their own lane; an agent (incl. Cornerman)
-  commits nothing it didn't author. Always `pull --rebase`; never force-push.
+  commits nothing it didn't author, and **never commits unprompted — ask the owner first** (see
+  Git workflow → Commit consent). Always `pull --rebase`; never force-push.
 - **Dev/prod separation:** agents operate on dev/clones only. Production servers, live DBs, and
   economy-wide changes require explicit owner approval (mirrors admin-panel least-privilege).
 - **Auto-commit hook:** the stop hook refuses to commit/push files containing merge-conflict
@@ -77,7 +78,11 @@ alwaysApply: true
   checkout: `C:\Users\jared\Projects\lifepunchaddons`. Git `origin` is always GitHub.
 - **GitLab (June 2026+)** — per-lane partner workspaces under `gitlab.com/mragerlp` (foundation,
   addons, website, rdp-server). Does NOT replace GitHub; map in `lifepunch/docs/GITLAB_ORGANIZATION.md`.
-- Single shared `main`. A user-level auto-commit+push hook runs on `stop`.
+- Single shared `main`. A user-level auto-commit+push hook runs on `stop` (separate safety net).
+- **Commit consent — ask first (always):** an agent NEVER creates a commit unprompted. When changes
+  reach a natural commit point, *ask the owner* whether to commit (propose the scope/message) and
+  commit only on an explicit yes. This holds for every agent/lane and takes precedence over silent
+  committing; the `stop` hook is a backstop, not a license to commit without asking.
 - **Lanes:** owner integrates on GitHub monorepo; shottaWEB writes `lifepunch-website` on GitLab;
   RDP server agent writes `lifepunch-rdp-server` on GitLab. Always `pull --rebase` + normal
   `push`; NEVER force-push.

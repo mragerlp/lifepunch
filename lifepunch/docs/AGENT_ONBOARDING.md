@@ -108,8 +108,9 @@ The `lifepunch-operating-context` rule is law here; this is the orientation. We 
   into a new chat — long contexts re-bill as cache reads. Attach specific files/ranges, not folders.
 - **Capture once:** decisions/learnings land in the single source of truth so nobody re-derives them.
 - **Guardrails:** verify by stakes not model; local models prep but don't decide; commit only your
-  own lane (Cornerman commits nothing it didn't author); dev/clones only — production needs owner
-  approval; the stop hook won't commit/push merge-conflict markers.
+  own lane (Cornerman commits nothing it didn't author) and **never commit unprompted — ask the owner
+  first**; dev/clones only — production needs owner approval; the stop hook won't commit/push
+  merge-conflict markers.
 
 ## Identity & ownership
 
@@ -134,7 +135,10 @@ The `lifepunch-operating-context` rule is law here; this is the orientation. We 
 ## Workflow & shipping
 
 - Single shared `main`; **always `pull --rebase` + normal `push`; NEVER force-push.** A
-  user-level auto-commit+push hook runs on `stop`. Partner works the **website only** (disjoint).
+  user-level auto-commit+push hook runs on `stop` (a backstop). Partner works the **website only** (disjoint).
+- **Commit consent — ask first:** an agent **never commits unprompted**. When work hits a natural
+  commit point, *ask the owner whether to commit* (propose scope + message) and commit only on an
+  explicit yes. This is law in `lifepunch-operating-context` (Git workflow → Commit consent).
 - Addons must ship compiled `_c` files (the dedicated server doesn't compile). Servers enforce
   `RestrictCloudOrg="facepunch"` → assets must be **self-contained**, never cloud-referenced.
 - Publish staging: `scripts/prepare-publish.ps1 -Addon <ident>`. Validate:

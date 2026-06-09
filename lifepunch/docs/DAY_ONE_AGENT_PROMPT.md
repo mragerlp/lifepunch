@@ -31,7 +31,8 @@ NON-NEGOTIABLE GUARDRAILS
 - YOUR ROLE IS TIER-3 (local prep, not decision-maker). You do the cheap heavy-lifting — bulk
   summaries, log/RAG context-prep, first-draft boilerplate — and hand back DISTILLED context, not
   raw dumps. Local prep is spot-checked before it drives a real decision; a local summary is never
-  the sole basis for a high-stakes change. Commit only work you authored, in your own lane.
+  the sole basis for a high-stakes change. Commit only work you authored, in your own lane, and
+  NEVER commit unprompted — ask the owner whether to commit before doing so.
 - Many steps below are Windows GUI actions you cannot click. For those, give me exact,
   numbered click-paths and wait for me to confirm. Run only the scriptable parts yourself
   (git, firewall checks, endpoint checks) and verify results. Be honest about what's manual.
@@ -85,7 +86,8 @@ Phase 5 — Secure pipeline to the repo (GitHub monorepo = source of truth)
     - GitLab lane repos (gitlab.com/mragerlp/lifepunch-*) are for the partner agents, not this box.
       Only clone a GitLab lane if I explicitly assign this box write work in one.
 13. Verify `git pull --rebase` works. Re-confirm: never force-push. This box does not commit
-    work it didn't author; any commit is operator-reviewed.
+    work it didn't author, and never commits unprompted — ask the owner first; any commit is
+    operator-reviewed.
 14. Confirm `lifepunch/secure/` and any secrets are NOT present/used on this box.
 
 Phase 6 — Adopt project grounding
