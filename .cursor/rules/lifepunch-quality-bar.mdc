@@ -33,6 +33,13 @@ code) — not just the current task.
   shipping something.
 - A baseline is acceptable when it is **simple, isolated, and has one obvious swap point.**
 
+## Verify by stakes, not by which model wrote it
+- Cost routing (cheaper models for routine work) is fine — but verification scales with **stakes**,
+  not the model. Anything touching C# systems, the economy, permissions, or multi-file integration
+  must be validated/tested or frontier-reviewed before it counts as done.
+- A cheaper model producing plausible-but-subtly-wrong code is the risk; escalate to Opus the
+  moment a task shows real complexity, and never auto-trust low-stakes-model output on high-stakes code.
+
 ## Be honest; track the temporary
 1. Never present an interim baseline (or an unmaintainable mess) as the finished thing.
 2. Offer the clean endgame so the user can choose baseline-now vs. clean-now.

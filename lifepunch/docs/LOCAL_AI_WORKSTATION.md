@@ -32,6 +32,11 @@ tooling/MCP can use, and RAG over the repo with secrets excluded. Sections 6–7
 - It runs local LLMs (coding assist, summarization, embeddings/RAG) and local MCP servers.
 - Frontier cloud models still do the hardest agentic coding. This box handles **private,
   bulk, offline, and experimental** work — so sensitive data never has to leave the LAN.
+- **Cornerman is Tier-3 in our model routing:** it does the cheap heavy-lifting — bulk
+  summarize, log/RAG context-prep, first-draft boilerplate, classification — and feeds Cursor
+  *distilled* context, not raw dumps. **Local preps, it does not decide:** spot-check any context
+  a local model produces before it drives a real decision; a local summary is never the sole basis
+  for a high-stakes change. (Routing law: `.cursor/rules/lifepunch-operating-context.mdc`.)
 - **Honest scope / VRAM ceiling:** this is the **64 GB SKU** → Variable Graphics Memory caps
   at **~48 GB**. Comfortable for up to ~30B-class coding models at good quant; a 70B Q4
   (~40 GB) fits but runs slow. The "GPT-OSS 120B / Mistral 123B locally" headlines are the
@@ -142,8 +147,10 @@ Principles: **LAN-only by default, encrypted in transit, one source of truth, se
    - If a secret must cross, move it **encrypted** (age/GPG or an encrypted volume) over
      SSH/Tailscale, decrypt only at point of use, never commit it, and keep it out of model
      context and RAG indexes.
-   - RAG/embeddings indexes are built **only** from non-secret repo content. Exclude `secure/`,
-     `.env`, credentials, and private player/economy data from any index.
+   - RAG/embeddings indexes are built **only** from non-secret repo content. The index build must
+     **enforce an explicit exclude list** (`secure/`, `.env`, credentials, private player/economy
+     data) rather than trusting convention — and the exclusions are **verified once** after the
+     first index (grep the index/manifest for a known secret path; confirm zero hits).
 
 4. **File transfer**
    - Use SSH/SFTP (`scp`, or rsync over SSH) for ad-hoc transfers. No USB sneakernet for
@@ -168,7 +175,8 @@ Principles: **LAN-only by default, encrypted in transit, one source of truth, se
       OpenAI-compatible endpoint.
 - [ ] Endpoint reachable from the primary machine over the **LAN**, **not** from the public internet.
 - [ ] Monorepo cloned over SSH; `pull --rebase` works; secrets lane absent from this box.
-- [ ] RAG index (if built) excludes secure/secret content.
+- [ ] RAG index (if built) **enforces** the secret-exclude list and is **verified** (no `secure/`
+      path or known secret appears in the index/manifest).
 
 ## Sources (verified June 2026)
 

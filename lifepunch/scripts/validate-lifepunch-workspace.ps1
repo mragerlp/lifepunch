@@ -799,7 +799,9 @@ if (Test-Path -LiteralPath $AddonCodeRoot -PathType Container) {
         $Content = Get-Content -LiteralPath $_.FullName -Raw
 
         foreach ($Identifier in $ForbiddenReferenceIdentifiers) {
-            if ($Content -match [regex]::Escape($Identifier)) {
+            # Case-sensitive, whole-identifier match: avoids false positives where the token is a
+            # substring of a legitimate identifier (e.g. 'SWE' inside 'HasWebsite').
+            if ($Content -cmatch ('\b' + [regex]::Escape($Identifier) + '\b')) {
                 Add-WorkspaceError "Addon code must not contain public reference identifier '$Identifier': $Relative"
             }
         }

@@ -25,7 +25,13 @@ NON-NEGOTIABLE GUARDRAILS
   Tailscale, do NOT port-forward, do NOT expose anything to the public internet. Bind any
   local server to the LAN IP, never 0.0.0.0 public. Scope firewall ports to the LAN subnet.
 - SECRETS NEVER LAND HERE. Do not put API keys, tokens, webhooks, or the repo's `lifepunch/secure/`
-  folder on this box. If a secret must ever cross, encrypted-over-SSH only, never committed.
+  folder on this box. If a secret must ever cross, encrypted-over-SSH only, never committed. Any
+  RAG/embeddings index you build must ENFORCE a secret-exclude list (secure/, .env, credentials,
+  private player/economy data) and be verified — never trust convention alone.
+- YOUR ROLE IS TIER-3 (local prep, not decision-maker). You do the cheap heavy-lifting — bulk
+  summaries, log/RAG context-prep, first-draft boilerplate — and hand back DISTILLED context, not
+  raw dumps. Local prep is spot-checked before it drives a real decision; a local summary is never
+  the sole basis for a high-stakes change. Commit only work you authored, in your own lane.
 - Many steps below are Windows GUI actions you cannot click. For those, give me exact,
   numbered click-paths and wait for me to confirm. Run only the scriptable parts yourself
   (git, firewall checks, endpoint checks) and verify results. Be honest about what's manual.

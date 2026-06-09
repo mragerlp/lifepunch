@@ -12,19 +12,39 @@ alwaysApply: true
 - Goal: build a shippable addon portfolio (weapons + entities) for DXRP servers.
 
 ## Efficiency & cost discipline (owner-funded startup)
-- The owner personally funds this LLC (cash + credit) to run best-in-class models
-  (e.g. Opus 4.8). Best-in-class is worth it — but every token is real $USD out of the
-  owner's pocket. Deliver maximum capability per dollar; never burn tokens on waste.
-- Ground once, don't re-read. Reference files by path; read only the ranges you need.
-  Prefer cheap, scoped tools (Grep/Glob/targeted Read) over broad semantic sweeps.
+- The owner personally funds this LLC (cash + credit) for best-in-class models (e.g. Opus 4.8).
+  Best-in-class is worth it — but every token is real $USD. Deliver max capability per dollar.
+- **Model routing (default down, escalate up; quality floor always protected):**
+  - **Tier 1 — Opus / high-reasoning:** architecture, multi-file C# systems, subtle or
+    cross-system debugging, security/legal/structural synthesis. The ~20% that's genuinely hard.
+  - **Tier 2 — Sonnet / auto (default):** scoped edits/refactors, boilerplate, docs, search,
+    validators, commit messages, straightforward Q&A. The routine ~80%.
+  - **Tier 3 — Cornerman (local, when live):** bulk summarize, log/RAG context-prep, first-draft
+    boilerplate, classification — zero Cursor tokens. Feed Cursor distilled context, not raw dumps.
+  - **Escalation:** start at the lowest tier that fits; jump to Opus the moment real complexity
+    appears; when unsure, use Opus. Never gamble a hard problem on a weak model to save cost.
+- **Session hygiene (kills the cache-read tax):** one focused chat per task; start fresh often;
+  continue via a short summary into a NEW chat, not a multi-million-token context drag. Attach
+  specific files/ranges, not whole folders. Ground once; reference by path.
+- **Knowledge capture:** every decision/learning lands ONCE in the single source of truth
+  (rules/docs) so agents operate from it instead of re-deriving — re-explaining is a token AND
+  focus leak.
 - Plan → sign-off → build for non-trivial work, so we don't pay twice for rework.
-- Right-size the model to the task: reserve frontier models for hard agentic work
-  (architecture, tricky multi-file builds, judgment). Push bulk/cheap work down.
-- Offload grunt work to the local AI box ("Cornerman"): summaries, doc/changelog drafts,
-  RAG/embeddings context-prep, first-pass triage and codegen drafts. Local box does the
-  cheap heavy-lifting and precise context-prep; frontier does the high-leverage thinking.
-  (See `lifepunch/docs/LOCAL_AI_WORKSTATION.md`.)
 - Be concise in agent output too — clear and complete, not padded.
+
+## Safeguards (multi-agent + autonomy)
+- **Verify by stakes, not model:** anything touching C# systems, economy, permissions, or
+  multi-file integration is validated/tested or Opus-reviewed before "done" — regardless of which
+  model wrote it (see quality-bar).
+- **Local preps, doesn't decide:** Cornerman/local models do distillation/drafts; spot-check
+  critical context before it drives a real decision. A local summary is never the sole basis.
+- **Lanes + clean commits:** agents commit only their own lane; an agent (incl. Cornerman)
+  commits nothing it didn't author. Always `pull --rebase`; never force-push.
+- **Dev/prod separation:** agents operate on dev/clones only. Production servers, live DBs, and
+  economy-wide changes require explicit owner approval (mirrors admin-panel least-privilege).
+- **Auto-commit hook:** the stop hook refuses to commit/push files containing merge-conflict
+  markers (left for review). A full validate-before-push gate activates once the workspace
+  validator is green (see `lifepunch/addons/docs/TECH_DEBT.md`).
 
 ## Asset ownership (default = ours)
 - Assume everything the user provides is theirs to use (self-made, owned, or

@@ -64,6 +64,23 @@ Use these names consistently so references are unambiguous across chats and agen
 - **Primary PC** — the owner's main dev machine (`C:\Users\jared\Projects\lifepunchaddons`),
   the live checkout of the `mragerlp/lifepunch` monorepo = the **source of truth**.
 
+## Efficiency & guardrails (cost-safe operation)
+
+The `lifepunch-operating-context` rule is law here; this is the orientation. We run best-in-class
+(Opus 4.8) but every token is real $USD, so:
+
+- **Route by difficulty:** Tier-1 Opus for architecture / multi-file C# / subtle debugging /
+  security-legal-structural work; Tier-2 Sonnet/auto for the routine ~80% (scoped edits, docs,
+  search, validators); Tier-3 **Cornerman** (local, when live) for bulk summarize / context-prep /
+  drafts at zero Cursor tokens. Start low, escalate to Opus the moment it's genuinely hard; when
+  unsure, use Opus. Never gamble a hard problem on a weak model to save cost.
+- **Session hygiene:** one focused chat per task, start fresh often, continue via a short summary
+  into a new chat — long contexts re-bill as cache reads. Attach specific files/ranges, not folders.
+- **Capture once:** decisions/learnings land in the single source of truth so nobody re-derives them.
+- **Guardrails:** verify by stakes not model; local models prep but don't decide; commit only your
+  own lane (Cornerman commits nothing it didn't author); dev/clones only — production needs owner
+  approval; the stop hook won't commit/push merge-conflict markers.
+
 ## Identity & ownership
 
 - LifePunch code: namespace `LifePunch.DXRP.Addons.*`, package `lifepunch.*`. Study public
