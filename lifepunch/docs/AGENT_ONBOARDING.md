@@ -45,6 +45,25 @@ direct, ship quality.
 Also read `lifepunch/docs/WORKSPACE_STRUCTURE.md`. Don't fork parallel grounding/docs —
 update the existing single source of truth.
 
+If you are operating on (or setting up) the **local AI workstation** — the Corsair AI
+Workstation 300 ("Strix Halo") box used as our private local inference/RAG node — read
+`lifepunch/docs/LOCAL_AI_WORKSTATION.md`. That box is a clone, **never** the source of
+truth; secrets stay quarantined off it and the same git rules apply.
+
+## Named systems (shared vocabulary)
+
+Use these names consistently so references are unambiguous across chats and agents:
+
+- **Cornerman** — the LifePunch **local AI workstation** (Corsair AI Workstation 300,
+  AMD Ryzen AI Max 385 / "Strix Halo"). A private, LAN-only local inference + RAG node that
+  does the cheap heavy-lifting and context-prep (summaries, drafts, embeddings, triage) so
+  frontier models handle the high-leverage thinking. It is a **clone, never the source of
+  truth**, holds **no secrets**, and follows the same git rules as any agent. Full reference:
+  `lifepunch/docs/LOCAL_AI_WORKSTATION.md`; day-one setup prompt:
+  `lifepunch/docs/DAY_ONE_AGENT_PROMPT.md`. When anyone says "Cornerman," this is the box.
+- **Primary PC** — the owner's main dev machine (`C:\Users\jared\Projects\lifepunchaddons`),
+  the live checkout of the `mragerlp/lifepunch` monorepo = the **source of truth**.
+
 ## Identity & ownership
 
 - LifePunch code: namespace `LifePunch.DXRP.Addons.*`, package `lifepunch.*`. Study public

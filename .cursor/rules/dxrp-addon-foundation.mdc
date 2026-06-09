@@ -12,6 +12,7 @@ alwaysApply: true
 - Keep hosted server records and audits in `lifepunch/server/`.
 - Keep DXRP portal tab documentation in `lifepunch/portal/`.
 - Keep staff role and permission policy in `lifepunch/admin-panel/`.
+- Keep trademark, brand-architecture, and proprietary-IP doctrine in `lifepunch/legal/` (canonical: `lifepunch/legal/TRADEMARK_AND_IP.md`). Trademark specimens live in `lifepunch/legal/specimens/`, mark drawings + logo filing in `lifepunch/legal/marks/`, and clearance evidence in `lifepunch/legal/clearance-evidence/`. Never commit sensitive identifiers (EIN, domicile street address) — they stay in OneDrive.
 - Treat `lifepunch/addons/config/addons.json` as the source of truth for LifePunch addon packages.
 - Keep addon assets under `lifepunch/addons/Assets/addons/lifepunch/<ident>/`.
 - Keep addon code under `lifepunch/addons/Code/Addons/lifepunch/<ident>/`.

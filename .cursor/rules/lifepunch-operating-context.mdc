@@ -11,6 +11,21 @@ alwaysApply: true
   resting/stopping. Just keep the work moving.
 - Goal: build a shippable addon portfolio (weapons + entities) for DXRP servers.
 
+## Efficiency & cost discipline (owner-funded startup)
+- The owner personally funds this LLC (cash + credit) to run best-in-class models
+  (e.g. Opus 4.8). Best-in-class is worth it — but every token is real $USD out of the
+  owner's pocket. Deliver maximum capability per dollar; never burn tokens on waste.
+- Ground once, don't re-read. Reference files by path; read only the ranges you need.
+  Prefer cheap, scoped tools (Grep/Glob/targeted Read) over broad semantic sweeps.
+- Plan → sign-off → build for non-trivial work, so we don't pay twice for rework.
+- Right-size the model to the task: reserve frontier models for hard agentic work
+  (architecture, tricky multi-file builds, judgment). Push bulk/cheap work down.
+- Offload grunt work to the local AI box ("Cornerman"): summaries, doc/changelog drafts,
+  RAG/embeddings context-prep, first-pass triage and codegen drafts. Local box does the
+  cheap heavy-lifting and precise context-prep; frontier does the high-leverage thinking.
+  (See `lifepunch/docs/LOCAL_AI_WORKSTATION.md`.)
+- Be concise in agent output too — clear and complete, not padded.
+
 ## Asset ownership (default = ours)
 - Assume everything the user provides is theirs to use (self-made, owned, or
   licensed/paid-for). Do NOT raise provenance or "is this OK to ship" concerns.
