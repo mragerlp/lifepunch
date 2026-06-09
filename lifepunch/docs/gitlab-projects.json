@@ -1,0 +1,65 @@
+{
+  "canonicalGithubMonorepo": "https://github.com/mragerlp/lifepunch",
+  "canonicalGithubClone": "https://github.com/mragerlp/lifepunch.git",
+  "gitlabHost": "https://gitlab.com",
+  "gitlabNamespace": "mragerlp",
+  "migrationStatus": "pending",
+  "primaryPcCheckout": "C:\\Users\\jared\\Projects\\lifepunchaddons",
+  "projects": [
+    {
+      "slug": "lifepunch-foundation",
+      "lane": "foundation",
+      "primaryAgent": "owner",
+      "writeAccess": ["owner"],
+      "readAccess": ["owner", "shottaWEB", "rdp-server-agent", "cornerman"],
+      "monorepoPaths": [
+        ".cursor/rules",
+        "lifepunch/docs",
+        "lifepunch/legal",
+        "lifepunch/templates",
+        "scripts",
+        "README.md"
+      ]
+    },
+    {
+      "slug": "lifepunch-addons",
+      "lane": "addons",
+      "primaryAgent": "owner",
+      "writeAccess": ["owner"],
+      "readAccess": ["owner", "rdp-server-agent", "cornerman"],
+      "monorepoPaths": [
+        "lifepunch/addons"
+      ]
+    },
+    {
+      "slug": "lifepunch-website",
+      "lane": "website",
+      "primaryAgent": "shottaWEB",
+      "writeAccess": ["shottaWEB", "owner"],
+      "readAccess": ["owner", "shottaWEB", "cornerman"],
+      "monorepoPaths": [
+        "lifepunch/website"
+      ]
+    },
+    {
+      "slug": "lifepunch-rdp-server",
+      "lane": "rdp-server",
+      "primaryAgent": "rdp-server-agent",
+      "writeAccess": ["owner", "rdp-server-agent"],
+      "readAccess": ["owner", "rdp-server-agent", "cornerman"],
+      "monorepoPaths": [
+        "lifepunch/server",
+        "lifepunch/portal",
+        "lifepunch/gamemode",
+        "lifepunch/maps",
+        "lifepunch/admin-panel",
+        "lifepunch/economy",
+        "lifepunch/audit",
+        "lifepunch/players",
+        "lifepunch/discord",
+        "lifepunch/webhooks",
+        "lifepunch/API"
+      ]
+    }
+  ]
+}

@@ -72,11 +72,15 @@ alwaysApply: true
   packages never mount — addon models must be self-contained, not cloud-referenced.
 
 ## Git workflow
+- **Source of truth:** `https://github.com/mragerlp/lifepunch` (private monorepo). Primary PC
+  checkout: `C:\Users\jared\Projects\lifepunchaddons`. Git `origin` is always GitHub.
+- **GitLab (June 2026+)** — per-lane partner workspaces under `gitlab.com/mragerlp` (foundation,
+  addons, website, rdp-server). Does NOT replace GitHub; map in `lifepunch/docs/GITLAB_ORGANIZATION.md`.
 - Single shared `main`. A user-level auto-commit+push hook runs on `stop`.
-- Partner works the website; we work DXRP/addons (disjoint areas) — so rebases
-  integrate cleanly. Always `pull --rebase` + normal `push`; NEVER force-push.
-- Project is the user's, shared only with one pull-access partner who runs their
-  own Cursor agent.
+- **Lanes:** owner integrates on GitHub monorepo; shottaWEB writes `lifepunch-website` on GitLab;
+  RDP server agent writes `lifepunch-rdp-server` on GitLab. Always `pull --rebase` + normal
+  `push`; NEVER force-push.
+- Agent onboarding copy/paste: `lifepunch/docs/AGENT_PROMPT.md`.
 
 ## DXRP publish notes
 - Addons must ship compiled `_c` files (the dedicated server does not compile).

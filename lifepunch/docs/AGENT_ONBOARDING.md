@@ -13,20 +13,39 @@ high-quality custom content (weapons, entities, staff/admin tooling, UI, gamemod
 ops) for our server and to license to other DXRP servers. Treat this as a business: be
 direct, ship quality.
 
-## Three repos — know where you are
+## Repos — know where you are
 
-1. **`mragerlp/lifepunch` → THE SOURCE OF TRUTH** (private monorepo). Live local checkout:
-   `C:\Users\jared\Projects\lifepunchaddons`. Holds the isolated `lifepunch/addons/` s&box
-   project, `gamemode/`, `server/`, `admin-panel/`, `portal/`, `website/`, `economy/`,
-   `audit/`, `docs/`, and the `.cursor/rules`. **Do all design/build work here.**
-   (Do **not** use any OneDrive clone — removed June 2026 as a git-corruption risk.)
-2. **`mragerlp/dxrp-public`** → our DXRP fork (`origin=dxrp-public`, `upstream=dxura/dxrp`).
+### 1. GitHub monorepo → THE SOURCE OF TRUTH
+
+**`https://github.com/mragerlp/lifepunch`** (private monorepo). Live local checkout:
+`C:\Users\jared\Projects\lifepunchaddons`. Holds all lanes — `lifepunch/addons/`, `website/`,
+`server/`, `portal/`, `gamemode/`, `admin-panel/`, `.cursor/rules`, `docs/`, `legal/`, etc.
+**Owner does all design/build integration here.** Git `origin` is always this repo.
+(Do **not** use any OneDrive clone — removed June 2026 as a git-corruption risk.)
+
+### 2. GitLab lane projects → focused workspaces for partners (June 2026+)
+
+GitLab does **not** replace GitHub. Four per-lane projects under `gitlab.com/mragerlp` give
+shottaWEB and the RDP server agent scoped repos. Owner exports lanes from the GitHub monorepo;
+partner commits on GitLab integrate back into GitHub. Full map:
+`lifepunch/docs/GITLAB_ORGANIZATION.md` + `gitlab-projects.json`.
+
+| GitLab project | Lane | Primary agent |
+|----------------|------|---------------|
+| `lifepunch-foundation` | rules, docs, legal | All read |
+| `lifepunch-addons` | `lifepunch/addons/**` | Owner |
+| `lifepunch-website` | `lifepunch/website/**` | **shottaWEB** |
+| `lifepunch-rdp-server` | server, portal, gamemode, ops | **RDP server agent** |
+
+**Copy/paste for new chats:** `lifepunch/docs/AGENT_PROMPT.md`.
+
+### 3. Upstream / integration (GitHub, third-party)
+
+1. **`mragerlp/dxrp-public`** → our DXRP fork (`origin=dxrp-public`, `upstream=dxura/dxrp`).
    Synced via `lifepunch/scripts/sync-dxrp-fork.ps1` (ff-merge upstream `develop`).
-   Integration/test.
-3. **The Steam checkout** (`D:\Steam\steamapps\common\sbox\dxrp`, `origin=dxura/dxrp`) →
-   a read-only **upstream** runtime/test copy where the editor runs. **Never** commit
-   LifePunch work or grounding here; you cannot push (it's Dxura's repo) and it must not
-   diverge from repo #1.
+2. **The Steam checkout** (`D:\Steam\steamapps\common\sbox\dxrp`, `origin=dxura/dxrp`) →
+   read-only **upstream** runtime/test copy where the editor runs. **Never** commit LifePunch
+   work here.
 
 ## Grounding = the monorepo's `.cursor/rules` (alwaysApply) are law
 
@@ -48,8 +67,8 @@ direct, ship quality.
   (EIN, domicile address) — those stay off the repo.
 - **lifepunch-rules-workflow** + **lifepunch-website-organization** — website/rules deploy.
 
-Also read `lifepunch/docs/WORKSPACE_STRUCTURE.md`. Don't fork parallel grounding/docs —
-update the existing single source of truth.
+Also read `lifepunch/docs/WORKSPACE_STRUCTURE.md` and `lifepunch/docs/GITLAB_ORGANIZATION.md`.
+Don't fork parallel grounding/docs — update the existing single source of truth.
 
 If you are operating on (or setting up) the **local AI workstation** — the Corsair AI
 Workstation 300 ("Strix Halo") box used as our private local inference/RAG node — read
@@ -68,7 +87,9 @@ Use these names consistently so references are unambiguous across chats and agen
   `lifepunch/docs/LOCAL_AI_WORKSTATION.md`; day-one setup prompt:
   `lifepunch/docs/DAY_ONE_AGENT_PROMPT.md`. When anyone says "Cornerman," this is the box.
 - **Primary PC** — the owner's main dev machine (`C:\Users\jared\Projects\lifepunchaddons`),
-  the live checkout of the `mragerlp/lifepunch` monorepo = the **source of truth**.
+  live checkout of `https://github.com/mragerlp/lifepunch` = **source of truth**.
+- **shottaWEB** — website partner; GitLab write lane = `lifepunch-website`.
+- **RDP server agent** — server/portal/gamemode ops; GitLab write lane = `lifepunch-rdp-server`.
 
 ## Efficiency & guardrails (cost-safe operation)
 
@@ -123,17 +144,16 @@ The `lifepunch-operating-context` rule is law here; this is the orientation. We 
 - **Trademark / IP doctrine — finalized + law.** `lifepunch-trademark-ip` rule + the full
   `lifepunch/legal/` tree (`TRADEMARK_AND_IP.md`, marks, specimens, clearance evidence) are in.
 - **Efficiency & cost discipline + Cornerman — merged.** Model-routing tiers (T1 Opus / T2
-  Sonnet-auto default / T3 Cornerman), session hygiene, knowledge-capture, and the multi-agent
-  safeguards live in `lifepunch-operating-context`; mirror above. Cornerman setup +
-  day-one prompt in `lifepunch/docs/`. On Ultra, **Auto/Composer don't draw the $400 pool** —
-  default there, reserve the pool for Tier-1 Opus.
+  Auto-Composer default / T3 Cornerman), session hygiene, knowledge-capture, and the multi-agent
+  safeguards live in `lifepunch-operating-context`; mirror above. On Ultra, **Auto/Composer
+  don't draw the $400 pool** — default there, reserve the pool for Tier-1 Opus.
+- **GitLab lane organization — documented.** `GITLAB_ORGANIZATION.md`, `gitlab-projects.json`,
+  `AGENT_PROMPT.md`, `setup-gitlab-projects.ps1`. GitHub monorepo stays canonical; GitLab is
+  per-lane partner workspaces. Cursor GitLab linked; **lane projects not created yet**.
 
-**Operational state (Cursor billing migration in progress):**
-- Owner is moving from the locked annual **Team** plan to an individual **Ultra** plan
-  (hard-stop at the $400 pool, on-demand off). Partner moves to their own individual plan
-  (Pro/Pro+, website lane). The old Team plan: usage-based **off** + auto-renew **cancelled**
-  once the owner is signed into Ultra; it lapses to free at term end. Source of truth is the
-  repo, so the account switch loses nothing but chat history.
+**Operational state:**
+- Billing on individual **Ultra** (hard-stop at $400 API pool). shottaWEB on own plan (website lane).
+- Canonical repo: `https://github.com/mragerlp/lifepunch`. GitLab lane projects pending creation.
 
 **Open tracked items (see `lifepunch/addons/docs/TECH_DEBT.md`):**
 - **STAFF-09** — `StaffMenuTestBots.cs` is in `namespace Dxura.RP.Game;` (must move to a

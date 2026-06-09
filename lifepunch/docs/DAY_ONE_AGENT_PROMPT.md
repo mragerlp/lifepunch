@@ -18,9 +18,9 @@ WHO/WHAT
   1TB NVMe, Windows 11 Home. Its job: a PRIVATE LOCAL INFERENCE + RAG node.
 
 NON-NEGOTIABLE GUARDRAILS
-- This box is NOT the source of truth. The source of truth is the monorepo "mragerlp/lifepunch"
-  on my primary PC. This box is just another clone that does `git pull --rebase` + normal push.
-  NEVER force-push. Single shared `main`.
+- This box is NOT the source of truth. Source of truth is the GitHub monorepo
+  https://github.com/mragerlp/lifepunch on my primary PC. This box clones that repo (read-only
+  or lane-scoped); `git pull --rebase` only if pushing lane work the owner assigned. NEVER force-push.
 - v1 networking is LAN-ONLY. Both machines are wired to the same router. Do NOT install
   Tailscale, do NOT port-forward, do NOT expose anything to the public internet. Bind any
   local server to the LAN IP, never 0.0.0.0 public. Scope firewall ports to the LAN subnet.
@@ -61,29 +61,32 @@ Phase 4 — Serve it on the LAN
 10. From my primary PC I'll open http://<LAN-IP>:1234/v1/models to confirm it's reachable.
     Help me find this box's LAN IP and verify.
 
-Phase 5 — Secure pipeline to the repo
+Phase 5 — Secure pipeline to GitLab
 11. Confirm Git is installed (CORSAIR stack or git-scm).
-12. Generate a new SSH key on this box; I'll add it to GitHub. Then clone "mragerlp/lifepunch"
-    over SSH.
-13. Verify `git pull --rebase` works. Re-confirm: never force-push.
+12. Generate a new SSH key on this box; I'll add it to GitLab. Clone:
+    - `gitlab.com/mragerlp/lifepunch-foundation` (read grounding)
+    - plus the lane project the owner assigns (addons / website / rdp-server)
+13. Verify `git pull --rebase` works on each. Re-confirm: never force-push.
 14. Confirm `lifepunch/secure/` and any secrets are NOT present/used on this box.
 
 Phase 6 — Adopt project grounding
 15. After cloning, READ these and follow them as law going forward:
-    - The monorepo's `.cursor/rules` (alwaysApply)
-    - `lifepunch/docs/AGENT_ONBOARDING.md`
-    - `lifepunch/docs/WORKSPACE_STRUCTURE.md`
-    - `lifepunch/docs/LOCAL_AI_WORKSTATION.md`  (the full reference for THIS machine)
+    - Foundation checkout: `.cursor/rules` (alwaysApply)
+    - `docs/AGENT_ONBOARDING.md`
+    - `docs/WORKSPACE_STRUCTURE.md`
+    - `docs/GITLAB_ORGANIZATION.md`
+    - `docs/LOCAL_AI_WORKSTATION.md`  (the full reference for THIS machine)
 16. Report: a short status of each phase, the endpoint URL + loaded model, and anything that
     failed or needs my decision.
 
-Ask me for: the GitHub repo SSH URL, and anything you can't determine yourself. Don't guess.
+Ask me for: the GitLab namespace + which lane project to clone, and anything you can't determine
+yourself. Don't guess.
 ```
 
 ## Human-in-the-loop handshakes (only two)
 
-1. You provide the **GitHub repo SSH URL**.
-2. You **add this box's generated SSH key to GitHub** (Phase 5).
+1. You confirm the **GitLab namespace** (`mragerlp`) and **lane project** for this box.
+2. You **add this box's generated SSH key to GitLab** (Phase 5).
 
 Everything else the agent either runs or walks you through. No secrets, no public exposure —
 "0 leaky pipes."

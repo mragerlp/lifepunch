@@ -1,6 +1,11 @@
 # LifePunch DXRP Workspace
 
-This repository is the sole working reference for the LifePunch community inside the DXRP gamemode.
+This repository is the working reference for the LifePunch community inside the DXRP gamemode.
+
+**Canonical repo:** [github.com/mragerlp/lifepunch](https://github.com/mragerlp/lifepunch)
+
+**GitLab (June 2026+):** Per-lane partner workspaces under `gitlab.com/mragerlp` — supplements
+GitHub, does not replace it. See `lifepunch/docs/GITLAB_ORGANIZATION.md` and `AGENT_PROMPT.md`.
 
 All community operations live under the main `lifepunch/` folder:
 

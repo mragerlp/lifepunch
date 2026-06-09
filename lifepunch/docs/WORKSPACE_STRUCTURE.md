@@ -2,6 +2,13 @@
 
 This repository is the organizing reference for the LifePunch community server on DXRP.
 
+## GitLab hosting (June 2026+)
+
+Raw code is split across GitLab projects under `gitlab.com/mragerlp` — see
+`lifepunch/docs/GITLAB_ORGANIZATION.md`. The folder layout below is unchanged; only **which
+Git repo** owns each folder differs by agent lane (`lifepunch-addons`, `lifepunch-website`,
+`lifepunch-rdp-server`, `lifepunch-foundation`).
+
 ## Main Folder
 
 ```text
