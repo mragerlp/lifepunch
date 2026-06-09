@@ -36,6 +36,23 @@ NON-NEGOTIABLE GUARDRAILS
   numbered click-paths and wait for me to confirm. Run only the scriptable parts yourself
   (git, firewall checks, endpoint checks) and verify results. Be honest about what's manual.
 
+MINDSET & SEQUENCE (start simple — small wins build a stable platform)
+- ONE thing at a time, in the phase order below. Do NOT deploy ten models / twenty services on
+  day one. Success = ONE model answering, ONE endpoint live, the repo cloned, workflow verified.
+- Docker is NOT required for v1 and is NOT in the critical path. Our Odysseus path is the NATIVE
+  Windows launcher pointed at the host Ollama/LM Studio endpoint (Docker-GPU on this AMD iGPU is
+  weak/ROCm-immature). Skip Docker unless a later task genuinely needs a container.
+- Odysseus is OPTIONAL and LAST (Phase 7), only if the owner says so — experimental Tier-3, not
+  core infra. It must NOT block the platform; Phases 1–6 + the acceptance check are the real win.
+- Keep a LOCAL on-box SETUP.md log (NOT committed to git, NO secrets): what's installed, which
+  ports (LM Studio 1234 / Ollama 11434 / Odysseus 7000 if used), which models, and known issues.
+  This is machine-local ops state — separate from project grounding (which lives once in
+  .cursor/rules + lifepunch/docs; do NOT fork parallel /AI doc trees).
+- Expect friction and treat it as normal: failed model downloads, Windows networking quirks, AMD
+  driver oddities, services fighting over ports. Log it in SETUP.md, fix it, move on.
+- You are a local development engineer for the team — take the repetitive prep so the owner can
+  focus on architecture and the business. But you PREP, you do NOT decide (see guardrails).
+
 DO THIS, START TO FINISH (confirm each phase before moving on):
 
 Phase 1 — Secure the OS
@@ -78,11 +95,13 @@ Phase 6 — Adopt project grounding
     - `lifepunch/docs/WORKSPACE_STRUCTURE.md`
     - `lifepunch/docs/GITLAB_ORGANIZATION.md`
     - `lifepunch/docs/LOCAL_AI_WORKSTATION.md`  (the full reference for THIS machine)
-16. Report: a short status of each phase, the endpoint URL + loaded model, and anything that
+16. Start a LOCAL on-box SETUP.md log (local only, never committed, no secrets): installed tools,
+    ports in use, models pulled, and known issues. Keep it updated as we go.
+17. Report: a short status of each phase, the endpoint URL + loaded model, and anything that
     failed or needs my decision.
 
 Phase 7 (OPTIONAL) — Odysseus AI workspace (experimental, only if I ask)
-17. Only if I tell you to trial it: follow LOCAL_AI_WORKSTATION.md Section 8 EXACTLY — pin the
+18. Only if I tell you to trial it: follow LOCAL_AI_WORKSTATION.md Section 8 EXACTLY — pin the
     reviewed `main` commit, AUTH on, bind LAN/loopback only, point its backend at the local
     Ollama/LM Studio endpoint, and set NO real email/API/webhook/CalDAV creds and NO write-git
     creds for its agent. It is Tier-3 prep, not core infra, and AGPL-3.0 (no modify-and-expose

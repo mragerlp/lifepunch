@@ -10,6 +10,10 @@
 > (live until ~next May), and works the **website lane**. The owner is on individual **Ultra**.
 > Regardless of plan, model routing is the same: **Auto/Composer default; Opus for the hard ~20%.**
 >
+> **Provisioning (verified June 9 2026):** GitLab lanes live + synced. **shottaWEB** email-invited
+> (must create/accept a GitLab account). **RDP agent** provisioned via project access token + ACTIVE
+> (Block C is its official prompt). **Cornerman** launches via `DAY_ONE_AGENT_PROMPT.md`.
+>
 > **Blocks:** A = owner/addons · B = shottaWEB/website · C = RDP server agent · D = Cornerman.
 
 ---
@@ -139,10 +143,9 @@ discord/, webhooks/, API/. Do NOT edit addons or website — owner integrates in
 PRODUCTION: Dev/clones only. Live server-page changes, economy-wide edits, and production deploys
 need explicit owner approval.
 
-SECURITY ROLE: The RDP/server lane is a core part of Cornerman's security posture (the box and the
-server are the two halves of "0 leaky pipes"). Until the owner hands you the OFFICIAL copy-paste
-(expected tomorrow), AWAIT it before standing up or changing anything server/security-related —
-ground and summarize only; do not act on RDP/security setup without that official prompt.
+SECURITY ROLE: The RDP/server lane is a core half of Cornerman's security posture ("0 leaky pipes"
+= the box + the server). THIS IS your official activation prompt — you are cleared to ground, clone
+your lane, and work it. Production limits below still apply: act inside them, escalate before crossing.
 
 DXRP UPSTREAM: mragerlp/dxrp-public fork + dxura/dxrp Steam checkout stay on GitHub — not your
 GitLab write lane. Sync fork via lifepunch/scripts/sync-dxrp-fork.ps1 when coordinated by owner.
