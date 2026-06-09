@@ -107,3 +107,4 @@ separately — GitHub stays `origin`; GitLab is additional lane remotes.
 
 - `lifepunch/docs/AGENT_PROMPT.md` — copy/paste per lane
 - `lifepunch/docs/AGENT_ONBOARDING.md` — full foundation
+- `lifepunch/docs/CI_CD_PLAN.md` — GitLab CI/CD plan (draft, not yet executed)
