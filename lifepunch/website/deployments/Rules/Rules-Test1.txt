@@ -53,24 +53,24 @@ export default {
                 title: "Serverwide Rules",
                 icon: "fa-globe",
                 rules: [
-                    { id: "en-only", html: `<b>English Only</b><ul class="rule-sublist"><li>We're an English-speaking community. Please keep all roleplay in English.</li></ul>` },
-                    { id: "no-cheat", html: `<b>No Cheating</b><ul class="rule-sublist"><li>Using third-party software, cheats, macros, or autoclickers will result in a permanent ban.</li></ul>` },
-                    { id: "no-exploit", html: `<b>No Exploiting</b><ul class="rule-sublist"><li>Exploiting maps, items, or tools for an unfair advantage is not allowed (drug creation and gun shops are excluded).</li></ul>` },
-                    { id: "no-mic-spam", html: `<b>No Mic or Text Spam</b><ul class="rule-sublist"><li>Intentionally disrupting roleplay through your microphone or chat spam is not allowed.</li></ul>` },
-                    { id: "no-staff-impersonation", html: `<b>No Staff Impersonation</b><ul class="rule-sublist"><li>Impersonating staff will result in a permanent ban.</li></ul>` },
-                    { id: "no-lie-staff", html: `<b>Do Not Lie to Staff</b><ul class="rule-sublist"><li>Lying to staff will result in a permanent ban.</li><li>This includes false reporting, deleting ticket evidence, or misleading staff during a report.</li></ul>` },
-                    { id: "no-staff-baiting", html: `<b>No Staff Baiting</b><ul class="rule-sublist"><li>Saying you will break a rule counts as breaking that rule.</li></ul>` },
-                    { id: "no-minimodding", html: `<b>No Minimodding</b><ul class="rule-sublist"><li>Do not threaten others with reports.</li><li>Submit reports properly and move on.</li></ul>` },
+                    { id: "en-only", html: `<b>Language Rules</b><ul class="rule-sublist"><li>We're an English-speaking community. Please keep all roleplay in English.</li></ul>` },
+                    { id: "no-cheat", html: `<b>Cheating Rules</b><ul class="rule-sublist"><li>Using third-party software, cheats, macros, or autoclickers will result in a permanent ban.</li></ul>` },
+                    { id: "no-exploit", html: `<b>Exploiting Rules</b><ul class="rule-sublist"><li>Exploiting maps, items, or tools for an unfair advantage is not allowed (drug creation and gun shops are excluded).</li></ul>` },
+                    { id: "no-mic-spam", html: `<b>Mic & Text Spam Rules</b><ul class="rule-sublist"><li>Intentionally disrupting roleplay through your microphone or chat spam is not allowed.</li></ul>` },
+                    { id: "no-staff-impersonation", html: `<b>Staff Impersonation Rules</b><ul class="rule-sublist"><li>Impersonating staff will result in a permanent ban.</li></ul>` },
+                    { id: "no-lie-staff", html: `<b>Lying to Staff Rules</b><ul class="rule-sublist"><li>Lying to staff will result in a permanent ban.</li><li>This includes false reporting, deleting ticket evidence, or misleading staff during a report.</li></ul>` },
+                    { id: "no-staff-baiting", html: `<b>Staff Baiting Rules</b><ul class="rule-sublist"><li>Saying you will break a rule counts as breaking that rule.</li></ul>` },
+                    { id: "no-minimodding", html: `<b>Minimodding Rules</b><ul class="rule-sublist"><li>Do not threaten others with reports.</li><li>Submit reports properly and move on.</li></ul>` },
                     { id: "admin-final-say", html: `<b>Admin Final Say</b><ul class="rule-sublist"><li>Do not argue with staff about rules or punishments.</li><li>Staff always have the final say in situations not listed.</li></ul>` },
-                    { id: "no-begging", html: `<b>No Begging</b><ul class="rule-sublist"><li>Soliciting real money or real-life items is not allowed.</li></ul>` },
-                    { id: "no-bullying", html: `<b>No Bullying</b><ul class="rule-sublist"><li>Targeting or harassing players outside of roleplay is never tolerated.</li></ul>` },
-                    { id: "no-politics", html: `<b>No Politics/War/Religion</b><ul class="rule-sublist"><li>Political arguments are not allowed.</li><li>Jokes are fine; arguments are not.</li></ul>` },
-                    { id: "no-racism", html: `<b>No Racism/Homophobia</b><ul class="rule-sublist"><li>There is zero tolerance for racism or homophobia.</li><li>Violations will result in a permanent ban.</li></ul>` },
-                    { id: "no-nsfw", html: `<b>No Sexual/NSFW Content</b><ul class="rule-sublist"><li>All media must remain PG-rated.</li><li>This includes ERP and pornographic content.</li></ul>` },
-                    { id: "no-doxing", html: `<b>No Doxing</b><ul class="rule-sublist"><li>Posting real-life pictures of someone without permission will result in a permanent ban.</li></ul>` },
-                    { id: "no-cybercrime", html: `<b>Cybercrime Threats</b><ul class="rule-sublist"><li>Threatening DDoS attacks or doxing will result in a permanent ban.</li></ul>` },
-                    { id: "no-advertising", html: `<b>No Advertising</b><ul class="rule-sublist"><li>Only official DXRP or S&box links are allowed.</li></ul>` },
-                    { id: "no-irl-illegal", html: `<b>No IRL Illegal Activity</b><ul class="rule-sublist"><li>Encouraging illegal real-life activity will result in a permanent ban.</li></ul>` }
+                    { id: "no-begging", html: `<b>Begging Rules</b><ul class="rule-sublist"><li>Soliciting real money or real-life items is not allowed.</li></ul>` },
+                    { id: "no-bullying", html: `<b>Bullying Rules</b><ul class="rule-sublist"><li>Targeting or harassing players outside of roleplay is never tolerated.</li></ul>` },
+                    { id: "no-politics", html: `<b>Politics, War & Religion Rules</b><ul class="rule-sublist"><li>Political arguments are not allowed.</li><li>Jokes are fine; arguments are not.</li></ul>` },
+                    { id: "no-racism", html: `<b>Racism & Homophobia Rules</b><ul class="rule-sublist"><li>There is zero tolerance for racism or homophobia.</li><li>Violations will result in a permanent ban.</li></ul>` },
+                    { id: "no-nsfw", html: `<b>Sexual & NSFW Content Rules</b><ul class="rule-sublist"><li>All media must remain PG-rated.</li><li>This includes ERP and pornographic content.</li></ul>` },
+                    { id: "no-doxing", html: `<b>Doxing Rules</b><ul class="rule-sublist"><li>Posting real-life pictures of someone without permission will result in a permanent ban.</li></ul>` },
+                    { id: "no-cybercrime", html: `<b>Cybercrime Threats Rules</b><ul class="rule-sublist"><li>Threatening DDoS attacks or doxing will result in a permanent ban.</li></ul>` },
+                    { id: "no-advertising", html: `<b>Advertising Rules</b><ul class="rule-sublist"><li>Only official DXRP or S&box links are allowed.</li></ul>` },
+                    { id: "no-irl-illegal", html: `<b>IRL Illegal Activity Rules</b><ul class="rule-sublist"><li>Encouraging illegal real-life activity will result in a permanent ban.</li></ul>` }
                 ]
             },
             {
@@ -84,9 +84,9 @@ export default {
                         rules: [
                             { id: "rdm-definition", html: `<b>RDM Definition</b><ul class="rule-sublist"><li>Random Deathmatch (RDM) is killing someone without a valid roleplay reason</li></ul>` },
                             { id: "rda-definition", html: `<b>RDA Definition</b><ul class="rule-sublist"><li>Random Death Arrest (RDA) is arresting someone without a valid roleplay reason</li></ul>` },
-                            { id: "rdm-reason", html: `<b>RDM Reasoning</b><ul class="rule-sublist"><li>Disrespect or threats alone are not valid reasons to kill someone</li><li>Taking damage or having items stolen are valid reasons</li></ul>` },
-                            { id: "rdm-warnings", html: `<b>Warnings</b><ul class="rule-sublist"><li>You may kill someone after warning them three times in chat to step away or to leave your property</li></ul>` },
-                            { id: "rdm-mayor", html: `<b>Killing the Mayor</b><ul class="rule-sublist"><li>Killing the Mayor requires a valid roleplay reason, such as a Police Department raid or mugging</li></ul>` }
+                            { id: "rdm-reason", html: `<b>RDM Reasoning Rules</b><ul class="rule-sublist"><li>Disrespect or threats alone are not valid reasons to kill someone</li><li>Taking damage or having items stolen are valid reasons</li></ul>` },
+                            { id: "rdm-warnings", html: `<b>Warning Rules</b><ul class="rule-sublist"><li>You may kill someone after warning them three times in chat to step away or to leave your property</li></ul>` },
+                            { id: "rdm-mayor", html: `<b>Killing the Mayor Rules</b><ul class="rule-sublist"><li>Killing the Mayor requires a valid roleplay reason, such as a Police Department raid or mugging</li></ul>` }
                         ]
                     },
                     {
@@ -94,11 +94,10 @@ export default {
                         webBtn: "⚠️ KOS",
                         rules: [
                             { id: "kos-line-definition", html: `<b>KOS Line Definition</b><ul class="rule-sublist"><li>An indicator that states moving past a certain point results in being killed on sight</li></ul>` },
-                            { id: "base-kos-line", html: `<b>KOS Line Placement</b><ul class="rule-sublist"><li>KOS zones must start at a base's purchasable front door, fading door, or the start of an airlock</li><li>KOS lines must be a text sign that implies crossing it results in death</li><li>Government jobs cannot have KOS lines (see Job Rules — Police Department — Lobby & KOS for Police Department exceptions)</li></ul>` },
-                            { id: "kos-understandable", html: `<b>KOS Clarity</b><ul class="rule-sublist"><li>KOS zones must be easy to understand and must never be deceptive</li></ul>` },
-                            { id: "rdm-kos2", html: `<b>KOS Boundaries</b><ul class="rule-sublist"><li>KOS lines are markers for where KOS begins at a base</li><li>Once a KOS line is placed, the intended base behind that line is considered KOS</li><li>Example: If a KOS line is at a front door and you enter through a window, you may still be killed</li></ul>` },
-                            { id: "kos-airlocks", html: `<b>Raid Hallways & Airlocks</b><ul class="rule-sublist"><li>Artificial raid hallways and airlocks start at your KOS sign and must not exceed 25 total 1×1 props (1000 units), excluding natural map layouts</li></ul>` },
-                            { id: "rdm-kos", html: `<b>KOS General</b><ul class="rule-sublist"><li>Crossing a clearly marked KOS line is not considered RDM</li></ul>` }
+                            { id: "base-kos-line", html: `<b>KOS Line Placement Rules</b><ul class="rule-sublist"><li>KOS zones must start at a base's purchasable front door, fading door, or the start of an airlock</li><li>KOS lines must be a text sign that implies crossing it results in death</li></ul>` },
+                            { id: "kos-understandable", html: `<b>KOS Clarity Rules</b><ul class="rule-sublist"><li>KOS zones must be easy to understand and must never be deceptive</li></ul>` },
+                            { id: "rdm-kos2", html: `<b>KOS Boundaries Rules</b><ul class="rule-sublist"><li>KOS lines are markers for where KOS begins at a base</li><li>Once a KOS line is placed, the intended base behind that line is considered KOS</li><li>Example: If a KOS line is at a front door and you enter through a window, you may still be killed</li></ul>` },
+                            { id: "rdm-kos", html: `<b>KOS General Rules</b><ul class="rule-sublist"><li>Crossing a clearly marked KOS line is not considered RDM</li></ul>` }
                         ]
                     },
                     {
@@ -106,10 +105,10 @@ export default {
                         webBtn: "💀 NLR",
                         rules: [
                             { id: "nlr-definition", html: `<b>NLR Definition</b><ul class="rule-sublist"><li>The New Life Rule (NLR) means you may remember past events, but you cannot act on them</li></ul>` },
-                            { id: "nlr-trigger", html: `<b>NLR Trigger</b><ul class="rule-sublist"><li>NLR applies on death, job change, and jail release (unless you escaped)</li></ul>` },
-                            { id: "nlr-raid", html: `<b>Raid</b><ul class="rule-sublist"><li>You may not return to a raid after death</li><li>You must wait until the raid is completed to return to your base as a defender</li><li>See Job Rules — Police & Raids for government exceptions; see Raiding Rules — Warrant Raids for warrant raid NLR</li></ul>` },
-                            { id: "nlr-revive", html: `<b>Revives</b><ul class="rule-sublist"><li>Revived players may continue their raid or scenario</li></ul>` },
-                            { id: "nlr-hitman", html: `<b>Hitman</b><ul class="rule-sublist"><li>A failed hit cannot be re-attempted</li><li>A hit fails upon death</li></ul>` }
+                            { id: "nlr-trigger", html: `<b>NLR Trigger Rules</b><ul class="rule-sublist"><li>NLR applies on death, job change, and jail release (unless you escaped)</li></ul>` },
+                            { id: "nlr-raid", html: `<b>Raid Rules</b><ul class="rule-sublist"><li>You may not return to a raid after death</li><li>You must wait until the raid is completed to return to your base as a defender</li></ul>` },
+                            { id: "nlr-revive", html: `<b>Revive Rules</b><ul class="rule-sublist"><li>Revived players may continue their raid or scenario</li></ul>` },
+                            { id: "nlr-hitman", html: `<b>Hitman Rules</b><ul class="rule-sublist"><li>A failed hit cannot be re-attempted</li><li>A hit fails upon death</li></ul>` }
                         ]
                     },
                     {
@@ -143,13 +142,13 @@ export default {
                 title: "Basic RP Guidelines",
                 icon: "fa-brain",
                 rules: [
-                    { id: "fearrp", html: `<b>FearRP</b><ul class="rule-sublist"><li>FearRP is not enforced, but you should still value your life reasonably</li></ul>` },
-                    { id: "no-suicide-rp", html: `<b>No Suicide RP</b><ul class="rule-sublist"><li>You may not commit suicide to avoid roleplay scenarios such as muggings</li></ul>` },
-                    { id: "job-desc", html: `<b>Job Description</b><ul class="rule-sublist"><li>You must follow your job description (Medics heal, Merchants/Dealers sell, and Cops protect)</li></ul>` },
-                    { id: "merchants", html: `<b>Merchants</b><ul class="rule-sublist"><li>Merchants may not deny service for non-roleplay reasons (for example, refusing to sell guns to a potential raider)</li><li>Merchants may not scam other players</li></ul>` },
-                    { id: "no-job-change", html: `<b>No Job Change</b><ul class="rule-sublist"><li>You may not change jobs during active roleplay</li></ul>` },
-                    { id: "demote-reasons", html: `<b>Demotions</b><ul class="rule-sublist"><li>Valid reasons include: not doing job, 30+ min AFK, police corruption</li></ul>` },
-                    { id: "no-vigilante", html: `<b>No Vigilante</b><ul class="rule-sublist"><li>Do not punish rulebreakers yourself through AOS, KOS, or prop blocking</li></ul>` }
+                    { id: "fearrp", html: `<b>FearRP Rules</b><ul class="rule-sublist"><li>FearRP is not enforced, but you should still value your life reasonably</li></ul>` },
+                    { id: "no-suicide-rp", html: `<b>SuicideRP Rules</b><ul class="rule-sublist"><li>You may not commit suicide to avoid roleplay scenarios such as muggings</li></ul>` },
+                    { id: "job-desc", html: `<b>Job Description Rules</b><ul class="rule-sublist"><li>You must follow your job description (Medics heal, Merchants/Dealers sell, and Cops protect)</li></ul>` },
+                    { id: "merchants", html: `<b>Merchant Rules</b><ul class="rule-sublist"><li>Merchants may not deny service for non-roleplay reasons (for example, refusing to sell guns to a potential raider)</li><li>Merchants may not scam other players</li></ul>` },
+                    { id: "no-job-change", html: `<b>Job Change Rules</b><ul class="rule-sublist"><li>You may not change jobs during active roleplay</li></ul>` },
+                    { id: "demote-reasons", html: `<b>Demotion Rules</b><ul class="rule-sublist"><li>Valid reasons include: not doing job, 30+ min AFK, police corruption</li></ul>` },
+                    { id: "no-vigilante", html: `<b>Vigilante Rules</b><ul class="rule-sublist"><li>Do not punish rulebreakers yourself through AOS, KOS, or prop blocking</li></ul>` }
                 ]
             },
             {
@@ -161,46 +160,47 @@ export default {
                         rawTitle: "SUB-CATEGORY 4A: BUILDING GUIDELINES",
                         webBtn: "📐 Building Guidelines",
                         rules: [
-                            { id: "special-doors", html: `<b>Doors</b><ul class="rule-sublist"><li>If you buy doors, you must actively use the space behind them as part of your base</li><li>You may not purchase interior doors and leave that area unused while basing on the roof or elsewhere</li></ul>` },
+                            { id: "special-doors", html: `<b>Door Rules</b><ul class="rule-sublist"><li>If you buy doors, you must actively use the space behind them as part of your base</li><li>You may not purchase interior doors and leave that area unused while basing on the roof or elsewhere</li></ul>` },
                             { id: "base-size-limits", html: `<b>Base Size Limits</b><ul class="rule-sublist"><li>A base's length and width must not exceed 1500×1500 units, measured with the Ruler tool</li><li>A base must not be over 1000 units tall from its floor, measured with the Ruler tool</li></ul>` },
-                            { id: "base-rooftop", html: `<b>Rooftop Bases</b><ul class="rule-sublist"><li>Rooftop bases are built on top of an existing map structure; this is not considered a skybase</li><li>Rooftop bases are allowed</li><li>You must have a ramp or other clear method of getting to the first fading door</li><li>Rooftop-only bases do not need to own the interior doors below</li><li>Rooftop base's first fading door must be located on the roof level</li><li>Rooftop bases must not obstruct or interfere with property on lower floors</li><li>If you do not own the property below, you may not hide or make it difficult for others to access its doors</li></ul>` },
-                            { id: "no-skybases", html: `<b>Sky Bases</b><ul class="rule-sublist"><li>A skybase is a base over 750 units tall measured with the Ruler tool from the ground of the map to the top of the base</li><li>Skybases are not allowed</li></ul>` },
-                            { id: "no-blackout", html: `<b>Blackout Bases</b><ul class="rule-sublist"><li>Blackout bases are not allowed</li></ul>` },
-                            { id: "hobo-aerial", html: `<b>Hobo Aerial Builds</b><ul class="rule-sublist"><li>Hobos may build aerial structures for roleplay features such as ramps and slides</li></ul>` }
+                            { id: "base-rooftop", html: `<b>Rooftop Base Rules</b><ul class="rule-sublist"><li>Rooftop bases are built on top of an existing map structure; this is not considered a skybase</li><li>Rooftop bases are allowed</li><li>You must have a ramp or other clear method of getting to the first fading door</li><li>Rooftop-only bases do not need to own the interior doors below</li><li>Rooftop base's first fading door must be located on the roof level</li><li>Rooftop bases must not obstruct or interfere with property on lower floors</li><li>If you do not own the property below, you may not hide or make it difficult for others to access its doors</li></ul>` },
+                            { id: "no-skybases", html: `<b>Sky Base Rules</b><ul class="rule-sublist"><li>A skybase is a base over 750 units tall measured with the Ruler tool from the ground of the map to the top of the base</li><li>Skybases are not allowed</li></ul>` },
+                            { id: "no-blackout", html: `<b>Blackout Base Rules</b><ul class="rule-sublist"><li>Blackout bases are not allowed</li></ul>` },
+                            { id: "hobo-aerial", html: `<b>Hobo Aerial Build Rules</b><ul class="rule-sublist"><li>Hobos may build aerial structures for roleplay features such as ramps and slides</li></ul>` }
                         ]
                     },
                     {
                         rawTitle: "SUB-CATEGORY 4B: PLACEMENT & MAP RULES",
                         webBtn: "🗺️ Placement & Map Rules",
                         rules: [
-                            { id: "map-boundary", html: `<b>Map Boundary</b><ul class="rule-sublist"><li>You may not base outside the map; the rock boundary is the limit</li></ul>` },
-                            { id: "public-space", html: `<b>Public Space</b><ul class="rule-sublist"><li>Do not take up excessive public space</li></ul>` },
+                            { id: "map-boundary", html: `<b>Map Boundary Rules</b><ul class="rule-sublist"><li>You may not base outside the map; the rock boundary is the limit</li></ul>` },
+                            { id: "public-space", html: `<b>Public Space Rules</b><ul class="rule-sublist"><li>Do not take up excessive public space</li></ul>` },
                             {
                                 id: "checkpoints",
-                                html: `<b>Checkpoints</b><ul class="rule-sublist"><li>Checkpoints must not block spawn-area entrances or exits, and must not extend raid duration</li><li>All checkpoints must leave another way around that does not require payment to reach the destination</li><li>Only two checkpoints are allowed on the entire map at a time</li><li>There may only be one police checkpoint and one hobo checkpoint or toll booth at a time</li><li>This limit is intended to encourage Hobos and Police to roleplay at their own respective checkpoints</li><li>Trying to directly bypass a Hobo checkpoint can result in death</li><li>Trying to directly bypass a Police checkpoint can result in AOS</li></ul>`
+                                html: `<b>Checkpoint Rules</b><ul class="rule-sublist"><li>Checkpoints must not block spawn-area entrances or exits, and must not extend raid duration</li><li>All checkpoints must leave another way around that does not require payment to reach the destination</li><li>Only two checkpoints are allowed on the entire map at a time</li><li>There may only be one police checkpoint and one hobo checkpoint or toll booth at a time</li><li>This limit is intended to encourage Hobos and Police to roleplay at their own respective checkpoints</li><li>Trying to directly bypass a Hobo checkpoint can result in death</li><li>Trying to directly bypass a Police checkpoint can result in AOS</li></ul>`
                             },
-                            { id: "pd-building", html: `<b>Police Department Building</b><ul class="rule-sublist"><li>Non-government players may not build in the Police Department, including the lobby, without the Mayor's permission</li><li>Only two fading doors are allowed inside of the Police Department</li></ul>` },
-                            { id: "blocking-off", html: `<b>Blocking Off</b><ul class="rule-sublist"><li>Do not block ATMs, drop-offs, trash cans, or the recycler</li></ul>` },
-                            { id: "atm-rules", html: `<b>ATMs</b><ul class="rule-sublist"><li>Props must not touch or obstruct an ATM</li><li>ATMs must be exposed on all sides and be fully walkable</li><li>You cannot access an ATM from your base</li></ul>` },
-                            { id: "drop-offs", html: `<b>Drop-Offs</b><ul class="rule-sublist"><li>Do not block weed drop-offs</li><li>Weed drop-off areas must be fully walkable</li><li>Your base may have only one connection to a drug drop-off location</li></ul>` }
+                            { id: "pd-building", html: `<b>Police Department Building Rules</b><ul class="rule-sublist"><li>Non-government players may not build in the Police Department, including the lobby, without the Mayor's permission</li><li>Only two fading doors are allowed inside of the Police Department</li></ul>` },
+                            { id: "blocking-off", html: `<b>Blocking Off Rules</b><ul class="rule-sublist"><li>Do not block ATMs, drop-offs, trash cans, or the recycler</li></ul>` },
+                            { id: "atm-rules", html: `<b>ATM Rules</b><ul class="rule-sublist"><li>Props must not touch or obstruct an ATM</li><li>ATMs must be exposed on all sides and be fully walkable</li><li>You cannot access an ATM from your base</li></ul>` },
+                            { id: "drop-offs", html: `<b>Drop-Off Rules</b><ul class="rule-sublist"><li>Do not block weed drop-offs</li><li>Weed drop-off areas must be fully walkable</li><li>Your base may have only one connection to a drug drop-off location</li></ul>` }
                         ]
                     },
                     {
                         rawTitle: "SUB-CATEGORY 4C: BASE LAYOUT & FAIRNESS",
                         webBtn: "🏠 Base Layout & Fairness",
                         rules: [
-                            { id: "base-reachable", html: `<b>Base Reachable</b><ul class="rule-sublist"><li>Bases must remain reachable and accessible at all times</li></ul>` },
-                            { id: "base-entrance", html: `<b>Base Entrance</b><ul class="rule-sublist"><li>Bases must have exactly one entrance</li><li>Unused map doors must be blocked off</li><li>You must own every door that is part of your base</li><li>You may only own doors in areas where you are actively basing</li></ul>` },
-                            { id: "base-entrance-visibility", html: `<b>Entrance Visibility</b><ul class="rule-sublist"><li>Entrances must be reasonably easy to find, visible, and distinct from surrounding walls, with a minimum 2×2 standing area (80×80 units)</li></ul>` },
-                            { id: "base-walkways", html: `<b>Base Walkways</b><ul class="rule-sublist"><li>Walkways must be at least one 1×1 prop wide (40 units), including ramps</li><li>You may not build aerial walkways from roof to roof</li></ul>` },
-                            { id: "entity-ladders", html: `<b>Entity Ladders</b><ul class="rule-sublist"><li>Bases must not require entity ladders to access at any time</li><li>Entity ladders may be used to get over public obstacles such as a toll booth or the open roof of a base</li></ul>` },
-                            { id: "base-crouch", html: `<b>Base Jump/Crouch</b><ul class="rule-sublist"><li>Raiders must never be forced to crouch or jump inside, outside, or to gain access to a base</li></ul>` },
-                            { id: "base-mazes", html: `<b>Base Mazes</b><ul class="rule-sublist"><li>Mazes are not allowed</li><li>A maze is more than one 180° turn, more than two 90° turns, or multiple disorienting pathways used to artificially extend raid duration</li></ul>` },
-                            { id: "base-shooting", html: `<b>Base Shooting</b><ul class="rule-sublist"><li>Raiders must be able to clearly see you and shoot back</li><li>You may not use tiny hitboxes for an unfair advantage</li></ul>` },
-                            { id: "base-crowbar", html: `<b>Base Crowbar</b><ul class="rule-sublist"><li>Bases must be crowbar-raidable</li><li>Code-only bases are not allowed</li></ul>` },
-                            { id: "base-damage", html: `<b>Base Damage</b><ul class="rule-sublist"><li>Bases may not damage players</li></ul>` },
-                            { id: "base-movement", html: `<b>Base Movement</b><ul class="rule-sublist"><li>Bases may not slow down or impede player movement</li></ul>` },
-                            { id: "base-no-collide", html: `<b>Base No Collide</b><ul class="rule-sublist"><li>No-collide props must not confuse raiders and should be visually distinct</li></ul>` }
+                            { id: "base-reachable", html: `<b>Base Reachability Rules</b><ul class="rule-sublist"><li>Bases must remain reachable and accessible at all times</li></ul>` },
+                            { id: "base-entrance", html: `<b>Base Entrance Rules</b><ul class="rule-sublist"><li>Bases must have exactly one entrance</li><li>Unused map doors must be blocked off</li><li>You must own every door that is part of your base</li><li>You may only own doors in areas where you are actively basing</li></ul>` },
+                            { id: "base-entrance-visibility", html: `<b>Entrance Visibility Rules</b><ul class="rule-sublist"><li>Entrances must be reasonably easy to find, visible, and distinct from surrounding walls, with a minimum 2×2 standing area (80×80 units)</li></ul>` },
+                            { id: "base-walkways", html: `<b>Base Walkway Rules</b><ul class="rule-sublist"><li>Walkways must be at least one 1×1 prop wide (40 units), including ramps</li><li>You may not build aerial walkways from roof to roof</li></ul>` },
+                            { id: "entity-ladders", html: `<b>Entity Ladder Rules</b><ul class="rule-sublist"><li>Bases must not require entity ladders to access at any time</li><li>Entity ladders may be used to get over public obstacles such as a toll booth or the open roof of a base</li></ul>` },
+                            { id: "base-crouch", html: `<b>Base Jump/Crouch Rules</b><ul class="rule-sublist"><li>Raiders must never be forced to crouch or jump inside, outside, or to gain access to a base</li></ul>` },
+                            { id: "base-mazes", html: `<b>Base Maze Rules</b><ul class="rule-sublist"><li>Mazes are not allowed</li><li>A maze is more than one 180° turn, more than two 90° turns, or multiple disorienting pathways used to artificially extend raid duration</li></ul>` },
+                            { id: "kos-airlocks", html: `<b>Raid Hallways & Airlock Rules</b><ul class="rule-sublist"><li>Artificial raid hallways and airlocks start at your KOS sign and must not exceed 25 total 1×1 props (1000 units), excluding natural map layouts</li></ul>` },
+                            { id: "base-shooting", html: `<b>Base Shooting Rules</b><ul class="rule-sublist"><li>Raiders must be able to clearly see you and shoot back</li><li>You may not use tiny hitboxes for an unfair advantage</li></ul>` },
+                            { id: "base-crowbar", html: `<b>Base Crowbar Rules</b><ul class="rule-sublist"><li>Bases must be crowbar-raidable</li><li>Code-only bases are not allowed</li></ul>` },
+                            { id: "base-damage", html: `<b>Base Damage Rules</b><ul class="rule-sublist"><li>Bases may not damage players</li></ul>` },
+                            { id: "base-movement", html: `<b>Base Movement Rules</b><ul class="rule-sublist"><li>Bases may not slow down or impede player movement</li></ul>` },
+                            { id: "base-no-collide", html: `<b>Base No-Collide Rules</b><ul class="rule-sublist"><li>No-collide props must not confuse raiders and should be visually distinct</li></ul>` }
                         ]
                     },
                     {
@@ -210,7 +210,7 @@ export default {
                             { id: "fd-limit", html: `<b>Fading Door Limit</b><ul class="rule-sublist"><li>You may use a maximum of two fading doors to access your raidables</li></ul>` },
                             {
                                 id: "fd-utility",
-                                html: `<b>Utility Fading Doors</b><ul class="rule-sublist"><li>Utility fading doors are allowed (examples: one-way exits, peeking holes, merchant airlocks)</li><li>Airlocks/fading door entrances must be identifiable and distinct through color or material</li><li>Merchant or Dealer "airlock" doors are permitted, provided they are publicly accessible and are not part of a base's main entrance or raidable area (2 Max)</li><li>Merchants include: Gun Dealer, Medic, Cook</li></ul>`
+                                html: `<b>Utility Fading Door Rules</b><ul class="rule-sublist"><li>Utility fading doors are allowed (examples: one-way exits, peeking holes, merchant airlocks)</li><li>Airlocks/fading door entrances must be identifiable and distinct through color or material</li><li>Merchant or Dealer "airlock" doors are permitted, provided they are publicly accessible and are not part of a base's main entrance or raidable area (2 Max)</li><li>Merchants include: Gun Dealer, Medic, Cook</li></ul>`
                             }
                         ]
                     },
@@ -218,10 +218,10 @@ export default {
                         rawTitle: "SUB-CATEGORY 4E: PROP & WIRE",
                         webBtn: "🔌 Prop & Wire",
                         rules: [
-                            { id: "spawn-build", html: `<b>Spawn Build</b><ul class="rule-sublist"><li>You may not build in spawn</li><li>Prop climbing, flying, and blocking are not allowed</li></ul>` },
-                            { id: "prop-blocking", html: `<b>Prop Blocking</b><ul class="rule-sublist"><li>Prop blocking and prop spamming are not allowed</li><li>You may not spam props in the street or other public areas</li></ul>` },
-                            { id: "wire-abuse", html: `<b>Wire Abuse</b><ul class="rule-sublist"><li>Wire abuse is not allowed</li><li>This includes auto-stealing money, loud sounds, stealing shipments, and using wire to annoy other players</li></ul>` },
-                            { id: "prop-permission", html: `<b>Property Respect</b><ul class="rule-sublist"><li>You may not place props on, build into, or occupy another player's property or base without permission</li></ul>` }
+                            { id: "spawn-build", html: `<b>Spawn Build Rules</b><ul class="rule-sublist"><li>You may not build in spawn</li><li>Prop climbing, flying, and blocking are not allowed</li></ul>` },
+                            { id: "prop-blocking", html: `<b>Prop Blocking Rules</b><ul class="rule-sublist"><li>Prop blocking and prop spamming are not allowed</li><li>You may not spam props in the street or other public areas</li></ul>` },
+                            { id: "wire-abuse", html: `<b>Wire Abuse Rules</b><ul class="rule-sublist"><li>Wire abuse is not allowed</li><li>This includes auto-stealing money, loud sounds, stealing shipments, and using wire to annoy other players</li></ul>` },
+                            { id: "prop-permission", html: `<b>Property Respect Rules</b><ul class="rule-sublist"><li>You may not place props on, build into, or occupy another player's property or base without permission</li></ul>` }
                         ]
                     }
                 ]
@@ -237,27 +237,27 @@ export default {
                         rules: [
                             {
                                 id: "mayor-base",
-                                html: `<b>Mayor</b><ul class="rule-sublist"><li>The Mayor must base in the Police Department</li><li>Gun licenses may include a fee, but the Mayor is not obligated to provide them to criminals</li><li>The Mayor may build outside the Police Department only for government or roleplay use, such as checkpoints or toll booths</li><li>Major law changes must be announced before enforcement</li><li>Laws must be reasonable and must not contradict server rules</li><li>You cannot make things said in text/voice chat illegal (i.e. Police Disrespect)</li><li>AOS laws are allowed; KOS laws are not</li><li>Laws may not target specific individuals or jobs</li><li>Lockdowns may only be enforced outdoors</li><li>A valid reason is required for a lockdown, such as a bank raid or active shooting</li></ul>`
+                                html: `<b>Mayor Rules</b><ul class="rule-sublist"><li>The Mayor must base in the Police Department</li><li>Gun licenses may include a fee, but the Mayor is not obligated to provide them to criminals</li><li>The Mayor may build outside the Police Department only for government or roleplay use, such as checkpoints or toll booths</li><li>Major law changes must be announced before enforcement</li><li>Laws must be reasonable and must not contradict server rules</li><li>You cannot make things said in text/voice chat illegal (i.e. Police Disrespect)</li><li>AOS laws are allowed; KOS laws are not</li><li>Laws may not target specific individuals or jobs</li><li>Lockdowns may only be enforced outdoors</li><li>A valid reason is required for a lockdown, such as a bank raid or active shooting</li></ul>`
                             },
                             {
                                 id: "police-base",
-                                html: `<b>Police</b><ul class="rule-sublist"><li>Police must base in the Police Department and allow all government members to base and roleplay with them</li><li>Follow the command hierarchy: Mayor>Police Chief>Police Officers</li><li>Attempt to arrest before killing, unless the suspect has a weapon drawn or you are defending an active raid</li><li>Police may create a checkpoint in public</li><li>Police do not use toll booths, as their checkpoints cannot require a fee</li><li>A police checkpoint may only enforce that a search is required to pass</li><li>Searches require a roleplay reason, such as being a police checkpoint, being near gunshots, or loitering near a drug drop-off</li><li>Government may raid alongside a Hitman on an active hit</li><li>Government may not raid with other criminals</li></ul>`
+                                html: `<b>Police Rules</b><ul class="rule-sublist"><li>Police must base in the Police Department and allow all government members to base and roleplay with them</li><li>Follow the command hierarchy: Mayor>Police Chief>Police Officers</li><li>Attempt to arrest before killing, unless the suspect has a weapon drawn or you are defending an active raid</li><li>Police may create a checkpoint in public</li><li>Police do not use toll booths, as their checkpoints cannot require a fee</li><li>A police checkpoint may only enforce that a search is required to pass</li><li>Searches require a roleplay reason, such as being a police checkpoint, being near gunshots, or loitering near a drug drop-off</li><li>Government may raid alongside a Hitman on an active hit</li><li>Government may not raid with other criminals</li></ul>`
                             },
                             {
                                 id: "police-raids",
-                                html: `<b>Police & Raids</b><ul class="rule-sublist"><li>While a Police Department raid is active, Government players may respawn and return to defend it; this does not count as breaking NLR</li><li>Police responding to an active raid to defend a base are not considered counter raiding</li><li>Police may kill active raiders to defend someone's base during an active raid</li></ul>`
+                                html: `<b>Police & Raid Rules</b><ul class="rule-sublist"><li>While a Police Department raid is active, Government players may respawn and return to defend it; this does not count as breaking NLR</li><li>Police responding to an active raid to defend a base are not considered counter raiding</li><li>Police may kill active raiders to defend someone's base during an active raid</li></ul>`
                             },
                             {
                                 id: "pd-lobby-kos",
-                                html: `<b>Police Department — Lobby & KOS</b><ul class="rule-sublist"><li>The Police Department lobby is the front room from the main entrance (the area past the front doors), including the public speaking window and ATM</li><li>Entering or being in the PD lobby is never AOS or KOS, and the lobby cannot be made AOS or KOS; KOS cannot start in the lobby</li><li>Only areas behind government-owned interior doors are AOS by default</li><li>The Mayor or Chief of Police may place a valid KOS line at any Police Department entrance except the lobby; areas beyond that line may be KOS</li><li>No law is required to enforce Police Department trespassing as AOS</li></ul>`
+                                html: `<b>Police Department — Lobby & KOS Rules</b><ul class="rule-sublist"><li>The Police Department lobby is the front room from the main entrance (the area past the front doors), including the public speaking window and ATM</li><li>Entering or being in the PD lobby is never AOS or KOS, and the lobby cannot be made AOS or KOS; KOS cannot start in the lobby</li><li>Only areas behind government-owned interior doors are AOS by default</li><li>The Mayor or Chief of Police may place a valid KOS line at any Police Department entrance except the lobby; areas beyond that line may be KOS</li><li>No law is required to enforce Police Department trespassing as AOS</li></ul>`
                             },
                             {
                                 id: "arrests-warrants",
-                                html: `<b>Arrests & Warrants</b><ul class="rule-sublist"><li>Government players cannot raid or arrest someone solely because of their job</li><li>Arrests may only be made against lawbreakers</li><li>You may not arrest innocent players, even if bribed</li><li>You may arrest during a lockdown, but KOS is not allowed</li><li>Warrants require valid roleplay evidence</li><li>You must witness illegal activity; you cannot arrest or warrant based off of sound</li><li>Warrants expire when the target is jailed or dies</li><li>Warrants expire on successful raid defense, including when all attending police die</li><li>An individual officer's death does not expire the warrant for other attending police</li><li>You may be killed by the person you are trying to arrest or their basemates</li></ul>`
+                                html: `<b>Arrest & Warrant Rules</b><ul class="rule-sublist"><li>Government players cannot raid or arrest someone solely because of their job</li><li>Arrests may only be made against lawbreakers</li><li>You may not arrest innocent players, even if bribed</li><li>You may arrest during a lockdown, but KOS is not allowed</li><li>Warrants require valid roleplay evidence</li><li>You must witness illegal activity; you cannot arrest or warrant based off of sound</li><li>Warrants expire when the target is jailed or dies</li><li>Warrants expire on successful raid defense, including when all attending police die</li><li>An individual officer's death does not expire the warrant for other attending police</li><li>You may be killed by the person you are trying to arrest or their basemates</li></ul>`
                             },
                             {
                                 id: "corruption",
-                                html: `<b>Police Corruption</b><ul class="rule-sublist"><li>Corruption is allowed in roleplay, but not against other government members</li><li>Bribes are allowed</li><li>Cannot raid with criminals, except alongside a Hitman on an active hit</li><li>Cannot allow the Police Department to be raided</li><li>Cannot kill government officials or allow them to be killed</li></ul>`
+                                html: `<b>Police Corruption Rules</b><ul class="rule-sublist"><li>Corruption is allowed in roleplay, but not against other government members</li><li>Bribes are allowed</li><li>Cannot raid with criminals, except alongside a Hitman on an active hit</li><li>Cannot allow the Police Department to be raided</li><li>Cannot kill government officials or allow them to be killed</li></ul>`
                             }
                         ]
                     },
@@ -267,19 +267,19 @@ export default {
                         rules: [
                             {
                                 id: "gun-dealer",
-                                html: `<b>Gun Dealer</b><ul class="rule-sublist"><li>Gun Dealers must intend to sell weapons</li><li>They may not base with another Gun Dealer</li><li>They must sell individual weapons, not only shipments</li></ul>`
+                                html: `<b>Gun Dealer Rules</b><ul class="rule-sublist"><li>Gun Dealers must intend to sell weapons</li><li>They may not base with another Gun Dealer</li><li>They must sell individual weapons, not only shipments</li></ul>`
                             },
                             {
                                 id: "medic",
-                                html: `<b>Medic</b><ul class="rule-sublist"><li>Medics must actively provide service</li><li>Only one Medic is allowed per raid party</li><li>Only one Medic is allowed per base</li></ul>`
+                                html: `<b>Medic Rules</b><ul class="rule-sublist"><li>Medics must actively provide service</li><li>Only one Medic is allowed per raid party</li><li>Only one Medic is allowed per base</li></ul>`
                             },
                             {
                                 id: "theatre-manager",
-                                html: `<b>Theatre Manager</b><ul class="rule-sublist"><li>The Theatre Manager must base in the Theatre</li></ul>`
+                                html: `<b>Theatre Manager Rules</b><ul class="rule-sublist"><li>The Theatre Manager must base in the Theatre</li></ul>`
                             },
                             {
                                 id: "hobo",
-                                html: `<b>Hobo</b><ul class="rule-sublist"><li>Hobos may create a checkpoint or toll booth</li><li>Hobo checkpoint and toll booth fees may not exceed $50</li><li>Hitting players with excrement can lead to a valid kill or arrest</li></ul>`
+                                html: `<b>Hobo Rules</b><ul class="rule-sublist"><li>Hobos may create a checkpoint or toll booth</li><li>Hobo checkpoint and toll booth fees may not exceed $50</li><li>Hitting players with excrement can lead to a valid kill or arrest</li></ul>`
                             }
                         ]
                     },
@@ -289,7 +289,7 @@ export default {
                         rules: [
                             {
                                 id: "hitman",
-                                html: `<b>Hitman</b><ul class="rule-sublist"><li>Only Hitmen may perform hits</li><li>Hitmen may not metagame hits</li><li>Hitmen may only raid active target locations</li><li>A valid roleplay reason is not required unless the target is the Mayor</li><li>Only one Hitman is allowed per raid</li></ul>`
+                                html: `<b>Hitman Rules</b><ul class="rule-sublist"><li>Only Hitmen may perform hits</li><li>Hitmen may not metagame hits</li><li>Hitmen may only raid active target locations</li><li>A valid roleplay reason is not required unless the target is the Mayor</li><li>Only one Hitman is allowed per raid</li></ul>`
                             }
                         ]
                     }
@@ -305,11 +305,11 @@ export default {
                         webBtn: "⚔️ Raiding Rules",
                         rules: [
                             { id: "raid-guidelines", html: `<b>Raiding Guidelines</b><ul class="rule-sublist"><li>A raid starts when a prybar is out, a base member is damaged, or when a weapon is drawn on the property</li><li>A raid ends when no raiders remain inside or on the property</li></ul>` },
-                            { id: "building-sign", html: `<b>Building Sign</b><ul class="rule-sublist"><li>You may not raid a base that has a building sign placed</li><li>You may not place a building sign with valuables in your base</li></ul>` },
-                            { id: "mid-raid", html: `<b>Mid-Raid</b><ul class="rule-sublist"><li>Props may not be moved, changed, deleted, or added during a raid</li><li>During a raid, you may use an entity ladder to enter a flawed or open base as allowed under Entity Ladders</li></ul>` },
-                            { id: "warrant-raid", html: `<b>Warrant Raids</b><ul class="rule-sublist"><li>A police raid with a warrant ends when all attending police die</li><li>Returning to a location with an active warrant after death breaks NLR</li></ul>` },
-                            { id: "no-counter-raid", html: `<b>No Counter Raiding</b><ul class="rule-sublist"><li>Counter raiding is joining a raid while not being a part of the original group; this may also be called third-party raiding</li><li>Counter raiding is not allowed</li><li>See Job Rules — Police & Raids for police exceptions</li></ul>` },
-                            { id: "base-defense", html: `<b>Base Defense</b><ul class="rule-sublist"><li>To defend a base, you must own valuables inside that base (such as your printers or weed stations)</li><li>You may not defend someone else's base unless you are actively basing with them</li><li>See Job Rules — Police & Raids for police exceptions</li></ul>` }
+                            { id: "building-sign", html: `<b>Building Sign Rules</b><ul class="rule-sublist"><li>You may not raid a base that has a building sign placed</li><li>You may not place a building sign with valuables in your base</li></ul>` },
+                            { id: "mid-raid", html: `<b>Mid-Raid Rules</b><ul class="rule-sublist"><li>Props may not be moved, changed, deleted, or added during a raid</li><li>During a raid, you may use an entity ladder to enter a flawed or open base as allowed under Entity Ladders</li></ul>` },
+                            { id: "warrant-raid", html: `<b>Warrant Raid Rules</b><ul class="rule-sublist"><li>A police raid with a warrant ends when all attending police die</li><li>Returning to a location with an active warrant after death breaks NLR</li></ul>` },
+                            { id: "no-counter-raid", html: `<b>Counter Raiding Rules</b><ul class="rule-sublist"><li>Counter raiding is joining a raid while not being a part of the original group; this may also be called third-party raiding</li><li>Counter raiding is not allowed</li></ul>` },
+                            { id: "base-defense", html: `<b>Base Defense Rules</b><ul class="rule-sublist"><li>To defend a base, you must own valuables inside that base (such as your printers or weed stations)</li><li>You may not defend someone else's base unless you are actively basing with them</li></ul>` }
                         ],
                         guide: {
                             rawHeading: "RAID GUIDE (✅ Can Raid)",
@@ -328,11 +328,11 @@ export default {
                         rawTitle: "SUB-CATEGORY 6B: MUGGING RULES",
                         webBtn: "💰 Mugging Rules",
                         rules: [
-                            { id: "mug-limit", html: `<b>Money Limit</b><ul class="rule-sublist"><li>The maximum mug amount is $1,000</li><li>You must type a mug warning, and the victim must be given 10 seconds to respond</li></ul>` },
-                            { id: "mug-defense", html: `<b>Defense</b><ul class="rule-sublist"><li>Victims of a mugging may always defend themselves without warning</li></ul>` },
-                            { id: "mug-base", html: `<b>Base Mugging</b><ul class="rule-sublist"><li>You may not mug people from your base</li></ul>` },
-                            { id: "mug-shipments", html: `<b>Shipments</b><ul class="rule-sublist"><li>You may mug shipments or guns if you see someone collect them</li><li>The same warning rules apply</li></ul>` },
-                            { id: "mug-cooldown", html: `<b>Cooldown</b><ul class="rule-sublist"><li>There is a 5-minute cooldown between mugs</li><li>Don't mug the same person repeatedly</li></ul>` }
+                            { id: "mug-limit", html: `<b>Money Limit Rules</b><ul class="rule-sublist"><li>The maximum mug amount is $1,000</li><li>You must type a mug warning, and the victim must be given 10 seconds to respond</li></ul>` },
+                            { id: "mug-defense", html: `<b>Defense Rules</b><ul class="rule-sublist"><li>Victims of a mugging may always defend themselves without warning</li></ul>` },
+                            { id: "mug-base", html: `<b>Base Mugging Rules</b><ul class="rule-sublist"><li>You may not mug people from your base</li></ul>` },
+                            { id: "mug-shipments", html: `<b>Shipment Rules</b><ul class="rule-sublist"><li>You may mug shipments or guns if you see someone collect them</li><li>The same warning rules apply</li></ul>` },
+                            { id: "mug-cooldown", html: `<b>Cooldown Rules</b><ul class="rule-sublist"><li>There is a 5-minute cooldown between mugs</li><li>Don't mug the same person repeatedly</li></ul>` }
                         ],
                         guide: {
                             rawHeading: "MUG GUIDE (✅ Can Mug)",
@@ -346,7 +346,7 @@ export default {
                         rules: [
                             {
                                 id: "targeting",
-                                html: `<b>Targeting</b><ul class="rule-sublist"><li>You may not spam-mug, spam-hit, or spam-raid the same person after successful attempts. Space things out and RP with other people or it could be considered harassment</li><li>Three or more repeated actions on the same person is considered spam</li></ul>`
+                                html: `<b>Targeting Rules</b><ul class="rule-sublist"><li>You may not spam-mug, spam-hit, or spam-raid the same person after successful attempts. Space things out and RP with other people or it could be considered harassment</li><li>Three or more repeated actions on the same person is considered spam</li></ul>`
                             },
                             {
                                 id: "cooldowns",
@@ -354,7 +354,7 @@ export default {
                             },
                             {
                                 id: "mayor-grace",
-                                html: `<b>Mayor Grace Period</b><ul class="rule-sublist"><li>For 10 minutes after a Mayor is elected, the Mayor may not be raided, mugged, or killed</li></ul>`
+                                html: `<b>Mayor Grace Period Rules</b><ul class="rule-sublist"><li>For 10 minutes after a Mayor is elected, the Mayor may not be raided, mugged, or killed</li></ul>`
                             }
                         ]
                     }
@@ -513,28 +513,28 @@ export default {
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
                 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Inter:wght@400;600&display=swap" rel="stylesheet">
                 <style>
-                    :root { --lp-blue: #0076E3; --bg: #02040a; --surface: rgba(255, 255, 255, 0.05); --border: rgba(255, 255, 255, 0.1); }
+                    :root { --lp-blue: #017AEF; --lp-blue-hover: #33A0FF; --lp-blue-rgb: 1, 122, 239; --bg: #000000; --surface: #1a1d23; --surface-inset: #12151a; --border: #374151; }
                     body { font-family: 'Inter', sans-serif; background: var(--bg); color: #fff; margin: 0; padding: 20px; line-height: 1.6; }
                     .header { text-align: center; margin-bottom: 30px; }
                     .header h1 { font-family: 'Montserrat', sans-serif; font-size: 32px; text-transform: uppercase; margin: 0; color: var(--lp-blue); }
-                    .header p { color: #a0a8b5; font-size: 14px; }
+                    .header p { color: #9ca3af; font-size: 14px; }
                     details { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 10px; overflow: hidden; }
                     summary { padding: 15px 20px; cursor: pointer; font-weight: bold; list-style: none; display: flex; justify-content: space-between; align-items: center; text-transform: uppercase; font-size: 14px; letter-spacing: 1px; }
                     summary::-webkit-details-marker { display: none; }
                     summary::after { content: '➔'; color: var(--lp-blue); transition: 0.3s; }
                     details[open] summary::after { transform: rotate(90deg); }
-                    details[open] summary { border-bottom: 1px solid var(--border); background: rgba(0, 118, 227, 0.1); }
-                    .content { padding: 20px; font-size: 14px; color: #f0f2f5; }
+                    details[open] summary { border-bottom: 1px solid var(--border); background: var(--lp-blue); color: #fff; }
+                    .content { padding: 20px; font-size: 14px; color: #ffffff; }
                     .content ul { list-style: none; padding: 0; margin: 0; }
                     .content li { margin-bottom: 12px; padding-left: 15px; border-left: 2px solid var(--lp-blue); }
-                    .content li.rule-intro { border-left-color: rgba(0, 118, 227, 0.35); }
+                    .content li.rule-intro { border-left-color: rgba(var(--lp-blue-rgb), 0.35); }
                     .content li.rule-intro ul.rule-sublist { display: none; }
                     .content .rule-num { color: #6b8499; font-weight: 600; font-size: 0.92em; margin-right: 0.35em; font-variant-numeric: tabular-nums; letter-spacing: 0.03em; }
                     .content b { color: var(--lp-blue); }
                     .content h4.rule-heading-underline { text-decoration: underline; }
                     .content li > b + ul.rule-sublist { margin-top: 6px; }
                     .important { color: #ff4d4d; font-weight: bold; margin-top: 15px; display: block; }
-                    .footer { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); color: #a0a8b5; font-size: 12px; }
+                    .footer { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); color: #9ca3af; font-size: 12px; }
                 </style>
             </head>
             <body>
@@ -899,7 +899,7 @@ export default {
         // Shared page variables need to be declared before any route handlers that set them
         let bodyContent = "";
         let pageTitle = "LIFEPUNCH";
-        let subHeaderTitle = "WELCOME TO THE PUNCH"; // Default subheader
+        let subHeaderTitle = "HOME"; // Default subheader
         let bodyClass = "";
 
         // --- AUTH ROUTES ---
@@ -1980,13 +1980,16 @@ export default {
         ${isSboxRules ? "" : `<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Inter:wght@400;600&display=swap" rel="stylesheet">`}
         <style>
             :root { 
-                --lp-blue: #0076E3; 
-                --bg: #02040a; 
-                --surface: rgba(255, 255, 255, 0.04); 
-                --card-header: rgba(255, 255, 255, 0.07);
-                --border: rgba(255, 255, 255, 0.12);
-                --text-main: #f0f2f5;
-                --text-dim: #a0a8b5;
+                --lp-blue: #017AEF; 
+                --lp-blue-hover: #33A0FF;
+                --lp-blue-rgb: 1, 122, 239;
+                --bg: #000000; 
+                --surface: #1a1d23; 
+                --surface-inset: #12151a;
+                --card-header: #22262e;
+                --border: #374151;
+                --text-main: #ffffff;
+                --text-dim: #9ca3af;
             }
 
             @view-transition {
@@ -2003,7 +2006,7 @@ export default {
                 width: 10px;
             }
             ::-webkit-scrollbar-track {
-                background: rgba(255, 255, 255, 0.02);
+                background: var(--surface);
             }
             ::-webkit-scrollbar-thumb {
                 background: var(--lp-blue);
@@ -2011,11 +2014,11 @@ export default {
                 border: 2px solid var(--bg);
             }
             ::-webkit-scrollbar-thumb:hover {
-                background: #3399ff;
+                background: var(--lp-blue-hover);
             }
             * {
                 scrollbar-width: thin;
-                scrollbar-color: var(--lp-blue) rgba(255, 255, 255, 0.02);
+                scrollbar-color: var(--lp-blue) var(--surface);
             }
             html {
                 scrollbar-gutter: stable;
@@ -2033,11 +2036,10 @@ export default {
                 position: fixed;
                 top: 0; left: 0; width: 100%; height: 100%;
                 background-color: var(--bg);
-                background-image: 
-                    radial-gradient(at 80% 50%, rgba(0, 118, 227, 0.25) 0px, transparent 50%),
-                    radial-gradient(at 20% 80%, rgba(0, 70, 160, 0.3) 0px, transparent 55%),
-                    radial-gradient(at 50% 10%, rgba(0, 118, 227, 0.15) 0px, transparent 40%),
-                    radial-gradient(at 100% 0%, rgba(0, 118, 227, 0.1) 0px, transparent 40%);
+                background-image:
+                    radial-gradient(at 75% 45%, rgba(34, 38, 46, 0.75) 0px, transparent 68%),
+                    radial-gradient(at 25% 82%, rgba(42, 47, 56, 0.52) 0px, transparent 72%),
+                    radial-gradient(at 50% 12%, rgba(34, 38, 46, 0.4) 0px, transparent 58%);
                 background-attachment: fixed;
                 z-index: -1;
             }
@@ -2058,13 +2060,13 @@ export default {
             .logo { 
                 width: 140px;
                 margin-bottom: 15px; 
-                filter: drop-shadow(0 0 20px rgba(0, 118, 227, 0.8)); 
+                filter: drop-shadow(0 0 20px rgba(var(--lp-blue-rgb), 0.7)); 
                 animation: logoStrobe 3s ease-in-out infinite;
             }
             @keyframes logoStrobe {
-                0% { filter: drop-shadow(0 0 15px rgba(0, 118, 227, 0.5)); opacity: 0.85; }
-                50% { filter: drop-shadow(0 0 35px rgba(0, 118, 227, 1)); opacity: 1; }
-                100% { filter: drop-shadow(0 0 15px rgba(0, 118, 227, 0.5)); opacity: 0.85; }
+                0% { filter: drop-shadow(0 0 15px rgba(var(--lp-blue-rgb), 0.45)); opacity: 0.85; }
+                50% { filter: drop-shadow(0 0 35px rgba(var(--lp-blue-rgb), 0.95)); opacity: 1; }
+                100% { filter: drop-shadow(0 0 15px rgba(var(--lp-blue-rgb), 0.45)); opacity: 0.85; }
             }
             h1 { 
                 font-family: 'Montserrat', sans-serif;
@@ -2074,7 +2076,7 @@ export default {
                 letter-spacing: -2px; 
                 margin: 0; 
                 font-size: 48px; 
-                text-shadow: 0 0 20px rgba(0, 118, 227, 0.4);
+                text-shadow: 0 0 12px rgba(var(--lp-blue-rgb), 0.18);
             }
             .sub-h { color: var(--lp-blue); font-weight: bold; letter-spacing: 2px; font-size: 14px; margin-bottom: 20px; }
             .links { 
@@ -2086,7 +2088,7 @@ export default {
             .links a { 
                 color: #fff;
                 text-decoration: none; 
-                background: rgba(255, 255, 255, 0.05); 
+                background: var(--surface); 
                 padding: 10px 18px; 
                 border-radius: 6px; 
                 font-size: 11px; 
@@ -2095,13 +2097,12 @@ export default {
                 border: 1px solid var(--border); 
                 transition: 0.2s; 
                 font-weight: bold; 
-                backdrop-filter: blur(10px) saturate(150%);
             }
             .links a:hover { 
                 background: var(--lp-blue);
-                border-color: rgba(255,255,255,0.4); 
+                border-color: rgba(var(--lp-blue-rgb), 0.45); 
                 transform: translateY(-2px); 
-                box-shadow: 0 5px 15px rgba(0, 118, 227, 0.3);
+                box-shadow: 0 5px 15px rgba(var(--lp-blue-rgb), 0.25);
             }
             footer {
                 padding: 30px 20px;
@@ -2301,7 +2302,7 @@ export default {
                 <style>
                     .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
                     .admin-card { background: var(--surface); border: 1px solid var(--border); padding: 40px; border-radius: 12px; text-align: center; text-decoration: none; transition: 0.3s; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-                    .admin-card:hover { border-color: var(--lp-blue); transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,118,227,0.2); }
+                    .admin-card:hover { border-color: var(--lp-blue); transform: translateY(-5px); box-shadow: 0 10px 20px rgba(var(--lp-blue-rgb),0.2); }
                     .admin-card i { font-size: 48px; color: var(--lp-blue); margin-bottom: 20px; }
                     .admin-card h3 { color: #fff; margin: 0; font-family: 'Montserrat', sans-serif; text-transform: uppercase; font-size: 20px; }
                     .admin-card p { color: var(--text-dim); margin: 10px 0 0; font-size: 14px; }
@@ -2430,7 +2431,7 @@ export default {
                     .settings-input:focus { border-color: var(--lp-blue); outline: none; }
                     .error-banner { background: rgba(255, 77, 77, 0.1); border: 1px solid #ff4d4d; color: #ff4d4d; padding: 15px; border-radius: 8px; margin-bottom: 20px; font-size: 12px; font-weight: bold; }
                     .btn-save { background: var(--lp-blue); color: #fff; border: none; padding: 12px 25px; border-radius: 6px; font-weight: 900; cursor: pointer; text-transform: uppercase; transition: 0.3s; }
-                    .btn-save:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 118, 227, 0.3); }
+                    .btn-save:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(var(--lp-blue-rgb), 0.3); }
                 </style>
 
                 <div class="settings-grid">
@@ -2594,8 +2595,8 @@ export default {
                     .nav-item-content { display: flex; align-items: center; gap: 12px; }
                     .nav-item i { width: 16px; text-align: center; font-size: 14px; }
                     .nav-item:hover { background: rgba(255, 255, 255, 0.05); color: #fff; }
-                    .nav-item.active { background: rgba(0, 118, 227, 0.1); color: var(--lp-blue); }
-                    .nav-item.active .count-badge { background: var(--lp-blue); color: #fff; }
+                    .nav-item.active { background: var(--lp-blue); color: #fff; }
+                    .nav-item.active .count-badge { background: rgba(255,255,255,0.2); color: #fff; }
 
                     .count-badge { 
                         font-size: 10px; background: rgba(255,255,255,0.05); color: var(--text-dim); 
@@ -2608,9 +2609,9 @@ export default {
                         background: var(--lp-blue); color: #fff; text-decoration: none; 
                         padding: 14px; border-radius: 12px; font-weight: 900; font-size: 12px; 
                         text-transform: uppercase; letter-spacing: 1px; margin-bottom: 25px;
-                        box-shadow: 0 4px 15px rgba(0, 118, 227, 0.3); transition: 0.3s;
+                        box-shadow: 0 4px 15px rgba(var(--lp-blue-rgb), 0.3); transition: 0.3s;
                     }
-                    .compose-btn-large:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 118, 227, 0.4); }
+                    .compose-btn-large:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(var(--lp-blue-rgb), 0.4); }
 
                     .inbox-table-container { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
                     .inbox-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
@@ -2618,7 +2619,7 @@ export default {
                     .inbox-table th { background: var(--card-header); color: var(--lp-blue); text-transform: uppercase; font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 1px; }
                     .inbox-table tr:hover { background: rgba(255,255,255,0.02); cursor: pointer; }
                     
-                    .unread { font-weight: 800; color: #fff; background: rgba(0, 118, 227, 0.03); }
+                    .unread { font-weight: 800; color: #fff; background: rgba(var(--lp-blue-rgb), 0.03); }
                     .unread td:first-child { border-left: 3px solid var(--lp-blue); }
                     
                     .badge { font-size: 9px; padding: 2px 6px; border-radius: 4px; font-weight: 900; text-transform: uppercase; }
@@ -2722,7 +2723,7 @@ export default {
                     .form-input:focus { border-color: var(--lp-blue); background: rgba(255,255,255,0.08); }
                     .form-textarea { min-height: 400px; resize: vertical; }
                     .btn-send { background: var(--lp-blue); color: #fff; border: none; padding: 12px 40px; border-radius: 6px; font-weight: 900; cursor: pointer; text-transform: uppercase; transition: 0.3s; font-size: 12px; letter-spacing: 1px; }
-                    .btn-send:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,118,227,0.4); }
+                    .btn-send:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(var(--lp-blue-rgb),0.4); }
                 </style>
                 <a href="/admin/inbox" style="color:var(--lp-blue); text-decoration:none; font-size:12px; font-weight:bold; margin-bottom:10px; display:inline-block;"><i class="fa-solid fa-arrow-left"></i> BACK TO INBOX</a>
                 <div class="compose-box">
@@ -2845,10 +2846,10 @@ export default {
                     .reply-box h3 { font-family: 'Montserrat', sans-serif; font-size: 12px; color: var(--lp-blue); margin-bottom: 20px; text-transform: uppercase; font-weight: 900; letter-spacing: 1px; }
                     .form-group { margin-bottom: 20px; }
                     .form-input { width: 100%; padding: 18px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 10px; color: #fff; font-family: inherit; box-sizing: border-box; outline: none; transition: 0.3s; font-size: 14px; }
-                    .form-input:focus { border-color: var(--lp-blue); box-shadow: 0 0 0 3px rgba(0, 118, 227, 0.1); }
+                    .form-input:focus { border-color: var(--lp-blue); box-shadow: 0 0 0 3px rgba(var(--lp-blue-rgb), 0.1); }
                     .form-textarea { min-height: 180px; resize: vertical; line-height: 1.6; }
                     .btn-send { background: var(--lp-blue); color: #fff; border: none; padding: 14px 30px; border-radius: 8px; font-weight: 900; cursor: pointer; text-transform: uppercase; font-size: 12px; letter-spacing: 1px; transition: 0.3s; }
-                    .btn-send:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 118, 227, 0.4); filter: brightness(1.1); }
+                    .btn-send:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(var(--lp-blue-rgb), 0.4); filter: brightness(1.1); }
                 </style>
 
                 <div class="email-container">
@@ -3032,7 +3033,7 @@ export default {
                                 embeds: [{
                                     title: "🎉 Monthly Giveaway Winner! 🎉",
                                     description: `Congratulations to **${winner.name}** (${winner.steamid}) for winning the **$100,000**, **EVIP Rank**, and **Builder+** for **${month}**!`,
-                                    color: 0x0076E3,
+                                    color: 0x017AEF,
                                     thumbnail: { url: winner.avatar },
                                     timestamp: new Date().toISOString()
                                 }]
@@ -3147,7 +3148,7 @@ export default {
                 bodyContent = `
                 <style>
                     .admin-search { width: 100%; padding: 15px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; color: #fff; margin-bottom: 20px; font-family: inherit; box-sizing: border-box; outline: none; transition: 0.2s; }
-                    .admin-search:focus { border-color: var(--lp-blue); box-shadow: 0 0 10px rgba(0,118,227,0.2); }
+                    .admin-search:focus { border-color: var(--lp-blue); box-shadow: 0 0 10px rgba(var(--lp-blue-rgb),0.2); }
                     .tx-table-container { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow-x: auto; }
                     .tx-table { width: 100%; border-collapse: collapse; min-width: 800px; }
                     .tx-table th, .tx-table td { padding: 15px; text-align: left; border-bottom: 1px solid var(--border); font-size: 13px; }
@@ -3162,7 +3163,7 @@ export default {
                         position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px);
                         background: var(--lp-blue); color: #fff; padding: 12px 24px; border-radius: 50px;
                         font-weight: 900; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;
-                        box-shadow: 0 10px 30px rgba(0, 118, 227, 0.4); z-index: 9999;
+                        box-shadow: 0 10px 30px rgba(var(--lp-blue-rgb), 0.4); z-index: 9999;
                         transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
                         pointer-events: none;
                     }
@@ -3382,13 +3383,13 @@ export default {
                     .btn-reset:hover { background: #cc0000; transform: scale(1.05); }
                     .btn-reset:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
                     
-                    .type-badge { background: rgba(0, 118, 227, 0.1); color: var(--lp-blue); padding: 4px 8px; border-radius: 4px; font-size: 10px; font-weight: 900; text-transform: uppercase; border: 1px solid rgba(0, 118, 227, 0.3); }
+                    .type-badge { background: rgba(var(--lp-blue-rgb), 0.1); color: var(--lp-blue); padding: 4px 8px; border-radius: 4px; font-size: 10px; font-weight: 900; text-transform: uppercase; border: 1px solid rgba(var(--lp-blue-rgb), 0.3); }
                     
                     #toast {
                         position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px);
                         background: var(--lp-blue); color: #fff; padding: 12px 24px; border-radius: 50px;
                         font-weight: 900; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;
-                        box-shadow: 0 10px 30px rgba(0, 118, 227, 0.4); z-index: 9999;
+                        box-shadow: 0 10px 30px rgba(var(--lp-blue-rgb), 0.4); z-index: 9999;
                         transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
                         pointer-events: none;
                     }
@@ -3769,7 +3770,7 @@ export default {
                     border-radius: 10px;
                     overflow: hidden;
                     border: 2px solid var(--lp-blue);
-                    box-shadow: 0 0 20px rgba(0, 118, 227, 0.2);
+                    box-shadow: 0 0 20px rgba(var(--lp-blue-rgb), 0.2);
                     flex-shrink: 0;
                 }
                 .profile-avatar img {
@@ -3818,8 +3819,8 @@ export default {
                     color: #fff;
                 }
                 .profile-meta-badge {
-                    background: rgba(0, 118, 227, 0.05);
-                    border: 1px solid rgba(0, 118, 227, 0.3);
+                    background: rgba(var(--lp-blue-rgb), 0.05);
+                    border: 1px solid rgba(var(--lp-blue-rgb), 0.3);
                     padding: 15px 25px;
                     border-radius: 10px;
                     text-align: center;
@@ -3868,7 +3869,7 @@ export default {
                     justify-content: space-between;
                     align-items: center;
                     padding: 20px;
-                    background: rgba(0, 118, 227, 0.05);
+                    background: rgba(var(--lp-blue-rgb), 0.05);
                     border: 1px solid var(--lp-blue);
                     border-radius: 8px;
                     margin-bottom: 15px;
@@ -3918,7 +3919,7 @@ export default {
                 }
                 .btn-link:hover {
                     transform: translateY(-2px);
-                    box-shadow: 0 5px 15px rgba(0, 118, 227, 0.3);
+                    box-shadow: 0 5px 15px rgba(var(--lp-blue-rgb), 0.3);
                 }
                 .btn-link.copied {
                     background: #00c853 !important;
@@ -4330,15 +4331,15 @@ export default {
 
             bodyContent = `
           <style>
-              .intro-text { background: rgba(0,118,227,0.1); border: 1px solid var(--lp-blue); padding: 25px; border-radius: 10px; margin-bottom: 25px; font-size: 14px; line-height: 1.6; color: #fff; text-align: center; }
+              .intro-text { background: rgba(var(--lp-blue-rgb), 0.07); border: 1px solid rgba(var(--lp-blue-rgb), 0.35); padding: 25px; border-radius: 10px; margin-bottom: 25px; font-size: 14px; line-height: 1.6; color: #fff; text-align: center; }
               
               .search-wrapper { position: sticky; top: 10px; z-index: 100; margin-bottom: 30px; position: relative; }
               
               .search-container {
                 position: relative;
                 width: 100%;
-                background: rgba(2, 4, 10, 0.85); 
-                border: 1px solid var(--lp-blue); 
+                background: rgba(0, 0, 0, 0.85); 
+                border: 1px solid rgba(var(--lp-blue-rgb), 0.35); 
                 border-radius: 8px;
                 backdrop-filter: null;
                 box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
@@ -4385,7 +4386,7 @@ export default {
                   background: var(--lp-blue); color: #fff; 
                   border-radius: 3px; 
                   padding: 1px 3px; 
-                  box-shadow: 0 0 10px rgba(0, 118, 227, 0.6);
+                  box-shadow: 0 0 8px rgba(var(--lp-blue-rgb), 0.25);
               }
 
               .category {
@@ -4415,15 +4416,15 @@ export default {
               .cat-btn .btn-label, .sub-btn .btn-label { flex: 1; min-width: 0; }
               .sub-cat {
                   margin: 10px 20px;
-                  border: 1px solid rgba(255, 255, 255, 0.05);
+                  border: 1px solid var(--border);
                   border-radius: 8px;
-                  background: rgba(255, 255, 255, 0.02);
+                  background: var(--surface-inset);
                   overflow: hidden;
               }
               .sub-btn {
                   width: 100%;
                   padding: 12px 20px;
-                  background: rgba(0, 118, 227, 0.05);
+                  background: var(--card-header);
                   border: none;
                   color: #fff;
                   text-align: left;
@@ -4433,7 +4434,7 @@ export default {
                   align-items: center;
                   font-size: 14px;
               }
-              .icon-box { width: 35px; height: 35px; background: rgba(0,118,227,0.2); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: var(--lp-blue); font-size: 18px; flex-shrink: 0; }
+              .icon-box { width: 35px; height: 35px; background: rgba(var(--lp-blue-rgb),0.12); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: var(--lp-blue); font-size: 18px; flex-shrink: 0; }
               .chevron { margin-left: auto; color: var(--text-dim); transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1), color 0.35s ease; }
               .active > .chevron { transform: rotate(180deg); color: var(--lp-blue); }
               
@@ -4447,11 +4448,12 @@ export default {
                   grid-template-rows: 0fr !important;
                   border-top: none !important;
               }
-              .content-wrapper.open { grid-template-rows: 1fr; border-top: 1px solid var(--border); }
+              .content-wrapper.open { grid-template-rows: 1fr; border-top: 1px solid var(--border); background: var(--surface-inset); }
               .content { min-height: 0; overflow: hidden; }
               .content-inner {
                   padding: 20px 25px 24px;
                   opacity: 1;
+                  background: var(--surface-inset);
                   transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
               }
               .content-wrapper:not(.open):not(.search-open) > .content > .content-inner {
@@ -4474,8 +4476,8 @@ export default {
                   color: #fff;
               }
               .rule-intro b { color: var(--lp-blue); }
-              .rule-line:hover { background: rgba(255,255,255,0.03); }
-              .rule-line:target { background: rgba(0, 118, 227, 0.15); border-left: 4px solid var(--lp-blue); }
+              .rule-line:hover { background: rgba(255,255,255,0.02); }
+              .rule-line:target { background: rgba(var(--lp-blue-rgb), 0.15); border-left: 4px solid var(--lp-blue); }
               .rule-num {
                   flex-shrink: 0;
                   min-width: 4.25rem;
@@ -4533,7 +4535,7 @@ export default {
               .sub-title--underline { text-decoration: underline; }
               .important { color: #ff4d4d; font-weight: bold; margin-top: 15px; display: block;}
               .guide-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
-              .guide-item { background: rgba(255,255,255,0.05); padding: 5px 10px; border-radius: 4px; font-size: 12px; display: flex; justify-content: space-between; }
+              .guide-item { background: var(--card-header); padding: 5px 10px; border-radius: 4px; font-size: 12px; display: flex; justify-content: space-between; }
               
               .searching .category.search-match, .searching .sub-cat.search-match { animation: slideUpFade 0.3s ease forwards; }
               #rules-root.search-mode .category:not(.search-match),
@@ -4842,9 +4844,18 @@ export default {
                   });
               }
 
+              function normalizeSearchDashes(value) {
+                  // Em/en dashes and spaced " - " only — not hyphens in words like "english-speaking".
+                  value = value.replace(/ *[–—] */g, " — ");
+                  value = value.replace(/ - /g, " — ");
+                  return value;
+              }
+
               function normalizeSearchTerm(term) {
-                  let value = String(term || "");
+                  let value = String(term || "").toLowerCase();
                   while (value.endsWith(".")) value = value.slice(0, -1);
+                  value = normalizeSearchDashes(value);
+                  value = value.replace(/ +/g, " ").trim();
                   return value;
               }
 
@@ -4865,11 +4876,10 @@ export default {
               }
 
               function getRuleLineSearchText(line) {
-                  const num = getRuleLineNumber(line);
-                  const prefix = (line.getAttribute("data-copy-prefix") || "").trim().toLowerCase();
-                  const ruleTxtEl = line.querySelector(".rule-text");
-                  const body = (ruleTxtEl ? ruleTxtEl.textContent : "").trim().toLowerCase();
-                  return [num, prefix, body].filter(Boolean).join(" ").trim();
+                  let value = buildRuleCopyText(line).toLowerCase();
+                  value = normalizeSearchDashes(value);
+                  value = value.replace(/ +/g, " ").trim();
+                  return value;
               }
 
               function isRuleNumberSearch(term) {
@@ -4910,7 +4920,7 @@ export default {
                   const toggle = getSectionToggle(sectionEl);
                   if (!toggle || !toggle.btn) return false;
                   const text = toggle.btn.textContent.trim();
-                  const match = text.match(/^(\d+)\./);
+                  const match = text.match(/^([0-9]+)[.]/);
                   return !!(match && match[1] === term);
               }
 
@@ -5053,9 +5063,12 @@ export default {
                           el.classList.remove('search-match');
                       });
 
+                      const introTitleMatchGroups = new Set();
+
                       rulesRoot.querySelectorAll('.rule-intro[data-rule-group]').forEach((intro) => {
                           if (!ruleIntroMatchesTerm(intro, term)) return;
                           intro.classList.add('search-match');
+                          introTitleMatchGroups.add(intro.dataset.ruleGroup);
                           if (!firstMatch) firstMatch = intro;
                           trackSectionParents(intro, visibleCats, visibleSubs);
                       });
@@ -5079,8 +5092,7 @@ export default {
                           trackSectionParents(intro, visibleCats, visibleSubs);
                       });
 
-                      rulesRoot.querySelectorAll('.rule-intro.search-match[data-rule-group]').forEach((intro) => {
-                          const group = intro.dataset.ruleGroup;
+                      introTitleMatchGroups.forEach((group) => {
                           rulesRoot.querySelectorAll('.rule-line[data-rule-group="' + group + '"]').forEach((line) => {
                               if (line.classList.contains('search-match')) return;
                               line.classList.add('search-match');
@@ -5275,7 +5287,7 @@ export default {
             bodyContent = `
             <style>
                 .reward-info-box { 
-                    background: rgba(0, 118, 227, 0.1); 
+                    background: rgba(var(--lp-blue-rgb), 0.1); 
                     border: 1px solid var(--lp-blue); 
                     padding: 20px; 
                     border-radius: 12px; 
@@ -5623,7 +5635,7 @@ export default {
             bodyContent = `
           <style>
               .store-intro { 
-                  background: rgba(0,118,227,0.08); border: 1px solid var(--lp-blue); 
+                  background: rgba(var(--lp-blue-rgb),0.08); border: 1px solid var(--lp-blue); 
                   padding: 25px; border-radius: 10px; margin-bottom: 30px; font-size: 14px; 
                   line-height: 1.8; color: #fff; text-align: center;
                   backdrop-filter: blur(10px);
@@ -5687,8 +5699,8 @@ export default {
                   justify-content: space-between;
                   align-items: center;
               }
-              .package-option:hover { border-color: var(--lp-blue); background: rgba(0, 118, 227, 0.05); }
-              .package-option.selected { border-color: var(--lp-blue); background: rgba(0, 118, 227, 0.1); box-shadow: 0 0 15px rgba(0, 118, 227, 0.2); }
+              .package-option:hover { border-color: var(--lp-blue); background: rgba(var(--lp-blue-rgb), 0.05); }
+              .package-option.selected { border-color: var(--lp-blue); background: rgba(var(--lp-blue-rgb), 0.1); box-shadow: 0 0 15px rgba(var(--lp-blue-rgb), 0.2); }
               .option-info b { display: block; font-size: 16px; color: #fff; }
               .option-info span { font-size: 12px; color: var(--text-dim); }
               .option-price { font-weight: 900; color: var(--lp-blue); }
@@ -5699,8 +5711,8 @@ export default {
               input[type=number] { -moz-appearance: textfield; }
 
               .perks-display {
-                  background: rgba(0, 118, 227, 0.05);
-                  border: 1px solid rgba(0, 118, 227, 0.2);
+                  background: rgba(var(--lp-blue-rgb), 0.05);
+                  border: 1px solid rgba(var(--lp-blue-rgb), 0.2);
                   border-radius: 8px;
                   padding: 20px;
                   margin-bottom: 20px;
@@ -5739,7 +5751,7 @@ export default {
               
               .success-overlay {
                   position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-                  background: rgba(2, 4, 10, 0.95); z-index: 1000;
+                  background: rgba(0, 0, 0, 0.95); z-index: 1000;
                   display: none; align-items: center; justify-content: center;
                   text-align: center; backdrop-filter: blur(10px);
               }
@@ -5762,7 +5774,7 @@ export default {
           </div>
 
           ${!steamid ? `
-          <div class="store-box" style="background: rgba(0, 118, 227, 0.1); border: 1px solid var(--lp-blue); padding: 20px; border-radius: 12px; margin-bottom: 30px; text-align: center; color: #fff; font-size: 14px; font-weight: 600; backdrop-filter: blur(10px);">
+          <div class="store-box" style="background: rgba(1, 122, 239, 0.07); border: 1px solid rgba(1, 122, 239, 0.35); padding: 20px; border-radius: 12px; margin-bottom: 30px; text-align: center; color: #fff; font-size: 14px; font-weight: 600; backdrop-filter: blur(10px);">
               You must be logged into Steam and authorize your Discord to use the Store.
           </div>
 
@@ -5810,7 +5822,7 @@ export default {
               </div>
           </div>
           ` : !discordAccount ? `
-          <div class="store-box" style="background: rgba(0, 118, 227, 0.1); border: 1px solid var(--lp-blue); padding: 20px; border-radius: 12px; margin-bottom: 30px; text-align: center; color: #fff; font-size: 14px; font-weight: 600; backdrop-filter: blur(10px);">
+          <div class="store-box" style="background: rgba(1, 122, 239, 0.07); border: 1px solid rgba(1, 122, 239, 0.35); padding: 20px; border-radius: 12px; margin-bottom: 30px; text-align: center; color: #fff; font-size: 14px; font-weight: 600; backdrop-filter: blur(10px);">
               You must authorize your Discord to use the Store. (this is done through your profile).
           </div>
 
@@ -6168,6 +6180,7 @@ export default {
         `;
         } else {
             // Home Page
+            subHeaderTitle = "HOME";
             let serverData = [];
             try {
                 const serverRes = await fetch("https://api.dxrp.net/v1/public/servers");
@@ -6191,7 +6204,7 @@ export default {
             bodyContent = `
             <style>
                 .top-disclaimer { text-align: center; color: var(--text-dim); margin-bottom: 30px; font-size: 14px; text-transform: uppercase; font-weight: bold; letter-spacing: 1px; }
-                .server-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 30px; display: flex; align-items: center; justify-content: space-between; backdrop-filter: blur(16px); margin-bottom: 15px; }
+                .server-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 30px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; }
                 .server-card:last-child { margin-bottom: 0; }
                 .server-info h3 { margin: 0; color: #fff; font-family: 'Montserrat', sans-serif; font-size: 18px; }
                 .server-info p { margin: 5px 0 0; color: var(--lp-blue); font-weight: bold; font-size: 11px; text-transform: uppercase; }
