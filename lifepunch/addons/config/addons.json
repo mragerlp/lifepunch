@@ -95,8 +95,8 @@
     },
     {
       "ident": "adminmenu",
-      "title": "DXRP Admin Menu",
-      "description": "DXRP Admin Menu is a server-agnostic, in-game staff UI/UX for any DXRP.net-powered server — a clean, permission-aware command console that acts as a thin presentation and dispatch layer over DXRP's native admin backend, surfacing only the actions a viewer's portal rank permits and reflecting live RankSystem and portal-API data (roster, roles, balances, health/armor) in real time.",
+      "title": "lifepunch.ulx",
+      "description": "lifepunch.ulx is a server-agnostic, in-game staff UI/UX for any DXRP.net-powered server — a clean, permission-aware command console that acts as a thin presentation and dispatch layer over DXRP's native admin backend, surfacing only the actions a viewer's portal rank permits and reflecting live RankSystem and portal-API data (roster, roles, balances, health/armor) in real time.",
       "kind": "code-only",
       "hasAssets": false,
       "hasCode": true,

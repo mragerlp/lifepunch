@@ -1,4 +1,4 @@
-# DXRP Admin Menu (`lifepunch.ulx`) — Changelog
+# lifepunch.ulx — Changelog
 
 Proprietary & Confidential — © 2026 lifepunch.co. Sole-owned IP of lifepunch.co.
 Portal package: "DXRP Admin Menu" (identifier `dxrpadminmenu`, s&box ident `lifepunch.ulx`).
