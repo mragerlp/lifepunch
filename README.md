@@ -33,7 +33,7 @@ DXRP.net/portal connects the hosted/RDP server side to the DXRP gamemode in S&bo
 
 ## Core Folders
 
-- `lifepunch/addons`: AK47, future weapons, Bitcoin Mining, Hacker Job entities, and all LifePunch DXRP addon packages.
+- `lifepunch/addons`: AK47, future weapons, Hacker Job entities, and all LifePunch DXRP addon packages.
 - `lifepunch/gamemode`: LifePunch gamemode exports/imports, addon revision pins, equipment/market rows, and gamemode validation.
 - `lifepunch/server`: `lifepunchmainserver` (`70p`) and `lifepunchdevelopment` (`Development`) server records, field inventory, and change logs.
 - `lifepunch/maps`: mapping plans and future S&box map workflow.

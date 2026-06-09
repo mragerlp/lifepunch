@@ -36,7 +36,6 @@ Observed LifePunch addon packages:
 - Additional Drop Locations
 - Advanced Drug Processing
 - AK-47
-- Bitcoin Mining
 - Double-Barreled Shotgun
 - Hacker Job
 

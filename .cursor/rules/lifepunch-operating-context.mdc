@@ -62,12 +62,13 @@ alwaysApply: true
 - The user will explicitly flag when something is external/someone else's work.
   Only then treat crediting/tweaking as a consideration.
 
-## Bitminer = evo's IP (not shippable)
-- The Bitcoin Mining / Bitminer work built on evo's (SPL Mute network) model is
-  evo's IP. It lives in `reference/evo-bitminer/` as reference only — never publish
-  it as LifePunch content. (Removed from `addons.json`; `evorp.*` package refs
-  dropped from `addons.sbproj`.)
-- A future in-house bitminer will reuse our code with an ORIGINAL Blender model.
+## Third-party-modeled work is not shippable
+- Any addon built on a third party's model/assets is **their** IP, not LifePunch IP.
+  Such material stays under `reference/` for study only and is **never** published as
+  LifePunch content, never listed in `addons.json`, and never referenced from shipped
+  code, proprietary docs, or public info.
+- A future in-house version of any such addon must reuse only our own code paired with
+  ORIGINAL, self-authored models/assets before it can ship.
 - DXRP servers enforce `RestrictCloudOrg = "facepunch"`, so non-facepunch cloud
   packages never mount — addon models must be self-contained, not cloud-referenced.
 

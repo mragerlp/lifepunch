@@ -71,8 +71,8 @@ Thumbnails often don't render — go by **Name + Type + Path** columns.
 > **You can STUDY anything in the cloud. You can only SHIP/MOUNT `facepunch.*`.**
 
 - **DXRP server policy:** `RestrictCloudOrg = "facepunch"`. Non-Facepunch cloud packages
-  (community `evorp.*`, EFT, etc.) **will not mount** on the DXRP dev server. ⚠️ This is the
-  exact wall that blocked the Bitminer's `evorp.*` assets.
+  (any non-Facepunch community org, EFT, etc.) **will not mount** on the DXRP dev server. ⚠️ This is
+  the exact wall that blocks third-party cloud assets from non-Facepunch orgs.
 - **Therefore:** learn structure from *any* cloud weapon, but **ship our own
   model/material/sound** packaged in the addon's `Assets/` + `Code/` folders (published via the
   DXRP portal), riding **Facepunch's** rig/animgraph. Owned assets + real attached code = not

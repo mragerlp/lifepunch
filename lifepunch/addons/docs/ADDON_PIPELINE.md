@@ -17,7 +17,7 @@ Public DXRP addon pages are the reference for the finished publish shape. Track 
 
 ## Addon Package Vs Content Row
 
-An addon package is the published DXRP package, such as `lifepunch.ak47` or `lifepunch.bitcoinmining`.
+An addon package is the published DXRP package, such as `lifepunch.ak47` or `lifepunch.hackerjob`.
 
 A content row is something the gamemode can reference from that package. One package may contain one content row, like AK47, or many rows, like a job/entity pack.
 
@@ -64,7 +64,7 @@ Assets/addons/lifepunch/<ident>/
   models/lifepunch/<ident>/<slug>/<slug>.vmdl
 ```
 
-Bitcoin mining props and hacker job props start here unless they need custom behavior.
+Hacker job props and other simple-entity props start here unless they need custom behavior.
 
 ### `interactive-entity`
 
@@ -92,7 +92,7 @@ Correct:
 
 ```text
 addons/lifepunch/ak47/equipment/w_ak47/w_ak47.prefab
-addons/lifepunch/bitcoinmining/entities/gpu_rack/gpu_rack.prefab
+addons/lifepunch/<ident>/entities/<entity>/<entity>.prefab
 ```
 
 Incorrect:

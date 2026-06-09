@@ -39,7 +39,7 @@ addons/lifepunch/ak47/models/lifepunch/ak47/w_ak47/w_ak47.vmdl
 Entity example:
 
 ```text
-addons/lifepunch/bitcoinmining/entities/gpu_rack/gpu_rack.prefab
+addons/lifepunch/<ident>/entities/<entity>/<entity>.prefab
 ```
 
 ## Publish Rule

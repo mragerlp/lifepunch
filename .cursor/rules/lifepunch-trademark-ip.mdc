@@ -93,5 +93,5 @@ for profit. Build so the trademark is supportable up front — never band-aid th
 - Enforce via the website **TOS §5 (Intellectual Property)** + **§6 (DMCA)** in
   `lifepunch/website/deployments/cloudflare-worker.mjs`.
 - Don't dilute the mark: always spell **LIFEPUNCH** consistently and use it as a source identifier.
-- Exception still stands: explicitly flagged third-party work (e.g. evo's bitminer) is NOT LIFEPUNCH
-  IP — see the operating-context rule.
+- Exception still stands: explicitly flagged third-party work (anything built on someone else's
+  model/assets) is NOT LIFEPUNCH IP and stays under `reference/` — see the operating-context rule.

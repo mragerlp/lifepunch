@@ -55,7 +55,7 @@ lifepunch/addons/Code/Addons/lifepunch/<ident>/
 lifepunch/addons/config/addons.json
 ```
 
-This is where AK47, Bitcoin Mining, Hacker Job entities, and future LifePunch addon packages are built.
+This is where AK47, Hacker Job entities, and future LifePunch addon packages are built.
 
 ## `gamemode`
 

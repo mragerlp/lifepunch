@@ -35,7 +35,7 @@ permanent. See `.cursor/rules/lifepunch-quality-bar.mdc`. Remove entries when tr
 - [ ] Delete the now-orphaned `equipment/vm_ak47/invisible.vmat` (+ `_c`) if no longer referenced.
 - [ ] Decide the fate of static `models/.../v_ak47/v_ak47.vmdl` (keep as mesh source for the
       future rig, or move to a clearly-labeled `_source/` area so it isn't mistaken for a usable viewmodel).
-- [ ] Leftover `bitcoinmining/` folder still in the DXRP editor project (Assets + Code) — remove.
+- [ ] Leftover third-party reference addon folder still in the DXRP editor project (Assets + Code) — remove.
 
 ## Decision needed
 - **FP-AK-01 approach:** (A) ship clean M4 placeholder now + keep FP-AK-01 tracked, or

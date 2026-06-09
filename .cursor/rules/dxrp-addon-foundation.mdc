@@ -17,6 +17,19 @@ alwaysApply: true
 - Keep addon assets under `lifepunch/addons/Assets/addons/lifepunch/<ident>/`.
 - Keep addon code under `lifepunch/addons/Code/Addons/lifepunch/<ident>/`.
 - Do not use flat `upload-assets/` or `upload-code/` folders as canonical source.
+- **Proprietary header on EVERY source file.** Every LifePunch-authored code file (`.cs`, `.razor`, `.razor.scss`, and any future source) MUST begin with the canonical proprietary header before any `using`/`namespace`/`@namespace`/style declaration. No exceptions, including dev-only/test helpers. Use `//` comments for `.cs`/`.scss` and a `@* ... *@` block for `.razor`. Fill the name slot from `addons.json` for that addon: `"<title>" (s&box ident: <sboxIdentifier-or-lifepunch.<ident>> · addon ident: <dxrpAddonIdentifier-or-<ident>>)`. Canonical text:
+
+```
+// ─────────────────────────────────────────────────────────────────────────────
+// PROPRIETARY & CONFIDENTIAL — © 2026 lifepunch.co. All rights reserved.
+//
+// "<ADDON TITLE>" (s&box ident: <s&box ident> · addon ident: <addon ident>) is the sole-owned
+// intellectual property of lifepunch.co. It is NOT licensed for resale, redistribution,
+// sublicensing, copying, or reuse by ANY person or entity — including DXRP and
+// LifePunch staff, contributors, or community — EXCEPT the owner (lifepunch.co).
+// Presence in this repository or on the DXRP portal grants no rights to anyone else.
+// ─────────────────────────────────────────────────────────────────────────────
+```
 - Separate addon package data, content row data, and gamemode attachment data.
 - Refer to `https://github.com/dxura/dxrp/tree/develop` when evaluating compatibility with the official DXRP gamemode.
 - Refer especially to `https://github.com/dxura/dxrp/tree/develop/game` when shaping LifePunch's main repository and gamemode structure.

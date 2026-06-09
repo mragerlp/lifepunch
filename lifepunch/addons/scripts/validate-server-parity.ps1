@@ -21,7 +21,7 @@
     "_c" as warnings (e.g. deferred assets that are not currently referenced).
 
 .PARAMETER Addon
-    The addon ident from config/addons.json (e.g. ak47, bitcoinmining).
+    The addon ident from config/addons.json (e.g. ak47, hackerjob).
 
 .EXAMPLE
     .\scripts\validate-server-parity.ps1 -Addon ak47

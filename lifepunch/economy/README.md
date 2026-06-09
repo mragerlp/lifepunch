@@ -8,7 +8,7 @@ Use it for procedures and policies around:
 - Inventory corrections.
 - Market items and shipments.
 - In-game money generation systems.
-- Economy-impacting addons such as Bitcoin Mining.
+- Economy-impacting addons (e.g. in-game production/processing systems).
 
 Do not store raw player economy exports or private player data here unless there is a specific incident record and owner approval.
 

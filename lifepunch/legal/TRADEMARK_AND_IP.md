@@ -138,8 +138,9 @@ and avoid "including but not limited to / like / such as / etc." (those phrasing
    `lifepunch/website/deployments/cloudflare-worker.mjs`.
 4. **Brand integrity.** Spell **LIFEPUNCH** consistently and use it as a source identifier so the mark
    does not become generic or diluted.
-5. **Exception:** explicitly flagged third-party work (e.g. evo's bitminer) is **not** LIFEPUNCH IP and
-   must never be published as LIFEPUNCH content (see `.cursor/rules/lifepunch-operating-context.mdc`).
+5. **Exception:** explicitly flagged third-party work (anything built on someone else's model/assets) is
+   **not** LIFEPUNCH IP and must never be published as LIFEPUNCH content. Such material stays under
+   `reference/` for study only (see `.cursor/rules/lifepunch-operating-context.mdc`).
 
 ---
 

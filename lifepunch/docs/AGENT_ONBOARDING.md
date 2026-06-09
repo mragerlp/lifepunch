@@ -59,6 +59,9 @@ partner commits on GitLab integrate back into GitHub. Full map:
   fully-owned solution, no dead/orphan assets. Don't present an interim baseline as the
   polished endgame; track genuinely-temporary work in `lifepunch/addons/docs/TECH_DEBT.md`.
 - **dxrp-addon-foundation** — folder lane + validators; `addons.json` is source of truth.
+  Also mandates the **proprietary header on every source file** (`.cs`/`.razor`/`.scss`): every
+  file opens with the `PROPRIETARY & CONFIDENTIAL — © 2026 lifepunch.co` block (name slot filled
+  from `addons.json`) before any `using`/`namespace`/style. No exceptions, incl. dev/test helpers.
 - **lifepunch-trademark-ip** — trademark, brand-architecture, and proprietary-IP doctrine
   (repo-wide). **LIFEPUNCH** is the only mark we own (owner: **Peak Performance Products LLC**);
   **DXRP / Dxura / s&box / Facepunch are third-party** — reference nominatively only, and
@@ -115,7 +118,7 @@ The `lifepunch-operating-context` rule is law here; this is the orientation. We 
 - Original from-scratch LifePunch content is **LifePunch IP** — may be licensed/sold to other
   servers and is defended (anti-clone + DMCA; see `lifepunch.co/tos` §5–6). Third-party/ported
   assets (Valve/CS2, s&box, community models) stay their owners' — used with attribution,
-  never sold/redistributed. evo's Bitminer is reference-only, never published.
+  never sold/redistributed. Third-party-modeled work stays under `reference/`, never published.
 - Trademark / brand-architecture / proprietary-IP doctrine is now **law** in the
   **lifepunch-trademark-ip** rule (canonical: `lifepunch/legal/TRADEMARK_AND_IP.md`); licensing /
   EULA terms surface in the **website ToS** (`lifepunch.co/tos` §5–6). Keep legal boilerplate out

@@ -68,7 +68,7 @@ is the 5-pack crate. Same generic `shipment.prefab`, driven entirely by portal c
 
 ### Why the AK took a week and #2–5 won't
 
-The week was **discovery**, not the kit: the first-person-rig truth, the cloud/IP/Bitminer
+The week was **discovery**, not the kit: the first-person-rig truth, the cloud/third-party-IP
 detour, and a publish-to-iterate loop. None recurs. The recurring cost is items 1, 3, 4, 5
 above (all unblocked today) plus a one-time FP-rig batch later (item 2).
 

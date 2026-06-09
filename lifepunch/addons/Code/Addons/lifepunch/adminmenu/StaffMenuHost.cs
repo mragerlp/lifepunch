@@ -85,7 +85,7 @@ public readonly record struct StaffAuditEntry(
 /// <c>AdminSystem</c> host RPCs, and <c>Chat.ExecuteCommandHost</c>. The local branch returns
 /// permissive stubs and a dummy roster so the UI renders and clicks log instead of dispatching.
 ///
-/// This mirrors the proven <c>BitminerTerminalHost</c> pattern: the engine define
+/// This uses a HUD-mounted host pattern: the engine define
 /// <c>LIFEPUNCH_LOCAL</c> reliably reaches plain .cs files even when the editor's Razor pass
 /// does not honour it.
 /// </summary>
@@ -198,7 +198,7 @@ internal static class StaffMenuHost
 #else
 		// DXRP build: mount into the HUD root ScreenPanel (the panel the engine routes the cursor/clicks
 		// to). A standalone ScreenPanel never receives pointer input while the HUD owns the cursor — this
-		// is the proven BitminerTerminal pattern. The panel still opts into clicks via pointer-events:all.
+		// is the proven HUD-mounted panel pattern. The panel still opts into clicks via pointer-events:all.
 		return GameManager.ShowUi<StaffMenu>();
 #endif
 	}
