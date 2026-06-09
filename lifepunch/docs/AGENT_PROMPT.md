@@ -70,7 +70,8 @@ Do NOT let shottaWEB or RDP agent paths drift — they commit on GitLab lanes, y
 CURRENT STATE (June 2026):
 - Trademark/IP doctrine is law. Billing on Individual Ultra (Auto default).
 - Staff/admin menu (adminmenu) substantially built; STAFF-09 blocks full validator green.
-- AK-47 paused. GitLab lane repos pending — export via setup-gitlab-projects.ps1 when ready.
+- AK-47 paused. GitLab lanes LIVE + synced (lanes-synced); shottaWEB + RDP agent provisioned.
+  Re-export a lane after changes via setup-gitlab-projects.ps1.
 
 NEXT: confirm grounding, then [YOUR TASK HERE].
 ```
@@ -79,8 +80,12 @@ NEXT: confirm grounding, then [YOUR TASK HERE].
 
 ## Block B — shottaWEB (website partner)
 
-**GitLab projects:** `lifepunch-foundation` (read) + `lifepunch-website` (write)  
-**Clone:**
+**GitLab projects:** `lifepunch-foundation` (read) + `lifepunch-website` (write — Developer)  
+**Access:** you've been **email-invited** at `br.black4022@gmail.com`. One-time setup:
+1. Create/sign in to a **GitLab account** on that email, then **accept** both project invites.
+2. `main` allows your normal push; **force-push is blocked** — use `git pull --rebase` + `git push`.
+
+**Clone (after accepting):**
 
 ```powershell
 git clone https://gitlab.com/mragerlp/lifepunch-foundation.git
@@ -111,11 +116,15 @@ NEXT: confirm grounding, then [YOUR TASK HERE].
 ## Block C — RDP server agent
 
 **GitLab projects:** `lifepunch-foundation` (read) + `lifepunch-rdp-server` (write)  
-**Clone:**
+**Access:** headless **tokens** (NOT a user login). Owner transfers `rdp-gitlab-access.txt` from
+`lifepunch/secure/` to the box over an encrypted channel — values never go in chat or git. The file
+holds ready-to-use HTTPS clone URLs (token embedded). `main` allows normal push; **force-push banned**.
+**Verified:** clone + push + branch-delete all work.
 
 ```powershell
-git clone https://gitlab.com/mragerlp/lifepunch-foundation.git
-git clone https://gitlab.com/mragerlp/lifepunch-rdp-server.git
+# Use the exact URLs from lifepunch/secure/rdp-gitlab-access.txt (token embedded), e.g.:
+git clone https://<deploy-token-user>:<token>@gitlab.com/mragerlp/lifepunch-foundation.git
+git clone https://rdp-agent:<token>@gitlab.com/mragerlp/lifepunch-rdp-server.git
 ```
 
 ```text

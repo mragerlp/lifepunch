@@ -22,9 +22,11 @@ RDP server agent work in focused workspaces without the full monorepo.
 |------|-------|
 | GitHub canonical | `https://github.com/mragerlp/lifepunch` — **live**, `origin` on Primary PC |
 | GitLab account | `gitlab.com/mragerlp` — Cursor integration connected |
-| GitLab lane projects | **Not created yet** — create empty projects, then run `setup-gitlab-projects.ps1` |
-| Lane sync | Owner exports lane slices from the GitHub monorepo → GitLab; partner lane commits
-  land on GitLab first, then owner integrates back into the monorepo |
+| GitLab lane projects | **Live + synced** — all four created (private), seeded from the monorepo (`migrationStatus: lanes-synced`) |
+| Branch protection | `lifepunch-website` + `lifepunch-rdp-server` `main`: **Developer push allowed, force-push BANNED**. `lifepunch-foundation` + `lifepunch-addons`: owner/Maintainer push only |
+| shottaWEB access | Email-invited (`br.black4022@gmail.com`): **Developer** on `lifepunch-website`, **Reporter/read** on `lifepunch-foundation`. Pending: shottaWEB must create/sign in to a GitLab account on that email and accept |
+| RDP agent access | Provisioned via **project access token** (read/write `lifepunch-rdp-server`) + **deploy token** (read `lifepunch-foundation`). Secrets in `lifepunch/secure/rdp-gitlab-access.txt` (local, gitignored). **Verified:** clone + push + branch-delete OK |
+| Lane sync | Owner exports lane slices from the GitHub monorepo → GitLab; partner lane commits land on GitLab first, then owner integrates back into the monorepo |
 
 ## GitLab lane projects (target layout)
 
@@ -56,7 +58,10 @@ Machine-readable map: `lifepunch/docs/gitlab-projects.json`.
   on the owner's Primary PC, then re-export to GitLab via `setup-gitlab-projects.ps1`.
 - **`lifepunch/secure/`** never goes to git — local only.
 
-## Setup (owner checklist)
+## Setup (owner checklist) — ✅ completed June 2026
+
+> The four projects are created, synced, protected, and partner access is provisioned (see Status
+> table). Steps kept for reference / re-running an export.
 
 1. Create **four empty private GitLab projects** (no README init) with slugs above.
 2. From the GitHub monorepo on Primary PC:
@@ -69,6 +74,18 @@ Machine-readable map: `lifepunch/docs/gitlab-projects.json`.
 3. Add GitLab remotes alongside GitHub (script adds `gitlab-<slug>` remotes; **do not** replace `origin`).
 4. Set `migrationStatus` to `"lanes-synced"` in `gitlab-projects.json` when first push succeeds.
 5. Hand agents their blocks from `lifepunch/docs/AGENT_PROMPT.md`.
+
+## Granting partner access (how it's wired)
+
+- **People (e.g. shottaWEB)** → GitLab **user membership** by email invite. Developer on their write
+  lane, Reporter (read) on `lifepunch-foundation`. They accept after creating/signing into a GitLab
+  account on the invited email. (Invite API: `POST /projects/:id/invitations`.)
+- **Headless agents (e.g. RDP server agent)** → a **project access token** (read/write, Developer
+  role, ~1yr expiry) on the write lane + a read-only **deploy token** on `lifepunch-foundation`. The
+  token values live ONLY in `lifepunch/secure/rdp-gitlab-access.txt` (gitignored) and are transferred
+  to the box over an encrypted channel — never in chat, never committed. Revoke + recreate if exposed.
+- **Branch protection** on writable lanes allows Developer push but **bans force-push**, enforcing the
+  "normal push, never force-push" rule at the server.
 
 ## Cursor + GitLab
 

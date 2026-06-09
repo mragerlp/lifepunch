@@ -4,6 +4,12 @@
   "gitlabHost": "https://gitlab.com",
   "gitlabNamespace": "mragerlp",
   "migrationStatus": "lanes-synced",
+  "accessVerified": "2026-06-09",
+  "accessNotes": {
+    "shottaWEB": "Email-invited (br.black4022@gmail.com): Developer on lifepunch-website, Reporter on lifepunch-foundation. Pending acceptance (must create/sign in to a GitLab account on that email).",
+    "rdpServerAgent": "Project access token (read/write) on lifepunch-rdp-server + read-only deploy token on lifepunch-foundation. Secrets in lifepunch/secure/rdp-gitlab-access.txt (gitignored). Verified clone+push+delete.",
+    "branchProtection": "lifepunch-website + lifepunch-rdp-server main: Developer push allowed, force-push banned. lifepunch-foundation + lifepunch-addons: owner/Maintainer-only push."
+  },
   "primaryPcCheckout": "C:\\Users\\jared\\Projects\\lifepunchaddons",
   "projects": [
     {
