@@ -3,7 +3,7 @@
   "canonicalGithubClone": "https://github.com/mragerlp/lifepunch.git",
   "gitlabHost": "https://gitlab.com",
   "gitlabNamespace": "mragerlp",
-  "migrationStatus": "pending",
+  "migrationStatus": "lanes-synced",
   "primaryPcCheckout": "C:\\Users\\jared\\Projects\\lifepunchaddons",
   "projects": [
     {

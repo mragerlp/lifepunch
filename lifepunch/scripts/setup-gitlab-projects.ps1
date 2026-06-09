@@ -1,5 +1,6 @@
-# LifePunch — create GitLab lane projects (optional) and push lane exports from the GitHub monorepo.
+﻿# LifePunch - create GitLab lane projects and push lane exports from the GitHub monorepo.
 # Canonical repo stays: https://github.com/mragerlp/lifepunch
+# Lane repos are partner workspaces (no shared history); canonical history lives on GitHub.
 param(
     [string]$GitLabHost = 'https://gitlab.com',
     [string]$GitLabNamespace = 'mragerlp',
@@ -24,6 +25,15 @@ function Get-GitLabUrl {
     return "$GitLabHost/$GitLabNamespace/$Slug.git"
 }
 
+function Get-PushUrl {
+    param([string]$Slug)
+    if ($GitLabToken) {
+        $hostPart = $GitLabHost -replace '^https://', ''
+        return "https://oauth2:$GitLabToken@$hostPart/$GitLabNamespace/$Slug.git"
+    }
+    return Get-GitLabUrl -Slug $Slug
+}
+
 function New-GitLabProject {
     param([string]$Slug)
 
@@ -33,10 +43,10 @@ function New-GitLabProject {
 
     $headers = @{ 'PRIVATE-TOKEN' = $GitLabToken }
     $body = @{
-        name                     = $Slug
-        path                     = $Slug
-        visibility               = 'private'
-        initialize_with_readme   = $false
+        name                   = $Slug
+        path                   = $Slug
+        visibility             = 'private'
+        initialize_with_readme = $false
     } | ConvertTo-Json
 
     try {
@@ -54,38 +64,19 @@ function New-GitLabProject {
     }
 }
 
-function Test-GitLabProject {
-    param([string]$Slug)
-    $Url = Get-GitLabUrl -Slug $Slug
-    git ls-remote $Url 2>$null | Out-Null
-    return $?
-}
-
-function Push-SinglePathSubtree {
+function Push-LaneExport {
     param(
         [string]$Slug,
-        [string]$Path,
-        [string]$RemoteUrl
+        [string[]]$Paths
     )
 
-    $Normalized = $Path -replace '/', '-'
-    $SplitBranch = "split-$Normalized"
+    Write-Host "`n=== $Slug ===" -ForegroundColor Cyan
+    Write-Host "Paths: $($Paths -join ', ')"
 
-    git branch -D $SplitBranch 2>$null
-    git subtree split --prefix=$Path -b $SplitBranch
-
-    git remote remove "gitlab-$Slug" 2>$null
-    git remote add "gitlab-$Slug" $RemoteUrl
-    git push "gitlab-$Slug" "${SplitBranch}:main" --force-with-lease
-    Write-Host "  Pushed $Path -> $Slug main" -ForegroundColor Green
-}
-
-function Push-MultiPathLane {
-    param(
-        [string]$Slug,
-        [string[]]$Paths,
-        [string]$RemoteUrl
-    )
+    if ($WhatIf) {
+        Write-Host "  WHATIF: export $($Paths.Count) path(s) and push to $Slug" -ForegroundColor Yellow
+        return $true
+    }
 
     $TempRoot = Join-Path $env:TEMP "lifepunch-export-$Slug"
     if (Test-Path -LiteralPath $TempRoot) {
@@ -96,37 +87,49 @@ function Push-MultiPathLane {
     foreach ($Path in $Paths) {
         $Source = Join-Path $RepoRoot $Path
         if (-not (Test-Path -LiteralPath $Source)) {
-            throw "Missing monorepo path: $Path"
+            Write-Host "  WARN: missing path skipped: $Path" -ForegroundColor Yellow
+            continue
         }
         $Dest = Join-Path $TempRoot $Path
-        New-Item -ItemType Directory -Path (Split-Path -Parent $Dest) -Force | Out-Null
+        $DestParent = Split-Path -Parent $Dest
+        if ($DestParent) {
+            New-Item -ItemType Directory -Path $DestParent -Force | Out-Null
+        }
         Copy-Item -LiteralPath $Source -Destination $Dest -Recurse -Force
     }
 
-    $Readme = @"
-# $Slug
-
-LifePunch lane export. **Canonical monorepo:** https://github.com/mragerlp/lifepunch
-
-Do not treat this repo as the sole source of truth — partner lane workspace only.
-See lifepunch/docs/GITLAB_ORGANIZATION.md in the GitHub monorepo.
-"@
+    $Readme = "# $Slug`n`nLifePunch lane export. Canonical monorepo: https://github.com/mragerlp/lifepunch`n`nThis repo is a partner lane workspace, NOT the sole source of truth.`nSee lifepunch/docs/GITLAB_ORGANIZATION.md in the GitHub monorepo.`n"
     Set-Content -LiteralPath (Join-Path $TempRoot 'README.md') -Value $Readme -Encoding UTF8
 
-    if ($WhatIf) {
-        Write-Host "  WHATIF: export $($Paths.Count) paths to $TempRoot and push -> $RemoteUrl" -ForegroundColor Yellow
-        return
-    }
+    $PushUrl = Get-PushUrl -Slug $Slug
 
     Push-Location $TempRoot
     try {
-        git init -q
-        git add .
-        git commit -q -m "Initial lane export from GitHub monorepo"
-        git branch -M main
-        git remote add origin $RemoteUrl
-        git push -u origin main --force
-        Write-Host "  Pushed $($Paths.Count) paths -> $Slug main" -ForegroundColor Green
+        # git writes progress to stderr; relax Stop here and gate on $LASTEXITCODE instead.
+        $prevEAP = $ErrorActionPreference
+        $prevPrompt = $env:GIT_TERMINAL_PROMPT
+        $ErrorActionPreference = 'Continue'
+        # Token is embedded in $PushUrl; disable credential helper + prompts so GCM never pops a GUI and hangs.
+        $env:GIT_TERMINAL_PROMPT = '0'
+        $gitNoCred = @('-c', 'credential.helper=', '-c', 'core.askpass=')
+
+        git init -q 2>&1 | Out-Null
+        git symbolic-ref HEAD refs/heads/main 2>&1 | Out-Null
+        git add -A 2>&1 | Out-Null
+        git -c user.name='LifePunch Setup' -c user.email='mragerlp@gmail.com' commit -q -m "Lane export from GitHub monorepo (canonical: mragerlp/lifepunch)" 2>&1 | Out-Null
+        # No --force: protected main rejects it (matches our never-force-push rule). Initial push to an empty repo still succeeds.
+        $pushOut = git @gitNoCred push $PushUrl HEAD:main 2>&1
+        $pushExit = $LASTEXITCODE
+        $ErrorActionPreference = $prevEAP
+        $env:GIT_TERMINAL_PROMPT = $prevPrompt
+
+        if ($pushExit -ne 0) {
+            Write-Host "  PUSH FAILED for $Slug (exit $pushExit)" -ForegroundColor Red
+            $pushOut | ForEach-Object { Write-Host "    $_" -ForegroundColor DarkGray }
+            return $false
+        }
+        Write-Host "  Pushed $($Paths.Count) path(s) -> $Slug main" -ForegroundColor Green
+        return $true
     }
     finally {
         Pop-Location
@@ -134,45 +137,7 @@ See lifepunch/docs/GITLAB_ORGANIZATION.md in the GitHub monorepo.
     }
 }
 
-function Push-LaneSubtree {
-    param(
-        [string]$Slug,
-        [string[]]$Paths
-    )
-
-    $RemoteUrl = Get-GitLabUrl -Slug $Slug
-    Write-Host "`n=== $Slug ===" -ForegroundColor Cyan
-    Write-Host "Remote: $RemoteUrl"
-    Write-Host "Paths: $($Paths -join ', ')"
-
-    if (-not (Test-GitLabProject -Slug $Slug)) {
-        Write-Host "  SKIP — project not found. Run with -CreateProjects and GITLAB_TOKEN, or create empty project '$Slug' on GitLab." -ForegroundColor Yellow
-        return $false
-    }
-
-    if ($WhatIf) {
-        Write-Host "  WHATIF: would push lane to $RemoteUrl" -ForegroundColor Yellow
-        return $true
-    }
-
-    if ($Slug -eq 'lifepunch-foundation') {
-        git remote remove gitlab-foundation 2>$null
-        git remote add gitlab-foundation $RemoteUrl
-        git push gitlab-foundation main:main
-        Write-Host "  Pushed monorepo main -> $Slug (transition anchor)" -ForegroundColor Green
-        return $true
-    }
-
-    if ($Paths.Count -eq 1) {
-        Push-SinglePathSubtree -Slug $Slug -Path $Paths[0] -RemoteUrl $RemoteUrl
-        return $true
-    }
-
-    Push-MultiPathLane -Slug $Slug -Paths $Paths -RemoteUrl $RemoteUrl
-    return $true
-}
-
-Write-Host "LifePunch GitLab setup — repo root: $RepoRoot" -ForegroundColor Cyan
+Write-Host "LifePunch GitLab setup - repo root: $RepoRoot" -ForegroundColor Cyan
 Write-Host "Canonical GitHub: $($Map.canonicalGithubMonorepo)"
 Write-Host "Map status: $($Map.migrationStatus)"
 
@@ -187,7 +152,7 @@ try {
 
     $pushed = 0
     foreach ($Project in $Map.projects) {
-        if (Push-LaneSubtree -Slug $Project.slug -Paths $Project.monorepoPaths) {
+        if (Push-LaneExport -Slug $Project.slug -Paths $Project.monorepoPaths) {
             $pushed++
         }
     }
@@ -195,7 +160,10 @@ try {
     if ($pushed -eq $Map.projects.Count -and -not $WhatIf) {
         $Map.migrationStatus = 'lanes-synced'
         $Map | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath $MapPath -Encoding UTF8
-        Write-Host "`nUpdated migrationStatus -> lanes-synced" -ForegroundColor Green
+        Write-Host "`nUpdated migrationStatus -> lanes-synced ($pushed/$($Map.projects.Count) lanes)" -ForegroundColor Green
+    }
+    else {
+        Write-Host "`nPushed $pushed/$($Map.projects.Count) lanes." -ForegroundColor Yellow
     }
 
     Write-Host "`nDone. GitHub remains origin: $($Map.canonicalGithubClone)" -ForegroundColor Cyan
