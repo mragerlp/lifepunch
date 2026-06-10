@@ -114,6 +114,14 @@ Phase 4 — Serve it on the LAN
 14. From my primary PC I'll open http://<LAN-IP>:1234/v1/models to confirm it's reachable.
     Help me find this box's LAN IP and verify.
 
+Phase 4b — Remote access (LAN-only, so the owner drives this box from VENGEANCE)
+14b. After the repo is cloned (Phase 5), run ELEVATED:
+        powershell -ExecutionPolicy Bypass -File "lifepunch\scripts\Enable-CornermanRemote.ps1" -SshPublicKey "<VENGEANCE pub key I give you>"
+     It enables OpenSSH Server + RDP (NLA), scopes BOTH firewall rules to the LAN subnet/Private
+     only (never public, no port-forward), authorizes my client key, and prints the LAN IP + SSH
+     host-key fingerprint. Report those back so I can verify on first connect. Don't run
+     -DisablePasswordAuth until I confirm key login works. Full detail: LOCAL_AI_WORKSTATION.md 7b.
+
 Phase 5 — Secure pipeline to the repo (GitHub monorepo = source of truth)
 15. Confirm Git is installed (CORSAIR stack or git-scm) + Git LFS + Git Credential Manager (the
     monorepo uses LFS).

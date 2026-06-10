@@ -204,6 +204,37 @@ Principles: **LAN-only by default, encrypted in transit, one source of truth, se
   custom base URL.
 - Keep a short note of the endpoint URL + loaded model in dev docs (**not** in secrets).
 
+## 7b. Remote access (LAN-only: SSH + RDP)
+
+You drive Cornerman **from VENGEANCE** — you don't sit at the box. v1 stays LAN-only: every
+rule is scoped to the LAN subnet + Private profile, nothing is exposed to the public internet,
+no port-forwarding. Win11 **Pro** is what makes the RDP host available (Home can't host RDP).
+
+**Two channels:**
+- **SSH (OpenSSH Server)** — terminal, agent ops, and port-tunneling the model endpoint back to
+  VENGEANCE (e.g. `ssh -L 1234:localhost:1234 cornerman`). Key auth; client public key only —
+  no private key/secret on the box.
+- **RDP (Remote Desktop)** — occasional GUI (LM Studio, AMD Adrenalin). NLA required, strong
+  account password.
+
+**Setup (Cornerman side, run elevated):**
+```powershell
+powershell -ExecutionPolicy Bypass -File "lifepunch\scripts\Enable-CornermanRemote.ps1" -SshPublicKey "<VENGEANCE public key>"
+```
+The script installs/starts OpenSSH Server, sets the default SSH shell to PowerShell, authorizes
+the client key (admin account -> `administrators_authorized_keys`, locked ACLs), enables RDP with
+NLA, and scopes both firewall rules to the LAN subnet (Private). It prints the hostname, LAN IP,
+and the SSH host-key fingerprint to verify on first connect. Flags: `-Subnet '192.168.x.0/24'`,
+`-DisablePasswordAuth` (key-only — only after you confirm key login works), `-SkipSSH` / `-SkipRDP`.
+
+**VENGEANCE side (already prepared by the owner):** a dedicated key `~/.ssh/cornerman` + an SSH
+config entry (`Host cornerman`). Connect with `ssh cornerman`, or `mstsc /v:cornerman` for RDP.
+If the hostname doesn't resolve, replace `HostName cornerman` with the box's LAN IP.
+
+**Off-LAN later (not v1):** if you ever need access away from home, add **Tailscale** (mesh VPN)
+as a deliberate, documented exception and keep the firewall rules bound to the tailnet — still
+never a raw public port-forward.
+
 ## 8. Optional layer — Odysseus AI workspace (EXPERIMENTAL, Tier-3)
 
 [Odysseus](https://github.com/pewdiepie-archdaemon/odysseus) is a self-hosted AI workspace
@@ -288,6 +319,8 @@ framing — that's exactly the Cornerman concept.
 - [ ] A coding model loads (GPU Offload MAX + Flash Attention) and answers via the local
       OpenAI-compatible endpoint.
 - [ ] Endpoint reachable from the primary machine over the **LAN**, **not** from the public internet.
+- [ ] (If remote access enabled) SSH + RDP reachable from VENGEANCE over the **LAN only**; firewall
+      rules scoped to the LAN subnet/Private; SSH host-key fingerprint verified; key login works.
 - [ ] Monorepo cloned over SSH; `pull --rebase` works; secrets lane absent from this box.
 - [ ] RAG index (if built) **enforces** the secret-exclude list and is **verified** (no `secure/`
       path or known secret appears in the index/manifest).
