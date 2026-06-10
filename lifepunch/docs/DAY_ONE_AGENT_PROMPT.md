@@ -147,11 +147,14 @@ Phase 7 (OPTIONAL) — Odysseus AI workspace (experimental, only if I ask)
 
 Phase 8 (OPTIONAL, cosmetic) — "Operations Console" branding
 23. If I ask, apply the Cornerman theme from `lifepunch/branding/cornerman/` (after the repo is
-    cloned): Dark mode + accent `#00FF7F`, wallpaper + lock screen to `cornerman-wallpaper.png`,
-    add the `Cornerman Ops` scheme from `windows-terminal-cornerman.json` to Windows Terminal
-    (font Cascadia Code / JetBrains Mono / Fira Code), Teams background to `cornerman-teams-bg.png`,
-    and dark Edge. Follow `lifepunch/branding/cornerman/THEME.md` step-by-step. Cosmetic only —
-    it changes NOTHING about the security posture.
+    cloned). For the terminal look (Windows Terminal `Cornerman Ops` scheme on PowerShell + cmd,
+    `#00FF7F` accent + green window borders, oh-my-posh prompt), just RUN the one-shot applier:
+        powershell -ExecutionPolicy Bypass -File "lifepunch\branding\cornerman\Apply-CornermanTerminal.ps1"
+    (it's idempotent; flags -SkipAccent / -SkipOhMyPosh; restart Explorer or sign out/in for borders).
+    Then do the manual bits by hand: Dark mode everywhere, wallpaper + lock screen to
+    `cornerman-wallpaper.png`, Teams background to `cornerman-teams-bg.png`, dark Edge. Full
+    step-by-step in `lifepunch/branding/cornerman/THEME.md`. Cosmetic only — it changes NOTHING
+    about the security posture.
 
 Ask me for: the GitHub repo SSH URL, and anything you can't determine yourself. Don't guess.
 ```
