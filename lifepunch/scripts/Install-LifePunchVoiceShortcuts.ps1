@@ -21,11 +21,11 @@ $desktop = [Environment]::GetFolderPath('Desktop')
 $programs = Join-Path $env:APPDATA 'Microsoft\Windows\Start Menu\Programs\LifePunch'
 New-Item -ItemType Directory -Force -Path $programs | Out-Null
 
-function New-Lnk([string]$Path, [string]$Target, [string]$Args, [string]$Desc, [string]$Icon) {
+function New-Lnk([string]$Path, [string]$Target, [string]$ShortcutArgs, [string]$Desc, [string]$Icon) {
     $shell = New-Object -ComObject WScript.Shell
     $sc = $shell.CreateShortcut($Path)
     $sc.TargetPath = $Target
-    $sc.Arguments = $Args
+    $sc.Arguments = $ShortcutArgs
     $sc.IconLocation = $Icon
     $sc.Description = $Desc
     $sc.WorkingDirectory = (Resolve-Path (Join-Path $Here '..\..')).Path
