@@ -73,6 +73,10 @@ powershell -ExecutionPolicy Bypass -File .\Apply-LifePunchOpsConsole.ps1 -Machin
 # lifepunchnet: copy pack on-box or RDP, then -Machine lifepunchnet
 ```
 
+**Uniform apply** sets wallpaper + gray taskbar only — it does **not** rewrite window
+colorization or title-bar accents. If a bad run flattened borders, add `-RestoreTitleBarAccent`
+once, then re-run without it.
+
 See `THEME.md` for terminal schemes and palette tokens.
 
 ## Desktop shortcut icons (VENGEANCE)

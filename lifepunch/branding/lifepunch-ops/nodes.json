@@ -39,7 +39,6 @@
     "scheme": "windows-terminal-lifepunch-ops.json",
     "omp": "lifepunch-government.omp.json",
     "accent": "00D4FF",
-    "taskbarGray": true,
     "brand": "government",
     "bannerColor": "Cyan"
   }
