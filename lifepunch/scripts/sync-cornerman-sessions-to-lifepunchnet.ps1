@@ -12,6 +12,7 @@ $ErrorActionPreference = 'Stop'
 $SessionLogRemote = 'C:\Projects\cornerman-rag\outbox\session.log'
 $TranscriptRemote = 'C:\Projects\cornerman-rag\outbox\to-vengeance.txt'
 $SttLogRemote = 'C:\Projects\cornerman-rag\outbox\stt-path.log'
+$ConversationRemote = 'C:\Projects\cornerman-rag\outbox\conversation.ndjson'
 
 function Read-Config {
     if (-not (Test-Path -LiteralPath $ConfigPath)) {
@@ -43,17 +44,22 @@ function Get-RemoteText([string]$RemotePath) {
 
 function Send-Ingest($cfg, [string]$Source, [string]$Type, [string]$Text) {
     if ([string]::IsNullOrWhiteSpace($Text)) { return }
+    Send-IngestObject $cfg @{
+        ts     = (Get-Date).ToUniversalTime().ToString('o')
+        source = $Source
+        type   = $Type
+        text   = $Text.Trim()
+    }
+}
+
+function Send-IngestObject($cfg, [hashtable]$Payload) {
+    if (-not $Payload -or $Payload.Count -eq 0) { return }
     $hostAddr = [string]$cfg.host
     $port = if ($cfg.sessionPort) { [int]$cfg.sessionPort } else { 9102 }
     $token = [string]$cfg.token
     $uri = "http://${hostAddr}:${port}/ingest"
     $headers = @{ Authorization = "Bearer $token" }
-    $body = @{
-        ts     = (Get-Date).ToUniversalTime().ToString('o')
-        source = $Source
-        type   = $Type
-        text   = $Text.Trim()
-    } | ConvertTo-Json -Compress
+    $body = ($Payload | ConvertTo-Json -Compress -Depth 8)
     Invoke-RestMethod -Uri $uri -Method Post -Headers $headers -Body $body -ContentType 'application/json' -TimeoutSec 15 | Out-Null
 }
 
@@ -97,6 +103,38 @@ while ($true) {
                     Send-Ingest $cfg 'cornerman' 'stt-path' $line
                 }
                 $state.sttLines = $sttLines.Count
+            }
+        }
+
+        $convRaw = Get-RemoteText $ConversationRemote
+        if ($convRaw) {
+            $convLines = @($convRaw -split "`r?`n" | Where-Object { $_.Trim() -ne '' })
+            if (-not $state.conversationLines) { $state | Add-Member -NotePropertyName conversationLines -NotePropertyValue 0 -Force }
+            $convStart = [int]$state.conversationLines
+            if ($convStart -lt $convLines.Count) {
+                foreach ($line in $convLines[$convStart..($convLines.Count - 1)]) {
+                    try {
+                        $obj = $line | ConvertFrom-Json
+                        $payload = @{
+                            source   = 'cornerman'
+                            type     = 'conversation'
+                            text     = [string]$obj.user_text
+                            ts       = [string]$obj.ts
+                            channel  = [string]$obj.channel
+                            user_text = [string]$obj.user_text
+                            ai_text  = if ($obj.ai_text) { [string]$obj.ai_text } else { $null }
+                            agent    = [string]$obj.agent
+                            intent   = [string]$obj.intent
+                            project  = if ($obj.project) { [string]$obj.project } else { $null }
+                            stt      = if ($obj.stt) { [string]$obj.stt } else { $null }
+                        }
+                        Send-IngestObject $cfg $payload
+                    }
+                    catch {
+                        Send-Ingest $cfg 'cornerman' 'conversation' $line
+                    }
+                }
+                $state.conversationLines = $convLines.Count
             }
         }
 

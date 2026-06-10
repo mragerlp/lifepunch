@@ -88,13 +88,21 @@ while ($listener.IsListening) {
         try {
             $raw = Read-Body $req
             $payload = $raw | ConvertFrom-Json
-            $entry = [ordered]@{
-                ts     = if ($payload.ts) { [string]$payload.ts } else { (Get-Date).ToUniversalTime().ToString('o') }
-                source = [string]$payload.source
-                type   = [string]$payload.type
-                text   = [string]$payload.text
+            $entry = [ordered]@{}
+            foreach ($prop in $payload.PSObject.Properties) {
+                if ($null -ne $prop.Value) {
+                    $entry[$prop.Name] = $prop.Value
+                }
             }
-            $line = ($entry | ConvertTo-Json -Compress)
+            if (-not $entry.ts) {
+                $entry.ts = (Get-Date).ToUniversalTime().ToString('o')
+            }
+            if (-not $entry.Contains('source')) { $entry.source = 'unknown' }
+            if (-not $entry.Contains('type')) { $entry.type = 'event' }
+            if (-not $entry.Contains('text') -and $entry.Contains('user_text')) {
+                $entry.text = [string]$entry.user_text
+            }
+            $line = ($entry | ConvertTo-Json -Compress -Depth 8)
             Add-Content -LiteralPath $logPath -Value $line -Encoding UTF8
             Write-Json $res 200 @{ ok = $true }
         }

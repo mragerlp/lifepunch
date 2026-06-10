@@ -30,6 +30,9 @@ logs here; Odysseus / Block C agents read them.
 | `transcript` | Latest `outbox\to-vengeance.txt` |
 | `stt-path` | Line from `outbox\stt-path.log` |
 | `chat` | Manual or future Cursor import |
+| `conversation` | Structured turn from `outbox/conversation.ndjson` (user_text, ai_text, agent, intent, project, stt) |
+
+Structured ingest accepts **any JSON fields** — they are stored verbatim in `voice-session.ndjson` for search and Odysseus later.
 
 ## Install
 

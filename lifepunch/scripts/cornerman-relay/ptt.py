@@ -1,0 +1,41 @@
+# Push-to-talk key helpers (Windows). Cornerman-local — deployed via Apply-CornermanPushToTalk.ps1
+from __future__ import annotations
+
+import ctypes
+import os
+import time
+
+# Virtual-key codes (GetAsyncKeyState)
+VK = {
+    "space": 0x20,
+    "f8": 0x77,
+    "f9": 0x78,
+    "f10": 0x79,
+    "scrolllock": 0x91,
+    "pause": 0x13,
+}
+
+
+def key_name() -> str:
+    return os.environ.get("CORNERMAN_PTT_KEY", "f8").strip().lower()
+
+
+def vk_code(name: str | None = None) -> int:
+    n = (name or key_name()).strip().lower()
+    if n not in VK:
+        raise ValueError(f"Unknown CORNERMAN_PTT_KEY={n!r} - use: {', '.join(sorted(VK))}")
+    return VK[n]
+
+
+def is_down(vk: int) -> bool:
+    return bool(ctypes.windll.user32.GetAsyncKeyState(vk) & 0x8000)
+
+
+def wait_down(vk: int, poll: float = 0.02) -> None:
+    while not is_down(vk):
+        time.sleep(poll)
+
+
+def wait_up(vk: int, poll: float = 0.02) -> None:
+    while is_down(vk):
+        time.sleep(poll)
