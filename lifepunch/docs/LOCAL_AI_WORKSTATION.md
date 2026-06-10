@@ -227,6 +227,11 @@ no port-forwarding. Win11 **Pro/Enterprise** is what makes the RDP host availabl
 `cornerman\jared`, password + keyboard-interactive disabled), RDP reachable, and the LAN model
 endpoint serving (`qwen2.5-coder-32b-instruct`). Firewall rules scoped to LocalSubnet/Private.
 
+**Headless boot (no keyboard):** `Enable-CornermanHeadless.ps1` (once, elevated) sets auto-login
+and registers `LifePunch-Cornerman-Headless-Startup` + `-Logon` so power/SSH/RDP/network settings
+re-apply every reboot (`Install-CornermanHeadlessBoot.ps1` / `Invoke-CornermanHeadlessBoot.ps1`).
+Log: `C:\lifepunch\cornerman\headless-boot.log`. Recovery: `lifepunch/scripts/CORNERMAN_HEADLESS_RECOVERY.txt`.
+
 **Setup (Cornerman side, run elevated):**
 ```powershell
 powershell -ExecutionPolicy Bypass -File "lifepunch\scripts\Enable-CornermanRemote.ps1" -SshPublicKey "<VENGEANCE public key>"

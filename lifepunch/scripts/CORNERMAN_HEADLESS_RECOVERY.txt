@@ -68,6 +68,13 @@ WHAT Enable-CornermanHeadless.ps1 DOES
   - Disable lock screen / console lock on AC
   - sshd + Remote Desktop start automatically
   - Network profile stays Private for LAN firewall rules
+  - Registers boot tasks (every reboot + logon):
+      LifePunch-Cornerman-Headless-Startup
+      LifePunch-Cornerman-Headless-Logon
+    Log: C:\lifepunch\cornerman\headless-boot.log
+
+  Re-wire tasks only (no password prompt):
+    powershell -ExecutionPolicy Bypass -File lifepunch\scripts\Install-CornermanHeadlessBoot.ps1
 
 --------------------------------------------------------------------------------
 IF STILL STUCK AFTER REBOOT

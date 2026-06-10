@@ -6,6 +6,9 @@
   Run ONCE on Cornerman in ELEVATED PowerShell (one-time keyboard plug-in is OK).
   After this, drive the box from VENGEANCE via RDP (Cornerman shortcut) or SSH.
 
+  Registers LifePunch-Cornerman-Headless-* scheduled tasks so power + SSH/RDP settings
+  re-apply on every startup and logon (Install-CornermanHeadlessBoot.ps1).
+
   Does NOT store the password in this repo. You enter it at runtime (or pass -PasswordSecure).
 
 .PARAMETER UserName
@@ -101,9 +104,17 @@ foreach ($p in $pub) {
     Write-Note "Set '$($p.Name)' Public -> Private."
 }
 
+Write-Step 'Boot tasks — re-apply headless settings every reboot'
+$installBoot = Join-Path $PSScriptRoot 'Install-CornermanHeadlessBoot.ps1'
+if (-not (Test-Path -LiteralPath $installBoot)) {
+    throw "Missing $installBoot"
+}
+& powershell.exe -NoProfile -ExecutionPolicy Bypass -File $installBoot
+
 Write-Step 'Done'
 Write-Host ''
 Write-Host '  Reboot Cornerman once. It should land on desktop with no keyboard.' -ForegroundColor Cyan
+Write-Host '  Boot tasks: LifePunch-Cornerman-Headless-Startup + -Logon (see headless-boot.log)' -ForegroundColor DarkGray
 Write-Host '  From VENGEANCE: Cornerman (RDP) shortcut or  ssh cornerman' -ForegroundColor Cyan
 Write-Host ''
 Write-Host '  To UNDO auto-login (elevated):' -ForegroundColor DarkGray

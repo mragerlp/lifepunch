@@ -158,6 +158,18 @@ if (-not $SkipCornerman) {
         $cmdCheck = Invoke-SshQuiet 'cmd /c if exist "C:\Projects\cornerman-rag\Talk to Vengeance.cmd" exit /b 0'
         if ($cmdCheck -eq 0) { Write-Pass 'Talk to Vengeance.cmd on Cornerman' }
         else { Write-Fail 'Talk to Vengeance.cmd missing - re-run Apply-CornermanPushToTalk' }
+
+        Write-Note 'Cornerman headless boot tasks (needs elevated on-box)...'
+        $bootInstall = Join-Path $Here 'Install-CornermanHeadlessBoot.ps1'
+        $bootInvoke = Join-Path $Here 'Invoke-CornermanHeadlessBoot.ps1'
+        if ((Test-Path -LiteralPath $bootInstall) -and (Test-Path -LiteralPath $bootInvoke)) {
+            Invoke-SshQuiet 'powershell -NoProfile -Command New-Item -ItemType Directory -Force -Path C:\lifepunch\cornerman' | Out-Null
+            & scp -o BatchMode=yes $bootInvoke "${CornermanSsh}:C:/lifepunch/cornerman/Invoke-CornermanHeadlessBoot.ps1" 2>$null
+            & scp -o BatchMode=yes $bootInstall "${CornermanSsh}:C:/lifepunch/cornerman/Install-CornermanHeadlessBoot.ps1" 2>$null
+            $bootRemote = 'powershell -NoProfile -ExecutionPolicy Bypass -File C:\lifepunch\cornerman\Install-CornermanHeadlessBoot.ps1'
+            if ((Invoke-SshQuiet $bootRemote) -eq 0) { Write-Pass 'Cornerman headless boot tasks' }
+            else { Write-Fail 'Headless boot install needs RDP elevated: Install-CornermanHeadlessBoot.ps1' }
+        }
     }
 }
 
