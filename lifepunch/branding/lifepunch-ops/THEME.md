@@ -2,6 +2,7 @@
 
 Each machine wears a **Hacker Job outfit**. OneDrive is the artist source; `outfits/` in this
 pack is the repo copy. See **`OUTFITS.md`** for web-node uniforms, paths, and taglines.
+**`UNIFORM_STANDARDS.md`** (repo + `OneDrive\Desktop\uniforms\`) is the web-wide uniform law.
 
 | Tier | Machine | Scheme | Prompt |
 |------|---------|--------|--------|

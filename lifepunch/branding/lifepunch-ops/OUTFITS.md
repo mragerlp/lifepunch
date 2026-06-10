@@ -21,6 +21,9 @@ Artist source — edit here first, then sync into the repo:
 | Cornerman | `%USERPROFILE%\OneDrive\Desktop\Hacker Job\Hacker Terminal\cornerman` |
 | lifepunchnet | `%USERPROFILE%\OneDrive\Desktop\Hacker Job\Government Terminal\lifepunchnet` |
 
+**Uniform standards (web-wide):** `%USERPROFILE%\OneDrive\Desktop\uniforms\UNIFORM_STANDARDS.md`
+(repo mirror: `UNIFORM_STANDARDS.md` in this folder).
+
 ## Desktop wallpapers (uniform)
 
 Same HUD layout on every machine — color matches the tier. Edit in OneDrive first:
@@ -79,7 +82,10 @@ powershell -ExecutionPolicy Bypass -File .\Apply-LifePunchOpsConsole.ps1 -Machin
 ```
 
 **Uniform apply** sets: dark mode (system + apps), per-node **colored title bars**,
-**gray taskbar**, and wallpaper. RDP sessions inherit dark theme from the remote box after apply.
+**gray taskbar**, wallpaper, and uniform **Explorer icons** on all nodes: **gray folder** +
+**gray .txt notes** (`icons/` ← `OneDrive\Desktop\uniforms\PNGs\grayfoldericon.png` · `graynotes.png`).
+`Set-LifePunchExplorerIcons.ps1` builds ICOs, sets registry (Win11: HKLM Shell Icons 3/4 — approve
+UAC once), restarts Explorer. RDP sessions inherit dark theme from the remote box after apply.
 
 See `THEME.md` for terminal schemes and palette tokens.
 

@@ -96,11 +96,14 @@ archaeology.
 | **At a glance** | Tier icon + shortcut name + one preflight FAIL → know the node/layer |
 | **Universal (tri-stack)** | All three nodes — **Start Day** = gate + watchers + Cornerman relay |
 | **Red / green / blue** | Single destination — icon = scope, not always where the `.lnk` lives |
+| **Explorer icons** | Gray folder + gray `.txt` on every node — `OneDrive\Desktop\uniforms\`; `Set-LifePunchExplorerIcons.ps1` |
 | **One `.lnk` → one script** | Installers own targets; see `lifepunch/branding/shortcut-icons/SHORTCUT_ICONS.md` |
 
 Full checkpoint (shortcuts, voice flow, per-node cheat sheet, failure surfaces):
-**`lifepunch/docs/OPS_CLARITY_CHECKPOINT.md`**. Cursor rule when editing installers:
-`.cursor/rules/lifepunch-shortcut-icons.mdc`.
+**`lifepunch/docs/OPS_CLARITY_CHECKPOINT.md`**. Uniform standards (web-wide):
+**`OneDrive\Desktop\uniforms\UNIFORM_STANDARDS.md`** (repo mirror:
+`lifepunch/branding/lifepunch-ops/UNIFORM_STANDARDS.md`). Cursor rules when editing installers:
+`.cursor/rules/lifepunch-shortcut-icons.mdc` · `.cursor/rules/lifepunch-explorer-icons.mdc`.
 
 | Codename | One line |
 |----------|----------|
@@ -175,9 +178,10 @@ The `lifepunch-operating-context` rule is law here; this is the orientation. We 
 ## Current direction (June 2026)
 
 **Recently landed (foundation is current as of this note):**
-- **Ops clarity checkpoint — June 2026.** Voice web uniform (shortcut tiers, consoles, preflight
-  surfaces) canonized in `OPS_CLARITY_CHECKPOINT.md` + `SHORTCUT_ICONS.md` + agent sync broadcast.
-  **Start Day** (tri-stack) = full stack; partial restarts = Voice Comms / Talk to Vengeance (red).
+- **Ops clarity checkpoint — June 2026.** Voice web uniform (shortcut tiers, consoles, Explorer
+  icons, preflight surfaces) canonized in `OPS_CLARITY_CHECKPOINT.md`, `UNIFORM_STANDARDS.md`,
+  `SHORTCUT_ICONS.md`, and agent sync broadcast. **Start Day** (tri-stack) = full stack; partial
+  restarts = Voice Comms / Talk to Vengeance (red). Gray folder + `.txt` icons on all nodes.
 - **Trademark / IP doctrine — finalized + law.** `lifepunch-trademark-ip` rule + the full
   `lifepunch/legal/` tree (`TRADEMARK_AND_IP.md`, marks, specimens, clearance evidence) are in.
 - **Efficiency & cost discipline + Cornerman — merged.** Model-routing tiers (T1 Opus / T2

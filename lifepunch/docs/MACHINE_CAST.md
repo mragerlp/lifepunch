@@ -136,6 +136,10 @@ Icons = **destination / scope** (at a glance, not a telescope). Full checkpoint:
 Config: `lifepunch/scripts/remote-hosts.json` + gitignored `remote-hosts.local.json`.
 Refresh all shortcut icons: `lifepunch/scripts/Install-LifePunchShortcutIcons.ps1`.
 
+**Explorer icons (all nodes):** gray folder + gray `.txt` — `OneDrive\Desktop\uniforms\PNGs\`;
+`lifepunch/branding/lifepunch-ops/Set-LifePunchExplorerIcons.ps1`. Standards:
+`UNIFORM_STANDARDS.md` (OneDrive + repo mirror).
+
 ---
 
 ## Key docs by machine

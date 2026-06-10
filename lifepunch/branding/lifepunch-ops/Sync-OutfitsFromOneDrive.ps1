@@ -12,6 +12,7 @@
     Hacker Terminal\cornerman
     Government Terminal\lifepunchnet
     Desktop\wallpapers  (desktop HUD — same layout, per-machine color)
+    Desktop\uniforms\PNGs  (gray Explorer icons — folder + .txt, all nodes)
 
 .EXAMPLE
   powershell -ExecutionPolicy Bypass -File .\Sync-OutfitsFromOneDrive.ps1
@@ -19,13 +20,15 @@
 [CmdletBinding()]
 param(
     [string] $HackerJobRoot = (Join-Path $env:USERPROFILE 'OneDrive\Desktop\Hacker Job'),
-    [string] $WallpapersRoot = (Join-Path $env:USERPROFILE 'OneDrive\Desktop\wallpapers')
+    [string] $WallpapersRoot = (Join-Path $env:USERPROFILE 'OneDrive\Desktop\wallpapers'),
+    [string] $UniformsRoot = (Join-Path $env:USERPROFILE 'OneDrive\Desktop\uniforms\PNGs')
 )
 
 $ErrorActionPreference = 'Stop'
 $here = Split-Path -Parent $MyInvocation.MyCommand.Path
 $outfitsRoot = Join-Path $here 'outfits'
 $wallDir = Join-Path $here 'wallpapers'
+$iconDir = Join-Path $here 'icons'
 
 function Write-Step($m) { Write-Host "==> $m" -ForegroundColor Cyan }
 
@@ -57,7 +60,7 @@ if (-not (Test-Path -LiteralPath $WallpapersRoot)) {
     throw "Wallpapers uniform folder not found: $WallpapersRoot"
 }
 
-New-Item -ItemType Directory -Force -Path $outfitsRoot, $wallDir | Out-Null
+New-Item -ItemType Directory -Force -Path $outfitsRoot, $wallDir, $iconDir | Out-Null
 
 foreach ($machine in $outfitMap.Keys) {
     $entry = $outfitMap[$machine]
@@ -81,5 +84,25 @@ foreach ($machine in $wallMap.Keys) {
     Write-Host "    $($entry.from) -> $($entry.to)" -ForegroundColor DarkGray
 }
 
+$explorerIconMap = @{
+    'grayfoldericon.png' = 'lifepunch-folder.png'
+    'graynotes.png'      = 'lifepunch-txt.png'
+}
+if (Test-Path -LiteralPath $UniformsRoot) {
+    Write-Step "Explorer icons (uniform) from $UniformsRoot"
+    foreach ($entry in $explorerIconMap.GetEnumerator()) {
+        $from = Join-Path $UniformsRoot $entry.Key
+        $to = Join-Path $iconDir $entry.Value
+        if (-not (Test-Path -LiteralPath $from)) {
+            throw "Missing Explorer icon source: $from (see OneDrive Desktop\uniforms\UNIFORM_STANDARDS.md)"
+        }
+        Copy-Item -LiteralPath $from -Destination $to -Force
+        Write-Host "    $($entry.Key) -> $($entry.Value)" -ForegroundColor DarkGray
+    }
+}
+else {
+    Write-Host "    Skip Explorer icons — uniforms folder not found: $UniformsRoot" -ForegroundColor Yellow
+}
+
 Write-Host ''
-Write-Host 'Outfits + wallpapers synced. Re-run Apply-LifePunchOpsConsole.ps1 on each machine to dress the desk.' -ForegroundColor Cyan
+Write-Host 'Outfits + wallpapers + Explorer icons synced. Re-run Apply-LifePunchOpsConsole.ps1 on each machine to dress the desk.' -ForegroundColor Cyan

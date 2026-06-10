@@ -30,9 +30,10 @@ READ FIRST (in this order), then follow them as law:
    lifepunch-rules-workflow, lifepunch-website-organization.
 2. `lifepunch/docs/MACHINE_CAST.md` ← machine names (VENGEANCE, Cornerman, lifepunchnet). Mandatory.
 3. `lifepunch/docs/OPS_CLARITY_CHECKPOINT.md` ← how we look at the web (at a glance, shortcut tiers, voice stack). Mandatory for ops/voice/multi-machine work.
-4. `lifepunch/docs/AGENT_ONBOARDING.md` ← foundation + current state.
-5. `lifepunch/docs/WORKSPACE_STRUCTURE.md`.
-6. `lifepunch/docs/GITLAB_ORGANIZATION.md` ← GitLab lane map (GitHub monorepo stays canonical).
+4. `OneDrive/Desktop/uniforms/UNIFORM_STANDARDS.md` ← web uniform standards (Explorer icons, shortcut tiers, console cast). Repo mirror: `lifepunch/branding/lifepunch-ops/UNIFORM_STANDARDS.md`.
+5. `lifepunch/docs/AGENT_ONBOARDING.md` ← foundation + current state.
+6. `lifepunch/docs/WORKSPACE_STRUCTURE.md`.
+7. `lifepunch/docs/GITLAB_ORGANIZATION.md` ← GitLab lane map (GitHub monorepo stays canonical).
 
 NOTE: every GitLab lane bundles a SYNCED MIRROR of `.cursor/rules` + `lifepunch/docs` at its root,
 so the rules auto-apply and grounding is local. NEVER edit grounding in a lane — it regenerates from

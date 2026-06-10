@@ -53,8 +53,10 @@ Applied per node via `lifepunch/branding/lifepunch-ops/Apply-LifePunchOpsConsole
 | **Gray taskbar** | Same on every node (taskbar only — title bars keep per-node accent) |
 | **Dark mode + wallpaper** | Same wallpaper family; RDP sessions inherit remote box theme |
 | **Console: black + accent** | PowerShell/conhost/WT schemes match node color |
+| **Explorer icons** | Gray folder + gray `.txt` on **every node** — art: `OneDrive\Desktop\uniforms\PNGs\`; apply: `Set-LifePunchExplorerIcons.ps1` (Win11 folders need HKLM Shell Icons — UAC once) |
 
-Outfits + shortcuts: `lifepunch/branding/lifepunch-ops/OUTFITS.md` · `lifepunch/branding/shortcut-icons/SHORTCUT_ICONS.md`.
+Uniform standards: `OneDrive\Desktop\uniforms\UNIFORM_STANDARDS.md` · repo `lifepunch/branding/lifepunch-ops/UNIFORM_STANDARDS.md`.
+Outfits + shortcuts: `OUTFITS.md` · `shortcut-icons/SHORTCUT_ICONS.md`.
 
 Refresh all VENGEANCE `.lnk` icons:
 
@@ -137,6 +139,8 @@ Preflight script: `Test-VoiceCommsReady.ps1` · ports: `VOICE_PIPELINE_STATUS.md
 | Concern | Canonical path |
 |---------|------------------|
 | Shortcut icon tiers | `lifepunch/branding/shortcut-icons/` + `.cursor/rules/lifepunch-shortcut-icons.mdc` |
+| Explorer icons (all nodes) | `OneDrive\Desktop\uniforms\` + `Set-LifePunchExplorerIcons.ps1` + `.cursor/rules/lifepunch-explorer-icons.mdc` |
+| Uniform standards (web) | `OneDrive\Desktop\uniforms\UNIFORM_STANDARDS.md` · repo `lifepunch-ops/UNIFORM_STANDARDS.md` |
 | Shortcut installers | `lifepunch/scripts/Install-LifePunch*.ps1` |
 | Reboot prep (all nodes) | `lifepunch/scripts/Prep-LifePunchReboot.ps1` · lifepunchnet: `server/scripts/Prep-LifePunchReboot-Lifepunchnet.ps1` |
 | Start Day orchestrator | `lifepunch/scripts/Start-LifePunchDay.ps1` |

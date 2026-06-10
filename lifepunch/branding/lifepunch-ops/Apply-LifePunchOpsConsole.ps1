@@ -298,6 +298,10 @@ else {
     Write-Note "No wallpaper for $Machine ($wpName). See SYNC_FROM_LIFEPUNCHNET.md"
 }
 
+# 5b. Uniform Explorer icons (folder + .txt — all LifePunch nodes)
+Write-Step 'Explorer icons (folder + .txt)'
+& (Join-Path $here 'Set-LifePunchExplorerIcons.ps1') -OpsRoot $here
+
 # 6. oh-my-posh + banner
 Write-Step 'oh-my-posh + ops banner profile'
 if (-not (Get-Command oh-my-posh -ErrorAction SilentlyContinue)) {
