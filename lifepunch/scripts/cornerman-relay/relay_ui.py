@@ -48,7 +48,7 @@ def reset_session() -> None:
 def ptt_banner() -> None:
     w = _width()
     title = " TALK TO VENGEANCE "
-    sub = " hold key -> speak -> clipboard -> paste in Cursor "
+    sub = " arm -> ready -> hold talk key -> clipboard -> Cursor "
     bar = "=" * w
     print()
     print(_c("1;96", bar))
@@ -57,31 +57,29 @@ def ptt_banner() -> None:
     print(_c("1;96", bar))
 
 
-def ptt_mode_info(mic: str, key: str) -> None:
-    print(_c("1;92", f"  Mode         PUSH-TO-TALK (hold {key.upper()})"))
+def ptt_mode_info(mic: str, arm_key: str, talk_key: str) -> None:
+    print(_c("1;92", "  Mode         ARM then PUSH-TO-TALK"))
     print(_c("90", f"  Mic          {mic}"))
+    print(_c("90", f"  Arm          tap {arm_key.upper()} when you want a round"))
+    print(_c("90", f"  Talk         hold {talk_key.upper()} after Cornerman says ready"))
     print(_c("90", "  End session  Ctrl+C, or say goodbye vengeance in a message"))
     print()
 
 
-def ptt_ready_line(key: str) -> None:
-    """Single quiet ready cue — no WAITING boxes, no log spam."""
-    print(_c("1;92", f"  [READY]  Hold {key.upper()} when you want to talk"))
+def ptt_armed(talk_key: str) -> None:
+    print(_c("1;92", f"  [ARMED]  Cornerman ready — hold {talk_key.upper()} to talk"))
 
 
 def ptt_recording(key: str) -> None:
     print(_c("1;91", f"  [RECORDING]  {key.upper()} held — release to send"))
 
 
-def clipboard_ready(ptt_key: str) -> None:
+def clipboard_copied() -> None:
     w = _width()
     print()
     print(_c("1;92", "+" + "-" * (w - 2) + "+"))
-    print(_c("1;92", "|" + "  CLIPBOARD READY  ".center(w - 2) + "|"))
-    for ln in (
-        "Copied to clipboard — paste into Cursor (Ctrl+V).",
-        f"Hold {ptt_key.upper()} when you have another message.",
-    ):
+    print(_c("1;92", "|" + "  COPIED TO CLIPBOARD  ".center(w - 2) + "|"))
+    for ln in ("Paste into Cursor (Ctrl+V).",):
         for part in textwrap.wrap(ln, width=w - 6) or [""]:
             print(_c("92", "|  " + part.ljust(w - 5) + "|"))
     print(_c("1;92", "+" + "-" * (w - 2) + "+"))

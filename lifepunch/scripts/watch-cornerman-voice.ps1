@@ -12,6 +12,7 @@ $ErrorActionPreference = 'Stop'
 $RemotePath = 'C:\Projects\cornerman-rag\outbox\to-vengeance.txt'
 $SessionLogPath = 'C:\Projects\cornerman-rag\outbox\session.log'
 $PullScript = Join-Path $PSScriptRoot 'pull-cornerman-voice.ps1'
+$ArmKey = if ($env:CORNERMAN_ARM_KEY) { $env:CORNERMAN_ARM_KEY.ToUpper() } else { 'F7' }
 $PttKey = if ($env:CORNERMAN_PTT_KEY) { $env:CORNERMAN_PTT_KEY.ToUpper() } else { 'F8' }
 
 if (-not (Test-Path -LiteralPath $PullScript)) {
@@ -44,9 +45,9 @@ Write-Host ''
 Write-Host ('=' * 60) -ForegroundColor Cyan
 Write-Host '  VENGEANCE VOICE INBOX  (watching Cornerman)' -ForegroundColor Cyan
 Write-Host ('=' * 60) -ForegroundColor Cyan
-Write-Host '  Cornerman : Talk to Vengeance - hold PTT key, speak, release' -ForegroundColor DarkGray
-Write-Host ('  PTT key   : {0} (CORNERMAN_PTT_KEY to override)' -f $PttKey) -ForegroundColor DarkGray
-Write-Host '  You       : when Cornerman says clipboard ready -> Ctrl+V in Cursor' -ForegroundColor DarkGray
+Write-Host '  Cornerman : tap ARM, wait for Ready, hold talk key, release' -ForegroundColor DarkGray
+Write-Host ('  Arm key   : {0}   Talk key: {1}' -f $ArmKey, $PttKey) -ForegroundColor DarkGray
+Write-Host '  You       : when clipboard updates -> Ctrl+V in Cursor' -ForegroundColor DarkGray
 Write-Host '  Stop      : Ctrl+C in this window' -ForegroundColor DarkGray
 Write-Host ''
 
@@ -87,7 +88,7 @@ while ($true) {
     }
 
     Write-Host ''
-    Write-Host ('  Cornerman ready - hold {0} for the next message' -f $PttKey) -ForegroundColor DarkCyan
+    Write-Host ('  Tap {0} on Cornerman when you want another round' -f $ArmKey) -ForegroundColor DarkCyan
     Write-Host ('-' * 60) -ForegroundColor DarkGray
     Write-Host ''
     $lastHash = $hash

@@ -20,11 +20,19 @@ def key_name() -> str:
     return os.environ.get("CORNERMAN_PTT_KEY", "f8").strip().lower()
 
 
+def arm_key_name() -> str:
+    return os.environ.get("CORNERMAN_ARM_KEY", "f7").strip().lower()
+
+
 def vk_code(name: str | None = None) -> int:
     n = (name or key_name()).strip().lower()
     if n not in VK:
-        raise ValueError(f"Unknown CORNERMAN_PTT_KEY={n!r} - use: {', '.join(sorted(VK))}")
+        raise ValueError(f"Unknown key={n!r} - use: {', '.join(sorted(VK))}")
     return VK[n]
+
+
+def arm_vk_code() -> int:
+    return vk_code(arm_key_name())
 
 
 def is_down(vk: int) -> bool:
@@ -33,6 +41,14 @@ def is_down(vk: int) -> bool:
 
 def wait_down(vk: int, poll: float = 0.02) -> None:
     while not is_down(vk):
+        time.sleep(poll)
+
+
+def wait_tap(vk: int, poll: float = 0.02) -> None:
+    """Block until the key is pressed and released once."""
+    while not is_down(vk):
+        time.sleep(poll)
+    while is_down(vk):
         time.sleep(poll)
 
 

@@ -39,6 +39,6 @@ if (-not $SkipWatchdog) {
 }
 
 Write-Host ''
-Write-Host 'Cornerman: Talk to Vengeance — hold F8, speak, release.' -ForegroundColor DarkGray
-Write-Host 'VENGEANCE: when Cornerman says clipboard ready, Ctrl+V in Cursor.' -ForegroundColor DarkGray
+Write-Host 'Cornerman: tap F7 to arm, wait for Ready, hold F8, release.' -ForegroundColor DarkGray
+Write-Host 'VENGEANCE: when clipboard updates, Ctrl+V in Cursor.' -ForegroundColor DarkGray
 Write-Host ''

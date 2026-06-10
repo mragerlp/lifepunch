@@ -4,8 +4,8 @@
 
 $watch = Join-Path $PSScriptRoot 'watch-cornerman-voice.ps1'
 Write-Host 'Voice brainstorm mode ON' -ForegroundColor Green
-Write-Host '  Cornerman: Talk to Vengeance - hold F8, speak, release' -ForegroundColor DarkGray
-Write-Host '  VENGEANCE: when Cornerman says clipboard ready, Ctrl+V into Cursor' -ForegroundColor DarkGray
+Write-Host '  Cornerman: tap F7 to arm, wait for Ready, hold F8, release' -ForegroundColor DarkGray
+Write-Host '  VENGEANCE: when clipboard updates, Ctrl+V into Cursor' -ForegroundColor DarkGray
 Write-Host '  Tip: use LifePunch Voice Comms shortcut to start sync + watch together' -ForegroundColor DarkGray
 Write-Host ''
 & $watch

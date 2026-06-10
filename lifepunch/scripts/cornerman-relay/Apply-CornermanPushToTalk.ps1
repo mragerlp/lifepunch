@@ -32,7 +32,8 @@ ssh -o BatchMode=yes $CornermanHost "cd $CornermanRag; .venv/Scripts/python.exe 
 
 Write-Host ''
 Write-Host 'Done.' -ForegroundColor Green
-Write-Host '  Cornerman: Talk to Vengeance.cmd  —  hold F8, speak, release' -ForegroundColor Cyan
-Write-Host '  Clipboard auto-copies; paste in Cursor when Cornerman says ready' -ForegroundColor DarkGray
+Write-Host '  Cornerman: tap F7 to arm, wait for Ready, hold F8, release' -ForegroundColor Cyan
+Write-Host '  Keys: CORNERMAN_ARM_KEY (default F7), CORNERMAN_PTT_KEY (default F8)' -ForegroundColor DarkGray
+Write-Host '  Clipboard auto-copies on send; paste in Cursor when you are ready' -ForegroundColor DarkGray
 Write-Host '  Legacy wake phrase: Talk to Vengeance (Wake).cmd (not recommended)' -ForegroundColor DarkGray
 Write-Host ''

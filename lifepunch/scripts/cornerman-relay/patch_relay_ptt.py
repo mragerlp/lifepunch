@@ -46,38 +46,38 @@ def run_ptt_loop(
     ui.reset_session()
     dev = stt.pick_input_device()
     mic_name = stt.sd.query_devices(dev)["name"]
-    key = ptt.key_name()
+    arm_key = ptt.arm_key_name()
+    talk_key = ptt.key_name()
+    arm_vk = ptt.arm_vk_code()
+    talk_vk = ptt.vk_code(talk_key)
 
     ui.ptt_banner()
-    ui.ptt_mode_info(mic_name, key)
-    ui.ptt_ready_line(key)
-
-    if guided:
-        _say(
-            f"Ready. Hold {key} when you want to talk, then release.",
-            guided=True,
-        )
+    ui.ptt_mode_info(mic_name, arm_key, talk_key)
 
     msg_n = 0
     while True:
-        ptt.wait_down(ptt.vk_code())
-        ui.ptt_recording(key)
+        # Silent until you tap ARM — you decide when Cornerman should listen.
+        ptt.wait_tap(arm_vk)
+
+        ui.ptt_armed(talk_key)
+        if guided:
+            _say("Ready.", guided=True)
         _beep_ready()
-        audio = ptt_capture.record_ptt(verbose=False, vk=ptt.vk_code(), armed=True)
+
+        ptt.wait_down(talk_vk)
+        ui.ptt_recording(talk_key)
+        audio = ptt_capture.record_ptt(verbose=False, vk=talk_vk, armed=True)
         if audio is None:
-            ui.ptt_ready_line(key)
             continue
 
         try:
             text = transcribe(audio, lemonade=lemonade, remote_url=remote_url)
         except requests.RequestException as exc:
             ui.warn(f"  Transcribe error: {exc}")
-            ui.ptt_ready_line(key)
             continue
 
         if not text:
-            ui.dim("  (empty — hold key and speak again)")
-            ui.ptt_ready_line(key)
+            ui.dim("  (empty — tap arm again or hold talk key and speak)")
             continue
         if _is_exit(text):
             ui.success("SESSION ENDED", ['You said "goodbye vengeance". See you next time.'])
@@ -88,8 +88,7 @@ def run_ptt_loop(
         msg_n += 1
         if msg_n > 1:
             ui.message_divider(msg_n)
-        deliver(text, msg_n, guided=guided, ptt_key=key)
-        ui.ptt_ready_line(key)
+        deliver(text, msg_n, guided=guided, ptt_key=talk_key)
 '''.strip()
 
 SHOW_CLIPBOARD = '''
@@ -100,12 +99,9 @@ def show_clipboard(
     ptt_key: str | None = None,
 ) -> None:
     if ptt_key:
-        ui.clipboard_ready(ptt_key)
+        ui.clipboard_copied()
         if guided:
-            _say(
-                f"Copied. Paste in Cursor. Hold {ptt_key} when you have another.",
-                guided=True,
-            )
+            _say("Copied. Paste in Cursor.", guided=True)
         return
     ui.success(
         "CLIPBOARD",
@@ -185,15 +181,12 @@ def main() -> int:
         relay, ok = _ensure_ptt_before_main(relay)
         if ok:
             changed.append("relay.py (ptt before main)")
-    else:
+    elif "wait_tap" not in relay:
         relay, ok = _replace_function(relay, "run_ptt_loop", RUN_PTT_LOOP)
         if ok:
-            changed.append("relay.py (ptt loop)")
+            changed.append("relay.py (arm+ptt loop)")
 
     if "ptt_key: str | None" not in relay:
-        relay, ok = _replace_function(relay, "show_clipboard", SHOW_CLIPBOARD)
-        if ok:
-            changed.append("relay.py (show_clipboard)")
         relay = relay.replace(
             "def deliver(text: str, n: int, *, guided: bool, wake_phrase: str) -> None:",
             DELIVER_SIG,
@@ -203,6 +196,10 @@ def main() -> int:
             "show_clipboard(guided=guided, wake_phrase=wake_phrase, ptt_key=ptt_key)",
         )
         changed.append("relay.py (deliver ptt_key)")
+    if "ui.clipboard_copied" not in relay or "ptt_ready_line" in relay or "wait_tap" not in relay:
+        relay, ok = _replace_function(relay, "show_clipboard", SHOW_CLIPBOARD)
+        if ok:
+            changed.append("relay.py (show_clipboard)")
 
     if "--ptt" not in relay:
         relay = relay.replace(

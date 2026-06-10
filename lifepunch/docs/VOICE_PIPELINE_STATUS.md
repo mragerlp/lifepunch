@@ -29,7 +29,7 @@ Cornerman desktop: **Talk to Vengeance** (push-to-talk only in normal use).
 
 | Mode | Shortcut | Trigger |
 |------|----------|---------|
-| **PTT** (default) | `Talk to Vengeance.cmd` | Hold **F8** → speak → release → clipboard |
+| **PTT** (default) | `Talk to Vengeance.cmd` | Tap **F7** (arm) → Cornerman says ready → hold **F8** → release → clipboard |
 | Wake phrase (legacy) | `Talk to Vengeance (Wake).cmd` | Say `send message` → speak (not recommended) |
 
 Deploy PTT from VENGEANCE: `lifepunch/scripts/cornerman-relay/Apply-CornermanPushToTalk.ps1`
@@ -57,7 +57,7 @@ allows `71.250.46.224` for ingest.
 
 1. `Test-VoiceCommsReady.ps1` — all OK
 2. Double-click **LifePunch Voice Comms**
-3. Cornerman: hold F8 → speak → release
+3. Cornerman: tap F7 → wait for Ready → hold F8 → release
 4. VENGEANCE: Ctrl+V in Cursor
 5. Check hub: `Invoke-RestMethod` on `:9102/tail?lines=10` with Bearer token
 
