@@ -88,10 +88,14 @@ truth; secrets stay quarantined off it and the same git rules apply.
 | **VENGEANCE** | Primary PC — Cursor, GitHub source of truth (`lifepunchaddons` checkout) |
 | **Cornerman** | Home LAN AI box — mic, local LLM/STT, Tier-3 prep (`LOCAL_AI_WORKSTATION.md`) |
 | **lifepunchnet** | Hosted always-on server — DXRP ops, Whisper, watchdog (`LIFEPUNCHNET_INSTRUCTIONS.txt`) |
-| **shottaWEB** | Website partner — GitLab `lifepunch-website` only |
+| **shottaWEB** | Website partner (Brian) — GitLab `lifepunch-website` only; say **shottaWEB** in agent chat |
 | **RDP server agent** | Agent **role** on **lifepunchnet** (Block C) — not a separate machine name |
 
 Deprecated: "Server Host", "RDP Server Host", "the server box" → **lifepunchnet**.
+
+**Agent-facing aliases:** say **Bloodwave** for the owner (same as Jared / Mr. Rager / mragerlp / mrragerlp);
+say **shottaWEB** for the partner (Brian). Bloodwave is the default owner reference (editor test character).
+See `MACHINE_CAST.md` § How agents should refer. lifepunchnet RDP may show `administrator` — still the owner.
 
 ## Efficiency & guardrails (cost-safe operation)
 

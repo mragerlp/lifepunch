@@ -43,6 +43,8 @@ QUICK CAST (no substitutes)
   lifepunchnet  = hosted always-on server, DXRP ops, Whisper, watchdog
                   (205.209.104.22, hostname lifepunchnet)
 
+  PEOPLE (alias-first): Bloodwave = owner (Jared/Mr. Rager/mragerlp) · shottaWEB = partner (Brian)
+
   DEPRECATED: "Server Host", "RDP Server Host", "the server box" → lifepunchnet
 
 ------------------------------------------------------------------------

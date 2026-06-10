@@ -15,7 +15,7 @@ if (-not $AllowedUsers -and (Test-Path -LiteralPath $configFile)) {
     }
     catch { }
 }
-if (-not $AllowedUsers) { $AllowedUsers = @('jared') }
+if (-not $AllowedUsers) { $AllowedUsers = @('jared', 'administrator') }
 
 $ErrorActionPreference = 'Continue'
 
@@ -114,11 +114,23 @@ function Get-ServiceStates {
     return $out
 }
 
+function Normalize-SessionUser([string]$Raw) {
+    if ([string]::IsNullOrWhiteSpace($Raw)) { return '' }
+    return ($Raw -replace '^>', '').Trim().ToLowerInvariant()
+}
+
+function Test-AllowedUser([string]$User, [string[]]$Allowed) {
+    $u = Normalize-SessionUser $User
+    if (-not $u -or $u -eq 'username') { return $true }
+    $norm = @($Allowed | ForEach-Object { Normalize-SessionUser $_ })
+    return $norm -contains $u
+}
+
 function New-Alerts($Sessions, $AuthEvents, $Allowed) {
     $alerts = @()
     foreach ($s in $Sessions) {
         $u = $s.user
-        if ($u -and $u -ne 'USERNAME' -and $Allowed -notcontains $u) {
+        if ($u -and -not (Test-AllowedUser $u $Allowed)) {
             $alerts += "UNEXPECTED_SESSION: $u ($($s.state))"
         }
     }
@@ -126,7 +138,7 @@ function New-Alerts($Sessions, $AuthEvents, $Allowed) {
         if ($e.id -eq 4625) {
             $alerts += "FAILED_LOGON: $($e.user) from $($e.ip)"
         }
-        if ($e.id -eq 4624 -and $e.logonType -eq '10' -and $Allowed -notcontains $e.user) {
+        if ($e.id -eq 4624 -and $e.logonType -eq '10' -and -not (Test-AllowedUser $e.user $Allowed)) {
             $alerts += "RDP_LOGON: $($e.user) from $($e.ip)"
         }
     }

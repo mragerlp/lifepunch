@@ -76,7 +76,7 @@ one-paragraph summary of where we are before work.
 ```text
 [Paste Block 0 above, then:]
 
-YOU ARE: an agent on **VENGEANCE** — the owner's primary PC (see MACHINE_CAST.md).
+YOU ARE: an agent on **VENGEANCE** — Bloodwave's primary PC (owner; see MACHINE_CAST.md).
 
 YOUR REPO: https://github.com/mragerlp/lifepunch (GitHub monorepo — source of truth).
 Workspace root: C:\Users\jared\Projects\lifepunchaddons. Git origin = GitHub.
@@ -113,7 +113,8 @@ git clone https://gitlab.com/mragerlp/lifepunch-website.git
 ```text
 [Paste Block 0 above, then:]
 
-YOUR LANE: GitLab lifepunch-website ONLY. You are shottaWEB — website partner for lifepunch.co.
+YOUR LANE: GitLab lifepunch-website ONLY. You are **shottaWEB** — website partner for lifepunch.co
+(human name: Brian; agents and owner refer to you as shottaWEB).
 Canonical monorepo (read grounding): https://github.com/mragerlp/lifepunch
 Workspace root: your lifepunch-website GitLab checkout.
 Paths you own: website/** — Cloudflare worker, rules deploy scripts, site integrations, public copy.

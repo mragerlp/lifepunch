@@ -3,9 +3,10 @@ LIFEPUNCH — WEBSITE LANE SETUP (for shottaWEB)
 Send this whole file. It's everything you need to start, in order.
 ========================================================================
 
-Hey — you're the website partner on LifePunch (the lifepunch.co site + Cloudflare
-worker). You work in your OWN GitLab lane; the owner integrates your commits into the
-main GitHub repo. You never touch addons / server / gamemode — just the website.
+Hey Brian — your agent-facing name is **shottaWEB** (say shottaWEB in Cursor; Jared hears
+shottaWEB and knows it's you — same pattern as agents saying Bloodwave for the owner). Website partner
+on LifePunch (lifepunch.co + Cloudflare worker). You work in your OWN GitLab lane; Bloodwave
+integrates your commits into GitHub. Never touch addons / server / gamemode — website only.
 
 Do the three steps below in order. Steps 1-2 are one-time. Step 3 is what you paste
 into Cursor every time you start a new website task.
@@ -99,7 +100,7 @@ your partner PC, not VENGEANCE/Cornerman/lifepunchnet), and give a one-paragraph
 
 ---
 
-YOUR LANE: GitLab lifepunch-website ONLY. You are shottaWEB — website partner for lifepunch.co.
+YOUR LANE: GitLab lifepunch-website ONLY. You are **shottaWEB** — website partner for lifepunch.co.
 Canonical monorepo (read grounding): https://github.com/mragerlp/lifepunch
 Workspace root: your lifepunch-website GitLab checkout.
 Paths you own: website/** — Cloudflare worker, rules deploy scripts, site integrations, public copy.

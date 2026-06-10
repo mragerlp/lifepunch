@@ -4,7 +4,7 @@ param(
     [int] $WatchdogIntervalMinutes = 2,
     [int] $StatusPort = 9101,
     [string] $StatusDir = 'C:\lifepunch\status',
-    [string[]] $AllowedUsers = @('jared')
+    [string[]] $AllowedUsers = @('jared', 'administrator')
 )
 
 $ErrorActionPreference = 'Stop'

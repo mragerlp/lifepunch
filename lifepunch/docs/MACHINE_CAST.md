@@ -28,12 +28,52 @@
 
 ---
 
+## How agents should refer to people (alias-first)
+
+Use the **codename alias** in agent chat — the owner and partner recognize it immediately:
+
+| Who | Say this in agent chat | Same person also known as |
+|-----|------------------------|---------------------------|
+| Owner | **Bloodwave** (default) | Jared, Mr. Rager, mragerlp, mrragerlp, jared (Windows) |
+| Partner | **shottaWEB** (default) | Brian (website lane) |
+
+Same pattern both sides: **Bloodwave** → owner (editor test character; easiest reference); **shottaWEB** → Brian.
+All owner aliases are one person — prefer **Bloodwave** in agent prose unless quoting a path, account, or Windows login.
+
+---
+
+## Owner identity (one person)
+
+| Context | Names |
+|---------|--------|
+| Agent default | **Bloodwave** (editor test character — use this in chat) |
+| Also the same person | Jared, Mr. Rager, mragerlp, mrragerlp |
+| Misspelling seen | bioodwave |
+| Windows / local login | jared |
+| GitHub / GitLab accounts | mragerlp, mrragerlp |
+
+**lifepunchnet RDP** may show Windows user **`administrator`** — still Bloodwave/owner. Watchdog `allowedUsers`: `jared`, `administrator`.
+
+---
+
+## Partner identity (one person — website lane)
+
+| Context | Names |
+|---------|--------|
+| Agent default | **shottaWEB** |
+| Person (human) | Brian |
+| GitLab | `lifepunch-website` · invite `br.black4022@gmail.com` |
+
+**partner** = **shottaWEB** = Brian. In agent chat, say **shottaWEB** first — not Cornerman, not lifepunchnet, not the owner.
+
+---
+
 ## Agent roles vs machines
 
 | Role | Runs on | Git write lane |
 |------|---------|----------------|
 | Owner / addons agent | **VENGEANCE** | GitHub monorepo |
-| shottaWEB (website partner) | Partner PC | GitLab `lifepunch-website` |
+| **shottaWEB** (Brian) | Partner PC | GitLab `lifepunch-website` |
 | RDP server agent | **lifepunchnet** | GitLab `lifepunch-rdp-server` |
 | Cornerman agent | **Cornerman** | GitHub clone (read-only deploy key → patch handoff to VENGEANCE) |
 
@@ -83,7 +123,7 @@ Refresh shortcuts: `lifepunch/scripts/Install-LifePunchRemoteShortcuts.ps1`.
 |---------|------------------|
 | All agents | `AGENT_ONBOARDING.md`, `AGENT_PROMPT.md` Block 0 |
 | VENGEANCE | Block A |
-| shottaWEB | Block B, `SHOTTAWEB_HANDOFF.txt` |
+| **shottaWEB** | Block B, `SHOTTAWEB_HANDOFF.txt` |
 | lifepunchnet | Block C, `lifepunch/server/LIFEPUNCHNET_INSTRUCTIONS.txt` |
 | Cornerman | Block D, `DAY_ONE_AGENT_PROMPT.md`, `LOCAL_AI_WORKSTATION.md` |
 
