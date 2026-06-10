@@ -99,14 +99,19 @@ if (-not $SkipSSH) {
         Write-Warn2 "No -SshPublicKey passed: password auth still on. Re-run with the key, then -DisablePasswordAuth."
     }
 
-    # Key-only auth (only when explicitly asked AND a key is present)
+    # Key-only auth (only when explicitly asked AND a key is present). Disables BOTH the
+    # password method and keyboard-interactive (which on Windows also accepts the password).
     if ($DisablePasswordAuth -and $SshPublicKey) {
         $cfg = Join-Path $env:ProgramData 'ssh\sshd_config'
         $c = Get-Content -LiteralPath $cfg -Raw
         $c = $c -replace '(?m)^\s*#?\s*PasswordAuthentication\s+.*$', 'PasswordAuthentication no'
         if ($c -notmatch '(?m)^\s*PasswordAuthentication\s+no\s*$') { $c += "`nPasswordAuthentication no`n" }
+        $c = $c -replace '(?m)^\s*#?\s*KbdInteractiveAuthentication\s+.*$', 'KbdInteractiveAuthentication no'
+        if ($c -notmatch '(?m)^\s*KbdInteractiveAuthentication\s+no\s*$') { $c += "`nKbdInteractiveAuthentication no`n" }
+        $c = $c -replace '(?m)^\s*#?\s*ChallengeResponseAuthentication\s+.*$', 'ChallengeResponseAuthentication no'
+        if ($c -notmatch '(?m)^\s*ChallengeResponseAuthentication\s+no\s*$') { $c += "`nChallengeResponseAuthentication no`n" }
         Set-Content -LiteralPath $cfg -Value $c -Encoding ascii
-        Write-Note "PasswordAuthentication disabled (key-only)."
+        Write-Note "Password + keyboard-interactive disabled (key-only)."
     }
 
     Restart-Service sshd

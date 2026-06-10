@@ -84,7 +84,7 @@ tooling/MCP can use, and RAG over the repo with secrets excluded. Sections 6–7
    - **Diagnostics:** Required only; tailored experiences + advertising ID → **Off**.
    - **Office / 365 apps (if installed):** default Save = **This PC**; don't connect cloud storage.
 5. Rename the PC to the codename (Settings → System → About → Rename).
-6. Storage encryption: this box runs **Win11 Pro = full managed BitLocker**. Turn on **BitLocker**
+6. Storage encryption: this box runs **Win11 Pro/Enterprise = full managed BitLocker**. Turn on **BitLocker**
    for the OS drive (Control Panel → System and Security → **BitLocker Drive Encryption**, or search
    "BitLocker"). **Microsoft account:** the recovery key auto-escrows to account.microsoft.com
    (MFA-protected) — fine; also keep an **offline copy** (USB + password manager). **Local account:**
@@ -208,14 +208,20 @@ Principles: **LAN-only by default, encrypted in transit, one source of truth, se
 
 You drive Cornerman **from VENGEANCE** — you don't sit at the box. v1 stays LAN-only: every
 rule is scoped to the LAN subnet + Private profile, nothing is exposed to the public internet,
-no port-forwarding. Win11 **Pro** is what makes the RDP host available (Home can't host RDP).
+no port-forwarding. Win11 **Pro/Enterprise** is what makes the RDP host available (Home can't host RDP).
 
 **Two channels:**
-- **SSH (OpenSSH Server)** — terminal, agent ops, and port-tunneling the model endpoint back to
-  VENGEANCE (e.g. `ssh -L 1234:localhost:1234 cornerman`). Key auth; client public key only —
-  no private key/secret on the box.
-- **RDP (Remote Desktop)** — occasional GUI (LM Studio, AMD Adrenalin). NLA required, strong
-  account password.
+- **SSH (OpenSSH Server)** — terminal + agent ops. Key auth only; client public key lives in
+  `administrators_authorized_keys` (admin account), no private key/secret on the box. NOTE: the
+  model endpoint is normally bound to the **LAN IP**, so VENGEANCE reaches it **directly** at
+  `http://<LAN-IP>:1234/v1/...` — no tunnel needed. A tunnel (`ssh -L 11234:127.0.0.1:1234 cornerman`)
+  is only for an endpoint bound to loopback.
+- **RDP (Remote Desktop)** — occasional GUI (LM Studio, AMD Adrenalin). NLA required; uses the
+  account **password** (not the Windows Hello PIN, which only works at the physical machine).
+
+**Verified working 2026-06-10 (cornerman @ 192.168.1.227):** key-only SSH (`ssh cornerman` →
+`cornerman\jared`, password + keyboard-interactive disabled), RDP reachable, and the LAN model
+endpoint serving (`qwen2.5-coder-32b-instruct`). Firewall rules scoped to LocalSubnet/Private.
 
 **Setup (Cornerman side, run elevated):**
 ```powershell
