@@ -150,14 +150,24 @@ function Get-LaneGitHead {
 }
 
 function Get-OdysseusProbe {
-    $candidates = @(
-        'C:\lifepunch\odysseus',
-        'C:\lifepunch\lifepunch-rdp-server\odysseus'
-    )
-    $installed = $false
-    foreach ($p in $candidates) {
-        if (Test-Path -LiteralPath $p) { $installed = $true; break }
+    $installDir = 'C:\lifepunch\odysseus'
+    $installed = Test-Path -LiteralPath (Join-Path $installDir '.git')
+    $httpOk = $false
+    $port = 7000
+    $statusFile = Join-Path $StatusDir 'odysseus.json'
+    if (Test-Path -LiteralPath $statusFile) {
+        try {
+            $st = Get-Content -LiteralPath $statusFile -Raw | ConvertFrom-Json
+            if ($st.port) { $port = [int]$st.port }
+            if ($st.installDir) { $installed = Test-Path -LiteralPath (Join-Path $st.installDir '.git') }
+        }
+        catch { }
     }
+    try {
+        $r = Invoke-WebRequest -Uri "http://127.0.0.1:$port" -TimeoutSec 4 -UseBasicParsing -ErrorAction Stop
+        $httpOk = ($r.StatusCode -ge 200 -and $r.StatusCode -lt 500)
+    }
+    catch { }
     $ollama = $false
     try {
         $r = Invoke-RestMethod -Uri 'http://127.0.0.1:11434/api/tags' -TimeoutSec 3 -ErrorAction Stop
@@ -166,7 +176,11 @@ function Get-OdysseusProbe {
     catch { }
     return @{
         installed = $installed
+        running   = $httpOk
+        httpOk    = $httpOk
         ollama    = $ollama
+        port      = $port
+        installDir = $installDir
     }
 }
 

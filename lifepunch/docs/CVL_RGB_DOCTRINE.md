@@ -99,4 +99,5 @@ Optional future field: `mix` = `yellow` | `cyan` | `magenta` | `white` | `black`
 - `session-hub/README.md` — blue host log + security
 - `Invoke-CvlUniversal.ps1` — universal white-light probe
 - `Get-CvlTeamRoundPaste.ps1` — one paste for Green + Blue from live gaps (Red's arm)
+- `Get-CvlOdysseusRoundPaste.ps1` — one paste for Odysseus install round on Blue
 - `Test-CvlSecurity.ps1` — signal hardening before ingest

@@ -11,11 +11,16 @@
 
 ## Install (RDP into lifepunchnet)
 
+**Team round (one paste to Green + Blue):** on VENGEANCE run `Get-CvlOdysseusRoundPaste.ps1` — Mr. Rager
+confirms send time; both lanes see the full round; Red pings once after "both lanes done".
+
 ```powershell
 cd C:\lifepunch\lifepunch-rdp-server\lifepunch\server\scripts
 git pull --rebase
 powershell -ExecutionPolicy Bypass -File .\Install-Odysseus-Lifepunchnet.ps1
 ```
+
+Writes `C:\lifepunch\status\odysseus.json` + `odysseus-cvl-context.txt` for watchdog `:9101` probe.
 
 Or manual: `LIFEPUNCHNET_RDP_ODYSSEUS.txt` Step 4.
 

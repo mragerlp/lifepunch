@@ -130,7 +130,10 @@ function Get-LifepunchnetSlot($cfg) {
             else { $slot.gitHead = 'no-git-in-status' }
         }
         if ($status.PSObject.Properties.Name -contains 'odysseus') {
-            $slot.odysseusHint = if ($status.odysseus.installed) { 'installed-on-box' } else { 'not-installed' }
+            $o = $status.odysseus
+            if ($o.running -or $o.httpOk) { $slot.odysseusHint = 'running' }
+            elseif ($o.installed) { $slot.odysseusHint = 'installed-not-running' }
+            else { $slot.odysseusHint = 'not-installed' }
         }
         if (-not $slot.whisperOk) { Add-Blocker 'lifepunchnet Whisper :9000 down' }
     }
@@ -156,11 +159,14 @@ function Get-OdysseusUniversalVerdict($v, $c, $l) {
         'VENGEANCE integrates GitHub; reads hub/Odysseus output for long-context prep, not hosting.'
         'Tier-3 experimental: pinned commit, AUTH on, no secrets, no write-git creds.'
     )
-    if ($l -and $l.odysseusHint -eq 'installed-on-box') {
-        $lines += 'lifepunchnet reports Odysseus path present (watchdog).'
+    if ($l -and $l.odysseusHint -eq 'running') {
+        $lines += 'Odysseus running on lifepunchnet :7000 - hub reader path live.'
+    }
+    elseif ($l -and $l.odysseusHint -eq 'installed-not-running') {
+        $lines += 'Odysseus installed on lifepunchnet but not responding on :7000 - start launch-windows.ps1.'
     }
     elseif ($l) {
-        $lines += 'lifepunchnet Odysseus install unconfirmed from API - RDP optional for UI trial.'
+        $lines += 'Odysseus not on lifepunchnet yet - run Install-Odysseus-Lifepunchnet.ps1 (CVL missing link).'
     }
     if ($c -and -not $c.relayRunning) {
         if ($c.relayCmd -and $c.relayStarter) {
