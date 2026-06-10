@@ -44,7 +44,7 @@ def _width() -> int:
     return max(52, min(term - 2, CONSOLE_WIDTH))
 
 
-def _rule(color: str = "1;96") -> None:
+def _rule(color: str = "1;92") -> None:
     print(_c(color, "=" * _width()))
 
 
@@ -73,7 +73,7 @@ def reset_session() -> None:
 def _voice_header(title: str, subtitle: str = "") -> None:
     print()
     _rule()
-    print(_c("1;96", f"  {title}"))
+    print(_c("1;92", f"  {title}"))
     if subtitle:
         print(_c("90", f"  {subtitle}"))
     _rule()

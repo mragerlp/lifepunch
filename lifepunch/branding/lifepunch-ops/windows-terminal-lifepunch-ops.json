@@ -1,5 +1,5 @@
 {
-  "_comment": "LifePunch Ops — cyan HUD terminal scheme (canonical on lifepunchnet). Same on every node; NODE banner differs per machine.",
+  "_comment": "lifepunchnet hosted ops — cyan LIFEPUNCH.NET HUD. VENGEANCE and Cornerman use their own schemes.",
   "name": "LifePunch Ops",
   "background": "#050A12",
   "foreground": "#C5EEFF",

@@ -3,9 +3,9 @@
   Apply per-node LifePunch ops console branding.
 
 .DESCRIPTION
-  VENGEANCE = red tactical HUD (vengeance@vengeance prompt).
-  Cornerman + lifepunchnet = cyan LIFEPUNCH.NET HUD.
-  Same apply script; nodes.json selects scheme, accent, omp, wallpaper.
+  Hacker Job machine uniforms — each node wears its own outfit from outfits/.
+  VENGEANCE (Enhanced Hacker Terminal, red), Cornerman (Hacker Terminal, green),
+  lifepunchnet (Government Terminal, cyan). Sync art: Sync-OutfitsFromOneDrive.ps1
 
 .PARAMETER Machine
   vengeance | cornerman | lifepunchnet
@@ -98,13 +98,15 @@ if (-not $NodeIp) {
     catch { $NodeIp = '' }
 }
 
-Write-Step "Ops console -> $Machine (NODE: $($node.node))"
-Write-Note "Scheme: $schemeFile  |  Prompt: $ompFile  |  Accent: #$accentHex"
+$tier = if ($node.tier) { [string]$node.tier } else { '' }
+$dressLabel = 'Dressing ' + $Machine + ' - ' + $node.node + $(if ($tier) { ' (' + $tier + ')' })
+Write-Step $dressLabel
+Write-Note ('Scheme: ' + $schemeFile + '  |  Prompt: ' + $ompFile + '  |  Accent: #' + $accentHex)
 Write-Note "IP banner: $(if ($NodeIp) { $NodeIp } else { '(pass -NodeIp)' })"
 
 $stateDir = Join-Path $env:LOCALAPPDATA 'LifePunch'
 New-Item -ItemType Directory -Force -Path $stateDir | Out-Null
-@{
+$state = [ordered]@{
     machine     = $Machine
     node        = [string]$node.node
     host        = [string]$node.host
@@ -116,7 +118,10 @@ New-Item -ItemType Directory -Force -Path $stateDir | Out-Null
     scheme      = $schemeFile
     omp         = $ompFile
     applied     = (Get-Date).ToUniversalTime().ToString('o')
-} | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $stateDir 'ops-node.json') -Encoding UTF8
+}
+if ($node.tier) { $state.tier = [string]$node.tier }
+if ($node.taglineSecondary) { $state.taglineSecondary = [string]$node.taglineSecondary }
+$state | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $stateDir 'ops-node.json') -Encoding UTF8
 
 # 1. Windows Terminal
 Write-Step 'Windows Terminal scheme + defaults'
@@ -234,4 +239,4 @@ foreach ($p in @(
 
 Write-Host ''
 Write-Host ('Done. NODE=' + $node.node + ' on ' + $Machine + '. Open a NEW Terminal tab to preview.') -ForegroundColor Cyan
-Write-Host 'VENGEANCE uses red VENGEANCE Ops; Cornerman/lifepunchnet use cyan LifePunch Ops.' -ForegroundColor DarkGray
+Write-Host 'Uniforms: see OUTFITS.md. Art source: OneDrive Desktop\Hacker Job' -ForegroundColor DarkGray

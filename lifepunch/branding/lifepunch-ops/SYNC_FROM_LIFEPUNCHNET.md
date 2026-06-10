@@ -1,32 +1,39 @@
-# Sync lifepunch-ops assets from lifepunchnet
+# Deploy uniforms to lifepunchnet
 
-When RDP/SSH to **lifepunchnet** (`205.209.104.22`) is available, refresh the monorepo from the canonical on-box folder:
+Canonical **Government Terminal** art lives in OneDrive (`Government Terminal/lifepunchnet`)
+and is copied into `outfits/lifepunchnet/` via `Sync-OutfitsFromOneDrive.ps1` on VENGEANCE.
 
-**Source (lifepunchnet):** `C:\lifepunch\branding\lifepunch-ops\`  
-**Destination (monorepo):** `lifepunch/branding/lifepunch-ops/`
+When the hosted box is reachable, dress lifepunchnet from the monorepo pack.
 
-## RDP handoff (recommended)
+## RDP handoff (recommended when SSH :22 times out)
 
-1. RDP to lifepunchnet as `jared`.
-2. Copy the entire `C:\lifepunch\branding\lifepunch-ops\` folder to VENGEANCE (clipboard, OneDrive, or shared drive).
-3. On VENGEANCE, replace `lifepunch\branding\lifepunch-ops\` in the monorepo (keep `nodes.json` if only wallpapers differ).
-4. Commit + push to GitHub.
-5. Re-run `Apply-LifePunchOpsConsole.ps1` on each node.
+1. RDP to lifepunchnet (`205.209.104.22`) as `jared`.
+2. Copy `lifepunch\branding\lifepunch-ops\` from the monorepo to `C:\lifepunch\branding\lifepunch-ops\` on-box.
+3. Elevated PowerShell on lifepunchnet:
+
+```powershell
+cd C:\lifepunch\branding\lifepunch-ops
+powershell -ExecutionPolicy Bypass -File .\Apply-LifePunchOpsConsole.ps1 -Machine lifepunchnet
+```
+
+4. Open a new terminal tab — expect cyan **LifePunch Ops**, `lifepunch@lifepunch.net` prompt, government banner.
 
 ## SCP (when port 22 is open)
 
-From VENGEANCE (adjust user/host if needed):
-
 ```powershell
-scp -r jared@205.209.104.22:C:/lifepunch/branding/lifepunch-ops/* `
-  C:\Users\jared\Projects\lifepunchaddons\lifepunch\branding\lifepunch-ops\
+scp -r C:\Users\jared\Projects\lifepunchaddons\lifepunch\branding\lifepunch-ops `
+  jared@205.209.104.22:C:/lifepunch/branding/
 ```
 
-## After sync
+Then run `Apply-LifePunchOpsConsole.ps1 -Machine lifepunchnet` on-box.
+
+## Refresh art first
+
+On VENGEANCE, before copying to lifepunchnet:
 
 ```powershell
-cd C:\Users\jared\Projects\lifepunchaddons\lifepunch\branding\lifepunch-ops
-powershell -ExecutionPolicy Bypass -File .\Apply-LifePunchOpsConsole.ps1 -Machine vengeance -NodeIp <desk-LAN-IP>
+cd <repo>\lifepunch\branding\lifepunch-ops
+powershell -ExecutionPolicy Bypass -File .\Sync-OutfitsFromOneDrive.ps1
 ```
 
-Cornerman: same script with `-Machine cornerman`. lifepunchnet: already applied on-box.
+See `OUTFITS.md` for the full Hacker Job cast and OneDrive paths.

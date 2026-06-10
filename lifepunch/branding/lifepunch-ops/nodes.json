@@ -2,8 +2,11 @@
   "vengeance": {
     "node": "VENGEANCE",
     "host": "vengeance",
+    "tier": "Enhanced Hacker Terminal",
+    "outfitSource": "Hacker Job/Enhanced Hacker Terminal/vengeance",
     "tagline": "PLAN. EXECUTE. DESTROY.",
     "wallpaper": "lifepunch-ops-wallpaper-vengeance.png",
+    "wallpaperAsset": "vengeanceterminal.png",
     "scheme": "windows-terminal-vengeance.json",
     "omp": "vengeance.omp.json",
     "accent": "E4002B",
@@ -13,23 +16,30 @@
   "cornerman": {
     "node": "CORNERMAN",
     "host": "cornerman",
-    "tagline": "PLAN. EXECUTE. DESTROY.",
+    "tier": "Hacker Terminal",
+    "outfitSource": "Hacker Job/Hacker Terminal/cornerman",
+    "tagline": "BUILD. AUTOMATE. ELEVATE.",
     "wallpaper": "lifepunch-ops-wallpaper-cornerman.png",
-    "scheme": "windows-terminal-lifepunch-ops.json",
-    "omp": "lifepunch-ops.omp.json",
-    "accent": "00D4FF",
-    "brand": "lifepunch",
-    "bannerColor": "Cyan"
+    "wallpaperAsset": "cornermanbanner.png",
+    "scheme": "windows-terminal-cornerman.json",
+    "omp": "cornerman.omp.json",
+    "accent": "00FF7F",
+    "brand": "cornerman",
+    "bannerColor": "Green"
   },
   "lifepunchnet": {
     "node": "LIFEPUNCH.NET",
-    "host": "lifepunchnet",
-    "tagline": "HOSTED OPS NODE",
+    "host": "lifepunch.net",
+    "tier": "Government Terminal",
+    "outfitSource": "Hacker Job/Government Terminal/lifepunchnet",
+    "tagline": "SECURE. CONTROL. SERVE.",
+    "taglineSecondary": "PROTECTING. MANAGING. GOVERNING.",
     "wallpaper": "lifepunch-ops-wallpaper-lifepunchnet.png",
+    "wallpaperAsset": "lifepunchnetbanner.png",
     "scheme": "windows-terminal-lifepunch-ops.json",
-    "omp": "lifepunch-ops.omp.json",
+    "omp": "lifepunchnet.omp.json",
     "accent": "00D4FF",
-    "brand": "lifepunch",
+    "brand": "government",
     "bannerColor": "Cyan"
   }
 }

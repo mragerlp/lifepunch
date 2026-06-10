@@ -363,10 +363,11 @@ framing — that's exactly the Cornerman concept.
 
 ## 10. Branding (OPTIONAL, cosmetic — does not affect security)
 
-Per-node ops console branding lives in `lifepunch/branding/lifepunch-ops/` (legacy green pack:
-`lifepunch/branding/cornerman/`). **VENGEANCE** = red tactical HUD (`vengeance@vengeance:~$`,
-`VENGEANCE Ops` scheme). **Cornerman / lifepunchnet** = cyan LIFEPUNCH.NET HUD. Apply via
-`Apply-LifePunchOpsConsole.ps1 -Machine <node>` — see `THEME.md`. Cosmetic only; no security impact.
+Hacker Job **machine uniforms** live in `lifepunch/branding/lifepunch-ops/` (`OUTFITS.md`).
+**VENGEANCE** = Enhanced Hacker Terminal (red). **Cornerman** = Hacker Terminal (green).
+**lifepunchnet** = Government Terminal (cyan, `lifepunch@lifepunch.net`). OneDrive outfit folders
+are canonical art; `Sync-OutfitsFromOneDrive.ps1` → `Apply-LifePunchOpsConsole.ps1 -Machine <node>`.
+Cosmetic only; no security impact.
 
 ## Sources (verified June 2026)
 
