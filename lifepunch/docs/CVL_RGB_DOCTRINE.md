@@ -69,6 +69,16 @@ not from whatever color an attacker guessed at the firewall.
 
 Do not label a shortcut or doc "rainbow" until white-light integration is routine. **Universal (tri-stack)** icon = **target white**, not "we already have a rainbow."
 
+## Team rounds (Red's arm)
+
+When non-blockers still need lane work, **Red does not solo-fix everything on Green/Blue.**
+
+1. **VENGEANCE:** `Get-CvlTeamRoundPaste.ps1` — reads live checkpoint gaps, prints **one paste** for both lanes.
+2. **Same paste** to Cornerman **and** lifepunchnet (shared situational awareness).
+3. **No dual replies** — only `BLOCKED <lane>: reason` if stuck.
+4. **Mr. Rager:** "both lanes done" → `Invoke-CvlUniversal.ps1 -IngestToHub -Note <ping-id>` = **single answer**.
+5. **Odysseus** (later) reads hub tier lines from that ping — you stop merging agent essays.
+
 ## Communication law (anti-tumble)
 
 1. **Hub is blue memory** — append-only on lifepunchnet. Green feeds via Red bridge. **No node reads hub and re-posts to another node.**
@@ -88,4 +98,5 @@ Optional future field: `mix` = `yellow` | `cyan` | `magenta` | `white` | `black`
 - `OPS_CLARITY_CHECKPOINT.md` — shortcuts, uniforms, voice stack
 - `session-hub/README.md` — blue host log + security
 - `Invoke-CvlUniversal.ps1` — universal white-light probe
+- `Get-CvlTeamRoundPaste.ps1` — one paste for Green + Blue from live gaps (Red's arm)
 - `Test-CvlSecurity.ps1` — signal hardening before ingest

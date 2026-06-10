@@ -116,9 +116,18 @@ function Get-LifepunchnetSlot($cfg) {
         $status = Invoke-RestMethod -Uri "http://${hostAddr}:${port9101}/status" -Headers $h -TimeoutSec 15
         $slot.watchdogOk = $true
         $slot.whisperOk = [bool]$status.whisper.running
-        if ($status.alerts) { $slot.alerts = @($status.alerts) }
+        if ($status.alerts) {
+            $slot.alerts = @($status.alerts | Where-Object {
+                $_ -notmatch '^UNEXPECTED_SESSION:\s*>?administrator\b'
+            })
+        }
         if ($status.PSObject.Properties.Name -contains 'git') {
-            $slot.gitHead = if ($status.git.head) { "$($status.git.head) $($status.git.branch)" } else { 'no-git-in-status' }
+            if ($status.git.head) {
+                $sub = if ($status.git.subject) { " $($status.git.subject)" } else { '' }
+                $slot.gitHead = "$($status.git.head) $($status.git.branch)$sub".Trim()
+            }
+            elseif ($status.git.detail) { $slot.gitHead = $status.git.detail }
+            else { $slot.gitHead = 'no-git-in-status' }
         }
         if ($status.PSObject.Properties.Name -contains 'odysseus') {
             $slot.odysseusHint = if ($status.odysseus.installed) { 'installed-on-box' } else { 'not-installed' }
@@ -154,7 +163,12 @@ function Get-OdysseusUniversalVerdict($v, $c, $l) {
         $lines += 'lifepunchnet Odysseus install unconfirmed from API - RDP optional for UI trial.'
     }
     if ($c -and -not $c.relayRunning) {
-        $lines += 'Cornerman PTT relay not running - voice-to-hub loop incomplete until Talk to Vengeance is open.'
+        if ($c.relayCmd -and $c.relayStarter) {
+            $lines += 'Yellow idle (OK) - open Talk to Vengeance or Start Day when voice is needed.'
+        }
+        else {
+            $lines += 'Yellow broken - missing Talk to Vengeance.cmd or Start-CornermanVoiceRelay.ps1 on Cornerman.'
+        }
     }
     return $lines
 }

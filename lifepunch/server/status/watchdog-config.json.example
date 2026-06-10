@@ -1,0 +1,4 @@
+{
+  "allowedUsers": ["jared", "administrator"],
+  "_comment": "Copy to C:\\lifepunch\\status\\watchdog-config.json on lifepunchnet. administrator = expected RDP console session; not a CVL leak."
+}

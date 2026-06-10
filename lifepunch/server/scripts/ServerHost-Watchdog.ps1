@@ -15,7 +15,13 @@ if (-not $AllowedUsers -and (Test-Path -LiteralPath $configFile)) {
     }
     catch { }
 }
-if (-not $AllowedUsers) { $AllowedUsers = @('jared', 'administrator') }
+$baselineAllowed = @('jared', 'administrator')
+if (-not $AllowedUsers) {
+    $AllowedUsers = $baselineAllowed
+}
+else {
+    $AllowedUsers = @($baselineAllowed + $AllowedUsers | Select-Object -Unique)
+}
 
 $ErrorActionPreference = 'Continue'
 
@@ -115,24 +121,32 @@ function Get-ServiceStates {
 }
 
 function Get-LaneGitHead {
-    $root = 'C:\lifepunch\lifepunch-rdp-server'
-    if (-not (Test-Path -LiteralPath (Join-Path $root '.git'))) {
-        return @{ head = ''; branch = ''; detail = 'no-clone' }
-    }
-    Push-Location $root
-    try {
-        $head = (git log -1 --format='%h' 2>$null)
-        $branch = (git branch --show-current 2>$null)
-        return @{
-            head   = if ($head) { $head.Trim() } else { '' }
-            branch = if ($branch) { $branch.Trim() } else { '' }
-            detail = 'ok'
+    $candidates = @(
+        'C:\lifepunch\lifepunch-rdp-server',
+        'C:\Projects\lifepunch',
+        'C:\lifepunch\lifepunchaddons'
+    )
+    foreach ($root in $candidates) {
+        if (-not (Test-Path -LiteralPath (Join-Path $root '.git'))) { continue }
+        Push-Location $root
+        try {
+            $head = (git log -1 --format='%h' 2>$null)
+            $branch = (git branch --show-current 2>$null)
+            $subject = (git log -1 --format='%s' 2>$null)
+            if ($head) {
+                return @{
+                    head    = $head.Trim()
+                    branch  = if ($branch) { $branch.Trim() } else { '' }
+                    subject = if ($subject) { $subject.Trim() } else { '' }
+                    root    = $root
+                    detail  = 'ok'
+                }
+            }
         }
+        catch { }
+        finally { Pop-Location }
     }
-    catch {
-        return @{ head = ''; branch = ''; detail = 'git-error' }
-    }
-    finally { Pop-Location }
+    return @{ head = ''; branch = ''; subject = ''; root = ''; detail = 'no-clone' }
 }
 
 function Get-OdysseusProbe {
@@ -158,7 +172,9 @@ function Get-OdysseusProbe {
 
 function Normalize-SessionUser([string]$Raw) {
     if ([string]::IsNullOrWhiteSpace($Raw)) { return '' }
-    return ($Raw -replace '^>', '').Trim().ToLowerInvariant()
+    $s = ($Raw -replace '^>+', '').Trim()
+    if ($s -match '\\') { $s = ($s -split '\\')[-1] }
+    return $s.ToLowerInvariant()
 }
 
 function Test-AllowedUser([string]$User, [string[]]$Allowed) {
@@ -232,7 +248,8 @@ $hubDir = 'C:\lifepunch\session-hub'
 $hubLog = Join-Path $hubDir 'voice-session.ndjson'
 $hubSigFile = Join-Path $StatusDir 'hub-watchdog-sig.txt'
 try {
-    $sig = "w=$($payload.whisper.running);a=$($payload.alerts -join '|')"
+    $gitSig = if ($payload.git.head) { $payload.git.head } else { 'none' }
+    $sig = "w=$($payload.whisper.running);g=$gitSig;a=$($payload.alerts -join '|')"
     $prevSig = ''
     if (Test-Path -LiteralPath $hubSigFile) {
         $prevSig = (Get-Content -LiteralPath $hubSigFile -Raw).Trim()
