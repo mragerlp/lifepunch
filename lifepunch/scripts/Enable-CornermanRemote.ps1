@@ -101,17 +101,29 @@ if (-not $SkipSSH) {
 
     # Key-only auth (only when explicitly asked AND a key is present). Disables BOTH the
     # password method and keyboard-interactive (which on Windows also accepts the password).
+    # IMPORTANT: inject into the GLOBAL scope, BEFORE the first `Match` block, or the directives
+    # would only apply to that Match's users (a latent gap for any non-matched account).
     if ($DisablePasswordAuth -and $SshPublicKey) {
         $cfg = Join-Path $env:ProgramData 'ssh\sshd_config'
-        $c = Get-Content -LiteralPath $cfg -Raw
-        $c = $c -replace '(?m)^\s*#?\s*PasswordAuthentication\s+.*$', 'PasswordAuthentication no'
-        if ($c -notmatch '(?m)^\s*PasswordAuthentication\s+no\s*$') { $c += "`nPasswordAuthentication no`n" }
-        $c = $c -replace '(?m)^\s*#?\s*KbdInteractiveAuthentication\s+.*$', 'KbdInteractiveAuthentication no'
-        if ($c -notmatch '(?m)^\s*KbdInteractiveAuthentication\s+no\s*$') { $c += "`nKbdInteractiveAuthentication no`n" }
-        $c = $c -replace '(?m)^\s*#?\s*ChallengeResponseAuthentication\s+.*$', 'ChallengeResponseAuthentication no'
-        if ($c -notmatch '(?m)^\s*ChallengeResponseAuthentication\s+no\s*$') { $c += "`nChallengeResponseAuthentication no`n" }
-        Set-Content -LiteralPath $cfg -Value $c -Encoding ascii
-        Write-Note "Password + keyboard-interactive disabled (key-only)."
+        $lines = Get-Content -LiteralPath $cfg
+        $names = 'PasswordAuthentication','KbdInteractiveAuthentication','ChallengeResponseAuthentication'
+        $clean = foreach ($ln in $lines) {
+            $t = $ln.Trim(); $skip = $false
+            foreach ($n in $names) { if ($t -match ('^#?\s*' + $n + '\s+\S')) { $skip = $true; break } }
+            if (-not $skip) { $ln }
+        }
+        $mi = $null
+        for ($i = 0; $i -lt $clean.Count; $i++) { if ($clean[$i] -match '^\s*Match\s') { $mi = $i; break } }
+        $inject = 'PasswordAuthentication no','KbdInteractiveAuthentication no','ChallengeResponseAuthentication no'
+        if ($null -ne $mi) {
+            $new = @(); if ($mi -gt 0) { $new += $clean[0..($mi - 1)] }; $new += $inject; $new += ''; $new += $clean[$mi..($clean.Count - 1)]
+        }
+        else { $new = $clean + $inject }
+        Set-Content -LiteralPath $cfg -Value $new -Encoding ascii
+        # Validate before the (out-of-band) restart so a bad edit can't lock SSH out.
+        $t = & "$env:SystemRoot\System32\OpenSSH\sshd.exe" -t 2>&1
+        if ($t) { Write-Warn2 "sshd config test reported: $t" }
+        Write-Note "Password + keyboard-interactive disabled GLOBALLY (key-only)."
     }
 
     Restart-Service sshd
