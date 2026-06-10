@@ -7,6 +7,18 @@
 
 ---
 
+## The LifePunch web
+
+VENGEANCE, Cornerman, and lifepunchnet are **nodes in one web** — not separate puzzles or
+one-off boxes. Voice, STT, session sync, branding, and git lanes are **edges** between nodes.
+**VENGEANCE** is the hub that reaches both LAN (Cornerman) and internet (lifepunchnet).
+
+Say **LifePunch web** (or **the web**) when you mean the whole distributed desk + voice + hosted
+stack. Say a **node** when you mean one machine. Do **not** call the three-machine setup a
+"puzzle" — that word is reserved for the in-game Hacker Job coding mini-game only.
+
+---
+
 ## The three machines
 
 | Codename | What it is | Where | Primary job |

@@ -1,9 +1,9 @@
 # Hacker Job — machine uniforms
 
-The voice pipeline and ops consoles are a real operation. Each machine wears an **outfit**
-from the Hacker Job art set — their uniform, not a generic theme.
+The voice pipeline and ops consoles are a real operation — nodes in the **LifePunch web**.
+Each machine wears an **outfit** from the Hacker Job art set: their uniform, not a generic theme.
 
-## Cast
+## Cast (web nodes)
 
 | Tier | Machine | Role | Color | Prompt |
 |------|---------|------|-------|--------|

@@ -210,7 +210,7 @@ if ($taskbarGray) {
     Set-ItemProperty -Path $dwm -Name ColorPrevalence -Type DWord -Value 0
     Set-ItemProperty -Path $accentKey -Name AccentColorMenu -Type DWord -Value $gray.ABGR
     Set-ItemProperty -Path $accentKey -Name StartColorMenu -Type DWord -Value $gray.ABGR
-    Write-Note 'Accent on title bars only; taskbar/Start = gray (matches desk uniform).'
+    Write-Note 'Accent on title bars only; taskbar/Start = gray (matches other web nodes).'
 }
 else {
     Set-ItemProperty -Path $personalize -Name ColorPrevalence -Type DWord -Value 1

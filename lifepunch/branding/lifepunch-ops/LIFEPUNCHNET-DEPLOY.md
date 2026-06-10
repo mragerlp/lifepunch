@@ -13,7 +13,7 @@
 | Taglines | SECURE. CONTROL. SERVE. / PROTECTING. MANAGING. GOVERNING. |
 | Wallpaper | `wallpapers/lifepunch-ops-wallpaper-lifepunchnet.png` |
 | Accent | `#00D4FF` (title bars only) |
-| Taskbar | Dark gray — same as VENGEANCE/Cornerman desk uniform (`taskbarGray` in `nodes.json`) |
+| Taskbar | Dark gray — same as other web nodes (`taskbarGray` in `nodes.json`) |
 
 Pack path on-box after copy: `C:\lifepunch\branding\lifepunch-ops\`
 

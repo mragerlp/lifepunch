@@ -3,7 +3,7 @@
   Refresh machine uniforms from canonical Hacker Job outfit folders on OneDrive.
 
 .DESCRIPTION
-  Each working piece has an outfit — the art that makes the ops console feel like them.
+  Each node in the LifePunch web has an outfit — the art that makes the ops console feel like them.
   OneDrive is the artist's source; this script copies into the monorepo pack and rebuilds
   desktop wallpapers from the shared wallpapers uniform folder.
 

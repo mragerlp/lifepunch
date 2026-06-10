@@ -1,7 +1,7 @@
 # LifePunch Ops — machine uniforms
 
 Each machine wears a **Hacker Job outfit**. OneDrive is the artist source; `outfits/` in this
-pack is the repo copy. See **`OUTFITS.md`** for the full cast, paths, and taglines.
+pack is the repo copy. See **`OUTFITS.md`** for web-node uniforms, paths, and taglines.
 
 | Tier | Machine | Scheme | Prompt |
 |------|---------|--------|--------|
