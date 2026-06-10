@@ -39,6 +39,48 @@ $wallDir = Join-Path $here 'wallpapers'
 function Write-Step($m) { Write-Host "==> $m" -ForegroundColor Cyan }
 function Write-Note($m) { Write-Host "    $m" -ForegroundColor DarkGray }
 
+function Get-ConhostColorBgr([string]$hex) {
+    $h = $hex.Trim().TrimStart('#')
+    if ($h.Length -ne 6) { throw "Color must be 6 hex digits, got: $hex" }
+    $r = [Convert]::ToInt32($h.Substring(0, 2), 16)
+    $g = [Convert]::ToInt32($h.Substring(2, 2), 16)
+    $b = [Convert]::ToInt32($h.Substring(4, 2), 16)
+    return [uint32]($b -bor ($g -shl 8) -bor ($r -shl 16))
+}
+
+function Set-ConhostUniform {
+    param([string]$AccentHex)
+    $accentBgr = Get-ConhostColorBgr $AccentHex
+    $dimBgr = Get-ConhostColorBgr '0A0A0A'
+    $keys = @(
+        'Console'
+        '%SystemRoot%_System32_cmd.exe'
+        '%SystemRoot%_System32_WindowsPowerShell_v1.0_powershell.exe'
+    )
+    $pwsh = Join-Path ${env:ProgramFiles} 'PowerShell\7\pwsh.exe'
+    if (Test-Path -LiteralPath $pwsh) {
+        $keys += ($pwsh -replace ':', '_')
+    }
+    foreach ($key in $keys) {
+        $path = "HKCU:\Console\$key"
+        New-Item -Path $path -Force | Out-Null
+        Set-ItemProperty -Path $path -Name ScreenColors -Type DWord -Value 15
+        Set-ItemProperty -Path $path -Name PopupColors -Type DWord -Value 245
+        Set-ItemProperty -Path $path -Name ColorTable00 -Type DWord -Value 0
+        for ($i = 1; $i -le 14; $i++) {
+            $n = '{0:D2}' -f $i
+            Set-ItemProperty -Path $path -Name "ColorTable$n" -Type DWord -Value $dimBgr
+        }
+        Set-ItemProperty -Path $path -Name ColorTable15 -Type DWord -Value $accentBgr
+        Set-ItemProperty -Path $path -Name FaceName -Value 'Consolas'
+        Set-ItemProperty -Path $path -Name FontFamily -Type DWord -Value 54
+        Set-ItemProperty -Path $path -Name FontWeight -Type DWord -Value 400
+        Set-ItemProperty -Path $path -Name FontSize -Type DWord -Value 0x140000
+        Set-ItemProperty -Path $path -Name CursorSize -Type DWord -Value 25
+        Set-ItemProperty -Path $path -Name QuickEdit -Type DWord -Value 1
+    }
+}
+
 function Get-AccentDwords([string]$hex) {
     $h = $hex.Trim().TrimStart('#')
     if ($h.Length -ne 6) { throw "Accent must be 6 hex digits, got: $hex" }
@@ -138,6 +180,8 @@ $state = [ordered]@{
 }
 if ($node.tier) { $state.tier = [string]$node.tier }
 if ($node.taglineSecondary) { $state.taglineSecondary = [string]$node.taglineSecondary }
+if ($node.consoleCopyright) { $state.consoleCopyright = [string]$node.consoleCopyright }
+if ($node.consolePrompt) { $state.consolePrompt = [string]$node.consolePrompt }
 $state | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $stateDir 'ops-node.json') -Encoding UTF8
 
 # 1. Windows Terminal
@@ -174,11 +218,24 @@ else {
     $d = $settings.profiles.defaults
     $d | Add-Member -NotePropertyName colorScheme -NotePropertyValue $scheme.name -Force
     $d | Add-Member -NotePropertyName cursorShape -NotePropertyValue 'filledBox' -Force
-    $d | Add-Member -NotePropertyName font -NotePropertyValue ([pscustomobject]@{ face = 'Cascadia Code'; size = 11 }) -Force
+    $d | Add-Member -NotePropertyName font -NotePropertyValue ([pscustomobject]@{ face = 'Cascadia Mono'; size = 12 }) -Force
     $d | Add-Member -NotePropertyName useAcrylic -NotePropertyValue $false -Force
+    if ($settings.profiles.list) {
+        foreach ($prof in $settings.profiles.list) {
+            $prof | Add-Member -NotePropertyName colorScheme -NotePropertyValue $scheme.name -Force
+            if (-not $prof.font) {
+                $prof | Add-Member -NotePropertyName font -NotePropertyValue ([pscustomobject]@{ face = 'Cascadia Mono'; size = 12 }) -Force
+            }
+            $prof | Add-Member -NotePropertyName useAcrylic -NotePropertyValue $false -Force
+        }
+    }
     $settings | ConvertTo-Json -Depth 32 | Set-Content -LiteralPath $wtPath -Encoding UTF8
-    Write-Note "Applied '$($scheme.name)' to $wtPath"
+    Write-Note "Applied '$($scheme.name)' to $wtPath (all profiles)"
 }
+
+Write-Step 'cmd + PowerShell console (conhost)'
+Set-ConhostUniform -AccentHex $accentHex
+Write-Note "Legacy console: black background, #$accentHex text (matches outfit console art)."
 
 # 2. Dark mode (system + apps — File Explorer, Settings, RDP sessions on this box)
 Write-Step 'Windows dark theme'

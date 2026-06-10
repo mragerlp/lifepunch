@@ -10,6 +10,8 @@
     "scheme": "windows-terminal-vengeance.json",
     "omp": "vengeance.omp.json",
     "accent": "E4002B",
+    "consoleCopyright": "(c) VENGEANCE Corp. All rights reserved.",
+    "consolePrompt": "C:\\VENGEANCE>",
     "brand": "vengeance",
     "bannerColor": "Red"
   },
@@ -24,6 +26,8 @@
     "scheme": "windows-terminal-cornerman.json",
     "omp": "cornerman.omp.json",
     "accent": "00FF7F",
+    "consoleCopyright": "(c) Microsoft Corporation. All rights reserved.",
+    "consolePrompt": "C:\\Cornerman>",
     "brand": "cornerman",
     "bannerColor": "Green"
   },
@@ -39,6 +43,8 @@
     "scheme": "windows-terminal-lifepunch-ops.json",
     "omp": "lifepunch-government.omp.json",
     "accent": "00D4FF",
+    "consoleCopyright": "(c) Lifepunch Government Systems. All rights reserved.",
+    "consolePrompt": "C:\\GOVERNMENT>",
     "brand": "government",
     "bannerColor": "Cyan"
   }
