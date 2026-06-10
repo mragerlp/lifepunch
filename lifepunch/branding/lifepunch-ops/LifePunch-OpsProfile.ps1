@@ -1,0 +1,34 @@
+# Dot-sourced by PowerShell profile after Apply-LifePunchOpsConsole.ps1.
+
+$cfgPath = Join-Path $env:LOCALAPPDATA 'LifePunch\ops-node.json'
+if (-not (Test-Path -LiteralPath $cfgPath)) { return }
+
+try {
+    $cfg = Get-Content -LiteralPath $cfgPath -Raw | ConvertFrom-Json
+}
+catch {
+    return
+}
+
+if ($global:LifePunchOpsBannerShown) { return }
+$global:LifePunchOpsBannerShown = $true
+
+$w = 64
+$ip = if ($cfg.nodeIp) { $cfg.nodeIp } else { 'LAN' }
+$color = if ($cfg.bannerColor) { [ConsoleColor]$cfg.bannerColor } else { [ConsoleColor]'Cyan' }
+
+Write-Host ''
+Write-Host ('=' * $w) -ForegroundColor $color
+
+if ($cfg.brand -eq 'vengeance') {
+    Write-Host '  V E N G E A N C E' -ForegroundColor $color
+    Write-Host "  $($cfg.tagline)" -ForegroundColor DarkGray
+    Write-Host "  NODE // $ip" -ForegroundColor DarkGray
+}
+else {
+    Write-Host "  LIFEPUNCH OPS  //  NODE: $($cfg.node)  //  $ip" -ForegroundColor $color
+    Write-Host "  $($cfg.tagline)" -ForegroundColor DarkGray
+}
+
+Write-Host ('=' * $w) -ForegroundColor $color
+Write-Host ''

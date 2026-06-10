@@ -8,6 +8,7 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+. (Join-Path $PSScriptRoot 'Voice-Console.ps1')
 # SSH helpers use Continue so remote cmd noise does not kill the watcher loop.
 $RemotePath = 'C:\Projects\cornerman-rag\outbox\to-vengeance.txt'
 $SessionLogPath = 'C:\Projects\cornerman-rag\outbox\session.log'
@@ -41,14 +42,13 @@ function Get-SessionLogTail {
     return $all[($all.Count - $Lines)..($all.Count - 1)]
 }
 
-Write-Host ''
-Write-Host ('=' * 60) -ForegroundColor Cyan
-Write-Host '  VENGEANCE VOICE INBOX  (watching Cornerman)' -ForegroundColor Cyan
-Write-Host ('=' * 60) -ForegroundColor Cyan
-Write-Host '  Cornerman : tap ARM, wait for Ready, hold talk key, release' -ForegroundColor DarkGray
-Write-Host ('  Arm key   : {0}   Talk key: {1}' -f $ArmKey, $PttKey) -ForegroundColor DarkGray
-Write-Host '  You       : when clipboard updates -> Ctrl+V in Cursor' -ForegroundColor DarkGray
-Write-Host '  Stop      : Ctrl+C in this window' -ForegroundColor DarkGray
+Write-VoiceHeader `
+    -Title 'VENGEANCE VOICE INBOX  (watching Cornerman)' `
+    -Subtitle 'F7 arm on Cornerman -> Ready -> F8 talk -> paste here'
+Write-VoiceMeta -Label 'Arm' -Value "tap $ArmKey on Cornerman when you want a round"
+Write-VoiceMeta -Label 'Talk' -Value "hold $PttKey after Cornerman says Ready"
+Write-VoiceMeta -Label 'Paste' -Value 'Ctrl+V in Cursor when clipboard updates'
+Write-VoiceMeta -Label 'Stop' -Value 'Ctrl+C in this window'
 Write-Host ''
 
 $lastHash = Get-RemoteTranscriptHash
@@ -56,9 +56,7 @@ if ($null -ne $lastHash) {
     Write-Host 'Baseline captured (notify only on NEW relays after this point).' -ForegroundColor DarkGray
     $tail = Get-SessionLogTail
     if ($tail.Count -gt 0) {
-        Write-Host ''
-        Write-Host '  CONVERSATION (from Cornerman session.log)' -ForegroundColor DarkMagenta
-        foreach ($line in $tail) { Write-Host "    $line" -ForegroundColor DarkGray }
+        Write-VoiceSessionLog -Lines $tail -Title 'SESSION LOG (Cornerman baseline)'
     }
     Write-Host ''
 }
@@ -75,21 +73,14 @@ while ($true) {
     if ($preview.Length -gt 80) { $preview = $preview.Substring(0, 80) + '...' }
 
     Write-Host ''
-    Write-Host ('-' * 60) -ForegroundColor DarkGray
-    Write-Host ("  [{0}]  PASTE NOW  (Ctrl+V in Cursor)" -f (Get-Date -Format 'HH:mm:ss')) -ForegroundColor Green
-    Write-Host '  CLIPBOARD updated - Cornerman voice prompt is your audio cue' -ForegroundColor Green
-    Write-Host ("  I HEARD: $preview") -ForegroundColor White
-
+    Write-VoiceDivider
+    Write-VoiceEvent -Name 'PASTE NOW' -Detail 'Ctrl+V in Cursor' -Color Green
+    Write-VoiceHeard -Text $full
     $tail = Get-SessionLogTail
-    if ($tail.Count -gt 0) {
-        Write-Host ''
-        Write-Host '  SESSION LOG (agents can read this thread)' -ForegroundColor DarkMagenta
-        foreach ($line in $tail) { Write-Host "    $line" -ForegroundColor Gray }
-    }
-
+    Write-VoiceSessionLog -Lines $tail
     Write-Host ''
-    Write-Host ('  Tap {0} on Cornerman when you want another round' -f $ArmKey) -ForegroundColor DarkCyan
-    Write-Host ('-' * 60) -ForegroundColor DarkGray
+    Write-VoiceMeta -Label 'Next' -Value "tap $ArmKey on Cornerman for another round"
+    Write-VoiceDivider
     Write-Host ''
     $lastHash = $hash
 }

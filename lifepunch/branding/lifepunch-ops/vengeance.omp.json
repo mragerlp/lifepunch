@@ -1,0 +1,59 @@
+{
+  "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+  "version": 3,
+  "final_space": true,
+  "console_title_template": "vengeance@vengeance",
+  "blocks": [
+    {
+      "type": "prompt",
+      "alignment": "left",
+      "segments": [
+        {
+          "type": "text",
+          "style": "plain",
+          "foreground": "#FF3333",
+          "template": "vengeance@vengeance"
+        },
+        {
+          "type": "path",
+          "style": "plain",
+          "foreground": "#FF6666",
+          "properties": {
+            "style": "folder",
+            "home_icon": "~"
+          },
+          "template": ":{{ .Path }}"
+        },
+        {
+          "type": "git",
+          "style": "plain",
+          "foreground": "#CC4444",
+          "properties": {
+            "fetch_status": false,
+            "fetch_upstream_icon": false
+          },
+          "template": " ({{ .HEAD }})"
+        },
+        {
+          "type": "text",
+          "style": "plain",
+          "foreground": "#FFE0E0",
+          "template": "$"
+        }
+      ]
+    },
+    {
+      "type": "prompt",
+      "alignment": "left",
+      "newline": false,
+      "segments": [
+        {
+          "type": "text",
+          "style": "plain",
+          "foreground": "#FF3333",
+          "template": " "
+        }
+      ]
+    }
+  ]
+}

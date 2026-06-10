@@ -33,6 +33,8 @@ Cornerman desktop: **Talk to Vengeance** (push-to-talk only in normal use).
 | Wake phrase (legacy) | `Talk to Vengeance (Wake).cmd` | Say `send message` → speak (not recommended) |
 
 Deploy PTT from VENGEANCE: `lifepunch/scripts/cornerman-relay/Apply-CornermanPushToTalk.ps1`
+
+Console layout is shared: `lifepunch/scripts/Voice-Console.ps1` (VENGEANCE) mirrors `cornerman-rag/relay_ui.py` (Cornerman).
 See `CORNERMAN_PUSH_TO_TALK.md` and **`CORNERMAN_VOICE_NETWORK.md`** (full stack: STT, commands, TTS, lifepunchnet memory).
 
 ### 2. Session hub ingest (logs)

@@ -7,6 +7,7 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+. (Join-Path $PSScriptRoot 'Voice-Console.ps1')
 
 function Read-WatchConfig {
     if (-not (Test-Path -LiteralPath $ConfigPath)) {
@@ -47,13 +48,12 @@ $allowed = @($cfg.allowedUsers)
 $lastState = $null
 $lastAlerts = @()
 
-Write-Host ''
-Write-Host ('=' * 64) -ForegroundColor Cyan
-Write-Host '  LIFEPUNCHNET WATCH  (lifepunch security + uptime bot)' -ForegroundColor Cyan
-Write-Host ('=' * 64) -ForegroundColor Cyan
-Write-Host "  Target   $hostAddr" -ForegroundColor DarkGray
-Write-Host "  Poll     every ${IntervalSeconds}s" -ForegroundColor DarkGray
-Write-Host '  Stop     Ctrl+C' -ForegroundColor DarkGray
+Write-VoiceHeader `
+    -Title 'LIFEPUNCHNET WATCH  (security + uptime)' `
+    -Subtitle 'Whisper :9000, sessions, alerts from :9101'
+Write-VoiceMeta -Label 'Target' -Value $hostAddr
+Write-VoiceMeta -Label 'Poll' -Value "every ${IntervalSeconds}s"
+Write-VoiceMeta -Label 'Stop' -Value 'Ctrl+C in this window'
 Write-Host ''
 
 while ($true) {
@@ -68,8 +68,8 @@ while ($true) {
         $alerts = @($data.alerts)
 
         Write-Host ''
-        Write-Host ('-' * 64) -ForegroundColor DarkGray
-        Write-Host "  [$ts]  ONLINE  uptime ${uptimeH}h  boot $($data.boot.bootTime)" -ForegroundColor Green
+        Write-VoiceDivider
+        Write-VoiceEvent -Name 'ONLINE' -Detail "uptime ${uptimeH}h  boot $($data.boot.bootTime)" -Color Green
         Write-Host '  SESSIONS:' -ForegroundColor White
         Write-Host (Format-SessionLine $data.sessions)
         $wh = $data.whisper

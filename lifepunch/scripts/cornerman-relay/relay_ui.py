@@ -1,11 +1,16 @@
-"""Console layout for Talk to VENGEANCE — push-to-talk first, event-driven output."""
+"""Console layout for Cornerman voice relay — mirrors lifepunch/scripts/Voice-Console.ps1."""
 from __future__ import annotations
 
 import shutil
 import sys
 import textwrap
+from datetime import datetime
 
 _session_count = 0
+
+# Keep in sync with Voice-Console.ps1 ($VoiceConsoleWidth = 64)
+CONSOLE_WIDTH = 64
+_LABEL_PAD = 11
 
 
 def _vt() -> bool:
@@ -34,8 +39,30 @@ def _c(code: str, text: str) -> str:
 
 
 def _width() -> int:
-    w = shutil.get_terminal_size(fallback=(72, 24)).columns
-    return max(52, min(w - 2, 78))
+    """Clamp to shared console width unless terminal is narrower."""
+    term = shutil.get_terminal_size(fallback=(CONSOLE_WIDTH, 24)).columns
+    return max(52, min(term - 2, CONSOLE_WIDTH))
+
+
+def _rule(color: str = "1;96") -> None:
+    print(_c(color, "=" * _width()))
+
+
+def _divider() -> None:
+    print(_c("90", "-" * _width()))
+
+
+def _meta(label: str, value: str) -> None:
+    print(_c("90", f"  {label.ljust(_LABEL_PAD)}  {value}"))
+
+
+def _event(name: str, detail: str = "", *, color: str = "1;92", stamp: bool = True) -> None:
+    ts = datetime.now().strftime("%H:%M:%S")
+    prefix = f"  [{ts}]  " if stamp else "  "
+    line = f"{prefix}{name}"
+    if detail:
+        line += f"  {detail}"
+    print(_c(color, line))
 
 
 def reset_session() -> None:
@@ -43,52 +70,53 @@ def reset_session() -> None:
     _session_count = 0
 
 
+def _voice_header(title: str, subtitle: str = "") -> None:
+    print()
+    _rule()
+    print(_c("1;96", f"  {title}"))
+    if subtitle:
+        print(_c("90", f"  {subtitle}"))
+    _rule()
+    print()
+
+
 # --- PTT (default) ---------------------------------------------------------
 
 def ptt_banner() -> None:
-    w = _width()
-    title = " TALK TO VENGEANCE "
-    sub = " arm -> ready -> hold talk key -> clipboard -> Cursor "
-    bar = "=" * w
-    print()
-    print(_c("1;96", bar))
-    print(_c("1;96", title.center(w)))
-    print(_c("96", sub.center(w)))
-    print(_c("1;96", bar))
+    _voice_header(
+        "CORNERMAN VOICE RELAY  (Talk to VENGEANCE)",
+        "tap F7 arm -> Ready -> hold F8 talk -> clipboard -> VENGEANCE",
+    )
 
 
 def ptt_mode_info(mic: str, arm_key: str, talk_key: str) -> None:
-    print(_c("1;92", "  Mode         ARM then PUSH-TO-TALK"))
-    print(_c("90", f"  Mic          {mic}"))
-    print(_c("90", f"  Arm          tap {arm_key.upper()} when you want a round"))
-    print(_c("90", f"  Talk         hold {talk_key.upper()} after Cornerman says ready"))
-    print(_c("90", "  End session  Ctrl+C, or say goodbye vengeance in a message"))
+    _meta("Mode", "ARM then PUSH-TO-TALK")
+    _meta("Mic", mic)
+    _meta("Arm", f"tap {arm_key.upper()} when you want a round")
+    _meta("Talk", f"hold {talk_key.upper()} after Ready")
+    _meta("Stop", "Ctrl+C in this window")
     print()
 
 
 def ptt_armed(talk_key: str) -> None:
-    print(_c("1;92", f"  [ARMED]  Cornerman ready — hold {talk_key.upper()} to talk"))
+    _event("ARMED", f"hold {talk_key.upper()} to talk")
 
 
 def ptt_recording(key: str) -> None:
-    print(_c("1;91", f"  [RECORDING]  {key.upper()} held — release to send"))
+    _event("RECORDING", f"{key.upper()} held - release to send", color="1;91")
 
 
 def clipboard_copied() -> None:
-    w = _width()
     print()
-    print(_c("1;92", "+" + "-" * (w - 2) + "+"))
-    print(_c("1;92", "|" + "  COPIED TO CLIPBOARD  ".center(w - 2) + "|"))
-    for ln in ("Paste into Cursor (Ctrl+V).",):
-        for part in textwrap.wrap(ln, width=w - 6) or [""]:
-            print(_c("92", "|  " + part.ljust(w - 5) + "|"))
-    print(_c("1;92", "+" + "-" * (w - 2) + "+"))
+    _divider()
+    _event("COPIED TO CLIPBOARD", "Ctrl+V on VENGEANCE")
+    _divider()
     print()
 
 
 def message_divider(n: int) -> None:
     print()
-    print(_c("90", "-" * _width()))
+    _divider()
     print(_c("90", f"  message {n}"))
 
 
@@ -106,14 +134,23 @@ def section_body(text: str) -> None:
             print(_c("97", f"  {line}"))
 
 
-def conversation_log(entries: list[str]) -> None:
+def heard_preview(text: str, max_len: int = 80) -> None:
+    preview = text if len(text) <= max_len else text[: max_len - 3] + "..."
+    print(_c("97", f"  I HEARD: {preview}"))
+
+
+def session_log(entries: list[str], title: str = "SESSION LOG") -> None:
     if not entries:
         return
     print()
-    print(_c("1;35", "  CONVERSATION THIS SESSION"))
+    print(_c("1;35", f"  {title}"))
     for line in entries[-8:]:
-        print(_c("35", f"  {line}"))
+        print(_c("35", f"    {line}"))
     print()
+
+
+def conversation_log(entries: list[str]) -> None:
+    session_log(entries)
 
 
 def message_sent(n: int, text: str) -> None:
@@ -132,14 +169,13 @@ def warn(msg: str) -> None:
 
 
 def success(title: str, lines: list[str]) -> None:
-    w = _width()
     print()
-    print(_c("1;92", "+" + "-" * (w - 2) + "+"))
-    print(_c("1;92", "|" + f"  {title}  ".center(w - 2) + "|"))
+    _divider()
+    _event(title.upper(), stamp=False)
     for ln in lines:
-        for part in textwrap.wrap(ln, width=w - 6) or [""]:
-            print(_c("92", "|  " + part.ljust(w - 5) + "|"))
-    print(_c("1;92", "+" + "-" * (w - 2) + "+"))
+        for part in textwrap.wrap(ln, width=_width() - 4) or [""]:
+            print(_c("92", f"  {part}"))
+    _divider()
     print()
 
 
@@ -150,9 +186,9 @@ def banner() -> None:
 
 
 def session_info(mic: str, wake_phrase: str) -> None:
-    print(_c("90", f"  Mic          {mic}"))
-    print(_c("90", f'  Wake phrase  say "{wake_phrase}"'))
-    print(_c("90", '  End session  say "goodbye vengeance"  (or Ctrl+C)'))
+    _meta("Mic", mic)
+    _meta("Wake", f'say "{wake_phrase}"')
+    _meta("Stop", "Ctrl+C or goodbye vengeance")
     print()
 
 
@@ -161,7 +197,7 @@ def idle_waiting(wake_phrase: str) -> None:
 
 
 def armed_listening() -> None:
-    print(_c("1;93", "  [LISTENING]  say your message, then pause"))
+    _event("LISTENING", "say your message, then pause", color="1;93")
 
 
 def next_round(n: int) -> None:

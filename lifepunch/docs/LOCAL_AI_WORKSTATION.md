@@ -363,11 +363,10 @@ framing — that's exactly the Cornerman concept.
 
 ## 10. Branding (OPTIONAL, cosmetic — does not affect security)
 
-A "Cornerman // Operations Console" theme pack lives in `lifepunch/branding/cornerman/`
-(wallpaper, Teams background, Windows Terminal `Cornerman Ops` scheme) with a step-by-step
-apply checklist in `THEME.md`. Palette: bg `#0A0D0A`, primary green `#00FF7F`, secondary
-`#19C37D`, warning red `#C1121F`, mint text `#D8FFE8`. Apply it only if you want the look;
-it changes nothing about the LAN-only / no-secrets posture above.
+Per-node ops console branding lives in `lifepunch/branding/lifepunch-ops/` (legacy green pack:
+`lifepunch/branding/cornerman/`). **VENGEANCE** = red tactical HUD (`vengeance@vengeance:~$`,
+`VENGEANCE Ops` scheme). **Cornerman / lifepunchnet** = cyan LIFEPUNCH.NET HUD. Apply via
+`Apply-LifePunchOpsConsole.ps1 -Machine <node>` — see `THEME.md`. Cosmetic only; no security impact.
 
 ## Sources (verified June 2026)
 

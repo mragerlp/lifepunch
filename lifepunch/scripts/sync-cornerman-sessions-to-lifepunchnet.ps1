@@ -8,6 +8,7 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+. (Join-Path $PSScriptRoot 'Voice-Console.ps1')
 
 $SessionLogRemote = 'C:\Projects\cornerman-rag\outbox\session.log'
 $TranscriptRemote = 'C:\Projects\cornerman-rag\outbox\to-vengeance.txt'
@@ -66,11 +67,12 @@ function Send-IngestObject($cfg, [hashtable]$Payload) {
 $cfg = Read-Config
 $state = Read-State
 
-Write-Host ''
-Write-Host 'SESSION SYNC  Cornerman -> lifepunchnet' -ForegroundColor Cyan
-Write-Host "  Target   $($cfg.host):$(if ($cfg.sessionPort) { $cfg.sessionPort } else { 9102 })" -ForegroundColor DarkGray
-Write-Host "  Poll     every ${IntervalSeconds}s" -ForegroundColor DarkGray
-Write-Host '  Stop     Ctrl+C' -ForegroundColor DarkGray
+Write-VoiceHeader `
+    -Title 'VENGEANCE SESSION SYNC  (Cornerman -> lifepunchnet)' `
+    -Subtitle 'Archives session.log, transcripts, and conversation.ndjson to :9102'
+Write-VoiceMeta -Label 'Target' -Value "$($cfg.host):$(if ($cfg.sessionPort) { $cfg.sessionPort } else { 9102 })"
+Write-VoiceMeta -Label 'Poll' -Value "every ${IntervalSeconds}s"
+Write-VoiceMeta -Label 'Stop' -Value 'Ctrl+C in this window'
 Write-Host ''
 
 while ($true) {

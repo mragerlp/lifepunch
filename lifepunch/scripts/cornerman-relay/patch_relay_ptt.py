@@ -117,6 +117,14 @@ def show_clipboard(
         )
 '''.strip()
 
+SHOW_HEARD = '''
+def show_heard(text: str, *, guided: bool) -> None:
+    ui.heard_preview(text)
+    if guided:
+        short = text if len(text) <= 100 else "Got it. Full text is on screen."
+        _say(short, guided=True)
+'''.strip()
+
 DELIVER_SIG = (
     "def deliver(text: str, n: int, *, guided: bool, wake_phrase: str = \"\", "
     "ptt_key: str | None = None) -> None:"
@@ -200,6 +208,10 @@ def main() -> int:
         relay, ok = _replace_function(relay, "show_clipboard", SHOW_CLIPBOARD)
         if ok:
             changed.append("relay.py (show_clipboard)")
+    if "ui.heard_preview" not in relay:
+        relay, ok = _replace_function(relay, "show_heard", SHOW_HEARD)
+        if ok:
+            changed.append("relay.py (show_heard)")
 
     if "--ptt" not in relay:
         relay = relay.replace(

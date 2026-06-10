@@ -6,6 +6,7 @@ param(
 )
 
 $ErrorActionPreference = 'Continue'
+. (Join-Path $PSScriptRoot 'Voice-Console.ps1')
 $ok = $true
 
 function Report([string]$Label, [bool]$Pass, [string]$Detail = '') {
@@ -16,9 +17,7 @@ function Report([string]$Label, [bool]$Pass, [string]$Detail = '') {
     if (-not $Pass) { $script:ok = $false }
 }
 
-Write-Host ''
-Write-Host 'VOICE COMMS PREFLIGHT (VENGEANCE)' -ForegroundColor Cyan
-Write-Host ''
+Write-VoiceHeader -Title 'VOICE COMMS PREFLIGHT  (VENGEANCE)' -Subtitle 'Run before LifePunch Voice Comms'
 
 if (-not (Test-Path -LiteralPath $ConfigPath)) {
     Report 'server-host-watch.local.json' $false 'Copy .example and add lifepunchnet token'

@@ -1,0 +1,35 @@
+{
+  "vengeance": {
+    "node": "VENGEANCE",
+    "host": "vengeance",
+    "tagline": "PLAN. EXECUTE. DESTROY.",
+    "wallpaper": "lifepunch-ops-wallpaper-vengeance.png",
+    "scheme": "windows-terminal-vengeance.json",
+    "omp": "vengeance.omp.json",
+    "accent": "E4002B",
+    "brand": "vengeance",
+    "bannerColor": "Red"
+  },
+  "cornerman": {
+    "node": "CORNERMAN",
+    "host": "cornerman",
+    "tagline": "PLAN. EXECUTE. DESTROY.",
+    "wallpaper": "lifepunch-ops-wallpaper-cornerman.png",
+    "scheme": "windows-terminal-lifepunch-ops.json",
+    "omp": "lifepunch-ops.omp.json",
+    "accent": "00D4FF",
+    "brand": "lifepunch",
+    "bannerColor": "Cyan"
+  },
+  "lifepunchnet": {
+    "node": "LIFEPUNCH.NET",
+    "host": "lifepunchnet",
+    "tagline": "HOSTED OPS NODE",
+    "wallpaper": "lifepunch-ops-wallpaper-lifepunchnet.png",
+    "scheme": "windows-terminal-lifepunch-ops.json",
+    "omp": "lifepunch-ops.omp.json",
+    "accent": "00D4FF",
+    "brand": "lifepunch",
+    "bannerColor": "Cyan"
+  }
+}
