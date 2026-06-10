@@ -98,7 +98,7 @@ When someone says **"RDP server agent"**, they mean the **Cursor agent on lifepu
 |-------|---------|
 | Microphone capture | **Cornerman** |
 | STT (hosted) | **lifepunchnet** `:9000` (`CORNERMAN_REMOTE_WHISPER_URL`, `small.en`) |
-| Paste into Cursor / agent chat | **VENGEANCE** (`start-vengeance-voice-watch.ps1`) |
+| Paste into Cursor / agent chat | **VENGEANCE** (`LifePunch Voice Comms` shortcut or `start-voice-comms.ps1`) |
 | Session log sync | **VENGEANCE** bridge → **lifepunchnet** `http://205.209.104.22:9102/ingest` (Bearer = `status-token.txt`; `start-session-sync.ps1`) |
 | Read logs + Odysseus / long context | **lifepunchnet** (RDP) — `LIFEPUNCHNET_RDP_ODYSSEUS.txt` |
 
