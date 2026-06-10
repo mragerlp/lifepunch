@@ -40,8 +40,8 @@ QUICK CAST (no substitutes)
 
   VENGEANCE     = primary PC, Cursor, GitHub monorepo integration
   Cornerman     = home LAN AI box, mic, voice relay (192.168.1.227)
-  lifepunchnet  = hosted always-on server, DXRP ops, Whisper, watchdog
-                  (205.209.104.22, hostname lifepunchnet)
+  lifepunchnet  = hosted always-on server, DXRP ops, Whisper, watchdog,
+                  session hub (:9102), Odysseus (RDP) — 205.209.104.22
 
   PEOPLE (alias-first): Bloodwave = owner (Jared/Mr. Rager/mragerlp) · shottaWEB = partner (Brian)
 

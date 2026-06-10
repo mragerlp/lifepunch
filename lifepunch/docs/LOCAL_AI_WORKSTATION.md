@@ -266,6 +266,10 @@ were published this way). Doctrine: `.cursor/rules/lifepunch-operating-context.m
 
 ## 8. Optional layer — Odysseus AI workspace (EXPERIMENTAL, Tier-3)
 
+> **June 2026 routing:** Odysseus + session hub live on **lifepunchnet** (RDP), not Cornerman.
+> Cornerman keeps mic + voice relay only. Runbook: `lifepunch/server/LIFEPUNCHNET_RDP_ODYSSEUS.txt`.
+> The constraints below still apply; substitute "this box" → **lifepunchnet** when installing.
+
 [Odysseus](https://github.com/pewdiepie-archdaemon/odysseus) is a self-hosted AI workspace
 (chat + agent + RAG/memory + "Cookbook" model-fit + deep research). It is a candidate **UI/agent
 layer on top of** the local runtime in Section 4 — **not** a replacement for LM Studio/Lemonade/

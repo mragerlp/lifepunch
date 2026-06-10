@@ -32,3 +32,16 @@ if ($data.whisper) {
     $w = if ($data.whisper.running) { 'running' } else { 'down' }
     Write-Host "  Whisper    -> $w ($($data.whisper.detail))"
 }
+
+$sessionPort = if ($cfg.sessionPort) { [int]$cfg.sessionPort } else { 9102 }
+$sessionOpen = (Test-NetConnection -ComputerName $hostAddr -Port $sessionPort -WarningAction SilentlyContinue).TcpTestSucceeded
+Write-Host "  Session :$sessionPort -> $(if ($sessionOpen) { 'open' } else { 'closed - install session hub on lifepunchnet' })"
+if ($sessionOpen) {
+    try {
+        $hub = Invoke-RestMethod -Uri "http://${hostAddr}:${sessionPort}/status" -Headers $headers -TimeoutSec 10
+        Write-Host "  Session hub -> $($hub.lines) lines in voice-session.ndjson" -ForegroundColor Green
+    }
+    catch {
+        Write-Host "  Session hub -> port open but API failed (task running?)" -ForegroundColor Yellow
+    }
+}

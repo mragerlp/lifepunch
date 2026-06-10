@@ -38,8 +38,9 @@ WHAT THIS BOX OWNS
 
   - DXRP server / portal / gamemode ops  (GitLab: lifepunch-rdp-server)
   - Read-only grounding                  (GitLab: lifepunch-foundation)
-  - Whisper HTTP API (target)            port 9000 — install below
-  - Voice session log / hub (next phase) append-only console for agents
+  - Whisper HTTP API                       port 9000 — Step 3
+  - Session hub (voice + chat logs)        port 9102 — Step 9
+  - Odysseus AI workspace (optional)       port 7000 loopback — see LIFEPUNCHNET_RDP_ODYSSEUS.txt
 
 NOT this box:
   - Addon code, website
@@ -162,6 +163,24 @@ PORTS (quick reference)
   22     SSH           not open from VENGEANCE
   9000   Whisper API   install in Step 3
   9101   Status API    watchdog (Step 8)
+  9102   Session hub   voice/chat ingest (Step 9)
+
+--------------------------------------------------------------------------------
+STEP 9 — SESSION HUB (voice + chat logs for Odysseus)
+--------------------------------------------------------------------------------
+
+  cd C:\lifepunch\lifepunch-rdp-server\lifepunch\server\scripts
+  powershell -ExecutionPolicy Bypass -File .\Install-LifepunchnetSessionHub.ps1 `
+    -RemoteAddress 71.250.46.224
+
+  Hub dir: C:\lifepunch\session-hub\
+  API:     http://<lifepunchnet-ip>:9102/ingest  (same Bearer token as :9101)
+
+On VENGEANCE (second window beside voice watch):
+
+  powershell -File lifepunch\scripts\start-session-sync.ps1
+
+Full RDP + Odysseus workflow: lifepunch\server\LIFEPUNCHNET_RDP_ODYSSEUS.txt
 
 --------------------------------------------------------------------------------
 CORNERMAN STT TODAY (if lifepunchnet Whisper is not ready yet)

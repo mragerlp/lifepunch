@@ -1,6 +1,7 @@
 {
   "host": "205.209.104.22",
   "statusPort": 9101,
+  "sessionPort": 9102,
   "token": "PASTE_FROM_C_lifepunch_status_status-token.txt",
   "allowedUsers": ["jared", "administrator"]
 }

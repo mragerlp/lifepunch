@@ -1,0 +1,145 @@
+================================================================================
+  LIFEPUNCHNET — RDP + SESSION HUB + ODYSSEUS
+  Bloodwave workflow: voice prompts + chat logs on the always-on box
+================================================================================
+
+Goal: RDP into lifepunchnet, read voice/chat history, work in Odysseus (or Cursor Block C)
+without keeping heavy session state on Cornerman or VENGEANCE.
+
+--------------------------------------------------------------------------------
+PREREQS (should already be true)
+--------------------------------------------------------------------------------
+
+  [x] RDP shortcut on VENGEANCE:  lifepunchnet (RDP)  ->  205.209.104.22
+  [x] Whisper on :9000 (Cornerman -> lifepunchnet STT)
+  [x] Watchdog on :9101 + token in VENGEANCE server-host-watch.local.json
+  [x] Voice paste loop on VENGEANCE: start-vengeance-voice-watch.ps1
+
+--------------------------------------------------------------------------------
+STEP 1 — RDP FROM VENGEANCE
+--------------------------------------------------------------------------------
+
+  1. Double-click  lifepunchnet (RDP)  on the Desktop
+  2. Log in with the hosted Windows account (password — not PIN)
+  3. Clipboard redirect is ON in the .rdp file (redirectclipboard:i:1)
+  4. Open Cursor on lifepunchnet with workspace:
+       C:\lifepunch\lifepunch-rdp-server
+
+Paste Block C from lifepunch/docs/AGENT_PROMPT.md when you want the RDP server agent.
+
+--------------------------------------------------------------------------------
+STEP 2 — SESSION HUB (voice + Cornerman logs land here)
+--------------------------------------------------------------------------------
+
+Run ELEVATED on lifepunchnet (once):
+
+  cd C:\lifepunch\lifepunch-rdp-server\lifepunch\server\scripts
+  git pull --rebase
+  powershell -ExecutionPolicy Bypass -File .\Install-LifepunchnetSessionHub.ps1 `
+    -RemoteAddress 71.250.46.224
+
+  # Scope :9102 to Bloodwave home IP (same as status :9101). Omit -RemoteAddress only for testing.
+
+Smoke test FROM VENGEANCE (uses same token as watchdog):
+
+  $cfg = Get-Content lifepunch\scripts\server-host-watch.local.json | ConvertFrom-Json
+  $h = @{ Authorization = "Bearer $($cfg.token)" }
+  Invoke-RestMethod -Uri "http://$($cfg.host):9102/status" -Headers $h
+
+Hub files on lifepunchnet:
+
+  C:\lifepunch\session-hub\voice-session.ndjson   append-only NDJSON
+  C:\lifepunch\session-hub\README.md              field reference
+
+Read recent lines (VENGEANCE or lifepunchnet RDP):
+
+  Invoke-RestMethod -Uri "http://205.209.104.22:9102/tail?lines=50" -Headers $h
+
+--------------------------------------------------------------------------------
+STEP 3 — VENGEANCE BRIDGE (Cornerman -> lifepunchnet)
+--------------------------------------------------------------------------------
+
+VENGEANCE is the only host that reaches BOTH Cornerman (LAN SSH) and lifepunchnet (internet).
+
+Leave this running beside the voice watcher (second PowerShell window):
+
+  cd C:\Users\jared\Projects\lifepunchaddons
+  powershell -File lifepunch\scripts\start-session-sync.ps1
+
+It polls Cornerman outbox (session.log, to-vengeance.txt, stt-path.log) and POSTs new lines to
+lifepunchnet :9102. State file: lifepunch\scripts\.session-sync-state.json (gitignored).
+
+--------------------------------------------------------------------------------
+STEP 4 — ODYSSEUS ON LIFEPUNCHNET (experimental Tier-3)
+--------------------------------------------------------------------------------
+
+Odysseus lives on lifepunchnet — NOT Cornerman. Cornerman stays thin (mic + relay).
+
+On lifepunchnet (RDP session), elevated PowerShell:
+
+  cd C:\lifepunch
+  git clone https://github.com/pewdiepie-archdaemon/odysseus.git
+  cd odysseus
+  git checkout 7690860ab1a7b50afd1887b5a61ca60f38961847
+  powershell -ExecutionPolicy Bypass -File .\launch-windows.ps1
+
+  Open http://localhost:7000
+  Copy admin password from the terminal; change it in Settings immediately.
+
+Hard rules (same as LOCAL_AI_WORKSTATION.md section 8):
+
+  - AUTH_ENABLED=true, LOCALHOST_BYPASS=false
+  - Bind loopback or LAN only — never port-forward :7000 to the internet
+  - No real LifePunch email/API/webhook creds in Odysseus
+  - Agent has NO write-git credentials
+  - RAG index: secret-excluded repo content only (lifepunch-foundation mirror)
+
+Model backend on lifepunchnet:
+
+  Option A (simple): install Ollama for Windows, point Odysseus Settings at
+    http://localhost:11434/v1
+
+  Option B (Docker): add an Ollama container beside Whisper — only if you need it;
+    Whisper already uses Docker on this box.
+
+Feed Odysseus context from the session hub:
+
+  - Paste /tail output into a chat, or
+  - Point RAG at C:\lifepunch\session-hub\ (non-secret voice lines only), or
+  - Import Cursor agent transcript exports Bloodwave saves to session-hub\imports\
+
+--------------------------------------------------------------------------------
+STEP 5 — CHAT LOG IMPORTS (manual v1)
+--------------------------------------------------------------------------------
+
+On VENGEANCE after a Cursor session you want on lifepunchnet:
+
+  1. Save or copy the agent transcript / key prompts
+  2. RDP to lifepunchnet
+  3. Drop files under C:\lifepunch\session-hub\imports\
+  4. Optional: POST each chunk to /ingest with source=vengeance type=chat
+
+Future: automated Cursor transcript sync — not in v1.
+
+--------------------------------------------------------------------------------
+PORTS (updated)
+--------------------------------------------------------------------------------
+
+  3389   RDP
+  9000   Whisper API
+  9101   Watchdog status
+  9102   Session hub ingest + /tail
+  7000   Odysseus (loopback on lifepunchnet only)
+
+--------------------------------------------------------------------------------
+QUICK DAILY WORKFLOW (Bloodwave)
+--------------------------------------------------------------------------------
+
+  VENGEANCE window 1:  start-vengeance-voice-watch.ps1     (paste into Cursor)
+  VENGEANCE window 2:  start-session-sync.ps1              (logs -> lifepunchnet)
+  VENGEANCE window 3:  start-server-host-watch.ps1         (uptime bot)
+  RDP lifepunchnet:     Odysseus + session-hub tail + Block C agent for server ops
+
+================================================================================
+  lifepunch.co · lifepunchnet session hub · June 2026
+================================================================================

@@ -13,7 +13,7 @@
 |----------|------------|-------|-------------|
 | **VENGEANCE** | Owner's primary PC | Desk — `C:\Users\jared\Projects\lifepunchaddons` | Cursor, agents, **GitHub monorepo = source of truth**, integrate partner work |
 | **Cornerman** | Local AI workstation | Home LAN — `192.168.1.227`, hostname `cornerman` | Mic (AT2020), local LLM/STT, voice relay, Tier-3 prep/RAG — **not** source of truth |
-| **lifepunchnet** | Always-on hosted server | Internet — `205.209.104.22`, Windows hostname **`lifepunchnet`** | DXRP/server ops, Whisper hub (`:9000`), security watchdog (`:9101`), GitLab `lifepunch-rdp-server` |
+| **lifepunchnet** | Always-on hosted server | Internet — `205.209.104.22`, Windows hostname **`lifepunchnet`** | DXRP/server ops, Whisper (`:9000`), watchdog (`:9101`), session hub (`:9102`), Odysseus (optional), GitLab `lifepunch-rdp-server` |
 
 **lifepunchnet git root:** `C:\lifepunch\lifepunch-rdp-server` — `C:\lifepunch` is only a parent folder
 (clones + `C:\lifepunch\status\` for watchdog). Do not `git pull` at `C:\lifepunch` itself.
@@ -92,16 +92,18 @@ When someone says **"RDP server agent"**, they mean the **Cursor agent on lifepu
 
 ---
 
-## Voice + STT routing
+## Voice + STT + session routing
 
 | Stage | Machine |
 |-------|---------|
 | Microphone capture | **Cornerman** |
-| STT today (home LAN) | Cornerman Lemonade `:13305` (`model=Whisper-Small`) |
-| STT target (hosted) | **lifepunchnet** `:9000` (`CORNERMAN_REMOTE_WHISPER_URL`) |
-| Paste into Cursor / agent chat | **VENGEANCE** |
+| STT (hosted) | **lifepunchnet** `:9000` (`CORNERMAN_REMOTE_WHISPER_URL`, `small.en`) |
+| Paste into Cursor / agent chat | **VENGEANCE** (`start-vengeance-voice-watch.ps1`) |
+| Session log sync | **VENGEANCE** bridge → **lifepunchnet** `:9102` (`start-session-sync.ps1`) |
+| Read logs + Odysseus / long context | **lifepunchnet** (RDP) — `LIFEPUNCHNET_RDP_ODYSSEUS.txt` |
 
-Cornerman captures audio; **lifepunchnet** transcribes when Whisper is live; **VENGEANCE** receives the text.
+Cornerman stays thin (mic + relay). **lifepunchnet** transcribes and stores session history.
+**VENGEANCE** is the only host that reaches both Cornerman (LAN) and lifepunchnet (internet).
 
 ---
 
@@ -124,7 +126,7 @@ Refresh shortcuts: `lifepunch/scripts/Install-LifePunchRemoteShortcuts.ps1`.
 | All agents | `AGENT_ONBOARDING.md`, `AGENT_PROMPT.md` Block 0 |
 | VENGEANCE | Block A |
 | **shottaWEB** | Block B, `SHOTTAWEB_HANDOFF.txt` |
-| lifepunchnet | Block C, `lifepunch/server/LIFEPUNCHNET_INSTRUCTIONS.txt` |
+| lifepunchnet | Block C, `LIFEPUNCHNET_INSTRUCTIONS.txt`, `LIFEPUNCHNET_RDP_ODYSSEUS.txt` |
 | Cornerman | Block D, `DAY_ONE_AGENT_PROMPT.md`, `LOCAL_AI_WORKSTATION.md` |
 
 ---
