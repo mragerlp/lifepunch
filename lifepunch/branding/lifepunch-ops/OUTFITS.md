@@ -90,8 +90,8 @@ Shortcuts use **tier icons** so you can see where they lead without reading the 
 | Icon color | Tier | Paired shortcuts |
 |------------|------|------------------|
 | Tri-stack (all 3) | **Universal** | LifePunch — Start Day, Voice Preflight |
-| Red | **VENGEANCE** | LifePunch Voice Comms |
-| Green | **Cornerman** | Cornerman (RDP), Talk to Vengeance |
+| Red | **VENGEANCE** | LifePunch Voice Comms, Talk to Vengeance |
+| Green | **Cornerman** | Cornerman (RDP) |
 | Blue | **lifepunchnet** | lifepunchnet (RDP) |
 
 Canonical PNGs: `lifepunch/branding/shortcut-icons/`. Refresh after pull:

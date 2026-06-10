@@ -1,5 +1,5 @@
-# Talk to Vengeance — green (Cornerman) icon. VENGEANCE desktop SSH-starts the PTT relay on Cornerman.
-# Also refreshes the Cornerman desktop shortcut (local .cmd) when SSH is available.
+# Talk to Vengeance — red (VENGEANCE) icon. Runs on Cornerman but voice lands on VENGEANCE / Cursor.
+# VENGEANCE desktop shortcut SSH-starts the PTT relay; Cornerman desktop runs Talk to Vengeance.cmd locally.
 
 param(
     [switch] $SkipCornermanDesktop
@@ -12,8 +12,8 @@ $Here = $PSScriptRoot
 $Launcher = Join-Path $Here 'Start-TalkToVengeance.ps1'
 if (-not (Test-Path -LiteralPath $Launcher)) { throw "Missing $Launcher" }
 
-$iconLoc = Get-LifePunchShortcutIconLocation -Tier cornerman
-$iconPath = Get-LifePunchShortcutIconPath -Tier cornerman
+$iconLoc = Get-LifePunchShortcutIconLocation -Tier vengeance
+$iconPath = Get-LifePunchShortcutIconPath -Tier vengeance
 $shortcutName = 'Talk to Vengeance'
 $ps = "$env:WINDIR\System32\WindowsPowerShell\v1.0\powershell.exe"
 $args = "-ExecutionPolicy Bypass -NoProfile -File `"$Launcher`""
@@ -35,7 +35,7 @@ function New-Lnk {
 }
 
 Write-Host ''
-Write-Host 'Talk to Vengeance shortcuts (green = Cornerman)' -ForegroundColor Cyan
+Write-Host 'Talk to Vengeance shortcuts (red = voice to VENGEANCE)' -ForegroundColor Cyan
 $repoRoot = (Resolve-Path (Join-Path $Here '..\..')).Path
 $desc = 'SSH-start Cornerman PTT relay (F7 arm, F8 talk) — voice to VENGEANCE Cursor'
 New-Lnk (Join-Path $desktop "$shortcutName.lnk") $ps $args $iconLoc $desc $repoRoot
@@ -44,7 +44,7 @@ New-Lnk (Join-Path $programs "$shortcutName.lnk") $ps $args $iconLoc $desc $repo
 if (-not $SkipCornermanDesktop) {
     $cornermanSsh = if ($env:CORNERMAN_SSH) { $env:CORNERMAN_SSH } else { 'cornerman' }
     $rag = 'C:/Projects/cornerman-rag'
-    $remoteIcon = "$rag/lifepunch-cornerman.png"
+    $remoteIcon = "$rag/lifepunch-vengeance.png"
     $remoteCmd = 'C:\Projects\cornerman-rag\Talk to Vengeance.cmd'
     Write-Host ''
     Write-Host "Cornerman desktop ($cornermanSsh)..." -ForegroundColor Cyan
