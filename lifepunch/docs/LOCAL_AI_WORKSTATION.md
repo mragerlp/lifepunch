@@ -241,6 +241,25 @@ If the hostname doesn't resolve, replace `HostName cornerman` with the box's LAN
 as a deliberate, documented exception and keep the firewall rules bound to the tailnet — still
 never a raw public port-forward.
 
+## 7c. Publishing Cornerman-authored work (read-only key -> patch handoff)
+
+Cornerman clones over a **read-only deploy key by design** — it can commit locally but **cannot
+push**, and no push credential (a secret) ever lives on the box. Anything Cornerman authors reaches
+origin through VENGEANCE over the existing SSH channel:
+
+1. **Cornerman:** commit locally on its clone (`C:\Projects\lifepunch`) with real messages. Then
+   ping VENGEANCE: "N commits on top of `origin/main`, ready to publish" + the one-line subjects.
+2. **VENGEANCE:** pull and push them — `git format-patch origin/main..HEAD` on Cornerman, `scp` the
+   patches over, `git am` them (preserves Cornerman's authorship + messages), then `git push`. For
+   binary assets, confirm first with `git apply --check --binary` before `am`.
+3. **Cornerman:** `git fetch && git pull --rebase` — rebase detects the patches are already upstream
+   and drops the local duplicates, landing exactly on `origin/main`. (Fallback, only if not
+   auto-dropped and the working tree is clean: `git reset --hard origin/main`.)
+
+This is the **standard path, not a workaround**: it keeps Cornerman read-only and secret-free while
+preserving authorship. Verified 2026-06-10 (the terminal-icon + boot-wallpaper branding commits
+were published this way). Doctrine: `.cursor/rules/lifepunch-operating-context.mdc` (Git workflow).
+
 ## 8. Optional layer — Odysseus AI workspace (EXPERIMENTAL, Tier-3)
 
 [Odysseus](https://github.com/pewdiepie-archdaemon/odysseus) is a self-hosted AI workspace

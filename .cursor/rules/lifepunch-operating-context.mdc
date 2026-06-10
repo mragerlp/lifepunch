@@ -86,6 +86,13 @@ alwaysApply: true
 - **Lanes:** owner integrates on GitHub monorepo; shottaWEB writes `lifepunch-website` on GitLab;
   RDP server agent writes `lifepunch-rdp-server` on GitLab. Always `pull --rebase` + normal
   `push`; NEVER force-push.
+- **Read-only clones publish via patch-handoff:** a box whose deploy key is *read-only* by design
+  (e.g. **Cornerman**) can commit locally but cannot push — keeping push credentials (a secret) off
+  the box. To publish, it commits on its clone and pings the primary PC with the commit count +
+  subjects; the primary PC pulls those commits over SSH (`format-patch origin/main..HEAD` → `scp`
+  → `git am`, preserving authorship) and pushes. The read-only box then `git pull --rebase` to
+  reconcile (rebase auto-drops the now-duplicate locals). Never put a write token on Cornerman.
+  Operational detail: `lifepunch/docs/LOCAL_AI_WORKSTATION.md` §7c.
 - Agent onboarding copy/paste: `lifepunch/docs/AGENT_PROMPT.md`.
 
 ## DXRP publish notes

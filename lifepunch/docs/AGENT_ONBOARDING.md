@@ -86,7 +86,9 @@ Use these names consistently so references are unambiguous across chats and agen
   AMD Ryzen AI Max 385 / "Strix Halo"). A private, LAN-only local inference + RAG node that
   does the cheap heavy-lifting and context-prep (summaries, drafts, embeddings, triage) so
   frontier models handle the high-leverage thinking. It is a **clone, never the source of
-  truth**, holds **no secrets**, and follows the same git rules as any agent. Full reference:
+  truth**, holds **no secrets**, and follows the same git rules as any agent. Its deploy key is
+  **read-only by design** — it commits locally and hands patches to the primary PC to push
+  (patch-handoff protocol: `LOCAL_AI_WORKSTATION.md` §7c). Full reference:
   `lifepunch/docs/LOCAL_AI_WORKSTATION.md`; day-one setup prompt:
   `lifepunch/docs/DAY_ONE_AGENT_PROMPT.md`. When anyone says "Cornerman," this is the box.
 - **Primary PC** — the owner's main dev machine (`C:\Users\jared\Projects\lifepunchaddons`),
