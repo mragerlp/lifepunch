@@ -9,6 +9,7 @@ param(
 
 $ErrorActionPreference = 'Stop'
 . (Join-Path $PSScriptRoot 'Voice-Console.ps1')
+. (Join-Path $PSScriptRoot 'Cvl-Hub.ps1')
 
 $SessionLogRemote = 'C:\Projects\cornerman-rag\outbox\session.log'
 $TranscriptRemote = 'C:\Projects\cornerman-rag\outbox\to-vengeance.txt'
@@ -34,12 +35,8 @@ function Save-State($state) {
 }
 
 function Get-RemoteText([string]$RemotePath) {
-    $psCmd = "if (Test-Path -LiteralPath '$RemotePath') { Get-Content -LiteralPath '$RemotePath' -Raw }"
-    $prev = $ErrorActionPreference
-    $ErrorActionPreference = 'Continue'
-    $raw = & ssh -o BatchMode=yes -o ConnectTimeout=10 $SshTarget "powershell -NoProfile -Command $psCmd" 2>$null
-    $ErrorActionPreference = $prev
-    if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($raw)) { return '' }
+    $raw = Invoke-CornermanSshRead -RemotePath $RemotePath -SshTarget $SshTarget
+    if ($null -eq $raw) { return '' }
     return $raw
 }
 
@@ -47,6 +44,7 @@ function Send-Ingest($cfg, [string]$Source, [string]$Type, [string]$Text) {
     if ([string]::IsNullOrWhiteSpace($Text)) { return }
     Send-IngestObject $cfg @{
         ts     = (Get-Date).ToUniversalTime().ToString('o')
+        tier   = 'cornerman'
         source = $Source
         type   = $Type
         text   = $Text.Trim()
@@ -55,13 +53,8 @@ function Send-Ingest($cfg, [string]$Source, [string]$Type, [string]$Text) {
 
 function Send-IngestObject($cfg, [hashtable]$Payload) {
     if (-not $Payload -or $Payload.Count -eq 0) { return }
-    $hostAddr = [string]$cfg.host
-    $port = if ($cfg.sessionPort) { [int]$cfg.sessionPort } else { 9102 }
-    $token = [string]$cfg.token
-    $uri = "http://${hostAddr}:${port}/ingest"
-    $headers = @{ Authorization = "Bearer $token" }
-    $body = ($Payload | ConvertTo-Json -Compress -Depth 8)
-    Invoke-RestMethod -Uri $uri -Method Post -Headers $headers -Body $body -ContentType 'application/json' -TimeoutSec 15 | Out-Null
+    if (-not $Payload.tier) { $Payload.tier = 'cornerman' }
+    Send-CvlHubObject -Config $cfg -Payload $Payload
 }
 
 $cfg = Read-Config

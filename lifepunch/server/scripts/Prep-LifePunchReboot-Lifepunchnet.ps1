@@ -67,6 +67,11 @@ if (-not $SkipNetBoot) {
     if (-not (Test-Path -LiteralPath $boot)) { throw "Missing $boot" }
     & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $boot -RemoteAddress $RemoteAddress
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+    Write-Step 'CVL signal security (required before hub high-value data)'
+    $secure = Join-Path $here 'Secure-LifepunchnetCvlPorts.ps1'
+    if (Test-Path -LiteralPath $secure) {
+        & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $secure -RemoteAddress $RemoteAddress
+    }
 }
 
 Write-Host ''

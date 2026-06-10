@@ -9,6 +9,7 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+. (Join-Path $PSScriptRoot 'ServerHost-CvlSignalGuard.ps1')
 
 if (-not (Test-Path -LiteralPath $TokenFile)) {
     throw "Missing token file: $TokenFile - run Install-ServerHostWatchdog.ps1 first."
@@ -26,8 +27,17 @@ catch {
     throw "Could not bind $prefix - run Install-LifepunchnetSessionHub.ps1 (elevated)."
 }
 
+$statusDir = Split-Path -Parent $TokenFile
+$allowlist = Get-CvlAllowlistIps -StatusDir $statusDir
+
 Write-Host "lifepunchnet session hub listening on port $Port" -ForegroundColor Green
 Write-Host "  Hub: $logPath" -ForegroundColor DarkGray
+if ($allowlist) {
+    Write-Host "  Client IP allowlist: $($allowlist -join ', ')" -ForegroundColor DarkGray
+}
+else {
+    Write-Host '  Client IP allowlist: OFF (run Secure-LifepunchnetCvlPorts.ps1)' -ForegroundColor Yellow
+}
 
 function Test-Token($req) {
     $auth = $req.Headers['Authorization']
@@ -60,6 +70,11 @@ while ($listener.IsListening) {
         continue
     }
 
+    if ($allowlist -and -not (Test-CvlClientIp -Request $req -Allowlist $allowlist)) {
+        Write-Json $res 403 @{ error = 'client ip not allowlisted' }
+        continue
+    }
+
     if ($path -eq '/status' -and $req.HttpMethod -eq 'GET') {
         $lines = 0
         if (Test-Path -LiteralPath $logPath) {
@@ -87,6 +102,10 @@ while ($listener.IsListening) {
     if ($path -eq '/ingest' -and $req.HttpMethod -eq 'POST') {
         try {
             $raw = Read-Body $req
+            if ($raw.Length -gt 512000) {
+                Write-Json $res 413 @{ error = 'body too large' }
+                continue
+            }
             $payload = $raw | ConvertFrom-Json
             $entry = [ordered]@{}
             foreach ($prop in $payload.PSObject.Properties) {
@@ -101,6 +120,11 @@ while ($listener.IsListening) {
             if (-not $entry.Contains('type')) { $entry.type = 'event' }
             if (-not $entry.Contains('text') -and $entry.Contains('user_text')) {
                 $entry.text = [string]$entry.user_text
+            }
+            $guard = Test-CvlIngestEntry -Entry $entry
+            if (-not $guard.ok) {
+                Write-Json $res 400 @{ error = $guard.error }
+                continue
             }
             $line = ($entry | ConvertTo-Json -Compress -Depth 8)
             Add-Content -LiteralPath $logPath -Value $line -Encoding UTF8

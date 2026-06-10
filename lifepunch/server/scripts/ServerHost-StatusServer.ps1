@@ -8,6 +8,7 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+. (Join-Path $PSScriptRoot 'ServerHost-CvlSignalGuard.ps1')
 
 if (-not (Test-Path -LiteralPath $TokenFile)) {
     throw "Missing token file: $TokenFile - run Install-ServerHostWatchdog.ps1 first."
@@ -28,7 +29,12 @@ Could not bind $prefix - run Install-ServerHostWatchdog.ps1 (elevated) to regist
 "@
 }
 
+$allowlist = Get-CvlAllowlistIps -StatusDir $StatusDir
+
 Write-Host "lifepunchnet status server listening on port $Port" -ForegroundColor Green
+if ($allowlist) {
+    Write-Host "  Client IP allowlist: $($allowlist -join ', ')" -ForegroundColor DarkGray
+}
 
 while ($listener.IsListening) {
     $ctx = $listener.GetContext()
@@ -46,6 +52,10 @@ while ($listener.IsListening) {
     if (-not $tokenOk) {
         $code = 401
         $body = '{"error":"unauthorized"}'
+    }
+    elseif ($allowlist -and -not (Test-CvlClientIp -Request $req -Allowlist $allowlist)) {
+        $code = 403
+        $body = '{"error":"client ip not allowlisted"}'
     }
     elseif ($path -eq '/status' -or $path -eq '') {
         $watchdog = Join-Path $StatusDir 'watchdog.json'

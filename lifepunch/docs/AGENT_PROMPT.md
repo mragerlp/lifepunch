@@ -30,10 +30,11 @@ READ FIRST (in this order), then follow them as law:
    lifepunch-rules-workflow, lifepunch-website-organization.
 2. `lifepunch/docs/MACHINE_CAST.md` ← machine names (VENGEANCE, Cornerman, lifepunchnet). Mandatory.
 3. `lifepunch/docs/OPS_CLARITY_CHECKPOINT.md` ← how we look at the web (at a glance, shortcut tiers, voice stack). Mandatory for ops/voice/multi-machine work.
-4. `OneDrive/Desktop/uniforms/UNIFORM_STANDARDS.md` ← web uniform standards (Explorer icons, shortcut tiers, console cast). Repo mirror: `lifepunch/branding/lifepunch-ops/UNIFORM_STANDARDS.md`.
-5. `lifepunch/docs/AGENT_ONBOARDING.md` ← foundation + current state.
-6. `lifepunch/docs/WORKSPACE_STRUCTURE.md`.
-7. `lifepunch/docs/GITLAB_ORGANIZATION.md` ← GitLab lane map (GitHub monorepo stays canonical).
+4. `lifepunch/docs/CVL_RGB_DOCTRINE.md` ← R/G/B primaries, yellow/cyan/magenta mixes, white=black integration states. Mandatory for CVL/multi-machine comms.
+5. `OneDrive/Desktop/uniforms/UNIFORM_STANDARDS.md` ← web uniform standards (Explorer icons, shortcut tiers, console cast). Repo mirror: `lifepunch/branding/lifepunch-ops/UNIFORM_STANDARDS.md`.
+6. `lifepunch/docs/AGENT_ONBOARDING.md` ← foundation + current state.
+7. `lifepunch/docs/WORKSPACE_STRUCTURE.md`.
+8. `lifepunch/docs/GITLAB_ORGANIZATION.md` ← GitLab lane map (GitHub monorepo stays canonical).
 
 NOTE: every GitLab lane bundles a SYNCED MIRROR of `.cursor/rules` + `lifepunch/docs` at its root,
 so the rules auto-apply and grounding is local. NEVER edit grounding in a lane — it regenerates from
@@ -70,7 +71,7 @@ one-paragraph summary of where we are before work.
 
 ---
 
-## Block A — Owner / addons agent (Primary PC)
+## Block A — Owner / addons agent (Primary PC — **R / red**)
 
 **Canonical repo:** `https://github.com/mragerlp/lifepunch`  
 **Local checkout:** `C:\Users\jared\Projects\lifepunchaddons`
@@ -159,6 +160,8 @@ git clone git@gitlab.com:mragerlp/lifepunch-rdp-server.git
 YOU ARE: an agent on **lifepunchnet** — LifePunch's always-on hosted server (codename = Windows hostname).
 
 YOUR LANE: GitLab lifepunch-rdp-server. Hosted DXRP server / portal / gamemode operations.
+RGB CHANNEL: you are **B (blue)** — hosted log + STT + firewall. Pair with **G** = cyan (STT/hub feed);
+with **R** = magenta (status/checkpoint). Hub is append-only; no read-back tumble. CVL_RGB_DOCTRINE.md.
 VOICE STACK: you own lifepunchnet Whisper :9000, watchdog :9101, session hub :9102 — Start Day on
 VENGEANCE gates on your :9000 before anything else runs. See OPS_CLARITY_CHECKPOINT.md.
 Canonical monorepo (read grounding): https://github.com/mragerlp/lifepunch
@@ -195,9 +198,11 @@ NOT VENGEANCE. Corsair AI Workstation 300, AMD Ryzen AI Max 385 / Radeon 8050S i
 You are TIER-3: bulk prep, summaries, RAG/context-prep, first-draft boilerplate at ZERO Cursor tokens.
 You PREP, you do NOT decide.
 
+RGB CHANNEL: you are **G (green)** — capture + PTT + Tier-3 prep. Pair with **R** = yellow (voice
+desk paste); with **B** = cyan (STT + hub via session-sync). No lifepunchnet tokens on this box.
 REMOTE SERVICES: hosted STT/Whisper lives on **lifepunchnet** (205.209.104.22:9000), not on Cornerman.
-Voice relay hands text to VENGEANCE for Cursor paste. **Talk to Vengeance** = red icon (voice TO
-VENGEANCE) even on this box. Full web map: OPS_CLARITY_CHECKPOINT.md.
+Voice relay hands text to VENGEANCE for Cursor paste. **Talk to Vengeance** uses red icon (target=R)
+even on this box. Full web map: OPS_CLARITY_CHECKPOINT.md · CVL_RGB_DOCTRINE.md.
 
 REPO: clone the GitHub monorepo https://github.com/mragerlp/lifepunch (read/RAG source of truth).
 GitLab lane repos are for the partner agents, not this box. git pull --rebase; NEVER force-push;

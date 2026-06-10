@@ -94,8 +94,10 @@ archaeology.
 | Idea | Rule |
 |------|------|
 | **At a glance** | Tier icon + shortcut name + one preflight FAIL → know the node/layer |
-| **Universal (tri-stack)** | All three nodes — **Start Day** = gate + watchers + Cornerman relay |
-| **Red / green / blue** | Single destination — icon = scope, not always where the `.lnk` lives |
+| **Universal (tri-stack)** | Target **white-light** (R+G+B) — **Start Day**, **CVL Same Page** |
+| **Red / green / blue** | **Primaries** R=VENGEANCE, G=Cornerman, B=lifepunchnet — not a group nickname |
+| **RGB mixes** | Yellow=R+G, Cyan=G+B, Magenta=B+R — see `CVL_RGB_DOCTRINE.md` |
+| **Rainbow** | Emerges from logged hub gradient — **not yet**; standard RGB phase now |
 | **Explorer icons** | Gray folder + gray `.txt` on every node — `OneDrive\Desktop\uniforms\`; `Set-LifePunchExplorerIcons.ps1` |
 | **One `.lnk` → one script** | Installers own targets; see `lifepunch/branding/shortcut-icons/SHORTCUT_ICONS.md` |
 

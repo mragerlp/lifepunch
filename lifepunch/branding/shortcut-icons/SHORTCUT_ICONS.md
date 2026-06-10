@@ -4,9 +4,9 @@ Icons tell you **which machine or scope** a shortcut targets at a glance.
 
 ## Tier rules
 
-**Universal (tri-stack)** — `lifepunch-universal.png`. Use when the shortcut spans **all three nodes** (lifepunchnet + Cornerman + VENGEANCE), not a single destination.
+**Universal (tri-stack)** — `lifepunch-universal.png`. Target **white-light** integration (R+G+B primaries lit). Not "rainbow" yet — see `lifepunch/docs/CVL_RGB_DOCTRINE.md`.
 
-Canonical example: **LifePunch — Start Day** — full stack: lifepunchnet gate (`:9000`) + VENGEANCE watchers + Cornerman PTT relay.
+Canonical examples: **LifePunch — Start Day** (full stack); **LifePunch - CVL Same Page** (checkpoint + hub).
 
 Also universal: cross-node **preflight/diagnostic** actions that touch the whole voice path (e.g. **LifePunch Voice Preflight**).
 
@@ -14,7 +14,7 @@ Also universal: cross-node **preflight/diagnostic** actions that touch the whole
 
 | Tier | Color | File | Paired shortcuts |
 |------|-------|------|------------------|
-| **Universal** | All three (tri-stack) | `lifepunch-universal.png` | **LifePunch — Start Day**, **LifePunch Voice Preflight** |
+| **Universal** | All three (tri-stack) | `lifepunch-universal.png` | **LifePunch — Start Day**, **LifePunch - CVL Same Page**, **LifePunch Voice Preflight** |
 | **VENGEANCE** | Red | `lifepunch-vengeance.png` | **LifePunch Voice Comms**, **Talk to Vengeance** (voice → VENGEANCE / Cursor) |
 | **Cornerman** | Green | `lifepunch-cornerman.png` | **Cornerman (RDP)** |
 | **lifepunchnet** | Blue / cyan | `lifepunch-lifepunchnet.png` | **lifepunchnet (RDP)** |

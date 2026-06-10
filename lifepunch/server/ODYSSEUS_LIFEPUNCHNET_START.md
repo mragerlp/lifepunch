@@ -48,6 +48,23 @@ Cornerman PTT → lifepunchnet Whisper → conversation.ndjson
   → Bloodwave executes on VENGEANCE / Cursor
 ```
 
+## CVL hub log (security + same-page — build this first)
+
+VENGEANCE universal command posts tier-tagged NDJSON to `:9102`:
+
+```powershell
+powershell -File lifepunch\scripts\Invoke-CvlUniversal.ps1 -IngestToHub
+```
+
+| tier | node | logs |
+|------|------|------|
+| `universal` | tri-stack | `cvl-checkpoint` |
+| `vengeance` | red | `cvl-git` |
+| `cornerman` | green | voice + `cvl-relay` |
+| `lifepunchnet` | blue | `cvl-watchdog`, `cvl-security` |
+
+Odysseus conductor reads `voice-session.ndjson` or `GET /tail?lines=50` — one static host, real audit trail.
+
 ## Hard rules
 
 - `AUTH_ENABLED=true`, loopback/LAN only — **no** public `:7000`

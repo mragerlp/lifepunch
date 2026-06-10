@@ -38,6 +38,8 @@ $watchdogInstall = Join-Path $here 'Install-ServerHostWatchdog.ps1'
 $hubInstall = Join-Path $here 'Install-LifepunchnetSessionHub.ps1'
 $statusFirewall = Join-Path $here 'Open-LifepunchnetStatusFirewall.ps1'
 $sessionFirewall = Join-Path $here 'Open-LifepunchnetSessionFirewall.ps1'
+$whisperFirewall = Join-Path $here 'Open-LifepunchnetWhisperFirewall.ps1'
+$secureCvl = Join-Path $here 'Secure-LifepunchnetCvlPorts.ps1'
 
 function Write-Step($m) { Write-Host "==> $m" -ForegroundColor Cyan }
 function Write-Note($m) { Write-Host "    $m" -ForegroundColor DarkGray }
@@ -118,6 +120,19 @@ else {
 
 if ($RemoteAddress -and (Test-Path -LiteralPath $sessionFirewall)) {
     & $sessionFirewall -RemoteAddress $RemoteAddress -Port $SessionPort
+}
+
+if ($RemoteAddress -and (Test-Path -LiteralPath $secureCvl)) {
+    Write-Step 'CVL signal hardening (firewall scope)'
+    & $secureCvl -RemoteAddress $RemoteAddress -WhisperPort $WhisperPort -StatusPort $StatusPort -SessionPort $SessionPort
+}
+elseif ($RemoteAddress -and (Test-Path -LiteralPath $whisperFirewall)) {
+    & $whisperFirewall -RemoteAddress $RemoteAddress -Port $WhisperPort
+}
+else {
+    Write-Host ''
+    Write-Host '  SECURITY: pass -RemoteAddress <VENGEANCE-home-public-IP> before hub ingest' -ForegroundColor Yellow
+    Write-Host '            Without it :9000 may be world-reachable via Docker bind.' -ForegroundColor Yellow
 }
 
 # --- Ensure startup tasks running ---

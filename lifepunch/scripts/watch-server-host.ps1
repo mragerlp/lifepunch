@@ -8,6 +8,7 @@ param(
 
 $ErrorActionPreference = 'Stop'
 . (Join-Path $PSScriptRoot 'Voice-Console.ps1')
+. (Join-Path $PSScriptRoot 'Cvl-Hub.ps1')
 
 function Read-WatchConfig {
     if (-not (Test-Path -LiteralPath $ConfigPath)) {
@@ -82,6 +83,10 @@ while ($true) {
             foreach ($a in $alerts) {
                 if ($lastAlerts -notcontains $a) {
                     Write-Host "  *** ALERT: $a" -ForegroundColor Red
+                    try {
+                        Send-CvlHubIngest -Tier lifepunchnet -Type 'cvl-security' -Text $a -Extra @{ alert = $a; state = $state }
+                    }
+                    catch { }
                 }
             }
         }
@@ -104,6 +109,12 @@ while ($true) {
 
     if ($lastState -and $lastState -ne $state) {
         Write-Host "  >> STATE CHANGE: $lastState -> $state" -ForegroundColor Magenta
+        try {
+            Send-CvlHubIngest -Tier lifepunchnet -Type 'cvl-uptime' -Text "state $lastState -> $state" -Extra @{
+                priorState = $lastState; state = $state
+            }
+        }
+        catch { }
     }
     $lastState = $state
 

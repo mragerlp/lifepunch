@@ -10,6 +10,7 @@ Write-Host ''
 & (Join-Path $Here 'Build-LifePunchShortcutIcons.ps1')
 
 & (Join-Path $Here 'Install-LifePunchDayShortcut.ps1')
+& (Join-Path $Here 'Install-LifePunchCvlShortcut.ps1')
 & (Join-Path $Here 'Install-LifePunchVoiceShortcuts.ps1')
 & (Join-Path $Here 'Install-LifePunchRemoteShortcuts.ps1')
 & (Join-Path $Here 'Install-LifePunchTalkToVengeanceShortcut.ps1')
@@ -17,6 +18,7 @@ Write-Host ''
 Write-Host ''
 Write-Host 'Shortcut pairing (icon color = destination):' -ForegroundColor Cyan
 Write-Host '  tri-stack  LifePunch — Start Day' -ForegroundColor DarkGray
+Write-Host '  tri-stack  LifePunch - CVL Same Page (hub log)' -ForegroundColor DarkGray
 Write-Host '  tri-stack  LifePunch Voice Preflight' -ForegroundColor DarkGray
 Write-Host '  red        LifePunch Voice Comms' -ForegroundColor DarkGray
 Write-Host '  green      Cornerman (RDP)' -ForegroundColor DarkGray

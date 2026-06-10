@@ -38,6 +38,15 @@ VENGEANCE, Cornerman, and lifepunchnet are **nodes in one web** — not three un
 
 Full cast: `lifepunch/docs/MACHINE_CAST.md`.
 
+### 2b. RGB integration (not a group nickname)
+
+**R** = VENGEANCE · **G** = Cornerman · **B** = lifepunchnet. Uniform primaries are **channels**, not
+"everyone together." Additive mixes: **Yellow** (R+G voice desk), **Cyan** (G+B STT/hub feed),
+**Magenta** (B+R status/checkpoint), **White** (full CVL go), **Black** (no signal). **Rainbow** =
+gradient maturity over logged hub history — **not yet**; we are in **standard RGB** phase.
+
+Canon: `lifepunch/docs/CVL_RGB_DOCTRINE.md`. Probe: `Get-CvlUniversalCheckpoint.ps1` prints RGB state.
+
 ---
 
 ## 3. Visual language (uniform = readable ops)
@@ -46,10 +55,10 @@ Applied per node via `lifepunch/branding/lifepunch-ops/Apply-LifePunchOpsConsole
 
 | Signal | Meaning |
 |--------|---------|
-| **Tri-stack app icon** | Universal scope — all three nodes |
-| **Red** accent / icon | VENGEANCE desk or voice **to** VENGEANCE/Cursor |
-| **Green** | Cornerman |
-| **Blue / cyan** | lifepunchnet |
+| **Tri-stack app icon** | Target **white-light** integration (all three primaries lit) — not "rainbow" yet |
+| **Red** accent / icon | **R** — VENGEANCE desk or voice **to** VENGEANCE/Cursor |
+| **Green** | **G** — Cornerman |
+| **Blue / cyan** | **B** — lifepunchnet |
 | **Gray taskbar** | Same on every node (taskbar only — title bars keep per-node accent) |
 | **Dark mode + wallpaper** | Same wallpaper family; RDP sessions inherit remote box theme |
 | **Console: black + accent** | PowerShell/conhost/WT schemes match node color |

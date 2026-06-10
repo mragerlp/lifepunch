@@ -114,6 +114,48 @@ function Get-ServiceStates {
     return $out
 }
 
+function Get-LaneGitHead {
+    $root = 'C:\lifepunch\lifepunch-rdp-server'
+    if (-not (Test-Path -LiteralPath (Join-Path $root '.git'))) {
+        return @{ head = ''; branch = ''; detail = 'no-clone' }
+    }
+    Push-Location $root
+    try {
+        $head = (git log -1 --format='%h' 2>$null)
+        $branch = (git branch --show-current 2>$null)
+        return @{
+            head   = if ($head) { $head.Trim() } else { '' }
+            branch = if ($branch) { $branch.Trim() } else { '' }
+            detail = 'ok'
+        }
+    }
+    catch {
+        return @{ head = ''; branch = ''; detail = 'git-error' }
+    }
+    finally { Pop-Location }
+}
+
+function Get-OdysseusProbe {
+    $candidates = @(
+        'C:\lifepunch\odysseus',
+        'C:\lifepunch\lifepunch-rdp-server\odysseus'
+    )
+    $installed = $false
+    foreach ($p in $candidates) {
+        if (Test-Path -LiteralPath $p) { $installed = $true; break }
+    }
+    $ollama = $false
+    try {
+        $r = Invoke-RestMethod -Uri 'http://127.0.0.1:11434/api/tags' -TimeoutSec 3 -ErrorAction Stop
+        $ollama = $null -ne $r
+    }
+    catch { }
+    return @{
+        installed = $installed
+        ollama    = $ollama
+    }
+}
+
 function Normalize-SessionUser([string]$Raw) {
     if ([string]::IsNullOrWhiteSpace($Raw)) { return '' }
     return ($Raw -replace '^>', '').Trim().ToLowerInvariant()
@@ -156,6 +198,8 @@ $payload = [ordered]@{
     sessions    = @(Get-InteractiveSessions)
     services    = Get-ServiceStates
     whisper     = Get-WhisperDockerStatus
+    git         = Get-LaneGitHead
+    odysseus    = Get-OdysseusProbe
     authEvents  = @(Get-AuthEvents -Minutes $EventLookbackMinutes)
     alerts      = @(New-Alerts -Sessions (Get-InteractiveSessions) -AuthEvents (Get-AuthEvents -Minutes $EventLookbackMinutes) -Allowed $AllowedUsers)
 }
@@ -182,6 +226,35 @@ if ($payload.alerts.Count -gt 0) {
 }
 
 Copy-Item -LiteralPath $outPath -Destination $prevPath -Force
+
+# Append tier-tagged snapshot to session hub only on material change (avoid noise / disk fill).
+$hubDir = 'C:\lifepunch\session-hub'
+$hubLog = Join-Path $hubDir 'voice-session.ndjson'
+$hubSigFile = Join-Path $StatusDir 'hub-watchdog-sig.txt'
+try {
+    $sig = "w=$($payload.whisper.running);a=$($payload.alerts -join '|')"
+    $prevSig = ''
+    if (Test-Path -LiteralPath $hubSigFile) {
+        $prevSig = (Get-Content -LiteralPath $hubSigFile -Raw).Trim()
+    }
+    if ($sig -ne $prevSig) {
+        New-Item -ItemType Directory -Force -Path $hubDir | Out-Null
+        $hubLine = @{
+            ts      = $payload.ts
+            tier    = 'lifepunchnet'
+            source  = 'lifepunchnet'
+            type    = 'cvl-watchdog'
+            text    = "whisper=$($payload.whisper.running) alerts=$($payload.alerts.Count) uptime=$($payload.boot.uptimeSeconds)s"
+            whisper = $payload.whisper.running
+            git     = $payload.git
+            odysseus = $payload.odysseus
+            alerts  = @($payload.alerts)
+        } | ConvertTo-Json -Compress -Depth 6
+        Add-Content -LiteralPath $hubLog -Value $hubLine -Encoding UTF8
+        Set-Content -LiteralPath $hubSigFile -Value $sig -Encoding ASCII -NoNewline
+    }
+}
+catch { }
 
 # Optional outbound alert (set LIFEPUNCH_ALERT_WEBHOOK in server env / secure local file)
 $webhook = $env:LIFEPUNCH_ALERT_WEBHOOK
