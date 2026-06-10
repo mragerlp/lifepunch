@@ -3,9 +3,9 @@
 # this script auto-copies new transcripts to clipboard (Cornerman TTS is the audio cue).
 
 $watch = Join-Path $PSScriptRoot 'watch-cornerman-voice.ps1'
-Write-Host 'Voice brainstorm mode ON' -ForegroundColor Green
-Write-Host '  Cornerman: tap F7 to arm, wait for Ready, hold F8, release' -ForegroundColor DarkGray
-Write-Host '  VENGEANCE: when clipboard updates, Ctrl+V into Cursor' -ForegroundColor DarkGray
-Write-Host '  Tip: use LifePunch Voice Comms shortcut to start sync + watch together' -ForegroundColor DarkGray
+Write-Host 'Voice brainstorm mode ON' -ForegroundColor Cyan
+Write-Host '  Cornerman: Talk to Vengeance window open — F7 arm, Ready, hold F8, release' -ForegroundColor Gray
+Write-Host '  VENGEANCE (this window): copies new transcripts to clipboard — Ctrl+V in Cursor' -ForegroundColor Gray
+Write-Host '  Tip: LifePunch Voice Comms shortcut starts sync + watch together' -ForegroundColor DarkGray
 Write-Host ''
 & $watch

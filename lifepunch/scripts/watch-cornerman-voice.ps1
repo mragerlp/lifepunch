@@ -7,9 +7,11 @@ param(
     [string] $SshTarget = $(if ($env:CORNERMAN_SSH) { $env:CORNERMAN_SSH } else { 'cornerman' })
 )
 
-$ErrorActionPreference = 'Stop'
+$ErrorActionPreference = 'Continue'
 . (Join-Path $PSScriptRoot 'Voice-Console.ps1')
-# SSH helpers use Continue so remote cmd noise does not kill the watcher loop.
+# VENGEANCE inbox uses cyan (Cornerman relay UI stays red).
+$script:VoiceConsoleAccent = 'Cyan'
+# SSH helpers swallow remote profile noise so the watcher loop keeps running.
 $RemotePath = 'C:\Projects\cornerman-rag\outbox\to-vengeance.txt'
 $SessionLogPath = 'C:\Projects\cornerman-rag\outbox\session.log'
 $PullScript = Join-Path $PSScriptRoot 'pull-cornerman-voice.ps1'
@@ -21,8 +23,8 @@ if (-not (Test-Path -LiteralPath $PullScript)) {
 }
 
 function Get-RemoteTranscriptHash {
-    $raw = & ssh -o BatchMode=yes -o ConnectTimeout=10 $SshTarget "type `"$RemotePath`"" 2>$null
-    if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($raw)) { return $null }
+    $raw = Invoke-CornermanSshRead -RemotePath $RemotePath -SshTarget $SshTarget
+    if ([string]::IsNullOrWhiteSpace($raw)) { return $null }
     $bytes = [System.Text.Encoding]::UTF8.GetBytes($raw.TrimEnd())
     $sha = [System.Security.Cryptography.SHA256]::Create()
     try { return [BitConverter]::ToString($sha.ComputeHash($bytes)) }
@@ -31,12 +33,8 @@ function Get-RemoteTranscriptHash {
 
 function Get-SessionLogTail {
     param([int] $Lines = 8)
-    $prev = $ErrorActionPreference
-    $ErrorActionPreference = 'Continue'
-    $psCmd = "if (Test-Path -LiteralPath '$SessionLogPath') { Get-Content -LiteralPath '$SessionLogPath' -Raw }"
-    $raw = & ssh -o BatchMode=yes -o ConnectTimeout=10 $SshTarget "powershell -NoProfile -Command $psCmd" 2>$null
-    $ErrorActionPreference = $prev
-    if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($raw)) { return @() }
+    $raw = Invoke-CornermanSshRead -RemotePath $SessionLogPath -SshTarget $SshTarget
+    if ([string]::IsNullOrWhiteSpace($raw)) { return @() }
     $all = $raw -split "`r?`n" | Where-Object { $_.Trim() -ne '' }
     if ($all.Count -le $Lines) { return $all }
     return $all[($all.Count - $Lines)..($all.Count - 1)]
@@ -44,7 +42,8 @@ function Get-SessionLogTail {
 
 Write-VoiceHeader `
     -Title 'VENGEANCE VOICE INBOX  (watching Cornerman)' `
-    -Subtitle 'F7 arm on Cornerman -> Ready -> F8 talk -> paste here'
+    -Subtitle 'Cornerman runs Talk to Vengeance (PTT) — this window only copies new transcripts'
+Write-VoiceMeta -Label 'Cornerman' -Value 'Talk to Vengeance must be open + focused (F7/F8 land there)'
 Write-VoiceMeta -Label 'Arm' -Value "tap $ArmKey on Cornerman when you want a round"
 Write-VoiceMeta -Label 'Talk' -Value "hold $PttKey after Cornerman says Ready"
 Write-VoiceMeta -Label 'Paste' -Value 'Ctrl+V in Cursor when clipboard updates'

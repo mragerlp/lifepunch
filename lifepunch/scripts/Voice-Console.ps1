@@ -17,6 +17,28 @@ function Get-VoiceConsoleAccent {
 
 $script:VoiceConsoleAccent = Get-VoiceConsoleAccent
 
+function Invoke-CornermanSshRead {
+    <#
+    .SYNOPSIS
+      Read a file from Cornerman over SSH without tripping on remote PowerShell profile noise.
+    #>
+    param(
+        [Parameter(Mandatory)]
+        [string] $RemotePath,
+        [string] $SshTarget = $(if ($env:CORNERMAN_SSH) { $env:CORNERMAN_SSH } else { 'cornerman' }),
+        [int] $ConnectTimeout = 10
+    )
+    # cmd /c type avoids remote PowerShell profile + brace-quoting issues over SSH.
+    $prev = $ErrorActionPreference
+    $ErrorActionPreference = 'SilentlyContinue'
+    $raw = & ssh -o BatchMode=yes -o ConnectTimeout=$ConnectTimeout $SshTarget `
+        "cmd /c type `"$RemotePath`"" 2>$null
+    $code = $LASTEXITCODE
+    $ErrorActionPreference = $prev
+    if ($code -ne 0) { return $null }
+    return $raw
+}
+
 function Write-VoiceRule {
     param([ConsoleColor] $Color = $script:VoiceConsoleAccent)
     Write-Host ('=' * $script:VoiceConsoleWidth) -ForegroundColor $Color
@@ -46,7 +68,7 @@ function Write-VoiceMeta {
         [string] $Value
     )
     $pad = $Label.PadRight(11)
-    Write-Host "  $pad  $Value" -ForegroundColor DarkGray
+    Write-Host "  $pad  $Value" -ForegroundColor Gray
 }
 
 function Write-VoiceDivider {

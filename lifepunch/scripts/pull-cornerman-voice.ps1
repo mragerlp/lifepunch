@@ -8,6 +8,7 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+. (Join-Path $PSScriptRoot 'Voice-Console.ps1')
 
 $RemotePath = 'C:\Projects\cornerman-rag\outbox\to-vengeance.txt'
 $SshTarget  = if ($env:CORNERMAN_SSH) { $env:CORNERMAN_SSH } else { 'cornerman' }
@@ -21,8 +22,8 @@ function Show-Toast([string]$Title, [string]$Message) {
     Write-Info "[$Title] $Message"
 }
 
-$text = & ssh -o BatchMode=yes -o ConnectTimeout=10 $SshTarget "type `"$RemotePath`"" 2>&1
-if ($LASTEXITCODE -ne 0) {
+$text = Invoke-CornermanSshRead -RemotePath $RemotePath -SshTarget $SshTarget
+if ($null -eq $text) {
     throw ('Could not read relay file on ' + $SshTarget + ' at ' + $RemotePath + '. Run relay.ps1 on Cornerman first.')
 }
 if ([string]::IsNullOrWhiteSpace($text)) {
