@@ -87,12 +87,12 @@ See `THEME.md` for terminal schemes and palette tokens.
 
 Shortcuts use **tier icons** so you can see where they lead without reading the name:
 
-| Icon color | Tier | Examples |
-|------------|------|----------|
-| Tri-stack / universal | **Universal** | LifePunch — Start Day, Voice Preflight |
+| Icon color | Tier | Paired shortcuts |
+|------------|------|------------------|
+| Tri-stack (all 3) | **Universal** | LifePunch — Start Day, Voice Preflight |
 | Red | **VENGEANCE** | LifePunch Voice Comms |
 | Green | **Cornerman** | Cornerman (RDP) |
-| Cyan | **lifepunchnet** | lifepunchnet (RDP) |
+| Blue | **lifepunchnet** | lifepunchnet (RDP) |
 
 Canonical PNGs: `lifepunch/branding/shortcut-icons/`. Refresh after pull:
 

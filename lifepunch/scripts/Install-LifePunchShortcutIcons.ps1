@@ -12,10 +12,11 @@ Write-Host ''
 & (Join-Path $Here 'Install-LifePunchRemoteShortcuts.ps1')
 
 Write-Host ''
-Write-Host 'Icon tiers:' -ForegroundColor DarkGray
-Write-Host '  universal   = Start Day, preflight (full stack)' -ForegroundColor DarkGray
-Write-Host '  vengeance   = Voice Comms (desk)' -ForegroundColor DarkGray
-Write-Host '  cornerman   = Cornerman RDP' -ForegroundColor DarkGray
-Write-Host '  lifepunchnet = lifepunchnet RDP' -ForegroundColor DarkGray
+Write-Host 'Shortcut pairing (icon color = destination):' -ForegroundColor Cyan
+Write-Host '  tri-stack  LifePunch — Start Day' -ForegroundColor DarkGray
+Write-Host '  tri-stack  LifePunch Voice Preflight' -ForegroundColor DarkGray
+Write-Host '  red        LifePunch Voice Comms' -ForegroundColor DarkGray
+Write-Host '  green      Cornerman (RDP)' -ForegroundColor DarkGray
+Write-Host '  blue       lifepunchnet (RDP)' -ForegroundColor DarkGray
 Write-Host ''
-Write-Host 'See lifepunch/branding/shortcut-icons/SHORTCUT_ICONS.md' -ForegroundColor Cyan
+Write-Host 'Icons: lifepunch/branding/shortcut-icons/SHORTCUT_ICONS.md' -ForegroundColor Cyan

@@ -2,14 +2,14 @@
 
 Icons tell you **which machine or scope** a shortcut targets at a glance.
 
-| Tier | File | Use on shortcuts that… |
-|------|------|-------------------------|
-| **Universal** | `lifepunch-universal.png` | Orchestrate the full stack (all nodes). Example: **LifePunch — Start Day**, voice preflight. |
-| **VENGEANCE** | `lifepunch-vengeance.png` | Run on the **desk PC** only (paste watcher, session sync, monorepo). |
-| **Cornerman** | `lifepunch-cornerman.png` | Target **Cornerman** (RDP, relay, LAN AI box). |
-| **lifepunchnet** | `lifepunch-lifepunchnet.png` | Target **hosted server** (RDP, boot install, Whisper/status/hub). |
+| Tier | Color | File | Paired shortcuts |
+|------|-------|------|------------------|
+| **Universal** | All three (tri-stack) | `lifepunch-universal.png` | **LifePunch — Start Day**, **LifePunch Voice Preflight** |
+| **VENGEANCE** | Red | `lifepunch-vengeance.png` | **LifePunch Voice Comms** (desk-only voice windows) |
+| **Cornerman** | Green | `lifepunch-cornerman.png` | **Cornerman (RDP)** |
+| **lifepunchnet** | Blue / cyan | `lifepunch-lifepunchnet.png` | **lifepunchnet (RDP)** |
 
-Art source: Hacker Job outfit app icons (same family as `lifepunch-ops/outfits/`).
+Art source: Hacker Job outfit app icons (`lifepunch-ops/outfits/*/appicon.png` family).
 
 ## Refresh shortcuts on VENGEANCE
 
@@ -18,4 +18,4 @@ cd <repo>\lifepunch\scripts
 powershell -ExecutionPolicy Bypass -File .\Install-LifePunchShortcutIcons.ps1
 ```
 
-Wires icons into Start Day, Voice Comms, preflight, and RDP shortcuts.
+Re-runs all shortcut installers so every `.lnk` picks up the latest PNG from `shortcut-icons/`.
