@@ -9,6 +9,8 @@ param(
 $ErrorActionPreference = 'Stop'
 . (Join-Path $PSScriptRoot 'Voice-Console.ps1')
 . (Join-Path $PSScriptRoot 'Cvl-Hub.ps1')
+# lifepunchnet watch = Blue channel; body text gray/white (never DarkGray on black)
+$script:VoiceConsoleAccent = 'Blue'
 
 function Read-WatchConfig {
     if (-not (Test-Path -LiteralPath $ConfigPath)) {
@@ -72,11 +74,11 @@ while ($true) {
         Write-VoiceDivider
         Write-VoiceEvent -Name 'ONLINE' -Detail "uptime ${uptimeH}h  boot $($data.boot.bootTime)" -Color Green
         Write-Host '  SESSIONS:' -ForegroundColor White
-        Write-Host (Format-SessionLine $data.sessions)
+        Write-VoiceBody (Format-SessionLine $data.sessions)
         $wh = $data.whisper
         if ($wh) {
             $wtxt = if ($wh.running) { "running ($($wh.detail))" } else { "down ($($wh.detail))" }
-            Write-Host "  WHISPER:  $wtxt" -ForegroundColor $(if ($wh.running) { 'DarkGray' } else { 'Yellow' })
+            Write-VoiceStatus -Label 'WHISPER' -Value $wtxt -Ok ([bool]$wh.running)
         }
 
         if ($alerts.Count -gt 0) {
@@ -98,7 +100,7 @@ while ($true) {
             $state = 'DEGRADED'
             Write-Host ''
             Write-Host "  [$ts]  DEGRADED — RDP :3389 open but status API failed" -ForegroundColor Yellow
-            Write-Host "         $($_.Exception.Message)" -ForegroundColor DarkGray
+            Write-VoiceMuted $_.Exception.Message
         }
         else {
             $state = 'DOWN'

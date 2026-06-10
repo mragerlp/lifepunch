@@ -92,6 +92,31 @@ function Write-VoiceMuted {
     Write-Host "  $Text" -ForegroundColor $script:VoiceColorMuted
 }
 
+function Write-VoiceBody {
+    param(
+        [Parameter(Mandatory)]
+        [string] $Text,
+        [ConsoleColor] $Color = $script:VoiceColorLogLine
+    )
+    foreach ($line in ($Text -split "`r?`n")) {
+        if ($line.Length -gt 0) {
+            Write-Host $line -ForegroundColor $Color
+        }
+    }
+}
+
+function Write-VoiceStatus {
+    param(
+        [Parameter(Mandatory)]
+        [string] $Label,
+        [Parameter(Mandatory)]
+        [string] $Value,
+        [bool] $Ok = $true
+    )
+    $color = if ($Ok) { $script:VoiceColorLogLine } else { 'Yellow' }
+    Write-Host "  ${Label}:  $Value" -ForegroundColor $color
+}
+
 function Write-VoiceDivider {
     Write-Host ('-' * $script:VoiceConsoleWidth) -ForegroundColor $script:VoiceColorDivider
 }

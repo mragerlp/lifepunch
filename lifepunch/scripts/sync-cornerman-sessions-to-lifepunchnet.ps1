@@ -59,6 +59,7 @@ function Send-IngestObject($cfg, [hashtable]$Payload) {
 
 $cfg = Read-Config
 $state = Read-State
+$script:VoiceConsoleAccent = 'Cyan'
 
 Write-VoiceHeader `
     -Title 'VENGEANCE SESSION SYNC  (Cornerman -> lifepunchnet)' `
