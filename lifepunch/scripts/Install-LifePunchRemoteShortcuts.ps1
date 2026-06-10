@@ -102,7 +102,7 @@ gatewaybrokeringtype:i:0
 use redirection server name:i:0
 rdgiskdcproxy:i:0
 kdcproxyname:s:
-drivestoredirect:s:
+drivestoredirect:s:C:\;
 "@
     Set-Content -LiteralPath $Path -Value $content -Encoding Unicode
     Write-Host "  RDP file: $Path ($DisplayName -> $HostAddress)" -ForegroundColor DarkGray

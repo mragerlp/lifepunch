@@ -59,5 +59,5 @@ if ($RemoteAddress) {
     Write-Host "  Firewall  TCP $Port open for $RemoteAddress" -ForegroundColor DarkGray
 }
 else {
-    Write-Host '  Firewall  TCP $Port open on Public — pass -RemoteAddress your home IP to scope' -ForegroundColor Yellow
+    Write-Host '  Firewall  TCP $Port open on Public - pass -RemoteAddress your home IP to scope' -ForegroundColor Yellow
 }

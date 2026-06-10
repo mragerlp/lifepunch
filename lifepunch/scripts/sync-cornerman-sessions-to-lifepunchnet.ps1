@@ -1,4 +1,4 @@
-# VENGEANCE bridge — pull Cornerman voice logs and POST to lifepunchnet session hub.
+# VENGEANCE bridge - pull Cornerman voice logs and POST to lifepunchnet session hub.
 
 param(
     [int] $IntervalSeconds = 15,
@@ -15,7 +15,7 @@ $SttLogRemote = 'C:\Projects\cornerman-rag\outbox\stt-path.log'
 
 function Read-Config {
     if (-not (Test-Path -LiteralPath $ConfigPath)) {
-        throw "Missing $ConfigPath — copy server-host-watch.local.json.example and add token."
+        throw "Missing $ConfigPath - copy server-host-watch.local.json.example and add token."
     }
     return Get-Content -LiteralPath $ConfigPath -Raw | ConvertFrom-Json
 }

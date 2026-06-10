@@ -1,4 +1,4 @@
-# Session hub HTTP server on lifepunchnet — ingests voice/chat lines for Odysseus + agents.
+# Session hub HTTP server on lifepunchnet - ingests voice/chat lines for Odysseus + agents.
 # POST /ingest (Bearer token)  GET /tail  GET /status
 
 param(
@@ -11,7 +11,7 @@ param(
 $ErrorActionPreference = 'Stop'
 
 if (-not (Test-Path -LiteralPath $TokenFile)) {
-    throw "Missing token file: $TokenFile — run Install-ServerHostWatchdog.ps1 first."
+    throw "Missing token file: $TokenFile - run Install-ServerHostWatchdog.ps1 first."
 }
 $expectedToken = (Get-Content -LiteralPath $TokenFile -Raw).Trim()
 New-Item -ItemType Directory -Force -Path $HubDir | Out-Null
@@ -23,7 +23,7 @@ $listener.Prefixes.Add($prefix)
 
 try { $listener.Start() }
 catch {
-    throw "Could not bind $prefix — run Install-LifepunchnetSessionHub.ps1 (elevated)."
+    throw "Could not bind $prefix - run Install-LifepunchnetSessionHub.ps1 (elevated)."
 }
 
 Write-Host "lifepunchnet session hub listening on port $Port" -ForegroundColor Green
