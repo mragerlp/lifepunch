@@ -1,4 +1,4 @@
-# Minimal HTTP status server — VENGEANCE watcher polls GET /status with a shared token.
+# Minimal HTTP status server - VENGEANCE watcher polls GET /status with a shared token.
 # Binds port 9101. Run at startup (Install-ServerHostWatchdog.ps1 registers this).
 
 param(
@@ -10,7 +10,7 @@ param(
 $ErrorActionPreference = 'Stop'
 
 if (-not (Test-Path -LiteralPath $TokenFile)) {
-    throw "Missing token file: $TokenFile — run Install-ServerHostWatchdog.ps1 first."
+    throw "Missing token file: $TokenFile - run Install-ServerHostWatchdog.ps1 first."
 }
 $expectedToken = (Get-Content -LiteralPath $TokenFile -Raw).Trim()
 
@@ -23,7 +23,7 @@ try {
 }
 catch {
     throw @"
-Could not bind $prefix — run Install-ServerHostWatchdog.ps1 (elevated) to register urlacl, or:
+Could not bind $prefix - run Install-ServerHostWatchdog.ps1 (elevated) to register urlacl, or:
   netsh http add urlacl url=$prefix user=$env:USERNAME
 "@
 }

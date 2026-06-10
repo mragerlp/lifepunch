@@ -29,7 +29,7 @@ if (-not (Test-Path -LiteralPath $tokenFile)) {
     Write-Host "  $token" -ForegroundColor Cyan
 }
 else {
-    Write-Host 'Status token already exists — unchanged.' -ForegroundColor DarkGray
+    Write-Host 'Status token already exists - unchanged.' -ForegroundColor DarkGray
 }
 
 # HTTP urlacl for status server
@@ -58,7 +58,7 @@ $watchAction = New-ScheduledTaskAction -Execute 'powershell.exe' `
     -Argument "-NoProfile -ExecutionPolicy Bypass -File `"$watchdog`""
 $watchTrigger = New-ScheduledTaskTrigger -Once -At ((Get-Date).AddMinutes(1)) `
     -RepetitionInterval (New-TimeSpan -Minutes $WatchdogIntervalMinutes) `
-    -RepetitionDuration ([TimeSpan]::MaxValue)
+    -RepetitionDuration (New-TimeSpan -Days 3650)
 Register-ScheduledTask -TaskName 'LifePunch-ServerHost-Watchdog' -Action $watchAction -Trigger $watchTrigger `
     -RunLevel Highest -Force | Out-Null
 

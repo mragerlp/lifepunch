@@ -1,4 +1,4 @@
-# lifepunchnet watchdog — collects health + security signals for the VENGEANCE watcher.
+# lifepunchnet watchdog - collects health + security signals for the VENGEANCE watcher.
 # Run on the server box (scheduled task). Writes C:\lifepunch\status\watchdog.json
 
 param(
