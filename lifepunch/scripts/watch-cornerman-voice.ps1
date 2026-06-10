@@ -1,6 +1,6 @@
 # Watch Cornerman outbox for new voice relay transcripts; auto-copy to VENGEANCE clipboard.
 # Run in a dedicated PowerShell window while brainstorming on VENGEANCE.
-# Cornerman: hold F8 (PTT) -> message -> this watcher picks up clipboard + session log.
+# Cornerman: F7 arm -> Ready -> F8 talk -> this watcher picks up clipboard + session log.
 
 param(
     [int] $IntervalSeconds = 2,

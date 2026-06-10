@@ -2,16 +2,21 @@
 
 ## Why
 
-Wake-phrase mode (`"send message"`) **always listens** and runs STT on every utterance to detect the phrase. That wastes lifepunchnet Whisper calls and can false-trigger on room noise.
+Wake-phrase mode always listens and runs STT to detect `"send message"`. That wastes lifepunchnet Whisper calls and adds idle log noise.
 
-**Push-to-talk** records only while you hold a key — one STT call per intentional message.
+**Arm-then-PTT** keeps Cornerman silent until you start a round. You control timing on both sides:
+
+- **F7 tap** — you arm Cornerman for one round
+- **F8 hold** — you talk (only after Cornerman says Ready)
+- **Clipboard** — Cornerman arms you back with the transcript; paste in Cursor when you want
 
 ## Modes
 
 | Shortcut on Cornerman | Mode |
 |----------------------|------|
-| `Talk to Vengeance.cmd` | Wake phrase (`send message` → speak) |
-| `Talk to Vengeance (PTT).cmd` | Hold **F8** → speak → release |
+| `Talk to Vengeance.cmd` | **Default:** tap **F7** → Ready → hold **F8** → release → clipboard |
+| `Talk to Vengeance (PTT).cmd` | Same as default |
+| `Talk to Vengeance (Wake).cmd` | Legacy wake phrase (not recommended) |
 
 ## Deploy from VENGEANCE
 
@@ -20,30 +25,29 @@ cd C:\Users\jared\Projects\lifepunchaddons
 powershell -ExecutionPolicy Bypass -File .\lifepunch\scripts\cornerman-relay\Apply-CornermanPushToTalk.ps1
 ```
 
-Requires `ssh cornerman` + SCP. Patches `cornerman-rag` in place; adds `ptt.py` + `ptt_capture.py`.
+Copies `ptt.py`, `ptt_capture.py`, `relay_ui.py`, `commands.py`, and patches `cornerman-rag\relay.py` in place.
 
-## Key binding
+## Key bindings
 
-Default: **F8** (`CORNERMAN_PTT_KEY`).
+| Key | Env var | Default | Action |
+|-----|---------|---------|--------|
+| Arm | `CORNERMAN_ARM_KEY` | **F7** | Tap once to start a round |
+| Talk | `CORNERMAN_PTT_KEY` | **F8** | Hold after Ready to record |
 
-On Cornerman:
+Allowed values: `space`, `f8`, `f9`, `f10`, `scrolllock`, `pause`.
 
-```powershell
-setx CORNERMAN_PTT_KEY space
-```
+Keys use `GetAsyncKeyState` — relay console window must be focused. Global hotkeys (foot pedal while alt-tabbed) are a future upgrade.
 
-Allowed: `space`, `f8`, `f9`, `f10`, `scrolllock`, `pause`.
-
-PTT uses `GetAsyncKeyState` — works while the **Talk to Vengeance** console window is focused. Global hotkeys (foot pedal while alt-tabbed) are a future upgrade.
-
-## Pipeline (unchanged)
+## Pipeline
 
 ```
-Hold F8 → record → lifepunchnet Whisper :9000 → outbox → VENGEANCE paste + session hub
+Tap F7 → Cornerman says Ready → hold F8 → lifepunchnet Whisper :9000
+  → Cornerman clipboard + outbox → VENGEANCE watch → Ctrl+V in Cursor
+  → session hub :9102 (via VENGEANCE session sync)
 ```
 
-VENGEANCE still runs **LifePunch Voice Comms** for paste + `:9102` archive.
+VENGEANCE runs **LifePunch Voice Comms** (preflight + paste watch + session sync + watchdog).
 
 ## Rollback
 
-Delete `ptt.py`, `ptt_capture.py`, remove `run_ptt_loop` / `--ptt` from `relay.py`, use wake-phrase shortcut only.
+Use `Talk to Vengeance (Wake).cmd` only if needed. To remove PTT entirely, delete `ptt.py` / `ptt_capture.py` and strip `run_ptt_loop` / `--ptt` from `relay.py`.

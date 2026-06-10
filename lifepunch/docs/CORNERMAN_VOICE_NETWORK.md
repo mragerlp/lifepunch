@@ -15,8 +15,8 @@
 ### A — Talk to Vengeance (brainstorm → Cursor)
 
 ```
-AT2020 → PTT (F8) → lifepunchnet Whisper :9000 → relay outbox
-  → VENGEANCE clipboard paste → lifepunchnet :9102 (via session sync)
+AT2020 → tap F7 (arm) → Ready → hold F8 → lifepunchnet Whisper :9000 → relay outbox
+  → Cornerman clipboard (arm back) → VENGEANCE paste → lifepunchnet :9102 (session sync)
 ```
 
 No local LLM on this path — Cornerman stays thin.
@@ -102,7 +102,7 @@ Read back: `GET /tail?lines=50` on lifepunchnet or RDP + Odysseus later.
 
 | Task | Shortcut |
 |------|----------|
-| Voice → Cursor | `Talk to Vengeance (PTT).cmd` |
+| Voice → Cursor | `Talk to Vengeance.cmd` (F7 arm → F8 talk) |
 | Local AI chat | `Talk to Cornerman.cmd` |
 | LM Studio | Must be running on `:1234` for talk.py |
 
