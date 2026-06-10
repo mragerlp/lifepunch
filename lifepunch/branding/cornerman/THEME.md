@@ -12,6 +12,8 @@ secrets on the box). See `../../docs/LOCAL_AI_WORKSTATION.md`.
 | `cornerman-wallpaper.png` | Desktop + lock-screen background | 4K 16:9, status panel lower-left |
 | `cornerman-teams-bg.png` | Microsoft Teams virtual background | 1920×1080, "SECURE NODE" panel left, subject area kept clear right |
 | `windows-terminal-cornerman.json` | Windows Terminal color scheme | scheme name `Cornerman Ops` |
+| `cornerman.omp.json` | oh-my-posh prompt theme | `user@host:path (branch)$ >`, green |
+| `Apply-CornermanTerminal.ps1` | one-shot applier (scheme + accent + prompt) | idempotent, self-contained |
 
 ## Palette
 
@@ -67,6 +69,30 @@ THREAT LEVEL: LOW
 
 > awaiting instruction_
 ```
+
+## Cornerman-style PowerShell + cmd (any Windows machine)
+
+To make a machine's terminal look like the Cornerman box (green-on-black scheme, green
+window borders, `user@host:path (branch)$ >` prompt), run the applier from a clone:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File "<repo>\lifepunch\branding\cornerman\Apply-CornermanTerminal.ps1"
+```
+
+It is idempotent and does three things (skip flags available):
+1. Injects the `Cornerman Ops` scheme into Windows Terminal `settings.json` and sets profile
+   defaults (scheme, Cascadia Code 11, filled-box cursor) — covers **PowerShell and Command Prompt**.
+2. Sets the Windows accent to `#00FF7F` and turns on accent on title bars/borders
+   (`-SkipAccent` to skip). Restart Explorer or sign out/in for borders to repaint.
+3. Installs **oh-my-posh** (via winget) and wires `cornerman.omp.json` into the PowerShell
+   profile — both Windows PowerShell 5.1 and PowerShell 7+ (`-SkipOhMyPosh` to skip).
+
+Notes:
+- Open a **new** terminal tab after running. Revert the accent anytime via
+  Settings → Personalization → Colors.
+- cmd gets the green color scheme automatically; the oh-my-posh prompt is PowerShell-only
+  (cmd would need Clink for a matching prompt — optional, not included).
+- The prompt theme is glyph-free, so no Nerd Font is required.
 
 ## Regenerating assets
 
