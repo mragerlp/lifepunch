@@ -42,8 +42,24 @@ REBUILD ZIP (after pack edits)
 ------------------------------
 .\Build-OpsDeployZip.ps1
 
+SHORTCUT ICONS (VENGEANCE desktop)
+----------------------------------
+Tier = scope (at a glance). Refresh after pull:
+
+  cd <repo>\lifepunch\scripts
+  powershell -ExecutionPolicy Bypass -File .\Install-LifePunchShortcutIcons.ps1
+
+  Tri-stack UNIVERSAL → Start Day (full stack), Voice Preflight
+  RED                 → Voice Comms, Talk to Vengeance
+  GREEN               → Cornerman (RDP)
+  BLUE                → lifepunchnet (RDP)
+
+See lifepunch/branding/shortcut-icons/SHORTCUT_ICONS.md
+     lifepunch/docs/OPS_CLARITY_CHECKPOINT.md
+
 DOCS
 ----
 OUTFITS.md — Hacker Job cast + OneDrive paths
 THEME.md   — schemes, workflow
 LIFEPUNCHNET-DEPLOY.md — RDP/SSH dress lifepunchnet
+OPS_CLARITY_CHECKPOINT.md — voice web + shortcut law (all agents)

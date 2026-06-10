@@ -85,7 +85,9 @@ See `THEME.md` for terminal schemes and palette tokens.
 
 ## Desktop shortcut icons (VENGEANCE)
 
-Shortcuts use **tier icons** so you can see where they lead without reading the name:
+Shortcuts use **tier icons** so you can see where they lead **at a glance** (not a telescope).
+**Universal (tri-stack)** = all three nodes — **Start Day** is the reference (gate + watchers + relay).
+Full doctrine: `lifepunch/docs/OPS_CLARITY_CHECKPOINT.md`.
 
 | Icon color | Tier | Paired shortcuts |
 |------------|------|------------------|

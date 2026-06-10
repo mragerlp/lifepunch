@@ -29,9 +29,10 @@ READ FIRST (in this order), then follow them as law:
    lifepunch-quality-bar, dxrp-addon-foundation, lifepunch-trademark-ip,
    lifepunch-rules-workflow, lifepunch-website-organization.
 2. `lifepunch/docs/MACHINE_CAST.md` ← machine names (VENGEANCE, Cornerman, lifepunchnet). Mandatory.
-3. `lifepunch/docs/AGENT_ONBOARDING.md` ← foundation + current state.
-4. `lifepunch/docs/WORKSPACE_STRUCTURE.md`.
-5. `lifepunch/docs/GITLAB_ORGANIZATION.md` ← GitLab lane map (GitHub monorepo stays canonical).
+3. `lifepunch/docs/OPS_CLARITY_CHECKPOINT.md` ← how we look at the web (at a glance, shortcut tiers, voice stack). Mandatory for ops/voice/multi-machine work.
+4. `lifepunch/docs/AGENT_ONBOARDING.md` ← foundation + current state.
+5. `lifepunch/docs/WORKSPACE_STRUCTURE.md`.
+6. `lifepunch/docs/GITLAB_ORGANIZATION.md` ← GitLab lane map (GitHub monorepo stays canonical).
 
 NOTE: every GitLab lane bundles a SYNCED MIRROR of `.cursor/rules` + `lifepunch/docs` at its root,
 so the rules auto-apply and grounding is local. NEVER edit grounding in a lane — it regenerates from
@@ -86,6 +87,7 @@ Do NOT let shottaWEB or RDP agent paths drift — they commit on GitLab lanes, y
 
 CURRENT STATE (June 2026):
 - Trademark/IP doctrine is law. Billing on Individual Ultra (Auto default).
+- Ops clarity checkpoint is law: OPS_CLARITY_CHECKPOINT.md + shortcut tiers (Start Day = tri-stack full stack).
 - Admin menu (adminmenu) = v1 publish-ready, branded `lifepunch.ulx` (credits ULX; DXRP nominative),
   dxrpAddonId reconciled to the live portal listing; dev-only test-bots excluded from publish staging.
 - AK-47 paused. GitLab lanes LIVE + synced (lanes-synced); shottaWEB + RDP agent provisioned.
@@ -156,6 +158,8 @@ git clone git@gitlab.com:mragerlp/lifepunch-rdp-server.git
 YOU ARE: an agent on **lifepunchnet** — LifePunch's always-on hosted server (codename = Windows hostname).
 
 YOUR LANE: GitLab lifepunch-rdp-server. Hosted DXRP server / portal / gamemode operations.
+VOICE STACK: you own lifepunchnet Whisper :9000, watchdog :9101, session hub :9102 — Start Day on
+VENGEANCE gates on your :9000 before anything else runs. See OPS_CLARITY_CHECKPOINT.md.
 Canonical monorepo (read grounding): https://github.com/mragerlp/lifepunch
 Workspace root: C:\lifepunch\lifepunch-rdp-server (GitLab clone — NOT C:\lifepunch itself).
 Paths you own: lifepunch/server/, portal/, gamemode/, maps/, admin-panel/, economy/, audit/,
@@ -191,7 +195,8 @@ You are TIER-3: bulk prep, summaries, RAG/context-prep, first-draft boilerplate 
 You PREP, you do NOT decide.
 
 REMOTE SERVICES: hosted STT/Whisper lives on **lifepunchnet** (205.209.104.22:9000), not on Cornerman.
-Voice relay hands text to VENGEANCE for Cursor paste.
+Voice relay hands text to VENGEANCE for Cursor paste. **Talk to Vengeance** = red icon (voice TO
+VENGEANCE) even on this box. Full web map: OPS_CLARITY_CHECKPOINT.md.
 
 REPO: clone the GitHub monorepo https://github.com/mragerlp/lifepunch (read/RAG source of truth).
 GitLab lane repos are for the partner agents, not this box. git pull --rebase; NEVER force-push;

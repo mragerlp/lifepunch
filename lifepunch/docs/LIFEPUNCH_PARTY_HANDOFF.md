@@ -2,6 +2,20 @@
 
 Target: **turn on VENGEANCE → double-click Start Day → PTT works.** lifepunchnet and Cornerman stay on or wake on LAN.
 
+**Ops doctrine:** see problems **at a glance** (shortcut tier, preflight row) — not a telescope.
+Canonical checkpoint: `lifepunch/docs/OPS_CLARITY_CHECKPOINT.md`.
+
+## Shortcut tiers (VENGEANCE desktop)
+
+| Shortcut | Icon | What |
+|----------|------|------|
+| **Start Day** | Tri-stack (universal) | Full stack: `:9000` gate + watchers + Cornerman relay |
+| **Voice Preflight** | Tri-stack | Test only — all nodes |
+| **Voice Comms** | Red | VENGEANCE watchers only |
+| **Talk to Vengeance** | Red | Cornerman PTT (red = voice to VENGEANCE) |
+| **Cornerman (RDP)** | Green | LAN box |
+| **lifepunchnet (RDP)** | Blue | Hosted box |
+
 ## Daily workflow (Bloodwave)
 
 1. Power on **VENGEANCE** (Cornerman + lifepunchnet already on or wake on LAN).

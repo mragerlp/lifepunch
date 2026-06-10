@@ -2,6 +2,16 @@
 
 Icons tell you **which machine or scope** a shortcut targets at a glance.
 
+## Tier rules
+
+**Universal (tri-stack)** — `lifepunch-universal.png`. Use when the shortcut spans **all three nodes** (lifepunchnet + Cornerman + VENGEANCE), not a single destination.
+
+Canonical example: **LifePunch — Start Day** — full stack: lifepunchnet gate (`:9000`) + VENGEANCE watchers + Cornerman PTT relay.
+
+Also universal: cross-node **preflight/diagnostic** actions that touch the whole voice path (e.g. **LifePunch Voice Preflight**).
+
+**Single-destination tiers** — red/green/blue = **where voice goes or which box you RDP into**, even if the `.lnk` lives on another machine (e.g. **Talk to Vengeance** is red on Cornerman because voice targets VENGEANCE).
+
 | Tier | Color | File | Paired shortcuts |
 |------|-------|------|------------------|
 | **Universal** | All three (tri-stack) | `lifepunch-universal.png` | **LifePunch — Start Day**, **LifePunch Voice Preflight** |

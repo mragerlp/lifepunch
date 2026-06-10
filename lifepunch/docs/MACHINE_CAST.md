@@ -121,13 +121,20 @@ Cornerman stays thin (mic + relay). **lifepunchnet** transcribes and stores sess
 
 ## How to connect (VENGEANCE shortcuts)
 
-| Shortcut | Target |
-|----------|--------|
-| Cornerman (RDP) | `192.168.1.227` |
-| lifepunchnet (RDP) | `205.209.104.22` |
+Icons = **destination / scope** (at a glance, not a telescope). Full checkpoint:
+`lifepunch/docs/OPS_CLARITY_CHECKPOINT.md`.
+
+| Shortcut | Icon tier | Target / job |
+|----------|-----------|----------------|
+| **LifePunch — Start Day** | Universal (tri-stack) | Full voice stack — gate + watchers + Cornerman relay |
+| **LifePunch Voice Preflight** | Universal | Cross-node health check |
+| **LifePunch Voice Comms** | Red (VENGEANCE) | VENGEANCE watchers only |
+| **Talk to Vengeance** | Red (VENGEANCE) | Cornerman PTT (icon red: voice **to** VENGEANCE) |
+| **Cornerman (RDP)** | Green | `192.168.1.227` |
+| **lifepunchnet (RDP)** | Blue | `205.209.104.22` |
 
 Config: `lifepunch/scripts/remote-hosts.json` + gitignored `remote-hosts.local.json`.
-Refresh shortcuts: `lifepunch/scripts/Install-LifePunchRemoteShortcuts.ps1`.
+Refresh all shortcut icons: `lifepunch/scripts/Install-LifePunchShortcutIcons.ps1`.
 
 ---
 
@@ -135,7 +142,7 @@ Refresh shortcuts: `lifepunch/scripts/Install-LifePunchRemoteShortcuts.ps1`.
 
 | Machine | Runbook / prompt |
 |---------|------------------|
-| All agents | `AGENT_ONBOARDING.md`, `AGENT_PROMPT.md` Block 0 |
+| All agents | `AGENT_ONBOARDING.md`, `OPS_CLARITY_CHECKPOINT.md`, `AGENT_PROMPT.md` Block 0 |
 | VENGEANCE | Block A |
 | **shottaWEB** | Block B, `SHOTTAWEB_HANDOFF.txt` |
 | lifepunchnet | Block C, `LIFEPUNCHNET_INSTRUCTIONS.txt`, `LIFEPUNCHNET_RDP_ODYSSEUS.txt` |

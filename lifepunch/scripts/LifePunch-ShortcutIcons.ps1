@@ -1,4 +1,5 @@
 # Dot-source from shortcut installers. Resolves tier icon paths for .lnk IconLocation.
+# universal = tri-stack (all 3 nodes) — e.g. Start Day: gate + watchers + Cornerman relay. See SHORTCUT_ICONS.md.
 
 function Get-LifePunchBrandingRoot {
     $scripts = $PSScriptRoot

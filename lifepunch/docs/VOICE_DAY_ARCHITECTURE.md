@@ -68,6 +68,7 @@ flowchart LR
 
 ## Related
 
+- `OPS_CLARITY_CHECKPOINT.md` — ops doctrine + shortcut tier map (all agents)
 - `Start-LifePunchDay.ps1` — orchestrator
 - `Install-LifePunchNetBoot.ps1` — lifepunchnet boot wiring
 - `LIFEPUNCH_PARTY_HANDOFF.md` — three-party checklist
