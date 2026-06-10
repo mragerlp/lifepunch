@@ -43,6 +43,10 @@ simple baselines are fine; tracked in addons/docs/TECH_DEBT.md when in the addon
 SOURCE OF TRUTH: https://github.com/mragerlp/lifepunch (GitHub monorepo). Owner works here.
 GITLAB (June 2026+): Per-lane partner repos under gitlab.com/mragerlp — NOT a GitHub replacement.
 Commit ONLY your lane. Always `git pull --rebase`; never force-push. See GITLAB_ORGANIZATION.md.
+ALWAYS-CURRENT (do this FIRST, before anything): `git fetch`, then if your working tree is clean,
+`git pull --rebase` so you start on the latest. If behind AND you have uncommitted changes, STOP and
+tell the owner (commit/stash first). A bundled sessionStart hook auto-does this — but never assume a
+stale clone; verify you are current before working.
 COMMIT CONSENT: never commit unprompted — when work hits a natural commit point, ASK the owner
 whether to commit (propose scope + message) and commit only on an explicit yes.
 

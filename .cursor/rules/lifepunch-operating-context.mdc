@@ -79,6 +79,14 @@ alwaysApply: true
 - **GitLab (June 2026+)** — per-lane partner workspaces under `gitlab.com/mragerlp` (foundation,
   addons, website, rdp-server). Does NOT replace GitHub; map in `lifepunch/docs/GITLAB_ORGANIZATION.md`.
 - Single shared `main`. A user-level auto-commit+push hook runs on `stop` (separate safety net).
+- **Always-current — session-start auto-sync (FAILSAFE):** before reading or editing anything in a
+  new session, sync your clone — `git fetch`, and if the working tree is **clean**, `git pull --rebase`
+  to land on the latest. If you are **behind AND have uncommitted changes**, STOP and tell the owner
+  (commit or stash first); never start work on a stale clone or silently discard local work. A
+  `sessionStart` hook (`.cursor/hooks/session-sync.*`, bundled into every lane) automates this where it
+  can run; **this rule is the guaranteed layer — it auto-applies even when no onboarding prompt was
+  pasted.** Purpose: partners (esp. shottaWEB) always work on the newest data without having to
+  remember to pull.
 - **Commit consent — ask first (always):** an agent NEVER creates a commit unprompted. When changes
   reach a natural commit point, *ask the owner* whether to commit (propose the scope/message) and
   commit only on an explicit yes. This holds for every agent/lane and takes precedence over silent

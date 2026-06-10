@@ -138,6 +138,11 @@ The `lifepunch-operating-context` rule is law here; this is the orientation. We 
 
 - Single shared `main`; **always `pull --rebase` + normal `push`; NEVER force-push.** A
   user-level auto-commit+push hook runs on `stop` (a backstop). Partner works the **website only** (disjoint).
+- **Always-current (session-start auto-sync — FAILSAFE):** at the start of any session, before reading
+  or editing, sync the clone (`git fetch`; if clean, `git pull --rebase`). If behind **and** dirty, stop
+  and tell the owner. A bundled `sessionStart` hook (`.cursor/hooks/session-sync.*`) automates this in
+  every lane; the always-on rule is the guaranteed layer (applies even with no prompt pasted). Law:
+  `lifepunch-operating-context` (Git workflow → Always-current).
 - **Commit consent — ask first:** an agent **never commits unprompted**. When work hits a natural
   commit point, *ask the owner whether to commit* (propose scope + message) and commit only on an
   explicit yes. This is law in `lifepunch-operating-context` (Git workflow → Commit consent).

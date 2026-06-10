@@ -14,9 +14,11 @@
     "primaryPcCheckout":  "C:\\Users\\jared\\Projects\\lifepunchaddons",
     "groundingBundle":  [
                             ".cursor/rules",
+                            ".cursor/hooks.json",
+                            ".cursor/hooks",
                             "lifepunch/docs"
                         ],
-    "groundingBundleNote":  "Injected into EVERY lane export so each clone is self-grounding (rules auto-apply at lane root). It is a READ-ONLY mirror of the monorepo; edit grounding in GitHub, never in a lane.",
+    "groundingBundleNote":  "Injected into EVERY lane export so each clone is self-grounding (rules auto-apply at lane root). Includes the sessionStart auto-sync hook (.cursor/hooks*) so partner lanes auto-pull the latest on session start. It is a READ-ONLY mirror of the monorepo; edit grounding in GitHub, never in a lane.",
     "projects":  [
                      {
                          "slug":  "lifepunch-foundation",

@@ -30,8 +30,15 @@ Run these in a terminal where you keep your projects:
 
 Open the lifepunch-website folder in Cursor — that's your workspace root.
 
-WORKFLOW (always):
-      git pull --rebase
+AUTO-SYNC (you no longer have to remember to pull):
+   Your lane now ships a sessionStart hook + an always-on rule. When you open the
+   lifepunch-website folder in Cursor and start a chat, it AUTOMATICALLY pulls the latest
+   before you work — even if you forget to paste the Step 3 block below. So you're always
+   on the newest data. (If you ever have uncommitted changes AND you're behind, it will NOT
+   auto-pull; it'll warn you to commit/stash first, then run: git pull --rebase)
+
+WORKFLOW (still good practice):
+      git pull --rebase        <- the hook does this for you, but running it is harmless
       ...do your work...
       git push
 Force-push is blocked on main. Always pull --rebase before you push.

@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "hooks": {
+    "sessionStart": [
+      {
+        "command": "powershell -NoProfile -ExecutionPolicy Bypass -File .cursor/hooks/session-sync.ps1",
+        "timeout": 45
+      },
+      {
+        "command": "bash .cursor/hooks/session-sync.sh",
+        "timeout": 45
+      }
+    ]
+  }
+}
