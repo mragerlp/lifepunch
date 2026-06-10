@@ -23,6 +23,7 @@ New-Item -ItemType Directory -Force -Path $programs | Out-Null
 
 function New-Lnk {
     param([string]$Path, [string]$Target, [string]$Arguments, [string]$Icon, [string]$Desc, [string]$WorkDir)
+    if (Test-Path -LiteralPath $Path) { Remove-Item -LiteralPath $Path -Force }
     $shell = New-Object -ComObject WScript.Shell
     $sc = $shell.CreateShortcut($Path)
     $sc.TargetPath = $Target
@@ -44,12 +45,13 @@ New-Lnk (Join-Path $programs "$shortcutName.lnk") $ps $args $iconLoc $desc $repo
 if (-not $SkipCornermanDesktop) {
     $cornermanSsh = if ($env:CORNERMAN_SSH) { $env:CORNERMAN_SSH } else { 'cornerman' }
     $rag = 'C:/Projects/cornerman-rag'
-    $remoteIcon = "$rag/lifepunch-vengeance.png"
+    $vengeanceIco = Get-LifePunchShortcutIconPath -Tier vengeance
+    $remoteIcon = "$rag/lifepunch-vengeance.ico"
     $remoteCmd = 'C:\Projects\cornerman-rag\Talk to Vengeance.cmd'
     Write-Host ''
     Write-Host "Cornerman desktop ($cornermanSsh)..." -ForegroundColor Cyan
     try {
-        & scp.exe -o BatchMode=yes -o ConnectTimeout=8 $iconPath "${cornermanSsh}:${remoteIcon}" 2>$null
+        & scp.exe -o BatchMode=yes -o ConnectTimeout=8 $vengeanceIco "${cornermanSsh}:${remoteIcon}" 2>$null
         if ($LASTEXITCODE -eq 0) {
             $iconRemoteLoc = "$remoteIcon,0"
             $ps1 = @"

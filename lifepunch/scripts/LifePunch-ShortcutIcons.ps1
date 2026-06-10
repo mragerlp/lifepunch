@@ -7,6 +7,10 @@ function Get-LifePunchBrandingRoot {
     return (Resolve-Path (Join-Path $scripts '..\branding')).Path
 }
 
+function Get-LifePunchShortcutIconPublishDir {
+    return (Join-Path $env:USERPROFILE 'Documents\LifePunch-Icons')
+}
+
 function Get-LifePunchShortcutIconPath {
     param(
         [Parameter(Mandatory)]
@@ -19,14 +23,18 @@ function Get-LifePunchShortcutIconPath {
         cornerman   = 'lifepunch-cornerman.png'
         lifepunchnet = 'lifepunch-lifepunchnet.png'
     }
+    $pngName = $map[$Tier]
+    $icoName = [System.IO.Path]::ChangeExtension($pngName, '.ico')
+    $publish = Join-Path (Get-LifePunchShortcutIconPublishDir) $icoName
+    if (Test-Path -LiteralPath $publish) { return $publish }
     $root = Get-LifePunchBrandingRoot
-    $path = Join-Path $root "shortcut-icons\$($map[$Tier])"
-    if (-not (Test-Path -LiteralPath $path)) {
-        $fallback = Join-Path $root 'cornerman\cornerman-terminal-icon.ico'
-        if (Test-Path -LiteralPath $fallback) { return $fallback }
-        throw "Missing shortcut icon for tier '$Tier': $path"
-    }
-    return $path
+    $repoIco = Join-Path $root "shortcut-icons\$icoName"
+    if (Test-Path -LiteralPath $repoIco) { return $repoIco }
+    $png = Join-Path $root "shortcut-icons\$name"
+    if (Test-Path -LiteralPath $png) { return $png }
+    $fallback = Join-Path $root 'cornerman\cornerman-terminal-icon.ico'
+    if (Test-Path -LiteralPath $fallback) { return $fallback }
+    throw "Missing shortcut icon for tier '$Tier': $ico (run Build-LifePunchShortcutIcons.ps1)"
 }
 
 function Get-LifePunchShortcutIconLocation {
@@ -37,5 +45,6 @@ function Get-LifePunchShortcutIconLocation {
     )
     $path = Get-LifePunchShortcutIconPath -Tier $Tier
     if ($path -like '*.ico') { return "$path,0" }
-    return $path
+    # PNG in IconLocation is ignored by Windows Explorer — build .ico first.
+    return "$path,0"
 }

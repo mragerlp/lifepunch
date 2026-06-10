@@ -150,16 +150,21 @@ if ($tcp9000.TcpTestSucceeded) {
 Write-Host ''
 Write-Host 'Preflight Cornerman...' -ForegroundColor Cyan
 $sshOk = $false
+$prevEa = $ErrorActionPreference
+$ErrorActionPreference = 'Continue'
 try {
-    $pong = ssh -o BatchMode=yes -o ConnectTimeout=8 $CornermanSsh 'echo ok' 2>$null
-    $sshOk = ($LASTEXITCODE -eq 0 -and $pong -eq 'ok')
+    & ssh -o BatchMode=yes -o ConnectTimeout=8 $CornermanSsh 'powershell -NoProfile -NonInteractive -Command "Write-Output ok"' 2>$null
+    $sshOk = ($LASTEXITCODE -eq 0)
 }
-catch { $sshOk = $false }
+finally { $ErrorActionPreference = $prevEa }
 Add-Check -Label 'Cornerman SSH' -Pass $sshOk -Detail $CornermanSsh
 
 if ($sshOk) {
-    $relayScriptOk = ssh -o BatchMode=yes -o ConnectTimeout=8 $CornermanSsh "if (Test-Path -LiteralPath '$CornermanRelayScript') { 'yes' } else { 'no' }" 2>$null
-    Add-Check -Label 'Start-CornermanVoiceRelay.ps1' -Pass ($relayScriptOk -eq 'yes') -Detail $CornermanRelayScript
+    $relayRemote = "powershell -NoProfile -NonInteractive -Command ""if (Test-Path -LiteralPath '$CornermanRelayScript') { Write-Output yes } else { Write-Output no }"""
+    $ErrorActionPreference = 'Continue'
+    $relayScriptOk = (& ssh -o BatchMode=yes -o ConnectTimeout=8 $CornermanSsh $relayRemote 2>$null | Out-String).Trim()
+    $ErrorActionPreference = $prevEa
+    Add-Check -Label 'Start-CornermanVoiceRelay.ps1' -Pass ($relayScriptOk -match 'yes') -Detail $CornermanRelayScript
 }
 
 # --- Results table ---

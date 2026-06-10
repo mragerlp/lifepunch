@@ -109,6 +109,7 @@ function New-RemoteShortcut {
         [string]$IconLocation,
         [string]$Description
     )
+    if (Test-Path -LiteralPath $ShortcutPath) { Remove-Item -LiteralPath $ShortcutPath -Force }
     $shell = New-Object -ComObject WScript.Shell
     $sc = $shell.CreateShortcut($ShortcutPath)
     $sc.TargetPath = "$env:WINDIR\System32\mstsc.exe"

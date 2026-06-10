@@ -138,6 +138,7 @@ Preflight script: `Test-VoiceCommsReady.ps1` · ports: `VOICE_PIPELINE_STATUS.md
 |---------|------------------|
 | Shortcut icon tiers | `lifepunch/branding/shortcut-icons/` + `.cursor/rules/lifepunch-shortcut-icons.mdc` |
 | Shortcut installers | `lifepunch/scripts/Install-LifePunch*.ps1` |
+| Reboot prep (all nodes) | `lifepunch/scripts/Prep-LifePunchReboot.ps1` · lifepunchnet: `server/scripts/Prep-LifePunchReboot-Lifepunchnet.ps1` |
 | Start Day orchestrator | `lifepunch/scripts/Start-LifePunchDay.ps1` |
 | Ops uniform / consoles | `lifepunch/branding/lifepunch-ops/` |
 | lifepunchnet boot | `lifepunch/server/scripts/Install-LifePunchNetBoot.ps1` |

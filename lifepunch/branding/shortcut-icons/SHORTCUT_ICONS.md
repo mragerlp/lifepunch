@@ -28,4 +28,8 @@ cd <repo>\lifepunch\scripts
 powershell -ExecutionPolicy Bypass -File .\Install-LifePunchShortcutIcons.ps1
 ```
 
-Re-runs all shortcut installers so every `.lnk` picks up the latest PNG from `shortcut-icons/`.
+Builds `.ico` from tier PNGs (Windows ignores PNG in `IconLocation`), then re-runs all shortcut installers.
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\Build-LifePunchShortcutIcons.ps1
+```

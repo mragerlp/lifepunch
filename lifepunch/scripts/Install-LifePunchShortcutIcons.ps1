@@ -4,8 +4,10 @@ $ErrorActionPreference = 'Stop'
 $Here = $PSScriptRoot
 
 Write-Host ''
-Write-Host 'LifePunch shortcut icons — refresh all installers' -ForegroundColor Cyan
+Write-Host 'LifePunch shortcut icons - refresh all installers' -ForegroundColor Cyan
 Write-Host ''
+
+& (Join-Path $Here 'Build-LifePunchShortcutIcons.ps1')
 
 & (Join-Path $Here 'Install-LifePunchDayShortcut.ps1')
 & (Join-Path $Here 'Install-LifePunchVoiceShortcuts.ps1')
@@ -22,3 +24,15 @@ Write-Host '  red        Talk to Vengeance (voice to VENGEANCE)' -ForegroundColo
 Write-Host '  blue       lifepunchnet (RDP)' -ForegroundColor DarkGray
 Write-Host ''
 Write-Host 'Icons: lifepunch/branding/shortcut-icons/SHORTCUT_ICONS.md' -ForegroundColor Cyan
+
+# Bust Explorer icon cache (generic document icon = stale cache or bad ICO).
+Write-Host 'Refreshing desktop icon cache...' -ForegroundColor DarkGray
+$prev = $ErrorActionPreference
+$ErrorActionPreference = 'Continue'
+$ie4u = Join-Path ${env:WinDir} 'System32\ie4uinit.exe'
+if (Test-Path -LiteralPath $ie4u) { Start-Process $ie4u -ArgumentList '-show' -WindowStyle Hidden }
+Stop-Process -Name explorer -Force -ErrorAction SilentlyContinue
+Start-Sleep -Milliseconds 1200
+Start-Process explorer.exe
+$ErrorActionPreference = $prev
+Write-Host 'Icons published under Documents\LifePunch-Icons - check desktop now.' -ForegroundColor Green

@@ -6,7 +6,7 @@ $ragRoot = 'C:\Projects\cornerman-rag'
 $relay = Join-Path $ragRoot 'relay.ps1'
 
 if (-not (Test-Path -LiteralPath $relay)) {
-    throw "Missing $relay — run Apply-CornermanPushToTalk.ps1 from VENGEANCE"
+    throw "Missing $relay - run Apply-CornermanPushToTalk.ps1 from VENGEANCE"
 }
 
 $existing = Get-CimInstance Win32_Process -Filter "Name = 'python.exe'" -ErrorAction SilentlyContinue |

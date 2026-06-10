@@ -22,6 +22,7 @@ $programs = Join-Path $env:APPDATA 'Microsoft\Windows\Start Menu\Programs\LifePu
 New-Item -ItemType Directory -Force -Path $programs | Out-Null
 
 function New-Lnk([string]$Path, [string]$Target, [string]$ShortcutArgs, [string]$Desc, [string]$Icon) {
+    if (Test-Path -LiteralPath $Path) { Remove-Item -LiteralPath $Path -Force }
     $shell = New-Object -ComObject WScript.Shell
     $sc = $shell.CreateShortcut($Path)
     $sc.TargetPath = $Target

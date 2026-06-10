@@ -27,8 +27,12 @@ else {
     Report 'server-host-watch.local.json' $true $cfg.host
 }
 
-$ssh = ssh -o BatchMode=yes -o ConnectTimeout=8 $SshTarget "echo ok" 2>$null
-Report 'Cornerman SSH' ($LASTEXITCODE -eq 0 -and $ssh -eq 'ok') $SshTarget
+$prevEa = $ErrorActionPreference
+$ErrorActionPreference = 'Continue'
+& ssh -o BatchMode=yes -o ConnectTimeout=8 $SshTarget 'powershell -NoProfile -NonInteractive -Command "Write-Output ok"' 2>$null
+$sshOk = ($LASTEXITCODE -eq 0)
+$ErrorActionPreference = $prevEa
+Report 'Cornerman SSH' $sshOk $SshTarget
 
 if ($cfg) {
     $h = @{ Authorization = "Bearer $($cfg.token)" }

@@ -16,6 +16,26 @@ Canonical checkpoint: `lifepunch/docs/OPS_CLARITY_CHECKPOINT.md`.
 | **Cornerman (RDP)** | Green | LAN box |
 | **lifepunchnet (RDP)** | Blue | Hosted box |
 
+## Before a full reboot (all machines)
+
+**VENGEANCE** (from monorepo):
+
+```powershell
+cd lifepunch\scripts
+powershell -ExecutionPolicy Bypass -File .\Prep-LifePunchReboot.ps1 -OpenLifepunchnetRdp
+```
+
+**lifepunchnet** (elevated, via RDP):
+
+```powershell
+cd C:\lifepunch\lifepunch-rdp-server\lifepunch\server\scripts
+powershell -ExecutionPolicy Bypass -File .\Prep-LifePunchReboot-Lifepunchnet.ps1 -RemoteAddress 71.250.46.224
+```
+
+Reboot order: **lifepunchnet** → **Cornerman** → **VENGEANCE** → **Start Day**.
+
+---
+
 ## Daily workflow (Bloodwave)
 
 1. Power on **VENGEANCE** (Cornerman + lifepunchnet already on or wake on LAN).

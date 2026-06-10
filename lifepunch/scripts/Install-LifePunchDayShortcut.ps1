@@ -23,7 +23,9 @@ $ps = "$env:WINDIR\System32\WindowsPowerShell\v1.0\powershell.exe"
 $args = "-ExecutionPolicy Bypass -NoProfile -File `"$Launcher`" -OpenRdpOnFailure"
 
 foreach ($dir in @($desktop, $programs)) {
-    $sc = $shell.CreateShortcut((Join-Path $dir "$shortcutName.lnk"))
+    $lnk = Join-Path $dir "$shortcutName.lnk"
+    if (Test-Path -LiteralPath $lnk) { Remove-Item -LiteralPath $lnk -Force }
+    $sc = $shell.CreateShortcut($lnk)
     $sc.TargetPath = $ps
     $sc.Arguments = $args
     $sc.IconLocation = $iconLoc
