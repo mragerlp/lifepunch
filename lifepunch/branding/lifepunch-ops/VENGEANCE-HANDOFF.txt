@@ -35,8 +35,8 @@ ART SYNC (OneDrive → repo)
 .\Sync-OutfitsFromOneDrive.ps1
   Outfits:  OneDrive\Desktop\Hacker Job\<tier>\<machine>
   Wallpapers uniform: OneDrive\Desktop\wallpapers\  (vengeance/cornerman/lifepunchnet wallpaper.png)
-  Uniform refresh: wallpaper + gray taskbar only (does NOT rewrite window accents).
-  Recovery: Apply-LifePunchOpsConsole.ps1 -RestoreTitleBarAccent if title bars were flattened.
+  Uniform: dark mode + colored title bars + gray taskbar + wallpaper (run on each web node).
+  RDP: remote session is dark after apply on Cornerman / lifepunchnet.
 
 REBUILD ZIP (after pack edits)
 ------------------------------

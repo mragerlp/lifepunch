@@ -14,8 +14,7 @@
   LAN IP shown in the ops banner.
 
 .PARAMETER RestoreTitleBarAccent
-  One-time recovery: re-apply per-node title-bar accent (DWM) after a bad dress run.
-  Normal uniform refresh does NOT touch window colorization — only gray taskbar + wallpaper.
+  Deprecated (no-op). Title-bar accent is always applied with dark mode.
 
 .EXAMPLE
   powershell -ExecutionPolicy Bypass -File .\Apply-LifePunchOpsConsole.ps1 -Machine vengeance -NodeIp 192.168.1.236
@@ -181,50 +180,48 @@ else {
     Write-Note "Applied '$($scheme.name)' to $wtPath"
 }
 
-# 2. Title-bar accent (opt-in recovery only — not part of routine uniform refresh)
-if ($RestoreTitleBarAccent) {
-    $accent = Get-AccentDwords $accentHex
-    Write-Step ('Restore title-bar accent = #' + $accentHex)
-    $dwm = 'HKCU:\Software\Microsoft\Windows\DWM'
-    New-Item -Path $dwm -Force | Out-Null
-    Set-ItemProperty -Path $dwm -Name AccentColor -Type DWord -Value $accent.ABGR
-    Set-ItemProperty -Path $dwm -Name ColorizationColor -Type DWord -Value $accent.ARGB
-    Set-ItemProperty -Path $dwm -Name ColorizationAfterglow -Type DWord -Value $accent.ARGB
-    Set-ItemProperty -Path $dwm -Name ColorPrevalence -Type DWord -Value 1
-    Set-ItemProperty -Path $dwm -Name EnableWindowColorization -Type DWord -Value 1
-
-    $factors = @(1.6, 1.4, 1.2, 1.0, 0.8, 0.6, 0.45, 0.3)
-    $palette = @()
-    foreach ($f in $factors) {
-        foreach ($c in $accent.RGB) {
-            $v = [math]::Round($c * $f)
-            if ($v -gt 255) { $v = 255 }
-            $palette += [byte]$v
-        }
-        $palette += [byte]255
-    }
-    $accentKey = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Accent'
-    New-Item -Path $accentKey -Force | Out-Null
-    Set-ItemProperty -Path $accentKey -Name AccentPalette -Type Binary -Value ([byte[]]$palette)
-    Write-Note 'Title-bar accent restored. DWM left at ColorPrevalence=1; taskbar gray applied below.'
-}
-else {
-    Write-Note 'Skipping window accent/colorization (uniform = wallpaper + gray taskbar only).'
-}
-
-# 2b. Gray taskbar (all web nodes) — does not touch DWM / title-bar colorization
-Write-Step 'Taskbar = gray (uniform)'
-$gray = Get-AccentDwords '1E1E1E'
+# 2. Dark mode (system + apps — File Explorer, Settings, RDP sessions on this box)
+Write-Step 'Windows dark theme'
 $personalize = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize'
 New-Item -Path $personalize -Force | Out-Null
-Set-ItemProperty -Path $personalize -Name ColorPrevalence -Type DWord -Value 0
+Set-ItemProperty -Path $personalize -Name SystemUsesLightTheme -Type DWord -Value 0
+Set-ItemProperty -Path $personalize -Name AppsUseLightTheme -Type DWord -Value 0
+Write-Note 'System + apps dark (matches Cursor / terminal HUD look).'
+
+# 3. Title-bar accent (per-node border color — always; DWM ColorPrevalence stays 1)
+$accent = Get-AccentDwords $accentHex
+Write-Step ('Title-bar accent = #' + $accentHex)
+$dwm = 'HKCU:\Software\Microsoft\Windows\DWM'
+New-Item -Path $dwm -Force | Out-Null
+Set-ItemProperty -Path $dwm -Name AccentColor -Type DWord -Value $accent.ABGR
+Set-ItemProperty -Path $dwm -Name ColorizationColor -Type DWord -Value $accent.ARGB
+Set-ItemProperty -Path $dwm -Name ColorizationAfterglow -Type DWord -Value $accent.ARGB
+Set-ItemProperty -Path $dwm -Name ColorPrevalence -Type DWord -Value 1
+Set-ItemProperty -Path $dwm -Name EnableWindowColorization -Type DWord -Value 1
+
+$factors = @(1.6, 1.4, 1.2, 1.0, 0.8, 0.6, 0.45, 0.3)
+$palette = @()
+foreach ($f in $factors) {
+    foreach ($c in $accent.RGB) {
+        $v = [math]::Round($c * $f)
+        if ($v -gt 255) { $v = 255 }
+        $palette += [byte]$v
+    }
+    $palette += [byte]255
+}
 $accentKey = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Accent'
 New-Item -Path $accentKey -Force | Out-Null
+Set-ItemProperty -Path $accentKey -Name AccentPalette -Type Binary -Value ([byte[]]$palette)
+
+# 4. Gray taskbar (all web nodes) — Personalize/Start only; never DWM ColorPrevalence=0
+Write-Step 'Taskbar = gray (uniform)'
+$gray = Get-AccentDwords '1E1E1E'
+Set-ItemProperty -Path $personalize -Name ColorPrevalence -Type DWord -Value 0
 Set-ItemProperty -Path $accentKey -Name AccentColorMenu -Type DWord -Value $gray.ABGR
 Set-ItemProperty -Path $accentKey -Name StartColorMenu -Type DWord -Value $gray.ABGR
-Write-Note 'Taskbar/Start gray. Window borders and terminal scheme unchanged.'
+Write-Note 'Dark windows + colored title bars; taskbar/Start gray.'
 
-# 3. Wallpaper
+# 5. Wallpaper
 Write-Step 'Desktop wallpaper'
 $wpName = [string]$node.wallpaper
 $wpPath = Join-Path $wallDir $wpName
@@ -244,7 +241,7 @@ else {
     Write-Note "No wallpaper for $Machine ($wpName). See SYNC_FROM_LIFEPUNCHNET.md"
 }
 
-# 4. oh-my-posh + banner
+# 6. oh-my-posh + banner
 Write-Step 'oh-my-posh + ops banner profile'
 if (-not (Get-Command oh-my-posh -ErrorAction SilentlyContinue)) {
     $winget = Get-Command winget -ErrorAction SilentlyContinue
@@ -270,6 +267,14 @@ foreach ($target in $profileTargets) {
     Set-ProfileBlock -Path $target.Path -Marker $ompMarker -Line $ompBlock
     Set-ProfileBlock -Path $target.Path -Marker $bannerMarker -Line $bannerLine
 }
+
+Write-Step 'Repaint shell'
+Stop-Process -Name explorer -Force -ErrorAction SilentlyContinue
+Start-Sleep -Seconds 2
+if (-not (Get-Process -Name explorer -ErrorAction SilentlyContinue)) {
+    Start-Process explorer
+}
+Write-Note 'Explorer restarted — dark theme + title bars should match ops HUD.'
 
 Write-Host ''
 Write-Host ('Done. NODE=' + $node.node + ' on ' + $Machine + '. Open a NEW Terminal tab to preview.') -ForegroundColor Cyan

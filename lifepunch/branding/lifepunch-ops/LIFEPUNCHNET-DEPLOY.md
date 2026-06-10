@@ -12,8 +12,8 @@
 | Banner | `L I F E P U N C H . N E T` |
 | Taglines | SECURE. CONTROL. SERVE. / PROTECTING. MANAGING. GOVERNING. |
 | Wallpaper | `wallpapers/lifepunch-ops-wallpaper-lifepunchnet.png` |
-| Accent | `#00D4FF` title bars (set once; applier does not rewrite window colorization) |
-| Taskbar | Dark gray on every node (uniform step in apply script) |
+| Theme | Dark mode (system + apps) — required for RDP sessions |
+| Accent | `#00D4FF` title bars; gray taskbar |
 
 Pack path on-box after copy: `C:\lifepunch\branding\lifepunch-ops\`
 
@@ -57,7 +57,7 @@ The applier uses **`oh-my-posh print primary`** in a custom `prompt` function �
 - [ ] Prompt shows `lifepunch@lifepunch.net`
 - [ ] Banner: `L I F E P U N C H . N E T` + government taglines
 - [ ] Desktop wallpaper = government HUD uniform (`lifepunchnetwallpaper.png`)
-- [ ] Cyan title-bar accent intact; **gray taskbar** (run `-RestoreTitleBarAccent` once if borders were flattened)
+- [ ] Dark File Explorer / Settings; cyan title bars; gray taskbar
 
 ## Option B — SSH (when port 22 is open)
 

@@ -73,9 +73,8 @@ powershell -ExecutionPolicy Bypass -File .\Apply-LifePunchOpsConsole.ps1 -Machin
 # lifepunchnet: copy pack on-box or RDP, then -Machine lifepunchnet
 ```
 
-**Uniform apply** sets wallpaper + gray taskbar only — it does **not** rewrite window
-colorization or title-bar accents. If a bad run flattened borders, add `-RestoreTitleBarAccent`
-once, then re-run without it.
+**Uniform apply** sets: dark mode (system + apps), per-node **colored title bars**,
+**gray taskbar**, and wallpaper. RDP sessions inherit dark theme from the remote box after apply.
 
 See `THEME.md` for terminal schemes and palette tokens.
 
