@@ -8,7 +8,7 @@
 |------|-------|
 | Tier | Government Terminal |
 | Scheme | `LifePunch Ops` (cyan) |
-| Prompt | `lifepunch@lifepunch.net:path$` |
+| Prompt | `lifepunch@lifepunch.net:path$` (`lifepunch-government.omp.json`) |
 | Banner | `L I F E P U N C H . N E T` |
 | Taglines | SECURE. CONTROL. SERVE. / PROTECTING. MANAGING. GOVERNING. |
 | Wallpaper | `wallpapers/lifepunch-ops-wallpaper-lifepunchnet.png` |
@@ -41,13 +41,14 @@ cd C:\lifepunch\branding\lifepunch-ops
 powershell -ExecutionPolicy Bypass -File .\Apply-LifePunchOpsConsole.ps1 -Machine lifepunchnet
 ```
 
-### 3. If oh-my-posh is missing
+### 3. Oh My Posh (required)
 
 ```powershell
 winget install --id JanDeDobbeleer.OhMyPosh -e --source winget --accept-source-agreements --accept-package-agreements
 ```
 
-Then re-run the apply script.
+The applier uses **`oh-my-posh print primary`** in a custom `prompt` function — not plain
+`init | Invoke-Expression` (init can return empty on some boxes). Re-run apply after install.
 
 ### 4. Verify (new Windows Terminal tab)
 

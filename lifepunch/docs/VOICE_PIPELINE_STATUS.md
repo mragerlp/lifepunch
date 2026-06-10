@@ -2,15 +2,30 @@
 
 > Updated when lifepunchnet confirms services live. Agents: read after `git pull --rebase`.
 
-## lifepunchnet services (stand by for lane ops)
+## lifepunchnet services (auto-boot target)
 
-| Port | Service | Status |
-|------|---------|--------|
-| 9000 | Whisper STT (`small.en`) | Live |
-| 9101 | Watchdog status API | Live |
-| 9102 | Session hub `/ingest` | Live (firewall: VENGEANCE home IP) |
+| Port | Service | Boot |
+|------|---------|------|
+| 9000 | Whisper STT (`small.en`) | `LifePunch-Whisper-Deploy` AtLogon → `deploy-whisper.ps1` |
+| 9101 | Watchdog status API | `LifePunch-ServerHost-StatusServer` AtStartup |
+| 9102 | Session hub `/ingest` | `LifePunch-SessionHub` AtStartup |
+
+**One-shot installer (lifepunchnet, elevated):** `lifepunch/server/scripts/Install-LifePunchNetBoot.ps1`
+
+Docker Desktop **Start when you sign in** (Administrator) is still manual once. VENGEANCE does not start Docker remotely in v1.
 
 Token: `C:\lifepunch\status\status-token.txt` on lifepunchnet = `server-host-watch.local.json` on VENGEANCE.
+
+See `lifepunch/docs/LIFEPUNCH_PARTY_HANDOFF.md`.
+
+## VENGEANCE — Start Day (one desktop action)
+
+**LifePunch — Start Day** → `Start-LifePunchDay.ps1`
+
+- Gate: `Test-NetConnection` lifepunchnet **:9000** (no Docker/SSH to lifepunchnet from desk in v1)
+- Starts: voice watch, session sync, lifepunchnet watchdog watch
+- Remote-starts Cornerman PTT: `Start-CornermanVoiceRelay.ps1` over SSH
+- Install: `Install-LifePunchDayShortcut.ps1`
 
 ## VENGEANCE wiring (owner runs before Cornerman voice work)
 

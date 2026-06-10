@@ -7,7 +7,7 @@ pack is the repo copy. See **`OUTFITS.md`** for the full cast, paths, and taglin
 |------|---------|--------|--------|
 | Enhanced Hacker Terminal | **VENGEANCE** | `VENGEANCE Ops` (red) | `vengeance@vengeance:~$` |
 | Hacker Terminal | **Cornerman** | `Cornerman Ops` (green) | `cornerman@cornerman:~$` |
-| Government Terminal | **lifepunchnet** | `LifePunch Ops` (cyan) | `lifepunch@lifepunch.net:~$` |
+| Government Terminal | **lifepunchnet** | `LifePunch Ops` (cyan) | `lifepunch@lifepunch.net:~$` (`lifepunch-government.omp.json`) |
 
 ## Palettes
 
@@ -37,7 +37,10 @@ Open a **new** Windows Terminal tab after apply.
 |------|---------|
 | `OUTFITS.md` | Cast, OneDrive paths, asset parity |
 | `Sync-OutfitsFromOneDrive.ps1` | Pull uniforms from OneDrive → `outfits/` + `wallpapers/` |
-| `Apply-LifePunchOpsConsole.ps1` | WT scheme, accent, wallpaper, oh-my-posh, banner |
+| `Apply-LifePunchOpsConsole.ps1` | WT scheme, accent, wallpaper, oh-my-posh `print primary`, banner |
+| `lifepunch-government.omp.json` | Government Terminal prompt (lifepunchnet) |
+| `Build-OpsDeployZip.ps1` | `lifepunch-ops-deploy.zip` for RDP / lane handoff |
+| `VENGEANCE-HANDOFF.txt` | Primary PC sync + apply quick reference |
 | `nodes.json` | Per-machine tier, brand, wallpaper map |
 | `outfits/<machine>/` | Full outfit (icons, banners, console refs) |
 | `wallpapers/` | Desktop images applied by the script |

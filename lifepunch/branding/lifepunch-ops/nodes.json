@@ -37,7 +37,7 @@
     "wallpaper": "lifepunch-ops-wallpaper-lifepunchnet.png",
     "wallpaperAsset": "lifepunchnetbanner.png",
     "scheme": "windows-terminal-lifepunch-ops.json",
-    "omp": "lifepunchnet.omp.json",
+    "omp": "lifepunch-government.omp.json",
     "accent": "00D4FF",
     "brand": "government",
     "bannerColor": "Cyan"

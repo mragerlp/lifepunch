@@ -1,0 +1,45 @@
+VENGEANCE — lifepunch-ops branding handoff (primary PC / monorepo)
+===============================================================
+
+Canonical pack: lifepunch/branding/lifepunch-ops/
+Deploy zip:     lifepunch/branding/lifepunch-ops-deploy.zip (rebuild after pack changes)
+
+When lifepunchnet on-box pack is ahead, pull C:\lifepunch\branding\lifepunch-ops\ into the
+monorepo, commit, push main, rebuild zip so GitLab lanes can git pull.
+
+OH-MY-POSH (every box)
+----------------------
+winget install --id JanDeDobbeleer.OhMyPosh -e --source winget
+
+Do NOT use plain `oh-my-posh init ... | Invoke-Expression` — init can return empty on some
+boxes. Apply-LifePunchOpsConsole.ps1 wires:
+
+  function prompt { oh-my-posh print primary --config "<omp.json>" --shell pwsh|powershell }
+
+PER-MACHINE APPLY
+-----------------
+cd <repo>\lifepunch\branding\lifepunch-ops
+
+VENGEANCE (Enhanced Hacker Terminal, red):
+  .\Apply-LifePunchOpsConsole.ps1 -Machine vengeance -NodeIp <desk-LAN-IP>
+
+Cornerman (Hacker Terminal, green):
+  .\Apply-LifePunchOpsConsole.ps1 -Machine cornerman -NodeIp 192.168.1.227
+
+lifepunchnet (Government Terminal, cyan):
+  .\Apply-LifePunchOpsConsole.ps1 -Machine lifepunchnet
+  Theme: lifepunch-government.omp.json — see LIFEPUNCHNET-DEPLOY.md
+
+ART SYNC (OneDrive → repo)
+--------------------------
+.\Sync-OutfitsFromOneDrive.ps1
+
+REBUILD ZIP (after pack edits)
+------------------------------
+.\Build-OpsDeployZip.ps1
+
+DOCS
+----
+OUTFITS.md — Hacker Job cast + OneDrive paths
+THEME.md   — schemes, workflow
+LIFEPUNCHNET-DEPLOY.md — RDP/SSH dress lifepunchnet

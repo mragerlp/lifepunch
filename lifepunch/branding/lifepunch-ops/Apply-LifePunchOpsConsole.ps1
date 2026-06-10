@@ -50,6 +50,18 @@ function Get-AccentDwords([string]$hex) {
     }
 }
 
+function Get-OpsPromptBlock {
+    param(
+        [string] $ThemePath,
+        [string] $ShellName
+    )
+    $cfg = $ThemePath.Replace("'", "''")
+    return @(
+        '[Console]::OutputEncoding = [Text.Encoding]::UTF8'
+        ('function prompt { oh-my-posh print primary --config "' + $cfg + '" --shell ' + $ShellName + ' }')
+    ) -join "`n"
+}
+
 function Set-ProfileBlock {
     param(
         [string] $Path,
@@ -227,14 +239,15 @@ if (-not (Get-Command oh-my-posh -ErrorAction SilentlyContinue)) {
 
 $ompMarker = '# LifePunch Ops prompt'
 $bannerMarker = '# LifePunch Ops banner'
-$ompLine = 'oh-my-posh init pwsh --config "' + $themePath + '" | Invoke-Expression'
 $bannerLine = '. "' + $profileSnippet + '"'
-foreach ($p in @(
-        "$HOME\Documents\PowerShell\Microsoft.PowerShell_profile.ps1",
-        "$HOME\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1"
-    )) {
-    Set-ProfileBlock -Path $p -Marker $ompMarker -Line $ompLine
-    Set-ProfileBlock -Path $p -Marker $bannerMarker -Line $bannerLine
+$profileTargets = @(
+    @{ Path = "$HOME\Documents\PowerShell\Microsoft.PowerShell_profile.ps1"; Shell = 'pwsh' },
+    @{ Path = "$HOME\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1"; Shell = 'powershell' }
+)
+foreach ($target in $profileTargets) {
+    $ompBlock = Get-OpsPromptBlock -ThemePath $themePath -ShellName $target.Shell
+    Set-ProfileBlock -Path $target.Path -Marker $ompMarker -Line $ompBlock
+    Set-ProfileBlock -Path $target.Path -Marker $bannerMarker -Line $bannerLine
 }
 
 Write-Host ''

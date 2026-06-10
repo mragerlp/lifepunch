@@ -1,5 +1,5 @@
 # Create LifePunch RDP shortcuts (Cornerman + lifepunchnet) on Desktop, Start menu, optional taskbar.
-# Both shortcuts use cornerman-terminal-icon.ico (same as Talk to Vengeance on Cornerman).
+# Icons: green = Cornerman, cyan = lifepunchnet (see branding/shortcut-icons/SHORTCUT_ICONS.md).
 #
 # First run (lifepunchnet IP unknown):
 #   Copy remote-hosts.local.json.example -> remote-hosts.local.json and set lifepunchnet.host
@@ -15,6 +15,7 @@ param(
 $ErrorActionPreference = 'Stop'
 $Here = $PSScriptRoot
 $RepoRoot = (Resolve-Path (Join-Path $Here '..')).Path
+. (Join-Path $Here 'LifePunch-ShortcutIcons.ps1')
 
 function Read-HostConfig {
     $basePath = Join-Path $Here 'remote-hosts.json'
@@ -39,14 +40,6 @@ function Read-HostConfig {
         $cfg.cornerman.host = $env:LIFEPUNCH_CORNERMAN_HOST.Trim()
     }
     return $cfg
-}
-
-function Get-IconPath([string]$iconFile, [string]$brandingFolder) {
-    $path = Join-Path $RepoRoot "branding\$brandingFolder\$iconFile"
-    if (-not (Test-Path -LiteralPath $path)) {
-        throw "Missing icon: $path"
-    }
-    return "$path,0"
 }
 
 function New-RdpFile {
@@ -164,12 +157,12 @@ Write-Host ''
 $targets = @(
     @{
         Key = 'cornerman'
-        Branding = 'cornerman'
+        IconTier = 'cornerman'
         Node = $cfg.cornerman
     },
     @{
         Key = 'lifepunchnet'
-        Branding = 'cornerman'
+        IconTier = 'lifepunchnet'
         Node = $cfg.lifepunchnet
     }
 )
@@ -178,7 +171,7 @@ $created = @()
 foreach ($t in $targets) {
     $node = $t.Node
     $hostAddr = [string]$node.host
-    $icon = Get-IconPath -iconFile $node.icon -brandingFolder $t.Branding
+    $icon = Get-LifePunchShortcutIconLocation -Tier $t.IconTier
     $rdpFile = Join-Path $rdpDir "$($t.Key).rdp"
 
     Write-Host "$($node.displayName):" -ForegroundColor White

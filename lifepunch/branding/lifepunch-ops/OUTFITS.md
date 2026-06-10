@@ -66,3 +66,21 @@ powershell -ExecutionPolicy Bypass -File .\Apply-LifePunchOpsConsole.ps1 -Machin
 ```
 
 See `THEME.md` for terminal schemes and palette tokens.
+
+## Desktop shortcut icons (VENGEANCE)
+
+Shortcuts use **tier icons** so you can see where they lead without reading the name:
+
+| Icon color | Tier | Examples |
+|------------|------|----------|
+| Tri-stack / universal | **Universal** | LifePunch — Start Day, Voice Preflight |
+| Red | **VENGEANCE** | LifePunch Voice Comms |
+| Green | **Cornerman** | Cornerman (RDP) |
+| Cyan | **lifepunchnet** | lifepunchnet (RDP) |
+
+Canonical PNGs: `lifepunch/branding/shortcut-icons/`. Refresh after pull:
+
+```powershell
+cd <repo>\lifepunch\scripts
+powershell -ExecutionPolicy Bypass -File .\Install-LifePunchShortcutIcons.ps1
+```

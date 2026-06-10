@@ -26,6 +26,10 @@ Scp-File (Join-Path $Here 'ptt_capture.py') 'ptt_capture.py'
 Scp-File (Join-Path $Here 'relay_ui.py') 'relay_ui.py'
 Scp-File (Join-Path $Here 'commands.py') 'commands.py'
 Scp-File (Join-Path $Here 'patch_relay_ptt.py') 'patch_relay_ptt.py'
+$relayStarter = Join-Path (Split-Path -Parent $Here) 'Start-CornermanVoiceRelay.ps1'
+if (Test-Path -LiteralPath $relayStarter) {
+    Scp-File $relayStarter 'Start-CornermanVoiceRelay.ps1'
+}
 
 Write-Host 'Patch cornerman-rag...' -ForegroundColor DarkGray
 ssh -o BatchMode=yes $CornermanHost "cd $CornermanRag; .venv/Scripts/python.exe patch_relay_ptt.py"

@@ -1,5 +1,8 @@
-{
-  "lifepunchnet": {
-    "host": "205.209.104.22"
-  }
-}
+{
+  "lifepunchnet": {
+    "host": "205.209.104.22"
+  },
+  "cornerman": {
+    "host": "192.168.1.227"
+  }
+}
