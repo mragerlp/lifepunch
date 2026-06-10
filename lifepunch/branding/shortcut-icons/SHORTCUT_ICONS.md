@@ -6,7 +6,7 @@ Icons tell you **which machine or scope** a shortcut targets at a glance.
 |------|-------|------|------------------|
 | **Universal** | All three (tri-stack) | `lifepunch-universal.png` | **LifePunch — Start Day**, **LifePunch Voice Preflight** |
 | **VENGEANCE** | Red | `lifepunch-vengeance.png` | **LifePunch Voice Comms** (desk-only voice windows) |
-| **Cornerman** | Green | `lifepunch-cornerman.png` | **Cornerman (RDP)** |
+| **Cornerman** | Green | `lifepunch-cornerman.png` | **Cornerman (RDP)**, **Talk to Vengeance** |
 | **lifepunchnet** | Blue / cyan | `lifepunch-lifepunchnet.png` | **lifepunchnet (RDP)** |
 
 Art source: Hacker Job outfit app icons (`lifepunch-ops/outfits/*/appicon.png` family).
