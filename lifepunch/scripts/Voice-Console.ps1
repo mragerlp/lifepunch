@@ -1,7 +1,19 @@
 # Shared LifePunch voice terminal layout (VENGEANCE PowerShell windows).
 # Cornerman relay_ui.py mirrors this spec — keep both in sync when changing banners/events.
+#
+# VENGEANCE uniform (June 2026): black/dark conhost + node accent banner; body text gray/white
+# (not DarkGray — unreadable on black). See lifepunch/branding/lifepunch-ops/UNIFORM_STANDARDS.md
 
 $script:VoiceConsoleWidth = 64
+
+# Readable body palette on dark backgrounds
+$script:VoiceColorSubtitle = 'Gray'
+$script:VoiceColorMetaLabel = 'Gray'
+$script:VoiceColorMetaValue = 'White'
+$script:VoiceColorDivider = 'Gray'
+$script:VoiceColorMuted = 'Gray'
+$script:VoiceColorLogTitle = 'Cyan'
+$script:VoiceColorLogLine = 'Gray'
 
 function Get-VoiceConsoleAccent {
     $cfgPath = Join-Path $env:LOCALAPPDATA 'LifePunch\ops-node.json'
@@ -54,7 +66,7 @@ function Write-VoiceHeader {
     Write-VoiceRule
     Write-Host "  $Title" -ForegroundColor $script:VoiceConsoleAccent
     if ($Subtitle) {
-        Write-Host "  $Subtitle" -ForegroundColor DarkGray
+        Write-Host "  $Subtitle" -ForegroundColor $script:VoiceColorSubtitle
     }
     Write-VoiceRule
     Write-Host ''
@@ -68,11 +80,20 @@ function Write-VoiceMeta {
         [string] $Value
     )
     $pad = $Label.PadRight(11)
-    Write-Host "  $pad  $Value" -ForegroundColor Gray
+    Write-Host "  $pad  " -NoNewline -ForegroundColor $script:VoiceColorMetaLabel
+    Write-Host $Value -ForegroundColor $script:VoiceColorMetaValue
+}
+
+function Write-VoiceMuted {
+    param(
+        [Parameter(Mandatory)]
+        [string] $Text
+    )
+    Write-Host "  $Text" -ForegroundColor $script:VoiceColorMuted
 }
 
 function Write-VoiceDivider {
-    Write-Host ('-' * $script:VoiceConsoleWidth) -ForegroundColor DarkGray
+    Write-Host ('-' * $script:VoiceConsoleWidth) -ForegroundColor $script:VoiceColorDivider
 }
 
 function Write-VoiceEvent {
@@ -109,8 +130,8 @@ function Write-VoiceSessionLog {
     )
     if (-not $Lines -or $Lines.Count -eq 0) { return }
     Write-Host ''
-    Write-Host "  $Title" -ForegroundColor DarkMagenta
+    Write-Host "  $Title" -ForegroundColor $script:VoiceColorLogTitle
     foreach ($line in $Lines) {
-        Write-Host "    $line" -ForegroundColor Gray
+        Write-Host "    $line" -ForegroundColor $script:VoiceColorLogLine
     }
 }

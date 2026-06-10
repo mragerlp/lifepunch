@@ -52,7 +52,7 @@ Write-Host ''
 
 $lastHash = Get-RemoteTranscriptHash
 if ($null -ne $lastHash) {
-    Write-Host 'Baseline captured (notify only on NEW relays after this point).' -ForegroundColor DarkGray
+    Write-VoiceMuted 'Baseline captured (notify only on NEW relays after this point).'
     $tail = Get-SessionLogTail
     if ($tail.Count -gt 0) {
         Write-VoiceSessionLog -Lines $tail -Title 'SESSION LOG (Cornerman baseline)'

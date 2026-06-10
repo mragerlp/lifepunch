@@ -7,6 +7,7 @@ param(
 
 $ErrorActionPreference = 'Stop'
 $Here = $PSScriptRoot
+. (Join-Path $Here 'Voice-Console.ps1')
 
 if (-not $SkipPreflight) {
     $preflight = Join-Path $Here 'Test-VoiceCommsReady.ps1'
@@ -39,6 +40,6 @@ if (-not $SkipWatchdog) {
 }
 
 Write-Host ''
-Write-Host 'Cornerman: tap F7 to arm, wait for Ready, hold F8, release.' -ForegroundColor DarkGray
-Write-Host 'VENGEANCE: when clipboard updates, Ctrl+V in Cursor.' -ForegroundColor DarkGray
+Write-VoiceMuted 'Cornerman: tap F7 to arm, wait for Ready, hold F8, release.'
+Write-VoiceMuted 'VENGEANCE: when clipboard updates, Ctrl+V in Cursor.'
 Write-Host ''

@@ -49,11 +49,15 @@ def _rule(color: str = "1;92") -> None:
 
 
 def _divider() -> None:
-    print(_c("90", "-" * _width()))
+    print(_c("37", "-" * _width()))
 
 
 def _meta(label: str, value: str) -> None:
-    print(_c("90", f"  {label.ljust(_LABEL_PAD)}  {value}"))
+    # Gray label + white value — readable on black (mirrors Voice-Console.ps1)
+    print(
+        _c("90", f"  {label.ljust(_LABEL_PAD)}  ")
+        + _c("97", value)
+    )
 
 
 def _event(name: str, detail: str = "", *, color: str = "1;92", stamp: bool = True) -> None:
@@ -75,7 +79,7 @@ def _voice_header(title: str, subtitle: str = "") -> None:
     _rule()
     print(_c("1;92", f"  {title}"))
     if subtitle:
-        print(_c("90", f"  {subtitle}"))
+        print(_c("37", f"  {subtitle}"))
     _rule()
     print()
 

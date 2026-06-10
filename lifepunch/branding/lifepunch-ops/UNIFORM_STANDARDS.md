@@ -58,3 +58,7 @@ See `lifepunch/branding/shortcut-icons/SHORTCUT_ICONS.md` and
 ## Per-node console uniform
 
 See `OUTFITS.md` and `lifepunch/docs/OPS_CLARITY_CHECKPOINT.md` §3.
+
+**VENGEANCE voice / ops windows** (`Voice-Console.ps1`): black/dark background + **node accent** on
+title rules only. Body text is **gray labels + white values** — never `DarkGray` on black (unreadable).
+Muted hints use `Write-VoiceMuted` (gray). Cornerman `relay_ui.py` mirrors the same contrast.
