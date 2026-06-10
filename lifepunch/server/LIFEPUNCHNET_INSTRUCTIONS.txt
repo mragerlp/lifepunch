@@ -1,0 +1,191 @@
+================================================================================
+  LIFEPUNCHNET INSTRUCTIONS
+  codename: lifepunchnet · hostname: lifepunchnet · 205.209.104.22
+================================================================================
+
+You are on **lifepunchnet** — LifePunch's always-on hosted box for DXRP ops,
+endless consoles, and (soon) Whisper STT.
+
+  Cornerman    = thin voice/mic client on your home LAN (AT2020)
+  VENGEANCE    = primary PC — Cursor, paste into agent chat
+  lifepunchnet = this box (not Cornerman, not VENGEANCE)
+
+--------------------------------------------------------------------------------
+WHAT THIS BOX OWNS
+--------------------------------------------------------------------------------
+
+  - DXRP server / portal / gamemode ops  (GitLab: lifepunch-rdp-server)
+  - Read-only grounding                  (GitLab: lifepunch-foundation)
+  - Whisper HTTP API (target)            port 9000 — install below
+  - Voice session log / hub (next phase) append-only console for agents
+
+NOT this box:
+  - Addon code, website
+  - Cornerman LLM (:1234 on 192.168.1.227)
+  - Voice microphone (AT2020 lives on Cornerman)
+
+--------------------------------------------------------------------------------
+STEP 1 — HEALTH CHECK (PowerShell on this box)
+--------------------------------------------------------------------------------
+
+  hostname
+  whoami
+  cd C:\lifepunch
+  git log -1 --oneline
+  git status -sb
+
+Expected: hostname lifepunchnet, clean main, HEAD at 4a156d4 or newer.
+
+--------------------------------------------------------------------------------
+STEP 2 — DOCKER + WSL (required for Whisper-in-Docker)
+--------------------------------------------------------------------------------
+
+  wsl --status
+  docker version
+
+If Docker shows "WSL is not installed" — run ELEVATED PowerShell:
+
+  wsl --install
+
+Reboot, open Docker Desktop, wait until it says Running. Then:
+
+  wsl --update
+  wsl --set-default-version 2
+  docker run hello-world
+
+--------------------------------------------------------------------------------
+STEP 3 — WHISPER ON PORT 9000
+--------------------------------------------------------------------------------
+
+Once Docker is green:
+
+  docker pull hwdsl2/whisper-server
+
+  docker run -d --name whisper --restart unless-stopped ^
+    -p 9000:9000 ^
+    -e WHISPER_MODEL=small.en ^
+    hwdsl2/whisper-server
+
+Create test audio (or copy any short .wav):
+
+  New-Item -ItemType Directory -Force -Path C:\lifepunch
+
+Smoke test ON THIS BOX:
+
+  curl.exe -X POST "http://127.0.0.1:9000/v1/audio/transcriptions" ^
+    -F "file=@C:\lifepunch\test.wav" ^
+    -F "model=small.en"
+
+Success = JSON response with a "text" field.
+
+Firewall: allow inbound 9000 only from trusted IPs (LAN / VENGEANCE / Cornerman).
+Do not expose 9000 to the public internet unless you intend to.
+
+--------------------------------------------------------------------------------
+STEP 4 — WIRE CORNERMAN TO LIFEPUNCHNET WHISPER (after Step 3 works)
+--------------------------------------------------------------------------------
+
+On Cornerman, point the voice relay at lifepunchnet:
+
+  $env:CORNERMAN_REMOTE_WHISPER_URL = "http://205.209.104.22:9000/v1/audio/transcriptions"
+
+Restart "Talk to Vengeance" on Cornerman.
+
+Cornerman captures audio; lifepunchnet transcribes.
+
+Confirm Cornerman can reach lifepunchnet first (curl from Cornerman to :9000).
+
+--------------------------------------------------------------------------------
+STEP 5 — GIT WORKFLOW ON THIS BOX
+--------------------------------------------------------------------------------
+
+  cd C:\lifepunch
+  git fetch
+  git pull --rebase
+
+  Write lane:  lifepunch-rdp-server only
+               (server/, portal/, gamemode/, maps/, admin-panel/, economy/, etc.)
+
+  Deploy key:  ~/.ssh/lifepunch_rdp — never copy private key off this box
+  Push:        normal git push to GitLab main — NO force-push
+  Integration: owner merges GitLab commits into GitHub monorepo on VENGEANCE
+
+Before server-page, economy, or production deploys: get explicit owner approval.
+
+--------------------------------------------------------------------------------
+STEP 6 — CONNECT FROM VENGEANCE
+--------------------------------------------------------------------------------
+
+  Desktop shortcut:  lifepunchnet (RDP)  ->  205.209.104.22
+  Login:             account PASSWORD (not Windows Hello PIN)
+  Clipboard:         enable in RDP dialog if you want copy/paste with VENGEANCE
+
+To change IP later (on VENGEANCE):
+
+  cd C:\Users\jared\Projects\lifepunchaddons\lifepunch\scripts
+  Edit remote-hosts.local.json  ->  lifepunchnet.host
+  .\Install-LifePunchRemoteShortcuts.ps1
+
+--------------------------------------------------------------------------------
+STEP 7 — CURSOR AGENT ON THIS BOX (optional)
+--------------------------------------------------------------------------------
+
+Paste Block C from lifepunch/docs/AGENT_PROMPT.md into Cursor on lifepunchnet
+for lane-scoped work (server audits, portal docs, Whisper hub, etc.).
+
+--------------------------------------------------------------------------------
+PORTS (quick reference)
+--------------------------------------------------------------------------------
+
+  3389   RDP           up (you connect via lifepunchnet shortcut)
+  22     SSH           not open from VENGEANCE
+  9000   Whisper API   install in Step 3
+  9101   Status API    watchdog (Step 8)
+
+--------------------------------------------------------------------------------
+CORNERMAN STT TODAY (if lifepunchnet Whisper is not ready yet)
+--------------------------------------------------------------------------------
+
+Cornerman Lemonade STT works now on the home LAN (not lifepunchnet):
+
+  http://192.168.1.227:13305/v1/audio/transcriptions
+  model=Whisper-Small
+
+Do NOT use port 9000 on Cornerman for OpenAI-style whisper — that port is
+LemonadeServer but does not answer /v1/audio/transcriptions there.
+
+--------------------------------------------------------------------------------
+STEP 8 — SECURITY / UPTIME BOT (install once, elevated on lifepunchnet)
+--------------------------------------------------------------------------------
+
+  cd C:\lifepunch\server\scripts
+  powershell -ExecutionPolicy Bypass -File .\Install-ServerHostWatchdog.ps1
+
+  Copy the generated TOKEN to VENGEANCE:
+    lifepunch\scripts\server-host-watch.local.json  (see .example)
+
+  On VENGEANCE (leave open):
+    powershell -File lifepunch\scripts\start-server-host-watch.ps1
+
+  The bot reports:
+    - lifepunchnet UP / DOWN / DEGRADED
+    - Who is logged in (RDP sessions)
+    - Failed logons + unexpected users (security alerts)
+    - Whisper docker status
+    - Optional Discord: set LIFEPUNCH_ALERT_WEBHOOK on lifepunchnet for push alerts
+
+  Status API:  http://<lifepunchnet-ip>:9101/status  (Bearer token, scoped firewall)
+
+--------------------------------------------------------------------------------
+REPORT BACK TO VENGEANCE WHEN DONE
+--------------------------------------------------------------------------------
+
+Paste:
+
+  1. Output of docker version (or WSL error if still blocked)
+  2. Output of the Whisper curl smoke test
+  3. git log -1 --oneline from C:\lifepunch
+
+================================================================================
+  lifepunch.co · lifepunchnet runbook · repo: lifepunch/server/
+================================================================================

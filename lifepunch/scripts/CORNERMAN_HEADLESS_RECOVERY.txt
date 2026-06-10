@@ -1,0 +1,81 @@
+================================================================================
+  CORNERMAN STUCK / NO KEYBOARD — RECOVERY (one-time physical access)
+================================================================================
+
+Right now VENGEANCE cannot reach Cornerman (ping/SSH timed out). The box may be:
+  - asleep / powered off
+  - stuck at login screen with no auto-login
+  - unplugged from Ethernet
+
+You only need keyboard + mouse ONCE to fix headless operation forever.
+
+--------------------------------------------------------------------------------
+STEP A — WAKE THE BOX
+--------------------------------------------------------------------------------
+
+  1. Press power on Cornerman (or tap keyboard if already on).
+  2. Confirm Ethernet is plugged into the 2.5GbE port (same LAN as VENGEANCE).
+  3. If you see a login screen: sign in as jared (PIN works at the physical PC).
+
+--------------------------------------------------------------------------------
+STEP B — RUN HEADLESS SETUP (elevated PowerShell on Cornerman)
+--------------------------------------------------------------------------------
+
+  Open PowerShell AS ADMINISTRATOR on Cornerman.
+
+  If the repo is at C:\Projects\lifepunch:
+
+    cd C:\Projects\lifepunch
+    git pull --rebase
+    powershell -ExecutionPolicy Bypass -File lifepunch\scripts\Enable-CornermanHeadless.ps1
+
+  If you only have a USB stick / no git — copy Enable-CornermanHeadless.ps1 from
+  VENGEANCE and run it from the stick.
+
+  When prompted: enter jared's Windows PASSWORD (not PIN). This enables auto-login.
+
+  If SSH key auth was never finished, also run:
+
+    powershell -ExecutionPolicy Bypass -File lifepunch\scripts\Enable-CornermanRemote.ps1 `
+      -SshPublicKey "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEbpoK+D7qryuZJX9rLJxkgOu8mZJuDhT2BNEaMQwBS9 jared@VENGEANCE" `
+      -DisablePasswordAuth
+
+--------------------------------------------------------------------------------
+STEP C — REBOOT & UNPLUG KEYBOARD
+--------------------------------------------------------------------------------
+
+    shutdown /r /t 0
+
+  After reboot Cornerman should go straight to desktop with NO keyboard attached.
+
+  From VENGEANCE:
+    - Double-click  Cornerman (RDP)  on desktop (192.168.1.227)
+    - Or:  ssh cornerman
+
+--------------------------------------------------------------------------------
+STEP D — VERIFY FROM VENGEANCE
+--------------------------------------------------------------------------------
+
+    ping 192.168.1.227
+    ssh cornerman "hostname; whoami"
+
+--------------------------------------------------------------------------------
+WHAT Enable-CornermanHeadless.ps1 DOES
+--------------------------------------------------------------------------------
+
+  - Auto-login jared at boot (no login screen)
+  - Never sleep on AC power
+  - Disable lock screen / console lock on AC
+  - sshd + Remote Desktop start automatically
+  - Network profile stays Private for LAN firewall rules
+
+--------------------------------------------------------------------------------
+IF STILL STUCK AFTER REBOOT
+--------------------------------------------------------------------------------
+
+  - BIOS: disable "ErP" / deep sleep if Ethernet drops when display sleeps
+  - Device Manager -> Ethernet adapter -> Power Management:
+      UNCHECK "Allow computer to turn off this device to save power"
+  - Re-run Enable-CornermanRemote.ps1 if RDP/SSH ports closed
+
+================================================================================

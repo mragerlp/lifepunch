@@ -28,8 +28,11 @@ function Get-GitLabUrl {
 function Get-PushUrl {
     param([string]$Slug)
     if ($GitLabToken) {
-        $hostPart = $GitLabHost -replace '^https://', ''
-        return "https://oauth2:$GitLabToken@$hostPart/$GitLabNamespace/$Slug.git"
+        # Trim copy-paste noise; URL-encode the token so + / = @ etc. don't break git/curl.
+        $token = $GitLabToken.Trim().Trim([char]0xFEFF).Trim('"').Trim("'")
+        $encoded = [uri]::EscapeDataString($token)
+        $hostPart = ($GitLabHost -replace '^https://', '').TrimEnd('/')
+        return "https://oauth2:${encoded}@${hostPart}/${GitLabNamespace}/${Slug}.git"
     }
     return Get-GitLabUrl -Slug $Slug
 }

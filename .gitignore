@@ -16,6 +16,10 @@ obj/
 # Local s&box scratch/test project (not shipped)
 lifepunch/addons/test/
 
+# Local machine-specific remote host overrides (LAN IPs)
+lifepunch/scripts/remote-hosts.local.json
+lifepunch/scripts/server-host-watch.local.json
+
 # Local sensitive information
 lifepunch/secure/*
 !lifepunch/secure/.gitignore

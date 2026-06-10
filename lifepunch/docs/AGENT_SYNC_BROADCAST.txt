@@ -1,0 +1,64 @@
+========================================================================
+LIFEPUNCH — AGENT SYNC (paste at start of next session on ANY machine)
+Send to: VENGEANCE · Cornerman · lifepunchnet · shottaWEB · any new chat
+========================================================================
+
+MANDATORY before work — machine names were canonized. Pull first, then read.
+
+------------------------------------------------------------------------
+STEP 1 — SYNC (automatic if sessionStart hook is active; verify anyway)
+------------------------------------------------------------------------
+
+  git fetch
+  git pull --rebase
+
+If you have uncommitted changes AND you are behind: stop, commit or stash, then pull.
+
+------------------------------------------------------------------------
+STEP 2 — READ (in order)
+------------------------------------------------------------------------
+
+  1. lifepunch/docs/MACHINE_CAST.md        ← NEW — machine vocabulary (law)
+  2. lifepunch/docs/AGENT_ONBOARDING.md    ← foundation
+  3. Your lane block in lifepunch/docs/AGENT_PROMPT.md (A/B/C/D)
+
+------------------------------------------------------------------------
+STEP 3 — CONFIRM (reply in one short paragraph)
+------------------------------------------------------------------------
+
+State:
+  - Which machine you are on (VENGEANCE · Cornerman · lifepunchnet · or partner PC)
+  - That lifepunchnet = always-on hosted server at 205.209.104.22 — NOT Cornerman
+  - That VENGEANCE = primary PC / GitHub source of truth — NOT lifepunchnet
+  - That Cornerman = home LAN mic + local AI — NOT lifepunchnet
+
+Then proceed with the task.
+
+------------------------------------------------------------------------
+QUICK CAST (no substitutes)
+------------------------------------------------------------------------
+
+  VENGEANCE     = primary PC, Cursor, GitHub monorepo integration
+  Cornerman     = home LAN AI box, mic, voice relay (192.168.1.227)
+  lifepunchnet  = hosted always-on server, DXRP ops, Whisper, watchdog
+                  (205.209.104.22, hostname lifepunchnet)
+
+  DEPRECATED: "Server Host", "RDP Server Host", "the server box" → lifepunchnet
+
+------------------------------------------------------------------------
+LANE OWNERS
+------------------------------------------------------------------------
+
+  VENGEANCE (Block A)     → GitHub monorepo, all integration
+  shottaWEB (Block B)     → GitLab lifepunch-website only
+  lifepunchnet (Block C)  → GitLab lifepunch-rdp-server only
+  Cornerman (Block D)     → read-only clone, patch handoff to VENGEANCE
+
+------------------------------------------------------------------------
+STALE LANE?
+------------------------------------------------------------------------
+
+If MACHINE_CAST.md is missing in your clone, you are behind. Tell the owner.
+GitLab lanes need a monorepo push + re-export to pick up new docs.
+
+========================================================================

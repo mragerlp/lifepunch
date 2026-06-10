@@ -25,6 +25,10 @@ tooling/MCP can use, and RAG over the repo with secrets excluded. Sections 6–7
 
 ## 0. Role of this machine (read first)
 
+**Machine cast:** **VENGEANCE** = primary PC (source of truth). **Cornerman** = this box (home LAN).
+**lifepunchnet** = always-on hosted server (DXRP ops, Whisper hub) — not Cornerman, not VENGEANCE.
+See `AGENT_ONBOARDING.md` § Named systems.
+
 - This box is a **private local inference + RAG node** for LifePunch. It is **NOT** the
   source of truth.
 - Source of truth stays the GitHub monorepo (`https://github.com/mragerlp/lifepunch`) on the

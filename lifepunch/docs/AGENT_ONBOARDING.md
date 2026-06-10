@@ -80,21 +80,18 @@ truth; secrets stay quarantined off it and the same git rules apply.
 
 ## Named systems (shared vocabulary)
 
-Use these names consistently so references are unambiguous across chats and agents:
+**Canonical reference:** `lifepunch/docs/MACHINE_CAST.md` — **read on every new session** after
+`git pull --rebase`. Paste `AGENT_SYNC_BROADCAST.txt` into any stale chat to force alignment.
 
-- **Cornerman** — the LifePunch **local AI workstation** (Corsair AI Workstation 300,
-  AMD Ryzen AI Max 385 / "Strix Halo"). A private, LAN-only local inference + RAG node that
-  does the cheap heavy-lifting and context-prep (summaries, drafts, embeddings, triage) so
-  frontier models handle the high-leverage thinking. It is a **clone, never the source of
-  truth**, holds **no secrets**, and follows the same git rules as any agent. Its deploy key is
-  **read-only by design** — it commits locally and hands patches to the primary PC to push
-  (patch-handoff protocol: `LOCAL_AI_WORKSTATION.md` §7c). Full reference:
-  `lifepunch/docs/LOCAL_AI_WORKSTATION.md`; day-one setup prompt:
-  `lifepunch/docs/DAY_ONE_AGENT_PROMPT.md`. When anyone says "Cornerman," this is the box.
-- **Primary PC** — the owner's main dev machine (`C:\Users\jared\Projects\lifepunchaddons`),
-  live checkout of `https://github.com/mragerlp/lifepunch` = **source of truth**.
-- **shottaWEB** — website partner; GitLab write lane = `lifepunch-website`.
-- **RDP server agent** — server/portal/gamemode ops; GitLab write lane = `lifepunch-rdp-server`.
+| Codename | One line |
+|----------|----------|
+| **VENGEANCE** | Primary PC — Cursor, GitHub source of truth (`lifepunchaddons` checkout) |
+| **Cornerman** | Home LAN AI box — mic, local LLM/STT, Tier-3 prep (`LOCAL_AI_WORKSTATION.md`) |
+| **lifepunchnet** | Hosted always-on server — DXRP ops, Whisper, watchdog (`LIFEPUNCHNET_INSTRUCTIONS.txt`) |
+| **shottaWEB** | Website partner — GitLab `lifepunch-website` only |
+| **RDP server agent** | Agent **role** on **lifepunchnet** (Block C) — not a separate machine name |
+
+Deprecated: "Server Host", "RDP Server Host", "the server box" → **lifepunchnet**.
 
 ## Efficiency & guardrails (cost-safe operation)
 
