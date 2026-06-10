@@ -15,6 +15,9 @@
 | **Cornerman** | Local AI workstation | Home LAN — `192.168.1.227`, hostname `cornerman` | Mic (AT2020), local LLM/STT, voice relay, Tier-3 prep/RAG — **not** source of truth |
 | **lifepunchnet** | Always-on hosted server | Internet — `205.209.104.22`, Windows hostname **`lifepunchnet`** | DXRP/server ops, Whisper hub (`:9000`), security watchdog (`:9101`), GitLab `lifepunch-rdp-server` |
 
+**lifepunchnet git root:** `C:\lifepunch\lifepunch-rdp-server` — `C:\lifepunch` is only a parent folder
+(clones + `C:\lifepunch\status\` for watchdog). Do not `git pull` at `C:\lifepunch` itself.
+
 ### One-line disambiguation (memorize)
 
 - **VENGEANCE** = where the owner **builds and decides** (GitHub).

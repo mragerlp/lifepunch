@@ -156,9 +156,10 @@ YOU ARE: an agent on **lifepunchnet** — LifePunch's always-on hosted server (c
 
 YOUR LANE: GitLab lifepunch-rdp-server. Hosted DXRP server / portal / gamemode operations.
 Canonical monorepo (read grounding): https://github.com/mragerlp/lifepunch
-Workspace root: your lifepunch-rdp-server GitLab checkout.
-Paths you own: server/, portal/, gamemode/, maps/, admin-panel/, economy/, audit/, players/,
-discord/, webhooks/, API/. Do NOT edit addons or website — owner integrates into GitHub.
+Workspace root: C:\lifepunch\lifepunch-rdp-server (GitLab clone — NOT C:\lifepunch itself).
+Paths you own: lifepunch/server/, portal/, gamemode/, maps/, admin-panel/, economy/, audit/,
+players/, discord/, webhooks/, API/. Do NOT edit addons or website — owner integrates into GitHub.
+Watchdog scripts: lifepunch/server/scripts/ · runtime status: C:\lifepunch\status\ (outside git).
 
 PRODUCTION: Dev/clones only. Live server-page changes, economy-wide edits, and production deploys
 need explicit owner approval.
