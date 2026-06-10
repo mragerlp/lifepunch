@@ -25,12 +25,12 @@ CORNERMAN_REMOTE_WHISPER_MODEL=small.en
 
 Verify from VENGEANCE: `ssh cornerman` then echo those vars, or run `Test-VoiceCommsReady.ps1`.
 
-Cornerman desktop: **Talk to Vengeance (PTT)** (recommended) or wake-phrase shortcut.
+Cornerman desktop: **Talk to Vengeance** (push-to-talk only in normal use).
 
 | Mode | Shortcut | Trigger |
 |------|----------|---------|
-| **PTT** (recommended) | `Talk to Vengeance (PTT).cmd` | Hold **F8** → speak → release |
-| Wake phrase | `Talk to Vengeance.cmd` | Say `send message` → speak |
+| **PTT** (default) | `Talk to Vengeance.cmd` | Hold **F8** → speak → release → clipboard |
+| Wake phrase (legacy) | `Talk to Vengeance (Wake).cmd` | Say `send message` → speak (not recommended) |
 
 Deploy PTT from VENGEANCE: `lifepunch/scripts/cornerman-relay/Apply-CornermanPushToTalk.ps1`
 See `CORNERMAN_PUSH_TO_TALK.md` and **`CORNERMAN_VOICE_NETWORK.md`** (full stack: STT, commands, TTS, lifepunchnet memory).
@@ -57,7 +57,7 @@ allows `71.250.46.224` for ingest.
 
 1. `Test-VoiceCommsReady.ps1` — all OK
 2. Double-click **LifePunch Voice Comms**
-3. Cornerman: wake phrase → speak
+3. Cornerman: hold F8 → speak → release
 4. VENGEANCE: Ctrl+V in Cursor
 5. Check hub: `Invoke-RestMethod` on `:9102/tail?lines=10` with Bearer token
 

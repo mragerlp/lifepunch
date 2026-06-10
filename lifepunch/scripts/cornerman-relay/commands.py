@@ -17,7 +17,6 @@ _PHRASES: list[tuple[str, str, str, dict[str, Any]]] = [
     ("remember for the website", "remember", "shottaweb", {"project": "website"}),
     ("explain this like i'm new", "explain_eli5", "cornerman", {}),
     ("explain like i'm new", "explain_eli5", "cornerman", {}),
-    ("send message", "vengeance_paste", "vengeance", {}),
 ]
 
 

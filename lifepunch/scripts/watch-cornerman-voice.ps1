@@ -1,6 +1,6 @@
 # Watch Cornerman outbox for new voice relay transcripts; auto-copy to VENGEANCE clipboard.
 # Run in a dedicated PowerShell window while brainstorming on VENGEANCE.
-# Cornerman: wake phrase -> message -> this watcher picks up clipboard + session log.
+# Cornerman: hold F8 (PTT) -> message -> this watcher picks up clipboard + session log.
 
 param(
     [int] $IntervalSeconds = 2,
@@ -12,7 +12,7 @@ $ErrorActionPreference = 'Stop'
 $RemotePath = 'C:\Projects\cornerman-rag\outbox\to-vengeance.txt'
 $SessionLogPath = 'C:\Projects\cornerman-rag\outbox\session.log'
 $PullScript = Join-Path $PSScriptRoot 'pull-cornerman-voice.ps1'
-$WakePhrase = if ($env:CORNERMAN_WAKE_PHRASE) { $env:CORNERMAN_WAKE_PHRASE } else { 'send message' }
+$PttKey = if ($env:CORNERMAN_PTT_KEY) { $env:CORNERMAN_PTT_KEY.ToUpper() } else { 'F8' }
 
 if (-not (Test-Path -LiteralPath $PullScript)) {
     throw "Missing $PullScript"
@@ -44,9 +44,9 @@ Write-Host ''
 Write-Host ('=' * 60) -ForegroundColor Cyan
 Write-Host '  VENGEANCE VOICE INBOX  (watching Cornerman)' -ForegroundColor Cyan
 Write-Host ('=' * 60) -ForegroundColor Cyan
-Write-Host '  Cornerman : Talk to Vengeance - say wake phrase, then your message' -ForegroundColor DarkGray
-Write-Host ('  Wake      : "{0}"' -f $WakePhrase) -ForegroundColor DarkGray
-Write-Host '  You       : when Cornerman says paste -> Ctrl+V in Cursor' -ForegroundColor DarkGray
+Write-Host '  Cornerman : Talk to Vengeance - hold PTT key, speak, release' -ForegroundColor DarkGray
+Write-Host ('  PTT key   : {0} (CORNERMAN_PTT_KEY to override)' -f $PttKey) -ForegroundColor DarkGray
+Write-Host '  You       : when Cornerman says clipboard ready -> Ctrl+V in Cursor' -ForegroundColor DarkGray
 Write-Host '  Stop      : Ctrl+C in this window' -ForegroundColor DarkGray
 Write-Host ''
 
@@ -87,7 +87,7 @@ while ($true) {
     }
 
     Write-Host ''
-    Write-Host ('  Cornerman waiting - say "{0}" for the next message' -f $WakePhrase) -ForegroundColor DarkCyan
+    Write-Host ('  Cornerman ready - hold {0} for the next message' -f $PttKey) -ForegroundColor DarkCyan
     Write-Host ('-' * 60) -ForegroundColor DarkGray
     Write-Host ''
     $lastHash = $hash

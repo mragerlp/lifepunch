@@ -23,6 +23,8 @@ Write-Host ''
 Write-Host 'Copy files...' -ForegroundColor DarkGray
 Scp-File (Join-Path $Here 'ptt.py') 'ptt.py'
 Scp-File (Join-Path $Here 'ptt_capture.py') 'ptt_capture.py'
+Scp-File (Join-Path $Here 'relay_ui.py') 'relay_ui.py'
+Scp-File (Join-Path $Here 'commands.py') 'commands.py'
 Scp-File (Join-Path $Here 'patch_relay_ptt.py') 'patch_relay_ptt.py'
 
 Write-Host 'Patch cornerman-rag...' -ForegroundColor DarkGray
@@ -30,6 +32,7 @@ ssh -o BatchMode=yes $CornermanHost "cd $CornermanRag; .venv/Scripts/python.exe 
 
 Write-Host ''
 Write-Host 'Done.' -ForegroundColor Green
-Write-Host '  Cornerman: Talk to Vengeance (PTT).cmd  —  hold F8, speak, release' -ForegroundColor Cyan
-Write-Host '  Wake phrase: Talk to Vengeance.cmd (unchanged)' -ForegroundColor DarkGray
+Write-Host '  Cornerman: Talk to Vengeance.cmd  —  hold F8, speak, release' -ForegroundColor Cyan
+Write-Host '  Clipboard auto-copies; paste in Cursor when Cornerman says ready' -ForegroundColor DarkGray
+Write-Host '  Legacy wake phrase: Talk to Vengeance (Wake).cmd (not recommended)' -ForegroundColor DarkGray
 Write-Host ''
