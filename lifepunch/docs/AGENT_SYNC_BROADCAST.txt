@@ -41,7 +41,9 @@ QUICK CAST (no substitutes)
   VENGEANCE     = primary PC, Cursor, GitHub monorepo integration
   Cornerman     = home LAN AI box, mic, voice relay (192.168.1.227)
   lifepunchnet  = hosted always-on server, DXRP ops, Whisper, watchdog,
-                  session hub (:9102), Odysseus (RDP) — 205.209.104.22
+                  session hub LIVE (:9102 /ingest), Odysseus (RDP) — 205.209.104.22
+  session hub   = POST http://205.209.104.22:9102/ingest (Bearer = status-token.txt)
+                  VENGEANCE bridge: start-session-sync.ps1 (Cornerman logs -> ingest)
 
   PEOPLE (alias-first): Bloodwave = owner (Jared/Mr. Rager/mragerlp) · shottaWEB = partner (Brian)
 
