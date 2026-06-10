@@ -33,6 +33,9 @@ lifepunchnet (Government Terminal, cyan):
 ART SYNC (OneDrive → repo)
 --------------------------
 .\Sync-OutfitsFromOneDrive.ps1
+  Outfits:  OneDrive\Desktop\Hacker Job\<tier>\<machine>
+  Wallpapers uniform: OneDrive\Desktop\wallpapers\  (vengeance/cornerman/lifepunchnet wallpaper.png)
+  lifepunchnet taskbar: gray (cyan accent on title bars only — taskbarGray in nodes.json)
 
 REBUILD ZIP (after pack edits)
 ------------------------------

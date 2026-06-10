@@ -183,7 +183,8 @@ New-Item -Path $dwm -Force | Out-Null
 Set-ItemProperty -Path $dwm -Name AccentColor -Type DWord -Value $accent.ABGR
 Set-ItemProperty -Path $dwm -Name ColorizationColor -Type DWord -Value $accent.ARGB
 Set-ItemProperty -Path $dwm -Name ColorizationAfterglow -Type DWord -Value $accent.ARGB
-Set-ItemProperty -Path $dwm -Name ColorPrevalence -Type DWord -Value 1
+$taskbarGray = $false
+if ($node.PSObject.Properties['taskbarGray']) { $taskbarGray = [bool]$node.taskbarGray }
 Set-ItemProperty -Path $dwm -Name EnableWindowColorization -Type DWord -Value 1
 
 $factors = @(1.6, 1.4, 1.2, 1.0, 0.8, 0.6, 0.45, 0.3)
@@ -199,9 +200,25 @@ foreach ($f in $factors) {
 $accentKey = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Accent'
 New-Item -Path $accentKey -Force | Out-Null
 Set-ItemProperty -Path $accentKey -Name AccentPalette -Type Binary -Value ([byte[]]$palette)
-Set-ItemProperty -Path $accentKey -Name AccentColorMenu -Type DWord -Value $accent.ABGR
-Set-ItemProperty -Path $accentKey -Name StartColorMenu -Type DWord -Value $accent.ABGR
-Write-Note 'Accent set. Restart Explorer or open a new terminal to repaint borders.'
+
+$personalize = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize'
+New-Item -Path $personalize -Force | Out-Null
+
+if ($taskbarGray) {
+    $gray = Get-AccentDwords '1E1E1E'
+    Set-ItemProperty -Path $personalize -Name ColorPrevalence -Type DWord -Value 0
+    Set-ItemProperty -Path $dwm -Name ColorPrevalence -Type DWord -Value 0
+    Set-ItemProperty -Path $accentKey -Name AccentColorMenu -Type DWord -Value $gray.ABGR
+    Set-ItemProperty -Path $accentKey -Name StartColorMenu -Type DWord -Value $gray.ABGR
+    Write-Note 'Accent on title bars only; taskbar/Start = gray (matches desk uniform).'
+}
+else {
+    Set-ItemProperty -Path $personalize -Name ColorPrevalence -Type DWord -Value 1
+    Set-ItemProperty -Path $dwm -Name ColorPrevalence -Type DWord -Value 1
+    Set-ItemProperty -Path $accentKey -Name AccentColorMenu -Type DWord -Value $accent.ABGR
+    Set-ItemProperty -Path $accentKey -Name StartColorMenu -Type DWord -Value $accent.ABGR
+    Write-Note 'Accent set. Restart Explorer or open a new terminal to repaint borders.'
+}
 
 # 3. Wallpaper
 Write-Step 'Desktop wallpaper'

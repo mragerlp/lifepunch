@@ -21,6 +21,18 @@ Artist source — edit here first, then sync into the repo:
 | Cornerman | `%USERPROFILE%\OneDrive\Desktop\Hacker Job\Hacker Terminal\cornerman` |
 | lifepunchnet | `%USERPROFILE%\OneDrive\Desktop\Hacker Job\Government Terminal\lifepunchnet` |
 
+## Desktop wallpapers (uniform)
+
+Same HUD layout on every machine — color matches the tier. Edit in OneDrive first:
+
+| Machine | OneDrive source | Repo output |
+|---------|-----------------|-------------|
+| VENGEANCE | `%USERPROFILE%\OneDrive\Desktop\wallpapers\vengeancewallpaper.png` | `wallpapers/lifepunch-ops-wallpaper-vengeance.png` |
+| Cornerman | `...\wallpapers\cornermanwallpaper.png` | `wallpapers/lifepunch-ops-wallpaper-cornerman.png` |
+| lifepunchnet | `...\wallpapers\lifepunchnetwallpaper.png` | `wallpapers/lifepunch-ops-wallpaper-lifepunchnet.png` |
+
+`Sync-OutfitsFromOneDrive.ps1` pulls outfits from Hacker Job and wallpapers from `Desktop\wallpapers`.
+
 ## Asset parity
 
 | Cornerman | VENGEANCE | lifepunchnet |
@@ -30,11 +42,7 @@ Artist source — edit here first, then sync into the repo:
 | `cornermanscreen.png` | `vengeanceterminal.png` | `lifepunchnetterminal.png` |
 | `cornermanbanner.png` | `vengeanceloadingscreen.png` | `lifepunchnetbanner.png` |
 
-Repo copies live under `outfits/<machine>/`. Desktop wallpapers are built from:
-
-- VENGEANCE → `vengeanceterminal.png`
-- Cornerman → `cornermanbanner.png`
-- lifepunchnet → `lifepunchnetbanner.png`
+Repo copies live under `outfits/<machine>/`.
 
 ## Taglines (wear with pride)
 

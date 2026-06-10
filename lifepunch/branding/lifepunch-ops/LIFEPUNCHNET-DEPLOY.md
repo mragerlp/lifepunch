@@ -12,7 +12,8 @@
 | Banner | `L I F E P U N C H . N E T` |
 | Taglines | SECURE. CONTROL. SERVE. / PROTECTING. MANAGING. GOVERNING. |
 | Wallpaper | `wallpapers/lifepunch-ops-wallpaper-lifepunchnet.png` |
-| Accent | `#00D4FF` |
+| Accent | `#00D4FF` (title bars only) |
+| Taskbar | Dark gray — same as VENGEANCE/Cornerman desk uniform (`taskbarGray` in `nodes.json`) |
 
 Pack path on-box after copy: `C:\lifepunch\branding\lifepunch-ops\`
 
@@ -55,8 +56,8 @@ The applier uses **`oh-my-posh print primary`** in a custom `prompt` function �
 - [ ] Cyan **LifePunch Ops** color scheme
 - [ ] Prompt shows `lifepunch@lifepunch.net`
 - [ ] Banner: `L I F E P U N C H . N E T` + government taglines
-- [ ] Desktop wallpaper = government HUD banner
-- [ ] Cyan window accent (sign out/in if title bars did not repaint)
+- [ ] Desktop wallpaper = government HUD uniform (`lifepunchnetwallpaper.png`)
+- [ ] Cyan window accent on title bars; **gray taskbar** (sign out/in if borders did not repaint)
 
 ## Option B — SSH (when port 22 is open)
 
