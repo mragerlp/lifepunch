@@ -2,7 +2,7 @@
 
 **Status:** Greenlit concept for build (assets in repo; code port next on VENGEANCE).  
 **Study source:** `reference/evo-bitminer/` — mechanics and DXRP seams only; **never ship** Evo mesh, sounds, or UI copy.  
-**Visual source:** LifePunch **Cornerman Hacker Terminal** outfit (`#00FF7F` on `#0a0f0a`, `cornerman@rig:~$` voice).  
+**Visual source (shipped Phase 1):** **HASHD RIG CONTROL** — amber mining ops (`#f0a500` on `#12100c`), left telemetry rail + right command log, `rig0>` prompt. Distinct from hacker-job green phosphor CLI. Initial UI study credited to spl mute in `about` only.  
 **World mesh:** LifePunch-owned **GPU rack** (`gpu-rack/`, 34 publish files; raw export at `reference-intake/gpu-rack-export`).
 
 ---

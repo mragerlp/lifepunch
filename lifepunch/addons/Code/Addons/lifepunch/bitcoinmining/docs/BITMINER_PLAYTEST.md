@@ -55,7 +55,9 @@ clear
 
 **Scroll:** mouse-wheel the terminal output area (history keeps up to 200 lines).
 
-**Upgrade menu:** `upgrade` or `menu` opens clickable **PURCHASE** buttons for CPU Clock and CPU Cores (still accepts `upgrade cpu` / `upgrade cores`).
+**UI:** **HASHD RIG CONTROL** — amber telemetry rail (left) + command log (right). Rail **START/STOP** toggles mining without typing.
+
+**Upgrade panel:** `upgrade` or `menu` opens **INSTALL** buttons for CPU Clock and CPU Cores (still accepts `upgrade cpu` / `upgrade cores`).
 
 Expected: green terminal UI, LCD on `computer_terminal` monitor face, fans spin while mining (placeholder fan GOs until vmdl anim ships).
 

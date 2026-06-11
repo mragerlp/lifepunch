@@ -18,64 +18,103 @@
 @attribute [StyleSheet]
 
 <root class="@( _showUpgradeMenu ? "upgrade-mode" : "" )">
-    @* ---- TITLE BAR ---- *@
+    <div class="scanlines"></div>
+
     <div class="title-bar">
-        <span class="title-text">LIFEPUNCH hashd v1.0 — cornerman@rig</span>
-        <button class="close-x" onclick=@OnClickClose>✕ CLOSE</button>
+        <span class="title-mark">◆</span>
+        <span class="title-text">HASHD RIG CONTROL</span>
+        <span class="title-ver">v1</span>
+        <span class="title-spacer"></span>
+        <button class="close-x" onclick=@OnClickClose>CLOSE</button>
     </div>
 
-    @if ( !_showUpgradeMenu )
-    {
-        @* ---- SCROLLABLE OUTPUT ---- *@
-        <div class="screen-scroll" @ref="ScreenScroll">
-            <div class="screen flex flex-col">
-                @foreach ( var line in _lines )
-                {
-                    <div class="line-row">
-                        <label class="screen-line @(GetLineClass( line ))">@line</label>
+    <div class="terminal-body">
+        @if ( !_showUpgradeMenu )
+        {
+            <div class="telemetry-rail">
+                <div class="rail-header">LIVE TELEMETRY</div>
+                <div class="rail-block">
+                    <span class="rail-label">STATUS</span>
+                    <span class="rail-value @(Miner.IsValid() && Miner.IsMining ? "active" : "")">@GetMiningStatusLabel()</span>
+                </div>
+                <div class="rail-block">
+                    <span class="rail-label">BALANCE</span>
+                    <span class="rail-value">@GetBtcBalanceLabel()</span>
+                </div>
+                <div class="rail-block">
+                    <span class="rail-label">VALUE</span>
+                    <span class="rail-value">@GetUsdValueLabel()</span>
+                </div>
+                <div class="rail-block">
+                    <span class="rail-label">HASH</span>
+                    <span class="rail-value">@GetHashRateLabel()</span>
+                </div>
+                <div class="rail-block">
+                    <span class="rail-label">CORES</span>
+                    <span class="rail-value">@GetCoreLabel()</span>
+                </div>
+                <div class="rail-block rail-progress">
+                    <span class="rail-label">TICK</span>
+                    <div class="tick-bar">
+                        <div class="tick-fill" style="width: @(GetTickPercent())%"></div>
                     </div>
-                }
-            </div>
-        </div>
-    }
-    else
-    {
-        @* ---- UPGRADE MENU (full terminal body) ---- *@
-        <div class="upgrade-panel">
-            <div class="upgrade-header">UPGRADE MODULE</div>
-            <div class="upgrade-balance">Wallet: $@BitminerTerminalHost.GetLocalWalletCash().ToString("N0")</div>
-
-            <div class="upgrade-row">
-                <div class="upgrade-info">
-                    <span class="upgrade-name">CPU CLOCK</span>
-                    <span class="upgrade-detail">@GetCpuUpgradeDetail()</span>
+                    <span class="rail-sub">@GetTickPercent()% / 60s</span>
                 </div>
-                <button class="upgrade-btn @(CanAffordCpu() ? "" : "disabled")" onclick=@OnBuyCpu>PURCHASE</button>
-            </div>
-
-            <div class="upgrade-row">
-                <div class="upgrade-info">
-                    <span class="upgrade-name">CPU CORES</span>
-                    <span class="upgrade-detail">@GetCoreUpgradeDetail()</span>
+                <div class="rail-actions">
+                    <button class="rail-btn start @(Miner.IsValid() && Miner.IsMining ? "active" : "")" onclick=@OnRailStart>START</button>
+                    <button class="rail-btn stop" onclick=@OnRailStop>STOP</button>
                 </div>
-                <button class="upgrade-btn @(CanAffordCores() ? "" : "disabled")" onclick=@OnBuyCores>PURCHASE</button>
+                <div class="rail-hint">Command log →</div>
             </div>
 
-            <div class="upgrade-hint">Type BACK or click below to return to the shell.</div>
-            <button class="upgrade-back" onclick=@CloseUpgradeMenu>← BACK TO TERMINAL</button>
-        </div>
-    }
+            <div class="console-pane">
+                <div class="screen-scroll" @ref="ScreenScroll">
+                    <div class="screen flex flex-col">
+                        @foreach ( var line in _lines )
+                        {
+                            <div class="line-row">
+                                <label class="screen-line @(GetLineClass( line ))">@line</label>
+                            </div>
+                        }
+                    </div>
+                </div>
 
-    @* ---- INPUT ---- *@
-    <div class="input-row" onclick=@FocusInput>
-        <span class="prompt-label">cornerman@rig:~$</span>
-        <TextEntry
-            class="terminal-input"
-            @ref="InputBox"
-            onsubmit=@OnSubmit />
+                <div class="input-row" onclick=@FocusInput>
+                    <span class="prompt-label">rig0&gt;</span>
+                    <TextEntry
+                        class="terminal-input"
+                        @ref="InputBox"
+                        onsubmit=@OnSubmit />
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="upgrade-panel">
+                <div class="upgrade-header">HARDWARE UPGRADES</div>
+                <div class="upgrade-balance">Wallet: $@BitminerTerminalHost.GetLocalWalletCash().ToString("N0")</div>
+
+                <div class="upgrade-row">
+                    <div class="upgrade-info">
+                        <span class="upgrade-name">CPU CLOCK</span>
+                        <span class="upgrade-detail">@GetCpuUpgradeDetail()</span>
+                    </div>
+                    <button class="upgrade-btn @(CanAffordCpu() ? "" : "disabled")" onclick=@OnBuyCpu>INSTALL</button>
+                </div>
+
+                <div class="upgrade-row">
+                    <div class="upgrade-info">
+                        <span class="upgrade-name">CPU CORES</span>
+                        <span class="upgrade-detail">@GetCoreUpgradeDetail()</span>
+                    </div>
+                    <button class="upgrade-btn @(CanAffordCores() ? "" : "disabled")" onclick=@OnBuyCores>INSTALL</button>
+                </div>
+
+                <div class="upgrade-hint">Type BACK or click below to return to rig control.</div>
+                <button class="upgrade-back" onclick=@CloseUpgradeMenu>← BACK TO CONSOLE</button>
+            </div>
+        }
     </div>
-
-    <div class="terminal-signature">spl mute</div>
 
 </root>
 
@@ -89,6 +128,7 @@
     private bool _showUpgradeMenu = false;
     private int _statusLineCount = 0;
     private const int MaxLines = 200;
+    private const string PromptPrefix = "rig0>";
     private float _smoothProgress = 0f;
     private float _lastKnownProgress = 0f;
     private int _lastTextLength = 0;
@@ -96,7 +136,8 @@
 
     private static string GetLineClass( string line )
     {
-        if ( line.StartsWith( "cornerman@" ) ) return "prompt-line";
+        if ( line.StartsWith( "rig0>" ) ) return "prompt-line";
+        if ( line.StartsWith( ">>" ) ) return "boot-line";
         if ( line.StartsWith( "---" ) || line.StartsWith( "----" ) ) return "divider-line";
         if ( line.StartsWith( "  " ) ) return "help-line";
         if ( line.StartsWith( "ERROR" ) ) return "error-line";
@@ -127,13 +168,42 @@
     {
         _lines.Clear();
         _showUpgradeMenu = false;
-        _lines.Add( "LIFEPUNCH hashd v1.0" );
-        _lines.Add( "[ OK ] memory 256mb" );
-        _lines.Add( "[ OK ] gpu-rack mesh" );
-        _lines.Add( "[ OK ] mounting /dev/rig0" );
-        _lines.Add( "starting mine.exe ..." );
-        _lines.Add( "Type 'help' for commands. Type 'UPGRADE' for the upgrade menu." );
+        _lines.Add( ">> hashd init — LIFEPUNCH mining daemon" );
+        _lines.Add( ">> linking gpu-rack telemetry bus ... OK" );
+        _lines.Add( ">> syncing payout ledger (60s tick) ... OK" );
+        _lines.Add( ">> rig interface ready — telemetry rail active (left)" );
+        _lines.Add( "Commands: help · mining · bitcoin · upgrade · status" );
         _lines.Add( "" );
+    }
+
+    private string GetMiningStatusLabel() =>
+        Miner.IsValid() && Miner.IsMining ? "MINING" : "IDLE";
+
+    private string GetBtcBalanceLabel() =>
+        Miner.IsValid() ? $"{Miner.BitcoinAmount:0.00000000} BTC" : "—";
+
+    private string GetUsdValueLabel() =>
+        Miner.IsValid() ? $"${Miner.BitcoinAmount * BitminerEntity.BitcoinValue:N0}" : "—";
+
+    private string GetHashRateLabel() =>
+        Miner.IsValid() ? $"{Miner.ClockSpeed:0.00} GHz" : "—";
+
+    private string GetCoreLabel() =>
+        Miner.IsValid() ? $"{Miner.CoreCount}" : "—";
+
+    private int GetTickPercent() =>
+        Miner.IsValid() && Miner.IsMining ? (int)MathF.Floor( _smoothProgress * 100f ) : 0;
+
+    private void OnRailStart()
+    {
+        if ( !Miner.IsValid() ) return;
+        Miner.SetMiningState( true );
+    }
+
+    private void OnRailStop()
+    {
+        if ( !Miner.IsValid() ) return;
+        Miner.SetMiningState( false );
     }
 
     private void SecondlyUpdate()
@@ -224,15 +294,15 @@
 
         if ( _showUpgradeMenu && ( input is "back" or "exit" or "close" ) )
         {
-            _lines.Add( $"cornerman@rig:~$ {input}" );
+            _lines.Add( $"{PromptPrefix} {input}" );
             CloseUpgradeMenu();
-            _lines.Add( "Returned to terminal shell." );
+            _lines.Add( "Returned to rig console." );
             _lines.Add( "" );
             TrimLines();
             return;
         }
 
-        _lines.Add( $"cornerman@rig:~$ {input}" );
+        _lines.Add( $"{PromptPrefix} {input}" );
 
         if ( _liveStatus && _statusLineCount > 0 )
         {
@@ -287,7 +357,7 @@
         _showUpgradeMenu = true;
         _liveStatus = false;
         _statusLineCount = 0;
-        _lines.Add( "Opening upgrade module — PURCHASE buttons active." );
+        _lines.Add( "Opening hardware upgrade panel ..." );
     }
 
     private void CloseUpgradeMenu()
@@ -340,9 +410,9 @@
             return;
         }
 
-        _lines.Add( $"Purchasing CPU Clock for ${cost:N0}..." );
+        _lines.Add( $"Installing CPU Clock (${cost:N0}) ..." );
         Miner.RequestUpgrade( BitminerUpgradeType.Cpu );
-        _lines.Add( "Upgrade requested — host will charge wallet if funds allow." );
+        _lines.Add( "Upgrade queued — host will charge wallet if funds allow." );
         TrimLines();
     }
 
@@ -358,9 +428,9 @@
             return;
         }
 
-        _lines.Add( $"Purchasing CPU Cores for ${cost:N0}..." );
+        _lines.Add( $"Installing CPU Cores (${cost:N0}) ..." );
         Miner.RequestUpgrade( BitminerUpgradeType.Cores );
-        _lines.Add( "Upgrade requested — host will charge wallet if funds allow." );
+        _lines.Add( "Upgrade queued — host will charge wallet if funds allow." );
         TrimLines();
     }
 
@@ -377,12 +447,12 @@
                 _lines.Add( "  BITCOIN  - Sell or view stored bitcoin balance." );
                 _lines.Add( "  INFO     - Output device specifications." );
                 _lines.Add( "  MINING   - Start or stop the miner." );
-                _lines.Add( "  UPGRADE  - Open clickable upgrade menu." );
-                _lines.Add( "  STATUS   - Show full device status." );
-                _lines.Add( "  MENU     - Same as UPGRADE (upgrade menu)." );
-                _lines.Add( "  BACK     - Close upgrade menu (when open)." );
+                _lines.Add( "  UPGRADE  - Open hardware upgrade panel." );
+                _lines.Add( "  STATUS   - Dump full status to command log." );
+                _lines.Add( "  MENU     - Same as UPGRADE." );
+                _lines.Add( "  BACK     - Close upgrade panel (when open)." );
                 _lines.Add( "  ABOUT    - LIFEPUNCH attribution." );
-                _lines.Add( "  CLEAR    - Clear the screen." );
+                _lines.Add( "  CLEAR    - Clear the command log." );
                 _lines.Add( "  HELP     - Show this list." );
                 _lines.Add( "--------------------------------------------" );
                 break;
@@ -403,7 +473,7 @@
                 if ( !Miner.IsValid() ) { _lines.Add( "ERROR: Miner connection lost." ); break; }
                 _lines.Add( "--------------------INFO--------------------" );
                 _lines.Add( $"  Device:      Bitcoin Miner" );
-                _lines.Add( $"  OS:          LIFEPUNCH hashd v1.0" );
+                _lines.Add( $"  Interface:   HASHD RIG CONTROL v1" );
                 _lines.Add( $"  CPU Speed:   {Miner.ClockSpeed:0.000} GHz (Lv {Miner.CpuUpgradeLevel})" );
                 _lines.Add( $"  CPU Cores:   {Miner.CoreCount} (Lv {Miner.CoreUpgradeLevel})" );
                 _lines.Add( $"  Hash Rate:   {Miner.ClockSpeed * 0.05f * Miner.CoreCount:0.0000} BTC/s" );
@@ -472,9 +542,9 @@
 
             case "about":
                 _lines.Add( "--------------------------------------------" );
-                _lines.Add( "  LIFEPUNCH hashd v1.0 — Bitcoin Miner" );
-                _lines.Add( "  Published by LIFEPUNCH™ — lifepunch.co" );
-                _lines.Add( "  Terminal UI — spl mute" );
+                _lines.Add( "  HASHD RIG CONTROL — LIFEPUNCH™ Bitcoin Miner" );
+                _lines.Add( "  Published by LIFEPUNCH — lifepunch.co" );
+                _lines.Add( "  Initial UI study — spl mute" );
                 _lines.Add( "  Proprietary software. All rights reserved." );
                 _lines.Add( "--------------------------------------------" );
                 break;
