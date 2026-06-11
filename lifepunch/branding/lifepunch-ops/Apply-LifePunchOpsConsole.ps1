@@ -159,6 +159,58 @@ function Set-WindowsTerminalOpsScheme {
     }
     $settings | ConvertTo-Json -Depth 32 | Set-Content -LiteralPath $wtPath -Encoding UTF8
     Write-Note "Applied '$($scheme.name)' to $wtPath (all profiles)"
+    return $wtPath
+}
+
+function Set-WindowsTerminalPowerShellIcon {
+    param([string]$IconPath)
+    if (-not (Test-Path -LiteralPath $IconPath)) {
+        Write-Note "PowerShell thumbnail .ico missing: $IconPath"
+        return
+    }
+    $wtCandidates = @(
+        "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json",
+        "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminalPreview_8wekyb3d8bbwe\LocalState\settings.json",
+        "$env:LOCALAPPDATA\Microsoft\Windows Terminal\settings.json"
+    )
+    $wtPath = $wtCandidates | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
+    if (-not $wtPath) {
+        Write-Note 'Windows Terminal settings.json not found; skip PowerShell tab icon.'
+        return
+    }
+    $resolved = (Resolve-Path -LiteralPath $IconPath).Path
+    $settings = Get-Content -LiteralPath $wtPath -Raw | ConvertFrom-Json
+    if (-not $settings.profiles.list) {
+        Write-Note 'Windows Terminal has no profiles.list; skip PowerShell tab icon.'
+        return
+    }
+    $pwshGuids = @(
+        '{61c54bbd-c2c6-5271-96e7-009e87ee4021}',
+        '{574e603e-0823-4b88-985f-30bf5266f21d}'
+    )
+    $matched = 0
+    foreach ($prof in $settings.profiles.list) {
+        $isPwsh = $false
+        if ($prof.PSObject.Properties.Name -contains 'guid' -and $prof.guid -in $pwshGuids) {
+            $isPwsh = $true
+        }
+        elseif ($prof.PSObject.Properties.Name -contains 'commandline' -and $prof.commandline -match 'powershell|pwsh') {
+            $isPwsh = $true
+        }
+        elseif ($prof.PSObject.Properties.Name -contains 'name' -and $prof.name -match 'PowerShell') {
+            $isPwsh = $true
+        }
+        if ($isPwsh) {
+            $prof | Add-Member -NotePropertyName icon -NotePropertyValue $resolved -Force
+            $matched++
+        }
+    }
+    if ($matched -eq 0) {
+        Write-Note 'No PowerShell profiles matched in Windows Terminal.'
+        return
+    }
+    $settings | ConvertTo-Json -Depth 32 | Set-Content -LiteralPath $wtPath -Encoding UTF8
+    Write-Note "PowerShell tab thumbnail -> $resolved ($matched profile(s))"
 }
 
 function Get-AccentDwords([string]$hex) {
@@ -275,8 +327,12 @@ if ($ConhostOnly) {
 }
 
 # 1. Windows Terminal
+Write-Step 'PowerShell prompt thumbnail (shared retro desktop)'
+$thumbIco = & (Join-Path $here 'Set-PowerShellPromptThumbnail.ps1') -OpsRoot $here
+
 Write-Step 'Windows Terminal scheme + defaults'
 Set-WindowsTerminalOpsScheme -SchemePath $schemePath
+Set-WindowsTerminalPowerShellIcon -IconPath $thumbIco
 
 Write-Step 'cmd + PowerShell console (conhost)'
 Set-ConhostUniform -AccentHex $accentHex -Machine $Machine

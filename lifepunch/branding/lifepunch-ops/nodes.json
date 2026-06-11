@@ -12,6 +12,7 @@
     "accent": "E4002B",
     "consoleCopyright": "(c) VENGEANCE Corp. All rights reserved.",
     "consolePrompt": "C:\\VENGEANCE>",
+    "promptThumbnail": "icons/powershell-prompt-thumbnail.png",
     "brand": "vengeance",
     "bannerColor": "Red"
   },
@@ -28,6 +29,7 @@
     "accent": "00FF7F",
     "consoleCopyright": "(c) Microsoft Corporation. All rights reserved.",
     "consolePrompt": "C:\\Cornerman>",
+    "promptThumbnail": "icons/powershell-prompt-thumbnail.png",
     "brand": "cornerman",
     "bannerColor": "Green"
   },
@@ -45,6 +47,7 @@
     "accent": "00D4FF",
     "consoleCopyright": "(c) Lifepunch Government Systems. All rights reserved.",
     "consolePrompt": "C:\\GOVERNMENT>",
+    "promptThumbnail": "icons/powershell-prompt-thumbnail.png",
     "brand": "government",
     "bannerColor": "Cyan"
   }

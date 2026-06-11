@@ -62,6 +62,7 @@ Applied per node via `lifepunch/branding/lifepunch-ops/Apply-LifePunchOpsConsole
 | **Gray taskbar** | Same on every node (taskbar only — title bars keep per-node accent) |
 | **Dark mode + wallpaper** | Same wallpaper family; RDP sessions inherit remote box theme |
 | **Console: black + accent** | PowerShell/conhost/WT schemes match node color; body text gray/white via `Voice-Console.ps1` (readable on black) |
+| **PowerShell tab thumbnail** | Shared retro desktop icon on every node — `lifepunch-ops/icons/powershell-prompt-thumbnail.png` |
 | **Explorer icons** | Gray folder + gray `.txt` on **every node** — art: `OneDrive\Desktop\uniforms\PNGs\`; apply: `Set-LifePunchExplorerIcons.ps1` (Win11 folders need HKLM Shell Icons — UAC once) |
 
 Uniform standards: `OneDrive\Desktop\uniforms\UNIFORM_STANDARDS.md` · repo `lifepunch/branding/lifepunch-ops/UNIFORM_STANDARDS.md`.

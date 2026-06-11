@@ -99,6 +99,7 @@ archaeology.
 | **RGB mixes** | Yellow=R+G, Cyan=G+B, Magenta=B+R — see `CVL_RGB_DOCTRINE.md` |
 | **Rainbow** | Emerges from logged hub gradient — **not yet**; standard RGB phase now |
 | **Explorer icons** | Gray folder + gray `.txt` on every node — `OneDrive\Desktop\uniforms\`; `Set-LifePunchExplorerIcons.ps1` |
+| **PowerShell thumbnail** | Shared retro desktop tab icon on every node — `uniforms\PNGs\powershell-prompt-thumbnail.png`; `Set-PowerShellPromptThumbnail.ps1` |
 | **One `.lnk` → one script** | Installers own targets; see `lifepunch/branding/shortcut-icons/SHORTCUT_ICONS.md` |
 
 Full checkpoint (shortcuts, voice flow, per-node cheat sheet, failure surfaces):
@@ -181,9 +182,10 @@ The `lifepunch-operating-context` rule is law here; this is the orientation. We 
 
 **Recently landed (foundation is current as of this note):**
 - **Ops clarity checkpoint — June 2026.** Voice web uniform (shortcut tiers, consoles, Explorer
-  icons, preflight surfaces) canonized in `OPS_CLARITY_CHECKPOINT.md`, `UNIFORM_STANDARDS.md`,
-  `SHORTCUT_ICONS.md`, and agent sync broadcast. **Start Day** (tri-stack) = full stack; partial
-  restarts = Voice Comms / Talk to Vengeance (red). Gray folder + `.txt` icons on all nodes.
+  icons, PowerShell tab thumbnail, preflight surfaces) canonized in `OPS_CLARITY_CHECKPOINT.md`,
+  `UNIFORM_STANDARDS.md`, `SHORTCUT_ICONS.md`, and agent sync broadcast. **Start Day** (tri-stack) =
+  full stack; partial restarts = Voice Comms / Talk to Vengeance (red). Gray folder + `.txt` icons
+  and the shared retro-desktop PowerShell thumbnail on all nodes.
 - **Trademark / IP doctrine — finalized + law.** `lifepunch-trademark-ip` rule + the full
   `lifepunch/legal/` tree (`TRADEMARK_AND_IP.md`, marks, specimens, clearance evidence) are in.
 - **Efficiency & cost discipline + Cornerman — merged.** Model-routing tiers (T1 Opus / T2

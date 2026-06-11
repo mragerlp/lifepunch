@@ -15,6 +15,7 @@ OneDrive canonical copy: `%USERPROFILE%\OneDrive\Desktop\uniforms\UNIFORM_STANDA
 | Per-node outfits (console, banner, app icon) | `Desktop\Hacker Job\<tier>\<machine>\` |
 | Desktop wallpapers (HUD layout, per-node color) | `Desktop\wallpapers\` |
 | **Explorer icons (all nodes)** | `Desktop\uniforms\PNGs\grayfoldericon.png` · `graynotes.png` |
+| **PowerShell prompt thumbnail (all nodes)** | `Desktop\uniforms\PNGs\powershell-prompt-thumbnail.png` |
 | Desktop shortcut tier icons | `lifepunch/branding/shortcut-icons/` (tri-stack / red / green / blue) |
 
 ---
@@ -27,8 +28,9 @@ Same gray minimalist art on **every** machine:
 |-----------|-----------------|------|
 | `icons/lifepunch-folder.png` | `uniforms\PNGs\grayfoldericon.png` | Default **folder** icon |
 | `icons/lifepunch-txt.png` | `uniforms\PNGs\graynotes.png` | Default **`.txt`** icon |
+| `icons/powershell-prompt-thumbnail.png` | `uniforms\PNGs\powershell-prompt-thumbnail.png` | **PowerShell** tab icon (Windows Terminal) + outfit `*console.png` reference |
 
-**Script:** `Set-LifePunchExplorerIcons.ps1` (step in `Apply-LifePunchOpsConsole.ps1`).
+**Scripts:** `Set-LifePunchExplorerIcons.ps1` + `Set-PowerShellPromptThumbnail.ps1` (steps in `Apply-LifePunchOpsConsole.ps1`).
 
 **Windows 11 (June 2026):**
 
@@ -63,6 +65,10 @@ See `OUTFITS.md` and `lifepunch/docs/OPS_CLARITY_CHECKPOINT.md` §3.
 title rules only. Body text is **gray labels + white values** — never `DarkGray` on black (unreadable).
 Config/path hints (`server-host-watch`, `status-token`, etc.) use `Write-VoiceMuted` (white).
 Cornerman `relay_ui.py` mirrors the same contrast.
+
+**PowerShell prompt thumbnail:** retro pixel desktop — **same art on every node** (node color stays
+in the prompt text + title bar). `Set-PowerShellPromptThumbnail.ps1` builds
+`icons/powershell-prompt-thumbnail.ico` and wires it into Windows Terminal PowerShell profiles.
 
 **Console palettes** (`windows-terminal-*.json` + `Set-ConhostUniform`): default text is **gray**;
 `white` slot is **#FFFFFF** (not accent — old schemes mapped White→red and broke `Write-Host`).

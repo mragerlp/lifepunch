@@ -85,8 +85,9 @@ foreach ($machine in $wallMap.Keys) {
 }
 
 $explorerIconMap = @{
-    'grayfoldericon.png' = 'lifepunch-folder.png'
-    'graynotes.png'      = 'lifepunch-txt.png'
+    'grayfoldericon.png'              = 'lifepunch-folder.png'
+    'graynotes.png'                   = 'lifepunch-txt.png'
+    'powershell-prompt-thumbnail.png' = 'powershell-prompt-thumbnail.png'
 }
 if (Test-Path -LiteralPath $UniformsRoot) {
     Write-Step "Explorer icons (uniform) from $UniformsRoot"
@@ -102,6 +103,22 @@ if (Test-Path -LiteralPath $UniformsRoot) {
 }
 else {
     Write-Host "    Skip Explorer icons — uniforms folder not found: $UniformsRoot" -ForegroundColor Yellow
+}
+
+if (Test-Path -LiteralPath (Join-Path $iconDir 'powershell-prompt-thumbnail.png')) {
+    Write-Step 'PowerShell prompt thumbnail -> outfit *console.png'
+    $thumb = Join-Path $iconDir 'powershell-prompt-thumbnail.png'
+    foreach ($entry in @{
+        vengeance    = 'vengeanceconsole.png'
+        cornerman    = 'cornermanconsole.png'
+        lifepunchnet = 'lifepunchnetconsole.png'
+    }.GetEnumerator()) {
+        $destDir = Join-Path $outfitsRoot $entry.Key
+        if (Test-Path -LiteralPath $destDir) {
+            Copy-Item -LiteralPath $thumb -Destination (Join-Path $destDir $entry.Value) -Force
+            Write-Host "    -> outfits/$($entry.Key)/$($entry.Value)" -ForegroundColor DarkGray
+        }
+    }
 }
 
 Write-Host ''

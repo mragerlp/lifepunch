@@ -21,7 +21,7 @@ STEP 2 — READ (in order)
 
   1. lifepunch/docs/MACHINE_CAST.md           ← machine vocabulary (law)
   2. lifepunch/docs/OPS_CLARITY_CHECKPOINT.md ← how we look at the web (law)
-  3. OneDrive/Desktop/uniforms/UNIFORM_STANDARDS.md ← web uniform (Explorer icons + tiers)
+  3. OneDrive/Desktop/uniforms/UNIFORM_STANDARDS.md ← web uniform (Explorer icons + PowerShell thumbnail + tiers)
   4. lifepunch/docs/AGENT_ONBOARDING.md       ← foundation
   5. Your lane block in lifepunch/docs/AGENT_PROMPT.md (A/B/C/D)
 

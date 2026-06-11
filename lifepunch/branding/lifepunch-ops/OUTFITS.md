@@ -47,8 +47,10 @@ Same HUD layout on every machine — color matches the tier. Edit in OneDrive fi
 | `cornermanconsole.png` | `vengeanceconsole.png` | `lifepunchnetconsole.png` |
 
 **Console uniform** (cmd + PowerShell + Windows Terminal): pure **black** background, single accent
-text color per node — see outfit `*console.png`. Applied by `Apply-LifePunchOpsConsole.ps1`
-(conhost registry + WT scheme). PowerShell opens with the console copyright line from `nodes.json`.
+text color per node. **PowerShell tab thumbnail** is the shared retro desktop
+(`icons/powershell-prompt-thumbnail.png` — same on all nodes); outfit `*console.png` mirrors it.
+Applied by `Apply-LifePunchOpsConsole.ps1` (conhost registry + WT scheme + tab icon).
+PowerShell opens with the console copyright line from `nodes.json`.
 
 Repo copies live under `outfits/<machine>/`.
 
