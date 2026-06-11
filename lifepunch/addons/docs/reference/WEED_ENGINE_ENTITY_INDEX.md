@@ -31,6 +31,6 @@
 | `packing_station` | `weed_packaging_station` |
 | `coke-bag` (TBD vmdl) | `*_bag.dprod` / `weed_baggie.vmdl` |
 | `coke-brick` (TBD vmdl) | bulk product (no direct weed twin?) |
-| `meth_lab` | separate line — defer |
+| `meth_lab` | **MethLabEntity** — GMod-inspired cook stages (`METH_CREATION_SPEC.md`) |
 
 Red fills **Portal content?** column after editor spawn test.

@@ -35,7 +35,7 @@ Weed index: `addons/docs/reference/WEED_ENGINE_ENTITY_INDEX.md` — Cornerman re
 1. **Alongside weed or replace** on LifePunch servers?
 2. **Job gate:** Drug Dealer only?
 3. **Drop-off:** same buyer NPC as weed?
-4. **Meth_lab** in pack — ship now or defer?
+4. **Meth_lab** — Phase 1 code shipped (`MethLabEntity`); economy/inventory Phase 2.
 
 ## Publish gates
 

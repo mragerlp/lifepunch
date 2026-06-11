@@ -91,6 +91,25 @@
         "OnComponentUpdate": null
       },
       {
+        "__type": "LifePunch.DXRP.Addons.AdvancedDrugProcessing.MethLabEntity",
+        "__guid": "c8f4a2e1-9b3d-4f7a-8e2c-1d5b6a7e8f90",
+        "__enabled": true,
+        "Flags": 0,
+        "ModelRenderer": {
+          "_type": "component",
+          "component_id": "91db2db8-c087-4034-aabb-4e600350df0c",
+          "go": "f96478db-4c8f-41e5-94ee-6522212fb6b3",
+          "component_type": "ModelRenderer"
+        },
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "StatusDisplay": null
+      },
+      {
         "__type": "Sandbox.BoxCollider",
         "__guid": "e2332802-789d-4378-a62b-25a5f330b982",
         "__enabled": true,
@@ -145,7 +164,7 @@
             "MaterialGroup": null,
             "MaterialOverride": null,
             "Materials": null,
-            "Model": "models/lifepunch/advanceddrugprocessing/meth_lab/meth_lab.vmdl",
+            "Model": "addons/lifepunch/advanceddrugprocessing/models/lifepunch/advanceddrugprocessing/meth_lab/meth_lab.vmdl",
             "OnComponentDestroy": null,
             "OnComponentDisabled": null,
             "OnComponentEnabled": null,

@@ -118,14 +118,15 @@
     {
       "ident": "advanceddrugprocessing",
       "title": "Advanced Drug Processing",
-      "description": "Drug grow entities (weed engine). Coke line = reskin: same pots/grow flow, LifePunch coke seeds/leaves/bricks/bags. See docs/COKE_DRUG_RESKIN_SPEC.md.",
+      "description": "Coke reskin (weed engine flow) + GMod-inspired meth cooking on meth_lab. See docs/COKE_DRUG_RESKIN_SPEC.md and docs/METH_CREATION_SPEC.md.",
       "kind": "simple-entity",
       "hasAssets": true,
-      "hasCode": false,
+      "hasCode": true,
       "dxrpAddonId": "019e36bf-31bf-7b2a-a56f-1ab4467cec29",
-      "status": "asset-intake",
-      "spec": "docs/COKE_DRUG_RESKIN_SPEC.md",
-      "notes": "Enhanced coke pack intaked (coca_seed/leaf, processing/packing stations + raw bag/brick). Map weed engine in DXRP editor. Opus before ship.",
+      "sboxIdentifier": "lifepunch.advanceddrugprocessing",
+      "status": "in-development",
+      "spec": "docs/METH_CREATION_SPEC.md",
+      "notes": "MethLabEntity Phase 1 scaffold (stage machine + dev spawn). Coke assets intaked. Opus before drug economy ships.",
       "contents": []
     },
     {
