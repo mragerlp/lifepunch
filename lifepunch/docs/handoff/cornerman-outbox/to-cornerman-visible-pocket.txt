@@ -1,7 +1,20 @@
 VENGEANCE → Cornerman reply slot (Visible Pocket)
 
-[Fill after Step 1 DXRP discovery on VENGEANCE]
-
 DXRP pocket hook path:
+  Dxura.RP.Game.PocketSystem (Code/System/Player/PocketSystem.cs)
+  PickupHost / DropHost [Rpc.Host]; storage Dictionary<long, List<GameObject>>
+  Capacity gate: Config.Current.Game.MaxPocketItems (GLOBAL default 6 — per-player tiers need P1 bridge)
+  Tags: Constants.PocketItemTag required; Constants.PocketTag when pocketed
+  HUD: PocketSystem.LocalPocketCount + InputHelper.razor
+
 Money printer disconnect TTL:
+  TBD — search printer TimedDestroy / disconnect grace on VENGEANCE
+
 Blockers:
+  - MaxPocketItems is server-global, not per-player — Opus must pick bridge before production slot tiers
+  - lifepunch_nopocket not in core — deny via omitting pocket_item (bitminer fixed)
+  - No stock Use-item from pocket UI — P2 new Razor layer
+
+Test on VENGEANCE:
+  lp_pocket_policy | lp_pocket_apply_dev
+  See visiblepocket/docs/VISIBLE_POCKET_PLAYTEST.md

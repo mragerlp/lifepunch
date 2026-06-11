@@ -238,6 +238,20 @@
       ]
     },
     {
+      "ident": "visiblepocket",
+      "title": "LIFEPUNCH Visible Pocket for DXRP",
+      "description": "Visible hotbar pocket UX + slot policy on DXRP PocketSystem — not a shop. Cash/rank tier slots, death drops, nopocket raid rules. Published by LIFEPUNCH.",
+      "kind": "code-only",
+      "hasAssets": false,
+      "hasCode": true,
+      "dxrpAddonId": "",
+      "sboxIdentifier": "lifepunch.visiblepocket",
+      "status": "p1-scaffold",
+      "spec": "docs/VISIBLE_POCKET_SPEC.md",
+      "notes": "P1: PocketSlotPolicy + lp_pocket_policy / lp_pocket_apply_dev dev bridge. Per-player MaxPocketItems = POCKET-01 Opus. llad MIS study only. Remove dev commands before portal ship.",
+      "contents": []
+    },
+    {
       "ident": "xm1014",
       "title": "XM1014",
       "kind": "weapon",
