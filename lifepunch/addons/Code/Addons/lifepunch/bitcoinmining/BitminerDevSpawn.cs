@@ -24,8 +24,20 @@ public static class BitminerDevSpawn
 {
 	private const float SpawnDistanceUnits = 120f;
 
+	/// <summary>Default dev spawn — GPU rack + separate hashd CRT terminal (linked on start).</summary>
 	[ConCmd( "lp_spawn_bitminer" )]
-	public static void SpawnBitminer()
+	public static void SpawnBitminer() => SpawnBitminerKit();
+
+	/// <summary>Dev smoke — spawn linked kit and open hashd immediately (CRT mesh optional).</summary>
+	[ConCmd( "lp_hashd_preview" )]
+	public static void HashdPreview()
+	{
+		SpawnBitminerKit();
+		BitminerCommandHost.OpenNearestTerminal();
+	}
+
+	[ConCmd( "lp_spawn_bitminer_kit" )]
+	public static void SpawnBitminerKit()
 	{
 		if ( !TryGetSpawnTransform( out var transform ) )
 		{
@@ -33,7 +45,7 @@ public static class BitminerDevSpawn
 			return;
 		}
 
-		var rig = CloneWorldPrefab( transform );
+		var rig = ClonePrefabAt( Bitminer.WorldPrefabPath, transform );
 		if ( !rig.IsValid() )
 			return;
 
@@ -45,6 +57,48 @@ public static class BitminerDevSpawn
 			return;
 		}
 
+		var terminalPos = transform.Position + transform.Rotation.Right * 120f + transform.Rotation.Forward * 40f;
+		var terminalTransform = new Transform( terminalPos, transform.Rotation );
+		var terminal = ClonePrefabAt( Bitminer.TerminalPrefabPath, terminalTransform );
+		if ( terminal.IsValid() )
+		{
+			var prop = terminal.Components.Get<BitminerTerminalProp>( FindMode.EverythingInSelfAndDescendants );
+			if ( prop.IsValid() )
+				prop.LinkedRig = entity;
+		}
+
+#if !LIFEPUNCH_LOCAL
+		var player = Player.Local;
+		if ( player.IsValid() )
+		{
+			rig.NetworkSpawn( player.Network.Owner );
+			if ( terminal.IsValid() )
+				terminal.NetworkSpawn( player.Network.Owner );
+		}
+		else
+		{
+			rig.NetworkSpawn();
+			if ( terminal.IsValid() )
+				terminal.NetworkSpawn();
+		}
+#endif
+
+		Log.Info( "lp_spawn_bitminer: gpu-rack + bitcoin-terminal placed. Use hashd on rig or USE the CRT." );
+	}
+
+	[ConCmd( "lp_spawn_advanced_bitminer" )]
+	public static void SpawnAdvancedBitminer()
+	{
+		if ( !TryGetSpawnTransform( out var transform ) )
+		{
+			Log.Warning( "lp_spawn_advanced_bitminer: no local viewer." );
+			return;
+		}
+
+		var rig = ClonePrefabAt( Bitminer.AdvancedPrefabPath, transform );
+		if ( !rig.IsValid() )
+			return;
+
 #if !LIFEPUNCH_LOCAL
 		var player = Player.Local;
 		if ( player.IsValid() )
@@ -53,44 +107,119 @@ public static class BitminerDevSpawn
 			rig.NetworkSpawn();
 #endif
 
-		Log.Info( $"lp_spawn_bitminer: rig at {rig.WorldPosition} (entity ok). Stand within 8m and run hashd or mine." );
+		Log.Info( "lp_spawn_advanced_bitminer: stacked gpu-rack placed (2× yield)." );
 	}
 
-	private static GameObject CloneWorldPrefab( Transform transform )
+	/// <summary>All three entities — terminal + small rack + advanced rack.</summary>
+	[ConCmd( "lp_spawn_bitminer_full_kit" )]
+	public static void SpawnBitminerFullKit()
+	{
+		if ( !TryGetSpawnTransform( out var transform ) )
+		{
+			Log.Warning( "lp_spawn_bitminer_full_kit: no local viewer." );
+			return;
+		}
+
+		var small = ClonePrefabAt( Bitminer.WorldPrefabPath, transform );
+		if ( !small.IsValid() )
+			return;
+
+		var advancedPos = transform.Position + transform.Rotation.Right * -160f;
+		var advanced = ClonePrefabAt( Bitminer.AdvancedPrefabPath, new Transform( advancedPos, transform.Rotation ) );
+
+		var terminalPos = transform.Position + transform.Rotation.Right * 120f + transform.Rotation.Forward * 40f;
+		var terminal = ClonePrefabAt( Bitminer.TerminalPrefabPath, new Transform( terminalPos, transform.Rotation ) );
+
+		var smallEntity = small.Components.Get<BitminerEntity>( FindMode.EverythingInSelfAndDescendants );
+		if ( terminal.IsValid() && smallEntity.IsValid() )
+		{
+			var prop = terminal.Components.Get<BitminerTerminalProp>( FindMode.EverythingInSelfAndDescendants );
+			if ( prop.IsValid() )
+				prop.LinkedRig = smallEntity;
+		}
+
+#if !LIFEPUNCH_LOCAL
+		var player = Player.Local;
+		if ( player.IsValid() )
+		{
+			small.NetworkSpawn( player.Network.Owner );
+			if ( advanced.IsValid() )
+				advanced.NetworkSpawn( player.Network.Owner );
+			if ( terminal.IsValid() )
+				terminal.NetworkSpawn( player.Network.Owner );
+		}
+		else
+		{
+			small.NetworkSpawn();
+			if ( advanced.IsValid() )
+				advanced.NetworkSpawn();
+			if ( terminal.IsValid() )
+				terminal.NetworkSpawn();
+		}
+#endif
+
+		Log.Info( "lp_spawn_bitminer_full_kit: terminal + small + advanced racks placed." );
+	}
+
+	[ConCmd( "lp_spawn_bitcoin_terminal" )]
+	public static void SpawnBitcoinTerminal()
+	{
+		if ( !TryGetSpawnTransform( out var transform ) )
+		{
+			Log.Warning( "lp_spawn_bitcoin_terminal: no local viewer." );
+			return;
+		}
+
+		var terminal = ClonePrefabAt( Bitminer.TerminalPrefabPath, transform );
+		if ( !terminal.IsValid() )
+			return;
+
+#if !LIFEPUNCH_LOCAL
+		var player = Player.Local;
+		if ( player.IsValid() )
+			terminal.NetworkSpawn( player.Network.Owner );
+		else
+			terminal.NetworkSpawn();
+#endif
+
+		Log.Info( "lp_spawn_bitcoin_terminal: CRT placed — auto-links to nearest rig within 4m." );
+	}
+
+	private static GameObject ClonePrefabAt( string prefabPath, Transform transform )
 	{
 #if LIFEPUNCH_LOCAL
-		var prefab = GameObject.GetPrefab( Bitminer.WorldPrefabPath );
+		var prefab = GameObject.GetPrefab( prefabPath );
 		if ( !prefab.IsValid() )
 		{
-			Log.Error( $"lp_spawn_bitminer: could not load '{Bitminer.WorldPrefabPath}'." );
+			Log.Error( $"bitminer spawn: could not load '{prefabPath}'." );
 			return default;
 		}
 
 		return prefab.Clone( new CloneConfig { Transform = transform } );
 #else
-		var prefabFile = PrefabFile.Load( Bitminer.WorldPrefabPath );
+		var prefabFile = PrefabFile.Load( prefabPath );
 		if ( prefabFile == null )
 		{
-			Log.Error( $"lp_spawn_bitminer: PrefabFile.Load failed '{Bitminer.WorldPrefabPath}'." );
+			Log.Error( $"bitminer spawn: PrefabFile.Load failed '{prefabPath}'." );
 			return default;
 		}
 
 		var prefabScene = SceneUtility.GetPrefabScene( prefabFile );
 		if ( prefabScene == null )
 		{
-			Log.Error( $"lp_spawn_bitminer: GetPrefabScene failed '{Bitminer.WorldPrefabPath}'." );
+			Log.Error( $"bitminer spawn: GetPrefabScene failed '{prefabPath}'." );
 			return default;
 		}
 
-		var rig = prefabScene.Clone();
-		if ( !rig.IsValid() )
+		var clone = prefabScene.Clone();
+		if ( !clone.IsValid() )
 		{
-			Log.Error( "lp_spawn_bitminer: scene clone failed." );
+			Log.Error( "bitminer spawn: scene clone failed." );
 			return default;
 		}
 
-		rig.WorldTransform = transform;
-		return rig;
+		clone.WorldTransform = transform;
+		return clone;
 #endif
 	}
 

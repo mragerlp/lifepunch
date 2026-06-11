@@ -4,19 +4,24 @@
 
 ## Ship tree (publish)
 
-| Slug | Role | Source | vmdl |
-|------|------|--------|------|
-| `gpu-rack` | **Small** mining rack + power anim | `gpu-rack-static.obj` + `gpu-rack-anim.fbx` | **Shipped** |
-| `gpu-rack-stacked` | **Large** expansion rack | `gpu-rack-stacked-anim.fbx` | **TODO** |
-| `bitcoin-terminal` | CRT / computer prop on rig | `computer.fbx` | **Shipped** (compile in ModelDoc) |
+| Slug | Entity name | Role | Source | vmdl |
+|------|-------------|------|--------|------|
+| `bitcoin-terminal` | **Bitcoin Terminal** | hashd control station (CRT prop) | `computer.fbx` | **Needs compile** — no `_c` yet → ERROR mesh |
+| `gpu-rack` | **Bitcoin Miner** (small rack) | Remote mining hardware | `gpu-rack-static.obj` + `gpu-rack-anim.fbx` | **Shipped** |
+| `gpu-rack-stacked` | **Advanced Bitcoin Miner** | Large stacked rack | `gpu-rack-stacked-anim.fbx` | **vmdl in repo** — compile in ModelDoc |
 
 ```text
 models/lifepunch/bitcoinmining/
-  gpu-rack/           ← see gpu-rack/MODEL_BUILD.md
-  bitcoin-terminal/   ← see bitcoin-terminal/MODEL_BUILD.md
-entities/bitcoin-miner/
+  gpu-rack/           ← small rack — gpu-rack/MODEL_BUILD.md
+  bitcoin-terminal/   ← CRT — bitcoin-terminal/MODEL_BUILD.md
+entities/
+  bitcoin-terminal/   ← separate placeable (NOT child of miner)
+  bitcoin-miner/      ← small rack only
+  advanced-bitcoin-miner/  ← stacked rack prefab (AdvancedRack = 2× yield)
 sounds/bitcoin-miner/
 ```
+
+**Architecture:** `docs/reference/BITMINER_THREE_ENTITY_ARCH.md`
 
 ## Archives (not published)
 

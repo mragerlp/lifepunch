@@ -23,8 +23,13 @@ lifepunch/scripts/Start-SboxDxrpEditor.ps1 -SyncAddon bitcoinmining
 
 1. Import `computer.fbx`; note material slots → fill `material-map.json`.
 2. Compile `bitcoin-terminal.vmdl`.
-3. On `bitcoin-miner.prefab`: child mesh for terminal screen area OR separate prop parented to rack.
-4. `TextRenderer` on rig screen can stay for in-world LCD summary; Razor terminal opens on interact.
+3. **Separate entity** `entities/bitcoin-terminal/bitcoin-terminal.prefab` — not a child of `bitcoin-miner`.
+4. `lcd_screen` `TextRenderer` on terminal; `BitminerTerminalProp` auto-links to nearest rig + opens hashd on USE.
+5. **Compile in ModelDoc (required — ERROR mesh until `_c` exist):**
+   - Open `bitcoin-terminal.vmdl` in DXRP project scope.
+   - Compile each `materials/bitcoin-terminal-*.vmat` (six files).
+   - Compile `bitcoin-terminal.vmdl` → produces `bitcoin-terminal.vmdl_c`.
+   - Sync compiled `_c` back to monorepo before publish.
 
 ## Relation to gpu-rack
 

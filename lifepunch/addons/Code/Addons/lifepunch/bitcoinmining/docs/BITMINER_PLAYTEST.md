@@ -4,6 +4,20 @@
 
 ---
 
+## 0. See the hashd console (fastest)
+
+Enter play mode, then:
+
+```text
+lp_hashd_preview
+```
+
+Spawns small rack + CRT kit and **opens the hashd overlay immediately**. The CRT world mesh can still show ERROR until `bitcoin-terminal.vmdl` is compiled in ModelDoc — the console UI does not depend on the CRT mesh.
+
+**Three entities (owner canon):** Terminal = control · Bitcoin Miner = small rack · Advanced Bitcoin Miner = stacked rack (TODO). See `docs/reference/BITMINER_THREE_ENTITY_ARCH.md`.
+
+---
+
 ## 1. Spawn a rig
 
 **Fast (dev console):**
@@ -12,7 +26,15 @@
 lp_spawn_bitminer
 ```
 
-Spawns `bitcoin-miner.prefab` ~3 m in front of you with full components. Works with a DXRP pawn **or** editor camera (no pawn required).
+Spawns **Bitcoin Miner** (`bitcoin-miner.prefab`) + **Bitcoin Terminal** (`bitcoin-terminal.prefab`) as linked pair. Works with a DXRP pawn **or** editor camera.
+
+```text
+lp_spawn_bitcoin_terminal
+lp_spawn_advanced_bitminer
+lp_spawn_bitminer_full_kit
+```
+
+CRT only · stacked rack only · all three entities (terminal + small + advanced).
 
 **Manual:** Asset Browser → DXRP → `addons/lifepunch/bitcoinmining/entities/bitcoin-miner/bitcoin-miner.prefab` → drag into map → **save scene**.
 
@@ -59,9 +81,9 @@ clear
 
 **Upgrade panel:** `upgrade` or `menu` opens **INSTALL** buttons for CPU Clock and CPU Cores (still accepts `upgrade cpu` / `upgrade cores`).
 
-Expected: green terminal UI, LCD on `computer_terminal` monitor face, fans spin while mining (placeholder fan GOs until vmdl anim ships).
+Expected: green terminal UI, LCD on `lcd_screen` (on `bitcoin-terminal.prefab`), fans spin while mining (placeholder fan GOs until vmdl anim ships).
 
-**LCD tune:** if the world TextRenderer misses the CRT, nudge `computer_terminal` / `lcd_text` transforms on `bitcoin-miner.prefab` in editor.
+**LCD tune:** nudge `lcd_screen` transform on `entities/bitcoin-terminal/bitcoin-terminal.prefab` — not on the rack prefab.
 
 ---
 

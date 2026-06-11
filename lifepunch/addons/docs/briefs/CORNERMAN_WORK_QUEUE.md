@@ -17,7 +17,7 @@ You do **not** open s&box, ModelDoc, or `git push`. Commit locally; ping Red wit
 | 1 | **Hacker Job terminal** | `CORNERMAN_HACKER_JOB_TERMINAL_TASK.md` | `HACKER_TERMINAL_FLOW.md` + `TERMINAL_PUZZLE_CATALOG.md` + platform tokens + gov DB scaffold |
 | 2 | **Coke intake** | `CORNERMAN_COKE_DRUG_INTAKE_TASK.md` | `UNZIP_MANIFEST.txt` + updated `COKE_LINE_MAP.md` |
 | 3 | **Deagle distill** | `CORNERMAN_DEAGLE_DISTILL_TASK.md` | USP stats table + `w_deagle/MODEL_BUILD.md` draft |
-| 4 | **Bitminer dual rack** | `CORNERMAN_BITMINER_DUAL_RACK_TASK.md` | `BITMINER_DUAL_RACK_SPEC.md` — small+large visible, yield tied to expansion |
+| 4 | **Bitminer three-entity arch** | `CORNERMAN_BITMINER_THREE_ENTITY_TASK.md` | Terminal hub + remote rack UX + advanced miner prefab wireframe (**replaces** dual-rack-on-one-prefab) |
 | 5 | **Bitminer Phase 2 menu** | `CORNERMAN_BITMINER_PHASE2_MENU_TASK.md` | Wireframe + `.razor.scss` token draft (no ship C#) |
 | 6 | **Weapon queue hygiene** | `DEAGLE_WEAPON_BRIEF.md` | One-page distill for RAG (`outbox/`) |
 

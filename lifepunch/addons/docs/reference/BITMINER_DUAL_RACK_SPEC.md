@@ -84,8 +84,10 @@ Large rack GPU emission: full when `RackExpansionLevel == 1 && IsMining`; dim wh
 ```text
 bitcoin-miner (root, scale ~1.11)
 ├── ModelRenderer          → gpu-rack.vmdl              (SMALL)
-├── computer_terminal      → bitcoin-terminal.vmdl
-│   └── lcd_text           → TextRenderer
+**Separate prefab** `entities/bitcoin-terminal/bitcoin-terminal.prefab`:
+├── ModelRenderer        → bitcoin-terminal.vmdl (`computer.fbx`)
+├── BitminerTerminalProp → links to nearest `BitminerEntity` within 4m
+└── lcd_screen           → TextRenderer (amber HASHD summary)
 ├── gpu_rack_large         → gpu-rack-stacked.vmdl      (LARGE — NEW child)
 ├── fan_placeholder*       → deprecate when anims wired
 └── BitminerEntity

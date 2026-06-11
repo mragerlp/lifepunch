@@ -19,15 +19,24 @@ public static class Bitminer
 	public const string Package = "lifepunch.bitcoinmining";
 	public const string Ident = "bitcoinmining";
 	public const string EntitySlug = "bitcoin-miner";
+	public const string AdvancedEntitySlug = "advanced-bitcoin-miner";
+	public const string TerminalEntitySlug = "bitcoin-terminal";
 	public const string ModelSlug = "gpu-rack";
+	public const string StackedModelSlug = "gpu-rack-stacked";
 	public const string DisplayName = "Bitcoin Miner";
-	public const string Description = "A placeable GPU mining rig. Interact for the LIFEPUNCH hashd terminal — mine, upgrade, sell.";
+	public const string AdvancedDisplayName = "Advanced Bitcoin Miner";
+	public const string TerminalDisplayName = "Bitcoin Terminal";
+	public const string Description = "Placeable GPU mining rack — controlled remotely from a LIFEPUNCH Bitcoin Terminal.";
 
 	public const int ContentType = 0;
 	public const string Grouping = "Entities";
 
 	public const string WorldPrefabPath = "addons/lifepunch/bitcoinmining/entities/bitcoin-miner/bitcoin-miner.prefab";
+	public const string AdvancedPrefabPath = "addons/lifepunch/bitcoinmining/entities/advanced-bitcoin-miner/advanced-bitcoin-miner.prefab";
+	public const string TerminalPrefabPath = "addons/lifepunch/bitcoinmining/entities/bitcoin-terminal/bitcoin-terminal.prefab";
 	public const string WorldModelPath = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/gpu-rack/gpu-rack.vmdl";
+	public const string StackedModelPath = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/gpu-rack/gpu-rack-stacked.vmdl";
+	public const string TerminalModelPath = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-terminal/bitcoin-terminal.vmdl";
 	public const string ModelRoot = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/gpu-rack";
 
 	public const string HumSoundPath = "addons/lifepunch/bitcoinmining/sounds/bitcoin-miner/server-hum.sound";

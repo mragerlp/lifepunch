@@ -7,7 +7,7 @@
     "targetModel": "bitcoin-terminal.vmdl",
     "importScale": 39.37,
     "alignOriginZ": "Bottom",
-    "status": "ModelDoc TODO — assign materials (checkerboard until remaps ship)"
+    "status": "Baseline solid vmats + MaterialGroupList in vmdl — recompile in ModelDoc; swap PNGs when baked"
   },
   "razorUi": {
     "authoringPath": "C:/Users/jared/Downloads/newaddons/hackerterminal/source/bitcointerminal",
@@ -110,8 +110,8 @@
   "status": {
     "sourceIntaked": true,
     "modelResourceCreated": true,
-    "materialResourcesCreated": false,
-    "materialGroupInVmdl": false,
-    "checkerboardCause": "bitcoin-terminal.vmdl has RenderMeshFile only — no MaterialGroupList remaps"
+    "materialResourcesCreated": true,
+    "materialGroupInVmdl": true,
+    "checkerboardCause": "resolved — compile vmdl + vmats in editor if ERROR persists"
   }
 }

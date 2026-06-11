@@ -1,0 +1,201 @@
+{
+  "RootObject": {
+    "__guid": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "__version": 2,
+    "Flags": 0,
+    "Name": "bitcoin-terminal",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "entity,hands_interact,occludable",
+    "Enabled": true,
+    "NetworkMode": 1,
+    "NetworkFlags": 0,
+    "NetworkOrphaned": 3,
+    "NetworkTransmit": true,
+    "OwnerTransfer": 1,
+    "Components": [
+      {
+        "__type": "Sandbox.BoxCollider",
+        "__guid": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
+        "__enabled": true,
+        "Flags": 0,
+        "Center": "0,10,20",
+        "ColliderFlags": 0,
+        "Elasticity": null,
+        "Friction": null,
+        "IsTrigger": false,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "OnObjectTriggerEnter": null,
+        "OnObjectTriggerExit": null,
+        "OnTriggerEnter": null,
+        "OnTriggerExit": null,
+        "RollingResistance": null,
+        "Scale": "14,18,8",
+        "Static": false,
+        "Surface": "surfaces/metal.surface",
+        "SurfaceVelocity": "0,0,0"
+      },
+      {
+        "__type": "Sandbox.ModelRenderer",
+        "__guid": "c3d4e5f6-a7b8-9012-cdef-123456789012",
+        "__enabled": true,
+        "Flags": 0,
+        "BodyGroups": 18446744073709551615,
+        "CreateAttachments": false,
+        "LodOverride": null,
+        "MaterialGroup": null,
+        "MaterialOverride": null,
+        "Materials": null,
+        "Model": "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-terminal/bitcoin-terminal.vmdl",
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "RenderOptions": {
+          "GameLayer": true,
+          "OverlayLayer": false,
+          "BloomLayer": false,
+          "AfterUILayer": false
+        },
+        "RenderType": "On",
+        "Tint": "1,1,1,1"
+      },
+      {
+        "__type": "LifePunch.DXRP.Addons.BitcoinMining.BitminerTerminalProp",
+        "__guid": "d4e5f6a7-b8c9-0123-def0-234567890123",
+        "__enabled": true,
+        "Flags": 0,
+        "LinkedRig": null,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "ScreenText": {
+          "_type": "component",
+          "component_id": "e5f6a7b8-c9d0-1234-ef01-345678901234",
+          "go": "f6a7b8c9-d0e1-2345-f012-456789012345",
+          "component_type": "TextRenderer"
+        }
+      }
+    ],
+    "Children": [
+      {
+        "__guid": "f6a7b8c9-d0e1-2345-f012-456789012345",
+        "__version": 2,
+        "Flags": 0,
+        "Name": "lcd_screen",
+        "Position": "0,18,3.5",
+        "Rotation": "0.5,0.5,-0.5,0.5",
+        "Scale": "1,0.14,0.11",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkFlags": 0,
+        "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
+        "OwnerTransfer": 1,
+        "Components": [
+          {
+            "__type": "Sandbox.TextRenderer",
+            "__guid": "e5f6a7b8-c9d0-1234-ef01-345678901234",
+            "__enabled": true,
+            "Flags": 0,
+            "__version": 2,
+            "BlendMode": "Normal",
+            "FogStrength": 1,
+            "HorizontalAlignment": "Left",
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "RenderOptions": {
+              "GameLayer": true,
+              "OverlayLayer": false,
+              "BloomLayer": false,
+              "AfterUILayer": false
+            },
+            "Scale": 0.1,
+            "TextScope": {
+              "Text": "LIFEPUNCH hashd\n----------------\nB 0.00000000\n\nMINING RATE  0 BTC/min\nHASH RATE    0 GHz\nCORES        1\n----------------\nIDLE",
+              "TextColor": "0.94,0.65,0,1",
+              "FontName": "Inter",
+              "FontSize": 48,
+              "FontWeight": 600,
+              "FontItalic": false,
+              "FontVariantNumeric": "Normal",
+              "LineHeight": 1,
+              "LetterSpacing": 0,
+              "WordSpacing": 0,
+              "FilterMode": "Bilinear",
+              "FontSmooth": "Auto",
+              "Outline": {
+                "Enabled": false,
+                "Size": 4,
+                "Color": "0,0,0,1"
+              },
+              "Shadow": {
+                "Enabled": false,
+                "Size": 1,
+                "Color": "1,1,1,1",
+                "Offset": "1,1"
+              },
+              "OutlineUnder": {
+                "Enabled": false,
+                "Size": 4,
+                "Color": "0.23,0.24,0.23,1"
+              },
+              "ShadowUnder": {
+                "Enabled": false,
+                "Size": 1,
+                "Color": "1,1,1,1",
+                "Offset": "1,1"
+              }
+            },
+            "VerticalAlignment": "Top"
+          }
+        ],
+        "Children": []
+      }
+    ],
+    "__properties": {
+      "NetworkInterpolation": true,
+      "TimeScale": 1,
+      "WantsSystemScene": true,
+      "Metadata": {},
+      "NavMesh": {
+        "Enabled": false,
+        "IncludeStaticBodies": true,
+        "IncludeKeyframedBodies": true,
+        "EditorAutoUpdate": false,
+        "AgentHeight": 64,
+        "AgentRadius": 16,
+        "AgentStepSize": 18,
+        "AgentMaxSlope": 40,
+        "ExcludedBodies": "",
+        "IncludedBodies": "",
+        "DeferGeneration": false,
+        "CustomBounds": false
+      }
+    },
+    "__variables": []
+  },
+  "ResourceVersion": 2,
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "DontBreakAsTemplate": false,
+  "__references": [],
+  "__version": 2
+}

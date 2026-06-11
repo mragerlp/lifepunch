@@ -14,28 +14,24 @@
 						remaps = 
 						[
 							{
-								from = "Monitor"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-terminal/materials/bitcoin-terminal-monitor.vmat"
+								from = "Cord"
+								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/gpu-rack/materials/gpu-rack-cord.vmat"
 							},
 							{
-								from = "Keyboard"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-terminal/materials/bitcoin-terminal-keyboard.vmat"
+								from = "PSU"
+								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/gpu-rack/materials/gpu-rack-psu.vmat"
 							},
 							{
-								from = "Cable"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-terminal/materials/bitcoin-terminal-cable.vmat"
+								from = "Rack"
+								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/gpu-rack/materials/gpu-rack-rack.vmat"
 							},
 							{
-								from = "CPU"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-terminal/materials/bitcoin-terminal-cpu.vmat"
+								from = "Motherboard"
+								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/gpu-rack/materials/gpu-rack-motherboard.vmat"
 							},
 							{
-								from = "Black"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-terminal/materials/bitcoin-terminal-black.vmat"
-							},
-							{
-								from = "White"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-terminal/materials/bitcoin-terminal-white.vmat"
+								from = "GPU"
+								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/gpu-rack/materials/gpu-rack-gpu.vmat"
 							},
 						]
 						use_global_default = false
@@ -65,7 +61,7 @@
 					{
 						_class = "RenderMeshFile"
 						name = "LOD0"
-						filename = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-terminal/source/computer.fbx"
+						filename = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/gpu-rack/source/gpu-rack-stacked-anim.fbx"
 						import_translation = [ 0.0, 0.0, 0.0 ]
 						import_rotation = [ 0.0, 0.0, 0.0 ]
 						import_scale = 39.37

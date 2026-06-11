@@ -39,6 +39,12 @@ internal static class BitminerCommandHost
 			return;
 		}
 
+		OpenNearestTerminal();
+	}
+
+	/// <summary>Shared open path for <c>hashd</c> and <c>lp_hashd_preview</c>.</summary>
+	public static void OpenNearestTerminal()
+	{
 		var scene = Sandbox.Game.ActiveScene;
 		if ( scene is null )
 			return;

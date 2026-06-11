@@ -53,7 +53,9 @@ public sealed partial class BitminerEntity : BaseEntity, Component.IPressable, I
 	// COMPONENT REFERENCES (bound by bitcoin-miner.prefab)
 	// ----------------------------
 
-	[Property] public required TextRenderer TextRender { get; set; }
+	[Property] public TextRenderer TextRender { get; set; }
+	/// <summary>Advanced Bitcoin Miner prefab sets this — doubles mining yield (stacked gpu-rack).</summary>
+	[Property] public bool AdvancedRack { get; set; }
 	[Property] public required GameObject BitminerFan { get; set; }
 	[Property] public GameObject BitminerFan2 { get; set; }
 	[Property] public GameObject BitminerFan3 { get; set; }
@@ -90,6 +92,11 @@ public sealed partial class BitminerEntity : BaseEntity, Component.IPressable, I
 	// ----------------------------
 
 	private const float BaseSpeed = 0.005f;
+	private const float AdvancedRackYield = 2f;
+	private float RackYield => AdvancedRack ? AdvancedRackYield : 1f;
+
+	/// <summary>Displayed BTC/min — includes advanced rack multiplier when set on prefab.</summary>
+	public float MiningRatePerMinute => ClockSpeed * BaseSpeed * CoreCount * RackYield;
 	private const float MiningInterval = 60f;
 	public const float BitcoinValue = 1500f;
 
@@ -245,6 +252,19 @@ public sealed partial class BitminerEntity : BaseEntity, Component.IPressable, I
 		UpdateHumVolume();
 	}
 
+	/// <summary>Called by <see cref="BitminerTerminalProp"/> when the LCD lives on a separate entity.</summary>
+	public void BindScreen( TextRenderer screen )
+	{
+		if ( !screen.IsValid() )
+			return;
+
+		TextRender = screen;
+		if ( TextRender.IsValid() )
+			TextRender.Color = Color.Parse( "#f0a500" ) ?? Color.White;
+
+		UpdateScreenText();
+	}
+
 	private void UpdateScreenText()
 	{
 		if ( !TextRender.IsValid() )
@@ -253,7 +273,7 @@ public sealed partial class BitminerEntity : BaseEntity, Component.IPressable, I
 		var filled = (int)( MiningProgress * 8 );
 		var bar = new string( '█', filled );
 		var pct = (int)( MiningProgress * 100 );
-		var rate = ClockSpeed * BaseSpeed * CoreCount;
+		var rate = ClockSpeed * BaseSpeed * CoreCount * RackYield;
 		var status = IsMining ? "● MINING" : "○ IDLE";
 
 		TextRender.Text = IsMining
@@ -286,7 +306,7 @@ public sealed partial class BitminerEntity : BaseEntity, Component.IPressable, I
 
 	private void MineBitcoin()
 	{
-		BitcoinAmount += ( ClockSpeed * BaseSpeed ) * CoreCount;
+		BitcoinAmount += ( ClockSpeed * BaseSpeed ) * CoreCount * RackYield;
 	}
 
 	// ----------------------------
