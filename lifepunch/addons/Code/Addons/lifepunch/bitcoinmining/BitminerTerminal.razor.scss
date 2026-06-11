@@ -28,6 +28,20 @@ BitminerTerminal {
     border-radius: 6px;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
+
+    .terminal-signature {
+        position: absolute;
+        right: 14px;
+        bottom: 46px;
+        font-family: $main-font;
+        font-size: 11px;
+        font-style: italic;
+        color: rgba(0, 255, 127, 0.45);
+        letter-spacing: 0.5px;
+        pointer-events: none;
+        z-index: 2;
+    }
 
     .title-bar {
         background-color: #080d08;
