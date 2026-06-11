@@ -26,3 +26,12 @@ Reorganize script: `addons/scripts/Reorganize-BitcoinMinerGpuRack.ps1`
 - **Pattern:** `BitminerTerminalHost` dual-build mount (same as StaffMenu / Evo reference)
 
 Task brief: `addons/docs/briefs/CORNERMAN_BITMINER_TERMINAL_TASK.md`
+
+### Phase 1 source files
+
+| File | Role |
+|------|------|
+| `BitminerCommandHost.cs` | `[ConCmd("hashd")]` / `[ConCmd("mine")]` — nearest rig within 8m / 4m; `close` subcommand |
+| `BitminerTerminalHost.cs` | `#if LIFEPUNCH_LOCAL` mount vs `GameManager.ShowUi`; viewer position for range |
+| `BitminerEntity.cs` | Synced mining state, RPCs, optional `IPressable` secondary open |
+| `BitminerTerminal.razor` | Define-free CLI; all gamemode coupling via host helpers |
