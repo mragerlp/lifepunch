@@ -18,32 +18,58 @@
 @attribute [StyleSheet]
 
 <root>
-    <div class="click-blocker" onclick=@FocusInput></div>
-
     @* ---- TITLE BAR ---- *@
     <div class="title-bar">
         <span class="title-text">LIFEPUNCH hashd v1.0 — cornerman@rig</span>
         <button class="close-x" onclick=@OnClickClose>✕ CLOSE</button>
     </div>
 
-    @* ---- SCREEN OUTPUT ---- *@
-    <div class="screen flex flex-col">
+    @* ---- SCROLLABLE OUTPUT ---- *@
+    <div class="screen-scroll" @ref="ScreenScroll">
+        <div class="screen flex flex-col">
             @foreach ( var line in _lines )
             {
-                <div class="p-1">
-                    <label class="screen-line @(line.StartsWith("cornerman@") ? "prompt-line" : line.StartsWith("---") ? "divider-line" : line.StartsWith("  ") ? "help-line" : line.StartsWith("ERROR") ? "error-line" : "output-line")">@line</label>
+                <div class="line-row">
+                    <label class="screen-line @(GetLineClass( line ))">@line</label>
                 </div>
             }
         </div>
+    </div>
 
-        @* ---- INPUT ---- *@
-        <div class="input-row">
-            <span class="prompt-label">cornerman@rig:~$</span>
-            <TextEntry
-                class="terminal-input"
-                @ref="InputBox"
-                onsubmit=@OnSubmit />
+    @* ---- UPGRADE MENU (clickable) ---- *@
+    @if ( _showUpgradeMenu )
+    {
+        <div class="upgrade-panel">
+            <div class="upgrade-header">UPGRADE MODULE</div>
+
+            <div class="upgrade-row">
+                <div class="upgrade-info">
+                    <span class="upgrade-name">CPU CLOCK</span>
+                    <span class="upgrade-detail">@GetCpuUpgradeDetail()</span>
+                </div>
+                <button class="upgrade-btn @(CanBuyCpu() ? "" : "disabled")" onclick=@OnBuyCpu>PURCHASE</button>
+            </div>
+
+            <div class="upgrade-row">
+                <div class="upgrade-info">
+                    <span class="upgrade-name">CPU CORES</span>
+                    <span class="upgrade-detail">@GetCoreUpgradeDetail()</span>
+                </div>
+                <button class="upgrade-btn @(CanBuyCores() ? "" : "disabled")" onclick=@OnBuyCores>PURCHASE</button>
+            </div>
+
+            <button class="upgrade-back" onclick=@CloseUpgradeMenu>← BACK TO TERMINAL</button>
         </div>
+    }
+
+    @* ---- INPUT ---- *@
+    <div class="input-row" onclick=@FocusInput>
+        <span class="prompt-label">cornerman@rig:~$</span>
+        <TextEntry
+            class="terminal-input"
+            @ref="InputBox"
+            onsubmit=@OnSubmit />
+    </div>
 
 </root>
 
@@ -51,14 +77,25 @@
     public BitminerEntity Miner { get; set; }
 
     private TextEntry InputBox { get; set; }
+    private Panel ScreenScroll { get; set; }
     private readonly List<string> _lines = new();
     private bool _liveStatus = false;
+    private bool _showUpgradeMenu = false;
     private int _statusLineCount = 0;
-    private const int MaxLines = 40;
+    private const int MaxLines = 200;
     private float _smoothProgress = 0f;
     private float _lastKnownProgress = 0f;
     private int _lastTextLength = 0;
     private TimeSince _sinceSecondly = 0f;
+
+    private static string GetLineClass( string line )
+    {
+        if ( line.StartsWith( "cornerman@" ) ) return "prompt-line";
+        if ( line.StartsWith( "---" ) || line.StartsWith( "----" ) ) return "divider-line";
+        if ( line.StartsWith( "  " ) ) return "help-line";
+        if ( line.StartsWith( "ERROR" ) ) return "error-line";
+        return "output-line";
+    }
 
     private void TrimLines()
     {
@@ -83,12 +120,13 @@
     private void Boot()
     {
         _lines.Clear();
+        _showUpgradeMenu = false;
         _lines.Add( "LIFEPUNCH hashd v1.0" );
         _lines.Add( "[ OK ] memory 256mb" );
         _lines.Add( "[ OK ] gpu-rack mesh" );
         _lines.Add( "[ OK ] mounting /dev/rig0" );
         _lines.Add( "starting mine.exe ..." );
-        _lines.Add( "Type 'help' for commands. Type 'menu' for graphical UI (coming soon)." );
+        _lines.Add( "Type 'help' for commands. Type 'upgrade' for clickable upgrades." );
         _lines.Add( "" );
     }
 
@@ -124,7 +162,7 @@
         if ( !Miner.IsValid() )
             return;
 
-        if ( InputBox.IsValid() && !InputBox.HasFocus )
+        if ( InputBox.IsValid() && !InputBox.HasFocus && !_showUpgradeMenu )
             InputBox.Focus();
 
         if ( Input.Pressed( "Attack2" ) )
@@ -222,6 +260,60 @@
         TrimLines();
     }
 
+    private void OpenUpgradeMenu()
+    {
+        _showUpgradeMenu = true;
+        _liveStatus = false;
+        _statusLineCount = 0;
+        _lines.Add( "Opening upgrade module — use PURCHASE buttons below." );
+    }
+
+    private void CloseUpgradeMenu()
+    {
+        _showUpgradeMenu = false;
+        FocusInput();
+    }
+
+    private bool CanBuyCpu() =>
+        Miner.IsValid() && Miner.CpuUpgradeLevel < BitminerEntity.CpuUpgradeCosts.Length;
+
+    private bool CanBuyCores() =>
+        Miner.IsValid() && Miner.CoreUpgradeLevel < BitminerEntity.CoreUpgradeCosts.Length;
+
+    private string GetCpuUpgradeDetail()
+    {
+        if ( !Miner.IsValid() ) return "offline";
+        if ( !CanBuyCpu() ) return $"MAXED — Lv {Miner.CpuUpgradeLevel}/{BitminerEntity.CpuUpgradeCosts.Length}";
+        return $"Lv {Miner.CpuUpgradeLevel}/{BitminerEntity.CpuUpgradeCosts.Length} — ${BitminerEntity.CpuUpgradeCosts[Miner.CpuUpgradeLevel]:N0}";
+    }
+
+    private string GetCoreUpgradeDetail()
+    {
+        if ( !Miner.IsValid() ) return "offline";
+        if ( !CanBuyCores() ) return $"MAXED — Lv {Miner.CoreUpgradeLevel}/{BitminerEntity.CoreUpgradeCosts.Length}";
+        return $"Lv {Miner.CoreUpgradeLevel}/{BitminerEntity.CoreUpgradeCosts.Length} — ${BitminerEntity.CoreUpgradeCosts[Miner.CoreUpgradeLevel]:N0}";
+    }
+
+    private void OnBuyCpu()
+    {
+        if ( !CanBuyCpu() ) return;
+        Sound.Play( Bitminer.KeyboardSoundPath );
+        _lines.Add( $"Purchasing CPU Clock for ${BitminerEntity.CpuUpgradeCosts[Miner.CpuUpgradeLevel]:N0}..." );
+        Miner.RequestUpgrade( BitminerUpgradeType.Cpu );
+        _lines.Add( "Done." );
+        TrimLines();
+    }
+
+    private void OnBuyCores()
+    {
+        if ( !CanBuyCores() ) return;
+        Sound.Play( Bitminer.KeyboardSoundPath );
+        _lines.Add( $"Purchasing CPU Cores for ${BitminerEntity.CoreUpgradeCosts[Miner.CoreUpgradeLevel]:N0}..." );
+        Miner.RequestUpgrade( BitminerUpgradeType.Cores );
+        _lines.Add( "Done." );
+        TrimLines();
+    }
+
     private void HandleCommand( string input )
     {
         var parts = input.Split( ' ', StringSplitOptions.RemoveEmptyEntries );
@@ -235,9 +327,9 @@
                 _lines.Add( "  BITCOIN  - Sell or view stored bitcoin balance." );
                 _lines.Add( "  INFO     - Output device specifications." );
                 _lines.Add( "  MINING   - Start or stop the miner." );
-                _lines.Add( "  UPGRADE  - View and purchase upgrades." );
+                _lines.Add( "  UPGRADE  - Open clickable upgrade menu." );
                 _lines.Add( "  STATUS   - Show full device status." );
-                _lines.Add( "  MENU     - Graphical UI (Phase 2 — stub in Phase 1)." );
+                _lines.Add( "  MENU     - Same as UPGRADE (upgrade menu)." );
                 _lines.Add( "  ABOUT    - LIFEPUNCH attribution." );
                 _lines.Add( "  CLEAR    - Clear the screen." );
                 _lines.Add( "  HELP     - Show this list." );
@@ -246,10 +338,12 @@
 
             case "clear":
                 _lines.Clear();
+                _showUpgradeMenu = false;
                 break;
 
             case "status":
                 if ( !Miner.IsValid() ) { _lines.Add( "ERROR: Miner connection lost." ); break; }
+                _showUpgradeMenu = false;
                 _liveStatus = true;
                 RefreshLiveStatus();
                 break;
@@ -308,45 +402,21 @@
                 if ( !Miner.IsValid() ) { _lines.Add( "ERROR: Miner connection lost." ); break; }
                 if ( arg == "cpu" )
                 {
-                    if ( Miner.CpuUpgradeLevel >= BitminerEntity.CpuUpgradeCosts.Length )
-                    {
-                        _lines.Add( "CPU Clock is already at max level." );
-                    }
-                    else
-                    {
-                        _lines.Add( $"Purchasing CPU upgrade for ${BitminerEntity.CpuUpgradeCosts[Miner.CpuUpgradeLevel]:N0}..." );
-                        Miner.RequestUpgrade( BitminerUpgradeType.Cpu );
-                        _lines.Add( "Done. Check INFO for updated specs." );
-                    }
+                    OnBuyCpu();
                 }
                 else if ( arg == "cores" )
                 {
-                    if ( Miner.CoreUpgradeLevel >= BitminerEntity.CoreUpgradeCosts.Length )
-                    {
-                        _lines.Add( "CPU Cores are already at max level." );
-                    }
-                    else
-                    {
-                        _lines.Add( $"Purchasing Cores upgrade for ${BitminerEntity.CoreUpgradeCosts[Miner.CoreUpgradeLevel]:N0}..." );
-                        Miner.RequestUpgrade( BitminerUpgradeType.Cores );
-                        _lines.Add( "Done. Check INFO for updated specs." );
-                    }
+                    OnBuyCores();
                 }
                 else
                 {
-                    _lines.Add( "--------------------UPGRADES----------------" );
-                    _lines.Add( Miner.CpuUpgradeLevel >= BitminerEntity.CpuUpgradeCosts.Length
-                        ? $"  CPU Clock: MAXED (Lv {Miner.CpuUpgradeLevel}/{BitminerEntity.CpuUpgradeCosts.Length})"
-                        : $"  CPU Clock: Lv {Miner.CpuUpgradeLevel}/{BitminerEntity.CpuUpgradeCosts.Length} — next: ${BitminerEntity.CpuUpgradeCosts[Miner.CpuUpgradeLevel]:N0} — 'upgrade cpu'" );
-                    _lines.Add( Miner.CoreUpgradeLevel >= BitminerEntity.CoreUpgradeCosts.Length
-                        ? $"  CPU Cores: MAXED (Lv {Miner.CoreUpgradeLevel}/{BitminerEntity.CoreUpgradeCosts.Length})"
-                        : $"  CPU Cores: Lv {Miner.CoreUpgradeLevel}/{BitminerEntity.CoreUpgradeCosts.Length} — next: ${BitminerEntity.CoreUpgradeCosts[Miner.CoreUpgradeLevel]:N0} — 'upgrade cores'" );
-                    _lines.Add( "--------------------------------------------" );
+                    OpenUpgradeMenu();
                 }
                 break;
 
             case "menu":
-                _lines.Add( "Graphical menu module not loaded. Use CLI commands (help)." );
+                if ( !Miner.IsValid() ) { _lines.Add( "ERROR: Miner connection lost." ); break; }
+                OpenUpgradeMenu();
                 break;
 
             case "about":
@@ -365,6 +435,6 @@
 
     protected override int BuildHash() =>
         Miner.IsValid()
-            ? HashCode.Combine( Miner.BitcoinAmount, Miner.IsMining, Miner.CpuUpgradeLevel, Miner.CoreUpgradeLevel, _lines.Count, (int)( _smoothProgress * 10f ) )
-            : _lines.Count;
+            ? HashCode.Combine( Miner.BitcoinAmount, Miner.IsMining, Miner.CpuUpgradeLevel, Miner.CoreUpgradeLevel, _lines.Count, _showUpgradeMenu, (int)( _smoothProgress * 10f ) )
+            : HashCode.Combine( _lines.Count, _showUpgradeMenu );
 }

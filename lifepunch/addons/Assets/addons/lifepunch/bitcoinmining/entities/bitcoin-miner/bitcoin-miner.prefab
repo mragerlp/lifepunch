@@ -236,13 +236,13 @@
         "Children": []
       },
       {
-        "__guid": "71458f6e-7b35-4faa-8dac-a6948c6dfd30",
+        "__guid": "e84a1f20-6b3c-4d9e-a1f2-8c7d6e5f4a3b",
         "__version": 2,
         "Flags": 0,
-        "Name": "lcd_text",
-        "Position": "0,0,50",
-        "Rotation": "0.5,0.5,-0.5,0.5",
-        "Scale": "1,0.14,0.11",
+        "Name": "computer_terminal",
+        "Position": "11.5,-7.5,0",
+        "Rotation": "0,0.7071068,0,0.7071068",
+        "Scale": "1,1,1",
         "Tags": "",
         "Enabled": true,
         "NetworkMode": 2,
@@ -252,8 +252,53 @@
         "OwnerTransfer": 1,
         "Components": [
           {
-            "__type": "Sandbox.TextRenderer",
-            "__guid": "0dc1d268-98c2-4ff6-8cfa-01fc33f0949c",
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "f95b2e31-7c4d-5e0a-b2f3-9d8e7f6a5b4c",
+            "__enabled": true,
+            "Flags": 0,
+            "BodyGroups": 18446744073709551615,
+            "CreateAttachments": false,
+            "LodOverride": null,
+            "MaterialGroup": null,
+            "MaterialOverride": null,
+            "Materials": null,
+            "Model": "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-terminal/bitcoin-terminal.vmdl",
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "RenderOptions": {
+              "GameLayer": true,
+              "OverlayLayer": false,
+              "BloomLayer": false,
+              "AfterUILayer": false
+            },
+            "RenderType": "On",
+            "Tint": "1,1,1,1"
+          }
+        ],
+        "Children": [
+          {
+            "__guid": "71458f6e-7b35-4faa-8dac-a6948c6dfd30",
+            "__version": 2,
+            "Flags": 0,
+            "Name": "lcd_text",
+            "Position": "0,18,3.5",
+            "Rotation": "0.5,0.5,-0.5,0.5",
+            "Scale": "1,0.14,0.11",
+            "Tags": "",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkFlags": 0,
+            "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
+            "OwnerTransfer": 1,
+            "Components": [
+              {
+                "__type": "Sandbox.TextRenderer",
+                "__guid": "0dc1d268-98c2-4ff6-8cfa-01fc33f0949c",
             "__enabled": true,
             "Flags": 0,
             "__version": 2,
@@ -310,9 +355,11 @@
               }
             },
             "VerticalAlignment": "Top"
+              }
+            ],
+            "Children": []
           }
-        ],
-        "Children": []
+        ]
       }
     ],
     "__properties": {

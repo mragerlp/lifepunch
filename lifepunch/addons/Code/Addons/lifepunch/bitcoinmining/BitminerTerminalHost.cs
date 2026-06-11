@@ -81,9 +81,11 @@ internal static class BitminerTerminalHost
 		var viewer = scene?.GetAllComponents<CameraComponent>().FirstOrDefault();
 		return viewer.IsValid() ? viewer.WorldPosition : (Vector3?)null;
 #else
-		return Player.Local.IsValid()
-			? Player.Local.WorldPosition
-			: (Vector3?)null;
+		if ( Player.Local.IsValid() )
+			return Player.Local.WorldPosition;
+
+		var viewer = scene?.GetAllComponents<CameraComponent>().FirstOrDefault();
+		return viewer.IsValid() ? viewer.WorldPosition : (Vector3?)null;
 #endif
 	}
 }

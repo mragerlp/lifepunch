@@ -19,7 +19,7 @@
   },
   "status": {
     "sourceIntaked": true,
-    "modelResourceCreated": false,
+    "modelResourceCreated": true,
     "materialResourcesCreated": false
   }
 }

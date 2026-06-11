@@ -25,6 +25,7 @@ See `WEAPON_CLASS_SPEC.md`, `VIEWMODEL_RIG_PIPELINE.md`, `SBOX_EDITOR_REFERENCE.
 ### Source 2 Viewer (VRF) — primary
 
 - Download: [s2v.app](https://s2v.app/) (GUI + optional `Source2Viewer-CLI.exe`)
+- **VENGEANCE GUI:** `C:\Tools\Source2Viewer\Source2Viewer.exe` (Desktop shortcut)
 - CS2 VPK on VENGEANCE: `D:\Steam\steamapps\common\Counter-Strike Global Offensive\game\csgo\pak01_dir.vpk`
 
 ### Blender
@@ -160,7 +161,7 @@ From each cached `v_*.vmdl`:
 
 ## AK-47 note
 
-Golden kit **did not** require CS2 glTF — owner used cleaned Sketchfab FBX + own WAV sounds (`ak47/docs/SOURCE_INTAKE.md`). CS2 `weapon_rif_ak47` is still useful as a **proportion/check** reference for the remaining four guns.
+Golden kit shipped from cleaned Sketchfab FBX + own WAV sounds (`ak47/docs/SOURCE_INTAKE.md`). CS2 `weapon_rif_ak47` is now an **active study target** for finishing `v_ak47` on the M4A1 class rig (animation timing, moving parts, proportions). Cornerman brief: `briefs/CORNERMAN_AK47_CS2_STUDY_TASK.md` · distill: `reference/CS2_AK47_STUDY.md`.
 
 ---
 

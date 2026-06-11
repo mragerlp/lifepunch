@@ -6,8 +6,9 @@
 
 | Slug | Role | Source | vmdl |
 |------|------|--------|------|
-| `gpu-rack` | World mining rack mesh + power anim | `gpu-rack-static.obj` + `gpu-rack-anim.fbx` | TODO |
-| `bitcoin-terminal` | CRT / computer prop on rig | `computer.fbx` | TODO |
+| `gpu-rack` | **Small** mining rack + power anim | `gpu-rack-static.obj` + `gpu-rack-anim.fbx` | **Shipped** |
+| `gpu-rack-stacked` | **Large** expansion rack | `gpu-rack-stacked-anim.fbx` | **TODO** |
+| `bitcoin-terminal` | CRT / computer prop on rig | `computer.fbx` | **Shipped** (compile in ModelDoc) |
 
 ```text
 models/lifepunch/bitcoinmining/

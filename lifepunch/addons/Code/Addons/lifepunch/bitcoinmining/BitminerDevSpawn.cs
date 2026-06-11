@@ -33,17 +33,15 @@ public static class BitminerDevSpawn
 			return;
 		}
 
-		var prefab = GameObject.GetPrefab( Bitminer.WorldPrefabPath );
-		if ( !prefab.IsValid() )
-		{
-			Log.Error( $"lp_spawn_bitminer: could not load '{Bitminer.WorldPrefabPath}'." );
-			return;
-		}
-
-		var rig = prefab.Clone( new CloneConfig { Transform = transform } );
+		var rig = CloneWorldPrefab( transform );
 		if ( !rig.IsValid() )
+			return;
+
+		var entity = rig.Components.Get<BitminerEntity>( FindMode.EverythingInSelfAndDescendants );
+		if ( !entity.IsValid() )
 		{
-			Log.Error( "lp_spawn_bitminer: clone failed." );
+			Log.Error( "lp_spawn_bitminer: clone has no BitminerEntity — prefab may be stale." );
+			rig.Destroy();
 			return;
 		}
 
@@ -55,13 +53,64 @@ public static class BitminerDevSpawn
 			rig.NetworkSpawn();
 #endif
 
-		Log.Info( $"lp_spawn_bitminer: rig at {rig.WorldPosition}. Stand within 8m and run hashd or mine." );
+		Log.Info( $"lp_spawn_bitminer: rig at {rig.WorldPosition} (entity ok). Stand within 8m and run hashd or mine." );
 	}
 
-	private static bool TryGetSpawnTransform( out Transform transform )
+	private static GameObject CloneWorldPrefab( Transform transform )
 	{
 #if LIFEPUNCH_LOCAL
+		var prefab = GameObject.GetPrefab( Bitminer.WorldPrefabPath );
+		if ( !prefab.IsValid() )
+		{
+			Log.Error( $"lp_spawn_bitminer: could not load '{Bitminer.WorldPrefabPath}'." );
+			return default;
+		}
+
+		return prefab.Clone( new CloneConfig { Transform = transform } );
+#else
+		var prefabFile = PrefabFile.Load( Bitminer.WorldPrefabPath );
+		if ( prefabFile == null )
+		{
+			Log.Error( $"lp_spawn_bitminer: PrefabFile.Load failed '{Bitminer.WorldPrefabPath}'." );
+			return default;
+		}
+
+		var prefabScene = SceneUtility.GetPrefabScene( prefabFile );
+		if ( prefabScene == null )
+		{
+			Log.Error( $"lp_spawn_bitminer: GetPrefabScene failed '{Bitminer.WorldPrefabPath}'." );
+			return default;
+		}
+
+		var rig = prefabScene.Clone();
+		if ( !rig.IsValid() )
+		{
+			Log.Error( "lp_spawn_bitminer: scene clone failed." );
+			return default;
+		}
+
+		rig.WorldTransform = transform;
+		return rig;
+#endif
+	}
+
+	[ConCmd( "lp_bitminer_count" )]
+	public static void CountBitminers()
+	{
 		var scene = Game.ActiveScene;
+		if ( scene is null )
+		{
+			Log.Warning( "lp_bitminer_count: no active scene." );
+			return;
+		}
+
+		var rigs = scene.GetAllComponents<BitminerEntity>().ToArray();
+		var positions = string.Join( "; ", rigs.Select( r => r.WorldPosition.ToString() ) );
+		Log.Info( $"BITMINER_TEST rigs={rigs.Length} pos={positions}" );
+	}
+
+	private static bool TryGetCameraSpawnTransform( Scene scene, out Transform transform )
+	{
 		var camera = scene?.GetAllComponents<CameraComponent>().FirstOrDefault();
 		if ( !camera.IsValid() )
 		{
@@ -77,23 +126,31 @@ public static class BitminerDevSpawn
 			camera.WorldPosition + forward * SpawnDistanceUnits,
 			Rotation.LookAt( forward ) );
 		return true;
+	}
+
+	private static bool TryGetSpawnTransform( out Transform transform )
+	{
+#if LIFEPUNCH_LOCAL
+		return TryGetCameraSpawnTransform( Game.ActiveScene, out transform );
 #else
 		var player = Player.Local;
-		if ( !player.IsValid() || !player.Controller.IsValid() )
+		if ( player.IsValid() )
 		{
-			transform = default;
-			return false;
+			var aim = player.Controller.IsValid()
+				? player.Controller.EyeAngles.ToRotation()
+				: player.WorldRotation;
+			var flatForward = aim.Forward.WithZ( 0 ).Normal;
+			if ( flatForward.Length < 0.01f )
+				flatForward = Vector3.Forward;
+
+			transform = new Transform(
+				player.WorldPosition + flatForward * SpawnDistanceUnits,
+				Rotation.LookAt( flatForward ) );
+			return true;
 		}
 
-		var aim = player.Controller.EyeAngles.ToRotation();
-		var flatForward = aim.Forward.WithZ( 0 ).Normal;
-		if ( flatForward.Length < 0.01f )
-			flatForward = Vector3.Forward;
-
-		transform = new Transform(
-			player.WorldPosition + flatForward * SpawnDistanceUnits,
-			Rotation.LookAt( flatForward ) );
-		return true;
+		// Editor play before DXRP spawns a pawn — same camera fallback as LIFEPUNCH_LOCAL.
+		return TryGetCameraSpawnTransform( Game.ActiveScene, out transform );
 #endif
 	}
 }

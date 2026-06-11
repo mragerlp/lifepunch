@@ -89,9 +89,18 @@ Keep Evo's on-rig LCD summary but re-skin copy:
 - Accent color: `#00FF7F` (not Evo blue `#44aaff`)
 - Labels: `LIFEPUNCH hashd`, `₿ balance`, `HASH`, `CORES`, progress bar
 
-### 3d. GPU rack mesh + power animation
+### 3d. Dual rack mesh + power animation
 
-- World model: compiled `gpu-rack.vmdl` from **gpu-rack** source tree (`gpu-rack-static.obj` + materials).
+**Owner decision (2026-06-11):** Show **small + large** racks on one prefab; BTC yield scales when the **large (stacked) rack** is expansion-active.
+
+| Rack | Mesh | Yield |
+|------|------|-------|
+| Small | `gpu-rack.vmdl` (`gpu-rack-static.obj`) | Always contributes base `×1.0` |
+| Large | `gpu-rack-stacked.vmdl` (`gpu-rack-stacked-anim.fbx`) | +bonus when `RackExpansionLevel ≥ 1` (proposed `×2.0` total) |
+
+Distill: `docs/reference/BITMINER_DUAL_RACK_SPEC.md` · Cornerman: `briefs/CORNERMAN_BITMINER_DUAL_RACK_TASK.md`.
+
+- World models: compiled `gpu-rack.vmdl` + **`gpu-rack-stacked.vmdl`** (TODO) from **gpu-rack** source tree.
 - **Power states (owner decision):** rack **animates when turned on** (`IsMining == true`) and **powers down when turned off** — no always-on idle spin.
 - ModelDoc: bake `source/gpu-rack-anim.fbx` into the vmdl with two sequences — **`power_on`** (loop while mining) and **`power_off`** (idle/stopped). `BitminerEntity.SetMiningState` drives which sequence plays.
 - **Emission** on GPU cards: brighter while mining (shader param or material toggle at mine start/stop).
@@ -146,6 +155,9 @@ Dual-build: `LIFEPUNCH_LOCAL` — see `RUNTIME_PATTERN.md`. **Tier-1 (Opus)** fo
 | Entity | GPU rig, economy generator | CRT terminal, job ability |
 | UI skin | Same **hacker terminal** family | `cornerman.exe` fiction, wallet steal puzzle |
 | Economy | Mine → sell BTC for cash | Steal wallet cash (draft, not built) |
+
+**Green prep (2026-06-11):** `briefs/CORNERMAN_HACKER_JOB_TERMINAL_TASK.md` — flow, puzzles, shared
+`TERMINAL_PLATFORM_TOKENS.scss`. Later fork: government database (`lifepunch@lifepunch.net`, cyan).
 
 Shared SCSS tokens; **separate addons**, separate prefabs.
 

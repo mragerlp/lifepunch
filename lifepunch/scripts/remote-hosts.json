@@ -1,16 +1,32 @@
-{
-  "cornerman": {
-    "displayName": "Cornerman",
-    "host": "192.168.1.227",
-    "shortcutName": "Cornerman (RDP)",
-    "description": "Cornerman AI workstation — full desktop (not the voice console)",
-    "icon": "cornerman-terminal-icon.ico"
-  },
-  "lifepunchnet": {
-    "displayName": "lifepunchnet",
-    "host": "",
-    "shortcutName": "lifepunchnet (RDP)",
-    "description": "lifepunchnet — always-on DXRP ops, Whisper hub, security watchdog",
-    "icon": "cornerman-terminal-icon.ico"
-  }
-}
+{
+
+  "cornerman": {
+
+    "displayName": "Cornerman",
+
+    "host": "192.168.1.227",
+
+    "shortcutName": "Cornerman (RDP)",
+
+    "description": "Cornerman AI workstation — full desktop (not the voice console)",
+
+    "icon": "cornerman-terminal-icon.ico"
+
+  },
+
+  "lifepunchnet": {
+
+    "displayName": "lifepunchnet",
+
+    "host": "",
+
+    "shortcutName": "lifepunchnet (RDP)",
+
+    "description": "lifepunchnet — always-on DXRP ops, Whisper hub, security watchdog",
+
+    "icon": "cornerman-terminal-icon.ico"
+
+  }
+
+}
+

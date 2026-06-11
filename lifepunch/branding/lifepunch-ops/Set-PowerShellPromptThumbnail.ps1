@@ -11,7 +11,7 @@
 #>
 [CmdletBinding()]
 param(
-    [string] $OpsRoot = $PSScriptRoot
+    [string] $OpsRoot = ''
 )
 
 $ErrorActionPreference = 'Stop'

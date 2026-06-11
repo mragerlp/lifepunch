@@ -12,9 +12,17 @@
 lp_spawn_bitminer
 ```
 
-Spawns `bitcoin-miner.prefab` ~3 m in front of you with full components.
+Spawns `bitcoin-miner.prefab` ~3 m in front of you with full components. Works with a DXRP pawn **or** editor camera (no pawn required).
 
 **Manual:** Asset Browser → DXRP → `addons/lifepunch/bitcoinmining/entities/bitcoin-miner/bitcoin-miner.prefab` → drag into map → **save scene**.
+
+**Verify scene (dev console):**
+
+```text
+lp_bitminer_count
+```
+
+Logs `BITMINER_TEST rigs=N pos=...` for every `BitminerEntity` in the active scene.
 
 ---
 
@@ -45,7 +53,13 @@ upgrade
 clear
 ```
 
-Expected: green terminal UI, LCD text updates on rig, fans spin while mining (placeholder fan GOs until vmdl anim ships).
+**Scroll:** mouse-wheel the terminal output area (history keeps up to 200 lines).
+
+**Upgrade menu:** `upgrade` or `menu` opens clickable **PURCHASE** buttons for CPU Clock and CPU Cores (still accepts `upgrade cpu` / `upgrade cores`).
+
+Expected: green terminal UI, LCD on `computer_terminal` monitor face, fans spin while mining (placeholder fan GOs until vmdl anim ships).
+
+**LCD tune:** if the world TextRenderer misses the CRT, nudge `computer_terminal` / `lcd_text` transforms on `bitcoin-miner.prefab` in editor.
 
 ---
 
