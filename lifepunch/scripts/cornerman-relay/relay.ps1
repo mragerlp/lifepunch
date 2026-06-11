@@ -4,14 +4,32 @@ param(
     [switch] $SelfTest,
     [switch] $NoGuided,
     [switch] $Loop,
-    [switch] $PushToTalk
+    [switch] $PushToTalk,
+    [switch] $SkipPreflight
 )
 
 $ErrorActionPreference = 'Stop'
-$env:CORNERMAN_REMOTE_WHISPER_URL = 'http://205.209.104.22:9000/v1/audio/transcriptions'
-$env:CORNERMAN_REMOTE_WHISPER_MODEL = 'small.en'
 
+$WhisperUrl = if ($env:CORNERMAN_REMOTE_WHISPER_URL) {
+    $env:CORNERMAN_REMOTE_WHISPER_URL.Trim()
+} else {
+    'http://205.209.104.22:9000/v1/audio/transcriptions'
+}
+$env:CORNERMAN_REMOTE_WHISPER_URL   = $WhisperUrl
+$env:CORNERMAN_REMOTE_WHISPER_MODEL = if ($env:CORNERMAN_REMOTE_WHISPER_MODEL) { $env:CORNERMAN_REMOTE_WHISPER_MODEL } else { 'small.en' }
 $env:CORNERMAN_PREFER_RDP_MIC = '0'
+
+if ($PushToTalk -and -not $SkipPreflight -and -not $SelfTest) {
+    $preflight = 'C:\Projects\lifepunch\lifepunch\scripts\Test-LifepunchnetWhisperPreflight.ps1'
+    if (-not (Test-Path -LiteralPath $preflight)) {
+        throw "Missing lifepunchnet preflight script: $preflight"
+    }
+    . $preflight
+    if (-not (Test-LifepunchnetWhisperPreflight)) {
+        Write-LifepunchnetWhisperPreflightFailure -WhisperUrl $WhisperUrl
+        exit 2
+    }
+}
 
 $py = Join-Path $PSScriptRoot '.venv\Scripts\python.exe'
 if (-not (Test-Path $py)) {

@@ -34,6 +34,9 @@ if (Test-Path -LiteralPath $relayStarter) {
 Write-Host 'Patch cornerman-rag...' -ForegroundColor DarkGray
 ssh -o BatchMode=yes $CornermanHost "cd $CornermanRag; .venv/Scripts/python.exe patch_relay_ptt.py"
 
+Write-Host 'Deploy lifepunchnet Whisper preflight (required by relay.ps1)...' -ForegroundColor DarkGray
+& (Join-Path $Here 'Deploy-CornermanWhisperPreflight.ps1') -CornermanHost $CornermanHost
+
 Write-Host ''
 Write-Host 'Done.' -ForegroundColor Green
 Write-Host '  Cornerman: tap F7 to arm, wait for Ready, hold F8, release' -ForegroundColor Cyan

@@ -8,9 +8,13 @@ import time
 # Virtual-key codes (GetAsyncKeyState)
 VK = {
     "space": 0x20,
+    "f6": 0x75,
+    "f7": 0x76,
     "f8": 0x77,
     "f9": 0x78,
     "f10": 0x79,
+    "f11": 0x7A,
+    "f12": 0x7B,
     "scrolllock": 0x91,
     "pause": 0x13,
 }
