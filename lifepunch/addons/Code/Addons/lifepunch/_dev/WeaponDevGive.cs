@@ -164,7 +164,7 @@ public static class WeaponDevGive
 		equipment.Identifier = ident;
 		equipment.OwnerId = player.Id;
 		equipment.CanDrop = true;
-		go.NetworkSpawn( Network.Owner );
+		go.NetworkSpawn( player.Network.Owner );
 
 		if ( !player.CantSwitch )
 		{
@@ -248,7 +248,7 @@ public static class WeaponDevGive
 		equipment.OwnerId = player.Id;
 		equipment.CanDrop = true;
 		equipment.ViewModelPrefab = vmPrefab;
-		go.NetworkSpawn( Network.Owner );
+		go.NetworkSpawn( player.Network.Owner );
 
 		if ( !player.CantSwitch )
 		{

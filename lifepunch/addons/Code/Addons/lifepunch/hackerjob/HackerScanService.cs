@@ -48,14 +48,14 @@ public static class HackerScanService
 #endif
 	}
 
-#if LIFEPUNCH_LOCAL
 	private static IReadOnlyList<ScanTarget> EditorStubWalletTargets() => new[]
 	{
 		new ScanTarget( "76561198000000001", "target_alpha", 4200 ),
 		new ScanTarget( "76561198000000002", "target_bravo", 1250 ),
 		new ScanTarget( "76561198000000003", "target_charlie", 890 ),
 	};
-#else
+
+#if !LIFEPUNCH_LOCAL
 	private static IReadOnlyList<ScanTarget> BuildLiveWalletTargets()
 	{
 		var manager = GameNetworkManager.Instance;
