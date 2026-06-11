@@ -15,12 +15,18 @@
 @using System.Collections.Generic
 @using System.Linq
 
-<root class="staffmenu">
+<root class="staffmenu ulx-v2">
 	<div class="window">
+		<div class="header-accent"></div>
 		<div class="header">
 			<div class="title">
-				<i class="material-icons">shield</i>
-				<span>Staff Menu</span>
+				<div class="title-badge">
+					<i class="material-icons">shield</i>
+				</div>
+				<div class="title-stack">
+					<span class="title-primary">lifepunch.ulx</span>
+					<span class="title-sub">Staff Console</span>
+				</div>
 			</div>
 			<div class="header-actions">
 				<button class="icon-btn cog" tooltip="Settings" onclick="@OpenSettings">
@@ -37,21 +43,24 @@
 			{
 				<button class="@TabClass( category )"
 				        onclick="@(() => SelectTab( category ))">
-					@category
+					<i class="material-icons tab-icon">@TabIcon( category )</i>
+					<span>@category</span>
 				</button>
 			}
 			@if ( StaffMenuHost.CanUseWaypoints() )
 			{
 				<button class="@TabClass( TabWaypoints )"
 				        onclick="@(() => SelectTab( TabWaypoints ))">
-					Waypoints
+					<i class="material-icons tab-icon">place</i>
+					<span>Waypoints</span>
 				</button>
 			}
 			@if ( StaffMenuHost.CanViewAudit() )
 			{
 				<button class="@TabClass( TabAudit )"
 				        onclick="@(() => SelectTab( TabAudit ))">
-					Audit
+					<i class="material-icons tab-icon">history</i>
+					<span>Audit</span>
 				</button>
 			}
 			<button class="network-block @( StaffMenuHost.HasWebsite ? "network-block-link" : "" ) @( _websiteCopied ? "network-block-copied" : "" )"
@@ -652,6 +661,17 @@
 	// A method (not an inline `@( ... ? "x" : "" )` with nested quotes) keeps the class binding clean,
 	// and toggling a class reliably applies AND clears while `.tab:hover` keeps working on the rest.
 	private string TabClass( string tab ) => _activeTab == tab ? "tab tab-sel" : "tab";
+
+	/// <summary>Material icon per tab strip entry (visual flavor only).</summary>
+	private static string TabIcon( string tab ) => tab switch
+	{
+		StaffMenuActions.CategoryModeration => "gavel",
+		StaffMenuActions.CategoryCommands => "terminal",
+		StaffMenuActions.CategoryAbility => "bolt",
+		TabWaypoints => "place",
+		TabAudit => "history",
+		_ => "folder"
+	};
 
 	// Audit viewer state: a full-window tab mirroring the portal Audit page — its two live filters
 	// (player id/name, entity id) are applied host-side.
