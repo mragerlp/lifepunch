@@ -1,8 +1,9 @@
 # Hacker Job — Protection & security checklist
 
-**Status:** 🟡 Living doc — **Green audits** · **Red/Opus ships** fixes  
+**Status:** ✅ Green audit complete (2026-06-11) · Phase 2 economy rows remain Opus  
 **Scope:** Trademark/source identity + economy security for `hackerjob` (flagship asset)  
-**Security detail:** `hackerjob/docs/SECURITY.md`
+**Security detail:** `hackerjob/docs/SECURITY.md`  
+**Outbox:** `C:\lifepunch\cornerman\outbox\HACKER_JOB_PROTECTION_AUDIT.md`
 
 ---
 
@@ -15,13 +16,13 @@ rg -i "spl mute|evo" lifepunch/addons/Assets/addons/lifepunch/hackerjob
 
 | Check | Pass criteria | Status | Notes |
 |-------|---------------|--------|-------|
-| About command | `HackerTerminalBrand.AboutLines` — LIFEPUNCH™ + lifepunch.co | ☐ | Red shipped 2026-06 |
-| Title bar | `LIFEPUNCH cornerman.exe` / `vengeance.exe` | ☐ | |
-| In-world LCD | `LIFEPUNCH` prefix on standby text | ☐ | `HackerTerminalEntity` |
-| Fiction disclaimer | cornerman/vengeance = in-world only | ☐ | About + brand doc |
-| No third-party credits in UI | Study refs in docs/`reference/` only | ☐ | |
-| Portal / `addons.json` | "Published by LIFEPUNCH" lead naming | ☐ | |
-| Use `™` not `®` | Pending USPTO registration | ☐ | |
+| About command | `HackerTerminalBrand.AboutLines` — LIFEPUNCH™ + lifepunch.co | ✅ | `cbeb481` |
+| Title bar | `LIFEPUNCH cornerman.exe` / `vengeance.exe` | ✅ | |
+| In-world LCD | `LIFEPUNCH` prefix on standby text | ✅ | `HackerTerminalEntity` |
+| Fiction disclaimer | cornerman/vengeance = in-world only | ✅ | About + brand doc |
+| No third-party credits in UI | Study refs in docs/`reference/` only | ✅ | grep clean |
+| Portal / `addons.json` | "Published by LIFEPUNCH" lead naming | ✅ | ownership wording present |
+| Use `™` not `®` | Pending USPTO registration | ✅ | |
 
 ---
 
@@ -34,9 +35,9 @@ cd lifepunch/addons/scripts
 
 | Check | Pass criteria | Status |
 |-------|---------------|--------|
-| All `.cs` / `.razor` / `.scss` in `hackerjob/` | Canonical proprietary block | ☐ |
-| `addons.json` ownership wording | No resale/redistribution | ☐ |
-| `sboxIdentifier` | `lifepunch.hackerjob` | ☐ |
+| All `.cs` / `.razor` / `.scss` in `hackerjob/` | Canonical proprietary block | ✅ |
+| `addons.json` ownership wording | No resale/redistribution | ✅ |
+| `sboxIdentifier` | `lifepunch.hackerjob` | ✅ |
 
 ---
 
@@ -44,11 +45,11 @@ cd lifepunch/addons/scripts
 
 | Check | Pass criteria | Status | Owner |
 |-------|---------------|--------|-------|
-| Hack submit uses `[Rpc.Host]` | `SubmitWalletHackHost` / `SubmitGovdbInfilHost` | ☐ | Red |
-| Host re-validates puzzle | `HackerEconomySecurity.ValidatePuzzleOnHost` | ☐ | Red |
-| Phase 1: no funds moved | `FundsMoved == false` always | ☐ | Red |
-| Bank never touched | `HackerJob.BankUntouchable` + Phase 2 code review | ☐ | Opus |
-| Self-hack denied | `hacker.SteamId == target` rejected | ☐ | Red |
+| Hack submit uses `[Rpc.Host]` | `SubmitWalletHackHost` / `SubmitGovdbInfilHost` | ✅ | Red `cbeb481` |
+| Host re-validates puzzle | `HackerEconomySecurity.ValidatePuzzleOnHost` | ✅ | Red |
+| Phase 1: no funds moved | `FundsMoved == false` always | ✅ | Red |
+| Bank never touched | `HackerJob.BankUntouchable` + Phase 2 code review | ⚠️ | Opus Phase 2 |
+| Self-hack denied | `hacker.SteamId == target` rejected | ✅ | Red |
 | Scan host-authoritative | Phase 2 `[Rpc.Host]` scan | ☐ | Opus |
 | Host-issued puzzle session | Closes HACKER-02 | ☐ | Opus |
 | UI success from host RPC only | Closes HACKER-01 | ☐ | Opus |
@@ -60,13 +61,15 @@ cd lifepunch/addons/scripts
 
 ## 4. Brand separation (clone resistance)
 
-| Terminal | Must stay distinct |
-|----------|-------------------|
-| Hacker green `#00FF7F` | ≠ HASHD amber bitminer |
-| Hacker red `#E4002B` | ≠ VENGEANCE machine fiction only in advanced tier |
-| Ops console layout | Shared *shape* with police cyan — different program/commands |
+| Terminal | Must stay distinct | Status |
+|----------|-------------------|--------|
+| Hacker green `#00FF7F` | ≠ HASHD amber bitminer | ✅ SCSS |
+| Hacker red `#E4002B` | ≠ VENGEANCE machine fiction only in advanced tier | ✅ |
+| Ops console layout | Shared *shape* with police cyan — different program/commands | ✅ |
 
 See `TERMINAL_BRAND_MATRIX.md` · `HACKER_OPS_CONSOLE_SPEC.md`.
+
+**Grep note:** `hashd` appears only in dev docs/comments (not player UI) — OK.
 
 ---
 
@@ -74,9 +77,9 @@ See `TERMINAL_BRAND_MATRIX.md` · `HACKER_OPS_CONSOLE_SPEC.md`.
 
 | Check | Pass criteria | Status |
 |-------|---------------|--------|
-| No `reference/` assets in ship tree | Self-authored CRT + sounds | ☐ |
-| No Facepunch cloud model paths | Self-contained prefabs | ☐ |
-| Compiled `_c` in publish staging | Dedicated server parity | ☐ |
+| No `reference/` assets in ship tree | Self-authored CRT + sounds | ⚠️ CRT model TBD |
+| No Facepunch cloud model paths | Self-contained prefabs | ☐ prefab TBD |
+| Compiled `_c` in publish staging | Dedicated server parity | ☐ pre-publish |
 
 ---
 
