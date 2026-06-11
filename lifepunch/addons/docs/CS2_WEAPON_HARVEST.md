@@ -2,7 +2,8 @@
 
 **Purpose:** Grab Counter-Strike 2 meshes, animations, textures, and sounds for **reference only** while we author **LifePunch-owned** ship assets.  
 **Never commit** CS2 exports to the monorepo. Store under `C:/lifepunch/reference-intake/cs2-weapons/`.  
-**Canon queue:** `config/weapon-production.json` · build lane: `WEAPON_MASS_PRODUCTION.md`
+**Canon queue:** `config/weapon-production.json` · **full CS2 catalog:** `config/cs2-weapon-catalog.json` · build lane: `WEAPON_MASS_PRODUCTION.md`  
+**World model fix lane:** `CS2_WORLD_MODEL_PIPELINE.md` · **sounds (reference):** `CS2_SOUND_REFERENCE.md` · **Red batch:** `RED_CS2_WEAPON_BATCH.md`
 
 ---
 
@@ -52,15 +53,24 @@ Open `pak01_dir.vpk` → browse:
 | Raw sounds | `sounds/` (filter `weapons` in S2V search) | WAV via S2V |
 | Weapon metadata | `scripts/items/items_game.txt`, `scripts/weapons.vdata` | Text — timing/stats study only |
 
-### LifePunch queue → CS2 mesh names
+### LifePunch catalog → CS2 mesh names
 
-| ident | `cs2Mesh` | S2V browse hint |
-|-------|-----------|-----------------|
-| `ak47` | `weapon_rif_ak47` | `weapons/models/ak47/` |
-| `deagle` | `weapon_pist_deagle` | `weapons/models/deagle/` |
-| `mp9` | `weapon_smg_mp9` | `weapons/models/mp9/` |
-| `ssg08` | `weapon_snip_ssg08` | `weapons/models/ssg08/` |
-| `xm1014` | `weapon_shot_xm1014` | `weapons/models/xm1014/` |
+See `config/cs2-weapon-catalog.json` for the full list. Ship queue + extended study:
+
+| ident | `cs2Mesh` | S2V folder | DXRP class |
+|-------|-----------|------------|------------|
+| `ak47` | `weapon_rif_ak47` | `ak47` | m4a1 |
+| `deagle` | `weapon_pist_deagle` | `deagle` | usp |
+| `mp9` | `weapon_smg_mp9` | `mp9` | mp5 |
+| `ssg08` | `weapon_snip_ssg08` | `ssg08` | m700 |
+| `xm1014` | `weapon_shot_xm1014` | `xm1014` | spaghelli |
+| `doublebarrelshotgun` | `weapon_shot_sawedoff` | `sawedoff` | spaghelli |
+| `awp` | `weapon_snip_awp` | `awp` | m700 |
+| `glock18` | `weapon_pist_glock18` | `glock18` | usp |
+| `m4a4` | `weapon_rif_m4a1` | `m4a1` | m4a1 |
+| `p250` | `weapon_pist_p250` | `p250` | usp |
+| `galilar` | `weapon_rif_galilar` | `galilar` | m4a1 |
+| `famas` | `weapon_rif_famas` | `famas` | m4a1 |
 
 Inside each folder you usually get **multiple** `.vmdl_c` files:
 
@@ -131,7 +141,7 @@ C:/lifepunch/reference-intake/cs2-weapons/
 
 1. **CS2 glTF** → Blender: measure scale, note moving parts (bolt, mag, slide).
 2. **Author own mesh** → `w_<ident>.fbx` (static world model is fine).
-3. **ModelDoc** → `w_<ident>.vmdl` + LifePunch materials.
+3. **ModelDoc** → `w_<ident>.vmdl` + LifePunch materials + **physics collision hull** (mandatory for drops).
 4. **Clone class prefab** (`w_usp`, `w_m4a1`, …) → save as `equipment/w_<ident>/`.
 5. **First person:** bind mesh to Facepunch rig OR class placeholder `vm_<class>` until rig batch (`VIEWMODEL_RIG_PIPELINE.md`).
 6. **Sounds:** own WAVs (AK pattern in `ak47/docs/SOURCE_INTAKE.md`) — use CS2 only as **reference mix**, not ship.
@@ -159,9 +169,9 @@ From each cached `v_*.vmdl`:
 
 ---
 
-## AK-47 note
+## AK-47 note (parked — CS2 rebuild)
 
-Golden kit shipped from cleaned Sketchfab FBX + own WAV sounds (`ak47/docs/SOURCE_INTAKE.md`). CS2 `weapon_rif_ak47` is now an **active study target** for finishing `v_ak47` on the M4A1 class rig (animation timing, moving parts, proportions). Cornerman brief: `briefs/CORNERMAN_AK47_CS2_STUDY_TASK.md` · distill: `reference/CS2_AK47_STUDY.md`.
+Sketchfab AK kit is **not shippable** (bad FP bonemerge, bad 3P hold, **no drop physics**). **Restart from CS2** `weapon_rif_ak47` world mesh + own FBX. **Keep LifePunch WAV sounds** — they work in-game (`ak47/sounds/`). See `CS2_FIRST_WEAPON_TEST.md`.
 
 ---
 
@@ -175,6 +185,10 @@ Golden kit shipped from cleaned Sketchfab FBX + own WAV sounds (`ak47/docs/SOURC
 
 ## Related docs
 
+- `CS2_WORLD_MODEL_PIPELINE.md` — world glTF → physics hull → fix drops
+- `CS2_SOUND_REFERENCE.md` — CS2 audio harvest; ship own WAV
+- `RED_CS2_WEAPON_BATCH.md` — VENGEANCE batch session
+- `CS2_FIRST_WEAPON_TEST.md` — owner CS2-first decision
 - `WEAPON_INTAKE.md` — classify `reference-only` vs `use`
 - `WEAPON_MASS_PRODUCTION.md` — queue + publish gates
 - `briefs/DEAGLE_WEAPON_BRIEF.md` — next gun step 1

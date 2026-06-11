@@ -1,7 +1,9 @@
 {
   "schemaVersion": 1,
-  "program": "LifePunch Gun Dealer — 5 class kit",
+  "program": "LifePunch Gun Dealer — 5 class kit + CS2 extended study",
+  "testLane": "cs2-first",
   "referenceIntakeRoot": "C:/lifepunch/reference-intake/cs2-weapons",
+  "cs2Catalog": "config/cs2-weapon-catalog.json",
   "weapons": [
     {
       "ident": "ak47",
@@ -12,7 +14,8 @@
       "cs2Mesh": "weapon_rif_ak47",
       "sboxIdentifier": "lifepunch.ak47",
       "devGiveCommand": "lp_give_ak",
-      "status": "active-kit",
+      "devGiveClassCommand": "lp_give_ak_class",
+      "status": "parked-cs2-rebuild",
       "queueOrder": 1
     },
     {
@@ -62,6 +65,76 @@
       "devGiveCommand": "lp_give_xm1014",
       "status": "code-draft",
       "queueOrder": 5
+    },
+    {
+      "ident": "doublebarrelshotgun",
+      "title": "Double-Barreled Shotgun",
+      "displayLabel": "DBS",
+      "weaponClass": "shotgun",
+      "dxrpClassWeapon": "spaghelli",
+      "cs2Mesh": "weapon_shot_sawedoff",
+      "sboxIdentifier": "lifepunch.doublebarrelshotgun",
+      "devGiveCommand": "lp_give_dbs",
+      "status": "code-draft",
+      "catalogProgram": "extended",
+      "portalDxrpAddonId": "019e44a4-be1e-77f8-b1a3-82e9b365dc36",
+      "queueOrder": 6
+    }
+  ],
+  "cs2StudyQueue": [
+    {
+      "ident": "awp",
+      "title": "AWP",
+      "cs2Mesh": "weapon_snip_awp",
+      "dxrpClassWeapon": "m700",
+      "weaponClass": "sniper",
+      "catalogProgram": "extended-study",
+      "queueOrder": 7
+    },
+    {
+      "ident": "glock18",
+      "title": "Glock-18",
+      "cs2Mesh": "weapon_pist_glock18",
+      "dxrpClassWeapon": "usp",
+      "weaponClass": "handgun",
+      "catalogProgram": "extended-study",
+      "queueOrder": 8
+    },
+    {
+      "ident": "m4a4",
+      "title": "M4A4",
+      "cs2Mesh": "weapon_rif_m4a1",
+      "dxrpClassWeapon": "m4a1",
+      "weaponClass": "assault-rifle",
+      "catalogProgram": "extended-study",
+      "queueOrder": 9
+    },
+    {
+      "ident": "p250",
+      "title": "P250",
+      "cs2Mesh": "weapon_pist_p250",
+      "dxrpClassWeapon": "usp",
+      "weaponClass": "handgun",
+      "catalogProgram": "extended-study",
+      "queueOrder": 10
+    },
+    {
+      "ident": "galilar",
+      "title": "Galil AR",
+      "cs2Mesh": "weapon_rif_galilar",
+      "dxrpClassWeapon": "m4a1",
+      "weaponClass": "assault-rifle",
+      "catalogProgram": "extended-study",
+      "queueOrder": 11
+    },
+    {
+      "ident": "famas",
+      "title": "FAMAS",
+      "cs2Mesh": "weapon_rif_famas",
+      "dxrpClassWeapon": "m4a1",
+      "weaponClass": "assault-rifle",
+      "catalogProgram": "extended-study",
+      "queueOrder": 12
     }
   ]
 }

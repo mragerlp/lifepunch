@@ -1,0 +1,131 @@
+{
+  "schemaVersion": 1,
+  "description": "CS2 study catalog — reference-intake only. Maps CS2 meshes to DXRP class kits for LifePunch remakes.",
+  "referenceIntakeRoot": "C:/lifepunch/reference-intake/cs2-weapons",
+  "shipRule": "Never commit CS2 exports to monorepo. Author own FBX + vmats + WAV (AK sound pattern).",
+  "dxrpClasses": ["m4a1", "usp", "mp5", "m700", "spaghelli"],
+  "entries": [
+    {
+      "ident": "ak47",
+      "cs2Mesh": "weapon_rif_ak47",
+      "s2vFolder": "ak47",
+      "dxrpClassWeapon": "m4a1",
+      "weaponClass": "assault-rifle",
+      "worldMeshHint": "Look for dropped/world variant separate from viewmodel ag2",
+      "soundHints": ["ak47", "rif_ak47"],
+      "program": "gun-dealer-5",
+      "priority": 1
+    },
+    {
+      "ident": "deagle",
+      "cs2Mesh": "weapon_pist_deagle",
+      "s2vFolder": "deagle",
+      "dxrpClassWeapon": "usp",
+      "weaponClass": "handgun",
+      "worldMeshHint": "pistol world mesh often separate vmdl_c",
+      "soundHints": ["deagle", "pist_deagle"],
+      "program": "gun-dealer-5",
+      "priority": 2
+    },
+    {
+      "ident": "mp9",
+      "cs2Mesh": "weapon_smg_mp9",
+      "s2vFolder": "mp9",
+      "dxrpClassWeapon": "mp5",
+      "weaponClass": "smg",
+      "soundHints": ["mp9", "smg_mp9"],
+      "program": "gun-dealer-5",
+      "priority": 3
+    },
+    {
+      "ident": "ssg08",
+      "cs2Mesh": "weapon_snip_ssg08",
+      "s2vFolder": "ssg08",
+      "dxrpClassWeapon": "m700",
+      "weaponClass": "sniper",
+      "soundHints": ["ssg08", "scout", "ssg"],
+      "program": "gun-dealer-5",
+      "priority": 4
+    },
+    {
+      "ident": "xm1014",
+      "cs2Mesh": "weapon_shot_xm1014",
+      "s2vFolder": "xm1014",
+      "dxrpClassWeapon": "spaghelli",
+      "weaponClass": "shotgun",
+      "soundHints": ["xm1014", "m1014", "nova"],
+      "program": "gun-dealer-5",
+      "priority": 5
+    },
+    {
+      "ident": "doublebarrelshotgun",
+      "cs2Mesh": "weapon_shot_sawedoff",
+      "s2vFolder": "sawedoff",
+      "dxrpClassWeapon": "spaghelli",
+      "weaponClass": "shotgun",
+      "soundHints": ["sawedoff", "mag7"],
+      "program": "extended",
+      "priority": 6
+    },
+    {
+      "ident": "awp",
+      "cs2Mesh": "weapon_snip_awp",
+      "s2vFolder": "awp",
+      "dxrpClassWeapon": "m700",
+      "weaponClass": "sniper",
+      "soundHints": ["awp", "snip_awp"],
+      "program": "extended-study",
+      "priority": 7
+    },
+    {
+      "ident": "glock18",
+      "cs2Mesh": "weapon_pist_glock18",
+      "s2vFolder": "glock18",
+      "dxrpClassWeapon": "usp",
+      "weaponClass": "handgun",
+      "soundHints": ["glock", "pist_glock"],
+      "program": "extended-study",
+      "priority": 8
+    },
+    {
+      "ident": "m4a4",
+      "cs2Mesh": "weapon_rif_m4a1",
+      "s2vFolder": "m4a1",
+      "dxrpClassWeapon": "m4a1",
+      "weaponClass": "assault-rifle",
+      "soundHints": ["m4a1", "rif_m4"],
+      "program": "extended-study",
+      "priority": 9
+    },
+    {
+      "ident": "p250",
+      "cs2Mesh": "weapon_pist_p250",
+      "s2vFolder": "p250",
+      "dxrpClassWeapon": "usp",
+      "weaponClass": "handgun",
+      "soundHints": ["p250", "pist_p250"],
+      "program": "extended-study",
+      "priority": 10
+    },
+    {
+      "ident": "galilar",
+      "cs2Mesh": "weapon_rif_galilar",
+      "s2vFolder": "galilar",
+      "dxrpClassWeapon": "m4a1",
+      "weaponClass": "assault-rifle",
+      "soundHints": ["galil", "galilar"],
+      "program": "extended-study",
+      "priority": 11
+    },
+    {
+      "ident": "famas",
+      "cs2Mesh": "weapon_rif_famas",
+      "s2vFolder": "famas",
+      "dxrpClassWeapon": "m4a1",
+      "weaponClass": "assault-rifle",
+      "soundHints": ["famas", "rif_famas"],
+      "program": "extended-study",
+      "priority": 12
+    }
+  ]
+}
