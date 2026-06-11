@@ -46,10 +46,12 @@ Create under `Assets/addons/lifepunch/deagle/models/lifepunch/deagle/w_deagle/`:
 
 ### 3. CS2 intake note
 
-Append to `Code/Addons/lifepunch/deagle/docs/SOURCE_INTAKE.md`:
+Read `addons/docs/CS2_WEAPON_HARVEST.md`. Append to `deagle/docs/SOURCE_INTAKE.md`:
 
 - Expected glTF path after `reference-intake/cs2-weapons/deagle/`
+- Animation names listed in `MANIFEST.txt` (from S2V preview)
 - Texture channel naming from CS2 export (study only)
+- **Reminder:** CS2 anims are study-only; ship FP via USP class kit
 
 ### 4. RAG copy
 

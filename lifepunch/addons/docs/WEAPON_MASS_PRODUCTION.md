@@ -29,13 +29,30 @@ powershell -NoProfile -ExecutionPolicy Bypass -File lifepunch/addons/scripts/New
 
 ## Per-weapon lane (repeat for #2–5)
 
-1. **CS2 reference** — Source 2 Viewer → glTF into `C:/lifepunch/reference-intake/cs2-weapons/<ident>/` (never commit).
+1. **CS2 reference** — Source 2 Viewer → glTF into `C:/lifepunch/reference-intake/cs2-weapons/<ident>/` (never commit). Full harvest guide: `CS2_WEAPON_HARVEST.md` · script: `Intake-Cs2WeaponReference.ps1`.
 2. **Own FBX** — Blender study → `Assets/.../w_<ident>/source/`.
 3. **World model** — `w_<ident>.vmdl` + materials (`MODEL_BUILD.md`, `material-map.json`).
 4. **Prefabs** — Clone DXRP class `w_*` / `vm_*` in editor; save under `equipment/`.
 5. **Stats** — Tune `<Pascal>.cs` from class reference; wire Functions on prefab.
 6. **Manifest** — Fill `addons.json` content row; create portal package → set `dxrpAddonId`.
-7. **Publish** — `prepare-publish.ps1 -Addon <ident>` → portal upload → Gun Dealer shipment (`Quantity=5`).
+7. **Publish** — VENGEANCE only (see gates below).
+
+## Publish gates (Gun Dealer shipments)
+
+| Gate | Rule |
+|------|------|
+| **Git push** | **VENGEANCE only.** Cornerman commits locally; patch handoff → `git am` → `git push` on Red (`LOCAL_AI_WORKSTATION.md` §7c). |
+| **Opus review** | **Required before any Gun Dealer shipment goes live** — dual-build, prefab wiring, stats, `prepare-publish` output, portal Equipment + Market item (`Quantity=5`). |
+| **Editor** | DXRP `rp.sbproj` + `+authorize` (`Start-SboxDxrpEditor.ps1`); sync addon before ModelDoc. |
+| **Cornerman** | Tier-3 distill/RAG/scaffold only — never portal publish, never production push. |
+
+**VENGEANCE publish checklist (after Opus sign-off):**
+
+```powershell
+powershell -File lifepunch/addons/scripts/validate-layout.ps1
+powershell -File lifepunch/addons/scripts/prepare-publish.ps1 -Addon <ident>
+# portal upload → Equipment row → Market item (Qty 5, Gun Dealer whitelist)
+```
 
 ## What each scaffold ships
 
