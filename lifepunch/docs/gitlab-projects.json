@@ -5,7 +5,7 @@
     "gitlabNamespace":  "mragerlp",
     "migrationStatus":  "lanes-synced",
     "accessVerified":  "2026-06-09",
-    "agentStatus":  "Voice PTT round: GitHub a988b04; lifepunch-rdp-server GitLab 9118777 (exported 2026-06-10). Blue git: C:\\lifepunch\\lifepunch-rdp-server. Export: Export-GitLabLane.ps1 or setup-gitlab-projects.ps1 (GCM creds).",
+    "agentStatus":  "Pre-CVL mock reboot: GitHub 4f9f6fb clean; lifepunch-rdp-server GitLab 1cd59ee; Green pulled 4f9f6fb. Blue: cd C:\\lifepunch\\lifepunch-rdp-server && git pull --rebase after reboot.",
     "accessNotes":  {
                         "shottaWEB":  "LINKED 2026-06-09 (br.black4022@gmail.com): GitLab account created + both invites accepted. Developer on lifepunch-website, Reporter on lifepunch-foundation. Active.",
                         "rdpServerAgent":  "SSH deploy key generated on the box; public key added to lifepunch-rdp-server (write) and enabled on lifepunch-foundation (read). Only the public key leaves the box - no token/secret transfer, private key never leaves. Verified clone + grounding.",
