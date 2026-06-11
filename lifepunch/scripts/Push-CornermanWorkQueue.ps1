@@ -9,6 +9,7 @@ $briefs = @(
     @{ rel = 'lifepunch\addons\docs\briefs\CORNERMAN_COKE_DRUG_INTAKE_TASK.md'; inbox = 'CORNERMAN_COKE_DRUG_INTAKE_TASK.md' },
     @{ rel = 'lifepunch\addons\docs\briefs\CORNERMAN_DEAGLE_DISTILL_TASK.md'; inbox = 'CORNERMAN_DEAGLE_DISTILL_TASK.md' },
     @{ rel = 'lifepunch\addons\docs\briefs\CORNERMAN_BITMINER_PHASE2_MENU_TASK.md'; inbox = 'CORNERMAN_BITMINER_PHASE2_MENU_TASK.md' },
+    @{ rel = 'lifepunch\addons\docs\briefs\BITMINER_VMAT_AUDIT.md'; inbox = 'BITMINER_VMAT_AUDIT.md' },
     @{ rel = 'lifepunch\addons\docs\briefs\DEAGLE_WEAPON_BRIEF.md'; inbox = 'DEAGLE_WEAPON_BRIEF.md' },
     @{ rel = 'lifepunch\addons\docs\COKE_DRUG_RESKIN_SPEC.md'; inbox = 'COKE_DRUG_RESKIN_SPEC.md' },
     @{ rel = 'lifepunch\addons\docs\BITMINER_UX_SPEC.md'; inbox = 'BITMINER_UX_SPEC.md' },

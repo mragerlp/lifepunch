@@ -50,6 +50,32 @@ The OBJ is **one assembled rack** (21 Blender objects) collapsed into **5 materi
 
 Do **not** split into separate vmdls per fan — fans are part of the rack assembly.
 
+## Materials quick reference (ModelDoc)
+
+**You only create 5 `.vmat` files** — not one per PNG. The OBJ already groups 21 parts into 5 slots (`Cord`, `PSU`, `Rack`, `Motherboard`, `GPU`).
+
+| # | ModelDoc material slot (from OBJ) | `.vmat` to create | Base color | Normal | AO | Metal | Rough | Extra |
+|---|-----------------------------------|-------------------|------------|--------|----|-------|-------|-------|
+| 1 | **Cord** | `materials/gpu-rack-cord.vmat` | `textures/cord/Wires_Cord_BaseColor.png` | — | `Wires_AO.png` | `Wires_Cord_Metallic.png` | `Wires_Cord_Roughness.png` | |
+| 2 | **PSU** | `materials/gpu-rack-psu.vmat` | `textures/psu/PSU_BaseColor.png` | `PSU_Normal_GL.png` | `PSU_AO.png` | `PSU_Metallic.png` | `PSU_Roughness.png` | |
+| 3 | **Rack** | `materials/gpu-rack-rack.vmat` | `textures/rack/Rack_BaseColor.png` | `Rack_Normal_GL.png` | `Rack_AO.png` | `Rack_Metallic.png` | `Rack_Roughness.png` | frame + 5 fan boxes + blades |
+| 4 | **Motherboard** | `materials/gpu-rack-motherboard.vmat` | `textures/motherboard/Motherboard_BaseColor.png` | `Motherboard_Normal_GL.png` | `MotherB_AO.png` | `Motherboard_Metallic.png` | `Motherboard_Roughness.png` | |
+| 5 | **GPU** | `materials/gpu-rack-gpu.vmat` | `textures/gpu/GPU_BaseColor.png` | `GPU_Normal_GL.png` | `GPU_AO.png` | `GPU_Metallic.png` | `GPU_Roughness.png` | **`GPU_Emission.png`** (mining glow) |
+
+**Ignore in ModelDoc (duplicates / wrong convention):**
+
+- `*_Normal_DX.png` — use the matching `*_Normal_GL.png` (OpenGL normals for s&box).
+- Extra PNGs not listed above — already folded into the five PBR sets.
+
+**ModelDoc order:**
+
+1. Import `source/gpu-rack-static.obj`.
+2. Confirm five material slots appear (Cord, PSU, Rack, Motherboard, GPU).
+3. For each slot, create the `.vmat` in `materials/` and assign textures from the table.
+4. Compile `gpu-rack.vmdl`.
+
+Canonical JSON: `material-map.json` in this folder.
+
 ## Archive (do not upload)
 
 ```text

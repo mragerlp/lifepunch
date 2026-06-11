@@ -16,6 +16,8 @@ You do **not** open s&box, ModelDoc, or `git push`. Commit locally; ping Red wit
 | 3 | **Bitminer Phase 2 menu** | `CORNERMAN_BITMINER_PHASE2_MENU_TASK.md` | Wireframe + `.razor.scss` token draft (no ship C#) |
 | 4 | **Weapon queue hygiene** | `DEAGLE_WEAPON_BRIEF.md` | One-page distill for RAG (`outbox/`) |
 
+**Closed:** vmat audit (`BITMINER_VMAT_AUDIT.md`) — Red completed vmats + vmdl + prefab 2026-06-11.
+
 Phase 1 Bitminer terminal (`CORNERMAN_BITMINER_TERMINAL_TASK.md`) is **done** — Red integrated `9fa5eb1`.
 
 ---
@@ -25,6 +27,7 @@ Phase 1 Bitminer terminal (`CORNERMAN_BITMINER_TERMINAL_TASK.md`) is **done** �
 ```text
 chore(advanceddrugprocessing): coke unzip manifest + weed map distill
 docs(deagle): USP reference stats table + w_deagle MODEL_BUILD draft
+docs(bitcoinmining): vmat audit + prefab scaffold draft
 docs(bitcoinmining): Phase 2 tabbed menu wireframe + scss tokens
 ```
 
