@@ -5,21 +5,113 @@
     "displayName": "Bitcoin Miner terminal prop",
     "activeSource": "source/computer.fbx",
     "targetModel": "bitcoin-terminal.vmdl",
-    "status": "ModelDoc TODO — assign materials after FBX import"
+    "importScale": 39.37,
+    "alignOriginZ": "Bottom",
+    "status": "ModelDoc TODO — assign materials (checkerboard until remaps ship)"
   },
   "razorUi": {
     "authoringPath": "C:/Users/jared/Downloads/newaddons/hackerterminal/source/bitcointerminal",
     "shipPath": "Code/Addons/lifepunch/bitcoinmining/BitminerTerminal.razor",
     "notes": "Razor is code, not in this asset folder."
   },
-  "materials": [],
+  "blenderObjects": [
+    { "object": "Cube", "materialSlot": "Black", "notes": "Case / base mesh" },
+    { "object": "Cube.001", "materialSlot": "White", "notes": "Trim panels" },
+    { "object": "Cube.003", "materialSlot": "CPU", "notes": "Tower body" },
+    { "object": "Cube.004", "materialSlot": "Black", "notes": "Shares Black slot" },
+    { "object": "Cylinder.001", "materialSlot": "Black", "notes": "Stand / feet" },
+    { "object": "Monitor", "materialSlot": "Monitor", "notes": "CRT bezel + glass — emission on screen submesh if split in ModelDoc" },
+    { "object": "Keyboard", "materialSlot": "Keyboard" },
+    { "object": "Cable", "materialSlot": "Cable" },
+    { "object": "CPU", "materialSlot": "CPU", "notes": "Legacy slot name; may alias Cube.003" }
+  ],
+  "materials": [
+    {
+      "name": "bitcoin-terminal-monitor",
+      "fbxSlot": "Monitor",
+      "targetMaterial": "materials/bitcoin-terminal-monitor.vmat",
+      "channels": {
+        "baseColor": "textures/monitor/Monitor_BaseColor.png",
+        "normal": "textures/monitor/Monitor_Normal_GL.png",
+        "ao": "textures/monitor/Monitor_AO.png",
+        "metalness": "textures/monitor/Monitor_Metallic.png",
+        "roughness": "textures/monitor/Monitor_Roughness.png",
+        "emission": "textures/monitor/Monitor_Emission.png",
+        "notes": "Emission drives CRT glow (#00FF7F hashd green). Export from blend on Red if missing."
+      }
+    },
+    {
+      "name": "bitcoin-terminal-keyboard",
+      "fbxSlot": "Keyboard",
+      "targetMaterial": "materials/bitcoin-terminal-keyboard.vmat",
+      "channels": {
+        "baseColor": "textures/keyboard/Keyboard_BaseColor.png",
+        "normal": "textures/keyboard/Keyboard_Normal_GL.png",
+        "ao": "textures/keyboard/Keyboard_AO.png",
+        "metalness": "textures/keyboard/Keyboard_Metallic.png",
+        "roughness": "textures/keyboard/Keyboard_Roughness.png"
+      }
+    },
+    {
+      "name": "bitcoin-terminal-cable",
+      "fbxSlot": "Cable",
+      "targetMaterial": "materials/bitcoin-terminal-cable.vmat",
+      "channels": {
+        "baseColor": "textures/cable/Cable_BaseColor.png",
+        "ao": "textures/cable/Cable_AO.png",
+        "metalness": "textures/cable/Cable_Metallic.png",
+        "roughness": "textures/cable/Cable_Roughness.png"
+      }
+    },
+    {
+      "name": "bitcoin-terminal-cpu",
+      "fbxSlot": "CPU",
+      "targetMaterial": "materials/bitcoin-terminal-cpu.vmat",
+      "channels": {
+        "baseColor": "textures/cpu/CPU_BaseColor.png",
+        "normal": "textures/cpu/CPU_Normal_GL.png",
+        "ao": "textures/cpu/CPU_AO.png",
+        "metalness": "textures/cpu/CPU_Metallic.png",
+        "roughness": "textures/cpu/CPU_Roughness.png"
+      }
+    },
+    {
+      "name": "bitcoin-terminal-black",
+      "fbxSlot": "Black",
+      "targetMaterial": "materials/bitcoin-terminal-black.vmat",
+      "channels": {
+        "baseColor": "textures/black/Black_BaseColor.png",
+        "fallback": "Solid #1a1a1a if no PNG exported — acceptable for Phase 1"
+      }
+    },
+    {
+      "name": "bitcoin-terminal-white",
+      "fbxSlot": "White",
+      "targetMaterial": "materials/bitcoin-terminal-white.vmat",
+      "channels": {
+        "baseColor": "textures/white/White_BaseColor.png",
+        "fallback": "Solid #d8d8d8 if no PNG exported"
+      }
+    }
+  ],
+  "modelDocRemaps": [
+    { "from": "Monitor", "to": "materials/bitcoin-terminal-monitor.vmat" },
+    { "from": "Keyboard", "to": "materials/bitcoin-terminal-keyboard.vmat" },
+    { "from": "Cable", "to": "materials/bitcoin-terminal-cable.vmat" },
+    { "from": "CPU", "to": "materials/bitcoin-terminal-cpu.vmat" },
+    { "from": "Black", "to": "materials/bitcoin-terminal-black.vmat" },
+    { "from": "White", "to": "materials/bitcoin-terminal-white.vmat" }
+  ],
   "archive": {
     "blend": "C:/lifepunch/reference-intake/bitcoinmining/bitcoin-terminal-export/computer.blend",
-    "notes": "Blend is archive-only; ship FBX + compiled vmdl."
+    "embeddedBlendPath": "D:/Blender/Models/Old Computer/computer.blend",
+    "notes": "Blend is archive-only; ship FBX + compiled vmdl. PNG bake from blend on VENGEANCE if repo has zero terminal textures."
   },
   "status": {
     "sourceIntaked": true,
     "modelResourceCreated": true,
-    "materialResourcesCreated": false
+    "materialResourcesCreated": false,
+    "materialGroupInVmdl": false,
+    "checkerboardCause": "bitcoin-terminal.vmdl has RenderMeshFile only — no MaterialGroupList remaps"
   }
 }
