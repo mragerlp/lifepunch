@@ -1,10 +1,24 @@
-# Drop Reset-CornermanClone.ps1 on Green inbox (works mid-rebase — script lives outside clone).
+# Drop Reset-CornermanClone.ps1 + shortcut installer on Green inbox (works mid-rebase).
 $ErrorActionPreference = 'Stop'
 $Here = $PSScriptRoot
 . (Join-Path $Here 'Cornerman-Workflow.ps1')
 
-$src = Join-Path $Here 'Reset-CornermanClone.ps1'
-$bytes = [System.IO.File]::ReadAllBytes($src)
-Push-CornermanFile -Path 'C:\lifepunch\cornerman\inbox\Reset-CornermanClone.ps1' -FileBytes $bytes
-Write-Host 'OK inbox\Reset-CornermanClone.ps1' -ForegroundColor Green
-Write-Host 'Green run: powershell -NoProfile -ExecutionPolicy Bypass -File C:\lifepunch\cornerman\inbox\Reset-CornermanClone.ps1' -ForegroundColor Cyan
+$drops = @(
+    @{ local = 'Reset-CornermanClone.ps1'; remote = 'Reset-CornermanClone.ps1' },
+    @{ local = 'Install-CornermanResetCloneShortcut.ps1'; remote = 'Install-CornermanResetCloneShortcut.ps1' },
+    @{ local = 'cornerman-inbox\Cornerman-Sync-from-Red.cmd'; remote = 'Cornerman-Sync-from-Red.cmd' }
+)
+
+foreach ($d in $drops) {
+    $src = Join-Path $Here $d.local
+    if (-not (Test-Path -LiteralPath $src)) { throw "Missing $src" }
+    $bytes = [System.IO.File]::ReadAllBytes($src)
+    Push-CornermanFile -Path "C:\lifepunch\cornerman\inbox\$($d.remote)" -FileBytes $bytes
+    Write-Host "OK inbox\$($d.remote)" -ForegroundColor Green
+}
+
+Write-Host ''
+Write-Host 'Green — one-time shortcut install:' -ForegroundColor Cyan
+Write-Host '  powershell -NoProfile -ExecutionPolicy Bypass -File C:\lifepunch\cornerman\inbox\Install-CornermanResetCloneShortcut.ps1' -ForegroundColor White
+Write-Host 'Green — run sync (or double-click desktop shortcut after install):' -ForegroundColor Cyan
+Write-Host '  C:\lifepunch\cornerman\inbox\Cornerman-Sync-from-Red.cmd' -ForegroundColor White
