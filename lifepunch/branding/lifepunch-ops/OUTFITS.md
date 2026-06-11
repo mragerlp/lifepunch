@@ -85,7 +85,8 @@ powershell -ExecutionPolicy Bypass -File .\Apply-LifePunchOpsConsole.ps1 -Machin
 
 **Uniform apply** sets: dark mode (system + apps), per-node **colored title bars**,
 **gray taskbar**, wallpaper, and uniform **Explorer icons** on all nodes: **gray folder** +
-**gray .txt notes** (`icons/` ← `OneDrive\Desktop\uniforms\PNGs\grayfoldericon.png` · `graynotes.png`).
+**gray .txt notes** + **biohazard Recycle Bin** (`icons/` ← `OneDrive\Desktop\uniforms\PNGs\grayfoldericon.png` ·
+`graynotes.png` · `recyclebin2.png`).
 `Set-LifePunchExplorerIcons.ps1` builds ICOs, sets registry (Win11: HKLM Shell Icons 3/4 — approve
 UAC once), restarts Explorer. RDP sessions inherit dark theme from the remote box after apply.
 

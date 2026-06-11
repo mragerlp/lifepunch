@@ -399,8 +399,8 @@ else {
     Write-Note "No wallpaper for $Machine ($wpName). See SYNC_FROM_LIFEPUNCHNET.md"
 }
 
-# 5b. Uniform Explorer icons (folder + .txt — all LifePunch nodes)
-Write-Step 'Explorer icons (folder + .txt)'
+# 5b. Uniform Explorer icons (folder + .txt + Recycle Bin — all LifePunch nodes)
+Write-Step 'Explorer icons (folder + .txt + Recycle Bin)'
 & (Join-Path $here 'Set-LifePunchExplorerIcons.ps1') -OpsRoot $here
 
 # 6. oh-my-posh + banner

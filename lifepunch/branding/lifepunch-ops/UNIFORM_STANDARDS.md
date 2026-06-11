@@ -14,7 +14,7 @@ OneDrive canonical copy: `%USERPROFILE%\OneDrive\Desktop\uniforms\UNIFORM_STANDA
 |-------------|-----------------|
 | Per-node outfits (console, banner, app icon) | `Desktop\Hacker Job\<tier>\<machine>\` |
 | Desktop wallpapers (HUD layout, per-node color) | `Desktop\wallpapers\` |
-| **Explorer icons (all nodes)** | `Desktop\uniforms\PNGs\grayfoldericon.png` · `graynotes.png` |
+| **Explorer icons (all nodes)** | `Desktop\uniforms\PNGs\grayfoldericon.png` · `graynotes.png` · `recyclebin2.png` |
 | **PowerShell prompt thumbnail (all nodes)** | `Desktop\uniforms\PNGs\powershell-prompt-thumbnail.png` |
 | Desktop shortcut tier icons | `lifepunch/branding/shortcut-icons/` (tri-stack / red / green / blue) |
 
@@ -28,6 +28,7 @@ Same gray minimalist art on **every** machine:
 |-----------|-----------------|------|
 | `icons/lifepunch-folder.png` | `uniforms\PNGs\grayfoldericon.png` | Default **folder** icon |
 | `icons/lifepunch-txt.png` | `uniforms\PNGs\graynotes.png` | Default **`.txt`** icon |
+| `icons/lifepunch-recycle-bin.png` | `uniforms\PNGs\recyclebin2.png` | Desktop **Recycle Bin** (biohazard bin art) |
 | `icons/powershell-prompt-thumbnail.png` | `uniforms\PNGs\powershell-prompt-thumbnail.png` | **PowerShell** tab icon (Windows Terminal) + outfit `*console.png` reference |
 
 **Scripts:** `Set-LifePunchExplorerIcons.ps1` + `Set-PowerShellPromptThumbnail.ps1` (steps in `Apply-LifePunchOpsConsole.ps1`).
@@ -38,7 +39,10 @@ Same gray minimalist art on **every** machine:
   `SystemFileAssociations\.txt`.
 - **Folders** — HKLM `Shell Icons` **3** + **4** (UAC once); `Folder` / `Directory` /
   `LibraryFolder` DefaultIcon; `IconsOnly=1`.
-- Published: `Documents\LifePunch-Icons\lifepunch-folder.ico` · `lifepunch-txt.ico`
+- **Recycle Bin** — Shell Icons **31** (empty) + **32** (full); Recycle Bin CLSID
+  `{645FF040-5081-101B-9F08-00AA002F954E}` DefaultIcon.
+- Published: `Documents\LifePunch-Icons\lifepunch-folder.ico` · `lifepunch-txt.ico` ·
+  `lifepunch-recycle-bin.ico`
 
 **Refresh:**
 

@@ -12,7 +12,7 @@
     Hacker Terminal\cornerman
     Government Terminal\lifepunchnet
     Desktop\wallpapers  (desktop HUD — same layout, per-machine color)
-    Desktop\uniforms\PNGs  (gray Explorer icons — folder + .txt, all nodes)
+    Desktop\uniforms\PNGs  (gray Explorer icons — folder + .txt + recycle bin, all nodes)
 
 .EXAMPLE
   powershell -ExecutionPolicy Bypass -File .\Sync-OutfitsFromOneDrive.ps1
@@ -87,6 +87,8 @@ foreach ($machine in $wallMap.Keys) {
 $explorerIconMap = @{
     'grayfoldericon.png'              = 'lifepunch-folder.png'
     'graynotes.png'                   = 'lifepunch-txt.png'
+    'recyclebin2.png'                 = 'lifepunch-recycle-bin.png'
+    'recyclebinicon.png'              = 'lifepunch-recycle-bin.png'
     'powershell-prompt-thumbnail.png' = 'powershell-prompt-thumbnail.png'
 }
 if (Test-Path -LiteralPath $UniformsRoot) {

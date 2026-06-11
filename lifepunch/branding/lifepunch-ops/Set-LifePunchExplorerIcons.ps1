@@ -1,23 +1,28 @@
 <#
 .SYNOPSIS
-  LifePunch uniform Explorer icons (all nodes) — folder + .txt.
+  LifePunch uniform Explorer icons (all nodes) — folder + .txt + Recycle Bin.
 
 .DESCRIPTION
-  Builds .ico from icons/lifepunch-folder.png and icons/lifepunch-txt.png,
+  Builds .ico from icons/lifepunch-folder.png, lifepunch-txt.png, lifepunch-recycle-bin.png,
   publishes to Documents\LifePunch-Icons, and applies:
     - Shell Icons 3/4 (closed/open folder; HKLM + HKCU — Win11 needs HKLM)
+    - Shell Icons 31/32 (empty/full Recycle Bin — desktop shortcut)
     - Folder / Directory / LibraryFolder DefaultIcon
+    - Recycle Bin CLSID DefaultIcon
     - Explorer Advanced IconsOnly=1 (skip imageres folder thumbnails)
     - .txt DefaultIcon (txtfile, txtfilelegacy, UserChoice ProgId, SystemFileAssociations)
   Call from Apply-LifePunchOpsConsole.ps1 on vengeance, cornerman, lifepunchnet.
 #>
 [CmdletBinding()]
 param(
-    [string] $OpsRoot = $PSScriptRoot,
+    [string] $OpsRoot = '',
     [string] $PublishDir = $(Join-Path $env:USERPROFILE 'Documents\LifePunch-Icons')
 )
 
 $ErrorActionPreference = 'Stop'
+if (-not $OpsRoot) {
+    $OpsRoot = if ($PSScriptRoot) { $PSScriptRoot } else { Split-Path -Parent $MyInvocation.MyCommand.Path }
+}
 
 function Get-LifePunchFfmpegPath {
     $candidates = @(
@@ -76,6 +81,7 @@ function Set-LifePunchRegistryDefaultIcon {
         [string]$WithIndex
     )
     foreach ($regPath in $RegPaths) {
+        if ([string]::IsNullOrWhiteSpace($regPath)) { continue }
         New-Item -Path $regPath -Force | Out-Null
         Set-ItemProperty -Path $regPath -Name '(default)' -Value $WithIndex
     }
@@ -89,46 +95,70 @@ function Set-LifePunchExplorerFolderViewPolicy {
     Set-ItemProperty -Path $adv -Name 'IconsOnly' -Value 1 -Type DWord -Force
 }
 
+function Set-LifePunchShellIconIndices {
+    param(
+        [string]$Root,
+        [hashtable]$Indices
+    )
+    $shellIcons = Join-Path $Root 'Shell Icons'
+    New-Item -Path $shellIcons -Force | Out-Null
+    foreach ($entry in $Indices.GetEnumerator()) {
+        Set-ItemProperty -Path $shellIcons -Name $entry.Key -Value $entry.Value
+    }
+}
+
 function Set-LifePunchShellIconsRegistry {
     param(
         [string]$Root,
         [string]$IcoPath
     )
-    $shellIcons = Join-Path $Root 'Shell Icons'
-    New-Item -Path $shellIcons -Force | Out-Null
-    Set-ItemProperty -Path $shellIcons -Name '3' -Value $IcoPath
-    Set-ItemProperty -Path $shellIcons -Name '4' -Value $IcoPath
+    Set-LifePunchShellIconIndices -Root $Root -Indices @{ '3' = $IcoPath; '4' = $IcoPath }
 }
 
-function Invoke-LifePunchShellIconsHklm {
-    param([string]$IcoPath)
+function Invoke-LifePunchShellIconIndicesHklm {
+    param(
+        [hashtable]$Indices,
+        [string]$RegLabel = 'shell-icons'
+    )
+    if (-not $Indices -or $Indices.Count -eq 0) { return $true }
+
     $hk = 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Icons'
     $existing = Get-ItemProperty -Path $hk -ErrorAction SilentlyContinue
-    if ($existing.'3' -eq $IcoPath -and $existing.'4' -eq $IcoPath) { return $true }
+    $alreadySet = $true
+    foreach ($entry in $Indices.GetEnumerator()) {
+        if ($existing.$($entry.Key) -ne $entry.Value) { $alreadySet = $false; break }
+    }
+    if ($alreadySet) { return $true }
 
     try {
-        Set-LifePunchShellIconsRegistry -Root 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer' -IcoPath $IcoPath
+        Set-LifePunchShellIconIndices -Root 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer' -Indices $Indices
         return $true
     }
     catch {
-        $escaped = $IcoPath -replace '\\', '\\'
-        $regBody = @"
-Windows Registry Editor Version 5.00
-
-[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Icons]
-"3"="$escaped"
-"4"="$escaped"
-"@
-        $regFile = Join-Path $env:TEMP 'lifepunch-folder-shell-icons-hklm.reg'
-        Set-Content -LiteralPath $regFile -Value $regBody -Encoding Unicode
+        $lines = @(
+            'Windows Registry Editor Version 5.00',
+            '',
+            '[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Icons]'
+        )
+        foreach ($entry in ($Indices.GetEnumerator() | Sort-Object Key)) {
+            $escaped = ($entry.Value -replace '\\', '\\')
+            $lines += "`"$($entry.Key)`"=`"$escaped`""
+        }
+        $regFile = Join-Path $env:TEMP "lifepunch-$RegLabel-hklm.reg"
+        Set-Content -LiteralPath $regFile -Value ($lines -join "`r`n") -Encoding Unicode
         $import = Start-Process -FilePath 'reg.exe' -ArgumentList @('import', $regFile) -Verb RunAs -PassThru -Wait
         if ($import.ExitCode -ne 0) {
-            Write-Host '    Folder: approve UAC to set HKLM Shell Icons (required on Windows 11).' -ForegroundColor Yellow
+            Write-Host "    $RegLabel : approve UAC to set HKLM Shell Icons (required on Windows 11)." -ForegroundColor Yellow
             Write-Host "    Or run elevated: reg import `"$regFile`"" -ForegroundColor DarkGray
             return $false
         }
         return $true
     }
+}
+
+function Invoke-LifePunchShellIconsHklm {
+    param([string]$IcoPath)
+    return Invoke-LifePunchShellIconIndicesHklm -Indices @{ '3' = $IcoPath; '4' = $IcoPath } -RegLabel 'folder-shell-icons'
 }
 
 function Set-LifePunchExplorerFolderIcon {
@@ -153,8 +183,21 @@ function Get-LifePunchTxtProgIds {
     $assoc = Get-ItemProperty 'HKLM:\Software\Classes\.txt' -ErrorAction SilentlyContinue
     if ($assoc.'(default)') { [void]$progIds.Add($assoc.'(default)') }
     $userChoice = Get-ItemProperty 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.txt\UserChoice' -ErrorAction SilentlyContinue
-    if ($userChoice.ProgId) { [void]$progIds.Add($userChoice.ProgId) }
+    if (-not [string]::IsNullOrWhiteSpace($userChoice.ProgId)) { [void]$progIds.Add($userChoice.ProgId) }
     return @($progIds)
+}
+
+function Set-LifePunchRecycleBinIcon {
+    param([string]$IcoPath)
+    $resolved = (Resolve-Path -LiteralPath $IcoPath).Path
+    $withIndex = "$resolved,0"
+    $indices = @{ '31' = $resolved; '32' = $resolved }
+    Set-LifePunchShellIconIndices -Root 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer' -Indices $indices
+    [void](Invoke-LifePunchShellIconIndicesHklm -Indices $indices -RegLabel 'recycle-bin-shell-icons')
+    Set-LifePunchRegistryDefaultIcon -RegPaths @(
+        'HKCU:\Software\Classes\CLSID\{645FF040-5081-101B-9F08-00AA002F954E}\DefaultIcon'
+    ) -WithIndex $withIndex
+    return $resolved
 }
 
 function Set-LifePunchTxtIcon {
@@ -209,5 +252,9 @@ Write-Host "    Folder icon: $folderApplied" -ForegroundColor DarkGray
 $txtPub = Publish-LifePunchIcon -Name 'lifepunch-txt' -FfmpegPath $ffmpeg
 $txtApplied = Set-LifePunchTxtIcon -IcoPath $txtPub
 Write-Host "    .txt icon: $txtApplied" -ForegroundColor DarkGray
+
+$recyclePub = Publish-LifePunchIcon -Name 'lifepunch-recycle-bin' -FfmpegPath $ffmpeg
+$recycleApplied = Set-LifePunchRecycleBinIcon -IcoPath $recyclePub
+Write-Host "    Recycle Bin icon: $recycleApplied" -ForegroundColor DarkGray
 
 Invoke-LifePunchExplorerIconRefresh
