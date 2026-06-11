@@ -99,11 +99,33 @@ After editor work, sync compiled outputs (`gpu-rack.vmdl`, `_c`, vmats, prefab) 
 
 See `lifepunch/addons/docs/SBOX_EDITOR_REFERENCE.md` §0–1.
 
+## Power animation (on / off)
+
+Rack fans and card LEDs **only run while mining** — idle when powered off.
+
+| Sequence | When | Source |
+|----------|------|--------|
+| `power_on` | `IsMining == true` | Loop from `source/gpu-rack-anim.fbx` |
+| `power_off` | `IsMining == false` | Hold first frame / wind-down from same FBX |
+
+`gpu-rack-stacked-anim.fbx` is a layout reference only unless art needs the stacked variant.
+
+**Code:** `BitminerEntity.SetMiningState` switches vmdl sequence (replaces Evo `BitminerFan*` child spin — see `TECH_DEBT` BITMINER-01).
+
+## Terminal prop (separate from rack vmdl)
+
+**Intaked:** `models/.../bitcoin-terminal/` (`computer.fbx` → `bitcoin-terminal.vmdl`).  
+Re-run: `addons/scripts/Intake-BitcoinTerminalAssets.ps1`  
+Archive: `C:/lifepunch/reference-intake/bitcoinmining/bitcoin-terminal-export/`
+
+Razor UI ships under `Code/Addons/lifepunch/bitcoinmining/` — author in Downloads `bitcointerminal/` lane.
+
 ## ModelDoc checklist (inside DXRP project)
 
 1. Asset Browser → **Project scope "DXRP"** → `addons/lifepunch/bitcoinmining/models/.../gpu-rack/`.
 2. Import `source/gpu-rack-static.obj` in ModelDoc.
-3. Create five vmats per `material-map.json` (GPU slot uses emission).
-4. Compile `gpu-rack.vmdl` in this folder; recompile after external edits.
-5. Prefab `entities/bitcoin-miner/bitcoin-miner.prefab` — scale ~1.11 vs Evo study prefab.
-6. Play-test on dev server with API connected (not local-only addon project).
+3. Import `source/gpu-rack-anim.fbx`; define `power_on` (loop) + `power_off` (idle) sequences.
+4. Create five vmats per `material-map.json` (GPU slot uses emission).
+5. Compile `gpu-rack.vmdl` in this folder; recompile after external edits.
+6. Prefab `entities/bitcoin-miner/bitcoin-miner.prefab` — scale ~1.11 vs Evo study prefab; wire anim driver to `BitminerEntity`.
+7. Play-test: `mining start` → rack anim + hum; `mining stop` → power down.

@@ -290,8 +290,10 @@ public sealed partial class BitminerEntity : BaseEntity, Component.IPressable, I
 	}
 
 	// ----------------------------
-	// FAN ANIMATION
+	// RACK POWER ANIMATION
 	// ----------------------------
+	// TODO (BITMINER-01): Drive gpu-rack.vmdl sequences power_on / power_off from IsMining.
+	// Deprecate Evo child-fan spin below once ModelDoc anim is on the prefab.
 
 	private void SpinFan()
 	{

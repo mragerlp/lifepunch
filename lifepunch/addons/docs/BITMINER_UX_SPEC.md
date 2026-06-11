@@ -89,11 +89,23 @@ Keep Evo's on-rig LCD summary but re-skin copy:
 - Accent color: `#00FF7F` (not Evo blue `#44aaff`)
 - Labels: `LIFEPUNCH hashd`, `₿ balance`, `HASH`, `CORES`, progress bar
 
-### 3d. GPU Farm mesh tie-in
+### 3d. GPU rack mesh + power animation
 
-- World model: compiled `gpu-rack.vmdl` from **gpu-rack** source tree
-- **Emission** maps on graphics cards pulse brighter while `IsMining` (material proxy or synced shader param if available; else emission toggle at mine start/stop)
-- Fans on prefab children — spin speed tied to `IsMining` (existing logic)
+- World model: compiled `gpu-rack.vmdl` from **gpu-rack** source tree (`gpu-rack-static.obj` + materials).
+- **Power states (owner decision):** rack **animates when turned on** (`IsMining == true`) and **powers down when turned off** — no always-on idle spin.
+- ModelDoc: bake `source/gpu-rack-anim.fbx` into the vmdl with two sequences — **`power_on`** (loop while mining) and **`power_off`** (idle/stopped). `BitminerEntity.SetMiningState` drives which sequence plays.
+- **Emission** on GPU cards: brighter while mining (shader param or material toggle at mine start/stop).
+- **Deprecate Evo pattern:** drop `BitminerFan` / `BitminerFan2` / `BitminerFan3` child spinners once vmdl anim is wired on the prefab (`TECH_DEBT` BITMINER-01).
+
+### 3e. Terminal UI + prop intake
+
+| Lane | Path |
+|------|------|
+| **Razor authoring (owner)** | `C:\Users\jared\Downloads\newaddons\hackerterminal\source\bitcointerminal\` |
+| **Ship target (repo)** | `Code/Addons/lifepunch/bitcoinmining/BitminerTerminal.razor` + `.razor.scss` |
+| **Terminal prop mesh (in intake folder)** | `computer.fbx` / `computer.blend` — in-world CRT/terminal prop on the rig (ModelDoc TBD) |
+
+Cornerman Phase 1 CLI already lives in the repo; owner-authored tabbed UI replaces/extends it from the bitcointerminal lane. Shared hacker-terminal **skin** with Hacker Job — separate addons, separate prefabs.
 
 ---
 
@@ -118,7 +130,7 @@ Keep Evo's on-rig LCD summary but re-skin copy:
 | `Bitminer.cs` | ✅ scaffolded — local model paths |
 | `BitminerEntity.cs` | Port from reference; keep simulation/RPCs; namespace `LifePunch.DXRP.Addons.BitcoinMining` |
 | `BitminerTerminalHost.cs` | Port mount/close; `LIFEPUNCH_LOCAL` branches |
-| `BitminerTerminal.razor` | **Rewrite** — tabbed UI per §3b; boot per §3a |
+| `BitminerTerminal.razor` | Author in `Downloads/.../bitcointerminal/` → ship tabbed UI per §3b; boot per §3a |
 | `BitminerTerminal.razor.scss` | Cornerman palette tokens from `lifepunch-ops/THEME.md` |
 | `bitcoin-miner.prefab` | Clone reference; swap model path; wire fans/TextRenderer |
 | Sounds | New assets under `sounds/bitcoin-miner/` |

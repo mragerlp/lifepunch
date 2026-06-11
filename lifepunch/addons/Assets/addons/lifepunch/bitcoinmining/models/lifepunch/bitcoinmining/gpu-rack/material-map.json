@@ -106,10 +106,27 @@
     "rawExport": "C:/lifepunch/reference-intake/bitcoinmining/gpu-rack-export",
     "notes": "Blender export as received (GPU_Farm_* names). Not published."
   },
+  "animation": {
+    "driver": "BitminerEntity.IsMining",
+    "source": "source/gpu-rack-anim.fbx",
+    "sequences": {
+      "power_on": "Loop while mining",
+      "power_off": "Idle / powered down"
+    },
+    "notes": "Replace Evo BitminerFan1/2/3 child spin with vmdl sequence swap."
+  },
+  "terminalIntake": {
+    "razorAuthoring": "C:/Users/jared/Downloads/newaddons/hackerterminal/source/bitcointerminal",
+    "propMesh": "models/lifepunch/bitcoinmining/bitcoin-terminal/source/computer.fbx",
+    "propVmdl": "models/lifepunch/bitcoinmining/bitcoin-terminal/bitcoin-terminal.vmdl",
+    "razorShip": "Code/Addons/lifepunch/bitcoinmining/BitminerTerminal.razor",
+    "intakeScript": "addons/scripts/Intake-BitcoinTerminalAssets.ps1"
+  },
   "status": {
     "sourceReorganized": true,
     "modelResourceCreated": false,
     "materialResourcesCreated": false,
+    "animationSequencesDefined": false,
     "entityPrefabCreated": false
   }
 }

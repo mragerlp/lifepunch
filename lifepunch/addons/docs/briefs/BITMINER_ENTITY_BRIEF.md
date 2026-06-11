@@ -60,6 +60,14 @@ sounds/bitcoin-miner/
 
 ---
 
+## Terminal + UI lanes
+
+| What | Where |
+|------|-------|
+| Razor UI (authoring) | `C:\Users\jared\Downloads\newaddons\hackerterminal\source\bitcointerminal\` |
+| Razor UI (ship) | `Code/Addons/lifepunch/bitcoinmining/BitminerTerminal.razor` |
+| Terminal prop mesh | Intaked → `models/.../bitcoin-terminal/` (`Intake-BitcoinTerminalAssets.ps1`) |
+
 ## Product goal
 
 Placeable **Bitcoin Miner** for DXRP — **not** the Hacker Job terminal.
@@ -68,6 +76,7 @@ Placeable **Bitcoin Miner** for DXRP — **not** the Hacker Job terminal.
 
 - Boot: `LIFEPUNCH hashd` / `mine.exe` (Cornerman green `#00FF7F`)
 - In-world **gpu-rack** mesh (no cloud `models/bitminer` path)
+- Rack **animates on** when mining, **powers down off** — vmdl sequences from `gpu-rack-anim.fbx`, not Evo child fan spinners
 - Economy: mine → upgrade → sell (`PayHost` / `ChargeHost`)
 
 ---

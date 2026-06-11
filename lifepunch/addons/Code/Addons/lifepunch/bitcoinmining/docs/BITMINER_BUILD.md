@@ -8,8 +8,9 @@
 | `BitminerEntity.cs` | **Done (Phase 1)** — entity + economy + `RequestOpenTerminal()` |
 | `BitminerTerminalHost.cs` | **Done (Phase 1)** — dual-build mount/close |
 | `BitminerCommandHost.cs` | **Done (Phase 1)** — `hashd` / `mine` opens terminal on nearest rig |
-| `BitminerTerminal.razor` + `.scss` | **Done (Phase 1)** — CLI + Cornerman theme; `menu` stubs Phase 2 |
-| `gpu-rack.vmdl` | **TODO** — ModelDoc on VENGEANCE |
+| `BitminerTerminal.razor` + `.scss` | **Phase 1 done** (Cornerman CLI); **owner tabbed UI** authors from `Downloads/newaddons/hackerterminal/source/bitcointerminal/` |
+| `bitcoin-terminal` (`computer.fbx`) | **Intaked** — `models/.../bitcoin-terminal/`; ModelDoc TBD |
+| `gpu-rack.vmdl` + power anim | **TODO** — static OBJ + `gpu-rack-anim.fbx` (`power_on` / `power_off` tied to `IsMining`) |
 | `bitcoin-miner.prefab` | **TODO** — editor on VENGEANCE |
 | Sounds | **TODO** — own/licensed under `sounds/bitcoin-miner/` |
 | `addons.json` content row | **TODO** after prefab path confirmed |

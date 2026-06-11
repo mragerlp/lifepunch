@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "model": {
+    "slug": "bitcoin-terminal",
+    "displayName": "Bitcoin Miner terminal prop",
+    "activeSource": "source/computer.fbx",
+    "targetModel": "bitcoin-terminal.vmdl",
+    "status": "ModelDoc TODO — assign materials after FBX import"
+  },
+  "razorUi": {
+    "authoringPath": "C:/Users/jared/Downloads/newaddons/hackerterminal/source/bitcointerminal",
+    "shipPath": "Code/Addons/lifepunch/bitcoinmining/BitminerTerminal.razor",
+    "notes": "Razor is code, not in this asset folder."
+  },
+  "materials": [],
+  "archive": {
+    "blend": "C:/lifepunch/reference-intake/bitcoinmining/bitcoin-terminal-export/computer.blend",
+    "notes": "Blend is archive-only; ship FBX + compiled vmdl."
+  },
+  "status": {
+    "sourceIntaked": true,
+    "modelResourceCreated": false,
+    "materialResourcesCreated": false
+  }
+}
