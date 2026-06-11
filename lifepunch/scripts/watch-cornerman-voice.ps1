@@ -33,16 +33,13 @@ function Get-RemoteTranscriptHash {
 
 function Get-SessionLogTail {
     param([int] $Lines = 8)
-    $raw = Invoke-CornermanSshRead -RemotePath $SessionLogPath -SshTarget $SshTarget
-    if ([string]::IsNullOrWhiteSpace($raw)) { return @() }
-    $all = $raw -split "`r?`n" | Where-Object { $_.Trim() -ne '' }
-    if ($all.Count -le $Lines) { return $all }
-    return $all[($all.Count - $Lines)..($all.Count - 1)]
+    $raw = Invoke-CornermanSshRead -RemotePath $SessionLogPath -SshTarget $SshTarget -Raw
+    return @(Get-CornermanSessionLogLines -Raw $raw -Tail $Lines)
 }
 
 Write-VoiceHeader `
     -Title 'VENGEANCE VOICE INBOX  (watching Cornerman)' `
-    -Subtitle 'Cornerman runs Talk to Vengeance (PTT) — this window only copies new transcripts'
+    -Subtitle 'Cornerman runs Talk to Vengeance (PTT) - this window only copies new transcripts'
 Write-VoiceMeta -Label 'Cornerman' -Value 'Talk to Vengeance must be open + focused (F7/F8 land there)'
 Write-VoiceMeta -Label 'Arm' -Value "tap $ArmKey on Cornerman when you want a round"
 Write-VoiceMeta -Label 'Talk' -Value "hold $PttKey after Cornerman says Ready"
@@ -66,10 +63,15 @@ while ($true) {
     if ($null -eq $hash) { continue }
     if ($null -ne $lastHash -and $hash -eq $lastHash) { continue }
 
-    & $PullScript -Notify -Quiet
+    try {
+        & $PullScript -Notify -Quiet
+    }
+    catch {
+        Write-VoiceEvent -Name 'PULL FAILED' -Detail $_.Exception.Message -Color Yellow
+        $lastHash = $hash
+        continue
+    }
     $full = (Get-Clipboard).ToString()
-    $preview = $full
-    if ($preview.Length -gt 80) { $preview = $preview.Substring(0, 80) + '...' }
 
     Write-Host ''
     Write-VoiceDivider

@@ -83,7 +83,9 @@ def record_ptt(
             return
         released = True
         release_at = time.time()
-        captured.extend(preroll)
+        # Wake mode: preroll is pre-key audio. PTT armed mode: hold-phase frames are already in captured.
+        if not armed:
+            captured.extend(preroll)
         if forced and verbose:
             print("  (PTT — max hold reached; sending anyway)")
         if on_release:
@@ -110,7 +112,11 @@ def record_ptt(
                 frame = buf[:frame_len]
                 buf = buf[frame_len:]
                 if not released:
-                    preroll.append(frame)
+                    if armed:
+                        captured.append(frame)
+                        total += frame_dt
+                    else:
+                        preroll.append(frame)
                     if ptt.is_released(vk):
                         _mark_released()
                     elif time.time() - hold_started >= MAX_PTT_HOLD_SECONDS:
@@ -138,7 +144,10 @@ def record_ptt(
         return None
 
     audio = np.concatenate(captured).astype(np.float32)
-    speech_secs = max(0.0, total - silence_secs)
+    if armed:
+        speech_secs = sum(frame_dt for frame in captured if is_speech(frame))
+    else:
+        speech_secs = max(0.0, total - silence_secs)
     if speech_secs < config.MIN_SPEECH_SECONDS:
         if verbose:
             print("  (PTT — too short)")

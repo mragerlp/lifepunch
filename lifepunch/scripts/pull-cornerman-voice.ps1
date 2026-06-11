@@ -30,12 +30,12 @@ if ([string]::IsNullOrWhiteSpace($text)) {
     throw 'Relay file is empty. Run Relay to VENGEANCE on Cornerman and speak first.'
 }
 
-Set-Clipboard -Value $text.TrimEnd()
+$clip = $text.TrimEnd()
+Set-Clipboard -Value $clip
 Write-Info 'Copied Cornerman transcript to clipboard.'
-$trim = $text.Trim()
-if ($trim.Length -gt 0) {
-    $previewLen = [Math]::Min(120, $trim.Length)
-    Write-Info ('Preview: ' + $trim.Substring(0, $previewLen) + $(if ($trim.Length -gt 120) { '...' } else { '' }))
+$preview = Get-TextPreview -Text $clip.Trim() -MaxLen 120
+if ($preview) {
+    Write-Info ('Preview: ' + $preview)
 }
 
 if ($Notify) {

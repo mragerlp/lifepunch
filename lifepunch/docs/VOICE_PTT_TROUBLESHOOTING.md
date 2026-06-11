@@ -17,6 +17,28 @@ Canonical fixes from the F7/F8 E2E debug round. Pair with `VOICE_TEST_CHECKLIST.
 
 **Operator recovery:** Close every old Talk to Vengeance window (Ctrl+C). Start one relay. Focus that window. F7 → Ready → F8 hold → release. Expect `RELEASED` then `TRANSCRIBING` before clipboard.
 
+## Symptom: `RELEASED` then `(no audio — tap F7 to arm again)` (mic shows AT2020)
+
+**Root cause:** `ptt_capture.record_ptt(armed=True)` only kept the last **300ms** of F8-hold audio in preroll and measured speech **after** release. Normal PTT (talk while holding, release when done) discarded almost everything.
+
+**Fix:** `ptt_capture.py` — while armed and F8 held, append frames to `captured`; count speech across the full hold + tail.
+
+**Deploy:** `Apply-CornermanPushToTalk.ps1` from VENGEANCE (or base64 `ptt_capture.py` to `cornerman-rag`). Restart **one** Talk to Vengeance window.
+
+## Symptom: `UnicodeDecodeError` in `load_session_log` after successful TRANSCRIBING
+
+**Root cause:** `outbox/session.log` contains a non-UTF-8 byte (often `0x97` from a Windows-1252 dash written by PowerShell `Add-Content` over SSH). `deliver()` crashes when painting the conversation log.
+
+**Fix:** `patch_relay_ptt.py` replaces `load_session_log()` with UTF-8 / CP1252 fallback + `errors="replace"`. Re-run patch on Green; optionally rewrite `session.log` as UTF-8.
+
+**Operator recovery:** Restart one Talk to Vengeance window after patch — transcript + clipboard still work; crash was post-STT UI only.
+
+## Symptom: Voice Watch shows Windows SSH banner in SESSION LOG / pull crashes on Preview
+
+**Root cause:** `Invoke-CornermanSshRead` returned raw `cmd /c type` output including Cornerman SSH login banner; multi-line SSH arrays broke `Substring` preview math in `pull-cornerman-voice.ps1`.
+
+**Fix:** `Voice-Console.ps1` — `Normalize-CornermanSshFileContent`, `Get-CornermanSessionLogLines`, `Get-TextPreview`. Restart **LifePunch Voice Watch** window after pull.
+
 ## Symptom: Red `sync error: Stream was not readable`
 
 **Root cause:** Session sync posts to hub `:9102` via `Invoke-RestMethod`. Empty ingest bodies can throw that error in PowerShell 5.

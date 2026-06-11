@@ -137,6 +137,24 @@ def show_heard(text: str, *, guided: bool) -> None:
         _say(short, guided=True)
 '''.strip()
 
+LOAD_SESSION_LOG = '''
+def load_session_log() -> list[str]:
+    if not os.path.isfile(SESSION_LOG):
+        return []
+    with open(SESSION_LOG, "rb") as f:
+        raw = f.read()
+    text = None
+    for encoding in ("utf-8-sig", "utf-8", "cp1252"):
+        try:
+            text = raw.decode(encoding)
+            break
+        except UnicodeDecodeError:
+            continue
+    if text is None:
+        text = raw.decode("utf-8", errors="replace")
+    return [ln.rstrip() for ln in text.splitlines() if ln.strip()]
+'''.strip()
+
 DELIVER_SIG = (
     "def deliver(text: str, n: int, *, guided: bool, wake_phrase: str = \"\", "
     "ptt_key: str | None = None) -> None:"
@@ -224,6 +242,11 @@ def main() -> int:
         relay, ok = _replace_function(relay, "show_heard", SHOW_HEARD)
         if ok:
             changed.append("relay.py (show_heard)")
+
+    if 'errors="replace"' not in relay and "cp1252" not in relay:
+        relay, ok = _replace_function(relay, "load_session_log", LOAD_SESSION_LOG)
+        if ok:
+            changed.append("relay.py (load_session_log encoding)")
 
     if "--ptt" not in relay:
         relay = relay.replace(

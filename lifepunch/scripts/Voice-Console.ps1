@@ -29,6 +29,75 @@ function Get-VoiceConsoleAccent {
 
 $script:VoiceConsoleAccent = Get-VoiceConsoleAccent
 
+function Get-CornermanSshNoisePatterns {
+    return @(
+        '^\s*Microsoft Windows \[Version',
+        '^\s*\(c\) Microsoft Corporation',
+        '^\s*All rights reserved\.\s*$',
+        '^\s*C:\\Users\\',
+        '^\s*#< CLIXML'
+    )
+}
+
+function Normalize-CornermanSshFileContent {
+    <#
+    .SYNOPSIS
+      Flatten SSH output and drop Windows banner / profile noise before file parsing.
+    #>
+    param(
+        [AllowNull()]
+        $Raw
+    )
+    if ($null -eq $Raw) { return $null }
+    $lines = if ($Raw -is [array]) {
+        @($Raw | ForEach-Object { [string]$_ })
+    }
+    else {
+        ([string]$Raw) -split "`r?`n"
+    }
+    $noise = Get-CornermanSshNoisePatterns
+    $filtered = foreach ($line in $lines) {
+        $drop = $false
+        foreach ($pat in $noise) {
+            if ($line -match $pat) { $drop = $true; break }
+        }
+        if (-not $drop) { $line }
+    }
+    $text = ($filtered -join "`n").TrimEnd()
+    if ([string]::IsNullOrWhiteSpace($text)) { return $null }
+    return $text
+}
+
+function Get-CornermanSessionLogLines {
+    param(
+        [AllowNull()]
+        $Raw,
+        [int] $Tail = 8
+    )
+    $text = Normalize-CornermanSshFileContent $Raw
+    if (-not $text) { return @() }
+    $all = @(
+        $text -split "`r?`n" |
+            Where-Object { $_ -match '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z\s*\|' }
+    )
+    if ($all.Count -le $Tail) { return $all }
+    return $all[($all.Count - $Tail)..($all.Count - 1)]
+}
+
+function Get-TextPreview {
+    param(
+        [AllowNull()]
+        [string] $Text,
+        [int] $MaxLen = 120
+    )
+    if ([string]::IsNullOrEmpty($Text)) { return '' }
+    $len = $Text.Length
+    if ($len -le $MaxLen) { return $Text }
+    $take = [Math]::Min($MaxLen, $len)
+    if ($take -le 0) { return '' }
+    return $Text.Substring(0, $take) + '...'
+}
+
 function Invoke-CornermanSshRead {
     <#
     .SYNOPSIS
@@ -38,17 +107,19 @@ function Invoke-CornermanSshRead {
         [Parameter(Mandatory)]
         [string] $RemotePath,
         [string] $SshTarget = $(if ($env:CORNERMAN_SSH) { $env:CORNERMAN_SSH } else { 'cornerman' }),
-        [int] $ConnectTimeout = 10
+        [int] $ConnectTimeout = 10,
+        [switch] $Raw
     )
     # cmd /c type avoids remote PowerShell profile + brace-quoting issues over SSH.
     $prev = $ErrorActionPreference
     $ErrorActionPreference = 'SilentlyContinue'
-    $raw = & ssh -o BatchMode=yes -o ConnectTimeout=$ConnectTimeout $SshTarget `
+    $out = & ssh -o BatchMode=yes -o ConnectTimeout=$ConnectTimeout $SshTarget `
         "cmd /c type `"$RemotePath`"" 2>$null
     $code = $LASTEXITCODE
     $ErrorActionPreference = $prev
     if ($code -ne 0) { return $null }
-    return $raw
+    if ($Raw) { return $out }
+    return Normalize-CornermanSshFileContent $out
 }
 
 function Write-VoiceRule {
