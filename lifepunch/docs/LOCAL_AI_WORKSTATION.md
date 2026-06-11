@@ -258,9 +258,12 @@ origin through VENGEANCE over the existing SSH channel:
 
 1. **Cornerman:** commit locally on its clone (`C:\Projects\lifepunch`) with real messages. Then
    ping VENGEANCE: "N commits on top of `origin/main`, ready to publish" + the one-line subjects.
-2. **VENGEANCE:** pull and push them — `git format-patch origin/main..HEAD` on Cornerman, `scp` the
-   patches over, `git am` them (preserves Cornerman's authorship + messages), then `git push`. For
-   binary assets, confirm first with `git apply --check --binary` before `am`.
+2. **VENGEANCE (Red / primary):** after Green pings, either `git pull origin main` if Red already
+   pushed the same work, or run `lifepunch/scripts/Pull-CornermanPatches.ps1 -Push` (SSH
+   `format-patch` → `C:\lifepunch\cornerman\outbox\patches\` → `git am --whitespace=nowarn` →
+   `git push`). If `git am` fails on a duplicate (e.g. ulx already on `main`), `git am --abort` and
+   `git apply --3way` the remaining patch from `.cornerman-patches/`. For binary assets, confirm
+   first with `git apply --check --binary` before `am`.
 3. **Cornerman:** `git fetch && git pull --rebase` — rebase detects the patches are already upstream
    and drops the local duplicates, landing exactly on `origin/main`. (Fallback, only if not
    auto-dropped and the working tree is clean: `git reset --hard origin/main`.)
