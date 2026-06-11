@@ -26,7 +26,8 @@ In-game terminals mirror **LifePunch Ops** machine uniforms (`branding/lifepunch
 lp_cornerman_ui          # standard hacker (green)
 lp_vengeance_ui            # advanced hacker (red)
 lp_lifepunch_ops_ui        # police terminal (Phase 2)
-lp_spawn_hacker_terminal   # world entity (prefab TBD)
+lp_spawn_hacker_terminal           # standard world entity (prefab TBD in editor)
+lp_spawn_advanced_hacker_terminal  # red-tier world entity
 ```
 
 ## Cybersecurity Officer

@@ -32,7 +32,7 @@ public static class AK47
 	public const string CockSoundPath = "addons/lifepunch/ak47/sounds/ak47_cock.sound";
 	public const string DrawSoundPath = "addons/lifepunch/ak47/sounds/ak47_draw.sound";
 	public const string IconPath = "addons/lifepunch/ak47/ui/ak47_killfeed.png";
-	public const string DevGiveCommand = "lp_give_ak";
+	public const string DevGiveCommand = "lp_give_ak_class";
 
 	public static AK47WeaponStats Stats { get; } = new()
 	{

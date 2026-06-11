@@ -28,6 +28,7 @@ public static class HackerJob
 	public const string AdvancedProgramName = "vengeance.exe";
 	public const string DevGiveCommand = "cornerman";
 	public const string DevSpawnCommand = "lp_spawn_hacker_terminal";
+	public const string DevAdvancedSpawnCommand = "lp_spawn_advanced_hacker_terminal";
 	public const string DevUiCommand = "lp_cornerman_ui";
 	public const string DevAdvancedUiCommand = "lp_vengeance_ui";
 

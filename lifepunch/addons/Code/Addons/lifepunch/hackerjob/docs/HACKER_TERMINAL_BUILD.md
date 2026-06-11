@@ -1,5 +1,7 @@
 # Hacker Terminal — Build Checklist
 
+**Red runbook (VENGEANCE):** `addons/docs/RED_HACKER_JOB_BUILD.md`
+
 Two tiers per `TERMINAL_BRAND_MATRIX.md`. Shares terminal **layout** with Bitcoin Miner hashd; Hacker uses Cornerman/Vengeance palettes.
 
 ## Tiers
@@ -41,7 +43,8 @@ govdb_breach
 
 ## Phase 2 — Red / Opus
 
-- [ ] CRT models: `hacker-terminal` + `advanced-hacker-terminal`
+- [ ] CRT models: `hacker-terminal` + `advanced-hacker-terminal` (`Seed-HackerTerminalCrt.ps1` + ModelDoc)
+- [ ] Entity prefabs: `ENTITY_PREFAB_BUILD.md` · `lp_spawn_hacker_terminal` · `lp_spawn_advanced_hacker_terminal`
 - [ ] Job gate, live scan, server-validated puzzles, wallet transfer
 - [ ] Govdb breach hooks into `governmentdatacenter` tax miners
 - [ ] Police counterplay via `police-terminal` (lifepunchnet cyan)

@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "model": {
+    "slug": "advanced-hacker-terminal",
+    "displayName": "Advanced Hacking Terminal CRT",
+    "activeSource": "source/computer.fbx",
+    "targetModel": "advanced-hacker-terminal.vmdl",
+    "status": "ModelDoc TODO — Vengeance red material pass"
+  },
+  "brand": {
+    "program": "vengeance.exe",
+    "accentHex": "#E4002B"
+  },
+  "materials": [],
+  "status": {
+    "sourceSeeded": true,
+    "modelResourceCreated": true,
+    "materialResourcesCreated": false
+  }
+}

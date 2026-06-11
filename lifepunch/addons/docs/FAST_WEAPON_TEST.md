@@ -9,19 +9,23 @@ Prefab tuning after clone: **`WEAPON_PREFAB_TUNE.md`** (stats → ShootWeaponCom
 
 ---
 
-## #1 AK-47 (LifePunch kit + custom viewmodel)
+## #1 AK-47 (class baseline — gate before full kit)
+
+**Rebuild order (Red lane):** CS2 export → Blender `w_ak47.fbx` → ModelDoc physics on `w_ak47.vmdl` → clone `w_m4a1` prefab wiring with `vm_m4a1` → drop/hold smoke → then restore `lp_give_ak` (vm_ak47 kit). **Do not pin more AK gamemode revisions until drop + hold passes.**
 
 ```text
-lp_give_ak
+lp_give_ak_class
 ```
 
 | Asset | Path |
 |-------|------|
-| World | `addons/lifepunch/ak47/equipment/w_ak47/w_ak47.prefab` |
-| First person | `vm_ak47.prefab` (M4 rig driver + bonemerged `v_ak47.vmdl`) |
+| World | `addons/lifepunch/ak47/equipment/w_ak47/w_ak47.prefab` (LifePunch `w_ak47.vmdl`) |
+| First person | `gameplay/equipment/weapons/m4a1/vm_m4a1.prefab` (class until FP rig) |
 | Third person | Hold offsets synced from M4 class (2026-06-11) |
 
-**Pass:** arms + textured AK lower-right; no visible M4 mesh; muzzle at barrel; reload anim; 30/90 mag; ~600 RPM auto.
+**Pass:** textured AK in world + third person; M4 arms 1P; **drop** lands with collision; **pickup** restores hold; no gamemode pin until this passes.
+
+`lp_give_ak` is **gated** until the above passes (full `vm_ak47` kit).
 
 ---
 
@@ -73,10 +77,13 @@ Each command uses the **LifePunch prefab** when present; otherwise the **DXRP cl
 
 ## Red lane (guns in faster)
 
-1. **CS2 export on VENGEANCE** — `Intake-Cs2WeaponReference.ps1` → Blender FBX → `w_<ident>.vmdl`
-2. **Clone class prefab** — swap world model; keep class `vm_*` on `ViewModelPrefab` until FP rig batch
-3. **Mirror stats** — `WEAPON_PREFAB_TUNE.md` + per-weapon `docs/WEAPON_BUILD.md`
-4. **`lp_give_<ident>`** — verify before `prepare-publish.ps1`
-5. **Portal Equipment + Gun Dealer shipment** — after Opus sign-off
+1. **Batch CS2 export on VENGEANCE** — `Intake-Cs2WeaponReference.ps1` (`weapon_rif_ak47` first, then deagle/mp9/…)
+2. **Blender** — LifePunch-owned `w_<ident>.fbx` from CS2 study (never raw CS2 in publish)
+3. **ModelDoc** — physics/collision on `w_<ident>.vmdl`
+4. **Clone class prefab wiring** — swap world model; class `vm_*` until FP rig batch (`lp_give_ak_class` for AK)
+5. **Drop + hold smoke** — editor `lp_give_ak_class` before gamemode pins or `lp_give_ak` gate
+6. **Mirror stats** — `WEAPON_PREFAB_TUNE.md` + per-weapon `docs/WEAPON_BUILD.md`
+7. **`lp_give_<ident>`** — verify before `prepare-publish.ps1`
+8. **Portal Equipment + Gun Dealer shipment** — after Opus sign-off
 
 Canon: `RED_WEAPON_MASS_PRODUCTION_PLAN.md` · `WEAPON_MASS_PRODUCTION.md` · `weapon-production.json`

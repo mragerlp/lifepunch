@@ -61,27 +61,43 @@ public static class HackerDevSpawn
 	}
 
 	[ConCmd( "lp_spawn_hacker_terminal" )]
-	public static void SpawnTerminal()
+	public static void SpawnTerminal() => SpawnTerminal( HackerTerminalTier.Standard );
+
+	[ConCmd( "lp_spawn_advanced_hacker_terminal" )]
+	public static void SpawnAdvancedTerminal() => SpawnTerminal( HackerTerminalTier.Advanced );
+
+	private static void SpawnTerminal( HackerTerminalTier tier )
 	{
+		var command = tier == HackerTerminalTier.Advanced
+			? HackerJob.DevAdvancedSpawnCommand
+			: HackerJob.DevSpawnCommand;
+		var prefabPath = tier == HackerTerminalTier.Advanced
+			? HackerJob.AdvancedWorldPrefabPath
+			: HackerJob.WorldPrefabPath;
+
 		if ( !TryGetSpawnTransform( out var transform ) )
 		{
-			Log.Warning( "lp_spawn_hacker_terminal: no local viewer." );
+			Log.Warning( $"{command}: no local viewer." );
 			return;
 		}
 
-		var prefab = GameObject.GetPrefab( HackerJob.WorldPrefabPath );
+		var prefab = GameObject.GetPrefab( prefabPath );
 		if ( !prefab.IsValid() )
 		{
-			Log.Error( $"lp_spawn_hacker_terminal: could not load '{HackerJob.WorldPrefabPath}'." );
+			Log.Error( $"{command}: could not load '{prefabPath}'. Build prefab per ENTITY_PREFAB_BUILD.md." );
 			return;
 		}
 
 		var terminal = prefab.Clone( new CloneConfig { Transform = transform } );
 		if ( !terminal.IsValid() )
 		{
-			Log.Error( "lp_spawn_hacker_terminal: clone failed." );
+			Log.Error( $"{command}: clone failed." );
 			return;
 		}
+
+		var entity = terminal.Components.Get<HackerTerminalEntity>( FindMode.EverythingInSelfAndDescendants );
+		if ( entity.IsValid() )
+			entity.Tier = tier;
 
 #if !LIFEPUNCH_LOCAL
 		var player = Player.Local;
@@ -91,7 +107,10 @@ public static class HackerDevSpawn
 			terminal.NetworkSpawn();
 #endif
 
-		Log.Info( "lp_spawn_hacker_terminal: placed. Stand within 6m and run cornerman or hack." );
+		var program = tier == HackerTerminalTier.Advanced
+			? HackerJob.AdvancedProgramName
+			: HackerJob.InGameProgramName;
+		Log.Info( $"{command}: placed ({program}). Stand within 6m and interact or use lp_cornerman_ui / lp_vengeance_ui." );
 	}
 
 	private static bool TryGetSpawnTransform( out Transform transform )

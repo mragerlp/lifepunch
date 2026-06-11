@@ -1,5 +1,7 @@
 # Hacker Job — editor playtest (with bots)
 
+**Red runbook:** `addons/docs/RED_HACKER_JOB_BUILD.md` (Step 0 smoke).
+
 Solo editor testing uses **`StaffMenuTestBots`** (`adminmenu/StaffMenuTestBots.cs`) — same bots as staff menu / waypoint tests. No second human required.
 
 ## Setup (host, editor play)

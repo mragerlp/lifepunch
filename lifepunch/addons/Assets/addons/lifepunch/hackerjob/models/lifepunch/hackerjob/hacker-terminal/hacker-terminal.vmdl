@@ -6,18 +6,6 @@
 		children = 
 		[
 			{
-				_class = "MaterialGroupList"
-				children = 
-				[
-					{
-						_class = "DefaultMaterialGroup"
-						remaps = [  ]
-						use_global_default = true
-						global_default_material = "addons/lifepunch/ak47/models/lifepunch/ak47/w_ak47/materials/ak47_body.vmat"
-					},
-				]
-			},
-			{
 				_class = "PhysicsShapeList"
 				children = 
 				[
@@ -38,22 +26,15 @@
 				[
 					{
 						_class = "RenderMeshFile"
-						filename = "addons/lifepunch/ak47/models/lifepunch/ak47/w_ak47/source/ak47.fbx"
-						import_translation = [ 0.0, 0.0, 8.0 ]
+						name = "LOD0"
+						filename = "addons/lifepunch/hackerjob/models/lifepunch/hackerjob/hacker-terminal/source/computer.fbx"
+						import_translation = [ 0.0, 0.0, 0.0 ]
 						import_rotation = [ 0.0, 0.0, 0.0 ]
-						import_scale = 0.039
+						import_scale = 39.37
 						align_origin_x_type = "None"
 						align_origin_y_type = "None"
-						align_origin_z_type = "None"
+						align_origin_z_type = "Bottom"
 						parent_bone = ""
-						import_filter = 
-						{
-							exclude_by_default = true
-							exception_list = 
-							[
-								"ak47",
-							]
-						}
 					},
 				]
 			},
