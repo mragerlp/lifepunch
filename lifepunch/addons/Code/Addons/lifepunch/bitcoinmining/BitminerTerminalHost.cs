@@ -74,6 +74,16 @@ internal static class BitminerTerminalHost
 			Close( terminal );
 	}
 
+	/// <summary>Local wallet cash for upgrade menu affordance hints (DXRP build).</summary>
+	public static int GetLocalWalletCash()
+	{
+#if LIFEPUNCH_LOCAL
+		return 999_999;
+#else
+		return Player.Local.IsValid() ? (int)Player.Local.WalletBalance : 0;
+#endif
+	}
+
 	/// <summary>World position of the local viewer, used for range checks.</summary>
 	public static Vector3? LocalViewerPosition( Scene scene )
 	{

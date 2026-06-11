@@ -17,37 +17,40 @@
 
 @attribute [StyleSheet]
 
-<root>
+<root class="@( _showUpgradeMenu ? "upgrade-mode" : "" )">
     @* ---- TITLE BAR ---- *@
     <div class="title-bar">
         <span class="title-text">LIFEPUNCH hashd v1.0 — cornerman@rig</span>
         <button class="close-x" onclick=@OnClickClose>✕ CLOSE</button>
     </div>
 
-    @* ---- SCROLLABLE OUTPUT ---- *@
-    <div class="screen-scroll" @ref="ScreenScroll">
-        <div class="screen flex flex-col">
-            @foreach ( var line in _lines )
-            {
-                <div class="line-row">
-                    <label class="screen-line @(GetLineClass( line ))">@line</label>
-                </div>
-            }
-        </div>
-    </div>
-
-    @* ---- UPGRADE MENU (clickable) ---- *@
-    @if ( _showUpgradeMenu )
+    @if ( !_showUpgradeMenu )
     {
+        @* ---- SCROLLABLE OUTPUT ---- *@
+        <div class="screen-scroll" @ref="ScreenScroll">
+            <div class="screen flex flex-col">
+                @foreach ( var line in _lines )
+                {
+                    <div class="line-row">
+                        <label class="screen-line @(GetLineClass( line ))">@line</label>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+    else
+    {
+        @* ---- UPGRADE MENU (full terminal body) ---- *@
         <div class="upgrade-panel">
             <div class="upgrade-header">UPGRADE MODULE</div>
+            <div class="upgrade-balance">Wallet: $@BitminerTerminalHost.GetLocalWalletCash().ToString("N0")</div>
 
             <div class="upgrade-row">
                 <div class="upgrade-info">
                     <span class="upgrade-name">CPU CLOCK</span>
                     <span class="upgrade-detail">@GetCpuUpgradeDetail()</span>
                 </div>
-                <button class="upgrade-btn @(CanBuyCpu() ? "" : "disabled")" onclick=@OnBuyCpu>PURCHASE</button>
+                <button class="upgrade-btn @(CanAffordCpu() ? "" : "disabled")" onclick=@OnBuyCpu>PURCHASE</button>
             </div>
 
             <div class="upgrade-row">
@@ -55,9 +58,10 @@
                     <span class="upgrade-name">CPU CORES</span>
                     <span class="upgrade-detail">@GetCoreUpgradeDetail()</span>
                 </div>
-                <button class="upgrade-btn @(CanBuyCores() ? "" : "disabled")" onclick=@OnBuyCores>PURCHASE</button>
+                <button class="upgrade-btn @(CanAffordCores() ? "" : "disabled")" onclick=@OnBuyCores>PURCHASE</button>
             </div>
 
+            <div class="upgrade-hint">Type BACK or click below to return to the shell.</div>
             <button class="upgrade-back" onclick=@CloseUpgradeMenu>← BACK TO TERMINAL</button>
         </div>
     }
@@ -126,7 +130,7 @@
         _lines.Add( "[ OK ] gpu-rack mesh" );
         _lines.Add( "[ OK ] mounting /dev/rig0" );
         _lines.Add( "starting mine.exe ..." );
-        _lines.Add( "Type 'help' for commands. Type 'upgrade' for clickable upgrades." );
+        _lines.Add( "Type 'help' for commands. Type 'UPGRADE' for the upgrade menu." );
         _lines.Add( "" );
     }
 
@@ -216,6 +220,16 @@
 
         if ( string.IsNullOrWhiteSpace( input ) ) return;
 
+        if ( _showUpgradeMenu && ( input is "back" or "exit" or "close" ) )
+        {
+            _lines.Add( $"cornerman@rig:~$ {input}" );
+            CloseUpgradeMenu();
+            _lines.Add( "Returned to terminal shell." );
+            _lines.Add( "" );
+            TrimLines();
+            return;
+        }
+
         _lines.Add( $"cornerman@rig:~$ {input}" );
 
         if ( _liveStatus && _statusLineCount > 0 )
@@ -262,10 +276,16 @@
 
     private void OpenUpgradeMenu()
     {
+        if ( !Miner.IsValid() )
+        {
+            _lines.Add( "ERROR: Miner connection lost." );
+            return;
+        }
+
         _showUpgradeMenu = true;
         _liveStatus = false;
         _statusLineCount = 0;
-        _lines.Add( "Opening upgrade module — use PURCHASE buttons below." );
+        _lines.Add( "Opening upgrade module — PURCHASE buttons active." );
     }
 
     private void CloseUpgradeMenu()
@@ -279,6 +299,18 @@
 
     private bool CanBuyCores() =>
         Miner.IsValid() && Miner.CoreUpgradeLevel < BitminerEntity.CoreUpgradeCosts.Length;
+
+    private bool CanAffordCpu()
+    {
+        if ( !CanBuyCpu() ) return false;
+        return BitminerTerminalHost.GetLocalWalletCash() >= BitminerEntity.CpuUpgradeCosts[Miner.CpuUpgradeLevel];
+    }
+
+    private bool CanAffordCores()
+    {
+        if ( !CanBuyCores() ) return false;
+        return BitminerTerminalHost.GetLocalWalletCash() >= BitminerEntity.CoreUpgradeCosts[Miner.CoreUpgradeLevel];
+    }
 
     private string GetCpuUpgradeDetail()
     {
@@ -298,9 +330,17 @@
     {
         if ( !CanBuyCpu() ) return;
         Sound.Play( Bitminer.KeyboardSoundPath );
-        _lines.Add( $"Purchasing CPU Clock for ${BitminerEntity.CpuUpgradeCosts[Miner.CpuUpgradeLevel]:N0}..." );
+        var cost = BitminerEntity.CpuUpgradeCosts[Miner.CpuUpgradeLevel];
+        if ( !CanAffordCpu() )
+        {
+            _lines.Add( $"ERROR: CPU Clock costs ${cost:N0} — wallet ${BitminerTerminalHost.GetLocalWalletCash():N0}." );
+            TrimLines();
+            return;
+        }
+
+        _lines.Add( $"Purchasing CPU Clock for ${cost:N0}..." );
         Miner.RequestUpgrade( BitminerUpgradeType.Cpu );
-        _lines.Add( "Done." );
+        _lines.Add( "Upgrade requested — host will charge wallet if funds allow." );
         TrimLines();
     }
 
@@ -308,9 +348,17 @@
     {
         if ( !CanBuyCores() ) return;
         Sound.Play( Bitminer.KeyboardSoundPath );
-        _lines.Add( $"Purchasing CPU Cores for ${BitminerEntity.CoreUpgradeCosts[Miner.CoreUpgradeLevel]:N0}..." );
+        var cost = BitminerEntity.CoreUpgradeCosts[Miner.CoreUpgradeLevel];
+        if ( !CanAffordCores() )
+        {
+            _lines.Add( $"ERROR: CPU Cores cost ${cost:N0} — wallet ${BitminerTerminalHost.GetLocalWalletCash():N0}." );
+            TrimLines();
+            return;
+        }
+
+        _lines.Add( $"Purchasing CPU Cores for ${cost:N0}..." );
         Miner.RequestUpgrade( BitminerUpgradeType.Cores );
-        _lines.Add( "Done." );
+        _lines.Add( "Upgrade requested — host will charge wallet if funds allow." );
         TrimLines();
     }
 
@@ -330,6 +378,7 @@
                 _lines.Add( "  UPGRADE  - Open clickable upgrade menu." );
                 _lines.Add( "  STATUS   - Show full device status." );
                 _lines.Add( "  MENU     - Same as UPGRADE (upgrade menu)." );
+                _lines.Add( "  BACK     - Close upgrade menu (when open)." );
                 _lines.Add( "  ABOUT    - LIFEPUNCH attribution." );
                 _lines.Add( "  CLEAR    - Clear the screen." );
                 _lines.Add( "  HELP     - Show this list." );
@@ -435,6 +484,6 @@
 
     protected override int BuildHash() =>
         Miner.IsValid()
-            ? HashCode.Combine( Miner.BitcoinAmount, Miner.IsMining, Miner.CpuUpgradeLevel, Miner.CoreUpgradeLevel, _lines.Count, _showUpgradeMenu, (int)( _smoothProgress * 10f ) )
-            : HashCode.Combine( _lines.Count, _showUpgradeMenu );
+            ? HashCode.Combine( Miner.BitcoinAmount, Miner.IsMining, Miner.CpuUpgradeLevel, Miner.CoreUpgradeLevel, _lines.Count, _showUpgradeMenu, BitminerTerminalHost.GetLocalWalletCash(), (int)( _smoothProgress * 10f ) )
+            : HashCode.Combine( _lines.Count, _showUpgradeMenu, BitminerTerminalHost.GetLocalWalletCash() );
 }
