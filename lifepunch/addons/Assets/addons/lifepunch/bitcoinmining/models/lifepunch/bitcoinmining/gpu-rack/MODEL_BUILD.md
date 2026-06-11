@@ -74,7 +74,7 @@ Do **not** split into separate vmdls per fan — fans are part of the rack assem
 3. For each slot, create the `.vmat` in `materials/` and assign textures from the table.
 4. Compile `gpu-rack.vmdl`.
 
-**World orientation:** rack sits **horizontal** on the ground (low profile, fans/GPUs face the player). Source OBJ is tall on Z — use `import_rotation = [ 0, 90, 0 ]` on both `gpu-rack.vmdl` and `gpu-rack-stacked.vmdl` (`align_origin_z_type = Bottom`). Recompile after any rotation tweak.
+**World orientation:** rack sits **horizontal** on the ground (low profile, fans/GPUs face the player). Source OBJ is tall on Z — use `import_rotation = [ 0, 90, 0 ]` on both `gpu-rack.vmdl` and `gpu-rack-stacked.vmdl` (`align_origin_z_type = Bottom`). Verified in editor: world Z extent ~8.6 units (not ~21). Recompile after any rotation tweak.
 
 Canonical JSON: `material-map.json` in this folder.
 
