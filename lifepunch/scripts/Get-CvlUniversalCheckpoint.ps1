@@ -64,21 +64,45 @@ function Get-VengeanceSlot {
     finally { Pop-Location }
 }
 
+function Test-IsCornermanHost {
+    return ($env:COMPUTERNAME -match '(?i)cornerman')
+}
+
+function Invoke-CornermanProbeScript([string]$ProbeFile) {
+    $prev = $ErrorActionPreference
+    $ErrorActionPreference = 'SilentlyContinue'
+    $raw = & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $ProbeFile 2>$null
+    $ErrorActionPreference = $prev
+    return $raw
+}
+
 function Get-CornermanSlot {
     $probeFile = Join-Path $Here 'Get-CvlCornermanProbe.ps1'
     if (-not (Test-Path -LiteralPath $probeFile)) {
         Add-Blocker 'Missing Get-CvlCornermanProbe.ps1'
         return $null
     }
-    $enc = [Convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes((Get-Content -LiteralPath $probeFile -Raw)))
-    $prev = $ErrorActionPreference
-    $ErrorActionPreference = 'SilentlyContinue'
-    $raw = & ssh -o BatchMode=yes -o ConnectTimeout=12 $CornermanSsh `
-        "powershell -NoProfile -NonInteractive -EncodedCommand $enc" 2>$null
-    $code = $LASTEXITCODE
-    $ErrorActionPreference = $prev
-    if ($code -ne 0 -or [string]::IsNullOrWhiteSpace($raw)) {
-        Add-Blocker "Cornerman SSH probe failed ($CornermanSsh)"
+
+    $raw = $null
+    if (Test-IsCornermanHost) {
+        $raw = Invoke-CornermanProbeScript $probeFile
+    }
+    else {
+        $enc = [Convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes((Get-Content -LiteralPath $probeFile -Raw)))
+        $prev = $ErrorActionPreference
+        $ErrorActionPreference = 'SilentlyContinue'
+        $raw = & ssh -o BatchMode=yes -o ConnectTimeout=12 $CornermanSsh `
+            "powershell -NoProfile -NonInteractive -EncodedCommand $enc" 2>$null
+        $code = $LASTEXITCODE
+        $ErrorActionPreference = $prev
+        if ($code -ne 0 -or [string]::IsNullOrWhiteSpace($raw)) {
+            Add-Blocker "Cornerman SSH probe failed ($CornermanSsh)"
+            return $null
+        }
+    }
+
+    if ([string]::IsNullOrWhiteSpace($raw)) {
+        Add-Blocker 'Cornerman probe returned no output'
         return $null
     }
     $line = ($raw -split "`r?`n" | Where-Object { $_.Trim().StartsWith('{') } | Select-Object -Last 1)
@@ -192,8 +216,15 @@ function Get-Recommendation($v, $ready) {
 
 # --- collect ---
 $cfg = $null
+$onCornerman = Test-IsCornermanHost
+$lifepunchnetSkipReason = ''
 if (-not (Test-Path -LiteralPath $ConfigPath)) {
-    Add-Blocker 'Missing server-host-watch.local.json'
+    if ($onCornerman) {
+        $lifepunchnetSkipReason = 'Green: no hub token by design - run full checkpoint on VENGEANCE for Blue slot'
+    }
+    else {
+        Add-Blocker 'Missing server-host-watch.local.json (copy .example + token on VENGEANCE)'
+    }
 }
 else {
     $cfg = Get-Content -LiteralPath $ConfigPath -Raw | ConvertFrom-Json
@@ -230,12 +261,14 @@ if ($JsonOnly) {
 Write-VoiceHeader -Title 'CVL UNIVERSAL CHECKPOINT' -Subtitle 'auto 1/3 + 2/3 + 3/3 - no RDP paste required'
 Write-Host ''
 
-Write-Host '  [1/3] VENGEANCE' -ForegroundColor Cyan
+$slot1Label = if ($onCornerman) { 'LOCAL GIT (Cornerman - run on VENGEANCE for Red slot)' } else { 'VENGEANCE' }
+Write-Host "  [1/3] $slot1Label" -ForegroundColor Cyan
 Write-Host "        git: $($v.gitHead)" -ForegroundColor Gray
 Write-Host "        branch: $($v.branch)  ahead: $($v.ahead)  behind: $($v.behind)  dirty: $($v.dirty)" -ForegroundColor Gray
 Write-Host ''
 
-Write-Host '  [2/3] CORNERMAN (SSH auto)' -ForegroundColor Cyan
+$slot2Label = if ($onCornerman) { 'CORNERMAN (local probe)' } else { 'CORNERMAN (SSH auto)' }
+Write-Host "  [2/3] $slot2Label" -ForegroundColor Cyan
 if ($c) {
     Write-Host "        git: $($c.gitHead)" -ForegroundColor Gray
     Write-Host "        relay: cmd=$($c.relayCmd) starter=$($c.relayStarter) running=$($c.relayRunning)" -ForegroundColor Gray
@@ -252,6 +285,7 @@ if ($l) {
         Write-Host "        alerts: $($l.alerts -join '; ')" -ForegroundColor Yellow
     }
 }
+elseif ($lifepunchnetSkipReason) { Write-Host "        $lifepunchnetSkipReason" -ForegroundColor DarkYellow }
 else { Write-Host '        probe skipped or failed' -ForegroundColor Red }
 Write-Host ''
 
