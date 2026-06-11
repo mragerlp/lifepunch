@@ -21,12 +21,14 @@ weed_pot / lamp  -->  strain seed  -->  grow stages  -->  drying  -->  bag produ
 
 | Coke (enhanced) | Weed counterpart (guess) | Portal content? | Notes |
 |-----------------|--------------------------|-----------------|-------|
-| `coca_seed` | weed seed / strain item | TBD | Prefab exists |
-| `coca_leaf` | raw bud / plant stage | TBD | Prefab exists |
-| `processing_station` | mixing / drying station? | TBD | New station type |
-| `packing_station` | packaging station | TBD | Clone weed packaging wiring |
-| `coke-bag` (vmdl TBD) | `*_bag` product | TBD | Raw FBX in intake |
+| `coca_seed` | `entities/weed/weed_seed_pack.prefab` + strains | TBD | Prefab exists |
+| `coca_leaf` | harvest / plant stage (no 1:1 prefab) | TBD | Prefab exists |
+| `processing_station` | `entities/weed/weed_drying_rack.prefab` or mixing | TBD | New station type |
+| `packing_station` | `entities/weed/weed_packaging_station.prefab` | TBD | Clone weed packaging wiring |
+| `coke-bag` (vmdl TBD) | `entities/weed/products/*_bag.dprod` | TBD | Raw FBX in intake |
 | `coke-brick` (vmdl TBD) | n/a or bulk product | TBD | Raw zip in intake |
+
+Weed index: `addons/docs/reference/WEED_ENGINE_ENTITY_INDEX.md` — Cornerman refines after unzip work.
 
 ## Open questions (owner sign-off — see spec section 9)
 

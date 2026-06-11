@@ -1,0 +1,37 @@
+{
+  "role": "cornerman-tier3",
+  "issuedBy": "vengeance",
+  "issuedAt": "2026-06-11",
+  "title": "Green workflow — Tier-3 prep lane (not dev box)",
+  "do": [
+    "Stay on distill model: qwen/qwen3.6-35b-a3b via LM Studio :1234 (32k context, Flash ON, GPU max)",
+    "Serve Tier-3 prep only: summarize specs, distill hub/session logs, first-draft briefs for Red/Cursor",
+    "Keep voice relay available (PTT → lifepunchnet STT → outbox → Vengeance watch)",
+    "Monorepo at C:\\Projects\\lifepunch is read reference for RAG — pull only, never force-push",
+    "Weapon mass-production queue: deagle is next distill target after AK verify on Red"
+  ],
+  "doNot": [
+    "Do NOT run s&box editor, ModelDoc, or primary addon C# integration — that is VENGEANCE (Red)",
+    "Do NOT host secrets, write-git creds, or hub tokens on this box",
+    "Do NOT use Lemonade — STT is lifepunchnet :9000 only",
+    "Do NOT keep Cursor open on Green for daily ops — Red dispatches via SSH/workflow"
+  ],
+  "activeQueue": {
+    "master": "lifepunch/addons/docs/briefs/CORNERMAN_WORK_QUEUE.md",
+    "onBox": "C:\\lifepunch\\cornerman\\inbox\\CORNERMAN_WORK_QUEUE.md",
+    "tasks": [
+      { "order": 1, "id": "coke-intake", "brief": "CORNERMAN_COKE_DRUG_INTAKE_TASK.md" },
+      { "order": 2, "id": "deagle-distill", "brief": "CORNERMAN_DEAGLE_DISTILL_TASK.md" },
+      { "order": 3, "id": "bitminer-phase2", "brief": "CORNERMAN_BITMINER_PHASE2_MENU_TASK.md" },
+      { "order": 4, "id": "deagle-rag", "brief": "DEAGLE_WEAPON_BRIEF.md" }
+    ],
+    "weaponQueue": "lifepunch/addons/config/weapon-production.json",
+    "reference": "lifepunch/addons/docs/WEAPON_MASS_PRODUCTION.md"
+  },
+  "redCommands": {
+    "checkpoint": "Get-CvlUniversalCheckpoint.ps1",
+    "dispatch": "Send-CornermanWorkflow.ps1",
+    "warmDistill": "Send-CornermanWorkflow.ps1 -Action FullPerformance",
+    "warmCoder": "ssh cornerman powershell -File C:\\lifepunch\\cornerman\\Start-CornermanLmStudio.ps1 -WarmModel coder"
+  }
+}

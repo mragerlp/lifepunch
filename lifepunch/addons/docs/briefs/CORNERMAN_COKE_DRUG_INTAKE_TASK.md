@@ -54,9 +54,10 @@ Cornerman: only fix if channel paths drift after unzip manifest work.
 Update `COKE_LINE_MAP.md` § mapping table from:
 
 - `addons/docs/COKE_DRUG_RESKIN_SPEC.md`
-- s&box download cache list in `ASSET_INVENTORY.md` (weed entity names)
+- **`addons/docs/reference/WEED_ENGINE_ENTITY_INDEX.md`** (Red pre-seeded from download cache)
+- `ASSET_INVENTORY.md` (coke side)
 
-Mark uncertain cells `TBD — needs Red editor spawn`.
+Fill **Weed counterpart** column with best-guess prefab paths; mark uncertain cells `TBD — needs Red editor spawn`.
 
 ### 4. Commit on Green (local only)
 
