@@ -1,16 +1,17 @@
-# Coke line — enhanced pack vs weed engine
+# Cocaine Addon — enhanced pack vs weed engine
 
+**Product name:** **Cocaine Addon** (LIFEPUNCH-branded; addon ident `advanceddrugprocessing` until rename)  
 **Status:** Cornerman distill (2026-06-11) — portal column still needs Red editor spawn  
 **Spec:** `COKE_DRUG_RESKIN_SPEC.md` · Weed index: `reference/WEED_ENGINE_ENTITY_INDEX.md`
 
-## Enhanced coke pack (LifePunch-owned, in repo)
+## Cocaine Addon pack (LifePunch-owned, in repo)
 
 ```text
 coca_seed  -->  coca_leaf  -->  processing_station  -->  packing_station
                                                       -->  coke-bag / coke-brick (products, ModelDoc TBD)
 ```
 
-Parallel: `meth_lab` → `MethLabEntity` (meth line — separate spec).
+Parallel: `meth_lab` → `MethLabEntity` (meth — separate spec; same addon package for now).
 
 ## Weed engine reference (DXRP / portal addon)
 
@@ -20,7 +21,7 @@ weed_pot / lamp  -->  weed_seed_pack / strains  -->  grow stages  -->  drying  -
 
 ## Mapping table
 
-| Coke (enhanced) | Weed counterpart | Portal content? | Notes |
+| Cocaine Addon entity | Weed counterpart | Portal content? | Notes |
 |-----------------|------------------|-----------------|-------|
 | `coca_seed` | `entities/weed/weed_seed_pack.prefab` + `strains/*.wstrain` | TBD — Red spawn | Seed entry — not 1:1 strain system |
 | `coca_leaf` | harvest / plant stage (no 1:1 prefab) | TBD | Coke uses leaf entity, not pot stages |

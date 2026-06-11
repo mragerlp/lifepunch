@@ -1,7 +1,8 @@
-# Bitminer dual rack spec (distill)
+# Bitminer dual rack spec (economy + meshes)
 
-**Status:** Green complete (2026-06-11) · Red ships `gpu-rack-stacked.vmdl` + economy  
-**Canon brief:** `briefs/BITMINER_DUAL_RACK_BRIEF.md`
+**Status:** Green complete (2026-06-11) · **Layout superseded** by three-entity arch  
+**Canon brief:** `briefs/BITMINER_DUAL_RACK_BRIEF.md`  
+**Placeables:** `BITMINER_THREE_ENTITY_ARCH.md` · **Remote UX:** `BITMINER_REMOTE_RACK_SPEC.md`
 
 ---
 
@@ -79,33 +80,30 @@ Large rack GPU emission: full when `RackExpansionLevel == 1 && IsMining`; dim wh
 
 ---
 
-## Prefab hierarchy (target)
+## Prefab hierarchy (three entities — current canon)
 
 ```text
-bitcoin-miner (root, scale ~1.11)
-├── ModelRenderer          → gpu-rack.vmdl              (SMALL)
-**Separate prefab** `entities/bitcoin-terminal/bitcoin-terminal.prefab`:
-├── ModelRenderer        → bitcoin-terminal.vmdl (`computer.fbx`)
-├── BitminerTerminalProp → links to nearest `BitminerEntity` within 4m
-└── lcd_screen           → TextRenderer (amber HASHD summary)
-├── gpu_rack_large         → gpu-rack-stacked.vmdl      (LARGE — NEW child)
-├── fan_placeholder*       → deprecate when anims wired
-└── BitminerEntity
+entities/bitcoin-terminal/bitcoin-terminal.prefab
+├── ModelRenderer          → bitcoin-terminal.vmdl
+├── BitminerTerminalProp   → links / registry of nearby BitminerEntity
+└── lcd_screen             → TextRenderer (amber summary)
+
+entities/bitcoin-miner/bitcoin-miner.prefab
+├── ModelRenderer          → gpu-rack.vmdl (SMALL)
+├── fan_placeholder*
+└── BitminerEntity         AdvancedRack = false
+
+entities/advanced-bitcoin-miner/advanced-bitcoin-miner.prefab
+├── ModelRenderer          → gpu-rack-stacked.vmdl (LARGE)
+├── fan_placeholder*
+└── BitminerEntity         AdvancedRack = true
 ```
 
-### First-pass `gpu_rack_large` transform (Red tune)
+Place racks near terminal in editor; player sees multiple units in world — not stacked on one prefab root.
 
-Mesh forward axis assumed same as small rack (Blender −Y depth ≈ 0.31 BU on small).
+### ~~Obsolete~~ single-prefab `gpu_rack_large` child
 
-```text
-Name:     gpu_rack_large
-Position: 0, -32, 0        # behind small rack (negative Y); TBD — Red editor verify
-Rotation: 0, 0, 0, 1
-Scale:    1, 1, 1
-Model:    addons/lifepunch/bitcoinmining/models/.../gpu-rack-stacked.vmdl
-```
-
-If stacked FBX origin is center-mass not floor-aligned, set ModelDoc `align_origin_z_type = Bottom` like terminal.
+Do not add large rack as child of `bitcoin-miner`. Use `advanced-bitcoin-miner` placeable + remote hashd control (`BITMINER_REMOTE_RACK_SPEC.md`).
 
 ---
 
@@ -137,9 +135,9 @@ Phase 1 upgrade overlay (CPU/CORES) shipped; Phase 2 **Upgrades** module per `BI
 1. Import `gpu-rack-stacked-anim.fbx` → new `gpu-rack-stacked.vmdl`.
 2. Remap five slots → existing `gpu-rack-*.vmat` (stacked FBX already names Cord, FanBlades*, etc.).
 3. Add sequences `power_on` / `power_off` (sync timing with small rack).
-4. Compile; add `gpu_rack_large` child on `bitcoin-miner.prefab`.
-5. Wire `RackExpansionLevel`, `RackYield`, `PurchaseUpgrade(Rack)` in `BitminerEntity.cs`.
-6. Play-test: both racks visible; yield doubles after purchase; LCD + `upgrade` panel show rack state.
+4. Compile; wire `advanced-bitcoin-miner.prefab` (not child on small miner).
+5. `AdvancedRack` property on `BitminerEntity` sets `RackYield` ×2 — shipped; expansion purchase track **TBD** vs separate placeable cost.
+6. Play-test: terminal + both rack entities placed nearby; hashd controls selected rig; LCD shows linked summary.
 
 ---
 

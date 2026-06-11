@@ -100,14 +100,26 @@ CRT world mesh is optional for the UI — `hashd` only needs a `BitminerEntity` 
 ```text
 entities/bitcoin-terminal/bitcoin-terminal.prefab
 entities/bitcoin-miner/bitcoin-miner.prefab
-entities/advanced-bitcoin-miner/advanced-bitcoin-miner.prefab   ← TODO
+entities/advanced-bitcoin-miner/advanced-bitcoin-miner.prefab
 ```
+
+---
+
+## What the player sees
+
+1. **World:** Amber-lit **Bitcoin Terminal** CRT (when `bitcoin-terminal.vmdl` compiled) placed near one or more **GPU racks** (small + optional advanced stacked unit). Racks spin fans / play power anim while mining.
+2. **Overlay:** Full **hashd** panel (`BitminerTerminal.razor`) — amber `#f0a500` telemetry rail + `rig0>` log. This is the real control console.
+3. **LCD:** One-line amber `TextRenderer` on the CRT monitor — balance / status summary only (not the full UI).
+4. **Fast preview:** `lp_hashd_preview` opens the console immediately without waiting on CRT ModelDoc compile.
+
+Remote rack list + multi-rig START: `BITMINER_REMOTE_RACK_SPEC.md`.
 
 ---
 
 ## Related
 
 - `docs/briefs/CORNERMAN_BITMINER_THREE_ENTITY_TASK.md` — Green distill
-- `BITMINER_DUAL_RACK_SPEC.md` — economy numbers (yield multiplier still valid; layout section obsolete)
+- `BITMINER_REMOTE_RACK_SPEC.md` — multi-rig hashd UX + linking rules
+- `BITMINER_DUAL_RACK_SPEC.md` — economy numbers (yield multiplier still valid; single-prefab layout **obsolete**)
 - `BITMINER_PLAYTEST.md` — smoke commands
 - `RED_BITMINER_PHASE2_BUILD.md` — tabbed modules on hashd console

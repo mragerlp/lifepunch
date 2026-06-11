@@ -1,20 +1,20 @@
-# Bitcoin Miner — dual rack brief (small + large)
+# Bitcoin Miner — dual rack economy brief (small + large yield)
 
 **Issued:** 2026-06-11 · **Lane:** Green distill → Red builds on VENGEANCE  
-**Owner ask:** Show **both** the large and small bitcoin rack on the entity; tie visible racks to **BTC production**.
+**Superseded layout:** ~~both racks + CRT on one `bitcoin-miner` prefab~~ → **three separate placeables** (`BITMINER_THREE_ENTITY_ARCH.md`)
 
 ---
 
 ## Goal
 
-One placeable **Bitcoin Miner** prefab shows:
+**Two rack types** with different yield — as **separate entities**, not children on one prefab:
 
-| Rack | Asset | Role |
-|------|-------|------|
-| **Small** | `gpu-rack.vmdl` (`gpu-rack-static.obj`) | Starter unit — always visible, base hash contribution |
-| **Large** | `gpu-rack-stacked.vmdl` (`gpu-rack-stacked-anim.fbx` → static + anim) | Expansion unit — visible on prefab; **yields BTC only when expansion is owned/active** |
+| Rack | Entity slug | Asset | Role |
+|------|-------------|-------|------|
+| **Small** | `bitcoin-miner` | `gpu-rack.vmdl` | Base `×1.0` yield |
+| **Large** | `advanced-bitcoin-miner` | `gpu-rack-stacked.vmdl` | `AdvancedRack` → `×2.0` yield |
 
-Plus **`computer_terminal`** (CRT + LCD) — already wired 2026-06-11.
+**Bitcoin Terminal** (`bitcoin-terminal`) is a **third placeable** — hashd control station; links racks remotely (`BITMINER_REMOTE_RACK_SPEC.md`).
 
 ---
 
@@ -45,19 +45,17 @@ Display rate everywhere: `ClockSpeed × 0.005 × CoreCount × RackYield`.
 
 ---
 
-## Prefab layout (target)
+## Prefab layout (obsolete — do not ship)
+
+~~Single prefab with `computer_terminal` + `gpu_rack_large` children~~ — replaced by:
 
 ```text
-bitcoin-miner (root)
-├── ModelRenderer          → gpu-rack.vmdl          (SMALL — primary collider anchor)
-├── computer_terminal      → bitcoin-terminal.vmdl
-│   └── lcd_text           → TextRenderer
-├── gpu_rack_large         → gpu-rack-stacked.vmdl    (LARGE — offset beside/behind small)
-├── fan placeholders       → deprecate when stacked anim ships
-└── BitminerEntity
+entities/bitcoin-terminal/bitcoin-terminal.prefab   ← CRT + BitminerTerminalProp
+entities/bitcoin-miner/bitcoin-miner.prefab       ← small rack only
+entities/advanced-bitcoin-miner/...                 ← stacked rack only
 ```
 
-Red tunes `gpu_rack_large` **Position / Rotation / Scale** in editor so both racks read clearly in third person.
+See `BITMINER_THREE_ENTITY_ARCH.md` + `BITMINER_REMOTE_RACK_SPEC.md`.
 
 ---
 

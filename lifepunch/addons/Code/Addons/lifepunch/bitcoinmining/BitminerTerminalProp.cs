@@ -41,7 +41,7 @@ public sealed class BitminerTerminalProp : Component, Component.IPressable
 			return;
 		}
 
-		var nearest = FindNearestRig( WorldPosition );
+		var nearest = FindNearestRig( Scene, WorldPosition );
 		if ( !nearest.IsValid() )
 			return;
 
@@ -56,12 +56,15 @@ public sealed class BitminerTerminalProp : Component, Component.IPressable
 		return true;
 	}
 
-	internal static BitminerEntity FindNearestRig( Vector3 from )
+	internal static BitminerEntity FindNearestRig( Scene scene, Vector3 from )
 	{
+		if ( scene is null )
+			return null;
+
 		BitminerEntity best = null;
 		var bestHorizontal = float.MaxValue;
 
-		foreach ( var rig in Scene.GetAllComponents<BitminerEntity>() )
+		foreach ( var rig in scene.GetAllComponents<BitminerEntity>() )
 		{
 			if ( !rig.IsValid() || !rig.GameObject.IsValid() )
 				continue;

@@ -34,7 +34,7 @@ docs(ak47): CS2 study distill + M4 class anim map
 docs(hackerjob): terminal flow, puzzle catalog, and platform tokens
 chore(advanceddrugprocessing): coke unzip manifest + weed map distill
 docs(deagle): USP reference stats table + w_deagle MODEL_BUILD draft
-docs(bitcoinmining): dual rack economy + prefab wireframe distill
+docs(bitcoinmining): three-entity arch + remote rack hashd UX distill
 docs(bitcoinmining): Phase 2 tabbed menu wireframe + scss tokens
 ```
 

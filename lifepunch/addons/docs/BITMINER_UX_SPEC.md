@@ -89,26 +89,46 @@ Detail: `briefs/BITMINER_PHASE2_WIREFRAME.md` · tokens: `briefs/BITMINER_PHASE2
 - Accent: **`#f0a500`** amber (not Evo blue `#44aaff`, not hacker green `#00FF7F`)
 - Labels: `LIFEPUNCH hashd`, `₿ balance`, `HASH`, `CORES`, progress bar
 
-### 3d. Dual rack mesh + power animation
+### 3d. Rack meshes + power animation (three entities)
 
-**Owner decision (2026-06-11):** Small + large racks on one prefab; yield scales when large rack expansion is active.
+**Owner canon (2026-06-11):** Small and advanced racks are **separate placeables**; terminal controls them remotely.
 
-| Rack | Mesh | Yield |
-|------|------|-------|
-| Small | `gpu-rack.vmdl` | Base `×1.0` |
-| Large | `gpu-rack-stacked.vmdl` | +bonus when expansion active (proposed `×2.0` total) |
+| Entity | Mesh | Yield (`BitminerEntity`) |
+|--------|------|--------------------------|
+| `bitcoin-miner` | `gpu-rack.vmdl` | `AdvancedRack=false` → `×1.0` |
+| `advanced-bitcoin-miner` | `gpu-rack-stacked.vmdl` | `AdvancedRack=true` → `×2.0` |
 
-Distill: `docs/reference/BITMINER_DUAL_RACK_SPEC.md` · `briefs/CORNERMAN_BITMINER_DUAL_RACK_TASK.md`.
+Distill: `BITMINER_THREE_ENTITY_ARCH.md` · `BITMINER_DUAL_RACK_SPEC.md` (economy) · `BITMINER_REMOTE_RACK_SPEC.md` (multi-rig UX).
 
 - **Power states:** `power_on` loop while `IsMining`; `power_off` when stopped.
 - **Deprecate Evo pattern:** remove `BitminerFan*` child spin when vmdl anim wired (`TECH_DEBT` BITMINER-01).
 
-### 3e. Terminal prop
+### 3e. Terminal prop (control station — not on rack)
 
-| Ship target | `Code/Addons/lifepunch/bitcoinmining/BitminerTerminal.razor` |
-| Prop mesh | `bitcoin-terminal.vmdl` from `computer.fbx` (CRT on rig) |
+| Ship target | `BitminerTerminal.razor` + `BitminerTerminalProp` |
+| Entity | `entities/bitcoin-terminal/bitcoin-terminal.prefab` |
+| Prop mesh | `bitcoin-terminal.vmdl` from `computer.fbx` — **separate placeable** beside racks |
 
-Separate addon from `hackerjob`; shared CRT mesh family, **different** palette and program.
+Separate addon from `hackerjob`; shared CRT mesh family, **different** palette and program (`hashd` / amber).
+
+### 3f. Remote multi-rack hashd UX (Phase 2)
+
+When terminal registers multiple `BitminerEntity` rigs in range:
+
+**Telemetry rail:**
+
+```text
+RACKS   2 linked (1× SMALL · 1× ADVANCED)
+ACTIVE  rig-0 SMALL · MINING
+        rig-1 ADVANCED · IDLE
+SELECT  rig-0
+```
+
+**CLI (spec):** `racks` · `select <id>` · `mining start [id|all]` · `mining stop [id|all]`
+
+**Upgrades:** CPU/Cores apply to **selected rig** (per-rig economy on each `BitminerEntity`).
+
+Full spec: `docs/reference/BITMINER_REMOTE_RACK_SPEC.md`.
 
 ---
 
