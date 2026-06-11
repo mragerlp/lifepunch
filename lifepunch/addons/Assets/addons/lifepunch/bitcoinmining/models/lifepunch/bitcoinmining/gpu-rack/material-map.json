@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 1,
+  "product": {
+    "displayName": "Bitcoin Miner",
+    "entitySlug": "bitcoin-miner",
+    "entityPrefab": "entities/bitcoin-miner/bitcoin-miner.prefab"
+  },
+  "model": {
+    "displayName": "GPU rack",
+    "slug": "gpu-rack",
+    "activeSource": "source/gpu-rack-static.obj",
+    "animSources": [
+      "source/gpu-rack-anim.fbx",
+      "source/gpu-rack-stacked-anim.fbx"
+    ],
+    "targetModel": "gpu-rack.vmdl"
+  },
+  "blenderObjects": [
+    { "object": "Wires_Cord", "materialSlot": "Cord", "textureFolder": "textures/cord", "vmat": "materials/gpu-rack-cord.vmat" },
+    { "object": "PSU_Power", "materialSlot": "PSU", "textureFolder": "textures/psu", "vmat": "materials/gpu-rack-psu.vmat" },
+    { "object": "Rack_Frame", "materialSlot": "Rack", "textureFolder": "textures/rack", "vmat": "materials/gpu-rack-rack.vmat" },
+    { "object": "FanBox_1", "materialSlot": "Rack", "notes": "Shares rack material with frame + fan blades" },
+    { "object": "FanBlades.005", "materialSlot": "Rack" },
+    { "object": "FanBox_2", "materialSlot": "Rack" },
+    { "object": "FanBlades.006", "materialSlot": "Rack" },
+    { "object": "FanBox_3", "materialSlot": "Rack" },
+    { "object": "FanBlades.007", "materialSlot": "Rack" },
+    { "object": "FanBox_4", "materialSlot": "Rack" },
+    { "object": "FanBlades.008", "materialSlot": "Rack" },
+    { "object": "FanBox_5", "materialSlot": "Rack" },
+    { "object": "FanBlades.009", "materialSlot": "Rack" },
+    { "object": "Motherboard_Base", "materialSlot": "Motherboard", "textureFolder": "textures/motherboard", "vmat": "materials/gpu-rack-motherboard.vmat" },
+    { "object": "GPU_GraphicsCard", "materialSlot": "GPU", "textureFolder": "textures/gpu", "vmat": "materials/gpu-rack-gpu.vmat" },
+    { "object": "GPU_Fan_1", "materialSlot": "GPU", "notes": "Card fans share GPU material + emission" },
+    { "object": "GPU_Fan_2", "materialSlot": "GPU" },
+    { "object": "GPU_Fan_3", "materialSlot": "GPU" },
+    { "object": "GPU_Fan_4", "materialSlot": "GPU" },
+    { "object": "GPU_Fan_5", "materialSlot": "GPU" },
+    { "object": "GPU_Fan_6", "materialSlot": "GPU" }
+  ],
+  "materials": [
+    {
+      "name": "gpu-rack-cord",
+      "objSlot": "Cord",
+      "targetMaterial": "materials/gpu-rack-cord.vmat",
+      "channels": {
+        "baseColor": "textures/cord/Wires_Cord_BaseColor.png",
+        "ao": "textures/cord/Wires_AO.png",
+        "metalness": "textures/cord/Wires_Cord_Metallic.png",
+        "roughness": "textures/cord/Wires_Cord_Roughness.png"
+      }
+    },
+    {
+      "name": "gpu-rack-psu",
+      "objSlot": "PSU",
+      "targetMaterial": "materials/gpu-rack-psu.vmat",
+      "channels": {
+        "baseColor": "textures/psu/PSU_BaseColor.png",
+        "normal": "textures/psu/PSU_Normal_GL.png",
+        "ao": "textures/psu/PSU_AO.png",
+        "metalness": "textures/psu/PSU_Metallic.png",
+        "roughness": "textures/psu/PSU_Roughness.png"
+      }
+    },
+    {
+      "name": "gpu-rack-rack",
+      "objSlot": "Rack",
+      "targetMaterial": "materials/gpu-rack-rack.vmat",
+      "channels": {
+        "baseColor": "textures/rack/Rack_BaseColor.png",
+        "normal": "textures/rack/Rack_Normal_GL.png",
+        "ao": "textures/rack/Rack_AO.png",
+        "metalness": "textures/rack/Rack_Metallic.png",
+        "roughness": "textures/rack/Rack_Roughness.png"
+      },
+      "notes": "One material for frame + all rack cooling fans (5 fan boxes + blades)."
+    },
+    {
+      "name": "gpu-rack-motherboard",
+      "objSlot": "Motherboard",
+      "targetMaterial": "materials/gpu-rack-motherboard.vmat",
+      "channels": {
+        "baseColor": "textures/motherboard/Motherboard_BaseColor.png",
+        "normal": "textures/motherboard/Motherboard_Normal_GL.png",
+        "ao": "textures/motherboard/MotherB_AO.png",
+        "metalness": "textures/motherboard/Motherboard_Metallic.png",
+        "roughness": "textures/motherboard/Motherboard_Roughness.png"
+      }
+    },
+    {
+      "name": "gpu-rack-gpu",
+      "objSlot": "GPU",
+      "targetMaterial": "materials/gpu-rack-gpu.vmat",
+      "channels": {
+        "baseColor": "textures/gpu/GPU_BaseColor.png",
+        "normal": "textures/gpu/GPU_Normal_GL.png",
+        "ao": "textures/gpu/GPU_AO.png",
+        "metalness": "textures/gpu/GPU_Metallic.png",
+        "roughness": "textures/gpu/GPU_Roughness.png",
+        "emission": "textures/gpu/GPU_Emission.png"
+      },
+      "notes": "Emission drives card LED glow while mining."
+    }
+  ],
+  "archive": {
+    "rawExport": "C:/lifepunch/reference-intake/bitcoinmining/gpu-rack-export",
+    "notes": "Blender export as received (GPU_Farm_* names). Not published."
+  },
+  "status": {
+    "sourceReorganized": true,
+    "modelResourceCreated": false,
+    "materialResourcesCreated": false,
+    "entityPrefabCreated": false
+  }
+}

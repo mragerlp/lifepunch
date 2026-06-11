@@ -89,11 +89,14 @@
     {
       "ident": "advanceddrugprocessing",
       "title": "Advanced Drug Processing",
+      "description": "Drug grow entities (weed engine). Coke line = reskin: same pots/grow flow, LifePunch coke seeds/leaves/bricks/bags. See docs/COKE_DRUG_RESKIN_SPEC.md.",
       "kind": "simple-entity",
       "hasAssets": true,
       "hasCode": false,
       "dxrpAddonId": "019e36bf-31bf-7b2a-a56f-1ab4467cec29",
       "status": "foundation-only",
+      "spec": "docs/COKE_DRUG_RESKIN_SPEC.md",
+      "notes": "CONCEPT: reskin weed grow pipeline — do not fork engine. Economy-touching → Tier-1 before ship.",
       "contents": []
     },
     {
@@ -154,6 +157,20 @@
       "dxrpClassReference": "m700",
       "cs2ReferenceMesh": "weapon_snip_ssg08",
       "notes": "Mass-production scaffold. Portal package TBD. Clone m700 kit; CS2 weapon_snip_ssg08 reference-only.",
+      "contents": []
+    },
+    {
+      "ident": "bitcoinmining",
+      "title": "Bitcoin Mining",
+      "description": "Bitcoin Miner — placeable GPU mining rig with LIFEPUNCH hashd terminal UI. LifePunch-owned gpu-rack world mesh; interactive entity with economy hooks.",
+      "kind": "interactive-entity",
+      "hasAssets": true,
+      "hasCode": true,
+      "dxrpAddonId": "",
+      "sboxIdentifier": "lifepunch.bitcoinmining",
+      "status": "foundation-scaffold",
+      "spec": "docs/BITMINER_UX_SPEC.md",
+      "notes": "Entity bitcoin-miner + world mesh gpu-rack/ (34 publish files). Raw export at reference-intake/gpu-rack-export. Code port from reference/evo-bitminer pattern — rebrand terminal; never ship Evo assets. Portal package TBD.",
       "contents": []
     },
     {

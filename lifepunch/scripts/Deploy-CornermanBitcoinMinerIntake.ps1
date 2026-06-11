@@ -10,7 +10,7 @@
 #>
 [CmdletBinding()]
 param(
-    [string] $SourceRoot = 'C:\Users\jared\desktop\gpu_farm (1)\GPU_Farm',
+    [string] $SourceRoot = 'C:\Users\jared\Downloads\bitcoinmining\GPU_Farm',
     [string] $SshTarget = '',
     [switch] $RepoOnly,
     [switch] $GreenOnly
@@ -20,8 +20,9 @@ $ErrorActionPreference = 'Stop'
 $Here = if ($PSScriptRoot) { $PSScriptRoot } else { Split-Path -Parent $MyInvocation.MyCommand.Path }
 $RepoRoot = (Resolve-Path (Join-Path $Here '..\..')).Path
 $AddonsRoot = Join-Path $RepoRoot 'lifepunch\addons'
-$RepoMirror = Join-Path $AddonsRoot 'Assets\addons\lifepunch\bitcoinmining\models\lifepunch\bitcoinmining\gpu_farm\source'
-$GreenIntake = 'C:\lifepunch\reference-intake\bitcoinmining\gpu-farm'
+$ReorganizeScript = Join-Path $AddonsRoot 'scripts\Reorganize-BitcoinMinerGpuRack.ps1'
+$ArchiveRoot = 'C:\lifepunch\reference-intake\bitcoinmining\gpu-rack-export'
+$GreenIntake = 'C:\lifepunch\reference-intake\bitcoinmining\gpu-rack-export'
 
 if (-not (Test-Path -LiteralPath $SourceRoot)) {
     throw "Source not found: $SourceRoot"
@@ -40,9 +41,9 @@ Write-Host 'Bitcoin miner GPU Farm intake' -ForegroundColor Cyan
 Write-Host "  Source: $SourceRoot"
 
 if (-not $GreenOnly) {
-    Write-Host "  Repo mirror: $RepoMirror" -ForegroundColor DarkGray
-    Copy-Tree -From $SourceRoot -To $RepoMirror
-    Write-Host 'Repo mirror OK' -ForegroundColor Green
+    Write-Host '  Repo publish: gpu-rack/ + entities/bitcoin-miner/' -ForegroundColor DarkGray
+    & $ReorganizeScript -SourceRoot $SourceRoot -ArchiveRoot $ArchiveRoot
+    Write-Host 'Repo publish tree OK' -ForegroundColor Green
 }
 
 function Push-CornermanFileChunked {
@@ -111,7 +112,7 @@ LifePunch Bitminer - GPU Farm source (owner-authored, shippable).
 Staged from VENGEANCE.
 
 Meshes:
-  GPU_Farm_Static.obj     - static world prop (primary for bitminer vmdl)
+  gpu-rack-static.obj     - static world prop (primary for gpu-rack.vmdl)
   GPU_Farm_Anim.fbx       - animated variant
   GPU_Farm_Stacked_Anim.fbx
 
@@ -119,11 +120,14 @@ Textures: GPU_GraphicsCard, GPU_Rack, Motherboard, Power_Supply, Wires
 
 Tier-3 prep (Green):
   - Compare layout vs reference/evo-bitminer (pattern only; do not ship evo mesh)
-  - Blender: verify scale, apply transforms, export bitminer.fbx for ModelDoc
+  - Blender: verify scale, apply transforms; ship via Reorganize-BitcoinMinerGpuRack.ps1
   - Note: OBJ references GPU_Farm_Static.mtl (not in export); use texture folders
 
-Red mirror:
-  lifepunch/addons/Assets/.../bitcoinmining/gpu_farm/source/
+Publish tree (git):
+  models/.../gpu-rack/  +  entities/bitcoin-miner/
+
+Archive (reference-intake):
+  C:/lifepunch/reference-intake/bitcoinmining/gpu-rack-export/
 "@
     Set-Content -LiteralPath (Join-Path $stageZip 'README.txt') -Value $readme -Encoding UTF8
     $zipLocal = Join-Path $env:TEMP 'lp-gpu-farm-intake.zip'
