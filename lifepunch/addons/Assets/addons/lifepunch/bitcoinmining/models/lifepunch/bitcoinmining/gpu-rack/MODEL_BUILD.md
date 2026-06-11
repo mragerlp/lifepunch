@@ -87,9 +87,15 @@ D:/Steam/steamapps/common/sbox/dxrp/game/
   Code/Addons/lifepunch/bitcoinmining/
 ```
 
-Repo source of truth: `lifepunch/addons/` in the monorepo. Copy or junction `bitcoinmining`
-into the DXRP project before ModelDoc if it is not already there. After editor work, sync
-compiled outputs (`gpu-rack.vmdl`, `_c`, vmats, prefab) **back into the monorepo** paths above.
+Repo source of truth: `lifepunch/addons/` in the monorepo. **Before ModelDoc**, mirror into DXRP:
+
+```powershell
+powershell -File lifepunch/scripts/Sync-LifePunchAddonsToDxrp.ps1
+# or launch editor (syncs bitcoinmining by default):
+powershell -File lifepunch/scripts/Start-SboxDxrpEditor.ps1
+```
+
+After editor work, sync compiled outputs (`gpu-rack.vmdl`, `_c`, vmats, prefab) **back into the monorepo** paths above.
 
 See `lifepunch/addons/docs/SBOX_EDITOR_REFERENCE.md` §0–1.
 
