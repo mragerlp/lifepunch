@@ -4,7 +4,7 @@
 **Issued:** 2026-06-11 · **Red:** implements prefabs + registry on VENGEANCE  
 **Owner ask:** Three **separate** placeables — Terminal controls racks remotely; owner needs to **see** what hashd console looks like and how the system fits together.
 
-**You do NOT:** edit ship C#, ModelDoc, or `git push`.
+**You do NOT:** edit ship C# (including `BitminerTerminalProp.cs` — Red fixes compile errors), ModelDoc, or `git push`. Code lands Red → push → Green `git pull --rebase`.
 
 ---
 
