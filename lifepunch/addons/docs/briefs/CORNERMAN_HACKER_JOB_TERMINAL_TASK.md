@@ -3,17 +3,18 @@
 **Lane:** Cornerman (Green) → patch handoff → VENGEANCE integrates  
 **Model routing:** Economy + wallet transfer = **Opus / Tier-1** on Red. Green ships **UI shell + puzzle framework stubs only**.  
 **Issued:** 2026-06-11  
-**Owner directive:** Bitcoin Miner terminal looks good — Hacker Job needs the same depth (real terminal, puzzles, cool ops). Work from `HACKER_JOB_SPEC.md`; government database comes after.
+**Status:** Green handoff **complete** — `origin/main` `ba8de9c` (Ops Console on Red).  
+**Owner directive:** Bitcoin Miner terminal looks good — Hacker Job needs the same depth (real terminal, puzzles, cool ops). Work from `HACKER_JOB_SPEC.md`; government database (cyan lifepunchnet) is a separate lane.
 
 ---
 
 ## Goal
 
-Ship a **playable cornerman.exe terminal** for the Hacker Job:
+Ship a **playable cornerman.exe / vengeance.exe Ops Console** for the Hacker Job (`HACKER_OPS_CONSOLE_SPEC.md`):
 
-1. Boot animation + Cornerman palette (shared with hashd)
-2. `scan` → target list (stub in local; live in Phase 2)
-3. `hack <steamid>` → time-boxed coding puzzle
+1. 960×640 session rail + LOG / SCAN / GOVDB / TARGET / HELP modules (green / red — not amber hashd, not cyan police)
+2. `scan` → target table (stub in local; live in Phase 2)
+3. `hack <steamid>` / `infil <nodeid>` → time-boxed coding puzzle
 4. Success/fail messaging — **no wallet movement** until Opus signs off Phase 2
 
 ---
@@ -77,4 +78,6 @@ powershell -File lifepunch/addons/scripts/validate-layout.ps1
 powershell -File lifepunch/addons/scripts/validate-headers.ps1
 ```
 
-**Deliverable commit:** `feat(hackerjob): cornerman.exe terminal shell with scan and puzzle stubs (Phase 1)`
+**Deliverable commits:**  
+- `feat(hackerjob): cornerman.exe terminal shell with scan and puzzle stubs (Phase 1)`  
+- `feat(hackerjob): ops console UI with session rail and module panes` (`ba8de9c` on `origin/main`)

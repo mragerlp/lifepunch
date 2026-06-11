@@ -26,7 +26,7 @@ hack <steamid>
 
 **Puzzle answers:** `drain(wallet);` · `cornerman_bypass` · `1`
 
-**Pass (H1):** Greg appears in `scan`; puzzle completes; bypass stub prints. No money moved (Phase 1).
+**Pass (H1):** Ops Console opens (960×640, session rail); Greg appears in `scan` (module or command); puzzle completes in TARGET; bypass stub prints. No money moved (Phase 1).
 
 **Advanced UI smoke (no prefab):**
 
