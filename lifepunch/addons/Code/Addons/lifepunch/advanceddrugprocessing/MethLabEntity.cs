@@ -124,20 +124,27 @@ public sealed class MethLabEntity : Component, Component.IPressable
 
 	public bool Press( IPressable.Event e )
 	{
-		if ( !Networking.IsHost )
-		{
-			RequestPressHost( e.Presser );
-			return true;
-		}
-
-		HandlePressHost( e.Presser );
+		RequestPressHost();
 		return true;
 	}
 
+	public void RequestPressHost() => DispatchPressHost();
+
 	[Rpc.Host]
-	private void RequestPressHost( GameObject presser )
+	private void DispatchPressHost()
 	{
-		HandlePressHost( presser );
+#if !LIFEPUNCH_LOCAL
+		if ( !GameUtils.HasPermission( Rpc.Caller, GameObject ) )
+			return;
+
+		var player = GameUtils.GetPlayerByConnectionId( Rpc.CallerId );
+		if ( !player.IsValid() )
+			return;
+
+		HandlePressHost( player.GameObject );
+#else
+		HandlePressHost( Player.Local?.GameObject );
+#endif
 	}
 
 	private void HandlePressHost( GameObject presser )

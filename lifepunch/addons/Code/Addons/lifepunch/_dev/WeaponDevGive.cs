@@ -12,11 +12,11 @@
 using System;
 using System.Linq;
 using Dxura.RP.Game;
-using LifePunch.DXRP.Addons.AK47;
-using LifePunch.DXRP.Addons.Deagle;
-using LifePunch.DXRP.Addons.Mp9;
-using LifePunch.DXRP.Addons.Ssg08;
-using LifePunch.DXRP.Addons.Xm1014;
+using Ak47Weapon = LifePunch.DXRP.Addons.AK47.AK47;
+using DeagleWeapon = LifePunch.DXRP.Addons.Deagle.Deagle;
+using Mp9Weapon = LifePunch.DXRP.Addons.Mp9.Mp9;
+using Ssg08Weapon = LifePunch.DXRP.Addons.Ssg08.Ssg08;
+using Xm1014Weapon = LifePunch.DXRP.Addons.Xm1014.Xm1014;
 using Sandbox;
 
 namespace LifePunch.DXRP.Addons.Dev;
@@ -37,21 +37,21 @@ public static class WeaponDevGive
 	[ConCmd( "lp_give_ak_class" )]
 	public static void GiveAkClass() => GiveClassToPlayer(
 		Player.Local,
-		AK47.Ident,
-		AK47.WorldPrefabPath,
-		AK47.ClassWorldPrefabPlaceholder,
-		AK47.ClassViewModelPlaceholder,
-		AK47.DisplayName );
+		Ak47Weapon.Ident,
+		Ak47Weapon.WorldPrefabPath,
+		Ak47Weapon.ClassWorldPrefabPlaceholder,
+		Ak47Weapon.ClassViewModelPlaceholder,
+		Ak47Weapon.DisplayName );
 
 	/// <summary>Equip AK baseline on a spawned test bot — best 3P hold check (orbit camera on Greg).</summary>
 	[ConCmd( "lp_give_ak_bot" )]
 	public static void GiveAkBot( string botName = "Greg" ) => GiveClassToPlayer(
 		ResolveTestPlayer( botName ),
-		AK47.Ident,
-		AK47.WorldPrefabPath,
-		AK47.ClassWorldPrefabPlaceholder,
-		AK47.ClassViewModelPlaceholder,
-		$"{AK47.DisplayName} — {botName}" );
+		Ak47Weapon.Ident,
+		Ak47Weapon.WorldPrefabPath,
+		Ak47Weapon.ClassWorldPrefabPlaceholder,
+		Ak47Weapon.ClassViewModelPlaceholder,
+		$"{Ak47Weapon.DisplayName} — {botName}" );
 
 	/// <summary>Spawn Greg + equip AK — one-shot 3P smoke.</summary>
 	[ConCmd( "lp_smoke_ak_bot" )]
@@ -69,16 +69,16 @@ public static class WeaponDevGive
 	}
 
 	[ConCmd( "lp_give_deagle" )]
-	public static void GiveDeagle() => Give( Deagle.Ident, Deagle.WorldPrefabPath, Deagle.ClassWorldPrefabPlaceholder, Deagle.DisplayName );
+	public static void GiveDeagle() => Give( DeagleWeapon.Ident, DeagleWeapon.WorldPrefabPath, DeagleWeapon.ClassWorldPrefabPlaceholder, DeagleWeapon.DisplayName );
 
 	[ConCmd( "lp_give_mp9" )]
-	public static void GiveMp9() => Give( Mp9.Ident, Mp9.WorldPrefabPath, Mp9.ClassWorldPrefabPlaceholder, Mp9.DisplayName );
+	public static void GiveMp9() => Give( Mp9Weapon.Ident, Mp9Weapon.WorldPrefabPath, Mp9Weapon.ClassWorldPrefabPlaceholder, Mp9Weapon.DisplayName );
 
 	[ConCmd( "lp_give_ssg08" )]
-	public static void GiveSsg08() => Give( Ssg08.Ident, Ssg08.WorldPrefabPath, Ssg08.ClassWorldPrefabPlaceholder, Ssg08.DisplayName );
+	public static void GiveSsg08() => Give( Ssg08Weapon.Ident, Ssg08Weapon.WorldPrefabPath, Ssg08Weapon.ClassWorldPrefabPlaceholder, Ssg08Weapon.DisplayName );
 
 	[ConCmd( "lp_give_xm1014" )]
-	public static void GiveXm1014() => Give( Xm1014.Ident, Xm1014.WorldPrefabPath, Xm1014.ClassWorldPrefabPlaceholder, Xm1014.DisplayName );
+	public static void GiveXm1014() => Give( Xm1014Weapon.Ident, Xm1014Weapon.WorldPrefabPath, Xm1014Weapon.ClassWorldPrefabPlaceholder, Xm1014Weapon.DisplayName );
 
 	/// <summary>Generic: <c>lp_give_weapon ak47</c> · <c>lp_give_weapon deagle</c> · etc.</summary>
 	[ConCmd( "lp_give_weapon" )]
