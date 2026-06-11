@@ -30,6 +30,8 @@ public static class Xm1014
 	public const string ReloadSoundPath = "addons/lifepunch/xm1014/sounds/xm1014_reload.sound";
 	public const string PumpSoundPath = "addons/lifepunch/xm1014/sounds/xm1014_pump.sound";
 	public const string DrawSoundPath = "addons/lifepunch/xm1014/sounds/xm1014_draw.sound";
+	public const string IconPath = "addons/lifepunch/xm1014/ui/xm1014_killfeed.png";
+	public const string DevGiveCommand = "lp_give_xm1014";
 
 	// Spaghelli class baseline (dxrp-public w_spaghelli) biased for XM1014 mag/pellet profile.
 	public static Xm1014WeaponStats Stats { get; } = new()

@@ -30,6 +30,8 @@ public static class Deagle
 	public const string ReloadSoundPath = "addons/lifepunch/deagle/sounds/deagle_reload.sound";
 	public const string CockSoundPath = "addons/lifepunch/deagle/sounds/deagle_cock.sound";
 	public const string DrawSoundPath = "addons/lifepunch/deagle/sounds/deagle_draw.sound";
+	public const string IconPath = "addons/lifepunch/deagle/ui/deagle_killfeed.png";
+	public const string DevGiveCommand = "lp_give_deagle";
 
 	// USP class baseline (dxrp-public w_usp) biased for Desert Eagle identity.
 	public static DeagleWeaponStats Stats { get; } = new()

@@ -30,6 +30,8 @@ public static class Mp9
 	public const string ReloadSoundPath = "addons/lifepunch/mp9/sounds/mp9_reload.sound";
 	public const string CockSoundPath = "addons/lifepunch/mp9/sounds/mp9_cock.sound";
 	public const string DrawSoundPath = "addons/lifepunch/mp9/sounds/mp9_draw.sound";
+	public const string IconPath = "addons/lifepunch/mp9/ui/mp9_killfeed.png";
+	public const string DevGiveCommand = "lp_give_mp9";
 
 	// MP5 class baseline (dxrp-public w_mp5) biased for MP9 ROF profile.
 	public static Mp9WeaponStats Stats { get; } = new()

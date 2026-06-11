@@ -16,6 +16,9 @@ public static class AK47
 	public const string Ident = "ak47";
 	public const string DisplayName = "AK-47";
 	public const string Grouping = "Secondary";
+	public const string WeaponClass = "assault-rifle";
+	public const string DxrpClassReference = "m4a1";
+	public const string Cs2ReferenceMesh = "weapon_rif_ak47";
 
 	public const string WorldPrefabPath = "addons/lifepunch/ak47/equipment/w_ak47/w_ak47.prefab";
 	public const string ViewModelPrefabPath = "addons/lifepunch/ak47/equipment/vm_ak47/vm_ak47.prefab";
@@ -28,6 +31,8 @@ public static class AK47
 	public const string ReloadClipInSoundPath = "addons/lifepunch/ak47/sounds/ak47_reload_clipin.sound";
 	public const string CockSoundPath = "addons/lifepunch/ak47/sounds/ak47_cock.sound";
 	public const string DrawSoundPath = "addons/lifepunch/ak47/sounds/ak47_draw.sound";
+	public const string IconPath = "addons/lifepunch/ak47/ui/ak47_killfeed.png";
+	public const string DevGiveCommand = "lp_give_ak";
 
 	public static AK47WeaponStats Stats { get; } = new()
 	{

@@ -30,6 +30,8 @@ public static class Ssg08
 	public const string ReloadSoundPath = "addons/lifepunch/ssg08/sounds/ssg08_reload.sound";
 	public const string BoltSoundPath = "addons/lifepunch/ssg08/sounds/ssg08_bolt.sound";
 	public const string DrawSoundPath = "addons/lifepunch/ssg08/sounds/ssg08_draw.sound";
+	public const string IconPath = "addons/lifepunch/ssg08/ui/ssg08_killfeed.png";
+	public const string DevGiveCommand = "lp_give_ssg08";
 
 	// M700 class baseline (dxrp-public w_m700) biased for scout rifle (SSG 08).
 	public static Ssg08WeaponStats Stats { get; } = new()

@@ -52,7 +52,7 @@ Per-weapon checklist: `Code/Addons/lifepunch/<ident>/docs/WEAPON_BUILD.md`.
 
 ## Stats sheet (Green first pass — tune in editor)
 
-Values live in `Code/Addons/lifepunch/<ident>/<Pascal>.cs`. Mirror onto prefab ShootWeaponComponent / AmmoComponent.
+Values live in `Code/Addons/lifepunch/<ident>/<Pascal>.cs`. Mirror onto prefab ShootWeaponComponent / AmmoComponent — field-by-field map in **`WEAPON_PREFAB_TUNE.md`**.
 
 | ident | Damage | RPM | Mag / Reserve | Reload | Fire mode | Recoil pitch / yaw | Notes |
 |-------|--------|-----|---------------|--------|-----------|-------------------|-------|

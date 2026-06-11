@@ -137,11 +137,11 @@
       "hasCode": true,
       "dxrpAddonId": "",
       "sboxIdentifier": "lifepunch.deagle",
-      "status": "foundation-scaffold",
+      "status": "code-draft",
       "weaponClass": "handgun",
       "dxrpClassReference": "usp",
       "cs2ReferenceMesh": "weapon_pist_deagle",
-      "notes": "Mass-production scaffold. Portal package TBD. Clone usp kit; CS2 weapon_pist_deagle reference-only.",
+      "notes": "Code-draft stats + DeagleWeapon.cs. Editor: lp_give_deagle (class USP until w_deagle ships). Clone usp kit; CS2 weapon_pist_deagle reference-only. Portal package TBD.",
       "contents": []
     },
     {
@@ -152,11 +152,11 @@
       "hasCode": true,
       "dxrpAddonId": "",
       "sboxIdentifier": "lifepunch.mp9",
-      "status": "foundation-scaffold",
+      "status": "code-draft",
       "weaponClass": "smg",
       "dxrpClassReference": "mp5",
       "cs2ReferenceMesh": "weapon_smg_mp9",
-      "notes": "Mass-production scaffold. Portal package TBD. Clone mp5 kit; CS2 weapon_smg_mp9 reference-only.",
+      "notes": "Code-draft stats + Mp9Weapon.cs. Editor: lp_give_mp9 (class MP5 until w_mp9 ships). Clone mp5 kit; CS2 weapon_smg_mp9 reference-only. Portal package TBD.",
       "contents": []
     },
     {
@@ -167,11 +167,11 @@
       "hasCode": true,
       "dxrpAddonId": "",
       "sboxIdentifier": "lifepunch.ssg08",
-      "status": "foundation-scaffold",
+      "status": "code-draft",
       "weaponClass": "sniper",
       "dxrpClassReference": "m700",
       "cs2ReferenceMesh": "weapon_snip_ssg08",
-      "notes": "Mass-production scaffold. Portal package TBD. Clone m700 kit; CS2 weapon_snip_ssg08 reference-only.",
+      "notes": "Code-draft stats + Ssg08Weapon.cs. Editor: lp_give_ssg08 (class M700 until w_ssg08 ships). Clone m700 kit; CS2 weapon_snip_ssg08 reference-only. Portal package TBD.",
       "contents": []
     },
     {
@@ -196,11 +196,11 @@
       "hasCode": true,
       "dxrpAddonId": "",
       "sboxIdentifier": "lifepunch.xm1014",
-      "status": "foundation-scaffold",
+      "status": "code-draft",
       "weaponClass": "shotgun",
       "dxrpClassReference": "spaghelli",
       "cs2ReferenceMesh": "weapon_shot_xm1014",
-      "notes": "Mass-production scaffold. Portal package TBD. Clone spaghelli kit; CS2 weapon_shot_xm1014 reference-only.",
+      "notes": "Code-draft stats + Xm1014Weapon.cs (PelletCount 8). Editor: lp_give_xm1014 (class Spaghelli until w_xm1014 ships). Clone spaghelli kit; CS2 weapon_shot_xm1014 reference-only. Portal package TBD.",
       "contents": []
     }
   ]
