@@ -3,87 +3,62 @@
 Use these **dev-only** console commands while the LifePunch addon is mounted in the DXRP editor project.
 They clone prefabs directly — excluded from publish (`_dev/WeaponDevGive.cs`).
 
-Generic fallback: `lp_give_weapon <ident>` (e.g. `lp_give_weapon deagle`).
-
-Prefab tuning after clone: **`WEAPON_PREFAB_TUNE.md`** (stats → ShootWeaponComponent fields).
+**Red first:** `Sync-LifePunchAddonsToDxrp.ps1 -Addon ak47` after every repo pull.
 
 ---
 
-## #1 AK-47 (class baseline — gate before full kit)
-
-**Rebuild order (Red lane):** CS2 export → Blender `w_ak47.fbx` → ModelDoc physics on `w_ak47.vmdl` → clone `w_m4a1` prefab wiring with `vm_m4a1` → drop/hold smoke → then restore `lp_give_ak` (vm_ak47 kit). **Do not pin more AK gamemode revisions until drop + hold passes.**
+## AK-47 — 3P bot smoke (see broken hold fast)
 
 ```text
-lp_give_ak_class
+lifepunch_clear_testbots
+lp_smoke_ak_bot
 ```
 
-| Asset | Path |
+Or step by step:
+
+```text
+lifepunch_spawn_testbot Greg
+lp_give_ak_bot Greg
+```
+
+Orbit **Greg** in free camera — third-person rifle hold should match M4 class.  
+**Note:** `lifepunch_spawn_testbot` disables `Controller` by default; `lp_give_ak_bot` re-enables it for hold IK.
+
+### AK — first person + drop (local player)
+
+```text
+lp_give_ak
+```
+
+Alias: `lp_give_ak_class` · `lp_give_weapon ak47`
+
+| Piece | Path |
 |-------|------|
-| World | `addons/lifepunch/ak47/equipment/w_ak47/w_ak47.prefab` (LifePunch `w_ak47.vmdl`) |
-| First person | `gameplay/equipment/weapons/m4a1/vm_m4a1.prefab` (class until FP rig) |
-| Third person | Hold offsets synced from M4 class (2026-06-11) |
+| World prefab | `addons/lifepunch/ak47/equipment/w_ak47/w_ak47.prefab` |
+| World mesh (runtime) | class `w_m4a1.vmdl` until CS2 rebuild |
+| Viewmodel (forced) | `gameplay/equipment/weapons/m4a1/vm_m4a1.prefab` |
+| Sounds | LifePunch `ak47/sounds/*` on prefab |
 
-**Pass:** textured AK in world + third person; M4 arms 1P; **drop** lands with collision; **pickup** restores hold; no gamemode pin until this passes.
+**Pass:** M4 arms 1P; M4 in hand 3P on Greg; drop rests on floor; AK fire/reload sounds.
 
-`lp_give_ak` is **gated** until the above passes (full `vm_ak47` kit).
+**Fail cues:**
+
+| Symptom | Likely cause |
+|---------|----------------|
+| Frankenstein FP mesh | Stale `vm_ak47` with bonemerged `v_ak47` — pull repo + sync |
+| Gun floats / wrong angle on bot | Bot controller was off — use `lp_give_ak_bot` not manual equip |
+| Falls through floor | Old `w_ak47.vmdl` without physics — sync repo baseline |
+| `lp_give_ak` does nothing | Stale code — rebuild; should equip via class baseline |
 
 ---
 
 ## #2–5 Queue weapons (class placeholder until LifePunch prefabs ship)
 
-Each command uses the **LifePunch prefab** when present; otherwise the **DXRP class** `w_*` prefab.
+```text
+lp_give_deagle
+lp_give_mp9
+lp_give_ssg08
+lp_give_xm1014
+```
 
-### Desert Eagle — `lp_give_deagle`
-
-| | |
-|-|-|
-| Class clone | USP (`w_usp` / `vm_usp`) |
-| Stats target | 55 dmg · 7/35 · 267 RPM semi · 2.0s reload |
-| Red ships | `w_deagle.vmdl` + prefab |
-
-**Pass:** heavy semi pistol; 7-round mag; USP arms 1P until custom VM.
-
-### MP9 — `lp_give_mp9`
-
-| | |
-|-|-|
-| Class clone | MP5 |
-| Stats target | 11 dmg · 30/90 · 857 RPM auto · 1.4s reload |
-| Red ships | `w_mp9.vmdl` + prefab |
-
-**Pass:** high-RPM spray; 30-round mag; MP5 arms 1P until custom VM.
-
-### SSG 08 — `lp_give_ssg08`
-
-| | |
-|-|-|
-| Class clone | M700 |
-| Stats target | 65 dmg · 10/30 · 60 RPM semi · 2.2s reload · 180m range |
-| Red ships | `w_ssg08.vmdl` + prefab |
-
-**Pass:** scout bolt feel; tight spread; M700 scope 1P until custom VM.
-
-### XM1014 — `lp_give_xm1014`
-
-| | |
-|-|-|
-| Class clone | Spaghelli |
-| Stats target | 7×8 pellets · 7/28 · 200 RPM auto · 6° spread |
-| Red ships | `w_xm1014.vmdl` + prefab |
-
-**Pass:** 8-pellet spread; 7-shell tube; Spaghelli arms 1P until custom VM.
-
----
-
-## Red lane (guns in faster)
-
-1. **Batch CS2 export on VENGEANCE** — `Intake-Cs2WeaponReference.ps1` (`weapon_rif_ak47` first, then deagle/mp9/…)
-2. **Blender** — LifePunch-owned `w_<ident>.fbx` from CS2 study (never raw CS2 in publish)
-3. **ModelDoc** — physics/collision on `w_<ident>.vmdl`
-4. **Clone class prefab wiring** — swap world model; class `vm_*` until FP rig batch (`lp_give_ak_class` for AK)
-5. **Drop + hold smoke** — editor `lp_give_ak_class` before gamemode pins or `lp_give_ak` gate
-6. **Mirror stats** — `WEAPON_PREFAB_TUNE.md` + per-weapon `docs/WEAPON_BUILD.md`
-7. **`lp_give_<ident>`** — verify before `prepare-publish.ps1`
-8. **Portal Equipment + Gun Dealer shipment** — after Opus sign-off
-
-Canon: `RED_WEAPON_MASS_PRODUCTION_PLAN.md` · `WEAPON_MASS_PRODUCTION.md` · `weapon-production.json`
+Canon: `RED_WEAPON_MASS_PRODUCTION_PLAN.md` · `weapon-production.json`
