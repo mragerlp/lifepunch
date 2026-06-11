@@ -35,7 +35,7 @@ lp_spawn_advanced_hacker_terminal  # red-tier world entity
 | Layout | Terminals | Spec |
 |--------|-----------|------|
 | **Ops Console** (rail + modules + command line) | Hacker green/red · Police cyan (Phase 4) | `HACKER_OPS_CONSOLE_SPEC.md` · `reference/GOVERNMENT_DATABASE_TERMINAL_SPEC.md` |
-| **HASHD rig control** (telemetry rail + `rig0>`) | Player bitminer amber | `BITMINER_UX_SPEC.md` |
+| **HASHD rig control** (telemetry rail + `rig0>`; Phase 2 + module panes) | Player bitminer amber `#f0a500` | `BITMINER_UX_SPEC.md` · `briefs/BITMINER_PHASE2_WIREFRAME.md` |
 | **LCD summary** | Gov tax miner blue console | `governmentdatacenter/docs/GOVERNMENT_TAX_MINER_BUILD.md` |
 
 ## Cybersecurity Officer

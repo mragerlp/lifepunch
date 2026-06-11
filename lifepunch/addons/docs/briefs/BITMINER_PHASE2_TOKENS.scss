@@ -1,0 +1,141 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// REFERENCE ONLY — not compiled. Red copies into BitminerTerminal.razor.scss.
+// HASHD rig control — AMBER mining ops (#f0a500). NOT hacker green (#00FF7F).
+// ─────────────────────────────────────────────────────────────────────────────
+
+// Surfaces
+$bg: #12100c;
+$bg-rail: #0e0c09;
+$bg-module: rgba(14, 12, 9, 0.6);
+$bg-card: rgba(18, 16, 12, 0.9);
+$title-bar-bg: linear-gradient(180deg, #1a1610 0%, #12100c 100%);
+
+// Borders
+$border: #3d3420;
+$border-bright: #5c4a22;
+$border-dim: #2a2418;
+
+// Accent — amber (canonical bitminer; TERMINAL_BRAND_MATRIX row: rig0>)
+$primary: #f0a500;
+$primary-dim: #c48400;
+$primary-glow: rgba(240, 165, 0, 0.2);
+
+// Body text
+$body: #e8dcc8;
+$body-dim: #9a8f7a;
+$body-bright: #f5ead6;
+
+// Semantic
+$error: #e44b2a;
+$warn: #ffb347;
+$ok: #7ec850;
+$mining-active: $primary;
+
+// Typography
+$main-font: Mina;
+$text-xs: 10px;
+$text-sm: 13px;
+$text-md: 14px;
+$text-lg: 15px;
+$letter-wide: 1.5px;
+$letter-title: 2px;
+
+// Shell (match Phase 1 placement)
+$panel-width: 960px;
+$panel-height: 640px;
+$rail-width: 220px;
+
+// Title bar
+.title-mark { color: $primary; font-size: 12px; }
+.title-text {
+    color: $primary;
+    font-size: $text-md;
+    letter-spacing: $letter-title;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+.title-ver { color: $body-dim; font-size: 11px; }
+
+// Rail (telemetry + modules — HACKER_OPS_CONSOLE pattern)
+.rail-header {
+    color: $primary-dim;
+    font-size: $text-xs;
+    letter-spacing: $letter-wide;
+    border-bottom: 1px solid $border;
+}
+.rail-label { color: $body-dim; font-size: $text-xs; }
+.rail-value {
+    color: $body;
+    font-size: $text-sm;
+    font-weight: bold;
+    &.active { color: $primary; }
+}
+.nav-btn {
+    color: $body-dim;
+    border: 1px solid transparent;
+    &.active {
+        color: $primary;
+        border-color: $border-bright;
+        background-color: $primary-glow;
+    }
+}
+.rail-btn, .module-action {
+    border: 1px solid $primary-dim;
+    color: $primary;
+    background-color: rgba(240, 165, 0, 0.08);
+    text-transform: uppercase;
+    &:hover { background-color: $primary-glow; }
+    &.disabled { opacity: 0.35; pointer-events: none; }
+}
+
+// Dashboard cards
+.stat-card {
+    border: 1px solid $border;
+    background-color: $bg-card;
+    .stat-label { color: $body-dim; font-size: $text-xs; }
+    .stat-value { color: $body-bright; font-size: $text-lg; font-weight: bold; }
+}
+.tick-bar {
+    height: 8px;
+    background-color: #1f1a12;
+    border: 1px solid $border;
+    .tick-fill { background-color: $primary; }
+}
+.btn-start {
+    border-color: $primary-dim;
+    color: $primary;
+    &.active { background-color: $primary-glow; }
+}
+.btn-stop:hover { border-color: $error; color: $error; }
+
+// Upgrade rows (reuse Phase 1 upgrade-panel tokens)
+.upgrade-row {
+    border: 1px solid $border;
+    background-color: $bg-card;
+    .upgrade-name { color: $primary; font-weight: bold; }
+    .upgrade-detail { color: $body-dim; }
+}
+
+// Log pane
+.prompt-label { color: $primary; font-weight: bold; }
+.terminal-input { color: $body; caret-color: $primary; }
+.prompt-line { color: $primary; }
+.boot-line { color: $primary-dim; }
+.error-line { color: $error; font-weight: bold; }
+
+// Modals (StaffMenu density)
+.modal-overlay { background-color: rgba(0, 0, 0, 0.65); }
+.modal-panel {
+    border: 2px solid $border-bright;
+    background-color: $bg;
+    .modal-title { color: $primary; letter-spacing: $letter-wide; }
+    .modal-body { color: $body; }
+    .modal-cancel { border-color: $border; color: $body-dim; }
+    .modal-confirm { border-color: $primary; color: $primary; }
+}
+
+// Scanlines (Phase 1)
+$scanline-opacity: 0.04;
+
+// In-world LCD (TextRenderer) — align with amber, not green
+$lcd-accent: #f0a500;

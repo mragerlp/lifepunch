@@ -1,15 +1,15 @@
 # LIFEPUNCH Bitcoin Miner — UX & Economy Spec
 
-**Status:** Greenlit concept for build (assets in repo; code port next on VENGEANCE).  
+**Status:** Phase 1 HASHD rig control shipped (`3633fb8`+); Phase 2 module menu drafted (`BITMINER_PHASE2_WIREFRAME.md`).  
 **Study source:** `reference/evo-bitminer/` — mechanics and DXRP seams only; **never ship** Evo mesh, sounds, or UI copy.  
-**Visual source (shipped Phase 1):** **HASHD RIG CONTROL** — amber mining ops (`#f0a500` on `#12100c`), left telemetry rail + right command log, `rig0>` prompt. Distinct from hacker-job green phosphor CLI. Initial UI study credited to spl mute in `about` only.  
-**World mesh:** LifePunch-owned **GPU rack** (`gpu-rack/`, 34 publish files; raw export at `reference-intake/gpu-rack-export`).
+**Visual source (shipped Phase 1):** **HASHD RIG CONTROL** — amber mining ops (`#f0a500` on `#12100c`), left telemetry rail + right command log, `rig0>` prompt. **Distinct from** hacker-job green/red ops console and lifepunchnet cyan police shell.  
+**World mesh:** LifePunch-owned **GPU rack** (`gpu-rack/`; raw export at `reference-intake/gpu-rack-export`).
 
 ---
 
 ## 1. Product pitch
 
-A placeable **GPU mining rig** players buy, place, upgrade, and run to earn **sellable BTC** (cash via `PayHost`). The UI *looks and feels* like the **Cornerman hacker terminal** — boot sequence, green phosphor, ops chrome.
+A placeable **GPU mining rig** players buy, place, upgrade, and run to earn **sellable BTC** (cash via `PayHost`). The UI looks like a **mining rig control console** (amber HASHD), not the hacker job terminal.
 
 Evo proved the economy loop works. We keep the loop, own the art, and ship a **better UX**.
 
@@ -17,16 +17,17 @@ Evo proved the economy loop works. We keep the loop, own the art, and ship a **b
 
 | Phase | Owner | UX |
 |-------|-------|-----|
-| **1 — CLI + command gate** | Cornerman (Qwen 2.5) | Type `hashd` or `mine` in-game to **open** the terminal on the nearest rig; run Evo-style commands (`mining start`, `upgrade cpu`, …). `menu` command stubs Phase 2. |
-| **2 — Tabbed menu** | VENGEANCE (Opus) | `menu` (or boot completion) opens Dashboard / Wallet / Upgrades tabs; optional Terminal tab keeps CLI. |
+| **1 — HASHD CLI + rail** | Shipped | `hashd` / `mine` opens rig; telemetry rail + `rig0>` log; upgrade overlay; `menu` opens upgrades. |
+| **2 — Module menu** | VENGEANCE (Opus) | Rail + **Dashboard / Wallet / Upgrades / Log / About** modules; confirm modals; remove full-screen upgrade overlay. |
 
-Phase 1 task: `docs/briefs/CORNERMAN_BITMINER_TERMINAL_TASK.md`
+Phase 1 task: `docs/briefs/CORNERMAN_BITMINER_TERMINAL_TASK.md`  
+Phase 2 draft: `docs/briefs/BITMINER_PHASE2_WIREFRAME.md` + `BITMINER_PHASE2_TOKENS.scss`
 
 ---
 
-## 2. Economy loop (keep from Evo — server-authoritative)
+## 2. Economy loop (server-authoritative)
 
-All payouts and charges go through **host RPCs** + `player.PayHost` / `player.ChargeHost` (see `BitminerEntity.cs` in reference).
+All payouts and charges go through **host RPCs** + `player.PayHost` / `player.ChargeHost` (see `BitminerEntity.cs`).
 
 | Constant | Value | Notes |
 |----------|-------|-------|
@@ -41,80 +42,73 @@ All payouts and charges go through **host RPCs** + `player.PayHost` / `player.Ch
 **Per-minute rate (display):** `ClockSpeed × 0.005 × CoreCount` BTC/min  
 **Payout each tick:** same formula once per 60s while `IsMining`.
 
-**Sell:** `bitcoin sell` → `uint(BitcoinAmount × 1500)` via `PayHost`, then zero balance.  
-**Upgrades:** charge player on host; fail closed if `ChargeHost` fails.
+**Sell:** `bitcoin sell` → `RequestSellBitcoin()` → `PayHost`, zero balance.  
+**Upgrades:** `RequestUpgrade(Cpu|Cores)` — charge on host; fail closed if `ChargeHost` fails.
 
-**Synced state (`[Sync]` from host):** `IsMining`, `BitcoinAmount`, `CpuUpgradeLevel`, `CoreUpgradeLevel`, `ClockSpeed`, `CoreCount`, `MiningProgress` (0–1 within 60s window).
+**Synced state (`[Sync]`):** `IsMining`, `BitcoinAmount`, `CpuUpgradeLevel`, `CoreUpgradeLevel`, `ClockSpeed`, `CoreCount`, `MiningProgress`.
 
-**World feedback (keep):** fan spin ramp, server hum, `TextRenderer` on rig screen, smoke + explosion on destroy (60 dmg AoE on ship build).
+**World feedback:** fan/sequence anim, server hum, `TextRenderer` LCD, smoke + explosion on destroy.
 
 **Pocket rule:** no mining/hum while entity has pocket tag.
 
 ---
 
-## 3. UX — LifePunch terminal shell + real menu
+## 3. UX — HASHD rig control
 
-### 3a. Boot (Cornerman aesthetic)
+### 3a. Boot
 
-On **open** (`hashd` / `mine` command, or optional use-key on rig), play a **short boot sequence** (2–4s, skippable):
+On open (`hashd` / `mine`, or optional use-key):
 
 ```text
-LIFEPUNCH hashd v1.0
-[ OK ] memory 256mb
-[ OK ] gpu-rack mesh
-[ OK ] mounting /dev/rig0
-starting mine.exe ...
+>> hashd init — LIFEPUNCH mining daemon
+>> linking gpu-rack telemetry bus ... OK
+>> syncing payout ledger (60s tick) ... OK
+>> rig interface ready — telemetry rail active (left)
 ```
 
-Then transition to **main UI** (not a blank CLI). Optional **Terminal** tab keeps CLI for power users.
+Phase 2: after boot, default module **Dashboard** (see wireframe).
 
-### 3b. Main window (StaffMenu-style structure)
+### 3b. Phase 2 main window (module panes)
 
-Reuse patterns from `StaffMenu.razor`: title bar, tabs, icon buttons, confirm dialogs.
+Reuse **ops-console platform shape** from `HACKER_OPS_CONSOLE_SPEC.md` (rail + modules + command line) with **amber** tokens only.
 
-| Tab | Purpose |
-|-----|---------|
-| **Dashboard** | Live cards: mining on/off indicator, BTC balance, USD value, progress bar (60s), hash rate, clock, cores. Primary **START / STOP** toggle (big). |
-| **Wallet** | Balance + **SELL ALL** button → confirm modal → `RequestSellBitcoin()`. Show estimated `$` before confirm. |
-| **Upgrades** | Two rows: **CPU Clock** and **GPU Cores** — current level, next cost, **[Purchase]** button (disabled if maxed or unaffordable). No typing `upgrade cpu`. |
-| **Terminal** | Optional retro pane: scrollback + `cornerman@rig:~$` prompt; maps same commands as Evo (`help`, `status`, `mining`, `bitcoin`, `upgrade`, `clear`). Keyboard SFX on type. |
-| **About** | LIFEPUNCH™ attribution — **no** Evo/Spl Mute credits. |
+| Module | Purpose |
+|--------|---------|
+| **Dashboard** | Live cards + TICK bar + **START / STOP** → `SetMiningState` |
+| **Wallet** | Balance + **SELL ALL** confirm → `RequestSellBitcoin()` |
+| **Upgrades** | CPU / Cores rows + **INSTALL** → `RequestUpgrade`; rack row when dual-rack ships |
+| **Log** | `rig0>` scrollback (Phase 1 console) |
+| **About** | LIFEPUNCH™ only — **no** Evo / Spl Mute / BitOS credits |
 
-**Chrome:** dark panel `#0a0f0a`, border `#1a3a2a`, accent `#00FF7F`, error `#E4002B`. Font: Mina or repo terminal stack. Close ✕ top-right. Auto-close if viewer > 150m (keep Evo rule).
+**Chrome:** `#12100c` bg, `#3d3420` / `#5c4a22` borders, accent **`#f0a500`**, error `#e44b2a`. Font: Mina. Bottom-left 960×640. Auto-close if viewer > 150m.
+
+Detail: `briefs/BITMINER_PHASE2_WIREFRAME.md` · tokens: `briefs/BITMINER_PHASE2_TOKENS.scss`
 
 ### 3c. In-world screen (`TextRenderer`)
 
-Keep Evo's on-rig LCD summary but re-skin copy:
-
-- Accent color: `#00FF7F` (not Evo blue `#44aaff`)
+- Accent: **`#f0a500`** amber (not Evo blue `#44aaff`, not hacker green `#00FF7F`)
 - Labels: `LIFEPUNCH hashd`, `₿ balance`, `HASH`, `CORES`, progress bar
 
 ### 3d. Dual rack mesh + power animation
 
-**Owner decision (2026-06-11):** Show **small + large** racks on one prefab; BTC yield scales when the **large (stacked) rack** is expansion-active.
+**Owner decision (2026-06-11):** Small + large racks on one prefab; yield scales when large rack expansion is active.
 
 | Rack | Mesh | Yield |
 |------|------|-------|
-| Small | `gpu-rack.vmdl` (`gpu-rack-static.obj`) | Always contributes base `×1.0` |
-| Large | `gpu-rack-stacked.vmdl` (`gpu-rack-stacked-anim.fbx`) | +bonus when `RackExpansionLevel ≥ 1` (proposed `×2.0` total) |
+| Small | `gpu-rack.vmdl` | Base `×1.0` |
+| Large | `gpu-rack-stacked.vmdl` | +bonus when expansion active (proposed `×2.0` total) |
 
-Distill: `docs/reference/BITMINER_DUAL_RACK_SPEC.md` · Cornerman: `briefs/CORNERMAN_BITMINER_DUAL_RACK_TASK.md`.
+Distill: `docs/reference/BITMINER_DUAL_RACK_SPEC.md` · `briefs/CORNERMAN_BITMINER_DUAL_RACK_TASK.md`.
 
-- World models: compiled `gpu-rack.vmdl` + **`gpu-rack-stacked.vmdl`** (TODO) from **gpu-rack** source tree.
-- **Power states (owner decision):** rack **animates when turned on** (`IsMining == true`) and **powers down when turned off** — no always-on idle spin.
-- ModelDoc: bake `source/gpu-rack-anim.fbx` into the vmdl with two sequences — **`power_on`** (loop while mining) and **`power_off`** (idle/stopped). `BitminerEntity.SetMiningState` drives which sequence plays.
-- **Emission** on GPU cards: brighter while mining (shader param or material toggle at mine start/stop).
-- **Deprecate Evo pattern:** drop `BitminerFan` / `BitminerFan2` / `BitminerFan3` child spinners once vmdl anim is wired on the prefab (`TECH_DEBT` BITMINER-01).
+- **Power states:** `power_on` loop while `IsMining`; `power_off` when stopped.
+- **Deprecate Evo pattern:** remove `BitminerFan*` child spin when vmdl anim wired (`TECH_DEBT` BITMINER-01).
 
-### 3e. Terminal UI + prop intake
+### 3e. Terminal prop
 
-| Lane | Path |
-|------|------|
-| **Razor authoring (owner)** | `C:\Users\jared\Downloads\newaddons\hackerterminal\source\bitcointerminal\` |
-| **Ship target (repo)** | `Code/Addons/lifepunch/bitcoinmining/BitminerTerminal.razor` + `.razor.scss` |
-| **Terminal prop mesh (in intake folder)** | `computer.fbx` / `computer.blend` — in-world CRT/terminal prop on the rig (ModelDoc TBD) |
+| Ship target | `Code/Addons/lifepunch/bitcoinmining/BitminerTerminal.razor` |
+| Prop mesh | `bitcoin-terminal.vmdl` from `computer.fbx` (CRT on rig) |
 
-Cornerman Phase 1 CLI already lives in the repo; owner-authored tabbed UI replaces/extends it from the bitcointerminal lane. Shared hacker-terminal **skin** with Hacker Job — separate addons, separate prefabs.
+Separate addon from `hackerjob`; shared CRT mesh family, **different** palette and program.
 
 ---
 
@@ -122,57 +116,53 @@ Cornerman Phase 1 CLI already lives in the repo; owner-authored tabbed UI replac
 
 | Evo | LIFEPUNCH |
 |-----|-----------|
-| CLI-only BitOS terminal | Tabbed menu + optional CLI tab |
-| `root@bitminer` / BitOS 1.0 | `cornerman@rig` / `LIFEPUNCH hashd` / `mine.exe` |
-| Blue terminal chrome | Cornerman green hacker terminal |
+| CLI-only BitOS terminal | HASHD modules + `rig0>` log |
+| `root@bitminer` / BitOS 1.0 | `rig0>` / `hashd` / `mine.exe` |
+| Blue terminal chrome `#44aaff` | Amber HASHD `#f0a500` |
 | Cloud `models/bitminer` mesh | Own gpu-rack vmdl |
 | Third-party sound pack | Own/licensed sounds |
-| `credits` → Spl Mute | LIFEPUNCH proprietary footer |
-| Info command wrong rate (`0.05`) | Display uses correct `0.005` formula |
+| `credits` → Spl Mute | LIFEPUNCH™ About only |
+| Info wrong rate (`0.05`) | Display uses `0.005` formula (fix `info` command on Red if still wrong) |
 
 ---
 
-## 5. Code architecture (port plan)
+## 5. Code architecture
 
-| File | Action |
+| File | Status |
 |------|--------|
-| `Bitminer.cs` | ✅ scaffolded — local model paths |
-| `BitminerEntity.cs` | Port from reference; keep simulation/RPCs; namespace `LifePunch.DXRP.Addons.BitcoinMining` |
-| `BitminerTerminalHost.cs` | Port mount/close; `LIFEPUNCH_LOCAL` branches |
-| `BitminerTerminal.razor` | Author in `Downloads/.../bitcointerminal/` → ship tabbed UI per §3b; boot per §3a |
-| `BitminerTerminal.razor.scss` | Cornerman palette tokens from `lifepunch-ops/THEME.md` |
-| `bitcoin-miner.prefab` | Clone reference; swap model path; wire fans/TextRenderer |
-| Sounds | New assets under `sounds/bitcoin-miner/` |
+| `Bitminer.cs` | ✅ package identity |
+| `BitminerEntity.cs` | ✅ economy + RPCs |
+| `BitminerTerminalHost.cs` | ✅ dual-build mount |
+| `BitminerTerminal.razor` | ✅ Phase 1 HASHD; Phase 2 modules per wireframe |
+| `BitminerTerminal.razor.scss` | ✅ amber tokens |
 
-Dual-build: `LIFEPUNCH_LOCAL` — see `RUNTIME_PATTERN.md`. **Tier-1 (Opus)** for entity + economy; UI can follow in same pass.
+Dual-build: `LIFEPUNCH_LOCAL` — see `RUNTIME_PATTERN.md`.
 
 ---
 
-## 6. Relation to Hacker Job
+## 6. Relation to other terminals
 
-| | **Bitminer** (`bitcoinmining`) | **Hacker Job** (`hackerjob`) |
-|--|-------------------------------|------------------------------|
-| Entity | GPU rig, economy generator | CRT terminal, job ability |
-| UI skin | Same **hacker terminal** family | `cornerman.exe` fiction, wallet steal puzzle |
-| Economy | Mine → sell BTC for cash | Steal wallet cash (draft, not built) |
+| | **Bitminer** | **Hacker Job** | **Police** |
+|--|--------------|----------------|------------|
+| Accent | Amber `#f0a500` | Green / red | Cyan `#00D4FF` |
+| Program | `hashd` | `cornerman.exe` / `vengeance.exe` | `lifepunch-ops.exe` |
+| Layout | HASHD rig (+ modules) | Ops console | Ops console (Phase 4) |
+| Matrix | `TERMINAL_BRAND_MATRIX.md` | same | same |
 
-**Green prep (2026-06-11):** `briefs/CORNERMAN_HACKER_JOB_TERMINAL_TASK.md` — flow, puzzles, shared
-`TERMINAL_PLATFORM_TOKENS.scss`. Later fork: government database (`lifepunch@lifepunch.net`, cyan).
-
-Shared SCSS tokens; **separate addons**, separate prefabs.
+**Not** the same UI skin — shared platform *patterns* only (`HACKER_OPS_CONSOLE_SPEC.md`).
 
 ---
 
 ## 7. Build order
 
-1. ModelDoc: gpu-rack → `gpu-rack.vmdl` + 5 materials (VENGEANCE editor)
-2. Prefab: wire entity, fans, screen, collider (VENGEANCE editor)
-3. Code port: `BitminerEntity` + new tabbed `BitminerTerminal` (VENGEANCE Cursor, Opus)
+1. ModelDoc: gpu-rack + materials (VENGEANCE)
+2. Prefab: entity, screen, collider
+3. Phase 2 UI merge (Opus) + protection fixes (`BITMINER_PROTECTION_CHECKLIST.md`)
 4. Sounds + compile `_c`
-5. Portal package + `prepare-publish.ps1 -Addon bitcoinmining`
+5. `prepare-publish.ps1 -Addon bitcoinmining`
 
 ---
 
 ## 8. Cornerman (Tier-3)
 
-Distill this spec + `BITMINER_ENTITY_BRIEF.md` for Red; **no** editor work on Green.
+Distill for Red; no editor work on Green. Protection audit: `briefs/BITMINER_PROTECTION_CHECKLIST.md`.

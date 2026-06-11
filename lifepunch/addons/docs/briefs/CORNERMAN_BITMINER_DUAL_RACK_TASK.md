@@ -1,7 +1,8 @@
 # Cornerman task — Bitminer dual rack (small + large → BTC yield)
 
-**Lane:** Tier-3 prep · **Priority:** **#3** (parallel with Phase 2 menu wireframe)  
-**Issued:** 2026-06-11 · **Red:** implements mesh + code on VENGEANCE after distill
+**Lane:** Tier-3 prep · **Priority:** **#4** (after Phase 2 menu draft — **unblocked**)  
+**Issued:** 2026-06-11 · **Red:** implements mesh + code on VENGEANCE after distill  
+**Prerequisite:** `BITMINER_PHASE2_WIREFRAME.md` ✅ (rack row in Upgrades module)
 
 ---
 
