@@ -8,10 +8,24 @@
 
 ## 0. Host + join (DXRP is DedicatedServerOnly)
 
-1. Open a **map scene** (not a prefab stage).
-2. Viewport toolbar → **network** icon → **Start Hosting**.
-3. Press **Play** (green arrow) — you should spawn as a player.
+1. Open a **map scene** (not a prefab stage) — e.g. downtown map, not `game.scene` prefab stage.
+2. Press **Play** (green arrow) first — editor must be **in play mode**.
+3. Viewport toolbar → **network** icon → **Start Hosting** (before Play = `Unable to create a lobby outside of a game`).
 4. Portal/API data only when needed: `authorize <token>` in console.
+
+### Log triage (`D:\Steam\steamapps\common\sbox\logs\sbox-dev.log`)
+
+| Log line | Severity | Cause | Fix (owner/agent) |
+|----------|----------|-------|-------------------|
+| `lifepunch_rgb_fan_led.shader` + `Feature combo not found` | **P0 block** | Custom GPU vmat shader not compiled | **Fixed baseline:** `gpu-rack-gpu.vmat` → `complex.shader` (BITMINER-03). Endgame: compile shader in editor, restore RGB vmat. |
+| `gpu-rack-gpu.vmat_c` / `gpu_basecolor...vtex_c` not found | **P0 block** | Downstream of failed vmat compile | Recompile vmat + vmdl after vmat fix; `Pull-DxrpCompiledAssetsToRepo.ps1`. |
+| `Couldn't load map (A task was canceled.)` | **P0 block** | Map load aborted (often user stop, or asset compile stall mid-load) | Clear bitminer test GOs from `Assets/scenes/game.scene`; fix P0 vmat; retry Play on **map** scene. |
+| `Unable to create a lobby outside of a game` | User flow | Start Hosting clicked before Play | Play first, then Start Hosting (§0 above). |
+| `ToolsStallMonitor Stall detected` | Watch | Long on-demand recompiles (bitminer vmdl/vmat) | Fix P0 shader; avoid leaving `gpu-rack-test` in startup scene. |
+| `dark green.vmat_c` / `lime green.vmat_c` on terminal | Cosmetic | Stale CRT mesh material paths | ModelDoc remap on `bitcoin-terminal.vmdl`; non-blocking for hashd CLI. |
+| `bitcoin-miner/*.sound_c` not found | Cosmetic | Sounds not compiled | Non-blocking; hum disabled on prefab. |
+
+**MCP check:** `get_compile_errors` + `read_log` (sbox bridge). **Do not** leave test rigs in `game.scene` — use `lp_spawn_bitminer` in play mode instead.
 
 ## 1. See the hashd console (fastest)
 
