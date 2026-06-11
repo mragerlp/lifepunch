@@ -94,9 +94,9 @@
       "hasAssets": true,
       "hasCode": false,
       "dxrpAddonId": "019e36bf-31bf-7b2a-a56f-1ab4467cec29",
-      "status": "foundation-only",
+      "status": "asset-intake",
       "spec": "docs/COKE_DRUG_RESKIN_SPEC.md",
-      "notes": "CONCEPT: reskin weed grow pipeline — do not fork engine. Economy-touching → Tier-1 before ship.",
+      "notes": "Enhanced coke pack intaked (coca_seed/leaf, processing/packing stations + raw bag/brick). Map weed engine in DXRP editor. Opus before ship.",
       "contents": []
     },
     {

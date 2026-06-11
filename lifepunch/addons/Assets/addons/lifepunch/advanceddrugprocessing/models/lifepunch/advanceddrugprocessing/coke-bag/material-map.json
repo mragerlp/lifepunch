@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "model": {
+    "slug": "coke-bag",
+    "activeSource": "intake-raw/source/DrugBaggieLP.fbx",
+    "targetModel": "coke-bag.vmdl",
+    "status": "ModelDoc TODO on VENGEANCE"
+  },
+  "materials": [
+    {
+      "name": "coke-bag-body",
+      "targetMaterial": "materials/coke-bag-body.vmat",
+      "channels": {
+        "baseColor": "intake-raw/textures/DrugBaggie_Base_color.png",
+        "normal": "intake-raw/textures/DrugBaggie_Normal_OpenGL.png",
+        "metalness": "intake-raw/textures/DrugBaggie_Metallic.png",
+        "roughness": "intake-raw/textures/DrugBaggie_Roughness.png",
+        "opacity": "intake-raw/textures/DrugBaggie_Opacity.png"
+      }
+    }
+  ]
+}

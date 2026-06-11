@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "model": {
+    "slug": "coke-brick",
+    "activeSource": "intake-raw/source/Coke Brick.fbx",
+    "targetModel": "coke-brick.vmdl",
+    "notes": "Extract Coke Brick.zip to intake-raw/source/ before ModelDoc",
+    "status": "ModelDoc TODO on VENGEANCE"
+  },
+  "materials": [
+    {
+      "name": "coke-brick-body",
+      "targetMaterial": "materials/coke-brick-body.vmat",
+      "channels": {
+        "baseColor": "intake-raw/textures/cokebrick.png",
+        "normal": "intake-raw/textures/cokebrick_n.png"
+      }
+    }
+  ]
+}
