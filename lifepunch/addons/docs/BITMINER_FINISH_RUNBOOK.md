@@ -14,6 +14,8 @@
 | `BitminerTerminalProp` Scene fix (CS0120) | `2e81a2c` |
 | `AdvancedRack` 2× yield on stacked prefab | Shipped |
 | Green distill: remote rack UX, protection scaffolds | `670fdee` + `2e81a2c` |
+| Multi-rig `BitminerRigRegistry` + hashd `racks` CLI | `dfd2f18` |
+| Green G1–G3: protection audit, portal listing, player UX § | Cornerman 2026-06-11 |
 
 ---
 
@@ -33,9 +35,9 @@
 
 | # | Task | Deliverable |
 |---|------|-------------|
-| G1 | Fill `BITMINER_PROTECTION_CHECKLIST.md` grep rows | Outbox copy |
-| G2 | Portal listing copy (title, description, 3 entity names) | `BITMINER_PORTAL_LISTING.md` |
-| G3 | Player-facing “how it works” (3 placeables, hashd flow) | 1-page in `BITMINER_UX_SPEC.md` §player |
+| G1 | Fill `BITMINER_PROTECTION_CHECKLIST.md` grep rows | ✅ `briefs/BITMINER_PROTECTION_CHECKLIST.md` |
+| G2 | Portal listing copy (title, description, 3 entity names) | ✅ `reference/BITMINER_PORTAL_LISTING.md` |
+| G3 | Player-facing “how it works” (3 placeables, hashd flow) | ✅ `BITMINER_UX_SPEC.md` §3g |
 
 **Green does NOT:** `BitminerTerminalProp.cs`, ModelDoc, `git push`.
 

@@ -132,6 +132,19 @@ Full spec: `docs/reference/BITMINER_REMOTE_RACK_SPEC.md`.
 
 ---
 
+## 3g. Player experience (three placeables)
+
+1. **Place** a **Bitcoin Terminal** (CRT) within ~4 m of one or more racks — **Bitcoin Miner** (small) and/or **Advanced Bitcoin Miner** (stacked, 2× yield).
+2. **Open hashd** — USE the terminal or type `hashd` / `mine` while near a rig (≤8 m).
+3. **Register racks** — telemetry rail shows linked rigs; type `racks` for the list.
+4. **Mine** — `mining start all` or `select <id>` then `mining start`; rail **START** / **STOP** toggles the selected rig.
+5. **Upgrade** — `upgrade` / `menu` for CPU and cores on the **selected** rig (per-rig economy).
+6. **Cash out** — `bitcoin sell` (Phase 1 CLI) or **Wallet → SELL ALL** when Phase 2 modules ship.
+
+Fast editor preview: `lp_hashd_preview` (console opens without waiting on CRT ModelDoc compile).
+
+---
+
 ## 4. What we improve vs Evo
 
 | Evo | LIFEPUNCH |
