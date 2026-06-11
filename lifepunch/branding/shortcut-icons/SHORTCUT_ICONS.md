@@ -21,6 +21,7 @@ Also universal: cross-node **preflight/diagnostic** actions that touch the whole
 | **VENGEANCE** | Red | `lifepunch-vengeance.png` | **LifePunch Voice Comms** (Red-side watch windows), **DXRP Editor - VENGEANCE** (local s&box + API token) |
 | **Cornerman** | Green | `lifepunch-cornerman.png` | **Cornerman (RDP)**, **Cornerman — Talk to Vengeance** *(on VENGEANCE desktop — signals Green)* |
 | **VENGEANCE** | Red | `lifepunch-vengeance.png` | **Talk to Vengeance** *(on Cornerman desktop only — voice to Red)* |
+| **Cornerman** | Green | `lifepunch-cornerman.png` | **Cornerman (Sync from Red)** *(on Cornerman desktop only — git reset to origin/main)* |
 | **lifepunchnet** | Blue / cyan | `lifepunch-lifepunchnet.png` | **lifepunchnet (RDP)** |
 
 Art source: Hacker Job outfit app icons (`lifepunch-ops/outfits/*/appicon.png` family).

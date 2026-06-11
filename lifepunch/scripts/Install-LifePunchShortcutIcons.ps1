@@ -24,6 +24,7 @@ Write-Host '  tri-stack  LifePunch Voice Preflight' -ForegroundColor DarkGray
 Write-Host '  red        LifePunch Voice Comms' -ForegroundColor DarkGray
 Write-Host '  green      Cornerman (RDP)' -ForegroundColor DarkGray
 Write-Host '  green      Cornerman — Talk to Vengeance (on VENGEANCE — signals Green)' -ForegroundColor DarkGray
+Write-Host '  green      Cornerman (Sync from Red) (on Cornerman only — git align to Red)' -ForegroundColor DarkGray
 Write-Host '  red        Talk to Vengeance (on Cornerman only — voice to Red)' -ForegroundColor DarkGray
 Write-Host '  blue       lifepunchnet (RDP)' -ForegroundColor DarkGray
 Write-Host '  red        DXRP Editor - VENGEANCE (+authorize API)' -ForegroundColor DarkGray
