@@ -13,7 +13,9 @@ COMMIT SCOPE (GitHub main — VENGEANCE integrates):
   Docs: VOICE_PTT_TROUBLESHOOTING.md, CORNERMAN_PUSH_TO_TALK.md (keys),
         VOICE_TEST_CHECKLIST.md (RELEASED/TRANSCRIBING criteria)
 
-WAIT FOR: Mr. Rager or VENGEANCE agent says "pushed <sha>" before you pull.
+WAIT FOR: Red says "pushed <sha> + rdp-server re-exported <gitlab-sha>" before you pull.
+Red export: Export-GitLabLane.ps1 -Slug lifepunch-rdp-server (uses Windows Git creds) OR setup-gitlab-projects.ps1 with GITLAB_TOKEN.
+DONE 2026-06-10: GitLab lifepunch-rdp-server 9118777 (mono a988b04).
 
 ------------------------------------------------------------------------
 PASTE — CORNERMAN (Green / Block D)
@@ -38,11 +40,13 @@ You do not hold hub tokens. You do not push to GitHub.
 PASTE — LIFEPUNCHNET (Blue / Block C)
 ------------------------------------------------------------------------
 
-SYNC ROUND voice-ptt-20260610 — you are B (Blue). Pull after Red push.
+SYNC ROUND voice-ptt-20260610 — you are B (Blue). Pull after Red push + lane re-export.
 
-1) git -C C:\Projects\lifepunch fetch && git -C C:\Projects\lifepunch pull --rebase origin main
-   (or lane clone path per LIFEPUNCHNET_INSTRUCTIONS.txt if different)
-2) Read: lifepunch/docs/VOICE_PTT_TROUBLESHOOTING.md (Blue legs §)
+Git root on lifepunchnet: C:\lifepunch\lifepunch-rdp-server  (NOT C:\Projects\lifepunch)
+
+1) cd C:\lifepunch\lifepunch-rdp-server && git fetch && git pull --rebase
+   (GitLab lifepunch-rdp-server — docs arrive via grounding bundle export from Red)
+2) Read: lifepunch\docs\VOICE_PTT_TROUBLESHOOTING.md (Blue legs §)
 3) Confirm services live on-box:
    - Whisper :9000 running
    - LifePunch-ServerHost-StatusServer task (not exit -1073741510)
