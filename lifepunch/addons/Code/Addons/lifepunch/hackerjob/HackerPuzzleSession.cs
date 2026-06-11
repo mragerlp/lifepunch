@@ -14,7 +14,8 @@ namespace LifePunch.DXRP.Addons.HackerJob;
 
 /// <summary>
 /// Time-boxed coding puzzle presented during a wallet hack attempt.
-/// Client displays; server validates outcome in Phase 2 — never trust client success here.
+/// Client displays; host re-validates via <see cref="HackerEconomySecurity.ValidatePuzzleOnHost"/>.
+/// Phase 2 (Opus): host issues puzzle session id — see TECH_DEBT HACKER-02.
 /// </summary>
 public sealed class HackerPuzzleSession
 {

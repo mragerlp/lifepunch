@@ -133,7 +133,7 @@ public sealed partial class BitminerEntity : BaseEntity, Component.IPressable, I
 		IsMining = false;
 
 		if ( TextRender.IsValid() )
-			TextRender.Color = Color.Parse( "#00FF7F" ) ?? Color.White;
+			TextRender.Color = Color.Parse( "#f0a500" ) ?? Color.White;
 
 		var correction = Rotation.FromAxis( Vector3.Right, 10f );
 

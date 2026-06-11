@@ -26,8 +26,8 @@ cornerman@rig    (deprecated bitminer prompt — use rig0>)
 
 | Path | Finding | Severity | Red action |
 |------|---------|----------|------------|
-| `BitminerTerminal.razor` `about` | `Initial UI study — spl mute` | **HIGH** | Remove line; About module = LIFEPUNCH™ only per wireframe |
-| `BitminerEntity.cs` `TextRender.Color` | `#00FF7F` (hacker green) | **MED** | Change to `#f0a500` amber for in-world LCD |
+| `BitminerTerminal.razor` `about` | ~~`Initial UI study — spl mute`~~ | **HIGH** | ✅ Red fixed — LIFEPUNCH™ only |
+| `BitminerEntity.cs` `TextRender.Color` | ~~`#00FF7F`~~ → `#f0a500` | **MED** | ✅ Red fixed — amber in-world LCD |
 | `BitminerEntity.cs` comment | `Deprecate Evo child-fan` | LOW | OK — internal TECH_DEBT pointer |
 | `Bitminer.cs` XML | `reference/evo-bitminer` study note | LOW | OK — not player-facing |
 | `docs/RUNTIME_PATTERN.md` | Evo pattern mention | LOW | OK — dev doc |

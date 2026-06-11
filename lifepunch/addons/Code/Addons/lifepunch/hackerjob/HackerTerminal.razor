@@ -485,17 +485,28 @@
 
     private void HandlePuzzleInput( string input )
     {
+        if ( _puzzle == null )
+            return;
+
+        var elapsed = _puzzle.TimeLimitSeconds - _puzzle.SecondsRemaining;
+        var kind = (int)_puzzle.Kind;
+
+        if ( !string.IsNullOrEmpty( _selectedGovNodeId ) && Terminal.IsValid() )
+            Terminal.RequestSubmitGovdbInfil( _selectedGovNodeId, kind, input, elapsed, _puzzle.TimeLimitSeconds );
+        else if ( !string.IsNullOrEmpty( _selectedTargetId ) && Terminal.IsValid() )
+            Terminal.RequestSubmitWalletHack( _selectedTargetId, kind, input, elapsed, _puzzle.TimeLimitSeconds );
+
         if ( _puzzle.TrySubmit( input ) )
         {
             if ( !string.IsNullOrEmpty( _selectedGovNodeId ) )
             {
-                _lines.Add( "BYPASS OK — govdb shard accessed (Phase 1 stub; no records exfiltrated)." );
-                _lines.Add( $"Node {_selectedGovNodeId} flagged. Server validation = Phase 2 (Opus)." );
+                _lines.Add( "BYPASS OK — host validated (Phase 1 stub; no records exfiltrated)." );
+                _lines.Add( $"Node {_selectedGovNodeId} logged. Govdb economy = Phase 2 (Opus)." );
             }
             else
             {
-                _lines.Add( "BYPASS OK — wallet probe succeeded (Phase 1 stub; no funds moved)." );
-                _lines.Add( $"Target {_selectedTargetId} flagged. Economy transfer = Phase 2 (Opus)." );
+                _lines.Add( "BYPASS OK — host validated (Phase 1 stub; no funds moved)." );
+                _lines.Add( $"Target {_selectedTargetId} logged. Wallet transfer = Phase 2 (Opus)." );
             }
 
             _puzzle = null;
@@ -549,10 +560,8 @@
                 break;
 
             case "about":
-                _lines.Add( "LIFEPUNCH™ Hacker Job — ops console is in-world fiction." );
-                _lines.Add( "Wallet hacks: server-validated Phase 2. Bank accounts untouchable." );
-                if ( Tier == HackerTerminalTier.Advanced )
-                    _lines.Add( "Govdb breaches countered by Police terminals (lifepunchnet cyan)." );
+                foreach ( var line in HackerTerminalBrand.AboutLines( Tier ) )
+                    _lines.Add( line );
                 break;
 
             case "info":

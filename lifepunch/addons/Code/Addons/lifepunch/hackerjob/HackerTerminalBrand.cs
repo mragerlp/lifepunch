@@ -48,4 +48,34 @@ public static class HackerTerminalBrand
 		HackerTerminalTier.Advanced => "▲",
 		_ => "◆"
 	};
+
+	/// <summary>Shipped About copy — LIFEPUNCH source only; no third-party product credits.</summary>
+	public static string[] AboutLines( HackerTerminalTier tier )
+	{
+		var lines = new[]
+		{
+			HackerJob.ProductTitle,
+			$"Published by {HackerJob.PublisherName} — {HackerJob.PublisherUrl}",
+			HackerJob.ProprietaryNotice,
+			HackerJob.UseRestrictionNotice,
+			"cornerman.exe / vengeance.exe are in-world fiction — not third-party software.",
+			"Wallet hacks: host-validated only. Bank accounts are never touched."
+		};
+
+		if ( tier == HackerTerminalTier.Advanced )
+		{
+			return new[]
+			{
+				HackerJob.ProductTitle,
+				$"Published by {HackerJob.PublisherName} — {HackerJob.PublisherUrl}",
+				HackerJob.ProprietaryNotice,
+				HackerJob.UseRestrictionNotice,
+				"cornerman.exe / vengeance.exe are in-world fiction — not third-party software.",
+				"Wallet hacks: host-validated only. Bank accounts are never touched.",
+				"Govdb breaches countered by Police terminals (lifepunchnet cyan)."
+			};
+		}
+
+		return lines;
+	}
 }

@@ -46,4 +46,12 @@ public static class HackerJob
 
 	/// <summary>Hard rule: only on-hand wallet cash — bank is never touched.</summary>
 	public const bool BankUntouchable = true;
+
+	/// <summary>Trademark + source identifier for in-product About tab and portal copy.</summary>
+	public const string PublisherMark = "LIFEPUNCH™";
+	public const string PublisherName = "LIFEPUNCH";
+	public const string PublisherUrl = "lifepunch.co";
+	public const string ProductTitle = "LIFEPUNCH™ Hacker Job for DXRP";
+	public const string ProprietaryNotice = "Proprietary software. All rights reserved.";
+	public const string UseRestrictionNotice = "Use on your server only. No redistribution or resale.";
 }

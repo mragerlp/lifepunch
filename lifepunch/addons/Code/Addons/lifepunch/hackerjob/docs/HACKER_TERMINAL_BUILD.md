@@ -20,6 +20,8 @@ Two tiers per `TERMINAL_BRAND_MATRIX.md`. **Ops Console** layout (960×640, sess
 | `HackerScanService.cs` | Wallet + govdb stubs |
 | `HackerPuzzleSession.cs` | Wallet + govdb bypass puzzles |
 | `HackerDevSpawn.cs` | `lp_cornerman_ui`, `lp_vengeance_ui` |
+| `HackerEconomySecurity.cs` | Host validation seam — Phase 1 no transfer |
+| `docs/SECURITY.md` | Threat model + Phase 2 Opus checklist |
 
 ## Editor smoke test (use bots)
 
@@ -46,6 +48,8 @@ govdb_breach
 - [ ] CRT models: `hacker-terminal` + `advanced-hacker-terminal` (`Seed-HackerTerminalCrt.ps1` + ModelDoc)
 - [ ] Entity prefabs: `ENTITY_PREFAB_BUILD.md` · `lp_spawn_hacker_terminal` · `lp_spawn_advanced_hacker_terminal`
 - [ ] Job gate, live scan, server-validated puzzles, wallet transfer
+- [ ] Protection audit green — `briefs/HACKER_JOB_PROTECTION_CHECKLIST.md`
+- [ ] Phase 2 Opus sign-off — `docs/SECURITY.md` checklist complete before publish
 - [ ] Govdb breach hooks into `governmentdatacenter` tax miners
 - [ ] Police counterplay via `police-terminal` (lifepunchnet cyan)
 

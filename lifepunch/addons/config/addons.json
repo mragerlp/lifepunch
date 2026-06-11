@@ -76,7 +76,7 @@
     {
       "ident": "hackerjob",
       "title": "Hacker Job",
-      "description": "A DXRP 'Hacker' job built around a placeable 'Hacker Terminal' (retro 1990s-2000s CRT). Players interact with the terminal to boot an in-world 'cornerman.exe' program, scan for live in-game players, and steal WALLET cash (never bank) by solving a time-boxed coding puzzle. Economy-touching and server-authoritative.",
+      "description": "LIFEPUNCH Hacker Job for DXRP — placeable retro CRT terminals (cornerman.exe / vengeance.exe fiction). Scan live wallets, solve time-boxed puzzles, steal on-hand cash only (never bank). Published by LIFEPUNCH. Proprietary; server-authoritative economy (Phase 2 Opus).",
       "kind": "simple-entity",
       "hasAssets": true,
       "hasCode": true,
