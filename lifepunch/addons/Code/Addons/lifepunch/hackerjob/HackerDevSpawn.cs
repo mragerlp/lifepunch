@@ -27,7 +27,12 @@ public static class HackerDevSpawn
 	/// Opens cornerman.exe UI immediately — no prefab or world entity required (editor smoke test).
 	/// </summary>
 	[ConCmd( "lp_cornerman_ui" )]
-	public static void OpenTerminalUi()
+	public static void OpenTerminalUi() => OpenTerminalUi( HackerTerminalTier.Standard );
+
+	[ConCmd( "lp_vengeance_ui" )]
+	public static void OpenAdvancedTerminalUi() => OpenTerminalUi( HackerTerminalTier.Advanced );
+
+	private static void OpenTerminalUi( HackerTerminalTier tier )
 	{
 		var scene = Game.ActiveScene;
 		if ( scene is null )
@@ -37,8 +42,11 @@ public static class HackerDevSpawn
 		}
 
 		var stub = scene.CreateObject();
-		stub.Name = "HackerTerminalDevStub";
+		stub.Name = tier == HackerTerminalTier.Advanced
+			? "AdvancedHackerTerminalDevStub"
+			: "HackerTerminalDevStub";
 		var entity = stub.AddComponent<HackerTerminalEntity>();
+		entity.Tier = tier;
 
 #if LIFEPUNCH_LOCAL
 		HackerTerminal.Open( entity );
@@ -46,7 +54,10 @@ public static class HackerDevSpawn
 		entity.RequestOpenTerminal();
 #endif
 
-		Log.Info( "lp_cornerman_ui: cornerman.exe mounted. Try: scan → hack 76561198000000001" );
+		if ( tier == HackerTerminalTier.Advanced )
+			Log.Info( "lp_vengeance_ui: vengeance.exe mounted. Try: govdb → infil govdb-tax-01" );
+		else
+			Log.Info( "lp_cornerman_ui: mounted. Spawn bots: lifepunch_spawn_testbot Greg → scan → hack <steamid>" );
 	}
 
 	[ConCmd( "lp_spawn_hacker_terminal" )]

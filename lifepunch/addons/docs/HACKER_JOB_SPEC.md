@@ -16,8 +16,10 @@
 
 The **"Hacker"** is a **DXRP job** that LifePunch creates. Core loop:
 
-1. **Entity — "Hacker Terminal"** — a placeable `simple-entity` whose model is a **1990s–2000s
-   computer screen** (owner will source/make the model). This is the world object the Hacker uses.
+1. **Entities — two hacker terminal tiers** (`TERMINAL_BRAND_MATRIX.md`):
+   - **Hacker Terminal** (Cornerman green) — wallet `scan` / `hack`
+   - **Advanced Hacking Terminal** (VENGEANCE red) — `govdb` / `infil` on city treasury nodes
+   Retro CRT models (owner will source/make).
 2. **Interact → on-screen UI** — when a player **interacts/uses** the terminal, a **Razor-coded
    worldscreen** lights up with the terminal visuals.
 3. **Boot `cornerman.exe`** — the screen prompts/loads a program called **`cornerman.exe`** —
@@ -83,7 +85,7 @@ systems as designed — see `REUSABLE_ADDON_FRAMEWORK.md`, `lifepunch-quality-ba
 
 | Phase | Owner | Deliverable |
 |-------|-------|-------------|
-| **1 — Terminal shell** | Green (Cornerman) | `cornerman.exe` CLI, scan stub, 3 puzzle types, dev spawn — **no money moved** |
+| **1 — Terminal shell** | Green (Cornerman) | Standard + Advanced tiers, scan/govdb stubs, puzzles, `lp_cornerman_ui` / `lp_vengeance_ui` — **no money moved** |
 | **2 — Economy** | Red (Opus) | Job gate, live scan, server-validated puzzles, wallet debit/credit, cooldowns, audit |
 | **3 — Assets** | Red | CRT model, prefab, sounds, optional WorldPanel on monitor |
 | **4 — Polish** | Owner + Opus | Tabbed UI (optional), counterplay, balance tuning |
@@ -93,4 +95,4 @@ Cornerman drafts Phase 1 UI + puzzle framework. **Opus owns Phase 2 economy** �
 
 ## 7. Status / next step
 
-Phase 1 code on Green. Red: quick gun smoke test first (owner priority), then pull hacker handoff → Opus review → CRT prefab → Phase 2 economy.
+Phase 1 code on Green. **Editor playtest:** spawn bots (`lifepunch_spawn_testbot`) then `scan` — live roster, not hardcoded stub ids (`hackerjob/docs/HACKER_JOB_PLAYTEST.md`). Red: Opus review → CRT prefab → Phase 2 economy.

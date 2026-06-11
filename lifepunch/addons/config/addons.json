@@ -84,7 +84,21 @@
       "dxrpAddonId": "019e448c-4958-77d1-84b7-c7ec3f1bc328",
       "status": "code-draft",
       "spec": "docs/HACKER_JOB_SPEC.md",
-      "notes": "Phase 1 GREENLIT: cornerman.exe terminal shell (scan + puzzle stubs, no economy). Editor: cornerman / hack + lp_spawn_hacker_terminal. Phase 2 economy = Opus on Red. Wallet-only rule; bank untouchable. cornerman.exe is in-game fiction. Roadmap: GOVERNMENT_DATABASE_SPEC.md after Hacker Job ships.",
+      "notes": "Two tiers: Standard Hacker Terminal (cornerman.exe green) + Advanced Hacking Terminal (vengeance.exe red, govdb infil). Dev: lp_cornerman_ui / lp_vengeance_ui. Phase 2 wallet economy = Opus. TERMINAL_BRAND_MATRIX.md.",
+      "contents": []
+    },
+    {
+      "ident": "governmentdatacenter",
+      "title": "Government Datacenter",
+      "description": "City treasury tax miners (always-on BTC, blue lifepunchnet console) and police terminals. Hourly tax drip 0-30% of BTC balance to city funds; $30K BTC cap; no player withdraw. Mirrors Bitminer math.",
+      "kind": "simple-entity",
+      "hasAssets": true,
+      "hasCode": true,
+      "sboxIdentifier": "lifepunch.governmentdatacenter",
+      "dxrpAddonId": "",
+      "status": "foundation-scaffold",
+      "spec": "docs/GOVERNMENT_DATABASE_SPEC.md",
+      "notes": "Economy constants in GovernmentTaxMiner.cs ($1500/BTC, 20 BTC cap, 60min tax tick). Entity port from BitminerEntity = Red Opus. Datacenter models TBD — owner to provide. Police terminal = lifepunchnet cyan.",
       "contents": []
     },
     {

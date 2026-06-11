@@ -28,7 +28,10 @@ public sealed class HackerTerminalEntity : Component, Component.IPressable
 public sealed class HackerTerminalEntity : BaseEntity, Component.IPressable
 #endif
 {
+	[Property] public HackerTerminalTier Tier { get; set; } = HackerTerminalTier.Standard;
 	[Property] public TextRenderer ScreenText { get; set; }
+
+	public bool IsAdvanced => Tier == HackerTerminalTier.Advanced;
 
 	protected override void OnStart()
 	{
@@ -70,6 +73,8 @@ public sealed class HackerTerminalEntity : BaseEntity, Component.IPressable
 		if ( !ScreenText.IsValid() )
 			return;
 
-		ScreenText.Text = "LIFEPUNCH cornerman.exe\n[ STANDBY ] type cornerman nearby";
+		ScreenText.Text = IsAdvanced
+			? "LIFEPUNCH vengeance.exe\n[ STANDBY ] enhanced intrusion rig"
+			: "LIFEPUNCH cornerman.exe\n[ STANDBY ] type cornerman nearby";
 	}
 }

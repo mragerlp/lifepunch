@@ -1,60 +1,52 @@
 # Hacker Terminal — Build Checklist
 
-Queue priority after weapon smoke test. Shares **Cornerman green-on-black terminal skin** with Bitcoin Miner (`BITMINER_UX_SPEC.md`) but different program flow: `cornerman.exe` → scan → puzzle → wallet hack.
+Two tiers per `TERMINAL_BRAND_MATRIX.md`. Shares terminal **layout** with Bitcoin Miner hashd; Hacker uses Cornerman/Vengeance palettes.
 
-## Phase 1 — Terminal shell (Green, this commit)
+## Tiers
+
+| Tier | Program | Dev UI | Commands |
+|------|---------|--------|----------|
+| Standard | `cornerman.exe` | `lp_cornerman_ui` | `scan`, `hack` |
+| Advanced | `vengeance.exe` | `lp_vengeance_ui` | + `govdb`, `infil` |
+
+## Phase 1 — Done on Green
 
 | File | Status |
 |------|--------|
-| `HackerJob.cs` | Done — paths, commands, constants |
-| `HackerTerminalEntity.cs` | Done — interact + RPC open |
-| `HackerTerminalHost.cs` | Done — dual-build mount |
-| `HackerCommandHost.cs` | Done — `cornerman` / `hack` |
-| `HackerTerminal.razor` + `.scss` | Done — boot, scan, hack, puzzles |
-| `HackerScanService.cs` | Stub targets (local); live list Phase 2 |
-| `HackerPuzzleSession.cs` | 3 puzzle kinds, time-boxed |
-| `HackerDevSpawn.cs` | `lp_spawn_hacker_terminal` |
+| `HackerTerminalTier.cs` / `HackerTerminalBrand.cs` | Done |
+| `HackerTerminal.razor` + `.scss` | Polished — scanlines, tier colors, TTL countdown |
+| `HackerScanService.cs` | Wallet + govdb stubs |
+| `HackerPuzzleSession.cs` | Wallet + govdb bypass puzzles |
+| `HackerDevSpawn.cs` | `lp_cornerman_ui`, `lp_vengeance_ui` |
 
-**No economy transfer in Phase 1** — puzzle success prints stub only.
+## Editor smoke test (use bots)
 
-## Phase 2 — Economy + validation (Red / Opus)
-
-- [ ] Job gate: only Hacker job can run `hack`
-- [ ] Server scan: live players, exclude self/staff/down
-- [ ] Server-validated puzzle tokens (client never asserts success)
-- [ ] Wallet debit/credit via DXRP `PayHost` / `ChargeHost` — **wallet only**
-- [ ] Cooldowns, caps, audit log hook
-- [ ] Counterplay (alert police / target notify) — TBD
-
-## Phase 3 — Assets (Red)
-
-- [ ] CRT model `hacker-terminal.vmdl` (owner sources retro screen mesh)
-- [ ] `hacker-terminal.prefab` with `TextRenderer` + interaction
-- [ ] Sounds under `sounds/hacker-terminal/`
-- [ ] WorldPanel on monitor face (optional — Phase 1 uses screen overlay CLI)
-
-## Editor smoke test
-
-**Fast path (no prefab yet):**
+Spawn targets first — **`HACKER_JOB_PLAYTEST.md`**:
 
 ```text
+lifepunch_spawn_testbot Greg
 lp_cornerman_ui
 scan
-hack 76561198000000001
-<type puzzle answer>
+hack <steamid from scan output>
 ```
 
-**Full path (after Red ships `hacker-terminal.prefab`):**
+**Advanced (red):**
 
 ```text
-lp_spawn_hacker_terminal
-cornerman
-scan
-hack 76561198000000001
+lp_vengeance_ui
+govdb
+infil govdb-tax-01
+govdb_breach
 ```
 
-Pass: boot sequence, scan list, puzzle timer, bypass message (no money moved).
+## Phase 2 — Red / Opus
 
-## Later — Government Database
+- [ ] CRT models: `hacker-terminal` + `advanced-hacker-terminal`
+- [ ] Job gate, live scan, server-validated puzzles, wallet transfer
+- [ ] Govdb breach hooks into `governmentdatacenter` tax miners
+- [ ] Police counterplay via `police-terminal` (lifepunchnet cyan)
 
-See `addons/docs/GOVERNMENT_DATABASE_SPEC.md` (concept stub; after Hacker Job economy sign-off).
+## Related
+
+- `addons/docs/GOVERNMENT_DATABASE_SPEC.md`
+- `governmentdatacenter/docs/GOVERNMENT_TAX_MINER_BUILD.md`

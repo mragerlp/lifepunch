@@ -17,11 +17,13 @@
 
 @attribute [StyleSheet]
 
-<root>
+<root class="@TierClass">
+    <div class="scanlines"></div>
     <div class="click-blocker" onclick=@FocusInput></div>
 
     <div class="title-bar">
-        <span class="title-text">LIFEPUNCH cornerman.exe v0.1 — cornerman@terminal</span>
+        <span class="title-text">@TitleBarText</span>
+        <span class="tier-badge">@TierBadge</span>
         <button class="close-x" onclick=@OnClickClose>✕ CLOSE</button>
     </div>
 
@@ -29,13 +31,19 @@
         @foreach ( var line in _lines )
         {
             <div class="p-1">
-                <label class="screen-line @(line.StartsWith("cornerman@") ? "prompt-line" : line.StartsWith("---") ? "divider-line" : line.StartsWith("  ") ? "help-line" : line.StartsWith("ERROR") ? "error-line" : "output-line")">@line</label>
+                <label class="screen-line @GetLineClass(line)">@line</label>
+            </div>
+        }
+        @if ( _puzzle != null && !_puzzle.IsExpired )
+        {
+            <div class="p-1 countdown-line">
+                <label class="screen-line warn-line">▶ PUZZLE TTL: @MathF.Ceiling(_puzzle.SecondsRemaining)s</label>
             </div>
         }
     </div>
 
     <div class="input-row">
-        <span class="prompt-label">cornerman@terminal:~$</span>
+        <span class="prompt-label">@PromptLabel</span>
         <TextEntry
             class="terminal-input"
             @ref="InputBox"
@@ -53,8 +61,37 @@
     private TimeSince _sinceSecondly = 0f;
 
     private IReadOnlyList<HackerScanService.ScanTarget> _scanResults = Array.Empty<HackerScanService.ScanTarget>();
+    private IReadOnlyList<HackerScanService.GovDbTarget> _govdbResults = Array.Empty<HackerScanService.GovDbTarget>();
     private string _selectedTargetId;
+    private string _selectedGovNodeId;
     private HackerPuzzleSession _puzzle;
+
+    private HackerTerminalTier Tier =>
+        Terminal.IsValid() && Terminal.IsAdvanced
+            ? HackerTerminalTier.Advanced
+            : HackerTerminalTier.Standard;
+
+    private string TierClass => HackerTerminalBrand.CssTierClass( Tier );
+    private string TitleBarText => HackerTerminalBrand.TitleBar( Tier );
+    private string PromptLabel => $"{HackerTerminalBrand.PromptLabel( Tier )}";
+    private string TierBadge => Tier == HackerTerminalTier.Advanced ? "VENGEANCE OPS" : "CORNERMAN OPS";
+
+    private static string GetLineClass( string line )
+    {
+        if ( line.StartsWith( "cornerman@" ) || line.StartsWith( "vengeance@" ) )
+            return "prompt-line";
+        if ( line.StartsWith( "---" ) )
+            return "divider-line";
+        if ( line.StartsWith( "  " ) )
+            return "help-line";
+        if ( line.StartsWith( "ERROR" ) || line.StartsWith( "DENIED" ) )
+            return "error-line";
+        if ( line.StartsWith( "[ OK" ) || line.StartsWith( "BYPASS" ) )
+            return "ok-line";
+        if ( line.StartsWith( "WARNING" ) || line.StartsWith( "▶" ) )
+            return "warn-line";
+        return "output-line";
+    }
 
     private void TrimLines()
     {
@@ -79,15 +116,31 @@
     {
         _lines.Clear();
         _scanResults = Array.Empty<HackerScanService.ScanTarget>();
+        _govdbResults = Array.Empty<HackerScanService.GovDbTarget>();
         _selectedTargetId = null;
+        _selectedGovNodeId = null;
         _puzzle = null;
 
-        _lines.Add( "LIFEPUNCH cornerman.exe v0.1" );
-        _lines.Add( "[ OK ] crt framebuffer 640x480" );
-        _lines.Add( "[ OK ] packet sniffer loaded" );
-        _lines.Add( "[ OK ] wallet probe module (read-only)" );
-        _lines.Add( $"starting {HackerJob.InGameProgramName} ..." );
-        _lines.Add( "Type 'help' for ops. Fiction only — not the real Cornerman box." );
+        if ( Tier == HackerTerminalTier.Advanced )
+        {
+            _lines.Add( "LIFEPUNCH vengeance.exe v0.1" );
+            _lines.Add( "[ OK ] crt framebuffer 800x600" );
+            _lines.Add( "[ OK ] enhanced intrusion toolkit" );
+            _lines.Add( "[ OK ] govdb route table mounted" );
+            _lines.Add( $"starting {HackerJob.AdvancedProgramName} ..." );
+            _lines.Add( "WARNING: unauthorized govdb access is a felony." );
+            _lines.Add( "Type 'help' for ops. Fiction only — not the real VENGEANCE box." );
+        }
+        else
+        {
+            _lines.Add( "LIFEPUNCH cornerman.exe v0.1" );
+            _lines.Add( "[ OK ] crt framebuffer 640x480" );
+            _lines.Add( "[ OK ] packet sniffer loaded" );
+            _lines.Add( "[ OK ] wallet probe module (read-only)" );
+            _lines.Add( $"starting {HackerJob.InGameProgramName} ..." );
+            _lines.Add( "Type 'help' for ops. Fiction only — not the real Cornerman box." );
+        }
+
         _lines.Add( "" );
     }
 
@@ -111,6 +164,7 @@
             _lines.Add( "ERROR: puzzle window expired — trace risk increased." );
             _puzzle = null;
             _selectedTargetId = null;
+            _selectedGovNodeId = null;
         }
     }
 
@@ -170,7 +224,7 @@
         if ( string.IsNullOrWhiteSpace( input ) )
             return;
 
-        _lines.Add( $"cornerman@terminal:~$ {input}" );
+        _lines.Add( $"{HackerTerminalBrand.PromptLabel( Tier )} {input}" );
 
         if ( _puzzle != null )
             HandlePuzzleInput( input );
@@ -185,10 +239,20 @@
     {
         if ( _puzzle.TrySubmit( input ) )
         {
-            _lines.Add( "BYPASS OK — wallet probe succeeded (Phase 1 stub; no funds moved)." );
-            _lines.Add( $"Target {_selectedTargetId} flagged. Economy transfer = Phase 2 (Opus)." );
+            if ( !string.IsNullOrEmpty( _selectedGovNodeId ) )
+            {
+                _lines.Add( "BYPASS OK — govdb shard accessed (Phase 1 stub; no records exfiltrated)." );
+                _lines.Add( $"Node {_selectedGovNodeId} flagged. Server validation = Phase 2 (Opus)." );
+            }
+            else
+            {
+                _lines.Add( "BYPASS OK — wallet probe succeeded (Phase 1 stub; no funds moved)." );
+                _lines.Add( $"Target {_selectedTargetId} flagged. Economy transfer = Phase 2 (Opus)." );
+            }
+
             _puzzle = null;
             _selectedTargetId = null;
+            _selectedGovNodeId = null;
             return;
         }
 
@@ -197,6 +261,7 @@
             _lines.Add( "ERROR: too slow — connection dropped." );
             _puzzle = null;
             _selectedTargetId = null;
+            _selectedGovNodeId = null;
             return;
         }
 
@@ -214,11 +279,16 @@
             case "help":
                 _lines.Add( "--------------------HELP--------------------" );
                 _lines.Add( "  SCAN     - Probe live wallet signatures." );
+                if ( Tier == HackerTerminalTier.Advanced )
+                {
+                    _lines.Add( "  GOVDB    - Scan government database nodes." );
+                    _lines.Add( "  INFIL    - Breach a govdb node (advanced)." );
+                }
                 _lines.Add( "  HACK     - Start wallet bypass on a SteamID." );
+                _lines.Add( "  INFO     - Terminal tier + session info." );
                 _lines.Add( "  STATUS   - Session + target state." );
                 _lines.Add( "  CLEAR    - Wipe scrollback." );
                 _lines.Add( "  ABOUT    - LIFEPUNCH attribution." );
-                _lines.Add( "  HELP     - Show this list." );
                 _lines.Add( "--------------------------------------------" );
                 break;
 
@@ -227,18 +297,88 @@
                 break;
 
             case "about":
-                _lines.Add( "LIFEPUNCH Hacker Job — cornerman.exe is in-world fiction only." );
-                _lines.Add( "Wallet hacks are server-validated in Phase 2. Bank accounts untouchable." );
+                _lines.Add( "LIFEPUNCH™ Hacker Job — terminal programs are in-world fiction." );
+                _lines.Add( "Wallet hacks: server-validated Phase 2. Bank accounts untouchable." );
+                if ( Tier == HackerTerminalTier.Advanced )
+                    _lines.Add( "Govdb breaches countered by Police terminals (lifepunchnet ops)." );
+                break;
+
+            case "info":
+                _lines.Add( "--------------------INFO--------------------" );
+                _lines.Add( $"  Tier:        {( Tier == HackerTerminalTier.Advanced ? "Advanced (vengeance.exe)" : "Standard (cornerman.exe)" )}" );
+                _lines.Add( $"  Job:         Hacker" );
+                _lines.Add( $"  Program:     {HackerTerminalBrand.ProgramName( Tier )}" );
+                _lines.Add( $"  Link:        {( Terminal.IsValid() ? "STABLE" : "LOST" )}" );
+                _lines.Add( "--------------------------------------------" );
                 break;
 
             case "status":
                 _lines.Add( "--------------------STATUS------------------" );
                 _lines.Add( $"  Terminal:    {( Terminal.IsValid() ? "LINKED" : "LOST" )}" );
-                _lines.Add( $"  Scan cache:  {_scanResults.Count} target(s)" );
-                _lines.Add( $"  Active hack: {( _puzzle != null ? _selectedTargetId : "none" )}" );
+                _lines.Add( $"  Wallet scan: {_scanResults.Count} target(s)" );
+                if ( Tier == HackerTerminalTier.Advanced )
+                    _lines.Add( $"  Govdb scan:  {_govdbResults.Count} node(s)" );
+                _lines.Add( $"  Active op:   {( _puzzle != null ? (_selectedGovNodeId ?? _selectedTargetId) : "none" )}" );
                 if ( _puzzle != null )
                     _lines.Add( $"  Puzzle TTL:  {MathF.Ceiling( _puzzle.SecondsRemaining )}s" );
                 _lines.Add( "--------------------------------------------" );
+                break;
+
+            case "govdb":
+                if ( Tier != HackerTerminalTier.Advanced )
+                {
+                    _lines.Add( "ERROR: govdb module requires Advanced Hacking Terminal." );
+                    break;
+                }
+
+                if ( !Terminal.IsValid() )
+                {
+                    _lines.Add( "ERROR: terminal link lost." );
+                    break;
+                }
+
+                _lines.Add( "Scanning govdb mesh for treasury miners ..." );
+                _govdbResults = HackerScanService.RequestGovDbScan( Terminal );
+                _lines.Add( $"Found {_govdbResults.Count} node(s):" );
+                foreach ( var node in _govdbResults )
+                    _lines.Add( $"  {node.NodeId}  {node.Label}  [{node.SecurityTier}]" );
+                _lines.Add( "Use: infil <nodeid>" );
+                break;
+
+            case "infil":
+                if ( Tier != HackerTerminalTier.Advanced )
+                {
+                    _lines.Add( "ERROR: infil requires Advanced Hacking Terminal." );
+                    break;
+                }
+
+                if ( string.IsNullOrWhiteSpace( arg ) )
+                {
+                    _lines.Add( "ERROR: infil requires a node id. Run govdb first." );
+                    break;
+                }
+
+                if ( _govdbResults.Count == 0 )
+                {
+                    _lines.Add( "ERROR: run govdb before infil." );
+                    break;
+                }
+
+                var nodeMatch = _govdbResults.FirstOrDefault( n =>
+                    n.NodeId.Equals( arg, StringComparison.OrdinalIgnoreCase ) );
+
+                if ( nodeMatch is null )
+                {
+                    _lines.Add( "ERROR: node not in govdb cache." );
+                    break;
+                }
+
+                _selectedGovNodeId = nodeMatch.NodeId;
+                _selectedTargetId = null;
+                _puzzle = HackerPuzzleSession.CreateRandom( advancedTerminal: true );
+                _lines.Add( $"INFILTRATING {nodeMatch.Label} [{nodeMatch.SecurityTier}]" );
+                _lines.Add( _puzzle.Prompt );
+                _lines.Add( $"TIME LIMIT: {MathF.Ceiling( _puzzle.TimeLimitSeconds )}s — type answer at prompt." );
                 break;
 
             case "scan":
@@ -279,7 +419,8 @@
                 }
 
                 _selectedTargetId = match.SteamId;
-                _puzzle = HackerPuzzleSession.CreateRandom();
+                _selectedGovNodeId = null;
+                _puzzle = HackerPuzzleSession.CreateRandom( advancedTerminal: false );
                 _lines.Add( $"INFILTRATING {match.DisplayName} — wallet ${match.WalletCash}" );
                 _lines.Add( _puzzle.Prompt );
                 _lines.Add( $"TIME LIMIT: {MathF.Ceiling( _puzzle.TimeLimitSeconds )}s — type answer at prompt." );

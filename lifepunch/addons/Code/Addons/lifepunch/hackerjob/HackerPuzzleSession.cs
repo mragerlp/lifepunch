@@ -22,7 +22,8 @@ public sealed class HackerPuzzleSession
 	{
 		CompleteTheLine,
 		TypeSequence,
-		PickFix
+		PickFix,
+		GovDbBypass
 	}
 
 	public PuzzleKind Kind { get; }
@@ -42,8 +43,17 @@ public sealed class HackerPuzzleSession
 		Started = 0f;
 	}
 
-	public static HackerPuzzleSession CreateRandom()
+	public static HackerPuzzleSession CreateRandom( bool advancedTerminal = false )
 	{
+		if ( advancedTerminal )
+		{
+			return new HackerPuzzleSession(
+				PuzzleKind.GovDbBypass,
+				"Bypass treasury firewall — type the intrusion token:",
+				"govdb_breach",
+				40f );
+		}
+
 		var roll = Random.Shared.Int( 0, 2 );
 		return roll switch
 		{

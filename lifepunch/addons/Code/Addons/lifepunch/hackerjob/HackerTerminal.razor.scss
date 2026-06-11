@@ -9,10 +9,13 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 $bg: #0a0f0a;
-$border: #1a3a2a;
-$primary: #00FF7F;
+$border-standard: #1a3a2a;
+$primary-standard: #00FF7F;
+$border-advanced: #3a1a1a;
+$primary-advanced: #E4002B;
 $body: #d8ffe8;
 $error: #e4002b;
+$warn: #ffb347;
 $main-font: Mina;
 $text-sm: 14px;
 
@@ -24,10 +27,48 @@ HackerTerminal {
     width: 720px;
     height: 520px;
     background-color: rgba(10, 15, 10, 0.97);
-    border: 1px solid $border;
     border-radius: 6px;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
+
+    &.tier-standard {
+        border: 1px solid $border-standard;
+
+        .title-bar { border-bottom-color: $border-standard; }
+        .title-text, .prompt-label, .prompt-line, .divider-line, .ok-line { color: $primary-standard; }
+        .tier-badge { color: $primary-standard; border-color: rgba(0, 255, 127, 0.35); }
+        .input-row { border-top-color: $border-standard; }
+    }
+
+    &.tier-advanced {
+        border: 1px solid $border-advanced;
+        box-shadow: 0 0 24px rgba(228, 0, 43, 0.12);
+
+        .title-bar { border-bottom-color: $border-advanced; background-color: #0d0808; }
+        .title-text, .prompt-label, .prompt-line, .divider-line { color: $primary-advanced; }
+        .ok-line { color: #ff6b6b; }
+        .tier-badge { color: $primary-advanced; border-color: rgba(228, 0, 43, 0.45); }
+        .input-row { border-top-color: $border-advanced; background-color: #0d0808; }
+    }
+
+    .scanlines {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        pointer-events: none;
+        opacity: 0.04;
+        background: repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 2px,
+            rgba(255, 255, 255, 0.15) 2px,
+            rgba(255, 255, 255, 0.15) 4px
+        );
+        z-index: 2;
+    }
 
     .click-blocker {
         position: absolute;
@@ -36,24 +77,37 @@ HackerTerminal {
         right: 0;
         bottom: 0;
         pointer-events: all;
+        z-index: 1;
     }
 
     .title-bar {
         background-color: #080d08;
         padding: 10px 18px;
-        border-bottom: 1px solid $border;
+        border-bottom: 1px solid $border-standard;
         flex-shrink: 0;
         display: flex;
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
+        gap: 12px;
+        z-index: 3;
 
         .title-text {
             font-family: $main-font;
             font-size: $text-sm;
-            color: $primary;
             letter-spacing: 1px;
             font-weight: bold;
+            flex-grow: 1;
+        }
+
+        .tier-badge {
+            font-family: $main-font;
+            font-size: 10px;
+            letter-spacing: 2px;
+            padding: 3px 8px;
+            border: 1px solid rgba(0, 255, 127, 0.35);
+            border-radius: 3px;
+            flex-shrink: 0;
         }
 
         .close-x {
@@ -65,6 +119,7 @@ HackerTerminal {
             padding: 4px 10px;
             border-radius: 3px;
             cursor: pointer;
+            flex-shrink: 0;
         }
     }
 
@@ -74,18 +129,23 @@ HackerTerminal {
         padding: 8px 14px;
         font-family: $main-font;
         font-size: $text-sm;
+        z-index: 3;
 
         .screen-line {
             font-family: $main-font;
             font-size: $text-sm;
             white-space: pre-wrap;
+            line-height: 1.35;
         }
 
-        .prompt-line { color: $primary; }
         .output-line { color: $body; }
         .help-line { color: rgba(216, 255, 232, 0.75); }
-        .divider-line { color: $primary; }
         .error-line { color: $error; }
+        .warn-line { color: $warn; }
+
+        .countdown-line {
+            animation: pulse 1s ease-in-out infinite;
+        }
     }
 
     .input-row {
@@ -94,13 +154,13 @@ HackerTerminal {
         flex-direction: row;
         align-items: center;
         padding: 10px 14px;
-        border-top: 1px solid $border;
+        border-top: 1px solid $border-standard;
         background-color: #080d08;
+        z-index: 3;
 
         .prompt-label {
             font-family: $main-font;
             font-size: $text-sm;
-            color: $primary;
             margin-right: 8px;
             flex-shrink: 0;
         }
@@ -114,4 +174,9 @@ HackerTerminal {
             font-size: $text-sm;
         }
     }
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.55; }
 }
