@@ -1,4 +1,4 @@
-# Desktop shortcut: DXRP Editor (auto server API token via Start-SboxDxrpEditor.ps1)
+# Desktop shortcut: DXRP Editor (sync addons + open rp.sbproj via Start-SboxDxrpEditor.ps1)
 
 $ErrorActionPreference = 'Stop'
 $Here = $PSScriptRoot
@@ -24,15 +24,15 @@ foreach ($dir in @($desktop, $programs)) {
     $sc.TargetPath = $ps
     $sc.Arguments = $args
     $sc.IconLocation = $iconLoc
-    $sc.Description = 'Launch s&box DXRP with +authorize token from dxrp-editor.local.json'
+    $sc.Description = 'Sync LifePunch addons and launch s&box DXRP (authorize token in console when needed)'
     $sc.WorkingDirectory = (Resolve-Path (Join-Path $Here '..\..')).Path
     $sc.Save()
     Write-Host "  $($sc.FullName)" -ForegroundColor Green
 }
 
 Write-Host ''
-Write-Host 'Done. Double-click DXRP Editor (API) on VENGEANCE.' -ForegroundColor Cyan
+Write-Host 'Done. Double-click DXRP Editor on VENGEANCE.' -ForegroundColor Cyan
 $config = Join-Path $Here 'dxrp-editor.local.json'
 if (-not (Test-Path -LiteralPath $config)) {
-    Write-Host 'Requires: copy dxrp-editor.local.json.example -> dxrp-editor.local.json + serverToken' -ForegroundColor Yellow
+    Write-Host 'Requires: copy dxrp-editor.local.json.example -> dxrp-editor.local.json (paths only)' -ForegroundColor Yellow
 }

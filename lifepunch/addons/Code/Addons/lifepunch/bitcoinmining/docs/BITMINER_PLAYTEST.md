@@ -1,12 +1,21 @@
 # Bitcoin Miner — play-test checklist
 
-**Editor:** DXRP + API (`Start-SboxDxrpEditor.ps1`) · **Sync:** `Sync-LifePunchAddonsToDxrp.ps1 -Addon bitcoinmining`
+**Editor:** `Start-SboxDxrpEditor.ps1` (opens DXRP normally) · **Sync:** `Sync-LifePunchAddonsToDxrp.ps1 -Addon bitcoinmining`
+
+**API key (optional):** in console after host play — `authorize <dxrp.net server token>`
 
 ---
 
-## 0. See the hashd console (fastest)
+## 0. Host + join (DXRP is DedicatedServerOnly)
 
-Enter play mode, then:
+1. Open a **map scene** (not a prefab stage).
+2. Viewport toolbar → **network** icon → **Start Hosting**.
+3. Press **Play** (green arrow) — you should spawn as a player.
+4. Portal/API data only when needed: `authorize <token>` in console.
+
+## 1. See the hashd console (fastest)
+
+Enter play mode (hosted), then:
 
 ```text
 lp_hashd_preview
@@ -18,7 +27,7 @@ Spawns small rack + CRT kit and **opens the hashd overlay immediately**. The CRT
 
 ---
 
-## 1. Spawn a rig
+## 2. Spawn a rig
 
 **Fast (dev console):**
 
@@ -48,7 +57,7 @@ Logs `BITMINER_TEST rigs=N pos=...` for every `BitminerEntity` in the active sce
 
 ---
 
-## 2. Open terminal
+## 3. Open terminal
 
 Within **8 m horizontal / 4 m vertical** of the rig:
 
@@ -61,7 +70,7 @@ Within **8 m horizontal / 4 m vertical** of the rig:
 
 ---
 
-## 3. CLI smoke test
+## 4. CLI smoke test
 
 ```text
 help
@@ -87,7 +96,7 @@ Expected: green terminal UI, LCD on `lcd_screen` (on `bitcoin-terminal.prefab`),
 
 ---
 
-## 4. Known gaps (not blockers for Phase 1)
+## 5. Known gaps (not blockers for Phase 1)
 
 - Sounds missing (`sounds/bitcoin-miner/` — hum disabled on prefab)
 - Power anim not wired (`gpu-rack-anim.fbx` → `power_on` / `power_off`)
@@ -96,6 +105,6 @@ Expected: green terminal UI, LCD on `lcd_screen` (on `bitcoin-terminal.prefab`),
 
 ---
 
-## 5. After editor tweaks
+## 6. After editor tweaks
 
 Copy compiled outputs from DXRP `game/Assets/addons/lifepunch/bitcoinmining/` back into monorepo `lifepunch/addons/Assets/...`.

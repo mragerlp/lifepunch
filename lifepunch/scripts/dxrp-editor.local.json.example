@@ -1,7 +1,7 @@
 {
   "sboxDevPath": "D:/Steam/steamapps/common/sbox/sbox-dev.exe",
   "projectPath": "D:/Steam/steamapps/common/sbox/dxrp/game/rp.sbproj",
-  "serverToken": "PASTE_DXRP_SERVER_TOKEN_FROM_dxrp.net",
+  "serverToken": "",
   "api": "production",
-  "_notes": "Start-SboxDxrpEditor.ps1 mirrors lifepunch/addons -> dxrp/game before launch (default: bitcoinmining). Override with -SyncAddon or -SyncAllAddons."
+  "_notes": "Start-SboxDxrpEditor.ps1 mirrors lifepunch/addons -> dxrp/game, then opens rp.sbproj normally. Paste API key in console: authorize <token>. Optional -WithAuthorize uses serverToken here."
 }
