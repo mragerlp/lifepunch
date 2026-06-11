@@ -5,18 +5,18 @@
 
 ---
 
-## Step 1 — DXRP pocket discovery (Opus)
+## Step 1 — DXRP pocket discovery (Opus) ✅
 
-**Goal:** Map real APIs before writing LifePunch code.
+**Done** — folded into `VISIBLE_POCKET_SPEC.md` § DXRP integration; detail in `reference/DXRP_POCKET_DISCOVERY.md`; merged reply `to-cornerman-visible-pocket.txt`; distill `VISIBLE_POCKET_DXRP_SUMMARY.txt`.
 
-| Discover | Record in `to-cornerman-visible-pocket.txt` |
-|----------|---------------------------------------------|
-| Pocket item grant/remove | Type + method paths |
-| Pocket slot count / capacity | Config or per-player state |
-| Right-click / use / drop hooks | Input + item definition |
-| Death drop behavior | Existing vs override |
-| Money printer pocket + disconnect TTL | Parity target for bank TTL |
-| `lifepunch_nopocket` tag handling | Confirm DXRP respects custom deny tag |
+| Discover | Result |
+|----------|--------|
+| Pocket grant/remove | `PocketSystem.PickupHost` / `DropHost`; `Pockets[steamId]` |
+| Slot capacity | `Config.Current.Game.MaxPocketItems` (global 6) — **POCKET-01** per-player gate |
+| Use/drop hooks | Stock: LIFO drop only; P2 LifePunch Use/Drop Razor |
+| Death drop | `DropPocketsOnDeath` / `DropPocketsOnJobChange` |
+| Printer disconnect TTL | `PrinterDestroyAfterDisconnectTime` = 3600s |
+| `lifepunch_nopocket` | Not in core; deny via no `pocket_item` |
 
 **Do not** fork a second item database. Adapter reads/writes DXRP pocket.
 
@@ -61,8 +61,8 @@ Study **Hit Shapes** / **SGE** for chrome only — ship LifePunch-owned UI.
 
 ## Definition of done (P1)
 
-- [ ] Step 1 discovery written to reply slot
-- [ ] Slot limits enforced server-side
+- [x] Step 1 discovery written to reply slot + spec § DXRP integration
+- [ ] Slot limits enforced server-side (per-player — POCKET-01; dev bridge only today)
 - [ ] Hotbar visible in play mode
 - [ ] Use/Drop UX matches spec
 - [ ] Miners not pocketable in play-test

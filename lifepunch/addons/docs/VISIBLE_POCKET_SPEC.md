@@ -1,7 +1,34 @@
 # LIFEPUNCH Visible Pocket — canonical spec
 
-**Addon (planned):** `lifepunch.visiblepocket` · **Status:** P1 design locked — implementation on VENGEANCE  
+**Addon:** `lifepunch.visiblepocket` · **Status:** P1 scaffold on `main` (`PocketSlotPolicy` + dev cmds) — Opus per-player gate pending  
 **Not a shop.** Players carry goods in a **visible hotbar pocket** at their own risk.
+
+---
+
+## DXRP integration (Step 1 — folded)
+
+LifePunch **does not** fork a second item database. Visible Pocket is policy + UX on DXRP `PocketSystem`.
+
+| Surface | DXRP path | Visible Pocket role |
+|---------|-----------|---------------------|
+| Pickup / drop | `PocketSystem.PickupHost` / `DropHost` (`Code/System/Player/PocketSystem.cs`) | Intercept capacity + future Use/Drop UX |
+| Storage | `Dictionary<long, List<GameObject>>` per SteamId | Read-only adapter; no parallel pocket list |
+| Capacity | `Config.Current.Game.MaxPocketItems` (default **6**, **server-global**) | `PocketSlotPolicy.ResolveMaxSlots` — per-player target |
+| Pickup allow | `Constants.PocketItemTag` on root | Raid deny: omit `pocket_item`; tag `lifepunch_nopocket` on miners/terminals |
+| Pocketed state | `Constants.PocketTag`; GO disabled | Unchanged |
+| HUD hint | `PocketSystem.LocalPocketCount` + `InputHelper.razor` | P2 replace/extend with visible hotbar |
+| Input | `HandsEquipment` attack2 → pocket RPCs | P2 right-click Use/Drop menu |
+| Death / job | `DropPocketsOnDeath` / `DropPocketsOnJobChange` | Align with spec (pocket drops; bank phase 3 exempt) |
+| Disconnect | `OnPlayerDisconnectHost` **destroys** pocketed entities | Bank TTL must **not** reuse pocket destroy path |
+| Staff | `dx_pocket_list` | Unchanged |
+
+**Pickup gate (stock DXRP):** ray → `EntityTag` → root has `PocketItemTag` → count &lt; `MaxPocketItems` → add `PocketTag`, disable GO, audit `PocketPickup`. Drop is LIFO via `DropHost`.
+
+**Money printer disconnect TTL (bank parity target):** `PrinterEntity` uses `Config.Current.Game.PrinterDestroyAfterDisconnectTime` (**3600s** default) when owner disconnects and `PrinterDecayEnabled` is on. Pocketed printers reset the timer (`PocketTag` clears disconnect decay). Inventory Bank phase 3 should align to this constant, not pocket disconnect destroy.
+
+**P1 dev bridge (not production):** `lp_pocket_policy` / `lp_pocket_apply_dev` in `lifepunch.visiblepocket` — host sets **global** `MaxPocketItems` to local player's policy max for play-test only.
+
+**Production swap (POCKET-01):** replace dev global sync with per-player capacity check at pickup — see `TECH_DEBT.md` POCKET-01. Detail reference: `reference/DXRP_POCKET_DISCOVERY.md`.
 
 ---
 
@@ -68,8 +95,10 @@ See `reference/LLAD_MODULAR_INVENTORY_STUDY.md` § DXRP conflict.
 
 ## Build runbooks
 
-- `RED_VENGEANCE_VISIBLE_POCKET_BUILD.md` — Opus implementation steps
+- `RED_VENGEANCE_VISIBLE_POCKET_BUILD.md` — Opus implementation steps (Step 1 ✅)
 - `RED_VENGEANCE_TOOLING_HANDOFF.md` — lane order + RGB P0
-- `TECH_DEBT.md` — **POCKET-01**
+- `TECH_DEBT.md` — **POCKET-01** swap point
+- `reference/DXRP_POCKET_DISCOVERY.md` — full Step 1 notes (detail; spec § DXRP integration is canonical summary)
 
-**VENGEANCE reply slot:** `lifepunch/docs/handoff/cornerman-outbox/to-cornerman-visible-pocket.txt` (DXRP hook paths after Step 1 discovery).
+**Handoff reply (merged):** `lifepunch/docs/handoff/cornerman-outbox/to-cornerman-visible-pocket.txt`  
+**Cornerman distill:** `lifepunch/docs/handoff/cornerman-outbox/VISIBLE_POCKET_DXRP_SUMMARY.txt`

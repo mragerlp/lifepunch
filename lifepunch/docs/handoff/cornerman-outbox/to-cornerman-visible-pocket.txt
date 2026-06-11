@@ -1,20 +1,41 @@
-VENGEANCE → Cornerman reply slot (Visible Pocket)
+VENGEANCE → Cornerman (Visible Pocket — merged handoff @ d240d35+)
 
-DXRP pocket hook path:
-  Dxura.RP.Game.PocketSystem (Code/System/Player/PocketSystem.cs)
-  PickupHost / DropHost [Rpc.Host]; storage Dictionary<long, List<GameObject>>
-  Capacity gate: Config.Current.Game.MaxPocketItems (GLOBAL default 6 — per-player tiers need P1 bridge)
-  Tags: Constants.PocketItemTag required; Constants.PocketTag when pocketed
+STATUS
+  Step 1 DXRP discovery: DONE — folded into VISIBLE_POCKET_SPEC.md § DXRP integration
+  P1 scaffold: lifepunch.visiblepocket (PocketSlotPolicy, VisiblePocketService, dev cmds)
+  Cornerman lane: distill only — no C# commits
+
+DXRP HOOKS (canonical)
+  PocketSystem — Code/System/Player/PocketSystem.cs
+  PickupHost / DropHost [Rpc.Host]; Pockets[steamId] List<GameObject>
+  Capacity: Config.Current.Game.MaxPocketItems (GLOBAL default 6)
+  Tags: PocketItemTag required to pick up; PocketTag when pocketed
   HUD: PocketSystem.LocalPocketCount + InputHelper.razor
+  Hands: HandsEquipment attack2 → pocket RPCs
 
-Money printer disconnect TTL:
-  TBD — search printer TimedDestroy / disconnect grace on VENGEANCE
+NOPOCKET / RAID
+  Core does not read lifepunch_nopocket — deny by omitting pocket_item
+  Bitminer prefabs: lifepunch_nopocket, no pocket_item (done)
 
-Blockers:
-  - MaxPocketItems is server-global, not per-player — Opus must pick bridge before production slot tiers
-  - lifepunch_nopocket not in core — deny via omitting pocket_item (bitminer fixed)
-  - No stock Use-item from pocket UI — P2 new Razor layer
+BANK TTL PARITY (phase 3)
+  Money printer: PrinterDestroyAfterDisconnectTime = 3600f (GameConfig.Systems.cs)
+  PrinterEntity.OnSecondlyUpdate — owner disconnect decay; pocketed printer exempt (PocketTag)
+  Pocket disconnect: destroys pocketed GOs — bank must NOT use that path
 
-Test on VENGEANCE:
-  lp_pocket_policy | lp_pocket_apply_dev
-  See visiblepocket/docs/VISIBLE_POCKET_PLAYTEST.md
+POCKET-01 BLOCKER (Opus)
+  Per-player slot tiers vs global MaxPocketItems
+  Swap: VisiblePocketService.TryApplyDevGlobalMax → per-player check at PickupHost gate
+  See TECH_DEBT.md POCKET-01 + spec § DXRP integration
+
+P2 / P3 OPEN
+  Use/Drop right-click UI — new Razor (not stock DXRP)
+  Inventory Bank prop + 5 death-safe slots @ $1.5M
+
+VENGEANCE TEST
+  lp_pocket_policy | lp_pocket_apply_dev (host dev bridge)
+  visiblepocket/docs/VISIBLE_POCKET_PLAYTEST.md
+
+CORNERMAN NEXT
+  Read spec § DXRP integration — optional 10-line outbox distill
+  Optional llad UI pattern notes → VISIBLE_POCKET_UI_NOTES.txt
+  Fold any new blockers back into spec; ping owner one line when done

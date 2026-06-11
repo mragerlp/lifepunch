@@ -1,7 +1,8 @@
 # DXRP pocket — discovery (Step 1 complete)
 
 **For:** `lifepunch.visiblepocket` (POCKET-01) · **Source:** `dxrp/game/Code` on VENGEANCE install  
-**Reply mirror:** `lifepunch/docs/handoff/cornerman-outbox/to-cornerman-visible-pocket.txt`
+**Canonical summary:** `VISIBLE_POCKET_SPEC.md` § DXRP integration (this file = detail reference)  
+**Handoff:** `lifepunch/docs/handoff/cornerman-outbox/to-cornerman-visible-pocket.txt` · distill: `VISIBLE_POCKET_DXRP_SUMMARY.txt`
 
 ---
 
@@ -64,8 +65,7 @@ Optional hardening: deny if `lifepunch_nopocket` tag present (addon PR to Dxura 
 
 ## Money printer disconnect TTL
 
-Search separately on VENGEANCE — candidate: printer entity / timed destroy / player disconnect grace.  
-Record constant in reply slot when found (bank phase 3 parity).
+**Found:** `PrinterEntity` (`Code/Entity/Entities/PrinterEntity.cs`) — when owner disconnects and `PrinterDecayEnabled`, starts `TimeSinceOwnerDisconnect`; destroys at `Config.Current.Game.PrinterDestroyAfterDisconnectTime` (**3600f** default, `GameConfig.Systems.cs`). Pocketed printers (`PocketTag`) skip decay. **Bank phase 3** should align to this constant, not pocket `OnPlayerDisconnectHost` destroy.
 
 ---
 

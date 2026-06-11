@@ -27,7 +27,7 @@ Read inbox after VENGEANCE push:
 
 | # | Task | Output |
 |---|------|--------|
-| 1 | **Distill** `DXRP_POCKET_DISCOVERY.md` into 10-line summary in outbox | `cornerman/outbox/VISIBLE_POCKET_DXRP_SUMMARY.txt` |
+| 1 | **Review** spec § DXRP integration + repo `VISIBLE_POCKET_DXRP_SUMMARY.txt` (VENGEANCE pre-distilled) | Add corrections only if you find gaps |
 | 2 | **llad UI study** (optional) — if package mounted, note grid/HUD patterns only | `cornerman/outbox/VISIBLE_POCKET_UI_NOTES.txt` |
 | 3 | **Watch** VENGEANCE reply slot | `cornerman/outbox/to-cornerman-visible-pocket.txt` — fold blockers into spec § Architecture |
 | 4 | **Do not** add `visiblepocket` code or `addons.json` ship rows | VENGEANCE only |

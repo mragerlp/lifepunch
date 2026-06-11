@@ -1,0 +1,14 @@
+Visible Pocket — DXRP pocket distill (Cornerman / VENGEANCE @ Step 1 complete)
+
+1. Carry model = Dxura.RP.Game.PocketSystem only — no LifePunch parallel inventory DB.
+2. Pickup/drop = PickupHost/DropHost RPCs; per-player list keyed by SteamId.
+3. Slot cap today = one server-wide MaxPocketItems (6); tiers need POCKET-01 per-player gate.
+4. Pickup requires pocket_item tag; lifepunch_nopocket = omit pocket_item (bitminer done).
+5. Death/job drop uses DropPocketsOnDeath / DropPocketsOnJobChange — matches spec raid drops.
+6. Disconnect destroys pocket contents — bank phase 3 must use separate TTL logic.
+7. Printer disconnect grace = PrinterDestroyAfterDisconnectTime (3600s) — bank parity target.
+8. P1 dev: lp_pocket_policy + lp_pocket_apply_dev (global max bridge, not production).
+9. P2: visible hotbar + Use/Drop menu; P3: Inventory Bank prop + 5 protected slots.
+10. llad MIS = study UI only; ship lifepunch.visiblepocket.
+
+Canonical: addons/docs/VISIBLE_POCKET_SPEC.md § DXRP integration
