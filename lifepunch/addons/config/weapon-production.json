@@ -22,7 +22,7 @@
       "dxrpClassWeapon": "usp",
       "cs2Mesh": "weapon_pist_deagle",
       "sboxIdentifier": "lifepunch.deagle",
-      "status": "scaffold",
+      "status": "code-draft",
       "queueOrder": 2
     },
     {
@@ -33,7 +33,7 @@
       "dxrpClassWeapon": "mp5",
       "cs2Mesh": "weapon_smg_mp9",
       "sboxIdentifier": "lifepunch.mp9",
-      "status": "scaffold",
+      "status": "code-draft",
       "queueOrder": 3
     },
     {
@@ -44,7 +44,7 @@
       "dxrpClassWeapon": "m700",
       "cs2Mesh": "weapon_snip_ssg08",
       "sboxIdentifier": "lifepunch.ssg08",
-      "status": "scaffold",
+      "status": "code-draft",
       "queueOrder": 4
     },
     {
@@ -55,7 +55,7 @@
       "dxrpClassWeapon": "spaghelli",
       "cs2Mesh": "weapon_shot_xm1014",
       "sboxIdentifier": "lifepunch.xm1014",
-      "status": "scaffold",
+      "status": "code-draft",
       "queueOrder": 5
     }
   ]

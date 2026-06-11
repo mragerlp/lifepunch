@@ -7,7 +7,7 @@ Copy AK golden-kit workflow. Class = **smg** / **mp5**.
 - [ ] `w_mp9.prefab` cloned from `gameplay/equipment/weapons/mp5/w_mp5.prefab` (Equipment + Functions)
 - [ ] `vm_mp9.prefab` OR placeholder `gameplay/equipment/weapons/mp5/vm_mp5.prefab` for FP
 - [ ] Sounds under `sounds/` (own or licensed)
-- [ ] Tune `Mp9.Stats` from class reference
+- [x] Tune `Mp9.Stats` from class reference (`DXRP_CLASS_WEAPON_REFERENCES.md`)
 - [ ] `addons.json` content row + portal Equipment + Gun Dealer shipment (Qty 5)
 - [ ] `prepare-publish.ps1 -Addon mp9`
 

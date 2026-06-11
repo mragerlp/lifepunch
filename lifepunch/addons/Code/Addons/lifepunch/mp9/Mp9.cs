@@ -18,25 +18,32 @@ public static class Mp9
 	public const string Grouping = "Secondary";
 	public const string WeaponClass = "smg";
 	public const string DxrpClassReference = "mp5";
+	public const string Cs2ReferenceMesh = "weapon_smg_mp9";
 
 	public const string WorldPrefabPath = "addons/lifepunch/mp9/equipment/w_mp9/w_mp9.prefab";
 	public const string ViewModelPrefabPath = "addons/lifepunch/mp9/equipment/vm_mp9/vm_mp9.prefab";
 	public const string WorldModelPath = "addons/lifepunch/mp9/models/lifepunch/mp9/w_mp9/w_mp9.vmdl";
 	public const string ClassWorldPrefabPlaceholder = "gameplay/equipment/weapons/mp5/w_mp5.prefab";
 	public const string ClassViewModelPlaceholder = "gameplay/equipment/weapons/mp5/vm_mp5.prefab";
+	public const string FireSoundPath = "addons/lifepunch/mp9/sounds/mp9_shot.sound";
+	public const string FireDistantSoundPath = "addons/lifepunch/mp9/sounds/mp9_shot_distant.sound";
+	public const string ReloadSoundPath = "addons/lifepunch/mp9/sounds/mp9_reload.sound";
+	public const string CockSoundPath = "addons/lifepunch/mp9/sounds/mp9_cock.sound";
+	public const string DrawSoundPath = "addons/lifepunch/mp9/sounds/mp9_draw.sound";
 
+	// MP5 class baseline (dxrp-public w_mp5) biased for MP9 ROF profile.
 	public static Mp9WeaponStats Stats { get; } = new()
 	{
-		Damage = 0,
-		RoundsPerMinute = 0,
-		MagazineSize = 0,
-		ReserveAmmo = 0,
-		ReloadSeconds = 0f,
-		RangeMeters = 0,
-		SpreadDegrees = 0f,
-		RecoilPitch = 0f,
-		RecoilYaw = 0f,
-		Automatic = false
+		Damage = 11,
+		RoundsPerMinute = 857,
+		MagazineSize = 30,
+		ReserveAmmo = 90,
+		ReloadSeconds = 1.4f,
+		RangeMeters = 65,
+		SpreadDegrees = 2.2f,
+		RecoilPitch = 3.0f,
+		RecoilYaw = 2.0f,
+		Automatic = true
 	};
 }
 

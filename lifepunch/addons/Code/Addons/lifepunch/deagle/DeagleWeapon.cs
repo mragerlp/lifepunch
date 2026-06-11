@@ -12,7 +12,6 @@ using Sandbox;
 
 namespace LifePunch.DXRP.Addons.Deagle;
 
-/// <summary>Runtime weapon state stub â€” tune stats in Deagle.cs, wire prefab Functions in editor.</summary>
 public sealed class DeagleWeapon : Component
 {
 	public int ClipContents { get; private set; }
@@ -31,4 +30,46 @@ public sealed class DeagleWeapon : Component
 		ReserveAmmo = Deagle.Stats.ReserveAmmo;
 		IsReloading = false;
 	}
+
+	public bool TrySpendRound()
+	{
+		if ( IsReloading || ClipContents <= 0 )
+			return false;
+
+		ClipContents--;
+		return true;
+	}
+
+	public bool TryStartReload()
+	{
+		if ( !CanReload )
+			return false;
+
+		IsReloading = true;
+		return true;
+	}
+
+	public void FinishReload()
+	{
+		if ( !IsReloading )
+			return;
+
+		var needed = Deagle.Stats.MagazineSize - ClipContents;
+		var loaded = System.Math.Min( needed, ReserveAmmo );
+
+		ClipContents += loaded;
+		ReserveAmmo -= loaded;
+		IsReloading = false;
+	}
+
+	public void CancelReload()
+	{
+		IsReloading = false;
+	}
+
+	public bool CanReload => !IsReloading
+		&& ClipContents < Deagle.Stats.MagazineSize
+		&& ReserveAmmo > 0;
+
+	public float SecondsBetweenShots => Deagle.Stats.SecondsBetweenShots;
 }

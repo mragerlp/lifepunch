@@ -7,7 +7,7 @@ Copy AK golden-kit workflow. Class = **handgun** / **usp**.
 - [ ] `w_deagle.prefab` cloned from `gameplay/equipment/weapons/usp/w_usp.prefab` (Equipment + Functions)
 - [ ] `vm_deagle.prefab` OR placeholder `gameplay/equipment/weapons/usp/vm_usp.prefab` for FP
 - [ ] Sounds under `sounds/` (own or licensed)
-- [ ] Tune `Deagle.Stats` from class reference
+- [x] Tune `Deagle.Stats` from class reference (`DXRP_CLASS_WEAPON_REFERENCES.md`)
 - [ ] `addons.json` content row + portal Equipment + Gun Dealer shipment (Qty 5)
 - [ ] `prepare-publish.ps1 -Addon deagle`
 

@@ -2,15 +2,17 @@
 
 Operational queue for the **5 Gun Dealer classes**. Canon strategy: `WEAPON_PROGRAM.md`. Per-class build steps: `WEAPON_CLASS_SPEC.md`.
 
+**Red (VENGEANCE) action plan:** `RED_WEAPON_MASS_PRODUCTION_PLAN.md` — start at **deagle** (#2).
+
 ## Queue
 
 | # | LifePunch ident | Gun Dealer class | DXRP kit clone | CS2 reference mesh | Status |
 |---|-----------------|------------------|----------------|--------------------|--------|
 | 1 | `ak47` | Assault Rifle | `m4a1` | `weapon_rif_ak47` | **Active kit** (golden reference) |
-| 2 | `deagle` | Handgun | `usp` | `weapon_pist_deagle` | `foundation-scaffold` |
-| 3 | `mp9` | SMG | `mp5` | `weapon_smg_mp9` | `foundation-scaffold` |
-| 4 | `ssg08` | Sniper | `m700` | `weapon_snip_ssg08` | `foundation-scaffold` |
-| 5 | `xm1014` | Semi-auto shotgun | `spaghelli` | `weapon_shot_xm1014` | `foundation-scaffold` |
+| 2 | `deagle` | Handgun | `usp` | `weapon_pist_deagle` | `code-draft` (stats + Weapon.cs) |
+| 3 | `mp9` | SMG | `mp5` | `weapon_smg_mp9` | `code-draft` |
+| 4 | `ssg08` | Sniper | `m700` | `weapon_snip_ssg08` | `code-draft` |
+| 5 | `xm1014` | Semi-auto shotgun | `spaghelli` | `weapon_shot_xm1014` | `code-draft` |
 
 Machine-readable copy: `config/weapon-production.json`.
 
@@ -26,6 +28,8 @@ powershell -NoProfile -ExecutionPolicy Bypass -File lifepunch/addons/scripts/New
 # Refresh code/docs after script changes
 powershell -NoProfile -ExecutionPolicy Bypass -File lifepunch/addons/scripts/New-LifePunchWeapon.ps1 -Ident mp9 -Force
 ```
+
+Class prefab extraction (USP/MP5/M700/Spaghelli): `DXRP_CLASS_WEAPON_REFERENCES.md`.
 
 ## Per-weapon lane (repeat for #2–5)
 

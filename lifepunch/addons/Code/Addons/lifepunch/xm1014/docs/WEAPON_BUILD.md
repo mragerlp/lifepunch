@@ -7,7 +7,7 @@ Copy AK golden-kit workflow. Class = **shotgun** / **spaghelli**.
 - [ ] `w_xm1014.prefab` cloned from `gameplay/equipment/weapons/spaghelli/w_spaghelli.prefab` (Equipment + Functions)
 - [ ] `vm_xm1014.prefab` OR placeholder `gameplay/equipment/weapons/spaghelli/vm_spaghelli.prefab` for FP
 - [ ] Sounds under `sounds/` (own or licensed)
-- [ ] Tune `Xm1014.Stats` from class reference
+- [x] Tune `Xm1014.Stats` from class reference (`DXRP_CLASS_WEAPON_REFERENCES.md`)
 - [ ] `addons.json` content row + portal Equipment + Gun Dealer shipment (Qty 5)
 - [ ] `prepare-publish.ps1 -Addon xm1014`
 

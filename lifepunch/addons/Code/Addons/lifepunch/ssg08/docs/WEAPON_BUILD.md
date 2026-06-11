@@ -7,7 +7,7 @@ Copy AK golden-kit workflow. Class = **sniper** / **m700**.
 - [ ] `w_ssg08.prefab` cloned from `gameplay/equipment/weapons/m700/w_m700.prefab` (Equipment + Functions)
 - [ ] `vm_ssg08.prefab` OR placeholder `gameplay/equipment/weapons/m700/vm_m700.prefab` for FP
 - [ ] Sounds under `sounds/` (own or licensed)
-- [ ] Tune `Ssg08.Stats` from class reference
+- [x] Tune `Ssg08.Stats` from class reference (`DXRP_CLASS_WEAPON_REFERENCES.md`)
 - [ ] `addons.json` content row + portal Equipment + Gun Dealer shipment (Qty 5)
 - [ ] `prepare-publish.ps1 -Addon ssg08`
 

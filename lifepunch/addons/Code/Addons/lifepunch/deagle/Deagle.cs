@@ -18,24 +18,31 @@ public static class Deagle
 	public const string Grouping = "Secondary";
 	public const string WeaponClass = "handgun";
 	public const string DxrpClassReference = "usp";
+	public const string Cs2ReferenceMesh = "weapon_pist_deagle";
 
 	public const string WorldPrefabPath = "addons/lifepunch/deagle/equipment/w_deagle/w_deagle.prefab";
 	public const string ViewModelPrefabPath = "addons/lifepunch/deagle/equipment/vm_deagle/vm_deagle.prefab";
 	public const string WorldModelPath = "addons/lifepunch/deagle/models/lifepunch/deagle/w_deagle/w_deagle.vmdl";
 	public const string ClassWorldPrefabPlaceholder = "gameplay/equipment/weapons/usp/w_usp.prefab";
 	public const string ClassViewModelPlaceholder = "gameplay/equipment/weapons/usp/vm_usp.prefab";
+	public const string FireSoundPath = "addons/lifepunch/deagle/sounds/deagle_shot.sound";
+	public const string FireDistantSoundPath = "addons/lifepunch/deagle/sounds/deagle_shot_distant.sound";
+	public const string ReloadSoundPath = "addons/lifepunch/deagle/sounds/deagle_reload.sound";
+	public const string CockSoundPath = "addons/lifepunch/deagle/sounds/deagle_cock.sound";
+	public const string DrawSoundPath = "addons/lifepunch/deagle/sounds/deagle_draw.sound";
 
+	// USP class baseline (dxrp-public w_usp) biased for Desert Eagle identity.
 	public static DeagleWeaponStats Stats { get; } = new()
 	{
-		Damage = 0,
-		RoundsPerMinute = 0,
-		MagazineSize = 0,
-		ReserveAmmo = 0,
-		ReloadSeconds = 0f,
-		RangeMeters = 0,
-		SpreadDegrees = 0f,
-		RecoilPitch = 0f,
-		RecoilYaw = 0f,
+		Damage = 55,
+		RoundsPerMinute = 267,
+		MagazineSize = 7,
+		ReserveAmmo = 35,
+		ReloadSeconds = 2.0f,
+		RangeMeters = 75,
+		SpreadDegrees = 2.5f,
+		RecoilPitch = 4.5f,
+		RecoilYaw = 1.8f,
 		Automatic = false
 	};
 }

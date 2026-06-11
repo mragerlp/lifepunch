@@ -12,7 +12,6 @@ using Sandbox;
 
 namespace LifePunch.DXRP.Addons.Ssg08;
 
-/// <summary>Runtime weapon state stub â€” tune stats in Ssg08.cs, wire prefab Functions in editor.</summary>
 public sealed class Ssg08Weapon : Component
 {
 	public int ClipContents { get; private set; }
@@ -31,4 +30,46 @@ public sealed class Ssg08Weapon : Component
 		ReserveAmmo = Ssg08.Stats.ReserveAmmo;
 		IsReloading = false;
 	}
+
+	public bool TrySpendRound()
+	{
+		if ( IsReloading || ClipContents <= 0 )
+			return false;
+
+		ClipContents--;
+		return true;
+	}
+
+	public bool TryStartReload()
+	{
+		if ( !CanReload )
+			return false;
+
+		IsReloading = true;
+		return true;
+	}
+
+	public void FinishReload()
+	{
+		if ( !IsReloading )
+			return;
+
+		var needed = Ssg08.Stats.MagazineSize - ClipContents;
+		var loaded = System.Math.Min( needed, ReserveAmmo );
+
+		ClipContents += loaded;
+		ReserveAmmo -= loaded;
+		IsReloading = false;
+	}
+
+	public void CancelReload()
+	{
+		IsReloading = false;
+	}
+
+	public bool CanReload => !IsReloading
+		&& ClipContents < Ssg08.Stats.MagazineSize
+		&& ReserveAmmo > 0;
+
+	public float SecondsBetweenShots => Ssg08.Stats.SecondsBetweenShots;
 }
