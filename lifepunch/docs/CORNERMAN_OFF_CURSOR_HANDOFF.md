@@ -17,12 +17,11 @@
 
 ## Cornerman box — if owner still uses it
 
-1. **Sync clone (optional):**
+1. **Sync clone (optional)** — use the script (safe mid-rebase):
    ```powershell
-   cd C:\Projects\lifepunch
-   git fetch origin
-   git reset --hard origin/main
+   powershell -NoProfile -ExecutionPolicy Bypass -File C:\lifepunch\cornerman\inbox\Reset-CornermanClone.ps1
    ```
+   Red pushes this to inbox via `Push-CornermanResetScript.ps1`. Manual equivalent: `git rebase --abort` then `git fetch origin` then `git reset --hard origin/main`.
 2. **Read inbox:** `C:\lifepunch\cornerman\inbox\CORNERMAN_OFF_CURSOR_HANDOFF.md` (this file, pushed by Red)
 3. **Do NOT** expect Cursor agents or automatic commits.
 4. **Optional (no Cursor):** copy `outbox/` mirrors into Odysseus/RAG; run PTT relay per `CORNERMAN_PUSH_TO_TALK.md`.
