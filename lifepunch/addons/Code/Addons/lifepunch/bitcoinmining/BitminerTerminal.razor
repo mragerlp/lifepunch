@@ -119,7 +119,7 @@
 </root>
 
 @code {
-    public BitminerEntity Miner { get; set; }
+    private BitminerEntity Miner => BitminerRigRegistry.SelectedRig;
 
     private TextEntry InputBox { get; set; }
     private Panel ScreenScroll { get; set; }
@@ -157,7 +157,15 @@
         if ( terminal == null )
             return;
 
-        terminal.Miner = miner;
+        var scene = Sandbox.Game.ActiveScene;
+        if ( miner.IsValid() )
+            BitminerRigRegistry.Refresh( scene, miner.WorldPosition );
+        else if ( BitminerTerminalHost.LocalViewerPosition( scene ) is { } viewerPos )
+            BitminerRigRegistry.Refresh( scene, viewerPos );
+
+        if ( miner.IsValid() )
+            BitminerRigRegistry.TrySelect( miner );
+
         terminal.FocusInput();
         terminal.Boot();
     }
@@ -172,7 +180,10 @@
         _lines.Add( ">> linking gpu-rack telemetry bus ... OK" );
         _lines.Add( ">> syncing payout ledger (60s tick) ... OK" );
         _lines.Add( ">> rig interface ready — telemetry rail active (left)" );
-        _lines.Add( "Commands: help · mining · bitcoin · upgrade · status" );
+        var rigCount = BitminerRigRegistry.RegisteredRigs.Count;
+        if ( rigCount > 1 )
+            _lines.Add( $">> {rigCount} rigs linked — use 'racks' · 'select <id>' · 'mining start all'" );
+        _lines.Add( "Commands: help · racks · mining · bitcoin · upgrade · status" );
         _lines.Add( "" );
     }
 
@@ -446,7 +457,9 @@
                 _lines.Add( "--------------------HELP--------------------" );
                 _lines.Add( "  BITCOIN  - Sell or view stored bitcoin balance." );
                 _lines.Add( "  INFO     - Output device specifications." );
-                _lines.Add( "  MINING   - Start or stop the miner." );
+                _lines.Add( "  RACKS    - List linked mining rigs in range." );
+                _lines.Add( "  SELECT   - select <id> — pick active rig for commands." );
+                _lines.Add( "  MINING   - start | stop | start all | stop all | start <id>" );
                 _lines.Add( "  UPGRADE  - Open hardware upgrade panel." );
                 _lines.Add( "  STATUS   - Dump full status to command log." );
                 _lines.Add( "  MENU     - Same as UPGRADE." );
@@ -500,22 +513,79 @@
                 }
                 break;
 
+            case "racks":
+                AppendRacksList();
+                break;
+
+            case "select":
+                if ( !int.TryParse( arg, out var selectId ) )
+                {
+                    _lines.Add( "ERROR: Usage — select <id>  (see 'racks')." );
+                    break;
+                }
+                if ( !BitminerRigRegistry.TrySelect( selectId ) )
+                {
+                    _lines.Add( $"ERROR: No rig id {selectId}." );
+                    break;
+                }
+                _lines.Add( $"Selected rig-{selectId} ({BitminerRigRegistry.GetRigTypeLabel( Miner )})." );
+                break;
+
             case "mining":
-                if ( !Miner.IsValid() ) { _lines.Add( "ERROR: Miner connection lost." ); break; }
                 if ( arg == "start" )
                 {
-                    Miner.SetMiningState( true );
-                    _lines.Add( "Mining started." );
+                    var startTarget = parts.Length > 2 ? parts[2] : "";
+                    if ( startTarget == "all" )
+                    {
+                        var started = SetMiningOnAll( true );
+                        _lines.Add( started > 0 ? $"Mining started on {started} rig(s)." : "ERROR: No rigs in range." );
+                    }
+                    else if ( int.TryParse( startTarget, out var startId ) && BitminerRigRegistry.TrySelect( startId ) )
+                    {
+                        Miner.SetMiningState( true );
+                        _lines.Add( $"Rig-{startId} mining started." );
+                    }
+                    else if ( Miner.IsValid() )
+                    {
+                        Miner.SetMiningState( true );
+                        _lines.Add( "Mining started." );
+                    }
+                    else
+                    {
+                        _lines.Add( "ERROR: No rig selected — use 'racks' or 'select <id>'." );
+                    }
                 }
                 else if ( arg == "stop" )
                 {
-                    Miner.SetMiningState( false );
-                    _lines.Add( "Mining stopped." );
+                    var stopTarget = parts.Length > 2 ? parts[2] : "";
+                    if ( stopTarget == "all" )
+                    {
+                        var stopped = SetMiningOnAll( false );
+                        _lines.Add( stopped > 0 ? $"Mining stopped on {stopped} rig(s)." : "ERROR: No rigs in range." );
+                    }
+                    else if ( int.TryParse( stopTarget, out var stopId ) && BitminerRigRegistry.TrySelect( stopId ) )
+                    {
+                        Miner.SetMiningState( false );
+                        _lines.Add( $"Rig-{stopId} mining stopped." );
+                    }
+                    else if ( Miner.IsValid() )
+                    {
+                        Miner.SetMiningState( false );
+                        _lines.Add( "Mining stopped." );
+                    }
+                    else
+                    {
+                        _lines.Add( "ERROR: No rig selected." );
+                    }
+                }
+                else if ( Miner.IsValid() )
+                {
+                    _lines.Add( $"  Status: {( Miner.IsMining ? "ACTIVE" : "STOPPED" )}" );
+                    _lines.Add( "  Use 'mining start' | 'stop' | 'start all' | 'start <id>'." );
                 }
                 else
                 {
-                    _lines.Add( $"  Status: {( Miner.IsMining ? "ACTIVE" : "STOPPED" )}" );
-                    _lines.Add( "  Use 'mining start' or 'mining stop'." );
+                    _lines.Add( "ERROR: No rigs linked." );
                 }
                 break;
 
@@ -555,8 +625,46 @@
         }
     }
 
+    private void AppendRacksList()
+    {
+        var rigs = BitminerRigRegistry.RegisteredRigs;
+        if ( rigs.Count == 0 )
+        {
+            _lines.Add( "No mining rigs within 4m of terminal." );
+            return;
+        }
+
+        _lines.Add( "--------------------RACKS--------------------" );
+        for ( var i = 0; i < rigs.Count; i++ )
+        {
+            var rig = rigs[i];
+            if ( !rig.IsValid() )
+                continue;
+
+            var marker = i == BitminerRigRegistry.SelectedIndex ? "*" : " ";
+            var type = BitminerRigRegistry.GetRigTypeLabel( rig );
+            var status = BitminerRigRegistry.GetRigStatusLabel( rig );
+            _lines.Add( $" {marker} rig-{i}  {type,-9}  {status,-7}  {rig.BitcoinAmount:0.00000000} BTC" );
+        }
+        _lines.Add( "--------------------------------------------" );
+    }
+
+    private static int SetMiningOnAll( bool enabled )
+    {
+        var count = 0;
+        foreach ( var rig in BitminerRigRegistry.RegisteredRigs )
+        {
+            if ( !rig.IsValid() )
+                continue;
+
+            rig.SetMiningState( enabled );
+            count++;
+        }
+        return count;
+    }
+
     protected override int BuildHash() =>
         Miner.IsValid()
-            ? HashCode.Combine( Miner.BitcoinAmount, Miner.IsMining, Miner.CpuUpgradeLevel, Miner.CoreUpgradeLevel, _lines.Count, _showUpgradeMenu, BitminerTerminalHost.GetLocalWalletCash(), (int)( _smoothProgress * 10f ) )
-            : HashCode.Combine( _lines.Count, _showUpgradeMenu, BitminerTerminalHost.GetLocalWalletCash() );
+            ? HashCode.Combine( Miner.BitcoinAmount, Miner.IsMining, Miner.CpuUpgradeLevel, Miner.CoreUpgradeLevel, _lines.Count, _showUpgradeMenu, BitminerTerminalHost.GetLocalWalletCash(), (int)( _smoothProgress * 10f ), BitminerRigRegistry.SelectedIndex, BitminerRigRegistry.RegisteredRigs.Count )
+            : HashCode.Combine( _lines.Count, _showUpgradeMenu, BitminerTerminalHost.GetLocalWalletCash(), BitminerRigRegistry.RegisteredRigs.Count );
 }

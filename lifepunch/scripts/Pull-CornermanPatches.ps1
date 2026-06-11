@@ -118,7 +118,7 @@ try {
 
     foreach ($p in $patchFiles) {
         Write-Host "Applying $($p.Name)..." -ForegroundColor DarkGray
-        git am $p.FullName 2>&1 | Write-Host
+        git am --whitespace=nowarn $p.FullName 2>&1 | Write-Host
         if ($LASTEXITCODE -ne 0) { throw "git am failed on $($p.Name)" }
     }
 

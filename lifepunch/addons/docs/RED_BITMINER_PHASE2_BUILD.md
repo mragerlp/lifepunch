@@ -32,14 +32,13 @@ Refactor `BitminerTerminal.razor` / `.scss`:
 
 ---
 
-## Step 2 — Dual rack (after Step 1 or parallel ModelDoc)
+## Step 2 — Three entities + multi-rig (partial on `main`)
 
-**Spec:** `docs/reference/BITMINER_DUAL_RACK_SPEC.md`
+**Spec:** `BITMINER_THREE_ENTITY_ARCH.md` · `BITMINER_REMOTE_RACK_SPEC.md` · `BITMINER_FINISH_RUNBOOK.md`
 
-1. ModelDoc `gpu-rack-stacked.vmdl` from `gpu-rack-stacked-anim.fbx`
-2. Prefab child `gpu_rack_large` (offset TBD in editor)
-3. Opus: `RackExpansionLevel`, `RackYield`, `BitminerUpgradeType.Rack`, `$250k` upgrade
-4. Third row in **Upgrades** module + `upgrade rack` CLI
+1. **Done:** `advanced-bitcoin-miner.prefab`, `BitminerRigRegistry`, `racks` / `select` / `mining start all`
+2. **Owner ModelDoc:** compile `bitcoin-terminal.vmdl` + `gpu-rack-stacked.vmdl` → `_c`
+3. **Optional economy:** rack purchase vs separate placeable — TBD playtest
 
 ---
 
