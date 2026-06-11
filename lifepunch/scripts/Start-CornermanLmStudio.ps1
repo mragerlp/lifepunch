@@ -1,19 +1,20 @@
 <#
 .SYNOPSIS
-  Start LM Studio server on Cornerman and optionally warm a Tier-3 model.
+  Start LM Studio server on Cornerman and warm Tier-3 models.
 
 .PARAMETER WarmModel
-  distill = qwen/qwen3.6-35b-a3b (doc prep default)
-  coder   = qwen2.5-coder-32b-instruct
+  distill = qwen/qwen3.6-35b-a3b only
+  coder   = qwen2.5-coder-32b-instruct only
+  all     = all three Tier-3 models (default for boot/watchdog)
   none    = server only
 
 .EXAMPLE
-  powershell -ExecutionPolicy Bypass -File Start-CornermanLmStudio.ps1 -WarmModel distill
+  powershell -ExecutionPolicy Bypass -File Start-CornermanLmStudio.ps1 -WarmModel all
 #>
 [CmdletBinding()]
 param(
-    [ValidateSet('distill', 'coder', 'none')]
-    [string] $WarmModel = 'distill',
+    [ValidateSet('distill', 'coder', 'all', 'none')]
+    [string] $WarmModel = 'all',
     [string] $BindHost = 'auto',
     [int] $Port = 1234,
     [switch] $Quiet
@@ -21,13 +22,20 @@ param(
 
 $ErrorActionPreference = 'Stop'
 
+# Canonical Cornerman Tier-3 catalog — keep in sync with cornerman-inbox-directive.json + CORNERMAN_MODEL_ROUTING.md
+$script:CornermanTier3Models = @(
+    'qwen/qwen3.6-35b-a3b'
+    'qwen2.5-coder-32b-instruct'
+    'text-embedding-nomic-embed-text-v1.5'
+)
+
 function Write-Lms([string]$m) {
     if (-not $Quiet) { Write-Host $m }
 }
 
 function Get-LmsExe {
     $candidates = @(
-        (Join-Path $env:USERPROFILE '.lmstudio\bin\lms.exe'),
+        (Join-Path $env:USERPROFILE '.lmstudio\bin\lms.exe')
         (Join-Path $env:LOCALAPPDATA 'LM Studio\bin\lms.exe')
     )
     foreach ($c in $candidates) {
@@ -42,7 +50,7 @@ function Invoke-Lms {
     param([Parameter(Mandatory)][string[]] $LmsArgs)
     $prev = $ErrorActionPreference
     $ErrorActionPreference = 'Continue'
-    $out = & $lms @LmsArgs 2>&1
+    $out = & $script:lms @LmsArgs 2>&1
     $code = $LASTEXITCODE
     $ErrorActionPreference = $prev
     $out | ForEach-Object { Write-Lms "$_" }
@@ -67,44 +75,79 @@ function Get-CornermanBindHost {
     return '127.0.0.1'
 }
 
-function Test-LmsProbe {
-    param([string] $HostIp)
+function Get-LmsModelIds([string]$HostIp) {
     foreach ($probeHost in @($HostIp, '127.0.0.1')) {
         try {
             $uri = "http://${probeHost}:${Port}/v1/models"
-            $null = Invoke-RestMethod -Uri $uri -TimeoutSec 10
-            return $true
+            return @((Invoke-RestMethod -Uri $uri -TimeoutSec 10).data.id)
         }
         catch { }
     }
-    return $false
+    return @()
+}
+
+function Test-LmsProbe([string]$HostIp) {
+    return (Get-LmsModelIds -HostIp $HostIp).Count -gt 0
+}
+
+function Get-WarmTargets([string]$Mode) {
+    switch ($Mode) {
+        'distill' { return @('qwen/qwen3.6-35b-a3b') }
+        'coder'   { return @('qwen2.5-coder-32b-instruct') }
+        'all'     { return $script:CornermanTier3Models }
+        default   { return @() }
+    }
+}
+
+function Test-Tier3Ready([string]$HostIp, [string[]]$Required) {
+    $present = Get-LmsModelIds -HostIp $HostIp
+    if ($present.Count -eq 0) { return $false }
+    foreach ($id in $Required) {
+        if ($present -notcontains $id) { return $false }
+    }
+    return $true
 }
 
 $BindHost = Get-CornermanBindHost -Preferred $BindHost
-$lms = Get-LmsExe
-Write-Lms "LM Studio: $lms (bind $BindHost)"
+$script:lms = Get-LmsExe
+$targets = Get-WarmTargets -Mode $WarmModel
+
+if ($WarmModel -ne 'none' -and (Test-Tier3Ready -HostIp $BindHost -Required $targets)) {
+    Write-Lms "Tier-3 already ready ($($targets.Count) models) on :$Port"
+    if (-not $Quiet) { Get-LmsModelIds -HostIp $BindHost | ForEach-Object { Write-Host "  $_" } }
+    return
+}
+
+Write-Lms "LM Studio: $script:lms (bind $BindHost)"
 
 $startCode = Invoke-Lms -LmsArgs @('server', 'start', '--port', "$Port", '--bind', $BindHost)
 if ($startCode -ne 0 -and -not (Test-LmsProbe -HostIp $BindHost)) {
     throw "lms server start failed (exit $startCode) and probe unreachable"
 }
 
-$modelId = switch ($WarmModel) {
-    'distill' { 'qwen/qwen3.6-35b-a3b' }
-    'coder'   { 'qwen2.5-coder-32b-instruct' }
-    default   { $null }
+foreach ($modelId in $targets) {
+    $present = Get-LmsModelIds -HostIp $BindHost
+    if ($present -contains $modelId) {
+        Write-Lms "Already listed: $modelId"
+        continue
+    }
+    Write-Lms "Loading $modelId (gpu max)..."
+    $gpuFlag = if ($modelId -like '*embed*') { 'off' } else { 'max' }
+    $loadCode = Invoke-Lms -LmsArgs @('load', $modelId, '--gpu', $gpuFlag, '-y')
+    if ($loadCode -ne 0) { throw "lms load failed for $modelId (exit $loadCode)" }
 }
 
-if ($modelId) {
-    Write-Lms "Loading $modelId (gpu max)..."
-    $loadCode = Invoke-Lms -LmsArgs @('load', $modelId, '--gpu', 'max', '-y')
-    if ($loadCode -ne 0) { throw "lms load failed for $modelId (exit $loadCode)" }
+if ($WarmModel -ne 'none') {
+    if (-not (Test-Tier3Ready -HostIp $BindHost -Required $targets)) {
+        $have = (Get-LmsModelIds -HostIp $BindHost) -join ', '
+        throw "Tier-3 incomplete after warm. Expected: $($targets -join ', '). Have: $have"
+    }
 }
 
 try {
     $uri = "http://${BindHost}:${Port}/v1/models"
-    $models = (Invoke-RestMethod -Uri $uri -TimeoutSec 15).data.id
-    Write-Lms "Tier-3 OK: $uri"
+    $models = Get-LmsModelIds -HostIp $BindHost
+    Write-Lms "Tier-3 OK: $uri ($($models.Count) models)"
     if (-not $Quiet) { $models | ForEach-Object { Write-Host "  $_" } }
 }
 catch {

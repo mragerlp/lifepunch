@@ -85,8 +85,8 @@ if ($env:USERNAME -and $env:USERNAME -ne 'SYSTEM') {
     $lmsScript = 'C:\lifepunch\cornerman\Start-CornermanLmStudio.ps1'
     if (Test-Path -LiteralPath $lmsScript) {
         try {
-            & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $lmsScript -WarmModel distill -Quiet
-            Write-BootNote 'LM Studio distill warm OK'
+            & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $lmsScript -WarmModel all -Quiet
+            Write-BootNote 'LM Studio Tier-3 warm OK (3 models)'
         }
         catch {
             Write-BootNote "LM Studio FAIL: $($_.Exception.Message)"

@@ -25,15 +25,25 @@ if (Test-Path -LiteralPath $sttPath) {
 }
 
 $lmStudioOk = $false
+$lmModelCount = 0
 $lmModels = ''
+$lmTier3Ok = $false
+$requiredTier3 = @(
+    'qwen/qwen3.6-35b-a3b'
+    'qwen2.5-coder-32b-instruct'
+    'text-embedding-nomic-embed-text-v1.5'
+)
 try {
     $r = Invoke-WebRequest -Uri 'http://127.0.0.1:1234/v1/models' -TimeoutSec 4 -UseBasicParsing
     if ($r.StatusCode -eq 200) {
         $lmStudioOk = $true
         $parsed = $r.Content | ConvertFrom-Json
         if ($parsed.data) {
-            $lmModels = ($parsed.data | ForEach-Object { $_.id }) -join ','
+            $ids = @($parsed.data | ForEach-Object { $_.id })
+            $lmModelCount = $ids.Count
+            $lmModels = ($ids -join ',')
             if ($lmModels.Length -gt 120) { $lmModels = $lmModels.Substring(0, 120) }
+            $lmTier3Ok = ($requiredTier3 | Where-Object { $ids -notcontains $_ }).Count -eq 0
         }
     }
 }
@@ -50,6 +60,8 @@ $payload = [ordered]@{
     sttPathLast    = $sttTail
     headlessLogOk  = Test-Path -LiteralPath $headlessLog
     lmStudioOk     = $lmStudioOk
+    lmModelCount   = $lmModelCount
+    lmTier3Ok      = $lmTier3Ok
     lmModels       = $lmModels
 }
 $payload | ConvertTo-Json -Compress

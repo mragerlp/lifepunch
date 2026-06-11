@@ -13,7 +13,7 @@
 #>
 [CmdletBinding()]
 param(
-    [ValidateSet('Inbox', 'StartVoiceRelay', 'DeployPttCapture', 'MonorepoPull', 'Checkpoint', 'WarmDistill', 'WarmCoder', 'FullPerformance')]
+    [ValidateSet('Inbox', 'StartVoiceRelay', 'DeployPttCapture', 'MonorepoPull', 'Checkpoint', 'WarmDistill', 'WarmCoder', 'FullPerformance', 'InstallLmWatchdog')]
     [string] $Action = 'Inbox',
     [string] $Message = '',
     [string] $WorkflowId = '',
@@ -108,21 +108,30 @@ Pop-Location
             $execDetail = ($r.Output -split "`n" | Where-Object { $_.Trim().StartsWith('{') } | Select-Object -Last 1)
         }
         { $_ -in 'WarmDistill', 'WarmCoder' } {
-            $warm = if ($Action -eq 'WarmCoder') { 'coder' } else { 'distill' }
+            $warm = if ($Action -eq 'WarmCoder') { 'coder' } else { 'all' }
             $lms = 'C:\lifepunch\cornerman\Start-CornermanLmStudio.ps1'
             $r = Invoke-CornermanSshExec -SshTarget $SshTarget -ScriptBlock @"
 if (-not (Test-Path -LiteralPath '$lms')) { throw 'Missing $lms — run Sync-CornermanRebootScripts.ps1 from Red' }
 & powershell -NoProfile -ExecutionPolicy Bypass -File '$lms' -WarmModel $warm
-"@ -ConnectTimeout 120
+"@ -ConnectTimeout 300
             $execOk = ($r.ExitCode -eq 0)
             $execDetail = if ($r.Output) { $r.Output } else { "warm=$warm exit=$($r.ExitCode)" }
+        }
+        'InstallLmWatchdog' {
+            $watch = 'C:\lifepunch\cornerman\Install-CornermanLmWatchdog.ps1'
+            $r = Invoke-CornermanSshExec -SshTarget $SshTarget -ScriptBlock @"
+if (-not (Test-Path -LiteralPath '$watch')) { throw 'Missing $watch — run Sync-CornermanRebootScripts.ps1 from Red' }
+& powershell -NoProfile -ExecutionPolicy Bypass -File '$watch'
+"@ -ConnectTimeout 300
+            $execOk = ($r.ExitCode -eq 0)
+            $execDetail = if ($r.Output) { $r.Output } else { "exit=$($r.ExitCode)" }
         }
         'FullPerformance' {
             $perf = 'C:\lifepunch\cornerman\Invoke-CornermanFullPerformance.ps1'
             $r = Invoke-CornermanSshExec -SshTarget $SshTarget -ScriptBlock @"
 if (-not (Test-Path -LiteralPath '$perf')) { throw 'Missing $perf — run Sync-CornermanRebootScripts.ps1 from Red' }
-& powershell -NoProfile -ExecutionPolicy Bypass -File '$perf' -WarmModel distill
-"@ -ConnectTimeout 180
+& powershell -NoProfile -ExecutionPolicy Bypass -File '$perf' -WarmModel all
+"@ -ConnectTimeout 300
             $execOk = ($r.ExitCode -eq 0)
             $execDetail = if ($r.Output) { $r.Output } else { "exit=$($r.ExitCode)" }
         }

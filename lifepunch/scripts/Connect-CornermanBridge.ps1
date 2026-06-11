@@ -134,5 +134,6 @@ Write-Host "  LM Studio ($cornermanIp:1234): $(if ($lmOk) { 'OK — ' + ($lmMode
 Write-Host "  Green SMB probe: $($probe.Output)" -ForegroundColor $(if ($probe.Output -match 'status_json=True') { 'Green' } else { 'Yellow' })
 
 Write-Host ''
+Write-Host 'LM watchdog (once, elevated on Green): Send-CornermanWorkflow.ps1 -Action InstallLmWatchdog' -ForegroundColor DarkGray
 Write-Host 'Done. On Green: restart Cursor -> MCP sbox + cornerman-lm should go green.' -ForegroundColor Cyan
 Write-Host 'VENGEANCE s&box editor must stay open for sbox MCP.' -ForegroundColor DarkGray

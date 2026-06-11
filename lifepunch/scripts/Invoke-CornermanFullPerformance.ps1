@@ -14,8 +14,8 @@
 #>
 [CmdletBinding()]
 param(
-    [ValidateSet('distill', 'coder', 'none')]
-    [string] $WarmModel = 'distill',
+    [ValidateSet('distill', 'coder', 'all', 'none')]
+    [string] $WarmModel = 'all',
     [switch] $SkipLmStudio,
     [switch] $SkipVoiceRelay,
     [switch] $Quiet
