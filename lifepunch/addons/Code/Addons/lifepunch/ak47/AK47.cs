@@ -20,6 +20,8 @@ public static class AK47
 	public const string WorldPrefabPath = "addons/lifepunch/ak47/equipment/w_ak47/w_ak47.prefab";
 	public const string ViewModelPrefabPath = "addons/lifepunch/ak47/equipment/vm_ak47/vm_ak47.prefab";
 	public const string WorldModelPath = "addons/lifepunch/ak47/models/lifepunch/ak47/w_ak47/w_ak47.vmdl";
+	public const string ClassWorldPrefabPlaceholder = "gameplay/equipment/weapons/m4a1/w_m4a1.prefab";
+	public const string ClassViewModelPlaceholder = "gameplay/equipment/weapons/m4a1/vm_m4a1.prefab";
 	public const string FireSoundPath = "addons/lifepunch/ak47/sounds/ak47_shot.sound";
 	public const string FireDistantSoundPath = "addons/lifepunch/ak47/sounds/ak47_shot_distant.sound";
 	public const string ReloadClipOutSoundPath = "addons/lifepunch/ak47/sounds/ak47_reload_clipout.sound";

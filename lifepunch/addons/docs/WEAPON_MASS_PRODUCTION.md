@@ -31,6 +31,8 @@ powershell -NoProfile -ExecutionPolicy Bypass -File lifepunch/addons/scripts/New
 
 Class prefab extraction (USP/MP5/M700/Spaghelli): `DXRP_CLASS_WEAPON_REFERENCES.md`.
 
+**Editor fast test (no portal Equipment):** `FAST_WEAPON_TEST.md` — `lp_give_ak`, `lp_give_deagle`, etc.
+
 ## Per-weapon lane (repeat for #2–5)
 
 1. **CS2 reference** — Source 2 Viewer → glTF into `C:/lifepunch/reference-intake/cs2-weapons/<ident>/` (never commit). Full harvest guide: `CS2_WEAPON_HARVEST.md` · script: `Intake-Cs2WeaponReference.ps1`.
