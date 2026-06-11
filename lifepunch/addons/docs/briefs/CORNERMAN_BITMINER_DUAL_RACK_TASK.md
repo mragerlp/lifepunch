@@ -2,7 +2,8 @@
 
 **Lane:** Tier-3 prep · **Priority:** **#4** (after Phase 2 menu draft — **unblocked**)  
 **Issued:** 2026-06-11 · **Red:** implements mesh + code on VENGEANCE after distill  
-**Prerequisite:** `BITMINER_PHASE2_WIREFRAME.md` ✅ (rack row in Upgrades module)
+**Prerequisite:** `BITMINER_PHASE2_WIREFRAME.md` ✅ (rack row in Upgrades module)  
+**Status:** **Distill complete** (2026-06-11) — `docs/reference/BITMINER_DUAL_RACK_SPEC.md` + outbox
 
 ---
 

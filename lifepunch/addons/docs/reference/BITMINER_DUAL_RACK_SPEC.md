@@ -126,7 +126,7 @@ YIELD   ×{RackYield:0.0}
 - Confirm copy: `Purchase large rack expansion? Doubles mining yield.`
 - CLI alias: `upgrade rack` (text) + clickable row (Red wires after enum exists).
 
-Phase 1.5 menu (CPU/CORES) already shipped in `BitminerTerminal.razor` — Red adds row + `RequestUpgrade(Rack)`.
+Phase 1 upgrade overlay (CPU/CORES) shipped; Phase 2 **Upgrades** module per `BITMINER_PHASE2_WIREFRAME.md` — Red adds rack row + `RequestUpgrade(Rack)`.
 
 ---
 

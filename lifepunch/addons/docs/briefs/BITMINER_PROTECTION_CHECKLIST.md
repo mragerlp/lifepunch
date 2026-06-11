@@ -2,7 +2,7 @@
 
 **Lane:** Cornerman audit (docs) · **Red** fixes ship-tree findings  
 **Scope:** `lifepunch/addons/Code/Addons/lifepunch/bitcoinmining/` + `Assets/.../bitcoinmining/`  
-**Last run:** 2026-06-10
+**Last run:** 2026-06-11 (post-`cbeb481` protection commit)
 
 ---
 
@@ -83,9 +83,9 @@ Repo-wide failure (unrelated): `docs/briefs/TERMINAL_PLATFORM_TOKENS.scss` — r
 
 ## Pre-publish gate (Red)
 
-- [ ] Re-run grep on `bitcoinmining` ship tree after fixes
-- [ ] `about` / About module — LIFEPUNCH™ only
-- [ ] LCD `TextRenderer` color amber
+- [x] Re-run grep on `bitcoinmining` ship tree after fixes (`cbeb481`)
+- [x] `about` / About module — LIFEPUNCH™ only
+- [x] LCD `TextRender` color amber `#f0a500`
 - [ ] Portal listing: Published by LIFEPUNCH
 - [ ] No Evo meshes/sounds `_c` in publish staging
 - [ ] `prepare-publish.ps1 -Addon bitcoinmining` clean

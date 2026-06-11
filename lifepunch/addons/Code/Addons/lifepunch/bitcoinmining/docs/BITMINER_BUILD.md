@@ -8,7 +8,7 @@
 | `BitminerEntity.cs` | **Done (Phase 1)** — entity + economy + `RequestOpenTerminal()` |
 | `BitminerTerminalHost.cs` | **Done (Phase 1)** — dual-build mount/close |
 | `BitminerCommandHost.cs` | **Done (Phase 1)** — `hashd` / `mine` opens terminal on nearest rig |
-| `BitminerTerminal.razor` + `.scss` | **Phase 1 done** (Cornerman CLI); **owner tabbed UI** authors from `Downloads/newaddons/hackerterminal/source/bitcointerminal/` |
+| `BitminerTerminal.razor` + `.scss` | **Phase 1 done** (HASHD amber rail); **Phase 2 modules** → `RED_BITMINER_PHASE2_BUILD.md` + `briefs/BITMINER_PHASE2_WIREFRAME.md` |
 | `bitcoin-terminal` (`computer.fbx`) | **Intaked** — `models/.../bitcoin-terminal/`; ModelDoc TBD |
 | `gpu-rack.vmdl` + 5 vmats | **Done** — compiled `_c` in repo; power anim still **TODO** |
 | `bitcoin-miner.prefab` | **Done** — scaffold on root; tune collider/LCD in editor |
