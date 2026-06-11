@@ -66,15 +66,15 @@
         "StartAsleep": false
       },
       {
-        "__type": "Sandbox.BoxCollider",
+        "__type": "Sandbox.ModelCollider",
         "__guid": "d08803d2-1ed7-4e63-8293-e9cf67e75485",
         "__enabled": true,
         "Flags": 0,
-        "Center": "0,0,10.627",
         "ColliderFlags": 0,
         "Elasticity": null,
         "Friction": null,
         "IsTrigger": false,
+        "Model": "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/gpu-rack/gpu-rack.vmdl",
         "OnComponentDestroy": null,
         "OnComponentDisabled": null,
         "OnComponentEnabled": null,
@@ -86,7 +86,6 @@
         "OnTriggerEnter": null,
         "OnTriggerExit": null,
         "RollingResistance": null,
-        "Scale": "8.629,12.937,21.254",
         "Static": false,
         "Surface": "surfaces/metal.surface",
         "SurfaceVelocity": "0,0,0"
