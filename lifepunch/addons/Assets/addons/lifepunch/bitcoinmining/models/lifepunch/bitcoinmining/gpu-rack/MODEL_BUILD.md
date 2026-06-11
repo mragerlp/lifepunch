@@ -64,9 +64,40 @@ Raw export keeps Blender names (`GPU_Farm_Static.obj`, `GPU_GraphicsCard/`, etc.
 powershell -File lifepunch/addons/scripts/Reorganize-BitcoinMinerGpuRack.ps1 -SourceRoot "C:\path\to\export"
 ```
 
-## ModelDoc checklist
+## Editor project (required — not `addons.sbproj`)
 
-1. Import `source/gpu-rack-static.obj`.
-2. Assign five vmats per `material-map.json`.
-3. Compile `gpu-rack.vmdl` in this folder.
-4. Prefab `entities/bitcoin-miner/bitcoin-miner.prefab` — scale reference ~1.11 vs Evo study prefab.
+ModelDoc, prefab wiring, play-test, and `PayHost` economy all need the **DXRP game project**
+with the **server API token** applied. The standalone LifePunch `addons.sbproj` compiles
+`LIFEPUNCH_LOCAL` stubs only — no real DXRP data, entities, or portal sync.
+
+**Launch (VENGEANCE):**
+
+```powershell
+powershell -File lifepunch/scripts/Start-SboxDxrpEditor.ps1
+```
+
+Uses `lifepunch/scripts/dxrp-editor.local.json` → `rp.sbproj` + `+authorize <token>`.
+Wait until compile finishes; bridge/host play should show `HasAuthorizationKey=true`.
+
+**Work path in DXRP install** (typical):
+
+```text
+D:/Steam/steamapps/common/sbox/dxrp/game/
+  Assets/addons/lifepunch/bitcoinmining/   ← must match repo tree
+  Code/Addons/lifepunch/bitcoinmining/
+```
+
+Repo source of truth: `lifepunch/addons/` in the monorepo. Copy or junction `bitcoinmining`
+into the DXRP project before ModelDoc if it is not already there. After editor work, sync
+compiled outputs (`gpu-rack.vmdl`, `_c`, vmats, prefab) **back into the monorepo** paths above.
+
+See `lifepunch/addons/docs/SBOX_EDITOR_REFERENCE.md` §0–1.
+
+## ModelDoc checklist (inside DXRP project)
+
+1. Asset Browser → **Project scope "DXRP"** → `addons/lifepunch/bitcoinmining/models/.../gpu-rack/`.
+2. Import `source/gpu-rack-static.obj` in ModelDoc.
+3. Create five vmats per `material-map.json` (GPU slot uses emission).
+4. Compile `gpu-rack.vmdl` in this folder; recompile after external edits.
+5. Prefab `entities/bitcoin-miner/bitcoin-miner.prefab` — scale ~1.11 vs Evo study prefab.
+6. Play-test on dev server with API connected (not local-only addon project).
