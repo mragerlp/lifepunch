@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "program": "LifePunch job gear — CS2 study → citizen attach",
+  "referenceIntakeRoot": "C:/lifepunch/reference-intake/cs2-characters",
+  "shipRule": "CS2 agents are REFERENCE-ONLY. Author own vest/helmet/prop meshes; rig and animations stay on s&box citizen + DXRP clothing.",
+  "roles": [
+    {
+      "ident": "swat",
+      "title": "SWAT",
+      "dxrpJob": "swat",
+      "cs2AgentFolder": "ctm_swat",
+      "cs2PrimaryModel": "ctm_swat_variante",
+      "s2vBrowse": "characters/models/ctm_swat/",
+      "terminalBrand": "lifepunchnet",
+      "accentHex": "#00D4FF",
+      "shipTarget": "citizen-clothing-attach",
+      "status": "study-queue",
+      "queueOrder": 1,
+      "relatedSpec": "docs/SWAT_JOB_SPEC.md",
+      "notes": "Tactical helmet, plate carrier, leg pouches. Optional CS2 shield study: weapons/models/weapon_shield/. Primary + sidearm use existing Gun Dealer class kits."
+    },
+    {
+      "ident": "police",
+      "title": "Police",
+      "dxrpJob": "police",
+      "cs2AgentFolder": "ctm_fbi",
+      "cs2PrimaryModel": "ctm_fbi_variantf",
+      "s2vBrowse": "characters/models/ctm_fbi/",
+      "terminalBrand": "lifepunchnet",
+      "accentHex": "#00D4FF",
+      "shipTarget": "citizen-clothing-attach",
+      "status": "study-queue",
+      "queueOrder": 2,
+      "relatedSpec": "docs/GOVERNMENT_DATABASE_SPEC.md",
+      "notes": "Patrol uniform study near government tax miners. Pairs with police-terminal entity (lifepunch-ops.exe)."
+    },
+    {
+      "ident": "hacker",
+      "title": "Hacker",
+      "dxrpJob": "hacker",
+      "cs2AgentFolder": "tm_professional",
+      "cs2PrimaryModel": "tm_professional_varf",
+      "s2vBrowse": "characters/models/tm_professional/",
+      "terminalBrand": "cornerman",
+      "accentHex": "#00FF7F",
+      "shipTarget": "citizen-clothing-attach",
+      "status": "study-queue",
+      "queueOrder": 3,
+      "relatedSpec": "docs/HACKER_JOB_SPEC.md",
+      "notes": "Street/casual silhouette study — separate from hacker-terminal CRT props. Advanced tier uses Vengeance red terminal, not different body mesh."
+    },
+    {
+      "ident": "mayor",
+      "title": "Mayor / Government",
+      "dxrpJob": "mayor",
+      "cs2AgentFolder": "ctm_sas",
+      "cs2PrimaryModel": "ctm_sas_variantf",
+      "s2vBrowse": "characters/models/ctm_sas/",
+      "terminalBrand": "lifepunchnet",
+      "accentHex": "#00D4FF",
+      "shipTarget": "citizen-clothing-attach",
+      "status": "study-queue",
+      "queueOrder": 4,
+      "relatedSpec": "docs/GOVERNMENT_DATABASE_SPEC.md",
+      "notes": "Formal/clean CT agent for gov RP. Swap cs2AgentFolder after S2V browse if a better suit agent is found."
+    },
+    {
+      "ident": "cybersecurity",
+      "title": "Cybersecurity Officer",
+      "dxrpJob": "cybersecurity",
+      "cs2AgentFolder": "ctm_st6",
+      "cs2PrimaryModel": "ctm_st6_variante",
+      "s2vBrowse": "characters/models/ctm_st6/",
+      "terminalBrand": "lifepunchnet",
+      "accentHex": "#00D4FF",
+      "shipTarget": "citizen-clothing-attach",
+      "status": "study-queue",
+      "queueOrder": 5,
+      "relatedSpec": "",
+      "notes": "Owner-built job — CS2 study placeholder (tactical tech look). Confirm final agent folder in S2V before Blender."
+    }
+  ],
+  "props": [
+    {
+      "ident": "riot_shield",
+      "title": "Riot Shield",
+      "cs2Mesh": "weapon_shield",
+      "s2vBrowse": "weapons/models/weapon_shield/",
+      "forRoles": ["swat", "police"],
+      "status": "study-queue",
+      "notes": "Complex attach — Phase 2+ after base uniforms."
+    }
+  ]
+}

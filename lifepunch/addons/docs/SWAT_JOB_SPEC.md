@@ -18,7 +18,7 @@ SWAT as a DXRP job with tactical gear and weapons sourced via **CS2 study → ow
 | Primary | M4/MP5 class already in DXRP | LifePunch skins optional |
 | Shield | `weapon_shield` study | Complex — Phase 2+ |
 
-Harvest workflow: `CS2_WEAPON_HARVEST.md` + `Intake-Cs2WeaponReference.ps1` pattern extended for gear.
+Harvest workflow: `CS2_CHARACTER_HARVEST.md` · queue `config/gear-production.json` · `Intake-Cs2CharacterReference.ps1 -Ident swat`
 
 ## Dependencies
 
@@ -28,4 +28,4 @@ Harvest workflow: `CS2_WEAPON_HARVEST.md` + `Intake-Cs2WeaponReference.ps1` patt
 
 ## Next step
 
-Owner greenlights → add `swat` row to `addons.json` → weapon/gear queue in `weapon-production.json` or separate `gear-production.json`.
+Owner greenlights → add `swat` row to `addons.json` (gear queue: `gear-production.json` queueOrder 1).
