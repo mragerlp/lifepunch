@@ -1,0 +1,16 @@
+﻿{
+    "materials":  [
+                      {
+                          "vmat":  "materials/ssg08_body.vmat",
+                          "textures":  {
+                                           "baseColor":  "textures/ssg08_BaseColor.png",
+                                           "metalness":  "textures/ssg08_Metalness.png",
+                                           "roughness":  "textures/ssg08_Roughness.png",
+                                           "normal":  "textures/ssg08_Normal.png"
+                                       },
+                          "slot":  "body"
+                      }
+                  ],
+    "ident":  "ssg08",
+    "schemaVersion":  1
+}

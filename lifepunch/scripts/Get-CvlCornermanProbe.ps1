@@ -24,6 +24,21 @@ if (Test-Path -LiteralPath $sttPath) {
     if ($lines.Count -gt 0) { $sttTail = [string]$lines[-1] }
 }
 
+$lmStudioOk = $false
+$lmModels = ''
+try {
+    $r = Invoke-WebRequest -Uri 'http://192.168.1.227:1234/v1/models' -TimeoutSec 4 -UseBasicParsing
+    if ($r.StatusCode -eq 200) {
+        $lmStudioOk = $true
+        $parsed = $r.Content | ConvertFrom-Json
+        if ($parsed.data) {
+            $lmModels = ($parsed.data | ForEach-Object { $_.id }) -join ','
+            if ($lmModels.Length -gt 120) { $lmModels = $lmModels.Substring(0, 120) }
+        }
+    }
+}
+catch { }
+
 $payload = [ordered]@{
     node           = 'cornerman'
     hostname       = $env:COMPUTERNAME
@@ -34,5 +49,7 @@ $payload = [ordered]@{
     relayRunning   = $relayRunning
     sttPathLast    = $sttTail
     headlessLogOk  = Test-Path -LiteralPath $headlessLog
+    lmStudioOk     = $lmStudioOk
+    lmModels       = $lmModels
 }
 $payload | ConvertTo-Json -Compress

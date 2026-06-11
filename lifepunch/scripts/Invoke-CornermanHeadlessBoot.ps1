@@ -80,4 +80,32 @@ catch {
     Write-BootNote "Network profile FAIL: $($_.Exception.Message)"
 }
 
+# Tier-3 LM Studio (logon user only — skip SYSTEM AtStartup task)
+if ($env:USERNAME -and $env:USERNAME -ne 'SYSTEM') {
+    $lmsScript = 'C:\lifepunch\cornerman\Start-CornermanLmStudio.ps1'
+    if (Test-Path -LiteralPath $lmsScript) {
+        try {
+            & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $lmsScript -WarmModel distill -Quiet
+            Write-BootNote 'LM Studio distill warm OK'
+        }
+        catch {
+            Write-BootNote "LM Studio FAIL: $($_.Exception.Message)"
+        }
+    }
+    else {
+        Write-BootNote 'LM Studio script missing (copy Start-CornermanLmStudio.ps1 to C:\lifepunch\cornerman\)'
+    }
+
+    $relayStarter = 'C:\Projects\cornerman-rag\Start-CornermanVoiceRelay.ps1'
+    if (Test-Path -LiteralPath $relayStarter) {
+        try {
+            & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $relayStarter
+            Write-BootNote 'Voice relay start OK'
+        }
+        catch {
+            Write-BootNote "Voice relay FAIL: $($_.Exception.Message)"
+        }
+    }
+}
+
 Write-BootNote 'DONE'

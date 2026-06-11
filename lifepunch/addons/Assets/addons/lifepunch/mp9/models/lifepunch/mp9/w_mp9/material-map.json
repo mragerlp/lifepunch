@@ -1,0 +1,16 @@
+﻿{
+    "materials":  [
+                      {
+                          "vmat":  "materials/mp9_body.vmat",
+                          "textures":  {
+                                           "baseColor":  "textures/mp9_BaseColor.png",
+                                           "metalness":  "textures/mp9_Metalness.png",
+                                           "roughness":  "textures/mp9_Roughness.png",
+                                           "normal":  "textures/mp9_Normal.png"
+                                       },
+                          "slot":  "body"
+                      }
+                  ],
+    "ident":  "mp9",
+    "schemaVersion":  1
+}

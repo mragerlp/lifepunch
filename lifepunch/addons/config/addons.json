@@ -110,6 +110,66 @@
       "ownership": "PROPRIETARY — sole-owned IP of lifepunch.co. NOT for resale, redistribution, sublicensing, or reuse by any party, including DXRP and LifePunch staff/contributors/community, except the owner (lifepunch.co). No rights granted to anyone else by presence in this repo or on the DXRP portal.",
       "notes": "Server-agnostic in-game staff/admin menu (portal package 'DXRP Admin Menu', network identifier 'dxrpadminmenu'; repo ident 'adminmenu'). Thin UX + dispatch layer over DXRP's existing admin backend: gates each action on Dxura.RP.Shared.Permission via RankSystem.HasLocalPermission, respects RankSystem.CanLocalTarget, and dispatches to AdminSystem [Rpc.Host] actions where one exists (Kick) else Chat.ExecuteCommandHost into the registered ICommand (Freeze/Goto/Bring/Spectate/God). Opens via the 'adminmenu' (and legacy 'staffmenu') console + chat command (staff bind any key to it). code-only kind: V1 uses the material-icons font, ships no image assets. LIFEPUNCH_LOCAL stubs keep it editor-compilable. Permission Id strings reconcile 1:1 with admin-panel/permissions/*.json. Code namespace/class names remain LifePunch.DXRP.Addons.StaffMenu (StaffMenu*.cs) — functional, not renamed with the package ident.",
       "contents": []
+    },
+    {
+      "ident": "deagle",
+      "title": "Desert Eagle",
+      "kind": "weapon",
+      "hasAssets": true,
+      "hasCode": true,
+      "dxrpAddonId": "",
+      "sboxIdentifier": "lifepunch.deagle",
+      "status": "foundation-scaffold",
+      "weaponClass": "handgun",
+      "dxrpClassReference": "usp",
+      "cs2ReferenceMesh": "weapon_pist_deagle",
+      "notes": "Mass-production scaffold. Portal package TBD. Clone usp kit; CS2 weapon_pist_deagle reference-only.",
+      "contents": []
+    },
+    {
+      "ident": "mp9",
+      "title": "MP9",
+      "kind": "weapon",
+      "hasAssets": true,
+      "hasCode": true,
+      "dxrpAddonId": "",
+      "sboxIdentifier": "lifepunch.mp9",
+      "status": "foundation-scaffold",
+      "weaponClass": "smg",
+      "dxrpClassReference": "mp5",
+      "cs2ReferenceMesh": "weapon_smg_mp9",
+      "notes": "Mass-production scaffold. Portal package TBD. Clone mp5 kit; CS2 weapon_smg_mp9 reference-only.",
+      "contents": []
+    },
+    {
+      "ident": "ssg08",
+      "title": "SSG 08",
+      "kind": "weapon",
+      "hasAssets": true,
+      "hasCode": true,
+      "dxrpAddonId": "",
+      "sboxIdentifier": "lifepunch.ssg08",
+      "status": "foundation-scaffold",
+      "weaponClass": "sniper",
+      "dxrpClassReference": "m700",
+      "cs2ReferenceMesh": "weapon_snip_ssg08",
+      "notes": "Mass-production scaffold. Portal package TBD. Clone m700 kit; CS2 weapon_snip_ssg08 reference-only.",
+      "contents": []
+    },
+    {
+      "ident": "xm1014",
+      "title": "XM1014",
+      "kind": "weapon",
+      "hasAssets": true,
+      "hasCode": true,
+      "dxrpAddonId": "",
+      "sboxIdentifier": "lifepunch.xm1014",
+      "status": "foundation-scaffold",
+      "weaponClass": "shotgun",
+      "dxrpClassReference": "spaghelli",
+      "cs2ReferenceMesh": "weapon_shot_xm1014",
+      "notes": "Mass-production scaffold. Portal package TBD. Clone spaghelli kit; CS2 weapon_shot_xm1014 reference-only.",
+      "contents": []
     }
   ]
 }

@@ -147,3 +147,11 @@ Traced in source. The gamemode (Equipments, MarketItems, Jobs, Addons+Contents) 
 
 **Per-weapon flow:** build kit in repo → publish revision → on portal: create Equipment
 pointing at the new content row → create Market item (`Quantity=5`, Gun-Dealer whitelist, price).
+
+---
+
+## Mass production (2026-06-10)
+
+Scaffolds for weapons **#2–5** (`deagle`, `mp9`, `ssg08`, `xm1014`) are live. Runbook +
+queue table: **`WEAPON_MASS_PRODUCTION.md`**. Config: `config/weapon-production.json`.
+Scripts: `scripts/Start-WeaponMassProduction.ps1`, `scripts/New-LifePunchWeapon.ps1`.

@@ -19,6 +19,7 @@ lifepunch/addons/test/
 # Local machine-specific remote host overrides (LAN IPs)
 lifepunch/scripts/remote-hosts.local.json
 lifepunch/scripts/server-host-watch.local.json
+lifepunch/scripts/dxrp-editor.local.json
 lifepunch/scripts/.session-sync-state.json
 
 # Local sensitive information

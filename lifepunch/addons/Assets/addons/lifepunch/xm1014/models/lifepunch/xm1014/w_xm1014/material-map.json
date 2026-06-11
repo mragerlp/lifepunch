@@ -1,0 +1,16 @@
+﻿{
+    "materials":  [
+                      {
+                          "vmat":  "materials/xm1014_body.vmat",
+                          "textures":  {
+                                           "baseColor":  "textures/xm1014_BaseColor.png",
+                                           "metalness":  "textures/xm1014_Metalness.png",
+                                           "roughness":  "textures/xm1014_Roughness.png",
+                                           "normal":  "textures/xm1014_Normal.png"
+                                       },
+                          "slot":  "body"
+                      }
+                  ],
+    "ident":  "xm1014",
+    "schemaVersion":  1
+}

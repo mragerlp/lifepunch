@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "program": "LifePunch Gun Dealer — 5 class kit",
+  "referenceIntakeRoot": "C:/lifepunch/reference-intake/cs2-weapons",
+  "weapons": [
+    {
+      "ident": "ak47",
+      "title": "AK-47",
+      "displayLabel": "AK-47",
+      "weaponClass": "assault-rifle",
+      "dxrpClassWeapon": "m4a1",
+      "cs2Mesh": "weapon_rif_ak47",
+      "sboxIdentifier": "lifepunch.ak47",
+      "status": "active-kit",
+      "queueOrder": 1
+    },
+    {
+      "ident": "deagle",
+      "title": "Desert Eagle",
+      "displayLabel": "Desert Eagle",
+      "weaponClass": "handgun",
+      "dxrpClassWeapon": "usp",
+      "cs2Mesh": "weapon_pist_deagle",
+      "sboxIdentifier": "lifepunch.deagle",
+      "status": "scaffold",
+      "queueOrder": 2
+    },
+    {
+      "ident": "mp9",
+      "title": "MP9",
+      "displayLabel": "MP9",
+      "weaponClass": "smg",
+      "dxrpClassWeapon": "mp5",
+      "cs2Mesh": "weapon_smg_mp9",
+      "sboxIdentifier": "lifepunch.mp9",
+      "status": "scaffold",
+      "queueOrder": 3
+    },
+    {
+      "ident": "ssg08",
+      "title": "SSG 08",
+      "displayLabel": "SSG 08",
+      "weaponClass": "sniper",
+      "dxrpClassWeapon": "m700",
+      "cs2Mesh": "weapon_snip_ssg08",
+      "sboxIdentifier": "lifepunch.ssg08",
+      "status": "scaffold",
+      "queueOrder": 4
+    },
+    {
+      "ident": "xm1014",
+      "title": "XM1014",
+      "displayLabel": "XM1014",
+      "weaponClass": "shotgun",
+      "dxrpClassWeapon": "spaghelli",
+      "cs2Mesh": "weapon_shot_xm1014",
+      "sboxIdentifier": "lifepunch.xm1014",
+      "status": "scaffold",
+      "queueOrder": 5
+    }
+  ]
+}

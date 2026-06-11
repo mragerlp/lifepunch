@@ -29,17 +29,22 @@ if (-not $isAdmin) {
 
 $here = $PSScriptRoot
 $bootSrc = Join-Path $here 'Invoke-CornermanHeadlessBoot.ps1'
+$lmsSrc = Join-Path $here 'Start-CornermanLmStudio.ps1'
 if (-not (Test-Path -LiteralPath $bootSrc)) {
     throw "Missing $bootSrc"
 }
+if (-not (Test-Path -LiteralPath $lmsSrc)) {
+    throw "Missing $lmsSrc"
+}
 
-Write-Step 'Publish headless boot script on-box'
+Write-Step 'Publish headless boot + LM Studio scripts on-box'
 New-Item -ItemType Directory -Force -Path $OnBoxDir | Out-Null
 $bootOnBox = Join-Path $OnBoxDir 'Invoke-CornermanHeadlessBoot.ps1'
-if ((Resolve-Path -LiteralPath $bootSrc).Path -ne (Resolve-Path -LiteralPath $bootOnBox -ErrorAction SilentlyContinue).Path) {
-    Copy-Item -LiteralPath $bootSrc -Destination $bootOnBox -Force
-}
+$lmsOnBox = Join-Path $OnBoxDir 'Start-CornermanLmStudio.ps1'
+Copy-Item -LiteralPath $bootSrc -Destination $bootOnBox -Force
+Copy-Item -LiteralPath $lmsSrc -Destination $lmsOnBox -Force
 Write-Note $bootOnBox
+Write-Note $lmsOnBox
 
 $psArgs = "-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File `"$bootOnBox`""
 $action = New-ScheduledTaskAction -Execute 'powershell.exe' -Argument $psArgs

@@ -1,0 +1,16 @@
+﻿{
+    "materials":  [
+                      {
+                          "vmat":  "materials/deagle_body.vmat",
+                          "textures":  {
+                                           "baseColor":  "textures/deagle_BaseColor.png",
+                                           "metalness":  "textures/deagle_Metalness.png",
+                                           "roughness":  "textures/deagle_Roughness.png",
+                                           "normal":  "textures/deagle_Normal.png"
+                                       },
+                          "slot":  "body"
+                      }
+                  ],
+    "ident":  "deagle",
+    "schemaVersion":  1
+}

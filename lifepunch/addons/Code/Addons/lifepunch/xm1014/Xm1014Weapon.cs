@@ -1,0 +1,34 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// PROPRIETARY & CONFIDENTIAL — © 2026 lifepunch.co. All rights reserved.
+//
+// "XM1014" (s&box ident: lifepunch.xm1014 · addon ident: xm1014) is the sole-owned
+// intellectual property of lifepunch.co. It is NOT licensed for resale, redistribution,
+// sublicensing, copying, or reuse by ANY person or entity — including DXRP and
+// LifePunch staff, contributors, or community — EXCEPT the owner (lifepunch.co).
+// Presence in this repository or on the DXRP portal grants no rights to anyone else.
+// ─────────────────────────────────────────────────────────────────────────────
+
+using Sandbox;
+
+namespace LifePunch.DXRP.Addons.Xm1014;
+
+/// <summary>Runtime weapon state stub â€” tune stats in Xm1014.cs, wire prefab Functions in editor.</summary>
+public sealed class Xm1014Weapon : Component
+{
+	public int ClipContents { get; private set; }
+	public int ReserveAmmo { get; private set; }
+	public bool IsReloading { get; private set; }
+
+	protected override void OnAwake()
+	{
+		base.OnAwake();
+		ResetAmmo();
+	}
+
+	public void ResetAmmo()
+	{
+		ClipContents = Xm1014.Stats.MagazineSize;
+		ReserveAmmo = Xm1014.Stats.ReserveAmmo;
+		IsReloading = false;
+	}
+}
