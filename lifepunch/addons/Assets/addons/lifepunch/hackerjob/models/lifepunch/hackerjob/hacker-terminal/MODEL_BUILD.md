@@ -17,7 +17,7 @@ Archive: `C:\lifepunch\reference-intake\hackerjob\hackerterminal-v2`
 ## ModelDoc
 
 1. Open `hacker-terminal.vmdl` — import `source/hacker-terminal.fbx`.
-2. Start `import_scale` at **39.37** (match bitminer terminal); tune to desk height vs citizen.
+2. Start `import_scale` at **39.37** (match bitcoinmining terminal); tune to desk height vs citizen.
 3. Note material slots from import → fill `material-map.json` + author vmats (green `#00FF7F` monitor accent).
 4. Compile → `Pull-DxrpCompiledAssetsToRepo.ps1`.
 

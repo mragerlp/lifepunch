@@ -11,7 +11,7 @@
   },
   "razorUi": {
     "authoringPath": "C:/Users/jared/Downloads/newaddons/hackerterminal/source/bitcointerminal",
-    "shipPath": "Code/Addons/lifepunch/bitcoinmining/BitminerTerminal.razor",
+    "shipPath": "Code/Addons/lifepunch/bitcoinmining/HashdTerminal.razor",
     "notes": "Razor is code, not in this asset folder."
   },
   "blenderObjects": [

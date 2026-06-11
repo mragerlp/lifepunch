@@ -12,7 +12,7 @@ P0 (do first)
 -------------
 StaffMenu.razor.scss has 7x linear-gradient — s&box UI rejects these (same bug class as hashd terminal).
 → Replace with solid background-color + box-shadow.
-→ Reference: inbox/BITMINER_GRADIENT_FIX_REFERENCE.scss (BitminerTerminal fix).
+→ Reference: inbox/BITCOINMINING_GRADIENT_FIX_REFERENCE.scss (HashdTerminal fix).
 → Deliver: outbox/STAFF_MENU_SCSS_FIX.scss (full file ready for Red to copy in).
 
 DO NOT change StaffMenuHost.cs mount pattern (GameManager.ShowUi) — clicks depend on it.

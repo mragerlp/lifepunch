@@ -1,7 +1,8 @@
 # advanced-hacker-terminal — Vengeance CRT (vengeance.exe)
 
 **Slug:** `advanced-hacker-terminal`  
-**Source:** `source/hacker-terminal.fbx` (same mesh as standard; red material pass in ModelDoc)  
+**Source:** `source/hacker-terminal.fbx` (owner `computer.fbx` — unique advanced CRT; red material pass in ModelDoc)  
+**UI art:** `ui/vengeance/*.png` (console, loading screen, terminal chrome)  
 **Target:** `advanced-hacker-terminal.vmdl`  
 **Prefab:** `entities/advanced-hacker-terminal/advanced-hacker-terminal.prefab`  
 **Tier:** `HackerTerminalEntity.Tier = Advanced`

@@ -13,11 +13,11 @@ using Sandbox;
 namespace LifePunch.DXRP.Addons.BitcoinMining;
 
 /// <summary>
-/// Large stacked GPU rack placeable — same behavior as <see cref="BitminerEntity"/> with
-/// <see cref="BitminerEntity.AdvancedRack"/> enabled (2× yield). Prefab: <c>large-gpu-rack</c>.
+/// Large stacked GPU rack placeable — same behavior as <see cref="GpuRackEntity"/> with
+/// <see cref="GpuRackEntity.AdvancedRack"/> enabled (2× yield). Prefab: <c>large-gpu-rack</c>.
 /// </summary>
 [Title( "Large GPU Rack" )]
 [Category( "LifePunch/Bitcoin Miner" )]
-public sealed class LargeGpuRackEntity : BitminerEntity
+public sealed class LargeGpuRackEntity : GpuRackEntity
 {
 }

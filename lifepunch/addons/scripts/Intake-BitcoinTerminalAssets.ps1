@@ -71,4 +71,4 @@ if (-not $WhatIf) {
 
 Write-Host 'Intake OK' -ForegroundColor Green
 Write-Host '  Blend archived only (not in publish tree).' -ForegroundColor DarkGray
-Write-Host '  Razor UI stays in Code/Addons/.../BitminerTerminal.razor' -ForegroundColor DarkGray
+Write-Host '  Razor UI stays in Code/Addons/.../HashdTerminal.razor' -ForegroundColor DarkGray

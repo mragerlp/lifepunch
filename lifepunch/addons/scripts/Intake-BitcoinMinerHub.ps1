@@ -71,4 +71,4 @@ else {
     Write-Host '  Ophion FBX + textures OK' -ForegroundColor Green
 }
 
-Write-Host 'Intake OK - ModelDoc bitcoin-miner.vmdl, wire power anims, prefab BitminerHubEntity.' -ForegroundColor Green
+Write-Host 'Intake OK - ModelDoc bitcoin-miner.vmdl, wire power anims, prefab BitcoinMinerHubEntity.' -ForegroundColor Green

@@ -10,8 +10,8 @@
 ## 1. In-product source identity (trademark)
 
 ```powershell
-rg -i "spl mute|bitos|root@bitminer" lifepunch/addons/Code/Addons/lifepunch/hackerjob
-rg -i "spl mute|bitos" lifepunch/addons/Assets/addons/lifepunch/hackerjob
+rg -i "LIFEPUNCH|lifepunch\.co" lifepunch/addons/Code/Addons/lifepunch/hackerjob --glob "*.{cs,razor,scss}"
+rg -i "cloud\.facepunch|packages\.facepunch" lifepunch/addons/Assets/addons/lifepunch/hackerjob
 ```
 
 | Check | Pass criteria | Status | Notes |
@@ -63,7 +63,7 @@ cd lifepunch/addons/scripts
 
 | Terminal | Must stay distinct | Status |
 |----------|-------------------|--------|
-| Hacker green `#00FF7F` | ≠ HASHD amber bitminer | ✅ SCSS |
+| Hacker green `#00FF7F` | ≠ HASHD amber | ✅ SCSS |
 | Hacker red `#E4002B` | ≠ VENGEANCE machine fiction only in advanced tier | ✅ |
 | Ops console layout | Shared *shape* with police cyan — different program/commands | ✅ |
 
@@ -99,4 +99,4 @@ Run in order:
 
 `C:\lifepunch\cornerman\outbox\HACKER_JOB_PROTECTION_AUDIT.md` — grep evidence + open items for Red.
 
-**Parallel:** `BITMINER_PROTECTION_CHECKLIST.md` (amber HASHD — separate addon).
+**Parallel:** `BITCOINMINING_PROTECTION_CHECKLIST.md` (amber HASHD — separate addon).

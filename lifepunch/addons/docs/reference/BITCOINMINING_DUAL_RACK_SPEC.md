@@ -1,0 +1,149 @@
+# Bitcoin mining dual rack spec (economy + meshes)
+
+**Status:** Green complete (2026-06-11) · **Layout superseded** by three-entity arch  
+**Canon brief:** `briefs/BITCOINMINING_DUAL_RACK_BRIEF.md`  
+**Placeables:** `BITCOINMINING_THREE_ENTITY_ARCH.md` · **Remote UX:** `BITCOINMINING_REMOTE_RACK_SPEC.md`
+
+---
+
+## Asset inventory
+
+| Asset | Repo path | Approx role | Notes |
+|-------|-----------|-------------|-------|
+| Small static | `gpu-rack/source/gpu-rack-static.obj` | Base rack | Shipped → `gpu-rack.vmdl` |
+| Small anim | `gpu-rack/source/gpu-rack-anim.fbx` | `power_on` / `power_off` | BITCOINMINING-01 — not on vmdl yet |
+| Large stacked | `gpu-rack/source/gpu-rack-stacked-anim.fbx` | Expansion rack | **vmdl TODO** — shares Cord/PSU/Rack/Motherboard/GPU slots |
+| CRT terminal | `bitcoin-terminal/source/computer.fbx` | Control station | `bitcoin-terminal.vmdl` shipped; **vmats TODO** (see `BITCOINMINING_VMAT_AUDIT.md`) |
+
+Archive mirror: `C:/lifepunch/reference-intake/bitcoinmining/gpu-rack-export/GPU_Farm_Stacked_Anim.fbx` (not on Green disk)
+
+### Height / bounds (Green audit)
+
+| Mesh | Method | Size (Blender units, XYZ) | Height (Z) |
+|------|--------|---------------------------|------------|
+| Small static OBJ | Vertex scan | `0.47 × 0.31 × 0.77` | **0.77** |
+| Large stacked FBX | TBD — Red ModelDoc | — | **TBD — Red editor verify** (expect ~1.5–2.0× small; filename + shared fan object names imply double stack) |
+
+**Origin note:** Terminal FBX uses `align_origin_z_type = Bottom` + `import_scale = 39.37`. Stacked FBX likely needs same Z align — flag if large rack floats/sinks beside small rack.
+
+---
+
+## Economy
+
+### Current (shipped `GpuRackEntity.MineBitcoin`)
+
+```text
+BTC per 90s tick = ClockSpeed × BaseSpeed(0.005) × CoreCount
+Display BTC/min  = same (rate label)
+```
+
+Example @ defaults (2.44 GHz, 1 core): `0.0122` BTC per tick / min.
+
+### Proposed dual-rack
+
+| Field | Type | Notes |
+|-------|------|-------|
+| `RackExpansionLevel` | `[Sync] int` 0–1 | 0 = large visible, offline; 1 = large contributes |
+| `RackYield` | derived | `1.0 + RackExpansionLevel × 1.0` |
+
+```text
+BTC per tick = ClockSpeed × 0.005 × CoreCount × RackYield
+```
+
+| State | RackYield | Example @ 2.44 GHz, 1 core |
+|-------|-----------|------------------------------|
+| Starter (large offline) | ×1.0 | 0.0122 BTC/min |
+| Expansion active | ×2.0 | 0.0244 BTC/min |
+
+### Rack Expansion upgrade
+
+| Tier | Proposed cost | Effect |
+|------|---------------|--------|
+| 1 (one-time) | **$250,000** | `RackExpansionLevel` 0→1; large rack anim + yield |
+
+**Balance rationale:** CPU clock tier 1 = $2k; core tier 1 = $50k; core max = $175k. Rack expansion **doubles all mining** — priced above max core tier but below “buy everything” grind. **TBD — Red economy playtest.**
+
+**Enum:** add `GpuRackUpgradeType.Rack` (Red/Opus in `GpuRackEntity.cs`).
+
+---
+
+## Visual states
+
+| RackExpansionLevel | IsMining | Small rack | Large rack |
+|--------------------|----------|------------|------------|
+| 0 | false | idle | visible, dim/off emission |
+| 0 | true | `power_on` | visible, dim/off |
+| 1 | false | idle | idle/off |
+| 1 | true | `power_on` | `power_on` (sync sequences) |
+
+Large rack GPU emission: full when `RackExpansionLevel == 1 && IsMining`; dim when expansion owned but idle; off when not purchased (optional — still visible mesh).
+
+---
+
+## Prefab hierarchy (three entities — current canon)
+
+```text
+entities/bitcoin-terminal/bitcoin-terminal.prefab
+├── ModelRenderer          → bitcoin-terminal.vmdl
+├── BitcoinTerminalProp   → links / registry of nearby GpuRackEntity
+└── lcd_screen             → TextRenderer (amber summary)
+
+entities/bitcoin-miner/bitcoin-miner.prefab
+├── ModelRenderer          → gpu-rack.vmdl (SMALL)
+├── fan_placeholder*
+└── GpuRackEntity         AdvancedRack = false
+
+entities/advanced-bitcoin-miner/advanced-bitcoin-miner.prefab
+├── ModelRenderer          → gpu-rack-stacked.vmdl (LARGE)
+├── fan_placeholder*
+└── GpuRackEntity         AdvancedRack = true
+```
+
+Place racks near terminal in editor; player sees multiple units in world — not stacked on one prefab root.
+
+### ~~Obsolete~~ single-prefab `gpu_rack_large` child
+
+Do not add large rack as child of `bitcoin-miner`. Use `advanced-bitcoin-miner` placeable + remote hashd control (`BITCOINMINING_REMOTE_RACK_SPEC.md`).
+
+---
+
+## Terminal / LCD copy
+
+### `status` / `info` lines
+
+```text
+RACKS   1× SMALL (active) + 1× LARGE (offline|active)
+YIELD   ×{RackYield:0.0}
+```
+
+### Upgrade panel — third row
+
+| Row | Label | Detail string | Button |
+|-----|-------|---------------|--------|
+| 3 | **RACK EXPANSION** | `Lv 0/1 — $250,000 — doubles mining yield` | PURCHASE |
+
+- Disabled when `RackExpansionLevel >= 1` or wallet &lt; cost.
+- Confirm copy: `Purchase large rack expansion? Doubles mining yield.`
+- CLI alias: `upgrade rack` (text) + clickable row (Red wires after enum exists).
+
+Phase 1 upgrade overlay (CPU/CORES) shipped; Phase 2 **Upgrades** module per `BITCOINMINING_PHASE2_WIREFRAME.md` — Red adds rack row + `RequestUpgrade(Rack)`.
+
+---
+
+## ModelDoc checklist (Red)
+
+1. Import `gpu-rack-stacked-anim.fbx` → new `gpu-rack-stacked.vmdl`.
+2. Remap five slots → existing `gpu-rack-*.vmat` (stacked FBX already names Cord, FanBlades*, etc.).
+3. Add sequences `power_on` / `power_off` (sync timing with small rack).
+4. Compile; wire `advanced-bitcoin-miner.prefab` (not child on small miner).
+5. `AdvancedRack` property on `GpuRackEntity` sets `RackYield` ×2 — shipped; expansion purchase track **TBD** vs separate placeable cost.
+6. Play-test: terminal + both rack entities placed nearby; hashd controls selected rig; LCD shows linked summary.
+
+---
+
+## Related
+
+- `BITCOINMINING_UX_SPEC.md` §2 economy, §3d rack anim
+- `gpu-rack/MODEL_BUILD.md`
+- `cornerman/outbox/BITCOINMINING_VMAT_AUDIT.md` — CRT materials (parallel blocker)
+- `TECH_DEBT.md` BITCOINMINING-01

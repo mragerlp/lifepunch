@@ -1,16 +1,17 @@
 <#
 .SYNOPSIS
-  Intake owner government datacenter + terminal assets.
+  Intake owner Government datacenter landmark art (addon: governmentdatacenter).
 
 .PARAMETER SourceRoot
-  Default: Downloads\governmentdatacenter
+  Default: OneDrive\Desktop\governmentdatacenter
 
 .EXAMPLE
   powershell -File Intake-GovernmentDatacenter.ps1
+  powershell -File Intake-GovernmentDatacenter.ps1 -SourceRoot "$env:USERPROFILE\OneDrive\Desktop\governmentdatacenter"
 #>
 [CmdletBinding()]
 param(
-    [string] $SourceRoot = "$env:USERPROFILE\Downloads\governmentdatacenter",
+    [string] $SourceRoot = '',
     [string] $ArchiveRoot = 'C:\lifepunch\reference-intake\governmentdatacenter',
     [switch] $WhatIf
 )
@@ -18,6 +19,21 @@ param(
 $ErrorActionPreference = 'Stop'
 $AddonsRoot = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 $GovAssets = Join-Path $AddonsRoot 'Assets\addons\lifepunch\governmentdatacenter'
+
+function Resolve-GovernmentSourceRoot([string]$Explicit) {
+    if ($Explicit) { return $Explicit }
+    $candidates = @(
+        (Join-Path $env:USERPROFILE 'OneDrive\Desktop\governmentdatacenter')
+        (Join-Path $env:USERPROFILE 'Desktop\governmentdatacenter')
+        (Join-Path $env:USERPROFILE 'Downloads\governmentdatacenter')
+    )
+    foreach ($c in $candidates) {
+        if (Test-Path -LiteralPath $c) { return $c }
+    }
+    return $candidates[0]
+}
+
+$SourceRoot = Resolve-GovernmentSourceRoot -Explicit $SourceRoot
 
 function Ensure-Dir([string]$Path) {
     if (-not (Test-Path -LiteralPath $Path)) {
@@ -27,7 +43,7 @@ function Ensure-Dir([string]$Path) {
 }
 
 if (-not (Test-Path -LiteralPath $SourceRoot)) {
-    throw "Missing $SourceRoot - drop government datacenter pack first."
+    throw "Missing $SourceRoot - drop government datacenter art into Desktop\governmentdatacenter first."
 }
 
 $sourceMesh = Get-ChildItem -LiteralPath $SourceRoot -Recurse -Include *.fbx,*.dae,*.obj -ErrorAction SilentlyContinue | Select-Object -First 5

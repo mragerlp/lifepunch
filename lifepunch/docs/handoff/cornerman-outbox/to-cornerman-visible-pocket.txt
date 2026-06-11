@@ -15,7 +15,7 @@ DXRP HOOKS (canonical)
 
 NOPOCKET / RAID
   Core does not read lifepunch_nopocket — deny by omitting pocket_item
-  Bitminer prefabs: lifepunch_nopocket, no pocket_item (done)
+  BitcoinMiningAddon prefabs: lifepunch_nopocket, no pocket_item (done)
 
 BANK TTL PARITY (phase 3)
   Money printer: PrinterDestroyAfterDisconnectTime = 3600f (GameConfig.Systems.cs)

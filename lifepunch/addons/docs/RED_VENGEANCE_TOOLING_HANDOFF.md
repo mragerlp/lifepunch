@@ -47,7 +47,7 @@ alexistb2904.sbox-api-tools
 shader-slang.slang-language-extension
 ```
 
-**Shader edit loop (P0 bitminer RGB):** edit `Assets/.../shaders/lifepunch_rgb_fan_led.shader` in Cursor (Slang mode) → save in **s&box editor** to compile/hotload → `Pull-DxrpCompiledAssetsToRepo.ps1` for `_c` publish artifacts. Official doc: [shader getting started](https://sbox.game/dev/doc/rendering/shaders/getting-started/).
+**Shader edit loop (P0 GPU rack RGB):** edit `Assets/.../shaders/lifepunch_rgb_fan_led.shader` in Cursor (Slang mode) → save in **s&box editor** to compile/hotload → `Pull-DxrpCompiledAssetsToRepo.ps1` for `_c` publish artifacts. Official doc: [shader getting started](https://sbox.game/dev/doc/rendering/shaders/getting-started/).
 
 ### Two eyes MCP (s&box editor + Cornerman distill)
 
@@ -86,7 +86,7 @@ On **Cornerman**: restart Cursor → MCP → `sbox` + `cornerman-lm` green. `sbo
 
 ```text
 1. git pull --rebase
-2. P0 — Bitminer RGB fan shader compile + START/STOP play-test
+2. P0 — BitcoinMiningAddon RGB fan shader compile + START/STOP play-test
 3. P1 — Visible Pocket Step 1 (DXRP pocket discovery, Opus)
 4. P1 — Slot limits → P2 HUD → P3 bank prop
 5. Write back: to-cornerman-visible-pocket.txt
@@ -94,9 +94,9 @@ On **Cornerman**: restart Cursor → MCP → `sbox` + `cornerman-lm` green. `sbo
 
 ---
 
-## P0 — Bitminer RGB fan LEDs
+## P0 — BitcoinMiningAddon RGB fan LEDs
 
-**Outbox:** `to-vengeance-bitminer-rgb.txt`
+**Outbox:** `to-vengeance-bitcoinmining-rgb.txt`
 
 ```powershell
 powershell -File lifepunch/scripts/Sync-LifePunchAddonsToDxrp.ps1 -Addon bitcoinmining
@@ -111,9 +111,9 @@ powershell -File lifepunch/scripts/Start-SboxDxrpEditor.ps1
 |------|------|
 | `Assets/.../bitcoinmining/shaders/lifepunch_rgb_fan_led.shader` | Custom LED shader |
 | `gpu-rack-gpu.vmat` | Shader ref + `g_flLedActive` |
-| `BitminerEntity.UpdateRgbFanLeds()` | Tied to `IsMining` + fan ramp |
+| `GpuRackEntity.UpdateRgbFanLeds()` | Tied to `IsMining` + fan ramp |
 
-**Note:** Fan mesh spin still uses legacy child GOs (`BITMINER-01`). RGB needs `GPU_Emission.png` / rack emission mask.
+**Note:** Fan mesh spin still uses legacy child GOs (`BITCOINMINING-01`). RGB needs `GPU_Emission.png` / rack emission mask.
 
 **Status:** RGB source pulled from Cornerman clone to VENGEANCE — **compile + START/STOP play-test still required** before calling P0 done.
 

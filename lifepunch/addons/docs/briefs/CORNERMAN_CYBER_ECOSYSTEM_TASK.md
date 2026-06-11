@@ -24,7 +24,7 @@ Red seeded repo canon — **distill/simplify for RAG**, do not duplicate verbati
 | Repo source (pull main) | Outbox target |
 |-------------------------|---------------|
 | `LIFEPUNCH_CYBER_ECOSYSTEM.md` | `CYBER_ECOSYSTEM_ONE_PAGER.md` |
-| `BITMINER_ENCRYPTION_SPEC.md` + `BitminerEncryptionCatalog.cs` | `BITMINER_ENCRYPTION_UPGRADE_TABLE.md` |
+| `BITCOINMINING_ENCRYPTION_SPEC.md` + `BitcoinMinerEncryptionCatalog.cs` | `BITCOINMINING_ENCRYPTION_UPGRADE_TABLE.md` |
 | `HACKER_PVP_INFRA.md` | `HACKER_PVP_INFRA_FLOW.md` |
 | `GOV_DATACENTER_ROLEPLAY.md` | same name in outbox (tighten) |
 | `UPGRADE_TIER_STANDARD.md` | same name in outbox |
@@ -37,7 +37,7 @@ Add: **open questions** list for owner playtest walkthrough.
 ## Do NOT
 
 - Edit ship C# or ModelDoc on Green
-- Ship only LifePunch-owned audio/models (`BITMINER_IP_DOCTRINE.md`)
+- Ship only LifePunch-owned audio/models (`BITCOINMINING_IP_DOCTRINE.md`)
 - Redesign amber hashd menu — additions only
 
 ---

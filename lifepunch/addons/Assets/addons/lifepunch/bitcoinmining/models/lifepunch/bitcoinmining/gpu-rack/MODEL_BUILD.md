@@ -138,7 +138,7 @@ Rack fans and card LEDs **only run while mining** — idle when powered off.
 
 `gpu-rack-stacked-anim.fbx` is a layout reference only unless art needs the stacked variant.
 
-**Code:** `BitminerEntity.SetMiningState` switches vmdl sequence (replaces legacy `BitminerFan*` child spin — see `TECH_DEBT` BITMINER-01).
+**Code:** `GpuRackEntity.SetMiningState` switches vmdl sequence (replaces legacy `RackFan1*` child spin — see `TECH_DEBT` BITCOINMINING-01).
 
 ## Terminal prop (separate from rack vmdl)
 
@@ -155,5 +155,5 @@ Razor UI ships under `Code/Addons/lifepunch/bitcoinmining/` — author in Downlo
 3. Mesh source is `source/gpu-rack-anim.fbx` (replaces static OBJ). In **AnimationList** → **Add Simple Animations** (star icon) from the same FBX; rename clips to `power_on` (loop) + `power_off` (idle/hold). Stacked rack: repeat on `gpu-rack-stacked.vmdl` (FBX scene name `Mining_Rig_Stacked` — code falls back to this name until renamed).
 4. Create five vmats per `material-map.json` (GPU slot uses emission).
 5. Compile `gpu-rack.vmdl` in this folder; recompile after external edits.
-6. Prefab `entities/bitcoin-miner/bitcoin-miner.prefab` — tune scale vs citizen; wire anim driver to `BitminerEntity`.
+6. Prefab `entities/bitcoin-miner/bitcoin-miner.prefab` — tune scale vs citizen; wire anim driver to `GpuRackEntity`.
 7. Play-test: `mining start` → rack anim + hum; `mining stop` → power down.

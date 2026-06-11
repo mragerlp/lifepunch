@@ -23,6 +23,15 @@ namespace LifePunch.DXRP.Addons.HackerJob;
 /// </summary>
 public static class HackerEconomySecurity
 {
+	// ── Phase 2 economy skeleton (prep only — no wallet transfer until owner post-legal sign-off) ──
+	// Swap point checklist: hackerjob/docs/SECURITY.md + HACKER_PHASE2_ECONOMY_PREP.md
+	// 1. ProcessWalletTransferHost — debit target.WalletBalance, credit hacker (on-hand cash only)
+	// 2. ProcessRackUpgradeChargeHost — debit installer on INSTALL button (rack menu today is UI-only)
+	// 3. BuildScanTargetsHost — host enumerates players + GovernmentTaxMinerEntity nodes
+	// 4. IssuePuzzleSessionHost — session id on hack/infil start (closes HACKER-02)
+	// 5. IsHackerJobHost + ValidateTerminalProximityHost — job + distance gates
+	// DO NOT call DXRP ChargeHost/PayHost from Phase 1 paths until checklist is signed off.
+
 	public readonly record struct HackAttemptResult( bool Accepted, bool FundsMoved, string Message )
 	{
 		public static HackAttemptResult Denied( string message ) => new( false, false, message );

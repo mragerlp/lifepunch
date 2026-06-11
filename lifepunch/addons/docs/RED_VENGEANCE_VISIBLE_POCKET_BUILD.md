@@ -1,7 +1,7 @@
 # Visible Pocket — VENGEANCE build runbook (Opus)
 
 **Spec:** `VISIBLE_POCKET_SPEC.md` · **Debt:** `TECH_DEBT.md` POCKET-01  
-**Prerequisite:** P0 bitminer RGB fan compile (`RED_VENGEANCE_TOOLING_HANDOFF.md`) optional but recommended first.
+**Prerequisite:** P0 GPU rack RGB fan compile (`RED_VENGEANCE_TOOLING_HANDOFF.md`) optional but recommended first.
 
 ---
 

@@ -11,8 +11,8 @@
 
 LifePunch already runs on **DXRP’s pocket model**:
 
-- `PocketTag` / `pocket_item` on placeables (e.g. bitminer prefabs)
-- Pocket carry rules in entity code (`BitminerEntity`, etc.)
+- `PocketTag` / `pocket_item` on placeables (e.g. bitcoinmining prefabs)
+- Pocket carry rules in entity code (`GpuRackEntity`, etc.)
 - **Drug Dealer** market rows + job gates for meth/coke economy (`METH-02`, `METH_CREATION_SPEC.md`)
 
 **llad MIS is a parallel stack** — bag grid, hotbar, equipment, crafting, world chests. It does **not** plug into DXRP pockets automatically. Treating it as a pocket replacement would fork the economy.
@@ -22,7 +22,7 @@ LifePunch already runs on **DXRP’s pocket model**:
 | Use | Mechanism | Consumer |
 |-----|-----------|----------|
 | **Stash / lab storage** | `StorageContainer` — chemicals, coke precursors off-person | `advanceddrugprocessing` |
-| **Job loot crates** | World chests, one-off rewards | `hackerjob`, optional bitminer |
+| **Job loot crates** | World chests, one-off rewards | `hackerjob`, optional bitcoinmining |
 | **Crafting bench UI** | Grid UI at meth/coke stations — inputs/outputs **sync to** Drug Dealer pocket rows | `advanceddrugprocessing` |
 
 ### Risky without Opus pass

@@ -12,8 +12,8 @@ The **government database** is represented in-world by **automatic government Bi
 - **Blue console** aesthetic (lifepunchnet cyan `#00D4FF`) — player hashd stays **green** Cornerman chrome
 - **Always mining** — no player start/stop
 - **Every 30 minutes:** deposit **0%–30%** of accumulated BTC balance as **cash into city funds** (tax rate set by mayor)
-- **No player withdraw** — treasury only; mirrors Bitminer accrual math
-- **$50,000 cap** on accumulated BTC value (= **~33.33 BTC** at $1,500/BTC — same rate as player Bitminer)
+- **No player withdraw** — treasury only; mirrors BitcoinMiningAddon accrual math
+- **$50,000 cap** on accumulated BTC value (= **~33.33 BTC** at $1,500/BTC — same rate as player BitcoinMiningAddon)
 - **Police terminals** placed near tax miners — lifepunchnet ops UI, counter-intrusion / audit (like Hacker flow)
 - **Advanced Hacking Terminal** (Vengeance red) is how Hackers breach govdb nodes
 
@@ -22,9 +22,9 @@ The **government database** is represented in-world by **automatic government Bi
 
 ---
 
-## 2. Economy (reuse Bitminer)
+## 2. Economy (reuse BitcoinMiningAddon)
 
-Player Bitminer already defines:
+Player BitcoinMiningAddon already defines:
 
 | Field | Value |
 |-------|-------|
@@ -88,7 +88,7 @@ Green does **not** block on models — Red ModelDoc when art lands.
 | Phase | Lane | Deliverable |
 |-------|------|-------------|
 | 1 | Green | Spec, `GovernmentTaxMiner` constants, addons.json row, brand matrix |
-| 2 | Red Opus | `GovernmentTaxMinerEntity` port from Bitminer, city funds RPC |
+| 2 | Red Opus | `GovernmentTaxMinerEntity` port from BitcoinMiningAddon, city funds RPC |
 | 3 | Red | Blue-console prefab + datacenter models |
 | 4 | Red | `PoliceTerminal` Razor shell (lifepunchnet cyan) |
 | 5 | Opus | Advanced hacker ↔ police counterplay + audit log |

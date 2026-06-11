@@ -23,7 +23,7 @@ $files = @(
     @{ rel = 'lifepunch\docs\handoff\cornerman-outbox\to-cornerman-hacker-job.txt'; inbox = 'to-cornerman-hacker-job.txt' },
     @{ rel = 'lifepunch\docs\handoff\cornerman-outbox\to-vengeance-hacker-job-start.txt'; inbox = 'to-vengeance-hacker-job-start.txt' },
     @{ rel = 'lifepunch\addons\docs\LIFEPUNCH_CYBER_ECOSYSTEM.md'; inbox = 'LIFEPUNCH_CYBER_ECOSYSTEM.md' },
-    @{ rel = 'lifepunch\addons\docs\BITMINER_ENCRYPTION_SPEC.md'; inbox = 'BITMINER_ENCRYPTION_SPEC.md' }
+    @{ rel = 'lifepunch\addons\docs\BITCOINMINING_ENCRYPTION_SPEC.md'; inbox = 'BITCOINMINING_ENCRYPTION_SPEC.md' }
 )
 
 foreach ($f in $files) {

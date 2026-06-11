@@ -7,7 +7,7 @@
     <dxrp-game>/Assets/addons/lifepunch/<ident>/
     <dxrp-game>/Code/Addons/lifepunch/<ident>/
 
-  Uses robocopy /MIR so stale folders (e.g. bitminer/ after gpu-rack rename) are removed.
+  Uses robocopy /MIR so stale folders (e.g. legacy gpu-rack paths after rename) are removed.
 
 .PARAMETER Addon
   One or more addon idents (e.g. bitcoinmining). Default: bitcoinmining.

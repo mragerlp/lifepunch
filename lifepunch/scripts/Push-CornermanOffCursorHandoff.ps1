@@ -9,8 +9,8 @@ $files = @(
     @{ rel = 'lifepunch\docs\CORNERMAN_OFF_CURSOR_HANDOFF.md'; inbox = 'CORNERMAN_OFF_CURSOR_HANDOFF.md' },
     @{ rel = 'lifepunch\docs\CORNERMAN_MODEL_ROUTING.md'; inbox = 'CORNERMAN_MODEL_ROUTING.md' },
     @{ rel = 'lifepunch\addons\docs\briefs\CORNERMAN_WORK_QUEUE.md'; inbox = 'CORNERMAN_WORK_QUEUE.md' },
-    @{ rel = 'lifepunch\addons\docs\BITMINER_FINISH_RUNBOOK.md'; inbox = 'BITMINER_FINISH_RUNBOOK.md' },
-    @{ rel = 'lifepunch\addons\docs\reference\BITMINER_PORTAL_LISTING.md'; inbox = 'BITMINER_PORTAL_LISTING.md' }
+    @{ rel = 'lifepunch\addons\docs\BITCOINMINING_FINISH_RUNBOOK.md'; inbox = 'BITCOINMINING_FINISH_RUNBOOK.md' },
+    @{ rel = 'lifepunch\addons\docs\reference\BITCOINMINING_PORTAL_LISTING.md'; inbox = 'BITCOINMINING_PORTAL_LISTING.md' }
 )
 
 foreach ($f in $files) {

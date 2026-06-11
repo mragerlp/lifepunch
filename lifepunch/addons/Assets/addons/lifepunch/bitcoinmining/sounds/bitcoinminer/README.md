@@ -1,6 +1,6 @@
 # Bitcoin Miner — sounds (owner-only)
 
-**Ship policy:** LifePunch-owned or owner-licensed audio **only**. No third-party addon sound packs, no copied WAVs from other bitminers.
+**Ship policy:** LifePunch-owned or owner-licensed audio **only**. No third-party addon sound packs, no copied WAVs from other bitcoin minings.
 
 The ship tree has **no audio binaries** until you drop files via `Intake-BitcoinMinerSounds.ps1`.
 

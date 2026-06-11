@@ -23,9 +23,11 @@ public static class HackerJob
 	public const string EntitySlug = "hacker-terminal";
 	public const string AdvancedEntitySlug = "advanced-hacker-terminal";
 	public const string ServerRackEntitySlug = "server-rack";
+	public const string AdvancedServerRackEntitySlug = "advanced-server-rack";
 	public const string DisplayName = "Hacker Terminal";
 	public const string AdvancedDisplayName = "Advanced Hacking Terminal";
 	public const string ServerRackDisplayName = "Hacker Server Rack";
+	public const string AdvancedServerRackDisplayName = "Advanced Hacker Server Rack";
 	public const string Description = "Retro CRT terminal for the Hacker job. Boot cornerman.exe, scan wallets, solve coding puzzles.";
 	public const string AdvancedDescription = "Enhanced intrusion rig for government database access. Boots vengeance.exe — Vengeance Ops tier.";
 	public const string InGameProgramName = "cornerman.exe";
@@ -34,6 +36,7 @@ public static class HackerJob
 	public const string DevSpawnCommand = "lp_spawn_hacker_terminal";
 	public const string DevAdvancedSpawnCommand = "lp_spawn_advanced_hacker_terminal";
 	public const string DevServerRackSpawnCommand = "lp_spawn_server_rack";
+	public const string DevAdvancedServerRackSpawnCommand = "lp_spawn_advanced_server_rack";
 	public const string DevHackerKitPreviewCommand = "lp_hacker_kit_preview";
 	public const string DevUiCommand = "lp_cornerman_ui";
 	public const string DevAdvancedUiCommand = "lp_vengeance_ui";
@@ -44,9 +47,11 @@ public static class HackerJob
 	public const string WorldPrefabPath = "addons/lifepunch/hackerjob/entities/hacker-terminal/hacker-terminal.prefab";
 	public const string AdvancedWorldPrefabPath = "addons/lifepunch/hackerjob/entities/advanced-hacker-terminal/advanced-hacker-terminal.prefab";
 	public const string ServerRackWorldPrefabPath = "addons/lifepunch/hackerjob/entities/server-rack/server-rack.prefab";
+	public const string AdvancedServerRackWorldPrefabPath = "addons/lifepunch/hackerjob/entities/advanced-server-rack/advanced-server-rack.prefab";
 	public const string WorldModelPath = "addons/lifepunch/hackerjob/models/lifepunch/hackerjob/hacker-terminal/hacker-terminal.vmdl";
 	public const string AdvancedWorldModelPath = "addons/lifepunch/hackerjob/models/lifepunch/hackerjob/advanced-hacker-terminal/advanced-hacker-terminal.vmdl";
 	public const string ServerRackWorldModelPath = "addons/lifepunch/hackerjob/models/lifepunch/hackerjob/server-rack/server-rack.vmdl";
+	public const string AdvancedServerRackWorldModelPath = "addons/lifepunch/hackerjob/models/lifepunch/hackerjob/advanced-server-rack/advanced-server-rack.vmdl";
 	public const string KeyboardSoundPath = "addons/lifepunch/hackerjob/sounds/hacker-terminal/keyboard.sound";
 
 	/// <summary>Seconds allowed to complete an active puzzle before auto-fail.</summary>

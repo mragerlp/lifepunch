@@ -64,7 +64,7 @@ Rank floors apply immediately when granted; cash unlocks stack with rank minimum
 |------|----------|
 | **Death** | Pocket contents drop |
 | **Raid — printers** | Money printers are pocketable |
-| **Raid — bitminer** | GPU racks + terminals **not** pocketable (`lifepunch_nopocket`) |
+| **Raid — bitcoin mining** | GPU racks + terminals **not** pocketable (`lifepunch_nopocket`) |
 | **Raid — hacker** | Hacker terminals **not** pocketable (`lifepunch_nopocket` when prefab ships) |
 
 DXRP pocket remains the underlying carry model; Visible Pocket is the **owned UX + rules layer** on top.

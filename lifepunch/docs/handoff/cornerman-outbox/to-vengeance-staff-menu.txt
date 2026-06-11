@@ -10,4 +10,4 @@ When Green pings OK:
 3. Play game.scene -> staffmenu -> log filter gradient = empty
 4. Commit: fix(ulx): remove unsupported CSS gradients from staff menu SCSS
 
-Optional fast-path: Red can land P0 without waiting (same fix as BitminerTerminal).
+Optional fast-path: Red can land P0 without waiting (same fix as HashdTerminal).

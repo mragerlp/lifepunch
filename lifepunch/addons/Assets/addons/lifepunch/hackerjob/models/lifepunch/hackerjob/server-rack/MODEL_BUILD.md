@@ -25,10 +25,16 @@ Archive: `C:\lifepunch\reference-intake\hackerjob\server-rack`
 
 | Rack state | Terminals within 8m horizontal / 4m vertical |
 |------------|-----------------------------------------------|
-| POWER ON   | cornerman.exe + vengeance.exe sessions allowed |
+| POWER ON   | Linked terminals within range can open sessions |
 | POWER OFF  | CRT shows `[ OFFLINE ]` — interact denied |
 
-Upgrades on rack apply to all linked terminals (puzzle TTL, reward, cooldown, detection).
+**Basic rack** powers cornerman.exe (standard CRT). **Advanced rack** (`advanced-server-rack/`) powers vengeance.exe with higher upgrade caps — see `advanced-server-rack/MODEL_BUILD.md`.
+
+Re-run intake if `source/textures/` is empty:
+
+```powershell
+powershell -File lifepunch/addons/scripts/Intake-HackerServerRack.ps1 -SourceRoot "$env:USERPROFILE\OneDrive\Desktop\serverrack"
+```
 
 ## Dev smoke
 

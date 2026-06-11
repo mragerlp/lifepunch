@@ -21,7 +21,7 @@ models/lifepunch/bitcoinmining/
 sounds/bitcoinminer/      ← owner WAV drop
 ```
 
-**Architecture:** `docs/BITMINER_HUB_ARCH.md` · `docs/LIFEPUNCH_CYBER_ECOSYSTEM.md`
+**Architecture:** `docs/BITCOINMINING_HUB_ARCH.md` · `docs/LIFEPUNCH_CYBER_ECOSYSTEM.md`
 
 ## Archives (not published)
 
@@ -34,10 +34,10 @@ sounds/bitcoinminer/      ← owner WAV drop
 
 | File | Role |
 |------|------|
-| `BitminerHubEntity.cs` | Hub power, encryption tiers, hashd anchor |
-| `BitminerHubRegistry.cs` | Hub ↔ rack linking (max 3+1 per hub) |
-| `BitminerEncryptionCatalog.cs` | Defense upgrade costs + math |
-| `BitminerEntity.cs` | Economy, `IsMining`, terminal open |
-| `BitminerTerminal.razor` | Phase 1 CLI; owner tabbed UI from Downloads bitcointerminal lane |
+| `BitcoinMinerHubEntity.cs` | Hub power, encryption tiers, hashd anchor |
+| `BitcoinMinerHubRegistry.cs` | Hub ↔ rack linking (max 3+1 per hub) |
+| `BitcoinMinerEncryptionCatalog.cs` | Defense upgrade costs + math |
+| `GpuRackEntity.cs` | Economy, `IsMining`, terminal open |
+| `HashdTerminal.razor` | Phase 1 CLI; owner tabbed UI from Downloads bitcointerminal lane |
 
-Spec: `addons/docs/BITMINER_UX_SPEC.md`
+Spec: `addons/docs/BITCOINMINING_UX_SPEC.md`

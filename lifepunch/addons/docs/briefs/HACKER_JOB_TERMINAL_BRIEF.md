@@ -15,7 +15,7 @@ A **real** retro terminal experience — not a menu with green paint. Players bo
 | **Miner** (done Phase 1.5) | `bitcoinmining` | `cornerman@rig:~$` | `#00FF7F` |
 | **Government** (later) | lifepunchnet / future addon | `lifepunch@lifepunch.net:~$` | `#00D4FF` |
 
-Bitminer proved the shell (boot, scroll, upgrade panel). Hacker Job goes **deeper**: multi-screen flow, puzzles, scan target picker, server-validated payouts.
+BitcoinMiningAddon proved the shell (boot, scroll, upgrade panel). Hacker Job goes **deeper**: multi-screen flow, puzzles, scan target picker, server-validated payouts.
 
 ---
 
@@ -71,6 +71,6 @@ See `CORNERMAN_HACKER_JOB_TERMINAL_TASK.md` — flow wireframe, puzzle catalog, 
 
 ## Related
 
-- `BITMINER_UX_SPEC.md` §6 Relation to Hacker Job
+- `BITCOINMINING_UX_SPEC.md` §6 Relation to Hacker Job
 - `branding/lifepunch-ops/outfits/lifepunchnet/TIER-SPEC.md` — government `ls` fiction
 - `AUDIT_LOG_REFERENCE.md` — hack transfers

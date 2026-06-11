@@ -16,9 +16,8 @@ obj/
 # Local s&box scratch/test project (not shipped)
 lifepunch/addons/test/
 
-# Third-party bitminer study archives — never commit (LifePunch ships original assets only)
-reference/evo-bitminer/
-reference/**/bitminer-study/
+# Third-party bitcoin mining study archives — never commit (LifePunch ships original assets only)
+reference/**/third-party-bitcoin-mining-study/
 
 # Local machine-specific remote host overrides (LAN IPs)
 lifepunch/scripts/remote-hosts.local.json

@@ -5,7 +5,7 @@
 
 ## Scope (TBD — owner sign-off before Opus economy pass)
 
-DXRP job line using placeable sci-fi power props: reactor processing, enrichment, sell loop (mirror bitminer/hacker job patterns where it fits).
+DXRP job line using placeable sci-fi power props: reactor processing, enrichment, sell loop (mirror bitcoinmining/hacker job patterns where it fits).
 
 **P0 assets (intake done):**
 

@@ -18,8 +18,8 @@ First draft used `GatherMaterial` / `FinalizePixelMaterial` — those are **not*
 
 ## C# hook
 
-`BitminerEntity.UpdateRgbFanLeds()` sets `g_flLedActive` on the renderer scene object (0–1 with fan ramp).
+`GpuRackEntity.UpdateRgbFanLeds()` sets `g_flLedActive` on the renderer scene object (0–1 with fan ramp).
 
 ## Rack slot
 
-`gpu-rack-rack.vmat` still uses `complex.shader` until `Rack_Emission.png` exists (BITMINER-01).
+`gpu-rack-rack.vmat` still uses `complex.shader` until `Rack_Emission.png` exists (BITCOINMINING-01).

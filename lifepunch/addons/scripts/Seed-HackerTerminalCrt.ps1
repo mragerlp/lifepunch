@@ -1,13 +1,13 @@
 <#
 .SYNOPSIS
-  [LEGACY] Seed hackerjob CRT from bitminer computer.fbx. Use Intake-HackerTerminalModel.ps1 instead.
+  [LEGACY] Seed hackerjob CRT from bitcoinmining computer.fbx. Use Intake-HackerTerminalModel.ps1 instead.
 
 .DESCRIPTION
   Copies computer.fbx into hacker-terminal and advanced-hacker-terminal source/ folders.
   Reference-only archive optional. Never pulls raw CS2 or third-party exports into publish.
 
 .PARAMETER SourceFbx
-  LifePunch-owned FBX (default: bitminer bitcoin-terminal ship tree).
+  LifePunch-owned FBX (default: bitcoinmining bitcoin-terminal ship tree).
 
 .PARAMETER ArchiveRoot
   Optional mirror under reference-intake.
@@ -42,7 +42,7 @@ function Ensure-Dir([string]$Path) {
 
 function Copy-Fbx([string]$From, [string]$To, [string]$Label) {
     if (-not (Test-Path -LiteralPath $From)) {
-        throw "Missing LifePunch source FBX: $From`nRun Intake-BitcoinTerminalAssets.ps1 on bitminer first, or pass -SourceFbx."
+        throw "Missing LifePunch source FBX: $From`nRun Intake-BitcoinTerminalAssets.ps1 on bitcoinmining first, or pass -SourceFbx."
     }
     if ($WhatIf) {
         Write-Host "[WhatIf] COPY $Label"

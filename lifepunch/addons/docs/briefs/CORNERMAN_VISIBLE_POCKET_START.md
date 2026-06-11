@@ -44,7 +44,7 @@ lp_pocket_policy        # your slot tier vs DXRP global max
 lp_pocket_apply_dev     # host dev: apply your tier to global max
 ```
 
-Play-test: pocket a `pocket_item` prop until full; confirm bitminer **cannot** pocket (`lifepunch_nopocket`).
+Play-test: pocket a `pocket_item` prop until full; confirm bitcoinmining **cannot** pocket (`lifepunch_nopocket`).
 
 Full steps: `lifepunch/addons/Code/Addons/lifepunch/visiblepocket/docs/VISIBLE_POCKET_PLAYTEST.md`
 

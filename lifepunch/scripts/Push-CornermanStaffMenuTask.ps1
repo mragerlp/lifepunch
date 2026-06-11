@@ -10,7 +10,7 @@ $files = @(
     @{ rel = 'lifepunch\addons\Code\Addons\lifepunch\adminmenu\StaffMenu.razor.scss'; inbox = 'StaffMenu.razor.scss' },
     @{ rel = 'lifepunch\addons\Code\Addons\lifepunch\adminmenu\StaffMenuHost.cs'; inbox = 'StaffMenuHost.cs' },
     @{ rel = 'lifepunch\addons\Code\Addons\lifepunch\adminmenu\StaffMenuActions.cs'; inbox = 'StaffMenuActions.cs' },
-    @{ rel = 'lifepunch\addons\Code\Addons\lifepunch\bitcoinmining\BitminerTerminal.razor.scss'; inbox = 'BITMINER_GRADIENT_FIX_REFERENCE.scss' },
+    @{ rel = 'lifepunch\addons\Code\Addons\lifepunch\bitcoinmining\HashdTerminal.razor.scss'; inbox = 'BITCOINMINING_GRADIENT_FIX_REFERENCE.scss' },
     @{ rel = 'lifepunch\docs\handoff\cornerman-outbox\to-cornerman-staff-menu.txt'; inbox = 'to-cornerman-staff-menu.txt' }
 )
 

@@ -38,7 +38,7 @@ Alias: `lp_pocket_slots`.
 3. `lp_pocket_policy` — confirm `policyMax` from wallet/rank.
 4. Pick up `pocket_item` props with hands **attack2** until full — stops at **your** tier max (not global 6).
 5. Drop with attack2 while not aiming at a pocketable prop (LIFO).
-6. Bitminer / hacker terminals — **forbidden** (`lifepunch_nopocket`).
+6. BitcoinMiningAddon / hacker terminals — **forbidden** (`lifepunch_nopocket`).
 
 ```text
 lp_pocket_refresh    # re-sync HUD labels from host
@@ -46,14 +46,14 @@ lp_pocket_refresh    # re-sync HUD labels from host
 
 ---
 
-## 4. RGB bitminer (P0 parallel)
+## 4. RGB GPU rack (P0 parallel)
 
 ```text
-lp_spawn_bitminer_full_kit
+lp_spawn_bitcoinmining_full_kit
 hashd
 ```
 
-START → rainbow fan LEDs ~8s → STOP off. See `BITMINER_FINISH_RUNBOOK.md`.
+START → rainbow fan LEDs ~8s → STOP off. See `BITCOINMINING_FINISH_RUNBOOK.md`.
 
 ---
 

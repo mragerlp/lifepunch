@@ -33,8 +33,8 @@
 
 | Item | Commit area |
 |------|-------------|
-| Bitminer three-entity arch + registry | `dfd2f18` |
-| Bitminer G1–G3 (protection, portal listing, player UX) | `3b92de8` |
+| BitcoinMiningAddon three-entity arch + registry | `dfd2f18` |
+| BitcoinMiningAddon G1–G3 (protection, portal listing, player UX) | `3b92de8` |
 | ULX v2 staff menu polish | `63b87e8` |
 | AK47 CS2 study distill | `3954155` |
 | Hacker/coke/deagle protection scaffolds | `670fdee` |
@@ -59,9 +59,9 @@ Red warms **distill** before Green inventory session: `Send-CornermanWorkflow.ps
 | Priority | Task | Doc |
 |----------|------|-----|
 | **P0** | Visible Pocket POCKET-01 + play-test | `RED_VENGEANCE_VISIBLE_POCKET_BUILD.md` |
-| **P0** | Bitminer RGB shader (editor) | `RGB_FAN_LED_SHADER.md` |
-| **P1** | Bitminer Phase 2 module UI | `RED_BITMINER_PHASE2_BUILD.md` |
-| **P2** | Owner ModelDoc: terminal + stacked `_c` | `BITMINER_FINISH_RUNBOOK.md` |
+| **P0** | BitcoinMiningAddon RGB shader (editor) | `RGB_FAN_LED_SHADER.md` |
+| **P1** | BitcoinMiningAddon Phase 2 module UI | `RED_BITCOINMINING_PHASE2_BUILD.md` |
+| **P2** | Owner ModelDoc: terminal + stacked `_c` | `BITCOINMINING_FINISH_RUNBOOK.md` |
 | **P3** | Hacker Phase 2 Opus | `RED_HACKER_JOB_BUILD.md` |
 
 ---
@@ -92,5 +92,5 @@ cd C:\Users\jared\Projects\lifepunchaddons\lifepunch\scripts
 ## Related
 
 - `LOCAL_AI_WORKSTATION.md` §7c (patch handoff — legacy if Cursor returns)
-- `BITMINER_FINISH_RUNBOOK.md`
+- `BITCOINMINING_FINISH_RUNBOOK.md`
 - `lifepunch/docs/AGENT_PROMPT.md` Block 0 sync

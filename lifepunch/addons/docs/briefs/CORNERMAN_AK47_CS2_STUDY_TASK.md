@@ -1,4 +1,4 @@
-# Cornerman task — AK-47 CS2 study (parallel while Red tests Bitminer)
+# Cornerman task — AK-47 CS2 study (parallel while Red tests BitcoinMiningAddon)
 
 **Lane:** Tier-3 prep · **Priority:** **#0** (run in parallel with coke/deagle — do not block on Red)  
 **Issued:** 2026-06-11

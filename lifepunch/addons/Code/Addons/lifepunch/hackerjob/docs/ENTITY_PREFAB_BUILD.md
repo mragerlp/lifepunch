@@ -7,7 +7,9 @@ Paths (from `HackerJob.cs`):
 | Tier | Prefab | Model |
 |------|--------|-------|
 | Standard | `entities/hacker-terminal/hacker-terminal.prefab` | `hacker-terminal.vmdl` |
-| Advanced | `entities/advanced-hacker-terminal/advanced-hacker-terminal.prefab` | `advanced-hacker-terminal.vmdl` |
+| Advanced CRT | `entities/advanced-hacker-terminal/advanced-hacker-terminal.prefab` | `advanced-hacker-terminal.vmdl` |
+| Basic rack | `entities/server-rack/server-rack.prefab` | `server-rack.vmdl` |
+| Advanced rack | `entities/advanced-server-rack/advanced-server-rack.prefab` | `advanced-server-rack.vmdl` |
 
 ---
 
@@ -25,9 +27,9 @@ Paths (from `HackerJob.cs`):
 | `HackerTerminalEntity` | **Tier** = Standard or Advanced |
 | `TextRenderer` (optional) | Wire to `HackerTerminalEntity.ScreenText` for idle `[ STANDBY ]` line |
 
-**Tags:** `entity`, `hands_interact` (match bitminer interact pattern).
+**Tags:** `entity`, `hands_interact` (match bitcoinmining interact pattern).
 
-**NetworkMode:** networked entity (same as bitminer root).
+**NetworkMode:** networked entity (same as bitcoinmining root).
 
 ---
 
@@ -38,6 +40,9 @@ lp_cornerman_preview
 lp_vengeance_preview
 lp_spawn_hacker_terminal
 lp_spawn_advanced_hacker_terminal
+lp_spawn_server_rack
+lp_spawn_advanced_server_rack
+lp_hacker_kit_preview
 ```
 
 Stand within **6m**; use interact (or dev UI commands). Prefab missing → check compile + sync:
@@ -50,4 +55,4 @@ powershell -File lifepunch/scripts/Sync-LifePunchAddonsToDxrp.ps1 -Addon hackerj
 
 ## Advanced tier visuals
 
-Same `computer.fbx` base mesh until a unique red CRT ships. ModelDoc: duplicate materials with Vengeance `#E4002B` accents per `TERMINAL_BRAND_MATRIX.md`.
+Owner `computer.fbx` intaken to `advanced-hacker-terminal/source/hacker-terminal.fbx`. ModelDoc: map materials with Vengeance `#E4002B` accents per `TERMINAL_BRAND_MATRIX.md`.

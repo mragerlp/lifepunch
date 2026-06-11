@@ -18,7 +18,7 @@ In-game terminals mirror **LifePunch Ops** machine uniforms (`branding/lifepunch
 | Hacker (advanced) | `govdb` → `infil` node puzzles | Govdb breach (Phase 2 Opus) |
 | Police | Trace alerts, audit miners, warrants (TBD) | City funds read / counter-hack |
 | Gov tax miner | Always mine BTC → hourly tax % → city cash | Server-only treasury |
-| Player bitminer | Mine → upgrade → sell | Player `PayHost` |
+| Bitcoin mining hub | Mine → upgrade → sell | Player `PayHost` |
 
 ## Dev smoke commands
 
@@ -35,7 +35,7 @@ lp_spawn_advanced_hacker_terminal  # red-tier world entity
 | Layout | Terminals | Spec |
 |--------|-----------|------|
 | **Ops Console** (rail + modules + command line) | Hacker green/red · Police cyan (Phase 4) | `HACKER_OPS_CONSOLE_SPEC.md` · `reference/GOVERNMENT_DATABASE_TERMINAL_SPEC.md` |
-| **HASHD rig control** (telemetry rail + `rig0>`; Phase 2 + module panes) | Player bitminer amber `#f0a500` | `BITMINER_UX_SPEC.md` · `briefs/BITMINER_PHASE2_WIREFRAME.md` |
+| **HASHD rig control** (telemetry rail + `rig0>`; Phase 2 + module panes) | Bitcoin mining hub amber `#f0a500` | `BITCOINMINING_UX_SPEC.md` · `briefs/BITCOINMINING_PHASE2_WIREFRAME.md` |
 | **LCD summary** | Gov tax miner blue console | `governmentdatacenter/docs/GOVERNMENT_TAX_MINER_BUILD.md` |
 
 ## Cybersecurity Officer

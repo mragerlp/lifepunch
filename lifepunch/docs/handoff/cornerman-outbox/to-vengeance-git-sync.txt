@@ -1,6 +1,6 @@
-P0 — RGB fans: to-vengeance-bitminer-rgb.txt
+P0 — RGB fans: to-vengeance-bitcoinmining-rgb.txt
 P1 — Visible Pocket: to-vengeance-visible-pocket.txt + VISIBLE_POCKET_SPEC.md
 
-Pull main → bitminer RGB compile → then Opus on Visible Pocket Step 1 (DXRP pocket hooks)
+Pull main → GPU rack RGB compile → then Opus on Visible Pocket Step 1 (DXRP pocket hooks)
 
 Reply slot: to-cornerman-visible-pocket.txt

@@ -1,0 +1,7 @@
+{
+  "model": "advanced-server-rack",
+  "sourceMesh": "source/advanced-server-rack.obj",
+  "textureDir": "source/textures",
+  "slots": [],
+  "notes": "Map OBJ/MTL material slots in ModelDoc after first compile. Copy PBR from MTL paths or author vmats manually."
+}

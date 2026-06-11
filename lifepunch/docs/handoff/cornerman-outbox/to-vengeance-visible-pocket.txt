@@ -8,7 +8,7 @@ RANKS: VIP=8 instant | EVIP=12 instant
 
 UX: visible hotbar pocket | right-click Use (if usable) or Drop (always). Weed brick = Drop only. NOT a shop.
 
-RAID: pocket drops on death. Money printers pocketable. BITCOIN MINERS + HACKER TERMINALS = NOT POCKETABLE (lifepunch_nopocket on bitminer prefabs — done).
+RAID: pocket drops on death. Money printers pocketable. BITCOIN MINERS + HACKER TERMINALS = NOT POCKETABLE (lifepunch_nopocket on bitcoinmining prefabs — done).
 
 BANK (phase 3): $1,500,000 → 5 slots survive death | Inventory Bank prop | disconnect TTL = money printer grace.
 
@@ -16,4 +16,4 @@ Study llad MIS + Hit Shapes for UI — ship LifePunch-owned code.
 
 After DXRP discovery + P1 test, write back: lifepunch/docs/handoff/cornerman-outbox/to-cornerman-visible-pocket.txt
 
-P0 still open: RGB fan shader compile — to-vengeance-bitminer-rgb.txt
+P0 still open: RGB fan shader compile — to-vengeance-bitcoinmining-rgb.txt

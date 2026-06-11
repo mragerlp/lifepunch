@@ -42,6 +42,18 @@ Solve the puzzle (e.g. `drain(wallet);`, `cornerman_bypass`, or `1`).
 
 **Pass:** Greg / Test Dummy appears in scan with wallet $ (bots init with wallet via `InitalizeHost`); puzzle completes; bypass stub prints.
 
+## Server racks
+
+```text
+lp_spawn_server_rack
+lp_spawn_advanced_server_rack
+lp_hacker_kit_preview
+```
+
+`lp_hacker_kit_preview` places **basic rack + cornerman** on the left and **advanced rack + vengeance** on the right (both powered). Interact each rack for upgrades — advanced rack has higher detection/puzzle tier caps.
+
+Terminals within ~8m of a powered rack come online; registry prefers tier-matched rack (cornerman → basic, vengeance → advanced).
+
 ## Hacker terminal — advanced (red)
 
 ```text
@@ -51,7 +63,7 @@ infil govdb-tax-01
 govdb_breach
 ```
 
-Govdb node list is still stub until tax miners ship on map.
+Govdb node list is stub until `governmentdatacenter` tax miners compile on map (`Intake-GovernmentTerminal.ps1` intaken).
 
 ## Bot commands reference
 

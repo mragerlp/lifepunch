@@ -119,7 +119,7 @@
         "Tint": "1,1,1,1"
       },
       {
-        "__type": "LifePunch.DXRP.Addons.BitcoinMining.BitminerHubEntity",
+        "__type": "LifePunch.DXRP.Addons.BitcoinMining.BitcoinMinerHubEntity",
         "__guid": "f6a7b8c9-d0e1-2345-f012-456789012345",
         "__enabled": true,
         "Flags": 0,

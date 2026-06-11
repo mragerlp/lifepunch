@@ -1,0 +1,14 @@
+P0b — Cyber asset audit (owner on legal)
+
+Pull main. Read inbox:
+  CORNERMAN_CYBER_ASSET_AUDIT_TASK.md
+  cornerman-outbox/CYBER_ASSET_AUDIT_2026-06-11.md (Red pre-draft)
+
+Green: validate greps, extend audit if repo drifted, save to outbox/ with your @sha.
+
+Ping Red one line:
+  OK cornerman cyber-asset-audit @<sha> — hacker BLOCKED _c · bitcoin PARTIAL · gov EMPTY
+
+Owner return docs:
+  MODELDOC_CHECKLIST_CYBER_2026-06-11.md
+  PUBLISH_STAGING_DRYRUN_2026-06-11.md

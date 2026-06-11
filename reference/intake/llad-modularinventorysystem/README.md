@@ -39,14 +39,14 @@ dependency on published LIFEPUNCH addons unless explicitly accepted.
 | Hacker job loot | Optional tool / loot containers |
 | Staff menu (`adminmenu`) | **No** — radial moderation wheel does not need MIS |
 | SGE header chrome | Optional item icon glow / rarity borders only |
-| Bitcoin mining | **No** — server-authoritative BTC stays in `BitminerEntity` |
+| Bitcoin mining | **No** — server-authoritative BTC stays in `GpuRackEntity` |
 
 ## DXRP conflict
 
-DXRP **pocket + Drug Dealer market** is already canonical (`METH-02`, bitminer `pocket_item` tags).
+DXRP **pocket + Drug Dealer market** is already canonical (`METH-02`, bitcoinmining `pocket_item` tags).
 llad MIS is a **full parallel inventory** — it does not drop into pockets automatically.
 
-**OK (with bridge):** lab `StorageContainer`, hacker/bitminer loot chests, crafting bench UI for drug processing.  
+**OK (with bridge):** lab `StorageContainer`, hacker/bitcoinmining loot chests, crafting bench UI for drug processing.  
 **Not OK without Opus:** replace pocket; run pocket + grid with no sync.
 
 See `lifepunch/addons/docs/reference/LLAD_MODULAR_INVENTORY_STUDY.md` § DXRP conflict.

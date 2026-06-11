@@ -14,12 +14,12 @@ namespace LifePunch.DXRP.Addons.GovernmentDatacenter;
 
 /// <summary>
 /// Economy constants for city treasury tax miners.
-/// Mirrors player <see cref="BitcoinMining.BitminerEntity"/> math — always mining, no player withdraw.
-/// Implementation: Opus ports from BitminerEntity on Red; entity stub lands in Phase 2.
+/// Mirrors player <see cref="BitcoinMining.GpuRackEntity"/> math — always mining, no player withdraw.
+/// Implementation: Opus ports from GpuRackEntity on Red; entity stub lands in Phase 2.
 /// </summary>
 public static class GovernmentTaxMiner
 {
-	/// <summary>Keep in sync with BitminerEntity.BitcoinValue until a shared economy module exists.</summary>
+	/// <summary>Keep in sync with GpuRackEntity.BitcoinValue until a shared economy module exists.</summary>
 	public const float BitcoinUsdRate = 1500f;
 
 	/// <summary>Owner cap: accumulated BTC worth at most this many in-game dollars.</summary>

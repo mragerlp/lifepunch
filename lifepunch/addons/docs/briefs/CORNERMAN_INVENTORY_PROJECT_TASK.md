@@ -74,7 +74,7 @@ powershell -File lifepunch\scripts\Send-CornermanWorkflow.ps1 -Action WarmDistil
 |------|-----|
 | POCKET-01 per-player gate | `TECH_DEBT.md` |
 | Dev cmds play-test | `VISIBLE_POCKET_PLAYTEST.md` |
-| Bitminer RGB shader | `RGB_FAN_LED_SHADER.md` (parallel P0) |
+| BitcoinMiningAddon RGB shader | `RGB_FAN_LED_SHADER.md` (parallel P0) |
 | `to-cornerman-visible-pocket.txt` reply | `handoff/cornerman-outbox/` |
 
 ---

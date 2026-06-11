@@ -25,7 +25,6 @@ $BitcoinRoot = Join-Path $AddonsRoot 'Assets\addons\lifepunch\bitcoinmining'
 $GpuRackRoot = Join-Path $BitcoinRoot 'models\lifepunch\bitcoinmining\gpu-rack'
 
 $legacyCandidates = @(
-    (Join-Path $BitcoinRoot 'models\lifepunch\bitcoinmining\bitminer')
     (Join-Path $BitcoinRoot 'models\lifepunch\bitcoinmining\gpu_farm\source')
     (Join-Path $BitcoinRoot 'models\lifepunch\bitcoinmining\gpu_farm')
 )
@@ -46,7 +45,7 @@ function Resolve-SourceRoot {
             }
         }
     }
-    throw 'No source. Pass -SourceRoot or restore bitminer/ / gpu_farm/source/.'
+    throw 'No source. Pass -SourceRoot or restore gpu_farm/source/.'
 }
 
 function Ensure-Dir([string]$Path) {
@@ -141,26 +140,9 @@ $soundDir = Join-Path $BitcoinRoot 'sounds\bitcoin-miner'
 if (-not $WhatIf) {
     Ensure-Dir $entityDir
     Ensure-Dir $soundDir
-    $oldEntity = Join-Path $BitcoinRoot 'entities\bitminer'
-    if (Test-Path -LiteralPath $oldEntity) {
-        Get-ChildItem -LiteralPath $oldEntity -Force | ForEach-Object {
-            Copy-Item -LiteralPath $_.FullName -Destination (Join-Path $entityDir $_.Name) -Force -Recurse
-        }
-        Remove-Item -LiteralPath $oldEntity -Recurse -Force
-    }
-    $oldSound = Join-Path $BitcoinRoot 'sounds\bitminer'
-    if (Test-Path -LiteralPath $oldSound) {
-        Get-ChildItem -LiteralPath $oldSound -Force | ForEach-Object {
-            Copy-Item -LiteralPath $_.FullName -Destination (Join-Path $soundDir $_.Name) -Force -Recurse
-        }
-        Remove-Item -LiteralPath $oldSound -Recurse -Force
-    }
-    $oldMat = Join-Path $BitcoinRoot 'materials\bitminer'
-    if (Test-Path -LiteralPath $oldMat) { Remove-Item -LiteralPath $oldMat -Recurse -Force }
 }
 
 $remove = @(
-    (Join-Path $BitcoinRoot 'models\lifepunch\bitcoinmining\bitminer')
     (Join-Path $BitcoinRoot 'models\lifepunch\bitcoinmining\gpu_farm')
 )
 foreach ($path in $remove) {

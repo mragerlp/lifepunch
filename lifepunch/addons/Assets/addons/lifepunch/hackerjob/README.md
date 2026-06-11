@@ -8,6 +8,10 @@
 | `models/.../advanced-hacker-terminal/` | Advanced CRT (vengeance.exe red) |
 | `entities/hacker-terminal/` | World prefab (editor build — see `ENTITY_PREFAB_BUILD.md`) |
 | `entities/advanced-hacker-terminal/` | Red-tier world prefab |
+| `ui/cornerman/` | Cornerman console / loading / terminal art |
+| `ui/vengeance/` | Vengeance console / loading / terminal art |
+| `entities/advanced-server-rack/` | Vengeance-tier rack prefab |
+| `models/.../advanced-server-rack/` | Advanced rack OBJ + vmdl stub |
 | `sounds/hacker-terminal/` | Keyboard SFX (optional) |
 
 **Red runbook:** `addons/docs/RED_HACKER_JOB_BUILD.md`
@@ -18,4 +22,4 @@
 powershell -File lifepunch/addons/scripts/Intake-HackerTerminalModel.ps1
 ```
 
-Source `hacker-terminal.fbx` from owner pack (`Downloads\hackerterminal`). Legacy `Seed-HackerTerminalCrt.ps1` copied bitminer `computer.fbx` — superseded.
+Standard CRT: `Intake-HackerTerminalModel.ps1` · Advanced: `Intake-AdvancedHackerTerminal.ps1` (owner pack `addon stuff\hackerjobassets\...\advancedhackerterminal`).

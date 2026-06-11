@@ -31,20 +31,30 @@ public static class HackerServerRackRegistry
 		if ( terminal.LinkedRack.IsValid() )
 			return terminal.LinkedRack;
 
-		return FindNearestRack( terminal.Scene, terminal.WorldPosition );
+		var prefer = terminal.IsAdvanced ? HackerRackTier.Advanced : HackerRackTier.Basic;
+		return FindNearestRack( terminal.Scene, terminal.WorldPosition, prefer );
 	}
 
-	public static HackerServerRackEntity FindNearestRack( Scene scene, Vector3 from )
+	public static HackerServerRackEntity FindNearestRack( Scene scene, Vector3 from, HackerRackTier? preferTier = null )
 	{
 		if ( scene is null )
 			return null;
 
+		return SelectNearestInRange( scene, from, preferTier )
+			?? SelectNearestInRange( scene, from, preferTier: null );
+	}
+
+	private static HackerServerRackEntity SelectNearestInRange( Scene scene, Vector3 from, HackerRackTier? preferTier )
+	{
 		HackerServerRackEntity best = null;
 		var bestHorizontal = float.MaxValue;
 
 		foreach ( var rack in scene.GetAllComponents<HackerServerRackEntity>() )
 		{
 			if ( !rack.IsValid() )
+				continue;
+
+			if ( preferTier.HasValue && rack.RackTier != preferTier.Value )
 				continue;
 
 			if ( !IsInLinkRange( from, rack.WorldPosition, out var horizontal ) )

@@ -57,7 +57,7 @@
 ## `lifepunch_nopocket`
 
 **Not in DXRP core today.** `PickupHost` only checks `PocketItemTag`.  
-LifePunch policy: entities **without** `pocket_item` cannot be picked up. Bitminer racks use `lifepunch_nopocket` and **no** `pocket_item` — sufficient for P0.
+LifePunch policy: entities **without** `pocket_item` cannot be picked up. GPU racks use `lifepunch_nopocket` and **no** `pocket_item` — sufficient for P0.
 
 Optional hardening: deny if `lifepunch_nopocket` tag present (addon PR to Dxura or host patch).
 

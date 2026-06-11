@@ -9,7 +9,7 @@
 
 Fix the **LIFEPUNCH staff menu** (`adminmenu` addon, s&box ident `lifepunch.ulx`) so it is stable in DXRP play: no s&box UI errors on open, visuals stay ulx-v2, clicks still work via HUD mount.
 
-**Red does NOT want another bitminer-style log loop.** Same root cause class as `BitminerTerminal.razor.scss` (CSS gradients rejected by s&box UI).
+**Red does NOT want another bitcoin mining-style log loop.** Same root cause class as `HashdTerminal.razor.scss` (CSS gradients rejected by s&box UI).
 
 ---
 
@@ -31,7 +31,7 @@ Red verify: open `staffmenu` in play — tab/action icons are glyphs, not words.
 
 **Problem:** Seven `background-image: linear-gradient(...)` rules (ulx-v2 polish, commit `63b87e8`). s&box UI panels reject gradients → console spam / broken paint (proven on hashd terminal).
 
-**Fix pattern (copy from bitminer):**
+**Fix pattern (copy from bitcoinmining):**
 
 ```scss
 // s&box UI does not support CSS gradients on background-image (log spam on open).
@@ -93,7 +93,7 @@ Cosmetic validator fix; low risk. Red can land without Opus.
 2. `StaffMenuHost.cs` — mount/click pattern (**do not change** unless Red asks)
 3. `StaffMenuActions.cs` — action catalog
 4. `lifepunch/addons/docs/TECH_DEBT.md` — STAFF-01…09
-5. `BitminerTerminal.razor.scss` — gradient fix precedent (lines 47–49 comment)
+5. `HashdTerminal.razor.scss` — gradient fix precedent (lines 47–49 comment)
 6. `gamemode/config/addon-revisions.json` — adminmenu Rev 1 click-fix history
 
 ---

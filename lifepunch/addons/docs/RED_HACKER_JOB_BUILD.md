@@ -45,7 +45,7 @@ cd lifepunch\addons\scripts
 powershell -File .\Seed-HackerTerminalCrt.ps1
 ```
 
-Copies LifePunch-owned `computer.fbx` from the bitminer CRT family into hackerjob (standard + advanced source folders). **Never** ship raw CS2 or third-party exports.
+Copies LifePunch-owned `computer.fbx` from the bitcoinmining CRT family into hackerjob (standard + advanced source folders). **Never** ship raw CS2 or third-party exports.
 
 **ModelDoc (editor):**
 

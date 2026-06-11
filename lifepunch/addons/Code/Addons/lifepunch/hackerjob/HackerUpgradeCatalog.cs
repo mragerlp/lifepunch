@@ -22,6 +22,31 @@ public static class HackerUpgradeCatalog
 	public const int MaxRewardTier = 3;
 	public const int MaxCooldownTier = 3;
 
+	public const int AdvancedMaxDetectionTier = 5;
+	public const int AdvancedMaxPuzzleTimeTier = 5;
+	public const int AdvancedMaxRewardTier = 3;
+	public const int AdvancedMaxCooldownTier = 3;
+
+	public static int GetMaxTier( HackerRackTier rackTier, HackerUpgradeKind kind ) => rackTier switch
+	{
+		HackerRackTier.Advanced => kind switch
+		{
+			HackerUpgradeKind.Detection => AdvancedMaxDetectionTier,
+			HackerUpgradeKind.PuzzleTime => AdvancedMaxPuzzleTimeTier,
+			HackerUpgradeKind.Reward => AdvancedMaxRewardTier,
+			HackerUpgradeKind.Cooldown => AdvancedMaxCooldownTier,
+			_ => 0
+		},
+		_ => kind switch
+		{
+			HackerUpgradeKind.Detection => MaxDetectionTier,
+			HackerUpgradeKind.PuzzleTime => MaxPuzzleTimeTier,
+			HackerUpgradeKind.Reward => MaxRewardTier,
+			HackerUpgradeKind.Cooldown => MaxCooldownTier,
+			_ => 0
+		}
+	};
+
 	public const float BasePuzzleSeconds = 45f;
 	public const float BaseHackCooldownSeconds = 120f;
 	public const float BaseRewardMultiplier = 1f;

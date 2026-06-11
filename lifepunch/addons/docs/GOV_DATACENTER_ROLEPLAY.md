@@ -38,7 +38,7 @@ Pay must feel **good but not broken** — action-job tiers hit harder per point 
 
 ## Criminal breach loop
 
-- **Advanced only** — standard cornerman cannot target datacenter or player bitminers.
+- **Advanced only** — standard cornerman cannot target datacenter or player bitcoin miners.
 - Puzzles hard; success payout capped; failure triggers police counterplay.
 - Police terminal nearby enables **trace/audit** response RP.
 

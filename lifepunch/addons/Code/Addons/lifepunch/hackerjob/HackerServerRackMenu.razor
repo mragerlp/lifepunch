@@ -183,7 +183,8 @@
     private int GetTier( HackerUpgradeKind kind ) =>
         Rack.IsValid() ? Rack.GetTier( kind ) : 0;
 
-    private int GetMax( HackerUpgradeKind kind ) => HackerServerRackEntity.GetMaxTier( kind );
+    private int GetMax( HackerUpgradeKind kind ) =>
+        Rack.IsValid() ? Rack.GetMaxTierForRack( kind ) : 0;
 
     private string GetNextLabel( HackerUpgradeKind kind )
     {
@@ -224,7 +225,7 @@
         if ( !Rack.IsValid() )
             return;
 
-        if ( Rack.GetTier( kind ) >= HackerServerRackEntity.GetMaxTier( kind ) )
+        if ( Rack.GetTier( kind ) >= Rack.GetMaxTierForRack( kind ) )
         {
             _lines.Add( $"ERROR: {title} already at max tier." );
             return;

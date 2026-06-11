@@ -35,6 +35,15 @@
 
 ---
 
+## Phase 2 prep (skeleton only — no transfer)
+
+Economy method stubs and checklist live in `HACKER_PHASE2_ECONOMY_PREP.md`.  
+`HackerEconomySecurity.cs` header comments mark the swap point — **do not** call `ChargeHost`/`PayHost` until owner post-legal sign-off.
+
+Rack menu INSTALL buttons preview affordability client-side; host debit lands in `ProcessRackUpgradeChargeHost` (Phase 2).
+
+---
+
 ## Phase 2 checklist (Opus — before publish)
 
 - [ ] Job gate: only Hacker job can complete wallet hack RPC

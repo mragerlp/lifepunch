@@ -38,5 +38,5 @@ PING RED when done:
 
 NEXT DISTILL (after regroup):
   Owner pivot: Bitcoin Miner hub — no separate bitcoin-terminal.
-  Read: lifepunch/addons/docs/reference/BITMINER_THREE_ENTITY_ARCH.md (obsolete terminal row)
-  Wait for Red brief BITMINER_HUB_ARCH or owner sign-off on stack-tier model.
+  Read: lifepunch/addons/docs/reference/BITCOINMINING_THREE_ENTITY_ARCH.md (obsolete terminal row)
+  Wait for Red brief BITCOINMINING_HUB_ARCH or owner sign-off on stack-tier model.

@@ -2,14 +2,14 @@
 
 City-owned BTC rig — **blue console** (lifepunchnet cyan `#00D4FF`), always mining, hourly tax drip to city funds.
 
-## Economy (mirrors player Bitminer)
+## Economy (mirrors player BitcoinMiningAddon)
 
 | Constant | Value | Source |
 |----------|-------|--------|
-| `BitcoinUsdRate` | $1,500 / BTC | `BitminerEntity.BitcoinValue` |
+| `BitcoinUsdRate` | $1,500 / BTC | `GpuRackEntity.BitcoinValue` |
 | `BtcBalanceUsdCap` | **$30,000** | Owner rule |
 | `BtcBalanceCap` | **20 BTC** | 30000 / 1500 |
-| `MiningIntervalSeconds` | 60s accrual tick | Same as Bitminer |
+| `MiningIntervalSeconds` | 60s accrual tick | Same as BitcoinMiningAddon |
 | `TaxPayoutIntervalSeconds` | **3600s (60 min)** | Owner rule |
 | `TaxRate` | **0%–30%** of BTC balance → cash | Map/server configurable |
 | Player withdraw | **DISABLED** | Treasury only |
@@ -20,7 +20,7 @@ City-owned BTC rig — **blue console** (lifepunchnet cyan `#00D4FF`), always mi
 
 ## Red lane (Opus)
 
-- [ ] Port `BitminerEntity` → `GovernmentTaxMinerEntity` (strip upgrades/sell, add tax RPC)
+- [ ] Port `GpuRackEntity` → `GovernmentTaxMinerEntity` (strip upgrades/sell, add tax RPC)
 - [ ] Blue terminal chrome on in-world `TextRenderer` (not green hashd)
 - [ ] Wire city funds API (DXRP mayor/treasury hook — confirm on `dxura/dxrp @develop`)
 - [ ] Datacenter mesh from owner (`government-tax-miner.vmdl`) — **ask owner if models not intaked yet**

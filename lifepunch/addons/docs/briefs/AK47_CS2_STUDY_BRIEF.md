@@ -1,6 +1,6 @@
 # AK-47 — CS2 study brief (golden kit upgrade)
 
-**Issued:** 2026-06-11 · **Lane:** Green distill · **Red:** tests Bitminer + runs S2V exports on VENGEANCE  
+**Issued:** 2026-06-11 · **Lane:** Green distill · **Red:** tests BitcoinMiningAddon + runs S2V exports on VENGEANCE  
 **Canon:** `config/weapon-production.json` · `CS2_WEAPON_HARVEST.md` · `VIEWMODEL_RIG_PIPELINE.md` · `AK47_FIX_CHECKLIST.md`
 
 ---

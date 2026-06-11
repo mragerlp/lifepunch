@@ -84,7 +84,7 @@
       "dxrpAddonId": "",
       "status": "foundation-intake",
       "spec": "docs/URANIUM_SPECIALIST_SPEC.md",
-      "notes": "Raw intake: 12 props from Pack_SciFi_B_001 (reactor, control panel, cells, cabinets, fan, etc.). Intake-UraniumSpecialistScifiPack.ps1. ModelDoc + job gameplay after bitminer ship.",
+      "notes": "Raw intake: 12 props from Pack_SciFi_B_001 (reactor, control panel, cells, cabinets, fan, etc.). Intake-UraniumSpecialistScifiPack.ps1. ModelDoc + job gameplay after bitcoinmining ship.",
       "contents": []
     },
     {
@@ -98,7 +98,7 @@
       "dxrpAddonId": "019e448c-4958-77d1-84b7-c7ec3f1bc328",
       "status": "code-draft",
       "spec": "docs/HACKER_JOB_SPEC.md",
-      "notes": "Owner FBX intake: Intake-HackerTerminalModel.ps1. Server rack DAE: Intake-HackerServerRack.ps1. Prefabs + lcd_screen wired. ModelDoc vmats TODO. Dev: lp_hacker_kit_preview / lp_spawn_server_rack. Phase 2 wallet economy = Opus.",
+      "notes": "Intake: HackerTerminalModel, HackerServerRack, AdvancedServerRack, AdvancedHackerTerminal, HackerCornermanUi. Advanced rack scaffold + dual-rack kit preview. ModelDoc _c TODO. Phase 2 wallet economy = Opus (HACKER_PHASE2_ECONOMY_PREP.md).",
       "contents": [
         {
           "slug": "server-rack",
@@ -110,6 +110,17 @@
           "grouping": "Entities",
           "implementationStatus": "rack-power-upgrades",
           "modelBuild": "Assets/addons/lifepunch/hackerjob/models/lifepunch/hackerjob/server-rack/MODEL_BUILD.md"
+        },
+        {
+          "slug": "advanced-server-rack",
+          "name": "Advanced Hacker Server Rack",
+          "label": "Advanced Hacker Server Rack",
+          "type": 0,
+          "primaryReference": "addons/lifepunch/hackerjob/entities/advanced-server-rack/advanced-server-rack.prefab",
+          "worldModelPath": "addons/lifepunch/hackerjob/models/lifepunch/hackerjob/advanced-server-rack/advanced-server-rack.vmdl",
+          "grouping": "Entities",
+          "implementationStatus": "vengeance-rack-upgrades",
+          "modelBuild": "Assets/addons/lifepunch/hackerjob/models/lifepunch/hackerjob/advanced-server-rack/MODEL_BUILD.md"
         },
         {
           "slug": "hacker-terminal",
@@ -138,7 +149,7 @@
     {
       "ident": "governmentdatacenter",
       "title": "Government Datacenter",
-      "description": "City treasury tax miners (always-on BTC, blue lifepunchnet console) and police terminals. Hourly tax drip 0-30% of BTC balance to city funds; $30K BTC cap; no player withdraw. Mirrors Bitminer math.",
+      "description": "City treasury tax miners (always-on BTC, blue lifepunchnet console) and police terminals. Hourly tax drip 0-30% of BTC balance to city funds; $30K BTC cap; no player withdraw. Mirrors BitcoinMiningAddon math.",
       "kind": "simple-entity",
       "hasAssets": true,
       "hasCode": true,
@@ -146,8 +157,20 @@
       "dxrpAddonId": "",
       "status": "foundation-scaffold",
       "spec": "docs/GOVERNMENT_DATABASE_SPEC.md",
-      "notes": "Economy constants in GovernmentTaxMiner.cs ($1500/BTC, 20 BTC cap, 60min tax tick). Entity port from BitminerEntity = Red Opus. Datacenter models TBD — owner to provide. Police terminal = lifepunchnet cyan.",
-      "contents": []
+      "notes": "Intake-GovernmentTerminal.ps1: police-terminal.obj + ui/lifepunchnet PNGs. Landmark = Intake-GovernmentDatacenter.ps1. Economy constants in GovernmentTaxMiner.cs. ModelDoc + prefab TODO — unblocks vengeance govdb scan.",
+      "contents": [
+        {
+          "slug": "police-terminal",
+          "name": "Police Terminal",
+          "label": "Police Terminal",
+          "type": 0,
+          "primaryReference": "addons/lifepunch/governmentdatacenter/entities/police-terminal/police-terminal.prefab",
+          "worldModelPath": "addons/lifepunch/governmentdatacenter/models/lifepunch/governmentdatacenter/police-terminal/police-terminal.vmdl",
+          "grouping": "Entities",
+          "implementationStatus": "lifepunchnet-cyan",
+          "modelBuild": "Assets/addons/lifepunch/governmentdatacenter/models/lifepunch/governmentdatacenter/police-terminal/MODEL_BUILD.md"
+        }
+      ]
     },
     {
       "ident": "additionaldroplocations",
@@ -247,8 +270,8 @@
       "dxrpAddonId": "",
       "sboxIdentifier": "lifepunch.bitcoinmining",
       "status": "in-development",
-      "spec": "docs/BITMINER_UX_SPEC.md",
-      "notes": "IP: docs/BITMINER_IP_DOCTRINE.md. Hub + gpu-rack + large-gpu-rack. ModelDoc _c before portal ship. Remove BitminerDevSpawn before publish.",
+      "spec": "docs/BITCOINMINING_UX_SPEC.md",
+      "notes": "IP: docs/BITCOINMINING_IP_DOCTRINE.md. Hub + gpu-rack + large-gpu-rack. ModelDoc _c before portal ship. Remove BitcoinMiningDevSpawn before publish.",
       "contents": [
         {
           "slug": "bitcoin-terminal",

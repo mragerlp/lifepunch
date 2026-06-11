@@ -21,11 +21,12 @@ namespace LifePunch.DXRP.Addons.HackerJob;
 [Title( "Hacker Server Rack" )]
 [Category( "LifePunch/Hacker Job" )]
 #if LIFEPUNCH_LOCAL
-public sealed class HackerServerRackEntity : Component, Component.IPressable
+public class HackerServerRackEntity : Component, Component.IPressable
 #else
-public sealed class HackerServerRackEntity : BaseEntity, Component.IPressable
+public class HackerServerRackEntity : BaseEntity, Component.IPressable
 #endif
 {
+	[Property] public HackerRackTier RackTier { get; set; } = HackerRackTier.Basic;
 	[Property] public bool IsPowered { get; set; }
 	[Property] public int DetectionTier { get; set; }
 	[Property] public int PuzzleTimeTier { get; set; }
@@ -93,7 +94,7 @@ public sealed class HackerServerRackEntity : BaseEntity, Component.IPressable
 #endif
 
 		var current = GetTier( kind );
-		var max = GetMaxTier( kind );
+		var max = GetMaxTierForRack( kind );
 		if ( current >= max )
 			return;
 
@@ -119,14 +120,8 @@ public sealed class HackerServerRackEntity : BaseEntity, Component.IPressable
 		_ => 0
 	};
 
-	public static int GetMaxTier( HackerUpgradeKind kind ) => kind switch
-	{
-		HackerUpgradeKind.Detection => HackerUpgradeCatalog.MaxDetectionTier,
-		HackerUpgradeKind.PuzzleTime => HackerUpgradeCatalog.MaxPuzzleTimeTier,
-		HackerUpgradeKind.Reward => HackerUpgradeCatalog.MaxRewardTier,
-		HackerUpgradeKind.Cooldown => HackerUpgradeCatalog.MaxCooldownTier,
-		_ => 0
-	};
+	public int GetMaxTierForRack( HackerUpgradeKind kind ) =>
+		HackerUpgradeCatalog.GetMaxTier( RackTier, kind );
 
 	private void SetTier( HackerUpgradeKind kind, int value )
 	{

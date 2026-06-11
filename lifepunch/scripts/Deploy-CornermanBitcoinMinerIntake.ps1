@@ -1,12 +1,12 @@
 <#
 .SYNOPSIS
-  Stage LifePunch-owned GPU Farm source for the in-house Bitminer on Cornerman + repo mirror.
+  Stage LifePunch-owned GPU Farm source for the in-house BitcoinMiningAddon on Cornerman + repo mirror.
 
 .PARAMETER SourceRoot
   Desktop export folder (GPU_Farm root with OBJ/FBX/textures).
 
 .EXAMPLE
-  powershell -NoProfile -ExecutionPolicy Bypass -File Deploy-CornermanBitcoinMinerIntake.ps1
+  powershell -NoProfile -ExecutionPolicy Bypass -File Deploy-CornermanBitcoinMiningIntake.ps1
 #>
 [CmdletBinding()]
 param(
@@ -108,7 +108,7 @@ if (-not $RepoOnly) {
     $stageZip = Join-Path $env:TEMP ('lp-gpu-farm-stage-' + [guid]::NewGuid().ToString('n'))
     Copy-Tree -From $SourceRoot -To $stageZip
     $readme = @"
-LifePunch Bitminer - GPU Farm source (owner-authored, shippable).
+LifePunch BitcoinMiningAddon - GPU Farm source (owner-authored, shippable).
 Staged from VENGEANCE.
 
 Meshes:
@@ -119,7 +119,7 @@ Meshes:
 Textures: GPU_GraphicsCard, GPU_Rack, Motherboard, Power_Supply, Wires
 
 Tier-3 prep (Green):
-  - Compare layout vs BITMINER_UX_SPEC.md (LifePunch-owned meshes only)
+  - Compare layout vs BITCOINMINING_UX_SPEC.md (LifePunch-owned meshes only)
   - Blender: verify scale, apply transforms; ship via Reorganize-BitcoinMinerGpuRack.ps1
   - Note: OBJ references GPU_Farm_Static.mtl (not in export); use texture folders
 

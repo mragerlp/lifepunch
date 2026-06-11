@@ -6,7 +6,7 @@
     hub-startup, hub-fan-loop, hub-fan-down, metal-hit, smoke, explode
     server-hum, keyboard, glitch, error
 
-  Do NOT copy audio from any third-party bitminer addon pack.
+  Do NOT copy audio from any third-party bitcoin mining addon pack.
 
 .PARAMETER SourceRoot
   Default: Downloads\bitcoinminer-sounds
@@ -90,4 +90,4 @@ if ($missing.Count -gt 0) {
     Write-Host "Still missing (optional until wired): $($missing -join ', ')" -ForegroundColor Yellow
 }
 
-Write-Host 'Next: compile .vsnd in s&box editor; wire .sound resources + BitminerHubEntity SFX hooks.' -ForegroundColor DarkGray
+Write-Host 'Next: compile .vsnd in s&box editor; wire .sound resources + BitcoinMinerHubEntity SFX hooks.' -ForegroundColor DarkGray

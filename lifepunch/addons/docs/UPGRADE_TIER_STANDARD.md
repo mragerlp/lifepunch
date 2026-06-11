@@ -59,4 +59,4 @@ Prevents misclick steals and supports RP "authentication."
 
 ## Implementation
 
-Data-driven catalogs (pattern: `HackerUpgradeCatalog.cs`, future `BitminerEncryptionCatalog.cs`).
+Data-driven catalogs (pattern: `HackerUpgradeCatalog.cs`, future `BitcoinMinerEncryptionCatalog.cs`).

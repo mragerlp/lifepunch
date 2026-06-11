@@ -75,19 +75,36 @@ public static class HackerDevSpawn
 	public static void VengeancePreview() => PreviewTerminal( HackerTerminalTier.Advanced );
 
 	[ConCmd( "lp_spawn_server_rack" )]
-	public static void SpawnServerRack() => SpawnServerRackEntity( powered: false );
+	public static void SpawnServerRack() => SpawnServerRackEntity( HackerJob.ServerRackWorldPrefabPath, powered: false );
 
-	/// <summary>Spawn powered rack + standard + advanced terminals for playtest.</summary>
+	[ConCmd( "lp_spawn_advanced_server_rack" )]
+	public static void SpawnAdvancedServerRack() =>
+		SpawnServerRackEntity( HackerJob.AdvancedServerRackWorldPrefabPath, powered: false );
+
+	/// <summary>Spawn powered basic + advanced racks with cornerman + vengeance terminals.</summary>
 	[ConCmd( "lp_hacker_kit_preview" )]
 	public static void HackerKitPreview()
 	{
-		var rack = SpawnServerRackEntity( powered: true );
-		if ( !rack.IsValid() )
+		if ( !TryGetSpawnTransform( out var transform ) )
+		{
+			Log.Warning( $"{HackerJob.DevHackerKitPreviewCommand}: no local viewer." );
+			return;
+		}
+
+		var basicPos = transform.Position + transform.Rotation.Left * 120f;
+		var advancedPos = transform.Position + transform.Rotation.Right * 120f;
+
+		var basicRack = SpawnServerRackAt( HackerJob.ServerRackWorldPrefabPath, basicPos, transform.Rotation, powered: true );
+		var advancedRack = SpawnServerRackAt( HackerJob.AdvancedServerRackWorldPrefabPath, advancedPos, transform.Rotation, powered: true );
+		if ( !basicRack.IsValid() && !advancedRack.IsValid() )
 			return;
 
-		SpawnTerminalNear( HackerTerminalTier.Standard, rack.WorldPosition + Vector3.Left * 80f );
-		SpawnTerminalNear( HackerTerminalTier.Advanced, rack.WorldPosition + Vector3.Right * 80f );
-		Log.Info( "lp_hacker_kit_preview: rack ON + cornerman + vengeance placed. Interact rack for upgrades." );
+		if ( basicRack.IsValid() )
+			SpawnTerminalNear( HackerTerminalTier.Standard, basicRack.WorldPosition + Vector3.Forward * 80f );
+		if ( advancedRack.IsValid() )
+			SpawnTerminalNear( HackerTerminalTier.Advanced, advancedRack.WorldPosition + Vector3.Forward * 80f );
+
+		Log.Info( $"{HackerJob.DevHackerKitPreviewCommand}: basic + advanced racks ON, cornerman + vengeance placed. Interact racks for upgrades." );
 	}
 
 	private static void PreviewTerminal( HackerTerminalTier tier )
@@ -146,22 +163,31 @@ public static class HackerDevSpawn
 #endif
 	}
 
-	private static HackerServerRackEntity SpawnServerRackEntity( bool powered )
+	private static HackerServerRackEntity SpawnServerRackEntity( string prefabPath, bool powered )
 	{
 		if ( !TryGetSpawnTransform( out var transform ) )
 		{
-			Log.Warning( $"{HackerJob.DevServerRackSpawnCommand}: no local viewer." );
+			Log.Warning( "lp_spawn_server_rack: no local viewer." );
 			return null;
 		}
 
-		var prefab = GameObject.GetPrefab( HackerJob.ServerRackWorldPrefabPath );
+		var rack = SpawnServerRackAt( prefabPath, transform.Position, transform.Rotation, powered );
+		if ( rack.IsValid() )
+			Log.Info( $"Rack placed at viewer (power={( powered ? "ON" : "OFF" )}) — {prefabPath}" );
+
+		return rack;
+	}
+
+	private static HackerServerRackEntity SpawnServerRackAt( string prefabPath, Vector3 position, Rotation rotation, bool powered )
+	{
+		var prefab = GameObject.GetPrefab( prefabPath );
 		if ( !prefab.IsValid() )
 		{
-			Log.Error( $"{HackerJob.DevServerRackSpawnCommand}: could not load '{HackerJob.ServerRackWorldPrefabPath}'." );
+			Log.Error( $"Could not load rack prefab '{prefabPath}'." );
 			return null;
 		}
 
-		var rackGo = prefab.Clone( new CloneConfig { Transform = transform } );
+		var rackGo = prefab.Clone( new CloneConfig { Transform = new Transform( position, rotation ) } );
 		if ( !rackGo.IsValid() )
 			return null;
 
@@ -177,7 +203,6 @@ public static class HackerDevSpawn
 			rackGo.NetworkSpawn();
 #endif
 
-		Log.Info( $"{HackerJob.DevServerRackSpawnCommand}: placed (power={( powered ? "ON" : "OFF" )})." );
 		return rack;
 	}
 

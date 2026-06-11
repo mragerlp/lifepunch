@@ -1,5 +1,5 @@
 // LifePunch gpu-rack — GPU slot (graphics cards + 6 card fans).
-// BASELINE: complex.shader + emission (RGB custom shader blocked play — see BITMINER_PLAYTEST.md §Log triage).
+// BASELINE: complex.shader + emission (RGB custom shader blocked play — see BITCOINMINING_PLAYTEST.md §Log triage).
 
 Layer0
 {

@@ -1,0 +1,34 @@
+BITCOINMINING PLAY UNBLOCK — log triage + fixes (2026-06-11)
+========================================================
+
+ROOT CAUSE (why join/play felt blocked by bitcoinmining assets)
+---------------------------------------------------
+1. gpu-rack-gpu.vmat referenced lifepunch_rgb_fan_led.shader (never compiled)
+   → vmat_c missing → gpu-rack.vmdl fails on load → on-demand recompile storm
+2. Stray test objects in DXRP Assets/scenes/game.scene (gpu-rack-test x2, empty bitcoin-miner)
+   → startup scene pulled broken gpu-rack on every session
+3. User flow: Start Hosting BEFORE Play → "Unable to create a lobby outside of a game"
+
+FIXES APPLIED (VENGEANCE session)
+---------------------------------
+- gpu-rack-gpu.vmat → shaders/complex.shader baseline (BITCOINMINING-03 in TECH_DEBT.md)
+- Recompiled gpu-rack-gpu.vmat_c + gpu-rack.vmdl_c (bridge recompile_asset OK)
+- Removed bitcoinmining test GOs from game.scene (local DXRP only — not in monorepo)
+- BITCOINMINING_PLAYTEST.md §Log triage table added for ongoing log monitoring
+
+VERIFY (owner)
+--------------
+1. Restart s&box editor (clean compile)
+2. Open downtown MAP scene (not game.scene)
+3. Play FIRST → then network → Start Hosting
+4. Console: lp_hashd_preview
+5. Log should NOT repeat lifepunch_rgb_fan_led.shader errors
+
+STILL OPEN (non-blocking)
+-------------------------
+- RGB fan shader P0 (restore vmat when shader compiles)
+- bitcoin-terminal dark/lime green.vmat_c paths
+- sound _c files
+
+Log path: D:\Steam\steamapps\common\sbox\logs\sbox-dev.log
+MCP: get_compile_errors, read_log (sbox bridge)

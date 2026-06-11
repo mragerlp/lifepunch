@@ -8,7 +8,7 @@ $briefs = @(
     @{ rel = 'lifepunch\addons\docs\reference\WEED_ENGINE_ENTITY_INDEX.md'; inbox = 'WEED_ENGINE_ENTITY_INDEX.md' },
     @{ rel = 'lifepunch\addons\Assets\addons\lifepunch\advanceddrugprocessing\ASSET_INVENTORY.md'; inbox = 'COKE_ASSET_INVENTORY.md' },
     @{ rel = 'lifepunch\addons\Assets\addons\lifepunch\advanceddrugprocessing\COKE_LINE_MAP.md'; inbox = 'COKE_LINE_MAP.md' },
-    @{ rel = 'lifepunch\addons\Assets\addons\lifepunch\bitcoinmining\ASSET_INVENTORY.md'; inbox = 'BITMINER_ASSET_INVENTORY.md' },
+    @{ rel = 'lifepunch\addons\Assets\addons\lifepunch\bitcoinmining\ASSET_INVENTORY.md'; inbox = 'BITCOINMINING_ASSET_INVENTORY.md' },
     @{ rel = 'lifepunch\addons\docs\briefs\CORNERMAN_HACKER_JOB_TERMINAL_TASK.md'; inbox = 'CORNERMAN_HACKER_JOB_TERMINAL_TASK.md' },
     @{ rel = 'lifepunch\addons\docs\briefs\HACKER_JOB_TERMINAL_BRIEF.md'; inbox = 'HACKER_JOB_TERMINAL_BRIEF.md' },
     @{ rel = 'lifepunch\addons\docs\HACKER_JOB_SPEC.md'; inbox = 'HACKER_JOB_SPEC.md' },
@@ -35,15 +35,15 @@ $directive = @{
     priority   = 'high'
     lane       = 'cornerman'
     title      = 'Active work queue — Hacker Job terminal depth (after AK47 guns)'
-    summary    = 'Pull main. #1 NEW: Hacker Job terminal — cornerman.exe flow, puzzle catalog, platform tokens, gov DB scaffold. Bitminer terminal is the shell reference.'
+    summary    = 'Pull main. #1 NEW: Hacker Job terminal — cornerman.exe flow, puzzle catalog, platform tokens, gov DB scaffold. BitcoinMiningAddon terminal is the shell reference.'
     primaryDoc = 'CORNERMAN_WORK_QUEUE.md'
     tasks      = @(
         @{ order = 0; id = 'ak47-cs2-study'; doc = 'CORNERMAN_AK47_CS2_STUDY_TASK.md' },
         @{ order = 1; id = 'hacker-terminal'; doc = 'CORNERMAN_HACKER_JOB_TERMINAL_TASK.md' },
         @{ order = 2; id = 'coke-intake'; doc = 'CORNERMAN_COKE_DRUG_INTAKE_TASK.md' },
         @{ order = 3; id = 'deagle-distill'; doc = 'CORNERMAN_DEAGLE_DISTILL_TASK.md' },
-        @{ order = 4; id = 'bitminer-dual-rack'; doc = 'CORNERMAN_BITMINER_DUAL_RACK_TASK.md' },
-        @{ order = 5; id = 'bitminer-phase2'; doc = 'CORNERMAN_BITMINER_PHASE2_MENU_TASK.md' },
+        @{ order = 4; id = 'bitcoinmining-dual-rack'; doc = 'CORNERMAN_BITCOINMINING_DUAL_RACK_TASK.md' },
+        @{ order = 5; id = 'bitcoinmining-phase2'; doc = 'CORNERMAN_BITCOINMINING_PHASE2_MENU_TASK.md' },
         @{ order = 6; id = 'deagle-rag'; doc = 'DEAGLE_WEAPON_BRIEF.md' }
     )
 } | ConvertTo-Json -Depth 5
