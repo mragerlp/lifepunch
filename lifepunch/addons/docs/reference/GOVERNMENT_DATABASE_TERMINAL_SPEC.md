@@ -1,7 +1,7 @@
 # Government database terminal (scaffold — later lane)
 
 **Skin:** lifepunchnet · **Accent:** `#00D4FF` · **Prompt:** `lifepunch@lifepunch.net:~$`  
-**Status:** Prep only — ship after Hacker Job + Bitminer platform merge  
+**Status:** Prep only — ship after Hacker Ops Console lands (same *platform shape*, cyan palette)  
 **Canon:** `branding/lifepunch-ops/outfits/lifepunchnet/TIER-SPEC.md`
 
 ---

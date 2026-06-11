@@ -2,7 +2,7 @@
 
 **Red runbook (VENGEANCE):** `addons/docs/RED_HACKER_JOB_BUILD.md`
 
-Two tiers per `TERMINAL_BRAND_MATRIX.md`. Shares terminal **layout** with Bitcoin Miner hashd; Hacker uses Cornerman/Vengeance palettes.
+Two tiers per `TERMINAL_BRAND_MATRIX.md`. **Ops Console** layout (960×640, session rail + LOG/SCAN/GOVDB/TARGET/HELP modules) — distinct from amber HASHD rig and cyan lifepunchnet police shell. See `addons/docs/HACKER_OPS_CONSOLE_SPEC.md`.
 
 ## Tiers
 

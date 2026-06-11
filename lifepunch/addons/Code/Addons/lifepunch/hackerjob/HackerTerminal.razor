@@ -19,46 +19,220 @@
 
 <root class="@TierClass">
     <div class="scanlines"></div>
-    <div class="click-blocker" onclick=@FocusInput></div>
 
     <div class="title-bar">
-        <span class="title-text">@TitleBarText</span>
+        <span class="title-mark">@OpsMark</span>
+        <span class="title-text">@OpsTitle</span>
+        <span class="title-sub">@ProgramLabel</span>
+        <span class="title-spacer"></span>
         <span class="tier-badge">@TierBadge</span>
-        <button class="close-x" onclick=@OnClickClose>✕ CLOSE</button>
+        <button class="close-x" onclick=@OnClickClose>CLOSE</button>
     </div>
 
-    <div class="screen flex flex-col">
-        @foreach ( var line in _lines )
-        {
-            <div class="p-1">
-                <label class="screen-line @GetLineClass(line)">@line</label>
+    <div class="terminal-body">
+        <div class="ops-rail">
+            <div class="rail-header">SESSION</div>
+            <div class="rail-block">
+                <span class="rail-label">PROGRAM</span>
+                <span class="rail-value">@ProgramLabel</span>
             </div>
-        }
-        @if ( _puzzle != null && !_puzzle.IsExpired )
-        {
-            <div class="p-1 countdown-line">
-                <label class="screen-line warn-line">▶ PUZZLE TTL: @MathF.Ceiling(_puzzle.SecondsRemaining)s</label>
+            <div class="rail-block">
+                <span class="rail-label">LINK</span>
+                <span class="rail-value @(Terminal.IsValid() ? "active" : "")">@(Terminal.IsValid() ? "STABLE" : "LOST")</span>
             </div>
-        }
-    </div>
+            <div class="rail-block">
+                <span class="rail-label">WALLETS</span>
+                <span class="rail-value">@_scanResults.Count</span>
+            </div>
+            @if ( Tier == HackerTerminalTier.Advanced )
+            {
+                <div class="rail-block">
+                    <span class="rail-label">GOVDB</span>
+                    <span class="rail-value">@_govdbResults.Count</span>
+                </div>
+            }
+            <div class="rail-block">
+                <span class="rail-label">ACTIVE OP</span>
+                <span class="rail-value @(HasActiveOp ? "active" : "")">@ActiveOpLabel</span>
+            </div>
+            @if ( _puzzle != null && !_puzzle.IsExpired )
+            {
+                <div class="rail-block rail-progress">
+                    <span class="rail-label">PUZZLE TTL</span>
+                    <div class="ttl-bar">
+                        <div class="ttl-fill" style="width: @(GetPuzzlePercent())%"></div>
+                    </div>
+                    <span class="rail-sub">@MathF.Ceiling(_puzzle.SecondsRemaining)s</span>
+                </div>
+            }
 
-    <div class="input-row">
-        <span class="prompt-label">@PromptLabel</span>
-        <TextEntry
-            class="terminal-input"
-            @ref="InputBox"
-            onsubmit=@OnSubmit />
+            <div class="rail-nav">
+                <div class="rail-nav-header">MODULES</div>
+                <button class="nav-btn @(_activeModule == OpsModule.Log ? "active" : "")" onclick=@(() => SwitchModule(OpsModule.Log))>LOG</button>
+                <button class="nav-btn @(_activeModule == OpsModule.Scan ? "active" : "")" onclick=@(() => SwitchModule(OpsModule.Scan))>SCAN</button>
+                @if ( Tier == HackerTerminalTier.Advanced )
+                {
+                    <button class="nav-btn @(_activeModule == OpsModule.Govdb ? "active" : "")" onclick=@(() => SwitchModule(OpsModule.Govdb))>GOVDB</button>
+                }
+                <button class="nav-btn @(_activeModule == OpsModule.Target ? "active" : "")" onclick=@(() => SwitchModule(OpsModule.Target))>TARGET</button>
+                <button class="nav-btn @(_activeModule == OpsModule.Help ? "active" : "")" onclick=@(() => SwitchModule(OpsModule.Help))>HELP</button>
+            </div>
+
+            <div class="rail-actions">
+                <button class="rail-btn" onclick=@RunScanFromUi>RUN SCAN</button>
+                @if ( Tier == HackerTerminalTier.Advanced )
+                {
+                    <button class="rail-btn" onclick=@RunGovdbFromUi>RUN GOVDB</button>
+                }
+            </div>
+            <div class="rail-hint">Command line ↓</div>
+        </div>
+
+        <div class="main-pane">
+            <div class="module-header">@ModuleTitle</div>
+
+            <div class="module-body" onclick=@FocusInput>
+                @if ( _activeModule == OpsModule.Log )
+                {
+                    <div class="log-scroll">
+                        @foreach ( var line in _lines )
+                        {
+                            <div class="line-row">
+                                <label class="screen-line @GetLineClass(line)">@line</label>
+                            </div>
+                        }
+                    </div>
+                }
+                else if ( _activeModule == OpsModule.Scan )
+                {
+                    <div class="module-scan">
+                        <div class="module-toolbar">
+                            <span class="toolbar-label">WALLET ENDPOINTS</span>
+                            <span class="toolbar-meta">@_scanResults.Count cached</span>
+                        </div>
+                        @if ( _scanResults.Count == 0 )
+                        {
+                            <div class="empty-state">No targets — RUN SCAN or type <span class="cmd">scan</span></div>
+                        }
+                        else
+                        {
+                            @foreach ( var target in _scanResults )
+                            {
+                                <div class="data-row @(_selectedTargetId == target.SteamId ? "selected" : "")"
+                                     onclick=@(() => SelectWalletTarget(target))>
+                                    <span class="data-id">@target.SteamId</span>
+                                    <span class="data-name">@target.DisplayName</span>
+                                    <span class="data-meta">$@target.WalletCash</span>
+                                </div>
+                            }
+                        }
+                        @if ( !string.IsNullOrEmpty( _selectedTargetId ) )
+                        {
+                            <button class="module-action" onclick=@StartHackFromUi>START HACK</button>
+                        }
+                    </div>
+                }
+                else if ( _activeModule == OpsModule.Govdb && Tier == HackerTerminalTier.Advanced )
+                {
+                    <div class="module-govdb">
+                        <div class="module-toolbar">
+                            <span class="toolbar-label">TREASURY NODES</span>
+                            <span class="toolbar-meta">@_govdbResults.Count cached</span>
+                        </div>
+                        @if ( _govdbResults.Count == 0 )
+                        {
+                            <div class="empty-state">No nodes — RUN GOVDB or type <span class="cmd">govdb</span></div>
+                        }
+                        else
+                        {
+                            @foreach ( var node in _govdbResults )
+                            {
+                                <div class="data-row @(_selectedGovNodeId == node.NodeId ? "selected" : "")"
+                                     onclick=@(() => SelectGovNode(node))>
+                                    <span class="data-id">@node.NodeId</span>
+                                    <span class="data-name">@node.Label</span>
+                                    <span class="data-meta">[@node.SecurityTier]</span>
+                                </div>
+                            }
+                        }
+                        @if ( !string.IsNullOrEmpty( _selectedGovNodeId ) )
+                        {
+                            <button class="module-action" onclick=@StartInfilFromUi>START INFIL</button>
+                        }
+                    </div>
+                }
+                else if ( _activeModule == OpsModule.Target )
+                {
+                    <div class="module-target">
+                        @if ( _puzzle == null )
+                        {
+                            <div class="empty-state">No active operation — select a target in SCAN or GOVDB</div>
+                        }
+                        else if ( _puzzle.IsExpired )
+                        {
+                            <div class="empty-state warn">Puzzle window expired — trace risk increased.</div>
+                        }
+                        else
+                        {
+                            <div class="target-banner">@GetTargetBanner()</div>
+                            <div class="puzzle-prompt">@_puzzle.Prompt</div>
+                            <div class="puzzle-hint">Type answer at command prompt — @MathF.Ceiling(_puzzle.SecondsRemaining)s remaining</div>
+                        }
+                    </div>
+                }
+                else if ( _activeModule == OpsModule.Help )
+                {
+                    <div class="module-help">
+                        <div class="help-block">
+                            <span class="help-cmd">scan</span>
+                            <span class="help-desc">Probe live wallet signatures</span>
+                        </div>
+                        <div class="help-block">
+                            <span class="help-cmd">hack &lt;steamid&gt;</span>
+                            <span class="help-desc">Start wallet bypass puzzle</span>
+                        </div>
+                        @if ( Tier == HackerTerminalTier.Advanced )
+                        {
+                            <div class="help-block">
+                                <span class="help-cmd">govdb</span>
+                                <span class="help-desc">Scan government database nodes</span>
+                            </div>
+                            <div class="help-block">
+                                <span class="help-cmd">infil &lt;nodeid&gt;</span>
+                                <span class="help-desc">Breach a treasury node</span>
+                            </div>
+                        }
+                        <div class="help-block">
+                            <span class="help-cmd">status / info / clear / about</span>
+                            <span class="help-desc">Session utilities</span>
+                        </div>
+                        <div class="help-note">Counterplay: lifepunchnet police terminals (cyan) — separate addon.</div>
+                    </div>
+                }
+            </div>
+
+            <div class="input-row" onclick=@FocusInput>
+                <span class="prompt-label">@PromptLabel</span>
+                <TextEntry
+                    class="terminal-input"
+                    @ref="InputBox"
+                    onsubmit=@OnSubmit />
+            </div>
+        </div>
     </div>
 </root>
 
 @code {
+    private enum OpsModule { Log, Scan, Govdb, Target, Help }
+
     public HackerTerminalEntity Terminal { get; set; }
 
     private TextEntry InputBox { get; set; }
     private readonly List<string> _lines = new();
-    private const int MaxLines = 48;
+    private const int MaxLines = 64;
     private int _lastTextLength = 0;
     private TimeSince _sinceSecondly = 0f;
+    private OpsModule _activeModule = OpsModule.Log;
 
     private IReadOnlyList<HackerScanService.ScanTarget> _scanResults = Array.Empty<HackerScanService.ScanTarget>();
     private IReadOnlyList<HackerScanService.GovDbTarget> _govdbResults = Array.Empty<HackerScanService.GovDbTarget>();
@@ -72,9 +246,22 @@
             : HackerTerminalTier.Standard;
 
     private string TierClass => HackerTerminalBrand.CssTierClass( Tier );
-    private string TitleBarText => HackerTerminalBrand.TitleBar( Tier );
-    private string PromptLabel => $"{HackerTerminalBrand.PromptLabel( Tier )}";
+    private string OpsTitle => HackerTerminalBrand.OpsConsoleTitle( Tier );
+    private string OpsMark => HackerTerminalBrand.OpsConsoleMark( Tier );
+    private string ProgramLabel => HackerTerminalBrand.ProgramName( Tier );
+    private string PromptLabel => HackerTerminalBrand.PromptLabel( Tier );
     private string TierBadge => Tier == HackerTerminalTier.Advanced ? "VENGEANCE OPS" : "CORNERMAN OPS";
+    private bool HasActiveOp => _puzzle != null && !_puzzle.IsExpired;
+    private string ActiveOpLabel => HasActiveOp ? (_selectedGovNodeId ?? _selectedTargetId ?? "active") : "none";
+
+    private string ModuleTitle => _activeModule switch
+    {
+        OpsModule.Scan => "SCAN — WALLET PROBE",
+        OpsModule.Govdb => "GOVDB — TREASURY MESH",
+        OpsModule.Target => "TARGET — BYPASS",
+        OpsModule.Help => "HELP — COMMAND REF",
+        _ => "LOG — COMMAND OUTPUT"
+    };
 
     private static string GetLineClass( string line )
     {
@@ -99,6 +286,25 @@
             _lines.RemoveRange( 0, _lines.Count - MaxLines );
     }
 
+    private float GetPuzzlePercent()
+    {
+        if ( _puzzle == null || _puzzle.TimeLimitSeconds <= 0f )
+            return 0f;
+
+        return Math.Clamp( _puzzle.SecondsRemaining / _puzzle.TimeLimitSeconds * 100f, 0f, 100f );
+    }
+
+    private string GetTargetBanner()
+    {
+        if ( !string.IsNullOrEmpty( _selectedGovNodeId ) )
+            return $"INFILTRATING GOVDB NODE {_selectedGovNodeId}";
+
+        if ( !string.IsNullOrEmpty( _selectedTargetId ) )
+            return $"INFILTRATING WALLET {_selectedTargetId}";
+
+        return "ACTIVE BYPASS";
+    }
+
     public static void Open( HackerTerminalEntity terminal )
     {
         var panel = HackerTerminalHost.Mount();
@@ -112,6 +318,14 @@
 
     private void CloseTerminal() => HackerTerminalHost.Close( this );
 
+    private void SwitchModule( OpsModule module )
+    {
+        if ( module == OpsModule.Govdb && Tier != HackerTerminalTier.Advanced )
+            return;
+
+        _activeModule = module;
+    }
+
     private void Boot()
     {
         _lines.Clear();
@@ -120,27 +334,29 @@
         _selectedTargetId = null;
         _selectedGovNodeId = null;
         _puzzle = null;
+        _activeModule = OpsModule.Log;
 
         if ( Tier == HackerTerminalTier.Advanced )
         {
-            _lines.Add( "LIFEPUNCH vengeance.exe v0.1" );
-            _lines.Add( "[ OK ] crt framebuffer 800x600" );
+            _lines.Add( "LIFEPUNCH vengeance.exe v0.2 — ops console" );
+            _lines.Add( "[ OK ] crt framebuffer 960x640" );
             _lines.Add( "[ OK ] enhanced intrusion toolkit" );
             _lines.Add( "[ OK ] govdb route table mounted" );
             _lines.Add( $"starting {HackerJob.AdvancedProgramName} ..." );
             _lines.Add( "WARNING: unauthorized govdb access is a felony." );
-            _lines.Add( "Type 'help' for ops. Fiction only — not the real VENGEANCE box." );
+            _lines.Add( "Modules: LOG | SCAN | GOVDB | TARGET | HELP" );
         }
         else
         {
-            _lines.Add( "LIFEPUNCH cornerman.exe v0.1" );
-            _lines.Add( "[ OK ] crt framebuffer 640x480" );
+            _lines.Add( "LIFEPUNCH cornerman.exe v0.2 — ops console" );
+            _lines.Add( "[ OK ] crt framebuffer 960x640" );
             _lines.Add( "[ OK ] packet sniffer loaded" );
             _lines.Add( "[ OK ] wallet probe module (read-only)" );
             _lines.Add( $"starting {HackerJob.InGameProgramName} ..." );
-            _lines.Add( "Type 'help' for ops. Fiction only — not the real Cornerman box." );
+            _lines.Add( "Modules: LOG | SCAN | TARGET | HELP" );
         }
 
+        _lines.Add( "Fiction only — not the real Ops box. Type help or open HELP module." );
         _lines.Add( "" );
     }
 
@@ -165,6 +381,7 @@
             _puzzle = null;
             _selectedTargetId = null;
             _selectedGovNodeId = null;
+            _activeModule = OpsModule.Log;
         }
     }
 
@@ -208,6 +425,37 @@
     }
 
     private void OnClickClose() => CloseTerminal();
+
+    private void RunScanFromUi() => HandleCommand( "scan" );
+    private void RunGovdbFromUi() => HandleCommand( "govdb" );
+
+    private void SelectWalletTarget( HackerScanService.ScanTarget target )
+    {
+        _selectedTargetId = target.SteamId;
+        _selectedGovNodeId = null;
+    }
+
+    private void SelectGovNode( HackerScanService.GovDbTarget node )
+    {
+        _selectedGovNodeId = node.NodeId;
+        _selectedTargetId = null;
+    }
+
+    private void StartHackFromUi()
+    {
+        if ( string.IsNullOrEmpty( _selectedTargetId ) )
+            return;
+
+        HandleCommand( $"hack {_selectedTargetId}" );
+    }
+
+    private void StartInfilFromUi()
+    {
+        if ( string.IsNullOrEmpty( _selectedGovNodeId ) )
+            return;
+
+        HandleCommand( $"infil {_selectedGovNodeId}" );
+    }
 
     private void OnSubmit()
     {
@@ -253,6 +501,7 @@
             _puzzle = null;
             _selectedTargetId = null;
             _selectedGovNodeId = null;
+            _activeModule = OpsModule.Log;
             return;
         }
 
@@ -262,10 +511,12 @@
             _puzzle = null;
             _selectedTargetId = null;
             _selectedGovNodeId = null;
+            _activeModule = OpsModule.Log;
             return;
         }
 
         _lines.Add( $"DENIED — {MathF.Ceiling( _puzzle.SecondsRemaining )}s remaining." );
+        _activeModule = OpsModule.Target;
     }
 
     private void HandleCommand( string input )
@@ -277,6 +528,7 @@
         switch ( cmd )
         {
             case "help":
+                _activeModule = OpsModule.Help;
                 _lines.Add( "--------------------HELP--------------------" );
                 _lines.Add( "  SCAN     - Probe live wallet signatures." );
                 if ( Tier == HackerTerminalTier.Advanced )
@@ -297,10 +549,10 @@
                 break;
 
             case "about":
-                _lines.Add( "LIFEPUNCH™ Hacker Job — terminal programs are in-world fiction." );
+                _lines.Add( "LIFEPUNCH™ Hacker Job — ops console is in-world fiction." );
                 _lines.Add( "Wallet hacks: server-validated Phase 2. Bank accounts untouchable." );
                 if ( Tier == HackerTerminalTier.Advanced )
-                    _lines.Add( "Govdb breaches countered by Police terminals (lifepunchnet ops)." );
+                    _lines.Add( "Govdb breaches countered by Police terminals (lifepunchnet cyan)." );
                 break;
 
             case "info":
@@ -342,7 +594,8 @@
                 _lines.Add( $"Found {_govdbResults.Count} node(s):" );
                 foreach ( var node in _govdbResults )
                     _lines.Add( $"  {node.NodeId}  {node.Label}  [{node.SecurityTier}]" );
-                _lines.Add( "Use: infil <nodeid>" );
+                _lines.Add( "Use: infil <nodeid> or GOVDB module + START INFIL" );
+                _activeModule = OpsModule.Govdb;
                 break;
 
             case "infil":
@@ -379,6 +632,7 @@
                 _lines.Add( $"INFILTRATING {nodeMatch.Label} [{nodeMatch.SecurityTier}]" );
                 _lines.Add( _puzzle.Prompt );
                 _lines.Add( $"TIME LIMIT: {MathF.Ceiling( _puzzle.TimeLimitSeconds )}s — type answer at prompt." );
+                _activeModule = OpsModule.Target;
                 break;
 
             case "scan":
@@ -393,7 +647,8 @@
                 _lines.Add( $"Found {_scanResults.Count} exploitable wallet(s):" );
                 foreach ( var target in _scanResults )
                     _lines.Add( $"  {target.SteamId}  {target.DisplayName}  ${target.WalletCash}" );
-                _lines.Add( "Use: hack <steamid>" );
+                _lines.Add( "Use: hack <steamid> or SCAN module + START HACK" );
+                _activeModule = OpsModule.Scan;
                 break;
 
             case "hack":
@@ -424,6 +679,7 @@
                 _lines.Add( $"INFILTRATING {match.DisplayName} — wallet ${match.WalletCash}" );
                 _lines.Add( _puzzle.Prompt );
                 _lines.Add( $"TIME LIMIT: {MathF.Ceiling( _puzzle.TimeLimitSeconds )}s — type answer at prompt." );
+                _activeModule = OpsModule.Target;
                 break;
 
             default:

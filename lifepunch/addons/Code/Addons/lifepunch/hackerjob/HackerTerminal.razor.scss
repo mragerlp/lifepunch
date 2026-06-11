@@ -8,12 +8,19 @@
 // Presence in this repository or on the DXRP portal grants no rights to anyone else.
 // ─────────────────────────────────────────────────────────────────────────────
 
+// Ops console — green Cornerman / red Vengeance (not amber hashd, not cyan lifepunchnet)
 $bg: #0a0f0a;
+$bg-rail: #080d08;
 $border-standard: #1a3a2a;
 $primary-standard: #00FF7F;
+$primary-standard-dim: #00c060;
 $border-advanced: #3a1a1a;
 $primary-advanced: #E4002B;
+$primary-advanced-dim: #a80020;
 $body: #d8ffe8;
+$body-dim: #7ab896;
+$body-advanced: #ffd8de;
+$body-advanced-dim: #b87a86;
 $error: #e4002b;
 $warn: #ffb347;
 $main-font: Mina;
@@ -22,34 +29,57 @@ $text-sm: 14px;
 HackerTerminal {
     pointer-events: all;
     position: absolute;
-    bottom: 60px;
-    right: 20px;
-    width: 720px;
-    height: 520px;
-    background-color: rgba(10, 15, 10, 0.97);
-    border-radius: 6px;
+    bottom: 48px;
+    left: 24px;
+    width: 960px;
+    height: 640px;
+    background-color: rgba(10, 15, 10, 0.98);
+    border-radius: 0;
+    box-shadow: 0 0 0 1px #000000, 0 12px 40px rgba(0, 0, 0, 0.55);
     display: flex;
     flex-direction: column;
     overflow: hidden;
 
     &.tier-standard {
-        border: 1px solid $border-standard;
+        border: 2px solid $border-standard;
 
         .title-bar { border-bottom-color: $border-standard; }
-        .title-text, .prompt-label, .prompt-line, .divider-line, .ok-line { color: $primary-standard; }
+        .title-text, .title-mark, .prompt-label, .prompt-line, .divider-line, .ok-line { color: $primary-standard; }
         .tier-badge { color: $primary-standard; border-color: rgba(0, 255, 127, 0.35); }
+        .ops-rail { border-right-color: $border-standard; }
         .input-row { border-top-color: $border-standard; }
+        .module-header { color: $primary-standard-dim; border-bottom-color: $border-standard; }
+        .nav-btn.active, .rail-value.active { color: $primary-standard; }
+        .data-row.selected { border-color: $primary-standard; background-color: rgba(0, 255, 127, 0.08); }
+        .module-action, .rail-btn:hover { border-color: $primary-standard; color: $primary-standard; }
+        .ttl-fill { background-color: $primary-standard; }
+        .terminal-input { caret-color: $primary-standard; }
+        .cmd { color: $primary-standard; }
+        .help-cmd { color: $primary-standard; }
     }
 
     &.tier-advanced {
-        border: 1px solid $border-advanced;
-        box-shadow: 0 0 24px rgba(228, 0, 43, 0.12);
+        border: 2px solid $border-advanced;
+        box-shadow: 0 0 0 1px #000000, 0 12px 40px rgba(0, 0, 0, 0.55), 0 0 28px rgba(228, 0, 43, 0.1);
 
         .title-bar { border-bottom-color: $border-advanced; background-color: #0d0808; }
-        .title-text, .prompt-label, .prompt-line, .divider-line { color: $primary-advanced; }
+        .title-text, .title-mark, .prompt-label, .prompt-line, .divider-line { color: $primary-advanced; }
         .ok-line { color: #ff6b6b; }
         .tier-badge { color: $primary-advanced; border-color: rgba(228, 0, 43, 0.45); }
+        .ops-rail { border-right-color: $border-advanced; background-color: #0a0606; }
         .input-row { border-top-color: $border-advanced; background-color: #0d0808; }
+        .module-header { color: $primary-advanced-dim; border-bottom-color: $border-advanced; }
+        .nav-btn.active, .rail-value.active { color: $primary-advanced; }
+        .nav-btn.active { border-color: $border-advanced; background-color: rgba(228, 0, 43, 0.08); }
+        .data-row.selected { border-color: $primary-advanced; background-color: rgba(228, 0, 43, 0.1); }
+        .data-row:hover { background-color: rgba(228, 0, 43, 0.05); }
+        .module-action, .rail-btn:hover { border-color: $primary-advanced; color: $primary-advanced; }
+        .ttl-fill { background-color: $primary-advanced; }
+        .terminal-input { caret-color: $primary-advanced; color: $body-advanced; }
+        .screen-line.output-line, .help-desc, .data-name, .toolbar-meta { color: $body-advanced; }
+        .rail-value, .data-meta, .rail-sub, .empty-state, .help-note { color: $body-advanced-dim; }
+        .cmd { color: $primary-advanced; }
+        .help-cmd { color: $primary-advanced; }
     }
 
     .scanlines {
@@ -67,36 +97,42 @@ HackerTerminal {
             rgba(255, 255, 255, 0.15) 2px,
             rgba(255, 255, 255, 0.15) 4px
         );
-        z-index: 2;
-    }
-
-    .click-blocker {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        pointer-events: all;
-        z-index: 1;
+        z-index: 10;
     }
 
     .title-bar {
-        background-color: #080d08;
-        padding: 10px 18px;
-        border-bottom: 1px solid $border-standard;
+        background: linear-gradient(180deg, #0c120c 0%, $bg 100%);
+        padding: 8px 14px;
+        border-bottom: 2px solid $border-standard;
         flex-shrink: 0;
         display: flex;
         flex-direction: row;
         align-items: center;
-        justify-content: space-between;
-        gap: 12px;
+        gap: 10px;
         z-index: 3;
+
+        .title-mark {
+            font-family: $main-font;
+            font-size: 12px;
+            font-weight: bold;
+        }
 
         .title-text {
             font-family: $main-font;
             font-size: $text-sm;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
             font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .title-sub {
+            font-family: $main-font;
+            font-size: 11px;
+            color: $body-dim;
+            letter-spacing: 0.5px;
+        }
+
+        .title-spacer {
             flex-grow: 1;
         }
 
@@ -106,34 +142,196 @@ HackerTerminal {
             letter-spacing: 2px;
             padding: 3px 8px;
             border: 1px solid rgba(0, 255, 127, 0.35);
-            border-radius: 3px;
+            border-radius: 0;
             flex-shrink: 0;
         }
 
         .close-x {
-            background-color: rgba(228, 0, 43, 0.15);
-            border: 1px solid rgba(228, 0, 43, 0.4);
+            background-color: rgba(228, 0, 43, 0.12);
+            border: 1px solid $error;
+            border-radius: 0;
             color: $error;
             font-family: $main-font;
-            font-size: 12px;
-            padding: 4px 10px;
-            border-radius: 3px;
-            cursor: pointer;
+            font-size: 11px;
+            font-weight: bold;
+            padding: 4px 12px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
             flex-shrink: 0;
         }
     }
 
-    .screen {
+    .terminal-body {
         flex-grow: 1;
-        overflow-y: scroll;
-        padding: 8px 14px;
-        font-family: $main-font;
-        font-size: $text-sm;
+        min-height: 0;
+        display: flex;
+        flex-direction: row;
         z-index: 3;
+    }
+
+    .ops-rail {
+        width: 220px;
+        flex-shrink: 0;
+        background-color: $bg-rail;
+        border-right: 2px solid $border-standard;
+        padding: 12px 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+
+        .rail-header {
+            font-family: $main-font;
+            font-size: 10px;
+            color: $body-dim;
+            letter-spacing: 1.5px;
+            font-weight: bold;
+            padding-bottom: 6px;
+            border-bottom: 1px solid $border-standard;
+        }
+
+        .rail-block {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+
+            .rail-label {
+                font-family: $main-font;
+                font-size: 10px;
+                color: $body-dim;
+                letter-spacing: 0.5px;
+            }
+
+            .rail-value {
+                font-family: $main-font;
+                font-size: 13px;
+                color: $body;
+                font-weight: bold;
+            }
+
+            .rail-sub {
+                font-family: $main-font;
+                font-size: 10px;
+                color: $body-dim;
+            }
+        }
+
+        .rail-progress {
+            .ttl-bar {
+                height: 6px;
+                background-color: #0f1a12;
+                border: 1px solid $border-standard;
+                margin-top: 2px;
+
+                .ttl-fill {
+                    height: 100%;
+                    max-width: 100%;
+                }
+            }
+        }
+
+        .rail-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin-top: 6px;
+            padding-top: 8px;
+            border-top: 1px solid $border-standard;
+
+            .rail-nav-header {
+                font-family: $main-font;
+                font-size: 10px;
+                color: $body-dim;
+                letter-spacing: 1.5px;
+                font-weight: bold;
+                margin-bottom: 2px;
+            }
+
+            .nav-btn {
+                font-family: $main-font;
+                font-size: 11px;
+                font-weight: bold;
+                letter-spacing: 1px;
+                text-align: left;
+                padding: 6px 8px;
+                border: 1px solid transparent;
+                background-color: transparent;
+                color: $body-dim;
+
+                &.active {
+                    border-color: $border-standard;
+                    background-color: rgba(0, 255, 127, 0.06);
+                }
+
+                &:hover {
+                    color: $body;
+                }
+            }
+        }
+
+        .rail-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-top: 4px;
+
+            .rail-btn {
+                font-family: $main-font;
+                font-size: 10px;
+                font-weight: bold;
+                letter-spacing: 0.5px;
+                padding: 7px 6px;
+                border: 1px solid $border-standard;
+                background-color: #0c120c;
+                color: $body-dim;
+                text-transform: uppercase;
+            }
+        }
+
+        .rail-hint {
+            margin-top: auto;
+            font-family: $main-font;
+            font-size: 9px;
+            color: rgba(122, 184, 150, 0.5);
+            letter-spacing: 0.5px;
+        }
+    }
+
+    .main-pane {
+        flex-grow: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .module-header {
+        flex-shrink: 0;
+        font-family: $main-font;
+        font-size: 11px;
+        font-weight: bold;
+        letter-spacing: 1.5px;
+        padding: 10px 16px;
+        border-bottom: 1px solid $border-standard;
+    }
+
+    .module-body {
+        flex-grow: 1;
+        min-height: 0;
+        overflow: hidden;
+        background-color: rgba(8, 13, 8, 0.6);
+    }
+
+    .log-scroll {
+        height: 100%;
+        overflow-y: scroll;
+        padding: 10px 16px;
+
+        .line-row {
+            padding: 1px 0;
+        }
 
         .screen-line {
             font-family: $main-font;
-            font-size: $text-sm;
+            font-size: 13px;
             white-space: pre-wrap;
             line-height: 1.35;
         }
@@ -142,10 +340,151 @@ HackerTerminal {
         .help-line { color: rgba(216, 255, 232, 0.75); }
         .error-line { color: $error; }
         .warn-line { color: $warn; }
+    }
 
-        .countdown-line {
-            animation: pulse 1s ease-in-out infinite;
+    .module-scan, .module-govdb, .module-target, .module-help {
+        height: 100%;
+        overflow-y: scroll;
+        padding: 12px 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .module-toolbar {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        padding-bottom: 8px;
+        border-bottom: 1px solid $border-standard;
+
+        .toolbar-label {
+            font-family: $main-font;
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            color: $body;
         }
+
+        .toolbar-meta {
+            font-family: $main-font;
+            font-size: 11px;
+            color: $body-dim;
+        }
+    }
+
+    .empty-state {
+        font-family: $main-font;
+        font-size: 13px;
+        color: $body-dim;
+        padding: 16px 0;
+
+        &.warn { color: $warn; }
+    }
+
+    .data-row {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 12px;
+        padding: 8px 10px;
+        border: 1px solid $border-standard;
+        background-color: rgba(8, 13, 8, 0.8);
+        cursor: pointer;
+
+        .data-id {
+            font-family: $main-font;
+            font-size: 11px;
+            color: $body-dim;
+            flex-shrink: 0;
+            width: 140px;
+        }
+
+        .data-name {
+            font-family: $main-font;
+            font-size: 13px;
+            color: $body;
+            flex-grow: 1;
+        }
+
+        .data-meta {
+            font-family: $main-font;
+            font-size: 12px;
+            color: $body-dim;
+            flex-shrink: 0;
+        }
+
+        &:hover {
+            background-color: rgba(0, 255, 127, 0.04);
+        }
+    }
+
+    .module-action {
+        align-self: flex-start;
+        margin-top: 8px;
+        font-family: $main-font;
+        font-size: 11px;
+        font-weight: bold;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        padding: 8px 16px;
+        border: 1px solid $border-standard;
+        background-color: rgba(0, 255, 127, 0.08);
+        color: $body;
+    }
+
+    .target-banner {
+        font-family: $main-font;
+        font-size: 13px;
+        font-weight: bold;
+        letter-spacing: 0.5px;
+        color: $warn;
+    }
+
+    .puzzle-prompt {
+        font-family: $main-font;
+        font-size: 15px;
+        color: $body;
+        line-height: 1.4;
+        padding: 12px;
+        border: 1px solid $border-standard;
+        background-color: rgba(8, 13, 8, 0.9);
+    }
+
+    .puzzle-hint {
+        font-family: $main-font;
+        font-size: 12px;
+        color: $body-dim;
+    }
+
+    .help-block {
+        display: flex;
+        flex-direction: row;
+        gap: 16px;
+        padding: 6px 0;
+        border-bottom: 1px solid rgba(26, 58, 42, 0.5);
+
+        .help-cmd {
+            font-family: $main-font;
+            font-size: 12px;
+            font-weight: bold;
+            width: 200px;
+            flex-shrink: 0;
+        }
+
+        .help-desc {
+            font-family: $main-font;
+            font-size: 12px;
+            color: $body-dim;
+        }
+    }
+
+    .help-note {
+        margin-top: 12px;
+        font-family: $main-font;
+        font-size: 11px;
+        color: $body-dim;
+        font-style: italic;
     }
 
     .input-row {
@@ -153,16 +492,16 @@ HackerTerminal {
         display: flex;
         flex-direction: row;
         align-items: center;
-        padding: 10px 14px;
-        border-top: 1px solid $border-standard;
-        background-color: #080d08;
-        z-index: 3;
+        padding: 10px 16px;
+        border-top: 2px solid $border-standard;
+        background-color: $bg-rail;
 
         .prompt-label {
             font-family: $main-font;
             font-size: $text-sm;
             margin-right: 8px;
             flex-shrink: 0;
+            font-weight: bold;
         }
 
         .terminal-input {
@@ -174,9 +513,4 @@ HackerTerminal {
             font-size: $text-sm;
         }
     }
-}
-
-@keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.55; }
 }

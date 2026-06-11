@@ -36,4 +36,16 @@ public static class HackerTerminalBrand
 		HackerTerminalTier.Advanced => "tier-advanced",
 		_ => "tier-standard"
 	};
+
+	public static string OpsConsoleTitle( HackerTerminalTier tier ) => tier switch
+	{
+		HackerTerminalTier.Advanced => "VENGEANCE OPS CONSOLE",
+		_ => "CORNERMAN OPS CONSOLE"
+	};
+
+	public static string OpsConsoleMark( HackerTerminalTier tier ) => tier switch
+	{
+		HackerTerminalTier.Advanced => "▲",
+		_ => "◆"
+	};
 }
