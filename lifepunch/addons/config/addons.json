@@ -82,9 +82,9 @@
       "hasCode": true,
       "sboxIdentifier": "lifepunch.hackerjob",
       "dxrpAddonId": "019e448c-4958-77d1-84b7-c7ec3f1bc328",
-      "status": "foundation-only",
+      "status": "code-draft",
       "spec": "docs/HACKER_JOB_SPEC.md",
-      "notes": "DESIGN CAPTURED (DRAFT), not greenlit for build. Full concept + first-pass architecture + permission/anti-abuse notes + open questions: addons/docs/HACKER_JOB_SPEC.md. Touches player money -> Tier-1 (Opus)/high-stakes, server-authoritative + validated; wallet-only (bank untouchable). 'cornerman.exe' is in-game fiction, NOT the real local workstation. In-depth design pass happens once fully connected.",
+      "notes": "Phase 1 GREENLIT: cornerman.exe terminal shell (scan + puzzle stubs, no economy). Editor: cornerman / hack + lp_spawn_hacker_terminal. Phase 2 economy = Opus on Red. Wallet-only rule; bank untouchable. cornerman.exe is in-game fiction. Roadmap: GOVERNMENT_DATABASE_SPEC.md after Hacker Job ships.",
       "contents": []
     },
     {

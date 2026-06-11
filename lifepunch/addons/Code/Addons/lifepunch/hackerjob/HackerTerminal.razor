@@ -1,0 +1,293 @@
+@* ─────────────────────────────────────────────────────────────────────────────
+   PROPRIETARY & CONFIDENTIAL — © 2026 lifepunch.co. All rights reserved.
+
+   "Hacker Job" (s&box ident: lifepunch.hackerjob · addon ident: hackerjob) is the sole-owned
+   intellectual property of lifepunch.co. It is NOT licensed for resale, redistribution,
+   sublicensing, copying, or reuse by ANY person or entity — including DXRP and
+   LifePunch staff, contributors, or community — EXCEPT the owner (lifepunch.co).
+   Presence in this repository or on the DXRP portal grants no rights to anyone else.
+   ───────────────────────────────────────────────────────────────────────────── *@
+@namespace LifePunch.DXRP.Addons.HackerJob
+@using System
+@using System.Collections.Generic
+@using System.Linq
+@using Sandbox
+@using Sandbox.UI
+@inherits PanelComponent
+
+@attribute [StyleSheet]
+
+<root>
+    <div class="click-blocker" onclick=@FocusInput></div>
+
+    <div class="title-bar">
+        <span class="title-text">LIFEPUNCH cornerman.exe v0.1 — cornerman@terminal</span>
+        <button class="close-x" onclick=@OnClickClose>✕ CLOSE</button>
+    </div>
+
+    <div class="screen flex flex-col">
+        @foreach ( var line in _lines )
+        {
+            <div class="p-1">
+                <label class="screen-line @(line.StartsWith("cornerman@") ? "prompt-line" : line.StartsWith("---") ? "divider-line" : line.StartsWith("  ") ? "help-line" : line.StartsWith("ERROR") ? "error-line" : "output-line")">@line</label>
+            </div>
+        }
+    </div>
+
+    <div class="input-row">
+        <span class="prompt-label">cornerman@terminal:~$</span>
+        <TextEntry
+            class="terminal-input"
+            @ref="InputBox"
+            onsubmit=@OnSubmit />
+    </div>
+</root>
+
+@code {
+    public HackerTerminalEntity Terminal { get; set; }
+
+    private TextEntry InputBox { get; set; }
+    private readonly List<string> _lines = new();
+    private const int MaxLines = 48;
+    private int _lastTextLength = 0;
+    private TimeSince _sinceSecondly = 0f;
+
+    private IReadOnlyList<HackerScanService.ScanTarget> _scanResults = Array.Empty<HackerScanService.ScanTarget>();
+    private string _selectedTargetId;
+    private HackerPuzzleSession _puzzle;
+
+    private void TrimLines()
+    {
+        if ( _lines.Count > MaxLines )
+            _lines.RemoveRange( 0, _lines.Count - MaxLines );
+    }
+
+    public static void Open( HackerTerminalEntity terminal )
+    {
+        var panel = HackerTerminalHost.Mount();
+        if ( panel == null )
+            return;
+
+        panel.Terminal = terminal;
+        panel.FocusInput();
+        panel.Boot();
+    }
+
+    private void CloseTerminal() => HackerTerminalHost.Close( this );
+
+    private void Boot()
+    {
+        _lines.Clear();
+        _scanResults = Array.Empty<HackerScanService.ScanTarget>();
+        _selectedTargetId = null;
+        _puzzle = null;
+
+        _lines.Add( "LIFEPUNCH cornerman.exe v0.1" );
+        _lines.Add( "[ OK ] crt framebuffer 640x480" );
+        _lines.Add( "[ OK ] packet sniffer loaded" );
+        _lines.Add( "[ OK ] wallet probe module (read-only)" );
+        _lines.Add( $"starting {HackerJob.InGameProgramName} ..." );
+        _lines.Add( "Type 'help' for ops. Fiction only — not the real Cornerman box." );
+        _lines.Add( "" );
+    }
+
+    private void SecondlyUpdate()
+    {
+        if ( !Terminal.IsValid() )
+        {
+            CloseTerminal();
+            return;
+        }
+
+        var viewerPos = HackerTerminalHost.LocalViewerPosition( Scene );
+        if ( viewerPos.HasValue && viewerPos.Value.Distance( Terminal.WorldPosition ) > 150f )
+        {
+            CloseTerminal();
+            return;
+        }
+
+        if ( _puzzle != null && _puzzle.IsExpired )
+        {
+            _lines.Add( "ERROR: puzzle window expired — trace risk increased." );
+            _puzzle = null;
+            _selectedTargetId = null;
+        }
+    }
+
+    protected override void OnUpdate()
+    {
+        base.OnUpdate();
+
+        if ( _sinceSecondly >= 1f )
+        {
+            _sinceSecondly = 0f;
+            SecondlyUpdate();
+        }
+
+        if ( InputBox.IsValid() && !InputBox.HasFocus )
+            InputBox.Focus();
+
+        if ( Input.Pressed( "Attack2" ) )
+            Input.Clear( "Attack2" );
+
+        if ( Input.Pressed( "Pocket" ) )
+            Input.Clear( "Pocket" );
+        if ( Input.Down( "Pocket" ) )
+            Input.Clear( "Pocket" );
+
+        if ( InputBox.IsValid() )
+        {
+            var currentLength = InputBox.Text?.Length ?? 0;
+            if ( currentLength != _lastTextLength )
+            {
+                if ( !string.IsNullOrEmpty( HackerJob.KeyboardSoundPath ) )
+                    Sound.Play( HackerJob.KeyboardSoundPath );
+                _lastTextLength = currentLength;
+            }
+        }
+    }
+
+    public void FocusInput()
+    {
+        if ( InputBox.IsValid() )
+            InputBox.Focus();
+    }
+
+    private void OnClickClose() => CloseTerminal();
+
+    private void OnSubmit()
+    {
+        if ( !InputBox.IsValid() )
+            return;
+
+        if ( !string.IsNullOrEmpty( HackerJob.KeyboardSoundPath ) )
+            Sound.Play( HackerJob.KeyboardSoundPath );
+
+        var input = ( InputBox.Text ?? "" ).Trim();
+        InputBox.Text = "";
+        InputBox.Focus();
+
+        if ( string.IsNullOrWhiteSpace( input ) )
+            return;
+
+        _lines.Add( $"cornerman@terminal:~$ {input}" );
+
+        if ( _puzzle != null )
+            HandlePuzzleInput( input );
+        else
+            HandleCommand( input.ToLower() );
+
+        _lines.Add( "" );
+        TrimLines();
+    }
+
+    private void HandlePuzzleInput( string input )
+    {
+        if ( _puzzle.TrySubmit( input ) )
+        {
+            _lines.Add( "BYPASS OK — wallet probe succeeded (Phase 1 stub; no funds moved)." );
+            _lines.Add( $"Target {_selectedTargetId} flagged. Economy transfer = Phase 2 (Opus)." );
+            _puzzle = null;
+            _selectedTargetId = null;
+            return;
+        }
+
+        if ( _puzzle.IsExpired )
+        {
+            _lines.Add( "ERROR: too slow — connection dropped." );
+            _puzzle = null;
+            _selectedTargetId = null;
+            return;
+        }
+
+        _lines.Add( $"DENIED — {MathF.Ceiling( _puzzle.SecondsRemaining )}s remaining." );
+    }
+
+    private void HandleCommand( string input )
+    {
+        var parts = input.Split( ' ', StringSplitOptions.RemoveEmptyEntries );
+        var cmd = parts.Length > 0 ? parts[0] : "";
+        var arg = parts.Length > 1 ? string.Join( ' ', parts.Skip( 1 ) ) : "";
+
+        switch ( cmd )
+        {
+            case "help":
+                _lines.Add( "--------------------HELP--------------------" );
+                _lines.Add( "  SCAN     - Probe live wallet signatures." );
+                _lines.Add( "  HACK     - Start wallet bypass on a SteamID." );
+                _lines.Add( "  STATUS   - Session + target state." );
+                _lines.Add( "  CLEAR    - Wipe scrollback." );
+                _lines.Add( "  ABOUT    - LIFEPUNCH attribution." );
+                _lines.Add( "  HELP     - Show this list." );
+                _lines.Add( "--------------------------------------------" );
+                break;
+
+            case "clear":
+                _lines.Clear();
+                break;
+
+            case "about":
+                _lines.Add( "LIFEPUNCH Hacker Job — cornerman.exe is in-world fiction only." );
+                _lines.Add( "Wallet hacks are server-validated in Phase 2. Bank accounts untouchable." );
+                break;
+
+            case "status":
+                _lines.Add( "--------------------STATUS------------------" );
+                _lines.Add( $"  Terminal:    {( Terminal.IsValid() ? "LINKED" : "LOST" )}" );
+                _lines.Add( $"  Scan cache:  {_scanResults.Count} target(s)" );
+                _lines.Add( $"  Active hack: {( _puzzle != null ? _selectedTargetId : "none" )}" );
+                if ( _puzzle != null )
+                    _lines.Add( $"  Puzzle TTL:  {MathF.Ceiling( _puzzle.SecondsRemaining )}s" );
+                _lines.Add( "--------------------------------------------" );
+                break;
+
+            case "scan":
+                if ( !Terminal.IsValid() )
+                {
+                    _lines.Add( "ERROR: terminal link lost." );
+                    break;
+                }
+
+                _lines.Add( "Scanning subnet for wallet endpoints ..." );
+                _scanResults = HackerScanService.RequestScan( Terminal );
+                _lines.Add( $"Found {_scanResults.Count} exploitable wallet(s):" );
+                foreach ( var target in _scanResults )
+                    _lines.Add( $"  {target.SteamId}  {target.DisplayName}  ${target.WalletCash}" );
+                _lines.Add( "Use: hack <steamid>" );
+                break;
+
+            case "hack":
+                if ( string.IsNullOrWhiteSpace( arg ) )
+                {
+                    _lines.Add( "ERROR: hack requires a SteamID. Run scan first." );
+                    break;
+                }
+
+                if ( _scanResults.Count == 0 )
+                {
+                    _lines.Add( "ERROR: run scan before hack." );
+                    break;
+                }
+
+                var match = _scanResults.FirstOrDefault( t =>
+                    t.SteamId.Equals( arg, StringComparison.OrdinalIgnoreCase ) );
+
+                if ( match is null )
+                {
+                    _lines.Add( "ERROR: target not in scan cache." );
+                    break;
+                }
+
+                _selectedTargetId = match.SteamId;
+                _puzzle = HackerPuzzleSession.CreateRandom();
+                _lines.Add( $"INFILTRATING {match.DisplayName} — wallet ${match.WalletCash}" );
+                _lines.Add( _puzzle.Prompt );
+                _lines.Add( $"TIME LIMIT: {MathF.Ceiling( _puzzle.TimeLimitSeconds )}s — type answer at prompt." );
+                break;
+
+            default:
+                _lines.Add( $"ERROR: unknown command '{cmd}'. Type help." );
+                break;
+        }
+    }
+}

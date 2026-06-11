@@ -20,12 +20,21 @@ public static class HackerJob
 	public const string Ident = "hackerjob";
 	public const string EntitySlug = "hacker-terminal";
 	public const string DisplayName = "Hacker Terminal";
+	public const string Description = "Retro CRT terminal for the Hacker job. Boot cornerman.exe, scan wallets, solve coding puzzles.";
 	public const string InGameProgramName = "cornerman.exe";
+	public const string DevGiveCommand = "cornerman";
+	public const string DevSpawnCommand = "lp_spawn_hacker_terminal";
 
 	public const int ContentType = 0;
 	public const string Grouping = "Entities";
 
-	// Prefab/model paths TBD when assets ship — placeholders for manifest alignment.
 	public const string WorldPrefabPath = "addons/lifepunch/hackerjob/entities/hacker-terminal/hacker-terminal.prefab";
 	public const string WorldModelPath = "addons/lifepunch/hackerjob/models/lifepunch/hackerjob/hacker-terminal/hacker-terminal.vmdl";
+	public const string KeyboardSoundPath = "addons/lifepunch/hackerjob/sounds/hacker-terminal/keyboard.sound";
+
+	/// <summary>Seconds allowed to complete an active puzzle before auto-fail.</summary>
+	public const float DefaultPuzzleTimeLimitSeconds = 45f;
+
+	/// <summary>Hard rule: only on-hand wallet cash — bank is never touched.</summary>
+	public const bool BankUntouchable = true;
 }

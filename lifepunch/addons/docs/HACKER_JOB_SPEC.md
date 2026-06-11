@@ -1,10 +1,9 @@
 # LifePunch "Hacker Job" — Design Spec (DRAFT)
 
-> **Status: DRAFT / concept captured — not yet greenlit for build.** This records the owner's
-> vision so it lives in the source of truth instead of only in chat. The in-depth design pass
-> (final feature set + architecture sign-off) happens later, "once we're all fully connected."
-> Manifest entry already exists: `addons/config/addons.json` → ident **`hackerjob`**
-> (kind `simple-entity`, `dxrpAddonId 019e448c-4958-77d1-84b7-c7ec3f1bc328`, `foundation-only`).
+> **Status: Phase 1 GREENLIT (terminal shell + puzzle stubs).** Economy / wallet transfer remains
+> **Tier-1 Opus** — not implemented until Phase 2 sign-off. Manifest: `addons.json` → **`hackerjob`**
+> (`dxrpAddonId 019e448c-4958-77d1-84b7-c7ec3f1bc328`). Build checklist: `hackerjob/docs/HACKER_TERMINAL_BUILD.md`.
+> **Roadmap after Hacker Job:** Government Database (`GOVERNMENT_DATABASE_SPEC.md`).
 >
 > Per `dxrp-addon-foundation`: propose feature set + architecture + permission mapping for
 > **owner sign-off before building**. This addon **touches the economy** (player money), so it is
@@ -80,9 +79,18 @@ systems as designed — see `REUSABLE_ADDON_FRAMEWORK.md`, `lifepunch-quality-ba
 - Placement: terminals map-placed by server owners, or spawnable by the Hacker job? How many?
 - DXRP job/economy API surface: confirm the exact money + job hooks against `dxura/dxrp @develop`.
 
-## 6. Status / next step
+## 6. Phased rollout
 
-Concept captured. **No build until owner greenlights** the feature set + architecture here. When we
-resume: lock §2–§3, answer §5, then scaffold the entity + Razor screen and wire the server-side
-hack/transfer behind validation. Cornerman's role on this is **Tier-3 support** (drafting boilerplate,
-summarizing the DXRP economy/job reference) — not driving the high-stakes economy logic.
+| Phase | Owner | Deliverable |
+|-------|-------|-------------|
+| **1 — Terminal shell** | Green (Cornerman) | `cornerman.exe` CLI, scan stub, 3 puzzle types, dev spawn — **no money moved** |
+| **2 — Economy** | Red (Opus) | Job gate, live scan, server-validated puzzles, wallet debit/credit, cooldowns, audit |
+| **3 — Assets** | Red | CRT model, prefab, sounds, optional WorldPanel on monitor |
+| **4 — Polish** | Owner + Opus | Tabbed UI (optional), counterplay, balance tuning |
+| **Later** | TBD | **Government Database** — see `GOVERNMENT_DATABASE_SPEC.md` |
+
+Cornerman drafts Phase 1 UI + puzzle framework. **Opus owns Phase 2 economy** — never trust client puzzle success or amounts.
+
+## 7. Status / next step
+
+Phase 1 code on Green. Red: quick gun smoke test first (owner priority), then pull hacker handoff → Opus review → CRT prefab → Phase 2 economy.
