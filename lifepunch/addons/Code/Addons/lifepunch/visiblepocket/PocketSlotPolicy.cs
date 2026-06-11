@@ -8,6 +8,8 @@
 // Presence in this repository or on the DXRP portal grants no rights to anyone else.
 // ─────────────────────────────────────────────────────────────────────────────
 
+using System;
+
 namespace LifePunch.DXRP.Addons.VisiblePocket;
 
 /// <summary>

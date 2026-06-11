@@ -2,13 +2,16 @@
   "role": "cornerman-tier3",
   "issuedBy": "vengeance",
   "issuedAt": "2026-06-11",
-  "title": "Green workflow — Tier-3 prep lane (not dev box)",
+  "title": "Green workflow — Inventory project (Visible Pocket P1)",
   "do": [
-    "Stay on distill model: qwen/qwen3.6-35b-a3b via LM Studio :1234 (32k context, Flash ON, GPU max)",
-    "Serve Tier-3 prep only: summarize specs, distill hub/session logs, first-draft briefs for Red/Cursor",
-    "Keep voice relay available (PTT → lifepunchnet STT → outbox → Vengeance watch)",
-    "Monorepo at C:\\Projects\\lifepunch is read reference for RAG — pull only, never force-push",
-    "Weapon mass-production queue: deagle is next distill target after AK verify on Red"
+    "Primary lane: INVENTORY PROJECT — read CORNERMAN_INVENTORY_PROJECT_TASK.md first",
+    "Default LM Studio model = distill: qwen/qwen3.6-35b-a3b (:1234, 32k context, Flash ON, GPU max)",
+    "Switch to coder ONLY when brief task 6 (HUD scss draft) or explicit WarmCoder: qwen2.5-coder-32b-instruct",
+    "Read CORNERMAN_MODEL_ROUTING.md on every inbox session — distill for docs, coder for assigned Razor/scss only",
+    "Ship inventory = lifepunch.visiblepocket on DXRP PocketSystem — llad MIS is study/UI notes only (LLAD_MODULAR_INVENTORY_STUDY.md)",
+    "Deliverables: outbox/VISIBLE_POCKET_* summaries + optional llad UI notes — no C# commits from Green",
+    "Sync clone via Cornerman (Sync from Red) before reading inbox; monorepo pull only, never force-push",
+    "Backlog (after inventory batch): deagle distill, coke intake — see CORNERMAN_WORK_QUEUE.md"
   ],
   "doNot": [
     "Do NOT run s&box editor, ModelDoc, or primary addon C# integration — that is VENGEANCE (Red)",
@@ -20,10 +23,11 @@
     "master": "lifepunch/addons/docs/briefs/CORNERMAN_WORK_QUEUE.md",
     "onBox": "C:\\lifepunch\\cornerman\\inbox\\CORNERMAN_WORK_QUEUE.md",
     "tasks": [
-      { "order": 1, "id": "coke-intake", "brief": "CORNERMAN_COKE_DRUG_INTAKE_TASK.md" },
-      { "order": 2, "id": "deagle-distill", "brief": "CORNERMAN_DEAGLE_DISTILL_TASK.md" },
-      { "order": 3, "id": "bitminer-phase2", "brief": "CORNERMAN_BITMINER_PHASE2_MENU_TASK.md" },
-      { "order": 4, "id": "deagle-rag", "brief": "DEAGLE_WEAPON_BRIEF.md" }
+      { "order": 1, "id": "inventory-project", "brief": "CORNERMAN_INVENTORY_PROJECT_TASK.md", "model": "distill" },
+      { "order": 2, "id": "inventory-llad-ui", "brief": "LLAD_MODULAR_INVENTORY_STUDY.md", "model": "distill", "output": "outbox/VISIBLE_POCKET_UI_NOTES.txt" },
+      { "order": 3, "id": "inventory-hud-draft", "brief": "CORNERMAN_INVENTORY_PROJECT_TASK.md task 6", "model": "coder", "when": "Red assigns only" },
+      { "order": 10, "id": "deagle-distill", "brief": "CORNERMAN_DEAGLE_DISTILL_TASK.md", "model": "distill", "status": "backlog" },
+      { "order": 11, "id": "coke-intake", "brief": "CORNERMAN_COKE_DRUG_INTAKE_TASK.md", "model": "distill", "status": "backlog" }
     ],
     "weaponQueue": "lifepunch/addons/config/weapon-production.json",
     "reference": "lifepunch/addons/docs/WEAPON_MASS_PRODUCTION.md"
@@ -31,7 +35,8 @@
   "redCommands": {
     "checkpoint": "Get-CvlUniversalCheckpoint.ps1",
     "dispatch": "Send-CornermanWorkflow.ps1",
-    "warmDistill": "Send-CornermanWorkflow.ps1 -Action FullPerformance",
-    "warmCoder": "ssh cornerman powershell -File C:\\lifepunch\\cornerman\\Start-CornermanLmStudio.ps1 -WarmModel coder"
+    "warmDistill": "Send-CornermanWorkflow.ps1 -Action WarmDistill",
+    "warmCoder": "Send-CornermanWorkflow.ps1 -Action WarmCoder",
+    "fullPerformance": "Send-CornermanWorkflow.ps1 -Action FullPerformance"
   }
 }

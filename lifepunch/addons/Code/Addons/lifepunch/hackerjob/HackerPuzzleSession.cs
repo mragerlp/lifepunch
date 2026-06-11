@@ -9,6 +9,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 using System;
+using Sandbox;
 
 namespace LifePunch.DXRP.Addons.HackerJob;
 

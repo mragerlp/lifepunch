@@ -75,10 +75,16 @@ Write-Host "  DXRP:  $dxrpGame" -ForegroundColor DarkGray
 
 foreach ($ident in Get-AddonIdents) {
     Write-Host "Addon: $ident" -ForegroundColor Cyan
-    Invoke-Mirror `
-        -From (Join-Path $repoAssetsRoot $ident) `
-        -To   (Join-Path $dxrpAssetsRoot $ident) `
-        -Label "Assets/$ident"
+    $assetsSrc = Join-Path $repoAssetsRoot $ident
+    if (Test-Path -LiteralPath $assetsSrc) {
+        Invoke-Mirror `
+            -From $assetsSrc `
+            -To   (Join-Path $dxrpAssetsRoot $ident) `
+            -Label "Assets/$ident"
+    }
+    else {
+        Write-Host "  Assets/$ident - skip (code-only addon)" -ForegroundColor DarkGray
+    }
     $codeSrc = Join-Path $repoCodeRoot $ident
     if (Test-Path -LiteralPath $codeSrc) {
         Invoke-Mirror `

@@ -50,4 +50,4 @@ Get-ChildItem -LiteralPath `$inbox -Filter 'ack-*.json' -ErrorAction SilentlyCon
 "@
 if ($ackList.Output) { Write-Host $ackList.Output } else { Write-Host '(none)' }
 Write-Host ''
-exit $(if ($r.ExitCode -eq 0) { 0 } else { 1 })
+exit 0

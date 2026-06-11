@@ -14,6 +14,8 @@
 @using System
 @using System.Collections.Generic
 @using System.Linq
+@using Sandbox
+@using Sandbox.UI
 
 <root class="staffmenu ulx-v2">
 	<div class="window">
@@ -512,12 +514,6 @@
 					}
 				</div>
 
-				@{
-					var visible = StaffMenuActions.All
-						.Where( a => a.Category == _activeTab && StaffMenuHost.CanView( a.PermissionId ) )
-						.ToList();
-				}
-
 				@if ( _pendingAction is { } pending )
 				{
 					<div class="arg-form">
@@ -568,7 +564,7 @@
 				}
 
 				<div class="action-grid">
-					@foreach ( var action in visible )
+					@foreach ( var action in GetVisibleTabActions() )
 					{
 						var enabled = IsEnabled( action, selected, hasTarget );
 						<button class="action-btn @( enabled ? "" : "disabled" )"
@@ -581,13 +577,13 @@
 
 					@* Invisible spacers pad the final row to a multiple of 4 so real boxes keep their
 					   1/4 width (uniform) instead of flex-growing to fill the leftover space. *@
-					@for ( var i = 0; i < (4 - visible.Count % 4) % 4; i++ )
+					@for ( var i = 0; i < (4 - GetVisibleTabActions().Count % 4) % 4; i++ )
 					{
 						<div class="action-spacer"></div>
 					}
 				</div>
 
-				@if ( visible.Count == 0 )
+				@if ( GetVisibleTabActions().Count == 0 )
 				{
 					<div class="empty">No @_activeTab.ToLower() actions available to your rank.</div>
 				}
@@ -901,6 +897,11 @@
 			StaffMenuHost.RefreshSettings();
 		}
 	}
+
+	private List<StaffAction> GetVisibleTabActions() =>
+		StaffMenuActions.All
+			.Where( a => a.Category == _activeTab && StaffMenuHost.CanView( a.PermissionId ) )
+			.ToList();
 
 	private static bool IsEnabled( StaffAction action, StaffMenuPlayer selected, bool hasTarget )
 	{

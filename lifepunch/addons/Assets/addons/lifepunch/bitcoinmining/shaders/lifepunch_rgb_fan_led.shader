@@ -1,17 +1,21 @@
-
-// LifePunch ΓÇö RGB fan LED ring shader (bitcoinmining / gpu-rack)
-// Extends standard complex PBR (GatherMaterial) with time-based HSV cycling on self-illum mask.
-// Edit in VS Code with Slang extension (workspace flavor: vfx). Compiles on save in s&box editor.
+// LifePunch — RGB fan LED ring shader (bitcoinmining / gpu-rack)
+// Complex PBR via Material.CommonInputs + HSV cycle on self-illum mask.
+// Editor: open this file → Save (compiles .shader_c) → then Save gpu-rack-gpu.vmat.
 
 HEADER
 {
-	CompileTargets = ( IS_SM_50 && ( PC || VULKAN ) );
-	Description = "LifePunch RGB fan LED (complex PBR + animated emission)";
+	Description = "LifePunch RGB fan LED (PBR + animated emission)";
 }
 
 FEATURES
 {
 	#include "common/features.hlsl"
+}
+
+MODES
+{
+	Forward();
+	Depth();
 }
 
 COMMON
@@ -33,7 +37,7 @@ VS
 {
 	#include "common/vertex.hlsl"
 
-	PixelInput MainVs( INSTANCED_SHADER_PARAMS( VertexInput i ) )
+	PixelInput MainVs( VertexInput i )
 	{
 		PixelInput o = ProcessVertex( i );
 		return FinalizeVertex( o );
@@ -43,21 +47,16 @@ VS
 PS
 {
 	#include "common/pixel.hlsl"
+	#include "common/utils/Material.CommonInputs.hlsl"
+
+	CreateInputTexture2D( TextureSelfIllumMask, Linear, 8, "", "_selfillummask", "Material,10/92", Default3( 0.0, 0.0, 0.0 ) );
+	Texture2D g_tSelfIllumMask < Channel( RGB, Box( TextureSelfIllumMask ), Linear ); OutputFormat( BC7 ); SrgbRead( false ); >;
 
 	float g_flRgbCycleSpeed < Default( 0.20 ); Range( 0, 2 ); UiGroup( "LifePunch RGB,10/" ); >;
-	FloatAttribute( g_flRgbCycleSpeed, g_flRgbCycleSpeed );
-
 	float g_flRgbIntensity < Default( 3.0 ); Range( 0, 12 ); UiGroup( "LifePunch RGB,10/" ); >;
-	FloatAttribute( g_flRgbIntensity, g_flRgbIntensity );
-
 	float g_flRgbPhaseSpread < Default( 0.40 ); Range( 0, 3 ); UiGroup( "LifePunch RGB,10/" ); >;
-	FloatAttribute( g_flRgbPhaseSpread, g_flRgbPhaseSpread );
-
 	float g_flLedActive < Default( 0.0 ); Range( 0, 1 ); UiGroup( "LifePunch RGB,10/" ); >;
-	FloatAttribute( g_flLedActive, g_flLedActive );
-
 	float g_flIdleGlow < Default( 0.06 ); Range( 0, 1 ); UiGroup( "LifePunch RGB,10/" ); >;
-	FloatAttribute( g_flIdleGlow, g_flIdleGlow );
 
 	float3 HsvToRgb( float h, float s, float v )
 	{
@@ -66,20 +65,22 @@ PS
 		return v * lerp( K.xxx, saturate( p - K.xxx ), s );
 	}
 
-	PixelOutput MainPs( PixelInput i )
+	float4 MainPs( PixelInput i ) : SV_Target0
 	{
-		Material m = GatherMaterial( i );
+		Material m = Material::From( i );
 
-		float emissionMask = max( max( m.Emission.r, m.Emission.g ), m.Emission.b );
+		float3 illumMask = g_tSelfIllumMask.Sample( TextureFiltering, i.vTextureCoords.xy ).rgb;
+		float emissionMask = max( max( illumMask.r, illumMask.g ), illumMask.b );
+
 		if ( emissionMask > 0.001 )
 		{
-			float phase = dot( m.WorldPosition, float3( 0.173, 0.317, 0.587 ) ) * g_flRgbPhaseSpread;
+			float phase = dot( i.vPositionWithOffsetWs.xyz, float3( 0.173, 0.317, 0.587 ) ) * g_flRgbPhaseSpread;
 			float hue = frac( g_flTime * g_flRgbCycleSpeed + phase );
 			float3 rgb = HsvToRgb( hue, 1.0, 1.0 );
 			float blend = lerp( g_flIdleGlow, 1.0, g_flLedActive );
-			m.Emission = rgb * emissionMask * g_flRgbIntensity * blend;
+			m.Emission = rgb * emissionMask * g_flRgbIntensity * blend * g_flSelfIllumScale;
 		}
 
-		return FinalizePixelMaterial( i, m );
+		return ShadingModelStandard::Shade( m );
 	}
 }

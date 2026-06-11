@@ -663,8 +663,24 @@
         return count;
     }
 
-    protected override int BuildHash() =>
-        Miner.IsValid()
-            ? HashCode.Combine( Miner.BitcoinAmount, Miner.IsMining, Miner.CpuUpgradeLevel, Miner.CoreUpgradeLevel, _lines.Count, _showUpgradeMenu, BitminerTerminalHost.GetLocalWalletCash(), (int)( _smoothProgress * 10f ), BitminerRigRegistry.SelectedIndex, BitminerRigRegistry.RegisteredRigs.Count )
-            : HashCode.Combine( _lines.Count, _showUpgradeMenu, BitminerTerminalHost.GetLocalWalletCash(), BitminerRigRegistry.RegisteredRigs.Count );
+    protected override int BuildHash()
+    {
+        if ( !Miner.IsValid() )
+        {
+            return HashCode.Combine( _lines.Count, _showUpgradeMenu, BitminerTerminalHost.GetLocalWalletCash(), BitminerRigRegistry.RegisteredRigs.Count );
+        }
+
+        var hash = new HashCode();
+        hash.Add( Miner.BitcoinAmount );
+        hash.Add( Miner.IsMining );
+        hash.Add( Miner.CpuUpgradeLevel );
+        hash.Add( Miner.CoreUpgradeLevel );
+        hash.Add( _lines.Count );
+        hash.Add( _showUpgradeMenu );
+        hash.Add( BitminerTerminalHost.GetLocalWalletCash() );
+        hash.Add( (int)( _smoothProgress * 10f ) );
+        hash.Add( BitminerRigRegistry.SelectedIndex );
+        hash.Add( BitminerRigRegistry.RegisteredRigs.Count );
+        return hash.ToHashCode();
+    }
 }

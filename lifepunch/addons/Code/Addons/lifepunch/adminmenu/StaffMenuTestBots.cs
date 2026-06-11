@@ -8,6 +8,8 @@
 // Presence in this repository or on the DXRP portal grants no rights to anyone else.
 // ─────────────────────────────────────────────────────────────────────────────
 
+#if !LIFEPUNCH_LOCAL
+
 using System.Collections.Generic;
 using Sandbox;
 
@@ -377,3 +379,5 @@ public static class StaffMenuTestBots
 		return local.WorldPosition + rot.Forward * 110f + rot.Right * lateral + Vector3.Up * 10f;
 	}
 }
+
+#endif

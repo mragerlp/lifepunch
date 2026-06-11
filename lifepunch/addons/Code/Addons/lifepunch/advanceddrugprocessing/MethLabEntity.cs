@@ -143,7 +143,7 @@ public sealed class MethLabEntity : Component, Component.IPressable
 
 		HandlePressHost( player.GameObject );
 #else
-		HandlePressHost( Player.Local?.GameObject );
+		HandlePressHost( null );
 #endif
 	}
 

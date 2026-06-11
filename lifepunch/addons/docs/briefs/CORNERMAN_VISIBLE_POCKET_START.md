@@ -1,6 +1,9 @@
 # Cornerman — Visible Pocket start brief (no Cursor required)
 
+**Superseded by:** `CORNERMAN_INVENTORY_PROJECT_TASK.md` — read that first (full P0 queue + deliverables).
+
 **You are:** Tier-3 prep on Green · **VENGEANCE owns:** C#, DXRP editor, git push  
+**Model:** **distill** (default) — `CORNERMAN_MODEL_ROUTING.md`. **coder** only for assigned HUD scss (task 6).  
 **Package:** `lifepunch.visiblepocket` — **not** llad MIS (study only)
 
 ---

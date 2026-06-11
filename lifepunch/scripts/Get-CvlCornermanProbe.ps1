@@ -27,7 +27,7 @@ if (Test-Path -LiteralPath $sttPath) {
 $lmStudioOk = $false
 $lmModels = ''
 try {
-    $r = Invoke-WebRequest -Uri 'http://192.168.1.227:1234/v1/models' -TimeoutSec 4 -UseBasicParsing
+    $r = Invoke-WebRequest -Uri 'http://127.0.0.1:1234/v1/models' -TimeoutSec 4 -UseBasicParsing
     if ($r.StatusCode -eq 200) {
         $lmStudioOk = $true
         $parsed = $r.Content | ConvertFrom-Json

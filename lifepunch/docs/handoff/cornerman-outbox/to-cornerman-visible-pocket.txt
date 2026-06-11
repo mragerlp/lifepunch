@@ -35,7 +35,9 @@ VENGEANCE TEST
   lp_pocket_policy | lp_pocket_apply_dev (host dev bridge)
   visiblepocket/docs/VISIBLE_POCKET_PLAYTEST.md
 
-CORNERMAN NEXT
-  Read spec § DXRP integration — optional 10-line outbox distill
-  Optional llad UI pattern notes → VISIBLE_POCKET_UI_NOTES.txt
-  Fold any new blockers back into spec; ping owner one line when done
+CORNERMAN NEXT (P0 — same sprint as Red)
+  Start: inbox/CORNERMAN_INVENTORY_PROJECT_TASK.md
+  Model: distill (WarmDistill) — coder only for task 6 HUD scss when Red assigns
+  Deliverables: outbox/VISIBLE_POCKET_DXRP_SUMMARY.txt, SLOTS_ONEPAGER.txt, UX_OUTLINE.txt
+  Optional llad UI notes → VISIBLE_POCKET_UI_NOTES.txt (study only — no llad ship)
+  Fold blockers into outbox; ping: OK cornerman inventory @<sha>

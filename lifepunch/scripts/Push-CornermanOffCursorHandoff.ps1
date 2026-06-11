@@ -5,7 +5,9 @@ $RepoRoot = (Resolve-Path (Join-Path $Here '..\..')).Path
 . (Join-Path $Here 'Cornerman-Workflow.ps1')
 
 $files = @(
+    @{ rel = 'lifepunch\addons\docs\briefs\CORNERMAN_INVENTORY_PROJECT_TASK.md'; inbox = 'CORNERMAN_INVENTORY_PROJECT_TASK.md' },
     @{ rel = 'lifepunch\docs\CORNERMAN_OFF_CURSOR_HANDOFF.md'; inbox = 'CORNERMAN_OFF_CURSOR_HANDOFF.md' },
+    @{ rel = 'lifepunch\docs\CORNERMAN_MODEL_ROUTING.md'; inbox = 'CORNERMAN_MODEL_ROUTING.md' },
     @{ rel = 'lifepunch\addons\docs\briefs\CORNERMAN_WORK_QUEUE.md'; inbox = 'CORNERMAN_WORK_QUEUE.md' },
     @{ rel = 'lifepunch\addons\docs\BITMINER_FINISH_RUNBOOK.md'; inbox = 'BITMINER_FINISH_RUNBOOK.md' },
     @{ rel = 'lifepunch\addons\docs\reference\BITMINER_PORTAL_LISTING.md'; inbox = 'BITMINER_PORTAL_LISTING.md' }
@@ -23,7 +25,7 @@ $directive = @{
     priority = 'info'
     lane     = 'cornerman'
     title    = 'Green off-Cursor — Red owns git; read inbox only'
-    summary  = 'No Cursor on Green. Red ships on VENGEANCE. Optional: RAG mirror + PTT. git reset --hard origin/main on clone.'
+    summary  = 'P0 = Inventory project (Visible Pocket). distill default. No Cursor on Green. git reset --hard origin/main on clone.'
     primaryDoc = 'CORNERMAN_OFF_CURSOR_HANDOFF.md'
     redHead  = 'afdabd4+'
 } | ConvertTo-Json -Depth 4

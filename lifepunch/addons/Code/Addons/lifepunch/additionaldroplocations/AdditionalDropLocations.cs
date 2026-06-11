@@ -8,6 +8,7 @@
 // Presence in this repository or on the DXRP portal grants no rights to anyone else.
 // ─────────────────────────────────────────────────────────────────────────────
 
+using System.Collections.Generic;
 using Sandbox;
 
 namespace LifePunch.DXRP.Addons.AdditionalDropLocations;

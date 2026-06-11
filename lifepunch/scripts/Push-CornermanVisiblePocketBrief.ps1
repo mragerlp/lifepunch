@@ -1,4 +1,4 @@
-# Push Visible Pocket start brief + discovery to Cornerman inbox.
+# Push Visible Pocket brief to Cornerman inbox. Prefer Push-CornermanInventoryProject.ps1 (full P0 package).
 $ErrorActionPreference = 'Stop'
 $Here = $PSScriptRoot
 $RepoRoot = (Resolve-Path (Join-Path $Here '..\..')).Path

@@ -267,38 +267,42 @@ public sealed partial class BitminerEntity : BaseEntity, Component.IPressable, I
 		UpdateScreenText();
 	}
 
+	// Unicode escapes keep source ASCII-safe (sync/tools must not mojibake char literals).
+	private const char ScreenBarFill = '\u2588';
+	private static readonly string ScreenRule = new( '\u2500', 16 );
+
 	private void UpdateScreenText()
 	{
 		if ( !TextRender.IsValid() )
 			return;
 
 		var filled = (int)( MiningProgress * 8 );
-		var bar = new string( 'Γûê', filled );
+		var bar = new string( ScreenBarFill, filled );
 		var pct = (int)( MiningProgress * 100 );
 		var rate = ClockSpeed * BaseSpeed * CoreCount * RackYield;
-		var status = IsMining ? "ΓùÅ MINING" : "Γùï IDLE";
+		var status = IsMining ? "\u25CF MINING" : "\u25CB IDLE";
 
 		TextRender.Text = IsMining
 			? $"{status}\n" +
-			  $"ΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇò\n" +
-			  $"Γé┐ {BitcoinAmount:0.00000000} BTC\n" +
+			  $"{ScreenRule}\n" +
+			  $"\u20BF {BitcoinAmount:0.00000000} BTC\n" +
 			  $"\n" +
 			  $"MINING RATE  {rate:0.00000} BTC/min\n" +
 			  $"HASH RATE    {ClockSpeed:0.000} GHz (Lv {CpuUpgradeLevel}/{CpuUpgradeCosts.Length})\n" +
 			  $"CORES        {CoreCount} (Lv {CoreUpgradeLevel}/{CoreUpgradeCosts.Length})\n" +
 			  $"VALUE        ${BitcoinAmount * BitcoinValue:N0}\n" +
-			  $"ΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇò\n" +
+			  $"{ScreenRule}\n" +
 			  $"{bar}\n" +
 			  $"{pct}%"
 			: $"{status}\n" +
-			  $"ΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇò\n" +
-			  $"Γé┐ {BitcoinAmount:0.00000000} BTC\n" +
+			  $"{ScreenRule}\n" +
+			  $"\u20BF {BitcoinAmount:0.00000000} BTC\n" +
 			  $"\n" +
 			  $"MINING RATE  0.00000 BTC/min\n" +
 			  $"HASH RATE    {ClockSpeed:0.000} GHz (Lv {CpuUpgradeLevel}/{CpuUpgradeCosts.Length})\n" +
 			  $"CORES        {CoreCount} (Lv {CoreUpgradeLevel}/{CoreUpgradeCosts.Length})\n" +
 			  $"VALUE        ${BitcoinAmount * BitcoinValue:N0}\n" +
-			  $"ΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇò\n" +
+			  $"{ScreenRule}\n" +
 			  $"0%";
 	}
 
@@ -329,7 +333,7 @@ public sealed partial class BitminerEntity : BaseEntity, Component.IPressable, I
 
 		var ledActive = 0f;
 		if ( IsMining && !GameObject.Tags.Has( PocketTag ) && FanMaxSpeed > 0f )
-			ledActive = MathF.Clamp( _fanSpeed / FanMaxSpeed, 0f, 1f );
+			ledActive = Math.Clamp( _fanSpeed / FanMaxSpeed, 0f, 1f );
 
 		sceneObject.Attributes.Set( "g_flLedActive", ledActive );
 	}
