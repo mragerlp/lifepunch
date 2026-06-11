@@ -66,9 +66,21 @@ def run_ptt_loop(
 
         ptt.wait_down(talk_vk)
         ui.ptt_recording(talk_key)
-        audio = ptt_capture.record_ptt(verbose=False, vk=talk_vk, armed=True)
+
+        def _on_release() -> None:
+            ui.ptt_released(talk_key)
+
+        audio = ptt_capture.record_ptt(
+            verbose=False,
+            vk=talk_vk,
+            armed=True,
+            on_release=_on_release,
+        )
         if audio is None:
+            ui.dim("  (no audio — tap F7 to arm again)")
             continue
+
+        ui.ptt_transcribing()
 
         try:
             text = transcribe(audio, lemonade=lemonade, remote_url=remote_url)
@@ -189,7 +201,7 @@ def main() -> int:
         relay, ok = _ensure_ptt_before_main(relay)
         if ok:
             changed.append("relay.py (ptt before main)")
-    elif "wait_tap" not in relay:
+    elif "wait_tap" not in relay or "on_release" not in relay:
         relay, ok = _replace_function(relay, "run_ptt_loop", RUN_PTT_LOOP)
         if ok:
             changed.append("relay.py (arm+ptt loop)")

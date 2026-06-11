@@ -9,11 +9,15 @@ if (-not (Test-Path -LiteralPath $relay)) {
     throw "Missing $relay - run Apply-CornermanPushToTalk.ps1 from VENGEANCE"
 }
 
-$existing = Get-CimInstance Win32_Process -Filter "Name = 'python.exe'" -ErrorAction SilentlyContinue |
-    Where-Object { $_.CommandLine -match 'relay\.py' -and $_.CommandLine -match '--ptt' }
-if ($existing) {
-    Write-Host 'Talk to Vengeance PTT relay already running (python relay.py --ptt).' -ForegroundColor Yellow
-    exit 0
+# One relay only — duplicate python relay.py processes steal F7/F8 and hang PTT.
+$relays = @(Get-CimInstance Win32_Process -Filter "Name = 'python.exe'" -ErrorAction SilentlyContinue |
+    Where-Object { $_.CommandLine -match 'relay\.py' })
+foreach ($p in $relays) {
+    Stop-Process -Id $p.ProcessId -Force -ErrorAction SilentlyContinue
+}
+if ($relays.Count -gt 0) {
+    Write-Host "Stopped $($relays.Count) stale relay process(es)." -ForegroundColor Yellow
+    Start-Sleep -Seconds 1
 }
 
 $ps = Join-Path $env:WINDIR 'System32\WindowsPowerShell\v1.0\powershell.exe'

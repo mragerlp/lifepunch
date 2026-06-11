@@ -1,0 +1,67 @@
+========================================================================
+SYNC ROUND — Voice PTT fixes (2026-06-10)
+Red commits first → Green + Blue pull → confirm → reply BLOCKED or OK
+========================================================================
+
+COMMIT SCOPE (GitHub main — VENGEANCE integrates):
+  fix(voice): PTT release timeout, single relay, hub sync stream, docs
+
+  Code: cornerman-relay (ptt, ptt_capture, relay_ui, patch_relay_ptt),
+        Start-CornermanVoiceRelay.ps1, Cvl-Hub.ps1,
+        sync-cornerman-sessions-to-lifepunchnet.ps1, pull-cornerman-voice.ps1
+
+  Docs: VOICE_PTT_TROUBLESHOOTING.md, CORNERMAN_PUSH_TO_TALK.md (keys),
+        VOICE_TEST_CHECKLIST.md (RELEASED/TRANSCRIBING criteria)
+
+WAIT FOR: Mr. Rager or VENGEANCE agent says "pushed <sha>" before you pull.
+
+------------------------------------------------------------------------
+PASTE — CORNERMAN (Green / Block D)
+------------------------------------------------------------------------
+
+SYNC ROUND voice-ptt-20260610 — you are G (Green). Pull after Red push.
+
+1) git -C C:\Projects\lifepunch fetch && git -C C:\Projects\lifepunch pull --rebase origin main
+2) Read: lifepunch/docs/VOICE_PTT_TROUBLESHOOTING.md
+3) Do NOT commit on Green unless you authored a change. Runtime deploy is from Red:
+   VENGEANCE runs Apply-CornermanPushToTalk.ps1 after push (or confirm cornerman-rag
+   already has is_released + RELEASED UI from live deploy).
+4) Verify on-box:
+   - One Talk to Vengeance window only (close duplicates).
+   - python -c "import ptt; print(hasattr(ptt,'is_released'), ptt.vk_code('f7'))"
+   - . lifepunch\scripts\Test-LifepunchnetWhisperPreflight.ps1; Test-LifepunchnetWhisperPreflight
+5) Reply one line: OK green voice-ptt-20260610 @<sha> | or BLOCKED green: <reason>
+
+You do not hold hub tokens. You do not push to GitHub.
+
+------------------------------------------------------------------------
+PASTE — LIFEPUNCHNET (Blue / Block C)
+------------------------------------------------------------------------
+
+SYNC ROUND voice-ptt-20260610 — you are B (Blue). Pull after Red push.
+
+1) git -C C:\Projects\lifepunch fetch && git -C C:\Projects\lifepunch pull --rebase origin main
+   (or lane clone path per LIFEPUNCHNET_INSTRUCTIONS.txt if different)
+2) Read: lifepunch/docs/VOICE_PTT_TROUBLESHOOTING.md (Blue legs §)
+3) Confirm services live on-box:
+   - Whisper :9000 running
+   - LifePunch-ServerHost-StatusServer task (not exit -1073741510)
+   - LifePunch-SessionHub task :9102
+   Local: GET http://127.0.0.1:9101/status and :9102/status with Bearer token
+4) No Blue code changes expected this round unless watchdog install scripts drifted.
+   If task was restarted, note uptime in reply.
+5) Reply one line: OK blue voice-ptt-20260610 @<sha> hubLines=<n> | or BLOCKED blue: <reason>
+
+Blue never decides GitHub merges. Host + log + STT only.
+
+------------------------------------------------------------------------
+PASTE — VENGEANCE (Red closes round)
+------------------------------------------------------------------------
+
+After Green + Blue OK (or documented BLOCKED):
+
+  git pull --rebase
+  powershell -File lifepunch\scripts\cornerman-relay\Apply-CornermanPushToTalk.ps1
+  powershell -File lifepunch\scripts\Invoke-CvlUniversal.ps1 -IngestToHub -Note voice-ptt-20260610
+
+========================================================================

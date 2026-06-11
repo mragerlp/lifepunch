@@ -43,6 +43,15 @@ def is_down(vk: int) -> bool:
     return bool(ctypes.windll.user32.GetAsyncKeyState(vk) & 0x8000)
 
 
+def is_released(vk: int, polls: int = 2, poll: float = 0.012) -> bool:
+    """Treat key as up only after consecutive up samples (debounce bounce/RDP glitches)."""
+    for _ in range(max(1, polls)):
+        if is_down(vk):
+            return False
+        time.sleep(poll)
+    return True
+
+
 def wait_down(vk: int, poll: float = 0.02) -> None:
     while not is_down(vk):
         time.sleep(poll)

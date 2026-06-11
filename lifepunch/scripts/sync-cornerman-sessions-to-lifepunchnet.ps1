@@ -7,7 +7,7 @@ param(
     [string] $StatePath = $(Join-Path $PSScriptRoot '.session-sync-state.json')
 )
 
-$ErrorActionPreference = 'Stop'
+$ErrorActionPreference = 'Continue'
 . (Join-Path $PSScriptRoot 'Voice-Console.ps1')
 . (Join-Path $PSScriptRoot 'Cvl-Hub.ps1')
 
@@ -31,7 +31,10 @@ function Read-State {
 }
 
 function Save-State($state) {
-    $state | ConvertTo-Json | Set-Content -LiteralPath $StatePath -Encoding UTF8
+    $json = $state | ConvertTo-Json -Depth 6 -Compress
+    $tmp = "$StatePath.tmp"
+    Set-Content -LiteralPath $tmp -Value $json -Encoding UTF8 -NoNewline
+    Move-Item -LiteralPath $tmp -Destination $StatePath -Force
 }
 
 function Get-RemoteText([string]$RemotePath) {

@@ -110,6 +110,14 @@ def ptt_recording(key: str) -> None:
     _event("RECORDING", f"{key.upper()} held - release to send", color="1;91")
 
 
+def ptt_released(key: str) -> None:
+    _event("RELEASED", f"{key.upper()} up — capturing tail", color="1;93")
+
+
+def ptt_transcribing() -> None:
+    _event("TRANSCRIBING", "lifepunchnet Whisper", color="1;36")
+
+
 def clipboard_copied() -> None:
     print()
     _divider()

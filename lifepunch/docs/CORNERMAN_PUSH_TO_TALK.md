@@ -34,9 +34,13 @@ Copies `ptt.py`, `ptt_capture.py`, `relay_ui.py`, `commands.py`, and patches `co
 | Arm | `CORNERMAN_ARM_KEY` | **F7** | Tap once to start a round |
 | Talk | `CORNERMAN_PTT_KEY` | **F8** | Hold after Ready to record |
 
-Allowed values: `space`, `f8`, `f9`, `f10`, `scrolllock`, `pause`.
+Allowed values: `space`, `f6`–`f12`, `scrolllock`, `pause` (defaults: **F7** arm, **F8** talk).
 
 Keys use `GetAsyncKeyState` — relay console window must be focused. Global hotkeys (foot pedal while alt-tabbed) are a future upgrade.
+
+**One relay window only** — `Start-CornermanVoiceRelay.ps1` stops stale `relay.py` processes before start. Duplicates cause F8 freeze (see `VOICE_PTT_TROUBLESHOOTING.md`).
+
+After F8 release the console shows **`RELEASED`** then **`TRANSCRIBING`** before clipboard copy.
 
 ## Pipeline
 

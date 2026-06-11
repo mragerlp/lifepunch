@@ -33,8 +33,10 @@ if ([string]::IsNullOrWhiteSpace($text)) {
 Set-Clipboard -Value $text.TrimEnd()
 Write-Info 'Copied Cornerman transcript to clipboard.'
 $trim = $text.Trim()
-$previewLen = [Math]::Min(120, $trim.Length)
-Write-Info ('Preview: ' + $trim.Substring(0, $previewLen) + $(if ($trim.Length -gt 120) { '...' } else { '' }))
+if ($trim.Length -gt 0) {
+    $previewLen = [Math]::Min(120, $trim.Length)
+    Write-Info ('Preview: ' + $trim.Substring(0, $previewLen) + $(if ($trim.Length -gt 120) { '...' } else { '' }))
+}
 
 if ($Notify) {
     Show-Toast 'Cornerman voice ready' 'Paste into Cursor (Ctrl+V)'

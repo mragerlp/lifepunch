@@ -45,9 +45,13 @@ Watcher scripts (`watch-cornerman-voice.ps1`) poll `to-vengeance.txt` via SSH �
 ## Success criteria (one round)
 
 - [ ] Hear **"Ready"** after F7 tap.
+- [ ] Green UI: **`RELEASED`** (F8 up) then **`TRANSCRIBING`** (not stuck on RECORDING).
 - [ ] After F8 release, transcript in `to-vengeance.txt`.
 - [ ] VENGEANCE watcher: hash change → clipboard → **Ctrl+V** in Cursor.
 - [ ] `outbox\stt-path.log` shows `lifepunchnet | http://205.209.104.22:9000/...` (not local fallback).
+- [ ] Exactly **one** Talk to Vengeance relay window on Green (no duplicate `relay.py`).
+
+Troubleshooting: `VOICE_PTT_TROUBLESHOOTING.md`
 
 ## Known blocker
 

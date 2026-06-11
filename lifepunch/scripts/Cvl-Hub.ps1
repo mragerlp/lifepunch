@@ -52,7 +52,7 @@ function Send-CvlHubIngest {
         if ($null -ne $Extra[$k]) { $payload[$k] = $Extra[$k] }
     }
     $body = ($payload | ConvertTo-Json -Compress -Depth 10)
-    Invoke-RestMethod -Uri $uri -Method Post -Headers $headers -Body $body -ContentType 'application/json' -TimeoutSec 15 | Out-Null
+    Invoke-CvlHubPost -Uri $uri -Headers $headers -Body $body
 }
 
 function Send-CvlHubObject {
@@ -72,5 +72,19 @@ function Send-CvlHubObject {
     $uri = "http://${hostAddr}:${port}/ingest"
     $headers = @{ Authorization = "Bearer $token" }
     $body = ($Payload | ConvertTo-Json -Compress -Depth 12)
-    Invoke-RestMethod -Uri $uri -Method Post -Headers $headers -Body $body -ContentType 'application/json' -TimeoutSec 15 | Out-Null
+    Invoke-CvlHubPost -Uri $uri -Headers $headers -Body $body
+}
+
+function Invoke-CvlHubPost {
+    param(
+        [Parameter(Mandatory)]
+        [string] $Uri,
+        [Parameter(Mandatory)]
+        [hashtable] $Headers,
+        [Parameter(Mandatory)]
+        [string] $Body
+    )
+    # Use WebRequest — empty ingest bodies can make Invoke-RestMethod throw "Stream was not readable".
+    $null = Invoke-WebRequest -Uri $Uri -Method Post -Headers $Headers -Body $Body `
+        -ContentType 'application/json' -TimeoutSec 15 -UseBasicParsing
 }

@@ -2,8 +2,10 @@
 from __future__ import annotations
 
 import collections
+import os
 import queue
 import time
+from typing import Callable
 
 import numpy as np
 import sounddevice as sd
@@ -11,6 +13,9 @@ import sounddevice as sd
 import config
 import ptt
 import stt
+
+# If F8 release is never seen (focus/RDP/key bounce), stop waiting — avoids infinite hang.
+MAX_PTT_HOLD_SECONDS = float(os.environ.get("CORNERMAN_PTT_MAX_HOLD_SEC", "90"))
 
 try:
     import webrtcvad
@@ -21,7 +26,11 @@ except Exception:  # noqa: BLE001
 
 
 def record_ptt(
-    *, verbose: bool = True, vk: int | None = None, armed: bool = False
+    *,
+    verbose: bool = True,
+    vk: int | None = None,
+    armed: bool = False,
+    on_release: Callable[[], None] | None = None,
 ) -> np.ndarray | None:
     """Record while PTT key is held; finish after release + hang. If not armed, wait for key down first."""
     vk = vk if vk is not None else ptt.vk_code()
@@ -60,6 +69,7 @@ def record_ptt(
     silence_secs = 0.0
     released = False
     release_at = 0.0
+    hold_started = time.time()
 
     def is_speech(frame: np.ndarray) -> bool:
         if vad is not None:
@@ -67,18 +77,44 @@ def record_ptt(
         lvl = stt._rms(frame)
         return lvl >= 0.006
 
+    def _mark_released(*, forced: bool = False) -> None:
+        nonlocal released, release_at
+        if released:
+            return
+        released = True
+        release_at = time.time()
+        captured.extend(preroll)
+        if forced and verbose:
+            print("  (PTT — max hold reached; sending anyway)")
+        if on_release:
+            on_release()
+
     try:
         while True:
-            buf = np.concatenate([buf, q.get()])
+            try:
+                chunk = q.get(timeout=1.0)
+            except queue.Empty:
+                if not released:
+                    if time.time() - hold_started >= MAX_PTT_HOLD_SECONDS:
+                        _mark_released(forced=True)
+                        continue
+                    if ptt.is_released(vk):
+                        _mark_released()
+                    continue
+                if time.time() - release_at >= config.SILENCE_HANG_SECONDS + 0.5:
+                    raise StopIteration
+                continue
+
+            buf = np.concatenate([buf, chunk])
             while buf.size >= frame_len:
                 frame = buf[:frame_len]
                 buf = buf[frame_len:]
                 if not released:
                     preroll.append(frame)
-                    if not ptt.is_down(vk):
-                        released = True
-                        release_at = time.time()
-                        captured.extend(preroll)
+                    if ptt.is_released(vk):
+                        _mark_released()
+                    elif time.time() - hold_started >= MAX_PTT_HOLD_SECONDS:
+                        _mark_released(forced=True)
                     continue
 
                 captured.append(frame)

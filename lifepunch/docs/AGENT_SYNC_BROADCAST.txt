@@ -64,6 +64,8 @@ OPS CLARITY (shortcut tiers on VENGEANCE — icon = scope)
 
   Start Day = gate :9000 + 3 VENGEANCE watchers + SSH Cornerman PTT relay.
   Full table: OPS_CLARITY_CHECKPOINT.md §4
+  PTT debug canon: VOICE_PTT_TROUBLESHOOTING.md
+  Lane sync rounds: SYNC_ROUND_*.txt in lifepunch/docs/ (pull after Red push)
 
 ------------------------------------------------------------------------
 EXPLORER ICONS (all nodes — gray folder + gray .txt)
