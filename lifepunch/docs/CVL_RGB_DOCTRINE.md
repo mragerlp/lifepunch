@@ -14,6 +14,57 @@
 
 Pure primaries alone are **necessary but not sufficient**. A node can be "lit" while the system is still not white.
 
+## Directed pings (source → destination)
+
+Every CVL action is a **directed ping**: one **source** node signals one **destination** node.
+
+**Notation:** `R → G` = VENGEANCE pings Cornerman. Read it as **source tier → destination tier**, not
+"shortcut color" and not "where the `.lnk` file lives."
+
+### The six pairwise directions
+
+| Ping | Plain English | Who initiates | Who receives | Shortcut / launcher icon |
+|------|---------------|---------------|--------------|---------------------------|
+| **R → G** | VENGEANCE → Cornerman | Red desk | Green worker | **Green** on Red desktop |
+| **G → R** | Cornerman → VENGEANCE | Green worker | Red desk | **Red** on Green desktop |
+| **R → B** | VENGEANCE → lifepunchnet | Red desk | Blue host | **Blue** on Red desktop |
+| **B → R** | lifepunchnet → VENGEANCE | Blue host | Red desk | **Red** on Blue desktop *(pull/status)* |
+| **G → B** | Cornerman → lifepunchnet | Green worker | Blue host | **Blue** on Green desktop *(STT POST)* |
+| **B → G** | lifepunchnet → Cornerman | Blue host | Green worker | **Green** on Blue desktop *(STT result / ack)* |
+
+**Icon rule (non-negotiable):** the shortcut you double-click uses the **destination** tier color —
+where the signal **lands** — even when the `.lnk` sits on a different machine.
+
+### Canonical examples (structured workflow)
+
+| Ping | Example on the wire | Correct shortcut pairing |
+|------|---------------------|---------------------------|
+| **R → G** | SSH-start PTT relay on Cornerman | **VENGEANCE desktop:** green **Cornerman - Talk to Vengeance** |
+| **G → R** | Outbox → Voice Watch → Cursor paste | **Cornerman desktop:** red **Talk to Vengeance** |
+| **R → B** | Session sync, hub ingest, lifepunchnet watch | **VENGEANCE:** blue **lifepunchnet (RDP)** + watch windows |
+| **B → R** | `:9101` status, `:9102` hub tail (Bearer) | Red pulls; no tumble back to Green |
+| **G → B** | Mic audio → Whisper `:9000` | Runs inside Green relay (cyan leg) |
+| **B → G** | Transcription JSON back to relay | Return leg on same voice round |
+
+**Wrong:** red **Talk to Vengeance** on the VENGEANCE desktop — that collapses **G → R** (destination Red)
+with **R → G** (you commanding Green). Fixed June 2026: Red commands Green with a **green** launcher.
+
+### Directed ping vs mix color
+
+Do not confuse **who pings whom** with **additive mix** (collaboration hue):
+
+| Concept | Meaning | Example |
+|---------|---------|---------|
+| **R → G** ping | Red commands / reaches Green | Start relay on Cornerman |
+| **Yellow** mix | R + G collaboration path lit | Full PTT → paste loop working |
+| **G → B** ping | Green sends work to Blue | Audio to Whisper |
+| **Cyan** mix | G + B path lit | STT + archive alive |
+| **R → B** ping | Red writes / polls Blue | Hub ingest, watchdog |
+| **B → R** ping | Blue reports to Red | Status API, hub tail |
+| **Magenta** mix | B + R path lit | Token auth + checkpoint OK |
+
+Mix = **path health**. Ping = **one hop** on that path. Rainbow (later) = many logged pings + mixes over time.
+
 ## Pairwise mixes (two-channel collaboration)
 
 Additive mixing — **adding signal**, not pasting chat between agents:
@@ -91,10 +142,18 @@ When non-blockers still need lane work, **Red does not solo-fix everything on Gr
 
 Session hub NDJSON uses `tier`: `vengeance` | `cornerman` | `lifepunchnet` | `universal`.
 
-Optional future field: `mix` = `yellow` | `cyan` | `magenta` | `white` | `black` for Odysseus queries.
+Optional future fields for Odysseus / rainbow:
+
+| Field | Values | Meaning |
+|-------|--------|---------|
+| `mix` | `yellow` \| `cyan` \| `magenta` \| `white` \| `black` | Path health (additive) |
+| `ping` | `r→g` \| `g→r` \| `r→b` \| `b→r` \| `g→b` \| `b→g` | Directed hop that produced the line |
 
 ## Related
 
+- `diagrams/cvl-missing-link-v2.png` — Mr. Rager chart v2 (authoritative raster)
+- `diagrams/cvl-missing-link-v2.drawio` — editable v2 (ops IPs in footer)
+- `diagrams/cvl-rgb-directed-ping.drawio` — v1 ecosystem chart (directed pings)
 - `OPS_CLARITY_CHECKPOINT.md` — shortcuts, uniforms, voice stack
 - `session-hub/README.md` — blue host log + security
 - `Invoke-CvlUniversal.ps1` — universal white-light probe

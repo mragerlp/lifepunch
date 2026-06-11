@@ -11,7 +11,7 @@ $script:VoiceColorSubtitle = 'Gray'
 $script:VoiceColorMetaLabel = 'Gray'
 $script:VoiceColorMetaValue = 'White'
 $script:VoiceColorDivider = 'Gray'
-$script:VoiceColorMuted = 'Gray'
+$script:VoiceColorMuted = 'White'
 $script:VoiceColorLogTitle = 'Cyan'
 $script:VoiceColorLogLine = 'Gray'
 
@@ -89,6 +89,7 @@ function Write-VoiceMuted {
         [Parameter(Mandatory)]
         [string] $Text
     )
+    # Config/path hints (server-host-watch, status-token, etc.) — always white on black.
     Write-Host "  $Text" -ForegroundColor $script:VoiceColorMuted
 }
 
@@ -113,8 +114,9 @@ function Write-VoiceStatus {
         [string] $Value,
         [bool] $Ok = $true
     )
-    $color = if ($Ok) { $script:VoiceColorLogLine } else { 'Yellow' }
-    Write-Host "  ${Label}:  $Value" -ForegroundColor $color
+    Write-Host "  ${Label}:  " -NoNewline -ForegroundColor $script:VoiceColorMetaLabel
+    $valueColor = if ($Ok) { $script:VoiceColorMetaValue } else { 'Yellow' }
+    Write-Host $Value -ForegroundColor $valueColor
 }
 
 function Write-VoiceDivider {

@@ -86,7 +86,8 @@ powershell -ExecutionPolicy Bypass -File .\Install-LifePunchShortcutIcons.ps1
 | **LifePunch — Start Day** | **Universal** | **Full stack:** lifepunchnet gate `:9000` + VENGEANCE watchers + SSH Cornerman PTT | `Start-LifePunchDay.ps1` |
 | **LifePunch Voice Preflight** | **Universal** | Cross-node health check only (no windows started) | `Test-VoiceCommsReady.ps1` |
 | **LifePunch Voice Comms** | **VENGEANCE (red)** | VENGEANCE watchers only — paste, session sync, host watch | `start-voice-comms.ps1` |
-| **Talk to Vengeance** | **VENGEANCE (red)** | Cornerman PTT relay (runs on Cornerman; icon red because voice **to** VENGEANCE) | `Start-TalkToVengeance.ps1` / `Talk to Vengeance.cmd` |
+| **Cornerman — Talk to Vengeance** | **Cornerman (green)** | **On VENGEANCE desktop:** Red→Green signal (SSH relay + RDP to Cornerman) | `Start-TalkToVengeance.ps1` |
+| **Talk to Vengeance** | **VENGEANCE (red)** | **On Cornerman desktop only:** PTT relay (red = voice **to** VENGEANCE) | `Talk to Vengeance.cmd` |
 | **Cornerman (RDP)** | **Cornerman (green)** | RDP `192.168.1.227` | `Install-LifePunchRemoteShortcuts.ps1` |
 | **lifepunchnet (RDP)** | **lifepunchnet (blue)** | RDP `205.209.104.22` | same |
 
@@ -96,7 +97,7 @@ powershell -ExecutionPolicy Bypass -File .\Install-LifePunchShortcutIcons.ps1
 2. Double-click **LifePunch — Start Day**.
 3. Preflight all green → **F7** Ready → **F8** talk → **Ctrl+V** in Cursor.
 
-Use **Voice Comms** / **Talk to Vengeance** when restarting **part** of the stack only.
+Use **Voice Comms** / **Cornerman — Talk to Vengeance** when restarting **part** of the stack only.
 
 Party checklist: `lifepunch/docs/LIFEPUNCH_PARTY_HANDOFF.md` · architecture: `lifepunch/docs/VOICE_DAY_ARCHITECTURE.md`.
 
@@ -114,7 +115,7 @@ On success, **Start Day** opens on VENGEANCE:
 
 Then SSH-starts **Cornerman** `Start-CornermanVoiceRelay.ps1` (same job as Talk to Vengeance).
 
-**Voice Comms** = rows 1–3 only (no relay). **Talk to Vengeance** = relay only.
+**Voice Comms** = rows 1–3 only (no relay). **Cornerman — Talk to Vengeance** = Yellow path (Green relay) only.
 
 ---
 

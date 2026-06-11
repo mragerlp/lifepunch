@@ -61,4 +61,13 @@ See `OUTFITS.md` and `lifepunch/docs/OPS_CLARITY_CHECKPOINT.md` §3.
 
 **VENGEANCE voice / ops windows** (`Voice-Console.ps1`): black/dark background + **node accent** on
 title rules only. Body text is **gray labels + white values** — never `DarkGray` on black (unreadable).
-Muted hints use `Write-VoiceMuted` (gray). Cornerman `relay_ui.py` mirrors the same contrast.
+Config/path hints (`server-host-watch`, `status-token`, etc.) use `Write-VoiceMuted` (white).
+Cornerman `relay_ui.py` mirrors the same contrast.
+
+**Console palettes** (`windows-terminal-*.json` + `Set-ConhostUniform`): default text is **gray**;
+`white` slot is **#FFFFFF** (not accent — old schemes mapped White→red and broke `Write-Host`).
+Accent stays on cursor + banner rules only. Repair without full uniform:
+
+`Apply-LifePunchOpsConsole.ps1 -Machine vengeance -ConhostOnly`
+
+Then open a **new** Terminal tab (existing tabs keep the old scheme).

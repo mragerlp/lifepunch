@@ -27,7 +27,9 @@ param(
 
     [string] $NodeIp = '',
 
-    [switch] $RestoreTitleBarAccent
+    [switch] $RestoreTitleBarAccent,
+
+    [switch] $ConhostOnly
 )
 
 $ErrorActionPreference = 'Stop'
@@ -49,9 +51,39 @@ function Get-ConhostColorBgr([string]$hex) {
 }
 
 function Set-ConhostUniform {
-    param([string]$AccentHex)
-    $accentBgr = Get-ConhostColorBgr $AccentHex
-    $dimBgr = Get-ConhostColorBgr '0A0A0A'
+    param(
+        [string]$AccentHex,
+        [string]$Machine
+    )
+    # Conhost maps Write-Host -ForegroundColor to ColorTable00–15. Prior uniform set 01–14 to
+    # near-black and 15 to accent, with ScreenColors default fg=15 — so Gray/White/Blue all
+    # rendered as red or invisible on black. Voice-Console needs readable body + RGB accents.
+    $accentSlot = switch ($Machine) {
+        'vengeance' { 12 }    # Red
+        'cornerman' { 10 }    # Green
+        'lifepunchnet' { 11 } # Cyan
+        default { 12 }
+    }
+    $paletteHex = @{
+        0  = '000000'
+        1  = '1A1A4A'
+        2  = '1A4A2A'
+        3  = '1A4A4A'
+        4  = '4A1A1A'
+        5  = '4A1A4A'
+        6  = '4A4A1A'
+        7  = 'BBBBBB' # Gray — body labels (Voice-Console)
+        8  = '888888' # DarkGray — muted but readable
+        9  = '5599FF' # Blue — CVL B channel / lifepunchnet watch headers
+        10 = '44DD77' # Green — CVL G channel
+        11 = '00D4FF' # Cyan — lifepunchnet node accent
+        12 = 'FF4444' # Red — CVL R channel
+        13 = 'DD66DD' # Magenta
+        14 = 'DDDD44' # Yellow — alerts / degraded
+        15 = 'FFFFFF' # White — body values (never accent)
+    }
+    $paletteHex[$accentSlot] = $AccentHex
+
     $keys = @(
         'Console'
         '%SystemRoot%_System32_cmd.exe'
@@ -64,14 +96,13 @@ function Set-ConhostUniform {
     foreach ($key in $keys) {
         $path = "HKCU:\Console\$key"
         New-Item -Path $path -Force | Out-Null
-        Set-ItemProperty -Path $path -Name ScreenColors -Type DWord -Value 15
+        # Low nibble = foreground, high nibble = background → gray (7) on black (0).
+        Set-ItemProperty -Path $path -Name ScreenColors -Type DWord -Value 7
         Set-ItemProperty -Path $path -Name PopupColors -Type DWord -Value 245
-        Set-ItemProperty -Path $path -Name ColorTable00 -Type DWord -Value 0
-        for ($i = 1; $i -le 14; $i++) {
-            $n = '{0:D2}' -f $i
-            Set-ItemProperty -Path $path -Name "ColorTable$n" -Type DWord -Value $dimBgr
+        foreach ($idx in $paletteHex.Keys) {
+            $n = '{0:D2}' -f $idx
+            Set-ItemProperty -Path $path -Name "ColorTable$n" -Type DWord -Value (Get-ConhostColorBgr $paletteHex[$idx])
         }
-        Set-ItemProperty -Path $path -Name ColorTable15 -Type DWord -Value $accentBgr
         Set-ItemProperty -Path $path -Name FaceName -Value 'Consolas'
         Set-ItemProperty -Path $path -Name FontFamily -Type DWord -Value 54
         Set-ItemProperty -Path $path -Name FontWeight -Type DWord -Value 400
@@ -79,6 +110,55 @@ function Set-ConhostUniform {
         Set-ItemProperty -Path $path -Name CursorSize -Type DWord -Value 25
         Set-ItemProperty -Path $path -Name QuickEdit -Type DWord -Value 1
     }
+}
+
+function Set-WindowsTerminalOpsScheme {
+    param([string]$SchemePath)
+    $wtCandidates = @(
+        "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json",
+        "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminalPreview_8wekyb3d8bbwe\LocalState\settings.json",
+        "$env:LOCALAPPDATA\Microsoft\Windows Terminal\settings.json"
+    )
+    $wtPath = $wtCandidates | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
+    if (-not $wtPath) {
+        Write-Note 'Windows Terminal settings.json not found; install WT, then re-run.'
+        return
+    }
+    if (-not (Test-Path -LiteralPath $SchemePath)) {
+        Write-Note "Missing $SchemePath"
+        return
+    }
+    $scheme = Get-Content -LiteralPath $SchemePath -Raw | ConvertFrom-Json
+    if ($scheme.PSObject.Properties.Name -contains '_comment') {
+        $scheme.PSObject.Properties.Remove('_comment')
+    }
+    $settings = Get-Content -LiteralPath $wtPath -Raw | ConvertFrom-Json
+    if (-not $settings.schemes) {
+        $settings | Add-Member -NotePropertyName schemes -NotePropertyValue @() -Force
+    }
+    $settings.schemes = @($settings.schemes | Where-Object { $_.name -ne $scheme.name }) + $scheme
+    if (-not $settings.profiles) {
+        $settings | Add-Member -NotePropertyName profiles -NotePropertyValue ([pscustomobject]@{}) -Force
+    }
+    if (-not $settings.profiles.defaults) {
+        $settings.profiles | Add-Member -NotePropertyName defaults -NotePropertyValue ([pscustomobject]@{}) -Force
+    }
+    $d = $settings.profiles.defaults
+    $d | Add-Member -NotePropertyName colorScheme -NotePropertyValue $scheme.name -Force
+    $d | Add-Member -NotePropertyName cursorShape -NotePropertyValue 'filledBox' -Force
+    $d | Add-Member -NotePropertyName font -NotePropertyValue ([pscustomobject]@{ face = 'Cascadia Mono'; size = 12 }) -Force
+    $d | Add-Member -NotePropertyName useAcrylic -NotePropertyValue $false -Force
+    if ($settings.profiles.list) {
+        foreach ($prof in $settings.profiles.list) {
+            $prof | Add-Member -NotePropertyName colorScheme -NotePropertyValue $scheme.name -Force
+            if (-not $prof.font) {
+                $prof | Add-Member -NotePropertyName font -NotePropertyValue ([pscustomobject]@{ face = 'Cascadia Mono'; size = 12 }) -Force
+            }
+            $prof | Add-Member -NotePropertyName useAcrylic -NotePropertyValue $false -Force
+        }
+    }
+    $settings | ConvertTo-Json -Depth 32 | Set-Content -LiteralPath $wtPath -Encoding UTF8
+    Write-Note "Applied '$($scheme.name)' to $wtPath (all profiles)"
 }
 
 function Get-AccentDwords([string]$hex) {
@@ -184,58 +264,23 @@ if ($node.consoleCopyright) { $state.consoleCopyright = [string]$node.consoleCop
 if ($node.consolePrompt) { $state.consolePrompt = [string]$node.consolePrompt }
 $state | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $stateDir 'ops-node.json') -Encoding UTF8
 
+if ($ConhostOnly) {
+    Write-Step 'Console palette (Windows Terminal + conhost)'
+    Set-WindowsTerminalOpsScheme -SchemePath $schemePath
+    Set-ConhostUniform -AccentHex $accentHex -Machine $Machine
+    Write-Note 'Body = gray/white; accent on headers only. Open a NEW Terminal tab or window.'
+    Write-Host ''
+    Write-Host 'Done (console palette). Restart watch/voice windows.' -ForegroundColor Cyan
+    return
+}
+
 # 1. Windows Terminal
 Write-Step 'Windows Terminal scheme + defaults'
-$wtCandidates = @(
-    "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json",
-    "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminalPreview_8wekyb3d8bbwe\LocalState\settings.json",
-    "$env:LOCALAPPDATA\Microsoft\Windows Terminal\settings.json"
-)
-$wtPath = $wtCandidates | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
-
-if (-not $wtPath) {
-    Write-Note 'Windows Terminal settings.json not found; install WT, then re-run.'
-}
-elseif (-not (Test-Path -LiteralPath $schemePath)) {
-    Write-Note "Missing $schemePath"
-}
-else {
-    $scheme = Get-Content -LiteralPath $schemePath -Raw | ConvertFrom-Json
-    if ($scheme.PSObject.Properties.Name -contains '_comment') {
-        $scheme.PSObject.Properties.Remove('_comment')
-    }
-    $settings = Get-Content -LiteralPath $wtPath -Raw | ConvertFrom-Json
-    if (-not $settings.schemes) {
-        $settings | Add-Member -NotePropertyName schemes -NotePropertyValue @() -Force
-    }
-    $settings.schemes = @($settings.schemes | Where-Object { $_.name -ne $scheme.name }) + $scheme
-    if (-not $settings.profiles) {
-        $settings | Add-Member -NotePropertyName profiles -NotePropertyValue ([pscustomobject]@{}) -Force
-    }
-    if (-not $settings.profiles.defaults) {
-        $settings.profiles | Add-Member -NotePropertyName defaults -NotePropertyValue ([pscustomobject]@{}) -Force
-    }
-    $d = $settings.profiles.defaults
-    $d | Add-Member -NotePropertyName colorScheme -NotePropertyValue $scheme.name -Force
-    $d | Add-Member -NotePropertyName cursorShape -NotePropertyValue 'filledBox' -Force
-    $d | Add-Member -NotePropertyName font -NotePropertyValue ([pscustomobject]@{ face = 'Cascadia Mono'; size = 12 }) -Force
-    $d | Add-Member -NotePropertyName useAcrylic -NotePropertyValue $false -Force
-    if ($settings.profiles.list) {
-        foreach ($prof in $settings.profiles.list) {
-            $prof | Add-Member -NotePropertyName colorScheme -NotePropertyValue $scheme.name -Force
-            if (-not $prof.font) {
-                $prof | Add-Member -NotePropertyName font -NotePropertyValue ([pscustomobject]@{ face = 'Cascadia Mono'; size = 12 }) -Force
-            }
-            $prof | Add-Member -NotePropertyName useAcrylic -NotePropertyValue $false -Force
-        }
-    }
-    $settings | ConvertTo-Json -Depth 32 | Set-Content -LiteralPath $wtPath -Encoding UTF8
-    Write-Note "Applied '$($scheme.name)' to $wtPath (all profiles)"
-}
+Set-WindowsTerminalOpsScheme -SchemePath $schemePath
 
 Write-Step 'cmd + PowerShell console (conhost)'
-Set-ConhostUniform -AccentHex $accentHex
-Write-Note "Legacy console: black background, #$accentHex text (matches outfit console art)."
+Set-ConhostUniform -AccentHex $accentHex -Machine $Machine
+Write-Note "Legacy console: black bg, gray default text, #$accentHex on accent slot, white body values."
 
 # 2. Dark mode (system + apps — File Explorer, Settings, RDP sessions on this box)
 Write-Step 'Windows dark theme'

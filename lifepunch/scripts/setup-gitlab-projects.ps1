@@ -5,6 +5,7 @@ param(
     [string]$GitLabHost = 'https://gitlab.com',
     [string]$GitLabNamespace = 'mragerlp',
     [string]$GitLabToken = $env:GITLAB_TOKEN,
+    [string[]]$Slug,
     [switch]$CreateProjects,
     [switch]$WhatIf
 )
@@ -198,20 +199,29 @@ try {
     }
     Write-Host "Grounding bundle (injected into every lane): $($Grounding -join ', ')" -ForegroundColor DarkCyan
 
+    $targets = @($Map.projects)
+    if ($Slug -and $Slug.Count -gt 0) {
+        $targets = @($Map.projects | Where-Object { $Slug -contains $_.slug })
+        if ($targets.Count -eq 0) {
+            throw "No projects matched -Slug $($Slug -join ', ')"
+        }
+        Write-Host "Slug filter: $($targets.slug -join ', ')" -ForegroundColor DarkCyan
+    }
+
     $pushed = 0
-    foreach ($Project in $Map.projects) {
+    foreach ($Project in $targets) {
         if (Push-LaneExport -Slug $Project.slug -Paths $Project.monorepoPaths -GroundingPaths $Grounding) {
             $pushed++
         }
     }
 
-    if ($pushed -eq $Map.projects.Count -and -not $WhatIf) {
+    if ($pushed -eq $targets.Count -and -not $WhatIf) {
         $Map.migrationStatus = 'lanes-synced'
         $Map | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath $MapPath -Encoding UTF8
-        Write-Host "`nUpdated migrationStatus -> lanes-synced ($pushed/$($Map.projects.Count) lanes)" -ForegroundColor Green
+        Write-Host "`nUpdated migrationStatus -> lanes-synced ($pushed/$($targets.Count) lanes)" -ForegroundColor Green
     }
     else {
-        Write-Host "`nPushed $pushed/$($Map.projects.Count) lanes." -ForegroundColor Yellow
+        Write-Host "`nPushed $pushed/$($targets.Count) lanes." -ForegroundColor Yellow
     }
 
     Write-Host "`nDone. GitHub remains origin: $($Map.canonicalGithubClone)" -ForegroundColor Cyan

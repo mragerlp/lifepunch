@@ -22,7 +22,8 @@ Write-Host '  tri-stack  LifePunch - CVL Same Page (hub log)' -ForegroundColor D
 Write-Host '  tri-stack  LifePunch Voice Preflight' -ForegroundColor DarkGray
 Write-Host '  red        LifePunch Voice Comms' -ForegroundColor DarkGray
 Write-Host '  green      Cornerman (RDP)' -ForegroundColor DarkGray
-Write-Host '  red        Talk to Vengeance (voice to VENGEANCE)' -ForegroundColor DarkGray
+Write-Host '  green      Cornerman — Talk to Vengeance (on VENGEANCE — signals Green)' -ForegroundColor DarkGray
+Write-Host '  red        Talk to Vengeance (on Cornerman only — voice to Red)' -ForegroundColor DarkGray
 Write-Host '  blue       lifepunchnet (RDP)' -ForegroundColor DarkGray
 Write-Host ''
 Write-Host 'Icons: lifepunch/branding/shortcut-icons/SHORTCUT_ICONS.md' -ForegroundColor Cyan

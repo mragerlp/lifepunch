@@ -1,6 +1,7 @@
 # LifePunch shortcut icons (tier → destination)
 
-Icons tell you **which machine or scope** a shortcut targets at a glance.
+Icons tell you **which node receives the ping** (destination tier), not which desk the `.lnk` sits on.
+Canon: `lifepunch/docs/CVL_RGB_DOCTRINE.md` § Directed pings.
 
 ## Tier rules
 
@@ -10,13 +11,16 @@ Canonical examples: **LifePunch — Start Day** (full stack); **LifePunch - CVL 
 
 Also universal: cross-node **preflight/diagnostic** actions that touch the whole voice path (e.g. **LifePunch Voice Preflight**).
 
-**Single-destination tiers** — red/green/blue = **where voice goes or which box you RDP into**, even if the `.lnk` lives on another machine (e.g. **Talk to Vengeance** is red on Cornerman because voice targets VENGEANCE).
+**Single-destination tiers** — icon color = **which node you signal or where voice lands**, not which machine the `.lnk` file sits on.
 
-| Tier | Color | File | Paired shortcuts |
-|------|-------|------|------------------|
+**Red → Green voice (Yellow path):** On **VENGEANCE (Red)** the shortcut is **green** — you are commanding **Cornerman**. On **Cornerman (Green)** the relay shortcut is **red** — voice lands on **VENGEANCE / Cursor**.
+
+| Tier | Color | File | Shortcuts |
+|------|-------|------|-----------|
 | **Universal** | All three (tri-stack) | `lifepunch-universal.png` | **LifePunch — Start Day**, **LifePunch - CVL Same Page**, **LifePunch Voice Preflight** |
-| **VENGEANCE** | Red | `lifepunch-vengeance.png` | **LifePunch Voice Comms**, **Talk to Vengeance** (voice → VENGEANCE / Cursor) |
-| **Cornerman** | Green | `lifepunch-cornerman.png` | **Cornerman (RDP)** |
+| **VENGEANCE** | Red | `lifepunch-vengeance.png` | **LifePunch Voice Comms** (Red-side watch windows) |
+| **Cornerman** | Green | `lifepunch-cornerman.png` | **Cornerman (RDP)**, **Cornerman — Talk to Vengeance** *(on VENGEANCE desktop — signals Green)* |
+| **VENGEANCE** | Red | `lifepunch-vengeance.png` | **Talk to Vengeance** *(on Cornerman desktop only — voice to Red)* |
 | **lifepunchnet** | Blue / cyan | `lifepunch-lifepunchnet.png` | **lifepunchnet (RDP)** |
 
 Art source: Hacker Job outfit app icons (`lifepunch-ops/outfits/*/appicon.png` family).
