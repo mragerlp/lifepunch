@@ -40,6 +40,7 @@ where the signal **lands** — even when the `.lnk` sits on a different machine.
 | Ping | Example on the wire | Correct shortcut pairing |
 |------|---------------------|---------------------------|
 | **R → G** | SSH-start PTT relay on Cornerman | **VENGEANCE desktop:** green **Cornerman - Talk to Vengeance** |
+| **R → G** (workflow) | `Send-CornermanWorkflow.ps1` → `C:\lifepunch\cornerman\inbox\` + SSH execute | Red dispatches; Green needs no Cursor |
 | **G → R** | Outbox → Voice Watch → Cursor paste | **Cornerman desktop:** red **Talk to Vengeance** |
 | **R → B** | Session sync, hub ingest, lifepunchnet watch | **VENGEANCE:** blue **lifepunchnet (RDP)** + watch windows |
 | **B → R** | `:9101` status, `:9102` hub tail (Bearer) | Red pulls; no tumble back to Green |
@@ -158,5 +159,7 @@ Optional future fields for Odysseus / rainbow:
 - `session-hub/README.md` — blue host log + security
 - `Invoke-CvlUniversal.ps1` — universal white-light probe
 - `Get-CvlTeamRoundPaste.ps1` — one paste for Green + Blue from live gaps (Red's arm)
+- `Send-CornermanWorkflow.ps1` — Red dispatches whitelisted work to Green over SSH (inbox + ack; no Cursor on Cornerman)
+- `Get-CornermanWorkflowStatus.ps1` — Red reads Green inbox/ack tail
 - `Get-CvlOdysseusRoundPaste.ps1` — one paste for Odysseus install round on Blue
 - `Test-CvlSecurity.ps1` — signal hardening before ingest

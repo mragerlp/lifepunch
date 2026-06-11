@@ -18,7 +18,7 @@ Also universal: cross-node **preflight/diagnostic** actions that touch the whole
 | Tier | Color | File | Shortcuts |
 |------|-------|------|-----------|
 | **Universal** | All three (tri-stack) | `lifepunch-universal.png` | **LifePunch — Start Day**, **LifePunch - CVL Same Page**, **LifePunch Voice Preflight** |
-| **VENGEANCE** | Red | `lifepunch-vengeance.png` | **LifePunch Voice Comms** (Red-side watch windows) |
+| **VENGEANCE** | Red | `lifepunch-vengeance.png` | **LifePunch Voice Comms** (Red-side watch windows), **DXRP Editor - VENGEANCE** (local s&box + API token) |
 | **Cornerman** | Green | `lifepunch-cornerman.png` | **Cornerman (RDP)**, **Cornerman — Talk to Vengeance** *(on VENGEANCE desktop — signals Green)* |
 | **VENGEANCE** | Red | `lifepunch-vengeance.png` | **Talk to Vengeance** *(on Cornerman desktop only — voice to Red)* |
 | **lifepunchnet** | Blue / cyan | `lifepunch-lifepunchnet.png` | **lifepunchnet (RDP)** |
