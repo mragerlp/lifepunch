@@ -1,10 +1,10 @@
-# Cornerman (Green) desktop shortcut — hard-sync clone to origin/main.
+# Cornerman (Green) desktop shortcut - hard-sync clone to origin/main.
 # Run on Green once (or after Red re-pushes inbox script). Safe mid-rebase.
 $ErrorActionPreference = 'Stop'
 
 $InboxScript = 'C:\lifepunch\cornerman\inbox\Reset-CornermanClone.ps1'
 if (-not (Test-Path -LiteralPath $InboxScript)) {
-    throw "Missing $InboxScript — run Push-CornermanResetScript.ps1 from VENGEANCE first."
+    throw "Missing $InboxScript - run Push-CornermanResetScript.ps1 from VENGEANCE first."
 }
 
 $Here = $PSScriptRoot

@@ -1,4 +1,4 @@
-# Green box — abort stuck rebase/merge and hard-align clone to origin/main.
+# Green box - abort stuck rebase/merge and hard-align clone to origin/main.
 # Red owns git; Cornerman should NOT pull --rebase after local commits. Run from inbox or repo.
 param(
     [string] $RepoRoot = 'C:\Projects\lifepunch',
@@ -49,7 +49,7 @@ try {
 
     $head = (git rev-parse --short HEAD).Trim()
     $subject = (git log -1 --format='%s').Trim()
-    Write-Host "OK Cornerman at $head — $subject" -ForegroundColor Green
+    Write-Host "OK Cornerman at $head - $subject" -ForegroundColor Green
     git status -sb
 }
 finally {

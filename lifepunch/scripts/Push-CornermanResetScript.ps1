@@ -18,7 +18,7 @@ foreach ($d in $drops) {
 }
 
 Write-Host ''
-Write-Host 'Green — one-time shortcut install:' -ForegroundColor Cyan
+Write-Host 'Green - one-time shortcut install:' -ForegroundColor Cyan
 Write-Host '  powershell -NoProfile -ExecutionPolicy Bypass -File C:\lifepunch\cornerman\inbox\Install-CornermanResetCloneShortcut.ps1' -ForegroundColor White
-Write-Host 'Green — run sync (or double-click desktop shortcut after install):' -ForegroundColor Cyan
+Write-Host 'Green - run sync (or double-click desktop shortcut after install):' -ForegroundColor Cyan
 Write-Host '  C:\lifepunch\cornerman\inbox\Cornerman-Sync-from-Red.cmd' -ForegroundColor White
