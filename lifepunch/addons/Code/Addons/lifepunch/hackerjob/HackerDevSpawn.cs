@@ -23,6 +23,32 @@ public static class HackerDevSpawn
 {
 	private const float SpawnDistanceUnits = 120f;
 
+	/// <summary>
+	/// Opens cornerman.exe UI immediately — no prefab or world entity required (editor smoke test).
+	/// </summary>
+	[ConCmd( "lp_cornerman_ui" )]
+	public static void OpenTerminalUi()
+	{
+		var scene = Game.ActiveScene;
+		if ( scene is null )
+		{
+			Log.Warning( "lp_cornerman_ui: no active scene." );
+			return;
+		}
+
+		var stub = scene.CreateObject();
+		stub.Name = "HackerTerminalDevStub";
+		var entity = stub.AddComponent<HackerTerminalEntity>();
+
+#if LIFEPUNCH_LOCAL
+		HackerTerminal.Open( entity );
+#else
+		entity.RequestOpenTerminal();
+#endif
+
+		Log.Info( "lp_cornerman_ui: cornerman.exe mounted. Try: scan → hack 76561198000000001" );
+	}
+
 	[ConCmd( "lp_spawn_hacker_terminal" )]
 	public static void SpawnTerminal()
 	{

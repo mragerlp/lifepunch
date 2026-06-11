@@ -24,6 +24,7 @@ public static class HackerJob
 	public const string InGameProgramName = "cornerman.exe";
 	public const string DevGiveCommand = "cornerman";
 	public const string DevSpawnCommand = "lp_spawn_hacker_terminal";
+	public const string DevUiCommand = "lp_cornerman_ui";
 
 	public const int ContentType = 0;
 	public const string Grouping = "Entities";

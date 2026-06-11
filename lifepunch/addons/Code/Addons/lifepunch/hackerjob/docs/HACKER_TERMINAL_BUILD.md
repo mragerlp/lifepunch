@@ -35,12 +35,22 @@ Queue priority after weapon smoke test. Shares **Cornerman green-on-black termin
 
 ## Editor smoke test
 
+**Fast path (no prefab yet):**
+
+```text
+lp_cornerman_ui
+scan
+hack 76561198000000001
+<type puzzle answer>
+```
+
+**Full path (after Red ships `hacker-terminal.prefab`):**
+
 ```text
 lp_spawn_hacker_terminal
 cornerman
 scan
 hack 76561198000000001
-<type puzzle answer>
 ```
 
 Pass: boot sequence, scan list, puzzle timer, bypass message (no money moved).
