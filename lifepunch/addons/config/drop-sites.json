@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "addonIdent": "additionaldroplocations",
+  "drugDropPrefab": "prefabs/world/drug_drop.prefab",
+  "referenceIntakeRoot": "C:/lifepunch/reference-intake/additional-drug-drops",
+  "sites": [
+    {
+      "ident": "subway",
+      "label": "Subway Carriage",
+      "mapIdent": "*",
+      "enabled": false,
+      "position": [0, 0, 0],
+      "rotation": [0, 0, 0, 1],
+      "cosmeticModelPath": "",
+      "notes": "Blender: reference-intake/additional-drug-drops/subway. Replace London Underground logo before ship. Enable after VENGEANCE sets map position in AdditionalDropLocations.cs."
+    },
+    {
+      "ident": "truck",
+      "label": "Delivery Truck",
+      "mapIdent": "*",
+      "enabled": false,
+      "position": [0, 0, 0],
+      "rotation": [0, 0, 0, 1],
+      "cosmeticModelPath": "",
+      "notes": "Blender: reference-intake/additional-drug-drops/truck. Enable after VENGEANCE sets map position."
+    }
+  ]
+}

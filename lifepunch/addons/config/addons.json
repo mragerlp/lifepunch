@@ -87,6 +87,20 @@
       "contents": []
     },
     {
+      "ident": "additionaldroplocations",
+      "title": "Additional Drop Locations",
+      "description": "Extra weed brick sell zones for LifePunch maps — spawns core DXRP drug_drop triggers at configured subway and truck locations after map fitting.",
+      "kind": "simple-entity",
+      "hasAssets": true,
+      "hasCode": true,
+      "dxrpAddonId": "",
+      "sboxIdentifier": "lifepunch.additionaldroplocations",
+      "status": "foundation-scaffold",
+      "spec": "Code/Addons/lifepunch/additionaldroplocations/docs/BUILD.md",
+      "notes": "Portal package exists (private). Monorepo scaffold: AddonService spawns prefabs/world/drug_drop.prefab on OnMapFitted. Sites disabled until VENGEANCE sets map coords. Blender study at reference-intake/additional-drug-drops. Opus before enable on production.",
+      "contents": []
+    },
+    {
       "ident": "advanceddrugprocessing",
       "title": "Advanced Drug Processing",
       "description": "Drug grow entities (weed engine). Coke line = reskin: same pots/grow flow, LifePunch coke seeds/leaves/bricks/bags. See docs/COKE_DRUG_RESKIN_SPEC.md.",

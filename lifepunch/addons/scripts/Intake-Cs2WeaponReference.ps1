@@ -29,6 +29,7 @@ param(
     [string] $CliPath = '',
     [string] $IntakeRoot = 'C:\lifepunch\reference-intake\cs2-weapons',
     [switch] $ExportGltf,
+    [switch] $ManifestOnly,
     [switch] $WhatIf
 )
 
@@ -54,8 +55,12 @@ Write-Host 'CS2 weapon reference intake' -ForegroundColor Cyan
 Write-Host "  VPK:    $Cs2Vpk" -ForegroundColor DarkGray
 Write-Host "  Intake: $IntakeRoot" -ForegroundColor DarkGray
 
-if (-not (Test-Path -LiteralPath $Cs2Vpk)) {
-    throw "CS2 VPK not found: $Cs2Vpk - install CS2 or pass -Cs2Vpk"
+if (-not $ManifestOnly -and -not (Test-Path -LiteralPath $Cs2Vpk)) {
+    throw "CS2 VPK not found: $Cs2Vpk - install CS2, pass -Cs2Vpk, or use -ManifestOnly on Cornerman"
+}
+
+if ($ManifestOnly) {
+    Write-Host '  Mode: ManifestOnly (no VPK / CLI required)' -ForegroundColor DarkYellow
 }
 
 $hasCli = $CliPath -and (Test-Path -LiteralPath $CliPath)
