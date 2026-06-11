@@ -8,6 +8,9 @@
 // Presence in this repository or on the DXRP portal grants no rights to anyone else.
 // ─────────────────────────────────────────────────────────────────────────────
 
+using System.Collections.Generic;
+using LifePunch.DXRP.Addons;
+
 namespace LifePunch.DXRP.Addons.HackerJob;
 
 /// <summary>UI chrome tokens per hacker terminal tier (mirrors LifePunch Ops machine uniforms).</summary>
@@ -52,30 +55,15 @@ public static class HackerTerminalBrand
 	/// <summary>Shipped About copy — LIFEPUNCH source only; no third-party product credits.</summary>
 	public static string[] AboutLines( HackerTerminalTier tier )
 	{
-		var lines = new[]
+		var lines = new List<string>( LifePunchSourceMark.AboutBlock( HackerJob.ProductTitle ) )
 		{
-			HackerJob.ProductTitle,
-			$"Published by {HackerJob.PublisherName} — {HackerJob.PublisherUrl}",
-			HackerJob.ProprietaryNotice,
-			HackerJob.UseRestrictionNotice,
 			"cornerman.exe / vengeance.exe are in-world fiction — not third-party software.",
 			"Wallet hacks: host-validated only. Bank accounts are never touched."
 		};
 
 		if ( tier == HackerTerminalTier.Advanced )
-		{
-			return new[]
-			{
-				HackerJob.ProductTitle,
-				$"Published by {HackerJob.PublisherName} — {HackerJob.PublisherUrl}",
-				HackerJob.ProprietaryNotice,
-				HackerJob.UseRestrictionNotice,
-				"cornerman.exe / vengeance.exe are in-world fiction — not third-party software.",
-				"Wallet hacks: host-validated only. Bank accounts are never touched.",
-				"Govdb breaches countered by Police terminals (lifepunchnet cyan)."
-			};
-		}
+			lines.Add( "Govdb breaches countered by Police terminals (lifepunchnet cyan)." );
 
-		return lines;
+		return lines.ToArray();
 	}
 }

@@ -8,6 +8,8 @@
 // Presence in this repository or on the DXRP portal grants no rights to anyone else.
 // ─────────────────────────────────────────────────────────────────────────────
 
+using LifePunch.DXRP.Addons;
+
 namespace LifePunch.DXRP.Addons.GovernmentDatacenter;
 
 /// <summary>
@@ -31,6 +33,12 @@ public static class GovernmentDatacenter
 	public const string TaxMinerWorldModelPath = "addons/lifepunch/governmentdatacenter/models/lifepunch/governmentdatacenter/government-tax-miner/government-tax-miner.vmdl";
 	public const string PoliceTerminalWorldPrefabPath = "addons/lifepunch/governmentdatacenter/entities/police-terminal/police-terminal.prefab";
 	public const string PoliceTerminalWorldModelPath = "addons/lifepunch/governmentdatacenter/models/lifepunch/governmentdatacenter/police-terminal/police-terminal.vmdl";
+
+	public const string PublisherMark = LifePunchSourceMark.Mark;
+	public const string PublisherName = LifePunchSourceMark.Publisher;
+	public const string PublisherUrl = LifePunchSourceMark.PublisherUrl;
+	public const string ProductTitle = "LIFEPUNCH™ Government Datacenter for DXRP";
+	public const string TerminalProductTitle = "LIFEPUNCH™ lifepunchnet Terminal for DXRP";
 
 	/// <summary>lifepunchnet cyan — distinct from Cornerman green hashd and Vengeance red hacker rigs.</summary>
 	public const string TerminalAccentHex = "#00D4FF";

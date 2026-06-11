@@ -31,6 +31,78 @@ public static class BitminerDevSpawn
 	[ConCmd( "lp_spawn_bitminer" )]
 	public static void SpawnBitminer() => SpawnBitminerKit();
 
+	/// <summary>Hub + 3 small racks + 1 large rack (owner canon layout).</summary>
+	[ConCmd( "lp_spawn_bitcoin_miner_hub" )]
+	public static BitminerHubEntity SpawnBitcoinMinerHub()
+	{
+		if ( !TryGetSpawnTransform( out var transform ) )
+		{
+			Log.Warning( "lp_spawn_bitcoin_miner_hub: no local viewer." );
+			return null;
+		}
+
+		var hubGo = ClonePrefabAt( Bitminer.HubPrefabPath, transform );
+		if ( !hubGo.IsValid() )
+		{
+			Log.Warning( "lp_spawn_bitcoin_miner_hub: hub prefab missing — compile ModelDoc + prefab first." );
+			return null;
+		}
+
+		var hub = hubGo.Components.Get<BitminerHubEntity>( FindMode.EverythingInSelfAndDescendants );
+		if ( !hub.IsValid() )
+		{
+			Log.Error( "lp_spawn_bitcoin_miner_hub: clone has no BitminerHubEntity." );
+			hubGo.Destroy();
+			return null;
+		}
+
+		var scene = Game.ActiveScene;
+		var offsets = new[]
+		{
+			transform.Rotation.Right * 140f,
+			transform.Rotation.Right * -140f,
+			transform.Rotation.Forward * 140f
+		};
+
+		for ( var i = 0; i < offsets.Length; i++ )
+		{
+			var pos = SnapToGround( scene, transform.Position + offsets[i] );
+			var rack = ClonePrefabAt( Bitminer.WorldPrefabPath, new Transform( pos, transform.Rotation ) );
+			NetworkSpawnIfNeeded( rack );
+		}
+
+		var largePos = SnapToGround( scene, transform.Position + transform.Rotation.Forward * -160f );
+		var large = ClonePrefabAt( Bitminer.AdvancedPrefabPath, new Transform( largePos, transform.Rotation ) );
+		NetworkSpawnIfNeeded( large );
+
+		NetworkSpawnIfNeeded( hubGo );
+
+		Log.Info( "lp_spawn_bitcoin_miner_hub: hub OFFLINE — USE hub or hashd → power on → POWER ON. lp_hub_power 1 to skip boot." );
+		return hub;
+	}
+
+	[ConCmd( "lp_hub_power" )]
+	public static void HubPower( string arg = "1" )
+	{
+		var scene = Game.ActiveScene;
+		if ( scene is null )
+		{
+			Log.Warning( "lp_hub_power: no active scene." );
+			return;
+		}
+
+		var hub = scene.GetAllComponents<BitminerHubEntity>().FirstOrDefault( h => h.IsValid() );
+		if ( !hub.IsValid() )
+		{
+			Log.Warning( "lp_hub_power: no hub — run lp_spawn_bitcoin_miner_hub first." );
+			return;
+		}
+
+		var powered = arg.Trim() is not ( "0" or "off" or "false" );
+		hub.RequestSetPowered( powered );
+		Log.Info( $"lp_hub_power: hub {( powered ? "ON" : "OFF" )}." );
+	}
+
 	/// <summary>Dev smoke — spawn linked kit and open hashd immediately (CRT mesh optional).</summary>
 	[ConCmd( "lp_hashd_preview" )]
 	public static void HashdPreview()
@@ -76,21 +148,8 @@ public static class BitminerDevSpawn
 				prop.LinkedRig = entity;
 		}
 
-#if !LIFEPUNCH_LOCAL
-		var player = Player.Local;
-		if ( player.IsValid() )
-		{
-			rig.NetworkSpawn( player.Network.Owner );
-			if ( terminal.IsValid() )
-				terminal.NetworkSpawn( player.Network.Owner );
-		}
-		else
-		{
-			rig.NetworkSpawn();
-			if ( terminal.IsValid() )
-				terminal.NetworkSpawn();
-		}
-#endif
+		NetworkSpawnIfNeeded( rig );
+		NetworkSpawnIfNeeded( terminal );
 
 		Log.Info( "lp_spawn_bitminer: gpu-rack + bitcoin-terminal placed. Use hashd on rig or USE the CRT." );
 		return entity;
@@ -196,6 +255,20 @@ public static class BitminerDevSpawn
 #endif
 
 		Log.Info( "lp_spawn_bitcoin_terminal: CRT placed — auto-links to nearest rig within 4m." );
+	}
+
+	private static void NetworkSpawnIfNeeded( GameObject go )
+	{
+		if ( !go.IsValid() )
+			return;
+
+#if !LIFEPUNCH_LOCAL
+		var player = Player.Local;
+		if ( player.IsValid() )
+			go.NetworkSpawn( player.Network.Owner );
+		else
+			go.NetworkSpawn();
+#endif
 	}
 
 	private static GameObject ClonePrefabAt( string prefabPath, Transform transform )

@@ -1,0 +1,42 @@
+CORNERMAN REGROUP — restore both eyes + 3 models (2026-06-11)
+=============================================================
+
+Red ran from VENGEANCE:
+  Connect-CornermanBridge.ps1
+  Send-CornermanWorkflow.ps1 -Action WarmDistill
+
+VENGEANCE side: OK
+  SboxBridgeIpc share -> %TEMP%\sbox-bridge-ipc
+  mcp.json refreshed on Green
+
+GREEN — you must finish (one-time if SMB dropped):
+
+1) Map the s&box bridge share (gets sbox MCP eye back):
+   powershell -File C:\lifepunch\cornerman\Map-CornermanBridgeShare.ps1
+   (needs VENGEANCE SMB password once — same as Windows login on Red)
+
+2) Restart Cursor on Green -> Settings -> MCP:
+   - sbox  = green when VENGEANCE editor is open (Start-SboxDxrpEditor.ps1)
+   - cornerman-lm = green when :1234 has models
+
+3) Confirm 3 Tier-3 models on :1234:
+   qwen/qwen3.6-35b-a3b
+   qwen2.5-coder-32b-instruct
+   text-embedding-nomic-embed-text-v1.5
+
+   If missing:
+   powershell -File C:\lifepunch\cornerman\Start-CornermanLmStudio.ps1 -WarmModel all
+
+4) Optional watchdog (keeps 3 models after reboot):
+   Ask Red: Send-CornermanWorkflow.ps1 -Action InstallLmWatchdog
+
+5) Sync monorepo before next distill:
+   Cornerman (Sync from Red) or git pull --rebase in clone
+
+PING RED when done:
+  OK cornerman eyes — smb=True lm3=True
+
+NEXT DISTILL (after regroup):
+  Owner pivot: Bitcoin Miner hub — no separate bitcoin-terminal.
+  Read: lifepunch/addons/docs/reference/BITMINER_THREE_ENTITY_ARCH.md (obsolete terminal row)
+  Wait for Red brief BITMINER_HUB_ARCH or owner sign-off on stack-tier model.

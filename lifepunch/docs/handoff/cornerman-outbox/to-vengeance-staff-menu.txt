@@ -1,0 +1,13 @@
+STAFF MENU — Red integration slot (after Cornerman)
+===================================================
+
+Cornerman P0: remove 7x linear-gradient from StaffMenu.razor.scss
+Brief: lifepunch/addons/docs/briefs/CORNERMAN_STAFF_MENU_TASK.md
+
+When Green pings OK:
+1. Copy outbox/STAFF_MENU_SCSS_FIX.scss -> repo StaffMenu.razor.scss
+2. Sync-LifePunchAddonsToDxrp.ps1 (adminmenu)
+3. Play game.scene -> staffmenu -> log filter gradient = empty
+4. Commit: fix(ulx): remove unsupported CSS gradients from staff menu SCSS
+
+Optional fast-path: Red can land P0 without waiting (same fix as BitminerTerminal).

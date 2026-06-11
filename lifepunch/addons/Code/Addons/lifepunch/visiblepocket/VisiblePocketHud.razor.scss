@@ -1,0 +1,108 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// PROPRIETARY & CONFIDENTIAL — © 2026 lifepunch.co. All rights reserved.
+//
+// "LIFEPUNCH Visible Pocket for DXRP" (s&box ident: lifepunch.visiblepocket · addon ident: visiblepocket) is the sole-owned
+// intellectual property of lifepunch.co. It is NOT licensed for resale, redistribution,
+// sublicensing, copying, or reuse by ANY person or entity — including DXRP and
+// LifePunch staff, contributors, or community — EXCEPT the owner (lifepunch.co).
+// Presence in this repository or on the DXRP portal grants no rights to anyone else.
+// ─────────────────────────────────────────────────────────────────────────────
+
+$bg: rgba(8, 12, 16, 0.92);
+$border: #1e3a4a;
+$accent: #00b4d8;
+$body: #d8f4ff;
+$body-dim: #7aa8bc;
+$filled: #0d2530;
+$main-font: Mina;
+
+VisiblePocketHud {
+    pointer-events: none;
+    position: absolute;
+    bottom: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: $main-font;
+
+    .pocket-bar {
+        background-color: $bg;
+        border: 1px solid $border;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+        padding: 6px 10px 4px;
+        min-width: 320px;
+    }
+
+    .pocket-header {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 6px;
+        border-bottom: 1px solid $border;
+        padding-bottom: 4px;
+
+        .pocket-mark {
+            color: $accent;
+            font-size: 10px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .pocket-title {
+            color: $accent;
+            font-size: 11px;
+            letter-spacing: 2px;
+            font-weight: bold;
+        }
+
+        .pocket-count {
+            margin-left: auto;
+            color: $body-dim;
+            font-size: 10px;
+        }
+    }
+
+    .pocket-slots {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 4px;
+        max-width: 520px;
+    }
+
+    .pocket-slot {
+        width: 72px;
+        height: 44px;
+        border: 1px solid $border;
+        background-color: rgba(0, 0, 0, 0.25);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 2px 4px;
+
+        &.filled {
+            border-color: $accent;
+            background-color: $filled;
+        }
+
+        .slot-index {
+            color: $body-dim;
+            font-size: 9px;
+        }
+
+        .slot-label {
+            color: $body;
+            font-size: 9px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
+
+    .pocket-footer {
+        margin-top: 4px;
+        color: $body-dim;
+        font-size: 8px;
+        opacity: 0.75;
+        text-align: right;
+    }
+}

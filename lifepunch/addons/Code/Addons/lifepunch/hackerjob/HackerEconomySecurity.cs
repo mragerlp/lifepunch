@@ -76,7 +76,11 @@ public static class HackerEconomySecurity
 
 		// Phase 2: IsHackerJob( hacker ), distance/LOS to terminal, per-target cooldown, audit log.
 		if ( !ValidatePuzzleOnHost( puzzleKind, submittedAnswer, advancedTerminal: false, secondsElapsed, timeLimitSeconds ) )
+		{
+			var rack = HackerServerRackRegistry.FindRackForTerminal( terminal );
+			_ = HackerCounterplayService.TryTriggerFailedHackAlert( rack, hacker.WorldPosition );
 			return HackAttemptResult.Denied( "puzzle validation failed" );
+		}
 
 		// Phase 2: clamp transfer to target.WalletBalance; ChargeHost/PayHost; never touch bank.
 		Log.Info( $"[LIFEPUNCH Hacker] wallet hack validated (stub) — hacker={hacker.SteamId} target={targetSteamId} kind={puzzleKind}" );
@@ -99,7 +103,11 @@ public static class HackerEconomySecurity
 			return HackAttemptResult.Denied( "invalid node" );
 
 		if ( !ValidatePuzzleOnHost( puzzleKind, submittedAnswer, advancedTerminal: true, secondsElapsed, timeLimitSeconds ) )
+		{
+			var rack = HackerServerRackRegistry.FindRackForTerminal( terminal );
+			_ = HackerCounterplayService.TryTriggerFailedHackAlert( rack, hacker.WorldPosition );
 			return HackAttemptResult.Denied( "puzzle validation failed" );
+		}
 
 		Log.Info( $"[LIFEPUNCH Hacker] govdb infil validated (stub) — hacker={hacker.SteamId} node={nodeId}" );
 		return HackAttemptResult.AcceptedNoTransfer( "validated — Phase 2 govdb not enabled" );

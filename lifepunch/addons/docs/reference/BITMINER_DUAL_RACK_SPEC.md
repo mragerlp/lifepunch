@@ -33,7 +33,7 @@ Archive mirror: `C:/lifepunch/reference-intake/bitcoinmining/gpu-rack-export/GPU
 ### Current (shipped `BitminerEntity.MineBitcoin`)
 
 ```text
-BTC per 60s tick = ClockSpeed × BaseSpeed(0.005) × CoreCount
+BTC per 90s tick = ClockSpeed × BaseSpeed(0.005) × CoreCount
 Display BTC/min  = same (rate label)
 ```
 

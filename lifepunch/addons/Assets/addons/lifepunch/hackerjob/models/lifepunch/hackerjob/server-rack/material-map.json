@@ -1,0 +1,20 @@
+{
+  "model": "server-rack",
+  "sourceMesh": "source/server-rack.dae",
+  "textureDir": "source/textures",
+  "slots": [
+    {
+      "importName": "ServerMaterial",
+      "vmat": "server-rack.vmat",
+      "maps": {
+        "Color": "ServerMaterial_albedo.jpg",
+        "Normal": "ServerMaterial_normal.png",
+        "Roughness": "ServerMaterial_roughness.jpg",
+        "Metalness": "ServerMaterial_metallic.jpg",
+        "AmbientOcclusion": "ServerMaterial_AO.jpg",
+        "Emissive": "ServerMaterial_emissive.jpg"
+      }
+    }
+  ],
+  "notes": "Author server-rack.vmat in ModelDoc after first compile; map PBR from source/textures."
+}

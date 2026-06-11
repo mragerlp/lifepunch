@@ -1,0 +1,23 @@
+{
+    "materials":  [
+                      "M_Cyan",
+                      "M_Gris_Metal",
+                      "M_Noir_BleutÃ©",
+                      "M_Noir_Profond",
+                      "M_Orange"
+                  ],
+    "status":  {
+                   "modelResourceCreated":  false,
+                   "materialResourcesCreated":  false,
+                   "sourceSeeded":  true
+               },
+    "schemaVersion":  1,
+    "model":  {
+                  "status":  "ModelDoc TODO",
+                  "slug":  "uranium-circuit-card",
+                  "packSource":  "SM_Card",
+                  "activeSource":  "source/uranium-circuit-card.fbx",
+                  "displayName":  "uranium circuit card",
+                  "targetModel":  "uranium-circuit-card.vmdl"
+              }
+}

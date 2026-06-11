@@ -44,18 +44,13 @@ BitminerTerminal {
         bottom: 0;
         pointer-events: none;
         z-index: 10;
-        opacity: 0.04;
-        background-image: repeating-linear-gradient(
-            0deg,
-            transparent,
-            transparent 2px,
-            #000000 2px,
-            #000000 4px
-        );
+        // s&box UI does not support CSS gradients on background-image (log spam on open).
+        opacity: 0.03;
+        background-color: #000000;
     }
 
     .title-bar {
-        background: linear-gradient(180deg, #1a1610 0%, #12100c 100%);
+        background-color: #16140f;
         padding: 8px 14px;
         border-bottom: 2px solid $border-bright;
         flex-shrink: 0;
@@ -88,6 +83,14 @@ BitminerTerminal {
 
         .title-spacer {
             flex-grow: 1;
+        }
+
+        .title-publisher {
+            font-family: $main-font;
+            font-size: 10px;
+            color: $primary-dim;
+            letter-spacing: 1px;
+            opacity: 0.85;
         }
 
         .close-x {
@@ -436,6 +439,36 @@ BitminerTerminal {
             font-family: $main-font;
             font-size: $text-sm;
             caret-color: $primary;
+        }
+    }
+
+    .lp-source-footer {
+        flex-shrink: 0;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+        padding: 5px 12px;
+        border-top: 1px solid $border;
+        background-color: #0c0a08;
+        font-family: $main-font;
+        font-size: 10px;
+        letter-spacing: 0.5px;
+
+        .lp-mark {
+            color: $primary;
+            font-weight: bold;
+        }
+
+        .lp-pub {
+            color: $body-dim;
+        }
+
+        .lp-legal {
+            color: $body-dim;
+            opacity: 0.75;
+            margin-left: auto;
+            text-align: right;
         }
     }
 }

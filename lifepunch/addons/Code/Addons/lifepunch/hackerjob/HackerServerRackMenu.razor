@@ -1,0 +1,243 @@
+@* ─────────────────────────────────────────────────────────────────────────────
+   PROPRIETARY & CONFIDENTIAL — © 2026 lifepunch.co. All rights reserved.
+
+   "Hacker Job" (s&box ident: lifepunch.hackerjob · addon ident: hackerjob) is the sole-owned
+   intellectual property of lifepunch.co. It is NOT licensed for resale, redistribution,
+   sublicensing, copying, or reuse by ANY person or entity — including DXRP and
+   LifePunch staff, contributors, or community — EXCEPT the owner (lifepunch.co).
+   Presence in this repository or on the DXRP portal grants no rights to anyone else.
+   ───────────────────────────────────────────────────────────────────────────── *@
+@namespace LifePunch.DXRP.Addons.HackerJob
+@using LifePunch.DXRP.Addons
+@using System.Collections.Generic
+@using Sandbox
+@using Sandbox.UI
+@inherits PanelComponent
+
+@attribute [StyleSheet]
+
+<root>
+    <div class="scanlines"></div>
+
+    <div class="title-bar">
+        <span class="title-mark">▣</span>
+        <span class="title-text">SERVER RACK CONTROL</span>
+        <span class="title-ver">v1</span>
+        <span class="title-spacer"></span>
+        <span class="title-publisher">@LifePunchSourceMark.UiFooterMark</span>
+        <button class="close-x" onclick=@OnClickClose>CLOSE</button>
+    </div>
+
+    <div class="terminal-body">
+        <div class="telemetry-rail">
+            <div class="rail-header">RACK STATUS</div>
+            <div class="rail-block">
+                <span class="rail-label">POWER</span>
+                <span class="rail-value @(Rack.IsValid() && Rack.IsPowered ? "active" : "")">@(Rack.IsValid() && Rack.IsPowered ? "ONLINE" : "OFFLINE")</span>
+            </div>
+            <div class="rail-block">
+                <span class="rail-label">TERMINALS</span>
+                <span class="rail-value">@_linkedCount</span>
+            </div>
+            <div class="rail-block">
+                <span class="rail-label">PUZZLE TTL</span>
+                <span class="rail-value">@(Rack.IsValid() ? $"{Rack.PuzzleTimeLimitSeconds:0}s" : "—")</span>
+            </div>
+            <div class="rail-block">
+                <span class="rail-label">REWARD</span>
+                <span class="rail-value">@(Rack.IsValid() ? $"{Rack.RewardMultiplier:0.00}×" : "—")</span>
+            </div>
+            <div class="rail-block">
+                <span class="rail-label">COOLDOWN</span>
+                <span class="rail-value">@(Rack.IsValid() ? $"{Rack.HackCooldownSeconds:0}s" : "—")</span>
+            </div>
+            <div class="rail-actions">
+                <button class="rail-btn start @(Rack.IsValid() && Rack.IsPowered ? "active" : "")" onclick=@OnPowerOn>POWER ON</button>
+                <button class="rail-btn stop" onclick=@OnPowerOff>POWER OFF</button>
+            </div>
+            <div class="rail-nav">
+                <div class="rail-nav-header">MODULES</div>
+                <button class="nav-btn @(_module == RackModule.Control ? "active" : "")" onclick=@(() => _module = RackModule.Control)>CONTROL</button>
+                <button class="nav-btn @(_module == RackModule.Upgrades ? "active" : "")" onclick=@(() => _module = RackModule.Upgrades)>UPGRADES</button>
+                <button class="nav-btn @(_module == RackModule.Log ? "active" : "")" onclick=@(() => _module = RackModule.Log)>LOG</button>
+            </div>
+        </div>
+
+        <div class="main-pane">
+            @if ( _module == RackModule.Control )
+            {
+                <div class="module-header">CONTROL — TERMINAL POWER</div>
+                <div class="control-body">
+                    <p class="control-line">Linked terminals within 8m receive rack power and upgrades.</p>
+                    <p class="control-line">Standard terminals: wallet hacks only.</p>
+                    <p class="control-line">Advanced (vengeance): wallets + Bitcoin Miners + Government Data Center.</p>
+                    <p class="control-line warn">Power OFF blocks all terminal sessions until restored.</p>
+                </div>
+            }
+            else if ( _module == RackModule.Upgrades )
+            {
+                <div class="module-header">UPGRADES — HACKING SYSTEMS</div>
+                <div class="upgrade-list">
+                    <div class="upgrade-row">
+                        <div class="upgrade-info">
+                            <span class="upgrade-name">Detection (L@GetTier(HackerUpgradeKind.Detection)/@GetMax(HackerUpgradeKind.Detection))</span>
+                            <span class="upgrade-detail">Lowers 911/Wanted chance on failed hacks</span>
+                            <span class="upgrade-detail dim">@GetNextLabel(HackerUpgradeKind.Detection)</span>
+                        </div>
+                        <button class="upgrade-btn @GetUpgradeBtnClass(HackerUpgradeKind.Detection)" onclick=@(() => TryUpgrade(HackerUpgradeKind.Detection, "Detection"))>@GetUpgradeBtnText(HackerUpgradeKind.Detection)</button>
+                    </div>
+                    <div class="upgrade-row">
+                        <div class="upgrade-info">
+                            <span class="upgrade-name">Puzzle Time (L@GetTier(HackerUpgradeKind.PuzzleTime)/@GetMax(HackerUpgradeKind.PuzzleTime))</span>
+                            <span class="upgrade-detail">More seconds to complete crack puzzles</span>
+                            <span class="upgrade-detail dim">@GetNextLabel(HackerUpgradeKind.PuzzleTime)</span>
+                        </div>
+                        <button class="upgrade-btn @GetUpgradeBtnClass(HackerUpgradeKind.PuzzleTime)" onclick=@(() => TryUpgrade(HackerUpgradeKind.PuzzleTime, "Puzzle Time"))>@GetUpgradeBtnText(HackerUpgradeKind.PuzzleTime)</button>
+                    </div>
+                    <div class="upgrade-row">
+                        <div class="upgrade-info">
+                            <span class="upgrade-name">Reward Yield (L@GetTier(HackerUpgradeKind.Reward)/@GetMax(HackerUpgradeKind.Reward))</span>
+                            <span class="upgrade-detail">Higher payout on successful hacks</span>
+                            <span class="upgrade-detail dim">@GetNextLabel(HackerUpgradeKind.Reward)</span>
+                        </div>
+                        <button class="upgrade-btn @GetUpgradeBtnClass(HackerUpgradeKind.Reward)" onclick=@(() => TryUpgrade(HackerUpgradeKind.Reward, "Reward Yield"))>@GetUpgradeBtnText(HackerUpgradeKind.Reward)</button>
+                    </div>
+                    <div class="upgrade-row">
+                        <div class="upgrade-info">
+                            <span class="upgrade-name">Cooldown (L@GetTier(HackerUpgradeKind.Cooldown)/@GetMax(HackerUpgradeKind.Cooldown))</span>
+                            <span class="upgrade-detail">Shorter wait between hack attempts</span>
+                            <span class="upgrade-detail dim">@GetNextLabel(HackerUpgradeKind.Cooldown)</span>
+                        </div>
+                        <button class="upgrade-btn @GetUpgradeBtnClass(HackerUpgradeKind.Cooldown)" onclick=@(() => TryUpgrade(HackerUpgradeKind.Cooldown, "Cooldown"))>@GetUpgradeBtnText(HackerUpgradeKind.Cooldown)</button>
+                    </div>
+                </div>
+                <div class="wallet-line">Wallet: $@HackerServerRackMenuHost.GetLocalWalletCash().ToString("N0")</div>
+            }
+            else
+            {
+                <div class="module-header">LOG</div>
+                <div class="log-scroll">
+                    @foreach ( var line in _lines )
+                    {
+                        <label class="log-line">@line</label>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="lp-source-footer">
+        <span class="lp-mark">@LifePunchSourceMark.UiFooterMark</span>
+        <span class="lp-pub">@LifePunchSourceMark.UiFooterPublisher</span>
+        <span class="lp-legal">@LifePunchSourceMark.UiFooterLegal</span>
+    </div>
+</root>
+
+@code {
+    private enum RackModule { Control, Upgrades, Log }
+
+    private HackerServerRackEntity Rack { get; set; }
+    private RackModule _module = RackModule.Control;
+    private int _linkedCount;
+    private readonly List<string> _lines = new();
+
+    public static void Open( HackerServerRackEntity rack )
+    {
+        var menu = HackerServerRackMenuHost.Mount();
+        if ( menu == null )
+            return;
+
+        menu.Rack = rack;
+        menu.RefreshLinkedCount();
+        menu._lines.Clear();
+        menu._lines.Add( $">> server rack control — {HackerJob.ProductTitle}" );
+        menu._lines.Add( $">> {LifePunchSourceMark.PublishedByLine}" );
+        menu._lines.Add( $">> power: {( rack.IsValid() && rack.IsPowered ? "ONLINE" : "OFFLINE" )}" );
+        menu._lines.Add( ">> use POWER ON before opening cornerman / vengeance terminals." );
+    }
+
+    private void RefreshLinkedCount()
+    {
+        _linkedCount = Rack.IsValid()
+            ? HackerServerRackRegistry.GetLinkedTerminals( Rack ).Count
+            : 0;
+    }
+
+    private void OnClickClose() => HackerServerRackMenuHost.Close( this );
+
+    private void OnPowerOn()
+    {
+        if ( !Rack.IsValid() ) return;
+        Rack.RequestSetPowered( true );
+        _lines.Add( "POWER ON — terminals energized." );
+        RefreshLinkedCount();
+    }
+
+    private void OnPowerOff()
+    {
+        if ( !Rack.IsValid() ) return;
+        Rack.RequestSetPowered( false );
+        _lines.Add( "POWER OFF — terminals offline." );
+    }
+
+    private int GetTier( HackerUpgradeKind kind ) =>
+        Rack.IsValid() ? Rack.GetTier( kind ) : 0;
+
+    private int GetMax( HackerUpgradeKind kind ) => HackerServerRackEntity.GetMaxTier( kind );
+
+    private string GetNextLabel( HackerUpgradeKind kind )
+    {
+        if ( !Rack.IsValid() )
+            return "—";
+
+        var tier = Rack.GetTier( kind );
+        var max = GetMax( kind );
+        return tier >= max
+            ? "MAX"
+            : HackerUpgradeCatalog.GetUpgradeLabel( kind, tier + 1 );
+    }
+
+    private string GetUpgradeBtnClass( HackerUpgradeKind kind )
+    {
+        if ( !Rack.IsValid() || Rack.GetTier( kind ) >= GetMax( kind ) )
+            return "disabled";
+
+        var cost = HackerUpgradeCatalog.GetUpgradeCost( kind, Rack.GetTier( kind ) + 1 );
+        return HackerServerRackMenuHost.GetLocalWalletCash() >= cost ? "" : "disabled";
+    }
+
+    private string GetUpgradeBtnText( HackerUpgradeKind kind )
+    {
+        if ( !Rack.IsValid() )
+            return "—";
+
+        var tier = Rack.GetTier( kind );
+        if ( tier >= GetMax( kind ) )
+            return "MAX";
+
+        var cost = HackerUpgradeCatalog.GetUpgradeCost( kind, tier + 1 );
+        return $"INSTALL ${cost:N0}";
+    }
+
+    private void TryUpgrade( HackerUpgradeKind kind, string title )
+    {
+        if ( !Rack.IsValid() )
+            return;
+
+        if ( Rack.GetTier( kind ) >= HackerServerRackEntity.GetMaxTier( kind ) )
+        {
+            _lines.Add( $"ERROR: {title} already at max tier." );
+            return;
+        }
+
+        var cost = HackerUpgradeCatalog.GetUpgradeCost( kind, Rack.GetTier( kind ) + 1 );
+        if ( HackerServerRackMenuHost.GetLocalWalletCash() < cost )
+        {
+            _lines.Add( $"ERROR: {title} costs ${cost:N0} — insufficient wallet." );
+            return;
+        }
+
+        Rack.RequestUpgrade( kind );
+        _lines.Add( $"INSTALLED: {title} → L{Rack.GetTier( kind )}" );
+    }
+}

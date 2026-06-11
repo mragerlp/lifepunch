@@ -14,13 +14,16 @@ $bg-raised: #1c1f27;
 $bg-row: #252932;
 $accent: #4f8cff;
 $accent-hover: #3d7af0;
-$accent-soft: rgba(79, 140, 255, 0.16);
-$accent-glow: rgba(79, 140, 255, 0.28);
+$accent-soft: rgba(79, 140, 255, 0.12);
+$accent-glow: rgba(79, 140, 255, 0.14);
 $dxrp-cyan: #08b2e3;
 $danger: #e7544a;
 $text: #e8eaed;
 $text-dim: #9aa0ab;
+$text-disabled: #6b7280;
+$bg-disabled: #1e2129;
 $border: rgba(255, 255, 255, 0.07);
+$border-disabled: rgba(255, 255, 255, 0.04);
 
 // Legacy fallback (pre ulx-v2 — restore these + remove `.ulx-v2` from razor to revert)
 // $bg: #16181d; $bg-raised: #1f2229; $bg-row: #262a33; $border: rgba(255,255,255,0.06);
@@ -39,6 +42,16 @@ $border: rgba(255, 255, 255, 0.07);
 	background-color: rgba(4, 6, 12, 0.62);
 	font-family: Poppins, Arial, sans-serif;
 
+	// Root Poppins cascades onto <i class="material-icons"> and renders ligature names as text
+	// instead of glyphs. Match DXRP BuildMenu / engine base.scss (IconPanel, tab icons, etc.).
+	.material-icons {
+		font-family: Material Icons;
+		font-weight: normal;
+		font-style: normal;
+		text-transform: none;
+		letter-spacing: normal;
+	}
+
 	.window {
 		flex-direction: column;
 		width: 1080px;
@@ -46,17 +59,10 @@ $border: rgba(255, 255, 255, 0.07);
 		max-width: 94%;
 		max-height: 92%;
 		background-color: $bg;
-		background-image: linear-gradient(165deg, #1a1e28 0%, $bg 42%, #12141a 100%);
-		border-radius: 14px;
+		border-radius: 12px;
 		border: 1px solid $border;
 		overflow: hidden;
-		box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.45), 0 28px 70px rgba(0, 0, 0, 0.55), 0 0 48px $accent-glow;
-	}
-
-	.header-accent {
-		flex-shrink: 0;
-		height: 2px;
-		background-image: linear-gradient(90deg, $dxrp-cyan 0%, $accent 38%, $accent 62%, rgba(79, 140, 255, 0.15) 100%);
+		box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
 	}
 
 	.header {
@@ -68,7 +74,6 @@ $border: rgba(255, 255, 255, 0.07);
 		justify-content: space-between;
 		padding: 14px 20px 16px 20px;
 		background-color: $bg-raised;
-		background-image: linear-gradient(180deg, rgba(79, 140, 255, 0.06) 0%, transparent 100%);
 		border-bottom: 1px solid $border;
 
 		.title {
@@ -269,7 +274,6 @@ $border: rgba(255, 255, 255, 0.07);
 		// clean width swap rather than a fight between the two panes.
 		flex-shrink: 0;
 		background-color: $bg-raised;
-		background-image: linear-gradient(90deg, rgba(79, 140, 255, 0.04) 0%, transparent 28%);
 		border-right: 1px solid $border;
 		min-height: 0;
 		// The sidebar spans the full body height (the signature now lives in the right column), so it
@@ -547,22 +551,21 @@ $border: rgba(255, 255, 255, 0.07);
 		// re-asserts the accent so the active tab never flickers to the plain hover style, while
 		// non-active tabs keep their normal `.tab:hover` feedback. Toggled via TabClass() in the razor.
 		.tab-sel {
-			color: #fff;
+			color: $text;
 			font-weight: 600;
-			background-color: $accent;
-			border-color: rgba(255, 255, 255, 0.12);
-			box-shadow: 0 4px 14px $accent-glow;
+			background-color: $accent-soft;
+			border-color: rgba(79, 140, 255, 0.35);
 
 			.tab-icon {
-				color: #fff;
+				color: $accent;
 			}
 
 			&:hover {
-				color: #fff;
-				background-color: $accent;
+				color: $text;
+				background-color: $accent-soft;
 
 				.tab-icon {
-					color: #fff;
+					color: $accent;
 				}
 			}
 		}
@@ -659,9 +662,7 @@ $border: rgba(255, 255, 255, 0.07);
 		// Clearer "a player is selected" state: accent border + tint + full-strength text.
 		&.active {
 			background-color: $accent-soft;
-			background-image: linear-gradient(90deg, rgba(8, 178, 227, 0.08) 0%, rgba(79, 140, 255, 0.14) 100%);
-			border: 1px solid rgba(79, 140, 255, 0.55);
-			box-shadow: inset 0 0 0 1px rgba(79, 140, 255, 0.12);
+			border: 1px solid rgba(79, 140, 255, 0.35);
 			color: $text;
 			font-weight: 500;
 		}
@@ -742,18 +743,23 @@ $border: rgba(255, 255, 255, 0.07);
 			transition: background-color 0.12s ease-out, color 0.12s ease-out, border-bottom-color 0.12s ease-out;
 
 			&:hover {
-				background-color: $accent;
-				color: #fff;
+				background-color: #2d323d;
+				color: $text;
 			}
 
 			&.active {
-				background-color: $accent;
-				color: #fff;
+				background-color: $accent-soft;
+				color: $accent;
+				border: 1px solid rgba(79, 140, 255, 0.35);
 			}
 
-			&.disabled {
-				opacity: 0.3;
+			&.disabled,
+			&.disabled:hover {
 				pointer-events: none;
+				cursor: default;
+				background-color: $bg-disabled;
+				color: $text-disabled;
+				border: 1px solid $border-disabled;
 			}
 		}
 	}
@@ -811,13 +817,12 @@ $border: rgba(255, 255, 255, 0.07);
 		padding: 8px 6px;
 		border-radius: 11px;
 		background-color: $bg-row;
-		background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, transparent 55%);
 		border: 1px solid $border;
 		color: $text;
 		font-size: 13px;
 		font-weight: 500;
 		cursor: pointer;
-		transition: background-color 0.12s ease-out, color 0.12s ease-out, border-bottom-color 0.12s ease-out, box-shadow 0.12s ease-out;
+		transition: background-color 0.12s ease-out, color 0.12s ease-out, border-color 0.12s ease-out;
 
 		span {
 			text-align: center;
@@ -834,21 +839,28 @@ $border: rgba(255, 255, 255, 0.07);
 		}
 
 		&:hover {
-			background-color: $accent;
-			background-image: none;
-			border-color: rgba(255, 255, 255, 0.14);
-			box-shadow: 0 6px 18px $accent-glow;
-			color: #fff;
+			background-color: #2d323d;
+			border-color: rgba(79, 140, 255, 0.28);
+			color: $text;
 
 			.material-icons {
-				color: #fff;
-				background-color: rgba(255, 255, 255, 0.14);
+				color: $accent;
+				background-color: $accent-soft;
 			}
 		}
 
-		&.disabled {
-			opacity: 0.3;
+		&.disabled,
+		&.disabled:hover {
 			pointer-events: none;
+			cursor: default;
+			background-color: $bg-disabled;
+			border-color: $border-disabled;
+			color: $text-disabled;
+
+			.material-icons {
+				color: $text-disabled;
+				background-color: rgba(255, 255, 255, 0.03);
+			}
 		}
 	}
 
@@ -937,9 +949,8 @@ $border: rgba(255, 255, 255, 0.07);
 			padding: 18px;
 			border-radius: 12px;
 			background-color: $bg-raised;
-			background-image: linear-gradient(180deg, rgba(79, 140, 255, 0.05) 0%, transparent 40%);
 			border: 1px solid $border;
-			border-top: 2px solid $accent;
+			border-top: 2px solid rgba(79, 140, 255, 0.45);
 
 			// Quick-teleport box (Goto / Bring / Return) pinned to the card's top-right corner so it
 			// reads as part of the player it acts on, not a floating control up by the header.
@@ -969,16 +980,23 @@ $border: rgba(255, 255, 255, 0.07);
 					}
 
 					&:hover {
-						background-color: $accent;
+						background-color: #2d323d;
 
 						.material-icons {
-							color: #fff;
+							color: $accent;
 						}
 					}
 
-					&.disabled {
-						opacity: 0.4;
+					&.disabled,
+					&.disabled:hover {
 						pointer-events: none;
+						cursor: default;
+						background-color: $bg-disabled;
+						border: 1px solid $border-disabled;
+
+						.material-icons {
+							color: $text-disabled;
+						}
 					}
 				}
 			}
@@ -988,8 +1006,7 @@ $border: rgba(255, 255, 255, 0.07);
 				width: 64px;
 				height: 64px;
 				border-radius: 50%;
-				border: 2px solid rgba(79, 140, 255, 0.45);
-				box-shadow: 0 0 20px $accent-glow;
+				border: 2px solid rgba(79, 140, 255, 0.3);
 			}
 
 			.profile-name {
@@ -1059,11 +1076,11 @@ $border: rgba(255, 255, 255, 0.07);
 		}
 
 		&:hover {
-			background-color: $accent;
-			color: #fff;
+			background-color: #2d323d;
+			color: $text;
 
 			.material-icons {
-				color: #fff;
+				color: $accent;
 			}
 		}
 	}
@@ -1471,9 +1488,13 @@ $border: rgba(255, 255, 255, 0.07);
 					}
 				}
 
-				&.disabled {
-					opacity: 0.4;
+				&.disabled,
+				&.disabled:hover {
 					pointer-events: none;
+					cursor: default;
+					background-color: $bg-disabled;
+					color: $text-disabled;
+					border: 1px solid $border-disabled;
 				}
 			}
 		}
@@ -1641,10 +1662,9 @@ $border: rgba(255, 255, 255, 0.07);
 			justify-content: center;
 			width: 40px;
 			height: 40px;
-			border-radius: 11px;
+			border-radius: 10px;
 			background-color: $accent-soft;
-			border: 1px solid rgba(79, 140, 255, 0.28);
-			box-shadow: 0 0 16px $accent-glow;
+			border: 1px solid rgba(79, 140, 255, 0.22);
 
 			.material-icons {
 				color: $accent;
@@ -1681,13 +1701,8 @@ $border: rgba(255, 255, 255, 0.07);
 			}
 		}
 
-		.audit-table {
-			box-shadow: inset 0 1px 0 rgba(79, 140, 255, 0.08);
-		}
-
 		.coming-soon .material-icons {
-			color: $accent;
-			opacity: 0.45;
+			color: $text-disabled;
 		}
 	}
 }

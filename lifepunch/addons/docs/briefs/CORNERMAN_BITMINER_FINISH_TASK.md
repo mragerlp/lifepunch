@@ -16,9 +16,9 @@
 
 Fill grep rows in `briefs/BITMINER_PROTECTION_CHECKLIST.md`:
 
-- LIFEPUNCH™ in About / boot / no Evo copy
+- LIFEPUNCH™ in About / boot — no third-party credits
 - Proprietary headers on all `bitcoinmining/*.cs` + `.razor`
-- No `Spl Mute` / BitOS strings
+- No third-party attribution strings (`BITMINER_PROTECTION_CHECKLIST.md`)
 - `addons.json` description leads with LIFEPUNCH
 
 Mark each row PASS / FAIL / N/A with file path.

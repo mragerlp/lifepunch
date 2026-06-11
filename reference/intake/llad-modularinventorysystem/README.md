@@ -65,5 +65,5 @@ Prefer **vendored source + owned bridge** over requiring players to mount llad c
 
 ## Reference only until gates pass
 
-Same bar as `reference/evo-bitminer/` and CS2 `reference-intake/`: study patterns, never
+Same bar as CS2 `reference-intake/`: study patterns, never
 list third-party work as LIFEPUNCH Class 9 goods without ownership or a documented license chain.

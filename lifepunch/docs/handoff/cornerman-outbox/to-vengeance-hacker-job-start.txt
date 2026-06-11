@@ -1,0 +1,41 @@
+HACKER JOB — VENGEANCE start (2026-06-11)
+==========================================
+
+CVL sync issued. Cornerman inbox + WarmDistill dispatched.
+
+STEP 0 — DXRP sync (you, now)
+-----------------------------
+powershell -File lifepunch/scripts/Sync-LifePunchAddonsToDxrp.ps1 -Addon hackerjob,adminmenu
+# Start-SboxDxrpEditor.ps1 if editor closed
+
+STEP 1 — H1 smoke (no prefab)
+------------------------------
+lifepunch_spawn_testbot Greg
+lp_cornerman_ui
+scan
+hack <steamid from scan>
+# puzzles: drain(wallet); · cornerman_bypass · 1
+
+STEP 2 — H2 world entities
+--------------------------
+lp_hacker_kit_preview
+# or: lp_spawn_hacker_terminal · lp_spawn_advanced_hacker_terminal · lp_spawn_server_rack
+
+STEP 3 — ModelDoc (editor)
+--------------------------
+hacker-terminal.vmdl + advanced-hacker-terminal.vmdl — compile vmats
+server-rack.vmdl — Intake-HackerServerRack.ps1 if mesh missing
+
+STEP 4 — publish (dev gamemode only)
+------------------------------------
+scripts/prepare-publish.ps1 -Addon hackerjob
+
+LANES
+-----
+Red: C#, prefabs, ModelDoc, playtest, publish
+Green: puzzle catalog distill, PvP flow notes, UI review (outbox/)
+Blue: Odysseus hub — session log when voice/PTT used
+
+DO NOT SHIP YET
+---------------
+Wallet money movement (Phase 2 Opus). Phase 1 = UI + puzzles + scan only.

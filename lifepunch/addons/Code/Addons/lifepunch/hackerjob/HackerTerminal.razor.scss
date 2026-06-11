@@ -136,6 +136,13 @@ HackerTerminal {
             flex-grow: 1;
         }
 
+        .title-publisher {
+            font-family: $main-font;
+            font-size: 10px;
+            letter-spacing: 1px;
+            opacity: 0.85;
+        }
+
         .tier-badge {
             font-family: $main-font;
             font-size: 10px;
@@ -512,5 +519,47 @@ HackerTerminal {
             font-family: $main-font;
             font-size: $text-sm;
         }
+    }
+
+    .lp-source-footer {
+        flex-shrink: 0;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+        padding: 5px 12px;
+        border-top: 1px solid #1a2a1a;
+        background-color: #060a06;
+        font-family: $main-font;
+        font-size: 10px;
+        letter-spacing: 0.5px;
+
+        .lp-mark {
+            font-weight: bold;
+        }
+
+        .lp-pub {
+            opacity: 0.8;
+        }
+
+        .lp-legal {
+            opacity: 0.65;
+            margin-left: auto;
+            text-align: right;
+        }
+    }
+
+    &.tier-standard .lp-source-footer {
+        border-top-color: $border-standard;
+        .lp-mark { color: $primary-standard; }
+        .lp-pub, .lp-legal { color: $body-standard-dim; }
+        .title-publisher { color: $primary-standard-dim; }
+    }
+
+    &.tier-advanced .lp-source-footer {
+        border-top-color: $border-advanced;
+        .lp-mark { color: $primary-advanced; }
+        .lp-pub, .lp-legal { color: $body-advanced-dim; }
+        .title-publisher { color: $primary-advanced-dim; }
     }
 }

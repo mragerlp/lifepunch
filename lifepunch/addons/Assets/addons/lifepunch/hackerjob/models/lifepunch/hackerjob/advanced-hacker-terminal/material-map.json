@@ -2,10 +2,11 @@
   "schemaVersion": 1,
   "model": {
     "slug": "advanced-hacker-terminal",
-    "displayName": "Advanced Hacking Terminal CRT",
-    "activeSource": "source/computer.fbx",
+    "displayName": "Advanced Hacking Terminal",
+    "activeSource": "source/hacker-terminal.fbx",
     "targetModel": "advanced-hacker-terminal.vmdl",
-    "status": "ModelDoc TODO — Vengeance red material pass"
+    "entityPrefab": "entities/advanced-hacker-terminal/advanced-hacker-terminal.prefab",
+    "status": "ModelDoc TODO — red Vengeance material pass"
   },
   "brand": {
     "program": "vengeance.exe",
@@ -15,6 +16,7 @@
   "status": {
     "sourceSeeded": true,
     "modelResourceCreated": true,
+    "prefabCreated": true,
     "materialResourcesCreated": false
   }
 }

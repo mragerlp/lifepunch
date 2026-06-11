@@ -29,9 +29,12 @@ public sealed class HackerTerminalEntity : BaseEntity, Component.IPressable
 #endif
 {
 	[Property] public HackerTerminalTier Tier { get; set; } = HackerTerminalTier.Standard;
+	[Property] public HackerServerRackEntity LinkedRack { get; set; }
 	[Property] public TextRenderer ScreenText { get; set; }
 
 	public bool IsAdvanced => Tier == HackerTerminalTier.Advanced;
+	public bool IsPowered => HackerServerRackRegistry.IsTerminalPowered( this );
+	public HackerServerRackEntity ActiveRack => HackerServerRackRegistry.FindRackForTerminal( this );
 
 	protected override void OnStart()
 	{
@@ -56,7 +59,22 @@ public sealed class HackerTerminalEntity : BaseEntity, Component.IPressable
 
 		// Job gate + distance validation land in Phase 2 (Opus).
 #endif
+		if ( !IsPowered )
+		{
+			DenyTerminalOpen( Rpc.CallerId, "ERROR: terminal offline — power ON the Server Rack first." );
+			return;
+		}
+
 		OpenTerminal( Rpc.CallerId );
+	}
+
+	[Rpc.Broadcast]
+	private void DenyTerminalOpen( Guid callerId, string message )
+	{
+		if ( Connection.Local.Id != callerId )
+			return;
+
+		Log.Info( $"[LIFEPUNCH Hacker] {message}" );
 	}
 
 	[Rpc.Broadcast]
@@ -118,10 +136,46 @@ public sealed class HackerTerminalEntity : BaseEntity, Component.IPressable
 #endif
 	}
 
-	private void RefreshScreenIdle()
+	public void RequestReportHackFailure() => ReportHackFailureHost();
+
+	[Rpc.Host]
+	private void ReportHackFailureHost()
+	{
+#if !LIFEPUNCH_LOCAL
+		if ( !GameUtils.HasPermission( Rpc.Caller, GameObject ) )
+			return;
+
+		var hacker = GameUtils.GetPlayerByConnectionId( Rpc.CallerId );
+		var position = hacker.IsValid() ? hacker.WorldPosition : WorldPosition;
+#else
+		var position = WorldPosition;
+#endif
+		var rack = ActiveRack;
+		var alertLine = HackerCounterplayService.TryTriggerFailedHackAlert( rack, position );
+		NotifyHackFailure( Rpc.CallerId, alertLine );
+	}
+
+	[Rpc.Broadcast]
+	private void NotifyHackFailure( Guid callerId, string alertLine )
+	{
+		if ( Connection.Local.Id != callerId )
+			return;
+
+		HackerTerminal.NotifyHackFailure( alertLine );
+	}
+
+	public void RefreshScreenIdle()
 	{
 		if ( !ScreenText.IsValid() )
 			return;
+
+		if ( !IsPowered )
+		{
+			ScreenText.Text = IsAdvanced
+				? "LIFEPUNCH vengeance.exe\n[ OFFLINE ] rack power required"
+				: "LIFEPUNCH cornerman.exe\n[ OFFLINE ] rack power required";
+			return;
+		}
 
 		ScreenText.Text = IsAdvanced
 			? "LIFEPUNCH vengeance.exe\n[ STANDBY ] enhanced intrusion rig"

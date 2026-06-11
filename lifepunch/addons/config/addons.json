@@ -74,6 +74,20 @@
       "contents": []
     },
     {
+      "ident": "uraniumspecialist",
+      "title": "Uranium Specialist Job",
+      "description": "LIFEPUNCH Uranium Specialist Job for DXRP — sci-fi power/reactor props (Pack SciFi B intake). Enrichment/processing loop TBD. Published by LIFEPUNCH.",
+      "kind": "simple-entity",
+      "hasAssets": true,
+      "hasCode": true,
+      "sboxIdentifier": "lifepunch.uraniumspecialist",
+      "dxrpAddonId": "",
+      "status": "foundation-intake",
+      "spec": "docs/URANIUM_SPECIALIST_SPEC.md",
+      "notes": "Raw intake: 12 props from Pack_SciFi_B_001 (reactor, control panel, cells, cabinets, fan, etc.). Intake-UraniumSpecialistScifiPack.ps1. ModelDoc + job gameplay after bitminer ship.",
+      "contents": []
+    },
+    {
       "ident": "hackerjob",
       "title": "Hacker Job",
       "description": "LIFEPUNCH Hacker Job for DXRP — placeable retro CRT terminals (cornerman.exe / vengeance.exe fiction). Scan live wallets, solve time-boxed puzzles, steal on-hand cash only (never bank). Published by LIFEPUNCH. Proprietary; server-authoritative economy (Phase 2 Opus).",
@@ -84,8 +98,42 @@
       "dxrpAddonId": "019e448c-4958-77d1-84b7-c7ec3f1bc328",
       "status": "code-draft",
       "spec": "docs/HACKER_JOB_SPEC.md",
-      "notes": "Two tiers: Standard Hacker Terminal (cornerman.exe green) + Advanced Hacking Terminal (vengeance.exe red, govdb infil). Dev: lp_cornerman_ui / lp_vengeance_ui. Phase 2 wallet economy = Opus. TERMINAL_BRAND_MATRIX.md.",
-      "contents": []
+      "notes": "Owner FBX intake: Intake-HackerTerminalModel.ps1. Server rack DAE: Intake-HackerServerRack.ps1. Prefabs + lcd_screen wired. ModelDoc vmats TODO. Dev: lp_hacker_kit_preview / lp_spawn_server_rack. Phase 2 wallet economy = Opus.",
+      "contents": [
+        {
+          "slug": "server-rack",
+          "name": "Hacker Server Rack",
+          "label": "Hacker Server Rack",
+          "type": 0,
+          "primaryReference": "addons/lifepunch/hackerjob/entities/server-rack/server-rack.prefab",
+          "worldModelPath": "addons/lifepunch/hackerjob/models/lifepunch/hackerjob/server-rack/server-rack.vmdl",
+          "grouping": "Entities",
+          "implementationStatus": "rack-power-upgrades",
+          "modelBuild": "Assets/addons/lifepunch/hackerjob/models/lifepunch/hackerjob/server-rack/MODEL_BUILD.md"
+        },
+        {
+          "slug": "hacker-terminal",
+          "name": "Hacker Terminal",
+          "label": "Hacker Terminal",
+          "type": 0,
+          "primaryReference": "addons/lifepunch/hackerjob/entities/hacker-terminal/hacker-terminal.prefab",
+          "worldModelPath": "addons/lifepunch/hackerjob/models/lifepunch/hackerjob/hacker-terminal/hacker-terminal.vmdl",
+          "grouping": "Entities",
+          "implementationStatus": "cornerman-exe-phase1",
+          "modelBuild": "Assets/addons/lifepunch/hackerjob/models/lifepunch/hackerjob/hacker-terminal/MODEL_BUILD.md"
+        },
+        {
+          "slug": "advanced-hacker-terminal",
+          "name": "Advanced Hacking Terminal",
+          "label": "Advanced Hacking Terminal",
+          "type": 0,
+          "primaryReference": "addons/lifepunch/hackerjob/entities/advanced-hacker-terminal/advanced-hacker-terminal.prefab",
+          "worldModelPath": "addons/lifepunch/hackerjob/models/lifepunch/hackerjob/advanced-hacker-terminal/advanced-hacker-terminal.vmdl",
+          "grouping": "Entities",
+          "implementationStatus": "vengeance-exe-govdb",
+          "modelBuild": "Assets/addons/lifepunch/hackerjob/models/lifepunch/hackerjob/advanced-hacker-terminal/MODEL_BUILD.md"
+        }
+      ]
     },
     {
       "ident": "governmentdatacenter",
@@ -191,8 +239,8 @@
     },
     {
       "ident": "bitcoinmining",
-      "title": "LIFEPUNCH Bitcoin Mining for DXRP",
-      "description": "LIFEPUNCH™ Bitcoin Mining — placeable terminal + GPU racks for DXRP. hashd console controls mining, upgrades, and BTC payout. Published by LIFEPUNCH. LifePunch-owned meshes; not third-party cloud assets.",
+      "title": "LIFEPUNCH Bitcoin Miner for DXRP",
+      "description": "LIFEPUNCH™ Bitcoin Miner — Bitcoin Terminal + GPU Rack + Large GPU Rack for DXRP. hashd console controls mining, upgrades, and BTC payout. Published by LIFEPUNCH. LifePunch-owned meshes; not third-party cloud assets.",
       "kind": "interactive-entity",
       "hasAssets": true,
       "hasCode": true,
@@ -200,7 +248,7 @@
       "sboxIdentifier": "lifepunch.bitcoinmining",
       "status": "in-development",
       "spec": "docs/BITMINER_UX_SPEC.md",
-      "notes": "Three placeables: bitcoin-terminal, bitcoin-miner, advanced-bitcoin-miner. Finish runbook: docs/BITMINER_FINISH_RUNBOOK.md. ModelDoc _c for terminal + stacked rack before portal ship. Remove BitminerDevSpawn before publish.",
+      "notes": "IP: docs/BITMINER_IP_DOCTRINE.md. Hub + gpu-rack + large-gpu-rack. ModelDoc _c before portal ship. Remove BitminerDevSpawn before publish.",
       "contents": [
         {
           "slug": "bitcoin-terminal",
@@ -214,22 +262,22 @@
           "modelBuild": "Assets/addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-terminal/MODEL_BUILD.md"
         },
         {
-          "slug": "bitcoin-miner",
-          "name": "Bitcoin Miner",
-          "label": "Bitcoin Miner",
+          "slug": "gpu-rack",
+          "name": "GPU Rack",
+          "label": "GPU Rack",
           "type": 0,
-          "primaryReference": "addons/lifepunch/bitcoinmining/entities/bitcoin-miner/bitcoin-miner.prefab",
+          "primaryReference": "addons/lifepunch/bitcoinmining/entities/gpu-rack/gpu-rack.prefab",
           "worldModelPath": "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/gpu-rack/gpu-rack.vmdl",
           "grouping": "Entities",
           "implementationStatus": "small-rack-phase1",
           "modelBuild": "Assets/addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/gpu-rack/MODEL_BUILD.md"
         },
         {
-          "slug": "advanced-bitcoin-miner",
-          "name": "Advanced Bitcoin Miner",
-          "label": "Advanced Bitcoin Miner",
+          "slug": "large-gpu-rack",
+          "name": "Large GPU Rack",
+          "label": "Large GPU Rack",
           "type": 0,
-          "primaryReference": "addons/lifepunch/bitcoinmining/entities/advanced-bitcoin-miner/advanced-bitcoin-miner.prefab",
+          "primaryReference": "addons/lifepunch/bitcoinmining/entities/large-gpu-rack/large-gpu-rack.prefab",
           "worldModelPath": "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/gpu-rack/gpu-rack-stacked.vmdl",
           "grouping": "Entities",
           "implementationStatus": "stacked-rack-2x-yield",
@@ -246,9 +294,9 @@
       "hasCode": true,
       "dxrpAddonId": "",
       "sboxIdentifier": "lifepunch.visiblepocket",
-      "status": "p1-scaffold",
+      "status": "p2-hud-policy",
       "spec": "docs/VISIBLE_POCKET_SPEC.md",
-      "notes": "P1: PocketSlotPolicy + lp_pocket_policy / lp_pocket_apply_dev dev bridge. Per-player MaxPocketItems = POCKET-01 Opus. llad MIS study only. Remove dev commands before portal ship.",
+      "notes": "P2: per-player pickup gate + visible hotbar HUD + input bridge on DXRP PocketSystem. P3 bank prop pending. Dev: lp_pocket_policy, lp_pocket_refresh. llad MIS study only.",
       "contents": []
     },
     {

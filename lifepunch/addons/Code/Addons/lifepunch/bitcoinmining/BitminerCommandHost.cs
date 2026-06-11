@@ -53,6 +53,20 @@ internal static class BitminerCommandHost
 		if ( !viewerPos.HasValue )
 			return;
 
+		var hub = FindNearestHub( scene, viewerPos.Value, poweredOnly: true );
+		if ( hub.IsValid() )
+		{
+			hub.RequestOpenHashd();
+			return;
+		}
+
+		var offlineHub = FindNearestHub( scene, viewerPos.Value, poweredOnly: false );
+		if ( offlineHub.IsValid() && !offlineHub.IsPowered )
+		{
+			offlineHub.RequestOpenPowerGate();
+			return;
+		}
+
 		var nearest = FindNearestRig( scene, viewerPos.Value );
 		if ( !nearest.IsValid() )
 		{
@@ -67,6 +81,32 @@ internal static class BitminerCommandHost
 	{
 		var trimmed = ( args ?? "" ).Trim();
 		return trimmed.Equals( "close", StringComparison.OrdinalIgnoreCase );
+	}
+
+	private static BitminerHubEntity FindNearestHub( Scene scene, Vector3 viewerPos, bool poweredOnly )
+	{
+		BitminerHubEntity best = null;
+		var bestHorizontal = float.MaxValue;
+
+		foreach ( var hub in scene.GetAllComponents<BitminerHubEntity>() )
+		{
+			if ( !hub.IsValid() )
+				continue;
+
+			if ( poweredOnly && !hub.IsPowered )
+				continue;
+
+			if ( !BitminerHubRegistry.IsInLinkRange( viewerPos, hub.WorldPosition, out var horizontal ) )
+				continue;
+
+			if ( horizontal < bestHorizontal )
+			{
+				bestHorizontal = horizontal;
+				best = hub;
+			}
+		}
+
+		return best;
 	}
 
 	private static BitminerEntity FindNearestRig( Scene scene, Vector3 viewerPos )
@@ -98,6 +138,6 @@ internal static class BitminerCommandHost
 
 	private static void NotifyNoRigInRange()
 	{
-		Log.Info( "[hashd] No Bitcoin Miner rig in range." );
+		Log.Info( "[hashd] No GPU rack in range." );
 	}
 }

@@ -1,0 +1,42 @@
+LIFEPUNCH HACKER JOB — Cornerman P0 (2026-06-11)
+=================================================
+
+OWNER PIVOT: start Hacker Job lane now. Cyber ecosystem distill continues in parallel (P1).
+
+START HERE
+----------
+inbox/CORNERMAN_HACKER_JOB_TERMINAL_TASK.md
+inbox/HACKER_JOB_SPEC.md
+inbox/HACKER_OPS_CONSOLE_SPEC.md
+inbox/HACKER_TERMINAL_FLOW_SCAFFOLD.md
+inbox/TERMINAL_PUZZLE_CATALOG_SCAFFOLD.md
+inbox/HACKER_PVP_INFRA.md          ← PvP vs bitcoin hub encryption
+inbox/TERMINAL_PLATFORM_TOKENS.scss
+
+RED STATUS (VENGEANCE — already on main, uncommitted WIP on box)
+----------------------------------------------------------------
+H1 PASS TARGET: lp_cornerman_ui → scan → hack <steamid> (bots)
+H2: prefabs exist (hacker-terminal, advanced-hacker-terminal, server-rack)
+Dev kit: lp_hacker_kit_preview · lp_spawn_server_rack · cornerman / hack commands
+
+YOUR DELIVERABLES (outbox/) — distill + UI notes, NO C#
+-------------------------------------------------------
+HACKER_TERMINAL_FLOW_NOTES.md     ← tighten HACKER_TERMINAL_FLOW for RAG
+TERMINAL_PUZZLE_CATALOG.md        ← expand puzzle kinds + time boxes
+HASHD_AUTH_PATTERN.md             ← type-then-click confirm (UPGRADE_TIER_STANDARD)
+HACKER_UI_REVIEW_NOTES.md         ← cornerman.exe vs owner tabbed intake UX
+HACKER_PVP_INFRA_FLOW.md          ← offense rack vs bitcoin hub defense (table)
+
+Optional coder (Red assigns): TERMINAL_PLATFORM_TOKENS.scss polish → outbox/
+
+WARM
+----
+Send-CornermanWorkflow.ps1 -Action WarmDistill
+
+DO NOT
+------
+Wallet RPC, economy debit, ModelDoc, prefab C# — Red only.
+
+PING RED
+--------
+OK cornerman hacker-job distill — outbox ready

@@ -1,0 +1,35 @@
+STAFF MENU — Cornerman P0 (2026-06-11)
+======================================
+
+OWNER ASK: Fix the lifepunch.ulx staff menu.
+
+START HERE
+----------
+inbox/CORNERMAN_STAFF_MENU_TASK.md
+inbox/STAFF_MENU_FIX.json
+
+P0 (do first)
+-------------
+StaffMenu.razor.scss has 7x linear-gradient — s&box UI rejects these (same bug class as hashd terminal).
+→ Replace with solid background-color + box-shadow.
+→ Reference: inbox/BITMINER_GRADIENT_FIX_REFERENCE.scss (BitminerTerminal fix).
+→ Deliver: outbox/STAFF_MENU_SCSS_FIX.scss (full file ready for Red to copy in).
+
+DO NOT change StaffMenuHost.cs mount pattern (GameManager.ShowUi) — clicks depend on it.
+
+P1 (distill)
+------------
+Hit Shapes radial wheel — study only, notes for Red:
+outbox/STAFF_MENU_HIT_SHAPES_NOTES.txt
+
+Model
+-----
+WarmCoder before SCSS work:
+  Send-CornermanWorkflow.ps1 -Action WarmCoder
+
+Ping Red when done
+------------------
+One line: OK cornerman staff-menu scss
++ path to outbox files.
+
+Red will sync adminmenu to DXRP + play-test from game.scene (not prefab tab).

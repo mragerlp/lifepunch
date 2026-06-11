@@ -1,13 +1,12 @@
-
-// ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
-// PROPRIETARY & CONFIDENTIAL ΓÇö ┬⌐ 2026 lifepunch.co. All rights reserved.
+// ─────────────────────────────────────────────────────────────────────────────
+// PROPRIETARY & CONFIDENTIAL — © 2026 lifepunch.co. All rights reserved.
 //
-// "Bitcoin Mining" (s&box ident: lifepunch.bitcoinmining ┬╖ addon ident: bitcoinmining) is the sole-owned
+// "Bitcoin Mining" (s&box ident: lifepunch.bitcoinmining · addon ident: bitcoinmining) is the sole-owned
 // intellectual property of lifepunch.co. It is NOT licensed for resale, redistribution,
-// sublicensing, copying, or reuse by ANY person or entity ΓÇö including DXRP and
-// LifePunch staff, contributors, or community ΓÇö EXCEPT the owner (lifepunch.co).
+// sublicensing, copying, or reuse by ANY person or entity — including DXRP and
+// LifePunch staff, contributors, or community — EXCEPT the owner (lifepunch.co).
 // Presence in this repository or on the DXRP portal grants no rights to anyone else.
-// ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+// ─────────────────────────────────────────────────────────────────────────────
 
 using System;
 using Sandbox;
@@ -33,12 +32,12 @@ public enum BitminerUpgradeType
 ///   * <c>#if LIFEPUNCH_LOCAL</c>  ΓÇö compile-safe Sandbox-only stub (local / editor build).
 ///   * <c>#else</c>                ΓÇö real <c>Dxura.RP.Game</c> implementation (dxrp.net build).
 /// </summary>
-[Title( "Bitcoin Miner" )]
-[Category( "LifePunch/Bitcoin Mining" )]
+[Title( "GPU Rack" )]
+[Category( "LifePunch/Bitcoin Miner" )]
 #if LIFEPUNCH_LOCAL
-public sealed partial class BitminerEntity : Component, Component.IPressable
+public partial class BitminerEntity : Component, Component.IPressable
 #else
-public sealed partial class BitminerEntity : BaseEntity, Component.IPressable, IGameEvents, IAreaDamageReceiver
+public partial class BitminerEntity : BaseEntity, Component.IPressable, IGameEvents, IAreaDamageReceiver
 #endif
 {
 #if !LIFEPUNCH_LOCAL
@@ -51,11 +50,11 @@ public sealed partial class BitminerEntity : BaseEntity, Component.IPressable, I
 #endif
 
 	// ----------------------------
-	// COMPONENT REFERENCES (bound by bitcoin-miner.prefab)
+	// COMPONENT REFERENCES (bound by gpu-rack / large-gpu-rack prefabs)
 	// ----------------------------
 
 	[Property] public TextRenderer TextRender { get; set; }
-	/// <summary>Advanced Bitcoin Miner prefab sets this ΓÇö doubles mining yield (stacked gpu-rack).</summary>
+	/// <summary>Large GPU Rack prefab sets this — doubles mining yield (stacked gpu-rack).</summary>
 	[Property] public bool AdvancedRack { get; set; }
 	[Property] public required GameObject BitminerFan { get; set; }
 	[Property] public GameObject BitminerFan2 { get; set; }
@@ -98,7 +97,7 @@ public sealed partial class BitminerEntity : BaseEntity, Component.IPressable, I
 
 	/// <summary>Displayed BTC/min ΓÇö includes advanced rack multiplier when set on prefab.</summary>
 	public float MiningRatePerMinute => ClockSpeed * BaseSpeed * CoreCount * RackYield;
-	private const float MiningInterval = 60f;
+	private const float MiningInterval = Bitminer.MiningPayoutIntervalSeconds;
 	public const float BitcoinValue = 1500f;
 
 	public static readonly int[] CpuUpgradeCosts = { 2000, 4000, 8000, 16000, 32000, 64000, 128000 };
@@ -122,6 +121,11 @@ public sealed partial class BitminerEntity : BaseEntity, Component.IPressable, I
 	private bool _humPlaying;
 	private float _fanSpeed;
 	private float _humVolume;
+	private string _cachedScreenText;
+	private float _lastScreenRefresh;
+	private float _lastLedActive = -1f;
+	private bool _vmdlAnimActive;
+	private const float ScreenRefreshInterval = 0.2f;
 	private const float FanMaxSpeed = 1200f;
 	private const float FanRampSeconds = 8f;
 	private const float HumMaxVolume = 1f;
@@ -162,6 +166,8 @@ public sealed partial class BitminerEntity : BaseEntity, Component.IPressable, I
 			BitminerFan3.Flags |= GameObjectFlags.NoInterpolation;
 			BitminerFan3.LocalRotation = correction;
 		}
+
+		ApplyRackPowerAnim( IsMining );
 	}
 
 	// ----------------------------
@@ -264,6 +270,7 @@ public sealed partial class BitminerEntity : BaseEntity, Component.IPressable, I
 		if ( TextRender.IsValid() )
 			TextRender.Color = Color.Parse( "#f0a500" ) ?? Color.White;
 
+		_cachedScreenText = null;
 		UpdateScreenText();
 	}
 
@@ -276,13 +283,27 @@ public sealed partial class BitminerEntity : BaseEntity, Component.IPressable, I
 		if ( !TextRender.IsValid() )
 			return;
 
+		if ( IsMining && Time.Now - _lastScreenRefresh < ScreenRefreshInterval )
+			return;
+
+		var text = BuildScreenText();
+		if ( string.Equals( text, _cachedScreenText, StringComparison.Ordinal ) )
+			return;
+
+		_cachedScreenText = text;
+		_lastScreenRefresh = Time.Now;
+		TextRender.Text = text;
+	}
+
+	private string BuildScreenText()
+	{
 		var filled = (int)( MiningProgress * 8 );
 		var bar = new string( ScreenBarFill, filled );
 		var pct = (int)( MiningProgress * 100 );
 		var rate = ClockSpeed * BaseSpeed * CoreCount * RackYield;
 		var status = IsMining ? "\u25CF MINING" : "\u25CB IDLE";
 
-		TextRender.Text = IsMining
+		return IsMining
 			? $"{status}\n" +
 			  $"{ScreenRule}\n" +
 			  $"\u20BF {BitcoinAmount:0.00000000} BTC\n" +
@@ -313,14 +334,25 @@ public sealed partial class BitminerEntity : BaseEntity, Component.IPressable, I
 	private void MineBitcoin()
 	{
 		BitcoinAmount += ( ClockSpeed * BaseSpeed ) * CoreCount * RackYield;
+		_cachedScreenText = null;
 	}
 
 	// ----------------------------
 	// RACK POWER ANIMATION
 	// ----------------------------
-	// TODO (BITMINER-01): Drive gpu-rack.vmdl sequences power_on / power_off from IsMining.
-	// Deprecate Evo child-fan spin below once ModelDoc anim is on the prefab.
+	// BITMINER-01: vmdl sequences when ModelDoc compiles power_on / power_off from gpu-rack-anim.fbx.
+	// Child-fan spin remains fallback until compiled _c exposes DirectPlayback.Sequences.
 	// RGB fan LED rings: lifepunch_rgb_fan_led.shader on gpu-rack-gpu.vmat (see gpu-rack/RGB_FAN_LED_SHADER.md).
+
+	private void ApplyRackPowerAnim( bool powered )
+	{
+		_vmdlAnimActive = BitminerPowerAnim.ApplyRackPower( ModelRenderer, powered, out _ );
+
+		if ( _vmdlAnimActive && powered )
+			_fanSpeed = FanMaxSpeed;
+		else if ( _vmdlAnimActive )
+			_fanSpeed = 0f;
+	}
 
 	private void UpdateRgbFanLeds()
 	{
@@ -335,12 +367,16 @@ public sealed partial class BitminerEntity : BaseEntity, Component.IPressable, I
 		if ( IsMining && !GameObject.Tags.Has( PocketTag ) && FanMaxSpeed > 0f )
 			ledActive = Math.Clamp( _fanSpeed / FanMaxSpeed, 0f, 1f );
 
+		if ( MathF.Abs( ledActive - _lastLedActive ) < 0.01f )
+			return;
+
+		_lastLedActive = ledActive;
 		sceneObject.Attributes.Set( "g_flLedActive", ledActive );
 	}
 
 	private void SpinFan()
 	{
-		if ( _fanSpeed <= 0f )
+		if ( _vmdlAnimActive || _fanSpeed <= 0f )
 			return;
 
 		var rot = Rotation.FromAxis( Vector3.Forward, _fanSpeed * Time.Delta );
@@ -352,6 +388,9 @@ public sealed partial class BitminerEntity : BaseEntity, Component.IPressable, I
 
 	private void UpdateFanRamp()
 	{
+		if ( _vmdlAnimActive )
+			return;
+
 		var fanTarget = IsMining ? FanMaxSpeed : 0f;
 		var fanStep = ( FanMaxSpeed / FanRampSeconds ) * Time.Delta;
 
@@ -429,6 +468,8 @@ public sealed partial class BitminerEntity : BaseEntity, Component.IPressable, I
 	public void SetMiningState( bool enabled )
 	{
 		IsMining = enabled;
+		_cachedScreenText = null;
+		_lastLedActive = -1f;
 
 		if ( enabled )
 		{
@@ -436,6 +477,13 @@ public sealed partial class BitminerEntity : BaseEntity, Component.IPressable, I
 			MiningProgress = 0f;
 		}
 
+		BroadcastMiningCosmetics( enabled );
+	}
+
+	[Rpc.Broadcast]
+	private void BroadcastMiningCosmetics( bool enabled )
+	{
+		ApplyRackPowerAnim( enabled );
 		BroadcastHumState( enabled );
 	}
 
@@ -534,6 +582,8 @@ public sealed partial class BitminerEntity : BaseEntity, Component.IPressable, I
 				break;
 			}
 		}
+
+		_cachedScreenText = null;
 	}
 
 #if LIFEPUNCH_LOCAL

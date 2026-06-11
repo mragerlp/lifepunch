@@ -119,7 +119,7 @@ Meshes:
 Textures: GPU_GraphicsCard, GPU_Rack, Motherboard, Power_Supply, Wires
 
 Tier-3 prep (Green):
-  - Compare layout vs reference/evo-bitminer (pattern only; do not ship evo mesh)
+  - Compare layout vs BITMINER_UX_SPEC.md (LifePunch-owned meshes only)
   - Blender: verify scale, apply transforms; ship via Reorganize-BitcoinMinerGpuRack.ps1
   - Note: OBJ references GPU_Farm_Static.mtl (not in export); use texture folders
 

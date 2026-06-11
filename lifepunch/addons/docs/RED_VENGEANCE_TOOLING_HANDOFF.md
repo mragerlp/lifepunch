@@ -113,7 +113,7 @@ powershell -File lifepunch/scripts/Start-SboxDxrpEditor.ps1
 | `gpu-rack-gpu.vmat` | Shader ref + `g_flLedActive` |
 | `BitminerEntity.UpdateRgbFanLeds()` | Tied to `IsMining` + fan ramp |
 
-**Note:** Fan mesh spin still uses Evo child GOs (`BITMINER-01`). RGB needs `GPU_Emission.png` / rack emission mask.
+**Note:** Fan mesh spin still uses legacy child GOs (`BITMINER-01`). RGB needs `GPU_Emission.png` / rack emission mask.
 
 **Status:** RGB source pulled from Cornerman clone to VENGEANCE — **compile + START/STOP play-test still required** before calling P0 done.
 

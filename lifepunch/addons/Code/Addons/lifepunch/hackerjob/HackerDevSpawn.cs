@@ -66,6 +66,160 @@ public static class HackerDevSpawn
 	[ConCmd( "lp_spawn_advanced_hacker_terminal" )]
 	public static void SpawnAdvancedTerminal() => SpawnTerminal( HackerTerminalTier.Advanced );
 
+	/// <summary>Spawn standard CRT and open cornerman.exe immediately.</summary>
+	[ConCmd( "lp_cornerman_preview" )]
+	public static void CornermanPreview() => PreviewTerminal( HackerTerminalTier.Standard );
+
+	/// <summary>Spawn advanced CRT and open vengeance.exe immediately.</summary>
+	[ConCmd( "lp_vengeance_preview" )]
+	public static void VengeancePreview() => PreviewTerminal( HackerTerminalTier.Advanced );
+
+	[ConCmd( "lp_spawn_server_rack" )]
+	public static void SpawnServerRack() => SpawnServerRackEntity( powered: false );
+
+	/// <summary>Spawn powered rack + standard + advanced terminals for playtest.</summary>
+	[ConCmd( "lp_hacker_kit_preview" )]
+	public static void HackerKitPreview()
+	{
+		var rack = SpawnServerRackEntity( powered: true );
+		if ( !rack.IsValid() )
+			return;
+
+		SpawnTerminalNear( HackerTerminalTier.Standard, rack.WorldPosition + Vector3.Left * 80f );
+		SpawnTerminalNear( HackerTerminalTier.Advanced, rack.WorldPosition + Vector3.Right * 80f );
+		Log.Info( "lp_hacker_kit_preview: rack ON + cornerman + vengeance placed. Interact rack for upgrades." );
+	}
+
+	private static void PreviewTerminal( HackerTerminalTier tier )
+	{
+		var entity = SpawnTerminalEntity( tier );
+		if ( !entity.IsValid() )
+			return;
+
+#if LIFEPUNCH_LOCAL
+		HackerTerminal.Open( entity );
+#else
+		entity.RequestOpenTerminal();
+#endif
+	}
+
+	private static HackerTerminalEntity SpawnTerminalEntity( HackerTerminalTier tier )
+	{
+		SpawnTerminal( tier );
+		var scene = Game.ActiveScene;
+		if ( scene is null )
+			return null;
+
+		HackerTerminalEntity best = null;
+		var bestDist = float.MaxValue;
+		var viewer = TryGetViewerPosition( scene );
+		if ( !viewer.HasValue )
+			return scene.GetAllComponents<HackerTerminalEntity>().LastOrDefault();
+
+		foreach ( var entity in scene.GetAllComponents<HackerTerminalEntity>() )
+		{
+			if ( !entity.IsValid() || entity.Tier != tier )
+				continue;
+
+			var dist = ( entity.WorldPosition - viewer.Value ).Length;
+			if ( dist < bestDist )
+			{
+				bestDist = dist;
+				best = entity;
+			}
+		}
+
+		return best;
+	}
+
+	private static Vector3? TryGetViewerPosition( Scene scene )
+	{
+#if LIFEPUNCH_LOCAL
+		var camera = scene?.GetAllComponents<CameraComponent>().FirstOrDefault();
+		return camera.IsValid() ? camera.WorldPosition : (Vector3?)null;
+#else
+		if ( Player.Local.IsValid() )
+			return Player.Local.WorldPosition;
+
+		var camera = scene?.GetAllComponents<CameraComponent>().FirstOrDefault();
+		return camera.IsValid() ? camera.WorldPosition : (Vector3?)null;
+#endif
+	}
+
+	private static HackerServerRackEntity SpawnServerRackEntity( bool powered )
+	{
+		if ( !TryGetSpawnTransform( out var transform ) )
+		{
+			Log.Warning( $"{HackerJob.DevServerRackSpawnCommand}: no local viewer." );
+			return null;
+		}
+
+		var prefab = GameObject.GetPrefab( HackerJob.ServerRackWorldPrefabPath );
+		if ( !prefab.IsValid() )
+		{
+			Log.Error( $"{HackerJob.DevServerRackSpawnCommand}: could not load '{HackerJob.ServerRackWorldPrefabPath}'." );
+			return null;
+		}
+
+		var rackGo = prefab.Clone( new CloneConfig { Transform = transform } );
+		if ( !rackGo.IsValid() )
+			return null;
+
+		var rack = rackGo.Components.Get<HackerServerRackEntity>( FindMode.EverythingInSelfAndDescendants );
+		if ( rack.IsValid() )
+			rack.IsPowered = powered;
+
+#if !LIFEPUNCH_LOCAL
+		var player = Player.Local;
+		if ( player.IsValid() )
+			rackGo.NetworkSpawn( player.Network.Owner );
+		else
+			rackGo.NetworkSpawn();
+#endif
+
+		Log.Info( $"{HackerJob.DevServerRackSpawnCommand}: placed (power={( powered ? "ON" : "OFF" )})." );
+		return rack;
+	}
+
+	private static void SpawnTerminalNear( HackerTerminalTier tier, Vector3 position )
+	{
+		var prefabPath = tier == HackerTerminalTier.Advanced
+			? HackerJob.AdvancedWorldPrefabPath
+			: HackerJob.WorldPrefabPath;
+
+		var prefab = GameObject.GetPrefab( prefabPath );
+		if ( !prefab.IsValid() )
+			return;
+
+		var forward = ( TryGetViewerPosition( Game.ActiveScene ) ?? position ) - position;
+		forward = forward.WithZ( 0 ).Normal;
+		if ( forward.Length < 0.01f )
+			forward = Vector3.Forward;
+
+		var terminal = prefab.Clone( new CloneConfig
+		{
+			Transform = new Transform( position, Rotation.LookAt( forward ) )
+		} );
+
+		if ( !terminal.IsValid() )
+			return;
+
+		var entity = terminal.Components.Get<HackerTerminalEntity>( FindMode.EverythingInSelfAndDescendants );
+		if ( entity.IsValid() )
+		{
+			entity.Tier = tier;
+			entity.RefreshScreenIdle();
+		}
+
+#if !LIFEPUNCH_LOCAL
+		var player = Player.Local;
+		if ( player.IsValid() )
+			terminal.NetworkSpawn( player.Network.Owner );
+		else
+			terminal.NetworkSpawn();
+#endif
+	}
+
 	private static void SpawnTerminal( HackerTerminalTier tier )
 	{
 		var command = tier == HackerTerminalTier.Advanced

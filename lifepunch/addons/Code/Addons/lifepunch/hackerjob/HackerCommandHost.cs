@@ -53,6 +53,12 @@ internal static class HackerCommandHost
 			return;
 		}
 
+		if ( !nearest.IsPowered )
+		{
+			Log.Info( "[cornerman] Terminal offline — power ON the Server Rack first." );
+			return;
+		}
+
 		nearest.RequestOpenTerminal();
 	}
 

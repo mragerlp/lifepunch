@@ -1,4 +1,4 @@
-# Visible Pocket — play-test (P1)
+# Visible Pocket — play-test (P2)
 
 **Addon:** `lifepunch.visiblepocket` · **Host:** VENGEANCE DXRP editor  
 **Prereq:** `main` at `a5e4461+`, bitcoinmining synced, DXRP pocket enabled.
@@ -31,13 +31,18 @@ Alias: `lp_pocket_slots`.
 
 ---
 
-## 3. Tier pickup test (host)
+## 3. Hotbar + tier pickup (host)
 
-1. Host a local session.
-2. `lp_pocket_apply_dev` — sets **global** `MaxPocketItems` to your policy max (dev bridge only).
-3. Spawn or find props with DXRP `pocket_item` tag.
-4. Hands **attack2** until pocket full — should stop at your tier, not stock 6 if you unlocked more.
-5. Aim at bitminer rack — **forbidden** (no `pocket_item`; `lifepunch_nopocket` documented).
+1. Host play on `game.scene`.
+2. Bottom-center **LIFEPUNCH™ POCKET** hotbar should appear automatically.
+3. `lp_pocket_policy` — confirm `policyMax` from wallet/rank.
+4. Pick up `pocket_item` props with hands **attack2** until full — stops at **your** tier max (not global 6).
+5. Drop with attack2 while not aiming at a pocketable prop (LIFO).
+6. Bitminer / hacker terminals — **forbidden** (`lifepunch_nopocket`).
+
+```text
+lp_pocket_refresh    # re-sync HUD labels from host
+```
 
 ---
 
@@ -52,12 +57,12 @@ START → rainbow fan LEDs ~8s → STOP off. See `BITMINER_FINISH_RUNBOOK.md`.
 
 ---
 
-## 5. Known gaps (POCKET-01)
+## 5. Known gaps
 
 | Gap | Notes |
 |-----|--------|
-| Global max | `lp_pocket_apply_dev` is **not** production per-player enforcement |
-| Use/Drop UI | P2 Razor hotbar |
-| Bank phase 3 | Not in this scaffold |
+| Use menu | Right-click Use/Drop per-item menu — P2b |
+| Bank phase 3 | Inventory Bank prop + protected slots |
+| DXRP API | `PocketSystemAccessor` reflection — swap if Dxura exposes public API |
 
 Discovery: `addons/docs/reference/DXRP_POCKET_DISCOVERY.md`.

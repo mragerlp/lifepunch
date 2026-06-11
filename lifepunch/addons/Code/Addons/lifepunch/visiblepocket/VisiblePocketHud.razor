@@ -1,0 +1,43 @@
+@* ─────────────────────────────────────────────────────────────────────────────
+   PROPRIETARY & CONFIDENTIAL — © 2026 lifepunch.co. All rights reserved.
+
+   "LIFEPUNCH Visible Pocket for DXRP" (s&box ident: lifepunch.visiblepocket · addon ident: visiblepocket) is the sole-owned
+   intellectual property of lifepunch.co. It is NOT licensed for resale, redistribution,
+   sublicensing, copying, or reuse by ANY person or entity — including DXRP and
+   LifePunch staff, contributors, or community — EXCEPT the owner (lifepunch.co).
+   Presence in this repository or on the DXRP portal grants no rights to anyone else.
+   ───────────────────────────────────────────────────────────────────────────── *@
+@namespace LifePunch.DXRP.Addons.VisiblePocket
+@using System
+@using LifePunch.DXRP.Addons
+@using Sandbox.UI
+@inherits PanelComponent
+
+@attribute [StyleSheet]
+
+<root>
+    <div class="pocket-bar">
+        <div class="pocket-header">
+            <span class="pocket-mark">@LifePunchSourceMark.UiFooterMark</span>
+            <span class="pocket-title">POCKET</span>
+            <span class="pocket-count">@VisiblePocketHudState.Count/@VisiblePocketHudState.MaxSlots</span>
+        </div>
+        <div class="pocket-slots">
+            @for ( var i = 0; i < VisiblePocketHudState.MaxSlots; i++ )
+            {
+                var label = i < VisiblePocketHudState.Labels.Count ? VisiblePocketHudState.Labels[i] : "";
+                var filled = !string.IsNullOrWhiteSpace( label );
+                <div class="pocket-slot @(filled ? "filled" : "")">
+                    <span class="slot-index">@(i + 1)</span>
+                    <span class="slot-label">@(filled ? label : "—")</span>
+                </div>
+            }
+        </div>
+        <div class="pocket-footer">@LifePunchSourceMark.UiFooterLegal</div>
+    </div>
+</root>
+
+@code {
+    protected override int BuildHash() =>
+        HashCode.Combine( VisiblePocketHudState.MaxSlots, VisiblePocketHudState.Count, VisiblePocketHudState.Revision );
+}

@@ -1,7 +1,7 @@
 # Bitcoin Miner — Entity Build Brief (gpu-rack intake)
 
 **Issued:** 2026-06-11 · **Assets:** LifePunch-owned GPU rack mesh  
-**Reference study only:** `reference/evo-bitminer/` — **never ship** Evo models, sounds, or compiled `_c` from that tree.
+**IP:** Original LIFEPUNCH content — `BITMINER_IP_DOCTRINE.md`. Ship LifePunch-owned meshes/sounds only.
 
 ---
 
@@ -72,11 +72,11 @@ sounds/bitcoin-miner/
 
 Placeable **Bitcoin Miner** for DXRP — **not** the Hacker Job terminal.
 
-**Canon UX:** `addons/docs/BITMINER_UX_SPEC.md` — tabbed hashd terminal; Evo mining economy server-side.
+**Canon UX:** `addons/docs/BITMINER_UX_SPEC.md` — HASHD on hub; server-authoritative economy.
 
 - Boot: `LIFEPUNCH hashd` / `mine.exe` (Cornerman green `#00FF7F`)
 - In-world **gpu-rack** mesh (no cloud `models/bitminer` path)
-- Rack **animates on** when mining, **powers down off** — vmdl sequences from `gpu-rack-anim.fbx`, not Evo child fan spinners
+- Rack **animates on** when mining, **powers down off** — vmdl sequences from `gpu-rack-anim.fbx` (BITMINER-01)
 - Economy: mine → upgrade → sell (`PayHost` / `ChargeHost`)
 
 ---
@@ -88,7 +88,7 @@ Placeable **Bitcoin Miner** for DXRP — **not** the Hacker Job terminal.
 | **Assets** | VENGEANCE | ModelDoc → `gpu-rack.vmdl` + 5 vmats from `material-map.json` |
 | **Prefab** | VENGEANCE | `bitcoin-miner.prefab` → local vmdl; wire `BitminerEntity` |
 | **Code** | VENGEANCE (Opus) | Port entity + terminal; rebrand UI |
-| **Sounds** | VENGEANCE | `sounds/bitcoin-miner/` — no Evo audio |
+| **Sounds** | Owner intake | `sounds/bitcoinminer/` — owner-recorded only (`README.md`) |
 | **Tier-3** | Cornerman | Distill brief; no ModelDoc |
 
 ---
@@ -98,7 +98,7 @@ Placeable **Bitcoin Miner** for DXRP — **not** the Hacker Job terminal.
 1. Import `source/gpu-rack-static.obj`.
 2. Five materials per `material-map.json` (GPU emission for LED glow).
 3. Compile `gpu-rack.vmdl`.
-4. Prefab scale ~1.11 vs Evo study prefab.
+4. Prefab scale tuned vs citizen (see `BITMINER_PLAYTEST.md`).
 5. Optional: `gpu-rack-anim.fbx` for fan motion.
 
 **WorldModelPath:**  

@@ -1,6 +1,6 @@
 # Hacker terminal — entity prefab build (Red / editor)
 
-Build **two** prefabs from the bitminer entity pattern. Razor UI stays in code (`HackerTerminal.razor`) — the prefab is the **world CRT** + interact collider.
+**Prefabs shipped** under `entities/hacker-terminal/` and `entities/advanced-hacker-terminal/` (cloned from bitcoin-terminal pattern). Razor UI stays in code (`HackerTerminal.razor`) — the prefab is the **world CRT** + interact collider + `lcd_screen`.
 
 Paths (from `HackerJob.cs`):
 
@@ -11,26 +11,11 @@ Paths (from `HackerJob.cs`):
 
 ---
 
-## Clone source
-
-**File → Save As** from:
-
-`addons/lifepunch/bitcoinmining/entities/bitcoin-miner/bitcoin-miner.prefab`
-
-into each hackerjob entity folder above.
+## Owner tune (after ModelDoc compile)
 
 ---
 
-## Strip (remove components / children)
-
-- `BitminerEntity` and all mining logic children
-- `HealthComponent` (optional — keep if you want damageable terminals)
-- GPU rack child mesh
-- Mining UI hooks, power anim drivers, hashd-specific children
-
----
-
-## Keep / add
+## Prefab contents
 
 | Component | Notes |
 |-----------|-------|
@@ -49,6 +34,8 @@ into each hackerjob entity folder above.
 ## Dev smoke
 
 ```text
+lp_cornerman_preview
+lp_vengeance_preview
 lp_spawn_hacker_terminal
 lp_spawn_advanced_hacker_terminal
 ```

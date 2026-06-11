@@ -1,0 +1,23 @@
+{
+    "materials":  [
+                      "M_Cyan",
+                      "M_Gris_Metal",
+                      "M_Noir_BleutÃ©",
+                      "M_Noir_Profond",
+                      "M_Orange"
+                  ],
+    "status":  {
+                   "modelResourceCreated":  false,
+                   "materialResourcesCreated":  false,
+                   "sourceSeeded":  true
+               },
+    "schemaVersion":  1,
+    "model":  {
+                  "status":  "ModelDoc TODO",
+                  "slug":  "uranium-capacitor",
+                  "packSource":  "SM_Capacitor",
+                  "activeSource":  "source/uranium-capacitor.fbx",
+                  "displayName":  "uranium capacitor",
+                  "targetModel":  "uranium-capacitor.vmdl"
+              }
+}

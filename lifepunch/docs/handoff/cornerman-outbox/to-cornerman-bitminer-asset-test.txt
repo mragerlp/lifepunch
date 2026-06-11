@@ -1,0 +1,35 @@
+BITCOIN MINING — asset test audit (2026-06-11)
+==============================================
+
+Owner: while hacker job assets intake continues, **audit bitcoinmining for playtest**.
+
+START HERE
+----------
+C:\lifepunch\cornerman\inbox\CORNERMAN_BITMINER_ASSET_TEST_AUDIT_TASK.md
+C:\lifepunch\cornerman\inbox\BITMINER_ASSET_TEST_DIRECTIVE.json
+
+WORKFLOW
+--------
+1. MonorepoPull (get latest lifepunch tree)
+2. WarmDistill — walk assets + playtest doc
+3. Write outbox/BITMINER_TEST_READINESS.md
+4. Ping Red one line with GO / PARTIAL / BLOCKED
+
+QUESTION TO ANSWER
+------------------
+Can VENGEANCE run a meaningful bitcoin miner playtest **today** with what is in the repo?
+
+Focus entities:
+  bitcoin-miner (hub / Ophion)
+  gpu-rack
+  large-gpu-rack
+
+Key smokes (Red runs these — you only judge readiness):
+  lp_hashd_preview
+  lp_spawn_bitminer
+  lp_spawn_bitcoin_miner_hub → power on → POWER ON
+  lp_hub_power 1 → hashd → mining start
+
+NOT YOUR LANE
+-------------
+ModelDoc, s&box, C#, git push. Hacker Job P0 still primary if timeboxed.

@@ -1,0 +1,32 @@
+LIFEPUNCH CYBER ECOSYSTEM — Cornerman P1 (2026-06-11)
+======================================================
+
+START HERE
+----------
+inbox/CORNERMAN_CYBER_ECOSYSTEM_TASK.md
+inbox/LIFEPUNCH_CYBER_ECOSYSTEM.md
+inbox/ASSET_INTAKE_CYBER_ECOSYSTEM.md
+
+OWNER IS PROVIDING ASSETS — your job is distill while Red intakes.
+
+DELIVER (outbox/) — distill from inbox/*.md (Red phase 2 seeded repo)
+---------------------------------------------------------------------
+CYBER_ECOSYSTEM_ONE_PAGER.md      ← LIFEPUNCH_CYBER_ECOSYSTEM.md
+BITMINER_ENCRYPTION_UPGRADE_TABLE.md ← BITMINER_ENCRYPTION_SPEC.md
+HACKER_PVP_INFRA_FLOW.md          ← HACKER_PVP_INFRA.md
+GOV_DATACENTER_ROLEPLAY.md        ← tighten GOV_DATACENTER_ROLEPLAY.md
+UPGRADE_TIER_STANDARD.md          ← compress for RAG
+HASHD_AUTH_PATTERN.md             ← type + click auth
+HACKER_UI_REVIEW_NOTES.md         ← lp_cornerman_ui vs owner "not console job"
+
+WARM
+----
+Send-CornermanWorkflow.ps1 -Action WarmDistill
+
+DO NOT
+------
+Ship C#, ModelDoc, or redesign amber hashd menu.
+
+PING RED
+--------
+OK cornerman cyber-ecosystem distill

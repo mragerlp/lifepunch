@@ -1,0 +1,23 @@
+{
+    "materials":  [
+                      "M_Cyan",
+                      "M_Gris_Metal",
+                      "M_Noir_BleutÃ©",
+                      "M_Noir_Profond",
+                      "M_Orange"
+                  ],
+    "status":  {
+                   "modelResourceCreated":  false,
+                   "materialResourcesCreated":  false,
+                   "sourceSeeded":  true
+               },
+    "schemaVersion":  1,
+    "model":  {
+                  "status":  "ModelDoc TODO",
+                  "slug":  "uranium-control-panel",
+                  "packSource":  "SM_Control_Pannel",
+                  "activeSource":  "source/uranium-control-panel.fbx",
+                  "displayName":  "uranium control panel",
+                  "targetModel":  "uranium-control-panel.vmdl"
+              }
+}

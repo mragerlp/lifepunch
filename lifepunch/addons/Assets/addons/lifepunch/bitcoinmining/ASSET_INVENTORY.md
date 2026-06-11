@@ -1,27 +1,27 @@
-# Bitcoin Mining — asset inventory
+# Bitcoin Miner — asset inventory
 
-**Intake scripts:** `addons/scripts/Reorganize-BitcoinMinerGpuRack.ps1`, `Intake-BitcoinTerminalAssets.ps1`
+**Intake scripts:** `Reorganize-BitcoinMinerGpuRack.ps1`, `Intake-BitcoinMinerHub.ps1`, `Intake-BitcoinTerminalAssets.ps1` (terminal deprecated)
 
-## Ship tree (publish)
+## Ship tree (publish) — LPaddons oneliners
 
 | Slug | Entity name | Role | Source | vmdl |
 |------|-------------|------|--------|------|
-| `bitcoin-terminal` | **Bitcoin Terminal** | hashd control station (CRT prop) | `computer.fbx` | **Needs compile** — no `_c` yet → ERROR mesh |
-| `gpu-rack` | **Bitcoin Miner** (small rack) | Remote mining hardware | `gpu-rack-static.obj` + `gpu-rack-anim.fbx` | **Shipped** |
-| `gpu-rack-stacked` | **Advanced Bitcoin Miner** | Large stacked rack | `gpu-rack-stacked-anim.fbx` | **vmdl in repo** — compile in ModelDoc |
+| `bitcoin-miner` | **Bitcoin Miner hub** | hashd menu + encryption + rack control | `Ophion.fbx` | vmdl in repo — **compile _c + vmat pass** |
+| `gpu-rack` | **GPU Rack** | 500 HP · mining hardware | `gpu-rack-static.obj` + anim FBX | Shipped |
+| `large-gpu-rack` | **Large GPU Rack** | 2000 HP · 2× yield | stacked anim FBX | vmdl in repo |
+| ~~`bitcoin-terminal`~~ | ~~CRT~~ | **Deprecated** — menu on hub | `computer.fbx` | legacy |
 
 ```text
+entities/bitcoinminer/    ← hub source + Ophion (owner)
+entities/gpurack/
+entities/largegpurack/
 models/lifepunch/bitcoinmining/
-  gpu-rack/           ← small rack — gpu-rack/MODEL_BUILD.md
-  bitcoin-terminal/   ← CRT — bitcoin-terminal/MODEL_BUILD.md
-entities/
-  bitcoin-terminal/   ← separate placeable (NOT child of miner)
-  bitcoin-miner/      ← small rack only
-  advanced-bitcoin-miner/  ← stacked rack prefab (AdvancedRack = 2× yield)
-sounds/bitcoin-miner/
+  bitcoin-miner/          ← hub vmdl target
+  gpu-rack/
+sounds/bitcoinminer/      ← owner WAV drop
 ```
 
-**Architecture:** `docs/reference/BITMINER_THREE_ENTITY_ARCH.md`
+**Architecture:** `docs/BITMINER_HUB_ARCH.md` · `docs/LIFEPUNCH_CYBER_ECOSYSTEM.md`
 
 ## Archives (not published)
 
@@ -34,6 +34,9 @@ sounds/bitcoin-miner/
 
 | File | Role |
 |------|------|
+| `BitminerHubEntity.cs` | Hub power, encryption tiers, hashd anchor |
+| `BitminerHubRegistry.cs` | Hub ↔ rack linking (max 3+1 per hub) |
+| `BitminerEncryptionCatalog.cs` | Defense upgrade costs + math |
 | `BitminerEntity.cs` | Economy, `IsMining`, terminal open |
 | `BitminerTerminal.razor` | Phase 1 CLI; owner tabbed UI from Downloads bitcointerminal lane |
 

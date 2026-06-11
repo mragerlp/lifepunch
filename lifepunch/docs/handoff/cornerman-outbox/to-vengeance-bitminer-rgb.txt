@@ -15,4 +15,4 @@ Shipped in repo:
 
 Also queued for you (not P0): SGE polish, Hit Shapes staff menu, llad inventory intake (reference only until license).
 
-Fan mesh spin still Evo child GOs (BITMINER-01). Rack fans need Rack_Emission.png for RGB.
+Fan mesh spin still legacy child GOs (BITMINER-01). Rack fans need Rack_Emission.png for RGB.

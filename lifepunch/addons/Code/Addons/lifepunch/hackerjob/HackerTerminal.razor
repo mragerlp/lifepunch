@@ -8,6 +8,7 @@
    Presence in this repository or on the DXRP portal grants no rights to anyone else.
    ───────────────────────────────────────────────────────────────────────────── *@
 @namespace LifePunch.DXRP.Addons.HackerJob
+@using LifePunch.DXRP.Addons
 @using System
 @using System.Collections.Generic
 @using System.Linq
@@ -26,6 +27,7 @@
         <span class="title-sub">@ProgramLabel</span>
         <span class="title-spacer"></span>
         <span class="tier-badge">@TierBadge</span>
+        <span class="title-publisher">@LifePunchSourceMark.UiFooterMark</span>
         <button class="close-x" onclick=@OnClickClose>CLOSE</button>
     </div>
 
@@ -39,6 +41,10 @@
             <div class="rail-block">
                 <span class="rail-label">LINK</span>
                 <span class="rail-value @(Terminal.IsValid() ? "active" : "")">@(Terminal.IsValid() ? "STABLE" : "LOST")</span>
+            </div>
+            <div class="rail-block">
+                <span class="rail-label">RACK PWR</span>
+                <span class="rail-value @(Terminal.IsValid() && Terminal.IsPowered ? "active" : "")">@(Terminal.IsValid() && Terminal.IsPowered ? "ONLINE" : "OFFLINE")</span>
             </div>
             <div class="rail-block">
                 <span class="rail-label">WALLETS</span>
@@ -206,7 +212,9 @@
                             <span class="help-cmd">status / info / clear / about</span>
                             <span class="help-desc">Session utilities</span>
                         </div>
-                        <div class="help-note">Counterplay: lifepunchnet police terminals (cyan) — separate addon.</div>
+                        <div class="help-note">Server Rack within 8m powers this terminal + applies upgrades.</div>
+                        <div class="help-note">Standard: wallets only. Advanced (vengeance): wallets + Bitcoin Miners + Gov Data Center.</div>
+                        <div class="help-note">Failed hacks may trigger 911 position ping and Wanted (Detection upgrades reduce chance).</div>
                     </div>
                 }
             </div>
@@ -219,6 +227,12 @@
                     onsubmit=@OnSubmit />
             </div>
         </div>
+    </div>
+
+    <div class="lp-source-footer">
+        <span class="lp-mark">@LifePunchSourceMark.UiFooterMark</span>
+        <span class="lp-pub">@LifePunchSourceMark.UiFooterPublisher</span>
+        <span class="lp-legal">@LifePunchSourceMark.UiFooterLegal</span>
     </div>
 </root>
 
@@ -307,6 +321,13 @@
 
     public static void Open( HackerTerminalEntity terminal )
     {
+        var isDevStub = terminal.IsValid() && terminal.GameObject.Name.Contains( "DevStub" );
+        if ( !isDevStub && terminal.IsValid() && !terminal.IsPowered )
+        {
+            Log.Info( "[LIFEPUNCH Hacker] Terminal offline — power ON the Server Rack first." );
+            return;
+        }
+
         var panel = HackerTerminalHost.Mount();
         if ( panel == null )
             return;
@@ -314,6 +335,29 @@
         panel.Terminal = terminal;
         panel.FocusInput();
         panel.Boot();
+    }
+
+    public static void NotifyHackFailure( string alertLine )
+    {
+        var panel = Sandbox.Game.ActiveScene?.GetAllComponents<HackerTerminal>().FirstOrDefault();
+        if ( !panel.IsValid() )
+            return;
+
+        panel._lines.Add( "WARNING: hack trace detected." );
+        panel._lines.Add( alertLine );
+        panel._activeModule = OpsModule.Log;
+        panel.TrimLines();
+    }
+
+    private float GetRackPuzzleSeconds()
+    {
+        if ( !Terminal.IsValid() )
+            return HackerJob.DefaultPuzzleTimeLimitSeconds;
+
+        var rack = Terminal.ActiveRack;
+        return rack.IsValid()
+            ? rack.PuzzleTimeLimitSeconds
+            : HackerJob.DefaultPuzzleTimeLimitSeconds;
     }
 
     private void CloseTerminal() => HackerTerminalHost.Close( this );
@@ -356,6 +400,24 @@
             _lines.Add( "Modules: LOG | SCAN | TARGET | HELP" );
         }
 
+        _lines.Add( LifePunchSourceMark.PublishedByLine );
+        _lines.Add( LifePunchSourceMark.UiFooterLegal );
+
+        if ( Terminal.IsValid() && Terminal.ActiveRack.IsValid() )
+        {
+            var rack = Terminal.ActiveRack;
+            _lines.Add( $"[ OK ] server rack linked — power {( rack.IsPowered ? "ON" : "OFF" )}" );
+            _lines.Add( $"[ OK ] puzzle TTL {rack.PuzzleTimeLimitSeconds:0}s · reward {rack.RewardMultiplier:0.00}× · cooldown {rack.HackCooldownSeconds:0}s" );
+        }
+        else if ( !Terminal.IsValid() || Terminal.GameObject.Name.Contains( "DevStub" ) )
+        {
+            _lines.Add( "[ DEV ] no rack link — use lp_hacker_kit_preview for full kit." );
+        }
+        else
+        {
+            _lines.Add( "WARNING: no server rack in range — place rack within 8m and power ON." );
+        }
+
         _lines.Add( "Fiction only — not the real Ops box. Type help or open HELP module." );
         _lines.Add( "" );
     }
@@ -378,6 +440,7 @@
         if ( _puzzle != null && _puzzle.IsExpired )
         {
             _lines.Add( "ERROR: puzzle window expired — trace risk increased." );
+            Terminal?.RequestReportHackFailure();
             _puzzle = null;
             _selectedTargetId = null;
             _selectedGovNodeId = null;
@@ -519,6 +582,7 @@
         if ( _puzzle.IsExpired )
         {
             _lines.Add( "ERROR: too slow — connection dropped." );
+            Terminal?.RequestReportHackFailure();
             _puzzle = null;
             _selectedTargetId = null;
             _selectedGovNodeId = null;
@@ -570,6 +634,15 @@
                 _lines.Add( $"  Job:         Hacker" );
                 _lines.Add( $"  Program:     {HackerTerminalBrand.ProgramName( Tier )}" );
                 _lines.Add( $"  Link:        {( Terminal.IsValid() ? "STABLE" : "LOST" )}" );
+                _lines.Add( $"  Rack power:  {( Terminal.IsValid() && Terminal.IsPowered ? "ONLINE" : "OFFLINE" )}" );
+                if ( Terminal.IsValid() && Terminal.ActiveRack.IsValid() )
+                {
+                    var rack = Terminal.ActiveRack;
+                    _lines.Add( $"  Detection:   L{rack.DetectionTier}" );
+                    _lines.Add( $"  Puzzle TTL:  {rack.PuzzleTimeLimitSeconds:0}s" );
+                    _lines.Add( $"  Reward:      {rack.RewardMultiplier:0.00}×" );
+                    _lines.Add( $"  Cooldown:    {rack.HackCooldownSeconds:0}s" );
+                }
                 _lines.Add( "--------------------------------------------" );
                 break;
 
@@ -586,9 +659,9 @@
                 break;
 
             case "govdb":
-                if ( Tier != HackerTerminalTier.Advanced )
+                if ( !HackerHackTargetPolicy.CanHack( Tier, HackerHackTarget.GovernmentDataCenter ) )
                 {
-                    _lines.Add( "ERROR: govdb module requires Advanced Hacking Terminal." );
+                    _lines.Add( HackerHackTargetPolicy.DenyMessage( Tier, HackerHackTarget.GovernmentDataCenter ) );
                     break;
                 }
 
@@ -608,9 +681,9 @@
                 break;
 
             case "infil":
-                if ( Tier != HackerTerminalTier.Advanced )
+                if ( !HackerHackTargetPolicy.CanHack( Tier, HackerHackTarget.GovernmentDataCenter ) )
                 {
-                    _lines.Add( "ERROR: infil requires Advanced Hacking Terminal." );
+                    _lines.Add( HackerHackTargetPolicy.DenyMessage( Tier, HackerHackTarget.GovernmentDataCenter ) );
                     break;
                 }
 
@@ -637,7 +710,7 @@
 
                 _selectedGovNodeId = nodeMatch.NodeId;
                 _selectedTargetId = null;
-                _puzzle = HackerPuzzleSession.CreateRandom( advancedTerminal: true );
+                _puzzle = HackerPuzzleSession.CreateRandom( advancedTerminal: true, timeLimitSeconds: GetRackPuzzleSeconds() );
                 _lines.Add( $"INFILTRATING {nodeMatch.Label} [{nodeMatch.SecurityTier}]" );
                 _lines.Add( _puzzle.Prompt );
                 _lines.Add( $"TIME LIMIT: {MathF.Ceiling( _puzzle.TimeLimitSeconds )}s — type answer at prompt." );
@@ -684,7 +757,7 @@
 
                 _selectedTargetId = match.SteamId;
                 _selectedGovNodeId = null;
-                _puzzle = HackerPuzzleSession.CreateRandom( advancedTerminal: false );
+                _puzzle = HackerPuzzleSession.CreateRandom( advancedTerminal: false, timeLimitSeconds: GetRackPuzzleSeconds() );
                 _lines.Add( $"INFILTRATING {match.DisplayName} — wallet ${match.WalletCash}" );
                 _lines.Add( _puzzle.Prompt );
                 _lines.Add( $"TIME LIMIT: {MathF.Ceiling( _puzzle.TimeLimitSeconds )}s — type answer at prompt." );

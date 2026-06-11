@@ -1,7 +1,7 @@
 # LIFEPUNCH Bitcoin Miner — UX & Economy Spec
 
 **Status:** Phase 1 HASHD rig control shipped (`3633fb8`+); Phase 2 module menu drafted (`BITMINER_PHASE2_WIREFRAME.md`).  
-**Study source:** `reference/evo-bitminer/` — mechanics and DXRP seams only; **never ship** Evo mesh, sounds, or UI copy.  
+**IP:** Original LIFEPUNCH content — `BITMINER_IP_DOCTRINE.md` (no third-party credits).  
 **Visual source (shipped Phase 1):** **HASHD RIG CONTROL** — amber mining ops (`#f0a500` on `#12100c`), left telemetry rail + right command log, `rig0>` prompt. **Distinct from** hacker-job green/red ops console and lifepunchnet cyan police shell.  
 **World mesh:** LifePunch-owned **GPU rack** (`gpu-rack/`; raw export at `reference-intake/gpu-rack-export`).
 
@@ -9,9 +9,9 @@
 
 ## 1. Product pitch
 
-A placeable **GPU mining rig** players buy, place, upgrade, and run to earn **sellable BTC** (cash via `PayHost`). The UI looks like a **mining rig control console** (amber HASHD), not the hacker job terminal.
+A placeable **GPU mining rig** players buy, place, upgrade, and run to earn **sellable BTC** (cash via `PayHost`). The UI is the **HASHD rig control console** (amber), not the hacker job terminal.
 
-Evo proved the economy loop works. We keep the loop, own the art, and ship a **better UX**.
+Bitcoin-mining roleplay is a long-standing **genre** on RP servers. LIFEPUNCH ships **original** art, branding, and UX on top of a server-authoritative economy loop.
 
 ### Rollout phases
 
@@ -20,7 +20,6 @@ Evo proved the economy loop works. We keep the loop, own the art, and ship a **b
 | **1 — HASHD CLI + rail** | Shipped | `hashd` / `mine` opens rig; telemetry rail + `rig0>` log; upgrade overlay; `menu` opens upgrades. |
 | **2 — Module menu** | VENGEANCE (Opus) | Rail + **Dashboard / Wallet / Upgrades / Log / About** modules; confirm modals; remove full-screen upgrade overlay. |
 
-Phase 1 task: `docs/briefs/CORNERMAN_BITMINER_TERMINAL_TASK.md`  
 Phase 2 draft: `docs/briefs/BITMINER_PHASE2_WIREFRAME.md` + `BITMINER_PHASE2_TOKENS.scss`
 
 ---
@@ -32,7 +31,7 @@ All payouts and charges go through **host RPCs** + `player.PayHost` / `player.Ch
 | Constant | Value | Notes |
 |----------|-------|-------|
 | `BaseSpeed` | `0.005` BTC per tick unit | × clock × cores |
-| `MiningInterval` | `60` seconds | One payout tick per minute while mining |
+| `MiningPayoutIntervalSeconds` | **90** seconds | LifePunch payout cadence (`Bitminer.cs`) |
 | `BitcoinValue` | `$1500` / BTC | Sell multiplier |
 | Start clock | `2.44 GHz` | |
 | Start cores | `1` | |
@@ -40,7 +39,7 @@ All payouts and charges go through **host RPCs** + `player.PayHost` / `player.Ch
 | Core upgrade | +`2` cores per level | Costs `50k / 100k / 175k` (3 tiers) |
 
 **Per-minute rate (display):** `ClockSpeed × 0.005 × CoreCount` BTC/min  
-**Payout each tick:** same formula once per 60s while `IsMining`.
+**Payout each tick:** same formula once per **90s** while `IsMining`.
 
 **Sell:** `bitcoin sell` → `RequestSellBitcoin()` → `PayHost`, zero balance.  
 **Upgrades:** `RequestUpgrade(Cpu|Cores)` — charge on host; fail closed if `ChargeHost` fails.
@@ -62,7 +61,7 @@ On open (`hashd` / `mine`, or optional use-key):
 ```text
 >> hashd init — LIFEPUNCH mining daemon
 >> linking gpu-rack telemetry bus ... OK
->> syncing payout ledger (60s tick) ... OK
+>> syncing payout ledger (90s tick) ... OK
 >> rig interface ready — telemetry rail active (left)
 ```
 
@@ -78,7 +77,7 @@ Reuse **ops-console platform shape** from `HACKER_OPS_CONSOLE_SPEC.md` (rail + m
 | **Wallet** | Balance + **SELL ALL** confirm → `RequestSellBitcoin()` |
 | **Upgrades** | CPU / Cores rows + **INSTALL** → `RequestUpgrade`; rack row when dual-rack ships |
 | **Log** | `rig0>` scrollback (Phase 1 console) |
-| **About** | LIFEPUNCH™ only — **no** Evo / Spl Mute / BitOS credits |
+| **About** | LIFEPUNCH™ proprietary notice only |
 
 **Chrome:** `#12100c` bg, `#3d3420` / `#5c4a22` borders, accent **`#f0a500`**, error `#e44b2a`. Font: Mina. Bottom-left 960×640. Auto-close if viewer > 150m.
 
@@ -86,12 +85,12 @@ Detail: `briefs/BITMINER_PHASE2_WIREFRAME.md` · tokens: `briefs/BITMINER_PHASE2
 
 ### 3c. In-world screen (`TextRenderer`)
 
-- Accent: **`#f0a500`** amber (not Evo blue `#44aaff`, not hacker green `#00FF7F`)
+- Accent: **`#f0a500`** amber (not hacker green `#00FF7F`)
 - Labels: `LIFEPUNCH hashd`, `₿ balance`, `HASH`, `CORES`, progress bar
 
 ### 3d. Rack meshes + power animation (three entities)
 
-**Owner canon (2026-06-11):** Small and advanced racks are **separate placeables**; terminal controls them remotely.
+**Owner canon (2026-06-11):** Small and advanced racks are **separate placeables**; hub/terminal controls them remotely.
 
 | Entity | Mesh | Yield (`BitminerEntity`) |
 |--------|------|--------------------------|
@@ -101,7 +100,7 @@ Detail: `briefs/BITMINER_PHASE2_WIREFRAME.md` · tokens: `briefs/BITMINER_PHASE2
 Distill: `BITMINER_THREE_ENTITY_ARCH.md` · `BITMINER_DUAL_RACK_SPEC.md` (economy) · `BITMINER_REMOTE_RACK_SPEC.md` (multi-rig UX).
 
 - **Power states:** `power_on` loop while `IsMining`; `power_off` when stopped.
-- **Deprecate Evo pattern:** remove `BitminerFan*` child spin when vmdl anim wired (`TECH_DEBT` BITMINER-01).
+- **BITMINER-01:** remove legacy `BitminerFan*` child spin when vmdl sequences compile (`TECH_DEBT.md`).
 
 ### 3e. Terminal prop (control station — not on rack)
 
@@ -145,17 +144,19 @@ Fast editor preview: `lp_hashd_preview` (console opens without waiting on CRT Mo
 
 ---
 
-## 4. What we improve vs Evo
+## 4. LIFEPUNCH differentiation (our expression)
 
-| Evo | LIFEPUNCH |
-|-----|-----------|
-| CLI-only BitOS terminal | HASHD modules + `rig0>` log |
-| `root@bitminer` / BitOS 1.0 | `rig0>` / `hashd` / `mine.exe` |
-| Blue terminal chrome `#44aaff` | Amber HASHD `#f0a500` |
-| Cloud `models/bitminer` mesh | Own gpu-rack vmdl |
-| Third-party sound pack | Own/licensed sounds |
-| `credits` → Spl Mute | LIFEPUNCH™ About only |
-| Info wrong rate (`0.05`) | Display uses `0.005` formula (fix `info` command on Red if still wrong) |
+| Element | LIFEPUNCH canon |
+|---------|-----------------|
+| Program / fiction | `hashd` · `mine.exe` · **HASHD RIG CONTROL** |
+| Prompt | `rig0>` |
+| UI accent | Amber `#f0a500` on `#12100c` |
+| World mesh | LifePunch gpu-rack export + Ophion hub |
+| Architecture | Hub + small rack + large rack + encryption PvP |
+| Attribution | **LIFEPUNCH™** About only |
+| Open flow | `hashd` / `mine` command-first (+ optional USE) |
+
+Portal copy: `BITMINER_IP_DOCTRINE.md` §2 nominative comparison.
 
 ---
 
@@ -190,7 +191,7 @@ Dual-build: `LIFEPUNCH_LOCAL` — see `RUNTIME_PATTERN.md`.
 
 1. ModelDoc: gpu-rack + materials (VENGEANCE)
 2. Prefab: entity, screen, collider
-3. Phase 2 UI merge (Opus) + protection fixes (`BITMINER_PROTECTION_CHECKLIST.md`)
+3. Phase 2 UI merge (Opus) + protection audit (`BITMINER_PROTECTION_CHECKLIST.md`)
 4. Sounds + compile `_c`
 5. `prepare-publish.ps1 -Addon bitcoinmining`
 

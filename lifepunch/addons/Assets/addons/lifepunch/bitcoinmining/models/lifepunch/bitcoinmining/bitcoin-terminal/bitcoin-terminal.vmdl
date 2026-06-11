@@ -37,6 +37,14 @@
 								from = "White"
 								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-terminal/materials/bitcoin-terminal-white.vmat"
 							},
+							{
+								from = "Lime Green"
+								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-terminal/materials/bitcoin-terminal-monitor.vmat"
+							},
+							{
+								from = "Dark Green"
+								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-terminal/materials/bitcoin-terminal-monitor.vmat"
+							},
 						]
 						use_global_default = false
 						global_default_material = "materials/default.vmat"

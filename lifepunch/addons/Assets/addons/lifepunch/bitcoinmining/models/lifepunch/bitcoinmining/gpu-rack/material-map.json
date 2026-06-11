@@ -1,14 +1,14 @@
 {
   "schemaVersion": 1,
   "product": {
-    "displayName": "Bitcoin Miner",
-    "entitySlug": "bitcoin-miner",
-    "entityPrefab": "entities/bitcoin-miner/bitcoin-miner.prefab"
+    "displayName": "GPU Rack",
+    "entitySlug": "gpu-rack",
+    "entityPrefab": "entities/gpu-rack/gpu-rack.prefab"
   },
   "model": {
     "displayName": "GPU rack",
     "slug": "gpu-rack",
-    "activeSource": "source/gpu-rack-static.obj",
+    "activeSource": "source/gpu-rack-anim.fbx",
     "animSources": [
       "source/gpu-rack-anim.fbx",
       "source/gpu-rack-stacked-anim.fbx"
@@ -113,7 +113,7 @@
       "power_on": "Loop while mining",
       "power_off": "Idle / powered down"
     },
-    "notes": "Replace Evo BitminerFan1/2/3 child spin with vmdl sequence swap."
+    "notes": "Replace legacy BitminerFan child spin with vmdl power_on/power_off sequences (BITMINER-01)."
   },
   "terminalIntake": {
     "razorAuthoring": "C:/Users/jared/Downloads/newaddons/hackerterminal/source/bitcointerminal",
@@ -126,7 +126,7 @@
     "sourceReorganized": true,
     "modelResourceCreated": true,
     "materialResourcesCreated": true,
-    "animationSequencesDefined": false,
+    "animationSequencesDefined": "code-ready-modeldoc-pending",
     "entityPrefabCreated": true
   }
 }

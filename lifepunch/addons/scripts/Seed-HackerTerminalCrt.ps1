@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-  Seed hackerjob CRT source meshes from the LifePunch-owned bitminer computer.fbx family.
+  [LEGACY] Seed hackerjob CRT from bitminer computer.fbx. Use Intake-HackerTerminalModel.ps1 instead.
 
 .DESCRIPTION
   Copies computer.fbx into hacker-terminal and advanced-hacker-terminal source/ folders.

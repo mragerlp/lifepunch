@@ -126,10 +126,10 @@ HASHD RIG CONTROL — LIFEPUNCH™ Bitcoin Miner
 Published by LIFEPUNCH — lifepunch.co
 Proprietary software. All rights reserved.
 
-(No third-party credits. No Evo / BitOS / Spl Mute lines.)
+(LIFEPUNCH™ proprietary notice only — no third-party credits.)
 ```
 
-**Red action:** remove `Initial UI study — spl mute` from `about` command output in ship tree (`BITMINER_PROTECTION_CHECKLIST.md`).
+**Red action:** verify `about` matches `BITMINER_PROTECTION_CHECKLIST.md`.
 
 ---
 

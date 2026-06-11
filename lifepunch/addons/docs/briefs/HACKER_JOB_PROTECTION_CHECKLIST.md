@@ -10,8 +10,8 @@
 ## 1. In-product source identity (trademark)
 
 ```powershell
-rg -i "spl mute|evo|BitOS|credits" lifepunch/addons/Code/Addons/lifepunch/hackerjob
-rg -i "spl mute|evo" lifepunch/addons/Assets/addons/lifepunch/hackerjob
+rg -i "spl mute|bitos|root@bitminer" lifepunch/addons/Code/Addons/lifepunch/hackerjob
+rg -i "spl mute|bitos" lifepunch/addons/Assets/addons/lifepunch/hackerjob
 ```
 
 | Check | Pass criteria | Status | Notes |

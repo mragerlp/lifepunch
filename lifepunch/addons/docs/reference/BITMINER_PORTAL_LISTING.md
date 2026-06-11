@@ -1,7 +1,8 @@
 # Bitcoin Mining — portal listing copy
 
 **Package:** `lifepunch.bitcoinmining` · **Portal row:** TBD (`addons.json` `dxrpAddonId`)  
-**Use:** Paste into DXRP portal when publishing — lead with **LIFEPUNCH** as source.
+**Use:** Paste into DXRP portal when publishing — lead with **LIFEPUNCH** as source.  
+**IP:** `BITMINER_IP_DOCTRINE.md`
 
 ---
 
@@ -17,15 +18,21 @@
 
 ---
 
-## Description (portal body)
+## Nominative comparison (portal body — lead paragraph)
 
-**LIFEPUNCH™ Bitcoin Mining** is a placeable mining kit for **DXRP** roleplay servers: a **Bitcoin Terminal** (hashd control station) plus one or more **GPU racks** you place nearby.
+**LIFEPUNCH™ Bitcoin Miner for DXRP** is an original placeable mining kit: HASHD rig control (`hashd`), LifePunch-owned GPU rack meshes, and server-authoritative BTC economy. It is **not affiliated with, endorsed by, or derived from** any other bitminer or crypto-miner addon for Garry's Mod, s&box, or DXRP. Bitcoin-mining roleplay is a long-standing **genre** on RP servers; LIFEPUNCH ships its **own** art, branding (amber HASHD / `rig0>`), and architecture (hub + racks + encryption). Published by **LIFEPUNCH** — lifepunch.co. Proprietary; no redistribution.
 
-- **Bitcoin Terminal** — amber HASHD console; `hashd` or USE the CRT to open the rig UI  
-- **Bitcoin Miner** — standard GPU rack (base yield)  
-- **Advanced Bitcoin Miner** — stacked rack (higher yield)
+---
 
-Control mining, upgrades, and BTC payout from the terminal. Server-authoritative economy; LifePunch-owned meshes and sounds — not third-party cloud assets.
+## Description (portal body — detail)
+
+**LIFEPUNCH™ Bitcoin Mining** is a placeable mining kit for **DXRP** roleplay servers:
+
+- **Bitcoin Miner hub** — HASHD control, encryption upgrades, rack linking  
+- **GPU Rack** — standard yield hardware  
+- **Large GPU Rack** — stacked rack (higher yield)
+
+Control mining, upgrades, and BTC payout from the HASHD console (`hashd` or USE the hub). Server-authoritative economy. LifePunch-owned meshes and sounds — self-contained addon assets.
 
 **Compatible with:** DXRP (third-party gamemode/platform — nominative reference only; not affiliated with Dxura or Facepunch).
 
@@ -33,7 +40,7 @@ Control mining, upgrades, and BTC payout from the terminal. Server-authoritative
 
 ## One-liner (spawn menu / tooltip)
 
-Place the terminal near your racks; open hashd to start mining and sell BTC.
+Place hub and racks; open hashd to mine BTC and sell for cash.
 
 ---
 
@@ -41,11 +48,11 @@ Place the terminal near your racks; open hashd to start mining and sell BTC.
 
 | Slug | Player-facing name |
 |------|-------------------|
-| `bitcoin-terminal` | Bitcoin Terminal |
 | `bitcoin-miner` | Bitcoin Miner |
-| `advanced-bitcoin-miner` | Advanced Bitcoin Miner |
+| `gpu-rack` | GPU Rack |
+| `large-gpu-rack` | Large GPU Rack |
 
-From `Bitminer.cs`: `TerminalDisplayName`, `DisplayName`, `AdvancedDisplayName`.
+From `Bitminer.cs` / `ASSET_INVENTORY.md`.
 
 ---
 
@@ -57,4 +64,4 @@ Proprietary software published by **LIFEPUNCH** (lifepunch.co). Use on your serv
 
 ## Related
 
-- `BITMINER_FINISH_RUNBOOK.md` · `BITMINER_UX_SPEC.md` · `BITMINER_PROTECTION_CHECKLIST.md`
+- `BITMINER_IP_DOCTRINE.md` · `BITMINER_UX_SPEC.md` · `BITMINER_PROTECTION_CHECKLIST.md`

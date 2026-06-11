@@ -2,10 +2,11 @@
   "schemaVersion": 1,
   "model": {
     "slug": "hacker-terminal",
-    "displayName": "Hacker Job standard CRT",
-    "activeSource": "source/computer.fbx",
+    "displayName": "Hacker Terminal",
+    "activeSource": "source/hacker-terminal.fbx",
     "targetModel": "hacker-terminal.vmdl",
-    "status": "ModelDoc TODO — assign materials after FBX import"
+    "entityPrefab": "entities/hacker-terminal/hacker-terminal.prefab",
+    "status": "ModelDoc TODO — note FBX material slots after import"
   },
   "brand": {
     "program": "cornerman.exe",
@@ -15,6 +16,7 @@
   "status": {
     "sourceSeeded": true,
     "modelResourceCreated": true,
+    "prefabCreated": true,
     "materialResourcesCreated": false
   }
 }

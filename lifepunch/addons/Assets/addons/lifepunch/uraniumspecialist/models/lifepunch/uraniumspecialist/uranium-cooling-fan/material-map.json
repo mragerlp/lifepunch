@@ -1,0 +1,23 @@
+{
+    "materials":  [
+                      "M_Cyan",
+                      "M_Gris_Metal",
+                      "M_Noir_BleutÃ©",
+                      "M_Noir_Profond",
+                      "M_Orange"
+                  ],
+    "status":  {
+                   "modelResourceCreated":  false,
+                   "materialResourcesCreated":  false,
+                   "sourceSeeded":  true
+               },
+    "schemaVersion":  1,
+    "model":  {
+                  "status":  "ModelDoc TODO",
+                  "slug":  "uranium-cooling-fan",
+                  "packSource":  "SM_Ventilateur",
+                  "activeSource":  "source/uranium-cooling-fan.fbx",
+                  "displayName":  "uranium cooling fan",
+                  "targetModel":  "uranium-cooling-fan.vmdl"
+              }
+}

@@ -27,7 +27,7 @@
 					{
 						_class = "RenderMeshFile"
 						name = "LOD0"
-						filename = "addons/lifepunch/hackerjob/models/lifepunch/hackerjob/advanced-hacker-terminal/source/computer.fbx"
+						filename = "addons/lifepunch/hackerjob/models/lifepunch/hackerjob/advanced-hacker-terminal/source/hacker-terminal.fbx"
 						import_translation = [ 0.0, 0.0, 0.0 ]
 						import_rotation = [ 0.0, 0.0, 0.0 ]
 						import_scale = 39.37

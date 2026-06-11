@@ -27,10 +27,10 @@ $directive = @{
     lane        = 'cornerman'
     modelHint   = 'qwen2.5-coder-32b-instruct or lane default'
     title       = 'Bitcoin Miner — Cornerman CLI terminal (Phase 1)'
-    summary     = 'Port Evo bitminer entity+terminal; rebrand to LIFEPUNCH hashd; open via hashd/mine commands; menu command stubs Phase 2.'
+    summary     = 'LIFEPUNCH hashd terminal; open via hashd/mine commands; menu command stubs Phase 2. IP: BITMINER_IP_DOCTRINE.md'
     primaryDoc  = 'CORNERMAN_BITMINER_TERMINAL_TASK.md'
     reference   = @(
-        'reference/evo-bitminer/Code/Addons/lifepunch/bitcoinmining/'
+        'lifepunch/addons/docs/BITMINER_IP_DOCTRINE.md'
         'lifepunch/addons/Code/Addons/lifepunch/adminmenu/StaffMenuHost.cs'
     )
     validation  = @(

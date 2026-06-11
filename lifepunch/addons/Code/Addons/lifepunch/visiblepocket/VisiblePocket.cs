@@ -20,4 +20,5 @@ public static class VisiblePocket
 	public const string Ident = "visiblepocket";
 	public const string DisplayName = "LIFEPUNCH Visible Pocket for DXRP";
 	public const string NoPocketTag = "lifepunch_nopocket";
+	public const string ProductTitle = "LIFEPUNCH™ Visible Pocket for DXRP";
 }

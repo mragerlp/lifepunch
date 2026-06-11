@@ -23,7 +23,7 @@
 Current formula (`BitminerEntity.MineBitcoin`):
 
 ```text
-BTC per 60s tick = ClockSpeed × BaseSpeed(0.005) × CoreCount
+BTC per 90s tick = ClockSpeed × BaseSpeed(0.005) × CoreCount
 ```
 
 **Proposed dual-rack multiplier:**
@@ -104,4 +104,4 @@ Reuse **same five vmats** on stacked mesh (material slots should match Cord/PSU/
 - `BITMINER_UX_SPEC.md` §2 economy
 - `CORNERMAN_BITMINER_DUAL_RACK_TASK.md`
 - `gpu-rack/MODEL_BUILD.md`
-- `reference/evo-bitminer/` — dual fan scale study only (do not ship Evo meshes)
+- Fan placement: tune in LifePunch `gpu-rack` prefab — LifePunch-owned meshes only (`BITMINER_IP_DOCTRINE.md`)

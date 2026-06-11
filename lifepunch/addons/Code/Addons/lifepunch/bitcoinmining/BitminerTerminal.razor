@@ -8,6 +8,7 @@
    Presence in this repository or on the DXRP portal grants no rights to anyone else.
    ───────────────────────────────────────────────────────────────────────────── *@
 @namespace LifePunch.DXRP.Addons.BitcoinMining
+@using LifePunch.DXRP.Addons
 @using System
 @using System.Linq
 @using System.Collections.Generic
@@ -22,9 +23,10 @@
 
     <div class="title-bar">
         <span class="title-mark">◆</span>
-        <span class="title-text">HASHD RIG CONTROL</span>
+        <span class="title-text">@GetTitleLabel()</span>
         <span class="title-ver">v1</span>
         <span class="title-spacer"></span>
+        <span class="title-publisher">@LifePunchSourceMark.UiFooterMark</span>
         <button class="close-x" onclick=@OnClickClose>CLOSE</button>
     </div>
 
@@ -32,39 +34,68 @@
         @if ( !_showUpgradeMenu )
         {
             <div class="telemetry-rail">
-                <div class="rail-header">LIVE TELEMETRY</div>
-                <div class="rail-block">
-                    <span class="rail-label">STATUS</span>
-                    <span class="rail-value @(Miner.IsValid() && Miner.IsMining ? "active" : "")">@GetMiningStatusLabel()</span>
-                </div>
-                <div class="rail-block">
-                    <span class="rail-label">BALANCE</span>
-                    <span class="rail-value">@GetBtcBalanceLabel()</span>
-                </div>
-                <div class="rail-block">
-                    <span class="rail-label">VALUE</span>
-                    <span class="rail-value">@GetUsdValueLabel()</span>
-                </div>
-                <div class="rail-block">
-                    <span class="rail-label">HASH</span>
-                    <span class="rail-value">@GetHashRateLabel()</span>
-                </div>
-                <div class="rail-block">
-                    <span class="rail-label">CORES</span>
-                    <span class="rail-value">@GetCoreLabel()</span>
-                </div>
-                <div class="rail-block rail-progress">
-                    <span class="rail-label">TICK</span>
-                    <div class="tick-bar">
-                        <div class="tick-fill" style="width: @(GetTickPercent())%"></div>
+                @if ( IsHubPowerGate )
+                {
+                    <div class="rail-header">HUB POWER</div>
+                    <div class="rail-block">
+                        <span class="rail-label">HUB</span>
+                        <span class="rail-value">@Bitminer.HubDisplayName</span>
                     </div>
-                    <span class="rail-sub">@GetTickPercent()% / 60s</span>
-                </div>
-                <div class="rail-actions">
-                    <button class="rail-btn start @(Miner.IsValid() && Miner.IsMining ? "active" : "")" onclick=@OnRailStart>START</button>
-                    <button class="rail-btn stop" onclick=@OnRailStop>STOP</button>
-                </div>
-                <div class="rail-hint">Command log →</div>
+                    <div class="rail-block">
+                        <span class="rail-label">STATUS</span>
+                        <span class="rail-value">OFFLINE</span>
+                    </div>
+                    <div class="rail-block">
+                        <span class="rail-label">LINKED</span>
+                        <span class="rail-value">@BitminerRigRegistry.RegisteredRigs.Count rack(s)</span>
+                    </div>
+                    <div class="rail-actions">
+                        <button class="rail-btn start @(_powerConfirm == PowerConfirmKind.On ? "active" : "")" onclick=@OnRailPowerOn>POWER ON</button>
+                    </div>
+                    <div class="rail-hint">Type power on → confirm</div>
+                }
+                else
+                {
+                    <div class="rail-header">LIVE TELEMETRY</div>
+                    <div class="rail-block">
+                        <span class="rail-label">STATUS</span>
+                        <span class="rail-value @(Miner.IsValid() && Miner.IsMining ? "active" : "")">@GetMiningStatusLabel()</span>
+                    </div>
+                    <div class="rail-block">
+                        <span class="rail-label">BALANCE</span>
+                        <span class="rail-value">@GetBtcBalanceLabel()</span>
+                    </div>
+                    <div class="rail-block">
+                        <span class="rail-label">VALUE</span>
+                        <span class="rail-value">@GetUsdValueLabel()</span>
+                    </div>
+                    <div class="rail-block">
+                        <span class="rail-label">HASH</span>
+                        <span class="rail-value">@GetHashRateLabel()</span>
+                    </div>
+                    <div class="rail-block">
+                        <span class="rail-label">CORES</span>
+                        <span class="rail-value">@GetCoreLabel()</span>
+                    </div>
+                    <div class="rail-block rail-progress">
+                        <span class="rail-label">TICK</span>
+                        <div class="tick-bar">
+                            <div class="tick-fill" style="width: @(GetTickPercent())%"></div>
+                        </div>
+                        <span class="rail-sub">@GetTickPercent()% / @((int)Bitminer.MiningPayoutIntervalSeconds)s</span>
+                    </div>
+                    <div class="rail-actions">
+                        <button class="rail-btn start @(Miner.IsValid() && Miner.IsMining ? "active" : "")" onclick=@OnRailStart>START</button>
+                        <button class="rail-btn stop" onclick=@OnRailStop>STOP</button>
+                    </div>
+                    @if ( Hub.IsValid() && Hub.IsPowered )
+                    {
+                        <div class="rail-actions">
+                            <button class="rail-btn stop @(_powerConfirm == PowerConfirmKind.Off ? "active" : "")" onclick=@OnRailPowerOff>POWER OFF</button>
+                        </div>
+                    }
+                    <div class="rail-hint">Command log →</div>
+                }
             </div>
 
             <div class="console-pane">
@@ -116,10 +147,19 @@
         }
     </div>
 
+    <div class="lp-source-footer">
+        <span class="lp-mark">@LifePunchSourceMark.UiFooterMark</span>
+        <span class="lp-pub">@LifePunchSourceMark.UiFooterPublisher</span>
+        <span class="lp-legal">@LifePunchSourceMark.UiFooterLegal</span>
+    </div>
 </root>
 
 @code {
+    private enum PowerConfirmKind { None, On, Off }
+
     private BitminerEntity Miner => BitminerRigRegistry.SelectedRig;
+    private BitminerHubEntity Hub => BitminerRigRegistry.ActiveHub;
+    private bool IsHubPowerGate => Hub.IsValid() && !Hub.IsPowered;
 
     private TextEntry InputBox { get; set; }
     private Panel ScreenScroll { get; set; }
@@ -133,6 +173,7 @@
     private float _lastKnownProgress = 0f;
     private int _lastTextLength = 0;
     private TimeSince _sinceSecondly = 0f;
+    private PowerConfirmKind _powerConfirm = PowerConfirmKind.None;
 
     private static string GetLineClass( string line )
     {
@@ -153,15 +194,48 @@
 
     public static void Open( BitminerEntity miner )
     {
-        var terminal = BitminerTerminalHost.Mount();
-        if ( terminal == null )
-            return;
-
         var scene = Sandbox.Game.ActiveScene;
         if ( miner.IsValid() )
             BitminerRigRegistry.Refresh( scene, miner.WorldPosition );
         else if ( BitminerTerminalHost.LocalViewerPosition( scene ) is { } viewerPos )
             BitminerRigRegistry.Refresh( scene, viewerPos );
+
+        OpenMounted( miner );
+    }
+
+    public static void OpenFromHub( BitminerHubEntity hub )
+    {
+        if ( !hub.IsValid() )
+            return;
+
+        var scene = Sandbox.Game.ActiveScene;
+        BitminerRigRegistry.RefreshFromHub( scene, hub );
+
+        var first = BitminerRigRegistry.RegisteredRigs.FirstOrDefault();
+        OpenMounted( first );
+    }
+
+    public static void OpenHubPowerGate( BitminerHubEntity hub )
+    {
+        if ( !hub.IsValid() )
+            return;
+
+        var scene = Sandbox.Game.ActiveScene;
+        BitminerRigRegistry.RefreshFromHub( scene, hub );
+
+        var terminal = BitminerTerminalHost.Mount();
+        if ( terminal == null )
+            return;
+
+        terminal.FocusInput();
+        terminal.BootHubPowerGate();
+    }
+
+    private static void OpenMounted( BitminerEntity miner )
+    {
+        var terminal = BitminerTerminalHost.Mount();
+        if ( terminal == null )
+            return;
 
         if ( miner.IsValid() )
             BitminerRigRegistry.TrySelect( miner );
@@ -172,13 +246,31 @@
 
     private void CloseTerminal() => BitminerTerminalHost.Close( this );
 
+    private string GetTitleLabel() =>
+        IsHubPowerGate ? "HUB POWER GATE" : "HASHD RIG CONTROL";
+
+    private void BootHubPowerGate()
+    {
+        _lines.Clear();
+        _showUpgradeMenu = false;
+        _powerConfirm = PowerConfirmKind.None;
+        _lines.Add( $">> {Bitminer.HubDisplayName} — power gate" );
+        _lines.Add( ">> hub offline — linked racks disabled" );
+        _lines.Add( ">> authorize boot: type 'power on' then click POWER ON" );
+        _lines.Add( $">> {BitminerRigRegistry.RegisteredRigs.Count} rack(s) linked within range" );
+        _lines.Add( "Commands: power · help" );
+        _lines.Add( "" );
+    }
+
     private void Boot()
     {
         _lines.Clear();
         _showUpgradeMenu = false;
-        _lines.Add( ">> hashd init — LIFEPUNCH mining daemon" );
+        _powerConfirm = PowerConfirmKind.None;
+        _lines.Add( $">> hashd init — {Bitminer.ProductTitle}" );
+        _lines.Add( $">> {LifePunchSourceMark.PublishedByLine}" );
         _lines.Add( ">> linking gpu-rack telemetry bus ... OK" );
-        _lines.Add( ">> syncing payout ledger (60s tick) ... OK" );
+        _lines.Add( $">> syncing payout ledger ({(int)Bitminer.MiningPayoutIntervalSeconds}s tick) ... OK" );
         _lines.Add( ">> rig interface ready — telemetry rail active (left)" );
         var rigCount = BitminerRigRegistry.RegisteredRigs.Count;
         if ( rigCount > 1 )
@@ -217,15 +309,75 @@
         Miner.SetMiningState( false );
     }
 
+    private void OnRailPowerOn()
+    {
+        if ( !Hub.IsValid() || Hub.IsPowered )
+            return;
+
+        if ( _powerConfirm != PowerConfirmKind.On )
+        {
+            _lines.Add( "ERROR: Type 'power on' at the prompt first." );
+            TrimLines();
+            return;
+        }
+
+        Sound.Play( Bitminer.KeyboardSoundPath );
+        Hub.RequestSetPowered( true );
+        _powerConfirm = PowerConfirmKind.None;
+        _lines.Add( ">> hub power authorized — booting ophion ..." );
+        _lines.Add( ">> startup sequence ... OK" );
+        _lines.Add( ">> hashd bus online — rig telemetry enabled" );
+        _lines.Add( "" );
+        TrimLines();
+    }
+
+    private void OnRailPowerOff()
+    {
+        if ( !Hub.IsValid() || !Hub.IsPowered )
+            return;
+
+        if ( _powerConfirm != PowerConfirmKind.Off )
+        {
+            _lines.Add( "ERROR: Type 'power off' at the prompt first." );
+            TrimLines();
+            return;
+        }
+
+        Sound.Play( Bitminer.KeyboardSoundPath );
+        Hub.RequestSetPowered( false );
+        _powerConfirm = PowerConfirmKind.None;
+        _lines.Add( ">> hub shutdown authorized — linked racks stopping" );
+        _lines.Add( "" );
+        TrimLines();
+    }
+
     private void SecondlyUpdate()
     {
+        var viewerPos = BitminerTerminalHost.LocalViewerPosition( Scene );
+
+        if ( IsHubPowerGate )
+        {
+            if ( !Hub.IsValid() )
+            {
+                CloseTerminal();
+                return;
+            }
+
+            if ( viewerPos.HasValue && viewerPos.Value.Distance( Hub.WorldPosition ) > 150f )
+            {
+                CloseTerminal();
+                return;
+            }
+
+            return;
+        }
+
         if ( !Miner.IsValid() )
         {
             CloseTerminal();
             return;
         }
 
-        var viewerPos = BitminerTerminalHost.LocalViewerPosition( Scene );
         if ( viewerPos.HasValue && viewerPos.Value.Distance( Miner.WorldPosition ) > 150f )
         {
             CloseTerminal();
@@ -246,7 +398,7 @@
             SecondlyUpdate();
         }
 
-        if ( !Miner.IsValid() )
+        if ( !IsHubPowerGate && !Miner.IsValid() )
             return;
 
         if ( InputBox.IsValid() && !InputBox.HasFocus && !_showUpgradeMenu )
@@ -275,7 +427,7 @@
             if ( Miner.MiningProgress < _lastKnownProgress - 0.1f )
                 _smoothProgress = 0f;
             _lastKnownProgress = Miner.MiningProgress;
-            _smoothProgress = MathF.Min( _smoothProgress + Time.Delta / 60f, 1f );
+            _smoothProgress = MathF.Min( _smoothProgress + Time.Delta / Bitminer.MiningPayoutIntervalSeconds, 1f );
         }
         else
         {
@@ -455,6 +607,10 @@
         {
             case "help":
                 _lines.Add( "--------------------HELP--------------------" );
+                if ( Hub.IsValid() )
+                {
+                    _lines.Add( "  POWER    - on | off — hub boot/shutdown (confirm on rail)." );
+                }
                 _lines.Add( "  BITCOIN  - Sell or view stored bitcoin balance." );
                 _lines.Add( "  INFO     - Output device specifications." );
                 _lines.Add( "  RACKS    - List linked mining rigs in range." );
@@ -485,7 +641,7 @@
             case "info":
                 if ( !Miner.IsValid() ) { _lines.Add( "ERROR: Miner connection lost." ); break; }
                 _lines.Add( "--------------------INFO--------------------" );
-                _lines.Add( $"  Device:      Bitcoin Miner" );
+                _lines.Add( $"  Device:      {BitminerRigRegistry.GetRigTypeLabel( Miner )}" );
                 _lines.Add( $"  Interface:   HASHD RIG CONTROL v1" );
                 _lines.Add( $"  CPU Speed:   {Miner.ClockSpeed:0.000} GHz (Lv {Miner.CpuUpgradeLevel})" );
                 _lines.Add( $"  CPU Cores:   {Miner.CoreCount} (Lv {Miner.CoreUpgradeLevel})" );
@@ -610,12 +766,47 @@
                 OpenUpgradeMenu();
                 break;
 
+            case "power":
+                if ( !Hub.IsValid() )
+                {
+                    _lines.Add( "ERROR: No hub session — open from a Bitcoin Miner hub." );
+                    break;
+                }
+
+                if ( arg is "on" or "boot" or "start" )
+                {
+                    if ( Hub.IsPowered )
+                    {
+                        _lines.Add( "Hub is already online." );
+                        break;
+                    }
+
+                    _powerConfirm = PowerConfirmKind.On;
+                    _lines.Add( "Auth pending — click POWER ON on the rail to confirm boot." );
+                }
+                else if ( arg is "off" or "shutdown" or "stop" )
+                {
+                    if ( !Hub.IsPowered )
+                    {
+                        _lines.Add( "Hub is already offline." );
+                        break;
+                    }
+
+                    _powerConfirm = PowerConfirmKind.Off;
+                    _lines.Add( "Auth pending — click POWER OFF on the rail to confirm shutdown." );
+                }
+                else
+                {
+                    var state = Hub.IsPowered ? "ONLINE" : "OFFLINE";
+                    _lines.Add( $"  Hub power: {state}" );
+                    _lines.Add( "  Use 'power on' or 'power off' (confirm on rail)." );
+                }
+                break;
+
             case "about":
                 _lines.Add( "--------------------------------------------" );
-                _lines.Add( "  HASHD RIG CONTROL — LIFEPUNCH™ Bitcoin Miner" );
-                _lines.Add( "  Published by LIFEPUNCH — lifepunch.co" );
-                _lines.Add( "  Proprietary software. All rights reserved." );
-                _lines.Add( "  Use on your server only. No redistribution or resale." );
+                foreach ( var line in LifePunchSourceMark.AboutBlock( Bitminer.ProductTitle ) )
+                    _lines.Add( $"  {line}" );
                 _lines.Add( "--------------------------------------------" );
                 break;
 
@@ -665,6 +856,15 @@
 
     protected override int BuildHash()
     {
+        if ( IsHubPowerGate )
+        {
+            return HashCode.Combine(
+                Hub?.IsPowered ?? false,
+                (int)_powerConfirm,
+                _lines.Count,
+                BitminerRigRegistry.RegisteredRigs.Count );
+        }
+
         if ( !Miner.IsValid() )
         {
             return HashCode.Combine( _lines.Count, _showUpgradeMenu, BitminerTerminalHost.GetLocalWalletCash(), BitminerRigRegistry.RegisteredRigs.Count );
@@ -681,6 +881,8 @@
         hash.Add( (int)( _smoothProgress * 10f ) );
         hash.Add( BitminerRigRegistry.SelectedIndex );
         hash.Add( BitminerRigRegistry.RegisteredRigs.Count );
+        hash.Add( Hub?.IsPowered ?? false );
+        hash.Add( (int)_powerConfirm );
         return hash.ToHashCode();
     }
 }

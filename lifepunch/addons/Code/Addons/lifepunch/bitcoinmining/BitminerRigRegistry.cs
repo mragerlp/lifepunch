@@ -27,6 +27,9 @@ internal static class BitminerRigRegistry
 
 	private static readonly List<BitminerEntity> Registered = new();
 	private static int _selectedIndex;
+	private static BitminerHubEntity _activeHub;
+
+	public static BitminerHubEntity ActiveHub => _activeHub.IsValid() ? _activeHub : null;
 
 	public static IReadOnlyList<BitminerEntity> RegisteredRigs => Registered;
 
@@ -37,11 +40,42 @@ internal static class BitminerRigRegistry
 
 	public static void Refresh( Scene scene, Vector3 anchor )
 	{
+		_activeHub = null;
+		RefreshInternal( scene, anchor, null );
+	}
+
+	public static void RefreshFromHub( Scene scene, BitminerHubEntity hub )
+	{
+		if ( !hub.IsValid() )
+		{
+			_activeHub = null;
+			Registered.Clear();
+			_selectedIndex = 0;
+			return;
+		}
+
+		_activeHub = hub;
+		RefreshInternal( scene, hub.WorldPosition, hub );
+	}
+
+	private static void RefreshInternal( Scene scene, Vector3 anchor, BitminerHubEntity hub )
+	{
 		Registered.Clear();
 		_selectedIndex = 0;
 
 		if ( scene is null )
 			return;
+
+		if ( hub.IsValid() )
+		{
+			foreach ( var rig in BitminerHubRegistry.GetLinkedRacks( hub ) )
+			{
+				if ( rig.IsValid() )
+					Registered.Add( rig );
+			}
+
+			return;
+		}
 
 		var candidates = new List<(BitminerEntity rig, float horizontal)>();
 
@@ -87,7 +121,7 @@ internal static class BitminerRigRegistry
 	}
 
 	public static string GetRigTypeLabel( BitminerEntity rig ) =>
-		rig.IsValid() && rig.AdvancedRack ? "ADVANCED" : "SMALL";
+		rig.IsValid() && rig.AdvancedRack ? Bitminer.AdvancedDisplayName : Bitminer.DisplayName;
 
 	public static string GetRigStatusLabel( BitminerEntity rig ) =>
 		rig.IsValid() && rig.IsMining ? "MINING" : "IDLE";

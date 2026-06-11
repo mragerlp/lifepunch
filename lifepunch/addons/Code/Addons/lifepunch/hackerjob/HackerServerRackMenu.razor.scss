@@ -1,0 +1,244 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// PROPRIETARY & CONFIDENTIAL — © 2026 lifepunch.co. All rights reserved.
+//
+// "Hacker Job" (s&box ident: lifepunch.hackerjob · addon ident: hackerjob) is the sole-owned
+// intellectual property of lifepunch.co. It is NOT licensed for resale, redistribution,
+// sublicensing, copying, or reuse by ANY person or entity — including DXRP and
+// LifePunch staff, contributors, or community — EXCEPT the owner (lifepunch.co).
+// Presence in this repository or on the DXRP portal grants no rights to anyone else.
+// ─────────────────────────────────────────────────────────────────────────────
+
+// Server rack control — green hacker ops (matches cornerman palette)
+$bg: #0a0f0a;
+$bg-rail: #080d08;
+$border: #1a3a2a;
+$primary: #00FF7F;
+$primary-dim: #00c060;
+$body: #d8ffe8;
+$body-dim: #7ab896;
+$error: #e4002b;
+$main-font: Mina;
+$text-sm: 14px;
+
+HackerServerRackMenu {
+    pointer-events: all;
+    position: absolute;
+    bottom: 48px;
+    left: 24px;
+    width: 780px;
+    height: 520px;
+    background-color: rgba(10, 15, 10, 0.98);
+    border: 2px solid $border;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    .scanlines {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0.03;
+        background-color: #000;
+    }
+
+    .title-bar {
+        background-color: #0d120d;
+        padding: 8px 14px;
+        border-bottom: 2px solid $border;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        .title-mark, .title-text { color: $primary; font-family: $main-font; font-weight: bold; }
+        .title-text { letter-spacing: 2px; text-transform: uppercase; font-size: $text-sm; }
+        .title-ver { color: $body-dim; font-family: $main-font; font-size: 11px; }
+        .title-spacer { flex-grow: 1; }
+
+        .title-publisher {
+            font-family: $main-font;
+            font-size: 10px;
+            color: $primary-dim;
+            letter-spacing: 1px;
+            opacity: 0.85;
+        }
+
+        .close-x {
+            background-color: rgba(228, 0, 43, 0.12);
+            border: 1px solid $error;
+            color: $error;
+            font-family: $main-font;
+            font-size: 11px;
+            padding: 4px 12px;
+        }
+    }
+
+    .terminal-body {
+        flex: 1;
+        display: flex;
+        min-height: 0;
+    }
+
+    .telemetry-rail {
+        width: 220px;
+        background-color: $bg-rail;
+        border-right: 2px solid $border;
+        padding: 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+
+        .rail-header, .rail-nav-header {
+            color: $primary-dim;
+            font-family: $main-font;
+            font-size: 11px;
+            letter-spacing: 1px;
+        }
+
+        .rail-block {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            .rail-label { color: $body-dim; font-size: 10px; font-family: $main-font; }
+            .rail-value { color: $body; font-family: $main-font; font-size: 13px; }
+            .rail-value.active { color: $primary; }
+        }
+
+        .rail-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-top: 8px;
+        }
+
+        .rail-btn, .nav-btn {
+            background-color: rgba(0, 255, 127, 0.06);
+            border: 1px solid $border;
+            color: $body;
+            font-family: $main-font;
+            font-size: 11px;
+            padding: 6px 8px;
+            text-transform: uppercase;
+        }
+
+        .rail-btn.active, .nav-btn.active {
+            border-color: $primary;
+            color: $primary;
+        }
+
+        .rail-nav { margin-top: auto; display: flex; flex-direction: column; gap: 4px; }
+    }
+
+    .main-pane {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        padding: 12px 16px;
+    }
+
+    .module-header {
+        color: $primary-dim;
+        font-family: $main-font;
+        font-size: 12px;
+        letter-spacing: 1px;
+        border-bottom: 1px solid $border;
+        padding-bottom: 8px;
+        margin-bottom: 12px;
+    }
+
+    .control-body .control-line {
+        color: $body;
+        font-family: $main-font;
+        font-size: 13px;
+        margin-bottom: 8px;
+    }
+
+    .control-line.warn { color: $error; }
+
+    .upgrade-list { display: flex; flex-direction: column; gap: 10px; }
+
+    .upgrade-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        border: 1px solid $border;
+        padding: 10px;
+    }
+
+    .upgrade-info {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        .upgrade-name { color: $primary; font-family: $main-font; font-size: 13px; }
+        .upgrade-detail { color: $body; font-family: $main-font; font-size: 12px; }
+        .upgrade-detail.dim { color: $body-dim; }
+    }
+
+    .upgrade-btn {
+        border: 1px solid $primary;
+        color: $primary;
+        background-color: rgba(0, 255, 127, 0.08);
+        font-family: $main-font;
+        font-size: 11px;
+        padding: 6px 10px;
+        white-space: nowrap;
+    }
+
+    .upgrade-btn.disabled {
+        border-color: #3a3a3a;
+        color: #6a6a6a;
+        background-color: #1a1a1a;
+    }
+
+    .wallet-line {
+        margin-top: 12px;
+        color: $body-dim;
+        font-family: $main-font;
+        font-size: 12px;
+    }
+
+    .log-scroll {
+        flex: 1;
+        overflow-y: scroll;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .log-line {
+        color: $body;
+        font-family: $main-font;
+        font-size: 13px;
+    }
+
+    .lp-source-footer {
+        flex-shrink: 0;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+        padding: 5px 12px;
+        border-top: 1px solid $border;
+        background-color: #060a06;
+        font-family: $main-font;
+        font-size: 10px;
+        letter-spacing: 0.5px;
+
+        .lp-mark {
+            color: $primary;
+            font-weight: bold;
+        }
+
+        .lp-pub {
+            color: $body-dim;
+        }
+
+        .lp-legal {
+            color: $body-dim;
+            opacity: 0.75;
+            margin-left: auto;
+            text-align: right;
+        }
+    }
+}

@@ -45,15 +45,17 @@ public sealed class HackerPuzzleSession
 		Started = 0f;
 	}
 
-	public static HackerPuzzleSession CreateRandom( bool advancedTerminal = false )
+	public static HackerPuzzleSession CreateRandom( bool advancedTerminal = false, float? timeLimitSeconds = null )
 	{
+		var limit = timeLimitSeconds ?? HackerJob.DefaultPuzzleTimeLimitSeconds;
+
 		if ( advancedTerminal )
 		{
 			return new HackerPuzzleSession(
 				PuzzleKind.GovDbBypass,
 				"Bypass treasury firewall — type the intrusion token:",
 				"govdb_breach",
-				40f );
+				limit );
 		}
 
 		var roll = Random.Shared.Int( 0, 2 );
@@ -63,17 +65,17 @@ public sealed class HackerPuzzleSession
 				PuzzleKind.CompleteTheLine,
 				"Complete the bypass line:\n  if (wallet.balance > 0) { __________ }",
 				"drain(wallet);",
-				45f ),
+				limit ),
 			1 => new HackerPuzzleSession(
 				PuzzleKind.TypeSequence,
 				"Type the exploit token within 30s:",
 				"cornerman_bypass",
-				30f ),
+				limit ),
 			_ => new HackerPuzzleSession(
 				PuzzleKind.PickFix,
 				"Pick the valid packet header (type the number):\n  1) CORNERMAN/1.0 OK\n  2) DXRP/HACK FREE\n  3) WALLET/OPEN ALL",
 				"1",
-				35f ),
+				limit ),
 		};
 	}
 

@@ -11,9 +11,9 @@ The **government database** is represented in-world by **automatic government Bi
 
 - **Blue console** aesthetic (lifepunchnet cyan `#00D4FF`) — player hashd stays **green** Cornerman chrome
 - **Always mining** — no player start/stop
-- **Every 60 minutes:** deposit **0%–30%** of accumulated BTC balance as **cash into city funds** (tax rate)
+- **Every 30 minutes:** deposit **0%–30%** of accumulated BTC balance as **cash into city funds** (tax rate set by mayor)
 - **No player withdraw** — treasury only; mirrors Bitminer accrual math
-- **$30,000 cap** on accumulated BTC value (= **20 BTC** at $1,500/BTC — same rate as player Bitminer)
+- **$50,000 cap** on accumulated BTC value (= **~33.33 BTC** at $1,500/BTC — same rate as player Bitminer)
 - **Police terminals** placed near tax miners — lifepunchnet ops UI, counter-intrusion / audit (like Hacker flow)
 - **Advanced Hacking Terminal** (Vengeance red) is how Hackers breach govdb nodes
 

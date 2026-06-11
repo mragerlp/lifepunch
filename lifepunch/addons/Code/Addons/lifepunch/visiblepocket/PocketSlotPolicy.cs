@@ -20,6 +20,7 @@ public static class PocketSlotPolicy
 	public const int DefaultSlots = 6;
 	public const int VipSlots = 8;
 	public const int EvipSlots = 12;
+	public const int MaxTierSlots = 15;
 
 	public const string VipRankName = "VIP";
 	public const string EvipRankName = "EVIP";

@@ -15,7 +15,7 @@
 **Seed CRT mesh:**
 
 ```powershell
-powershell -File lifepunch/addons/scripts/Seed-HackerTerminalCrt.ps1
+powershell -File lifepunch/addons/scripts/Intake-HackerTerminalModel.ps1
 ```
 
-Source `computer.fbx` is LifePunch-owned (same CRT family as bitminer) — not raw CS2.
+Source `hacker-terminal.fbx` from owner pack (`Downloads\hackerterminal`). Legacy `Seed-HackerTerminalCrt.ps1` copied bitminer `computer.fbx` — superseded.

@@ -21,7 +21,7 @@ Study DXRP handgun class reference (`usp`):
 
 - Download cache: `download/assets/` weapon defs if present
 - DXRP GitHub `develop` game code — `Usp` / `UspWeapon` / equipment stats
-- `reference/evo-bitminer` is **not** the weapon reference — use DXRP USP
+- Bitminer addon is **not** the weapon reference — use DXRP USP
 
 Produce `lifepunch/addons/docs/reference/USP_CLASS_STATS.md`:
 

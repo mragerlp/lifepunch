@@ -1,26 +1,19 @@
 # advanced-hacker-terminal — Vengeance CRT (vengeance.exe)
 
 **Slug:** `advanced-hacker-terminal`  
-**Source:** `source/computer.fbx` (same base mesh; red skin in materials)  
+**Source:** `source/hacker-terminal.fbx` (same mesh as standard; red material pass in ModelDoc)  
 **Target:** `advanced-hacker-terminal.vmdl`  
-**Brand:** `#E4002B` per `TERMINAL_BRAND_MATRIX.md`
-
-## Seed
-
-Same script as standard tier — copies FBX into this folder:
-
-```powershell
-powershell -File lifepunch/addons/scripts/Seed-HackerTerminalCrt.ps1
-```
+**Prefab:** `entities/advanced-hacker-terminal/advanced-hacker-terminal.prefab`  
+**Tier:** `HackerTerminalEntity.Tier = Advanced`
 
 ## ModelDoc
 
-1. Open `advanced-hacker-terminal.vmdl`.
-2. Duplicate / retint materials for Vengeance red accents.
-3. Compile → build advanced prefab (`ENTITY_PREFAB_BUILD.md`).
+1. Duplicate material remaps from standard terminal with Vengeance `#E4002B` accents (`TERMINAL_BRAND_MATRIX.md`).
+2. Same `import_scale` baseline as `hacker-terminal.vmdl`.
 
-## Dev
+## Dev smoke
 
 ```text
 lp_spawn_advanced_hacker_terminal
+lp_vengeance_preview
 ```

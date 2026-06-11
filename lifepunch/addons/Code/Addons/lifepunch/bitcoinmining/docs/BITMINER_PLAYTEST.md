@@ -6,12 +6,24 @@
 
 ---
 
-## 0. Host + join (DXRP is DedicatedServerOnly)
+## 0. Enter play mode (DXRP is DedicatedServerOnly)
 
-1. Open a **map scene** (not a prefab stage) — e.g. downtown map, not `game.scene` prefab stage.
-2. Press **Play** (green arrow) first — editor must be **in play mode**.
-3. Viewport toolbar → **network** icon → **Start Hosting** (before Play = `Unable to create a lobby outside of a game`).
-4. Portal/API data only when needed: `authorize <token>` in console.
+### Root cause (confirmed 2026-06-11)
+
+**Play fails when the active tab is a prefab stage** (`Prefab: GPU Rack`, `Prefab: Large GPU Rack`, etc.). Bridge reports `sceneName: "gpu-rack"` — that is **not** DXRP play mode. Hosting from there always yields `Unable to create a lobby outside of a game`.
+
+**Play works from `scenes/game.scene`** — bridge reports `sceneName: "Game"`, log shows `[Fitter] Fitting thieves.rpdowntown3t` and `Mr. Rager has joined the game`.
+
+### Steps (every session)
+
+1. **Close all prefab tabs** (save/discard the `*` on Large GPU Rack if prompted).
+2. Asset Browser → **scenes** → double-click **`game.scene`** — tab title must say **Game**, not `Prefab: …`.
+3. Press **Play** (green arrow). First cold load: wait **2–5 minutes** while downtown compiles; early Stop = `Couldn't load map (A task was canceled.)`.
+4. Log/console shows player join + map fit → you're in. Then: `lp_hashd_preview` or `lp_spawn_bitminer`.
+5. **Start Hosting** is optional and only **after** step 3 succeeds (not from prefab edit mode).
+6. Portal/API when needed: `authorize <token>` in console.
+
+**Stall on cold start:** broken `advanceddrugprocessing` models on disk can spam recompiles — local DXRP install may rename that folder to `advanceddrugprocessing._disabled` (not in `rp.sbproj` Resources).
 
 ### Log triage (`D:\Steam\steamapps\common\sbox\logs\sbox-dev.log`)
 
@@ -19,13 +31,23 @@
 |----------|----------|-------|-------------------|
 | `lifepunch_rgb_fan_led.shader` + `Feature combo not found` | **P0 block** | Custom GPU vmat shader not compiled | **Fixed baseline:** `gpu-rack-gpu.vmat` → `complex.shader` (BITMINER-03). Endgame: compile shader in editor, restore RGB vmat. |
 | `gpu-rack-gpu.vmat_c` / `gpu_basecolor...vtex_c` not found | **P0 block** | Downstream of failed vmat compile | Recompile vmat + vmdl after vmat fix; `Pull-DxrpCompiledAssetsToRepo.ps1`. |
-| `Couldn't load map (A task was canceled.)` | **P0 block** | Map load aborted (often user stop, or asset compile stall mid-load) | Clear bitminer test GOs from `Assets/scenes/game.scene`; fix P0 vmat; retry Play on **map** scene. |
+| `Couldn't load map (A task was canceled.)` | **P0 block** | Map load aborted (Stop clicked too soon, prefab tab active, or compile stall) | Open **`scenes/game.scene`** (not prefab); Play once and **wait** 2–5 min; disable broken `advanceddrugprocessing._disabled` folder locally. |
 | `Unable to create a lobby outside of a game` | User flow | Start Hosting clicked before Play | Play first, then Start Hosting (§0 above). |
 | `ToolsStallMonitor Stall detected` | Watch | Long on-demand recompiles (bitminer vmdl/vmat) | Fix P0 shader; avoid leaving `gpu-rack-test` in startup scene. |
-| `dark green.vmat_c` / `lime green.vmat_c` on terminal | Cosmetic | Stale CRT mesh material paths | ModelDoc remap on `bitcoin-terminal.vmdl`; non-blocking for hashd CLI. |
-| `bitcoin-miner/*.sound_c` not found | Cosmetic | Sounds not compiled | Non-blocking; hum disabled on prefab. |
+| `FanBlades.00x` / `GPU_Fan_x.00x` incorrect extension | **P0 loop** | Stacked FBX material slots not remapped | **Fixed:** remaps in `gpu-rack-stacked.vmdl` → rack/gpu vmats. |
+| `bassm\Desktop\PSU...` content-relative error | Warning | Stacked FBX embeds artist absolute paths | Ignored after remap; PSU uses our `gpu-rack-psu.vmat`. |
+| `dark green.vmat_c` / `lime green.vmat_c` on terminal | **P1 loop** | CRT FBX `Lime Green` / `Dark Green` slots | **Fixed:** remap → `bitcoin-terminal-monitor.vmat`. |
+| `bitcoin-miner/*.sound_c` not found | **P1 loop** | Prefab refs sounds that do not exist yet | **Fixed:** prefab sound props nulled until owned audio ships. |
+| `Skipping texture streaming` (gpu textures) | Watch | Recompile storm settling | Stops after vmat/vmdl `_c` stable; restart editor if it persists >30s. |
+| `repeating-linear-gradient` / `linear-gradient` invalid `background-image` | **P1 loop** | s&box UI panel SCSS rejects CSS gradients | **Fixed:** solid colors in `BitminerTerminal.razor.scss` (no gradients). |
+| `Failed to get player inventory` **403** | Expected offline | No `authorize` token / portal API | Console: `authorize <dxrp.net token>` — not required for `lp_spawn_bitminer` / hashd UI. |
+| `Unable to load prefab improved_atm` (×11) | DXRP map | Map fitting references missing SPL ATM addon | Noise only; downtown still loads. |
+| `Couldn't find Input Action called "Pocket"` | DXRP | Pocket bind not in project InputSettings | Ignore for bitminer playtest. |
+| `returning error texture` metal036 / door vmdl | DXRP map | Downtown fitting props missing `_c` on cold compile | Cosmetic checkerboard on some doors; map playable. |
+| `lp_spawn_bitminer: gpu-rack + bitcoin-terminal placed` | **OK** | Dev spawn succeeded | Run `hashd` near rig or `lp_hashd_preview` from play mode. |
+| FPS tanks right after `lp_spawn_bitminer` | **P0 perf** | `ModelCollider` on full `gpu-rack*.vmdl` with `PhysicsHullFromRender` / `HullPerElement` + per-frame `TextRenderer` rebuild | **Fixed:** prefabs use tuned `BoxCollider` + `StartAsleep`; `BitminerEntity` throttles screen text + RGB attribute writes. |
 
-**MCP check:** `get_compile_errors` + `read_log` (sbox bridge). **Do not** leave test rigs in `game.scene` — use `lp_spawn_bitminer` in play mode instead.
+**MCP check:** `read_log` filter `bitcoinmining`, `error`, `spawn`, `403`. **Do not** leave test rigs in `game.scene` — use `lp_spawn_bitminer` in play mode instead.
 
 ## 1. See the hashd console (fastest)
 
@@ -37,7 +59,7 @@ lp_hashd_preview
 
 Spawns small rack + CRT kit and **opens the hashd overlay immediately**. The CRT world mesh can still show ERROR until `bitcoin-terminal.vmdl` is compiled in ModelDoc — the console UI does not depend on the CRT mesh.
 
-**Three entities (owner canon):** Terminal = control · Bitcoin Miner = small rack · Advanced Bitcoin Miner = stacked rack (TODO). See `docs/reference/BITMINER_THREE_ENTITY_ARCH.md`.
+**Three entities (owner canon):** Bitcoin Terminal = control · GPU Rack = small · Large GPU Rack = stacked (2× yield). See `docs/reference/BITMINER_THREE_ENTITY_ARCH.md`.
 
 ---
 
@@ -49,7 +71,7 @@ Spawns small rack + CRT kit and **opens the hashd overlay immediately**. The CRT
 lp_spawn_bitminer
 ```
 
-Spawns **Bitcoin Miner** (`bitcoin-miner.prefab`) + **Bitcoin Terminal** (`bitcoin-terminal.prefab`) as linked pair. Works with a DXRP pawn **or** editor camera.
+Spawns **GPU Rack** (`gpu-rack.prefab`) + **Bitcoin Terminal** (`bitcoin-terminal.prefab`) as linked pair. Works with a DXRP pawn **or** editor camera.
 
 ```text
 lp_spawn_bitcoin_terminal
@@ -59,7 +81,7 @@ lp_spawn_bitminer_full_kit
 
 CRT only · stacked rack only · all three entities (terminal + small + advanced).
 
-**Manual:** Asset Browser → DXRP → `addons/lifepunch/bitcoinmining/entities/bitcoin-miner/bitcoin-miner.prefab` → drag into map → **save scene**.
+**Manual:** Asset Browser → DXRP → `addons/lifepunch/bitcoinmining/entities/gpu-rack/gpu-rack.prefab` → drag into map → **save scene**.
 
 **Verify scene (dev console):**
 
@@ -107,6 +129,8 @@ clear
 Expected: green terminal UI, LCD on `lcd_screen` (on `bitcoin-terminal.prefab`), fans spin while mining (placeholder fan GOs until vmdl anim ships).
 
 **LCD tune:** nudge `lcd_screen` transform on `entities/bitcoin-terminal/bitcoin-terminal.prefab` — not on the rack prefab.
+
+**World scale:** `gpu-rack` root `Scale` **0.65** · `large-gpu-rack` **0.5** (tuned from early oversized import; `0.4`/`0.3` was too small in play). Collider + mesh share root scale; nudge prefab root if still off.
 
 ---
 

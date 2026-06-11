@@ -33,5 +33,11 @@ public static class VisiblePocketCommands
 	{
 		VisiblePocketService.TryApplyDevGlobalMax();
 	}
+
+	[ConCmd( "lp_pocket_refresh" )]
+	public static void PocketRefresh()
+	{
+		VisiblePocketService.RequestHudRefresh();
+	}
 }
 #endif

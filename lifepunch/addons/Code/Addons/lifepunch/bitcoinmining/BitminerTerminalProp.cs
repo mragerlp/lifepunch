@@ -19,7 +19,7 @@ namespace LifePunch.DXRP.Addons.BitcoinMining;
 /// Rack and terminal are distinct placeable entities; pair in editor or via <c>lp_spawn_bitminer_kit</c>.
 /// </summary>
 [Title( "Bitcoin Terminal (hashd CRT)" )]
-[Category( "LifePunch/Bitcoin Mining" )]
+[Category( "LifePunch/Bitcoin Miner" )]
 public sealed class BitminerTerminalProp : Component, Component.IPressable
 {
 	private const float LinkHorizontalUnits = 4f * 39.3701f;

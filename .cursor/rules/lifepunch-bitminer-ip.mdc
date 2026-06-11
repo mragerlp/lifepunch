@@ -1,0 +1,32 @@
+---
+description: LIFEPUNCH Bitcoin Miner IP — original work, no third-party credits
+globs:
+  - lifepunch/addons/Code/Addons/lifepunch/bitcoinmining/**
+  - lifepunch/addons/Assets/addons/lifepunch/bitcoinmining/**
+  - lifepunch/addons/docs/BITMINER*.md
+  - lifepunch/addons/docs/briefs/BITMINER*.md
+  - lifepunch/addons/config/addons.json
+alwaysApply: false
+---
+
+# LIFEPUNCH Bitcoin Miner — IP (agents)
+
+Canonical: `lifepunch/addons/docs/BITMINER_IP_DOCTRINE.md`
+
+## Non-negotiable
+
+- **LIFEPUNCH™ Bitcoin Miner for DXRP** is original LIFEPUNCH content. Bitcoin-mining RP is a **genre** (GMod-era and earlier) — no third-party author gets miner credits.
+- **No third-party credits** in miner ship code, UI, portal copy, or About tabs.
+- **ULX / Ulysses** respect applies to **`lifepunch.ulx` only** — not the miner addon.
+- **Never** commit third-party bitminer study archives (gitignored under `reference/`).
+- Built from **original LifePunch work** + public RP genre — not copy-paste; no creator credits except **ULX/Ulysses on `lifepunch.ulx` only**.
+
+## Architecture (differentiation)
+
+- HASHD UI runs on the **Bitcoin Miner hub** — GPU racks are hardware + LCD telemetry, **not** a terminal on the rig.
+- Payout cadence: **`Bitminer.MiningPayoutIntervalSeconds` (90s)** — do not revert to 60s without owner ask.
+- Sounds: **owner intake only** — ship tree has no WAVs until `Intake-BitcoinMinerSounds.ps1`; never copy third-party packs.
+
+## Before publish
+
+Greps + checklist in `BITMINER_IP_DOCTRINE.md` §6.

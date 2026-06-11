@@ -33,21 +33,39 @@ $requiredTier3 = @(
     'qwen2.5-coder-32b-instruct'
     'text-embedding-nomic-embed-text-v1.5'
 )
-try {
-    $r = Invoke-WebRequest -Uri 'http://127.0.0.1:1234/v1/models' -TimeoutSec 4 -UseBasicParsing
-    if ($r.StatusCode -eq 200) {
+$lmProbeHosts = @('127.0.0.1')
+$lanIp = (Get-NetIPAddress -AddressFamily IPv4 -ErrorAction SilentlyContinue |
+    Where-Object { $_.IPAddress -like '192.168.*' } |
+    Select-Object -First 1).IPAddress
+if ($lanIp) { $lmProbeHosts += $lanIp }
+
+foreach ($probeHost in $lmProbeHosts) {
+    try {
+        $r = Invoke-WebRequest -Uri "http://${probeHost}:1234/v1/models" -TimeoutSec 4 -UseBasicParsing
+        if ($r.StatusCode -ne 200) { continue }
+
         $lmStudioOk = $true
         $parsed = $r.Content | ConvertFrom-Json
-        if ($parsed.data) {
-            $ids = @($parsed.data | ForEach-Object { $_.id })
-            $lmModelCount = $ids.Count
-            $lmModels = ($ids -join ',')
-            if ($lmModels.Length -gt 120) { $lmModels = $lmModels.Substring(0, 120) }
-            $lmTier3Ok = ($requiredTier3 | Where-Object { $ids -notcontains $_ }).Count -eq 0
-        }
+        if (-not $parsed.data) { continue }
+
+        $ids = @($parsed.data | ForEach-Object { $_.id })
+        $lmModelCount = $ids.Count
+        $lmModels = ($ids -join ',')
+        if ($lmModels.Length -gt 120) { $lmModels = $lmModels.Substring(0, 120) }
+
+        $missing = @($requiredTier3 | Where-Object {
+            $req = $_
+            if ($ids -contains $req) { return $false }
+            if ($req -like '*embed*') {
+                return -not @($ids | Where-Object { $_ -like '*embed*' -or $_ -eq 'lp-embed' }).Count
+            }
+            return $true
+        })
+        $lmTier3Ok = ($missing.Count -eq 0)
+        if ($lmTier3Ok) { break }
     }
+    catch { }
 }
-catch { }
 
 $payload = [ordered]@{
     node           = 'cornerman'
