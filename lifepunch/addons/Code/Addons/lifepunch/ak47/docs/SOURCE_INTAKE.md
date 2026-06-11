@@ -299,6 +299,14 @@ Code target:
 Code/Addons/lifepunch/ak47/AK47.cs
 ```
 
+## CS2 reference intake (study only)
+
+- Mesh: `weapon_rif_ak47`
+- Intake: `C:/lifepunch/reference-intake/cs2-weapons/ak47/`
+- Animation catalog: `addons/docs/reference/CS2_AK47_STUDY.md`
+- M4 class map: `addons/docs/reference/M4A1_CLASS_ANIM_MAP.md`
+- Ship boundary: no CS2 assets in publish tree; FP via M4A1 class kit (`vm_m4a1`)
+
 ## Next Step
 
 Create the S&box model resource/materials from the imported FBX and textures using `MODEL_BUILD.md` and `material-map.json`, then create `w_ak47.prefab` and `vm_ak47.prefab` around the confirmed DXRP weapon prefab/component pattern.
