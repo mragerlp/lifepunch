@@ -252,6 +252,10 @@ never a raw public port-forward.
 
 ## 7c. Publishing Cornerman-authored work (read-only key -> patch handoff)
 
+> **June 2026 — Green off-Cursor:** Cornerman no longer runs Cursor agents. Red ships on VENGEANCE;
+> optional inbox drops via `Push-CornermanOffCursorHandoff.ps1`. See `CORNERMAN_OFF_CURSOR_HANDOFF.md`.
+> Patch handoff below remains valid if Cursor returns on Green.
+
 Cornerman clones over a **read-only deploy key by design** — it can commit locally but **cannot
 push**, and no push credential (a secret) ever lives on the box. Anything Cornerman authors reaches
 origin through VENGEANCE over the existing SSH channel:

@@ -42,6 +42,8 @@ Keys use `GetAsyncKeyState` — relay console window must be focused. Global hot
 
 After F8 release the console shows **`RELEASED`** then **`TRANSCRIBING`** before clipboard copy.
 
+**Ready cue:** default mode uses TTS only (`Ready.`) — no beep on top. With `--no-guided`, a quiet chirp plays (`CORNERMAN_BEEP_VOLUME`, default `0.12`; set `0` to silence).
+
 ## Pipeline
 
 ```

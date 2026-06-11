@@ -1,11 +1,11 @@
 # Cornerman work queue (Tier-3 prep)
 
-**Issued:** 2026-06-11 · **Red:** VENGEANCE tests Bitminer + integrates via patch handoff  
-**Pull first:** `C:\Projects\lifepunch` → `git pull --rebase` (or `Invoke-CornermanMonorepoSync.ps1` from Red)
+**Issued:** 2026-06-11 · **Updated:** Green **off-Cursor** — see `lifepunch/docs/CORNERMAN_OFF_CURSOR_HANDOFF.md`
 
-You do **not** open s&box, ModelDoc, or `git push`. Commit locally; ping Red with commit count + subjects.
+**Green box:** optional RAG mirror + PTT only. **Red (VENGEANCE)** owns git push, C#, and doc distill going forward.  
+**Sync clone (if used):** `git fetch origin && git reset --hard origin/main` — do **not** commit from Green unless owner revives Cursor.
 
-**While Red play-tests Bitminer + smoke-tests guns:** finish **#0 AK47** if still open, then **#1 Hacker Job terminal** is the main lane.
+~~Patch handoff~~ → Red pushes `origin/main` directly. Inbox drops: `Push-CornermanOffCursorHandoff.ps1`.
 
 ---
 
@@ -17,7 +17,7 @@ You do **not** open s&box, ModelDoc, or `git push`. Commit locally; ping Red wit
 | 1 | **Hacker Job terminal** | `CORNERMAN_HACKER_JOB_TERMINAL_TASK.md` | `HACKER_TERMINAL_FLOW.md` + `TERMINAL_PUZZLE_CATALOG.md` + platform tokens + gov DB scaffold |
 | 2 | **Coke intake** | `CORNERMAN_COKE_DRUG_INTAKE_TASK.md` | `UNZIP_MANIFEST.txt` + updated `COKE_LINE_MAP.md` |
 | 3 | **Deagle distill** | `CORNERMAN_DEAGLE_DISTILL_TASK.md` | USP stats table + `w_deagle/MODEL_BUILD.md` draft |
-| 4 | **Bitminer finish (docs)** | `CORNERMAN_BITMINER_FINISH_TASK.md` | Protection checklist + portal listing + player flow (**three-entity distill done** on `2e81a2c`) |
+| 4 | ~~Bitminer finish~~ | — | **CLOSED** on Red `3b92de8` — Red owns Phase 2 UI + publish |
 | 5 | **Bitminer Phase 2 menu** | `CORNERMAN_BITMINER_PHASE2_MENU_TASK.md` | Wireframe + `.razor.scss` token draft (no ship C#) |
 | 6 | **Weapon queue hygiene** | `DEAGLE_WEAPON_BRIEF.md` | One-page distill for RAG (`outbox/`) |
 

@@ -26,10 +26,14 @@ lifepunch/scripts/Start-SboxDxrpEditor.ps1 -SyncAddon bitcoinmining
 3. **Separate entity** `entities/bitcoin-terminal/bitcoin-terminal.prefab` — not a child of `bitcoin-miner`.
 4. `lcd_screen` `TextRenderer` on terminal; `BitminerTerminalProp` auto-links to nearest rig + opens hashd on USE.
 5. **Compile in ModelDoc (required — ERROR mesh until `_c` exist):**
-   - Open `bitcoin-terminal.vmdl` in DXRP project scope.
+   - Open `bitcoin-terminal.vmdl` in **DXRP** project scope (not standalone `addons.sbproj`).
    - Compile each `materials/bitcoin-terminal-*.vmat` (six files).
    - Compile `bitcoin-terminal.vmdl` → produces `bitcoin-terminal.vmdl_c`.
-   - Sync compiled `_c` back to monorepo before publish.
+6. **Pull compiled into monorepo** (repo→DXRP `/MIR` deletes `_c` if missing from git):
+   ```powershell
+   powershell -File lifepunch/scripts/Pull-DxrpCompiledAssetsToRepo.ps1
+   ```
+   `Start-SboxDxrpEditor.ps1` runs this automatically before sync.
 
 ## Relation to gpu-rack
 

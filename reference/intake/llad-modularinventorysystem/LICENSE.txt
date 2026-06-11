@@ -1,0 +1,7 @@
+PASTE LICENSE TEXT HERE AFTER MOUNTING llad.modularinventorysystem
+
+Source options:
+  - s&box package page / README shipped with the addon
+  - LICENSE file inside the mounted package tree
+
+Update INTAKE_MANIFEST.txt (license_summary, ship_allowed) once reviewed.

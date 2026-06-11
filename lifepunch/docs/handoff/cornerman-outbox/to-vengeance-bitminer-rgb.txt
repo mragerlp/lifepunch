@@ -1,0 +1,18 @@
+VENGEANCE P0 — Bitminer RGB fan LEDs + tooling context
+
+Pull main on lifepunchaddons, then:
+  Sync-LifePunchAddonsToDxrp.ps1 -Addon bitcoinmining
+  Start-SboxDxrpEditor.ps1
+
+PLAY-TEST: hashd → START → card fan RGB rainbow ramps with fan spin (8s). STOP → both off.
+
+Full runbook: lifepunch/addons/docs/RED_VENGEANCE_TOOLING_HANDOFF.md
+
+Shipped in repo:
+  shaders/lifepunch_rgb_fan_led.shader
+  gpu-rack-gpu.vmat (custom shader + g_flLedActive)
+  BitminerEntity.UpdateRgbFanLeds() tied to IsMining + fan ramp
+
+Also queued for you (not P0): SGE polish, Hit Shapes staff menu, llad inventory intake (reference only until license).
+
+Fan mesh spin still Evo child GOs (BITMINER-01). Rack fans need Rack_Emission.png for RGB.

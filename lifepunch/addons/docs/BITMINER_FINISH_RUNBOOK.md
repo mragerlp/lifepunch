@@ -31,25 +31,23 @@
 | R4 | Protection gate grep | 30m | `BITMINER_PROTECTION_CHECKLIST.md` |
 | R5 | Remove `BitminerDevSpawn` before publish | 5m | Playtest-only |
 
-### Green (Cornerman) — docs only, no C# / ModelDoc
+### Green (Cornerman) — **off-Cursor** (closed / optional)
 
-| # | Task | Deliverable |
-|---|------|-------------|
-| G1 | Fill `BITMINER_PROTECTION_CHECKLIST.md` grep rows | ✅ `briefs/BITMINER_PROTECTION_CHECKLIST.md` |
-| G2 | Portal listing copy (title, description, 3 entity names) | ✅ `reference/BITMINER_PORTAL_LISTING.md` |
-| G3 | Player-facing “how it works” (3 placeables, hashd flow) | ✅ `BITMINER_UX_SPEC.md` §3g |
+| # | Task | Status |
+|---|------|--------|
+| G1–G3 | Protection, portal listing, player UX | ✅ Red `3b92de8` |
 
-**Green does NOT:** `BitminerTerminalProp.cs`, ModelDoc, `git push`.
+Green no longer runs Cursor — see `lifepunch/docs/CORNERMAN_OFF_CURSOR_HANDOFF.md`. Red continues R2–R5.
 
 ### Owner (editor — one session)
 
 | # | Task | Blocks |
 |---|------|--------|
-| E1 | ModelDoc compile `bitcoin-terminal.vmdl` + 6 vmats → `_c` | CRT ERROR mesh |
-| E2 | ModelDoc compile `gpu-rack-stacked.vmdl` | Advanced rack ERROR mesh |
+| E1 | ModelDoc compile `bitcoin-terminal.vmdl` + 6 vmats → `_c` | ✅ pulled to repo — verify in DXRP asset browser |
+| E2 | ModelDoc compile `gpu-rack-stacked.vmdl` | ✅ `gpu-rack-stacked.vmdl_c` in repo |
 | E3 | ModelDoc `power_on` / `power_off` on `gpu-rack.vmdl` | BITMINER-01 fan spinners |
 | E4 | Tune `lcd_screen` transform on terminal prefab | LCD alignment |
-| E5 | Sync `_c` from DXRP → monorepo before publish | Portal compile |
+| E5 | `Pull-DxrpCompiledAssetsToRepo.ps1` after ModelDoc (auto in `Start-SboxDxrpEditor.ps1`) | Portal compile |
 
 ---
 
@@ -71,4 +69,4 @@ Red R1 (registry) → Red R2 (modules) → Owner E1–E2 (meshes) → playtest �
          ↘ Green G1–G3 in parallel (docs)
 ```
 
-Ping Green: `BITMINER_FINISH_RUNBOOK.md` on main — G1–G3 only.
+**Next Red:** R2 Phase 2 modules → owner E1–E2 ModelDoc → R3–R5 publish gate.

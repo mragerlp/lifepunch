@@ -62,7 +62,8 @@ def run_ptt_loop(
         ui.ptt_armed(talk_key)
         if guided:
             _say("Ready.", guided=True)
-        _beep_ready()
+        else:
+            _beep_ready()
 
         ptt.wait_down(talk_vk)
         ui.ptt_recording(talk_key)
@@ -160,6 +161,12 @@ DELIVER_SIG = (
     "ptt_key: str | None = None) -> None:"
 )
 
+BEEP_READY_FUNC = '''
+def _beep_ready() -> None:
+    import beep
+    beep.ready()
+'''.strip()
+
 MAIN_HOOK = """
     if args.ptt:
         return run_ptt_loop(
@@ -219,10 +226,18 @@ def main() -> int:
         relay, ok = _ensure_ptt_before_main(relay)
         if ok:
             changed.append("relay.py (ptt before main)")
-    elif "wait_tap" not in relay or "on_release" not in relay:
+    elif (
+        "wait_tap" not in relay
+        or "on_release" not in relay
+        or '_say("Ready.", guided=True)\n        _beep_ready()' in relay
+    ):
         relay, ok = _replace_function(relay, "run_ptt_loop", RUN_PTT_LOOP)
         if ok:
             changed.append("relay.py (arm+ptt loop)")
+
+    relay, ok = _replace_function(relay, "_beep_ready", BEEP_READY_FUNC)
+    if ok:
+        changed.append("relay.py (quiet beep)")
 
     if "ptt_key: str | None" not in relay:
         relay = relay.replace(

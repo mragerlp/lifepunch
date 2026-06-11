@@ -1,12 +1,13 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// PROPRIETARY & CONFIDENTIAL — © 2026 lifepunch.co. All rights reserved.
+
+// ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+// PROPRIETARY & CONFIDENTIAL ΓÇö ┬⌐ 2026 lifepunch.co. All rights reserved.
 //
-// "Bitcoin Mining" (s&box ident: lifepunch.bitcoinmining · addon ident: bitcoinmining) is the sole-owned
+// "Bitcoin Mining" (s&box ident: lifepunch.bitcoinmining ┬╖ addon ident: bitcoinmining) is the sole-owned
 // intellectual property of lifepunch.co. It is NOT licensed for resale, redistribution,
-// sublicensing, copying, or reuse by ANY person or entity — including DXRP and
-// LifePunch staff, contributors, or community — EXCEPT the owner (lifepunch.co).
+// sublicensing, copying, or reuse by ANY person or entity ΓÇö including DXRP and
+// LifePunch staff, contributors, or community ΓÇö EXCEPT the owner (lifepunch.co).
 // Presence in this repository or on the DXRP portal grants no rights to anyone else.
-// ─────────────────────────────────────────────────────────────────────────────
+// ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
 
 using System;
 using Sandbox;
@@ -29,8 +30,8 @@ public enum BitminerUpgradeType
 /// DUAL-BUILD (see <c>docs/RUNTIME_PATTERN.md</c>):
 /// All simulation, networked state, fan/sound cosmetics, screen text, interaction, RPCs and the
 /// terminal hook are shared Sandbox code. Only the gamemode-coupled touch-points are branched:
-///   * <c>#if LIFEPUNCH_LOCAL</c>  — compile-safe Sandbox-only stub (local / editor build).
-///   * <c>#else</c>                — real <c>Dxura.RP.Game</c> implementation (dxrp.net build).
+///   * <c>#if LIFEPUNCH_LOCAL</c>  ΓÇö compile-safe Sandbox-only stub (local / editor build).
+///   * <c>#else</c>                ΓÇö real <c>Dxura.RP.Game</c> implementation (dxrp.net build).
 /// </summary>
 [Title( "Bitcoin Miner" )]
 [Category( "LifePunch/Bitcoin Mining" )]
@@ -54,7 +55,7 @@ public sealed partial class BitminerEntity : BaseEntity, Component.IPressable, I
 	// ----------------------------
 
 	[Property] public TextRenderer TextRender { get; set; }
-	/// <summary>Advanced Bitcoin Miner prefab sets this — doubles mining yield (stacked gpu-rack).</summary>
+	/// <summary>Advanced Bitcoin Miner prefab sets this ΓÇö doubles mining yield (stacked gpu-rack).</summary>
 	[Property] public bool AdvancedRack { get; set; }
 	[Property] public required GameObject BitminerFan { get; set; }
 	[Property] public GameObject BitminerFan2 { get; set; }
@@ -95,7 +96,7 @@ public sealed partial class BitminerEntity : BaseEntity, Component.IPressable, I
 	private const float AdvancedRackYield = 2f;
 	private float RackYield => AdvancedRack ? AdvancedRackYield : 1f;
 
-	/// <summary>Displayed BTC/min — includes advanced rack multiplier when set on prefab.</summary>
+	/// <summary>Displayed BTC/min ΓÇö includes advanced rack multiplier when set on prefab.</summary>
 	public float MiningRatePerMinute => ClockSpeed * BaseSpeed * CoreCount * RackYield;
 	private const float MiningInterval = 60f;
 	public const float BitcoinValue = 1500f;
@@ -247,8 +248,9 @@ public sealed partial class BitminerEntity : BaseEntity, Component.IPressable, I
 #endif
 
 		UpdateScreenText();
-		SpinFan();
 		UpdateFanRamp();
+		UpdateRgbFanLeds();
+		SpinFan();
 		UpdateHumVolume();
 	}
 
@@ -271,32 +273,32 @@ public sealed partial class BitminerEntity : BaseEntity, Component.IPressable, I
 			return;
 
 		var filled = (int)( MiningProgress * 8 );
-		var bar = new string( '█', filled );
+		var bar = new string( 'Γûê', filled );
 		var pct = (int)( MiningProgress * 100 );
 		var rate = ClockSpeed * BaseSpeed * CoreCount * RackYield;
-		var status = IsMining ? "● MINING" : "○ IDLE";
+		var status = IsMining ? "ΓùÅ MINING" : "Γùï IDLE";
 
 		TextRender.Text = IsMining
 			? $"{status}\n" +
-			  $"――――――――――――――――\n" +
-			  $"₿ {BitcoinAmount:0.00000000} BTC\n" +
+			  $"ΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇò\n" +
+			  $"Γé┐ {BitcoinAmount:0.00000000} BTC\n" +
 			  $"\n" +
 			  $"MINING RATE  {rate:0.00000} BTC/min\n" +
 			  $"HASH RATE    {ClockSpeed:0.000} GHz (Lv {CpuUpgradeLevel}/{CpuUpgradeCosts.Length})\n" +
 			  $"CORES        {CoreCount} (Lv {CoreUpgradeLevel}/{CoreUpgradeCosts.Length})\n" +
 			  $"VALUE        ${BitcoinAmount * BitcoinValue:N0}\n" +
-			  $"――――――――――――――――\n" +
+			  $"ΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇò\n" +
 			  $"{bar}\n" +
 			  $"{pct}%"
 			: $"{status}\n" +
-			  $"――――――――――――――――\n" +
-			  $"₿ {BitcoinAmount:0.00000000} BTC\n" +
+			  $"ΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇò\n" +
+			  $"Γé┐ {BitcoinAmount:0.00000000} BTC\n" +
 			  $"\n" +
 			  $"MINING RATE  0.00000 BTC/min\n" +
 			  $"HASH RATE    {ClockSpeed:0.000} GHz (Lv {CpuUpgradeLevel}/{CpuUpgradeCosts.Length})\n" +
 			  $"CORES        {CoreCount} (Lv {CoreUpgradeLevel}/{CoreUpgradeCosts.Length})\n" +
 			  $"VALUE        ${BitcoinAmount * BitcoinValue:N0}\n" +
-			  $"――――――――――――――――\n" +
+			  $"ΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇòΓÇò\n" +
 			  $"0%";
 	}
 
@@ -314,6 +316,23 @@ public sealed partial class BitminerEntity : BaseEntity, Component.IPressable, I
 	// ----------------------------
 	// TODO (BITMINER-01): Drive gpu-rack.vmdl sequences power_on / power_off from IsMining.
 	// Deprecate Evo child-fan spin below once ModelDoc anim is on the prefab.
+	// RGB fan LED rings: lifepunch_rgb_fan_led.shader on gpu-rack-gpu.vmat (see gpu-rack/RGB_FAN_LED_SHADER.md).
+
+	private void UpdateRgbFanLeds()
+	{
+		if ( !ModelRenderer.IsValid() )
+			return;
+
+		var sceneObject = ModelRenderer.SceneObject;
+		if ( !sceneObject.IsValid() )
+			return;
+
+		var ledActive = 0f;
+		if ( IsMining && !GameObject.Tags.Has( PocketTag ) && FanMaxSpeed > 0f )
+			ledActive = MathF.Clamp( _fanSpeed / FanMaxSpeed, 0f, 1f );
+
+		sceneObject.Attributes.Set( "g_flLedActive", ledActive );
+	}
 
 	private void SpinFan()
 	{

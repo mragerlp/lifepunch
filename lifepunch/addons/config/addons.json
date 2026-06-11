@@ -191,17 +191,51 @@
     },
     {
       "ident": "bitcoinmining",
-      "title": "Bitcoin Mining",
-      "description": "Bitcoin Miner — placeable GPU mining rig with LIFEPUNCH hashd terminal UI. LifePunch-owned gpu-rack world mesh; interactive entity with economy hooks.",
+      "title": "LIFEPUNCH Bitcoin Mining for DXRP",
+      "description": "LIFEPUNCH™ Bitcoin Mining — placeable terminal + GPU racks for DXRP. hashd console controls mining, upgrades, and BTC payout. Published by LIFEPUNCH. LifePunch-owned meshes; not third-party cloud assets.",
       "kind": "interactive-entity",
       "hasAssets": true,
       "hasCode": true,
       "dxrpAddonId": "",
       "sboxIdentifier": "lifepunch.bitcoinmining",
-      "status": "foundation-scaffold",
+      "status": "in-development",
       "spec": "docs/BITMINER_UX_SPEC.md",
-      "notes": "Entity bitcoin-miner + world mesh gpu-rack/ (34 publish files). Raw export at reference-intake/gpu-rack-export. Code port from reference/evo-bitminer pattern — rebrand terminal; never ship Evo assets. Portal package TBD.",
-      "contents": []
+      "notes": "Three placeables: bitcoin-terminal, bitcoin-miner, advanced-bitcoin-miner. Finish runbook: docs/BITMINER_FINISH_RUNBOOK.md. ModelDoc _c for terminal + stacked rack before portal ship. Remove BitminerDevSpawn before publish.",
+      "contents": [
+        {
+          "slug": "bitcoin-terminal",
+          "name": "Bitcoin Terminal",
+          "label": "Bitcoin Terminal",
+          "type": 0,
+          "primaryReference": "addons/lifepunch/bitcoinmining/entities/bitcoin-terminal/bitcoin-terminal.prefab",
+          "worldModelPath": "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-terminal/bitcoin-terminal.vmdl",
+          "grouping": "Entities",
+          "implementationStatus": "terminal-hub-hashd",
+          "modelBuild": "Assets/addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-terminal/MODEL_BUILD.md"
+        },
+        {
+          "slug": "bitcoin-miner",
+          "name": "Bitcoin Miner",
+          "label": "Bitcoin Miner",
+          "type": 0,
+          "primaryReference": "addons/lifepunch/bitcoinmining/entities/bitcoin-miner/bitcoin-miner.prefab",
+          "worldModelPath": "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/gpu-rack/gpu-rack.vmdl",
+          "grouping": "Entities",
+          "implementationStatus": "small-rack-phase1",
+          "modelBuild": "Assets/addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/gpu-rack/MODEL_BUILD.md"
+        },
+        {
+          "slug": "advanced-bitcoin-miner",
+          "name": "Advanced Bitcoin Miner",
+          "label": "Advanced Bitcoin Miner",
+          "type": 0,
+          "primaryReference": "addons/lifepunch/bitcoinmining/entities/advanced-bitcoin-miner/advanced-bitcoin-miner.prefab",
+          "worldModelPath": "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/gpu-rack/gpu-rack-stacked.vmdl",
+          "grouping": "Entities",
+          "implementationStatus": "stacked-rack-2x-yield",
+          "modelBuild": "Assets/addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/gpu-rack/MODEL_BUILD.md"
+        }
+      ]
     },
     {
       "ident": "xm1014",

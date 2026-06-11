@@ -1,8 +1,9 @@
-// LifePunch gpu-rack — GPU slot (graphics cards + 6 card fans). Emission = mining LED glow.
+
+// LifePunch gpu-rack ΓÇö GPU slot (graphics cards + 6 card fans). RGB fan LEDs via custom shader.
 
 Layer0
 {
-	shader "shaders/complex.shader"
+	shader "addons/lifepunch/bitcoinmining/shaders/lifepunch_rgb_fan_led.shader"
 
 	F_METALNESS_TEXTURE 1
 	F_SPECULAR 1
@@ -29,6 +30,11 @@ Layer0
 	g_flSelfIllumScale "1.000"
 	g_vSelfIllumTint "[1.000000 1.000000 1.000000 0.000000]"
 	TextureSelfIllumMask "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/gpu-rack/textures/gpu/GPU_Emission.png"
+
+	g_flLedActive "0.000"
+	g_flIdleGlow "0.040"
+	g_flRgbCycleSpeed "0.220"
+	g_flRgbIntensity "3.500"
 
 	g_vTexCoordOffset "[0.000 0.000]"
 	g_vTexCoordScale "[1.000 1.000]"

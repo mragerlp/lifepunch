@@ -1,0 +1,67 @@
+# llad Modular Inventory System — intake manifest
+# Fill this file when VENGEANCE copies the mounted package into this folder.
+# Status: SCAFFOLD ONLY — no package files committed yet.
+
+package_title: Modular Inventory System
+sbox_ident: llad.modularinventorysystem
+publisher: llad
+intake_date: YYYY-MM-DD
+intake_by: VENGEANCE
+intake_status: study-only
+
+# --- Source (after mount in s&box editor) ---
+# Typical mount path on disk (verify in Asset Browser after install):
+#   <dxrp-game>/addons/llad/modularinventorysystem/
+# or:
+#   <sbox-user-data>/.../llad.modularinventorysystem/
+#
+# Copy the full package tree (Code + Assets + any .sbproj metadata) into:
+#   reference/intake/llad-modularinventorysystem/
+
+copy_from_editor: PASTE_ABSOLUTE_PATH_AFTER_MOUNT
+copy_to_repo: reference/intake/llad-modularinventorysystem/
+file_count: 0
+has_assets: unknown
+has_code: unknown
+
+# --- License (REQUIRED before ship) ---
+license_file: LICENSE.txt
+license_url: PASTE_FROM_SBOX_GAME_PAGE_OR_PACKAGE
+license_summary: UNREVIEWED
+author_contact: llad
+ship_allowed: pending-owner-review
+
+# --- Known collision risk (global types today) ---
+types_global:
+  - InventoryItem
+  - InventoryComponent
+# Ship requires LifePunch namespace + proprietary headers if we vendored-bridge.
+
+# --- LifePunch fit (preliminary) ---
+natural_consumers:
+  - advanceddrugprocessing (coke / meth pocket + crafting)
+  - hackerjob (loot / tools — optional)
+  - additionaldroplocations (world loot — optional)
+not_required_for:
+  - adminmenu (lifepunch.ulx staff UI)
+  - bitcoinmining (hashd terminal economy)
+
+# --- Ship bar (all must be true before addons/lifepunch/) ---
+ship_gates:
+  - license_reviewed_and_recorded
+  - opus_bridge_design_signed_off
+  - types_renamespaced_no_dxrp_collision
+  - proprietary_headers_on_owned_bridge_code
+  - drug_dealer_item_bridge_not_duplicate_economy
+  - addons_json_entry_only_if_lifepunch_ip_or_licensed_bridge_documented
+
+# --- DXRP conflict ---
+dxrp_pocket_model: canonical (PocketTag, pocket_item, Drug Dealer market rows)
+llad_mis_model: parallel stack (grid, hotbar, equipment, crafting, chests) — NOT auto-compatible
+bridge_invariant: pocket remains source of truth; MIS is ancillary stash/chest/bench UI only
+reasonable_uses: StorageContainer lab stash; job loot crates; crafting bench UI for drug line
+blocked_without_opus: replace DXRP pocket; dual inventory with no bridge
+
+# --- Next decision (Opus) ---
+bridge_question: ancillary adapter design (stash/chest/bench) syncing to Drug Dealer pocket rows — not pocket replacement
+study_doc: lifepunch/addons/docs/reference/LLAD_MODULAR_INVENTORY_STUDY.md
