@@ -57,7 +57,9 @@ STEP 1 — HEALTH CHECK (PowerShell on this box)
   git log -1 --oneline
   git status -sb
 
-Expected: hostname lifepunchnet, clean main, HEAD at 4a156d4 or newer (re-export bumps this).
+Expected: hostname lifepunchnet, clean main, HEAD matches latest GitLab lifepunch-rdp-server
+  lane export (see lifepunch/docs/gitlab-projects.json agentStatus). After Red re-export:
+  git fetch && git pull --rebase until status -sb shows no behind.
 
 --------------------------------------------------------------------------------
 STEP 2 — DOCKER + WSL (required for Whisper-in-Docker)
