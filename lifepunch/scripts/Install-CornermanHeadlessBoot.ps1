@@ -28,21 +28,28 @@ if (-not $isAdmin) {
 }
 
 $here = $PSScriptRoot
-$bootSrc = Join-Path $here 'Invoke-CornermanHeadlessBoot.ps1'
-$lmsSrc = Join-Path $here 'Start-CornermanLmStudio.ps1'
-if (-not (Test-Path -LiteralPath $bootSrc)) {
-    throw "Missing $bootSrc"
-}
-if (-not (Test-Path -LiteralPath $lmsSrc)) {
-    throw "Missing $lmsSrc"
-}
-
-Write-Step 'Publish headless boot + LM Studio scripts on-box'
 New-Item -ItemType Directory -Force -Path $OnBoxDir | Out-Null
 $bootOnBox = Join-Path $OnBoxDir 'Invoke-CornermanHeadlessBoot.ps1'
 $lmsOnBox = Join-Path $OnBoxDir 'Start-CornermanLmStudio.ps1'
-Copy-Item -LiteralPath $bootSrc -Destination $bootOnBox -Force
-Copy-Item -LiteralPath $lmsSrc -Destination $lmsOnBox -Force
+$bootSrc = Join-Path $here 'Invoke-CornermanHeadlessBoot.ps1'
+$lmsSrc = Join-Path $here 'Start-CornermanLmStudio.ps1'
+
+foreach ($pair in @(
+        @{ Label = 'Invoke-CornermanHeadlessBoot.ps1'; Src = $bootSrc; Dest = $bootOnBox }
+        @{ Label = 'Start-CornermanLmStudio.ps1'; Src = $lmsSrc; Dest = $lmsOnBox }
+    )) {
+    if (-not (Test-Path -LiteralPath $pair.Dest)) {
+        if (-not (Test-Path -LiteralPath $pair.Src)) {
+            throw "Missing $($pair.Dest) (sync $($pair.Label) from Red first)"
+        }
+        Copy-Item -LiteralPath $pair.Src -Destination $pair.Dest -Force
+    }
+    elseif ($pair.Src -ne $pair.Dest -and (Test-Path -LiteralPath $pair.Src)) {
+        Copy-Item -LiteralPath $pair.Src -Destination $pair.Dest -Force
+    }
+}
+
+Write-Step 'Headless boot + LM Studio scripts on-box'
 Write-Note $bootOnBox
 Write-Note $lmsOnBox
 
@@ -56,19 +63,19 @@ $settings = New-ScheduledTaskSettingsSet `
     -RestartInterval (New-TimeSpan -Minutes 1) `
     -ExecutionTimeLimit (New-TimeSpan -Minutes 5)
 
-Write-Step 'Scheduled task — AtStartup'
+Write-Step 'Scheduled task AtStartup'
 $startupTrigger = New-ScheduledTaskTrigger -AtStartup
 Register-ScheduledTask -TaskName 'LifePunch-Cornerman-Headless-Startup' `
     -Action $action -Trigger $startupTrigger -Settings $settings `
     -RunLevel Highest -User 'SYSTEM' -Force | Out-Null
 Write-Note 'LifePunch-Cornerman-Headless-Startup'
 
-Write-Step 'Scheduled task — AtLogon'
+Write-Step 'Scheduled task AtLogon'
 $logonTrigger = New-ScheduledTaskTrigger -AtLogon
 Register-ScheduledTask -TaskName 'LifePunch-Cornerman-Headless-Logon' `
     -Action $action -Trigger $logonTrigger -Settings $settings `
     -RunLevel Highest -Force | Out-Null
-Write-Note 'LifePunch-Cornerman-Headless-Logon (any user — runs after auto-login)'
+Write-Note 'LifePunch-Cornerman-Headless-Logon (any user, runs after auto-login)'
 
 Write-Step 'Run headless boot maintenance now'
 & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $bootOnBox

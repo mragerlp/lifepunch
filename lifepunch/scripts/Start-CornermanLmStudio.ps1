@@ -50,11 +50,17 @@ function Invoke-Lms {
     param([Parameter(Mandatory)][string[]] $LmsArgs)
     $prev = $ErrorActionPreference
     $ErrorActionPreference = 'Continue'
-    $out = & $script:lms @LmsArgs 2>&1
+    $out = @(& $script:lms @LmsArgs 2>&1 | ForEach-Object { "$_" })
     $code = $LASTEXITCODE
     $ErrorActionPreference = $prev
+    $script:LastLmsOutput = $out -join "`n"
     $out | ForEach-Object { Write-Lms "$_" }
     return $code
+}
+
+function Test-LmsAlreadyLoaded {
+    param([string]$Text)
+    return $Text -match 'already exists|already loaded|is already loaded'
 }
 
 function Get-CornermanBindHost {
@@ -99,11 +105,20 @@ function Get-WarmTargets([string]$Mode) {
     }
 }
 
+function Test-ModelPresent([string[]]$Present, [string]$RequiredId) {
+    if ($Present -contains $RequiredId) { return $true }
+    # LM Studio may alias embed models (e.g. lp-embed) while API still serves /v1/models.
+    if ($RequiredId -like '*embed*') {
+        return @($Present | Where-Object { $_ -like '*embed*' -or $_ -eq 'lp-embed' }).Count -gt 0
+    }
+    return $false
+}
+
 function Test-Tier3Ready([string]$HostIp, [string[]]$Required) {
     $present = Get-LmsModelIds -HostIp $HostIp
     if ($present.Count -eq 0) { return $false }
     foreach ($id in $Required) {
-        if ($present -notcontains $id) { return $false }
+        if (-not (Test-ModelPresent -Present $present -RequiredId $id)) { return $false }
     }
     return $true
 }
@@ -127,14 +142,19 @@ if ($startCode -ne 0 -and -not (Test-LmsProbe -HostIp $BindHost)) {
 
 foreach ($modelId in $targets) {
     $present = Get-LmsModelIds -HostIp $BindHost
-    if ($present -contains $modelId) {
+    if (Test-ModelPresent -Present $present -RequiredId $modelId) {
         Write-Lms "Already listed: $modelId"
         continue
     }
-    Write-Lms "Loading $modelId (gpu max)..."
-    $gpuFlag = if ($modelId -like '*embed*') { 'off' } else { 'max' }
+    $gpuFlag = if ($modelId -like '*embed*') { '0.05' } else { 'max' }
+    Write-Lms "Loading $modelId (gpu $gpuFlag)..."
     $loadCode = Invoke-Lms -LmsArgs @('load', $modelId, '--gpu', $gpuFlag, '-y')
-    if ($loadCode -ne 0) { throw "lms load failed for $modelId (exit $loadCode)" }
+    if ($loadCode -ne 0 -and -not (Test-LmsAlreadyLoaded -Text $script:LastLmsOutput)) {
+        throw "lms load failed for $modelId (exit $loadCode)"
+    }
+    if (Test-LmsAlreadyLoaded -Text $script:LastLmsOutput) {
+        Write-Lms "Already loaded in LM Studio: $modelId"
+    }
 }
 
 if ($WarmModel -ne 'none') {
