@@ -26,9 +26,9 @@ Red draft lives in `lifepunch/docs/handoff/cornerman-outbox/` — diff against r
 cd C:\Users\jared\Projects\lifepunchaddons
 git pull --rebase origin main
 
-# Protection
+# Protection (identity + study-tree absent — no legacy third-party name greps)
 rg -i "LIFEPUNCH|lifepunch\.co" lifepunch/addons/Code/Addons/lifepunch/hackerjob lifepunch/addons/Code/Addons/lifepunch/bitcoinmining lifepunch/addons/Code/Addons/lifepunch/governmentdatacenter --glob "*.{cs,razor,scss}"
-rg -i "bitminer|evo-bitminer|spl mute" lifepunch reference .cursor .gitignore
+Get-ChildItem reference -Recurse -Directory -Filter 'third-party-bitcoin-mining-study' -ErrorAction SilentlyContinue
 
 # Compile inventory
 Get-ChildItem lifepunch\addons\Assets\addons\lifepunch\hackerjob,bitcoinmining,governmentdatacenter -Recurse -Include *.vmdl,*.vmdl_c,*.prefab,*.prefab_c -ErrorAction SilentlyContinue

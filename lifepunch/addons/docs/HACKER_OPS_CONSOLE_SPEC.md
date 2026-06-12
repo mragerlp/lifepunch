@@ -10,7 +10,7 @@
 | **HASHD rig** | Amber `#f0a500` | `hashd` | Telemetry rail + `rig0>` log | `bitcoinmining` |
 | **lifepunchnet ops** | Cyan `#00D4FF` | `lifepunch-ops.exe` | Same *platform* (rail + modules) — **Phase 4** on `governmentdatacenter` | `governmentdatacenter` |
 
-Hacker and police share the **ops-console platform shape** (not spl-mute CLI clone). Colors, programs, commands, and job gates stay separate per `TERMINAL_BRAND_MATRIX.md`.
+Hacker and police share the **ops-console platform shape** (LifePunch-owned rail + modules — not a copied legacy GMod admin CLI). Colors, programs, commands, and job gates stay separate per `TERMINAL_BRAND_MATRIX.md`.
 
 ## Hacker modules
 

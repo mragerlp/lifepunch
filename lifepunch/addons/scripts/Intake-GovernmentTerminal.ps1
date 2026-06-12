@@ -83,12 +83,15 @@ Copy-Item -LiteralPath $mesh.FullName -Destination $destMesh -Force
 Write-Host '  police-terminal.obj OK' -ForegroundColor Green
 
 $texSrc = Join-Path $SourceRoot 'textures'
+$destTex = Join-Path $ModelSource 'textures'
 if (Test-Path -LiteralPath $texSrc) {
-    Copy-Item -LiteralPath (Join-Path $texSrc '*') -Destination (Join-Path $ModelSource 'textures') -Recurse -Force
-    Write-Host '  source/textures OK' -ForegroundColor Green
+    Copy-Item -Path "$texSrc\*" -Destination $destTex -Force
+    Write-Host "  source/textures: $((Get-ChildItem -LiteralPath $destTex -File).Count) files" -ForegroundColor Green
 }
 
-Get-ChildItem -LiteralPath $uiDir -File -Include *.png,*.jpg,*.jpeg -ErrorAction SilentlyContinue |
+@('*.png', '*.jpg', '*.jpeg') | ForEach-Object {
+    Get-ChildItem -LiteralPath $uiDir -File -Filter $_ -ErrorAction SilentlyContinue
+} |
     ForEach-Object {
         Copy-Item -LiteralPath $_.FullName -Destination (Join-Path $DestUi $_.Name) -Force
         Write-Host "  ui/lifepunchnet/$($_.Name)" -ForegroundColor DarkGray

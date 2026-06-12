@@ -27,6 +27,10 @@ Canonical: `lifepunch/addons/docs/BITCOINMINING_IP_DOCTRINE.md`
 - Payout cadence: **`BitcoinMiningAddon.MiningPayoutIntervalSeconds` (90s)** — do not revert to 60s without owner ask.
 - Sounds: **owner intake only** — ship tree has no WAVs until `Intake-BitcoinMinerSounds.ps1`; never copy third-party packs.
 
+## Vocabulary (agents)
+
+Canon only: `bitcoinmining`, `hashd`, GPU racks, Bitcoin Miner hub. Never re-introduce legacy third-party miner/admin names in greps, docs, rules, or comments.
+
 ## Before publish
 
-Greps + checklist in `BITCOINMINING_IP_DOCTRINE.md` §6.
+Positive identity greps + checklist in `BITCOINMINING_IP_DOCTRINE.md` §6.

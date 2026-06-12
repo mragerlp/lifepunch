@@ -18,7 +18,7 @@ No individual “invented” the miner job; LIFEPUNCH owns **this** implementati
 - **Assets:** LifePunch-owned or owner-licensed meshes, vmats, sounds — self-contained under `addons/lifepunch/bitcoinmining/`
 - **Code:** Proprietary header on every `.cs` / `.razor` / `.scss` file
 
-**Respect note (other products only):** **ULX / Ulysses** may be credited on **`lifepunch.ulx`** (staff menu) as the historical GMod admin lineage — that credit does **not** extend to the Bitcoin Miner addon.
+**Respect note (other products only):** **ULX / Ulysses** may be credited on `**lifepunch.ulx`** (staff menu) as the historical GMod admin lineage — that credit does **not** extend to the Bitcoin Miner addon.
 
 ---
 
@@ -32,12 +32,14 @@ Use nominative mentions of **DXRP** and **s&box** only as platform compatibility
 
 ## 3. Architecture differences (we already win here)
 
-| Common single-entity pattern | LIFEPUNCH canon |
-|------------------------------|-----------------|
+
+| Common single-entity pattern              | LIFEPUNCH canon                                                         |
+| ----------------------------------------- | ----------------------------------------------------------------------- |
 | CRT / terminal mesh **on the mining rig** | **Bitcoin Miner hub** (Ophion) runs HASHD — racks are **hardware only** |
-| One combined prefab | **Hub** + up to 3 small racks + 1 large rack per hub |
-| Interact-only UI | **`hashd` / `mine` commands** + hub USE + power gate |
-| Fixed 60s payout cadence | **`MiningPayoutIntervalSeconds = 90`** (`BitcoinMiningAddon.cs`) |
+| One combined prefab                       | **Hub** + up to 3 small racks + 1 large rack per hub                    |
+| Interact-only UI                          | `**hashd` / `mine` commands** + hub USE + power gate                    |
+| Fixed 60s payout cadence                  | `**MiningPayoutIntervalSeconds = 90`** (`BitcoinMiningAddon.cs`)        |
+
 
 GPU racks expose **LCD telemetry** (`TextRenderer`) — not a full terminal skin on the rack mesh.
 
@@ -45,11 +47,13 @@ GPU racks expose **LCD telemetry** (`TextRenderer`) — not a full terminal skin
 
 ## 4. Economy constants (LifePunch-owned tuning)
 
-| Constant | Value | Where |
-|----------|-------|--------|
-| Payout interval | **90 seconds** | `BitcoinMiningAddon.MiningPayoutIntervalSeconds` |
-| Base speed | `0.005` BTC per tick unit | `GpuRackEntity` |
-| BTC sell price | `$1500` | `GpuRackEntity` |
+
+| Constant        | Value                     | Where                                            |
+| --------------- | ------------------------- | ------------------------------------------------ |
+| Payout interval | **90 seconds**            | `BitcoinMiningAddon.MiningPayoutIntervalSeconds` |
+| Base speed      | `0.005` BTC per tick unit | `GpuRackEntity`                                  |
+| BTC sell price  | `$1500`                   | `GpuRackEntity`                                  |
+
 
 Genre overlap (upgrade tiers, sell command) is fine. **Our numbers and cadence are ours.**
 
@@ -100,6 +104,7 @@ Checklist: `briefs/BITCOINMINING_PROTECTION_CHECKLIST.md`
 2. **Do not** re-import third-party meshes, sounds, or UI copy.
 3. **Do** lead with **LIFEPUNCH** on all miner listings.
 4. Clone accusations → genre ≠ copy; cite §2–§5.
+5. **Vocabulary:** Use only LIFEPUNCH canon (`bitcoinmining`, `hashd`, GPU racks, Bitcoin Miner hub). Do **not** name, grep for, or document legacy third-party miner/admin addons — they are not part of this repo’s vocabulary. Protection checks use **positive identity greps** (§6) and study-tree absence only.
 
 ---
 
@@ -108,3 +113,4 @@ Checklist: `briefs/BITCOINMINING_PROTECTION_CHECKLIST.md`
 - `reference/BITCOINMINING_PORTAL_LISTING.md`
 - `BITCOINMINING_UX_SPEC.md`
 - `lifepunch/legal/TRADEMARK_AND_IP.md`
+

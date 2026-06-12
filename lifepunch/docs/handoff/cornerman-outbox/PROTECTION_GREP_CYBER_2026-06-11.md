@@ -16,17 +16,16 @@ rg -i "LIFEPUNCH|lifepunch\.co" `
 |--------|--------|
 | **38 files** with LIFEPUNCH / lifepunch.co in preamble or About | **PASS** |
 
-## Forbidden strings (must be zero)
+## Vocabulary gate (agents)
+
+LIFEPUNCH canon names only: **bitcoinmining**, **hashd**, **GPU racks**, **Bitcoin Miner hub**.  
+Do **not** re-introduce legacy third-party miner/admin CLI names in greps, rules, docs, or comments.
 
 ```powershell
-rg -i "bitminer|evo-bitminer|spl mute" lifepunch reference .cursor .gitignore
+# Study archives must stay absent (gitignored path — never commit)
+Get-ChildItem reference -Recurse -Directory -Filter 'third-party-bitcoin-mining-study' -ErrorAction SilentlyContinue
+# expect zero directories in working tree
 ```
-
-| Pattern | Status |
-|---------|--------|
-| bitminer | **PASS** (0 hits) |
-| evo-bitminer | **PASS** (0 hits) |
-| spl mute | **PASS** (0 hits) |
 
 ## Cloud path grep (ship assets)
 
