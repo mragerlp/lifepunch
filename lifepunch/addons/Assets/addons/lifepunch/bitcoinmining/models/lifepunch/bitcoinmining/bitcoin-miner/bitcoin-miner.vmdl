@@ -71,7 +71,7 @@
 							},
 							{
 								from = "Motherboard"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-plate.vmat"
+								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-motherboard.vmat"
 							},
 							{
 								from = "G.Skill Trident Z5"
@@ -79,15 +79,15 @@
 							},
 							{
 								from = "Powersupply"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-plate.vmat"
+								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-psu.vmat"
 							},
 							{
 								from = "LED"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-plate.vmat"
+								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-led.vmat"
 							},
 							{
 								from = "LED.001"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-plate.vmat"
+								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-led.vmat"
 							},
 							{
 								from = "Acrylic"

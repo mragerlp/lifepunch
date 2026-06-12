@@ -605,11 +605,18 @@ public partial class GpuRackEntity : BaseEntity, IGameEvents, IAreaDamageReceive
 #if LIFEPUNCH_LOCAL
 				if ( ErrorBeepSound != null )
 					Sound.Play( ErrorBeepSound, WorldPosition );
+				else
+					Sound.Play( BitcoinMiningAddon.ErrorSoundPath, WorldPosition );
 #else
-				ErrorBeepSound?.Broadcast( WorldPosition );
+				if ( ErrorBeepSound != null )
+					ErrorBeepSound.Broadcast( WorldPosition );
+				else
+					Sound.Play( BitcoinMiningAddon.ErrorSoundPath, WorldPosition );
 #endif
 				if ( GlitchSound != null )
 					Sound.Play( GlitchSound, WorldPosition );
+				else
+					Sound.Play( BitcoinMiningAddon.GlitchSoundPath, WorldPosition );
 			}
 
 			await GameTask.DelaySeconds( interval );

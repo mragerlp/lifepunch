@@ -148,12 +148,12 @@
           "_type": "gameobject",
           "go": "363c8e75-ca15-43fa-bd1a-c2789226e3e2"
         },
-        "ErrorBeepSound": null,
+        "ErrorBeepSound": "addons/lifepunch/bitcoinmining/sounds/bitcoinminer/error.sound",
         "Explosion": {
           "_type": "gameobject",
           "prefab": "prefabs/helpers/explosion.prefab"
         },
-        "GlitchSound": null,
+        "GlitchSound": "addons/lifepunch/bitcoinmining/sounds/bitcoinminer/glitch.sound",
         "MaxSmokeTime": 6,
         "MinSmokeTime": 2.5,
         "ModelRenderer": {

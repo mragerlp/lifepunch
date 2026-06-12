@@ -1,0 +1,18 @@
+// LifePunch bitcoin-miner hub — status LEDs (emissive)
+
+Layer0
+{
+	shader "shaders/complex.shader"
+
+	F_METALNESS_TEXTURE 1
+	F_SPECULAR 1
+	F_EMISSIVE_TEXTURE 1
+
+	TextureColor "addons/lifepunch/bitcoinmining/entities/bitcoinminer/textures/LD0005903152_1_0005906983_0005906987_color.jpg"
+	TextureEmissive "addons/lifepunch/bitcoinmining/entities/bitcoinminer/textures/LD0005903152_1_0005906983_0005906987_Emiss.png"
+	TextureRoughness "addons/lifepunch/bitcoinmining/entities/bitcoinminer/textures/Metal036_2K_Roughness.jpg"
+
+	g_flModelTintAmount "1.000"
+	g_vColorTint "[1.000000 1.000000 1.000000 0.000000]"
+	g_flEmissiveStrength "2.500"
+}
