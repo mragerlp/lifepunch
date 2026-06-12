@@ -2,7 +2,7 @@
 .SYNOPSIS
   Intake owner Bitcoin Miner SFX into sounds/bitcoinminer/.
 
-  Expected names (any of .wav / .mp3 / .ogg) — **owner-recorded or licensed originals only**:
+  Expected names (any of .wav / .mp3 / .ogg) - owner-recorded or licensed originals only:
     hub-startup, hub-fan-loop, hub-fan-down, metal-hit, smoke, explode
     server-hum, keyboard, glitch, error
 
@@ -46,7 +46,7 @@ function Ensure-Dir([string]$Path) {
 }
 
 if (-not (Test-Path -LiteralPath $SourceRoot)) {
-    throw "Missing $SourceRoot — drop owner sound pack first."
+    throw "Missing $SourceRoot - drop owner sound pack first."
 }
 
 $audio = Get-ChildItem -LiteralPath $SourceRoot -Recurse -Include *.wav, *.mp3, *.ogg -ErrorAction SilentlyContinue

@@ -84,7 +84,7 @@ Phase 1: success/fail messaging only — **no wallet or treasury movement**.
 | `clear` | both | LOG | — |
 | `about` | both | LOG | `HackerTerminalBrand.AboutLines` |
 
-**World commands** (`HackerCommandHost`): `cornerman`, `hack` (open UI), `cornerman close`, `lp_spawn_hacker_terminal`, `lp_cornerman_ui`, `lp_vengeance_ui`.
+**Open UI:** USE / interact on `HackerTerminalEntity` (within 6m of powered rack). Dev only: `lp_spawn_hacker_terminal`, `lp_cornerman_ui`, `lp_vengeance_ui`. No game-console `hack` or `scan` — those are typed in the Razor terminal input.
 
 ---
 

@@ -196,7 +196,7 @@
 						filename = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/gpu-rack/source/gpu-rack-stacked-anim.fbx"
 						import_translation = [ -1.389, -0.208, 2.912 ]
 						import_rotation = [ 0.0, 90.0, 0.0 ]
-						import_scale = 0.5
+						import_scale = 1.0
 						align_origin_x_type = "Center"
 						align_origin_y_type = "Center"
 						align_origin_z_type = "Bottom"

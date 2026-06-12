@@ -27,17 +27,17 @@ public enum GpuRackUpgradeType
 /// LifePunch Bitcoin Miner interactive entity.
 ///
 /// DUAL-BUILD (see <c>docs/RUNTIME_PATTERN.md</c>):
-/// All simulation, networked state, fan/sound cosmetics, screen text, interaction, RPCs and the
-/// terminal hook are shared Sandbox code. Only the gamemode-coupled touch-points are branched:
+/// Passive compute — simulation, networked state, fan/sound cosmetics, screen text, and mining RPCs.
+/// Players interact with <see cref="BitcoinMinerHubEntity"/> only; racks credit the linked hub wallet. Only the gamemode-coupled touch-points are branched:
 ///   * <c>#if LIFEPUNCH_LOCAL</c>  ΓÇö compile-safe Sandbox-only stub (local / editor build).
 ///   * <c>#else</c>                ΓÇö real <c>Dxura.RP.Game</c> implementation (dxrp.net build).
 /// </summary>
 [Title( "GPU Rack" )]
 [Category( "LifePunch/Bitcoin Miner" )]
 #if LIFEPUNCH_LOCAL
-public partial class GpuRackEntity : Component, Component.IPressable
+public partial class GpuRackEntity : Component
 #else
-public partial class GpuRackEntity : BaseEntity, Component.IPressable, IGameEvents, IAreaDamageReceiver
+public partial class GpuRackEntity : BaseEntity, IGameEvents, IAreaDamageReceiver
 #endif
 {
 #if !LIFEPUNCH_LOCAL
@@ -80,7 +80,6 @@ public partial class GpuRackEntity : BaseEntity, Component.IPressable, IGameEven
 	// ----------------------------
 
 	[Sync( SyncFlags.FromHost )] public bool IsMining { get; set; }
-	[Sync( SyncFlags.FromHost )] public float BitcoinAmount { get; set; }
 	[Sync( SyncFlags.FromHost )] public int CpuUpgradeLevel { get; set; }
 	[Sync( SyncFlags.FromHost )] public int CoreUpgradeLevel { get; set; }
 	[Sync( SyncFlags.FromHost )] public float ClockSpeed { get; set; } = 2.44f;
@@ -141,7 +140,6 @@ public partial class GpuRackEntity : BaseEntity, Component.IPressable, IGameEven
 
 		GameObject.Tags.Add( "gpu-rack" );
 
-		BitcoinAmount = 0f;
 		IsMining = false;
 
 		if ( TextRender.IsValid() )
@@ -276,7 +274,8 @@ public partial class GpuRackEntity : BaseEntity, Component.IPressable, IGameEven
 
 	// Unicode escapes keep source ASCII-safe (sync/tools must not mojibake char literals).
 	private const char ScreenBarFill = '\u2588';
-	private static readonly string ScreenRule = new( '\u2500', 16 );
+	private const int ScreenLineWidth = 18;
+	private static readonly string ScreenRule = new( '\u2500', ScreenLineWidth );
 
 	private void UpdateScreenText()
 	{
@@ -302,29 +301,17 @@ public partial class GpuRackEntity : BaseEntity, Component.IPressable, IGameEven
 		var pct = (int)( MiningProgress * 100 );
 		var rate = ClockSpeed * BaseSpeed * CoreCount * RackYield;
 		var status = IsMining ? "\u25CF MINING" : "\u25CB IDLE";
-
-		return IsMining
-			? $"{status}\n" +
-			  $"{ScreenRule}\n" +
-			  $"\u20BF {BitcoinAmount:0.00000000} BTC\n" +
-			  $"\n" +
-			  $"MINING RATE  {rate:0.00000} BTC/min\n" +
-			  $"HASH RATE    {ClockSpeed:0.000} GHz (Lv {CpuUpgradeLevel}/{CpuUpgradeCosts.Length})\n" +
-			  $"CORES        {CoreCount} (Lv {CoreUpgradeLevel}/{CoreUpgradeCosts.Length})\n" +
-			  $"VALUE        ${BitcoinAmount * BitcoinValue:N0}\n" +
-			  $"{ScreenRule}\n" +
-			  $"{bar}\n" +
-			  $"{pct}%"
-			: $"{status}\n" +
-			  $"{ScreenRule}\n" +
-			  $"\u20BF {BitcoinAmount:0.00000000} BTC\n" +
-			  $"\n" +
-			  $"MINING RATE  0.00000 BTC/min\n" +
-			  $"HASH RATE    {ClockSpeed:0.000} GHz (Lv {CpuUpgradeLevel}/{CpuUpgradeCosts.Length})\n" +
-			  $"CORES        {CoreCount} (Lv {CoreUpgradeLevel}/{CoreUpgradeCosts.Length})\n" +
-			  $"VALUE        ${BitcoinAmount * BitcoinValue:N0}\n" +
-			  $"{ScreenRule}\n" +
-			  $"0%";
+		var rateLine = IsMining ? $"{rate:0.00000}/m" : "0.00000/m";
+		var hashLine = $"{ClockSpeed:0.00}G L{CpuUpgradeLevel}/{CpuUpgradeCosts.Length}";
+		var coreLine = $"{CoreCount}c L{CoreUpgradeLevel}/{CoreUpgradeCosts.Length}";
+		return $"{status}\n" +
+		       $"{ScreenRule}\n" +
+		       $"{rateLine}\n" +
+		       $"{hashLine}\n" +
+		       $"{coreLine}\n" +
+		       $"{ScreenRule}\n" +
+		       $"{( IsMining ? bar : "" )}\n" +
+		       $"{pct}%";
 	}
 
 	// ----------------------------
@@ -333,7 +320,11 @@ public partial class GpuRackEntity : BaseEntity, Component.IPressable, IGameEven
 
 	private void MineBitcoin()
 	{
-		BitcoinAmount += ( ClockSpeed * BaseSpeed ) * CoreCount * RackYield;
+		var payout = ( ClockSpeed * BaseSpeed ) * CoreCount * RackYield;
+		var hub = BitcoinMinerHubRegistry.FindHubForRig( this );
+		if ( hub.IsValid() && hub.IsPowered )
+			hub.CreditMiningPayout( payout );
+
 		_cachedScreenText = null;
 	}
 
@@ -422,51 +413,18 @@ public partial class GpuRackEntity : BaseEntity, Component.IPressable, IGameEven
 	}
 
 	// ----------------------------
-	// PLAYER INTERACTION
-	// ----------------------------
-
-	public bool Press( IPressable.Event e )
-	{
-		if ( Input.Down( "Attack1" ) )
-			return false;
-
-		RequestOpenTerminal();
-		return true;
-	}
-
-	public void RequestOpenTerminal() => OpenTerminalHost();
-
-	[Rpc.Host]
-	private void OpenTerminalHost()
-	{
-#if !LIFEPUNCH_LOCAL
-		if ( !GameUtils.HasPermission( Rpc.Caller, GameObject ) )
-			return;
-
-		var player = GameUtils.GetPlayerByConnectionId( Rpc.CallerId );
-		if ( player.IsValid() && player.CantSwitch )
-			return;
-#endif
-
-		OpenTerminal( Rpc.CallerId );
-	}
-
-	[Rpc.Broadcast]
-	private void OpenTerminal( Guid callerId )
-	{
-		if ( Connection.Local.Id != callerId )
-			return;
-
-		HashdTerminal.Open( this );
-	}
-
-	// ----------------------------
 	// MINING TOGGLE
 	// ----------------------------
+
+	public void RequestSetMiningState( bool enabled ) => SetMiningState( enabled );
 
 	[Rpc.Host]
 	public void SetMiningState( bool enabled )
 	{
+		var hub = BitcoinMinerHubRegistry.FindHubForRig( this );
+		if ( hub.IsValid() && hub.RequiresPinSession( Rpc.CallerId ) )
+			return;
+
 		IsMining = enabled;
 		_cachedScreenText = null;
 		_lastLedActive = -1f;
@@ -510,42 +468,6 @@ public partial class GpuRackEntity : BaseEntity, Component.IPressable, IGameEven
 	}
 
 	// ----------------------------
-	// SELL BITCOIN
-	// ----------------------------
-
-	[Rpc.Host]
-	private async void SellBitcoinHost()
-	{
-		var callerId = Rpc.CallerId;
-
-		if ( BitcoinAmount <= 0 )
-			return;
-
-		var value = (uint)( BitcoinAmount * BitcoinValue );
-
-		if ( !await TryPayPlayer( callerId, value, "Sold mined bitcoin" ) )
-			return;
-
-		BitcoinAmount = 0f;
-	}
-
-#if LIFEPUNCH_LOCAL
-	private static async System.Threading.Tasks.Task<bool> TryPayPlayer( Guid callerId, uint amount, string reason )
-	{
-		await System.Threading.Tasks.Task.CompletedTask;
-		return true;
-	}
-#else
-	private async System.Threading.Tasks.Task<bool> TryPayPlayer( Guid callerId, uint amount, string reason )
-	{
-		var player = GameUtils.GetPlayerByConnectionId( callerId );
-		return player.IsValid() && await player.PayHost( amount, reason );
-	}
-#endif
-
-	public void RequestSellBitcoin() => SellBitcoinHost();
-
-	// ----------------------------
 	// UPGRADES
 	// ----------------------------
 
@@ -553,6 +475,9 @@ public partial class GpuRackEntity : BaseEntity, Component.IPressable, IGameEven
 	private async void PurchaseUpgradeHost( GpuRackUpgradeType type )
 	{
 		var callerId = Rpc.CallerId;
+		var hub = BitcoinMinerHubRegistry.FindHubForRig( this );
+		if ( hub.IsValid() && hub.RequiresPinSession( callerId ) )
+			return;
 
 		switch ( type )
 		{

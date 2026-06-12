@@ -77,7 +77,7 @@ public static class BitcoinMiningDevSpawn
 
 		NetworkSpawnIfNeeded( hubGo );
 
-		Log.Info( "lp_spawn_bitcoin_miner_hub: hub OFFLINE — USE hub or hashd → power on → POWER ON. lp_hub_power 1 to skip boot." );
+		Log.Info( "lp_spawn_bitcoin_miner_hub: hub OFFLINE — USE hub → click POWER ON on rail. lp_hub_power 1 to skip boot." );
 		return hub;
 	}
 
@@ -103,16 +103,41 @@ public static class BitcoinMiningDevSpawn
 		Log.Info( $"lp_hub_power: hub {( powered ? "ON" : "OFF" )}." );
 	}
 
-	/// <summary>Dev smoke — spawn linked kit and open hashd immediately (CRT mesh optional).</summary>
+	/// <summary>Dev smoke — spawn hub + racks and open hashd from the hub.</summary>
 	[ConCmd( "lp_hashd_preview" )]
 	public static void HashdPreview()
 	{
-		var entity = SpawnBitcoinMiningAddonKit();
-		if ( !entity.IsValid() )
+		var hub = SpawnBitcoinMinerHub();
+		if ( !hub.IsValid() )
 			return;
 
-		// Dev preview — open UI directly (skip RPC host + 8m range search).
-		HashdTerminal.Open( entity );
+		hub.RequestSetPowered( true );
+		hub.RequestOpenHashd();
+	}
+
+	/// <summary>Dev smoke — ghost-console PIN gate. Modes: unlock (default), setup, blocked.</summary>
+	[ConCmd( "lp_hashd_pin_preview" )]
+	public static void HashdPinPreview( string mode = "unlock" )
+	{
+		var hub = SpawnBitcoinMinerHub();
+		if ( !hub.IsValid() )
+			return;
+
+		switch ( mode.Trim().ToLowerInvariant() )
+		{
+			case "setup":
+				HashdTerminal.OpenHubPinSetup( hub );
+				Log.Info( "lp_hashd_pin_preview: GATEKEEPER SET PIN — spawner registers first PIN." );
+				break;
+			case "blocked":
+				HashdTerminal.OpenHubPinBlocked( hub );
+				Log.Info( "lp_hashd_pin_preview: GATEKEEPER LOCKED — non-spawner view (no input)." );
+				break;
+			default:
+				HashdTerminal.OpenHubPinUnlock( hub );
+				Log.Info( "lp_hashd_pin_preview: GATEKEEPER ENTER PIN — ghost console behind veil." );
+				break;
+		}
 	}
 
 	[ConCmd( "lp_spawn_gpu_rack_kit" )]
@@ -151,7 +176,7 @@ public static class BitcoinMiningDevSpawn
 		NetworkSpawnIfNeeded( rig );
 		NetworkSpawnIfNeeded( terminal );
 
-		Log.Info( "lp_spawn_gpu_rack: gpu-rack + bitcoin-terminal placed. Use hashd on rig or USE the CRT." );
+		Log.Info( "lp_spawn_gpu_rack: gpu-rack + CRT kit placed. Link racks to a Bitcoin Miner hub — USE the hub." );
 		return entity;
 	}
 
@@ -265,9 +290,17 @@ public static class BitcoinMiningDevSpawn
 #if !LIFEPUNCH_LOCAL
 		var player = Player.Local;
 		if ( player.IsValid() )
+		{
+			var owned = go.GetComponent<BitcoinMinerHubEntity>();
+			if ( owned.IsValid() )
+				owned.Owner = player.SteamId;
+
 			go.NetworkSpawn( player.Network.Owner );
+		}
 		else
+		{
 			go.NetworkSpawn();
+		}
 #endif
 	}
 
@@ -373,6 +406,113 @@ public static class BitcoinMiningDevSpawn
 			Log.Warning( "BITCOINMINING_DEBUG no rigs — run lp_spawn_gpu_rack or lp_hashd_preview (prefab editor stage has no runtime entities)." );
 	}
 
+	/// <summary>Swap active map to flatgrass for scale/playtest clarity (no downtown clutter).</summary>
+	[ConCmd( "lp_map_flatgrass" )]
+	public static void MapFlatgrass()
+	{
+		var scene = Game.ActiveScene;
+		if ( scene is null )
+		{
+			Log.Warning( "lp_map_flatgrass: no active scene." );
+			return;
+		}
+
+		var map = scene.GetAllComponents<MapInstance>().FirstOrDefault();
+		if ( !map.IsValid() )
+		{
+			Log.Warning( "lp_map_flatgrass: no MapInstance in scene." );
+			return;
+		}
+
+		map.MapName = "facepunch.flatgrass";
+		Log.Info( "lp_map_flatgrass: loading facepunch.flatgrass …" );
+	}
+
+	/// <summary>
+	/// Logs mesh bounds + BoxCollider scale for hub / small rack / large rack (MODEL_SCALE_DOCTRINE flatgrass pass).
+	/// Spawns a fresh row when any type is missing.
+	/// </summary>
+	[ConCmd( "lp_bitcoinmining_scale_audit" )]
+	public static void ScaleAudit()
+	{
+		var scene = Game.ActiveScene;
+		if ( scene is null )
+		{
+			Log.Warning( "lp_bitcoinmining_scale_audit: no active scene — play on a map, not a prefab stage." );
+			return;
+		}
+
+		if ( !TryGetSpawnTransform( out var transform ) )
+		{
+			Log.Warning( "lp_bitcoinmining_scale_audit: no local viewer." );
+			return;
+		}
+
+		var hub = scene.GetAllComponents<BitcoinMinerHubEntity>().FirstOrDefault( h => h.IsValid() );
+		var smallRacks = scene.GetAllComponents<GpuRackEntity>()
+			.Where( r => r.IsValid() && !r.AdvancedRack )
+			.ToArray();
+		var largeRacks = scene.GetAllComponents<GpuRackEntity>()
+			.Where( r => r.IsValid() && r.AdvancedRack )
+			.ToArray();
+
+		if ( !hub.IsValid() || smallRacks.Length == 0 || largeRacks.Length == 0 )
+		{
+			Log.Info( "lp_bitcoinmining_scale_audit: spawning hub + racks for measurement …" );
+			SpawnBitcoinMinerHub();
+			hub = scene.GetAllComponents<BitcoinMinerHubEntity>().FirstOrDefault( h => h.IsValid() );
+			smallRacks = scene.GetAllComponents<GpuRackEntity>().Where( r => r.IsValid() && !r.AdvancedRack ).ToArray();
+			largeRacks = scene.GetAllComponents<GpuRackEntity>().Where( r => r.IsValid() && r.AdvancedRack ).ToArray();
+		}
+
+		Log.Info( "BITCOINMINING_SCALE_AUDIT begin (mesh=ModelRenderer bounds; collider=BoxCollider.Scale)" );
+		if ( hub.IsValid() )
+			LogScaleRow( "hub", hub.GameObject );
+		else
+			Log.Warning( "BITCOINMINING_SCALE_AUDIT hub missing" );
+
+		if ( smallRacks.Length > 0 )
+			LogScaleRow( "gpu-rack", smallRacks[0].GameObject );
+		else
+			Log.Warning( "BITCOINMINING_SCALE_AUDIT gpu-rack missing" );
+
+		if ( largeRacks.Length > 0 )
+			LogScaleRow( "large-gpu-rack", largeRacks[0].GameObject );
+		else
+			Log.Warning( "BITCOINMINING_SCALE_AUDIT large-gpu-rack missing" );
+
+		Log.Info( "BITCOINMINING_SCALE_AUDIT end — hierarchy: large > gpu-rack > hub (visual height)" );
+	}
+
+	private static void LogScaleRow( string tag, GameObject go )
+	{
+		if ( !go.IsValid() )
+		{
+			Log.Warning( $"BITCOINMINING_SCALE_AUDIT {tag}: invalid GameObject" );
+			return;
+		}
+
+		var worldBounds = go.GetBounds();
+		Log.Info( $"BITCOINMINING_SCALE_AUDIT {tag} go={go.Name} pos={go.WorldPosition} goBounds size={worldBounds.Size} extents={worldBounds.Extents}" );
+
+		var renderer = go.Components.Get<ModelRenderer>( FindMode.EverythingInSelfAndDescendants );
+		if ( renderer.IsValid() )
+		{
+			var meshBounds = renderer.Bounds;
+			Log.Info( $"BITCOINMINING_SCALE_AUDIT {tag} mesh size={meshBounds.Size} extents={meshBounds.Extents} model={renderer.Model?.Name ?? "(null)"}" );
+		}
+		else
+		{
+			Log.Warning( $"BITCOINMINING_SCALE_AUDIT {tag} no ModelRenderer" );
+		}
+
+		var collider = go.Components.Get<BoxCollider>( FindMode.EverythingInSelfAndDescendants );
+		if ( collider.IsValid() )
+			Log.Info( $"BITCOINMINING_SCALE_AUDIT {tag} collider scale={collider.Scale} center={collider.Center}" );
+		else
+			Log.Warning( $"BITCOINMINING_SCALE_AUDIT {tag} no BoxCollider" );
+	}
+
 	private static bool TryGetCameraSpawnTransform( Scene scene, out Transform transform )
 	{
 		var camera = scene?.GetAllComponents<CameraComponent>().FirstOrDefault();
@@ -425,10 +565,17 @@ public static class BitcoinMiningDevSpawn
 		if ( scene is null )
 			return horizontalPoint;
 
-		var start = horizontalPoint + Vector3.Up * GroundTraceUp;
-		var end = horizontalPoint - Vector3.Up * GroundTraceDown;
-		var trace = scene.Trace.Ray( start, end ).Run();
-
-		return trace.Hit ? trace.HitPosition : horizontalPoint;
+		try
+		{
+			var start = horizontalPoint + Vector3.Up * GroundTraceUp;
+			var end = horizontalPoint - Vector3.Up * GroundTraceDown;
+			var trace = scene.Trace.Ray( start, end ).Run();
+			return trace.Hit ? trace.HitPosition : horizontalPoint;
+		}
+		catch ( Exception ex ) when ( ex.Message.Contains( "Default Surface", StringComparison.OrdinalIgnoreCase ) )
+		{
+			// DXRP editor play can run traces before the surface registry is ready (map still fitting).
+			return horizontalPoint;
+		}
 	}
 }

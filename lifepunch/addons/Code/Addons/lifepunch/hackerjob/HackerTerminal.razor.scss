@@ -29,19 +29,42 @@ $text-sm: 14px;
 HackerTerminal {
     pointer-events: all;
     position: absolute;
-    bottom: 48px;
-    left: 24px;
-    width: 960px;
-    height: 640px;
-    background-color: rgba(10, 15, 10, 0.98);
-    border-radius: 0;
-    box-shadow: 0 0 0 1px #000000, 0 12px 40px rgba(0, 0, 0, 0.55);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 800;
+
+    .ops-backdrop {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.55);
+        pointer-events: all;
+    }
+
+    .ops-window {
+        position: absolute;
+        bottom: 48px;
+        left: 24px;
+        width: 960px;
+        height: 640px;
+        background-color: rgba(10, 15, 10, 0.98);
+        border-radius: 0;
+        box-shadow: 0 0 0 1px #000000, 0 12px 40px rgba(0, 0, 0, 0.55);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        pointer-events: all;
+        z-index: 2;
+    }
 
     &.tier-standard {
-        border: 2px solid $border-standard;
+        .ops-window {
+            border: 2px solid $border-standard;
+        }
 
         .title-bar { border-bottom-color: $border-standard; }
         .title-text, .title-mark, .prompt-label, .prompt-line, .divider-line, .ok-line { color: $primary-standard; }
@@ -59,8 +82,10 @@ HackerTerminal {
     }
 
     &.tier-advanced {
-        border: 2px solid $border-advanced;
-        box-shadow: 0 0 0 1px #000000, 0 12px 40px rgba(0, 0, 0, 0.55), 0 0 28px rgba(228, 0, 43, 0.1);
+        .ops-window {
+            border: 2px solid $border-advanced;
+            box-shadow: 0 0 0 1px #000000, 0 12px 40px rgba(0, 0, 0, 0.55), 0 0 28px rgba(228, 0, 43, 0.1);
+        }
 
         .title-bar { border-bottom-color: $border-advanced; background-color: #0d0808; }
         .title-text, .title-mark, .prompt-label, .prompt-line, .divider-line { color: $primary-advanced; }

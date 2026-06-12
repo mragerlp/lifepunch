@@ -1,0 +1,16 @@
+// LifePunch bitcoin-miner hub — cable weave
+
+Layer0
+{
+	shader "shaders/complex.shader"
+
+	F_METALNESS_TEXTURE 1
+	F_SPECULAR 1
+
+	TextureColor "addons/lifepunch/bitcoinmining/entities/bitcoinminer/textures/Wire_weave_texture.png"
+	TextureNormal "addons/lifepunch/bitcoinmining/entities/bitcoinminer/textures/Wire_weave_bump1.jpg"
+	TextureRoughness "addons/lifepunch/bitcoinmining/entities/bitcoinminer/textures/Metal036_2K_Roughness.jpg"
+
+	g_flModelTintAmount "1.000"
+	g_vColorTint "[0.750000 0.750000 0.780000 0.000000]"
+}

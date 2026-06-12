@@ -1,0 +1,22 @@
+RED — After Cornerman physical-terminal distill
+==============================================
+Slot: after Cornerman outbox lands · VENGEANCE integrates
+
+READ FIRST
+----------
+outbox/PHYSICAL_TERMINAL_GAP_AUDIT.md
+outbox/STALE_TERMINAL_DOC_FIXLIST.md
+addons/docs/PHYSICAL_TERMINAL_DOCTRINE.md
+
+HACKER P0 (code)
+----------------
+1. Audit HackerServerRackEntity — must NOT open ops UI on USE (rack = passive like GPU rack)
+2. HackerTerminalEntity — sole player open path (already should be Press → RequestOpenTerminal)
+3. Update RED_HACKER_JOB_BUILD.md H1: pass = lp_hacker_kit_preview → USE CRT → scan in ops console
+4. Sweep playtest docs per Cornerman fixlist
+
+BITCOIN (mostly done — verify)
+------------------------------
+USE hub only · wallet on hub · GPU rack IPressable removed
+
+DO NOT re-add player ConCmds in DXRP builds.

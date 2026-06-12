@@ -1,0 +1,39 @@
+CORNERMAN SESSION DIRECTIVE — 2026-06-12
+========================================
+
+Red is in editor playtest on VENGEANCE. You work IN PARALLEL — distill only.
+
+START (in order)
+----------------
+1. inbox/GREEN-WORKFLOW-DIRECTIVE.json
+2. inbox/CORNERMAN_CYBER_ECOSYSTEM_TASK.md
+3. inbox/to-cornerman-cyber-ecosystem.txt
+
+P1 DELIVERABLES (outbox/)
+-------------------------
+CYBER_ECOSYSTEM_ONE_PAGER.md
+BITCOINMINING_ENCRYPTION_UPGRADE_TABLE.md
+HACKER_PVP_INFRA_FLOW.md
+GOV_DATACENTER_ROLEPLAY.md
+UPGRADE_TIER_STANDARD.md
+HASHD_AUTH_PATTERN.md
+HACKER_UI_REVIEW_NOTES.md
+PLAYTEST_OPEN_QUESTIONS.md  ← distill from BITCOINMINING_PLAYTEST.md + HACKER_JOB_PLAYTEST.md
+
+P2 (after P1 or if blocked)
+---------------------------
+inbox/CORNERMAN_BITCOINMINING_VMAT_TASK.md
+inbox/BITCOINMINING_VMAT_OWNER_GUIDE.md
+→ outbox/BITCOINMINING_VMAT_DISTILL.md (slot map + owner checklist, no C#)
+
+MODEL
+-----
+WarmDistill = daily lane (distill + embed). WarmCoder ONLY if brief says scss draft.
+
+DO NOT
+------
+C#, ModelDoc, git push, redesign hashd UI.
+
+WHEN DONE
+---------
+Ping Red: OK cornerman session — outbox/*.md ready

@@ -49,7 +49,43 @@
 
 **MCP check:** `read_log` filter `bitcoinmining`, `error`, `spawn`, `403`. **Do not** leave test rigs in `game.scene` — use `lp_spawn_gpu_rack` in play mode instead.
 
-## 1. See the hashd console (fastest)
+## 1. Physical Bitcoin Miner hub (real-time DXRP)
+
+**Market tab:** not live yet — `addons.json` has no `dxrpAddonId` / server market row. Use dev spawn until portal ship.
+
+**Tonight’s path (VENGEANCE / DXRP play mode):**
+
+1. Sync code + assets into DXRP:
+   ```powershell
+   powershell -File lifepunch\scripts\Sync-LifePunchAddonsToDxrp.ps1 -Addon bitcoinmining
+   ```
+2. Open **`scenes/game.scene`** (not a prefab tab) → **Play** → wait for map fit.
+3. Console:
+   ```text
+   lp_spawn_bitcoin_miner_hub
+   ```
+   Spawns **Ophion hub** (owner = your Steam ID) + 3 small racks + 1 large rack nearby.
+4. Optional skip boot: `lp_hub_power 1`
+5. **USE** the Ophion hub (E / interact) → click **SECURE BOOT** → numpad PIN (owner, twice) → power on → `rig0>`.
+
+**Ghost-console PIN preview (instant):**
+
+```text
+lp_hashd_pin_preview
+lp_hashd_pin_preview unlock
+lp_hashd_pin_preview setup
+lp_hashd_pin_preview blocked
+```
+
+Shows ghost telemetry + clickable Secure Boot CTA → graphical numpad (no `auth>` typing).
+
+**Two-player PIN abuse test:** second client walks to the same hub before owner sets PIN → should see **ACCESS LOCKED**, not PIN setup. After owner sets PIN, second client only gets past gate with the PIN (or stays locked).
+
+**When Market ships:** buying **Bitcoin Miner Hub** sets `Owner` to buyer Steam ID — same PIN rules apply.
+
+---
+
+## 2. See the hashd console (fastest)
 
 Enter play mode (hosted), then:
 
@@ -63,7 +99,7 @@ Spawns small rack + CRT kit and **opens the hashd overlay immediately**. The CRT
 
 ---
 
-## 2. Spawn a rig
+## 3. Spawn a rig
 
 **Fast (dev console):**
 
@@ -87,13 +123,15 @@ CRT only · stacked rack only · all three entities (terminal + small + advanced
 
 ```text
 lp_gpu_rack_count
+lp_map_flatgrass
+lp_bitcoinmining_scale_audit
 ```
 
 Logs `BITCOINMINING_TEST rigs=N pos=...` for every `GpuRackEntity` in the active scene.
 
 ---
 
-## 3. Open terminal
+## 4. Open terminal
 
 Within **8 m horizontal / 4 m vertical** of the rig:
 
@@ -130,7 +168,28 @@ Expected: green terminal UI, LCD on `lcd_screen` (on `bitcoin-terminal.prefab`),
 
 **LCD tune:** nudge `lcd_screen` transform on `entities/bitcoin-terminal/bitcoin-terminal.prefab` — not on the rack prefab.
 
-**World scale:** `gpu-rack` root `Scale` **0.65** · `large-gpu-rack` **0.5** (tuned from early oversized import; `0.4`/`0.3` was too small in play). Collider + mesh share root scale; nudge prefab root if still off.
+**World scale** — see `addons/docs/MODEL_SCALE_DOCTRINE.md`. **Prefab root = `1,1,1` only.** Tune `import_scale` in vmdl until **mesh bounds** match intent; `BoxCollider.Scale` is the gameplay footprint target.
+
+**Visual size hierarchy (what players should see):**
+
+```text
+Large GPU Rack  >>  GPU Rack  >>  Bitcoin Miner hub (Ophion desktop)
+   farm unit         low rack         control box on desk
+```
+
+**Do not compare collider Z to infer visuals** — colliders can be stale placeholders.
+
+| Entity | Prefab | Root scale | BoxCollider (gameplay hammer) | vmdl `import_scale` (repo) | Mesh bounds @ flatgrass (Jun 2026) |
+|--------|--------|------------|-------------------------------|----------------------------|-------------------------------------|
+| **GPU Rack** | `gpurack/gpu-rack.prefab` | 1,1,1 | ~8.6 × 12.9 × **21** | 1.0 | ~19.7 × 24.5 × **8.6** |
+| **Large GPU Rack** | `largegpurack/large-gpu-rack.prefab` | 1,1,1 | ~52 × 27 × **47** | 1.0 | ~45 × 97 × **25** |
+| **Bitcoin Miner hub** | `bitcoinminer/bitcoin-miner.prefab` | 1,1,1 | **12 × 9 × 7** | **0.26** | ~11.3 × 8.5 × **6.6** |
+
+**Verified hierarchy (mesh height Z):** hub **6.6** &lt; gpu-rack **8.6** &lt; large **25**. Hub footprint also smallest — desk control unit, not farm-scale.
+
+**Scale audit:** `lp_map_flatgrass` → Play → `lp_bitcoinmining_scale_audit` (logs `BITCOINMINING_SCALE_AUDIT` lines).
+
+**If something looks giant again:** delete old instances, Stop/Play, respawn `lp_spawn_bitcoin_miner_hub` / `lp_spawn_gpu_rack`. Never fudge prefab root scale (no `0.41` / `0.5`).
 
 ---
 

@@ -55,6 +55,7 @@ public static class BitcoinMiningAddon
 	public const string PublisherName = LifePunchSourceMark.Publisher;
 	public const string PublisherUrl = LifePunchSourceMark.PublisherUrl;
 	public const string ProductTitle = "LIFEPUNCH™ Bitcoin Miner for DXRP";
+	public const string UiVersionFooter = "lifepunch.bitcoin v1.0.0 - lifepunch.co";
 	public const string HashdProgramName = "hashd";
 
 	/// <summary>Seconds between server-authoritative BTC payout ticks while mining (LifePunch economy tuning).</summary>

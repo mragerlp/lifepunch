@@ -18,7 +18,7 @@
 
 @attribute [StyleSheet]
 
-<root class="@( _showUpgradeMenu ? "upgrade-mode" : "" )">
+<root class="@GetRootClass()">
     <div class="scanlines"></div>
 
     <div class="title-bar">
@@ -26,15 +26,140 @@
         <span class="title-text">@GetTitleLabel()</span>
         <span class="title-ver">v1</span>
         <span class="title-spacer"></span>
-        <span class="title-publisher">@LifePunchSourceMark.UiFooterMark</span>
-        <button class="close-x" onclick=@OnClickClose>CLOSE</button>
+        <div class="title-actions">
+            @if ( !IsPinGateActive )
+            {
+                <button class="icon-btn cog @(_showSettings ? "active" : "")" tooltip="Settings" onclick=@OnToggleSettings>
+                    <i class="material-icons">settings</i>
+                </button>
+            }
+            <button class="icon-btn close" tooltip="Close" onclick=@OnClickClose>
+                <i class="material-icons">close</i>
+            </button>
+        </div>
     </div>
+
+    @if ( _showSettings )
+    {
+        <div class="hashd-settings">
+            <div class="hashd-settings-head">PANEL SIZE</div>
+            <button class="hashd-settings-opt @( _panelSize == 0 ? "active" : "" )" onclick=@(() => SetPanelSize( 0 ))>COMPACT</button>
+            <button class="hashd-settings-opt @( _panelSize == 1 ? "active" : "" )" onclick=@(() => SetPanelSize( 1 ))>STANDARD</button>
+            <button class="hashd-settings-opt @( _panelSize == 2 ? "active" : "" )" onclick=@(() => SetPanelSize( 2 ))>EXPANDED</button>
+        </div>
+    }
 
     <div class="terminal-body">
         @if ( !_showUpgradeMenu )
         {
+            @if ( IsPinGateActive )
+            {
+                <div class="pin-ghost">
+                    <div class="pin-ghost-rail">
+                        <div class="pin-ghost-rail-header">LIVE TELEMETRY</div>
+                        <div class="pin-ghost-block">
+                            <span class="pin-ghost-label">STATUS</span>
+                            <span class="pin-ghost-value active">MINING</span>
+                        </div>
+                        <div class="pin-ghost-block">
+                            <span class="pin-ghost-label">BALANCE</span>
+                            <span class="pin-ghost-value">████.████████ BTC</span>
+                        </div>
+                        <div class="pin-ghost-block">
+                            <span class="pin-ghost-label">VALUE</span>
+                            <span class="pin-ghost-value">$██████</span>
+                        </div>
+                        <div class="pin-ghost-block">
+                            <span class="pin-ghost-label">HASH</span>
+                            <span class="pin-ghost-value">█.██ GHz</span>
+                        </div>
+                        <div class="pin-ghost-block">
+                            <span class="pin-ghost-label">CORES</span>
+                            <span class="pin-ghost-value">██</span>
+                        </div>
+                        <div class="pin-ghost-block">
+                            <span class="pin-ghost-label">TICK</span>
+                            <div class="pin-ghost-bar"><div class="pin-ghost-bar-fill"></div></div>
+                        </div>
+                        <div class="pin-ghost-actions">
+                            <span class="pin-ghost-btn">START</span>
+                            <span class="pin-ghost-btn">STOP</span>
+                        </div>
+                    </div>
+                    <div class="pin-ghost-console">
+                        <div class="pin-ghost-line dim">&gt;&gt; hashd init — bitcoin rig control ... OK</div>
+                        <div class="pin-ghost-line dim">&gt;&gt; linking gpu-rack telemetry bus ... OK</div>
+                        <div class="pin-ghost-line">&gt;&gt; syncing payout ledger (30s tick) ... OK</div>
+                        <div class="pin-ghost-line">&gt;&gt; rig interface ready — telemetry rail active</div>
+                        <div class="pin-ghost-line dim">--------------------STATUS------------------</div>
+                        <div class="pin-ghost-line">  Mining:      ● ACTIVE</div>
+                        <div class="pin-ghost-line">  Hub wallet:  ████.████████ BTC</div>
+                        <div class="pin-ghost-line">  Value:       $██████</div>
+                        <div class="pin-ghost-line dim">  Clock Speed: █.██ GHz (Lv █)</div>
+                        <div class="pin-ghost-line dim">  Rate:        █.█████ BTC/min</div>
+                        <div class="pin-ghost-line accent">rig0&gt; mining start</div>
+                        <div class="pin-ghost-line accent">rig0&gt; bitcoin sell</div>
+                        <div class="pin-ghost-line accent">rig0&gt; upgrade</div>
+                    </div>
+                    <div class="pin-ghost-veil"></div>
+                </div>
+                <div class="pin-lock-stage">
+                    @if ( IsHubPinBlocked )
+                    {
+                        <div class="pin-lock-badge pin-lock-static">
+                            <span class="pin-lock-mark">◆</span>
+                            <span class="pin-lock-text">@GetPinLockBadgeLabel()</span>
+                        </div>
+                    }
+                    else if ( !_pinEntryOpen )
+                    {
+                        <button class="pin-lock-cta" onclick=@OnPinCtaClick>
+                            <span class="pin-lock-mark">◆</span>
+                            <span class="pin-lock-text">@GetPinLockBadgeLabel()</span>
+                            <span class="pin-lock-hint">CLICK TO CONTINUE</span>
+                        </button>
+                    }
+                    else
+                    {
+                        <div class="pin-entry-panel">
+                            <div class="pin-entry-header">
+                                <span class="pin-entry-mark">◆</span>
+                                <span class="pin-entry-title">@GetPinEntryTitle()</span>
+                            </div>
+                            <div class="pin-entry-sub">@GetPinEntrySubtitle()</div>
+                            <div class="pin-entry-dots">
+                                @for ( var i = 0; i < BitcoinMinerHubAccessPin.PinLength; i++ )
+                                {
+                                    <span class="pin-dot @( i < _pinDigits.Length ? "filled" : "" )"></span>
+                                }
+                            </div>
+                            @if ( !string.IsNullOrEmpty( _pinError ) )
+                            {
+                                <div class="pin-entry-error">@_pinError</div>
+                            }
+                            <div class="pin-numpad">
+                                @for ( var digit = 1; digit <= 9; digit++ )
+                                {
+                                    var key = digit;
+                                    <button class="pin-key" onclick=@(() => OnPinDigit( key ))>@key</button>
+                                }
+                                <button class="pin-key pin-key-fn" onclick=@OnPinClear>CLEAR</button>
+                                <button class="pin-key" onclick=@(() => OnPinDigit( 0 ))>0</button>
+                                <button class="pin-key pin-key-fn" onclick=@OnPinBackspace>⌫</button>
+                            </div>
+                            @if ( _pinConfirming )
+                            {
+                                <button class="pin-entry-back" onclick=@OnPinEntryBack>← RE-ENTER PIN</button>
+                            }
+                        </div>
+                    }
+                </div>
+            }
+
+            @if ( !IsPinUiFlow )
+            {
             <div class="telemetry-rail">
-                @if ( IsHubPowerGate )
+                @if ( Hub.IsValid() )
                 {
                     <div class="rail-header">HUB POWER</div>
                     <div class="rail-block">
@@ -43,22 +168,22 @@
                     </div>
                     <div class="rail-block">
                         <span class="rail-label">STATUS</span>
-                        <span class="rail-value">OFFLINE</span>
+                        <span class="rail-value @(Hub.IsPowered ? "active" : "")">@(Hub.IsPowered ? "ONLINE" : "OFFLINE")</span>
                     </div>
                     <div class="rail-block">
                         <span class="rail-label">LINKED</span>
-                        <span class="rail-value">@GpuRackRegistry.RegisteredRigs.Count rack(s)</span>
+                        <span class="rail-value">@GetLinkedRigsSummary()</span>
                     </div>
                     <div class="rail-actions">
-                        <button class="rail-btn start @(_powerConfirm == PowerConfirmKind.On ? "active" : "")" onclick=@OnRailPowerOn>POWER ON</button>
+                        <button class="rail-btn @(Hub.IsPowered ? "power-off" : "power-on")" onclick=@OnRailPowerToggle>@(Hub.IsPowered ? "POWER OFF" : "POWER ON")</button>
                     </div>
-                    <div class="rail-hint">Type power on → confirm</div>
                 }
-                else
+
+                @if ( !IsHubPowerGate )
                 {
                     <div class="rail-header">LIVE TELEMETRY</div>
                     <div class="rail-block">
-                        <span class="rail-label">STATUS</span>
+                        <span class="rail-label">MINING</span>
                         <span class="rail-value @(Miner.IsValid() && Miner.IsMining ? "active" : "")">@GetMiningStatusLabel()</span>
                     </div>
                     <div class="rail-block">
@@ -88,17 +213,15 @@
                         <button class="rail-btn start @(Miner.IsValid() && Miner.IsMining ? "active" : "")" onclick=@OnRailStart>START</button>
                         <button class="rail-btn stop" onclick=@OnRailStop>STOP</button>
                     </div>
-                    @if ( Hub.IsValid() && Hub.IsPowered )
-                    {
-                        <div class="rail-actions">
-                            <button class="rail-btn stop @(_powerConfirm == PowerConfirmKind.Off ? "active" : "")" onclick=@OnRailPowerOff>POWER OFF</button>
-                        </div>
-                    }
                     <div class="rail-hint">Command log →</div>
+                }
+                else
+                {
+                    <div class="rail-hint">Click POWER ON to boot the hub</div>
                 }
             </div>
 
-            <div class="console-pane">
+            <div class="console-pane @( IsPinGateActive ? "pin-gate-console" : "" )">
                 <div class="screen-scroll" @ref="ScreenScroll">
                     <div class="screen flex flex-col">
                         @foreach ( var line in _lines )
@@ -110,14 +233,18 @@
                     </div>
                 </div>
 
-                <div class="input-row" onclick=@FocusInput>
-                    <span class="prompt-label">rig0&gt;</span>
-                    <TextEntry
-                        class="terminal-input"
-                        @ref="InputBox"
-                        onsubmit=@OnSubmit />
-                </div>
+                @if ( !IsPinGateActive )
+                {
+                    <div class="input-row" onclick=@FocusInput>
+                        <span class="prompt-label">@GetPromptLabel()</span>
+                        <TextEntry
+                            class="terminal-input"
+                            @ref="InputBox"
+                            onsubmit=@OnSubmit />
+                    </div>
+                }
             </div>
+            }
         }
         else
         {
@@ -149,17 +276,21 @@
 
     <div class="lp-source-footer">
         <span class="lp-mark">@LifePunchSourceMark.UiFooterMark</span>
-        <span class="lp-pub">@LifePunchSourceMark.UiFooterPublisher</span>
-        <span class="lp-legal">@LifePunchSourceMark.UiFooterLegal</span>
+        <span class="lp-legal">@BitcoinMiningAddon.UiVersionFooter</span>
     </div>
 </root>
 
 @code {
-    private enum PowerConfirmKind { None, On, Off }
+    private enum PinGateKind { None, Setup, Unlock, Blocked }
 
     private GpuRackEntity Miner => GpuRackRegistry.SelectedRig;
     private BitcoinMinerHubEntity Hub => GpuRackRegistry.ActiveHub;
-    private bool IsHubPowerGate => Hub.IsValid() && !Hub.IsPowered;
+    private bool IsHubPowerGate => Hub.IsValid() && !Hub.IsPowered && _pinGate == PinGateKind.None;
+    private bool IsHubPinSetup => _pinGate == PinGateKind.Setup;
+    private bool IsHubPinUnlock => _pinGate == PinGateKind.Unlock;
+    private bool IsHubPinBlocked => _pinGate == PinGateKind.Blocked;
+    private bool IsPinGateActive => _pinGate != PinGateKind.None;
+    private bool IsPinUiFlow => IsHubPinSetup || IsHubPinUnlock;
 
     private TextEntry InputBox { get; set; }
     private Panel ScreenScroll { get; set; }
@@ -169,11 +300,50 @@
     private int _statusLineCount = 0;
     private const int MaxLines = 200;
     private const string PromptPrefix = "rig0>";
+    private const string AuthPromptPrefix = "auth>";
+    private PinGateKind _pinGate = PinGateKind.None;
     private float _smoothProgress = 0f;
     private float _lastKnownProgress = 0f;
     private int _lastTextLength = 0;
     private TimeSince _sinceSecondly = 0f;
-    private PowerConfirmKind _powerConfirm = PowerConfirmKind.None;
+    private bool _showSettings;
+    private int _panelSize = 1;
+    private bool _pinEntryOpen;
+    private bool _pinConfirming;
+    private string _pinDigits = "";
+    private string _pinFirstEntry = "";
+    private string _pinError = "";
+
+    private string GetRootClass()
+    {
+        var classes = new List<string>();
+        if ( _showUpgradeMenu )
+            classes.Add( "upgrade-mode" );
+        if ( _pinGate != PinGateKind.None )
+            classes.Add( "pin-gate" );
+        if ( IsHubPinBlocked )
+            classes.Add( "pin-blocked" );
+        if ( IsHubPinUnlock )
+            classes.Add( "pin-unlock" );
+        if ( _pinEntryOpen )
+            classes.Add( "pin-entry-open" );
+        if ( _panelSize == 0 )
+            classes.Add( "compact" );
+        else if ( _panelSize == 2 )
+            classes.Add( "expanded" );
+        return string.Join( " ", classes );
+    }
+
+    private void OnToggleSettings()
+    {
+        _showSettings = !_showSettings;
+    }
+
+    private void SetPanelSize( int size )
+    {
+        _panelSize = Math.Clamp( size, 0, 2 );
+        _showSettings = false;
+    }
 
     private static string GetLineClass( string line )
     {
@@ -231,6 +401,63 @@
         terminal.BootHubPowerGate();
     }
 
+    public static void OpenHubPinSetup( BitcoinMinerHubEntity hub )
+    {
+        if ( !hub.IsValid() )
+            return;
+
+        var scene = Sandbox.Game.ActiveScene;
+        GpuRackRegistry.RefreshFromHub( scene, hub );
+
+        var terminal = HashdTerminalHost.Mount();
+        if ( terminal == null )
+            return;
+
+        terminal.FocusInput();
+        terminal.BootHubPinSetup();
+    }
+
+    public static void OpenHubPinUnlock( BitcoinMinerHubEntity hub )
+    {
+        if ( !hub.IsValid() )
+            return;
+
+        var scene = Sandbox.Game.ActiveScene;
+        GpuRackRegistry.RefreshFromHub( scene, hub );
+
+        var terminal = HashdTerminalHost.Mount();
+        if ( terminal == null )
+            return;
+
+        terminal.FocusInput();
+        terminal.BootHubPinUnlock();
+    }
+
+    public static void OpenHubPinBlocked( BitcoinMinerHubEntity hub )
+    {
+        if ( !hub.IsValid() )
+            return;
+
+        var scene = Sandbox.Game.ActiveScene;
+        GpuRackRegistry.RefreshFromHub( scene, hub );
+
+        var terminal = HashdTerminalHost.Mount();
+        if ( terminal == null )
+            return;
+
+        terminal.FocusInput();
+        terminal.BootHubPinBlocked();
+    }
+
+    public static void NotifyPinDenied( string message )
+    {
+        var terminal = Sandbox.Game.ActiveScene?.GetAllComponents<HashdTerminal>().FirstOrDefault();
+        if ( !terminal.IsValid() )
+            return;
+
+        terminal.AppendAuthLine( $"ERROR: {message}" );
+    }
+
     private static void OpenMounted( GpuRackEntity miner )
     {
         var terminal = HashdTerminalHost.Mount();
@@ -244,20 +471,80 @@
         terminal.Boot();
     }
 
-    private void CloseTerminal() => HashdTerminalHost.Close( this );
+    private void CloseTerminal()
+    {
+        if ( Hub.IsValid() )
+            Hub.RequestEndAccessSession();
 
-    private string GetTitleLabel() =>
-        IsHubPowerGate ? "HUB POWER GATE" : "HASHD RIG CONTROL";
+        HashdTerminalHost.Close( this );
+    }
+
+    private string GetPinLockBadgeLabel()
+    {
+        if ( IsHubPinSetup )
+            return "SECURE BOOT — SET PIN";
+        if ( IsHubPinBlocked )
+            return "LOCKED — SPAWN ACCESS ONLY";
+        if ( IsHubPinUnlock )
+            return "ENCRYPTED — PIN REQUIRED";
+        return "LOCKED";
+    }
+
+    private string GetTitleLabel()
+    {
+        if ( IsHubPinSetup )
+            return "GATEKEEPER — SET PIN";
+        if ( IsHubPinBlocked )
+            return "GATEKEEPER — LOCKED";
+        if ( IsHubPinUnlock )
+            return "GATEKEEPER — ENTER PIN";
+        if ( IsHubPowerGate )
+            return "HUB POWER GATE";
+        return "HASHD RIG CONTROL";
+    }
+
+    private string GetPromptLabel() =>
+        _pinGate != PinGateKind.None ? AuthPromptPrefix : PromptPrefix;
+
+    private void BootHubPinSetup()
+    {
+        ResetPinEntryUi();
+        _lines.Clear();
+        _showUpgradeMenu = false;
+        _pinGate = PinGateKind.Setup;
+    }
+
+    private void BootHubPinBlocked()
+    {
+        ResetPinEntryUi();
+        _lines.Clear();
+        _showUpgradeMenu = false;
+        _pinGate = PinGateKind.Blocked;
+        _lines.Add( ">> gatekeeper — spawner wake required" );
+        _lines.Add( $">> registered spawner: {Hub.GetOwnerLabel()}" );
+        _lines.Add( $">> your identity: {HashdTerminalHost.GetLocalOperatorLabel()}" );
+        _lines.Add( ">> your Steam ID does not match the spawner — cannot set PIN" );
+        _lines.Add( ">> wait for the spawner to wake this hub, then enter their PIN" );
+        _lines.Add( "" );
+    }
+
+    private void BootHubPinUnlock()
+    {
+        ResetPinEntryUi();
+        _lines.Clear();
+        _showUpgradeMenu = false;
+        _pinGate = PinGateKind.Unlock;
+    }
 
     private void BootHubPowerGate()
     {
         _lines.Clear();
         _showUpgradeMenu = false;
-        _powerConfirm = PowerConfirmKind.None;
+        _pinGate = PinGateKind.None;
         _lines.Add( $">> {BitcoinMiningAddon.HubDisplayName} — power gate" );
         _lines.Add( ">> hub offline — linked racks disabled" );
-        _lines.Add( ">> authorize boot: type 'power on' then click POWER ON" );
-        _lines.Add( $">> {GpuRackRegistry.RegisteredRigs.Count} rack(s) linked within range" );
+        _lines.Add( ">> click POWER ON on the rail to boot" );
+        _lines.Add( $">> linked: {GetLinkedRigsSummary()}" );
         _lines.Add( "Commands: power · help" );
         _lines.Add( "" );
     }
@@ -266,27 +553,32 @@
     {
         _lines.Clear();
         _showUpgradeMenu = false;
-        _powerConfirm = PowerConfirmKind.None;
-        _lines.Add( $">> hashd init — {BitcoinMiningAddon.ProductTitle}" );
-        _lines.Add( $">> {LifePunchSourceMark.PublishedByLine}" );
+        _pinGate = PinGateKind.None;
+        _lines.Add( ">> hashd init — bitcoin rig control ... OK" );
         _lines.Add( ">> linking gpu-rack telemetry bus ... OK" );
         _lines.Add( $">> syncing payout ledger ({(int)BitcoinMiningAddon.MiningPayoutIntervalSeconds}s tick) ... OK" );
         _lines.Add( ">> rig interface ready — telemetry rail active (left)" );
-        var rigCount = GpuRackRegistry.RegisteredRigs.Count;
-        if ( rigCount > 1 )
-            _lines.Add( $">> {rigCount} rigs linked — use 'racks' · 'select <id>' · 'mining start all'" );
-        _lines.Add( "Commands: help · racks · mining · bitcoin · upgrade · status" );
+        _lines.Add( $">> linked: {GetLinkedRigsSummary()}" );
+        if ( GpuRackRegistry.RegisteredRigs.Count > 1 )
+            _lines.Add( ">> multi-rig — use 'rigs' · 'select <id>' · 'mining start all'" );
+        _lines.Add( "Commands: help · rigs · mining · bitcoin · upgrade · status" );
         _lines.Add( "" );
     }
 
     private string GetMiningStatusLabel() =>
-        Miner.IsValid() && Miner.IsMining ? "MINING" : "IDLE";
+        GpuRackRegistry.RegisteredRigs.Any( r => r.IsValid() && r.IsMining ) ? "MINING" : "IDLE";
+
+    private string GetLinkedRigsSummary() =>
+        BitcoinMinerHubRegistry.DescribeLinkedRacks( GpuRackRegistry.RegisteredRigs );
+
+    private float GetHubBtcBalance() =>
+        Hub.IsValid() ? Hub.BitcoinAmount : 0f;
 
     private string GetBtcBalanceLabel() =>
-        Miner.IsValid() ? $"{Miner.BitcoinAmount:0.00000000} BTC" : "—";
+        Hub.IsValid() ? $"{GetHubBtcBalance():0.00000000} BTC" : "—";
 
     private string GetUsdValueLabel() =>
-        Miner.IsValid() ? $"${Miner.BitcoinAmount * GpuRackEntity.BitcoinValue:N0}" : "—";
+        Hub.IsValid() ? $"${GetHubBtcBalance() * GpuRackEntity.BitcoinValue:N0}" : "—";
 
     private string GetHashRateLabel() =>
         Miner.IsValid() ? $"{Miner.ClockSpeed:0.00} GHz" : "—";
@@ -300,54 +592,38 @@
     private void OnRailStart()
     {
         if ( !Miner.IsValid() ) return;
-        Miner.SetMiningState( true );
+        Miner.RequestSetMiningState( true );
     }
 
     private void OnRailStop()
     {
         if ( !Miner.IsValid() ) return;
-        Miner.SetMiningState( false );
+        Miner.RequestSetMiningState( false );
     }
 
-    private void OnRailPowerOn()
+    private void OnRailPowerToggle()
     {
-        if ( !Hub.IsValid() || Hub.IsPowered )
+        if ( !Hub.IsValid() )
             return;
-
-        if ( _powerConfirm != PowerConfirmKind.On )
-        {
-            _lines.Add( "ERROR: Type 'power on' at the prompt first." );
-            TrimLines();
-            return;
-        }
 
         Sound.Play( BitcoinMiningAddon.KeyboardSoundPath );
-        Hub.RequestSetPowered( true );
-        _powerConfirm = PowerConfirmKind.None;
-        _lines.Add( ">> hub power authorized — booting ophion ..." );
-        _lines.Add( ">> startup sequence ... OK" );
-        _lines.Add( ">> hashd bus online — rig telemetry enabled" );
-        _lines.Add( "" );
-        TrimLines();
-    }
 
-    private void OnRailPowerOff()
-    {
-        if ( !Hub.IsValid() || !Hub.IsPowered )
-            return;
-
-        if ( _powerConfirm != PowerConfirmKind.Off )
+        if ( Hub.IsPowered )
         {
-            _lines.Add( "ERROR: Type 'power off' at the prompt first." );
-            TrimLines();
-            return;
+            Hub.RequestSetPowered( false );
+            _lines.Add( ">> hub shutdown — linked racks stopping" );
+            _lines.Add( "" );
+        }
+        else
+        {
+            Hub.RequestSetPowered( true );
+            _lines.Add( ">> hub power on — booting ophion ..." );
+            _lines.Add( ">> startup sequence ... OK" );
+            _lines.Add( ">> hashd bus online — rig telemetry enabled" );
+            _lines.Add( "" );
+            Boot();
         }
 
-        Sound.Play( BitcoinMiningAddon.KeyboardSoundPath );
-        Hub.RequestSetPowered( false );
-        _powerConfirm = PowerConfirmKind.None;
-        _lines.Add( ">> hub shutdown authorized — linked racks stopping" );
-        _lines.Add( "" );
         TrimLines();
     }
 
@@ -355,7 +631,7 @@
     {
         var viewerPos = HashdTerminalHost.LocalViewerPosition( Scene );
 
-        if ( IsHubPowerGate )
+        if ( IsHubPowerGate || IsHubPinSetup || IsHubPinUnlock )
         {
             if ( !Hub.IsValid() )
             {
@@ -372,13 +648,13 @@
             return;
         }
 
-        if ( !Miner.IsValid() )
+        if ( !Hub.IsValid() )
         {
             CloseTerminal();
             return;
         }
 
-        if ( viewerPos.HasValue && viewerPos.Value.Distance( Miner.WorldPosition ) > 150f )
+        if ( viewerPos.HasValue && viewerPos.Value.Distance( Hub.WorldPosition ) > 150f )
         {
             CloseTerminal();
             return;
@@ -398,10 +674,10 @@
             SecondlyUpdate();
         }
 
-        if ( !IsHubPowerGate && !Miner.IsValid() )
+        if ( !IsHubPowerGate && !IsHubPinSetup && !IsHubPinUnlock && !IsHubPinBlocked && !Hub.IsValid() )
             return;
 
-        if ( InputBox.IsValid() && !InputBox.HasFocus && !_showUpgradeMenu )
+        if ( InputBox.IsValid() && !InputBox.HasFocus && !_showUpgradeMenu && !IsPinUiFlow )
             InputBox.Focus();
 
         if ( Input.Pressed( "Attack2" ) )
@@ -422,11 +698,12 @@
             }
         }
 
-        if ( Miner.IsMining )
+        var progressRig = Miner.IsValid() ? Miner : GpuRackRegistry.RegisteredRigs.FirstOrDefault( r => r.IsValid() && r.IsMining );
+        if ( progressRig.IsValid() && progressRig.IsMining )
         {
-            if ( Miner.MiningProgress < _lastKnownProgress - 0.1f )
+            if ( progressRig.MiningProgress < _lastKnownProgress - 0.1f )
                 _smoothProgress = 0f;
-            _lastKnownProgress = Miner.MiningProgress;
+            _lastKnownProgress = progressRig.MiningProgress;
             _smoothProgress = MathF.Min( _smoothProgress + Time.Delta / BitcoinMiningAddon.MiningPayoutIntervalSeconds, 1f );
         }
         else
@@ -465,7 +742,16 @@
             return;
         }
 
-        _lines.Add( $"{PromptPrefix} {input}" );
+        var prompt = GetPromptLabel();
+        _lines.Add( $"{prompt} {input}" );
+
+        if ( _pinGate != PinGateKind.None )
+        {
+            HandlePinGateInput( input );
+            _lines.Add( "" );
+            TrimLines();
+            return;
+        }
 
         if ( _liveStatus && _statusLineCount > 0 )
         {
@@ -482,24 +768,32 @@
 
     private void RefreshLiveStatus()
     {
-        if ( !Miner.IsValid() ) return;
+        if ( !Hub.IsValid() ) return;
 
         int steps = (int)MathF.Floor( _smoothProgress * 10f );
         int pct = steps * 10;
         string bar = new string( '█', steps );
+        var anyMining = GpuRackRegistry.RegisteredRigs.Any( r => r.IsValid() && r.IsMining );
+        var rig = Miner.IsValid() ? Miner : GpuRackRegistry.RegisteredRigs.FirstOrDefault( r => r.IsValid() );
 
         var statusLines = new List<string>
         {
             "--------------------STATUS------------------",
-            $"  Mining:      {( Miner.IsMining ? "● ACTIVE" : "○ STOPPED" )}",
-            $"  Bitcoin:     {Miner.BitcoinAmount:0.00000000} BTC",
-            $"  Value:       ${Miner.BitcoinAmount * GpuRackEntity.BitcoinValue:N0}",
-            $"  Clock Speed: {Miner.ClockSpeed:0.000} GHz (Lv {Miner.CpuUpgradeLevel})",
-            $"  Cores:       {Miner.CoreCount} (Lv {Miner.CoreUpgradeLevel})",
-            $"  Progress:    {pct}% {bar}",
-            $"  Rate:        {Miner.MiningRatePerMinute:0.00000} BTC/min",
-            "--------------------------------------------",
+            $"  Mining:      {( anyMining ? "● ACTIVE" : "○ STOPPED" )}",
+            $"  Hub wallet:  {GetHubBtcBalance():0.00000000} BTC",
+            $"  Value:       ${GetHubBtcBalance() * GpuRackEntity.BitcoinValue:N0}",
         };
+
+        if ( rig.IsValid() )
+        {
+            statusLines.Add( $"  Selected:    {GpuRackRegistry.GetRigTypeLabel( rig )}" );
+            statusLines.Add( $"  Clock Speed: {rig.ClockSpeed:0.000} GHz (Lv {rig.CpuUpgradeLevel})" );
+            statusLines.Add( $"  Cores:       {rig.CoreCount} (Lv {rig.CoreUpgradeLevel})" );
+            statusLines.Add( $"  Rate:        {rig.MiningRatePerMinute:0.00000} BTC/min" );
+        }
+
+        statusLines.Add( $"  Progress:    {pct}% {bar}" );
+        statusLines.Add( "--------------------------------------------" );
 
         if ( _statusLineCount > 0 )
             _lines.RemoveRange( _lines.Count - _statusLineCount, _statusLineCount );
@@ -597,6 +891,200 @@
         TrimLines();
     }
 
+    private void HandlePinGateInput( string input )
+    {
+        if ( !Hub.IsValid() )
+        {
+            _lines.Add( "ERROR: Hub session lost." );
+            return;
+        }
+
+        var parts = input.Split( ' ', StringSplitOptions.RemoveEmptyEntries );
+        var cmd = parts.Length > 0 ? parts[0] : "";
+
+        if ( _pinGate == PinGateKind.Setup )
+        {
+            if ( cmd == "pin" && parts.Length >= 4 && parts[1] == "set" )
+            {
+                Hub.RequestSetAccessPin( parts[2], parts[3] );
+                _lines.Add( ">> configuring operator PIN ..." );
+                return;
+            }
+
+            _lines.Add( "ERROR: Use pin set 1234 1234  (four digits, twice)." );
+            return;
+        }
+
+        if ( _pinGate == PinGateKind.Unlock )
+        {
+            if ( BitcoinMinerHubAccessPin.IsValidFormat( input ) )
+            {
+                _lines.Add( ">> verifying PIN ..." );
+                Hub.RequestUnlockAccessPin( input );
+                return;
+            }
+
+            if ( cmd == "pin" && parts.Length >= 2 && BitcoinMinerHubAccessPin.IsValidFormat( parts[1] ) )
+            {
+                _lines.Add( ">> verifying PIN ..." );
+                Hub.RequestUnlockAccessPin( parts[1] );
+                return;
+            }
+
+            _lines.Add( "ERROR: Enter a 4-digit PIN." );
+            return;
+        }
+
+        if ( _pinGate == PinGateKind.Blocked )
+            _lines.Add( "ERROR: Hub locked — owner must set the initial PIN first." );
+    }
+
+    public void AppendAuthLine( string line )
+    {
+        if ( IsPinUiFlow && _pinEntryOpen )
+        {
+            _pinError = line.StartsWith( "ERROR:", StringComparison.OrdinalIgnoreCase )
+                ? line["ERROR:".Length..].Trim()
+                : line;
+            ResetPinDigits();
+            return;
+        }
+
+        _lines.Add( line );
+        TrimLines();
+    }
+
+    private void ResetPinEntryUi()
+    {
+        _pinEntryOpen = false;
+        _pinConfirming = false;
+        _pinDigits = "";
+        _pinFirstEntry = "";
+        _pinError = "";
+    }
+
+    private void ResetPinDigits()
+    {
+        _pinDigits = "";
+    }
+
+    private string GetPinEntryTitle()
+    {
+        if ( IsHubPinSetup )
+            return _pinConfirming ? "CONFIRM PIN" : "SET PIN";
+
+        return "ENTER PIN";
+    }
+
+    private string GetPinEntrySubtitle()
+    {
+        if ( IsHubPinSetup )
+        {
+            if ( _pinConfirming )
+                return "Enter the same 4-digit PIN again to confirm.";
+
+            return $"Operator: {HashdTerminalHost.GetLocalOperatorLabel()} — choose your hub lock.";
+        }
+
+        var owner = Hub.IsValid() && !string.IsNullOrWhiteSpace( Hub.OperatorDisplayName )
+            ? Hub.OperatorDisplayName
+            : "registered operator";
+
+        return $"Encrypted hub — registered by {owner}.";
+    }
+
+    private void OnPinCtaClick()
+    {
+        if ( IsHubPinBlocked )
+            return;
+
+        Sound.Play( BitcoinMiningAddon.KeyboardSoundPath );
+        _pinEntryOpen = true;
+        _pinError = "";
+        ResetPinDigits();
+    }
+
+    private void OnPinDigit( int digit )
+    {
+        if ( !IsPinUiFlow || !_pinEntryOpen || _pinDigits.Length >= BitcoinMinerHubAccessPin.PinLength )
+            return;
+
+        Sound.Play( BitcoinMiningAddon.KeyboardSoundPath );
+        _pinDigits += digit.ToString();
+        _pinError = "";
+
+        if ( _pinDigits.Length >= BitcoinMinerHubAccessPin.PinLength )
+            CompletePinEntry();
+    }
+
+    private void OnPinBackspace()
+    {
+        if ( !IsPinUiFlow || !_pinEntryOpen || _pinDigits.Length == 0 )
+            return;
+
+        Sound.Play( BitcoinMiningAddon.KeyboardSoundPath );
+        _pinDigits = _pinDigits[..^1];
+        _pinError = "";
+    }
+
+    private void OnPinClear()
+    {
+        if ( !IsPinUiFlow || !_pinEntryOpen )
+            return;
+
+        Sound.Play( BitcoinMiningAddon.KeyboardSoundPath );
+        ResetPinDigits();
+        _pinError = "";
+    }
+
+    private void OnPinEntryBack()
+    {
+        if ( !IsHubPinSetup || !_pinConfirming )
+            return;
+
+        Sound.Play( BitcoinMiningAddon.KeyboardSoundPath );
+        _pinConfirming = false;
+        _pinFirstEntry = "";
+        ResetPinDigits();
+        _pinError = "";
+    }
+
+    private void CompletePinEntry()
+    {
+        if ( !Hub.IsValid() )
+        {
+            _pinError = "Hub session lost.";
+            ResetPinDigits();
+            return;
+        }
+
+        if ( IsHubPinSetup )
+        {
+            if ( !_pinConfirming )
+            {
+                _pinFirstEntry = _pinDigits;
+                _pinConfirming = true;
+                ResetPinDigits();
+                return;
+            }
+
+            if ( _pinDigits != _pinFirstEntry )
+            {
+                _pinError = "PINs did not match — try again.";
+                _pinConfirming = false;
+                _pinFirstEntry = "";
+                ResetPinDigits();
+                return;
+            }
+
+            Hub.RequestSetAccessPin( _pinDigits, _pinDigits );
+            return;
+        }
+
+        if ( IsHubPinUnlock )
+            Hub.RequestUnlockAccessPin( _pinDigits );
+    }
+
     private void HandleCommand( string input )
     {
         var parts = input.Split( ' ', StringSplitOptions.RemoveEmptyEntries );
@@ -610,17 +1098,21 @@
                 if ( Hub.IsValid() )
                 {
                     _lines.Add( "  POWER    - on | off — hub boot/shutdown (confirm on rail)." );
+                    if ( !Hub.AccessPinIsSet )
+                        _lines.Add( "  PIN      - owner sets hub lock at first USE (graphical gatekeeper)." );
+                    else
+                        _lines.Add( "  PIN      - gatekeeper unlocks on hub USE (session ~15 min)." );
                 }
                 _lines.Add( "  BITCOIN  - Sell or view stored bitcoin balance." );
                 _lines.Add( "  INFO     - Output device specifications." );
-                _lines.Add( "  RACKS    - List linked mining rigs in range." );
+                _lines.Add( "  RIGS     - List linked GPU Racks (Market → place within 8m)." );
                 _lines.Add( "  SELECT   - select <id> — pick active rig for commands." );
                 _lines.Add( "  MINING   - start | stop | start all | stop all | start <id>" );
                 _lines.Add( "  UPGRADE  - Open hardware upgrade panel." );
                 _lines.Add( "  STATUS   - Dump full status to command log." );
                 _lines.Add( "  MENU     - Same as UPGRADE." );
                 _lines.Add( "  BACK     - Close upgrade panel (when open)." );
-                _lines.Add( "  ABOUT    - LIFEPUNCH attribution." );
+                _lines.Add( "  ABOUT    - Package version and copyright." );
                 _lines.Add( "  CLEAR    - Clear the command log." );
                 _lines.Add( "  HELP     - Show this list." );
                 _lines.Add( "--------------------------------------------" );
@@ -632,7 +1124,7 @@
                 break;
 
             case "status":
-                if ( !Miner.IsValid() ) { _lines.Add( "ERROR: Miner connection lost." ); break; }
+                if ( !Hub.IsValid() ) { _lines.Add( "ERROR: Hub connection lost." ); break; }
                 _showUpgradeMenu = false;
                 _liveStatus = true;
                 RefreshLiveStatus();
@@ -650,33 +1142,34 @@
                 break;
 
             case "bitcoin":
-                if ( !Miner.IsValid() ) { _lines.Add( "ERROR: Miner connection lost." ); break; }
+                if ( !Hub.IsValid() ) { _lines.Add( "ERROR: Hub connection lost." ); break; }
                 if ( arg == "sell" )
                 {
-                    if ( Miner.BitcoinAmount <= 0 )
+                    if ( GetHubBtcBalance() <= 0 )
                     {
                         _lines.Add( "ERROR: No bitcoin to sell." );
                         break;
                     }
-                    _lines.Add( $"Selling {Miner.BitcoinAmount:0.00000} BTC for ${Miner.BitcoinAmount * GpuRackEntity.BitcoinValue:N0}..." );
-                    Miner.RequestSellBitcoin();
+                    _lines.Add( $"Selling {GetHubBtcBalance():0.00000} BTC for ${GetHubBtcBalance() * GpuRackEntity.BitcoinValue:N0}..." );
+                    Hub.RequestSellBitcoin();
                     _lines.Add( "Done." );
                 }
                 else
                 {
-                    _lines.Add( $"  Balance: {Miner.BitcoinAmount:0.00000} BTC (≈ ${Miner.BitcoinAmount * GpuRackEntity.BitcoinValue:N0})" );
+                    _lines.Add( $"  Hub balance: {GetHubBtcBalance():0.00000} BTC (≈ ${GetHubBtcBalance() * GpuRackEntity.BitcoinValue:N0})" );
                     _lines.Add( "  Use 'bitcoin sell' to cash out." );
                 }
                 break;
 
             case "racks":
+            case "rigs":
                 AppendRacksList();
                 break;
 
             case "select":
                 if ( !int.TryParse( arg, out var selectId ) )
                 {
-                    _lines.Add( "ERROR: Usage — select <id>  (see 'racks')." );
+                    _lines.Add( "ERROR: Usage — select <id>  (see 'rigs')." );
                     break;
                 }
                 if ( !GpuRackRegistry.TrySelect( selectId ) )
@@ -698,17 +1191,17 @@
                     }
                     else if ( int.TryParse( startTarget, out var startId ) && GpuRackRegistry.TrySelect( startId ) )
                     {
-                        Miner.SetMiningState( true );
+                        Miner.RequestSetMiningState( true );
                         _lines.Add( $"Rig-{startId} mining started." );
                     }
                     else if ( Miner.IsValid() )
                     {
-                        Miner.SetMiningState( true );
+                        Miner.RequestSetMiningState( true );
                         _lines.Add( "Mining started." );
                     }
                     else
                     {
-                        _lines.Add( "ERROR: No rig selected — use 'racks' or 'select <id>'." );
+                        _lines.Add( "ERROR: No GPU Rack selected — use 'rigs' or 'select <id>'." );
                     }
                 }
                 else if ( arg == "stop" )
@@ -721,12 +1214,12 @@
                     }
                     else if ( int.TryParse( stopTarget, out var stopId ) && GpuRackRegistry.TrySelect( stopId ) )
                     {
-                        Miner.SetMiningState( false );
+                        Miner.RequestSetMiningState( false );
                         _lines.Add( $"Rig-{stopId} mining stopped." );
                     }
                     else if ( Miner.IsValid() )
                     {
-                        Miner.SetMiningState( false );
+                        Miner.RequestSetMiningState( false );
                         _lines.Add( "Mining stopped." );
                     }
                     else
@@ -773,40 +1266,16 @@
                     break;
                 }
 
-                if ( arg is "on" or "boot" or "start" )
-                {
-                    if ( Hub.IsPowered )
-                    {
-                        _lines.Add( "Hub is already online." );
-                        break;
-                    }
-
-                    _powerConfirm = PowerConfirmKind.On;
-                    _lines.Add( "Auth pending — click POWER ON on the rail to confirm boot." );
-                }
-                else if ( arg is "off" or "shutdown" or "stop" )
-                {
-                    if ( !Hub.IsPowered )
-                    {
-                        _lines.Add( "Hub is already offline." );
-                        break;
-                    }
-
-                    _powerConfirm = PowerConfirmKind.Off;
-                    _lines.Add( "Auth pending — click POWER OFF on the rail to confirm shutdown." );
-                }
-                else
-                {
-                    var state = Hub.IsPowered ? "ONLINE" : "OFFLINE";
-                    _lines.Add( $"  Hub power: {state}" );
-                    _lines.Add( "  Use 'power on' or 'power off' (confirm on rail)." );
-                }
+                var hubState = Hub.IsPowered ? "ONLINE" : "OFFLINE";
+                _lines.Add( $"  Hub power: {hubState}" );
+                _lines.Add( "  Use the POWER ON / POWER OFF button on the rail." );
                 break;
 
             case "about":
                 _lines.Add( "--------------------------------------------" );
-                foreach ( var line in LifePunchSourceMark.AboutBlock( BitcoinMiningAddon.ProductTitle ) )
-                    _lines.Add( $"  {line}" );
+                _lines.Add( $"  {BitcoinMiningAddon.UiVersionFooter}" );
+                _lines.Add( $"  {LifePunchSourceMark.CopyrightLine}" );
+                _lines.Add( $"  {LifePunchSourceMark.UseRestrictionShort}" );
                 _lines.Add( "--------------------------------------------" );
                 break;
 
@@ -821,11 +1290,12 @@
         var rigs = GpuRackRegistry.RegisteredRigs;
         if ( rigs.Count == 0 )
         {
-            _lines.Add( "No mining rigs within 4m of terminal." );
+            _lines.Add( "No GPU Racks linked — buy from Market, place within 8m of this hub." );
+            _lines.Add( $"  Cap: {BitcoinMiningCombatStats.MaxSmallRacksPerHub}× {BitcoinMiningAddon.DisplayName} · {BitcoinMiningCombatStats.MaxLargeRacksPerHub}× {BitcoinMiningAddon.AdvancedDisplayName}" );
             return;
         }
 
-        _lines.Add( "--------------------RACKS--------------------" );
+        _lines.Add( "--------------------LINKED GPU RIGS--------------------" );
         for ( var i = 0; i < rigs.Count; i++ )
         {
             var rig = rigs[i];
@@ -835,7 +1305,7 @@
             var marker = i == GpuRackRegistry.SelectedIndex ? "*" : " ";
             var type = GpuRackRegistry.GetRigTypeLabel( rig );
             var status = GpuRackRegistry.GetRigStatusLabel( rig );
-            _lines.Add( $" {marker} rig-{i}  {type,-9}  {status,-7}  {rig.BitcoinAmount:0.00000000} BTC" );
+            _lines.Add( $" {marker} rig-{i}  {type,-9}  {status,-7}  {rig.ClockSpeed:0.00} GHz" );
         }
         _lines.Add( "--------------------------------------------" );
     }
@@ -848,7 +1318,7 @@
             if ( !rig.IsValid() )
                 continue;
 
-            rig.SetMiningState( enabled );
+            rig.RequestSetMiningState( enabled );
             count++;
         }
         return count;
@@ -856,22 +1326,28 @@
 
     protected override int BuildHash()
     {
-        if ( IsHubPowerGate )
+        if ( IsHubPowerGate || IsHubPinSetup || IsHubPinUnlock )
         {
             return HashCode.Combine(
                 Hub?.IsPowered ?? false,
-                (int)_powerConfirm,
+                Hub?.AccessPinIsSet ?? false,
+                (int)_pinGate,
                 _lines.Count,
                 GpuRackRegistry.RegisteredRigs.Count );
         }
 
         if ( !Miner.IsValid() )
         {
-            return HashCode.Combine( _lines.Count, _showUpgradeMenu, HashdTerminalHost.GetLocalWalletCash(), GpuRackRegistry.RegisteredRigs.Count );
+            return HashCode.Combine(
+                GetHubBtcBalance(),
+                _lines.Count,
+                _showUpgradeMenu,
+                HashdTerminalHost.GetLocalWalletCash(),
+                GpuRackRegistry.RegisteredRigs.Count );
         }
 
         var hash = new HashCode();
-        hash.Add( Miner.BitcoinAmount );
+        hash.Add( GetHubBtcBalance() );
         hash.Add( Miner.IsMining );
         hash.Add( Miner.CpuUpgradeLevel );
         hash.Add( Miner.CoreUpgradeLevel );
@@ -882,7 +1358,6 @@
         hash.Add( GpuRackRegistry.SelectedIndex );
         hash.Add( GpuRackRegistry.RegisteredRigs.Count );
         hash.Add( Hub?.IsPowered ?? false );
-        hash.Add( (int)_powerConfirm );
         return hash.ToHashCode();
     }
 }

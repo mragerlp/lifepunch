@@ -1,10 +1,10 @@
 <#
 .SYNOPSIS
-  Register a logon + 10-minute LM Studio watchdog on Cornerman (all 3 Tier-3 models).
+  Register a logon + 10-minute LM Studio watchdog on Cornerman (Tier-3 serve lane).
 
 .DESCRIPTION
-  Keeps :1234 up with qwen distill, qwen coder, and nomic embed. Idempotent with
-  Start-CornermanLmStudio.ps1 -WarmModel all. Run elevated ON Green once, or from
+  Keeps :1234 up with distill + embed; coder stays on disk until WarmCoder. Idempotent with
+  Start-CornermanLmStudio.ps1 -WarmModel daily. Run elevated ON Green once, or from
   Red via Send-CornermanWorkflow -Action InstallLmWatchdog.
 
 .EXAMPLE
@@ -43,7 +43,7 @@ elseif ($lmsSrc -ne $lmsOnBox -and (Test-Path -LiteralPath $lmsSrc)) {
     Copy-Item -LiteralPath $lmsSrc -Destination $lmsOnBox -Force
 }
 
-$psArgs = "-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File `"$lmsOnBox`" -WarmModel all -Quiet"
+$psArgs = "-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File `"$lmsOnBox`" -WarmModel daily -Quiet"
 $action = New-ScheduledTaskAction -Execute 'powershell.exe' -Argument $psArgs
 $settings = New-ScheduledTaskSettingsSet `
     -AllowStartIfOnBatteries `
@@ -66,8 +66,8 @@ Register-ScheduledTask -TaskName 'LifePunch-Cornerman-LM-Watchdog' `
     -Action $action -Trigger @($logonTrigger, $repeatTrigger) -Settings $settings `
     -Principal $principal -Force | Out-Null
 
-Write-Step 'Warm all Tier-3 models now'
-& powershell.exe -NoProfile -ExecutionPolicy Bypass -File $lmsOnBox -WarmModel all
+Write-Step 'Warm Tier-3 serve lane now (distill + embed)'
+& powershell.exe -NoProfile -ExecutionPolicy Bypass -File $lmsOnBox -WarmModel daily
 
 Write-Host ''
-Write-Host 'LM watchdog installed. Green should keep 3 models on :1234 after reboot/logon.' -ForegroundColor Cyan
+Write-Host 'LM watchdog installed. Green keeps distill+embed on :1234; WarmCoder swaps to Qwen 2.5.' -ForegroundColor Cyan

@@ -79,6 +79,9 @@ public static class GpuRackPowerAnim
 		if ( string.IsNullOrEmpty( resolved ) )
 			return false;
 
+		if ( powered && IsBindOrIdleSequence( resolved ) )
+			return false;
+
 		try
 		{
 			sceneModel.DirectPlayback.Play( resolved );
@@ -91,6 +94,16 @@ public static class GpuRackPowerAnim
 		}
 	}
 
+	private static bool IsBindOrIdleSequence( string sequence )
+	{
+		if ( string.IsNullOrWhiteSpace( sequence ) )
+			return true;
+
+		var normalized = NormalizeSequenceName( sequence );
+		return normalized.Contains( "bind", StringComparison.OrdinalIgnoreCase )
+		       || string.Equals( normalized, "idle", StringComparison.OrdinalIgnoreCase );
+	}
+
 	private static bool TryGetSceneModel( ModelRenderer renderer, out SceneModel sceneModel )
 	{
 		sceneModel = null;
@@ -98,8 +111,8 @@ public static class GpuRackPowerAnim
 		if ( !renderer.IsValid() )
 			return false;
 
-		sceneModel = renderer.SceneObject;
-		return sceneModel.IsValid();
+		sceneModel = renderer.SceneObject as SceneModel;
+		return sceneModel is not null && sceneModel.IsValid();
 	}
 
 	private static string ResolveSequence(
@@ -123,7 +136,10 @@ public static class GpuRackPowerAnim
 			}
 		}
 
-		return powered ? available[0] : available[^1];
+		if ( !powered && available.Count > 0 )
+			return available[^1];
+
+		return null;
 	}
 
 	private static string FindSequence( IReadOnlyList<string> available, string candidate )

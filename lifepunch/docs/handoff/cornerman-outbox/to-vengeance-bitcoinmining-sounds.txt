@@ -1,0 +1,10 @@
+OK cornerman bitcoinmining sounds P1d — 7 slots shortlist, 12+ CC0 candidates (verify Freesound page per file)
+
+Outbox:
+  BITCOINMINING_SOUND_SLOT_SPEC.md
+  BITCOINMINING_SOUND_SHORTLIST.md
+  BITCOINMINING_SOUND_INTAKE_CHECKLIST.md
+
+Owner priority: keyboard = RECORD loud Cherry MX clicks first; CC0 fallback grcekh Freesound 546046 (trim singles).
+
+Next on Red: owner drops WAVs -> Intake-BitcoinMinerSounds.ps1 -> .vsnd compile -> .sound JSON -> smoke lp_hub_power / hashd keyboard / mining hum.

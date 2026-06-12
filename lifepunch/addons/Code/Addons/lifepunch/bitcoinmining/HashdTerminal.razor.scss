@@ -22,12 +22,21 @@ $main-font: Mina;
 $text-sm: 14px;
 
 HashdTerminal {
+    // Mina cascades onto material-icons ligatures — keep glyph font explicit.
+    .material-icons {
+        font-family: Material Icons;
+        font-weight: normal;
+        font-style: normal;
+        text-transform: none;
+        letter-spacing: normal;
+    }
+
     pointer-events: all;
     position: absolute;
     bottom: 48px;
-    left: 24px;
-    width: 780px;
-    height: 480px;
+    right: 24px;
+    width: 820px;
+    height: 500px;
     background-color: rgba(18, 16, 12, 0.98);
     border: 2px solid $border-bright;
     border-radius: 0;
@@ -35,6 +44,422 @@ HashdTerminal {
     display: flex;
     flex-direction: column;
     overflow: hidden;
+
+    &.compact {
+        width: 680px;
+        height: 400px;
+        right: 24px;
+        bottom: 48px;
+    }
+
+    &.expanded {
+        width: 960px;
+        height: 620px;
+        right: 16px;
+        bottom: 32px;
+    }
+
+    // PIN gate — ghost hashd console behind veil; real telemetry never mounts.
+    &.pin-gate {
+        border-color: $primary-dim;
+        box-shadow: 0 0 0 1px #000000, 0 0 28px rgba(240, 165, 0, 0.12), 0 12px 40px rgba(0, 0, 0, 0.55);
+
+        .telemetry-rail {
+            display: none;
+        }
+
+        .terminal-body {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pin-gate-console {
+            position: relative;
+            z-index: 4;
+            flex: 1;
+            margin: 0;
+            background-color: rgba(10, 9, 7, 0.88);
+            border-left: none;
+            border-top: 1px solid rgba(240, 165, 0, 0.35);
+            box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.45);
+        }
+
+        .screen-scroll {
+            max-height: 100%;
+        }
+
+        .input-row {
+            border-top: 1px solid $border-bright;
+            background-color: rgba(14, 12, 9, 0.95);
+        }
+
+        .prompt-label {
+            color: $primary;
+            text-shadow: 0 0 8px rgba(240, 165, 0, 0.35);
+        }
+    }
+
+    &.pin-blocked {
+        .input-row {
+            display: none;
+        }
+
+        .pin-gate-console {
+            border-top-color: rgba(228, 75, 42, 0.45);
+        }
+
+        .pin-lock-badge {
+            border-color: rgba(228, 75, 42, 0.55);
+            background-color: rgba(28, 10, 6, 0.92);
+
+            .pin-lock-mark,
+            .pin-lock-text {
+                color: $error;
+            }
+        }
+    }
+
+    .pin-ghost {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        z-index: 1;
+        display: flex;
+        flex-direction: row;
+        pointer-events: none;
+        overflow: hidden;
+    }
+
+    .pin-ghost-rail {
+        width: 210px;
+        flex-shrink: 0;
+        background-color: $bg-rail;
+        border-right: 2px solid $border;
+        padding: 12px 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        opacity: 0.22;
+    }
+
+    .pin-ghost-rail-header {
+        font-family: $main-font;
+        font-size: 10px;
+        color: $primary-dim;
+        letter-spacing: 1.5px;
+        font-weight: bold;
+        padding-bottom: 6px;
+        border-bottom: 1px solid $border;
+    }
+
+    .pin-ghost-block {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .pin-ghost-label {
+        font-family: $main-font;
+        font-size: 10px;
+        color: $body-dim;
+        letter-spacing: 0.5px;
+    }
+
+    .pin-ghost-value {
+        font-family: $main-font;
+        font-size: 12px;
+        color: $body;
+        letter-spacing: 0.5px;
+
+        &.active {
+            color: $primary;
+        }
+    }
+
+    .pin-ghost-bar {
+        height: 6px;
+        background-color: #1a1610;
+        border: 1px solid $border;
+
+        .pin-ghost-bar-fill {
+            width: 68%;
+            height: 100%;
+            background-color: $primary-dim;
+        }
+    }
+
+    .pin-ghost-actions {
+        display: flex;
+        flex-direction: row;
+        gap: 6px;
+        margin-top: 4px;
+    }
+
+    .pin-ghost-btn {
+        font-family: $main-font;
+        font-size: 9px;
+        font-weight: bold;
+        letter-spacing: 1px;
+        color: $body-dim;
+        border: 1px solid $border;
+        padding: 4px 8px;
+        background-color: rgba(240, 165, 0, 0.06);
+    }
+
+    .pin-ghost-console {
+        flex: 1;
+        padding: 14px 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        opacity: 0.16;
+        overflow: hidden;
+    }
+
+    .pin-ghost-line {
+        font-family: $main-font;
+        font-size: 13px;
+        color: $body;
+        letter-spacing: 0.3px;
+        white-space: nowrap;
+
+        &.dim {
+            color: $body-dim;
+        }
+
+        &.accent {
+            color: $primary-dim;
+        }
+    }
+
+    .pin-ghost-veil {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        z-index: 2;
+        background-color: rgba(8, 7, 5, 0.78);
+        pointer-events: none;
+    }
+
+    .pin-lock-stage {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        z-index: 3;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        pointer-events: all;
+    }
+
+    .pin-lock-cta,
+    .pin-lock-badge {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        min-width: 300px;
+        max-width: 420px;
+        padding: 18px 28px;
+        border: 2px solid rgba(240, 165, 0, 0.45);
+        background-color: rgba(18, 14, 8, 0.92);
+        box-shadow: 0 0 24px rgba(240, 165, 0, 0.15), inset 0 0 12px rgba(0, 0, 0, 0.5);
+        text-align: center;
+
+        .pin-lock-mark {
+            font-family: $main-font;
+            font-size: 16px;
+            color: $primary;
+            line-height: 1;
+        }
+
+        .pin-lock-text {
+            font-family: $main-font;
+            font-size: 12px;
+            font-weight: bold;
+            color: $primary;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            line-height: 1.3;
+        }
+    }
+
+    .pin-lock-cta {
+        cursor: pointer;
+        transition: border-color 0.12s ease, box-shadow 0.12s ease, background-color 0.12s ease;
+
+        &:hover {
+            border-color: $primary;
+            background-color: rgba(28, 22, 12, 0.96);
+            box-shadow: 0 0 32px rgba(240, 165, 0, 0.28), inset 0 0 12px rgba(0, 0, 0, 0.5);
+        }
+
+        &:active {
+            transform: scale(0.98);
+        }
+
+        .pin-lock-hint {
+            font-family: $main-font;
+            font-size: 9px;
+            font-weight: bold;
+            color: $body-dim;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+    }
+
+    .pin-lock-static {
+        pointer-events: none;
+    }
+
+    .pin-entry-panel {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        min-width: 280px;
+        max-width: 360px;
+        padding: 20px 24px 16px;
+        border: 2px solid rgba(240, 165, 0, 0.55);
+        background-color: rgba(14, 12, 8, 0.96);
+        box-shadow: 0 0 32px rgba(240, 165, 0, 0.18), inset 0 0 16px rgba(0, 0, 0, 0.55);
+
+        .pin-entry-header {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .pin-entry-mark {
+            font-family: $main-font;
+            font-size: 14px;
+            color: $primary;
+        }
+
+        .pin-entry-title {
+            font-family: $main-font;
+            font-size: 13px;
+            font-weight: bold;
+            color: $primary;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .pin-entry-sub {
+            font-family: $main-font;
+            font-size: 11px;
+            color: $body-dim;
+            text-align: center;
+            line-height: 1.4;
+            max-width: 300px;
+        }
+
+        .pin-entry-dots {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            margin: 6px 0 4px;
+        }
+
+        .pin-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            border: 2px solid $border-bright;
+            background-color: transparent;
+            transition: background-color 0.1s ease, border-color 0.1s ease;
+
+            &.filled {
+                background-color: $primary;
+                border-color: $primary;
+                box-shadow: 0 0 10px rgba(240, 165, 0, 0.45);
+            }
+        }
+
+        .pin-entry-error {
+            font-family: $main-font;
+            font-size: 11px;
+            color: $error;
+            text-align: center;
+            letter-spacing: 0.3px;
+            min-height: 16px;
+        }
+
+        .pin-numpad {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            width: 240px;
+            margin-top: 4px;
+        }
+
+        .pin-key {
+            width: 68px;
+            height: 44px;
+            border: 1px solid $border-bright;
+            background-color: rgba(240, 165, 0, 0.08);
+            color: $primary;
+            font-family: $main-font;
+            font-size: 16px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            cursor: pointer;
+
+            &:hover {
+                background-color: rgba(240, 165, 0, 0.18);
+                border-color: $primary;
+            }
+
+            &:active {
+                background-color: rgba(240, 165, 0, 0.28);
+            }
+
+            &.pin-key-fn {
+                font-size: 10px;
+                letter-spacing: 1.5px;
+                color: $body-dim;
+            }
+        }
+
+        .pin-entry-back {
+            margin-top: 2px;
+            background-color: transparent;
+            border: none;
+            color: $body-dim;
+            font-family: $main-font;
+            font-size: 10px;
+            font-weight: bold;
+            letter-spacing: 1.5px;
+            cursor: pointer;
+
+            &:hover {
+                color: $primary;
+            }
+        }
+    }
+
+    &.pin-entry-open {
+        .pin-ghost-veil {
+            background-color: rgba(8, 7, 5, 0.88);
+        }
+    }
 
     .scanlines {
         position: absolute;
@@ -85,29 +510,111 @@ HashdTerminal {
             flex-grow: 1;
         }
 
-        .title-publisher {
-            font-family: $main-font;
-            font-size: 10px;
-            color: $primary-dim;
-            letter-spacing: 1px;
-            opacity: 0.85;
+        .title-actions {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 4px;
         }
 
-        .close-x {
-            background-color: rgba(228, 75, 42, 0.12);
-            border: 1px solid $error;
+        .icon-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 34px;
+            height: 34px;
             border-radius: 0;
-            color: $error;
+            border: 1px solid $border;
+            color: $body-dim;
+            background-color: transparent;
+            cursor: pointer;
+
+            .material-icons {
+                line-height: 1;
+            }
+
+            &:hover {
+                background-color: rgba(240, 165, 0, 0.12);
+                color: $primary;
+            }
+
+            &.active {
+                background-color: rgba(240, 165, 0, 0.18);
+                color: $primary;
+                border-color: $border-bright;
+            }
+
+            &.close {
+                border-color: rgba(228, 75, 42, 0.45);
+
+                .material-icons {
+                    font-size: 26px;
+                }
+
+                &:hover {
+                    background-color: rgba(228, 75, 42, 0.35);
+                    color: #ffffff;
+                    border-color: $error;
+                }
+            }
+
+            &.cog .material-icons {
+                font-size: 24px;
+            }
+        }
+    }
+
+    &.pin-gate .title-bar {
+        background-color: #1a1408;
+        border-bottom-color: $primary-dim;
+    }
+
+    .hashd-settings {
+        position: absolute;
+        top: 46px;
+        right: 10px;
+        z-index: 20;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        min-width: 140px;
+        padding: 8px;
+        background-color: #16140f;
+        border: 1px solid $border-bright;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+
+        .hashd-settings-head {
             font-family: $main-font;
-            font-size: 11px;
+            font-size: 9px;
+            color: $primary-dim;
+            letter-spacing: 1.5px;
             font-weight: bold;
-            padding: 4px 12px;
+            padding-bottom: 4px;
+            border-bottom: 1px solid $border;
+        }
+
+        .hashd-settings-opt {
+            background-color: transparent;
+            border: 1px solid $border;
+            border-radius: 0;
+            color: $body-dim;
+            font-family: $main-font;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 5px 8px;
             letter-spacing: 1px;
+            text-align: left;
             text-transform: uppercase;
 
             &:hover {
-                background-color: rgba(228, 75, 42, 0.3);
-                color: #ffffff;
+                background-color: rgba(240, 165, 0, 0.1);
+                color: $primary;
+            }
+
+            &.active {
+                background-color: rgba(240, 165, 0, 0.16);
+                color: $primary;
+                border-color: $border-bright;
             }
         }
     }
@@ -120,7 +627,7 @@ HashdTerminal {
     }
 
     .telemetry-rail {
-        width: 200px;
+        width: 210px;
         flex-shrink: 0;
         background-color: $bg-rail;
         border-right: 2px solid $border;
@@ -154,9 +661,9 @@ HashdTerminal {
 
             .rail-value {
                 font-family: $main-font;
-                font-size: 13px;
+                font-size: 12px;
                 color: $body;
-                font-weight: bold;
+                letter-spacing: 0.5px;
 
                 &.active {
                     color: $primary;
@@ -165,23 +672,23 @@ HashdTerminal {
 
             .rail-sub {
                 font-family: $main-font;
-                font-size: 10px;
+                font-size: 9px;
                 color: $body-dim;
             }
         }
 
         .rail-progress {
-            .tick-bar {
-                height: 6px;
-                background-color: #1f1a12;
-                border: 1px solid $border;
-                margin-top: 2px;
+            gap: 4px;
+        }
 
-                .tick-fill {
-                    height: 100%;
-                    background-color: $primary;
-                    max-width: 100%;
-                }
+        .tick-bar {
+            height: 6px;
+            background-color: #1a1610;
+            border: 1px solid $border;
+
+            .tick-fill {
+                height: 100%;
+                background-color: $primary;
             }
         }
 
@@ -190,54 +697,78 @@ HashdTerminal {
             flex-direction: row;
             gap: 6px;
             pointer-events: all;
-            margin-top: 4px;
+        }
 
-            .rail-btn {
-                flex: 1;
-                font-family: $main-font;
-                font-size: 10px;
-                font-weight: bold;
-                letter-spacing: 0.5px;
-                padding: 6px 4px;
-                border: 1px solid $border;
-                background-color: #1a1610;
-                color: $body-dim;
-                text-transform: uppercase;
+        .rail-btn {
+            flex: 1;
+            font-family: $main-font;
+            font-size: 9px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            color: $body-dim;
+            border: 1px solid $border;
+            padding: 6px 4px;
+            background-color: transparent;
+            cursor: pointer;
 
-                &.start {
-                    border-color: $primary-dim;
-                    color: $primary;
+            &:hover {
+                background-color: rgba(240, 165, 0, 0.1);
+                color: $primary;
+            }
 
-                    &.active {
-                        background-color: rgba(240, 165, 0, 0.2);
-                    }
+            &.start.active {
+                background-color: rgba(240, 165, 0, 0.2);
+                color: $primary;
+                border-color: $border-bright;
+            }
 
-                    &:hover {
-                        background-color: rgba(240, 165, 0, 0.15);
-                    }
+            &.stop.active {
+                background-color: rgba(228, 75, 42, 0.2);
+                color: $error;
+                border-color: rgba(228, 75, 42, 0.5);
+            }
+
+            &.power-on {
+                background-color: rgba(34, 197, 94, 0.22);
+                color: #4ade80;
+                border-color: rgba(34, 197, 94, 0.55);
+
+                &:hover {
+                    background-color: rgba(34, 197, 94, 0.32);
+                    color: #86efac;
                 }
+            }
 
-                &.stop:hover {
-                    border-color: $error;
-                    color: $error;
+            &.power-off {
+                background-color: rgba(228, 75, 42, 0.22);
+                color: $error;
+                border-color: rgba(228, 75, 42, 0.55);
+
+                &:hover {
+                    background-color: rgba(228, 75, 42, 0.32);
+                    color: #f87171;
                 }
             }
         }
 
         .rail-hint {
-            margin-top: auto;
             font-family: $main-font;
             font-size: 9px;
-            color: rgba(154, 143, 122, 0.6);
+            color: $body-dim;
             letter-spacing: 0.5px;
+            margin-top: auto;
+            padding-top: 8px;
+            border-top: 1px solid $border;
         }
     }
 
     .console-pane {
-        flex-grow: 1;
+        flex: 1;
         min-width: 0;
         display: flex;
         flex-direction: column;
+        background-color: $bg;
+        border-left: 1px solid $border;
     }
 
     .screen-scroll {
@@ -245,97 +776,94 @@ HashdTerminal {
         min-height: 0;
         overflow-y: scroll;
         overflow-x: hidden;
-        pointer-events: all;
-        padding: 8px 12px 4px 14px;
-        background-color: rgba(14, 12, 9, 0.5);
+        padding: 10px 12px;
     }
 
     .screen {
-        font-family: $main-font;
+        gap: 2px;
+    }
+
+    .line-row {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
+    }
 
-        .line-row {
-            padding: 1px 0;
+    .screen-line {
+        font-family: $main-font;
+        font-size: 13px;
+        color: $body;
+        letter-spacing: 0.3px;
+        white-space: pre-wrap;
+        word-break: break-word;
+
+        &.dim {
+            color: $body-dim;
         }
 
-        .screen-line {
-            font-size: 13px;
-            white-space: pre-wrap;
-            color: $body;
-        }
-
-        .prompt-line {
+        &.accent {
             color: $primary;
-            font-weight: bold;
         }
 
-        .boot-line {
-            color: $primary-dim;
-            font-size: 12px;
-        }
-
-        .divider-line {
-            color: $border;
-        }
-
-        .help-line {
-            color: #f5ead6;
-        }
-
-        .output-line {
-            color: $body;
-        }
-
-        .error-line {
+        &.error {
             color: $error;
-            font-weight: bold;
+        }
+
+        &.success {
+            color: $primary;
         }
     }
 
-    &.upgrade-mode {
-        .terminal-body {
-            flex-direction: column;
-        }
+    .input-row {
+        flex-shrink: 0;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        border-top: 1px solid $border;
+        background-color: #0e0c09;
+        cursor: text;
+    }
 
-        .upgrade-panel {
-            flex-grow: 1;
-            min-height: 0;
-        }
+    .prompt-label {
+        font-family: $main-font;
+        font-size: 13px;
+        color: $primary-dim;
+        font-weight: bold;
+        flex-shrink: 0;
+    }
+
+    .terminal-input {
+        flex-grow: 1;
+        background-color: transparent;
+        border: none;
+        color: $body;
+        font-family: $main-font;
+        font-size: 13px;
+        padding: 0;
+        outline: none;
     }
 
     .upgrade-panel {
-        flex-grow: 1;
-        background-color: $bg-rail;
-        padding: 20px 24px;
+        flex: 1;
+        padding: 16px 20px;
         display: flex;
         flex-direction: column;
         gap: 12px;
-        pointer-events: all;
-        overflow-y: scroll;
+        background-color: $bg;
 
         .upgrade-header {
             font-family: $main-font;
-            font-size: 15px;
+            font-size: 12px;
             color: $primary;
-            font-weight: bold;
             letter-spacing: 2px;
-            text-transform: uppercase;
+            font-weight: bold;
         }
 
         .upgrade-balance {
             font-family: $main-font;
-            font-size: $text-sm;
-            color: $body;
-            padding-bottom: 8px;
-            border-bottom: 1px solid $border;
-        }
-
-        .upgrade-hint {
-            font-family: $main-font;
             font-size: 12px;
             color: $body-dim;
-            margin-top: 4px;
         }
 
         .upgrade-row {
@@ -343,102 +871,83 @@ HashdTerminal {
             flex-direction: row;
             align-items: center;
             justify-content: space-between;
-            gap: 12px;
             padding: 10px 12px;
             border: 1px solid $border;
-            background-color: rgba(18, 16, 12, 0.9);
+            background-color: rgba(14, 12, 9, 0.6);
+        }
 
-            .upgrade-info {
-                display: flex;
-                flex-direction: column;
-                gap: 2px;
-                flex-grow: 1;
+        .upgrade-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
 
-                .upgrade-name {
-                    font-family: $main-font;
-                    font-size: $text-sm;
-                    color: $primary;
-                    font-weight: bold;
-                    letter-spacing: 0.5px;
-                }
+        .upgrade-name {
+            font-family: $main-font;
+            font-size: 11px;
+            color: $primary;
+            letter-spacing: 1px;
+            font-weight: bold;
+        }
 
-                .upgrade-detail {
-                    font-family: $main-font;
-                    font-size: 12px;
-                    color: $body-dim;
-                }
+        .upgrade-detail {
+            font-family: $main-font;
+            font-size: 11px;
+            color: $body-dim;
+        }
+
+        .upgrade-btn {
+            font-family: $main-font;
+            font-size: 10px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            color: $primary;
+            border: 1px solid $border-bright;
+            padding: 6px 14px;
+            background-color: rgba(240, 165, 0, 0.08);
+            cursor: pointer;
+
+            &:hover {
+                background-color: rgba(240, 165, 0, 0.18);
             }
 
-            .upgrade-btn {
-                flex-shrink: 0;
-                background-color: rgba(240, 165, 0, 0.1);
-                border: 1px solid $primary;
-                border-radius: 0;
-                color: $primary;
-                font-family: $main-font;
-                font-size: 11px;
-                font-weight: bold;
-                padding: 6px 14px;
-                letter-spacing: 1px;
-                text-transform: uppercase;
-
-                &:hover {
-                    background-color: rgba(240, 165, 0, 0.25);
-                    color: #ffffff;
-                }
-
-                &.disabled {
-                    opacity: 0.35;
-                    pointer-events: none;
-                }
+            &.disabled {
+                color: $body-dim;
+                border-color: $border;
+                cursor: default;
+                opacity: 0.5;
             }
         }
 
-        .upgrade-back {
-            align-self: flex-start;
-            background-color: transparent;
-            border: 1px solid $border;
-            border-radius: 0;
-            color: $body-dim;
+        .upgrade-hint {
             font-family: $main-font;
-            font-size: 12px;
-            padding: 4px 12px;
+            font-size: 10px;
+            color: $body-dim;
+            margin-top: auto;
+        }
+
+        .upgrade-back {
+            font-family: $main-font;
+            font-size: 10px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            color: $body-dim;
+            border: 1px solid $border;
+            padding: 8px 12px;
+            background-color: transparent;
+            cursor: pointer;
+            align-self: flex-start;
 
             &:hover {
-                border-color: $primary;
                 color: $primary;
+                border-color: $border-bright;
             }
         }
     }
 
-    .input-row {
-        padding: 8px 14px;
-        border-top: 2px solid $border;
-        background-color: #0e0c09;
-        flex-shrink: 0;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        gap: 8px;
-        pointer-events: all;
-
-        .prompt-label {
-            font-family: $main-font;
-            font-size: $text-sm;
-            color: $primary;
-            white-space: nowrap;
-            flex-shrink: 0;
-            font-weight: bold;
-        }
-
-        .terminal-input {
-            flex-grow: 1;
-            background-color: transparent;
-            border: none;
-            color: $body;
-            font-family: $main-font;
-            font-size: $text-sm;
-            caret-color: $primary;
+    &.upgrade-mode {
+        .telemetry-rail {
+            display: none;
         }
     }
 
@@ -446,29 +955,26 @@ HashdTerminal {
         flex-shrink: 0;
         display: flex;
         flex-direction: row;
+        justify-content: space-between;
         align-items: center;
-        gap: 10px;
-        padding: 5px 12px;
+        padding: 4px 12px;
         border-top: 1px solid $border;
-        background-color: #0c0a08;
-        font-family: $main-font;
-        font-size: 10px;
-        letter-spacing: 0.5px;
+        background-color: #0a0907;
 
         .lp-mark {
-            color: $primary;
+            font-family: $main-font;
+            font-size: 9px;
+            color: $primary-dim;
+            letter-spacing: 1px;
             font-weight: bold;
         }
 
-        .lp-pub {
-            color: $body-dim;
-        }
-
         .lp-legal {
+            font-family: $main-font;
+            font-size: 9px;
             color: $body-dim;
-            opacity: 0.75;
-            margin-left: auto;
-            text-align: right;
+            letter-spacing: 0.5px;
         }
     }
 }
+

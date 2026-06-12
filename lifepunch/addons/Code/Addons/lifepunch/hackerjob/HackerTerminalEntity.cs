@@ -179,6 +179,6 @@ public sealed class HackerTerminalEntity : BaseEntity, Component.IPressable
 
 		ScreenText.Text = IsAdvanced
 			? "LIFEPUNCH vengeance.exe\n[ STANDBY ] enhanced intrusion rig"
-			: "LIFEPUNCH cornerman.exe\n[ STANDBY ] type cornerman nearby";
+			: "LIFEPUNCH cornerman.exe\n[ STANDBY ] USE to log in";
 	}
 }

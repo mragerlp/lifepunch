@@ -32,7 +32,7 @@
 #>
 [CmdletBinding()]
 param(
-    [string[]] $SyncAddon = @('bitcoinmining'),
+    [string[]] $SyncAddon = @('bitcoinmining', 'hackerjob'),
     [switch] $SyncAllAddons,
     [switch] $NoSync,
     [switch] $WithAuthorize,

@@ -1,0 +1,30 @@
+OWNER ASK — universal console keyboard (2026-06-12)
+===================================================
+
+**Scope:** ALL LifePunch entity consoles — one loud click typing sound, shared.
+
+## Owner decision
+
+Use **one universal** mechanical click for every terminal UI — not per-job variants.
+
+| Console today | Current path constant |
+|---------------|----------------------|
+| HASHD (bitcoinmining) | `BitcoinMiningAddon.KeyboardSoundPath` |
+| cornerman.exe / vengeance.exe (hackerjob) | `HackerJob.KeyboardSoundPath` |
+| Future gov / police terminals | TBD — same asset |
+
+**Proposed ship path (Red wires after pick):**
+`addons/lifepunch/shared/sounds/lifepunch-console-keyboard.sound`
+
+Until shared folder exists, duplicate `.sound` → both addon paths is fine.
+
+## Sound spec
+
+- **Loud click typing** — mechanical, punchy, RP-audible
+- Short sample (~50–150ms) — fires on every key / numpad press
+- Works on amber HASHD and green/red hacker terminals (neutral timbre; UI color carries identity)
+- Not whisper-quiet laptop keys
+
+Deliver **one top pick + 2 alternates** in `BITCOINMINING_SOUND_SHORTLIST.md` § **Universal console keyboard** (or separate `LIFEPUNCH_CONSOLE_KEYBOARD_SHORTLIST.md`).
+
+See also: `OWNER_ASK_LOUD_CLICK_TYPING.txt` (same ask — merged here for clarity).

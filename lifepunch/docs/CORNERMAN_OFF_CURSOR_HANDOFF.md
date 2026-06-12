@@ -3,6 +3,11 @@
 **Status:** Green box **no longer runs Cursor.** Red (VENGEANCE) owns git, C#, ModelDoc coordination, and urgent docs.  
 **Cornerman role:** Voice/PTT relay, optional local RAG ingest, file mirror — **not** code commits or patch handoff unless owner revives Cursor on Green.
 
+**Eyes covered (law):** If something covers Green's eyes, say so to the owner — same as Cursor agents.
+Green has **no** Claude Bridge and **no** view of the editor unless the owner sends a screenshot or
+RDPs in. Distills and Qwen drafts are **not** eyes. On visual/playtest/spawn/scale questions, lead with:
+**Cornerman's eyes are covered** — I only have [inbox / repo / distill], not your screen or the game.
+
 ---
 
 ## What changed

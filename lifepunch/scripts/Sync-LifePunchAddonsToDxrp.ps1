@@ -73,6 +73,22 @@ Write-Host 'Sync LifePunch addons -> DXRP game' -ForegroundColor Cyan
 Write-Host "  Repo:  $repoAddons" -ForegroundColor DarkGray
 Write-Host "  DXRP:  $dxrpGame" -ForegroundColor DarkGray
 
+# Shared lifepunch code (LifePunchSourceMark.cs, etc.) — not under a single addon ident.
+$sharedCodeFiles = @(Get-ChildItem -LiteralPath $repoCodeRoot -File -ErrorAction SilentlyContinue)
+if ($sharedCodeFiles.Count -gt 0) {
+    Write-Host 'Shared: lifepunch root code' -ForegroundColor Cyan
+    New-Item -ItemType Directory -Force -Path $dxrpCodeRoot | Out-Null
+    foreach ($file in $sharedCodeFiles) {
+        $dest = Join-Path $dxrpCodeRoot $file.Name
+        if ($WhatIf) {
+            Write-Host "  [WhatIf] $($file.Name)" -ForegroundColor DarkGray
+            continue
+        }
+        Copy-Item -LiteralPath $file.FullName -Destination $dest -Force
+        Write-Host "  $($file.Name)" -ForegroundColor Green
+    }
+}
+
 foreach ($ident in Get-AddonIdents) {
     Write-Host "Addon: $ident" -ForegroundColor Cyan
     $assetsSrc = Join-Path $repoAssetsRoot $ident
@@ -95,6 +111,11 @@ foreach ($ident in Get-AddonIdents) {
     else {
         Write-Host "  Code/$ident - skip (no repo folder)" -ForegroundColor DarkGray
     }
+}
+
+$ensureResources = Join-Path $Here 'Ensure-DxrpLifepunchResources.ps1'
+if (Test-Path -LiteralPath $ensureResources) {
+    & $ensureResources -Ident (Get-AddonIdents) -ConfigPath $ConfigPath
 }
 
 Write-Host 'Sync OK' -ForegroundColor Green

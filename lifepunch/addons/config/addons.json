@@ -285,11 +285,23 @@
           "modelBuild": "Assets/addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-terminal/MODEL_BUILD.md"
         },
         {
+          "slug": "bitcoin-miner",
+          "name": "Bitcoin Miner Hub",
+          "label": "Bitcoin Miner Hub",
+          "type": 0,
+          "primaryReference": "addons/lifepunch/bitcoinmining/entities/bitcoinminer/bitcoin-miner.prefab",
+          "worldModelPath": "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/bitcoin-miner.vmdl",
+          "grouping": "Entities",
+          "implementationStatus": "ophion-hub-power-boot",
+          "modelBuild": "Assets/addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/MODEL_BUILD.md",
+          "notes": "Ophion intake (Jun 11). Desktop control unit — smallest of the three (flatgrass verified Jun 2026: mesh ~11×8×7, import_scale 0.26, BoxCollider 12×9×7 @ prefab 1,1,1). See BITCOINMINING_PLAYTEST.md scale table."
+        },
+        {
           "slug": "gpu-rack",
           "name": "GPU Rack",
           "label": "GPU Rack",
           "type": 0,
-          "primaryReference": "addons/lifepunch/bitcoinmining/entities/gpu-rack/gpu-rack.prefab",
+          "primaryReference": "addons/lifepunch/bitcoinmining/entities/gpurack/gpu-rack.prefab",
           "worldModelPath": "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/gpu-rack/gpu-rack.vmdl",
           "grouping": "Entities",
           "implementationStatus": "small-rack-phase1",
@@ -300,7 +312,7 @@
           "name": "Large GPU Rack",
           "label": "Large GPU Rack",
           "type": 0,
-          "primaryReference": "addons/lifepunch/bitcoinmining/entities/large-gpu-rack/large-gpu-rack.prefab",
+          "primaryReference": "addons/lifepunch/bitcoinmining/entities/largegpurack/large-gpu-rack.prefab",
           "worldModelPath": "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/gpu-rack/gpu-rack-stacked.vmdl",
           "grouping": "Entities",
           "implementationStatus": "stacked-rack-2x-yield",

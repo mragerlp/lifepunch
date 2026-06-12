@@ -15,21 +15,22 @@ using Sandbox;
 namespace LifePunch.DXRP.Addons.BitcoinMining;
 
 /// <summary>
-/// Console/chat entry points for the LIFEPUNCH hashd terminal (Phase 1).
-/// Opens the CLI on the nearest <see cref="GpuRackEntity"/> within range.
+/// Dev-only hashd open shim for local/editor builds. Players USE the Bitcoin Miner hub — see
+/// <c>docs/BITCOINMINING_TERMINAL_DOCTRINE.md</c>.
 /// </summary>
 internal static class HashdCommandHost
 {
-	// Source units ≈ inches; ~8 m horizontal / ~4 m vertical open range.
 	private const float MetersToUnits = 39.3701f;
 	private const float OpenHorizontalUnits = 8f * MetersToUnits;
 	private const float OpenVerticalUnits = 4f * MetersToUnits;
 
+#if LIFEPUNCH_LOCAL
 	[ConCmd( "hashd" )]
 	public static void HashdConCmd( string args = "" ) => HandleOpenCommand( args );
 
 	[ConCmd( "mine" )]
 	public static void MineConCmd( string args = "" ) => HandleOpenCommand( args );
+#endif
 
 	private static void HandleOpenCommand( string args )
 	{
@@ -39,11 +40,11 @@ internal static class HashdCommandHost
 			return;
 		}
 
-		OpenNearestTerminal();
+		OpenNearestHub();
 	}
 
-	/// <summary>Shared open path for <c>hashd</c> and <c>lp_hashd_preview</c>.</summary>
-	public static void OpenNearestTerminal()
+	/// <summary>Shared dev open path for <c>hashd</c> and <c>lp_hashd_preview</c>.</summary>
+	public static void OpenNearestHub()
 	{
 		var scene = Sandbox.Game.ActiveScene;
 		if ( scene is null )
@@ -67,14 +68,7 @@ internal static class HashdCommandHost
 			return;
 		}
 
-		var nearest = FindNearestRig( scene, viewerPos.Value );
-		if ( !nearest.IsValid() )
-		{
-			NotifyNoRigInRange();
-			return;
-		}
-
-		nearest.RequestOpenTerminal();
+		NotifyNoHubInRange();
 	}
 
 	private static bool IsCloseRequest( string args )
@@ -109,35 +103,8 @@ internal static class HashdCommandHost
 		return best;
 	}
 
-	private static GpuRackEntity FindNearestRig( Scene scene, Vector3 viewerPos )
+	private static void NotifyNoHubInRange()
 	{
-		GpuRackEntity best = null;
-		var bestHorizontal = float.MaxValue;
-
-		foreach ( var rig in scene.GetAllComponents<GpuRackEntity>() )
-		{
-			if ( !rig.IsValid() || !rig.GameObject.IsValid() )
-				continue;
-
-			var delta = rig.WorldPosition - viewerPos;
-			var horizontal = new Vector3( delta.x, delta.y, 0f ).Length;
-			var vertical = MathF.Abs( delta.z );
-
-			if ( horizontal > OpenHorizontalUnits || vertical > OpenVerticalUnits )
-				continue;
-
-			if ( horizontal < bestHorizontal )
-			{
-				bestHorizontal = horizontal;
-				best = rig;
-			}
-		}
-
-		return best;
-	}
-
-	private static void NotifyNoRigInRange()
-	{
-		Log.Info( "[hashd] No GPU rack in range." );
+		Log.Info( "[hashd] No Bitcoin Miner hub in range — USE the hub to open the terminal." );
 	}
 }

@@ -1,0 +1,17 @@
+// LifePunch bitcoin-miner hub — perforated plate
+
+Layer0
+{
+	shader "shaders/complex.shader"
+
+	F_METALNESS_TEXTURE 1
+	F_SPECULAR 1
+
+	TextureColor "addons/lifepunch/bitcoinmining/entities/bitcoinminer/textures/white-metal-plate-dots-600w-427727302_(2).png"
+	TextureNormal "addons/lifepunch/bitcoinmining/entities/bitcoinminer/textures/Metal036_2K_NormalGL.jpg"
+	TextureRoughness "addons/lifepunch/bitcoinmining/entities/bitcoinminer/textures/Metal036_2K_Roughness.jpg"
+	TextureMetalness "addons/lifepunch/bitcoinmining/entities/bitcoinminer/textures/Metal036_2K_Metalness.jpg"
+
+	g_flModelTintAmount "1.000"
+	g_vColorTint "[1.000000 1.000000 1.000000 0.000000]"
+}

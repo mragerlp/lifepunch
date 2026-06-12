@@ -4,6 +4,9 @@
 
 Cornerman is **Tier-3 prep** — distill and draft, not production C# decisions. Red (VENGEANCE / Cursor Opus) owns integration.
 
+**Eyes covered:** Green cannot see the game or the owner's screen. Say **Cornerman's eyes are covered**
+before any visual, spawn, scale, or playtest claim — files and distills are not the viewport.
+
 ---
 
 ## Two models (not one)
@@ -13,7 +16,7 @@ Cornerman is **Tier-3 prep** — distill and draft, not production C# decisions.
 | **distill** (default) | `qwen/qwen3.6-35b-a3b` | Spec summaries, 10-line distills, inbox/outbox docs, RAG prep, work-queue hygiene |
 | **coder** | `qwen2.5-coder-32b-instruct` | Multi-file C# **drafts**, Razor/scss first passes, terminal command tables — **Red must review before ship** |
 
-**Default on boot:** `distill` (`Invoke-CornermanHeadlessBoot.ps1`). That is why Cornerman is **not** on Qwen 2.5 unless someone explicitly warms **coder**.
+**Default on boot:** `daily` = distill + embed (`Invoke-CornermanHeadlessBoot.ps1`). **Tier-3 catalog** = all three on disk; **Tier-3 serve** = distill + embed loaded — **not** both big models at once (~45 GB). Warm **coder** only when the brief says so.
 
 ---
 
@@ -66,3 +69,50 @@ powershell -File C:\lifepunch\cornerman\Start-CornermanLmStudio.ps1 -WarmModel c
 ## Inbox pointer
 
 `C:\lifepunch\cornerman\inbox\GREEN-WORKFLOW-DIRECTIVE.json` — Red refreshes via `Push-CornermanWorkflowDirective.ps1`.
+
+---
+
+## LM Link (LM Studio remote models — preview, June 2026)
+
+**Product:** [LM Link](https://lmstudio.ai/link) — LM Studio + Tailscale (`tsnet`) mesh. Load models on
+a remote machine; use them on another as if local. E2E encrypted P2P; no public endpoints. Preview
+rollout (LM Studio account; batched access).
+
+### Fit in the LifePunch web
+
+| | |
+|--|--|
+| **Host (GPU)** | Cornerman — distill / coder / embed on Green's Vulkan iGPU |
+| **Client** | VENGEANCE — LM Studio desktop sees Green's models in the loader |
+| **API surface** | Unchanged: `http://localhost:1234/v1` on the client; LM Link routes to remote weights |
+| **LAN today** | Red still uses `Send-CornermanWorkflow.ps1` + SSH to warm models on Green; direct `http://192.168.1.227:1234` also works on subnet |
+
+### What LM Link could simplify
+
+- Off-LAN access to Green's models (travel, desk away from home LAN) without port-forward or SSH tunnels.
+- One LM Studio UI on VENGEANCE listing local + remote models — tools already on `:1234` work unchanged.
+
+### What LM Link does **not** replace
+
+| Still separate | Why |
+|----------------|-----|
+| **Claude Bridge** | s&box viewport / playtest — LM Link is LLM inference only; agents stay **blind** without bridge |
+| **Cornerman inbox/outbox** | Tier-3 distill handoff, `GREEN-WORKFLOW-DIRECTIVE.json`, patch flow |
+| **lifepunchnet `:9000`** | Hosted Whisper STT — not LM Studio |
+| **Tier routing law** | Green = prep/draft; Red / Opus = integration and ship |
+| **`Send-CornermanWorkflow.ps1`** | Until adopted: still canonical for warm/switch on Green headless boot |
+
+### Adoption status
+
+**Not enabled yet** — document and evaluate when preview access is granted. Does not change v1
+LAN-only posture in `LOCAL_AI_WORKSTATION.md` §6 until owner opts in.
+
+**Enablement sketch (when ready):**
+
+1. **Green:** LM Studio or `llmster` running; `lms login` → `lms link enable` (add to headless boot if headless).
+2. **Red:** LM Studio with Link; link Green; load remote distill/coder from loader.
+3. **Verify:** client `localhost:1234` serves a model whose weights live on Green; prompts stay E2E encrypted per LM Studio FAQ.
+
+**Coexistence:** LM Link uses embedded Tailscale `tsnet` — per LM Studio FAQ, should not interfere with a full Tailscale tailnet if one is added later for other services.
+
+**Refs:** `LOCAL_AI_WORKSTATION.md` §6 (networking), §7b (SSH/RDP), §7d (LM Link).

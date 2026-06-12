@@ -2,7 +2,9 @@
 
 **Ship policy:** LifePunch-owned or owner-licensed audio **only**. No third-party addon sound packs, no copied WAVs from other bitcoin minings.
 
-The ship tree has **no audio binaries** until you drop files via `Intake-BitcoinMinerSounds.ps1`.
+CC0 fast-path: `Prepare-BitcoinMinerSoundsDrop.ps1` → owner drop in Downloads → `Intake-BitcoinMinerSounds.ps1` → `New-BitcoinMinerSoundResources.ps1` → s&box `.vsnd` compile.
+
+See `sources.md` in this folder for license manifest per slot.
 
 ## Semantic slots (not copies of anyone else's files)
 

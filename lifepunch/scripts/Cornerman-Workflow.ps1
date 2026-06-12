@@ -24,10 +24,27 @@ function Test-CornermanSshReady {
     return $ok
 }
 
+function Invoke-CornermanEncoded {
+    param(
+        [string] $ScriptBlock,
+        [string] $SshTarget = $(Get-CornermanSshTarget)
+    )
+    $enc = [Convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes($ScriptBlock))
+    if ($enc.Length -gt 7800) {
+        throw 'Cornerman SSH encoded command too long — use chunked file push.'
+    }
+    $prev = $ErrorActionPreference
+    $ErrorActionPreference = 'SilentlyContinue'
+    $out = & ssh -o BatchMode=yes $SshTarget "powershell -NoProfile -NonInteractive -EncodedCommand $enc" 2>$null
+    $code = $LASTEXITCODE
+    $ErrorActionPreference = $prev
+    return @{ ExitCode = $code; Output = $out }
+}
+
 function Push-CornermanFile {
     <#
     .SYNOPSIS
-      Write a file on Cornerman via base64 (scp often fails over Cornerman SSH profile).
+      Write a file on Cornerman via chunked base64 (scp often fails; single-shot SSH hits cmdline limit).
     #>
     param(
         [Parameter(Mandatory, Position = 0)]
@@ -39,22 +56,44 @@ function Push-CornermanFile {
     $b64 = [Convert]::ToBase64String($FileBytes)
     $parent = (Split-Path -Path $Path -Parent) -replace "'", "''"
     $pathEsc = $Path -replace "'", "''"
-    $remote = @"
+    $tmpEsc = 'C:\lifepunch\cornerman\.push-tmp.b64'
+
+    $init = @"
 New-Item -ItemType Directory -Force -LiteralPath '$parent' | Out-Null
-[IO.File]::WriteAllBytes('$pathEsc', [Convert]::FromBase64String('$b64'))
+Set-Content -LiteralPath '$tmpEsc' -Value '' -NoNewline -Encoding ASCII
+Write-Output 'chunk_init_ok'
+"@
+    $r = Invoke-CornermanEncoded -ScriptBlock $init -SshTarget $SshTarget
+    if ($r.ExitCode -ne 0 -or ($r.Output -join "`n") -notmatch 'chunk_init_ok') {
+        throw "SSH write init failed: $Path ($($r.Output -join '; '))"
+    }
+
+    $chunkSize = 2800
+    for ($i = 0; $i -lt $b64.Length; $i += $chunkSize) {
+        $len = [Math]::Min($chunkSize, $b64.Length - $i)
+        $part = $b64.Substring($i, $len) -replace "'", "''"
+        $append = @"
+Add-Content -LiteralPath '$tmpEsc' -Value '$part' -NoNewline -Encoding ASCII
+Write-Output 'chunk_ok'
+"@
+        $r = Invoke-CornermanEncoded -ScriptBlock $append -SshTarget $SshTarget
+        if ($r.ExitCode -ne 0 -or ($r.Output -join "`n") -notmatch 'chunk_ok') {
+            throw "SSH write chunk failed: $Path at $i ($($r.Output -join '; '))"
+        }
+    }
+
+    $finalize = @"
+`$raw = Get-Content -LiteralPath '$tmpEsc' -Raw -Encoding ASCII
+[IO.File]::WriteAllBytes('$pathEsc', [Convert]::FromBase64String(`$raw))
+Remove-Item -LiteralPath '$tmpEsc' -Force -ErrorAction SilentlyContinue
 if (-not (Test-Path -LiteralPath '$pathEsc')) { throw 'write verify failed' }
 Write-Output 'write_ok'
 "@
-    $enc = [Convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes($remote))
-    $prev = $ErrorActionPreference
-    $ErrorActionPreference = 'SilentlyContinue'
-    $out = & ssh -o BatchMode=yes $SshTarget "powershell -NoProfile -NonInteractive -EncodedCommand $enc" 2>$null
-    $code = $LASTEXITCODE
-    $ErrorActionPreference = $prev
-    if ($code -ne 0 -or ($out -join "`n") -notmatch 'write_ok') {
-        throw "SSH write failed: $Path ($($out -join '; '))"
+    $r = Invoke-CornermanEncoded -ScriptBlock $finalize -SshTarget $SshTarget
+    if ($r.ExitCode -ne 0 -or ($r.Output -join "`n") -notmatch 'write_ok') {
+        throw "SSH write finalize failed: $Path ($($r.Output -join '; '))"
     }
-    return $out
+    return $r.Output
 }
 
 function Push-CornermanText {

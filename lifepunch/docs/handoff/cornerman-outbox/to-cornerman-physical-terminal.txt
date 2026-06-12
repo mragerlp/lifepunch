@@ -1,0 +1,45 @@
+LIFEPUNCH — Physical terminal alignment (Cornerman P0)
+======================================================
+Issued: 2026-06-12 · Owner locked canon with Red (Cursor)
+
+START HERE
+----------
+inbox/CORNERMAN_PHYSICAL_TERMINAL_ALIGNMENT_TASK.md
+inbox/PHYSICAL_TERMINAL_DOCTRINE.md
+inbox/BITCOINMINING_TERMINAL_DOCTRINE.md
+inbox/TERMINAL_SESSION_DOCTRINE.md
+inbox/TERMINAL_BRAND_MATRIX.md
+
+OWNER RULE (non-negotiable)
+---------------------------
+NO player gameplay in the s&box developer console.
+USE the world entity → ops prompt inside the program UI.
+
+  BITCOIN:  USE Bitcoin Miner hub     |  GPU Rack = passive compute
+  HACKER:   USE Hacker Terminal CRT  |  Server Rack = power + link
+
+YOUR DELIVERABLES (outbox/) — DISTILL ONLY, NO C#
+-------------------------------------------------
+PHYSICAL_TERMINAL_GAP_AUDIT.md      ← file:line gaps vs doctrine (both addons)
+HACKER_SERVER_RACK_TERMINAL_PARITY.md ← mirror bitcoin hub/rack split
+STALE_TERMINAL_DOC_FIXLIST.md       ← docs Red must update (list only)
+HACKER_UI_PARITY_NOTES.md           ← optional UI notes vs hashd terminal
+
+RED ALREADY DID (verify after sync)
+-----------------------------------
+Bitcoin: hub wallet, rack passive, hashd/mine ConCmd LOCAL-only
+Hacker: cornerman/vengeance ConCmd LOCAL-only
+Doctrine: PHYSICAL_TERMINAL_DOCTRINE.md on main
+
+WARM
+----
+Send-CornermanWorkflow.ps1 -Action WarmDistill
+Cornerman (Sync from Red).cmd
+
+PING RED
+--------
+OK physical-terminal distill — outbox ready
+
+DO NOT
+------
+C# commits, ModelDoc, playtest claims without owner screenshot

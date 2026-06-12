@@ -18,7 +18,9 @@
 
 @attribute [StyleSheet]
 
-<root class="@TierClass">
+<root class="@TierClass ops-shell">
+    <div class="ops-backdrop" onclick=@OnClickClose></div>
+    <div class="ops-window">
     <div class="scanlines"></div>
 
     <div class="title-bar">
@@ -234,6 +236,7 @@
         <span class="lp-pub">@LifePunchSourceMark.UiFooterPublisher</span>
         <span class="lp-legal">@LifePunchSourceMark.UiFooterLegal</span>
     </div>
+    </div>
 </root>
 
 @code {
@@ -319,22 +322,26 @@
         return "ACTIVE BYPASS";
     }
 
-    public static void Open( HackerTerminalEntity terminal )
+    public static bool Open( HackerTerminalEntity terminal )
     {
         var isDevStub = terminal.IsValid() && terminal.GameObject.Name.Contains( "DevStub" );
         if ( !isDevStub && terminal.IsValid() && !terminal.IsPowered )
         {
-            Log.Info( "[LIFEPUNCH Hacker] Terminal offline — power ON the Server Rack first." );
-            return;
+            Log.Info( "[cornerman] Terminal offline — power ON the Server Rack first." );
+            return false;
         }
 
         var panel = HackerTerminalHost.Mount();
-        if ( panel == null )
-            return;
+        if ( !panel.IsValid() )
+            return false;
 
         panel.Terminal = terminal;
         panel.FocusInput();
         panel.Boot();
+
+        var program = panel.Tier == HackerTerminalTier.Advanced ? "vengeance.exe" : "cornerman.exe";
+        Log.Info( $"[{program}] logged in — type scan/hack at {HackerTerminalBrand.PromptLabel( panel.Tier )} in the ops console (not the developer console)." );
+        return true;
     }
 
     public static void NotifyHackFailure( string alertLine )
@@ -430,11 +437,15 @@
             return;
         }
 
-        var viewerPos = HackerTerminalHost.LocalViewerPosition( Scene );
-        if ( viewerPos.HasValue && viewerPos.Value.Distance( Terminal.WorldPosition ) > 150f )
+        var isDevStub = Terminal.IsValid() && Terminal.GameObject.Name.Contains( "DevStub" );
+        if ( !isDevStub )
         {
-            CloseTerminal();
-            return;
+            var viewerPos = HackerTerminalHost.LocalViewerPosition( Scene );
+            if ( viewerPos.HasValue && !HackerTerminalRange.IsInUiCloseRange( viewerPos.Value, Terminal.WorldPosition ) )
+            {
+                CloseTerminal();
+                return;
+            }
         }
 
         if ( _puzzle != null && _puzzle.IsExpired )
@@ -596,6 +607,12 @@
 
     private void HandleCommand( string input )
     {
+        if ( !HackerTerminalSession.CanRunOpsCommand( Terminal, out var deny ) )
+        {
+            _lines.Add( $"ERROR: {deny}" );
+            return;
+        }
+
         var parts = input.Split( ' ', StringSplitOptions.RemoveEmptyEntries );
         var cmd = parts.Length > 0 ? parts[0] : "";
         var arg = parts.Length > 1 ? string.Join( ' ', parts.Skip( 1 ) ) : "";

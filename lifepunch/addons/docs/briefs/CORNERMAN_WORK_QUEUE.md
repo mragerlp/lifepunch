@@ -1,11 +1,11 @@
 # Cornerman work queue (Tier-3 prep)
 
-**Issued:** 2026-06-11 · **Updated:** 2026-06-11 — **P0 = Hacker Job · P1b = BitcoinMiningAddon test audit · P1 = Cyber ecosystem**
+**Issued:** 2026-06-11 · **Updated:** 2026-06-12 — **P0 = Hacker Job · P1c = Bitcoin Miner job solidification · P1d = Bitcoin sounds research · P1b = asset test audit · P1 = Cyber ecosystem**
 
 **Green box:** RAG mirror + distill prep. **Red (VENGEANCE)** owns git push, C#, editor, Opus integration.  
 **Sync clone:** `Cornerman (Sync from Red)` or `git stash` + `git pull --rebase origin/main`
 
-**Push inbox:** `Push-CornermanCyberAssetAudit.ps1` (P0b) · `Push-CornermanHackerJobKickoff.ps1` (P0) · `Push-CornermanBitcoinMiningAssetTestAudit.ps1` (P1b) · `Push-CornermanCyberEcosystemBrief.ps1` (P1)
+**Push inbox:** `Push-CornermanCyberAssetAudit.ps1` (P0b) · `Push-CornermanHackerJobKickoff.ps1` (P0) · `Push-CornermanBitcoinMiningJobSolidification.ps1` (P1c) · `Push-CornermanBitcoinMiningSounds.ps1` (P1d) · `Push-CornermanBitcoinMiningAssetTestAudit.ps1` (P1b) · `Push-CornermanCyberEcosystemBrief.ps1` (P1)
 
 ---
 
@@ -16,6 +16,8 @@
 | **P0b** | **Cyber asset audit** (owner on legal) | `CORNERMAN_CYBER_ASSET_AUDIT_TASK.md` | **distill** | Validate `cornerman-outbox/*_2026-06-11.md` · ping Red one-liner |
 | **P0** | **Hacker Job distill** | `CORNERMAN_HACKER_JOB_TERMINAL_TASK.md` | **distill** | `outbox/HACKER_TERMINAL_FLOW_NOTES.md` · `TERMINAL_PUZZLE_CATALOG.md` · `HACKER_PVP_INFRA_FLOW.md` |
 | P0a | Auth pattern + UI review | `UPGRADE_TIER_STANDARD.md` + owner intake | distill | `HASHD_AUTH_PATTERN.md` · `HACKER_UI_REVIEW_NOTES.md` |
+| **P1c** | **Bitcoin Miner job solidification** | `CORNERMAN_BITCOINMINING_JOB_SOLIDIFICATION_TASK.md` | distill | `outbox/BITCOINMINING_JOB_ROLEPLAY_ONE_PAGER.md` + Market draft + stale doc fixlist |
+| **P1d** | **Cyber console sounds** (bitcoin + hacker + shared keyboard + GPU fan lifecycle) | `CORNERMAN_BITCOINMINING_SOUNDS_TASK.md` + `CORNERMAN_CYBER_CONSOLE_SOUNDS_SUPPLEMENT.md` | distill | `BITCOINMINING_SOUND_SHORTLIST.md` (+ optional `HACKERJOB_SOUND_SHORTLIST.md`) |
 | **P1b** | **BitcoinMiningAddon test audit** | `CORNERMAN_BITCOINMINING_ASSET_TEST_AUDIT_TASK.md` | distill | `outbox/BITCOINMINING_TEST_READINESS.md` — *can we playtest today?* |
 | **P1** | Cyber ecosystem | `CORNERMAN_CYBER_ECOSYSTEM_TASK.md` | distill | `outbox/CYBER_ECOSYSTEM_ONE_PAGER.md` + encryption table |
 | P2 | Staff menu SCSS fix | `CORNERMAN_STAFF_MENU_TASK.md` | **coder** | `outbox/STAFF_MENU_SCSS_FIX.scss` (when Red assigns) |
@@ -58,6 +60,9 @@ Ping Red after each batch: `OK cornerman inventory @<sha>` one line.
 | Path | Role |
 |------|------|
 | `C:\lifepunch\cornerman\inbox\to-cornerman-hacker-job.txt` | **P0 start** |
+| `C:\lifepunch\cornerman\inbox\to-cornerman-bitcoinmining-job-solidification.txt` | **P1c — miner job canon + Market draft** |
+| `C:\lifepunch\cornerman\inbox\to-cornerman-bitcoinmining-sounds.txt` | **P1d — sound slot research + shortlist** |
+| `C:\lifepunch\cornerman\inbox\to-cornerman-cyber-sounds-supplement.txt` | **P1d supplement — universal keyboard + GPU fan + hacker matrix** |
 | `C:\lifepunch\cornerman\inbox\to-cornerman-bitcoinmining-asset-test.txt` | **P1b — bitcoinmining test audit** |
 | `C:\lifepunch\cornerman\inbox\HACKER_JOB_DIRECTIVE.json` | P0 directive |
 | `C:\lifepunch\cornerman\inbox\CYBER_ECOSYSTEM_DIRECTIVE.json` | P1 parallel |

@@ -20,8 +20,9 @@ Reorganize script: `addons/scripts/Reorganize-BitcoinMinerGpuRack.ps1`
 
 ## Terminal (Phase 1 — Cornerman)
 
-- **Open:** `[ConCmd("hashd")]` / `[ConCmd("mine")]` → nearest `GpuRackEntity` within 8m → `HashdTerminal.Open`
-- **Close:** `hashd close` / `mine close` / ✕ button / walk >150m
+- **Open:** USE `BitcoinMinerHubEntity` → `HashdTerminal.OpenFromHub` (power gate when offline)
+- **Close:** ✕ button / walk >150m from hub
+- **Dev only:** `hashd` / `mine` ConCmds (`#if LIFEPUNCH_LOCAL`) — see `BITCOINMINING_TERMINAL_DOCTRINE.md`
 - **Inside:** HASHD CLI (`help`, `mining`, `bitcoin`, `upgrade`, …); `menu` stubs tabbed UI (Phase 2)
 - **Pattern:** `HashdTerminalHost` dual-build mount (same as StaffMenu / other LifePunch terminals)
 
@@ -31,7 +32,7 @@ Task brief: `addons/docs/briefs/CORNERMAN_BITCOINMINING_TERMINAL_TASK.md`
 
 | File | Role |
 |------|------|
-| `HashdCommandHost.cs` | `[ConCmd("hashd")]` / `[ConCmd("mine")]` — nearest rig within 8m / 4m; `close` subcommand |
+| `HashdCommandHost.cs` | Dev-only ConCmd shim — hub-only open path |
 | `HashdTerminalHost.cs` | `#if LIFEPUNCH_LOCAL` mount vs `GameManager.ShowUi`; viewer position for range |
 | `GpuRackEntity.cs` | Synced mining state, RPCs, optional `IPressable` secondary open |
 | `HashdTerminal.razor` | Define-free CLI; all gamemode coupling via host helpers |

@@ -5,7 +5,7 @@
   "title": "Green workflow — Inventory project (Visible Pocket P1)",
   "do": [
     "Primary lane: INVENTORY PROJECT — read CORNERMAN_INVENTORY_PROJECT_TASK.md first",
-    "LM Studio :1234 must always expose 3 models (WarmDistill / watchdog): qwen/qwen3.6-35b-a3b, qwen2.5-coder-32b-instruct, text-embedding-nomic-embed-text-v1.5",
+    "Tier-3 = catalog (3 on disk) + serve (distill+embed on :1234). Coder on disk only until WarmCoder — never load 35b+32b together (VRAM). Models: qwen/qwen3.6-35b-a3b, qwen2.5-coder-32b-instruct, text-embedding-nomic-embed-text-v1.5",
     "Switch to coder ONLY when brief task 6 (HUD scss draft) or explicit WarmCoder: qwen2.5-coder-32b-instruct",
     "Read CORNERMAN_MODEL_ROUTING.md on every inbox session — distill for docs, coder for assigned Razor/scss only",
     "Ship inventory = lifepunch.visiblepocket on DXRP PocketSystem — llad MIS is study/UI notes only (LLAD_MODULAR_INVENTORY_STUDY.md)",

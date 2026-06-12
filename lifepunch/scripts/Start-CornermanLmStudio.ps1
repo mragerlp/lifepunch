@@ -3,18 +3,19 @@
   Start LM Studio server on Cornerman and warm Tier-3 models.
 
 .PARAMETER WarmModel
+  daily   = distill + embed loaded (default — Cornerman daily lane)
   distill = qwen/qwen3.6-35b-a3b only
-  coder   = qwen2.5-coder-32b-instruct only
-  all     = all three Tier-3 models (default for boot/watchdog)
+  coder   = qwen2.5-coder-32b-instruct only (unloads other big models first)
+  all     = alias for daily + verify coder catalog (do NOT load 35b+32b together)
   none    = server only
 
 .EXAMPLE
-  powershell -ExecutionPolicy Bypass -File Start-CornermanLmStudio.ps1 -WarmModel all
+  powershell -ExecutionPolicy Bypass -File Start-CornermanLmStudio.ps1 -WarmModel daily
 #>
 [CmdletBinding()]
 param(
-    [ValidateSet('distill', 'coder', 'all', 'none')]
-    [string] $WarmModel = 'all',
+    [ValidateSet('daily', 'distill', 'coder', 'all', 'none')]
+    [string] $WarmModel = 'daily',
     [string] $BindHost = 'auto',
     [int] $Port = 1234,
     [switch] $Quiet
@@ -65,24 +66,41 @@ function Test-LmsAlreadyLoaded {
 
 function Get-CornermanBindHost {
     param([string] $Preferred = 'auto')
-    if ($Preferred -and $Preferred -ne 'auto') {
-        $hit = Get-NetIPAddress -AddressFamily IPv4 -ErrorAction SilentlyContinue |
-            Where-Object { $_.IPAddress -eq $Preferred }
-        if ($hit) { return $Preferred }
-        Write-Lms "BindHost $Preferred not on this box - auto-detecting LAN IP"
-    }
-    $addrs = @(Get-NetIPAddress -AddressFamily IPv4 -ErrorAction SilentlyContinue |
-        Where-Object { $_.IPAddress -notlike '127.*' -and $_.IPAddress -notlike '169.254.*' })
-    $eth = $addrs | Where-Object { $_.InterfaceAlias -match 'Ethernet|eth|LAN' } | Select-Object -First 1
-    if ($eth) { return $eth.IPAddress }
-    $priv = $addrs | Where-Object { $_.IPAddress -like '192.168.*' } | Select-Object -First 1
-    if ($priv) { return $priv.IPAddress }
-    if ($addrs.Count -gt 0) { return $addrs[0].IPAddress }
-    return '127.0.0.1'
+    # 0.0.0.0 — localhost for cornerman-lm MCP on Green + LAN for Red warm probes.
+    if (-not $Preferred -or $Preferred -eq 'auto') { return '0.0.0.0' }
+    if ($Preferred -eq '0.0.0.0' -or $Preferred -eq '127.0.0.1') { return $Preferred }
+    $hit = Get-NetIPAddress -AddressFamily IPv4 -ErrorAction SilentlyContinue |
+        Where-Object { $_.IPAddress -eq $Preferred }
+    if ($hit) { return $Preferred }
+    Write-Lms "BindHost $Preferred not on this box — using 0.0.0.0"
+    return '0.0.0.0'
 }
 
-function Get-LmsModelIds([string]$HostIp) {
-    foreach ($probeHost in @($HostIp, '127.0.0.1')) {
+function Remove-DuplicateLmsLoads {
+    $psText = (& $script:lms ps 2>&1 | ForEach-Object { "$_" }) -join "`n"
+    $dupIds = [regex]::Matches($psText, '(?m)^(\S+:\d+)\s') |
+        ForEach-Object { $_.Groups[1].Value } |
+        Select-Object -Unique
+    foreach ($dupId in $dupIds) {
+        Write-Lms "Unloading duplicate LM instance: $dupId"
+        Invoke-Lms -LmsArgs @('unload', $dupId) | Out-Null
+    }
+}
+
+function Get-LmsProbeHosts([string]$BindHost) {
+    $hosts = @('127.0.0.1')
+    if ($BindHost -and $BindHost -ne '0.0.0.0' -and $BindHost -ne '127.0.0.1') {
+        $hosts += $BindHost
+    }
+    $lan = Get-NetIPAddress -AddressFamily IPv4 -ErrorAction SilentlyContinue |
+        Where-Object { $_.IPAddress -like '192.168.*' } |
+        Select-Object -First 1 -ExpandProperty IPAddress
+    if ($lan -and $hosts -notcontains $lan) { $hosts += $lan }
+    return $hosts
+}
+
+function Get-LmsModelIds([string]$BindHost) {
+    foreach ($probeHost in (Get-LmsProbeHosts -BindHost $BindHost)) {
         try {
             $uri = "http://${probeHost}:${Port}/v1/models"
             return @((Invoke-RestMethod -Uri $uri -TimeoutSec 10).data.id)
@@ -92,17 +110,38 @@ function Get-LmsModelIds([string]$HostIp) {
     return @()
 }
 
-function Test-LmsProbe([string]$HostIp) {
-    return (Get-LmsModelIds -HostIp $HostIp).Count -gt 0
+function Test-Tier3CatalogOnDisk {
+    $lsText = (& $script:lms ls 2>&1 | ForEach-Object { "$_" }) -join "`n"
+    foreach ($id in $script:CornermanTier3Models) {
+        $needle = if ($id -like '*embed*') { 'nomic-embed' } else { ($id -split '/')[-1] }
+        if ($lsText -notmatch [regex]::Escape($needle)) { return $false }
+    }
+    return $true
+}
+
+function Test-LmsProbe([string]$BindHost) {
+    return (Get-LmsModelIds -BindHost $BindHost).Count -gt 0
 }
 
 function Get-WarmTargets([string]$Mode) {
     switch ($Mode) {
+        'daily'   { return @('qwen/qwen3.6-35b-a3b', 'text-embedding-nomic-embed-text-v1.5') }
         'distill' { return @('qwen/qwen3.6-35b-a3b') }
         'coder'   { return @('qwen2.5-coder-32b-instruct') }
-        'all'     { return $script:CornermanTier3Models }
+        'all'     { return @('qwen/qwen3.6-35b-a3b', 'text-embedding-nomic-embed-text-v1.5') }
         default   { return @() }
     }
+}
+
+function Unload-BigLmsModels {
+    $psText = (& $script:lms ps 2>&1 | ForEach-Object { "$_" }) -join "`n"
+    foreach ($id in @('qwen/qwen3.6-35b-a3b', 'qwen2.5-coder-32b-instruct')) {
+        if ($psText -match "(?m)^$([regex]::Escape($id))\s") {
+            Write-Lms "Unloading $id before coder warm..."
+            Invoke-Lms -LmsArgs @('unload', $id) | Out-Null
+        }
+    }
+    Remove-DuplicateLmsLoads
 }
 
 function Test-ModelPresent([string[]]$Present, [string]$RequiredId) {
@@ -114,8 +153,8 @@ function Test-ModelPresent([string[]]$Present, [string]$RequiredId) {
     return $false
 }
 
-function Test-Tier3Ready([string]$HostIp, [string[]]$Required) {
-    $present = Get-LmsModelIds -HostIp $HostIp
+function Test-WarmTargetsReady([string]$BindHost, [string[]]$Required) {
+    $present = Get-LmsModelIds -BindHost $BindHost
     if ($present.Count -eq 0) { return $false }
     foreach ($id in $Required) {
         if (-not (Test-ModelPresent -Present $present -RequiredId $id)) { return $false }
@@ -123,25 +162,46 @@ function Test-Tier3Ready([string]$HostIp, [string[]]$Required) {
     return $true
 }
 
+function Test-Tier3ServeReady([string]$BindHost) {
+    if (-not (Test-Tier3CatalogOnDisk)) { return $false }
+    if (-not (Test-LmsProbe -BindHost $BindHost)) { return $false }
+    $present = Get-LmsModelIds -BindHost $BindHost
+    foreach ($id in @('qwen/qwen3.6-35b-a3b', 'text-embedding-nomic-embed-text-v1.5')) {
+        if (-not (Test-ModelPresent -Present $present -RequiredId $id)) { return $false }
+    }
+    return $true
+}
+
 $BindHost = Get-CornermanBindHost -Preferred $BindHost
 $script:lms = Get-LmsExe
-$targets = Get-WarmTargets -Mode $WarmModel
+$effectiveMode = if ($WarmModel -eq 'all') { 'daily' } else { $WarmModel }
+$targets = Get-WarmTargets -Mode $effectiveMode
 
-if ($WarmModel -ne 'none' -and (Test-Tier3Ready -HostIp $BindHost -Required $targets)) {
-    Write-Lms "Tier-3 already ready ($($targets.Count) models) on :$Port"
-    if (-not $Quiet) { Get-LmsModelIds -HostIp $BindHost | ForEach-Object { Write-Host "  $_" } }
+if ($WarmModel -eq 'none') {
+    # server-only path below
+}
+elseif ($WarmModel -in 'daily', 'all' -and (Test-Tier3ServeReady -BindHost $BindHost)) {
+    Write-Lms "Tier-3 serve ready (catalog + distill + embed on :$Port)"
+    if (-not $Quiet) { Get-LmsModelIds -BindHost $BindHost | ForEach-Object { Write-Host "  $_" } }
+    return
+}
+elseif ($WarmModel -notin 'daily', 'all', 'none' -and (Test-WarmTargetsReady -BindHost $BindHost -Required $targets)) {
+    Write-Lms "Warm targets ready ($($targets.Count) models) on :$Port"
+    if (-not $Quiet) { Get-LmsModelIds -BindHost $BindHost | ForEach-Object { Write-Host "  $_" } }
     return
 }
 
 Write-Lms "LM Studio: $script:lms (bind $BindHost)"
+if ($effectiveMode -eq 'coder') { Unload-BigLmsModels }
+else { Remove-DuplicateLmsLoads }
 
 $startCode = Invoke-Lms -LmsArgs @('server', 'start', '--port', "$Port", '--bind', $BindHost)
-if ($startCode -ne 0 -and -not (Test-LmsProbe -HostIp $BindHost)) {
+if ($startCode -ne 0 -and -not (Test-LmsProbe -BindHost $BindHost)) {
     throw "lms server start failed (exit $startCode) and probe unreachable"
 }
 
 foreach ($modelId in $targets) {
-    $present = Get-LmsModelIds -HostIp $BindHost
+    $present = Get-LmsModelIds -BindHost $BindHost
     if (Test-ModelPresent -Present $present -RequiredId $modelId) {
         Write-Lms "Already listed: $modelId"
         continue
@@ -158,16 +218,27 @@ foreach ($modelId in $targets) {
 }
 
 if ($WarmModel -ne 'none') {
-    if (-not (Test-Tier3Ready -HostIp $BindHost -Required $targets)) {
-        $have = (Get-LmsModelIds -HostIp $BindHost) -join ', '
-        throw "Tier-3 incomplete after warm. Expected: $($targets -join ', '). Have: $have"
+    if ($WarmModel -in 'daily', 'all') {
+        if (-not (Test-Tier3CatalogOnDisk)) {
+            throw 'Tier-3 catalog incomplete on disk — download all three models in LM Studio first.'
+        }
+        if (-not (Test-Tier3ServeReady -BindHost $BindHost)) {
+            $have = (Get-LmsModelIds -BindHost $BindHost) -join ', '
+            throw "Tier-3 serve incomplete after warm. Need distill+embed on :$Port. Have: $have"
+        }
+        Write-Lms 'Tier-3 catalog OK — coder on disk; WarmCoder swaps GPU when C# drafts needed.'
+    }
+    elseif (-not (Test-WarmTargetsReady -BindHost $BindHost -Required $targets)) {
+        $have = (Get-LmsModelIds -BindHost $BindHost) -join ', '
+        throw "Warm incomplete. Expected: $($targets -join ', '). Have: $have"
     }
 }
 
 try {
-    $uri = "http://${BindHost}:${Port}/v1/models"
-    $models = Get-LmsModelIds -HostIp $BindHost
-    Write-Lms "Tier-3 OK: $uri ($($models.Count) models)"
+    $probeHost = (Get-LmsProbeHosts -BindHost $BindHost | Select-Object -First 1)
+    $uri = "http://${probeHost}:${Port}/v1/models"
+    $models = Get-LmsModelIds -BindHost $BindHost
+    Write-Lms "LM OK: $uri ($($models.Count) models listed)"
     if (-not $Quiet) { $models | ForEach-Object { Write-Host "  $_" } }
 }
 catch {

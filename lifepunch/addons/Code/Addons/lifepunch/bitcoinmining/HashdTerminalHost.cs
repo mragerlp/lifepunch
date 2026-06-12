@@ -84,6 +84,31 @@ internal static class HashdTerminalHost
 #endif
 	}
 
+	/// <summary>Local connection id for hub PIN sessions.</summary>
+	public static System.Guid? LocalConnectionId()
+	{
+#if LIFEPUNCH_LOCAL
+		return Connection.Local?.Id;
+#else
+		return Connection.Local != null ? Connection.Local.Id : (System.Guid?)null;
+#endif
+	}
+
+	/// <summary>Display label shown on hub PIN setup (operator registering on this hub).</summary>
+	public static string GetLocalOperatorLabel()
+	{
+#if LIFEPUNCH_LOCAL
+		return "LOCAL OPERATOR";
+#else
+		if ( !Player.Local.IsValid() )
+			return "UNKNOWN";
+
+		return string.IsNullOrWhiteSpace( Player.Local.DisplayName )
+			? Player.Local.SteamId.ToString()
+			: Player.Local.DisplayName;
+#endif
+	}
+
 	/// <summary>World position of the local viewer, used for range checks.</summary>
 	public static Vector3? LocalViewerPosition( Scene scene )
 	{

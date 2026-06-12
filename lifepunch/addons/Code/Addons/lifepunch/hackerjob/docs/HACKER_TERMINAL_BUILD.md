@@ -8,8 +8,8 @@ Two tiers per `TERMINAL_BRAND_MATRIX.md`. **Ops Console** layout (960×640, sess
 
 | Tier | Program | Dev UI | Commands |
 |------|---------|--------|----------|
-| Standard | `cornerman.exe` | `lp_cornerman_ui` | `scan`, `hack` |
-| Advanced | `vengeance.exe` | `lp_vengeance_ui` | + `govdb`, `infil` |
+| Standard | `cornerman.exe` | USE CRT · dev: `lp_cornerman_ui` | `scan`, `hack` (**terminal input only**) |
+| Advanced | `vengeance.exe` | USE CRT · dev: `lp_vengeance_ui` | + `govdb`, `infil` (**terminal input only**) |
 
 ## Phase 1 — Done on Green
 
@@ -29,15 +29,19 @@ Spawn targets first — **`HACKER_JOB_PLAYTEST.md`**:
 
 ```text
 lifepunch_spawn_testbot Greg
-lp_cornerman_ui
+lp_hacker_kit_preview
+```
+
+USE cornerman CRT, then in the **terminal input**:
+
+```text
 scan
 hack <steamid from scan output>
 ```
 
-**Advanced (red):**
+**Advanced (red)** — USE vengeance CRT, terminal input:
 
 ```text
-lp_vengeance_ui
 govdb
 infil govdb-tax-01
 govdb_breach

@@ -61,6 +61,13 @@ HOW WE OPERATE (cost-safe — every token is real $USD):
 - Guardrails: verify by stakes not model; commit only your lane; dev/clones only (production
   needs owner approval).
 
+EYES COVERED (law — Cursor + Cornerman):
+- If something covers your eyes, **say so first** — no hedging. Owner asks "do you see this?" →
+  **"No — something's covering my eyes."** + what the cover is (bridge off, no screenshot, files only).
+- s&box/editor: `get_bridge_status` first. Bridge off → **"I can't see the game — Claude Bridge is not connected."**
+  Bridge on → screenshot/probe before any visual claim. Prefab scale ≠ spawned scene.
+- Cornerman: **"Cornerman's eyes are covered"** — inbox/distill/repo only; never imply game or screen verified.
+
 TRADEMARK: LIFEPUNCH is the only mark we own (Peak Performance Products LLC). DXRP/Dxura/s&box/
 Facepunch are third-party — lead product names with LIFEPUNCH ("LIFEPUNCH Admin Menu for DXRP").
 Use LIFEPUNCH(TM) now (pending); never the (R) symbol until the USPTO registration issues.
@@ -94,6 +101,9 @@ CURRENT STATE (June 2026):
   dxrpAddonId reconciled to the live portal listing; dev-only test-bots excluded from publish staging.
 - AK-47 paused. GitLab lanes LIVE + synced (lanes-synced); shottaWEB + RDP agent provisioned.
   Re-export a lane after changes via setup-gitlab-projects.ps1.
+
+EDITOR / PLAYTEST on VENGEANCE: eyes-covered law applies. `get_bridge_status` first; disclose before
+answering "do you see this?"; screenshot/probe before claiming you see anything.
 
 NEXT: confirm grounding, then [YOUR TASK HERE].
 ```
@@ -214,6 +224,8 @@ NON-NEGOTIABLE (see LOCAL_AI_WORKSTATION.md):
   secrets and are verified.
 - Local model serving = Ollama/LM Studio via Vulkan (AMD path). Spot-check local output before it
   drives any real decision; a local summary is never the sole basis for a high-stakes change.
+- **Eyes covered:** you cannot see the game, VENGEANCE's screen, or live playtest. Lead with
+  **"Cornerman's eyes are covered"** on any visual/spawn/scale/UI question — inbox and repo only.
 - Odysseus (optional, experimental Tier-3): only if owner says so, per LOCAL_AI_WORKSTATION.md
   Section 8 (pinned commit, AUTH on, LAN-only, no real creds, no write-git creds, AGPL caution).
 

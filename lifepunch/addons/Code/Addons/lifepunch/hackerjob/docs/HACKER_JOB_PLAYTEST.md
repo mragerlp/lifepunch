@@ -2,6 +2,8 @@
 
 **Red runbook:** `addons/docs/RED_HACKER_JOB_BUILD.md` (Step 0 smoke).
 
+**Scale / map (Jun 2026):** `facepunch.flatgrass` + `addons/docs/MODEL_SCALE_DOCTRINE.md`. Prefab root **1.0**; terminal `import_scale` **1.0** (verified). Never default **39.37**. Recompile vmdl after edits.
+
 Solo editor testing uses **`StaffMenuTestBots`** (`adminmenu/StaffMenuTestBots.cs`) — same bots as staff menu / waypoint tests. No second human required.
 
 ## Setup (host, editor play)
@@ -27,18 +29,26 @@ lifepunch_clear_testbots
 
 ## Hacker terminal — standard (green)
 
+**Production path:** **Hacker job** → powered CRT → **USE to log in** (or `cornerman` at the entity) → type `scan` / `hack` at **`cornerman@terminal:~$`** in the ops console only. Not the s&box developer `>` console.
+
+**Dev smoke test** (login without world CRT):
+
 ```text
-lp_cornerman_ui
+lp_hacker_kit_preview
+```
+
+Then **USE** the cornerman CRT, or `lp_cornerman_ui` for a floating dev stub only.
+
+**Inside the terminal UI** (not the game console):
+
+```text
 scan
+hack <steamid from scan output>
 ```
 
 `scan` lists **live players** (bots included). Copy a SteamId from the list — not the old stub ids unless no bots are spawned.
 
-```text
-hack <steamid from scan>
-```
-
-Solve the puzzle (e.g. `drain(wallet);`, `cornerman_bypass`, or `1`).
+Solve the puzzle in the terminal prompt (e.g. `drain(wallet);`, `cornerman_bypass`, or `1`).
 
 **Pass:** Greg / Test Dummy appears in scan with wallet $ (bots init with wallet via `InitalizeHost`); puzzle completes; bypass stub prints.
 

@@ -15,8 +15,8 @@ using Sandbox;
 namespace LifePunch.DXRP.Addons.BitcoinMining;
 
 /// <summary>
-/// Separate CRT/computer prop — links to a nearby <see cref="GpuRackEntity"/> for LCD + hashd open.
-/// Rack and terminal are distinct placeable entities; pair in editor or via <c>lp_spawn_gpu_rack_kit</c>.
+/// Deprecated CRT kit — routes USE to the nearest <see cref="BitcoinMinerHubEntity"/>.
+/// Player canon: interact with the Bitcoin Miner hub only. See <c>docs/BITCOINMINING_TERMINAL_DOCTRINE.md</c>.
 /// </summary>
 [Title( "Bitcoin Terminal (hashd CRT)" )]
 [Category( "LifePunch/Bitcoin Miner" )]
@@ -53,7 +53,7 @@ public sealed class BitcoinTerminalProp : Component, Component.IPressable
 	public bool Press( IPressable.Event e )
 	{
 		TryAutoLink();
-		HashdCommandHost.OpenNearestTerminal();
+		HashdCommandHost.OpenNearestHub();
 		return true;
 	}
 

@@ -108,7 +108,7 @@ Pop-Location
             $execDetail = ($r.Output -split "`n" | Where-Object { $_.Trim().StartsWith('{') } | Select-Object -Last 1)
         }
         { $_ -in 'WarmDistill', 'WarmCoder' } {
-            $warm = if ($Action -eq 'WarmCoder') { 'coder' } else { 'all' }
+            $warm = if ($Action -eq 'WarmCoder') { 'coder' } else { 'daily' }
             $lms = 'C:\lifepunch\cornerman\Start-CornermanLmStudio.ps1'
             $r = Invoke-CornermanSshExec -SshTarget $SshTarget -ScriptBlock @"
 if (-not (Test-Path -LiteralPath '$lms')) { throw 'Missing $lms — run Sync-CornermanRebootScripts.ps1 from Red' }

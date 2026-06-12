@@ -1,14 +1,16 @@
 # LifePunch terminal brand matrix
 
+**“Terminal”** = placeable entity with an ops program UI attached — not a generic prop name. Player commands run only in the **in-fiction ops console** after **USE** on the entity. **Not** the s&box developer `>` console. Canon: `addons/docs/PHYSICAL_TERMINAL_DOCTRINE.md`.
+
 In-game terminals mirror **LifePunch Ops** machine uniforms (`branding/lifepunch-ops/THEME.md`).
 
-| Tier | Machine | Job / role | Program | Accent | Prompt | Entity |
-|------|---------|------------|---------|--------|--------|--------|
-| Hacker Terminal | **Cornerman** | Hacker | `cornerman.exe` | `#00FF7F` green | `cornerman@terminal:~$` | `hacker-terminal` |
-| Advanced Hacking Terminal | **VENGEANCE** | Hacker (elevated) | `vengeance.exe` | `#E4002B` red | `vengeance@terminal:~$` | `advanced-hacker-terminal` |
-| Government / Police Terminal | **lifepunchnet** | Police, Mayor, Gov jobs | `lifepunch-ops.exe` | `#00D4FF` cyan | `lifepunch@lifepunch.net:~$` | `police-terminal` |
-| Player Bitcoin Miner | *(player rig)* | Civilian economy | `hashd` / `mine.exe` | `#f0a500` amber | `rig0>` | `bitcoin-miner` |
-| Government Tax Miner | *(city rig)* | City treasury | `treasuryd` (TBD) | `#00D4FF` blue console | N/A — LCD only | `government-tax-miner` |
+| Tier | Machine | Job / role | Program | Accent | Prompt | Terminal entity | Hub entity |
+|------|---------|------------|---------|--------|--------|-----------------|------------|
+| Hacker Terminal | **Cornerman** | Hacker | `cornerman.exe` | `#00FF7F` green | `cornerman@terminal:~$` | `hacker-terminal` | `hacker-server-rack` |
+| Advanced Hacking Terminal | **VENGEANCE** | Hacker (elevated) | `vengeance.exe` | `#E4002B` red | `vengeance@terminal:~$` | `advanced-hacker-terminal` | `advanced-hacker-server-rack` |
+| Government / Police Terminal | **lifepunchnet** | Police, Mayor, Gov jobs | `lifepunch-ops.exe` | `#00D4FF` cyan | `lifepunch@lifepunch.net:~$` | `police-terminal` | *(TBD)* |
+| Player Bitcoin Miner | **hashd** | Civilian economy | hashd rig control | `#f0a500` amber | `rig0>` | `bitcoin-miner` | `gpu-rack` / `large-gpu-rack` |
+| Government Tax Miner | *(city rig)* | City treasury | `treasuryd` (TBD) | `#00D4FF` blue console | N/A — LCD only | `government-tax-miner` | — |
 
 ## Capabilities by terminal
 
@@ -20,15 +22,15 @@ In-game terminals mirror **LifePunch Ops** machine uniforms (`branding/lifepunch
 | Gov tax miner | Always mine BTC → hourly tax % → city cash | Server-only treasury |
 | Bitcoin mining hub | Mine → upgrade → sell | Player `PayHost` |
 
-## Dev smoke commands
+## Editor helpers (place entities — not player gameplay)
 
 ```text
-lp_cornerman_ui          # standard hacker (green)
-lp_vengeance_ui            # advanced hacker (red)
-lp_lifepunch_ops_ui        # police terminal (Phase 2)
-lp_spawn_hacker_terminal           # standard world entity (prefab TBD in editor)
-lp_spawn_advanced_hacker_terminal  # red-tier world entity
+lp_spawn_hacker_terminal / lp_spawn_server_rack   # place hacker kit
+lp_spawn_bitcoin_miner_hub / lp_spawn_gpu_rack    # place mining kit
+lp_cornerman_ui / lp_vengeance_ui                  # UI compile smoke only
 ```
+
+Real playtests: **USE the world terminal / hub.** No job verbs in the developer console.
 
 ## UI layout families
 

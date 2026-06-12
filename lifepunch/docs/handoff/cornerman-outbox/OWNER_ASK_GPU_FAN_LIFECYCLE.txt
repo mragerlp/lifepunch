@@ -1,0 +1,36 @@
+OWNER ASK — GPU / server fan lifecycle (2026-06-12)
+==================================================
+
+**Addon:** bitcoinmining (hub + GPU racks) · **Priority:** P1d supplement
+
+## Fantasy (what players should hear)
+
+```text
+POWER ON  →  fans ramp UP (spin-up)
+MINING ON →  passive steady fan LOOP (data-center hum)
+POWER OFF →  fans ramp DOWN to silence (spin-down)
+```
+
+Code already **ramps volume over ~8 seconds** on a single loop handle — you do NOT need separate “volume envelope” files unless a one-shot spin-up/down layers better.
+
+## Wired paths today (`BitcoinMiningAddon.cs`)
+
+| Slot | Entity | Code behavior |
+|------|--------|---------------|
+| `hub-startup` | Bitcoin Miner hub | One-shot when hub powers on (before loop fades in) |
+| `hub-fan-loop` | Hub | Seamless loop; volume 0→max over `HubFanRampSeconds` (~8s) |
+| `hub-fan-down` | Hub | One-shot when hub powers off; loop volume max→0 then stop |
+| `server-hum` | GPU Rack / Large GPU Rack | Same pattern when `mining start` — loop + 8s volume ramp |
+
+Visual fan RPM also ramps (`FanRampSeconds` = 8s) — **audio should feel synced** with that curve.
+
+## What to shortlist
+
+1. **Primary:** seamless **server/GPU fan LOOP** (30s+ loop, no obvious seam) — works for hub + racks at different volumes
+2. **Optional layer:** short **spin-up** one-shot (`hub-startup`) — relay click + whoosh
+3. **Optional layer:** short **spin-down** one-shot (`hub-fan-down`) — decelerating whirr
+4. **Anti-patterns:** laptop whisper, vacuum cleaner, single-shot-only clips that can’t loop, ripped miner-pack SFX
+
+Deliver rows in `BITCOINMINING_SOUND_SHORTLIST.md` under § **GPU fan lifecycle**.
+
+License: CC0 / paid / RECORD only — same rules as main P1d brief.

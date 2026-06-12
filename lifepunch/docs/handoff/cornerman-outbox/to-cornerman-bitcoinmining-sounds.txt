@@ -1,0 +1,38 @@
+BITCOIN MINING — sound sourcing (2026-06-12)
+============================================
+
+Owner: code wires 7 SFX paths but ship tree has **no audio**. Research legal candidates per slot.
+
+START HERE
+----------
+C:\lifepunch\cornerman\inbox\CORNERMAN_BITCOINMINING_SOUNDS_TASK.md
+C:\lifepunch\cornerman\inbox\BITCOINMINING_SOUNDS_DIRECTIVE.json
+
+WORKFLOW
+--------
+1. MonorepoPull (get latest lifepunch tree)
+2. WarmDistill — read README + BitcoinMiningAddon.cs constants
+3. Write outbox/BITCOINMINING_SOUND_SLOT_SPEC.md
+4. Write outbox/BITCOINMINING_SOUND_SHORTLIST.md
+5. Write outbox/BITCOINMINING_SOUND_INTAKE_CHECKLIST.md
+6. Ping Red one line with slot count + top CC0/paid picks
+
+QUESTION TO ANSWER
+------------------
+What should the owner license or record for hub startup/fan, rack hum, HASHD keyboard, glitch, and error — without ripping third-party miner packs?
+
+OWNER ASK (keyboard slot — priority)
+------------------------------------
+Find **loud click typing** sounds for HASHD UI / numpad — mechanical, punchy, audible in RP (not whisper-quiet laptop keys). Amber terminal vibe; distinct from hacker green phosphor. Shortlist 3–5 CC0 or paid candidates with license notes.
+
+WIRED SLOTS (P0)
+----------------
+hub-startup, hub-fan-loop, hub-fan-down, server-hum, keyboard, glitch, error
+
+INTAKE (after owner picks)
+--------------------------
+Downloads\bitcoinminer-sounds → Intake-BitcoinMinerSounds.ps1 → ModelDoc .sound
+
+NOT YOUR LANE
+-------------
+Download/commit WAVs, s&box compile, C#, git push.

@@ -1,0 +1,34 @@
+OWNER ASK — Hacker Job sound assets (2026-06-12)
+================================================
+
+**Addon:** `hackerjob` · **Priority:** P1d supplement (parallel with bitcoinmining P1d)
+
+Ship tree today: **no** `sounds/hacker-terminal/` folder. Only constant wired:
+
+- `HackerJob.KeyboardSoundPath` → use **universal console keyboard** (see `OWNER_ASK_UNIVERSAL_CONSOLE_KEYBOARD.txt`)
+
+## Slots to research (shortlist + license)
+
+| Slot | Suggested stem | Use | Priority |
+|------|----------------|-----|----------|
+| `console-keyboard` | shared | All terminal typing | **P0** — universal ask |
+| `terminal-boot` | `terminal-boot` | CRT power-on chirp / scanline wake | P1 |
+| `terminal-access-granted` | `access-granted` | Puzzle success / wallet transfer OK | P1 |
+| `terminal-access-denied` | `access-denied` | Puzzle fail / cooldown / denied | P1 |
+| `rack-fan-loop` | `rack-fan-loop` | Server rack powered (mirror bitcoin fan lifecycle) | P2 |
+| `rack-fan-start` | `rack-fan-start` | Rack power on spin-up | P2 |
+| `rack-fan-stop` | `rack-fan-stop` | Rack power off spin-down | P2 |
+| `scan-pulse` | `scan-pulse` | SCAN command tick / sonar blip | P2 |
+| `puzzle-tick` | `puzzle-tick` | Active puzzle timer urgency (optional) | P3 |
+
+**Entities:** `hacker-terminal`, `advanced-hacker-terminal`, `server-rack`, `advanced-server-rack`
+
+**Vibe:** green phosphor CRT (cornerman) vs red Vengeance ops — same **families** of SFX, not duplicate files unless timbre must differ.
+
+## Deliverable
+
+Add section **§ Hacker Job** to `BITCOINMINING_SOUND_SHORTLIST.md` **OR** write `outbox/HACKERJOB_SOUND_SHORTLIST.md` with same table format (3–5 candidates per P0/P1 slot).
+
+**Not wired in C# yet** — research + intake spec only. Red adds constants after owner picks.
+
+IP: LifePunch-owned / licensed only. No third-party pack rips.

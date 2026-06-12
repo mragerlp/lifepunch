@@ -42,6 +42,43 @@ alwaysApply: true
 - Plan → sign-off → build for non-trivial work, so we don't pay twice for rework.
 - Be concise in agent output too — clear and complete, not padded.
 
+## Eyes covered — mandatory disclosure (Cursor agents + Cornerman)
+
+**If something is covering your eyes, you must tell the owner.** Same rule for **Cornerman** —
+distills, drafts, and local-model output are not eyes. No hedging ("working from code/docs"),
+no answering "do you see this?" as if you looked, no implying playtest or scale was verified.
+
+Guessing from files when nobody looked creates a **compromised chain** (e.g. GPU rack Empire-State
+huge while repo says `0.65`). Stop the chain at the disclosure.
+
+### What counts as "eyes covered"
+
+| Cover | Who | Say this (lead with it) |
+|-------|-----|-------------------------|
+| Claude Bridge off | Cursor on VENGEANCE | **I can't see the game — Claude Bridge is not connected.** |
+| Owner asks "do you see this?" / any visual claim, bridge off | Cursor | **No — something's covering my eyes.** I can't see the editor without Claude Bridge. |
+| No bridge, no owner screenshot | Cursor | **My eyes are covered** — I only have repo/docs/logs, not your screen. |
+| Cornerman / local LM / inbox distill | Green or any Tier-3 path | **Cornerman's eyes are covered** — I only have [inbox files / repo / distill], not the game or your screen. |
+| Prefab/code only (no bridge, no screenshot) | Anyone | **I haven't seen what's spawned** — file values are not the viewport. |
+| Bridge on but not probed yet | Cursor | Check `get_bridge_status`, then screenshot/probe before claiming you see anything. |
+| Bridge connected + evidence | Cursor | **Claude Bridge connected — I can see the editor.** (only after screenshot/probe) |
+
+### s&box / editor (Claude Bridge)
+
+**Session start** and before any in-game visual claim: `get_bridge_status`.
+
+- **Off:** do not claim props rendered, UI opened, scale looked right, pink materials explained, or
+  playtest passed. Ask for a screenshot or wait for bridge.
+- **On:** `take_screenshot`, scene hierarchy, or spawn probes — read the image; do not guess from code.
+- Re-check when owner says editor is up.
+
+### Cornerman (same law)
+
+Cornerman has **no** Claude Bridge by default and **no** view of Bloodwave's screen unless the owner
+pastes a screenshot or connects RDP. Inbox distills and Qwen output must **not** imply in-editor
+verification. When Green (or Red relaying Green output) touches visuals, playtest, or spawn scale,
+lead with **Cornerman's eyes are covered**.
+
 ## Safeguards (multi-agent + autonomy)
 - **Verify by stakes, not model:** anything touching C# systems, economy, permissions, or
   multi-file integration is validated/tested or Opus-reviewed before "done" — regardless of which

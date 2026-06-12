@@ -28,9 +28,14 @@ $lmStudioOk = $false
 $lmModelCount = 0
 $lmModels = ''
 $lmTier3Ok = $false
-$requiredTier3 = @(
+$lmCatalogOk = $false
+$requiredCatalog = @(
     'qwen/qwen3.6-35b-a3b'
     'qwen2.5-coder-32b-instruct'
+    'text-embedding-nomic-embed-text-v1.5'
+)
+$requiredServe = @(
+    'qwen/qwen3.6-35b-a3b'
     'text-embedding-nomic-embed-text-v1.5'
 )
 $lmProbeHosts = @('127.0.0.1')
@@ -53,15 +58,17 @@ foreach ($probeHost in $lmProbeHosts) {
         $lmModels = ($ids -join ',')
         if ($lmModels.Length -gt 120) { $lmModels = $lmModels.Substring(0, 120) }
 
-        $missing = @($requiredTier3 | Where-Object {
-            $req = $_
-            if ($ids -contains $req) { return $false }
+        function Test-IdPresent($req, $ids) {
+            if ($ids -contains $req) { return $true }
             if ($req -like '*embed*') {
-                return -not @($ids | Where-Object { $_ -like '*embed*' -or $_ -eq 'lp-embed' }).Count
+                return @($ids | Where-Object { $_ -like '*embed*' -or $_ -eq 'lp-embed' }).Count -gt 0
             }
-            return $true
-        })
-        $lmTier3Ok = ($missing.Count -eq 0)
+            return $false
+        }
+        $catalogMissing = @($requiredCatalog | Where-Object { -not (Test-IdPresent $_ $ids) })
+        $serveMissing = @($requiredServe | Where-Object { -not (Test-IdPresent $_ $ids) })
+        $lmCatalogOk = ($catalogMissing.Count -eq 0)
+        $lmTier3Ok = $lmCatalogOk -and ($serveMissing.Count -eq 0)
         if ($lmTier3Ok) { break }
     }
     catch { }
@@ -80,6 +87,7 @@ $payload = [ordered]@{
     lmStudioOk     = $lmStudioOk
     lmModelCount   = $lmModelCount
     lmTier3Ok      = $lmTier3Ok
+    lmCatalogOk    = $lmCatalogOk
     lmModels       = $lmModels
 }
 $payload | ConvertTo-Json -Compress

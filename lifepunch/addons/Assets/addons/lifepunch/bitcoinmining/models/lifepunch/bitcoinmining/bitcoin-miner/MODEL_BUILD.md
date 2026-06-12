@@ -10,7 +10,8 @@ models/lifepunch/bitcoinmining/bitcoin-miner/
   source/
     Ophion.fbx
     textures/           ← copied from entities/bitcoinminer/textures on intake
-  bitcoin-miner.vmdl    ← points at Ophion.fbx (import_scale 39.37, align Z Bottom)
+  bitcoin-miner.vmdl    ← Ophion.fbx (`import_scale` 0.52 @ prefab 1,1,1)
+  materials/            ← chassis + plate vmats (remap in vmdl MaterialGroupList)
   MODEL_BUILD.md
 
 entities/bitcoinminer/
@@ -22,7 +23,7 @@ entities/bitcoinminer/
 ## ModelDoc checklist
 
 1. Open `bitcoin-miner.vmdl` in ModelDoc — compile `_c`.
-2. Map Ophion material slots → vmat (use texture folders under `entities/bitcoinminer/textures/`).
+2. Map Ophion material slots → vmat (`MaterialGroupList` remaps FBX names: `Aluminium`, `Aluminium.001`, `GraphicCard`, …). **`Metal036_2K_Color.jpg`** is a placeholder copy of `internal_ground_ao_texture.jpeg` until the real ambientCG color map is intaked.
 3. **AnimationList** → **Add Simple Animations** from `Ophion.fbx`; rename hub boot clips to `power_on` (loop) + `power_off` (idle). `BitcoinMinerHubEntity` + `GpuRackPowerAnim` already call `DirectPlayback.Play` on power toggle.
 4. Prefab: `ModelRenderer` → `bitcoin-miner.vmdl`, `BitcoinMinerHubEntity`, `HealthComponent.MaxHealth = 250`.
 

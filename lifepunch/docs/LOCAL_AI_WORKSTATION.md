@@ -171,11 +171,12 @@ Principles: **LAN-only by default, encrypted in transit, one source of truth, se
      2.5 GbE for the model endpoint, file transfer, and git. The box is used only when the
      owner is home. Nothing is exposed to the public internet. No Tailscale, no port forwarding.
    - Scope any opened firewall port (`1234`/`11434`/`8000`/`22`) to the **LAN subnet only**.
-   - **Deferred (future discussion):** remote access from iPhone/laptop when away. The clean
-     path then is **Tailscale** (WireGuard mesh — encrypted, no port forwarding, device-scoped
-     ACLs); a 5-minute drop-in with no other changes. Not done now because it implies keeping
-     the box always-on (power) for a need that doesn't exist this early. Revisit when remote
-     use is real. **Never** port-forward the LLM server to the public internet.
+   - **Deferred (future discussion):** remote LLM access from VENGEANCE when away from home LAN.
+     **Preferred path when needed:** [LM Link](https://lmstudio.ai/link) (LM Studio + Tailscale
+     `tsnet`, E2E encrypted P2P, no public exposure) — remote models appear as local on
+     `localhost:1234`. See §7d. Generic **Tailscale** tailnet remains an option for non–LM Studio
+     services (SSH, RDP, file transfer). Not enabled in v1 — Cornerman is home-LAN + owner-present.
+     Revisit when off-LAN Tier-3 use is real. **Never** port-forward the LLM server to the public internet.
 
 2. **Code / repo sync (this box is a clone, not the master)**
    - Clone the monorepo over **git + SSH**. Treat it like any agent: always `git pull --rebase`,
@@ -246,9 +247,9 @@ and the SSH host-key fingerprint to verify on first connect. Flags: `-Subnet '19
 config entry (`Host cornerman`). Connect with `ssh cornerman`, or `mstsc /v:cornerman` for RDP.
 If the hostname doesn't resolve, replace `HostName cornerman` with the box's LAN IP.
 
-**Off-LAN later (not v1):** if you ever need access away from home, add **Tailscale** (mesh VPN)
-as a deliberate, documented exception and keep the firewall rules bound to the tailnet — still
-never a raw public port-forward.
+**Off-LAN later (not v1):** prefer **LM Link** (§7d) for remote model access from VENGEANCE; add a
+full **Tailscale** tailnet only if other services (SSH/RDP off-LAN) need it too. Firewall rules
+stay bound to LAN or tailnet — never a raw public port-forward.
 
 ## 7c. Publishing Cornerman-authored work (read-only key -> patch handoff)
 
@@ -275,6 +276,26 @@ origin through VENGEANCE over the existing SSH channel:
 This is the **standard path, not a workaround**: it keeps Cornerman read-only and secret-free while
 preserving authorship. Verified 2026-06-10 (the terminal-icon + boot-wallpaper branding commits
 were published this way). Doctrine: `.cursor/rules/lifepunch-operating-context.mdc` (Git workflow).
+
+## 7d. LM Link (remote LM Studio models — preview, June 2026)
+
+LM Studio's **LM Link** lets VENGEANCE use Cornerman's loaded models as if they were local — same
+`localhost:1234` API, traffic over Tailscale's embedded `tsnet` (E2E encrypted, devices not exposed
+to the public internet). Partnership: [lmstudio.ai/link](https://lmstudio.ai/link).
+
+| Role | Machine | Job |
+|------|---------|-----|
+| Model host | Cornerman | Qwen distill / coder / embed on Green GPU |
+| Client | VENGEANCE | LM Studio lists + routes to remote weights |
+
+**Status:** captured for evaluation; **not enabled** (preview / batched access). v1 stays LAN +
+`Send-CornermanWorkflow.ps1` + direct `http://192.168.1.227:1234` on subnet.
+
+**Does not replace:** Claude Bridge (s&box visibility), lifepunchnet STT, inbox/outbox handoff, or
+Tier-3 vs Opus routing — see `CORNERMAN_MODEL_ROUTING.md` § LM Link.
+
+**When adopting:** Green `lms link enable` (+ headless boot hook if needed); Red LM Studio link to
+Green; smoke-test `localhost:1234/v1` with a model whose weights live on Green only.
 
 ## 8. Optional layer — Odysseus AI workspace (EXPERIMENTAL, Tier-3)
 

@@ -20,9 +20,9 @@ The **"Hacker"** is a **DXRP job** that LifePunch creates. Core loop:
    - **Hacker Terminal** (Cornerman green) — wallet `scan` / `hack`
    - **Advanced Hacking Terminal** (VENGEANCE red) — `govdb` / `infil` on city treasury nodes
    Retro CRT models (owner will source/make).
-2. **Interact → on-screen UI** — when a player **interacts/uses** the terminal, a **Razor-coded
-   worldscreen** lights up with the terminal visuals.
-3. **Boot `cornerman.exe`** — the screen prompts/loads a program called **`cornerman.exe`** —
+2. **Interact → log in** — USE the Hacker / Advanced Hacker Terminal to boot the attached program UI
+   (Cornerman green / Vengeance red). See `hackerjob/docs/TERMINAL_SESSION_DOCTRINE.md`.
+3. **Boot `cornerman.exe`** — the ops console loads **`cornerman.exe`** —
    themed *after* Cornerman (our local AI box) but **explicitly NOT the real Cornerman**: it's an
    in-world fictional program / flavor nod, not a reference to the actual workstation.
 4. **Scan** — once `cornerman.exe` finishes loading, the terminal lets the player **"scan" for

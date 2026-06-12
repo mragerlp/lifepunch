@@ -5,9 +5,9 @@
 | gpu-rack publish tree (34 files) | **In repo** under `models/.../gpu-rack/` |
 | Raw export archive | **Local** `C:/lifepunch/reference-intake/bitcoinmining/gpu-rack-export/` |
 | `BitcoinMiningAddon.cs` identity | **Done** — entities `gpu-rack` / `large-gpu-rack`, mesh `gpu-rack` |
-| `GpuRackEntity.cs` | **Done (Phase 1)** — entity + economy + `RequestOpenTerminal()` |
+| `GpuRackEntity.cs` | **Done (Phase 1)** — passive compute; credits linked hub wallet |
 | `HashdTerminalHost.cs` | **Done (Phase 1)** — dual-build mount/close |
-| `HashdCommandHost.cs` | **Done (Phase 1)** — `hashd` / `mine` opens terminal on nearest rig |
+| `HashdCommandHost.cs` | **Dev-only** — local-build `hashd` / `mine` smoke; players USE hub |
 | `GpuRackRegistry.cs` | **Done** — multi-rig scan + `racks` / `select` / `mining start all` |
 | `HashdTerminal.razor` + `.scss` | **Phase 1 done**; **Phase 2 modules** → `RED_BITCOINMINING_PHASE2_BUILD.md` |
 | `bitcoin-terminal` (`computer.fbx`) | **Intaked** — `models/.../bitcoin-terminal/`; ModelDoc TBD |

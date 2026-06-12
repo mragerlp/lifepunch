@@ -13,7 +13,7 @@
 | Per hub — small racks | **3** (`gpu-rack`) |
 | Per hub — large rack | **1** (`large-gpu-rack`) |
 
-Each hub controls **only its linked racks** (registry by owner + proximity).
+Each hub controls **only its linked racks** (same spawner `Owner` + within **8m / 4m** of hub). Racks are **separate Market purchases** — not bought inside hashd (Phase 2 deploy TBD).
 
 ---
 
@@ -57,6 +57,21 @@ See `BITCOINMINING_ENCRYPTION_SPEC.md` — mirrors hacker server-rack offense.
 Damage → metal hit SFX → smoke → explode (existing `GpuRackEntity` path).
 
 ---
+
+## Scale (visual)
+
+**Intended in-world read:** Ophion hub = **small desktop control box** · GPU Rack = low horizontal unit · Large GPU Rack = **largest** farm stack.
+
+Prefab roots stay `1,1,1` (`MODEL_SCALE_DOCTRINE.md`). If hub `BoxCollider` Z rivals the large rack but the mesh looks like a PC, the collider is stale — retune on flatgrass with bridge bounds, not prefab root fudge.
+
+## PvP upgrades (miner vs hacker)
+
+| Side | Buys on | Effect |
+|------|---------|--------|
+| **Miner** | Hub hashd — encryption tracks | Firewall, Wallet Cipher, Alert, Re-hack CD, **Puzzle Hardening** (shorter attacker window) |
+| **Hacker** | Server rack — offense tracks | Detection, **Puzzle Time** (more time to crack), Reward, Cooldown |
+
+Host resolves: `attackerPuzzleSeconds = base + hackerPuzzleBonus − minerHardeningBonus` (`BITCOINMINING_ENCRYPTION_SPEC.md`).
 
 ## Deprecated
 

@@ -1,0 +1,17 @@
+OWNER ASK — loud click typing (2026-06-12)
+==========================================
+
+Priority slot: **keyboard** (`BitcoinMiningAddon.KeyboardSoundPath`)
+
+HASHD terminal + graphical PIN numpad need **loud, punchy mechanical click** typing —
+RP-audible, not whisper-quiet laptop keys. Amber mining terminal vibe.
+
+Deliver first in `outbox/BITCOINMINING_SOUND_SHORTLIST.md`:
+  - 3–5 candidates (CC0 / paid / RECORD)
+  - License class per row
+  - URL or library search terms
+  - One-line why it fits "loud click"
+
+Do NOT rip third-party bitcoin miner pack SFX.
+
+Related: `CORNERMAN_BITCOINMINING_SOUNDS_TASK.md` (P1d)

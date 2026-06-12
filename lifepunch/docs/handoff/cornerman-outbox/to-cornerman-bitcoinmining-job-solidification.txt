@@ -1,0 +1,26 @@
+CORNERMAN — Bitcoin Miner JOB SOLIDIFICATION (P1c)
+Issued: 2026-06-12 from VENGEANCE brainstorm session
+
+START HERE
+  inbox/CORNERMAN_BITCOINMINING_JOB_SOLIDIFICATION_TASK.md
+
+CONTEXT (owner locked)
+  Miner = roleplay CLASS, not generic copy-paste ATM.
+  Three placeables: Bitcoin Miner hub (Ophion) + GPU Rack + Large GPU Rack.
+  Hub = PIN gatekeeper + hashd + wallet. Racks = passive compute only (no USE).
+  Racks link by same spawner Owner + 8m/4m proximity (Red shipped 2026-06-12).
+  Ghost-console PIN veil shipped — lp_hashd_pin_preview for smoke.
+  Market NOT live yet — racks are separate purchases (NOT in-hashd shop today).
+
+YOUR LANE (distill only)
+  1. BITCOINMINING_JOB_ROLEPLAY_ONE_PAGER.md
+  2. BITCOINMINING_PURCHASE_MODEL.md (recommend Market vs hub-deploy)
+  3. STALE_BITCOINMINING_DOC_FIXLIST.md
+  4. BITCOINMINING_MARKET_LISTINGS_DRAFT.md (3 entities, LIFEPUNCH-led)
+  5. BITCOINMINING_SCALE_CHECKLIST.md (for Red ModelDoc)
+  6. BITCOINMINING_UI_NAMING_AUDIT.md (GPU Rack naming, not generic "rack")
+
+DO NOT
+  C#, ModelDoc, s&box play, git push to GitHub.
+
+WarmDistill. Commit outbox only. Ping Red one line when done.

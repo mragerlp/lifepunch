@@ -48,7 +48,7 @@ function Copy-CompiledTree([string]$Relative) {
     if (-not (Test-Path -LiteralPath $src)) { return }
     New-Item -ItemType Directory -Force -Path $dst | Out-Null
     & robocopy $src $dst /E /NFL /NDL /NJH /NJS /nc /ns /np `
-        *.vmdl_c *.vmat_c *.vtex_c *.prefab_c *.shader_c | Out-Null
+        *.vmdl_c *.vmat_c *.vtex_c *.prefab_c *.shader_c *.vsnd_c *.sound_c | Out-Null
     if ($LASTEXITCODE -ge 8) { throw "robocopy failed ($LASTEXITCODE): $Relative" }
 }
 
@@ -58,7 +58,7 @@ Write-Host "  To:   $to" -ForegroundColor DarkGray
 
 # Whole addon tree — only compiled + generated texture outputs.
 & robocopy $from $to /E /NFL /NDL /NJH /NJS /nc /ns /np `
-    *.vmdl_c *.vmat_c *.vtex_c *.prefab_c *.shader_c | Out-Null
+    *.vmdl_c *.vmat_c *.vtex_c *.prefab_c *.shader_c *.vsnd_c *.sound_c | Out-Null
 if ($LASTEXITCODE -ge 8) { throw "robocopy failed ($LASTEXITCODE)" }
 
 # Textures folder (PBR maps referenced by vmats after ModelDoc compile).

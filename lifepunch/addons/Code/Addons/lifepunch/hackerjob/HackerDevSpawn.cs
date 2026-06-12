@@ -8,6 +8,7 @@
 // Presence in this repository or on the DXRP portal grants no rights to anyone else.
 // ─────────────────────────────────────────────────────────────────────────────
 
+using System;
 using System.Linq;
 using Sandbox;
 #if !LIFEPUNCH_LOCAL
@@ -22,6 +23,8 @@ namespace LifePunch.DXRP.Addons.HackerJob;
 public static class HackerDevSpawn
 {
 	private const float SpawnDistanceUnits = 120f;
+	private const float GroundTraceUp = 2000f;
+	private const float GroundTraceDown = 20000f;
 
 	/// <summary>
 	/// Opens cornerman.exe UI immediately — no prefab or world entity required (editor smoke test).
@@ -48,16 +51,13 @@ public static class HackerDevSpawn
 		var entity = stub.AddComponent<HackerTerminalEntity>();
 		entity.Tier = tier;
 
-#if LIFEPUNCH_LOCAL
-		HackerTerminal.Open( entity );
-#else
-		entity.RequestOpenTerminal();
-#endif
-
-		if ( tier == HackerTerminalTier.Advanced )
-			Log.Info( "lp_vengeance_ui: vengeance.exe mounted. Try: govdb → infil govdb-tax-01" );
-		else
-			Log.Info( "lp_cornerman_ui: mounted. Spawn bots: lifepunch_spawn_testbot Greg → scan → hack <steamid>" );
+		// Dev stub is local UI smoke — bypass RPC (unspawned GO would fail RequestOpenTerminal).
+		if ( !HackerTerminal.Open( entity ) )
+		{
+			Log.Warning( tier == HackerTerminalTier.Advanced
+				? "lp_vengeance_ui: failed — see [cornerman] errors above."
+				: "lp_cornerman_ui: failed — see [cornerman] errors above." );
+		}
 	}
 
 	[ConCmd( "lp_spawn_hacker_terminal" )]
@@ -80,6 +80,28 @@ public static class HackerDevSpawn
 	[ConCmd( "lp_spawn_advanced_server_rack" )]
 	public static void SpawnAdvancedServerRack() =>
 		SpawnServerRackEntity( HackerJob.AdvancedServerRackWorldPrefabPath, powered: false );
+
+	/// <summary>Swap active map to flatgrass for scale/playtest clarity (no downtown clutter).</summary>
+	[ConCmd( "lp_map_flatgrass" )]
+	public static void MapFlatgrass()
+	{
+		var scene = Game.ActiveScene;
+		if ( scene is null )
+		{
+			Log.Warning( "lp_map_flatgrass: no active scene." );
+			return;
+		}
+
+		var map = scene.GetAllComponents<MapInstance>().FirstOrDefault();
+		if ( !map.IsValid() )
+		{
+			Log.Warning( "lp_map_flatgrass: no MapInstance in scene." );
+			return;
+		}
+
+		map.MapName = "facepunch.flatgrass";
+		Log.Info( "lp_map_flatgrass: loading facepunch.flatgrass …" );
+	}
 
 	/// <summary>Spawn powered basic + advanced racks with cornerman + vengeance terminals.</summary>
 	[ConCmd( "lp_hacker_kit_preview" )]
@@ -180,14 +202,7 @@ public static class HackerDevSpawn
 
 	private static HackerServerRackEntity SpawnServerRackAt( string prefabPath, Vector3 position, Rotation rotation, bool powered )
 	{
-		var prefab = GameObject.GetPrefab( prefabPath );
-		if ( !prefab.IsValid() )
-		{
-			Log.Error( $"Could not load rack prefab '{prefabPath}'." );
-			return null;
-		}
-
-		var rackGo = prefab.Clone( new CloneConfig { Transform = new Transform( position, rotation ) } );
+		var rackGo = ClonePrefabAt( prefabPath, new Transform( position, rotation ) );
 		if ( !rackGo.IsValid() )
 			return null;
 
@@ -212,20 +227,13 @@ public static class HackerDevSpawn
 			? HackerJob.AdvancedWorldPrefabPath
 			: HackerJob.WorldPrefabPath;
 
-		var prefab = GameObject.GetPrefab( prefabPath );
-		if ( !prefab.IsValid() )
-			return;
-
 		var forward = ( TryGetViewerPosition( Game.ActiveScene ) ?? position ) - position;
 		forward = forward.WithZ( 0 ).Normal;
 		if ( forward.Length < 0.01f )
 			forward = Vector3.Forward;
 
-		var terminal = prefab.Clone( new CloneConfig
-		{
-			Transform = new Transform( position, Rotation.LookAt( forward ) )
-		} );
-
+		var grounded = SnapToGround( Game.ActiveScene, position );
+		var terminal = ClonePrefabAt( prefabPath, new Transform( grounded, Rotation.LookAt( forward ) ) );
 		if ( !terminal.IsValid() )
 			return;
 
@@ -260,17 +268,10 @@ public static class HackerDevSpawn
 			return;
 		}
 
-		var prefab = GameObject.GetPrefab( prefabPath );
-		if ( !prefab.IsValid() )
-		{
-			Log.Error( $"{command}: could not load '{prefabPath}'. Build prefab per ENTITY_PREFAB_BUILD.md." );
-			return;
-		}
-
-		var terminal = prefab.Clone( new CloneConfig { Transform = transform } );
+		var terminal = ClonePrefabAt( prefabPath, transform );
 		if ( !terminal.IsValid() )
 		{
-			Log.Error( $"{command}: clone failed." );
+			Log.Error( $"{command}: could not load or clone '{prefabPath}'. Recompile prefab in editor if missing prefab_c." );
 			return;
 		}
 
@@ -292,6 +293,44 @@ public static class HackerDevSpawn
 		Log.Info( $"{command}: placed ({program}). Stand within 6m and interact or use lp_cornerman_ui / lp_vengeance_ui." );
 	}
 
+	private static GameObject ClonePrefabAt( string prefabPath, Transform transform )
+	{
+#if LIFEPUNCH_LOCAL
+		var prefab = GameObject.GetPrefab( prefabPath );
+		if ( !prefab.IsValid() )
+		{
+			Log.Error( $"hackerjob spawn: could not load '{prefabPath}'." );
+			return default;
+		}
+
+		return prefab.Clone( new CloneConfig { Transform = transform } );
+#else
+		var prefabFile = PrefabFile.Load( prefabPath );
+		if ( prefabFile == null )
+		{
+			Log.Error( $"hackerjob spawn: PrefabFile.Load failed '{prefabPath}'." );
+			return default;
+		}
+
+		var prefabScene = SceneUtility.GetPrefabScene( prefabFile );
+		if ( prefabScene == null )
+		{
+			Log.Error( $"hackerjob spawn: GetPrefabScene failed '{prefabPath}'." );
+			return default;
+		}
+
+		var clone = prefabScene.Clone();
+		if ( !clone.IsValid() )
+		{
+			Log.Error( $"hackerjob spawn: scene clone failed '{prefabPath}'." );
+			return default;
+		}
+
+		clone.WorldTransform = transform;
+		return clone;
+#endif
+	}
+
 	private static bool TryGetSpawnTransform( out Transform transform )
 	{
 #if LIFEPUNCH_LOCAL
@@ -307,27 +346,57 @@ public static class HackerDevSpawn
 		if ( forward.Length < 0.01f )
 			forward = Vector3.Forward;
 
-		transform = new Transform(
-			camera.WorldPosition + forward * SpawnDistanceUnits,
-			Rotation.LookAt( forward ) );
+		var position = SnapToGround( scene, camera.WorldPosition + forward * SpawnDistanceUnits );
+		transform = new Transform( position, Rotation.LookAt( forward ) );
 		return true;
 #else
+		var scene = Game.ActiveScene;
 		var player = Player.Local;
-		if ( !player.IsValid() || !player.Controller.IsValid() )
+		if ( player.IsValid() && player.Controller.IsValid() )
+		{
+			var aim = player.Controller.EyeAngles.ToRotation();
+			var flatForward = aim.Forward.WithZ( 0 ).Normal;
+			if ( flatForward.Length < 0.01f )
+				flatForward = Vector3.Forward;
+
+			var position = SnapToGround( scene, player.WorldPosition + flatForward * SpawnDistanceUnits );
+			transform = new Transform( position, Rotation.LookAt( flatForward ) );
+			return true;
+		}
+
+		// Editor play before DXRP pawn — camera fallback with ground snap.
+		var camera = scene?.GetAllComponents<CameraComponent>().FirstOrDefault();
+		if ( !camera.IsValid() )
 		{
 			transform = default;
 			return false;
 		}
 
-		var aim = player.Controller.EyeAngles.ToRotation();
-		var flatForward = aim.Forward.WithZ( 0 ).Normal;
-		if ( flatForward.Length < 0.01f )
-			flatForward = Vector3.Forward;
+		var camForward = camera.WorldRotation.Forward.WithZ( 0 ).Normal;
+		if ( camForward.Length < 0.01f )
+			camForward = Vector3.Forward;
 
-		transform = new Transform(
-			player.WorldPosition + flatForward * SpawnDistanceUnits,
-			Rotation.LookAt( flatForward ) );
+		var camPosition = SnapToGround( scene, camera.WorldPosition + camForward * SpawnDistanceUnits );
+		transform = new Transform( camPosition, Rotation.LookAt( camForward ) );
 		return true;
 #endif
+	}
+
+	private static Vector3 SnapToGround( Scene scene, Vector3 horizontalPoint )
+	{
+		if ( scene is null )
+			return horizontalPoint;
+
+		try
+		{
+			var start = horizontalPoint + Vector3.Up * GroundTraceUp;
+			var end = horizontalPoint - Vector3.Up * GroundTraceDown;
+			var trace = scene.Trace.Ray( start, end ).Run();
+			return trace.Hit ? trace.HitPosition : horizontalPoint;
+		}
+		catch ( Exception ex ) when ( ex.Message.Contains( "Default Surface", StringComparison.OrdinalIgnoreCase ) )
+		{
+			return horizontalPoint;
+		}
 	}
 }
