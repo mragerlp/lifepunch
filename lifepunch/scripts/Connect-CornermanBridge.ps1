@@ -70,6 +70,7 @@ $uncIpc = "\\$vengeanceHost\SboxBridgeIpc"
 Write-Step 'Push Green on-box scripts'
 Push-OnBoxScript 'Map-CornermanBridgeShare.ps1'
 Push-OnBoxScript 'Start-CornermanLmStudio.ps1'
+Push-OnBoxScript 'Start-CornermanSboxEditorTunnel.ps1'
 
 Write-Step 'Refresh Cornerman mcp.json'
 & (Join-Path $Here 'Install-CornermanSboxBridgeMcp.ps1') -SshTarget $SshTarget -SkipShare -SkipLmClone
@@ -135,5 +136,6 @@ Write-Host "  Green SMB probe: $($probe.Output)" -ForegroundColor $(if ($probe.O
 
 Write-Host ''
 Write-Host 'LM watchdog (once, elevated on Green): Send-CornermanWorkflow.ps1 -Action InstallLmWatchdog' -ForegroundColor DarkGray
-Write-Host 'Done. On Green: restart Cursor -> MCP sbox + cornerman-lm should go green.' -ForegroundColor Cyan
-Write-Host 'VENGEANCE s&box editor must stay open for sbox MCP.' -ForegroundColor DarkGray
+Write-Host 'Done. On Green: restart Cursor -> MCP sbox + sbox-editor + cornerman-lm.' -ForegroundColor Cyan
+Write-Host 'Green dual-stack: SMB sbox + SSH tunnel for sbox-editor (Start-CornermanSboxEditorTunnel.ps1 -Background).' -ForegroundColor DarkGray
+Write-Host 'VENGEANCE s&box editor must stay open for both MCP servers.' -ForegroundColor DarkGray

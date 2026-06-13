@@ -18,7 +18,7 @@ using Dxura.RP.Game;
 namespace LifePunch.DXRP.Addons.BitcoinMining;
 
 /// <summary>
-/// DEV / EDITOR-TEST ONLY — remove before portal publish.
+/// DEV / EDITOR-TEST ONLY — excluded from publish staging (<c>*DevSpawn.cs</c>).
 /// Clones <see cref="BitcoinMiningAddon.WorldPrefabPath"/> in front of the local viewer for hashd / mining CLI tests.
 /// </summary>
 public static class BitcoinMiningDevSpawn

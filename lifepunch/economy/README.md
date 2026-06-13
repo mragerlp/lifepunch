@@ -40,6 +40,7 @@ Rules:
 - VIP/EVIP fulfillment must match the rank baselines in `../players/ranks/`.
 - VIP/EVIP do not grant moderation powers, in-game commands, portal permissions, or administrative tools.
 - Supporter fulfillment should only grant approved in-game supporter roles/perks.
+- **OG migration (addon launch):** current donors become **`VIP (OG)`** / **`EVIP (OG)`** — policy and fair-perk fence in `../docs/LPDXRP_OG_SUPPORTERS.md`. Agents use **LPDXRP** as shorthand for LifePunch DXRP.
 
 ## Website Rewards Economy
 

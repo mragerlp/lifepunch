@@ -4,6 +4,8 @@ This folder tracks non-administrative DXRP rank baselines.
 
 Use this for regular player and supporter ranks such as `None`, `Members`, `VIP`, and `EVIP`.
 
+**Addon-era OG ranks (planned):** `VIP (OG)` and `EVIP (OG)` for early donors at first LPDXRP addon launch — see `lifepunch/docs/LPDXRP_OG_SUPPORTERS.md`.
+
 Current regular player baselines:
 
 - `none-rank.json`

@@ -38,8 +38,8 @@ All payouts and charges go through **host RPCs** + `player.PayHost` / `player.Ch
 | CPU upgrade | +`1.5 GHz` per level | Costs `2k → 128k` (7 tiers) |
 | Core upgrade | +`2` cores per level | Costs `50k / 100k / 175k` (3 tiers) |
 
-**Per-minute rate (display):** `ClockSpeed × 0.005 × CoreCount` BTC/min  
-**Payout each tick:** same formula once per **90s** while `IsMining`.
+**Per tick (payout):** `ClockSpeed × 0.005 × CoreCount × RackYield` BTC every **90s** while `IsMining`.  
+**Per-minute rate (display):** per-tick × `(60 / 90)` BTC/min — rack LCD and hashd `status` use `MiningRatePerMinute`.
 
 **Sell:** `bitcoin sell` → `RequestSellBitcoin()` → `PayHost`, zero balance.  
 **Upgrades:** `RequestUpgrade(Cpu|Cores)` — charge on host; fail closed if `ChargeHost` fails.

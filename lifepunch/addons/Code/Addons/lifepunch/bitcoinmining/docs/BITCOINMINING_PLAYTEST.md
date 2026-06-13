@@ -200,6 +200,8 @@ Large GPU Rack  >>  GPU Rack  >>  Bitcoin Miner hub (Ophion desktop)
 - Economy RPCs need host + wallet — verify sell/upgrade on live DXRP server, not editor-only stub
 - Remove `BitcoinMiningDevSpawn.cs` before portal publish
 
+**Publish:** `*DevSpawn.cs` is excluded automatically by `prepare-publish.ps1` (local playtest keeps ConCmds).
+
 ---
 
 ## 6. After editor tweaks

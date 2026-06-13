@@ -20,7 +20,8 @@ $files = @(
     'Install-CornermanHeadlessBoot.ps1',
     'Map-CornermanBridgeShare.ps1',
     'Connect-CornermanBridge.ps1',
-    'Install-CornermanLmWatchdog.ps1'
+    'Install-CornermanLmWatchdog.ps1',
+    'Get-CvlCornermanProbe.ps1'
 )
 foreach ($name in $files) {
     $local = Join-Path $Here $name

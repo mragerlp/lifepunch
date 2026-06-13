@@ -71,6 +71,7 @@ partner commits on GitLab integrate back into GitHub. Full map:
 - **lifepunch-rules-workflow** + **lifepunch-website-organization** — website/rules deploy.
 
 Also read `lifepunch/docs/WORKSPACE_STRUCTURE.md` and `lifepunch/docs/GITLAB_ORGANIZATION.md`.
+**LPDXRP** = LifePunch DXRP (shorthand). **VIP (OG)** / **EVIP (OG)** = early donors at first addon launch — `lifepunch/docs/LPDXRP_OG_SUPPORTERS.md`.
 Don't fork parallel grounding/docs — update the existing single source of truth.
 
 If you are operating on (or setting up) the **local AI workstation** — the Corsair AI
@@ -111,8 +112,9 @@ Full checkpoint (shortcuts, voice flow, per-node cheat sheet, failure surfaces):
 | Codename | One line |
 |----------|----------|
 | **VENGEANCE** | Primary PC — Cursor, GitHub source of truth (`lifepunchaddons` checkout) |
-| **Cornerman** | Home LAN AI box — mic, local LLM/STT, Tier-3 prep (`LOCAL_AI_WORKSTATION.md`) |
+| **Cornerman** | Home LAN AI box — mic, local LLM/STT, Tier-3 prep (`LOCAL_AI_WORKSTATION.md`, `CORNERMAN_MODEL_ROUTING.md`) |
 | **lifepunchnet** | Hosted always-on server — DXRP ops, Whisper, watchdog (`LIFEPUNCHNET_INSTRUCTIONS.txt`) |
+| **LPDXRP** | **LifePunch DXRP** — shorthand for our server + addon portfolio on DXRP (`LPDXRP_OG_SUPPORTERS.md`) |
 | **shottaWEB** | Website partner (Brian) — GitLab `lifepunch-website` only; say **shottaWEB** in agent chat |
 | **RDP server agent** | Agent **role** on **lifepunchnet** (Block C) — not a separate machine name |
 
@@ -135,6 +137,9 @@ The `lifepunch-operating-context` rule is law here; this is the orientation. We 
 - **Session hygiene:** one focused chat per task, start fresh often, continue via a short summary
   into a new chat — long contexts re-bill as cache reads. Attach specific files/ranges, not folders.
 - **Capture once:** decisions/learnings land in the single source of truth so nobody re-derives them.
+- **Out of scope (do not reference, document, or build):** legacy EVO / EVORP / SPL-mute / null-EVORP
+  tooling or branding — not part of LifePunch CVL or any lane. If you find stray mentions in docs you
+  touch, remove them; do not add new ones.
 - **Guardrails:** verify by stakes not model; local models prep but don't decide; commit only your
   own lane (Cornerman commits nothing it didn't author) and **never commit unprompted — ask the owner
   first**; dev/clones only — production needs owner approval; the stop hook won't commit/push
@@ -180,6 +185,17 @@ The `lifepunch-operating-context` rule is law here; this is the orientation. We 
 
 ## Current direction (June 2026)
 
+**Tonight (2026-06-13) — CVL continuity if you lose chat context:**
+
+| Topic | Canon |
+|-------|-------|
+| **Cornerman LM (headless)** | GUI **not** required. `lms server` on `:1234` + distill+embed in VRAM. Fix: `lifepunch/scripts/Fix-CornermanLmServe.ps1`. Probe uses `lms ps` (not `/v1/models` catalog). Watchdog: `LifePunch-Cornerman-LM-Watchdog`. |
+| **Dual s&box MCP** | VENGEANCE: `sbox` (Claude Bridge) + `sbox-editor` (chomnr `:9090`). Cornerman: SMB bridge + SSH tunnel for editor MCP. `lifepunch/docs/SBOX_EDITOR_MCP.md` |
+| **Bitcoin miner** | Hub wallet + rack LCD `/m` rate fix; `prepare-publish` skips `*DevSpawn.cs`. Playtest: `addons/docs/BITCOINMINING_PLAYTEST.md`. Open: encryption UI, hub placement cap. |
+| **LPDXRP OG ranks** | VIP (OG) / EVIP (OG) at first addon launch — cosmetics only. `lifepunch/docs/LPDXRP_OG_SUPPORTERS.md` |
+| **lifepunchnet remote apps** | Discord etc. on Blue via RDP — `lifepunch/docs/REMOTE_APPS_LIFEPUNCHNET.md` |
+| **Cornerman git** | Clone `C:\Projects\lifepunch` — pull after Red pushes: `Send-CornermanWorkflow.ps1 -Action MonorepoPull` |
+
 **Recently landed (foundation is current as of this note):**
 - **Ops clarity checkpoint — June 2026.** Voice web uniform (shortcut tiers, consoles, Explorer
   icons, PowerShell tab thumbnail, preflight surfaces) canonized in `OPS_CLARITY_CHECKPOINT.md`,
@@ -204,8 +220,10 @@ The `lifepunch-operating-context` rule is law here; this is the orientation. We 
 - Billing on individual **Ultra** (hard-stop at $400 API pool). **shottaWEB still on the shared
   Cursor Team plan** (live until ~next May), website lane. Routing unchanged: Auto/Composer default.
 - Canonical repo: `https://github.com/mragerlp/lifepunch`. GitLab lanes synced.
-- **Cornerman** (local AI box) arriving imminently — bring-up via `DAY_ONE_AGENT_PROMPT.md`;
-  reference `LOCAL_AI_WORKSTATION.md`; optional experimental Odysseus layer documented (§8).
+- **Cornerman — LIVE.** Headless LM Studio on `:1234` (distill+embed VRAM; coder on disk until
+  `WarmCoder`). Dual MCP when paired with VENGEANCE (`SBOX_EDITOR_MCP.md`). Day-one:
+  `DAY_ONE_AGENT_PROMPT.md` · daily LM: `Fix-CornermanLmServe.ps1` · routing:
+  `CORNERMAN_MODEL_ROUTING.md`.
 - **RDP server agent:** **ACTIVE** — grounded and working its `lifepunch-rdp-server` lane, cloned over
   an SSH deploy key (clone + grounding verified). The RDP/server lane is core to Cornerman's security
   posture ("0 leaky pipes"). Its official prompt is Block C in `AGENT_PROMPT.md`.
@@ -219,6 +237,8 @@ The `lifepunch-operating-context` rule is law here; this is the orientation. We 
   (STAFF-09). The merge-conflict-marker guard in the stop hook is **active** now.
 
 **Current / next build:**
+- **Bitcoin miner hub** — active ship lane (hub terminal, rack mining, hashd upgrades). See
+  `addons/docs/BITCOINMINING_HUB_ARCH.md`, `BITCOINMINING_UX_SPEC.md`, `BITCOINMINING_FINISH_RUNBOOK.md`.
 - The **in-game staff/admin menu** (server-agnostic, driven by `lifepunch/admin-panel/` roles +
   `permissions/matrix.md`, LifePunch-owned IP, branded `lifepunch.ulx`) is **built and shipping its
   v1** to the DXRP portal.

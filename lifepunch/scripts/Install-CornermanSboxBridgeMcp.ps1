@@ -7,7 +7,7 @@
   s&box (VENGEANCE). Cornerman MCP must use the SAME directory via an SMB share.
 
   1. Share VENGEANCE's bridge IPC folder (admin).
-  2. Push Cornerman %USERPROFILE%\.cursor\mcp.json (sbox + cornerman-lm).
+  2. Push Cornerman %USERPROFILE%\.cursor\mcp.json (sbox + sbox-editor + cornerman-lm).
   3. Bootstrap local-llm-mcp-server on Cornerman (localhost LM Studio).
 
   Run from VENGEANCE after s&box editor is open (Start-SboxDxrpEditor.ps1).
@@ -20,8 +20,10 @@ param(
     [string] $SshTarget = '',
     [string] $ShareName = 'SboxBridgeIpc',
     [string] $CornermanLmClone = 'C:\Projects\local-llm-mcp-server',
+    [int] $EditorMcpPort = 9090,
     [switch] $SkipShare,
-    [switch] $SkipLmClone
+    [switch] $SkipLmClone,
+    [switch] $SkipEditorMcp
 )
 
 $ErrorActionPreference = 'Stop'
@@ -141,21 +143,27 @@ Pop-Location
     Push-CornermanText -Path (Join-Path $CornermanLmClone 'config.json') -Text $cfgJson -SshTarget $SshTarget
 }
 
-$mcp = @{
-    mcpServers = @{
-        sbox = @{
-            command = 'cmd'
-            args    = @('/c', 'npx', '-y', 'sbox-mcp-server')
-            env     = @{
-                SBOX_BRIDGE_IPC_DIR = $uncIpc
-            }
-        }
-        'cornerman-lm' = @{
-            command = 'node'
-            args    = @((Join-Path $CornermanLmClone 'dist\index.js'))
+$servers = [ordered]@{
+    sbox = @{
+        command = 'cmd'
+        args    = @('/c', 'npx', '-y', 'sbox-mcp-server')
+        env     = @{
+            SBOX_BRIDGE_IPC_DIR = $uncIpc
         }
     }
+    'cornerman-lm' = @{
+        command = 'node'
+        args    = @((Join-Path $CornermanLmClone 'dist\index.js'))
+    }
 }
+
+if (-not $SkipEditorMcp) {
+    $servers['sbox-editor'] = @{
+        url = "http://127.0.0.1:$EditorMcpPort/sbox-mcp"
+    }
+}
+
+$mcp = @{ mcpServers = $servers }
 $mcpJson = ($mcp | ConvertTo-Json -Depth 8)
 $cornermanMcpPath = Join-Path $env:USERPROFILE '.cursor\mcp.json'
 Push-CornermanText -Path $cornermanMcpPath -Text $mcpJson -SshTarget $SshTarget
@@ -172,6 +180,9 @@ Write-Host "Cornerman probe: $($probe.Output -join ' ')" -ForegroundColor $(if (
 
 Write-Host ''
 Write-Host 'Next on Cornerman:' -ForegroundColor Cyan
-Write-Host '  1. Open Cursor on Green -> Settings -> MCP -> enable sbox + cornerman-lm (both green)' -ForegroundColor Cyan
-Write-Host '  2. sbox editor must stay open on VENGEANCE (Start-SboxDxrpEditor.ps1)' -ForegroundColor Cyan
-Write-Host "  3. IPC share: $uncIpc  (local: $ipcDir)" -ForegroundColor DarkGray
+Write-Host '  1. Map SMB (once): Map-CornermanBridgeShare.ps1' -ForegroundColor Cyan
+Write-Host '  2. Editor MCP tunnel: Start-CornermanSboxEditorTunnel.ps1 -Background' -ForegroundColor Cyan
+Write-Host '  3. Cursor -> MCP green: sbox + sbox-editor + cornerman-lm' -ForegroundColor Cyan
+Write-Host '  4. VENGEANCE editor open (Start-SboxDxrpEditor.ps1)' -ForegroundColor Cyan
+Write-Host "  IPC share: $uncIpc" -ForegroundColor DarkGray
+Write-Host "  Editor tunnel -> http://127.0.0.1:$EditorMcpPort/sbox-mcp (via SSH to VENGEANCE)" -ForegroundColor DarkGray

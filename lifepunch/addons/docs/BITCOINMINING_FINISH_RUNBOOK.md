@@ -29,7 +29,7 @@
 | R2 | **Phase 2 module UI** (Dashboard / Wallet / Upgrades / Log / About) | 2–4h Opus | `RED_BITCOINMINING_PHASE2_BUILD.md` Step 1 |
 | R3 | `addons.json` content row + portal description | 30m | After prefab paths confirmed |
 | R4 | Protection gate grep | 30m | `BITCOINMINING_PROTECTION_CHECKLIST.md` |
-| R5 | Remove `BitcoinMiningDevSpawn` before publish | 5m | Playtest-only |
+| R5 | Exclude `*DevSpawn.cs` from publish staging | Done | `prepare-publish.ps1` — playtest ConCmds stay in repo for local DXRP |
 
 ### Green (Cornerman) — **off-Cursor** (closed / optional)
 

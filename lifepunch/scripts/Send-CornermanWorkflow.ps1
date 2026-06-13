@@ -101,9 +101,11 @@ Pop-Location
             $execDetail = $r.Output
         }
         'Checkpoint' {
-            $probe = Join-Path $Here 'Get-CvlCornermanProbe.ps1'
-            $enc = [Convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes((Get-Content -LiteralPath $probe -Raw)))
-            $r = Invoke-CornermanSshExec -SshTarget $SshTarget -ScriptBlock "powershell -NoProfile -NonInteractive -EncodedCommand $enc"
+            $probe = 'C:\lifepunch\cornerman\Get-CvlCornermanProbe.ps1'
+            $r = Invoke-CornermanSshExec -SshTarget $SshTarget -ScriptBlock @"
+if (-not (Test-Path -LiteralPath '$probe')) { throw 'Missing $probe — run Sync-CornermanRebootScripts.ps1 from Red' }
+& powershell -NoProfile -ExecutionPolicy Bypass -File '$probe'
+"@ -ConnectTimeout 30
             $execOk = ($r.ExitCode -eq 0)
             $execDetail = ($r.Output -split "`n" | Where-Object { $_.Trim().StartsWith('{') } | Select-Object -Last 1)
         }

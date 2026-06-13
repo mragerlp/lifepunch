@@ -70,6 +70,8 @@ Then **restart Cursor** → Settings → MCP → both servers green. IP from `li
 
 The bridge uses **file IPC** on VENGEANCE `%TEMP%\sbox-bridge-ipc`. Green MCP must watch the same folder via SMB.
 
+**VENGEANCE dual MCP (June 2026):** pair **Claude Bridge** (`sbox` in Cursor) with **chomnr editor MCP** (`sbox-editor` → `http://127.0.0.1:9090/sbox-mcp`). Install: `Install-VengeanceSboxEditorMcp.ps1` · canon: `lifepunch/docs/SBOX_EDITOR_MCP.md`.
+
 ```powershell
 # Once, elevated on VENGEANCE:
 net share SboxBridgeIpc="%TEMP%\sbox-bridge-ipc" /GRANT:Everyone,FULL

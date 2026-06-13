@@ -27,14 +27,14 @@ function Copy-PublishItems {
             $Relative = $_.FullName.Substring($SourceRoot.Length).TrimStart('\', '/')
             $RelativeParts = $Relative -split '[\\/]'
 
-            # Dev-only helpers never ship: a file named *TestBots.cs / *DevGive.cs, or anything
+            # Dev-only helpers never ship: *TestBots.cs, *DevGive.cs, *DevSpawn.cs, or anything
             # under a `_dev/` folder, stays out of the publish staging. Keep this in sync with
             # the dev-only files tracked in lifepunch/addons/docs/TECH_DEBT.md.
             $_.Name -notin @('.gitkeep', 'desktop.ini', 'Thumbs.db', 'material-map.json') `
                 -and $_.Extension -ne '.md' `
                 -and $RelativeParts -notcontains 'docs' `
                 -and $RelativeParts -notcontains '_dev' `
-                -and $_.Name -notmatch '(TestBots|DevGive)\.cs$'
+                -and $_.Name -notmatch '(TestBots|DevGive|DevSpawn)\.cs$'
         } |
         ForEach-Object {
             $Relative = $_.FullName.Substring($SourceRoot.Length).TrimStart('\', '/')

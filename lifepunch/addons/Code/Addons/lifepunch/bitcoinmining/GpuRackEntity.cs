@@ -94,8 +94,11 @@ public partial class GpuRackEntity : BaseEntity, IGameEvents, IAreaDamageReceive
 	private const float AdvancedRackYield = 2f;
 	private float RackYield => AdvancedRack ? AdvancedRackYield : 1f;
 
-	/// <summary>Displayed BTC/min ΓÇö includes advanced rack multiplier when set on prefab.</summary>
-	public float MiningRatePerMinute => ClockSpeed * BaseSpeed * CoreCount * RackYield;
+	/// <summary>BTC credited per payout tick (every <see cref="MiningInterval"/>s).</summary>
+	public float BtcPerMiningTick => ClockSpeed * BaseSpeed * CoreCount * RackYield;
+
+	/// <summary>Displayed BTC/min — tick rate scaled by 60s / payout interval.</summary>
+	public float MiningRatePerMinute => BtcPerMiningTick * (60f / MiningInterval);
 	private const float MiningInterval = BitcoinMiningAddon.MiningPayoutIntervalSeconds;
 	public const float BitcoinValue = 1000f;
 
@@ -299,7 +302,7 @@ public partial class GpuRackEntity : BaseEntity, IGameEvents, IAreaDamageReceive
 		var filled = (int)( MiningProgress * 8 );
 		var bar = new string( ScreenBarFill, filled );
 		var pct = (int)( MiningProgress * 100 );
-		var rate = ClockSpeed * BaseSpeed * CoreCount * RackYield;
+		var rate = MiningRatePerMinute;
 		var status = IsMining ? "\u25CF MINING" : "\u25CB IDLE";
 		var rateLine = IsMining ? $"{rate:0.00000}/m" : "0.00000/m";
 		var hashLine = $"{ClockSpeed:0.00}G L{CpuUpgradeLevel}/{CpuUpgradeCosts.Length}";
@@ -320,7 +323,7 @@ public partial class GpuRackEntity : BaseEntity, IGameEvents, IAreaDamageReceive
 
 	private void MineBitcoin()
 	{
-		var payout = ( ClockSpeed * BaseSpeed ) * CoreCount * RackYield;
+		var payout = BtcPerMiningTick;
 		var hub = BitcoinMinerHubRegistry.FindHubForRig( this );
 		if ( hub.IsValid() && hub.IsPowered )
 			hub.CreditMiningPayout( payout );

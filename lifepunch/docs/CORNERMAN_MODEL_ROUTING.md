@@ -20,6 +20,22 @@ before any visual, spawn, scale, or playtest claim — files and distills are no
 
 **Loaded vs catalog:** LM Studio `/v1/models` lists every downloaded model even when not in VRAM. Trust `lms ps` (or warm-script output `LOADED in VRAM`) — not the GUI progress bar stalling at ~97%.
 
+### GUI vs server (headless)
+
+| Piece | Required? | Notes |
+|-------|-----------|-------|
+| **LM Studio GUI window** | **No** | Close it after first-time setup (Developer Mode + models downloaded). |
+| **`lms server` on `:1234`** | **Yes** | Headless API — `Start-CornermanLmStudio.ps1` runs `lms server start`. |
+| **Models in VRAM** | **Daily: 2** | Distill + embed loaded via `lms load`. Coder on disk until `WarmCoder`. |
+| **SSH terminal on Red** | **No** | One-shot warm/probe only. Watchdog on Green keeps serve alive. |
+| **jared logged in on Green** | **Yes** | Watchdog task is Interactive/logon-scoped; box must be on + auto-login session. |
+
+**Fix everything from VENGEANCE (one command):**
+
+```powershell
+powershell -File lifepunch\scripts\Fix-CornermanLmServe.ps1
+```
+
 ---
 
 ## Red commands (VENGEANCE)

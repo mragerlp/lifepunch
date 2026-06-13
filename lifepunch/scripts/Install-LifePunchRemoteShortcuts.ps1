@@ -46,7 +46,8 @@ function New-RdpFile {
     param(
         [string]$Path,
         [string]$HostAddress,
-        [string]$DisplayName
+        [string]$DisplayName,
+        [int]$AudioMode = 0
     )
     $content = @"
 screen mode id:i:2
@@ -73,7 +74,7 @@ disable themes:i:0
 disable cursor setting:i:0
 bitmapcachepersistenable:i:1
 full address:s:$HostAddress
-audiomode:i:0
+audiomode:i:$AudioMode
 redirectprinters:i:0
 redirectcomports:i:0
 redirectsmartcards:i:0
@@ -178,10 +179,11 @@ foreach ($t in $targets) {
     Write-Host "$($node.displayName):" -ForegroundColor White
     if ([string]::IsNullOrWhiteSpace($hostAddr)) {
         Write-Host '  Host not set - edit the .rdp file on first connect, then set remote-hosts.local.json and re-run.' -ForegroundColor Yellow
-        New-RdpFile -Path $rdpFile -HostAddress 'CONFIGURE-ME' -DisplayName $node.displayName
+        New-RdpFile -Path $rdpFile -HostAddress 'CONFIGURE-ME' -DisplayName $node.displayName -AudioMode $(if ($t.Key -eq 'lifepunchnet') { 1 } else { 0 })
     }
     else {
-        New-RdpFile -Path $rdpFile -HostAddress $hostAddr -DisplayName $node.displayName
+        $audio = if ($t.Key -eq 'lifepunchnet') { 1 } else { 0 }
+        New-RdpFile -Path $rdpFile -HostAddress $hostAddr -DisplayName $node.displayName -AudioMode $audio
     }
 
     $places = @(

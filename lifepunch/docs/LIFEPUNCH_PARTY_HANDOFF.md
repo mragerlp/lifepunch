@@ -16,6 +16,8 @@ Canonical checkpoint: `lifepunch/docs/OPS_CLARITY_CHECKPOINT.md`.
 | **Cornerman (RDP)** | Green | LAN box |
 | **lifepunchnet (RDP)** | Blue | Hosted box |
 
+**Discord / chat on Blue (save VENGEANCE RAM):** `Open-LifepunchnetRemoteAppsSetup.ps1` on VENGEANCE → RDP → `Install-LifepunchnetRemoteApps.ps1`. Full list: `lifepunch/docs/REMOTE_APPS_LIFEPUNCHNET.md`.
+
 ## Before a full reboot (all machines)
 
 **VENGEANCE** (from monorepo):

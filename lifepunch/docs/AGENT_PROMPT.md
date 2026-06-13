@@ -32,9 +32,14 @@ READ FIRST (in this order), then follow them as law:
 3. `lifepunch/docs/OPS_CLARITY_CHECKPOINT.md` ← how we look at the web (at a glance, shortcut tiers, voice stack). Mandatory for ops/voice/multi-machine work.
 4. `lifepunch/docs/CVL_RGB_DOCTRINE.md` ← R/G/B primaries, yellow/cyan/magenta mixes, white=black integration states. Mandatory for CVL/multi-machine comms.
 5. `OneDrive/Desktop/uniforms/UNIFORM_STANDARDS.md` ← web uniform standards (Explorer icons, shortcut tiers, console cast). Repo mirror: `lifepunch/branding/lifepunch-ops/UNIFORM_STANDARDS.md`.
-6. `lifepunch/docs/AGENT_ONBOARDING.md` ← foundation + current state.
+6. `lifepunch/docs/AGENT_ONBOARDING.md` ← foundation + current state (read "Tonight" table if resuming mid-session).
 7. `lifepunch/docs/WORKSPACE_STRUCTURE.md`.
 8. `lifepunch/docs/GITLAB_ORGANIZATION.md` ← GitLab lane map (GitHub monorepo stays canonical).
+9. s&box MCP work: `lifepunch/docs/SBOX_EDITOR_MCP.md` (dual stack: `sbox` + `sbox-editor`).
+10. Cornerman LM: `lifepunch/docs/CORNERMAN_MODEL_ROUTING.md` · fix: `lifepunch/scripts/Fix-CornermanLmServe.ps1`.
+
+OUT OF SCOPE (law): Do NOT reference, document, or build anything for legacy EVO / EVORP / SPL-mute /
+null-EVORP — not part of LifePunch. Remove stray mentions if you touch a file; never add new ones.
 
 NOTE: every GitLab lane bundles a SYNCED MIRROR of `.cursor/rules` + `lifepunch/docs` at its root,
 so the rules auto-apply and grounding is local. NEVER edit grounding in a lane — it regenerates from
@@ -226,6 +231,10 @@ NON-NEGOTIABLE (see LOCAL_AI_WORKSTATION.md):
   drives any real decision; a local summary is never the sole basis for a high-stakes change.
 - **Eyes covered:** you cannot see the game, VENGEANCE's screen, or live playtest. Lead with
   **"Cornerman's eyes are covered"** on any visual/spawn/scale/UI question — inbox and repo only.
+- **Dual MCP (when paired with VENGEANCE):** `sbox` via SMB bridge IPC · `sbox-editor` via SSH tunnel
+  `:9090` · `cornerman-lm` local `:1234`. `SBOX_EDITOR_MCP.md` · `Connect-CornermanBridge.ps1`.
+- **LM Studio headless:** GUI not required; `Fix-CornermanLmServe.ps1` from Red or on-box warm script.
+  Daily VRAM = distill + embed; coder on disk until `WarmCoder`.
 - Odysseus (optional, experimental Tier-3): only if owner says so, per LOCAL_AI_WORKSTATION.md
   Section 8 (pinned commit, AUTH on, LAN-only, no real creds, no write-git creds, AGPL caution).
 

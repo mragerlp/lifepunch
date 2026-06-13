@@ -70,12 +70,13 @@ Register-ScheduledTask -TaskName 'LifePunch-Cornerman-Headless-Startup' `
     -RunLevel Highest -User 'SYSTEM' -Force | Out-Null
 Write-Note 'LifePunch-Cornerman-Headless-Startup'
 
-Write-Step 'Scheduled task AtLogon'
-$logonTrigger = New-ScheduledTaskTrigger -AtLogon
+Write-Step 'Scheduled task AtLogon (jared — LM Studio needs user session)'
+$logonTrigger = New-ScheduledTaskTrigger -AtLogon -User 'jared'
+$logonPrincipal = New-ScheduledTaskPrincipal -UserId 'jared' -LogonType Interactive -RunLevel Highest
 Register-ScheduledTask -TaskName 'LifePunch-Cornerman-Headless-Logon' `
     -Action $action -Trigger $logonTrigger -Settings $settings `
-    -RunLevel Highest -Force | Out-Null
-Write-Note 'LifePunch-Cornerman-Headless-Logon (any user, runs after auto-login)'
+    -Principal $logonPrincipal -Force | Out-Null
+Write-Note 'LifePunch-Cornerman-Headless-Logon (jared at logon — warms LM daily lane)'
 
 Write-Step 'Run headless boot maintenance now'
 & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $bootOnBox

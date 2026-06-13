@@ -41,7 +41,7 @@ See `BITCOINMINING_ENCRYPTION_SPEC.md` — mirrors hacker server-rack offense.
 
 - CPU Clock (7 tiers)
 - CPU Cores (3 tiers)
-- RGB Fans (cosmetic + shader)
+- RGB Fans (cosmetic + shader) — **donor-only variants** when shipped; see `BITCOINMINING_DONOR_PERKS.md`
 - Future: PSU, Cooling, VRAM
 
 ---
