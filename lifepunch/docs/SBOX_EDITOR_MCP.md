@@ -39,6 +39,16 @@ powershell -File Test-PreLaunchCheckup.ps1 -Fix
 
 `Start-SboxDxrpEditor.ps1` runs this automatically (use `-SkipPreflight` to bypass, `-PreflightFix` to heal first).
 
+**During work — disconnect alerts (both machines):**
+
+```powershell
+powershell -File lifepunch\scripts\Watch-CvlConnectivity.ps1
+```
+
+Polls every 30s; **Windows toast** when any MCP or Tier-3 link drops on VENGEANCE or Cornerman (bridge IPC, `sbox-editor`, `mcp.json` stacks, Tier-3 `:1234`, Green SMB/tunnel/watchdog). `Start-SboxDxrpEditor.ps1` starts this in a minimized window unless `-SkipConnectivityWatch`. Optional auto-heal: `-FixOnDown`.
+
+Status JSON only: `Get-CvlConnectivityStatus.ps1`
+
 Heal only: `Invoke-VengeanceBloatCleanup.ps1` (Red) · `Fix-CornermanLmServe.ps1` (Green) · bridge: `Connect-CornermanBridge.ps1`
 
 ---

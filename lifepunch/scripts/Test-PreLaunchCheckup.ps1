@@ -252,6 +252,7 @@ if (-not $Quiet) {
         Write-Host '  Fix: powershell -File lifepunch\scripts\Test-PreLaunchCheckup.ps1 -Fix' -ForegroundColor Yellow
         Write-Host '  Then: Start-SboxDxrpEditor.ps1' -ForegroundColor DarkGray
     }
+    Write-Host 'During work: Watch-CvlConnectivity.ps1 (auto-starts with Start-SboxDxrpEditor.ps1)' -ForegroundColor DarkGray
     Write-Host ''
 }
 

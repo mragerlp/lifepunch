@@ -38,6 +38,7 @@ param(
     [switch] $WithAuthorize,
     [switch] $SkipPreflight,
     [switch] $PreflightFix,
+    [switch] $SkipConnectivityWatch,
     [string] $ConfigPath = ''
 )
 
@@ -128,4 +129,32 @@ if ($WithAuthorize) {
 }
 else {
     Write-Host 'Editor started. Host play, then authorize <token> in console if you need portal/API data.' -ForegroundColor Cyan
+}
+
+if (-not $SkipConnectivityWatch) {
+    $watchScript = Join-Path $Here 'Watch-CvlConnectivity.ps1'
+    if (Test-Path -LiteralPath $watchScript) {
+        $statePath = Join-Path $env:LOCALAPPDATA 'LifePunch\cvl-connectivity-state.json'
+        $startWatch = $true
+        if (Test-Path -LiteralPath $statePath) {
+            try {
+                $saved = Get-Content -LiteralPath $statePath -Raw | ConvertFrom-Json
+                if ($saved.ts) {
+                    $age = ((Get-Date).ToUniversalTime() - [datetime]$saved.ts).TotalSeconds
+                    if ($age -lt 90) { $startWatch = $false }
+                }
+            }
+            catch { }
+        }
+        if ($startWatch) {
+            Start-Process -FilePath 'powershell.exe' -ArgumentList @(
+                '-NoExit', '-NoProfile', '-ExecutionPolicy', 'Bypass',
+                '-File', $watchScript
+            ) -WindowStyle Minimized | Out-Null
+            Write-Host 'Connectivity watch started (toast on MCP/Tier-3 drop). Minimized PowerShell window.' -ForegroundColor DarkGray
+        }
+        else {
+            Write-Host 'Connectivity watch already active (recent state file).' -ForegroundColor DarkGray
+        }
+    }
 }
