@@ -27,12 +27,16 @@ namespace LifePunch.DXRP.Addons.Dev;
 /// </summary>
 public static class WeaponDevGive
 {
-	/// <summary>AK baseline — same as <see cref="GiveAkClass"/> (LifePunch sounds + class M4 hold/vm).</summary>
+	/// <summary>AK with LifePunch <c>w_ak47</c> + <c>vm_ak47</c> (first-person rig under test).</summary>
 	[ConCmd( "lp_give_ak" )]
-	public static void GiveAk() => GiveAkClass();
+	public static void GiveAk() => Give(
+		Ak47Weapon.Ident,
+		Ak47Weapon.WorldPrefabPath,
+		Ak47Weapon.ClassWorldPrefabPlaceholder,
+		Ak47Weapon.DisplayName );
 
 	/// <summary>
-	/// AK baseline: LifePunch <c>w_ak47</c> world prefab + M4 class <c>vm_m4a1</c> until FP rig lands.
+	/// AK class baseline: LifePunch <c>w_ak47</c> world + M4 <c>vm_m4a1</c> for hold comparison only.
 	/// </summary>
 	[ConCmd( "lp_give_ak_class" )]
 	public static void GiveAkClass() => GiveClassToPlayer(
@@ -88,7 +92,7 @@ public static class WeaponDevGive
 		{
 			case "ak":
 			case "ak47":
-				GiveAkClass();
+				GiveAk();
 				break;
 			case "deagle":
 				GiveDeagle();

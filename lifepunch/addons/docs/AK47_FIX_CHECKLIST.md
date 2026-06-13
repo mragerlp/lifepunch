@@ -72,6 +72,7 @@ Open **`equipment/vm_ak47/vm_ak47.prefab`**. Match M4A1 — do **not** guess pat
 
 - [ ] In editor: prefab shows gun at scale 1, press **F**
 - [ ] **Play** from `addons.sbproj` **or** publish + dev server (Part C)
+- [ ] Console: **`lp_give_ak`** (LifePunch `vm_ak47`) — not `lp_give_ak_class` (that keeps M4 vm for comparison)
 - [ ] First person looks like **M4A1 photo** (lower-right, not blocking screen)
 
 **Part A done when:** first person matches M4A1 reference.

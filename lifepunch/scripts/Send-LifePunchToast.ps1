@@ -13,8 +13,21 @@ function Send-LifePunchToast {
         [Parameter(Mandatory)]
         [string] $Message,
         [ValidateSet('default', 'warning', 'error')]
-        [string] $Tone = 'default'
+        [string] $Tone = 'default',
+        [switch] $AllowNonVengeance
     )
+
+    if (-not $AllowNonVengeance) {
+        $opsHelper = Join-Path $PSScriptRoot 'LifePunch-OpsNode.ps1'
+        if (Test-Path -LiteralPath $opsHelper) {
+            . $opsHelper
+            if (-not (Test-IsVengeanceWorkstation)) { return $false }
+        }
+        else {
+            $hn = $env:COMPUTERNAME.ToUpperInvariant()
+            if ($hn -notlike '*VENGEANCE*') { return $false }
+        }
+    }
 
     $safeTitle = [System.Security.SecurityElement]::Escape($Title)
     $safeMsg = [System.Security.SecurityElement]::Escape($Message)

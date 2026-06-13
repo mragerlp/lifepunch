@@ -133,7 +133,16 @@ else {
 
 if (-not $SkipConnectivityWatch) {
     $watchScript = Join-Path $Here 'Watch-CvlConnectivity.ps1'
-    if (Test-Path -LiteralPath $watchScript) {
+    $opsNode = Join-Path $Here 'LifePunch-OpsNode.ps1'
+    $isVengeance = $true
+    if (Test-Path -LiteralPath $opsNode) {
+        . $opsNode
+        $isVengeance = Test-IsVengeanceWorkstation
+    }
+    elseif ($env:COMPUTERNAME.ToUpperInvariant() -notlike '*VENGEANCE*') {
+        $isVengeance = $false
+    }
+    if ($isVengeance -and (Test-Path -LiteralPath $watchScript)) {
         $statePath = Join-Path $env:LOCALAPPDATA 'LifePunch\cvl-connectivity-state.json'
         $startWatch = $true
         if (Test-Path -LiteralPath $statePath) {

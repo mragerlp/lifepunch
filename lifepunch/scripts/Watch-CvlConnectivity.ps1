@@ -3,8 +3,9 @@
   Watch MCP + Tier-3 connectivity during work; toast when anything drops on Red or Green.
 
 .DESCRIPTION
-  Run in a dedicated PowerShell window while you work on VENGEANCE (or start via
-  Start-SboxDxrpEditor.ps1 -WatchConnectivity). Notifies on disconnect edges only.
+  VENGEANCE-only: run on Red while you work (or via Start-SboxDxrpEditor.ps1).
+  Toasts fire on this machine only — Cornerman never gets Windows notifications.
+  Notifies on disconnect edges only.
 
 .EXAMPLE
   powershell -File Watch-CvlConnectivity.ps1
@@ -20,7 +21,13 @@ param(
 
 $ErrorActionPreference = 'Continue'
 $Here = if ($PSScriptRoot) { $PSScriptRoot } else { Split-Path -Parent $MyInvocation.MyCommand.Path }
+. (Join-Path $Here 'LifePunch-OpsNode.ps1')
 . (Join-Path $Here 'Send-LifePunchToast.ps1')
+
+if (-not (Test-IsVengeanceWorkstation)) {
+    Write-Host 'Watch-CvlConnectivity is VENGEANCE-only (no toasts on Cornerman/lifepunchnet).' -ForegroundColor Yellow
+    exit 0
+}
 
 $statePath = Join-Path $env:LOCALAPPDATA 'LifePunch\cvl-connectivity-state.json'
 New-Item -ItemType Directory -Force -Path (Split-Path $statePath -Parent) | Out-Null
