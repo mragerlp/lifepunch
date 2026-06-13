@@ -3,7 +3,7 @@
   Start LM Studio server on Cornerman and warm Tier-3 models.
 
 .PARAMETER WarmModel
-  daily   = distill + embed loaded (default — Cornerman daily lane)
+  daily   = distill + embed loaded (default - Cornerman daily lane)
   distill = qwen/qwen3.6-35b-a3b only
   coder   = qwen2.5-coder-32b-instruct only (unloads other big models first)
   all     = alias for daily + verify coder catalog (do NOT load 35b+32b together)
@@ -23,7 +23,7 @@ param(
 
 $ErrorActionPreference = 'Stop'
 
-# Canonical Cornerman Tier-3 catalog — keep in sync with cornerman-inbox-directive.json + CORNERMAN_MODEL_ROUTING.md
+# Canonical Cornerman Tier-3 catalog - keep in sync with cornerman-inbox-directive.json + CORNERMAN_MODEL_ROUTING.md
 $script:CornermanTier3Models = @(
     'qwen/qwen3.6-35b-a3b'
     'qwen2.5-coder-32b-instruct'
@@ -66,13 +66,13 @@ function Test-LmsAlreadyLoaded {
 
 function Get-CornermanBindHost {
     param([string] $Preferred = 'auto')
-    # 0.0.0.0 — localhost for cornerman-lm MCP on Green + LAN for Red warm probes.
+    # 0.0.0.0 - localhost for cornerman-lm MCP on Green + LAN for Red warm probes.
     if (-not $Preferred -or $Preferred -eq 'auto') { return '0.0.0.0' }
     if ($Preferred -eq '0.0.0.0' -or $Preferred -eq '127.0.0.1') { return $Preferred }
     $hit = Get-NetIPAddress -AddressFamily IPv4 -ErrorAction SilentlyContinue |
         Where-Object { $_.IPAddress -eq $Preferred }
     if ($hit) { return $Preferred }
-    Write-Lms "BindHost $Preferred not on this box — using 0.0.0.0"
+    Write-Lms "BindHost $Preferred not on this box - using 0.0.0.0"
     return '0.0.0.0'
 }
 
@@ -186,7 +186,7 @@ elseif ($WarmModel -in 'daily', 'all' -and (Test-Tier3ServeReady -BindHost $Bind
     return
 }
 elseif ($WarmModel -notin 'daily', 'all', 'none' -and (Test-WarmTargetsReady -BindHost $BindHost -Required $targets)) {
-    Write-Lms "Warm targets ready ($($targets.Count) models) on :$Port"
+    Write-Lms ('Warm targets ready ({0} models) on :{1}' -f $targets.Count, $Port)
     if (-not $Quiet) { Get-LmsModelIds -BindHost $BindHost | ForEach-Object { Write-Host "  $_" } }
     return
 }
@@ -220,13 +220,13 @@ foreach ($modelId in $targets) {
 if ($WarmModel -ne 'none') {
     if ($WarmModel -in 'daily', 'all') {
         if (-not (Test-Tier3CatalogOnDisk)) {
-            throw 'Tier-3 catalog incomplete on disk — download all three models in LM Studio first.'
+            throw 'Tier-3 catalog incomplete on disk - download all three models in LM Studio first.'
         }
         if (-not (Test-Tier3ServeReady -BindHost $BindHost)) {
             $have = (Get-LmsModelIds -BindHost $BindHost) -join ', '
             throw "Tier-3 serve incomplete after warm. Need distill+embed on :$Port. Have: $have"
         }
-        Write-Lms 'Tier-3 catalog OK — coder on disk; WarmCoder swaps GPU when C# drafts needed.'
+        Write-Lms 'Tier-3 catalog OK - coder on disk; WarmCoder swaps GPU when C# drafts needed.'
     }
     elseif (-not (Test-WarmTargetsReady -BindHost $BindHost -Required $targets)) {
         $have = (Get-LmsModelIds -BindHost $BindHost) -join ', '
@@ -238,10 +238,10 @@ try {
     $probeHost = (Get-LmsProbeHosts -BindHost $BindHost | Select-Object -First 1)
     $uri = "http://${probeHost}:${Port}/v1/models"
     $models = Get-LmsModelIds -BindHost $BindHost
-    Write-Lms "LM OK: $uri ($($models.Count) models listed)"
+    Write-Lms ('LM OK: {0} ({1} models listed)' -f $uri, $models.Count)
     if (-not $Quiet) { $models | ForEach-Object { Write-Host "  $_" } }
 }
 catch {
     $msg = $_.Exception.Message
-    throw "LM Studio server up but probe failed: $uri - $msg"
+    throw ('LM Studio server up but probe failed: {0} - {1}' -f $uri, $msg)
 }

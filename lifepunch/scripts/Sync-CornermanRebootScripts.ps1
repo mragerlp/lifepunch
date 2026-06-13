@@ -25,8 +25,15 @@ $files = @(
 foreach ($name in $files) {
     $local = Join-Path $Here $name
     if (-not (Test-Path -LiteralPath $local)) { throw "Missing $local" }
-    $bytes = [IO.File]::ReadAllBytes($local)
-    Push-CornermanFile -Path (Join-Path $onBox $name) -FileBytes $bytes -SshTarget $SshTarget | Out-Null
+    $dest = Join-Path $onBox $name
+    if ($name -like '*.ps1') {
+        $text = [IO.File]::ReadAllText($local)
+        Push-CornermanText -Path $dest -Text $text -SshTarget $SshTarget | Out-Null
+    }
+    else {
+        $bytes = [IO.File]::ReadAllBytes($local)
+        Push-CornermanFile -Path $dest -FileBytes $bytes -SshTarget $SshTarget | Out-Null
+    }
     Write-Host "OK $name" -ForegroundColor Green
 }
 
