@@ -18,6 +18,8 @@ before any visual, spawn, scale, or playtest claim — files and distills are no
 
 **Default on boot:** `daily` = distill + embed (`Invoke-CornermanHeadlessBoot.ps1`). **Tier-3 catalog** = all three on disk; **Tier-3 serve** = distill + embed loaded — **not** both big models at once (~45 GB). Warm **coder** only when the brief says so.
 
+**Loaded vs catalog:** LM Studio `/v1/models` lists every downloaded model even when not in VRAM. Trust `lms ps` (or warm-script output `LOADED in VRAM`) — not the GUI progress bar stalling at ~97%.
+
 ---
 
 ## Red commands (VENGEANCE)

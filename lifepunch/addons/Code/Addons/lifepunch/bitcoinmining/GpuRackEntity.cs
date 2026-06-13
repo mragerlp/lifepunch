@@ -97,7 +97,7 @@ public partial class GpuRackEntity : BaseEntity, IGameEvents, IAreaDamageReceive
 	/// <summary>Displayed BTC/min ΓÇö includes advanced rack multiplier when set on prefab.</summary>
 	public float MiningRatePerMinute => ClockSpeed * BaseSpeed * CoreCount * RackYield;
 	private const float MiningInterval = BitcoinMiningAddon.MiningPayoutIntervalSeconds;
-	public const float BitcoinValue = 1500f;
+	public const float BitcoinValue = 1000f;
 
 	public static readonly int[] CpuUpgradeCosts = { 2000, 4000, 8000, 16000, 32000, 64000, 128000 };
 	public static readonly int[] CoreUpgradeCosts = { 50000, 100000, 175000 };

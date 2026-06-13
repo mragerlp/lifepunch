@@ -99,7 +99,7 @@ function Get-LmsProbeHosts([string]$BindHost) {
     return $hosts
 }
 
-function Get-LmsModelIds([string]$BindHost) {
+function Get-LmsCatalogIds([string]$BindHost) {
     foreach ($probeHost in (Get-LmsProbeHosts -BindHost $BindHost)) {
         try {
             $uri = "http://${probeHost}:${Port}/v1/models"
@@ -108,6 +108,13 @@ function Get-LmsModelIds([string]$BindHost) {
         catch { }
     }
     return @()
+}
+
+function Get-LmsLoadedIds {
+    $psText = (& $script:lms ps 2>&1 | ForEach-Object { "$_" }) -join "`n"
+    return @([regex]::Matches($psText, '(?m)^(\S+)\s+\S+\s+(?:IDLE|RUNNING)\s') |
+        ForEach-Object { $_.Groups[1].Value } |
+        Select-Object -Unique)
 }
 
 function Test-Tier3CatalogOnDisk {
@@ -119,8 +126,16 @@ function Test-Tier3CatalogOnDisk {
     return $true
 }
 
-function Test-LmsProbe([string]$BindHost) {
-    return (Get-LmsModelIds -BindHost $BindHost).Count -gt 0
+function Test-LmsServerUp([string]$BindHost) {
+    foreach ($probeHost in (Get-LmsProbeHosts -BindHost $BindHost)) {
+        try {
+            $uri = "http://${probeHost}:${Port}/v1/models"
+            Invoke-RestMethod -Uri $uri -TimeoutSec 10 | Out-Null
+            return $true
+        }
+        catch { }
+    }
+    return $false
 }
 
 function Get-WarmTargets([string]$Mode) {
@@ -154,22 +169,35 @@ function Test-ModelPresent([string[]]$Present, [string]$RequiredId) {
 }
 
 function Test-WarmTargetsReady([string]$BindHost, [string[]]$Required) {
-    $present = Get-LmsModelIds -BindHost $BindHost
-    if ($present.Count -eq 0) { return $false }
+    if (-not (Test-LmsServerUp -BindHost $BindHost)) { return $false }
+    $loaded = Get-LmsLoadedIds
+    if ($loaded.Count -eq 0) { return $false }
     foreach ($id in $Required) {
-        if (-not (Test-ModelPresent -Present $present -RequiredId $id)) { return $false }
+        if (-not (Test-ModelPresent -Present $loaded -RequiredId $id)) { return $false }
     }
     return $true
 }
 
 function Test-Tier3ServeReady([string]$BindHost) {
     if (-not (Test-Tier3CatalogOnDisk)) { return $false }
-    if (-not (Test-LmsProbe -BindHost $BindHost)) { return $false }
-    $present = Get-LmsModelIds -BindHost $BindHost
+    if (-not (Test-LmsServerUp -BindHost $BindHost)) { return $false }
+    $loaded = Get-LmsLoadedIds
     foreach ($id in @('qwen/qwen3.6-35b-a3b', 'text-embedding-nomic-embed-text-v1.5')) {
-        if (-not (Test-ModelPresent -Present $present -RequiredId $id)) { return $false }
+        if (-not (Test-ModelPresent -Present $loaded -RequiredId $id)) { return $false }
     }
     return $true
+}
+
+function Write-LmsServeStatus([string]$BindHost) {
+    $loaded = Get-LmsLoadedIds
+    $catalogOnly = @($script:CornermanTier3Models | Where-Object { $loaded -notcontains $_ })
+    Write-Lms ('LOADED in VRAM ({0}):' -f $loaded.Count)
+    if ($loaded.Count -eq 0) { Write-Host '  (none)' }
+    else { $loaded | ForEach-Object { Write-Host "  $_" } }
+    if ($catalogOnly.Count -gt 0) {
+        Write-Lms ('On disk only ({0}) - load via WarmCoder when needed:' -f $catalogOnly.Count)
+        $catalogOnly | ForEach-Object { Write-Host "  $_" }
+    }
 }
 
 $BindHost = Get-CornermanBindHost -Preferred $BindHost
@@ -181,13 +209,13 @@ if ($WarmModel -eq 'none') {
     # server-only path below
 }
 elseif ($WarmModel -in 'daily', 'all' -and (Test-Tier3ServeReady -BindHost $BindHost)) {
-    Write-Lms "Tier-3 serve ready (catalog + distill + embed on :$Port)"
-    if (-not $Quiet) { Get-LmsModelIds -BindHost $BindHost | ForEach-Object { Write-Host "  $_" } }
+    Write-Lms "Tier-3 serve ready (distill + embed loaded on :$Port)"
+    if (-not $Quiet) { Write-LmsServeStatus -BindHost $BindHost }
     return
 }
 elseif ($WarmModel -notin 'daily', 'all', 'none' -and (Test-WarmTargetsReady -BindHost $BindHost -Required $targets)) {
-    Write-Lms ('Warm targets ready ({0} models) on :{1}' -f $targets.Count, $Port)
-    if (-not $Quiet) { Get-LmsModelIds -BindHost $BindHost | ForEach-Object { Write-Host "  $_" } }
+    Write-Lms ('Warm targets ready ({0} loaded) on :{1}' -f $targets.Count, $Port)
+    if (-not $Quiet) { Write-LmsServeStatus -BindHost $BindHost }
     return
 }
 
@@ -196,14 +224,14 @@ if ($effectiveMode -eq 'coder') { Unload-BigLmsModels }
 else { Remove-DuplicateLmsLoads }
 
 $startCode = Invoke-Lms -LmsArgs @('server', 'start', '--port', "$Port", '--bind', $BindHost)
-if ($startCode -ne 0 -and -not (Test-LmsProbe -BindHost $BindHost)) {
+if ($startCode -ne 0 -and -not (Test-LmsServerUp -BindHost $BindHost)) {
     throw "lms server start failed (exit $startCode) and probe unreachable"
 }
 
 foreach ($modelId in $targets) {
-    $present = Get-LmsModelIds -BindHost $BindHost
-    if (Test-ModelPresent -Present $present -RequiredId $modelId) {
-        Write-Lms "Already listed: $modelId"
+    $loaded = Get-LmsLoadedIds
+    if (Test-ModelPresent -Present $loaded -RequiredId $modelId) {
+        Write-Lms "Already loaded in VRAM: $modelId"
         continue
     }
     $gpuFlag = if ($modelId -like '*embed*') { '0.05' } else { 'max' }
@@ -223,23 +251,23 @@ if ($WarmModel -ne 'none') {
             throw 'Tier-3 catalog incomplete on disk - download all three models in LM Studio first.'
         }
         if (-not (Test-Tier3ServeReady -BindHost $BindHost)) {
-            $have = (Get-LmsModelIds -BindHost $BindHost) -join ', '
-            throw "Tier-3 serve incomplete after warm. Need distill+embed on :$Port. Have: $have"
+            $have = (Get-LmsLoadedIds) -join ', '
+            throw "Tier-3 serve incomplete after warm. Need distill+embed loaded on :$Port. Loaded: $have"
         }
         Write-Lms 'Tier-3 catalog OK - coder on disk; WarmCoder swaps GPU when C# drafts needed.'
     }
     elseif (-not (Test-WarmTargetsReady -BindHost $BindHost -Required $targets)) {
-        $have = (Get-LmsModelIds -BindHost $BindHost) -join ', '
-        throw "Warm incomplete. Expected: $($targets -join ', '). Have: $have"
+        $have = (Get-LmsLoadedIds) -join ', '
+        throw "Warm incomplete. Expected loaded: $($targets -join ', '). Loaded: $have"
     }
 }
 
 try {
     $probeHost = (Get-LmsProbeHosts -BindHost $BindHost | Select-Object -First 1)
     $uri = "http://${probeHost}:${Port}/v1/models"
-    $models = Get-LmsModelIds -BindHost $BindHost
-    Write-Lms ('LM OK: {0} ({1} models listed)' -f $uri, $models.Count)
-    if (-not $Quiet) { $models | ForEach-Object { Write-Host "  $_" } }
+    $loaded = Get-LmsLoadedIds
+    Write-Lms ('LM OK: {0} ({1} loaded in VRAM)' -f $uri, $loaded.Count)
+    if (-not $Quiet) { Write-LmsServeStatus -BindHost $BindHost }
 }
 catch {
     $msg = $_.Exception.Message

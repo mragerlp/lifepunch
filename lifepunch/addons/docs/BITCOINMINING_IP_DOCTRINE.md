@@ -52,7 +52,7 @@ GPU racks expose **LCD telemetry** (`TextRenderer`) — not a full terminal skin
 | --------------- | ------------------------- | ------------------------------------------------ |
 | Payout interval | **90 seconds**            | `BitcoinMiningAddon.MiningPayoutIntervalSeconds` |
 | Base speed      | `0.005` BTC per tick unit | `GpuRackEntity`                                  |
-| BTC sell price  | `$1500`                   | `GpuRackEntity`                                  |
+| BTC sell price  | `$1000`                   | `GpuRackEntity.BitcoinValue`                     |
 
 
 Genre overlap (upgrade tiers, sell command) is fine. **Our numbers and cadence are ours.**
