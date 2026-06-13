@@ -194,7 +194,7 @@ The `lifepunch-operating-context` rule is law here; this is the orientation. We 
 | **Bitcoin miner** | Hub wallet + rack LCD `/m` rate fix; `prepare-publish` skips `*DevSpawn.cs`. Playtest: `addons/docs/BITCOINMINING_PLAYTEST.md`. Open: encryption UI, hub placement cap. |
 | **LPDXRP OG ranks** | VIP (OG) / EVIP (OG) at first addon launch — cosmetics only. `lifepunch/docs/LPDXRP_OG_SUPPORTERS.md` |
 | **lifepunchnet remote apps** | Discord etc. on Blue via RDP — `lifepunch/docs/REMOTE_APPS_LIFEPUNCHNET.md` |
-| **Cornerman git** | Clone `C:\Projects\lifepunch` — pull after Red pushes: `Send-CornermanWorkflow.ps1 -Action MonorepoPull` |
+| **Pre-launch checkup** | Before any editor session: `Test-PreLaunchCheckup.ps1 -Fix` (VENGEANCE + Cornerman health/bloat, headless Tier-3 LM, dual MCP). Auto-runs from `Start-SboxDxrpEditor.ps1`. |
 
 **Recently landed (foundation is current as of this note):**
 - **Ops clarity checkpoint — June 2026.** Voice web uniform (shortcut tiers, consoles, Explorer

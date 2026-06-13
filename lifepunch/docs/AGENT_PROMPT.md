@@ -37,6 +37,7 @@ READ FIRST (in this order), then follow them as law:
 8. `lifepunch/docs/GITLAB_ORGANIZATION.md` ← GitLab lane map (GitHub monorepo stays canonical).
 9. s&box MCP work: `lifepunch/docs/SBOX_EDITOR_MCP.md` (dual stack: `sbox` + `sbox-editor`).
 10. Cornerman LM: `lifepunch/docs/CORNERMAN_MODEL_ROUTING.md` · fix: `lifepunch/scripts/Fix-CornermanLmServe.ps1`.
+11. Before editor/project work: `lifepunch/scripts/Test-PreLaunchCheckup.ps1 -Fix` (Cornerman health, headless LM, dual MCP).
 
 OUT OF SCOPE (law): Do NOT reference, document, or build anything for legacy EVO / EVORP / SPL-mute /
 null-EVORP — not part of LifePunch. Remove stray mentions if you touch a file; never add new ones.

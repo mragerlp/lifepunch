@@ -36,12 +36,29 @@ param(
     [switch] $SyncAllAddons,
     [switch] $NoSync,
     [switch] $WithAuthorize,
+    [switch] $SkipPreflight,
+    [switch] $PreflightFix,
     [string] $ConfigPath = ''
 )
 
 $ErrorActionPreference = 'Stop'
 $Here = if ($PSScriptRoot) { $PSScriptRoot } else { Split-Path -Parent $MyInvocation.MyCommand.Path }
 if (-not $ConfigPath) { $ConfigPath = Join-Path $Here 'dxrp-editor.local.json' }
+
+if (-not $SkipPreflight) {
+    $preflight = Join-Path $Here 'Test-PreLaunchCheckup.ps1'
+    if (Test-Path -LiteralPath $preflight) {
+        Write-Host 'Pre-launch checkup (Cornerman + dual MCP)...' -ForegroundColor Cyan
+        $pfArgs = @{}
+        if ($PreflightFix) { $pfArgs['Fix'] = $true }
+        & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $preflight @pfArgs
+        if ($LASTEXITCODE -ne 0) {
+            Write-Host 'Pre-launch checkup reported blockers — continuing editor launch.' -ForegroundColor Yellow
+            Write-Host '  Re-run: Test-PreLaunchCheckup.ps1 -Fix' -ForegroundColor DarkGray
+        }
+        Write-Host ''
+    }
+}
 
 if (-not $NoSync) {
     $pullCompiled = Join-Path $Here 'Pull-DxrpCompiledAssetsToRepo.ps1'

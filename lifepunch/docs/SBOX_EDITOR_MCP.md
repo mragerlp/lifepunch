@@ -20,6 +20,29 @@ Install / refresh: `lifepunch/scripts/Install-VengeanceSboxEditorMcp.ps1`
 
 ---
 
+## Pre-launch checkup (run before every project session)
+
+From **VENGEANCE**, before `Start-SboxDxrpEditor.ps1` or heavy addon work:
+
+```powershell
+cd lifepunch\scripts
+powershell -File Test-PreLaunchCheckup.ps1 -Fix
+```
+
+| Check | Pass means |
+|-------|------------|
+| **VENGEANCE RAM / bloat** | No Discord/Spotify/LM Studio GUI on Red; one s&box instance; optional Xbox/telemetry services flagged |
+| **Cornerman RAM / bloat** | No LM Studio **GUI** eating RAM; flag Discord/Chrome/Spotify on Green |
+| **Tier-3 LM headless** | `lms server` on `:1234`, distill+embed **in VRAM**, watchdog task OK — **no GUI window** |
+| **VENGEANCE dual MCP** | `sbox` bridge IPC fresh + `sbox-editor` in `mcp.json` (+ HTTP when editor open) |
+| **Cornerman triple MCP** | SMB `sbox` + SSH tunnel `sbox-editor` + `cornerman-lm` in Green `mcp.json` |
+
+`Start-SboxDxrpEditor.ps1` runs this automatically (use `-SkipPreflight` to bypass, `-PreflightFix` to heal first).
+
+Heal only: `Invoke-VengeanceBloatCleanup.ps1` (Red) · `Fix-CornermanLmServe.ps1` (Green) · bridge: `Connect-CornermanBridge.ps1`
+
+---
+
 ## Recommendation: pair both (do not replace)
 
 They are **complementary**, not duplicates.
