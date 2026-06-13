@@ -106,6 +106,28 @@ if ($env:USERNAME -and $env:USERNAME -ne 'SYSTEM') {
             Write-BootNote "Voice relay FAIL: $($_.Exception.Message)"
         }
     }
+
+    $ensureBridge = 'C:\lifepunch\cornerman\Ensure-CornermanBridgeShare.ps1'
+    if (Test-Path -LiteralPath $ensureBridge) {
+        try {
+            & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $ensureBridge
+            Write-BootNote 'Bridge SMB ensure OK'
+        }
+        catch {
+            Write-BootNote "Bridge SMB ensure FAIL: $($_.Exception.Message)"
+        }
+    }
+
+    $tunnelScript = 'C:\lifepunch\cornerman\Start-CornermanSboxEditorTunnel.ps1'
+    if (Test-Path -LiteralPath $tunnelScript) {
+        try {
+            & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $tunnelScript -Background
+            Write-BootNote 'sbox-editor tunnel OK'
+        }
+        catch {
+            Write-BootNote "sbox-editor tunnel FAIL: $($_.Exception.Message)"
+        }
+    }
 }
 
 Write-BootNote 'DONE'

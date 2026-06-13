@@ -78,6 +78,10 @@ $lmWatchdogOk = $false
 $wd = schtasks /Query /TN LifePunch-Cornerman-LM-Watchdog /FO LIST 2>$null
 if ($wd -match 'Ready|Running') { $lmWatchdogOk = $true }
 
+$tunnelWatchdogOk = $false
+$twd = schtasks /Query /TN LifePunch-Cornerman-SboxEditor-Tunnel /FO LIST 2>$null
+if ($twd -match 'Ready|Running') { $tunnelWatchdogOk = $true }
+
 $allowProc = '(?i)^(System|Idle|Registry|csrss|wininit|services|lsass|svchost|dwm|explorer|powershell|pwsh|conhost|sshd|OpenSSH|python|node|lms|Cursor|SearchHost|RuntimeBroker|WmiPrvSE|fontdrvhost)$'
 $bloatHints = @(
     @{ Name = 'LM Studio GUI'; Match = '(?i)LM Studio'; Why = 'Close window -  use headless lms server + watchdog' }
@@ -156,6 +160,7 @@ $payload = [ordered]@{
     lmVramCount    = $lmVramCount
     lmVramLoaded   = $lmVramLoaded
     lmWatchdogOk   = $lmWatchdogOk
+    tunnelWatchdogOk = $tunnelWatchdogOk
     bloat          = @($bloat)
     topMemoryMb    = @($topProcs)
     powerPlan      = $powerPlan

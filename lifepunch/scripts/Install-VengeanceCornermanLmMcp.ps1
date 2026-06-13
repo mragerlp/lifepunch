@@ -139,9 +139,16 @@ if (Test-Path -LiteralPath $mcpPath) {
     }
 }
 
-# Preserve sbox if present; refresh cornerman-lm entry.
+# Preserve existing sbox / sbox-editor entries; refresh cornerman-lm only.
 $servers = @{}
-if ($mcp.mcpServers.PSObject.Properties['sbox']) {
+if ($mcp.mcpServers) {
+    foreach ($prop in $mcp.mcpServers.PSObject.Properties) {
+        if ($prop.Name -in @('sbox', 'sbox-editor')) {
+            $servers[$prop.Name] = $prop.Value
+        }
+    }
+}
+if (-not $servers['sbox']) {
     $servers['sbox'] = @{
         command = 'cmd'
         args    = @('/c', 'npx', '-y', 'sbox-mcp-server')

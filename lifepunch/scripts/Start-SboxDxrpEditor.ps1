@@ -11,9 +11,10 @@
     api production
 
   Optional -WithAuthorize still passes +authorize from dxrp-editor.local.json.
+  With API connected, editor host play auto-spawns rank bots (lifepunch_auto_spawn_testbots, default 1).
 
 .PARAMETER SyncAddon
-  Addon idents to mirror before launch. Default: bitcoinmining.
+  Addon idents to mirror before launch. Default: bitcoinmining, hackerjob, adminmenu.
 
 .PARAMETER SyncAllAddons
   Mirror every lifepunch addon folder in the repo.
@@ -32,7 +33,7 @@
 #>
 [CmdletBinding()]
 param(
-    [string[]] $SyncAddon = @('bitcoinmining', 'hackerjob'),
+    [string[]] $SyncAddon = @('bitcoinmining', 'hackerjob', 'adminmenu'),
     [switch] $SyncAllAddons,
     [switch] $NoSync,
     [switch] $WithAuthorize,
@@ -126,9 +127,11 @@ Write-Host ''
 Start-Process -FilePath $sbox -ArgumentList $args -WorkingDirectory (Split-Path -Parent $sbox)
 if ($WithAuthorize) {
     Write-Host 'Editor started with +authorize. Wait for compile, then host play.' -ForegroundColor Cyan
+    Write-Host '  Rank bots auto-spawn when portal ranks load (lifepunch_auto_spawn_testbots 1).' -ForegroundColor DarkGray
 }
 else {
     Write-Host 'Editor started. Host play, then authorize <token> in console if you need portal/API data.' -ForegroundColor Cyan
+    Write-Host '  Rank bots wait for authorize — vanilla editor play will NOT spawn them.' -ForegroundColor DarkGray
 }
 
 if (-not $SkipConnectivityWatch) {

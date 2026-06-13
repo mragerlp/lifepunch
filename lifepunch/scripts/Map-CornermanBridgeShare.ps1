@@ -57,6 +57,17 @@ if (-not $mapped) {
 
 $ok = (Test-Path -LiteralPath (Join-Path $uncHost 'status.json')) -or (Test-Path -LiteralPath (Join-Path $uncIp 'status.json'))
 if ($ok) {
+    if ($Password) {
+        $bstr = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($Password)
+        try {
+            $plain = [Runtime.InteropServices.Marshal]::PtrToStringAuto($bstr)
+            cmdkey /generic:LifePunch/VengeanceSmb /user:$User /pass:$plain 2>$null | Out-Null
+            cmdkey /add:$VengeanceHost /user:$User /pass:$plain 2>$null | Out-Null
+        }
+        finally {
+            [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($bstr)
+        }
+    }
     Write-Host 'OK — Cornerman can read bridge IPC. Restart Cursor -> MCP sbox should go green when editor runs on VENGEANCE.' -ForegroundColor Green
 }
 else {

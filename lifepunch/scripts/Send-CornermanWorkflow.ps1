@@ -13,7 +13,7 @@
 #>
 [CmdletBinding()]
 param(
-    [ValidateSet('Inbox', 'StartVoiceRelay', 'DeployPttCapture', 'MonorepoPull', 'Checkpoint', 'WarmDistill', 'WarmCoder', 'FullPerformance', 'InstallLmWatchdog')]
+    [ValidateSet('Inbox', 'StartVoiceRelay', 'DeployPttCapture', 'MonorepoPull', 'Checkpoint', 'WarmDistill', 'WarmCoder', 'FullPerformance', 'InstallLmWatchdog', 'InstallGreenMcp')]
     [string] $Action = 'Inbox',
     [string] $Message = '',
     [string] $WorkflowId = '',
@@ -125,6 +125,15 @@ if (-not (Test-Path -LiteralPath '$lms')) { throw 'Missing $lms — run Sync-Cor
 if (-not (Test-Path -LiteralPath '$watch')) { throw 'Missing $watch — run Sync-CornermanRebootScripts.ps1 from Red' }
 & powershell -NoProfile -ExecutionPolicy Bypass -File '$watch'
 "@ -ConnectTimeout 300
+            $execOk = ($r.ExitCode -eq 0)
+            $execDetail = if ($r.Output) { $r.Output } else { "exit=$($r.ExitCode)" }
+        }
+        'InstallGreenMcp' {
+            $green = 'C:\lifepunch\cornerman\Install-CornermanGreenMcp.ps1'
+            $r = Invoke-CornermanSshExec -SshTarget $SshTarget -ScriptBlock @"
+if (-not (Test-Path -LiteralPath '$green')) { throw 'Missing $green — run Sync-CornermanRebootScripts.ps1 from Red' }
+& powershell -NoProfile -ExecutionPolicy Bypass -File '$green'
+"@ -ConnectTimeout 120
             $execOk = ($r.ExitCode -eq 0)
             $execDetail = if ($r.Output) { $r.Output } else { "exit=$($r.ExitCode)" }
         }
