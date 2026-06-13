@@ -9,8 +9,8 @@
     - VENGEANCE RAM / bloat (Discord, Spotify, LM Studio GUI on Red, duplicate s&box)
     - Cornerman RAM / bloat (LM Studio GUI, browsers, etc.)
     - Tier-3 serve lane (distill+embed in VRAM via lms CLI - no GUI required)
-    - VENGEANCE dual MCP (sbox bridge IPC + sbox-editor HTTP + mcp.json)
-    - Cornerman triple MCP (SMB sbox + SSH tunnel sbox-editor + cornerman-lm)
+    - VENGEANCE MCP (sbox bridge IPC + sbox-editor HTTP + cornerman-lm + mcp.json)
+    - Cornerman triple MCP only when Green still runs Cursor (OFF_CURSOR_ACTIVE.txt = skip)
 
   Use -Fix to stop wrong-node apps on VENGEANCE, warm Green LM, refresh bridge wiring.
 
@@ -77,6 +77,15 @@ function Get-LocalVengeanceHealth {
     return ($jsonLine | ConvertFrom-Json)
 }
 
+function Test-GreenOffCursor([string]$Target) {
+    if (-not (Test-CornermanSshReady -SshTarget $Target)) { return $false }
+    $marker = 'C:\lifepunch\cornerman\OFF_CURSOR_ACTIVE.txt'
+    $r = Invoke-CornermanSshExec -SshTarget $Target -ScriptBlock @"
+if (Test-Path -LiteralPath '$marker') { 'yes' } else { 'no' }
+"@ -ConnectTimeout 15
+    return ($r.Output -match 'yes')
+}
+
 function Test-VengeanceHealth {
     $v = Get-LocalVengeanceHealth
     if (-not $v) {
@@ -136,8 +145,8 @@ function Test-VengeanceMcpStack {
         $mj = Get-Content -LiteralPath $mcpPath -Raw | ConvertFrom-Json
         if ($mj.mcpServers) { $keys = @($mj.mcpServers.PSObject.Properties.Name) }
     }
-    $dualOk = ('sbox' -in $keys) -and ('sbox-editor' -in $keys)
-    Write-Check 'VENGEANCE mcp.json dual stack' $dualOk ($keys -join ', ')
+    $tripleOk = ('sbox' -in $keys) -and ('sbox-editor' -in $keys) -and ('cornerman-lm' -in $keys)
+    Write-Check 'VENGEANCE mcp.json stack' $tripleOk ($keys -join ', ')
 
     $editorUrl = "http://127.0.0.1:$EditorPort/sbox-mcp"
     $editorOk = $false
@@ -180,20 +189,31 @@ if ($Fix) {
     if (Test-CornermanSshReady -SshTarget $SshTarget) {
         & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $Here 'Sync-CornermanRebootScripts.ps1') | Out-Null
         & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $Here 'Fix-CornermanLmServe.ps1') 2>$null | Out-Null
-        & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $Here 'Connect-CornermanBridge.ps1') -SkipSmbMap 2>$null | Out-Null
+        $greenOffCursorFix = Test-GreenOffCursor -Target $SshTarget
+        if ($greenOffCursorFix) {
+            $offCursor = Join-Path $Here 'Apply-CornermanOffCursor.ps1'
+            if (Test-Path -LiteralPath $offCursor) {
+                Invoke-CornermanSshExec -SshTarget $SshTarget -ScriptBlock @"
+& powershell -NoProfile -ExecutionPolicy Bypass -File 'C:\lifepunch\cornerman\Apply-CornermanOffCursor.ps1'
+"@ -ConnectTimeout 60 | Out-Null
+            }
+        }
+        else {
+            & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $Here 'Connect-CornermanBridge.ps1') -SkipSmbMap 2>$null | Out-Null
+            $tunnel = 'C:\lifepunch\cornerman\Start-CornermanSboxEditorTunnel.ps1'
+            Invoke-CornermanSshExec -SshTarget $SshTarget -ScriptBlock @"
+if (Test-Path -LiteralPath '$tunnel') {
+  & powershell -NoProfile -ExecutionPolicy Bypass -File '$tunnel' -Background
+}
+"@ -ConnectTimeout 25 | Out-Null
+        }
         Invoke-CornermanSshExec -SshTarget $SshTarget -ScriptBlock @"
 Get-Process -ErrorAction SilentlyContinue | Where-Object { `$_.ProcessName -match 'LM Studio' } | ForEach-Object {
   `$null = `$_.CloseMainWindow(); Start-Sleep -Milliseconds 300
 }
 "@ -ConnectTimeout 15 | Out-Null
-        $tunnel = 'C:\lifepunch\cornerman\Start-CornermanSboxEditorTunnel.ps1'
-        Invoke-CornermanSshExec -SshTarget $SshTarget -ScriptBlock @"
-if (Test-Path -LiteralPath '$tunnel') {
-  & powershell -NoProfile -ExecutionPolicy Bypass -File '$tunnel' -Background
-}
-"@ -ConnectTimeout 25 | Out-Null
     }
-    & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $Here 'Install-VengeanceSboxEditorMcp.ps1') -SkipProbe | Out-Null
+    & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $Here 'Install-VengeanceMcpStack.ps1') -SkipProbe | Out-Null
     if (-not $Quiet) { Write-Host '' }
 }
 
@@ -208,11 +228,18 @@ else {
     if (-not $Quiet) { Write-Host '' ; Write-Host '--- Cornerman (Green) ---' -ForegroundColor Cyan }
     Write-Check 'Cornerman SSH' $true $SshTarget
     $health = Invoke-RemoteProbe 'Get-CornermanHealthProbe.ps1'
+    $greenOffCursor = Test-GreenOffCursor -Target $SshTarget
     if ($health) {
         $ramOk = ($health.ramFreeGb -ge 2) -and ($health.ramUsedPct -lt 92)
         Write-Check 'Cornerman RAM headroom' $ramOk "$($health.ramFreeGb)GB free / $($health.ramTotalGb)GB ($($health.ramUsedPct)% used)"
 
-        Write-Check 'LM Studio GUI closed' (-not $health.lmGuiRunning) $(if ($health.lmGuiRunning) { "GUI using $($health.lmGuiRamMb)MB -  close window" } else { 'headless serve only' })
+        if ($greenOffCursor) {
+            Write-Check 'Green off-Cursor mode' $true 'OFF_CURSOR_ACTIVE — headless LM only'
+            Write-Check 'LM Studio GUI closed' (-not $health.lmGuiRunning) $(if ($health.lmGuiRunning) { "GUI using $($health.lmGuiRamMb)MB - close window (optional)" } else { 'headless serve only' }) -Warning:($health.lmGuiRunning)
+        }
+        else {
+            Write-Check 'LM Studio GUI closed' (-not $health.lmGuiRunning) $(if ($health.lmGuiRunning) { "GUI using $($health.lmGuiRamMb)MB -  close window" } else { 'headless serve only' })
+        }
 
         Write-Check 'Tier-3 VRAM serve' $health.lmServeOk "loaded: $($health.lmVramLoaded)"
         Write-Check 'Tier-3 catalog' $health.lmCatalogOk '3 models on disk'
@@ -225,14 +252,21 @@ else {
             Write-Check 'Bloat scan' $true 'no flagged heavy apps'
         }
 
-        Write-Check 'Green SMB bridge' $health.smbShareOk 'UNC SboxBridgeIpc'
-        if ($RequireEditor) {
-            Write-Check 'Green editor tunnel :9090' $health.tunnel9090Ok 'SSH forward to VENGEANCE chomnr'
+        if ($greenOffCursor) {
+            Write-Check 'Green SMB bridge' $true 'N/A off-Cursor (Red local IPC)'
+            Write-Check 'Green editor tunnel :9090' $true 'N/A off-Cursor (Red local chomnr)'
+            Write-Check 'Green mcp.json triple' $true 'N/A off-Cursor (no Green Cursor)'
         }
         else {
-            Write-Check 'Green editor tunnel :9090' $health.tunnel9090Ok 'SSH forward to VENGEANCE chomnr' -Warning:(-not $health.tunnel9090Ok)
+            Write-Check 'Green SMB bridge' $health.smbShareOk 'UNC SboxBridgeIpc'
+            if ($RequireEditor) {
+                Write-Check 'Green editor tunnel :9090' $health.tunnel9090Ok 'SSH forward to VENGEANCE chomnr'
+            }
+            else {
+                Write-Check 'Green editor tunnel :9090' $health.tunnel9090Ok 'SSH forward to VENGEANCE chomnr' -Warning:(-not $health.tunnel9090Ok)
+            }
+            Write-Check 'Green mcp.json triple' $health.mcpTripleOk $health.mcpKeys
         }
-        Write-Check 'Green mcp.json triple' $health.mcpTripleOk $health.mcpKeys
     }
     else {
         Write-Check 'Cornerman health probe' $false 'push Get-CornermanHealthProbe.ps1 via Sync-CornermanRebootScripts'
