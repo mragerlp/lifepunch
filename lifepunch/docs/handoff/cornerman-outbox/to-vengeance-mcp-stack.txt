@@ -1,0 +1,23 @@
+VENGEANCE — one Cursor MCP stack (run on Red, not Green)
+=======================================================
+
+Green is off-Cursor. Cornerman ran Apply-CornermanOffCursor.ps1:
+  - LM daily lane hot (distill + embed on :1234)
+  - Green ~/.cursor/mcp.json archived and removed (do not use Cursor on Green)
+
+ON VENGEANCE (open Cursor there only):
+
+  cd C:\Projects\lifepunch
+  git pull --rebase
+  powershell -File lifepunch\scripts\Install-VengeanceMcpStack.ps1
+  powershell -File lifepunch\scripts\Start-SboxDxrpEditor.ps1
+
+Then: Developer Reload Window -> MCP green:
+  sbox          -> local %TEMP%\sbox-bridge-ipc
+  sbox-editor   -> http://127.0.0.1:9090/sbox-mcp
+  cornerman-lm  -> http://192.168.1.229:1234/v1
+
+Tier-3 prep without Cursor tokens:
+  powershell -File lifepunch\scripts\Send-CornermanWorkflow.ps1 -Action WarmDistill
+
+Green SMB map (\\VENGEANCE\SboxBridgeIpc) is NOT needed for this layout.
