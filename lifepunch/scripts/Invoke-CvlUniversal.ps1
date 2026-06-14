@@ -4,7 +4,7 @@
 
 .DESCRIPTION
   Rainbow / tri-stack tier. Probes VENGEANCE + Cornerman SSH + lifepunchnet HTTP, posts tier-tagged
-  NDJSON to session hub :9102 for Odysseus + security audit trail. Mr. Rager asks once; hub remembers.
+  NDJSON to session hub :9102 for Odysseus + security audit trail. Bloodwave asks once; hub remembers.
 
 .EXAMPLE
   powershell -File Invoke-CvlUniversal.ps1

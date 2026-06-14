@@ -10,6 +10,7 @@ Each machine wears an **outfit** from the Hacker Job art set: their uniform, not
 | **Hacker Terminal** | Cornerman | Local AI / mic / relay | Neon green `#00FF7F` | `cornerman@cornerman:~$` |
 | **Enhanced Hacker Terminal** | VENGEANCE | Desk / Cursor / monorepo | Neon red `#E4002B` | `vengeance@vengeance:~$` |
 | **Government Terminal** | lifepunchnet | Hosted Whisper, watchdog, sessions | Electric cyan `#00D4FF` | `lifepunch@lifepunch.net:~$` |
+| **Owner** | Bloodwave | Community / personal uniform (not a machine node) | — | — |
 
 ## Canonical outfit folders (OneDrive)
 
@@ -20,6 +21,7 @@ Artist source — edit here first, then sync into the repo:
 | VENGEANCE | `%USERPROFILE%\OneDrive\Desktop\Hacker Job\Enhanced Hacker Terminal\vengeance` |
 | Cornerman | `%USERPROFILE%\OneDrive\Desktop\Hacker Job\Hacker Terminal\cornerman` |
 | lifepunchnet | `%USERPROFILE%\OneDrive\Desktop\Hacker Job\Government Terminal\lifepunchnet` |
+| Bloodwave (owner) | `CVLassets\…\Bloodwave\` (owner prepares — see `outfits/bloodwave/README.md`) |
 
 **Uniform standards (web-wide):** `%USERPROFILE%\OneDrive\Desktop\uniforms\UNIFORM_STANDARDS.md`
 (repo mirror: `UNIFORM_STANDARDS.md` in this folder).

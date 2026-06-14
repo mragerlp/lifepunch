@@ -128,13 +128,13 @@ When non-blockers still need lane work, **Red does not solo-fix everything on Gr
 1. **VENGEANCE:** `Get-CvlTeamRoundPaste.ps1` — reads live checkpoint gaps, prints **one paste** for both lanes.
 2. **Same paste** to Cornerman **and** lifepunchnet (shared situational awareness).
 3. **No dual replies** — only `BLOCKED <lane>: reason` if stuck.
-4. **Mr. Rager:** "both lanes done" → `Invoke-CvlUniversal.ps1 -IngestToHub -Note <ping-id>` = **single answer**.
+4. **Bloodwave:** "both lanes done" → `Invoke-CvlUniversal.ps1 -IngestToHub -Note <ping-id>` = **single answer**.
 5. **Odysseus** (later) reads hub tier lines from that ping — you stop merging agent essays.
 
 ## Communication law (anti-tumble)
 
 1. **Hub is blue memory** — append-only on lifepunchnet. Green feeds via Red bridge. **No node reads hub and re-posts to another node.**
-2. **Red conducts checkpoints** — one universal answer for Mr. Rager; auto-probe, not three Cursor paste hunts.
+2. **Red conducts checkpoints** — one universal answer for Bloodwave; auto-probe, not three Cursor paste hunts.
 3. **Green never holds blue tokens** — LAN worker only.
 4. **Blue never decides GitHub** — host + log + STT; integration stays on Red.
 5. **Security before intensity** — `Test-CvlSecurity.ps1` before high-value hub ingest. Dim channels stay dim; do not fake white.
@@ -152,7 +152,7 @@ Optional future fields for Odysseus / rainbow:
 
 ## Related
 
-- `diagrams/cvl-missing-link-v2.png` — Mr. Rager chart v2 (authoritative raster)
+- `diagrams/cvl-missing-link-v2.png` — CVL chart v2 (authoritative raster)
 - `diagrams/cvl-missing-link-v2.drawio` — editable v2 (ops IPs in footer)
 - `diagrams/cvl-rgb-directed-ping.drawio` — v1 ecosystem chart (directed pings)
 - `OPS_CLARITY_CHECKPOINT.md` — shortcuts, uniforms, voice stack

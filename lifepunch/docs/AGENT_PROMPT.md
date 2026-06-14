@@ -29,17 +29,18 @@ READ FIRST (in this order), then follow them as law:
    lifepunch-quality-bar, dxrp-addon-foundation, lifepunch-trademark-ip,
    lifepunch-rules-workflow, lifepunch-website-organization, lifepunch-sbox-patches.
 2. `lifepunch/docs/MACHINE_CAST.md` ← machine names (VENGEANCE, Cornerman, lifepunchnet). Mandatory.
-3. `lifepunch/docs/OPS_CLARITY_CHECKPOINT.md` ← how we look at the web (at a glance, shortcut tiers, voice stack). Mandatory for ops/voice/multi-machine work.
-4. `lifepunch/docs/CVL_RGB_DOCTRINE.md` ← R/G/B primaries, yellow/cyan/magenta mixes, white=black integration states. Mandatory for CVL/multi-machine comms.
-5. `OneDrive/Desktop/uniforms/UNIFORM_STANDARDS.md` ← web uniform standards (Explorer icons, shortcut tiers, console cast). Repo mirror: `lifepunch/branding/lifepunch-ops/UNIFORM_STANDARDS.md`.
-6. `lifepunch/docs/AGENT_ONBOARDING.md` ← foundation + current state (read "Tonight" table if resuming mid-session).
-7. `lifepunch/docs/GIT_CHECKPOINTS.md` ← commit/push/pull (agent recommends, owner approves).
-8. `lifepunch/docs/WORKSPACE_STRUCTURE.md`.
-9. `lifepunch/docs/GITLAB_ORGANIZATION.md` ← GitLab lane map (GitHub monorepo stays canonical).
-10. s&box MCP work: `lifepunch/docs/SBOX_EDITOR_MCP.md` (dual stack: `sbox` + `sbox-editor`) · routing: `lifepunch/docs/MCP_AGENT_ROUTING.md`. `execute_csharp` OK when needed; **always** delete leftover `Editor/__Exec_*.cs` after exec sessions (see that doc).
-11. Cornerman LM: `lifepunch/docs/CORNERMAN_MODEL_ROUTING.md` · fix: `lifepunch/scripts/Fix-CornermanLmServe.ps1`.
-12. Before editor/project work: `lifepunch/scripts/Test-PreLaunchCheckup.ps1 -Fix` (Cornerman health, headless LM, dual MCP).
-13. s&box engine patches: `lifepunch/scripts/Get-SboxEnginePatchStatus.ps1` — if WARN, read `lifepunch/addons/docs/SBOX_ENGINE_PATCHES.md` and triage before UI/publish edits.
+3. `lifepunch/docs/BLOODWAVE_ALIAS.md` ← Bloodwave visible · mrragerlp proprietary · Mr. Rager contact. Mandatory.
+4. `lifepunch/docs/OPS_CLARITY_CHECKPOINT.md` ← how we look at the web (at a glance, shortcut tiers, voice stack). Mandatory for ops/voice/multi-machine work.
+5. `lifepunch/docs/CVL_RGB_DOCTRINE.md` ← R/G/B primaries, yellow/cyan/magenta mixes, white=black integration states. Mandatory for CVL/multi-machine comms.
+6. `OneDrive/Desktop/uniforms/UNIFORM_STANDARDS.md` ← web uniform standards (Explorer icons, shortcut tiers, console cast). Repo mirror: `lifepunch/branding/lifepunch-ops/UNIFORM_STANDARDS.md`.
+7. `lifepunch/docs/AGENT_ONBOARDING.md` ← foundation + current state (read "Tonight" table if resuming mid-session).
+8. `lifepunch/docs/GIT_CHECKPOINTS.md` ← commit/push/pull (agent recommends, owner approves).
+9. `lifepunch/docs/WORKSPACE_STRUCTURE.md`.
+10. `lifepunch/docs/GITLAB_ORGANIZATION.md` ← GitLab lane map (GitHub monorepo stays canonical).
+11. s&box MCP work: `lifepunch/docs/SBOX_EDITOR_MCP.md` (dual stack: `sbox` + `sbox-editor`) · routing: `lifepunch/docs/MCP_AGENT_ROUTING.md`. `execute_csharp` OK when needed; **always** delete leftover `Editor/__Exec_*.cs` after exec sessions (see that doc).
+12. Cornerman LM: `lifepunch/docs/CORNERMAN_MODEL_ROUTING.md` · fix: `lifepunch/scripts/Fix-CornermanLmServe.ps1`.
+13. Before editor/project work: `lifepunch/scripts/Test-PreLaunchCheckup.ps1 -Fix` (Cornerman health, headless LM, dual MCP).
+14. s&box engine patches: `lifepunch/scripts/Get-SboxEnginePatchStatus.ps1` — if WARN, read `lifepunch/addons/docs/SBOX_ENGINE_PATCHES.md` and triage before UI/publish edits.
 
 OUT OF SCOPE (law): Do NOT reference, document, or build anything for legacy EVO / EVORP / SPL-mute /
 null-EVORP — not part of LifePunch. Remove stray mentions if you touch a file; never add new ones.

@@ -18,7 +18,7 @@ Source of truth for the YouTube description copy used on every LifePunch addon s
 - Section dividers use the 28-char em-dash bar: `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`.
 - The proprietary notice is **required** on every description from here on out — it is the public-facing
   counterpart to the in-code proprietary header (see `.cursor/rules/dxrp-addon-foundation.mdc`).
-- Author credit defaults to the owner (`Mr. Rager | mrragerlp | lifepunch.co`); change only if a
+- Author credit defaults to the owner (`Bloodwave | mrragerlp | lifepunch.co`); change only if a
   different uploader publishes the video.
 
 ## Index

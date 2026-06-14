@@ -1,6 +1,6 @@
 # Discord changelog routine (end of workday)
 
-**Owner:** Mr. Rager posts manually to Discord — no webhook automation yet.  
+**Owner:** Bloodwave posts manually to Discord — no webhook automation yet.  
 **Agent duty:** At natural end-of-session (or when owner says "changelog"), produce one `diff`-fenced block for copy-paste.
 
 ---

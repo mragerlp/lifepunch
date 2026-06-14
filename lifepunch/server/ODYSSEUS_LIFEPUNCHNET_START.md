@@ -11,7 +11,7 @@
 
 ## Install (RDP into lifepunchnet)
 
-**Team round (one paste to Green + Blue):** on VENGEANCE run `Get-CvlOdysseusRoundPaste.ps1` — Mr. Rager
+**Team round (one paste to Green + Blue):** on VENGEANCE run `Get-CvlOdysseusRoundPaste.ps1` — Bloodwave
 confirms send time; both lanes see the full round; Red pings once after "both lanes done".
 
 ```powershell

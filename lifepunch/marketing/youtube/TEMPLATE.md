@@ -43,7 +43,7 @@ over DXRP's own backend, host-side re-validation, no client authority.}}
 
 Enjoy ⛶
 
-Mr. Rager | mrragerlp | lifepunch.co
+Bloodwave | mrragerlp | lifepunch.co
 
 -----------------------------------------------------------------------------------
 DXRP            @     | https://DXRP.net/

@@ -42,15 +42,15 @@ stack. Say a **node** when you mean one machine. Do **not** call the three-machi
 
 ## How agents should refer to people (alias-first)
 
-Use the **codename alias** in agent chat — the owner and partner recognize it immediately:
+**June 2026 aliases:** **Bloodwave** = visible (in-game · Steam · Discord). **mrragerlp** = proprietary /
+legal author on code. **Mr. Rager** = email and legacy contact. Full policy: `BLOODWAVE_ALIAS.md`.
 
-| Who | Say this in agent chat | Same person also known as |
-|-----|------------------------|---------------------------|
-| Owner | **Bloodwave** (default) | Jared, Mr. Rager, mragerlp, mrragerlp, jared (Windows) |
-| Partner | **shottaWEB** (default) | Brian (website lane) |
+| Who | Visible / agent | Proprietary / legal | Contact |
+|-----|-----------------|---------------------|---------|
+| Owner | **Bloodwave** | **mrragerlp** | Mr. Rager, Jared; GitHub remote `mragerlp` |
+| Partner | **shottaWEB** | — | Brian |
 
-Same pattern both sides: **Bloodwave** → owner (editor test character; easiest reference); **shottaWEB** → Brian.
-All owner aliases are one person — prefer **Bloodwave** in agent prose unless quoting a path, account, or Windows login.
+Prefer **Bloodwave** in agent prose; **mrragerlp** in proprietary headers.
 
 ---
 
@@ -58,11 +58,11 @@ All owner aliases are one person — prefer **Bloodwave** in agent prose unless 
 
 | Context | Names |
 |---------|--------|
-| Agent default | **Bloodwave** (editor test character — use this in chat) |
-| Also the same person | Jared, Mr. Rager, mragerlp, mrragerlp |
-| Misspelling seen | bioodwave |
-| Windows / local login | jared |
-| GitHub / GitLab accounts | mragerlp, mrragerlp |
+| Agent default | **Bloodwave** (in-game · Steam · Discord · agent chat) |
+| Proprietary / legal author | **mrragerlp** |
+| Contact / legacy | Mr. Rager, Jared |
+| GitHub monorepo remote | mragerlp |
+| Git author accounts | mrragerlp, mragerlp |
 
 **lifepunchnet RDP** may show Windows user **`administrator`** — still Bloodwave/owner. Watchdog `allowedUsers`: `jared`, `administrator`.
 

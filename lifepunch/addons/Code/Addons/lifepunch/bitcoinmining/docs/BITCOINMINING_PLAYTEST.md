@@ -12,7 +12,7 @@
 
 **Play fails when the active tab is a prefab stage** (`Prefab: GPU Rack`, `Prefab: Large GPU Rack`, etc.). Bridge reports `sceneName: "gpu-rack"` — that is **not** DXRP play mode. Hosting from there always yields `Unable to create a lobby outside of a game`.
 
-**Play works from `scenes/game.scene`** — bridge reports `sceneName: "Game"`, log shows `[Fitter] Fitting thieves.rpdowntown3t` and `Mr. Rager has joined the game`.
+**Play works from `scenes/game.scene`** — bridge reports `sceneName: "Game"`, log shows `[Fitter] Fitting thieves.rpdowntown3t` and `Bloodwave has joined the game`.
 
 ### Steps (every session)
 

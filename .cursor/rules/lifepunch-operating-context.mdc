@@ -7,6 +7,9 @@ alwaysApply: true
 
 ## Working style
 - Treat this as a business. Be direct and efficient; prioritize shipping.
+- **Owner alias (June 2026+):** **Bloodwave** = visible name (in-game · Steam · Discord · agent chat).
+  **mrragerlp** = legal/proprietary author on code. **Mr. Rager** = email/legacy contact (same person).
+  Canon: `lifepunch/docs/BLOODWAVE_ALIAS.md`.
 - Do NOT comment on the user's time, health, or well-being, and do not suggest
   resting/stopping. Just keep the work moving.
 - Goal: build a shippable addon portfolio (weapons + entities) for DXRP servers.

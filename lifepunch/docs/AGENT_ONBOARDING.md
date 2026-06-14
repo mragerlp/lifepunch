@@ -129,8 +129,9 @@ Full checkpoint (shortcuts, voice flow, per-node cheat sheet, failure surfaces):
 
 Deprecated: "Server Host", "RDP Server Host", "the server box" → **lifepunchnet**.
 
-**Agent-facing aliases:** say **Bloodwave** for the owner (same as Jared / Mr. Rager / mragerlp / mrragerlp);
-say **shottaWEB** for the partner (Brian). Bloodwave is the default owner reference (editor test character).
+**Agent-facing aliases:** **Bloodwave** = visible name (in-game · Steam · Discord · agent chat).
+**mrragerlp** = proprietary/legal author on code. **Mr. Rager** = email/legacy contact (same person).
+GitHub remote stays `mragerlp/lifepunch`. `BLOODWAVE_ALIAS.md`.
 See `MACHINE_CAST.md` § How agents should refer. lifepunchnet RDP may show `administrator` — still the owner.
 
 ## Efficiency & guardrails (cost-safe operation)
@@ -203,6 +204,7 @@ The `lifepunch-operating-context` rule is law here; this is the orientation. We 
 | **Publish now** | **`adminmenu` (`lifepunch.ulx`) only** — v1 ship-ready; LifePunch servers, not for resale |
 | **Bitcoin** | Ophion P0 from `BITCOIN_OPHION_CURSOR_BRIEF.md` — active dev, **not** publish export until visual sign-off |
 | **Ideation** | ChatGPT Step 1 → paste CURSOR BRIEF → Cursor VENGEANCE. `WORKFLOW_IDEATION_FIRST.md` · paste: `handoff/CHATGPT_STEP1_PASTE.txt` |
+| **Owner alias** | Visible: **Bloodwave** · Proprietary: **mrragerlp** · Contact: Mr. Rager — `BLOODWAVE_ALIAS.md` |
 | **Git checkpoints** | Agent recommends scope; owner approves. `GIT_CHECKPOINTS.md` · handoff: `handoff/JUNE_2026_FOUNDATION_CHECKPOINT.md` |
 | **Cornerman LM** | Headless `lms` on `:1234`. Dual MCP required — `Restore-CornermanDualStack.ps1` if off-Cursor. |
 | **Dual s&box MCP** | `sbox` + `sbox-editor` on both VENGEANCE and Cornerman when paired. `SBOX_EDITOR_MCP.md` |

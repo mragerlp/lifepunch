@@ -44,6 +44,7 @@ Done. You never edit template files.
 | `WORKFLOW_IDEATION_FIRST.md` | This process |
 | `PUBLISH_REPO_LANE.md` | Core vs publish repo law |
 | `GIT_CHECKPOINTS.md` | What to commit / push / pull — checkpoint habit |
+| `BLOODWAVE_ALIAS.md` | Owner community name (Bloodwave; legacy Mr. Rager) |
 | `CHATGPT_FOOD_PIPELINE.md` | Lanes + infra Run 1 notes |
 | `MCP_AGENT_ROUTING.md` | MCP/tool law after brief is accepted |
 

@@ -42,7 +42,7 @@ BEST-IN-CLASS UI / UX
 
 Enjoy ⛶
 
-Mr. Rager | mrragerlp | lifepunch.co
+Bloodwave | mrragerlp | lifepunch.co
 
 -----------------------------------------------------------------------------------
 DXRP            @     | https://DXRP.net/

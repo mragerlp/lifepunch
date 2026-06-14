@@ -15,17 +15,17 @@ $paste = @"
 ================================================================
 LIFEPUNCH CVL - ODYSSEUS ROUND (G + B) | ONE PASTE | RED'S ARM
 PING: $PingNote
-Goal: Odysseus on Blue reads tier-tagged hub memory - ONE final CVL answer (not Mr. Rager merging replies)
+Goal: Odysseus on Blue reads tier-tagged hub memory - ONE final CVL answer (not Bloodwave merging replies)
 ================================================================
 
 YOU BOTH SEE THE FULL ROUND. Do your section only. No routine replies to VENGEANCE.
 Exception only: BLOCKED <lane>: <reason>
 
-WHEN BOTH LANES DONE -> Mr. Rager tells VENGEANCE: "both lanes done"
+WHEN BOTH LANES DONE -> Bloodwave tells VENGEANCE: "both lanes done"
 Red runs ONE ping:
   .\lifepunch\scripts\Invoke-CvlUniversal.ps1 -IngestToHub -Note "$PingNote"
 
---- RED (VENGEANCE - Mr. Rager, before or during Blue install) ---
+--- RED (VENGEANCE - Bloodwave, before or during Blue install) ---
   - Leave session-sync feeding hub (Start Day or):
       .\lifepunch\scripts\start-session-sync.ps1
   - Hub should have CVL tier lines (universal/vengeance/cornerman/lifepunchnet)
@@ -75,4 +75,4 @@ if ($CopyToClipboard) {
 
 Write-Host ''
 Write-Host "Ping id: $PingNote" -ForegroundColor Cyan
-Write-Host 'Send this SAME paste to Cornerman and lifepunchnet when Mr. Rager confirms send time.' -ForegroundColor DarkGray
+Write-Host 'Send this SAME paste to Cornerman and lifepunchnet when Bloodwave confirms send time.' -ForegroundColor DarkGray

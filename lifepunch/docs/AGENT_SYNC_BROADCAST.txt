@@ -69,7 +69,7 @@ QUICK CAST (no substitutes)
   session hub   = POST http://205.209.104.22:9102/ingest (Bearer = status-token.txt)
                   VENGEANCE bridge: start-session-sync.ps1 (Cornerman logs -> ingest)
 
-  PEOPLE (alias-first): Bloodwave = owner (Jared/Mr. Rager/mragerlp) · shottaWEB = partner (Brian)
+  PEOPLE: Bloodwave = visible (in-game/Discord/Steam) · mrragerlp = proprietary author · Mr. Rager = email/legacy · shottaWEB = Brian
 
   DEPRECATED: "Server Host", "RDP Server Host", "the server box" → lifepunchnet
 

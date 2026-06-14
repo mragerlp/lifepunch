@@ -4,7 +4,7 @@
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="source" value="SOURCE&#xa;Mr. Rager — Systems Integrator&#xa;(black — not a worker tier)&#xa;127.0.0.1 local" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1a1a1a;strokeColor=#FFFFFF;fontColor=#FFFFFF;fontStyle=1" vertex="1" parent="1">
+        <mxCell id="source" value="SOURCE&#xa;Bloodwave — Systems Integrator&#xa;(black — not a worker tier)&#xa;127.0.0.1 local" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1a1a1a;strokeColor=#FFFFFF;fontColor=#FFFFFF;fontStyle=1" vertex="1" parent="1">
           <mxGeometry x="300" y="40" width="300" height="90" as="geometry" />
         </mxCell>
         <mxCell id="missing" value="MISSING LINK&#xa;integration law + one-paste +&#xa;hub tiers + Odysseus synthesis" style="shape=rhombus;whiteSpace=wrap;html=1;fillColor=#2a2a00;strokeColor=#DDDD44;fontColor=#FFFFFF;fontStyle=1" vertex="1" parent="1">
@@ -28,7 +28,7 @@
         <mxCell id="law" value="Law: hub=Blue only | Green no tokens | Blue no GitHub | Red one answer | no tumble" style="text;html=1;strokeColor=none;fillColor=none;fontColor=#BBBBBB;fontSize=10;align=center;" vertex="1" parent="1">
           <mxGeometry x="100" y="900" width="700" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="png-ref" value="Authoritative raster: cvl-missing-link-v2.png (Mr. Rager)" style="text;html=1;strokeColor=none;fillColor=none;fontColor=#666666;fontSize=9;" vertex="1" parent="1">
+        <mxCell id="png-ref" value="Authoritative raster: cvl-missing-link-v2.png (Bloodwave / CVL)" style="text;html=1;strokeColor=none;fillColor=none;fontColor=#666666;fontSize=9;" vertex="1" parent="1">
           <mxGeometry x="250" y="930" width="400" height="20" as="geometry" />
         </mxCell>
         <mxCell id="e-s-m" style="endArrow=classic;html=1;strokeColor=#888888;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="source" target="missing">

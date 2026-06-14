@@ -206,7 +206,7 @@ function Get-OdysseusUniversalVerdict($v, $c, $l) {
 function Get-Recommendation($v, $ready) {
     if (-not $ready) { return 'FIX FIRST - resolve BLOCKERS before commit/push or move-on.' }
     if ($v.dirty -or $v.ahead -gt 0) {
-        return "COMMIT/PUSH CANDIDATE - VENGEANCE $($v.ahead) commit(s) ahead of origin; confirm scope with Mr. Rager."
+        return "COMMIT/PUSH CANDIDATE - VENGEANCE $($v.ahead) commit(s) ahead of origin; confirm scope with Bloodwave."
     }
     if ($v.behind -gt 0) {
         return "PULL FIRST - VENGEANCE behind origin by $($v.behind) commit(s)."
@@ -304,7 +304,7 @@ Write-CvlRgbReport -Rgb $rgb
 Write-Host ''
 
 $readyColor = if ($script:Ready) { 'Green' } else { 'Yellow' }
-$readyText = if ($script:Ready) { 'YES - Mr. Rager may move on or commit when scope is confirmed' } else { 'NO - fix blockers first' }
+$readyText = if ($script:Ready) { 'YES - Bloodwave may move on or commit when scope is confirmed' } else { 'NO - fix blockers first' }
 Write-Host "  CVL READY: $readyText" -ForegroundColor $readyColor
 Write-Host "  $($result.recommend)" -ForegroundColor $(if ($script:Ready) { 'Green' } else { 'Yellow' })
 Write-VoiceDivider

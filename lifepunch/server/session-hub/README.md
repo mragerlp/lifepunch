@@ -38,7 +38,7 @@ logs here; Odysseus / Block C agents read them.
 | `cvl-watchdog` | lifepunchnet on-box watchdog snapshot |
 | `cvl-security` | Alert from VENGEANCE lifepunchnet watch |
 | `cvl-uptime` | UP/DOWN/DEGRADED state change |
-| `cvl-note` | Mr. Rager note attached to a checkpoint |
+| `cvl-note` | Bloodwave note attached to a checkpoint |
 
 ## CVL tiers (uniform — not cosmetic)
 

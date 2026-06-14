@@ -4,7 +4,7 @@
 
 .DESCRIPTION
   Runs Get-CvlUniversalCheckpoint -JsonOnly, builds ONE message both lanes receive.
-  No dual replies - Mr. Rager says "both lanes done" then Invoke-CvlUniversal -IngestToHub.
+  No dual replies - Bloodwave says "both lanes done" then Invoke-CvlUniversal -IngestToHub.
 
 .EXAMPLE
   powershell -File Get-CvlTeamRoundPaste.ps1
@@ -106,7 +106,7 @@ Red snapshot: $rgbLine | cvlReady=$($probe.cvlReady)
 YOU BOTH SEE THE FULL ROUND. Do your section only. No routine replies to VENGEANCE.
 Exception only: BLOCKED <lane>: <reason>
 
-When BOTH lanes are done, Mr. Rager tells VENGEANCE: "both lanes done"
+When BOTH lanes are done, Bloodwave tells VENGEANCE: "both lanes done"
 Red runs ONE ping (the single answer):
   .\lifepunch\scripts\Invoke-CvlUniversal.ps1 -IngestToHub -Note "$PingNote"
 
