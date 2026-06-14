@@ -146,6 +146,15 @@ $content = $content.Substring(0, $valueStart) + $newResources + $content.Substri
 [System.IO.File]::WriteAllText($sbprojPath, $content)
 Write-Host ('rp.sbproj Resources -> addons/lifepunch/' + $repoIdent + '/** only') -ForegroundColor Green
 
+$assetsRoot = Join-Path $dxrpGame 'Assets'
+foreach ($name in @('lpdevtest.scene', 'LPDEVTEST.scene', 'lpdevtest.scene_c', 'lpdevtest.scene_d', 'LPDEVTEST.scene.bak')) {
+    $p = Join-Path $assetsRoot $name
+    if (Test-Path -LiteralPath $p) {
+        Remove-Item -LiteralPath $p -Force
+        Write-Host "  Removed stale lpdevtest artifact: $name" -ForegroundColor Yellow
+    }
+}
+
 Write-Host ''
 Write-Host 'Bitcoin-only DXRP lane ready. Restart s&box editor (Resources changed).' -ForegroundColor Cyan
 Write-Host 'Play: lp_map_flatgrass -> lp_bitcoin_spawn_kit -> USE hub / racks' -ForegroundColor DarkGray

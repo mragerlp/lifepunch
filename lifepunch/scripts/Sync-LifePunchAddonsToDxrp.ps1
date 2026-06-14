@@ -148,4 +148,15 @@ if (Test-Path -LiteralPath $ensureResources) {
     & $ensureResources -Ident (Get-AddonIdents) -ConfigPath $ConfigPath
 }
 
+if (-not $WhatIf) {
+    $assetsRoot = Join-Path $dxrpGame 'Assets'
+    foreach ($name in @('lpdevtest.scene', 'LPDEVTEST.scene', 'lpdevtest.scene_c', 'lpdevtest.scene_d', 'LPDEVTEST.scene.bak')) {
+        $p = Join-Path $assetsRoot $name
+        if (Test-Path -LiteralPath $p) {
+            Remove-Item -LiteralPath $p -Force
+            Write-Host "  Removed stale lpdevtest artifact: $name" -ForegroundColor Yellow
+        }
+    }
+}
+
 Write-Host 'Sync OK' -ForegroundColor Green
