@@ -1,7 +1,11 @@
 # Cornerman — off-Cursor handoff (June 2026)
 
-**Status:** Green box **no longer runs Cursor.** Red (VENGEANCE) owns git, C#, ModelDoc coordination, and urgent docs.  
-**Cornerman role:** Voice/PTT relay, optional local RAG ingest, file mirror — **not** code commits or patch handoff unless owner revives Cursor on Green.
+> **SUPERSEDED for MCP full capacity (June 2026):** Green **must** run Cursor with triple MCP
+> (`sbox` + `sbox-editor` + `cornerman-lm`). Use `Restore-CornermanDualStack.ps1` from Red.
+> This doc remains for **git lane** law (Red commits; Green distill/outbox only).
+
+**Status:** Green may run Cursor again for **dual-stack MCP**; Red still owns **all git commits**.  
+**Cornerman role:** Tier-3 distill, voice/PTT, optional second Cursor — **not** integrate commits.
 
 **Eyes covered (law):** If something covers Green's eyes, say so to the owner — same as Cursor agents.
 Green has **no** Claude Bridge and **no** view of the editor unless the owner sends a screenshot or

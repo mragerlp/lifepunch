@@ -35,7 +35,7 @@ READ FIRST (in this order), then follow them as law:
 6. `lifepunch/docs/AGENT_ONBOARDING.md` ← foundation + current state (read "Tonight" table if resuming mid-session).
 7. `lifepunch/docs/WORKSPACE_STRUCTURE.md`.
 8. `lifepunch/docs/GITLAB_ORGANIZATION.md` ← GitLab lane map (GitHub monorepo stays canonical).
-9. s&box MCP work: `lifepunch/docs/SBOX_EDITOR_MCP.md` (dual stack: `sbox` + `sbox-editor`). `execute_csharp` OK when needed; **always** delete leftover `Editor/__Exec_*.cs` after exec sessions (see that doc).
+9. s&box MCP work: `lifepunch/docs/SBOX_EDITOR_MCP.md` (dual stack: `sbox` + `sbox-editor`) · routing: `lifepunch/docs/MCP_AGENT_ROUTING.md`. `execute_csharp` OK when needed; **always** delete leftover `Editor/__Exec_*.cs` after exec sessions (see that doc).
 10. Cornerman LM: `lifepunch/docs/CORNERMAN_MODEL_ROUTING.md` · fix: `lifepunch/scripts/Fix-CornermanLmServe.ps1`.
 11. Before editor/project work: `lifepunch/scripts/Test-PreLaunchCheckup.ps1 -Fix` (Cornerman health, headless LM, dual MCP).
 12. s&box engine patches: `lifepunch/scripts/Get-SboxEnginePatchStatus.ps1` — if WARN, read `lifepunch/addons/docs/SBOX_ENGINE_PATCHES.md` and triage before UI/publish edits.
@@ -46,6 +46,11 @@ null-EVORP — not part of LifePunch. Remove stray mentions if you touch a file;
 NOTE: every GitLab lane bundles a SYNCED MIRROR of `.cursor/rules` + `lifepunch/docs` at its root,
 so the rules auto-apply and grounding is local. NEVER edit grounding in a lane — it regenerates from
 the monorepo on each export; change rules/docs in GitHub only.
+
+IDEATION FIRST (law — Bloodwave workflow):
+  New product / spaghetti / mixed infra+UX → owner runs ChatGPT Step 1 BEFORE you build:
+  `lifepunch/docs/handoff/CHATGPT_STEP1_PASTE.txt` → product line → filled CURSOR BRIEF → paste here.
+  Process: `lifepunch/docs/WORKFLOW_IDEATION_FIRST.md`. If no brief, ask for Step 1 — do not guess.
 
 WHAT THIS IS: LifePunch builds custom, LifePunch-owned content for DXRP (a DarkRP-style game
 on s&box / Facepunch). Treat it as a business: direct, ship quality, no spaghetti (honest

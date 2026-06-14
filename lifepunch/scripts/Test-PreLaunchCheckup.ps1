@@ -247,9 +247,14 @@ if ($Fix) {
         }
 
         if ($greenOffCursorFix) {
-            Write-FixStep 'Off-Cursor mode — skip Apply-CornermanOffCursor (no re-warm)'
-            Write-FixStep 'Close LM Studio GUI on Green'
-            Close-GreenLmGui -Target $SshTarget
+            Write-FixStep 'Off-Cursor detected — restore Green dual-stack (required for full capacity)'
+            $restore = Join-Path $Here 'Restore-CornermanDualStack.ps1'
+            if (Test-Path -LiteralPath $restore) {
+                & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $restore -SshTarget $SshTarget -SkipSmbMap 2>$null
+            }
+            else {
+                Write-FixStep 'WARN: missing Restore-CornermanDualStack.ps1'
+            }
         }
         else {
             Write-FixStep 'Green Cursor mode — bridge + editor tunnel'
@@ -289,10 +294,11 @@ else {
         Write-Check 'Cornerman RAM headroom' $ramOk "$($health.ramFreeGb)GB free / $($health.ramTotalGb)GB ($($health.ramUsedPct)% used)"
 
         if ($greenOffCursor) {
-            Write-Check 'Green off-Cursor mode' $true 'OFF_CURSOR_ACTIVE — headless LM only'
-            Write-Check 'LM Studio GUI closed' (-not $health.lmGuiRunning) $(if ($health.lmGuiRunning) { "GUI using $($health.lmGuiRamMb)MB - close window (optional)" } else { 'headless serve only' }) -Warning:($health.lmGuiRunning)
+            Write-Check 'Green dual-stack mode' $false 'OFF_CURSOR_ACTIVE — run Restore-CornermanDualStack.ps1'
+            Write-Check 'LM Studio GUI closed' (-not $health.lmGuiRunning) $(if ($health.lmGuiRunning) { "GUI using $($health.lmGuiRamMb)MB - close window" } else { 'headless serve only' }) -Warning:($health.lmGuiRunning)
         }
         else {
+            Write-Check 'Green dual-stack mode' $true 'Cursor + triple MCP expected'
             Write-Check 'LM Studio GUI closed' (-not $health.lmGuiRunning) $(if ($health.lmGuiRunning) { "GUI using $($health.lmGuiRamMb)MB -  close window" } else { 'headless serve only' })
         }
 
@@ -308,9 +314,9 @@ else {
         }
 
         if ($greenOffCursor) {
-            Write-Check 'Green SMB bridge' $true 'N/A off-Cursor (Red local IPC)'
-            Write-Check 'Green editor tunnel :9090' $true 'N/A off-Cursor (Red local chomnr)'
-            Write-Check 'Green mcp.json triple' $true 'N/A off-Cursor (no Green Cursor)'
+            Write-Check 'Green SMB bridge' $false 'blocked by off-Cursor'
+            Write-Check 'Green editor tunnel :9090' $false 'blocked by off-Cursor'
+            Write-Check 'Green mcp.json triple' $false 'blocked by off-Cursor'
         }
         else {
             Write-Check 'Green SMB bridge' $health.smbShareOk 'UNC SboxBridgeIpc'

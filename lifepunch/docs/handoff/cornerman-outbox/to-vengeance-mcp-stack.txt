@@ -1,23 +1,28 @@
-VENGEANCE — one Cursor MCP stack (run on Red, not Green)
-=======================================================
+VENGEANCE — full MCP stack (Red + Green dual-stack)
+====================================================
 
-Green is off-Cursor. Cornerman ran Apply-CornermanOffCursor.ps1:
-  - LM daily lane hot (distill + embed on :1234)
-  - Green ~/.cursor/mcp.json archived and removed (do not use Cursor on Green)
+SUPERSEDES off-Cursor-only layout. Both machines at full capacity.
 
-ON VENGEANCE (open Cursor there only):
+ON VENGEANCE (Red — integrate lane):
 
-  cd C:\Projects\lifepunch
+  cd C:\Users\jared\Projects\lifepunchaddons
   git pull --rebase
-  powershell -File lifepunch\scripts\Install-VengeanceMcpStack.ps1
-  powershell -File lifepunch\scripts\Start-SboxDxrpEditor.ps1
+  powershell -File lifepunch\scripts\Test-PreLaunchCheckup.ps1 -Fix
+  powershell -File lifepunch\scripts\Start-SboxDxrpEditor.ps1 -PreflightFix
 
-Then: Developer Reload Window -> MCP green:
+Cursor MCP 3/3 green:
   sbox          -> local %TEMP%\sbox-bridge-ipc
-  sbox-editor   -> http://127.0.0.1:9090/sbox-mcp
+  sbox-editor   -> http://127.0.0.1:9090/sbox-mcp (chomnr)
   cornerman-lm  -> http://192.168.1.229:1234/v1
 
-Tier-3 prep without Cursor tokens:
-  powershell -File lifepunch\scripts\Send-CornermanWorkflow.ps1 -Action WarmDistill
+ON CORNERMAN (Green — distill + second Cursor):
 
-Green SMB map (\\VENGEANCE\SboxBridgeIpc) is NOT needed for this layout.
+  powershell -File lifepunch\scripts\Restore-CornermanDualStack.ps1
+  (SMB map once on Green desktop if automated map skipped)
+
+Green Cursor MCP 3/3 green (same keys, SMB + tunnel + localhost LM).
+
+Canon: lifepunch/docs/MCP_AGENT_ROUTING.md
+ChatGPT advisory paste: lifepunch/docs/handoff/to-chatgpt-mcp-topology-handoff.txt
+
+Red commits. Green outbox only.

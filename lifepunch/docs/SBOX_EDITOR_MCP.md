@@ -20,6 +20,68 @@ Install / refresh: `lifepunch/scripts/Install-VengeanceSboxEditorMcp.ps1`
 
 ---
 
+## Full capacity bar (lock this — June 2026)
+
+**Two different UIs — do not confuse them.**
+
+| Where you look | What it means | Full capacity |
+|----------------|---------------|---------------|
+| **s&box editor bottom-right** `MCP · N` | **chomnr** editor HTTP server · **N = connected AI clients** (Cursor tabs/agents), not “number of MCP servers” | **Green dot** + **`MCP · 1` or higher** (N ≥ 1). **`MCP 6` is fine** — six clients hooked to `sbox-editor`. Click pill → MCP dock → **Overview** to see client names. |
+| **Cursor → Settings → MCP** | Cursor-side MCP servers | **3 green** on VENGEANCE: `sbox`, `sbox-editor`, `cornerman-lm` |
+| **Claude Bridge** (play mode) | Runtime IPC | `get_bridge_status` → `connected: true`, heartbeat &lt; 30s |
+
+**You are NOT aiming for a magic number like “MCP 3” in the editor.** Zero clients (`MCP` with no number) = **not full** on editor MCP.
+
+### VENGEANCE (Red) — minimum every session
+
+```text
+Cursor MCP:     3/3 green  (sbox + sbox-editor + cornerman-lm)
+Editor pill:    green dot + MCP · ≥1
+Bridge:         connected (play/screenshots/lp_spawn_*)
+Tier-3 (Green): :1234 distill+embed loaded (via cornerman-lm from Red)
+```
+
+One-command probe:
+
+```powershell
+powershell -File lifepunch\scripts\Get-CvlConnectivityStatus.ps1 -Pretty
+```
+
+Pass when: `vengeance.sboxBridge`, `vengeance.sboxEditor`, `vengeance.mcpDual`, `cornerman.tier3Serve`, `cornerman.mcpTriple` = **true**.
+
+### Cornerman (Green) — 360° dual-stack (required every session)
+
+Green needs **triple** MCP (same two toolsets as Red, different transport):
+
+| Server | Toolset | Transport |
+|--------|---------|-----------|
+| `sbox` | Claude Bridge (play/runtime) | SMB `\\VENGEANCE\SboxBridgeIpc` |
+| `sbox-editor` | chomnr (ModelDoc/prefabs) | SSH tunnel `localhost:9090` → VENGEANCE |
+| `cornerman-lm` | Tier-3 distill | Green `localhost:1234` |
+
+Wire from VENGEANCE:
+
+```powershell
+powershell -File lifepunch\scripts\Restore-CornermanDualStack.ps1
+```
+
+On Green: restart Cursor → **3/3 green** when VENGEANCE editor is open.
+
+**Tier-3 models run on Green only** — VENGEANCE uses `cornerman-lm` as a LAN client to `:1234`. Do **not** run LM Studio on Red (competes with editor RAM).
+
+### Not full capacity → relaunch (no guilt, 2 minutes)
+
+```powershell
+powershell -File lifepunch\scripts\Test-PreLaunchCheckup.ps1 -Fix
+powershell -File lifepunch\scripts\Start-SboxDxrpEditor.ps1 -PreflightFix -SyncAddon bitcoinmining
+```
+
+Then **Ctrl+Shift+P → Reload Window** in Cursor if MCP panel still red.
+
+**Do not** use saved test scenes as proof — always `lp_map_flatgrass` + spawn prefabs fresh.
+
+---
+
 ## Pre-launch checkup (run before every project session)
 
 From **VENGEANCE**, before `Start-SboxDxrpEditor.ps1` or heavy addon work:
@@ -49,7 +111,10 @@ Polls every 30s on **VENGEANCE**; **Windows toast on Red only** when any MCP or 
 
 Status JSON only: `Get-CvlConnectivityStatus.ps1`
 
-Heal only: `Invoke-VengeanceBloatCleanup.ps1` (Red) · `Fix-CornermanLmServe.ps1` (Green) · bridge: `Connect-CornermanBridge.ps1`
+Heal only: `Invoke-VengeanceBloatCleanup.ps1` (Red) · `Fix-CornermanLmServe.ps1` (Green) · bridge: `Connect-CornermanBridge.ps1` · Green dual-stack: `Restore-CornermanDualStack.ps1`
+
+**Agent routing table (task → MCP → tier):** `lifepunch/docs/MCP_AGENT_ROUTING.md`  
+**ChatGPT advisory handoff:** `lifepunch/docs/handoff/to-chatgpt-mcp-topology-handoff.txt`
 
 ---
 
@@ -66,7 +131,7 @@ Cursor
 - **Claude Bridge** owns what happens **after Play** (pawn, mining playtest, bridge screenshots).
 - **chomnr_mcp** owns **editor authoring** (compile `gpu-rack.vmdl`, shader `_c`, KV3 writes, undo/revert UI).
 
-Cornerman **can dual-stack too** — SMB for `sbox` + **SSH tunnel** for `sbox-editor` (chomnr is `127.0.0.1` on VENGEANCE only).
+Cornerman **must dual-stack too** at full capacity — SMB for `sbox` + **SSH tunnel** for `sbox-editor` (chomnr is `127.0.0.1` on VENGEANCE only).
 
 ---
 

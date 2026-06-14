@@ -1,0 +1,153 @@
+CHATGPT — CVL MCP topology handoff (paste this whole block)
+============================================================
+Source: VENGEANCE (Red) · LifePunch DXRP · June 2026
+Reply format: numbered answers · no generic SaaS stack · no renaming our tools
+
+You are advising LifePunch — a proprietary s&box/DXRP addon studio (weapons, entities, website).
+We already wired the stack. Your job is to REFINE routing, ops, and failure modes — NOT redesign
+from scratch. If something below conflicts with your prior replies, THIS BLOCK wins.
+
+────────────────────────────────────────────────────────────────────────────
+§0 — CVL nodes (do not collapse these)
+────────────────────────────────────────────────────────────────────────────
+
+R = VENGEANCE (192.168.1.236) — primary desk, s&box editor, GitHub monorepo, Cursor integrate
+G = Cornerman   (192.168.1.229) — Tier-3 inference, voice/PTT, second Cursor when dual-stack
+B = lifepunchnet — hosted hub/logs (not in scope for this thread unless we ask)
+
+────────────────────────────────────────────────────────────────────────────
+§1 — CANON topology (locked — treat as law)
+────────────────────────────────────────────────────────────────────────────
+
+VENGEANCE hosts the s&box DXRP editor. Two addons INSIDE the editor:
+
+  sboxskinsgg.claudebridge   → runtime / play mode IPC
+  notpointless.chomnr_mcp    → editor HTTP MCP on 127.0.0.1:9090
+
+Cursor on VENGEANCE has THREE MCP server keys in ~/.cursor/mcp.json:
+
+  sbox          → npx sbox-mcp-server → %TEMP%\sbox-bridge-ipc (local file IPC)
+  sbox-editor   → http://127.0.0.1:9090/sbox-mcp (chomnr — NOT "Chromr", NOT web research)
+  cornerman-lm  → node local-llm-mcp-server → http://192.168.1.229:1234/v1 (LAN to Green)
+
+CORNERMAN (when at full capacity — required, not optional):
+
+  sbox          → SMB \\VENGEANCE\SboxBridgeIpc (same bridge IPC folder on Red)
+  sbox-editor   → SSH -L 9090:127.0.0.1:9090 jared@192.168.1.236 (tunnel to Red chomnr)
+  cornerman-lm  → localhost :1234 (LM Studio headless on Green)
+
+Green LM Studio (Tier-3 serve):
+  Daily models in VRAM: qwen/qwen3.6-35b-a3b + text-embedding-nomic-embed-text-v1.5
+  Warm coder (qwen2.5-coder) only on explicit brief — not default.
+
+Full capacity bar (both machines):
+  Cursor MCP 3/3 green · editor pill green + MCP·≥1 · bridge heartbeat <30s · Green :1234 up
+  Heal: Test-PreLaunchCheckup.ps1 -Fix · Restore-CornermanDualStack.ps1
+
+────────────────────────────────────────────────────────────────────────────
+§2 — Naming corrections (stop getting these wrong)
+────────────────────────────────────────────────────────────────────────────
+
+WRONG → RIGHT
+
+  "ClaudeBridge = Tier-3 strategist / architecture model"
+    → Claude Bridge is a TOOL (sbox MCP), not an LLM. Thinking = Cursor Opus/Auto.
+
+  "Chromr = research / browser / DOM / web lookup"
+    → chomnr_mcp = EDITOR MCP (ModelDoc, vmats, prefabs, compile). Name is chomnr not Chromr.
+
+  "Run LM Studio on VENGEANCE for autocomplete / cheap edits"
+    → NO LM on Red. Red uses cornerman-lm CLIENT to Green. Red RAM is for s&box editor.
+
+  "Move chomnr to Cornerman to fix tunnel latency"
+    → IMPOSSIBLE without moving s&box editor to Green (we explicitly do not).
+
+  "Tier 3 = ClaudeBridge, Tier 1 = LM Studio"
+    → LifePunch tiers are INVERTED vs that numbering:
+       Tier-1 = Opus (Cursor API, hard ~20%)
+       Tier-2 = Auto/Composer (routine ~80%)
+       Tier-3 = Cornerman local LM (distill/prep only — not production C# decisions)
+
+────────────────────────────────────────────────────────────────────────────
+§3 — What each layer actually owns
+────────────────────────────────────────────────────────────────────────────
+
+| Layer              | Owns                                      | Does NOT own              |
+|--------------------|-------------------------------------------|---------------------------|
+| Cursor (Red/Green) | Orchestration, git, agent plans, Opus/Auto  | In-game state by itself   |
+| sbox MCP           | Play mode, spawn, runtime screenshots     | ModelDoc / vmat compile   |
+| sbox-editor MCP    | Editor assets, compile, prefab/scene edit | Play mode pawn logic      |
+| cornerman-lm MCP   | Distill, summarize, cheap draft prep      | Ship decisions, commits   |
+| Green LM :1234     | Token gen, embed, local batch work        | Editor filesystem on Red  |
+
+Agent routing (current law):
+  Playtest / lp_spawn_* / in-game UI     → sbox
+  vmdl/vmat/shader/prefab editor work    → sbox-editor
+  Bulk summarize / log prep / classify   → cornerman-lm
+  Architecture / multi-file C# / security → Cursor Opus (not any bridge)
+
+────────────────────────────────────────────────────────────────────────────
+§4 — Questions for you (answer these specifically)
+────────────────────────────────────────────────────────────────────────────
+
+Q1 — ROUTING TABLE
+Given §1–§3, produce a task→tool→model matrix for s&box addon work (20+ rows).
+Columns: Task type | MCP server | Cursor model tier | Never use | Why.
+Include: Bitcoin miner hub visuals, GPU rack vmdl, Razor UI, playtest, portal publish prep.
+
+Q2 — GREEN DUAL-STACK OPS
+Cornerman must run the same 3 MCP keys as Vengeance (different transport). List:
+  (a) boot order after reboot
+  (b) failure signatures (SMB vs tunnel vs LM)
+  (c) which fixes are safe automated vs need owner password (SMB map)
+  (d) how Green Cursor and Red Cursor should split work without duplicate commits
+
+Q3 — SSH TUNNEL :9090
+chomnr is editor-bound on Red. Green reaches it via SSH forward. Without moving the editor:
+  (a) what latency/throughput is acceptable before editor MCP feels broken?
+  (b) mitigations (keepalive, watchdog, multiplexing, split sessions)?
+  (c) what workload should NEVER go through the tunnel?
+
+Q4 — PROJECT MEMORY
+We use Cursor rules + repo docs (not /ai/*.md yet). Propose a minimal memory layout that:
+  (a) loads via Cursor rules/skills — NOT via bridge addons
+  (b) stays in GitHub monorepo under lifepunch/docs/
+  (c) avoids duplicating AGENT_PROMPT.md / SBOX_EDITOR_MCP.md
+What 5 files would you add, what goes in each, who updates them (Red vs Green)?
+
+Q5 — TIER-3 BOUNDARY
+When should Cornerman distill output be trusted vs must escalate to Opus on Red?
+Give 10 concrete examples from game-addon work (C#, assets, legal/trademark, UX).
+
+Q6 — LM STUDIO MCP SHAPE
+We use georgepok/local-llm-mcp-server (node) pointing at LM OpenAI API :1234.
+vs LM Studio hosting MCP servers directly — which fits our two-machine setup better and why?
+
+Q7 — MONITORING
+What 8 metrics/signals should Watch-CvlConnectivity.ps1 treat as P0 vs P2?
+(bridge heartbeat, chomnr HTTP, SMB readable, tunnel up, LM models loaded, etc.)
+
+Q8 — ANTI-PATTERNS
+List 10 ways this setup fails in practice (agent confusion, wrong MCP, stale tunnel,
+off-Cursor drift, execute_csharp temp file leaks, etc.) and one-line prevention each.
+
+────────────────────────────────────────────────────────────────────────────
+§5 — Reply constraints
+────────────────────────────────────────────────────────────────────────────
+
+DO:
+  - Respect LifePunch tier naming (Tier-3 = Cornerman LM, not Claude Bridge)
+  - Keep s&box editor on VENGEANCE permanently
+  - Assume both machines run Cursor at full capacity
+  - Reference MCP keys exactly: sbox, sbox-editor, cornerman-lm
+
+DO NOT:
+  - Suggest Next.js / Postgres / Supabase / generic "MCP filesystem+github" starter stacks
+  - Rename chomnr to Chromr or assign it browser/DOM duties
+  - Put LM Studio on VENGEANCE
+  - Treat Claude Bridge as a reasoning model tier
+  - Propose moving the editor to Cornerman
+
+If you need clarification, ask at most 3 questions — then answer Q1–Q8 with best-effort.
+
+— END HANDOFF —

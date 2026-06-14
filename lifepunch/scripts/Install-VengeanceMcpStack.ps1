@@ -29,4 +29,4 @@ if ($SkipProbe) { $editorArgs['SkipProbe'] = $true }
 
 Write-Host ''
 Write-Host 'Done. Reload Cursor on VENGEANCE -> MCP: sbox, sbox-editor, cornerman-lm.' -ForegroundColor Green
-Write-Host 'Green: headless LM only (OFF_CURSOR_ACTIVE). Close Cursor on Cornerman.' -ForegroundColor DarkGray
+Write-Host 'Green: dual-stack required — Restore-CornermanDualStack.ps1 if OFF_CURSOR_ACTIVE.' -ForegroundColor DarkGray

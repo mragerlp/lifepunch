@@ -1,0 +1,58 @@
+LIFEPUNCH™ — fill the blank CURSOR BRIEF (Step 1 ideation)
+===========================================================
+Bloodwave uses ChatGPT to turn ideas into structured food for Cursor on VENGEANCE.
+
+YOUR JOB:
+1. Wait for Bloodwave's product line (next message), OR if included below, use it.
+2. Fill EVERY field in the blank template. Keep section headers exactly.
+3. Reply with ONLY the filled brief — no intro essay, no outro.
+4. No shippable C#. Any path = "suggested — integrator verifies".
+5. LIFEPUNCH™ lead · DXRP nominative only · ™ not ® · no ®
+
+BLANK TEMPLATE (fill all fields):
+
+───────────────────────────────────────────────────────────────────────────
+CURSOR BRIEF — from ChatGPT LIFEPUNCH™
+───────────────────────────────────────────────────────────────────────────
+Product: 
+ChatGPT chat date: 
+Owner priority (P0/P1/P2): 
+
+── PLAYER FANTASY (2–4 sentences) ──
+
+
+── LOOP (player steps) ──
+1. 
+2. 
+3. 
+4. 
+5. 
+
+── ENTITIES / PROPS (names only) ──
+
+
+── UX / UI (screens, prompts, errors) ──
+
+
+── DXRP FIT (roleplay hook — your guess) ──
+
+
+── LIFEPUNCH™ BRAND (listing title + in-game source line) ──
+Lead LIFEPUNCH™ · DXRP nominative only · ™ not ®
+
+── VISUAL / AUDIO ──
+
+
+── OUT OF SCOPE ──
+
+
+── OPEN QUESTIONS FOR CURSOR (max 5) ──
+1. 
+2. 
+3. 
+
+───────────────────────────────────────────────────────────────────────────
+END BRIEF — Bloodwave pastes this into Cursor VENGEANCE
+───────────────────────────────────────────────────────────────────────────
+
+If Bloodwave has not named a product yet, ask once: "Which ONE product?" Then fill.

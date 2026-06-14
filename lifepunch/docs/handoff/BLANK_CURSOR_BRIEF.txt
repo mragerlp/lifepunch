@@ -1,0 +1,43 @@
+───────────────────────────────────────────────────────────────────────────
+CURSOR BRIEF — from ChatGPT LIFEPUNCH™
+───────────────────────────────────────────────────────────────────────────
+Product: 
+ChatGPT chat date: 
+Owner priority (P0/P1/P2): 
+
+── PLAYER FANTASY (2–4 sentences) ──
+
+
+── LOOP (player steps) ──
+1. 
+2. 
+3. 
+4. 
+5. 
+
+── ENTITIES / PROPS (names only) ──
+
+
+── UX / UI (screens, prompts, errors) ──
+
+
+── DXRP FIT (roleplay hook — ChatGPT guess; Cursor verifies) ──
+
+
+── LIFEPUNCH™ BRAND (listing title + in-game source line) ──
+Lead LIFEPUNCH™ · DXRP nominative only · ™ not ®
+
+── VISUAL / AUDIO ──
+
+
+── OUT OF SCOPE ──
+
+
+── OPEN QUESTIONS FOR CURSOR (max 5) ──
+1. 
+2. 
+3. 
+
+───────────────────────────────────────────────────────────────────────────
+END BRIEF
+───────────────────────────────────────────────────────────────────────────

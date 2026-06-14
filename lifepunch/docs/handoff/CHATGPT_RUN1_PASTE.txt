@@ -1,0 +1,97 @@
+LIFEPUNCH™ + CVL — Run 1 (paste entire block into LIFEPUNCH™ Project chat)
+=============================================================================
+Bloodwave · VENGEANCE · June 2026 · ChatGPT Plus · Repo law wins if you conflict.
+
+We are giving you a real shot to advise our wired stack. Answer Q1–Q8 below in numbered
+sections. No generic SaaS starter stacks. No renaming our tools.
+
+────────────────────────────────────────────────────────────────────────────
+§0 — CVL nodes
+────────────────────────────────────────────────────────────────────────────
+
+R = VENGEANCE (192.168.1.236) — s&box DXRP editor, GitHub monorepo, Cursor integrate, commits
+G = Cornerman   (192.168.1.229) — LM Studio :1234, voice/PTT, Cursor dual-stack mirror
+B = lifepunchnet (205.209.104.22) — hub :9102, watchdog :9101, Whisper :9000
+
+────────────────────────────────────────────────────────────────────────────
+§1 — MCP topology (LOCKED)
+────────────────────────────────────────────────────────────────────────────
+
+Editor on R only. Two addons inside s&box on VENGEANCE:
+  sboxskinsgg.claudebridge  → runtime / play
+  notpointless.chomnr_mcp   → editor HTTP 127.0.0.1:9090
+
+Cursor MCP keys (BOTH R and G at full capacity — 3/3 green):
+
+  sbox          → Claude Bridge file IPC (R: local %TEMP%\sbox-bridge-ipc · G: SMB \\VENGEANCE\SboxBridgeIpc)
+  sbox-editor   → chomnr (R: localhost:9090 · G: SSH tunnel → R)
+  cornerman-lm  → LM API (R: http://192.168.1.229:1234/v1 · G: localhost:1234)
+
+Green LM daily VRAM: qwen/qwen3.6-35b-a3b + nomic embed. Coder model only on explicit brief.
+NO LM Studio on Vengeance. Heal scripts: Test-PreLaunchCheckup.ps1 -Fix · Restore-CornermanDualStack.ps1
+
+────────────────────────────────────────────────────────────────────────────
+§2 — Naming law (you have gotten these wrong before — do not repeat)
+────────────────────────────────────────────────────────────────────────────
+
+  Claude Bridge ≠ a reasoning model. It is the sbox MCP tool.
+  chomnr_mcp ≠ "Chromr". It is editor MCP — NOT web research or browser DOM.
+  Tier-1 = Cursor Opus (hard ~20%). Tier-2 = Auto/Composer. Tier-3 = Green LM prep ONLY.
+  ChatGPT = advisory fifth lane. Cursor on R commits. Green never commits.
+
+────────────────────────────────────────────────────────────────────────────
+§3 — Current P0 product context
+────────────────────────────────────────────────────────────────────────────
+
+Bitcoin miner hub (Ophion) on flatgrass — NOT portal-ready until visuals pass.
+Workflow: ModelDoc/vmat on sbox-editor → play spawn lp_spawn_bitcoin_miner_hub_only on sbox.
+No saved test scenes as proof. LIFEPUNCH™ trademark — lead with LIFEPUNCH, DXRP nominative only.
+
+────────────────────────────────────────────────────────────────────────────
+QUESTIONS — answer all eight, numbered, best-effort (max 3 clarifying questions first if needed)
+────────────────────────────────────────────────────────────────────────────
+
+Q1 — ROUTING TABLE
+20+ rows: Task type | MCP server | Cursor tier | Never use | Why.
+Must include: hub vmdl/vmat, GPU rack shader, Razor terminal UI, flatgrass playtest, portal publish prep.
+
+Q2 — GREEN DUAL-STACK OPS
+(a) boot order after full power loss — Red then Green, script names
+(b) failure signatures: SMB vs SSH tunnel vs LM vs OFF_CURSOR marker
+(c) automated fix vs owner-password step (SMB map)
+(d) how R Cursor and G Cursor split work — zero duplicate commits
+
+Q3 — SSH TUNNEL :9090
+(a) acceptable RPC latency before editor MCP feels broken
+(b) mitigations without moving editor off Vengeance
+(c) workloads that must NEVER use Green tunnel — do on R Cursor
+
+Q4 — PROJECT MEMORY
+5 files under lifepunch/docs/ — name, contents, who updates (R vs G). Load via Cursor rules only.
+
+Q5 — TIER-3 BOUNDARY
+10 examples: when Green distill is OK vs must escalate Opus on R (C#, assets, trademark, UX).
+
+Q6 — LM MCP SHAPE
+georgepok/local-llm-mcp-server (node → :1234) vs LM Studio native MCP host — which for our two-box setup?
+
+Q7 — MONITORING
+8 signals for Watch-CvlConnectivity: label each P0 or P2 and why.
+
+Q8 — ANTI-PATTERNS
+10 failure modes + one-line prevention (wrong MCP, off-Cursor drift, __Exec_*.cs leaks, etc.).
+
+────────────────────────────────────────────────────────────────────────────
+REPLY FORMAT
+────────────────────────────────────────────────────────────────────────────
+
+Start with: "ACK — [confirm sbox / sbox-editor / cornerman-lm and tier naming in one line]"
+
+Then Q1…Q8. Keep tables tight. End with:
+
+  ROOTS CHECK — 5 bullets: what must be green before ANY addon work
+  RED ACTION TODAY — 3 concrete steps on Vengeance
+  GREEN ACTION TODAY — 3 concrete steps on Cornerman
+  CHATGPT ONLY — what you cannot execute (honest)
+
+— END RUN 1 —
