@@ -57,7 +57,7 @@ function Copy-PublishTree {
                 -and $_.Extension -ne '.md' `
                 -and $parts -notcontains 'docs' `
                 -and $parts -notcontains '_dev' `
-                -and $_.Name -notmatch '(TestBots|DevGive|DevSpawn)\.cs$'
+                -and $_.Name -notmatch '(TestBots|DevGive|DevSpawn)'
         } |
         ForEach-Object {
             $rel = $_.FullName.Substring($sourceRoot.Length).TrimStart('\', '/')
@@ -66,6 +66,16 @@ function Copy-PublishTree {
             if (-not (Test-Path -LiteralPath $parent)) { New-Item -ItemType Directory -Force -Path $parent | Out-Null }
             Copy-Item -LiteralPath $_.FullName -Destination $target -Force
         }
+}
+
+# Remove stale addon trees from prior exports (publish lane is a snapshot, not incremental).
+foreach ($root in @(
+        (Join-Path $Target 'Assets\addons\lifepunch'),
+        (Join-Path $Target 'Code\Addons\lifepunch')
+    )) {
+    if (Test-Path -LiteralPath $root) {
+        Remove-Item -LiteralPath $root -Recurse -Force
+    }
 }
 
 $exportAddons = @()
