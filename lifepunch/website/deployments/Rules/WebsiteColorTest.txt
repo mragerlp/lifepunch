@@ -5519,13 +5519,13 @@ export default {
                 <i class="fa-brands fa-discord discord-icon"></i>
                 <div class="discord-title">JOIN THE COMMUNITY</div>
                 <p class="discord-desc">Stay updated, report rulebreakers, and chat with the community!</p>
-                <a href="https://discord.gg/lifepunchco" target="_blank" class="discord-btn">JOIN SERVER</a>
+                <a href="https://discord.gg/lifepunch" target="_blank" class="discord-btn">JOIN SERVER</a>
                 <button class="copy-btn" onclick="copyInvite(this)">COPY INVITE LINK</button>
             </div>
             
             <script>
                 function copyInvite(btn) {
-                    navigator.clipboard.writeText("https://discord.gg/lifepunchco");
+                    navigator.clipboard.writeText("https://discord.gg/lifepunch");
                     const originalText = btn.innerText;
                     btn.innerText = "COPIED!";
                     btn.classList.add('copied');

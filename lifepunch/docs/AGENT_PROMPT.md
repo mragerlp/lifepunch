@@ -1,4 +1,4 @@
-# LifePunch — Agent Copy/Paste Prompts (GitLab era)
+# LIFEPUNCH™ — Agent Copy/Paste Prompts (GitLab era)
 
 > Hand the correct block to a **fresh Cursor chat** on **Auto/Composer** (Tier-2 default).
 > Escalate to Opus only for genuinely hard work. Full foundation: `AGENT_ONBOARDING.md`.
@@ -34,13 +34,16 @@ READ FIRST (in this order), then follow them as law:
 5. `lifepunch/docs/CVL_RGB_DOCTRINE.md` ← R/G/B primaries, yellow/cyan/magenta mixes, white=black integration states. Mandatory for CVL/multi-machine comms.
 6. `OneDrive/Desktop/uniforms/UNIFORM_STANDARDS.md` ← web uniform standards (Explorer icons, shortcut tiers, console cast). Repo mirror: `lifepunch/branding/lifepunch-ops/UNIFORM_STANDARDS.md`.
 7. `lifepunch/docs/AGENT_ONBOARDING.md` ← foundation + current state (read "Tonight" table if resuming mid-session).
-8. `lifepunch/docs/GIT_CHECKPOINTS.md` ← commit/push/pull (agent recommends, owner approves).
-9. `lifepunch/docs/WORKSPACE_STRUCTURE.md`.
-10. `lifepunch/docs/GITLAB_ORGANIZATION.md` ← GitLab lane map (GitHub monorepo stays canonical).
-11. s&box MCP work: `lifepunch/docs/SBOX_EDITOR_MCP.md` (dual stack: `sbox` + `sbox-editor`) · routing: `lifepunch/docs/MCP_AGENT_ROUTING.md`. `execute_csharp` OK when needed; **always** delete leftover `Editor/__Exec_*.cs` after exec sessions (see that doc).
-12. Cornerman LM: `lifepunch/docs/CORNERMAN_MODEL_ROUTING.md` · fix: `lifepunch/scripts/Fix-CornermanLmServe.ps1`.
-13. Before editor/project work: `lifepunch/scripts/Test-PreLaunchCheckup.ps1 -Fix` (Cornerman health, headless LM, dual MCP).
-14. s&box engine patches: `lifepunch/scripts/Get-SboxEnginePatchStatus.ps1` — if WARN, read `lifepunch/addons/docs/SBOX_ENGINE_PATCHES.md` and triage before UI/publish edits.
+8. `lifepunch/docs/BUSINESS_CONTEXT.md` ← LIFEPUNCH™ entity, revenue, community links.
+9. `lifepunch/docs/PUBLISH_REPO_LANE.md` ← two-repo publish law (core vs lifepunch-published).
+10. `lifepunch/addons/docs/QUARANTINE_REGISTER.md` ← frozen idents; concepts only, no ship copy.
+11. `lifepunch/docs/GIT_CHECKPOINTS.md` ← commit/push/pull (agent recommends, owner approves).
+12. `lifepunch/docs/WORKSPACE_STRUCTURE.md`.
+13. `lifepunch/docs/GITLAB_ORGANIZATION.md` ← GitLab lane map (GitHub monorepo stays canonical).
+14. s&box MCP work: `lifepunch/docs/SBOX_EDITOR_MCP.md` (dual stack: `sbox` + `sbox-editor`) · routing: `lifepunch/docs/MCP_AGENT_ROUTING.md`. `execute_csharp` OK when needed; **always** delete leftover `Editor/__Exec_*.cs` after exec sessions (see that doc).
+15. Cornerman LM: `lifepunch/docs/CORNERMAN_MODEL_ROUTING.md` · fix: `lifepunch/scripts/Fix-CornermanLmServe.ps1`.
+16. Before editor/project work: `lifepunch/scripts/Test-PreLaunchCheckup.ps1 -Fix` (Cornerman health, headless LM, dual MCP).
+17. s&box engine patches: `lifepunch/scripts/Get-SboxEnginePatchStatus.ps1` — if WARN, read `lifepunch/addons/docs/SBOX_ENGINE_PATCHES.md` and triage before UI/publish edits.
 
 OUT OF SCOPE (law): Do NOT reference, document, or build anything for legacy EVO / EVORP / SPL-mute /
 null-EVORP — not part of LifePunch. Remove stray mentions if you touch a file; never add new ones.
@@ -56,12 +59,22 @@ IDEATION FIRST (law — Bloodwave workflow):
 
 PUBLISH LANE (ship tree — not law):
   Portal-ready exports go to `lifepunch-published` repo — see `lifepunch/docs/PUBLISH_REPO_LANE.md`.
+  Source: `portfolio.json` → publishReadyAddons (today: adminmenu/lifepunchulx only).
+  Workflow: core build → owner sign-off → Export-LifepunchPublishLane.ps1 → prepare-publish.ps1.
   Commit/push/pull decisions: `lifepunch/docs/GIT_CHECKPOINTS.md` — agent recommends, owner approves.
   Integrate and quarantine stay in THIS monorepo only.
 
-WHAT THIS IS: LifePunch builds custom, LifePunch-owned content for DXRP (a DarkRP-style game
+QUARANTINE (law — frozen idents):
+  Only adminmenu + bitcoinmining are active compile/ship work (portfolio.json activeAddons).
+  Quarantined idents (hackerjob, ak47, bankerjob, drugs, …) are ON DISK for **concepts/context
+  only** — do NOT edit, extend, export, or copy their code/prefabs/SCSS into active addons.
+  Promotion requires owner + portfolio.json + addons.csproj unblock + ChatGPT brief.
+  Register: lifepunch/addons/docs/QUARANTINE_REGISTER.md
+
+WHAT THIS IS: LIFEPUNCH™ builds custom, LIFEPUNCH-owned content for DXRP (a DarkRP-style game
 on s&box / Facepunch). Treat it as a business: direct, ship quality, no spaghetti (honest
 simple baselines are fine; tracked in addons/docs/TECH_DEBT.md when in the addons lane).
+Community: https://discord.gg/lifepunch · https://lifepunch.co
 
 SOURCE OF TRUTH: https://github.com/mragerlp/lifepunch (GitHub monorepo). Owner works here.
 GITLAB (June 2026+): Per-lane partner repos under gitlab.com/mragerlp — NOT a GitHub replacement.
@@ -87,9 +100,13 @@ EYES COVERED (law — Cursor + Cornerman):
   Bridge on → screenshot/probe before any visual claim. Prefab scale ≠ spawned scene.
 - Cornerman: **"Cornerman's eyes are covered"** — inbox/distill/repo only; never imply game or screen verified.
 
-TRADEMARK: LIFEPUNCH is the only mark we own (Peak Performance Products LLC). DXRP/Dxura/s&box/
-Facepunch are third-party — lead product names with LIFEPUNCH ("LIFEPUNCH Admin Menu for DXRP").
-Use LIFEPUNCH(TM) now (pending); never the (R) symbol until the USPTO registration issues.
+TRADEMARK / BRANDING (law):
+- **LIFEPUNCH™** is the only mark we own (Peak Performance Products LLC). DXRP/Dxura/s&box/
+  Facepunch are third-party — lead product names with LIFEPUNCH ("LIFEPUNCH Admin Menu for DXRP").
+- Use **LIFEPUNCH™** (all-caps mark + ™) in docs and product naming while registration is pending;
+  **never ®** until the USPTO registration issues.
+- Public community Discord: **https://discord.gg/lifepunch** (legacy `discord.gg/lifepunchco` is retired).
+- Canonical: lifepunch-trademark-ip rule + lifepunch/legal/TRADEMARK_AND_IP.md.
 
 Confirm you've read the grounding, state which machine you are on (see MACHINE_CAST.md), and give a
 one-paragraph summary of where we are before work.
@@ -116,8 +133,10 @@ Do NOT let shottaWEB or RDP agent paths drift — they commit on GitLab lanes, y
 CURRENT STATE (June 2026):
 - Trademark/IP doctrine is law. Billing on Individual Ultra (Auto default).
 - Ops clarity checkpoint is law: OPS_CLARITY_CHECKPOINT.md + shortcut tiers (Start Day = tri-stack full stack).
-- Admin menu (adminmenu) = v1 publish-ready, branded `lifepunch.ulx` (credits ULX; DXRP nominative),
-  dxrpAddonId reconciled to the live portal listing; dev-only test-bots excluded from publish staging.
+- Admin menu (adminmenu) = v1 publish-ready, branded `lifepunch.ulx` / packageSlug `lifepunchulx`;
+  in publishReadyAddons — export to lifepunch-published when owner says ship.
+- Bitcoin (bitcoinmining) = active dev, packageSlug `lifepunchbitcoin`; NOT in publishReadyAddons yet.
+- Quarantine: hackerjob, ak47, bankerjob, etc. — read for concepts only; never copy into active addons.
 - AK-47 paused. GitLab lanes LIVE + synced (lanes-synced); shottaWEB + RDP agent provisioned.
   Re-export a lane after changes via setup-gitlab-projects.ps1.
 

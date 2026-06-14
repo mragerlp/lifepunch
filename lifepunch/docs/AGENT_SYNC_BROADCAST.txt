@@ -1,10 +1,13 @@
 ========================================================================
-LIFEPUNCH — AGENT SYNC (paste at start of next session on ANY machine)
+LIFEPUNCH™ — AGENT SYNC (paste at start of next session on ANY machine)
 Send to: VENGEANCE · Cornerman · lifepunchnet · shottaWEB · any new chat
 ========================================================================
 
 MANDATORY before work — machine names + ops clarity checkpoint canonized.
 Pull first, then read.
+
+BRANDING (law): **LIFEPUNCH™** = our mark (Peak Performance Products LLC). All-caps + ™ while
+pending; never ®. Lead product names with LIFEPUNCH. Community: https://discord.gg/lifepunch
 
 ------------------------------------------------------------------------
 STEP 1 — SYNC (automatic if sessionStart hook is active; verify anyway)
@@ -50,10 +53,13 @@ FOUNDATION (June 2026 — after pull)
     Core     = github.com/mragerlp/lifepunch (law, WIP, quarantine)
     Publish  = github.com/mragerlp/lifepunch-published (export only)
 
-  QUARANTINE: active dev = adminmenu + bitcoinmining only (repo idents)
+  QUARANTINE: active dev = adminmenu + bitcoinmining only. Frozen idents = concepts/context —
+    NO edits, NO copy-paste into ship paths. portfolio.json + QUARANTINE_REGISTER.md
   PACKAGE SLUGS: lifepunchulx · lifepunchbitcoin · … — config/packages.json
-  PUBLISH NOW: lifepunchulx (s&box lifepunch.ulx) — LifePunch servers, not for resale
-  BITCOIN: lifepunchbitcoin (s&box lifepunch.bitcoin) — Ophion P0 — LIFEPUNCH_BITCOIN_START.md
+  PUBLISH NOW: lifepunchulx only (publishReadyAddons) — Export-LifepunchPublishLane.ps1
+  BITCOIN: lifepunchbitcoin (s&box lifepunch.bitcoin) — hub admin + CRT terminal v2 — LIFEPUNCH_BITCOIN_START.md
+
+  COMMUNITY: https://discord.gg/lifepunch · https://lifepunch.co
 
   IDEATION: ChatGPT Step 1 -> CURSOR BRIEF -> Cursor VENGEANCE
     Paste: lifepunch/docs/handoff/CHATGPT_STEP1_PASTE.txt

@@ -1,4 +1,4 @@
-# LifePunch × DXRP — Agent Foundation
+# LIFEPUNCH™ × DXRP — Agent Foundation
 
 > Read this first. Hand it to any agent in any of our repos so it operates inside
 > the established foundation instead of re-deriving (or diverging from) it.
@@ -7,11 +7,79 @@
 
 ## Who / what
 
-LifePunch is the largest community server for **DXRP**, a source-available DarkRP-style
+LifePunch (**LIFEPUNCH™**) is the largest community server for **DXRP**, a source-available DarkRP-style
 RP game by **Dxura**, built on **s&box** (Facepunch's Source 2 engine). We build
 high-quality custom content (weapons, entities, staff/admin tooling, UI, gamemode/server
 ops) for our server and to license to other DXRP servers. Treat this as a business: be
 direct, ship quality.
+
+## LIFEPUNCH™ branding (agents — law)
+
+**LIFEPUNCH™** is our only owned mark (legal entity: **Peak Performance Products LLC**). Agents
+must keep the brand consistent in docs, UI copy, listings, and product names.
+
+| Rule | Do |
+|------|-----|
+| **Source identifier** | Spell **`LIFEPUNCH™`** in all-caps for the brand mark in agent-facing docs and product naming. |
+| **Registration** | Use **`™` only** while #402997 / #397871 are pending. **Never `®`** until the USPTO issues registration. |
+| **Product names** | **Lead with LIFEPUNCH** — e.g. "LIFEPUNCH Admin Menu for DXRP", not "DXRP Admin Menu". |
+| **Third-party marks** | **DXRP / Dxura / s&box / Facepunch** — nominative use only; never imply affiliation or ownership. |
+| **Proprietary goods** | Original LIFEPUNCH content is sole-owned IP — not for resale/redistribution by others (see website ToS §5–6). |
+| **Community** | Public Discord invite: **`https://discord.gg/lifepunch`** (replaces legacy `discord.gg/lifepunchco`). |
+| **Website** | **`https://lifepunch.co`** — Class 41 services specimen; community + server list. |
+
+Canonical trademark/IP detail: `lifepunch/legal/TRADEMARK_AND_IP.md` + **lifepunch-trademark-ip** rule.
+Business wrapper: `lifepunch/docs/BUSINESS_CONTEXT.md`.
+
+## Publish addons (June 2026 — two-repo law)
+
+**Build in core. Export when portal-ready. Never invent law in the publish clone.**
+
+| Layer | Repo | Role |
+|-------|------|------|
+| **Core** | `github.com/mragerlp/lifepunch` | All WIP, quarantine, docs, legal, MCP, website, server |
+| **Publish** | `github.com/mragerlp/lifepunch-published` | **Portal-ready snapshot only** — clean tree for DXRP upload |
+
+**Manifests (read every addons session):**
+
+- `lifepunch/addons/config/portfolio.json` — `activeAddons` (in-scope dev) · `publishReadyAddons` (export set)
+- `lifepunch/addons/config/packages.json` — **packageSlug** law (`lifepunchulx`, `lifepunchbitcoin`, …)
+- `lifepunch/addons/docs/PACKAGE_NAMING_STANDARD.md` — public branch + s&box ident naming
+
+**Workflow:**
+
+```text
+ChatGPT Step 1 brief → Cursor build (core monorepo) → owner portal-ready sign-off
+       ↓
+Export-LifepunchPublishLane.ps1  (-Target publish clone; reads publishReadyAddons)
+       ↓
+prepare-publish.ps1 -Addon <repoIdent>  → DXRP portal Assets + Code upload
+```
+
+- **Day-to-day commits:** always on **core** `main`.
+- **Export:** only when an ident is in `publishReadyAddons` (today: **`adminmenu` / lifepunchulx** only).
+- **Publish repo never contains:** quarantined idents, `reference/`, dev helpers (`*DevSpawn*`, `*TestBots*`), full monorepo docs.
+- **Display on portal/listings:** **LIFEPUNCH™** lead · DXRP nominative · **`™` not `®`**.
+
+Full detail: `lifepunch/docs/PUBLISH_REPO_LANE.md` · checkpoints: `GIT_CHECKPOINTS.md`.
+
+## Quarantine (frozen idents — concepts only)
+
+**June 2026 phase:** `ophion-rebuild-2026-06`. Only **`adminmenu`** + **`bitcoinmining`** are active compile/ship work.
+
+Everything in `portfolio.json` → `quarantinedAddons` is **frozen on disk** — not deleted, **not extended**, **not copied into active code paths**, **not exported** to `lifepunch-published`.
+
+| Agents MAY | Agents MUST NOT |
+|------------|-----------------|
+| Read quarantined files for **concepts, UX ideas, economy notes, prior art** | Edit quarantined `.cs` / `.razor` / assets without owner **promotion** |
+| Cite a quarantined ident in a **brief or TECH_DEBT** when comparing approaches | Import types, prefabs, SCSS, or patterns from quarantined trees into active addons |
+| Restore via owner promotion workflow | Use quarantined code as a **template to paste** into `adminmenu` or `bitcoinmining` |
+| | Run `prepare-publish` / export for quarantined idents |
+| | Mount quarantined packages in DXRP-only sync scripts unless owner says otherwise |
+
+**Promotion (owner-only):** name ident → move to `activeAddons` in `portfolio.json` → remove `<Compile Remove>` in `addons.csproj` → ChatGPT Step 1 brief if new UX.
+
+Register + reasons: `lifepunch/addons/docs/QUARANTINE_REGISTER.md`. Ideation gate: `WORKFLOW_IDEATION_FIRST.md`.
 
 ## Repos — know where you are
 
@@ -50,8 +118,9 @@ partner commits on GitLab integrate back into GitHub. Full map:
 ### 4. Publish lane → portal snapshot (not law)
 
 **`mragerlp/lifepunch-published`** — export-only tree for DXRP portal. Built by
-`Export-LifepunchPublishLane.ps1` from `publishReadyAddons` in `portfolio.json`.
-Core monorepo stays where all agents work. See `PUBLISH_REPO_LANE.md` + `GIT_CHECKPOINTS.md`.
+`Export-LifepunchPublishLane.ps1` from **`publishReadyAddons`** in `portfolio.json` (not
+`activeAddons` — bitcoin can be active but not publish-ready). Core monorepo stays where all
+agents work. See **Publish addons** + `PUBLISH_REPO_LANE.md` + `GIT_CHECKPOINTS.md`.
 
 ## Grounding = the monorepo's `.cursor/rules` (alwaysApply) are law
 
@@ -200,9 +269,9 @@ The `lifepunch-operating-context` rule is law here; this is the orientation. We 
 | Topic | Canon |
 |-------|-------|
 | **Two repos** | Core `mragerlp/lifepunch` = law/WIP/quarantine. Publish `lifepunch-published` = export snapshot only. |
-| **Quarantine** | Active dev: `adminmenu` + `bitcoinmining`. All other idents frozen — `portfolio.json`, `QUARANTINE_REGISTER.md` |
-| **Publish now** | **`adminmenu` (`lifepunch.ulx`) only** — v1 ship-ready; LifePunch servers, not for resale |
-| **Bitcoin** | Ophion P0 from `BITCOIN_OPHION_CURSOR_BRIEF.md` — active dev, **not** publish export until visual sign-off |
+| **Quarantine** | Active dev: `adminmenu` + `bitcoinmining` only. All other idents **frozen** — concepts/context OK, **no edits, no copy-paste ship paths** — `portfolio.json`, `QUARANTINE_REGISTER.md` |
+| **Publish now** | **`lifepunchulx`** (`adminmenu`) only — in `publishReadyAddons`; export via `Export-LifepunchPublishLane.ps1` |
+| **Bitcoin** | Ophion hub + CRT terminal v2 — active dev (`bitcoinmining` / `lifepunch.bitcoin`); hub admin vs typed terminal split; **not** publish export until visual sign-off |
 | **Ideation** | ChatGPT Step 1 → paste CURSOR BRIEF → Cursor VENGEANCE. Voice = **Cursor mic** (Whisper deferred). `WORKFLOW_IDEATION_FIRST.md` |
 | **ChatGPT templates** | Step1 · Visual pass · Edit session · Ship checklist — `handoff/CHATGPT_*.txt` · index: `briefs/BRIEF_INDEX.md` |
 | **Owner alias** | Visible: **Bloodwave** · Proprietary: **mrragerlp** · Contact: Mr. Rager — `BLOODWAVE_ALIAS.md` |
@@ -255,7 +324,7 @@ The `lifepunch-operating-context` rule is law here; this is the orientation. We 
 
 **Current / next build:**
 - **Admin menu (`lifepunch.ulx`)** — **publish-ready v1**; export to `lifepunch-published`. Do not refactor without owner ask.
-- **Bitcoin miner hub** — Ophion visual + player UX pass (active dev, not publish yet). `BITCOIN_OPHION_CURSOR_BRIEF.md`.
+- **Bitcoin miner hub** — hub/terminal UI chrome, gray CRT ops, v2 prefabs (active dev, not publish yet). `BITCOIN_OPHION_CURSOR_BRIEF.md` · `LIFEPUNCH_HUB_PATTERN.md`.
 - **Hub pattern law** — `addons/docs/LIFEPUNCH_HUB_PATTERN.md` for all computer-heavy jobs.
 - AK-47 and all quarantined idents — **paused** until promote + ChatGPT brief.
 - New products: ChatGPT Step 1 brief **before** code.

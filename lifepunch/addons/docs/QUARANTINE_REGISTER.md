@@ -4,7 +4,24 @@
 **Source of truth:** `config/portfolio.json`
 
 Bloodwave reset: **only** `adminmenu` (lifepunch.ulx) + `bitcoinmining` (Ophion) are active.
-Everything else is frozen — not deleted, not extended.
+Everything else is frozen — not deleted, not extended, **not used as a ship template**.
+
+---
+
+## Quarantine law (agents)
+
+Quarantined trees exist for **historical context and product ideas only**.
+
+| Allowed | Forbidden |
+|---------|-----------|
+| Read to understand prior UX, economy, or mesh decisions | Edit quarantined source/assets without owner **promotion** |
+| Reference in briefs, `TECH_DEBT.md`, or comparison tables | Import/copy quarantined types, prefabs, panels, or SCSS into **active** addons |
+| Note "we tried X in hackerjob" when ideating a new lane | Treat quarantined code as a paste-in **reference implementation** |
+| | Include quarantined idents in `publishReadyAddons` or `prepare-publish` |
+| | Add quarantined paths to DXRP-only sync unless owner directs |
+
+**Active addons are the only compile + ship path.** Quarantine ≠ `reference/` (third-party study) —
+both are non-ship, but quarantine is **our** frozen WIP, not external IP.
 
 ---
 
@@ -17,7 +34,7 @@ Everything else is frozen — not deleted, not extended.
 
 ---
 
-## Quarantined (reference only)
+## Quarantined (concepts / context only — do not ship from here)
 
 | ident | Restore when |
 |-------|----------------|

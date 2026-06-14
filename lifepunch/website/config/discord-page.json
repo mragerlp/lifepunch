@@ -5,7 +5,8 @@
     "url": "https://lifepunch.co/discord",
     "title": "Join The Community",
     "subtitle": "Join Our Community",
-    "purpose": "Public Discord community entry point."
+    "purpose": "Public Discord community entry point.",
+    "inviteUrl": "https://discord.gg/lifepunch"
   },
   "loggedOutState": {
     "headerControl": "Login",

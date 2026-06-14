@@ -11,10 +11,11 @@
 |-------|-------|
 | **Two-repo model** | **Core** = law + WIP + quarantine. **Publish** = `lifepunch-published` export only. `PUBLISH_REPO_LANE.md` |
 | **Git checkpoints** | Agent **recommends** commit scope; Bloodwave **approves**. `GIT_CHECKPOINTS.md` |
-| **Quarantine** | Active dev: `adminmenu` → **lifepunchulx**, `bitcoinmining` → **lifepunchbitcoin**. Everything else frozen — `portfolio.json` + `QUARANTINE_REGISTER.md` |
+| **Quarantine** | Active dev: `adminmenu` + `bitcoinmining` only. Frozen idents = **concepts/context** — no edits, no copy into ship paths — `QUARANTINE_REGISTER.md` |
+| **Publish** | `publishReadyAddons` → `Export-LifepunchPublishLane.ps1` → `lifepunch-published` (today: **lifepunchulx** only) |
 | **Package names** | Public branches = **packageSlug** in `addons/config/packages.json` — `PACKAGE_NAMING_STANDARD.md` |
-| **Publish-ready now** | **`lifepunchulx`** (`lifepunch.ulx`) — LifePunch servers; not for resale |
-| **Bitcoin** | **lifepunchbitcoin** (`lifepunch.bitcoin`) — Ophion P0; start `addons/docs/LIFEPUNCH_BITCOIN_START.md` — NOT publish export until visual sign-off |
+| **Bitcoin** | **lifepunchbitcoin** (`lifepunch.bitcoin`) — hub admin + CRT terminal v2; start `addons/docs/LIFEPUNCH_BITCOIN_START.md` — NOT publish export until visual sign-off |
+| **Branding** | **LIFEPUNCH™** (all-caps + ™ while pending; never ®). Community: `https://discord.gg/lifepunch` |
 | **Ideation** | ChatGPT Step 1 → CURSOR BRIEF → Cursor on VENGEANCE. `WORKFLOW_IDEATION_FIRST.md` |
 | **Export** | `Export-LifepunchPublishLane.ps1` reads `publishReadyAddons` |
 

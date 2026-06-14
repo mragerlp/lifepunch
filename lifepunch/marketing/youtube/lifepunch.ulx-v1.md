@@ -47,7 +47,7 @@ Bloodwave | mrragerlp | lifepunch.co
 -----------------------------------------------------------------------------------
 DXRP            @     | https://DXRP.net/
 Website        @     | https://lifepunch.co/
-Discord         @     | https://discord.gg/lifepunchco
+Discord         @     | https://discord.gg/lifepunch
 Steam           @     | https://steamcommunity.com/groups/lifepunchofficial
 
 Check out s&box | https://sbox.game/

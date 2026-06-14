@@ -10,6 +10,7 @@
 - **Legal entity:** PEAK PERFORMANCE PRODUCTS LLC (NJ single-member LLC; sole member Jared Zerillo).
 - **Brand / mark:** **LIFEPUNCH™** — owned by the LLC, surfaced at `lifepunch.co`. Operate under
   **`™` now**; **`®` only after USPTO registration issues** (see trademark doctrine).
+- **Community:** public Discord invite **`https://discord.gg/lifepunch`** (legacy `discord.gg/lifepunchco` retired).
 - **Assets that strengthen the position:** registered LLC, EIN, owned domain, live servers/community,
   social accounts. These support business credibility and common-law brand use (they are **not** a
   substitute for the trademark registration).

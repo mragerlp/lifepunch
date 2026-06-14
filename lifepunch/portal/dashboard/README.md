@@ -28,7 +28,7 @@ Observed dashboard controls:
 
 Observed announcement content categories:
 
-- Discord: `discord.gg/lifepunchco`
+- Discord: `discord.gg/lifepunch` (`https://discord.gg/lifepunch`)
 - Website: `www.lifepunch.co`
 - Welcome message.
 - Rules/RP guideline message.

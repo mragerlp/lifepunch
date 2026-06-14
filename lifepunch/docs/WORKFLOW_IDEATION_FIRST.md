@@ -23,6 +23,7 @@ Done. You never edit template files.
 
 1. Treat brief as **ideation** — verify against `addons.json`, `config/portfolio.json`, `QUARANTINE_REGISTER.md`, existing docs
 2. **Active addons only:** `adminmenu` + `bitcoinmining` unless owner promotes from quarantine
+3. **Quarantined idents:** concepts/context only — cite in briefs if useful; **never** copy code/prefabs into active trees
 3. If building in editor: `Test-PreLaunchCheckup.ps1 -Fix` first — bar in `SBOX_EDIT_STANDARDS.md`
 4. Reply with: **exists / net-new / P0 steps / which MCP** (`sbox`, `sbox-editor`, `cornerman-lm`)
 5. Ask Bloodwave for ChatGPT Step 1 if message is spaghetti with no brief
