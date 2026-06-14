@@ -12,7 +12,8 @@
 [CmdletBinding()]
 param(
     [string] $SshTarget = '',
-    [switch] $SkipWatchdog
+    [switch] $SkipWatchdog,
+    [switch] $SkipSync
 )
 
 $ErrorActionPreference = 'Stop'
@@ -31,8 +32,13 @@ if (-not (Test-CornermanSshReady -SshTarget $SshTarget)) {
 
 Write-Step '=== Fix Cornerman LM serve (headless, no GUI) ==='
 
-Write-Step '1/4 Sync reboot scripts to Green...'
-& powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $Here 'Sync-CornermanRebootScripts.ps1')
+if (-not $SkipSync) {
+    Write-Step '1/4 Sync reboot scripts to Green...'
+    & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $Here 'Sync-CornermanRebootScripts.ps1')
+}
+else {
+    Write-Step '1/4 Sync skipped (-SkipSync)' 'DarkGray'
+}
 
 Write-Step '2/4 Warm daily lane (lms server + distill + embed in VRAM)...'
 $lms = 'C:\lifepunch\cornerman\Start-CornermanLmStudio.ps1'

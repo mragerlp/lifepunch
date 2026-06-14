@@ -145,27 +145,22 @@ if (-not $SkipConnectivityWatch) {
         $isVengeance = $false
     }
     if ($isVengeance -and (Test-Path -LiteralPath $watchScript)) {
-        $statePath = Join-Path $env:LOCALAPPDATA 'LifePunch\cvl-connectivity-state.json'
-        $startWatch = $true
-        if (Test-Path -LiteralPath $statePath) {
-            try {
-                $saved = Get-Content -LiteralPath $statePath -Raw | ConvertFrom-Json
-                if ($saved.ts) {
-                    $age = ((Get-Date).ToUniversalTime() - [datetime]$saved.ts).TotalSeconds
-                    if ($age -lt 90) { $startWatch = $false }
-                }
-            }
-            catch { }
-        }
-        if ($startWatch) {
+        $watchRunning = @(Get-CimInstance Win32_Process -Filter "Name='powershell.exe'" -ErrorAction SilentlyContinue |
+            Where-Object { $_.CommandLine -and $_.CommandLine -match 'Watch-CvlConnectivity\.ps1' })
+        if ($watchRunning.Count -eq 0) {
+            $logDir = Join-Path $env:LOCALAPPDATA 'LifePunch'
+            New-Item -ItemType Directory -Force -Path $logDir | Out-Null
+            $logPath = Join-Path $logDir 'cvl-connectivity-watch.log'
+            $errPath = Join-Path $logDir 'cvl-connectivity-watch.err.log'
             Start-Process -FilePath 'powershell.exe' -ArgumentList @(
-                '-NoExit', '-NoProfile', '-ExecutionPolicy', 'Bypass',
-                '-File', $watchScript
-            ) -WindowStyle Minimized | Out-Null
-            Write-Host 'Connectivity watch started (toast on MCP/Tier-3 drop). Minimized PowerShell window.' -ForegroundColor DarkGray
+                '-NoProfile', '-ExecutionPolicy', 'Bypass',
+                '-File', $watchScript, '-Quiet'
+            ) -WindowStyle Hidden -RedirectStandardOutput $logPath -RedirectStandardError $errPath | Out-Null
+            Write-Host "Connectivity watch started (hidden). Log: $logPath" -ForegroundColor DarkGray
+            Write-Host '  Stop: powershell -File lifepunch\scripts\Stop-CvlBackgroundWatchers.ps1' -ForegroundColor DarkGray
         }
         else {
-            Write-Host 'Connectivity watch already active (recent state file).' -ForegroundColor DarkGray
+            Write-Host "Connectivity watch already running (pid $($watchRunning[0].ProcessId))." -ForegroundColor DarkGray
         }
     }
 }

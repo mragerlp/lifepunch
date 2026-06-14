@@ -13,10 +13,13 @@
     - Cornerman triple MCP only when Green still runs Cursor (OFF_CURSOR_ACTIVE.txt = skip)
 
   Use -Fix to stop wrong-node apps on VENGEANCE, warm Green LM, refresh bridge wiring.
+  Routine -Fix skips Green LM warm when Tier-3 is already healthy (fast path, ~10s).
 
 .EXAMPLE
   powershell -File lifepunch\scripts\Test-PreLaunchCheckup.ps1
   powershell -File lifepunch\scripts\Test-PreLaunchCheckup.ps1 -Fix
+  powershell -File lifepunch\scripts\Test-PreLaunchCheckup.ps1 -Fix -SkipGreenFix
+  powershell -File lifepunch\scripts\Test-PreLaunchCheckup.ps1 -Fix -SyncGreenScripts
   powershell -File lifepunch\scripts\Test-PreLaunchCheckup.ps1 -RequireEditor
 #>
 [CmdletBinding()]
@@ -24,6 +27,8 @@ param(
     [switch] $Fix,
     [switch] $RequireEditor,
     [switch] $Quiet,
+    [switch] $SkipGreenFix,
+    [switch] $SyncGreenScripts,
     [string] $SshTarget = '',
     [int] $EditorPort = 9090
 )
@@ -77,6 +82,24 @@ function Get-LocalVengeanceHealth {
     return ($jsonLine | ConvertFrom-Json)
 }
 
+function Write-FixStep([string]$Detail) {
+    if (-not $Quiet) { Write-Host "  -> $Detail" -ForegroundColor DarkGray }
+}
+
+function Test-GreenTier3Healthy {
+    $health = Invoke-RemoteProbe 'Get-CornermanHealthProbe.ps1'
+    if (-not $health) { return $false }
+    return [bool]$health.lmServeOk -and [bool]$health.lmCatalogOk -and [bool]$health.lmWatchdogOk
+}
+
+function Close-GreenLmGui([string]$Target) {
+    Invoke-CornermanSshExec -SshTarget $Target -ScriptBlock @'
+Get-Process -ErrorAction SilentlyContinue | Where-Object { $_.ProcessName -match 'LM Studio' } | ForEach-Object {
+  $null = $_.CloseMainWindow(); Start-Sleep -Milliseconds 300
+}
+'@ -ConnectTimeout 15 | Out-Null
+}
+
 function Test-GreenOffCursor([string]$Target) {
     if (-not (Test-CornermanSshReady -SshTarget $Target)) { return $false }
     $marker = 'C:\lifepunch\cornerman\OFF_CURSOR_ACTIVE.txt'
@@ -127,7 +150,11 @@ function Test-VengeanceMcpStack {
         try {
             $st = Get-Content -LiteralPath $statusPath -Raw | ConvertFrom-Json
             if ($st.heartbeat) {
-                $hb = [datetime]$st.heartbeat
+                $hb = [datetime]::Parse(
+                    [string]$st.heartbeat,
+                    $null,
+                    [System.Globalization.DateTimeStyles]::RoundtripKind
+                ).ToUniversalTime()
                 $bridgeAge = [math]::Round(((Get-Date).ToUniversalTime() - $hb).TotalSeconds, 0).ToString() + 's'
                 $bridgeOk = ((Get-Date).ToUniversalTime() - $hb).TotalSeconds -lt 120
             }
@@ -182,23 +209,50 @@ if (-not $Quiet) {
 
 if ($Fix) {
     if (-not $Quiet) { Write-Host 'Fix pass...' -ForegroundColor Cyan }
+    Write-FixStep 'VENGEANCE bloat cleanup'
     $cleanup = Join-Path $Here 'Invoke-VengeanceBloatCleanup.ps1'
     if (Test-Path -LiteralPath $cleanup) {
         & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $cleanup
     }
-    if (Test-CornermanSshReady -SshTarget $SshTarget) {
-        & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $Here 'Sync-CornermanRebootScripts.ps1') | Out-Null
-        & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $Here 'Fix-CornermanLmServe.ps1') 2>$null | Out-Null
+
+    if ($SkipGreenFix) {
+        Write-FixStep 'Green fix skipped (-SkipGreenFix)'
+    }
+    elseif (Test-CornermanSshReady -SshTarget $SshTarget) {
+        Write-FixStep 'Probe Green Tier-3'
+        $tier3Ok = Test-GreenTier3Healthy
         $greenOffCursorFix = Test-GreenOffCursor -Target $SshTarget
-        if ($greenOffCursorFix) {
-            $offCursor = Join-Path $Here 'Apply-CornermanOffCursor.ps1'
-            if (Test-Path -LiteralPath $offCursor) {
-                Invoke-CornermanSshExec -SshTarget $SshTarget -ScriptBlock @"
-& powershell -NoProfile -ExecutionPolicy Bypass -File 'C:\lifepunch\cornerman\Apply-CornermanOffCursor.ps1'
-"@ -ConnectTimeout 60 | Out-Null
-            }
+
+        if ($SyncGreenScripts) {
+            Write-FixStep 'Sync reboot scripts to Green (-SyncGreenScripts)'
+            & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $Here 'Sync-CornermanRebootScripts.ps1')
+        }
+        elseif (-not $tier3Ok) {
+            Write-FixStep 'Sync reboot scripts (Tier-3 unhealthy)'
+            & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $Here 'Sync-CornermanRebootScripts.ps1')
         }
         else {
+            Write-FixStep 'Skip script sync (Tier-3 healthy; use -SyncGreenScripts to force)'
+        }
+
+        if ($tier3Ok) {
+            Write-FixStep 'Tier-3 healthy — skip LM warm'
+        }
+        else {
+            Write-FixStep 'Tier-3 down — warm LM on Green (1-2 min)'
+            $lmFix = Join-Path $Here 'Fix-CornermanLmServe.ps1'
+            if (Test-Path -LiteralPath $lmFix) {
+                & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $lmFix -SkipSync
+            }
+        }
+
+        if ($greenOffCursorFix) {
+            Write-FixStep 'Off-Cursor mode — skip Apply-CornermanOffCursor (no re-warm)'
+            Write-FixStep 'Close LM Studio GUI on Green'
+            Close-GreenLmGui -Target $SshTarget
+        }
+        else {
+            Write-FixStep 'Green Cursor mode — bridge + editor tunnel'
             & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $Here 'Connect-CornermanBridge.ps1') -SkipSmbMap 2>$null | Out-Null
             $tunnel = 'C:\lifepunch\cornerman\Start-CornermanSboxEditorTunnel.ps1'
             Invoke-CornermanSshExec -SshTarget $SshTarget -ScriptBlock @"
@@ -206,13 +260,14 @@ if (Test-Path -LiteralPath '$tunnel') {
   & powershell -NoProfile -ExecutionPolicy Bypass -File '$tunnel' -Background
 }
 "@ -ConnectTimeout 25 | Out-Null
+            Close-GreenLmGui -Target $SshTarget
         }
-        Invoke-CornermanSshExec -SshTarget $SshTarget -ScriptBlock @"
-Get-Process -ErrorAction SilentlyContinue | Where-Object { `$_.ProcessName -match 'LM Studio' } | ForEach-Object {
-  `$null = `$_.CloseMainWindow(); Start-Sleep -Milliseconds 300
-}
-"@ -ConnectTimeout 15 | Out-Null
     }
+    else {
+        Write-FixStep 'Cornerman SSH not ready — skip Green fix'
+    }
+
+    Write-FixStep 'Refresh VENGEANCE mcp.json'
     & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $Here 'Install-VengeanceMcpStack.ps1') -SkipProbe | Out-Null
     if (-not $Quiet) { Write-Host '' }
 }
@@ -286,7 +341,8 @@ if (-not $Quiet) {
         Write-Host '  Fix: powershell -File lifepunch\scripts\Test-PreLaunchCheckup.ps1 -Fix' -ForegroundColor Yellow
         Write-Host '  Then: Start-SboxDxrpEditor.ps1' -ForegroundColor DarkGray
     }
-    Write-Host 'During work: Watch-CvlConnectivity.ps1 (auto-starts with Start-SboxDxrpEditor.ps1)' -ForegroundColor DarkGray
+    Write-Host 'During work: Watch-CvlConnectivity.ps1 (hidden background via Start-SboxDxrpEditor.ps1)' -ForegroundColor DarkGray
+    Write-Host 'Stop watchers: Stop-CvlBackgroundWatchers.ps1' -ForegroundColor DarkGray
     Write-Host ''
 }
 

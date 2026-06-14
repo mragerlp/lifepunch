@@ -29,6 +29,19 @@ if (-not (Test-IsVengeanceWorkstation)) {
     exit 0
 }
 
+# Single instance — do not stack watchers (each spawns a visible/hidden terminal loop).
+$selfPid = $PID
+$dupes = @(Get-CimInstance Win32_Process -Filter "Name='powershell.exe'" -ErrorAction SilentlyContinue |
+    Where-Object {
+        $_.ProcessId -ne $selfPid -and
+        $_.CommandLine -and
+        $_.CommandLine -match 'Watch-CvlConnectivity\.ps1'
+    })
+if ($dupes.Count -gt 0) {
+    Write-Host "Watch-CvlConnectivity already running (pid $($dupes[0].ProcessId)). Exiting." -ForegroundColor Yellow
+    exit 0
+}
+
 $statePath = Join-Path $env:LOCALAPPDATA 'LifePunch\cvl-connectivity-state.json'
 New-Item -ItemType Directory -Force -Path (Split-Path $statePath -Parent) | Out-Null
 
@@ -68,8 +81,11 @@ while ($true) {
         Write-Watch "DOWN: $msg" 'Red'
 
         if ($FixOnDown) {
-            Write-Watch 'Auto-fix pass...' 'Yellow'
-            & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $Here 'Test-PreLaunchCheckup.ps1') -Fix -Quiet | Out-Null
+            Write-Watch 'Auto-fix (local MCP only, no Green warm)...' 'Yellow'
+            $mcpInstall = Join-Path $Here 'Install-VengeanceMcpStack.ps1'
+            if (Test-Path -LiteralPath $mcpInstall) {
+                & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $mcpInstall -SkipProbe | Out-Null
+            }
         }
     }
 
