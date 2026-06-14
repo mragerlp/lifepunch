@@ -95,6 +95,28 @@ if (Test-Path -LiteralPath $devSrc) {
         -From $devSrc `
         -To   (Join-Path $dxrpCodeRoot '_dev') `
         -Label 'Code/_dev'
+    if (-not $WhatIf) {
+        $syncedIdents = @(Get-AddonIdents)
+        $weaponDevDeps = @('adminmenu', 'ak47', 'deagle', 'mp9', 'ssg08', 'xm1014')
+        $weaponDevReady = @($weaponDevDeps | Where-Object { $syncedIdents -notcontains $_ }).Count -eq 0
+        $weaponDevGive = Join-Path $dxrpCodeRoot '_dev\WeaponDevGive.cs'
+        $weaponDevQuarantine = "$weaponDevGive.quarantine"
+        if (-not $weaponDevReady) {
+            if (Test-Path -LiteralPath $weaponDevGive) {
+                if (Test-Path -LiteralPath $weaponDevQuarantine) {
+                    Remove-Item -LiteralPath $weaponDevQuarantine -Force
+                }
+                Rename-Item -LiteralPath $weaponDevGive -NewName 'WeaponDevGive.cs.quarantine' -Force
+                Write-Host '  Code/_dev: WeaponDevGive.cs quarantined (weapon addons not in sync set)' -ForegroundColor Yellow
+            }
+        }
+        elseif (Test-Path -LiteralPath $weaponDevQuarantine) {
+            if (-not (Test-Path -LiteralPath $weaponDevGive)) {
+                Rename-Item -LiteralPath $weaponDevQuarantine -NewName 'WeaponDevGive.cs' -Force
+                Write-Host '  Code/_dev: WeaponDevGive.cs restored (weapon lane)' -ForegroundColor Green
+            }
+        }
+    }
 }
 
 foreach ($ident in Get-AddonIdents) {

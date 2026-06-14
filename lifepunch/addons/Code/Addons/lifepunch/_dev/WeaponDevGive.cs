@@ -9,7 +9,9 @@
 // Presence in this repository or on the DXRP portal grants no rights to anyone else.
 // ─────────────────────────────────────────────────────────────────────────────
 
-#if !LIFEPUNCH_LOCAL
+// Opt-in only: define LIFEPUNCH_WEAPON_DEV in the DXRP game project when adminmenu + weapon addons are synced.
+// Bitcoin-only / single-addon lanes leave this undefined — file is excluded from compile.
+#if LIFEPUNCH_WEAPON_DEV
 using System;
 using System.Linq;
 using Dxura.RP.Game;
