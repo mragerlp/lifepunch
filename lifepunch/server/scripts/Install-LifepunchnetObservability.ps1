@@ -40,7 +40,10 @@ if (Test-Path -LiteralPath $ObsRoot) {
     Remove-Item -LiteralPath $ObsRoot -Recurse -Force
 }
 New-Item -ItemType Directory -Force -Path $ObsRoot | Out-Null
-Copy-Item -LiteralPath (Join-Path $RepoObsPath '*') -Destination $ObsRoot -Recurse -Force
+# PS 5.1: -LiteralPath never expands '*' — copy children explicitly
+Get-ChildItem -Path $RepoObsPath -Force | ForEach-Object {
+    Copy-Item -Path $_.FullName -Destination $ObsRoot -Recurse -Force
+}
 if (Test-Path -LiteralPath (Join-Path $ObsRoot 'rendered')) {
     Remove-Item -LiteralPath (Join-Path $ObsRoot 'rendered') -Recurse -Force -ErrorAction SilentlyContinue
 }

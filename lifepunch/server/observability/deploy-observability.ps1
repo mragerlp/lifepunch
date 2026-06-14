@@ -46,14 +46,14 @@ function Get-OrCreateGrafanaPassword([string]$Path) {
 }
 
 if (-not (Test-Path -LiteralPath $StatusTokenFile)) {
-    throw "Missing $StatusTokenFile — run Install-ServerHostWatchdog.ps1 first."
+    throw "Missing $StatusTokenFile - run Install-ServerHostWatchdog.ps1 first."
 }
 $statusToken = (Get-Content -LiteralPath $StatusTokenFile -Raw).Trim()
 if (-not $statusToken) { throw 'status-token.txt is empty' }
 
 $composeFile = Join-Path $ObsRoot 'docker-compose.yml'
 if (-not (Test-Path -LiteralPath $composeFile)) {
-    throw "Missing $composeFile — run Install-LifepunchnetObservability.ps1 first."
+    throw "Missing $composeFile - run Install-LifepunchnetObservability.ps1 first."
 }
 
 $renderedDir = Join-Path $ObsRoot 'rendered'
@@ -84,11 +84,18 @@ while (-not (Test-DockerReady)) {
 
 Push-Location $ObsRoot
 try {
+    $prevEa = $ErrorActionPreference
+    $ErrorActionPreference = 'Continue'
     Write-Log 'docker compose pull'
-    docker compose pull 2>&1 | ForEach-Object { Write-Log $_ }
+    docker compose pull 2>&1 | ForEach-Object { Write-Log ([string]$_) }
+    $pullExit = $LASTEXITCODE
     Write-Log 'docker compose up -d'
-    docker compose up -d 2>&1 | ForEach-Object { Write-Log $_ }
-    if ($LASTEXITCODE -ne 0) { throw "docker compose failed (exit $LASTEXITCODE)" }
+    docker compose up -d 2>&1 | ForEach-Object { Write-Log ([string]$_) }
+    $upExit = $LASTEXITCODE
+    $ErrorActionPreference = $prevEa
+    if ($pullExit -ne 0 -or $upExit -ne 0) {
+        throw "docker compose failed (pull=$pullExit up=$upExit)"
+    }
 }
 finally {
     Pop-Location
@@ -125,7 +132,7 @@ foreach ($s in $smoke) {
 
 Write-Host ''
 Write-Host 'Grafana: http://<lifepunchnet-ip>:3000  user=admin  password in secrets\grafana-admin.txt' -ForegroundColor Cyan
-Write-Host 'Dashboard: LifePunch folder -> LifePunch CVL — Phase 1' -ForegroundColor Cyan
+Write-Host 'Dashboard: LifePunch folder -> LifePunch CVL - Phase 1' -ForegroundColor Cyan
 
 $fail = @($smoke | Where-Object { -not $_.Pass }).Count
 exit $(if ($fail -eq 0) { 0 } else { 1 })

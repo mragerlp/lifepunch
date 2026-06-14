@@ -4,6 +4,10 @@
 **GitHub mono:** `f0410da`  
 **GitLab rdp-server:** `a3f5b39`
 
+**Status:** Live on lifepunchnet @ GitLab `7d28b96` (2026-06-14). Prometheus 4/4 targets up.
+
+**PS 5.1 fixes** in mono after Blue install: `Copy-Item` wildcard + Docker stderr + ASCII throw strings (`fix(server)` post-live).
+
 ## On lifepunchnet (elevated)
 
 ```powershell
