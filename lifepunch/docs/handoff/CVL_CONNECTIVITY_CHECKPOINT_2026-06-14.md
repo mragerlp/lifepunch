@@ -1,5 +1,7 @@
 # CVL connectivity checkpoint — 2026-06-14 ~06:05 UTC
 
+**Git checkpoint:** `f6d4dae` — `fix(bitcoinmining): Ophion hub materials, scale, and MCP preflight`
+
 **Node:** VENGEANCE (Red) · **Session:** Bitcoin miner / DXRP editor
 
 ## VENGEANCE — dual MCP (this machine)
@@ -18,6 +20,8 @@
 - Bitcoinmining code/assets synced (incl. ConCmd duplicate fix)
 
 **Probe:** `Get-CvlConnectivityStatus.ps1` → `vengeance.sboxBridge` + `vengeance.sboxEditor` + `vengeance.mcpDual` = **true**
+
+**If Cursor MCP panel still shows red:** **Ctrl+Shift+P** → **Reload Window** → Enter. No manual relink — `mcp.json` is already wired.
 
 ## Cornerman (Green) — intentional layout
 
