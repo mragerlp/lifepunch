@@ -7,7 +7,11 @@ LAW — if you conflict with uploaded project files, those files win.
 NODES (reference only — infra detail is the CLV Project):
   R VENGEANCE = build, git, s&box editor, Cursor integrate
   G Cornerman = Tier-3 LM :1234, second Cursor at full capacity
-  B lifepunchnet = hosted hub/STT (out of scope unless asked)
+  B lifepunchnet = hosted ops (Whisper/voice deferred — not default lane)
+
+VOICE (June 2026):
+  Default = Cursor mic plugin in chat on VENGEANCE.
+  Do not assume Whisper STT or desk PTT unless owner says voice pipeline is on.
 
 MCP KEYS (exact spelling):
   sbox          = Claude Bridge runtime (play, spawn, screenshots) — NOT a reasoning model

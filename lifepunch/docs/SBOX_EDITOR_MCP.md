@@ -114,6 +114,7 @@ Status JSON only: `Get-CvlConnectivityStatus.ps1`
 Heal only: `Invoke-VengeanceBloatCleanup.ps1` (Red) · `Fix-CornermanLmServe.ps1` (Green) · bridge: `Connect-CornermanBridge.ps1` · Green dual-stack: `Restore-CornermanDualStack.ps1`
 
 **Agent routing table (task → MCP → tier):** `lifepunch/docs/MCP_AGENT_ROUTING.md`  
+**Editing standards bar:** `lifepunch/docs/SBOX_EDIT_STANDARDS.md`  
 **ChatGPT advisory handoff:** `lifepunch/docs/handoff/to-chatgpt-mcp-topology-handoff.txt`
 
 ---

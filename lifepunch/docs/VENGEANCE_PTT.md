@@ -1,6 +1,13 @@
 # VENGEANCE desk PTT
 
-**June 2026** — Voice to Cursor **without Cornerman** or RDP.
+**Status:** **Deferred (June 2026).** Default voice lane = **Cursor mic plugin** in chat.
+
+Whisper STT on lifepunchnet and this desk PTT stack remain in repo for later re-enable.
+See `SBOX_EDIT_STANDARDS.md` for current editing bar.
+
+---
+
+**June 2026** — Voice to Cursor **without Cornerman** or RDP (when enabled).
 
 ## Hardware (VENGEANCE)
 

@@ -1,0 +1,62 @@
+global:
+  scrape_interval: 30s
+  evaluation_interval: 30s
+
+scrape_configs:
+  - job_name: prometheus
+    static_configs:
+      - targets: ['prometheus:9090']
+
+  - job_name: probe_whisper
+    metrics_path: /probe
+    params:
+      module: [http_2xx]
+    static_configs:
+      - targets:
+          - http://host.docker.internal:9000/health
+        labels:
+          service: whisper
+          cvl_port: '9000'
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: blackbox:9115
+
+  - job_name: probe_watchdog
+    metrics_path: /probe
+    params:
+      module: [http_bearer_2xx]
+    static_configs:
+      - targets:
+          - http://host.docker.internal:9101/status
+        labels:
+          service: watchdog
+          cvl_port: '9101'
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: blackbox:9115
+
+  - job_name: probe_session_hub
+    metrics_path: /probe
+    params:
+      module: [http_bearer_2xx]
+    static_configs:
+      - targets:
+          - http://host.docker.internal:9102/status
+        labels:
+          service: session_hub
+          cvl_port: '9102'
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: blackbox:9115

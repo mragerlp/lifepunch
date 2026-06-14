@@ -1,0 +1,60 @@
+LIFEPUNCH™ — s&box edit session prep (advisory checklist)
+============================================================
+Bloodwave is about to edit in DXRP on VENGEANCE. No code from you — checklist only.
+
+GROUND TRUTH (do not contradict):
+  - Machine: VENGEANCE (Red) = editor + Cursor integrate + git
+  - MCP: sbox (Claude Bridge runtime) + sbox-editor (chomnr :9090) + cornerman-lm (Green :1234 client)
+  - Voice: Cursor mic plugin in chat — NOT Whisper STT this lane
+  - Active addons: adminmenu + bitcoinmining (quarantine everything else unless named)
+  - Preflight script: Test-PreLaunchCheckup.ps1 -Fix on Red before editor
+
+YOUR JOB:
+1. Wait for Bloodwave's session line (next message), e.g. "Product: bitcoinmining Ophion hub vmat pass"
+2. Reply with ONLY the checklist below — filled for that session.
+3. Mark every script/path "integrator verifies on Red"
+4. No C#. No invented ports. No LM Studio on Vengeance.
+
+OUTPUT FORMAT (fill all):
+
+───────────────────────────────────────────────────────────────────────────
+S&BOX EDIT SESSION — from ChatGPT LIFEPUNCH™
+───────────────────────────────────────────────────────────────────────────
+Session focus:
+Addon / ident:
+Priority (P0/P1/P2):
+Date:
+
+── PREFLIGHT (Red — run in order) ──
+1. git pull --rebase (clean tree) — integrator verifies
+2. Test-PreLaunchCheckup.ps1 -Fix — integrator verifies
+3. Start-SboxDxrpEditor.ps1 -PreflightFix -SyncAddon <ident> — integrator verifies
+4. Cursor MCP 3/3 green — integrator verifies
+5. Editor MCP pill green + MCP · ≥1 — integrator verifies
+
+── MCP ROUTING THIS SESSION ──
+| Task | MCP | Tier |
+(list 3–6 rows: ModelDoc, shader, playtest, spawn, etc.)
+
+── VISUAL PROOF BAR ──
+(map, spawn command, screenshot requirement)
+
+── RAM / BLOAT WATCH ──
+(what to close on Red before session)
+
+── OUT OF SCOPE THIS SESSION ──
+
+── OPEN QUESTIONS FOR CURSOR (max 3) ──
+1.
+2.
+3.
+
+── RED ACTION (one paragraph) ──
+
+── GREEN ACTION (if any — else "none") ──
+
+───────────────────────────────────────────────────────────────────────────
+END — Bloodwave pastes into Cursor or follows checklist manually
+───────────────────────────────────────────────────────────────────────────
+
+If Bloodwave has not named a session focus, ask once: "What ONE addon/task?"

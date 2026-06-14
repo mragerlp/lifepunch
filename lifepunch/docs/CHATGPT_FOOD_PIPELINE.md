@@ -48,12 +48,14 @@ ChatGPT **passed** the roots test on naming:
 ## Your real workflow (concept lane)
 
 ```text
-You (voice / shower thought)
+You (typed or Cursor mic in chat)
     → ChatGPT LIFEPUNCH™ ("banker job: player does X at hub Y")
     → ChatGPT expands (UX, loops, DXRP-flavored copy)
     → YOU paste BRIEF into Cursor (template below)
     → Cursor grounds in repo + MCP + ships or says what's missing
 ```
+
+**Voice lane (current):** Cursor **mic plugin** in chat — not lifepunchnet Whisper / desk PTT unless owner re-enables.
 
 **Do not** paste raw ChatGPT walls into Cursor without the template — that's the confusion.
 
@@ -95,7 +97,13 @@ DXRP: nominative only. Lead LIFEPUNCH™ as source. No ®.
 
 | File | Role |
 |------|------|
-| `handoff/CHATGPT_CONCEPT_BRIEF_TEMPLATE.txt` | What ChatGPT fills · what you paste into Cursor |
+| `handoff/CHATGPT_STEP1_PASTE.txt` | Product ideation → CURSOR BRIEF |
+| `handoff/CHATGPT_VISUAL_PASS_PASTE.txt` | Visual/asset pass brief |
+| `handoff/CHATGPT_SBOX_EDIT_SESSION_PASTE.txt` | Pre-editor checklist |
+| `handoff/CHATGPT_ADDON_SHIP_CHECKLIST_PASTE.txt` | Portal ship advisory |
+| `handoff/BLANK_CURSOR_BRIEF.txt` | Upload to ChatGPT Project knowledge |
 | `handoff/CHATGPT_RUN1_PASTE.txt` | Infra Run 1 (already answered — keep in Project) |
+| `addons/docs/briefs/BRIEF_INDEX.md` | Brief status index |
+| `SBOX_EDIT_STANDARDS.md` | Editor hardware/software bar |
 | `MCP_AGENT_ROUTING.md` | Cursor law for MCP/tools |
 | `CHATGPT_OPENAI_INTEGRATION.md` | Two Projects setup |

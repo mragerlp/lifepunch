@@ -15,7 +15,8 @@ param(
     [string] $RemoteAddress = '71.250.46.224',
     [switch] $SkipGitPull,
     [switch] $SkipOpsUniform,
-    [switch] $SkipNetBoot
+    [switch] $SkipNetBoot,
+    [switch] $SkipObservability
 )
 
 $ErrorActionPreference = 'Stop'
@@ -71,6 +72,20 @@ if (-not $SkipNetBoot) {
     $secure = Join-Path $here 'Secure-LifepunchnetCvlPorts.ps1'
     if (Test-Path -LiteralPath $secure) {
         & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $secure -RemoteAddress $RemoteAddress
+    }
+}
+
+if (-not $SkipObservability) {
+    Write-Step 'Observability Phase 1 (Grafana :3000 + probes)'
+    $obs = Join-Path $here 'Install-LifepunchnetObservability.ps1'
+    if (Test-Path -LiteralPath $obs) {
+        & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $obs -RemoteAddress $RemoteAddress
+        if ($LASTEXITCODE -ne 0) {
+            Write-Host '    Observability install had failures — fix Docker/status-token, re-run Install-LifepunchnetObservability.ps1' -ForegroundColor Yellow
+        }
+    }
+    else {
+        Write-Host "    Skip — missing $obs (git pull lifepunch-rdp-server first)" -ForegroundColor Yellow
     }
 }
 

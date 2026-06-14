@@ -1,0 +1,11 @@
+apiVersion: 1
+
+providers:
+  - name: LifePunch CVL
+    orgId: 1
+    folder: LifePunch
+    type: file
+    disableDeletion: true
+    editable: true
+    options:
+      path: /var/lib/grafana/dashboards

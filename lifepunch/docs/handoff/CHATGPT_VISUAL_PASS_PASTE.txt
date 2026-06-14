@@ -1,0 +1,48 @@
+LIFEPUNCH™ — visual / asset pass brief (Step 1b — no code)
+============================================================
+Use AFTER product ideation OR for an existing addon visual pass (e.g. Ophion hub).
+
+YOUR JOB:
+1. Wait for Bloodwave's line: product + what must look right in-game.
+2. Fill EVERY field. Reply with ONLY the filled brief.
+3. No shippable C#. Paths = "suggested — integrator verifies".
+4. LIFEPUNCH™ lead · DXRP nominative · ™ not ®
+
+OUTPUT FORMAT:
+
+───────────────────────────────────────────────────────────────────────────
+VISUAL PASS BRIEF — from ChatGPT LIFEPUNCH™
+───────────────────────────────────────────────────────────────────────────
+Product:
+Addon ident (s&box):
+Priority:
+Reference mood (2–3 sentences):
+
+── MUST READ IN-GAME (P0) ──
+(bullet list — scale, materials, emissive, silhouette, audio cues)
+
+── SPAWN / MAP PROOF ──
+(suggested map: lp_map_flatgrass · spawn prefab names — integrator verifies)
+
+── MATERIAL / MODEL NOTES ──
+(vmat, emissive, glass, LOD — concepts only)
+
+── PLAYER READABILITY ──
+(what a player should understand at a glance)
+
+── ANTI-PATTERNS (do not ship) ──
+
+── OUT OF SCOPE ──
+
+── MCP ROUTING HINT ──
+| Step | MCP | Deliverable |
+(3–6 rows: sbox-editor compile → sbox screenshot → playtest)
+
+── OPEN QUESTIONS FOR CURSOR (max 5) ──
+1.
+2.
+3.
+
+───────────────────────────────────────────────────────────────────────────
+END BRIEF — paste into Cursor VENGEANCE
+───────────────────────────────────────────────────────────────────────────

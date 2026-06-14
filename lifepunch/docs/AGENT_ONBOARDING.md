@@ -203,12 +203,13 @@ The `lifepunch-operating-context` rule is law here; this is the orientation. We 
 | **Quarantine** | Active dev: `adminmenu` + `bitcoinmining`. All other idents frozen — `portfolio.json`, `QUARANTINE_REGISTER.md` |
 | **Publish now** | **`adminmenu` (`lifepunch.ulx`) only** — v1 ship-ready; LifePunch servers, not for resale |
 | **Bitcoin** | Ophion P0 from `BITCOIN_OPHION_CURSOR_BRIEF.md` — active dev, **not** publish export until visual sign-off |
-| **Ideation** | ChatGPT Step 1 → paste CURSOR BRIEF → Cursor VENGEANCE. `WORKFLOW_IDEATION_FIRST.md` · paste: `handoff/CHATGPT_STEP1_PASTE.txt` |
+| **Ideation** | ChatGPT Step 1 → paste CURSOR BRIEF → Cursor VENGEANCE. Voice = **Cursor mic** (Whisper deferred). `WORKFLOW_IDEATION_FIRST.md` |
+| **ChatGPT templates** | Step1 · Visual pass · Edit session · Ship checklist — `handoff/CHATGPT_*.txt` · index: `briefs/BRIEF_INDEX.md` |
 | **Owner alias** | Visible: **Bloodwave** · Proprietary: **mrragerlp** · Contact: Mr. Rager — `BLOODWAVE_ALIAS.md` |
 | **Git checkpoints** | Agent recommends scope; owner approves. `GIT_CHECKPOINTS.md` · handoff: `handoff/JUNE_2026_FOUNDATION_CHECKPOINT.md` |
-| **Cornerman LM** | Headless `lms` on `:1234`. Dual MCP required — `Restore-CornermanDualStack.ps1` if off-Cursor. |
-| **Dual s&box MCP** | `sbox` + `sbox-editor` on both VENGEANCE and Cornerman when paired. `SBOX_EDITOR_MCP.md` |
-| **Pre-launch** | `Test-PreLaunchCheckup.ps1 -Fix` before editor work |
+| **Cornerman LM** | Headless `lms` on `:1234`. Dual MCP when Green Cursor active — `Restore-CornermanDualStack.ps1` |
+| **Dual s&box MCP** | `sbox` + `sbox-editor` on VENGEANCE every edit session. `SBOX_EDITOR_MCP.md` · bar: `SBOX_EDIT_STANDARDS.md` |
+| **Pre-launch** | `Test-PreLaunchCheckup.ps1 -Fix` then `Start-SboxDxrpEditor.ps1 -PreflightFix -SyncAddon <ident>` |
 
 **Handoff paste for any node:** `AGENT_SYNC_BROADCAST.txt` after `git pull --rebase`.
 

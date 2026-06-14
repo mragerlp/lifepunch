@@ -13,6 +13,8 @@ infra + UX + code in one rant → **ChatGPT Step 1 first**, then Cursor. No exce
 4. Copy ChatGPT's filled **CURSOR BRIEF** block
 5. Open **Cursor on VENGEANCE** → new chat → paste brief → add: `Map to repo and start.`
 
+**Voice:** use **Cursor mic plugin** in chat for ideation. Whisper / desk PTT lanes are **deferred**.
+
 Done. You never edit template files.
 
 ---
@@ -21,7 +23,7 @@ Done. You never edit template files.
 
 1. Treat brief as **ideation** — verify against `addons.json`, `config/portfolio.json`, `QUARANTINE_REGISTER.md`, existing docs
 2. **Active addons only:** `adminmenu` + `bitcoinmining` unless owner promotes from quarantine
-3. If building in editor: `Test-PreLaunchCheckup.ps1 -Fix` first
+3. If building in editor: `Test-PreLaunchCheckup.ps1 -Fix` first — bar in `SBOX_EDIT_STANDARDS.md`
 4. Reply with: **exists / net-new / P0 steps / which MCP** (`sbox`, `sbox-editor`, `cornerman-lm`)
 5. Ask Bloodwave for ChatGPT Step 1 if message is spaghetti with no brief
 
@@ -39,8 +41,12 @@ Done. You never edit template files.
 
 | File | Role |
 |------|------|
-| `handoff/CHATGPT_STEP1_PASTE.txt` | **Bloodwave copies this to ChatGPT** |
+| `handoff/CHATGPT_STEP1_PASTE.txt` | **Bloodwave copies this to ChatGPT** — product ideation |
+| `handoff/CHATGPT_VISUAL_PASS_PASTE.txt` | Visual/asset pass brief (Ophion-style) |
+| `handoff/CHATGPT_SBOX_EDIT_SESSION_PASTE.txt` | Pre-editor session checklist (advisory) |
+| `handoff/CHATGPT_ADDON_SHIP_CHECKLIST_PASTE.txt` | Portal ship advisory |
 | `handoff/BLANK_CURSOR_BRIEF.txt` | Blank form — upload to ChatGPT Project knowledge |
+| `SBOX_EDIT_STANDARDS.md` | VENGEANCE editor hardware/software bar |
 | `WORKFLOW_IDEATION_FIRST.md` | This process |
 | `PUBLISH_REPO_LANE.md` | Core vs publish repo law |
 | `GIT_CHECKPOINTS.md` | What to commit / push / pull — checkpoint habit |

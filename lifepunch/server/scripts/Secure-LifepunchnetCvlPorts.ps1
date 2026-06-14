@@ -15,7 +15,9 @@ param(
     [string] $RemoteAddress,
     [int] $WhisperPort = 9000,
     [int] $StatusPort = 9101,
-    [int] $SessionPort = 9102
+    [int] $SessionPort = 9102,
+    [int] $GrafanaPort = 3000,
+    [switch] $SkipGrafana
 )
 
 $ErrorActionPreference = 'Stop'
@@ -34,6 +36,13 @@ Write-Host ''
 & (Join-Path $here 'Open-LifepunchnetWhisperFirewall.ps1') -RemoteAddress $RemoteAddress -Port $WhisperPort
 & (Join-Path $here 'Open-LifepunchnetStatusFirewall.ps1') -RemoteAddress $RemoteAddress -Port $StatusPort
 & (Join-Path $here 'Open-LifepunchnetSessionFirewall.ps1') -RemoteAddress $RemoteAddress -Port $SessionPort
+
+if (-not $SkipGrafana) {
+    $grafanaFw = Join-Path $here 'Open-LifepunchnetGrafanaFirewall.ps1'
+    if (Test-Path -LiteralPath $grafanaFw) {
+        & $grafanaFw -RemoteAddress $RemoteAddress -Port $GrafanaPort
+    }
+}
 
 $guard = Join-Path $here 'ServerHost-CvlSignalGuard.ps1'
 if (Test-Path -LiteralPath $guard) {

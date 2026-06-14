@@ -1,0 +1,18 @@
+modules:
+  http_2xx:
+    prober: http
+    timeout: 12s
+    http:
+      method: GET
+      valid_status_codes: [200]
+      preferred_ip_protocol: ip4
+
+  http_bearer_2xx:
+    prober: http
+    timeout: 12s
+    http:
+      method: GET
+      valid_status_codes: [200]
+      preferred_ip_protocol: ip4
+      headers:
+        Authorization: 'Bearer __STATUS_TOKEN__'

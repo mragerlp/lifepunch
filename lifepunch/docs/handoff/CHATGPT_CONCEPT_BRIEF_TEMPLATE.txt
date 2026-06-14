@@ -1,2 +1,8 @@
-DEPRECATED — use CHATGPT_STEP1_PASTE.txt + BLANK_CURSOR_BRIEF.txt
-See lifepunch/docs/WORKFLOW_IDEATION_FIRST.md
+SUPERSEDED — use these instead (June 2026):
+
+  Product ideation:     handoff/CHATGPT_STEP1_PASTE.txt + BLANK_CURSOR_BRIEF.txt
+  Visual pass:          handoff/CHATGPT_VISUAL_PASS_PASTE.txt
+  Editor session prep:  handoff/CHATGPT_SBOX_EDIT_SESSION_PASTE.txt
+  Portal ship check:    handoff/CHATGPT_ADDON_SHIP_CHECKLIST_PASTE.txt
+
+See: WORKFLOW_IDEATION_FIRST.md · SBOX_EDIT_STANDARDS.md
