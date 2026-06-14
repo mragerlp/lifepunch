@@ -19,11 +19,11 @@
 @attribute [StyleSheet]
 
 <root class="@GetRootClass()">
-    @if ( IsHeadConsole && !IsPinGateActive )
+    @if ( IsAtComputer )
     {
         <div class="ops-backdrop" onclick=@OnClickClose></div>
     }
-    <div class="@(IsHeadConsole && !IsPinGateActive ? "ops-window" : "")">
+    <div class="@(IsAtComputer ? "crt-frame" : "")">
     <div class="scanlines"></div>
 
     <div class="title-bar">
@@ -366,6 +366,7 @@
     private HeadOpsModule _headModule = HeadOpsModule.Log;
     private bool IsHubPanel => _surface == HashdSurface.HubPanel;
     private bool IsHeadConsole => _surface == HashdSurface.HeadConsole;
+    private bool IsAtComputer => IsHeadConsole || IsPinGateActive;
 
     private GpuRackEntity Miner => GpuRackRegistry.SelectedRig;
     private BitcoinMinerHubEntity Hub => GpuRackRegistry.ActiveHub;
@@ -411,6 +412,8 @@
             classes.Add( "pin-entry-open" );
         if ( IsHeadConsole )
             classes.Add( "head-console-shell" );
+        if ( IsAtComputer )
+            classes.Add( "at-computer" );
         if ( IsHubPanel && !IsPinGateActive )
             classes.Add( "hub-panel-shell" );
         if ( _panelSize == 0 )

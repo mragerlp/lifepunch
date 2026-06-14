@@ -984,7 +984,7 @@ $text-sm: 14px;
         }
     }
 
-    &.head-console-shell {
+    &.at-computer {
         position: absolute;
         top: 0;
         left: 0;
@@ -996,6 +996,10 @@ $text-sm: 14px;
         background-color: transparent;
         border: none;
         box-shadow: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        pointer-events: none;
 
         .ops-backdrop {
             position: absolute;
@@ -1003,34 +1007,65 @@ $text-sm: 14px;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.55);
+            background-color: rgba(0, 0, 0, 0.62);
             pointer-events: all;
         }
 
-        .ops-window {
-            position: absolute;
-            bottom: 48px;
-            right: 24px;
-            width: 960px;
-            height: 640px;
+        .crt-frame {
+            position: relative;
+            width: 92%;
+            max-width: 1080px;
+            height: 82%;
+            max-height: 700px;
+            padding: 16px 18px 20px;
             background-color: rgba(18, 16, 12, 0.98);
-            border: 2px solid $border-bright;
-            box-shadow: 0 0 0 1px #000000, 0 12px 40px rgba(0, 0, 0, 0.55);
+            border: 3px solid #3d3420;
+            border-radius: 6px;
+            box-shadow:
+                0 0 0 1px #000000,
+                0 0 48px rgba(240, 165, 0, 0.08),
+                0 18px 56px rgba(0, 0, 0, 0.65),
+                inset 0 2px 0 rgba(255, 255, 255, 0.04);
             display: flex;
             flex-direction: column;
             overflow: hidden;
             pointer-events: all;
             z-index: 2;
+
+            &::before {
+                content: "";
+                position: absolute;
+                top: 10px;
+                left: 10px;
+                right: 10px;
+                bottom: 10px;
+                border: 2px solid rgba(240, 165, 0, 0.22);
+                pointer-events: none;
+                z-index: 0;
+            }
+
+            > * {
+                position: relative;
+                z-index: 1;
+            }
         }
 
-        &.compact .ops-window {
-            width: 820px;
-            height: 520px;
+        &.compact .crt-frame {
+            max-width: 900px;
+            max-height: 560px;
         }
 
-        &.expanded .ops-window {
-            width: 1080px;
-            height: 700px;
+        &.expanded .crt-frame {
+            max-width: 1180px;
+            max-height: 760px;
+        }
+
+        &.pin-gate .crt-frame {
+            border-color: $primary-dim;
+            box-shadow:
+                0 0 0 1px #000000,
+                0 0 36px rgba(240, 165, 0, 0.14),
+                0 18px 56px rgba(0, 0, 0, 0.65);
         }
     }
 
