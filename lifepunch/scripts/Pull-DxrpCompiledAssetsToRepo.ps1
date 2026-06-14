@@ -37,7 +37,9 @@ $from = Join-Path $dxrpGame "Assets\addons\lifepunch\$Addon"
 $to = Join-Path $repoAddons "Assets\addons\lifepunch\$Addon"
 
 if (-not (Test-Path -LiteralPath $from)) {
-    throw "DXRP addon assets missing: $from (compile in ModelDoc first)"
+    Write-Host "Pull DXRP compiled -> repo ($Addon)" -ForegroundColor Cyan
+    Write-Host '  skip: no DXRP assets folder (code-only addon)' -ForegroundColor DarkGray
+    exit 0
 }
 
 New-Item -ItemType Directory -Force -Path $to | Out-Null
