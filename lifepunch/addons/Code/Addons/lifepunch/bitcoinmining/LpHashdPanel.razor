@@ -1,0 +1,144 @@
+@* ─────────────────────────────────────────────────────────────────────────────
+   PROPRIETARY & CONFIDENTIAL — © 2026 lifepunch.co. All rights reserved.
+   "LIFEPUNCH Bitcoin Miner for DXRP" (s&box ident: lifepunch.bitcoin · addon ident: bitcoinmining)
+   ───────────────────────────────────────────────────────────────────────────── *@
+@namespace LifePunch.DXRP.Addons.Bitcoin
+@using System
+@using Sandbox.UI
+@inherits PanelComponent
+
+@attribute [StyleSheet]
+
+<root class="@GetRootClass()">
+	<div class="chrome">
+		<div class="titlebar">
+			<span class="mark">◆ HASHD RIG CONTROL v2</span>
+			<span class="program">@LpBitcoinIdent.HashdProgram</span>
+			<span class="state @(Hub?.IsMining == true ? "mining" : "idle")">@(Hub?.IsMining == true ? "MINING" : "IDLE")</span>
+			<button class="close" onclick="@Close">CLOSE</button>
+		</div>
+		<div class="body">
+			<div class="rail">
+				<div class="telemetry">
+					<div class="line">STATUS @(Hub?.IsMining == true ? "MINING" : "IDLE")</div>
+					<div class="line">BTC @(Hub?.BitcoinAmount.ToString("F5") ?? "0")</div>
+					<div class="line">USD $@(Hub?.UsdValue ?? 0)</div>
+					<div class="line">HASH @(Hub?.ClockGhz.ToString("F2") ?? "0") GHz</div>
+					<div class="line">CORES @(Hub?.CoreCount ?? 0)</div>
+					<div class="tickbar">
+						<div class="fill" style="width: @((Hub?.MiningProgress ?? 0f) * 100f)%"></div>
+					</div>
+				</div>
+				<div class="modules">
+					@foreach ( var mod in _modules )
+					{
+						<button class="module @(mod == _active ? "active" : "")" onclick="@(() => SelectModule(mod))">@mod</button>
+					}
+				</div>
+			</div>
+			<div class="main">
+				@if ( _active == HashdModule.Dashboard )
+				{
+					<div class="pane">
+						<div class="heading">DASHBOARD — RIG STATUS</div>
+						<div class="cards">
+							<div class="card"><div class="label">₿ BALANCE</div><div class="value">@(Hub?.BitcoinAmount.ToString("F8") ?? "0")</div></div>
+							<div class="card"><div class="label">USD VALUE</div><div class="value">$@(Hub?.UsdValue ?? 0)</div></div>
+							<div class="card"><div class="label">RATE / MIN</div><div class="value">@(Hub?.MiningRatePerMinute.ToString("F5") ?? "0")</div></div>
+						</div>
+						<div class="actions">
+							<button class="action primary" onclick="@StartMining">START MINING</button>
+							<button class="action" onclick="@StopMining">STOP MINING</button>
+						</div>
+					</div>
+				}
+				else if ( _active == HashdModule.Wallet )
+				{
+					<div class="pane">
+						<div class="heading">WALLET — PAYOUT</div>
+						<div class="wallet-balance">@(Hub?.BitcoinAmount.ToString("F8") ?? "0") BTC</div>
+						<button class="action primary" onclick="@SellAll">SELL ALL</button>
+					</div>
+				}
+				else if ( _active == HashdModule.Upgrades )
+				{
+					<div class="pane">
+						<div class="heading">UPGRADES</div>
+						<div class="upgrade-row">
+							<span>CPU Lv @(Hub?.CpuUpgradeLevel ?? 0) → +@LpBitcoinEconomy.CpuGhzPerLevel GHz</span>
+							<button class="action" onclick="@UpgradeCpu">INSTALL CPU</button>
+						</div>
+						<div class="upgrade-row">
+							<span>CORES Lv @(Hub?.CoreUpgradeLevel ?? 0) → +@LpBitcoinEconomy.CoresPerLevel</span>
+							<button class="action" onclick="@UpgradeCores">INSTALL CORES</button>
+						</div>
+						<div class="hint">Cash on hand: $@LpHashdUiHost.GetLocalWalletCash()</div>
+					</div>
+				}
+				else if ( _active == HashdModule.Log )
+				{
+					<div class="pane log">
+						<div class="heading">LOG</div>
+						<div class="logline">> hashd init — LIFEPUNCH mining daemon</div>
+						<div class="logline">> rig interface ready — module rail active</div>
+						<div class="prompt">rig0&gt; _</div>
+					</div>
+				}
+				else
+				{
+					<div class="pane">
+						<div class="heading">ABOUT</div>
+						<div class="about">@LpBitcoinIdent.ProductTitle</div>
+						<div class="about">@LpBitcoinIdent.UiFooter</div>
+						<div class="about">Proprietary — lifepunch.co</div>
+					</div>
+				}
+			</div>
+		</div>
+	</div>
+</root>
+
+@code
+{
+	private enum HashdModule { Dashboard, Wallet, Upgrades, Log, About }
+
+	private static readonly HashdModule[] _modules =
+	{
+		HashdModule.Dashboard, HashdModule.Wallet, HashdModule.Upgrades, HashdModule.Log, HashdModule.About
+	};
+
+	private HashdModule _active = HashdModule.Dashboard;
+	private LpBitcoinHubEntity _hub;
+
+	public LpBitcoinHubEntity Hub => _hub;
+
+	private string GetRootClass() => "lp-hashd-panel";
+
+	public void BindHub( LpBitcoinHubEntity hub ) => _hub = hub;
+
+	private void SelectModule( HashdModule mod ) => _active = mod;
+
+	private void Close() => LpHashdUiHost.CloseOpen();
+
+	private void StartMining() => _hub?.SetMining( true );
+	private void StopMining() => _hub?.SetMining( false );
+	private void SellAll() => _hub?.RequestSell();
+	private void UpgradeCpu() => _hub?.RequestUpgradeCpu();
+	private void UpgradeCores() => _hub?.RequestUpgradeCores();
+
+	protected override void OnUpdate()
+	{
+		base.OnUpdate();
+		if ( !_hub.IsValid() )
+			Close();
+	}
+
+	protected override int BuildHash() => HashCode.Combine(
+		_active,
+		_hub?.IsMining,
+		_hub?.BitcoinAmount,
+		_hub?.ClockGhz,
+		_hub?.CoreCount,
+		_hub?.MiningProgress,
+		_hub?.UsdValue );
+}

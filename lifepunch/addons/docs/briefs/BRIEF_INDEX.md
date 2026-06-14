@@ -4,7 +4,8 @@ Lightweight archive — **not** a database ledger. Git + owner checkpoint = merg
 
 | Brief | Type | Status | Notes |
 |-------|------|--------|-------|
-| `BITCOIN_OPHION_CURSOR_BRIEF.md` | visual + UX P0 | **active** | lifepunchbitcoin · Ophion |
+| `BITCOIN_OPHION_VISUAL_PASS_BRIEF.md` | visual pass P0 | **active** | Bloodwave verdicts · full-kit hero |
+| `BITCOIN_OPHION_CURSOR_BRIEF.md` | product + UX | **active** | lifepunchbitcoin · Ophion loop |
 | `LIFEPUNCH_BITCOIN_START.md` | session kickoff | **active** | lifepunchbitcoin Ophion P0 |
 | `PACKAGE_NAMING_STANDARD.md` | package law | **active** | Public branch slugs + s&box ids |
 | `BITCOINMINING_ENTITY_BRIEF.md` | product | reference | Entity arch |

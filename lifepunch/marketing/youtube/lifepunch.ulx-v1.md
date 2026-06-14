@@ -6,7 +6,7 @@ A clean, modern, fully server-agnostic in-game staff menu for any DXRP.net-power
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 OVERVIEW
-This is a polished, ULX-inspired (but built clean from scratch) staff console that opens instantly via console or chat command (adminmenu / /adminmenu). It's intentionally architected as a thin UX + dispatch layer over DXRP's own admin backend — it never reimplements authentication, authority, or actions.
+This is a polished, ULX-inspired (but built clean from scratch) console that opens instantly via `lifepunchulx` / `/lifepunchulx`. It's intentionally architected as a thin UX + dispatch layer over DXRP's own admin backend — it never reimplements authentication, authority, or actions.
 
 Every command routes to DXRP's existing AdminSystem host RPCs where one exists, or to the registered chat ICommand otherwise, and every action is re-validated host-side — so the client never holds authority and the menu can't be exploited or desynced from your server's rules.
 

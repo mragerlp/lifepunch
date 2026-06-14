@@ -34,7 +34,7 @@ Log signal: `D:\Steam\steamapps\common\sbox\logs\sbox-dev.log` → `not valid wi
 
 | Panel | Path |
 |-------|------|
-| Staff menu (ships) | `adminmenu/StaffMenu.razor.scss` — `.staffmenu` root |
+| LIFEPUNCH ULX (ships) | `adminmenu/StaffMenu.razor.scss` — `.lifepunchulx` root |
 | Hacker rack PIN | `hackerjob/HackerServerRackMenu.razor.scss` — `.pin-stage` (⚠️ migrate type selector to class root) |
 | Shared footer | `LifePunchUiFooter.razor.scss` |
 

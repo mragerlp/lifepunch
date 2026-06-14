@@ -213,17 +213,17 @@
     {
       "ident": "adminmenu",
       "packageSlug": "lifepunchulx",
-      "title": "lifepunch.ulx",
-      "description": "lifepunch.ulx is a server-agnostic, in-game staff UI/UX for any DXRP.net-powered server — a clean, permission-aware command console that acts as a thin presentation and dispatch layer over DXRP's native admin backend, surfacing only the actions a viewer's portal rank permits and reflecting live RankSystem and portal-API data (roster, roles, balances, health/armor) in real time.",
+      "title": "lifepunchulx",
+      "description": "lifepunchulx is a server-agnostic, in-game ULX console for any DXRP.net-powered server — a clean, permission-aware command surface that acts as a thin presentation and dispatch layer over DXRP's native admin backend, surfacing only the actions a viewer's portal rank permits and reflecting live RankSystem and portal-API data (roster, roles, balances, health/armor) in real time.",
       "kind": "code-only",
       "hasAssets": false,
       "hasCode": true,
       "dxrpAddonId": "019e9cfa-3141-723c-a430-1a0e256472eb",
-      "dxrpAddonIdentifier": "dxrpadminmenu",
+      "dxrpAddonIdentifier": "lifepunchulx",
       "sboxIdentifier": "lifepunch.ulx",
       "status": "v1-vertical-slice",
       "ownership": "PROPRIETARY — sole-owned IP of lifepunch.co. NOT for resale, redistribution, sublicensing, or reuse by any party, including DXRP and LifePunch staff/contributors/community, except the owner (lifepunch.co). No rights granted to anyone else by presence in this repo or on the DXRP portal.",
-      "notes": "Server-agnostic in-game staff/admin menu (portal package 'DXRP Admin Menu', network identifier 'dxrpadminmenu'; repo ident 'adminmenu'). Thin UX + dispatch layer over DXRP's existing admin backend: gates each action on Dxura.RP.Shared.Permission via RankSystem.HasLocalPermission, respects RankSystem.CanLocalTarget, and dispatches to AdminSystem [Rpc.Host] actions where one exists (Kick) else Chat.ExecuteCommandHost into the registered ICommand (Freeze/Goto/Bring/Spectate/God). Opens via the 'adminmenu' (and legacy 'staffmenu') console + chat command (staff bind any key to it). code-only kind: V1 uses the material-icons font, ships no image assets. LIFEPUNCH_LOCAL stubs keep it editor-compilable. Permission Id strings reconcile 1:1 with admin-panel/permissions/*.json. Code namespace/class names remain LifePunch.DXRP.Addons.StaffMenu (StaffMenu*.cs) — functional, not renamed with the package ident.",
+      "notes": "LIFEPUNCH ULX package lifepunchulx (repo path adminmenu; s&box ident lifepunch.ulx). Thin UX + dispatch layer over DXRP's existing admin backend: gates each action on Dxura.RP.Shared.Permission via RankSystem.HasLocalPermission, respects RankSystem.CanLocalTarget, and dispatches to AdminSystem [Rpc.Host] actions where one exists (Kick) else Chat.ExecuteCommandHost into the registered ICommand (Freeze/Goto/Bring/Spectate/God). Opens via lifepunchulx console + /lifepunchulx chat command (e.g. bind f4 lifepunchulx). code-only kind: V1 uses the material-icons font, ships no image assets. LIFEPUNCH_LOCAL stubs keep it editor-compilable. Settings permission: lifepunchulx.settings.edit. Code namespace/class names remain LifePunch.DXRP.Addons.StaffMenu (StaffMenu*.cs) — internal, not user-facing.",
       "contents": []
     },
     {

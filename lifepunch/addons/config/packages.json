@@ -15,9 +15,9 @@
       "packageSlug": "lifepunchulx",
       "sboxIdentifier": "lifepunch.ulx",
       "repoIdent": "adminmenu",
-      "title": "LIFEPUNCH™ ULX Staff Menu for DXRP",
+      "title": "LIFEPUNCH™ ULX for DXRP",
       "status": "publish-ready",
-      "notes": "Was dxrpadminmenu / adminmenu. Server-agnostic staff UI."
+      "notes": "Package slug lifepunchulx. Command /lifepunchulx. Server-agnostic ULX console."
     },
     {
       "packageSlug": "lifepunchbitcoin",

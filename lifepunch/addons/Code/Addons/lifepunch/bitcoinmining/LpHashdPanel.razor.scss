@@ -1,0 +1,162 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// PROPRIETARY & CONFIDENTIAL — © 2026 lifepunch.co. All rights reserved.
+//
+// "LIFEPUNCH Bitcoin Miner for DXRP" (s&box ident: lifepunch.bitcoin · addon ident: bitcoinmining)
+// ─────────────────────────────────────────────────────────────────────────────
+
+.lp-hashd-panel {
+	position: absolute;
+	left: 24px;
+	bottom: 24px;
+	width: 960px;
+	height: 640px;
+	font-family: Mina;
+	font-size: 14px;
+	color: #f0e6d0;
+	pointer-events: all;
+
+	.chrome {
+		width: 100%;
+		height: 100%;
+		background-color: #12100c;
+		border: 2px solid #5c4a22;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.titlebar {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		padding: 10px 14px;
+		background-color: #1a160f;
+		border-bottom: 1px solid #3d3420;
+
+		.mark { color: #f0a500; font-weight: bold; flex-grow: 1; }
+		.program { color: #c9a227; }
+		.state {
+			padding: 2px 8px;
+			border: 1px solid #3d3420;
+			&.mining { color: #f0a500; border-color: #f0a500; }
+			&.idle { color: #8a7a5a; }
+		}
+		.close {
+			background-color: #2a2218;
+			border: 1px solid #5c4a22;
+			color: #f0a500;
+			padding: 4px 10px;
+		}
+	}
+
+	.body {
+		display: flex;
+		flex: 1;
+		min-height: 0;
+	}
+
+	.rail {
+		width: 220px;
+		border-right: 1px solid #3d3420;
+		display: flex;
+		flex-direction: column;
+		padding: 12px;
+		gap: 12px;
+		background-color: #0f0d0a;
+	}
+
+	.telemetry .line { margin-bottom: 4px; color: #d4c4a0; font-size: 12px; }
+
+	.tickbar {
+		height: 8px;
+		background-color: #2a2218;
+		border: 1px solid #3d3420;
+		margin-top: 8px;
+		.fill {
+			height: 100%;
+			background-color: #f0a500;
+		}
+	}
+
+	.modules {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+	}
+
+	.module {
+		text-align: left;
+		background-color: #1a160f;
+		border: 1px solid #3d3420;
+		color: #c9a227;
+		padding: 6px 8px;
+		&.active {
+			border-color: #f0a500;
+			color: #f0a500;
+			background-color: #221c12;
+		}
+	}
+
+	.main {
+		flex: 1;
+		padding: 16px;
+		overflow: hidden;
+	}
+
+	.pane {
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+	}
+
+	.heading {
+		color: #f0a500;
+		font-size: 16px;
+		font-weight: bold;
+		border-bottom: 1px solid #3d3420;
+		padding-bottom: 8px;
+	}
+
+	.cards {
+		display: flex;
+		gap: 12px;
+	}
+
+	.card {
+		flex: 1;
+		background-color: #1a160f;
+		border: 1px solid #3d3420;
+		padding: 12px;
+		.label { color: #8a7a5a; font-size: 11px; }
+		.value { color: #f0a500; font-size: 18px; margin-top: 4px; }
+	}
+
+	.actions, .upgrade-row {
+		display: flex;
+		gap: 12px;
+		align-items: center;
+	}
+
+	.action {
+		background-color: #2a2218;
+		border: 1px solid #5c4a22;
+		color: #f0e6d0;
+		padding: 10px 16px;
+		&.primary {
+			border-color: #f0a500;
+			color: #f0a500;
+		}
+	}
+
+	.wallet-balance {
+		font-size: 28px;
+		color: #f0a500;
+	}
+
+	.hint { color: #8a7a5a; font-size: 12px; }
+
+	.log .logline { color: #9a8a6a; font-family: monospace; }
+	.prompt { margin-top: auto; color: #f0a500; font-family: monospace; }
+
+	.about { color: #c9a227; }
+}

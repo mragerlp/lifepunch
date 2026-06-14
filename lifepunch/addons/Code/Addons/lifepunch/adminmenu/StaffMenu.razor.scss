@@ -1,7 +1,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // PROPRIETARY & CONFIDENTIAL — © 2026 lifepunch.co. All rights reserved.
 //
-// "lifepunch.ulx" (s&box ident: lifepunch.ulx · addon ident: lifepunch.dxrpadminmenu) is the sole-owned
+// "LIFEPUNCH ULX for DXRP" (s&box ident: lifepunch.ulx · addon ident: lifepunchulx) is the sole-owned
 // intellectual property of lifepunch.co. It is NOT licensed for resale, redistribution,
 // sublicensing, copying, or reuse by ANY person or entity — including DXRP and
 // LifePunch staff, contributors, or community — EXCEPT the owner (lifepunch.co).
@@ -29,7 +29,7 @@ $border-disabled: rgba(255, 255, 255, 0.04);
 // Legacy fallback (pre ulx-v2 — restore these + remove `.ulx-v2` from razor to revert)
 // $bg: #16181d; $bg-raised: #1f2229; $bg-row: #262a33; $border: rgba(255,255,255,0.06);
 
-.staffmenu {
+.lifepunchulx {
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -212,7 +212,7 @@ $border-disabled: rgba(255, 255, 255, 0.04);
 		justify-content: flex-end;
 		// Nudge the text a hair up off the bottom border.
 		padding: 4px 14px 6px 14px;
-		// Match the "Staff Menu" title colour ($text) but at a very low opacity — just enough to read
+		// Match the lifepunchulx title colour ($text) but at a very low opacity — just enough to read
 		// as a distinct mark without competing with real labels.
 		color: rgba(232, 234, 237, 0.18);
 		font-size: 11px;

@@ -1,7 +1,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // PROPRIETARY & CONFIDENTIAL — © 2026 lifepunch.co. All rights reserved.
 //
-// "lifepunch.ulx" (s&box ident: lifepunch.ulx · addon ident: lifepunch.dxrpadminmenu) is the sole-owned
+// "LIFEPUNCH ULX for DXRP" (s&box ident: lifepunch.ulx · addon ident: lifepunchulx) is the sole-owned
 // intellectual property of lifepunch.co. It is NOT licensed for resale, redistribution,
 // sublicensing, copying, or reuse by ANY person or entity — including DXRP and
 // LifePunch staff, contributors, or community — EXCEPT the owner (lifepunch.co).
@@ -78,7 +78,7 @@ public readonly record struct StaffAuditEntry(
 	string Description );
 
 /// <summary>
-/// Dual-build host bindings for the staff menu.
+/// Dual-build host bindings for LIFEPUNCH ULX (<c>lifepunchulx</c>).
 ///
 /// All DXRP coupling lives here behind <c>#if !LIFEPUNCH_LOCAL</c> so <c>StaffMenu.razor</c> and
 /// <c>StaffMenuActions.cs</c> stay define-free and compile in the standalone s&amp;box editor. On the
@@ -117,15 +117,11 @@ internal static class StaffMenuHost
 	// --- Open / close ------------------------------------------------------
 
 	/// <summary>
-	/// Console + chat entry point. Staff bind any key to the <c>staffmenu</c> console command
-	/// (e.g. <c>bind f4 staffmenu</c>), so the open key is per-staff-member and server-agnostic.
+	/// Console + chat entry point. Staff bind any key to <c>lifepunchulx</c>
+	/// (e.g. <c>bind f4 lifepunchulx</c>).
 	/// </summary>
-	[ConCmd( "staffmenu" )]
-	public static void StaffMenuConCmd() => Toggle();
-
-	/// <summary>Alias console command.</summary>
-	[ConCmd( "adminmenu" )]
-	public static void AdminMenuConCmd() => Toggle();
+	[ConCmd( "lifepunchulx" )]
+	public static void LifepunchUlxConCmd() => Toggle();
 
 	/// <summary>
 	/// Open the menu if closed, else close it. Open-for-all by design: any player may open it via the
@@ -204,7 +200,7 @@ internal static class StaffMenuHost
 #endif
 	}
 
-	private const string MenuObjectName = "LifePunchStaffMenu";
+	private const string MenuObjectName = "LifePunchUlx";
 
 	private static void Close( StaffMenu menu )
 	{
@@ -541,7 +537,7 @@ internal static class StaffMenuHost
 				break;
 		}
 
-		Log.Info( $"[StaffMenu] (local stub) waypoint {op} '{name}'" );
+		Log.Info( $"[lifepunchulx] (local stub) waypoint {op} '{name}'" );
 #else
 		// /waypoint grammar: "set <name>", "clear <name>", or a bare <name> to teleport.
 		var argv = op switch
@@ -633,10 +629,10 @@ internal static class StaffMenuHost
 	/// <summary>
 	/// Owner-grant permission gating edits to the menu's owner customizations (currently the network
 	/// website link). The Owner rank's <c>"*"</c> wildcard satisfies it automatically; an owner may also
-	/// grant <c>staffmenu.settings.edit</c> to other ranks in the portal. UX gating only — the host
+	/// grant <c>lifepunchulx.settings.edit</c> to other ranks in the portal. UX gating only — the host
 	/// (<see cref="StaffSettingsService"/>) re-checks every write.
 	/// </summary>
-	public const string SettingsEditPermissionId = "staffmenu.settings.edit";
+	public const string SettingsEditPermissionId = "lifepunchulx.settings.edit";
 
 	/// <summary>True if the local viewer may edit owner settings. UX gating only; host re-checks the write.</summary>
 	public static bool CanEditSettings() => CanView( SettingsEditPermissionId );
@@ -675,7 +671,7 @@ internal static class StaffMenuHost
 #if LIFEPUNCH_LOCAL
 		_websiteUrl = ( url ?? string.Empty ).Trim();
 		SettingsVersion++;
-		Log.Info( $"[StaffMenu] (local stub) website set '{_websiteUrl}'" );
+		Log.Info( $"[lifepunchulx] (local stub) website set '{_websiteUrl}'" );
 #else
 		if ( StaffSettingsService.Instance.IsValid() )
 		{
@@ -706,7 +702,7 @@ internal static class StaffMenuHost
 	{
 #if LIFEPUNCH_LOCAL
 		var argText = string.Join( ", ", args.Select( kv => $"{kv.Key}={kv.Value}" ) );
-		Log.Info( $"[StaffMenu] (local stub) {action.Key} target={targetSteamId} [{argText}]" );
+		Log.Info( $"[lifepunchulx] (local stub) {action.Key} target={targetSteamId} [{argText}]" );
 #else
 		switch ( action.Dispatch )
 		{
@@ -796,15 +792,15 @@ internal static class StaffMenuHost
 
 #if !LIFEPUNCH_LOCAL
 /// <summary>
-/// Registers <c>/staffmenu</c> and <c>/adminmenu</c> as in-game chat commands. <see cref="ExecuteLocal"/>
+/// Registers <c>/lifepunchulx</c> as the in-game chat command. <see cref="ExecuteLocal"/>
 /// opens the menu client-side and consumes the command, so it never round-trips to the host.
 /// Discovered automatically via TypeLibrary on the dxrp.net gamemode build.
 /// </summary>
-public sealed class StaffMenuCommand : ICommand
+public sealed class LifepunchUlxChatCommand : ICommand
 {
-	public string Command => "staffmenu";
-	public string[] Aliases => ["adminmenu"];
-	public string Help => "Open the LifePunch staff menu.";
+	public string Command => "lifepunchulx";
+	public string[] Aliases => [];
+	public string Help => "Open LIFEPUNCH ULX.";
 	public bool IsUsableWhileDead => true;
 
 	public bool ExecuteLocal( string[] args, string raw )

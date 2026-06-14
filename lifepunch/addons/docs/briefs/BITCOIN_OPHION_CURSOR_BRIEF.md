@@ -1,6 +1,7 @@
 # Ophion hub — CURSOR BRIEF (ChatGPT LIFEPUNCH™ · June 14, 2026)
 
 **Status:** Official product foundation for `lifepunchbitcoin` (repo ident `bitcoinmining`, s&box `lifepunch.bitcoin`).  
+**Visual pass (P0 law):** `BITCOIN_OPHION_VISUAL_PASS_BRIEF.md` — Bloodwave verdicts locked.  
 **Quarantine:** All other addons frozen per `QUARANTINE_REGISTER.md`.
 
 ---
@@ -46,18 +47,28 @@ Real crypto, real wallets, blockchain, tax sim, real profitability math, GPU ass
 
 ---
 
+## Visual hierarchy (Bloodwave law)
+
+The **room tells the story before USE**:
+
+`Hub silhouette → rack wall → amber HASHD (on USE) → cable clutter → LEDs/fans`
+
+Not: UI panel → terminal screen → menus.
+
 ## P0 build order (Cursor law)
 
 | Step | MCP | Deliverable |
 |------|-----|-------------|
-| 1 | `sbox-editor` | Hub vmdl/vmat compile clean; glass/interior readable; scale vs citizen |
-| 2 | `sbox` | `lp_map_flatgrass` + `lp_spawn_bitcoin_miner_hub_only` + screenshot proof |
-| 3 | `sbox-editor` | Rack prefab visual pass (LED/emissive baseline) |
-| 4 | `sbox` | Powered hub + rack mining loop playtest |
-| 5 | repo | UX copy aligned to brief (HASHD terminal — amber ops, not hacker green) |
-| 6 | owner | Visual sign-off before portal publish |
+| 1 | `sbox-editor` | Hub + rack vmdl/vmat compile clean; remap audit; `complex.shader` baseline |
+| 2 | `sbox` | `lp_map_flatgrass` + **`lp_spawn_bitcoin_miner_hub`** — **hero full-kit** screenshot |
+| 3 | `sbox` | `lp_spawn_bitcoin_miner_hub_only` — scale-vs-citizen doc screenshot only |
+| 4 | `sbox` | Power on/off + mining — state unmistakable (emissive + audio; anim Phase 2) |
+| 5 | `sbox` | USE hub — HASHD amber (secondary proof; no color-family contamination) |
+| 6 | owner | Visual sign-off — review **five P0 failure gates** in visual pass brief |
 
-**Not P0:** full Hardware Shop UI, Generator Unit props, Mining Container, multi-room progression.
+**P0 verdicts:** full kit = hero · hub-only = scale doc · no RGB shader experiment · no dollhouse scale regression.
+
+**Not P0:** full Hardware Shop UI, Generator Unit props, Mining Container, multi-room progression, hub fan/LED vmdl anim.
 
 ---
 

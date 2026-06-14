@@ -2,17 +2,15 @@
 
 **Package:** `lifepunchbitcoin` · **s&box:** `lifepunch.bitcoin` · **repo folder:** `bitcoinmining` (until NAME-01 migration)
 
-Read first: `PACKAGE_NAMING_STANDARD.md` · `briefs/BITCOIN_OPHION_CURSOR_BRIEF.md` · quarantine law in `portfolio.json`.
+Read first: `briefs/BITCOIN_OPHION_VISUAL_PASS_BRIEF.md` · `PACKAGE_NAMING_STANDARD.md` · quarantine law in `portfolio.json`.
 
 ---
 
 ## What “from scratch” means
 
-We are **not** deleting the repo tree. We are restarting **ship work** under the canonical package identity:
+**Greenfield v2 is live.** v1 C#/UI archived to `reference-intake/bitcoinmining-v1-code/`. v1 **assets** remain on disk as reference — v2 dev spawn uses **placeholder boxes** until new prefabs.
 
-1. **Identity** — product = `lifepunchbitcoin`, mount = `lifepunch.bitcoin`, paths = `bitcoinmining/` for now.
-2. **Scope** — Ophion **hub visual pass** on flatgrass only (P0 in brief). No new meshes, no portal publish, no quarantine addons.
-3. **Architecture** — keep hub + GPU racks + HASHD terminal; rebuild **player-readable power/mining states** and hub aesthetics.
+Read: `BITCOIN_GREENFIELD_REBUILD.md`
 
 ---
 
@@ -35,11 +33,13 @@ powershell -NoProfile -ExecutionPolicy Bypass -File lifepunch\scripts\Start-Sbox
 
 ```text
 lp_map_flatgrass
-lp_spawn_bitcoin_miner_hub_only
+lp_bitcoin_spawn_kit
 ```
 
-5. MCP: orbit screenshots of hub scale, glass/interior, citizen height.
-6. Optional full kit: `lp_spawn_bitcoin_miner_hub` (hub + racks).
+5. MCP: orbit screenshot — **full kit** (hub + 3 small + 1 large rack) = P0 hero composition.
+6. Scale doc only: `lp_spawn_bitcoin_miner_hub_only` + citizen height check.
+
+**Visual law:** room story before USE — hub silhouette → rack wall → clutter → LEDs. See visual pass brief § hierarchy.
 
 ---
 
@@ -48,7 +48,7 @@ lp_spawn_bitcoin_miner_hub_only
 | # | Done when |
 |---|-----------|
 | 1 | Hub vmdl/vmat compile clean; no P0 log spam |
-| 2 | Hub on flatgrass — screenshot proof (MCP) |
+| 2 | **Full kit** on flatgrass — hero screenshot (MCP); hub-only = scale doc |
 | 3 | Rack LED/emissive baseline readable |
 | 4 | Powered hub + mining loop playtest |
 | 5 | HASHD copy = amber ops (not hacker green) |
@@ -58,7 +58,15 @@ lp_spawn_bitcoin_miner_hub_only
 
 ---
 
-## Sync commands (repo ↔ DXRP)
+# DXRP editor (ULX-only lane)
+
+Bitcoin greenfield does **not** mount in the default DXRP editor until promoted.
+
+**Today:** run `Set-DxrpLifepunchUlxOnly.ps1` - `addons/lifepunch/` contains **only `lifepunchulx`**. See `DXRP_ULX_ONLY_LANE.md`.
+
+When bitcoin ships to editor: explicit sync + `rp.sbproj` glob - not `-SyncAllAddons`.
+
+## Sync commands (repo to DXRP when promoted)
 
 ```powershell
 powershell -File lifepunch\scripts\Sync-LifePunchAddonsToDxrp.ps1 -Addon bitcoinmining

@@ -59,6 +59,21 @@ public static class DxrpPortalDevAuth
 	private static async Task InitializePortalApi()
 	{
 		await GameTask.MainThread();
+
+		// Editor play: GameNetworkManager.OnStart returns early (Scene.IsEditor) so RankSystem may
+		// not exist when Initialize() runs — full bootstrap NREs at RankSystem.Instance.SetRanks.
+		// Token alone is enough for InitializePlayer refresh (bank/playtime for local smoke).
+		if ( Game.ActiveScene?.IsEditor == true )
+		{
+			await RefreshConnectedPlayersFromPortal();
+			if ( ServerApiLink.HasAuthorizationKey )
+			{
+				Log.Info( "lp_authorize: editor mode — portal token set; player stats refreshed (skipped full server bootstrap)." );
+			}
+
+			return;
+		}
+
 		if ( ServerApiLink.Current == null )
 		{
 			Log.Warning( "lp_authorize: ServerApiLink not ready yet — retry after scene load." );
@@ -88,11 +103,20 @@ public static class DxrpPortalDevAuth
 
 		foreach ( var player in players )
 		{
-			var initResponse = await ServerApiClient.InitializePlayer( new InitalizePlayerDto
+			InitalizePlayerResponseDto? initResponse;
+			try
 			{
-				Id = player.SteamId,
-				Name = player.DisplayName
-			} );
+				initResponse = await ServerApiClient.InitializePlayer( new InitalizePlayerDto
+				{
+					Id = player.SteamId,
+					Name = player.DisplayName
+				} );
+			}
+			catch ( System.Exception ex )
+			{
+				Log.Warning( $"lp_authorize: InitializePlayer API failed for {player.DisplayName} — {ex.Message}" );
+				continue;
+			}
 
 			if ( initResponse == null )
 			{

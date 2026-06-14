@@ -24,10 +24,10 @@
       ]
     },
     {
-      "package": "lifepunch.adminmenu",
+      "package": "lifepunchulx",
       "addonIdent": "adminmenu",
       "dxrpAddonId": "019e9cfa-3141-723c-a430-1a0e256472eb",
-      "dxrpAddonIdentifier": "dxrpadminmenu",
+      "dxrpAddonIdentifier": "lifepunchulx",
       "targetEnvironment": "lifepunchdevelopment",
       "publishStatus": "ui-pass-complete-editor-verified-ready-to-publish",
       "marketingVersion": "2.0.0",
@@ -36,7 +36,7 @@
       "stagingRoot": "../addons/.dxrp-publish/upload",
       "packageExport": "../addons/.dxrp-publish/package-adminmenu.json",
       "notes": [
-        "Portal package 'DXRP Admin Menu' (identifier dxrpadminmenu) created 2026-06-06.",
+        "Portal package lifepunchulx (rebrand from dxrpadminmenu) — command lifepunchulx / /lifepunchulx.",
         "Rev 1: menu rendered in-game but was NOT clickable. Root cause: it mounted on its own ScreenPanel, which the engine never routes the cursor/clicks to while DXRP's HUD owns input.",
         "Click fix (verified clickable via the editor bridge on the API-connected dev server): StaffMenuHost.Mount uses GameManager.ShowUi<StaffMenu>() on the DXRP build (HUD root, the HUD-mounted panel pattern); raw ScreenPanel only in the LIFEPUNCH_LOCAL editor build. Root SCSS sets pointer-events:all. Player.LockCamera toggled to suppress look while open.",
         "Roster grouping: SanitizeRankName strips control/format chars so the real 'Owner' rank matches its canonical tier (no double-'Owner'). Empty reference tiers (Owner/Super Admin/Admin/Mod) always shown for context.",

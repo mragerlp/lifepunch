@@ -72,7 +72,7 @@ Do not wait for a broken playtest to discover it.
 | **Binary assets** | `_d` / model changes trigger rebuild | Touch vmat → confirm `_c` refresh |
 | **Deprecated APIs** | No new `[Global]` / `[Frame]` usage | `rg '\[Global\]|\[Frame\]' lifepunch/` |
 
-Known-good UI references: `StaffMenu.razor.scss` (`.staffmenu`), `HashdTerminal.razor.scss`
+Known-good UI references: `StaffMenu.razor.scss` (`.lifepunchulx`), `HashdTerminal.razor.scss`
 (`.hashd-terminal`). **Audit debt:** `HackerServerRackMenu.razor.scss` still uses type selector —
 migrate to class root when that lane is touched.
 
