@@ -51,7 +51,8 @@ public static class LpBitcoinDevSpawn
 		SpawnRackAt( origin + Vector3.Right * 160f, hub, large: false );
 		SpawnRackAt( origin + Vector3.Left * 80f, hub, large: false );
 		SpawnRackAt( origin + Vector3.Left * 160f, hub, large: true );
-		Log.Info( "lp_bitcoin_spawn_kit: v2 full kit (hub + 3 small + 1 large placeholders)." );
+		SpawnTerminalAt( origin + Vector3.Forward * 100f );
+		Log.Info( "lp_bitcoin_spawn_kit: v2 full kit (hub + racks + terminal placeholders)." );
 	}
 
 	private static Vector3? GetViewerPosition()
@@ -101,5 +102,23 @@ public static class LpBitcoinDevSpawn
 		var rack = go.AddComponent<LpBitcoinRackEntity>();
 		rack.LargeRack = large;
 		rack.LinkToHub( hub );
+	}
+
+	private static void SpawnTerminalAt( Vector3 pos )
+	{
+		var scene = Game.ActiveScene;
+		if ( scene is null )
+			return;
+
+		var go = scene.CreateObject();
+		go.Name = "LpBitcoinTerminal";
+		go.WorldPosition = pos;
+		go.WorldScale = new Vector3( 0.8f, 0.5f, 1.2f );
+
+		var renderer = go.AddComponent<ModelRenderer>();
+		renderer.Model = Model.Load( PlaceholderModel );
+		renderer.Tint = new Color( 0.15f, 0.55f, 0.25f );
+
+		go.AddComponent<LpBitcoinTerminalEntity>();
 	}
 }

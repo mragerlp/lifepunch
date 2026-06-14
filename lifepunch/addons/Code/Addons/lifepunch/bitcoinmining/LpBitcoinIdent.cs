@@ -17,6 +17,7 @@ public static class LpBitcoinIdent
 	public const string SboxPackage = "lifepunch.bitcoin";
 	public const string RepoIdent = "bitcoinmining";
 	public const string ProductTitle = "LIFEPUNCH™ Bitcoin Miner for DXRP";
+	public const string OpsTitle = "Bitcoin Ops";
 	public const string HashdProgram = "hashd";
 	public const string UiFooter = "lifepunch.bitcoin v2 — lifepunch.co";
 }

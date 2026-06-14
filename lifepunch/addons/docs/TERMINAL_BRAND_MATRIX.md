@@ -20,7 +20,7 @@ In-game terminals mirror **LifePunch Ops** machine uniforms (`branding/lifepunch
 | Hacker (advanced) | `govdb` → `infil` node puzzles | Govdb breach (Phase 2 Opus) |
 | Police | Trace alerts, audit miners, warrants (TBD) | City funds read / counter-hack |
 | Gov tax miner | Always mine BTC → hourly tax % → city cash | Server-only treasury |
-| Bitcoin mining hub | Mine → upgrade → sell | Player `PayHost` |
+| Bitcoin mining hub | Power, link racks, buy upgrades | Terminal `sell` → player `PayHost` |
 
 ## Editor helpers (place entities — not player gameplay)
 
@@ -32,12 +32,26 @@ lp_cornerman_ui / lp_vengeance_ui                  # UI compile smoke only
 
 Real playtests: **USE the world terminal / hub.** No job verbs in the developer console.
 
-## UI layout families
+## UI layout families (two surfaces — do not mix)
 
-| Layout | Terminals | Spec |
+LifePunch uses **two UI surfaces**. They are different products, not skins of each other.
+
+| Surface | What it is | Interaction law | Visual |
+|---------|------------|-----------------|--------|
+| **Physical terminal** | CRT / desk prop — in-fiction **ops program** | **Type commands as text** — primary loop is prompt + scrollback + executing real command strings. Optional **sidebar** for command reference / module navigation; sidebar helps, it does **not** replace typing. Harder by design than hub menus. | **Old-school terminal** — per-job accent from matrix below. Greenfield code only — better than v1, not copy-paste. |
+| **Hub admin panel** | USE on **Ophion hub** | **Fully clickable** — power, linking info, per-rack upgrades. No mine/stop/sell on hub. | **Modern dashboard** — `LpHashdPanel` |
+| **Bitcoin CRT terminal** | USE on **terminal prop** or **GPU rack** | **Type commands** — `mining start`, `sell`, etc.; optional sidebar lists commands only. | **Retro terminal** — `LpBitcoinTerminalPanel` |
+
+**Rule of thumb:** Hub = easy ops. Terminal = power-user / roleplay authenticity via **text commands**.
+
+**Bitcoin v2:** USE **hub** → modern **admin** dashboard (power + upgrades). USE **terminal** or **rack** → typed `rig@hub>` commands + command sidebar — mine/stop/sell live here only.
+
+**Hub panel:** `LpHashdPanel` · **Terminal panel:** `LpBitcoinTerminalPanel` — `BITCOIN_GREENFIELD_REBUILD.md`
+
+| Layout (terminals only) | Terminals | Spec |
 |--------|-----------|------|
-| **Ops Console** (rail + modules + command line) | Hacker green/red · Police cyan (Phase 4) | `HACKER_OPS_CONSOLE_SPEC.md` · `reference/GOVERNMENT_DATABASE_TERMINAL_SPEC.md` |
-| **HASHD rig control** (telemetry rail + `rig0>`; Phase 2 + module panes) | Bitcoin mining hub amber `#f0a500` | `BITCOINMINING_UX_SPEC.md` · `briefs/BITCOINMINING_PHASE2_WIREFRAME.md` |
+| **Ops Console** (typed commands + optional reference sidebar) | Hacker green/red · Police cyan (Phase 4) | `HACKER_OPS_CONSOLE_SPEC.md` · `reference/GOVERNMENT_DATABASE_TERMINAL_SPEC.md` |
+| **HASHD CRT** (typed `rig0>` commands + optional command sidebar) | Bitcoin **terminal prop** amber `#f0a500` | `BITCOINMINING_UX_SPEC.md` (terminal path — greenfield, not v1 paste) |
 | **LCD summary** | Gov tax miner blue console | `governmentdatacenter/docs/GOVERNMENT_TAX_MINER_BUILD.md` |
 
 ## Cybersecurity Officer

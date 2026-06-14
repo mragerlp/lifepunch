@@ -4,127 +4,222 @@
    ───────────────────────────────────────────────────────────────────────────── *@
 @namespace LifePunch.DXRP.Addons.Bitcoin
 @using System
+@using System.Collections.Generic
+@using System.Linq
 @using Sandbox.UI
 @inherits PanelComponent
 
 @attribute [StyleSheet]
 
-<root class="@GetRootClass()">
-	<div class="chrome">
-		<div class="titlebar">
-			<span class="mark">◆ HASHD RIG CONTROL v2</span>
-			<span class="program">@LpBitcoinIdent.HashdProgram</span>
-			<span class="state @(Hub?.IsMining == true ? "mining" : "idle")">@(Hub?.IsMining == true ? "MINING" : "IDLE")</span>
-			<button class="close" onclick="@Close">CLOSE</button>
+<root class="lp-bitcoin-ops">
+	<div class="shell">
+		<div class="topbar">
+			<div class="brand">
+				<i class="material-icons brand-icon">memory</i>
+				<div class="brand-text">
+					<span class="brand-title">@LpBitcoinIdent.OpsTitle</span>
+					<span class="brand-sub">Ophion hub admin</span>
+				</div>
+			</div>
+			<div class="status-chip @(Hub?.IsPowered == true ? "live" : "off")">
+				<span class="dot"></span>
+				<span>@StatusLabel()</span>
+			</div>
+			<div class="topbar-actions">
+				<button class="icon-btn" tooltip="Settings" onclick="@ToggleSettings">
+					<i class="material-icons">settings</i>
+				</button>
+				<button class="icon-btn close" tooltip="Close" onclick="@Close">
+					<i class="material-icons">close</i>
+				</button>
+			</div>
 		</div>
-		<div class="body">
-			<div class="rail">
-				<div class="telemetry">
-					<div class="line">STATUS @(Hub?.IsMining == true ? "MINING" : "IDLE")</div>
-					<div class="line">BTC @(Hub?.BitcoinAmount.ToString("F5") ?? "0")</div>
-					<div class="line">USD $@(Hub?.UsdValue ?? 0)</div>
-					<div class="line">HASH @(Hub?.ClockGhz.ToString("F2") ?? "0") GHz</div>
-					<div class="line">CORES @(Hub?.CoreCount ?? 0)</div>
-					<div class="tickbar">
-						<div class="fill" style="width: @((Hub?.MiningProgress ?? 0f) * 100f)%"></div>
+
+		@if ( _showSettings )
+		{
+			<div class="settings-sheet">
+				<div class="settings-title">Hub settings</div>
+				<div class="settings-row">
+					<span>Power</span>
+					<div class="split-actions">
+						<button class="pill @(Hub?.IsPowered == true ? "active" : "")" onclick="@PowerOn">Power on</button>
+						<button class="pill @(Hub?.IsPowered != true ? "active" : "")" onclick="@PowerOff">Power off</button>
 					</div>
 				</div>
-				<div class="modules">
-					@foreach ( var mod in _modules )
+				<div class="settings-hint">Access PIN ships next. Mine, stop, and sell run on the CRT terminal only.</div>
+			</div>
+		}
+
+		<div class="nav">
+			@foreach ( var tab in _tabs )
+			{
+				<button class="nav-tab @(tab == _active ? "active" : "")" onclick="@(() => SelectTab(tab))">
+					<i class="material-icons">@TabIcon(tab)</i>
+					<span>@TabLabel(tab)</span>
+				</button>
+			}
+		</div>
+
+		<div class="content">
+			@if ( _active == OpsTab.Overview )
+			{
+				<div class="pane overview">
+					<div class="hero-card @(Hub?.IsPowered == true ? "mining" : "")">
+						<div class="hero-copy">
+							<div class="hero-label">Hub power</div>
+							<div class="hero-value">@(Hub?.IsPowered == true ? "Online" : "Offline")</div>
+							<div class="hero-sub">@LinkedRackCount() linked GPU rack(s)</div>
+						</div>
+					</div>
+
+					<div class="metric-grid">
+						<div class="metric">
+							<div class="metric-label">Total rack BTC</div>
+							<div class="metric-value">@TotalBtc().ToString("F6")</div>
+						</div>
+						<div class="metric">
+							<div class="metric-label">Total USD</div>
+							<div class="metric-value">$@TotalUsd()</div>
+						</div>
+						<div class="metric">
+							<div class="metric-label">Mining racks</div>
+							<div class="metric-value">@MiningRackCount()</div>
+						</div>
+						<div class="metric">
+							<div class="metric-label">Cash on hand</div>
+							<div class="metric-value">$@LpHashdUiHost.GetLocalWalletCash()</div>
+						</div>
+					</div>
+
+					<div class="payout-card">
+						<div class="payout-head">
+							<span>Operations</span>
+						</div>
+						<div class="payout-foot">USE a CRT terminal or GPU rack for typed mine/stop/sell commands. Purchase upgrades here on each rack card.</div>
+					</div>
+				</div>
+			}
+			else if ( _active == OpsTab.Racks )
+			{
+				<div class="pane racks">
+					<div class="rack-summary">
+						<span>@LinkedRackCount() linked rack(s)</span>
+						<span class="yield">Terminal index matches list order</span>
+					</div>
+					@if ( LinkedRackCount() == 0 )
 					{
-						<button class="module @(mod == _active ? "active" : "")" onclick="@(() => SelectModule(mod))">@mod</button>
+						<div class="empty-card">
+							<i class="material-icons">dns</i>
+							<div>Place GPU racks near this hub — they auto-link on spawn.</div>
+						</div>
+					}
+					else
+					{
+						@for ( var i = 0; i < GetLinkedRacks().Count; i++ )
+						{
+							var rack = GetLinkedRacks()[i];
+							<div class="rack-card">
+								<div class="rack-icon">
+									<i class="material-icons">@(rack.LargeRack ? "view_module" : "storage")</i>
+								</div>
+								<div class="rack-copy">
+									<div class="rack-title">#@i @(rack.LargeRack ? "Advanced" : "Standard") rack</div>
+									<div class="rack-sub">@(rack.BitcoinAmount.ToString("F6")) BTC · $@(rack.UsdValue) · @(rack.IsMining ? "MINING" : "IDLE")</div>
+									<div class="rack-sub">@(rack.ClockGhz.ToString("F2")) GHz · x@(rack.CoreCount) cores · yield x@(rack.YieldMultiplier.ToString("F1"))</div>
+								</div>
+								<div class="rack-actions">
+									<button class="ghost small" disabled="@(!CanUpgradeCpu(rack))" onclick="@(() => UpgradeCpu(rack))">CPU $@UpgradeCpuCost(rack)</button>
+									<button class="ghost small" disabled="@(!CanUpgradeCores(rack))" onclick="@(() => UpgradeCores(rack))">Core $@UpgradeCoreCost(rack)</button>
+									<button class="ghost small" onclick="@(() => OpenTerminal(rack))">Terminal</button>
+								</div>
+							</div>
+						}
 					}
 				</div>
-			</div>
-			<div class="main">
-				@if ( _active == HashdModule.Dashboard )
-				{
-					<div class="pane">
-						<div class="heading">DASHBOARD — RIG STATUS</div>
-						<div class="cards">
-							<div class="card"><div class="label">₿ BALANCE</div><div class="value">@(Hub?.BitcoinAmount.ToString("F8") ?? "0")</div></div>
-							<div class="card"><div class="label">USD VALUE</div><div class="value">$@(Hub?.UsdValue ?? 0)</div></div>
-							<div class="card"><div class="label">RATE / MIN</div><div class="value">@(Hub?.MiningRatePerMinute.ToString("F5") ?? "0")</div></div>
-						</div>
-						<div class="actions">
-							<button class="action primary" onclick="@StartMining">START MINING</button>
-							<button class="action" onclick="@StopMining">STOP MINING</button>
-						</div>
-					</div>
-				}
-				else if ( _active == HashdModule.Wallet )
-				{
-					<div class="pane">
-						<div class="heading">WALLET — PAYOUT</div>
-						<div class="wallet-balance">@(Hub?.BitcoinAmount.ToString("F8") ?? "0") BTC</div>
-						<button class="action primary" onclick="@SellAll">SELL ALL</button>
-					</div>
-				}
-				else if ( _active == HashdModule.Upgrades )
-				{
-					<div class="pane">
-						<div class="heading">UPGRADES</div>
-						<div class="upgrade-row">
-							<span>CPU Lv @(Hub?.CpuUpgradeLevel ?? 0) → +@LpBitcoinEconomy.CpuGhzPerLevel GHz</span>
-							<button class="action" onclick="@UpgradeCpu">INSTALL CPU</button>
-						</div>
-						<div class="upgrade-row">
-							<span>CORES Lv @(Hub?.CoreUpgradeLevel ?? 0) → +@LpBitcoinEconomy.CoresPerLevel</span>
-							<button class="action" onclick="@UpgradeCores">INSTALL CORES</button>
-						</div>
-						<div class="hint">Cash on hand: $@LpHashdUiHost.GetLocalWalletCash()</div>
-					</div>
-				}
-				else if ( _active == HashdModule.Log )
-				{
-					<div class="pane log">
-						<div class="heading">LOG</div>
-						<div class="logline">> hashd init — LIFEPUNCH mining daemon</div>
-						<div class="logline">> rig interface ready — module rail active</div>
-						<div class="prompt">rig0&gt; _</div>
-					</div>
-				}
-				else
-				{
-					<div class="pane">
-						<div class="heading">ABOUT</div>
-						<div class="about">@LpBitcoinIdent.ProductTitle</div>
-						<div class="about">@LpBitcoinIdent.UiFooter</div>
-						<div class="about">Proprietary — lifepunch.co</div>
-					</div>
-				}
-			</div>
+			}
+			else
+			{
+				<div class="pane about">
+					<div class="about-title">@LpBitcoinIdent.ProductTitle</div>
+					<div class="about-line">Hub admin — power, linking, rack info, and paid upgrades. Mining and payout require the CRT terminal.</div>
+					<div class="about-line">@LpBitcoinIdent.UiFooter</div>
+					<div class="about-legal">Proprietary & confidential — lifepunch.co</div>
+				</div>
+			}
 		</div>
 	</div>
 </root>
 
 @code
 {
-	private enum HashdModule { Dashboard, Wallet, Upgrades, Log, About }
+	private enum OpsTab { Overview, Racks, About }
 
-	private static readonly HashdModule[] _modules =
-	{
-		HashdModule.Dashboard, HashdModule.Wallet, HashdModule.Upgrades, HashdModule.Log, HashdModule.About
-	};
+	private static readonly OpsTab[] _tabs = { OpsTab.Overview, OpsTab.Racks, OpsTab.About };
 
-	private HashdModule _active = HashdModule.Dashboard;
+	private OpsTab _active = OpsTab.Overview;
+	private bool _showSettings;
 	private LpBitcoinHubEntity _hub;
 
 	public LpBitcoinHubEntity Hub => _hub;
 
-	private string GetRootClass() => "lp-hashd-panel";
-
 	public void BindHub( LpBitcoinHubEntity hub ) => _hub = hub;
 
-	private void SelectModule( HashdModule mod ) => _active = mod;
+	private string StatusLabel() => Hub?.IsPowered == true ? "POWER ON" : "POWER OFF";
 
+	private static string TabIcon( OpsTab tab ) => tab switch
+	{
+		OpsTab.Overview => "dashboard",
+		OpsTab.Racks => "dns",
+		_ => "info"
+	};
+
+	private static string TabLabel( OpsTab tab ) => tab switch
+	{
+		OpsTab.Overview => "Overview",
+		OpsTab.Racks => "Racks",
+		_ => "About"
+	};
+
+	private void SelectTab( OpsTab tab ) => _active = tab;
+	private void ToggleSettings() => _showSettings = !_showSettings;
 	private void Close() => LpHashdUiHost.CloseOpen();
+	private void PowerOn() => Hub?.SetPowered( true );
+	private void PowerOff() => Hub?.SetPowered( false );
 
-	private void StartMining() => _hub?.SetMining( true );
-	private void StopMining() => _hub?.SetMining( false );
-	private void SellAll() => _hub?.RequestSell();
-	private void UpgradeCpu() => _hub?.RequestUpgradeCpu();
-	private void UpgradeCores() => _hub?.RequestUpgradeCores();
+	private int LinkedRackCount() => GetLinkedRacks().Count;
+
+	private List<LpBitcoinRackEntity> GetLinkedRacks()
+		=> Hub.IsValid() ? Hub.GetLinkedRacks().ToList() : new List<LpBitcoinRackEntity>();
+
+	private float TotalBtc() => GetLinkedRacks().Sum( r => r.BitcoinAmount );
+
+	private int TotalUsd() => GetLinkedRacks().Sum( r => r.UsdValue );
+
+	private int MiningRackCount() => GetLinkedRacks().Count( r => r.IsMining );
+
+	private bool CanUpgradeCpu( LpBitcoinRackEntity rack )
+		=> rack.IsValid() && rack.CpuUpgradeLevel < LpBitcoinEconomy.CpuUpgradeCosts.Length;
+
+	private bool CanUpgradeCores( LpBitcoinRackEntity rack )
+		=> rack.IsValid() && rack.CoreUpgradeLevel < LpBitcoinEconomy.CoreUpgradeCosts.Length;
+
+	private string UpgradeCpuCost( LpBitcoinRackEntity rack )
+		=> CanUpgradeCpu( rack ) ? $"{LpBitcoinEconomy.CpuUpgradeCosts[rack.CpuUpgradeLevel]:N0}" : "MAX";
+
+	private string UpgradeCoreCost( LpBitcoinRackEntity rack )
+		=> CanUpgradeCores( rack ) ? $"{LpBitcoinEconomy.CoreUpgradeCosts[rack.CoreUpgradeLevel]:N0}" : "MAX";
+
+	private void UpgradeCpu( LpBitcoinRackEntity rack )
+		=> _hub?.RequestUpgradeCpu( rack.GameObject.Id );
+
+	private void UpgradeCores( LpBitcoinRackEntity rack )
+		=> _hub?.RequestUpgradeCores( rack.GameObject.Id );
+
+	private void OpenTerminal( LpBitcoinRackEntity rack )
+	{
+		Close();
+		LpBitcoinTerminalUiHost.Open( _hub, rack );
+	}
 
 	protected override void OnUpdate()
 	{
@@ -135,10 +230,9 @@
 
 	protected override int BuildHash() => HashCode.Combine(
 		_active,
-		_hub?.IsMining,
-		_hub?.BitcoinAmount,
-		_hub?.ClockGhz,
-		_hub?.CoreCount,
-		_hub?.MiningProgress,
-		_hub?.UsdValue );
+		_showSettings,
+		_hub?.IsPowered,
+		LinkedRackCount(),
+		TotalBtc(),
+		MiningRackCount() );
 }

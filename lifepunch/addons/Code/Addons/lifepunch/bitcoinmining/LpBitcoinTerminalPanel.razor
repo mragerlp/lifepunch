@@ -1,0 +1,117 @@
+@* ─────────────────────────────────────────────────────────────────────────────
+   PROPRIETARY & CONFIDENTIAL — © 2026 lifepunch.co. All rights reserved.
+   "LIFEPUNCH Bitcoin Miner for DXRP" (s&box ident: lifepunch.bitcoin · addon ident: bitcoinmining)
+   ───────────────────────────────────────────────────────────────────────────── *@
+@namespace LifePunch.DXRP.Addons.Bitcoin
+@using System
+@using System.Collections.Generic
+@using System.Linq
+@using Sandbox.UI
+@inherits PanelComponent
+
+@attribute [StyleSheet]
+
+<root class="lp-bitcoin-terminal">
+	<div class="shell">
+		<div class="crt-frame">
+			<div class="crt-header">
+				<span>LIFEPUNCH RIG TERMINAL v2</span>
+				<button class="close-btn" onclick="@Close">ESC</button>
+			</div>
+			<div class="crt-body">
+				<div class="sidebar">
+					<div class="sidebar-title">COMMANDS</div>
+					<div class="cmd-ref">help</div>
+					<div class="cmd-ref">racks</div>
+					<div class="cmd-ref">select &lt;n&gt;</div>
+					<div class="cmd-ref">status</div>
+					<div class="cmd-ref">mining start</div>
+					<div class="cmd-ref">mining stop</div>
+					<div class="cmd-ref">mining all-start</div>
+					<div class="cmd-ref">mining all-stop</div>
+					<div class="cmd-ref">sell</div>
+					<div class="cmd-ref">sell all</div>
+					<div class="sidebar-foot">Selected rack #@_selectedIndex</div>
+				</div>
+				<div class="screen">
+					<div class="log">
+						@foreach ( var line in _lines )
+						{
+							<div class="log-line @(line.Ok ? "" : "err")">@line.Text</div>
+						}
+					</div>
+					<div class="prompt-row">
+						<span class="prompt">rig@hub&gt;</span>
+						<TextEntry class="cmd-input" Value:bind="@_input" onsubmit="@Submit" placeholder="type command..." />
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</root>
+
+@code
+{
+	private readonly record struct LogLine( bool Ok, string Text );
+
+	private LpBitcoinHubEntity _hub;
+	private int _selectedIndex;
+	private string _input = string.Empty;
+	private readonly List<LogLine> _lines = new();
+
+	public void Bind( LpBitcoinHubEntity hub, LpBitcoinRackEntity focusRack = null )
+	{
+		_hub = hub;
+		_lines.Clear();
+		_lines.Add( new LogLine( true, "LIFEPUNCH bitcoin terminal — type help" ) );
+		_lines.Add( new LogLine( true, _hub?.IsPowered == true ? "hub power: ON" : "hub power: OFF" ) );
+
+		if ( focusRack.IsValid() )
+		{
+			var racks = _hub?.GetLinkedRacks() ?? Array.Empty<LpBitcoinRackEntity>();
+			for ( var i = 0; i < racks.Count; i++ )
+			{
+				if ( racks[i].GameObject.Id != focusRack.GameObject.Id )
+					continue;
+
+				_selectedIndex = i;
+				_lines.Add( new LogLine( true, $"focused rack #{i}" ) );
+				break;
+			}
+		}
+	}
+
+	private void Submit()
+	{
+		var raw = _input?.Trim() ?? string.Empty;
+		if ( string.IsNullOrWhiteSpace( raw ) )
+			return;
+
+		_lines.Add( new LogLine( true, $"rig@hub&gt; {raw}" ) );
+
+		var result = LpBitcoinTerminalCommands.Execute( _hub, ref _selectedIndex, raw );
+		if ( !string.IsNullOrWhiteSpace( result.Line ) )
+			_lines.Add( new LogLine( result.Ok, result.Line ) );
+
+		while ( _lines.Count > 40 )
+			_lines.RemoveAt( 0 );
+
+		_input = string.Empty;
+	}
+
+	private void Close() => LpBitcoinTerminalUiHost.CloseOpen();
+
+	protected override void OnUpdate()
+	{
+		base.OnUpdate();
+		if ( !_hub.IsValid() )
+			Close();
+	}
+
+	protected override int BuildHash() => HashCode.Combine(
+		_selectedIndex,
+		_input,
+		_lines.Count,
+		_hub?.IsPowered,
+		_hub?.GetLinkedRacks().Sum( r => r.BitcoinAmount ) );
+}

@@ -2,15 +2,11 @@
 // PROPRIETARY & CONFIDENTIAL — © 2026 lifepunch.co. All rights reserved.
 //
 // "LIFEPUNCH Bitcoin Miner for DXRP" (s&box ident: lifepunch.bitcoin · addon ident: bitcoinmining)
-// is the sole-owned intellectual property of lifepunch.co. It is NOT licensed for resale,
-// redistribution, sublicensing, copying, or reuse by ANY person or entity — including DXRP and
-// LifePunch staff, contributors, or community — EXCEPT the owner (lifepunch.co).
-// Author account: mrragerlp · Public alias (in-game · Steam · Discord): Bloodwave
-// Presence in this repository or on the DXRP portal grants no rights to anyone else.
 // ─────────────────────────────────────────────────────────────────────────────
 
 using System;
-using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Linq;
 using Sandbox;
 #if !LIFEPUNCH_LOCAL
 using Dxura.RP.Game;
@@ -18,7 +14,7 @@ using Dxura.RP.Game;
 
 namespace LifePunch.DXRP.Addons.Bitcoin;
 
-/// <summary>Greenfield v2 hub — wallet, mining loop, USE → HASHD module panel.</summary>
+/// <summary>Hub — PIN, power, linking, upgrades (purchased here). No mine/sell on hub UI.</summary>
 [Title( "LIFEPUNCH Bitcoin Hub (v2)" )]
 [Category( "LifePunch/Bitcoin" )]
 #if LIFEPUNCH_LOCAL
@@ -28,44 +24,11 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable
 #endif
 {
 	[Sync( SyncFlags.FromHost )] public bool IsPowered { get; set; } = true;
-	[Sync( SyncFlags.FromHost )] public bool IsMining { get; set; }
-	[Sync( SyncFlags.FromHost )] public float BitcoinAmount { get; set; }
-	[Sync( SyncFlags.FromHost )] public float ClockGhz { get; set; } = LpBitcoinEconomy.StartClockGhz;
-	[Sync( SyncFlags.FromHost )] public int CoreCount { get; set; } = LpBitcoinEconomy.StartCores;
-	[Sync( SyncFlags.FromHost )] public int CpuUpgradeLevel { get; set; }
-	[Sync( SyncFlags.FromHost )] public int CoreUpgradeLevel { get; set; }
-	[Sync( SyncFlags.FromHost )] public float MiningProgress { get; set; }
-
-#if LIFEPUNCH_LOCAL
+	[Sync( SyncFlags.FromHost )] public bool AccessPinIsSet { get; set; } = true;
 	[Sync( SyncFlags.FromHost )] public long Owner { get; set; }
-#endif
-
-	private TimeSince _sincePayout;
-
-	public float RackYieldMultiplier { get; set; } = 1f;
-
-	public float MiningRatePerMinute => LpBitcoinEconomy.MiningRatePerMinute( ClockGhz, CoreCount, RackYieldMultiplier );
-	public int UsdValue => (int)(BitcoinAmount * LpBitcoinEconomy.BitcoinValueUsd);
-
-	protected override void OnUpdate()
-	{
-		if ( !Networking.IsHost || !IsPowered || !IsMining )
-			return;
-
-		MiningProgress = Math.Clamp( _sincePayout.Relative / LpBitcoinEconomy.PayoutIntervalSeconds, 0f, 1f );
-
-		if ( _sincePayout < LpBitcoinEconomy.PayoutIntervalSeconds )
-			return;
-
-		_sincePayout = 0;
-		BitcoinAmount += LpBitcoinEconomy.TickPayout( ClockGhz, CoreCount, RackYieldMultiplier );
-	}
 
 	public bool Press( IPressable.Event e )
 	{
-		if ( !IsPowered )
-			return false;
-
 		LpHashdUiHost.Open( this );
 		return true;
 	}
@@ -73,61 +36,91 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable
 	public void Hover( IPressable.Event e ) { }
 	public void Blur( IPressable.Event e ) { }
 
-	public void SetMining( bool on ) => SetMiningHost( on );
+	public void SetPowered( bool on ) => SetPoweredHost( on );
 
 	[Rpc.Host]
-	private void SetMiningHost( bool on )
+	private void SetPoweredHost( bool on )
 	{
-		IsMining = on && IsPowered;
-		if ( IsMining )
-			_sincePayout = 0;
+		if ( !CanManageHub( Rpc.CallerId ) )
+			return;
+
+		IsPowered = on;
+		if ( !on )
+		{
+			foreach ( var rack in GetLinkedRacks() )
+				rack.StopMiningHost();
+		}
 	}
 
-	public void RequestSell() => SellHost();
-
-	[Rpc.Host]
-	private async void SellHost()
+	public IReadOnlyList<LpBitcoinRackEntity> GetLinkedRacks()
 	{
-		if ( BitcoinAmount <= 0f )
-			return;
+		var scene = GameObject.Scene ?? Game.ActiveScene;
+		if ( scene is null )
+			return Array.Empty<LpBitcoinRackEntity>();
 
-		var value = (uint)(BitcoinAmount * LpBitcoinEconomy.BitcoinValueUsd);
-		if ( !await TryPayPlayer( Rpc.CallerId, value, "LIFEPUNCH bitcoin sell" ) )
-			return;
-
-		BitcoinAmount = 0f;
+		return scene.GetAllComponents<LpBitcoinRackEntity>()
+			.Where( r => r.IsValid() && r.LinkedHubId == GameObject.Id )
+			.ToList();
 	}
 
-	public void RequestUpgradeCpu() => UpgradeCpuHost();
-
-	[Rpc.Host]
-	private async void UpgradeCpuHost()
+	public LpBitcoinRackEntity FindRackByIndex( int index )
 	{
-		if ( CpuUpgradeLevel >= LpBitcoinEconomy.CpuUpgradeCosts.Length )
-			return;
-
-		var cost = (uint)LpBitcoinEconomy.CpuUpgradeCosts[CpuUpgradeLevel];
-		if ( !await TryChargePlayer( Rpc.CallerId, cost, "LIFEPUNCH CPU upgrade" ) )
-			return;
-
-		CpuUpgradeLevel++;
-		ClockGhz += LpBitcoinEconomy.CpuGhzPerLevel;
+		var racks = GetLinkedRacks();
+		return index >= 0 && index < racks.Count ? racks[index] : null;
 	}
 
-	public void RequestUpgradeCores() => UpgradeCoresHost();
+	public void RequestUpgradeCpu( Guid rackId ) => UpgradeCpuHost( rackId );
+
+	public void RequestUpgradeCores( Guid rackId ) => UpgradeCoresHost( rackId );
 
 	[Rpc.Host]
-	private async void UpgradeCoresHost()
+	private void UpgradeCpuHost( Guid rackId )
 	{
-		if ( CoreUpgradeLevel >= LpBitcoinEconomy.CoreUpgradeCosts.Length )
+		if ( !CanManageHub( Rpc.CallerId ) )
 			return;
 
-		var cost = (uint)LpBitcoinEconomy.CoreUpgradeCosts[CoreUpgradeLevel];
-		if ( !await TryChargePlayer( Rpc.CallerId, cost, "LIFEPUNCH core upgrade" ) )
+		ResolveRack( rackId )?.ApplyUpgradeCpu( Rpc.CallerId );
+	}
+
+	[Rpc.Host]
+	private void UpgradeCoresHost( Guid rackId )
+	{
+		if ( !CanManageHub( Rpc.CallerId ) )
 			return;
 
-		CoreUpgradeLevel++;
-		CoreCount += LpBitcoinEconomy.CoresPerLevel;
+		ResolveRack( rackId )?.ApplyUpgradeCores( Rpc.CallerId );
+	}
+
+	private LpBitcoinRackEntity ResolveRack( Guid rackId )
+	{
+		if ( rackId == Guid.Empty )
+			return GetLinkedRacks().FirstOrDefault();
+
+		return GetLinkedRacks().FirstOrDefault( r => r.GameObject.Id == rackId );
+	}
+
+	public bool CanManageHub( Guid callerId )
+	{
+#if LIFEPUNCH_LOCAL
+		return true;
+#else
+		if ( !AccessPinIsSet )
+			return TryBindOwner( callerId );
+
+		if ( Owner == 0 )
+			return TryBindOwner( callerId );
+
+		var player = GameUtils.GetPlayerByConnectionId( callerId );
+		return player.IsValid() && player.SteamId == Owner;
+#endif
+	}
+
+	public bool CanOperateTerminal( Guid callerId )
+	{
+		if ( !IsPowered )
+			return false;
+
+		return CanManageHub( callerId );
 	}
 
 	public void BindOwnerFromLocalViewer()
@@ -143,29 +136,15 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable
 #endif
 	}
 
-#if LIFEPUNCH_LOCAL
-	private static async Task<bool> TryChargePlayer( Guid callerId, uint amount, string reason )
-	{
-		await Task.CompletedTask;
-		return true;
-	}
-
-	private static async Task<bool> TryPayPlayer( Guid callerId, uint amount, string reason )
-	{
-		await Task.CompletedTask;
-		return true;
-	}
-#else
-	private static async Task<bool> TryChargePlayer( Guid callerId, uint amount, string reason )
+#if !LIFEPUNCH_LOCAL
+	private bool TryBindOwner( Guid callerId )
 	{
 		var player = GameUtils.GetPlayerByConnectionId( callerId );
-		return player.IsValid() && await player.ChargeHost( amount, reason );
-	}
+		if ( !player.IsValid() )
+			return false;
 
-	private static async Task<bool> TryPayPlayer( Guid callerId, uint amount, string reason )
-	{
-		var player = GameUtils.GetPlayerByConnectionId( callerId );
-		return player.IsValid() && await player.PayHost( amount, reason );
+		Owner = player.SteamId;
+		return true;
 	}
 #endif
 }

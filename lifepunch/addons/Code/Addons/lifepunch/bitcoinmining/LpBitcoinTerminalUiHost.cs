@@ -2,11 +2,6 @@
 // PROPRIETARY & CONFIDENTIAL — © 2026 lifepunch.co. All rights reserved.
 //
 // "LIFEPUNCH Bitcoin Miner for DXRP" (s&box ident: lifepunch.bitcoin · addon ident: bitcoinmining)
-// is the sole-owned intellectual property of lifepunch.co. It is NOT licensed for resale,
-// redistribution, sublicensing, copying, or reuse by ANY person or entity — including DXRP and
-// LifePunch staff, contributors, or community — EXCEPT the owner (lifepunch.co).
-// Author account: mrragerlp · Public alias (in-game · Steam · Discord): Bloodwave
-// Presence in this repository or on the DXRP portal grants no rights to anyone else.
 // ─────────────────────────────────────────────────────────────────────────────
 
 using System.Linq;
@@ -18,12 +13,12 @@ using Dxura.RP.Game;
 
 namespace LifePunch.DXRP.Addons.Bitcoin;
 
-internal static class LpHashdUiHost
+internal static class LpBitcoinTerminalUiHost
 {
 	public static bool IsOpen =>
-		Game.ActiveScene?.GetAllComponents<LpHashdPanel>().FirstOrDefault().IsValid() ?? false;
+		Game.ActiveScene?.GetAllComponents<LpBitcoinTerminalPanel>().FirstOrDefault().IsValid() ?? false;
 
-	public static LpHashdPanel Open( LpBitcoinHubEntity hub )
+	public static LpBitcoinTerminalPanel Open( LpBitcoinHubEntity hub, LpBitcoinRackEntity focusRack = null )
 	{
 		CloseOpen();
 
@@ -33,26 +28,24 @@ internal static class LpHashdUiHost
 			return null;
 
 		var go = scene.CreateObject();
-		go.Name = "LpHashdPanel";
+		go.Name = "LpBitcoinTerminalPanel";
 		go.AddComponent<ScreenPanel>();
-		var panel = go.AddComponent<LpHashdPanel>();
-		panel.BindHub( hub );
+		var panel = go.AddComponent<LpBitcoinTerminalPanel>();
+		panel.Bind( hub, focusRack );
 		return panel;
 #else
-		var panel = GameManager.ShowUi<LpHashdPanel>();
-		panel?.BindHub( hub );
+		var panel = GameManager.ShowUi<LpBitcoinTerminalPanel>();
+		panel?.Bind( hub, focusRack );
 		return panel;
 #endif
 	}
 
 	public static void CloseOpen()
 	{
-		var panel = Game.ActiveScene?.GetAllComponents<LpHashdPanel>().FirstOrDefault();
+		var panel = Game.ActiveScene?.GetAllComponents<LpBitcoinTerminalPanel>().FirstOrDefault();
 		if ( !panel.IsValid() )
 			return;
 
 		panel.Destroy();
 	}
-
-	public static int GetLocalWalletCash() => LpBitcoinWallet.GetLocalCash();
 }

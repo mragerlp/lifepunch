@@ -12,7 +12,14 @@
 
 **Package:** `lifepunchbitcoin` · **s&box:** `lifepunch.bitcoin` · **repo folder:** `bitcoinmining/`
 
-**v1 snapshot:** `reference-intake/bitcoinmining-v1-code/` (read-only study)
+## Two UI surfaces (law)
+
+| Surface | Opens from | Interaction | Look |
+|---------|------------|-------------|------|
+| **Hub admin** | USE Ophion hub | **Click-first** — power, rack info, paid upgrades | Modern dashboard (`LpHashdPanel`) |
+| **CRT terminal** | USE terminal prop or GPU rack | **Type commands** — mine/stop/sell; optional command sidebar | Retro terminal (`LpBitcoinTerminalPanel`) |
+
+Hub = admin. Terminal = mine/stop/sell via typed commands (authentic, less hand-holding). BTC accrues on **GPU racks**, not the hub.
 
 ---
 
@@ -50,7 +57,7 @@ Enable when lane needs them. **P0:** skip shader_graph_extras unless leaving `co
 | Step | Deliverable |
 |------|-------------|
 | **0** | v1 code → `reference-intake/`; v2 compiles clean |
-| **1** | `LpBitcoinHub` + `LpHashdPanel` (module shell) + dev spawn placeholders |
+| **1** | `LpBitcoinHub` + modern ops UI (`LpHashdPanel`) + dev spawn placeholders |
 | **2** | Host economy loop (90s tick, sell, upgrades) wired to UI |
 | **3** | `LpBitcoinRack` link + yield; flatgrass full-kit proof |
 | **4** | New prefabs + owner Ophion re-intake (fresh ModelDoc, no v1 vmats) |

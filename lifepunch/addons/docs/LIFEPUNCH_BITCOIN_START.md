@@ -58,13 +58,16 @@ lp_bitcoin_spawn_kit
 
 ---
 
-# DXRP editor (ULX-only lane)
+# DXRP editor (lane scripts)
 
-Bitcoin greenfield does **not** mount in the default DXRP editor until promoted.
+Bitcoin greenfield does **not** mount in the default DXRP editor until you run a lane script.
 
-**Today:** run `Set-DxrpLifepunchUlxOnly.ps1` - `addons/lifepunch/` contains **only `lifepunchulx`**. See `DXRP_ULX_ONLY_LANE.md`.
+| Lane | Script | Mounts |
+|------|--------|--------|
+| ULX only | `Set-DxrpLifepunchUlxOnly.ps1` | `lifepunchulx` |
+| **Bitcoin only** | `Set-DxrpLifepunchBitcoinOnly.ps1` | `bitcoinmining` + `_dev` (`lp_map_flatgrass`) |
 
-When bitcoin ships to editor: explicit sync + `rp.sbproj` glob - not `-SyncAllAddons`.
+See `DXRP_ULX_ONLY_LANE.md` · bitcoin lane: run Bitcoin script above, then restart editor.
 
 ## Sync commands (repo to DXRP when promoted)
 
