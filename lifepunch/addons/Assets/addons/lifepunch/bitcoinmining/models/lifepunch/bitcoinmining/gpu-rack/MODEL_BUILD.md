@@ -74,7 +74,7 @@ Do **not** split into separate vmdls per fan — fans are part of the rack assem
 3. For each slot, create the `.vmat` in `materials/` and assign textures from the table.
 4. Compile `gpu-rack.vmdl`.
 
-**World orientation:** standing **open-frame crypto mining rig** (Sketchfab [Crypto Farm / Mining Rig](https://sketchfab.com/3d-models/crypto-farm-mining-rig-049f02ffd15c41ca8cb8020feb43993f) — same asset family as `gpu-rack-anim.fbx`). Source mesh is tall on Z; use `import_rotation = [ 90, 0, 0 ]` + `import_scale = 0.465` @ prefab `1,1,1` → ~**25 × 20 × 36** hammer units (feet on ground). Do **not** lay the rack flat with Y=90 — that was an old misread.
+**World orientation:** standing **open-frame crypto mining rig** (Sketchfab [Crypto Farm / Mining Rig](https://sketchfab.com/3d-models/crypto-farm-mining-rig-049f02ffd15c41ca8cb8020feb43993f) — same asset family as `gpu-rack-anim.fbx`). **Single and stacked racks share the same ModelDoc axis treatment:** `import_rotation = [ 0, 90, 0 ]`, `import_translation = [ -1.389, -0.208, 2.912 ]`, align **Center / Center / Bottom**. Single rack `import_scale = 0.395` (~15% below prior 0.465); stacked `import_scale = 0.85` @ prefab `1,1,1`.
 
 Canonical JSON: `material-map.json` in this folder.
 

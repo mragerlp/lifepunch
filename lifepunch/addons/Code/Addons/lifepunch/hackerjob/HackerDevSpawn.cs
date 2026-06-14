@@ -114,28 +114,6 @@ public static class HackerDevSpawn
 	public static void SpawnAdvancedServerRack() =>
 		SpawnServerRackEntity( HackerJob.AdvancedServerRackWorldPrefabPath, powered: false );
 
-	/// <summary>Swap active map to flatgrass for scale/playtest clarity (no downtown clutter).</summary>
-	[ConCmd( "lp_map_flatgrass" )]
-	public static void MapFlatgrass()
-	{
-		var scene = Game.ActiveScene;
-		if ( scene is null )
-		{
-			Log.Warning( "lp_map_flatgrass: no active scene." );
-			return;
-		}
-
-		var map = scene.GetAllComponents<MapInstance>().FirstOrDefault();
-		if ( !map.IsValid() )
-		{
-			Log.Warning( "lp_map_flatgrass: no MapInstance in scene." );
-			return;
-		}
-
-		map.MapName = "facepunch.flatgrass";
-		Log.Info( "lp_map_flatgrass: loading facepunch.flatgrass …" );
-	}
-
 	/// <summary>Spawn powered basic + advanced racks with cornerman + vengeance terminals.</summary>
 	[ConCmd( "lp_hacker_kit_preview" )]
 	public static void HackerKitPreview()
@@ -164,7 +142,7 @@ public static class HackerDevSpawn
 
 	private static void PreviewTerminal( HackerTerminalTier tier )
 	{
-		var entity = SpawnTerminalEntity( tier );
+		var entity = SpawnTerminalAtViewer( tier );
 		if ( !entity.IsValid() )
 			return;
 
@@ -175,33 +153,51 @@ public static class HackerDevSpawn
 #endif
 	}
 
-	private static HackerTerminalEntity SpawnTerminalEntity( HackerTerminalTier tier )
+	private static HackerTerminalEntity SpawnTerminalAtViewer( HackerTerminalTier tier )
 	{
-		SpawnTerminal( tier );
-		var scene = Game.ActiveScene;
-		if ( scene is null )
-			return null;
+		var command = tier == HackerTerminalTier.Advanced
+			? HackerJob.DevAdvancedSpawnCommand
+			: HackerJob.DevSpawnCommand;
+		var prefabPath = tier == HackerTerminalTier.Advanced
+			? HackerJob.AdvancedWorldPrefabPath
+			: HackerJob.WorldPrefabPath;
 
-		HackerTerminalEntity best = null;
-		var bestDist = float.MaxValue;
-		var viewer = TryGetViewerPosition( scene );
-		if ( !viewer.HasValue )
-			return scene.GetAllComponents<HackerTerminalEntity>().LastOrDefault();
-
-		foreach ( var entity in scene.GetAllComponents<HackerTerminalEntity>() )
+		if ( !TryGetSpawnTransform( out var transform ) )
 		{
-			if ( !entity.IsValid() || entity.Tier != tier )
-				continue;
-
-			var dist = ( entity.WorldPosition - viewer.Value ).Length;
-			if ( dist < bestDist )
-			{
-				bestDist = dist;
-				best = entity;
-			}
+			Log.Warning( $"{command}: no local viewer." );
+			return null;
 		}
 
-		return best;
+		var terminal = ClonePrefabAt( prefabPath, transform );
+		if ( !terminal.IsValid() )
+		{
+			Log.Error( $"{command}: could not load or clone '{prefabPath}'. Recompile prefab in editor if missing prefab_c." );
+			return null;
+		}
+
+		var entity = terminal.Components.Get<HackerTerminalEntity>( FindMode.EverythingInSelfAndDescendants );
+		if ( !entity.IsValid() )
+		{
+			Log.Error( $"{command}: clone has no HackerTerminalEntity." );
+			terminal.Destroy();
+			return null;
+		}
+
+		entity.Tier = tier;
+
+#if !LIFEPUNCH_LOCAL
+		var player = Player.Local;
+		if ( player.IsValid() )
+			terminal.NetworkSpawn( player.Network.Owner );
+		else
+			terminal.NetworkSpawn();
+#endif
+
+		var program = tier == HackerTerminalTier.Advanced
+			? HackerJob.AdvancedProgramName
+			: HackerJob.InGameProgramName;
+		Log.Info( $"{command}: placed ({program}). Stand within 6m and interact or use lp_cornerman_ui / lp_vengeance_ui." );
+		return entity;
 	}
 
 	private static Vector3? TryGetViewerPosition( Scene scene )
@@ -286,45 +282,8 @@ public static class HackerDevSpawn
 #endif
 	}
 
-	private static void SpawnTerminal( HackerTerminalTier tier )
-	{
-		var command = tier == HackerTerminalTier.Advanced
-			? HackerJob.DevAdvancedSpawnCommand
-			: HackerJob.DevSpawnCommand;
-		var prefabPath = tier == HackerTerminalTier.Advanced
-			? HackerJob.AdvancedWorldPrefabPath
-			: HackerJob.WorldPrefabPath;
-
-		if ( !TryGetSpawnTransform( out var transform ) )
-		{
-			Log.Warning( $"{command}: no local viewer." );
-			return;
-		}
-
-		var terminal = ClonePrefabAt( prefabPath, transform );
-		if ( !terminal.IsValid() )
-		{
-			Log.Error( $"{command}: could not load or clone '{prefabPath}'. Recompile prefab in editor if missing prefab_c." );
-			return;
-		}
-
-		var entity = terminal.Components.Get<HackerTerminalEntity>( FindMode.EverythingInSelfAndDescendants );
-		if ( entity.IsValid() )
-			entity.Tier = tier;
-
-#if !LIFEPUNCH_LOCAL
-		var player = Player.Local;
-		if ( player.IsValid() )
-			terminal.NetworkSpawn( player.Network.Owner );
-		else
-			terminal.NetworkSpawn();
-#endif
-
-		var program = tier == HackerTerminalTier.Advanced
-			? HackerJob.AdvancedProgramName
-			: HackerJob.InGameProgramName;
-		Log.Info( $"{command}: placed ({program}). Stand within 6m and interact or use lp_cornerman_ui / lp_vengeance_ui." );
-	}
+	private static void SpawnTerminal( HackerTerminalTier tier ) =>
+		SpawnTerminalAtViewer( tier );
 
 	private static GameObject ClonePrefabAt( string prefabPath, Transform transform )
 	{

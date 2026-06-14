@@ -433,8 +433,10 @@ public static class BitcoinMiningDevSpawn
 		Log.Info( $"BITCOINMINING_TEST rigs={rigs.Length} pos={positions}" );
 	}
 
-	/// <summary>Range + link diagnostics (replaces broken bridge __Exec_*.cs snippets).</summary>
+	/// <summary>Hub, rig, hashd UI, and link diagnostics (replaces MCP execute_csharp snippets).</summary>
+	[ConCmd( "lp_bitcoinmining_debug" )]
 	[ConCmd( "lp_gpu_rack_debug" )]
+	[ConCmd( "lp_hashd_debug" )]
 	public static void DebugBitcoinMiningAddons()
 	{
 		var scene = Game.ActiveScene;
@@ -452,6 +454,19 @@ public static class BitcoinMiningDevSpawn
 		}
 
 		Log.Info( $"BITCOINMINING_DEBUG viewer={viewer.Value}" );
+		Log.Info( $"BITCOINMINING_DEBUG hashd_open={HashdTerminalHost.IsOpen}" );
+
+		var hubs = scene.GetAllComponents<BitcoinMinerHubEntity>().ToArray();
+		Log.Info( $"BITCOINMINING_DEBUG hubs={hubs.Length}" );
+		foreach ( var hub in hubs )
+		{
+			if ( !hub.IsValid() )
+				continue;
+
+			var linked = BitcoinMinerHubRegistry.GetLinkedRacks( hub ).Count();
+			Log.Info(
+				$"BITCOINMINING_DEBUG hub={hub.GameObject.Name} owner={hub.Owner} powered={hub.IsPowered} btc={hub.BitcoinAmount:F8} linked_racks={linked}" );
+		}
 
 		var rigs = scene.GetAllComponents<GpuRackEntity>().ToArray();
 		Log.Info( $"BITCOINMINING_DEBUG rigs={rigs.Length} terminals={scene.GetAllComponents<BitcoinTerminalProp>().Count()}" );
@@ -482,27 +497,6 @@ public static class BitcoinMiningDevSpawn
 			Log.Warning( "BITCOINMINING_DEBUG no rigs — run lp_spawn_gpu_rack or lp_hashd_preview (prefab editor stage has no runtime entities)." );
 	}
 
-	/// <summary>Swap active map to flatgrass for scale/playtest clarity (no downtown clutter).</summary>
-	[ConCmd( "lp_map_flatgrass" )]
-	public static void MapFlatgrass()
-	{
-		var scene = Game.ActiveScene;
-		if ( scene is null )
-		{
-			Log.Warning( "lp_map_flatgrass: no active scene." );
-			return;
-		}
-
-		var map = scene.GetAllComponents<MapInstance>().FirstOrDefault();
-		if ( !map.IsValid() )
-		{
-			Log.Warning( "lp_map_flatgrass: no MapInstance in scene." );
-			return;
-		}
-
-		map.MapName = "facepunch.flatgrass";
-		Log.Info( "lp_map_flatgrass: loading facepunch.flatgrass …" );
-	}
 
 	/// <summary>
 	/// Logs mesh bounds + BoxCollider scale for hub / small rack / large rack (MODEL_SCALE_DOCTRINE flatgrass pass).

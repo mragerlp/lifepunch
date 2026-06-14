@@ -128,10 +128,10 @@
           "label": "Hacker Terminal",
           "type": 0,
           "primaryReference": "addons/lifepunch/hackerjob/entities/hacker-terminal/hacker-terminal.prefab",
-          "worldModelPath": "addons/lifepunch/hackerjob/models/lifepunch/hackerjob/hacker-terminal/hacker-terminal.vmdl",
+          "worldModelPath": "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-terminal/bitcoin-terminal.vmdl",
           "grouping": "Entities",
           "implementationStatus": "cornerman-exe-phase1",
-          "modelBuild": "Assets/addons/lifepunch/hackerjob/models/lifepunch/hackerjob/hacker-terminal/MODEL_BUILD.md"
+          "modelBuild": "Assets/addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-terminal/MODEL_BUILD.md"
         },
         {
           "slug": "advanced-hacker-terminal",
@@ -139,10 +139,10 @@
           "label": "Advanced Hacking Terminal",
           "type": 0,
           "primaryReference": "addons/lifepunch/hackerjob/entities/advanced-hacker-terminal/advanced-hacker-terminal.prefab",
-          "worldModelPath": "addons/lifepunch/hackerjob/models/lifepunch/hackerjob/advanced-hacker-terminal/advanced-hacker-terminal.vmdl",
+          "worldModelPath": "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-terminal/bitcoin-terminal.vmdl",
           "grouping": "Entities",
           "implementationStatus": "vengeance-exe-govdb",
-          "modelBuild": "Assets/addons/lifepunch/hackerjob/models/lifepunch/hackerjob/advanced-hacker-terminal/MODEL_BUILD.md"
+          "modelBuild": "Assets/addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-terminal/MODEL_BUILD.md"
         }
       ]
     },

@@ -1,16 +1,16 @@
 # advanced-hacker-terminal — Vengeance CRT (vengeance.exe)
 
+> **World mesh (Jun 2026):** Prefab uses shared **`bitcoin-terminal.vmdl`** from `bitcoinmining`. Tier stays **Advanced** → `vengeance.exe` UI only. Local `advanced-hacker-terminal.vmdl` is **deprecated** (do not ship).
+
 **Slug:** `advanced-hacker-terminal`  
-**Source:** `source/hacker-terminal.fbx` (owner `computer.fbx` — unique advanced CRT; red material pass in ModelDoc)  
+**World model:** `addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-terminal/bitcoin-terminal.vmdl`  
 **UI art:** `ui/vengeance/*.png` (console, loading screen, terminal chrome)  
-**Target:** `advanced-hacker-terminal.vmdl`  
 **Prefab:** `entities/advanced-hacker-terminal/advanced-hacker-terminal.prefab`  
 **Tier:** `HackerTerminalEntity.Tier = Advanced`
 
 ## ModelDoc
 
-1. Duplicate material remaps from standard terminal with Vengeance `#E4002B` accents (`TERMINAL_BRAND_MATRIX.md`).
-2. Same `import_scale` baseline as `hacker-terminal.vmdl`.
+No local vmdl — world mesh is **`bitcoin-terminal.vmdl`**. Vengeance red accent is **UI-only** (`HackerTerminal.razor` / `ui/vengeance/`).
 
 ## Dev smoke
 

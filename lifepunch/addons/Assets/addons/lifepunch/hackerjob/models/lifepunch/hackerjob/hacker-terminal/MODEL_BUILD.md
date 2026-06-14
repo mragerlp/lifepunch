@@ -1,8 +1,9 @@
 # hacker-terminal — standard CRT (cornerman.exe)
 
+> **World mesh (Jun 2026):** Prefab uses shared **`bitcoin-terminal.vmdl`** from `bitcoinmining` — same computer prop as hashd terminals. Gameplay/UI stays `cornerman.exe`. Local `hacker-terminal.vmdl` is **deprecated** (do not ship).
+
 **Slug:** `hacker-terminal`  
-**Source:** `source/hacker-terminal.fbx` (owner pack — `Intake-HackerTerminalModel.ps1`)  
-**Target:** `hacker-terminal.vmdl`  
+**World model:** `addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-terminal/bitcoin-terminal.vmdl`  
 **Prefab:** `entities/hacker-terminal/hacker-terminal.prefab`  
 **UI overlay:** `HackerTerminal.razor` (cornerman.exe console — not baked into mesh)
 
@@ -16,10 +17,7 @@ Archive: `C:\lifepunch\reference-intake\hackerjob\hackerterminal-v2`
 
 ## ModelDoc
 
-1. Open `hacker-terminal.vmdl` — import `source/hacker-terminal.fbx`.
-2. **`import_scale` law:** **1.0** @ prefab **1.0** for this mesh (verified Jun 2026 on flatgrass). **Do not** default **39.37**. See `addons/docs/MODEL_SCALE_DOCTRINE.md`.
-3. Note material slots from import → fill `material-map.json` + author vmats (green `#00FF7F` monitor accent).
-4. Compile → `Pull-DxrpCompiledAssetsToRepo.ps1`.
+No local vmdl — world mesh is **`bitcoin-terminal.vmdl`** (see `bitcoinmining/.../bitcoin-terminal/MODEL_BUILD.md`). LCD child matches bitcoin-terminal prefab (`lcd_screen` @ `0,18,3.5`).
 
 ## Screen + console (prefab — no ModelDoc required for UI)
 

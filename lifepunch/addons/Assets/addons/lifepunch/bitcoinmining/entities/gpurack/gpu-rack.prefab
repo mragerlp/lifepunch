@@ -70,7 +70,7 @@
         "__guid": "d08803d2-1ed7-4e63-8293-e9cf67e75485",
         "__enabled": true,
         "Flags": 0,
-        "Center": "0,0,10.627",
+        "Center": "0,0,9.033",
         "ColliderFlags": 0,
         "Elasticity": null,
         "Friction": null,
@@ -86,7 +86,7 @@
         "OnTriggerEnter": null,
         "OnTriggerExit": null,
         "RollingResistance": null,
-        "Scale": "8.629,12.937,21.254",
+        "Scale": "7.335,11.096,18.066",
         "Static": false,
         "Surface": "surfaces/metal.surface",
         "SurfaceVelocity": "0,0,0"

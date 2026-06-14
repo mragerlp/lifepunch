@@ -61,6 +61,11 @@ if (-not $SkipPreflight) {
     }
 }
 
+$sweepExec = Join-Path $Here 'Sweep-SboxExecSnippets.ps1'
+if (Test-Path -LiteralPath $sweepExec) {
+    & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $sweepExec
+}
+
 if (-not $NoSync) {
     $pullCompiled = Join-Path $Here 'Pull-DxrpCompiledAssetsToRepo.ps1'
     if (Test-Path -LiteralPath $pullCompiled) {

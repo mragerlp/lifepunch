@@ -6,8 +6,8 @@ Paths (from `HackerJob.cs`):
 
 | Tier | Prefab | Model |
 |------|--------|-------|
-| Standard | `entities/hacker-terminal/hacker-terminal.prefab` | `hacker-terminal.vmdl` |
-| Advanced CRT | `entities/advanced-hacker-terminal/advanced-hacker-terminal.prefab` | `advanced-hacker-terminal.vmdl` |
+| Standard | `entities/hacker-terminal/hacker-terminal.prefab` | `bitcoinmining/.../bitcoin-terminal/bitcoin-terminal.vmdl` (shared) |
+| Advanced CRT | `entities/advanced-hacker-terminal/advanced-hacker-terminal.prefab` | same `bitcoin-terminal.vmdl` — tier + `vengeance.exe` UI only |
 | Basic rack | `entities/server-rack/server-rack.prefab` | `server-rack.vmdl` |
 | Advanced rack | `entities/advanced-server-rack/advanced-server-rack.prefab` | `advanced-server-rack.vmdl` |
 
