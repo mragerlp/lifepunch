@@ -60,6 +60,11 @@ Template: `.cursor/rules/dxrp-addon-foundation.mdc`
 
 ---
 
-## Uniform
+## Uniform (avatar)
 
-Owner assets: `CVLassets\…\Bloodwave\` → repo `outfits/bloodwave/` when synced.
+| File | Use |
+|------|-----|
+| `branding/lifepunch-ops/outfits/bloodwave/bloodwave-avatar-1024.png` | Canonical |
+| `branding/lifepunch-ops/outfits/bloodwave/bloodwave-avatar-500.png` | Discord · Steam · profiles |
+
+Split portrait — Mr. Rager / Bloodwave, same person. See `outfits/bloodwave/README.md`.

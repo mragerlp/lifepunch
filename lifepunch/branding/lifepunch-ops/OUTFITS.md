@@ -21,7 +21,7 @@ Artist source — edit here first, then sync into the repo:
 | VENGEANCE | `%USERPROFILE%\OneDrive\Desktop\Hacker Job\Enhanced Hacker Terminal\vengeance` |
 | Cornerman | `%USERPROFILE%\OneDrive\Desktop\Hacker Job\Hacker Terminal\cornerman` |
 | lifepunchnet | `%USERPROFILE%\OneDrive\Desktop\Hacker Job\Government Terminal\lifepunchnet` |
-| Bloodwave (owner) | `CVLassets\…\Bloodwave\` (owner prepares — see `outfits/bloodwave/README.md`) |
+| Bloodwave (owner) | `CVLassets\…\Bloodwave\` · repo `outfits/bloodwave/bloodwave-avatar-500.png` |
 
 **Uniform standards (web-wide):** `%USERPROFILE%\OneDrive\Desktop\uniforms\UNIFORM_STANDARDS.md`
 (repo mirror: `UNIFORM_STANDARDS.md` in this folder).

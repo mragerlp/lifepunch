@@ -1,19 +1,23 @@
-# Bloodwave — owner uniform (placeholder)
+# Bloodwave — owner avatar / uniform
 
-**June 2026** — Personal avatar / uniform for Bloodwave (owner). Not a CVL machine node —
-separate from VENGEANCE / Cornerman / lifepunchnet outfits.
+**June 2026** — Personal portrait for **Bloodwave** (visible community name) and **Mr. Rager /
+mrragerlp** (same person — contact / proprietary author). Not a CVL machine node.
 
-## Source (owner OneDrive — path when ready)
+## Repo files
 
-`CVLassets\…\Bloodwave\` — owner is preparing assets (typical **500×500** avatar export).
+| File | Size | Use |
+|------|------|-----|
+| `bloodwave-avatar-1024.png` | 1024×1024 | Canonical source (do not redesign) |
+| `bloodwave-avatar-500.png` | 500×500 | Discord · Steam · profile thumbnails |
 
-## Repo mirror (after sync)
+Design: split portrait — human + cybernetic homage. Black background.
 
-| File | Role |
-|------|------|
-| `bloodwave-avatar-500.png` | Community avatar / profile |
-| *(owner adds)* | Additional uniform art |
+## OneDrive (owner)
 
-Sync script wiring lands when owner finalizes the OneDrive path.
+When synced from CVLassets, owner path: `CVLassets\…\Bloodwave\` (Bloodwave sets final folder).
 
-See `lifepunch/docs/BLOODWAVE_ALIAS.md`.
+## Agents
+
+- Do not alter the art without owner ask.
+- Use `bloodwave-avatar-500.png` for UI/docs that need a small square avatar.
+- See `lifepunch/docs/BLOODWAVE_ALIAS.md` for naming law.
