@@ -8,9 +8,9 @@ Layer0
 	F_TRANSLUCENT 1
 
 	TextureColor "addons/lifepunch/bitcoinmining/entities/bitcoinminer/textures/hexabg.png"
-	TextureRoughness "addons/lifepunch/bitcoinmining/entities/bitcoinminer/textures/Metal036_2K_Roughness.jpg"
 
 	g_flModelTintAmount "1.000"
-	g_vColorTint "[0.720000 0.820000 0.920000 0.550000]"
-	g_flOpacityScale "0.420"
+	g_vColorTint "[0.850000 0.920000 0.980000 0.220000]"
+	g_flOpacityScale "0.120"
+	g_flRoughnessScaleFactor "0.050"
 }

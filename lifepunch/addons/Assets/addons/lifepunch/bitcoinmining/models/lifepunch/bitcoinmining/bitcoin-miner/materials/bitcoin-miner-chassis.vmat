@@ -13,5 +13,5 @@ Layer0
 	TextureMetalness "addons/lifepunch/bitcoinmining/entities/bitcoinminer/textures/Metal036_2K_Metalness.jpg"
 
 	g_flModelTintAmount "1.000"
-	g_vColorTint "[1.000000 1.000000 1.000000 0.000000]"
+	g_vColorTint "[1.080000 1.080000 1.120000 0.000000]"
 }

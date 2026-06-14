@@ -50,9 +50,12 @@ if (-not $SkipPreflight) {
     $preflight = Join-Path $Here 'Test-PreLaunchCheckup.ps1'
     if (Test-Path -LiteralPath $preflight) {
         Write-Host 'Pre-launch checkup (Cornerman + dual MCP)...' -ForegroundColor Cyan
-        $pfArgs = @{}
-        if ($PreflightFix) { $pfArgs['Fix'] = $true }
-        & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $preflight @pfArgs
+        if ($PreflightFix) {
+            & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $preflight -Fix
+        }
+        else {
+            & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $preflight
+        }
         if ($LASTEXITCODE -ne 0) {
             Write-Host 'Pre-launch checkup reported blockers — continuing editor launch.' -ForegroundColor Yellow
             Write-Host '  Re-run: Test-PreLaunchCheckup.ps1 -Fix' -ForegroundColor DarkGray

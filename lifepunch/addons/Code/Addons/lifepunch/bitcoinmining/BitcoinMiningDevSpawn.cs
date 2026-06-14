@@ -435,9 +435,15 @@ public static class BitcoinMiningDevSpawn
 
 	/// <summary>Hub, rig, hashd UI, and link diagnostics (replaces MCP execute_csharp snippets).</summary>
 	[ConCmd( "lp_bitcoinmining_debug" )]
+	public static void DebugBitcoinMiningAddons() => DebugBitcoinMiningAddonsCore();
+
 	[ConCmd( "lp_gpu_rack_debug" )]
+	public static void DebugBitcoinMiningAddonsGpuAlias() => DebugBitcoinMiningAddonsCore();
+
 	[ConCmd( "lp_hashd_debug" )]
-	public static void DebugBitcoinMiningAddons()
+	public static void DebugBitcoinMiningAddonsHashdAlias() => DebugBitcoinMiningAddonsCore();
+
+	private static void DebugBitcoinMiningAddonsCore()
 	{
 		var scene = Game.ActiveScene;
 		if ( scene is null )

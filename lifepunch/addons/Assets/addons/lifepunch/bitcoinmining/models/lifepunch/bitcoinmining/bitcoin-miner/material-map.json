@@ -37,7 +37,7 @@
   },
   "fbxSlots": {
     "chassis": ["Aluminium", "Aluminium.001", "Brushed Aluminium", "Anisotropic Aluminium", "Steel", "Steel anisotropic", "Diffuse", "Mesh", "Back screws", "Bottom screws", "Pre-screws", "Acrylic Screw", "Metal036"],
-    "acrylic": ["Side Panels", "Acrylic", "Acrylic Panels", "hexabg", "hexabg.png"],
+    "acrylic": ["Side Panels", "Acrylic", "Acrylic Panels", "Front Panel", "Front Panel.001", "Top Panel", "Top Panel.001", "hexabg", "hexabg.png"],
     "gpu": ["GraphicCard", "AsusRog", "AsusRogStrix3090.png"],
     "motherboard": ["Motherboard", "Motherboard.001", "Motherboard scres"],
     "psu": ["Powersupply"],
@@ -54,8 +54,11 @@
   ],
   "fixedJun2026": [
     "Side Panels → acrylic (was chassis — blocked glass)",
+    "Front/Top Panel slots → acrylic; Back Panel → wire grille",
+    "Bottom/Middle Panel → chassis",
     "AsusRog, Wire weave, white-metal, Metal036, Metal009, LD000548 → vmats (were falling to default chassis)",
     "Metal036_2K_NormalGL.jpg remap added (repo file is NormalGL not NormalDX)",
-    "hexabg slot name remap added"
+    "hexabg resized 1024 RGBA for translucent compile; vmats stripped failing normal/roughness maps",
+    "gpu/mobo/acrylic vmats simplified so s&box MaterialCompiler succeeds"
   ]
 }

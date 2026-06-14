@@ -24,8 +24,8 @@ entities/bitcoinminer/
 
 | Field | Value | Why |
 |-------|-------|-----|
-| **Import scale** | `0.385` (Custom) | Human-scale Ophion tower @ prefab `1,1,1` |
-| **Import translation** | `0, 0, **13.3**` | Lifts mesh so origin/ground contact reads correctly (was `0` — visual culprit) |
+| **Import scale** | `0.77` (Custom) | ~2× prior pass — ~30″ tall vs ~77″ citizen on flatgrass (was 0.385 / ~15″) |
+| **Import translation** | `0, 0, **26.6**` | Scales with import_scale for ground contact (was 13.3 @ 0.385) |
 | **Import rotation** | `0, 0, 0` | FBX export is already upright — **do not** pitch 90° |
 | **Align origin** | None / None / None | Match ModelDoc screenshot; re-verify bounds after compile |
 | **Source meshes** | `Vert_005`, `Circle_002` (if ModelDoc lists extras, disable junk LODs) | |

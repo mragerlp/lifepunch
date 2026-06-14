@@ -42,7 +42,11 @@ function Test-BridgeIpc {
     try {
         $st = Get-Content -LiteralPath $statusPath -Raw | ConvertFrom-Json
         if (-not $st.heartbeat) { return $false }
-        $hb = [datetime]$st.heartbeat
+        $hb = [datetime]::Parse(
+            [string]$st.heartbeat,
+            $null,
+            [System.Globalization.DateTimeStyles]::RoundtripKind
+        ).ToUniversalTime()
         return ((Get-Date).ToUniversalTime() - $hb).TotalSeconds -lt 120
     }
     catch { return $false }
