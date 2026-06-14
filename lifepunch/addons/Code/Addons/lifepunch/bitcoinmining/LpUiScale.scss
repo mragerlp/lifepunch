@@ -1,0 +1,71 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// PROPRIETARY & CONFIDENTIAL — © 2026 lifepunch.co. All rights reserved.
+//
+// "LIFEPUNCH Bitcoin Miner for DXRP" (s&box ident: lifepunch.bitcoin · addon ident: bitcoinmining)
+// ─────────────────────────────────────────────────────────────────────────────
+
+// Hub admin shell (LpHashdPanel root: .lp-bitcoin-ops)
+.lp-bitcoin-ops {
+	&.lp-ui-size-s {
+		width: 760px;
+		height: 500px;
+		margin-left: -380px;
+		margin-top: -250px;
+	}
+
+	&.lp-ui-size-m {
+		width: 900px;
+		height: 600px;
+		margin-left: -450px;
+		margin-top: -300px;
+	}
+
+	&.lp-ui-size-l {
+		width: 1000px;
+		height: 660px;
+		margin-left: -500px;
+		margin-top: -330px;
+	}
+
+	&.lp-ui-size-xl {
+		width: 1100px;
+		height: 720px;
+		margin-left: -550px;
+		margin-top: -360px;
+	}
+}
+
+// CRT terminal shell (LpBitcoinTerminalPanel root: .lp-ops-crt)
+.lp-ops-crt {
+	&.lp-ui-size-s {
+		width: 736px;
+		height: 448px;
+		margin-left: -368px;
+		margin-top: -224px;
+		font-size: 12px;
+	}
+
+	&.lp-ui-size-m {
+		width: 920px;
+		height: 560px;
+		margin-left: -460px;
+		margin-top: -280px;
+		font-size: 13px;
+	}
+
+	&.lp-ui-size-l {
+		width: 1012px;
+		height: 616px;
+		margin-left: -506px;
+		margin-top: -308px;
+		font-size: 14px;
+	}
+
+	&.lp-ui-size-xl {
+		width: 1150px;
+		height: 700px;
+		margin-left: -575px;
+		margin-top: -350px;
+		font-size: 15px;
+	}
+}

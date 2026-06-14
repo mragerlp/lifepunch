@@ -11,12 +11,33 @@
 
 @attribute [StyleSheet]
 
-<root class="lp-bitcoin-terminal">
+<root class="@GetRootClass()">
 	<div class="shell">
 		<div class="crt-frame">
 			<div class="crt-header">
-				<span>LIFEPUNCH RIG TERMINAL v2</span>
-				<button class="close-btn" onclick="@Close">ESC</button>
+				<span>LIFEPUNCH HASHD TERMINAL</span>
+				<div class="lp-ui-chrome-actions">
+					<div class="lp-ui-scale-menu">
+						<button class="lp-ui-chrome-btn cog" tooltip="UI scale" onclick="@ToggleScaleMenu">
+							<i class="material-icons">settings</i>
+						</button>
+						@if ( _showScaleMenu )
+						{
+							<div class="lp-ui-scale-dropdown">
+								<div class="lp-ui-scale-dropdown-title">UI Scale</div>
+								@foreach ( var size in _uiScaleOptions )
+								{
+									<button class="lp-ui-scale-opt @( _uiScale == size ? "active" : "" )"
+									        onclick="@(() => SetUiScale( size ))">
+										<span>@ScaleLabel( size )</span>
+										<span>@LpUiScale.ShortLabel( size )</span>
+									</button>
+								}
+							</div>
+						}
+					</div>
+					<button class="lp-ui-chrome-btn esc" tooltip="Close terminal" onclick="@Close">ESC</button>
+				</div>
 			</div>
 			<div class="crt-body">
 				<div class="sidebar">
@@ -41,7 +62,7 @@
 						}
 					</div>
 					<div class="prompt-row">
-						<span class="prompt">rig@hub&gt;</span>
+						<span class="prompt">rig0&gt;</span>
 						<TextEntry class="cmd-input" Value:bind="@_input" onsubmit="@Submit" placeholder="type command..." />
 					</div>
 				</div>
@@ -58,6 +79,34 @@
 	private int _selectedIndex;
 	private string _input = string.Empty;
 	private readonly List<LogLine> _lines = new();
+	private bool _showScaleMenu;
+	private LpUiScaleSize _uiScale = LpUiScale.Default;
+	private static readonly LpUiScaleSize[] _uiScaleOptions =
+	{
+		LpUiScaleSize.Small,
+		LpUiScaleSize.Medium,
+		LpUiScaleSize.Large,
+		LpUiScaleSize.ExtraLarge
+	};
+
+	private string GetRootClass() =>
+		$"lp-ops-crt lp-ops-crt--gray {LpUiScale.CssClass( _uiScale )}";
+
+	private static string ScaleLabel( LpUiScaleSize size ) => size switch
+	{
+		LpUiScaleSize.Small => "Small",
+		LpUiScaleSize.Medium => "Medium",
+		LpUiScaleSize.Large => "Large",
+		_ => "Extra Large"
+	};
+
+	private void ToggleScaleMenu() => _showScaleMenu = !_showScaleMenu;
+
+	private void SetUiScale( LpUiScaleSize size )
+	{
+		_uiScale = size;
+		_showScaleMenu = false;
+	}
 
 	public void Bind( LpBitcoinHubEntity hub, LpBitcoinRackEntity focusRack = null )
 	{
@@ -87,7 +136,7 @@
 		if ( string.IsNullOrWhiteSpace( raw ) )
 			return;
 
-		_lines.Add( new LogLine( true, $"rig@hub&gt; {raw}" ) );
+		_lines.Add( new LogLine( true, $"rig0&gt; {raw}" ) );
 
 		var result = LpBitcoinTerminalCommands.Execute( _hub, ref _selectedIndex, raw );
 		if ( !string.IsNullOrWhiteSpace( result.Line ) )
@@ -112,6 +161,8 @@
 		_selectedIndex,
 		_input,
 		_lines.Count,
+		_uiScale,
+		_showScaleMenu,
 		_hub?.IsPowered,
 		_hub?.GetLinkedRacks().Sum( r => r.BitcoinAmount ) );
 }

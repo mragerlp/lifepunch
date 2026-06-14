@@ -124,6 +124,11 @@ if (Test-Path -LiteralPath $repoDevSrc) {
     New-Item -ItemType Directory -Force -Path $dxrpDev | Out-Null
     & robocopy $repoDevSrc $dxrpDev /MIR /NFL /NDL /NJH /NJS /nc /ns /np | Out-Null
     if ($LASTEXITCODE -ge 8) { throw "robocopy _dev failed" }
+    $weaponDevGive = Join-Path $dxrpDev 'WeaponDevGive.cs'
+    if (Test-Path -LiteralPath $weaponDevGive) {
+        Rename-Item -LiteralPath $weaponDevGive -NewName 'WeaponDevGive.cs.quarantine' -Force
+        Write-Host '  Code/_dev: WeaponDevGive.cs quarantined (bitcoin-only lane)' -ForegroundColor Yellow
+    }
     Write-Host '  Code/_dev mirrored (lp_map_flatgrass)' -ForegroundColor Green
 }
 

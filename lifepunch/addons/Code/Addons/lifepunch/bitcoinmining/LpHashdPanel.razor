@@ -11,7 +11,7 @@
 
 @attribute [StyleSheet]
 
-<root class="lp-bitcoin-ops">
+<root class="@GetRootClass()">
 	<div class="shell">
 		<div class="topbar">
 			<div class="brand">
@@ -25,30 +25,15 @@
 				<span class="dot"></span>
 				<span>@StatusLabel()</span>
 			</div>
-			<div class="topbar-actions">
-				<button class="icon-btn" tooltip="Settings" onclick="@ToggleSettings">
+			<div class="topbar-actions lp-ui-chrome-actions">
+				<button class="lp-ui-chrome-btn cog" tooltip="Settings" onclick="@OpenSettings">
 					<i class="material-icons">settings</i>
 				</button>
-				<button class="icon-btn close" tooltip="Close" onclick="@Close">
+				<button class="lp-ui-chrome-btn close" tooltip="Close" onclick="@Close">
 					<i class="material-icons">close</i>
 				</button>
 			</div>
 		</div>
-
-		@if ( _showSettings )
-		{
-			<div class="settings-sheet">
-				<div class="settings-title">Hub settings</div>
-				<div class="settings-row">
-					<span>Power</span>
-					<div class="split-actions">
-						<button class="pill @(Hub?.IsPowered == true ? "active" : "")" onclick="@PowerOn">Power on</button>
-						<button class="pill @(Hub?.IsPowered != true ? "active" : "")" onclick="@PowerOff">Power off</button>
-					</div>
-				</div>
-				<div class="settings-hint">Access PIN ships next. Mine, stop, and sell run on the CRT terminal only.</div>
-			</div>
-		}
 
 		<div class="nav">
 			@foreach ( var tab in _tabs )
@@ -137,7 +122,7 @@
 					}
 				</div>
 			}
-			else
+			else if ( _active == OpsTab.About )
 			{
 				<div class="pane about">
 					<div class="about-title">@LpBitcoinIdent.ProductTitle</div>
@@ -146,18 +131,64 @@
 					<div class="about-legal">Proprietary & confidential — lifepunch.co</div>
 				</div>
 			}
+			else if ( _active == OpsTab.Settings )
+			{
+				<div class="pane settings-pane">
+					<div class="settings-head">
+						<i class="material-icons">settings</i>
+						<span>Settings</span>
+					</div>
+
+					<div class="settings-group">
+						<div class="settings-label">UI Scale</div>
+						<div class="settings-hint">Resize the hub admin window.</div>
+						<div class="panel-size-row">
+							@foreach ( var size in _uiScaleOptions )
+							{
+								<button class="panel-size-opt @( _uiScale == size ? "active" : "" )"
+								        onclick="@(() => SetUiScale( size ))">
+									@LpUiScale.ShortLabel( size )
+								</button>
+							}
+						</div>
+					</div>
+
+					<div class="settings-group">
+						<div class="settings-label">Hub Power</div>
+						<div class="settings-hint">Turn the Ophion hub on or off. Racks stop accruing when power is off.</div>
+						<div class="settings-row">
+							<div class="split-actions">
+								<button class="pill @(Hub?.IsPowered == true ? "active" : "")" onclick="@PowerOn">Power on</button>
+								<button class="pill @(Hub?.IsPowered != true ? "active" : "")" onclick="@PowerOff">Power off</button>
+							</div>
+						</div>
+					</div>
+
+					<div class="settings-group">
+						<div class="settings-label">Security</div>
+						<div class="settings-hint">Access PIN and placement limits ship in a later pass.</div>
+					</div>
+				</div>
+			}
 		</div>
 	</div>
 </root>
 
 @code
 {
-	private enum OpsTab { Overview, Racks, About }
+	private enum OpsTab { Overview, Racks, About, Settings }
 
 	private static readonly OpsTab[] _tabs = { OpsTab.Overview, OpsTab.Racks, OpsTab.About };
 
 	private OpsTab _active = OpsTab.Overview;
-	private bool _showSettings;
+	private LpUiScaleSize _uiScale = LpUiScale.Default;
+	private static readonly LpUiScaleSize[] _uiScaleOptions =
+	{
+		LpUiScaleSize.Small,
+		LpUiScaleSize.Medium,
+		LpUiScaleSize.Large,
+		LpUiScaleSize.ExtraLarge
+	};
 	private LpBitcoinHubEntity _hub;
 
 	public LpBitcoinHubEntity Hub => _hub;
@@ -181,7 +212,9 @@
 	};
 
 	private void SelectTab( OpsTab tab ) => _active = tab;
-	private void ToggleSettings() => _showSettings = !_showSettings;
+	private void OpenSettings() => SelectTab( OpsTab.Settings );
+	private string GetRootClass() => $"lp-bitcoin-ops {LpUiScale.CssClass( _uiScale )}";
+	private void SetUiScale( LpUiScaleSize size ) => _uiScale = size;
 	private void Close() => LpHashdUiHost.CloseOpen();
 	private void PowerOn() => Hub?.SetPowered( true );
 	private void PowerOff() => Hub?.SetPowered( false );
@@ -230,7 +263,7 @@
 
 	protected override int BuildHash() => HashCode.Combine(
 		_active,
-		_showSettings,
+		_uiScale,
 		_hub?.IsPowered,
 		LinkedRackCount(),
 		TotalBtc(),

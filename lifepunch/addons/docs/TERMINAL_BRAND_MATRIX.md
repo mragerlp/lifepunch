@@ -40,18 +40,18 @@ LifePunch uses **two UI surfaces**. They are different products, not skins of ea
 |---------|------------|-----------------|--------|
 | **Physical terminal** | CRT / desk prop — in-fiction **ops program** | **Type commands as text** — primary loop is prompt + scrollback + executing real command strings. Optional **sidebar** for command reference / module navigation; sidebar helps, it does **not** replace typing. Harder by design than hub menus. | **Old-school terminal** — per-job accent from matrix below. Greenfield code only — better than v1, not copy-paste. |
 | **Hub admin panel** | USE on **Ophion hub** | **Fully clickable** — power, linking info, per-rack upgrades. No mine/stop/sell on hub. | **Modern dashboard** — `LpHashdPanel` |
-| **Bitcoin CRT terminal** | USE on **terminal prop** or **GPU rack** | **Type commands** — `mining start`, `sell`, etc.; optional sidebar lists commands only. | **Retro terminal** — `LpBitcoinTerminalPanel` |
+| **Bitcoin CRT terminal** | USE on **terminal prop** or **GPU rack** | **Type commands** — `mining start`, `sell`, etc.; optional sidebar lists commands only. | **Gray CRT** (`lp-ops-crt--gray`) · prompt `rig0>` |
 
 **Rule of thumb:** Hub = easy ops. Terminal = power-user / roleplay authenticity via **text commands**.
 
-**Bitcoin v2:** USE **hub** → modern **admin** dashboard (power + upgrades). USE **terminal** or **rack** → typed `rig@hub>` commands + command sidebar — mine/stop/sell live here only.
+**Bitcoin v2:** USE **hub** → modern **admin** dashboard (power + upgrades). USE **terminal** or **rack** → gray CRT (`rig0>`). Hacker green CRT layout saved as `lp-ops-crt--hacker` — see `branding/OPS_CRT_TERMINAL_THEMES.md`.
 
-**Hub panel:** `LpHashdPanel` · **Terminal panel:** `LpBitcoinTerminalPanel` — `BITCOIN_GREENFIELD_REBUILD.md`
+**Hub panel:** `LpHashdPanel` · **Bitcoin CRT:** `LpBitcoinTerminalPanel` (`--gray`) · **Hacker CRT (future):** `lp-ops-crt--hacker`
 
 | Layout (terminals only) | Terminals | Spec |
 |--------|-----------|------|
-| **Ops Console** (typed commands + optional reference sidebar) | Hacker green/red · Police cyan (Phase 4) | `HACKER_OPS_CONSOLE_SPEC.md` · `reference/GOVERNMENT_DATABASE_TERMINAL_SPEC.md` |
-| **HASHD CRT** (typed `rig0>` commands + optional command sidebar) | Bitcoin **terminal prop** amber `#f0a500` | `BITCOINMINING_UX_SPEC.md` (terminal path — greenfield, not v1 paste) |
+| **Ops CRT** (sidebar + typed prompt) | Bitcoin gray · Hacker green · Vengeance red · Gov cyan · Banker `#000080` · Black market `#000000` · Casino `#FF00FF` | `branding/OPS_CRT_TERMINAL_THEMES.md` |
+| **Ops Console** (legacy hacker modules) | Hacker until CRT migration | `HACKER_OPS_CONSOLE_SPEC.md` |
 | **LCD summary** | Gov tax miner blue console | `governmentdatacenter/docs/GOVERNMENT_TAX_MINER_BUILD.md` |
 
 ## Cybersecurity Officer

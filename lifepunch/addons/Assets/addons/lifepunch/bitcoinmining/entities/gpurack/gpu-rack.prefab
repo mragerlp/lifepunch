@@ -20,9 +20,9 @@
         "__guid": "375b9aa9-e8b3-4170-a70f-7e3f37eb76e7",
         "__enabled": true,
         "Flags": 0,
-        "Health": 100,
+        "Health": 500,
         "IsGodMode": false,
-        "MaxHealth": 100,
+        "MaxHealth": 500,
         "OnComponentDestroy": null,
         "OnComponentDisabled": null,
         "OnComponentEnabled": null,
@@ -132,47 +132,17 @@
         "SoundEvent": null
       },
       {
-        "__type": "LifePunch.DXRP.Addons.BitcoinMining.GpuRackEntity",
+        "__type": "LifePunch.DXRP.Addons.Bitcoin.LpBitcoinRackEntity",
         "__guid": "6d47169b-65d4-45c5-961e-9c429d802e21",
         "__enabled": true,
         "Flags": 0,
-        "RackFan1": {
-          "_type": "gameobject",
-          "go": "99103107-53c9-4f0f-9849-3aa23ac42a91"
-        },
-        "RackFan2": {
-          "_type": "gameobject",
-          "go": "337e2738-6af5-46e6-b3ad-ed76d3e87842"
-        },
-        "RackFan3": {
-          "_type": "gameobject",
-          "go": "363c8e75-ca15-43fa-bd1a-c2789226e3e2"
-        },
-        "ErrorBeepSound": "addons/lifepunch/bitcoinmining/sounds/bitcoinminer/error.sound",
-        "Explosion": {
-          "_type": "gameobject",
-          "prefab": "prefabs/helpers/explosion.prefab"
-        },
-        "GlitchSound": "addons/lifepunch/bitcoinmining/sounds/bitcoinminer/glitch.sound",
-        "MaxSmokeTime": 6,
-        "MinSmokeTime": 2.5,
-        "ModelRenderer": {
-          "_type": "component",
-          "component_id": "c4a9f255-56a8-48f0-9c36-43ef91e6b38c",
-          "go": "0fe9afa7-2cd2-4dbc-b764-0b32b9d94403",
-          "component_type": "ModelRenderer"
-        },
+        "LargeRack": false,
         "OnComponentDestroy": null,
         "OnComponentDisabled": null,
         "OnComponentEnabled": null,
         "OnComponentFixedUpdate": null,
         "OnComponentStart": null,
-        "OnComponentUpdate": null,
-        "SmokeEffect": {
-          "_type": "gameobject",
-          "prefab": "prefabs/helpers/smoke.prefab"
-        },
-        "TextRender": null
+        "OnComponentUpdate": null
       }
     ],
     "Children": [

@@ -4,20 +4,25 @@
 // "LIFEPUNCH Bitcoin Miner for DXRP" (s&box ident: lifepunch.bitcoin · addon ident: bitcoinmining)
 // ─────────────────────────────────────────────────────────────────────────────
 
+@import "LpUiChrome.scss";
+@import "LpUiScale.scss";
+
 .lp-bitcoin-ops {
 	position: absolute;
-	right: 28px;
+	left: 50%;
 	top: 50%;
-	width: 900px;
-	height: 600px;
-	margin-top: -300px;
-	font-family: Poppins;
+	font-family: Poppins, Arial, sans-serif;
 	font-size: 14px;
 	color: #e8edf5;
 	pointer-events: all;
 
 	.material-icons {
-		font-family: material-icons;
+		font-family: Material Icons;
+		font-weight: normal;
+		font-style: normal;
+		text-transform: none;
+		letter-spacing: normal;
+		white-space: nowrap;
 	}
 
 	.shell {
@@ -103,39 +108,70 @@
 		gap: 8px;
 	}
 
-	.icon-btn {
-		width: 40px;
-		height: 40px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		background-color: rgba(255, 255, 255, 0.04);
-		border: 1px solid rgba(255, 255, 255, 0.08);
-		border-radius: 10px;
-		color: #d5dbe7;
-
-		&.close:hover { color: #ef6b5f; }
-	}
-
-	.settings-sheet {
+	.settings-pane {
 		display: flex;
 		flex-direction: column;
-		gap: 10px;
-		padding: 14px 18px;
-		background-color: rgba(240, 165, 0, 0.08);
-		border-bottom: 1px solid rgba(240, 165, 0, 0.2);
+		gap: 14px;
+		overflow-y: scroll;
 	}
 
-	.settings-title {
-		color: #f0a500;
-		font-weight: bold;
-	}
-
-	.settings-row {
+	.settings-head {
 		display: flex;
 		align-items: center;
-		justify-content: space-between;
-		gap: 12px;
+		gap: 8px;
+		color: #f0a500;
+		font-size: 18px;
+		font-weight: bold;
+
+		.material-icons {
+			font-size: 22px;
+		}
+	}
+
+	.settings-group {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		padding: 16px;
+		border-radius: 12px;
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		background-color: rgba(255, 255, 255, 0.03);
+	}
+
+	.settings-label {
+		color: #f7f9fc;
+		font-size: 13px;
+		font-weight: 600;
+	}
+
+	.panel-size-row {
+		display: flex;
+		flex-direction: row;
+		gap: 8px;
+		margin-top: 4px;
+	}
+
+	.panel-size-opt {
+		flex-grow: 1;
+		height: 32px;
+		border-radius: 8px;
+		border: 1px solid rgba(255, 255, 255, 0.1);
+		background-color: rgba(255, 255, 255, 0.04);
+		color: #9aa6ba;
+		font-size: 12px;
+		font-weight: 700;
+		cursor: pointer;
+
+		&:hover {
+			color: #e8edf5;
+			border-color: rgba(255, 255, 255, 0.16);
+		}
+
+		&.active {
+			color: #f0a500;
+			border-color: rgba(240, 165, 0, 0.45);
+			background-color: rgba(240, 165, 0, 0.12);
+		}
 	}
 
 	.split-actions {
@@ -162,6 +198,13 @@
 		font-size: 12px;
 	}
 
+	.settings-row {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 12px;
+	}
+
 	.nav {
 		display: flex;
 		gap: 8px;
@@ -177,6 +220,13 @@
 		background-color: rgba(255, 255, 255, 0.03);
 		border: 1px solid rgba(255, 255, 255, 0.06);
 		color: #9aa6ba;
+		white-space: nowrap;
+		flex-shrink: 0;
+
+		.material-icons {
+			font-size: 18px;
+			flex-shrink: 0;
+		}
 
 		&.active {
 			color: #f0a500;
@@ -214,9 +264,16 @@
 		}
 	}
 
+	.hero-copy {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+		min-width: 0;
+	}
+
 	.hero-label { color: #8b95a8; font-size: 12px; }
-	.hero-value { color: #f7f9fc; font-size: 28px; font-weight: bold; }
-	.hero-sub { color: #aeb8cb; font-size: 12px; margin-top: 4px; }
+	.hero-value { color: #f7f9fc; font-size: 28px; font-weight: bold; line-height: 1.1; }
+	.hero-sub { color: #aeb8cb; font-size: 12px; }
 
 	.hero-toggle {
 		display: flex;
@@ -252,12 +309,13 @@
 
 	.metric-grid {
 		display: flex;
-		flex-wrap: wrap;
+		flex-direction: row;
 		gap: 10px;
 	}
 
 	.metric {
-		flex: 1 1 180px;
+		flex: 1 1 0;
+		min-width: 0;
 		padding: 14px;
 		border-radius: 12px;
 		background-color: rgba(255, 255, 255, 0.03);
@@ -265,20 +323,34 @@
 	}
 
 	.metric-label { color: #8b95a8; font-size: 11px; }
-	.metric-value { color: #f0a500; font-size: 20px; font-weight: bold; margin-top: 6px; }
+	.metric-value {
+		color: #f0a500;
+		font-size: 18px;
+		font-weight: bold;
+		margin-top: 6px;
+		white-space: nowrap;
+	}
 
 	.payout-card {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
 		padding: 14px;
 		border-radius: 12px;
 		background-color: rgba(255, 255, 255, 0.03);
 		border: 1px solid rgba(255, 255, 255, 0.06);
 	}
 
-	.payout-head, .payout-foot {
-		display: flex;
-		justify-content: space-between;
+	.payout-head {
+		color: #f7f9fc;
+		font-size: 13px;
+		font-weight: 600;
+	}
+
+	.payout-foot {
 		color: #aeb8cb;
 		font-size: 12px;
+		line-height: 1.45;
 	}
 
 	.payout-pct { color: #f0a500; font-weight: bold; }

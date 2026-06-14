@@ -1,0 +1,42 @@
+@* Reference only — green hacker CRT shell. Wire when hackerjob adopts sidebar layout.
+   SCSS: bitcoinmining/LpOpsCrtTerminal.scss · theme: lp-ops-crt--hacker *@
+@namespace LifePunch.DXRP.Addons.HackerJob
+@using Sandbox.UI
+@inherits PanelComponent
+
+@attribute [StyleSheet]
+
+<root class="lp-ops-crt lp-ops-crt--hacker">
+	<div class="shell">
+		<div class="crt-frame">
+			<div class="crt-header">
+				<span>LIFEPUNCH CORNERMAN TERMINAL</span>
+				<button class="close-btn">ESC</button>
+			</div>
+			<div class="crt-body">
+				<div class="sidebar">
+					<div class="sidebar-title">COMMANDS</div>
+					<div class="cmd-ref">help</div>
+					<div class="cmd-ref">scan</div>
+					<div class="cmd-ref">hack</div>
+					<div class="cmd-ref">status</div>
+					<div class="sidebar-foot">cornerman.exe</div>
+				</div>
+				<div class="screen">
+					<div class="log">
+						<div class="log-line">LIFEPUNCH cornerman — type help</div>
+					</div>
+					<div class="prompt-row">
+						<span class="prompt">cornerman@terminal:~$</span>
+						<TextEntry class="cmd-input" placeholder="type command..." />
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</root>
+
+@code
+{
+	// Stub — implement command host when hacker lane promotes from quarantine.
+}

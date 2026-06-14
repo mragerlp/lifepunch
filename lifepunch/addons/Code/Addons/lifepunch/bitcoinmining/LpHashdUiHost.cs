@@ -25,6 +25,7 @@ internal static class LpHashdUiHost
 
 	public static LpHashdPanel Open( LpBitcoinHubEntity hub )
 	{
+		LpBitcoinTerminalUiHost.CloseOpen();
 		CloseOpen();
 
 #if LIFEPUNCH_LOCAL

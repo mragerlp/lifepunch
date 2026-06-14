@@ -20,4 +20,9 @@ public static class LpBitcoinIdent
 	public const string OpsTitle = "Bitcoin Ops";
 	public const string HashdProgram = "hashd";
 	public const string UiFooter = "lifepunch.bitcoin v2 — lifepunch.co";
+
+	public const string HubPrefabPath = "addons/lifepunch/bitcoinmining/entities/bitcoinminer/bitcoin-miner.prefab";
+	public const string RackPrefabPath = "addons/lifepunch/bitcoinmining/entities/gpurack/gpu-rack.prefab";
+	public const string LargeRackPrefabPath = "addons/lifepunch/bitcoinmining/entities/largegpurack/large-gpu-rack.prefab";
+	public const string TerminalPrefabPath = "addons/lifepunch/bitcoinmining/entities/bitcoin-terminal/bitcoin-terminal.prefab";
 }
