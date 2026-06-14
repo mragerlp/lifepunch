@@ -47,6 +47,11 @@ public sealed class BitcoinMinerHubEntity : BaseEntity, Component.IPressable
 	/// <summary>Pipe-separated <see cref="GameObject.Id"/> values for explicitly linked GPU racks.</summary>
 	[Sync( SyncFlags.FromHost )] public string LinkedRigIds { get; set; } = "";
 
+#if LIFEPUNCH_LOCAL
+	/// <summary>Spawner Steam ID stub for local/editor builds (DXRP uses <c>BaseEntity.Owner</c>).</summary>
+	[Sync( SyncFlags.FromHost )] public long Owner { get; set; }
+#endif
+
 	private ushort _pinHash;
 	private readonly Dictionary<Guid, double> _sessionExpiry = new();
 	private readonly Dictionary<Guid, HashdSurface> _pendingSurface = new();

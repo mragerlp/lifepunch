@@ -9,6 +9,8 @@
     "compatiblePlatformNote": "DXRP is a gamemode/platform owned by Dxura (on s&box by Facepunch). Third-party; LifePunch (Peak Performance Products LLC) is NOT affiliated. Reference nominatively only ('for DXRP'); never claim DXRP/Dxura/s&box as a LifePunch brand."
   },
   "ownership": "PROPRIETARY — original LIFEPUNCH content is the sole-owned IP of lifepunch.co. NOT for resale, redistribution, sublicensing, or reuse by any party (including DXRP and LifePunch staff/contributors/community) except the owner (lifepunch.co). Limited license: server owners may use this content on their own servers only; no copying, redistribution, or resale. Doctrine: lifepunch/legal/TRADEMARK_AND_IP.md.",
+  "portfolioPhase": "ophion-rebuild-2026-06",
+  "portfolioManifest": "config/portfolio.json",
   "contentReferenceRoot": "addons/lifepunch",
   "addons": [
     {

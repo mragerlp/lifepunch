@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "phase": "ophion-rebuild-2026-06",
+  "law": "Only activeAddons are in-scope for ship work. Quarantined idents stay in repo for reference — do not extend until owner promotes.",
+  "activeAddons": [
+    "adminmenu",
+    "bitcoinmining"
+  ],
+  "activeNotes": {
+    "adminmenu": "lifepunch.ulx — polished staff menu. Do not refactor without owner ask.",
+    "bitcoinmining": "Ophion hub rebuild from BITCOIN_OPHION_CURSOR_BRIEF.md — visual + player UX pass first."
+  },
+  "quarantinedAddons": [
+    { "ident": "ak47", "reason": "Viewmodel baseline; resume after Ophion ship." },
+    { "ident": "doublebarrelshotgun", "reason": "Foundation-only assets." },
+    { "ident": "uraniumspecialist", "reason": "Intake pause." },
+    { "ident": "hackerjob", "reason": "Tangled with bitcoin terminal mesh; resume as separate lane." },
+    { "ident": "governmentdatacenter", "reason": "Depends on bitcoin economy; after Ophion." },
+    { "ident": "additionaldroplocations", "reason": "Map coords unset." },
+    { "ident": "advanceddrugprocessing", "reason": "Opus economy not signed off." },
+    { "ident": "deagle", "reason": "Weapon code-draft queue." },
+    { "ident": "mp9", "reason": "Weapon code-draft queue." },
+    { "ident": "ssg08", "reason": "Weapon code-draft queue." },
+    { "ident": "xm1014", "reason": "Weapon code-draft queue." },
+    { "ident": "visiblepocket", "reason": "HUD policy lane paused." },
+    { "ident": "bankerjob", "reason": "WIP untracked; start from ChatGPT brief when promoted." }
+  ]
+}

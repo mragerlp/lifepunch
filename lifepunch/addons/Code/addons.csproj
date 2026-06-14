@@ -39,4 +39,24 @@
 		<ProjectReference Include="D:/Steam/steamapps/common/sbox/addons/base/code/Base Library.csproj" />
 	</ItemGroup>
 
+	<!-- Quarantine June 2026: active = adminmenu + bitcoinmining only (portfolio.json) -->
+	<ItemGroup>
+		<Compile Remove="Addons\lifepunch\ak47\**\*.cs" />
+		<Compile Remove="Addons\lifepunch\hackerjob\**\*.cs" />
+		<Compile Remove="Addons\lifepunch\governmentdatacenter\**\*.cs" />
+		<Compile Remove="Addons\lifepunch\additionaldroplocations\**\*.cs" />
+		<Compile Remove="Addons\lifepunch\advanceddrugprocessing\**\*.cs" />
+		<Compile Remove="Addons\lifepunch\deagle\**\*.cs" />
+		<Compile Remove="Addons\lifepunch\mp9\**\*.cs" />
+		<Compile Remove="Addons\lifepunch\ssg08\**\*.cs" />
+		<Compile Remove="Addons\lifepunch\xm1014\**\*.cs" />
+		<Compile Remove="Addons\lifepunch\visiblepocket\**\*.cs" />
+		<Compile Remove="Addons\lifepunch\uraniumspecialist\**\*.cs" />
+		<Compile Remove="Addons\lifepunch\bankerjob\**\*.cs" />
+		<Content Remove="Addons\lifepunch\hackerjob\**\*.razor" />
+		<Content Remove="Addons\lifepunch\hackerjob\**\*.razor.scss" />
+		<Content Remove="Addons\lifepunch\visiblepocket\**\*.razor" />
+		<Content Remove="Addons\lifepunch\visiblepocket\**\*.razor.scss" />
+	</ItemGroup>
+
 </Project>

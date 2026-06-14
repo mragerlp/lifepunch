@@ -19,10 +19,11 @@ Done. You never edit template files.
 
 ## Cursor agent (after brief arrives)
 
-1. Treat brief as **ideation** — verify against `addons.json`, existing docs, `TECH_DEBT.md`
-2. If building in editor: `Test-PreLaunchCheckup.ps1 -Fix` first
-3. Reply with: **exists / net-new / P0 steps / which MCP** (`sbox`, `sbox-editor`, `cornerman-lm`)
-4. Ask Bloodwave for ChatGPT Step 1 if message is spaghetti with no brief
+1. Treat brief as **ideation** — verify against `addons.json`, `config/portfolio.json`, `QUARANTINE_REGISTER.md`, existing docs
+2. **Active addons only:** `adminmenu` + `bitcoinmining` unless owner promotes from quarantine
+3. If building in editor: `Test-PreLaunchCheckup.ps1 -Fix` first
+4. Reply with: **exists / net-new / P0 steps / which MCP** (`sbox`, `sbox-editor`, `cornerman-lm`)
+5. Ask Bloodwave for ChatGPT Step 1 if message is spaghetti with no brief
 
 ---
 
