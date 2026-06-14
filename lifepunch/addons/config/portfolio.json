@@ -1,14 +1,17 @@
 {
   "schemaVersion": 1,
   "phase": "ophion-rebuild-2026-06",
-  "law": "Only activeAddons are in-scope for ship work. Quarantined idents stay in repo for reference — do not extend until owner promotes.",
+  "law": "Only activeAddons are in-scope for ship work. Quarantined idents stay in repo for reference — do not extend until owner promotes. publishReadyAddons is the export set for lifepunch-published.",
   "activeAddons": [
     "adminmenu",
     "bitcoinmining"
   ],
+  "publishReadyAddons": [
+    "adminmenu"
+  ],
   "activeNotes": {
-    "adminmenu": "lifepunch.ulx — polished staff menu. Do not refactor without owner ask.",
-    "bitcoinmining": "Ophion hub rebuild from BITCOIN_OPHION_CURSOR_BRIEF.md — visual + player UX pass first."
+    "adminmenu": "lifepunch.ulx — v1 publish-ready. LifePunch servers only; not for resale. Export to lifepunch-published now.",
+    "bitcoinmining": "Ophion hub rebuild from BITCOIN_OPHION_CURSOR_BRIEF.md — active dev; NOT publish until owner visual sign-off."
   },
   "quarantinedAddons": [
     { "ident": "ak47", "reason": "Viewmodel baseline; resume after Ophion ship." },

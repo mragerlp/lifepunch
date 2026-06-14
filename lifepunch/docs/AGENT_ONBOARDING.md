@@ -47,6 +47,12 @@ partner commits on GitLab integrate back into GitHub. Full map:
    read-only **upstream** runtime/test copy where the editor runs. **Never** commit LifePunch
    work here.
 
+### 4. Publish lane → portal snapshot (not law)
+
+**`mragerlp/lifepunch-published`** — export-only tree for DXRP portal. Built by
+`Export-LifepunchPublishLane.ps1` from `publishReadyAddons` in `portfolio.json`.
+Core monorepo stays where all agents work. See `PUBLISH_REPO_LANE.md` + `GIT_CHECKPOINTS.md`.
+
 ## Grounding = the monorepo's `.cursor/rules` (alwaysApply) are law
 
 - **lifepunch-operating-context** — business style; **asset ownership default = ours**, do
@@ -177,9 +183,9 @@ The `lifepunch-operating-context` rule is law here; this is the orientation. We 
   and tell the owner. A bundled `sessionStart` hook (`.cursor/hooks/session-sync.*`) automates this in
   every lane; the always-on rule is the guaranteed layer (applies even with no prompt pasted). Law:
   `lifepunch-operating-context` (Git workflow → Always-current).
-- **Commit consent — ask first:** an agent **never commits unprompted**. When work hits a natural
-  commit point, *ask the owner whether to commit* (propose scope + message) and commit only on an
-  explicit yes. This is law in `lifepunch-operating-context` (Git workflow → Commit consent).
+- **Commit consent — recommend then approve:** an agent **never commits unprompted**. At a natural
+  checkpoint the agent states **scope + recommend commit (+ push if N commits behind)**; Bloodwave
+  says `commit to main` or `commit and push`. Law: `GIT_CHECKPOINTS.md`.
 - Addons must ship compiled `_c` files (the dedicated server doesn't compile). Servers enforce
   `RestrictCloudOrg="facepunch"` → assets must be **self-contained**, never cloud-referenced.
 - Publish staging: `scripts/prepare-publish.ps1 -Addon <ident>`. Validate:
@@ -188,16 +194,21 @@ The `lifepunch-operating-context` rule is law here; this is the orientation. We 
 
 ## Current direction (June 2026)
 
-**Tonight (2026-06-13) — CVL continuity if you lose chat context:**
+**Tonight (2026-06-14) — foundation if you lose chat context:**
 
 | Topic | Canon |
 |-------|-------|
-| **Cornerman LM (headless)** | GUI **not** required. `lms server` on `:1234` + distill+embed in VRAM. Fix: `lifepunch/scripts/Fix-CornermanLmServe.ps1`. Probe uses `lms ps` (not `/v1/models` catalog). Watchdog: `LifePunch-Cornerman-LM-Watchdog`. |
-| **Dual s&box MCP** | VENGEANCE: `sbox` (Claude Bridge) + `sbox-editor` (chomnr `:9090`). Cornerman: SMB bridge + SSH tunnel for editor MCP. `lifepunch/docs/SBOX_EDITOR_MCP.md` |
-| **Bitcoin miner** | Hub wallet + rack LCD `/m` rate fix; `prepare-publish` skips `*DevSpawn.cs`. Playtest: `addons/docs/BITCOINMINING_PLAYTEST.md`. Open: encryption UI, hub placement cap. |
-| **LPDXRP OG ranks** | VIP (OG) / EVIP (OG) at first addon launch — cosmetics only. `lifepunch/docs/LPDXRP_OG_SUPPORTERS.md` |
-| **lifepunchnet remote apps** | Discord etc. on Blue via RDP — `lifepunch/docs/REMOTE_APPS_LIFEPUNCHNET.md` |
-| **Pre-launch checkup** | Before any editor session: `Test-PreLaunchCheckup.ps1 -Fix` (VENGEANCE + Cornerman health/bloat, headless Tier-3 LM, dual MCP). Auto-runs from `Start-SboxDxrpEditor.ps1`. |
+| **Two repos** | Core `mragerlp/lifepunch` = law/WIP/quarantine. Publish `lifepunch-published` = export snapshot only. |
+| **Quarantine** | Active dev: `adminmenu` + `bitcoinmining`. All other idents frozen — `portfolio.json`, `QUARANTINE_REGISTER.md` |
+| **Publish now** | **`adminmenu` (`lifepunch.ulx`) only** — v1 ship-ready; LifePunch servers, not for resale |
+| **Bitcoin** | Ophion P0 from `BITCOIN_OPHION_CURSOR_BRIEF.md` — active dev, **not** publish export until visual sign-off |
+| **Ideation** | ChatGPT Step 1 → paste CURSOR BRIEF → Cursor VENGEANCE. `WORKFLOW_IDEATION_FIRST.md` · paste: `handoff/CHATGPT_STEP1_PASTE.txt` |
+| **Git checkpoints** | Agent recommends scope; owner approves. `GIT_CHECKPOINTS.md` · handoff: `handoff/JUNE_2026_FOUNDATION_CHECKPOINT.md` |
+| **Cornerman LM** | Headless `lms` on `:1234`. Dual MCP required — `Restore-CornermanDualStack.ps1` if off-Cursor. |
+| **Dual s&box MCP** | `sbox` + `sbox-editor` on both VENGEANCE and Cornerman when paired. `SBOX_EDITOR_MCP.md` |
+| **Pre-launch** | `Test-PreLaunchCheckup.ps1 -Fix` before editor work |
+
+**Handoff paste for any node:** `AGENT_SYNC_BROADCAST.txt` after `git pull --rebase`.
 
 **Recently landed (foundation is current as of this note):**
 - **Ops clarity checkpoint — June 2026.** Voice web uniform (shortcut tiers, consoles, Explorer
@@ -240,11 +251,8 @@ The `lifepunch-operating-context` rule is law here; this is the orientation. We 
   (STAFF-09). The merge-conflict-marker guard in the stop hook is **active** now.
 
 **Current / next build:**
-- **Bitcoin miner hub** — active ship lane (hub terminal, rack mining, hashd upgrades). See
-  `addons/docs/BITCOINMINING_HUB_ARCH.md`, `BITCOINMINING_UX_SPEC.md`, `BITCOINMINING_FINISH_RUNBOOK.md`.
-- The **in-game staff/admin menu** (server-agnostic, driven by `lifepunch/admin-panel/` roles +
-  `permissions/matrix.md`, LifePunch-owned IP, branded `lifepunch.ulx`) is **built and shipping its
-  v1** to the DXRP portal.
-- AK-47 weapon work remains **paused**.
-- For any new addon: propose feature set + architecture + permission mapping for sign-off **before**
-  building.
+- **Admin menu (`lifepunch.ulx`)** — **publish-ready v1**; export to `lifepunch-published`. Do not refactor without owner ask.
+- **Bitcoin miner hub** — Ophion visual + player UX pass (active dev, not publish yet). `BITCOIN_OPHION_CURSOR_BRIEF.md`.
+- **Hub pattern law** — `addons/docs/LIFEPUNCH_HUB_PATTERN.md` for all computer-heavy jobs.
+- AK-47 and all quarantined idents — **paused** until promote + ChatGPT brief.
+- New products: ChatGPT Step 1 brief **before** code.

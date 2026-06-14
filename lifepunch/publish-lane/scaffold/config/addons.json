@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "org": "lifepunch",
+  "brand": {
+    "houseMark": "LIFEPUNCH",
+    "publisher": "LIFEPUNCH",
+    "publisherAttribution": "Published by LIFEPUNCH",
+    "compatiblePlatform": "DXRP"
+  },
+  "ownership": "PROPRIETARY — © 2026 lifepunch.co. Server use only; no redistribution.",
+  "contentReferenceRoot": "addons/lifepunch",
+  "addons": []
+}

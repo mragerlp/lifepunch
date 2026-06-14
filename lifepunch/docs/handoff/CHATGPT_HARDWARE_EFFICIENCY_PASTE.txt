@@ -1,0 +1,46 @@
+LIFEPUNCH™ — CVL hardware & efficiency audit (Step 1 — no code)
+================================================================
+Bloodwave needs a structured audit of our three-machine web BEFORE more addon work tonight.
+
+YOUR JOB:
+1. Read the machine table below as ground truth (do not invent boxes).
+2. Answer each section with bullets — concise, actionable.
+3. Reply with ONLY the audit sections — no intro essay.
+4. No shippable C#. Suggest tools/scripts only as "candidate — integrator verifies".
+5. ChatGPT does NOT replace Tier-3 LM or fix LM Studio — focus on fluency, routing, gaps, tools.
+
+── CVL NODES (ground truth) ──
+
+| Node | Role | Key services |
+|------|------|----------------|
+| **VENGEANCE** (R) | Primary PC — Cursor Ultra, git integrate, s&box editor | MCP: `sbox` (Claude Bridge IPC), `sbox-editor` (chomnr :9090). Tier-1 Opus / Tier-2 Auto default. NO local LM Studio. |
+| **Cornerman** (G) | Home LAN — Tier-3 prep, mic, voice | LM Studio headless `:1234`, `cornerman-lm` MCP. Dual MCP: SMB bridge to VENGEANCE sbox + SSH tunnel sbox-editor. Read-only git clone; patch-handoff to VENGEANCE. |
+| **lifepunchnet** (B) | Hosted 24/7 — DXRP ops | Whisper :9000, watchdog :9101, session hub :9102. GitLab `lifepunch-rdp-server`. RDP for remote apps. |
+
+**Tiers:** T1 = Cursor Opus ($400 API pool) · T2 = Auto/Composer (separate pool) · T3 = Cornerman LM prep only (distill, classify, draft — never decides alone).
+
+**Workflow:** ChatGPT Step 1 → CURSOR BRIEF → Cursor VENGEANCE builds in core monorepo. Publish = separate export repo.
+
+── SECTION A — What is already strong? ──
+(List what we should NOT rip out.)
+
+── SECTION B — Bottlenecks & failure modes ──
+(Where do humans/agents lose time? Off-Cursor on Green? MCP timeouts? Context drag?)
+
+── SECTION C — Add / remove / defer ──
+| Action | Item | Why |
+(Add rows: keep · add · remove · defer)
+
+── SECTION D — Tool candidates (2026) ──
+(MCP-adjacent, briefing, monitoring, handoff — NOT "install another LLM on Vengeance")
+
+── SECTION E — Tonight priority order ──
+(Max 5 steps Bloodwave + Cursor should do after this audit.)
+
+── SECTION F — OPEN QUESTIONS (max 5) ──
+1.
+2.
+
+================================================================
+Bloodwave pastes your audit into Cursor VENGEANCE for integrator action.
+================================================================
