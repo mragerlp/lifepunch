@@ -4,6 +4,18 @@ Canon for agents, proprietary headers, and CVL. Read with `MACHINE_CAST.md`.
 
 ---
 
+## Why Bloodwave
+
+**Bloodwave** is the owner's visible community name — an homage to the original **Bloodwave**
+who led a **DarkRP (Garry's Mod)** community. Jared worked under that Bloodwave for nearly a decade;
+when he disappeared, the community lost its anchor. LifePunch is the owner's attempt to rebuild
+that spirit of serious development — not impersonation, but respect carried forward.
+
+**Mr. Rager / mrragerlp** remains how people know Jared through email, accounts, and legacy contact.
+**Bloodwave** is the public face for in-game, Steam, Discord, and new community work.
+
+---
+
 ## Three layers (do not mix)
 
 | Layer | Identifier | Use when |
