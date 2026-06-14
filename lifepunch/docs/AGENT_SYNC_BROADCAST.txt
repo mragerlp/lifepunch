@@ -25,8 +25,9 @@ STEP 2 — READ (in order)
   4. lifepunch/docs/AGENT_ONBOARDING.md       ← foundation (Tonight table = recovery)
   5. lifepunch/docs/GIT_CHECKPOINTS.md        ← commit/push/pull law
   6. lifepunch/docs/handoff/JUNE_2026_FOUNDATION_CHECKPOINT.md ← all-node pull brief
-  7. lifepunch/addons/docs/PACKAGE_NAMING_STANDARD.md ← public branch slugs (June 2026)
-  8. Your lane block in lifepunch/docs/AGENT_PROMPT.md (A/B/C/D)
+  7. lifepunch/docs/handoff/DESKTOP_ORG_CHECKPOINT_2026-06.md ← Bloodwave Desktop org (local; optional for CVL)
+  8. lifepunch/addons/docs/PACKAGE_NAMING_STANDARD.md ← public branch slugs (June 2026)
+  9. Your lane block in lifepunch/docs/AGENT_PROMPT.md (A/B/C/D)
 
 ------------------------------------------------------------------------
 STEP 3 — CONFIRM (reply in one short paragraph)

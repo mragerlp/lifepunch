@@ -34,7 +34,7 @@ function Copy-PublishItems {
                 -and $_.Extension -ne '.md' `
                 -and $RelativeParts -notcontains 'docs' `
                 -and $RelativeParts -notcontains '_dev' `
-                -and $_.Name -notmatch '(TestBots|DevGive|DevSpawn)\.cs$'
+                -and $_.Name -notmatch '(TestBots|DevGive|DevSpawn)'
         } |
         ForEach-Object {
             $Relative = $_.FullName.Substring($SourceRoot.Length).TrimStart('\', '/')

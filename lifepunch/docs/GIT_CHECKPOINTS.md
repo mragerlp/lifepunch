@@ -121,6 +121,7 @@ Publish tree = **export script output only** (`Export-LifepunchPublishLane.ps1`)
 3. Agent: "Checkpoint ready" → you: "commit to main"
 4. Optional: push (separate yes if you want control)
 5. When portal-ready: Export-LifepunchPublishLane.ps1 → publish repo → prepare-publish → portal
+6. **Desktop org (Bloodwave local):** `Sync-DesktopPublishFolder.ps1` → `%USERPROFILE%\Desktop\lifepunch\addons\publish\` — see `handoff/DESKTOP_ORG_CHECKPOINT_2026-06.md`
 ```
 
 Ideation and structure live in **core**. Clean customer tree lives in **publish**.
