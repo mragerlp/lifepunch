@@ -4,6 +4,7 @@ The structured map of the s&box editor, its cloud, and **how the AI studies it**
 being "all over the place." This is the anti-spaghetti index: when in doubt, check here first.
 
 Sourced from the official s&box docs + the live DXRP install, verified **2026-06-04**.
+**Engine patches:** `SBOX_ENGINE_PATCHES.md` + `Get-SboxEnginePatchStatus.ps1` — run every session.
 Status legend: ✅ verified · 🔎 needs a closer look · ⚠️ constraint/gotcha.
 
 ---

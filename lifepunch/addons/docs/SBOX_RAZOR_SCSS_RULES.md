@@ -4,6 +4,8 @@
 
 Log signal: `D:\Steam\steamapps\common\sbox\logs\sbox-dev.log` → `not valid with`.
 
+**Engine context:** `SBOX_ENGINE_PATCHES.md` — patch log + regression gate when s&box updates.
+
 ---
 
 ## Forbidden
@@ -33,7 +35,7 @@ Log signal: `D:\Steam\steamapps\common\sbox\logs\sbox-dev.log` → `not valid wi
 | Panel | Path |
 |-------|------|
 | Staff menu (ships) | `adminmenu/StaffMenu.razor.scss` — `.staffmenu` root |
-| Hacker rack PIN | `hackerjob/HackerServerRackMenu.razor.scss` — `.pin-stage` |
+| Hacker rack PIN | `hackerjob/HackerServerRackMenu.razor.scss` — `.pin-stage` (⚠️ migrate type selector to class root) |
 | Shared footer | `LifePunchUiFooter.razor.scss` |
 
 ## Validate before playtest

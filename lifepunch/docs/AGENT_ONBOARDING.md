@@ -69,8 +69,10 @@ partner commits on GitLab integrate back into GitHub. Full map:
   Canonical detail: `lifepunch/legal/TRADEMARK_AND_IP.md`. Never commit sensitive identifiers
   (EIN, domicile address) — those stay off the repo.
 - **lifepunch-rules-workflow** + **lifepunch-website-organization** — website/rules deploy.
+- **lifepunch-sbox-patches** — engine patch log, version check, UI/publish regression gate.
 
 Also read `lifepunch/docs/WORKSPACE_STRUCTURE.md` and `lifepunch/docs/GITLAB_ORGANIZATION.md`.
+**s&box engine:** `lifepunch/addons/docs/SBOX_ENGINE_PATCHES.md` — run `lifepunch/scripts/Get-SboxEnginePatchStatus.ps1` each session.
 **LPDXRP** = LifePunch DXRP (shorthand). **VIP (OG)** / **EVIP (OG)** = early donors at first addon launch — `lifepunch/docs/LPDXRP_OG_SUPPORTERS.md`.
 Don't fork parallel grounding/docs — update the existing single source of truth.
 
