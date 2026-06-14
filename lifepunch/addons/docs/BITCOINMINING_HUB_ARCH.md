@@ -60,9 +60,9 @@ Damage → metal hit SFX → smoke → explode (existing `GpuRackEntity` path).
 
 ## Scale (visual)
 
-**Intended in-world read:** Ophion hub = **small desktop control box** · GPU Rack = low horizontal unit · Large GPU Rack = **largest** farm stack.
+**Intended in-world read:** Ophion hub = **Raijintek Ophion gaming PC tower** (standing ITX build — visible GPU/PSU, hashd control station). Reference: [Sketchfab Gaming PC (Ophion)](https://sketchfab.com/3d-models/gaming-pc-765427bb0cc3495592f94e0ac468d48c). **GPU Rack** = standing open-frame crypto mining rig. Reference: [Sketchfab Crypto Farm / Mining Rig](https://sketchfab.com/3d-models/crypto-farm-mining-rig-049f02ffd15c41ca8cb8020feb43993f). **Large GPU Rack** = stacked farm unit (largest).
 
-Prefab roots stay `1,1,1` (`MODEL_SCALE_DOCTRINE.md`). If hub `BoxCollider` Z rivals the large rack but the mesh looks like a PC, the collider is stale — retune on flatgrass with bridge bounds, not prefab root fudge.
+Prefab roots stay `1,1,1` (`MODEL_SCALE_DOCTRINE.md`). Tune `import_scale` in `bitcoin-miner.vmdl` until mesh bounds match a ~15″ tall tower on flatgrass — not a shrunken desk puck.
 
 ## PvP upgrades (miner vs hacker)
 
@@ -75,8 +75,7 @@ Host resolves: `attackerPuzzleSeconds = base + hackerPuzzleBonus − minerHarden
 
 ## Deprecated
 
-- `bitcoin-terminal` prefab — menu moves to hub
-- Separate CRT as hashd control station
+- Using the hub menu as a typed command console (rig0 input moved to monitor only).
 
 ---
 

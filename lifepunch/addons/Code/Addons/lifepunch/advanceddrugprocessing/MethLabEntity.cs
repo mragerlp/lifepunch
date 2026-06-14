@@ -10,6 +10,7 @@
 
 using System;
 using Sandbox;
+using LifePunch.DXRP.Addons;
 #if !LIFEPUNCH_LOCAL
 using Dxura.RP.Game;
 #endif
@@ -120,7 +121,7 @@ public sealed class MethLabEntity : Component, Component.IPressable
 		Log.Warning( $"MethLab: batch failed — {reason}" );
 	}
 
-	public bool CanPress( IPressable.Event e ) => true;
+	public bool CanPress( IPressable.Event e ) => LifePunchMenuInteractGate.CanPressMenu( GameObject );
 
 	public bool Press( IPressable.Event e )
 	{
@@ -134,7 +135,7 @@ public sealed class MethLabEntity : Component, Component.IPressable
 	private void DispatchPressHost()
 	{
 #if !LIFEPUNCH_LOCAL
-		if ( !GameUtils.HasPermission( Rpc.Caller, GameObject ) )
+		if ( !LifePunchMenuInteractGate.IsCallerAllowed( Rpc.Caller, GameObject ) )
 			return;
 
 		var player = GameUtils.GetPlayerByConnectionId( Rpc.CallerId );
@@ -143,6 +144,9 @@ public sealed class MethLabEntity : Component, Component.IPressable
 
 		HandlePressHost( player.GameObject );
 #else
+		if ( !LifePunchMenuInteractGate.IsCallerAllowed( null, GameObject ) )
+			return;
+
 		HandlePressHost( null );
 #endif
 	}

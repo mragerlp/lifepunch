@@ -25,8 +25,8 @@
 |-------|----------------|-------|
 | `hacker-terminal` | **1.0** | Correct at baseline — do not shrink |
 | `advanced-hacker-terminal` | **1.0** | Same mesh baseline |
-| `gpu-rack` | **1.0** | Same baseline as hacker terminal — prefab **1,1,1** |
-| `bitcoin-miner` (Ophion hub) | **0.52** | Jun 2026 pass — 2× prior desk read; prefab **1,1,1** · collider **24×18×13** |
+| `gpu-rack` | **0.465** | Crypto Farm mining rig · pitch 90° stand-up · ~25×20×36 @ prefab 1,1,1 |
+| `bitcoin-miner` (Ophion hub) | **0.385** | Translation **Z 13.3** · rotation **0** · align **None** @ prefab **1,1,1** · re-verify flatgrass bounds vs collider **10×8×15** |
 
 **Do not** auto-shrink props that already look right @ `import_scale` 1.0 — collider numbers may be stale.
 

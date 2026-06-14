@@ -61,11 +61,5 @@ public static class BitcoinMiningAddon
 	/// <summary>Seconds between server-authoritative BTC payout ticks while mining (LifePunch economy tuning).</summary>
 	public const float MiningPayoutIntervalSeconds = 90f;
 
-	public const string HumSoundPath = "addons/lifepunch/bitcoinmining/sounds/bitcoinminer/server-hum.sound";
 	public const string KeyboardSoundPath = "addons/lifepunch/bitcoinmining/sounds/bitcoinminer/keyboard.sound";
-	public const string GlitchSoundPath = "addons/lifepunch/bitcoinmining/sounds/bitcoinminer/glitch.sound";
-	public const string ErrorSoundPath = "addons/lifepunch/bitcoinmining/sounds/bitcoinminer/error.sound";
-	public const string HubStartupSoundPath = "addons/lifepunch/bitcoinmining/sounds/bitcoinminer/hub-startup.sound";
-	public const string HubFanLoopSoundPath = "addons/lifepunch/bitcoinmining/sounds/bitcoinminer/hub-fan-loop.sound";
-	public const string HubFanDownSoundPath = "addons/lifepunch/bitcoinmining/sounds/bitcoinminer/hub-fan-down.sound";
 }

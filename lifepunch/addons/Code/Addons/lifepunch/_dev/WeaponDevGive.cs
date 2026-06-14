@@ -12,6 +12,7 @@
 using System;
 using System.Linq;
 using Dxura.RP.Game;
+using LifePunch.DXRP.Addons.StaffMenu;
 using Ak47Weapon = LifePunch.DXRP.Addons.AK47.AK47;
 using DeagleWeapon = LifePunch.DXRP.Addons.Deagle.Deagle;
 using Mp9Weapon = LifePunch.DXRP.Addons.Mp9.Mp9;

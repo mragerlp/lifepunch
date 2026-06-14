@@ -32,8 +32,8 @@ internal static class VisiblePocketDropHost
 			return;
 		}
 
-		var pockets = PocketSystemAccessor.GetPockets();
-		if ( pockets == null || !pockets.TryGetValue( player.SteamId, out var pocket ) || pocket.Count == 0 )
+		var pocket = PocketSystem.Instance.GetOrCreatePocket( player.SteamId );
+		if ( pocket.Count == 0 )
 		{
 			player.Error( "#notify.pocket.drop.nothing" );
 			return;
@@ -75,7 +75,7 @@ internal static class VisiblePocketDropHost
 
 	private static void ResetItemDecay( GameObject item )
 	{
-		var timedDestroy = item.GetComponent<TimedDestroy>( true );
+		var timedDestroy = item.GetComponent<TimedDestroyComponent>( true );
 		if ( timedDestroy.IsValid() )
 		{
 			timedDestroy.ResetTimer();

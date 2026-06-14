@@ -63,6 +63,6 @@ START → rainbow fan LEDs ~8s → STOP off. See `BITCOINMINING_FINISH_RUNBOOK.m
 |-----|--------|
 | Use menu | Right-click Use/Drop per-item menu — P2b |
 | Bank phase 3 | Inventory Bank prop + protected slots |
-| DXRP API | `PocketSystemAccessor` reflection — swap if Dxura exposes public API |
+| DXRP API | `PocketSystem.VisiblePocket.Api.cs` partial on `PocketSystem` (requires `partial` in DXRP core) |
 
 Discovery: `addons/docs/reference/DXRP_POCKET_DISCOVERY.md`.

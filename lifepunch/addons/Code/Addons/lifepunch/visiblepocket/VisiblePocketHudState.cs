@@ -20,6 +20,24 @@ public static class VisiblePocketHudState
 	public static IReadOnlyList<string> Labels { get; private set; } = [];
 	public static int Revision { get; private set; }
 
+	/// <summary>Reload + Hands toggles the pocket inventory panel.</summary>
+	public static bool IsOpen { get; private set; }
+
+	public static void ToggleOpen()
+	{
+		IsOpen = !IsOpen;
+		Revision++;
+	}
+
+	public static void SetOpen( bool open )
+	{
+		if ( IsOpen == open )
+			return;
+
+		IsOpen = open;
+		Revision++;
+	}
+
 	public static void Apply( int maxSlots, int count, IReadOnlyList<string> labels )
 	{
 		MaxSlots = maxSlots;

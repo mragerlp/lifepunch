@@ -24,7 +24,7 @@ HackerServerRackMenu {
     pointer-events: all;
     position: absolute;
     bottom: 48px;
-    left: 24px;
+    right: 24px;
     width: 780px;
     height: 520px;
     background-color: rgba(10, 15, 10, 0.98);
@@ -32,6 +32,21 @@ HackerServerRackMenu {
     display: flex;
     flex-direction: column;
     overflow: hidden;
+
+    &.compact {
+        width: 680px;
+        height: 400px;
+    }
+
+    &.expanded {
+        width: 960px;
+        height: 620px;
+    }
+
+    &.pin-gate {
+        border-color: $primary-dim;
+        box-shadow: 0 0 28px rgba(0, 255, 127, 0.1), 0 12px 40px rgba(0, 0, 0, 0.55);
+    }
 
     .scanlines {
         position: absolute;
@@ -48,19 +63,12 @@ HackerServerRackMenu {
         display: flex;
         align-items: center;
         gap: 8px;
+        flex-shrink: 0;
 
         .title-mark, .title-text { color: $primary; font-family: $main-font; font-weight: bold; }
         .title-text { letter-spacing: 2px; text-transform: uppercase; font-size: $text-sm; }
         .title-ver { color: $body-dim; font-family: $main-font; font-size: 11px; }
         .title-spacer { flex-grow: 1; }
-
-        .title-publisher {
-            font-family: $main-font;
-            font-size: 10px;
-            color: $primary-dim;
-            letter-spacing: 1px;
-            opacity: 0.85;
-        }
 
         .close-x {
             background-color: rgba(228, 0, 43, 0.12);
@@ -69,6 +77,96 @@ HackerServerRackMenu {
             font-family: $main-font;
             font-size: 11px;
             padding: 4px 12px;
+            cursor: pointer;
+        }
+
+        .icon-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 34px;
+            height: 34px;
+            border-radius: 0;
+            border: 1px solid $border;
+            color: $body-dim;
+            background-color: transparent;
+            cursor: pointer;
+
+            .material-icons {
+                line-height: 1;
+            }
+
+            &:hover {
+                background-color: rgba(0, 255, 127, 0.12);
+                color: $primary;
+            }
+
+            &.active {
+                background-color: rgba(0, 255, 127, 0.18);
+                color: $primary;
+                border-color: $primary-dim;
+            }
+
+            &.close {
+                border-color: rgba(228, 0, 43, 0.45);
+
+                .material-icons {
+                    font-size: 26px;
+                }
+
+                &:hover {
+                    background-color: rgba(228, 0, 43, 0.35);
+                    color: #ffffff;
+                    border-color: $error;
+                }
+            }
+
+            &.cog .material-icons {
+                font-size: 24px;
+            }
+        }
+    }
+
+    &.pin-gate .title-bar {
+        background-color: #081208;
+        border-bottom-color: $primary-dim;
+    }
+
+    .rack-settings {
+        position: absolute;
+        top: 46px;
+        right: 10px;
+        z-index: 20;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        min-width: 140px;
+        padding: 8px;
+        background-color: #060a06;
+        border: 1px solid $primary-dim;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+
+        .rack-settings-head {
+            font-family: $main-font;
+            font-size: 9px;
+            color: $primary-dim;
+            letter-spacing: 1.5px;
+            font-weight: bold;
+        }
+
+        .rack-settings-opt {
+            border: 1px solid $border;
+            background-color: rgba(0, 255, 127, 0.06);
+            color: $body;
+            font-family: $main-font;
+            font-size: 10px;
+            padding: 6px 8px;
+            text-align: left;
+
+            &.active {
+                border-color: $primary;
+                color: $primary;
+            }
         }
     }
 
@@ -76,6 +174,177 @@ HackerServerRackMenu {
         flex: 1;
         display: flex;
         min-height: 0;
+    }
+
+    .pin-stage {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        background-color: rgba(6, 10, 6, 0.92);
+    }
+
+    .pin-lock-cta,
+    .pin-lock-badge {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 20px 28px;
+        border: 2px solid $primary-dim;
+        background-color: rgba(8, 13, 8, 0.96);
+        cursor: pointer;
+
+        .pin-lock-mark {
+            font-family: $main-font;
+            font-size: 18px;
+            color: $primary;
+        }
+
+        .pin-lock-text {
+            font-family: $main-font;
+            font-size: 12px;
+            font-weight: bold;
+            color: $primary;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        .pin-lock-hint {
+            font-family: $main-font;
+            font-size: 10px;
+            color: $body-dim;
+            letter-spacing: 1px;
+        }
+    }
+
+    .pin-lock-static {
+        pointer-events: none;
+        border-color: $error;
+        cursor: default;
+
+        .pin-lock-mark,
+        .pin-lock-text {
+            color: $error;
+        }
+    }
+
+    .pin-entry-panel {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        min-width: 280px;
+        max-width: 360px;
+        padding: 20px 24px 16px;
+        border: 2px solid $primary-dim;
+        background-color: rgba(8, 13, 8, 0.96);
+        box-shadow: 0 0 32px rgba(0, 255, 127, 0.12);
+
+        .pin-entry-header {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .pin-entry-mark {
+            font-family: $main-font;
+            font-size: 14px;
+            color: $primary;
+        }
+
+        .pin-entry-title {
+            font-family: $main-font;
+            font-size: 13px;
+            font-weight: bold;
+            color: $primary;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .pin-entry-sub {
+            font-family: $main-font;
+            font-size: 11px;
+            color: $body-dim;
+            text-align: center;
+            line-height: 1.4;
+            max-width: 300px;
+        }
+
+        .pin-entry-dots {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            margin: 6px 0 4px;
+        }
+
+        .pin-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            border: 2px solid $primary-dim;
+            background-color: transparent;
+
+            &.filled {
+                background-color: $primary;
+                border-color: $primary;
+                box-shadow: 0 0 10px rgba(0, 255, 127, 0.45);
+            }
+        }
+
+        .pin-entry-error {
+            font-family: $main-font;
+            font-size: 11px;
+            color: $error;
+            text-align: center;
+            min-height: 16px;
+        }
+
+        .pin-numpad {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            width: 240px;
+            margin-top: 4px;
+        }
+
+        .pin-key {
+            width: 68px;
+            height: 44px;
+            border: 1px solid $primary-dim;
+            background-color: rgba(0, 255, 127, 0.08);
+            color: $primary;
+            font-family: $main-font;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+
+            &.pin-key-fn {
+                font-size: 11px;
+                letter-spacing: 0.5px;
+            }
+        }
+
+        .pin-entry-back {
+            border: none;
+            background-color: transparent;
+            color: $body-dim;
+            font-family: $main-font;
+            font-size: 10px;
+            letter-spacing: 1px;
+            cursor: pointer;
+            margin-top: 4px;
+        }
     }
 
     .telemetry-rail {
@@ -86,6 +355,7 @@ HackerServerRackMenu {
         display: flex;
         flex-direction: column;
         gap: 8px;
+        flex-shrink: 0;
 
         .rail-header, .rail-nav-header {
             color: $primary-dim;
@@ -105,9 +375,13 @@ HackerServerRackMenu {
 
         .rail-actions {
             display: flex;
-            flex-direction: column;
-            gap: 6px;
-            margin-top: 8px;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            align-items: stretch;
+            justify-content: center;
+            gap: 4px;
+            margin-top: 4px;
+            width: 100%;
         }
 
         .rail-btn, .nav-btn {
@@ -118,6 +392,38 @@ HackerServerRackMenu {
             font-size: 11px;
             padding: 6px 8px;
             text-transform: uppercase;
+            cursor: pointer;
+        }
+
+        .rail-btn.power-on,
+        .rail-btn.power-off {
+            flex: 1 1 0;
+            min-width: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4px 2px;
+            font-size: 8px;
+            letter-spacing: 0.2px;
+            line-height: 1.1;
+            white-space: nowrap;
+            text-align: center;
+        }
+
+        .rail-btn.power-on {
+            background-color: rgba(0, 255, 127, 0.12);
+            border-color: $primary;
+            color: $primary;
+
+            &.active {
+                background-color: rgba(0, 255, 127, 0.22);
+            }
+        }
+
+        .rail-btn.power-off {
+            background-color: rgba(228, 0, 43, 0.12);
+            border-color: $error;
+            color: $error;
         }
 
         .rail-btn.active, .nav-btn.active {
@@ -154,6 +460,55 @@ HackerServerRackMenu {
     }
 
     .control-line.warn { color: $error; }
+
+    .control-section {
+        color: $primary-dim;
+        font-family: $main-font;
+        font-size: 10px;
+        letter-spacing: 1px;
+        margin-top: 10px;
+        margin-bottom: 4px;
+    }
+
+    .control-line.dim { color: $body-dim; }
+
+    .link-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+        border: 1px solid $border;
+        padding: 8px 10px;
+        margin-bottom: 6px;
+    }
+
+    .link-label {
+        color: $body;
+        font-family: $main-font;
+        font-size: 12px;
+        flex: 1;
+    }
+
+    .link-btn {
+        border: 1px solid $primary;
+        color: $primary;
+        background-color: rgba(0, 255, 127, 0.08);
+        font-family: $main-font;
+        font-size: 10px;
+        padding: 4px 10px;
+        white-space: nowrap;
+
+        &.unlink {
+            border-color: $error;
+            color: $error;
+            background-color: rgba(228, 0, 43, 0.08);
+        }
+
+        &.unlink-all {
+            margin-top: 4px;
+            margin-bottom: 8px;
+        }
+    }
 
     .upgrade-list { display: flex; flex-direction: column; gap: 10px; }
 
@@ -216,6 +571,7 @@ HackerServerRackMenu {
         flex-shrink: 0;
         display: flex;
         flex-direction: row;
+        justify-content: space-between;
         align-items: center;
         gap: 10px;
         padding: 5px 12px;
@@ -230,14 +586,8 @@ HackerServerRackMenu {
             font-weight: bold;
         }
 
-        .lp-pub {
-            color: $body-dim;
-        }
-
         .lp-legal {
             color: $body-dim;
-            opacity: 0.75;
-            margin-left: auto;
             text-align: right;
         }
     }

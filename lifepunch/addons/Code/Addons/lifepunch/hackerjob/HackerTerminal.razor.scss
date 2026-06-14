@@ -48,7 +48,7 @@ HackerTerminal {
     .ops-window {
         position: absolute;
         bottom: 48px;
-        left: 24px;
+        right: 24px;
         width: 960px;
         height: 640px;
         background-color: rgba(10, 15, 10, 0.98);
@@ -114,19 +114,14 @@ HackerTerminal {
         right: 0;
         bottom: 0;
         pointer-events: none;
-        opacity: 0.04;
-        background: repeating-linear-gradient(
-            0deg,
-            transparent,
-            transparent 2px,
-            rgba(255, 255, 255, 0.15) 2px,
-            rgba(255, 255, 255, 0.15) 4px
-        );
+        // s&box UI does not support CSS gradients on background-image (log spam on open).
+        opacity: 0.03;
+        background-color: #000000;
         z-index: 10;
     }
 
     .title-bar {
-        background: linear-gradient(180deg, #0c120c 0%, $bg 100%);
+        background-color: #0c120c;
         padding: 8px 14px;
         border-bottom: 2px solid $border-standard;
         flex-shrink: 0;
@@ -574,10 +569,30 @@ HackerTerminal {
         }
     }
 
+    &.tier-standard {
+        .lp-url-copy {
+            color: rgba(120, 200, 120, 0.55);
+
+            &:hover, &.copied {
+                color: #7fd47f;
+            }
+        }
+    }
+
+    &.tier-advanced {
+        .lp-url-copy {
+            color: rgba(200, 160, 255, 0.55);
+
+            &:hover, &.copied {
+                color: #c8a0ff;
+            }
+        }
+    }
+
     &.tier-standard .lp-source-footer {
         border-top-color: $border-standard;
         .lp-mark { color: $primary-standard; }
-        .lp-pub, .lp-legal { color: $body-standard-dim; }
+        .lp-pub, .lp-legal { color: $body-dim; }
         .title-publisher { color: $primary-standard-dim; }
     }
 

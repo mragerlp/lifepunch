@@ -89,6 +89,7 @@ $bloatHints = @(
     @{ Name = 'Chrome'; Match = '(?i)^(chrome|msedge)$'; Why = 'Browser RAM on Green competes with Tier-3 VRAM' }
     @{ Name = 'Spotify'; Match = '(?i)^Spotify$'; Why = 'Optional -  quit if distill loads are slow' }
     @{ Name = 'Steam'; Match = '(?i)^steam'; Why = 'OK if idle; quit if not needed on Green' }
+    @{ Name = 'Lemonade'; Match = '(?i)^Lemonade'; Why = 'Deprecated — Remove-CornermanLemonade.ps1; use LM Studio :1234 only' }
 )
 
 $bloat = [System.Collections.Generic.List[string]]::new()

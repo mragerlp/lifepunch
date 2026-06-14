@@ -89,6 +89,14 @@ if ($sharedCodeFiles.Count -gt 0) {
     }
 }
 
+$devSrc = Join-Path $repoCodeRoot '_dev'
+if (Test-Path -LiteralPath $devSrc) {
+    Invoke-Mirror `
+        -From $devSrc `
+        -To   (Join-Path $dxrpCodeRoot '_dev') `
+        -Label 'Code/_dev'
+}
+
 foreach ($ident in Get-AddonIdents) {
     Write-Host "Addon: $ident" -ForegroundColor Cyan
     $assetsSrc = Join-Path $repoAssetsRoot $ident

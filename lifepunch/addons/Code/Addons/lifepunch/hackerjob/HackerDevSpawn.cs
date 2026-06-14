@@ -77,6 +77,39 @@ public static class HackerDevSpawn
 	[ConCmd( "lp_spawn_server_rack" )]
 	public static void SpawnServerRack() => SpawnServerRackEntity( HackerJob.ServerRackWorldPrefabPath, powered: false );
 
+	/// <summary>Remove LifePunch dev-spawned hackerjob world entities in the active scene.</summary>
+	[ConCmd( "lp_clear_hackerjob_spawns" )]
+	public static void ClearHackerJobSpawns()
+	{
+		var scene = Game.ActiveScene;
+		if ( scene is null )
+		{
+			Log.Warning( "lp_clear_hackerjob_spawns: no active scene." );
+			return;
+		}
+
+		var destroyed = 0;
+		foreach ( var rack in scene.GetAllComponents<HackerServerRackEntity>().ToArray() )
+		{
+			if ( rack.IsValid() && rack.GameObject.IsValid() )
+			{
+				rack.GameObject.Destroy();
+				destroyed++;
+			}
+		}
+
+		foreach ( var term in scene.GetAllComponents<HackerTerminalEntity>().ToArray() )
+		{
+			if ( term.IsValid() && term.GameObject.IsValid() )
+			{
+				term.GameObject.Destroy();
+				destroyed++;
+			}
+		}
+
+		Log.Info( $"lp_clear_hackerjob_spawns: removed {destroyed} object(s)." );
+	}
+
 	[ConCmd( "lp_spawn_advanced_server_rack" )]
 	public static void SpawnAdvancedServerRack() =>
 		SpawnServerRackEntity( HackerJob.AdvancedServerRackWorldPrefabPath, powered: false );

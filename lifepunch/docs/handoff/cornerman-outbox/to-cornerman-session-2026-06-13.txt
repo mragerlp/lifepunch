@@ -1,0 +1,78 @@
+CORNERMAN SESSION 2026-06-13 — READ FIRST
+
+
+
+Primary: lifepunch/docs/handoff/cornerman-outbox/CORNERMAN_SESSION_2026-06-13.md
+
+Idle doctrine: lifepunch/docs/CORNERMAN_IDLE_FOLDER.md
+
+
+
+HARD DEADLINES (EST):
+
+  3:50 PM — STOP coding. Export to idle (mandatory). NO git push to main.
+
+  4:00 PM — SHUTDOWN (owner kills box)
+
+
+
+3:50 idle export (Green):
+
+  powershell -File C:\lifepunch\cornerman\inbox\Export-CornermanIdle.ps1 -SessionLabel menu-ui-2026-06-13 -Summary "P0 menu SCSS + PIN; see SESSION_SUMMARY.md"
+
+
+
+P0 (first 90m): Menu UI — empty GATEKEEPER = SCSS compile failure
+
+  Validate-SboxRazorScss.ps1 → fix all → sync DXRP → playtest flatgrass + lp_spawn_bitcoin_miner_hub
+
+
+
+P1 addon code (if Cursor + editor on VENGEANCE):
+
+  A1 hackerjob HackerTerminal.razor.scss — remove gradients (validator flags 3 lines)
+
+  A2 bitcoinmining BITCOINMINING_PLAYTEST.md — SCSS triage table
+
+  A3 bitcoinmining protection grep
+
+  A4 adminmenu StaffMenuTestBots namespace (STAFF-09)
+
+  A5 lp_hashd_pin_preview smoke log
+
+  A6 visiblepocket dev ConCmd audit (POCKET-01)
+
+
+
+P2 distill (Green Qwen — outbox only, no eyes on game):
+
+  D1 bitcoin sound shortlist
+
+  D2 hacker terminal flow notes
+
+  D3 MENU_SCSS_AUDIT.txt + MENU_PLAYTEST_RESULT.txt
+
+  D4 portal blurb draft
+
+  D5 cyber encryption matrix
+
+
+
+IGNORE: CS8669/CS8603 nullable warnings.
+
+
+
+VENGEANCE is offline — all ship candidates go to C:\lifepunch\cornerman\idle\sessions\ via export.
+
+Jared pulls with Pull-CornermanIdle.ps1 when back.
+
+
+
+SCSS law: addons/docs/SBOX_RAZOR_SCSS_RULES.md
+
+Validator: addons/scripts/Validate-SboxRazorScss.ps1
+
+
+
+Owner must push main + run Push-CornermanSession20260613.ps1 before you start if inbox is stale.
+

@@ -10,7 +10,7 @@
 #>
 [CmdletBinding()]
 param(
-    [string] $SourceRoot = "$env:USERPROFILE\Downloads\bitcoinminer",
+    [string] $SourceRoot = "$env:USERPROFILE\Downloads\gaming-pc",
     [string] $ArchiveRoot = 'C:\lifepunch\reference-intake\bitcoinmining\bitcoin-miner-hub',
     [switch] $WhatIf
 )

@@ -17,7 +17,8 @@ using Sandbox;
 namespace LifePunch.DXRP.Addons.VisiblePocket;
 
 /// <summary>
-/// Routes hands attack2 pocket input through LifePunch policy pickup before stock DXRP handler runs.
+/// Hands replication layer on DXRP <see cref="HandsEquipment"/>:
+/// Reload + Hands → pocket inventory UI; attack2 → policy-aware world pickup/drop.
 /// </summary>
 internal sealed class VisiblePocketInputBridge : Component
 {
@@ -34,6 +35,21 @@ internal sealed class VisiblePocketInputBridge : Component
 			return;
 		}
 
+		if ( !IsHandsEquipped( player ) )
+		{
+			if ( VisiblePocketHudState.IsOpen )
+				VisiblePocketHudState.SetOpen( false );
+
+			return;
+		}
+
+		if ( Input.Pressed( "reload" ) )
+		{
+			VisiblePocketHudState.ToggleOpen();
+			Input.Clear( "reload" );
+			return;
+		}
+
 		if ( !Input.Pressed( "attack2" ) )
 		{
 			return;
@@ -45,8 +61,9 @@ internal sealed class VisiblePocketInputBridge : Component
 		}
 
 		var trace = Scene.Trace.Ray( player.AimRay, Config.Current.Game.ReachDistance )
+			.UseHitboxes()
 			.IgnoreGameObjectHierarchy( player.GameObject )
-			.WithTag( Constants.EntityTag )
+			.WithoutTags( Constants.TraceIgnoreTags )
 			.Run();
 
 		if ( !trace.Hit || !trace.GameObject.IsValid() )
@@ -76,6 +93,12 @@ internal sealed class VisiblePocketInputBridge : Component
 
 		Input.Clear( "attack2" );
 		Input.Clear( "Pocket" );
+	}
+
+	private static bool IsHandsEquipped( Player player )
+	{
+		var equipment = player.CurrentEquipment;
+		return equipment.IsValid() && equipment.Identifier == "hands";
 	}
 }
 #endif

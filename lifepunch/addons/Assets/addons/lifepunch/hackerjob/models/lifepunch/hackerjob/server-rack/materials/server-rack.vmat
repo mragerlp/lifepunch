@@ -1,0 +1,18 @@
+// LifePunch hacker server rack — ServerMaterial PBR
+
+Layer0
+{
+	shader "shaders/complex.shader"
+
+	F_METALNESS_TEXTURE 1
+	F_SPECULAR 1
+
+	TextureColor "addons/lifepunch/hackerjob/models/lifepunch/hackerjob/server-rack/source/textures/ServerMaterial_albedo.jpg"
+	TextureNormal "addons/lifepunch/hackerjob/models/lifepunch/hackerjob/server-rack/source/textures/ServerMaterial_normal.png"
+	TextureRoughness "addons/lifepunch/hackerjob/models/lifepunch/hackerjob/server-rack/source/textures/ServerMaterial_roughness.jpg"
+	TextureMetalness "addons/lifepunch/hackerjob/models/lifepunch/hackerjob/server-rack/source/textures/ServerMaterial_metallic.jpg"
+	TextureAmbientOcclusion "addons/lifepunch/hackerjob/models/lifepunch/hackerjob/server-rack/source/textures/ServerMaterial_AO.jpg"
+
+	g_flModelTintAmount "1.000"
+	g_vColorTint "[1.000000 1.000000 1.000000 0.000000]"
+}

@@ -69,8 +69,6 @@ public partial class GpuRackEntity : BaseEntity, IGameEvents, IAreaDamageReceive
 	[Property, Group( "Effects" )] public GameObject SmokeEffect { get; set; }
 	[Property, Group( "Effects" ), Range( 2, 6 )] public float MinSmokeTime { get; set; } = 2.5f;
 	[Property, Group( "Effects" ), Range( 2, 6 )] public float MaxSmokeTime { get; set; } = 2.5f;
-	[Property, Group( "Effects" )] private SoundEvent ErrorBeepSound { get; set; }
-	[Property, Group( "Effects" )] private SoundEvent GlitchSound { get; set; }
 
 	private GameObject _activeSmoke;
 	private bool _isExploding;
@@ -119,10 +117,7 @@ public partial class GpuRackEntity : BaseEntity, IGameEvents, IAreaDamageReceive
 
 	private TimeSince _lastMiningTick = 0f;
 	private bool _occluded;
-	private SoundHandle _humHandle;
-	private bool _humPlaying;
 	private float _fanSpeed;
-	private float _humVolume;
 	private string _cachedScreenText;
 	private float _lastScreenRefresh;
 	private float _lastLedActive = -1f;
@@ -130,8 +125,6 @@ public partial class GpuRackEntity : BaseEntity, IGameEvents, IAreaDamageReceive
 	private const float ScreenRefreshInterval = 0.2f;
 	private const float FanMaxSpeed = 1200f;
 	private const float FanRampSeconds = 8f;
-	private const float HumMaxVolume = 1f;
-	private const float HumRampSeconds = 8f;
 
 	// ----------------------------
 	// INITIALIZATION
@@ -178,12 +171,7 @@ public partial class GpuRackEntity : BaseEntity, IGameEvents, IAreaDamageReceive
 	private void HostTick()
 	{
 		if ( GameObject.Tags.Has( PocketTag ) )
-		{
-			if ( _humPlaying )
-				BroadcastHumState( false );
-
 			return;
-		}
 
 		if ( !IsMining )
 			return;
@@ -229,23 +217,6 @@ public partial class GpuRackEntity : BaseEntity, IGameEvents, IAreaDamageReceive
 			HostTick();
 #endif
 
-		try
-		{
-			if ( _humPlaying )
-			{
-				if ( GameObject.Tags.Has( PocketTag ) )
-				{
-					_humHandle.Stop();
-					_humPlaying = false;
-				}
-				else
-				{
-					_humHandle.Position = WorldPosition;
-				}
-			}
-		}
-		catch { }
-
 		if ( _occluded )
 			return;
 
@@ -258,7 +229,6 @@ public partial class GpuRackEntity : BaseEntity, IGameEvents, IAreaDamageReceive
 		UpdateFanRamp();
 		UpdateRgbFanLeds();
 		SpinFan();
-		UpdateHumVolume();
 	}
 
 	/// <summary>Called by <see cref="BitcoinTerminalProp"/> when the LCD lives on a separate entity.</summary>
@@ -394,27 +364,6 @@ public partial class GpuRackEntity : BaseEntity, IGameEvents, IAreaDamageReceive
 			_fanSpeed = MathF.Max( _fanSpeed - fanStep, fanTarget );
 	}
 
-	private void UpdateHumVolume()
-	{
-		var humTarget = _humPlaying ? HumMaxVolume : 0f;
-		var humStep = ( HumMaxVolume / HumRampSeconds ) * Time.Delta;
-
-		if ( _humVolume < humTarget )
-		{
-			_humVolume = MathF.Min( _humVolume + humStep, humTarget );
-		}
-		else if ( _humVolume > humTarget )
-		{
-			_humVolume = MathF.Max( _humVolume - humStep, 0f );
-			try { _humHandle.Volume = _humVolume; } catch { }
-			if ( _humVolume <= 0f )
-				try { _humHandle.Stop(); } catch { }
-		}
-
-		if ( _humPlaying )
-			try { _humHandle.Volume = _humVolume; } catch { }
-	}
-
 	// ----------------------------
 	// MINING TOGGLE
 	// ----------------------------
@@ -445,29 +394,6 @@ public partial class GpuRackEntity : BaseEntity, IGameEvents, IAreaDamageReceive
 	private void BroadcastMiningCosmetics( bool enabled )
 	{
 		ApplyRackPowerAnim( enabled );
-		BroadcastHumState( enabled );
-	}
-
-	[Rpc.Broadcast]
-	private void BroadcastHumState( bool enabled )
-	{
-		if ( enabled )
-		{
-			_humHandle = Sound.Play( BitcoinMiningAddon.HumSoundPath, WorldPosition );
-			if ( _humHandle is null )
-			{
-				_humPlaying = false;
-				return;
-			}
-
-			_humHandle.Volume = 0f;
-			_humVolume = 0f;
-			_humPlaying = true;
-		}
-		else
-		{
-			_humPlaying = false;
-		}
 	}
 
 	// ----------------------------
@@ -534,32 +460,6 @@ public partial class GpuRackEntity : BaseEntity, IGameEvents, IAreaDamageReceive
 	// DESTRUCTION
 	// ----------------------------
 
-	protected override void OnDisabled()
-	{
-		base.OnDisabled();
-		try { _humHandle.Stop(); } catch { }
-		_humPlaying = false;
-	}
-
-	protected override void OnEnabled()
-	{
-		base.OnEnabled();
-
-		if ( IsMining )
-		{
-			try
-			{
-				_humHandle = Sound.Play( BitcoinMiningAddon.HumSoundPath, WorldPosition );
-				if ( _humHandle is not null )
-				{
-					_humHandle.Volume = 0.05f;
-					_humPlaying = true;
-				}
-			}
-			catch { }
-		}
-	}
-
 #if LIFEPUNCH_LOCAL
 	protected override void OnDestroy() => HandleDestroyed();
 #else
@@ -584,7 +484,6 @@ public partial class GpuRackEntity : BaseEntity, IGameEvents, IAreaDamageReceive
 	{
 		IsMining = false;
 		MiningProgress = 0f;
-		BroadcastHumState( false );
 
 		if ( SmokeEffect.IsValid() )
 		{
@@ -596,31 +495,11 @@ public partial class GpuRackEntity : BaseEntity, IGameEvents, IAreaDamageReceive
 		var smokeTime = Random.Shared.Float( MinSmokeTime, MaxSmokeTime );
 		var elapsed = 0f;
 		var interval = 0.75f;
-		var stopSoundsAt = smokeTime - 3f;
 
 		while ( elapsed < smokeTime )
 		{
 			if ( !GameObject.IsValid() )
 				return;
-
-			if ( elapsed < stopSoundsAt )
-			{
-#if LIFEPUNCH_LOCAL
-				if ( ErrorBeepSound != null )
-					Sound.Play( ErrorBeepSound, WorldPosition );
-				else
-					Sound.Play( BitcoinMiningAddon.ErrorSoundPath, WorldPosition );
-#else
-				if ( ErrorBeepSound != null )
-					ErrorBeepSound.Broadcast( WorldPosition );
-				else
-					Sound.Play( BitcoinMiningAddon.ErrorSoundPath, WorldPosition );
-#endif
-				if ( GlitchSound != null )
-					Sound.Play( GlitchSound, WorldPosition );
-				else
-					Sound.Play( BitcoinMiningAddon.GlitchSoundPath, WorldPosition );
-			}
 
 			await GameTask.DelaySeconds( interval );
 			elapsed += interval;

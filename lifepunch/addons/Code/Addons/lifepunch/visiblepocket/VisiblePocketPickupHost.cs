@@ -66,18 +66,7 @@ internal static class VisiblePocketPickupHost
 			return;
 		}
 
-		var pockets = PocketSystemAccessor.GetPockets();
-		if ( pockets == null )
-		{
-			return;
-		}
-
-		if ( !pockets.TryGetValue( player.SteamId, out var pocket ) )
-		{
-			pocket = new List<GameObject>();
-			pockets[player.SteamId] = pocket;
-		}
-
+		var pocket = PocketSystem.Instance.GetOrCreatePocket( player.SteamId );
 		var policyMax = VisiblePocketPolicyStore.GetMaxSlots( player );
 		if ( pocket.Count >= policyMax )
 		{

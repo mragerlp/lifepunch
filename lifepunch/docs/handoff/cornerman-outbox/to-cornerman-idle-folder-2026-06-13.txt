@@ -1,0 +1,14 @@
+CORNERMAN — VENGEANCE GOING OFFLINE
+
+Read inbox: CORNERMAN_SESSION_2026-06-13.md + CORNERMAN_IDLE_FOLDER.md
+
+NEW RULE: Do NOT git push to main. At 3:50 PM EST run idle export instead:
+
+powershell -File C:\lifepunch\cornerman\inbox\Export-CornermanIdle.ps1 -SessionLabel menu-ui-2026-06-13 -Summary "P0 menu SCSS + PIN"
+
+Work lands in C:\lifepunch\cornerman\idle\sessions\<timestamp>-menu-ui-2026-06-13\
+Also writes outbox\IDLE_READY.txt with the folder path.
+
+4:00 PM EST — shutdown as planned.
+
+Jared reviews idle on VENGEANCE with Pull-CornermanIdle.ps1 when back.

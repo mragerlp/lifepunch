@@ -185,16 +185,17 @@ On VENGEANCE (second window beside voice watch):
 Full RDP + Odysseus workflow: lifepunch\server\LIFEPUNCHNET_RDP_ODYSSEUS.txt
 
 --------------------------------------------------------------------------------
-CORNERMAN STT TODAY (if lifepunchnet Whisper is not ready yet)
+CORNERMAN STT (lifepunchnet only — Lemonade removed)
 --------------------------------------------------------------------------------
 
-Cornerman Lemonade STT works now on the home LAN (not lifepunchnet):
+STT is lifepunchnet Whisper only:
 
-  http://192.168.1.227:13305/v1/audio/transcriptions
-  model=Whisper-Small
+  http://205.209.104.22:9000/v1/audio/transcriptions
+  model=small.en
 
-Do NOT use port 9000 on Cornerman for OpenAI-style whisper — that port is
-LemonadeServer but does not answer /v1/audio/transcriptions there.
+Do NOT run AMD Lemonade on Cornerman. Tier-3 LLM is LM Studio headless :1234.
+If Lemonade reappears in Startup, run from VENGEANCE:
+  powershell -File lifepunch\scripts\Remove-CornermanLemonade.ps1
 
 --------------------------------------------------------------------------------
 STEP 8 — SECURITY / UPTIME BOT (install once, elevated on lifepunchnet)

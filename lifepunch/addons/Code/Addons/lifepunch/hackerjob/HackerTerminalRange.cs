@@ -10,29 +10,16 @@
 
 using System;
 using Sandbox;
+using LifePunch.DXRP.Addons;
 
 namespace LifePunch.DXRP.Addons.HackerJob;
 
-/// <summary>Shared open/close range for hacker CRT interact + console open helpers.</summary>
+/// <summary>Shared open/close range for hacker CRT + rack menus — delegates to <see cref="LifePunchMenuInteractRange"/>.</summary>
 internal static class HackerTerminalRange
 {
-	public const float MetersToUnits = 39.3701f;
-	public const float OpenHorizontalUnits = 6f * MetersToUnits;
-	public const float OpenVerticalUnits = 3f * MetersToUnits;
-	public const float UiCloseHorizontalUnits = 8f * MetersToUnits;
-	public const float UiCloseVerticalUnits = 4f * MetersToUnits;
-
 	public static bool IsInOpenRange( Vector3 viewerPos, Vector3 terminalPos )
-		=> IsWithin( viewerPos, terminalPos, OpenHorizontalUnits, OpenVerticalUnits );
+		=> LifePunchMenuInteractRange.IsInOpenRange( viewerPos, terminalPos );
 
 	public static bool IsInUiCloseRange( Vector3 viewerPos, Vector3 terminalPos )
-		=> IsWithin( viewerPos, terminalPos, UiCloseHorizontalUnits, UiCloseVerticalUnits );
-
-	private static bool IsWithin( Vector3 viewerPos, Vector3 terminalPos, float horizontalUnits, float verticalUnits )
-	{
-		var delta = terminalPos - viewerPos;
-		var horizontal = new Vector3( delta.x, delta.y, 0f ).Length;
-		var vertical = MathF.Abs( delta.z );
-		return horizontal <= horizontalUnits && vertical <= verticalUnits;
-	}
+		=> LifePunchMenuInteractRange.IsInUiCloseRange( viewerPos, terminalPos );
 }

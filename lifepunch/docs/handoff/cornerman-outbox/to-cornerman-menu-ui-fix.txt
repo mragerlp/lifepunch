@@ -1,0 +1,26 @@
+CORNERMAN — MENU UI FIX (owner away ~5h)
+
+Read first: lifepunch/docs/handoff/cornerman-outbox/CORNERMAN_MENU_UI_FIX_2026-06-13.md
+
+P0: Bitcoin GATEKEEPER panel is EMPTY (SCSS compile failure kills whole stylesheet).
+P0: Power ON|OFF side-by-side in left rail; settings cog next to CLOSE.
+P0: Hacker server rack PIN gate (code landed; verify in play).
+
+NOT the problem: CS8669/CS8603 nullable warnings in console — ignore.
+
+Workflow:
+1. git pull --rebase (read-only clone: patch-handoff to VENGEANCE if needed)
+2. powershell -File lifepunch\addons\scripts\Validate-SboxRazorScss.ps1
+   (currently flags: hackerjob\HackerTerminal.razor.scss gradients x3 — bitcoin SCSS clean)
+3. Fix all validator hits + any new log "not valid with" lines
+4. Sync-LifePunchAddonsToDxrp.ps1 -Addon bitcoinmining then hackerjob
+5. Playtest matrix in CORNERMAN_MENU_UI_FIX_2026-06-13.md
+6. Tier 2 tasks in same doc if time left
+7. Update progress table when done
+
+Red push to Green inbox (run once on VENGEANCE before owner leaves):
+  powershell -File lifepunch\scripts\Push-CornermanMenuUiFix.ps1
+
+SCSS law (canonical): lifepunch\addons\docs\SBOX_RAZOR_SCSS_RULES.md
+
+Do not commit unless owner asks. Green without Cursor: audit + WarmCoder SCSS drafts to outbox only.

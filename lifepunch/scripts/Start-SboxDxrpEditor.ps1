@@ -6,11 +6,10 @@
   1. Mirror repo addon trees into the DXRP game project (default: bitcoinmining).
   2. Launch s&box with -project only (normal DXRP route).
 
-  Paste your server API key in the in-game console when you need portal data:
-    authorize <token from dxrp.net>
-    api production
-
-  Optional -WithAuthorize still passes +authorize from dxrp-editor.local.json.
+  Portal API is a launch ConVar (+authorize), not an in-game console command.
+  After host play, use:  lp_authorize <token from dxrp.net>
+  Or launch with -WithAuthorize (passes +authorize from dxrp-editor.local.json).
+  api defaults to production — only pass +api staging if you need staging.
   With API connected, editor host play auto-spawns rank bots (lifepunch_auto_spawn_testbots, default 1).
 
 .PARAMETER SyncAddon
@@ -120,7 +119,7 @@ if ($WithAuthorize) {
     Write-Host "  API:     $api (+authorize from config)" -ForegroundColor DarkGray
 }
 else {
-    Write-Host '  API key: paste in console when needed — authorize <token>' -ForegroundColor DarkGray
+    Write-Host '  Portal API: host play then lp_authorize <token> (authorize is +launch only)' -ForegroundColor DarkGray
 }
 Write-Host ''
 
@@ -130,8 +129,8 @@ if ($WithAuthorize) {
     Write-Host '  Rank bots auto-spawn when portal ranks load (lifepunch_auto_spawn_testbots 1).' -ForegroundColor DarkGray
 }
 else {
-    Write-Host 'Editor started. Host play, then authorize <token> in console if you need portal/API data.' -ForegroundColor Cyan
-    Write-Host '  Rank bots wait for authorize — vanilla editor play will NOT spawn them.' -ForegroundColor DarkGray
+    Write-Host 'Editor started. Host play, then lp_authorize <token> if you need portal/API data.' -ForegroundColor Cyan
+    Write-Host '  Rank bots wait for lp_authorize — vanilla editor play will NOT spawn them.' -ForegroundColor DarkGray
 }
 
 if (-not $SkipConnectivityWatch) {

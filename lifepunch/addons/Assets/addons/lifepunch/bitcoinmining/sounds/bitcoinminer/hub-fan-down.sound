@@ -1,4 +1,4 @@
-﻿{
+{
     "SelectionMode":  "Random",
     "DistanceAttenuation":  true,
     "UI":  false,
@@ -9,7 +9,7 @@
     "Transmission":  true,
     "Pitch":  "1",
     "AirAbsorption":  true,
-    "Decibels":  64,
+    "Decibels":  44,
     "Falloff":  [
                     {
                         "y":  1,

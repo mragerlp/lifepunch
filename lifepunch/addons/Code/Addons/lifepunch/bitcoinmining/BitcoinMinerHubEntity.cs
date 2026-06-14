@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using Sandbox;
+using LifePunch.DXRP.Addons;
 #if !LIFEPUNCH_LOCAL
 using Dxura.RP.Game;
 #endif
@@ -19,7 +20,7 @@ namespace LifePunch.DXRP.Addons.BitcoinMining;
 
 /// <summary>
 /// Bitcoin Miner hub (Ophion) — hashd menu anchor, hub power, encryption defense tiers.
-/// Racks link by proximity via <see cref="BitcoinMinerHubRegistry"/>.
+/// Racks link explicitly via hashd <c>link</c> / <c>unlink</c> (stored on <see cref="LinkedRigIds"/>).
 /// </summary>
 [Title( "Bitcoin Miner Hub" )]
 [Category( "LifePunch/Bitcoin Miner" )]
@@ -43,9 +44,15 @@ public sealed class BitcoinMinerHubEntity : BaseEntity, Component.IPressable
 	[Sync( SyncFlags.FromHost )] public bool AccessPinIsSet { get; set; }
 	/// <summary>Display label for the operator who configured the hub PIN.</summary>
 	[Sync( SyncFlags.FromHost )] public string OperatorDisplayName { get; set; } = "";
+	/// <summary>Pipe-separated <see cref="GameObject.Id"/> values for explicitly linked GPU racks.</summary>
+	[Sync( SyncFlags.FromHost )] public string LinkedRigIds { get; set; } = "";
 
 	private ushort _pinHash;
 	private readonly Dictionary<Guid, double> _sessionExpiry = new();
+	private readonly Dictionary<Guid, HashdSurface> _pendingSurface = new();
+	private readonly Dictionary<Guid, Guid> _pendingHeadObjectId = new();
+	private readonly List<string> _operationLog = new();
+	private const int MaxOperationLogLines = 200;
 
 	public float FirewallFailBonus => BitcoinMinerEncryptionCatalog.GetFirewallFailBonus( FirewallTier );
 	public float WalletStealReduction => BitcoinMinerEncryptionCatalog.GetWalletCipherStealReduction( WalletCipherTier );
@@ -53,17 +60,23 @@ public sealed class BitcoinMinerHubEntity : BaseEntity, Component.IPressable
 	public float RehackCooldownBonusSeconds => BitcoinMinerEncryptionCatalog.GetRehackCooldownBonusSeconds( RehackCooldownTier );
 	public float PuzzleHardeningSeconds => BitcoinMinerEncryptionCatalog.GetPuzzleHardeningSeconds( PuzzleHardeningTier );
 
-	private SoundHandle _hubFanLoopHandle;
-	private bool _hubFanLoopPlaying;
-	private float _hubFanVolume;
-	private const float HubFanMaxVolume = 1f;
-	private const float HubFanRampSeconds = 4f;
-
 	protected override void OnStart()
 	{
 		base.OnStart();
+		EnsurePhysicalBody();
 		TryBindSpawnOwnerHost();
 		ApplyHubPowerState( IsPowered );
+	}
+
+	/// <summary>Prefab ships with gravity + motion; wake the body so placement and pushes behave normally.</summary>
+	private void EnsurePhysicalBody()
+	{
+		var body = Components.Get<Rigidbody>( FindMode.EverythingInSelf );
+		if ( !body.IsValid() )
+			return;
+
+		body.Gravity = true;
+		body.MotionEnabled = true;
 	}
 
 	/// <summary>Stamp spawner Steam ID from network owner when Market/dev spawn sets connection but not <see cref="Owner"/> yet.</summary>
@@ -83,12 +96,7 @@ public sealed class BitcoinMinerHubEntity : BaseEntity, Component.IPressable
 #endif
 	}
 
-	protected override void OnUpdate()
-	{
-		base.OnUpdate();
-
-		UpdateHubFanVolume();
-	}
+	public bool CanPress( IPressable.Event e ) => LifePunchMenuInteractGate.CanPressMenu( GameObject );
 
 	public bool Press( IPressable.Event e )
 	{
@@ -96,20 +104,34 @@ public sealed class BitcoinMinerHubEntity : BaseEntity, Component.IPressable
 		return true;
 	}
 
-	public void RequestOpenTerminal() => OpenTerminalHost();
+	public void RequestOpenTerminal() => BeginTerminalOpen( HashdSurface.HubPanel, GameObject );
 
 	/// <summary>Legacy alias — terminal flow handles power gate after PIN auth.</summary>
-	public void RequestOpenPowerGate() => OpenTerminalHost();
+	public void RequestOpenPowerGate() => BeginTerminalOpen( HashdSurface.HubPanel, GameObject );
 
-	/// <summary>Legacy alias — terminal flow handles PIN before full console.</summary>
-	public void RequestOpenHashd() => OpenTerminalHost();
+	/// <summary>Legacy alias — opens hub management panel after PIN auth.</summary>
+	public void RequestOpenHashd() => BeginTerminalOpen( HashdSurface.HubPanel, GameObject );
+
+	/// <summary>USE on the HASHD monitor — rig0 command console after PIN auth.</summary>
+	public void RequestOpenHeadConsole( GameObject headSource ) =>
+		BeginTerminalOpen( HashdSurface.HeadConsole, headSource );
+
+	[Rpc.Host]
+	private void BeginTerminalOpen( HashdSurface surface, GameObject reachObject )
+	{
+		if ( !reachObject.IsValid() || !LifePunchMenuInteractGate.IsCallerAllowed( Rpc.Caller, reachObject ) )
+			return;
+
+		_pendingSurface[Rpc.CallerId] = surface;
+		if ( surface == HashdSurface.HeadConsole && reachObject.IsValid() )
+			_pendingHeadObjectId[Rpc.CallerId] = reachObject.Id;
+
+		OpenTerminalHost();
+	}
 
 	[Rpc.Host]
 	private void OpenTerminalHost()
 	{
-		if ( !IsCallerInReach() )
-			return;
-
 		TryBindSpawnOwnerHost();
 
 #if LIFEPUNCH_LOCAL
@@ -150,10 +172,22 @@ public sealed class BitcoinMinerHubEntity : BaseEntity, Component.IPressable
 
 	private void ContinueAfterAuth( Guid callerId )
 	{
+		var surface = _pendingSurface.TryGetValue( callerId, out var pending )
+			? pending
+			: HashdSurface.HubPanel;
+
+		_pendingSurface.Remove( callerId );
+
+		if ( surface == HashdSurface.HeadConsole )
+		{
+			OpenHeadConsole( callerId );
+			return;
+		}
+
 		if ( !IsPowered )
 			OpenPowerGate( callerId );
 		else
-			OpenHashd( callerId );
+			OpenHubPanel( callerId );
 	}
 
 	[Rpc.Broadcast]
@@ -166,12 +200,75 @@ public sealed class BitcoinMinerHubEntity : BaseEntity, Component.IPressable
 	}
 
 	[Rpc.Broadcast]
-	private void OpenHashd( System.Guid callerId )
+	private void OpenHubPanel( System.Guid callerId )
 	{
 		if ( Connection.Local.Id != callerId )
 			return;
 
-		HashdTerminal.OpenFromHub( this );
+		HashdTerminal.OpenHubPanel( this );
+	}
+
+	[Rpc.Broadcast]
+	private void OpenHeadConsole( Guid callerId )
+	{
+		if ( Connection.Local.Id != callerId )
+			return;
+
+		GameObject head = null;
+		if ( _pendingHeadObjectId.TryGetValue( callerId, out var headId ) )
+		{
+			_pendingHeadObjectId.Remove( callerId );
+			head = GameObject.Scene?.Directory.FindByGuid( headId );
+		}
+
+		if ( !head.IsValid() )
+			head = FindLinkedHeadForCaller( callerId );
+
+		HashdTerminal.OpenHeadConsole( this, head );
+	}
+
+	private GameObject FindLinkedHeadForCaller( Guid callerId )
+	{
+		var scene = GameObject.Scene;
+		if ( scene is null )
+			return null;
+
+		GameObject best = null;
+		var bestHorizontal = float.MaxValue;
+
+		foreach ( var prop in scene.GetAllComponents<BitcoinTerminalProp>() )
+		{
+			if ( !prop.IsValid() || !prop.GameObject.IsValid() )
+				continue;
+
+			if ( !BitcoinTerminalProp.IsWithinHubLinkRange( prop.WorldPosition, WorldPosition ) )
+				continue;
+
+			var delta = prop.WorldPosition - WorldPosition;
+			var horizontal = new Vector3( delta.x, delta.y, 0f ).Length;
+			if ( horizontal < bestHorizontal )
+			{
+				bestHorizontal = horizontal;
+				best = prop.GameObject;
+			}
+		}
+
+		return best;
+	}
+
+	internal IReadOnlyList<string> GetOperationLog() => _operationLog;
+
+	public void RequestAppendOperationLog( string line ) => AppendOperationLogHost( line );
+
+	[Rpc.Host]
+	private void AppendOperationLogHost( string line )
+	{
+		if ( string.IsNullOrWhiteSpace( line ) )
+			return;
+
+		_operationLog.Add( line );
+		while ( _operationLog.Count > MaxOperationLogLines )
+			_operationLog.RemoveAt( 0 );
 	}
 
 	[Rpc.Broadcast]
@@ -338,14 +435,7 @@ public sealed class BitcoinMinerHubEntity : BaseEntity, Component.IPressable
 #endif
 	}
 
-	private bool IsCallerInReach()
-	{
-#if LIFEPUNCH_LOCAL
-		return true;
-#else
-		return GameUtils.HasPermission( Rpc.Caller, GameObject );
-#endif
-	}
+	private bool IsCallerInReach() => LifePunchMenuInteractGate.IsCallerAllowed( Rpc.Caller, GameObject );
 
 	private void AuthorizeSession( Guid callerId )
 	{
@@ -388,67 +478,6 @@ public sealed class BitcoinMinerHubEntity : BaseEntity, Component.IPressable
 	private void ApplyHubPowerState( bool powered )
 	{
 		GpuRackPowerAnim.ApplyHubPower( ModelRenderer, powered, out _ );
-		UpdateHubSounds( powered );
-	}
-
-	private void UpdateHubSounds( bool powered )
-	{
-		if ( powered )
-		{
-			if ( !_hubFanLoopPlaying )
-			{
-				Sound.Play( BitcoinMiningAddon.HubStartupSoundPath, WorldPosition );
-				_hubFanLoopHandle = Sound.Play( BitcoinMiningAddon.HubFanLoopSoundPath, WorldPosition );
-				if ( _hubFanLoopHandle is null )
-				{
-					_hubFanLoopPlaying = false;
-					return;
-				}
-
-				_hubFanLoopHandle.Volume = 0f;
-				_hubFanVolume = 0f;
-				_hubFanLoopPlaying = true;
-			}
-		}
-		else
-		{
-			if ( _hubFanLoopPlaying )
-			{
-				Sound.Play( BitcoinMiningAddon.HubFanDownSoundPath, WorldPosition );
-				_hubFanLoopPlaying = false;
-			}
-		}
-	}
-
-	private void UpdateHubFanVolume()
-	{
-		if ( !_hubFanLoopPlaying || _hubFanLoopHandle is null )
-			return;
-
-		try
-		{
-			_hubFanLoopHandle.Position = WorldPosition;
-
-			var target = IsPowered ? HubFanMaxVolume : 0f;
-			var step = ( HubFanMaxVolume / HubFanRampSeconds ) * Time.Delta;
-
-			if ( _hubFanVolume < target )
-				_hubFanVolume = MathF.Min( _hubFanVolume + step, target );
-			else if ( _hubFanVolume > target )
-				_hubFanVolume = MathF.Max( _hubFanVolume - step, 0f );
-
-			_hubFanLoopHandle.Volume = _hubFanVolume;
-
-			if ( !IsPowered && _hubFanVolume <= 0f )
-			{
-				_hubFanLoopHandle.Stop();
-				_hubFanLoopPlaying = false;
-			}
-		}
-		catch
-		{
-			_hubFanLoopPlaying = false;
-		}
 	}
 
 	public void RequestUpgrade( BitcoinMiningAddonEncryptionKind kind ) => UpgradeHost( kind );
@@ -534,6 +563,69 @@ public sealed class BitcoinMinerHubEntity : BaseEntity, Component.IPressable
 	}
 
 	public void RequestSellBitcoin() => SellBitcoinHost();
+
+	public void RequestLinkRig( int scanIndex ) => LinkRigHost( scanIndex );
+
+	public void RequestUnlinkRig( int linkIndex ) => UnlinkRigHost( linkIndex );
+
+	public void RequestUnlinkAllRigs() => UnlinkAllRigsHost();
+
+	[Rpc.Host]
+	private void LinkRigHost( int scanIndex )
+	{
+		if ( !IsCallerInReach() || RequiresPinSession( Rpc.CallerId ) )
+			return;
+
+		var candidates = BitcoinMinerHubRegistry.ScanUnlinkedRigs( this );
+		if ( scanIndex < 0 || scanIndex >= candidates.Count )
+		{
+			NotifyLinkMessage( Rpc.CallerId, $"ERROR: invalid link index — run 'link' to list ({candidates.Count} available)." );
+			return;
+		}
+
+		if ( !BitcoinMinerHubRegistry.TryLinkRig( this, candidates[scanIndex], out var error ) )
+		{
+			NotifyLinkMessage( Rpc.CallerId, $"ERROR: {error}" );
+			return;
+		}
+
+		NotifyLinkMessage( Rpc.CallerId, $"LINKED: {BitcoinMinerHubRegistry.GetRigLabel( candidates[scanIndex] )}." );
+	}
+
+	[Rpc.Host]
+	private void UnlinkRigHost( int linkIndex )
+	{
+		if ( !IsCallerInReach() || RequiresPinSession( Rpc.CallerId ) )
+			return;
+
+		if ( !BitcoinMinerHubRegistry.TryUnlinkRigAt( this, linkIndex, out var error ) )
+		{
+			NotifyLinkMessage( Rpc.CallerId, $"ERROR: {error}" );
+			return;
+		}
+
+		NotifyLinkMessage( Rpc.CallerId, "UNLINKED: rack removed from hub." );
+	}
+
+	[Rpc.Host]
+	private void UnlinkAllRigsHost()
+	{
+		if ( !IsCallerInReach() || RequiresPinSession( Rpc.CallerId ) )
+			return;
+
+		BitcoinMinerHubRegistry.UnlinkAll( this );
+		NotifyLinkMessage( Rpc.CallerId, "UNLINKED: all racks cleared." );
+	}
+
+	[Rpc.Broadcast]
+	private void NotifyLinkMessage( Guid callerId, string message )
+	{
+		if ( Connection.Local.Id != callerId )
+			return;
+
+		AppendOperationLogHost( message );
+		HashdTerminal.NotifyLinkMessage( message );
+	}
 
 	[Rpc.Host]
 	private async void SellBitcoinHost()

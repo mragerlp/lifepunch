@@ -54,6 +54,7 @@ $border-disabled: rgba(255, 255, 255, 0.04);
 
 	.window {
 		flex-direction: column;
+		position: relative;
 		width: 1080px;
 		height: 720px;
 		max-width: 94%;
@@ -63,6 +64,16 @@ $border-disabled: rgba(255, 255, 255, 0.04);
 		border: 1px solid $border;
 		overflow: hidden;
 		box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+	}
+
+	&.compact .window {
+		width: 920px;
+		height: 600px;
+	}
+
+	&.expanded .window {
+		width: 1240px;
+		height: 820px;
 	}
 
 	.header {
@@ -1296,7 +1307,37 @@ $border-disabled: rgba(255, 255, 255, 0.04);
 			font-size: 12px;
 		}
 
-		// Input + Save row, identical language to the waypoint .wp-bar. Extra vertical padding (and a
+		.panel-size-row {
+			flex-direction: row;
+			gap: 8px;
+			margin-top: 4px;
+		}
+
+		.panel-size-opt {
+			flex-grow: 1;
+			height: 32px;
+			border-radius: 6px;
+			border: 1px solid $border;
+			background-color: $bg-row;
+			color: $text-dim;
+			font-size: 11px;
+			font-weight: 700;
+			letter-spacing: 0.5px;
+			cursor: pointer;
+
+			&:hover {
+				color: $text;
+				border-color: rgba(255, 255, 255, 0.14);
+			}
+
+			&.active {
+				background-color: $accent-soft;
+				border-color: rgba(79, 140, 255, 0.45);
+				color: $accent;
+			}
+		}
+
+		// Input + Save row, identical language to the waypoint .wp-bar.
 		// touch less on the right) floats the Save button inset from the bar edges — matching the Return
 		// bar's "respect the border" look rather than sitting flush to the frame.
 		.settings-bar {

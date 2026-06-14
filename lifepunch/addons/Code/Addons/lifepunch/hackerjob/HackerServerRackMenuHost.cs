@@ -72,4 +72,18 @@ internal static class HackerServerRackMenuHost
 		return Player.Local.IsValid() ? (int)Player.Local.WalletBalance : 0;
 #endif
 	}
+
+	public static string GetLocalOperatorLabel()
+	{
+#if LIFEPUNCH_LOCAL
+		return "LOCAL OPERATOR";
+#else
+		if ( !Player.Local.IsValid() )
+			return "UNKNOWN";
+
+		return string.IsNullOrWhiteSpace( Player.Local.DisplayName )
+			? Player.Local.SteamId.ToString()
+			: Player.Local.DisplayName;
+#endif
+	}
 }

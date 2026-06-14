@@ -149,5 +149,36 @@ Refresh mcp only: `Install-CornermanSboxBridgeMcp.ps1`
 | Playtest, `lp_spawn_*`, in-game UI | `sbox` (Claude Bridge) |
 | Compile vmdl/vmat, edit prefab in editor, shader graph | `sbox-editor` (chomnr) |
 | Distill / cheap prep | Cornerman `cornerman-lm` (unchanged) |
+| Runtime inspect / audit | Prefer **dev ConCmds** + `console_run`; `execute_csharp` OK when needed — **always** sweep `Editor/__Exec_*.cs` after (see § execute_csharp) |
 
 Do not claim visual verification without the appropriate server connected.
+
+---
+
+## `execute_csharp` — temp exec files (`Editor/__Exec_*.cs`)
+
+**Recorded:** 2026-06-13 (VENGEANCE DXRP) — agents must treat cleanup as law.
+
+The `sbox` MCP tool `execute_csharp` is **experimental**. It writes a temp file `Editor/__Exec_<id>.cs`, hotloads the **editor** assembly, runs the snippet, then deletes the file. Bridge v1.13+ sweeps leftovers on startup (`SweepStaleExecFiles` in `sboxskinsgg.claudebridge`).
+
+### Failure mode
+
+If a snippet **fails to compile**, the bad `__Exec_*.cs` can **leak** and break **every** subsequent editor compile (`CS1026`, `Sandbox.Log` missing, etc.) until the files are removed.
+
+### Agent rules
+
+1. **Prefer** dev ConCmds in `Code/Addons/lifepunch/_dev/` + `console_run` / `get_compile_errors` / screenshots when that solves the task without editor exec temps.
+2. **`execute_csharp` is fine** (including multi-line) when you actually need it — just treat it as hazardous tooling, not the default.
+3. **Always clean up after exec sessions:**
+   - If compile errors cite `Editor/__Exec_*.cs`, delete them **immediately** and recompile.
+   - After any `execute_csharp` inspect/debug pass, sweep leftovers even when compile looked fine.
+
+**Manual cleanup (VENGEANCE):**
+
+```powershell
+Remove-Item "D:\Steam\steamapps\common\sbox\dxrp\game\Editor\__Exec_*.cs" -Force -ErrorAction SilentlyContinue
+```
+
+Then recompile (or restart the editor so the bridge sweep runs on a clean assembly).
+
+**Bitcoin/hacker inspect pattern:** add or reuse an `lp_*` ConCmd when you'll need the same probe twice; one-off editor probes via `execute_csharp` are OK if you run step 3.

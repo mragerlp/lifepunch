@@ -123,7 +123,10 @@ function Invoke-CornermanSshExec {
     $code = $LASTEXITCODE
     $ErrorActionPreference = $prev
     $lines = @($raw | Where-Object {
-            $_ -notmatch 'Microsoft\.PowerShell_profile|Execution_Policies|UnauthorizedAccess|#< CLIXML'
+            $_ -notmatch 'Microsoft\.PowerShell_profile|Execution_Policies|UnauthorizedAccess|#< CLIXML' -and
+            $_ -notmatch '^Microsoft Windows \[Version' -and
+            $_ -notmatch '^\(c\) Microsoft Corporation' -and
+            $_ -notmatch '^All rights reserved\.$'
         })
     return [pscustomobject]@{
         ExitCode = $code

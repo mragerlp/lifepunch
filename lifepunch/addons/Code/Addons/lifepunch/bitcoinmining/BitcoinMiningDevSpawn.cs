@@ -11,6 +11,7 @@
 using System;
 using System.Linq;
 using Sandbox;
+using LifePunch.DXRP.Addons;
 #if !LIFEPUNCH_LOCAL
 using Dxura.RP.Game;
 #endif
@@ -41,7 +42,9 @@ public static class BitcoinMiningDevSpawn
 			return null;
 		}
 
-		var hubGo = ClonePrefabAt( BitcoinMiningAddon.HubPrefabPath, transform );
+		var scene = Game.ActiveScene;
+		var hubPos = SnapToGround( scene, transform.Position );
+		var hubGo = ClonePrefabAt( BitcoinMiningAddon.HubPrefabPath, new Transform( hubPos, transform.Rotation ) );
 		if ( !hubGo.IsValid() )
 		{
 			Log.Warning( "lp_spawn_bitcoin_miner_hub: hub prefab missing — compile ModelDoc + prefab first." );
@@ -56,7 +59,6 @@ public static class BitcoinMiningDevSpawn
 			return null;
 		}
 
-		var scene = Game.ActiveScene;
 		var offsets = new[]
 		{
 			transform.Rotation.Right * 140f,
@@ -79,6 +81,80 @@ public static class BitcoinMiningDevSpawn
 
 		Log.Info( "lp_spawn_bitcoin_miner_hub: hub OFFLINE — USE hub → click POWER ON on rail. lp_hub_power 1 to skip boot." );
 		return hub;
+	}
+
+	/// <summary>Hub prefab only — no linked racks (model/scale pass).</summary>
+	[ConCmd( "lp_spawn_bitcoin_miner_hub_only" )]
+	public static BitcoinMinerHubEntity SpawnBitcoinMinerHubOnly()
+	{
+		if ( !TryGetSpawnTransform( out var transform ) )
+		{
+			Log.Warning( "lp_spawn_bitcoin_miner_hub_only: no local viewer." );
+			return null;
+		}
+
+		var scene = Game.ActiveScene;
+		var hubPos = SnapToGround( scene, transform.Position );
+		var hubGo = ClonePrefabAt( BitcoinMiningAddon.HubPrefabPath, new Transform( hubPos, transform.Rotation ) );
+		if ( !hubGo.IsValid() )
+		{
+			Log.Warning( "lp_spawn_bitcoin_miner_hub_only: hub prefab missing — compile ModelDoc + prefab first." );
+			return null;
+		}
+
+		var hub = hubGo.Components.Get<BitcoinMinerHubEntity>( FindMode.EverythingInSelfAndDescendants );
+		if ( !hub.IsValid() )
+		{
+			Log.Error( "lp_spawn_bitcoin_miner_hub_only: clone has no BitcoinMinerHubEntity." );
+			hubGo.Destroy();
+			return null;
+		}
+
+		NetworkSpawnIfNeeded( hubGo );
+		Log.Info( "lp_spawn_bitcoin_miner_hub_only: Ophion hub placed (no racks)." );
+		return hub;
+	}
+
+	/// <summary>Remove LifePunch dev-spawned bitcoinmining entities in the active scene.</summary>
+	[ConCmd( "lp_clear_bitcoinmining_spawns" )]
+	public static void ClearBitcoinMiningSpawns()
+	{
+		var scene = Game.ActiveScene;
+		if ( scene is null )
+		{
+			Log.Warning( "lp_clear_bitcoinmining_spawns: no active scene." );
+			return;
+		}
+
+		var destroyed = 0;
+		foreach ( var hub in scene.GetAllComponents<BitcoinMinerHubEntity>().ToArray() )
+		{
+			if ( hub.IsValid() && hub.GameObject.IsValid() )
+			{
+				hub.GameObject.Destroy();
+				destroyed++;
+			}
+		}
+
+		foreach ( var rig in scene.GetAllComponents<GpuRackEntity>().ToArray() )
+		{
+			if ( rig.IsValid() && rig.GameObject.IsValid() )
+			{
+				rig.GameObject.Destroy();
+				destroyed++;
+			}
+		}
+
+		foreach ( var term in scene.GetAllComponents<BitcoinTerminalProp>().ToArray() )
+		{
+			if ( term.IsValid() && term.GameObject.IsValid() )
+			{
+				term.GameObject.Destroy();
+				destroyed++;
+			}
+		}
+
+		Log.Info( $"lp_clear_bitcoinmining_spawns: removed {destroyed} object(s)." );
 	}
 
 	[ConCmd( "lp_hub_power" )]
@@ -388,7 +464,7 @@ public static class BitcoinMiningDevSpawn
 			var delta = rig.WorldPosition - viewer.Value;
 			var horizontal = new Vector3( delta.x, delta.y, 0f ).Length;
 			var vertical = MathF.Abs( delta.z );
-			var inHashdRange = horizontal <= 8f * 39.3701f && vertical <= 4f * 39.3701f;
+			var inHashdRange = LifePunchMenuInteractRange.IsInOpenRange( viewer.Value, rig.WorldPosition );
 			Log.Info(
 				$"BITCOINMINING_DEBUG rig={rig.GameObject.Name} advanced={rig.AdvancedRack} pos={rig.WorldPosition} horiz={horizontal:0} vert={vertical:0} hashd_ok={inHashdRange}" );
 		}

@@ -17,7 +17,7 @@ LifePunch **does not** fork a second item database. Visible Pocket is policy + U
 | Pickup allow | `Constants.PocketItemTag` on root | Raid deny: omit `pocket_item`; tag `lifepunch_nopocket` on miners/terminals |
 | Pocketed state | `Constants.PocketTag`; GO disabled | Unchanged |
 | HUD hint | `PocketSystem.LocalPocketCount` + `InputHelper.razor` | P2 replace/extend with visible hotbar |
-| Input | `HandsEquipment` attack2 → pocket RPCs | P2 right-click Use/Drop menu |
+| Input | `HandsEquipment` attack2 → world pickup/drop; **Reload + Hands** → pocket inventory UI | LifePunch `VisiblePocketInputBridge` |
 | Death / job | `DropPocketsOnDeath` / `DropPocketsOnJobChange` | Align with spec (pocket drops; bank phase 3 exempt) |
 | Disconnect | `OnPlayerDisconnectHost` **destroys** pocketed entities | Bank TTL must **not** reuse pocket destroy path |
 | Staff | `dx_pocket_list` | Unchanged |
@@ -48,12 +48,14 @@ Rank floors apply immediately when granted; cash unlocks stack with rank minimum
 
 ---
 
-## Interaction (right-click)
+## Interaction (inventory UI — Reload + Hands)
 
 | Action | When |
 |--------|------|
-| **Use** | Usable items (guns, consumables, etc.) |
-| **Drop** | Always available |
+| **Open pocket UI** | **Reload** while **Hands** equipped (toggle) |
+| **World pickup/drop** | **attack2** while Hands equipped (mirrors stock `HandsEquipment` pocket path) |
+| **Use** (P2) | Usable items from open pocket UI |
+| **Drop** (P2) | Always available from open pocket UI |
 | Weed brick | **Drop only** (no Use) |
 
 ---

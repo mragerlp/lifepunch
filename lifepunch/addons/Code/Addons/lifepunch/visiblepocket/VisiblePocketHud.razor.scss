@@ -105,4 +105,19 @@ VisiblePocketHud {
         opacity: 0.75;
         text-align: right;
     }
+
+    &.collapsed {
+        .pocket-collapsed-hint {
+            background-color: rgba(8, 12, 16, 0.55);
+            border: 1px solid $border;
+            padding: 2px 8px;
+            border-radius: 2px;
+
+            .pocket-count-mini {
+                color: $body-dim;
+                font-size: 9px;
+                letter-spacing: 1px;
+            }
+        }
+    }
 }

@@ -10,6 +10,8 @@
 
 namespace LifePunch.DXRP.Addons.VisiblePocket;
 
+using LifePunch.DXRP.Addons;
+
 /// <summary>
 /// LifePunch Visible Pocket — UX + slot policy on DXRP <c>PocketSystem</c> (not a shop).
 /// Canonical rules: <c>addons/docs/VISIBLE_POCKET_SPEC.md</c>.
@@ -19,6 +21,6 @@ public static class VisiblePocket
 	public const string Package = "lifepunch.visiblepocket";
 	public const string Ident = "visiblepocket";
 	public const string DisplayName = "LIFEPUNCH Visible Pocket for DXRP";
-	public const string NoPocketTag = "lifepunch_nopocket";
+	public const string NoPocketTag = LifePunchInteractTags.NoPocket;
 	public const string ProductTitle = "LIFEPUNCH™ Visible Pocket for DXRP";
 }

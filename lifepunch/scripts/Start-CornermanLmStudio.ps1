@@ -47,6 +47,15 @@ function Get-LmsExe {
     throw 'lms CLI not found. Install LM Studio and ensure lms is on PATH or under ~/.lmstudio/bin/'
 }
 
+function Invoke-LmsCapture {
+    param([string[]] $LmsArgs)
+    $prev = $ErrorActionPreference
+    $ErrorActionPreference = 'Continue'
+    $out = @(& $script:lms @LmsArgs 2>&1 | ForEach-Object { "$_" })
+    $ErrorActionPreference = $prev
+    return ($out -join "`n")
+}
+
 function Invoke-Lms {
     param([Parameter(Mandatory)][string[]] $LmsArgs)
     $prev = $ErrorActionPreference
@@ -77,7 +86,7 @@ function Get-CornermanBindHost {
 }
 
 function Remove-DuplicateLmsLoads {
-    $psText = (& $script:lms ps 2>&1 | ForEach-Object { "$_" }) -join "`n"
+    $psText = Invoke-LmsCapture -LmsArgs @('ps')
     $dupIds = [regex]::Matches($psText, '(?m)^(\S+:\d+)\s') |
         ForEach-Object { $_.Groups[1].Value } |
         Select-Object -Unique
@@ -111,14 +120,14 @@ function Get-LmsCatalogIds([string]$BindHost) {
 }
 
 function Get-LmsLoadedIds {
-    $psText = (& $script:lms ps 2>&1 | ForEach-Object { "$_" }) -join "`n"
+    $psText = Invoke-LmsCapture -LmsArgs @('ps')
     return @([regex]::Matches($psText, '(?m)^(\S+)\s+\S+\s+(?:IDLE|RUNNING)\s') |
         ForEach-Object { $_.Groups[1].Value } |
         Select-Object -Unique)
 }
 
 function Test-Tier3CatalogOnDisk {
-    $lsText = (& $script:lms ls 2>&1 | ForEach-Object { "$_" }) -join "`n"
+    $lsText = Invoke-LmsCapture -LmsArgs @('ls')
     foreach ($id in $script:CornermanTier3Models) {
         $needle = if ($id -like '*embed*') { 'nomic-embed' } else { ($id -split '/')[-1] }
         if ($lsText -notmatch [regex]::Escape($needle)) { return $false }
@@ -149,7 +158,7 @@ function Get-WarmTargets([string]$Mode) {
 }
 
 function Unload-BigLmsModels {
-    $psText = (& $script:lms ps 2>&1 | ForEach-Object { "$_" }) -join "`n"
+    $psText = Invoke-LmsCapture -LmsArgs @('ps')
     foreach ($id in @('qwen/qwen3.6-35b-a3b', 'qwen2.5-coder-32b-instruct')) {
         if ($psText -match "(?m)^$([regex]::Escape($id))\s") {
             Write-Lms "Unloading $id before coder warm..."

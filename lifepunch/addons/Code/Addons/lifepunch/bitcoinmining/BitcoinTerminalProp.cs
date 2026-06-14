@@ -11,12 +11,13 @@
 using System;
 using System.Linq;
 using Sandbox;
+using LifePunch.DXRP.Addons;
 
 namespace LifePunch.DXRP.Addons.BitcoinMining;
 
 /// <summary>
-/// Deprecated CRT kit — routes USE to the nearest <see cref="BitcoinMinerHubEntity"/>.
-/// Player canon: interact with the Bitcoin Miner hub only. See <c>docs/BITCOINMINING_TERMINAL_DOCTRINE.md</c>.
+/// HASHD monitor ("head") — rig0 command console. Place on or beside the hub; LCD can mirror a linked GPU rack.
+/// Hub body USE opens management rail; monitor USE opens typed commands. See <c>docs/BITCOINMINING_TERMINAL_DOCTRINE.md</c>.
 /// </summary>
 [Title( "Bitcoin Terminal (hashd CRT)" )]
 [Category( "LifePunch/Bitcoin Miner" )]
@@ -50,11 +51,57 @@ public sealed class BitcoinTerminalProp : Component, Component.IPressable
 		LinkedRig.BindScreen( ScreenText );
 	}
 
+	public bool CanPress( IPressable.Event e ) => LifePunchMenuInteractGate.CanPressMenu( GameObject );
+
 	public bool Press( IPressable.Event e )
 	{
 		TryAutoLink();
-		HashdCommandHost.OpenNearestHub();
+
+		var hub = FindNearestHub( Scene, WorldPosition );
+		if ( !hub.IsValid() )
+		{
+			Log.Info( "[hashd] No Bitcoin Miner hub in range — place the monitor beside the hub." );
+			return false;
+		}
+
+		hub.RequestOpenHeadConsole( GameObject );
 		return true;
+	}
+
+	internal static bool IsWithinHubLinkRange( Vector3 from, Vector3 hubPosition )
+	{
+		var delta = from - hubPosition;
+		var horizontal = new Vector3( delta.x, delta.y, 0f ).Length;
+		var vertical = MathF.Abs( delta.z );
+		return horizontal <= LinkHorizontalUnits && vertical <= LinkVerticalUnits;
+	}
+
+	internal static BitcoinMinerHubEntity FindNearestHub( Scene scene, Vector3 from )
+	{
+		if ( scene is null )
+			return null;
+
+		BitcoinMinerHubEntity best = null;
+		var bestHorizontal = float.MaxValue;
+
+		foreach ( var hub in scene.GetAllComponents<BitcoinMinerHubEntity>() )
+		{
+			if ( !hub.IsValid() || !hub.GameObject.IsValid() )
+				continue;
+
+			if ( !IsWithinHubLinkRange( from, hub.WorldPosition ) )
+				continue;
+
+			var delta = hub.WorldPosition - from;
+			var horizontal = new Vector3( delta.x, delta.y, 0f ).Length;
+			if ( horizontal < bestHorizontal )
+			{
+				bestHorizontal = horizontal;
+				best = hub;
+			}
+		}
+
+		return best;
 	}
 
 	internal static GpuRackEntity FindNearestRig( Scene scene, Vector3 from )

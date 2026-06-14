@@ -1,7 +1,7 @@
 # server-rack — hacker infrastructure power unit
 
 **Slug:** `server-rack`  
-**Source:** `source/server-rack.dae` + `source/textures/*` (owner pack — `Intake-HackerServerRack.ps1`)  
+**Source:** `source/server-rack.obj` (converted from DAE — ModelDoc does not load Collada) + `source/textures/*`  
 **Target:** `server-rack.vmdl`  
 **Prefab:** `entities/server-rack/server-rack.prefab`  
 **UI:** `HackerServerRackMenu.razor` (POWER ON/OFF + upgrades)
@@ -16,7 +16,7 @@ Archive: `C:\lifepunch\reference-intake\hackerjob\server-rack`
 
 ## ModelDoc
 
-1. Open `server-rack.vmdl` — import `source/server-rack.dae`.
+1. Open `server-rack.vmdl` — imports `source/server-rack.obj` (regenerate from DAE via `addons/scripts/blender/convert_server_rack_dae_to_fbx.py` or `trimesh` if intake updates the DAE).
 2. Start `import_scale` at **39.37**; tune height vs citizen + terminal desk.
 3. Map `ServerMaterial` slot → PBR vmats per `material-map.json`.
 4. Compile → `Pull-DxrpCompiledAssetsToRepo.ps1`.

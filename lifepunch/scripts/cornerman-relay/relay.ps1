@@ -1,6 +1,5 @@
 # Talk to VENGEANCE - voice relay (AT2020 on Cornerman -> VENGEANCE Cursor).
 param(
-    [switch] $Lemonade,
     [switch] $SelfTest,
     [switch] $NoGuided,
     [switch] $Loop,
@@ -42,7 +41,6 @@ $pyArgs = @('relay.py')
 if ($env:CORNERMAN_REMOTE_WHISPER_URL) {
     $pyArgs += '--remote-whisper', $env:CORNERMAN_REMOTE_WHISPER_URL
 }
-if ($Lemonade)   { $pyArgs += '--lemonade' }
 if ($SelfTest)   { $pyArgs += '--selftest' }
 if ($NoGuided)   { $pyArgs += '--no-guided' }
 if ($PushToTalk) { $pyArgs += '--ptt' }

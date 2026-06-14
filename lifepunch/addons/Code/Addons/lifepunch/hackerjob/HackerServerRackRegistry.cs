@@ -16,58 +16,13 @@ using Sandbox;
 namespace LifePunch.DXRP.Addons.HackerJob;
 
 /// <summary>
-/// Links <see cref="HackerServerRackEntity"/> to nearby hacker terminals for power + upgrades.
+/// Explicit server rack ↔ terminal links via <see cref="HackerTerminalEntity.LinkedRack"/> (no proximity auto-link).
 /// </summary>
 public static class HackerServerRackRegistry
 {
-	private const float LinkHorizontalUnits = 8f * 39.3701f;
-	private const float LinkVerticalUnits = 4f * 39.3701f;
-
 	public static HackerServerRackEntity FindRackForTerminal( HackerTerminalEntity terminal )
 	{
-		if ( !terminal.IsValid() )
-			return null;
-
-		if ( terminal.LinkedRack.IsValid() )
-			return terminal.LinkedRack;
-
-		var prefer = terminal.IsAdvanced ? HackerRackTier.Advanced : HackerRackTier.Basic;
-		return FindNearestRack( terminal.Scene, terminal.WorldPosition, prefer );
-	}
-
-	public static HackerServerRackEntity FindNearestRack( Scene scene, Vector3 from, HackerRackTier? preferTier = null )
-	{
-		if ( scene is null )
-			return null;
-
-		return SelectNearestInRange( scene, from, preferTier )
-			?? SelectNearestInRange( scene, from, preferTier: null );
-	}
-
-	private static HackerServerRackEntity SelectNearestInRange( Scene scene, Vector3 from, HackerRackTier? preferTier )
-	{
-		HackerServerRackEntity best = null;
-		var bestHorizontal = float.MaxValue;
-
-		foreach ( var rack in scene.GetAllComponents<HackerServerRackEntity>() )
-		{
-			if ( !rack.IsValid() )
-				continue;
-
-			if ( preferTier.HasValue && rack.RackTier != preferTier.Value )
-				continue;
-
-			if ( !IsInLinkRange( from, rack.WorldPosition, out var horizontal ) )
-				continue;
-
-			if ( horizontal < bestHorizontal )
-			{
-				bestHorizontal = horizontal;
-				best = rack;
-			}
-		}
-
-		return best;
+		return terminal.IsValid() ? terminal.ResolveLinkedRack() : null;
 	}
 
 	public static IReadOnlyList<HackerTerminalEntity> GetLinkedTerminals( HackerServerRackEntity rack )
@@ -75,18 +30,9 @@ public static class HackerServerRackRegistry
 		if ( !rack.IsValid() || rack.Scene is null )
 			return Array.Empty<HackerTerminalEntity>();
 
-		var list = new List<HackerTerminalEntity>();
-		foreach ( var terminal in rack.Scene.GetAllComponents<HackerTerminalEntity>() )
-		{
-			if ( !terminal.IsValid() )
-				continue;
-
-			var linked = terminal.LinkedRack.IsValid() ? terminal.LinkedRack : FindNearestRack( rack.Scene, terminal.WorldPosition );
-			if ( linked == rack )
-				list.Add( terminal );
-		}
-
-		return list;
+		return rack.Scene.GetAllComponents<HackerTerminalEntity>()
+			.Where( t => t.IsValid() && t.ResolveLinkedRack() == rack )
+			.ToList();
 	}
 
 	public static bool IsTerminalPowered( HackerTerminalEntity terminal )
@@ -95,11 +41,86 @@ public static class HackerServerRackRegistry
 		return rack.IsValid() && rack.IsPowered;
 	}
 
-	public static bool IsInLinkRange( Vector3 from, Vector3 to, out float horizontalDistance )
+	/// <summary>Terminals not linked to any rack; tier-matched to this rack when possible.</summary>
+	public static IReadOnlyList<HackerTerminalEntity> ScanUnlinkedTerminals( HackerServerRackEntity rack )
 	{
-		var delta = to - from;
-		horizontalDistance = new Vector3( delta.x, delta.y, 0f ).Length;
-		var vertical = MathF.Abs( delta.z );
-		return horizontalDistance <= LinkHorizontalUnits && vertical <= LinkVerticalUnits;
+		if ( !rack.IsValid() || rack.Scene is null )
+			return Array.Empty<HackerTerminalEntity>();
+
+		var preferAdvanced = rack.RackTier == HackerRackTier.Advanced;
+		var list = new List<HackerTerminalEntity>();
+
+		foreach ( var terminal in rack.Scene.GetAllComponents<HackerTerminalEntity>() )
+		{
+			if ( !terminal.IsValid() || terminal.ResolveLinkedRack().IsValid() )
+				continue;
+
+			if ( terminal.IsAdvanced != preferAdvanced )
+				continue;
+
+			list.Add( terminal );
+		}
+
+		if ( list.Count == 0 )
+		{
+			foreach ( var terminal in rack.Scene.GetAllComponents<HackerTerminalEntity>() )
+			{
+				if ( !terminal.IsValid() || terminal.ResolveLinkedRack().IsValid() )
+					continue;
+
+				list.Add( terminal );
+			}
+		}
+
+		return list.OrderBy( t => t.GameObject.Name ).ToList();
 	}
+
+	public static bool TryLinkTerminal( HackerServerRackEntity rack, HackerTerminalEntity terminal, out string error )
+	{
+		error = null;
+
+		if ( !rack.IsValid() || !terminal.IsValid() )
+		{
+			error = "Invalid rack or terminal.";
+			return false;
+		}
+
+		var existing = terminal.ResolveLinkedRack();
+		if ( existing.IsValid() && existing != rack )
+		{
+			error = "Terminal is linked to another rack — unlink first.";
+			return false;
+		}
+
+		terminal.SetLinkedRackHost( rack );
+		return true;
+	}
+
+	public static void UnlinkAllFromRack( HackerServerRackEntity rack )
+	{
+		if ( !rack.IsValid() || rack.Scene is null )
+			return;
+
+		foreach ( var terminal in GetLinkedTerminals( rack ) )
+			terminal.ClearLinkedRackHost();
+	}
+
+	public static bool TryUnlinkTerminalAt( HackerServerRackEntity rack, int index, out string error )
+	{
+		error = null;
+		var linked = GetLinkedTerminals( rack ).ToList();
+		if ( index < 0 || index >= linked.Count )
+		{
+			error = "Invalid unlink index.";
+			return false;
+		}
+
+		linked[index].ClearLinkedRackHost();
+		return true;
+	}
+
+	public static string GetTerminalLabel( HackerTerminalEntity terminal ) =>
+		terminal.IsValid()
+			? ( terminal.IsAdvanced ? HackerJob.AdvancedDisplayName : HackerJob.DisplayName ) + $" ({terminal.GameObject.Name})"
+			: "terminal";
 }

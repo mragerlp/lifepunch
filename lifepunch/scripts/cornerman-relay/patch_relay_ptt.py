@@ -36,7 +36,6 @@ WAKE_CMD_BODY = (
 RUN_PTT_LOOP = '''
 def run_ptt_loop(
     *,
-    lemonade: bool = False,
     remote_url: str = "",
     guided: bool = True,
 ) -> int:
@@ -84,7 +83,7 @@ def run_ptt_loop(
         ui.ptt_transcribing()
 
         try:
-            text = transcribe(audio, lemonade=lemonade, remote_url=remote_url)
+            text = transcribe(audio, remote_url=remote_url)
         except requests.RequestException as exc:
             ui.warn(f"  Transcribe error: {exc}")
             continue
@@ -170,7 +169,6 @@ def _beep_ready() -> None:
 MAIN_HOOK = """
     if args.ptt:
         return run_ptt_loop(
-            lemonade=args.lemonade,
             remote_url=remote,
             guided=guided,
         )

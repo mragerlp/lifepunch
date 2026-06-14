@@ -8,6 +8,8 @@
    Presence in this repository or on the DXRP portal grants no rights to anyone else.
    ───────────────────────────────────────────────────────────────────────────── *@
 @namespace LifePunch.DXRP.Addons.HackerJob
+@using System
+@using System.Linq
 @using LifePunch.DXRP.Addons
 @using System.Collections.Generic
 @using Sandbox
@@ -16,24 +18,112 @@
 
 @attribute [StyleSheet]
 
-<root>
+<root class="@GetRootClass()">
     <div class="scanlines"></div>
 
     <div class="title-bar">
         <span class="title-mark">▣</span>
-        <span class="title-text">SERVER RACK CONTROL</span>
+        <span class="title-text">@GetTitleLabel()</span>
         <span class="title-ver">v1</span>
         <span class="title-spacer"></span>
-        <span class="title-publisher">@LifePunchSourceMark.UiFooterMark</span>
-        <button class="close-x" onclick=@OnClickClose>CLOSE</button>
+        @if ( !IsPinGateActive )
+        {
+            <button class="icon-btn cog @(_showSettings ? "active" : "")" tooltip="Settings" onclick=@OnToggleSettings>
+                <i class="material-icons">settings</i>
+            </button>
+        }
+        <button class="@(!IsPinGateActive ? "close-x" : "icon-btn close")" tooltip="Close" onclick=@OnClickClose>
+            @if ( !IsPinGateActive )
+            {
+                <text>CLOSE</text>
+            }
+            else
+            {
+                <i class="material-icons">close</i>
+            }
+        </button>
     </div>
 
+    @if ( _showSettings && !IsPinGateActive )
+    {
+        <div class="rack-settings">
+            <div class="rack-settings-head">PANEL SIZE</div>
+            <button class="rack-settings-opt @( _panelSize == 0 ? "active" : "" )" onclick=@(() => SetPanelSize( 0 ))>COMPACT</button>
+            <button class="rack-settings-opt @( _panelSize == 1 ? "active" : "" )" onclick=@(() => SetPanelSize( 1 ))>STANDARD</button>
+            <button class="rack-settings-opt @( _panelSize == 2 ? "active" : "" )" onclick=@(() => SetPanelSize( 2 ))>EXPANDED</button>
+        </div>
+    }
+
     <div class="terminal-body">
+        @if ( IsPinGateActive )
+        {
+            <div class="pin-stage">
+                @if ( IsRackPinBlocked )
+                {
+                    <div class="pin-lock-badge pin-lock-static">
+                        <span class="pin-lock-mark">▣</span>
+                        <span class="pin-lock-text">@GetPinLockBadgeLabel()</span>
+                    </div>
+                }
+                else if ( !_pinEntryOpen )
+                {
+                    <button class="pin-lock-cta" onclick=@OnPinCtaClick>
+                        <span class="pin-lock-mark">▣</span>
+                        <span class="pin-lock-text">@GetPinLockBadgeLabel()</span>
+                        <span class="pin-lock-hint">CLICK TO CONTINUE</span>
+                    </button>
+                }
+                else
+                {
+                    <div class="pin-entry-panel">
+                        <div class="pin-entry-header">
+                            <span class="pin-entry-mark">▣</span>
+                            <span class="pin-entry-title">@GetPinEntryTitle()</span>
+                        </div>
+                        <div class="pin-entry-sub">@GetPinEntrySubtitle()</div>
+                        <div class="pin-entry-dots">
+                            @for ( var i = 0; i < HackerServerRackAccessPin.PinLength; i++ )
+                            {
+                                <span class="pin-dot @( i < _pinDigits.Length ? "filled" : "" )"></span>
+                            }
+                        </div>
+                        @if ( !string.IsNullOrEmpty( _pinError ) )
+                        {
+                            <div class="pin-entry-error">@_pinError</div>
+                        }
+                        <div class="pin-numpad">
+                            @foreach ( var key in new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 } )
+                            {
+                                <button class="pin-key" onclick=@(() => OnPinDigit( key ))>@key</button>
+                            }
+                            <button class="pin-key pin-key-fn" onclick=@OnPinClear>CLEAR</button>
+                            <button class="pin-key" onclick=@(() => OnPinDigit( 0 ))>0</button>
+                            <button class="pin-key pin-key-fn" onclick=@OnPinBackspace>⌫</button>
+                        </div>
+                        @if ( _pinConfirming )
+                        {
+                            <button class="pin-entry-back" onclick=@OnPinEntryBack>← RE-ENTER PIN</button>
+                        }
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
         <div class="telemetry-rail">
+            <div class="rail-header">IDENTIFICATION</div>
+            <div class="rail-block">
+                <span class="rail-label">OPERATOR</span>
+                <span class="rail-value">@HackerServerRackMenuHost.GetLocalOperatorLabel()</span>
+            </div>
             <div class="rail-header">RACK STATUS</div>
             <div class="rail-block">
                 <span class="rail-label">POWER</span>
                 <span class="rail-value @(Rack.IsValid() && Rack.IsPowered ? "active" : "")">@(Rack.IsValid() && Rack.IsPowered ? "ONLINE" : "OFFLINE")</span>
+            </div>
+            <div class="rail-block">
+                <span class="rail-label">ACCESS</span>
+                <span class="rail-value active">@(Rack.IsValid() && Rack.AccessPinIsSet ? "SECURED" : "DORMANT")</span>
             </div>
             <div class="rail-block">
                 <span class="rail-label">TERMINALS</span>
@@ -52,8 +142,8 @@
                 <span class="rail-value">@(Rack.IsValid() ? $"{Rack.HackCooldownSeconds:0}s" : "—")</span>
             </div>
             <div class="rail-actions">
-                <button class="rail-btn start @(Rack.IsValid() && Rack.IsPowered ? "active" : "")" onclick=@OnPowerOn>POWER ON</button>
-                <button class="rail-btn stop" onclick=@OnPowerOff>POWER OFF</button>
+                <button class="rail-btn power-on @(Rack.IsValid() && Rack.IsPowered ? "active" : "")" onclick=@OnPowerOn>POWER ON</button>
+                <button class="rail-btn power-off" onclick=@OnPowerOff>POWER OFF</button>
             </div>
             <div class="rail-nav">
                 <div class="rail-nav-header">MODULES</div>
@@ -66,11 +156,54 @@
         <div class="main-pane">
             @if ( _module == RackModule.Control )
             {
-                <div class="module-header">CONTROL — TERMINAL POWER</div>
+                <div class="module-header">CONTROL — TERMINAL LINK</div>
                 <div class="control-body">
-                    <p class="control-line">Linked terminals within 8m receive rack power and upgrades.</p>
-                    <p class="control-line">Standard terminals: wallet hacks only.</p>
-                    <p class="control-line">Advanced (vengeance): wallets + Bitcoin Miners + Government Data Center.</p>
+                    <p class="control-line">Link cornerman / vengeance terminals to this rack. Linked CRTs receive rack power and upgrades.</p>
+                    <div class="control-section">LINKED</div>
+                    @{
+                        var linkedTerminals = Rack.IsValid()
+                            ? HackerServerRackRegistry.GetLinkedTerminals( Rack )
+                            : Array.Empty<HackerTerminalEntity>();
+                    }
+                    @if ( linkedTerminals.Count == 0 )
+                    {
+                        <p class="control-line dim">No terminals linked.</p>
+                    }
+                    else
+                    {
+                        @for ( var i = 0; i < linkedTerminals.Count; i++ )
+                        {
+                            var linkIndex = i;
+                            var terminal = linkedTerminals[i];
+                            <div class="link-row">
+                                <span class="link-label">@HackerServerRackRegistry.GetTerminalLabel( terminal )</span>
+                                <button class="link-btn unlink" onclick=@(() => OnUnlinkTerminal( linkIndex ))>UNLINK</button>
+                            </div>
+                        }
+                        <button class="link-btn unlink-all" onclick=@OnUnlinkAllTerminals>UNLINK ALL</button>
+                    }
+                    <div class="control-section">AVAILABLE</div>
+                    @{
+                        var terminalCandidates = Rack.IsValid()
+                            ? HackerServerRackRegistry.ScanUnlinkedTerminals( Rack )
+                            : Array.Empty<HackerTerminalEntity>();
+                    }
+                    @if ( terminalCandidates.Count == 0 )
+                    {
+                        <p class="control-line dim">No unlinked terminals in scene.</p>
+                    }
+                    else
+                    {
+                        @for ( var i = 0; i < terminalCandidates.Count; i++ )
+                        {
+                            var scanIndex = i;
+                            var terminal = terminalCandidates[i];
+                            <div class="link-row">
+                                <span class="link-label">@HackerServerRackRegistry.GetTerminalLabel( terminal )</span>
+                                <button class="link-btn" onclick=@(() => OnLinkTerminal( scanIndex ))>LINK</button>
+                            </div>
+                        }
+                    }
                     <p class="control-line warn">Power OFF blocks all terminal sessions until restored.</p>
                 </div>
             }
@@ -124,22 +257,96 @@
                 </div>
             }
         </div>
+        }
     </div>
 
-    <div class="lp-source-footer">
-        <span class="lp-mark">@LifePunchSourceMark.UiFooterMark</span>
-        <span class="lp-pub">@LifePunchSourceMark.UiFooterPublisher</span>
-        <span class="lp-legal">@LifePunchSourceMark.UiFooterLegal</span>
-    </div>
+    <LifePunchUiFooter />
 </root>
 
 @code {
     private enum RackModule { Control, Upgrades, Log }
+    private enum PinGateKind { None, Setup, Unlock, Blocked }
 
     private HackerServerRackEntity Rack { get; set; }
     private RackModule _module = RackModule.Control;
     private int _linkedCount;
     private readonly List<string> _lines = new();
+
+    private PinGateKind _pinGate = PinGateKind.None;
+    private bool _pinEntryOpen;
+    private bool _pinConfirming;
+    private string _pinDigits = "";
+    private string _pinFirstEntry = "";
+    private string _pinError = "";
+    private bool _showSettings;
+    private int _panelSize = 1;
+
+    private bool IsRackPinSetup => _pinGate == PinGateKind.Setup;
+    private bool IsRackPinUnlock => _pinGate == PinGateKind.Unlock;
+    private bool IsRackPinBlocked => _pinGate == PinGateKind.Blocked;
+    private bool IsPinGateActive => _pinGate != PinGateKind.None;
+    private bool IsPinUiFlow => IsRackPinSetup || IsRackPinUnlock;
+
+    private string GetRootClass()
+    {
+        var classes = new List<string>();
+        if ( IsPinGateActive )
+            classes.Add( "pin-gate" );
+        if ( IsRackPinBlocked )
+            classes.Add( "pin-blocked" );
+        if ( _pinEntryOpen )
+            classes.Add( "pin-entry-open" );
+        if ( _panelSize == 0 )
+            classes.Add( "compact" );
+        else if ( _panelSize == 2 )
+            classes.Add( "expanded" );
+        return string.Join( " ", classes );
+    }
+
+    private string GetTitleLabel()
+    {
+        if ( IsRackPinSetup )
+            return "GATEKEEPER — SET PIN";
+        if ( IsRackPinBlocked )
+            return "GATEKEEPER — LOCKED";
+        if ( IsRackPinUnlock )
+            return "GATEKEEPER — ENTER PIN";
+        return "SERVER RACK CONTROL";
+    }
+
+    private string GetPinLockBadgeLabel()
+    {
+        if ( IsRackPinSetup )
+            return "SECURE BOOT — SET PIN";
+        if ( IsRackPinBlocked )
+            return "LOCKED — SPAWN ACCESS ONLY";
+        if ( IsRackPinUnlock )
+            return "ENCRYPTED — PIN REQUIRED";
+        return "LOCKED";
+    }
+
+    private string GetPinEntryTitle()
+    {
+        if ( IsRackPinSetup )
+            return _pinConfirming ? "CONFIRM PIN" : "SET PIN";
+        return "ENTER PIN";
+    }
+
+    private string GetPinEntrySubtitle()
+    {
+        if ( IsRackPinSetup )
+        {
+            if ( _pinConfirming )
+                return "Enter the same 4-digit PIN again to confirm.";
+            return $"Operator: {HackerServerRackMenuHost.GetLocalOperatorLabel()} — choose your rack lock.";
+        }
+
+        var owner = Rack.IsValid() && !string.IsNullOrWhiteSpace( Rack.OperatorDisplayName )
+            ? Rack.OperatorDisplayName
+            : "registered operator";
+
+        return $"Encrypted rack — registered by {owner}.";
+    }
 
     public static void Open( HackerServerRackEntity rack )
     {
@@ -148,13 +355,94 @@
             return;
 
         menu.Rack = rack;
+        menu._pinGate = PinGateKind.None;
+        menu.ResetPinEntryUi();
+        menu._showSettings = false;
+        menu._module = RackModule.Control;
         menu.RefreshLinkedCount();
         menu._lines.Clear();
         menu._lines.Add( $">> server rack control — {HackerJob.ProductTitle}" );
-        menu._lines.Add( $">> {LifePunchSourceMark.PublishedByLine}" );
+        menu._lines.Add( $">> {HackerJob.UiVersionFooter}" );
+        menu._lines.Add( $">> {LifePunchSourceMark.CopyrightLine}" );
+        menu._lines.Add( $">> {LifePunchSourceMark.UseRestrictionShort}" );
         menu._lines.Add( $">> power: {( rack.IsValid() && rack.IsPowered ? "ONLINE" : "OFFLINE" )}" );
         menu._lines.Add( ">> use POWER ON before opening cornerman / vengeance terminals." );
     }
+
+    public static void OpenPinSetup( HackerServerRackEntity rack )
+    {
+        var menu = HackerServerRackMenuHost.Mount();
+        if ( menu == null )
+            return;
+
+        menu.Rack = rack;
+        menu.BootPinSetup();
+    }
+
+    public static void OpenPinUnlock( HackerServerRackEntity rack )
+    {
+        var menu = HackerServerRackMenuHost.Mount();
+        if ( menu == null )
+            return;
+
+        menu.Rack = rack;
+        menu.BootPinUnlock();
+    }
+
+    public static void OpenPinBlocked( HackerServerRackEntity rack )
+    {
+        var menu = HackerServerRackMenuHost.Mount();
+        if ( menu == null )
+            return;
+
+        menu.Rack = rack;
+        menu.BootPinBlocked();
+    }
+
+    public static void NotifyPinDenied( string message )
+    {
+        var menu = Sandbox.Game.ActiveScene?.GetAllComponents<HackerServerRackMenu>().FirstOrDefault();
+        if ( !menu.IsValid() )
+            return;
+
+        if ( menu.IsPinUiFlow && menu._pinEntryOpen )
+        {
+            menu._pinError = message;
+            menu.ResetPinDigits();
+        }
+    }
+
+    private void BootPinSetup()
+    {
+        ResetPinEntryUi();
+        _lines.Clear();
+        _pinGate = PinGateKind.Setup;
+    }
+
+    private void BootPinUnlock()
+    {
+        ResetPinEntryUi();
+        _lines.Clear();
+        _pinGate = PinGateKind.Unlock;
+    }
+
+    private void BootPinBlocked()
+    {
+        ResetPinEntryUi();
+        _lines.Clear();
+        _pinGate = PinGateKind.Blocked;
+    }
+
+    private void ResetPinEntryUi()
+    {
+        _pinEntryOpen = false;
+        _pinConfirming = false;
+        _pinDigits = "";
+        _pinFirstEntry = "";
+        _pinError = "";
+    }
+
+    private void ResetPinDigits() => _pinDigits = "";
 
     private void RefreshLinkedCount()
     {
@@ -163,7 +451,142 @@
             : 0;
     }
 
-    private void OnClickClose() => HackerServerRackMenuHost.Close( this );
+    public static void NotifyLinkMessage( string message )
+    {
+        var menu = Sandbox.Game.ActiveScene?.GetAllComponents<HackerServerRackMenu>().FirstOrDefault();
+        if ( !menu.IsValid() )
+            return;
+
+        menu._lines.Add( message );
+        menu.RefreshLinkedCount();
+    }
+
+    private void OnToggleSettings() => _showSettings = !_showSettings;
+
+    private void SetPanelSize( int size )
+    {
+        _panelSize = Math.Clamp( size, 0, 2 );
+        _showSettings = false;
+    }
+
+    private void OnPinCtaClick()
+    {
+        if ( IsRackPinBlocked )
+            return;
+
+        _pinEntryOpen = true;
+        _pinError = "";
+        ResetPinDigits();
+    }
+
+    private void OnPinDigit( int digit )
+    {
+        if ( !IsPinUiFlow || !_pinEntryOpen || _pinDigits.Length >= HackerServerRackAccessPin.PinLength )
+            return;
+
+        _pinDigits += digit.ToString();
+        _pinError = "";
+
+        if ( _pinDigits.Length >= HackerServerRackAccessPin.PinLength )
+            CompletePinEntry();
+    }
+
+    private void OnPinBackspace()
+    {
+        if ( !IsPinUiFlow || !_pinEntryOpen || _pinDigits.Length == 0 )
+            return;
+
+        _pinDigits = _pinDigits[..^1];
+        _pinError = "";
+    }
+
+    private void OnPinClear()
+    {
+        if ( !IsPinUiFlow || !_pinEntryOpen )
+            return;
+
+        ResetPinDigits();
+        _pinError = "";
+    }
+
+    private void OnPinEntryBack()
+    {
+        if ( !IsRackPinSetup || !_pinConfirming )
+            return;
+
+        _pinConfirming = false;
+        _pinFirstEntry = "";
+        ResetPinDigits();
+        _pinError = "";
+    }
+
+    private void CompletePinEntry()
+    {
+        if ( !Rack.IsValid() )
+        {
+            _pinError = "Rack session lost.";
+            ResetPinDigits();
+            return;
+        }
+
+        if ( IsRackPinSetup )
+        {
+            if ( !_pinConfirming )
+            {
+                _pinFirstEntry = _pinDigits;
+                _pinConfirming = true;
+                ResetPinDigits();
+                return;
+            }
+
+            if ( _pinDigits != _pinFirstEntry )
+            {
+                _pinError = "PINs did not match — try again.";
+                _pinConfirming = false;
+                _pinFirstEntry = "";
+                ResetPinDigits();
+                return;
+            }
+
+            Rack.RequestSetAccessPin( _pinDigits, _pinDigits );
+            return;
+        }
+
+        if ( IsRackPinUnlock )
+            Rack.RequestUnlockAccessPin( _pinDigits );
+    }
+
+    private void OnLinkTerminal( int scanIndex )
+    {
+        if ( !Rack.IsValid() )
+            return;
+
+        Rack.RequestLinkTerminal( scanIndex );
+    }
+
+    private void OnUnlinkTerminal( int linkIndex )
+    {
+        if ( !Rack.IsValid() )
+            return;
+
+        Rack.RequestUnlinkTerminal( linkIndex );
+    }
+
+    private void OnUnlinkAllTerminals()
+    {
+        if ( !Rack.IsValid() )
+            return;
+
+        Rack.RequestUnlinkAllTerminals();
+    }
+
+    private void OnClickClose()
+    {
+        if ( Rack.IsValid() )
+            Rack.RequestEndAccessSession();
+
+        HackerServerRackMenuHost.Close( this );
+    }
 
     private void OnPowerOn()
     {

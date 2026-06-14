@@ -65,6 +65,7 @@ public static class HackerJob
 	public const string PublisherName = LifePunchSourceMark.Publisher;
 	public const string PublisherUrl = LifePunchSourceMark.PublisherUrl;
 	public const string ProductTitle = "LIFEPUNCH™ Hacker Job for DXRP";
+	public const string UiVersionFooter = "lifepunch.hackerjob v1.0.0 - lifepunch.co";
 	public const string ProprietaryNotice = LifePunchSourceMark.ProprietaryShort;
 	public const string UseRestrictionNotice = LifePunchSourceMark.UseRestrictionShort;
 }

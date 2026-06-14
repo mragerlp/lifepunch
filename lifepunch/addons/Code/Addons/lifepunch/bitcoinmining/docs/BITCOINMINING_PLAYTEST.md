@@ -2,7 +2,7 @@
 
 **Editor:** `Start-SboxDxrpEditor.ps1` (opens DXRP normally) · **Sync:** `Sync-LifePunchAddonsToDxrp.ps1 -Addon bitcoinmining`
 
-**API key (optional):** in console after host play — `authorize <dxrp.net server token>`
+**API key (optional):** after host play — `lp_authorize <dxrp.net server token>` (`authorize` is a launch ConVar only: `+authorize` at startup)
 
 ---
 
@@ -21,7 +21,7 @@
 3. Press **Play** (green arrow). First cold load: wait **2–5 minutes** while downtown compiles; early Stop = `Couldn't load map (A task was canceled.)`.
 4. Log/console shows player join + map fit → you're in. Then: `lp_hashd_preview` or `lp_spawn_gpu_rack`.
 5. **Start Hosting** is optional and only **after** step 3 succeeds (not from prefab edit mode).
-6. Portal/API when needed: `authorize <token>` in console.
+6. Portal/API when needed: `lp_authorize <token>` after host play (or launch with `+authorize` / `-WithAuthorize`).
 
 **Stall on cold start:** broken `advanceddrugprocessing` models on disk can spam recompiles — local DXRP install may rename that folder to `advanceddrugprocessing._disabled` (not in `rp.sbproj` Resources).
 
@@ -39,8 +39,8 @@
 | `dark green.vmat_c` / `lime green.vmat_c` on terminal | **P1 loop** | CRT FBX `Lime Green` / `Dark Green` slots | **Fixed:** remap → `bitcoin-terminal-monitor.vmat`. |
 | `bitcoin-miner/*.sound_c` not found | **P1 loop** | Prefab refs sounds that do not exist yet | **Fixed:** prefab sound props nulled until owned audio ships. |
 | `Skipping texture streaming` (gpu textures) | Watch | Recompile storm settling | Stops after vmat/vmdl `_c` stable; restart editor if it persists >30s. |
-| `repeating-linear-gradient` / `linear-gradient` invalid `background-image` | **P1 loop** | s&box UI panel SCSS rejects CSS gradients | **Fixed:** solid colors in `HashdTerminal.razor.scss` (no gradients). |
-| `Failed to get player inventory` **403** | Expected offline | No `authorize` token / portal API | Console: `authorize <dxrp.net token>` — not required for `lp_spawn_gpu_rack` / hashd UI. |
+| `repeating-linear-gradient` / `linear-gradient` invalid `background-image` | **P1 loop** | s&box UI panel SCSS rejects CSS gradients | **Fixed:** solid colors in `HashdTerminal.razor.scss`, `HackerTerminal.razor.scss`, `HackerServerRackMenu.razor.scss` (no gradients). Run `Validate-SboxRazorScss.ps1` before ship. |
+| `Failed to get player inventory` **403** | Expected offline | No portal API token | `lp_authorize <dxrp.net token>` after host play — not required for `lp_spawn_gpu_rack` / hashd UI. |
 | `Unable to load prefab improved_atm` (×11) | DXRP map | Map fitting references missing SPL ATM addon | Noise only; downtown still loads. |
 | `Couldn't find Input Action called "Pocket"` | DXRP | Pocket bind not in project InputSettings | Ignore for bitcoinmining playtest. |
 | `returning error texture` metal036 / door vmdl | DXRP map | Downtown fitting props missing `_c` on cold compile | Cosmetic checkerboard on some doors; map playable. |
@@ -173,19 +173,17 @@ Expected: green terminal UI, LCD on `lcd_screen` (on `bitcoin-terminal.prefab`),
 **Visual size hierarchy (what players should see):**
 
 ```text
-Large GPU Rack  >>  GPU Rack  >>  Bitcoin Miner hub (Ophion desktop)
-   farm unit         low rack         control box on desk
+Large GPU Rack  >>  GPU Rack (standing crypto farm frame)  >>  Bitcoin Miner hub (Ophion gaming PC)
+   stacked farm         single open-frame mining rig              hashd control tower
 ```
 
-**Do not compare collider Z to infer visuals** — colliders can be stale placeholders.
+| Entity | Prefab | Root scale | BoxCollider (gameplay hammer) | vmdl `import_scale` (repo) | Mesh bounds @ flatgrass |
+|--------|--------|------------|-------------------------------|----------------------------|-------------------------|
+| **GPU Rack** | `gpurack/gpu-rack.prefab` | 1,1,1 | **25 × 20 × 36** | **0.465** (pitch 90°) | ~16 × 23 × **36** |
+| **Large GPU Rack** | `largegpurack/large-gpu-rack.prefab` | 1,1,1 | ~52 × 27 × **47** | 1.0 | ~95 × 70 × **94** |
+| **Bitcoin Miner hub** | `bitcoinminer/bitcoin-miner.prefab` | 1,1,1 | **10 × 8 × 15** | **0.385** + **Z 13.3** trans, rot 0 | Re-verify after vmdl recompile (was wrong @ trans 0 + pitch 90°) |
 
-| Entity | Prefab | Root scale | BoxCollider (gameplay hammer) | vmdl `import_scale` (repo) | Mesh bounds @ flatgrass (Jun 2026) |
-|--------|--------|------------|-------------------------------|----------------------------|-------------------------------------|
-| **GPU Rack** | `gpurack/gpu-rack.prefab` | 1,1,1 | ~8.6 × 12.9 × **21** | 1.0 | ~19.7 × 24.5 × **8.6** |
-| **Large GPU Rack** | `largegpurack/large-gpu-rack.prefab` | 1,1,1 | ~52 × 27 × **47** | 1.0 | ~45 × 97 × **25** |
-| **Bitcoin Miner hub** | `bitcoinminer/bitcoin-miner.prefab` | 1,1,1 | **12 × 9 × 7** | **0.26** | ~11.3 × 8.5 × **6.6** |
-
-**Verified hierarchy (mesh height Z):** hub **6.6** &lt; gpu-rack **8.6** &lt; large **25**. Hub footprint also smallest — desk control unit, not farm-scale.
+**Verified read:** single GPU rack is a **standing crypto farm frame** (Sketchfab ref) — taller than the Ophion hub, smaller than the stacked farm unit.
 
 **Scale audit:** `lp_map_flatgrass` → Play → `lp_bitcoinmining_scale_audit` (logs `BITCOINMINING_SCALE_AUDIT` lines).
 

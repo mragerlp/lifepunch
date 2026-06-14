@@ -15,29 +15,38 @@
 
 @attribute [StyleSheet]
 
-<root>
-    <div class="pocket-bar">
-        <div class="pocket-header">
-            <span class="pocket-mark">@LifePunchSourceMark.UiFooterMark</span>
-            <span class="pocket-title">POCKET</span>
-            <span class="pocket-count">@VisiblePocketHudState.Count/@VisiblePocketHudState.MaxSlots</span>
+<root class="@(VisiblePocketHudState.IsOpen ? "open" : "collapsed")">
+    @if ( VisiblePocketHudState.IsOpen )
+    {
+        <div class="pocket-bar">
+            <div class="pocket-header">
+                <span class="pocket-mark">@LifePunchSourceMark.UiFooterMark</span>
+                <span class="pocket-title">POCKET</span>
+                <span class="pocket-count">@VisiblePocketHudState.Count/@VisiblePocketHudState.MaxSlots</span>
+            </div>
+            <div class="pocket-slots">
+                @for ( var i = 0; i < VisiblePocketHudState.MaxSlots; i++ )
+                {
+                    var label = i < VisiblePocketHudState.Labels.Count ? VisiblePocketHudState.Labels[i] : "";
+                    var filled = !string.IsNullOrWhiteSpace( label );
+                    <div class="pocket-slot @(filled ? "filled" : "")">
+                        <span class="slot-index">@(i + 1)</span>
+                        <span class="slot-label">@(filled ? label : "—")</span>
+                    </div>
+                }
+            </div>
+            <LifePunchUiFooter />
         </div>
-        <div class="pocket-slots">
-            @for ( var i = 0; i < VisiblePocketHudState.MaxSlots; i++ )
-            {
-                var label = i < VisiblePocketHudState.Labels.Count ? VisiblePocketHudState.Labels[i] : "";
-                var filled = !string.IsNullOrWhiteSpace( label );
-                <div class="pocket-slot @(filled ? "filled" : "")">
-                    <span class="slot-index">@(i + 1)</span>
-                    <span class="slot-label">@(filled ? label : "—")</span>
-                </div>
-            }
+    }
+    else
+    {
+        <div class="pocket-collapsed-hint">
+            <span class="pocket-count-mini">@VisiblePocketHudState.Count/@VisiblePocketHudState.MaxSlots</span>
         </div>
-        <div class="pocket-footer">@LifePunchSourceMark.UiFooterLegal</div>
-    </div>
+    }
 </root>
 
 @code {
     protected override int BuildHash() =>
-        HashCode.Combine( VisiblePocketHudState.MaxSlots, VisiblePocketHudState.Count, VisiblePocketHudState.Revision );
+        HashCode.Combine( VisiblePocketHudState.MaxSlots, VisiblePocketHudState.Count, VisiblePocketHudState.Revision, VisiblePocketHudState.IsOpen );
 }

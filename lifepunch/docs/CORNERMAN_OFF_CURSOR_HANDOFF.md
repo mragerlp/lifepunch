@@ -96,6 +96,7 @@ cd C:\Users\jared\Projects\lifepunchaddons\lifepunch\scripts
 
 ## Related
 
-- `LOCAL_AI_WORKSTATION.md` §7c (patch handoff — legacy if Cursor returns)
+- `CORNERMAN_IDLE_FOLDER.md` — **primary handoff while VENGEANCE is offline** (idle export, no push)
+- `LOCAL_AI_WORKSTATION.md` §7c (patch handoff — legacy when Cursor returns)
 - `BITCOINMINING_FINISH_RUNBOOK.md`
 - `lifepunch/docs/AGENT_PROMPT.md` Block 0 sync

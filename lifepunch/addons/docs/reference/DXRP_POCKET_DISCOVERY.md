@@ -15,6 +15,7 @@
 | `Constants.PocketTag` / `PocketItemTag` | `Dxura.RP.Shared` (used by entities + `PocketSystem`) |
 | HUD hint | `Code/UI/HUD/InputHelper.razor` — `LocalPocketCount` / `MaxPocketItems` |
 | Hands input | `Code/Equipment/Equipments/Default/HandsEquipment.cs` — attack2 → `PickupHost` / `DropHost` |
+| Inventory (hands equipped) | **R** (`Pocket` input) — stock DXRP pocket/inventory UI; LifePunch menus do not bind R |
 
 ---
 

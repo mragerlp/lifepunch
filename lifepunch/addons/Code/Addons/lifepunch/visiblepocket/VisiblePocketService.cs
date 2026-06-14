@@ -160,7 +160,7 @@ public sealed class VisiblePocketService : SingletonComponent<VisiblePocketServi
 		}
 
 		var max = VisiblePocketPolicyStore.Refresh( player );
-		var items = PocketSystemAccessor.GetItems( player.SteamId );
+		var items = PocketSystem.Instance.GetPocketItems( player.SteamId );
 		var labels = new List<string>();
 
 		foreach ( var item in items )

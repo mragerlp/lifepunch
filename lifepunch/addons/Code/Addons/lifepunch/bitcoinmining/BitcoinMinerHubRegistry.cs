@@ -16,39 +16,25 @@ using Sandbox;
 namespace LifePunch.DXRP.Addons.BitcoinMining;
 
 /// <summary>
-/// Links <see cref="BitcoinMinerHubEntity"/> to nearby <see cref="GpuRackEntity"/> racks (owner + proximity).
-/// Host placement caps land in Phase 2.
+/// Explicit hub ↔ GPU rack links via <see cref="BitcoinMinerHubEntity.LinkedRigIds"/> (no proximity auto-link).
 /// </summary>
 public static class BitcoinMinerHubRegistry
 {
-	private const float MetersToUnits = 39.3701f;
-	private const float LinkHorizontalUnits = 8f * MetersToUnits;
-	private const float LinkVerticalUnits = 4f * MetersToUnits;
-
 	public static BitcoinMinerHubEntity FindHubForRig( GpuRackEntity rig )
 	{
 		if ( !rig.IsValid() || rig.Scene is null )
 			return null;
 
-		BitcoinMinerHubEntity best = null;
-		var bestHorizontal = float.MaxValue;
-
 		foreach ( var hub in rig.Scene.GetAllComponents<BitcoinMinerHubEntity>() )
 		{
-			if ( !hub.IsValid() || !SharesHubOwner( hub, rig ) )
+			if ( !hub.IsValid() )
 				continue;
 
-			if ( !IsInLinkRange( rig.WorldPosition, hub.WorldPosition, out var horizontal ) )
-				continue;
-
-			if ( horizontal < bestHorizontal )
-			{
-				bestHorizontal = horizontal;
-				best = hub;
-			}
+			if ( BitcoinMinerHubLinkIds.Parse( hub.LinkedRigIds ).Contains( rig.GameObject.Id ) )
+				return hub;
 		}
 
-		return best;
+		return null;
 	}
 
 	public static IReadOnlyList<GpuRackEntity> GetLinkedRacks( BitcoinMinerHubEntity hub )
@@ -56,33 +42,114 @@ public static class BitcoinMinerHubRegistry
 		if ( !hub.IsValid() || hub.Scene is null )
 			return Array.Empty<GpuRackEntity>();
 
-		var small = new List<GpuRackEntity>();
-		var large = new List<GpuRackEntity>();
+		var resolved = ResolveLinkedRigsInOrder( hub );
+		var small = resolved.Where( r => !r.AdvancedRack ).Take( BitcoinMiningCombatStats.MaxSmallRacksPerHub ).ToList();
+		var large = resolved.Where( r => r.AdvancedRack ).Take( BitcoinMiningCombatStats.MaxLargeRacksPerHub ).ToList();
+		return small.Concat( large ).ToList();
+	}
 
-		foreach ( var rig in hub.Scene.GetAllComponents<GpuRackEntity>() )
+	public static IReadOnlyList<GpuRackEntity> ResolveLinkedRigsInOrder( BitcoinMinerHubEntity hub )
+	{
+		if ( !hub.IsValid() || hub.Scene is null )
+			return Array.Empty<GpuRackEntity>();
+
+		var rigsById = hub.Scene.GetAllComponents<GpuRackEntity>()
+			.Where( r => r.IsValid() )
+			.ToDictionary( r => r.GameObject.Id, r => r );
+
+		var ordered = new List<GpuRackEntity>();
+		foreach ( var id in BitcoinMinerHubLinkIds.Parse( hub.LinkedRigIds ) )
 		{
-			if ( !rig.IsValid() || !SharesHubOwner( hub, rig ) )
-				continue;
-
-			if ( !IsInLinkRange( rig.WorldPosition, hub.WorldPosition, out _ ) )
-				continue;
-
-			if ( rig.AdvancedRack )
-				large.Add( rig );
-			else
-				small.Add( rig );
+			if ( rigsById.TryGetValue( id, out var rig ) && rig.IsValid() && SharesHubOwner( hub, rig ) )
+				ordered.Add( rig );
 		}
 
-		var ordered = small
-			.OrderBy( r => ( r.WorldPosition - hub.WorldPosition ).Length )
-			.Take( BitcoinMiningCombatStats.MaxSmallRacksPerHub )
-			.Concat(
-				large
-					.OrderBy( r => ( r.WorldPosition - hub.WorldPosition ).Length )
-					.Take( BitcoinMiningCombatStats.MaxLargeRacksPerHub ) )
-			.ToList();
-
 		return ordered;
+	}
+
+	/// <summary>Owner rigs in the scene that are not linked to any hub yet.</summary>
+	public static IReadOnlyList<GpuRackEntity> ScanUnlinkedRigs( BitcoinMinerHubEntity hub )
+	{
+		if ( !hub.IsValid() || hub.Scene is null )
+			return Array.Empty<GpuRackEntity>();
+
+		var list = new List<GpuRackEntity>();
+		foreach ( var rig in hub.Scene.GetAllComponents<GpuRackEntity>() )
+		{
+			if ( !rig.IsValid() || !SharesHubOwner( hub, rig ) || IsRigLinkedAnywhere( rig ) )
+				continue;
+
+			list.Add( rig );
+		}
+
+		return list
+			.OrderBy( r => r.AdvancedRack )
+			.ThenBy( r => r.GameObject.Name )
+			.ToList();
+	}
+
+	public static bool TryLinkRig( BitcoinMinerHubEntity hub, GpuRackEntity rig, out string error )
+	{
+		error = null;
+
+		if ( !hub.IsValid() || !rig.IsValid() )
+		{
+			error = "Invalid hub or rack.";
+			return false;
+		}
+
+		if ( !SharesHubOwner( hub, rig ) )
+		{
+			error = "Rack owner does not match this hub.";
+			return false;
+		}
+
+		var ids = BitcoinMinerHubLinkIds.Parse( hub.LinkedRigIds ).ToList();
+		if ( ids.Contains( rig.GameObject.Id ) )
+		{
+			error = "Rack already linked to this hub.";
+			return false;
+		}
+
+		if ( IsRigLinkedAnywhere( rig ) )
+		{
+			error = "Rack is linked to another hub — unlink first.";
+			return false;
+		}
+
+		var projected = ResolveIdsToRigs( hub, ids );
+		projected.Add( rig );
+
+		if ( !CanAcceptRig( projected, rig, out error ) )
+			return false;
+
+		ids.Add( rig.GameObject.Id );
+		hub.LinkedRigIds = BitcoinMinerHubLinkIds.Serialize( ids );
+		return true;
+	}
+
+	public static bool TryUnlinkRigAt( BitcoinMinerHubEntity hub, int index, out string error )
+	{
+		error = null;
+		var linked = ResolveLinkedRigsInOrder( hub ).ToList();
+		if ( index < 0 || index >= linked.Count )
+		{
+			error = "Invalid link index — run 'link' to list.";
+			return false;
+		}
+
+		var removeId = linked[index].GameObject.Id;
+		var ids = BitcoinMinerHubLinkIds.Parse( hub.LinkedRigIds ).Where( id => id != removeId ).ToList();
+		hub.LinkedRigIds = BitcoinMinerHubLinkIds.Serialize( ids );
+		return true;
+	}
+
+	public static void UnlinkAll( BitcoinMinerHubEntity hub )
+	{
+		if ( !hub.IsValid() )
+			return;
+
+		hub.LinkedRigIds = "";
 	}
 
 	public static int CountHubs( Scene scene )
@@ -93,19 +160,11 @@ public static class BitcoinMinerHubRegistry
 		return scene.GetAllComponents<BitcoinMinerHubEntity>().Count( h => h.IsValid() );
 	}
 
-	public static bool IsInLinkRange( Vector3 from, Vector3 to, out float horizontal )
-	{
-		var delta = from - to;
-		horizontal = new Vector3( delta.x, delta.y, 0f ).Length;
-		var vertical = MathF.Abs( delta.z );
-		return horizontal <= LinkHorizontalUnits && vertical <= LinkVerticalUnits;
-	}
-
-	/// <summary>Human-readable link summary for hashd rail (caps per <see cref="BitcoinMiningCombatStats"/>).</summary>
+	/// <summary>Human-readable link summary for hashd rail.</summary>
 	public static string DescribeLinkedRacks( IReadOnlyList<GpuRackEntity> racks )
 	{
 		if ( racks == null || racks.Count == 0 )
-			return "none — buy & place GPU Racks within 8m";
+			return "none — use LINK at rig0>";
 
 		var small = racks.Count( r => r.IsValid() && !r.AdvancedRack );
 		var large = racks.Count( r => r.IsValid() && r.AdvancedRack );
@@ -117,6 +176,11 @@ public static class BitcoinMinerHubRegistry
 
 		return string.Join( " · ", parts );
 	}
+
+	public static string GetRigLabel( GpuRackEntity rig ) =>
+		rig.IsValid()
+			? ( rig.AdvancedRack ? BitcoinMiningAddon.AdvancedDisplayName : BitcoinMiningAddon.DisplayName ) + $" ({rig.GameObject.Name})"
+			: "rack";
 
 	/// <summary>Only the spawner's racks link to their hub — prevents neighbor rack hijack.</summary>
 	internal static bool SharesHubOwner( BitcoinMinerHubEntity hub, GpuRackEntity rig )
@@ -132,5 +196,59 @@ public static class BitcoinMinerHubRegistry
 
 		return hub.Owner == rig.Owner;
 #endif
+	}
+
+	private static bool IsRigLinkedAnywhere( GpuRackEntity rig )
+	{
+		if ( !rig.IsValid() || rig.Scene is null )
+			return false;
+
+		foreach ( var hub in rig.Scene.GetAllComponents<BitcoinMinerHubEntity>() )
+		{
+			if ( !hub.IsValid() )
+				continue;
+
+			if ( BitcoinMinerHubLinkIds.Parse( hub.LinkedRigIds ).Contains( rig.GameObject.Id ) )
+				return true;
+		}
+
+		return false;
+	}
+
+	private static List<GpuRackEntity> ResolveIdsToRigs( BitcoinMinerHubEntity hub, IReadOnlyList<Guid> ids )
+	{
+		var rigsById = hub.Scene.GetAllComponents<GpuRackEntity>()
+			.Where( r => r.IsValid() )
+			.ToDictionary( r => r.GameObject.Id, r => r );
+
+		var list = new List<GpuRackEntity>();
+		foreach ( var id in ids )
+		{
+			if ( rigsById.TryGetValue( id, out var rig ) && rig.IsValid() )
+				list.Add( rig );
+		}
+
+		return list;
+	}
+
+	private static bool CanAcceptRig( IReadOnlyList<GpuRackEntity> projected, GpuRackEntity rig, out string error )
+	{
+		error = null;
+		var small = projected.Count( r => !r.AdvancedRack );
+		var large = projected.Count( r => r.AdvancedRack );
+
+		if ( rig.AdvancedRack && large > BitcoinMiningCombatStats.MaxLargeRacksPerHub )
+		{
+			error = $"Cap: {BitcoinMiningCombatStats.MaxLargeRacksPerHub}× {BitcoinMiningAddon.AdvancedDisplayName}.";
+			return false;
+		}
+
+		if ( !rig.AdvancedRack && small > BitcoinMiningCombatStats.MaxSmallRacksPerHub )
+		{
+			error = $"Cap: {BitcoinMiningCombatStats.MaxSmallRacksPerHub}× {BitcoinMiningAddon.DisplayName}.";
+			return false;
+		}
+
+		return true;
 	}
 }

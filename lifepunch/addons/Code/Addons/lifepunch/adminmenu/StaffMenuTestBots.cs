@@ -12,8 +12,9 @@
 
 using System.Collections.Generic;
 using Sandbox;
+using Dxura.RP.Game;
 
-namespace Dxura.RP.Game;
+namespace LifePunch.DXRP.Addons.StaffMenu;
 
 /// <summary>
 /// DEV / EDITOR-TEST ONLY — DO NOT SHIP. Exclude before publishing the admin-menu addon.
@@ -31,6 +32,8 @@ namespace Dxura.RP.Game;
 ///   lifepunch_spawn_rankbots         → spawns one bot per rank (Regular/VIP/EVIP/Mod/Admin/Super Admin)
 ///                                      plus "Greg" as an Owner-mirror, each with a real public avatar.
 ///                                      Pass `lifepunch_spawn_rankbots false` to skip Greg (targetable only).
+///   lifepunch_spawn_all_testbots     → alias for lifepunch_spawn_rankbots (full roster incl. Greg)
+///   lifepunch_auto_spawn_testbots 1  → on editor host play, auto-spawn after portal API init (default 1)
 ///   lifepunch_list_ranks             → logs which rank names resolve (confirms the live portal strings)
 ///   lifepunch_botsay "Greg hi there" → makes a spawned bot talk in chat (first token = bot, rest = msg)
 ///   lifepunch_clear_testbots         → removes all spawned bots and clears their rank assignments
@@ -192,6 +195,12 @@ public static class StaffMenuTestBots
 		( "Player Bot 1", "", 76561197964781654L ),
 		( "Player Bot 2", "", 76561198005079964L )
 	};
+
+	[ConCmd( "lifepunch_spawn_all_testbots" )]
+	public static void SpawnAllTestBots()
+	{
+		SpawnRankBots( true );
+	}
 
 	[ConCmd( "lifepunch_spawn_rankbots" )]
 	public static void SpawnRankBots( bool includeOwner = true )

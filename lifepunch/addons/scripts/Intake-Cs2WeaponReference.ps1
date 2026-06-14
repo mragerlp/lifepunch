@@ -30,7 +30,7 @@
 param(
     [string[]] $Ident = @(),
     [string] $Cs2Vpk = 'D:\Steam\steamapps\common\Counter-Strike Global Offensive\game\csgo\pak01_dir.vpk',
-    [string] $CliPath = '',
+    [string] $CliPath = 'C:\Tools\Source2Viewer\Source2Viewer-CLI.exe',
     [string] $IntakeRoot = 'C:\lifepunch\reference-intake\cs2-weapons',
     [switch] $ExportGltf,
     [switch] $ManifestOnly,
@@ -203,13 +203,25 @@ foreach ($id in $Ident) {
             Join-Path $Cs2Vpk "weapons\models\$folder\weapon_$folder.vmdl_c"
         )
         $vmPath = $candidates | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
-        $outGlb = Join-Path $vmDir "$($w.cs2Mesh).glb"
+        if (-not $vmPath) {
+            $list = & $CliPath -i $Cs2Vpk --vpk_list -f "weapons/models/$folder/" 2>$null
+            $rel = $list | Where-Object { $_ -match "$([regex]::Escape($w.cs2Mesh))\.vmdl_c" } | ForEach-Object { ($_ -split '\s+')[0] } | Select-Object -First 1
+            if ($rel) { $vmPath = $rel }
+        }
+        $outGlb = Join-Path $vmDir "$($w.cs2Mesh)_reference.glb"
         if ($WhatIf) {
             Write-Host "[WhatIf] CLI export $vmPath -> $outGlb"
         } elseif ($vmPath) {
-            & $CliPath -i $vmPath -o $outGlb -d --gltf_export_format glb --gltf_export_materials --gltf_export_animations
+            if (Test-Path -LiteralPath $outGlb) { Remove-Item -LiteralPath $outGlb -Force -Recurse -ErrorAction SilentlyContinue }
+            & $CliPath -i $Cs2Vpk -f $vmPath -o $outGlb -d --gltf_export_format glb --gltf_export_materials --gltf_export_animations
             if ($LASTEXITCODE -ne 0) { Write-Host "  WARN: CLI exit $LASTEXITCODE for $id viewmodel" -ForegroundColor Yellow }
-            else { Write-Host "  $id viewmodel glTF OK" -ForegroundColor Green }
+            else {
+                $nested = Join-Path $vmDir "$($w.cs2Mesh).glb\weapons\models\$folder\$($w.cs2Mesh).glb"
+                if ((Test-Path -LiteralPath $nested) -and -not (Test-Path -LiteralPath $outGlb)) {
+                    Copy-Item -LiteralPath $nested -Destination $outGlb -Force
+                }
+                Write-Host "  $id viewmodel glTF OK -> $outGlb" -ForegroundColor Green
+            }
         } else {
             Write-Host "  $id skip CLI viewmodel - use S2V GUI to find exact vmdl_c names in weapons/models/$folder/" -ForegroundColor DarkYellow
         }

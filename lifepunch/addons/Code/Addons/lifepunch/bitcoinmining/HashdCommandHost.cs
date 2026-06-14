@@ -11,6 +11,7 @@
 using System;
 using System.Linq;
 using Sandbox;
+using LifePunch.DXRP.Addons;
 
 namespace LifePunch.DXRP.Addons.BitcoinMining;
 
@@ -20,10 +21,6 @@ namespace LifePunch.DXRP.Addons.BitcoinMining;
 /// </summary>
 internal static class HashdCommandHost
 {
-	private const float MetersToUnits = 39.3701f;
-	private const float OpenHorizontalUnits = 8f * MetersToUnits;
-	private const float OpenVerticalUnits = 4f * MetersToUnits;
-
 #if LIFEPUNCH_LOCAL
 	[ConCmd( "hashd" )]
 	public static void HashdConCmd( string args = "" ) => HandleOpenCommand( args );
@@ -90,7 +87,7 @@ internal static class HashdCommandHost
 			if ( poweredOnly && !hub.IsPowered )
 				continue;
 
-			if ( !BitcoinMinerHubRegistry.IsInLinkRange( viewerPos, hub.WorldPosition, out var horizontal ) )
+			if ( !LifePunchMenuInteractRange.IsInOpenRange( viewerPos, hub.WorldPosition, out var horizontal ) )
 				continue;
 
 			if ( horizontal < bestHorizontal )

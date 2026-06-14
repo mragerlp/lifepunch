@@ -1,0 +1,61 @@
+{
+  "model": "bitcoin-miner.vmdl",
+  "source": "source/Ophion.fbx",
+  "textureRoot": "addons/lifepunch/bitcoinmining/entities/bitcoinminer/textures",
+  "note": "Three-hop chain: FBX slot name → vmdl remap → vmat texture paths. Unmapped slots use global_default (chassis). Recompile vmdl + vmats after edits; pull _c to repo.",
+  "vmats": {
+    "bitcoin-miner-chassis.vmat": {
+      "shader": "complex",
+      "textures": ["Metal036_2K_Color.jpg", "Metal036_2K_NormalGL.jpg", "Metal036_2K_Roughness.jpg", "Metal036_2K_Metalness.jpg"]
+    },
+    "bitcoin-miner-acrylic.vmat": {
+      "shader": "complex + F_TRANSLUCENT",
+      "textures": ["hexabg.png", "Metal036_2K_Roughness.jpg"]
+    },
+    "bitcoin-miner-gpu.vmat": {
+      "shader": "complex + emissive",
+      "textures": ["AsusRogStrix3090.png", "AsusRogStrix3090_roughness.png", "AsusRogStrix3090_metalness.png", "AsusRogStrix3090_emission_-_showdown.png"]
+    },
+    "bitcoin-miner-motherboard.vmat": {
+      "textures": ["LD0005903152_1_0005906983_0005906987_color.jpg", "LD0005903152_1_0005906983_0005906987_bump.jpg", "LD0005903152_1_0005906983_0005906987_rough.jpg"]
+    },
+    "bitcoin-miner-psu.vmat": {
+      "textures": ["CorsairTX850.png"]
+    },
+    "bitcoin-miner-led.vmat": {
+      "textures": ["LD0005903152_1_0005906983_0005906987_color.jpg", "LD0005903152_1_0005906983_0005906987_Emiss.png"]
+    },
+    "bitcoin-miner-wire.vmat": {
+      "textures": ["Wire_weave_texture.png", "Wire_weave_bump1.jpg"]
+    },
+    "bitcoin-miner-metal009.vmat": {
+      "textures": ["Metal009_2K_Color.jpg", "Metal009_2K_Normal.jpg", "Metal009_2K_Roughness.jpg", "Metal009_2K_Metalness.jpg"]
+    },
+    "bitcoin-miner-plate.vmat": {
+      "textures": ["white-metal-plate-dots-600w-427727302_(2).png"]
+    }
+  },
+  "fbxSlots": {
+    "chassis": ["Aluminium", "Aluminium.001", "Brushed Aluminium", "Anisotropic Aluminium", "Steel", "Steel anisotropic", "Diffuse", "Mesh", "Back screws", "Bottom screws", "Pre-screws", "Acrylic Screw", "Metal036"],
+    "acrylic": ["Side Panels", "Acrylic", "Acrylic Panels", "hexabg", "hexabg.png"],
+    "gpu": ["GraphicCard", "AsusRog", "AsusRogStrix3090.png"],
+    "motherboard": ["Motherboard", "Motherboard.001", "Motherboard scres"],
+    "psu": ["Powersupply"],
+    "led": ["LED", "LED.001"],
+    "wire": ["Braided cable", "Grille", "Wire weave", "Wire_weave_texture.png", "Wire weave_texture.png"],
+    "metal009": ["Cuivre", "Metal009", "Metal009_2K_Normal.jpg", "Metal009_2K_Roughness.jpg", "Metal009_2K_Roughness.jpg.001"],
+    "plate": ["Plastic", "Plastic Matt", "G.Skill Trident Z5", "white-metal", "LD000548", "white-metal-plate-dots-600w-427727302 (2).png", "white-metal-plate-dots-600w-427727302_(2).png"]
+  },
+  "unusedTextures": [
+    "Raijintek-Logo.png",
+    "LD0005480336_2_(1).png",
+    "depositphotos_80604180-stock-photo-backgro.png",
+    "internal_ground_ao_texture.jpeg"
+  ],
+  "fixedJun2026": [
+    "Side Panels → acrylic (was chassis — blocked glass)",
+    "AsusRog, Wire weave, white-metal, Metal036, Metal009, LD000548 → vmats (were falling to default chassis)",
+    "Metal036_2K_NormalGL.jpg remap added (repo file is NormalGL not NormalDX)",
+    "hexabg slot name remap added"
+  ]
+}

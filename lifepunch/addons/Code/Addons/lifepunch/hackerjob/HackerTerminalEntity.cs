@@ -10,6 +10,7 @@
 
 using System;
 using Sandbox;
+using LifePunch.DXRP.Addons;
 #if !LIFEPUNCH_LOCAL
 using Dxura.RP.Game;
 #endif
@@ -36,11 +37,20 @@ public sealed class HackerTerminalEntity : BaseEntity, Component.IPressable
 	public bool IsPowered => HackerServerRackRegistry.IsTerminalPowered( this );
 	public HackerServerRackEntity ActiveRack => HackerServerRackRegistry.FindRackForTerminal( this );
 
+	public HackerServerRackEntity ResolveLinkedRack() =>
+		LinkedRack.IsValid() ? LinkedRack : null;
+
+	public void SetLinkedRackHost( HackerServerRackEntity rack ) => LinkedRack = rack;
+
+	public void ClearLinkedRackHost() => LinkedRack = null;
+
 	protected override void OnStart()
 	{
 		base.OnStart();
 		RefreshScreenIdle();
 	}
+
+	public bool CanPress( IPressable.Event e ) => LifePunchMenuInteractGate.CanPressMenu( GameObject );
 
 	public bool Press( IPressable.Event e )
 	{
@@ -54,10 +64,11 @@ public sealed class HackerTerminalEntity : BaseEntity, Component.IPressable
 	private void OpenTerminalHost()
 	{
 #if !LIFEPUNCH_LOCAL
-		if ( !GameUtils.HasPermission( Rpc.Caller, GameObject ) )
+		if ( !LifePunchMenuInteractGate.IsCallerAllowed( Rpc.Caller, GameObject ) )
 			return;
-
-		// Job gate + distance validation land in Phase 2 (Opus).
+#else
+		if ( !LifePunchMenuInteractGate.IsCallerAllowed( null, GameObject ) )
+			return;
 #endif
 		if ( !IsPowered )
 		{

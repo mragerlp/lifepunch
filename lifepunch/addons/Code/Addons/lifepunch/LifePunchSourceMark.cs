@@ -22,6 +22,14 @@ public static class LifePunchSourceMark
 	public const string CopyrightLine = "© 2026 lifepunch.co. All rights reserved.";
 
 	public const string UiFooterMark = "LIFEPUNCH™";
+	public const string UiFooterUrl = "https://lifepunch.co/";
+
+	/// <summary>Screen anchor for LifePunch terminal menus — bottom-right, parallel to DXRP player HUD.</summary>
+	public const int UiMenuScreenBottomPx = 48;
+
+	/// <summary>Right inset for LifePunch terminal menus — stacks beside the player HUD.</summary>
+	public const int UiMenuScreenRightPx = 24;
+
 	public const string UiFooterPublisher = "Published by LIFEPUNCH — lifepunch.co";
 	public const string UiFooterLegal = "Proprietary software · no copy, resale, or redistribution";
 

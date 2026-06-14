@@ -1,0 +1,132 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// PROPRIETARY & CONFIDENTIAL — © 2026 lifepunch.co. All rights reserved.
+//
+// "LIFEPUNCH DXRP Addons" (s&box ident: lifepunch.* · addon ident: lifepunch) is the sole-owned
+// intellectual property of lifepunch.co. It is NOT licensed for resale, redistribution,
+// sublicensing, copying, or reuse by ANY person or entity — including DXRP and
+// LifePunch staff, contributors, or community — EXCEPT the owner (lifepunch.co).
+// Presence in this repository or on the DXRP portal grants no rights to anyone else.
+// ─────────────────────────────────────────────────────────────────────────────
+
+using System.Linq;
+using Sandbox;
+#if !LIFEPUNCH_LOCAL
+using Dxura.RP.Game;
+using Dxura.RP.Shared;
+#endif
+
+namespace LifePunch.DXRP.Addons;
+
+/// <summary>
+/// Client + host gates for LifePunch menu USE — close range; yields when DXRP Hands would pocket-pickup first.
+/// </summary>
+public static class LifePunchMenuInteractGate
+{
+	public static bool CanPressMenu( GameObject target )
+	{
+		if ( !target.IsValid() )
+			return false;
+
+		var viewerPos = GetLocalViewerPosition( target.Scene );
+		if ( !viewerPos.HasValue )
+			return false;
+
+		if ( !LifePunchMenuInteractRange.IsInOpenRange( viewerPos.Value, target.WorldPosition ) )
+			return false;
+
+		return !WouldHandsPickupTakePriority( viewerPos.Value, target );
+	}
+
+#if !LIFEPUNCH_LOCAL
+	public static bool IsCallerAllowed( Connection caller, GameObject target )
+	{
+		if ( !target.IsValid() || caller is null )
+			return false;
+
+		if ( !GameUtils.HasPermission( caller, target ) )
+			return false;
+
+		var player = GameUtils.GetPlayerByConnectionId( caller.Id );
+		if ( !player.IsValid() )
+			return false;
+
+		if ( !LifePunchMenuInteractRange.IsInOpenRange( player.WorldPosition, target.WorldPosition ) )
+			return false;
+
+		return !WouldHandsPickupTakePriority( player, target );
+	}
+#else
+	public static bool IsCallerAllowed( Connection caller, GameObject target )
+	{
+		if ( !target.IsValid() )
+			return false;
+
+		var viewerPos = GetLocalViewerPosition( target.Scene );
+		if ( !viewerPos.HasValue )
+			return false;
+
+		return LifePunchMenuInteractRange.IsInOpenRange( viewerPos.Value, target.WorldPosition );
+	}
+#endif
+
+	public static Vector3? GetLocalViewerPosition( Scene scene )
+	{
+		if ( scene is null )
+			return null;
+
+#if LIFEPUNCH_LOCAL
+		var camera = scene.GetAllComponents<CameraComponent>().FirstOrDefault();
+		return camera.IsValid() ? camera.WorldPosition : null;
+#else
+		var player = Player.Local;
+		return player.IsValid() ? player.WorldPosition : null;
+#endif
+	}
+
+#if !LIFEPUNCH_LOCAL
+	private static bool WouldHandsPickupTakePriority( Player player, GameObject menuTarget )
+	{
+		if ( !player.IsValid() || !menuTarget.IsValid() || player.Scene is null )
+			return false;
+
+		if ( !Config.Current.Game.PocketEnabled )
+			return false;
+
+		var trace = player.Scene.Trace.Ray( player.AimRay, Config.Current.Game.ReachDistance )
+			.UseHitboxes()
+			.IgnoreGameObjectHierarchy( player.GameObject )
+			.WithoutTags( Constants.TraceIgnoreTags )
+			.Run();
+
+		return WouldHandsPickupHit( trace, menuTarget );
+	}
+#endif
+
+	private static bool WouldHandsPickupTakePriority( Vector3 viewerPos, GameObject menuTarget )
+	{
+#if LIFEPUNCH_LOCAL
+		return false;
+#else
+		var player = Player.Local;
+		return player.IsValid() && WouldHandsPickupTakePriority( player, menuTarget );
+#endif
+	}
+
+#if !LIFEPUNCH_LOCAL
+	private static bool WouldHandsPickupHit( SceneTraceResult trace, GameObject menuTarget )
+	{
+		if ( !trace.Hit || !trace.GameObject.IsValid() || !menuTarget.IsValid() )
+			return false;
+
+		var aimed = trace.GameObject.Root;
+		if ( !aimed.IsValid() || aimed == menuTarget.Root )
+			return false;
+
+		if ( aimed.Tags.Has( LifePunchInteractTags.NoPocket ) )
+			return false;
+
+		// Mirror HandsEquipment RMB pocket path: pocket_item and not already pocketed.
+		return aimed.Tags.Has( Constants.PocketItemTag ) && !aimed.Tags.Has( Constants.PocketTag );
+	}
+#endif
+}

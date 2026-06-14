@@ -58,6 +58,9 @@ internal static class GpuRackRegistry
 		RefreshInternal( scene, hub.WorldPosition, hub );
 	}
 
+	public static void RefreshFromHub( BitcoinMinerHubEntity hub ) =>
+		RefreshFromHub( Game.ActiveScene, hub );
+
 	private static void RefreshInternal( Scene scene, Vector3 anchor, BitcoinMinerHubEntity hub )
 	{
 		Registered.Clear();

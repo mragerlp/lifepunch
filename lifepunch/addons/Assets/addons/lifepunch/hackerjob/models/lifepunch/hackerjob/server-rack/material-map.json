@@ -1,6 +1,6 @@
 {
   "model": "server-rack",
-  "sourceMesh": "source/server-rack.dae",
+  "sourceMesh": "source/server-rack.obj",
   "textureDir": "source/textures",
   "slots": [
     {
