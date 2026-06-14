@@ -367,7 +367,7 @@ public static class BitcoinMiningDevSpawn
 		var player = Player.Local;
 		if ( player.IsValid() )
 		{
-			var owned = go.GetComponent<BitcoinMinerHubEntity>();
+			var owned = go.Components.Get<BitcoinMinerHubEntity>( FindMode.EverythingInSelfAndDescendants );
 			if ( owned.IsValid() )
 				owned.Owner = player.SteamId;
 

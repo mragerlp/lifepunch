@@ -21,7 +21,7 @@ $error: #e44b2a;
 $main-font: Mina;
 $text-sm: 14px;
 
-HashdTerminal {
+.hashd-terminal {
     // Mina cascades onto material-icons ligatures — keep glyph font explicit.
     .material-icons {
         font-family: Material Icons;

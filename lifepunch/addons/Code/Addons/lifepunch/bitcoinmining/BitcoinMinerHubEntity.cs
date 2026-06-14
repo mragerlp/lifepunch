@@ -79,20 +79,30 @@ public sealed class BitcoinMinerHubEntity : BaseEntity, Component.IPressable
 		body.MotionEnabled = true;
 	}
 
-	/// <summary>Stamp spawner Steam ID from network owner when Market/dev spawn sets connection but not <see cref="Owner"/> yet.</summary>
-	private void TryBindSpawnOwnerHost()
+	/// <summary>Stamp spawner Steam ID from network owner or first USE caller when <see cref="Owner"/> is still unset.</summary>
+	private void TryBindSpawnOwnerHost( Guid? callerId = null )
 	{
 #if !LIFEPUNCH_LOCAL
 		if ( !Networking.IsHost || Owner != 0 )
 			return;
 
 		var networkOwner = GameObject.Network.Owner;
-		if ( networkOwner == null )
-			return;
+		if ( networkOwner != null )
+		{
+			var ownerPlayer = GameUtils.GetPlayerByConnectionId( networkOwner.Id );
+			if ( ownerPlayer.IsValid() )
+			{
+				Owner = ownerPlayer.SteamId;
+				return;
+			}
+		}
 
-		var player = GameUtils.GetPlayerByConnectionId( networkOwner.Id );
-		if ( player.IsValid() )
-			Owner = player.SteamId;
+		if ( callerId.HasValue )
+		{
+			var callerPlayer = GameUtils.GetPlayerByConnectionId( callerId.Value );
+			if ( callerPlayer.IsValid() )
+				Owner = callerPlayer.SteamId;
+		}
 #endif
 	}
 
@@ -132,7 +142,7 @@ public sealed class BitcoinMinerHubEntity : BaseEntity, Component.IPressable
 	[Rpc.Host]
 	private void OpenTerminalHost()
 	{
-		TryBindSpawnOwnerHost();
+		TryBindSpawnOwnerHost( Rpc.CallerId );
 
 #if LIFEPUNCH_LOCAL
 		if ( !AccessPinIsSet )

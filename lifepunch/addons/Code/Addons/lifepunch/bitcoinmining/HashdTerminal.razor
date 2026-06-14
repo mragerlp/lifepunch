@@ -400,7 +400,7 @@
 
     private string GetRootClass()
     {
-        var classes = new List<string>();
+        var classes = new List<string> { "hashd-terminal" };
         if ( _pinGate != PinGateKind.None )
             classes.Add( "pin-gate" );
         if ( IsHubPinBlocked )
@@ -835,7 +835,7 @@
     {
         var viewerPos = HashdTerminalHost.LocalViewerPosition( Scene );
 
-        if ( IsHubPowerGate || IsHubPinSetup || IsHubPinUnlock )
+        if ( IsPinGateActive || IsHubPowerGate )
         {
             if ( !Hub.IsValid() )
             {
@@ -1596,40 +1596,35 @@
 
     protected override int BuildHash()
     {
-        if ( IsHubPowerGate || IsHubPinSetup || IsHubPinUnlock )
-        {
-            return HashCode.Combine(
-                Hub?.IsPowered ?? false,
-                Hub?.AccessPinIsSet ?? false,
-                (int)_pinGate,
-                _lines.Count,
-                GpuRackRegistry.RegisteredRigs.Count );
-        }
-
-        if ( !Miner.IsValid() )
-        {
-            return HashCode.Combine(
-                GetHubBtcBalance(),
-                _lines.Count,
-                (int)_module,
-                HashdTerminalHost.GetLocalWalletCash(),
-                GpuRackRegistry.RegisteredRigs.Count,
-                Hub.IsValid() ? BitcoinMinerHubRegistry.GetLinkedRacks( Hub ).Count : 0 );
-        }
-
         var hash = new HashCode();
-        hash.Add( GetHubBtcBalance() );
-        hash.Add( Miner.IsMining );
-        hash.Add( Miner.CpuUpgradeLevel );
-        hash.Add( Miner.CoreUpgradeLevel );
-        hash.Add( _lines.Count );
+        hash.Add( (int)_surface );
+        hash.Add( (int)_pinGate );
+        hash.Add( _pinEntryOpen );
+        hash.Add( _pinDigits?.Length ?? 0 );
+        hash.Add( _pinConfirming );
+        hash.Add( _pinError ?? "" );
         hash.Add( (int)_module );
+        hash.Add( (int)_headModule );
+        hash.Add( _showSettings );
+        hash.Add( _panelSize );
+        hash.Add( _lines.Count );
+        hash.Add( Hub?.IsPowered ?? false );
+        hash.Add( Hub?.AccessPinIsSet ?? false );
+        hash.Add( Hub.IsValid() ? Hub.Owner : 0L );
+        hash.Add( GetHubBtcBalance() );
         hash.Add( HashdTerminalHost.GetLocalWalletCash() );
-        hash.Add( (int)( _smoothProgress * 10f ) );
         hash.Add( GpuRackRegistry.SelectedIndex );
         hash.Add( GpuRackRegistry.RegisteredRigs.Count );
-        hash.Add( Hub?.IsPowered ?? false );
         hash.Add( Hub.IsValid() ? BitcoinMinerHubRegistry.GetLinkedRacks( Hub ).Count : 0 );
+
+        if ( Miner.IsValid() )
+        {
+            hash.Add( Miner.IsMining );
+            hash.Add( Miner.CpuUpgradeLevel );
+            hash.Add( Miner.CoreUpgradeLevel );
+            hash.Add( (int)( _smoothProgress * 10f ) );
+        }
+
         return hash.ToHashCode();
     }
 }
