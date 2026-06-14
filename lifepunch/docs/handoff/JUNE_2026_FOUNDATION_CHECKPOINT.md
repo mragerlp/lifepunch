@@ -11,9 +11,10 @@
 |-------|-------|
 | **Two-repo model** | **Core** = law + WIP + quarantine. **Publish** = `lifepunch-published` export only. `PUBLISH_REPO_LANE.md` |
 | **Git checkpoints** | Agent **recommends** commit scope; Bloodwave **approves**. `GIT_CHECKPOINTS.md` |
-| **Quarantine** | Active dev: `adminmenu`, `bitcoinmining`. Everything else frozen — `portfolio.json` + `QUARANTINE_REGISTER.md` |
-| **Publish-ready now** | **`adminmenu` only** (`lifepunch.ulx`) — LifePunch servers; not for resale |
-| **Bitcoin** | Active Ophion rebuild — **not** in publish export until visual sign-off |
+| **Quarantine** | Active dev: `adminmenu` → **lifepunchulx**, `bitcoinmining` → **lifepunchbitcoin**. Everything else frozen — `portfolio.json` + `QUARANTINE_REGISTER.md` |
+| **Package names** | Public branches = **packageSlug** in `addons/config/packages.json` — `PACKAGE_NAMING_STANDARD.md` |
+| **Publish-ready now** | **`lifepunchulx`** (`lifepunch.ulx`) — LifePunch servers; not for resale |
+| **Bitcoin** | **lifepunchbitcoin** (`lifepunch.bitcoin`) — Ophion P0; start `addons/docs/LIFEPUNCH_BITCOIN_START.md` — NOT publish export until visual sign-off |
 | **Ideation** | ChatGPT Step 1 → CURSOR BRIEF → Cursor on VENGEANCE. `WORKFLOW_IDEATION_FIRST.md` |
 | **Export** | `Export-LifepunchPublishLane.ps1` reads `publishReadyAddons` |
 
@@ -69,7 +70,7 @@ powershell -File lifepunch\scripts\Export-LifepunchPublishLane.ps1 -Target C:\Us
 ## Next build lane (after infra ChatGPT brief)
 
 1. **Tonight optional:** ChatGPT hardware/efficiency audit — `handoff/CHATGPT_HARDWARE_EFFICIENCY_PASTE.txt`
-2. **Then:** Bitcoin Ophion P0 visual pass — `addons/docs/briefs/BITCOIN_OPHION_CURSOR_BRIEF.md`
+2. **Then:** Bitcoin Ophion P0 — `addons/docs/LIFEPUNCH_BITCOIN_START.md` + `briefs/BITCOIN_OPHION_CURSOR_BRIEF.md`
 3. **Do not** extend quarantined idents without owner promote + ChatGPT brief
 
 ---

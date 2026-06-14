@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "law": "Canonical LIFEPUNCH™ public package names. Source of truth for publish branches, portal listings, ChatGPT briefs, and target s&box identifiers. Proprietary headers and ownership wording apply to every package whether or not it is public yet.",
+  "naming": {
+    "packageSlug": "lifepunch{product} — all lowercase ASCII, no dots, no ™ in slug",
+    "sboxOrg": "lifepunch",
+    "sboxSuffix": "packageSlug with leading lifepunch removed (e.g. lifepunchbitcoin → bitcoin)",
+    "sboxIdentifier": "lifepunch.{sboxSuffix}",
+    "repoIdent": "legacy monorepo folder name until path migration — see repoIdent column",
+    "displayMark": "LIFEPUNCH™ lead on player-facing titles; DXRP nominative only"
+  },
+  "publicBranchTarget": "Each packageSlug is the intended public/publish branch name on LIFEPUNCH™",
+  "packages": [
+    {
+      "packageSlug": "lifepunchulx",
+      "sboxIdentifier": "lifepunch.ulx",
+      "repoIdent": "adminmenu",
+      "title": "LIFEPUNCH™ ULX Staff Menu for DXRP",
+      "status": "publish-ready",
+      "notes": "Was dxrpadminmenu / adminmenu. Server-agnostic staff UI."
+    },
+    {
+      "packageSlug": "lifepunchbitcoin",
+      "sboxIdentifier": "lifepunch.bitcoin",
+      "repoIdent": "bitcoinmining",
+      "title": "LIFEPUNCH™ Bitcoin Miner for DXRP",
+      "status": "active-dev",
+      "notes": "Ophion hub package. LifePunch servers first."
+    },
+    {
+      "packageSlug": "lifepunchhacker",
+      "sboxIdentifier": "lifepunch.hacker",
+      "repoIdent": "hackerjob",
+      "title": "LIFEPUNCH™ Hacker Job for DXRP",
+      "status": "quarantine"
+    },
+    {
+      "packageSlug": "lifepunchbanker",
+      "sboxIdentifier": "lifepunch.banker",
+      "repoIdent": "bankerjob",
+      "title": "LIFEPUNCH™ Banker Job for DXRP",
+      "status": "quarantine-wip"
+    },
+    {
+      "packageSlug": "lifepunchswat",
+      "sboxIdentifier": "lifepunch.swat",
+      "repoIdent": null,
+      "title": "LIFEPUNCH™ SWAT for DXRP",
+      "status": "reserved",
+      "notes": "Package reserved — no repo tree yet."
+    },
+    {
+      "packageSlug": "lifepunchak47",
+      "sboxIdentifier": "lifepunch.ak47",
+      "repoIdent": "ak47",
+      "title": "LIFEPUNCH™ AK-47 for DXRP",
+      "status": "quarantine"
+    },
+    {
+      "packageSlug": "lifepunchdrugprocessing",
+      "sboxIdentifier": "lifepunch.drugprocessing",
+      "repoIdent": "advanceddrugprocessing",
+      "title": "LIFEPUNCH™ Drug Processing for DXRP",
+      "status": "quarantine"
+    },
+    {
+      "packageSlug": "lifepunchdrugdrops",
+      "sboxIdentifier": "lifepunch.drugdrops",
+      "repoIdent": "additionaldroplocations",
+      "title": "LIFEPUNCH™ Drug Drops for DXRP",
+      "status": "quarantine"
+    },
+    {
+      "packageSlug": "lifepunchdeserteagle",
+      "sboxIdentifier": "lifepunch.deserteagle",
+      "repoIdent": "deagle",
+      "title": "LIFEPUNCH™ Desert Eagle for DXRP",
+      "status": "quarantine"
+    },
+    {
+      "packageSlug": "lifepunchdoublebarreledshotgun",
+      "sboxIdentifier": "lifepunch.doublebarreledshotgun",
+      "repoIdent": "doublebarrelshotgun",
+      "title": "LIFEPUNCH™ Double-Barreled Shotgun for DXRP",
+      "status": "quarantine"
+    }
+  ]
+}

@@ -14,6 +14,7 @@ alwaysApply: true
 - Keep staff role and permission policy in `lifepunch/admin-panel/`.
 - Keep trademark, brand-architecture, and proprietary-IP doctrine in `lifepunch/legal/` (canonical: `lifepunch/legal/TRADEMARK_AND_IP.md`). Trademark specimens live in `lifepunch/legal/specimens/`, mark drawings + logo filing in `lifepunch/legal/marks/`, and clearance evidence in `lifepunch/legal/clearance-evidence/`. Never commit sensitive identifiers (EIN, domicile street address) — they stay in OneDrive.
 - Treat `lifepunch/addons/config/addons.json` as the source of truth for LifePunch addon packages.
+- Treat `lifepunch/addons/config/packages.json` as the source of truth for **packageSlug** (public branch names) and target **sboxIdentifier** values. Each registered addon in `addons.json` should carry a matching `packageSlug`. Repo folder paths use legacy **ident** until path migration (`PACKAGE_NAMING_STANDARD.md`).
 - Keep addon assets under `lifepunch/addons/Assets/addons/lifepunch/<ident>/`.
 - Keep addon code under `lifepunch/addons/Code/Addons/lifepunch/<ident>/`.
 - Do not use flat `upload-assets/` or `upload-code/` folders as canonical source.

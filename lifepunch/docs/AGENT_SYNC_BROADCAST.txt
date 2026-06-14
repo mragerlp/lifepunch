@@ -25,7 +25,8 @@ STEP 2 — READ (in order)
   4. lifepunch/docs/AGENT_ONBOARDING.md       ← foundation (Tonight table = recovery)
   5. lifepunch/docs/GIT_CHECKPOINTS.md        ← commit/push/pull law
   6. lifepunch/docs/handoff/JUNE_2026_FOUNDATION_CHECKPOINT.md ← all-node pull brief
-  7. Your lane block in lifepunch/docs/AGENT_PROMPT.md (A/B/C/D)
+  7. lifepunch/addons/docs/PACKAGE_NAMING_STANDARD.md ← public branch slugs (June 2026)
+  8. Your lane block in lifepunch/docs/AGENT_PROMPT.md (A/B/C/D)
 
 ------------------------------------------------------------------------
 STEP 3 — CONFIRM (reply in one short paragraph)
@@ -48,9 +49,10 @@ FOUNDATION (June 2026 — after pull)
     Core     = github.com/mragerlp/lifepunch (law, WIP, quarantine)
     Publish  = github.com/mragerlp/lifepunch-published (export only)
 
-  QUARANTINE: active dev = adminmenu + bitcoinmining only
-  PUBLISH NOW: adminmenu (lifepunch.ulx) — LifePunch servers, not for resale
-  BITCOIN: Ophion rebuild active — NOT publish export until visual sign-off
+  QUARANTINE: active dev = adminmenu + bitcoinmining only (repo idents)
+  PACKAGE SLUGS: lifepunchulx · lifepunchbitcoin · … — config/packages.json
+  PUBLISH NOW: lifepunchulx (s&box lifepunch.ulx) — LifePunch servers, not for resale
+  BITCOIN: lifepunchbitcoin (s&box lifepunch.bitcoin) — Ophion P0 — LIFEPUNCH_BITCOIN_START.md
 
   IDEATION: ChatGPT Step 1 -> CURSOR BRIEF -> Cursor VENGEANCE
     Paste: lifepunch/docs/handoff/CHATGPT_STEP1_PASTE.txt

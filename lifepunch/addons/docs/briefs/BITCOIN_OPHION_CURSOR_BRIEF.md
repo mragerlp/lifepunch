@@ -1,6 +1,6 @@
 # Ophion hub — CURSOR BRIEF (ChatGPT LIFEPUNCH™ · June 14, 2026)
 
-**Status:** Official product foundation for `bitcoinmining` rebuild.  
+**Status:** Official product foundation for `lifepunchbitcoin` (repo ident `bitcoinmining`, s&box `lifepunch.bitcoin`).  
 **Quarantine:** All other addons frozen per `QUARANTINE_REGISTER.md`.
 
 ---

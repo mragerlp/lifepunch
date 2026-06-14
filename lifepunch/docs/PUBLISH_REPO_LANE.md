@@ -1,6 +1,20 @@
 # LIFEPUNCH™ — publish repo lane (DXRP addons)
 
-**June 2026** — Two-repo law. Read with `QUARANTINE_REGISTER.md` and `portfolio.json`.
+**June 2026** — Two-repo law. Read with `QUARANTINE_REGISTER.md`, `portfolio.json`, and `addons/docs/PACKAGE_NAMING_STANDARD.md`.
+
+---
+
+## Package names (public branch law)
+
+Canonical slugs live in `lifepunch/addons/config/packages.json`. Each **packageSlug** (e.g. `lifepunchbitcoin`, `lifepunchulx`) is the intended **public branch / publish export name** on LIFEPUNCH™.
+
+| packageSlug | repoIdent (monorepo paths today) | s&box |
+|-------------|----------------------------------|-------|
+| `lifepunchulx` | adminmenu | `lifepunch.ulx` |
+| `lifepunchbitcoin` | bitcoinmining | `lifepunch.bitcoin` |
+| … | see `packages.json` | `lifepunch.{suffix}` |
+
+Monorepo folders still use **repoIdent** until a deliberate path migration. Export script may still key on repoIdent — target export folders use **packageSlug** when promoted.
 
 ---
 
