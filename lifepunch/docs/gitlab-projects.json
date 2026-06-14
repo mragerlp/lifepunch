@@ -102,5 +102,22 @@
                                                "lifepunch/API"
                                            ]
                      }
-                 ]
+                 ],
+    "gitBranchLanes":  [
+                           {
+                               "branch":  "lane/ak47",
+                               "lane":  "ak47-quarantine",
+                               "primaryAgent":  "owner",
+                               "monorepoPaths":  [
+                                                     "lifepunch/addons/Assets/addons/lifepunch/ak47",
+                                                     "lifepunch/addons/Code/Addons/lifepunch/ak47",
+                                                     "lifepunch/addons/scripts/Invoke-Ak47VmBlenderFix.ps1",
+                                                     "lifepunch/addons/scripts/Invoke-Ak47VmCs2Align.ps1",
+                                                     "lifepunch/addons/scripts/Invoke-Ak47VmM4Bind.ps1",
+                                                     "lifepunch/addons/scripts/blender"
+                                                 ],
+                               "doctrine":  "lifepunch/docs/lanes/AK47_LANE.md",
+                               "mergeToMain":  "owner-sign-off-only"
+                           }
+                       ]
 }

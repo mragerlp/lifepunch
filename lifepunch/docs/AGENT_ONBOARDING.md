@@ -119,6 +119,7 @@ Full checkpoint (shortcuts, voice flow, per-node cheat sheet, failure surfaces):
 | **LPDXRP** | **LifePunch DXRP** — shorthand for our server + addon portfolio on DXRP (`LPDXRP_OG_SUPPORTERS.md`) |
 | **shottaWEB** | Website partner (Brian) — GitLab `lifepunch-website` only; say **shottaWEB** in agent chat |
 | **RDP server agent** | Agent **role** on **lifepunchnet** (Block C) — not a separate machine name |
+| **AK47 lane** | Git branch `lane/ak47` — quarantined viewmodel experiment; **not** on ship path (`lifepunch/docs/lanes/AK47_LANE.md`) |
 
 Deprecated: "Server Host", "RDP Server Host", "the server box" → **lifepunchnet**.
 

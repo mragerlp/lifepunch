@@ -39,6 +39,9 @@ Namespace: **`gitlab.com/mragerlp`**
 | `lifepunch-website` | `https://gitlab.com/mragerlp/lifepunch-website` | `lifepunch/website/**` | **shottaWEB** |
 | `lifepunch-rdp-server` | `https://gitlab.com/mragerlp/lifepunch-rdp-server` | `lifepunch/server`, `portal`, `gamemode`, `maps`, `admin-panel`, `economy`, `audit`, `players`, `discord`, `webhooks`, `API` | **RDP server agent** |
 
+**Git branch lane (not GitLab):** `lane/ak47` — quarantined AK viewmodel experiment. See
+`lifepunch/docs/lanes/AK47_LANE.md`. **Never merge to `main` without owner sign-off.**
+
 Machine-readable map: `lifepunch/docs/gitlab-projects.json`.
 
 ### Who clones what
@@ -46,6 +49,7 @@ Machine-readable map: `lifepunch/docs/gitlab-projects.json`.
 | Agent | Clone for work | Canonical push target |
 |-------|----------------|----------------------|
 | **Owner** (Primary PC) | GitHub monorepo | `github.com/mragerlp/lifepunch` (`origin`) |
+| **Owner — AK quarantine** | GitHub branch `lane/ak47` (same monorepo) | `lane/ak47` only for `**/ak47/**` — see `lanes/AK47_LANE.md` |
 | **shottaWEB** | GitLab `lifepunch-website` (+ read `lifepunch-foundation` or GitHub monorepo for grounding) | GitLab `lifepunch-website`; owner merges into GitHub |
 | **RDP server agent** | GitLab `lifepunch-rdp-server` (+ read foundation) | GitLab `lifepunch-rdp-server`; owner merges into GitHub |
 | **Cornerman** | Read-only clone of GitHub monorepo or foundation | Never push |

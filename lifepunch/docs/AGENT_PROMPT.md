@@ -14,7 +14,7 @@
 > (must create/accept a GitLab account). **RDP agent** provisioned via an SSH deploy key + ACTIVE
 > (Block C is its official prompt). **Cornerman** launches via `DAY_ONE_AGENT_PROMPT.md`.
 >
-> **Blocks:** A = owner/addons · B = shottaWEB/website · C = lifepunchnet (RDP server agent) · D = Cornerman.
+> **Blocks:** A = owner/addons · B = shottaWEB/website · C = lifepunchnet (RDP server agent) · D = Cornerman · **E = AK47 quarantine (`lane/ak47` only)**
 
 ---
 
@@ -241,4 +241,38 @@ NON-NEGOTIABLE (see LOCAL_AI_WORKSTATION.md):
   Section 8 (pinned commit, AUTH on, LAN-only, no real creds, no write-git creds, AGPL caution).
 
 NEXT: confirm grounding + report setup status, then [YOUR TASK HERE].
+```
+
+---
+
+## Block E — AK47 quarantine (`lane/ak47` only)
+
+**Not a ship lane.** Use only when explicitly working on AK viewmodel — separate chat from bitcoin/hacker/staff.
+
+```text
+[Paste Block 0 above, then:]
+
+YOU ARE: AK47 quarantine lane — branch **lane/ak47** ONLY (see lifepunch/docs/lanes/AK47_LANE.md).
+
+BEFORE ANY EDIT:
+  git fetch origin
+  git checkout lane/ak47
+  git pull --rebase
+  Confirm: git branch --show-current → lane/ak47
+
+SCOPE (and only this):
+  lifepunch/addons/**/ak47/**
+  lifepunch/addons/scripts/Invoke-Ak47Vm*.ps1
+  lifepunch/addons/scripts/blender/*ak47*
+
+OUT OF SCOPE:
+  bitcoinmining, hackerjob, adminmenu, entities, website, server — use main + Block A.
+  Do NOT merge lane/ak47 → main without owner sign-off + verified lp_give_ak first-person.
+
+HONEST STATUS: FP-AK-01 is likely a dead end (M4 invisible-master spaghetti). Clean endgame =
+owned VM rig per VIEWMODEL_RIG_PIPELINE.md, OR ship world AK only and abandon FP for now.
+
+COMMIT: only on lane/ak47. Push to origin lane/ak47. Main integration is owner-only.
+
+NEXT: confirm branch + read AK47_LANE.md, then [YOUR AK TASK HERE].
 ```
