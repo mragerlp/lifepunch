@@ -53,6 +53,18 @@ flowchart LR
 
 ## Operator round (PTT)
 
+### Path C — VENGEANCE desk (preferred when Cornerman load is unwanted)
+
+1. Run **`Talk-On-Vengeance.cmd`** (AT2020 in, Virtuoso out)
+2. **F7** tap → Ready
+3. **F8** hold → speak → release
+4. lifepunchnet Whisper → clipboard + `vengeance-ptt/outbox/to-cursor.txt`
+5. **Ctrl+V** in Cursor
+
+See `VENGEANCE_PTT.md`. No Cornerman relay, no RDP.
+
+### Path A — Cornerman relay (brainstorm mic on Green)
+
 1. **F7** tap on Cornerman → TTS **Ready**
 2. **F8** hold → speak → release
 3. Cornerman → lifepunchnet Whisper → `to-vengeance.txt` + clipboard

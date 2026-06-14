@@ -12,6 +12,14 @@
 
 ## Pipeline (two modes)
 
+### C — VENGEANCE desk PTT (no Cornerman)
+
+```
+AT2020 USB+ on VENGEANCE → F7/F8 → lifepunchnet Whisper :9000 → clipboard → Cursor
+```
+
+See `VENGEANCE_PTT.md`. Virtuoso headset = listen output only.
+
 ### A — Talk to Vengeance (brainstorm → Cursor)
 
 ```

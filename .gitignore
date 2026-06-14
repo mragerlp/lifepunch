@@ -25,6 +25,12 @@ lifepunch/scripts/server-host-watch.local.json
 lifepunch/scripts/dxrp-editor.local.json
 lifepunch/scripts/.session-sync-state.json
 
+# VENGEANCE desk PTT local runtime
+lifepunch/scripts/vengeance-ptt/.venv/
+lifepunch/scripts/vengeance-ptt/__pycache__/
+lifepunch/scripts/vengeance-ptt/outbox/*
+!lifepunch/scripts/vengeance-ptt/outbox/.gitkeep
+
 # Local sensitive information
 lifepunch/secure/*
 !lifepunch/secure/.gitignore
