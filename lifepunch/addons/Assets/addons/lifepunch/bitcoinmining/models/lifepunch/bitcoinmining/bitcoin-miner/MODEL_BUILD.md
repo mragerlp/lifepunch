@@ -25,12 +25,12 @@ entities/bitcoinminer/
 | Field | Value | Why |
 |-------|-------|-----|
 | **Import scale** | `0.77` (Custom) | ~2× prior pass — ~30″ tall vs ~77″ citizen on flatgrass (was 0.385 / ~15″) |
-| **Import translation** | `0, 0, **26.6**` | Scales with import_scale for ground contact (was 13.3 @ 0.385) |
+| **Import translation** | `0, 0, **16.324**` | Ground contact: lowers mesh so `mins.z ≈ 0` at prefab root (was 26.6 → hub floated ~10u; tuned via MCP bounds Jun 2026) |
 | **Import rotation** | `0, 0, 0` | FBX export is already upright — **do not** pitch 90° |
 | **Align origin** | None / None / None | Match ModelDoc screenshot; re-verify bounds after compile |
 | **Source meshes** | `Vert_005`, `Circle_002` (if ModelDoc lists extras, disable junk LODs) | |
 
-Prefab root stays **`1,1,1`**. Recompile `bitcoin-miner.vmdl` → pull `_c` to repo → flatgrass verify mesh bounds vs `BoxCollider` `10×8×15` (center Z `7.5`).
+Prefab root stays **`1,1,1`**. Recompile `bitcoin-miner.vmdl` → pull `_c` to repo → flatgrass verify mesh bounds vs `BoxCollider` **`30×15.5×20`** (center **`0.55, 0, 9.82`** — matches ModelRenderer bounds at import_scale `0.77`).
 
 ## Texture chain (3-hop — must all link)
 

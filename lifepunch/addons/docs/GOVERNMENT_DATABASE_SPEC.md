@@ -5,17 +5,28 @@
 
 ---
 
-## 1. Owner vision (2026-06-11)
+## 1. Owner vision (2026-06-11, updated 2026-06-15)
 
-The **government database** is represented in-world by **automatic government Bitcoin miners** in a datacenter:
+The **government cyber** stack is the **protagonist** counterpart to the **Hacker** criminal lane (`TERMINAL_BRAND_MATRIX.md` criminal vs protagonist split):
+
+| Piece | Entity | Role |
+|-------|--------|------|
+| **Hub** | `government-server-rack` | Powers and links the Government Terminal; upgrade surface for lawful cyber |
+| **Terminal** | `police-terminal` (Government Terminal) | **lifepunchnet** cyan CRT · `lifepunch-ops.exe` — trace, audit, counter-intrusion |
+| **Treasury miner** | `government-data-center` | Autonomous BTC miner on map — **always mining**, no player start/stop |
+
+**Government Data Center** behavior:
 
 - **Blue console** aesthetic (lifepunchnet cyan `#00D4FF`) — player hashd stays **green** Cornerman chrome
 - **Always mining** — no player start/stop
 - **Every 30 minutes:** deposit **0%–30%** of accumulated BTC balance as **cash into city funds** (tax rate set by mayor)
 - **No player withdraw** — treasury only; mirrors BitcoinMiningAddon accrual math
 - **$50,000 cap** on accumulated BTC value (= **~33.33 BTC** at $1,500/BTC — same rate as player BitcoinMiningAddon)
-- **Police terminals** placed near tax miners — lifepunchnet ops UI, counter-intrusion / audit (like Hacker flow)
-- **Advanced Hacking Terminal** (Vengeance red) is how Hackers breach govdb nodes
+- **Government / Law Enforcement jobs cannot spawn or USE player lifepunchbitcoin entities** — treasury is this datacenter only
+- **FBI protagonist loop:** counter **advanced hacker (red)** breaches on **bitcoin miners**, **bank**, and **city funds** via lifepunchnet terminal
+- **Phase F gate:** deep-dive FBI features **after Hacker Job** (advanced terminal + target policy) ships
+
+Legacy code name `government-tax-miner` may remain until entity rename migration.
 
 **Cybersecurity Officer** — owner builds separately.  
 **SWAT job** — future; CS2 models (`SWAT_JOB_SPEC.md`).
@@ -47,13 +58,14 @@ Code constants: `governmentdatacenter/GovernmentTaxMiner.cs`
 
 ## 3. Entities
 
-| Entity | Job access | Terminal program |
-|--------|------------|------------------|
-| `government-tax-miner` | Server/map placed | LCD summary (blue) |
-| `police-terminal` | Police / gov jobs | `lifepunch-ops.exe` |
-| `advanced-hacker-terminal` | Hacker (hackerjob addon) | `vengeance.exe` |
+| Entity | Job access | Role |
+|--------|------------|------|
+| `government-data-center` | Map/server placed | Autonomous tax miner → city cash drip |
+| `government-server-rack` | Police / FBI / gov jobs | Hub — powers Government Terminal |
+| `police-terminal` | Police / FBI / gov jobs | `lifepunch-ops.exe` — protagonist cyber desk |
+| `advanced-hacker-terminal` | Hacker (purchased upgrade) | `vengeance.exe` — **opposing** breach tool |
 
-Hacker **standard** terminal = wallet hacks. **Advanced** = `govdb` / `infil` on treasury nodes.
+Hacker **starter** terminal = wallet hacks only. **Purchased advanced** = `govdb` / `infil` on treasury nodes + large-scale targets.
 
 ---
 

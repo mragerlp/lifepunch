@@ -259,7 +259,7 @@
 						_class = "RenderMeshFile"
 						name = "LOD0"
 						filename = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/source/Ophion.fbx"
-						import_translation = [ 0.0, 0.0, 26.6 ]
+						import_translation = [ 0.0, 0.0, 16.324 ]
 						import_rotation = [ 0.0, 0.0, 0.0 ]
 						import_scale = 0.77
 						align_origin_x_type = "None"

@@ -1,6 +1,7 @@
 # Hacker Server Rack — power + upgrades
 
-**Entity:** `server-rack` (`HackerServerRackEntity`)  
+**Entity:** `server-rack` (`HackerServerRackEntity`) — **starter hub** (job kit; low cost)  
+**Advanced entity:** `advanced-server-rack` — **purchased upgrade** (expensive; pairs with Vengeance red terminal)  
 **Menu:** `HackerServerRackMenu.razor` (hashd-style green ops console)  
 **Powers:** `hacker-terminal` (cornerman.exe) + `advanced-hacker-terminal` (vengeance.exe) within **8m horizontal / 4m vertical**
 

@@ -104,6 +104,67 @@ public static class LpBitcoinDevSpawn
 		Log.Info( "lp_bitcoin_terminal_preview: kit spawned + CRT terminal." );
 	}
 
+	/// <summary>Logs mesh + BoxCollider bounds for hub (H1 scale pass). Spawns hub if missing.</summary>
+	[ConCmd( "lp_bitcoin_scale_audit" )]
+	public static void ScaleAudit()
+	{
+		var scene = Game.ActiveScene;
+		if ( scene is null )
+		{
+			Log.Warning( "lp_bitcoin_scale_audit: no active scene — play from game.scene, not a prefab tab." );
+			return;
+		}
+
+		var hub = scene.GetAllComponents<LpBitcoinHubEntity>().FirstOrDefault( h => h.IsValid() );
+		if ( !hub.IsValid() )
+		{
+			if ( !TryGetSpawnTransform( out var transform ) )
+			{
+				Log.Warning( "lp_bitcoin_scale_audit: no local viewer." );
+				return;
+			}
+
+			Log.Info( "lp_bitcoin_scale_audit: spawning hub for measurement …" );
+			hub = SpawnHubPrefab( transform );
+		}
+
+		Log.Info( "BITCOINMINING_SCALE_AUDIT begin (mesh=ModelRenderer bounds; collider=BoxCollider.Scale)" );
+		if ( hub.IsValid() )
+			LogScaleRow( "hub", hub.GameObject );
+		else
+			Log.Warning( "BITCOINMINING_SCALE_AUDIT hub missing" );
+		Log.Info( "BITCOINMINING_SCALE_AUDIT end — target: mesh mins.z ≈ 0 at spawn; height ~20u vs citizen ~72u" );
+	}
+
+	private static void LogScaleRow( string tag, GameObject go )
+	{
+		if ( !go.IsValid() )
+		{
+			Log.Warning( $"BITCOINMINING_SCALE_AUDIT {tag}: invalid GameObject" );
+			return;
+		}
+
+		var worldBounds = go.GetBounds();
+		Log.Info( $"BITCOINMINING_SCALE_AUDIT {tag} go={go.Name} pos={go.WorldPosition} goBounds size={worldBounds.Size} extents={worldBounds.Extents}" );
+
+		var renderer = go.Components.Get<ModelRenderer>( FindMode.EverythingInSelfAndDescendants );
+		if ( renderer.IsValid() )
+		{
+			var meshBounds = renderer.Bounds;
+			Log.Info( $"BITCOINMINING_SCALE_AUDIT {tag} mesh size={meshBounds.Size} mins={meshBounds.Mins} maxs={meshBounds.Maxs} model={renderer.Model?.Name ?? "(null)"}" );
+		}
+		else
+		{
+			Log.Warning( $"BITCOINMINING_SCALE_AUDIT {tag} no ModelRenderer" );
+		}
+
+		var collider = go.Components.Get<BoxCollider>( FindMode.EverythingInSelfAndDescendants );
+		if ( collider.IsValid() )
+			Log.Info( $"BITCOINMINING_SCALE_AUDIT {tag} collider scale={collider.Scale} center={collider.Center}" );
+		else
+			Log.Warning( $"BITCOINMINING_SCALE_AUDIT {tag} no BoxCollider" );
+	}
+
 	private static LpBitcoinHubEntity SpawnKitInternal()
 	{
 		if ( !TryGetSpawnTransform( out var transform ) )

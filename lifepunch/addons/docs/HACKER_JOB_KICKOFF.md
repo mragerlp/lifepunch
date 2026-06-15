@@ -48,6 +48,8 @@ lp_hacker_kit_preview
 
 Canon: `RED_HACKER_JOB_BUILD.md` · `hackerjob/docs/HACKER_JOB_PLAYTEST.md`
 
+**Polish tracker:** `addons/docs/CYBER_JOBS_POLISH_CHECKLIST.md` (Phase E — hub → terminal → advanced rack → advanced terminal)
+
 ---
 
 ## Green — dispatch (from VENGEANCE)

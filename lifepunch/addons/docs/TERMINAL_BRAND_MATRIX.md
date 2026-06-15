@@ -6,21 +6,25 @@ In-game terminals mirror **LifePunch Ops** machine uniforms (`branding/lifepunch
 
 | Tier | Machine | Job / role | Program | Accent | Prompt | Terminal entity | Hub entity |
 |------|---------|------------|---------|--------|--------|-----------------|------------|
-| Hacker Terminal | **Cornerman** | Hacker | `cornerman.exe` | `#00FF7F` green | `cornerman@terminal:~$` | `hacker-terminal` | `hacker-server-rack` |
-| Advanced Hacking Terminal | **VENGEANCE** | Hacker (elevated) | `vengeance.exe` | `#E4002B` red | `vengeance@terminal:~$` | `advanced-hacker-terminal` | `advanced-hacker-server-rack` |
-| Government / Police Terminal | **lifepunchnet** | Police, Mayor, Gov jobs | `lifepunch-ops.exe` | `#00D4FF` cyan | `lifepunch@lifepunch.net:~$` | `police-terminal` | *(TBD)* |
-| Player Bitcoin Miner | **hashd** | Civilian economy | hashd rig control | `#f0a500` amber | `rig0>` | `bitcoin-miner` | `gpu-rack` / `large-gpu-rack` |
-| Government Tax Miner | *(city rig)* | City treasury | `treasuryd` (TBD) | `#00D4FF` blue console | N/A — LCD only | `government-tax-miner` | — |
+| Hacker Terminal (starter) | **Cornerman** | Hacker | `cornerman.exe` | `#00FF7F` green | `cornerman@terminal:~$` | `hacker-terminal` | `server-rack` |
+| Advanced Hacking Terminal (purchased) | **VENGEANCE** | Hacker (elevated) | `vengeance.exe` | `#E4002B` red | `vengeance@terminal:~$` | `advanced-hacker-terminal` | `advanced-server-rack` |
+| Government Terminal | **lifepunchnet** | Police, FBI, Mayor, Gov jobs | `lifepunch-ops.exe` | `#00D4FF` cyan | `lifepunch@lifepunch.net:~$` | `police-terminal` | `government-server-rack` |
+| Player Bitcoin Miner | **hashd** | Civilian + most jobs *(not gov/LE)* | hashd rig control | `#f0a500` amber | `rig0>` | `bitcoin-terminal` | `bitcoin-miner` |
+| Government Data Center | *(city rig)* | Map treasury — autonomous miner | `treasuryd` (TBD) | `#00D4FF` blue console | N/A — LCD only | — | `government-data-center` |
+
+**Starter vs purchased (hacker):** green rack + terminal = **job starter** (low cost, less secure, wallet hacks). Red rack + terminal = **purchased upgrade** (expensive, complex commands, higher rewards — player miners, bank, govdb).
+
+**lifepunchbitcoin access:** every job may spawn/USE hashd hub + terminal + racks **except Government / Law Enforcement** — city uses Government Data Center only.
 
 ## Capabilities by terminal
 
 | Terminal | Primary loop | Economy touch |
 |----------|----------------|---------------|
-| Hacker (standard) | `scan` → `hack` wallet puzzles | Wallet theft (Phase 2 Opus) |
-| Hacker (advanced) | `govdb` → `infil` node puzzles | Govdb breach (Phase 2 Opus) |
-| Police | Trace alerts, audit miners, warrants (TBD) | City funds read / counter-hack |
-| Gov tax miner | Always mine BTC → hourly tax % → city cash | Server-only treasury |
-| Bitcoin mining hub | Power, link racks, buy upgrades | Terminal `sell` → player `PayHost` |
+| Hacker (standard / starter) | `scan` → `hack` wallet puzzles | Wallet theft (Phase 2 Opus); cheap kit, weaker security |
+| Hacker (advanced / purchased) | `govdb` → `infil`; breach miners + bank + gov nodes | High-reward targets; complex puzzles |
+| Government (lifepunchnet) | Trace alerts, audit miners, counter large-scale breaches | City funds read / counter-hack vs red tier |
+| Government Data Center | Always mine BTC → tax % (0–30%) → city cash | Server-only treasury; parallel to mayor rate |
+| Bitcoin mining hub | Power, link racks, buy upgrades | Terminal `sell` → player `PayHost`; **blocked for gov/LE jobs** |
 
 ## Editor helpers (place entities — not player gameplay)
 

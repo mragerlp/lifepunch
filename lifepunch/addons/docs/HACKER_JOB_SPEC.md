@@ -17,8 +17,8 @@
 The **"Hacker"** is a **DXRP job** that LifePunch creates. Core loop:
 
 1. **Entities — two hacker terminal tiers** (`TERMINAL_BRAND_MATRIX.md`):
-   - **Hacker Terminal** (Cornerman green) — wallet `scan` / `hack`
-   - **Advanced Hacking Terminal** (VENGEANCE red) — `govdb` / `infil` on city treasury nodes
+   - **Starter kit** — `server-rack` + **Hacker Terminal** (Cornerman green): **low price**, **less secure**, wallet `scan` / `hack` only. This is what the Hacker job starts with.
+   - **Purchased upgrade** — `advanced-server-rack` + **Advanced Hacking Terminal** (VENGEANCE red): **much more expensive**, higher-end hardware, **more complex** commands, **higher rewards** — targets include player **bitcoin miners**, **bank**, and **government datacenter** / city funds (`govdb` / `infil`).
    Retro CRT models (owner will source/make).
 2. **Interact → log in** — USE the Hacker / Advanced Hacker Terminal to boot the attached program UI
    (Cornerman green / Vengeance red). See `hackerjob/docs/TERMINAL_SESSION_DOCTRINE.md`.
@@ -89,7 +89,7 @@ systems as designed — see `REUSABLE_ADDON_FRAMEWORK.md`, `lifepunch-quality-ba
 | **2 — Economy** | Red (Opus) | Job gate, live scan, server-validated puzzles, wallet debit/credit, cooldowns, audit |
 | **3 — Assets** | Red | CRT model, prefab, sounds, optional WorldPanel on monitor |
 | **4 — Polish** | Owner + Opus | Tabbed UI (optional), counterplay, balance tuning |
-| **Later** | TBD | **Government Database** — see `GOVERNMENT_DATABASE_SPEC.md` |
+| **Later** | TBD | **Government / FBI protagonist cyber (Phase F)** — finish Hacker Job first. `government-server-rack` hub + lifepunchnet `police-terminal` vs red-tier breaches. See `GOVERNMENT_DATABASE_SPEC.md` |
 
 Cornerman drafts Phase 1 UI + puzzle framework. **Opus owns Phase 2 economy** — never trust client puzzle success or amounts.
 

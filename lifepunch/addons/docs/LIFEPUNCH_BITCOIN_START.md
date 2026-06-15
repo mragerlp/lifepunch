@@ -41,6 +41,10 @@ lp_bitcoin_spawn_kit
 
 **Visual law:** room story before USE — hub silhouette → rack wall → clutter → LEDs. See visual pass brief § hierarchy.
 
+**Polish tracker (check off as we go):** `Code/Addons/lifepunch/bitcoinmining/docs/BITCOINMINING_POLISH_CHECKLIST.md`
+
+**Other cyber lanes (hacker, banker, black market, drug chemist, …):** `addons/docs/CYBER_JOBS_POLISH_CHECKLIST.md` · full portfolio order: `addons/docs/JOB_PORTFOLIO_ROADMAP.md`
+
 ---
 
 ## P0 deliverables (sign-off gate)

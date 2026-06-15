@@ -6,23 +6,26 @@
 
 ## What it is
 
-- **Landmark** on map — visible city infrastructure
-- **Passive BTC treasury** — always mining (no player start/stop)
+- **Landmark** on map — visible city infrastructure (**Government Data Center**)
+- **Passive BTC treasury** — always mining (no player start/stop); mayor tax **0–30%** every 30m → city funds
 - **$50,000 cap** at $1,500/BTC
-- **Every 30 minutes:** `floor(btc × 1500 × mayorTaxRate)` → **city funds** (tax 0–30%)
+- **Government Server Rack** — hub for lawful cyber kit (powers Government Terminal)
+- **Not player hashd** — gov/LE jobs **cannot** spawn lifepunchbitcoin miner entities
 
-Players cannot withdraw treasury BTC directly — lawful jobs earn via **puzzles + terminal**.
+Players cannot withdraw treasury BTC directly — lawful jobs earn via **puzzles + lifepunchnet terminal**.
+
+**Build order:** finish **Hacker Job** (red tier as breach antagonist) before deep-diving FBI counter-intrusion features.
 
 ---
 
 ## Who uses it
 
-| Job | Terminal | Role |
-|-----|----------|------|
-| **FBI** | Government terminal (cyan) | Counter-hack, trace, audit |
-| **Cybersecurity** | Same terminal | Hardening, incident response |
-| **Mayor** | Sets tax rate | Affects drip % |
-| **Hacker (vengeance)** | Criminal breach | Hard puzzles, high risk |
+| Job | Hub | Terminal | Role |
+|-----|-----|----------|------|
+| **FBI / gov cyber** | `government-server-rack` | Government Terminal (cyan lifepunchnet) | Counter-hack, trace, audit — intercept breaches on **miners, bank, city funds** |
+| **Cybersecurity** | Same hub | Same terminal | Hardening, incident response |
+| **Mayor** | — | Sets tax rate on data center | Affects treasury drip % |
+| **Hacker (purchased red)** | `advanced-server-rack` | Vengeance terminal | Criminal breach — hard puzzles, high risk |
 
 ---
 

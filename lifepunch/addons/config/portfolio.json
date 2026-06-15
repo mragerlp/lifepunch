@@ -2,6 +2,7 @@
   "schemaVersion": 1,
   "phase": "ophion-rebuild-2026-06",
   "law": "Only activeAddons are in-scope for ship work. Quarantined idents stay in repo for reference — do not extend until owner promotes. publishReadyAddons is the export set for lifepunch-published. Public branch names = packageSlug in config/packages.json.",
+  "jobRoadmap": "docs/JOB_PORTFOLIO_ROADMAP.md",
   "packageManifest": "config/packages.json",
   "activeAddons": [
     "adminmenu",
