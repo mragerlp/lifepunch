@@ -1,0 +1,42 @@
+[
+  {
+    "name": "Bitcoin Miner Hub",
+    "type": 0,
+    "description": "Ophion hashd hub — power, rack linking, upgrades. Published by LIFEPUNCH.",
+    "primaryReference": "addons/lifepunch/bitcoinmining/entities/bitcoinminer/bitcoin-miner.prefab",
+    "secondaryReference": "",
+    "grouping": "Entities",
+    "worldModelPath": "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/bitcoin-miner.vmdl",
+    "iconPath": ""
+  },
+  {
+    "name": "Bitcoin Terminal",
+    "type": 0,
+    "description": "HASHD CRT monitor — rig0 typed commands.",
+    "primaryReference": "addons/lifepunch/bitcoinmining/entities/bitcoin-terminal/bitcoin-terminal.prefab",
+    "secondaryReference": "",
+    "grouping": "Entities",
+    "worldModelPath": "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-terminal/bitcoin-terminal.vmdl",
+    "iconPath": ""
+  },
+  {
+    "name": "GPU Rack",
+    "type": 0,
+    "description": "Standard GPU mining rack — links to hub.",
+    "primaryReference": "addons/lifepunch/bitcoinmining/entities/gpurack/gpu-rack.prefab",
+    "secondaryReference": "",
+    "grouping": "Entities",
+    "worldModelPath": "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/gpu-rack/gpu-rack.vmdl",
+    "iconPath": ""
+  },
+  {
+    "name": "Large GPU Rack",
+    "type": 0,
+    "description": "Stacked GPU rack — 2x yield.",
+    "primaryReference": "addons/lifepunch/bitcoinmining/entities/largegpurack/large-gpu-rack.prefab",
+    "secondaryReference": "",
+    "grouping": "Entities",
+    "worldModelPath": "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/gpu-rack/gpu-rack-stacked.vmdl",
+    "iconPath": ""
+  }
+]

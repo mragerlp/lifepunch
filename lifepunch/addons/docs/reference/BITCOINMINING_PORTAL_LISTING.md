@@ -1,6 +1,6 @@
 # Bitcoin Mining — portal listing copy
 
-**Package:** `lifepunch.bitcoinmining` · **Portal row:** TBD (`addons.json` `dxrpAddonId`)  
+**Package:** `lifepunch.bitcoin` · **Portal:** `019ec9a4-d867-7668-b452-904f97493c7e` · **Identifier:** `lifepunchbitcoin`  
 **Use:** Paste into DXRP portal when publishing — lead with **LIFEPUNCH** as source.  
 **IP:** `BITCOINMINING_IP_DOCTRINE.md`
 
@@ -14,7 +14,9 @@
 | **Short name** | Bitcoin Mining |
 | **Publisher** | LIFEPUNCH |
 | **Publisher URL** | lifepunch.co |
-| **s&box identifier** | `lifepunch.bitcoinmining` |
+| **s&box identifier** | `lifepunch.bitcoin` |
+| **Portal addon ID** | `019ec9a4-d867-7668-b452-904f97493c7e` |
+| **Portal identifier** | `lifepunchbitcoin` |
 
 ---
 

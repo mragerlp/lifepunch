@@ -222,7 +222,7 @@ These are **inconsistent with full ChatGPT exit fantasy** but **expected on this
 
 | Gap | Status | Notes |
 |-----|--------|-------|
-| Market acquire / place | **Not live** | No `dxrpAddonId` / market row — dev spawn only until portal ship |
+| Market acquire / place | **Portal placeholder live** — addon `019ec9a4-d867-7668-b452-904f97493c7e` (`lifepunchbitcoin`); **no published revision yet** | Paste content JSON from `config/portal/lifepunchbitcoin-content-placeholder.json`; publish after `_c` ship |
 | Gov/LE blocked from hashd | **Doc only** | `TERMINAL_BRAND_MATRIX.md`; not enforced in `LpBitcoinHubEntity` yet |
 | Full Law 6 world states | **Partial** | Boot splash = UI; emissive/audio = H4/R4 checklist |
 | PIN graphical gate | **H9 open** | `AccessPinIsSet` in code; full numpad flow TBD |
