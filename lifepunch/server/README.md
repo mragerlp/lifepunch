@@ -65,6 +65,7 @@ Operational rules:
 - Keep `lifepunchmainserver` and `lifepunchdevelopment` procedures separate.
 - Test addon/gamemode/beta-feature changes on `lifepunchdevelopment` before considering `lifepunchmainserver`.
 - **On-box launch wrappers** (versioned): `dxrp-host/` — deploy to `C:\S&BOX DXRP Server` via `Deploy-DxrpHostLaunchers.ps1`. Tokens stay in on-box `secure/*.local.env` only.
+- **Server won't pulse / INACTIVE?** → `SERVER_ONLINE_QUICKFIX.md` (Official must use `dotnet run dxrp-server.cs`, not `+game dxura.rp`).
 - Do not commit live tokens, `dxrp-server-config.json` with secrets, or fork upstream `dxrp-server.cs`.
 - Keep the server inventory in `../../config/servers.json`.
 - Keep the visible server-page field inventory in `../../config/server-page-fields.json`.

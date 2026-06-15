@@ -28,14 +28,6 @@
 					</button>
 				}
 			</nav>
-
-			<div class="sidebar-foot">
-				<button class="sidebar-btn @( _active == OpsTab.Settings ? "active" : "" )"
-				        tooltip="Settings"
-				        onclick="@OpenSettings">
-					<i class="material-icons">settings</i>
-				</button>
-			</div>
 		</aside>
 
 		<div class="workspace">
@@ -51,6 +43,11 @@
 				</div>
 
 				<div class="header-actions lp-ui-chrome-actions">
+					<button class="lp-ui-chrome-btn cog @( _active == OpsTab.Settings ? "active" : "" )"
+					        tooltip="Settings"
+					        onclick="@OpenSettings">
+						<i class="material-icons">settings</i>
+					</button>
 					<button class="lp-ui-chrome-btn close" tooltip="Close" onclick="@Close">
 						<i class="material-icons">close</i>
 					</button>

@@ -6,8 +6,11 @@ Layer0
 
 	F_SPECULAR 1
 	F_EMISSIVE_TEXTURE 1
+	F_METALNESS_TEXTURE 1
 
 	TextureColor "addons/lifepunch/bitcoinmining/entities/bitcoinminer/textures/AsusRogStrix3090.png"
+	TextureRoughness "addons/lifepunch/bitcoinmining/entities/bitcoinminer/textures/AsusRogStrix3090_roughness.png"
+	TextureMetalness "addons/lifepunch/bitcoinmining/entities/bitcoinminer/textures/AsusRogStrix3090_metalness.png"
 	TextureEmissive "addons/lifepunch/bitcoinmining/entities/bitcoinminer/textures/AsusRogStrix3090_emission_-_showdown.png"
 
 	g_flModelTintAmount "1.000"

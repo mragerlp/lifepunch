@@ -60,7 +60,7 @@ Unmapped slots hit **`global_default_material` = chassis** — entire GPU/cables
 
 ### Glass (acrylic) — Jun 2026 fix
 
-`bitcoin-miner-acrylic.vmat` must use **`generic.shader`** + **`F_RENDER_BACKFACES`** (thin panel meshes are single-sided) + **`g_flOpacityScale` ~0.38**. The prior `complex.shader` at **0.12 opacity** made side panels invisible in play. After vmat edit: recompile vmats + `bitcoin-miner.vmdl` in ModelDoc, sync DXRP, respawn hub.
+`bitcoin-miner-acrylic.vmat` must use **`generic.shader`** + **`F_RENDER_BACKFACES`** (thin panel meshes are single-sided) + **`g_flOpacityScale` ~0.38**. The prior `complex.shader` at **0.12 opacity** made side panels invisible in play. After vmat edit: **recompile `bitcoin-miner-acrylic.vmat` in Material Editor** (repo is missing `bitcoin-miner-acrylic.vmat_c` until compile) → recompile `bitcoin-miner.vmdl` in ModelDoc → sync DXRP → `Pull-DxrpCompiledAssetsToRepo.ps1 -Addon bitcoinmining` → respawn hub.
 
 ### Textures shipped but not on any vmat
 

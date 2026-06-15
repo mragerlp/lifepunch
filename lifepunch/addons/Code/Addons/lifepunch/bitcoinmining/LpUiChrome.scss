@@ -51,6 +51,11 @@ $lp-chrome-danger-hover: #c40024;
 		font-size: 24px;
 	}
 
+	&.cog.active {
+		background-color: rgba(240, 165, 0, 0.18);
+		color: #f0a500;
+	}
+
 	&.close {
 		color: $lp-chrome-danger;
 

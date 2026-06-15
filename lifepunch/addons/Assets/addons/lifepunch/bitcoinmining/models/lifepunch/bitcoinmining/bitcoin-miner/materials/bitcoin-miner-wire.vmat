@@ -8,6 +8,7 @@ Layer0
 	F_SPECULAR 1
 
 	TextureColor "addons/lifepunch/bitcoinmining/entities/bitcoinminer/textures/Wire_weave_texture.png"
+	TextureNormal "addons/lifepunch/bitcoinmining/entities/bitcoinminer/textures/Wire_weave_bump1.jpg"
 	TextureRoughness "addons/lifepunch/bitcoinmining/entities/bitcoinminer/textures/Metal036_2K_Roughness.jpg"
 
 	g_flModelTintAmount "1.000"
