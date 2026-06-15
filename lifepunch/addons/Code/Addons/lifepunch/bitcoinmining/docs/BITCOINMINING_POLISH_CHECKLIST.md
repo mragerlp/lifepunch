@@ -4,6 +4,10 @@
 **Order:** Bitcoin Miner Hub → Bitcoin Terminal → GPU Rack → *(later)* Hacker Server Rack → Hacker Terminal  
 **Law:** one item at a time → play proof on flatgrass → owner sign-off → check box → next.
 
+**Production gate (read first every session):** `addons/docs/ACTIVE_WORKSTREAM.md`  
+**Production laws:** `addons/docs/CYBER_REFERENCE_LAWS.md`  
+**Bible (on sign-off):** `addons/docs/BITCOIN_REFERENCE_IMPLEMENTATION.md`  
+**Parking lot (blocked ideas):** `addons/docs/BACKLOG_PARKING_LOT.md`  
 **Owner tracker (plain text, second screen):** `addons/docs/OWNER_PROGRESS_TRACKER.txt`
 
 **Visual canon:** `lifepunch/addons/docs/briefs/BITCOIN_OPHION_VISUAL_PASS_BRIEF.md`  
@@ -49,6 +53,31 @@ powershell -File lifepunch\scripts\Pull-DxrpCompiledAssetsToRepo.ps1 -Addon bitc
 ## Phase A — Bitcoin Miner Hub (Ophion)
 
 *Room story first: silhouette → materials → power state → USE → admin UI.*
+
+### Phase A sign-off gate (hard — no Phase B until complete)
+
+**DONE WHEN (all required):**
+
+```text
+☐ Correct scale          (H1)
+☐ Correct collider       (H1, H6)
+☐ Idle state readable    (H4)
+☐ Active state readable  (H4)
+☐ USE feedback readable  (H6)
+☐ Night visibility       (H4 — night screenshot)
+☐ Branding verified      (H7 — BTC mark + amber HASHD)
+☐ Screenshot proof       (H10 — proof package below)
+```
+
+**Proof package (status = NOT DONE if any missing):**
+
+```text
+- Screenshot #1: Day (flatgrass, citizen scale)
+- Screenshot #2: Night (power on/off readable)
+- Screenshot #3: USE state (hub interaction)
+- Screenshot #4: Citizen comparison (waist/chest vs hub)
+- 30-second gameplay clip (place → power → UI)
+```
 
 | ID | Done | Task | Done when | Proof |
 |----|:----:|------|-----------|-------|

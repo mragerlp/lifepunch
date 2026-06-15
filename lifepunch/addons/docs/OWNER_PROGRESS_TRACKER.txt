@@ -1,16 +1,21 @@
 ================================================================================
 LIFEPUNCH ADDON PROGRESS TRACKER (owner copy — edit [ ] to [x] as you go)
 ================================================================================
+GATE LAW (read every session): lifepunch/addons/docs/ACTIVE_WORKSTREAM.md
+REFERENCE LAWS:                lifepunch/addons/docs/CYBER_REFERENCE_LAWS.md
+PARKING LOT (no production):     lifepunch/addons/docs/BACKLOG_PARKING_LOT.md
 Repo mirror: lifepunch/addons/docs/OWNER_PROGRESS_TRACKER.txt
 Detail docs:  lifepunch/addons/docs/JOB_PORTFOLIO_ROADMAP.md
               lifepunch/addons/Code/Addons/lifepunch/bitcoinmining/docs/BITCOINMINING_POLISH_CHECKLIST.md
               lifepunch/addons/docs/CYBER_JOBS_POLISH_CHECKLIST.md
 
 Law: one item at a time -> play proof on flatgrass -> your OK -> check box -> next.
+Proof package required for phase sign-off (day, night, USE, citizen, 30s clip).
 Play from: game.scene (NOT prefab tabs). Cold compile: wait 2-5 min.
 
 Last updated: 2026-06-15
-ACTIVE NOW: lifepunchbitcoin (LifePunch Bitcoin Mining)
+ACTIVE NOW: lifepunchbitcoin (LifePunch Bitcoin Mining) — Phase A Hub Polish
+BLOCKED: Hacker, Banker, Government, Casino, Drug Chemist, all new cyber lanes
 
 Send edits to Cursor: paste changed sections or say "tracker: checked H1, start H2".
 

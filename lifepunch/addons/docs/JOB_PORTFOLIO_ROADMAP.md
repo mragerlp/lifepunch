@@ -1,6 +1,7 @@
 # LifePunch job portfolio — post-bitcoin roadmap
 
 **Owner law (2026-06-15):** finish **lifepunchbitcoin** polish (hub → terminal → GPU rack) before promoting any lane below.  
+**Hard gate:** `ACTIVE_WORKSTREAM.md` · **Parking lot:** `BACKLOG_PARKING_LOT.md`  
 **Work law:** one item at a time → play proof → owner sign-off → next.
 
 **Related:** `config/portfolio.json` · `CYBER_JOBS_POLISH_CHECKLIST.md` · `BITCOINMINING_POLISH_CHECKLIST.md` · `TERMINAL_BRAND_MATRIX.md`
@@ -21,7 +22,7 @@ Nothing in Tier 1–3 starts until Bitcoin Phase A–C hub/terminal/rack pattern
 
 | Order | Job | Package / repo | UI pattern | Status | Notes |
 |-------|-----|----------------|------------|--------|-------|
-| **1** | **Hacker** | `lifepunchhacker` / `hackerjob` | Hub + terminal (Cornerman + VENGEANCE tiers) | **In progress** | Criminal cyber lane; quarantined on bitcoin-only DXRP until promoted. Checklist: `CYBER_JOBS_POLISH_CHECKLIST.md` Phase E. |
+| **1** | **Hacker** | `lifepunchhacker` / `hackerjob` | Hub + terminal (Cornerman + VENGEANCE tiers) | **Blocked** | Criminal cyber lane; quarantined on disk. Checklist: `CYBER_JOBS_POLISH_CHECKLIST.md` Phase E. Unlock: Bitcoin Phases A–C sign-off. |
 | **2** | **Banker** | `lifepunchbanker` / `bankerjob` | Hub (`bank-vault-hub`) + teller terminal | Idea / concept | Spec: `BANKER_JOB_SPEC.md`, `bankerjob/docs/BANK_VAULT_HUB.md`. Blocked on bitcoin economy + Opus economy sign-off. |
 | **3** | **Black Market Dealer** | *TBD* (e.g. `blackmarketdealer`) | Hub for **optional BTC** payments; dealer CRT catalog | Idea / concept | Gadgets + weapons; BTC via Ophion hub pattern when buyer chooses crypto. Theme: `lp-ops-crt--blackmarket`. Checklist: Phase H. |
 | **4** | **Drug Chemist** | `lifepunchdrugprocessing` / `advanceddrugprocessing` | **Hub likely; terminal probably not** | Idea / concept | Processing stations exist in repo; economy not signed off. Coke/meth canon: `COKE_DRUG_RESKIN_SPEC.md`, `advanceddrugprocessing/docs/`. |

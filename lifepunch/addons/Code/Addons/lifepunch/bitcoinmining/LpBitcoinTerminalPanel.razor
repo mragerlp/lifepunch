@@ -226,14 +226,15 @@
 	}
 
 	protected override int BuildHash() => HashCode.Combine(
-		_selectedIndex,
-		_input,
-		_lines.Count,
-		_uiScale,
-		_showScaleMenu,
-		_showBootSplash,
-		_bootStatus,
-		_bootLineIndex,
+		HashCode.Combine(
+			_selectedIndex,
+			_input,
+			_lines.Count,
+			_uiScale,
+			_showScaleMenu,
+			_showBootSplash,
+			_bootStatus,
+			_bootLineIndex ),
 		_bootComplete,
 		_hub?.IsPowered,
 		_hub?.GetLinkedRacks().Sum( r => r.BitcoinAmount ) );

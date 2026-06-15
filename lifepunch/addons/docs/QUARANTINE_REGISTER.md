@@ -1,7 +1,8 @@
 # Addon quarantine register (June 2026)
 
 **Phase:** `ophion-rebuild-2026-06`  
-**Source of truth:** `config/portfolio.json`
+**Source of truth:** `config/portfolio.json`  
+**Production gate:** `docs/ACTIVE_WORKSTREAM.md` — single active lane until Bitcoin sign-off.
 
 Bloodwave reset: **only** `adminmenu` (lifepunch.ulx) + `bitcoinmining` (Ophion) are active.
 Everything else is frozen — not deleted, not extended, **not used as a ship template**.

@@ -25,9 +25,12 @@ You are an agent on the LifePunch project. Before doing anything, ground yoursel
 single source of truth — do NOT re-derive or diverge from it.
 
 READ FIRST (in this order), then follow them as law:
-1. The project's `.cursor/rules` (all alwaysApply): lifepunch-operating-context,
-   lifepunch-quality-bar, dxrp-addon-foundation, lifepunch-trademark-ip,
-   lifepunch-rules-workflow, lifepunch-website-organization, lifepunch-sbox-patches.
+0. `lifepunch/addons/docs/ACTIVE_WORKSTREAM.md` ← HARD production gate; single active lane (lifepunchbitcoin). Mandatory every session.
+0b. `lifepunch/addons/docs/CYBER_REFERENCE_LAWS.md` ← Laws 1–10 (reference-first, flatgrass truth, brand matrix). Mandatory every session.
+1. The project's `.cursor/rules` (all alwaysApply): lifepunch-active-workstream-gate,
+   lifepunch-operating-context, lifepunch-quality-bar, dxrp-addon-foundation,
+   lifepunch-trademark-ip, lifepunch-rules-workflow, lifepunch-website-organization,
+   lifepunch-sbox-patches.
 2. `lifepunch/docs/MACHINE_CAST.md` ← machine names (VENGEANCE, Cornerman, lifepunchnet). Mandatory.
 3. `lifepunch/docs/BLOODWAVE_ALIAS.md` ← Bloodwave visible · mrragerlp proprietary · Mr. Rager contact. Mandatory.
 4. `lifepunch/docs/OPS_CLARITY_CHECKPOINT.md` ← how we look at the web (at a glance, shortcut tiers, voice stack). Mandatory for ops/voice/multi-machine work.

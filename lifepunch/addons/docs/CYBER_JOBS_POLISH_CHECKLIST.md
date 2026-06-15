@@ -1,5 +1,6 @@
 # LifePunch cyber jobs — polish checklist (hub → terminal → rack)
 
+**Production gate:** `ACTIVE_WORKSTREAM.md` — **all rows below are BLOCKED** until Bitcoin Phases A–C sign-off.  
 **Law:** one item at a time → play proof → owner sign-off → check box → next.  
 **Shared pattern:** **Hub / Server Rack** (power, PIN, linking, upgrades) → **Terminal** (typed CRT commands) → **Satellite entities** (racks, tellers, miners).
 
@@ -16,7 +17,7 @@
 | Order | Lane | Addon ident | Status | Blocked on |
 |-------|------|-------------|--------|------------|
 | **0** | Civilian Bitcoin Miner | `bitcoinmining` | **Active** — Phase A in progress | — |
-| **1** | Hacker (criminal) | `hackerjob` | **In progress**; quarantined on bitcoin-only DXRP | Bitcoin hub/terminal patterns proven |
+| **1** | Hacker (criminal) | `hackerjob` | **Blocked** | Bitcoin Phases A–C owner sign-off |
 | **2** | Banker | `bankerjob` | Spec / scaffold only | Bitcoin + hacker Phase 1 playtest; Opus economy |
 | **3** | Black Market Dealer | *(TBD ident)* | Theme SCSS only (`lp-ops-crt--blackmarket`) | Bitcoin BTC wallet + optional hub payment RPC |
 | **4** | Drug Chemist | `advanceddrugprocessing` | Assets partial; economy not signed off | Hub pattern; **likely no terminal** |
