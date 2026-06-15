@@ -37,45 +37,56 @@ if ($allowlist) {
 }
 
 while ($listener.IsListening) {
-    $ctx = $listener.GetContext()
-    $req = $ctx.Request
-    $res = $ctx.Response
-    $path = $req.Url.LocalPath.TrimEnd('/')
+    try {
+        $ctx = $listener.GetContext()
+        $req = $ctx.Request
+        $res = $ctx.Response
+        $path = $req.Url.LocalPath.TrimEnd('/')
 
-    $auth = $req.Headers['Authorization']
-    $tokenOk = ($auth -eq "Bearer $expectedToken")
+        $auth = $req.Headers['Authorization']
+        $tokenOk = ($auth -eq "Bearer $expectedToken")
 
-    $body = ''
-    $code = 200
-    $ctype = 'application/json; charset=utf-8'
+        $body = ''
+        $code = 200
+        $ctype = 'application/json; charset=utf-8'
 
-    if (-not $tokenOk) {
-        $code = 401
-        $body = '{"error":"unauthorized"}'
-    }
-    elseif ($allowlist -and -not (Test-CvlClientIp -Request $req -Allowlist $allowlist)) {
-        $code = 403
-        $body = '{"error":"client ip not allowlisted"}'
-    }
-    elseif ($path -eq '/status' -or $path -eq '') {
-        $watchdog = Join-Path $StatusDir 'watchdog.json'
-        if (Test-Path -LiteralPath $watchdog) {
-            $body = Get-Content -LiteralPath $watchdog -Raw
+        if (-not $tokenOk) {
+            $code = 401
+            $body = '{"error":"unauthorized"}'
+        }
+        elseif ($allowlist -and -not (Test-CvlClientIp -Request $req -Allowlist $allowlist)) {
+            $code = 403
+            $body = '{"error":"client ip not allowlisted"}'
+        }
+        elseif ($path -eq '/status' -or $path -eq '') {
+            $watchdog = Join-Path $StatusDir 'watchdog.json'
+            if (Test-Path -LiteralPath $watchdog) {
+                $body = Get-Content -LiteralPath $watchdog -Raw
+            }
+            else {
+                $code = 503
+                $body = '{"error":"watchdog not ready"}'
+            }
         }
         else {
-            $code = 503
-            $body = '{"error":"watchdog not ready"}'
+            $code = 404
+            $body = '{"error":"not found"}'
+        }
+
+        $res.StatusCode = $code
+        $res.ContentType = $ctype
+        $bytes = [Text.Encoding]::UTF8.GetBytes($body)
+        $res.ContentLength64 = $bytes.Length
+        try {
+            $res.OutputStream.Write($bytes, 0, $bytes.Length)
+        }
+        finally {
+            try { $res.OutputStream.Close() } catch { }
         }
     }
-    else {
-        $code = 404
-        $body = '{"error":"not found"}'
+    catch {
+        if (-not (Test-CvlBenignClientAbort $_)) {
+            Write-Host "request error: $($_.Exception.Message)" -ForegroundColor Yellow
+        }
     }
-
-    $res.StatusCode = $code
-    $res.ContentType = $ctype
-    $bytes = [Text.Encoding]::UTF8.GetBytes($body)
-    $res.ContentLength64 = $bytes.Length
-    $res.OutputStream.Write($bytes, 0, $bytes.Length)
-    $res.OutputStream.Close()
 }

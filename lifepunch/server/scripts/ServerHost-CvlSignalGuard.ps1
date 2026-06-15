@@ -20,6 +20,26 @@ function Test-CvlClientIp {
     return ($Allowlist -contains $ip)
 }
 
+function Test-CvlBenignClientAbort {
+    param($ErrorRecord)
+    $ex = if ($ErrorRecord.Exception) { $ErrorRecord.Exception } else { $ErrorRecord }
+    $msg = [string]$ex.Message
+    if ($ex.InnerException) { $msg += ' ' + [string]$ex.InnerException.Message }
+    if (-not $msg.Trim()) { return $false }
+    $needles = @(
+        'network name is no longer available'
+        'forcibly closed'
+        'connection was aborted'
+        'existing connection was forcibly closed'
+        'I/O operation has been aborted'
+        'transport connection'
+    )
+    foreach ($n in $needles) {
+        if ($msg -match [regex]::Escape($n)) { return $true }
+    }
+    return $false
+}
+
 function Test-CvlIngestEntry {
     param([hashtable]$Entry, [int]$MaxTextLen = 32000, [int]$MaxBodyLen = 512000)
     foreach ($key in $Entry.Keys) {

@@ -8,6 +8,8 @@ Keep it separate from `../addons` and `../server`. Addon packages publish assets
 
 ```text
 gamemodes/   # exported/importable LifePunch .gamemode files
+             #   lifepunch-ship.gamemode = LIFEPUNCH™ ship (019ec9ec-…)
+             #   lifepunch.gamemode      = legacy LifePunch (019e36c0-…) — pending owner rename/import
 config/      # stable gamemode IDs, revision refs, import metadata
 docs/        # gamemode procedures
 scripts/     # gamemode validation/import/export helpers
