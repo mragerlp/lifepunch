@@ -104,17 +104,19 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable
 	public void RequestSell() => SellHost();
 
 	[Rpc.Host]
-	private async void SellHost()
+	private async void SellHost() => await SellForCallerHost( Rpc.CallerId );
+
+	internal async System.Threading.Tasks.Task SellForCallerHost( Guid callerId )
 	{
 		if ( BitcoinAmount <= 0f )
 			return;
 
 		var hub = GetLinkedHub();
-		if ( hub is null || !hub.CanOperateTerminal( Rpc.CallerId ) )
+		if ( hub is null || !hub.CanOperateTerminal( callerId ) )
 			return;
 
 		var value = (uint)(BitcoinAmount * LpBitcoinEconomy.BitcoinValueUsd);
-		if ( !await LpBitcoinWallet.TryPay( Rpc.CallerId, value, "LIFEPUNCH bitcoin sell" ) )
+		if ( !await LpBitcoinWallet.TryPay( callerId, value, "LIFEPUNCH bitcoin sell" ) )
 			return;
 
 		BitcoinAmount = 0f;

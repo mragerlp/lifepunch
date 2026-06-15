@@ -7,12 +7,72 @@
 @using System.Collections.Generic
 @using System.Linq
 @using Sandbox.UI
+@using LifePunch.DXRP.Addons
 @inherits PanelComponent
 
 @attribute [StyleSheet]
 
 <root class="@GetRootClass()">
 	<div class="shell">
+		@if ( ShowPinGate() )
+		{
+			<div class="pin-gate">
+				<header class="pin-header">
+					<div class="pin-brand">
+						<div class="brand-mark"></div>
+						<div class="pin-brand-copy">
+							<div class="pin-title">@( PinSetupMode() ? "SECURE BOOT SETUP" : "SECURE BOOT" )</div>
+							<div class="pin-sub">@( PinSetupMode() ? "Create a 4–6 digit hub PIN" : "Enter hub PIN to continue" )</div>
+						</div>
+					</div>
+					<button class="lp-ui-chrome-btn close" tooltip="Close" onclick="@Close">
+						<i class="material-icons">close</i>
+					</button>
+				</header>
+
+				<div class="pin-body">
+					<div class="pin-dots">
+						@for ( var i = 0; i < PinTargetLength(); i++ )
+						{
+							<span class="pin-dot @(i < _pinBuffer.Length ? "filled" : "")"></span>
+						}
+					</div>
+					@if ( !string.IsNullOrWhiteSpace( _pinError ) )
+					{
+						<div class="pin-error">@_pinError</div>
+					}
+					@if ( PinSetupMode() && _pinSetupPass == 1 )
+					{
+						<div class="pin-hint">Confirm your PIN</div>
+					}
+
+					<div class="pin-pad">
+						@foreach ( var key in _pinKeys )
+						{
+							<button class="pin-key @(key == "ok" ? "ok" : "") @(key == "clr" ? "clr" : "")"
+							        onclick="@(() => PressPinKey(key))">
+								@if ( key == "clr" )
+								{
+									<i class="material-icons">backspace</i>
+								}
+								else if ( key == "ok" )
+								{
+									<i class="material-icons">check</i>
+								}
+								else
+								{
+									<span>@key</span>
+								}
+							</button>
+						}
+					</div>
+				</div>
+			</div>
+		}
+		else
+		{
+			<div class="hub-body">
+				<div class="hub-main">
 		<aside class="sidebar">
 			<div class="sidebar-brand" title="@LpBitcoinIdent.OpsTitle">
 				<div class="brand-mark"></div>
@@ -179,6 +239,35 @@
 							}
 						</div>
 					}
+					else if ( _active == OpsTab.Wallet )
+					{
+						<div class="pane wallet">
+							<div class="pane-head">
+								<div class="pane-title">Wallet payout</div>
+								<div class="pane-sub">Cash out linked rack balances to your DXRP wallet</div>
+							</div>
+
+							<div class="dash-card wallet-card">
+								<div class="card-head">
+									<span class="card-label">Rack BTC total</span>
+									<span class="tag-pill">@LpBitcoinIdent.BtcEmoji</span>
+								</div>
+								<div class="balance-value">@TotalBtc().ToString("F6")</div>
+								<div class="balance-sub">$@TotalUsd() USD at $@LpBitcoinEconomy.BitcoinValueUsd / BTC</div>
+								<div class="balance-sub">Your cash: $@LpHashdUiHost.GetLocalWalletCash()</div>
+							</div>
+
+							<div class="wallet-actions">
+								<button class="cta-pill wide" disabled="@(TotalBtc() <= 0f)" onclick="@SellAllRacks">Sell all rack BTC</button>
+								<button class="ghost" onclick="@(() => OpenTerminal( null ))">Open CRT terminal</button>
+							</div>
+
+							<div class="hint-card">
+								<i class="material-icons">info</i>
+								<span>Per-rack sell and mining control stay on the CRT terminal (`sell`, `mining start`).</span>
+							</div>
+						</div>
+					}
 					else if ( _active == OpsTab.About )
 					{
 						<div class="pane about">
@@ -221,7 +310,7 @@
 
 							<div class="settings-group">
 								<div class="settings-label">Security</div>
-								<div class="settings-hint">Access PIN and placement limits ship in a later pass.</div>
+								<div class="settings-hint">@( Hub?.AccessPinIsSet == true ? "Hub PIN is active. PIN change ships in a later pass." : "Set your PIN on first hub USE via Secure Boot." )</div>
 							</div>
 						</div>
 					}
@@ -272,16 +361,26 @@
 				}
 			</div>
 		</div>
+				</div>
+				<LifePunchUiFooter />
+			</div>
+		}
 	</div>
 </root>
 
 @code
 {
-	private enum OpsTab { Overview, Racks, About, Settings }
+	private enum OpsTab { Overview, Racks, Wallet, About, Settings }
 
-	private static readonly OpsTab[] _tabs = { OpsTab.Overview, OpsTab.Racks, OpsTab.About };
+	private static readonly OpsTab[] _tabs = { OpsTab.Overview, OpsTab.Racks, OpsTab.Wallet, OpsTab.About };
 
 	private OpsTab _active = OpsTab.Overview;
+	private bool _pinUnlocked;
+	private string _pinBuffer = "";
+	private string _pinConfirmDraft = "";
+	private string _pinError = "";
+	private int _pinSetupPass;
+	private static readonly string[] _pinKeys = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "clr", "0", "ok" };
 	private LpUiScaleSize _uiScale = LpUiScale.Default;
 	private static readonly LpUiScaleSize[] _uiScaleOptions =
 	{
@@ -294,7 +393,15 @@
 
 	public LpBitcoinHubEntity Hub => _hub;
 
-	public void BindHub( LpBitcoinHubEntity hub ) => _hub = hub;
+	public void BindHub( LpBitcoinHubEntity hub )
+	{
+		_hub = hub;
+		_pinUnlocked = hub is null;
+		_pinBuffer = "";
+		_pinConfirmDraft = "";
+		_pinError = "";
+		_pinSetupPass = 0;
+	}
 
 	private string StatusLabel() => Hub?.IsPowered == true ? "POWER ON" : "POWER OFF";
 
@@ -302,6 +409,7 @@
 	{
 		OpsTab.Overview => "dashboard",
 		OpsTab.Racks => "dns",
+		OpsTab.Wallet => "account_balance_wallet",
 		_ => "info"
 	};
 
@@ -309,6 +417,7 @@
 	{
 		OpsTab.Overview => "Overview",
 		OpsTab.Racks => "Racks",
+		OpsTab.Wallet => "Wallet",
 		_ => "About"
 	};
 
@@ -320,6 +429,81 @@
 	private void Close() => LpHashdUiHost.CloseOpen();
 	private void PowerOn() => Hub?.SetPowered( true );
 	private void PowerOff() => Hub?.SetPowered( false );
+
+	private bool ShowPinGate() => Hub is not null && !_pinUnlocked;
+	private bool PinSetupMode() => Hub is not null && !Hub.AccessPinIsSet;
+	private int PinTargetLength() => LpBitcoinHubPin.MaxDigits;
+
+	private void PressPinKey( string key )
+	{
+		if ( Hub is null )
+			return;
+
+		if ( key == "clr" )
+		{
+			_pinBuffer = "";
+			_pinError = "";
+			if ( PinSetupMode() && _pinSetupPass == 1 )
+			{
+				_pinSetupPass = 0;
+				_pinConfirmDraft = "";
+			}
+
+			return;
+		}
+
+		if ( key == "ok" )
+		{
+			if ( _pinBuffer.Length < LpBitcoinHubPin.MinDigits )
+				return;
+
+			if ( PinSetupMode() )
+			{
+				if ( _pinSetupPass == 0 )
+				{
+					_pinConfirmDraft = _pinBuffer;
+					_pinBuffer = "";
+					_pinSetupPass = 1;
+					_pinError = "";
+					return;
+				}
+
+				Hub.RequestSetAccessPin( _pinConfirmDraft, _pinBuffer );
+				return;
+			}
+
+			Hub.RequestUnlockAccessPin( _pinBuffer );
+			return;
+		}
+
+		if ( _pinBuffer.Length >= LpBitcoinHubPin.MaxDigits )
+			return;
+
+		_pinBuffer += key;
+	}
+
+	public void OnPinGateResult( bool success, string message )
+	{
+		if ( success )
+		{
+			_pinUnlocked = true;
+			_pinBuffer = "";
+			_pinConfirmDraft = "";
+			_pinError = "";
+			_pinSetupPass = 0;
+			return;
+		}
+
+		_pinBuffer = "";
+		_pinError = string.IsNullOrWhiteSpace( message ) ? "Access denied." : message;
+		if ( PinSetupMode() )
+		{
+			_pinSetupPass = 0;
+			_pinConfirmDraft = "";
+		}
+	}
+
+	private void SellAllRacks() => Hub?.RequestSellAllRacks();
 
 	private string GreetingName()
 	{
@@ -403,8 +587,18 @@
 
 	private void OpenTerminal( LpBitcoinRackEntity rack )
 	{
+		if ( Hub is null )
+			return;
+
+		var target = rack;
+		if ( target is null )
+			target = GetLinkedRacks().FirstOrDefault();
+
+		if ( target is null )
+			return;
+
 		Close();
-		LpBitcoinTerminalUiHost.Open( _hub, rack );
+		LpBitcoinTerminalUiHost.Open( _hub, target );
 	}
 
 	protected override void OnUpdate()
@@ -414,12 +608,21 @@
 			Close();
 	}
 
-	protected override int BuildHash() => HashCode.Combine(
-		_active,
-		_uiScale,
-		_hub?.IsPowered,
-		LinkedRackCount(),
-		TotalBtc(),
-		MiningRackCount(),
-		TotalMiningRate() );
+	protected override int BuildHash()
+	{
+		var hash = new HashCode();
+		hash.Add( _active );
+		hash.Add( _uiScale );
+		hash.Add( _pinUnlocked );
+		hash.Add( _pinBuffer );
+		hash.Add( _pinSetupPass );
+		hash.Add( _pinError );
+		hash.Add( _hub?.IsPowered );
+		hash.Add( _hub?.AccessPinIsSet );
+		hash.Add( LinkedRackCount() );
+		hash.Add( TotalBtc() );
+		hash.Add( MiningRackCount() );
+		hash.Add( TotalMiningRate() );
+		return hash.ToHashCode();
+	}
 }

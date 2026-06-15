@@ -59,6 +59,49 @@ public static class LpBitcoinDevSpawn
 		Log.Info( "lp_bitcoin_preview_hub: hub admin panel only (amber ops)." );
 	}
 
+	/// <summary>Hub admin with PIN gate presets — setup (default), unlock (PIN 4242), or blocked (wrong owner).</summary>
+	[ConCmd( "lp_hashd_pin_preview" )]
+	public static void PreviewHubPinUi( string mode = "setup" )
+	{
+		var hub = LpBitcoinUi.GetOrCreatePreviewHub( withSampleRacks: true );
+		if ( !hub.IsValid() )
+		{
+			Log.Warning( "lp_hashd_pin_preview: no active scene." );
+			return;
+		}
+
+		ConfigurePreviewPin( hub, mode );
+		LpHashdUiHost.Open( hub );
+	}
+
+	private static void ConfigurePreviewPin( LpBitcoinHubEntity hub, string mode )
+	{
+		var normalized = string.IsNullOrWhiteSpace( mode ) ? "setup" : mode.Trim().ToLowerInvariant();
+		switch ( normalized )
+		{
+			case "unlock":
+				hub.BindOwnerFromLocalViewer();
+				hub.AccessPinIsSet = true;
+				hub.AccessPinHash = LpBitcoinHubPin.Hash( "4242" );
+				Log.Info( "lp_hashd_pin_preview unlock: enter PIN 4242 to open hub admin." );
+				break;
+
+			case "blocked":
+				hub.AccessPinIsSet = true;
+				hub.AccessPinHash = LpBitcoinHubPin.Hash( "4242" );
+				hub.Owner = 1;
+				Log.Info( "lp_hashd_pin_preview blocked: hub owned by another operator — expect access denied." );
+				break;
+
+			default:
+				hub.BindOwnerFromLocalViewer();
+				hub.AccessPinIsSet = false;
+				hub.AccessPinHash = 0;
+				Log.Info( "lp_hashd_pin_preview setup: secure boot — create a 4–6 digit PIN." );
+				break;
+		}
+	}
+
 	/// <summary>CRT terminal UI only — no world spawn. Closes hub admin if open.</summary>
 	[ConCmd( "lp_bitcoin_preview_terminal" )]
 	public static void PreviewTerminalUi()

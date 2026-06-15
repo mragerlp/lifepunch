@@ -24,7 +24,8 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable
 #endif
 {
 	[Sync( SyncFlags.FromHost )] public bool IsPowered { get; set; } = true;
-	[Sync( SyncFlags.FromHost )] public bool AccessPinIsSet { get; set; } = true;
+	[Sync( SyncFlags.FromHost )] public bool AccessPinIsSet { get; set; }
+	[Sync( SyncFlags.FromHost )] public int AccessPinHash { get; set; }
 	[Sync( SyncFlags.FromHost )] public long Owner { get; set; }
 
 	public bool Press( IPressable.Event e )
@@ -73,6 +74,91 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable
 
 	public void RequestUpgradeCores( Guid rackId ) => UpgradeCoresHost( rackId );
 
+	public void RequestSetAccessPin( string pin, string confirm ) => SetAccessPinHost( pin, confirm );
+
+	public void RequestUnlockAccessPin( string pin ) => UnlockAccessPinHost( pin );
+
+	public void RequestSellAllRacks() => SellAllRacksHost();
+
+	[Rpc.Host]
+	private void SetAccessPinHost( string pin, string confirm )
+	{
+		if ( AccessPinIsSet )
+		{
+			SendPinResultToCaller( false, "PIN already configured." );
+			return;
+		}
+
+		if ( !LpBitcoinHubPin.IsValidFormat( pin ) || pin != confirm )
+		{
+			SendPinResultToCaller( false, "PIN must be 4–6 digits and match confirmation." );
+			return;
+		}
+
+		if ( Owner == 0 && !TryBindOwner( Rpc.CallerId ) )
+		{
+			SendPinResultToCaller( false, "Could not claim hub ownership." );
+			return;
+		}
+
+		if ( Owner != 0 && !CallerIsOwner( Rpc.CallerId ) )
+		{
+			SendPinResultToCaller( false, "Only the hub owner can set the PIN." );
+			return;
+		}
+
+		AccessPinHash = LpBitcoinHubPin.Hash( pin );
+		AccessPinIsSet = true;
+		SendPinResultToCaller( true, "Secure boot enabled." );
+	}
+
+	[Rpc.Host]
+	private void UnlockAccessPinHost( string pin )
+	{
+		if ( !AccessPinIsSet )
+		{
+			SendPinResultToCaller( true, string.Empty );
+			return;
+		}
+
+		if ( !CallerIsOwner( Rpc.CallerId ) )
+		{
+			SendPinResultToCaller( false, "Access denied — hub belongs to another operator." );
+			return;
+		}
+
+		if ( !LpBitcoinHubPin.Matches( pin, AccessPinHash ) )
+		{
+			SendPinResultToCaller( false, "Incorrect PIN." );
+			return;
+		}
+
+		SendPinResultToCaller( true, string.Empty );
+	}
+
+	[Rpc.Host]
+	private async void SellAllRacksHost()
+	{
+		if ( !CanManageHub( Rpc.CallerId ) )
+			return;
+
+		foreach ( var rack in GetLinkedRacks() )
+		{
+			if ( rack.BitcoinAmount <= 0f )
+				continue;
+
+			await rack.SellForCallerHost( Rpc.CallerId );
+		}
+	}
+
+	[Rpc.Owner]
+	private void SendPinResultToCaller( bool ok, string message )
+	{
+		var panel = Game.ActiveScene?.GetAllComponents<LpHashdPanel>().FirstOrDefault();
+		if ( panel.IsValid() )
+			panel.OnPinGateResult( ok, message );
+	}
+
 	[Rpc.Host]
 	private void UpgradeCpuHost( Guid rackId )
 	{
@@ -105,13 +191,9 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable
 		return true;
 #else
 		if ( !AccessPinIsSet )
-			return TryBindOwner( callerId );
+			return CallerIsOwner( callerId ) || Owner == 0;
 
-		if ( Owner == 0 )
-			return TryBindOwner( callerId );
-
-		var player = GameUtils.GetPlayerByConnectionId( callerId );
-		return player.IsValid() && player.SteamId == Owner;
+		return CallerIsOwner( callerId );
 #endif
 	}
 
@@ -137,6 +219,12 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable
 	}
 
 #if !LIFEPUNCH_LOCAL
+	private bool CallerIsOwner( Guid callerId )
+	{
+		var player = GameUtils.GetPlayerByConnectionId( callerId );
+		return player.IsValid() && ( Owner == 0 || player.SteamId == Owner );
+	}
+
 	private bool TryBindOwner( Guid callerId )
 	{
 		var player = GameUtils.GetPlayerByConnectionId( callerId );

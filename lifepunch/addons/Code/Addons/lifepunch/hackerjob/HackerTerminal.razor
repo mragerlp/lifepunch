@@ -421,8 +421,7 @@
         _activeModule = OpsModule.Log;
         _screen = LifePunchCyberScreen.Home;
 
-        var seed = Terminal.IsValid() ? Terminal.GameObject.Id.GetHashCode() : 42;
-        _fakeIp = LifePunchCyberTerminalTheme.FakeLanIp( Math.Abs( seed ) );
+        _fakeIp = LifePunchCyberTerminalTheme.FictionOpsHostIp;
 
         if ( Tier == HackerTerminalTier.Advanced )
         {

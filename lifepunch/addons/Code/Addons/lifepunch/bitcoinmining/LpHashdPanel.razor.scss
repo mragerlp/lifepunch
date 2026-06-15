@@ -31,12 +31,187 @@ $hashd-title: #f7f9fc;
 		width: 100%;
 		height: 100%;
 		display: flex;
-		flex-direction: row;
+		flex-direction: column;
 		background-color: $hashd-bg;
 		border: 1px solid $hashd-border;
 		border-radius: 18px;
 		overflow: hidden;
 		box-shadow: 0 24px 56px rgba(0, 0, 0, 0.62);
+	}
+
+	.hub-body {
+		flex: 1 1 auto;
+		min-height: 0;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.hub-main {
+		flex: 1 1 auto;
+		min-height: 0;
+		display: flex;
+		flex-direction: row;
+	}
+
+	.pin-gate {
+		flex: 1 1 auto;
+		min-height: 0;
+		display: flex;
+		flex-direction: column;
+		background-color: $hashd-bg;
+	}
+
+	.pin-header {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: 14px;
+		flex-shrink: 0;
+		padding: 16px 20px;
+		border-bottom: 1px solid $hashd-border;
+	}
+
+	.pin-brand {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: 12px;
+		flex-grow: 1;
+		min-width: 0;
+
+		.brand-mark {
+			width: 42px;
+			height: 42px;
+			flex-shrink: 0;
+		}
+	}
+
+	.pin-brand-copy {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+		min-width: 0;
+	}
+
+	.pin-title {
+		color: $hashd-title;
+		font-size: 16px;
+		font-weight: 700;
+		letter-spacing: 0.06em;
+	}
+
+	.pin-sub {
+		color: $hashd-muted;
+		font-size: 12px;
+	}
+
+	.pin-body {
+		flex: 1 1 auto;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 18px;
+		padding: 28px 24px 32px;
+	}
+
+	.pin-dots {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: 12px;
+	}
+
+	.pin-dot {
+		width: 14px;
+		height: 14px;
+		border-radius: 999px;
+		border: 2px solid rgba(240, 165, 0, 0.35);
+		background-color: transparent;
+
+		&.filled {
+			background-color: $hashd-amber;
+			border-color: $hashd-amber;
+			box-shadow: 0 0 10px rgba(240, 165, 0, 0.35);
+		}
+	}
+
+	.pin-error {
+		color: #ef6b5f;
+		font-size: 12px;
+		font-weight: 600;
+		text-align: center;
+		max-width: 320px;
+		line-height: 1.4;
+	}
+
+	.pin-hint {
+		color: $hashd-muted;
+		font-size: 12px;
+		font-weight: 600;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+	}
+
+	.pin-pad {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 10px;
+		width: 100%;
+		max-width: 280px;
+	}
+
+	.pin-key {
+		width: 78px;
+		height: 52px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 14px;
+		background-color: $hashd-card;
+		border: 1px solid $hashd-border;
+		color: $hashd-title;
+		font-size: 18px;
+		font-weight: 700;
+		cursor: pointer;
+
+		.material-icons {
+			font-size: 22px;
+		}
+
+		&:hover {
+			border-color: rgba(240, 165, 0, 0.35);
+			background-color: rgba(240, 165, 0, 0.08);
+		}
+
+		&.ok {
+			color: #12100c;
+			background-color: $hashd-amber;
+			border-color: $hashd-amber;
+		}
+
+		&.clr {
+			color: #aeb8cb;
+		}
+	}
+
+	.wallet-actions {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 10px;
+	}
+
+	.wallet-card {
+		max-width: 520px;
+	}
+
+	.cta-pill.wide {
+		flex: 1 1 220px;
+		min-width: 200px;
 	}
 
 	.sidebar {
