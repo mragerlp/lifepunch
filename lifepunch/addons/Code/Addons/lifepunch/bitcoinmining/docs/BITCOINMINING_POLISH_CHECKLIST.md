@@ -4,6 +4,8 @@
 **Order:** Bitcoin Miner Hub → Bitcoin Terminal → GPU Rack → *(later)* Hacker Server Rack → Hacker Terminal  
 **Law:** one item at a time → play proof on flatgrass → owner sign-off → check box → next.
 
+**Owner tracker (plain text, second screen):** `addons/docs/OWNER_PROGRESS_TRACKER.txt`
+
 **Visual canon:** `lifepunch/addons/docs/briefs/BITCOIN_OPHION_VISUAL_PASS_BRIEF.md`  
 **Play law:** `BITCOINMINING_PLAYTEST.md` §0 — always from **`scenes/game.scene`**, never prefab tabs.
 
