@@ -48,8 +48,10 @@
   ],
   "notes": [
     "The DXRP Servers page should be treated as a two-server operational surface for LifePunch.",
+    "70p may run Vanilla until LIFEPUNCH™ ship gamemode is assigned after bitcoin publish-ready sign-off.",
+    "Development server tests LIFEPUNCH™ gamemode pins before 70p promotion.",
     "Do not design workflows around unmanaged or external servers unless the owner adds them later.",
-    "Do not add .bat launch scripts or server start arguments until hosting/security details are provided later.",
+    "lifepunchnet launch wrappers: lifepunch/server/dxrp-host/ — Official must use dotnet run dxrp-server.cs (not bare +game dxura.rp).",
     "Internal server ids are lifepunchdevelopment and lifepunchmainserver.",
     "Development and 70p procedures must remain separate."
   ]

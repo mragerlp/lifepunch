@@ -64,7 +64,8 @@ Operational rules:
 - Never trigger server sync without explicit owner approval.
 - Keep `lifepunchmainserver` and `lifepunchdevelopment` procedures separate.
 - Test addon/gamemode/beta-feature changes on `lifepunchdevelopment` before considering `lifepunchmainserver`.
-- Do not add `.bat` launch scripts, server start arguments, hosting credentials, or security details until the owner provides that information later.
+- **On-box launch wrappers** (versioned): `dxrp-host/` — deploy to `C:\S&BOX DXRP Server` via `Deploy-DxrpHostLaunchers.ps1`. Tokens stay in on-box `secure/*.local.env` only.
+- Do not commit live tokens, `dxrp-server-config.json` with secrets, or fork upstream `dxrp-server.cs`.
 - Keep the server inventory in `../../config/servers.json`.
 - Keep the visible server-page field inventory in `../../config/server-page-fields.json`.
 - Record developer/admin changes in `change-log/` using `../../templates/server-change.md`.

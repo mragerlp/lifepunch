@@ -14,6 +14,11 @@ secure/
   cloudflare.local.env
   server-hosting.local.env
   notes.local.md
+
+On lifepunchnet install roots (not in monorepo git):
+  C:\S&BOX DXRP Server\secure\official.local.env
+  C:\S&BOX DXRP Server Dev\secure\development.local.env
+  Templates: secure/templates/official.local.env.example
 ```
 
 Use `templates/secrets-inventory.md` to document what exists and where it is used without exposing the raw values in normal docs.

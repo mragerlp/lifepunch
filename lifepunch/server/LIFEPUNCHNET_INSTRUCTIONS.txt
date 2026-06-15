@@ -158,6 +158,39 @@ Paste Block C from lifepunch/docs/AGENT_PROMPT.md into Cursor on lifepunchnet
 for lane-scoped work (server audits, portal docs, Whisper hub, etc.).
 
 --------------------------------------------------------------------------------
+STEP 10 — DXRP SERVER 1 / 2 LAUNCHERS (Official must use dxrp-server.cs)
+--------------------------------------------------------------------------------
+
+  Problem:  sbox-server.exe +game dxura.rp +authorize … → "no code archive"
+  Fix:      Same as Server 2 (Dev): dotnet run dxrp-server.cs --token <portal token>
+
+  Repo (versioned wrappers):
+    lifepunch\server\dxrp-host\
+    README.md — full split (git vs on-box secrets)
+
+  After git pull on this box:
+
+    cd C:\lifepunch\lifepunch-rdp-server\lifepunch\server\dxrp-host\scripts
+    powershell -ExecutionPolicy Bypass -File .\Deploy-DxrpHostLaunchers.ps1
+
+  On-box secrets (NEVER commit):
+    C:\S&BOX DXRP Server\secure\official.local.env       → DXRP_TOKEN_OFFICIAL
+    C:\S&BOX DXRP Server Dev\secure\development.local.env → DXRP_TOKEN_DEVELOPMENT
+    Templates: lifepunch\secure\templates\*.local.env.example
+
+  Official (70p):
+    Install root:  C:\S&BOX DXRP Server
+    Game port:     27015  (in dxrp-server-config.json.example extraArgs)
+    Start:         server1_start.bat  OR  restart_official.ps1
+    Desktop shortcut must point at server1_start.bat — NOT legacy +game dxura.rp
+
+  Development:
+    Install root:  C:\S&BOX DXRP Server Dev
+    Start:         server2_start.bat
+
+  dxrp-server.cs stays upstream/pristine on the box — do not fork in LifePunch git.
+
+--------------------------------------------------------------------------------
 PORTS (quick reference)
 --------------------------------------------------------------------------------
 
@@ -166,6 +199,8 @@ PORTS (quick reference)
   9000   Whisper API   install in Step 3
   9101   Status API    watchdog (Step 8)
   9102   Session hub   voice/chat ingest (Step 9)
+  27015  DXRP Official game port (Server 1 — Step 10)
+  27016  DXRP Dev game port (Server 2 — typical)
 
 --------------------------------------------------------------------------------
 STEP 9 — SESSION HUB (voice + chat logs for Odysseus)

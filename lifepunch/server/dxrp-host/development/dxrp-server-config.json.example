@@ -1,0 +1,9 @@
+{
+  "token": "",
+  "repoUrl": "https://github.com/dxura/dxrp.git",
+  "branch": "main",
+  "apiEndpoint": "https://api.dxrp.net",
+  "verifyAddons": false,
+  "map": "",
+  "extraArgs": "+port 27016 +net_query_port 27017 +hostname \"LifePunch Official | DEVELOPMENT SERVER\""
+}
