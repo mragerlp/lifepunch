@@ -41,6 +41,18 @@ $ErrorActionPreference = 'Stop'
 $Here = if ($PSScriptRoot) { $PSScriptRoot } else { Split-Path -Parent $MyInvocation.MyCommand.Path }
 if (-not $ConfigPath) { $ConfigPath = Join-Path $Here 'dxrp-editor.local.json' }
 
+$upstreamGate = Join-Path $Here 'Ensure-DxrpUpstreamCurrent.ps1'
+if ((Test-Path -LiteralPath $upstreamGate) -and -not $SkipPreflight) {
+    Write-Host 'DXRP upstream gate (mragerlp/dxrp-public develop)...' -ForegroundColor Cyan
+    & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $upstreamGate -FailIfBehind
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host 'Blocked: DXRP develop is behind upstream.' -ForegroundColor Red
+        Write-Host '  powershell -File lifepunch\scripts\Ensure-DxrpUpstreamCurrent.ps1 -Sync -UpdatePin -SyncSteam' -ForegroundColor Yellow
+        exit 1
+    }
+    Write-Host ''
+}
+
 if (-not $SkipPreflight) {
     $preflight = Join-Path $Here 'Test-PreLaunchCheckup.ps1'
     if (Test-Path -LiteralPath $preflight) {

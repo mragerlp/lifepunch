@@ -2,6 +2,7 @@
    PROPRIETARY & CONFIDENTIAL — © 2026 lifepunch.co. All rights reserved.
    "LIFEPUNCH Bitcoin Miner for DXRP" (s&box ident: lifepunch.bitcoin · addon ident: bitcoinmining)
    ───────────────────────────────────────────────────────────────────────────── *@
+@* tailw& safelist: flex flex-col w-full h-full overflow-hidden rounded-2xl border border-hashd/35 bg-hashd-shell flex items-center gap-[14px] px-[18px] py-[14px] bg-hashd-topbar border-b border-white/6 gap-3 grow flex-col text-lg font-bold text-hashd-title text-xs text-hashd-muted gap-2 pt-3 flex-1 min-h-0 pt-4 pb-[18px] overflow-hidden *@
 @namespace LifePunch.DXRP.Addons.Bitcoin
 @using System
 @using System.Collections.Generic
@@ -12,13 +13,13 @@
 @attribute [StyleSheet]
 
 <root class="@GetRootClass()">
-	<div class="shell">
-		<div class="topbar">
-			<div class="brand">
+	<div class="shell flex flex-col w-full h-full overflow-hidden rounded-2xl border border-hashd/35 bg-hashd-shell">
+		<div class="topbar flex items-center gap-[14px] px-[18px] py-[14px] bg-hashd-topbar border-b border-white/6">
+			<div class="brand flex items-center gap-3 grow">
 				<div class="brand-mark" title="Bitcoin"></div>
-				<div class="brand-text">
-					<span class="brand-title">@LpBitcoinIdent.OpsTitle</span>
-					<span class="brand-sub">Ophion hub admin</span>
+				<div class="brand-text flex flex-col">
+					<span class="brand-title text-lg font-bold text-hashd-title">@LpBitcoinIdent.OpsTitle</span>
+					<span class="brand-sub text-xs text-hashd-muted">Ophion hub admin</span>
 				</div>
 			</div>
 			<div class="status-chip @(Hub?.IsPowered == true ? "live" : "off")">
@@ -35,7 +36,7 @@
 			</div>
 		</div>
 
-		<div class="nav">
+		<div class="nav flex gap-2 px-[18px] pt-3">
 			@foreach ( var tab in _tabs )
 			{
 				<button class="nav-tab @(tab == _active ? "active" : "")" onclick="@(() => SelectTab(tab))">
@@ -45,7 +46,7 @@
 			}
 		</div>
 
-		<div class="content">
+		<div class="content flex-1 min-h-0 px-[18px] pt-4 pb-[18px] overflow-hidden">
 			@if ( _active == OpsTab.Overview )
 			{
 				<div class="pane overview">

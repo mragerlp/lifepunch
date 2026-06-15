@@ -1,0 +1,23 @@
+﻿{
+    "schemaVersion":  1,
+    "fork":  {
+                 "remote":  "https://github.com/mragerlp/dxrp-public.git",
+                 "branch":  "develop"
+             },
+    "upstream":  {
+                     "remote":  "https://github.com/dxura/dxrp.git",
+                     "branch":  "develop"
+                 },
+    "pinned":  {
+                   "sha":  "7fcbf03c4f4fd2250469269c4da1ed28f999ad17",
+                   "shortSha":  "7fcbf03",
+                   "subject":  "Fix current tool info UI",
+                   "syncedAt":  "2026-06-15T05:54:57Z"
+               },
+    "localPaths":  {
+                       "forkCheckout":  "C:/Users/jared/Projects/dxrp-public",
+                       "steamCheckout":  "D:/Steam/steamapps/common/sbox/dxrp"
+                   },
+    "gateScript":  "lifepunch/scripts/Ensure-DxrpUpstreamCurrent.ps1",
+    "notes":  "Run Ensure-DxrpUpstreamCurrent.ps1 -Sync before addon/editor work. Monorepo records the verified develop tip here after each upstream sync."
+}

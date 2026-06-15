@@ -109,11 +109,21 @@ partner commits on GitLab integrate back into GitHub. Full map:
 
 ### 3. Upstream / integration (GitHub, third-party)
 
+**Law — before addon or editor work:** DXRP `develop` must match upstream. Run:
+
+```powershell
+powershell -File lifepunch\scripts\Ensure-DxrpUpstreamCurrent.ps1 -Sync -UpdatePin -SyncSteam
+powershell -File lifepunch\scripts\Sync-LifePunchAddonsToDxrp.ps1 -Addon bitcoinmining
+```
+
+Verified tip is recorded in `lifepunch/config/dxrp-upstream-pin.json` (commit after each upstream bump).
+`Start-SboxDxrpEditor.ps1` blocks launch when the pin is behind (`-FailIfBehind`).
+
 1. **`mragerlp/dxrp-public`** → our DXRP fork (`origin=dxrp-public`, `upstream=dxura/dxrp`).
-   Synced via `lifepunch/scripts/sync-dxrp-fork.ps1` (ff-merge upstream `develop`).
+   Local clone: `C:\Users\jared\Projects\dxrp-public`. Synced via `sync-dxrp-fork.ps1` (ff-merge upstream `develop`).
 2. **The Steam checkout** (`D:\Steam\steamapps\common\sbox\dxrp`, `origin=dxura/dxrp`) →
-   read-only **upstream** runtime/test copy where the editor runs. **Never** commit LifePunch
-   work here.
+   read-only **upstream** runtime/test copy where the editor runs. Aligned via `Sync-DxrpSteamCheckout.ps1`.
+   **Never** commit LifePunch work here.
 
 ### 4. Publish lane → portal snapshot (not law)
 

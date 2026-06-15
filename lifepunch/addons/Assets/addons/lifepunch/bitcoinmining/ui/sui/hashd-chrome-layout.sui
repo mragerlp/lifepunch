@@ -1,0 +1,459 @@
+{
+  "Document": {
+    "SchemaVersion": 1,
+    "DocumentId": "sui_hashd_chrome_layout_lp01",
+    "Name": "hashd-chrome-layout",
+    "CreatedWith": "Sbox UI Designer",
+    "DesignerVersion": "0.1.0",
+    "Canvas": {
+      "BaseWidth": 1920,
+      "BaseHeight": 1080,
+      "ScaleMode": "ScreenHeight1080",
+      "SafeArea": { "Enabled": false, "Left": 0, "Top": 0, "Right": 0, "Bottom": 0 },
+      "BackgroundPreview": { "Type": "Color", "Color": "#0a0c10", "ImagePath": null },
+      "PreviewWidth": 0,
+      "PreviewHeight": 0
+    },
+    "Settings": {
+      "AutoPreview": true,
+      "PreviewDebounceMs": 350,
+      "SnapToGrid": true,
+      "GridSize": 8,
+      "ShowRulers": true,
+      "ShowAnchors": true,
+      "ShowSafeArea": false,
+      "ShowGrid": true,
+      "ShowAlignmentGuides": true,
+      "CanvasZoom": 0.65,
+      "CanvasPanX": 0,
+      "CanvasPanY": 0
+    },
+    "Output": {
+      "Configured": true,
+      "RootFolder": "Code/_sui_scratch/hashd_chrome",
+      "Namespace": "LifePunch.DXRP.Addons.Bitcoin",
+      "ClassName": "HashdChromeLayout",
+      "GenerateRazor": true,
+      "GenerateScss": true,
+      "GenerateGeneratedCs": false,
+      "GenerateUserCsIfMissing": false,
+      "GenerateCustomScssIfMissing": true
+    },
+    "Elements": [
+      {
+        "Id": "root",
+        "Name": "Root",
+        "Type": "Canvas",
+        "ParentId": null,
+        "Children": ["shell"],
+        "Flags": { "IsVariable": false, "Locked": false, "HiddenInDesigner": false },
+        "Layout": {
+          "Mode": "Absolute", "X": 0, "Y": 0, "Width": 1920, "Height": 1080,
+          "Anchor": "TopLeft", "PivotX": 0, "PivotY": 0, "ZIndex": 0,
+          "FlexDirection": "Row", "JustifyContent": "FlexStart", "AlignItems": "Stretch",
+          "FlexWrap": "NoWrap", "Gap": 0,
+          "Margin": { "Left": 0, "Top": 0, "Right": 0, "Bottom": 0, "IsZero": true, "IsUniform": true },
+          "Padding": { "Left": 0, "Top": 0, "Right": 0, "Bottom": 0, "IsZero": true, "IsUniform": true }
+        },
+        "Style": { "Visibility": "Visible", "PointerEvents": "None", "Overflow": "Visible", "Opacity": 1, "BorderRadius": 0, "BorderWidth": 0, "ClassName": "hashd-chrome-root" },
+        "Props": {}
+      },
+      {
+        "Id": "shell",
+        "Name": "Shell",
+        "Type": "VerticalBox",
+        "ParentId": "root",
+        "Children": ["topbar", "nav", "content"],
+        "Flags": { "IsVariable": false, "Locked": false, "HiddenInDesigner": false },
+        "Layout": {
+          "Mode": "Flex", "X": 0, "Y": 0, "Width": 900, "Height": 600,
+          "Anchor": "MiddleCenter", "PivotX": 0.5, "PivotY": 0.5, "ZIndex": 0,
+          "FlexDirection": "Column", "JustifyContent": "FlexStart", "AlignItems": "Stretch",
+          "FlexWrap": "NoWrap", "Gap": 0,
+          "Margin": { "Left": 0, "Top": 0, "Right": 0, "Bottom": 0, "IsZero": true, "IsUniform": true },
+          "Padding": { "Left": 0, "Top": 0, "Right": 0, "Bottom": 0, "IsZero": true, "IsUniform": true }
+        },
+        "Style": {
+          "Visibility": "Visible", "PointerEvents": "All", "Overflow": "Hidden", "Opacity": 0.96,
+          "BackgroundColor": "#0c0e12", "BorderColor": "#f0a50059", "BorderWidth": 1, "BorderRadius": 16,
+          "ClassName": "shell"
+        },
+        "Props": {},
+        "Notes": "LpHashdPanel shell — 900×600 (lp-ui-size-m). Port flex layout to tailw& utilities after compile."
+      },
+      {
+        "Id": "topbar",
+        "Name": "Topbar",
+        "Type": "HorizontalBox",
+        "ParentId": "shell",
+        "Children": ["brand", "status_chip", "topbar_actions"],
+        "Flags": { "IsVariable": false, "Locked": false, "HiddenInDesigner": false },
+        "Layout": {
+          "Mode": "Flex", "X": 0, "Y": 0, "Width": 900, "Height": 62,
+          "Anchor": "TopLeft", "PivotX": 0, "PivotY": 0, "ZIndex": 0,
+          "FlexDirection": "Row", "JustifyContent": "SpaceBetween", "AlignItems": "Center",
+          "FlexWrap": "NoWrap", "Gap": 14,
+          "Margin": { "Left": 0, "Top": 0, "Right": 0, "Bottom": 0, "IsZero": true, "IsUniform": true },
+          "Padding": { "Left": 18, "Top": 14, "Right": 18, "Bottom": 14, "IsZero": false, "IsUniform": false }
+        },
+        "Style": {
+          "Visibility": "Visible", "PointerEvents": "All", "Overflow": "Visible", "Opacity": 1,
+          "BackgroundColor": "#12141a", "BorderColor": "#ffffff0f", "BorderWidth": 1, "BorderRadius": 0,
+          "ClassName": "topbar"
+        },
+        "Props": {}
+      },
+      {
+        "Id": "brand",
+        "Name": "Brand",
+        "Type": "HorizontalBox",
+        "ParentId": "topbar",
+        "Children": ["brand_mark", "brand_text"],
+        "Flags": { "IsVariable": false, "Locked": false, "HiddenInDesigner": false },
+        "Layout": {
+          "Mode": "Flex", "X": 0, "Y": 0, "Width": 420, "Height": 34,
+          "Anchor": "TopLeft", "PivotX": 0, "PivotY": 0, "ZIndex": 0,
+          "FlexDirection": "Row", "JustifyContent": "FlexStart", "AlignItems": "Center",
+          "FlexWrap": "NoWrap", "Gap": 12,
+          "Margin": { "Left": 0, "Top": 0, "Right": 0, "Bottom": 0, "IsZero": true, "IsUniform": true },
+          "Padding": { "Left": 0, "Top": 0, "Right": 0, "Bottom": 0, "IsZero": true, "IsUniform": true }
+        },
+        "Style": { "Visibility": "Visible", "PointerEvents": "None", "Overflow": "Visible", "Opacity": 1, "BorderRadius": 0, "BorderWidth": 0, "ClassName": "brand" },
+        "Props": {}
+      },
+      {
+        "Id": "brand_mark",
+        "Name": "BrandMark",
+        "Type": "Image",
+        "ParentId": "brand",
+        "Children": [],
+        "Flags": { "IsVariable": false, "Locked": false, "HiddenInDesigner": false },
+        "Layout": {
+          "Mode": "Flex", "X": 0, "Y": 0, "Width": 34, "Height": 34,
+          "Anchor": "TopLeft", "PivotX": 0, "PivotY": 0, "ZIndex": 0,
+          "FlexDirection": "Row", "JustifyContent": "FlexStart", "AlignItems": "Stretch",
+          "FlexWrap": "NoWrap", "Gap": 0,
+          "Margin": { "Left": 0, "Top": 0, "Right": 0, "Bottom": 0, "IsZero": true, "IsUniform": true },
+          "Padding": { "Left": 0, "Top": 0, "Right": 0, "Bottom": 0, "IsZero": true, "IsUniform": true }
+        },
+        "Style": { "Visibility": "Visible", "PointerEvents": "None", "Overflow": "Visible", "Opacity": 1, "BorderRadius": 0, "BorderWidth": 0, "ClassName": "brand-mark" },
+        "Props": {
+          "ImagePath": "/addons/lifepunch/bitcoinmining/ui/hashd/btc-mark.png",
+          "FitMode": "Contain",
+          "BackgroundPosition": "Center"
+        }
+      },
+      {
+        "Id": "brand_text",
+        "Name": "BrandText",
+        "Type": "VerticalBox",
+        "ParentId": "brand",
+        "Children": ["brand_title", "brand_sub"],
+        "Flags": { "IsVariable": false, "Locked": false, "HiddenInDesigner": false },
+        "Layout": {
+          "Mode": "Flex", "X": 0, "Y": 0, "Width": 280, "Height": 34,
+          "Anchor": "TopLeft", "PivotX": 0, "PivotY": 0, "ZIndex": 0,
+          "FlexDirection": "Column", "JustifyContent": "Center", "AlignItems": "Stretch",
+          "FlexWrap": "NoWrap", "Gap": 2,
+          "Margin": { "Left": 0, "Top": 0, "Right": 0, "Bottom": 0, "IsZero": true, "IsUniform": true },
+          "Padding": { "Left": 0, "Top": 0, "Right": 0, "Bottom": 0, "IsZero": true, "IsUniform": true }
+        },
+        "Style": { "Visibility": "Visible", "PointerEvents": "None", "Overflow": "Visible", "Opacity": 1, "BorderRadius": 0, "BorderWidth": 0, "ClassName": "brand-text" },
+        "Props": {}
+      },
+      {
+        "Id": "brand_title",
+        "Name": "BrandTitle",
+        "Type": "Text",
+        "ParentId": "brand_text",
+        "Children": [],
+        "Flags": { "IsVariable": false, "Locked": false, "HiddenInDesigner": false },
+        "Layout": {
+          "Mode": "Flex", "X": 0, "Y": 0, "Width": 280, "Height": 20,
+          "Anchor": "TopLeft", "PivotX": 0, "PivotY": 0, "ZIndex": 0,
+          "FlexDirection": "Row", "JustifyContent": "FlexStart", "AlignItems": "Stretch",
+          "FlexWrap": "NoWrap", "Gap": 0,
+          "Margin": { "Left": 0, "Top": 0, "Right": 0, "Bottom": 0, "IsZero": true, "IsUniform": true },
+          "Padding": { "Left": 0, "Top": 0, "Right": 0, "Bottom": 0, "IsZero": true, "IsUniform": true }
+        },
+        "Style": { "Visibility": "Visible", "PointerEvents": "None", "Overflow": "Visible", "Opacity": 1, "BorderRadius": 0, "BorderWidth": 0, "ClassName": "brand-title" },
+        "Props": { "Text": "HASHD Admin", "FontSize": 18, "FontWeight": "Bold", "Color": "#f7f9fc", "TextAlign": "Left" }
+      },
+      {
+        "Id": "brand_sub",
+        "Name": "BrandSub",
+        "Type": "Text",
+        "ParentId": "brand_text",
+        "Children": [],
+        "Flags": { "IsVariable": false, "Locked": false, "HiddenInDesigner": false },
+        "Layout": {
+          "Mode": "Flex", "X": 0, "Y": 0, "Width": 280, "Height": 14,
+          "Anchor": "TopLeft", "PivotX": 0, "PivotY": 0, "ZIndex": 0,
+          "FlexDirection": "Row", "JustifyContent": "FlexStart", "AlignItems": "Stretch",
+          "FlexWrap": "NoWrap", "Gap": 0,
+          "Margin": { "Left": 0, "Top": 0, "Right": 0, "Bottom": 0, "IsZero": true, "IsUniform": true },
+          "Padding": { "Left": 0, "Top": 0, "Right": 0, "Bottom": 0, "IsZero": true, "IsUniform": true }
+        },
+        "Style": { "Visibility": "Visible", "PointerEvents": "None", "Overflow": "Visible", "Opacity": 1, "BorderRadius": 0, "BorderWidth": 0, "ClassName": "brand-sub" },
+        "Props": { "Text": "Ophion hub admin", "FontSize": 12, "FontWeight": "Normal", "Color": "#8b95a8", "TextAlign": "Left" }
+      },
+      {
+        "Id": "status_chip",
+        "Name": "StatusChip",
+        "Type": "HorizontalBox",
+        "ParentId": "topbar",
+        "Children": ["status_dot", "status_label"],
+        "Flags": { "IsVariable": false, "Locked": false, "HiddenInDesigner": false },
+        "Layout": {
+          "Mode": "Flex", "X": 0, "Y": 0, "Width": 120, "Height": 28,
+          "Anchor": "TopLeft", "PivotX": 0, "PivotY": 0, "ZIndex": 0,
+          "FlexDirection": "Row", "JustifyContent": "FlexStart", "AlignItems": "Center",
+          "FlexWrap": "NoWrap", "Gap": 8,
+          "Margin": { "Left": 0, "Top": 0, "Right": 0, "Bottom": 0, "IsZero": true, "IsUniform": true },
+          "Padding": { "Left": 12, "Top": 6, "Right": 12, "Bottom": 6, "IsZero": false, "IsUniform": false }
+        },
+        "Style": {
+          "Visibility": "Visible", "PointerEvents": "None", "Overflow": "Visible", "Opacity": 1,
+          "BackgroundColor": "#f0a5001f", "BorderColor": "#f0a50000", "BorderWidth": 0, "BorderRadius": 999,
+          "ClassName": "status-chip"
+        },
+        "Props": {},
+        "Notes": "Maps to .status-chip.live in LpHashdPanel — wire IsPowered in ported Razor."
+      },
+      {
+        "Id": "status_dot",
+        "Name": "StatusDot",
+        "Type": "Panel",
+        "ParentId": "status_chip",
+        "Children": [],
+        "Flags": { "IsVariable": false, "Locked": false, "HiddenInDesigner": false },
+        "Layout": {
+          "Mode": "Flex", "X": 0, "Y": 0, "Width": 8, "Height": 8,
+          "Anchor": "TopLeft", "PivotX": 0, "PivotY": 0, "ZIndex": 0,
+          "FlexDirection": "Row", "JustifyContent": "FlexStart", "AlignItems": "Stretch",
+          "FlexWrap": "NoWrap", "Gap": 0,
+          "Margin": { "Left": 0, "Top": 0, "Right": 0, "Bottom": 0, "IsZero": true, "IsUniform": true },
+          "Padding": { "Left": 0, "Top": 0, "Right": 0, "Bottom": 0, "IsZero": true, "IsUniform": true }
+        },
+        "Style": {
+          "Visibility": "Visible", "PointerEvents": "None", "Overflow": "Visible", "Opacity": 1,
+          "BackgroundColor": "#f0a500", "BorderRadius": 999, "BorderWidth": 0,
+          "ClassName": "dot"
+        },
+        "Props": {}
+      },
+      {
+        "Id": "status_label",
+        "Name": "StatusLabel",
+        "Type": "Text",
+        "ParentId": "status_chip",
+        "Children": [],
+        "Flags": { "IsVariable": false, "Locked": false, "HiddenInDesigner": false },
+        "Layout": {
+          "Mode": "Flex", "X": 0, "Y": 0, "Width": 80, "Height": 16,
+          "Anchor": "TopLeft", "PivotX": 0, "PivotY": 0, "ZIndex": 0,
+          "FlexDirection": "Row", "JustifyContent": "FlexStart", "AlignItems": "Stretch",
+          "FlexWrap": "NoWrap", "Gap": 0,
+          "Margin": { "Left": 0, "Top": 0, "Right": 0, "Bottom": 0, "IsZero": true, "IsUniform": true },
+          "Padding": { "Left": 0, "Top": 0, "Right": 0, "Bottom": 0, "IsZero": true, "IsUniform": true }
+        },
+        "Style": { "Visibility": "Visible", "PointerEvents": "None", "Overflow": "Visible", "Opacity": 1, "BorderRadius": 0, "BorderWidth": 0, "ClassName": "status-label" },
+        "Props": { "Text": "POWER ON", "FontSize": 12, "FontWeight": "SemiBold", "Color": "#f0a500", "TextAlign": "Left" }
+      },
+      {
+        "Id": "topbar_actions",
+        "Name": "TopbarActions",
+        "Type": "HorizontalBox",
+        "ParentId": "topbar",
+        "Children": ["btn_settings", "btn_close"],
+        "Flags": { "IsVariable": false, "Locked": false, "HiddenInDesigner": false },
+        "Layout": {
+          "Mode": "Flex", "X": 0, "Y": 0, "Width": 76, "Height": 34,
+          "Anchor": "TopLeft", "PivotX": 0, "PivotY": 0, "ZIndex": 0,
+          "FlexDirection": "Row", "JustifyContent": "FlexEnd", "AlignItems": "Center",
+          "FlexWrap": "NoWrap", "Gap": 6,
+          "Margin": { "Left": 0, "Top": 0, "Right": 0, "Bottom": 0, "IsZero": true, "IsUniform": true },
+          "Padding": { "Left": 0, "Top": 0, "Right": 0, "Bottom": 0, "IsZero": true, "IsUniform": true }
+        },
+        "Style": { "Visibility": "Visible", "PointerEvents": "All", "Overflow": "Visible", "Opacity": 1, "BorderRadius": 0, "BorderWidth": 0, "ClassName": "topbar-actions" },
+        "Props": {},
+        "Notes": "Ship path uses LpUiChrome.scss lp-ui-chrome-btn — replace buttons on port."
+      },
+      {
+        "Id": "btn_settings",
+        "Name": "BtnSettings",
+        "Type": "Button",
+        "ParentId": "topbar_actions",
+        "Children": [],
+        "Flags": { "IsVariable": false, "Locked": false, "HiddenInDesigner": false },
+        "Layout": {
+          "Mode": "Flex", "X": 0, "Y": 0, "Width": 34, "Height": 34,
+          "Anchor": "TopLeft", "PivotX": 0, "PivotY": 0, "ZIndex": 0,
+          "FlexDirection": "Row", "JustifyContent": "FlexStart", "AlignItems": "Stretch",
+          "FlexWrap": "NoWrap", "Gap": 0,
+          "Margin": { "Left": 0, "Top": 0, "Right": 0, "Bottom": 0, "IsZero": true, "IsUniform": true },
+          "Padding": { "Left": 0, "Top": 0, "Right": 0, "Bottom": 0, "IsZero": true, "IsUniform": true }
+        },
+        "Style": {
+          "Visibility": "Visible", "PointerEvents": "All", "Overflow": "Visible", "Opacity": 1,
+          "BackgroundColor": "#ffffff00", "BorderRadius": 8, "BorderWidth": 0,
+          "ClassName": "lp-ui-chrome-btn"
+        },
+        "Props": { "ButtonText": "⚙" },
+        "TooltipText": "Settings"
+      },
+      {
+        "Id": "btn_close",
+        "Name": "BtnClose",
+        "Type": "Button",
+        "ParentId": "topbar_actions",
+        "Children": [],
+        "Flags": { "IsVariable": false, "Locked": false, "HiddenInDesigner": false },
+        "Layout": {
+          "Mode": "Flex", "X": 0, "Y": 0, "Width": 34, "Height": 34,
+          "Anchor": "TopLeft", "PivotX": 0, "PivotY": 0, "ZIndex": 0,
+          "FlexDirection": "Row", "JustifyContent": "FlexStart", "AlignItems": "Stretch",
+          "FlexWrap": "NoWrap", "Gap": 0,
+          "Margin": { "Left": 0, "Top": 0, "Right": 0, "Bottom": 0, "IsZero": true, "IsUniform": true },
+          "Padding": { "Left": 0, "Top": 0, "Right": 0, "Bottom": 0, "IsZero": true, "IsUniform": true }
+        },
+        "Style": {
+          "Visibility": "Visible", "PointerEvents": "All", "Overflow": "Visible", "Opacity": 1,
+          "BackgroundColor": "#ffffff00", "BorderRadius": 8, "BorderWidth": 0,
+          "ClassName": "lp-ui-chrome-btn close"
+        },
+        "Props": { "ButtonText": "✕", "Color": "#e4002b" },
+        "TooltipText": "Close"
+      },
+      {
+        "Id": "nav",
+        "Name": "Nav",
+        "Type": "HorizontalBox",
+        "ParentId": "shell",
+        "Children": ["tab_overview", "tab_racks", "tab_about"],
+        "Flags": { "IsVariable": false, "Locked": false, "HiddenInDesigner": false },
+        "Layout": {
+          "Mode": "Flex", "X": 0, "Y": 0, "Width": 900, "Height": 44,
+          "Anchor": "TopLeft", "PivotX": 0, "PivotY": 0, "ZIndex": 0,
+          "FlexDirection": "Row", "JustifyContent": "FlexStart", "AlignItems": "Center",
+          "FlexWrap": "NoWrap", "Gap": 8,
+          "Margin": { "Left": 0, "Top": 0, "Right": 0, "Bottom": 0, "IsZero": true, "IsUniform": true },
+          "Padding": { "Left": 18, "Top": 12, "Right": 18, "Bottom": 0, "IsZero": false, "IsUniform": false }
+        },
+        "Style": { "Visibility": "Visible", "PointerEvents": "All", "Overflow": "Visible", "Opacity": 1, "BorderRadius": 0, "BorderWidth": 0, "ClassName": "nav" },
+        "Props": {}
+      },
+      {
+        "Id": "tab_overview",
+        "Name": "TabOverview",
+        "Type": "Button",
+        "ParentId": "nav",
+        "Children": [],
+        "Flags": { "IsVariable": false, "Locked": false, "HiddenInDesigner": false },
+        "Layout": {
+          "Mode": "Flex", "X": 0, "Y": 0, "Width": 118, "Height": 36,
+          "Anchor": "TopLeft", "PivotX": 0, "PivotY": 0, "ZIndex": 0,
+          "FlexDirection": "Row", "JustifyContent": "FlexStart", "AlignItems": "Stretch",
+          "FlexWrap": "NoWrap", "Gap": 0,
+          "Margin": { "Left": 0, "Top": 0, "Right": 0, "Bottom": 0, "IsZero": true, "IsUniform": true },
+          "Padding": { "Left": 14, "Top": 10, "Right": 14, "Bottom": 10, "IsZero": false, "IsUniform": false }
+        },
+        "Style": {
+          "Visibility": "Visible", "PointerEvents": "All", "Overflow": "Visible", "Opacity": 1,
+          "BackgroundColor": "#f0a5001a", "BorderColor": "#f0a50073", "BorderWidth": 1, "BorderRadius": 10,
+          "ClassName": "nav-tab active"
+        },
+        "Props": { "ButtonText": "Overview", "FontSize": 13, "Color": "#f0a500" }
+      },
+      {
+        "Id": "tab_racks",
+        "Name": "TabRacks",
+        "Type": "Button",
+        "ParentId": "nav",
+        "Children": [],
+        "Flags": { "IsVariable": false, "Locked": false, "HiddenInDesigner": false },
+        "Layout": {
+          "Mode": "Flex", "X": 0, "Y": 0, "Width": 96, "Height": 36,
+          "Anchor": "TopLeft", "PivotX": 0, "PivotY": 0, "ZIndex": 0,
+          "FlexDirection": "Row", "JustifyContent": "FlexStart", "AlignItems": "Stretch",
+          "FlexWrap": "NoWrap", "Gap": 0,
+          "Margin": { "Left": 0, "Top": 0, "Right": 0, "Bottom": 0, "IsZero": true, "IsUniform": true },
+          "Padding": { "Left": 14, "Top": 10, "Right": 14, "Bottom": 10, "IsZero": false, "IsUniform": false }
+        },
+        "Style": {
+          "Visibility": "Visible", "PointerEvents": "All", "Overflow": "Visible", "Opacity": 1,
+          "BackgroundColor": "#ffffff08", "BorderColor": "#ffffff0f", "BorderWidth": 1, "BorderRadius": 10,
+          "ClassName": "nav-tab"
+        },
+        "Props": { "ButtonText": "Racks", "FontSize": 13, "Color": "#9aa6ba" }
+      },
+      {
+        "Id": "tab_about",
+        "Name": "TabAbout",
+        "Type": "Button",
+        "ParentId": "nav",
+        "Children": [],
+        "Flags": { "IsVariable": false, "Locked": false, "HiddenInDesigner": false },
+        "Layout": {
+          "Mode": "Flex", "X": 0, "Y": 0, "Width": 96, "Height": 36,
+          "Anchor": "TopLeft", "PivotX": 0, "PivotY": 0, "ZIndex": 0,
+          "FlexDirection": "Row", "JustifyContent": "FlexStart", "AlignItems": "Stretch",
+          "FlexWrap": "NoWrap", "Gap": 0,
+          "Margin": { "Left": 0, "Top": 0, "Right": 0, "Bottom": 0, "IsZero": true, "IsUniform": true },
+          "Padding": { "Left": 14, "Top": 10, "Right": 14, "Bottom": 10, "IsZero": false, "IsUniform": false }
+        },
+        "Style": {
+          "Visibility": "Visible", "PointerEvents": "All", "Overflow": "Visible", "Opacity": 1,
+          "BackgroundColor": "#ffffff08", "BorderColor": "#ffffff0f", "BorderWidth": 1, "BorderRadius": 10,
+          "ClassName": "nav-tab"
+        },
+        "Props": { "ButtonText": "About", "FontSize": 13, "Color": "#9aa6ba" }
+      },
+      {
+        "Id": "content",
+        "Name": "Content",
+        "Type": "Panel",
+        "ParentId": "shell",
+        "Children": ["content_placeholder"],
+        "Flags": { "IsVariable": false, "Locked": false, "HiddenInDesigner": false },
+        "Layout": {
+          "Mode": "Flex", "X": 0, "Y": 0, "Width": 900, "Height": 494,
+          "Anchor": "TopLeft", "PivotX": 0, "PivotY": 0, "ZIndex": 0,
+          "FlexDirection": "Row", "JustifyContent": "FlexStart", "AlignItems": "Stretch",
+          "FlexWrap": "NoWrap", "Gap": 0,
+          "Margin": { "Left": 0, "Top": 0, "Right": 0, "Bottom": 0, "IsZero": true, "IsUniform": true },
+          "Padding": { "Left": 18, "Top": 16, "Right": 18, "Bottom": 18, "IsZero": false, "IsUniform": false }
+        },
+        "Style": { "Visibility": "Visible", "PointerEvents": "All", "Overflow": "Hidden", "Opacity": 1, "BorderRadius": 0, "BorderWidth": 0, "ClassName": "content" },
+        "Props": {}
+      },
+      {
+        "Id": "content_placeholder",
+        "Name": "ContentPlaceholder",
+        "Type": "Text",
+        "ParentId": "content",
+        "Children": [],
+        "Flags": { "IsVariable": false, "Locked": false, "HiddenInDesigner": false },
+        "Layout": {
+          "Mode": "Flex", "X": 0, "Y": 0, "Width": 864, "Height": 80,
+          "Anchor": "TopLeft", "PivotX": 0, "PivotY": 0, "ZIndex": 0,
+          "FlexDirection": "Row", "JustifyContent": "FlexStart", "AlignItems": "Stretch",
+          "FlexWrap": "NoWrap", "Gap": 0,
+          "Margin": { "Left": 0, "Top": 0, "Right": 0, "Bottom": 0, "IsZero": true, "IsUniform": true },
+          "Padding": { "Left": 0, "Top": 0, "Right": 0, "Bottom": 0, "IsZero": true, "IsUniform": true }
+        },
+        "Style": { "Visibility": "Visible", "PointerEvents": "None", "Overflow": "Visible", "Opacity": 1, "BorderRadius": 0, "BorderWidth": 0, "ClassName": "content-placeholder" },
+        "Props": {
+          "Text": "Overview pane — replace with metric grid + rack cards from LpHashdPanel.razor @code.",
+          "FontSize": 14,
+          "FontWeight": "Normal",
+          "Color": "#9aa6ba",
+          "TextAlign": "Left",
+          "TextSizeMode": "AutoHeightWrap",
+          "AutoWrapText": true,
+          "WrapTextAt": 840
+        }
+      }
+    ]
+  }
+}

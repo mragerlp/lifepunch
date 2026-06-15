@@ -1,0 +1,30 @@
+{
+  "outputPath": "Code/tailwand.generated.scss",
+  "content": [
+    "Code/Addons/lifepunch/**/*.razor"
+  ],
+  "safelist": [
+    "border-white/6",
+    "border-hashd/35",
+    "bg-hashd/10",
+    "bg-hashd/12",
+    "text-hashd",
+    "text-hashd-danger"
+  ],
+  "colors": {
+    "hashd": "#f0a500",
+    "hashd-shell": "rgba( 12, 14, 18, 0.96 )",
+    "hashd-topbar": "rgba( 18, 20, 26, 1 )",
+    "hashd-title": "#f7f9fc",
+    "hashd-muted": "#8b95a8",
+    "hashd-subtle": "#9aa6ba",
+    "hashd-danger": "#ef6b5f",
+    "hashd-text": "#e8edf5"
+  },
+  "spacing": {
+    "18": "72px"
+  },
+  "radii": {
+    "2xl": "16px"
+  }
+}

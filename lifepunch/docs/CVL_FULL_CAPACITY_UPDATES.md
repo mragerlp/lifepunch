@@ -47,6 +47,7 @@ Canonical version pins: `lifepunch/config/cvl-stack-pins.json` — bump `lastVer
 
 ## s&box + DXRP update routine
 
+0. **DXRP upstream gate (mandatory before work)** — `Ensure-DxrpUpstreamCurrent.ps1 -Sync -UpdatePin -SyncSteam`; commit `lifepunch/config/dxrp-upstream-pin.json` when the pin moves.
 1. **Steam** — update s&box (engine + tools).
 2. **DXRP** — update game project per owner/upstream policy.
 3. **LifePunch sync** — `Sync-LifePunchAddonsToDxrp.ps1 -Addon bitcoinmining` (or active lane).
@@ -57,6 +58,7 @@ Canonical version pins: `lifepunch/config/cvl-stack-pins.json` — bump `lastVer
    - optional: `notpointless.chomnr_humanoid_retargeter`
    - optional (client-local save hardening only): `quality.simpleantitamper` — see `TECH_DEBT.md` SEC-01
    - optional (dev utils only, not ship dep): `wizards.wackylib` — see `TECH_DEBT.md` STACK-02
+   - **UI polish:** `tristan.tailwand` — Editor → tailw& → Generate Now (`TAILWAND.md`); `kikozl.sbox_ui_designer` — layout scratch (`SBOX_UI_DESIGNER.md`)
 5. **Restart editor** — `Start-SboxDxrpEditor.ps1 -PreflightFix -BitcoinOnly`
 6. **MCP guard** — `Fix-SboxEditorMcpCursorToolNames.ps1 -ProbeEditorMcp`
 7. **Probe** — `Get-CvlConnectivityStatus.ps1 -Pretty`

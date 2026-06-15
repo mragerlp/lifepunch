@@ -159,4 +159,16 @@ if (-not $WhatIf) {
     }
 }
 
+$tailwandConfigSrc = Join-Path (Split-Path $Here -Parent) 'config\tailwand.config.json'
+$tailwandConfigDest = Join-Path $dxrpGame 'tailwand.config.json'
+if (Test-Path -LiteralPath $tailwandConfigSrc) {
+    if ($WhatIf) {
+        Write-Host "[WhatIf] tailwand.config.json -> $tailwandConfigDest" -ForegroundColor DarkGray
+    }
+    else {
+        Copy-Item -LiteralPath $tailwandConfigSrc -Destination $tailwandConfigDest -Force
+        Write-Host '  tailwand.config.json -> DXRP game root' -ForegroundColor Green
+    }
+}
+
 Write-Host 'Sync OK' -ForegroundColor Green

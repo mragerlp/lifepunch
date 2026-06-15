@@ -228,8 +228,9 @@ SECURITY ROLE: The RDP/server lane is a core half of Cornerman's security postur
 = the box + the server). THIS IS your official activation prompt — you are cleared to ground, clone
 your lane, and work it. Production limits below still apply: act inside them, escalate before crossing.
 
-DXRP UPSTREAM: mragerlp/dxrp-public fork + dxura/dxrp Steam checkout stay on GitHub — not your
-GitLab write lane. Sync fork via lifepunch/scripts/sync-dxrp-fork.ps1 when coordinated by owner.
+DXRP UPSTREAM (before any addon/editor work): run Ensure-DxrpUpstreamCurrent.ps1 -Sync -UpdatePin -SyncSteam.
+Pin: lifepunch/config/dxrp-upstream-pin.json · fork: mragerlp/dxrp-public develop · Steam: D:\Steam\steamapps\common\sbox\dxrp.
+Never commit LifePunch work in the Steam DXRP tree.
 
 NEXT: confirm grounding, then [YOUR TASK HERE].
 ```

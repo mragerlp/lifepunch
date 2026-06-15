@@ -4,6 +4,7 @@
 // "LIFEPUNCH Bitcoin Miner for DXRP" (s&box ident: lifepunch.bitcoin · addon ident: bitcoinmining)
 // ─────────────────────────────────────────────────────────────────────────────
 
+@import "/tailwand.generated.scss";
 @import "LpUiChrome.scss";
 @import "LpUiScale.scss";
 
@@ -26,30 +27,15 @@
 	}
 
 	.shell {
-		width: 100%;
-		height: 100%;
-		display: flex;
-		flex-direction: column;
-		background-color: rgba(12, 14, 18, 0.96);
-		border: 1px solid rgba(240, 165, 0, 0.35);
-		border-radius: 16px;
-		overflow: hidden;
+		// Layout: tailw& utilities on .shell in LpHashdPanel.razor — run Editor > tailw& > Generate Now
 	}
 
 	.topbar {
-		display: flex;
-		align-items: center;
-		gap: 14px;
-		padding: 14px 18px;
-		background-color: rgba(18, 20, 26, 1);
-		border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+		// Layout: tailw& utilities on .topbar
 	}
 
 	.brand {
-		display: flex;
-		align-items: center;
-		gap: 12px;
-		flex-grow: 1;
+		// Layout: tailw& utilities on .brand
 	}
 
 	.brand-mark {
@@ -63,19 +49,15 @@
 	}
 
 	.brand-text {
-		display: flex;
-		flex-direction: column;
+		// flex flex-col via tailw&
 	}
 
 	.brand-title {
-		color: #f7f9fc;
-		font-size: 18px;
-		font-weight: bold;
+		// text-lg font-bold text-hashd-title via tailw&
 	}
 
 	.brand-sub {
-		color: #8b95a8;
-		font-size: 12px;
+		// text-xs text-hashd-muted via tailw&
 	}
 
 	.status-chip {
@@ -109,8 +91,7 @@
 	}
 
 	.topbar-actions {
-		display: flex;
-		gap: 8px;
+		// lp-ui-chrome-actions via LpUiChrome.scss
 	}
 
 	.settings-pane {
@@ -211,9 +192,7 @@
 	}
 
 	.nav {
-		display: flex;
-		gap: 8px;
-		padding: 12px 18px 0 18px;
+		// flex gap-2 px-[18px] pt-3 via tailw&
 	}
 
 	.nav-tab {
@@ -241,10 +220,7 @@
 	}
 
 	.content {
-		flex: 1;
-		min-height: 0;
-		padding: 16px 18px 18px 18px;
-		overflow: hidden;
+		// flex-1 min-h-0 px-[18px] pt-4 pb-[18px] overflow-hidden via tailw&
 	}
 
 	.pane {

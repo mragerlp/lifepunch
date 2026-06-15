@@ -13,7 +13,10 @@
       "id": "dxrp-gamemode",
       "role": "editor project + portal API",
       "path": "D:/Steam/steamapps/common/sbox/dxrp/game",
-      "updateVia": "Steam s&box update; DXRP upstream per owner; Sync-LifePunchAddonsToDxrp.ps1 after repo pull"
+      "fork": "https://github.com/mragerlp/dxrp-public/tree/develop",
+      "pin": "lifepunch/config/dxrp-upstream-pin.json",
+      "gateScript": "lifepunch/scripts/Ensure-DxrpUpstreamCurrent.ps1",
+      "updateVia": "Ensure-DxrpUpstreamCurrent.ps1 -Sync -UpdatePin -SyncSteam; then Sync-LifePunchAddonsToDxrp.ps1"
     },
     {
       "id": "sbox-engine",
@@ -70,6 +73,23 @@
       "url": "https://github.com/WackyWizards/WackyLib",
       "status": "installed-not-wired",
       "updateVia": "s&box Library Manager; see TECH_DEBT STACK-02"
+    },
+    {
+      "id": "tailwand",
+      "role": "Tailwind utilities for LifePunch Razor UI (HASHD chrome pilot)",
+      "library": "tristan.tailwand",
+      "url": "https://sbox.game/tristan/tailwand",
+      "config": "lifepunch/config/tailwand.config.json",
+      "status": "installed-active-pilot",
+      "updateVia": "Editor > tailw& > Generate Now after Razor edits; see TAILWAND.md"
+    },
+    {
+      "id": "sbox-ui-designer",
+      "role": "visual .sui → Razor layout tool (scratch → port)",
+      "library": "kikozl.sbox_ui_designer",
+      "url": "https://sbox.game/kikozl/sbox_ui_designer",
+      "status": "installed-optional",
+      "updateVia": "s&box Library Manager; see SBOX_UI_DESIGNER.md"
     },
     {
       "id": "cursor-mcp-limit",
