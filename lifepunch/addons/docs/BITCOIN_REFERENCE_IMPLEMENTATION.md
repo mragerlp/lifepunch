@@ -67,10 +67,8 @@
 *(Populate after hub + rack economy signed off)*
 
 - Hub power gate
-- Rack link radius
-- Small vs large yield multiplier
-- Payout / sell flow
-- PIN gatekeeper (if shipped)
+- Rack link (`LinkedHubId`; terminal `LinkRange` 512u)
+- **Per-rack BTC** (`LpBitcoinRackEntity.BitcoinAmount`) — sell via terminal
 
 ---
 

@@ -213,16 +213,21 @@ Do **not** sign off because it feels done.
 Sign off when the player can complete this loop **without explanation**:
 
 ```text
-Acquire miner
-  → Place hub
-  → Operate terminal
-  → Connect / upgrade rack
+Dev (now):  lp_map_flatgrass → lp_bitcoin_spawn_kit → USE hub + terminal + racks
+Ship (later): acquire from DXRP market → place → same USE loop
+```
+
+```text
+Place / spawn hub
+  → Operate terminal (rig0>)
+  → Connect / link rack
   → Observe production
   → Understand status at a glance
   → Complete full loop
 ```
 
-**Proof:** flatgrass host play + §3 package + tracker checkboxes A–C.
+**Proof:** flatgrass **host play** + proof package (§3) + tracker checkboxes A–C.  
+**Known gaps:** `CYBER_REFERENCE_LAWS.md` § DXRP lane — market row, full world states, gov job block.
 
 Only then does Bitcoin become the **canonical cyber lane** and Tier 1 jobs (Hacker, Banker, …) enter active development per `JOB_PORTFOLIO_ROADMAP.md`.
 

@@ -24,10 +24,13 @@ What part will Government reuse?
 
 | Answer | Action |
 |--------|--------|
-| At least one clear reuse path | Proceed |
-| **"Nothing"** | **Stop** — reconsider building it |
+| Reusable **code** (shared SCSS, entity pattern, RPC shape) | Proceed |
+| Reusable **reference standard** (scale, collider, proof workflow, visual language) | Proceed — required for Phase A mesh work |
+| **Neither** — one-off with no clone path | **Stop** — reconsider or park |
 
 Prefer extending shared surfaces (`LpOpsCrtTerminal.scss`, `LpHashdPanel` patterns, hub entity base behaviors) over one-off Bitcoin-only code.
+
+**Phase exception:** UI-only preview (`lp_bitcoin_preview_hub` / `lp_bitcoin_preview_terminal`) is allowed during Phase A for Razor compile — it does **not** start Phase B world/gameplay work.
 
 ---
 
@@ -37,9 +40,9 @@ By the end of Bitcoin, the player should **instantly** recognize:
 
 | Type | Visual identity | Bitcoin entity |
 |------|-----------------|----------------|
-| **Hub** | Physical machine — power, linking, upgrades | `bitcoin-miner` (Ophion) |
-| **Terminal** | Information / control — typed commands | `bitcoin-terminal` (gray CRT) |
-| **Rack** | Scaling / expansion — production unit | `gpu-rack` / `large-gpu-rack` |
+| **Hub** | Physical machine + **modern admin dashboard** on USE | `bitcoin-miner` → `LpHashdPanel` |
+| **Terminal** | Information / control — typed commands | `bitcoin-terminal` → `LpBitcoinTerminalPanel` |
+| **Rack** | Scaling / expansion — production unit; USE opens CRT focused on rack | `gpu-rack` / `large-gpu-rack` |
 | **Power / error** | Universal warning language | Off = dark; blocked = explicit message |
 | **Active / success** | Universal success language | Powered + mining = unmistakable live read |
 
@@ -72,7 +75,7 @@ New patterns → document in `BITCOIN_REFERENCE_IMPLEMENTATION.md` when signed o
 
 Cyber systems fail when they become **visual clutter**.
 
-**30-foot test** (stand back in flatgrass):
+**30-foot test** — use **~15–20 m in-game** on flatgrass (s&box units; citizen ~72u tall). Stand back until the hub fills roughly ⅓ of the view:
 
 ```text
 Can you tell:
@@ -94,14 +97,21 @@ Editor screenshots are **not** proof. Only **gameplay** proof matters.
 ```text
 Citizen scale comparison
 Day test
-Night test
-Movement test (walk around, 30-foot read)
+Night test (may need time-of-day / lighting setup on flatgrass)
+Movement test (walk around, distance read)
 Interaction test (USE hub, terminal, rack)
 ```
 
-Anything that fails in flatgrass is **unfinished** — status = NOT DONE.
+**Two proof tiers (DXRP lane):**
 
-Play law: `game.scene` → Host Play → `lp_map_flatgrass` → spawn kit. See `BITCOINMINING_PLAYTEST.md`.
+| Tier | When | Acquire / spawn | Exit test |
+|------|------|-----------------|-----------|
+| **Dev sign-off** | Now (Phases A–C polish) | `lp_map_flatgrass` → `lp_bitcoin_spawn_kit` | Full USE loop without ConCmd job verbs |
+| **Ship sign-off** | After portal row + publish | Player acquires from DXRP market | Law 10 loop — no dev spawn ConCmds |
+
+Anything that fails in flatgrass host play is **unfinished** — status = NOT DONE. Editor-only or prefab-tab preview does not count.
+
+Play law: `game.scene` → Host Play (2–5 min cold) → `lp_map_flatgrass` → spawn kit. See `BITCOINMINING_PLAYTEST.md`.
 
 ---
 
@@ -127,6 +137,8 @@ UPGRADING
 
 A **spectator** should know the state at a glance.
 
+**Lane reality:** v2 today exposes `IsPowered` / `IsMining` + terminal boot UI only. Full world-readable OFF/BOOTING/WARNING/ERROR/UPGRADING is a **deliverable** (checklist H4, H9, R4) — not a blocker to *start* Phase A, but required before Phase C sign-off.
+
 ---
 
 ## LAW 7 — Preserve the brand matrix
@@ -141,7 +153,7 @@ Feedback language   (consistent power/mining/error strings)
 Status wording      (no ad-hoc labels per session)
 ```
 
-**No ad-hoc wording. No random UI styles.** Fork SCSS theme modifiers (`lp-ops-crt--*`), do not invent parallel layouts.
+**No ad-hoc wording. No random UI styles.** Fork SCSS theme modifiers (`lp-ops-crt--*`), do not invent parallel layouts. Verify against **v2 code** (`LpHashdPanel`, `LpBitcoinTerminalPanel`) — not v1 `HashdTerminal` names.
 
 ---
 
@@ -183,10 +195,11 @@ It would be cool if...
 
 ## LAW 10 — Actual exit condition
 
-Bitcoin is **done** when a **brand-new player** can:
+**Ship sign-off** — when a **brand-new player** can:
 
 ```text
-Place Hub
+Acquire hub (DXRP market — not dev ConCmd)
+  → Place hub
   → Open Terminal
   → Understand what it does
   → Connect Rack
@@ -197,9 +210,28 @@ Place Hub
 
 **Without** Discord help, admin help, or developer explanation.
 
-That is the **real** sign-off test — stricter than "feels done" or "compiles clean."
+**Dev sign-off (current milestone):** same loop using `lp_bitcoin_spawn_kit` on flatgrass after host play — proves patterns before market row exists.
 
 Maps to `ACTIVE_WORKSTREAM.md` §8 and tracker gate **BITCOIN SHIP GATE**.
+
+---
+
+## DXRP lane — known gaps (documented, not law violations)
+
+These are **inconsistent with full ChatGPT exit fantasy** but **expected on this lane today**. Do not pretend they are done.
+
+| Gap | Status | Notes |
+|-----|--------|-------|
+| Market acquire / place | **Not live** | No `dxrpAddonId` / market row — dev spawn only until portal ship |
+| Gov/LE blocked from hashd | **Doc only** | `TERMINAL_BRAND_MATRIX.md`; not enforced in `LpBitcoinHubEntity` yet |
+| Full Law 6 world states | **Partial** | Boot splash = UI; emissive/audio = H4/R4 checklist |
+| PIN graphical gate | **H9 open** | `AccessPinIsSet` in code; full numpad flow TBD |
+| `lp_authorize` | **Optional for polish** | Wallet sell proof may need portal token |
+| Dedicated server `_c` | **Required for ship** | Compile + `Pull-DxrpCompiledAssetsToRepo.ps1` |
+| Dev ConCmds | **Strip before publish** | `LpBitcoinDevSpawn` is playtest-only |
+| Per-rack BTC balance | **v2 code** | `LpBitcoinRackEntity.BitcoinAmount` — bible must match code, not v1 hub-wallet doc |
+
+**s&box ceilings agents must respect:** no SCSS gradients · `HashCode.Combine` ≤ 8 args · host-authoritative mining RPCs · `RestrictCloudOrg = facepunch` (self-contained assets).
 
 ---
 
@@ -212,4 +244,4 @@ Maps to `ACTIVE_WORKSTREAM.md` §8 and tracker gate **BITCOIN SHIP GATE**.
 5. Law 9 — reject scope creep phrases.
 6. Law 5 — flatgrass proof before "done."
 
-**Last updated:** 2026-06-15
+**Last updated:** 2026-06-15 (ChatGPT laws merged + DXRP lane gaps)
