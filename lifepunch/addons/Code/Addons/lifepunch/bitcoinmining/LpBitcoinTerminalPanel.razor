@@ -55,6 +55,14 @@
 					<div class="sidebar-foot">Selected rack #@_selectedIndex</div>
 				</div>
 				<div class="screen">
+					@if ( _showBootSplash )
+					{
+						<div class="boot-splash">
+							<div class="boot-mark"></div>
+							<div class="boot-title">LIFEPUNCH HASHD</div>
+							<div class="boot-status">@_bootStatus</div>
+						</div>
+					}
 					<div class="log">
 						@foreach ( var line in _lines )
 						{
@@ -79,6 +87,11 @@
 	private int _selectedIndex;
 	private string _input = string.Empty;
 	private readonly List<LogLine> _lines = new();
+	private bool _showBootSplash = true;
+	private bool _bootComplete;
+	private int _bootLineIndex;
+	private float _bootElapsed;
+	private string _bootStatus = "INITIALIZING RIG0...";
 	private bool _showScaleMenu;
 	private LpUiScaleSize _uiScale = LpUiScale.Default;
 	private static readonly LpUiScaleSize[] _uiScaleOptions =
@@ -88,6 +101,18 @@
 		LpUiScaleSize.Large,
 		LpUiScaleSize.ExtraLarge
 	};
+
+	private static readonly string[] BootLines =
+	{
+		"LIFEPUNCH HASHD rig0 — boot sequence",
+		"loading hashd kernel ............... OK",
+		"probe ophion hub bus ............... OK",
+		"sync gpu-rack telemetry ............ OK",
+		"rig0 console online ................ OK"
+	};
+
+	private const float BootLineIntervalSeconds = 0.42f;
+	private const float BootSplashHoldSeconds = 0.55f;
 
 	private string GetRootClass() =>
 		$"lp-ops-crt lp-ops-crt--gray {LpUiScale.CssClass( _uiScale )}";
@@ -112,23 +137,15 @@
 	{
 		_hub = hub;
 		_lines.Clear();
-		_lines.Add( new LogLine( true, "LIFEPUNCH bitcoin terminal — type help" ) );
-		_lines.Add( new LogLine( true, _hub?.IsPowered == true ? "hub power: ON" : "hub power: OFF" ) );
-
-		if ( focusRack.IsValid() )
-		{
-			var racks = _hub?.GetLinkedRacks() ?? Array.Empty<LpBitcoinRackEntity>();
-			for ( var i = 0; i < racks.Count; i++ )
-			{
-				if ( racks[i].GameObject.Id != focusRack.GameObject.Id )
-					continue;
-
-				_selectedIndex = i;
-				_lines.Add( new LogLine( true, $"focused rack #{i}" ) );
-				break;
-			}
-		}
+		_showBootSplash = true;
+		_bootComplete = false;
+		_bootLineIndex = 0;
+		_bootElapsed = 0f;
+		_bootStatus = "INITIALIZING RIG0...";
+		_pendingFocusRack = focusRack;
 	}
+
+	private LpBitcoinRackEntity _pendingFocusRack;
 
 	private void Submit()
 	{
@@ -154,7 +171,58 @@
 	{
 		base.OnUpdate();
 		if ( !_hub.IsValid() )
+		{
 			Close();
+			return;
+		}
+
+		if ( !_bootComplete )
+			TickBoot();
+	}
+
+	private void TickBoot()
+	{
+		_bootElapsed += Time.Delta;
+
+		while ( _bootLineIndex < BootLines.Length
+		        && _bootElapsed >= BootLineIntervalSeconds * ( _bootLineIndex + 1 ) )
+		{
+			_lines.Add( new LogLine( true, BootLines[_bootLineIndex] ) );
+			_bootStatus = _bootLineIndex < BootLines.Length - 1
+				? $"{BootLines[_bootLineIndex + 1].Split( ' ' )[0].ToUpperInvariant()}..."
+				: "READY";
+			_bootLineIndex++;
+		}
+
+		var bootEnd = BootLineIntervalSeconds * BootLines.Length + BootSplashHoldSeconds;
+		if ( _bootLineIndex < BootLines.Length || _bootElapsed < bootEnd )
+			return;
+
+		FinishBoot();
+	}
+
+	private void FinishBoot()
+	{
+		_bootComplete = true;
+		_showBootSplash = false;
+		_lines.Add( new LogLine( true, _hub?.IsPowered == true ? "hub power: ON" : "hub power: OFF" ) );
+		_lines.Add( new LogLine( true, "type help for rig0 commands" ) );
+
+		if ( _pendingFocusRack.IsValid() )
+		{
+			var racks = _hub?.GetLinkedRacks() ?? Array.Empty<LpBitcoinRackEntity>();
+			for ( var i = 0; i < racks.Count; i++ )
+			{
+				if ( racks[i].GameObject.Id != _pendingFocusRack.GameObject.Id )
+					continue;
+
+				_selectedIndex = i;
+				_lines.Add( new LogLine( true, $"focused rack #{i}" ) );
+				break;
+			}
+		}
+
+		_pendingFocusRack = null;
 	}
 
 	protected override int BuildHash() => HashCode.Combine(
@@ -163,6 +231,10 @@
 		_lines.Count,
 		_uiScale,
 		_showScaleMenu,
+		_showBootSplash,
+		_bootStatus,
+		_bootLineIndex,
+		_bootComplete,
 		_hub?.IsPowered,
 		_hub?.GetLinkedRacks().Sum( r => r.BitcoinAmount ) );
 }

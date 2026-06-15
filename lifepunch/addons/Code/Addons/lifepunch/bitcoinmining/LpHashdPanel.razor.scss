@@ -52,9 +52,14 @@
 		flex-grow: 1;
 	}
 
-	.brand-icon {
-		color: #f0a500;
-		font-size: 28px;
+	.brand-mark {
+		width: 34px;
+		height: 34px;
+		flex-shrink: 0;
+		background-image: url(/addons/lifepunch/bitcoinmining/ui/hashd/btc-mark.png);
+		background-size: contain;
+		background-repeat: no-repeat;
+		background-position: center;
 	}
 
 	.brand-text {
