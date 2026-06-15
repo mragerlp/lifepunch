@@ -194,6 +194,7 @@ Large GPU Rack  >>  GPU Rack (standing crypto farm frame)  >>  Bitcoin Miner hub
 | **GPU Rack** | `gpurack/gpu-rack.prefab` | 1,1,1 | **25 × 20 × 36** | **0.465** (pitch 90°) | ~16 × 23 × **36** |
 | **Large GPU Rack** | `largegpurack/large-gpu-rack.prefab` | 1,1,1 | ~52 × 27 × **47** | 1.0 | ~95 × 70 × **94** |
 | **Bitcoin Miner hub** | `bitcoinminer/bitcoin-miner.prefab` | 1,1,1 | **10 × 8 × 15** | **0.385** + **Z 13.3** trans, rot 0 | Re-verify after vmdl recompile (was wrong @ trans 0 + pitch 90°) |
+| **Bitcoin Terminal (CRT)** | `bitcoin-terminal/bitcoin-terminal.prefab` | 1,1,1 | **14 × 18 × 8** | **0.0195** | ~19 × 18 × 8 mesh @ flatgrass (Jun 2026 bridge tune; was ~1006×925×429 @ 1.0) |
 
 **Verified read:** single GPU rack is a **standing crypto farm frame** (Sketchfab ref) — taller than the Ophion hub, smaller than the stacked farm unit.
 

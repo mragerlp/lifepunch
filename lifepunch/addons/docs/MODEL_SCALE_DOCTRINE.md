@@ -23,11 +23,12 @@
 
 | Model | `import_scale` | Notes |
 |-------|----------------|-------|
-| `hacker-terminal` | **1.0** | Correct at baseline — do not shrink |
-| `advanced-hacker-terminal` | **1.0** | Same mesh baseline |
+| `hacker-terminal` | **0.0195** | Shared `bitcoin-terminal.vmdl` — was giant @ 1.0; bridge tune Jun 2026 |
+| `advanced-hacker-terminal` | **0.0195** | Same shared mesh |
 | `gpu-rack` | **0.395** | Same axis treatment as stacked rack · Y=90° · translation `[-1.389,-0.208,2.912]` · ~15% below prior 0.465 @ prefab 1,1,1 |
 | `gpu-rack-stacked` (large) | **0.85** | Stacked variant · same import rotation/translation as single rack · ~15% down from baseline 1.0 @ prefab 1,1,1 |
 | `bitcoin-miner` (Ophion hub) | **0.77** | Translation **Z 26.6** · rotation **0** · align **None** @ prefab **1,1,1** · flatgrass verify ~32×31×30 vs collider |
+| `bitcoin-terminal` (CRT prop) | **0.0195** | `align_origin_z_type = Bottom` @ prefab **1,1,1** · mesh ~18u Y @ flatgrass vs collider **14×18×8** (was ~925u @ 1.0) |
 
 **Do not** auto-shrink props that already look right @ `import_scale` 1.0 — collider numbers may be stale.
 

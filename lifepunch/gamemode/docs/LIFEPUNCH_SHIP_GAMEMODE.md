@@ -1,6 +1,6 @@
 # LIFEPUNCH™ — ship gamemode (DXRP portal)
 
-**Status:** Portal gamemode created · **not live on servers yet** · becomes production when bitcoinmining is publish-ready.
+**Status:** Portal gamemode created · export captured `gamemodes/lifepunch-ship.gamemode` · **not live on servers yet**
 
 ---
 
@@ -44,7 +44,7 @@ Fill when captured from dxrp.net:
 
 | Gamemode | Portal ID |
 |----------|-----------|
-| **LIFEPUNCH™** (ship) | `TBD` — paste from Game Modes detail URL |
+| **LIFEPUNCH™** (ship) | `019ec9ec-7527-7cf4-87f9-d04e582989bb` |
 | LifePunch (legacy) | `019e36c0-a67f-701c-90f2-460e0b0f1487` |
 
 Update `lifepunch/gamemode/config/gamemode.json` when the LIFEPUNCH™ ID is known.

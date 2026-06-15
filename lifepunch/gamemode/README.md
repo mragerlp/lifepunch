@@ -22,7 +22,7 @@ scripts/     # gamemode validation/import/export helpers
 
 ## Current Status
 
-**Ship target:** **LIFEPUNCH™** — new DXRP portal gamemode for publish-ready production (bitcoin + pinned addons). Not assigned to servers until bitcoin sign-off. Canon: `docs/LIFEPUNCH_SHIP_GAMEMODE.md`.
+**Ship target:** **LIFEPUNCH™** — `019ec9ec-7527-7cf4-87f9-d04e582989bb` · canonical export `gamemodes/lifepunch-ship.gamemode` (captured 2026-06-15). Not assigned to servers until bitcoin sign-off.
 
 **Legacy / dev:** **LifePunch** gamemode (`019e36c0-a67f-701c-90f2-460e0b0f1487`) — earlier pins and development testing. Do not conflate with **LIFEPUNCH™** ship pins.
 

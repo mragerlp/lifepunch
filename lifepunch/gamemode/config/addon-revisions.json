@@ -3,8 +3,8 @@
   "gamemode": {
     "ship": {
       "name": "LIFEPUNCH™",
-      "dxrpGamemodeId": null,
-      "notes": "Publish-ready production gamemode — pin bitcoin + ship addons here at go-live."
+      "dxrpGamemodeId": "019ec9ec-7527-7cf4-87f9-d04e582989bb",
+      "notes": "Publish-ready production gamemode — Base Content rev 3 only until bitcoin + ship addons pin here."
     },
     "legacy": {
       "name": "LifePunch",

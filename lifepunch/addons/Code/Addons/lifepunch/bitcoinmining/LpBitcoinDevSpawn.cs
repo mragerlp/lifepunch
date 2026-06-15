@@ -176,7 +176,14 @@ public static class LpBitcoinDevSpawn
 			LogScaleRow( "hub", hub.GameObject );
 		else
 			Log.Warning( "BITCOINMINING_SCALE_AUDIT hub missing" );
-		Log.Info( "BITCOINMINING_SCALE_AUDIT end — target: mesh mins.z ≈ 0 at spawn; height ~20u vs citizen ~72u" );
+
+		var terminal = scene.GetAllComponents<LpBitcoinTerminalEntity>().FirstOrDefault( t => t.IsValid() );
+		if ( terminal.IsValid() )
+			LogScaleRow( "terminal", terminal.GameObject );
+		else
+			Log.Warning( "BITCOINMINING_SCALE_AUDIT terminal missing — spawn kit first" );
+
+		Log.Info( "BITCOINMINING_SCALE_AUDIT end — terminal target mesh Y ~18u vs collider 14×18×8" );
 	}
 
 	private static void LogScaleRow( string tag, GameObject go )

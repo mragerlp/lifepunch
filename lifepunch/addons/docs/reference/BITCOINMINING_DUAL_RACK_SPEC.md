@@ -24,7 +24,7 @@ Archive mirror: `C:/lifepunch/reference-intake/bitcoinmining/gpu-rack-export/GPU
 | Small static OBJ | Vertex scan | `0.47 × 0.31 × 0.77` | **0.77** |
 | Large stacked FBX | TBD — Red ModelDoc | — | **TBD — Red editor verify** (expect ~1.5–2.0× small; filename + shared fan object names imply double stack) |
 
-**Origin note:** Terminal FBX uses `align_origin_z_type = Bottom` + `import_scale = 39.37`. Stacked FBX likely needs same Z align — flag if large rack floats/sinks beside small rack.
+**Origin note:** Terminal FBX uses `align_origin_z_type = Bottom` + `import_scale = 0.0195` (bridge-measured Jun 2026 — was building-sized @ 1.0). Stacked FBX likely needs same Z align — flag if large rack floats/sinks beside small rack.
 
 ---
 

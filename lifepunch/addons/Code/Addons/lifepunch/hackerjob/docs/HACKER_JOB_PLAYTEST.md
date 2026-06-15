@@ -2,7 +2,7 @@
 
 **Red runbook:** `addons/docs/RED_HACKER_JOB_BUILD.md` (Step 0 smoke).
 
-**Scale / map (Jun 2026):** `facepunch.flatgrass` + `addons/docs/MODEL_SCALE_DOCTRINE.md`. Prefab root **1.0**; terminal `import_scale` **1.0** (verified). Never default **39.37**. Recompile vmdl after edits.
+**Scale / map (Jun 2026):** `facepunch.flatgrass` + `addons/docs/MODEL_SCALE_DOCTRINE.md`. Prefab root **1.0**; shared `bitcoin-terminal.vmdl` **`import_scale` 0.0195** (was giant @ 1.0). Never default **39.37**. Recompile vmdl after edits.
 
 Solo editor testing uses **`StaffMenuTestBots`** (`adminmenu/StaffMenuTestBots.cs`) — same bots as staff menu / waypoint tests. No second human required.
 

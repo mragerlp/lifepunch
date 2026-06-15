@@ -6,11 +6,19 @@
   "gamemode": {
     "ship": {
       "name": "LIFEPUNCH™",
-      "description": "Publish-ready LifePunch DXRP gamemode — real community experience when bitcoin and pinned addons ship.",
-      "dxrpGamemodeId": null,
+      "description": "The official LIFEPUNCH™ DXRP gamemode for the LifePunch community — publish-ready addon pins, jobs, market, and server content. Built for DXRP roleplay servers; proprietary LifePunch experience by lifepunch.co.",
+      "dxrpGamemodeId": "019ec9ec-7527-7cf4-87f9-d04e582989bb",
       "visibility": "Private",
-      "status": "portal-created-not-assigned",
+      "status": "portal-export-captured",
+      "portalUrl": "https://dxrp.net/portal/gamemodes/019ec9ec-7527-7cf4-87f9-d04e582989bb",
+      "startingBalance": 1500,
+      "defaultJobId": "6b746f90-328b-4203-bf15-2d50f88a14dd",
+      "addonPinCount": 1,
+      "addonPins": [
+        "Base Content @ revision 3"
+      ],
       "canonicalExport": "gamemodes/lifepunch-ship.gamemode",
+      "exportedAt": "2026-06-15T08:42:05.607Z",
       "assignAfter": "bitcoinmining publish-ready sign-off"
     },
     "legacy": {

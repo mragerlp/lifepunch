@@ -6,7 +6,7 @@ Purpose: manage LifePunch gamemode imports, addon attachments, revision pins, an
 
 | Portal gamemode | Purpose |
 |-----------------|--------|
-| **LIFEPUNCH™** | **Production / publish-ready** — assign to 70p + Development when bitcoinmining ships. Real community gamemode. |
+| **LIFEPUNCH™** | **Production / publish-ready** — `019ec9ec-7527-7cf4-87f9-d04e582989bb` · export `gamemodes/lifepunch-ship.gamemode` |
 | **LifePunch** (`019e36c0-…`) | **Legacy / dev** — earlier pins; AK47 and WIP testing. Migrate pins to **LIFEPUNCH™** at ship. |
 
 Canon: `../../gamemode/docs/LIFEPUNCH_SHIP_GAMEMODE.md`

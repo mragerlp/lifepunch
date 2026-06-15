@@ -5,7 +5,7 @@
     "displayName": "Bitcoin Miner terminal prop",
     "activeSource": "source/computer.fbx",
     "targetModel": "bitcoin-terminal.vmdl",
-    "importScale": 39.37,
+    "importScale": 0.0195,
     "alignOriginZ": "Bottom",
     "status": "Baseline solid vmats + MaterialGroupList in vmdl — recompile in ModelDoc; swap PNGs when baked"
   },
