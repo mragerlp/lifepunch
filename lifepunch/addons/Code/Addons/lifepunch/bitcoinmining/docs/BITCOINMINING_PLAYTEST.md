@@ -47,6 +47,18 @@
 | `lp_spawn_gpu_rack: gpu-rack + bitcoin-terminal placed` | **OK** | Dev spawn succeeded | Run `hashd` near rig or `lp_hashd_preview` from play mode. |
 | FPS tanks right after `lp_spawn_gpu_rack` | **P0 perf** | `ModelCollider` on full `gpu-rack*.vmdl` with `PhysicsHullFromRender` / `HullPerElement` + per-frame `TextRenderer` rebuild | **Fixed:** prefabs use tuned `BoxCollider` + `StartAsleep`; `GpuRackEntity` throttles screen text + RGB attribute writes. |
 
+### SCSS triage (all `.razor.scss` — Cornerman audit 2026-06-13)
+
+| File | Gradients | Undefined vars | `transform:` (non text-) | Red verify |
+|------|-----------|----------------|--------------------------|------------|
+| `adminmenu/StaffMenu.razor.scss` | 0 | 0 | 0 | `staffmenu` open — no gradient log spam |
+| `bitcoinmining/HashdTerminal.razor.scss` | 0 | 0 | 1 (`scale(0.98)` active state) | `lp_hashd_preview` — UI paints |
+| `hackerjob/HackerTerminal.razor.scss` | 0 | 0 | 0 | `hacker` terminal open — no compile fail |
+| `hackerjob/HackerServerRackMenu.razor.scss` | 0 | 0 | 0 | rack menu if wired |
+| `visiblepocket/VisiblePocketHud.razor.scss` | 0 | 0 | 1 (`translateX(-50%)` centering) | `lp_pocket_preview` — bar centered |
+
+Validator: `lifepunch/addons/scripts/Validate-SboxRazorScss.ps1` — run before ship; 0 forbidden gradients required.
+
 **MCP check:** `read_log` filter `bitcoinmining`, `error`, `spawn`, `403`. **Do not** leave test rigs in `game.scene` — use `lp_spawn_gpu_rack` in play mode instead.
 
 ## 1. Physical Bitcoin Miner hub (real-time DXRP)

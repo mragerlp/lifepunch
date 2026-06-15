@@ -32,6 +32,13 @@
       "updateVia": "s&box Library Manager → update; restart editor; get_bridge_status versionsAligned"
     },
     {
+      "id": "cornerman-claude-bridge",
+      "role": "Anthropic client -> Cornerman LM Studio (/v1/messages)",
+      "script": "lifepunch/scripts/Start-ClaudeBridge.ps1",
+      "doc": "lifepunch/docs/CORNERMAN_LM_STUDIO.md",
+      "updateVia": "Sync Cornerman Tier-3; run Start-ClaudeBridge.ps1 before claude CLI sessions"
+    },
+    {
       "id": "chomnr_mcp",
       "role": "editor MCP — ModelDoc, prefabs, imported game tools",
       "library": "notpointless.chomnr_mcp",

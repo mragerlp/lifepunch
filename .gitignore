@@ -25,6 +25,9 @@ lifepunch/scripts/server-host-watch.local.json
 lifepunch/scripts/dxrp-editor.local.json
 lifepunch/scripts/.session-sync-state.json
 
+# Third-party study clones (local only — never commit)
+.study-drawio/
+
 # VENGEANCE desk PTT local runtime
 lifepunch/scripts/vengeance-ptt/.venv/
 lifepunch/scripts/vengeance-ptt/__pycache__/
