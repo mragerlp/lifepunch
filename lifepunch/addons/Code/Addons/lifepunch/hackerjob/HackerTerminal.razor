@@ -19,220 +19,196 @@
 
 @attribute [StyleSheet]
 
-<root class="hacker-terminal @TierClass ops-shell">
+<root class="hacker-terminal lp-cyber-terminal @TierClass">
     <div class="ops-backdrop" onclick=@OnClickClose></div>
-    <div class="ops-window">
-    <div class="scanlines"></div>
-
-    <div class="title-bar">
-        <span class="title-mark">@OpsMark</span>
-        <span class="title-text">@OpsTitle</span>
-        <span class="title-sub">@ProgramLabel</span>
-        <span class="title-spacer"></span>
-        <span class="tier-badge">@TierBadge</span>
-        <span class="title-publisher">@LifePunchSourceMark.UiFooterMark</span>
-        <button class="close-x" onclick=@OnClickClose>CLOSE</button>
-    </div>
-
-    <div class="terminal-body">
-        <div class="ops-rail">
-            <div class="rail-header">SESSION</div>
-            <div class="rail-block">
-                <span class="rail-label">PROGRAM</span>
-                <span class="rail-value">@ProgramLabel</span>
+    <div class="cyber-window">
+        <header class="cyber-header">
+            <span class="cyber-brand">@ScreenBrandTitle()</span>
+            <div class="cyber-status-row">
+                <span>STATUS: @StatusConnectedLabel()</span>
+                <span>IP: @_fakeIp</span>
+                <span>SECURITY: LEVEL @SecurityLevel()</span>
             </div>
-            <div class="rail-block">
-                <span class="rail-label">LINK</span>
-                <span class="rail-value @(Terminal.IsValid() ? "active" : "")">@(Terminal.IsValid() ? "STABLE" : "LOST")</span>
-            </div>
-            <div class="rail-block">
-                <span class="rail-label">RACK PWR</span>
-                <span class="rail-value @(Terminal.IsValid() && Terminal.IsPowered ? "active" : "")">@(Terminal.IsValid() && Terminal.IsPowered ? "ONLINE" : "OFFLINE")</span>
-            </div>
-            <div class="rail-block">
-                <span class="rail-label">WALLETS</span>
-                <span class="rail-value">@_scanResults.Count</span>
-            </div>
-            @if ( Tier == HackerTerminalTier.Advanced )
+            @if ( _screen != LifePunchCyberScreen.Home )
             {
-                <div class="rail-block">
-                    <span class="rail-label">GOVDB</span>
-                    <span class="rail-value">@_govdbResults.Count</span>
-                </div>
+                <button class="cyber-menu-btn" onclick=@GoHome>MAIN MENU</button>
             }
-            <div class="rail-block">
-                <span class="rail-label">ACTIVE OP</span>
-                <span class="rail-value @(HasActiveOp ? "active" : "")">@ActiveOpLabel</span>
-            </div>
-            @if ( _puzzle != null && !_puzzle.IsExpired )
+            <button class="cyber-close-btn" onclick=@OnClickClose>CLOSE</button>
+        </header>
+
+        <div class="cyber-body">
+            @if ( _screen == LifePunchCyberScreen.Home )
             {
-                <div class="rail-block rail-progress">
-                    <span class="rail-label">PUZZLE TTL</span>
-                    <div class="ttl-bar">
-                        <div class="ttl-fill" style="width: @(GetPuzzlePercent())%"></div>
+                <div class="cyber-home">
+                    <div class="cyber-welcome">
+                        <div class="cyber-welcome-title">@LifePunchCyberTerminalTheme.WelcomeLine( CyberBrandDisplay() )</div>
+                        <div class="cyber-welcome-sub">@LifePunchCyberTerminalTheme.BootSubtitle( ProgramLabel )</div>
                     </div>
-                    <span class="rail-sub">@MathF.Ceiling(_puzzle.SecondsRemaining)s</span>
+                    <div class="cyber-module-grid">
+                        @foreach ( var card in HackerTerminalBrand.HomeModules( Tier ) )
+                        {
+                            <button class="cyber-module-card" onclick=@(() => EnterScreen( card.Screen ))>
+                                <span class="card-title">@card.Title</span>
+                                <span class="card-desc">@card.Description</span>
+                            </button>
+                        }
+                    </div>
                 </div>
             }
-
-            <div class="rail-nav">
-                <div class="rail-nav-header">MODULES</div>
-                <button class="nav-btn @(_activeModule == OpsModule.Log ? "active" : "")" onclick=@(() => SwitchModule(OpsModule.Log))>LOG</button>
-                <button class="nav-btn @(_activeModule == OpsModule.Scan ? "active" : "")" onclick=@(() => SwitchModule(OpsModule.Scan))>SCAN</button>
-                @if ( Tier == HackerTerminalTier.Advanced )
-                {
-                    <button class="nav-btn @(_activeModule == OpsModule.Govdb ? "active" : "")" onclick=@(() => SwitchModule(OpsModule.Govdb))>GOVDB</button>
-                }
-                <button class="nav-btn @(_activeModule == OpsModule.Target ? "active" : "")" onclick=@(() => SwitchModule(OpsModule.Target))>TARGET</button>
-                <button class="nav-btn @(_activeModule == OpsModule.Help ? "active" : "")" onclick=@(() => SwitchModule(OpsModule.Help))>HELP</button>
-            </div>
-
-            <div class="rail-actions">
-                <button class="rail-btn" onclick=@RunScanFromUi>RUN SCAN</button>
-                @if ( Tier == HackerTerminalTier.Advanced )
-                {
-                    <button class="rail-btn" onclick=@RunGovdbFromUi>RUN GOVDB</button>
-                }
-            </div>
-            <div class="rail-hint">Command line ↓</div>
-        </div>
-
-        <div class="main-pane">
-            <div class="module-header">@ModuleTitle</div>
-
-            <div class="module-body" onclick=@FocusInput>
-                @if ( _activeModule == OpsModule.Log )
-                {
-                    <div class="log-scroll">
+            else if ( _screen == LifePunchCyberScreen.Terminal )
+            {
+                <div class="cyber-terminal-screen">
+                    <div class="cyber-terminal-bar">@PromptLabel</div>
+                    <div class="cyber-terminal-log" onclick=@FocusInput>
+                        <div class="cyber-line ok">@LifePunchCyberTerminalTheme.WelcomeLine( CyberBrandDisplay() ) v0.2</div>
+                        <div class="cyber-line dim">Type "help" for available commands.</div>
                         @foreach ( var line in _lines )
                         {
-                            <div class="line-row">
-                                <label class="screen-line @GetLineClass(line)">@line</label>
-                            </div>
+                            <div class="cyber-line @GetLineClass(line)">@line</div>
                         }
                     </div>
-                }
-                else if ( _activeModule == OpsModule.Scan )
-                {
-                    <div class="module-scan">
-                        <div class="module-toolbar">
-                            <span class="toolbar-label">WALLET ENDPOINTS</span>
-                            <span class="toolbar-meta">@_scanResults.Count cached</span>
-                        </div>
-                        @if ( _scanResults.Count == 0 )
-                        {
-                            <div class="empty-state">No targets — RUN SCAN or type <span class="cmd">scan</span></div>
-                        }
-                        else
-                        {
-                            @foreach ( var target in _scanResults )
+                    <div class="cyber-input-row" onclick=@FocusInput>
+                        <span class="cyber-prompt">@PromptLabel</span>
+                        <TextEntry class="cyber-input" @ref="InputBox" onsubmit=@OnSubmit />
+                    </div>
+                </div>
+            }
+            else if ( _screen == LifePunchCyberScreen.Network )
+            {
+                <div class="cyber-screen">
+                    <div class="cyber-panel cyber-panel-fill">
+                        <div class="cyber-panel-title">@( Tier == HackerTerminalTier.Advanced ? "NETWORK + GOVDB PROBE" : "WALLET ENDPOINT SCAN" )</div>
+                        <div class="cyber-scroll">
+                            @if ( _scanResults.Count == 0 && ( Tier != HackerTerminalTier.Advanced || _govdbResults.Count == 0 ) )
                             {
-                                <div class="data-row @(_selectedTargetId == target.SteamId ? "selected" : "")"
-                                     onclick=@(() => SelectWalletTarget(target))>
-                                    <span class="data-id">@target.SteamId</span>
-                                    <span class="data-name">@target.DisplayName</span>
-                                    <span class="data-meta">$@target.WalletCash</span>
-                                </div>
+                                <div class="cyber-line dim">No targets — RUN SCAN or type <span class="cyber-line ok">scan</span></div>
                             }
-                        }
-                        @if ( !string.IsNullOrEmpty( _selectedTargetId ) )
-                        {
-                            <button class="module-action" onclick=@StartHackFromUi>START HACK</button>
-                        }
-                    </div>
-                }
-                else if ( _activeModule == OpsModule.Govdb && Tier == HackerTerminalTier.Advanced )
-                {
-                    <div class="module-govdb">
-                        <div class="module-toolbar">
-                            <span class="toolbar-label">TREASURY NODES</span>
-                            <span class="toolbar-meta">@_govdbResults.Count cached</span>
-                        </div>
-                        @if ( _govdbResults.Count == 0 )
-                        {
-                            <div class="empty-state">No nodes — RUN GOVDB or type <span class="cmd">govdb</span></div>
-                        }
-                        else
-                        {
-                            @foreach ( var node in _govdbResults )
+                            @if ( _scanResults.Count > 0 )
                             {
-                                <div class="data-row @(_selectedGovNodeId == node.NodeId ? "selected" : "")"
-                                     onclick=@(() => SelectGovNode(node))>
-                                    <span class="data-id">@node.NodeId</span>
-                                    <span class="data-name">@node.Label</span>
-                                    <span class="data-meta">[@node.SecurityTier]</span>
-                                </div>
+                                <div class="cyber-line ok">WALLET ENDPOINTS (@_scanResults.Count)</div>
+                                @foreach ( var target in _scanResults )
+                                {
+                                    <div class="cyber-data-row @(_selectedTargetId == target.SteamId ? "selected" : "")"
+                                         onclick=@(() => SelectWalletTarget(target))>
+                                        <span class="cyber-line">@target.SteamId</span>
+                                        <span class="cyber-line dim">@target.DisplayName</span>
+                                        <span class="cyber-line ok">$@target.WalletCash</span>
+                                    </div>
+                                }
                             }
-                        }
-                        @if ( !string.IsNullOrEmpty( _selectedGovNodeId ) )
-                        {
-                            <button class="module-action" onclick=@StartInfilFromUi>START INFIL</button>
-                        }
-                    </div>
-                }
-                else if ( _activeModule == OpsModule.Target )
-                {
-                    <div class="module-target">
-                        @if ( _puzzle == null )
-                        {
-                            <div class="empty-state">No active operation — select a target in SCAN or GOVDB</div>
-                        }
-                        else if ( _puzzle.IsExpired )
-                        {
-                            <div class="empty-state warn">Puzzle window expired — trace risk increased.</div>
-                        }
-                        else
-                        {
-                            <div class="target-banner">@GetTargetBanner()</div>
-                            <div class="puzzle-prompt">@_puzzle.Prompt</div>
-                            <div class="puzzle-hint">Type answer at command prompt — @MathF.Ceiling(_puzzle.SecondsRemaining)s remaining</div>
-                        }
-                    </div>
-                }
-                else if ( _activeModule == OpsModule.Help )
-                {
-                    <div class="module-help">
-                        <div class="help-block">
-                            <span class="help-cmd">scan</span>
-                            <span class="help-desc">Probe live wallet signatures</span>
+                            @if ( Tier == HackerTerminalTier.Advanced && _govdbResults.Count > 0 )
+                            {
+                                <div class="cyber-line ok cyber-section-gap">GOVDB NODES (@_govdbResults.Count)</div>
+                                @foreach ( var node in _govdbResults )
+                                {
+                                    <div class="cyber-data-row @(_selectedGovNodeId == node.NodeId ? "selected" : "")"
+                                         onclick=@(() => SelectGovNode(node))>
+                                        <span class="cyber-line">@node.NodeId</span>
+                                        <span class="cyber-line dim">@node.Label</span>
+                                        <span class="cyber-line warn">[@node.SecurityTier]</span>
+                                    </div>
+                                }
+                            }
                         </div>
-                        <div class="help-block">
-                            <span class="help-cmd">hack &lt;steamid&gt;</span>
-                            <span class="help-desc">Start wallet bypass puzzle</span>
+                        <div class="cyber-action-row">
+                            <button class="cyber-action-btn" onclick=@RunScanFromUi>RUN SCAN</button>
+                            @if ( Tier == HackerTerminalTier.Advanced )
+                            {
+                                <button class="cyber-action-btn" onclick=@RunGovdbFromUi>RUN GOVDB</button>
+                            }
+                            @if ( !string.IsNullOrEmpty( _selectedTargetId ) )
+                            {
+                                <button class="cyber-action-btn" onclick=@StartHackFromUi>START HACK</button>
+                            }
+                            @if ( !string.IsNullOrEmpty( _selectedGovNodeId ) )
+                            {
+                                <button class="cyber-action-btn" onclick=@StartInfilFromUi>START INFIL</button>
+                            }
                         </div>
-                        @if ( Tier == HackerTerminalTier.Advanced )
-                        {
-                            <div class="help-block">
-                                <span class="help-cmd">govdb</span>
-                                <span class="help-desc">Scan government database nodes</span>
+                    </div>
+                </div>
+            }
+            else if ( _screen == LifePunchCyberScreen.Decrypt )
+            {
+                <div class="cyber-screen">
+                    <div class="cyber-panel" style="flex: 1;">
+                        <div class="cyber-panel-title">PASSWORD BYPASS / CRACK</div>
+                        <div class="cyber-scroll">
+                            @if ( _puzzle == null )
+                            {
+                                <div class="cyber-line dim">Password cracker initialized. Run NETWORK scan, select a target, then START HACK or START INFIL.</div>
+                            }
+                            else if ( _puzzle.IsExpired )
+                            {
+                                <div class="cyber-line warn">Puzzle window expired — trace risk increased.</div>
+                            }
+                            else
+                            {
+                                <div class="cyber-line warn">@GetTargetBanner()</div>
+                                <div class="cyber-line cyber-section-gap">@_puzzle.Prompt</div>
+                                <div class="cyber-line dim">Type answer at TERMINAL prompt — @MathF.Ceiling(_puzzle.SecondsRemaining)s remaining</div>
+                            }
+                        </div>
+                        <button class="cyber-action-btn" onclick=@(() => EnterScreen( LifePunchCyberScreen.Terminal ))>OPEN TERMINAL</button>
+                    </div>
+                </div>
+            }
+            else if ( _screen == LifePunchCyberScreen.Dashboard )
+            {
+                <div class="cyber-screen">
+                    <div class="cyber-dash-grid">
+                        <div class="cyber-dash-cell cyber-panel">
+                            <div class="cyber-panel-title">SESSION STATUS</div>
+                            <div class="cyber-stat-row">
+                                <div class="cyber-stat">
+                                    <div class="stat-label">LINK</div>
+                                    <div class="stat-value">@(Terminal.IsValid() ? "STABLE" : "LOST")</div>
+                                </div>
+                                <div class="cyber-stat">
+                                    <div class="stat-label">RACK PWR</div>
+                                    <div class="stat-value">@(Terminal.IsValid() && Terminal.IsPowered ? "ONLINE" : "OFFLINE")</div>
+                                </div>
+                                <div class="cyber-stat">
+                                    <div class="stat-label">WALLETS</div>
+                                    <div class="stat-value">@_scanResults.Count</div>
+                                </div>
+                                <div class="cyber-stat">
+                                    <div class="stat-label">ACTIVE OP</div>
+                                    <div class="stat-value">@ActiveOpLabel</div>
+                                </div>
                             </div>
-                            <div class="help-block">
-                                <span class="help-cmd">infil &lt;nodeid&gt;</span>
-                                <span class="help-desc">Breach a treasury node</span>
-                            </div>
-                        }
-                        <div class="help-block">
-                            <span class="help-cmd">status / info / clear / about</span>
-                            <span class="help-desc">Session utilities</span>
                         </div>
-                        <div class="help-note">Server Rack within 8m powers this terminal + applies upgrades.</div>
-                        <div class="help-note">Standard: wallets only. Advanced (vengeance): wallets + Bitcoin Miners + Gov Data Center.</div>
-                        <div class="help-note">Failed hacks may trigger 911 position ping and Wanted (Detection upgrades reduce chance).</div>
+                        <div class="cyber-dash-cell cyber-panel">
+                            <div class="cyber-panel-title">QUICK ACCESS</div>
+                            <div class="cyber-quick-grid">
+                                <button class="cyber-quick-btn" onclick=@(() => EnterScreen( LifePunchCyberScreen.Terminal ))>TERMINAL</button>
+                                <button class="cyber-quick-btn" onclick=@(() => EnterScreen( LifePunchCyberScreen.Network ))>NETWORK</button>
+                                <button class="cyber-quick-btn" onclick=@(() => EnterScreen( LifePunchCyberScreen.Decrypt ))>DECRYPT</button>
+                                <button class="cyber-quick-btn" onclick=@GoHome>HOME</button>
+                            </div>
+                        </div>
+                        <div class="cyber-dash-cell cyber-panel cyber-panel-wide">
+                            <div class="cyber-panel-title">ACTIVITY LOG</div>
+                            <div class="cyber-scroll">
+                                @foreach ( var line in _lines.TakeLast( 12 ) )
+                                {
+                                    <div class="cyber-line @GetLineClass(line)">@line</div>
+                                }
+                            </div>
+                        </div>
                     </div>
-                }
-            </div>
-
-            <div class="input-row" onclick=@FocusInput>
-                <span class="prompt-label">@PromptLabel</span>
-                <TextEntry
-                    class="terminal-input"
-                    @ref="InputBox"
-                    onsubmit=@OnSubmit />
-            </div>
+                </div>
+            }
         </div>
-    </div>
 
-    <LifePunchUiFooter />
+        <div class="cyber-footer-log">
+            @foreach ( var line in _footerLog )
+            {
+                <div class="cyber-footer-line">@line</div>
+            }
+        </div>
+
+        <LifePunchUiFooter />
     </div>
 </root>
 
@@ -243,10 +219,13 @@
 
     private TextEntry InputBox { get; set; }
     private readonly List<string> _lines = new();
+    private readonly List<string> _footerLog = new();
     private const int MaxLines = 64;
     private int _lastTextLength = 0;
     private TimeSince _sinceSecondly = 0f;
     private OpsModule _activeModule = OpsModule.Log;
+    private LifePunchCyberScreen _screen = LifePunchCyberScreen.Home;
+    private string _fakeIp = "192.168.1.1";
 
     private IReadOnlyList<HackerScanService.ScanTarget> _scanResults = Array.Empty<HackerScanService.ScanTarget>();
     private IReadOnlyList<HackerScanService.GovDbTarget> _govdbResults = Array.Empty<HackerScanService.GovDbTarget>();
@@ -268,30 +247,77 @@
     private bool HasActiveOp => _puzzle != null && !_puzzle.IsExpired;
     private string ActiveOpLabel => HasActiveOp ? (_selectedGovNodeId ?? _selectedTargetId ?? "active") : "none";
 
-    private string ModuleTitle => _activeModule switch
+    private string CyberBrandDisplay() => HackerTerminalBrand.CyberBrandDisplay( Tier );
+
+    private string ScreenBrandTitle() =>
+        LifePunchCyberTerminalTheme.ScreenTitle( HackerTerminalBrand.CyberBrandSlug( Tier ), _screen );
+
+    private string StatusConnectedLabel()
     {
-        OpsModule.Scan => "SCAN — WALLET PROBE",
-        OpsModule.Govdb => "GOVDB — TREASURY MESH",
-        OpsModule.Target => "TARGET — BYPASS",
-        OpsModule.Help => "HELP — COMMAND REF",
-        _ => "LOG — COMMAND OUTPUT"
-    };
+        if ( !Terminal.IsValid() )
+            return "LOST";
+
+        return Terminal.IsPowered ? "CONNECTED" : "STANDBY";
+    }
+
+    private int SecurityLevel()
+    {
+        if ( Terminal.IsValid() && Terminal.ActiveRack.IsValid() )
+            return Math.Max( 1, Terminal.ActiveRack.DetectionTier );
+
+        return 1;
+    }
+
+    private void AppendFooterLog( string message )
+    {
+        var stamp = DateTime.Now.ToString( "h:mm:ss tt" ).ToLowerInvariant();
+        _footerLog.Add( $"[{stamp}] {message}" );
+        if ( _footerLog.Count > 24 )
+            _footerLog.RemoveAt( 0 );
+    }
+
+    private void GoHome()
+    {
+        _screen = LifePunchCyberScreen.Home;
+        AppendFooterLog( "Returned to main menu." );
+    }
+
+    private void EnterScreen( LifePunchCyberScreen screen )
+    {
+        _screen = screen;
+        _activeModule = screen switch
+        {
+            LifePunchCyberScreen.Network => OpsModule.Scan,
+            LifePunchCyberScreen.Decrypt => OpsModule.Target,
+            LifePunchCyberScreen.Terminal => OpsModule.Log,
+            _ => _activeModule
+        };
+
+        AppendFooterLog( screen switch
+        {
+            LifePunchCyberScreen.Terminal => "Terminal module loaded. Type help for commands.",
+            LifePunchCyberScreen.Network => "Network module loaded. Run scan to probe targets.",
+            LifePunchCyberScreen.Decrypt => "Decrypt module loaded. Select an operation to begin.",
+            LifePunchCyberScreen.Dashboard => "Dashboard module loaded. System monitoring active.",
+            _ => "Main menu ready."
+        } );
+    }
 
     private static string GetLineClass( string line )
     {
         if ( line.StartsWith( "cornerman@" ) || line.StartsWith( "vengeance@" ) )
-            return "prompt-line";
+            return "ok";
         if ( line.StartsWith( "---" ) )
-            return "divider-line";
+            return "dim";
         if ( line.StartsWith( "  " ) )
-            return "help-line";
+            return "dim";
         if ( line.StartsWith( "ERROR" ) || line.StartsWith( "DENIED" ) )
-            return "error-line";
+            return "err";
         if ( line.StartsWith( "[ OK" ) || line.StartsWith( "BYPASS" ) )
-            return "ok-line";
+            return "ok";
         if ( line.StartsWith( "WARNING" ) || line.StartsWith( "▶" ) )
-            return "warn-line";
-        return "output-line";
+            return "warn";
+        return "";
     }
 
     private void TrimLines()
@@ -350,6 +376,7 @@
         panel._lines.Add( "WARNING: hack trace detected." );
         panel._lines.Add( alertLine );
         panel._activeModule = OpsModule.Log;
+        panel._screen = LifePunchCyberScreen.Terminal;
         panel.TrimLines();
     }
 
@@ -372,17 +399,30 @@
             return;
 
         _activeModule = module;
+        _screen = module switch
+        {
+            OpsModule.Scan => LifePunchCyberScreen.Network,
+            OpsModule.Govdb => LifePunchCyberScreen.Network,
+            OpsModule.Target => LifePunchCyberScreen.Decrypt,
+            OpsModule.Help => LifePunchCyberScreen.Terminal,
+            _ => LifePunchCyberScreen.Terminal
+        };
     }
 
     private void Boot()
     {
         _lines.Clear();
+        _footerLog.Clear();
         _scanResults = Array.Empty<HackerScanService.ScanTarget>();
         _govdbResults = Array.Empty<HackerScanService.GovDbTarget>();
         _selectedTargetId = null;
         _selectedGovNodeId = null;
         _puzzle = null;
         _activeModule = OpsModule.Log;
+        _screen = LifePunchCyberScreen.Home;
+
+        var seed = Terminal.IsValid() ? Terminal.GameObject.Id.GetHashCode() : 42;
+        _fakeIp = LifePunchCyberTerminalTheme.FakeLanIp( Math.Abs( seed ) );
 
         if ( Tier == HackerTerminalTier.Advanced )
         {
@@ -392,7 +432,6 @@
             _lines.Add( "[ OK ] govdb route table mounted" );
             _lines.Add( $"starting {HackerJob.AdvancedProgramName} ..." );
             _lines.Add( "WARNING: unauthorized govdb access is a felony." );
-            _lines.Add( "Modules: LOG | SCAN | GOVDB | TARGET | HELP" );
         }
         else
         {
@@ -401,7 +440,6 @@
             _lines.Add( "[ OK ] packet sniffer loaded" );
             _lines.Add( "[ OK ] wallet probe module (read-only)" );
             _lines.Add( $"starting {HackerJob.InGameProgramName} ..." );
-            _lines.Add( "Modules: LOG | SCAN | TARGET | HELP" );
         }
 
         _lines.Add( LifePunchSourceMark.PublishedByLine );
@@ -422,8 +460,12 @@
             _lines.Add( "WARNING: no server rack in range — place rack within 8m and power ON." );
         }
 
-        _lines.Add( "Fiction only — not the real Ops box. Type help or open HELP module." );
+        _lines.Add( "Fiction only — not the real Ops box. Select a module or open TERMINAL." );
         _lines.Add( "" );
+
+        AppendFooterLog( "System initialized. Select a module to begin." );
+        AppendFooterLog( "Establishing secure connection..." );
+        AppendFooterLog( "Connection established" );
     }
 
     private void SecondlyUpdate()
@@ -453,6 +495,7 @@
             _selectedTargetId = null;
             _selectedGovNodeId = null;
             _activeModule = OpsModule.Log;
+            _screen = LifePunchCyberScreen.Decrypt;
         }
     }
 
@@ -466,7 +509,7 @@
             SecondlyUpdate();
         }
 
-        if ( InputBox.IsValid() && !InputBox.HasFocus )
+        if ( _screen == LifePunchCyberScreen.Terminal && InputBox.IsValid() && !InputBox.HasFocus )
             InputBox.Focus();
 
         if ( Input.Pressed( "Attack2" ) )
@@ -584,6 +627,7 @@
             _selectedTargetId = null;
             _selectedGovNodeId = null;
             _activeModule = OpsModule.Log;
+            _screen = LifePunchCyberScreen.Terminal;
             return;
         }
 
@@ -595,11 +639,13 @@
             _selectedTargetId = null;
             _selectedGovNodeId = null;
             _activeModule = OpsModule.Log;
+            _screen = LifePunchCyberScreen.Decrypt;
             return;
         }
 
         _lines.Add( $"DENIED — {MathF.Ceiling( _puzzle.SecondsRemaining )}s remaining." );
         _activeModule = OpsModule.Target;
+        _screen = LifePunchCyberScreen.Decrypt;
     }
 
     private void HandleCommand( string input )
@@ -618,6 +664,7 @@
         {
             case "help":
                 _activeModule = OpsModule.Help;
+                _screen = LifePunchCyberScreen.Terminal;
                 _lines.Add( "--------------------HELP--------------------" );
                 _lines.Add( "  SCAN     - Probe live wallet signatures." );
                 if ( Tier == HackerTerminalTier.Advanced )
@@ -630,7 +677,13 @@
                 _lines.Add( "  STATUS   - Session + target state." );
                 _lines.Add( "  CLEAR    - Wipe scrollback." );
                 _lines.Add( "  ABOUT    - LIFEPUNCH attribution." );
+                _lines.Add( "  HOME     - Return to module home." );
                 _lines.Add( "--------------------------------------------" );
+                break;
+
+            case "home":
+            case "menu":
+                GoHome();
                 break;
 
             case "clear":
@@ -690,8 +743,10 @@
                 _lines.Add( $"Found {_govdbResults.Count} node(s):" );
                 foreach ( var node in _govdbResults )
                     _lines.Add( $"  {node.NodeId}  {node.Label}  [{node.SecurityTier}]" );
-                _lines.Add( "Use: infil <nodeid> or GOVDB module + START INFIL" );
+                _lines.Add( "Use: infil <nodeid> or NETWORK module + START INFIL" );
                 _activeModule = OpsModule.Govdb;
+                _screen = LifePunchCyberScreen.Network;
+                AppendFooterLog( $"Govdb scan complete — {_govdbResults.Count} node(s)." );
                 break;
 
             case "infil":
@@ -729,6 +784,8 @@
                 _lines.Add( _puzzle.Prompt );
                 _lines.Add( $"TIME LIMIT: {MathF.Ceiling( _puzzle.TimeLimitSeconds )}s — type answer at prompt." );
                 _activeModule = OpsModule.Target;
+                _screen = LifePunchCyberScreen.Decrypt;
+                AppendFooterLog( $"Infiltration started on {nodeMatch.NodeId}." );
                 break;
 
             case "scan":
@@ -743,8 +800,10 @@
                 _lines.Add( $"Found {_scanResults.Count} exploitable wallet(s):" );
                 foreach ( var target in _scanResults )
                     _lines.Add( $"  {target.SteamId}  {target.DisplayName}  ${target.WalletCash}" );
-                _lines.Add( "Use: hack <steamid> or SCAN module + START HACK" );
+                _lines.Add( "Use: hack <steamid> or NETWORK module + START HACK" );
                 _activeModule = OpsModule.Scan;
+                _screen = LifePunchCyberScreen.Network;
+                AppendFooterLog( $"Network scan complete — {_scanResults.Count} wallet(s)." );
                 break;
 
             case "hack":
@@ -776,6 +835,8 @@
                 _lines.Add( _puzzle.Prompt );
                 _lines.Add( $"TIME LIMIT: {MathF.Ceiling( _puzzle.TimeLimitSeconds )}s — type answer at prompt." );
                 _activeModule = OpsModule.Target;
+                _screen = LifePunchCyberScreen.Decrypt;
+                AppendFooterLog( $"Bypass started on wallet {match.SteamId}." );
                 break;
 
             default:

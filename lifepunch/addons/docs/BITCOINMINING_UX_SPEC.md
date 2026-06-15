@@ -3,6 +3,7 @@
 **Status:** Phase 1 HASHD rig control shipped (`3633fb8`+); Phase 2 module menu drafted (`BITCOINMINING_PHASE2_WIREFRAME.md`).  
 **IP:** Original LIFEPUNCH content — `BITCOINMINING_IP_DOCTRINE.md` (no third-party credits).  
 **Visual source (shipped Phase 1):** **HASHD RIG CONTROL** — amber mining ops (`#f0a500` on `#12100c`), left telemetry rail + right command log, `rig0>` prompt. **Distinct from** hacker-job green/red ops console and lifepunchnet cyan police shell.  
+**Bitcoin glyph (canon):** `₿` (U+20BF) — code: `LpBitcoinIdent.BtcEmoji`; raster mark: `ui/hashd/btc-mark.png`.
 **World mesh:** LifePunch-owned **GPU rack** (`gpu-rack/`; raw export at `reference-intake/gpu-rack-export`).
 
 ---

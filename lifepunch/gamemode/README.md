@@ -22,9 +22,13 @@ scripts/     # gamemode validation/import/export helpers
 
 ## Current Status
 
-This lane is where the canonical `lifepunch.gamemode` file will live when we import/export through the DXRP portal Game Modes page.
+**Ship target:** **LIFEPUNCH™** — new DXRP portal gamemode for publish-ready production (bitcoin + pinned addons). Not assigned to servers until bitcoin sign-off. Canon: `docs/LIFEPUNCH_SHIP_GAMEMODE.md`.
 
-Observed LifePunch gamemode:
+**Legacy / dev:** **LifePunch** gamemode (`019e36c0-a67f-701c-90f2-460e0b0f1487`) — earlier pins and development testing. Do not conflate with **LIFEPUNCH™** ship pins.
+
+This lane stores canonical `.gamemode` exports and revision pins for both portal rows.
+
+Observed legacy LifePunch gamemode:
 
 - Name: `LifePunch`
 - ID: `019e36c0-a67f-701c-90f2-460e0b0f1487`

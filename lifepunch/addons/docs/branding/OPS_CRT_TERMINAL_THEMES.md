@@ -6,6 +6,8 @@
 
 Hub admin panels (`LpHashdPanel`, hacker rack menu, etc.) use the **modern clickable** surface — not this CRT shell.
 
+**Cyber module shell** (home grid + TERMINAL / NETWORK / DECRYPT / DASHBOARD): `branding/CYBER_TERMINAL_SHELL_SPEC.md` · shared `LifePunchCyberTerminal.scss`. Reference layout: [Cyber Hacker Simulator](https://apps.microsoft.com/detail/9nvc5p0bphgr) (MS Store) — LIFEPUNCH branding only.
+
 ---
 
 ## Theme map

@@ -9,8 +9,9 @@
       "textures": ["Metal036_2K_Color.jpg", "Metal036_2K_NormalGL.jpg", "Metal036_2K_Roughness.jpg", "Metal036_2K_Metalness.jpg"]
     },
     "bitcoin-miner-acrylic.vmat": {
-      "shader": "complex + F_TRANSLUCENT",
-      "textures": ["hexabg.png", "Metal036_2K_Roughness.jpg"]
+      "shader": "generic + F_TRANSLUCENT + F_RENDER_BACKFACES",
+      "textures": ["hexabg.png"],
+      "notes": "Jun 2026: match dxrp glass_plate.vmat — prior complex shader + 0.12 opacity made panels invisible"
     },
     "bitcoin-miner-gpu.vmat": {
       "shader": "complex + emissive",

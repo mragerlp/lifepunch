@@ -29,4 +29,7 @@ public static class LpBitcoinIdent
 	/// <summary>HASHD hub + terminal UI — Bitcoin mark (orange ₿ on black).</summary>
 	public const string BtcMarkPath = "addons/lifepunch/bitcoinmining/ui/hashd/btc-mark.png";
 	public const string BtcMarkUrl = "/addons/lifepunch/bitcoinmining/ui/hashd/btc-mark.png";
+
+	/// <summary>Canonical Bitcoin glyph for UI copy, server titles, and docs (Unicode U+20BF).</summary>
+	public const string BtcEmoji = "₿";
 }

@@ -4,11 +4,23 @@
   "website": "https://lifepunch.co/",
   "dxrpNetwork": "https://dxrp.net/",
   "gamemode": {
-    "name": "LifePunch",
-    "description": "The LifePunch DXRP Gamemode experience. Tweaked and tuned to the LifePunch Community DXRP server.",
-    "dxrpGamemodeId": "019e36c0-a67f-701c-90f2-460e0b0f1487",
-    "visibility": "Private",
-    "canonicalExport": "gamemodes/lifepunch.gamemode"
+    "ship": {
+      "name": "LIFEPUNCH™",
+      "description": "Publish-ready LifePunch DXRP gamemode — real community experience when bitcoin and pinned addons ship.",
+      "dxrpGamemodeId": null,
+      "visibility": "Private",
+      "status": "portal-created-not-assigned",
+      "canonicalExport": "gamemodes/lifepunch-ship.gamemode",
+      "assignAfter": "bitcoinmining publish-ready sign-off"
+    },
+    "legacy": {
+      "name": "LifePunch",
+      "description": "The LifePunch DXRP Gamemode experience. Tweaked and tuned to the LifePunch Community DXRP server.",
+      "dxrpGamemodeId": "019e36c0-a67f-701c-90f2-460e0b0f1487",
+      "visibility": "Private",
+      "role": "development and legacy addon pins until migration to LIFEPUNCH™ ship gamemode",
+      "canonicalExport": "gamemodes/lifepunch.gamemode"
+    }
   },
   "environments": [
     {
@@ -27,6 +39,8 @@
     }
   ],
   "notes": [
+    "Ship gamemode: LIFEPUNCH™ (portal) — production target when bitcoinmining is publish-ready. See docs/LIFEPUNCH_SHIP_GAMEMODE.md.",
+    "Legacy gamemode: LifePunch (019e36c0) — dev/legacy pins only; do not treat as ship target for new addons.",
     "Keep addon package source in ../addons.",
     "Keep hosted server records and server-page audits in ../server.",
     "Keep gamemode imports, revision pins, equipment rows, and market rows in this folder."

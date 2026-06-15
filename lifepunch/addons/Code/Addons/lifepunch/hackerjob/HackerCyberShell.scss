@@ -1,0 +1,427 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// PROPRIETARY & CONFIDENTIAL — © 2026 lifepunch.co. All rights reserved.
+//
+// Cyber-terminal shell (hackerjob copy — s&box only resolves same-folder @import).
+// Canonical shared copy: ../LifePunchCyberTerminal.scss
+// ─────────────────────────────────────────────────────────────────────────────
+
+$cyber-bg: #000000;
+$cyber-panel: #050805;
+$cyber-font: Mina, "Courier New", monospace;
+$cyber-primary: #00ff7f !default;
+$cyber-border: #1a3a2a !default;
+$cyber-dim: #7ab896 !default;
+$cyber-body: #d8ffe8 !default;
+$cyber-hover: rgba(0, 255, 127, 0.08) !default;
+$cyber-glow: rgba(0, 255, 127, 0.12) !default;
+
+.lp-cyber-terminal {
+	pointer-events: all;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 800;
+	font-family: $cyber-font;
+	color: $cyber-primary;
+
+	.ops-backdrop {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(0, 0, 0, 0.55);
+		pointer-events: all;
+	}
+
+	.cyber-window {
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		width: 960px;
+		height: 640px;
+		margin-left: -480px;
+		margin-top: -320px;
+		background-color: $cyber-bg;
+		border: 2px solid $cyber-border;
+		box-shadow: 0 0 24px rgba(0, 0, 0, 0.65), 0 0 18px $cyber-glow;
+		display: flex;
+		flex-direction: column;
+		overflow: hidden;
+		pointer-events: all;
+		z-index: 2;
+	}
+
+	.cyber-header {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: 12px;
+		flex-shrink: 0;
+		padding: 10px 14px;
+		border-bottom: 2px solid $cyber-border;
+		background-color: $cyber-panel;
+	}
+
+	.cyber-brand {
+		font-size: 15px;
+		font-weight: bold;
+		letter-spacing: 2px;
+		text-transform: uppercase;
+		color: $cyber-primary;
+		flex-shrink: 0;
+	}
+
+	.cyber-status-row {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		gap: 14px;
+		flex-grow: 1;
+		justify-content: center;
+		font-size: 11px;
+		letter-spacing: 0.5px;
+		color: $cyber-dim;
+	}
+
+	.cyber-menu-btn,
+	.cyber-close-btn {
+		flex-shrink: 0;
+		padding: 5px 12px;
+		border: 1px solid $cyber-border;
+		background-color: transparent;
+		color: $cyber-primary;
+		font-family: $cyber-font;
+		font-size: 10px;
+		font-weight: bold;
+		letter-spacing: 1px;
+		text-transform: uppercase;
+		cursor: pointer;
+
+		&:hover {
+			background-color: $cyber-hover;
+		}
+	}
+
+	.cyber-close-btn {
+		color: #ef6b5f;
+		border-color: rgba(239, 107, 95, 0.45);
+	}
+
+	.cyber-body {
+		flex: 1 1 auto;
+		min-height: 0;
+		display: flex;
+		flex-direction: column;
+		overflow: hidden;
+		background-color: $cyber-bg;
+	}
+
+	.cyber-home {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		padding: 20px 28px;
+		gap: 18px;
+	}
+
+	.cyber-welcome {
+		text-align: center;
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+	}
+
+	.cyber-welcome-title {
+		font-size: 22px;
+		font-weight: bold;
+		letter-spacing: 3px;
+		color: $cyber-primary;
+		text-transform: uppercase;
+	}
+
+	.cyber-welcome-sub {
+		font-size: 12px;
+		color: $cyber-dim;
+	}
+
+	.cyber-module-grid {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		gap: 14px;
+		justify-content: center;
+		width: 100%;
+		max-width: 720px;
+	}
+
+	.cyber-module-card {
+		flex: 1 1 calc(50% - 8px);
+		min-width: 280px;
+		min-height: 110px;
+		padding: 16px 18px;
+		border: 2px solid $cyber-border;
+		background-color: rgba(0, 0, 0, 0.55);
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		cursor: pointer;
+		text-align: left;
+
+		&:hover {
+			border-color: $cyber-primary;
+			background-color: $cyber-hover;
+			box-shadow: 0 0 14px $cyber-glow;
+		}
+
+		.card-title {
+			font-size: 14px;
+			font-weight: bold;
+			letter-spacing: 1.5px;
+			color: $cyber-primary;
+		}
+
+		.card-desc {
+			font-size: 11px;
+			line-height: 1.45;
+			color: $cyber-body;
+		}
+	}
+
+	.cyber-screen {
+		flex: 1;
+		min-height: 0;
+		display: flex;
+		flex-direction: column;
+		padding: 12px 14px;
+		gap: 10px;
+	}
+
+	.cyber-panel {
+		border: 2px solid $cyber-border;
+		background-color: rgba(0, 0, 0, 0.65);
+		padding: 12px 14px;
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		min-height: 0;
+	}
+
+	.cyber-panel-fill {
+		flex: 1;
+		min-height: 0;
+	}
+
+	.cyber-panel-wide {
+		flex: 1 1 100%;
+		min-height: 140px;
+	}
+
+	.cyber-panel-title {
+		font-size: 11px;
+		font-weight: bold;
+		letter-spacing: 1.2px;
+		color: $cyber-primary;
+		padding-bottom: 6px;
+		border-bottom: 1px solid $cyber-border;
+	}
+
+	.cyber-scroll {
+		flex: 1;
+		min-height: 0;
+		overflow-y: scroll;
+	}
+
+	.cyber-line {
+		font-size: 12px;
+		line-height: 1.4;
+		color: $cyber-body;
+		white-space: pre-wrap;
+	}
+
+	.cyber-line.dim { color: $cyber-dim; }
+	.cyber-line.err { color: #ef6b5f; }
+	.cyber-line.warn { color: #ffb347; }
+	.cyber-line.ok { color: $cyber-primary; }
+
+	.cyber-dash-grid {
+		flex: 1;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		gap: 10px;
+		min-height: 0;
+	}
+
+	.cyber-dash-cell {
+		flex: 1 1 calc(50% - 6px);
+		min-width: 280px;
+		min-height: 180px;
+	}
+
+	.cyber-stat-row {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		gap: 8px;
+	}
+
+	.cyber-stat {
+		flex: 1 1 calc(50% - 4px);
+		min-width: 120px;
+		padding: 8px 10px;
+		border: 1px solid $cyber-border;
+		background-color: rgba(0, 0, 0, 0.5);
+
+		.stat-label {
+			font-size: 10px;
+			color: $cyber-dim;
+		}
+
+		.stat-value {
+			font-size: 14px;
+			font-weight: bold;
+			color: $cyber-primary;
+			margin-top: 4px;
+		}
+	}
+
+	.cyber-quick-grid {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		gap: 8px;
+	}
+
+	.cyber-quick-btn {
+		flex: 1 1 calc(50% - 4px);
+		min-width: 120px;
+		padding: 14px 10px;
+		border: 2px solid $cyber-border;
+		background-color: transparent;
+		color: $cyber-primary;
+		font-family: $cyber-font;
+		font-size: 11px;
+		font-weight: bold;
+		letter-spacing: 1px;
+		cursor: pointer;
+
+		&:hover {
+			background-color: $cyber-hover;
+		}
+	}
+
+	.cyber-data-row {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: 10px;
+		padding: 8px 10px;
+		border: 1px solid $cyber-border;
+		background-color: rgba(0, 0, 0, 0.45);
+		cursor: pointer;
+
+		&.selected {
+			border-color: $cyber-primary;
+			background-color: $cyber-hover;
+		}
+	}
+
+	.cyber-action-row {
+		display: flex;
+		flex-direction: row;
+		gap: 8px;
+		flex-wrap: wrap;
+	}
+
+	.cyber-section-gap {
+		margin-top: 8px;
+	}
+
+	.cyber-action-btn {
+		align-self: flex-start;
+		padding: 8px 14px;
+		border: 1px solid $cyber-border;
+		background-color: $cyber-hover;
+		color: $cyber-body;
+		font-family: $cyber-font;
+		font-size: 11px;
+		font-weight: bold;
+		letter-spacing: 0.5px;
+		cursor: pointer;
+
+		&:hover {
+			border-color: $cyber-primary;
+			color: $cyber-primary;
+		}
+	}
+
+	.cyber-terminal-screen {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		min-height: 0;
+		border: 2px solid $cyber-border;
+		margin: 12px 14px;
+	}
+
+	.cyber-terminal-bar {
+		padding: 6px 10px;
+		border-bottom: 1px solid $cyber-border;
+		font-size: 11px;
+		color: $cyber-dim;
+	}
+
+	.cyber-terminal-log {
+		flex: 1;
+		min-height: 0;
+		overflow-y: scroll;
+		padding: 12px 14px;
+	}
+
+	.cyber-input-row {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		padding: 10px 14px;
+		border-top: 2px solid $cyber-border;
+		background-color: $cyber-panel;
+	}
+
+	.cyber-prompt {
+		font-size: 13px;
+		font-weight: bold;
+		margin-right: 8px;
+		flex-shrink: 0;
+		color: $cyber-primary;
+	}
+
+	.cyber-input {
+		flex-grow: 1;
+		background-color: transparent;
+		border: none;
+		color: $cyber-body;
+		font-family: $cyber-font;
+		font-size: 13px;
+		caret-color: $cyber-primary;
+	}
+
+	.cyber-footer-log {
+		flex-shrink: 0;
+		max-height: 72px;
+		overflow-y: scroll;
+		padding: 8px 14px;
+		border-top: 2px solid $cyber-border;
+		background-color: $cyber-panel;
+		font-size: 11px;
+		color: $cyber-dim;
+	}
+
+	.cyber-footer-line {
+		line-height: 1.35;
+	}
+}

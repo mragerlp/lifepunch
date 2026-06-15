@@ -2,6 +2,18 @@
 
 Purpose: manage LifePunch gamemode imports, addon attachments, revision pins, and gamemode-level content.
 
+## Ship vs legacy (June 2026)
+
+| Portal gamemode | Purpose |
+|-----------------|--------|
+| **LIFEPUNCH™** | **Production / publish-ready** — assign to 70p + Development when bitcoinmining ships. Real community gamemode. |
+| **LifePunch** (`019e36c0-…`) | **Legacy / dev** — earlier pins; AK47 and WIP testing. Migrate pins to **LIFEPUNCH™** at ship. |
+
+Canon: `../../gamemode/docs/LIFEPUNCH_SHIP_GAMEMODE.md`
+
+**Do not** pin new publish-ready addons on legacy LifePunch when **LIFEPUNCH™** is the ship target.
+
+---
 Observed list page:
 
 - Warning banner: `Work In Progress`.

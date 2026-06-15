@@ -58,6 +58,10 @@ Full slot map: `material-map.json` in this folder.
 
 Unmapped slots hit **`global_default_material` = chassis** — entire GPU/cables/glass can render as flat Metal036.
 
+### Glass (acrylic) — Jun 2026 fix
+
+`bitcoin-miner-acrylic.vmat` must use **`generic.shader`** + **`F_RENDER_BACKFACES`** (thin panel meshes are single-sided) + **`g_flOpacityScale` ~0.38**. The prior `complex.shader` at **0.12 opacity** made side panels invisible in play. After vmat edit: recompile vmats + `bitcoin-miner.vmdl` in ModelDoc, sync DXRP, respawn hub.
+
 ### Textures shipped but not on any vmat
 
 `Raijintek-Logo.png`, `LD0005480336_2_(1).png`, `depositphotos_…backgro.png`, `internal_ground_ao_texture.jpeg` — Blender/env leftovers; safe to ignore unless a new slot appears in ModelDoc.

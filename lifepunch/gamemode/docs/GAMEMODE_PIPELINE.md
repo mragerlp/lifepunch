@@ -40,9 +40,13 @@ AK47 is tracked through separate addon, equipment, and market states. A publishe
 
 ## Portal Workflow
 
-The DXRP portal Game Modes page is the management surface for the LifePunch gamemode.
+The DXRP portal Game Modes page is the management surface for LifePunch gamemodes.
 
-Observed workflow:
+**Ship gamemode:** **LIFEPUNCH™** — production target when bitcoinmining is publish-ready (`docs/LIFEPUNCH_SHIP_GAMEMODE.md`).
+
+**Legacy gamemode:** **LifePunch** (`019e36c0-a67f-701c-90f2-460e0b0f1487`) — development pins until migration.
+
+Observed workflow (either gamemode row):
 
 1. Open `Game Modes`.
 2. Select `LifePunch`.

@@ -1,8 +1,16 @@
 {
   "schemaVersion": 1,
   "gamemode": {
-    "name": "LifePunch",
-    "dxrpGamemodeId": "019e36c0-a67f-701c-90f2-460e0b0f1487"
+    "ship": {
+      "name": "LIFEPUNCH™",
+      "dxrpGamemodeId": null,
+      "notes": "Publish-ready production gamemode — pin bitcoin + ship addons here at go-live."
+    },
+    "legacy": {
+      "name": "LifePunch",
+      "dxrpGamemodeId": "019e36c0-a67f-701c-90f2-460e0b0f1487",
+      "notes": "Legacy/dev pins (AK47, ULX testing) until migration to LIFEPUNCH™ ship gamemode."
+    }
   },
   "revisionPins": [
     {
@@ -61,8 +69,8 @@
       "notes": [
         "Rev 1 (2026-06-10): content-row snapshot only — Bitcoin Miner Hub, Bitcoin Terminal, GPU Rack, Large GPU Rack. No Code/Assets upload.",
         "Portal persists content JSON only after Publish Revision; editor draft is not saved.",
-        "NEXT ship tier: ModelDoc _c → prepare-publish.ps1 -Addon bitcoinmining → Rev 2 with Code+Assets → pin on LifePunch gamemode (019e36c0-a67f-701c-90f2-460e0b0f1487) → sync lifepunchdevelopment.",
-        "Do not sync lifepunchmainserver; it must remain on the vanilla gamemode."
+        "NEXT ship tier: ModelDoc _c → prepare-publish.ps1 -Addon bitcoinmining → Rev 2 with Code+Assets → pin on LIFEPUNCH™ ship gamemode (not legacy LifePunch) → assign gamemode on lifepunchdevelopment → Sync Servers.",
+        "70p (lifepunchmainserver): assign LIFEPUNCH™ gamemode only after development playtest sign-off (replaces Vanilla)."
       ]
     }
   ]

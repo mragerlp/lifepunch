@@ -36,6 +36,13 @@ public static class HackerDevSpawn
 	[ConCmd( "lp_vengeance_ui" )]
 	public static void OpenAdvancedTerminalUi() => OpenTerminalUi( HackerTerminalTier.Advanced );
 
+	[ConCmd( "lp_hacker_ui_close" )]
+	public static void CloseTerminalUi()
+	{
+		HackerTerminalHost.CloseOpen();
+		Log.Info( "lp_hacker_ui_close: hacker terminal UI closed." );
+	}
+
 	private static void OpenTerminalUi( HackerTerminalTier tier )
 	{
 		var scene = Game.ActiveScene;

@@ -53,6 +53,37 @@ public static class HackerTerminalBrand
 		_ => "◆"
 	};
 
+	public static string CyberBrandSlug( HackerTerminalTier tier ) => tier switch
+	{
+		HackerTerminalTier.Advanced => "VENGEANCE",
+		_ => "CORNERMAN"
+	};
+
+	public static string CyberBrandDisplay( HackerTerminalTier tier ) => tier switch
+	{
+		HackerTerminalTier.Advanced => "VENGEANCE TERMINAL",
+		_ => "CORNERMAN TERMINAL"
+	};
+
+	public static IReadOnlyList<LifePunchCyberModuleCard> HomeModules( HackerTerminalTier tier )
+	{
+		var networkDesc = tier == HackerTerminalTier.Advanced
+			? "Network scanning and govdb mesh probe."
+			: "Network scanning and wallet probe.";
+
+		var decryptDesc = tier == HackerTerminalTier.Advanced
+			? "Password cracking and node infiltration."
+			: "Password cracking and wallet bypass.";
+
+		return new LifePunchCyberModuleCard[]
+		{
+			new( "TERMINAL", "Command line interface for system penetration.", LifePunchCyberScreen.Terminal, "terminal" ),
+			new( "NETWORK", networkDesc, LifePunchCyberScreen.Network, "hub" ),
+			new( "DECRYPT", decryptDesc, LifePunchCyberScreen.Decrypt, "vpn_key" ),
+			new( "DASHBOARD", "System overview and mission control.", LifePunchCyberScreen.Dashboard, "dashboard" )
+		};
+	}
+
 	/// <summary>Shipped About copy — LIFEPUNCH source only; no third-party product credits.</summary>
 	public static string[] AboutLines( HackerTerminalTier tier )
 	{

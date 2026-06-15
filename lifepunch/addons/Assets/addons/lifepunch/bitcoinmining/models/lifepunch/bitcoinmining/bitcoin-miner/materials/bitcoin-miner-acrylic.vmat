@@ -1,16 +1,18 @@
-// LifePunch bitcoin-miner hub — tempered-glass side panel (hex mesh)
+// LifePunch bitcoin-miner hub — tempered-glass side panels (hex mesh visible through tint)
 
 Layer0
 {
-	shader "shaders/complex.shader"
+	shader "shaders/generic.shader"
 
-	F_SPECULAR 1
 	F_TRANSLUCENT 1
+	F_RENDER_BACKFACES 1
 
 	TextureColor "addons/lifepunch/bitcoinmining/entities/bitcoinminer/textures/hexabg.png"
+	TextureNormal "materials/default/default_normal.tga"
+	TextureTranslucency "materials/default/default_trans.tga"
 
-	g_flModelTintAmount "1.000"
-	g_vColorTint "[0.850000 0.920000 0.980000 0.220000]"
-	g_flOpacityScale "0.120"
-	g_flRoughnessScaleFactor "0.050"
+	g_vColorTint "[0.820000 0.900000 0.980000 1.000000]"
+	g_flOpacityScale "0.380000"
+	g_flBumpStrength "0.250000"
+	g_bFogEnabled "1"
 }
