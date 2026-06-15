@@ -28,6 +28,23 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable
 	[Sync( SyncFlags.FromHost )] public int AccessPinHash { get; set; }
 	[Sync( SyncFlags.FromHost )] public long Owner { get; set; }
 
+	private ModelRenderer _modelRenderer;
+	private bool _lastPoweredVisual = true;
+
+	protected override void OnStart()
+	{
+		_modelRenderer = Components.Get<ModelRenderer>( FindMode.EverythingInSelf );
+		ApplyHubPowerVisual( IsPowered );
+	}
+
+	protected override void OnUpdate()
+	{
+		if ( IsPowered == _lastPoweredVisual )
+			return;
+
+		ApplyHubPowerVisual( IsPowered );
+	}
+
 	public bool Press( IPressable.Event e )
 	{
 		LpHashdUiHost.Open( this );
@@ -39,6 +56,18 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable
 
 	public void SetPowered( bool on ) => SetPoweredHost( on );
 
+	/// <summary>Host-side power apply without RPC caller (preview hub, editor).</summary>
+	public void ApplyPoweredState( bool on )
+	{
+		IsPowered = on;
+		ApplyHubPowerVisual( on );
+		if ( !on )
+		{
+			foreach ( var rack in GetLinkedRacks() )
+				rack.StopMiningHost();
+		}
+	}
+
 	[Rpc.Host]
 	private void SetPoweredHost( bool on )
 	{
@@ -46,6 +75,7 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable
 			return;
 
 		IsPowered = on;
+		ApplyHubPowerVisual( on );
 		if ( !on )
 		{
 			foreach ( var rack in GetLinkedRacks() )
@@ -222,7 +252,10 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable
 	private bool CallerIsOwner( Guid callerId )
 	{
 		var player = GameUtils.GetPlayerByConnectionId( callerId );
-		return player.IsValid() && ( Owner == 0 || player.SteamId == Owner );
+		if ( !player.IsValid() )
+			return Networking.IsHost;
+
+		return Owner == 0 || player.SteamId == Owner;
 	}
 
 	private bool TryBindOwner( Guid callerId )
@@ -235,4 +268,17 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable
 		return true;
 	}
 #endif
+
+	private void ApplyHubPowerVisual( bool powered )
+	{
+		_lastPoweredVisual = powered;
+
+		if ( !_modelRenderer.IsValid() )
+			_modelRenderer = Components.Get<ModelRenderer>( FindMode.EverythingInSelf );
+
+		if ( !_modelRenderer.IsValid() )
+			return;
+
+		LpBitcoinPowerAnim.ApplyHubPower( _modelRenderer, powered, out _ );
+	}
 }

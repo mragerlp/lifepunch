@@ -9,24 +9,20 @@
 // Presence in this repository or on the DXRP portal grants no rights to anyone else.
 // ─────────────────────────────────────────────────────────────────────────────
 
-LifePunchUiFooter {
+.lp-source-footer {
     flex-shrink: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
     width: 100%;
-
-    .lp-source-footer {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        gap: 10px;
-        width: 100%;
-        padding: 5px 12px;
-        border-top: 1px solid rgba(255, 255, 255, 0.08);
-        background-color: #060606;
-        font-family: "Roboto Mono";
-        font-size: 10px;
-        letter-spacing: 0.5px;
-    }
+    padding: 5px 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    background-color: #060606;
+    font-family: "Roboto Mono";
+    font-size: 10px;
+    letter-spacing: 0.5px;
 
     .lp-mark {
         color: #c8a45a;

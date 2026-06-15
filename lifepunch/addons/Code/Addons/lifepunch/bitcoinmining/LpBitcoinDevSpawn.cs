@@ -33,7 +33,7 @@ public static class LpBitcoinDevSpawn
 		if ( !hub.IsValid() )
 			return;
 
-		Log.Info( "lp_bitcoin_spawn_hub: Ophion hub prefab placed." );
+		Log.Info( "lp_bitcoin_spawn_hub: Steam Machine hub prefab placed." );
 	}
 
 	[ConCmd( "lp_bitcoin_spawn_kit" )]
@@ -68,6 +68,7 @@ public static class LpBitcoinDevSpawn
 	[ConCmd( "lp_bitcoin_preview_hub" )]
 	public static void PreviewHubUi()
 	{
+		WarnIfWrongPlayScene();
 		var hub = LpBitcoinUi.GetOrCreatePreviewHub( withSampleRacks: true );
 		if ( !hub.IsValid() )
 		{
@@ -75,8 +76,9 @@ public static class LpBitcoinDevSpawn
 			return;
 		}
 
-		LpHashdUiHost.Open( hub );
-		Log.Info( "lp_bitcoin_preview_hub: hub admin panel only (amber ops)." );
+		var panel = LpHashdUiHost.Open( hub );
+		panel?.DevBypassPinGate();
+		Log.Info( "lp_bitcoin_preview_hub: hub admin open — amber dashboard (PIN bypassed for dev)." );
 	}
 
 	/// <summary>Hub admin with PIN gate presets — setup (default), unlock (PIN 4242), or blocked (wrong owner).</summary>
@@ -126,6 +128,7 @@ public static class LpBitcoinDevSpawn
 	[ConCmd( "lp_bitcoin_preview_terminal" )]
 	public static void PreviewTerminalUi()
 	{
+		WarnIfWrongPlayScene();
 		var hub = LpBitcoinUi.GetOrCreatePreviewHub( withSampleRacks: true );
 		if ( !hub.IsValid() )
 		{
@@ -178,7 +181,10 @@ public static class LpBitcoinDevSpawn
 			return;
 		}
 
-		var hub = scene.GetAllComponents<LpBitcoinHubEntity>().FirstOrDefault( h => h.IsValid() );
+		var hub = scene.GetAllComponents<LpBitcoinHubEntity>()
+			.Where( h => h.IsValid() && !IsPreviewHub( h ) )
+			.OrderByDescending( h => h.Components.Get<ModelRenderer>( FindMode.EverythingInSelf )?.IsValid() == true )
+			.FirstOrDefault();
 		if ( !hub.IsValid() )
 		{
 			if ( !TryGetSpawnTransform( out var transform ) )
@@ -204,6 +210,15 @@ public static class LpBitcoinDevSpawn
 			Log.Warning( "BITCOINMINING_SCALE_AUDIT terminal missing — spawn kit first" );
 
 		Log.Info( "BITCOINMINING_SCALE_AUDIT end — terminal target mesh Y ~18u vs collider 14×18×8" );
+	}
+
+	private static bool IsPreviewHub( LpBitcoinHubEntity hub )
+	{
+		if ( !hub.IsValid() )
+			return false;
+
+		var name = hub.GameObject.Name ?? string.Empty;
+		return name.StartsWith( "LpBitcoinPreview", StringComparison.OrdinalIgnoreCase );
 	}
 
 	private static void LogScaleRow( string tag, GameObject go )
@@ -429,6 +444,20 @@ public static class LpBitcoinDevSpawn
 		catch ( Exception ex ) when ( ex.Message.Contains( "Default Surface", StringComparison.OrdinalIgnoreCase ) )
 		{
 			return horizontalPoint;
+		}
+	}
+
+	private static void WarnIfWrongPlayScene()
+	{
+		var scene = Game.ActiveScene;
+		if ( scene is null )
+			return;
+
+		var name = scene.Name ?? string.Empty;
+		if ( name.Contains( "Preview", StringComparison.OrdinalIgnoreCase ) )
+		{
+			Log.Warning(
+				$"Bitcoin UI preview on '{name}' — open scenes/game.scene, click Host Play, then run lp_bitcoin_preview_hub again." );
 		}
 	}
 }

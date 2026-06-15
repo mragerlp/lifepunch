@@ -1,0 +1,24 @@
+// LifePunch police terminal — hologram glass (cyan lifepunchnet)
+
+Layer0
+{
+	shader "shaders/complex.shader"
+
+	F_TRANSLUCENT 1
+	F_SPECULAR 1
+	F_SELF_ILLUM 1
+	F_METALNESS_TEXTURE 1
+
+	TextureColor "addons/lifepunch/governmentdatacenter/models/lifepunch/governmentdatacenter/police-terminal/source/textures/hologram_glass_Base_color.png"
+	TextureNormal "addons/lifepunch/governmentdatacenter/models/lifepunch/governmentdatacenter/police-terminal/source/textures/hologram_glass_Normal_OpenGL.png"
+	TextureRoughness "addons/lifepunch/governmentdatacenter/models/lifepunch/governmentdatacenter/police-terminal/source/textures/hologram_glass_Roughness.png"
+	TextureMetalness "addons/lifepunch/governmentdatacenter/models/lifepunch/governmentdatacenter/police-terminal/source/textures/hologram_glass_Metallic.png"
+	TextureAmbientOcclusion "addons/lifepunch/governmentdatacenter/models/lifepunch/governmentdatacenter/police-terminal/source/textures/hologram_glass_Mixed_AO.png"
+	TextureEmissive "addons/lifepunch/governmentdatacenter/models/lifepunch/governmentdatacenter/police-terminal/source/textures/hologram_glass_Emissive.png"
+
+	g_flModelTintAmount "1.000"
+	g_vColorTint "[0.000000 0.830000 1.000000 0.000000]"
+	g_vSelfIllumTint "[0.000000 0.830000 1.000000 1.000000]"
+	g_flSelfIllumScale "0.550000"
+	g_flOpacityScale "0.450000"
+}

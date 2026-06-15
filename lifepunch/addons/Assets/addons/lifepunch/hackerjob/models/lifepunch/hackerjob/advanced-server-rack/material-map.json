@@ -1,7 +1,26 @@
 {
-  "model": "advanced-server-rack",
-  "sourceMesh": "source/advanced-server-rack.obj",
-  "textureDir": "source/textures",
-  "slots": [],
-  "notes": "Map OBJ/MTL material slots in ModelDoc after first compile. Copy PBR from MTL paths or author vmats manually."
+  "schemaVersion": 1,
+  "model": {
+    "slug": "advanced-server-rack",
+    "displayName": "Advanced Hacker Server Rack",
+    "activeSource": "source/advanced-server-rack.fbx",
+    "fabMesh": "Servers/Model/Servers_Rows.fbx",
+    "targetModel": "advanced-server-rack.vmdl",
+    "entityPrefab": "entities/advanced-server-rack/advanced-server-rack.prefab",
+    "status": "Reuses server-rack-trim.vmat + server-rack-glass.vmat"
+  },
+  "sharedTextures": {
+    "trim": "Servers/Texture/2K",
+    "glass": "Glass_Cover_Material/2K"
+  },
+  "modelDocRemaps": [
+    { "from": "Server_Trim", "to": "addons/lifepunch/hackerjob/models/lifepunch/hackerjob/server-rack/materials/server-rack-trim.vmat" },
+    { "from": "Glass", "to": "addons/lifepunch/hackerjob/models/lifepunch/hackerjob/server-rack/materials/server-rack-glass.vmat" },
+    { "from": "Glass.002", "to": "addons/lifepunch/hackerjob/models/lifepunch/hackerjob/server-rack/materials/server-rack-glass.vmat" }
+  ],
+  "status": {
+    "sourceIntaked": true,
+    "modelResourceCreated": true,
+    "prefabCreated": true
+  }
 }

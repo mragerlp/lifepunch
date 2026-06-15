@@ -34,7 +34,7 @@ internal static class LpBitcoinUi
 		go.Name = "LpBitcoinPreviewHub";
 		var hub = go.AddComponent<LpBitcoinHubEntity>();
 		hub.BindOwnerFromLocalViewer();
-		hub.SetPowered( true );
+		hub.ApplyPoweredState( true );
 
 		if ( withSampleRacks )
 			EnsureSampleRacks( scene, hub );

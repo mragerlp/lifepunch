@@ -9,6 +9,14 @@ Two names, two jobs:
 
 No underscores in ship slugs (`gpu-rack`, not `gpu_rack` or `GPU_Farm`).
 
+## Owner drop + intake
+
+```powershell
+powershell -File lifepunch/addons/scripts/Reorganize-BitcoinMinerGpuRack.ps1
+```
+
+**Drop:** `OneDrive\Desktop\LIFEPUNCH*\addons\gpurack` (Fab crypto farm pack)
+
 ## Ship tree (publish)
 
 ```text

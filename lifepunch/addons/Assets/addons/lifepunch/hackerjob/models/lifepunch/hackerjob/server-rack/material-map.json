@@ -1,20 +1,15 @@
 {
-  "model": "server-rack",
-  "sourceMesh": "source/server-rack.obj",
-  "textureDir": "source/textures",
-  "slots": [
-    {
-      "importName": "ServerMaterial",
-      "vmat": "server-rack.vmat",
-      "maps": {
-        "Color": "ServerMaterial_albedo.jpg",
-        "Normal": "ServerMaterial_normal.png",
-        "Roughness": "ServerMaterial_roughness.jpg",
-        "Metalness": "ServerMaterial_metallic.jpg",
-        "AmbientOcclusion": "ServerMaterial_AO.jpg",
-        "Emissive": "ServerMaterial_emissive.jpg"
-      }
-    }
-  ],
-  "notes": "Author server-rack.vmat in ModelDoc after first compile; map PBR from source/textures."
+  "model": "server-rack.vmdl",
+  "source": "source/server-rack.fbx",
+  "fabListing": "ab865a8b-c6c8-4362-8998-50bc8239277d",
+  "glassPack": "serverrack/serverglassmaterial/materials (or Glass_Cover_Material/2K)",
+  "fbxSlots": {
+    "Server_Trim": "server-rack-trim.vmat",
+    "Glass": "server-rack-glass.vmat",
+    "Glass.002": "server-rack-glass.vmat"
+  },
+  "textures": {
+    "trim": "source/textures/trim/Server_Trim_Sheet_* (2K)",
+    "glass": "source/textures/glass/Glass_Cover_* (2K)"
+  }
 }

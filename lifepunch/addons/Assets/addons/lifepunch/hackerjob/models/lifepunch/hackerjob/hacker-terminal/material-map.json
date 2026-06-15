@@ -4,19 +4,33 @@
     "slug": "hacker-terminal",
     "displayName": "Hacker Terminal",
     "activeSource": "source/hacker-terminal.fbx",
+    "blendSource": "source/computer-thing.blend",
     "targetModel": "hacker-terminal.vmdl",
+    "importScale": 0.0195,
+    "alignOriginZ": "Bottom",
     "entityPrefab": "entities/hacker-terminal/hacker-terminal.prefab",
-    "status": "ModelDoc TODO — note FBX material slots after import"
+    "status": "FBX exported from computer thing.blend — compile vmdl + vmats in ModelDoc"
   },
   "brand": {
     "program": "cornerman.exe",
     "accentHex": "#00FF7F"
   },
-  "materials": [],
+  "modelDocRemaps": [
+    { "from": "Monitor", "to": "materials/hacker-terminal-monitor.vmat" },
+    { "from": "Keyboard", "to": "materials/hacker-terminal-keyboard.vmat" },
+    { "from": "Cable", "to": "materials/hacker-terminal-cable.vmat" },
+    { "from": "CPU", "to": "materials/hacker-terminal-cpu.vmat" },
+    { "from": "Black", "to": "materials/hacker-terminal-black.vmat" },
+    { "from": "White", "to": "materials/hacker-terminal-white.vmat" },
+    { "from": "Lime Green", "to": "materials/hacker-terminal-monitor.vmat" },
+    { "from": "Dark Green", "to": "materials/hacker-terminal-monitor.vmat" }
+  ],
   "status": {
-    "sourceSeeded": true,
+    "sourceIntaked": true,
     "modelResourceCreated": true,
+    "materialResourcesCreated": true,
+    "materialGroupInVmdl": true,
     "prefabCreated": true,
-    "materialResourcesCreated": false
+    "compiledInModelDoc": true
   }
 }

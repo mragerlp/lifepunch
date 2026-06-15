@@ -1,32 +1,45 @@
-# hacker-terminal — standard CRT (cornerman.exe)
-
-> **World mesh (Jun 2026):** Prefab uses shared **`bitcoin-terminal.vmdl`** from `bitcoinmining` — same computer prop as hashd terminals. Gameplay/UI stays `cornerman.exe`. Local `hacker-terminal.vmdl` is **deprecated** (do not ship).
+# hacker-terminal — criminal CRT (cornerman.exe)
 
 **Slug:** `hacker-terminal`  
-**World model:** `addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-terminal/bitcoin-terminal.vmdl`  
+**Addon:** `hackerjob` (criminal lane)  
+**World model:** `hacker-terminal.vmdl`  
 **Prefab:** `entities/hacker-terminal/hacker-terminal.prefab`  
 **UI overlay:** `HackerTerminal.razor` (cornerman.exe console — not baked into mesh)
+
+## OneDrive drop
+
+`OneDrive\Desktop\LIFEPUNCH*\addons\lifepunchhacker\hacker\hackerterminal\`
+
+| File | Role |
+|------|------|
+| `source/computer thing.blend` | Authoring mesh (export to FBX) |
+| `BM_BAKE_5.png` | Bake reference |
+| `internal_ground_ao_texture.jpeg` | Ground AO |
 
 ## Intake
 
 ```powershell
-powershell -File lifepunch/addons/scripts/Intake-HackerTerminalModel.ps1
+powershell -File lifepunch/addons/scripts/Intake-HackerTerminalModel.ps1 -ExportFbx
 ```
 
-Archive: `C:\lifepunch\reference-intake\hackerjob\hackerterminal-v2`
+Exports `hacker-terminal.fbx` via Blender when the drop has blend only. Archive: `C:\lifepunch\reference-intake\hackerjob\hackerterminal-v2`
 
 ## ModelDoc
 
-No local vmdl — world mesh is **`bitcoin-terminal.vmdl`** (see `bitcoinmining/.../bitcoin-terminal/MODEL_BUILD.md`). LCD child matches bitcoin-terminal prefab (`lcd_screen` @ `0,18,3.5`).
+1. Import `source/hacker-terminal.fbx` — **`import_scale` 0.0195** (same CRT prop family as bitcoin-terminal).
+2. Material remaps in `hacker-terminal.vmdl` (Monitor/Keyboard/Cable/CPU/Black/White + green aliases).
+3. LCD child on prefab (`lcd_screen`) — tune after compile.
 
-## Screen + console (prefab — no ModelDoc required for UI)
+**Compiled (Jun 2026):** `hacker-terminal.vmdl_c` + 6 `hacker-terminal-*.vmat_c` + `hacker-terminal.prefab_c` in repo.
 
-| Layer | What |
-|-------|------|
-| **World LCD** | Child `lcd_screen` + `TextRenderer` wired to `HackerTerminalEntity.ScreenText` |
-| **Console UI** | USE interact or `cornerman` → `HackerTerminal.razor` overlay |
+## Lane split (Jun 2026)
 
-**Owner tune after compile:** nudge `lcd_screen` Position/Rotation on the prefab so text sits on the monitor glass.
+| Lane | Terminal drop | Console brand |
+|------|---------------|---------------|
+| Criminal | `hacker\hackerterminal` | cornerman.exe (green) |
+| Government | `fbi\governmentterminal` | lifepunchnet (cyan) — `governmentdatacenter` addon |
+
+Advanced / Vengeance **terminal** tier is **parked** — advanced **server rack** is active.
 
 ## Dev smoke
 

@@ -1,93 +1,102 @@
-# Bitcoin Miner hub — Ophion world model
+# Bitcoin Miner hub — Steam Machine world model
 
 **Entity slug:** `bitcoin-miner` · **Disk folder:** `entities/bitcoinminer/`  
-**Source:** owner `Ophion.fbx` + textures (intake via `Intake-BitcoinMinerHub.ps1`)
+**Source:** owner `bitcoinminer.blend` → `steam-machine.fbx` + `sm_*` textures
 
 ## Ship tree
 
 ```text
 models/lifepunch/bitcoinmining/bitcoin-miner/
   source/
-    Ophion.fbx
-    textures/           ← copied from entities/bitcoinminer/textures on intake
-  bitcoin-miner.vmdl    ← Ophion.fbx — **owner-verified ModelDoc import (Jun 2026)**
-  materials/            ← chassis + plate vmats (remap in vmdl MaterialGroupList)
+    bitcoinminer.blend      ← owner archive
+    steam-machine.fbx       ← Blender export (Intake -ExportFbx or Export-BitcoinMinerSteamMachineFbx.ps1)
+    textures/               ← sm_* / sc_* PBR from intake
+  bitcoin-miner.vmdl        ← steam-machine.fbx + sm_* material remaps
+  materials/                ← bitcoin-miner-sm-*.vmat
   MODEL_BUILD.md
 
 entities/bitcoinminer/
-  source/Ophion.fbx     ← owner drop (archive)
-  textures/             ← owner PBR sets
-  bitcoin-miner.prefab  ← ModelRenderer + BitcoinMinerHubEntity + Health 250 + Rigidbody
+  source/bitcoinminer.blend
+  textures/
+  bitcoin-miner.prefab      ← ModelRenderer + LpBitcoinHubEntity
 ```
 
-## ModelDoc import (owner-verified — do not drift)
+## ModelDoc import (initial — verify on flatgrass)
 
 | Field | Value | Why |
 |-------|-------|-----|
-| **Import scale** | `0.77` (Custom) | ~2× prior pass — ~30″ tall vs ~77″ citizen on flatgrass (was 0.385 / ~15″) |
-| **Import translation** | `0, 0, **16.324**` | Ground contact: lowers mesh so `mins.z ≈ 0` at prefab root (was 26.6 → hub floated ~10u; tuned via MCP bounds Jun 2026) |
-| **Import rotation** | `0, 0, 0` | FBX export is already upright — **do not** pitch 90° |
-| **Align origin** | None / None / None | Match ModelDoc screenshot; re-verify bounds after compile |
-| **Source meshes** | `Vert_005`, `Circle_002` (if ModelDoc lists extras, disable junk LODs) | |
+| **Mesh** | `source/steam-machine.fbx` | Replaces static Ophion gaming PC |
+| **Import scale** | `0.152` (Custom) | Bridge-tuned Jun 2026 @ prefab `1,1,1` → mesh ~32×30×29 vs collider 32×20×28 |
+| **Import translation** | `0, 0, 0` | `align_origin_z_type = Bottom` — ground contact verified flatgrass |
+| **Import rotation** | `0, 0, 0` | FBX export axis: -Z forward, Y up |
+| **Align origin Z** | Bottom | Sit on ground at prefab root |
+## Export law (Jun 2026 fix)
 
-Prefab root stays **`1,1,1`**. Recompile `bitcoin-miner.vmdl` → pull `_c` to repo → flatgrass verify mesh bounds vs `BoxCollider` **`30×15.5×20`** (center **`0.55, 0, 9.82`** — matches ModelRenderer bounds at import_scale `0.77`).
+`Export-BitcoinMinerSteamMachineFbx.py` must:
 
-## Texture chain (3-hop — must all link)
+1. Export **only** `Steam_Machine` collection meshes (no camera/lights/`more`).
+2. Parent `fan`, `front_panel`, `back_body` under `base_body` **with world transform kept**.
+3. **Never** `transform_apply` per-mesh before parenting — that detaches parts in-engine.
 
-```text
-Ophion.fbx material slot  →  bitcoin-miner.vmdl remap  →  *.vmat  →  entities/bitcoinminer/textures/*  →  *_c
+```powershell
+powershell -File lifepunch\addons\scripts\Export-BitcoinMinerSteamMachineFbx.ps1
 ```
 
-Canonical texture root for vmats: **`entities/bitcoinminer/textures/`** (has `vtex_c` in repo).  
-Mirror at `models/.../source/textures/` is intake copy only — **not** what vmats reference.
+## Prefab collider (gameplay hammer)
 
-Full slot map: `material-map.json` in this folder.
+| Field | Value |
+|-------|-------|
+| Root scale | `1,1,1` |
+| BoxCollider Scale | `32, 20, 28` |
+| BoxCollider Center | `0, 0, 14` |
 
-### Jun 2026 audit — gaps that were breaking the look
+Measured mesh @ `import_scale 0.152`: **31.97 × 30.4 × 29.36** (flatgrass `lp_bitcoin_scale_audit`).
 
-| FBX slot (in mesh) | Was remapped? | Fix |
-|--------------------|---------------|-----|
-| `AsusRog` | **No** → default chassis | → `bitcoin-miner-gpu.vmat` |
-| `Wire weave` | **No** → default chassis | → `bitcoin-miner-wire.vmat` |
-| `white-metal` | **No** → default chassis | → `bitcoin-miner-plate.vmat` |
-| `Metal036` / `Metal009` | **No** (only filename variants) | → chassis / metal009 |
-| `LD000548` | **No** | → plate |
-| `Side Panels` | chassis (opaque) | → **acrylic** (glass) |
-| `Metal036_2K_NormalGL.jpg` | missing (only NormalDX) | → chassis |
-| `hexabg` | only `hexabg.png` | both → acrylic |
+## Material slots (FBX)
 
-Unmapped slots hit **`global_default_material` = chassis** — entire GPU/cables/glass can render as flat Metal036.
+| FBX slot | vmat |
+|----------|------|
+| `sm_body_mat` | `bitcoin-miner-sm-body.vmat` |
+| `sm_details_one_mat` | `bitcoin-miner-sm-details-one.vmat` |
+| `sm_details_two_mat` | `bitcoin-miner-sm-details-two.vmat` |
+| `sm_panel_mat` | `bitcoin-miner-sm-panel.vmat` |
+| `sm_fence_led_mat` | `bitcoin-miner-sm-fence-led.vmat` (emissive) |
 
-### Glass (acrylic) — Jun 2026 fix
+Textures live under `entities/bitcoinminer/textures/` (intake copies from `Downloads\bitcoinminer\textures`).  
+**Compile note:** BaseColor maps must be `.png` — s&box texture compiler rejects `.jpeg` on `TextureColor`.
 
-`bitcoin-miner-acrylic.vmat` must use **`generic.shader`** + **`F_RENDER_BACKFACES`** (thin panel meshes are single-sided) + **`g_flOpacityScale` ~0.38**. The prior `complex.shader` at **0.12 opacity** made side panels invisible in play. After vmat edit: **recompile `bitcoin-miner-acrylic.vmat` in Material Editor** (repo is missing `bitcoin-miner-acrylic.vmat_c` until compile) → recompile `bitcoin-miner.vmdl` in ModelDoc → sync DXRP → `Pull-DxrpCompiledAssetsToRepo.ps1 -Addon bitcoinmining` → respawn hub.
+## Animations (owner blend)
 
-### Textures shipped but not on any vmat
+Blender actions baked into FBX:
 
-`Raijintek-Logo.png`, `LD0005480336_2_(1).png`, `depositphotos_…backgro.png`, `internal_ground_ao_texture.jpeg` — Blender/env leftovers; safe to ignore unless a new slot appears in ModelDoc.
+| Action | Hub power use |
+|--------|----------------|
+| `fanAction` | **ON** — primary loop (`LpBitcoinPowerAnim`) |
+| `front_panelAction` | Optional panel motion (fallback candidate) |
+| `bindPose` | **OFF** |
 
-## ModelDoc checklist
+**ModelDoc:** After reimport, **AnimationList → Add Simple Animations** (star) from `steam-machine.fbx`; ensure `fanAction` + `front_panelAction` compile. Rename to `power_on` / `power_off` only if you want canonical names — code already resolves `fanAction`.
 
-1. Open `bitcoin-miner.vmdl` in ModelDoc — compile `_c`.
-2. Map Ophion material slots → vmat (`MaterialGroupList` remaps). Textures from owner `gaming-pc\textures` + ambientCG **Metal036/Metal009 color** maps.
-3. **AnimationList:** `Ophion.fbx` is a **static mesh** (no FBX clips). `bindPose` only until owner ships a rigged fan/LED anim FBX. `GpuRackPowerAnim.ApplyHubPower` no-ops until `power_on` / `power_off` sequences exist in the compiled vmdl.
-4. Prefab: `ModelRenderer` → `bitcoin-miner.vmdl`, `BitcoinMinerHubEntity`, `HealthComponent.MaxHealth = 250`, `Rigidbody` motion on + unlocked axes (match `gpu-rack` / `hacker-terminal`).
+## Intake commands
 
-## Sounds (owner drop → `sounds/bitcoinminer/`)
+```powershell
+# Export FBX (needs Blender 5.x)
+lifepunch\addons\scripts\Export-BitcoinMinerSteamMachineFbx.ps1
 
-| Event | File |
-|-------|------|
-| Hub startup | `hub-startup.wav` |
-| Fan loop | `hub-fan-loop.wav` |
-| Fan down | `hub-fan-down.wav` |
+# Copy blend, fbx, textures into repo
+lifepunch\addons\scripts\Intake-BitcoinMinerHub.ps1 -ExportFbx
+```
 
-## Code
+## Compile + playtest
 
-| File | Role |
-|------|------|
-| `BitcoinMinerHubEntity.cs` | Power, encryption tiers, opens hashd |
-| `BitcoinMinerHubRegistry.cs` | Links hub ↔ racks (8m / 4m) |
-| `BitcoinMinerEncryptionCatalog.cs` | Defense upgrade math |
-| `BitcoinMiningCombatStats.cs` | HP + placement caps |
+```powershell
+lifepunch\scripts\Start-SboxDxrpEditor.ps1 -PreflightFix -SyncAddon bitcoinmining
+```
 
-Spec: `addons/docs/BITCOINMINING_HUB_ARCH.md`
+In editor: compile `bitcoin-miner.vmdl` + vmats → `Pull-DxrpCompiledAssetsToRepo.ps1`  
+**Compiled (Jun 2026):** all 5 `bitcoin-miner-sm-*.vmat_c` + `bitcoin-miner.vmdl_c` in repo. Animations still bindPose-only (ModelDoc star-add).  
+Dev spawn: `lp_map_flatgrass` → `lp_bitcoin_spawn_hub` — verify scale, collider, fan anim on power toggle.
+
+## Superseded
+
+Ophion `Ophion.fbx` + ambientCG vmats remain in repo history only; hub product read is **Steam Machine** industrial miner, not Raijintek gaming PC.

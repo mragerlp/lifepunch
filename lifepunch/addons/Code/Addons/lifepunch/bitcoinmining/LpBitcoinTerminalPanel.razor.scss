@@ -2,16 +2,64 @@
 // PROPRIETARY & CONFIDENTIAL — © 2026 lifepunch.co. All rights reserved.
 //
 // "LIFEPUNCH Bitcoin Miner for DXRP" (s&box ident: lifepunch.bitcoin · addon ident: bitcoinmining)
-// Bitcoin CRT uses gray theme — shared shell in LpOpsCrtTerminal.scss
+// Bitcoin CRT — gray shell with amber HASHD prompt accents
 // ─────────────────────────────────────────────────────────────────────────────
+
+$hashd-amber: #f0a500;
+$hashd-amber-dim: #c4882a;
 
 @import "LpUiChrome.scss";
 @import "LpUiScale.scss";
 @import "LpOpsCrtTerminal.scss";
+@import "../LifePunchUiFooter.razor.scss";
 
 .lp-ops-crt--gray {
 	.screen {
 		position: relative;
+		background-color: rgba(0, 0, 0, 0.35);
+	}
+
+	.crt-status-row {
+		color: #7a7a7a;
+	}
+
+	.status-ok {
+		color: #9fd6a8;
+	}
+
+	.status-warn {
+		color: $hashd-amber-dim;
+	}
+
+	.cmd-ref:hover {
+		color: $hashd-amber;
+	}
+
+	.log {
+		cursor: text;
+	}
+
+	.log-line {
+		font-size: inherit;
+		line-height: 1.4;
+
+		&.dim {
+			color: #8a8a8a;
+		}
+
+		&.ok {
+			color: #b8d4b0;
+		}
+	}
+
+	.prompt {
+		color: $hashd-amber;
+		font-weight: bold;
+	}
+
+	.cmd-input {
+		color: #ececec;
+		caret-color: $hashd-amber;
 	}
 
 	.boot-splash {
@@ -27,6 +75,8 @@
 		background-color: rgba(8, 8, 8, 0.94);
 		z-index: 2;
 		gap: 10px;
+		cursor: pointer;
+		pointer-events: all;
 	}
 
 	.boot-mark {
@@ -39,7 +89,7 @@
 	}
 
 	.boot-title {
-		color: #f0a500;
+		color: $hashd-amber;
 		font-size: 13px;
 		letter-spacing: 0.14em;
 	}
@@ -49,5 +99,12 @@
 		font-size: 11px;
 		min-height: 14px;
 		letter-spacing: 0.06em;
+	}
+
+	.boot-hint {
+		color: #5a5a5a;
+		font-size: 10px;
+		letter-spacing: 0.08em;
+		margin-top: 8px;
 	}
 }

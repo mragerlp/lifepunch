@@ -1,10 +1,16 @@
-# server-rack — hacker infrastructure power unit
+# server-rack — hacker infrastructure power unit (Fab DataCenter)
 
 **Slug:** `server-rack`  
-**Source:** `source/server-rack.obj` (converted from DAE — ModelDoc does not load Collada) + `source/textures/*`  
+**Source:** Fab [Servers (DataCenter)](https://www.fab.com/listings/ab865a8b-c6c8-4362-8998-50bc8239277d)
+
+| Fab path | Repo |
+|----------|------|
+| `Servers\Model/Servers.fbx` | `source/server-rack.fbx` |
+| `Servers/Texture/2K/*` | `source/textures/trim/` |
+| `Glass_Cover_Material/2K/*` | `source/textures/glass/` |
+
 **Target:** `server-rack.vmdl`  
-**Prefab:** `entities/server-rack/server-rack.prefab`  
-**UI:** `HackerServerRackMenu.razor` (POWER ON/OFF + upgrades)
+**Prefab:** `entities/server-rack/server-rack.prefab`
 
 ## Intake
 
@@ -12,29 +18,23 @@
 powershell -File lifepunch/addons/scripts/Intake-HackerServerRack.ps1
 ```
 
-Archive: `C:\lifepunch\reference-intake\hackerjob\server-rack`
+Drop: `OneDrive\Desktop\LIFEPUNCH*\addons\lifepunchhacker\hacker\serverrack` (glass in `Materials\materials\` or `serverglassmaterial\materials\`)
+
+Archive: `C:\lifepunch\reference-intake\hackerjob\server-rack-fab`
 
 ## ModelDoc
 
-1. Open `server-rack.vmdl` — imports `source/server-rack.obj` (regenerate from DAE via `addons/scripts/blender/convert_server_rack_dae_to_fbx.py` or `trimesh` if intake updates the DAE).
-2. Start `import_scale` at **39.37**; tune height vs citizen + terminal desk.
-3. Map `ServerMaterial` slot → PBR vmats per `material-map.json`.
-4. Compile → `Pull-DxrpCompiledAssetsToRepo.ps1`.
+| Slot | vmat |
+|------|------|
+| `Server_Trim` | `server-rack-trim.vmat` |
+| `Glass` / `Glass.002` | `server-rack-glass.vmat` |
 
-## Gameplay link
+1. Import `source/server-rack.fbx` — start `import_scale` **1.0**; tune vs citizen + terminal.
+2. Compile trim + glass vmats (2K paths under `source/textures/`).
+3. Door is parented mesh — wire rotation or Blender door clip after flatgrass verify.
 
-| Rack state | Terminals within 8m horizontal / 4m vertical |
-|------------|-----------------------------------------------|
-| POWER ON   | Linked terminals within range can open sessions |
-| POWER OFF  | CRT shows `[ OFFLINE ]` — interact denied |
-
-**Basic rack** powers cornerman.exe (standard CRT). **Advanced rack** (`advanced-server-rack/`) powers vengeance.exe with higher upgrade caps — see `advanced-server-rack/MODEL_BUILD.md`.
-
-Re-run intake if `source/textures/` is empty:
-
-```powershell
-powershell -File lifepunch/addons/scripts/Intake-HackerServerRack.ps1 -SourceRoot "$env:USERPROFILE\OneDrive\Desktop\serverrack"
-```
+**Compiled (Jun 2026):** trim/glass `vmat_c` + `server-rack.vmdl_c` + `prefab_c` in repo.  
+**Scale audit @ import_scale 1.0:** bounds ~124×203×218 vs collider 28×28×87 — **ModelDoc scale pass TODO** on flatgrass.
 
 ## Dev smoke
 

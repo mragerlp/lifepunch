@@ -24,6 +24,13 @@ $AddonsRoot = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 $BitcoinRoot = Join-Path $AddonsRoot 'Assets\addons\lifepunch\bitcoinmining'
 $GpuRackRoot = Join-Path $BitcoinRoot 'models\lifepunch\bitcoinmining\gpu-rack'
 
+$dropCandidates = @()
+. (Join-Path $PSScriptRoot 'LifePunch-AddonDropPaths.ps1')
+$onedriveGpu = Get-LifePunchEntityDrop -Key 'bitcoin.gpu-rack' -LegacyNames @('gpurack')
+if ($onedriveGpu -and (Test-Path -LiteralPath $onedriveGpu)) {
+    $dropCandidates += $onedriveGpu
+}
+
 $legacyCandidates = @(
     (Join-Path $BitcoinRoot 'models\lifepunch\bitcoinmining\gpu_farm\source')
     (Join-Path $BitcoinRoot 'models\lifepunch\bitcoinmining\gpu_farm')
@@ -31,6 +38,12 @@ $legacyCandidates = @(
 
 function Resolve-SourceRoot {
     if ($SourceRoot) { return (Resolve-Path -LiteralPath $SourceRoot).Path }
+    foreach ($c in $dropCandidates) {
+        if (-not (Test-Path -LiteralPath $c)) { continue }
+        $nested = Join-Path $c 'source'
+        if (Test-Path -LiteralPath $nested) { return (Resolve-Path -LiteralPath $nested).Path }
+        return (Resolve-Path -LiteralPath $c).Path
+    }
     foreach ($c in $legacyCandidates) {
         if (Test-Path -LiteralPath $c) {
             $meshes = @('GPU_Farm_Static.obj', 'gpu-rack-static.obj')
@@ -45,7 +58,7 @@ function Resolve-SourceRoot {
             }
         }
     }
-    throw 'No source. Pass -SourceRoot or restore gpu_farm/source/.'
+    throw 'No source. Pass -SourceRoot or drop Fab pack under OneDrive\Desktop\LIFEPUNCH™\addons\gpurack'
 }
 
 function Ensure-Dir([string]$Path) {

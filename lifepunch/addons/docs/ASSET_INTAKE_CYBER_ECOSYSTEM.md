@@ -1,6 +1,27 @@
 # Asset intake — LIFEPUNCH Cyber Ecosystem
 
-Drop packs on VENGEANCE; tell Red the folder path. Scripts will mirror into `LPaddons` oneliner entity folders.
+**Owner drop root (canonical):** `%USERPROFILE%\OneDrive\Desktop\LIFEPUNCH*\addons\`
+
+Resolver: `addons/scripts/LifePunch-AddonDropPaths.ps1` (scans Desktop for any folder containing `addons\`). Falls back to `Downloads\<folder>` for legacy drops.
+
+Tell Red the folder path after drop; scripts mirror into repo `Assets/addons/lifepunch/…`.
+
+---
+
+## Package layout (Jun 2026)
+
+| Package folder | Addon ident | Entity drops |
+|----------------|-------------|--------------|
+| `lifepunchhacker\hacker\serverrack` | `hackerjob` | Basic `Servers.fbx` + advanced `Servers_Rows.fbx` + shared trim/glass |
+| `lifepunchhacker\hacker\hackerterminal` | `hackerjob` | Criminal hacker terminal |
+| `lifepunchhacker\fbi\governmentserverrack` | `governmentdatacenter` | FBI / government server rack |
+| `lifepunchhacker\fbi\governmentterminal` | `governmentdatacenter` | Government terminal (lifepunchnet) |
+| `lifepunchbitcoin\bitcoinminer` | `bitcoinmining` | Steam Machine hub |
+| `lifepunchbitcoin\gpurack` | `bitcoinmining` | GPU racks |
+| `lifepunchbitcoin\bitcointerminal` | `bitcoinmining` | Hashd terminals |
+| `lifepunchblackmarketdealer\blackmarkethub` | `blackmarketdealer` (prep) | Vault dealer hub |
+
+**Parked (not in active scope):** `advanced-hacker-terminal` / Vengeance terminal only.
 
 ---
 
@@ -8,102 +29,46 @@ Drop packs on VENGEANCE; tell Red the folder path. Scripts will mirror into `LPa
 
 | Pack | Path | Notes |
 |------|------|-------|
-| GPU racks | `models/.../gpu-rack/` | Anim FBX exists — wire `power_on`/`power_off` |
-| Ophion hub | `entities/bitcoinminer/source/Ophion.fbx` | Needs ModelDoc + hub anim |
-| Hacker terminal | `hacker-terminal.fbx` | Green Cornerman CRT |
-| Advanced terminal | shares hacker mesh | Red UI skin |
-| Server rack | `server-rack.dae` + PBR textures | Basic rack — cornerman upgrades |
-| Advanced server rack | `advanced-server-rack.obj` | Vengeance-tier rack — higher upgrade caps |
+| GPU racks | `models/.../gpu-rack/` | Anim FBX — wire `power_on`/`power_off` |
+| Bitcoin hub | `models/.../bitcoin-miner/` | Steam Machine FBX + power anims |
+| Hacker server rack | `hackerjob/.../server-rack/` | Fab `Servers.fbx` + trim/glass 2K |
+| Advanced server rack | `hackerjob/.../advanced-server-rack/` | Fab `Servers_Rows.fbx`; reuses trim/glass |
+| Government server rack | `governmentdatacenter/.../government-server-rack/` | Same Fab family; FBI lane drop |
+| Hacker terminal | `hackerjob/.../hacker-terminal/` | cornerman.exe CRT |
+| Gov terminal | `governmentdatacenter/.../police-terminal/` | lifepunchnet PNGs + Stol2.obj |
 | Cornerman UI | `ui/cornerman/*.png` | Optional CRT chrome beyond green SCSS |
-| Vengeance UI | `ui/vengeance/*.png` | Red tier console art |
-| Gov terminal | `police-terminal.obj` + lifepunchnet PNGs | `governmentdatacenter` — unblocks govdb scan |
-
----
-
-## Need from owner (drop in Downloads, then ping Red)
-
-### Bitcoin mining (`bitcoinmining`)
-
-| # | Asset | Ideal format | Drop folder |
-|---|-------|--------------|-------------|
-| 1 | **Bitcoin Miner hub** (Ophion) | FBX + textures + **anim list** | `Downloads\bitcoinminer` ✅ partial |
-| 2 | Hub **power on/off** clips | Named in FBX or separate | same zip |
-| 3 | **Sounds** (you supply) | WAV/MP3 | `Downloads\bitcoinminer-sounds\` |
-
-Sound order: `startup` → `fan_loop` → `fan_down` → `metal_hit` → `smoke` → `explode`
-
-### Hacker job (`hackerjob`)
-
-| # | Asset | Notes |
-|---|-------|-------|
-| 4 | **Cornerman console art** | ✅ `Intake-HackerCornermanUi.ps1` |
-| 5 | **Vengeance console art** | ✅ `Intake-AdvancedHackerTerminal.ps1` |
-| 6 | **Advanced server rack** | ✅ `Intake-AdvancedServerRack.ps1` — ModelDoc TODO |
-| 7 | In-world **job props** | If job is not CRT-first — laptops, desks, etc. |
-
-### Government (`governmentdatacenter`) — **drop `governmentdatacenter`**
-
-| # | Asset | Notes |
-|---|-------|-------|
-| 8 | **Government datacenter** landmark | Large map prop + blue miner cluster |
-| 9 | **Government terminal** | ✅ `Intake-GovernmentTerminal.ps1` — police-terminal.obj + ui/lifepunchnet |
-| 10 | Tax miner visual | Blue-tinted rack OR unique mesh |
-| 11 | Optional **datacenter interior** | RP landmark |
-
-**Owner drop folder (canonical):** `OneDrive\Desktop\governmentdatacenter\` with `source/` + `textures/`
+| Black market hub | `blackmarketdealer/.../black-market-hub/` | Phase H prep |
 
 ---
 
 ## After drop — Red runs
 
 ```powershell
-Intake-BitcoinMinerHub.ps1 -SourceRoot "$env:USERPROFILE\Downloads\bitcoinminer"
-Intake-BitcoinMinerSounds.ps1 -SourceRoot "$env:USERPROFILE\Downloads\bitcoinminer-sounds"
-Intake-GovernmentDatacenter.ps1   # landmark mesh — Desktop\governmentdatacenter
-Intake-GovernmentTerminal.ps1     # police CRT pack — addon stuff\governmentterminal
-Intake-HackerServerRack.ps1       # server-rack DAE + textures
+Intake-HackerServerRack.ps1
 Intake-AdvancedServerRack.ps1
+Intake-GovernmentServerRack.ps1
+Intake-HackerTerminalModel.ps1
+Intake-GovernmentTerminal.ps1
+Intake-BitcoinMinerHub.ps1 -ExportFbx
+Reorganize-BitcoinMinerGpuRack.ps1
+Intake-BlackMarketHub.ps1
 Intake-HackerCornermanUi.ps1
 ```
 
----
-
-## Folder convention (LPaddons oneliners)
-
-```text
-entities/bitcoinminer/     # hub prefab + source
-entities/gpurack/
-entities/advancedgpurack/
-entities/hackerterminal/   # future rename from hacker-terminal
-entities/serverrack/
-entities/governmentdatacenter/   # landmark
-entities/governmentterminal/
-```
-
-Portal **slugs** may stay dashed (`bitcoin-miner`); disk folders = oneliners.
+**Parked scripts (exit 0, no-op):** `Intake-AdvancedHackerTerminal.ps1`
 
 ---
 
-## Owner blueprint (incoming)
+## ModelDoc compile queue
 
-When the blueprint lands, these fields let Red intake in one pass:
+| vmdl | Addon |
+|------|-------|
+| `server-rack.vmdl` | hackerjob |
+| `advanced-server-rack.vmdl` | hackerjob |
+| `government-server-rack.vmdl` | governmentdatacenter |
+| `hacker-terminal.vmdl` | hackerjob |
+| `police-terminal.vmdl` | governmentdatacenter |
+| `bitcoin-miner.vmdl` | bitcoinmining |
+| `gpu-rack/*.vmdl` | bitcoinmining |
 
-| Field | Example |
-|-------|---------|
-| Pack folders | `Downloads\bitcoinminer-sounds`, `Desktop\governmentdatacenter` |
-| Hub anim names | `power_on`, `power_off` in Ophion FBX |
-| Material slot list | Ophion mesh → texture folder mapping |
-| Gov landmark scale | meters or “match server-rack height” |
-| Terminal skins | cornerman / vengeance / hashd / lifepunchnet — which are new art vs SCSS-only |
-| Sound filenames | `hub-startup.wav`, `hub-fan-loop.wav`, … |
-
-Code scaffold already wired: `BitcoinMinerHubEntity`, encryption catalog, hub registry, `lp_spawn_bitcoin_miner_hub`.
-
-## Ping format
-
-```text
-Assets ready: governmentdatacenter at Desktop\governmentdatacenter
-Blueprint: <paste or attach path>
-```
-
-Red will intake, update `ASSET_INVENTORY.md`, ModelDoc compile list, and wire sounds/anims.
+Pull `_c` after compile; dedicated server does not compile.

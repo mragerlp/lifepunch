@@ -106,7 +106,7 @@
       "dxrpAddonId": "019e448c-4958-77d1-84b7-c7ec3f1bc328",
       "status": "code-draft",
       "spec": "docs/HACKER_JOB_SPEC.md",
-      "notes": "Intake: HackerTerminalModel, HackerServerRack, AdvancedServerRack, AdvancedHackerTerminal, HackerCornermanUi. Advanced rack scaffold + dual-rack kit preview. ModelDoc _c TODO. Phase 2 wallet economy = Opus (HACKER_PHASE2_ECONOMY_PREP.md).",
+      "notes": "Criminal hacker lane: server-rack, advanced-server-rack (vengeance rows), hacker-terminal. Advanced terminal still parked. FBI lane = governmentdatacenter. Intake: HackerServerRack, AdvancedServerRack, HackerTerminalModel.",
       "contents": [
         {
           "slug": "server-rack",
@@ -136,21 +136,10 @@
           "label": "Hacker Terminal",
           "type": 0,
           "primaryReference": "addons/lifepunch/hackerjob/entities/hacker-terminal/hacker-terminal.prefab",
-          "worldModelPath": "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-terminal/bitcoin-terminal.vmdl",
+          "worldModelPath": "addons/lifepunch/hackerjob/models/lifepunch/hackerjob/hacker-terminal/hacker-terminal.vmdl",
           "grouping": "Entities",
           "implementationStatus": "cornerman-exe-phase1",
-          "modelBuild": "Assets/addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-terminal/MODEL_BUILD.md"
-        },
-        {
-          "slug": "advanced-hacker-terminal",
-          "name": "Advanced Hacking Terminal",
-          "label": "Advanced Hacking Terminal",
-          "type": 0,
-          "primaryReference": "addons/lifepunch/hackerjob/entities/advanced-hacker-terminal/advanced-hacker-terminal.prefab",
-          "worldModelPath": "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-terminal/bitcoin-terminal.vmdl",
-          "grouping": "Entities",
-          "implementationStatus": "vengeance-exe-govdb",
-          "modelBuild": "Assets/addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-terminal/MODEL_BUILD.md"
+          "modelBuild": "Assets/addons/lifepunch/hackerjob/models/lifepunch/hackerjob/hacker-terminal/MODEL_BUILD.md"
         }
       ]
     },
@@ -165,8 +154,19 @@
       "dxrpAddonId": "",
       "status": "foundation-scaffold",
       "spec": "docs/GOVERNMENT_DATABASE_SPEC.md",
-      "notes": "Intake-GovernmentTerminal.ps1: police-terminal.obj + ui/lifepunchnet PNGs. Landmark = Intake-GovernmentDatacenter.ps1. Economy constants in GovernmentTaxMiner.cs. ModelDoc + prefab TODO — unblocks vengeance govdb scan.",
+      "notes": "FBI / government lane: government-server-rack hub + police-terminal (lifepunchnet). OneDrive drops under lifepunchhacker\\fbi\\. Advanced hacker tier parked — criminal vs gov split only.",
       "contents": [
+        {
+          "slug": "government-server-rack",
+          "name": "Government Server Rack",
+          "label": "Government Server Rack",
+          "type": 0,
+          "primaryReference": "addons/lifepunch/governmentdatacenter/entities/government-server-rack/government-server-rack.prefab",
+          "worldModelPath": "addons/lifepunch/governmentdatacenter/models/lifepunch/governmentdatacenter/government-server-rack/government-server-rack.vmdl",
+          "grouping": "Entities",
+          "implementationStatus": "fbi-hub-scaffold",
+          "modelBuild": "Assets/addons/lifepunch/governmentdatacenter/models/lifepunch/governmentdatacenter/government-server-rack/MODEL_BUILD.md"
+        },
         {
           "slug": "police-terminal",
           "name": "Police Terminal",
@@ -308,7 +308,7 @@
           "grouping": "Entities",
           "implementationStatus": "ophion-hub-power-boot",
           "modelBuild": "Assets/addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/MODEL_BUILD.md",
-          "notes": "Ophion hub. Prefab 1,1,1 · import_scale 0.385 · import_translation Z 13.3 · rotation 0 · align None. Recompile vmdl after import edits; verify BoxCollider 10×8×15 on flatgrass."
+          "notes": "Steam Machine hub (bitcoinminer.blend). Prefab 1,1,1 · import_scale 1.0 · align Bottom · anims fanAction/front_panelAction. ModelDoc compile + flatgrass scale/collider pass."
         },
         {
           "slug": "gpu-rack",

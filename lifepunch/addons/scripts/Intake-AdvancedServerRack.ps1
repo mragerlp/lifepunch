@@ -1,74 +1,90 @@
 <#
 .SYNOPSIS
-  Intake owner advanced server rack mesh into lifepunch hackerjob.
+  Intake advanced hacker server rack (Fab DataCenter rows) into hackerjob.
 
-.PARAMETER SourceRoot
-  Folder containing advanced server rack OBJ (+ MTL). Default: Desktop\advancedserverrack
+.DESCRIPTION
+  Same Fab pack as basic rack (OneDrive lifepunchhacker\hacker\serverrack):
+    Servers\Model\Servers.fbx        -> server-rack (Intake-HackerServerRack.ps1)
+    Servers\Model\Servers_Rows.fbx   -> advanced-server-rack (this script)
+    Servers\Texture\2K\*             -> trim (shared)
+    Glass_Cover_Material\2K\*        -> glass (shared)
 
 .EXAMPLE
-  powershell -File Intake-AdvancedServerRack.ps1 -SourceRoot "$env:USERPROFILE\OneDrive\Desktop\advancedserverrack"
+  powershell -File Intake-AdvancedServerRack.ps1
 #>
 [CmdletBinding()]
 param(
-    [string] $SourceRoot = "$env:USERPROFILE\OneDrive\Desktop\advancedserverrack",
-    [string] $ArchiveRoot = 'C:\lifepunch\reference-intake\hackerjob\advanced-server-rack',
+    [string] $SourceRoot = '',
+    [string] $GlassSourceRoot = '',
+    [string] $ArchiveRoot = 'C:\lifepunch\reference-intake\hackerjob\advanced-server-rack-fab',
+    [switch] $SkipBasicRackIntake,
     [switch] $WhatIf
 )
 
 $ErrorActionPreference = 'Stop'
+. (Join-Path $PSScriptRoot 'LifePunch-AddonDropPaths.ps1')
+. (Join-Path $PSScriptRoot 'Import-FabServerRack.ps1')
+
+if (-not $SourceRoot) {
+    $SourceRoot = Get-LifePunchEntityDrop -Key 'hacker.server-rack' -LegacyNames @('serverrack')
+}
+if (-not $GlassSourceRoot) {
+    $GlassSourceRoot = Resolve-LifePunchServerRackGlassRoot -ServerRackRoot $SourceRoot
+}
+
 $AddonsRoot = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 $HackerAssets = Join-Path $AddonsRoot 'Assets\addons\lifepunch\hackerjob'
-$DestRoot = Join-Path $HackerAssets 'models\lifepunch\hackerjob\advanced-server-rack\source'
+$BasicModelRoot = Join-Path $HackerAssets 'models\lifepunch\hackerjob\server-rack'
+$ModelRoot = Join-Path $HackerAssets 'models\lifepunch\hackerjob\advanced-server-rack'
+$DestSource = Join-Path $ModelRoot 'source'
 $IntakeRaw = Join-Path $HackerAssets 'intake-raw\advanced-server-rack'
 
-function Ensure-Dir([string]$Path) {
-    if (-not (Test-Path -LiteralPath $Path)) {
-        if ($WhatIf) { Write-Host "[WhatIf] mkdir $Path" }
-        else { New-Item -ItemType Directory -Force -Path $Path | Out-Null }
+Write-Host 'Advanced server rack intake (vengeance-tier rows)' -ForegroundColor Cyan
+Write-Host "  Drop: $SourceRoot" -ForegroundColor DarkGray
+
+if (-not $SkipBasicRackIntake) {
+    Write-Host '  Running basic server-rack intake first (shared trim/glass)...' -ForegroundColor DarkGray
+    $basicScript = Join-Path $PSScriptRoot 'Intake-HackerServerRack.ps1'
+    if ($WhatIf) {
+        Write-Host '[WhatIf] Intake-HackerServerRack.ps1' -ForegroundColor DarkGray
+    }
+    else {
+        & $basicScript -SourceRoot $SourceRoot -GlassSourceRoot $GlassSourceRoot
     }
 }
 
-if (-not (Test-Path -LiteralPath $SourceRoot)) {
-    throw "Missing source root: $SourceRoot"
+if (-not $WhatIf) {
+    if (-not (Test-Path -LiteralPath $ArchiveRoot)) { New-Item -ItemType Directory -Force -Path $ArchiveRoot | Out-Null }
+    & robocopy $SourceRoot $ArchiveRoot /E /NFL /NDL /NJH /NJS /nc /ns /np | Out-Null
+    if ($LASTEXITCODE -ge 8) { throw "Archive robocopy failed ($LASTEXITCODE)" }
 }
 
-$mesh = Get-ChildItem -LiteralPath $SourceRoot -Recurse -File -Include *.obj,*.fbx,*.dae -ErrorAction SilentlyContinue |
-    Sort-Object Length -Descending |
-    Select-Object -First 1
-if (-not $mesh) {
-    throw "No OBJ/FBX/DAE under $SourceRoot"
+$result = Import-FabServerRackAssets `
+    -SourceRoot $SourceRoot `
+    -GlassSourceRoot $GlassSourceRoot `
+    -DestFbxPath (Join-Path $DestSource 'advanced-server-rack.fbx') `
+    -DestTrimDir (Join-Path $DestSource 'textures\trim') `
+    -DestGlassDir (Join-Path $DestSource 'textures\glass') `
+    -MeshFilter 'Servers_Rows.fbx' `
+    -WhatIf:$WhatIf
+
+Write-Host "  Mesh:  $($result.Mesh)" -ForegroundColor DarkGray
+Write-Host "  Trim:  $($result.Trim)" -ForegroundColor DarkGray
+Write-Host "  Glass: $($result.Glass)" -ForegroundColor DarkGray
+
+if (-not $WhatIf) {
+    if (-not (Test-Path -LiteralPath $IntakeRaw)) { New-Item -ItemType Directory -Force -Path $IntakeRaw | Out-Null }
+    Copy-Item -LiteralPath (Join-Path $DestSource 'advanced-server-rack.fbx') -Destination (Join-Path $IntakeRaw 'advanced-server-rack.fbx') -Force
+
+    # Keep advanced tree in sync with basic rack trim/glass when basic intake ran.
+    $basicTrim = Join-Path $BasicModelRoot 'source\textures\trim'
+    $basicGlass = Join-Path $BasicModelRoot 'source\textures\glass'
+    if (Test-Path -LiteralPath $basicTrim) {
+        & robocopy $basicTrim (Join-Path $DestSource 'textures\trim') /E /NFL /NDL /NJH /NJS /nc /ns /np | Out-Null
+    }
+    if (Test-Path -LiteralPath $basicGlass) {
+        & robocopy $basicGlass (Join-Path $DestSource 'textures\glass') /E /NFL /NDL /NJH /NJS /nc /ns /np | Out-Null
+    }
 }
 
-$mtl = Get-ChildItem -LiteralPath $SourceRoot -Recurse -File -Filter *.mtl -ErrorAction SilentlyContinue | Select-Object -First 1
-$texDir = @(
-    (Join-Path $SourceRoot 'textures')
-    (Join-Path $SourceRoot 'source\textures')
-) | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
-
-Write-Host 'Advanced server rack intake' -ForegroundColor Cyan
-Write-Host "  Mesh: $($mesh.FullName)" -ForegroundColor DarkGray
-
-if ($WhatIf) {
-    Write-Host "[WhatIf] -> $DestRoot"
-    return
-}
-
-Ensure-Dir $ArchiveRoot
-Copy-Item -LiteralPath $SourceRoot -Destination (Join-Path $ArchiveRoot 'source-tree') -Recurse -Force
-Ensure-Dir $IntakeRaw
-Copy-Item -LiteralPath $SourceRoot -Destination (Join-Path $IntakeRaw 'latest') -Recurse -Force
-
-Ensure-Dir $DestRoot
-$destMesh = Join-Path $DestRoot ("advanced-server-rack{0}" -f $mesh.Extension)
-Copy-Item -LiteralPath $mesh.FullName -Destination $destMesh -Force
-if ($mtl) {
-    Copy-Item -LiteralPath $mtl.FullName -Destination (Join-Path $DestRoot $mtl.Name) -Force
-}
-if ($texDir) {
-    $destTex = Join-Path $DestRoot 'textures'
-    Ensure-Dir $destTex
-    Copy-Item -LiteralPath (Join-Path $texDir '*') -Destination $destTex -Recurse -Force
-}
-
-Write-Host '  advanced-server-rack source OK' -ForegroundColor Green
-Write-Host 'Next: ModelDoc advanced-server-rack.vmdl, map MTL slots, compile _c.' -ForegroundColor Yellow
+Write-Host 'Intake OK — hackerjob advanced-server-rack.vmdl (reuses server-rack trim/glass vmats)' -ForegroundColor Green

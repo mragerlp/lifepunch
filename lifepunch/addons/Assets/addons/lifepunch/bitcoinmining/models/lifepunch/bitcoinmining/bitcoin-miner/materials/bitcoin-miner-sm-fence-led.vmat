@@ -1,0 +1,18 @@
+// LifePunch bitcoin-miner hub — Steam Machine fence LEDs (emissive)
+
+Layer0
+{
+	shader "shaders/complex.shader"
+
+	F_SPECULAR 1
+	F_EMISSIVE_TEXTURE 1
+
+	TextureColor "addons/lifepunch/bitcoinmining/entities/bitcoinminer/textures/sm_fence_led_mat_BaseColor-sm_fence_led_mat_Alpha.png"
+	TextureNormal "addons/lifepunch/bitcoinmining/entities/bitcoinminer/textures/sm_fence_led_mat_Normal.png"
+	TextureRoughness "addons/lifepunch/bitcoinmining/entities/bitcoinminer/textures/sm_fence_led_mat_Metallic-sm_fence_led_mat_Roughness@channel.png"
+	TextureEmissive "addons/lifepunch/bitcoinmining/entities/bitcoinminer/textures/sm_fence_led_mat_Emissive.jpeg"
+
+	g_flModelTintAmount "1.000"
+	g_vColorTint "[1.000000 1.000000 1.000000 0.000000]"
+	g_flEmissiveStrength "3.000"
+}

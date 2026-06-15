@@ -1,0 +1,19 @@
+// LifePunch hacker server rack — Fab glass door (Glass_Cover)
+
+Layer0
+{
+	shader "shaders/complex.shader"
+
+	F_TRANSLUCENT 1
+	F_SPECULAR 1
+	F_METALNESS_TEXTURE 1
+
+	TextureColor "addons/lifepunch/hackerjob/models/lifepunch/hackerjob/server-rack/source/textures/glass/Glass_Cover_BaseColor.png"
+	TextureNormal "addons/lifepunch/hackerjob/models/lifepunch/hackerjob/server-rack/source/textures/glass/Glass_Cover_GL_Normal.png"
+	TextureRoughness "addons/lifepunch/hackerjob/models/lifepunch/hackerjob/server-rack/source/textures/glass/Glass_Cover_Roughness.png"
+	TextureMetalness "addons/lifepunch/hackerjob/models/lifepunch/hackerjob/server-rack/source/textures/glass/Glass_Cover_Metallic.png"
+
+	g_flModelTintAmount "1.000"
+	g_vColorTint "[1.000000 1.000000 1.000000 0.000000]"
+	g_flOpacityScale "0.420000"
+}

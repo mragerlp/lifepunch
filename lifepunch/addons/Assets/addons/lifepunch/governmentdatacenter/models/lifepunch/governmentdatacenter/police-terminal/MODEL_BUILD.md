@@ -3,9 +3,13 @@
 **Slug:** `police-terminal`  
 **Source:** `source/police-terminal.obj` + `source/textures/*` (`Intake-GovernmentTerminal.ps1`)  
 **Target:** `police-terminal.vmdl`  
-**Prefab:** `entities/police-terminal/police-terminal.prefab` (TODO)  
+**Prefab:** `entities/police-terminal/police-terminal.prefab`  
 **UI art:** `ui/lifepunchnet/*.png`  
 **Accent:** `#00D4FF` per `GovernmentDatacenter.TerminalAccentHex`
+
+**Compiled (Jun 2026):** `police-terminal.vmdl_c` + vmats + `police-terminal.prefab_c` in repo.  
+**Scale:** `import_scale = 39.37` (meter OBJ → hammer units).  
+**Flatgrass audit (Jun 2026):** bounds ~80×40×55 @ prefab 1,1,1 — matches desk terminal target; collider 50×70×40 is close (width tune optional).
 
 ## Intake
 

@@ -14,240 +14,28 @@
 						remaps = 
 						[
 							{
-								from = "Aluminium"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-chassis.vmat"
+								from = "sm_body_mat"
+								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-sm-body.vmat"
 							},
 							{
-								from = "Aluminium.001"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-chassis.vmat"
+								from = "sm_details_one_mat"
+								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-sm-details-one.vmat"
 							},
 							{
-								from = "Brushed Aluminium"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-chassis.vmat"
+								from = "sm_details_two_mat"
+								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-sm-details-two.vmat"
 							},
 							{
-								from = "Anisotropic Aluminium"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-chassis.vmat"
+								from = "sm_panel_mat"
+								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-sm-panel.vmat"
 							},
 							{
-								from = "Steel"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-chassis.vmat"
-							},
-							{
-								from = "Steel anisotropic"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-chassis.vmat"
-							},
-							{
-								from = "Diffuse"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-chassis.vmat"
-							},
-							{
-								from = "Mesh"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-chassis.vmat"
-							},
-							{
-								from = "Back screws"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-chassis.vmat"
-							},
-							{
-								from = "Bottom screws"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-chassis.vmat"
-							},
-							{
-								from = "Pre-screws"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-chassis.vmat"
-							},
-							{
-								from = "Side Panels"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-acrylic.vmat"
-							},
-							{
-								from = "Front Panel"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-acrylic.vmat"
-							},
-							{
-								from = "Front Panel.001"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-acrylic.vmat"
-							},
-							{
-								from = "Back Panel"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-wire.vmat"
-							},
-							{
-								from = "Top Panel"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-acrylic.vmat"
-							},
-							{
-								from = "Top Panel.001"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-acrylic.vmat"
-							},
-							{
-								from = "Bottom Panel"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-chassis.vmat"
-							},
-							{
-								from = "Middle Panel"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-chassis.vmat"
-							},
-							{
-								from = "Cuivre"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-metal009.vmat"
-							},
-							{
-								from = "Metal036"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-chassis.vmat"
-							},
-							{
-								from = "Metal009"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-metal009.vmat"
-							},
-							{
-								from = "AsusRog"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-gpu.vmat"
-							},
-							{
-								from = "Wire weave"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-wire.vmat"
-							},
-							{
-								from = "white-metal"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-plate.vmat"
-							},
-							{
-								from = "LD000548"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-plate.vmat"
-							},
-							{
-								from = "GraphicCard"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-gpu.vmat"
-							},
-							{
-								from = "Braided cable"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-wire.vmat"
-							},
-							{
-								from = "Grille"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-wire.vmat"
-							},
-							{
-								from = "Plastic"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-plate.vmat"
-							},
-							{
-								from = "Plastic Matt"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-plate.vmat"
-							},
-							{
-								from = "Motherboard"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-motherboard.vmat"
-							},
-							{
-								from = "Motherboard.001"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-motherboard.vmat"
-							},
-							{
-								from = "Motherboard scres"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-motherboard.vmat"
-							},
-							{
-								from = "G.Skill Trident Z5"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-plate.vmat"
-							},
-							{
-								from = "Powersupply"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-psu.vmat"
-							},
-							{
-								from = "LED"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-led.vmat"
-							},
-							{
-								from = "LED.001"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-led.vmat"
-							},
-							{
-								from = "Acrylic"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-acrylic.vmat"
-							},
-							{
-								from = "Acrylic Panels"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-acrylic.vmat"
-							},
-							{
-								from = "Acrylic Screw"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-chassis.vmat"
-							},
-							{
-								from = "Metal036_2K_Color.jpg"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-chassis.vmat"
-							},
-							{
-								from = "Metal036_2K_NormalDX.jpg"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-chassis.vmat"
-							},
-							{
-								from = "Metal036_2K_NormalGL.jpg"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-chassis.vmat"
-							},
-							{
-								from = "Metal036_2K_Metalness.jpg"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-chassis.vmat"
-							},
-							{
-								from = "Metal036_2K_Roughness.jpg"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-chassis.vmat"
-							},
-							{
-								from = "Metal036_2K_Roughness.jpg.001"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-chassis.vmat"
-							},
-							{
-								from = "roughness_texture"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-chassis.vmat"
-							},
-							{
-								from = "Metal009_2K_Normal.jpg"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-metal009.vmat"
-							},
-							{
-								from = "Metal009_2K_Roughness.jpg"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-metal009.vmat"
-							},
-							{
-								from = "Metal009_2K_Roughness.jpg.001"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-metal009.vmat"
-							},
-							{
-								from = "AsusRogStrix3090.png"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-gpu.vmat"
-							},
-							{
-								from = "Wire_weave_texture.png"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-wire.vmat"
-							},
-							{
-								from = "Wire weave_texture.png"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-wire.vmat"
-							},
-							{
-								from = "white-metal-plate-dots-600w-427727302 (2).png"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-plate.vmat"
-							},
-							{
-								from = "white-metal-plate-dots-600w-427727302_(2).png"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-plate.vmat"
-							},
-							{
-								from = "hexabg.png"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-acrylic.vmat"
-							},
-							{
-								from = "hexabg"
-								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-acrylic.vmat"
+								from = "sm_fence_led_mat"
+								to = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-sm-fence-led.vmat"
 							},
 						]
 						use_global_default = true
-						global_default_material = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-chassis.vmat"
+						global_default_material = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/materials/bitcoin-miner-sm-body.vmat"
 					},
 				]
 			},
@@ -258,13 +46,13 @@
 					{
 						_class = "RenderMeshFile"
 						name = "LOD0"
-						filename = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/source/Ophion.fbx"
-						import_translation = [ 0.0, 0.0, 16.324 ]
+						filename = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/source/steam-machine.fbx"
+						import_translation = [ 0.0, 0.0, 0.0 ]
 						import_rotation = [ 0.0, 0.0, 0.0 ]
-						import_scale = 0.77
+						import_scale = 0.152
 						align_origin_x_type = "None"
 						align_origin_y_type = "None"
-						align_origin_z_type = "None"
+						align_origin_z_type = "Bottom"
 						parent_bone = ""
 					},
 				]

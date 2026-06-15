@@ -20,6 +20,8 @@ namespace LifePunch.DXRP.Addons.Bitcoin;
 
 internal static class LpHashdUiHost
 {
+	private const string PanelObjectName = "LpHashdPanel";
+
 	public static bool IsOpen =>
 		Game.ActiveScene?.GetAllComponents<LpHashdPanel>().FirstOrDefault().IsValid() ?? false;
 
@@ -28,31 +30,53 @@ internal static class LpHashdUiHost
 		LpBitcoinTerminalUiHost.CloseOpen();
 		CloseOpen();
 
+		var panel = MountPanel();
+		panel?.BindHub( hub );
+		return panel;
+	}
+
+	private static LpHashdPanel MountPanel()
+	{
 #if LIFEPUNCH_LOCAL
+		return OpenOnScreenPanel();
+#else
+		var panel = GameManager.ShowUi<LpHashdPanel>();
+		if ( panel.IsValid() )
+			return panel;
+
+		// Editor / solo play without HUD root — dev preview ConCmds still need a visible panel.
+		Log.Warning( "LpHashdUiHost: GameManager.ShowUi returned null — falling back to ScreenPanel." );
+		return OpenOnScreenPanel();
+#endif
+	}
+
+	private static LpHashdPanel OpenOnScreenPanel()
+	{
 		var scene = Game.ActiveScene;
 		if ( scene is null )
 			return null;
 
 		var go = scene.CreateObject();
-		go.Name = "LpHashdPanel";
+		go.Name = PanelObjectName;
 		go.AddComponent<ScreenPanel>();
-		var panel = go.AddComponent<LpHashdPanel>();
-		panel.BindHub( hub );
-		return panel;
-#else
-		var panel = GameManager.ShowUi<LpHashdPanel>();
-		panel?.BindHub( hub );
-		return panel;
-#endif
+		return go.AddComponent<LpHashdPanel>();
 	}
 
 	public static void CloseOpen()
 	{
 		var panel = Game.ActiveScene?.GetAllComponents<LpHashdPanel>().FirstOrDefault();
+		Close( panel );
+	}
+
+	private static void Close( LpHashdPanel panel )
+	{
 		if ( !panel.IsValid() )
 			return;
 
-		panel.Destroy();
+		if ( panel.GameObject.IsValid() && panel.GameObject.Name == PanelObjectName )
+			panel.GameObject.Destroy();
+		else
+			panel.Destroy();
 	}
 
 	public static int GetLocalWalletCash() => LpBitcoinWallet.GetLocalCash();

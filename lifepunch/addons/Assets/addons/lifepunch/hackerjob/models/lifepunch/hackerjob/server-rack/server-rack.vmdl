@@ -14,12 +14,24 @@
 						remaps = 
 						[
 							{
+								from = "Server_Trim"
+								to = "addons/lifepunch/hackerjob/models/lifepunch/hackerjob/server-rack/materials/server-rack-trim.vmat"
+							},
+							{
+								from = "Glass"
+								to = "addons/lifepunch/hackerjob/models/lifepunch/hackerjob/server-rack/materials/server-rack-glass.vmat"
+							},
+							{
+								from = "Glass.002"
+								to = "addons/lifepunch/hackerjob/models/lifepunch/hackerjob/server-rack/materials/server-rack-glass.vmat"
+							},
+							{
 								from = "ServerMaterial"
-								to = "addons/lifepunch/hackerjob/models/lifepunch/hackerjob/server-rack/materials/server-rack.vmat"
+								to = "addons/lifepunch/hackerjob/models/lifepunch/hackerjob/server-rack/materials/server-rack-trim.vmat"
 							},
 						]
 						use_global_default = true
-						global_default_material = "addons/lifepunch/hackerjob/models/lifepunch/hackerjob/server-rack/materials/server-rack.vmat"
+						global_default_material = "addons/lifepunch/hackerjob/models/lifepunch/hackerjob/server-rack/materials/server-rack-trim.vmat"
 					},
 				]
 			},
@@ -30,14 +42,27 @@
 					{
 						_class = "RenderMeshFile"
 						name = "LOD0"
-						filename = "addons/lifepunch/hackerjob/models/lifepunch/hackerjob/server-rack/source/server-rack.obj"
+						filename = "addons/lifepunch/hackerjob/models/lifepunch/hackerjob/server-rack/source/server-rack.fbx"
 						import_translation = [ 0.0, 0.0, 0.0 ]
 						import_rotation = [ 0.0, 0.0, 0.0 ]
-						import_scale = 39.37
+						import_scale = 1.0
 						align_origin_x_type = "None"
 						align_origin_y_type = "None"
 						align_origin_z_type = "Bottom"
 						parent_bone = ""
+					},
+				]
+			},
+			{
+				_class = "AnimationList"
+				children = 
+				[
+					{
+						_class = "AnimBindPose"
+						name = "bindPose"
+						looping = true
+						frame_count = 1
+						frame_rate = 30
 					},
 				]
 			},

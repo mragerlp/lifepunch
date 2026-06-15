@@ -6,6 +6,52 @@
 		children = 
 		[
 			{
+				_class = "MaterialGroupList"
+				children = 
+				[
+					{
+						_class = "DefaultMaterialGroup"
+						remaps = 
+						[
+							{
+								from = "Monitor"
+								to = "addons/lifepunch/hackerjob/models/lifepunch/hackerjob/hacker-terminal/materials/hacker-terminal-monitor.vmat"
+							},
+							{
+								from = "Keyboard"
+								to = "addons/lifepunch/hackerjob/models/lifepunch/hackerjob/hacker-terminal/materials/hacker-terminal-keyboard.vmat"
+							},
+							{
+								from = "Cable"
+								to = "addons/lifepunch/hackerjob/models/lifepunch/hackerjob/hacker-terminal/materials/hacker-terminal-cable.vmat"
+							},
+							{
+								from = "CPU"
+								to = "addons/lifepunch/hackerjob/models/lifepunch/hackerjob/hacker-terminal/materials/hacker-terminal-cpu.vmat"
+							},
+							{
+								from = "Black"
+								to = "addons/lifepunch/hackerjob/models/lifepunch/hackerjob/hacker-terminal/materials/hacker-terminal-black.vmat"
+							},
+							{
+								from = "White"
+								to = "addons/lifepunch/hackerjob/models/lifepunch/hackerjob/hacker-terminal/materials/hacker-terminal-white.vmat"
+							},
+							{
+								from = "Lime Green"
+								to = "addons/lifepunch/hackerjob/models/lifepunch/hackerjob/hacker-terminal/materials/hacker-terminal-monitor.vmat"
+							},
+							{
+								from = "Dark Green"
+								to = "addons/lifepunch/hackerjob/models/lifepunch/hackerjob/hacker-terminal/materials/hacker-terminal-monitor.vmat"
+							},
+						]
+						use_global_default = false
+						global_default_material = "materials/default.vmat"
+					},
+				]
+			},
+			{
 				_class = "PhysicsShapeList"
 				children = 
 				[
@@ -30,7 +76,7 @@
 						filename = "addons/lifepunch/hackerjob/models/lifepunch/hackerjob/hacker-terminal/source/hacker-terminal.fbx"
 						import_translation = [ 0.0, 0.0, 0.0 ]
 						import_rotation = [ 0.0, 0.0, 0.0 ]
-						import_scale = 1.0
+						import_scale = 0.0195
 						align_origin_x_type = "None"
 						align_origin_y_type = "None"
 						align_origin_z_type = "Bottom"

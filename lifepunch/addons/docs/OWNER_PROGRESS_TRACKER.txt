@@ -24,14 +24,14 @@ GATE 0 — LIFEPUNCH BITCOIN MINING (lifepunchbitcoin / repo: bitcoinmining)
 ================================================================================
 Session: game.scene -> Play -> lp_map_flatgrass -> lp_bitcoin_spawn_hub (or _kit)
 
---- Phase A: Bitcoin Miner Hub (Ophion) — IN PROGRESS ---
-[ ] H1  Scale + ground contact (vmdl import, collider, flatgrass proof)
-[ ] H2  Material remap audit (Ophion FBX slots, no checkerboard)
+--- Phase A: Bitcoin Miner Hub (Steam Machine) — IN PROGRESS ---
+[~] H1  Scale + ground contact — mesh ~32×30×29 @ import 0.152; export pipeline fixed; YOUR sign-off pending
+[ ] H2  Material remap audit (sm_* slots, no checkerboard)
 [ ] H3  Acrylic / glass side panels
 [ ] H4  Powered vs off (world emissive/audio)
 [ ] H5  Hub audio baseline (startup / fan loop / fan down)
 [ ] H6  Prefab integrity (LpBitcoinHubEntity, collider, USE works)
-[ ] H7  HASHD admin panel UI (LpHashdPanel amber ops)
+[~] H7  HASHD admin panel UI — overlay layout pass done; verify lp_bitcoin_preview_hub
 [ ] H8  Hub power + rack link UI (Overview / Racks tabs)
 [ ] H9  PIN gatekeeper (or documented defer)
 [ ] H10 Hub-only hero sign-off (owner visual OK)
@@ -163,7 +163,8 @@ lp_bitcoin_scale_audit
 lp_bitcoin_preview_hub
 lp_bitcoin_preview_terminal
 
-Sync:
+Handoff: bitcoinmining/docs/BITCOIN_SESSION_HANDOFF.md
+Proof:   addons/docs/proof/2026-06-15-hub/H1-mesh-assembled.png
   powershell -File lifepunch\scripts\Sync-LifePunchAddonsToDxrp.ps1 -Addon bitcoinmining
   powershell -File lifepunch\scripts\Pull-DxrpCompiledAssetsToRepo.ps1 -Addon bitcoinmining
 

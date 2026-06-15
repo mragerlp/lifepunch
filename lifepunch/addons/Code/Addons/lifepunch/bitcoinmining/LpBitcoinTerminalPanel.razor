@@ -7,6 +7,10 @@
 @using System.Collections.Generic
 @using System.Linq
 @using Sandbox.UI
+@using LifePunch.DXRP.Addons
+#if !LIFEPUNCH_LOCAL
+@using Dxura.RP.Game.UI
+#endif
 @inherits PanelComponent
 
 @attribute [StyleSheet]
@@ -16,6 +20,11 @@
 		<div class="crt-frame">
 			<div class="crt-header">
 				<span>LIFEPUNCH HASHD TERMINAL</span>
+				<div class="crt-status-row">
+					<span class="@StatusPowerClass()">@StatusPowerLabel()</span>
+					<span>@LinkedRackCount() racks</span>
+					<span>sel #@_selectedIndex</span>
+				</div>
 				<div class="lp-ui-chrome-actions">
 					<div class="lp-ui-scale-menu">
 						<button class="lp-ui-chrome-btn cog" tooltip="UI scale" onclick="@ToggleScaleMenu">
@@ -42,46 +51,42 @@
 			<div class="crt-body">
 				<div class="sidebar">
 					<div class="sidebar-title">COMMANDS</div>
-					<div class="cmd-ref">help</div>
-					<div class="cmd-ref">racks</div>
-					<div class="cmd-ref">select &lt;n&gt;</div>
-					<div class="cmd-ref">status</div>
-					<div class="cmd-ref">mining start</div>
-					<div class="cmd-ref">mining stop</div>
-					<div class="cmd-ref">mining all-start</div>
-					<div class="cmd-ref">mining all-stop</div>
-					<div class="cmd-ref">sell</div>
-					<div class="cmd-ref">sell all</div>
+					@foreach ( var cmd in _commandRefs )
+					{
+						<div class="cmd-ref" onclick="@(() => PrefillCommand( cmd ))">@cmd</div>
+					}
 					<div class="sidebar-foot">Selected rack #@_selectedIndex</div>
 				</div>
 				<div class="screen">
 					@if ( _showBootSplash )
 					{
-						<div class="boot-splash">
+						<div class="boot-splash" onclick="@SkipBoot">
 							<div class="boot-mark"></div>
 							<div class="boot-title">LIFEPUNCH HASHD</div>
 							<div class="boot-status">@_bootStatus</div>
+							<div class="boot-hint">click to skip boot</div>
 						</div>
 					}
-					<div class="log">
+					<div class="log" onclick="@FocusInput">
 						@foreach ( var line in _lines )
 						{
-							<div class="log-line @(line.Ok ? "" : "err")">@line.Text</div>
+							<div class="log-line @LineClass( line )">@line.Text</div>
 						}
 					</div>
-					<div class="prompt-row">
-						<span class="prompt">rig0&gt;</span>
-						<TextEntry class="cmd-input" Value:bind="@_input" onsubmit="@Submit" placeholder="type command..." />
+					<div class="prompt-row" onclick="@FocusInput">
+						<span class="prompt">rig@hub&gt;</span>
+						<TextEntry class="cmd-input" @ref="InputBox" Value:bind="@_input" onsubmit="@Submit" placeholder="type command..." />
 					</div>
 				</div>
 			</div>
 		</div>
+		<LifePunchUiFooter />
 	</div>
 </root>
 
 @code
 {
-	private readonly record struct LogLine( bool Ok, string Text );
+	private readonly record struct LogLine( string Kind, string Text );
 
 	private LpBitcoinHubEntity _hub;
 	private int _selectedIndex;
@@ -91,9 +96,11 @@
 	private bool _bootComplete;
 	private int _bootLineIndex;
 	private float _bootElapsed;
-	private string _bootStatus = "INITIALIZING RIG0...";
+	private string _bootStatus = "INITIALIZING RIG...";
 	private bool _showScaleMenu;
-	private LpUiScaleSize _uiScale = LpUiScale.Default;
+	private LpUiScaleSize _uiScale = LpUiScaleSize.Large;
+	private TextEntry InputBox { get; set; }
+
 	private static readonly LpUiScaleSize[] _uiScaleOptions =
 	{
 		LpUiScaleSize.Small,
@@ -102,17 +109,32 @@
 		LpUiScaleSize.ExtraLarge
 	};
 
-	private static readonly string[] BootLines =
+	private static readonly string[] _commandRefs =
 	{
-		"LIFEPUNCH HASHD rig0 — boot sequence",
-		"loading hashd kernel ............... OK",
-		"probe ophion hub bus ............... OK",
-		"sync gpu-rack telemetry ............ OK",
-		"rig0 console online ................ OK"
+		"help",
+		"racks",
+		"select <n>",
+		"status",
+		"mining start",
+		"mining stop",
+		"mining all-start",
+		"mining all-stop",
+		"sell",
+		"sell all"
 	};
 
-	private const float BootLineIntervalSeconds = 0.42f;
-	private const float BootSplashHoldSeconds = 0.55f;
+	private static readonly string[] BootLines =
+	{
+		"LIFEPUNCH HASHD rig — boot sequence",
+		"loading hashd kernel ............... OK",
+		"probe hashd hub bus ................ OK",
+		"sync gpu-rack telemetry ............ OK",
+		"rig console online ................. OK"
+	};
+
+	private const float BootLineIntervalSeconds = 0.35f;
+	private const float BootSplashHoldSeconds = 0.4f;
+	private const string PromptLabel = "rig@hub>";
 
 	private string GetRootClass() =>
 		$"lp-ops-crt lp-ops-crt--gray {LpUiScale.CssClass( _uiScale )}";
@@ -124,6 +146,20 @@
 		LpUiScaleSize.Large => "Large",
 		_ => "Extra Large"
 	};
+
+	private static string LineClass( LogLine line ) => line.Kind switch
+	{
+		"err" => "err",
+		"ok" => "ok",
+		"dim" => "dim",
+		_ => ""
+	};
+
+	private int LinkedRackCount() => _hub?.GetLinkedRacks().Count ?? 0;
+
+	private string StatusPowerLabel() => _hub?.IsPowered == true ? "hub power on" : "hub power off";
+
+	private string StatusPowerClass() => _hub?.IsPowered == true ? "status-ok" : "status-warn";
 
 	private void ToggleScaleMenu() => _showScaleMenu = !_showScaleMenu;
 
@@ -141,28 +177,79 @@
 		_bootComplete = false;
 		_bootLineIndex = 0;
 		_bootElapsed = 0f;
-		_bootStatus = "INITIALIZING RIG0...";
+		_bootStatus = "INITIALIZING RIG...";
 		_pendingFocusRack = focusRack;
+	}
+
+	protected override void OnEnabled()
+	{
+#if !LIFEPUNCH_LOCAL
+		HUD.SetCursorUnlockRequest( this, true );
+#endif
+	}
+
+	protected override void OnDisabled()
+	{
+#if !LIFEPUNCH_LOCAL
+		HUD.SetCursorUnlockRequest( this, false );
+#endif
 	}
 
 	private LpBitcoinRackEntity _pendingFocusRack;
 
+	public void FocusInput()
+	{
+		if ( InputBox.IsValid() )
+			InputBox.Focus();
+	}
+
+	private void PrefillCommand( string cmd )
+	{
+		if ( !_bootComplete )
+			SkipBoot();
+
+		_input = cmd;
+		FocusInput();
+	}
+
+	private void SkipBoot()
+	{
+		if ( _bootComplete )
+			return;
+
+		while ( _bootLineIndex < BootLines.Length )
+		{
+			_lines.Add( new LogLine( "dim", BootLines[_bootLineIndex] ) );
+			_bootLineIndex++;
+		}
+
+		FinishBoot();
+	}
+
 	private void Submit()
 	{
+		if ( !_bootComplete )
+		{
+			SkipBoot();
+			if ( string.IsNullOrWhiteSpace( _input ) )
+				return;
+		}
+
 		var raw = _input?.Trim() ?? string.Empty;
 		if ( string.IsNullOrWhiteSpace( raw ) )
 			return;
 
-		_lines.Add( new LogLine( true, $"rig0&gt; {raw}" ) );
+		_lines.Add( new LogLine( "cmd", $"{PromptLabel} {raw}" ) );
 
 		var result = LpBitcoinTerminalCommands.Execute( _hub, ref _selectedIndex, raw );
 		if ( !string.IsNullOrWhiteSpace( result.Line ) )
-			_lines.Add( new LogLine( result.Ok, result.Line ) );
+			_lines.Add( new LogLine( result.Ok ? "ok" : "err", result.Line ) );
 
-		while ( _lines.Count > 40 )
+		while ( _lines.Count > 48 )
 			_lines.RemoveAt( 0 );
 
 		_input = string.Empty;
+		FocusInput();
 	}
 
 	private void Close() => LpBitcoinTerminalUiHost.CloseOpen();
@@ -187,7 +274,7 @@
 		while ( _bootLineIndex < BootLines.Length
 		        && _bootElapsed >= BootLineIntervalSeconds * ( _bootLineIndex + 1 ) )
 		{
-			_lines.Add( new LogLine( true, BootLines[_bootLineIndex] ) );
+			_lines.Add( new LogLine( "dim", BootLines[_bootLineIndex] ) );
 			_bootStatus = _bootLineIndex < BootLines.Length - 1
 				? $"{BootLines[_bootLineIndex + 1].Split( ' ' )[0].ToUpperInvariant()}..."
 				: "READY";
@@ -205,8 +292,8 @@
 	{
 		_bootComplete = true;
 		_showBootSplash = false;
-		_lines.Add( new LogLine( true, _hub?.IsPowered == true ? "hub power: ON" : "hub power: OFF" ) );
-		_lines.Add( new LogLine( true, "type help for rig0 commands" ) );
+		_lines.Add( new LogLine( "ok", _hub?.IsPowered == true ? "hub power: ON" : "hub power: OFF" ) );
+		_lines.Add( new LogLine( "dim", $"type help for {PromptLabel} commands" ) );
 
 		if ( _pendingFocusRack.IsValid() )
 		{
@@ -217,12 +304,13 @@
 					continue;
 
 				_selectedIndex = i;
-				_lines.Add( new LogLine( true, $"focused rack #{i}" ) );
+				_lines.Add( new LogLine( "ok", $"focused rack #{i}" ) );
 				break;
 			}
 		}
 
 		_pendingFocusRack = null;
+		FocusInput();
 	}
 
 	protected override int BuildHash() => HashCode.Combine(

@@ -1,0 +1,19 @@
+// LifePunch police terminal — desk / table (lifepunchnet)
+
+Layer0
+{
+	shader "shaders/complex.shader"
+
+	F_METALNESS_TEXTURE 1
+	F_SPECULAR 1
+
+	TextureColor "addons/lifepunch/governmentdatacenter/models/lifepunch/governmentdatacenter/police-terminal/source/textures/table_Base_color.png"
+	TextureNormal "addons/lifepunch/governmentdatacenter/models/lifepunch/governmentdatacenter/police-terminal/source/textures/table_Normal_OpenGL.png"
+	TextureRoughness "addons/lifepunch/governmentdatacenter/models/lifepunch/governmentdatacenter/police-terminal/source/textures/table_Roughness.png"
+	TextureMetalness "addons/lifepunch/governmentdatacenter/models/lifepunch/governmentdatacenter/police-terminal/source/textures/table_Metallic.png"
+	TextureAmbientOcclusion "addons/lifepunch/governmentdatacenter/models/lifepunch/governmentdatacenter/police-terminal/source/textures/table_Mixed_AO.png"
+	TextureEmissive "addons/lifepunch/governmentdatacenter/models/lifepunch/governmentdatacenter/police-terminal/source/textures/table_Emissive.png"
+
+	g_flModelTintAmount "1.000"
+	g_vColorTint "[1.000000 1.000000 1.000000 0.000000]"
+}

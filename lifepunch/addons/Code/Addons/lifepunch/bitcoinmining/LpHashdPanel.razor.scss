@@ -4,39 +4,48 @@
 // "LIFEPUNCH Bitcoin Miner for DXRP" (s&box ident: lifepunch.bitcoin · addon ident: bitcoinmining)
 // ─────────────────────────────────────────────────────────────────────────────
 
-$hashd-amber: #f0a500;
-$hashd-amber-deep: #c88400;
-$hashd-bg: #12100c;
-$hashd-surface: #1a1814;
-$hashd-card: #1f1c17;
-$hashd-border: rgba(255, 255, 255, 0.07);
-$hashd-muted: #8b95a8;
-$hashd-text: #e8edf5;
-$hashd-title: #f7f9fc;
+$hashd-amber: #e87d3e;
+$hashd-amber-deep: #d06b2f;
+$hashd-amber-glow: #f0a500;
+$hashd-bg: #0e0e0e;
+$hashd-surface: #141414;
+$hashd-card: #1a1a1a;
+$hashd-border: rgba(255, 255, 255, 0.06);
+$hashd-muted: #8b8f98;
+$hashd-text: #eceef3;
+$hashd-title: #f8f9fc;
+$hashd-green: #5fd38d;
 
 @import "LpUiChrome.scss";
 @import "LpUiScale.scss";
 
 .lp-bitcoin-ops {
 	position: absolute;
-	left: 50%;
-	top: 50%;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	font-family: Poppins, Arial, sans-serif;
 	font-size: 14px;
 	color: $hashd-text;
-	pointer-events: all;
+	pointer-events: none;
 	z-index: 100;
 
 	.shell {
-		width: 100%;
-		height: 100%;
+		flex-shrink: 0;
 		display: flex;
 		flex-direction: column;
 		background-color: $hashd-bg;
 		border: 1px solid $hashd-border;
-		border-radius: 18px;
+		border-radius: 22px;
 		overflow: hidden;
-		box-shadow: 0 24px 56px rgba(0, 0, 0, 0.62);
+		box-shadow: 0 28px 64px rgba(0, 0, 0, 0.72);
+		pointer-events: all;
 	}
 
 	.hub-body {
@@ -207,6 +216,7 @@ $hashd-title: #f7f9fc;
 
 	.wallet-card {
 		max-width: 520px;
+		border-left: 4px solid $hashd-amber;
 	}
 
 	.cta-pill.wide {
@@ -215,21 +225,32 @@ $hashd-title: #f7f9fc;
 	}
 
 	.sidebar {
-		width: 68px;
+		width: 72px;
 		flex-shrink: 0;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		padding: 14px 10px;
+		padding: 16px 10px 14px;
 		background-color: $hashd-surface;
 		border-right: 1px solid $hashd-border;
 	}
 
-	.sidebar-brand {
-		width: 42px;
-		height: 42px;
-		flex-shrink: 0;
-		margin-bottom: 18px;
+	.sidebar-brand.hex-mark {
+		width: 46px;
+		height: 46px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin-bottom: 22px;
+		border-radius: 14px;
+		background: linear-gradient(145deg, rgba(232, 125, 62, 0.22), rgba(232, 125, 62, 0.06));
+		border: 1px solid rgba(232, 125, 62, 0.35);
+		box-shadow: 0 0 18px rgba(232, 125, 62, 0.12);
+
+		.brand-mark {
+			width: 30px;
+			height: 30px;
+		}
 	}
 
 	.brand-mark {
@@ -257,15 +278,15 @@ $hashd-title: #f7f9fc;
 	}
 
 	.sidebar-btn {
-		width: 44px;
-		height: 44px;
+		width: 46px;
+		height: 46px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		border-radius: 14px;
 		background-color: transparent;
 		border: 1px solid transparent;
-		color: #7f8a9e;
+		color: #6f7785;
 		cursor: pointer;
 
 		.material-icons {
@@ -278,18 +299,110 @@ $hashd-title: #f7f9fc;
 		}
 
 		&.active {
-			color: #12100c;
-			background-color: $hashd-amber;
-			border-color: $hashd-amber;
-			box-shadow: 0 8px 18px rgba(240, 165, 0, 0.28);
+			color: #fff;
+			background: linear-gradient(145deg, $hashd-amber, $hashd-amber-deep);
+			border-color: rgba(255, 255, 255, 0.08);
+			box-shadow: 0 10px 22px rgba(232, 125, 62, 0.35);
 		}
+	}
+
+	.sidebar-avatar {
+		width: 38px;
+		height: 38px;
+		border-radius: 999px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+		border: 2px solid rgba(255, 255, 255, 0.08);
+		color: $hashd-title;
+		font-size: 13px;
+		font-weight: 700;
 	}
 
 	.workspace {
 		flex: 1 1 auto;
 		min-width: 0;
+		min-height: 0;
 		display: flex;
 		flex-direction: column;
+	}
+
+	.mock-header {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		gap: 16px;
+		flex-shrink: 0;
+		min-height: 68px;
+		padding: 14px 22px 12px;
+		border-bottom: 1px solid $hashd-border;
+	}
+
+	.mock-greeting {
+		color: $hashd-title;
+		font-family: Georgia, "Times New Roman", serif;
+		font-size: 28px;
+		font-weight: 400;
+		line-height: 1.1;
+		white-space: nowrap;
+	}
+
+	.header-widgets {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: 10px;
+		flex-shrink: 0;
+	}
+
+	.header-chip {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: 8px;
+		height: 36px;
+		padding: 0 14px;
+		border-radius: 999px;
+		background-color: $hashd-card;
+		border: 1px solid $hashd-border;
+		color: $hashd-text;
+		font-size: 12px;
+		font-weight: 600;
+		cursor: default;
+
+		.material-icons {
+			font-size: 16px;
+			color: $hashd-amber;
+		}
+
+		&.wallet-chip {
+			cursor: pointer;
+
+			&:hover {
+				border-color: rgba(232, 125, 62, 0.35);
+				background-color: rgba(232, 125, 62, 0.08);
+			}
+		}
+
+		&.notif-chip {
+			position: relative;
+			width: 36px;
+			padding: 0;
+			justify-content: center;
+			cursor: pointer;
+
+			.notif-dot {
+				position: absolute;
+				top: 7px;
+				right: 8px;
+				width: 7px;
+				height: 7px;
+				border-radius: 999px;
+				background-color: $hashd-amber;
+			}
+		}
 	}
 
 	.page-header {
@@ -376,22 +489,550 @@ $hashd-title: #f7f9fc;
 		flex: 1 1 auto;
 		min-height: 0;
 		display: flex;
-		flex-direction: row;
+		flex-direction: column;
+	}
+
+	.main-panel > .pane:not(.overview-mock) {
+		padding: 16px 18px 18px;
 	}
 
 	.main-panel {
 		flex: 1 1 auto;
 		min-width: 0;
-		padding: 16px 18px 18px;
+		padding: 0;
 		overflow-y: scroll;
 		overflow-x: hidden;
+	}
+
+	.overview-mock {
+		height: 100%;
+		min-height: 0;
+	}
+
+	.mock-layout {
+		display: flex;
+		flex-direction: row;
+		align-items: stretch;
+		min-height: 100%;
+	}
+
+	.mock-main {
+		flex: 1 1 auto;
+		min-width: 0;
+		min-height: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 14px;
+		padding: 16px 18px 18px;
+		overflow-y: scroll;
+	}
+
+	.hero-row {
+		display: flex;
+		flex-direction: row;
+		gap: 14px;
+		flex-wrap: wrap;
+	}
+
+	.hero-btc-card {
+		position: relative;
+		flex: 1 1 58%;
+		min-width: 280px;
+		min-height: 148px;
+		padding: 20px 22px;
+		border-radius: 20px;
+		overflow: hidden;
+		background: linear-gradient(135deg, #f0a13d 0%, $hashd-amber 48%, $hashd-amber-deep 100%);
+		box-shadow: 0 16px 36px rgba(232, 125, 62, 0.28);
+	}
+
+	.hero-btc-watermark {
+		position: absolute;
+		right: -8px;
+		bottom: -18px;
+		width: 120px;
+		height: 120px;
+		opacity: 0.18;
+		background-image: url(/addons/lifepunch/bitcoinmining/ui/hashd/btc-mark.png);
+		background-size: contain;
+		background-repeat: no-repeat;
+		background-position: center;
+	}
+
+	.hero-hash-card {
+		position: relative;
+		flex: 1 1 34%;
+		min-width: 200px;
+		min-height: 148px;
+		padding: 20px 22px;
+		border-radius: 20px;
+		background-color: $hashd-card;
+		border: 1px solid $hashd-border;
+		overflow: hidden;
+	}
+
+	.hero-hash-watermark {
+		position: absolute;
+		right: 12px;
+		bottom: 8px;
+		font-size: 72px;
+		font-weight: 700;
+		color: rgba(255, 255, 255, 0.04);
+		line-height: 1;
+	}
+
+	.hero-label {
+		color: rgba(255, 255, 255, 0.82);
+		font-size: 12px;
+		font-weight: 600;
+		letter-spacing: 0.02em;
+	}
+
+	.hero-btc-value {
+		margin-top: 8px;
+		color: #fff;
+		font-size: 34px;
+		font-weight: 700;
+		line-height: 1.05;
+		letter-spacing: -0.02em;
+	}
+
+	.hero-btc-sub {
+		margin-top: 4px;
+		color: rgba(255, 255, 255, 0.78);
+		font-size: 13px;
+	}
+
+	.hero-hash-value {
+		margin-top: 8px;
+		color: $hashd-title;
+		font-size: 30px;
+		font-weight: 700;
+		line-height: 1.05;
+	}
+
+	.hero-hash-delta {
+		margin-top: 6px;
+		color: $hashd-muted;
+		font-size: 12px;
+		font-weight: 600;
+
+		&.up {
+			color: $hashd-green;
+		}
+	}
+
+	.mid-row {
+		display: flex;
+		flex-direction: row;
+		gap: 14px;
+		flex-wrap: wrap;
+	}
+
+	.perf-card,
+	.profit-card,
+	.miners-table-card {
+		border-radius: 20px;
+		background-color: $hashd-card;
+		border: 1px solid $hashd-border;
+	}
+
+	.perf-card {
+		flex: 1 1 58%;
+		min-width: 300px;
+		padding: 16px 18px 14px;
+	}
+
+	.profit-card {
+		flex: 1 1 34%;
+		min-width: 220px;
+		padding: 16px 18px 18px;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.miners-table-card {
+		flex-shrink: 0;
+		padding: 16px 18px 14px;
+		display: flex;
+		flex-direction: column;
+		min-height: 0;
+	}
+
+	.miners-table-body {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		max-height: 220px;
+		overflow-y: scroll;
+		padding-right: 4px;
+	}
+
+	.card-top {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		gap: 10px;
+		margin-bottom: 12px;
+	}
+
+	.card-title {
+		color: $hashd-title;
+		font-size: 15px;
+		font-weight: 700;
+	}
+
+	.range-toggle {
+		display: flex;
+		flex-direction: row;
+		gap: 4px;
+	}
+
+	.range-btn {
+		min-width: 24px;
+		height: 24px;
+		padding: 0 6px;
+		border-radius: 6px;
+		border: 0;
+		background-color: transparent;
+		color: $hashd-muted;
+		font-size: 11px;
+		font-weight: 700;
+		cursor: pointer;
+
+		&.active {
+			color: $hashd-title;
+			background-color: rgba(255, 255, 255, 0.08);
+		}
+	}
+
+	.perf-chart {
+		display: flex;
+		flex-direction: row;
+		align-items: flex-end;
+		gap: 8px;
+		height: 132px;
+		padding-top: 8px;
+	}
+
+	.perf-col {
+		flex: 1 1 0;
+		min-width: 0;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: flex-end;
+		gap: 8px;
+		height: 100%;
+
+		&.active .perf-bar {
+			background: linear-gradient(180deg, rgba(232, 125, 62, 0.95), rgba(232, 125, 62, 0.35));
+			box-shadow: 0 0 16px rgba(232, 125, 62, 0.35);
+		}
+	}
+
+	.perf-bar {
+		width: 100%;
+		max-width: 28px;
+		border-radius: 999px;
+		background: linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.04));
+		min-height: 12px;
+	}
+
+	.perf-day {
+		color: $hashd-muted;
+		font-size: 10px;
+		font-weight: 600;
+	}
+
+	.profit-value {
+		color: $hashd-title;
+		font-size: 34px;
+		font-weight: 700;
+		line-height: 1.05;
+		margin-top: 4px;
+	}
+
+	.profit-calc {
+		margin-top: auto;
+		padding: 0;
+		border: 0;
+		background: transparent;
+		color: $hashd-amber;
+		font-size: 12px;
+		font-weight: 700;
+		cursor: pointer;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: 4px;
+
+		.material-icons {
+			font-size: 14px;
+		}
+	}
+
+	.icon-link {
+		width: 30px;
+		height: 30px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 8px;
+		border: 0;
+		background-color: rgba(255, 255, 255, 0.04);
+		color: $hashd-muted;
+		cursor: pointer;
+
+		.material-icons {
+			font-size: 16px;
+		}
+	}
+
+	.miners-table-head,
+	.miners-table-row {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: 10px;
+	}
+
+	.miners-table-head {
+		padding: 0 12px 8px;
+		color: $hashd-muted;
+		font-size: 11px;
+		font-weight: 600;
+		letter-spacing: 0.03em;
+
+		span:nth-child(1) { flex: 1.4 1 0; min-width: 120px; }
+		span:nth-child(2) { width: 72px; flex-shrink: 0; }
+		span:nth-child(3) { width: 88px; flex-shrink: 0; }
+		span:nth-child(4) { width: 56px; flex-shrink: 0; }
+		span:nth-child(5) { width: 88px; flex-shrink: 0; }
+		span:nth-child(6) { width: 32px; flex-shrink: 0; }
+	}
+
+	.miners-table-row {
+		padding: 10px 12px;
+		border-radius: 14px;
+		background-color: rgba(255, 255, 255, 0.02);
+		border: 1px solid rgba(255, 255, 255, 0.04);
+	}
+
+	.col-miner {
+		flex: 1.4 1 0;
+		min-width: 120px;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: 10px;
+	}
+
+	.col-status {
+		width: 72px;
+		flex-shrink: 0;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: 6px;
+		font-size: 12px;
+		font-weight: 600;
+	}
+
+	.col-hash {
+		width: 88px;
+		flex-shrink: 0;
+		font-size: 12px;
+		color: $hashd-text;
+	}
+
+	.col-temp,
+	.col-uptime {
+		width: 88px;
+		flex-shrink: 0;
+		font-size: 12px;
+		color: $hashd-muted;
+	}
+
+	.col-temp {
+		width: 56px;
+	}
+
+	.col-actions {
+		width: 32px;
+		flex-shrink: 0;
+		display: flex;
+		justify-content: flex-end;
+	}
+
+	.status-dot {
+		width: 8px;
+		height: 8px;
+		border-radius: 999px;
+		background-color: #5a5f6a;
+		flex-shrink: 0;
+
+		&.on {
+			background-color: $hashd-amber;
+			box-shadow: 0 0 8px rgba(232, 125, 62, 0.45);
+		}
+	}
+
+	.kebab-btn {
+		width: 28px;
+		height: 28px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 8px;
+		border: 0;
+		background-color: transparent;
+		color: $hashd-muted;
+		cursor: pointer;
+
+		.material-icons {
+			font-size: 18px;
+		}
+
+		&:hover {
+			background-color: rgba(255, 255, 255, 0.06);
+			color: $hashd-text;
+		}
+	}
+
+	.server-status-rail {
+		width: 248px;
+		flex-shrink: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+		padding: 16px 14px 18px;
+		background-color: $hashd-surface;
+		border-left: 1px solid $hashd-border;
+	}
+
+	.server-status-head {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+	}
+
+	.server-status-title {
+		color: $hashd-title;
+		font-size: 14px;
+		font-weight: 700;
+	}
+
+	.server-status-meta {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: 8px;
+		color: $hashd-muted;
+		font-size: 12px;
+		font-weight: 600;
+	}
+
+	.server-temp {
+		color: $hashd-title;
+		font-size: 22px;
+		font-weight: 700;
+		margin-right: auto;
+	}
+
+	.server-visual {
+		position: relative;
+		flex: 1 1 auto;
+		min-height: 220px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 10px;
+		padding: 18px 12px 88px;
+		border-radius: 18px;
+		background: radial-gradient(circle at 50% 35%, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.01) 58%), $hashd-card;
+		border: 1px solid $hashd-border;
+	}
+
+	.server-visual-mark {
+		width: 110px;
+		height: 110px;
+		background-image: url(/addons/lifepunch/bitcoinmining/ui/hashd/btc-mark.png);
+		background-size: contain;
+		background-repeat: no-repeat;
+		background-position: center;
+		opacity: 0.92;
+		filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.45));
+	}
+
+	.server-visual-name {
+		color: $hashd-muted;
+		font-size: 11px;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+
+	.server-stats-overlay {
+		position: relative;
+		margin-top: -74px;
+		display: flex;
+		flex-direction: row;
+		gap: 8px;
+		padding: 10px;
+		border-radius: 14px;
+		background-color: rgba(10, 10, 10, 0.82);
+		border: 1px solid rgba(255, 255, 255, 0.08);
+	}
+
+	.server-stat {
+		flex: 1 1 0;
+		min-width: 0;
+		display: flex;
+		flex-direction: row;
+		align-items: flex-start;
+		gap: 6px;
+
+		.material-icons {
+			font-size: 16px;
+			color: $hashd-amber;
+			flex-shrink: 0;
+		}
+	}
+
+	.server-stat-value {
+		color: $hashd-title;
+		font-size: 12px;
+		font-weight: 700;
+		line-height: 1.2;
+	}
+
+	.server-stat-label {
+		color: $hashd-muted;
+		font-size: 9px;
+		line-height: 1.2;
+	}
+
+	.server-cta {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		gap: 6px;
+
+		.material-icons {
+			font-size: 16px;
+		}
 	}
 
 	.pane {
 		display: flex;
 		flex-direction: column;
 		gap: 14px;
-		min-height: 100%;
+		flex: 1 1 auto;
+		min-height: 0;
 	}
 
 	.pane-head {
@@ -512,22 +1153,12 @@ $hashd-title: #f7f9fc;
 		border-top: 1px solid rgba(255, 255, 255, 0.05);
 	}
 
-	.chart-bar {
+		.chart-bar {
 		flex: 1 1 0;
 		min-width: 6px;
 		border-radius: 6px 6px 2px 2px;
 		background-color: rgba(240, 165, 0, 0.18);
 		border: 1px solid rgba(240, 165, 0, 0.22);
-
-		&:nth-child(3n) {
-			background-color: rgba(240, 165, 0, 0.32);
-			border-color: rgba(240, 165, 0, 0.42);
-		}
-
-		&:nth-child(5n) {
-			background-color: rgba(240, 165, 0, 0.48);
-			border-color: rgba(240, 165, 0, 0.58);
-		}
 	}
 
 	.sparkline {
@@ -664,11 +1295,17 @@ $hashd-title: #f7f9fc;
 		font-size: 12px;
 		line-height: 1.45;
 		margin-top: auto;
+		flex-shrink: 0;
 
 		.material-icons {
 			color: $hashd-amber;
 			font-size: 20px;
 			flex-shrink: 0;
+		}
+
+		span {
+			flex: 1 1 auto;
+			min-width: 0;
 		}
 	}
 
@@ -1005,5 +1642,15 @@ $hashd-title: #f7f9fc;
 		font-size: 11px;
 		margin-top: auto;
 		padding-top: 12px;
+	}
+
+	.lp-source-footer {
+		flex-shrink: 0;
+		border-top-color: $hashd-border;
+		background-color: #0c0a08;
+
+		.lp-mark {
+			color: $hashd-amber;
+		}
 	}
 }

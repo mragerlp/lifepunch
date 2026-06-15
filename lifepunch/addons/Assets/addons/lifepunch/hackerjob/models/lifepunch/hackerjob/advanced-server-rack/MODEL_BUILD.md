@@ -1,11 +1,15 @@
-# advanced-server-rack — vengeance-tier hacker power unit
+# advanced-server-rack — vengeance-tier hacker power unit (Fab rows)
 
 **Slug:** `advanced-server-rack`  
-**Source:** `source/advanced-server-rack.obj` + MTL (`Intake-AdvancedServerRack.ps1`)  
+**Source:** Same Fab pack as basic rack — `Servers/Model/Servers_Rows.fbx` (multi-cabinet row); **reuses** trim + glass from basic intake  
 **Target:** `advanced-server-rack.vmdl`  
-**Prefab:** `entities/advanced-server-rack/advanced-server-rack.prefab`  
-**Entity:** `HackerAdvancedServerRackEntity` — upgrade caps per `HackerUpgradeCatalog` advanced max tiers  
-**UI:** `HackerServerRackMenu.razor` (shared with basic rack)
+**Prefab:** `entities/advanced-server-rack/advanced-server-rack.prefab`
+
+| Fab path | Repo |
+|----------|------|
+| `Servers/Model/Servers_Rows.fbx` | `source/advanced-server-rack.fbx` |
+| `Servers/Texture/2K/*` | shared → `source/textures/trim/` |
+| `Glass_Cover_Material/2K/*` | shared → `source/textures/glass/` |
 
 ## Intake
 
@@ -13,23 +17,16 @@
 powershell -File lifepunch/addons/scripts/Intake-AdvancedServerRack.ps1
 ```
 
-Archive: `C:\lifepunch\reference-intake\hackerjob\advanced-server-rack`
+Runs basic rack intake first (shared trim/glass textures), then copies `Servers_Rows.fbx` → `advanced-server-rack.fbx`.
+
+Archive: `C:\lifepunch\reference-intake\hackerjob\advanced-server-rack-fab`
 
 ## ModelDoc
 
-1. Open `advanced-server-rack.vmdl` — import `source/advanced-server-rack.obj`.
-2. Start `import_scale` at **39.37**; tune height vs basic `server-rack` (advanced mesh is taller).
-3. Map MTL slots → vmats per `material-map.json`.
-4. Compile → `Pull-DxrpCompiledAssetsToRepo.ps1`.
+Reuses `server-rack-trim.vmat` + `server-rack-glass.vmat` remaps. Import `source/advanced-server-rack.fbx` — scale vs basic single cabinet on flatgrass.
 
-## Gameplay link
-
-| Rack tier | Terminal preference | Max detection / puzzle tiers |
-|-----------|---------------------|------------------------------|
-| Basic (`server-rack`) | cornerman.exe | 4 / 4 / 3 / 3 |
-| Advanced (`advanced-server-rack`) | vengeance.exe | 5 / 5 / 3 / 3 |
-
-Registry prefers tier-matched rack within 8m horizontal / 4m vertical.
+**Compiled (Jun 2026):** `advanced-server-rack.vmdl_c` + `prefab_c` in repo.  
+**Scale audit @ import_scale 1.0:** bounds ~232×410×218 vs collider 24×24×56 — **ModelDoc scale pass TODO**.
 
 ## Dev smoke
 

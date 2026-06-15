@@ -41,12 +41,12 @@ powershell -File lifepunch\scripts\Pull-DxrpCompiledAssetsToRepo.ps1 -Addon bitc
 
 | Phase | Scope | Status |
 |-------|--------|--------|
-| **A** | Bitcoin Miner Hub (Ophion) | **In progress** — H1 started |
+| **A** | Bitcoin Miner Hub (Steam Machine) | **In progress** — H1 mesh assembly + scale verified |
 | **B** | Bitcoin Terminal (CRT) | Not started |
 | **C** | GPU Rack (small + large) | Not started |
 | **D** | Hacker lane (deferred) | Not started |
 
-**Last updated:** 2026-06-15 (H1 import/collider pass + `lp_bitcoin_scale_audit` added)
+**Last updated:** 2026-06-15 (H1 export pipeline + `import_scale 0.152` + UI overlay pass — see `BITCOIN_SESSION_HANDOFF.md`)
 
 ---
 
@@ -94,12 +94,11 @@ powershell -File lifepunch\scripts\Pull-DxrpCompiledAssetsToRepo.ps1 -Addon bitc
 
 ### H1 session notes (2026-06-15)
 
-- **Found:** mesh `mins.z ≈ 10.3` at spawn origin with translation Z `26.6` — hub floated above ground.
-- **Changed:** `import_translation` Z `26.6` → `16.324` in `bitcoin-miner.vmdl`.
-- **Changed:** `BoxCollider` Scale `32,31,30` → `30,15.5,20`; Center `0,0,15` → `0.55,0,9.82` in `bitcoin-miner.prefab`.
-- **Changed:** `MODEL_BUILD.md` collider law updated to measured bounds.
-- **Added:** `lp_bitcoin_scale_audit` in `LpBitcoinDevSpawn.cs`.
-- **Pending owner sign-off:** flatgrass play proof (`lp_bitcoin_spawn_hub` on `facepunch.flatgrass` with citizen scale check).
+- **Found:** old FBX export shipped camera/lights + unparented meshes → building-scale bounds (485u) + fan/panel on ground.
+- **Fixed:** `Export-BitcoinMinerSteamMachineFbx.py` — `Steam_Machine` only, parent-under-`base_body`, no pre-parent transform apply.
+- **Fixed:** `import_scale` `1.0` → **`0.152`**; collider `32×20×28` center `0,0,14`.
+- **Verified:** `lp_bitcoin_scale_audit` mesh **31.97×30.4×29.36** @ flatgrass; proof `addons/docs/proof/2026-06-15-hub/H1-mesh-assembled.png`.
+- **Pending owner sign-off:** citizen waist comparison + night shot (H4).
 
 ### Phase A — out of scope (this pass)
 

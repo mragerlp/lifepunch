@@ -1,0 +1,18 @@
+// LifePunch black market hub — Fab safe vault body
+
+Layer0
+{
+	shader "shaders/complex.shader"
+
+	F_METALNESS_TEXTURE 1
+	F_SPECULAR 1
+
+	TextureColor "addons/lifepunch/blackmarketdealer/models/lifepunch/blackmarketdealer/black-market-hub/source/textures/safe-vault/Safe_Vault_BaseColor.png"
+	TextureNormal "addons/lifepunch/blackmarketdealer/models/lifepunch/blackmarketdealer/black-market-hub/source/textures/safe-vault/Safe_Vault_GL_Normal.png"
+	TextureRoughness "addons/lifepunch/blackmarketdealer/models/lifepunch/blackmarketdealer/black-market-hub/source/textures/safe-vault/Safe_Vault_Roughness.png"
+	TextureMetalness "addons/lifepunch/blackmarketdealer/models/lifepunch/blackmarketdealer/black-market-hub/source/textures/safe-vault/Safe_Vault_Metallic.png"
+	TextureAmbientOcclusion "addons/lifepunch/blackmarketdealer/models/lifepunch/blackmarketdealer/black-market-hub/source/textures/safe-vault/Safe_Vault_AO.png"
+
+	g_flModelTintAmount "1.000"
+	g_vColorTint "[1.000000 1.000000 1.000000 0.000000]"
+}

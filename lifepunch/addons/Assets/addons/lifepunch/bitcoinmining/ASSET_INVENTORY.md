@@ -6,7 +6,7 @@
 
 | Slug | Entity name | Role | Source | vmdl |
 |------|-------------|------|--------|------|
-| `bitcoin-miner` | **Bitcoin Miner hub** | hashd menu + encryption + rack control | `Ophion.fbx` | vmdl in repo — **compile _c + vmat pass** |
+| `bitcoin-miner` | **Bitcoin Miner hub** | hashd menu + encryption + rack control | `steam-machine.fbx` (from `bitcoinminer.blend`) | vmdl + sm_* vmats — **compile _c + flatgrass scale** |
 | `gpu-rack` | **GPU Rack** | 500 HP · mining hardware | `gpu-rack-static.obj` + anim FBX | Shipped |
 | `advanced-gpu-rack` | **Advanced GPU Rack** | 2000 HP · 2× yield | stacked anim FBX | vmdl in repo |
 | ~~`bitcoin-terminal`~~ | ~~CRT~~ | **Deprecated** — menu on hub | `computer.fbx` | legacy |

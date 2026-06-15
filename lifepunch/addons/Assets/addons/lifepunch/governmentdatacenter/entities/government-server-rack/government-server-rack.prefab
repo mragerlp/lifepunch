@@ -1,0 +1,57 @@
+{
+  "RootObject": {
+    "__guid": "d1e2f3a4-aaaa-4a5b-9c0d-000000000401",
+    "__version": 2,
+    "Flags": 0,
+    "Name": "government-server-rack",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "entity,hands_interact,occludable",
+    "Enabled": true,
+    "NetworkMode": 1,
+    "NetworkFlags": 0,
+    "NetworkOrphaned": 3,
+    "NetworkTransmit": true,
+    "OwnerTransfer": 1,
+    "Components": [
+      {
+        "__type": "Sandbox.Rigidbody",
+        "__guid": "d2e3f4a5-bbbb-4a5b-9c0d-000000000402",
+        "__enabled": true,
+        "Flags": 0,
+        "MotionEnabled": false,
+        "Gravity": true,
+        "Locking": { "X": true, "Y": true, "Z": true, "Pitch": true, "Yaw": true, "Roll": true },
+        "StartAsleep": true
+      },
+      {
+        "__type": "Sandbox.ModelRenderer",
+        "__guid": "d3e4f5a6-cccc-4a5b-9c0d-000000000403",
+        "__enabled": true,
+        "Flags": 0,
+        "BodyGroups": 18446744073709551615,
+        "Model": "addons/lifepunch/governmentdatacenter/models/lifepunch/governmentdatacenter/government-server-rack/government-server-rack.vmdl",
+        "RenderType": "On",
+        "Tint": "1,1,1,1"
+      },
+      {
+        "__type": "Sandbox.BoxCollider",
+        "__guid": "d4e5f6a7-dddd-4a5b-9c0d-000000000404",
+        "__enabled": true,
+        "Flags": 0,
+        "Center": "0,0,43.5",
+        "Scale": "28,28,87",
+        "Static": false,
+        "Surface": "surfaces/metal.surface"
+      }
+    ],
+    "Children": [],
+    "__properties": { "NetworkInterpolation": true, "TimeScale": 1, "WantsSystemScene": true },
+    "__variables": []
+  },
+  "ResourceVersion": 2,
+  "ShowInMenu": false,
+  "__references": [],
+  "__version": 2
+}

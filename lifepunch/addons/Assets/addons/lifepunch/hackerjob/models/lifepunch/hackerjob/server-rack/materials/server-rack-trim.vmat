@@ -1,0 +1,20 @@
+// LifePunch hacker server rack — Fab trim sheet (Server_Trim)
+
+Layer0
+{
+	shader "shaders/complex.shader"
+
+	F_METALNESS_TEXTURE 1
+	F_SPECULAR 1
+
+	TextureColor "addons/lifepunch/hackerjob/models/lifepunch/hackerjob/server-rack/source/textures/trim/Server_Trim_Sheet_BaseColor.png"
+	TextureNormal "addons/lifepunch/hackerjob/models/lifepunch/hackerjob/server-rack/source/textures/trim/Server_Trim_Sheet_GL_Normal.png"
+	TextureRoughness "addons/lifepunch/hackerjob/models/lifepunch/hackerjob/server-rack/source/textures/trim/Server_Trim_Sheet_Roughness.png"
+	TextureMetalness "addons/lifepunch/hackerjob/models/lifepunch/hackerjob/server-rack/source/textures/trim/Server_Trim_Sheet_Metallic.png"
+	TextureAmbientOcclusion "addons/lifepunch/hackerjob/models/lifepunch/hackerjob/server-rack/source/textures/trim/Server_Trim_Sheet_AO.png"
+	TextureEmissive "addons/lifepunch/hackerjob/models/lifepunch/hackerjob/server-rack/source/textures/trim/Server_Trim_Sheet_Emission.png"
+
+	g_flModelTintAmount "1.000"
+	g_vColorTint "[1.000000 1.000000 1.000000 0.000000]"
+	g_flEmissiveStrength "1.500"
+}

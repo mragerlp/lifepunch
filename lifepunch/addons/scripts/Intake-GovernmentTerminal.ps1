@@ -16,6 +16,7 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+. (Join-Path $PSScriptRoot 'LifePunch-AddonDropPaths.ps1')
 $AddonsRoot = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 $GovAssets = Join-Path $AddonsRoot 'Assets\addons\lifepunch\governmentdatacenter'
 $ModelSource = Join-Path $GovAssets 'models\lifepunch\governmentdatacenter\police-terminal\source'
@@ -24,6 +25,8 @@ $IntakeRaw = Join-Path $GovAssets 'intake-raw\government-terminal'
 
 function Resolve-GovernmentTerminalSource([string]$Explicit) {
     if ($Explicit) { return $Explicit }
+    $canonical = Get-LifePunchEntityDrop -Key 'fbi.government-terminal' -LegacyNames @('governmentterminal')
+    if (Test-Path -LiteralPath $canonical) { return $canonical }
     $candidates = @(
         (Join-Path $env:USERPROFILE 'OneDrive\Desktop\addon stuff\hackerjobassets\Hacker Job\governmentterminal')
         (Join-Path $env:USERPROFILE 'OneDrive\Desktop\governmentterminal')
