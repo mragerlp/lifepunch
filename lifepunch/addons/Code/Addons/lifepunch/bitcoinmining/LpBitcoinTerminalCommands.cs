@@ -42,7 +42,7 @@ internal static class LpBitcoinTerminalCommands
 					return new LpBitcoinCommandResult( true, "No linked GPU racks." );
 
 				var lines = racks.Select( ( r, i ) =>
-					$"#{i} {( r.LargeRack ? "ADV" : "STD" )} BTC={r.BitcoinAmount:F6} {( r.IsMining ? "MINING" : "IDLE" )}" );
+					$"#{i} {( r.AdvancedRack ? LpBitcoinIdent.AdvancedRackDisplayName : LpBitcoinIdent.RackDisplayName )} BTC={r.BitcoinAmount:F6} {( r.IsMining ? "MINING" : "IDLE" )}" );
 				return new LpBitcoinCommandResult( true, string.Join( "\n", lines ) );
 
 			case "select":
@@ -61,7 +61,7 @@ internal static class LpBitcoinTerminalCommands
 					return new LpBitcoinCommandResult( false, "ERR no rack selected — type racks / select <n>" );
 
 				return new LpBitcoinCommandResult( true,
-					$"rack #{selectedIndex} {( rack.LargeRack ? "ADV" : "STD" )} | BTC {rack.BitcoinAmount:F8} | ${rack.UsdValue} | {rack.ClockGhz:F2}GHz x{rack.CoreCount} | {( rack.IsMining ? "MINING" : "IDLE" )}" );
+					$"rack #{selectedIndex} {( rack.AdvancedRack ? LpBitcoinIdent.AdvancedRackDisplayName : LpBitcoinIdent.RackDisplayName )} | BTC {rack.BitcoinAmount:F8} | ${rack.UsdValue} | {rack.ClockGhz:F2}GHz x{rack.CoreCount} | {( rack.IsMining ? "MINING" : "IDLE" )}" );
 
 			case "mining":
 				if ( parts.Length < 2 )

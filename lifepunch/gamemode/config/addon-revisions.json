@@ -61,15 +61,18 @@
       "dxrpAddonId": "019ec9a4-d867-7668-b452-904f97493c7e",
       "dxrpAddonIdentifier": "lifepunchbitcoin",
       "targetEnvironment": "lifepunchdevelopment",
-      "publishStatus": "content-rev1-published-not-pinned",
+      "publishStatus": "content-rev2-published-and-pinned-dev",
       "revisionId": null,
-      "revisionNumber": 1,
+      "revisionNumber": 2,
+      "targetGamemode": "development",
+      "targetGamemodeId": "019eca7a-d259-747f-9670-c6642e0d3c19",
+      "targetGamemodeName": "LIFEPUNCH™ Development",
       "stagingRoot": "../addons/.dxrp-publish/upload",
       "packageExport": "../addons/.dxrp-publish/package-bitcoinmining.json",
       "notes": [
-        "Rev 1 (2026-06-10): content-row snapshot only — Bitcoin Miner Hub, Bitcoin Terminal, GPU Rack, Large GPU Rack. No Code/Assets upload.",
-        "Portal persists content JSON only after Publish Revision; editor draft is not saved.",
-        "NEXT ship tier: ModelDoc _c → prepare-publish.ps1 -Addon bitcoinmining → Rev 2 with Code+Assets → pin on LIFEPUNCH™ ship gamemode (not legacy LifePunch) → assign gamemode on lifepunchdevelopment → Sync Servers.",
+        "Rev 1 (2026-06-10): content-row snapshot — Hub, Terminal, GPU Rack, Large GPU Rack. No Code/Assets.",
+        "Rev 2 (2026-06-10): rename Large GPU Rack → Advanced GPU Rack; primaryReference → advanced-gpu-rack.prefab. Content-only. Pinned Rev 2 on LIFEPUNCH™ Development gamemode (019eca7a) for lifepunchdevelopment — NOT 70p.",
+        "NEXT ship tier (Rev 3+): ModelDoc _c → prepare-publish.ps1 -Addon bitcoinmining → portal upload Code+Assets → re-pin on LIFEPUNCH™ ship gamemode after dev playtest.",
         "70p (lifepunchmainserver): assign LIFEPUNCH™ gamemode only after development playtest sign-off (replaces Vanilla)."
       ]
     }

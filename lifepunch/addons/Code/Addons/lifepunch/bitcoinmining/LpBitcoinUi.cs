@@ -52,7 +52,7 @@ internal static class LpBitcoinUi
 			var rackGo = scene.CreateObject();
 			rackGo.Name = i == 0 ? "LpBitcoinPreviewRackStd" : "LpBitcoinPreviewRackAdv";
 			var rack = rackGo.AddComponent<LpBitcoinRackEntity>();
-			rack.LargeRack = i == 1;
+			rack.AdvancedRack = i == 1;
 			rack.LinkToHub( hub );
 		}
 	}

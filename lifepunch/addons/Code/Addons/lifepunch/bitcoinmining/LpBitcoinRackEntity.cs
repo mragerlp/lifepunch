@@ -21,7 +21,8 @@ public sealed class LpBitcoinRackEntity : Component, Component.IPressable
 public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable
 #endif
 {
-	[Property] public bool LargeRack { get; set; }
+	/// <summary>Stacked rack (<see cref="LpBitcoinIdent.AdvancedRackSlug"/>) — <see cref="LpBitcoinIdent.AdvancedRackDisplayName"/>, 2× yield.</summary>
+	[Property] public bool AdvancedRack { get; set; }
 
 	[Sync( SyncFlags.FromHost )] public Guid LinkedHubId { get; set; }
 	[Sync( SyncFlags.FromHost )] public bool IsMining { get; set; }
@@ -32,7 +33,7 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable
 	[Sync( SyncFlags.FromHost )] public int CoreUpgradeLevel { get; set; }
 	[Sync( SyncFlags.FromHost )] public float MiningProgress { get; set; }
 
-	public float YieldMultiplier => LargeRack ? 2f : 1f;
+	public float YieldMultiplier => AdvancedRack ? 2f : 1f;
 	public float MiningRatePerMinute => LpBitcoinEconomy.MiningRatePerMinute( ClockGhz, CoreCount, YieldMultiplier );
 	public int UsdValue => (int)(BitcoinAmount * LpBitcoinEconomy.BitcoinValueUsd);
 

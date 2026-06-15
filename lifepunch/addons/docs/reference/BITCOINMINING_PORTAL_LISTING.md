@@ -22,8 +22,9 @@
 
 | Rev | Status | Notes |
 |-----|--------|-------|
-| **1** | Published (content only) | 2026-06-10 — snapshots 4 content rows (Hub, Terminal, GPU Rack, Large GPU Rack). No Code/Assets upload. Changelog: placeholder; ship gate deferred. |
-| **2+** | Not yet | Ship tier: `prepare-publish.ps1 -Addon bitcoinmining` → upload Code + Assets with `_c` → re-pin on LifePunch gamemode. |
+| **1** | Published (content only) | 2026-06-10 — snapshots 4 content rows (Hub, Terminal, GPU Rack, Large GPU Rack). No Code/Assets upload. |
+| **2** | Published (content only) | 2026-06-10 — rename Large GPU Rack → **Advanced GPU Rack**; `primaryReference` → `advancedgpurack/advanced-gpu-rack.prefab`. Addon description updated. No Code/Assets upload. |
+| **3+** | Not yet | Ship tier: `prepare-publish.ps1 -Addon bitcoinmining` → upload Code + Assets with `_c` → re-pin on LifePunch gamemode. |
 
 **Portal rule:** Content JSON is **not persisted** until **Publish Revision** — editor draft alone does not save.
 
@@ -41,7 +42,7 @@
 
 - **Bitcoin Miner hub** — HASHD control, encryption upgrades, rack linking  
 - **GPU Rack** — standard yield hardware  
-- **Large GPU Rack** — stacked rack (higher yield)
+- **Advanced GPU Rack** — stacked rack (higher yield)
 
 Control mining, upgrades, and BTC payout from the HASHD console (`hashd` or USE the hub). Server-authoritative economy. LifePunch-owned meshes and sounds — self-contained addon assets.
 
@@ -61,7 +62,7 @@ Place hub and racks; open hashd to mine BTC and sell for cash.
 |------|-------------------|
 | `bitcoin-miner` | Bitcoin Miner |
 | `gpu-rack` | GPU Rack |
-| `large-gpu-rack` | Large GPU Rack |
+| `advanced-gpu-rack` | Advanced GPU Rack |
 
 From `BitcoinMiningAddon.cs` / `ASSET_INVENTORY.md`.
 

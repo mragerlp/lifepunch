@@ -73,7 +73,7 @@ Intake-HackerCornermanUi.ps1
 ```text
 entities/bitcoinminer/     # hub prefab + source
 entities/gpurack/
-entities/largegpurack/
+entities/advancedgpurack/
 entities/hackerterminal/   # future rename from hacker-terminal
 entities/serverrack/
 entities/governmentdatacenter/   # landmark

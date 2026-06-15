@@ -11,7 +11,7 @@
 |------|-------|
 | Max hubs | **2** |
 | Per hub — small racks | **3** (`gpu-rack`) |
-| Per hub — large rack | **1** (`large-gpu-rack`) |
+| Per hub — advanced rack | **1** (`advanced-gpu-rack`) |
 
 Each hub controls **only its linked racks** (same spawner `Owner` + within **8m / 4m** of hub). Racks are **separate Market purchases** — not bought inside hashd (Phase 2 deploy TBD).
 
@@ -52,7 +52,7 @@ See `BITCOINMINING_ENCRYPTION_SPEC.md` — mirrors hacker server-rack offense.
 |--------|--------|
 | `bitcoin-miner` hub | 250 |
 | `gpu-rack` | 500 |
-| `large-gpu-rack` | 2000 |
+| `advanced-gpu-rack` | 2000 |
 
 Damage → metal hit SFX → smoke → explode (existing `GpuRackEntity` path).
 
@@ -60,7 +60,7 @@ Damage → metal hit SFX → smoke → explode (existing `GpuRackEntity` path).
 
 ## Scale (visual)
 
-**Intended in-world read:** Ophion hub = **Raijintek Ophion gaming PC tower** (standing ITX build — visible GPU/PSU, hashd control station). Reference: [Sketchfab Gaming PC (Ophion)](https://sketchfab.com/3d-models/gaming-pc-765427bb0cc3495592f94e0ac468d48c). **GPU Rack** = standing open-frame crypto mining rig. Reference: [Sketchfab Crypto Farm / Mining Rig](https://sketchfab.com/3d-models/crypto-farm-mining-rig-049f02ffd15c41ca8cb8020feb43993f). **Large GPU Rack** = stacked farm unit (largest).
+**Intended in-world read:** Ophion hub = **Raijintek Ophion gaming PC tower** (standing ITX build — visible GPU/PSU, hashd control station). Reference: [Sketchfab Gaming PC (Ophion)](https://sketchfab.com/3d-models/gaming-pc-765427bb0cc3495592f94e0ac468d48c). **GPU Rack** = standing open-frame crypto mining rig. Reference: [Sketchfab Crypto Farm / Mining Rig](https://sketchfab.com/3d-models/crypto-farm-mining-rig-049f02ffd15c41ca8cb8020feb43993f). **Advanced GPU Rack** = stacked farm unit (largest).
 
 Prefab roots stay `1,1,1` (`MODEL_SCALE_DOCTRINE.md`). Tune `import_scale` in `bitcoin-miner.vmdl` until mesh bounds match a ~15″ tall tower on flatgrass — not a shrunken desk puck.
 

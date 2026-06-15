@@ -60,7 +60,7 @@ Hacker job is **not a pure console job** — world props + modules + typing as *
 |--------|------|----------------|-----|
 | Bitcoin Miner hub | `bitcoin-miner` | **2** | **250** |
 | GPU Rack | `gpu-rack` | **3 per hub** | **500** |
-| Large GPU Rack | `large-gpu-rack` | **1 per hub** | **2000** |
+| Advanced GPU Rack | `advanced-gpu-rack` | **1 per hub** | **2000** |
 
 - Hub **command power ON** → hub anim + startup sound → menu rack buttons enabled.
 - Hub **encryption** upgrades defend against vengeance hacks.

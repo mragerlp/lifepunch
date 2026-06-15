@@ -276,7 +276,7 @@
       "ident": "bitcoinmining",
       "packageSlug": "lifepunchbitcoin",
       "title": "LIFEPUNCH Bitcoin Miner for DXRP",
-      "description": "LIFEPUNCH™ Bitcoin Miner — Bitcoin Terminal + GPU Rack + Large GPU Rack for DXRP. hashd console controls mining, upgrades, and BTC payout. Published by LIFEPUNCH. LifePunch-owned meshes; not third-party cloud assets.",
+      "description": "LIFEPUNCH™ Bitcoin Miner — Bitcoin Terminal + GPU Rack + Advanced GPU Rack for DXRP. hashd console controls mining, upgrades, and BTC payout. Published by LIFEPUNCH. LifePunch-owned meshes; not third-party cloud assets.",
       "kind": "interactive-entity",
       "hasAssets": true,
       "hasCode": true,
@@ -285,7 +285,7 @@
       "sboxIdentifier": "lifepunch.bitcoin",
       "status": "in-development",
       "spec": "docs/BITCOINMINING_UX_SPEC.md",
-      "notes": "IP: docs/BITCOINMINING_IP_DOCTRINE.md. Hub + gpu-rack + large-gpu-rack. Portal Rev 1 (2026-06-10): content snapshot only — 4 entities, no code/assets. ModelDoc _c before ship-tier Rev 2+. Remove BitcoinMiningDevSpawn before ship publish. Gamemode pin pending.",
+      "notes": "IP: docs/BITCOINMINING_IP_DOCTRINE.md. Hub + gpu-rack + advanced-gpu-rack. Portal Rev 2 pinned on LIFEPUNCH™ Development gamemode. Ship-tier Rev 3+: upload from .dxrp-publish/upload via prepare-publish.ps1. Remove BitcoinMiningDevSpawn before ship publish.",
       "contents": [
         {
           "slug": "bitcoin-terminal",
@@ -322,11 +322,11 @@
           "modelBuild": "Assets/addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/gpu-rack/MODEL_BUILD.md"
         },
         {
-          "slug": "large-gpu-rack",
-          "name": "Large GPU Rack",
-          "label": "Large GPU Rack",
+          "slug": "advanced-gpu-rack",
+          "name": "Advanced GPU Rack",
+          "label": "Advanced GPU Rack",
           "type": 0,
-          "primaryReference": "addons/lifepunch/bitcoinmining/entities/largegpurack/large-gpu-rack.prefab",
+          "primaryReference": "addons/lifepunch/bitcoinmining/entities/advancedgpurack/advanced-gpu-rack.prefab",
           "worldModelPath": "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/gpu-rack/gpu-rack-stacked.vmdl",
           "grouping": "Entities",
           "implementationStatus": "stacked-rack-2x-yield",

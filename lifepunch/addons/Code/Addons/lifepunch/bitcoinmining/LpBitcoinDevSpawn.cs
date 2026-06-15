@@ -44,6 +44,26 @@ public static class LpBitcoinDevSpawn
 			Log.Info( "lp_bitcoin_spawn_kit: full prefab kit placed — USE hub or terminal." );
 	}
 
+	[ConCmd( "lp_spawn_advanced_gpu_rack" )]
+	public static void SpawnAdvancedRack()
+	{
+		if ( !TryGetSpawnTransform( out var transform ) )
+		{
+			Log.Warning( "lp_spawn_advanced_gpu_rack: no local viewer — play from game.scene first." );
+			return;
+		}
+
+		var hub = Game.ActiveScene?.GetAllComponents<LpBitcoinHubEntity>().FirstOrDefault( h => h.IsValid() );
+		if ( !hub.IsValid() )
+		{
+			Log.Warning( "lp_spawn_advanced_gpu_rack: no hub in scene — spawn kit or hub first." );
+			return;
+		}
+
+		SpawnRackPrefab( transform, hub, advanced: true );
+		Log.Info( "lp_spawn_advanced_gpu_rack: Advanced GPU Rack placed (2× yield)." );
+	}
+
 	/// <summary>Hub admin UI only — no world spawn. Closes terminal if open.</summary>
 	[ConCmd( "lp_bitcoin_preview_hub" )]
 	public static void PreviewHubUi()
@@ -229,10 +249,10 @@ public static class LpBitcoinDevSpawn
 
 		var origin = hub.WorldPosition;
 		var rot = transform.Rotation;
-		SpawnRackPrefab( new Transform( SnapToGround( origin + rot.Right * 80f ), rot ), hub, large: false );
-		SpawnRackPrefab( new Transform( SnapToGround( origin + rot.Right * 160f ), rot ), hub, large: false );
-		SpawnRackPrefab( new Transform( SnapToGround( origin + rot.Left * 80f ), rot ), hub, large: false );
-		SpawnRackPrefab( new Transform( SnapToGround( origin + rot.Left * 160f ), rot ), hub, large: true );
+		SpawnRackPrefab( new Transform( SnapToGround( origin + rot.Right * 80f ), rot ), hub, advanced: false );
+		SpawnRackPrefab( new Transform( SnapToGround( origin + rot.Right * 160f ), rot ), hub, advanced: false );
+		SpawnRackPrefab( new Transform( SnapToGround( origin + rot.Left * 80f ), rot ), hub, advanced: false );
+		SpawnRackPrefab( new Transform( SnapToGround( origin + rot.Left * 160f ), rot ), hub, advanced: true );
 		SpawnTerminalPrefab( new Transform( SnapToGround( origin + rot.Forward * 100f ), rot ) );
 		return hub;
 	}
@@ -262,9 +282,9 @@ public static class LpBitcoinDevSpawn
 		return hub;
 	}
 
-	private static void SpawnRackPrefab( Transform transform, LpBitcoinHubEntity hub, bool large )
+	private static void SpawnRackPrefab( Transform transform, LpBitcoinHubEntity hub, bool advanced )
 	{
-		var path = large ? LpBitcoinIdent.LargeRackPrefabPath : LpBitcoinIdent.RackPrefabPath;
+		var path = advanced ? LpBitcoinIdent.AdvancedRackPrefabPath : LpBitcoinIdent.RackPrefabPath;
 		var go = ClonePrefabAt( path, transform );
 		if ( !go.IsValid() )
 			return;
@@ -275,7 +295,7 @@ public static class LpBitcoinDevSpawn
 
 		if ( rack.IsValid() )
 		{
-			rack.LargeRack = large;
+			rack.AdvancedRack = advanced;
 			rack.LinkToHub( hub );
 		}
 

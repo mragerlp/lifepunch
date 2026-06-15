@@ -42,7 +42,7 @@ By the end of Bitcoin, the player should **instantly** recognize:
 |------|-----------------|----------------|
 | **Hub** | Physical machine + **modern admin dashboard** on USE | `bitcoin-miner` → `LpHashdPanel` |
 | **Terminal** | Information / control — typed commands | `bitcoin-terminal` → `LpBitcoinTerminalPanel` |
-| **Rack** | Scaling / expansion — production unit; USE opens CRT focused on rack | `gpu-rack` / `large-gpu-rack` |
+| **Rack** | Scaling / expansion — production unit; USE opens CRT focused on rack | `gpu-rack` / `advanced-gpu-rack` |
 | **Power / error** | Universal warning language | Off = dark; blocked = explicit message |
 | **Active / success** | Universal success language | Powered + mining = unmistakable live read |
 

@@ -11,7 +11,7 @@
 Owner locked the **miner as a roleplay class** (not a copy-paste ATM):
 
 - **Bitcoin Miner hub** (`bitcoin-miner` / Ophion) = PIN gatekeeper + hashd + wallet + encryption
-- **GPU Rack** + **Large GPU Rack** = passive compute linked by proximity + same spawner `Owner`
+- **GPU Rack** + **Advanced GPU Rack** = passive compute linked by proximity + same spawner `Owner`
 - **Hackers** crack PIN / breach hub — miners defend with encryption tiers
 
 Red just shipped: owner-matched rack linking, ghost-console PIN veil, gatekeeper flow.  
@@ -48,7 +48,7 @@ One page a new player / staff member understands:
 4. **What you never do** (USE a GPU Rack — it's hardware only)
 5. **Caps** (2 hubs · 3 small · 1 large per hub)
 
-Use player-facing names: **Bitcoin Miner**, **GPU Rack**, **Large GPU Rack** — not slug jargon in body text.
+Use player-facing names: **Bitcoin Miner**, **GPU Rack**, **Advanced GPU Rack** — not slug jargon in body text.
 
 ---
 
@@ -77,7 +77,7 @@ Grep repo `lifepunch/addons` for drift vs hub canon. Flag files that still say:
 - `bitcoin-terminal` as control station
 - `bitcoin-miner` = small gpu-rack mesh (wrong — Ophion hub)
 - `hashd` / `mine` as **player** ConCmds (dev only now)
-- `racks` without **GPU Rack** / **Large GPU Rack** labels
+- `racks` without **GPU Rack** / **Advanced GPU Rack** labels
 - Purchase "through terminal" or single entity
 
 Per row: `path` · `line/issue` · `fix one-liner` · `priority P0/P1/P2`
@@ -94,7 +94,7 @@ Paste-ready for DXRP portal / gamemode entity rows:
 |--------|--------------|-------------------|----------------------|------------------|
 | `bitcoin-miner` | Bitcoin Miner | … | TBD | 2 |
 | `gpu-rack` | GPU Rack | … | TBD | 3 per hub (note) |
-| `large-gpu-rack` | Large GPU Rack | … | TBD | 1 per hub |
+| `advanced-gpu-rack` | Advanced GPU Rack | … | TBD | 1 per hub |
 
 Include **job fantasy** one-liner each (not tech spec). Lead **LIFEPUNCH** per trademark rule.
 
@@ -104,7 +104,7 @@ Include **job fantasy** one-liner each (not tech spec). Lead **LIFEPUNCH** per t
 
 **Output:** `outbox/BITCOINMINING_SCALE_CHECKLIST.md`
 
-**Critical:** `BoxCollider` ≠ visual mesh. Hub collider Z≈48 can be **wrong** while Ophion reads as a desktop — visual hierarchy must be **Large GPU Rack >> GPU Rack >> hub**.
+**Critical:** `BoxCollider` ≠ visual mesh. Hub collider Z≈48 can be **wrong** while Ophion reads as a desktop — visual hierarchy must be **Advanced GPU Rack >> GPU Rack >> hub**.
 
 Table Red fills on `facepunch.flatgrass` with bridge bounds:
 
@@ -112,7 +112,7 @@ Table Red fills on `facepunch.flatgrass` with bridge bounds:
 |--------|----------------------|-------------|--------------|----------------------|--------|
 | Bitcoin Miner hub (Ophion) | measure | 20×20×48 ⚠️ stale? | 1.0 | **3 — smallest** | Shrink collider to desk |
 | GPU Rack | measure | ~8.6×12.9×21 | 1.0 | 2 | |
-| Large GPU Rack | measure | ~52×27×47 | 1.0 | **1 — largest** | |
+| Advanced GPU Rack | measure | ~52×27×47 | 1.0 | **1 — largest** | |
 
 Law: `MODEL_SCALE_DOCTRINE.md` — prefab root `1,1,1` only; tune `import_scale` once from measured mesh.
 
@@ -126,9 +126,9 @@ Include link range: **8m / 4m** from hub.
 
 Red renamed CLI `rigs` (alias `racks`). Audit `HashdTerminal.razor` + help strings for:
 
-- Generic "rack" → prefer **GPU Rack** / **Large GPU Rack**
+- Generic "rack" → prefer **GPU Rack** / **Advanced GPU Rack**
 - Empty state copy (Market purchase hint)
-- Rail **LINKED** summary format: `2× GPU Rack · 1× Large GPU Rack`
+- Rail **LINKED** summary format: `2× GPU Rack · 1× Advanced GPU Rack`
 
 List any remaining generic "rack(s)" user-visible strings + suggested replacement.
 

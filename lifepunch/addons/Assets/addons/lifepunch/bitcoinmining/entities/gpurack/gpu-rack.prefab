@@ -136,7 +136,7 @@
         "__guid": "6d47169b-65d4-45c5-961e-9c429d802e21",
         "__enabled": true,
         "Flags": 0,
-        "LargeRack": false,
+        "AdvancedRack": false,
         "OnComponentDestroy": null,
         "OnComponentDisabled": null,
         "OnComponentEnabled": null,

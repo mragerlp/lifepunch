@@ -88,7 +88,7 @@ powershell -File lifepunch\scripts\Pull-DxrpCompiledAssetsToRepo.ps1 -Addon bitc
 |--------|--------|-------|
 | Ophion hub | `entities/bitcoinminer/bitcoin-miner.prefab` | `models/.../bitcoin-miner/bitcoin-miner.vmdl` |
 | GPU rack | `entities/gpurack/gpu-rack.prefab` | `models/.../gpu-rack/gpu-rack.vmdl` |
-| Large rack | `entities/largegpurack/large-gpu-rack.prefab` | `models/.../gpu-rack/gpu-rack-stacked.vmdl` |
+| Advanced rack | `entities/advancedgpurack/advanced-gpu-rack.prefab` | `models/.../gpu-rack/gpu-rack-stacked.vmdl` |
 | Terminal | hub USE path → `HashdTerminal` | `bitcoin-terminal` mesh shared |
 
 Code root: `Code/Addons/lifepunch/bitcoinmining/`

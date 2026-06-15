@@ -77,7 +77,7 @@ Not: UI panel → terminal screen → menus.
 | Brief entity | Repo today |
 |--------------|------------|
 | Ophion Miner / hub | `bitcoin-miner.prefab` + `bitcoin-miner.vmdl` |
-| Rack Frame / GPU racks | `gpu-rack`, `large-gpu-rack` |
+| Rack Frame / GPU racks | `gpu-rack`, `advanced-gpu-rack` |
 | Crypto Wallet Terminal | `HashdTerminal` on hub (USE hub path) |
 | Starter ASIC / Titan | Future rack modules — not P0 |
 | PDU, cooling duct, generator | Brief flavor — **not** new meshes P0 |

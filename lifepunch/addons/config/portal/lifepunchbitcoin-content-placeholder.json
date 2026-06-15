@@ -30,10 +30,10 @@
     "iconPath": ""
   },
   {
-    "name": "Large GPU Rack",
+    "name": "Advanced GPU Rack",
     "type": 0,
     "description": "Stacked GPU rack — 2x yield.",
-    "primaryReference": "addons/lifepunch/bitcoinmining/entities/largegpurack/large-gpu-rack.prefab",
+    "primaryReference": "addons/lifepunch/bitcoinmining/entities/advancedgpurack/advanced-gpu-rack.prefab",
     "secondaryReference": "",
     "grouping": "Entities",
     "worldModelPath": "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/gpu-rack/gpu-rack-stacked.vmdl",

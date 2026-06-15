@@ -29,7 +29,7 @@ foreach ($ident in $Ident) {
     $needle = "addons/lifepunch/$ident/**"
     if ($content -notlike "*$needle*") {
         $old = 'addons/lifepunch/bitcoinmining/**"'
-        $new = "addons/lifepunch/bitcoinmining/**`naddons/lifepunch/$ident/**`""
+        $new = "addons/lifepunch/bitcoinmining/**\\naddons/lifepunch/$ident/**`""
         if ($content -like "*$old*" -and $ident -ne 'bitcoinmining') {
             $content = $content.Replace( $old, $new )
             $added += $needle
@@ -40,7 +40,7 @@ foreach ($ident in $Ident) {
             if ($idx -ge 0) {
                 $insertAt = $content.IndexOf( '"', $idx + $marker.Length )
                 if ($insertAt -ge 0) {
-                    $content = $content.Insert( $insertAt, "$needle\n" )
+                    $content = $content.Insert( $insertAt, "$needle\\n" )
                     $added += $needle
                 }
             }

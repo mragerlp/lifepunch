@@ -10,13 +10,13 @@
 
 ### Root cause (confirmed 2026-06-11)
 
-**Play fails when the active tab is a prefab stage** (`Prefab: GPU Rack`, `Prefab: Large GPU Rack`, etc.). Bridge reports `sceneName: "gpu-rack"` — that is **not** DXRP play mode. Hosting from there always yields `Unable to create a lobby outside of a game`.
+**Play fails when the active tab is a prefab stage** (`Prefab: GPU Rack`, `Prefab: Advanced GPU Rack`, etc.). Bridge reports `sceneName: "gpu-rack"` — that is **not** DXRP play mode. Hosting from there always yields `Unable to create a lobby outside of a game`.
 
 **Play works from `scenes/game.scene`** — bridge reports `sceneName: "Game"`, log shows `[Fitter] Fitting thieves.rpdowntown3t` and `Bloodwave has joined the game`.
 
 ### Steps (every session)
 
-1. **Close all prefab tabs** (save/discard the `*` on Large GPU Rack if prompted).
+1. **Close all prefab tabs** (save/discard the `*` on Advanced GPU Rack if prompted).
 2. Asset Browser → **scenes** → double-click **`game.scene`** — tab title must say **Game**, not `Prefab: …`.
 3. Press **Play** (green arrow). First cold load: wait **2–5 minutes** while downtown compiles; early Stop = `Couldn't load map (A task was canceled.)`.
 4. Log/console shows player join + map fit → you're in. Then: `lp_hashd_preview` or `lp_spawn_gpu_rack`.
@@ -107,7 +107,7 @@ lp_hashd_preview
 
 Spawns small rack + CRT kit and **opens the hashd overlay immediately**. The CRT world mesh can still show ERROR until `bitcoin-terminal.vmdl` is compiled in ModelDoc — the console UI does not depend on the CRT mesh.
 
-**Three entities (owner canon):** Bitcoin Terminal = control · GPU Rack = small · Large GPU Rack = stacked (2× yield). See `docs/reference/BITCOINMINING_THREE_ENTITY_ARCH.md`.
+**Three entities (owner canon):** Bitcoin Terminal = control · GPU Rack = small · Advanced GPU Rack = stacked (2× yield). See `docs/reference/BITCOINMINING_THREE_ENTITY_ARCH.md`.
 
 ---
 
@@ -123,7 +123,7 @@ Spawns **GPU Rack** (`gpu-rack.prefab`) + **Bitcoin Terminal** (`bitcoin-termina
 
 ```text
 lp_spawn_bitcoin_terminal
-lp_spawn_large_gpu_rack
+lp_spawn_advanced_gpu_rack
 lp_spawn_bitcoinmining_full_kit
 ```
 
@@ -185,14 +185,14 @@ Expected: green terminal UI, LCD on `lcd_screen` (on `bitcoin-terminal.prefab`),
 **Visual size hierarchy (what players should see):**
 
 ```text
-Large GPU Rack  >>  GPU Rack (standing crypto farm frame)  >>  Bitcoin Miner hub (Ophion gaming PC)
+Advanced GPU Rack  >>  GPU Rack (standing crypto farm frame)  >>  Bitcoin Miner hub (Ophion gaming PC)
    stacked farm         single open-frame mining rig              hashd control tower
 ```
 
 | Entity | Prefab | Root scale | BoxCollider (gameplay hammer) | vmdl `import_scale` (repo) | Mesh bounds @ flatgrass |
 |--------|--------|------------|-------------------------------|----------------------------|-------------------------|
 | **GPU Rack** | `gpurack/gpu-rack.prefab` | 1,1,1 | **25 × 20 × 36** | **0.465** (pitch 90°) | ~16 × 23 × **36** |
-| **Large GPU Rack** | `largegpurack/large-gpu-rack.prefab` | 1,1,1 | ~52 × 27 × **47** | 1.0 | ~95 × 70 × **94** |
+| **Advanced GPU Rack** | `advancedgpurack/advanced-gpu-rack.prefab` | 1,1,1 | ~52 × 27 × **47** | 1.0 | ~95 × 70 × **94** |
 | **Bitcoin Miner hub** | `bitcoinminer/bitcoin-miner.prefab` | 1,1,1 | **10 × 8 × 15** | **0.385** + **Z 13.3** trans, rot 0 | Re-verify after vmdl recompile (was wrong @ trans 0 + pitch 90°) |
 | **Bitcoin Terminal (CRT)** | `bitcoin-terminal/bitcoin-terminal.prefab` | 1,1,1 | **14 × 18 × 8** | **0.0195** | ~19 × 18 × 8 mesh @ flatgrass (Jun 2026 bridge tune; was ~1006×925×429 @ 1.0) |
 

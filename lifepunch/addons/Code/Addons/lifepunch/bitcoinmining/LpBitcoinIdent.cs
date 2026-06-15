@@ -22,8 +22,13 @@ public static class LpBitcoinIdent
 	public const string UiFooter = "lifepunch.bitcoin v2 — lifepunch.co";
 
 	public const string HubPrefabPath = "addons/lifepunch/bitcoinmining/entities/bitcoinminer/bitcoin-miner.prefab";
+	public const string RackDisplayName = "GPU Rack";
+	public const string AdvancedRackDisplayName = "Advanced GPU Rack";
+
+	public const string AdvancedRackSlug = "advanced-gpu-rack";
+
 	public const string RackPrefabPath = "addons/lifepunch/bitcoinmining/entities/gpurack/gpu-rack.prefab";
-	public const string LargeRackPrefabPath = "addons/lifepunch/bitcoinmining/entities/largegpurack/large-gpu-rack.prefab";
+	public const string AdvancedRackPrefabPath = "addons/lifepunch/bitcoinmining/entities/advancedgpurack/advanced-gpu-rack.prefab";
 	public const string TerminalPrefabPath = "addons/lifepunch/bitcoinmining/entities/bitcoin-terminal/bitcoin-terminal.prefab";
 
 	/// <summary>HASHD hub + terminal UI — Bitcoin mark (orange ₿ on black).</summary>

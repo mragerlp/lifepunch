@@ -172,10 +172,10 @@
 											var rack = GetLinkedRacks()[i];
 											<div class="miner-row">
 												<div class="miner-thumb">
-													<i class="material-icons">@(rack.LargeRack ? "view_module" : "storage")</i>
+													<i class="material-icons">@(rack.AdvancedRack ? "view_module" : "storage")</i>
 												</div>
 												<div class="miner-copy">
-													<div class="miner-name">#@i @(rack.LargeRack ? "Advanced" : "Standard")</div>
+													<div class="miner-name">#@i @(rack.AdvancedRack ? LpBitcoinIdent.AdvancedRackDisplayName : LpBitcoinIdent.RackDisplayName)</div>
 													<div class="miner-meta">@(rack.ClockGhz.ToString("F2")) GHz · x@(rack.CoreCount) · @(rack.BitcoinAmount.ToString("F4")) BTC</div>
 												</div>
 												<span class="status-pill @(rack.IsMining ? "active" : "idle")">
@@ -217,10 +217,10 @@
 										<div class="rack-card">
 											<div class="rack-main">
 												<div class="rack-icon">
-													<i class="material-icons">@(rack.LargeRack ? "view_module" : "storage")</i>
+													<i class="material-icons">@(rack.AdvancedRack ? "view_module" : "storage")</i>
 												</div>
 												<div class="rack-copy">
-													<div class="rack-title">#@i @(rack.LargeRack ? "Advanced" : "Standard") rack</div>
+													<div class="rack-title">#@i @(rack.AdvancedRack ? LpBitcoinIdent.AdvancedRackDisplayName : LpBitcoinIdent.RackDisplayName)</div>
 													<div class="rack-sub">@(rack.BitcoinAmount.ToString("F6")) BTC · $@(rack.UsdValue)</div>
 													<div class="rack-sub">@(rack.ClockGhz.ToString("F2")) GHz · x@(rack.CoreCount) cores · yield x@(rack.YieldMultiplier.ToString("F1"))</div>
 												</div>

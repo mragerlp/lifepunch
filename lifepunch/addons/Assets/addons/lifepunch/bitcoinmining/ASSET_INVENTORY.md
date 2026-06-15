@@ -8,13 +8,13 @@
 |------|-------------|------|--------|------|
 | `bitcoin-miner` | **Bitcoin Miner hub** | hashd menu + encryption + rack control | `Ophion.fbx` | vmdl in repo — **compile _c + vmat pass** |
 | `gpu-rack` | **GPU Rack** | 500 HP · mining hardware | `gpu-rack-static.obj` + anim FBX | Shipped |
-| `large-gpu-rack` | **Large GPU Rack** | 2000 HP · 2× yield | stacked anim FBX | vmdl in repo |
+| `advanced-gpu-rack` | **Advanced GPU Rack** | 2000 HP · 2× yield | stacked anim FBX | vmdl in repo |
 | ~~`bitcoin-terminal`~~ | ~~CRT~~ | **Deprecated** — menu on hub | `computer.fbx` | legacy |
 
 ```text
 entities/bitcoinminer/    ← hub source + Ophion (owner)
 entities/gpurack/
-entities/largegpurack/
+entities/advancedgpurack/
 models/lifepunch/bitcoinmining/
   bitcoin-miner/          ← hub vmdl target
   gpu-rack/
