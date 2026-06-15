@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "lastVerified": "2026-06-15",
+  "lastVerified": "2026-06-10",
   "notes": "Known-good stack pins + where to update. Re-verify after any bump. Full runbook: lifepunch/docs/CVL_FULL_CAPACITY_UPDATES.md",
   "components": [
     {
@@ -46,6 +46,30 @@
       "role": "distill + embed + on-demand coder",
       "config": "lifepunch/config/cornerman-tier3-models.json",
       "updateVia": "LM Studio on Green; edit JSON; Fix-CornermanLmServe.ps1"
+    },
+    {
+      "id": "xmovement",
+      "role": "DXRP movement library (rp.csproj dependency)",
+      "library": "xenthio.xmovement",
+      "url": "https://sbox.game/xenthio/xmovement",
+      "status": "installed-required-by-dxrp",
+      "updateVia": "s&box Library Manager; keep in sync with DXRP upstream"
+    },
+    {
+      "id": "simpleantitamper",
+      "role": "optional client-local JSON save tamper hash (not anticheat, not bots)",
+      "library": "quality.simpleantitamper",
+      "url": "https://sbox.game/quality/simpleantitamper",
+      "status": "installed-not-wired",
+      "updateVia": "s&box Library Manager; see TECH_DEBT SEC-01"
+    },
+    {
+      "id": "wackylib",
+      "role": "optional dev utils (not entity framework; not ship dep)",
+      "library": "wizards.wackylib",
+      "url": "https://github.com/WackyWizards/WackyLib",
+      "status": "installed-not-wired",
+      "updateVia": "s&box Library Manager; see TECH_DEBT STACK-02"
     },
     {
       "id": "cursor-mcp-limit",

@@ -53,12 +53,17 @@ Canonical version pins: `lifepunch/config/cvl-stack-pins.json` — bump `lastVer
 4. **Libraries** — s&box Library Manager:
    - `sboxskinsgg.claudebridge` (runtime)
    - `notpointless.chomnr_mcp` (editor)
+   - `xenthio.xmovement` (**required** — DXRP `rp.csproj` reference; see `TECH_DEBT.md` STACK-01)
    - optional: `notpointless.chomnr_humanoid_retargeter`
+   - optional (client-local save hardening only): `quality.simpleantitamper` — see `TECH_DEBT.md` SEC-01
+   - optional (dev utils only, not ship dep): `wizards.wackylib` — see `TECH_DEBT.md` STACK-02
 5. **Restart editor** — `Start-SboxDxrpEditor.ps1 -PreflightFix -BitcoinOnly`
 6. **MCP guard** — `Fix-SboxEditorMcpCursorToolNames.ps1 -ProbeEditorMcp`
 7. **Probe** — `Get-CvlConnectivityStatus.ps1 -Pretty`
 
 After DXRP API changes: re-test `lp_authorize` in editor host play (`DxrpPortalDevAuth.cs`).
+
+**Editor bot playtest** (staff menu, hacker scan, etc.): `game.scene` → Host Play → `lp_authorize` → `lifepunch_spawn_testbot` / `lifepunch_auto_spawn_testbots 1`. Test bots are **stationary** (controller disabled) — not XMovement-driven. XMovement only matters for **your** pawn via DXRP `PlayerController`.
 
 ---
 
