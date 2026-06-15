@@ -45,9 +45,28 @@ Template: `.cursor/rules/dxrp-addon-foundation.mdc`
 | Context | Value |
 |---------|--------|
 | GitHub monorepo remote | `github.com/mragerlp/lifepunch` |
+| GitHub username | **`mragerlp`** — keep; do **not** rename to `bloodwave` (see below) |
+| GitHub display name | **Bloodwave** (profile only — no URL change) |
 | Git author / legal account | **mrragerlp** (also **mragerlp** where used historically) |
 | Windows login | `jared` |
 | USPTO / LLC | Jared Zerillo · Peak Performance Products LLC |
+
+---
+
+## GitHub username — keep `mragerlp` (June 2026 decision)
+
+**Bloodwave** is the public/community alias. **`mragerlp`** is the infrastructure handle.
+
+Do **not** change the GitHub account username to `bloodwave`:
+
+| Reason | Detail |
+|--------|--------|
+| **Redirects are fragile** | [GitHub username changes](https://docs.github.com/en/account-and-profile/concepts/username-changes) redirect repos briefly; if someone claims `mragerlp` and recreates a repo name, redirects break |
+| **Wired everywhere** | `lifepunch`, `lifepunch-published`, `dxrp-public`, agent prompts, DXRP pin config, partner clones |
+| **Three-layer law** | Bloodwave = visible; mrragerlp = author; lifepunch.co = IP — username rename conflates layers |
+| **GitLab separate** | `gitlab.com/mragerlp` is unrelated to a GitHub rename — more drift, no benefit |
+
+**Do instead:** GitHub profile **display name** = Bloodwave; keep all `github.com/mragerlp/...` remotes as-is. Optional future: GitHub **org** (`lifepunch` or `bloodwave`) for public repos only — personal account stays `mragerlp`.
 
 ---
 
