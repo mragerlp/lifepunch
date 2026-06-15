@@ -46,6 +46,24 @@
         "NEXT: publish this revision, re-pin on the LifePunch gamemode (019e36c0-a67f-701c-90f2-460e0b0f1487), sync lifepunchdevelopment only.",
         "Do not sync lifepunchmainserver; it must remain on the vanilla gamemode."
       ]
+    },
+    {
+      "package": "lifepunch.bitcoin",
+      "addonIdent": "bitcoinmining",
+      "dxrpAddonId": "019ec9a4-d867-7668-b452-904f97493c7e",
+      "dxrpAddonIdentifier": "lifepunchbitcoin",
+      "targetEnvironment": "lifepunchdevelopment",
+      "publishStatus": "content-rev1-published-not-pinned",
+      "revisionId": null,
+      "revisionNumber": 1,
+      "stagingRoot": "../addons/.dxrp-publish/upload",
+      "packageExport": "../addons/.dxrp-publish/package-bitcoinmining.json",
+      "notes": [
+        "Rev 1 (2026-06-10): content-row snapshot only — Bitcoin Miner Hub, Bitcoin Terminal, GPU Rack, Large GPU Rack. No Code/Assets upload.",
+        "Portal persists content JSON only after Publish Revision; editor draft is not saved.",
+        "NEXT ship tier: ModelDoc _c → prepare-publish.ps1 -Addon bitcoinmining → Rev 2 with Code+Assets → pin on LifePunch gamemode (019e36c0-a67f-701c-90f2-460e0b0f1487) → sync lifepunchdevelopment.",
+        "Do not sync lifepunchmainserver; it must remain on the vanilla gamemode."
+      ]
     }
   ]
 }

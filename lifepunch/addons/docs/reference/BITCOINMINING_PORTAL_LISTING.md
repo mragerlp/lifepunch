@@ -18,6 +18,15 @@
 | **Portal addon ID** | `019ec9a4-d867-7668-b452-904f97493c7e` |
 | **Portal identifier** | `lifepunchbitcoin` |
 
+### Revisions
+
+| Rev | Status | Notes |
+|-----|--------|-------|
+| **1** | Published (content only) | 2026-06-10 — snapshots 4 content rows (Hub, Terminal, GPU Rack, Large GPU Rack). No Code/Assets upload. Changelog: placeholder; ship gate deferred. |
+| **2+** | Not yet | Ship tier: `prepare-publish.ps1 -Addon bitcoinmining` → upload Code + Assets with `_c` → re-pin on LifePunch gamemode. |
+
+**Portal rule:** Content JSON is **not persisted** until **Publish Revision** — editor draft alone does not save.
+
 ---
 
 ## Nominative comparison (portal body — lead paragraph)

@@ -285,7 +285,7 @@
       "sboxIdentifier": "lifepunch.bitcoin",
       "status": "in-development",
       "spec": "docs/BITCOINMINING_UX_SPEC.md",
-      "notes": "IP: docs/BITCOINMINING_IP_DOCTRINE.md. Hub + gpu-rack + large-gpu-rack. ModelDoc _c before portal ship. Remove BitcoinMiningDevSpawn before publish.",
+      "notes": "IP: docs/BITCOINMINING_IP_DOCTRINE.md. Hub + gpu-rack + large-gpu-rack. Portal Rev 1 (2026-06-10): content snapshot only — 4 entities, no code/assets. ModelDoc _c before ship-tier Rev 2+. Remove BitcoinMiningDevSpawn before ship publish. Gamemode pin pending.",
       "contents": [
         {
           "slug": "bitcoin-terminal",
