@@ -49,8 +49,7 @@ both are non-ship, but quarantine is **our** frozen WIP, not external IP.
 | `doublebarrelshotgun` | Asset foundation |
 | `bankerjob` | New brief + promotion |
 
-**Code:** quarantined folders excluded from `Code/addons.csproj` compile (faster editor, less cross-talk).  
-**Assets:** stay on disk; publish scripts should target active idents only.
+**DXRP install:** quarantined idents are **not** kept under `lifepunch._quarantine/` in the game folder — that caused console spam. Run `Set-DxrpLifepunchBitcoinOnly.ps1` (or `Start-SboxDxrpEditor.ps1 -PreflightFix -BitcoinOnly`) to purge stale trees; sources stay in the monorepo only.
 
 ---
 

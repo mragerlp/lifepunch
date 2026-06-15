@@ -4,7 +4,8 @@
 
 .DESCRIPTION
   DXRP editor install only — monorepo source unchanged.
-  - Moves other Assets/Code lifepunch addon folders → lifepunch._quarantine/
+  - **Deletes** non-bitcoin LifePunch addon folders from the DXRP game tree (repo keeps sources)
+  - Removes stale lifepunch._quarantine trees (they caused console spam even when not mounted)
   - Syncs repo bitcoinmining + _dev
   - Rewrites rp.sbproj Resources to addons/lifepunch/bitcoinmining/** only
 
@@ -31,73 +32,50 @@ $repoIdent = 'bitcoinmining'
 $keepCodeFolders = @($repoIdent, '_dev')
 
 $repoAddons = (Resolve-Path (Join-Path $Here '..\addons')).Path
-$repoCodeSrc = Join-Path $repoAddons "Code\Addons\lifepunch\$repoIdent"
-$repoDevSrc = Join-Path $repoAddons 'Code\Addons\lifepunch\_dev'
+$repoCodeRoot = Join-Path $repoAddons 'Code\Addons\lifepunch'
+$repoCodeSrc = Join-Path $repoCodeRoot $repoIdent
+$repoDevSrc = Join-Path $repoCodeRoot '_dev'
 
 $dxrpAssetsRoot = Join-Path $dxrpGame 'Assets\addons\lifepunch'
 $dxrpCodeRoot = Join-Path $dxrpGame 'Code\Addons\lifepunch'
 $quarantineAssets = Join-Path $dxrpGame 'Assets\addons\lifepunch._quarantine'
 $quarantineCode = Join-Path $dxrpGame 'Code\Addons\lifepunch._quarantine'
 
-function Move-AddonFolder {
-    param(
-        [string] $From,
-        [string] $ToRoot,
-        [string] $Name
-    )
-    if (-not (Test-Path -LiteralPath $From)) { return }
-    New-Item -ItemType Directory -Force -Path $ToRoot | Out-Null
-    $dest = Join-Path $ToRoot $Name
-    if (Test-Path -LiteralPath $dest) {
-        $stamp = Get-Date -Format 'yyyyMMdd-HHmmss'
-        $dest = "${dest}.$stamp"
-    }
-    Move-Item -LiteralPath $From -Destination $dest -Force
-    Write-Host "  quarantine: $Name -> $(Split-Path $dest -Leaf)" -ForegroundColor Yellow
+function Remove-DxrpTree {
+    param([string] $Path, [string] $Label)
+    if (-not (Test-Path -LiteralPath $Path)) { return }
+    Remove-Item -LiteralPath $Path -Recurse -Force
+    Write-Host "  purged: $Label" -ForegroundColor Yellow
 }
 
-Write-Host 'DXRP Bitcoin-only lane — quarantine + bitcoinmining sync' -ForegroundColor Cyan
+function Purge-NonKeepFolders {
+    param(
+        [string] $Root,
+        [string[]] $Keep,
+        [string] $Label
+    )
+    if (-not (Test-Path -LiteralPath $Root)) { return }
+    Get-ChildItem -LiteralPath $Root -Directory -ErrorAction SilentlyContinue | ForEach-Object {
+        if ($Keep -contains $_.Name) { return }
+        Remove-DxrpTree -Path $_.FullName -Label "$Label/$($_.Name)"
+    }
+    Get-ChildItem -LiteralPath $Root -File -ErrorAction SilentlyContinue | ForEach-Object {
+        Remove-DxrpTree -Path $_.FullName -Label "$Label/$($_.Name)"
+    }
+}
+
+Write-Host 'DXRP Bitcoin-only lane — purge stale addons + bitcoinmining sync' -ForegroundColor Cyan
 Write-Host "  Game: $dxrpGame" -ForegroundColor DarkGray
 
-Write-Host 'Quarantine Assets/addons/lifepunch/*' -ForegroundColor Cyan
-if (Test-Path -LiteralPath $dxrpAssetsRoot) {
-    Get-ChildItem -LiteralPath $dxrpAssetsRoot -Directory | ForEach-Object {
-        if ($_.Name -eq $repoIdent) { return }
-        Move-AddonFolder -From $_.FullName -ToRoot $quarantineAssets -Name $_.Name
-    }
-}
+Write-Host 'Purge stale lifepunch._quarantine trees' -ForegroundColor Cyan
+Remove-DxrpTree -Path $quarantineAssets -Label 'Assets/addons/lifepunch._quarantine'
+Remove-DxrpTree -Path $quarantineCode -Label 'Code/Addons/lifepunch._quarantine'
 
-Write-Host 'Quarantine Code/Addons/lifepunch/*' -ForegroundColor Cyan
-if (Test-Path -LiteralPath $dxrpCodeRoot) {
-    Get-ChildItem -LiteralPath $dxrpCodeRoot -Directory | ForEach-Object {
-        if ($keepCodeFolders -contains $_.Name) { return }
-        Move-AddonFolder -From $_.FullName -ToRoot $quarantineCode -Name $_.Name
-    }
-    Get-ChildItem -LiteralPath $dxrpCodeRoot -File | ForEach-Object {
-        $qFiles = Join-Path $quarantineCode '_root'
-        New-Item -ItemType Directory -Force -Path $qFiles | Out-Null
-        Move-Item -LiteralPath $_.FullName -Destination (Join-Path $qFiles $_.Name) -Force
-        Write-Host "  quarantine file: $($_.Name)" -ForegroundColor Yellow
-    }
-}
+Write-Host 'Purge Assets/addons/lifepunch/* (keep bitcoinmining only)' -ForegroundColor Cyan
+Purge-NonKeepFolders -Root $dxrpAssetsRoot -Keep @($repoIdent) -Label 'Assets/addons/lifepunch'
 
-if (Test-Path -LiteralPath $quarantineCode) {
-    $quarantinePatterns = @('*.cs', '*.razor', '*.razor.scss')
-    $quarantineRenamed = 0
-    foreach ($pattern in $quarantinePatterns) {
-        $files = Get-ChildItem -LiteralPath $quarantineCode -Recurse -File -Filter $pattern -ErrorAction SilentlyContinue
-        foreach ($file in $files) {
-            $off = "$($file.FullName).quarantine"
-            if (-not (Test-Path -LiteralPath $off)) {
-                Rename-Item -LiteralPath $file.FullName -NewName ($file.Name + '.quarantine') -Force
-                $quarantineRenamed++
-            }
-        }
-    }
-    if ($quarantineRenamed -gt 0) {
-        Write-Host "  quarantine: $quarantineRenamed source files renamed to *.quarantine (not compiled)" -ForegroundColor Yellow
-    }
-}
+Write-Host 'Purge Code/Addons/lifepunch/* (keep bitcoinmining + _dev)' -ForegroundColor Cyan
+Purge-NonKeepFolders -Root $dxrpCodeRoot -Keep $keepCodeFolders -Label 'Code/Addons/lifepunch'
 
 Write-Host "Sync repo $repoIdent" -ForegroundColor Cyan
 $dxrpFolderAssets = Join-Path $dxrpAssetsRoot $repoIdent
@@ -118,6 +96,15 @@ if (-not (Test-Path -LiteralPath $repoCodeSrc)) {
 if ($LASTEXITCODE -ge 8) { throw "robocopy code failed" }
 $codeCount = (Get-ChildItem -LiteralPath $dxrpFolderCode -Recurse -File).Count
 Write-Host "  Code/bitcoinmining - $codeCount files" -ForegroundColor Green
+
+$sharedCodeFiles = @(Get-ChildItem -LiteralPath $repoCodeRoot -File -ErrorAction SilentlyContinue)
+if ($sharedCodeFiles.Count -gt 0) {
+    New-Item -ItemType Directory -Force -Path $dxrpCodeRoot | Out-Null
+    foreach ($file in $sharedCodeFiles) {
+        Copy-Item -LiteralPath $file.FullName -Destination (Join-Path $dxrpCodeRoot $file.Name) -Force
+    }
+    Write-Host "  Code/lifepunch shared root - $($sharedCodeFiles.Count) files" -ForegroundColor Green
+}
 
 if (Test-Path -LiteralPath $repoDevSrc) {
     $dxrpDev = Join-Path $dxrpCodeRoot '_dev'
@@ -156,5 +143,6 @@ foreach ($name in @('lpdevtest.scene', 'LPDEVTEST.scene', 'lpdevtest.scene_c', '
 }
 
 Write-Host ''
-Write-Host 'Bitcoin-only DXRP lane ready. Restart s&box editor (Resources changed).' -ForegroundColor Cyan
+Write-Host 'Bitcoin-only DXRP lane ready. Restart s&box editor (Resources + asset tree changed).' -ForegroundColor Cyan
+Write-Host 'Quarantined addons live in the monorepo only — not copied into DXRP.' -ForegroundColor DarkGray
 Write-Host 'Play: lp_map_flatgrass -> lp_bitcoin_spawn_kit -> USE hub / racks' -ForegroundColor DarkGray

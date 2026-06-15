@@ -163,4 +163,7 @@ Sync:
   powershell -File lifepunch\scripts\Pull-DxrpCompiledAssetsToRepo.ps1 -Addon bitcoinmining
 
 Launch editor:
-  powershell -File lifepunch\scripts\Start-SboxDxrpEditor.ps1 -PreflightFix -SyncAddon bitcoinmining
+  powershell -File lifepunch\scripts\Start-SboxDxrpEditor.ps1 -PreflightFix -BitcoinOnly -SyncAddon bitcoinmining
+
+Fresh DXRP (purge ak47/hackerjob quarantine console spam):
+  powershell -File lifepunch\scripts\Set-DxrpLifepunchBitcoinOnly.ps1

@@ -13,31 +13,26 @@
   With API connected, editor host play auto-spawns rank bots (lifepunch_auto_spawn_testbots, default 1).
 
 .PARAMETER SyncAddon
-  Addon idents to mirror before launch. Default: bitcoinmining, hackerjob, adminmenu.
+  Addon idents to mirror before launch. Default: bitcoinmining only.
 
-.PARAMETER SyncAllAddons
-  Mirror every lifepunch addon folder in the repo.
-
-.PARAMETER NoSync
-  Skip repo -> DXRP mirror (editor only).
-
-.PARAMETER WithAuthorize
-  Pass +authorize and +api from dxrp-editor.local.json (legacy automation).
+.PARAMETER BitcoinOnly
+  Purge all non-bitcoin LifePunch addons from DXRP before sync (fresh console).
 
 .EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File lifepunch\scripts\Start-SboxDxrpEditor.ps1
-  powershell -File lifepunch\scripts\Start-SboxDxrpEditor.ps1 -SyncAddon ak47,bitcoinmining
+  powershell -File lifepunch\scripts\Start-SboxDxrpEditor.ps1 -PreflightFix -BitcoinOnly -SyncAddon bitcoinmining
   powershell -File lifepunch\scripts\Start-SboxDxrpEditor.ps1 -NoSync
   powershell -File lifepunch\scripts\Start-SboxDxrpEditor.ps1 -WithAuthorize
 #>
 [CmdletBinding()]
 param(
-    [string[]] $SyncAddon = @('adminmenu'),
+    [string[]] $SyncAddon = @('bitcoinmining'),
     [switch] $SyncAllAddons,
     [switch] $NoSync,
     [switch] $WithAuthorize,
     [switch] $SkipPreflight,
     [switch] $PreflightFix,
+    [switch] $BitcoinOnly,
     [switch] $SkipConnectivityWatch,
     [string] $ConfigPath = ''
 )
@@ -70,6 +65,14 @@ if (Test-Path -LiteralPath $sweepExec) {
 }
 
 if (-not $NoSync) {
+    if ($BitcoinOnly -or ($PreflightFix -and -not $SyncAllAddons)) {
+        $bitcoinOnlyScript = Join-Path $Here 'Set-DxrpLifepunchBitcoinOnly.ps1'
+        if (Test-Path -LiteralPath $bitcoinOnlyScript) {
+            Write-Host 'Bitcoin-only DXRP purge (remove quarantined addon trees)...' -ForegroundColor Cyan
+            & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $bitcoinOnlyScript -ConfigPath $ConfigPath
+            Write-Host ''
+        }
+    }
     $pullCompiled = Join-Path $Here 'Pull-DxrpCompiledAssetsToRepo.ps1'
     if (Test-Path -LiteralPath $pullCompiled) {
         foreach ($ident in $(if ($SyncAllAddons) { @() } else { $SyncAddon })) {
