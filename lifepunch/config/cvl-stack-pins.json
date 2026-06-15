@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "lastVerified": "2026-06-15",
+  "notes": "Known-good stack pins + where to update. Re-verify after any bump. Full runbook: lifepunch/docs/CVL_FULL_CAPACITY_UPDATES.md",
+  "components": [
+    {
+      "id": "lifepunch-monorepo",
+      "role": "addons, scripts, docs",
+      "verified": "git main",
+      "updateVia": "git fetch && git pull --rebase origin main (clean tree only)"
+    },
+    {
+      "id": "dxrp-gamemode",
+      "role": "editor project + portal API",
+      "path": "D:/Steam/steamapps/common/sbox/dxrp/game",
+      "updateVia": "Steam s&box update; DXRP upstream per owner; Sync-LifePunchAddonsToDxrp.ps1 after repo pull"
+    },
+    {
+      "id": "sbox-engine",
+      "role": "s&box dev + compile",
+      "path": "D:/Steam/steamapps/common/sbox",
+      "updateVia": "Steam → s&box; restart editor after SDK bump"
+    },
+    {
+      "id": "claudebridge",
+      "role": "runtime MCP — play, console_run, screenshots",
+      "library": "sboxskinsgg.claudebridge",
+      "verifiedVersion": "1.13.0",
+      "updateVia": "s&box Library Manager → update; restart editor; get_bridge_status versionsAligned"
+    },
+    {
+      "id": "chomnr_mcp",
+      "role": "editor MCP — ModelDoc, prefabs, imported game tools",
+      "library": "notpointless.chomnr_mcp",
+      "endpoint": "http://127.0.0.1:9090/sbox-mcp",
+      "updateVia": "s&box Library Manager → update; restart editor MCP server; Fix-SboxEditorMcpCursorToolNames.ps1 after import changes"
+    },
+    {
+      "id": "sbox-mcp-server",
+      "role": "Cursor npm bridge to Claude Bridge IPC",
+      "package": "sbox-mcp-server",
+      "updateVia": "npx -y sbox-mcp-server (on Cursor MCP start); Install-VengeanceSboxEditorMcp.ps1 refreshes mcp.json"
+    },
+    {
+      "id": "cornerman-tier3",
+      "role": "distill + embed + on-demand coder",
+      "config": "lifepunch/config/cornerman-tier3-models.json",
+      "updateVia": "LM Studio on Green; edit JSON; Fix-CornermanLmServe.ps1"
+    },
+    {
+      "id": "cursor-mcp-limit",
+      "role": "tool name filter",
+      "rule": "len(serverName + ':' + toolName) <= 60",
+      "serverName": "sbox-editor",
+      "guardScript": "lifepunch/scripts/Fix-SboxEditorMcpCursorToolNames.ps1"
+    }
+  ],
+  "fullCapacityProbe": "lifepunch/scripts/Get-CvlConnectivityStatus.ps1 -Pretty",
+  "fullCapacityRefresh": "lifepunch/scripts/Invoke-CvlFullCapacityRefresh.ps1"
+}

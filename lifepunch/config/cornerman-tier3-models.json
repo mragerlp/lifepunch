@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "updated": "2026-06-15",
+  "notes": "Canonical Tier-3 catalog for Cornerman (Green). Sync: Start-CornermanLmStudio.ps1, Fix-CornermanLmServe.ps1, Push-CornermanWorkflowDirective.ps1. Upgrade procedure: lifepunch/docs/CVL_FULL_CAPACITY_UPDATES.md",
+  "catalog": [
+    {
+      "id": "distill",
+      "model": "qwen/qwen3.6-35b-a3b",
+      "role": "default distill — specs, inbox/outbox, RAG prep",
+      "dailyServe": true,
+      "vramGbEstimate": 22
+    },
+    {
+      "id": "coder",
+      "model": "qwen2.5-coder-32b-instruct",
+      "role": "on-demand C#/Razor drafts — WarmCoder only; Red reviews before ship",
+      "dailyServe": false,
+      "vramGbEstimate": 20
+    },
+    {
+      "id": "embed",
+      "model": "text-embedding-nomic-embed-text-v1.5",
+      "role": "RAG embeddings — always paired with distill on daily boot",
+      "dailyServe": true,
+      "vramGbEstimate": 1
+    }
+  ],
+  "warmProfiles": {
+    "daily": ["distill", "embed"],
+    "distill": ["distill"],
+    "coder": ["coder"],
+    "all": ["distill", "embed"]
+  },
+  "constraints": {
+    "maxBigModelsInVram": 1,
+    "neverLoadTogether": ["distill", "coder"],
+    "bindHost": "0.0.0.0",
+    "port": 1234
+  },
+  "adoptNewModel": {
+    "steps": [
+      "Download in LM Studio on Green (Developer Mode + lms CLI)",
+      "Add entry to this file catalog[] with id, role, dailyServe, vramGbEstimate",
+      "Update Start-CornermanLmStudio.ps1 warmProfiles if daily/on-demand lane changes",
+      "Update CORNERMAN_MODEL_ROUTING.md + cornerman-inbox-directive.json do[] line",
+      "Run Fix-CornermanLmServe.ps1 from VENGEANCE; verify Get-CvlConnectivityStatus cornerman.tier3Serve",
+      "Push directive: Push-CornermanWorkflowDirective.ps1"
+    ]
+  }
+}

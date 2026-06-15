@@ -23,12 +23,41 @@ param(
 
 $ErrorActionPreference = 'Stop'
 
-# Canonical Cornerman Tier-3 catalog - keep in sync with cornerman-inbox-directive.json + CORNERMAN_MODEL_ROUTING.md
-$script:CornermanTier3Models = @(
-    'qwen/qwen3.6-35b-a3b'
-    'qwen2.5-coder-32b-instruct'
-    'text-embedding-nomic-embed-text-v1.5'
-)
+function Import-CornermanTier3Catalog {
+    $candidates = @(
+        (Join-Path $PSScriptRoot '..\config\cornerman-tier3-models.json')
+        'C:\lifepunch\cornerman\config\cornerman-tier3-models.json'
+    )
+    foreach ($path in $candidates) {
+        if (-not (Test-Path -LiteralPath $path)) { continue }
+        try {
+            $cfg = Get-Content -LiteralPath $path -Raw | ConvertFrom-Json
+            $ids = @($cfg.catalog | ForEach-Object { [string]$_.model })
+            if ($ids.Count -gt 0) {
+                return @{ Models = $ids; Config = $cfg; Path = $path }
+            }
+        }
+        catch { }
+    }
+    return $null
+}
+
+$imported = Import-CornermanTier3Catalog
+if ($imported) {
+    $script:CornermanTier3Models = $imported.Models
+    $script:CornermanTier3Config = $imported.Config
+}
+else {
+    # Fallback if JSON not synced yet
+    $script:CornermanTier3Models = @(
+        'qwen/qwen3.6-35b-a3b'
+        'qwen2.5-coder-32b-instruct'
+        'text-embedding-nomic-embed-text-v1.5'
+    )
+    $script:CornermanTier3Config = $null
+}
+
+# Canonical Cornerman Tier-3 catalog - prefer lifepunch/config/cornerman-tier3-models.json
 
 function Write-Lms([string]$m) {
     if (-not $Quiet) { Write-Host $m }
@@ -148,6 +177,12 @@ function Test-LmsServerUp([string]$BindHost) {
 }
 
 function Get-WarmTargets([string]$Mode) {
+    if ($script:CornermanTier3Config -and $script:CornermanTier3Config.warmProfiles.$Mode) {
+        $profileIds = @($script:CornermanTier3Config.warmProfiles.$Mode)
+        $byId = @{}
+        foreach ($entry in $script:CornermanTier3Config.catalog) { $byId[$entry.id] = $entry.model }
+        return @($profileIds | ForEach-Object { $byId[$_] } | Where-Object { $_ })
+    }
     switch ($Mode) {
         'daily'   { return @('qwen/qwen3.6-35b-a3b', 'text-embedding-nomic-embed-text-v1.5') }
         'distill' { return @('qwen/qwen3.6-35b-a3b') }

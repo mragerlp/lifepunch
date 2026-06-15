@@ -133,3 +133,10 @@ Write-Host '  1. Start-SboxDxrpEditor.ps1' -ForegroundColor White
 Write-Host '  2. Editor menu -> MCP dock -> set Approve writes (recommended)' -ForegroundColor White
 Write-Host '  3. Restart Cursor -> Settings -> MCP -> green: sbox + sbox-editor' -ForegroundColor White
 Write-Host '  4. Doc: lifepunch/docs/SBOX_EDITOR_MCP.md' -ForegroundColor DarkGray
+
+$cursorNameFix = Join-Path $Here 'Fix-SboxEditorMcpCursorToolNames.ps1'
+if (Test-Path -LiteralPath $cursorNameFix) {
+    Write-Host ''
+    Write-Host 'Cursor MCP tool-name guard (60-char limit)...' -ForegroundColor Cyan
+    & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $cursorNameFix
+}

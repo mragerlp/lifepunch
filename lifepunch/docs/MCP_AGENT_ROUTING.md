@@ -6,6 +6,8 @@
 ChatGPT Plus/Pro on the desk is **advisory** — paste `handoff/to-chatgpt-mcp-topology-handoff.txt` for refinement.
 **Cursor on VENGEANCE integrates and commits.** Green distill prep only; Red owns ship.
 
+**Stack updates / full capacity:** `CVL_FULL_CAPACITY_UPDATES.md` · `Invoke-CvlFullCapacityRefresh.ps1`
+
 ---
 
 ## Machine roles (do not collapse)

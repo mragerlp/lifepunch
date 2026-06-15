@@ -43,9 +43,9 @@ READ FIRST (in this order), then follow them as law:
 11. `lifepunch/docs/GIT_CHECKPOINTS.md` ← commit/push/pull (agent recommends, owner approves).
 12. `lifepunch/docs/WORKSPACE_STRUCTURE.md`.
 13. `lifepunch/docs/GITLAB_ORGANIZATION.md` ← GitLab lane map (GitHub monorepo stays canonical).
-14. s&box MCP work: `lifepunch/docs/SBOX_EDITOR_MCP.md` (dual stack: `sbox` + `sbox-editor`) · routing: `lifepunch/docs/MCP_AGENT_ROUTING.md`. `execute_csharp` OK when needed; **always** delete leftover `Editor/__Exec_*.cs` after exec sessions (see that doc).
-15. Cornerman LM: `lifepunch/docs/CORNERMAN_MODEL_ROUTING.md` · fix: `lifepunch/scripts/Fix-CornermanLmServe.ps1`.
-16. Before editor/project work: `lifepunch/scripts/Test-PreLaunchCheckup.ps1 -Fix` (Cornerman health, headless LM, dual MCP).
+14. s&box MCP work: `lifepunch/docs/SBOX_EDITOR_MCP.md` (dual stack: `sbox` + `sbox-editor`) · routing: `lifepunch/docs/MCP_AGENT_ROUTING.md` · **updates:** `lifepunch/docs/CVL_FULL_CAPACITY_UPDATES.md`. `execute_csharp` OK when needed; **always** delete leftover `Editor/__Exec_*.cs` after exec sessions (see that doc). After MCP/library bumps: `Fix-SboxEditorMcpCursorToolNames.ps1 -ProbeEditorMcp`.
+15. Cornerman LM: `lifepunch/docs/CORNERMAN_MODEL_ROUTING.md` · catalog: `lifepunch/config/cornerman-tier3-models.json` · fix: `lifepunch/scripts/Fix-CornermanLmServe.ps1`.
+16. Before editor/project work: `lifepunch/scripts/Test-PreLaunchCheckup.ps1 -Fix` (Cornerman health, headless LM, dual MCP). Full refresh after stack updates: `Invoke-CvlFullCapacityRefresh.ps1`.
 17. s&box engine patches: `lifepunch/scripts/Get-SboxEnginePatchStatus.ps1` — if WARN, read `lifepunch/addons/docs/SBOX_ENGINE_PATCHES.md` and triage before UI/publish edits.
 
 OUT OF SCOPE (law): Do NOT reference, document, or build anything for legacy EVO / EVORP / SPL-mute /

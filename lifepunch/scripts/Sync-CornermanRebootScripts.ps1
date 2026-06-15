@@ -44,6 +44,14 @@ foreach ($name in $files) {
     Write-Host "OK $name" -ForegroundColor Green
 }
 
+$configSrc = Join-Path (Split-Path -Parent $Here) 'config\cornerman-tier3-models.json'
+if (Test-Path -LiteralPath $configSrc) {
+    $configDest = Join-Path $onBox 'config\cornerman-tier3-models.json'
+    $bytes = [IO.File]::ReadAllBytes($configSrc)
+    Push-CornermanFile -Path $configDest -FileBytes $bytes -SshTarget $SshTarget | Out-Null
+    Write-Host 'OK cornerman-tier3-models.json -> config\' -ForegroundColor Green
+}
+
 Write-Host ''
 Write-Host 'On Cornerman (elevated, once per box):' -ForegroundColor Cyan
 Write-Host '  powershell -ExecutionPolicy Bypass -File C:\lifepunch\cornerman\Install-CornermanHeadlessBoot.ps1'

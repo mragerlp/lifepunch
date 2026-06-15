@@ -47,6 +47,14 @@ One-command probe:
 powershell -File lifepunch\scripts\Get-CvlConnectivityStatus.ps1 -Pretty
 ```
 
+After any stack update (s&box, DXRP, Bridge, chomnr, new LLM, new MCP imports):
+
+```powershell
+powershell -File lifepunch\scripts\Invoke-CvlFullCapacityRefresh.ps1
+```
+
+Runbook: `lifepunch/docs/CVL_FULL_CAPACITY_UPDATES.md` · pins: `lifepunch/config/cvl-stack-pins.json`
+
 Pass when: `vengeance.sboxBridge`, `vengeance.sboxEditor`, `vengeance.mcpDual`, `cornerman.tier3Serve`, `cornerman.mcpTriple` = **true**.
 
 ### Cornerman (Green) — 360° dual-stack (required every session)
@@ -194,6 +202,7 @@ Refresh mcp only: `Install-CornermanSboxBridgeMcp.ps1`
 | **Cornerman tunnel extra step** | Run `Start-CornermanSboxEditorTunnel.ps1 -Background` when using Green for editor MCP |
 | **Default Full access** | Switch to **Approve writes** in MCP dock Settings on first open |
 | **Cloud install tools opt-in** | Leave disabled unless you want AI pulling packages |
+| **Cursor "naming issues" warning** | Some imported tools exceed Cursor's 60-char `server:tool` limit — run `lifepunch/scripts/Fix-SboxEditorMcpCursorToolNames.ps1`, then **Reload Window** in Cursor |
 
 ---
 

@@ -18,6 +18,8 @@ before any visual, spawn, scale, or playtest claim — files and distills are no
 
 **Default on boot:** `daily` = distill + embed (`Invoke-CornermanHeadlessBoot.ps1`). **Tier-3 catalog** = all three on disk; **Tier-3 serve** = distill + embed loaded — **not** both big models at once (~45 GB). Warm **coder** only when the brief says so.
 
+**Canonical catalog file:** `lifepunch/config/cornerman-tier3-models.json` — edit this when adopting a newer LLM; run `Fix-CornermanLmServe.ps1` + see `CVL_FULL_CAPACITY_UPDATES.md` § Cornerman LLM.
+
 **Loaded vs catalog:** LM Studio `/v1/models` lists every downloaded model even when not in VRAM. Trust `lms ps` (or warm-script output `LOADED in VRAM`) — not the GUI progress bar stalling at ~97%.
 
 ### GUI vs server (headless)
@@ -133,4 +135,5 @@ LAN-only posture in `LOCAL_AI_WORKSTATION.md` §6 until owner opts in.
 
 **Coexistence:** LM Link uses embedded Tailscale `tsnet` — per LM Studio FAQ, should not interfere with a full Tailscale tailnet if one is added later for other services.
 
-**Refs:** `LOCAL_AI_WORKSTATION.md` §6 (networking), §7b (SSH/RDP), §7d (LM Link).
+**Refs:** `LOCAL_AI_WORKSTATION.md` §6 (networking), §7b (SSH/RDP), §7d (LM Link).  
+**Stack updates:** `CVL_FULL_CAPACITY_UPDATES.md` · `Invoke-CvlFullCapacityRefresh.ps1`

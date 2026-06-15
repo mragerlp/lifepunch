@@ -273,6 +273,10 @@ if (Test-Path -LiteralPath '$tunnel') {
     }
 
     Write-FixStep 'Refresh VENGEANCE mcp.json'
+    $nameFix = Join-Path $Here 'Fix-SboxEditorMcpCursorToolNames.ps1'
+    if (Test-Path -LiteralPath $nameFix) {
+        & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $nameFix -ProbeEditorMcp 2>$null
+    }
     & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $Here 'Install-VengeanceMcpStack.ps1') -SkipProbe | Out-Null
     if (-not $Quiet) { Write-Host '' }
 }
