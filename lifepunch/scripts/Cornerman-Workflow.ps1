@@ -173,3 +173,18 @@ function Add-CornermanWorkflowAck {
     $ackPath = Join-Path $script:CornermanInboxRoot ("ack-$WorkflowId.json")
     Push-CornermanText -Path $ackPath -Text $ack -SshTarget $SshTarget
 }
+
+function Get-VengeanceSmbPassword {
+    if ($env:LIFEPUNCH_VENGEANCE_SMB_PASSWORD) {
+        return [string]$env:LIFEPUNCH_VENGEANCE_SMB_PASSWORD.Trim()
+    }
+    foreach ($path in @(
+            (Join-Path $env:USERPROFILE 'OneDrive\Lifepunch\Secrets\vengeance-smb.password')
+            (Join-Path $env:USERPROFILE 'OneDrive\Documents\Lifepunch\Secrets\vengeance-smb.password')
+        )) {
+        if (-not (Test-Path -LiteralPath $path)) { continue }
+        $text = (Get-Content -LiteralPath $path -Raw).Trim()
+        if ($text) { return $text }
+    }
+    return $null
+}

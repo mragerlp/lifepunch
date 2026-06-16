@@ -12,13 +12,36 @@ function Get-LmsExe {
     return $null
 }
 
+function Get-LmsCatalogIds {
+    foreach ($probeHost in @('127.0.0.1')) {
+        try {
+            $r = Invoke-WebRequest -Uri "http://${probeHost}:1234/v1/models" -TimeoutSec 4 -UseBasicParsing
+            if ($r.StatusCode -eq 200) {
+                return @(($r.Content | ConvertFrom-Json).data | ForEach-Object { $_.id })
+            }
+        }
+        catch { }
+    }
+    return @()
+}
+
+function Test-LmsCliBusy([string]$Text) {
+    return $Text -match 'being used by another process|cannot access the file'
+}
+
 function Get-LmsLoadedIds {
     $lms = Get-LmsExe
-    if (-not $lms) { return @() }
-    $psText = (& $lms ps 2>&1 | ForEach-Object { "$_" }) -join "`n"
-    return @([regex]::Matches($psText, '(?m)^(\S+)\s+\S+\s+(?:IDLE|RUNNING)\s') |
-        ForEach-Object { $_.Groups[1].Value } |
-        Select-Object -Unique)
+    if ($lms) {
+        $psText = (& $lms ps 2>&1 | ForEach-Object { "$_" }) -join "`n"
+        if ($psText -and -not (Test-LmsCliBusy $psText)) {
+            $fromPs = @([regex]::Matches($psText, '(?m)^(\S+)\s+\S+\s+(?:IDLE|RUNNING)\s') |
+                ForEach-Object { $_.Groups[1].Value } |
+                Select-Object -Unique)
+            if ($fromPs.Count -gt 0) { return $fromPs }
+        }
+    }
+    # lms ps empty or CLI locked (LM Studio GUI) — served models still visible on :1234.
+    return @(Get-LmsCatalogIds)
 }
 
 function Test-IdPresent($req, $ids) {
@@ -133,7 +156,25 @@ $smbShareOk = $false
 $vengeanceName = $env:VENGEANCE_HOST
 if (-not $vengeanceName) { $vengeanceName = 'VENGEANCE' }
 $uncIpc = "\\$vengeanceName\SboxBridgeIpc"
-$smbShareOk = Test-Path -LiteralPath $uncIpc
+$smbShareOk = Test-Path -LiteralPath $uncIpc -ErrorAction SilentlyContinue
+if (-not $smbShareOk) {
+    $mirrorIpc = 'C:\lifepunch\cornerman\sbox-bridge-ipc-mirror'
+    $mirrorStatus = Join-Path $mirrorIpc 'status.json'
+    if (Test-Path -LiteralPath $mirrorStatus) {
+        try {
+            $st = Get-Content -LiteralPath $mirrorStatus -Raw | ConvertFrom-Json
+            if ($st.heartbeat) {
+                $hb = [datetime]::Parse(
+                    [string]$st.heartbeat,
+                    $null,
+                    [System.Globalization.DateTimeStyles]::RoundtripKind
+                ).ToUniversalTime()
+                $smbShareOk = ((Get-Date).ToUniversalTime() - $hb).TotalSeconds -lt 120
+            }
+        }
+        catch { }
+    }
+}
 
 $mcpKeys = @()
 $mcpPath = Join-Path $env:USERPROFILE '.cursor\mcp.json'

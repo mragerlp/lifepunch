@@ -82,7 +82,7 @@ if (-not $SkipLmWarm) {
 
 if (-not $SkipSmbMap) {
     Write-Step 'Map SMB bridge share on Green'
-    $password = $env:LIFEPUNCH_VENGEANCE_SMB_PASSWORD
+    $password = Get-VengeanceSmbPassword
     if ($PromptForPassword -and -not $password) {
         $sec = Read-Host 'VENGEANCE\jared password (for Green SMB map)' -AsSecureString
         $bstr = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($sec)
@@ -105,9 +105,22 @@ if (-not $SkipSmbMap) {
         }
     }
     else {
-        Write-Host '  SKIP headless SMB map (no password).' -ForegroundColor Yellow
-        Write-Host '  On Green desktop (or: ssh -t cornerman), run once:' -ForegroundColor Yellow
-        Write-Host "    powershell -File $onBox\Map-CornermanBridgeShare.ps1" -ForegroundColor White
+        $ensureScript = Join-Path $onBox 'Ensure-CornermanBridgeShare.ps1'
+        $r = Invoke-CornermanSshExec -SshTarget $SshTarget -ScriptBlock @"
+if (Test-Path -LiteralPath '$ensureScript') {
+  & powershell -NoProfile -ExecutionPolicy Bypass -File '$ensureScript'
+} else { exit 1 }
+"@ -ConnectTimeout 30
+        if ($r.ExitCode -eq 0) {
+            Write-Host "  $($r.Output)" -ForegroundColor Green
+        }
+        else {
+            Write-Host '  SMB map failed — falling back to SSH IPC mirror...' -ForegroundColor Yellow
+            $mirror = Join-Path $Here 'Sync-CornermanBridgeIpcMirror.ps1'
+            if (Test-Path -LiteralPath $mirror) {
+                & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $mirror -UpdateMcpJson -SshTarget $SshTarget
+            }
+        }
     }
 }
 

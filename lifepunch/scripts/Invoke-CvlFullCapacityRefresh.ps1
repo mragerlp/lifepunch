@@ -90,15 +90,24 @@ if (-not $SkipGreen -and (Test-CornermanSshReady -SshTarget $SshTarget)) {
     if (Test-Path -LiteralPath $restore) {
         & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $restore -SshTarget $SshTarget
     }
+
+    Write-Step 'VENGEANCE reverse editor tunnel (Green :9090)'
+    $revTunnel = Join-Path $Here 'Start-VengeanceEditorTunnelToCornerman.ps1'
+    if (Test-Path -LiteralPath $revTunnel) {
+        & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $revTunnel -Background -SshTarget $SshTarget
+    }
 }
 
 if (-not $SkipPreLaunch) {
     Write-Step 'Pre-launch checkup -Fix'
     $prelaunch = Join-Path $Here 'Test-PreLaunchCheckup.ps1'
     if (Test-Path -LiteralPath $prelaunch) {
-        $plArgs = @{ Fix = $true }
-        if ($Quiet) { $plArgs['Quiet'] = $true }
-        & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $prelaunch @plArgs
+        if ($Quiet) {
+            & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $prelaunch -Fix -Quiet
+        }
+        else {
+            & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $prelaunch -Fix
+        }
     }
 }
 

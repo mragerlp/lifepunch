@@ -29,8 +29,11 @@ $uncIp = "\\$VengeanceIp\$ShareName"
 function Test-BridgeReachable {
     $statusHost = Join-Path $uncHost 'status.json'
     $statusIp = Join-Path $uncIp 'status.json'
-    return (Test-Path -LiteralPath $uncHost) -or (Test-Path -LiteralPath $uncIp) `
-        -or (Test-Path -LiteralPath $statusHost) -or (Test-Path -LiteralPath $statusIp)
+    $hostOk = Test-Path -LiteralPath $uncHost -ErrorAction SilentlyContinue
+    $ipOk = Test-Path -LiteralPath $uncIp -ErrorAction SilentlyContinue
+    $statusHostOk = Test-Path -LiteralPath $statusHost -ErrorAction SilentlyContinue
+    $statusIpOk = Test-Path -LiteralPath $statusIp -ErrorAction SilentlyContinue
+    return $hostOk -or $ipOk -or $statusHostOk -or $statusIpOk
 }
 
 if (Test-BridgeReachable) {
@@ -51,7 +54,10 @@ function Get-StoredPassword {
 }
 
 function Invoke-Map([string] $Unc, [string] $PlainPassword) {
+    $prev = $ErrorActionPreference
+    $ErrorActionPreference = 'SilentlyContinue'
     net use $Unc /delete /y 2>$null | Out-Null
+    $ErrorActionPreference = $prev
     if ($PlainPassword) {
         net use $Unc /user:$User $PlainPassword /persistent:yes | Out-Null
         return $LASTEXITCODE -eq 0
