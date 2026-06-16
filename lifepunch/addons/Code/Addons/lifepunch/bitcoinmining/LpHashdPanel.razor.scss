@@ -8,7 +8,8 @@ $hashd-amber: #e87d3e;
 $hashd-amber-deep: #d06b2f;
 $hashd-amber-glow: #f0a500;
 $hashd-bg: #000000;
-$hashd-surface: #1a1d23;
+// Matches ui/hashd/btc-mark.png matte background (sidebar brand flush blend).
+$hashd-surface: #15181f;
 $hashd-card: #12151a;
 $hashd-border: #374151;
 $hashd-muted: #9ca3af;
@@ -79,6 +80,7 @@ $hashd-green: #5fd38d;
 		gap: 14px;
 		flex-shrink: 0;
 		padding: 16px 20px;
+		background-color: $hashd-surface;
 		border-bottom: 1px solid $hashd-border;
 	}
 
@@ -240,6 +242,7 @@ $hashd-green: #5fd38d;
 	.sidebar-brand.hex-mark {
 		width: 46px;
 		height: 46px;
+		flex-shrink: 0;
 		display: flex;
 		align-items: center;
 		justify-content: center;
