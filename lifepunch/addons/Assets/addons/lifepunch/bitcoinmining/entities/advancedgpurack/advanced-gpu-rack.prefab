@@ -92,7 +92,7 @@
         "SurfaceVelocity": "0,0,0"
       },
       {
-        "__type": "Sandbox.ModelRenderer",
+        "__type": "Sandbox.SkinnedModelRenderer",
         "__guid": "c4a9f255-56a8-48f0-9c36-43ef91e6b38c",
         "__enabled": true,
         "Flags": 0,
@@ -129,7 +129,25 @@
         "OnComponentFixedUpdate": null,
         "OnComponentStart": null,
         "OnComponentUpdate": null,
-        "SoundEvent": null
+        "SoundEvent": "addons/lifepunch/bitcoinmining/sounds/bitcoinminer/server-hum.sound"
+      },
+      {
+        "__type": "LifePunch.DXRP.Addons.Bitcoin.LpBitcoinRackVisuals",
+        "__guid": "a9b8c7d6-e5f4-3210-abcd-ef9876543210",
+        "__enabled": true,
+        "Flags": 0,
+        "Rack": {
+          "_type": "component",
+          "component_id": "6d47169b-65d4-45c5-961e-9c429d802e21",
+          "go": "f1e2d3c4-b5a6-9780-1234-567890abcdef",
+          "component_type": "LpBitcoinRackEntity"
+        },
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null
       },
       {
         "__type": "LifePunch.DXRP.Addons.Bitcoin.LpBitcoinRackEntity",

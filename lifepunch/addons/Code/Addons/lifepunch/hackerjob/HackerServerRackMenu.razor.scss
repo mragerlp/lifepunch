@@ -21,7 +21,7 @@ $error: #e4002b;
 $main-font: Mina;
 $text-sm: 14px;
 
-HackerServerRackMenu {
+.hacker-server-rack-menu {
     pointer-events: all;
     position: absolute;
     bottom: 48px;
@@ -516,7 +516,7 @@ HackerServerRackMenu {
     .upgrade-row {
         display: flex;
         justify-content: space-between;
-        align-items: center;
+        align-items: flex-start;
         gap: 12px;
         border: 1px solid $border;
         padding: 10px;
@@ -525,9 +525,11 @@ HackerServerRackMenu {
     .upgrade-info {
         display: flex;
         flex-direction: column;
-        gap: 2px;
-        .upgrade-name { color: $primary; font-family: $main-font; font-size: 13px; }
-        .upgrade-detail { color: $body; font-family: $main-font; font-size: 12px; }
+        gap: 4px;
+        flex: 1 1 auto;
+        min-width: 0;
+        .upgrade-name { color: $primary; font-family: $main-font; font-size: 13px; line-height: 1.35; }
+        .upgrade-detail { color: $body; font-family: $main-font; font-size: 12px; line-height: 1.4; }
         .upgrade-detail.dim { color: $body-dim; }
     }
 

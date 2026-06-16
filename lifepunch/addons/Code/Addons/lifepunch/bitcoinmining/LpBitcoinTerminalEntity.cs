@@ -10,11 +10,12 @@ using Sandbox;
 using LifePunch.DXRP.Addons;
 #if !LIFEPUNCH_LOCAL
 using Dxura.RP.Game;
+using Dxura.RP.Shared;
 #endif
 
 namespace LifePunch.DXRP.Addons.Bitcoin;
 
-/// <summary>CRT terminal prop — typed commands control linked GPU racks remotely.</summary>
+/// <summary>CRT terminal prop — world LCD telemetry + USE opens command console.</summary>
 [Title( "LIFEPUNCH Bitcoin Terminal (v2)" )]
 [Category( "LifePunch/Bitcoin" )]
 #if LIFEPUNCH_LOCAL
@@ -23,11 +24,85 @@ public sealed class LpBitcoinTerminalEntity : Component, Component.IPressable
 public sealed class LpBitcoinTerminalEntity : BaseEntity, Component.IPressable
 #endif
 {
+	private const float ScreenRefreshSeconds = 0.25f;
+
 	[Property] public float LinkRange { get; set; } = 512f;
+	[Property] public TextRenderer ScreenText { get; set; }
 
 #if !LIFEPUNCH_LOCAL
 	public override string DisplayName => LpBitcoinIdent.TerminalDisplayName;
 #endif
+
+	private string _cachedScreenText;
+	private bool _occluded;
+
+	protected override void OnStart()
+	{
+		base.OnStart();
+#if !LIFEPUNCH_LOCAL
+		this.TryBindSpawnOwnerHost();
+#endif
+
+		if ( !ScreenText.IsValid() )
+			ScreenText = GameObject.Children.FirstOrDefault( c => c.Name == "lcd_screen" )?.GetComponent<TextRenderer>();
+
+		RefreshScreenIdle();
+	}
+
+#if !LIFEPUNCH_LOCAL
+	public override void OnOcclusionChanged( bool occlude )
+	{
+		base.OnOcclusionChanged( occlude );
+		_occluded = occlude;
+	}
+#endif
+
+	protected override void OnUpdate()
+	{
+#if !LIFEPUNCH_LOCAL
+		if ( _occluded || GameManager.IsHeadless )
+			return;
+
+		if ( Cooldown.Current.CheckAndStartCooldown( $"{GameObject.Id}:lcd", ScreenRefreshSeconds ) )
+			return;
+#endif
+
+		RefreshScreenIdle();
+	}
+
+	/// <summary>Push hub telemetry to every terminal linked to this hub.</summary>
+	public static void RefreshForHub( LpBitcoinHubEntity hub )
+	{
+		if ( hub is null || !hub.IsValid() )
+			return;
+
+		var scene = hub.GameObject.Scene ?? Game.ActiveScene;
+		if ( scene is null )
+			return;
+
+		foreach ( var terminal in scene.GetAllComponents<LpBitcoinTerminalEntity>() )
+		{
+			if ( !terminal.IsValid() )
+				continue;
+
+			var linked = terminal.FindLinkedHub();
+			if ( linked.IsValid() && linked.GameObject.Id == hub.GameObject.Id )
+				terminal.RefreshScreenIdle();
+		}
+	}
+
+	public void RefreshScreenIdle()
+	{
+		if ( !ScreenText.IsValid() )
+			return;
+
+		var text = LpBitcoinTerminalScreen.Build( FindLinkedHub() );
+		if ( string.Equals( text, _cachedScreenText, StringComparison.Ordinal ) )
+			return;
+
+		_cachedScreenText = text;
+		ScreenText.Text = text;
+	}
 
 	public bool CanPress( IPressable.Event e ) => LifePunchMenuInteractGate.CanPressMenu( GameObject );
 
@@ -97,7 +172,7 @@ public sealed class LpBitcoinTerminalEntity : BaseEntity, Component.IPressable
 		return null;
 	}
 
-	private LpBitcoinHubEntity FindLinkedHub()
+	internal LpBitcoinHubEntity FindLinkedHub()
 	{
 		var scene = GameObject.Scene ?? Game.ActiveScene;
 		if ( scene is null )

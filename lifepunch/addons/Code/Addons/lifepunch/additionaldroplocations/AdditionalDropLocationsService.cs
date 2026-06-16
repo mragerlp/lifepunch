@@ -11,6 +11,7 @@
 
 #if !LIFEPUNCH_LOCAL
 using System.Collections.Generic;
+using System.Linq;
 using Dxura.RP.Game;
 using Dxura.RP.Game.Addons;
 using Sandbox;
@@ -68,7 +69,11 @@ public sealed class AdditionalDropLocationsService : SingletonComponent<Addition
 
 	private static string ResolveMapIdent()
 	{
-		var mapInstance = Scene.Components.GetAll<MapInstance>( FindMode.EverythingInSelfAndDescendants ).FirstOrDefault();
+		var scene = Game.ActiveScene;
+		if ( scene is null )
+			return string.Empty;
+
+		var mapInstance = scene.GetAllComponents<MapInstance>().FirstOrDefault();
 		if ( mapInstance.IsValid() && !string.IsNullOrWhiteSpace( mapInstance.MapName ) )
 		{
 			return mapInstance.MapName;

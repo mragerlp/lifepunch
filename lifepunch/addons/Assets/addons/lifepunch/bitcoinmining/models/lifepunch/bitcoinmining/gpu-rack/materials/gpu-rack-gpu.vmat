@@ -27,7 +27,7 @@ Layer0
 	g_flRoughnessScaleFactor "1.000"
 	TextureRoughness "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/gpu-rack/textures/gpu/GPU_Roughness.png"
 
-	g_flSelfIllumScale "0.500"
+	g_flSelfIllumScale "0.000"
 	g_vSelfIllumTint "[0.200000 0.800000 1.000000 0.000000]"
 	TextureSelfIllumMask "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/gpu-rack/textures/gpu/GPU_Emission.png"
 

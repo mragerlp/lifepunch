@@ -214,7 +214,7 @@
                 <div class="upgrade-list">
                     <div class="upgrade-row">
                         <div class="upgrade-info">
-                            <span class="upgrade-name">Detection (L@GetTier(HackerUpgradeKind.Detection)/@GetMax(HackerUpgradeKind.Detection))</span>
+                            <span class="upgrade-name">@UpgradeTierLabel( HackerUpgradeKind.Detection, "Detection" )</span>
                             <span class="upgrade-detail">Lowers 911/Wanted chance on failed hacks</span>
                             <span class="upgrade-detail dim">@GetNextLabel(HackerUpgradeKind.Detection)</span>
                         </div>
@@ -222,7 +222,7 @@
                     </div>
                     <div class="upgrade-row">
                         <div class="upgrade-info">
-                            <span class="upgrade-name">Puzzle Time (L@GetTier(HackerUpgradeKind.PuzzleTime)/@GetMax(HackerUpgradeKind.PuzzleTime))</span>
+                            <span class="upgrade-name">@UpgradeTierLabel( HackerUpgradeKind.PuzzleTime, "Puzzle Time" )</span>
                             <span class="upgrade-detail">More seconds to complete crack puzzles</span>
                             <span class="upgrade-detail dim">@GetNextLabel(HackerUpgradeKind.PuzzleTime)</span>
                         </div>
@@ -230,7 +230,7 @@
                     </div>
                     <div class="upgrade-row">
                         <div class="upgrade-info">
-                            <span class="upgrade-name">Reward Yield (L@GetTier(HackerUpgradeKind.Reward)/@GetMax(HackerUpgradeKind.Reward))</span>
+                            <span class="upgrade-name">@UpgradeTierLabel( HackerUpgradeKind.Reward, "Reward Yield" )</span>
                             <span class="upgrade-detail">Higher payout on successful hacks</span>
                             <span class="upgrade-detail dim">@GetNextLabel(HackerUpgradeKind.Reward)</span>
                         </div>
@@ -238,7 +238,7 @@
                     </div>
                     <div class="upgrade-row">
                         <div class="upgrade-info">
-                            <span class="upgrade-name">Cooldown (L@GetTier(HackerUpgradeKind.Cooldown)/@GetMax(HackerUpgradeKind.Cooldown))</span>
+                            <span class="upgrade-name">@UpgradeTierLabel( HackerUpgradeKind.Cooldown, "Cooldown" )</span>
                             <span class="upgrade-detail">Shorter wait between hack attempts</span>
                             <span class="upgrade-detail dim">@GetNextLabel(HackerUpgradeKind.Cooldown)</span>
                         </div>
@@ -301,7 +301,7 @@
 
     private string GetRootClass()
     {
-        var classes = new List<string>();
+        var classes = new List<string> { "hacker-server-rack-menu" };
         if ( IsPinGateActive )
             classes.Add( "pin-gate" );
         if ( IsRackPinBlocked )
@@ -620,6 +620,9 @@
 
     private int GetMax( HackerUpgradeKind kind ) =>
         Rack.IsValid() ? Rack.GetMaxTierForRack( kind ) : 0;
+
+    private string UpgradeTierLabel( HackerUpgradeKind kind, string title )
+        => $"{title} (L{GetTier( kind )}/{GetMax( kind )})";
 
     private string GetNextLabel( HackerUpgradeKind kind )
     {

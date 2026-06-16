@@ -52,6 +52,8 @@ powershell -File lifepunch\addons\scripts\Export-BitcoinMinerSteamMachineFbx.ps1
 
 Measured mesh @ `import_scale 0.152`: **31.97 × 30.4 × 29.36** (flatgrass `lp_bitcoin_scale_audit`).
 
+Reference: DXRP `gameplay/entities/printer/printer.prefab` — `BoxCollider` from model feet; hub collider matches `Model.Bounds`.
+
 ## Material slots (FBX)
 
 | FBX slot | vmat |
@@ -75,7 +77,13 @@ Blender actions baked into FBX:
 | `front_panelAction` | Optional panel motion (fallback candidate) |
 | `bindPose` | **OFF** |
 
-**ModelDoc:** After reimport, **AnimationList → Add Simple Animations** (star) from `steam-machine.fbx`; ensure `fanAction` + `front_panelAction` compile. Rename to `power_on` / `power_off` only if you want canonical names — code already resolves `fanAction`.
+**ModelDoc:** After reimport, set **Archetype → Animated Model** (kv3: `model_archetype = "animated_model"`). **AnimationList → Add Simple Animations** (★ star) from `steam-machine.fbx`; ensure `fanAction` + `front_panelAction` compile. Rename to `power_on` / `power_off` only if you want canonical names — code already resolves `fanAction`.
+
+**Prefab renderer:** Use **`SkinnedModelRenderer`** (not `ModelRenderer`) — prop sequences play via `Sequence.Name`, same as ModelDoc preview.
+
+**FBX rig (Jun 2026):** Owner blend has object actions, not an armature. `Export-BitcoinMinerSteamMachineFbx.py` builds `SteamMachineRig` (bones: `base_body`, `fan`, `front_panel`, `back_body`) and bakes actions before export. Without `LimbNode` data in FBX, compiled vmdl stays `bones=0`.
+
+**If fan still static after compile:** open **Compiled Preview Outliner → Skeleton**. Empty skeleton = re-run export script or star-add anims from FBX. Add **BoneMarkupList → BoneMarkup** on `fan` with **Do Not Discard** if bones get culled.
 
 ## Intake commands
 

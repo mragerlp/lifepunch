@@ -16,6 +16,21 @@
     "OwnerTransfer": 1,
     "Components": [
       {
+        "__type": "Dxura.RP.Game.HealthComponent",
+        "__guid": "f7a8b9c0-d1e2-3456-7890-abcdef123456",
+        "__enabled": true,
+        "Flags": 0,
+        "Health": 100,
+        "IsGodMode": false,
+        "MaxHealth": 100,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null
+      },
+      {
         "__type": "Sandbox.Rigidbody",
         "__guid": "a1b2c3d4-e5f6-7890-abcd-ef1234567891",
         "__enabled": true,
@@ -109,6 +124,24 @@
         "__enabled": true,
         "Flags": 0,
         "LinkRange": 512,
+        "ScreenText": {
+          "_type": "component",
+          "component_id": "e5f6a7b8-c9d0-1234-ef01-345678901234",
+          "go": "f6a7b8c9-d0e1-2345-f012-456789012345",
+          "component_type": "TextRenderer"
+        },
+        "HealthComponent": {
+          "_type": "component",
+          "component_id": "f7a8b9c0-d1e2-3456-7890-abcdef123456",
+          "go": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+          "component_type": "HealthComponent"
+        },
+        "Rigidbody": {
+          "_type": "component",
+          "component_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567891",
+          "go": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+          "component_type": "Rigidbody"
+        },
         "OnComponentDestroy": null,
         "OnComponentDisabled": null,
         "OnComponentEnabled": null,

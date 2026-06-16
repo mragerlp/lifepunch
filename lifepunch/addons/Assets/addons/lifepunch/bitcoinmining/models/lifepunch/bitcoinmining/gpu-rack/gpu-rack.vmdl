@@ -62,7 +62,7 @@
 						_class = "RenderMeshFile"
 						name = "LOD0"
 						filename = "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/gpu-rack/source/gpu-rack-anim.fbx"
-						import_translation = [ -1.389, -0.208, 2.912 ]
+						import_translation = [ -1.389, -0.208, 21.382 ]
 						import_rotation = [ 0.0, 90.0, 0.0 ]
 						import_scale = 0.395
 						align_origin_x_type = "Center"
@@ -130,10 +130,67 @@
 						reverse = false
 					},
 				]
+				default_root_bone_name = "rack_root"
+			},
+			{
+				_class = "BoneMarkupList"
+				children = 
+				[
+					{
+						_class = "Folder"
+						name = "GpuRackBones"
+						children = 
+						[
+							{
+								_class = "BoneMarkup"
+								target_bone = "rack_root"
+								ignore_Translation = false
+								ignore_rotation = true
+								do_not_discard = true
+							},
+							{
+								_class = "BoneMarkup"
+								target_bone = "FanBlades_005"
+								ignore_Translation = true
+								ignore_rotation = false
+								do_not_discard = true
+							},
+							{
+								_class = "BoneMarkup"
+								target_bone = "FanBlades_006"
+								ignore_Translation = true
+								ignore_rotation = false
+								do_not_discard = true
+							},
+							{
+								_class = "BoneMarkup"
+								target_bone = "FanBlades_007"
+								ignore_Translation = true
+								ignore_rotation = false
+								do_not_discard = true
+							},
+							{
+								_class = "BoneMarkup"
+								target_bone = "FanBlades_008"
+								ignore_Translation = true
+								ignore_rotation = false
+								do_not_discard = true
+							},
+							{
+								_class = "BoneMarkup"
+								target_bone = "FanBlades_009"
+								ignore_Translation = true
+								ignore_rotation = false
+								do_not_discard = true
+							},
+						]
+					},
+				]
+				bone_cull_type = "Leaf Only"
 			},
 		]
-		model_archetype = ""
-		primary_associated_entity = ""
+		model_archetype = "animated_model"
+		primary_associated_entity = "prop_dynamic"
 		anim_graph_name = ""
 		base_model_name = ""
 	}

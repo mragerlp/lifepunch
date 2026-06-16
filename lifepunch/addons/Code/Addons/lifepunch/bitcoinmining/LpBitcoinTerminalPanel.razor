@@ -52,7 +52,7 @@
 					{
 						<div class="cmd-ref" onclick="@(() => PrefillCommand( cmd ))">@cmd</div>
 					}
-					<div class="sidebar-foot">Selected rack #@_selectedIndex</div>
+					<div class="sidebar-foot">sel #@_selectedIndex · drag-select log · ctrl+c/v</div>
 				</div>
 				<div class="screen">
 					@if ( _showBootSplash )
@@ -64,15 +64,15 @@
 							<div class="boot-hint">click to skip boot</div>
 						</div>
 					}
-					<div class="log" onclick="@FocusInput">
+					<LpBitcoinTerminalLogPanel @ref="LogPanel">
 						@foreach ( var line in _lines )
 						{
-							<div class="log-line @LineClass( line )">@line.Text</div>
+							<Label class="log-line @LineClass( line )" Text="@line.Text" Selectable="@true" />
 						}
-					</div>
+					</LpBitcoinTerminalLogPanel>
 					<div class="prompt-row" onclick="@FocusInput">
 						<span class="prompt">rig@hub&gt;</span>
-						<TextEntry class="cmd-input" @ref="InputBox" Value:bind="@_input" onsubmit="@Submit" placeholder="type command..." />
+						<LpBitcoinTerminalCommandInput @ref="InputBox" onsubmit="@Submit" Placeholder="type command..." />
 					</div>
 				</div>
 			</div>
@@ -89,7 +89,6 @@
 
 	private LpBitcoinHubEntity _hub;
 	private int _selectedIndex;
-	private string _input = string.Empty;
 	private readonly List<LogLine> _lines = new();
 	private bool _showBootSplash = true;
 	private bool _bootComplete;
@@ -97,8 +96,28 @@
 	private float _bootElapsed;
 	private string _bootStatus = "INITIALIZING RIG...";
 	private bool _showScaleMenu;
-	private LpUiScaleSize _uiScale = LpUiScaleSize.Large;
-	private TextEntry InputBox { get; set; }
+	private LpUiScaleSize _uiScale = LpUiScale.Default;
+	private LpBitcoinTerminalCommandInput InputBox { get; set; }
+	private LpBitcoinTerminalLogPanel LogPanel { get; set; }
+
+	private const int MaxLogLines = 36;
+
+	private static readonly string[] _commandRefs =
+	{
+		"help",
+		"racks",
+		"select 0",
+		"status",
+		"info",
+		"wallet",
+		"mining start",
+		"mining stop",
+		"mining start all",
+		"deposit",
+		"deposit all",
+		"send",
+		"clear"
+	};
 
 	private static readonly LpUiScaleSize[] _uiScaleOptions =
 	{
@@ -108,19 +127,7 @@
 		LpUiScaleSize.ExtraLarge
 	};
 
-	private static readonly string[] _commandRefs =
-	{
-		"help",
-		"racks",
-		"select <n>",
-		"status",
-		"mining start",
-		"mining stop",
-		"mining all-start",
-		"mining all-stop",
-		"sell",
-		"sell all"
-	};
+	private bool _scrollLogNextFrame;
 
 	private static readonly string[] BootLines =
 	{
@@ -151,6 +158,7 @@
 		"err" => "err",
 		"ok" => "ok",
 		"dim" => "dim",
+		"cmd" => "cmd",
 		_ => ""
 	};
 
@@ -205,8 +213,11 @@
 		if ( !_bootComplete )
 			SkipBoot();
 
-		_input = cmd;
-		FocusInput();
+		if ( InputBox.IsValid() )
+		{
+			InputBox.Text = cmd;
+			InputBox.Focus();
+		}
 	}
 
 	private void SkipBoot()
@@ -216,7 +227,7 @@
 
 		while ( _bootLineIndex < BootLines.Length )
 		{
-			_lines.Add( new LogLine( "dim", BootLines[_bootLineIndex] ) );
+			AppendLogLine( "dim", BootLines[_bootLineIndex] );
 			_bootLineIndex++;
 		}
 
@@ -225,28 +236,97 @@
 
 	private void Submit()
 	{
+		if ( !InputBox.IsValid() )
+			return;
+
 		if ( !_bootComplete )
 		{
 			SkipBoot();
-			if ( string.IsNullOrWhiteSpace( _input ) )
+			if ( string.IsNullOrWhiteSpace( InputBox.Text ) )
 				return;
 		}
 
-		var raw = _input?.Trim() ?? string.Empty;
+		var raw = InputBox.Text?.Trim() ?? string.Empty;
 		if ( string.IsNullOrWhiteSpace( raw ) )
 			return;
 
-		_lines.Add( new LogLine( "cmd", $"{PromptLabel} {raw}" ) );
+		AppendLogLine( "cmd", $"{PromptLabel} {raw}" );
+
+		if ( raw.Equals( "clear", StringComparison.OrdinalIgnoreCase ) )
+		{
+			_lines.Clear();
+			_hub?.RequestPushTerminalCommandAlert( raw, "log cleared" );
+			InputBox.Text = string.Empty;
+			InputBox.Focus();
+			return;
+		}
 
 		var result = LpBitcoinTerminalCommands.Execute( _hub, ref _selectedIndex, raw );
-		if ( !string.IsNullOrWhiteSpace( result.Line ) )
-			_lines.Add( new LogLine( result.Ok ? "ok" : "err", result.Line ) );
+		AppendCommandResult( result );
+		_hub?.RequestPushTerminalCommandAlert( raw, SummarizeResult( result ) );
 
-		while ( _lines.Count > 48 )
+		InputBox.Text = string.Empty;
+		InputBox.Focus();
+		QueueScrollLogToBottom();
+	}
+
+	private void AppendCommandResult( LpBitcoinCommandResult result )
+	{
+		if ( string.IsNullOrWhiteSpace( result.Line ) )
+			return;
+
+		foreach ( var line in result.Line.Split( '\n' ) )
+		{
+			var trimmed = line.TrimEnd();
+			if ( string.IsNullOrWhiteSpace( trimmed ) )
+				continue;
+
+			AppendLogLine( result.Ok ? "ok" : "err", trimmed );
+		}
+	}
+
+	private static string SummarizeResult( LpBitcoinCommandResult result )
+	{
+		if ( string.IsNullOrWhiteSpace( result.Line ) )
+			return string.Empty;
+
+		var first = result.Line.Split( '\n' ).FirstOrDefault( l => !string.IsNullOrWhiteSpace( l ) );
+		return first?.Trim() ?? string.Empty;
+	}
+
+	private void AppendLogLine( string kind, string text )
+	{
+		_lines.Add( new LogLine( kind, text ) );
+		TrimLog();
+	}
+
+	private void TrimLog()
+	{
+		while ( _lines.Count > MaxLogLines )
 			_lines.RemoveAt( 0 );
+	}
 
-		_input = string.Empty;
-		FocusInput();
+	private void QueueScrollLogToBottom() => _scrollLogNextFrame = true;
+
+	private void ScrollLogToBottom( bool force = false )
+	{
+		if ( !LogPanel.IsValid() )
+			return;
+
+		if ( !LogPanel.HasScrollY )
+			return;
+
+		var viewHeight = LogPanel.Box.Bottom - LogPanel.Box.Top;
+		var maxY = Math.Max( 0f, LogPanel.ScrollSize.y - viewHeight );
+
+		if ( !force )
+		{
+			var nearBottom = LogPanel.ScrollOffset.y >= maxY - 28f;
+			if ( !nearBottom )
+				return;
+		}
+
+		LogPanel.ScrollOffset = new Vector2( 0f, maxY );
 	}
 
 	private void Close() => LpBitcoinTerminalUiHost.CloseOpen();
@@ -263,6 +343,12 @@
 
 		if ( !_bootComplete )
 			TickBoot();
+
+		if ( _scrollLogNextFrame )
+		{
+			_scrollLogNextFrame = false;
+			ScrollLogToBottom( force: true );
+		}
 	}
 
 	private void TickBoot()
@@ -272,11 +358,12 @@
 		while ( _bootLineIndex < BootLines.Length
 		        && _bootElapsed >= BootLineIntervalSeconds * ( _bootLineIndex + 1 ) )
 		{
-			_lines.Add( new LogLine( "dim", BootLines[_bootLineIndex] ) );
+			AppendLogLine( "dim", BootLines[_bootLineIndex] );
 			_bootStatus = _bootLineIndex < BootLines.Length - 1
 				? $"{BootLines[_bootLineIndex + 1].Split( ' ' )[0].ToUpperInvariant()}..."
 				: "READY";
 			_bootLineIndex++;
+			QueueScrollLogToBottom();
 		}
 
 		var bootEnd = BootLineIntervalSeconds * BootLines.Length + BootSplashHoldSeconds;
@@ -290,8 +377,8 @@
 	{
 		_bootComplete = true;
 		_showBootSplash = false;
-		_lines.Add( new LogLine( "ok", _hub?.IsPowered == true ? "hub power: ON" : "hub power: OFF" ) );
-		_lines.Add( new LogLine( "dim", $"type help for {PromptLabel} commands" ) );
+		AppendLogLine( "ok", _hub?.IsPowered == true ? "hub power: ON" : "hub power: OFF" );
+		AppendLogLine( "dim", $"type help for {PromptLabel} commands · drag-select log · ctrl+c copy · ctrl+v paste" );
 
 		if ( _pendingFocusRack.IsValid() )
 		{
@@ -302,19 +389,20 @@
 					continue;
 
 				_selectedIndex = i;
-				_lines.Add( new LogLine( "ok", $"focused rack #{i}" ) );
+				AppendLogLine( "ok", $"focused rack #{i}" );
 				break;
 			}
 		}
 
 		_pendingFocusRack = null;
+		QueueScrollLogToBottom();
 		FocusInput();
 	}
 
 	protected override int BuildHash() => HashCode.Combine(
 		HashCode.Combine(
 			_selectedIndex,
-			_input,
+			InputBox?.Text,
 			_lines.Count,
 			_uiScale,
 			_showScaleMenu,

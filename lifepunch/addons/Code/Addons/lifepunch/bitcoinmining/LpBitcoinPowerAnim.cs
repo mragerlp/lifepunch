@@ -12,7 +12,8 @@ using Sandbox;
 namespace LifePunch.DXRP.Addons.Bitcoin;
 
 /// <summary>
-/// Drives hub/rack vmdl ON/OFF sequences via <see cref="SceneModel.DirectPlayback"/>.
+/// Drives hub/rack vmdl ON/OFF sequences via <see cref="SkinnedModelRenderer.Sequence"/>.
+/// Animated props need SkinnedModelRenderer (ModelDoc animated_model) — same path ModelDoc preview uses.
 /// Hub Steam Machine export: <c>fanAction</c> (powered), <c>front_panelAction</c> (optional), <c>bindPose</c> (off).
 /// GPU racks: <c>power_on</c> / <c>GPU_Farm_Final</c> (small), <c>Mining_Rig_Stacked</c> (advanced).
 /// </summary>
@@ -26,8 +27,6 @@ public static class LpBitcoinPowerAnim
 		PowerOn,
 		"fanAction",
 		"fan_action",
-		"front_panelAction",
-		"front_panel_action",
 	};
 
 	private static readonly string[] HubPowerOffCandidates =
@@ -68,12 +67,12 @@ public static class LpBitcoinPowerAnim
 	{
 		playedSequence = null;
 
-		if ( !TryGetSceneModel( renderer, out var sceneModel ) )
+		if ( !TryGetSkinnedRenderer( renderer, out var skinned ) )
 			return false;
 
-		sceneModel.UseAnimGraph = false;
+		skinned.UseAnimGraph = false;
 
-		var sequences = GetAvailableSequences( renderer, sceneModel );
+		var sequences = GetAvailableSequences( skinned );
 		if ( sequences.Count == 0 )
 			return false;
 
@@ -86,7 +85,8 @@ public static class LpBitcoinPowerAnim
 
 		try
 		{
-			sceneModel.DirectPlayback.Play( resolved );
+			skinned.Sequence.Name = resolved;
+			skinned.Sequence.Looping = powered;
 			playedSequence = resolved;
 			return true;
 		}
@@ -106,11 +106,14 @@ public static class LpBitcoinPowerAnim
 		       || string.Equals( normalized, "idle", StringComparison.OrdinalIgnoreCase );
 	}
 
-	internal static IReadOnlyList<string> GetAvailableSequences( ModelRenderer renderer, SceneModel sceneModel )
+	internal static IReadOnlyList<string> GetAvailableSequences( ModelRenderer renderer, SceneModel sceneModel = null )
 	{
-		var playbackSequences = sceneModel?.DirectPlayback?.Sequences;
-		if ( playbackSequences is { Count: > 0 } )
-			return playbackSequences;
+		if ( TryGetSkinnedRenderer( renderer, out var skinned ) )
+		{
+			var sequenceNames = skinned.Sequence.SequenceNames;
+			if ( sequenceNames is { Count: > 0 } )
+				return sequenceNames;
+		}
 
 		var model = renderer?.Model;
 		if ( model is null || !model.IsValid )
@@ -130,15 +133,18 @@ public static class LpBitcoinPowerAnim
 		return Array.Empty<string>();
 	}
 
-	private static bool TryGetSceneModel( ModelRenderer renderer, out SceneModel sceneModel )
+	private static bool TryGetSkinnedRenderer( ModelRenderer renderer, out SkinnedModelRenderer skinned )
 	{
-		sceneModel = null;
+		skinned = null;
 
 		if ( !renderer.IsValid() )
 			return false;
 
-		sceneModel = renderer.SceneObject as SceneModel;
-		return sceneModel is not null && sceneModel.IsValid();
+		skinned = renderer as SkinnedModelRenderer;
+		if ( skinned is null && renderer.GameObject.IsValid() )
+			skinned = renderer.GameObject.Components.Get<SkinnedModelRenderer>( FindMode.EverythingInSelf );
+
+		return skinned is not null && skinned.IsValid();
 	}
 
 	private static string ResolveSequence(

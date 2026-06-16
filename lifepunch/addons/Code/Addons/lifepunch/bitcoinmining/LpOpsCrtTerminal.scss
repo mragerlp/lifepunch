@@ -72,13 +72,10 @@
 	}
 
 	.cmd-ref {
-		opacity: 0.75;
+		opacity: 1;
 		cursor: pointer;
 		padding: 2px 0;
-
-		&:hover {
-			opacity: 1;
-		}
+		line-height: 1.35;
 	}
 
 	.sidebar-foot {

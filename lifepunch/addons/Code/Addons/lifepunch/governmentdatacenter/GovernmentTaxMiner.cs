@@ -20,13 +20,13 @@ namespace LifePunch.DXRP.Addons.GovernmentDatacenter;
 /// </summary>
 public static class GovernmentTaxMiner
 {
-	/// <summary>Keep in sync with GpuRackEntity.BitcoinValue until a shared economy module exists.</summary>
-	public const float BitcoinUsdRate = 1500f;
+	/// <summary>Keep in sync with <see cref="BitcoinMining.LpBitcoinEconomy.BitcoinValueUsd"/>.</summary>
+	public const float BitcoinUsdRate = 5000f;
 
 	/// <summary>Owner cap: accumulated BTC worth at most this many in-game dollars.</summary>
 	public const float BtcBalanceUsdCap = 30_000f;
 
-	/// <summary>Max BTC held on miner before accrual stops: $30,000 / $1,500 = 20 BTC.</summary>
+	/// <summary>Max BTC held on miner before accrual stops: $30,000 / $5,000 = 6 BTC.</summary>
 	public const float BtcBalanceCap = BtcBalanceUsdCap / BitcoinUsdRate;
 
 	public const float BaseSpeed = 0.005f;

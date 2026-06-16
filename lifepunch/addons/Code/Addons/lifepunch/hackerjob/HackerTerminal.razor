@@ -10,6 +10,7 @@
    ───────────────────────────────────────────────────────────────────────────── *@
 @namespace LifePunch.DXRP.Addons.HackerJob
 @using LifePunch.DXRP.Addons
+@using LifePunch.DXRP.Addons.Bitcoin
 @using System
 @using System.Collections.Generic
 @using System.Linq
@@ -79,7 +80,7 @@
                     <div class="cyber-panel cyber-panel-fill">
                         <div class="cyber-panel-title">@( Tier == HackerTerminalTier.Advanced ? "NETWORK + GOVDB PROBE" : "WALLET ENDPOINT SCAN" )</div>
                         <div class="cyber-scroll">
-                            @if ( _scanResults.Count == 0 && ( Tier != HackerTerminalTier.Advanced || _govdbResults.Count == 0 ) )
+                            @if ( _scanResults.Count == 0 && ( Tier != HackerTerminalTier.Advanced || ( _govdbResults.Count == 0 && _hashdResults.Count == 0 ) ) )
                             {
                                 <div class="cyber-line dim">No targets — RUN SCAN or type <span class="cyber-line ok">scan</span></div>
                             }
@@ -90,9 +91,22 @@
                                 {
                                     <div class="cyber-data-row @(_selectedTargetId == target.SteamId ? "selected" : "")"
                                          onclick=@(() => SelectWalletTarget(target))>
-                                        <span class="cyber-line">@target.SteamId</span>
-                                        <span class="cyber-line dim">@target.DisplayName</span>
-                                        <span class="cyber-line ok">$@target.WalletCash</span>
+                                        <span class="cyber-col-id">@target.SteamId</span>
+                                        <span class="cyber-col-name">@target.DisplayName</span>
+                                        <span class="cyber-col-value">$@target.WalletCash</span>
+                                    </div>
+                                }
+                            }
+                            @if ( Tier == HackerTerminalTier.Advanced && _hashdResults.Count > 0 )
+                            {
+                                <div class="cyber-line ok cyber-section-gap">HASHD MINERS (@_hashdResults.Count)</div>
+                                @foreach ( var hub in _hashdResults )
+                                {
+                                    <div class="cyber-data-row @(_selectedHashdId == hub.ScanId ? "selected" : "")"
+                                         onclick=@(() => SelectHashdTarget(hub))>
+                                        <span class="cyber-col-id">@hub.ScanId</span>
+                                        <span class="cyber-col-name">@hub.Label · @hub.DistanceMeters.ToString("F0")m</span>
+                                        <span class="cyber-col-value warn">@hub.HubWalletBtc.ToString("F4") BTC</span>
                                     </div>
                                 }
                             }
@@ -103,9 +117,9 @@
                                 {
                                     <div class="cyber-data-row @(_selectedGovNodeId == node.NodeId ? "selected" : "")"
                                          onclick=@(() => SelectGovNode(node))>
-                                        <span class="cyber-line">@node.NodeId</span>
-                                        <span class="cyber-line dim">@node.Label</span>
-                                        <span class="cyber-line warn">[@node.SecurityTier]</span>
+                                        <span class="cyber-col-id">@node.NodeId</span>
+                                        <span class="cyber-col-name">@node.Label</span>
+                                        <span class="cyber-col-value warn">[@node.SecurityTier]</span>
                                     </div>
                                 }
                             }
@@ -119,6 +133,10 @@
                             @if ( !string.IsNullOrEmpty( _selectedTargetId ) )
                             {
                                 <button class="cyber-action-btn" onclick=@StartHackFromUi>START HACK</button>
+                            }
+                            @if ( !string.IsNullOrEmpty( _selectedHashdId ) )
+                            {
+                                <button class="cyber-action-btn" onclick=@StartHashdHackFromUi>START HASHD HACK</button>
                             }
                             @if ( !string.IsNullOrEmpty( _selectedGovNodeId ) )
                             {
@@ -136,20 +154,28 @@
                         <div class="cyber-scroll">
                             @if ( _puzzle == null )
                             {
-                                <div class="cyber-line dim">Password cracker initialized. Run NETWORK scan, select a target, then START HACK or START INFIL.</div>
+                                <div class="cyber-decrypt-stack">
+                                    <div class="cyber-line dim">Password cracker initialized. Run NETWORK scan, select a target, then START HACK or START INFIL.</div>
+                                </div>
                             }
                             else if ( _puzzle.IsExpired )
                             {
-                                <div class="cyber-line warn">Puzzle window expired — trace risk increased.</div>
+                                <div class="cyber-decrypt-stack">
+                                    <div class="cyber-line warn">Puzzle window expired — trace risk increased.</div>
+                                </div>
                             }
                             else
                             {
-                                <div class="cyber-line warn">@GetTargetBanner()</div>
-                                <div class="cyber-line cyber-section-gap">@_puzzle.Prompt</div>
-                                <div class="cyber-line dim">Type answer at TERMINAL prompt — @MathF.Ceiling(_puzzle.SecondsRemaining)s remaining</div>
+                                <div class="cyber-decrypt-stack">
+                                    <div class="cyber-line warn">@GetTargetBanner()</div>
+                                    <div class="cyber-line">@_puzzle.Prompt</div>
+                                    <div class="cyber-line dim">Type answer at TERMINAL prompt — @MathF.Ceiling(_puzzle.SecondsRemaining)s remaining</div>
+                                </div>
                             }
                         </div>
-                        <button class="cyber-action-btn" onclick=@(() => EnterScreen( LifePunchCyberScreen.Terminal ))>OPEN TERMINAL</button>
+                        <div class="cyber-decrypt-actions">
+                            <button class="cyber-action-btn" onclick=@(() => EnterScreen( LifePunchCyberScreen.Terminal ))>OPEN TERMINAL</button>
+                        </div>
                     </div>
                 </div>
             }
@@ -229,8 +255,10 @@
 
     private IReadOnlyList<HackerScanService.ScanTarget> _scanResults = Array.Empty<HackerScanService.ScanTarget>();
     private IReadOnlyList<HackerScanService.GovDbTarget> _govdbResults = Array.Empty<HackerScanService.GovDbTarget>();
+    private IReadOnlyList<HackerScanService.HashdTarget> _hashdResults = Array.Empty<HackerScanService.HashdTarget>();
     private string _selectedTargetId;
     private string _selectedGovNodeId;
+    private string _selectedHashdId;
     private HackerPuzzleSession _puzzle;
 
     private HackerTerminalTier Tier =>
@@ -245,7 +273,7 @@
     private string PromptLabel => HackerTerminalBrand.PromptLabel( Tier );
     private string TierBadge => Tier == HackerTerminalTier.Advanced ? "VENGEANCE OPS" : "CORNERMAN OPS";
     private bool HasActiveOp => _puzzle != null && !_puzzle.IsExpired;
-    private string ActiveOpLabel => HasActiveOp ? (_selectedGovNodeId ?? _selectedTargetId ?? "active") : "none";
+    private string ActiveOpLabel => HasActiveOp ? (_selectedGovNodeId ?? _selectedHashdId ?? _selectedTargetId ?? "active") : "none";
 
     private string CyberBrandDisplay() => HackerTerminalBrand.CyberBrandDisplay( Tier );
 
@@ -339,6 +367,9 @@
         if ( !string.IsNullOrEmpty( _selectedGovNodeId ) )
             return $"INFILTRATING GOVDB NODE {_selectedGovNodeId}";
 
+        if ( !string.IsNullOrEmpty( _selectedHashdId ) )
+            return $"INFILTRATING HASHD NODE {_selectedHashdId}";
+
         if ( !string.IsNullOrEmpty( _selectedTargetId ) )
             return $"INFILTRATING WALLET {_selectedTargetId}";
 
@@ -415,8 +446,10 @@
         _footerLog.Clear();
         _scanResults = Array.Empty<HackerScanService.ScanTarget>();
         _govdbResults = Array.Empty<HackerScanService.GovDbTarget>();
+        _hashdResults = Array.Empty<HackerScanService.HashdTarget>();
         _selectedTargetId = null;
         _selectedGovNodeId = null;
+        _selectedHashdId = null;
         _puzzle = null;
         _activeModule = OpsModule.Log;
         _screen = LifePunchCyberScreen.Home;
@@ -552,12 +585,21 @@
     {
         _selectedTargetId = target.SteamId;
         _selectedGovNodeId = null;
+        _selectedHashdId = null;
     }
 
     private void SelectGovNode( HackerScanService.GovDbTarget node )
     {
         _selectedGovNodeId = node.NodeId;
         _selectedTargetId = null;
+        _selectedHashdId = null;
+    }
+
+    private void SelectHashdTarget( HackerScanService.HashdTarget target )
+    {
+        _selectedHashdId = target.ScanId;
+        _selectedTargetId = null;
+        _selectedGovNodeId = null;
     }
 
     private void StartHackFromUi()
@@ -566,6 +608,14 @@
             return;
 
         HandleCommand( $"hack {_selectedTargetId}" );
+    }
+
+    private void StartHashdHackFromUi()
+    {
+        if ( string.IsNullOrEmpty( _selectedHashdId ) )
+            return;
+
+        HandleCommand( $"hack {_selectedHashdId}" );
     }
 
     private void StartInfilFromUi()
@@ -806,6 +856,16 @@
                 foreach ( var target in _scanResults )
                     _lines.Add( $"  {target.SteamId}  {target.DisplayName}  ${target.WalletCash}" );
                 _lines.Add( "Use: hack <steamid> or NETWORK module + START HACK" );
+
+                if ( Tier == HackerTerminalTier.Advanced )
+                {
+                    _hashdResults = HackerScanService.RequestHashdScan( Terminal );
+                    _lines.Add( $"Found {_hashdResults.Count} HASHD miner hub(s):" );
+                    foreach ( var hub in _hashdResults )
+                        _lines.Add( $"  {hub.ScanId}  {hub.Label}  {hub.HubWalletBtc:F4} BTC  {hub.DistanceMeters:F0}m" );
+                    _lines.Add( "Use: hack hashd-<guid> or NETWORK module + START HASHD HACK" );
+                }
+
                 _activeModule = OpsModule.Scan;
                 _screen = LifePunchCyberScreen.Network;
                 AppendFooterLog( $"Network scan complete — {_scanResults.Count} wallet(s)." );
@@ -814,7 +874,49 @@
             case "hack":
                 if ( string.IsNullOrWhiteSpace( arg ) )
                 {
-                    _lines.Add( "ERROR: hack requires a SteamID. Run scan first." );
+                    _lines.Add( "ERROR: hack requires a target id. Run scan first." );
+                    break;
+                }
+
+                if ( arg.StartsWith( LpBitcoinHubAlertBridge.ScanIdPrefix, StringComparison.OrdinalIgnoreCase ) )
+                {
+                    if ( Tier != HackerTerminalTier.Advanced )
+                    {
+                        _lines.Add( HackerHackTargetPolicy.DenyMessage( Tier, HackerHackTarget.BitcoinMiner ) );
+                        break;
+                    }
+
+                    if ( _hashdResults.Count == 0 )
+                    {
+                        _lines.Add( "ERROR: run scan before hashd hack." );
+                        break;
+                    }
+
+                    var hashdMatch = _hashdResults.FirstOrDefault( h =>
+                        h.ScanId.Equals( arg, StringComparison.OrdinalIgnoreCase ) );
+
+                    if ( hashdMatch is null )
+                    {
+                        _lines.Add( "ERROR: HASHD target not in scan cache." );
+                        break;
+                    }
+
+                    _selectedHashdId = hashdMatch.ScanId;
+                    _selectedTargetId = null;
+                    _selectedGovNodeId = null;
+
+                    var hub = LpBitcoinHubAlertBridge.ResolveFromScanId( hashdMatch.ScanId );
+                    var attacker = Connection.Local?.DisplayName ?? "unknown operator";
+                    if ( hub.IsValid() )
+                        LpBitcoinHubAlertBridge.NotifyHubUnderAttack( hub, attacker );
+
+                    _puzzle = HackerPuzzleSession.CreateRandom( advancedTerminal: true, timeLimitSeconds: GetRackPuzzleSeconds() );
+                    _lines.Add( $"INFILTRATING {hashdMatch.Label} — hub wallet {hashdMatch.HubWalletBtc:F4} BTC" );
+                    _lines.Add( _puzzle.Prompt );
+                    _lines.Add( $"TIME LIMIT: {MathF.Ceiling( _puzzle.TimeLimitSeconds )}s — type answer at prompt." );
+                    _activeModule = OpsModule.Target;
+                    _screen = LifePunchCyberScreen.Decrypt;
+                    AppendFooterLog( $"HASHD bypass started on {hashdMatch.ScanId}." );
                     break;
                 }
 
@@ -835,6 +937,7 @@
 
                 _selectedTargetId = match.SteamId;
                 _selectedGovNodeId = null;
+                _selectedHashdId = null;
                 _puzzle = HackerPuzzleSession.CreateRandom( advancedTerminal: false, timeLimitSeconds: GetRackPuzzleSeconds() );
                 _lines.Add( $"INFILTRATING {match.DisplayName} — wallet ${match.WalletCash}" );
                 _lines.Add( _puzzle.Prompt );

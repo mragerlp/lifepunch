@@ -16,7 +16,7 @@ public static class LpBitcoinEconomy
 {
 	public const float BaseSpeed = 0.005f;
 	public const float PayoutIntervalSeconds = 90f;
-	public const int BitcoinValueUsd = 1000;
+	public const int BitcoinValueUsd = 5000;
 
 	public const float StartClockGhz = 2.44f;
 	public const int StartCores = 1;
@@ -42,4 +42,11 @@ public static class LpBitcoinEconomy
 
 	public static float TickPayout( float clockGhz, int cores, float rackYield = 1f )
 		=> clockGhz * BaseSpeed * cores * rackYield;
+
+	/// <summary>Undeposited BTC cap per rack before mining stops and hub alerts fire.</summary>
+	public const float StandardRackBtcCapacity = 0.05f;
+	public const float AdvancedRackBtcCapacity = 0.15f;
+
+	public static float RackBtcCapacity( bool advancedRack )
+		=> advancedRack ? AdvancedRackBtcCapacity : StandardRackBtcCapacity;
 }

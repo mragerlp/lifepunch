@@ -33,7 +33,7 @@ All payouts and charges go through **host RPCs** + `player.PayHost` / `player.Ch
 |----------|-------|-------|
 | `BaseSpeed` | `0.005` BTC per tick unit | × clock × cores |
 | `MiningPayoutIntervalSeconds` | **90** seconds | LifePunch payout cadence (`BitcoinMiningAddon.cs`) |
-| `BitcoinValue` | `$1000` / BTC | Sell multiplier |
+| `BitcoinValue` | `$5000` / BTC | Sell multiplier |
 | Start clock | `2.44 GHz` | |
 | Start cores | `1` | |
 | CPU upgrade | +`1.5 GHz` per level | Costs `2k → 128k` (7 tiers) |

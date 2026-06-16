@@ -44,6 +44,61 @@ public static class LpBitcoinDevSpawn
 			Log.Info( "lp_bitcoin_spawn_kit: full prefab kit placed — USE hub or terminal." );
 	}
 
+	/// <summary>Hub + terminal + one GPU rack + one Advanced GPU rack — flatgrass hero lineup.</summary>
+	[ConCmd( "lp_bitcoin_spawn_lineup" )]
+	public static void SpawnLineup()
+	{
+		if ( !TryGetSpawnTransform( out var transform ) )
+		{
+			Log.Warning( "lp_bitcoin_spawn_lineup: no local viewer — play from game.scene first." );
+			return;
+		}
+
+		var hub = SpawnHubPrefab( transform );
+		if ( !hub.IsValid() )
+			return;
+
+		var origin = hub.WorldPosition;
+		var rot = transform.Rotation;
+		SpawnTerminalPrefab( new Transform( SnapToGround( origin + rot.Forward * 100f ), rot ) );
+		SpawnRackPrefab( new Transform( SnapToGround( origin + rot.Right * 90f ), rot ), hub, advanced: false );
+		SpawnRackPrefab( new Transform( SnapToGround( origin + rot.Left * 90f ), rot ), hub, advanced: true );
+		Log.Info( "lp_bitcoin_spawn_lineup: Bitcoin Miner + Terminal + GPU Rack + Advanced GPU Rack placed." );
+	}
+
+	[ConCmd( "lp_bitcoin_spawn_terminal" )]
+	public static void SpawnTerminal()
+	{
+		if ( !TryGetSpawnTransform( out var transform ) )
+		{
+			Log.Warning( "lp_bitcoin_spawn_terminal: no local viewer — play from game.scene first." );
+			return;
+		}
+
+		SpawnTerminalPrefab( transform );
+		Log.Info( "lp_bitcoin_spawn_terminal: Bitcoin Terminal placed." );
+	}
+
+	[ConCmd( "lp_bitcoin_spawn_rack" )]
+	public static void SpawnRack()
+	{
+		if ( !TryGetSpawnTransform( out var transform ) )
+		{
+			Log.Warning( "lp_bitcoin_spawn_rack: no local viewer — play from game.scene first." );
+			return;
+		}
+
+		var hub = Game.ActiveScene?.GetAllComponents<LpBitcoinHubEntity>().FirstOrDefault( h => h.IsValid() );
+		if ( !hub.IsValid() )
+		{
+			Log.Warning( "lp_bitcoin_spawn_rack: no hub in scene — run lp_bitcoin_spawn_hub first." );
+			return;
+		}
+
+		SpawnRackPrefab( transform, hub, advanced: false );
+		Log.Info( "lp_bitcoin_spawn_rack: GPU Rack placed and linked." );
+	}
+
 	[ConCmd( "lp_spawn_advanced_gpu_rack" )]
 	public static void SpawnAdvancedRack()
 	{
@@ -451,6 +506,8 @@ public static class LpBitcoinDevSpawn
 			Log.Info( $"BITCOINMINING_SCALE_AUDIT {tag} collider scale={collider.Scale} center={collider.Center}" );
 		else
 			Log.Warning( $"BITCOINMINING_SCALE_AUDIT {tag} no BoxCollider" );
+
+		LifePunchPropPhysics.LogModelPhysics( go, tag );
 	}
 
 	private static LpBitcoinHubEntity SpawnKitInternal()
@@ -496,6 +553,7 @@ public static class LpBitcoinDevSpawn
 		}
 
 		hub.BindOwnerFromLocalViewer();
+		LifePunchPropPhysics.SetupPhysicalProp( go, alignGround: true );
 		NetworkSpawnIfNeeded( go );
 		return hub;
 	}
@@ -517,6 +575,7 @@ public static class LpBitcoinDevSpawn
 			rack.LinkToHub( hub );
 		}
 
+		LifePunchPropPhysics.SetupPhysicalProp( go, alignGround: true );
 		NetworkSpawnIfNeeded( go );
 	}
 
@@ -536,6 +595,10 @@ public static class LpBitcoinDevSpawn
 
 #if !LIFEPUNCH_LOCAL
 		var player = Player.Local;
+		var baseEntity = go.Components.Get<BaseEntity>( FindMode.EverythingInSelfAndDescendants );
+		if ( baseEntity.IsValid() && player.IsValid() )
+			baseEntity.BindOwnerFromPlayer( player );
+
 		if ( player.IsValid() )
 			go.NetworkSpawn( player.Network.Owner );
 		else

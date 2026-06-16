@@ -109,10 +109,45 @@
 									<i class="material-icons">calendar_today</i>
 									<span>@HeaderDateLabel()</span>
 								</div>
-								<button class="header-chip notif-chip" tooltip="Hub alerts">
-									<i class="material-icons">notifications</i>
-									<span class="notif-dot"></span>
-								</button>
+								<div class="notif-wrap">
+									<button class="header-chip notif-chip @(HasUnreadAlerts() ? "has-unread" : "")"
+									        tooltip="Hub alerts"
+									        onclick="@ToggleAlerts">
+										<i class="material-icons">notifications</i>
+										<span class="notif-dot"></span>
+									</button>
+									@if ( _alertsOpen )
+									{
+										<div class="notif-dropdown">
+											<div class="notif-dropdown-head">
+												<span>Hub alerts</span>
+												<button class="notif-close" onclick="@CloseAlerts">
+													<i class="material-icons">close</i>
+												</button>
+											</div>
+											@if ( GetHubAlerts().Count == 0 )
+											{
+												<div class="notif-empty">No alerts yet — terminal commands, rack capacity, and intrusion attempts appear here.</div>
+											}
+											else
+											{
+												<div class="notif-list">
+													@foreach ( var alert in GetHubAlerts() )
+													{
+														<div class="notif-row">
+															<i class="material-icons">@AlertIcon(alert.Kind)</i>
+															<div class="notif-copy">
+																<div class="notif-kind">@AlertKindLabel(alert.Kind)</div>
+																<div class="notif-message">@alert.Message</div>
+																<div class="notif-time">@AlertTimeLabel(alert.Timestamp)</div>
+															</div>
+														</div>
+													}
+												</div>
+											}
+										</div>
+									}
+								</div>
 								<button class="lp-ui-chrome-btn close" tooltip="Close" onclick="@Close">
 									<i class="material-icons">close</i>
 								</button>
@@ -152,7 +187,7 @@
 																<div class="lp-ui-list-row">
 																	<div class="lp-ui-list-main">
 																		<div class="lp-ui-list-title">@RackDisplayName( rack, i )</div>
-																		<div class="lp-ui-list-sub">@RackHashRateLabel( rack ) · @RackTempLabel( rack ) · @RackUptimeLabel( rack, i )</div>
+																		<div class="lp-ui-list-sub rack-stats">@RackOverviewSubline( rack )</div>
 																	</div>
 																	<div class="lp-ui-list-meta">
 																		<div class="lp-ui-list-value">@(rack.IsMining ? "Mining" : "Idle")</div>
@@ -202,7 +237,7 @@
 												<div class="lp-ui-perks">
 													<div class="lp-ui-perk">@LinkedRackCount() linked rack@(LinkedRackCount() == 1 ? "" : "s")</div>
 													<div class="lp-ui-perk">@MiningRackCount() mining now</div>
-													<div class="lp-ui-perk">Hub wallet @HubWalletBtc().ToString("F4") BTC · @RackPendingLabel() on racks</div>
+													<div class="lp-ui-perk">Hub wallet @HubWalletBtc().ToString("F4") BTC · @RackPendingBtc().ToString("F4") BTC on racks</div>
 												</div>
 
 												<div class="lp-ui-btn-row">
@@ -216,15 +251,18 @@
 								else if ( _active == OpsTab.Racks )
 								{
 									<div class="pane racks">
-										<div class="lp-ui-panel">
+										<div class="lp-ui-panel racks-panel">
 											<div class="lp-ui-panel-title">
 												<i class="material-icons">dns</i>
 												<span>GPU racks</span>
 											</div>
 
-											<div class="lp-ui-intro wallet-intro">
-												@LinkedRackCount() linked · terminal index matches list order
-											</div>
+											@if ( LinkedRackCount() > 0 )
+											{
+												<div class="lp-ui-intro">
+													Rack numbers <strong>#0–#@(LinkedRackCount() - 1)</strong> match rig0 at the terminal. Upgrade CPU and cores here — start/stop mining on the CRT.
+												</div>
+											}
 
 											@if ( LinkedRackCount() == 0 )
 											{
@@ -236,24 +274,26 @@
 											else
 											{
 												<div class="lp-ui-scroll">
-													<div class="lp-ui-list">
+													<div class="rack-grid">
 														@for ( var i = 0; i < GetLinkedRacks().Count; i++ )
 														{
 															var rack = GetLinkedRacks()[i];
-															<div class="rack-shell-row">
-																<div class="lp-ui-list-row">
-																	<div class="lp-ui-list-main">
-																		<div class="lp-ui-list-title">#@i @(rack.AdvancedRack ? LpBitcoinIdent.AdvancedRackDisplayName : LpBitcoinIdent.RackDisplayName)</div>
-																		<div class="lp-ui-list-sub">@(rack.BitcoinAmount.ToString("F6")) BTC · $@(rack.UsdValue) · @(rack.ClockGhz.ToString("F2")) GHz · x@(rack.CoreCount)</div>
-																	</div>
-																	<div class="lp-ui-list-meta">
-																		<div class="lp-ui-list-value">@(rack.IsMining ? "Mining" : "Idle")</div>
-																		<div class="lp-ui-list-tag">yield x@(rack.YieldMultiplier.ToString("F1"))</div>
+															<div class="rack-card">
+																<div class="rack-card-head">
+																	<div class="rack-card-title">@RackDisplayName( rack, i )</div>
+																	<div class="rack-card-badges">
+																		<span class="rack-badge @(rack.IsMining ? "on" : "")">@(rack.IsMining ? "Mining" : "Idle")</span>
+																		<span class="rack-badge dim">yield x@(rack.YieldMultiplier.ToString( "F1" ))</span>
 																	</div>
 																</div>
-																<div class="rack-shell-actions">
-																	<button class="lp-ui-btn-ghost @(!CanUpgradeCpu(rack) ? "disabled" : "")" onclick="@(() => UpgradeCpu(rack))">CPU $@UpgradeCpuCost(rack)</button>
-																	<button class="lp-ui-btn-ghost @(!CanUpgradeCores(rack) ? "disabled" : "")" onclick="@(() => UpgradeCores(rack))">Core $@UpgradeCoreCost(rack)</button>
+																<div class="rack-card-stats">
+																	<span>@RackBtcLine( rack )</span>
+																	<span>@RackHardwareLine( rack )</span>
+																	<span>@RackUpgradeLine( rack )</span>
+																</div>
+																<div class="rack-card-actions">
+																	<button class="lp-ui-btn-ghost @(!CanUpgradeCpu( rack ) ? "disabled" : "")" onclick="@(() => UpgradeCpu( rack ))">CPU $@UpgradeCpuCost( rack )</button>
+																	<button class="lp-ui-btn-ghost @(!CanUpgradeCores( rack ) ? "disabled" : "")" onclick="@(() => UpgradeCores( rack ))">Core $@UpgradeCoreCost( rack )</button>
 																</div>
 															</div>
 														}
@@ -266,66 +306,92 @@
 								else if ( _active == OpsTab.Wallet )
 								{
 									<div class="pane wallet">
-										<div class="lp-ui-panel">
+										<div class="lp-ui-panel wallet-panel">
 											<div class="lp-ui-panel-title">
 												<i class="material-icons">account_balance_wallet</i>
-												<span>Wallet payout</span>
+												<span>Hub wallet</span>
 											</div>
 
-											<div class="lp-ui-intro wallet-intro">
-												Deposit rack BTC at the bitcoin terminal (deposit / deposit all), then cash out from this hub wallet to your bank. A linked terminal is required for deposits.
+											<div class="lp-ui-intro">
+												Your secured hub balance. Move rack earnings in at the linked terminal, send BTC to other operators there, then cash out to your bank here.
 											</div>
 
-											<div class="lp-ui-info">
-												<div class="lp-ui-info-row">
-													<span class="lp-ui-info-label">Hub wallet</span>
-													<span class="lp-ui-info-value accent">@HubWalletBtc().ToString("F6") BTC</span>
-												</div>
-												<div class="lp-ui-info-row">
-													<span class="lp-ui-info-label">On racks (undeposited)</span>
-													<span class="lp-ui-info-value">@RackPendingBtc().ToString("F6") BTC</span>
-												</div>
-												<div class="lp-ui-info-row">
-													<span class="lp-ui-info-label">Terminal linked</span>
-													<span class="lp-ui-info-value">@(HasLinkedTerminal() ? "Yes — deposit at CRT" : "No — place bitcoin terminal near hub")</span>
-												</div>
-												<div class="lp-ui-info-row">
-													<span class="lp-ui-info-label">USD value (hub)</span>
-													<span class="lp-ui-info-value">$@HubWalletUsd().ToString("N2")</span>
-												</div>
-												<div class="lp-ui-info-row">
-													<span class="lp-ui-info-label">Exchange rate</span>
-													<span class="lp-ui-info-value">$@LpBitcoinEconomy.BitcoinValueUsd / BTC</span>
-												</div>
-												<div class="lp-ui-info-row">
-													<span class="lp-ui-info-label">Your cash</span>
-													<span class="lp-ui-info-value">$@LpHashdUiHost.GetLocalWalletCash()</span>
-												</div>
+											<div class="wallet-section-tabs">
+												<button class="wallet-section-tab @(_walletSection == WalletSection.CashOut ? "active" : "")"
+												        onclick="@(() => SelectWalletSection( WalletSection.CashOut ))">
+													Cash out
+												</button>
+												<button class="wallet-section-tab @(_walletSection == WalletSection.Send ? "active" : "")"
+												        onclick="@(() => SelectWalletSection( WalletSection.Send ))">
+													Send BTC
+												</button>
 											</div>
 
-											<div class="wallet-cashout-bar">
-												<i class="material-icons">payments</i>
-												<TextEntry class="wallet-cashout-input" Placeholder="BTC amount (e.g. 0.025)" Value:bind="@CashOutAmount"/>
-												<button class="lp-ui-btn-primary wallet-cashout-btn @GetPartialCashOutButtonClass()" onclick="@CashOutPartial">@PartialCashOutButtonLabel()</button>
-											</div>
-
-											<div class="wallet-cashout-row">
-												<button class="lp-ui-btn-primary wallet-cashout-all @(HubWalletBtc() <= 0f ? "disabled" : "")" onclick="@CashOutAll">@CashOutAllButtonLabel()</button>
-											</div>
-
-											@if ( _cashOutErrorActive )
+											@if ( _walletSection == WalletSection.CashOut )
 											{
-												<div class="wallet-cashout-error @(_cashOutErrorVisible ? "visible" : "")">
-													<i class="material-icons">error_outline</i>
-													<span>@_cashOutErrorMessage</span>
+												<div class="lp-ui-info">
+													<div class="lp-ui-info-row">
+														<span class="lp-ui-info-label">Hub wallet</span>
+														<span class="lp-ui-info-value accent">@HubWalletBtc().ToString("F6") BTC</span>
+													</div>
+													<div class="lp-ui-info-row">
+														<span class="lp-ui-info-label">Still on racks</span>
+														<span class="lp-ui-info-value">@RackPendingBtc().ToString("F6") BTC</span>
+													</div>
+													<div class="lp-ui-info-row">
+														<span class="lp-ui-info-label">Terminal linked</span>
+														<span class="lp-ui-info-value">@(HasLinkedTerminal() ? "Yes" : "No — place terminal near hub")</span>
+													</div>
+													<div class="lp-ui-info-row">
+														<span class="lp-ui-info-label">USD value (hub)</span>
+														<span class="lp-ui-info-value">$@HubWalletUsd().ToString("N2")</span>
+													</div>
+													<div class="lp-ui-info-row">
+														<span class="lp-ui-info-label">Exchange rate</span>
+														<span class="lp-ui-info-value">$@LpBitcoinEconomy.BitcoinValueUsd / BTC</span>
+													</div>
+													<div class="lp-ui-info-row">
+														<span class="lp-ui-info-label">Your cash</span>
+														<span class="lp-ui-info-value">$@LpHashdUiHost.GetLocalWalletCash()</span>
+													</div>
 												</div>
+
+												<div class="wallet-cashout-bar">
+													<i class="material-icons">payments</i>
+													<TextEntry class="wallet-cashout-input" Placeholder="BTC amount (e.g. 0.025)" Value:bind="@CashOutAmount"/>
+													<button class="lp-ui-btn-primary wallet-cashout-btn @GetPartialCashOutButtonClass()" onclick="@CashOutPartial">@PartialCashOutButtonLabel()</button>
+												</div>
+
+												<div class="wallet-cashout-row">
+													<button class="lp-ui-btn-primary wallet-cashout-all @(HubWalletBtc() <= 0f ? "disabled" : "")" onclick="@CashOutAll">@CashOutAllButtonLabel()</button>
+												</div>
+
+												@if ( _cashOutErrorActive )
+												{
+													<div class="wallet-cashout-error @(_cashOutErrorVisible ? "visible" : "")">
+														<i class="material-icons">error_outline</i>
+														<span>@_cashOutErrorMessage</span>
+													</div>
+												}
+
+												@if ( _cashOutSuccessActive )
+												{
+													<div class="wallet-cashout-success @(_cashOutSuccessVisible ? "visible" : "")">
+														<i class="material-icons">check_circle</i>
+														<span>@_cashOutSuccessMessage</span>
+													</div>
+												}
 											}
-
-											@if ( _cashOutSuccessActive )
+											else
 											{
-												<div class="wallet-cashout-success @(_cashOutSuccessVisible ? "visible" : "")">
-													<i class="material-icons">check_circle</i>
-													<span>@_cashOutSuccessMessage</span>
+												<div class="wallet-send-placeholder">
+													<i class="material-icons">send</i>
+													<div class="wallet-send-title">Send to another hub</div>
+													<p>Use the linked bitcoin terminal: <strong>send &lt;steamid&gt; &lt;amount|all&gt;</strong>. BTC moves from this hub wallet to the recipient's hub (matched by their Steam ID).</p>
+													<div class="wallet-send-search disabled">
+														<i class="material-icons">terminal</i>
+														<span>Terminal only — rig@hub&gt; send …</span>
+													</div>
 												</div>
 											}
 										</div>
@@ -385,12 +451,14 @@
 @code
 {
 	private enum OpsTab { Overview, Wallet, Racks, Settings }
+	private enum WalletSection { CashOut, Send }
 	private enum PerfRange { Day, Week, Month }
 
 	private static readonly OpsTab[] _tabs = { OpsTab.Overview, OpsTab.Wallet, OpsTab.Racks, OpsTab.Settings };
 	private static readonly PerfRange[] _perfRanges = { PerfRange.Day, PerfRange.Week, PerfRange.Month };
 
 	private OpsTab _active = OpsTab.Overview;
+	private WalletSection _walletSection = WalletSection.CashOut;
 	private PerfRange _perfRange = PerfRange.Week;
 	private PerfRange _profitRange = PerfRange.Week;
 	private bool _pinUnlocked;
@@ -399,7 +467,7 @@
 	private string _pinError = "";
 	private int _pinSetupPass;
 	private static readonly string[] _pinKeys = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "clr", "0", "ok" };
-	private LpUiScaleSize _uiScale = LpUiScaleSize.Large;
+	private LpUiScaleSize _uiScale = LpUiScale.Default;
 	private string _cashOutAmount = "";
 	private bool _cashOutSuccessActive;
 	private bool _cashOutSuccessVisible;
@@ -407,6 +475,7 @@
 	private bool _cashOutErrorActive;
 	private bool _cashOutErrorVisible;
 	private string _cashOutErrorMessage = "";
+	private bool _alertsOpen;
 
 	private string CashOutAmount
 	{
@@ -468,6 +537,49 @@
 
 	private static string HeaderDateLabel() => DateTime.Now.ToString( "MMMM, yyyy" );
 
+	private bool HasUnreadAlerts() => Hub?.UnreadAlertCount > 0;
+
+	private IReadOnlyList<LpBitcoinHubAlert> GetHubAlerts() => Hub?.GetAlerts() ?? Array.Empty<LpBitcoinHubAlert>();
+
+	private void ToggleAlerts()
+	{
+		_alertsOpen = !_alertsOpen;
+		if ( _alertsOpen )
+			Hub?.RequestMarkAlertsRead();
+	}
+
+	private void CloseAlerts() => _alertsOpen = false;
+
+	private static string AlertIcon( LpBitcoinHubAlertKind kind ) => kind switch
+	{
+		LpBitcoinHubAlertKind.TerminalCommand => "terminal",
+		LpBitcoinHubAlertKind.RackCapacity => "storage",
+		LpBitcoinHubAlertKind.HackAttack => "gpp_bad",
+		LpBitcoinHubAlertKind.HubTransfer => "swap_horiz",
+		_ => "notifications"
+	};
+
+	private static string AlertKindLabel( LpBitcoinHubAlertKind kind ) => kind switch
+	{
+		LpBitcoinHubAlertKind.TerminalCommand => "Terminal",
+		LpBitcoinHubAlertKind.RackCapacity => "Rack capacity",
+		LpBitcoinHubAlertKind.HackAttack => "Intrusion",
+		LpBitcoinHubAlertKind.HubTransfer => "Hub transfer",
+		_ => "Alert"
+	};
+
+	private static string AlertTimeLabel( double timestamp )
+	{
+		var age = Math.Max( 0, Time.Now - timestamp );
+		if ( age < 60 )
+			return "just now";
+
+		if ( age < 3600 )
+			return $"{(int)(age / 60)}m ago";
+
+		return $"{(int)(age / 3600)}h ago";
+	}
+
 	private string HashRateLabel()
 	{
 		var th = TotalMiningRate() * 18.5f;
@@ -524,37 +636,41 @@
 	private static string RackDisplayName( LpBitcoinRackEntity rack, int index )
 	{
 		if ( !rack.IsValid() )
-			return $"Rack {index}";
+			return $"Rack #{index}";
 
-		return rack.AdvancedRack ? $"Adv-{index + 12}" : $"GPU-{index + 35}";
+		var label = rack.AdvancedRack ? LpBitcoinIdent.AdvancedRackDisplayName : LpBitcoinIdent.RackDisplayName;
+		return $"#{index} {label}";
 	}
 
-	private static string RackHashRateLabel( LpBitcoinRackEntity rack )
+	private static string RackOverviewSubline( LpBitcoinRackEntity rack )
 	{
-		if ( !rack.IsValid() || !rack.IsMining )
-			return "--";
+		if ( !rack.IsValid() )
+			return "—";
 
-		return $"{rack.MiningRatePerMinute * 18.5f:F1} TH/s";
+		var cap = LpBitcoinEconomy.RackBtcCapacity( rack.AdvancedRack );
+		var fill = cap > 0f ? (int)Math.Round( 100f * rack.BitcoinAmount / cap ) : 0;
+		var rate = rack.IsMining ? $"{rack.MiningRatePerMinute * 18.5f:F1} TH/s" : "idle";
+		return $"{rate} · {rack.BitcoinAmount:F4}/{cap:F4} BTC ({fill}%)";
 	}
 
-	private static string RackTempLabel( LpBitcoinRackEntity rack )
+	private static string RackBtcLine( LpBitcoinRackEntity rack )
 	{
-		if ( !rack.IsValid() || !rack.IsMining )
-			return "--";
-
-		var seed = rack.GameObject.Id.GetHashCode();
-		return $"{58 + Math.Abs( seed % 11 )}°C";
+		var cap = LpBitcoinEconomy.RackBtcCapacity( rack.AdvancedRack );
+		var state = rack.BitcoinAmount >= cap ? "full" : rack.IsMining ? "mining" : "idle";
+		return $"{rack.BitcoinAmount:F6} / {cap:F6} BTC · ${rack.UsdValue:N0} · {state}";
 	}
 
-	private static string RackUptimeLabel( LpBitcoinRackEntity rack, int index )
+	private static string RackHardwareLine( LpBitcoinRackEntity rack )
+		=> $"{rack.ClockGhz:F2} GHz · {rack.CoreCount} cores · CPU L{rack.CpuUpgradeLevel} · Core L{rack.CoreUpgradeLevel}";
+
+	private static string RackUpgradeLine( LpBitcoinRackEntity rack )
 	{
-		if ( !rack.IsValid() || !rack.IsMining )
-			return "--";
-
-		var days = 1 + index * 2;
-		var hours = 3 + index * 4;
-		return $"{days}d {hours}h 12m";
+		var cpu = rack.CpuUpgradeLevel >= LpBitcoinEconomy.CpuUpgradeCosts.Length ? "CPU max" : $"CPU next ${LpBitcoinEconomy.CpuUpgradeCosts[rack.CpuUpgradeLevel]:N0}";
+		var core = rack.CoreUpgradeLevel >= LpBitcoinEconomy.CoreUpgradeCosts.Length ? "Core max" : $"Core next ${LpBitcoinEconomy.CoreUpgradeCosts[rack.CoreUpgradeLevel]:N0}";
+		return $"{cpu} · {core}";
 	}
+
+	private void SelectWalletSection( WalletSection section ) => _walletSection = section;
 
 	private string HubDisplayName() => "HASHD Hub";
 
@@ -924,6 +1040,7 @@
 	{
 		var hash = new HashCode();
 		hash.Add( _active );
+		hash.Add( _walletSection );
 		hash.Add( _uiScale );
 		hash.Add( _pinUnlocked );
 		hash.Add( _pinBuffer );
@@ -939,6 +1056,9 @@
 		hash.Add( _cashOutAmount );
 		hash.Add( MiningRackCount() );
 		hash.Add( TotalMiningRate() );
+		hash.Add( _alertsOpen );
+		hash.Add( Hub?.UnreadAlertCount ?? 0 );
+		hash.Add( Hub?.AlertFeed );
 		return hash.ToHashCode();
 	}
 }

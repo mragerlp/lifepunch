@@ -27,9 +27,13 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable
 	[Sync( SyncFlags.FromHost )] public bool IsPowered { get; set; } = true;
 	[Sync( SyncFlags.FromHost )] public bool AccessPinIsSet { get; set; }
 	[Sync( SyncFlags.FromHost )] public int AccessPinHash { get; set; }
+#if LIFEPUNCH_LOCAL
 	[Sync( SyncFlags.FromHost )] public long Owner { get; set; }
+#endif
 	/// <summary>PIN-gated hub wallet — rack BTC deposits here via terminal; cash out from hub admin.</summary>
 	[Sync( SyncFlags.FromHost )] public float HubWalletBtc { get; set; }
+	[Sync( SyncFlags.FromHost )] public string AlertFeed { get; private set; } = string.Empty;
+	[Sync( SyncFlags.FromHost )] public int UnreadAlertCount { get; private set; }
 
 #if !LIFEPUNCH_LOCAL
 	public override string DisplayName => LpBitcoinIdent.HubDisplayName;
@@ -40,8 +44,28 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable
 
 	protected override void OnStart()
 	{
+		base.OnStart();
+#if !LIFEPUNCH_LOCAL
+		this.TryBindSpawnOwnerHost();
+		LifePunchPropPhysics.SetupPhysicalProp( GameObject, alignGround: Networking.IsHost );
+#endif
 		_modelRenderer = Components.Get<ModelRenderer>( FindMode.EverythingInSelf );
+		EnsureHubVisuals();
 		ApplyHubPowerVisual( IsPowered );
+	}
+
+	private void EnsureHubVisuals()
+	{
+		var visuals = Components.Get<LpBitcoinHubVisuals>( FindMode.EverythingInSelf );
+		if ( !visuals.IsValid() )
+		{
+			visuals = GameObject.AddComponent<LpBitcoinHubVisuals>();
+			visuals.Hub = this;
+		}
+		else if ( !visuals.Hub.IsValid() )
+		{
+			visuals.Hub = this;
+		}
 	}
 
 	protected override void OnUpdate()
@@ -106,6 +130,8 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable
 			foreach ( var rack in GetLinkedRacks() )
 				rack.StopMiningHost();
 		}
+
+		RefreshLinkedTerminalScreens();
 	}
 
 	[Rpc.Host]
@@ -121,7 +147,11 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable
 			foreach ( var rack in GetLinkedRacks() )
 				rack.StopMiningHost();
 		}
+
+		RefreshLinkedTerminalScreens();
 	}
+
+	public void RefreshLinkedTerminalScreens() => LpBitcoinTerminalEntity.RefreshForHub( this );
 
 	public IReadOnlyList<LpBitcoinRackEntity> GetLinkedRacks()
 	{
@@ -156,6 +186,30 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable
 
 	public void RequestCashOutAllHub() => CashOutHubHost( HubWalletBtc, true );
 
+	public void RequestSendHubWallet( long targetSteamId, float amount ) => SendHubWalletHost( targetSteamId, amount );
+
+	/// <summary>First hub in the scene owned by <paramref name="steamId"/> (excludes <paramref name="exclude"/>).</summary>
+	public static LpBitcoinHubEntity FindHubByOwnerSteamId( long steamId, LpBitcoinHubEntity exclude = null )
+	{
+		if ( steamId == 0 )
+			return null;
+
+		var scene = Game.ActiveScene;
+		if ( scene is null )
+			return null;
+
+		foreach ( var hub in scene.GetAllComponents<LpBitcoinHubEntity>() )
+		{
+			if ( !hub.IsValid() || hub == exclude )
+				continue;
+
+			if ( hub.Owner == steamId )
+				return hub;
+		}
+
+		return null;
+	}
+
 	/// <summary>Legacy alias — cash out entire hub wallet.</summary>
 	public void RequestSellAllRacks() => RequestCashOutAllHub();
 
@@ -178,6 +232,106 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable
 	}
 
 	public float GetRackPendingBtc() => GetLinkedRacks().Sum( r => r.BitcoinAmount );
+
+	public IReadOnlyList<LpBitcoinHubAlert> GetAlerts()
+		=> LpBitcoinHubAlertCodec.Deserialize( AlertFeed );
+
+	public int GetRackIndex( LpBitcoinRackEntity rack )
+	{
+		if ( !rack.IsValid() )
+			return -1;
+
+		var racks = GetLinkedRacks();
+		for ( var i = 0; i < racks.Count; i++ )
+		{
+			if ( racks[i].GameObject.Id == rack.GameObject.Id )
+				return i;
+		}
+
+		return -1;
+	}
+
+	public void RequestMarkAlertsRead() => MarkAlertsReadHost();
+
+	public void RequestPushTerminalCommandAlert( string command, string result )
+		=> PushTerminalCommandAlertHost( command, result );
+
+	public void ReportHackAttempt( string attackerLabel ) => ReportHackAttemptHostRpc( attackerLabel );
+
+	[Rpc.Host]
+	private void ReportHackAttemptHostRpc( string attackerLabel )
+	{
+		var label = LpBitcoinHubAlertCodec.Sanitize( attackerLabel );
+		if ( string.IsNullOrWhiteSpace( label ) )
+			label = "unknown operator";
+
+		PushHackAttackAlertHost( $"HASHD intrusion attempt — {label}" );
+	}
+
+	internal void PushRackCapacityAlertHost( int rackIndex, float amount, float capacity )
+	{
+		var label = rackIndex >= 0 ? $"Rack #{rackIndex}" : "GPU rack";
+		PushAlertHost(
+			LpBitcoinHubAlertKind.RackCapacity,
+			$"{label} at capacity ({amount:F6} / {capacity:F6} BTC) — deposit at terminal" );
+	}
+
+	[Rpc.Host]
+	private void MarkAlertsReadHost()
+	{
+		if ( !CanManageHub( Rpc.CallerId ) )
+			return;
+
+		UnreadAlertCount = 0;
+	}
+
+	[Rpc.Host]
+	private void PushTerminalCommandAlertHost( string command, string result )
+	{
+		if ( !CanOperateTerminal( Rpc.CallerId ) )
+			return;
+
+		var cmd = LpBitcoinHubAlertCodec.Sanitize( command );
+		if ( string.IsNullOrWhiteSpace( cmd ) )
+			return;
+
+		var line = LpBitcoinHubAlertCodec.Sanitize( result );
+		var message = string.IsNullOrWhiteSpace( line ) ? cmd : $"{cmd} → {line}";
+		PushAlertHost( LpBitcoinHubAlertKind.TerminalCommand, message );
+	}
+
+	internal void PushHackAttackAlertHost( string detail )
+	{
+		var message = LpBitcoinHubAlertCodec.Sanitize( detail );
+		if ( string.IsNullOrWhiteSpace( message ) )
+			message = "Intrusion attempt detected on HASHD hub";
+
+		PushAlertHost( LpBitcoinHubAlertKind.HackAttack, message );
+	}
+
+	internal void PushAlertHost( LpBitcoinHubAlertKind kind, string message )
+	{
+		if ( !Networking.IsHost )
+			return;
+
+		message = LpBitcoinHubAlertCodec.Sanitize( message );
+		if ( string.IsNullOrWhiteSpace( message ) )
+			return;
+
+		var alerts = GetAlerts().ToList();
+		alerts.Insert( 0, new LpBitcoinHubAlert
+		{
+			Kind = kind,
+			Message = message,
+			Timestamp = Time.Now,
+		} );
+
+		while ( alerts.Count > 20 )
+			alerts.RemoveAt( alerts.Count - 1 );
+
+		AlertFeed = LpBitcoinHubAlertCodec.Serialize( alerts );
+		UnreadAlertCount = Math.Min( UnreadAlertCount + 1, 99 );
+	}
 
 	[Rpc.Host]
 	private void SetAccessPinHost( string pin, string confirm )
@@ -250,6 +404,7 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable
 
 		HubWalletBtc += rack.BitcoinAmount;
 		rack.ClearBalanceHost();
+		RefreshLinkedTerminalScreens();
 	}
 
 	[Rpc.Host]
@@ -269,6 +424,8 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable
 			HubWalletBtc += rack.BitcoinAmount;
 			rack.ClearBalanceHost();
 		}
+
+		RefreshLinkedTerminalScreens();
 	}
 
 	[Rpc.Host]
@@ -289,6 +446,46 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable
 
 		HubWalletBtc -= amount;
 		NotifyCashOutSuccess( Rpc.CallerId, amount, payout, soldAll );
+		RefreshLinkedTerminalScreens();
+	}
+
+	[Rpc.Host]
+	private void SendHubWalletHost( long targetSteamId, float amount )
+	{
+		if ( !CanOperateTerminal( Rpc.CallerId ) )
+			return;
+
+		if ( !HasLinkedTerminal() )
+			return;
+
+		if ( targetSteamId <= 0 || amount <= 0f || amount > HubWalletBtc )
+			return;
+
+		if ( Owner != 0 && Owner == targetSteamId )
+			return;
+
+		var target = FindHubByOwnerSteamId( targetSteamId, exclude: this );
+		if ( target is null || !target.IsValid() )
+			return;
+
+		HubWalletBtc -= amount;
+		target.HubWalletBtc += amount;
+
+		var recipientLabel = LifePunchEntityOwnership.GetOwnerLabel( targetSteamId );
+		if ( string.IsNullOrWhiteSpace( recipientLabel ) )
+			recipientLabel = targetSteamId.ToString();
+
+		var senderLabel = LifePunchEntityOwnership.GetOwnerLabel( Owner );
+		if ( string.IsNullOrWhiteSpace( senderLabel ) )
+			senderLabel = Owner == 0 ? "unknown operator" : Owner.ToString();
+
+		PushAlertHost( LpBitcoinHubAlertKind.HubTransfer,
+			$"Sent {amount:F6} BTC to hub {recipientLabel}" );
+		target.PushAlertHost( LpBitcoinHubAlertKind.HubTransfer,
+			$"Received {amount:F6} BTC from hub {senderLabel}" );
+
+		RefreshLinkedTerminalScreens();
+		target.RefreshLinkedTerminalScreens();
 	}
 
 	[Rpc.Broadcast]
@@ -358,37 +555,33 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable
 
 	public void BindOwnerFromLocalViewer()
 	{
-#if !LIFEPUNCH_LOCAL
-		if ( !Networking.IsHost || Owner != 0 )
+#if LIFEPUNCH_LOCAL
+		if ( Owner != 0 )
 			return;
-
-		if ( Player.Local.IsValid() )
-			Owner = Player.Local.SteamId;
-#else
 		Owner = 1;
+#else
+		LifePunchEntityOwnership.BindOwnerFromLocalViewer( this );
 #endif
 	}
 
-#if !LIFEPUNCH_LOCAL
 	private bool CallerIsOwner( Guid callerId )
 	{
-		var player = GameUtils.GetPlayerByConnectionId( callerId );
-		if ( !player.IsValid() )
-			return Networking.IsHost;
-
-		return Owner == 0 || player.SteamId == Owner;
+#if LIFEPUNCH_LOCAL
+		return true;
+#else
+		return LifePunchEntityOwnership.CallerIsOwner( Owner, callerId );
+#endif
 	}
 
 	private bool TryBindOwner( Guid callerId )
 	{
-		var player = GameUtils.GetPlayerByConnectionId( callerId );
-		if ( !player.IsValid() )
-			return false;
-
-		Owner = player.SteamId;
+#if LIFEPUNCH_LOCAL
+		Owner = 1;
 		return true;
-	}
+#else
+		return this.TryBindOwnerFromCaller( callerId );
 #endif
+	}
 
 	private void ApplyHubPowerVisual( bool powered )
 	{
@@ -400,6 +593,8 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable
 		if ( !_modelRenderer.IsValid() )
 			return;
 
-		LpBitcoinPowerAnim.ApplyHubPower( _modelRenderer, powered, out _ );
+		// Chassis stays on bindPose; LpBitcoinHubVisuals spins the fan bone only.
+		LpBitcoinPowerAnim.ApplyHubPower( _modelRenderer, false, out _ );
+		LpBitcoinPowerLeds.ApplyHubFenceLeds( _modelRenderer, powered );
 	}
 }

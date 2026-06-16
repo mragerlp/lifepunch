@@ -7,16 +7,126 @@
 
 $hashd-amber: #f0a500;
 $hashd-amber-dim: #c4882a;
+$crt-bg: #0a0a0a;
+$crt-frame-bg: #141414;
+$crt-header-bg: #1c1c1c;
+$crt-sidebar-bg: #101010;
+$crt-border: #2a2a2a;
+$crt-text: #d4d4d4;
+$crt-text-dim: #9a9a9a;
 
 @import "LpUiChrome.scss";
 @import "LpUiScale.scss";
 @import "LpOpsCrtTerminal.scss";
 @import "../LifePunchUiFooter.razor.scss";
 
-.lp-ops-crt--gray {
+// Flat selectors only — s&box drops nested theme rules from LpOpsCrtTerminal.scss imports.
+.lp-ops-crt {
+	z-index: 100;
+}
+
+.lp-ops-crt.lp-ops-crt--gray {
+	color: $crt-text;
+
+	.shell {
+		display: flex;
+		flex-direction: column;
+		min-height: 0;
+		overflow: hidden;
+		background-color: rgba(6, 6, 6, 0.98);
+		border: 1px solid #333333;
+		border-radius: 8px;
+		box-shadow: 0 24px 64px rgba(0, 0, 0, 0.72);
+	}
+
+	.crt-frame {
+		flex: 1 1 auto;
+		min-height: 0;
+		background-color: $crt-frame-bg;
+		border: 3px solid #3a3a3a;
+		box-shadow: 0 0 24px rgba(255, 255, 255, 0.04);
+	}
+
+	.crt-header {
+		background-color: $crt-header-bg;
+		border-bottom: 1px solid #333333;
+		color: #b8b8b8;
+	}
+
+	.sidebar {
+		background-color: $crt-sidebar-bg;
+		border-right: 1px solid $crt-border;
+		color: $crt-text-dim;
+	}
+
+	.sidebar-title,
+	.sidebar-foot {
+		color: #c8c8c8;
+	}
+
+	.sidebar-foot {
+		border-top: 1px solid $crt-border;
+	}
+
+	.log {
+		flex: 1 1 auto;
+		min-height: 0;
+		overflow-y: scroll;
+		overflow-x: hidden;
+		cursor: text;
+	}
+
 	.screen {
 		position: relative;
-		background-color: rgba(0, 0, 0, 0.35);
+		background-color: $crt-bg;
+		display: flex;
+		flex-direction: column;
+		min-height: 0;
+		min-width: 0;
+	}
+
+	.log-line {
+		font-size: inherit;
+		line-height: 1.4;
+		color: $crt-text;
+		flex-shrink: 0;
+		cursor: text;
+		pointer-events: all;
+		white-space: pre-wrap;
+		word-break: break-word;
+
+		&.dim {
+			color: #8a8a8a;
+		}
+
+		&.ok {
+			color: #b8d4b0;
+		}
+
+		&.err {
+			color: #e07070;
+		}
+
+		&.cmd {
+			color: #ececec;
+		}
+	}
+
+	.prompt-row {
+		border-top: 1px solid $crt-border;
+		flex-shrink: 0;
+	}
+
+	.cmd-ref {
+		opacity: 1;
+		color: $crt-text-dim;
+		cursor: pointer;
+		padding: 2px 0;
+		line-height: 1.35;
+
+		&:hover {
+			color: $hashd-amber;
+		}
 	}
 
 	.crt-status-row {
@@ -31,27 +141,6 @@ $hashd-amber-dim: #c4882a;
 		color: $hashd-amber-dim;
 	}
 
-	.cmd-ref:hover {
-		color: $hashd-amber;
-	}
-
-	.log {
-		cursor: text;
-	}
-
-	.log-line {
-		font-size: inherit;
-		line-height: 1.4;
-
-		&.dim {
-			color: #8a8a8a;
-		}
-
-		&.ok {
-			color: #b8d4b0;
-		}
-	}
-
 	.prompt {
 		color: $hashd-amber;
 		font-weight: bold;
@@ -60,6 +149,29 @@ $hashd-amber-dim: #c4882a;
 	.cmd-input {
 		color: #ececec;
 		caret-color: $hashd-amber;
+		background-color: transparent;
+		pointer-events: all;
+		cursor: text;
+	}
+
+	.lp-window-watermark {
+		flex: 0 0 32px;
+		flex-shrink: 0;
+		align-self: stretch;
+		width: 100%;
+		height: 32px;
+		min-height: 32px;
+		max-height: 32px;
+		overflow: hidden;
+		background-color: #060606;
+		border-top: 1px solid rgba(255, 255, 255, 0.08);
+
+		.lp-source-footer {
+			width: 100%;
+			height: 32px;
+			min-height: 32px;
+			max-height: 32px;
+		}
 	}
 
 	.boot-splash {
@@ -72,7 +184,7 @@ $hashd-amber-dim: #c4882a;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		background-color: rgba(8, 8, 8, 0.94);
+		background-color: rgba(8, 8, 8, 0.96);
 		z-index: 2;
 		gap: 10px;
 		cursor: pointer;

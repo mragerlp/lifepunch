@@ -192,10 +192,10 @@ Advanced GPU Rack  >>  GPU Rack (standing crypto farm frame)  >>  Bitcoin Miner 
 
 | Entity | Prefab | Root scale | BoxCollider (gameplay hammer) | vmdl `import_scale` (repo) | Mesh bounds @ flatgrass |
 |--------|--------|------------|-------------------------------|----------------------------|-------------------------|
-| **GPU Rack** | `gpurack/gpu-rack.prefab` | 1,1,1 | **25 × 20 × 36** | **0.465** (pitch 90°) | ~16 × 23 × **36** |
-| **Advanced GPU Rack** | `advancedgpurack/advanced-gpu-rack.prefab` | 1,1,1 | ~52 × 27 × **47** | 1.0 | ~95 × 70 × **94** |
+| **GPU Rack** | `gpurack/gpu-rack.prefab` | 1,1,1 | **25 × 20 × 36** | **0.395** | translation Z **21.382** · mesh bottom on ground |
+| **Advanced GPU Rack** | `advancedgpurack/advanced-gpu-rack.prefab` | 1,1,1 | ~52 × 27 × **47** | **0.72** | ~1.8× single scale · translation Z **27.682** |
 | **Bitcoin Miner hub** | `bitcoinminer/bitcoin-miner.prefab` | 1,1,1 | **10 × 8 × 15** | **0.385** + **Z 13.3** trans, rot 0 | Re-verify after vmdl recompile (was wrong @ trans 0 + pitch 90°) |
-| **Bitcoin Terminal (CRT)** | `bitcoin-terminal/bitcoin-terminal.prefab` | 1,1,1 | **14 × 18 × 8** | **0.0195** | ~19 × 18 × 8 mesh @ flatgrass (Jun 2026 bridge tune; was ~1006×925×429 @ 1.0) |
+| **Bitcoin Terminal (CRT)** | `bitcoin-terminal/bitcoin-terminal.prefab` | 1,1,1 | **10 × 4 × 9** | **0.0272** | ~20×17×20 mesh @ flatgrass · **`import_rotation [-90,0,0]`** · **HP 100** |
 
 **Verified read:** single GPU rack is a **standing crypto farm frame** (Sketchfab ref) — taller than the Ophion hub, smaller than the stacked farm unit.
 

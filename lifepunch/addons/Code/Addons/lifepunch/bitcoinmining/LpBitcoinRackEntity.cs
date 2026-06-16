@@ -6,8 +6,10 @@
 
 using System;
 using Sandbox;
+using LifePunch.DXRP.Addons;
 #if !LIFEPUNCH_LOCAL
 using Dxura.RP.Game;
+using Dxura.RP.Shared;
 #endif
 
 namespace LifePunch.DXRP.Addons.Bitcoin;
@@ -45,12 +47,43 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable
 
 	private TimeSince _sincePayout;
 	private ModelRenderer _modelRenderer;
+	private LpBitcoinRackVisuals _visuals;
 	private bool _lastMiningVisual;
+	private bool _capacityAlertSent;
 
 	protected override void OnStart()
 	{
+		base.OnStart();
+#if !LIFEPUNCH_LOCAL
+		LifePunchPropPhysics.SyncBoxColliderFromModel( GameObject );
+		if ( Networking.IsHost )
+			LifePunchGroundContact.AlignMeshBottom( GameObject );
+		this.TryBindSpawnOwnerHost();
+#endif
 		_modelRenderer = Components.Get<ModelRenderer>( FindMode.EverythingInSelf );
+		_visuals = Components.Get<LpBitcoinRackVisuals>( FindMode.EverythingInSelf );
+		if ( !_visuals.IsValid() )
+		{
+			_visuals = GameObject.AddComponent<LpBitcoinRackVisuals>();
+			_visuals.Rack = this;
+		}
+
 		ApplyRackMiningVisual( IsMining );
+	}
+
+#if !LIFEPUNCH_LOCAL
+	public override void OnOcclusionChanged( bool occlude )
+	{
+		base.OnOcclusionChanged( occlude );
+		_visuals?.OnOcclusionChanged( occlude );
+	}
+#endif
+
+	protected override void OnFixedUpdate()
+	{
+#if !LIFEPUNCH_LOCAL
+		TryAlignGroundWhenReleased();
+#endif
 	}
 
 	protected override void OnUpdate()
@@ -58,8 +91,11 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable
 		if ( IsMining != _lastMiningVisual )
 			ApplyRackMiningVisual( IsMining );
 
+		if ( !Networking.IsHost )
+			return;
+
 		var hub = GetLinkedHub();
-		if ( !Networking.IsHost || hub is null || !hub.IsPowered || !IsMining )
+		if ( hub is null || !hub.IsPowered || !IsMining )
 			return;
 
 		MiningProgress = Math.Clamp( _sincePayout.Relative / LpBitcoinEconomy.PayoutIntervalSeconds, 0f, 1f );
@@ -69,6 +105,33 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable
 
 		_sincePayout = 0;
 		BitcoinAmount += LpBitcoinEconomy.TickPayout( ClockGhz, CoreCount, YieldMultiplier );
+		TryHandleCapacityHost();
+		RefreshLinkedTerminalScreens();
+	}
+
+	private void TryHandleCapacityHost()
+	{
+		var capacity = LpBitcoinEconomy.RackBtcCapacity( AdvancedRack );
+		if ( BitcoinAmount < capacity )
+		{
+			_capacityAlertSent = false;
+			return;
+		}
+
+		BitcoinAmount = capacity;
+
+		if ( IsMining )
+			StopMiningHost();
+
+		if ( _capacityAlertSent )
+			return;
+
+		_capacityAlertSent = true;
+		var hub = GetLinkedHub();
+		if ( hub is null )
+			return;
+
+		hub.PushRackCapacityAlertHost( hub.GetRackIndex( this ), BitcoinAmount, capacity );
 	}
 
 	public bool Press( IPressable.Event e ) => false;
@@ -82,6 +145,7 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable
 			return;
 
 		LinkedHubId = hub.GameObject.Id;
+		hub.RefreshLinkedTerminalScreens();
 	}
 
 	public LpBitcoinHubEntity GetLinkedHub()
@@ -104,14 +168,19 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable
 		{
 			IsMining = false;
 			ApplyRackMiningVisual( false );
+			RefreshLinkedTerminalScreens();
 			return;
 		}
+
+		if ( on && BitcoinAmount >= LpBitcoinEconomy.RackBtcCapacity( AdvancedRack ) )
+			on = false;
 
 		IsMining = on;
 		if ( IsMining )
 			_sincePayout = 0;
 
 		ApplyRackMiningVisual( IsMining );
+		RefreshLinkedTerminalScreens();
 	}
 
 	public void RequestSell() => SellHost();
@@ -140,9 +209,15 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable
 		IsMining = false;
 		MiningProgress = 0f;
 		ApplyRackMiningVisual( false );
+		RefreshLinkedTerminalScreens();
 	}
 
-	internal void ClearBalanceHost() => BitcoinAmount = 0f;
+	internal void ClearBalanceHost()
+	{
+		BitcoinAmount = 0f;
+		_capacityAlertSent = false;
+		RefreshLinkedTerminalScreens();
+	}
 
 	public void RequestUpgradeCpu() => UpgradeCpuHost();
 
@@ -198,6 +273,29 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable
 		if ( !_modelRenderer.IsValid() )
 			return;
 
-		LpBitcoinPowerAnim.ApplyRackPower( _modelRenderer, mining, out _ );
+		var played = LpBitcoinPowerAnim.ApplyRackPower( _modelRenderer, mining, out _ );
+		_visuals?.SetVmdlAnimActive( played && mining );
+	}
+
+	private void RefreshLinkedTerminalScreens()
+	{
+		GetLinkedHub()?.RefreshLinkedTerminalScreens();
+	}
+
+	private void TryAlignGroundWhenReleased()
+	{
+		if ( !Networking.IsHost || GameObject.Tags.Has( Constants.GrabbedTag ) )
+			return;
+
+		if ( !_modelRenderer.IsValid() )
+			_modelRenderer = Components.Get<ModelRenderer>( FindMode.EverythingInSelf );
+
+		if ( !_modelRenderer.IsValid() || _modelRenderer.Bounds.Mins.z > -0.15f )
+			return;
+
+		if ( Rigidbody.IsValid() && Rigidbody.Velocity.Length > 8f )
+			return;
+
+		LifePunchGroundContact.AlignMeshBottom( GameObject );
 	}
 }

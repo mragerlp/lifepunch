@@ -52,22 +52,8 @@ public class HackerServerRackEntity : BaseEntity, Component.IPressable
 	protected override void OnStart()
 	{
 		base.OnStart();
-		TryBindSpawnOwnerHost();
-	}
-
-	private void TryBindSpawnOwnerHost()
-	{
 #if !LIFEPUNCH_LOCAL
-		if ( !Networking.IsHost || Owner != 0 )
-			return;
-
-		var networkOwner = GameObject.Network.Owner;
-		if ( networkOwner == null )
-			return;
-
-		var player = GameUtils.GetPlayerByConnectionId( networkOwner.Id );
-		if ( player.IsValid() )
-			Owner = player.SteamId;
+		this.TryBindSpawnOwnerHost();
 #endif
 	}
 
@@ -84,7 +70,9 @@ public class HackerServerRackEntity : BaseEntity, Component.IPressable
 	[Rpc.Host]
 	private void OpenMenuHost()
 	{
-		TryBindSpawnOwnerHost();
+#if !LIFEPUNCH_LOCAL
+		this.TryBindSpawnOwnerHost();
+#endif
 
 #if !LIFEPUNCH_LOCAL
 		if ( !LifePunchMenuInteractGate.IsCallerAllowed( Rpc.Caller, GameObject ) )

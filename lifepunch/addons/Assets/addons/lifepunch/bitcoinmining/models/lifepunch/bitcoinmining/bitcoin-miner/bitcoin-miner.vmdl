@@ -115,10 +115,53 @@
 						reverse = false
 					},
 				]
+				default_root_bone_name = "base_body"
+			},
+			{
+				_class = "BoneMarkupList"
+				children = 
+				[
+					{
+						_class = "Folder"
+						name = "SteamMachineBones"
+						children = 
+						[
+							{
+								_class = "BoneMarkup"
+								target_bone = "base_body"
+								ignore_Translation = true
+								ignore_rotation = true
+								do_not_discard = true
+							},
+							{
+								_class = "BoneMarkup"
+								target_bone = "fan"
+								ignore_Translation = false
+								ignore_rotation = false
+								do_not_discard = true
+							},
+							{
+								_class = "BoneMarkup"
+								target_bone = "front_panel"
+								ignore_Translation = true
+								ignore_rotation = true
+								do_not_discard = true
+							},
+							{
+								_class = "BoneMarkup"
+								target_bone = "back_body"
+								ignore_Translation = true
+								ignore_rotation = true
+								do_not_discard = true
+							},
+						]
+					},
+				]
+				bone_cull_type = "Leaf Only"
 			},
 		]
-		model_archetype = ""
-		primary_associated_entity = ""
+		model_archetype = "animated_model"
+		primary_associated_entity = "prop_dynamic"
 		anim_graph_name = ""
 		base_model_name = ""
 	}

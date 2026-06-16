@@ -82,9 +82,47 @@ Do **not** split into separate vmdls per fan — fans are part of the rack assem
 3. For each slot, create the `.vmat` in `materials/` and assign textures from the table.
 4. Compile `gpu-rack.vmdl`.
 
-**World orientation:** standing **open-frame crypto mining rig** (Sketchfab [Crypto Farm / Mining Rig](https://sketchfab.com/3d-models/crypto-farm-mining-rig-049f02ffd15c41ca8cb8020feb43993f) — same asset family as `gpu-rack-anim.fbx`). **Single and stacked racks share the same ModelDoc axis treatment:** `import_rotation = [ 0, 90, 0 ]`, `import_translation = [ -1.389, -0.208, 2.912 ]`, align **Center / Center / Bottom**. Single rack `import_scale = 0.395` (~15% below prior 0.465); stacked `import_scale = 0.85` @ prefab `1,1,1`.
+**World orientation:** standing **open-frame crypto mining rig** (Sketchfab [Crypto Farm / Mining Rig](https://sketchfab.com/3d-models/crypto-farm-mining-rig-049f02ffd15c41ca8cb8020feb43993f) — same asset family as `gpu-rack-anim.fbx`). **Single and stacked racks share the same ModelDoc axis treatment:** `import_rotation = [ 0, 90, 0 ]`, align **Center / Center / Bottom**, prefab root **`1,1,1`**.
+
+| Variant | `import_scale` | `import_translation` Z | Notes |
+|---------|----------------|------------------------|-------|
+| **gpu-rack** | **0.395** | **21.382** | Bridge tune Jun 2026 — lifts mesh bottom toward ground |
+| **gpu-rack-stacked** | **0.72** | **27.682** | ~1.8× single import scale (two-tier); was 0.85 — oversized |
+
+## Prefab collider (match DXRP printer + bitcoin-miner hub)
+
+**Problem (Jun 2026):** hand-authored `BoxCollider` used tall **Z** half-extents while the mesh is **Y-rotated** in ModelDoc → players walked through the visible frame; feet clipped into flatgrass.
+
+**Fix:** drive collider from **`Model.Bounds`** (same as DXRP `Prop.Modify` + `gameplay/entities/printer/printer.prefab`):
+
+| Reference | BoxCollider Center | BoxCollider Scale |
+|-----------|-------------------|-------------------|
+| **DXRP printer** | `0, 0, 0` | `35, 35, 10` |
+| **bitcoin-miner hub** | `0, 0, 14` | `32, 20, 28` |
+| **gpu-rack / stacked** | **`model.Bounds.Center`** | **`model.Bounds.Size`** |
+
+**Runtime (host):** `LifePunchPropPhysics.SetupPhysicalProp` — sync box from vmdl + ground-align mesh feet.
+
+**Editor bake (optional):** host play → `lp_bitcoin_scale_audit` → copy `LIFEPUNCH_PROP_PHYSICS` `modelBounds center/size` into prefab JSON → recompile prefab.
 
 Canonical JSON: `material-map.json` in this folder.
+
+## Rigged fan animation (required for power_on)
+
+The shipped `gpu-rack-anim.fbx` has **mesh only** (no armature) → ModelDoc reports `bones=0`.
+Run the headless Blender rig export (same pattern as hub `Export-BitcoinMinerSteamMachineFbx.ps1`):
+
+```powershell
+powershell -File lifepunch\addons\scripts\Export-GpuRackAnimFbx.ps1
+```
+
+Writes `source/gpu-rack-anim-rigged.fbx` + `source/gpu-rack-stacked-anim-rigged.fbx` with:
+- `rack_root` bone + `FanBlades_*` / `GPU_Fan_*` fan bones
+- Actions: `power_on`, `GPU_Farm_Final` (single) or `Mining_Rig_Stacked` (stacked)
+
+Then compile `gpu-rack.vmdl` / `gpu-rack-stacked.vmdl` in ModelDoc and `Pull-DxrpCompiledAssetsToRepo.ps1 -Addon bitcoinmining`.
+
+Owner `.blend` (if present): `GPU_Farm_Final.blend` — pass as `-GpuRackSource` only when re-exporting from Blender; default input is the existing anim FBX.
 
 ## Archive (do not upload)
 

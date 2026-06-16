@@ -22,7 +22,7 @@ public enum LpUiScaleSize
 /// <summary>CSS class helpers for hub and CRT terminal scale modifiers.</summary>
 public static class LpUiScale
 {
-	public static readonly LpUiScaleSize Default = LpUiScaleSize.Medium;
+	public static readonly LpUiScaleSize Default = LpUiScaleSize.ExtraLarge;
 
 	public static string CssClass( LpUiScaleSize size ) => size switch
 	{
@@ -30,7 +30,7 @@ public static class LpUiScale
 		LpUiScaleSize.Medium => "lp-ui-size-m",
 		LpUiScaleSize.Large => "lp-ui-size-l",
 		LpUiScaleSize.ExtraLarge => "lp-ui-size-xl",
-		_ => "lp-ui-size-m"
+		_ => "lp-ui-size-xl"
 	};
 
 	public static string ShortLabel( LpUiScaleSize size ) => size switch
@@ -39,7 +39,7 @@ public static class LpUiScale
 		LpUiScaleSize.Medium => "M",
 		LpUiScaleSize.Large => "L",
 		LpUiScaleSize.ExtraLarge => "XL",
-		_ => "M"
+		_ => "XL"
 	};
 
 	public static LpUiScaleSize Clamp( int value ) =>

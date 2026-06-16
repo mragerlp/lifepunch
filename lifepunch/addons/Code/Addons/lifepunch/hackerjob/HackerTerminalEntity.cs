@@ -49,6 +49,9 @@ public sealed class HackerTerminalEntity : BaseEntity, Component.IPressable
 	{
 		base.OnStart();
 		RefreshScreenIdle();
+#if !LIFEPUNCH_LOCAL
+		this.TryBindSpawnOwnerHost();
+#endif
 	}
 
 	public bool CanPress( IPressable.Event e ) => LifePunchMenuInteractGate.CanPressMenu( GameObject );

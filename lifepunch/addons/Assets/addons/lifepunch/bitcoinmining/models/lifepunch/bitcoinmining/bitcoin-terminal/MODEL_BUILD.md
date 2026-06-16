@@ -22,7 +22,7 @@ lifepunch/scripts/Start-SboxDxrpEditor.ps1 -SyncAddon bitcoinmining
 ## ModelDoc
 
 1. Import `computer.fbx`; note material slots → fill `material-map.json`.
-2. **`import_scale = 0.0195`** (Jun 2026 bridge tune — mesh was ~1006×925×429 @ 1.0; target collider max **18**).
+2. **`import_scale = 0.0272`**, **`import_rotation = [-90, 0, 0]`** (Jun 2026 — FBX imported flat; pitch upright → ~20u desk height @ prefab **1,1,1**).
 3. Compile `bitcoin-terminal.vmdl`.
 3. **Separate entity** `entities/bitcoin-terminal/bitcoin-terminal.prefab` — not a child of `bitcoin-miner`.
 4. `lcd_screen` `TextRenderer` on terminal; `BitcoinTerminalProp` auto-links to nearest rig + opens hashd on USE.
