@@ -270,6 +270,81 @@ public static class LpBitcoinDevSpawn
 		hub.ApplyPoweredState( true );
 	}
 
+	/// <summary>Logs GPU rack + advanced rack vmdl sequences and mining anim apply (BITCOINMINING-01).</summary>
+	[ConCmd( "lp_bitcoin_rack_anim_audit" )]
+	public static void RackAnimAudit()
+	{
+		var scene = Game.ActiveScene;
+		if ( scene is null )
+		{
+			Log.Warning( "lp_bitcoin_rack_anim_audit: no active scene." );
+			return;
+		}
+
+		var racks = scene.GetAllComponents<LpBitcoinRackEntity>()
+			.Where( r => r.IsValid() )
+			.OrderBy( r => r.AdvancedRack )
+			.ToList();
+
+		if ( racks.Count == 0 )
+		{
+			if ( !TryGetSpawnTransform( out var transform ) )
+			{
+				Log.Warning( "lp_bitcoin_rack_anim_audit: no racks — run lp_bitcoin_spawn_kit first." );
+				return;
+			}
+
+			Log.Info( "lp_bitcoin_rack_anim_audit: spawning kit …" );
+			SpawnKitInternal();
+			racks = scene.GetAllComponents<LpBitcoinRackEntity>()
+				.Where( r => r.IsValid() )
+				.OrderBy( r => r.AdvancedRack )
+				.ToList();
+		}
+
+		foreach ( var rack in racks )
+			LogRackAnimAudit( rack );
+	}
+
+	private static void LogRackAnimAudit( LpBitcoinRackEntity rack )
+	{
+		if ( !rack.IsValid() )
+			return;
+
+		var tag = rack.AdvancedRack ? "advanced-rack" : "gpu-rack";
+		var renderer = rack.Components.Get<ModelRenderer>( FindMode.EverythingInSelf );
+		if ( !renderer.IsValid() )
+		{
+			Log.Warning( $"BITCOINMINING_RACK_ANIM_AUDIT {tag} no ModelRenderer" );
+			return;
+		}
+
+		var sceneModel = renderer.SceneObject as SceneModel;
+		var model = renderer.Model;
+		var sequences = LpBitcoinPowerAnim.GetAvailableSequences( renderer, sceneModel );
+		Log.Info( $"BITCOINMINING_RACK_ANIM_AUDIT {tag} model={model?.ResourcePath ?? "(null)"} mining={rack.IsMining} bones={model?.BoneCount ?? 0} animCount={model?.AnimationCount ?? 0}" );
+
+		if ( sequences.Count == 0 )
+		{
+			var vmdl = rack.AdvancedRack ? "gpu-rack-stacked.vmdl" : "gpu-rack.vmdl";
+			Log.Warning( $"BITCOINMINING_RACK_ANIM_AUDIT {tag} sequences=0 — open {vmdl} in ModelDoc, star-add power_on from anim FBX, recompile, Pull-DxrpCompiledAssetsToRepo." );
+			return;
+		}
+
+		foreach ( var seq in sequences )
+			Log.Info( $"BITCOINMINING_RACK_ANIM_AUDIT {tag} seq={seq}" );
+
+		if ( LpBitcoinPowerAnim.ApplyRackPower( renderer, true, out var onSeq ) )
+			Log.Info( $"BITCOINMINING_RACK_ANIM_AUDIT {tag} apply ON -> {onSeq}" );
+		else
+			Log.Warning( $"BITCOINMINING_RACK_ANIM_AUDIT {tag} apply ON failed." );
+
+		if ( LpBitcoinPowerAnim.ApplyRackPower( renderer, false, out var offSeq ) )
+			Log.Info( $"BITCOINMINING_RACK_ANIM_AUDIT {tag} apply OFF -> {offSeq}" );
+		else
+			Log.Warning( $"BITCOINMINING_RACK_ANIM_AUDIT {tag} apply OFF failed." );
+	}
+
 	private static bool IsPreviewHub( LpBitcoinHubEntity hub )
 	{
 		if ( !hub.IsValid() )

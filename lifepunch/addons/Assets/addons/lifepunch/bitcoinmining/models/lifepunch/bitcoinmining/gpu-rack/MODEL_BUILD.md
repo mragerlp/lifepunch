@@ -141,12 +141,12 @@ Rack fans and card LEDs **only run while mining** — idle when powered off.
 
 | Sequence | When | Source |
 |----------|------|--------|
-| `power_on` | `IsMining == true` | Loop from `source/gpu-rack-anim.fbx` |
-| `power_off` | `IsMining == false` | Hold first frame / wind-down from same FBX |
+| `power_on` | `IsMining == true` | Loop from `source/gpu-rack-anim.fbx` (FBX stack `GPU_Farm_Final`, take 0) |
+| `power_off` | `IsMining == false` | `bindPose` (single take in source FBX) |
 
-`gpu-rack-stacked-anim.fbx` is a layout reference only unless art needs the stacked variant.
+`gpu-rack-stacked.vmdl` uses `source/gpu-rack-stacked-anim.fbx` — FBX stack **`Mining_Rig_Stacked`** (take 0). Same `power_on` / `bindPose` contract as small rack.
 
-**Code:** `GpuRackEntity.SetMiningState` switches vmdl sequence (replaces legacy `RackFan1*` child spin — see `TECH_DEBT` BITCOINMINING-01).
+**Code:** `LpBitcoinRackEntity` + `LpBitcoinPowerAnim.ApplyRackPower` switch vmdl sequence on `IsMining` (replaces legacy child-fan spin when compiled `_c` exposes sequences — see `TECH_DEBT` BITCOINMINING-01).
 
 ## Terminal prop (separate from rack vmdl)
 

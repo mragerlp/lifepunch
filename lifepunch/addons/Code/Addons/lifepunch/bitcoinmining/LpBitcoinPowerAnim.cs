@@ -14,6 +14,7 @@ namespace LifePunch.DXRP.Addons.Bitcoin;
 /// <summary>
 /// Drives hub/rack vmdl ON/OFF sequences via <see cref="SceneModel.DirectPlayback"/>.
 /// Hub Steam Machine export: <c>fanAction</c> (powered), <c>front_panelAction</c> (optional), <c>bindPose</c> (off).
+/// GPU racks: <c>power_on</c> / <c>GPU_Farm_Final</c> (small), <c>Mining_Rig_Stacked</c> (advanced).
 /// </summary>
 public static class LpBitcoinPowerAnim
 {
@@ -36,8 +37,27 @@ public static class LpBitcoinPowerAnim
 		"bindpose",
 	};
 
+	private static readonly string[] RackPowerOnCandidates =
+	{
+		PowerOn,
+		"GPU_Farm_Final",
+		"gpu_farm_final",
+		"Mining_Rig_Stacked",
+		"mining_rig_stacked",
+	};
+
+	private static readonly string[] RackPowerOffCandidates =
+	{
+		PowerOff,
+		"bindPose",
+		"bindpose",
+	};
+
 	public static bool ApplyHubPower( ModelRenderer renderer, bool powered, out string playedSequence )
 		=> ApplyPower( renderer, powered, HubPowerOnCandidates, HubPowerOffCandidates, out playedSequence );
+
+	public static bool ApplyRackPower( ModelRenderer renderer, bool mining, out string playedSequence )
+		=> ApplyPower( renderer, mining, RackPowerOnCandidates, RackPowerOffCandidates, out playedSequence );
 
 	public static bool ApplyPower(
 		ModelRenderer renderer,

@@ -38,9 +38,20 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable
 	public int UsdValue => (int)(BitcoinAmount * LpBitcoinEconomy.BitcoinValueUsd);
 
 	private TimeSince _sincePayout;
+	private ModelRenderer _modelRenderer;
+	private bool _lastMiningVisual;
+
+	protected override void OnStart()
+	{
+		_modelRenderer = Components.Get<ModelRenderer>( FindMode.EverythingInSelf );
+		ApplyRackMiningVisual( IsMining );
+	}
 
 	protected override void OnUpdate()
 	{
+		if ( IsMining != _lastMiningVisual )
+			ApplyRackMiningVisual( IsMining );
+
 		var hub = GetLinkedHub();
 		if ( !Networking.IsHost || hub is null || !hub.IsPowered || !IsMining )
 			return;
@@ -94,12 +105,15 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable
 		if ( hub is null || !hub.IsPowered || !hub.CanOperateTerminal( Rpc.CallerId ) )
 		{
 			IsMining = false;
+			ApplyRackMiningVisual( false );
 			return;
 		}
 
 		IsMining = on;
 		if ( IsMining )
 			_sincePayout = 0;
+
+		ApplyRackMiningVisual( IsMining );
 	}
 
 	public void RequestSell() => SellHost();
@@ -127,6 +141,7 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable
 	{
 		IsMining = false;
 		MiningProgress = 0f;
+		ApplyRackMiningVisual( false );
 	}
 
 	public void RequestUpgradeCpu() => UpgradeCpuHost();
@@ -171,5 +186,18 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable
 
 		CoreUpgradeLevel++;
 		CoreCount += LpBitcoinEconomy.CoresPerLevel;
+	}
+
+	private void ApplyRackMiningVisual( bool mining )
+	{
+		_lastMiningVisual = mining;
+
+		if ( !_modelRenderer.IsValid() )
+			_modelRenderer = Components.Get<ModelRenderer>( FindMode.EverythingInSelf );
+
+		if ( !_modelRenderer.IsValid() )
+			return;
+
+		LpBitcoinPowerAnim.ApplyRackPower( _modelRenderer, mining, out _ );
 	}
 }

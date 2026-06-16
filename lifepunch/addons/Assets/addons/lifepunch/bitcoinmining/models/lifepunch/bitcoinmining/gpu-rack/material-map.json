@@ -126,7 +126,7 @@
     "sourceReorganized": true,
     "modelResourceCreated": true,
     "materialResourcesCreated": true,
-    "animationSequencesDefined": "code-ready-modeldoc-pending",
+    "animationSequencesDefined": "vmdl AnimFile entries for power_on + FBX aliases; recompile _c in ModelDoc after edits",
     "entityPrefabCreated": true
   }
 }
