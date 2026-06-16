@@ -28,6 +28,31 @@ $lp-ui-hashd-accent-hover: #d06b2f;
 $lp-ui-hashd-accent-soft: rgba(232, 125, 62, 0.12);
 $lp-ui-hashd-accent-border: rgba(232, 125, 62, 0.35);
 
+// ── Flex-scroll shell chain (required with lp-ui-size-* — see LifePunchUiScale.scss) ──
+// Column shell → workspace body → scroll region. Pin chrome with lp-ui-chrome-slot.
+.lp-ui-workspace {
+	flex: 1 1 0;
+	min-height: 0;
+	min-width: 0;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+}
+
+.lp-ui-chrome-slot {
+	flex-shrink: 0;
+}
+
+// Alias: use on the one region inside a tab that should scroll (lists, forms, grids).
+// Same contract as .lp-ui-scroll below — prefer this class name on new panels.
+.lp-ui-scroll-region {
+	flex: 1 1 auto;
+	min-height: 0;
+	min-width: 0;
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+
 .lp-ui-intro {
 	flex-shrink: 0;
 	width: 100%;

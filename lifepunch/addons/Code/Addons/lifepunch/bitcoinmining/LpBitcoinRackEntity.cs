@@ -12,7 +12,7 @@ using Dxura.RP.Game;
 
 namespace LifePunch.DXRP.Addons.Bitcoin;
 
-/// <summary>GPU rack — idle BTC printer; mine/stop/sell only via terminal commands.</summary>
+/// <summary>GPU rack — idle BTC printer; deposit to hub wallet via bitcoin terminal only.</summary>
 [Title( "LIFEPUNCH Bitcoin Rack (v2)" )]
 [Category( "LifePunch/Bitcoin" )]
 #if LIFEPUNCH_LOCAL
@@ -37,36 +37,20 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable
 	public float MiningRatePerMinute => LpBitcoinEconomy.MiningRatePerMinute( ClockGhz, CoreCount, YieldMultiplier );
 	public int UsdValue => (int)(BitcoinAmount * LpBitcoinEconomy.BitcoinValueUsd);
 
+#if !LIFEPUNCH_LOCAL
+	public override string DisplayName => AdvancedRack
+		? LpBitcoinIdent.AdvancedRackDisplayName
+		: LpBitcoinIdent.RackDisplayName;
+#endif
+
 	private TimeSince _sincePayout;
 	private ModelRenderer _modelRenderer;
 	private bool _lastMiningVisual;
 
 	protected override void OnStart()
 	{
-		FreezeAsWorldProp();
 		_modelRenderer = Components.Get<ModelRenderer>( FindMode.EverythingInSelf );
 		ApplyRackMiningVisual( IsMining );
-	}
-
-	/// <summary>Placed racks are static world props — no gravity drift or floor tunneling.</summary>
-	private void FreezeAsWorldProp()
-	{
-		var body = Components.Get<Rigidbody>( FindMode.EverythingInSelf );
-		if ( !body.IsValid() )
-			return;
-
-		body.Gravity = false;
-		body.Locking = new PhysicsLock
-		{
-			X = true,
-			Y = true,
-			Z = true,
-			Pitch = true,
-			Yaw = true,
-			Roll = true
-		};
-		body.Velocity = Vector3.Zero;
-		body.AngularVelocity = Vector3.Zero;
 	}
 
 	protected override void OnUpdate()
@@ -87,15 +71,7 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable
 		BitcoinAmount += LpBitcoinEconomy.TickPayout( ClockGhz, CoreCount, YieldMultiplier );
 	}
 
-	public bool Press( IPressable.Event e )
-	{
-		var hub = GetLinkedHub();
-		if ( hub is null )
-			return false;
-
-		LpBitcoinTerminalUiHost.Open( hub, this );
-		return true;
-	}
+	public bool Press( IPressable.Event e ) => false;
 
 	public void Hover( IPressable.Event e ) { }
 	public void Blur( IPressable.Event e ) { }
@@ -165,6 +141,8 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable
 		MiningProgress = 0f;
 		ApplyRackMiningVisual( false );
 	}
+
+	internal void ClearBalanceHost() => BitcoinAmount = 0f;
 
 	public void RequestUpgradeCpu() => UpgradeCpuHost();
 

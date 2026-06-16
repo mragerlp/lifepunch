@@ -288,6 +288,17 @@
     private bool IsPinGateActive => _pinGate != PinGateKind.None;
     private bool IsPinUiFlow => IsRackPinSetup || IsRackPinUnlock;
 
+    protected override void OnEnabled()
+    {
+        LifePunchUiScrollPolicy.Apply( Panel );
+    }
+
+    protected override void OnUpdate()
+    {
+        base.OnUpdate();
+        LifePunchUiScrollPolicy.Apply( Panel );
+    }
+
     private string GetRootClass()
     {
         var classes = new List<string>();

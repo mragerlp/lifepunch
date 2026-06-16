@@ -4,8 +4,13 @@
 // "LIFEPUNCH Bitcoin Miner for DXRP" (s&box ident: lifepunch.bitcoin · addon ident: bitcoinmining)
 // ─────────────────────────────────────────────────────────────────────────────
 
+using System;
 using System.Linq;
 using Sandbox;
+using LifePunch.DXRP.Addons;
+#if !LIFEPUNCH_LOCAL
+using Dxura.RP.Game;
+#endif
 
 namespace LifePunch.DXRP.Addons.Bitcoin;
 
@@ -20,21 +25,77 @@ public sealed class LpBitcoinTerminalEntity : BaseEntity, Component.IPressable
 {
 	[Property] public float LinkRange { get; set; } = 512f;
 
+#if !LIFEPUNCH_LOCAL
+	public override string DisplayName => LpBitcoinIdent.TerminalDisplayName;
+#endif
+
+	public bool CanPress( IPressable.Event e ) => LifePunchMenuInteractGate.CanPressMenu( GameObject );
+
 	public bool Press( IPressable.Event e )
 	{
-		var hub = FindLinkedHub();
-		if ( hub is null )
-		{
-			Log.Warning( "[lifepunch.bitcoin] No hub in range for terminal." );
-			return false;
-		}
-
-		LpBitcoinTerminalUiHost.Open( hub );
+		RequestOpenTerminal();
 		return true;
 	}
 
 	public void Hover( IPressable.Event e ) { }
 	public void Blur( IPressable.Event e ) { }
+
+	public void RequestOpenTerminal() => OpenTerminalHost();
+
+	[Rpc.Host]
+	private void OpenTerminalHost()
+	{
+#if !LIFEPUNCH_LOCAL
+		if ( !LifePunchMenuInteractGate.IsCallerAllowed( Rpc.Caller, GameObject ) )
+			return;
+#else
+		if ( !LifePunchMenuInteractGate.IsCallerAllowed( null, GameObject ) )
+			return;
+#endif
+
+		var hub = FindLinkedHub();
+		if ( hub is null )
+		{
+			Log.Warning( "[lifepunch.bitcoin] No hub in range for terminal." );
+			return;
+		}
+
+		if ( !hub.IsPowered )
+		{
+			Log.Warning( "[lifepunch.bitcoin] Hub power off — enable at hub admin panel." );
+			return;
+		}
+
+		OpenTerminal( Rpc.CallerId, hub.GameObject.Id );
+	}
+
+	[Rpc.Broadcast]
+	private void OpenTerminal( Guid callerId, Guid hubId )
+	{
+		if ( Connection.Local.Id != callerId )
+			return;
+
+		var hub = ResolveHub( hubId );
+		if ( hub is null )
+			return;
+
+		LpBitcoinTerminalUiHost.Open( hub );
+	}
+
+	private static LpBitcoinHubEntity ResolveHub( Guid hubId )
+	{
+		var scene = Game.ActiveScene;
+		if ( scene is null )
+			return null;
+
+		foreach ( var hub in scene.GetAllComponents<LpBitcoinHubEntity>() )
+		{
+			if ( hub.IsValid() && hub.GameObject.Id == hubId )
+				return hub;
+		}
+
+		return null;
+	}
 
 	private LpBitcoinHubEntity FindLinkedHub()
 	{

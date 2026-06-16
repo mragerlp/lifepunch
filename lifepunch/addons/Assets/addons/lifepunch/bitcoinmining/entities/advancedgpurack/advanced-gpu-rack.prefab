@@ -38,17 +38,17 @@
         "AngularDamping": 0,
         "EnableImpactDamage": true,
         "EnhancedCcd": false,
-        "Gravity": false,
+        "Gravity": true,
         "GravityScale": 1,
         "ImpactDamage": 0,
         "LinearDamping": 0,
         "Locking": {
-          "X": true,
-          "Y": true,
-          "Z": true,
-          "Pitch": true,
-          "Yaw": true,
-          "Roll": true
+          "X": false,
+          "Y": false,
+          "Z": false,
+          "Pitch": false,
+          "Yaw": false,
+          "Roll": false
         },
         "MassCenterOverride": "0,0,0",
         "MassOverride": 0,
@@ -63,7 +63,7 @@
         "OverrideMassCenter": false,
         "RigidbodyFlags": 0,
         "SleepThreshold": 2,
-        "StartAsleep": true
+        "StartAsleep": false
       },
       {
         "__type": "Sandbox.BoxCollider",
@@ -137,6 +137,18 @@
         "__enabled": true,
         "Flags": 0,
         "AdvancedRack": true,
+        "HealthComponent": {
+          "_type": "component",
+          "component_id": "375b9aa9-e8b3-4170-a70f-7e3f37eb76e7",
+          "go": "f1e2d3c4-b5a6-9780-1234-567890abcdef",
+          "component_type": "HealthComponent"
+        },
+        "Rigidbody": {
+          "_type": "component",
+          "component_id": "5ceb07a2-b10d-41c7-93ae-7ada8b29a9bf",
+          "go": "f1e2d3c4-b5a6-9780-1234-567890abcdef",
+          "component_type": "Rigidbody"
+        },
         "OnComponentDestroy": null,
         "OnComponentDisabled": null,
         "OnComponentEnabled": null,

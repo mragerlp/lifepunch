@@ -77,7 +77,9 @@
 				</div>
 			</div>
 		</div>
-		<LifePunchUiFooter />
+		<div class="lp-window-watermark lp-window-watermark--boxed">
+			<LifePunchUiFooter />
+		</div>
 	</div>
 </root>
 
@@ -164,6 +166,13 @@
 	{
 		_uiScale = size;
 		_showScaleMenu = false;
+		LifePunchUiScrollPolicy.Apply( Panel, resetOffset: true );
+	}
+
+	protected override void OnEnabled()
+	{
+		LpBitcoinHudBridge.SetMenuCursorMode( true );
+		LifePunchUiScrollPolicy.Apply( Panel );
 	}
 
 	public void Bind( LpBitcoinHubEntity hub, LpBitcoinRackEntity focusRack = null )
@@ -176,11 +185,6 @@
 		_bootElapsed = 0f;
 		_bootStatus = "INITIALIZING RIG...";
 		_pendingFocusRack = focusRack;
-	}
-
-	protected override void OnEnabled()
-	{
-		LpBitcoinHudBridge.SetMenuCursorMode( true );
 	}
 
 	protected override void OnDisabled()
@@ -250,6 +254,7 @@
 	protected override void OnUpdate()
 	{
 		base.OnUpdate();
+		LifePunchUiScrollPolicy.Apply( Panel );
 		if ( !_hub.IsValid() )
 		{
 			Close();

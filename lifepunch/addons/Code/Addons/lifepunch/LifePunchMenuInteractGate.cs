@@ -13,13 +13,14 @@ using System.Linq;
 using Sandbox;
 #if !LIFEPUNCH_LOCAL
 using Dxura.RP.Game;
+using Dxura.RP.Game.Equipments;
 using Dxura.RP.Shared;
 #endif
 
 namespace LifePunch.DXRP.Addons;
 
 /// <summary>
-/// Client + host gates for LifePunch menu USE — close range; yields when DXRP Hands would pocket-pickup first.
+/// Client + host gates for LifePunch menu USE — close range; yields when DXRP Hands grab/rotate or pocket-pickup wins.
 /// </summary>
 public static class LifePunchMenuInteractGate
 {
@@ -33,6 +34,9 @@ public static class LifePunchMenuInteractGate
 			return false;
 
 		if ( !LifePunchMenuInteractRange.IsInOpenRange( viewerPos.Value, target.WorldPosition ) )
+			return false;
+
+		if ( WouldHandsManipulationTakePriority( viewerPos.Value, target ) )
 			return false;
 
 		return !WouldHandsPickupTakePriority( viewerPos.Value, target );
@@ -52,6 +56,9 @@ public static class LifePunchMenuInteractGate
 			return false;
 
 		if ( !LifePunchMenuInteractRange.IsInOpenRange( player.WorldPosition, target.WorldPosition ) )
+			return false;
+
+		if ( WouldHandsManipulationTakePriority( player, target ) )
 			return false;
 
 		return !WouldHandsPickupTakePriority( player, target );
@@ -81,6 +88,50 @@ public static class LifePunchMenuInteractGate
 #else
 		var player = Player.Local;
 		return player.IsValid() ? player.WorldPosition : null;
+#endif
+	}
+
+#if !LIFEPUNCH_LOCAL
+	private static bool WouldHandsManipulationTakePriority( Player player, GameObject menuTarget )
+	{
+		if ( !player.IsValid() || !menuTarget.IsValid() )
+			return false;
+
+		var root = menuTarget.Root;
+		if ( !root.IsValid() )
+			return false;
+
+		if ( root.Tags.Has( Constants.GrabbedTag ) )
+			return true;
+
+		var equipment = player.CurrentEquipment;
+		if ( !equipment.IsValid() || equipment.Identifier != "hands" )
+			return false;
+
+		var hands = equipment.Components.Get<HandsEquipment>( FindMode.EverythingInSelf );
+		if ( hands.IsValid() && hands.IsHolding( root ) )
+			return true;
+
+		if ( !root.Tags.Has( Constants.HandsInteractTag ) || !Input.Down( "attack1" ) )
+			return false;
+
+		var trace = player.Scene.Trace.Ray( player.AimRay, Config.Current.Game.ReachDistance )
+			.UseHitboxes()
+			.IgnoreGameObjectHierarchy( player.GameObject )
+			.WithoutTags( Constants.TraceIgnoreTags )
+			.Run();
+
+		return trace.Hit && trace.GameObject.IsValid() && trace.GameObject.Root == root;
+	}
+#endif
+
+	private static bool WouldHandsManipulationTakePriority( Vector3 viewerPos, GameObject menuTarget )
+	{
+#if LIFEPUNCH_LOCAL
+		return false;
+#else
+		var player = Player.Local;
+		return player.IsValid() && WouldHandsManipulationTakePriority( player, menuTarget );
 #endif
 	}
 

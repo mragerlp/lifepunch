@@ -22,11 +22,11 @@ public static class LifePunchMenuInteractRange
 {
 	public const float MetersToUnits = 39.3701f;
 
-	/// <summary>~1.25 m — stand at the console face to USE-open menus.</summary>
-	public const float OpenHorizontalMeters = 1.25f;
+	/// <summary>~0.85 m — stand at the console face to USE-open menus (not across the room).</summary>
+	public const float OpenHorizontalMeters = 0.85f;
 
-	/// <summary>~1.0 m vertical slack while opening.</summary>
-	public const float OpenVerticalMeters = 1.0f;
+	/// <summary>~0.75 m vertical slack while opening.</summary>
+	public const float OpenVerticalMeters = 0.75f;
 
 	/// <summary>~2.0 m — auto-close UI if the player walks away.</summary>
 	public const float UiCloseHorizontalMeters = 2.0f;

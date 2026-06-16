@@ -6,7 +6,11 @@
 
 namespace LifePunch.DXRP.Addons;
 
-/// <summary>Shared LifePunch menu UI scale steps (S / M / L / XL).</summary>
+/// <summary>
+/// Shared LifePunch menu UI scale steps (S / M / L / XL).
+/// Pair with flex-scroll layout on every scalable panel — scale only resizes the shell;
+/// tab content must scroll via min-height:0 + overflow-y:scroll (see LifePunchUiScale.scss).
+/// </summary>
 public enum LifePunchUiScaleSize
 {
 	Small = 0,
@@ -36,4 +40,7 @@ public static class LifePunchUiScale
 		LifePunchUiScaleSize.ExtraLarge => "XL",
 		_ => "XL"
 	};
+
+	public static LifePunchUiScaleSize Clamp( int value ) =>
+		(LifePunchUiScaleSize)Math.Clamp( value, 0, 3 );
 }

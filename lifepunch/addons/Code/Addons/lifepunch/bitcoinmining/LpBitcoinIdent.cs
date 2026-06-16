@@ -22,6 +22,8 @@ public static class LpBitcoinIdent
 	public const string UiFooter = "lifepunch.bitcoin v2 — lifepunch.co";
 
 	public const string HubPrefabPath = "addons/lifepunch/bitcoinmining/entities/bitcoinminer/bitcoin-miner.prefab";
+	public const string HubDisplayName = "Bitcoin Miner";
+	public const string TerminalDisplayName = "Bitcoin Terminal";
 	public const string RackDisplayName = "GPU Rack";
 	public const string AdvancedRackDisplayName = "Advanced GPU Rack";
 

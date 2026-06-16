@@ -16,6 +16,7 @@ $hashd-muted: #9ca3af;
 $hashd-text: #eceef3;
 $hashd-title: #f8f9fc;
 $hashd-green: #5fd38d;
+$shell-radius: 22px;
 
 @import "LpUiChrome.scss";
 @import "LpUiScale.scss";
@@ -43,20 +44,84 @@ $hashd-green: #5fd38d;
 		flex-shrink: 0;
 		display: flex;
 		flex-direction: column;
+		width: 1040px;
+		height: 640px;
+		max-width: 94%;
+		max-height: 92%;
 		min-height: 0;
 		background-color: $hashd-bg;
 		border: 1px solid $hashd-border;
-		border-radius: 22px;
+		border-radius: $shell-radius;
 		overflow: hidden;
 		box-shadow: 0 28px 64px rgba(0, 0, 0, 0.72);
 		pointer-events: all;
 	}
 
+	.lp-window-watermark {
+		flex: 0 0 32px;
+		flex-shrink: 0;
+		align-self: stretch;
+		width: 100%;
+		height: 32px;
+		min-height: 32px;
+		max-height: 32px;
+		overflow: hidden;
+		background-color: #0c0a08;
+
+		&.lp-window-watermark--rounded {
+			border-radius: 0 0 $shell-radius $shell-radius;
+		}
+
+		.lp-source-footer {
+			width: 100%;
+			height: 32px;
+			min-height: 32px;
+			max-height: 32px;
+			flex: none;
+		}
+
+		&.lp-window-watermark--rounded .lp-source-footer {
+			border-radius: 0 0 $shell-radius $shell-radius;
+		}
+	}
+
+	// Hub scale — L is the canonical layout; other steps only resize the shell.
+	// Do NOT nest tab/sidebar overrides here: s&box silently drops SCSS rules nested 4+ deep,
+	// so per-tab tweaks under &.lp-ui-size-* .shell { .pane.wallet { … } } never compile.
+	&.lp-ui-size-s .shell {
+		width: 920px;
+		height: 540px;
+	}
+
+	&.lp-ui-size-m .shell {
+		width: 980px;
+		height: 580px;
+	}
+
+	&.lp-ui-size-l .shell {
+		width: 1040px;
+		height: 640px;
+	}
+
+	&.lp-ui-size-xl .shell {
+		width: 1100px;
+		height: 700px;
+	}
+
+	// Flat selectors only (max 3 levels) for scale-specific chrome that must hide at small sizes.
+	&.lp-ui-size-s .date-chip,
+	&.lp-ui-size-m .date-chip {
+		display: none;
+	}
+
 	.hub-body {
-		flex: 1 1 auto;
+		flex: 1 1 0;
 		min-height: 0;
 		display: flex;
 		flex-direction: column;
+		overflow: hidden;
+		border-top-left-radius: $shell-radius;
+		border-top-right-radius: $shell-radius;
 	}
 
 	.hub-main {
@@ -64,6 +129,7 @@ $hashd-green: #5fd38d;
 		min-height: 0;
 		display: flex;
 		flex-direction: row;
+		overflow: hidden;
 	}
 
 	.pin-gate {
@@ -72,6 +138,9 @@ $hashd-green: #5fd38d;
 		display: flex;
 		flex-direction: column;
 		background-color: $hashd-bg;
+		overflow: hidden;
+		border-top-left-radius: $shell-radius;
+		border-top-right-radius: $shell-radius;
 	}
 
 	.pin-header {
@@ -129,6 +198,21 @@ $hashd-green: #5fd38d;
 		padding: 28px 24px 32px;
 	}
 
+	.pin-entry {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 10px;
+	}
+
+	.pin-label {
+		color: $hashd-amber;
+		font-size: 13px;
+		font-weight: 700;
+		letter-spacing: 0.14em;
+		text-align: center;
+	}
+
 	.pin-dots {
 		display: flex;
 		flex-direction: row;
@@ -157,14 +241,6 @@ $hashd-green: #5fd38d;
 		text-align: center;
 		max-width: 320px;
 		line-height: 1.4;
-	}
-
-	.pin-hint {
-		color: $hashd-muted;
-		font-size: 12px;
-		font-weight: 600;
-		letter-spacing: 0.04em;
-		text-transform: uppercase;
 	}
 
 	.pin-pad {
@@ -238,6 +314,8 @@ $hashd-green: #5fd38d;
 		padding: 16px 10px 14px;
 		background-color: $hashd-surface;
 		border-right: 1px solid $hashd-border;
+		border-top-left-radius: $shell-radius;
+		overflow: hidden;
 	}
 
 	.sidebar-brand.hex-mark {
@@ -345,6 +423,8 @@ $hashd-green: #5fd38d;
 		min-height: 68px;
 		padding: 14px 22px 12px;
 		border-bottom: 1px solid $hashd-border;
+		background-color: $hashd-bg;
+		border-top-right-radius: $shell-radius;
 	}
 
 	.hub-title {
@@ -516,8 +596,7 @@ $hashd-green: #5fd38d;
 		flex: 1 1 auto;
 		min-height: 0;
 		padding: 16px 18px 18px;
-		overflow-y: scroll;
-		overflow-x: hidden;
+		overflow: hidden;
 	}
 
 	.main-panel {
@@ -538,33 +617,188 @@ $hashd-green: #5fd38d;
 		flex-direction: column;
 		gap: 14px;
 		padding: 16px 18px 18px;
-		overflow-y: scroll;
-		overflow-x: hidden;
+		overflow: hidden;
 	}
 
 	.overview .lp-ui-split {
 		flex: 1 1 auto;
 		min-height: 0;
-		align-content: flex-start;
+		align-content: stretch;
+	}
+
+	.overview .lp-ui-split > .lp-ui-panel {
+		flex: 1 1 240px;
+		min-height: 0;
+		overflow: hidden;
 	}
 
 	.pane.wallet,
 	.pane.racks,
 	.pane.settings-pane {
 		padding: 16px 18px 18px;
-		overflow-y: scroll;
-		overflow-x: hidden;
+		overflow: hidden;
 
 		> .lp-ui-panel {
 			flex: 1 1 auto;
 			min-height: 0;
+			overflow-y: scroll;
+			overflow-x: hidden;
 		}
+	}
+
+	// Wallet cashout stacks on narrow workspace widths at every scale (not only S).
+	&.lp-ui-size-s .wallet-cashout-input,
+	&.lp-ui-size-s .wallet-cashout-btn,
+	&.lp-ui-size-m .wallet-cashout-input,
+	&.lp-ui-size-m .wallet-cashout-btn {
+		flex: 1 1 100%;
+		width: 100%;
+		max-width: none;
 	}
 
 	.wallet-intro {
 		margin-bottom: 4px;
 		text-align: left;
 		white-space: normal;
+	}
+
+	.wallet-cashout-bar {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		align-items: stretch;
+		gap: 8px;
+		margin-top: 8px;
+		padding: 8px 10px;
+		border-radius: 8px;
+		background-color: rgba(0, 0, 0, 0.28);
+		border: 1px solid rgba(255, 255, 255, 0.08);
+
+		> .material-icons {
+			flex-shrink: 0;
+			align-self: center;
+			font-size: 18px;
+			color: $hashd-amber;
+		}
+
+		.wallet-cashout-input {
+			flex: 1 1 160px;
+			min-width: 0;
+			height: 38px;
+			padding: 0 10px;
+			border-radius: 6px;
+			background-color: rgba(0, 0, 0, 0.35);
+			border: 1px solid rgba(255, 255, 255, 0.08);
+			color: $hashd-title;
+			font-size: 13px;
+		}
+	}
+
+	.wallet-cashout-btn,
+	.wallet-cashout-all {
+		flex: 0 0 auto;
+		flex-grow: 0;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		min-height: 38px;
+		height: 38px;
+		padding: 0 14px;
+		border-radius: 6px;
+		text-align: center;
+		line-height: 1.15;
+		white-space: nowrap;
+		font-size: 11px;
+		font-weight: 900;
+	}
+
+	.wallet-cashout-btn {
+		flex: 1 1 160px;
+		min-width: 0;
+		max-width: none;
+	}
+
+	.wallet-cashout-row {
+		display: flex;
+		flex-direction: row;
+		margin-top: 8px;
+
+		.wallet-cashout-all {
+			width: 100%;
+			max-width: none;
+		}
+	}
+
+	.wallet-cashout-error {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		gap: 10px;
+		margin-top: 10px;
+		padding: 12px 16px;
+		border-radius: 8px;
+		background-color: rgba(239, 107, 95, 0.1);
+		border: 1px solid rgba(239, 107, 95, 0.45);
+		color: #ef6b5f;
+		opacity: 0;
+		transform: scale(0.94);
+		transition: opacity 0.22s ease-out, transform 0.22s ease-out;
+
+		&.visible {
+			opacity: 1;
+			transform: scale(1);
+		}
+
+		.material-icons {
+			flex-shrink: 0;
+			font-size: 22px;
+			color: #ef6b5f;
+		}
+
+		span {
+			font-size: 13px;
+			font-weight: 600;
+			line-height: 1.3;
+			text-align: center;
+		}
+	}
+
+	.wallet-cashout-success {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		gap: 10px;
+		margin-top: 10px;
+		padding: 12px 16px;
+		border-radius: 8px;
+		background-color: rgba(0, 200, 83, 0.1);
+		border: 1px solid rgba(0, 200, 83, 0.42);
+		color: #00c853;
+		opacity: 0;
+		transform: scale(0.94);
+		transition: opacity 0.22s ease-out, transform 0.22s ease-out;
+
+		&.visible {
+			opacity: 1;
+			transform: scale(1);
+		}
+
+		.material-icons {
+			flex-shrink: 0;
+			font-size: 24px;
+			color: #00c853;
+		}
+
+		span {
+			font-size: 13px;
+			font-weight: 600;
+			letter-spacing: 0.2px;
+			line-height: 1.3;
+			text-align: center;
+		}
 	}
 
 	.rack-shell-row {
@@ -1148,6 +1382,7 @@ $hashd-green: #5fd38d;
 	}
 
 	.panel-size-opt {
+		display: flex;
 		flex-direction: row;
 		flex-grow: 1;
 		align-items: center;
@@ -1222,6 +1457,7 @@ $hashd-green: #5fd38d;
 		padding-top: 12px;
 	}
 
+	.lp-window-watermark,
 	.lp-source-footer {
 		flex-shrink: 0;
 		border-top-color: $hashd-border;

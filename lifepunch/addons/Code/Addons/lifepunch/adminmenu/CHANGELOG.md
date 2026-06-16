@@ -17,6 +17,10 @@ Core updates
 - **Stability & polish** — fixed sidebar/hover flicker (throttled per-frame rebuilds + cached stat hash), centered Material Icons glyphs, scroll-capped lists, locked header/tab heights, and pixel-aligned header controls.
 - **Command rebrand** — single entry point `lifepunchulx` / `/lifepunchulx` (removed `staffmenu` and `adminmenu` aliases).
 
+## v2.0.4
+
+- **UI Scale** — Settings uses S / M / L / XL steps anchored on **XL (1160×700)** as the canonical layout; smaller steps only trim the shell slightly (no per-step squish of buttons, sidebar, or icons). Default scale is XL. Sidebar **Staff / Players** roster uses section + tier wrappers with clearer header/rank/player spacing for long scrollable lists (~70 players).
+
 ## v2.0.3 — publish-ready
 
 - **Settings panel size controls** — centered Compact / Standard / Expanded labels (flex + padding fix; no clipped top-edge text).

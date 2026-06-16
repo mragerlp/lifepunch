@@ -76,17 +76,20 @@ internal static class LpBitcoinTerminalCommands
 					_ => new LpBitcoinCommandResult( false, "usage: mining start|stop|all-start|all-stop" )
 				};
 
-			case "sell":
+			case "deposit":
 				if ( parts.Length > 1 && parts[1].Equals( "all", StringComparison.OrdinalIgnoreCase ) )
-					return SellAll( hub );
+					return DepositAll( hub );
 
-				return SellSelected( hub, selectedIndex );
+				if ( parts.Length > 1 && int.TryParse( parts[1], out var depositPick ) )
+					return DepositRack( hub, depositPick );
+
+				return DepositRack( hub, selectedIndex );
+
+			case "sell":
+				return new LpBitcoinCommandResult( false, "ERR use 'deposit' at terminal, then cash out from hub admin wallet" );
 
 			case "bitcoin":
-				if ( parts.Length > 1 && parts[1].Equals( "sell", StringComparison.OrdinalIgnoreCase ) )
-					return SellSelected( hub, selectedIndex );
-
-				return new LpBitcoinCommandResult( false, "usage: bitcoin sell | sell" );
+				return new LpBitcoinCommandResult( false, "usage: deposit | deposit all | deposit <index>" );
 
 			default:
 				return new LpBitcoinCommandResult( false, $"ERR unknown command '{cmd}' — type help" );
@@ -121,8 +124,11 @@ internal static class LpBitcoinTerminalCommands
 		return new LpBitcoinCommandResult( true, on ? "mining started on all racks" : "mining stopped on all racks" );
 	}
 
-	private static LpBitcoinCommandResult SellSelected( LpBitcoinHubEntity hub, int index )
+	private static LpBitcoinCommandResult DepositRack( LpBitcoinHubEntity hub, int index )
 	{
+		if ( !hub.HasLinkedTerminal() )
+			return new LpBitcoinCommandResult( false, "ERR no bitcoin terminal linked to hub" );
+
 		var rack = hub.FindRackByIndex( index );
 		if ( rack is null )
 			return new LpBitcoinCommandResult( false, "ERR no rack selected" );
@@ -130,25 +136,22 @@ internal static class LpBitcoinTerminalCommands
 		if ( rack.BitcoinAmount <= 0f )
 			return new LpBitcoinCommandResult( false, "ERR rack balance empty" );
 
-		rack.RequestSell();
-		return new LpBitcoinCommandResult( true, $"sold rack #{index} balance to wallet" );
+		hub.RequestDepositRack( index );
+		return new LpBitcoinCommandResult( true, $"deposited rack #{index} BTC to hub wallet" );
 	}
 
-	private static LpBitcoinCommandResult SellAll( LpBitcoinHubEntity hub )
+	private static LpBitcoinCommandResult DepositAll( LpBitcoinHubEntity hub )
 	{
-		var sold = 0;
-		foreach ( var rack in hub.GetLinkedRacks() )
-		{
-			if ( rack.BitcoinAmount <= 0f )
-				continue;
+		if ( !hub.HasLinkedTerminal() )
+			return new LpBitcoinCommandResult( false, "ERR no bitcoin terminal linked to hub" );
 
-			rack.RequestSell();
-			sold++;
-		}
+		if ( hub.GetRackPendingBtc() <= 0f )
+			return new LpBitcoinCommandResult( false, "ERR no rack balances to deposit" );
 
-		return new LpBitcoinCommandResult( true, sold == 0 ? "no balances to sell" : $"sold {sold} rack balance(s)" );
+		hub.RequestDepositRacksToHub();
+		return new LpBitcoinCommandResult( true, "deposited all rack BTC to hub wallet" );
 	}
 
 	private static string HelpText() =>
-		"help\nracks\nselect <n>\nstatus\nmining start|stop|all-start|all-stop\nsell | bitcoin sell\nsell all";
+		"help\nracks\nselect <n>\nstatus\nmining start|stop|all-start|all-stop\ndeposit | deposit all | deposit <index>\n(cash out BTC at hub admin wallet panel)";
 }

@@ -14,14 +14,14 @@
 @inherits Panel
 @attribute [StyleSheet]
 
-<div class="lp-source-footer">
+<root class="lp-source-footer">
     <span class="lp-mark">@LifePunchSourceMark.UiFooterMark</span>
     <button class="lp-url-copy @(_urlCopied ? "copied" : "")"
             tooltip="@($"Copy {LifePunchSourceMark.UiFooterUrl}")"
             onclick="@CopySourceUrl">
         @( _urlCopied ? "Link copied!" : LifePunchSourceMark.UiFooterUrl )
     </button>
-</div>
+</root>
 
 @code {
     private bool _urlCopied;

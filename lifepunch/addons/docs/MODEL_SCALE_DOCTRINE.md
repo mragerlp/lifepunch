@@ -28,7 +28,7 @@
 | `gpu-rack` | **0.395** | Same axis treatment as stacked rack · Y=90° · translation `[-1.389,-0.208,2.912]` · ~15% below prior 0.465 @ prefab 1,1,1 |
 | `gpu-rack-stacked` (large) | **0.85** | Stacked variant · same import rotation/translation as single rack · ~15% down from baseline 1.0 @ prefab 1,1,1 |
 | `bitcoin-miner` (Steam Machine hub) | **0.152** | Parented FBX export · translation `0` · align Z Bottom @ prefab **1,1,1** · mesh ~32×30×29 vs collider 32×20×28 (Jun 2026) |
-| `bitcoin-terminal` (CRT prop) | **0.0195** | `align_origin_z_type = Bottom` @ prefab **1,1,1** · mesh ~18u Y @ flatgrass vs collider **14×18×8** (was ~925u @ 1.0) |
+| `bitcoin-terminal` (CRT prop) | **0.0195** | `align_origin_z_type = Bottom` @ prefab **1,1,1** · mesh ~18u Z · collider center **`0,0,9`** scale **`10×4×9`** (Jun 2026 — was stale `0,10,20` / `14×18×8` from pre-scale mesh) |
 | `server-rack` (Fab DataCenter) | **0.399** | Fab FBX cm @ import 1.0 → mesh Z ~218u · collider **28×28×87** · height-aligned Jun 2026 |
 | `advanced-server-rack` (Fab row) | **0.399** | Same cabinet height as basic · mesh ~164×94×87 @ prefab **1,1,1** · collider updated to match |
 | `government-server-rack` | **0.399** | Same Fab mesh family as criminal rack · collider **28×28×87** |

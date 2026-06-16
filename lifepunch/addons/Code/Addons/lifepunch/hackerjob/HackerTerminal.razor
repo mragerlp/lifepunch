@@ -498,9 +498,15 @@
         }
     }
 
+    protected override void OnEnabled()
+    {
+        LifePunchUiScrollPolicy.Apply( Panel );
+    }
+
     protected override void OnUpdate()
     {
         base.OnUpdate();
+        LifePunchUiScrollPolicy.Apply( Panel );
 
         if ( _sinceSecondly >= 1f )
         {

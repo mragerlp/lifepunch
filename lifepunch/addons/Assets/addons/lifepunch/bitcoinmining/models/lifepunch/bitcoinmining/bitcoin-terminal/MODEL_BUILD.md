@@ -30,7 +30,8 @@ lifepunch/scripts/Start-SboxDxrpEditor.ps1 -SyncAddon bitcoinmining
    - Open `bitcoin-terminal.vmdl` in **DXRP** project scope (not standalone `addons.sbproj`).
    - Compile each `materials/bitcoin-terminal-*.vmat` (six files).
    - Compile `bitcoin-terminal.vmdl` → produces `bitcoin-terminal.vmdl_c`.
-6. **Pull compiled into monorepo** (repo→DXRP `/MIR` deletes `_c` if missing from git):
+6. **Prefab collider (Jun 2026):** `BoxCollider` center **`0,0,9`**, scale **`10,4,9`** — matches `import_scale` 0.0195 bottom-aligned mesh (~18u tall). Stale `0,10,20` / `14×18×8` was from the giant pre-scale import.
+7. **Pull compiled into monorepo** (repo→DXRP `/MIR` deletes `_c` if missing from git):
    ```powershell
    powershell -File lifepunch/scripts/Pull-DxrpCompiledAssetsToRepo.ps1
    ```
