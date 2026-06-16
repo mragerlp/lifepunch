@@ -56,7 +56,7 @@ function Push-CornermanFile {
     $b64 = [Convert]::ToBase64String($FileBytes)
     $parent = (Split-Path -Path $Path -Parent) -replace "'", "''"
     $pathEsc = $Path -replace "'", "''"
-    $tmpEsc = 'C:\lifepunch\cornerman\.push-tmp.b64'
+    $tmpEsc = ('C:\lifepunch\cornerman\.p-{0}.b64' -f [Guid]::NewGuid().ToString('n').Substring(0, 8))
 
     $init = @"
 New-Item -ItemType Directory -Force -LiteralPath '$parent' | Out-Null
@@ -68,7 +68,7 @@ Write-Output 'chunk_init_ok'
         throw "SSH write init failed: $Path ($($r.Output -join '; '))"
     }
 
-    $chunkSize = 2800
+    $chunkSize = 2000
     for ($i = 0; $i -lt $b64.Length; $i += $chunkSize) {
         $len = [Math]::Min($chunkSize, $b64.Length - $i)
         $part = $b64.Substring($i, $len) -replace "'", "''"
@@ -174,19 +174,205 @@ function Add-CornermanWorkflowAck {
     Push-CornermanText -Path $ackPath -Text $ack -SshTarget $SshTarget
 }
 
+function Get-VengeanceSmbSecretsDir {
+    foreach ($path in @(
+            (Join-Path $env:USERPROFILE 'OneDrive\Lifepunch\Secrets')
+            (Join-Path $env:USERPROFILE 'OneDrive\Documents\Lifepunch\Secrets')
+        )) {
+        if (Test-Path -LiteralPath $path) { return $path }
+    }
+    return (Join-Path $env:USERPROFILE 'OneDrive\Lifepunch\Secrets')
+}
+
+function Get-VengeanceSmbPasswordPath {
+    Join-Path (Get-VengeanceSmbSecretsDir) 'vengeance-smb.password'
+}
+
+function Get-VengeanceSmbUserPath {
+    Join-Path (Get-VengeanceSmbSecretsDir) 'vengeance-smb.user'
+}
+
+function Read-VengeanceSmbTextFile {
+    param([Parameter(Mandatory)][string] $Path)
+    if (-not (Test-Path -LiteralPath $Path)) { return $null }
+    $bytes = [IO.File]::ReadAllBytes($Path)
+    if ($bytes.Length -ge 3 -and $bytes[0] -eq 0xEF -and $bytes[1] -eq 0xBB -and $bytes[2] -eq 0xBF) {
+        $bytes = $bytes[3..($bytes.Length - 1)]
+    }
+    $utf8 = New-Object System.Text.UTF8Encoding $false
+    $text = $utf8.GetString($bytes).Trim()
+    if ($text) { return $text }
+    return $null
+}
+
+function Write-VengeanceSmbTextFile {
+    param(
+        [Parameter(Mandatory)][string] $Path,
+        [Parameter(Mandatory)][string] $Text
+    )
+    $parent = Split-Path -Parent $Path
+    if (-not (Test-Path -LiteralPath $parent)) {
+        New-Item -ItemType Directory -Force -Path $parent | Out-Null
+    }
+    $utf8 = New-Object System.Text.UTF8Encoding $false
+    [IO.File]::WriteAllText($Path, $Text.Trim(), $utf8)
+}
+
+function Read-VengeanceSmbPasswordFile {
+    param([Parameter(Mandatory)][string] $Path)
+    Read-VengeanceSmbTextFile -Path $Path
+}
+
 function Get-VengeanceSmbPassword {
     if ($env:LIFEPUNCH_VENGEANCE_SMB_PASSWORD) {
         return [string]$env:LIFEPUNCH_VENGEANCE_SMB_PASSWORD.Trim()
     }
-    foreach ($path in @(
-            (Join-Path $env:USERPROFILE 'OneDrive\Lifepunch\Secrets\vengeance-smb.password')
-            (Join-Path $env:USERPROFILE 'OneDrive\Documents\Lifepunch\Secrets\vengeance-smb.password')
-        )) {
-        if (-not (Test-Path -LiteralPath $path)) { continue }
-        $text = (Get-Content -LiteralPath $path -Raw).Trim()
-        if ($text) { return $text }
-    }
+    $text = Read-VengeanceSmbTextFile -Path (Get-VengeanceSmbPasswordPath)
+    if ($text) { return $text }
     return $null
+}
+
+function Get-VengeanceSmbUser {
+    if ($env:LIFEPUNCH_VENGEANCE_SMB_USER) {
+        return [string]$env:LIFEPUNCH_VENGEANCE_SMB_USER.Trim()
+    }
+    $text = Read-VengeanceSmbTextFile -Path (Get-VengeanceSmbUserPath)
+    if ($text) { return $text }
+    $hostName = $env:COMPUTERNAME
+    if (Get-LocalUser -Name 'lpbridge' -ErrorAction SilentlyContinue) {
+        return "$hostName\lpbridge"
+    }
+    return "$hostName\jared"
+}
+
+function Set-VengeanceSmbCredential {
+    param(
+        [Parameter(Mandatory)][string] $User,
+        [Parameter(Mandatory)][SecureString] $Password
+    )
+    Write-VengeanceSmbTextFile -Path (Get-VengeanceSmbUserPath) -Text $User
+    Set-VengeanceSmbPassword -Password $Password | Out-Null
+    return @{
+        UserPath     = (Get-VengeanceSmbUserPath)
+        PasswordPath = (Get-VengeanceSmbPasswordPath)
+        User         = $User
+    }
+}
+
+function Clear-VengeanceNetUse {
+    param([string] $Unc)
+    $prev = $ErrorActionPreference
+    $ErrorActionPreference = 'SilentlyContinue'
+    net use $Unc /delete /y 2>$null | Out-Null
+    $ErrorActionPreference = $prev
+}
+
+function Test-VengeanceSmbCredential {
+    param(
+        [string] $User = $(Get-VengeanceSmbUser),
+        [string] $PlainPassword = $(Get-VengeanceSmbPassword),
+        [string] $ShareUnc = "\\$($env:COMPUTERNAME)\SboxBridgeIpc",
+        [string] $ShareUncIp = '\\192.168.1.236\SboxBridgeIpc'
+    )
+    if (-not $PlainPassword) { return @{ Ok = $false; Detail = 'no password on file' } }
+
+    $targets = @($ShareUnc)
+    if ($ShareUncIp -and $ShareUncIp -ne $ShareUnc) { $targets += $ShareUncIp }
+
+    foreach ($unc in $targets) {
+        Clear-VengeanceNetUse -Unc $unc
+        $prev = $ErrorActionPreference
+        $ErrorActionPreference = 'SilentlyContinue'
+        net use $unc /user:$User $PlainPassword /persistent:no 2>$null | Out-Null
+        $code = $LASTEXITCODE
+        $ErrorActionPreference = $prev
+        $statusOk = Test-Path -LiteralPath (Join-Path $unc 'status.json')
+        Clear-VengeanceNetUse -Unc $unc
+        if ($code -eq 0 -and $statusOk) {
+            return @{
+                Ok     = $true
+                Detail = "net use exit=0 status.json=True user=$User unc=$unc"
+            }
+        }
+    }
+
+    return @{
+        Ok     = $false
+        Detail = "net use failed for user=$User (tried $($targets -join ', '))"
+    }
+}
+
+function Set-VengeanceSmbPassword {
+    param(
+        [Parameter(Mandatory)]
+        [SecureString] $Password
+    )
+    $path = Get-VengeanceSmbPasswordPath
+    $parent = Split-Path -Parent $path
+    if (-not (Test-Path -LiteralPath $parent)) {
+        New-Item -ItemType Directory -Force -Path $parent | Out-Null
+    }
+    $bstr = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($Password)
+    try {
+        $plain = [Runtime.InteropServices.Marshal]::PtrToStringAuto($bstr).Trim()
+    }
+    finally {
+        [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($bstr)
+    }
+    if (-not $plain) { throw 'Empty SMB password refused.' }
+    $utf8 = New-Object System.Text.UTF8Encoding $false
+    [IO.File]::WriteAllText($path, $plain, $utf8)
+    return $path
+}
+
+function Repair-VengeanceSmbPasswordFile {
+    $path = Get-VengeanceSmbPasswordPath
+    if (-not (Test-Path -LiteralPath $path)) { return $false }
+    $bytes = [IO.File]::ReadAllBytes($path)
+    if ($bytes.Length -lt 3 -or $bytes[0] -ne 0xEF -or $bytes[1] -ne 0xBB -or $bytes[2] -ne 0xBF) {
+        return $false
+    }
+    $plain = Read-VengeanceSmbPasswordFile -Path $path
+    if (-not $plain) { return $false }
+    $utf8 = New-Object System.Text.UTF8Encoding $false
+    [IO.File]::WriteAllText($path, $plain, $utf8)
+    return $true
+}
+
+function Test-CornermanBridgeShareReachable {
+    param([string] $SshTarget = $(Get-CornermanSshTarget))
+    $vengeanceHost = $env:COMPUTERNAME
+    $uncIpc = "\\$vengeanceHost\SboxBridgeIpc"
+    $r = Invoke-CornermanSshExec -SshTarget $SshTarget -ScriptBlock @"
+`$statusPath = Join-Path '$uncIpc' 'status.json'
+`$shareOk = Test-Path -LiteralPath '$uncIpc'
+`$statusOk = Test-Path -LiteralPath `$statusPath
+Write-Output "share=`$shareOk status=`$statusOk"
+"@ -ConnectTimeout 20
+    $text = [string]$r.Output
+    return ($r.ExitCode -eq 0 -and $text -match 'status=True')
+}
+
+function Sync-VengeanceSmbPasswordToCornerman {
+    param([string] $SshTarget = $(Get-CornermanSshTarget))
+    $plain = Get-VengeanceSmbPassword
+    if (-not $plain) { return $false }
+    $user = Get-VengeanceSmbUser
+    Push-CornermanText -Path 'C:\lifepunch\cornerman\config\vengeance-smb.password' -Text $plain -SshTarget $SshTarget | Out-Null
+    Push-CornermanText -Path 'C:\lifepunch\cornerman\config\vengeance-smb.user' -Text $user -SshTarget $SshTarget | Out-Null
+    return $true
+}
+
+function Invoke-CornermanEnsureBridgeShare {
+    param([string] $SshTarget = $(Get-CornermanSshTarget))
+    $ensure = 'C:\lifepunch\cornerman\Ensure-CornermanBridgeShare.ps1'
+    $r = Invoke-CornermanSshExec -SshTarget $SshTarget -ScriptBlock @"
+if (-not (Test-Path -LiteralPath '$ensure')) { throw 'Missing $ensure' }
+& '$ensure' *>&1 | ForEach-Object { Write-Output `$_ }
+exit `$LASTEXITCODE
+"@ -ConnectTimeout 45
+    $ok = ($r.ExitCode -eq 0) -or (Test-CornermanBridgeShareReachable -SshTarget $SshTarget)
+    return @{ Ok = $ok; Output = ($r.Output -join "`n") }
 }
 
 function Invoke-CornermanMapBridgeShare {
@@ -194,26 +380,30 @@ function Invoke-CornermanMapBridgeShare {
         [string] $SshTarget = $(Get-CornermanSshTarget),
         [SecureString] $PlainPassword
     )
+    if (Test-CornermanBridgeShareReachable -SshTarget $SshTarget) {
+        return @{ Ok = $true; Output = 'OK bridge share already mapped' }
+    }
     if (-not $PlainPassword) {
         $plain = Get-VengeanceSmbPassword
-        if (-not $plain) { return @{ Ok = $false; Output = 'no password' } }
-        $PlainPassword = ConvertTo-SecureString $plain -AsPlainText -Force
-    }
-    $bstr = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($PlainPassword)
-    try {
-        $passB64 = [Convert]::ToBase64String(
-            [Text.Encoding]::UTF8.GetBytes([Runtime.InteropServices.Marshal]::PtrToStringAuto($bstr)))
-    }
-    finally {
-        [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($bstr)
+        if (-not $plain) { return @{ Ok = $false; Output = 'no password — run Initialize-VengeanceSmbSecret.ps1 on VENGEANCE' } }
+        if (-not (Sync-VengeanceSmbPasswordToCornerman -SshTarget $SshTarget)) {
+            return @{ Ok = $false; Output = 'failed to sync password to Green' }
+        }
     }
     $mapScript = 'C:\lifepunch\cornerman\Map-CornermanBridgeShare.ps1'
+    $smbUser = (Get-VengeanceSmbUser) -replace "'", "''"
     $r = Invoke-CornermanSshExec -SshTarget $SshTarget -ScriptBlock @"
 if (-not (Test-Path -LiteralPath '$mapScript')) { throw 'Missing $mapScript' }
-`$plain = [Text.Encoding]::UTF8.GetString([Convert]::FromBase64String('$passB64'))
+`$passFile = 'C:\lifepunch\cornerman\config\vengeance-smb.password'
+`$userFile = 'C:\lifepunch\cornerman\config\vengeance-smb.user'
+if (-not (Test-Path -LiteralPath `$passFile)) { throw 'Missing password file on Green' }
+`$plain = (Get-Content -LiteralPath `$passFile -Raw).Trim()
+`$user = if (Test-Path -LiteralPath `$userFile) { (Get-Content -LiteralPath `$userFile -Raw).Trim() } else { '$smbUser' }
 `$sec = ConvertTo-SecureString `$plain -AsPlainText -Force
-& '$mapScript' -Password `$sec *>&1 | ForEach-Object { Write-Output `$_ }
+& '$mapScript' -Password `$sec -User `$user *>&1 | ForEach-Object { Write-Output `$_ }
 if (`$LASTEXITCODE -ne 0) { exit `$LASTEXITCODE }
 "@ -ConnectTimeout 45
-    return @{ Ok = ($r.ExitCode -eq 0); Output = ($r.Output -join "`n") }
+    $ok = (Test-CornermanBridgeShareReachable -SshTarget $SshTarget)
+    if (-not $ok) { $ok = ($r.ExitCode -eq 0 -and [string]$r.Output -match 'OK - Cornerman can read bridge IPC') }
+    return @{ Ok = $ok; Output = ($r.Output -join "`n") }
 }

@@ -8,17 +8,19 @@
     2. Push Map + LM scripts to Green
     3. Refresh Cornerman mcp.json (sbox UNC + cornerman-lm localhost)
     4. Warm LM Studio on Green
-    5. Sync SSH IPC mirror to Green (default — no SMB password needed)
-  6. Optional: -TrySmbMap maps \\VENGEANCE\SboxBridgeIpc when secret/password is set
+    5. Sync SSH IPC mirror to Green (fallback)
+  6. Headless SMB map (default) via OneDrive secret + Ensure/Map on Green
 
 .EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File lifepunch\scripts\Connect-CornermanBridge.ps1
-  powershell -File lifepunch\scripts\Connect-CornermanBridge.ps1 -TrySmbMap
+  powershell -File lifepunch\scripts\Connect-CornermanBridge.ps1 -MirrorOnly
+  powershell -File lifepunch\scripts\Initialize-VengeanceSmbSecret.ps1 -VerifyMap
 #>
 [CmdletBinding()]
 param(
     [switch] $SkipLmWarm,
     [switch] $SkipBridgeSync,
+    [switch] $MirrorOnly,
     [switch] $TrySmbMap,
     [switch] $PromptForPassword,
     [string] $SshTarget = ''
@@ -31,6 +33,12 @@ $Here = if ($PSScriptRoot) { $PSScriptRoot } else { Split-Path -Parent $MyInvoca
 if (-not $SshTarget) { $SshTarget = Get-CornermanSshTarget }
 if (-not (Test-CornermanSshReady -SshTarget $SshTarget)) {
     throw "Cornerman SSH not ready ($SshTarget)"
+}
+
+$null = Repair-VengeanceSmbPasswordFile
+$useSmbMap = -not $MirrorOnly
+if ($PSBoundParameters.ContainsKey('TrySmbMap')) {
+    $useSmbMap = [bool]$TrySmbMap
 }
 
 $onBox = 'C:\lifepunch\cornerman'
@@ -71,6 +79,7 @@ $uncIpc = "\\$vengeanceHost\SboxBridgeIpc"
 
 Write-Step 'Push Green on-box scripts'
 Push-OnBoxScript 'Map-CornermanBridgeShare.ps1'
+Push-OnBoxScript 'Ensure-CornermanBridgeShare.ps1'
 Push-OnBoxScript 'Start-CornermanLmStudio.ps1'
 Push-OnBoxScript 'Start-CornermanSboxEditorTunnel.ps1'
 
@@ -93,29 +102,31 @@ if (-not $SkipBridgeSync) {
         & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $watch -Background
     }
 
-    if ($TrySmbMap) {
-        Write-Step 'Optional native SMB map'
+    if ($useSmbMap) {
+        Write-Step 'Headless native SMB map'
         $password = Get-VengeanceSmbPassword
-        if ($PromptForPassword -and -not $password) {
+        if ($PromptForPassword) {
             $sec = Read-Host 'VENGEANCE\jared password (for Green SMB map)' -AsSecureString
-            $bstr = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($sec)
-            try { $password = [Runtime.InteropServices.Marshal]::PtrToStringAuto($bstr) }
-            finally { [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($bstr) }
+            $savedPath = Set-VengeanceSmbPassword -Password $sec
+            Write-Host "  Saved $savedPath" -ForegroundColor DarkGray
+            $password = Get-VengeanceSmbPassword
         }
-        if ($password) {
-            $map = Invoke-CornermanMapBridgeShare -SshTarget $SshTarget
-            if ($map.Ok) {
-                Write-Host "  $($map.Output)" -ForegroundColor Green
-                & (Join-Path $Here 'Install-CornermanSboxBridgeMcp.ps1') -SshTarget $SshTarget -SkipShare -SkipLmClone
-            }
-            else {
-                Write-Host "  SMB skipped (map failed): $($map.Output)" -ForegroundColor Yellow
-                Write-Host '  Mirror path remains active — no action needed.' -ForegroundColor DarkGray
-            }
+        if (-not $password) {
+            throw 'Missing vengeance-smb.password — run: powershell -File lifepunch\scripts\Initialize-VengeanceSmbBridgeUser.ps1'
         }
-        else {
-            Write-Host '  No SMB password on file — mirror only.' -ForegroundColor DarkGray
+        $null = Sync-VengeanceSmbPasswordToCornerman -SshTarget $SshTarget
+
+        & (Join-Path $Here 'Install-CornermanBridgeShareMapTask.ps1') -SshTarget $SshTarget -RunNow
+
+        if (-not (Test-CornermanBridgeShareReachable -SshTarget $SshTarget)) {
+            throw @'
+Headless SMB not reachable on Cornerman desktop session.
+Ensure Cornerman is logged in (RDP/console), then re-run Connect-CornermanBridge.ps1.
+OpenSSH cannot persist SMB creds; the LifePunch BridgeShare logon task maps the share for Cursor.
+'@
         }
+        Write-Host '  OK Cornerman SMB bridge (interactive session)' -ForegroundColor Green
+        & (Join-Path $Here 'Install-CornermanSboxBridgeMcp.ps1') -SshTarget $SshTarget -SkipShare -SkipLmClone
     }
 }
 

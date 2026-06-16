@@ -19,8 +19,14 @@ param(
     [string] $VengeanceHost = 'VENGEANCE',
     [string] $VengeanceIp = '192.168.1.236',
     [string] $ShareName = 'SboxBridgeIpc',
-    [string] $User = 'VENGEANCE\jared'
+    [string] $User = ''
 )
+
+$configUser = 'C:\lifepunch\cornerman\config\vengeance-smb.user'
+if (-not $User -and (Test-Path -LiteralPath $configUser)) {
+    $User = (Get-Content -LiteralPath $configUser -Raw).Trim()
+}
+if (-not $User) { $User = 'VENGEANCE\lpbridge' }
 
 $ErrorActionPreference = 'Stop'
 $uncHost = "\\$VengeanceHost\$ShareName"
@@ -44,6 +50,17 @@ if (Test-BridgeReachable) {
 function Get-StoredPassword {
     $envPass = $env:LIFEPUNCH_VENGEANCE_SMB_PASSWORD
     if ($envPass) { return $envPass }
+
+    $passFile = 'C:\lifepunch\cornerman\config\vengeance-smb.password'
+    if (Test-Path -LiteralPath $passFile) {
+        $bytes = [IO.File]::ReadAllBytes($passFile)
+        if ($bytes.Length -ge 3 -and $bytes[0] -eq 0xEF -and $bytes[1] -eq 0xBB -and $bytes[2] -eq 0xBF) {
+            $bytes = $bytes[3..($bytes.Length - 1)]
+        }
+        $utf8 = New-Object System.Text.UTF8Encoding $false
+        $text = $utf8.GetString($bytes).Trim()
+        if ($text) { return $text }
+    }
 
     foreach ($target in @('LifePunch/VengeanceSmb', $VengeanceHost, "LegacyGeneric:target=$VengeanceHost")) {
         $listing = cmdkey /list 2>$null | Out-String

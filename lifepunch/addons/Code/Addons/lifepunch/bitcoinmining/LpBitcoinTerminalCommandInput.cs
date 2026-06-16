@@ -17,7 +17,7 @@ namespace LifePunch.DXRP.Addons.Bitcoin;
 [Library( "lp_bitcoin_terminal_cmd_input" )]
 public sealed class LpBitcoinTerminalCommandInput : TextEntry
 {
-	private static readonly Color SelectionTint = Color.Parse( "#f0a500" ).WithAlpha( 0.35f );
+	private static readonly Color SelectionTint = (Color.Parse( "#f0a500" ) ?? new Color( 0.941f, 0.647f, 0f )).WithAlpha( 0.35f );
 
 	public LpBitcoinTerminalCommandInput()
 	{

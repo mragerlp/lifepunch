@@ -19,13 +19,16 @@ namespace LifePunch.DXRP.Addons.Bitcoin;
 [Library( "lp_bitcoin_terminal_log_panel" )]
 public sealed class LpBitcoinTerminalLogPanel : Panel
 {
-	private static readonly Color SelectionTint = Color.Parse( "#f0a500" ).WithAlpha( 0.35f );
+	private static readonly Color SelectionTint = (Color.Parse( "#f0a500" ) ?? new Color( 0.941f, 0.647f, 0f )).WithAlpha( 0.35f );
 
 	public LpBitcoinTerminalLogPanel()
 	{
 		AllowChildSelection = true;
 		AcceptsFocus = true;
 		AddClass( "log" );
+		Style.FlexGrow = 1;
+		Style.FlexShrink = 1;
+		Style.MinHeight = Length.Pixels( 0 );
 	}
 
 	public override void Tick()
@@ -87,6 +90,6 @@ public sealed class LpBitcoinTerminalLogPanel : Panel
 			parts.Add( slice );
 		}
 
-		return parts.Count == 0 ? string.Empty : string.Join( Environment.NewLine, parts );
+		return parts.Count == 0 ? string.Empty : string.Join( "\n", parts );
 	}
 }

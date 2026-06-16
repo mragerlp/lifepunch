@@ -6,6 +6,7 @@
 @using System
 @using System.Collections.Generic
 @using System.Linq
+@using Sandbox
 @using Sandbox.UI
 @using LifePunch.DXRP.Addons
 @inherits PanelComponent
@@ -50,9 +51,12 @@
 					<div class="sidebar-title">COMMANDS</div>
 					@foreach ( var cmd in _commandRefs )
 					{
-						<div class="cmd-ref" onclick="@(() => PrefillCommand( cmd ))">@cmd</div>
+						<div class="cmd-ref @( IsCommandCopied( cmd ) ? "copied" : "" )"
+						     onclick="@(() => CopySidebarCommand( cmd ))">
+							@( IsCommandCopied( cmd ) ? ">copied" : cmd )
+						</div>
 					}
-					<div class="sidebar-foot">sel #@_selectedIndex · drag-select log · ctrl+c/v</div>
+					<div class="sidebar-foot">sel #@_selectedIndex</div>
 				</div>
 				<div class="screen">
 					@if ( _showBootSplash )
@@ -64,21 +68,28 @@
 							<div class="boot-hint">click to skip boot</div>
 						</div>
 					}
-					<LpBitcoinTerminalLogPanel @ref="LogPanel">
+					<div @ref="LogPanel" class="log">
 						@foreach ( var line in _lines )
 						{
-							<Label class="log-line @LineClass( line )" Text="@line.Text" Selectable="@true" />
+							<div class="log-line @LineClass( line )">@line.Text</div>
 						}
-					</LpBitcoinTerminalLogPanel>
+					</div>
 					<div class="prompt-row" onclick="@FocusInput">
 						<span class="prompt">rig@hub&gt;</span>
-						<LpBitcoinTerminalCommandInput @ref="InputBox" onsubmit="@Submit" Placeholder="type command..." />
+						<TextEntry class="cmd-input" @ref="InputBox" onsubmit="@Submit" Placeholder="type command..." />
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="lp-window-watermark lp-window-watermark--boxed">
-			<LifePunchUiFooter />
+			<div class="lp-source-footer">
+				<span class="lp-mark">@LifePunchSourceMark.UiFooterMark</span>
+				<button class="lp-url-copy @(_urlCopied ? "copied" : "")"
+				        tooltip="@($"Copy {LifePunchSourceMark.UiFooterUrl}")"
+				        onclick="@CopySourceUrl">
+					@(_urlCopied ? "Link copied!" : LifePunchSourceMark.UiFooterUrl)
+				</button>
+			</div>
 		</div>
 	</div>
 </root>
@@ -97,8 +108,8 @@
 	private string _bootStatus = "INITIALIZING RIG...";
 	private bool _showScaleMenu;
 	private LpUiScaleSize _uiScale = LpUiScale.Default;
-	private LpBitcoinTerminalCommandInput InputBox { get; set; }
-	private LpBitcoinTerminalLogPanel LogPanel { get; set; }
+	private TextEntry InputBox { get; set; }
+	private Panel LogPanel { get; set; }
 
 	private const int MaxLogLines = 36;
 
@@ -128,6 +139,9 @@
 	};
 
 	private bool _scrollLogNextFrame;
+	private bool _urlCopied;
+	private string _copiedCommandFlash;
+	private RealTimeSince _copiedCommandFlashSince;
 
 	private static readonly string[] BootLines =
 	{
@@ -140,7 +154,8 @@
 
 	private const float BootLineIntervalSeconds = 0.35f;
 	private const float BootSplashHoldSeconds = 0.4f;
-	private const string PromptLabel = "rig@hub>";
+	private static readonly string PromptLabel = "rig@hub>";
+	private static readonly Color CmdSelectionTint = (Color.Parse( "#f0a500" ) ?? new Color( 0.941f, 0.647f, 0f )).WithAlpha( 0.35f );
 
 	private string GetRootClass() =>
 		$"lp-ops-crt lp-ops-crt--gray {LpUiScale.CssClass( _uiScale )}";
@@ -181,6 +196,7 @@
 	{
 		LpBitcoinHudBridge.SetMenuCursorMode( true );
 		LifePunchUiScrollPolicy.Apply( Panel );
+		ApplyCommandInputChrome();
 	}
 
 	public void Bind( LpBitcoinHubEntity hub, LpBitcoinRackEntity focusRack = null )
@@ -208,17 +224,20 @@
 			InputBox.Focus();
 	}
 
-	private void PrefillCommand( string cmd )
+	private void CopySidebarCommand( string cmd )
 	{
 		if ( !_bootComplete )
 			SkipBoot();
 
-		if ( InputBox.IsValid() )
-		{
-			InputBox.Text = cmd;
-			InputBox.Focus();
-		}
+		Clipboard.SetText( cmd );
+		_copiedCommandFlash = cmd;
+		_copiedCommandFlashSince = 0;
 	}
+
+	private bool IsCommandCopied( string cmd ) =>
+		!string.IsNullOrEmpty( _copiedCommandFlash )
+		&& _copiedCommandFlash == cmd
+		&& _copiedCommandFlashSince < 1.5f;
 
 	private void SkipBoot()
 	{
@@ -331,6 +350,19 @@
 
 	private void Close() => LpBitcoinTerminalUiHost.CloseOpen();
 
+	private void CopySourceUrl()
+	{
+		Clipboard.SetText( LifePunchSourceMark.UiFooterUrl );
+		_urlCopied = true;
+		_ = RevertCopyLabel();
+	}
+
+	private async System.Threading.Tasks.Task RevertCopyLabel()
+	{
+		await GameTask.DelayRealtimeSeconds( 1.8f );
+		_urlCopied = false;
+	}
+
 	protected override void OnUpdate()
 	{
 		base.OnUpdate();
@@ -343,6 +375,8 @@
 
 		if ( !_bootComplete )
 			TickBoot();
+
+		ApplyCommandInputChrome();
 
 		if ( _scrollLogNextFrame )
 		{
@@ -378,7 +412,7 @@
 		_bootComplete = true;
 		_showBootSplash = false;
 		AppendLogLine( "ok", _hub?.IsPowered == true ? "hub power: ON" : "hub power: OFF" );
-		AppendLogLine( "dim", $"type help for {PromptLabel} commands · drag-select log · ctrl+c copy · ctrl+v paste" );
+		AppendLogLine( "dim", $"type help for {PromptLabel} commands · drag-select log · ctrl+c copy" );
 
 		if ( _pendingFocusRack.IsValid() )
 		{
@@ -399,17 +433,44 @@
 		FocusInput();
 	}
 
-	protected override int BuildHash() => HashCode.Combine(
-		HashCode.Combine(
-			_selectedIndex,
-			InputBox?.Text,
-			_lines.Count,
-			_uiScale,
-			_showScaleMenu,
-			_showBootSplash,
-			_bootStatus,
-			_bootLineIndex ),
-		_bootComplete,
-		_hub?.IsPowered,
-		_hub?.GetLinkedRacks().Sum( r => r.BitcoinAmount ) );
+	private void ApplyCommandInputChrome()
+	{
+		if ( !InputBox.IsValid() )
+			return;
+
+		InputBox.SelectionColor = CmdSelectionTint;
+		InputBox.AcceptsFocus = true;
+	}
+
+	protected override int BuildHash()
+	{
+		var lineHash = 0;
+		foreach ( var line in _lines )
+			lineHash = HashCode.Combine( lineHash, line.Kind, line.Text );
+
+		return HashCode.Combine(
+			HashCode.Combine(
+				_selectedIndex,
+				InputBox?.Text,
+				_lines.Count,
+				lineHash,
+				_uiScale,
+				_showScaleMenu,
+				_showBootSplash,
+				_bootStatus ),
+			_bootLineIndex,
+			_bootComplete,
+			_hub?.IsPowered,
+			_hub?.GetLinkedRacks().Sum( r => r.BitcoinAmount ),
+			_urlCopied,
+			CopiedCommandFlashHash() );
+	}
+
+	private int CopiedCommandFlashHash()
+	{
+		if ( string.IsNullOrEmpty( _copiedCommandFlash ) || _copiedCommandFlashSince >= 1.5f )
+			return 0;
+
+		return HashCode.Combine( _copiedCommandFlash, (int)( _copiedCommandFlashSince * 10f ) );
+	}
 }

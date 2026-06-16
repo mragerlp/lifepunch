@@ -4,7 +4,10 @@
 
 .DESCRIPTION
   Cornerman cannot use anonymous SMB to \\VENGEANCE\SboxBridgeIpc even with Everyone
-  share ACLs. Map once with your VENGEANCE account (same jared password on LAN).
+  share ACLs. Map with the dedicated bridge user (lpbridge) or VENGEANCE\jared.
+
+  Credentials live in C:\lifepunch\cornerman\config\vengeance-smb.{user,password}
+  (synced headlessly from VENGEANCE by Connect-CornermanBridge.ps1).
 
 .EXAMPLE
   # On Cornerman (desktop PowerShell):
@@ -18,9 +21,15 @@ param(
     [string] $VengeanceHost = 'VENGEANCE',
     [string] $VengeanceIp = '192.168.1.236',
     [string] $ShareName = 'SboxBridgeIpc',
-    [string] $User = 'VENGEANCE\jared',
+    [string] $User = '',
     [SecureString] $Password
 )
+
+$configUser = 'C:\lifepunch\cornerman\config\vengeance-smb.user'
+if (-not $User -and (Test-Path -LiteralPath $configUser)) {
+    $User = (Get-Content -LiteralPath $configUser -Raw).Trim()
+}
+if (-not $User) { $User = 'VENGEANCE\lpbridge' }
 
 $uncHost = "\\$VengeanceHost\$ShareName"
 $uncIp = "\\$VengeanceIp\$ShareName"
@@ -47,7 +56,7 @@ function Invoke-BridgeNetUse([string]$Unc) {
             [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($bstr)
         }
         if ($code -ne 0) {
-            Write-Host 'Hint: System error 86 = wrong password. Re-run Initialize-VengeanceSmbSecret.ps1 on VENGEANCE.' -ForegroundColor Yellow
+            Write-Host 'Hint: error 86/1326 = wrong password/user. Run Initialize-VengeanceSmbBridgeUser.ps1 on VENGEANCE (MSA+PIN login is NOT the SMB password).' -ForegroundColor Yellow
         }
         return $code -eq 0
     }
@@ -75,7 +84,7 @@ if ($ok) {
             [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($bstr)
         }
     }
-    Write-Host 'OK — Cornerman can read bridge IPC. Restart Cursor -> MCP sbox should go green when editor runs on VENGEANCE.' -ForegroundColor Green
+    Write-Host 'OK - Cornerman can read bridge IPC. Restart Cursor -> MCP sbox should go green when editor runs on VENGEANCE.' -ForegroundColor Green
 }
 else {
     Write-Host 'FAIL — still cannot read status.json. Confirm share exists on VENGEANCE and password is correct.' -ForegroundColor Red

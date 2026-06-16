@@ -172,3 +172,5 @@ if (Test-Path -LiteralPath $tailwandConfigSrc) {
 }
 
 Write-Host 'Sync OK' -ForegroundColor Green
+Write-Host '  If play shows ERROR models, recompile bitcoinmining .vmdl/.vmat in ModelDoc (sync invalidates _c checksums).' -ForegroundColor Yellow
+Write-Host '  Bridge: recompile_asset on gpu-rack.vmdl, gpu-rack-stacked.vmdl, bitcoin-miner.vmdl, bitcoin-terminal.vmdl, then entity prefabs.' -ForegroundColor DarkGray

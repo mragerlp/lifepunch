@@ -6,7 +6,7 @@
   Full capacity requires dual-stack on BOTH machines. This script:
     1. Removes OFF_CURSOR_ACTIVE marker on Green
     2. Pushes on-box scripts + refreshes Green mcp.json
-    3. Sync SSH IPC mirror to Green (default — no SMB password)
+    3. Sync SSH IPC mirror to Green (fallback) + headless SMB when secret exists
     4. Installs editor tunnel watchdog + starts tunnel
     5. Keeps Tier-3 headless (LM GUI closed)
 
@@ -14,11 +14,12 @@
 
 .EXAMPLE
   powershell -File lifepunch\scripts\Restore-CornermanDualStack.ps1
-  powershell -File lifepunch\scripts\Restore-CornermanDualStack.ps1 -PromptForPassword
+  powershell -File lifepunch\scripts\Restore-CornermanDualStack.ps1 -MirrorOnly
 #>
 [CmdletBinding()]
 param(
     [switch] $PromptForPassword,
+    [switch] $MirrorOnly,
     [switch] $TrySmbMap,
     [string] $SshTarget = ''
 )
@@ -54,7 +55,8 @@ Write-Step 'Sync Green on-box scripts'
 
 Write-Step 'Bridge share + Green mcp.json + LM warm'
 $bridgeArgs = @('-File', (Join-Path $Here 'Connect-CornermanBridge.ps1'), '-SshTarget', $SshTarget)
-if ($TrySmbMap) { $bridgeArgs += '-TrySmbMap' }
+if ($MirrorOnly) { $bridgeArgs += '-MirrorOnly' }
+elseif ($PSBoundParameters.ContainsKey('TrySmbMap') -and -not $TrySmbMap) { $bridgeArgs += '-MirrorOnly' }
 if ($PromptForPassword) { $bridgeArgs += '-PromptForPassword' }
 & powershell.exe -NoProfile -ExecutionPolicy Bypass @bridgeArgs
 

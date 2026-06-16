@@ -35,7 +35,7 @@ $crt-text-dim: #9a9a9a;
 		overflow: hidden;
 		background-color: rgba(6, 6, 6, 0.98);
 		border: 1px solid #333333;
-		border-radius: 8px;
+		border-radius: 8px 8px 0 0;
 		box-shadow: 0 24px 64px rgba(0, 0, 0, 0.72);
 	}
 
@@ -45,6 +45,16 @@ $crt-text-dim: #9a9a9a;
 		background-color: $crt-frame-bg;
 		border: 3px solid #3a3a3a;
 		box-shadow: 0 0 24px rgba(255, 255, 255, 0.04);
+		display: flex;
+		flex-direction: column;
+		overflow: hidden;
+	}
+
+	.crt-body {
+		flex: 1 1 auto;
+		display: flex;
+		flex-direction: row;
+		min-height: 0;
 	}
 
 	.crt-header {
@@ -74,6 +84,10 @@ $crt-text-dim: #9a9a9a;
 		overflow-y: scroll;
 		overflow-x: hidden;
 		cursor: text;
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+		padding-right: 4px;
 	}
 
 	.screen {
@@ -83,6 +97,8 @@ $crt-text-dim: #9a9a9a;
 		flex-direction: column;
 		min-height: 0;
 		min-width: 0;
+		flex: 1 1 auto;
+		padding: 12px;
 	}
 
 	.log-line {
@@ -115,6 +131,13 @@ $crt-text-dim: #9a9a9a;
 	.prompt-row {
 		border-top: 1px solid $crt-border;
 		flex-shrink: 0;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: 8px;
+		margin-top: 8px;
+		padding-top: 8px;
+		cursor: text;
 	}
 
 	.cmd-ref {
@@ -125,6 +148,10 @@ $crt-text-dim: #9a9a9a;
 		line-height: 1.35;
 
 		&:hover {
+			color: $hashd-amber;
+		}
+
+		&.copied {
 			color: $hashd-amber;
 		}
 	}
@@ -152,26 +179,12 @@ $crt-text-dim: #9a9a9a;
 		background-color: transparent;
 		pointer-events: all;
 		cursor: text;
-	}
-
-	.lp-window-watermark {
-		flex: 0 0 32px;
-		flex-shrink: 0;
-		align-self: stretch;
-		width: 100%;
-		height: 32px;
-		min-height: 32px;
-		max-height: 32px;
-		overflow: hidden;
-		background-color: #060606;
-		border-top: 1px solid rgba(255, 255, 255, 0.08);
-
-		.lp-source-footer {
-			width: 100%;
-			height: 32px;
-			min-height: 32px;
-			max-height: 32px;
-		}
+		flex: 1 1 auto;
+		min-width: 0;
+		border: none;
+		font-family: inherit;
+		font-size: inherit;
+		padding: 4px 0;
 	}
 
 	.boot-splash {
@@ -219,4 +232,81 @@ $crt-text-dim: #9a9a9a;
 		letter-spacing: 0.08em;
 		margin-top: 8px;
 	}
+}
+
+// Footer — flat selectors only (nested .lp-mark / .lp-url-copy rules are dropped by s&box).
+.lp-ops-crt.lp-ops-crt--gray .lp-window-watermark {
+	flex: 0 0 32px;
+	flex-shrink: 0;
+	align-self: stretch;
+	width: 100%;
+	height: 32px;
+	min-height: 32px;
+	max-height: 32px;
+	overflow: hidden;
+	background-color: #060606;
+	border-top: 1px solid rgba(255, 255, 255, 0.08);
+	border-radius: 0;
+	display: flex;
+	flex-direction: row;
+	align-items: stretch;
+}
+
+.lp-ops-crt.lp-ops-crt--gray .lp-window-watermark .lp-source-footer {
+	flex: 1 1 auto;
+	align-self: stretch;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	gap: 10px;
+	width: 100%;
+	min-width: 100%;
+	height: 32px;
+	min-height: 32px;
+	max-height: 32px;
+	padding: 0 16px;
+	border-radius: 0;
+	border-top: none;
+	background-color: #060606;
+	font-family: "Roboto Mono";
+	font-size: 10px;
+	letter-spacing: 0.5px;
+	overflow: hidden;
+}
+
+.lp-ops-crt.lp-ops-crt--gray .lp-window-watermark .lp-mark {
+	display: flex;
+	align-items: center;
+	color: #c8a45a;
+	font-weight: bold;
+	flex-shrink: 0;
+	line-height: 1;
+	white-space: nowrap;
+}
+
+.lp-ops-crt.lp-ops-crt--gray .lp-window-watermark .lp-url-copy {
+	display: flex;
+	align-items: center;
+	margin-left: auto;
+	padding: 0;
+	border: none;
+	background-color: transparent;
+	color: rgba(255, 255, 255, 0.55);
+	font-family: "Roboto Mono";
+	font-size: 10px;
+	letter-spacing: 0.5px;
+	line-height: 1;
+	cursor: pointer;
+	text-align: right;
+	white-space: nowrap;
+	flex-shrink: 0;
+}
+
+.lp-ops-crt.lp-ops-crt--gray .lp-window-watermark .lp-url-copy:hover {
+	color: #8ec8ff;
+}
+
+.lp-ops-crt.lp-ops-crt--gray .lp-window-watermark .lp-url-copy.copied {
+	color: #8ec8ff;
 }
