@@ -98,8 +98,11 @@
 					</aside>
 
 					<div class="workspace">
-						<header class="page-header mock-header">
-							<div class="mock-greeting">Hi, @GreetingName()!</div>
+						<header class="page-header hub-header">
+							<div class="lp-ui-panel-title hub-title">
+								<i class="material-icons">memory</i>
+								<span>@LpBitcoinIdent.OpsTitle</span>
+							</div>
 
 							<div class="header-widgets">
 								<button class="header-chip wallet-chip" onclick="@SelectWalletTab">
@@ -124,279 +127,225 @@
 							<div class="main-panel">
 								@if ( _active == OpsTab.Overview )
 								{
-									<div class="pane overview-mock">
-										<div class="mock-layout">
-											<div class="mock-main">
-												<div class="hero-row">
-													<div class="hero-btc-card">
-														<div class="hero-btc-watermark"></div>
-														<div class="hero-label">Total BTC mined</div>
-														<div class="hero-btc-value">@TotalBtc().ToString("F6") BTC</div>
-														<div class="hero-btc-sub">~ $@TotalUsd().ToString("N2")</div>
-													</div>
+									<div class="pane overview">
+										<div class="lp-ui-intro">
+											Manage linked GPU racks, wallet payout, and hub power from this panel. Place racks near the hub and they auto-link on spawn.
+										</div>
 
-													<div class="hero-hash-card">
-														<div class="hero-hash-watermark">#</div>
-														<div class="hero-label">Hash rate</div>
-														<div class="hero-hash-value">@HashRateLabel()</div>
-														<div class="hero-hash-delta @(MiningRackCount() > 0 ? "up" : "")">@HashRateDeltaLabel()</div>
-													</div>
+										<div class="lp-ui-split">
+											<div class="lp-ui-panel">
+												<div class="lp-ui-panel-title">
+													<i class="material-icons">dns</i>
+													<span>Active miners</span>
 												</div>
 
-												<div class="mid-row">
-													<div class="perf-card">
-														<div class="card-top">
-															<span class="card-title">Mining performance</span>
-															<div class="range-toggle">
-																@foreach ( var range in _perfRanges )
-																{
-																	<button class="range-btn @( _perfRange == range ? "active" : "" )"
-																	        onclick="@(() => SetPerfRange( range ))">@PerfRangeLabel( range )</button>
-																}
-															</div>
-														</div>
-														<div class="perf-chart">
-															@for ( var i = 0; i < 7; i++ )
-															{
-																<div class="perf-col @(i == PerfHighlightIndex() ? "active" : "")">
-																	<div class="perf-bar" style="height: @(PerfBarHeight(i))%"></div>
-																	<div class="perf-day">@PerfDayLabel(i)</div>
-																</div>
-															}
-														</div>
+												@if ( LinkedRackCount() == 0 )
+												{
+													<div class="lp-ui-empty">
+														<i class="material-icons">dns</i>
+														<span>Place GPU racks near this hub — they auto-link on spawn.</span>
 													</div>
-
-													<div class="profit-card">
-														<div class="card-top">
-															<span class="card-title">Profit estimate</span>
-															<div class="range-toggle">
-																@foreach ( var range in _perfRanges )
-																{
-																	<button class="range-btn @( _profitRange == range ? "active" : "" )"
-																	        onclick="@(() => SetProfitRange( range ))">@PerfRangeLabel( range )</button>
-																}
-															</div>
-														</div>
-														<div class="profit-value">$@ProfitEstimate().ToString("N2")</div>
-														<button class="profit-calc" onclick="@SelectWalletTab">
-															Calculate <i class="material-icons">open_in_new</i>
-														</button>
-													</div>
-												</div>
-
-												<div class="miners-table-card">
-													<div class="card-top">
-														<span class="card-title">Active miners</span>
-														<button class="icon-link" onclick="@SelectRacksTab">
-															<i class="material-icons">open_in_new</i>
-														</button>
-													</div>
-
-													@if ( LinkedRackCount() == 0 )
-													{
-														<div class="miners-empty">
-															<i class="material-icons">dns</i>
-															<span>Place GPU racks near this hub — they auto-link on spawn.</span>
-														</div>
-													}
-													else
-													{
-														<div class="miners-table-head">
-															<span>Miner</span>
-															<span>Status</span>
-															<span>Hash rate</span>
-															<span>Temp</span>
-															<span>Uptime</span>
-															<span></span>
-														</div>
-														<div class="miners-table-body">
+												}
+												else
+												{
+													<div class="lp-ui-scroll">
+														<div class="lp-ui-list">
 															@for ( var i = 0; i < GetLinkedRacks().Count; i++ )
 															{
 																var rack = GetLinkedRacks()[i];
-																<div class="miners-table-row">
-																	<div class="col-miner">
-																		<div class="miner-thumb">
-																			<i class="material-icons">@(rack.AdvancedRack ? "view_module" : "storage")</i>
+																<div class="lp-ui-list-row" onclick="@(() => OpenTerminal(rack))">
+																	<div class="lp-ui-list-main">
+																		<div class="lp-ui-list-title">@RackDisplayName( rack, i )</div>
+																		<div class="lp-ui-list-sub">@RackHashRateLabel( rack ) · @RackTempLabel( rack ) · @RackUptimeLabel( rack, i )</div>
+																	</div>
+																	<div class="lp-ui-list-meta">
+																		<div class="lp-ui-list-value">@(rack.IsMining ? "Mining" : "Idle")</div>
+																		<div class="lp-ui-list-tag">
+																			<span class="lp-ui-status-dot @(rack.IsMining ? "on" : "off")"></span>
 																		</div>
-																		<span class="miner-name">@RackDisplayName( rack, i )</span>
-																	</div>
-																	<div class="col-status">
-																		<span class="status-dot @(rack.IsMining ? "on" : "off")"></span>
-																		<span>@(rack.IsMining ? "On" : "Off")</span>
-																	</div>
-																	<div class="col-hash">@RackHashRateLabel( rack )</div>
-																	<div class="col-temp">@RackTempLabel( rack )</div>
-																	<div class="col-uptime">@RackUptimeLabel( rack, i )</div>
-																	<div class="col-actions">
-																		<button class="kebab-btn" tooltip="Open terminal" onclick="@(() => OpenTerminal(rack))">
-																			<i class="material-icons">more_vert</i>
-																		</button>
 																	</div>
 																</div>
 															}
 														</div>
+													</div>
+												}
+											</div>
+
+											<div class="lp-ui-panel">
+												<div class="lp-ui-panel-title">
+													<i class="material-icons">analytics</i>
+													<span>Hub status</span>
+												</div>
+
+												<div class="lp-ui-info">
+													<div class="lp-ui-info-row">
+														<span class="lp-ui-info-label">Total mined</span>
+														<span class="lp-ui-info-value">@TotalBtc().ToString("F6") BTC</span>
+													</div>
+													<div class="lp-ui-info-row">
+														<span class="lp-ui-info-label">USD value</span>
+														<span class="lp-ui-info-value">$@TotalUsd().ToString("N2")</span>
+													</div>
+													<div class="lp-ui-info-row">
+														<span class="lp-ui-info-label">Hash rate</span>
+														<span class="lp-ui-info-value">@HashRateLabel()</span>
+													</div>
+													<div class="lp-ui-info-row">
+														<span class="lp-ui-info-label">Hub power</span>
+														<span class="lp-ui-info-value">
+															<span class="lp-ui-status-dot @(Hub?.IsPowered == true ? "on" : "off")"></span>
+															@(Hub?.IsPowered == true ? "On" : "Off") · @HubTempLabel()
+														</span>
+													</div>
+													<div class="lp-ui-info-row">
+														<span class="lp-ui-info-label">Load / draw</span>
+														<span class="lp-ui-info-value">@MiningLoadPercent()% · @HubPowerDrawLabel()</span>
+													</div>
+												</div>
+
+												<div class="lp-ui-perks">
+													<div class="lp-ui-perk">@LinkedRackCount() linked rack@(LinkedRackCount() == 1 ? "" : "s")</div>
+													<div class="lp-ui-perk">@MiningRackCount() mining now</div>
+													<div class="lp-ui-perk">Wallet @HeaderWalletBtc() BTC ready to cash out</div>
+												</div>
+
+												<div class="lp-ui-btn-row">
+													<button class="lp-ui-btn-primary" onclick="@SelectRacksTab">Manage racks</button>
+													<button class="lp-ui-btn-ghost" onclick="@SelectWalletTab">Wallet</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								}
+								else if ( _active == OpsTab.Racks )
+								{
+									<div class="pane racks">
+										<div class="lp-ui-panel">
+											<div class="lp-ui-panel-title">
+												<i class="material-icons">dns</i>
+												<span>GPU racks</span>
+											</div>
+
+											<div class="lp-ui-intro wallet-intro">
+												@LinkedRackCount() linked · terminal index matches list order
+											</div>
+
+											@if ( LinkedRackCount() == 0 )
+											{
+												<div class="lp-ui-empty">
+													<i class="material-icons">dns</i>
+													<span>Place GPU racks near this hub — they auto-link on spawn.</span>
+												</div>
+											}
+											else
+											{
+												<div class="lp-ui-scroll">
+													<div class="lp-ui-list">
+														@for ( var i = 0; i < GetLinkedRacks().Count; i++ )
+														{
+															var rack = GetLinkedRacks()[i];
+															<div class="rack-shell-row">
+																<div class="lp-ui-list-row" onclick="@(() => OpenTerminal(rack))">
+																	<div class="lp-ui-list-main">
+																		<div class="lp-ui-list-title">#@i @(rack.AdvancedRack ? LpBitcoinIdent.AdvancedRackDisplayName : LpBitcoinIdent.RackDisplayName)</div>
+																		<div class="lp-ui-list-sub">@(rack.BitcoinAmount.ToString("F6")) BTC · $@(rack.UsdValue) · @(rack.ClockGhz.ToString("F2")) GHz · x@(rack.CoreCount)</div>
+																	</div>
+																	<div class="lp-ui-list-meta">
+																		<div class="lp-ui-list-value">@(rack.IsMining ? "Mining" : "Idle")</div>
+																		<div class="lp-ui-list-tag">yield x@(rack.YieldMultiplier.ToString("F1"))</div>
+																	</div>
+																</div>
+																<div class="rack-shell-actions">
+																	<button class="lp-ui-btn-ghost @(!CanUpgradeCpu(rack) ? "disabled" : "")" onclick="@(() => UpgradeCpu(rack))">CPU $@UpgradeCpuCost(rack)</button>
+																	<button class="lp-ui-btn-ghost @(!CanUpgradeCores(rack) ? "disabled" : "")" onclick="@(() => UpgradeCores(rack))">Core $@UpgradeCoreCost(rack)</button>
+																	<button class="lp-ui-btn-primary" onclick="@(() => OpenTerminal(rack))">Terminal</button>
+																</div>
+															</div>
+														}
+													</div>
+												</div>
+											}
+										</div>
+									</div>
+								}
+								else if ( _active == OpsTab.Wallet )
+								{
+									<div class="pane wallet">
+										<div class="lp-ui-panel">
+											<div class="lp-ui-panel-title">
+												<i class="material-icons">account_balance_wallet</i>
+												<span>Wallet payout</span>
+											</div>
+
+											<div class="lp-ui-intro wallet-intro">
+												Cash out linked rack balances to your DXRP wallet. Per-rack sell and mining control stay on the CRT terminal.
+											</div>
+
+											<div class="lp-ui-info">
+												<div class="lp-ui-info-row">
+													<span class="lp-ui-info-label">Rack BTC total</span>
+													<span class="lp-ui-info-value accent">@TotalBtc().ToString("F6") BTC</span>
+												</div>
+												<div class="lp-ui-info-row">
+													<span class="lp-ui-info-label">USD value</span>
+													<span class="lp-ui-info-value">$@TotalUsd().ToString("N2")</span>
+												</div>
+												<div class="lp-ui-info-row">
+													<span class="lp-ui-info-label">Exchange rate</span>
+													<span class="lp-ui-info-value">$@LpBitcoinEconomy.BitcoinValueUsd / BTC</span>
+												</div>
+												<div class="lp-ui-info-row">
+													<span class="lp-ui-info-label">Your cash</span>
+													<span class="lp-ui-info-value">$@LpHashdUiHost.GetLocalWalletCash()</span>
+												</div>
+											</div>
+
+											<div class="lp-ui-btn-row">
+												<button class="lp-ui-btn-primary @(TotalBtc() <= 0f ? "disabled" : "")" onclick="@SellAllRacks">Sell all rack BTC</button>
+												<button class="lp-ui-btn-ghost" onclick="@(() => OpenTerminal( null ))">Open CRT terminal</button>
+											</div>
+										</div>
+									</div>
+								}
+								else if ( _active == OpsTab.Settings )
+								{
+									<div class="pane settings-pane">
+										<div class="lp-ui-panel">
+											<div class="lp-ui-panel-title">
+												<i class="material-icons">settings</i>
+												<span>Settings</span>
+											</div>
+
+											<div class="settings-group">
+												<div class="settings-label">UI Scale</div>
+												<div class="settings-hint">Resize the hub admin window.</div>
+												<div class="panel-size-row">
+													@foreach ( var size in _uiScaleOptions )
+													{
+														<button class="panel-size-opt @( _uiScale == size ? "active" : "" )"
+														        onclick="@(() => SetUiScale( size ))">
+															@LpUiScale.ShortLabel( size )
+														</button>
 													}
 												</div>
 											</div>
 
-											<aside class="server-status-rail">
-												<div class="server-status-head">
-													<div class="server-status-title">Mining server status</div>
-													<div class="server-status-meta">
-														<span class="server-temp">@HubTempLabel()</span>
-														<span class="status-dot @(Hub?.IsPowered == true ? "on" : "off")"></span>
-														<span>@(Hub?.IsPowered == true ? "On" : "Off")</span>
-													</div>
+											<div class="settings-group">
+												<div class="settings-label">Hub Power</div>
+												<div class="settings-hint">Turn the HASHD hub on or off. Racks stop accruing when power is off.</div>
+												<div class="split-actions">
+													<button class="pill @(Hub?.IsPowered == true ? "active" : "")" onclick="@PowerOn">Power on</button>
+													<button class="pill @(Hub?.IsPowered != true ? "active" : "")" onclick="@PowerOff">Power off</button>
 												</div>
+											</div>
 
-												<div class="server-visual">
-													<div class="server-visual-mark"></div>
-													<div class="server-visual-name">@HubDisplayName()</div>
-												</div>
-
-												<div class="server-stats-overlay">
-													<div class="server-stat">
-														<i class="material-icons">device_thermostat</i>
-														<div class="server-stat-copy">
-															<div class="server-stat-value">@HubPeakTempLabel()</div>
-															<div class="server-stat-label">24h high</div>
-														</div>
-													</div>
-													<div class="server-stat">
-														<i class="material-icons">pie_chart</i>
-														<div class="server-stat-copy">
-															<div class="server-stat-value">@MiningLoadPercent()%</div>
-															<div class="server-stat-label">CPU usage</div>
-														</div>
-													</div>
-													<div class="server-stat">
-														<i class="material-icons">local_fire_department</i>
-														<div class="server-stat-copy">
-															<div class="server-stat-value">@HubPowerDrawLabel()</div>
-															<div class="server-stat-label">Power draw</div>
-														</div>
-													</div>
-												</div>
-
-												<button class="cta-pill server-cta" onclick="@SelectRacksTab">
-													View all details <i class="material-icons">north_east</i>
-												</button>
-											</aside>
+											<div class="settings-group">
+												<div class="settings-label">Security</div>
+												<div class="settings-hint">@( Hub?.AccessPinIsSet == true ? "Hub PIN is active. PIN change ships in a later pass." : "Set your PIN on first hub USE via Secure Boot." )</div>
+											</div>
 										</div>
 									</div>
 								}
-					else if ( _active == OpsTab.Racks )
-					{
-						<div class="pane racks">
-							<div class="pane-head">
-								<div class="pane-title">GPU racks</div>
-								<div class="pane-sub">@LinkedRackCount() linked · terminal index matches list order</div>
-							</div>
-
-							@if ( LinkedRackCount() == 0 )
-							{
-								<div class="empty-card">
-									<i class="material-icons">dns</i>
-									<div>Place GPU racks near this hub — they auto-link on spawn.</div>
-								</div>
-							}
-							else
-							{
-								<div class="rack-list">
-									@for ( var i = 0; i < GetLinkedRacks().Count; i++ )
-									{
-										var rack = GetLinkedRacks()[i];
-										<div class="rack-card">
-											<div class="rack-main">
-												<div class="rack-icon">
-													<i class="material-icons">@(rack.AdvancedRack ? "view_module" : "storage")</i>
-												</div>
-												<div class="rack-copy">
-													<div class="rack-title">#@i @(rack.AdvancedRack ? LpBitcoinIdent.AdvancedRackDisplayName : LpBitcoinIdent.RackDisplayName)</div>
-													<div class="rack-sub">@(rack.BitcoinAmount.ToString("F6")) BTC · $@(rack.UsdValue)</div>
-													<div class="rack-sub">@(rack.ClockGhz.ToString("F2")) GHz · x@(rack.CoreCount) cores · yield x@(rack.YieldMultiplier.ToString("F1"))</div>
-												</div>
-												<span class="status-pill @(rack.IsMining ? "active" : "idle")">
-													@(rack.IsMining ? "Mining" : "Idle")
-												</span>
-											</div>
-											<div class="rack-actions">
-												<button class="ghost small @(!CanUpgradeCpu(rack) ? "disabled" : "")" onclick="@(() => UpgradeCpu(rack))">CPU $@UpgradeCpuCost(rack)</button>
-												<button class="ghost small @(!CanUpgradeCores(rack) ? "disabled" : "")" onclick="@(() => UpgradeCores(rack))">Core $@UpgradeCoreCost(rack)</button>
-												<button class="ghost small accent" onclick="@(() => OpenTerminal(rack))">Terminal</button>
-											</div>
-										</div>
-									}
-								</div>
-							}
-						</div>
-					}
-					else if ( _active == OpsTab.Wallet )
-					{
-						<div class="pane wallet">
-							<div class="pane-head">
-								<div class="pane-title">Wallet payout</div>
-								<div class="pane-sub">Cash out linked rack balances to your DXRP wallet</div>
-							</div>
-
-							<div class="dash-card wallet-card">
-								<div class="card-head">
-									<span class="card-label">Rack BTC total</span>
-									<span class="tag-pill">@LpBitcoinIdent.BtcEmoji</span>
-								</div>
-								<div class="balance-value">@TotalBtc().ToString("F6")</div>
-								<div class="balance-sub">$@TotalUsd() USD at $@LpBitcoinEconomy.BitcoinValueUsd / BTC</div>
-								<div class="balance-sub">Your cash: $@LpHashdUiHost.GetLocalWalletCash()</div>
-							</div>
-
-							<div class="wallet-actions">
-								<button class="cta-pill wide @(TotalBtc() <= 0f ? "disabled" : "")" onclick="@SellAllRacks">Sell all rack BTC</button>
-								<button class="ghost" onclick="@(() => OpenTerminal( null ))">Open CRT terminal</button>
-							</div>
-
-							<div class="hint-card">
-								<i class="material-icons">info</i>
-								<span>Per-rack sell and mining control stay on the CRT terminal (`sell`, `mining start`).</span>
-							</div>
-						</div>
-					}
-					else if ( _active == OpsTab.Settings )
-					{
-						<div class="pane settings-pane">
-							<div class="pane-head">
-								<div class="pane-title">Settings</div>
-								<div class="pane-sub">Hub power, UI scale, and security</div>
-							</div>
-
-							<div class="settings-group">
-								<div class="settings-label">UI Scale</div>
-								<div class="settings-hint">Resize the hub admin window.</div>
-								<div class="panel-size-row">
-									@foreach ( var size in _uiScaleOptions )
-									{
-										<button class="panel-size-opt @( _uiScale == size ? "active" : "" )"
-										        onclick="@(() => SetUiScale( size ))">
-											@LpUiScale.ShortLabel( size )
-										</button>
-									}
-								</div>
-							</div>
-
-							<div class="settings-group">
-								<div class="settings-label">Hub Power</div>
-								<div class="settings-hint">Turn the HASHD hub on or off. Racks stop accruing when power is off.</div>
-								<div class="split-actions">
-									<button class="pill @(Hub?.IsPowered == true ? "active" : "")" onclick="@PowerOn">Power on</button>
-									<button class="pill @(Hub?.IsPowered != true ? "active" : "")" onclick="@PowerOff">Power off</button>
-								</div>
-							</div>
-
-							<div class="settings-group">
-								<div class="settings-label">Security</div>
-								<div class="settings-hint">@( Hub?.AccessPinIsSet == true ? "Hub PIN is active. PIN change ships in a later pass." : "Set your PIN on first hub USE via Secure Boot." )</div>
-							</div>
-						</div>
-					}
 				</div>
 			</div>
 		</div>
@@ -613,7 +562,7 @@
 	private void SelectWalletTab() => SelectTab( OpsTab.Wallet );
 	private void SelectRacksTab() => SelectTab( OpsTab.Racks );
 	private void OpenSettings() => SelectTab( OpsTab.Settings );
-	private string GetRootClass() => $"lp-bitcoin-ops {LpUiScale.CssClass( _uiScale )}";
+	private string GetRootClass() => $"lp-bitcoin-ops lp-ui-accent-hashd {LpUiScale.CssClass( _uiScale )}";
 	private void SetUiScale( LpUiScaleSize size ) => _uiScale = size;
 	private void Close() => LpHashdUiHost.CloseOpen();
 	private void PowerOn() => Hub?.SetPowered( true );

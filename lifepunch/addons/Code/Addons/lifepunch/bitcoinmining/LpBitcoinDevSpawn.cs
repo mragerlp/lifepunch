@@ -212,6 +212,63 @@ public static class LpBitcoinDevSpawn
 		Log.Info( "BITCOINMINING_SCALE_AUDIT end — terminal target mesh Y ~18u vs collider 14×18×8" );
 	}
 
+	/// <summary>Logs compiled vmdl sequences + power anim apply (BITCOINMINING-05).</summary>
+	[ConCmd( "lp_bitcoin_anim_audit" )]
+	public static void AnimAudit()
+	{
+		var scene = Game.ActiveScene;
+		if ( scene is null )
+		{
+			Log.Warning( "lp_bitcoin_anim_audit: no active scene." );
+			return;
+		}
+
+		var hub = scene.GetAllComponents<LpBitcoinHubEntity>()
+			.Where( h => h.IsValid() && !IsPreviewHub( h ) )
+			.FirstOrDefault();
+		if ( !hub.IsValid() )
+		{
+			if ( !TryGetSpawnTransform( out var transform ) )
+			{
+				Log.Warning( "lp_bitcoin_anim_audit: no hub — spawn with lp_bitcoin_spawn_hub first." );
+				return;
+			}
+
+			hub = SpawnHubPrefab( transform );
+		}
+
+		var renderer = hub.Components.Get<ModelRenderer>( FindMode.EverythingInSelf );
+		if ( !renderer.IsValid() )
+		{
+			Log.Warning( "lp_bitcoin_anim_audit: hub has no ModelRenderer." );
+			return;
+		}
+
+		var sceneModel = renderer.SceneObject as SceneModel;
+		var sequences = sceneModel?.DirectPlayback?.Sequences;
+		Log.Info( $"BITCOINMINING_ANIM_AUDIT model={renderer.Model?.ResourcePath ?? "(null)"} powered={hub.IsPowered}" );
+		if ( sequences is null || sequences.Count == 0 )
+		{
+			Log.Warning( "BITCOINMINING_ANIM_AUDIT sequences=0 — recompile bitcoin-miner.vmdl in ModelDoc (Add Simple Animations)." );
+			return;
+		}
+
+		foreach ( var seq in sequences )
+			Log.Info( $"BITCOINMINING_ANIM_AUDIT seq={seq}" );
+
+		if ( LpBitcoinPowerAnim.ApplyHubPower( renderer, true, out var onSeq ) )
+			Log.Info( $"BITCOINMINING_ANIM_AUDIT apply ON -> {onSeq}" );
+		else
+			Log.Warning( "BITCOINMINING_ANIM_AUDIT apply ON failed — fanAction missing from compiled vmdl." );
+
+		if ( LpBitcoinPowerAnim.ApplyHubPower( renderer, false, out var offSeq ) )
+			Log.Info( $"BITCOINMINING_ANIM_AUDIT apply OFF -> {offSeq}" );
+		else
+			Log.Warning( "BITCOINMINING_ANIM_AUDIT apply OFF failed." );
+
+		hub.ApplyPoweredState( true );
+	}
+
 	private static bool IsPreviewHub( LpBitcoinHubEntity hub )
 	{
 		if ( !hub.IsValid() )

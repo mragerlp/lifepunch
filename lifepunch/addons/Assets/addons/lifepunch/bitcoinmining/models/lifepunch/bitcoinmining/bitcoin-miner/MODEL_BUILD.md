@@ -94,7 +94,7 @@ lifepunch\scripts\Start-SboxDxrpEditor.ps1 -PreflightFix -SyncAddon bitcoinminin
 ```
 
 In editor: compile `bitcoin-miner.vmdl` + vmats → `Pull-DxrpCompiledAssetsToRepo.ps1`  
-**Compiled (Jun 2026):** all 5 `bitcoin-miner-sm-*.vmat_c` + `bitcoin-miner.vmdl_c` in repo. Animations still bindPose-only (ModelDoc star-add).  
+**Compiled (Jun 2026):** all 5 `bitcoin-miner-sm-*.vmat_c` + `bitcoin-miner.vmdl_c` in repo. `bitcoin-miner.vmdl` includes `fanAction` (take 0) + `front_panelAction` (take 1) from `steam-machine.fbx`; recompile after vmdl edits.
 Dev spawn: `lp_map_flatgrass` → `lp_bitcoin_spawn_hub` — verify scale, collider, fan anim on power toggle.
 
 ## Superseded
