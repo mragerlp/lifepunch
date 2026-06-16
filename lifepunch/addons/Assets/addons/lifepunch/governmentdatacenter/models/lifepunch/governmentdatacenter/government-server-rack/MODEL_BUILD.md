@@ -26,11 +26,12 @@ Archive: `C:\lifepunch\reference-intake\governmentdatacenter\government-server-r
 | `Server_Trim` | `government-server-rack-trim.vmat` |
 | `Glass` / `Glass.002` | `government-server-rack-glass.vmat` |
 
-1. Import `source/government-server-rack.fbx` — start `import_scale` **1.0**.
+1. Import `source/government-server-rack.fbx` — **`import_scale` 0.399** (same Fab rack family as criminal lane).
 2. Compile trim + glass vmats (2K paths under `source/textures/`).
 3. Prefab + `GovernmentServerRackEntity` gameplay = Phase F (after Hacker Job ship).
 
-**Compiled (Jun 2026):** `government-server-rack.vmdl_c` + vmats + `government-server-rack.prefab_c` in repo.
+**Compiled (Jun 2026):** `government-server-rack.vmdl_c` + vmats + `government-server-rack.prefab_c` in repo (recompile after scale pass).  
+**Scale @ import_scale 0.399:** mesh height ~**87u** vs collider **28×28×87**.
 
 ## Lane split (Jun 2026)
 

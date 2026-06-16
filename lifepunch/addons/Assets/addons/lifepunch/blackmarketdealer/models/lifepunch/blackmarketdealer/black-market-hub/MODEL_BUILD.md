@@ -31,7 +31,7 @@ models/lifepunch/blackmarketdealer/black-market-hub/
 | Field | Value |
 |-------|-------|
 | Mesh | `source/black-market-hub.fbx` |
-| Import scale | `1.0` — tune vs citizen on flatgrass |
+| Import scale | **`0.74`** (Fab vault FBX · ~36×24×26u target vs citizen) |
 | Align Z | Bottom |
 | Slots | `Safe_Vault`, `Bullion` |
 

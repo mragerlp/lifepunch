@@ -27,7 +27,7 @@
 							},
 							{
 								from = "ServerMaterial"
-								to = "addons/lifepunch/hackerjob/models/lifepunch/hackerjob/server-rack/materials/server-rack-trim.vmat"
+								to = "addons/lifepunch/hackerjob/models/lifepunch/hackerjob/server-rack/materials/server-rack.vmat"
 							},
 						]
 						use_global_default = true
@@ -45,7 +45,7 @@
 						filename = "addons/lifepunch/hackerjob/models/lifepunch/hackerjob/server-rack/source/server-rack.fbx"
 						import_translation = [ 0.0, 0.0, 0.0 ]
 						import_rotation = [ 0.0, 0.0, 0.0 ]
-						import_scale = 1.0
+						import_scale = 0.399
 						align_origin_x_type = "None"
 						align_origin_y_type = "None"
 						align_origin_z_type = "Bottom"

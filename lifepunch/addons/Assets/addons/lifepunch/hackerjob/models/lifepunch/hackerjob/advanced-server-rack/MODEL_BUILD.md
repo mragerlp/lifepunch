@@ -23,10 +23,10 @@ Archive: `C:\lifepunch\reference-intake\hackerjob\advanced-server-rack-fab`
 
 ## ModelDoc
 
-Reuses `server-rack-trim.vmat` + `server-rack-glass.vmat` remaps. Import `source/advanced-server-rack.fbx` — scale vs basic single cabinet on flatgrass.
+Reuses `server-rack-trim.vmat` + `server-rack-glass.vmat` + **`server-rack.vmat`** (`ServerMaterial`). Import `source/advanced-server-rack.fbx` — **`import_scale` 0.399** (same cabinet height as basic row unit).
 
-**Compiled (Jun 2026):** `advanced-server-rack.vmdl_c` + `prefab_c` in repo.  
-**Scale audit @ import_scale 1.0:** bounds ~232×410×218 vs collider 24×24×56 — **ModelDoc scale pass TODO**.
+**Compiled (Jun 2026):** `advanced-server-rack.vmdl_c` + `prefab_c` in repo (recompile after scale pass).  
+**Scale @ import_scale 0.399:** mesh ~**164×94×87** · prefab collider **164×94×87** center `0,0,43.5`.
 
 ## Dev smoke
 

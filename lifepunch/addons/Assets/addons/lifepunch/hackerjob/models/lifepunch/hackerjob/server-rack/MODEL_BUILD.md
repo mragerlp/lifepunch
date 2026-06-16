@@ -27,14 +27,16 @@ Archive: `C:\lifepunch\reference-intake\hackerjob\server-rack-fab`
 | Slot | vmat |
 |------|------|
 | `Server_Trim` | `server-rack-trim.vmat` |
+| `ServerMaterial` | `server-rack.vmat` |
 | `Glass` / `Glass.002` | `server-rack-glass.vmat` |
 
-1. Import `source/server-rack.fbx` — start `import_scale` **1.0**; tune vs citizen + terminal.
-2. Compile trim + glass vmats (2K paths under `source/textures/`).
-3. Door is parented mesh — wire rotation or Blender door clip after flatgrass verify.
+1. Import `source/server-rack.fbx` — **`import_scale` 0.399** (Fab cm mesh · height ~87u vs collider Z=87).
+2. Material remaps: `Server_Trim` → trim vmat · `ServerMaterial` → **`server-rack.vmat`** · `Glass*` → glass vmat.
+3. Compile trim + glass + body vmats (2K paths under `source/textures/`).
+4. Door is parented mesh — wire rotation or Blender door clip after flatgrass verify.
 
-**Compiled (Jun 2026):** trim/glass `vmat_c` + `server-rack.vmdl_c` + `prefab_c` in repo.  
-**Scale audit @ import_scale 1.0:** bounds ~124×203×218 vs collider 28×28×87 — **ModelDoc scale pass TODO** on flatgrass.
+**Compiled (Jun 2026):** trim/glass/body `vmat_c` + `server-rack.vmdl_c` + `prefab_c` in repo (recompile after scale pass).  
+**Scale @ import_scale 0.399:** mesh height ~**87u** (collider Z) · XY mesh wider than tight 28×28 hitbox (intentional).
 
 ## Dev smoke
 
