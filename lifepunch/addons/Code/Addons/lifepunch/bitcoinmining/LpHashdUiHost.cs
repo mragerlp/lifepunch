@@ -27,6 +27,7 @@ internal static class LpHashdUiHost
 
 	public static LpHashdPanel Open( LpBitcoinHubEntity hub )
 	{
+		LpBitcoinUi.CloseSuiPreviews();
 		LpBitcoinTerminalUiHost.CloseOpen();
 		CloseOpen();
 

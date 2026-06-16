@@ -69,6 +69,7 @@ public static class LpBitcoinDevSpawn
 	public static void PreviewHubUi()
 	{
 		WarnIfWrongPlayScene();
+		LpBitcoinUi.CloseAll();
 		var hub = LpBitcoinUi.GetOrCreatePreviewHub( withSampleRacks: true );
 		if ( !hub.IsValid() )
 		{

@@ -16,6 +16,26 @@ internal static class LpBitcoinUi
 	{
 		LpHashdUiHost.CloseOpen();
 		LpBitcoinTerminalUiHost.CloseOpen();
+		CloseSuiPreviews();
+	}
+
+	/// <summary>
+	/// UI Designer scratch preview (<c>lp_bitcoin_sui_hub_preview</c>) mounts a static layout that
+	/// shows pin + hub body at once — destroy it before opening ship Razor panels.
+	/// </summary>
+	public static void CloseSuiPreviews()
+	{
+		var scene = Game.ActiveScene;
+		if ( scene is null )
+			return;
+
+		foreach ( var go in scene.GetAllObjects( true ) )
+		{
+			if ( !go.IsValid() || go.Name != "LpSuiHubPreview" )
+				continue;
+
+			go.Destroy();
+		}
 	}
 
 	public static LpBitcoinHubEntity GetOrCreatePreviewHub( bool withSampleRacks = false )

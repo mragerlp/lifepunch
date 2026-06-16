@@ -9,40 +9,96 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 using System;
+using System.Reflection;
 using Editor;
 using Sandbox;
-using SboxMcp.Mcp;
 
 namespace Dxura.RP.Game;
 
 /// <summary>
 /// jtc.mcp-server only binds HTTP when its "MCP Server" dock opens. Cursor <c>sbox-jtc</c>
 /// needs <c>:29015/mcp</c> without that manual step — mirror chomnr autostart behavior here.
+/// Uses reflection (no compile-time ref to <c>package.jtc.mcp-server.editor</c>) so editor boot
+/// does not spam <c>tool.frame</c> when jtc is not mounted yet.
 /// Swap point: remove when jtc adds editor-load autostart upstream.
 /// </summary>
 public static class LpJtcMcpAutostart
 {
-	static bool _started;
+	const int DefaultPort = 29015;
+	static bool _done;
 
 	[EditorEvent.Frame]
 	public static void OnFrame()
 	{
-		if ( _started )
+		if ( _done )
 			return;
 
+		_done = true;
+		TryAutostartOnce();
+	}
+
+	static void TryAutostartOnce()
+	{
 		try
 		{
-			var server = McpHttpServer.GetOrStart( McpHttpServer.DefaultPort );
-			_started = server.IsListening;
+			var serverType = ResolveJtcServerType();
+			if ( serverType is null )
+			{
+				Log.Info( "[LifePunch] jtc MCP not loaded — open Editor dock MCP Server for sbox-jtc." );
+				return;
+			}
 
-			if ( _started )
-				Log.Info( $"[LifePunch] jtc MCP autostart — http://localhost:{server.Port}/mcp" );
+			var getOrStart = serverType.GetMethod(
+				"GetOrStart",
+				BindingFlags.Public | BindingFlags.Static,
+				binder: null,
+				types: new[] { typeof( int ) },
+				modifiers: null );
+
+			if ( getOrStart is null )
+			{
+				Log.Warning( "[LifePunch] jtc MCP autostart: McpHttpServer.GetOrStart missing." );
+				return;
+			}
+
+			var server = getOrStart.Invoke( null, new object[] { DefaultPort } );
+			if ( server is null )
+			{
+				Log.Warning( "[LifePunch] jtc MCP autostart: GetOrStart returned null." );
+				return;
+			}
+
+			var isListening = serverType.GetProperty( "IsListening" )?.GetValue( server ) as bool? ?? false;
+			var port = serverType.GetProperty( "Port" )?.GetValue( server ) as int? ?? DefaultPort;
+
+			if ( isListening )
+				Log.Info( $"[LifePunch] jtc MCP autostart — http://localhost:{port}/mcp" );
 			else
 				Log.Warning( "[LifePunch] jtc MCP autostart: server not listening — open MCP Server dock." );
 		}
 		catch ( Exception ex )
 		{
-			Log.Warning( $"[LifePunch] jtc MCP autostart failed: {ex.Message}" );
+			var message = ex.InnerException?.Message ?? ex.Message;
+			if ( message.Contains( "conflicts with an existing registration", StringComparison.OrdinalIgnoreCase ) )
+				Log.Info( "[LifePunch] jtc MCP already listening on :29015 (MCP Server dock)." );
+			else
+				Log.Warning( $"[LifePunch] jtc MCP autostart skipped: {message}" );
 		}
+	}
+
+	static global::System.Type ResolveJtcServerType()
+	{
+		foreach ( var asm in AppDomain.CurrentDomain.GetAssemblies() )
+		{
+			var asmName = asm.GetName().Name;
+			if ( asmName is null || !asmName.Contains( "jtc.mcp-server", StringComparison.OrdinalIgnoreCase ) )
+				continue;
+
+			var t = asm.GetType( "SboxMcp.Mcp.McpHttpServer" );
+			if ( t is not null )
+				return t;
+		}
+
+		return null;
 	}
 }

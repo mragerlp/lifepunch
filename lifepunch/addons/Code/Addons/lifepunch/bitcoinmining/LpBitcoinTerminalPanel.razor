@@ -8,9 +8,6 @@
 @using System.Linq
 @using Sandbox.UI
 @using LifePunch.DXRP.Addons
-#if !LIFEPUNCH_LOCAL
-@using Dxura.RP.Game.UI
-#endif
 @inherits PanelComponent
 
 @attribute [StyleSheet]
@@ -183,16 +180,12 @@
 
 	protected override void OnEnabled()
 	{
-#if !LIFEPUNCH_LOCAL
-		HUD.SetCursorUnlockRequest( this, true );
-#endif
+		LpBitcoinHudBridge.SetMenuCursorMode( true );
 	}
 
 	protected override void OnDisabled()
 	{
-#if !LIFEPUNCH_LOCAL
-		HUD.SetCursorUnlockRequest( this, false );
-#endif
+		LpBitcoinHudBridge.SetMenuCursorMode( false );
 	}
 
 	private LpBitcoinRackEntity _pendingFocusRack;

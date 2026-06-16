@@ -18,7 +18,7 @@
 ## Session setup (every sitting)
 
 ```text
-game.scene → Play (wait 2–5 min cold) → lp_map_flatgrass → lp_bitcoin_spawn_kit
+game.scene → Play (wait 2–5 min cold) → lp_authorize <token> (owner manual) → lp_map_flatgrass → lp_bitcoin_spawn_kit
 ```
 
 | Purpose | Command |

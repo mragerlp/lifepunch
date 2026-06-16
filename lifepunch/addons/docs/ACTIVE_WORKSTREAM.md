@@ -106,8 +106,10 @@ Proof Package:
 - 30-second gameplay clip
 ```
 
-**Play law:** `game.scene` → Host Play (wait 2–5 min cold) → `lp_map_flatgrass` → spawn kit/hub.  
+**Play law:** `game.scene` → Host Play (wait 2–5 min cold) → **`lp_authorize <token>` (owner manual)** → `lp_map_flatgrass` → spawn kit/hub.  
 **Never** sign off from prefab tabs or editor-only preview alone.
+
+**Portal auth (owner manual — before agent play proof):** After Host Play, the **owner** enters `lp_authorize <token>` in the s&box console (token from dxrp.net). Agents **do not** run this command or ask for the token — wait until the owner confirms authorize is done, then proceed with spawn/UI proof.
 
 ```text
 If proof doesn't exist:

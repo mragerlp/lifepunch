@@ -29,15 +29,16 @@ powershell -NoProfile -ExecutionPolicy Bypass -File lifepunch\scripts\Start-Sbox
 1. Close prefab tabs.
 2. Open **`scenes/game.scene`** (tab title **Game**, not `Prefab: …`).
 3. **Play** — wait for map fit + player join (2–5 min cold).
-4. Console:
+4. **Owner:** console `lp_authorize <token>` (manual — token from dxrp.net; agents wait for this before spawn/proof).
+5. Console:
 
 ```text
 lp_map_flatgrass
 lp_bitcoin_spawn_kit
 ```
 
-5. MCP: orbit screenshot — **full kit** (hub + 3 small + 1 large rack) = P0 hero composition.
-6. Scale doc only: `lp_spawn_bitcoin_miner_hub_only` + citizen height check.
+6. MCP: orbit screenshot — **full kit** (hub + 3 small + 1 large rack) = P0 hero composition.
+7. Scale doc only: `lp_spawn_bitcoin_miner_hub_only` + citizen height check.
 
 **Visual law:** room story before USE — hub silhouette → rack wall → clutter → LEDs. See visual pass brief § hierarchy.
 

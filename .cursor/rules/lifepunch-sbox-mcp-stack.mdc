@@ -30,11 +30,12 @@ alwaysApply: true
 ## Mandatory loop (every s&box task)
 
 1. **Probe** — `get_bridge_status` (play) and/or editor MCP HTTP (authoring). Never assume scene/collider/material from code alone.
-2. **One focused change** — no unrelated batching.
-3. **Compile** — chomnr compile errors or jtc console; fix before play.
-4. **Play proof** — `lp_map_flatgrass` + fresh spawn; not saved test scenes.
-5. **Screenshot / notes** — Bridge or jtc screenshot; report pass/fail.
-6. **Commit** — propose scope; **owner approves** before git commit (repo law).
+2. **Portal auth (owner)** — After Host Play, **owner manually** runs `lp_authorize <token>` in console before spawn/proof work. Agents do not run this or request the token; wait for owner confirmation.
+3. **One focused change** — no unrelated batching.
+4. **Compile** — chomnr compile errors or jtc console; fix before play.
+5. **Play proof** — `lp_map_flatgrass` + fresh spawn; not saved test scenes.
+6. **Screenshot / notes** — Bridge or jtc screenshot; report pass/fail.
+7. **Commit** — propose scope; **owner approves** before git commit (repo law).
 
 ## Bitcoinmining lane (`bitcoinmining` ident)
 

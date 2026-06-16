@@ -2,7 +2,7 @@
 
 **Editor:** `Start-SboxDxrpEditor.ps1` (opens DXRP normally) · **Sync:** `Sync-LifePunchAddonsToDxrp.ps1 -Addon bitcoinmining`
 
-**API key (optional):** after host play — `lp_authorize <dxrp.net server token>` (`authorize` is a launch ConVar only: `+authorize` at startup)
+**API key (owner manual):** after Host Play — **owner** runs `lp_authorize <dxrp.net server token>` in console before spawn/proof work (`authorize` is a launch ConVar only: `+authorize` at startup). Agents do not run this or request the token.
 
 ---
 
@@ -19,9 +19,10 @@
 1. **Close all prefab tabs** (save/discard the `*` on Advanced GPU Rack if prompted).
 2. Asset Browser → **scenes** → double-click **`game.scene`** — tab title must say **Game**, not `Prefab: …`.
 3. Press **Play** (green arrow). First cold load: wait **2–5 minutes** while downtown compiles; early Stop = `Couldn't load map (A task was canceled.)`.
-4. Log/console shows player join + map fit → you're in. Then: `lp_hashd_preview` or `lp_spawn_gpu_rack`.
-5. **Start Hosting** is optional and only **after** step 3 succeeds (not from prefab edit mode).
-6. Portal/API when needed: `lp_authorize <token>` after host play (or launch with `+authorize` / `-WithAuthorize`).
+4. Log/console shows player join + map fit → you're in. **Owner:** `lp_authorize <token>` in console (manual — before agent spawn/proof).
+5. Then: `lp_hashd_preview` or `lp_spawn_gpu_rack` / `lp_map_flatgrass` + bitcoin spawn commands.
+6. **Start Hosting** is optional and only **after** step 3 succeeds (not from prefab edit mode).
+7. Launch alternative: `+authorize` / `Start-SboxDxrpEditor.ps1 -WithAuthorize` (owner still prefers manual console entry each session).
 
 **Stall on cold start:** broken `advanceddrugprocessing` models on disk can spam recompiles — local DXRP install may rename that folder to `advanceddrugprocessing._disabled` (not in `rp.sbproj` Resources).
 
