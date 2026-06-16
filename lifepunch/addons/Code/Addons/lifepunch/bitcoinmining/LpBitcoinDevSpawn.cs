@@ -245,11 +245,12 @@ public static class LpBitcoinDevSpawn
 		}
 
 		var sceneModel = renderer.SceneObject as SceneModel;
-		var sequences = sceneModel?.DirectPlayback?.Sequences;
-		Log.Info( $"BITCOINMINING_ANIM_AUDIT model={renderer.Model?.ResourcePath ?? "(null)"} powered={hub.IsPowered}" );
-		if ( sequences is null || sequences.Count == 0 )
+		var model = renderer.Model;
+		var sequences = LpBitcoinPowerAnim.GetAvailableSequences( renderer, sceneModel );
+		Log.Info( $"BITCOINMINING_ANIM_AUDIT model={model?.ResourcePath ?? "(null)"} powered={hub.IsPowered} bones={model?.BoneCount ?? 0} animCount={model?.AnimationCount ?? 0}" );
+		if ( sequences.Count == 0 )
 		{
-			Log.Warning( "BITCOINMINING_ANIM_AUDIT sequences=0 — recompile bitcoin-miner.vmdl in ModelDoc (Add Simple Animations)." );
+			Log.Warning( "BITCOINMINING_ANIM_AUDIT sequences=0 — open bitcoin-miner.vmdl in ModelDoc, star-add fanAction from steam-machine.fbx, recompile, Pull-DxrpCompiledAssetsToRepo." );
 			return;
 		}
 

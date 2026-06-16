@@ -6,6 +6,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Sandbox;
 
 namespace LifePunch.DXRP.Addons.Bitcoin;
@@ -52,8 +53,8 @@ public static class LpBitcoinPowerAnim
 
 		sceneModel.UseAnimGraph = false;
 
-		var sequences = sceneModel.DirectPlayback?.Sequences;
-		if ( sequences is null || sequences.Count == 0 )
+		var sequences = GetAvailableSequences( renderer, sceneModel );
+		if ( sequences.Count == 0 )
 			return false;
 
 		var resolved = ResolveSequence( sequences, powered ? onCandidates : offCandidates, powered );
@@ -83,6 +84,30 @@ public static class LpBitcoinPowerAnim
 		var normalized = NormalizeSequenceName( sequence );
 		return normalized.Contains( "bind", StringComparison.OrdinalIgnoreCase )
 		       || string.Equals( normalized, "idle", StringComparison.OrdinalIgnoreCase );
+	}
+
+	internal static IReadOnlyList<string> GetAvailableSequences( ModelRenderer renderer, SceneModel sceneModel )
+	{
+		var playbackSequences = sceneModel?.DirectPlayback?.Sequences;
+		if ( playbackSequences is { Count: > 0 } )
+			return playbackSequences;
+
+		var model = renderer?.Model;
+		if ( model is null || !model.IsValid )
+			return Array.Empty<string>();
+
+		if ( model.AnimationNames is { Count: > 0 } )
+			return model.AnimationNames;
+
+		if ( model.AnimationCount > 0 )
+		{
+			return Enumerable.Range( 0, model.AnimationCount )
+				.Select( model.GetAnimationName )
+				.Where( name => !string.IsNullOrWhiteSpace( name ) )
+				.ToArray();
+		}
+
+		return Array.Empty<string>();
 	}
 
 	private static bool TryGetSceneModel( ModelRenderer renderer, out SceneModel sceneModel )
