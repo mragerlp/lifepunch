@@ -7,6 +7,13 @@
 #>
 $ErrorActionPreference = 'Stop'
 $Here = if ($PSScriptRoot) { $PSScriptRoot } else { Split-Path -Parent $MyInvocation.MyCommand.Path }
+
+# On Green itself, copy locally — no SSH hop from Cornerman to Cornerman.
+if ($env:COMPUTERNAME -eq 'CORNERMAN') {
+    & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $Here 'Sync-CornermanRebootScriptsLocal.ps1')
+    return
+}
+
 . (Join-Path $Here 'Cornerman-Workflow.ps1')
 $SshTarget = Get-CornermanSshTarget
 if (-not (Test-CornermanSshReady -SshTarget $SshTarget)) {

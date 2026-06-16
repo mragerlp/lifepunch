@@ -76,25 +76,88 @@ function Get-LmsExe {
     throw 'lms CLI not found. Install LM Studio and ensure lms is on PATH or under ~/.lmstudio/bin/'
 }
 
+function Enter-LmsCliLock {
+    if (-not $script:LmsCliMutex) {
+        $script:LmsCliMutex = New-Object System.Threading.Mutex($false, 'Global\LifePunch.Cornerman.LmsCli')
+    }
+    if (-not $script:LmsCliMutex.WaitOne(120000)) {
+        throw 'Timed out waiting for lms CLI (another warm/watchdog script is running). Retry in 30s.'
+    }
+}
+
+function Exit-LmsCliLock {
+    if ($script:LmsCliMutex) {
+        try { [void]$script:LmsCliMutex.ReleaseMutex() } catch { }
+    }
+}
+
+function Test-LmsCliBusyError([string]$Text) {
+    return $Text -match 'being used by another process|cannot access the file'
+}
+
 function Invoke-LmsCapture {
     param([string[]] $LmsArgs)
+    Enter-LmsCliLock
     $prev = $ErrorActionPreference
-    $ErrorActionPreference = 'Continue'
-    $out = @(& $script:lms @LmsArgs 2>&1 | ForEach-Object { "$_" })
-    $ErrorActionPreference = $prev
-    return ($out -join "`n")
+    try {
+        $ErrorActionPreference = 'Continue'
+        try {
+            $out = @(& $script:lms @LmsArgs 2>&1 | ForEach-Object { "$_" })
+        }
+        catch {
+            $msg = $_.Exception.Message
+            if (Test-LmsCliBusyError $msg) {
+                $script:LmsCliBusy = $true
+                return ''
+            }
+            throw
+        }
+        $joined = $out -join "`n"
+        if (Test-LmsCliBusyError $joined) {
+            $script:LmsCliBusy = $true
+            return ''
+        }
+        return $joined
+    }
+    finally {
+        $ErrorActionPreference = $prev
+        Exit-LmsCliLock
+    }
 }
 
 function Invoke-Lms {
     param([Parameter(Mandatory)][string[]] $LmsArgs)
+    Enter-LmsCliLock
     $prev = $ErrorActionPreference
-    $ErrorActionPreference = 'Continue'
-    $out = @(& $script:lms @LmsArgs 2>&1 | ForEach-Object { "$_" })
-    $code = $LASTEXITCODE
-    $ErrorActionPreference = $prev
-    $script:LastLmsOutput = $out -join "`n"
-    $out | ForEach-Object { Write-Lms "$_" }
-    return $code
+    try {
+        $ErrorActionPreference = 'Continue'
+        try {
+            $out = @(& $script:lms @LmsArgs 2>&1 | ForEach-Object { "$_" })
+        }
+        catch {
+            $msg = $_.Exception.Message
+            if (Test-LmsCliBusyError $msg) {
+                $script:LmsCliBusy = $true
+                $script:LastLmsOutput = $msg
+                Write-Lms "WARN: lms CLI busy (LM Studio already running) - using HTTP probe fallback."
+                return 1
+            }
+            throw
+        }
+        $code = $LASTEXITCODE
+        $script:LastLmsOutput = $out -join "`n"
+        if (Test-LmsCliBusyError $script:LastLmsOutput) {
+            $script:LmsCliBusy = $true
+            Write-Lms "WARN: lms CLI busy - using HTTP probe fallback."
+            return 1
+        }
+        $out | ForEach-Object { Write-Lms "$_" }
+        return $code
+    }
+    finally {
+        $ErrorActionPreference = $prev
+        Exit-LmsCliLock
+    }
 }
 
 function Test-LmsAlreadyLoaded {
@@ -150,13 +213,29 @@ function Get-LmsCatalogIds([string]$BindHost) {
 
 function Get-LmsLoadedIds {
     $psText = Invoke-LmsCapture -LmsArgs @('ps')
-    return @([regex]::Matches($psText, '(?m)^(\S+)\s+\S+\s+(?:IDLE|RUNNING)\s') |
-        ForEach-Object { $_.Groups[1].Value } |
-        Select-Object -Unique)
+    if ($psText) {
+        $fromPs = @([regex]::Matches($psText, '(?m)^(\S+)\s+\S+\s+(?:IDLE|RUNNING)\s') |
+            ForEach-Object { $_.Groups[1].Value } |
+            Select-Object -Unique)
+        if ($fromPs.Count -gt 0) { return $fromPs }
+    }
+    # CLI locked or empty ps — API lists served models (good enough for warm checks).
+    return @(Get-LmsCatalogIds -BindHost $script:BindHostResolved)
 }
 
 function Test-Tier3CatalogOnDisk {
+    $apiIds = @(Get-LmsCatalogIds -BindHost $script:BindHostResolved)
+    if ($apiIds.Count -gt 0) {
+        $allOnApi = $true
+        foreach ($id in $script:CornermanTier3Models) {
+            if (-not (Test-ModelPresent -Present $apiIds -RequiredId $id)) { $allOnApi = $false; break }
+        }
+        if ($allOnApi) { return $true }
+    }
     $lsText = Invoke-LmsCapture -LmsArgs @('ls')
+    if (-not $lsText -and $script:LmsCliBusy) {
+        return $apiIds.Count -gt 0
+    }
     foreach ($id in $script:CornermanTier3Models) {
         $needle = if ($id -like '*embed*') { 'nomic-embed' } else { ($id -split '/')[-1] }
         if ($lsText -notmatch [regex]::Escape($needle)) { return $false }
@@ -245,6 +324,8 @@ function Write-LmsServeStatus([string]$BindHost) {
 }
 
 $BindHost = Get-CornermanBindHost -Preferred $BindHost
+$script:BindHostResolved = $BindHost
+$script:LmsCliBusy = $false
 $script:lms = Get-LmsExe
 $effectiveMode = if ($WarmModel -eq 'all') { 'daily' } else { $WarmModel }
 $targets = Get-WarmTargets -Mode $effectiveMode
@@ -267,9 +348,17 @@ Write-Lms "LM Studio: $script:lms (bind $BindHost)"
 if ($effectiveMode -eq 'coder') { Unload-BigLmsModels }
 else { Remove-DuplicateLmsLoads }
 
-$startCode = Invoke-Lms -LmsArgs @('server', 'start', '--port', "$Port", '--bind', $BindHost)
-if ($startCode -ne 0 -and -not (Test-LmsServerUp -BindHost $BindHost)) {
-    throw "lms server start failed (exit $startCode) and probe unreachable"
+if (Test-LmsServerUp -BindHost $BindHost) {
+    Write-Lms "LM server already listening on :$Port (skip lms server start)."
+}
+else {
+    $startCode = Invoke-Lms -LmsArgs @('server', 'start', '--port', "$Port", '--bind', $BindHost)
+    if ($startCode -ne 0 -and -not (Test-LmsServerUp -BindHost $BindHost)) {
+        if ($script:LmsCliBusy) {
+            throw "lms server start skipped (CLI busy) and :$Port probe unreachable. Close duplicate warm scripts or wait 30s."
+        }
+        throw "lms server start failed (exit $startCode) and probe unreachable"
+    }
 }
 
 foreach ($modelId in $targets) {
