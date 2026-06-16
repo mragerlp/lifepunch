@@ -28,5 +28,5 @@ if ($SkipProbe) { $editorArgs['SkipProbe'] = $true }
 & (Join-Path $Here 'Install-VengeanceSboxEditorMcp.ps1') @editorArgs
 
 Write-Host ''
-Write-Host 'Done. Reload Cursor on VENGEANCE -> MCP: sbox, sbox-editor, cornerman-lm.' -ForegroundColor Green
+Write-Host 'Done. Reload Cursor on VENGEANCE -> MCP: sbox, sbox-editor, sbox-jtc, cornerman-lm.' -ForegroundColor Green
 Write-Host 'Green: dual-stack required — Restore-CornermanDualStack.ps1 if OFF_CURSOR_ACTIVE.' -ForegroundColor DarkGray

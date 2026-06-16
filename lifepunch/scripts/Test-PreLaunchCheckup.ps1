@@ -9,7 +9,7 @@
     - VENGEANCE RAM / bloat (Discord, Spotify, LM Studio GUI on Red, duplicate s&box)
     - Cornerman RAM / bloat (LM Studio GUI, browsers, etc.)
     - Tier-3 serve lane (distill+embed in VRAM via lms CLI - no GUI required)
-    - VENGEANCE MCP (sbox bridge IPC + sbox-editor HTTP + cornerman-lm + mcp.json)
+    - VENGEANCE MCP (sbox bridge IPC + sbox-editor + sbox-jtc HTTP + cornerman-lm + mcp.json)
     - Cornerman triple MCP only when Green still runs Cursor (OFF_CURSOR_ACTIVE.txt = skip)
 
   Use -Fix to stop wrong-node apps on VENGEANCE, warm Green LM, refresh bridge wiring.
@@ -30,12 +30,19 @@ param(
     [switch] $SkipGreenFix,
     [switch] $SyncGreenScripts,
     [string] $SshTarget = '',
-    [int] $EditorPort = 9090
+    [int] $EditorPort = 0,
+    [int] $JtcPort = 0
 )
 
 $ErrorActionPreference = 'Stop'
 $Here = if ($PSScriptRoot) { $PSScriptRoot } else { Split-Path -Parent $MyInvocation.MyCommand.Path }
 . (Join-Path $Here 'Cornerman-Workflow.ps1')
+. (Join-Path $Here 'Get-SboxMcpPortConfig.ps1')
+
+$portCfg = Get-SboxMcpPortConfig
+if ($EditorPort -le 0) { $EditorPort = $portCfg.ChomnrPort }
+if ($JtcPort -le 0) { $JtcPort = $portCfg.JtcPort }
+$jtcPath = $portCfg.JtcPath
 
 if (-not $SshTarget) { $SshTarget = Get-CornermanSshTarget }
 
@@ -172,8 +179,8 @@ function Test-VengeanceMcpStack {
         $mj = Get-Content -LiteralPath $mcpPath -Raw | ConvertFrom-Json
         if ($mj.mcpServers) { $keys = @($mj.mcpServers.PSObject.Properties.Name) }
     }
-    $tripleOk = ('sbox' -in $keys) -and ('sbox-editor' -in $keys) -and ('cornerman-lm' -in $keys)
-    Write-Check 'VENGEANCE mcp.json stack' $tripleOk ($keys -join ', ')
+    $stackOk = ('sbox' -in $keys) -and ('sbox-editor' -in $keys) -and ('sbox-jtc' -in $keys) -and ('cornerman-lm' -in $keys)
+    Write-Check 'VENGEANCE mcp.json stack' $stackOk ($keys -join ', ')
 
     $editorUrl = "http://127.0.0.1:$EditorPort/sbox-mcp"
     $editorOk = $false
@@ -185,10 +192,26 @@ function Test-VengeanceMcpStack {
     }
     catch { }
     if ($RequireEditor) {
-        Write-Check 'VENGEANCE sbox-editor MCP' $editorOk $editorUrl
+        Write-Check 'VENGEANCE sbox-editor MCP (chomnr)' $editorOk $editorUrl
     }
     else {
-        Write-Check 'VENGEANCE sbox-editor MCP' $editorOk $editorUrl -Warning:(-not $editorOk)
+        Write-Check 'VENGEANCE sbox-editor MCP (chomnr)' $editorOk $editorUrl -Warning:(-not $editorOk)
+    }
+
+    $jtcUrl = "http://127.0.0.1:$JtcPort$jtcPath"
+    $jtcOk = $false
+    try {
+        $null = Invoke-WebRequest -Uri $jtcUrl -Method Post -ContentType 'application/json' `
+            -Body '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-06-18","capabilities":{},"clientInfo":{"name":"preflight","version":"1"}}}' `
+            -TimeoutSec 4 -UseBasicParsing
+        $jtcOk = $true
+    }
+    catch { }
+    if ($RequireEditor) {
+        Write-Check 'VENGEANCE sbox-jtc MCP (jtc)' $jtcOk $jtcUrl
+    }
+    else {
+        Write-Check 'VENGEANCE sbox-jtc MCP (jtc)' $jtcOk $jtcUrl -Warning:(-not $jtcOk)
     }
 
     $lmOk = $false

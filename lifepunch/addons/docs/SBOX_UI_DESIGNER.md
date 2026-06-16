@@ -14,7 +14,81 @@
 | Visual spacing/anchor iteration before hand-merge | Replacing entire shipped `.razor` files in one compile |
 | HUD / hotbar prototypes | Portal ship without merging proprietary header + namespace |
 
-**Canon:** `.sui` is source of truth → generated `.razor` / `.razor.scss` are **disposable**. LifePunch **repo** `.razor` files are ship truth after you port logic.
+**Canon:** `.sui` is **your** visual source of truth while iterating → generated `.razor` / `.razor.scss` in `_sui_scratch/` are **disposable reference**. After port, LifePunch **repo** `LpHashdPanel.razor` + `.razor.scss` are ship truth (logic + bindings stay hand-written).
+
+---
+
+## Co-editing workflow (you = visuals, agent = code)
+
+| Lane | You (UI Designer) | Agent (Cursor) |
+|------|-------------------|----------------|
+| **Edit** | `hashd-hub-ui.sui` — layout, spacing, colors, images | `LpHashdPanel.razor` `@code`, host RPCs, tab logic, PIN |
+| **Preview** | Compile (`Ctrl+B`) → **Test in Play** on scratch panel | `lp_bitcoin_preview_hub` on shipped `LpHashdPanel` |
+| **Handoff → repo** | Run pull script (below) when a visual pass is ready | Port layout/class/CSS deltas from scratch or `.sui` into ship Razor |
+| **Handoff → DXRP** | — | `Sync-LifePunchAddonsToDxrp.ps1 -Addon bitcoinmining` after port |
+
+### Your loop (Designer)
+
+1. Open **`Assets/.../bitcoinmining/ui/sui/hashd-hub-ui.sui`** in Sbox UI Designer.
+2. Edit layout — drag anchors, swap images (e.g. `ui/hashd/btc.png`), tune Details panel.
+3. **Compile** (`Ctrl+B`) → output lands in `Code/_sui_scratch/hashd_hub_ui/` (never overwrites ship files).
+4. **Test in Play** — bundled preview scene; confirm spacing and images.
+5. When happy, pull to repo:
+
+```powershell
+powershell -File lifepunch\scripts\Pull-DxrpUiDesignerToRepo.ps1 -IncludeScratch
+```
+
+6. Tell the agent what changed (or say “port latest designer pass”) — agent merges structure/CSS into `LpHashdPanel.razor` + `.razor.scss` and keeps all `@code`.
+
+### Agent loop (port)
+
+1. Read pulled `.sui` + `Code/_sui_scratch/hashd_hub_ui/HashdHubUiLayout.razor(.scss)`.
+2. Copy **class names, hierarchy, sizes, colors, image paths** into ship files.
+3. **Do not** replace ship `.razor` with generated file wholesale — preserve `@if`, `@foreach`, `onclick`, sync bindings.
+4. Sync repo → DXRP; hotload; `lp_bitcoin_preview_hub` screenshot proof.
+
+### Critical: sync direction
+
+| Command | Direction | When |
+|---------|-----------|------|
+| `Pull-DxrpUiDesignerToRepo.ps1` | DXRP → repo | **After every Designer session** before git or agent port |
+| `Sync-LifePunchAddonsToDxrp.ps1` | repo → DXRP | After agent port — **wipes unsaved DXRP-only edits** |
+
+**Never** run repo → DXRP sync while you still have un-pulled Designer work in the editor tree.
+
+### Canvas size (must match ship panel)
+
+**Do not use 1920×1080** for `hashd-hub-ui.sui`. The live hub uses **`lp-ui-size-l` = 1080×660** (`LpUiScale.scss`).
+
+| Setting | Value |
+|---------|--------|
+| Canvas **Base Width / Height** | **1080 × 660** |
+| **Scale Mode** | **Fixed Resolution** (not Screen Height 1080) |
+| Root + Shell | Both **1080×660**, shell anchor **Top Left** (not centered in a fake fullscreen) |
+
+`ScreenHeight1080` + a 1920 canvas scales the whole document like a fullscreen HUD — the 1080×660 menu floats inside it and **Test in Play** stacks layout wrong.
+
+### Mutual-exclusive states (Razor `@if` → Designer toggles)
+
+Ship Razor shows **one** of PIN / hub body and **one** tab pane. SUI compiles **all** nodes unless you collapse extras:
+
+| What | Default in SUI | To edit |
+|------|----------------|---------|
+| PIN gate | `HiddenInDesigner` + **Visibility: Collapsed** | Show PIN, collapse `hub_body` |
+| Hub body | Visible | Default overview editing |
+| Tab panes | Only **Overview** visible | Collapse overview, show Wallet/Racks/Settings |
+
+In Details → **Visibility: Collapsed** = `display: none` in compiled preview (matches Razor hiding). **Hidden in designer** only skips designer flex layout — it does **not** hide Test in Play by itself.
+
+### Shared assets (e.g. BTC logo)
+
+| File | Role |
+|------|------|
+| `ui/hashd/btc.png` | Transparent mark — sidebar + PIN (Designer **Image** or ship `.brand-mark` CSS) |
+| `ui/hashd/btc-mark.png` | Legacy matte PNG — keep until all refs retired |
+
+Image path in Designer: `addons/lifepunch/bitcoinmining/ui/hashd/btc.png` (leading `/` optional in SUI).
 
 ---
 
@@ -27,7 +101,13 @@
 | SUI compile output (scratch) | — | `dxrp/game/Code/_sui_scratch/<panel>/` **first** |
 | Ship target after port | `lifepunch/addons/Code/…/<Panel>.razor` | synced via `Sync-LifePunchAddonsToDxrp.ps1` |
 
-**Sync before editor work:**
+**Pull designer work back (after UI Designer sessions):**
+
+```powershell
+powershell -File lifepunch\scripts\Pull-DxrpUiDesignerToRepo.ps1 -IncludeScratch
+```
+
+**Sync before editor work (repo → DXRP — overwrites un-pulled DXRP edits):**
 
 ```powershell
 powershell -File lifepunch\scripts\Sync-LifePunchAddonsToDxrp.ps1 -Addon bitcoinmining
@@ -97,6 +177,7 @@ powershell -File lifepunch\scripts\Start-SboxDxrpEditor.ps1 -PreflightFix -Bitco
 | Panel | SUI fit | Notes |
 |-------|---------|-------|
 | **`hashd-chrome-layout.sui`** | **Ready** | `Assets/.../bitcoinmining/ui/sui/hashd-chrome-layout.sui` — HASHD hub chrome shell (900×600) |
+| **`hashd-hub-ui.sui`** | **Your working copy** | Full LpHashdPanel layout mirror — edit in UI Designer; hand back for port into `LpHashdPanel.razor`. Regenerate from Razor: `python lifepunch/addons/scripts/build-hashd-hub-ui-sui.py` |
 | `LpHashdPanel` | Chrome shell + nav rail | Logic stays in repo; see TAILWAND pilot for utilities |
 | `LpBitcoinTerminalPanel` | CRT frame + boot splash layout | Typed command logic stays hand-written |
 | `StaffMenu` | Tab rail + profile pane layout | Large `@code` — SUI for subsection prototypes only |

@@ -1,0 +1,18 @@
+{
+  "GeneratedFiles": [
+    {
+      "Kind": 0,
+      "Path": "HashdHubUiLayout.razor",
+      "LastHash": "abd15a8c7f7d837014d341a00e5165adf4df37eb8a419c7f17d1f25e781f1b34",
+      "OwnedByDocumentId": "sui_hashd_hub_ui_lp01",
+      "GeneratorVersion": "0.1.0"
+    },
+    {
+      "Kind": 1,
+      "Path": "HashdHubUiLayout.razor.scss",
+      "LastHash": "e57a47aa385d8327f7dab49f168220d8efe59a58a6f68487a29e16f7f583a57e",
+      "OwnedByDocumentId": "sui_hashd_hub_ui_lp01",
+      "GeneratorVersion": "0.1.0"
+    }
+  ]
+}

@@ -8,7 +8,7 @@ $hashd-amber: #e87d3e;
 $hashd-amber-deep: #d06b2f;
 $hashd-amber-glow: #f0a500;
 $hashd-bg: #000000;
-// Matches ui/hashd/btc-mark.png matte background (sidebar brand flush blend).
+// Transparent BTC mark — ui/hashd/btc.png (edited in Sbox UI Designer).
 $hashd-surface: #15181f;
 $hashd-card: #12151a;
 $hashd-border: #374151;
@@ -261,7 +261,7 @@ $hashd-green: #5fd38d;
 	.brand-mark {
 		width: 100%;
 		height: 100%;
-		background-image: url(/addons/lifepunch/bitcoinmining/ui/hashd/btc-mark.png);
+		background-image: url(/addons/lifepunch/bitcoinmining/ui/hashd/btc.png);
 		background-size: contain;
 		background-repeat: no-repeat;
 		background-position: center;

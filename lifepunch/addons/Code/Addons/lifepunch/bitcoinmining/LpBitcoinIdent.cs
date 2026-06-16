@@ -31,9 +31,9 @@ public static class LpBitcoinIdent
 	public const string AdvancedRackPrefabPath = "addons/lifepunch/bitcoinmining/entities/advancedgpurack/advanced-gpu-rack.prefab";
 	public const string TerminalPrefabPath = "addons/lifepunch/bitcoinmining/entities/bitcoin-terminal/bitcoin-terminal.prefab";
 
-	/// <summary>HASHD hub + terminal UI — Bitcoin mark (orange ₿ on sidebar-matched matte).</summary>
-	public const string BtcMarkPath = "addons/lifepunch/bitcoinmining/ui/hashd/btc-mark.png";
-	public const string BtcMarkUrl = "/addons/lifepunch/bitcoinmining/ui/hashd/btc-mark.png";
+	/// <summary>HASHD hub + terminal UI — transparent Bitcoin mark (sidebar / PIN gate).</summary>
+	public const string BtcMarkPath = "addons/lifepunch/bitcoinmining/ui/hashd/btc.png";
+	public const string BtcMarkUrl = "/addons/lifepunch/bitcoinmining/ui/hashd/btc.png";
 
 	/// <summary>Canonical Bitcoin glyph for UI copy, server titles, and docs (Unicode U+20BF).</summary>
 	public const string BtcEmoji = "₿";

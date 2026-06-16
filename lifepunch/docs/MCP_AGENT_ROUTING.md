@@ -14,7 +14,7 @@ ChatGPT Plus/Pro on the desk is **advisory** — paste `handoff/to-chatgpt-mcp-t
 
 | Node | IP | Owns |
 |------|-----|------|
-| **VENGEANCE (R)** | 192.168.1.236 | s&box editor, git, integrate, `sbox` + `sbox-editor` + `cornerman-lm` client |
+| **VENGEANCE (R)** | 192.168.1.236 | s&box editor, git, integrate, `sbox` + `sbox-editor` + `sbox-jtc` + `cornerman-lm` |
 | **Cornerman (G)** | 192.168.1.229 | LM Studio `:1234`, same 3 MCP keys (SMB + tunnel + local LM) |
 | **lifepunchnet (B)** | hosted | Hub/logs — out of scope for MCP routing |
 
@@ -37,6 +37,10 @@ ChatGPT Plus/Pro on the desk is **advisory** — paste `handoff/to-chatgpt-mcp-t
 | GPU rack vmdl / fan shader | `sbox-editor` | Tier-2 | Tier-3 draft as ship | Authoring is editor-bound |
 | Pull `_c` after editor compile | Tier-2 script | Tier-2 | chomnr for publish folder | Repo sync is Red shell |
 | Edit bitcoin miner prefab in editor | `sbox-editor` | Tier-2 | Raw file write w/o compile | Prefab needs editor graph |
+| Scene hierarchy / transform audit (no compile) | `sbox-jtc` | Tier-2 | Code-only guess | `scene_*` tools |
+| s&box API / docs lookup | `sbox-jtc` | Tier-2 | Training-data guess | `sbox_search_docs` / `sbox_search_api` |
+| Project file read / glob inspect | `sbox-jtc` | Tier-2 | Blind repo read when editor truth needed | `file_list` / `project_info` |
+| Editor console / compile log readback | `sbox-jtc` or `sbox-editor` | Tier-2 | — | jtc for quick console; chomnr for compile panel |
 | Razor terminal UI markup | Tier-2 (files) | Tier-2 | `sbox-editor` for .razor | Code lane; build in editor after |
 | Multi-file C# hub ↔ rack wallet | Opus | Tier-1 | Tier-3 | Economy + integration stakes |
 | IPressable / permission paths | Opus | Tier-1 | Tier-3 | DXRP integration |
@@ -62,8 +66,8 @@ ChatGPT Plus/Pro on the desk is **advisory** — paste `handoff/to-chatgpt-mcp-t
 1. `git pull --rebase` (clean tree)
 2. `powershell -File lifepunch\scripts\Test-PreLaunchCheckup.ps1 -Fix`
 3. `powershell -File lifepunch\scripts\Start-SboxDxrpEditor.ps1 -PreflightFix`
-4. Cursor → Reload Window → MCP **3/3 green**
-5. Editor pill → green + **MCP · ≥1**
+4. Cursor → Reload Window → MCP **4/4 green** (`sbox`, `sbox-editor`, `sbox-jtc`, `cornerman-lm`)
+5. Editor pill → green + **MCP · ≥1** (chomnr); jtc dock → **listening on :29015/mcp**
 
 **CORNERMAN (Green) — second** (requires Red editor up for tunnel + bridge heartbeat)
 

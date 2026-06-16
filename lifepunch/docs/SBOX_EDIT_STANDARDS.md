@@ -45,7 +45,7 @@ powershell -File Start-SboxDxrpEditor.ps1 -PreflightFix -SyncAddon bitcoinmining
 
 | Surface | Pass |
 |---------|------|
-| **Cursor → MCP** | 3 green: `sbox`, `sbox-editor`, `cornerman-lm` |
+| **Cursor → MCP** | 4 green: `sbox`, `sbox-editor`, `sbox-jtc`, `cornerman-lm` |
 | **Editor pill** | Green dot + `MCP · ≥1` (chomnr clients) |
 | **Claude Bridge** | `get_bridge_status` → connected, heartbeat &lt; 30s |
 | **Map** | `lp_map_flatgrass` — not saved test scenes |

@@ -43,8 +43,30 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable
 
 	protected override void OnStart()
 	{
+		FreezeAsWorldProp();
 		_modelRenderer = Components.Get<ModelRenderer>( FindMode.EverythingInSelf );
 		ApplyRackMiningVisual( IsMining );
+	}
+
+	/// <summary>Placed racks are static world props — no gravity drift or floor tunneling.</summary>
+	private void FreezeAsWorldProp()
+	{
+		var body = Components.Get<Rigidbody>( FindMode.EverythingInSelf );
+		if ( !body.IsValid() )
+			return;
+
+		body.Gravity = false;
+		body.Locking = new PhysicsLock
+		{
+			X = true,
+			Y = true,
+			Z = true,
+			Pitch = true,
+			Yaw = true,
+			Roll = true
+		};
+		body.Velocity = Vector3.Zero;
+		body.AngularVelocity = Vector3.Zero;
 	}
 
 	protected override void OnUpdate()

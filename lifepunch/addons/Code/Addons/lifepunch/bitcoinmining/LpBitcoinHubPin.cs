@@ -12,7 +12,7 @@ namespace LifePunch.DXRP.Addons.Bitcoin;
 internal static class LpBitcoinHubPin
 {
 	public const int MinDigits = 4;
-	public const int MaxDigits = 6;
+	public const int MaxDigits = 4;
 
 	public static bool IsValidFormat( string pin )
 	{

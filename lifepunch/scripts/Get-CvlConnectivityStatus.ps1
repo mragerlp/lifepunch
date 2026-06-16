@@ -10,12 +10,19 @@
 param(
     [switch] $Pretty,
     [string] $SshTarget = '',
-    [int] $EditorPort = 9090
+    [int] $EditorPort = 0,
+    [int] $JtcPort = 0
 )
 
 $ErrorActionPreference = 'SilentlyContinue'
 $Here = if ($PSScriptRoot) { $PSScriptRoot } else { Split-Path -Parent $MyInvocation.MyCommand.Path }
 . (Join-Path $Here 'Cornerman-Workflow.ps1')
+. (Join-Path $Here 'Get-SboxMcpPortConfig.ps1')
+
+$portCfg = Get-SboxMcpPortConfig
+if ($EditorPort -le 0) { $EditorPort = $portCfg.ChomnrPort }
+if ($JtcPort -le 0) { $JtcPort = $portCfg.JtcPort }
+$jtcPath = $portCfg.JtcPath
 
 if (-not $SshTarget) { $SshTarget = Get-CornermanSshTarget }
 
@@ -26,14 +33,22 @@ if (Test-Path -LiteralPath $hostsPath) {
     if ($h.cornerman.host) { $cornermanIp = [string]$h.cornerman.host }
 }
 
-function Test-EditorMcp([int]$Port) {
+function Test-HttpEditorMcp([string]$Url) {
     try {
-        $null = Invoke-WebRequest -Uri "http://127.0.0.1:$Port/sbox-mcp" -Method Post -ContentType 'application/json' `
+        $null = Invoke-WebRequest -Uri $Url -Method Post -ContentType 'application/json' `
             -Body '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-06-18","capabilities":{},"clientInfo":{"name":"probe","version":"1"}}}' `
             -TimeoutSec 4 -UseBasicParsing
         return $true
     }
     catch { return $false }
+}
+
+function Test-EditorMcp([int]$Port) {
+    return (Test-HttpEditorMcp "http://127.0.0.1:$Port/sbox-mcp")
+}
+
+function Test-JtcMcp([int]$Port, [string]$Path) {
+    return (Test-HttpEditorMcp "http://127.0.0.1:$Port$Path")
 }
 
 function Test-BridgeIpc {
@@ -88,6 +103,9 @@ $checks = [ordered]@{}
 
 $checks['vengeance.sboxBridge'] = Test-BridgeIpc
 $checks['vengeance.sboxEditor'] = Test-EditorMcp -Port $EditorPort
+$checks['vengeance.sboxJtc'] = Test-JtcMcp -Port $JtcPort -Path $jtcPath
+$checks['vengeance.mcpStack'] = ('sbox' -in $mcpKeys) -and ('sbox-editor' -in $mcpKeys) -and ('sbox-jtc' -in $mcpKeys) -and ('cornerman-lm' -in $mcpKeys)
+# Legacy alias — chomnr + bridge keys only (pre-jtc probes)
 $checks['vengeance.mcpDual'] = ('sbox' -in $mcpKeys) -and ('sbox-editor' -in $mcpKeys)
 
 $checks['cornerman.ssh'] = $sshOk
@@ -100,8 +118,10 @@ $checks['cornerman.mcpTriple'] = [bool]($green -and $green.mcpTripleOk)
 
 $labels = @{
     'vengeance.sboxBridge'    = 'VENGEANCE sbox (Claude Bridge)'
-    'vengeance.sboxEditor'    = 'VENGEANCE sbox-editor (chomnr)'
-    'vengeance.mcpDual'       = 'VENGEANCE mcp.json dual stack'
+    'vengeance.sboxEditor'    = 'VENGEANCE sbox-editor (chomnr :9090)'
+    'vengeance.sboxJtc'       = 'VENGEANCE sbox-jtc (jtc :29015/mcp)'
+    'vengeance.mcpStack'      = 'VENGEANCE mcp.json stack (4 keys)'
+    'vengeance.mcpDual'       = 'VENGEANCE mcp.json bridge+chomnr keys'
     'cornerman.ssh'           = 'Cornerman SSH'
     'cornerman.tier3Api'      = 'Cornerman Tier-3 API :1234'
     'cornerman.tier3Serve'    = 'Cornerman Tier-3 VRAM serve'

@@ -1,22 +1,37 @@
-# VENGEANCE — dual s&box MCP stack (Claude Bridge + chomnr)
+# VENGEANCE — triple s&box MCP stack (Claude Bridge + chomnr + jtc)
 
 **Status:** Wired on VENGEANCE (June 2026)  
+**Port registry:** `lifepunch/config/sbox-mcp-ports.json`  
+**Agent law:** `.cursor/rules/lifepunch-sbox-mcp-stack.mdc` · `lifepunch/docs/MCP_AGENT_ROUTING.md`
+
 **Libraries (DXRP `game/Libraries/`):**
 
 | Package | Role |
 |---------|------|
-| `sboxskinsgg.claudebridge` | Runtime bridge — file IPC, play mode, in-game screenshots |
-| `notpointless.chomnr_mcp` | Editor MCP — HTTP server inside editor |
+| `sboxskinsgg.claudebridge` | Runtime bridge — **file IPC** (not HTTP), play mode, in-game screenshots |
+| `notpointless.chomnr_mcp` | Editor MCP — compile lane — HTTP `:9090/sbox-mcp` |
+| `jtc.mcp-server` | Editor MCP — automation + docs — HTTP `:29015/mcp` |
 | `notpointless.chomnr_humanoid_retargeter` | Optional — human anim retarget (import as chomnr tools) |
 
 **Cursor MCP (`%USERPROFILE%\.cursor\mcp.json`):**
 
 | Server key | Transport | Use for |
 |------------|-----------|---------|
-| `sbox` | `npx sbox-mcp-server` + `%TEMP%\sbox-bridge-ipc` | Play mode, runtime C#, logs, game screenshots |
-| `sbox-editor` | `http://127.0.0.1:9090/sbox-mcp` | ModelDoc, ShaderGraph, scenes, prefabs, compile errors |
+| `sbox` | `npx sbox-mcp-server` + `%TEMP%\sbox-bridge-ipc` | Play mode, runtime C#, logs, game screenshots, LifePunch ConCmds |
+| `sbox-editor` | `http://127.0.0.1:9090/sbox-mcp` | ModelDoc, ShaderGraph, prefabs, compile errors, chomnr-imported tools |
+| `sbox-jtc` | `http://127.0.0.1:29015/mcp` | Scene graph, components, files, docs/API search, editor play/console |
 
-Install / refresh: `lifepunch/scripts/Install-VengeanceSboxEditorMcp.ps1`
+Install / refresh: `lifepunch/scripts/Install-VengeanceSboxEditorMcp.ps1` (or `Install-VengeanceMcpStack.ps1` for full Red stack incl. `cornerman-lm`)
+
+### Port law — no Claude Bridge vs jtc conflict
+
+| Port | Owner | Path | Notes |
+|------|-------|------|-------|
+| *(none)* | **Claude Bridge** | file IPC | `get_bridge_status` may mention `:29015` as npm metadata — **Bridge does not bind HTTP** |
+| **9090** | **chomnr** | `/sbox-mcp` | ModelDoc / compile / undo |
+| **29015** | **jtc** | `/mcp` | Scene automation + built-in Facepunch docs/API crawler |
+
+Change ports: edit `sbox-mcp-ports.json` + matching dock UI (chomnr Settings / jtc Port field) → re-run install script with `-Port` / `-JtcPort`.
 
 ---
 
@@ -27,7 +42,8 @@ Install / refresh: `lifepunch/scripts/Install-VengeanceSboxEditorMcp.ps1`
 | Where you look | What it means | Full capacity |
 |----------------|---------------|---------------|
 | **s&box editor bottom-right** `MCP · N` | **chomnr** editor HTTP server · **N = connected AI clients** (Cursor tabs/agents), not “number of MCP servers” | **Green dot** + **`MCP · 1` or higher** (N ≥ 1). **`MCP 6` is fine** — six clients hooked to `sbox-editor`. Click pill → MCP dock → **Overview** to see client names. |
-| **Cursor → Settings → MCP** | Cursor-side MCP servers | **3 green** on VENGEANCE: `sbox`, `sbox-editor`, `cornerman-lm` |
+| **Editor dock “MCP Server” (jtc)** | **jtc** listener on `:29015/mcp` | **Listening** in dock header; separate from chomnr pill |
+| **Cursor → Settings → MCP** | Cursor-side MCP servers | **4 green** on VENGEANCE: `sbox`, `sbox-editor`, `sbox-jtc`, `cornerman-lm` |
 | **Claude Bridge** (play mode) | Runtime IPC | `get_bridge_status` → `connected: true`, heartbeat &lt; 30s |
 
 **You are NOT aiming for a magic number like “MCP 3” in the editor.** Zero clients (`MCP` with no number) = **not full** on editor MCP.
@@ -35,8 +51,9 @@ Install / refresh: `lifepunch/scripts/Install-VengeanceSboxEditorMcp.ps1`
 ### VENGEANCE (Red) — minimum every session
 
 ```text
-Cursor MCP:     3/3 green  (sbox + sbox-editor + cornerman-lm)
-Editor pill:    green dot + MCP · ≥1
+Cursor MCP:     4/4 green  (sbox + sbox-editor + sbox-jtc + cornerman-lm)
+Editor pill:    green dot + MCP · ≥1   (chomnr clients)
+jtc dock:       http://localhost:29015/mcp listening
 Bridge:         connected (play/screenshots/lp_spawn_*)
 Tier-3 (Green): :1234 distill+embed loaded (via cornerman-lm from Red)
 ```
@@ -55,7 +72,7 @@ powershell -File lifepunch\scripts\Invoke-CvlFullCapacityRefresh.ps1
 
 Runbook: `lifepunch/docs/CVL_FULL_CAPACITY_UPDATES.md` · pins: `lifepunch/config/cvl-stack-pins.json`
 
-Pass when: `vengeance.sboxBridge`, `vengeance.sboxEditor`, `vengeance.mcpDual`, `cornerman.tier3Serve`, `cornerman.mcpTriple` = **true**.
+Pass when: `vengeance.sboxBridge`, `vengeance.sboxEditor`, `vengeance.sboxJtc`, `vengeance.mcpStack`, `cornerman.tier3Serve`, `cornerman.mcpTriple` = **true**.
 
 ### Cornerman (Green) — 360° dual-stack (required every session)
 
@@ -127,20 +144,22 @@ Heal only: `Invoke-VengeanceBloatCleanup.ps1` (Red) · `Fix-CornermanLmServe.ps1
 
 ---
 
-## Recommendation: pair both (do not replace)
+## Recommendation: stack all three (do not replace)
 
 They are **complementary**, not duplicates.
 
 ```text
 Cursor
-  ├─ sbox          → Claude Bridge addon → game / play mode
-  └─ sbox-editor   → chomnr_mcp HttpListener → editor main thread
+  ├─ sbox          → Claude Bridge addon → file IPC → play / runtime proof
+  ├─ sbox-editor   → chomnr_mcp HttpListener :9090 → compile / ModelDoc / undo
+  └─ sbox-jtc      → jtc.mcp-server HttpListener :29015 → scene automation + docs/API
 ```
 
-- **Claude Bridge** owns what happens **after Play** (pawn, mining playtest, bridge screenshots).
-- **chomnr_mcp** owns **editor authoring** (compile `gpu-rack.vmdl`, shader `_c`, KV3 writes, undo/revert UI).
+- **Claude Bridge** owns what happens **after Play** (pawn, mining playtest, bridge screenshots, LifePunch ConCmds).
+- **chomnr_mcp** owns **authoring compile** (compile `gpu-rack.vmdl`, shader `_c`, KV3 writes, undo/revert UI, LifePunch-imported dev tools).
+- **jtc.mcp-server** owns **editor automation + reference** (scene graph edits, component sets, `sbox_search_docs` / `sbox_search_api`, project/file inspect). Use when chomnr lacks a tool or docs lookup is the goal — **not** as a replacement for ModelDoc compile.
 
-Cornerman **must dual-stack too** at full capacity — SMB for `sbox` + **SSH tunnel** for `sbox-editor` (chomnr is `127.0.0.1` on VENGEANCE only).
+Cornerman **must dual-stack too** at full capacity — SMB for `sbox` + **SSH tunnel** for `sbox-editor` (chomnr is `127.0.0.1` on VENGEANCE only). **jtc is Red-only today** (no Green tunnel for `:29015` yet).
 
 ---
 
@@ -196,9 +215,10 @@ Refresh mcp only: `Install-CornermanSboxBridgeMcp.ps1`
 | Con | Mitigation |
 |-----|------------|
 | **Brand new package** (no reviews) | Approve-writes mode; small smoke tests before bulk edits |
-| **Two MCP servers in Cursor** | Name clearly: `sbox` vs `sbox-editor`; agents must pick the right one |
-| **Editor must be open** | `sbox-editor` offline without `Start-SboxDxrpEditor.ps1` |
+| **Two editor MCP servers** | Name clearly: `sbox-editor` (chomnr) vs `sbox-jtc` (jtc); agents must pick by task |
+| **Editor must be open** | `sbox-editor` and `sbox-jtc` offline without `Start-SboxDxrpEditor.ps1` |
 | **Port 9090 conflicts** | chomnr Settings → change port → re-run install script `-Port N` |
+| **Port 29015 conflicts** | jtc dock Port field → Stop/Start → re-run install script `-JtcPort N` |
 | **Cornerman tunnel extra step** | Run `Start-CornermanSboxEditorTunnel.ps1 -Background` when using Green for editor MCP |
 | **Default Full access** | Switch to **Approve writes** in MCP dock Settings on first open |
 | **Cloud install tools opt-in** | Leave disabled unless you want AI pulling packages |
@@ -208,11 +228,12 @@ Refresh mcp only: `Install-CornermanSboxBridgeMcp.ps1`
 
 ## First session checklist
 
-1. `powershell -File lifepunch\scripts\Install-VengeanceSboxEditorMcp.ps1`
+1. `powershell -File lifepunch\scripts\Install-VengeanceMcpStack.ps1`
 2. `powershell -File lifepunch\scripts\Start-SboxDxrpEditor.ps1`
-3. Editor → **MCP** menu / dock → **Approve writes**
-4. Restart Cursor → MCP panel: `sbox` + `sbox-editor` green
-5. Smoke: `sbox-editor` → list tools; `sbox` → `get_bridge_status`
+3. Editor → **chomnr MCP** dock → **Approve writes**
+4. Editor → **MCP Server (jtc)** dock → confirm `:29015/mcp` listening
+5. Restart Cursor → MCP panel: `sbox` + `sbox-editor` + `sbox-jtc` + `cornerman-lm` green
+6. Smoke: `sbox-editor` → list tools; `sbox-jtc` → `get_server_status`; `sbox` → `get_bridge_status`
 6. Bitcoin P0: `modeldoc` / shader tools on `lifepunch_rgb_fan_led.shader` + `gpu-rack-gpu.vmat`
 
 ---
@@ -221,10 +242,14 @@ Refresh mcp only: `Install-CornermanSboxBridgeMcp.ps1`
 
 | Task | MCP |
 |------|-----|
-| Playtest, `lp_spawn_*`, in-game UI | `sbox` (Claude Bridge) |
-| Compile vmdl/vmat, edit prefab in editor, shader graph | `sbox-editor` (chomnr) |
+| Playtest, `lp_spawn_*`, in-game UI, runtime proof | `sbox` (Claude Bridge) |
+| Compile vmdl/vmat, edit prefab in editor, shader graph, chomnr imports | `sbox-editor` (chomnr) |
+| Scene graph / component automation, file read/list, docs/API search | `sbox-jtc` (jtc) |
+| When chomnr + jtc overlap (scene edit) | Prefer **chomnr** if compile/undo/imported tools matter; **jtc** for docs or quick hierarchy |
 | Distill / cheap prep | Cornerman `cornerman-lm` (unchanged) |
 | Runtime inspect / audit | Prefer **dev ConCmds** + `console_run`; `execute_csharp` OK when needed — **always** sweep `Editor/__Exec_*.cs` after (see § execute_csharp) |
+
+**Verification loop:** probe → one change → compile → play on **`sbox`** → screenshot → owner-approved commit. Reality wins over code assumptions.
 
 Do not claim visual verification without the appropriate server connected.
 

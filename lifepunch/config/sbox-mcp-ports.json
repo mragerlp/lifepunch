@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "lastVerified": "2026-06-10",
+  "notes": "Canonical s&box MCP transports on VENGEANCE. Claude Bridge uses file IPC — it does NOT bind HTTP :29015. jtc owns HTTP :29015/mcp. chomnr owns HTTP :9090/sbox-mcp.",
+  "claudeBridge": {
+    "transport": "file-ipc",
+    "ipcDirEnv": "SBOX_BRIDGE_IPC_DIR",
+    "ipcDirDefault": "%TEMP%\\sbox-bridge-ipc",
+    "cursorServerKey": "sbox",
+    "npmPackage": "sbox-mcp-server",
+    "library": "sboxskinsgg.claudebridge"
+  },
+  "chomnr": {
+    "port": 9090,
+    "path": "/sbox-mcp",
+    "cursorServerKey": "sbox-editor",
+    "library": "notpointless.chomnr_mcp"
+  },
+  "jtc": {
+    "port": 29015,
+    "path": "/mcp",
+    "cursorServerKey": "sbox-jtc",
+    "library": "jtc.mcp-server"
+  },
+  "cornermanLm": {
+    "cursorServerKey": "cornerman-lm"
+  },
+  "portConflictPolicy": {
+    "claudeBridgeVsJtc": "No HTTP conflict — Bridge is file IPC only. get_bridge_status may mention :29015 as npm metadata; ignore for bind checks.",
+    "changeChomnrPort": "chomnr MCP dock Settings → new port → Install-VengeanceSboxEditorMcp.ps1 -Port N",
+    "changeJtcPort": "jtc MCP Server dock → edit Port field → Stop/Start → Install-VengeanceSboxEditorMcp.ps1 -JtcPort N"
+  }
+}

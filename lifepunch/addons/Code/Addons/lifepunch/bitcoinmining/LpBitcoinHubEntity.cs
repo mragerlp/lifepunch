@@ -121,7 +121,7 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable
 
 		if ( !LpBitcoinHubPin.IsValidFormat( pin ) || pin != confirm )
 		{
-			SendPinResultToCaller( false, "PIN must be 4–6 digits and match confirmation." );
+			SendPinResultToCaller( false, "PIN must be 4 digits and match confirmation." );
 			return;
 		}
 

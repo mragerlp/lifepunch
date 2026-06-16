@@ -119,7 +119,7 @@ public static class LpBitcoinDevSpawn
 				hub.BindOwnerFromLocalViewer();
 				hub.AccessPinIsSet = false;
 				hub.AccessPinHash = 0;
-				Log.Info( "lp_hashd_pin_preview setup: secure boot — create a 4–6 digit PIN." );
+				Log.Info( "lp_hashd_pin_preview setup: secure boot — create a 4-digit PIN." );
 				break;
 		}
 	}
@@ -146,6 +146,69 @@ public static class LpBitcoinDevSpawn
 	{
 		LpBitcoinUi.CloseAll();
 		Log.Info( "lp_bitcoin_ui_close: all bitcoin UI closed." );
+	}
+
+	/// <summary>Dev automation — open admin on nearest hub (same result as USE after spawn).</summary>
+	[ConCmd( "lp_bitcoin_use_hub" )]
+	public static void UseSpawnedHub()
+	{
+		WarnIfWrongPlayScene();
+		var scene = Game.ActiveScene;
+		if ( scene is null )
+		{
+			Log.Warning( "lp_bitcoin_use_hub: no active scene." );
+			return;
+		}
+
+		var hub = scene.GetAllComponents<LpBitcoinHubEntity>()
+			.Where( h => h.IsValid() )
+			.OrderBy( h => DistanceToViewer( h.WorldPosition ) )
+			.FirstOrDefault();
+
+		if ( !hub.IsValid() )
+		{
+			Log.Warning( "lp_bitcoin_use_hub: no hub — run lp_bitcoin_spawn_hub first." );
+			return;
+		}
+
+		LpHashdUiHost.Open( hub );
+		Log.Info( "lp_bitcoin_use_hub: hub admin opened (USE equivalent)." );
+	}
+
+	/// <summary>Mount compiled <c>HashdHubUiLayout</c> from SUI scratch output (btc.png smoke test).</summary>
+	[ConCmd( "lp_bitcoin_sui_hub_preview" )]
+	public static void PreviewSuiHubLayout()
+	{
+		WarnIfWrongPlayScene();
+		LpBitcoinUi.CloseAll();
+
+		const string layoutType = "LifePunch.DXRP.Addons.Bitcoin.HashdHubUiLayout";
+		var typeDesc = TypeLibrary.GetType( layoutType );
+		if ( typeDesc is null )
+		{
+			Log.Warning( "lp_bitcoin_sui_hub_preview: HashdHubUiLayout not loaded — compile hashd-hub-ui.sui (Ctrl+B) in UI Designer first." );
+			return;
+		}
+
+		var scene = Game.ActiveScene;
+		if ( scene is null )
+		{
+			Log.Warning( "lp_bitcoin_sui_hub_preview: no active scene." );
+			return;
+		}
+
+		var host = scene.CreateObject();
+		host.Name = "LpSuiHubPreview";
+		host.AddComponent<ScreenPanel>();
+
+		if ( host.Components.Create( typeDesc ) is not Component )
+		{
+			Log.Warning( "lp_bitcoin_sui_hub_preview: failed to mount HashdHubUiLayout." );
+			host.Destroy();
+			return;
+		}
+
+		Log.Info( "lp_bitcoin_sui_hub_preview: SUI layout mounted — check sidebar BTC mark (btc.png)." );
 	}
 
 	[ConCmd( "lp_bitcoin_ui_preview" )]
@@ -209,7 +272,13 @@ public static class LpBitcoinDevSpawn
 		else
 			Log.Warning( "BITCOINMINING_SCALE_AUDIT terminal missing — spawn kit first" );
 
-		Log.Info( "BITCOINMINING_SCALE_AUDIT end — terminal target mesh Y ~18u vs collider 14×18×8" );
+		foreach ( var rack in scene.GetAllComponents<LpBitcoinRackEntity>().Where( r => r.IsValid() ) )
+		{
+			var tag = rack.AdvancedRack ? "advanced-rack" : "gpu-rack";
+			LogScaleRow( tag, rack.GameObject );
+		}
+
+		Log.Info( "BITCOINMINING_SCALE_AUDIT end — gpu-rack collider target 25×20×36; advanced-rack 52×27×47" );
 	}
 
 	/// <summary>Logs compiled vmdl sequences + power anim apply (BITCOINMINING-05).</summary>
@@ -509,6 +578,20 @@ public static class LpBitcoinDevSpawn
 		clone.WorldTransform = transform;
 		return clone;
 #endif
+	}
+
+	private static float DistanceToViewer( Vector3 worldPos )
+	{
+#if LIFEPUNCH_LOCAL
+		var camera = Game.ActiveScene?.GetAllComponents<CameraComponent>().FirstOrDefault();
+		if ( camera.IsValid() )
+			return Vector3.DistanceBetween( worldPos, camera.WorldPosition );
+#else
+		var player = Player.Local;
+		if ( player.IsValid() )
+			return Vector3.DistanceBetween( worldPos, player.WorldPosition );
+#endif
+		return 0f;
 	}
 
 	private static bool TryGetSpawnTransform( out Transform transform )
