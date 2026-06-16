@@ -250,7 +250,7 @@ if ($Fix) {
             Write-FixStep 'Off-Cursor detected — restore Green dual-stack (required for full capacity)'
             $restore = Join-Path $Here 'Restore-CornermanDualStack.ps1'
             if (Test-Path -LiteralPath $restore) {
-                & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $restore -SshTarget $SshTarget -SkipSmbMap 2>$null
+                & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $restore -SshTarget $SshTarget 2>$null
             }
             else {
                 Write-FixStep 'WARN: missing Restore-CornermanDualStack.ps1'
@@ -258,7 +258,7 @@ if ($Fix) {
         }
         else {
             Write-FixStep 'Green Cursor mode — bridge + editor tunnel'
-            & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $Here 'Connect-CornermanBridge.ps1') -SkipSmbMap 2>$null | Out-Null
+            & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $Here 'Connect-CornermanBridge.ps1') 2>$null | Out-Null
             $tunnel = 'C:\lifepunch\cornerman\Start-CornermanSboxEditorTunnel.ps1'
             Invoke-CornermanSshExec -SshTarget $SshTarget -ScriptBlock @"
 if (Test-Path -LiteralPath '$tunnel') {
@@ -323,7 +323,7 @@ else {
             Write-Check 'Green mcp.json triple' $false 'blocked by off-Cursor'
         }
         else {
-            Write-Check 'Green SMB bridge' $health.smbShareOk 'UNC SboxBridgeIpc'
+            Write-Check 'Green bridge IPC' $health.smbShareOk 'SSH mirror or UNC SboxBridgeIpc'
             if ($RequireEditor) {
                 Write-Check 'Green editor tunnel :9090' $health.tunnel9090Ok 'SSH forward to VENGEANCE chomnr'
             }

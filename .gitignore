@@ -40,6 +40,7 @@ lifepunch/secure/*
 !lifepunch/secure/README.md
 !lifepunch/secure/templates/
 !lifepunch/secure/templates/**
+**/vengeance-smb.password
 
 # OS files
 Thumbs.db

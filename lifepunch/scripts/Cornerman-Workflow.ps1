@@ -188,3 +188,32 @@ function Get-VengeanceSmbPassword {
     }
     return $null
 }
+
+function Invoke-CornermanMapBridgeShare {
+    param(
+        [string] $SshTarget = $(Get-CornermanSshTarget),
+        [SecureString] $PlainPassword
+    )
+    if (-not $PlainPassword) {
+        $plain = Get-VengeanceSmbPassword
+        if (-not $plain) { return @{ Ok = $false; Output = 'no password' } }
+        $PlainPassword = ConvertTo-SecureString $plain -AsPlainText -Force
+    }
+    $bstr = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($PlainPassword)
+    try {
+        $passB64 = [Convert]::ToBase64String(
+            [Text.Encoding]::UTF8.GetBytes([Runtime.InteropServices.Marshal]::PtrToStringAuto($bstr)))
+    }
+    finally {
+        [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($bstr)
+    }
+    $mapScript = 'C:\lifepunch\cornerman\Map-CornermanBridgeShare.ps1'
+    $r = Invoke-CornermanSshExec -SshTarget $SshTarget -ScriptBlock @"
+if (-not (Test-Path -LiteralPath '$mapScript')) { throw 'Missing $mapScript' }
+`$plain = [Text.Encoding]::UTF8.GetString([Convert]::FromBase64String('$passB64'))
+`$sec = ConvertTo-SecureString `$plain -AsPlainText -Force
+& '$mapScript' -Password `$sec *>&1 | ForEach-Object { Write-Output `$_ }
+if (`$LASTEXITCODE -ne 0) { exit `$LASTEXITCODE }
+"@ -ConnectTimeout 45
+    return @{ Ok = ($r.ExitCode -eq 0); Output = ($r.Output -join "`n") }
+}

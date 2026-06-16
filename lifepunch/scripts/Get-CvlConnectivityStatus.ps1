@@ -106,7 +106,7 @@ $labels = @{
     'cornerman.tier3Api'      = 'Cornerman Tier-3 API :1234'
     'cornerman.tier3Serve'    = 'Cornerman Tier-3 VRAM serve'
     'cornerman.lmWatchdog'    = 'Cornerman LM watchdog'
-    'cornerman.smbBridge'     = 'Cornerman SMB sbox bridge'
+    'cornerman.smbBridge'     = 'Cornerman bridge IPC (mirror or UNC)'
     'cornerman.editorTunnel'  = 'Cornerman editor tunnel :9090'
     'cornerman.mcpTriple'     = 'Cornerman mcp.json triple'
 }

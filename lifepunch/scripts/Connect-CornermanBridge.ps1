@@ -8,16 +8,18 @@
     2. Push Map + LM scripts to Green
     3. Refresh Cornerman mcp.json (sbox UNC + cornerman-lm localhost)
     4. Warm LM Studio on Green
-    5. Map SMB share on Green (password: env LIFEPUNCH_VENGEANCE_SMB_PASSWORD or -PromptForPassword)
+    5. Sync SSH IPC mirror to Green (default — no SMB password needed)
+  6. Optional: -TrySmbMap maps \\VENGEANCE\SboxBridgeIpc when secret/password is set
 
 .EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File lifepunch\scripts\Connect-CornermanBridge.ps1
-  powershell -File lifepunch\scripts\Connect-CornermanBridge.ps1 -PromptForPassword
+  powershell -File lifepunch\scripts\Connect-CornermanBridge.ps1 -TrySmbMap
 #>
 [CmdletBinding()]
 param(
     [switch] $SkipLmWarm,
-    [switch] $SkipSmbMap,
+    [switch] $SkipBridgeSync,
+    [switch] $TrySmbMap,
     [switch] $PromptForPassword,
     [string] $SshTarget = ''
 )
@@ -80,46 +82,39 @@ if (-not $SkipLmWarm) {
     & (Join-Path $Here 'Send-CornermanWorkflow.ps1') -Action WarmDistill -SshTarget $SshTarget -NoHubIngest
 }
 
-if (-not $SkipSmbMap) {
-    Write-Step 'Map SMB bridge share on Green'
-    $password = Get-VengeanceSmbPassword
-    if ($PromptForPassword -and -not $password) {
-        $sec = Read-Host 'VENGEANCE\jared password (for Green SMB map)' -AsSecureString
-        $bstr = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($sec)
-        try { $password = [Runtime.InteropServices.Marshal]::PtrToStringAuto($bstr) }
-        finally { [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($bstr) }
+if (-not $SkipBridgeSync) {
+    Write-Step 'SSH IPC mirror to Green (SMB-free)'
+    $mirror = Join-Path $Here 'Sync-CornermanBridgeIpcMirror.ps1'
+    if (-not (Test-Path -LiteralPath $mirror)) { throw "Missing $mirror" }
+    & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $mirror -UpdateMcpJson -SshTarget $SshTarget
+
+    $watch = Join-Path $Here 'Start-CornermanBridgeIpcMirrorWatch.ps1'
+    if (Test-Path -LiteralPath $watch) {
+        & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $watch -Background
     }
 
-    if ($password) {
-        $passEsc = $password -replace "'", "''"
-        $mapScript = Join-Path $onBox 'Map-CornermanBridgeShare.ps1'
-        $r = Invoke-CornermanSshExec -SshTarget $SshTarget -ScriptBlock @"
-`$sec = ConvertTo-SecureString '$passEsc' -AsPlainText -Force
-& powershell -NoProfile -ExecutionPolicy Bypass -File '$mapScript' -Password `$sec
-"@ -ConnectTimeout 30
-        if ($r.ExitCode -ne 0) {
-            Write-Host "  SMB map failed: $($r.Output)" -ForegroundColor Red
+    if ($TrySmbMap) {
+        Write-Step 'Optional native SMB map'
+        $password = Get-VengeanceSmbPassword
+        if ($PromptForPassword -and -not $password) {
+            $sec = Read-Host 'VENGEANCE\jared password (for Green SMB map)' -AsSecureString
+            $bstr = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($sec)
+            try { $password = [Runtime.InteropServices.Marshal]::PtrToStringAuto($bstr) }
+            finally { [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($bstr) }
         }
-        else {
-            Write-Host "  $($r.Output)" -ForegroundColor Green
-        }
-    }
-    else {
-        $ensureScript = Join-Path $onBox 'Ensure-CornermanBridgeShare.ps1'
-        $r = Invoke-CornermanSshExec -SshTarget $SshTarget -ScriptBlock @"
-if (Test-Path -LiteralPath '$ensureScript') {
-  & powershell -NoProfile -ExecutionPolicy Bypass -File '$ensureScript'
-} else { exit 1 }
-"@ -ConnectTimeout 30
-        if ($r.ExitCode -eq 0) {
-            Write-Host "  $($r.Output)" -ForegroundColor Green
-        }
-        else {
-            Write-Host '  SMB map failed — falling back to SSH IPC mirror...' -ForegroundColor Yellow
-            $mirror = Join-Path $Here 'Sync-CornermanBridgeIpcMirror.ps1'
-            if (Test-Path -LiteralPath $mirror) {
-                & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $mirror -UpdateMcpJson -SshTarget $SshTarget
+        if ($password) {
+            $map = Invoke-CornermanMapBridgeShare -SshTarget $SshTarget
+            if ($map.Ok) {
+                Write-Host "  $($map.Output)" -ForegroundColor Green
+                & (Join-Path $Here 'Install-CornermanSboxBridgeMcp.ps1') -SshTarget $SshTarget -SkipShare -SkipLmClone
             }
+            else {
+                Write-Host "  SMB skipped (map failed): $($map.Output)" -ForegroundColor Yellow
+                Write-Host '  Mirror path remains active — no action needed.' -ForegroundColor DarkGray
+            }
+        }
+        else {
+            Write-Host '  No SMB password on file — mirror only.' -ForegroundColor DarkGray
         }
     }
 }
@@ -150,5 +145,5 @@ Write-Host "  Green SMB probe: $($probe.Output)" -ForegroundColor $(if ($probe.O
 Write-Host ''
 Write-Host 'LM watchdog (once, elevated on Green): Send-CornermanWorkflow.ps1 -Action InstallLmWatchdog' -ForegroundColor DarkGray
 Write-Host 'Done. On Green: restart Cursor -> MCP sbox + sbox-editor + cornerman-lm.' -ForegroundColor Cyan
-Write-Host 'Green dual-stack: SMB sbox + SSH tunnel for sbox-editor (Start-CornermanSboxEditorTunnel.ps1 -Background).' -ForegroundColor DarkGray
+Write-Host 'Green dual-stack: SSH mirror sbox + reverse tunnel for sbox-editor.' -ForegroundColor DarkGray
 Write-Host 'VENGEANCE s&box editor must stay open for both MCP servers.' -ForegroundColor DarkGray

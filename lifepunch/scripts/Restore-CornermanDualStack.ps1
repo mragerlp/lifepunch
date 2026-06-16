@@ -6,7 +6,7 @@
   Full capacity requires dual-stack on BOTH machines. This script:
     1. Removes OFF_CURSOR_ACTIVE marker on Green
     2. Pushes on-box scripts + refreshes Green mcp.json
-    3. Maps SMB bridge (if LIFEPUNCH_VENGEANCE_SMB_PASSWORD set or -PromptForPassword)
+    3. Sync SSH IPC mirror to Green (default — no SMB password)
     4. Installs editor tunnel watchdog + starts tunnel
     5. Keeps Tier-3 headless (LM GUI closed)
 
@@ -19,7 +19,7 @@
 [CmdletBinding()]
 param(
     [switch] $PromptForPassword,
-    [switch] $SkipSmbMap,
+    [switch] $TrySmbMap,
     [string] $SshTarget = ''
 )
 
@@ -54,7 +54,7 @@ Write-Step 'Sync Green on-box scripts'
 
 Write-Step 'Bridge share + Green mcp.json + LM warm'
 $bridgeArgs = @('-File', (Join-Path $Here 'Connect-CornermanBridge.ps1'), '-SshTarget', $SshTarget)
-if ($SkipSmbMap) { $bridgeArgs += '-SkipSmbMap' }
+if ($TrySmbMap) { $bridgeArgs += '-TrySmbMap' }
 if ($PromptForPassword) { $bridgeArgs += '-PromptForPassword' }
 & powershell.exe -NoProfile -ExecutionPolicy Bypass @bridgeArgs
 
@@ -80,7 +80,3 @@ Get-Process -ErrorAction SilentlyContinue | Where-Object { $_.ProcessName -match
 Write-Host ''
 Write-Host 'Green dual-stack restore done.' -ForegroundColor Green
 Write-Host 'On Cornerman: open Cursor -> Reload Window -> MCP should show 3/3 green when VENGEANCE editor is open.' -ForegroundColor Cyan
-if ($SkipSmbMap -and -not $env:LIFEPUNCH_VENGEANCE_SMB_PASSWORD) {
-    Write-Host 'SMB map skipped — on Green desktop run once:' -ForegroundColor Yellow
-    Write-Host "  powershell -File $onBox\Map-CornermanBridgeShare.ps1" -ForegroundColor White
-}

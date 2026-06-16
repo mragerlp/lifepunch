@@ -37,12 +37,19 @@ function Invoke-BridgeNetUse([string]$Unc) {
         try {
             $plain = [Runtime.InteropServices.Marshal]::PtrToStringAuto($bstr)
             cmdkey /add:$VengeanceHost /user:$User /pass:$plain 2>$null | Out-Null
-            net use $Unc /user:$User $plain /persistent:yes | Out-Null
+            net use $Unc /user:$User $plain /persistent:yes 2>&1 | ForEach-Object {
+                if ($_ -is [System.Management.Automation.ErrorRecord]) { Write-Host $_.Exception.Message -ForegroundColor Red }
+                else { Write-Host $_ }
+            }
+            $code = $LASTEXITCODE
         }
         finally {
             [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($bstr)
         }
-        return $LASTEXITCODE -eq 0
+        if ($code -ne 0) {
+            Write-Host 'Hint: System error 86 = wrong password. Re-run Initialize-VengeanceSmbSecret.ps1 on VENGEANCE.' -ForegroundColor Yellow
+        }
+        return $code -eq 0
     }
     # Interactive password prompt (do not pass password on command line).
     net use $Unc /user:$User /persistent:yes
