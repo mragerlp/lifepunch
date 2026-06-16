@@ -1,9 +1,3 @@
-<!--
-LIFEPUNCH Discord welcome / rules channel pinned post.
-Paste everything BELOW this comment into Discord (#welcome or #rules).
-Requires custom emoji :lifepunchlogo: on the server.
--->
-
 # LifePunch Official
 
 LIFEPUNCH™ is the next chapter of a community that started in **Garry's Mod** — rebuilt from the ground up on **s&box** with original systems, addons, and long-term progression in mind.
