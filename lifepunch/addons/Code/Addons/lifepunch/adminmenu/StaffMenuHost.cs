@@ -117,11 +117,17 @@ internal static class StaffMenuHost
 	// --- Open / close ------------------------------------------------------
 
 	/// <summary>
-	/// Console + chat entry point. Staff bind any key to <c>lifepunchulx</c>
-	/// (e.g. <c>bind f4 lifepunchulx</c>).
+	/// Console + chat entry point. Staff bind any key to <c>lifepunchulx</c>, <c>menu</c>, or <c>ulx</c>
+	/// (e.g. <c>bind f4 lifepunchulx</c>). Chat: <c>/lifepunchulx</c>, <c>/menu</c>, <c>/ulx</c>.
 	/// </summary>
 	[ConCmd( "lifepunchulx" )]
 	public static void LifepunchUlxConCmd() => Toggle();
+
+	[ConCmd( "menu" )]
+	public static void MenuConCmd() => Toggle();
+
+	[ConCmd( "ulx" )]
+	public static void UlxConCmd() => Toggle();
 
 	/// <summary>
 	/// Open the menu if closed, else close it. Open-for-all by design: any player may open it via the
@@ -792,14 +798,14 @@ internal static class StaffMenuHost
 
 #if !LIFEPUNCH_LOCAL
 /// <summary>
-/// Registers <c>/lifepunchulx</c> as the in-game chat command. <see cref="ExecuteLocal"/>
-/// opens the menu client-side and consumes the command, so it never round-trips to the host.
+/// Registers <c>/lifepunchulx</c>, <c>/menu</c>, and <c>/ulx</c> as in-game chat commands.
+/// <see cref="ExecuteLocal"/> opens the menu client-side and consumes the command, so it never round-trips to the host.
 /// Discovered automatically via TypeLibrary on the dxrp.net gamemode build.
 /// </summary>
 public sealed class LifepunchUlxChatCommand : ICommand
 {
 	public string Command => "lifepunchulx";
-	public string[] Aliases => [];
+	public string[] Aliases => ["menu", "ulx"];
 	public string Help => "Open LIFEPUNCH ULX.";
 	public bool IsUsableWhileDead => true;
 

@@ -17,6 +17,20 @@ Core updates
 - **Stability & polish** — fixed sidebar/hover flicker (throttled per-frame rebuilds + cached stat hash), centered Material Icons glyphs, scroll-capped lists, locked header/tab heights, and pixel-aligned header controls.
 - **Command rebrand** — single entry point `lifepunchulx` / `/lifepunchulx` (removed `staffmenu` and `adminmenu` aliases).
 
+## v2.0.3 — publish-ready
+
+- **Settings panel size controls** — centered Compact / Standard / Expanded labels (flex + padding fix; no clipped top-edge text).
+- **Publish-ready** — first LIFEPUNCH addon cleared for portal publish (`lifepunchulx` / `lifepunch.ulx`).
+
+## v2.0.2
+
+- **Hub-family polish** — shared `LifePunchUiFooter`, 22px shell radius, header network chip + chrome close/cog (ULX blue palette unchanged).
+- **Title** — header reads **Admin Menu** (subtitle ULX Console); footer uses shared LIFEPUNCH mark in ULX blue.
+
+## v2.0.1
+
+- **Chat + console aliases** — `/menu`, `/ulx`, `menu`, and `ulx` open the same ULX panel as `lifepunchulx` / `/lifepunchulx`.
+
 Under the hood: every action routes through DXRP's re-validated host RPCs (no new authority granted); the menu is self-contained via `WaypointSyncService` + `StaffSettingsService` and no longer depends on DXRP core.
 
 Known/pending (not in this release): the footer "Player & Staff Management" entry opens a "Coming Soon" placeholder; sanction history in the profile pane is still a TODO (STAFF-06).
