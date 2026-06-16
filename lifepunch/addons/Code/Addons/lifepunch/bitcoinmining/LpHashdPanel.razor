@@ -321,8 +321,8 @@
 												</span>
 											</div>
 											<div class="rack-actions">
-												<button class="ghost small" disabled="@(!CanUpgradeCpu(rack))" onclick="@(() => UpgradeCpu(rack))">CPU $@UpgradeCpuCost(rack)</button>
-												<button class="ghost small" disabled="@(!CanUpgradeCores(rack))" onclick="@(() => UpgradeCores(rack))">Core $@UpgradeCoreCost(rack)</button>
+												<button class="ghost small @(!CanUpgradeCpu(rack) ? "disabled" : "")" onclick="@(() => UpgradeCpu(rack))">CPU $@UpgradeCpuCost(rack)</button>
+												<button class="ghost small @(!CanUpgradeCores(rack) ? "disabled" : "")" onclick="@(() => UpgradeCores(rack))">Core $@UpgradeCoreCost(rack)</button>
 												<button class="ghost small accent" onclick="@(() => OpenTerminal(rack))">Terminal</button>
 											</div>
 										</div>
@@ -350,7 +350,7 @@
 							</div>
 
 							<div class="wallet-actions">
-								<button class="cta-pill wide" disabled="@(TotalBtc() <= 0f)" onclick="@SellAllRacks">Sell all rack BTC</button>
+								<button class="cta-pill wide @(TotalBtc() <= 0f ? "disabled" : "")" onclick="@SellAllRacks">Sell all rack BTC</button>
 								<button class="ghost" onclick="@(() => OpenTerminal( null ))">Open CRT terminal</button>
 							</div>
 
@@ -398,12 +398,11 @@
 						</div>
 					}
 				</div>
-
 			</div>
 		</div>
-				</div>
-				<LifePunchUiFooter />
-			</div>
+		</div>
+		<LifePunchUiFooter />
+	</div>
 		}
 	</div>
 </root>
@@ -693,7 +692,13 @@
 		}
 	}
 
-	private void SellAllRacks() => Hub?.RequestSellAllRacks();
+	private void SellAllRacks()
+	{
+		if ( TotalBtc() <= 0f )
+			return;
+
+		Hub?.RequestSellAllRacks();
+	}
 
 	private string GreetingName()
 	{
@@ -748,10 +753,20 @@
 		=> CanUpgradeCores( rack ) ? $"{LpBitcoinEconomy.CoreUpgradeCosts[rack.CoreUpgradeLevel]:N0}" : "MAX";
 
 	private void UpgradeCpu( LpBitcoinRackEntity rack )
-		=> _hub?.RequestUpgradeCpu( rack.GameObject.Id );
+	{
+		if ( !CanUpgradeCpu( rack ) )
+			return;
+
+		_hub?.RequestUpgradeCpu( rack.GameObject.Id );
+	}
 
 	private void UpgradeCores( LpBitcoinRackEntity rack )
-		=> _hub?.RequestUpgradeCores( rack.GameObject.Id );
+	{
+		if ( !CanUpgradeCores( rack ) )
+			return;
+
+		_hub?.RequestUpgradeCores( rack.GameObject.Id );
+	}
 
 	private void OpenTerminal( LpBitcoinRackEntity rack )
 	{

@@ -15,6 +15,8 @@ Configure these in Cloudflare, not in Git:
 - `STEAM_API_KEY`: Steam Web API key for profile lookup.
 - `STRIPE_SECRET_KEY`: Stripe secret key for checkout creation.
 - `STRIPE_WEBHOOK_SECRET`: Stripe endpoint signing secret for `/webhook`.
+- `STRIPE_PRICE_VIP` (optional): overrides default VIP monthly price id `price_1TinR5980UYbxT0B4iv7DQ5v`.
+- `STRIPE_PRICE_EVIP` (optional): overrides default EVIP monthly price id `price_1TinMD980UYbxT0BPfZs8K8g`.
 
 Required bindings:
 

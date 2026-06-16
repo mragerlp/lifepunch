@@ -542,7 +542,7 @@ export default {
             </head>
             <body>
                 <div class="header">
-                    <h1>LIFEPUNCH™ Rules</h1>
+                    <h1>LifePunch Rules</h1>
                     <p>Official s&box DXRP Guidelines</p>
                 </div>
                 ${lite ? `<p class="sbox-hint">Press Tab to close the dashboard. Expand a section below to read rules.</p>` : ""}
@@ -553,7 +553,7 @@ export default {
                 </details>`).join("")}
                 <div class="footer">
                     Searchable rules available at lifepunch.co/rules<br>
-                    &copy; 2026 LIFEPUNCH™ · lifepunch.co
+                    &copy; 2026 LifePunch Network
                 </div>
             </body>
             </html>`;
@@ -903,7 +903,7 @@ export default {
 
         // Shared page variables need to be declared before any route handlers that set them
         let bodyContent = "";
-        let pageTitle = "LIFEPUNCH™";
+        let pageTitle = "LIFEPUNCH";
         let subHeaderTitle = "HOME"; // Default subheader
         let bodyClass = "";
 
@@ -1078,7 +1078,7 @@ export default {
                     { name: "Reward", value: "**$10,000** (Join Discord)", inline: false },
                     { name: "Admin Panel", value: "[Manage Rewards](https://lifepunch.co/admin/rewards)", inline: false }
                 ],
-                footer: { text: "LIFEPUNCH™ Rewards • 2026" },
+                footer: { text: "LifePunch Rewards • 2026" },
                 timestamp: new Date().toISOString()
             };
 
@@ -1226,7 +1226,7 @@ export default {
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({
                             content: `@here **${discordTag}** claimed their Weekend Bonus!`,
-                            username: "LIFEPUNCH™ Rewards",
+                            username: "LifePunch Rewards",
                             embeds: [{
                                 title: "🎁 Weekend Bonus Claimed",
                                 color: 0x0076e3,
@@ -1236,7 +1236,7 @@ export default {
                                     { name: "Reward", value: "**$10,000** (Weekend Bonus)", inline: false },
                                     { name: "Admin Panel", value: "[Manage Rewards](https://lifepunch.co/admin/rewards)", inline: false }
                                 ],
-                                footer: { text: "LIFEPUNCH™ Rewards • 2026" },
+                                footer: { text: "LifePunch Rewards • 2026" },
                                 timestamp: new Date().toISOString()
                             }]
                         })
@@ -1531,6 +1531,29 @@ export default {
         }
 
         // --- STRIPE & DISCORD HELPERS ---
+
+        const STORE_RANK_PACKAGES = {
+            VIP: {
+                priceUsd: 10,
+                stripePriceId: "price_1TinR5980UYbxT0B4iv7DQ5v",
+                lookupKey: "VIP_Monthly"
+            },
+            EVIP: {
+                priceUsd: 25,
+                stripePriceId: "price_1TinMD980UYbxT0BPfZs8K8g",
+                lookupKey: "EVIP_Monthly"
+            }
+        };
+
+        function resolveStoreRankPackage(env, packageName) {
+            const base = STORE_RANK_PACKAGES[packageName];
+            if (!base) return null;
+            const stripePriceId =
+                packageName === "VIP"
+                    ? (env.STRIPE_PRICE_VIP || base.stripePriceId)
+                    : (env.STRIPE_PRICE_EVIP || base.stripePriceId);
+            return { ...base, stripePriceId };
+        }
         
         async function verifyStripeSignature(body, signatureHeader, secret) {
             try {
@@ -1600,7 +1623,7 @@ export default {
                     { name: "Admin Panel", value: "[Manage Transactions](https://lifepunch.co/admin/transactions)", inline: false },
                     { name: "Transaction ID", value: `\`${data.id}\``, inline: false }
                 ],
-                footer: { text: "LIFEPUNCH™ Store • 2026" },
+                footer: { text: "LifePunch Store • 2026" },
                 timestamp: new Date().toISOString()
             };
 
@@ -1609,7 +1632,7 @@ export default {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ 
                     content: `@here A new purchase was made for **${data.package}**!`,
-                    username: "LIFEPUNCH™ Store",
+                    username: "LifePunch Store",
                     embeds: [embed] 
                 })
             });
@@ -1659,8 +1682,60 @@ export default {
         if (path === "/create-checkout-session" && request.method === "POST") {
             try {
                 const { packageName, price, steamid, referralCode, creditUsed } = await request.json();
-                if (!steamid || !packageName || !price) {
+                if (!steamid || !packageName || price == null) {
                     return new Response(JSON.stringify({ error: "Missing parameters" }), { status: 400, headers: { 'Content-Type': 'application/json' } });
+                }
+
+                const rankPkg = resolveStoreRankPackage(env, packageName);
+                if (rankPkg) {
+                    const listPrice = parseFloat(price);
+                    if (Number.isNaN(listPrice) || Math.abs(listPrice - rankPkg.priceUsd) > 0.01) {
+                        return new Response(JSON.stringify({ error: "Invalid package price." }), { status: 400, headers: { 'Content-Type': 'application/json' } });
+                    }
+
+                    const referralAttempt = referralCode && referralCode.trim() !== "";
+                    const creditAttempt = Math.max(0, parseFloat(creditUsed) || 0) > 0;
+                    if (referralAttempt || creditAttempt) {
+                        return new Response(JSON.stringify({
+                            error: "Referral codes and store credit do not apply to monthly VIP/EVIP subscriptions."
+                        }), { status: 400, headers: { 'Content-Type': 'application/json' } });
+                    }
+
+                    const stripeBody = new URLSearchParams({
+                        'success_url': `${url.origin}/store?success=true`,
+                        'cancel_url': `${url.origin}/store`,
+                        'mode': 'subscription',
+                        'line_items[0][price]': rankPkg.stripePriceId,
+                        'line_items[0][quantity]': 1,
+                        'metadata[steamid]': steamid,
+                        'metadata[package]': packageName,
+                        'metadata[billing]': 'monthly',
+                        'subscription_data[metadata][steamid]': steamid,
+                        'subscription_data[metadata][package]': packageName
+                    });
+
+                    const stripeRes = await fetch('https://api.stripe.com/v1/checkout/sessions', {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${env.STRIPE_SECRET_KEY}`,
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        body: stripeBody.toString()
+                    });
+
+                    const session = await stripeRes.json();
+
+                    if (!stripeRes.ok) {
+                        console.error("Stripe API Error:", session);
+                        return new Response(JSON.stringify({
+                            error: session.error?.message || "Stripe session creation failed",
+                            detail: session.error
+                        }), { status: stripeRes.status, headers: { 'Content-Type': 'application/json' } });
+                    }
+
+                    return new Response(JSON.stringify({ url: session.url }), {
+                        headers: { 'Content-Type': 'application/json' }
+                    });
                 }
 
                 let finalPrice = parseFloat(price);
@@ -2158,7 +2233,7 @@ export default {
             `}
             <img src="https://assets.lifepunch.co/logo.png" class="logo">
 
-            <h1>LIFEPUNCH™</h1>
+            <h1>LifePunch</h1>
             <div class="sub-h">${subTitle}</div>
             ${isSbox ? '' : `
             <div class="links">
@@ -2177,7 +2252,7 @@ export default {
         const sharedFooter = `
         <footer>
             <div class="footer-disclaimer">
-                Designed by LIFEPUNCH™ · 2026 - <a href="/tos">ToS</a>
+                Designed by LifePunch 2026 - <a href="/tos">ToS</a>
             </div>
         </footer>
         `;
@@ -2301,7 +2376,7 @@ export default {
             }
 
             if (path === "/admin") {
-                pageTitle = "LIFEPUNCH™ | Admin Panel";
+                pageTitle = "LifePunch | Admin Panel";
                 subHeaderTitle = "ADMIN DASHBOARD";
                 bodyContent = `
                 <style>
@@ -2370,7 +2445,7 @@ export default {
                     `;
                 }
 
-                pageTitle = "LIFEPUNCH™ | Ban Management";
+                pageTitle = "LifePunch | Ban Management";
                 subHeaderTitle = "WEBSITE BAN MANAGEMENT";
                 bodyContent = `
                 <div class="settings-card">
@@ -2420,7 +2495,7 @@ export default {
                     linksKv.get("status:dxrp_error")
                 ]);
 
-                pageTitle = "LIFEPUNCH™ | System Settings";
+                pageTitle = "LifePunch | System Settings";
                 subHeaderTitle = "SYSTEM CONFIGURATION";
 
                 const dxrpTokenBookmark = "javascript:(async function(){const n=v=>{if(!v||typeof v!=='string')return null;let s=v.trim();if(s.startsWith('Bearer '))s=s.slice(7).trim();return s.startsWith('eyJ')?s:null;};const e=v=>{if(typeof v==='string')return n(v);if(!v||typeof v!=='object')return null;for(const k of['access_token','accessToken','token','bearer','id_token','idToken']){const h=n(v[k]);if(h)return h}if(Array.isArray(v)){for(const i of v){const h=e(i);if(h)return h}}else{for(const k of Object.keys(v)){const h=e(v[k]);if(h)return h}}return null;};const f=()=>{if(!location.hostname.endsWith('dxrp.net'))return null;for(const s of[localStorage,sessionStorage]){for(let i=0;i<s.length;i++){const r=s.getItem(s.key(i));const d=n(r);if(d)return d;try{const h=e(JSON.parse(r));if(h)return h}catch(_){}}}return null};const t=f();if(!t){alert('Could not find a DXRP Bearer token. Stay logged into dxrp.net, refresh the page, then try again.');return}try{const r=await fetch('https://lifepunch.co/api/v1/sync-auth-token',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token:t})});const d=await r.json().catch(()=>({}));if(r.ok&&d.success)alert('LifePunch DXRP token updated successfully!');else alert('Failed: '+(d.error||r.status))}catch(err){alert('Request failed: '+err.message)}})();";
@@ -2474,7 +2549,7 @@ export default {
                             <li>Show your bookmarks bar (<kbd style="background:#222;padding:2px 6px;border-radius:4px;">Ctrl+Shift+B</kbd> in Chrome/Edge).</li>
                             <li>Drag <a id="dxrp-token-bookmark" href="${dxrpTokenBookmark}" style="display:inline-block;background:var(--lp-blue);color:#fff;padding:8px 14px;border-radius:6px;font-weight:900;text-decoration:none;">Update Token</a> to the bar.</li>
                             <li>Log into <a href="https://dxrp.net" target="_blank" rel="noopener">dxrp.net</a>.</li>
-                            <li>Click the bookmark. You should see <b>LIFEPUNCH™ DXRP token updated successfully!</b></li>
+                            <li>Click the bookmark. You should see <b>LifePunch DXRP token updated successfully!</b></li>
                         </ol>
                         <p style="font-size: 11px; color: var(--text-dim); margin: 0;">If the bookmark cannot find a token, copy it manually from DevTools → Network → any api.dxrp.net request → Headers → authorization.</p>
                     </div>
@@ -2545,7 +2620,7 @@ export default {
                 `;
             }
             else if (path === "/admin/inbox") {
-                pageTitle = "LIFEPUNCH™ | Admin Inbox";
+                pageTitle = "LifePunch | Admin Inbox";
                 subHeaderTitle = "EMAIL INBOX";
                 
                 const filter = url.searchParams.get("filter") || "all";
@@ -2716,7 +2791,7 @@ export default {
                 `;
             }
             else if (path === "/admin/inbox/compose") {
-                pageTitle = "LIFEPUNCH™ | Compose Email";
+                pageTitle = "LifePunch | Compose Email";
                 subHeaderTitle = "COMPOSE MESSAGE";
                 
                 bodyContent = `
@@ -2810,7 +2885,7 @@ export default {
                 // Mark as read
                 await env.DB.prepare("UPDATE emails SET is_read = 1 WHERE id = ?").bind(emailId).run();
                 
-                pageTitle = `LIFEPUNCH™ | View Email`;
+                pageTitle = `LifePunch | View Email`;
                 subHeaderTitle = "VIEW MESSAGE";
                 
                 bodyContent = `
@@ -3128,7 +3203,7 @@ export default {
                 }
             }
             else if (path === "/admin/transactions") {
-                pageTitle = "LIFEPUNCH™ | Admin Transactions";
+                pageTitle = "LifePunch | Admin Transactions";
                 subHeaderTitle = "ALL TRANSACTIONS";
                 
                 // Fetch all transaction keys (prefix tx:)
@@ -3320,7 +3395,7 @@ export default {
                 `;
             }
             else if (path === "/admin/rewards") {
-                pageTitle = "LIFEPUNCH™ | Admin Rewards";
+                pageTitle = "LifePunch | Admin Rewards";
                 subHeaderTitle = "REWARD MANAGEMENT";
                 
                 const allRewards = [];
@@ -3657,7 +3732,7 @@ export default {
 
             const isOwner = (steamid !== null && steamid === targetSteamId);
 
-            pageTitle = isOwner ? "LIFEPUNCH™ | My Profile" : `LIFEPUNCH™ | Profile - ${targetSteamId}`;
+            pageTitle = isOwner ? "LifePunch | My Profile" : `LifePunch | Profile - ${targetSteamId}`;
             subHeaderTitle = isOwner ? "YOUR PROFILE" : "PLAYER PROFILE";
 
             let discordAccount = null;
@@ -4289,7 +4364,7 @@ export default {
         }
 
         if (path === "/rules") {
-            pageTitle = "LIFEPUNCH™ | Official Rules";
+            pageTitle = "LifePunch | Official Rules";
             subHeaderTitle = "RULES & CONDUCT";
             if (isSbox) bodyClass = "sbox-rules";
 
@@ -5282,7 +5357,7 @@ export default {
           </script>
         `;
         } else if (path === "/rewards") {
-            pageTitle = "LIFEPUNCH™ | Rewards";
+            pageTitle = "LifePunch | Rewards";
             subHeaderTitle = "UNLOCK BONUSES";
 
             let drDiscordLinked = false;
@@ -5390,7 +5465,7 @@ export default {
                     already_claimed: "You’ve already claimed this reward.",
                     discord_not_linked: "Link Discord on your Profile first, then try again.",
                     not_weekend: "The Weekend Bonus is only available on Saturday and Sunday!",
-                    not_in_discord_server_join_first: "That Discord account isn’t in our Discord server yet. Join the LIFEPUNCH™ Discord, then use Claim again—we verify membership when you claim.",
+                    not_in_discord_server_join_first: "That Discord account isn’t in our Discord server yet. Join the LifePunch Discord, then use Claim again—we verify membership when you claim.",
                     wrong_discord_account_use_linked_account: "Sign into Discord with the same account you linked on your Profile, then try again.",
                     could_not_read_guild_list: "Discord didn’t return your server list. Try again in a moment.",
                     guild_id_not_configured: "Server verification isn’t configured (missing DISCORD_GUILD_ID). Contact staff.",
@@ -5605,7 +5680,7 @@ export default {
                 })();
             </script>            `;
         } else if (path === "/discord") {
-            pageTitle = "LIFEPUNCH™ | Discord";
+            pageTitle = "LifePunch | Discord";
             subHeaderTitle = "JOIN OUR COMMUNITY";
 
             bodyContent = `
@@ -5655,7 +5730,7 @@ export default {
             </script>
             `;
         } else if (path === "/tos") {
-            pageTitle = "LIFEPUNCH™ | Terms of Service";
+            pageTitle = "LifePunch | Terms of Service";
             subHeaderTitle = "TERMS OF SERVICE";
 
             bodyContent = `
@@ -5673,20 +5748,20 @@ export default {
 
               <div class="tos-section">
                   <h2>1. Acceptance of Terms</h2>
-                  <p>By accessing or using LIFEPUNCH™ services, including our servers, website, and related platforms, you agree to be bound by these Terms of Service and our Privacy Policy. If you are under the age of 13 (or 16 in certain jurisdictions), you represent that you have obtained parental consent to use these services.</p>
-                  <p>If you do not agree to these Terms, you must immediately cease all use of LIFEPUNCH™ services. Continued use constitutes a legally binding agreement to these terms and any future modifications.</p>
+                  <p>By accessing or using LifePunch services, including our servers, website, and related platforms, you agree to be bound by these Terms of Service and our Privacy Policy. If you are under the age of 13 (or 16 in certain jurisdictions), you represent that you have obtained parental consent to use these services.</p>
+                  <p>If you do not agree to these Terms, you must immediately cease all use of LifePunch services. Continued use constitutes a legally binding agreement to these terms and any future modifications.</p>
               </div>
               
               <div class="tos-section">
                   <h2>2. User Conduct & Rule Compliance</h2>
-                  <p>Access to LIFEPUNCH™ is a privilege, not a right. All users must comply with server-specific rules, community guidelines, and staff directives. We reserve the right, at our sole discretion, to terminate or suspend access to any user for any reason, including but not limited to: toxicity, harassment, exploitation of bugs, or disruption of the community environment.</p>
+                  <p>Access to LifePunch is a privilege, not a right. All users must comply with server-specific rules, community guidelines, and staff directives. We reserve the right, at our sole discretion, to terminate or suspend access to any user for any reason, including but not limited to: toxicity, harassment, exploitation of bugs, or disruption of the community environment.</p>
                   <p>Staff interpretations of rules are final. "Roleplay" standards are enforced to maintain community integrity; "FailRP" or "Metagaming" may result in immediate administrative action without prior warning.</p>
               </div>
               
               <div class="tos-section">
                   <h2>3. Virtual Goods, Credits & Referrals</h2>
-                  <p>Any financial contributions, referral rewards, or "Store Credit" earned or used on LIFEPUNCH™ are considered payments for a limited, revocable, non-transferable license to use specific virtual items, ranks, or "perks" within the LIFEPUNCH™ ecosystem. These items, including "Store Credit," have no real-world monetary value and cannot be traded for "real world" currency or assets.</p>
-                  <p><strong>WIP & Roadmap:</strong> You acknowledge that LIFEPUNCH™ is a live, evolving service. Some virtual goods, ranks, or 'perks' may include features currently in development ('Work in Progress' or 'WIP'). The purchase of a rank provides access to the rank's current 'As Available' features; missing or upcoming features do not constitute a failure of service or grounds for a refund.</p>
+                  <p>Any financial contributions, referral rewards, or "Store Credit" earned or used on LifePunch are considered payments for a limited, revocable, non-transferable license to use specific virtual items, ranks, or "perks" within the LifePunch ecosystem. These items, including "Store Credit," have no real-world monetary value and cannot be traded for "real world" currency or assets.</p>
+                  <p><strong>WIP & Roadmap:</strong> You acknowledge that LifePunch is a live, evolving service. Some virtual goods, ranks, or 'perks' may include features currently in development ('Work in Progress' or 'WIP'). The purchase of a rank provides access to the rank's current 'As Available' features; missing or upcoming features do not constitute a failure of service or grounds for a refund.</p>
                   <p><strong>Store Credit & Referrals:</strong> Referral rewards and Store Credit are provided at our sole discretion as a community benefit. We reserve the right to revoke any rewards, credits, or related perks if we determine, in our sole judgment, that the system has been abused (e.g., self-referral, exploitation, or fraudulent activity). Credit is non-transferable and cannot be "cashed out."</p>
                   <p><strong>Refund Policy:</strong> All transactions are final. By completing a purchase or applying credit, you waive any right to a refund unless required by local consumer law. Verbal or written statements made by staff members or community leads regarding refunds do not override these written Terms. Only a formal notice from our billing department/legal email can authorize an exception to the 'No Refund' policy. Attempting to circumvent this via "chargebacks" through payment processors will result in a permanent ban and potential legal or collection action to recover lost funds and fees.</p>
               </div>
@@ -5695,13 +5770,13 @@ export default {
                   <h2>4. Disclaimer of Warranties & Limitation of Liability</h2>
                   <p>LIFEPUNCH SERVICES ARE PROVIDED "AS IS" AND "AS AVAILABLE." WE EXPRESSLY DISCLAIM ALL WARRANTIES OF ANY KIND, WHETHER EXPRESS OR IMPLIED. WE DO NOT WARRANT THAT ANY SPECIFIC PERK, JOB, OR ADMINISTRATIVE POWER WILL BE AVAILABLE AT ALL TIMES OR REMAIN UNCHANGED. WE RESERVE THE RIGHT TO MODIFY, REMOVE, OR DELAY THE IMPLEMENTATION OF ANY VIRTUAL FEATURE WITHOUT NOTICE AND WITHOUT PROVIDING A REFUND.</p>
                   <p>LIFEPUNCH SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES ARISING FROM YOUR USE OF THE SERVICE, INCLUDING BUT NOT LIMITED TO SERVER DOWNTIME, LOSS OF VIRTUAL ASSETS, OR DATA BREACHES.</p>
-                  <p>In no event shall our total liability to you for all damages exceed the amount paid by you to LIFEPUNCH™ in the six (6) months preceding the claim.</p>
+                  <p>In no event shall our total liability to you for all damages exceed the amount paid by you to LifePunch in the six (6) months preceding the claim.</p>
               </div>
               
               <div class="tos-section">
                   <h2>5. Intellectual Property</h2>
-                  <p>All original content created by LIFEPUNCH™—including logos, custom code, UI design, and branding—is the exclusive property of LIFEPUNCH™. You are granted a limited license to view and interact with this content for personal, non-commercial use only.</p>
-                  <p>Third-party assets (such as those from s&box or DXRP) remain the property of their respective owners. Any unauthorized replication of LIFEPUNCH™'s unique site layout or proprietary assets for use in "clone" servers is strictly prohibited and will be met with legal action.</p>
+                  <p>All original content created by LifePunch—including logos, custom code, UI design, and branding—is the exclusive property of LifePunch. You are granted a limited license to view and interact with this content for personal, non-commercial use only.</p>
+                  <p>Third-party assets (such as those from s&box or DXRP) remain the property of their respective owners. Any unauthorized replication of LifePunch’s unique site layout or proprietary assets for use in "clone" servers is strictly prohibited and will be met with legal action.</p>
               </div>
 
               <div class="tos-section">
@@ -5723,7 +5798,7 @@ export default {
           </div>
         `;
         } else if (path === "/store" || path === "/donate") {
-            pageTitle = "LIFEPUNCH™ | Store & Donations";
+            pageTitle = "LifePunch | Store & Donations";
             subHeaderTitle = "SUPPORT THE COMMUNITY";
 
             let transactionHistory = [];
@@ -5888,7 +5963,7 @@ export default {
           </div>
 
           <div class="store-intro">
-              Support LIFEPUNCH™ and unlock exclusive perks! Your purchases help keep our servers running and allow us to add new features. All donations are non-refundable but carry immense value.
+              Support LifePunch with a monthly VIP or EVIP subscription and unlock exclusive perks! Your subscription helps keep our servers running and funds new features. Billed monthly through Stripe — cancel anytime.
           </div>
 
           ${!steamid ? `
@@ -5900,7 +5975,7 @@ export default {
               <div class="box-title" style="justify-content: center; margin-bottom: 25px;"><i class="fa-solid fa-cart-shopping"></i> Available Packages</div>
               <div class="package-preview" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
                   <div class="preview-card" style="background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 8px; padding: 20px;">
-                      <div class="box-title" style="font-size:16px; margin-bottom:15px; justify-content: center;">VIP - $10.00</div>
+                      <div class="box-title" style="font-size:16px; margin-bottom:15px; justify-content: center;">VIP - $10.00/mo</div>
                       <div class="perks-display" style="background:transparent; border:none; padding:0;">
                           <ul style="margin:0;">
                               <li>Builder Status</li>
@@ -5913,7 +5988,7 @@ export default {
                   </div>
                   
                   <div class="preview-card" style="background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 8px; padding: 20px;">
-                      <div class="box-title" style="font-size:16px; margin-bottom:15px; justify-content: center;">EVIP - $25.00</div>
+                      <div class="box-title" style="font-size:16px; margin-bottom:15px; justify-content: center;">EVIP - $25.00/mo</div>
                       <div class="perks-display" style="background:transparent; border:none; padding:0;">
                           <ul style="margin:0;">
                               <li>Builder+ Status</li>
@@ -5948,7 +6023,7 @@ export default {
               <div class="box-title" style="justify-content: center; margin-bottom: 25px;"><i class="fa-solid fa-cart-shopping"></i> Available Packages</div>
               <div class="package-preview" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
                   <div class="preview-card" style="background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 8px; padding: 20px;">
-                      <div class="box-title" style="font-size:16px; margin-bottom:15px; justify-content: center;">VIP - $10.00</div>
+                      <div class="box-title" style="font-size:16px; margin-bottom:15px; justify-content: center;">VIP - $10.00/mo</div>
                       <div class="perks-display" style="background:transparent; border:none; padding:0;">
                           <ul style="margin:0;">
                               <li>Builder Status</li>
@@ -5961,7 +6036,7 @@ export default {
                   </div>
                   
                   <div class="preview-card" style="background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 8px; padding: 20px;">
-                      <div class="box-title" style="font-size:16px; margin-bottom:15px; justify-content: center;">EVIP - $25.00</div>
+                      <div class="box-title" style="font-size:16px; margin-bottom:15px; justify-content: center;">EVIP - $25.00/mo</div>
                       <div class="perks-display" style="background:transparent; border:none; padding:0;">
                           <ul style="margin:0;">
                               <li>Builder+ Status</li>
@@ -6016,12 +6091,12 @@ export default {
                       <div class="box-title"><i class="fa-solid fa-cart-shopping"></i> Select Package</div>
                       <div class="package-selector">
                           <div class="package-option" onclick="selectPkg('VIP', 10.00)">
-                              <div class="option-info"><b>VIP</b><span>Standard Rank</span></div>
-                              <div class="option-price">$10.00</div>
+                              <div class="option-info"><b>VIP</b><span>Standard rank · billed monthly</span></div>
+                              <div class="option-price">$10.00/mo</div>
                           </div>
                           <div class="package-option selected" onclick="selectPkg('EVIP', 25.00)">
-                              <div class="option-info"><b>EVIP</b><span>Premium Rank</span></div>
-                              <div class="option-price">$25.00</div>
+                              <div class="option-info"><b>EVIP</b><span>Premium rank · billed monthly</span></div>
+                              <div class="option-price">$25.00/mo</div>
                           </div>
                           <div class="package-option" style="opacity: 0.5; filter: grayscale(1); cursor: not-allowed; position: relative; overflow: hidden;" onclick="return false;">
                               <div style="position: absolute; top: 10px; right: -35px; background: #666; color: #fff; padding: 5px 40px; transform: rotate(45deg); font-size: 10px; font-weight: 900; letter-spacing: 1px; box-shadow: 0 2px 10px rgba(0,0,0,0.5); z-index: 10;">WIP</div>
@@ -6052,7 +6127,7 @@ export default {
                               <span id="final-pkg" class="info-value">EVIP</span>
                           </div>
 
-                          <div class="referral-section" style="margin-top: 15px; border-top: 1px solid var(--border); padding-top: 15px;">
+                          <div class="referral-section" id="referral-section" style="margin-top: 15px; border-top: 1px solid var(--border); padding-top: 15px;">
                               <label style="font-size:11px; color:var(--text-dim); font-weight:bold; text-transform:uppercase;">Referral Code</label>
                               <div style="display:flex; gap:10px; margin-top:5px;">
                                   <input type="text" id="referral-input" class="lp-input" style="margin-top:0;" placeholder="Enter code for 10% off">
@@ -6062,7 +6137,7 @@ export default {
                           </div>
 
                           ${parseFloat(userCredit) > 0 ? `
-                          <div class="credit-section" style="margin-top: 15px; border-top: 1px solid var(--border); padding-top: 15px;">
+                          <div class="credit-section" id="credit-section" style="margin-top: 15px; border-top: 1px solid var(--border); padding-top: 15px;">
                               <div class="info-row">
                                   <span class="info-label">Available Credit:</span>
                                   <span class="info-value" style="color:#00c853;">$${userCredit}</span>
@@ -6077,12 +6152,12 @@ export default {
 
                           <div class="info-row" style="margin-top: 15px; border-top: 1px solid var(--border); padding-top: 15px;">
                               <span class="info-label" style="font-size:18px;">Total:</span>
-                              <span id="final-price" class="info-value" style="font-size:18px; color:var(--lp-blue);">$25.00</span>
+                              <span id="final-price" class="info-value" style="font-size:18px; color:var(--lp-blue);">$25.00/mo</span>
                           </div>
                       </div>
                       <div class="btn-row">
                           <button class="btn-store btn-back" onclick="goToStep(1)">Back</button>
-                          <button id="pay-btn" class="btn-store btn-next" onclick="startCheckout()">Pay Securely</button>
+                          <button id="pay-btn" class="btn-store btn-next" onclick="startCheckout()">Subscribe Securely</button>
                       </div>
                   </div>
                   </div>
@@ -6102,6 +6177,37 @@ export default {
                   "$LP": ["Universal Currency", "Works on All Servers", "Never Expires", "In-game Store Purchases"]
               };
 
+              function isMonthlyRankPkg(name) {
+                  return name === "VIP" || name === "EVIP";
+              }
+
+              function formatStorePrice(amount, name) {
+                  const suffix = isMonthlyRankPkg(name) ? "/mo" : "";
+                  return "$" + amount.toFixed(2) + suffix;
+              }
+
+              function syncCheckoutExtras() {
+                  const monthly = isMonthlyRankPkg(selectedPkgName);
+                  const referralSection = document.getElementById("referral-section");
+                  const creditSection = document.getElementById("credit-section");
+                  if (referralSection) referralSection.style.display = monthly ? "none" : "block";
+                  if (creditSection) creditSection.style.display = monthly ? "none" : "block";
+                  if (monthly) {
+                      currentReferral = null;
+                      appliedCredit = 0.00;
+                      const referralInput = document.getElementById("referral-input");
+                      const referralMsg = document.getElementById("referral-msg");
+                      const creditInput = document.getElementById("credit-input");
+                      const creditMsg = document.getElementById("credit-msg");
+                      if (referralInput) referralInput.value = "";
+                      if (referralMsg) referralMsg.innerText = "";
+                      if (creditInput) creditInput.value = "";
+                      if (creditMsg) creditMsg.innerText = "";
+                  }
+                  const payBtn = document.getElementById("pay-btn");
+                  if (payBtn) payBtn.innerText = monthly ? "Subscribe Securely" : "Pay Securely";
+              }
+
               function selectPkg(name, price) {
                   selectedPkgName = name;
                   selectedPkgPrice = price;
@@ -6112,6 +6218,7 @@ export default {
                   });
 
                   document.getElementById('lp-custom-amount').style.display = (name === '$LP') ? 'block' : 'none';
+                  syncCheckoutExtras();
                   updatePerks();
               }
 
@@ -6150,10 +6257,10 @@ export default {
                   price = Math.max(0, price - appliedCredit);
 
                   if (currentReferral || appliedCredit > 0) {
-                      finalPriceEl.innerHTML = '<span style="text-decoration: line-through; color: var(--text-dim); font-size: 14px; margin-right: 8px;">$' + selectedPkgPrice.toFixed(2) + '</span>' +
-                                             '<span style="color: #00c853;">$' + price.toFixed(2) + '</span>';
+                      finalPriceEl.innerHTML = '<span style="text-decoration: line-through; color: var(--text-dim); font-size: 14px; margin-right: 8px;">' + formatStorePrice(selectedPkgPrice, selectedPkgName) + '</span>' +
+                                             '<span style="color: #00c853;">' + formatStorePrice(price, selectedPkgName) + '</span>';
                   } else {
-                      finalPriceEl.innerText = '$' + selectedPkgPrice.toFixed(2);
+                      finalPriceEl.innerText = formatStorePrice(price, selectedPkgName);
                   }
                   document.getElementById('final-pkg').innerText = selectedPkgName;
               }
@@ -6240,6 +6347,7 @@ export default {
                   document.getElementById('step-1').style.display = (step === 1) ? 'flex' : 'none';
                   document.getElementById('step-2').style.display = (step === 2) ? 'flex' : 'none';
                   if (step === 2) {
+                      syncCheckoutExtras();
                       updatePriceUI();
                   }
               }
@@ -6281,6 +6389,7 @@ export default {
               }
 
               window.addEventListener('load', () => {
+                  syncCheckoutExtras();
                   updatePerks();
                   
                   const urlParams = new URLSearchParams(window.location.search);
@@ -6332,7 +6441,7 @@ export default {
                 .btn-link.copied { background: #00c853; border-color: #00c853; color: #fff; }
                 </style>
             
-            <div class="top-disclaimer">LIFEPUNCH™ s&box Server List</div>
+            <div class="top-disclaimer">LifePunch s&box Server List</div>
             
             <div class="server-card">
                 <div class="server-info">

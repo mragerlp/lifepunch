@@ -1531,6 +1531,29 @@ export default {
         }
 
         // --- STRIPE & DISCORD HELPERS ---
+
+        const STORE_RANK_PACKAGES = {
+            VIP: {
+                priceUsd: 10,
+                stripePriceId: "price_1TinR5980UYbxT0B4iv7DQ5v",
+                lookupKey: "VIP_Monthly"
+            },
+            EVIP: {
+                priceUsd: 25,
+                stripePriceId: "price_1TinMD980UYbxT0BPfZs8K8g",
+                lookupKey: "EVIP_Monthly"
+            }
+        };
+
+        function resolveStoreRankPackage(env, packageName) {
+            const base = STORE_RANK_PACKAGES[packageName];
+            if (!base) return null;
+            const stripePriceId =
+                packageName === "VIP"
+                    ? (env.STRIPE_PRICE_VIP || base.stripePriceId)
+                    : (env.STRIPE_PRICE_EVIP || base.stripePriceId);
+            return { ...base, stripePriceId };
+        }
         
         async function verifyStripeSignature(body, signatureHeader, secret) {
             try {
@@ -1659,8 +1682,60 @@ export default {
         if (path === "/create-checkout-session" && request.method === "POST") {
             try {
                 const { packageName, price, steamid, referralCode, creditUsed } = await request.json();
-                if (!steamid || !packageName || !price) {
+                if (!steamid || !packageName || price == null) {
                     return new Response(JSON.stringify({ error: "Missing parameters" }), { status: 400, headers: { 'Content-Type': 'application/json' } });
+                }
+
+                const rankPkg = resolveStoreRankPackage(env, packageName);
+                if (rankPkg) {
+                    const listPrice = parseFloat(price);
+                    if (Number.isNaN(listPrice) || Math.abs(listPrice - rankPkg.priceUsd) > 0.01) {
+                        return new Response(JSON.stringify({ error: "Invalid package price." }), { status: 400, headers: { 'Content-Type': 'application/json' } });
+                    }
+
+                    const referralAttempt = referralCode && referralCode.trim() !== "";
+                    const creditAttempt = Math.max(0, parseFloat(creditUsed) || 0) > 0;
+                    if (referralAttempt || creditAttempt) {
+                        return new Response(JSON.stringify({
+                            error: "Referral codes and store credit do not apply to monthly VIP/EVIP subscriptions."
+                        }), { status: 400, headers: { 'Content-Type': 'application/json' } });
+                    }
+
+                    const stripeBody = new URLSearchParams({
+                        'success_url': `${url.origin}/store?success=true`,
+                        'cancel_url': `${url.origin}/store`,
+                        'mode': 'subscription',
+                        'line_items[0][price]': rankPkg.stripePriceId,
+                        'line_items[0][quantity]': 1,
+                        'metadata[steamid]': steamid,
+                        'metadata[package]': packageName,
+                        'metadata[billing]': 'monthly',
+                        'subscription_data[metadata][steamid]': steamid,
+                        'subscription_data[metadata][package]': packageName
+                    });
+
+                    const stripeRes = await fetch('https://api.stripe.com/v1/checkout/sessions', {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${env.STRIPE_SECRET_KEY}`,
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        body: stripeBody.toString()
+                    });
+
+                    const session = await stripeRes.json();
+
+                    if (!stripeRes.ok) {
+                        console.error("Stripe API Error:", session);
+                        return new Response(JSON.stringify({
+                            error: session.error?.message || "Stripe session creation failed",
+                            detail: session.error
+                        }), { status: stripeRes.status, headers: { 'Content-Type': 'application/json' } });
+                    }
+
+                    return new Response(JSON.stringify({ url: session.url }), {
+                        headers: { 'Content-Type': 'application/json' }
+                    });
                 }
 
                 let finalPrice = parseFloat(price);
@@ -5888,7 +5963,7 @@ export default {
           </div>
 
           <div class="store-intro">
-              Support LifePunch and unlock exclusive perks! Your purchases help keep our servers running and allow us to add new features. All donations are non-refundable but carry immense value.
+              Support LifePunch with a monthly VIP or EVIP subscription and unlock exclusive perks! Your subscription helps keep our servers running and funds new features. Billed monthly through Stripe — cancel anytime.
           </div>
 
           ${!steamid ? `
@@ -5900,7 +5975,7 @@ export default {
               <div class="box-title" style="justify-content: center; margin-bottom: 25px;"><i class="fa-solid fa-cart-shopping"></i> Available Packages</div>
               <div class="package-preview" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
                   <div class="preview-card" style="background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 8px; padding: 20px;">
-                      <div class="box-title" style="font-size:16px; margin-bottom:15px; justify-content: center;">VIP - $10.00</div>
+                      <div class="box-title" style="font-size:16px; margin-bottom:15px; justify-content: center;">VIP - $10.00/mo</div>
                       <div class="perks-display" style="background:transparent; border:none; padding:0;">
                           <ul style="margin:0;">
                               <li>Builder Status</li>
@@ -5913,7 +5988,7 @@ export default {
                   </div>
                   
                   <div class="preview-card" style="background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 8px; padding: 20px;">
-                      <div class="box-title" style="font-size:16px; margin-bottom:15px; justify-content: center;">EVIP - $25.00</div>
+                      <div class="box-title" style="font-size:16px; margin-bottom:15px; justify-content: center;">EVIP - $25.00/mo</div>
                       <div class="perks-display" style="background:transparent; border:none; padding:0;">
                           <ul style="margin:0;">
                               <li>Builder+ Status</li>
@@ -5948,7 +6023,7 @@ export default {
               <div class="box-title" style="justify-content: center; margin-bottom: 25px;"><i class="fa-solid fa-cart-shopping"></i> Available Packages</div>
               <div class="package-preview" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
                   <div class="preview-card" style="background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 8px; padding: 20px;">
-                      <div class="box-title" style="font-size:16px; margin-bottom:15px; justify-content: center;">VIP - $10.00</div>
+                      <div class="box-title" style="font-size:16px; margin-bottom:15px; justify-content: center;">VIP - $10.00/mo</div>
                       <div class="perks-display" style="background:transparent; border:none; padding:0;">
                           <ul style="margin:0;">
                               <li>Builder Status</li>
@@ -5961,7 +6036,7 @@ export default {
                   </div>
                   
                   <div class="preview-card" style="background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 8px; padding: 20px;">
-                      <div class="box-title" style="font-size:16px; margin-bottom:15px; justify-content: center;">EVIP - $25.00</div>
+                      <div class="box-title" style="font-size:16px; margin-bottom:15px; justify-content: center;">EVIP - $25.00/mo</div>
                       <div class="perks-display" style="background:transparent; border:none; padding:0;">
                           <ul style="margin:0;">
                               <li>Builder+ Status</li>
@@ -6016,12 +6091,12 @@ export default {
                       <div class="box-title"><i class="fa-solid fa-cart-shopping"></i> Select Package</div>
                       <div class="package-selector">
                           <div class="package-option" onclick="selectPkg('VIP', 10.00)">
-                              <div class="option-info"><b>VIP</b><span>Standard Rank</span></div>
-                              <div class="option-price">$10.00</div>
+                              <div class="option-info"><b>VIP</b><span>Standard rank · billed monthly</span></div>
+                              <div class="option-price">$10.00/mo</div>
                           </div>
                           <div class="package-option selected" onclick="selectPkg('EVIP', 25.00)">
-                              <div class="option-info"><b>EVIP</b><span>Premium Rank</span></div>
-                              <div class="option-price">$25.00</div>
+                              <div class="option-info"><b>EVIP</b><span>Premium rank · billed monthly</span></div>
+                              <div class="option-price">$25.00/mo</div>
                           </div>
                           <div class="package-option" style="opacity: 0.5; filter: grayscale(1); cursor: not-allowed; position: relative; overflow: hidden;" onclick="return false;">
                               <div style="position: absolute; top: 10px; right: -35px; background: #666; color: #fff; padding: 5px 40px; transform: rotate(45deg); font-size: 10px; font-weight: 900; letter-spacing: 1px; box-shadow: 0 2px 10px rgba(0,0,0,0.5); z-index: 10;">WIP</div>
@@ -6052,7 +6127,7 @@ export default {
                               <span id="final-pkg" class="info-value">EVIP</span>
                           </div>
 
-                          <div class="referral-section" style="margin-top: 15px; border-top: 1px solid var(--border); padding-top: 15px;">
+                          <div class="referral-section" id="referral-section" style="margin-top: 15px; border-top: 1px solid var(--border); padding-top: 15px;">
                               <label style="font-size:11px; color:var(--text-dim); font-weight:bold; text-transform:uppercase;">Referral Code</label>
                               <div style="display:flex; gap:10px; margin-top:5px;">
                                   <input type="text" id="referral-input" class="lp-input" style="margin-top:0;" placeholder="Enter code for 10% off">
@@ -6062,7 +6137,7 @@ export default {
                           </div>
 
                           ${parseFloat(userCredit) > 0 ? `
-                          <div class="credit-section" style="margin-top: 15px; border-top: 1px solid var(--border); padding-top: 15px;">
+                          <div class="credit-section" id="credit-section" style="margin-top: 15px; border-top: 1px solid var(--border); padding-top: 15px;">
                               <div class="info-row">
                                   <span class="info-label">Available Credit:</span>
                                   <span class="info-value" style="color:#00c853;">$${userCredit}</span>
@@ -6077,12 +6152,12 @@ export default {
 
                           <div class="info-row" style="margin-top: 15px; border-top: 1px solid var(--border); padding-top: 15px;">
                               <span class="info-label" style="font-size:18px;">Total:</span>
-                              <span id="final-price" class="info-value" style="font-size:18px; color:var(--lp-blue);">$25.00</span>
+                              <span id="final-price" class="info-value" style="font-size:18px; color:var(--lp-blue);">$25.00/mo</span>
                           </div>
                       </div>
                       <div class="btn-row">
                           <button class="btn-store btn-back" onclick="goToStep(1)">Back</button>
-                          <button id="pay-btn" class="btn-store btn-next" onclick="startCheckout()">Pay Securely</button>
+                          <button id="pay-btn" class="btn-store btn-next" onclick="startCheckout()">Subscribe Securely</button>
                       </div>
                   </div>
                   </div>
@@ -6102,6 +6177,37 @@ export default {
                   "$LP": ["Universal Currency", "Works on All Servers", "Never Expires", "In-game Store Purchases"]
               };
 
+              function isMonthlyRankPkg(name) {
+                  return name === "VIP" || name === "EVIP";
+              }
+
+              function formatStorePrice(amount, name) {
+                  const suffix = isMonthlyRankPkg(name) ? "/mo" : "";
+                  return "$" + amount.toFixed(2) + suffix;
+              }
+
+              function syncCheckoutExtras() {
+                  const monthly = isMonthlyRankPkg(selectedPkgName);
+                  const referralSection = document.getElementById("referral-section");
+                  const creditSection = document.getElementById("credit-section");
+                  if (referralSection) referralSection.style.display = monthly ? "none" : "block";
+                  if (creditSection) creditSection.style.display = monthly ? "none" : "block";
+                  if (monthly) {
+                      currentReferral = null;
+                      appliedCredit = 0.00;
+                      const referralInput = document.getElementById("referral-input");
+                      const referralMsg = document.getElementById("referral-msg");
+                      const creditInput = document.getElementById("credit-input");
+                      const creditMsg = document.getElementById("credit-msg");
+                      if (referralInput) referralInput.value = "";
+                      if (referralMsg) referralMsg.innerText = "";
+                      if (creditInput) creditInput.value = "";
+                      if (creditMsg) creditMsg.innerText = "";
+                  }
+                  const payBtn = document.getElementById("pay-btn");
+                  if (payBtn) payBtn.innerText = monthly ? "Subscribe Securely" : "Pay Securely";
+              }
+
               function selectPkg(name, price) {
                   selectedPkgName = name;
                   selectedPkgPrice = price;
@@ -6112,6 +6218,7 @@ export default {
                   });
 
                   document.getElementById('lp-custom-amount').style.display = (name === '$LP') ? 'block' : 'none';
+                  syncCheckoutExtras();
                   updatePerks();
               }
 
@@ -6150,10 +6257,10 @@ export default {
                   price = Math.max(0, price - appliedCredit);
 
                   if (currentReferral || appliedCredit > 0) {
-                      finalPriceEl.innerHTML = '<span style="text-decoration: line-through; color: var(--text-dim); font-size: 14px; margin-right: 8px;">$' + selectedPkgPrice.toFixed(2) + '</span>' +
-                                             '<span style="color: #00c853;">$' + price.toFixed(2) + '</span>';
+                      finalPriceEl.innerHTML = '<span style="text-decoration: line-through; color: var(--text-dim); font-size: 14px; margin-right: 8px;">' + formatStorePrice(selectedPkgPrice, selectedPkgName) + '</span>' +
+                                             '<span style="color: #00c853;">' + formatStorePrice(price, selectedPkgName) + '</span>';
                   } else {
-                      finalPriceEl.innerText = '$' + selectedPkgPrice.toFixed(2);
+                      finalPriceEl.innerText = formatStorePrice(price, selectedPkgName);
                   }
                   document.getElementById('final-pkg').innerText = selectedPkgName;
               }
@@ -6240,6 +6347,7 @@ export default {
                   document.getElementById('step-1').style.display = (step === 1) ? 'flex' : 'none';
                   document.getElementById('step-2').style.display = (step === 2) ? 'flex' : 'none';
                   if (step === 2) {
+                      syncCheckoutExtras();
                       updatePriceUI();
                   }
               }
@@ -6281,6 +6389,7 @@ export default {
               }
 
               window.addEventListener('load', () => {
+                  syncCheckoutExtras();
                   updatePerks();
                   
                   const urlParams = new URLSearchParams(window.location.search);

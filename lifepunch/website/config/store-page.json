@@ -17,17 +17,23 @@
   "packages": [
     {
       "name": "VIP",
-      "type": "supporter-rank",
+      "type": "supporter-rank-subscription",
       "priceUsd": 10.0,
+      "billingInterval": "month",
+      "stripePriceId": "price_1TinR5980UYbxT0B4iv7DQ5v",
+      "stripeLookupKey": "VIP_Monthly",
       "rankBaseline": "players/ranks/vip-rank.json",
-      "notes": "Standard rank."
+      "notes": "Standard rank — billed monthly via Stripe."
     },
     {
       "name": "EVIP",
-      "type": "supporter-rank",
+      "type": "supporter-rank-subscription",
       "priceUsd": 25.0,
+      "billingInterval": "month",
+      "stripePriceId": "price_1TinMD980UYbxT0BPfZs8K8g",
+      "stripeLookupKey": "EVIP_Monthly",
       "rankBaseline": "players/ranks/evip-rank.json",
-      "notes": "Premium rank."
+      "notes": "Premium rank — billed monthly via Stripe."
     },
     {
       "name": "SLP - Work In Progress",

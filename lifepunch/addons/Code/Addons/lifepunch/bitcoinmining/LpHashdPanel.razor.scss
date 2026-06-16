@@ -18,6 +18,7 @@ $hashd-green: #5fd38d;
 
 @import "LpUiChrome.scss";
 @import "LpUiScale.scss";
+@import "../LifePunchUiFooter.razor.scss";
 
 .lp-bitcoin-ops {
 	position: absolute;
@@ -341,12 +342,16 @@ $hashd-green: #5fd38d;
 	}
 
 	.mock-greeting {
+		flex: 1 1 auto;
+		min-width: 0;
 		color: $hashd-title;
 		font-family: Georgia, "Times New Roman", serif;
 		font-size: 28px;
 		font-weight: 400;
 		line-height: 1.1;
 		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 
 	.header-widgets {
@@ -493,27 +498,37 @@ $hashd-green: #5fd38d;
 	}
 
 	.main-panel > .pane:not(.overview-mock) {
+		flex: 1 1 auto;
+		min-height: 0;
 		padding: 16px 18px 18px;
+		overflow-y: scroll;
+		overflow-x: hidden;
 	}
 
 	.main-panel {
 		flex: 1 1 auto;
 		min-width: 0;
+		min-height: 0;
+		display: flex;
+		flex-direction: column;
 		padding: 0;
-		overflow-y: scroll;
-		overflow-x: hidden;
+		overflow: hidden;
 	}
 
 	.overview-mock {
-		height: 100%;
+		flex: 1 1 auto;
 		min-height: 0;
+		display: flex;
+		flex-direction: column;
 	}
 
 	.mock-layout {
+		flex: 1 1 auto;
+		min-height: 0;
 		display: flex;
 		flex-direction: row;
 		align-items: stretch;
-		min-height: 100%;
+		overflow: hidden;
 	}
 
 	.mock-main {
@@ -525,6 +540,7 @@ $hashd-green: #5fd38d;
 		gap: 14px;
 		padding: 16px 18px 18px;
 		overflow-y: scroll;
+		overflow-x: hidden;
 	}
 
 	.hero-row {
@@ -903,13 +919,18 @@ $hashd-green: #5fd38d;
 
 	.server-status-rail {
 		width: 248px;
-		flex-shrink: 0;
+		flex: 0 0 248px;
+		min-width: 248px;
+		max-width: 248px;
+		min-height: 0;
 		display: flex;
 		flex-direction: column;
 		gap: 12px;
 		padding: 16px 14px 18px;
 		background-color: $hashd-surface;
 		border-left: 1px solid $hashd-border;
+		overflow-y: scroll;
+		overflow-x: hidden;
 	}
 
 	.server-status-head {
@@ -943,16 +964,17 @@ $hashd-green: #5fd38d;
 
 	.server-visual {
 		position: relative;
-		flex: 1 1 auto;
-		min-height: 220px;
+		flex: 0 0 auto;
+		min-height: 180px;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
 		gap: 10px;
-		padding: 18px 12px 88px;
+		padding: 18px 12px 16px;
 		border-radius: 18px;
-		background: radial-gradient(circle at 50% 35%, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.01) 58%), $hashd-card;
+		background-color: $hashd-card;
+		background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.01));
 		border: 1px solid $hashd-border;
 	}
 
@@ -976,8 +998,7 @@ $hashd-green: #5fd38d;
 	}
 
 	.server-stats-overlay {
-		position: relative;
-		margin-top: -74px;
+		flex-shrink: 0;
 		display: flex;
 		flex-direction: row;
 		gap: 8px;
@@ -1412,6 +1433,14 @@ $hashd-green: #5fd38d;
 		&:hover {
 			background-color: #f3ae0a;
 		}
+
+		&.disabled,
+		&.disabled:hover {
+			opacity: 0.45;
+			cursor: default;
+			background-color: rgba(232, 125, 62, 0.35);
+			border-color: rgba(232, 125, 62, 0.35);
+		}
 	}
 
 	.rack-list {
@@ -1518,7 +1547,8 @@ $hashd-green: #5fd38d;
 			border-color: rgba(255, 255, 255, 0.16);
 		}
 
-		&:disabled {
+		&.disabled,
+		&.disabled:hover {
 			opacity: 0.45;
 			cursor: default;
 		}

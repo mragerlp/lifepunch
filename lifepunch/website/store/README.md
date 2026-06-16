@@ -19,7 +19,7 @@ Observed purpose:
 Observed store notice:
 
 ```text
-Support LifePunch and unlock exclusive perks! Your purchases help keep our servers running and allow us to add new features. All donations are non-refundable but carry immense value.
+Support LifePunch with a monthly VIP or EVIP subscription and unlock exclusive perks! Your subscription helps keep our servers running and funds new features. Billed monthly through Stripe — cancel anytime.
 ```
 
 Observed panels:
@@ -31,8 +31,8 @@ Observed panels:
 
 Observed packages:
 
-- `VIP`: `$10.00`, standard rank.
-- `EVIP`: `$25.00`, premium rank.
+- `VIP`: `$10.00/mo` monthly subscription (`price_1TinR5980UYbxT0B4iv7DQ5v`), standard rank.
+- `EVIP`: `$25.00/mo` monthly subscription (`price_1TinMD980UYbxT0BPfZs8K8g`), premium rank.
 - `SLP - Work In Progress`: in-game currency, shown as work in progress.
 - `SLP Currency ($)`: appears in transaction history at `$5.00`.
 
@@ -44,7 +44,7 @@ Observed checkout fields/actions:
 - `Apply` referral action.
 - Total.
 - `Back`.
-- `Pay Securely`.
+- `Subscribe Securely` (VIP/EVIP monthly) or `Pay Securely` (future one-time packages).
 
 Observed Stripe payment methods:
 
