@@ -10,11 +10,15 @@ Future structure:
 
 ```text
 discord/
-  docs/
+  docs/           ← pinned channel copy (welcome post lives here)
   bots/
   moderation/
   announcements/
 ```
+
+## Pinned channel copy
+
+Reusable Discord markdown is tracked in `docs/` — start with `docs/welcome-official-channel.md` for the official welcome/rules intro.
 
 Discord secrets belong in `../secure`. DXRP webhook categories are tracked in `../webhooks` and `../portal/network`.
 

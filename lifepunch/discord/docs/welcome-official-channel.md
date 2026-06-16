@@ -1,0 +1,50 @@
+<!--
+LIFEPUNCH Discord welcome / rules channel pinned post.
+Paste everything BELOW this comment into Discord (#welcome or #rules).
+Requires custom emoji :lifepunchlogo: on the server.
+-->
+
+# LifePunch Official
+
+LIFEPUNCH™ is the next chapter of a community that started in **Garry's Mod DarkRP** — rebuilt from the ground up on **s&box** with original systems, addons, and long-term progression in mind.
+
+What began as years inside a serious GMod community lives on here: player-driven stories, deep job ecosystems, and development that respects that legacy without copying it. LIFEPUNCH™ is not a rebrand gimmick — it is a full revamp: new engine, new codebase, and a growing portfolio of immersive experiences designed to last on DXRP.
+
+Whether you played with us back on GMod, you are discovering LIFEPUNCH™ for the first time, or you are here to test what we ship next — you are welcome. Help us build what this community was always meant to become. :lifepunchlogo:
+
+## Rules
+
+- Be respectful
+- Don't spam
+- Don't advertise
+- No hate speech
+- Use English
+- Follow staff instructions
+
+## :link: Links
+
+- **[Website](https://lifepunch.co/)**
+- **[Rules](https://lifepunch.co/rules)**
+- **[Store](https://lifepunch.co/store)**
+- **[Discord](https://discord.gg/lifepunch)**
+- **[Steam Group](https://steamcommunity.com/groups/lifepunchofficial)**
+- **[s&box Organization Page](https://sbox.game/lifepunch)**
+
+## :sparkling_heart: Support Development
+
+Supporters help fund servers, testing, infrastructure, and the content pipeline across the entire LIFEPUNCH™ ecosystem — the same way a committed community kept the GMod era alive.
+
+**[Support the project](https://lifepunch.co/store)**
+
+## LIFEPUNCH™ Ecosystem
+
+- :computer: Cyber Operations
+- ₿ Cryptocurrency Mining
+- :classical_building: Government Networks
+- :bank: Financial Systems
+- :flag_black: Black Market
+- :dark_sunglasses: Criminal Enterprises
+- :package: Premium Addons & Expansions
+- :rocket: Future Gameplay Experiences
+
+Join the community and help shape the future of LIFEPUNCH™.
