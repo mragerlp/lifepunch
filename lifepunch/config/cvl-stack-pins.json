@@ -49,7 +49,7 @@
       "id": "jtc_mcp_server",
       "role": "editor MCP — scene automation, files, built-in docs/API search",
       "library": "jtc.mcp-server",
-      "endpoint": "http://127.0.0.1:29015/mcp",
+      "endpoint": "http://localhost:29015/mcp",
       "cursorServerKey": "sbox-jtc",
       "portRegistry": "lifepunch/config/sbox-mcp-ports.json",
       "updateVia": "s&box Library Manager → update jtc/mcp-server; confirm MCP Server dock listening; Install-VengeanceSboxEditorMcp.ps1"

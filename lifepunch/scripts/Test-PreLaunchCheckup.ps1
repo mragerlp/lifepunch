@@ -211,7 +211,8 @@ function Test-VengeanceMcpStack {
         Write-Check 'VENGEANCE sbox-jtc MCP (jtc)' $jtcOk $jtcUrl
     }
     else {
-        Write-Check 'VENGEANCE sbox-jtc MCP (jtc)' $jtcOk $jtcUrl -Warning:(-not $jtcOk)
+        $jtcHint = if (-not $jtcOk) { ' — open Editor dock MCP Server (jtc has no autostart)' } else { '' }
+        Write-Check 'VENGEANCE sbox-jtc MCP (jtc)' $jtcOk ($jtcUrl + $jtcHint) -Warning:(-not $jtcOk)
     }
 
     $lmOk = $false

@@ -76,6 +76,11 @@ if (Test-Path -LiteralPath $sweepExec) {
     & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $sweepExec
 }
 
+$overlaySync = Join-Path $Here 'Sync-DxrpEditorOverlays.ps1'
+if (Test-Path -LiteralPath $overlaySync) {
+    & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $overlaySync -ConfigPath $ConfigPath
+}
+
 if (-not $NoSync) {
     if ($BitcoinOnly -or ($PreflightFix -and -not $SyncAllAddons)) {
         $bitcoinOnlyScript = Join-Path $Here 'Set-DxrpLifepunchBitcoinOnly.ps1'
@@ -154,6 +159,9 @@ if ($WithAuthorize) {
 else {
     Write-Host 'Editor started. Host play, then lp_authorize <token> if you need portal/API data.' -ForegroundColor Cyan
     Write-Host '  Rank bots wait for lp_authorize — vanilla editor play will NOT spawn them.' -ForegroundColor DarkGray
+    Write-Host '  sbox-jtc: open Editor dock "MCP Server" (jtc) — it does NOT autostart like chomnr.' -ForegroundColor Yellow
+    Write-Host '  LifePunch overlay autostarts jtc when Sync-DxrpEditorOverlays.ps1 ran (see dxrp-overlays/Editor).' -ForegroundColor DarkGray
+    Write-Host '  Then Cursor Reload Window if sbox-jtc MCP is red.' -ForegroundColor DarkGray
 }
 
 if (-not $SkipConnectivityWatch) {

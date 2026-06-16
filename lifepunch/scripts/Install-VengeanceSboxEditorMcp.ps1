@@ -6,7 +6,7 @@
   Triple-stack on VENGEANCE:
     sbox         — sboxskinsgg.claudebridge via npx sbox-mcp-server (file IPC, play mode / runtime)
     sbox-editor  — notpointless.chomnr_mcp (HTTP 127.0.0.1:9090/sbox-mcp, ModelDoc / compile)
-    sbox-jtc     — jtc.mcp-server (HTTP 127.0.0.1:29015/mcp, scene automation + docs/API)
+    sbox-jtc     — jtc.mcp-server (HTTP localhost:29015/mcp, scene automation + docs/API)
 
   Port registry: lifepunch/config/sbox-mcp-ports.json
   Claude Bridge does NOT bind HTTP :29015 — no conflict with jtc.
@@ -37,8 +37,8 @@ $portCfg = Get-SboxMcpPortConfig
 if ($Port -le 0) { $Port = $portCfg.ChomnrPort }
 if ($JtcPort -le 0) { $JtcPort = $portCfg.JtcPort }
 
-$chomnrUrl = "http://127.0.0.1:$Port$($portCfg.ChomnrPath)"
-$jtcUrl = "http://127.0.0.1:$JtcPort$($portCfg.JtcPath)"
+$chomnrUrl = if ($Port -eq $portCfg.ChomnrPort) { $portCfg.ChomnrUrl } else { "http://127.0.0.1:$Port$($portCfg.ChomnrPath)" }
+$jtcUrl = if ($JtcPort -eq $portCfg.JtcPort) { $portCfg.JtcUrl } else { "http://localhost:$JtcPort$($portCfg.JtcPath)" }
 
 if (-not $ConfigPath) { $ConfigPath = Join-Path $Here 'dxrp-editor.local.json' }
 

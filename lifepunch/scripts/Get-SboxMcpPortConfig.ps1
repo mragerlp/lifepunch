@@ -24,16 +24,21 @@ function Get-SboxMcpPortConfig {
     $jtcPath = '/mcp'
     $ipcDir = Join-Path $env:TEMP 'sbox-bridge-ipc'
 
+    $jtcHost = 'localhost'
+    $chomnrHost = '127.0.0.1'
+
     if (Test-Path -LiteralPath $ConfigPath) {
         $raw = Get-Content -LiteralPath $ConfigPath -Raw | ConvertFrom-Json
         if ($raw.chomnr.port) { $chomnrPort = [int]$raw.chomnr.port }
         if ($raw.chomnr.path) { $chomnrPath = [string]$raw.chomnr.path }
+        if ($raw.chomnr.host) { $chomnrHost = [string]$raw.chomnr.host }
         if ($raw.jtc.port) { $jtcPort = [int]$raw.jtc.port }
         if ($raw.jtc.path) { $jtcPath = [string]$raw.jtc.path }
+        if ($raw.jtc.host) { $jtcHost = [string]$raw.jtc.host }
     }
 
-    $chomnrUrl = "http://127.0.0.1:$chomnrPort$chomnrPath"
-    $jtcUrl = "http://127.0.0.1:$jtcPort$jtcPath"
+    $chomnrUrl = "http://${chomnrHost}:$chomnrPort$chomnrPath"
+    $jtcUrl = "http://${jtcHost}:$jtcPort$jtcPath"
 
     [pscustomobject]@{
         ConfigPath   = $ConfigPath

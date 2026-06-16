@@ -11,16 +11,19 @@
     "library": "sboxskinsgg.claudebridge"
   },
   "chomnr": {
+    "host": "127.0.0.1",
     "port": 9090,
     "path": "/sbox-mcp",
     "cursorServerKey": "sbox-editor",
     "library": "notpointless.chomnr_mcp"
   },
   "jtc": {
+    "host": "localhost",
     "port": 29015,
     "path": "/mcp",
     "cursorServerKey": "sbox-jtc",
-    "library": "jtc.mcp-server"
+    "library": "jtc.mcp-server",
+    "hostnameNote": "jtc HttpListener binds localhost only — Cursor must use localhost, not 127.0.0.1 (HTTP 400 Invalid Hostname)"
   },
   "cornermanLm": {
     "cursorServerKey": "cornerman-lm"

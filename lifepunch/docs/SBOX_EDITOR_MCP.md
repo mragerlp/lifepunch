@@ -19,7 +19,7 @@
 |------------|-----------|---------|
 | `sbox` | `npx sbox-mcp-server` + `%TEMP%\sbox-bridge-ipc` | Play mode, runtime C#, logs, game screenshots, LifePunch ConCmds |
 | `sbox-editor` | `http://127.0.0.1:9090/sbox-mcp` | ModelDoc, ShaderGraph, prefabs, compile errors, chomnr-imported tools |
-| `sbox-jtc` | `http://127.0.0.1:29015/mcp` | Scene graph, components, files, docs/API search, editor play/console |
+| `sbox-jtc` | `http://localhost:29015/mcp` | Scene graph, components, files, docs/API search, editor play/console |
 
 Install / refresh: `lifepunch/scripts/Install-VengeanceSboxEditorMcp.ps1` (or `Install-VengeanceMcpStack.ps1` for full Red stack incl. `cornerman-lm`)
 
@@ -29,7 +29,7 @@ Install / refresh: `lifepunch/scripts/Install-VengeanceSboxEditorMcp.ps1` (or `I
 |------|-------|------|-------|
 | *(none)* | **Claude Bridge** | file IPC | `get_bridge_status` may mention `:29015` as npm metadata — **Bridge does not bind HTTP** |
 | **9090** | **chomnr** | `/sbox-mcp` | ModelDoc / compile / undo |
-| **29015** | **jtc** | `/mcp` | Scene automation + built-in Facepunch docs/API crawler |
+| **29015** | **jtc** | `/mcp` | **Bind host = `localhost` only** — Cursor URL must be `http://localhost:29015/mcp`, not `127.0.0.1` |
 
 Change ports: edit `sbox-mcp-ports.json` + matching dock UI (chomnr Settings / jtc Port field) → re-run install script with `-Port` / `-JtcPort`.
 
@@ -42,7 +42,7 @@ Change ports: edit `sbox-mcp-ports.json` + matching dock UI (chomnr Settings / j
 | Where you look | What it means | Full capacity |
 |----------------|---------------|---------------|
 | **s&box editor bottom-right** `MCP · N` | **chomnr** editor HTTP server · **N = connected AI clients** (Cursor tabs/agents), not “number of MCP servers” | **Green dot** + **`MCP · 1` or higher** (N ≥ 1). **`MCP 6` is fine** — six clients hooked to `sbox-editor`. Click pill → MCP dock → **Overview** to see client names. |
-| **Editor dock “MCP Server” (jtc)** | **jtc** listener on `:29015/mcp` | **Listening** in dock header; separate from chomnr pill |
+| **jtc dock "MCP Server"** | HTTP `:29015/mcp` | **Must open dock each editor session** — jtc has **no autostart** (unlike chomnr). Green dot + "Listening" in dock header. |
 | **Cursor → Settings → MCP** | Cursor-side MCP servers | **4 green** on VENGEANCE: `sbox`, `sbox-editor`, `sbox-jtc`, `cornerman-lm` |
 | **Claude Bridge** (play mode) | Runtime IPC | `get_bridge_status` → `connected: true`, heartbeat &lt; 30s |
 
@@ -218,6 +218,7 @@ Refresh mcp only: `Install-CornermanSboxBridgeMcp.ps1`
 | **Two editor MCP servers** | Name clearly: `sbox-editor` (chomnr) vs `sbox-jtc` (jtc); agents must pick by task |
 | **Editor must be open** | `sbox-editor` and `sbox-jtc` offline without `Start-SboxDxrpEditor.ps1` |
 | **Port 9090 conflicts** | chomnr Settings → change port → re-run install script `-Port N` |
+| **jtc has no autostart** | Open **Editor → MCP Server** dock each session; probe: `Test-JtcMcpListener.ps1` |
 | **Port 29015 conflicts** | jtc dock Port field → Stop/Start → re-run install script `-JtcPort N` |
 | **Cornerman tunnel extra step** | Run `Start-CornermanSboxEditorTunnel.ps1 -Background` when using Green for editor MCP |
 | **Default Full access** | Switch to **Approve writes** in MCP dock Settings on first open |
@@ -231,7 +232,7 @@ Refresh mcp only: `Install-CornermanSboxBridgeMcp.ps1`
 1. `powershell -File lifepunch\scripts\Install-VengeanceMcpStack.ps1`
 2. `powershell -File lifepunch\scripts\Start-SboxDxrpEditor.ps1`
 3. Editor → **chomnr MCP** dock → **Approve writes**
-4. Editor → **MCP Server (jtc)** dock → confirm `:29015/mcp` listening
+4. Editor → **MCP Server (jtc)** dock → confirm `:29015/mcp` **Listening** (required every session — no autostart)
 5. Restart Cursor → MCP panel: `sbox` + `sbox-editor` + `sbox-jtc` + `cornerman-lm` green
 6. Smoke: `sbox-editor` → list tools; `sbox-jtc` → `get_server_status`; `sbox` → `get_bridge_status`
 6. Bitcoin P0: `modeldoc` / shader tools on `lifepunch_rgb_fan_led.shader` + `gpu-rack-gpu.vmat`
