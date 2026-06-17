@@ -94,20 +94,23 @@ Full runbook: `lifepunch/server/START_DEV_SERVER.md`
 
 ---
 
-## 7. `Compile of 'dxura.rp' Failed` — LifePunchUiScale / LifePunchUiFooter not found
+## 7. `Compile of 'dxrp.rp' Failed` — LifePunchUiScale / lifepunch.ulx (only if ULX is pinned)
 
-**Cause:** Published `lifepunch.ulx` code zip shipped only 6 adminmenu files — not the 5 shared UI helpers StaffMenu needs.
+**Skip this section if lifepunch.ulx is NOT on the Dev gamemode** — remove stale on-disk folder instead:
 
-**On-box fix (lifepunchnet, after `git pull`):**
+```bat
+rmdir /S /Q "C:\S&BOX DXRP Server\dxrp\game\Code\Addons\lifepunch\dxrpadminmenu"
+rmdir /S /Q "C:\S&BOX DXRP Server\dev-patches"
+```
+
+Then `start_dev_server.bat` again.
+
+**Only when ULX is pinned on portal:** published zip must include 11 code files. Manual patch (repo only, not deployed to install root):
 
 ```powershell
 cd C:\lifepunch\lifepunch-rdp-server\lifepunch\server\dxrp-host\scripts
 powershell -ExecutionPolicy Bypass -File .\Patch-LifepunchnetUlxCompile.ps1
 ```
-
-Then restart `C:\S&BOX DXRP Server\server2_start.bat`.
-
-**Portal republish (permanent):** staging must be `upload\Code\Addons\lifepunch\lifepunchulx\` with **11** code files — run `prepare-publish.ps1 -Addon adminmenu` from a repo that includes the bundle fix, then upload that tree as **r8**.
 
 ---
 

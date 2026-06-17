@@ -35,6 +35,12 @@ DO NOT:
   - Run server1_start.bat (that is 70p Official)
   - Change ULX portal revisions to fix Steam
   - Run multiple server2_start / start_dev_server at once
+  - Run Patch-LifepunchnetUlxCompile.ps1 (ULX is OFF your gamemode — not needed)
+
+ULX OFF GAMEMODE — remove stale on-disk copy (one-time, if compile still mentions lifepunch.ulx):
+  rmdir /S /Q "C:\S&BOX DXRP Server\dxrp\game\Code\Addons\lifepunch\dxrpadminmenu"
+  rmdir /S /Q "C:\S&BOX DXRP Server\dev-patches"
+  Then start_dev_server.bat again. Portal will NOT download ULX until you re-pin it.
 
 Portal: Development server token lives in:
   C:\S&BOX DXRP Server\secure\development.local.env
