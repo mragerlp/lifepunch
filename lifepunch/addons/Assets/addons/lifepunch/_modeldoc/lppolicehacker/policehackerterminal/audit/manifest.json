@@ -1,0 +1,9 @@
+﻿{
+    "texture_files":  32,
+    "role":  "Police Terminal",
+    "primary_mesh":  "game/source/fbx/Terminal_TH.fbx",
+    "issues":  [
+
+               ],
+    "slot":  "policehackerterminal"
+}

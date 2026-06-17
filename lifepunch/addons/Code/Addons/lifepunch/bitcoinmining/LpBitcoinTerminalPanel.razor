@@ -68,12 +68,12 @@
 							<div class="boot-hint">click to skip boot</div>
 						</div>
 					}
-					<LpBitcoinTerminalLogPanel @ref="LogPanel">
+					<div class="log" @ref="LogPanel">
 						@foreach ( var line in _lines )
 						{
 							<div class="log-line @LineClass( line )">@line.Text</div>
 						}
-					</LpBitcoinTerminalLogPanel>
+					</div>
 					<div class="prompt-row" onclick="@FocusInput">
 						<span class="prompt">rig@hub&gt;</span>
 						<TextEntry class="cmd-input" @ref="InputBox" onsubmit="@Submit" Placeholder="type command..." />
@@ -109,7 +109,7 @@
 	private bool _showScaleMenu;
 	private LpUiScaleSize _uiScale = LpUiScale.Default;
 	private TextEntry InputBox { get; set; }
-	private LpBitcoinTerminalLogPanel LogPanel { get; set; }
+	private Panel LogPanel { get; set; }
 
 	private const int MaxLogLines = 36;
 
@@ -205,7 +205,7 @@
 		if ( !LogPanel.IsValid() )
 			return;
 
-		LogPanel.ProvideCopyText = BuildLogClipboardText;
+		LogPanel.AcceptsFocus = true;
 	}
 
 	public void Bind( LpBitcoinHubEntity hub, LpBitcoinRackEntity focusRack = null )

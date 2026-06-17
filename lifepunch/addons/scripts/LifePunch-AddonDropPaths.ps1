@@ -7,10 +7,12 @@
     %USERPROFILE%\OneDrive\Desktop\LIFEPUNCH*\addons\
 
   Package layout (Jun 2026):
-    lifepunchhacker\hacker\serverrack | hackerterminal
+    lifepunchhacker\hacker\serverrack | advancedserverrack | hackerterminal | advancedhackerterminal
     lifepunchhacker\fbi\governmentserverrack | governmentterminal
     lifepunchbitcoin\bitcoinminer | gpurack | bitcointerminal
     lifepunchblackmarketdealer\blackmarkethub | blackmarketterminal | blackmarketcardreader
+
+  Canonical map: addons/docs/MODEL_INTAKE_DROP_MAP.md
 #>
 
 function Get-LifePunchAddonsDropRoot {
@@ -31,7 +33,9 @@ function Get-LifePunchAddonsDropRoot {
 # Relative paths under addons\ (keys = intake script lookup id)
 $script:LifePunchEntityDropMap = @{
     'hacker.server-rack'           = 'lifepunchhacker\hacker\serverrack'
+    'hacker.advanced-server-rack'  = 'lifepunchhacker\hacker\advancedserverrack'
     'hacker.hacker-terminal'       = 'lifepunchhacker\hacker\hackerterminal'
+    'hacker.advanced-hacker-terminal' = 'lifepunchhacker\hacker\advancedhackerterminal'
     'fbi.government-server-rack'   = 'lifepunchhacker\fbi\governmentserverrack'
     'fbi.government-terminal'      = 'lifepunchhacker\fbi\governmentterminal'
     'bitcoin.bitcoin-miner'        = 'lifepunchbitcoin\bitcoinminer'

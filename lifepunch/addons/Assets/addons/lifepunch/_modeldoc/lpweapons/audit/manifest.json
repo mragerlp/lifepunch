@@ -1,0 +1,39 @@
+﻿{
+    "packageSlug":  "lifepunchak47+",
+    "healthScore":  100,
+    "slotCount":  2,
+    "package":  "lpweapons",
+    "role":  "Weapon pipeline (parallel to prop pass)",
+    "totalSizeMB":  60.57,
+    "generated":  "2026-06-17T00:29:01.8068922-04:00",
+    "slots":  [
+                  {
+                      "fbx":  1,
+                      "textures":  6,
+                      "blend":  1,
+                      "obj":  0,
+                      "sizeMB":  24.29,
+                      "role":  "AK-47 weapon",
+                      "issues":  [
+                                     "Parallel weapon track â€” not cyber prop Phase 1"
+                                 ],
+                      "slot":  "ak47military",
+                      "primary_mesh":  "game/source/fbx/AK47.fbx"
+                  },
+                  {
+                      "fbx":  1,
+                      "textures":  12,
+                      "blend":  0,
+                      "obj":  0,
+                      "sizeMB":  36.28,
+                      "role":  "AR-15 weapon",
+                      "issues":  [
+                                     "Parallel weapon track",
+                                     "glb/usdz/gltf kept in slot root as reference only"
+                                 ],
+                      "slot":  "ar15military",
+                      "primary_mesh":  "game/source/fbx/ar_15.fbx"
+                  }
+              ],
+    "priority":  "parallel"
+}

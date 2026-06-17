@@ -1,0 +1,8 @@
+﻿{
+    "role":  "Banker ATM",
+    "primary_mesh":  "game/source/fbx/SM_ATM_Modern_01.fbx",
+    "issues":  [
+
+               ],
+    "slot":  "bankeratm"
+}

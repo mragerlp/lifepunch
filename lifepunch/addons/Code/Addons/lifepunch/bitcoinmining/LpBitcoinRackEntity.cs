@@ -51,11 +51,15 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable
 	private bool _lastMiningVisual;
 	private bool _capacityAlertSent;
 
+	protected override void OnAwake()
+	{
+		LifePunchPropPhysics.SyncBoxColliderFromModel( GameObject );
+	}
+
 	protected override void OnStart()
 	{
 		base.OnStart();
 #if !LIFEPUNCH_LOCAL
-		LifePunchPropPhysics.SyncBoxColliderFromModel( GameObject );
 		if ( Networking.IsHost )
 			LifePunchGroundContact.AlignMeshBottom( GameObject );
 		this.TryBindSpawnOwnerHost();
@@ -266,17 +270,7 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable
 	private void ApplyRackMiningVisual( bool mining )
 	{
 		_lastMiningVisual = mining;
-
-		if ( !_modelRenderer.IsValid() )
-			_modelRenderer = Components.Get<ModelRenderer>( FindMode.EverythingInSelf );
-
-		if ( !_modelRenderer.IsValid() )
-			return;
-
-		// Never play power_on on the live mesh — it mis-rotates fan bones. LpBitcoinRackVisuals spins bones on bindPose.
-		var skinned = LpBitcoinSkinnedFanSpin.GetSkinned( _modelRenderer );
-		if ( skinned.IsValid() )
-			LpBitcoinSkinnedFanSpin.ForceBindPose( skinned );
+		// Fan spin is prefab child GOs (Evo pattern) — LpBitcoinRackVisuals drives rotation.
 	}
 
 	private void RefreshLinkedTerminalScreens()

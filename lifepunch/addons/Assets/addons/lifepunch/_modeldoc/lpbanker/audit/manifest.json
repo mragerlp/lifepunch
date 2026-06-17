@@ -1,0 +1,51 @@
+﻿{
+    "packageSlug":  "lifepunchbanker",
+    "healthScore":  100,
+    "slotCount":  3,
+    "package":  "lpbanker",
+    "role":  "Legitimate financial economy",
+    "totalSizeMB":  2058.65,
+    "generated":  "2026-06-17T00:29:01.7962578-04:00",
+    "slots":  [
+                  {
+                      "fbx":  1,
+                      "textures":  14,
+                      "blend":  1,
+                      "obj":  0,
+                      "sizeMB":  6.69,
+                      "role":  "Banker ATM",
+                      "issues":  [
+
+                                 ],
+                      "slot":  "bankeratm",
+                      "primary_mesh":  "game/source/fbx/SM_ATM_Modern_01.fbx"
+                  },
+                  {
+                      "fbx":  1,
+                      "textures":  20,
+                      "blend":  1,
+                      "obj":  0,
+                      "sizeMB":  946.2,
+                      "role":  "Banker Hub (Safe/Vault)",
+                      "issues":  [
+                                     "4K TGA dupes in source â€” game/textures has first-pass 2K/png subset only"
+                                 ],
+                      "slot":  "bankerhub",
+                      "primary_mesh":  "game/source/fbx/Safe_all.fbx"
+                  },
+                  {
+                      "fbx":  1,
+                      "textures":  22,
+                      "blend":  1,
+                      "obj":  0,
+                      "sizeMB":  1105.76,
+                      "role":  "Bank Terminal",
+                      "issues":  [
+
+                                 ],
+                      "slot":  "bankerterminal",
+                      "primary_mesh":  "game/source/fbx/Computer.fbx"
+                  }
+              ],
+    "priority":  "P2"
+}

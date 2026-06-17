@@ -1,0 +1,38 @@
+﻿{
+    "packageSlug":  "defer",
+    "healthScore":  100,
+    "slotCount":  2,
+    "package":  "lpflashdrive",
+    "role":  "USB storage + electronics table (gameplay later)",
+    "totalSizeMB":  381.04,
+    "generated":  "2026-06-17T00:29:01.8016155-04:00",
+    "slots":  [
+                  {
+                      "fbx":  1,
+                      "textures":  13,
+                      "blend":  0,
+                      "obj":  0,
+                      "sizeMB":  27.71,
+                      "role":  "Electronics / upgrade table",
+                      "issues":  [
+
+                                 ],
+                      "slot":  "electronicstable",
+                      "primary_mesh":  "game/source/fbx/Soldering_Kit.fbx"
+                  },
+                  {
+                      "fbx":  1,
+                      "textures":  7,
+                      "blend":  1,
+                      "obj":  0,
+                      "sizeMB":  353.33,
+                      "role":  "USB Flash Drive (all color variants in textures)",
+                      "issues":  [
+
+                                 ],
+                      "slot":  "usbflashdrive",
+                      "primary_mesh":  "game/source/fbx/USB_flash.fbx"
+                  }
+              ],
+    "priority":  "P3"
+}

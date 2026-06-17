@@ -1,0 +1,38 @@
+﻿{
+    "packageSlug":  "TBD",
+    "healthScore":  100,
+    "slotCount":  2,
+    "package":  "lpgovernment",
+    "role":  "Government hub + terminal",
+    "totalSizeMB":  218.12,
+    "generated":  "2026-06-17T00:29:01.7842328-04:00",
+    "slots":  [
+                  {
+                      "fbx":  1,
+                      "textures":  6,
+                      "blend":  0,
+                      "obj":  0,
+                      "sizeMB":  9.31,
+                      "role":  "Government HUB",
+                      "issues":  [
+
+                                 ],
+                      "slot":  "governmenthub",
+                      "primary_mesh":  "game/source/fbx/Server_pillar.fbx"
+                  },
+                  {
+                      "fbx":  1,
+                      "textures":  5,
+                      "blend":  0,
+                      "obj":  0,
+                      "sizeMB":  208.81,
+                      "role":  "Government Terminal",
+                      "issues":  [
+
+                                 ],
+                      "slot":  "governmentterminal",
+                      "primary_mesh":  "game/source/fbx/sm_computer_console_01.fbx"
+                  }
+              ],
+    "priority":  "P1"
+}

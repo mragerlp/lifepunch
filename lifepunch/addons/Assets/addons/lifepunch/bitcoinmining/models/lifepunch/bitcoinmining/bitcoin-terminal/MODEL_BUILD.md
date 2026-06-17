@@ -22,7 +22,7 @@ lifepunch/scripts/Start-SboxDxrpEditor.ps1 -SyncAddon bitcoinmining
 ## ModelDoc
 
 1. Import `computer.fbx`; note material slots → fill `material-map.json`.
-2. **`import_scale = 0.0272`**, **`import_rotation = [-90, 0, 0]`** (Jun 2026 — FBX imported flat; pitch upright → ~20u desk height @ prefab **1,1,1**).
+2. **`import_scale = 0.0272`**, **`import_rotation = [0, 0, 0]`**, align **Center / Center / Bottom** (Jun 2026 — drop stale `-90` pitch; it laid the CRT on its side). Prefab root **`1,1,1`**.
 3. Compile `bitcoin-terminal.vmdl`.
 3. **Separate entity** `entities/bitcoin-terminal/bitcoin-terminal.prefab` — not a child of `bitcoin-miner`.
 4. `lcd_screen` `TextRenderer` on terminal; `BitcoinTerminalProp` auto-links to nearest rig + opens hashd on USE.
@@ -30,7 +30,7 @@ lifepunch/scripts/Start-SboxDxrpEditor.ps1 -SyncAddon bitcoinmining
    - Open `bitcoin-terminal.vmdl` in **DXRP** project scope (not standalone `addons.sbproj`).
    - Compile each `materials/bitcoin-terminal-*.vmat` (six files).
    - Compile `bitcoin-terminal.vmdl` → produces `bitcoin-terminal.vmdl_c`.
-6. **Prefab collider (Jun 2026):** `BoxCollider` center **`0,0,9`**, scale **`10,4,9`** — matches `import_scale` 0.0195 bottom-aligned mesh (~18u tall). Stale `0,10,20` / `14×18×8` was from the giant pre-scale import.
+6. **Prefab collider:** `BoxCollider` **Center** + **Scale** must equal **`model.Bounds`** (white wireframe in prefab editor). Copy from `lp_bitcoin_scale_audit` log line `modelBounds center=… size=…` — **not** `GetBounds()` world render bounds. `LpBitcoinTerminalEntity.OnAwake` auto-syncs green box from `model.Bounds` when the prefab loads. **Unique prefab GUIDs** — never reuse `bitcoin-miner` placeholder guids.
 7. **Pull compiled into monorepo** (repo→DXRP `/MIR` deletes `_c` if missing from git):
    ```powershell
    powershell -File lifepunch/scripts/Pull-DxrpCompiledAssetsToRepo.ps1

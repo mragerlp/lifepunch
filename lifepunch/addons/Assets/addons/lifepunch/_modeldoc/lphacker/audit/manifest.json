@@ -1,0 +1,64 @@
+﻿{
+    "packageSlug":  "lifepunchhacker",
+    "healthScore":  100,
+    "slotCount":  4,
+    "package":  "lphacker",
+    "role":  "Cybercrime progression (basic + advanced tiers)",
+    "totalSizeMB":  2178.67,
+    "generated":  "2026-06-17T00:29:01.7699507-04:00",
+    "slots":  [
+                  {
+                      "fbx":  1,
+                      "textures":  7,
+                      "blend":  0,
+                      "obj":  0,
+                      "sizeMB":  6.15,
+                      "role":  "Advanced Hacker HUB",
+                      "issues":  [
+
+                                 ],
+                      "slot":  "advancedhackerhub",
+                      "primary_mesh":  "game/source/fbx/Servers.fbx"
+                  },
+                  {
+                      "fbx":  1,
+                      "textures":  32,
+                      "blend":  1,
+                      "obj":  0,
+                      "sizeMB":  1253.58,
+                      "role":  "Advanced Hacker Terminal",
+                      "issues":  [
+
+                                 ],
+                      "slot":  "advancedhackerterminal",
+                      "primary_mesh":  "game/source/fbx/PC_all_in_one.fbx"
+                  },
+                  {
+                      "fbx":  1,
+                      "textures":  13,
+                      "blend":  0,
+                      "obj":  0,
+                      "sizeMB":  29.66,
+                      "role":  "Hacker HUB",
+                      "issues":  [
+
+                                 ],
+                      "slot":  "hackerhub",
+                      "primary_mesh":  "game/source/fbx/Servers.fbx"
+                  },
+                  {
+                      "fbx":  1,
+                      "textures":  32,
+                      "blend":  1,
+                      "obj":  0,
+                      "sizeMB":  889.28,
+                      "role":  "Hacker Terminal",
+                      "issues":  [
+
+                                 ],
+                      "slot":  "hackerterminal",
+                      "primary_mesh":  "game/source/fbx/Computer.fbx"
+                  }
+              ],
+    "priority":  "P1"
+}

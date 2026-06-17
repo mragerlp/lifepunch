@@ -67,7 +67,26 @@ Reference: DXRP `gameplay/entities/printer/printer.prefab` — `BoxCollider` fro
 Textures live under `entities/bitcoinminer/textures/` (intake copies from `Downloads\bitcoinminer\textures`).  
 **Compile note:** BaseColor maps must be `.png` — s&box texture compiler rejects `.jpeg` on `TextureColor`.
 
-## Animations (owner blend)
+## Fan spin (Evo pattern — Jun 2026)
+
+**Only the fan moves.** Chassis, front panel, and back body are static.
+
+| vmdl | Role |
+|------|------|
+| `bitcoin-miner.vmdl` | Body — imports `base_body`, `front_panel`, `back_body` only (fan mesh excluded) |
+| `bitcoin-miner-fan.vmdl` | Fan blade mesh only (`fan` from FBX) |
+
+**Prefab:** `fan_spin_hub` child with `ModelRenderer` → `bitcoin-miner-fan.vmdl`. Code spins the child GO when hub is powered (`LpBitcoinHubVisuals`).
+
+**ModelDoc:** No `AnimationList`, no `BoneMarkup`, no `animated_model`. Same import scale/rotation as before (`0.152`, bottom align).
+
+If fan sits wrong in the cage: open `bitcoin-miner.prefab`, select `fan_spin_hub`, nudge position/rotation, run `lp_bitcoin_fan_tune` to log coords.
+
+### Legacy (do not use for ship)
+
+`fanAction` / `front_panelAction` on a skinned `bitcoin-miner.vmdl` separated hull parts — replaced by child fan spin above.
+
+## Animations (owner blend — reference only)
 
 Blender actions baked into FBX:
 

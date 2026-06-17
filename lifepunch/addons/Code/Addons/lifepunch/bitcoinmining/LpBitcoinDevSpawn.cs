@@ -44,6 +44,73 @@ public static class LpBitcoinDevSpawn
 			Log.Info( "lp_bitcoin_spawn_kit: full prefab kit placed — USE hub or terminal." );
 	}
 
+	/// <summary>Dev shortcut — power hub + start all linked racks (host play only).</summary>
+	[ConCmd( "lp_bitcoin_playtest_mining" )]
+	public static void PlaytestMining()
+	{
+#if LIFEPUNCH_LOCAL
+		Log.Warning( "lp_bitcoin_playtest_mining: DXRP project only." );
+#else
+		if ( !Networking.IsHost )
+		{
+			Log.Warning( "lp_bitcoin_playtest_mining: host only — Start Hosting then Play." );
+			return;
+		}
+
+		var scene = Game.ActiveScene;
+		if ( scene is null )
+		{
+			Log.Warning( "lp_bitcoin_playtest_mining: no active scene." );
+			return;
+		}
+
+		var hub = scene.GetAllComponents<LpBitcoinHubEntity>()
+			.Where( h => h.IsValid() )
+			.OrderByDescending( h => h.IsPowered )
+			.FirstOrDefault();
+
+		if ( !hub.IsValid() )
+		{
+			Log.Warning( "lp_bitcoin_playtest_mining: no hub — run lp_bitcoin_spawn_kit first." );
+			return;
+		}
+
+		hub.BindOwnerFromLocalViewer();
+		hub.ApplyPoweredState( true );
+
+		var racks = scene.GetAllComponents<LpBitcoinRackEntity>().Where( r => r.IsValid() ).ToList();
+		foreach ( var rack in racks )
+			rack.RequestSetMining( true );
+
+		Log.Info( $"lp_bitcoin_playtest_mining: hub ON, {racks.Count} rack(s) mining." );
+#endif
+	}
+
+	/// <summary>Log fan_spin_* local transforms — use after nudging fans in prefab editor.</summary>
+	[ConCmd( "lp_bitcoin_fan_tune" )]
+	public static void FanTune()
+	{
+		var scene = Game.ActiveScene;
+		if ( scene is null )
+		{
+			Log.Warning( "lp_bitcoin_fan_tune: no active scene." );
+			return;
+		}
+
+		foreach ( var rack in scene.GetAllComponents<LpBitcoinRackEntity>().Where( r => r.IsValid() ) )
+		{
+			var tag = rack.AdvancedRack ? "advanced" : "gpu-rack";
+			foreach ( var child in rack.GameObject.Children.Where( c => c.Name.StartsWith( "fan_spin_", StringComparison.OrdinalIgnoreCase ) ) )
+				Log.Info( $"BITCOINMINING_FAN_TUNE {tag} {child.Name} pos={child.LocalPosition} rot={child.LocalRotation.Angles()}" );
+		}
+
+		foreach ( var hub in scene.GetAllComponents<LpBitcoinHubEntity>().Where( h => h.IsValid() ) )
+		{
+			foreach ( var child in hub.GameObject.Children.Where( c => c.Name.StartsWith( "fan_spin", StringComparison.OrdinalIgnoreCase ) ) )
+				Log.Info( $"BITCOINMINING_FAN_TUNE hub {child.Name} pos={child.LocalPosition} rot={child.LocalRotation.Angles()}" );
+		}
+	}
+
 	/// <summary>Hub + terminal + one GPU rack + one Advanced GPU rack — flatgrass hero lineup.</summary>
 	[ConCmd( "lp_bitcoin_spawn_lineup" )]
 	public static void SpawnLineup()
@@ -334,7 +401,7 @@ public static class LpBitcoinDevSpawn
 			LogScaleRow( tag, rack.GameObject );
 		}
 
-		Log.Info( "BITCOINMINING_SCALE_AUDIT end — gpu-rack collider target 25×20×36; advanced-rack 52×27×47" );
+		Log.Info( "BITCOINMINING_SCALE_AUDIT end — bake BoxCollider from model.Bounds; close/reopen prefab tab if green wireframe still stale" );
 	}
 
 	/// <summary>Logs compiled vmdl sequences + power anim apply (BITCOINMINING-05).</summary>
@@ -382,14 +449,17 @@ public static class LpBitcoinDevSpawn
 		foreach ( var seq in sequences )
 			Log.Info( $"BITCOINMINING_ANIM_AUDIT seq={seq}" );
 
-		// Do not play fanAction on the live hub — it displaces hull bones and explodes the mesh.
-		// Production uses bindPose + LpBitcoinHubVisuals fan bone spin (see LpBitcoinHubVisuals).
-		var hasFanAction = sequences.Any( s => string.Equals( s, "fanAction", StringComparison.OrdinalIgnoreCase ) );
-		Log.Info( hasFanAction
-			? "BITCOINMINING_ANIM_AUDIT fanAction present (runtime uses bindPose + bone spin, not sequence playback)"
-			: "BITCOINMINING_ANIM_AUDIT fanAction missing — re-export steam-machine.fbx and recompile vmdl" );
+		if ( LpBitcoinPowerAnim.ApplyHubPower( renderer, true, out var onSeq ) )
+			Log.Info( $"BITCOINMINING_ANIM_AUDIT apply ON -> {onSeq}" );
+		else
+			Log.Warning( "BITCOINMINING_ANIM_AUDIT apply ON failed — fanAction missing from compiled vmdl." );
 
-		hub.ApplyPoweredState( hub.IsPowered );
+		if ( LpBitcoinPowerAnim.ApplyHubPower( renderer, false, out var offSeq ) )
+			Log.Info( $"BITCOINMINING_ANIM_AUDIT apply OFF -> {offSeq}" );
+		else
+			Log.Warning( "BITCOINMINING_ANIM_AUDIT apply OFF failed." );
+
+		hub.ApplyPoweredState( true );
 	}
 
 	/// <summary>Logs GPU rack + advanced rack vmdl sequences and mining anim apply (BITCOINMINING-01).</summary>
@@ -456,16 +526,15 @@ public static class LpBitcoinDevSpawn
 		foreach ( var seq in sequences )
 			Log.Info( $"BITCOINMINING_RACK_ANIM_AUDIT {tag} seq={seq}" );
 
-		var hasPowerOn = sequences.Any( s =>
-			string.Equals( s, "power_on", StringComparison.OrdinalIgnoreCase )
-			|| string.Equals( s, "GPU_Farm_Final", StringComparison.OrdinalIgnoreCase ) );
-		Log.Info( hasPowerOn
-			? $"BITCOINMINING_RACK_ANIM_AUDIT {tag} power_on present (runtime uses bindPose + bone spin, not sequence playback)"
-			: $"BITCOINMINING_RACK_ANIM_AUDIT {tag} power_on missing — re-export anim FBX and recompile vmdl" );
+		if ( LpBitcoinPowerAnim.ApplyRackPower( renderer, true, out var onSeq ) )
+			Log.Info( $"BITCOINMINING_RACK_ANIM_AUDIT {tag} apply ON -> {onSeq}" );
+		else
+			Log.Warning( $"BITCOINMINING_RACK_ANIM_AUDIT {tag} apply ON failed." );
 
-		var skinned = LpBitcoinSkinnedFanSpin.GetSkinned( renderer );
-		if ( skinned.IsValid() )
-			LpBitcoinSkinnedFanSpin.ForceBindPose( skinned );
+		if ( LpBitcoinPowerAnim.ApplyRackPower( renderer, false, out var offSeq ) )
+			Log.Info( $"BITCOINMINING_RACK_ANIM_AUDIT {tag} apply OFF -> {offSeq}" );
+		else
+			Log.Warning( $"BITCOINMINING_RACK_ANIM_AUDIT {tag} apply OFF failed." );
 	}
 
 	private static bool IsPreviewHub( LpBitcoinHubEntity hub )
@@ -497,6 +566,12 @@ public static class LpBitcoinDevSpawn
 		else
 		{
 			Log.Warning( $"BITCOINMINING_SCALE_AUDIT {tag} no ModelRenderer" );
+		}
+
+		if ( renderer.IsValid() && renderer.Model is not null )
+		{
+			var modelBounds = renderer.Model.Bounds;
+			Log.Info( $"BITCOINMINING_SCALE_AUDIT {tag} modelBounds center={modelBounds.Center} size={modelBounds.Size} ← copy to prefab BoxCollider" );
 		}
 
 		var collider = go.Components.Get<BoxCollider>( FindMode.EverythingInSelfAndDescendants );

@@ -42,14 +42,21 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable
 	private ModelRenderer _modelRenderer;
 	private bool _lastPoweredVisual = true;
 
+	protected override void OnAwake()
+	{
+		LifePunchPropPhysics.SyncBoxColliderFromModel( GameObject );
+	}
+
 	protected override void OnStart()
 	{
 		base.OnStart();
 #if !LIFEPUNCH_LOCAL
 		this.TryBindSpawnOwnerHost();
-		LifePunchPropPhysics.SetupPhysicalProp( GameObject, alignGround: Networking.IsHost );
+		if ( Networking.IsHost )
+			LifePunchGroundContact.AlignMeshBottom( GameObject );
 #endif
-		_modelRenderer = Components.Get<ModelRenderer>( FindMode.EverythingInSelf );
+		_modelRenderer = Components.Get<ModelRenderer>( FindMode.EverythingInSelf )
+		                 ?? Components.Get<SkinnedModelRenderer>( FindMode.EverythingInSelf ) as ModelRenderer;
 		EnsureHubVisuals();
 		ApplyHubPowerVisual( IsPowered );
 	}
@@ -588,12 +595,13 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable
 		_lastPoweredVisual = powered;
 
 		if ( !_modelRenderer.IsValid() )
-			_modelRenderer = Components.Get<ModelRenderer>( FindMode.EverythingInSelf );
+			_modelRenderer = Components.Get<ModelRenderer>( FindMode.EverythingInSelf )
+			                 ?? Components.Get<SkinnedModelRenderer>( FindMode.EverythingInSelf ) as ModelRenderer;
 
 		if ( !_modelRenderer.IsValid() )
 			return;
 
-		// LpBitcoinHubVisuals owns bindPose + fan bone spin — never play fanAction here.
+		// Chassis static; LpBitcoinHubVisuals spins fan_spin_* child only.
 		LpBitcoinPowerLeds.ApplyHubFenceLeds( _modelRenderer, powered );
 	}
 }

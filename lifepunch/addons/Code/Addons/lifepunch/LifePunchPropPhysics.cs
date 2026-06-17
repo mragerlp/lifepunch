@@ -24,7 +24,7 @@ public static class LifePunchPropPhysics
 			LifePunchGroundContact.AlignMeshBottom( go );
 	}
 
-	/// <summary>DXRP Prop pattern — <c>model.Bounds</c> drives BoxCollider center + scale in model space.</summary>
+	/// <summary>DXRP Prop pattern — <c>model.Bounds</c> drives BoxCollider center + scale in model space (matches ModelDoc white wireframe).</summary>
 	public static bool SyncBoxColliderFromModel( GameObject go )
 	{
 		if ( !go.IsValid() )
@@ -41,6 +41,25 @@ public static class LifePunchPropPhysics
 		box.IsTrigger = false;
 		box.Static = false;
 		box.OnPhysicsChanged();
+		return true;
+	}
+
+	/// <summary>Logs <c>model.Bounds</c> center/size for prefab BoxCollider bake (copy into prefab JSON).</summary>
+	public static bool TryGetModelColliderBake( GameObject go, out Vector3 center, out Vector3 size )
+	{
+		center = default;
+		size = default;
+
+		if ( !go.IsValid() )
+			return false;
+
+		var renderer = go.Components.Get<ModelRenderer>( FindMode.EverythingInSelf );
+		if ( !renderer.IsValid() || renderer.Model is null )
+			return false;
+
+		var bounds = renderer.Model.Bounds;
+		center = bounds.Center;
+		size = bounds.Size;
 		return true;
 	}
 

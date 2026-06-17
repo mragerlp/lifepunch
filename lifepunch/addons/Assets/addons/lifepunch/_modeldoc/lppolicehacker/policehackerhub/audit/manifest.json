@@ -1,0 +1,8 @@
+﻿{
+    "role":  "Police HUB",
+    "primary_mesh":  "game/source/obj/Sci_fi_server_rack.obj",
+    "issues":  [
+                   "Fab nested pack = OBJ only, no FBX â€” OK for ModelDoc OBJ import or re-export FBX from Fab"
+               ],
+    "slot":  "policehackerhub"
+}

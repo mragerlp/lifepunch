@@ -1,0 +1,12 @@
+﻿{
+    "notes":  [
+                  "8/16/256 GB color maps in source textures",
+                  "bitcoinusb + hackerusb = future gameplay splits, same mesh family"
+              ],
+    "role":  "USB Flash Drive (all color variants in textures)",
+    "primary_mesh":  "game/source/fbx/USB_flash.fbx",
+    "issues":  [
+
+               ],
+    "slot":  "usbflashdrive"
+}

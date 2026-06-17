@@ -45,6 +45,11 @@ public sealed class HackerTerminalEntity : BaseEntity, Component.IPressable
 
 	public void ClearLinkedRackHost() => LinkedRack = null;
 
+	protected override void OnAwake()
+	{
+		LifePunchPropPhysics.SyncBoxColliderFromModel( GameObject );
+	}
+
 	protected override void OnStart()
 	{
 		base.OnStart();

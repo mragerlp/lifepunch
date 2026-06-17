@@ -1,0 +1,9 @@
+﻿{
+    "texture_files":  12,
+    "role":  "Black Market Hub (Vault)",
+    "primary_mesh":  "game/source/fbx/Safe_Vault_TRIO.fbx",
+    "issues":  [
+
+               ],
+    "slot":  "blackmarkethub"
+}

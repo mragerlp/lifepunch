@@ -1,0 +1,13 @@
+﻿{
+    "slot":  "gpurack",
+    "primary_mesh":  "game/source/obj/GPU_Farm_Static.obj",
+    "alt_source":  "game/source/blend/gpu_crypto_farm.blend",
+    "role":  "GPU Rack (standard)",
+    "issues":  [
+                   "Confirm static OBJ vs blend export for ModelDoc body"
+               ],
+    "notes":  [
+                  "No static FBX in Fab pack â€” static OBJ + blend are source of truth",
+                  "Anim FBX archived under game/source/fbx/_reference_anim for fan study only"
+              ]
+}

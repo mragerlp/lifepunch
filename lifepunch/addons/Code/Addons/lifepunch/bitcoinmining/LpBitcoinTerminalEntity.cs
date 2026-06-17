@@ -36,11 +36,21 @@ public sealed class LpBitcoinTerminalEntity : BaseEntity, Component.IPressable
 	private string _cachedScreenText;
 	private bool _occluded;
 
+	protected override void OnAwake()
+	{
+		// Prefab editor + runtime: green BoxCollider must match ModelDoc white wireframe (model.Bounds).
+		LifePunchPropPhysics.SyncBoxColliderFromModel( GameObject );
+	}
+
 	protected override void OnStart()
 	{
 		base.OnStart();
 #if !LIFEPUNCH_LOCAL
 		this.TryBindSpawnOwnerHost();
+		if ( Networking.IsHost )
+			LifePunchGroundContact.AlignMeshBottom( GameObject );
+#else
+		LifePunchGroundContact.AlignMeshBottom( GameObject );
 #endif
 
 		if ( !ScreenText.IsValid() )

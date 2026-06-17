@@ -1,0 +1,9 @@
+﻿{
+    "role":  "AR-15 weapon",
+    "primary_mesh":  "game/source/fbx/ar_15.fbx",
+    "issues":  [
+                   "Parallel weapon track",
+                   "glb/usdz/gltf kept in slot root as reference only"
+               ],
+    "slot":  "ar15military"
+}

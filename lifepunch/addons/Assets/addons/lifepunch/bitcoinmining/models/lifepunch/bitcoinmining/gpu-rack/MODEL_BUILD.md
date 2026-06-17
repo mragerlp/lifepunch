@@ -116,11 +116,27 @@ Run the headless Blender rig export (same pattern as hub `Export-BitcoinMinerSte
 powershell -File lifepunch\addons\scripts\Export-GpuRackAnimFbx.ps1
 ```
 
-Writes `source/gpu-rack-anim-rigged.fbx` + `source/gpu-rack-stacked-anim-rigged.fbx` with:
-- `rack_root` bone + `FanBlades_*` / `GPU_Fan_*` fan bones
-- Actions: `power_on`, `GPU_Farm_Final` (single) or `Mining_Rig_Stacked` (stacked)
+Then point both vmdls at `*-rigged.fbx` (mesh **RenderMeshFile** + animation **AnimFile** nodes can share the same FBX path).
 
-Then compile `gpu-rack.vmdl` / `gpu-rack-stacked.vmdl` in ModelDoc and `Pull-DxrpCompiledAssetsToRepo.ps1 -Addon bitcoinmining`.
+### ModelDoc: Simple Animation nodes (one per take)
+
+ModelDoc is node-based — mesh, materials, physics, and animations are **separate nodes**. Animations are **not** auto-imported with the mesh.
+
+1. Open `gpu-rack.vmdl` (or `gpu-rack-stacked.vmdl`) in ModelDoc.
+2. Under **AnimationList**, use **Add Simple Animations** (★ star next to ➕ Add, or right-click AnimationList).
+3. Pick `source/gpu-rack-anim-rigged.fbx` (or `gpu-rack-stacked-anim-rigged.fbx`).
+4. ModelDoc creates one **`AnimFile`** node per FBX take. **Repeat the star-add for every take** — do not copy/paste one node for all clips.
+5. On each node, set **Take** in the properties dropdown (top of node inspector). Our rigged exports:
+   | vmdl | Sequence name | Take index | FBX action |
+   |------|---------------|------------|------------|
+   | `gpu-rack.vmdl` | `power_on` | **0** | `power_on` |
+   | `gpu-rack.vmdl` | `GPU_Farm_Final` | **1** | alias of `power_on` |
+   | `gpu-rack-stacked.vmdl` | `power_on` | **0** | `power_on` |
+   | `gpu-rack-stacked.vmdl` | `Mining_Rig_Stacked` | **1** | alias of `power_on` |
+6. Keep **AnimBindPose** (`bindPose`). Set fan clips **looping**. Archetype = **Animated Model** (`model_archetype = "animated_model"`).
+7. Compile → `Pull-DxrpCompiledAssetsToRepo.ps1 -Addon bitcoinmining`.
+
+**Runtime (Jun 2026):** code holds `bindPose` and spins fan bones in C# — it does **not** play `power_on` on the live mesh (that sequence mis-rotates hull bones). Sequences still need to compile so `bones>0` and audit passes.
 
 Owner `.blend` (if present): `GPU_Farm_Final.blend` — pass as `-GpuRackSource` only when re-exporting from Blender; default input is the existing anim FBX.
 
@@ -198,7 +214,7 @@ Razor UI ships under `Code/Addons/lifepunch/bitcoinmining/` — author in Downlo
 
 1. Asset Browser → **Project scope "DXRP"** → `addons/lifepunch/bitcoinmining/models/.../gpu-rack/`.
 2. Import `source/gpu-rack-static.obj` in ModelDoc.
-3. Mesh source is `source/gpu-rack-anim.fbx` (replaces static OBJ). In **AnimationList** → **Add Simple Animations** (star icon) from the same FBX; rename clips to `power_on` (loop) + `power_off` (idle/hold). Stacked rack: repeat on `gpu-rack-stacked.vmdl` (FBX scene name `Mining_Rig_Stacked` — code falls back to this name until renamed).
+3. **Render mesh** from `source/gpu-rack-anim-rigged.fbx` (stacked: `gpu-rack-stacked-anim-rigged.fbx`). **Animations:** star-add **one Simple Animation node per take** (see § Rigged fan animation); set Take dropdown per table; do not duplicate one node with `take=0` for every name.
 4. Create five vmats per `material-map.json` (GPU slot uses emission).
 5. Compile `gpu-rack.vmdl` in this folder; recompile after external edits.
 6. Prefab `entities/bitcoin-miner/bitcoin-miner.prefab` — tune scale vs citizen; wire anim driver to `GpuRackEntity`.

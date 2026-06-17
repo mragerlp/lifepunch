@@ -171,13 +171,6 @@ def create_fan_spin_action(arm_obj, fan_bone_names, action_name):
         pose_bone.rotation_euler = (0.0, 0.0, 6.283185307)
         pose_bone.keyframe_insert(data_path="rotation_euler", frame=FRAME_COUNT)
 
-        if pose_bone.animation_data is None:
-            continue
-        for fcurve in action.fcurves:
-            if fcurve.data_path.startswith(f'pose.bones["{bone_name}"]'):
-                for kp in fcurve.keyframe_points:
-                    kp.interpolation = "LINEAR"
-
     bpy.ops.object.mode_set(mode="OBJECT")
     print(f"ACTION_OK: {action_name} bones={len(fan_bone_names)} frames=1-{FRAME_COUNT}")
 

@@ -5,7 +5,7 @@
   "Ident": "lifepunch.modeldoc",
   "Schema": 1,
   "IncludeSourceFiles": false,
-  "Resources": "addons/lifepunch/lpbitcoin/**\nscenes/**",
+  "Resources": "scenes/**\naddons/lifepunch/lpbitcoin/**",
   "PackageReferences": [],
   "EditorReferences": null,
   "Mounts": null,

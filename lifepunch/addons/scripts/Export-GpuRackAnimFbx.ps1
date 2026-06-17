@@ -60,8 +60,9 @@ Write-Host ''
 Write-Host 'Next: run with -UpdateVmdl to point gpu-rack*.vmdl at *-rigged.fbx, then compile in ModelDoc + Pull-DxrpCompiledAssetsToRepo.' -ForegroundColor Yellow
 
 if (-not $WhatIf -and $UpdateVmdl) {
-    $vmdlSingle = Join-Path (Split-Path $ModelSource -Parent) '..\gpu-rack.vmdl'
-    $vmdlStacked = Join-Path (Split-Path $ModelSource -Parent) '..\gpu-rack-stacked.vmdl'
+    $modelDir = Split-Path $ModelSource -Parent
+    $vmdlSingle = Join-Path $modelDir 'gpu-rack.vmdl'
+    $vmdlStacked = Join-Path $modelDir 'gpu-rack-stacked.vmdl'
     foreach ($pair in @(
             @{ Vmdl = $vmdlSingle; From = 'gpu-rack-anim.fbx'; To = 'gpu-rack-anim-rigged.fbx' },
             @{ Vmdl = $vmdlStacked; From = 'gpu-rack-stacked-anim.fbx'; To = 'gpu-rack-stacked-anim-rigged.fbx' }

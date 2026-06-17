@@ -1,6 +1,6 @@
 {
   "RootObject": {
-    "__guid": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "__guid": "c8f2a901-4d7e-4b63-9f10-1a2b3c4d5e01",
     "__version": 2,
     "Flags": 0,
     "Name": "bitcoin-terminal",
@@ -17,7 +17,7 @@
     "Components": [
       {
         "__type": "Dxura.RP.Game.HealthComponent",
-        "__guid": "f7a8b9c0-d1e2-3456-7890-abcdef123456",
+        "__guid": "c8f2a901-4d7e-4b63-9f10-1a2b3c4d5e02",
         "__enabled": true,
         "Flags": 0,
         "Health": 100,
@@ -32,7 +32,7 @@
       },
       {
         "__type": "Sandbox.Rigidbody",
-        "__guid": "a1b2c3d4-e5f6-7890-abcd-ef1234567891",
+        "__guid": "c8f2a901-4d7e-4b63-9f10-1a2b3c4d5e03",
         "__enabled": true,
         "Flags": 0,
         "AngularDamping": 0,
@@ -63,14 +63,14 @@
         "OverrideMassCenter": false,
         "RigidbodyFlags": 0,
         "SleepThreshold": 2,
-        "StartAsleep": true
+        "StartAsleep": false
       },
       {
         "__type": "Sandbox.BoxCollider",
-        "__guid": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
+        "__guid": "c8f2a901-4d7e-4b63-9f10-1a2b3c4d5e04",
         "__enabled": true,
         "Flags": 0,
-        "Center": "0,0,9",
+        "Center": "0,0,0",
         "ColliderFlags": 0,
         "Elasticity": null,
         "Friction": null,
@@ -86,14 +86,14 @@
         "OnTriggerEnter": null,
         "OnTriggerExit": null,
         "RollingResistance": null,
-        "Scale": "10,4,9",
+        "Scale": "1,1,1",
         "Static": false,
         "Surface": "surfaces/metal.surface",
         "SurfaceVelocity": "0,0,0"
       },
       {
         "__type": "Sandbox.ModelRenderer",
-        "__guid": "c3d4e5f6-a7b8-9012-cdef-123456789012",
+        "__guid": "c8f2a901-4d7e-4b63-9f10-1a2b3c4d5e05",
         "__enabled": true,
         "Flags": 0,
         "BodyGroups": 18446744073709551615,
@@ -120,26 +120,26 @@
       },
       {
         "__type": "LifePunch.DXRP.Addons.Bitcoin.LpBitcoinTerminalEntity",
-        "__guid": "d4e5f6a7-b8c9-0123-def0-234567890123",
+        "__guid": "c8f2a901-4d7e-4b63-9f10-1a2b3c4d5e06",
         "__enabled": true,
         "Flags": 0,
         "LinkRange": 512,
         "ScreenText": {
           "_type": "component",
-          "component_id": "e5f6a7b8-c9d0-1234-ef01-345678901234",
-          "go": "f6a7b8c9-d0e1-2345-f012-456789012345",
+          "component_id": "c8f2a901-4d7e-4b63-9f10-1a2b3c4d5e08",
+          "go": "c8f2a901-4d7e-4b63-9f10-1a2b3c4d5e07",
           "component_type": "TextRenderer"
         },
         "HealthComponent": {
           "_type": "component",
-          "component_id": "f7a8b9c0-d1e2-3456-7890-abcdef123456",
-          "go": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+          "component_id": "c8f2a901-4d7e-4b63-9f10-1a2b3c4d5e02",
+          "go": "c8f2a901-4d7e-4b63-9f10-1a2b3c4d5e01",
           "component_type": "HealthComponent"
         },
         "Rigidbody": {
           "_type": "component",
-          "component_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567891",
-          "go": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+          "component_id": "c8f2a901-4d7e-4b63-9f10-1a2b3c4d5e03",
+          "go": "c8f2a901-4d7e-4b63-9f10-1a2b3c4d5e01",
           "component_type": "Rigidbody"
         },
         "OnComponentDestroy": null,
@@ -152,12 +152,12 @@
     ],
     "Children": [
       {
-        "__guid": "f6a7b8c9-d0e1-2345-f012-456789012345",
+        "__guid": "c8f2a901-4d7e-4b63-9f10-1a2b3c4d5e07",
         "__version": 2,
         "Flags": 0,
         "Name": "lcd_screen",
-        "Position": "0,4,14",
-        "Rotation": "0.5,0.5,-0.5,0.5",
+        "Position": "0,8,10",
+        "Rotation": "0.7071068,0,0.7071068,0",
         "Scale": "1.15,0.18,0.14",
         "Tags": "",
         "Enabled": true,
@@ -169,7 +169,7 @@
         "Components": [
           {
             "__type": "Sandbox.TextRenderer",
-            "__guid": "e5f6a7b8-c9d0-1234-ef01-345678901234",
+            "__guid": "c8f2a901-4d7e-4b63-9f10-1a2b3c4d5e08",
             "__enabled": true,
             "Flags": 0,
             "__version": 2,
@@ -185,7 +185,7 @@
             "RenderOptions": {
               "GameLayer": true,
               "OverlayLayer": false,
-              "BloomLayer": false,
+              "BloomLayer": true,
               "AfterUILayer": false
             },
             "Scale": 0.085,

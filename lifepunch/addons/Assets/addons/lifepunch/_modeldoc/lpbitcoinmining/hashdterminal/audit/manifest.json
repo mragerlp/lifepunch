@@ -1,0 +1,9 @@
+﻿{
+    "texture_files":  29,
+    "role":  "HASHD Terminal",
+    "primary_mesh":  "game/source/fbx/PC.fbx",
+    "issues":  [
+
+               ],
+    "slot":  "hashdterminal"
+}

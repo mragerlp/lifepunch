@@ -49,6 +49,11 @@ public class HackerServerRackEntity : BaseEntity, Component.IPressable
 	public float RewardMultiplier => HackerUpgradeCatalog.GetRewardMultiplier( RewardTier );
 	public float HackCooldownSeconds => HackerUpgradeCatalog.GetHackCooldownSeconds( CooldownTier );
 
+	protected override void OnAwake()
+	{
+		LifePunchPropPhysics.SyncBoxColliderFromModel( GameObject );
+	}
+
 	protected override void OnStart()
 	{
 		base.OnStart();

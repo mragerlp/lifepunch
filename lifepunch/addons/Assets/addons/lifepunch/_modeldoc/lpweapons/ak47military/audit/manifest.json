@@ -1,0 +1,8 @@
+﻿{
+    "role":  "AK-47 weapon",
+    "primary_mesh":  "game/source/fbx/AK47.fbx",
+    "issues":  [
+                   "Parallel weapon track â€” not cyber prop Phase 1"
+               ],
+    "slot":  "ak47military"
+}
