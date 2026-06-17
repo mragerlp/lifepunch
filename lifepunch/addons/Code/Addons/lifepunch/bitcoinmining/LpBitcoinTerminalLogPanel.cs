@@ -9,21 +9,19 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 using System;
-using System.Collections.Generic;
 using Sandbox;
 using Sandbox.UI;
 
 namespace LifePunch.DXRP.Addons.Bitcoin;
 
-/// <summary>Scrollback log — selectable labels with ctrl+c / ctrl+a support.</summary>
+/// <summary>Scrollback log host — ctrl+c copies full scrollback via <see cref="ProvideCopyText"/>.</summary>
 [Library( "lp_bitcoin_terminal_log_panel" )]
 public sealed class LpBitcoinTerminalLogPanel : Panel
 {
-	private static readonly Color SelectionTint = (Color.Parse( "#f0a500" ) ?? new Color( 0.941f, 0.647f, 0f )).WithAlpha( 0.35f );
+	public Func<string> ProvideCopyText { get; set; }
 
 	public LpBitcoinTerminalLogPanel()
 	{
-		AllowChildSelection = true;
 		AcceptsFocus = true;
 		AddClass( "log" );
 		Style.FlexGrow = 1;
@@ -31,65 +29,18 @@ public sealed class LpBitcoinTerminalLogPanel : Panel
 		Style.MinHeight = Length.Pixels( 0 );
 	}
 
-	public override void Tick()
-	{
-		base.Tick();
-
-		foreach ( var label in ChildrenOfType<Label>() )
-		{
-			if ( label.Selectable && label.ShouldDrawSelection )
-				continue;
-
-			label.Selectable = true;
-			label.ShouldDrawSelection = true;
-			label.SelectionColor = SelectionTint;
-		}
-	}
-
 	public override void OnButtonEvent( ButtonEvent e )
 	{
 		base.OnButtonEvent( e );
 
-		if ( !e.Pressed || !e.HasCtrl )
+		if ( !e.Pressed || !e.HasCtrl || e.Button != "C" )
 			return;
 
-		if ( e.Button == "A" )
-		{
-			if ( !HasFocus )
-				return;
-
-			SelectAllInChildren();
-			e.StopPropagation = true;
-			return;
-		}
-
-		if ( e.Button != "C" )
+		var text = ProvideCopyText?.Invoke() ?? string.Empty;
+		if ( string.IsNullOrEmpty( text ) )
 			return;
 
-		var selected = CollectSelectedText();
-		if ( string.IsNullOrEmpty( selected ) )
-			return;
-
-		Clipboard.SetText( selected );
+		Clipboard.SetText( text );
 		e.StopPropagation = true;
-	}
-
-	private string CollectSelectedText()
-	{
-		var parts = new List<string>();
-
-		foreach ( var label in ChildrenOfType<Label>() )
-		{
-			if ( !label.HasSelection() )
-				continue;
-
-			var slice = label.GetSelectedText();
-			if ( string.IsNullOrEmpty( slice ) )
-				continue;
-
-			parts.Add( slice );
-		}
-
-		return parts.Count == 0 ? string.Empty : string.Join( "\n", parts );
 	}
 }

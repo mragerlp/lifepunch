@@ -68,12 +68,12 @@
 							<div class="boot-hint">click to skip boot</div>
 						</div>
 					}
-					<div @ref="LogPanel" class="log">
+					<LpBitcoinTerminalLogPanel @ref="LogPanel">
 						@foreach ( var line in _lines )
 						{
 							<div class="log-line @LineClass( line )">@line.Text</div>
 						}
-					</div>
+					</LpBitcoinTerminalLogPanel>
 					<div class="prompt-row" onclick="@FocusInput">
 						<span class="prompt">rig@hub&gt;</span>
 						<TextEntry class="cmd-input" @ref="InputBox" onsubmit="@Submit" Placeholder="type command..." />
@@ -109,7 +109,7 @@
 	private bool _showScaleMenu;
 	private LpUiScaleSize _uiScale = LpUiScale.Default;
 	private TextEntry InputBox { get; set; }
-	private Panel LogPanel { get; set; }
+	private LpBitcoinTerminalLogPanel LogPanel { get; set; }
 
 	private const int MaxLogLines = 36;
 
@@ -197,6 +197,15 @@
 		LpBitcoinHudBridge.SetMenuCursorMode( true );
 		LifePunchUiScrollPolicy.Apply( Panel );
 		ApplyCommandInputChrome();
+		WireLogCopyProvider();
+	}
+
+	private void WireLogCopyProvider()
+	{
+		if ( !LogPanel.IsValid() )
+			return;
+
+		LogPanel.ProvideCopyText = BuildLogClipboardText;
 	}
 
 	public void Bind( LpBitcoinHubEntity hub, LpBitcoinRackEntity focusRack = null )
@@ -377,6 +386,7 @@
 			TickBoot();
 
 		ApplyCommandInputChrome();
+		WireLogCopyProvider();
 
 		if ( _scrollLogNextFrame )
 		{
@@ -412,7 +422,7 @@
 		_bootComplete = true;
 		_showBootSplash = false;
 		AppendLogLine( "ok", _hub?.IsPowered == true ? "hub power: ON" : "hub power: OFF" );
-		AppendLogLine( "dim", $"type help for {PromptLabel} commands · drag-select log · ctrl+c copy" );
+		AppendLogLine( "dim", $"type help for {PromptLabel} commands · ctrl+c copies log scrollback" );
 
 		if ( _pendingFocusRack.IsValid() )
 		{
@@ -432,6 +442,16 @@
 		QueueScrollLogToBottom();
 		FocusInput();
 	}
+
+	private static string BuildLogClipboardText( IReadOnlyList<LogLine> lines )
+	{
+		if ( lines.Count == 0 )
+			return string.Empty;
+
+		return string.Join( "\n", lines.Select( l => l.Text ) );
+	}
+
+	private string BuildLogClipboardText() => BuildLogClipboardText( _lines );
 
 	private void ApplyCommandInputChrome()
 	{

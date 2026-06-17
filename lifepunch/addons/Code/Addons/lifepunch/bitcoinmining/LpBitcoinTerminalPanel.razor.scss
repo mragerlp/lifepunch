@@ -310,3 +310,111 @@ $crt-text-dim: #9a9a9a;
 .lp-ops-crt.lp-ops-crt--gray .lp-window-watermark .lp-url-copy.copied {
 	color: #8ec8ff;
 }
+
+// CRT chrome — flat (imported LpOpsCrtTerminal nested rules may not compile).
+.lp-ops-crt .crt-header {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	padding: 8px 12px;
+	font-size: 11px;
+	letter-spacing: 0.08em;
+	gap: 12px;
+	flex-shrink: 0;
+}
+
+.lp-ops-crt .sidebar {
+	width: 180px;
+	flex-shrink: 0;
+	padding: 10px;
+	font-size: 11px;
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	min-height: 0;
+	overflow-y: scroll;
+}
+
+.lp-ops-crt .sidebar-title {
+	font-weight: bold;
+	margin-bottom: 6px;
+	flex-shrink: 0;
+}
+
+.lp-ops-crt .sidebar-foot {
+	margin-top: auto;
+	padding-top: 8px;
+	flex-shrink: 0;
+}
+
+.lp-ops-crt.lp-ui-size-s .sidebar {
+	width: 132px;
+	padding: 8px;
+	font-size: 10px;
+}
+
+.lp-ops-crt.lp-ui-size-s .screen {
+	padding: 8px;
+}
+
+.lp-ops-crt.lp-ui-size-s .crt-header {
+	padding: 6px 10px;
+	font-size: 10px;
+	gap: 8px;
+}
+
+.lp-ops-crt.lp-ui-size-s .boot-mark {
+	width: 72px;
+	height: 72px;
+}
+
+.lp-ops-crt.lp-ui-size-s .lp-window-watermark .lp-source-footer {
+	font-size: 9px;
+	padding: 0 10px;
+}
+
+.lp-ops-crt.lp-ui-size-m .sidebar {
+	width: 156px;
+}
+
+.lp-ops-crt.lp-ui-size-m .screen {
+	padding: 10px;
+}
+
+.lp-ops-crt.lp-ui-size-l .sidebar {
+	width: 168px;
+}
+
+.lp-ops-crt.lp-ui-size-l .screen {
+	padding: 12px;
+}
+
+.lp-ops-crt.lp-ui-size-l .crt-header {
+	padding: 8px 12px;
+	font-size: 11px;
+}
+
+.lp-ops-crt.lp-ui-size-xl .sidebar {
+	width: 180px;
+}
+
+.lp-ops-crt.lp-ui-size-xl .screen {
+	padding: 14px;
+}
+
+.lp-ops-crt.lp-ui-size-xl .crt-header {
+	padding: 10px 14px;
+	font-size: 12px;
+	gap: 14px;
+}
+
+.lp-ops-crt.lp-ui-size-xl .boot-mark {
+	width: 108px;
+	height: 108px;
+}
+
+.lp-ops-crt.lp-ui-size-xl .lp-window-watermark .lp-source-footer {
+	font-size: 11px;
+	padding: 0 18px;
+}
