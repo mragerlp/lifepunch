@@ -1,0 +1,112 @@
+================================================================================
+LIFEPUNCHNET — FULL PASTE (context + commands)
+================================================================================
+Paste this whole block into lifepunchnet RDP. Use CMD (Win+R → cmd → Enter).
+Stay logged in as ONE user for everything (e.g. administrator). Do NOT right-click
+"Run as administrator" for start_dev_server.bat.
+
+--------------------------------------------------------------------------------
+CONTEXT — what happened (read once)
+--------------------------------------------------------------------------------
+- Last night: Dev server worked. Steam connected. dxrp-server.cs + dev token.
+- Today: s&box 26.06.10 engine update broke Steam on dedicated hosts (DLLs + per-
+  user Windows registry). That is NOT a Dxura bug and NOT a ULX bug.
+- ULX is OFF the Dev gamemode (correct). Do NOT change ULX portal revisions.
+- Agents wasted hours on ULX/Gate0/scripts. Ignore all of that.
+- One install folder only: C:\S&BOX DXRP Server
+- Dev server = server2_start.bat / start_dev_server.bat = ONE command:
+    dotnet run dxrp-server.cs --token <DEVELOPMENT portal token>
+- Cursor on VENGEANCE cannot see this RDP console. If window is lost, read the log.
+
+--------------------------------------------------------------------------------
+WHAT NOT TO DO
+--------------------------------------------------------------------------------
+- Do NOT create a second S&BOX DXRP Server folder
+- Do NOT run server1_start.bat (that is Official 70p, different token)
+- Do NOT run auto_update.bat again unless you need engine binaries
+- Do NOT run Patch-LifepunchnetUlxCompile.ps1 (ULX unpinned)
+- Do NOT start server twice (no duplicate dotnet)
+- Do NOT chase portal addon revisions to fix Steam
+
+--------------------------------------------------------------------------------
+WHERE THINGS LIVE
+--------------------------------------------------------------------------------
+Install root:     C:\S&BOX DXRP Server
+Dxura launcher:   C:\S&BOX DXRP Server\dxrp-server.cs
+Dev token file:   C:\S&BOX DXRP Server\secure\development.local.env
+                  (must contain DXRP_TOKEN_DEVELOPMENT=<portal token>)
+Git scripts:      C:\lifepunch\lifepunch-rdp-server
+Dev console log:  C:\S&BOX DXRP Server\logs\dev-server-last.log
+Portal server:    LifePunch Official | DEVELOPMENT SERVER (not 70p)
+Gamemode:         LifePunch (019e36c0…) — ULX currently OFF
+
+--------------------------------------------------------------------------------
+STEP 1 — COPY-PASTE THIS ENTIRE BLOCK INTO CMD
+--------------------------------------------------------------------------------
+
+taskkill /F /IM sbox-server.exe 2>nul
+taskkill /F /IM dotnet.exe 2>nul
+rmdir /S /Q "C:\S&BOX DXRP Server\dev-patches" 2>nul
+rmdir /S /Q "C:\S&BOX DXRP Server\dxrp\game\Code\Addons\lifepunch\dxrpadminmenu" 2>nul
+cd C:\lifepunch\lifepunch-rdp-server
+git pull --rebase
+cd lifepunch\server\dxrp-host\scripts
+powershell -ExecutionPolicy Bypass -File .\Deploy-DxrpHostLaunchers.ps1
+cd /d "C:\S&BOX DXRP Server"
+start_dev_server.bat
+
+--------------------------------------------------------------------------------
+STEP 2 — IF YOU CANNOT SEE THE CONSOLE (or window closed)
+--------------------------------------------------------------------------------
+
+notepad "C:\S&BOX DXRP Server\logs\dev-server-last.log"
+
+Or after deploy:
+
+cd /d "C:\S&BOX DXRP Server"
+show_dev_server_log.bat
+
+Also check taskbar for window titled: LIFEPUNCH DEV SERVER
+
+--------------------------------------------------------------------------------
+STEP 3 — MANUAL FALLBACK (if start_dev_server.bat missing)
+--------------------------------------------------------------------------------
+
+cd /d "C:\S&BOX DXRP Server"
+fix_steam.bat
+powershell -ExecutionPolicy Bypass -File "C:\S&BOX DXRP Server\Run-DevServer.ps1"
+
+--------------------------------------------------------------------------------
+STEP 4 — VERIFY TOKEN EXISTS (if immediate error about token)
+--------------------------------------------------------------------------------
+
+type "C:\S&BOX DXRP Server\secure\development.local.env"
+
+Must show: DXRP_TOKEN_DEVELOPMENT=<value from dxrp.net portal Development server>
+
+--------------------------------------------------------------------------------
+PASS = DEV SERVER IS UP
+--------------------------------------------------------------------------------
+In console OR dev-server-last.log you must see BOTH:
+  1) Connected to Steam   (NOT "not connected to Steam")
+  2) dxrp-server reaches [7/7]
+
+Then DXRP portal "DEVELOPMENT SERVER" Last Pulsed should refresh.
+Then you can join :27016 and test addons (bitcoin, etc.).
+
+--------------------------------------------------------------------------------
+FAIL — paste back to VENGEANCE (only these 3 things)
+--------------------------------------------------------------------------------
+  1) Steam line: connected or not connected
+  2) Last [N/7] line before stop
+  3) Last 20 lines of: C:\S&BOX DXRP Server\logs\dev-server-last.log
+
+--------------------------------------------------------------------------------
+BITCOIN / ADDON WORK TONIGHT
+--------------------------------------------------------------------------------
+- lifepunchnet in-game test: BLOCKED until Steam + [7/7] above
+- VENGEANCE editor local work: does NOT need lifepunchnet — can continue there
+
+================================================================================
+END — nothing else required until PASS or FAIL lines above
+================================================================================
