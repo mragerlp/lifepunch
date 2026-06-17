@@ -56,6 +56,8 @@ Entity code still lives in **`Code/Addons/lifepunch/bitcoinmining/`** until owne
 | `lpblackmarket` | `lpblackmarket` | `lpblackmarket.zip` |
 | `lpbanker` | `lpbanker` | `lpbanker.zip` |
 | `lpflashdrive` | `lpflashdrive` | `lpflashdrive.zip` |
+| `lpchemist` | `lpchemist` | `lpchemist.zip` |
+| `lpdrugdrops` | `lpdrugdrops` | `lpdrugdrops.zip` |
 | `lpweapons` | `lpweapons` | `lpweapons.zip` |
 
 ---

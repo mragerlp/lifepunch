@@ -110,6 +110,44 @@
         "ak47military": { "displayName": "AK-47 Military", "shipEntitySlug": "ak47" },
         "ar15military": { "displayName": "AR-15 Military", "shipEntitySlug": "ar15" }
       }
+    },
+    "lpchemist": {
+      "packageSlug": "TBD",
+      "repoIdent": "advanceddrugprocessing",
+      "publishAssetsMount": "addons/lifepunch/advanceddrugprocessing",
+      "zipName": "lpchemist.zip",
+      "entities": {
+        "druglab": {
+          "displayName": "Meth Lab Bench",
+          "shipEntitySlug": "meth-lab-bench",
+          "priority": "P2",
+          "notes": "Fab Props FOR Labs hero merge (UE export)"
+        },
+        "drugtable": { "displayName": "Drug Table", "shipEntitySlug": "drug-table" },
+        "laboven": { "displayName": "Lab Drying Oven", "shipEntitySlug": "lab-oven" },
+        "chemicalprocessor": { "displayName": "Chemical Processor", "shipEntitySlug": "chemical-processor" },
+        "chemicaljar": { "displayName": "Chemical Jar", "shipEntitySlug": "chemical-jar" },
+        "iodinebarrel": { "displayName": "Iodine Barrel", "shipEntitySlug": "iodine-barrel" },
+        "sulfurbarrel": { "displayName": "Sulfur Barrel", "shipEntitySlug": "sulfur-barrel" },
+        "redphosphorusbarrel": { "displayName": "Red Phosphorus Barrel", "shipEntitySlug": "red-phosphorus-barrel" },
+        "cocaseed": { "displayName": "Coca Seed", "shipEntitySlug": "coca-seed" },
+        "cocaleaf": { "displayName": "Coca Leaf", "shipEntitySlug": "coca-leaf" }
+      }
+    },
+    "lpdrugdrops": {
+      "packageSlug": "TBD",
+      "repoIdent": "TBD",
+      "publishAssetsMount": "addons/lifepunch/drugdrops",
+      "zipName": "lpdrugdrops.zip",
+      "entities": {
+        "methbag": { "displayName": "Meth Bag", "shipEntitySlug": "meth-bag" },
+        "methbrick": { "displayName": "Meth Brick", "shipEntitySlug": "meth-brick" },
+        "rawmeth": { "displayName": "Raw Meth", "shipEntitySlug": "raw-meth" },
+        "cocainebag": { "displayName": "Cocaine Bag", "shipEntitySlug": "cocaine-bag" },
+        "cocainebrick": { "displayName": "Cocaine Brick", "shipEntitySlug": "coke-brick" },
+        "traindrop": { "displayName": "Train Drug Drop", "shipEntitySlug": "train-drop" },
+        "truckdrop": { "displayName": "Truck Drug Drop", "shipEntitySlug": "truck-drop" }
+      }
     }
   },
   "entityLayout": {

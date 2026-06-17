@@ -76,7 +76,7 @@ Move-LegacyPackageName -Root $TargetRoot -OldName 'lppolicehacker' -NewName 'lpp
     'Law: addons/docs/PACKAGE_STAGING_LAYOUT.md',
     'Populate from repo: Initialize-UploadReadyAddons.ps1',
     '',
-    'Canonical packages: lpbitcoin lphacker lppolice lpgovernment lpblackmarket lpbanker lpflashdrive lpweapons'
+    'Canonical packages: lpbitcoin lphacker lppolice lpgovernment lpblackmarket lpbanker lpflashdrive lpweapons lpchemist lpdrugdrops'
 ) | Set-Content -LiteralPath (Join-Path $TargetRoot 'README.txt') -Encoding UTF8
 
 foreach ($pkgProp in $config.packages.PSObject.Properties) {
