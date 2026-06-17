@@ -35,7 +35,31 @@ $SharedFiles = @(
     'LifePunchUiFooter.razor.scss'
 )
 
-$SharedSource = Join-Path $RepoRoot 'lifepunch\addons\Code\Addons\lifepunch'
+$SharedSource = $null
+$candidates = @(
+    (Join-Path $PSScriptRoot '..\vendor\ulx-shared'),
+    (Join-Path $RepoRoot 'lifepunch\server\dxrp-host\vendor\ulx-shared'),
+    (Join-Path $RepoRoot 'lifepunch\addons\Code\Addons\lifepunch')
+)
+foreach ($c in $candidates) {
+    $resolved = $null
+    try { $resolved = (Resolve-Path -LiteralPath $c -ErrorAction Stop).Path } catch { continue }
+    $probe = Join-Path $resolved 'LifePunchUiScale.cs'
+    if (Test-Path -LiteralPath $probe) {
+        $SharedSource = $resolved
+        break
+    }
+}
+if (-not $SharedSource) {
+    throw @"
+Missing ULX shared UI sources. Expected vendor bundle under:
+  lifepunch\server\dxrp-host\vendor\ulx-shared\
+Run git pull on lifepunch-rdp-server (lane export includes vendor copy).
+"@
+}
+
+Write-Host "Shared UI source: $SharedSource" -ForegroundColor DarkGray
+
 $GameCodeRoot = Join-Path $DxrpRoot 'dxrp\game\Code\Addons\lifepunch'
 
 if (-not (Test-Path -LiteralPath $GameCodeRoot)) {
@@ -45,7 +69,7 @@ if (-not (Test-Path -LiteralPath $GameCodeRoot)) {
 foreach ($name in $SharedFiles) {
     $src = Join-Path $SharedSource $name
     if (-not (Test-Path -LiteralPath $src)) {
-        throw "Missing shared source in repo: $src`nRun: git pull --rebase in $RepoRoot"
+        throw "Missing shared file: $src"
     }
 }
 

@@ -68,8 +68,14 @@ $patch = Join-Path $Here 'Patch-LifepunchnetUlxCompile.ps1'
 if (Test-Path -LiteralPath $patch) {
     $dxrpGame = Join-Path $InstallRoot 'dxrp\game\Code\Addons\lifepunch'
     if (Test-Path -LiteralPath $dxrpGame) {
-        Write-Step 'Patch ULX shared UI files on disk (until portal r8 pins)'
-        & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $patch -DxrpRoot $InstallRoot -RepoRoot $GitRoot
+        Write-Step 'Patch ULX shared UI files on disk (optional — compile only; Steam is separate)'
+        try {
+            & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $patch -DxrpRoot $InstallRoot -RepoRoot $GitRoot
+        }
+        catch {
+            Write-Host "ULX patch skipped: $($_.Exception.Message)" -ForegroundColor Yellow
+            Write-Host 'Gate 0 (Steam) is unaffected. Fix Steam first; ULX compile after server downloads addons.' -ForegroundColor Yellow
+        }
     }
     else {
         Write-Host 'Skip ULX patch — dxrp not cloned yet (first start will create it).' -ForegroundColor Yellow
