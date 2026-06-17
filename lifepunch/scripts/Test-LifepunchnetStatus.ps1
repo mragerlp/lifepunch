@@ -27,7 +27,21 @@ if (-not $api) { exit 1 }
 $headers = @{ Authorization = "Bearer $token" }
 $data = Invoke-RestMethod -Uri "http://${hostAddr}:${port}/status" -Headers $headers -TimeoutSec 15
 Write-Host '  API auth   -> OK' -ForegroundColor Green
+Write-Host "  Hostname   -> $($data.boot.hostname)"
 Write-Host "  Uptime     -> $([math]::Round($data.boot.uptimeSeconds / 3600, 1))h"
+if ($data.sessions -and $data.sessions.Count -gt 0) {
+    Write-Host '  RDP sessions (Gate 0: fix/start server as this user):' -ForegroundColor Yellow
+    $data.sessions | ForEach-Object {
+        Write-Host "    $($_.user)  $($_.state)  $($_.session)" -ForegroundColor White
+    }
+}
+if ($data.git) {
+    Write-Host "  Git lane   -> $($data.git.head) $($data.git.subject)" -ForegroundColor DarkGray
+}
+if ($data.alerts -and $data.alerts.Count -gt 0) {
+    Write-Host '  ALERTS:' -ForegroundColor Red
+    $data.alerts | ForEach-Object { Write-Host "    $_" -ForegroundColor Red }
+}
 if ($data.whisper) {
     $w = if ($data.whisper.running) { 'running' } else { 'down' }
     Write-Host "  Whisper    -> $w ($($data.whisper.detail))"
