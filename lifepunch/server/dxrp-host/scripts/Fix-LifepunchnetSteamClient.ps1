@@ -169,17 +169,15 @@ if ($steamCmd) {
 
 $dll64 = Find-SteamClientDll64 -SteamDir $steamDir -SearchRoots $InstallRoots
 if (-not $dll64) {
-    throw @"
-steamclient64.dll not found. lifepunchnet expects steamcmd at:
-  C:\S&BOX DXRP Server\steamcmd.exe
-Or install Steam desktop client, then re-run.
-"@
+    $steamHint = Join-Path 'C:\S&BOX DXRP Server' 'steamcmd.exe'
+    throw "steamclient64.dll not found. lifepunchnet expects steamcmd at: $steamHint Or install Steam desktop client, then re-run."
 }
 
 $regPath = 'HKCU:\SOFTWARE\Valve\Steam\ActiveProcess'
 New-Item -Path $regPath -Force | Out-Null
 Set-ItemProperty -Path $regPath -Name 'SteamClientDll64' -Value $dll64 -Type String
-$dll32 = Join-Path $steamDir 'steamclient.dll'
+$dll32Dir = if ($steamDir) { $steamDir } else { Split-Path -Parent $dll64 }
+$dll32 = Join-Path $dll32Dir 'steamclient.dll'
 if (Test-Path -LiteralPath $dll32) {
     Set-ItemProperty -Path $regPath -Name 'SteamClientDll' -Value $dll32 -Type String
 }
