@@ -45,6 +45,7 @@ function Deploy-Profile {
     $files = @(
         @{ Src = 'server1_start.bat'; Dst = 'server1_start.bat' },
         @{ Src = 'server2_start.bat'; Dst = 'server2_start.bat' },
+        @{ Src = 'start_dev_server.bat'; Dst = 'start_dev_server.bat' },
         @{ Src = 'restart_official.ps1'; Dst = 'restart_official.ps1' },
         @{ Src = 'restart_development.ps1'; Dst = 'restart_development.ps1' },
         @{ Src = 'dxrp-server-config.json.example'; Dst = 'dxrp-server-config.json.example' }
@@ -67,6 +68,7 @@ $scriptFiles = @(
     @{ Src = 'auto_update.bat'; Dst = 'auto_update.bat' },
     @{ Src = 'auto_update_all.bat'; Dst = 'auto_update_all.bat' },
     @{ Src = 'fix_steam.bat'; Dst = 'fix_steam.bat' },
+    @{ Src = 'Run-DevServer.ps1'; Dst = 'Run-DevServer.ps1' },
     @{ Src = 'Patch-LifepunchnetUlxCompile.ps1'; Dst = 'Patch-LifepunchnetUlxCompile.ps1' },
     @{ Src = 'Update-LifepunchnetSboxServers.ps1'; Dst = 'Update-LifepunchnetSboxServers.ps1' },
     @{ Src = 'Fix-LifepunchnetSteamClient.ps1'; Dst = 'Fix-LifepunchnetSteamClient.ps1' }

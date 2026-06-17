@@ -1,0 +1,43 @@
+================================================================================
+LIFEPUNCHNET — START DEVELOPMENT SERVER (paste into RDP PowerShell or CMD)
+================================================================================
+One folder: C:\S&BOX DXRP Server
+One launcher: dotnet run dxrp-server.cs --token <DEVELOPMENT token>
+Same RDP user for ALL steps (e.g. administrator). NOT elevated for start.
+
+STEP 1 — Pull scripts (once)
+--------------------------------------------------------------------------------
+cd C:\lifepunch\lifepunch-rdp-server
+git pull --rebase
+cd lifepunch\server\dxrp-host\scripts
+powershell -ExecutionPolicy Bypass -File .\Deploy-DxrpHostLaunchers.ps1
+
+STEP 2 — Start dev server (every time after engine bump or Steam break)
+--------------------------------------------------------------------------------
+cd /d "C:\S&BOX DXRP Server"
+start_dev_server.bat
+
+  OR (same thing):
+
+powershell -ExecutionPolicy Bypass -File "C:\S&BOX DXRP Server\Run-DevServer.ps1"
+
+PASS in console:
+  Connected to Steam
+  dxrp-server [7/7]
+
+FAIL → paste back ONLY:
+  1) Steam line (connected / not connected)
+  2) Last [N/7] line
+  3) First red error block
+
+DO NOT:
+  - Create a second S&BOX DXRP Server folder
+  - Run server1_start.bat (that is 70p Official)
+  - Change ULX portal revisions to fix Steam
+  - Run multiple server2_start / start_dev_server at once
+
+Portal: Development server token lives in:
+  C:\S&BOX DXRP Server\secure\development.local.env
+  DXRP_TOKEN_DEVELOPMENT=<token from dxrp.net portal Development server>
+
+================================================================================

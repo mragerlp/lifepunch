@@ -6,10 +6,10 @@ Dxura's launcher (not bare `sbox-server.exe +game dxura.rp`):
 
 ```bat
 cd /d "C:\S&BOX DXRP Server"
-server2_start.bat
+start_dev_server.bat
 ```
 
-That runs `dotnet run dxrp-server.cs --token %DXRP_TOKEN_DEVELOPMENT%` using `secure\development.local.env`.
+Or `server2_start.bat` (delegates to the same `Run-DevServer.ps1` when deployed).
 
 ---
 

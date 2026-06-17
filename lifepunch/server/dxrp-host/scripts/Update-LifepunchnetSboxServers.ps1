@@ -193,6 +193,11 @@ Write-Host '============================================================' -Foreg
 Write-Host ''
 
 if (-not $SkipSteamUpdate) {
+    $installRoots = @($OfficialRoot)
+    if ($DevelopmentRoot -ne $OfficialRoot) {
+        $installRoots += $DevelopmentRoot
+    }
+
     $steamCmd = Find-SteamCmd -Hint $SteamCmdExe -InstallRoots $installRoots
     if (-not $steamCmd) {
         throw @'
@@ -206,16 +211,12 @@ steamcmd.exe not found. Install SteamCMD on lifepunchnet, then re-run.
     $steamDir = Split-Path -Parent $steamCmd
     Push-Location $steamDir
     try {
-        & $steamCmd +login anonymous +app_update 1892930 validate +quit
+        & $steamCmd @('+login', 'anonymous', '+app_update', '1892930', 'validate', '+quit')
         if ($LASTEXITCODE -gt 1) { throw "steamcmd exited $LASTEXITCODE" }
     }
     finally { Pop-Location }
 
     Write-Step 'Wire Steam client DLLs + copy redist into install roots'
-    $installRoots = @($OfficialRoot)
-    if ($DevelopmentRoot -ne $OfficialRoot) {
-        $installRoots += $DevelopmentRoot
-    }
     Invoke-SteamFixAsInteractiveUser -SteamCmdPath $steamCmd -InstallRoots $installRoots
 
     $dedicatedRoot = Find-DedicatedServerRoot -SteamCmdPath $steamCmd

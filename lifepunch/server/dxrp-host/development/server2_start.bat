@@ -1,10 +1,17 @@
 @echo off
 setlocal
 cd /d "%~dp0"
-REM 26.06.10+: dedicated server needs SteamCMD client DLL registry (same user as this console)
-for %%S in ("%~dp0Fix-LifepunchnetSteamClient.ps1" "C:\lifepunch\lifepunch-rdp-server\lifepunch\server\dxrp-host\scripts\Fix-LifepunchnetSteamClient.ps1") do (
-  if exist %%~S powershell -NoProfile -ExecutionPolicy Bypass -File "%%~S" 2>nul
+REM Prefer Run-DevServer.ps1 (visible Steam fix + single dotnet). Fallback: inline start.
+
+set "RUNNER=%~dp0Run-DevServer.ps1"
+if exist "%RUNNER%" (
+  powershell -NoProfile -ExecutionPolicy Bypass -File "%RUNNER%" -InstallRoot "%~dp0"
+  set EXIT=%ERRORLEVEL%
+  echo Server 2 exited with code %EXIT%
+  pause
+  exit /b %EXIT%
 )
+
 if not exist "dxrp-server.cs" (
   echo ERROR: dxrp-server.cs not found in %CD%
   pause
