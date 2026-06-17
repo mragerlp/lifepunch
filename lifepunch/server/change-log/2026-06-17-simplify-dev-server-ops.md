@@ -26,6 +26,7 @@
 - `dev-patches/` stubs on lifepunchnet overwrote portal r8 — caused whitelist compile failures; removed on box
 - Session-user mismatch (Admin Steam fix + jared start) broke Gate 0 for hours
 - Agents chased ULX revisions before proving one Dxura start command
+- **Dev + Official share one install folder** — blanket `taskkill dotnet.exe` / kill-all-under-root murdered Official 70p whenever Dev started; fixed with `Dxrp-HostProcess.ps1` (token/port scoped stop)
 
 ## Operator path (lifepunchnet)
 

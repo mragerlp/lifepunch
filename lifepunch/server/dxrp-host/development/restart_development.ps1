@@ -43,9 +43,24 @@ try {
         Copy-Item -LiteralPath $example -Destination $config
     }
 
-    Get-Process -Name 'sbox-server','dotnet' -ErrorAction SilentlyContinue |
-        Where-Object { $_.Path -and $_.Path.StartsWith($InstallRoot, [StringComparison]::OrdinalIgnoreCase) } |
-        Stop-Process -Force -ErrorAction SilentlyContinue
+    $setConfigScript = Join-Path $PSScriptRoot 'Set-DxrpServerConfig.ps1'
+    if (-not (Test-Path -LiteralPath $setConfigScript)) {
+        $setConfigScript = Join-Path $InstallRoot 'Set-DxrpServerConfig.ps1'
+    }
+    if (Test-Path -LiteralPath $setConfigScript) {
+        . $setConfigScript
+        Set-DxrpServerConfigForProfile -Profile Development -InstallRoot $InstallRoot | Out-Null
+        Test-DxrpServerConfigForProfile -Profile Development -InstallRoot $InstallRoot
+    }
+
+    $hostProcessScript = Join-Path $PSScriptRoot 'Dxrp-HostProcess.ps1'
+    if (-not (Test-Path -LiteralPath $hostProcessScript)) {
+        $hostProcessScript = Join-Path $InstallRoot 'Dxrp-HostProcess.ps1'
+    }
+    if (Test-Path -LiteralPath $hostProcessScript) {
+        . $hostProcessScript
+        Stop-DevelopmentDxrpServer -InstallRoot $InstallRoot -GamePort $GamePort
+    }
 
     if ($NoStart) { return }
 

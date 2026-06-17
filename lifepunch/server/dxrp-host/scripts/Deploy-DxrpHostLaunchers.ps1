@@ -32,7 +32,8 @@ function Deploy-Profile {
     param(
         [string] $SourceDir,
         [string] $DestRoot,
-        [string] $Label
+        [string] $Label,
+        [string] $ConfigExampleDst = 'dxrp-server-config.json.example'
     )
 
     if (-not (Test-Path -LiteralPath $SourceDir)) {
@@ -49,7 +50,7 @@ function Deploy-Profile {
         @{ Src = 'show_dev_server_log.bat'; Dst = 'show_dev_server_log.bat' },
         @{ Src = 'restart_official.ps1'; Dst = 'restart_official.ps1' },
         @{ Src = 'restart_development.ps1'; Dst = 'restart_development.ps1' },
-        @{ Src = 'dxrp-server-config.json.example'; Dst = 'dxrp-server-config.json.example' }
+        @{ Src = 'dxrp-server-config.json.example'; Dst = $ConfigExampleDst }
     )
 
     foreach ($f in $files) {
@@ -70,6 +71,8 @@ $scriptFiles = @(
     @{ Src = 'auto_update_all.bat'; Dst = 'auto_update_all.bat' },
     @{ Src = 'fix_steam.bat'; Dst = 'fix_steam.bat' },
     @{ Src = 'Run-DevServer.ps1'; Dst = 'Run-DevServer.ps1' },
+    @{ Src = 'Dxrp-HostProcess.ps1'; Dst = 'Dxrp-HostProcess.ps1' },
+    @{ Src = 'Set-DxrpServerConfig.ps1'; Dst = 'Set-DxrpServerConfig.ps1' },
     @{ Src = 'Update-LifepunchnetSboxServers.ps1'; Dst = 'Update-LifepunchnetSboxServers.ps1' },
     @{ Src = 'Fix-LifepunchnetSteamClient.ps1'; Dst = 'Fix-LifepunchnetSteamClient.ps1' }
 )
@@ -87,8 +90,8 @@ function Deploy-ScriptBundle {
     }
 }
 
-Deploy-Profile -SourceDir (Join-Path $RepoDxrpHost 'official') -DestRoot $OfficialRoot -Label 'Official'
-Deploy-Profile -SourceDir (Join-Path $RepoDxrpHost 'development') -DestRoot $DevelopmentRoot -Label 'Development'
+Deploy-Profile -SourceDir (Join-Path $RepoDxrpHost 'official') -DestRoot $OfficialRoot -Label 'Official' -ConfigExampleDst 'dxrp-server-config.official.json.example'
+Deploy-Profile -SourceDir (Join-Path $RepoDxrpHost 'development') -DestRoot $DevelopmentRoot -Label 'Development' -ConfigExampleDst 'dxrp-server-config.development.json.example'
 
 $deployRoots = @($OfficialRoot)
 if ($DevelopmentRoot -ne $OfficialRoot) {

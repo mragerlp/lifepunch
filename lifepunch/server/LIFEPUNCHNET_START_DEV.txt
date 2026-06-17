@@ -38,6 +38,8 @@ FAIL → paste back ONLY:
 DO NOT:
   - Create a second S&BOX DXRP Server folder
   - Run server1_start.bat (that is 70p Official)
+  - Run auto_update_all.bat (restarts BOTH servers on purpose)
+  - taskkill dotnet.exe or sbox-server.exe (kills Official 70p — Dev and Official share one folder)
   - Change ULX portal revisions to fix Steam
   - Run multiple server2_start / start_dev_server at once
   - Run Patch-LifepunchnetUlxCompile.ps1 (ULX is OFF your gamemode — not needed)

@@ -42,13 +42,27 @@ try {
     $config = 'dxrp-server-config.json'
     if (-not (Test-Path -LiteralPath $config) -and (Test-Path -LiteralPath $example)) {
         Copy-Item -LiteralPath $example -Destination $config
-        Write-Host "Created $config from example (port $GamePort in extraArgs)." -ForegroundColor Yellow
     }
 
-    Write-Host 'Stopping prior s&box / dxrp-server processes in this session...' -ForegroundColor Cyan
-    Get-Process -Name 'sbox-server','dotnet' -ErrorAction SilentlyContinue |
-        Where-Object { $_.Path -and $_.Path.StartsWith($InstallRoot, [StringComparison]::OrdinalIgnoreCase) } |
-        Stop-Process -Force -ErrorAction SilentlyContinue
+    $setConfigScript = Join-Path $PSScriptRoot 'Set-DxrpServerConfig.ps1'
+    if (-not (Test-Path -LiteralPath $setConfigScript)) {
+        $setConfigScript = Join-Path $InstallRoot 'Set-DxrpServerConfig.ps1'
+    }
+    if (Test-Path -LiteralPath $setConfigScript) {
+        . $setConfigScript
+        Set-DxrpServerConfigForProfile -Profile Official -InstallRoot $InstallRoot | Out-Null
+        Test-DxrpServerConfigForProfile -Profile Official -InstallRoot $InstallRoot
+    }
+
+    Write-Host 'Stopping Official dxrp-server only (not Development)...' -ForegroundColor Cyan
+    $hostProcessScript = Join-Path $PSScriptRoot 'Dxrp-HostProcess.ps1'
+    if (-not (Test-Path -LiteralPath $hostProcessScript)) {
+        $hostProcessScript = Join-Path $InstallRoot 'Dxrp-HostProcess.ps1'
+    }
+    if (Test-Path -LiteralPath $hostProcessScript) {
+        . $hostProcessScript
+        Stop-OfficialDxrpServer -InstallRoot $InstallRoot -GamePort $GamePort
+    }
 
     if ($NoStart) {
         Write-Host 'NoStart — stop only.' -ForegroundColor Green

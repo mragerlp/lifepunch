@@ -19,9 +19,45 @@ CONTEXT — what happened (read once)
 - Cursor on VENGEANCE cannot see this RDP console. If window is lost, read the log.
 
 --------------------------------------------------------------------------------
+WHY PORTAL SHOWS NOTHING — SHARED CONFIG BUG (fixed in scripts below)
+--------------------------------------------------------------------------------
+Dev + Official share ONE file: dxrp-server-config.json
+If Official ran last, extraArgs had +port 27015 — Dev pulsed with the WRONG port
+or failed to bind. Portal "DEVELOPMENT SERVER" never updates.
+
+Fix: start_dev_server.bat now stamps Development config (+port 27016) before launch.
+Gamemode is NOT in config — portal token pulls assigned gamemode/addons from API.
+We do NOT add +game or +map to config (dxrp-server.cs owns +game rp.sbproj).
+
+VERIFY ON PORTAL (dxrp.net → Servers → DEVELOPMENT SERVER):
+  IP:    205.209.104.22  (lifepunchnet)
+  Port:  27016
+  Token: must match secure\development.local.env (NOT the 70p Official token)
+
+--------------------------------------------------------------------------------
+WHY SERVER 1 (70p) WAS RESTARTING — READ THIS
+--------------------------------------------------------------------------------
+Dev and Official share ONE folder: C:\S&BOX DXRP Server
+OLD scripts (and taskkill /IM dotnet.exe) killed EVERY dotnet in that folder —
+that murdered Server 1 Official every time you started Dev.
+
+FIXED: start_dev_server.bat now stops DEVELOPMENT only (dev token / port 27016).
+Official on port 27015 is LEFT ALONE.
+
+NEVER RUN for dev-only work:
+  auto_update_all.bat          (restarts Dev + Official on purpose)
+  taskkill /F /IM dotnet.exe   (kills Official too)
+
+OK for dev-only:
+  auto_update.bat              (Dev only — no -IncludeOfficial)
+  start_dev_server.bat
+
+--------------------------------------------------------------------------------
 WHAT NOT TO DO
 --------------------------------------------------------------------------------
 - Do NOT create a second S&BOX DXRP Server folder
+- Do NOT run auto_update_all.bat (restarts BOTH Dev + Official 70p)
+- Do NOT taskkill dotnet.exe or sbox-server.exe (kills Official too — same install folder)
 - Do NOT run server1_start.bat (that is Official 70p, different token)
 - Do NOT run auto_update.bat again unless you need engine binaries
 - Do NOT run Patch-LifepunchnetUlxCompile.ps1 (ULX unpinned)
@@ -43,9 +79,8 @@ Gamemode:         LifePunch (019e36c0…) — ULX currently OFF
 --------------------------------------------------------------------------------
 STEP 1 — COPY-PASTE THIS ENTIRE BLOCK INTO CMD
 --------------------------------------------------------------------------------
+(No taskkill here — start_dev_server.bat stops DEVELOPMENT only; Official 70p stays up)
 
-taskkill /F /IM sbox-server.exe 2>nul
-taskkill /F /IM dotnet.exe 2>nul
 rmdir /S /Q "C:\S&BOX DXRP Server\dev-patches" 2>nul
 rmdir /S /Q "C:\S&BOX DXRP Server\dxrp\game\Code\Addons\lifepunch\dxrpadminmenu" 2>nul
 cd C:\lifepunch\lifepunch-rdp-server
@@ -77,7 +112,20 @@ fix_steam.bat
 powershell -ExecutionPolicy Bypass -File "C:\S&BOX DXRP Server\Run-DevServer.ps1"
 
 --------------------------------------------------------------------------------
-STEP 4 — VERIFY TOKEN EXISTS (if immediate error about token)
+STEP 4 — VERIFY TOKEN + PORT BEFORE START (paste output if portal still dead)
+--------------------------------------------------------------------------------
+
+type "C:\S&BOX DXRP Server\secure\development.local.env"
+findstr extraArgs "C:\S&BOX DXRP Server\dxrp-server-config.json"
+
+Must show:
+  DXRP_TOKEN_DEVELOPMENT=<portal Development token — NOT 70p token>
+  extraArgs with +port 27016  (if 27015, wrong server profile — re-run deploy + start_dev_server)
+
+Portal row "LifePunch Official | DEVELOPMENT SERVER" must list IP 205.209.104.22 port 27016.
+
+--------------------------------------------------------------------------------
+STEP 5 — VERIFY TOKEN EXISTS (if immediate error about token)
 --------------------------------------------------------------------------------
 
 type "C:\S&BOX DXRP Server\secure\development.local.env"

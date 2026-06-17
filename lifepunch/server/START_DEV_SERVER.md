@@ -13,6 +13,24 @@ Or `server2_start.bat` (delegates to the same `Run-DevServer.ps1` when deployed)
 
 ---
 
+## Dev vs Official — do not kill both
+
+Dev and Official share **`C:\S&BOX DXRP Server`**. They differ by **portal token** and **port** (Dev 27016, Official 27015), not by folder.
+
+They also share **`dxrp-server-config.json`** on disk. `start_dev_server.bat` stamps **Development** ports before launch; `server1_start.bat` stamps **Official** ports. Never hand-edit `+port` in that file.
+
+| Field | Development | Official (70p) |
+|-------|-------------|----------------|
+| Portal row | LifePunch Official \| DEVELOPMENT SERVER | LifePunch Official \| 70p |
+| Token env | `DXRP_TOKEN_DEVELOPMENT` | `DXRP_TOKEN_OFFICIAL` |
+| Game port | **27016** | **27015** |
+| Host IP (portal) | **205.209.104.22** | **205.209.104.22** |
+| Gamemode | Portal-assigned via token — **not** in `extraArgs` | Same |
+
+`dxrp-server.cs` always launches `+game "<local rp.sbproj>" +authorize <token>`. Addons/gamemode pins come from `GET /v1/server/addons` for that token. LifePunch does **not** override gamemode in config.
+
+---
+
 ## Session user (Steam registry is per Windows user)
 
 | Rule | Why |
@@ -36,8 +54,8 @@ cd C:\lifepunch\lifepunch-rdp-server\lifepunch\server\dxrp-host\scripts
 powershell -ExecutionPolicy Bypass -File .\Fix-LifepunchnetSteamClient.ps1 -SteamCmdExe 'C:\S&BOX DXRP Server\steamcmd.exe' -InstallRoots @('C:\S&BOX DXRP Server')
 ```
 
-1. Kill stale `dotnet` / `sbox-server` under `C:\S&BOX DXRP Server`
-2. **One** `server2_start.bat` — wait for console
+1. `start_dev_server.bat` stops **Development only** (dev token / port 27016) — **Official 70p is not touched**
+2. **One** `start_dev_server.bat` — wait for console
 
 **Pass:** `Connected to Steam` (not "not connected to Steam") + launcher **`[7/7]`** + portal **DEVELOPMENT SERVER** Last Pulsed refreshes.
 

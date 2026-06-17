@@ -5,7 +5,7 @@
 .DESCRIPTION
   1. Verify dxrp-server.cs + DXRP_TOKEN_DEVELOPMENT
   2. Wire Steam (HKCU for THIS user — required after 26.06.10+)
-  3. Stop stale sbox-server/dotnet under install root only
+  3. Stop stale DEVELOPMENT processes only (Official 70p left running)
   4. dotnet run dxrp-server.cs --token <dev token>
 
   Run as your normal RDP user (same user who will own the server process). NOT elevated.
@@ -82,6 +82,9 @@ try {
         $env:DXRP_TOKEN_DEVELOPMENT.Substring(0, 4) + '...' + $env:DXRP_TOKEN_DEVELOPMENT.Substring($env:DXRP_TOKEN_DEVELOPMENT.Length - 4)
     } else { '(short)' }
     Write-Host "Dev token: $tokenPreview" -ForegroundColor DarkGray
+    Write-Host 'Portal row: LifePunch Official | DEVELOPMENT SERVER' -ForegroundColor DarkGray
+    Write-Host 'Game port:  27016  Query: 27017  IP: 205.209.104.22 (set on DXRP portal)' -ForegroundColor DarkGray
+    Write-Host 'Gamemode:   portal-assigned via token — NOT overridden by launcher' -ForegroundColor DarkGray
 
     if (-not $SkipSteamFix) {
         $fixCandidates = @(
@@ -105,10 +108,31 @@ try {
         Copy-Item -LiteralPath $example -Destination $config
     }
 
-    Write-Host '==> Stop stale processes under install root...' -ForegroundColor Cyan
-    Get-Process -Name 'sbox-server', 'dotnet' -ErrorAction SilentlyContinue |
-        Where-Object { $_.Path -and $_.Path.StartsWith($InstallRoot, [StringComparison]::OrdinalIgnoreCase) } |
-        Stop-Process -Force -ErrorAction SilentlyContinue
+    $setConfigScript = Join-Path $PSScriptRoot 'Set-DxrpServerConfig.ps1'
+    if (-not (Test-Path -LiteralPath $setConfigScript)) {
+        $setConfigScript = Join-Path $InstallRoot 'Set-DxrpServerConfig.ps1'
+    }
+    if (Test-Path -LiteralPath $setConfigScript) {
+        . $setConfigScript
+        Set-DxrpServerConfigForProfile -Profile Development -InstallRoot $InstallRoot | Out-Null
+        Test-DxrpServerConfigForProfile -Profile Development -InstallRoot $InstallRoot
+    }
+    else {
+        throw 'Set-DxrpServerConfig.ps1 missing — git pull + Deploy-DxrpHostLaunchers.ps1'
+    }
+
+    Write-Host '==> Stop stale DEVELOPMENT processes only (Official 70p left running)...' -ForegroundColor Cyan
+    $hostProcessScript = Join-Path $PSScriptRoot 'Dxrp-HostProcess.ps1'
+    if (-not (Test-Path -LiteralPath $hostProcessScript)) {
+        $hostProcessScript = Join-Path $InstallRoot 'Dxrp-HostProcess.ps1'
+    }
+    if (Test-Path -LiteralPath $hostProcessScript) {
+        . $hostProcessScript
+        Stop-DevelopmentDxrpServer -InstallRoot $InstallRoot
+    }
+    else {
+        Write-Host 'WARN: Dxrp-HostProcess.ps1 missing — skip process stop. Run Deploy-DxrpHostLaunchers.ps1' -ForegroundColor Yellow
+    }
 
     if ($NoStart) {
         Write-Host 'NoStart — preflight OK.' -ForegroundColor Green
