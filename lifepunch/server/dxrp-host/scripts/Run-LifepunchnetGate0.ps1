@@ -17,6 +17,24 @@ $Here = $PSScriptRoot
 
 function Write-Step($m) { Write-Host "==> $m" -ForegroundColor Cyan }
 
+function Invoke-GitQuiet {
+    param([Parameter(Mandatory)][string[]] $GitArgs)
+    $prev = $ErrorActionPreference
+    $ErrorActionPreference = 'Continue'
+    try {
+        $out = & git @GitArgs 2>&1
+        $code = $LASTEXITCODE
+        foreach ($line in $out) {
+            $text = if ($line -is [System.Management.Automation.ErrorRecord]) { $line.ToString() } else { [string]$line }
+            if ($text) { Write-Host "  $text" -ForegroundColor DarkGray }
+        }
+        return $code
+    }
+    finally {
+        $ErrorActionPreference = $prev
+    }
+}
+
 Write-Host ''
 Write-Host '========== LIFEPUNCH GATE 0 (Steam + Dev start) ==========' -ForegroundColor Green
 Write-Host "User: $env:USERDOMAIN\$env:USERNAME" -ForegroundColor White
@@ -32,13 +50,23 @@ if (-not (Test-Path -LiteralPath $InstallRoot)) {
 if (Test-Path -LiteralPath (Join-Path $GitRoot '.git')) {
     Write-Step 'git pull'
     Push-Location $GitRoot
-    $dirty = git status --porcelain 2>$null
-    if ($dirty) {
-        Write-Host '  Stashing local changes before pull...' -ForegroundColor Yellow
-        git stash push -m "gate0-auto-$(Get-Date -Format 'yyyyMMdd-HHmmss')" 2>&1 | ForEach-Object { Write-Host "  $_" -ForegroundColor DarkGray }
+    try {
+        $dirty = git status --porcelain 2>$null
+        if ($dirty) {
+            Write-Host '  Stashing local changes before pull...' -ForegroundColor Yellow
+            $stashCode = Invoke-GitQuiet -GitArgs @('stash', 'push', '-m', "gate0-auto-$(Get-Date -Format 'yyyyMMdd-HHmmss')")
+            if ($stashCode -ne 0) {
+                Write-Host "  WARN: git stash exited $stashCode — continuing." -ForegroundColor Yellow
+            }
+        }
+        $pullCode = Invoke-GitQuiet -GitArgs @('pull', '--rebase')
+        if ($pullCode -ne 0) {
+            Write-Host "  WARN: git pull exited $pullCode — continuing with on-disk scripts." -ForegroundColor Yellow
+        }
     }
-    git pull --rebase 2>&1 | ForEach-Object { Write-Host "  $_" -ForegroundColor DarkGray }
-    Pop-Location
+    finally {
+        Pop-Location
+    }
 }
 
 $steamCmdHint = Join-Path $InstallRoot 'steamcmd.exe'
