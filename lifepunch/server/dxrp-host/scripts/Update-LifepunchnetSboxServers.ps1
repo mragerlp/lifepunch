@@ -175,14 +175,17 @@ function Start-DxrpHost {
         [string] $RestartScript,
         [string] $Label
     )
+    $startBat = Join-Path $InstallRoot 'start_dev_server.bat'
+    if (Test-Path -LiteralPath $startBat) {
+        Write-Host "Starting $Label in visible CMD window: start_dev_server.bat" -ForegroundColor Green
+        Start-Process -FilePath 'cmd.exe' -ArgumentList @('/c', 'start', 'LIFEPUNCH DEV SERVER', 'cmd', '/k', 'start_dev_server.bat') -WorkingDirectory $InstallRoot
+        return
+    }
     if (-not (Test-Path -LiteralPath $RestartScript)) {
         throw "Missing $RestartScript"
     }
-    Write-Host "Starting $Label in new window ($InstallRoot)..." -ForegroundColor Green
-    Start-Process -FilePath 'powershell.exe' -ArgumentList @(
-        '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', $RestartScript,
-        '-InstallRoot', $InstallRoot
-    ) -WorkingDirectory $InstallRoot
+    Write-Host "Starting $Label in visible CMD window ($InstallRoot)..." -ForegroundColor Green
+    Start-Process -FilePath 'cmd.exe' -ArgumentList @('/c', 'start', "LIFEPUNCH $Label", 'cmd', '/k', 'powershell.exe', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', $RestartScript, '-InstallRoot', $InstallRoot) -WorkingDirectory $InstallRoot
 }
 
 Write-Host ''

@@ -17,6 +17,11 @@ STEP 2 — Start dev server (every time after engine bump or Steam break)
 cd /d "C:\S&BOX DXRP Server"
 start_dev_server.bat
 
+CONSOLE LOST? (common after auto_update — server opened in hidden window)
+  - Taskbar: look for window titled "LIFEPUNCH DEV SERVER"
+  - Or double-click: show_dev_server_log.bat  (opens logs\dev-server-last.log in Notepad)
+  - Or in CMD: type C:\S&BOX DXRP Server\logs\dev-server-last.log
+
   OR (same thing):
 
 powershell -ExecutionPolicy Bypass -File "C:\S&BOX DXRP Server\Run-DevServer.ps1"

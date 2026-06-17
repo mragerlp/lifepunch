@@ -23,6 +23,14 @@ param(
 
 $ErrorActionPreference = 'Stop'
 
+function Write-LogLine([string] $Message) {
+    $line = "[$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')] $Message"
+    Write-Host $line
+    if ($script:LogPath) {
+        Add-Content -LiteralPath $script:LogPath -Value $line -Encoding UTF8
+    }
+}
+
 function Import-LocalEnvFile([string] $Path) {
     if (-not (Test-Path -LiteralPath $Path)) { return }
     Get-Content -LiteralPath $Path | ForEach-Object {
@@ -53,6 +61,11 @@ Write-Host ''
 if (-not (Test-Path -LiteralPath $InstallRoot)) {
     throw "Missing install root: $InstallRoot"
 }
+
+$logDir = Join-Path $InstallRoot 'logs'
+New-Item -ItemType Directory -Force -Path $logDir | Out-Null
+$script:LogPath = Join-Path $logDir 'dev-server-last.log'
+Set-Content -LiteralPath $script:LogPath -Value "=== LIFEPUNCH dev server log $(Get-Date -Format o) ===" -Encoding UTF8
 
 Push-Location $InstallRoot
 try {
@@ -102,13 +115,22 @@ try {
         return
     }
 
-    Write-Host '==> dotnet run dxrp-server.cs --token <DEVELOPMENT> ...' -ForegroundColor Cyan
-    Write-Host '    Wait for: Connected to Steam + [7/7]' -ForegroundColor DarkGray
+    Write-LogLine '==> dotnet run dxrp-server.cs --token <DEVELOPMENT> ...'
+    Write-LogLine '    Log file: logs\dev-server-last.log'
+    Write-LogLine '    Wait for: Connected to Steam + [7/7]'
     Write-Host ''
-    & dotnet run dxrp-server.cs --token $env:DXRP_TOKEN_DEVELOPMENT
+    & dotnet run dxrp-server.cs --token $env:DXRP_TOKEN_DEVELOPMENT 2>&1 | ForEach-Object {
+        $t = $_.ToString()
+        Write-Host $t
+        if ($script:LogPath) { Add-Content -LiteralPath $script:LogPath -Value $t -Encoding UTF8 }
+    }
     if ($LASTEXITCODE -ne 0) {
         throw "dxrp-server.cs exited with code $LASTEXITCODE"
     }
+}
+catch {
+    Write-LogLine "FATAL: $($_.Exception.Message)"
+    throw
 }
 finally {
     Pop-Location

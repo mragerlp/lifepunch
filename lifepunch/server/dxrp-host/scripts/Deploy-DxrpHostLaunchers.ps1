@@ -46,6 +46,7 @@ function Deploy-Profile {
         @{ Src = 'server1_start.bat'; Dst = 'server1_start.bat' },
         @{ Src = 'server2_start.bat'; Dst = 'server2_start.bat' },
         @{ Src = 'start_dev_server.bat'; Dst = 'start_dev_server.bat' },
+        @{ Src = 'show_dev_server_log.bat'; Dst = 'show_dev_server_log.bat' },
         @{ Src = 'restart_official.ps1'; Dst = 'restart_official.ps1' },
         @{ Src = 'restart_development.ps1'; Dst = 'restart_development.ps1' },
         @{ Src = 'dxrp-server-config.json.example'; Dst = 'dxrp-server-config.json.example' }
