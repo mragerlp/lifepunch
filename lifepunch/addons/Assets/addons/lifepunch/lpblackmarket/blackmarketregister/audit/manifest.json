@@ -1,0 +1,9 @@
+{
+    "slot": "blackmarketregister",
+    "role": "Black Market Register (BTC checkout → DXRP market grant)",
+    "primary_mesh": "assets/source/blend/CashRegister-00.blend",
+    "issues": [
+        "No FBX in pack — export FBX from blend before ModelDoc OR import blend via pipeline"
+    ],
+    "texture_files": 4
+}

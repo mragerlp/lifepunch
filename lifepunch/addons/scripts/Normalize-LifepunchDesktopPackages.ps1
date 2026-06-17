@@ -266,11 +266,24 @@ Normalize-Slot 'lpblackmarket\blackmarketterminal' {
     }
 }
 
+Normalize-Slot 'lpblackmarket\blackmarketregister' {
+    param($s,$fbx,$blend,$obj,$tex)
+    Copy-IfExists (Join-Path $s 'assets\source\CashRegister-00.blend') (Join-Path $blend 'CashRegister-00.blend') | Out-Null
+    Copy-IfExists (Join-Path $s 'CashRegister-00.blend') (Join-Path $blend 'CashRegister-00.blend') | Out-Null
+    $tn = Copy-Tree2K (Join-Path $s 'assets\textures') $tex
+    if (-not $tn) { $tn = Copy-Tree2K (Join-Path $s 'textures') $tex }
+    Write-SlotManifest $s @{
+        slot = 'blackmarketregister'; role = 'Black Market Register (BTC checkout → DXRP market grant)'
+        primary_mesh = 'assets/source/blend/CashRegister-00.blend'
+        issues = @('No FBX in pack — export FBX from blend before ModelDoc OR import blend via pipeline')
+    }
+}
+
 Normalize-Slot 'lpblackmarket\blackmarketlocker' {
     param($s,$fbx,$blend,$obj,$tex)
     Copy-IfExists (Join-Path $s 'extracted\locker-19\source\SF_Locker_19.fbx') $fbx | Out-Null
     $tn = Copy-Tree2K (Join-Path $s 'extracted\locker-19\textures') $tex
-    Write-SlotManifest $s @{ slot = 'blackmarketlocker'; role = 'Black Market Locker'; primary_mesh = 'assets/source/fbx/SF_Locker_19.fbx'; texture_files = $tn; issues = @() }
+    Write-SlotManifest $s @{ slot = 'blackmarketlocker'; role = 'Black Market Locker (weapon storage / customization)'; primary_mesh = 'assets/source/fbx/SF_Locker_19.fbx'; texture_files = $tn; issues = @() }
 }
 
 # --- banker ---

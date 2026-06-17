@@ -33,7 +33,7 @@ These assets are **not** generic props. Every mesh belongs to a **specific gamep
 | `lphacker` | `lifepunchhacker` | `hackerhub`, `hackerterminal`, `advancedhackerhub`, `advancedhackerterminal` | P1 |
 | `lppolice` | *(police lane)* | `policehackerhub`, `policehackerterminal` | P1 |
 | `lpgovernment` | *(gov datacenter lane)* | `governmenthub`, `governmentterminal` | P1 |
-| `lpblackmarket` | *(black market dealer)* | `blackmarkethub`, `blackmarketterminal`, `blackmarketlocker` | P2 |
+| `lpblackmarket` | *(black market dealer)* | `blackmarkethub`, `blackmarketterminal`, `blackmarketregister`, `blackmarketlocker` | P2 |
 | `lpbanker` | `lifepunchbanker` | `bankerhub`, `bankerterminal`, `bankeratm` | P2 |
 | `lpflashdrive` | *(defer gameplay — item economy)* | `usbflashdrive`, `electronicstable` | P3 |
 | `lpweapons` | `lifepunchak47` / weapon rows | `ak47military`, `ar15military` | Parallel weapon pipeline |
@@ -118,11 +118,16 @@ These assets are **not** generic props. Every mesh belongs to a **specific gamep
 
 | Slot | Role |
 |------|------|
-| `blackmarkethub` | Underground hub (vault) |
-| `blackmarketterminal` | BM terminal |
-| `blackmarketlocker` | Flash-drive reader / escrow lane |
+| `blackmarkethub` | Underground hub (vault / infrastructure) |
+| `blackmarketterminal` | BM ops terminal (CRT catalog UI — when wired) |
+| `blackmarketregister` | **BTC checkout** — customer pays in Bitcoin; entity grants **spawnable items via DXRP market** (Gun Dealer shipments, gadgets, etc.) |
+| `blackmarketlocker` | **Weapon storage / customization** — regular world prop (locker mesh); not payment or escrow |
+
+**Law:** `blackmarketregister` is the **commerce surface** (BTC → market grant). `blackmarketlocker` is physical storage/loadout only — do not conflate with flash-drive escrow (that stays **banker ATM** + `lpflashdrive`).
 
 Maintain package separation from banker and bitcoin packages.
+
+**Owner drop (Jun 2026):** `UPLOAD READY ADDONS\lpblackmarket\blackmarketregister` (cash register mesh).
 
 ---
 
@@ -134,7 +139,7 @@ Maintain package separation from banker and bitcoin packages.
 | `bankerterminal` | Bank Terminal | Branch terminal |
 | `bankeratm` | Banker ATM | Deposit / withdraw / invest |
 
-**Law:** Visual consistency across all three banker slots. ATM reads flash drives — same economy surface as locker/black market but **different package**.
+**Law:** Visual consistency across all three banker slots. ATM reads flash drives — legitimate finance surface (`lpbanker` + `lpflashdrive`). Black market **BTC checkout** is `blackmarketregister`, not the locker.
 
 ---
 

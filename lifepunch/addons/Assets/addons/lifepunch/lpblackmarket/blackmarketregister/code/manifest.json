@@ -1,0 +1,9 @@
+{
+    "entitySlot": "blackmarketregister",
+    "legacyRepoIdent": "blackmarketdealer",
+    "packageFolder": "lpblackmarket",
+    "shipEntitySlug": "black-market-register",
+    "role": "BTC payment checkout; grants spawnable entities via DXRP market",
+    "legacyCodeRoot": "Code/Addons/lifepunch/blackmarketdealer",
+    "gameplayStatus": "assets-only — blocked until bitcoin Phase A–C sign-off"
+}

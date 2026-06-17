@@ -28,6 +28,8 @@ Tell agent the folder path (or Fab row #) after drop; scripts mirror into repo `
 | `lifepunchbitcoin\bitcointerminal` | `bitcoinmining` | Hashd terminals |
 | `lifepunchblackmarketdealer\blackmarkethub` | `blackmarketdealer` (prep) | Vault dealer hub |
 | `lifepunchblackmarketdealer\blackmarketterminal` | `blackmarketdealer` (prep) | Dealer terminal |
+| `lpblackmarket\blackmarketregister` | `blackmarketdealer` (prep) | **BTC register** → DXRP market grant |
+| `lpblackmarket\blackmarketlocker` | `blackmarketdealer` (prep) | Weapon storage / customization prop |
 
 **Fab refresh:** advanced hacker + new entities un-parked when listed in owner manifest.
 

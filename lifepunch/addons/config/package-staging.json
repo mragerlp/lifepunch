@@ -76,7 +76,8 @@
       "entities": {
         "blackmarkethub": { "displayName": "Black Market Hub", "shipEntitySlug": "black-market-hub" },
         "blackmarketterminal": { "displayName": "Black Market Terminal", "shipEntitySlug": "black-market-terminal" },
-        "blackmarketlocker": { "displayName": "Black Market Locker", "shipEntitySlug": "black-market-locker" }
+        "blackmarketregister": { "displayName": "Black Market Register", "shipEntitySlug": "black-market-register", "notes": "BTC payment → DXRP market grant spawnable entities" },
+        "blackmarketlocker": { "displayName": "Black Market Locker", "shipEntitySlug": "black-market-locker", "notes": "Weapon storage / customization prop only" }
       }
     },
     "lpbanker": {

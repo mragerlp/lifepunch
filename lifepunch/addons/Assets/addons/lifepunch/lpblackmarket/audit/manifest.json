@@ -1,7 +1,7 @@
 ﻿{
     "packageSlug":  "TBD",
     "healthScore":  72,
-    "slotCount":  3,
+    "slotCount":  4,
     "package":  "lpblackmarket",
     "role":  "Underground BTC economy",
     "totalSizeMB":  125.56,
@@ -14,11 +14,22 @@
                       "obj":  0,
                       "sizeMB":  31.41,
                       "role":  "Black Market Hub (Vault)",
-                      "issues":  [
-
-                                 ],
+                      "issues":  [],
                       "slot":  "blackmarkethub",
                       "primary_mesh":  "assets/source/fbx/Safe_Vault_TRIO.fbx"
+                  },
+                  {
+                      "fbx":  0,
+                      "textures":  4,
+                      "blend":  1,
+                      "obj":  0,
+                      "sizeMB":  0,
+                      "role":  "Black Market Register (BTC checkout → DXRP market grant)",
+                      "issues":  [
+                                     "No FBX in pack — export FBX from blend before ModelDoc OR import blend via pipeline"
+                                 ],
+                      "slot":  "blackmarketregister",
+                      "primary_mesh":  "assets/source/blend/CashRegister-00.blend"
                   },
                   {
                       "fbx":  1,
@@ -26,10 +37,8 @@
                       "blend":  0,
                       "obj":  0,
                       "sizeMB":  10.23,
-                      "role":  "Black Market Locker",
-                      "issues":  [
-
-                                 ],
+                      "role":  "Black Market Locker (weapon storage / customization)",
+                      "issues":  [],
                       "slot":  "blackmarketlocker",
                       "primary_mesh":  "assets/source/fbx/SF_Locker_19.fbx"
                   },
@@ -41,8 +50,8 @@
                       "sizeMB":  83.92,
                       "role":  "Black Market Terminal",
                       "issues":  [
-                                     "No FBX in pack â€” export FBX from blend before ModelDoc OR import blend via pipeline",
-                                     "BLOCKER: primary_mesh is blend-only â€” export FBX for ModelDoc or document blend import path"
+                                     "No FBX in pack — export FBX from blend before ModelDoc OR import blend via pipeline",
+                                     "BLOCKER: primary_mesh is blend-only — export FBX for ModelDoc or document blend import path"
                                  ],
                       "slot":  "blackmarketterminal",
                       "primary_mesh":  "assets/source/blend/CRT COMPUTER.blend"
