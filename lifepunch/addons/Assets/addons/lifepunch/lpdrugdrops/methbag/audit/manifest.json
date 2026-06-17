@@ -1,0 +1,8 @@
+﻿{
+    "role":  "Meth bag product",
+    "primary_mesh":  "assets/source/fbx/meth-bag.fbx",
+    "issues":  [
+
+               ],
+    "slot":  "methbag"
+}

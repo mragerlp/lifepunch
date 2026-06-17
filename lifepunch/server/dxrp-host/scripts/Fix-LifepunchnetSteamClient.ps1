@@ -15,13 +15,15 @@
 [CmdletBinding()]
 param(
     [string] $SteamCmdExe = '',
-    [string[]] $InstallRoots = @(
-        'C:\S&BOX DXRP Server'
-    ),
+    [string[]] $InstallRoots,
     [switch] $SkipSteamCmdUpdate
 )
 
 $ErrorActionPreference = 'Stop'
+
+if (-not $InstallRoots -or $InstallRoots.Count -eq 0) {
+    $InstallRoots = @('C:\S&BOX DXRP Server')
+}
 
 function Find-SteamCmdExe {
     param(
@@ -94,7 +96,7 @@ function Ensure-SteamSdkDlls {
             'quit'
         ) | Set-Content -LiteralPath $sdkScript -Encoding ASCII
         Push-Location $steamDir
-        try { & $SteamCmdPath +runscript $sdkScript }
+        try { & $SteamCmdPath @('+runscript', $sdkScript) }
         finally { Pop-Location }
     }
     return $steamDir
@@ -155,7 +157,7 @@ if ($steamCmd -and -not $SkipSteamCmdUpdate) {
     Write-Host 'Updating s&box dedicated server (app 1892930)...' -ForegroundColor Yellow
     Push-Location $steamDir
     try {
-        & $steamCmd +login anonymous +app_update 1892930 validate +quit
+        & $steamCmd @('+login', 'anonymous', '+app_update', '1892930', 'validate', '+quit')
         if ($LASTEXITCODE -gt 1) {
             Write-Host "WARN: steamcmd app_update exited $LASTEXITCODE — continuing with on-disk DLLs." -ForegroundColor Yellow
         }

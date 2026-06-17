@@ -1,0 +1,8 @@
+﻿{
+    "role":  "Alternate drug table (blend source)",
+    "primary_mesh":  "assets/source/blend/drugtable.blend",
+    "issues":  [
+                   "Export FBX from blend before ModelDoc if blend import unavailable"
+               ],
+    "slot":  "drugtable"
+}

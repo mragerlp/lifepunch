@@ -1,0 +1,8 @@
+﻿{
+    "role":  "Laboratory drying oven",
+    "primary_mesh":  "assets/source/obj/lab-oven.glb",
+    "issues":  [
+                   "GLB reference â€” export FBX for ModelDoc if needed"
+               ],
+    "slot":  "laboven"
+}

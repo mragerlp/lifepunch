@@ -9,40 +9,44 @@
 ## 1. Single active lane
 
 ```text
-ACTIVE PROJECT:
-lifepunchbitcoin
+OWNER SOURCE OF TRUTH (assets):
+C:\Users\jared\OneDrive\Desktop\UPLOAD READY ADDONS\addons\lifepunch
 
-REPO IDENT:
+WORKING LAYOUT:
+{UPLOAD READY ADDONS}\addons\lifepunch\{lpPackage}\{entitySlot}\assets|code|audit
+Example: ...\lpbitcoin\bitcoinhub\assets\source\fbx\cpu_gamer.fbx
+
+ACTIVE PROJECT:
+lifepunchbitcoin (package folder: lpbitcoin)
+
+REPO IDENT (code + UI only until promotion):
 bitcoinmining
 
 S&BOX PACKAGE:
 lifepunch.bitcoin
 
 CURRENT PHASE:
-Phase A — Hub Polish
+Model Foundation — new Fab meshes on Desktop (NOT legacy ship-tree polish)
 
-NEXT PHASE (locked until Phase A sign-off):
-Phase B — Terminal Polish
+NEXT PHASE (locked until Model Foundation sign-off per entity):
+Wire prefabs + play proof (hub → terminal → racks)
 
-THEN:
-Phase C — GPU Rack Polish
+KEEP FROM PRIOR WORK:
+UI / menus / economy / USE logic only (Razor panels, themes, entity C#)
+
+QUARANTINED — DO NOT POLISH OR SYNC FOR MESH WORK:
+bitcoinmining/models/ (steam-machine, Ophion, old vmdl prefab mesh pass)
+bitcoinmining/entities/ prefabs tied to old meshes until promotion
 
 BLOCKED (no production work):
-Hacker
-Banker
-Government
-Casino
-Drug Chemist
-Black Market
-All new cyber lanes
-All quarantined idents (see QUARANTINE_REGISTER.md)
+Hacker, Banker, Government, Casino, Drug Chemist, Black Market
+All new cyber lanes · quarantined idents (QUARANTINE_REGISTER.md)
 
 UNLOCK CONDITION:
-Flatgrass proof + owner sign-off on Phases A → B → C
-(See §8 Owner sign-off criteria)
+Desktop lp* → ModelDoc sign-off → promote vmdl → flatgrass USE loop proof (§8)
 ```
 
-**Agents:** If work does not directly improve **Hub**, **Terminal**, or **GPU Rack** for `lifepunchbitcoin`, **stop** and park the idea in `BACKLOG_PARKING_LOT.md`.
+**Agents:** Work **only** under Desktop `UPLOAD READY ADDONS\addons\lifepunch\{lpPackage}\{entitySlot}\`. If the task touches legacy `bitcoinmining/models/` meshes or old reference FBX, **stop**. Park non-bitcoin ideas in `BACKLOG_PARKING_LOT.md`.
 
 ---
 
@@ -50,7 +54,7 @@ Flatgrass proof + owner sign-off on Phases A → B → C
 
 Scope creep happens when "finished" is undefined. **No new task starts until the current phase DONE criteria are written and understood.**
 
-### Phase A — Hub (Ophion) — DONE WHEN
+### Phase A — Hub (CPU GAMER) — Model Foundation — DONE WHEN
 
 ```text
 ☐ Correct scale

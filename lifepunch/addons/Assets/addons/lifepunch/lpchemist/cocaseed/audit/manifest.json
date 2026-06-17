@@ -1,0 +1,8 @@
+﻿{
+    "role":  "Coca seed prop",
+    "primary_mesh":  "assets/source/fbx/coca-seed.fbx",
+    "issues":  [
+
+               ],
+    "slot":  "cocaseed"
+}

@@ -1,0 +1,8 @@
+﻿{
+    "role":  "Train drug drop map entity",
+    "primary_mesh":  "assets/source/blend/train-drop.blend",
+    "issues":  [
+                   "Map entity â€” export FBX when drop prefab is wired"
+               ],
+    "slot":  "traindrop"
+}

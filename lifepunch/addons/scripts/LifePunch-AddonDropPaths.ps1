@@ -15,7 +15,41 @@
   Canonical map: addons/docs/MODEL_INTAKE_DROP_MAP.md
 #>
 
+function Get-LifePunchUploadReadyRoot {
+    Join-Path $env:USERPROFILE 'OneDrive\Desktop\UPLOAD READY ADDONS'
+}
+
+function Get-LifePunchUploadReadyPackageRoot {
+    <#
+      Owner source of truth for lp* package folders.
+      Preferred: UPLOAD READY ADDONS\addons\lifepunch\lpbitcoin\...
+      Legacy fallbacks: lp* direct under UPLOAD READY ADDONS, or lifepunchaddons.
+    #>
+    $candidates = @(
+        (Join-Path (Get-LifePunchUploadReadyRoot) 'addons\lifepunch')
+        (Get-LifePunchUploadReadyRoot)
+        (Join-Path $env:USERPROFILE 'OneDrive\Desktop\lifepunchaddons')
+    )
+
+    foreach ($candidate in $candidates) {
+        if (-not (Test-Path -LiteralPath $candidate)) { continue }
+        $hasLp = Get-ChildItem -LiteralPath $candidate -Directory -ErrorAction SilentlyContinue |
+            Where-Object { $_.Name -like 'lp*' } |
+            Select-Object -First 1
+        if ($hasLp) {
+            return (Resolve-Path -LiteralPath $candidate).Path
+        }
+    }
+
+    return (Join-Path (Get-LifePunchUploadReadyRoot) 'addons\lifepunch')
+}
+
 function Get-LifePunchAddonsDropRoot {
+    $uploadPkg = Get-LifePunchUploadReadyPackageRoot
+    if ($uploadPkg -and (Test-Path -LiteralPath $uploadPkg)) {
+        return $uploadPkg
+    }
+
     $desktop = Join-Path $env:USERPROFILE 'OneDrive\Desktop'
     if (-not (Test-Path -LiteralPath $desktop)) {
         return $null

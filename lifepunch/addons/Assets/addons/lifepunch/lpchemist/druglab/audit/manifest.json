@@ -1,0 +1,10 @@
+﻿{
+    "slot":  "druglab",
+    "primary_mesh":  "assets/source/fbx/meth-lab-bench.fbx",
+    "fab_listing":  "https://www.fab.com/listings/87ceafb0-5a88-4d8c-b960-ae301f53036a",
+    "priority":  "P2",
+    "role":  "Meth lab bench (Fab Props FOR Labs hero merge)",
+    "issues":  [
+                   "Export Chemistry/Texture maps from UE if not yet in assets/textures/"
+               ]
+}

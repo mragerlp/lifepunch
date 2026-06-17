@@ -1,0 +1,8 @@
+﻿{
+    "role":  "Cocaine brick product",
+    "primary_mesh":  "assets/source/fbx/coke-brick.fbx",
+    "issues":  [
+
+               ],
+    "slot":  "cocainebrick"
+}

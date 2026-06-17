@@ -1,0 +1,8 @@
+﻿{
+    "role":  "Chemical processor",
+    "primary_mesh":  "assets/source/fbx/chemical-processor.fbx",
+    "issues":  [
+
+               ],
+    "slot":  "chemicalprocessor"
+}

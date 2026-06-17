@@ -67,10 +67,6 @@ $scriptFiles = @(
     @{ Src = 'auto_update.bat'; Dst = 'auto_update.bat' },
     @{ Src = 'auto_update_all.bat'; Dst = 'auto_update_all.bat' },
     @{ Src = 'fix_steam.bat'; Dst = 'fix_steam.bat' },
-    @{ Src = 'Run-LifepunchnetGate0.ps1'; Dst = 'Run-LifepunchnetGate0.ps1' },
-    @{ Src = 'fix_dev_server_now.bat'; Dst = 'fix_dev_server_now.bat' },
-    @{ Src = 'Fix-LifepunchnetDevServerNow.ps1'; Dst = 'Fix-LifepunchnetDevServerNow.ps1' },
-    @{ Src = 'Test-LifepunchnetDevServerReady.ps1'; Dst = 'Test-LifepunchnetDevServerReady.ps1' },
     @{ Src = 'Patch-LifepunchnetUlxCompile.ps1'; Dst = 'Patch-LifepunchnetUlxCompile.ps1' },
     @{ Src = 'Update-LifepunchnetSboxServers.ps1'; Dst = 'Update-LifepunchnetSboxServers.ps1' },
     @{ Src = 'Fix-LifepunchnetSteamClient.ps1'; Dst = 'Fix-LifepunchnetSteamClient.ps1' }

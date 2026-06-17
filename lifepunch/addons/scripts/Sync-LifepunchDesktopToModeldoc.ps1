@@ -1,13 +1,13 @@
 <#
 .SYNOPSIS
-  Mirror normalized Desktop lifepunchaddons -> repo lp* staging (alias).
+  Mirror owner Desktop UPLOAD READY ADDONS -> repo lp* staging (alias).
 
 .EXAMPLE
   powershell -File lifepunch\addons\scripts\Sync-LifepunchDesktopToModeldoc.ps1
 #>
 [CmdletBinding()]
 param(
-    [string] $DesktopRoot = "$env:USERPROFILE\OneDrive\Desktop\lifepunchaddons",
+    [string] $DesktopRoot = '',
     [string] $RepoModelDoc = ''
 )
 

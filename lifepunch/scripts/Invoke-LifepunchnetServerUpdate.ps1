@@ -62,18 +62,17 @@ else {
 
 
 $oneLiner = @"
-cd C:\lifepunch\lifepunch-rdp-server
-git pull --rebase
-cd lifepunch\server\dxrp-host\scripts
-.\fix_dev_server_now.bat
+cd C:\S&BOX DXRP Server
+fix_steam.bat
+server2_start.bat
 "@
 
 Set-Clipboard -Value $oneLiner
 Write-Host ''
-Write-Host 'Copied to clipboard (paste in PowerShell on lifepunchnet RDP — NOT elevated):' -ForegroundColor Green
+Write-Host 'Copied to clipboard (paste in CMD on lifepunchnet RDP — NOT elevated):' -ForegroundColor Green
 Write-Host $oneLiner -ForegroundColor White
 Write-Host ''
-Write-Host 'fix_dev_server_now.bat = Steam fix + ULX patch + restart Dev in one step.' -ForegroundColor Cyan
+Write-Host 'fix_steam.bat wires Steam HKCU + DLLs; server2_start.bat runs dxrp-server.cs.' -ForegroundColor Cyan
 Write-Host 'If RDP is Administrator: run fix AND server2_start as Administrator (same user).' -ForegroundColor Yellow
 if (-not $IncludeOfficial) {
     Write-Host 'Tip: auto_update_all.bat restarts Official 70p after Dev smoke.' -ForegroundColor DarkGray

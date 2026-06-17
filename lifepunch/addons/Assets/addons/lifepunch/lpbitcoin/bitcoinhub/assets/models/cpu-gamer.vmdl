@@ -39,7 +39,12 @@
 				[
 					{
 						_class = "PhysicsHullFromRender"
-						name = "default"
+						parent_bone = ""
+						surface_prop = "metal"
+						collision_tags = "solid"
+						faceMergeAngle = 20.0
+						maxHullVertices = 16
+						hull_mode = "SingleHull"
 					},
 				]
 			},

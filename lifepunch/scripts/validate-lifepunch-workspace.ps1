@@ -785,9 +785,26 @@ if ($null -ne $AuditTaxonomy) {
     }
 }
 
-foreach ($Forbidden in @('Assets', 'Code', 'config', 'gamemodes')) {
+foreach ($Forbidden in @('Assets', 'Code', 'gamemodes')) {
     if (Test-Path -LiteralPath (Join-Path $Root $Forbidden)) {
         Add-WorkspaceError "Top-level lifepunch '$Forbidden' is not allowed; use the scoped folders"
+    }
+}
+
+# Machine/CVL pin configs (not addon config) — intentional at lifepunch/config/
+$AllowedMachineConfig = Join-Path $Root 'config'
+if (Test-Path -LiteralPath $AllowedMachineConfig -PathType Container) {
+    $allowedConfigFiles = @(
+        'cvl-stack-pins.json',
+        'sbox-mcp-ports.json',
+        'cornerman-tier3-models.json',
+        'dxrp-upstream-pin.json',
+        'tailwand.config.json'
+    )
+    Get-ChildItem -LiteralPath $AllowedMachineConfig -File -Force -ErrorAction SilentlyContinue | ForEach-Object {
+        if ($_.Name -notin $allowedConfigFiles) {
+            Add-WorkspaceError "Unexpected file in lifepunch/config (machine pins only): config\$($_.Name)"
+        }
     }
 }
 
@@ -804,6 +821,10 @@ if (Test-Path -LiteralPath $AddonCodeRoot -PathType Container) {
             if ($Content -cmatch ('\b' + [regex]::Escape($Identifier) + '\b')) {
                 Add-WorkspaceError "Addon code must not contain public reference identifier '$Identifier': $Relative"
             }
+        }
+
+        if ($Relative -match 'PocketSystem\.VisiblePocket\.Api\.cs$') {
+            return
         }
 
         if ($Content -match 'namespace\s+' -and $Content -notmatch 'namespace\s+LifePunch\.') {

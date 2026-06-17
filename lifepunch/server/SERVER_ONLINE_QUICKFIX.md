@@ -52,26 +52,21 @@ Template: `lifepunch/secure/templates/` → copy to on-box `secure\`.
 
 **Common mistake:** Running `auto_update.bat` or `fix_steam.bat` **as Administrator** then `server2_start.bat` as **jared** — registry is per-user, so Steam stays broken.
 
-**One-shot fix (lifepunchnet — normal RDP user, NOT elevated):**
+**Fix (lifepunchnet — normal RDP user, NOT elevated):**
 
 ```bat
-fix_dev_server_now.bat
+cd /d "C:\S&BOX DXRP Server"
+fix_steam.bat
 ```
 
 Or:
 
 ```powershell
 cd C:\lifepunch\lifepunch-rdp-server\lifepunch\server\dxrp-host\scripts
-powershell -ExecutionPolicy Bypass -File .\Fix-LifepunchnetDevServerNow.ps1
+powershell -ExecutionPolicy Bypass -File .\Fix-LifepunchnetSteamClient.ps1 -SteamCmdExe 'C:\S&BOX DXRP Server\steamcmd.exe' -InstallRoots @('C:\S&BOX DXRP Server')
 ```
 
-**Steam only:**
-
-```bat
-fix_steam.bat
-```
-
-Then **restart** `server2_start.bat` (same Windows user — registry is HKCU).
+Kill stale `dotnet` / `sbox-server`, then **one** `server2_start.bat` (same Windows user — registry is HKCU).
 
 `auto_update.bat` now runs this step automatically after `steamcmd app_update 1892930`.
 
@@ -91,9 +86,11 @@ Then **restart** `server2_start.bat` (same Windows user — registry is HKCU).
 
 ---
 
-## 6. Development server (reference — already working)
+## 6. Development server
 
 `C:\S&BOX DXRP Server\server2_start.bat` — same pattern, different token in `secure\development.local.env`.
+
+Full runbook: `lifepunch/server/START_DEV_SERVER.md`
 
 ---
 

@@ -66,13 +66,13 @@ powershell -ExecutionPolicy Bypass -File .\Deploy-DxrpHostLaunchers.ps1
 
 ## Engine update (26.06.10+)
 
-**Read first:** `../DEV_SERVER_GATES.md` — Gate 0 (Steam) before any addon or portal work.
+**Read first:** `../START_DEV_SERVER.md` — Steam + `[7/7]` before any addon or portal work.
 
 After s&box Steam updates:
 
-1. **Preflight** (normal RDP user): `Test-LifepunchnetDevServerReady.ps1`
-2. **Binaries** (elevated): `Update-LifepunchnetSboxServers.ps1` or `auto_update.bat`
-3. **Recover** (same RDP user): `fix_dev_server_now.bat`
+1. **Binaries** (elevated): `Update-LifepunchnetSboxServers.ps1` or `auto_update.bat`
+2. **Steam fix** (normal RDP user): `fix_steam.bat`
+3. **Start** (same user): `server2_start.bat`
 4. **Verify** portal Last Pulsed + Steam connected in console
 
 ```powershell

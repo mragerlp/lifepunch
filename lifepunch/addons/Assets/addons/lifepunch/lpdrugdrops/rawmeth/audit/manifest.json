@@ -1,0 +1,8 @@
+﻿{
+    "role":  "Raw meth product",
+    "primary_mesh":  "assets/source/obj/raw-meth.dae",
+    "issues":  [
+
+               ],
+    "slot":  "rawmeth"
+}

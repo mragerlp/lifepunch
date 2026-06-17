@@ -7,9 +7,9 @@
 | Folder | Ship entity | ModelDoc |
 |--------|-------------|----------|
 | `bitcoinhub/` | bitcoin-miner | `assets/models/cpu-gamer.vmdl` |
-| `hashdterminal/` | bitcoin-terminal | pending |
-| `gpurack/` | gpu-rack | pending (OBJ primary) |
-| `advancedgpurack/` | advanced-gpu-rack | pending |
+| `hashdterminal/` | bitcoin-terminal | `assets/models/hashd-terminal.vmdl` |
+| `gpurack/` | gpu-rack | `assets/models/gpu-rack.vmdl` |
+| `advancedgpurack/` | advanced-gpu-rack | `assets/models/gpu-rack-stacked.vmdl` |
 
 Each entity folder:
 

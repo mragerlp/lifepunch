@@ -1,0 +1,8 @@
+﻿{
+    "role":  "Coca leaf prop",
+    "primary_mesh":  "assets/source/obj/leaf.zip (extract for mesh)",
+    "issues":  [
+                   "Extract leaf.zip when ready â€” keep zip as source archive"
+               ],
+    "slot":  "cocaleaf"
+}

@@ -1,0 +1,246 @@
+<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:modeldoc30:version{8c2d7a91-9c42-4bf0-883a-5a3b1762d4f1} -->
+{
+	rootNode = 
+	{
+		_class = "RootNode"
+		children = 
+		[
+			{
+				_class = "MaterialGroupList"
+				children = 
+				[
+					{
+						_class = "DefaultMaterialGroup"
+						remaps = 
+						[
+							{
+								from = "Cord"
+								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-cord.vmat"
+							},
+							{
+								from = "PSU"
+								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-psu.vmat"
+							},
+							{
+								from = "Rack"
+								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-rack.vmat"
+							},
+							{
+								from = "Motherboard"
+								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-motherboard.vmat"
+							},
+							{
+								from = "GPU"
+								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-gpu.vmat"
+							},
+							{
+								from = "FanBlades.005"
+								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-rack.vmat"
+							},
+							{
+								from = "FanBlades.006"
+								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-rack.vmat"
+							},
+							{
+								from = "FanBlades.007"
+								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-rack.vmat"
+							},
+							{
+								from = "FanBlades.008"
+								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-rack.vmat"
+							},
+							{
+								from = "FanBlades.009"
+								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-rack.vmat"
+							},
+							{
+								from = "FanBlades.010"
+								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-rack.vmat"
+							},
+							{
+								from = "FanBlades.011"
+								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-rack.vmat"
+							},
+							{
+								from = "FanBlades.012"
+								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-rack.vmat"
+							},
+							{
+								from = "FanBlades.013"
+								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-rack.vmat"
+							},
+							{
+								from = "FanBlades.014"
+								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-rack.vmat"
+							},
+							{
+								from = "FanBlades.015"
+								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-rack.vmat"
+							},
+							{
+								from = "FanBlades.016"
+								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-rack.vmat"
+							},
+							{
+								from = "FanBlades.017"
+								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-rack.vmat"
+							},
+							{
+								from = "FanBlades.018"
+								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-rack.vmat"
+							},
+							{
+								from = "FanBlades.019"
+								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-rack.vmat"
+							},
+							{
+								from = "GPU_Fan_1"
+								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-gpu.vmat"
+							},
+							{
+								from = "GPU_Fan_2"
+								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-gpu.vmat"
+							},
+							{
+								from = "GPU_Fan_3"
+								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-gpu.vmat"
+							},
+							{
+								from = "GPU_Fan_4"
+								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-gpu.vmat"
+							},
+							{
+								from = "GPU_Fan_5"
+								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-gpu.vmat"
+							},
+							{
+								from = "GPU_Fan_6"
+								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-gpu.vmat"
+							},
+						]
+						use_global_default = false
+						global_default_material = "materials/default.vmat"
+					},
+				]
+			},
+			{
+				_class = "PhysicsShapeList"
+				children = 
+				[
+					{
+						_class = "PhysicsHullFromRender"
+						parent_bone = ""
+						surface_prop = "metal"
+						collision_tags = "solid"
+						faceMergeAngle = 20.0
+						maxHullVertices = 32
+						hull_mode = "HullPerElement"
+					},
+				]
+			},
+			{
+				_class = "RenderMeshList"
+				children = 
+				[
+					{
+						_class = "RenderMeshFile"
+						name = "LOD0"
+						filename = "addons/lifepunch/lpbitcoin/advancedgpurack/assets/source/fbx/gpu-rack-stacked-anim.fbx"
+						import_translation = [ -1.389, -0.208, 27.682 ]
+						import_rotation = [ 0.0, 90.0, 0.0 ]
+						import_scale = 0.72
+						align_origin_x_type = "Center"
+						align_origin_y_type = "Center"
+						align_origin_z_type = "Bottom"
+						parent_bone = ""
+					},
+				]
+			},
+			{
+				_class = "AnimationList"
+				children = 
+				[
+					{
+						_class = "AnimBindPose"
+						name = "bindPose"
+						looping = true
+						frame_count = 1
+						frame_rate = 30
+					},
+					{
+						_class = "AnimFile"
+						name = "power_on"
+						activity_name = ""
+						activity_weight = 1
+						weight_list_name = ""
+						fade_in_time = 0.2
+						fade_out_time = 0.2
+						looping = true
+						delta = false
+						worldSpace = false
+						hidden = false
+						anim_markup_ordered = false
+						disable_compression = false
+						disable_interpolation = false
+						enable_scale = false
+						source_filename = "addons/lifepunch/lpbitcoin/advancedgpurack/assets/source/fbx/gpu-rack-stacked-anim.fbx"
+						start_frame = -1
+						end_frame = -1
+						framerate = -1.0
+						take = 0
+						reverse = false
+					},
+					{
+						_class = "AnimFile"
+						name = "Mining_Rig_Stacked"
+						activity_name = ""
+						activity_weight = 1
+						weight_list_name = ""
+						fade_in_time = 0.2
+						fade_out_time = 0.2
+						looping = true
+						delta = false
+						worldSpace = false
+						hidden = false
+						anim_markup_ordered = false
+						disable_compression = false
+						disable_interpolation = false
+						enable_scale = false
+						source_filename = "addons/lifepunch/lpbitcoin/advancedgpurack/assets/source/fbx/gpu-rack-stacked-anim.fbx"
+						start_frame = -1
+						end_frame = -1
+						framerate = -1.0
+						take = 0
+						reverse = false
+					},
+				]
+				default_root_bone_name = "rack_root"
+			},
+			{
+				_class = "BoneMarkupList"
+				children = 
+				[
+					{
+						_class = "Folder"
+						name = "GpuRackStackedBones"
+						children = 
+						[
+							{
+								_class = "BoneMarkup"
+								target_bone = "rack_root"
+								ignore_Translation = false
+								ignore_rotation = true
+								do_not_discard = true
+							},
+						]
+					},
+				]
+				bone_cull_type = "Leaf Only"
+			},
+		]
+		model_archetype = "animated_model"
+		primary_associated_entity = "prop_dynamic"
+		anim_graph_name = ""
+		base_model_name = ""
+	}
+}

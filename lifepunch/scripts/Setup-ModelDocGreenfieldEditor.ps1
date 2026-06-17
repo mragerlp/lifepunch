@@ -38,7 +38,7 @@ if (Test-Path -LiteralPath $sweepExec) {
     & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $sweepExec
 }
 
-Write-Host "`n[1/3] Sync Desktop lifepunchaddons -> repo lp* staging" -ForegroundColor Cyan
+Write-Host "`n[1/3] Sync Desktop UPLOAD READY ADDONS -> repo lp* staging" -ForegroundColor Cyan
 & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $syncDesktop
 if ($LASTEXITCODE -ne 0) { throw 'Desktop sync failed' }
 

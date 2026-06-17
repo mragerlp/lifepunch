@@ -1,0 +1,8 @@
+﻿{
+    "role":  "Truck drug drop map entity",
+    "primary_mesh":  "assets/source/blend/truck-drop.blend",
+    "issues":  [
+                   "Map entity â€” export FBX when drop prefab is wired"
+               ],
+    "slot":  "truckdrop"
+}

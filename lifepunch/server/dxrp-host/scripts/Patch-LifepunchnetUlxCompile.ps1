@@ -95,6 +95,13 @@ if ($targets.Count -eq 0) {
 Write-Host 'Patching ULX compile bundle on lifepunchnet...' -ForegroundColor Cyan
 
 foreach ($target in $targets) {
+    $fileCount = (Get-ChildItem -LiteralPath $target -File -ErrorAction SilentlyContinue).Count
+    $staffMenu = Join-Path $target 'StaffMenu.razor'
+    if ($fileCount -ge 11 -and (Test-Path -LiteralPath $staffMenu) -and ((Get-Item -LiteralPath $staffMenu).Length -gt 40000)) {
+        Write-Host "  Skip $target — portal r8 bundle already present ($fileCount files)" -ForegroundColor Yellow
+        continue
+    }
+
     Write-Host "  -> $target" -ForegroundColor Green
     foreach ($name in $SharedFiles) {
         Copy-Item -LiteralPath (Join-Path $SharedSource $name) -Destination (Join-Path $target $name) -Force

@@ -1,0 +1,12 @@
+﻿{
+    "notes":  [
+                  "Green barrel maps in assets/textures/",
+                  "Shared barrel mesh â€” tint via vmat"
+              ],
+    "role":  "Sulfur precursor barrel (green)",
+    "primary_mesh":  "assets/source/fbx/fuel_barrels.fbx",
+    "issues":  [
+
+               ],
+    "slot":  "sulfurbarrel"
+}

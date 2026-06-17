@@ -1,0 +1,8 @@
+﻿{
+    "role":  "Meth brick product",
+    "primary_mesh":  "assets/source/obj/meth-brick.obj",
+    "issues":  [
+
+               ],
+    "slot":  "methbrick"
+}

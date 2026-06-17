@@ -1,18 +1,22 @@
 <#
 .SYNOPSIS
-  Mirror normalized Desktop lifepunchaddons trees into repo lp* staging.
+  Mirror owner Desktop lp* packages into repo staging (Assets/addons/lifepunch/lp*).
 
 .EXAMPLE
   powershell -File lifepunch\addons\scripts\Sync-LifepunchDesktopToStaging.ps1
 #>
 [CmdletBinding()]
 param(
-    [string] $DesktopRoot = "$env:USERPROFILE\OneDrive\Desktop\lifepunchaddons",
+    [string] $DesktopRoot = '',
     [string] $RepoAssetsRoot = ''
 )
 
 $ErrorActionPreference = 'Stop'
 $Here = $PSScriptRoot
+. (Join-Path $Here 'LifePunch-AddonDropPaths.ps1')
+if (-not $DesktopRoot) {
+    $DesktopRoot = Get-LifePunchUploadReadyPackageRoot
+}
 $AddonsRoot = Split-Path $Here -Parent
 if (-not $RepoAssetsRoot) {
     $RepoAssetsRoot = (Resolve-Path (Join-Path $AddonsRoot 'Assets\addons\lifepunch')).Path

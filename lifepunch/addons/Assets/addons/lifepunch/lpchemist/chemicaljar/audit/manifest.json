@@ -1,0 +1,8 @@
+﻿{
+    "role":  "Chemical jar prop",
+    "primary_mesh":  "assets/source/fbx/chemical-jar.fbx",
+    "issues":  [
+
+               ],
+    "slot":  "chemicaljar"
+}

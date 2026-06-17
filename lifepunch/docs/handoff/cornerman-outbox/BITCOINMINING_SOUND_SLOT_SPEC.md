@@ -1,6 +1,3 @@
-﻿Microsoft Windows [Version 10.0.26200.8655]
-(c) Microsoft Corporation. All rights reserved.
-
 # Bitcoin mining ├óΓé¼ΓÇ¥ per-slot sound spec (Cornerman distill)
 
 **Issued:** 2026-06-12 ├é┬╖ **Lane:** P1d distill ├é┬╖ **Red:** intake + ModelDoc + compile  

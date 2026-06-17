@@ -1,0 +1,798 @@
+{
+    "lifepunch/lpflashdrive/usbflashdrive":  {
+                                                 "fbxFile":  "USB_flash.fbx",
+                                                 "slots":  [
+                                                               {
+                                                                   "value":  [
+                                                                                 "ByPolygonVertex",
+                                                                                 "Material",
+                                                                                 "MaterialL",
+                                                                                 "MaterialS",
+                                                                                 "Materialsi",
+                                                                                 "PolygonVertexIndexi"
+                                                                             ],
+                                                                   "Count":  6
+                                                               }
+                                                           ]
+                                             },
+    "lifepunch/lpchemist/druglab":  {
+                                        "fbxFile":  "meth-lab-bench.fbx",
+                                        "slots":  [
+
+                                                  ]
+                                    },
+    "lifepunch/lpweapons/weaponlocker":  {
+                                             "fbxFile":  "SF_Locker_19.fbx",
+                                             "slots":  [
+
+                                                       ]
+                                         },
+    "lifepunch/lpdrugdrops/cocainebrick":  {
+                                               "fbxFile":  "coke-brick.fbx",
+                                               "slots":  [
+
+                                                         ]
+                                           },
+    "lifepunch/lpblackmarket/blackmarketterminal":  {
+                                                        "fbxFile":  "",
+                                                        "slots":  [
+
+                                                                  ]
+                                                    },
+    "lifepunch/lpbanker/bankerhub":  {
+                                         "fbxFile":  "Safe_all.fbx",
+                                         "slots":  [
+                                                       {
+                                                           "value":  [
+                                                                         ")JMI",
+                                                                         "ByPolygonVertex",
+                                                                         "ByPolygonVertex\"",
+                                                                         "ByPolygonVertex(4",
+                                                                         "ByPolygonVertex-",
+                                                                         "ByPolygonVertex2S",
+                                                                         "ByPolygonVertex9",
+                                                                         "ByPolygonVertexG*",
+                                                                         "ByPolygonVertexO",
+                                                                         "ByPolygonVertexQ",
+                                                                         "ByPolygonVertexX",
+                                                                         "ByPolygonVertexgI",
+                                                                         "ByPolygonVertexp",
+                                                                         "ByPolygonVertexq",
+                                                                         "ByPolygonVertexqq",
+                                                                         "ByPolygonVertexs",
+                                                                         "D2MI",
+                                                                         "MI_",
+                                                                         "Material",
+                                                                         "MaterialL",
+                                                                         "MaterialLc",
+                                                                         "MaterialS",
+                                                                         "Materialsi",
+                                                                         "PolygonVertexIndexi",
+                                                                         "PolygonVertexIndexi$",
+                                                                         "PolygonVertexIndexi8\"",
+                                                                         "PolygonVertexIndexi?",
+                                                                         "PolygonVertexIndexiD",
+                                                                         "PolygonVertexIndexiX",
+                                                                         "Safe",
+                                                                         "Safe_Door",
+                                                                         "Safe_inside",
+                                                                         "Safe_noinside"
+                                                                     ],
+                                                           "Count":  33
+                                                       }
+                                                   ]
+                                     },
+    "lifepunch/lpchemist/chemicaljar":  {
+                                            "fbxFile":  "chemical-jar.fbx",
+                                            "slots":  [
+
+                                                      ]
+                                        },
+    "lifepunch/lpchemist/iodinebarrel":  {
+                                             "fbxFile":  "fuel_barrels.fbx",
+                                             "slots":  [
+
+                                                       ]
+                                         },
+    "lifepunch/lpflashdrive/hackerusb":  {
+                                             "fbxFile":  "",
+                                             "slots":  [
+
+                                                       ]
+                                         },
+    "lifepunch/lpchemist/drugtable":  {
+                                          "fbxFile":  "",
+                                          "slots":  [
+
+                                                    ]
+                                      },
+    "lifepunch/lpdrugdrops/methbrick":  {
+                                            "fbxFile":  "",
+                                            "slots":  [
+
+                                                      ]
+                                        },
+    "lifepunch/lpchemist/chemicalprocessor":  {
+                                                  "fbxFile":  "chemical-processor.fbx",
+                                                  "slots":  [
+
+                                                            ]
+                                              },
+    "lifepunch/lpchemist/redphosphorusbarrel":  {
+                                                    "fbxFile":  "fuel_barrels.fbx",
+                                                    "slots":  [
+
+                                                              ]
+                                                },
+    "lifepunch/lpweapons/ak47military":  {
+                                             "fbxFile":  "AK47.fbx",
+                                             "slots":  [
+                                                           {
+                                                               "value":  [
+                                                                             "ByPolygonVertex",
+                                                                             "ByPolygonVertex,",
+                                                                             "ByPolygonVertex,N",
+                                                                             "ByPolygonVertex9H",
+                                                                             "ByPolygonVertex?",
+                                                                             "ByPolygonVertexD",
+                                                                             "ByPolygonVertexJ",
+                                                                             "ByPolygonVertexO",
+                                                                             "ByPolygonVertexl",
+                                                                             "ByPolygonVertexn",
+                                                                             "MIp",
+                                                                             "Material",
+                                                                             "MaterialL",
+                                                                             "MaterialLR",
+                                                                             "MaterialS",
+                                                                             "Materialsi",
+                                                                             "PolygonVertexIndexi",
+                                                                             "SLR47Mag_MI.001",
+                                                                             "SLR47_MI.001",
+                                                                             "o{MI"
+                                                                         ],
+                                                               "Count":  20
+                                                           }
+                                                       ]
+                                         },
+    "lifepunch/lpgovernment/governmentterminal":  {
+                                                      "fbxFile":  "sm_computer_console_01.fbx",
+                                                      "slots":  [
+                                                                    {
+                                                                        "value":  [
+                                                                                      "BaseLayer",
+                                                                                      "ByPolygonVertex",
+                                                                                      "MIw",
+                                                                                      "Material",
+                                                                                      "MaterialL",
+                                                                                      "MaterialS",
+                                                                                      "Materialsi",
+                                                                                      "PolygonVertexIndexi",
+                                                                                      "qMI"
+                                                                                  ],
+                                                                        "Count":  9
+                                                                    }
+                                                                ]
+                                                  },
+    "lifepunch/lpbitcoin/advancedgpurack":  {
+                                                "fbxFile":  "GPU_Farm_Stacked_Anim.fbx",
+                                                "slots":  [
+                                                              {
+                                                                  "value":  [
+                                                                                "5MI.",
+                                                                                "BMIo",
+                                                                                "ByPolygonVertex",
+                                                                                "ByPolygonVertex,!",
+                                                                                "ByPolygonVertex.",
+                                                                                "ByPolygonVertex1",
+                                                                                "ByPolygonVertex4",
+                                                                                "ByPolygonVertex6:",
+                                                                                "ByPolygonVertex9",
+                                                                                "ByPolygonVertex:",
+                                                                                "ByPolygonVertex\u003c",
+                                                                                "ByPolygonVertex\u003e",
+                                                                                "ByPolygonVertexA1",
+                                                                                "ByPolygonVertexB",
+                                                                                "ByPolygonVertexD",
+                                                                                "ByPolygonVertexJ",
+                                                                                "ByPolygonVertexL",
+                                                                                "ByPolygonVertexOK",
+                                                                                "ByPolygonVertexRw",
+                                                                                "ByPolygonVertexT",
+                                                                                "ByPolygonVertexU",
+                                                                                "ByPolygonVertexZJ",
+                                                                                "ByPolygonVertexZ^",
+                                                                                "ByPolygonVertex]",
+                                                                                "ByPolygonVertexb",
+                                                                                "ByPolygonVertexbE",
+                                                                                "ByPolygonVertexdr",
+                                                                                "ByPolygonVertexeA",
+                                                                                "ByPolygonVertexj",
+                                                                                "ByPolygonVertexj,",
+                                                                                "CurrentTextureBlendModeS",
+                                                                                "GPU",
+                                                                                "GPU_Fan_1",
+                                                                                "GPU_Fan_1.001",
+                                                                                "GPU_Fan_1.002",
+                                                                                "GPU_Fan_2",
+                                                                                "GPU_Fan_2.001",
+                                                                                "GPU_Fan_2.002",
+                                                                                "GPU_Fan_3",
+                                                                                "GPU_Fan_3.001",
+                                                                                "GPU_Fan_3.002",
+                                                                                "GPU_Fan_4",
+                                                                                "GPU_Fan_4.001",
+                                                                                "GPU_Fan_4.002",
+                                                                                "GPU_Fan_5",
+                                                                                "GPU_Fan_5.001",
+                                                                                "GPU_Fan_5.002",
+                                                                                "GPU_Fan_6",
+                                                                                "GPU_Fan_6.001",
+                                                                                "GPU_Fan_6.002"
+                                                                            ],
+                                                                  "Count":  50
+                                                              }
+                                                          ]
+                                            },
+    "lifepunch/lpbanker/bankerterminal":  {
+                                              "fbxFile":  "Computer.fbx",
+                                              "slots":  [
+                                                            {
+                                                                "value":  [
+                                                                              "ByPolygonVertex",
+                                                                              "ByPolygonVertex91",
+                                                                              "ByPolygonVertex\u003c",
+                                                                              "Material",
+                                                                              "MaterialL",
+                                                                              "MaterialLY",
+                                                                              "MaterialS",
+                                                                              "Materialsi",
+                                                                              "Materialsis",
+                                                                              "PolygonVertexIndexiY",
+                                                                              "PolygonVertexIndexid"
+                                                                          ],
+                                                                "Count":  11
+                                                            }
+                                                        ]
+                                          },
+    "lifepunch/lpbanker/bankeratm":  {
+                                         "fbxFile":  "SM_ATM_Modern_01.fbx",
+                                         "slots":  [
+                                                       {
+                                                           "value":  [
+                                                                         "ByPolygonVertexH",
+                                                                         "ByPolygonVertexy",
+                                                                         "CurrentTextureBlendModeS",
+                                                                         "M_ATM_Modern_01",
+                                                                         "M_ATM_Modern_01_Screen",
+                                                                         "Material",
+                                                                         "MaterialL5",
+                                                                         "MaterialL9?",
+                                                                         "MaterialS",
+                                                                         "Materialsi",
+                                                                         "PolygonVertexIndexi",
+                                                                         "SM_ATM_Modern_01",
+                                                                         "SM_ATM_Modern_01.003",
+                                                                         "T_ATM_Modern_01_Emissive.png",
+                                                                         "T_ATM_Modern_01_Metallic.png",
+                                                                         "T_ATM_Modern_01_Normal.png",
+                                                                         "T_ATM_Modern_01_Roughness.png",
+                                                                         "T_ATM_Modern_01_Screen_Emissive.png",
+                                                                         "T_ATM_Modern_01_Screen_Metallic.png",
+                                                                         "T_ATM_Modern_01_Screen_Normal.png",
+                                                                         "T_ATM_Modern_01_Screen_Roughness.png",
+                                                                         "Texture",
+                                                                         "Texture alphaS",
+                                                                         "Texture#v",
+                                                                         "TextureL",
+                                                                         "TextureLTA",
+                                                                         "TextureLm",
+                                                                         "TextureL~",
+                                                                         "TextureNameS",
+                                                                         "TextureQo",
+                                                                         "TextureRotationPivotS",
+                                                                         "TextureS",
+                                                                         "TextureScalingPivotS",
+                                                                         "TextureTypeUseS",
+                                                                         "TextureVideoClip",
+                                                                         "TextureVideoClipGz",
+                                                                         "TextureVideoClipYs",
+                                                                         "TextureVideoCliplj",
+                                                                         "Textureox",
+                                                                         "Texturez,",
+                                                                         "UseMaterialS",
+                                                                         "emission_color_texture",
+                                                                         "metallic_texture",
+                                                                         "normalmap_texture",
+                                                                         "roughness_texture"
+                                                                     ],
+                                                           "Count":  45
+                                                       }
+                                                   ]
+                                     },
+    "lifepunch/lpdrugdrops/traindrop":  {
+                                            "fbxFile":  "",
+                                            "slots":  [
+
+                                                      ]
+                                        },
+    "lifepunch/lpdrugdrops/rawmeth":  {
+                                          "fbxFile":  "",
+                                          "slots":  [
+
+                                                    ]
+                                      },
+    "lifepunch/lphacker/hackerhub":  {
+                                         "fbxFile":  "Servers.fbx",
+                                         "slots":  [
+                                                       {
+                                                           "value":  [
+                                                                         "\u0026MI",
+                                                                         "ByPolygonVertex",
+                                                                         "ByPolygonVertex`a",
+                                                                         "ByPolygonVertexrG",
+                                                                         "ByPolygonVertext",
+                                                                         "CurrentTextureBlendModeS",
+                                                                         "Material",
+                                                                         "MaterialL",
+                                                                         "MaterialS",
+                                                                         "Materialsi",
+                                                                         "PolygonVertexIndexi",
+                                                                         "PolygonVertexIndexiP",
+                                                                         "PolygonVertexIndexib",
+                                                                         "Server_Trim_Sheet_BaseColor.png",
+                                                                         "Texture",
+                                                                         "Texture alphaS",
+                                                                         "TextureL",
+                                                                         "TextureLW",
+                                                                         "TextureNameS",
+                                                                         "TextureRotationPivotS",
+                                                                         "TextureS",
+                                                                         "TextureScalingPivotS",
+                                                                         "TextureTypeUseS",
+                                                                         "TextureVideoClip",
+                                                                         "TextureVideoClipy",
+                                                                         "Texturew,",
+                                                                         "Texturex",
+                                                                         "UseMaterialS",
+                                                                         "base_color_texture",
+                                                                         "metallic_texture",
+                                                                         "normalmap_texture",
+                                                                         "roughness_texture"
+                                                                     ],
+                                                           "Count":  32
+                                                       }
+                                                   ]
+                                     },
+    "lifepunch/lpbitcoin/bitcoinhub":  {
+                                           "fbxFile":  "cpu_gamer.fbx",
+                                           "slots":  [
+                                                         {
+                                                             "value":  [
+                                                                           "\u0027:MI?",
+                                                                           "\u0027MI",
+                                                                           "-U(MIJQ",
+                                                                           "-dMI",
+                                                                           "1MI",
+                                                                           "4!MI3",
+                                                                           "7MI~",
+                                                                           "\u003cMI5CG",
+                                                                           "\u003ce)MI",
+                                                                           "\u003eATMC~",
+                                                                           "\u003eMI",
+                                                                           "AMI",
+                                                                           "ByPolygonVertex",
+                                                                           "ByPolygonVertex!",
+                                                                           "ByPolygonVertex%*)",
+                                                                           "ByPolygonVertex\u0027 8",
+                                                                           "ByPolygonVertex3C",
+                                                                           "ByPolygonVertex9",
+                                                                           "ByPolygonVertex;",
+                                                                           "ByPolygonVertex\u003c",
+                                                                           "ByPolygonVertex=",
+                                                                           "ByPolygonVertex?",
+                                                                           "ByPolygonVertexCj?",
+                                                                           "ByPolygonVertexL",
+                                                                           "ByPolygonVertexP",
+                                                                           "ByPolygonVertexS",
+                                                                           "ByPolygonVertexY",
+                                                                           "ByPolygonVertex[",
+                                                                           "ByPolygonVertex_",
+                                                                           "ByPolygonVertexa",
+                                                                           "ByPolygonVertexb",
+                                                                           "ByPolygonVertexb\u0026A",
+                                                                           "ByPolygonVertexc",
+                                                                           "ByPolygonVertexp",
+                                                                           "ByPolygonVertexs",
+                                                                           "ByPolygonVertexx",
+                                                                           "ByPolygonVertexz",
+                                                                           "F+ORMx",
+                                                                           "H8gMI",
+                                                                           "H\u003cMI",
+                                                                           "JMI",
+                                                                           "MI\u0026#",
+                                                                           "MI\u0027",
+                                                                           "MI(",
+                                                                           "MI+~",
+                                                                           "MI.F",
+                                                                           "MI1",
+                                                                           "MI6r",
+                                                                           "MI9",
+                                                                           "MI\u003c"
+                                                                       ],
+                                                             "Count":  50
+                                                         }
+                                                     ]
+                                       },
+    "lifepunch/lpbitcoin/hashdterminal":  {
+                                              "fbxFile":  "PC.fbx",
+                                              "slots":  [
+                                                            {
+                                                                "value":  [
+                                                                              "ByPolygonVertex",
+                                                                              "ByPolygonVertexM",
+                                                                              "ByPolygonVertexsJ",
+                                                                              "Material",
+                                                                              "MaterialL",
+                                                                              "MaterialL(",
+                                                                              "MaterialS",
+                                                                              "Materialsi",
+                                                                              "PolygonVertexIndexi",
+                                                                              "PolygonVertexIndexiH",
+                                                                              "sgMI"
+                                                                          ],
+                                                                "Count":  11
+                                                            }
+                                                        ]
+                                          },
+    "lifepunch/lpchemist/cocaseed":  {
+                                         "fbxFile":  "coca-seed.fbx",
+                                         "slots":  [
+
+                                                   ]
+                                     },
+    "lifepunch/lpdrugdrops/truckdrop":  {
+                                            "fbxFile":  "",
+                                            "slots":  [
+
+                                                      ]
+                                        },
+    "lifepunch/lpbitcoin/gpurack":  {
+                                        "fbxFile":  "",
+                                        "slots":  [
+
+                                                  ]
+                                    },
+    "lifepunch/lphacker/advancedhackerhub":  {
+                                                 "fbxFile":  "Servers.fbx",
+                                                 "slots":  [
+                                                               {
+                                                                   "value":  [
+                                                                                 "ByPolygonVertex",
+                                                                                 "ByPolygonVertex.x",
+                                                                                 "ByPolygonVertexH",
+                                                                                 "ByPolygonVertexk",
+                                                                                 "MIk",
+                                                                                 "Material",
+                                                                                 "MaterialL",
+                                                                                 "MaterialS",
+                                                                                 "PolygonVertexIndexi",
+                                                                                 "PolygonVertexIndexi!$",
+                                                                                 "s}MI"
+                                                                             ],
+                                                                   "Count":  11
+                                                               }
+                                                           ]
+                                             },
+    "lifepunch/lpdrugdrops/cocainebag":  {
+                                             "fbxFile":  "cocaine-bag.fbx",
+                                             "slots":  [
+
+                                                       ]
+                                         },
+    "lifepunch/lpchemist/cocaleaf":  {
+                                         "fbxFile":  "",
+                                         "slots":  [
+
+                                                   ]
+                                     },
+    "lifepunch/lpweapons/ar15military":  {
+                                             "fbxFile":  "ar_15.fbx",
+                                             "slots":  [
+                                                           {
+                                                               "value":  [
+                                                                             "*MI",
+                                                                             "AR_15_01",
+                                                                             "AR_15_02",
+                                                                             "AR_15_03",
+                                                                             "BaseLayer",
+                                                                             "Bullet",
+                                                                             "Bullet_01_low001",
+                                                                             "Bullet_01_low002",
+                                                                             "Bullet_02_low001",
+                                                                             "Bullet_02_low002",
+                                                                             "ByPolygonVertex",
+                                                                             "ByPolygonVertex ",
+                                                                             "ByPolygonVertex [",
+                                                                             "ByPolygonVertex$",
+                                                                             "ByPolygonVertex$@",
+                                                                             "ByPolygonVertex\u0026",
+                                                                             "ByPolygonVertex\u0026$2",
+                                                                             "ByPolygonVertex\u0027\u003c",
+                                                                             "ByPolygonVertex*",
+                                                                             "ByPolygonVertex1",
+                                                                             "ByPolygonVertex2",
+                                                                             "ByPolygonVertex36",
+                                                                             "ByPolygonVertex3L2",
+                                                                             "ByPolygonVertex45",
+                                                                             "ByPolygonVertex4v3",
+                                                                             "ByPolygonVertex7",
+                                                                             "ByPolygonVertex\u003c?",
+                                                                             "ByPolygonVertex\u003c]0",
+                                                                             "ByPolygonVertex\u003e",
+                                                                             "ByPolygonVertexET3",
+                                                                             "ByPolygonVertexH-2",
+                                                                             "ByPolygonVertexIb",
+                                                                             "ByPolygonVertexJ",
+                                                                             "ByPolygonVertexKX+",
+                                                                             "ByPolygonVertexN",
+                                                                             "ByPolygonVertexO",
+                                                                             "ByPolygonVertexR",
+                                                                             "ByPolygonVertexU",
+                                                                             "ByPolygonVertexWv",
+                                                                             "ByPolygonVertex_",
+                                                                             "ByPolygonVertexb",
+                                                                             "ByPolygonVertexc:",
+                                                                             "ByPolygonVertexm",
+                                                                             "ByPolygonVertexnU",
+                                                                             "ByPolygonVertexr",
+                                                                             "ByPolygonVertexx",
+                                                                             "ByPolygonVertexy",
+                                                                             "ByPolygonVertexz",
+                                                                             "ByPolygonVertex|",
+                                                                             "CurrentTextureBlendModeS"
+                                                                         ],
+                                                               "Count":  50
+                                                           }
+                                                       ]
+                                         },
+    "lifepunch/lpchemist/laboven":  {
+                                        "fbxFile":  "",
+                                        "slots":  [
+
+                                                  ]
+                                    },
+    "lifepunch/lphacker/hackerterminal":  {
+                                              "fbxFile":  "Computer.fbx",
+                                              "slots":  [
+                                                            {
+                                                                "value":  [
+                                                                              "ByPolygonVertex",
+                                                                              "ByPolygonVertex4",
+                                                                              "ByPolygonVertex_",
+                                                                              "Material!%",
+                                                                              "MaterialL",
+                                                                              "MaterialLm",
+                                                                              "MaterialS",
+                                                                              "Materialsi",
+                                                                              "MaterialsiV",
+                                                                              "PolygonVertexIndexi",
+                                                                              "PolygonVertexIndexi2"
+                                                                          ],
+                                                                "Count":  11
+                                                            }
+                                                        ]
+                                          },
+    "lifepunch/lpflashdrive/electronicstable":  {
+                                                    "fbxFile":  "Soldering_Kit.fbx",
+                                                    "slots":  [
+                                                                  {
+                                                                      "value":  [
+                                                                                    "ByPolygonVertex",
+                                                                                    "ByPolygonVertex!Z",
+                                                                                    "ByPolygonVertex$",
+                                                                                    "ByPolygonVertex\u003c",
+                                                                                    "ByPolygonVertexF",
+                                                                                    "ByPolygonVertexK",
+                                                                                    "ByPolygonVertexW",
+                                                                                    "ByPolygonVertex[",
+                                                                                    "ByPolygonVertexy",
+                                                                                    "CurrentTextureBlendModeS",
+                                                                                    "DMI8\u003e9j",
+                                                                                    "Material",
+                                                                                    "MaterialL",
+                                                                                    "MaterialS",
+                                                                                    "Materialsi",
+                                                                                    "PCB_BaseColor.png",
+                                                                                    "PolygonVertexIndexi",
+                                                                                    "PolygonVertexIndexi ",
+                                                                                    "PolygonVertexIndexi6!",
+                                                                                    "PolygonVertexIndexi@",
+                                                                                    "PolygonVertexIndexih",
+                                                                                    "PolygonVertexIndexit",
+                                                                                    "Solder_Kit_BaseColor.png",
+                                                                                    "Texture",
+                                                                                    "Texture alphaS",
+                                                                                    "Texture\u003c",
+                                                                                    "TextureL",
+                                                                                    "TextureL(",
+                                                                                    "TextureL\u003e",
+                                                                                    "TextureLB",
+                                                                                    "TextureNameS",
+                                                                                    "TextureRotationPivotS",
+                                                                                    "TextureS",
+                                                                                    "TextureScalingPivotS",
+                                                                                    "TextureTypeUseS",
+                                                                                    "TextureVideoClip",
+                                                                                    "TextureVideoClipm",
+                                                                                    "TextureVideoClipu",
+                                                                                    "TextureVideoClip{",
+                                                                                    "TextureW",
+                                                                                    "Texture},",
+                                                                                    "UseMaterialS",
+                                                                                    "base_color_texture",
+                                                                                    "emission_color_texture",
+                                                                                    "metallic_texture",
+                                                                                    "normalmap_texture",
+                                                                                    "roughness_texture"
+                                                                                ],
+                                                                      "Count":  47
+                                                                  }
+                                                              ]
+                                                },
+    "lifepunch/lpblackmarket/blackmarketregister":  {
+                                                        "fbxFile":  "",
+                                                        "slots":  [
+
+                                                                  ]
+                                                    },
+    "lifepunch/lpdrugdrops/methbag":  {
+                                          "fbxFile":  "meth-bag.fbx",
+                                          "slots":  [
+
+                                                    ]
+                                      },
+    "lifepunch/lpblackmarket/blackmarkethub":  {
+                                                   "fbxFile":  "Safe_Vault_TRIO.fbx",
+                                                   "slots":  [
+                                                                 {
+                                                                     "value":  [
+                                                                                   "Bullion_BaseColor.png",
+                                                                                   "ByPolygonVertex",
+                                                                                   "ByPolygonVertexI",
+                                                                                   "ByPolygonVertexSh",
+                                                                                   "ByPolygonVertexZv",
+                                                                                   "ByPolygonVertex[",
+                                                                                   "ByPolygonVertexo",
+                                                                                   "ByPolygonVertexx\u0027",
+                                                                                   "CurrentTextureBlendModeS",
+                                                                                   "MIn",
+                                                                                   "Material",
+                                                                                   "MaterialL?",
+                                                                                   "MaterialLX",
+                                                                                   "MaterialS",
+                                                                                   "Materialsi",
+                                                                                   "PolygonVertexIndexi",
+                                                                                   "PolygonVertexIndexi.",
+                                                                                   "PolygonVertexIndexi5",
+                                                                                   "PolygonVertexIndexiJ(",
+                                                                                   "PolygonVertexIndexiR",
+                                                                                   "Safe_Vault",
+                                                                                   "Safe_Vault_BaseColor.png",
+                                                                                   "Safe_Vault_Closed",
+                                                                                   "Safe_Vault_Door",
+                                                                                   "Safe_Vault_Door.001",
+                                                                                   "Safe_Vault_GL_Normal.png",
+                                                                                   "Safe_Vault_Metallic.png",
+                                                                                   "Safe_Vault_Open",
+                                                                                   "Safe_Vault_Roughness.png",
+                                                                                   "Texture",
+                                                                                   "Texture alphaS",
+                                                                                   "Texture\"",
+                                                                                   "Texture(",
+                                                                                   "Texture+",
+                                                                                   "Texture.",
+                                                                                   "Texture7",
+                                                                                   "Texture@",
+                                                                                   "TextureL",
+                                                                                   "TextureLefF5",
+                                                                                   "TextureLr$",
+                                                                                   "TextureNameS",
+                                                                                   "TextureRotationPivotS",
+                                                                                   "TextureS",
+                                                                                   "TextureScalingPivotS",
+                                                                                   "TextureTypeUseS",
+                                                                                   "TextureVideoClip",
+                                                                                   "Texture},",
+                                                                                   "UseMaterialS",
+                                                                                   "base_color_texture",
+                                                                                   "metallic_texture"
+                                                                               ],
+                                                                     "Count":  50
+                                                                 }
+                                                             ]
+                                               },
+    "lifepunch/lppolice/policehackerhub":  {
+                                               "fbxFile":  "",
+                                               "slots":  [
+
+                                                         ]
+                                           },
+    "lifepunch/lpchemist/sulfurbarrel":  {
+                                             "fbxFile":  "fuel_barrels.fbx",
+                                             "slots":  [
+
+                                                       ]
+                                         },
+    "lifepunch/lppolice/policehackerterminal":  {
+                                                    "fbxFile":  "Terminal_TH.fbx",
+                                                    "slots":  [
+                                                                  {
+                                                                      "value":  [
+                                                                                    "ByPolygonVertex",
+                                                                                    "ByPolygonVertex!",
+                                                                                    "ByPolygonVertex15",
+                                                                                    "ByPolygonVertex2P",
+                                                                                    "ByPolygonVertex5A",
+                                                                                    "ByPolygonVertexmt",
+                                                                                    "ByPolygonVertex~b",
+                                                                                    "Material",
+                                                                                    "MaterialL",
+                                                                                    "MaterialS",
+                                                                                    "Materialsi",
+                                                                                    "PolygonVertexIndexi",
+                                                                                    "PolygonVertexIndexif",
+                                                                                    "Terminal_TH",
+                                                                                    "Terminal_TH_Keyboard",
+                                                                                    "Terminal_TH_Screen",
+                                                                                    "Terminal_TH_wire"
+                                                                                ],
+                                                                      "Count":  17
+                                                                  }
+                                                              ]
+                                                },
+    "lifepunch/lpgovernment/governmenthub":  {
+                                                 "fbxFile":  "Server_pillar.fbx",
+                                                 "slots":  [
+                                                               {
+                                                                   "value":  [
+                                                                                 ";AnimLayer::BaseLayer, AnimStack::Take 001",
+                                                                                 ";Material::lambert2, Model::polySurface234",
+                                                                                 "Material: 2606024969120, \"Material::lambert2\", \"\" {",
+                                                                                 "Materials: *1 {",
+                                                                                 "ObjectType: \"AnimationLayer\" {",
+                                                                                 "ObjectType: \"AnimationStack\" {",
+                                                                                 "ObjectType: \"Material\" {",
+                                                                                 "PolygonVertexIndex: *20688 {",
+                                                                                 "Type: \"LayerElementMaterial\""
+                                                                             ],
+                                                                   "Count":  9
+                                                               }
+                                                           ]
+                                             },
+    "lifepunch/lphacker/advancedhackerterminal":  {
+                                                      "fbxFile":  "PC_all_in_one.fbx",
+                                                      "slots":  [
+                                                                    {
+                                                                        "value":  [
+                                                                                      "ByPolygonVertex",
+                                                                                      "ByPolygonVertex-L",
+                                                                                      "Material",
+                                                                                      "MaterialLZ[#",
+                                                                                      "MaterialL^",
+                                                                                      "MaterialS",
+                                                                                      "Materialsi",
+                                                                                      "Materialsif",
+                                                                                      "PolygonVertexIndexi2",
+                                                                                      "PolygonVertexIndexiJ"
+                                                                                  ],
+                                                                        "Count":  10
+                                                                    }
+                                                                ]
+                                                  },
+    "lifepunch/lpflashdrive/bitcoinusb":  {
+                                              "fbxFile":  "",
+                                              "slots":  [
+
+                                                        ]
+                                          }
+}

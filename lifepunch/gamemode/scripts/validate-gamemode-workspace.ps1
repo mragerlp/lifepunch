@@ -62,8 +62,15 @@ foreach ($File in @(
 }
 
 if ($null -ne $Config) {
-    if ($Config.gamemode.dxrpGamemodeId -ne '019e36c0-a67f-701c-90f2-460e0b0f1487') {
-        Add-ValidationError 'config\gamemode.json has unexpected LifePunch gamemode id'
+    $legacyId = $null
+    if ($Config.gamemode.PSObject.Properties.Name -contains 'legacy') {
+        $legacyId = [string]$Config.gamemode.legacy.dxrpGamemodeId
+    }
+    elseif ($Config.gamemode.PSObject.Properties.Name -contains 'dxrpGamemodeId') {
+        $legacyId = [string]$Config.gamemode.dxrpGamemodeId
+    }
+    if ($legacyId -ne '019e36c0-a67f-701c-90f2-460e0b0f1487') {
+        Add-ValidationError 'config\gamemode.json has unexpected LifePunch legacy gamemode id'
     }
 }
 
@@ -86,8 +93,15 @@ if ($null -ne $GamemodePage) {
 }
 
 if ($null -ne $AddonRevisions) {
-    if ($AddonRevisions.gamemode.dxrpGamemodeId -ne '019e36c0-a67f-701c-90f2-460e0b0f1487') {
-        Add-ValidationError 'config\addon-revisions.json has unexpected LifePunch gamemode id'
+    $legacyId = $null
+    if ($AddonRevisions.gamemode.PSObject.Properties.Name -contains 'legacy') {
+        $legacyId = [string]$AddonRevisions.gamemode.legacy.dxrpGamemodeId
+    }
+    elseif ($AddonRevisions.gamemode.PSObject.Properties.Name -contains 'dxrpGamemodeId') {
+        $legacyId = [string]$AddonRevisions.gamemode.dxrpGamemodeId
+    }
+    if ($legacyId -ne '019e36c0-a67f-701c-90f2-460e0b0f1487') {
+        Add-ValidationError 'config\addon-revisions.json has unexpected LifePunch legacy gamemode id'
     }
 
     $Ak47Revision = @($AddonRevisions.revisionPins) | Where-Object { $_.package -eq 'lifepunch.ak47' } | Select-Object -First 1

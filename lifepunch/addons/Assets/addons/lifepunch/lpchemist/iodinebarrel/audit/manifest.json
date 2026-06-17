@@ -1,0 +1,12 @@
+﻿{
+    "notes":  [
+                  "Blue barrel maps in assets/textures/",
+                  "Shared barrel mesh â€” tint via vmat"
+              ],
+    "role":  "Iodine precursor barrel (blue)",
+    "primary_mesh":  "assets/source/fbx/fuel_barrels.fbx",
+    "issues":  [
+
+               ],
+    "slot":  "iodinebarrel"
+}

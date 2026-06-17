@@ -1,0 +1,21 @@
+﻿{
+    "top10":  [
+                  "lifepunch/lpbanker/bankeratm",
+                  "lifepunch/lpbanker/bankerhub",
+                  "lifepunch/lpbanker/bankerterminal",
+                  "lifepunch/lpbitcoin/advancedgpurack",
+                  "lifepunch/lpbitcoin/hashdterminal",
+                  "lifepunch/lpblackmarket/blackmarkethub",
+                  "lifepunch/lpchemist/iodinebarrel",
+                  "lifepunch/lpchemist/redphosphorusbarrel",
+                  "lifepunch/lpchemist/sulfurbarrel",
+                  "lifepunch/lpdrugdrops/cocainebag"
+              ],
+    "bucketC":  13,
+    "bucketA":  24,
+    "ok":  true,
+    "completedUtc":  "2026-06-17T20:15:13.2848457Z",
+    "host":  "CORNERMAN",
+    "bucketB":  5,
+    "entityCount":  42
+}

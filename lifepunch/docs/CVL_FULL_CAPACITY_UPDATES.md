@@ -70,17 +70,17 @@ After DXRP API changes: re-test `lp_authorize` in editor host play (`DxrpPortalD
 
 ---
 
-## lifepunchnet dedicated server (Gate 0 — before any addon test)
+## lifepunchnet dedicated server (before any addon test)
 
-**Canonical law:** `lifepunch/server/DEV_SERVER_GATES.md`
+**Canonical law:** `lifepunch/server/START_DEV_SERVER.md`
 
 s&box **26.06.10+** and every future engine bump:
 
 | Step | Who | Action |
 |------|-----|--------|
-| 1 | **RDP user** (jared or administrator — pick one) | `Test-LifepunchnetDevServerReady.ps1` |
-| 2 | Elevated OK | `auto_update.bat` or `Update-LifepunchnetSboxServers.ps1` |
-| 3 | **Same RDP user as step 1** | `fix_dev_server_now.bat` |
+| 1 | Elevated OK | `auto_update.bat` or `Update-LifepunchnetSboxServers.ps1` |
+| 2 | **RDP user** (jared or administrator — pick one) | `fix_steam.bat` |
+| 3 | **Same RDP user as step 2** | `server2_start.bat` (one instance) |
 | 4 | All CVL | Portal **Last Pulsed** + console **Steam connected** + `[7/7]` |
 | 5 | Only after 4 | Portal addon publish / gamemode pin / in-game smoke |
 
@@ -92,7 +92,7 @@ powershell -File lifepunch\scripts\Test-LifepunchnetStatus.ps1
 
 Read `sessions[].user` on `:9101/status` — advice must match the **active RDP account**.
 
-**Never:** publish addon revisions to fix Steam; never debug ULX compile until Gate 0 passes.
+**Never:** publish addon revisions to fix Steam; never debug ULX compile until Steam + `[7/7]` pass.
 
 ---
 

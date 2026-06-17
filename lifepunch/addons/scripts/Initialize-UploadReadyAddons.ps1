@@ -62,17 +62,41 @@ if (-not (Test-Path -LiteralPath $TargetRoot)) {
     throw "Missing target root: $TargetRoot"
 }
 
+$PackageRoot = Join-Path $TargetRoot 'addons\lifepunch'
+Ensure-Dir $PackageRoot
+
 Write-Host "Initialize UPLOAD READY ADDONS" -ForegroundColor Cyan
 Write-Host "  Target: $TargetRoot" -ForegroundColor DarkGray
+Write-Host "  Packages: $PackageRoot" -ForegroundColor DarkGray
 Write-Host "  Source: $repoStaging" -ForegroundColor DarkGray
 
-# Canonical package folder names
-Move-LegacyPackageName -Root $TargetRoot -OldName 'lpbitcoinmining' -NewName 'lpbitcoin'
-Move-LegacyPackageName -Root $TargetRoot -OldName 'lppolicehacker' -NewName 'lppolice'
+# Canonical package folder names (migrate legacy flat layout under PackageRoot)
+Move-LegacyPackageName -Root $PackageRoot -OldName 'lpbitcoinmining' -NewName 'lpbitcoin'
+Move-LegacyPackageName -Root $PackageRoot -OldName 'lppolicehacker' -NewName 'lppolice'
+# If owner had lp* at TargetRoot root (legacy flat layout), merge into addons/lifepunch
+Get-ChildItem -LiteralPath $TargetRoot -Directory -ErrorAction SilentlyContinue |
+    Where-Object { $_.Name -like 'lp*' } |
+    ForEach-Object {
+        $dest = Join-Path $PackageRoot $_.Name
+        if (-not (Test-Path -LiteralPath $dest)) {
+            Move-Item -LiteralPath $_.FullName -Destination $dest -Force
+            Write-Host "  moved $($_.Name) -> addons\lifepunch\$($_.Name)" -ForegroundColor Green
+            return
+        }
+        Get-ChildItem -LiteralPath $_.FullName -Directory -ErrorAction SilentlyContinue | ForEach-Object {
+            $entityDest = Join-Path $dest $_.Name
+            if (-not (Test-Path -LiteralPath $entityDest)) {
+                Move-Item -LiteralPath $_.FullName -Destination $entityDest -Force
+            }
+        }
+        if (@(Get-ChildItem -LiteralPath $_.FullName -Force -ErrorAction SilentlyContinue).Count -eq 0) {
+            Remove-Item -LiteralPath $_.FullName -Force -ErrorAction SilentlyContinue
+        }
+    }
 
 @(
     'Package staging for LIFEPUNCH upload-ready zips.',
-    'Layout: {lpPackage}/{entitySlot}/assets|code|audit',
+    'Layout: addons/lifepunch/{lpPackage}/{entitySlot}/assets|code|audit',
     'Law: addons/docs/PACKAGE_STAGING_LAYOUT.md',
     'Populate from repo: Initialize-UploadReadyAddons.ps1',
     '',
@@ -81,7 +105,7 @@ Move-LegacyPackageName -Root $TargetRoot -OldName 'lppolicehacker' -NewName 'lpp
 
 foreach ($pkgProp in $config.packages.PSObject.Properties) {
     $pkg = $pkgProp.Name
-    $pkgPath = Join-Path $TargetRoot $pkg
+    $pkgPath = Join-Path $PackageRoot $pkg
     Ensure-Dir $pkgPath
 
     foreach ($entProp in $pkgProp.Value.entities.PSObject.Properties) {
@@ -98,7 +122,7 @@ foreach ($pkgProp in $config.packages.PSObject.Properties) {
 
     $placeArgs = @{
         Package    = $pkg
-        TargetRoot = $TargetRoot
+        TargetRoot = $PackageRoot
     }
     if ($IncludeCode) { $placeArgs['IncludeCode'] = $true }
     & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $placeScript @placeArgs
@@ -106,7 +130,7 @@ foreach ($pkgProp in $config.packages.PSObject.Properties) {
 
 # Placeholder lanes on Desktop (flash drive splits)
 foreach ($placeholder in @('lpflashdrive\bitcoinusb', 'lpflashdrive\hackerusb')) {
-    $p = Join-Path $TargetRoot ($placeholder -replace '\\', '\')
+    $p = Join-Path $PackageRoot ($placeholder -replace '\\', '\')
     if (-not (Test-Path -LiteralPath $p)) { continue }
     Ensure-EntitySkeleton $p
     @"
