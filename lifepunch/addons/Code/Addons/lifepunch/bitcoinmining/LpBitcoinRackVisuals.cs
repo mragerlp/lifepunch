@@ -15,8 +15,7 @@ using Dxura.RP.Shared;
 namespace LifePunch.DXRP.Addons.Bitcoin;
 
 /// <summary>
-/// Client-side GPU rack visuals — mirrors DXRP <see cref="PrinterEntity"/> fan spin + idle hum pattern.
-/// Host simulation stays on <see cref="LpBitcoinRackEntity"/>; this is display/audio only.
+/// Client-side GPU rack visuals — bindPose chassis + fan bone spin (never <c>power_on</c> sequence playback).
 /// </summary>
 public sealed class LpBitcoinRackVisuals : Component
 {
@@ -27,8 +26,10 @@ public sealed class LpBitcoinRackVisuals : Component
 	[Property] public LpBitcoinRackEntity Rack { get; set; }
 
 	private GameObject[] _fanChildren = Array.Empty<GameObject>();
+	private SkinnedModelRenderer _skinned;
+	private BoneCollection.Bone[] _fanBones = Array.Empty<BoneCollection.Bone>();
+	private bool _bindPoseApplied;
 	private ModelRenderer _modelRenderer;
-	private bool _vmdlAnimActive;
 	private float _fanSpeed;
 	private bool _occluded;
 #if !LIFEPUNCH_LOCAL
@@ -41,8 +42,16 @@ public sealed class LpBitcoinRackVisuals : Component
 		if ( !Rack.IsValid() )
 			Rack = Components.Get<LpBitcoinRackEntity>( FindMode.EverythingInSelf );
 
-		CacheFanChildren();
 		_modelRenderer = Components.Get<ModelRenderer>( FindMode.EverythingInSelf );
+		_skinned = LpBitcoinSkinnedFanSpin.GetSkinned( _modelRenderer );
+		if ( _skinned.IsValid() )
+		{
+			_fanBones = LpBitcoinSkinnedFanSpin.CacheFanBones( _skinned.Model );
+			LpBitcoinSkinnedFanSpin.ForceBindPose( _skinned );
+			_bindPoseApplied = true;
+		}
+
+		CacheFanChildren();
 #if !LIFEPUNCH_LOCAL
 		var soundPoint = Components.Get<ContinuousSoundPoint>( FindMode.EverythingInSelf );
 		if ( soundPoint.IsValid() && soundPoint.SoundEvent.IsValid() )
@@ -78,6 +87,9 @@ public sealed class LpBitcoinRackVisuals : Component
 		if ( Cooldown.Current.CheckAndStartCooldown( $"{GameObject.Id}:rack-vis", VisualTickSeconds ) )
 			return;
 
+		if ( _skinned.IsValid() )
+			LpBitcoinSkinnedFanSpin.HoldBindPose( _skinned, ref _bindPoseApplied );
+
 		UpdateFanRamp();
 		UpdateMiningHum();
 		UpdateMiningLeds();
@@ -85,16 +97,8 @@ public sealed class LpBitcoinRackVisuals : Component
 #endif
 	}
 
-	internal void SetVmdlAnimActive( bool active ) => _vmdlAnimActive = active;
-
 	private void UpdateFanRamp()
 	{
-		if ( _vmdlAnimActive )
-		{
-			_fanSpeed = Rack.IsMining ? FanMaxSpeed : 0f;
-			return;
-		}
-
 		var hub = Rack.GetLinkedHub();
 		var mining = Rack.IsMining && hub is { IsPowered: true };
 		var target = mining ? FanMaxSpeed : 0f;
@@ -108,10 +112,19 @@ public sealed class LpBitcoinRackVisuals : Component
 
 	private void SpinFans()
 	{
-		if ( _vmdlAnimActive || _fanSpeed <= 0f || _fanChildren.Length == 0 )
+		if ( _fanSpeed <= 0f )
 			return;
 
-		var rot = Rotation.FromAxis( Vector3.Forward, _fanSpeed * Time.Delta );
+		if ( _skinned.IsValid() && _fanBones.Length > 0 )
+		{
+			LpBitcoinSkinnedFanSpin.SpinFanBones( _skinned, _fanBones, _fanSpeed );
+			return;
+		}
+
+		if ( _fanChildren.Length == 0 )
+			return;
+
+		var rot = Rotation.FromAxis( Vector3.Up, _fanSpeed * Time.Delta );
 		foreach ( var fan in _fanChildren )
 		{
 			if ( fan.IsValid() )

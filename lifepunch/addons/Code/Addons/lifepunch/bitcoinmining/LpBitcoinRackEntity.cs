@@ -273,8 +273,10 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable
 		if ( !_modelRenderer.IsValid() )
 			return;
 
-		var played = LpBitcoinPowerAnim.ApplyRackPower( _modelRenderer, mining, out _ );
-		_visuals?.SetVmdlAnimActive( played && mining );
+		// Never play power_on on the live mesh — it mis-rotates fan bones. LpBitcoinRackVisuals spins bones on bindPose.
+		var skinned = LpBitcoinSkinnedFanSpin.GetSkinned( _modelRenderer );
+		if ( skinned.IsValid() )
+			LpBitcoinSkinnedFanSpin.ForceBindPose( skinned );
 	}
 
 	private void RefreshLinkedTerminalScreens()

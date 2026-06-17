@@ -127,16 +127,16 @@ def bake_actions_to_armature(arm_obj, part_objects):
         arm_obj.animation_data_create()
         arm_obj.animation_data.action = None
 
-		for part_name, obj in part_objects.items():
-			if obj is None:
-				continue
-			obj.animation_data_create()
-			if action.name == "fanAction" and part_name != "fan":
-				obj.animation_data.action = None
-			elif action.name == "front_panelAction" and part_name != "front_panel":
-				obj.animation_data.action = None
-			else:
-				obj.animation_data.action = action
+        for part_name, obj in part_objects.items():
+            if obj is None:
+                continue
+            obj.animation_data_create()
+            if action.name == "fanAction" and part_name != "fan":
+                obj.animation_data.action = None
+            elif action.name == "front_panelAction" and part_name != "front_panel":
+                obj.animation_data.action = None
+            else:
+                obj.animation_data.action = action
 
         bpy.context.view_layer.objects.active = arm_obj
         bpy.ops.object.mode_set(mode="POSE")

@@ -382,17 +382,14 @@ public static class LpBitcoinDevSpawn
 		foreach ( var seq in sequences )
 			Log.Info( $"BITCOINMINING_ANIM_AUDIT seq={seq}" );
 
-		if ( LpBitcoinPowerAnim.ApplyHubPower( renderer, true, out var onSeq ) )
-			Log.Info( $"BITCOINMINING_ANIM_AUDIT apply ON -> {onSeq}" );
-		else
-			Log.Warning( "BITCOINMINING_ANIM_AUDIT apply ON failed — fanAction missing from compiled vmdl." );
+		// Do not play fanAction on the live hub — it displaces hull bones and explodes the mesh.
+		// Production uses bindPose + LpBitcoinHubVisuals fan bone spin (see LpBitcoinHubVisuals).
+		var hasFanAction = sequences.Any( s => string.Equals( s, "fanAction", StringComparison.OrdinalIgnoreCase ) );
+		Log.Info( hasFanAction
+			? "BITCOINMINING_ANIM_AUDIT fanAction present (runtime uses bindPose + bone spin, not sequence playback)"
+			: "BITCOINMINING_ANIM_AUDIT fanAction missing — re-export steam-machine.fbx and recompile vmdl" );
 
-		if ( LpBitcoinPowerAnim.ApplyHubPower( renderer, false, out var offSeq ) )
-			Log.Info( $"BITCOINMINING_ANIM_AUDIT apply OFF -> {offSeq}" );
-		else
-			Log.Warning( "BITCOINMINING_ANIM_AUDIT apply OFF failed." );
-
-		hub.ApplyPoweredState( true );
+		hub.ApplyPoweredState( hub.IsPowered );
 	}
 
 	/// <summary>Logs GPU rack + advanced rack vmdl sequences and mining anim apply (BITCOINMINING-01).</summary>
@@ -459,15 +456,16 @@ public static class LpBitcoinDevSpawn
 		foreach ( var seq in sequences )
 			Log.Info( $"BITCOINMINING_RACK_ANIM_AUDIT {tag} seq={seq}" );
 
-		if ( LpBitcoinPowerAnim.ApplyRackPower( renderer, true, out var onSeq ) )
-			Log.Info( $"BITCOINMINING_RACK_ANIM_AUDIT {tag} apply ON -> {onSeq}" );
-		else
-			Log.Warning( $"BITCOINMINING_RACK_ANIM_AUDIT {tag} apply ON failed." );
+		var hasPowerOn = sequences.Any( s =>
+			string.Equals( s, "power_on", StringComparison.OrdinalIgnoreCase )
+			|| string.Equals( s, "GPU_Farm_Final", StringComparison.OrdinalIgnoreCase ) );
+		Log.Info( hasPowerOn
+			? $"BITCOINMINING_RACK_ANIM_AUDIT {tag} power_on present (runtime uses bindPose + bone spin, not sequence playback)"
+			: $"BITCOINMINING_RACK_ANIM_AUDIT {tag} power_on missing — re-export anim FBX and recompile vmdl" );
 
-		if ( LpBitcoinPowerAnim.ApplyRackPower( renderer, false, out var offSeq ) )
-			Log.Info( $"BITCOINMINING_RACK_ANIM_AUDIT {tag} apply OFF -> {offSeq}" );
-		else
-			Log.Warning( $"BITCOINMINING_RACK_ANIM_AUDIT {tag} apply OFF failed." );
+		var skinned = LpBitcoinSkinnedFanSpin.GetSkinned( renderer );
+		if ( skinned.IsValid() )
+			LpBitcoinSkinnedFanSpin.ForceBindPose( skinned );
 	}
 
 	private static bool IsPreviewHub( LpBitcoinHubEntity hub )

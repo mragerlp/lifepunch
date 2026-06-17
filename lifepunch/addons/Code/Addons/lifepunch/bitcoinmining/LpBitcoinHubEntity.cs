@@ -593,8 +593,7 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable
 		if ( !_modelRenderer.IsValid() )
 			return;
 
-		// Chassis stays on bindPose; LpBitcoinHubVisuals spins the fan bone only.
-		LpBitcoinPowerAnim.ApplyHubPower( _modelRenderer, false, out _ );
+		// LpBitcoinHubVisuals owns bindPose + fan bone spin — never play fanAction here.
 		LpBitcoinPowerLeds.ApplyHubFenceLeds( _modelRenderer, powered );
 	}
 }
