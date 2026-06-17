@@ -58,9 +58,32 @@ function Deploy-Profile {
 
 Write-Host 'Deploying LifePunch DXRP host launchers...' -ForegroundColor Cyan
 
+$scriptFiles = @(
+    @{ Src = 'auto_update.bat'; Dst = 'auto_update.bat' },
+    @{ Src = 'auto_update_all.bat'; Dst = 'auto_update_all.bat' },
+    @{ Src = 'fix_steam.bat'; Dst = 'fix_steam.bat' },
+    @{ Src = 'Update-LifepunchnetSboxServers.ps1'; Dst = 'Update-LifepunchnetSboxServers.ps1' },
+    @{ Src = 'Fix-LifepunchnetSteamClient.ps1'; Dst = 'Fix-LifepunchnetSteamClient.ps1' }
+)
+
+function Deploy-ScriptBundle {
+    param([string] $DestRoot, [string] $Label)
+    foreach ($f in $scriptFiles) {
+        $srcPath = Join-Path $RepoDxrpHost 'scripts' $f.Src
+        if (-not (Test-Path -LiteralPath $srcPath)) { continue }
+        $dstPath = Join-Path $DestRoot $f.Dst
+        Copy-Item -LiteralPath $srcPath -Destination $dstPath -Force
+        Write-Host "  $Label -> $($f.Dst)" -ForegroundColor DarkGray
+    }
+}
+
 Deploy-Profile -SourceDir (Join-Path $RepoDxrpHost 'official') -DestRoot $OfficialRoot -Label 'Official'
 Deploy-Profile -SourceDir (Join-Path $RepoDxrpHost 'development') -DestRoot $DevelopmentRoot -Label 'Development'
 
+Deploy-ScriptBundle -DestRoot $OfficialRoot -Label 'Official'
+Deploy-ScriptBundle -DestRoot $DevelopmentRoot -Label 'Development'
+
 Write-Host ''
 Write-Host 'Next: point desktop shortcut at server1_start.bat in Official root.' -ForegroundColor Cyan
+Write-Host 'Engine updates: double-click auto_update.bat (Dev) or auto_update_all.bat (Dev+Official).' -ForegroundColor Cyan
 Write-Host 'Secrets stay in secure\official.local.env (never committed).' -ForegroundColor Yellow

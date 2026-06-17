@@ -36,6 +36,9 @@ lifepunch/server/dxrp-host/
   development/restart_development.ps1
   development/dxrp-server-config.json.example
   scripts/Deploy-DxrpHostLaunchers.ps1
+  scripts/Update-LifepunchnetSboxServers.ps1
+  scripts/auto_update.bat
+  scripts/auto_update_all.bat
 ```
 
 ### On-box only (never commit)
@@ -58,6 +61,28 @@ Copy env templates from `lifepunch/secure/templates/` into each install root’s
 cd C:\lifepunch\lifepunch-rdp-server\lifepunch\server\dxrp-host\scripts
 powershell -ExecutionPolicy Bypass -File .\Deploy-DxrpHostLaunchers.ps1
 ```
+
+## Engine update (26.06.10+)
+
+After s&box Steam updates, run on lifepunchnet (elevated):
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\Update-LifepunchnetSboxServers.ps1
+# After Dev pulses OK on portal:
+powershell -ExecutionPolicy Bypass -File .\Update-LifepunchnetSboxServers.ps1 -IncludeOfficial
+```
+
+From VENGEANCE: `powershell -File lifepunch\scripts\Invoke-LifepunchnetServerUpdate.ps1`
+
+**Double-click on lifepunchnet** (after `Deploy-DxrpHostLaunchers.ps1`):
+
+| File | Action |
+|------|--------|
+| `auto_update.bat` | steamcmd + restart **Development** only |
+| `auto_update_all.bat` | steamcmd + restart **Dev + Official** |
+
+Copied to `C:\S&BOX DXRP Server\`, `C:\S&BOX DXRP Server Dev\`, and `dxrp-host\scripts\`.
+
 
 Then **migrate Official** (one-time):
 

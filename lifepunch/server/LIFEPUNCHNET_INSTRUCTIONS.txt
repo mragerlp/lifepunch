@@ -191,6 +191,39 @@ STEP 10 — DXRP SERVER 1 / 2 LAUNCHERS (Official must use dxrp-server.cs)
   dxrp-server.cs stays upstream/pristine on the box — do not fork in LifePunch git.
 
 --------------------------------------------------------------------------------
+STEP 11 — s&box ENGINE UPDATE (26.06.10+) — lifepunchnet dedicated hosts
+--------------------------------------------------------------------------------
+
+  After Steam/engine bumps on VENGEANCE, update lifepunchnet the same day.
+
+  On VENGEANCE (opens RDP + copies one-liner):
+
+    powershell -File lifepunch\scripts\Invoke-LifepunchnetServerUpdate.ps1
+    powershell -File lifepunch\scripts\Invoke-LifepunchnetServerUpdate.ps1 -IncludeOfficial
+
+  On lifepunchnet (ELEVATED — or double-click .bat; it self-elevates):
+
+    auto_update.bat          — Dev only (safe default)
+    auto_update_all.bat      — Dev + Official 70p
+
+  Or PowerShell:
+
+    cd C:\lifepunch\lifepunch-rdp-server\lifepunch\server\dxrp-host\scripts
+    git pull --rebase
+    powershell -ExecutionPolicy Bypass -File .\Deploy-DxrpHostLaunchers.ps1
+    powershell -ExecutionPolicy Bypass -File .\Update-LifepunchnetSboxServers.ps1 -IncludeOfficial
+
+  What it does:
+    - steamcmd +app_update 1892930 validate (dedicated server binaries)
+    - sync sbox-server.* into Official + Dev install roots
+    - deploy launchers from git
+    - restart Dev first; Official only with -IncludeOfficial
+
+  Verify on DXRP portal Servers page:
+    - Version = 26.06.10+ (both rows)
+    - Last Pulsed refreshes for Development, then Official
+
+--------------------------------------------------------------------------------
 PORTS (quick reference)
 --------------------------------------------------------------------------------
 

@@ -44,7 +44,34 @@ Template: `lifepunch/secure/templates/` → copy to on-box `secure\`.
 
 ---
 
-## 4. If it still fails
+## 4. "Not connected to Steam" (26.06.10+)
+
+**Symptom:** Dev/Official console says server is **not connected to Steam** after engine update.
+
+**Cause:** s&box dedicated server **no longer ships** `steamclient64.dll`. SteamCMD must be installed and registry must point at its DLLs ([s&box docs](https://sbox.game/dev/doc/networking/dedicated-servers/)).
+
+**Fix (lifepunchnet — double-click or elevated PS):**
+
+```text
+fix_steam.bat
+```
+
+Or:
+
+```powershell
+cd C:\lifepunch\lifepunch-rdp-server\lifepunch\server\dxrp-host\scripts
+powershell -ExecutionPolicy Bypass -File .\Fix-LifepunchnetSteamClient.ps1
+```
+
+Then **restart** `server2_start.bat` (same Windows user — registry is HKCU).
+
+`auto_update.bat` now runs this step automatically after `steamcmd app_update 1892930`.
+
+**Alternative:** install Steam desktop client on lifepunchnet (also satisfies the requirement).
+
+---
+
+## 5. If it still fails
 
 | Check | Action |
 |-------|--------|
@@ -56,7 +83,7 @@ Template: `lifepunch/secure/templates/` → copy to on-box `secure\`.
 
 ---
 
-## 5. Development server (reference — already working)
+## 6. Development server (reference — already working)
 
 `C:\S&BOX DXRP Server Dev\development\server2_start.bat` — same pattern, different token in `secure\development.local.env`.
 

@@ -1,6 +1,10 @@
 @echo off
 setlocal
 cd /d "%~dp0"
+REM 26.06.10+: dedicated server needs SteamCMD client DLL registry (same user as this console)
+for %%S in ("%~dp0Fix-LifepunchnetSteamClient.ps1" "C:\lifepunch\lifepunch-rdp-server\lifepunch\server\dxrp-host\scripts\Fix-LifepunchnetSteamClient.ps1") do (
+  if exist %%~S powershell -NoProfile -ExecutionPolicy Bypass -File "%%~S" 2>nul
+)
 if not exist "dxrp-server.cs" (
   echo ERROR: dxrp-server.cs not found in %CD%
   echo Install Dxura host files in this folder first.

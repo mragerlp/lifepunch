@@ -10,6 +10,7 @@
       "portalName": "LifePunch Official | DEVELOPMENT SERVER",
       "dxrpServerId": null,
       "version": "26.05.20",
+      "targetVersion": "26.06.10",
       "created": "3 weeks ago",
       "lastPulsed": "2 days ago",
       "purpose": "Test LifePunch addons, gamemode changes, and newer beta features before public release.",
@@ -31,6 +32,7 @@
       "portalName": "LifePunch Official | 70p",
       "dxrpServerId": null,
       "version": "26.05.20",
+      "targetVersion": "26.06.10",
       "created": "1 month ago",
       "lastPulsed": "9 minutes ago",
       "purpose": "70-player vanilla-style DXRP server that mirrors official DXRP limitations.",
@@ -52,6 +54,7 @@
     "Development server tests LIFEPUNCH™ gamemode pins before 70p promotion.",
     "Do not design workflows around unmanaged or external servers unless the owner adds them later.",
     "lifepunchnet launch wrappers: lifepunch/server/dxrp-host/ — Official must use dotnet run dxrp-server.cs (not bare +game dxura.rp).",
+    "Engine bump (26.06.10+): on lifepunchnet run dxrp-host/scripts/Update-LifepunchnetSboxServers.ps1 — Dev first, then -IncludeOfficial for 70p.",
     "Internal server ids are lifepunchdevelopment and lifepunchmainserver.",
     "Development and 70p procedures must remain separate."
   ]
