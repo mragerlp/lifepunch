@@ -1,15 +1,9 @@
 @echo off
 setlocal EnableExtensions
-REM LIFEPUNCH - fix "not connected to Steam" on dedicated server (26.06.10+)
+REM LIFEPUNCH - fix "not connected to Steam" (26.06.10+)
+REM IMPORTANT: Run as the SAME user who starts server2_start.bat - DO NOT "Run as administrator"
 
 cd /d "%~dp0"
-
-net session >nul 2>&1
-if %errorlevel% neq 0 (
-    echo Requesting Administrator...
-    powershell -NoProfile -Command "Start-Process -FilePath '%~f0' -Verb RunAs"
-    exit /b 0
-)
 
 set "SCRIPTS=%~dp0"
 if not exist "%SCRIPTS%Fix-LifepunchnetSteamClient.ps1" (
@@ -18,7 +12,9 @@ if not exist "%SCRIPTS%Fix-LifepunchnetSteamClient.ps1" (
 
 echo.
 echo ============================================================
-echo   LIFEPUNCH FIX STEAM - wire SteamCMD client DLLs
+echo   LIFEPUNCH FIX STEAM
+echo   User: %USERNAME%
+echo   DO NOT run as Administrator - use your normal RDP login
 echo ============================================================
 echo.
 
@@ -27,7 +23,7 @@ set EXIT=%ERRORLEVEL%
 
 echo.
 if %EXIT% equ 0 (
-    echo OK. Now restart server2_start.bat ^(Dev^) or server1_start.bat ^(Official^).
+    echo OK. Restart server2_start.bat in THIS SAME session/user.
 ) else (
     echo FIX STEAM failed with code %EXIT%
 )

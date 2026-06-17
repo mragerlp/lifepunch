@@ -110,20 +110,14 @@ function Sync-SboxServerBinaries {
 }
 
 function Register-SteamCmdClientDlls {
-    param([string] $SteamCmdPath)
-    $steamDir = Split-Path -Parent $SteamCmdPath
-    $dll64 = Join-Path $steamDir 'steamclient64.dll'
-    $dll32 = Join-Path $steamDir 'steamclient.dll'
-    if (-not (Test-Path -LiteralPath $dll64)) {
-        throw "Missing $dll64 — steamcmd app_update 1892930 did not lay down steamclient DLLs."
-    }
-    $regPath = 'HKCU:\SOFTWARE\Valve\Steam\ActiveProcess'
-    New-Item -Path $regPath -Force | Out-Null
-    Set-ItemProperty -Path $regPath -Name 'SteamClientDll64' -Value $dll64 -Type String
-    if (Test-Path -LiteralPath $dll32) {
-        Set-ItemProperty -Path $regPath -Name 'SteamClientDll' -Value $dll32 -Type String
-    }
-    Write-Host "  Steam registry -> $dll64" -ForegroundColor DarkGray
+    param(
+        [string] $SteamCmdPath,
+        [string[]] $InstallRoots
+    )
+    $fix = Join-Path $PSScriptRoot 'Fix-LifepunchnetSteamClient.ps1'
+    if (-not (Test-Path -LiteralPath $fix)) { throw "Missing $fix" }
+    & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $fix `
+        -SteamCmdExe $SteamCmdPath -InstallRoots $InstallRoots -SkipSteamCmdUpdate
 }
 
 function Start-DxrpHost {
@@ -168,8 +162,8 @@ steamcmd.exe not found. Install SteamCMD on lifepunchnet, then re-run.
     }
     finally { Pop-Location }
 
-    Write-Step 'Wire Steam client DLLs (26.06.10+ dedicated server requirement)'
-    Register-SteamCmdClientDlls -SteamCmdPath $steamCmd
+    Write-Step 'Wire Steam client DLLs + copy redist into install roots'
+    Register-SteamCmdClientDlls -SteamCmdPath $steamCmd -InstallRoots @($OfficialRoot, $DevelopmentRoot)
 
     $dedicatedRoot = Find-DedicatedServerRoot -SteamCmdPath $steamCmd
     if (-not $dedicatedRoot) {

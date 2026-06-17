@@ -48,9 +48,11 @@ Template: `lifepunch/secure/templates/` → copy to on-box `secure\`.
 
 **Symptom:** Dev/Official console says server is **not connected to Steam** after engine update.
 
-**Cause:** s&box dedicated server **no longer ships** `steamclient64.dll`. SteamCMD must be installed and registry must point at its DLLs ([s&box docs](https://sbox.game/dev/doc/networking/dedicated-servers/)).
+**Cause:** s&box 26.06.10+ needs Steam redist DLLs **and** HKCU registry for the **same Windows user** who starts the server.
 
-**Fix (lifepunchnet — double-click or elevated PS):**
+**Common mistake:** Running `fix_steam.bat` **as Administrator** then `server2_start.bat` as **jared** — registry is per-user, so Steam stays broken.
+
+**Fix (lifepunchnet — normal RDP user, NOT elevated):**
 
 ```text
 fix_steam.bat
