@@ -114,15 +114,49 @@ function Sync-SboxServerBinaries {
     }
 }
 
-function Register-SteamCmdClientDlls {
+function Get-InteractiveUsername {
+    try {
+        $sessions = Get-CimInstance -ClassName Win32_ComputerSystem -ErrorAction Stop
+        if ($sessions.UserName) {
+            return ($sessions.UserName -split '\\')[-1]
+        }
+    }
+    catch { }
+    return $env:USERNAME
+}
+
+function Invoke-SteamFixAsInteractiveUser {
     param(
         [string] $SteamCmdPath,
         [string[]] $InstallRoots
     )
     $fix = Join-Path $PSScriptRoot 'Fix-LifepunchnetSteamClient.ps1'
     if (-not (Test-Path -LiteralPath $fix)) { throw "Missing $fix" }
-    & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $fix `
-        -SteamCmdExe $SteamCmdPath -InstallRoots $InstallRoots -SkipSteamCmdUpdate
+
+    $isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()
+              ).IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator)
+
+    if (-not $isAdmin) {
+        & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $fix `
+            -SteamCmdExe $SteamCmdPath -InstallRoots $InstallRoots -SkipSteamCmdUpdate
+        return
+    }
+
+    # Elevated auto_update: HKCU is Administrator's — wrong user. Run fix as logged-on RDP user.
+    $runUser = Get-InteractiveUsername
+    $taskName = "LifepunchSteamFix_$([guid]::NewGuid().ToString('N').Substring(0, 8))"
+    $wrapper = Join-Path $env:TEMP "lifepunch-steamfix-$taskName.ps1"
+    $rootsLiteral = ($InstallRoots | ForEach-Object { "'$($_ -replace "'", "''")'" }) -join ','
+    @"
+& '$($fix -replace "'", "''")' -SteamCmdExe '$($SteamCmdPath -replace "'", "''")' -InstallRoots @($rootsLiteral) -SkipSteamCmdUpdate
+"@ | Set-Content -LiteralPath $wrapper -Encoding UTF8
+    $tr = "powershell.exe -NoProfile -ExecutionPolicy Bypass -File `"$wrapper`""
+    Write-Host "  Steam HKCU fix as interactive user: $runUser (not Administrator)" -ForegroundColor Yellow
+    schtasks /Create /TN $taskName /TR $tr /SC ONCE /ST 00:00 /RU $runUser /IT /F | Out-Null
+    schtasks /Run /TN $taskName | Out-Null
+    Start-Sleep -Seconds 8
+    schtasks /Delete /TN $taskName /F 2>$null | Out-Null
+    Remove-Item -LiteralPath $wrapper -Force -ErrorAction SilentlyContinue
 }
 
 function Start-DxrpHost {
@@ -172,7 +206,7 @@ steamcmd.exe not found. Install SteamCMD on lifepunchnet, then re-run.
     if ($DevelopmentRoot -ne $OfficialRoot) {
         $installRoots += $DevelopmentRoot
     }
-    Register-SteamCmdClientDlls -SteamCmdPath $steamCmd -InstallRoots $installRoots
+    Invoke-SteamFixAsInteractiveUser -SteamCmdPath $steamCmd -InstallRoots $installRoots
 
     $dedicatedRoot = Find-DedicatedServerRoot -SteamCmdPath $steamCmd
     if (-not $dedicatedRoot) {

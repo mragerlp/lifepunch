@@ -50,19 +50,25 @@ Template: `lifepunch/secure/templates/` → copy to on-box `secure\`.
 
 **Cause:** s&box 26.06.10+ needs Steam redist DLLs **and** HKCU registry for the **same Windows user** who starts the server.
 
-**Common mistake:** Running `fix_steam.bat` **as Administrator** then `server2_start.bat` as **jared** — registry is per-user, so Steam stays broken.
+**Common mistake:** Running `auto_update.bat` or `fix_steam.bat` **as Administrator** then `server2_start.bat` as **jared** — registry is per-user, so Steam stays broken.
 
-**Fix (lifepunchnet — normal RDP user, NOT elevated):**
+**One-shot fix (lifepunchnet — normal RDP user, NOT elevated):**
 
-```text
-fix_steam.bat
+```bat
+fix_dev_server_now.bat
 ```
 
 Or:
 
 ```powershell
 cd C:\lifepunch\lifepunch-rdp-server\lifepunch\server\dxrp-host\scripts
-powershell -ExecutionPolicy Bypass -File .\Fix-LifepunchnetSteamClient.ps1
+powershell -ExecutionPolicy Bypass -File .\Fix-LifepunchnetDevServerNow.ps1
+```
+
+**Steam only:**
+
+```bat
+fix_steam.bat
 ```
 
 Then **restart** `server2_start.bat` (same Windows user — registry is HKCU).

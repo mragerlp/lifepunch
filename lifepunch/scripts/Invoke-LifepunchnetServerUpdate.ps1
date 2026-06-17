@@ -65,17 +65,16 @@ $oneLiner = @"
 cd C:\lifepunch\lifepunch-rdp-server
 git pull --rebase
 cd lifepunch\server\dxrp-host\scripts
-powershell -ExecutionPolicy Bypass -File .\Deploy-DxrpHostLaunchers.ps1
-powershell -ExecutionPolicy Bypass -File .\Patch-LifepunchnetUlxCompile.ps1
+.\fix_dev_server_now.bat
 "@
 
 Set-Clipboard -Value $oneLiner
 Write-Host ''
-Write-Host 'Copied to clipboard (paste in PowerShell on lifepunchnet RDP — NOT elevated for patch):' -ForegroundColor Green
+Write-Host 'Copied to clipboard (paste in PowerShell on lifepunchnet RDP — NOT elevated):' -ForegroundColor Green
 Write-Host $oneLiner -ForegroundColor White
 Write-Host ''
-Write-Host 'Then restart Dev: C:\S&BOX DXRP Server\server2_start.bat' -ForegroundColor Cyan
-Write-Host 'Patch fixes ULX compile (LifePunchUiScale missing). Portal r7 still needs lifepunchulx upload path.' -ForegroundColor DarkGray
+Write-Host 'fix_dev_server_now.bat = Steam fix + ULX patch + restart Dev in one step.' -ForegroundColor Cyan
+Write-Host 'If RDP is Administrator: run fix AND server2_start as Administrator (same user).' -ForegroundColor Yellow
 if (-not $IncludeOfficial) {
     Write-Host 'Tip: auto_update_all.bat restarts Official 70p after Dev smoke.' -ForegroundColor DarkGray
 }
