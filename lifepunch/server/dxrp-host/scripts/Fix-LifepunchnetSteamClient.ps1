@@ -16,7 +16,6 @@
 param(
     [string] $SteamCmdExe = '',
     [string[]] $InstallRoots = @(
-        'C:\S&BOX DXRP Server Dev',
         'C:\S&BOX DXRP Server'
     ),
     [switch] $SkipSteamCmdUpdate

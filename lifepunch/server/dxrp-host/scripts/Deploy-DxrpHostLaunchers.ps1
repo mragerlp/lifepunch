@@ -13,11 +13,16 @@
 [CmdletBinding()]
 param(
     [string] $OfficialRoot = 'C:\S&BOX DXRP Server',
-    [string] $DevelopmentRoot = 'C:\S&BOX DXRP Server Dev',
+    # lifepunchnet: ONE install root. Dev + Official differ by bat/token, not folder.
+    [string] $DevelopmentRoot = '',
     [string] $RepoDxrpHost = ''
 )
 
 $ErrorActionPreference = 'Stop'
+
+if (-not $DevelopmentRoot) {
+    $DevelopmentRoot = $OfficialRoot
+}
 
 if (-not $RepoDxrpHost) {
     $RepoDxrpHost = Split-Path -Parent $PSScriptRoot
@@ -62,6 +67,7 @@ $scriptFiles = @(
     @{ Src = 'auto_update.bat'; Dst = 'auto_update.bat' },
     @{ Src = 'auto_update_all.bat'; Dst = 'auto_update_all.bat' },
     @{ Src = 'fix_steam.bat'; Dst = 'fix_steam.bat' },
+    @{ Src = 'Patch-LifepunchnetUlxCompile.ps1'; Dst = 'Patch-LifepunchnetUlxCompile.ps1' },
     @{ Src = 'Update-LifepunchnetSboxServers.ps1'; Dst = 'Update-LifepunchnetSboxServers.ps1' },
     @{ Src = 'Fix-LifepunchnetSteamClient.ps1'; Dst = 'Fix-LifepunchnetSteamClient.ps1' }
 )
@@ -80,10 +86,16 @@ function Deploy-ScriptBundle {
 Deploy-Profile -SourceDir (Join-Path $RepoDxrpHost 'official') -DestRoot $OfficialRoot -Label 'Official'
 Deploy-Profile -SourceDir (Join-Path $RepoDxrpHost 'development') -DestRoot $DevelopmentRoot -Label 'Development'
 
-Deploy-ScriptBundle -DestRoot $OfficialRoot -Label 'Official'
-Deploy-ScriptBundle -DestRoot $DevelopmentRoot -Label 'Development'
+$deployRoots = @($OfficialRoot)
+if ($DevelopmentRoot -ne $OfficialRoot) {
+    $deployRoots += $DevelopmentRoot
+}
+foreach ($root in $deployRoots) {
+    Deploy-ScriptBundle -DestRoot $root -Label (Split-Path -Leaf $root)
+}
 
 Write-Host ''
-Write-Host 'Next: point desktop shortcut at server1_start.bat in Official root.' -ForegroundColor Cyan
-Write-Host 'Engine updates: double-click auto_update.bat (Dev) or auto_update_all.bat (Dev+Official).' -ForegroundColor Cyan
-Write-Host 'Secrets stay in secure\official.local.env (never committed).' -ForegroundColor Yellow
+Write-Host "Install root: $OfficialRoot (Dev + Official launchers in same folder)." -ForegroundColor Cyan
+Write-Host '  Official: server1_start.bat   Development: server2_start.bat' -ForegroundColor Cyan
+Write-Host 'Engine updates: auto_update.bat (Dev) or auto_update_all.bat (Dev+Official).' -ForegroundColor Cyan
+Write-Host 'Secrets: secure\official.local.env + secure\development.local.env (never committed).' -ForegroundColor Yellow

@@ -122,6 +122,28 @@ if (-not (Test-Path -LiteralPath $repoCodeSrc)) {
 }
 & robocopy $repoCodeSrc $dxrpFolderCode /MIR /NFL /NDL /NJH /NJS /nc /ns /np | Out-Null
 if ($LASTEXITCODE -ge 8) { throw "robocopy code failed" }
+
+$sharedBundle = @(
+    'LifePunchUiScale.cs',
+    'LifePunchUiScrollPolicy.cs',
+    'LifePunchSourceMark.cs',
+    'LifePunchUiFooter.razor',
+    'LifePunchUiFooter.razor.scss'
+)
+$sharedRoot = Join-Path $repoAddons 'Code\Addons\lifepunch'
+foreach ($name in $sharedBundle) {
+    $src = Join-Path $sharedRoot $name
+    if (Test-Path -LiteralPath $src) {
+        Copy-Item -LiteralPath $src -Destination (Join-Path $dxrpFolderCode $name) -Force
+    }
+}
+$staffScss = Join-Path $dxrpFolderCode 'StaffMenu.razor.scss'
+if (Test-Path -LiteralPath $staffScss) {
+    $scss = [System.IO.File]::ReadAllText($staffScss)
+    $patched = $scss -replace '@import "\.\./LifePunchUiFooter\.razor\.scss";', '@import "./LifePunchUiFooter.razor.scss";'
+    if ($patched -ne $scss) { [System.IO.File]::WriteAllText($staffScss, $patched) }
+}
+
 $codeCount = (Get-ChildItem -LiteralPath $dxrpFolderCode -Recurse -File).Count
 Write-Host "  Code/lifepunchulx — $codeCount files" -ForegroundColor Green
 

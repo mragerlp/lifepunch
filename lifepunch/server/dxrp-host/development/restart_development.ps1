@@ -1,7 +1,7 @@
 # Restart Development (Server 2) — Dxura dxrp-server.cs launcher.
 
 param(
-    [string] $InstallRoot = 'C:\S&BOX DXRP Server Dev',
+    [string] $InstallRoot = 'C:\S&BOX DXRP Server',
     [int] $GamePort = 27016,
     [switch] $NoStart
 )

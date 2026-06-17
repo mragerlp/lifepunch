@@ -107,8 +107,9 @@ if (Test-Path -LiteralPath $UploadRoot) {
 }
 
 $Org = [string]$Manifest.org
-$AssetsStage = Join-Path $UploadRoot "Assets\addons\$Org\$($Package.ident)"
-$CodeStage = Join-Path $UploadRoot "Code\Addons\$Org\$($Package.ident)"
+$PublishIdent = if ($Package.packageSlug) { [string]$Package.packageSlug } else { [string]$Package.ident }
+$AssetsStage = Join-Path $UploadRoot "Assets\addons\$Org\$PublishIdent"
+$CodeStage = Join-Path $UploadRoot "Code\Addons\$Org\$PublishIdent"
 
 if ($Package.hasAssets) {
     $AssetsSource = Join-Path $Root "Assets\addons\$Org\$($Package.ident)"
@@ -120,6 +121,93 @@ if ($Package.hasCode) {
     $CodeSource = Join-Path $Root "Code\Addons\$Org\$($Package.ident)"
     New-Item -ItemType Directory -Force -Path $CodeStage | Out-Null
     Copy-PublishItems -Source $CodeSource -Destination $CodeStage
+
+    # code-only packages that depend on shared LifePunch UI helpers in the parent
+    # lifepunch/ folder must vend those files into the publish folder — the dedicated
+    # server only mounts Code/Addons/lifepunch/<ident>/, not the parent root.
+    $SharedCodeBundle = @{
+        adminmenu = @(
+            'LifePunchUiScale.cs',
+            'LifePunchUiScrollPolicy.cs',
+            'LifePunchSourceMark.cs',
+            'LifePunchUiFooter.razor',
+            'LifePunchUiFooter.razor.scss'
+        )
+    }
+
+    if ($SharedCodeBundle.ContainsKey($Package.ident)) {
+        $SharedRoot = Join-Path $Root "Code\Addons\$Org"
+        foreach ($SharedFile in $SharedCodeBundle[$Package.ident]) {
+            $SharedSource = Join-Path $SharedRoot $SharedFile
+            if (-not (Test-Path -LiteralPath $SharedSource -PathType Leaf)) {
+                throw "Publish bundle missing shared file for $($Package.ident): $SharedFile (expected $SharedSource)"
+            }
+
+            Copy-Item -LiteralPath $SharedSource -Destination (Join-Path $CodeStage $SharedFile) -Force
+        }
+
+        $StaffMenuScss = Join-Path $CodeStage 'StaffMenu.razor.scss'
+        if (Test-Path -LiteralPath $StaffMenuScss -PathType Leaf) {
+            $Scss = Get-Content -LiteralPath $StaffMenuScss -Raw
+            $Patched = $Scss -replace '@import "\.\./LifePunchUiFooter\.razor\.scss";', '@import "./LifePunchUiFooter.razor.scss";'
+            if ($Patched -ne $Scss) {
+                $utf8NoBom = New-Object System.Text.UTF8Encoding $false
+                [System.IO.File]::WriteAllText($StaffMenuScss, $Patched, $utf8NoBom)
+            }
+        }
+
+        # Dedicated server log shows lifepunch.dxrpadminmenu — mirror bundle for legacy mount name.
+        $legacyMounts = @('dxrpadminmenu')
+        foreach ($legacy in $legacyMounts) {
+            if ($legacy -eq $PublishIdent) { continue }
+            $legacyStage = Join-Path $UploadRoot "Code\Addons\$Org\$legacy"
+            if (Test-Path -LiteralPath $legacyStage) {
+                Remove-Item -LiteralPath $legacyStage -Recurse -Force
+            }
+            New-Item -ItemType Directory -Force -Path $legacyStage | Out-Null
+            Get-ChildItem -LiteralPath $CodeStage -File | ForEach-Object {
+                Copy-Item -LiteralPath $_.FullName -Destination (Join-Path $legacyStage $_.Name) -Force
+            }
+        }
+
+        $requiredShipFiles = @(
+            'StaffMenu.razor',
+            'StaffMenuHost.cs',
+            'LifePunchUiScale.cs',
+            'LifePunchUiScrollPolicy.cs',
+            'LifePunchUiFooter.razor',
+            'LifePunchSourceMark.cs'
+        )
+        $shipFiles = @(Get-ChildItem -LiteralPath $CodeStage -File)
+        $missing = @($requiredShipFiles | Where-Object {
+            -not (Test-Path -LiteralPath (Join-Path $CodeStage $_))
+        })
+        if ($shipFiles.Count -lt 11 -or $missing.Count -gt 0) {
+            throw @"
+ULX publish gate FAILED: expected >= 11 code files in $CodeStage, got $($shipFiles.Count).
+Missing: $($missing -join ', ')
+Do not upload this revision to the portal.
+"@
+        }
+
+        $codeBytes = ($shipFiles | Measure-Object -Property Length -Sum).Sum
+        $verify = [ordered]@{
+            schemaVersion = 1
+            packageSlug = $PublishIdent
+            repoIdent = $Package.ident
+            codeMount = "Code/Addons/$Org/$PublishIdent"
+            legacyMounts = $legacyMounts
+            fileCount = $shipFiles.Count
+            totalBytes = $codeBytes
+            files = @($shipFiles | ForEach-Object { $_.Name } | Sort-Object)
+            portalUpload = "Upload every file inside: Code/Addons/$Org/$PublishIdent/ (not adminmenu/, not repo root)"
+            minDownloadBytesHint = 85000
+        }
+        $verify | ConvertTo-Json -Depth 4 |
+            Set-Content -LiteralPath (Join-Path $Root '.dxrp-publish\ulx-publish-verify.json') -Encoding UTF8
+
+        Write-Host "ULX publish gate OK: $($shipFiles.Count) files, $codeBytes bytes -> $PublishIdent" -ForegroundColor Green
+    }
 }
 
 $ContentRows = @(@($Package.contents) | ForEach-Object {
@@ -154,8 +242,8 @@ Package:
   HasCode:    $($Package.hasCode)
 
 Expected DXRP paths:
-  Assets/addons/$Org/$($Package.ident)/
-  Code/Addons/$Org/$($Package.ident)/
+  Assets/addons/$Org/$PublishIdent/
+  Code/Addons/$Org/$PublishIdent/
 
 Content rows:
 $(
@@ -202,7 +290,7 @@ $PackageExport |
     ConvertTo-Json -Depth 8 |
     Set-Content -LiteralPath (Join-Path $StagingRoot "package-$($Package.ident).json") -Encoding UTF8
 
-Write-Host "Prepared DXRP publish staging for $Org.$($Package.ident)" -ForegroundColor Green
+Write-Host "Prepared DXRP publish staging for $Org.$PublishIdent (repo ident: $($Package.ident))" -ForegroundColor Green
 Write-Host "Upload root: $UploadRoot"
 
 if ($OpenFolder) {

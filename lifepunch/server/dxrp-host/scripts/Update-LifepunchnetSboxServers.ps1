@@ -6,7 +6,7 @@
   Run ELEVATED on lifepunchnet after Steam/engine updates (e.g. 26.06.10).
 
   1. steamcmd app_update 1892930 validate (dedicated server binaries)
-  2. Sync sbox-server.* into Official + Dev install roots (if separate from steamcmd tree)
+  2. Sync sbox-server.* into install root (if separate from steamcmd tree)
   3. git pull + Deploy-DxrpHostLaunchers.ps1
   4. Restart Development (default); Official with -IncludeOfficial
 
@@ -35,7 +35,7 @@
 param(
     [string] $SteamCmdExe = '',
     [string] $OfficialRoot = 'C:\S&BOX DXRP Server',
-    [string] $DevelopmentRoot = 'C:\S&BOX DXRP Server Dev',
+    [string] $DevelopmentRoot = '',
     [string] $GitRoot = 'C:\lifepunch\lifepunch-rdp-server',
     [switch] $IncludeOfficial,
     [switch] $SkipSteamUpdate,
@@ -43,6 +43,11 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+
+if (-not $DevelopmentRoot) {
+    $DevelopmentRoot = $OfficialRoot
+}
+
 $isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()
           ).IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator)
 if (-not $isAdmin) { throw 'Run elevated on lifepunchnet (Administrator).' }
@@ -163,7 +168,11 @@ steamcmd.exe not found. Install SteamCMD on lifepunchnet, then re-run.
     finally { Pop-Location }
 
     Write-Step 'Wire Steam client DLLs + copy redist into install roots'
-    Register-SteamCmdClientDlls -SteamCmdPath $steamCmd -InstallRoots @($OfficialRoot, $DevelopmentRoot)
+    $installRoots = @($OfficialRoot)
+    if ($DevelopmentRoot -ne $OfficialRoot) {
+        $installRoots += $DevelopmentRoot
+    }
+    Register-SteamCmdClientDlls -SteamCmdPath $steamCmd -InstallRoots $installRoots
 
     $dedicatedRoot = Find-DedicatedServerRoot -SteamCmdPath $steamCmd
     if (-not $dedicatedRoot) {

@@ -87,7 +87,24 @@ Then **restart** `server2_start.bat` (same Windows user — registry is HKCU).
 
 ## 6. Development server (reference — already working)
 
-`C:\S&BOX DXRP Server Dev\development\server2_start.bat` — same pattern, different token in `secure\development.local.env`.
+`C:\S&BOX DXRP Server\server2_start.bat` — same pattern, different token in `secure\development.local.env`.
+
+---
+
+## 7. `Compile of 'dxura.rp' Failed` — LifePunchUiScale / LifePunchUiFooter not found
+
+**Cause:** Published `lifepunch.ulx` code zip shipped only 6 adminmenu files — not the 5 shared UI helpers StaffMenu needs.
+
+**On-box fix (lifepunchnet, after `git pull`):**
+
+```powershell
+cd C:\lifepunch\lifepunch-rdp-server\lifepunch\server\dxrp-host\scripts
+powershell -ExecutionPolicy Bypass -File .\Patch-LifepunchnetUlxCompile.ps1
+```
+
+Then restart `C:\S&BOX DXRP Server\server2_start.bat`.
+
+**Portal republish (permanent):** staging must be `upload\Code\Addons\lifepunch\lifepunchulx\` with **11** code files — run `prepare-publish.ps1 -Addon adminmenu` from a repo that includes the bundle fix, then upload that tree as **r8**.
 
 ---
 

@@ -62,17 +62,20 @@ else {
 
 
 $oneLiner = @"
-cd C:\lifepunch\lifepunch-rdp-server\lifepunch\server\dxrp-host\scripts
+cd C:\lifepunch\lifepunch-rdp-server
 git pull --rebase
+cd lifepunch\server\dxrp-host\scripts
 powershell -ExecutionPolicy Bypass -File .\Deploy-DxrpHostLaunchers.ps1
+powershell -ExecutionPolicy Bypass -File .\Patch-LifepunchnetUlxCompile.ps1
 "@
 
 Set-Clipboard -Value $oneLiner
 Write-Host ''
-Write-Host 'Copied to clipboard (paste in ELEVATED PowerShell on lifepunchnet RDP):' -ForegroundColor Green
+Write-Host 'Copied to clipboard (paste in PowerShell on lifepunchnet RDP — NOT elevated for patch):' -ForegroundColor Green
 Write-Host $oneLiner -ForegroundColor White
 Write-Host ''
-Write-Host 'After deploy: double-click auto_update.bat (Dev) or auto_update_all.bat (both servers).' -ForegroundColor Cyan
+Write-Host 'Then restart Dev: C:\S&BOX DXRP Server\server2_start.bat' -ForegroundColor Cyan
+Write-Host 'Patch fixes ULX compile (LifePunchUiScale missing). Portal r7 still needs lifepunchulx upload path.' -ForegroundColor DarkGray
 if (-not $IncludeOfficial) {
     Write-Host 'Tip: auto_update_all.bat restarts Official 70p after Dev smoke.' -ForegroundColor DarkGray
 }

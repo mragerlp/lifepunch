@@ -15,9 +15,9 @@ secure/
   server-hosting.local.env
   notes.local.md
 
-On lifepunchnet install roots (not in monorepo git):
+On lifepunchnet install root (not in monorepo git) — single folder `C:\S&BOX DXRP Server\`:
   C:\S&BOX DXRP Server\secure\official.local.env
-  C:\S&BOX DXRP Server Dev\secure\development.local.env
+  C:\S&BOX DXRP Server\secure\development.local.env
   Templates: secure/templates/official.local.env.example
 ```
 

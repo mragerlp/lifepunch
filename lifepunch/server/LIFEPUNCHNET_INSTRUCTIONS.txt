@@ -173,20 +173,21 @@ STEP 10 — DXRP SERVER 1 / 2 LAUNCHERS (Official must use dxrp-server.cs)
     cd C:\lifepunch\lifepunch-rdp-server\lifepunch\server\dxrp-host\scripts
     powershell -ExecutionPolicy Bypass -File .\Deploy-DxrpHostLaunchers.ps1
 
-  On-box secrets (NEVER commit):
+  On-box secrets (NEVER commit) — both in the same install root:
     C:\S&BOX DXRP Server\secure\official.local.env       → DXRP_TOKEN_OFFICIAL
-    C:\S&BOX DXRP Server Dev\secure\development.local.env → DXRP_TOKEN_DEVELOPMENT
+    C:\S&BOX DXRP Server\secure\development.local.env    → DXRP_TOKEN_DEVELOPMENT
     Templates: lifepunch\secure\templates\*.local.env.example
 
+  Install root (lifepunchnet — ONE folder for both servers):
+    C:\S&BOX DXRP Server
+
   Official (70p):
-    Install root:  C:\S&BOX DXRP Server
-    Game port:     27015  (in dxrp-server-config.json.example extraArgs)
     Start:         server1_start.bat  OR  restart_official.ps1
+    Game port:     27015  (in dxrp-server-config.json.example extraArgs)
     Desktop shortcut must point at server1_start.bat — NOT legacy +game dxura.rp
 
   Development:
-    Install root:  C:\S&BOX DXRP Server Dev
-    Start:         server2_start.bat
+    Start:         server2_start.bat  OR  restart_development.ps1
 
   dxrp-server.cs stays upstream/pristine on the box — do not fork in LifePunch git.
 
