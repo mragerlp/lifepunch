@@ -1,0 +1,20 @@
+LIFEPUNCHNET CURSOR — paste this entire block as the ONLY task. Do not run other commands.
+
+You are on lifepunchnet. Run exactly ONE PowerShell script. Do not improvise. Do not debug ULX or portal until Gate 0 passes.
+
+RULES:
+- Run in PowerShell as the same user who will own the server console (administrator OR jared — whichever is logged in now).
+- Do NOT run a long chain of separate commands.
+- Report the last line of output: GATE0_SCRIPT_OK or GATE0_FAIL ...
+
+EXECUTE:
+
+cd C:\lifepunch\lifepunch-rdp-server\lifepunch\server\dxrp-host\scripts
+powershell -ExecutionPolicy Bypass -File .\Run-LifepunchnetGate0.ps1
+
+THEN tell the owner:
+1. Did output end with GATE0_SCRIPT_OK?
+2. In the NEW server window: Steam connected? [7/7]?
+3. If GATE0_FAIL or Steam still broken: paste the exact error lines — nothing else.
+
+Do NOT publish portal revisions. Do NOT patch ULX unless Gate 0 is green and owner asks.
