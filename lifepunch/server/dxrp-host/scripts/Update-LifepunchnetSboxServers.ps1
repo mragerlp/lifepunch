@@ -55,10 +55,20 @@ if (-not $isAdmin) { throw 'Run elevated on lifepunchnet (Administrator).' }
 function Write-Step($m) { Write-Host "==> $m" -ForegroundColor Cyan }
 
 function Find-SteamCmd {
-    param([string] $Hint)
+    param(
+        [string] $Hint,
+        [string[]] $InstallRoots = @()
+    )
     $candidates = @()
     if ($Hint) { $candidates += $Hint }
+    foreach ($root in $InstallRoots) {
+        if (-not $root) { continue }
+        $candidates += Join-Path $root 'steamcmd.exe'
+        $candidates += Join-Path $root 'steamcmd\steamcmd.exe'
+    }
     $candidates += @(
+        'C:\S&BOX DXRP Server\steamcmd.exe',
+        'C:\S&BOX DXRP Server\steamcmd\steamcmd.exe',
         'C:\steamcmd\steamcmd.exe',
         'C:\SteamCMD\steamcmd.exe',
         'C:\Program Files\SteamCMD\steamcmd.exe',
@@ -183,7 +193,7 @@ Write-Host '============================================================' -Foreg
 Write-Host ''
 
 if (-not $SkipSteamUpdate) {
-    $steamCmd = Find-SteamCmd -Hint $SteamCmdExe
+    $steamCmd = Find-SteamCmd -Hint $SteamCmdExe -InstallRoots $installRoots
     if (-not $steamCmd) {
         throw @'
 steamcmd.exe not found. Install SteamCMD on lifepunchnet, then re-run.

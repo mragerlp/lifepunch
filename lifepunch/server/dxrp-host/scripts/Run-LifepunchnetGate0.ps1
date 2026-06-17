@@ -32,9 +32,17 @@ if (-not (Test-Path -LiteralPath $InstallRoot)) {
 if (Test-Path -LiteralPath (Join-Path $GitRoot '.git')) {
     Write-Step 'git pull'
     Push-Location $GitRoot
+    $dirty = git status --porcelain 2>$null
+    if ($dirty) {
+        Write-Host '  Stashing local changes before pull...' -ForegroundColor Yellow
+        git stash push -m "gate0-auto-$(Get-Date -Format 'yyyyMMdd-HHmmss')" 2>&1 | ForEach-Object { Write-Host "  $_" -ForegroundColor DarkGray }
+    }
     git pull --rebase 2>&1 | ForEach-Object { Write-Host "  $_" -ForegroundColor DarkGray }
     Pop-Location
 }
+
+$steamCmdHint = Join-Path $InstallRoot 'steamcmd.exe'
+if (-not (Test-Path -LiteralPath $steamCmdHint)) { $steamCmdHint = '' }
 
 $steamFix = Join-Path $Here 'Fix-LifepunchnetSteamClient.ps1'
 if (-not (Test-Path -LiteralPath $steamFix)) {
@@ -43,7 +51,7 @@ if (-not (Test-Path -LiteralPath $steamFix)) {
 }
 
 Write-Step 'Steam DLLs + HKCU (this user)'
-& powershell.exe -NoProfile -ExecutionPolicy Bypass -File $steamFix -InstallRoots @($InstallRoot)
+& powershell.exe -NoProfile -ExecutionPolicy Bypass -File $steamFix -SteamCmdExe $steamCmdHint -InstallRoots @($InstallRoot)
 if ($LASTEXITCODE -ne 0 -and $null -ne $LASTEXITCODE) {
     Write-Host "GATE0_FAIL steam_fix exit=$LASTEXITCODE" -ForegroundColor Red
     exit 1

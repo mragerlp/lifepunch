@@ -24,10 +24,20 @@ param(
 $ErrorActionPreference = 'Stop'
 
 function Find-SteamCmdExe {
-    param([string] $Hint)
+    param(
+        [string] $Hint,
+        [string[]] $SearchRoots = @()
+    )
     $exes = @()
     if ($Hint) { $exes += $Hint }
+    foreach ($root in $SearchRoots) {
+        if (-not $root) { continue }
+        $exes += Join-Path $root 'steamcmd.exe'
+        $exes += Join-Path $root 'steamcmd\steamcmd.exe'
+    }
     $exes += @(
+        'C:\S&BOX DXRP Server\steamcmd.exe',
+        'C:\S&BOX DXRP Server\steamcmd\steamcmd.exe',
         'C:\steamcmd\steamcmd.exe',
         'C:\SteamCMD\steamcmd.exe',
         'C:\Program Files\SteamCMD\steamcmd.exe',
@@ -35,6 +45,27 @@ function Find-SteamCmdExe {
     )
     foreach ($p in $exes) {
         if ($p -and (Test-Path -LiteralPath $p)) { return (Resolve-Path -LiteralPath $p).Path }
+    }
+    return $null
+}
+
+function Find-SteamClientDll64 {
+    param(
+        [string] $SteamDir,
+        [string[]] $SearchRoots
+    )
+    $candidates = @()
+    if ($SteamDir) {
+        $candidates += Join-Path $SteamDir 'steamclient64.dll'
+        $candidates += Join-Path $SteamDir 'sdk_win\redistributable_binaries\win64\steamclient64.dll'
+    }
+    foreach ($root in $SearchRoots) {
+        if (-not $root) { continue }
+        $candidates += Join-Path $root 'steamclient64.dll'
+        $candidates += Join-Path $root 'dxrp\game\steamclient64.dll'
+    }
+    foreach ($c in $candidates) {
+        if ($c -and (Test-Path -LiteralPath $c)) { return (Resolve-Path -LiteralPath $c).Path }
     }
     return $null
 }
@@ -110,27 +141,39 @@ function Copy-SteamDllsToRoot {
 
 Write-Host "Running as: $env:USERDOMAIN\$env:USERNAME (HKCU applies to THIS user only)" -ForegroundColor Cyan
 
-$steamCmd = Find-SteamCmdExe -Hint $SteamCmdExe
-if (-not $steamCmd) {
-    throw @'
-steamcmd.exe not found. Install SteamCMD, then:
-  steamcmd +login anonymous +app_update 1892930 validate +quit
-Or install Steam desktop client on lifepunchnet (easiest).
-'@
+$steamCmd = Find-SteamCmdExe -Hint $SteamCmdExe -SearchRoots $InstallRoots
+$steamDir = $null
+if ($steamCmd) {
+    $steamDir = Split-Path -Parent $steamCmd
+    Write-Host "steamcmd: $steamCmd" -ForegroundColor DarkGray
+}
+else {
+    Write-Host 'steamcmd.exe not in search paths — will use existing DLLs in install root if present.' -ForegroundColor Yellow
 }
 
-if (-not $SkipSteamCmdUpdate) {
+if ($steamCmd -and -not $SkipSteamCmdUpdate) {
     Write-Host 'Updating s&box dedicated server (app 1892930)...' -ForegroundColor Yellow
-    $steamDir = Split-Path -Parent $steamCmd
     Push-Location $steamDir
-    try { & $steamCmd +login anonymous +app_update 1892930 validate +quit }
+    try {
+        & $steamCmd +login anonymous +app_update 1892930 validate +quit
+        if ($LASTEXITCODE -gt 1) {
+            Write-Host "WARN: steamcmd app_update exited $LASTEXITCODE — continuing with on-disk DLLs." -ForegroundColor Yellow
+        }
+    }
     finally { Pop-Location }
 }
 
-$steamDir = Ensure-SteamSdkDlls -SteamCmdPath $steamCmd
-$dll64 = Join-Path $steamDir 'steamclient64.dll'
-if (-not (Test-Path -LiteralPath $dll64)) {
-    throw "Still missing $dll64 after steamcmd updates."
+if ($steamCmd) {
+    $steamDir = Ensure-SteamSdkDlls -SteamCmdPath $steamCmd
+}
+
+$dll64 = Find-SteamClientDll64 -SteamDir $steamDir -SearchRoots $InstallRoots
+if (-not $dll64) {
+    throw @"
+steamclient64.dll not found. lifepunchnet expects steamcmd at:
+  C:\S&BOX DXRP Server\steamcmd.exe
+Or install Steam desktop client, then re-run.
+"@
 }
 
 $regPath = 'HKCU:\SOFTWARE\Valve\Steam\ActiveProcess'
@@ -144,7 +187,12 @@ if (Test-Path -LiteralPath $dll32) {
 Write-Host 'Registry wired (HKCU for current user).' -ForegroundColor Green
 Write-Host "  SteamClientDll64 = $dll64" -ForegroundColor DarkGray
 
-$sources = Get-SteamDllSources -SteamDir $steamDir
+$sources = Get-SteamDllSources -SteamDir $(if ($steamDir) { $steamDir } else { $InstallRoots[0] })
+foreach ($root in $InstallRoots) {
+    if ($root -and (Test-Path -LiteralPath $root)) {
+        $sources = @($sources) + @($root) | Select-Object -Unique
+    }
+}
 Write-Host 'Copying Steam redist DLLs into server install roots...' -ForegroundColor Cyan
 foreach ($root in $InstallRoots) {
     Copy-SteamDllsToRoot -SourceDirs $sources -DestRoot $root

@@ -12,6 +12,8 @@ EXECUTE:
 cd C:\lifepunch\lifepunch-rdp-server\lifepunch\server\dxrp-host\scripts
 powershell -ExecutionPolicy Bypass -File .\Run-LifepunchnetGate0.ps1
 
+(Auto-stashes dirty git before pull. steamcmd path: C:\S&BOX DXRP Server\steamcmd.exe)
+
 THEN tell the owner:
 1. Did output end with GATE0_SCRIPT_OK?
 2. In the NEW server window: Steam connected? [7/7]?
