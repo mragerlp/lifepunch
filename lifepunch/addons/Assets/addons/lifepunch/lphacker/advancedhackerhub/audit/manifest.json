@@ -1,0 +1,10 @@
+﻿{
+    "texture_files":  7,
+    "role":  "Advanced Hacker HUB",
+    "primary_mesh":  "assets/source/fbx/Servers.fbx",
+    "issues":  [
+
+               ],
+    "slot":  "advancedhackerhub"
+}
+

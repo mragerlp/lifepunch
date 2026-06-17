@@ -14,7 +14,8 @@
 | **Quarantine** | Active dev: `adminmenu` + `bitcoinmining` only. Frozen idents = **concepts/context** — no edits, no copy into ship paths — `QUARANTINE_REGISTER.md` |
 | **Publish** | `publishReadyAddons` → `Export-LifepunchPublishLane.ps1` → `lifepunch-published` (today: **lifepunchulx** only) |
 | **Package names** | Public branches = **packageSlug** in `addons/config/packages.json` — `PACKAGE_NAMING_STANDARD.md` |
-| **Bitcoin** | **lifepunchbitcoin** (`lifepunch.bitcoin`) — hub admin + CRT terminal v2; start `addons/docs/LIFEPUNCH_BITCOIN_START.md` — NOT publish export until visual sign-off |
+| **Bitcoin** | P0 ModelDoc on `lpbitcoin` — **digital machine** stack · `LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md` — NOT publish until mesh sign-off |
+| **Weapons** | Parallel track — **weapon platform** · `LIFEPUNCH_WEAPON_IMPLEMENTATION_LAW.md` · AK FP = `lane/ak47` only |
 | **Branding** | **LIFEPUNCH™** (all-caps + ™ while pending; never ®). Community: `https://discord.gg/lifepunch` |
 | **Ideation** | ChatGPT Step 1 → CURSOR BRIEF → Cursor on VENGEANCE. `WORKFLOW_IDEATION_FIRST.md` |
 | **Export** | `Export-LifepunchPublishLane.ps1` reads `publishReadyAddons` |

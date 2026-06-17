@@ -2,6 +2,9 @@
 
 Use this checklist before importing any weapon source folder into the LifePunch DXRP addon lane.
 
+**Platform law (mandatory):** `LIFEPUNCH_WEAPON_IMPLEMENTATION_LAW.md` — P0 scale/collision/attachments
+before gameplay. Produce **`WEAPON_PLATFORM_REPORT.md`** (or section in `WEAPON_BUILD.md`) per weapon.
+
 The goal is to make every future weapon repeatable: AK47 first, then shotguns, handguns, rifles, and equipment.
 
 ## Step 1: Source Inventory

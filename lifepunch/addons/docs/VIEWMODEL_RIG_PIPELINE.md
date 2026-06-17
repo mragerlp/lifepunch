@@ -3,6 +3,9 @@
 The authoritative, no-spaghetti recipe for giving a custom weapon a **real first-person
 viewmodel** (model in your hands, working ADS) in DXRP. Read this before opening Blender.
 
+**Full platform checklist:** `LIFEPUNCH_WEAPON_IMPLEMENTATION_LAW.md` (attachments, P1 anims, state
+machine, required report). **This doc** = FP rig bind + DXRP class integration path only.
+
 Grounded in the real on-disk DXRP/s&box files and the official s&box first-person-weapons +
 Model Editor docs, verified **2026-06-04**.
 

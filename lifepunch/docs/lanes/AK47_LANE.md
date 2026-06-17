@@ -16,8 +16,9 @@ burned sessions without a shippable FP result. AK work is isolated so **ship lan
 |------|----------|
 | **Git branch** | `lane/ak47` on `github.com/mragerlp/lifepunch` |
 | **Monorepo paths** | `lifepunch/addons/**/ak47/**`, `lifepunch/addons/scripts/blender/*ak47*`, `lifepunch/addons/scripts/Invoke-Ak47Vm*.ps1` |
+| **Tech debt** | `TECH_DEBT.md` FP-AK-01, WEAPON-* |
+| **Platform law** | `LIFEPUNCH_WEAPON_IMPLEMENTATION_LAW.md` |
 | **Agent block** | `AGENT_PROMPT.md` Block E |
-| **Tech debt** | `TECH_DEBT.md` FP-AK-01 |
 
 `main` keeps the last **known-good** AK listing in `addons.json` (world model + M4 placeholder
 baseline). Experimental prefab/FBX/blender churn stays on `lane/ak47` only.

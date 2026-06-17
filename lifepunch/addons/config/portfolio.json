@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "phase": "ophion-rebuild-2026-06",
-  "law": "Only activeAddons are in-scope for ship work. Quarantined idents stay in repo for reference — do not extend until owner promotes. publishReadyAddons is the export set for lifepunch-published. Public branch names = packageSlug in config/packages.json.",
+  "phase": "model-foundation-2026-06",
+  "law": "DXRP default lane = ModelDoc greenfield (ULX + lp* staging packages). Monorepo entity code/UI stays as reference under Code/Addons/lifepunch/bitcoinmining until promoted into lpbitcoin/{entity}/code/. See PACKAGE_STAGING_LAYOUT.md.",
   "jobRoadmap": "docs/JOB_PORTFOLIO_ROADMAP.md",
   "packageManifest": "config/packages.json",
   "activeAddons": [
@@ -13,7 +13,7 @@
   ],
   "activeNotes": {
     "adminmenu": "lifepunchulx (s&box lifepunch.ulx) — v1 publish-ready. Open via lifepunchulx / /lifepunchulx. LifePunch servers only; not for resale.",
-    "bitcoinmining": "lifepunchbitcoin (s&box lifepunch.bitcoin) — repo ident bitcoinmining until path migration. Ophion P0; LifePunch servers first; NOT publish export until visual sign-off. Proprietary headers always on."
+    "bitcoinmining": "lifepunchbitcoin — Fab intake under lpbitcoin/{entity}/assets|. Entity C# still in Code/.../bitcoinmining/; each slot has code/manifest.json mapping files until physical split. NOT publish export until Model Foundation sign-off."
   },
   "quarantinedAddons": [
     { "ident": "ak47", "reason": "Viewmodel baseline; resume after Ophion ship." },

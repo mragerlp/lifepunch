@@ -1,0 +1,10 @@
+﻿{
+    "texture_files":  5,
+    "role":  "Government Terminal",
+    "primary_mesh":  "assets/source/fbx/sm_computer_console_01.fbx",
+    "issues":  [
+
+               ],
+    "slot":  "governmentterminal"
+}
+

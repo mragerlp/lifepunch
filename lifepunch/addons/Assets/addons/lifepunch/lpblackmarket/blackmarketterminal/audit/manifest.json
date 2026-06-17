@@ -1,0 +1,9 @@
+﻿{
+    "role":  "Black Market Terminal",
+    "primary_mesh":  "assets/source/blend/CRT COMPUTER.blend",
+    "issues":  [
+                   "No FBX in pack â€” export FBX from blend before ModelDoc OR import blend via pipeline"
+               ],
+    "slot":  "blackmarketterminal"
+}
+

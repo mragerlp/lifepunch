@@ -18,6 +18,17 @@
 
 ---
 
+## Cursor plugins (optional)
+
+| Plugin | Use for LifePunch |
+|--------|-----------------|
+| **Convex** | Reactive TypeScript backend if owner builds portal/live ops on Convex — **not** s&box ModelDoc or DXRP gameplay |
+| **GitLab** | MR workflow on lane repos |
+
+Entity work = ModelDoc + s&box MCP stack above. Do not route prop/mesh tasks through Convex.
+
+---
+
 ## Block 0 — Universal preamble (prepend to any lane block)
 
 ```text
@@ -27,10 +38,13 @@ single source of truth — do NOT re-derive or diverge from it.
 READ FIRST (in this order), then follow them as law:
 0. `lifepunch/addons/docs/ACTIVE_WORKSTREAM.md` ← HARD production gate; single active lane (lifepunchbitcoin). Mandatory every session.
 0b. `lifepunch/addons/docs/CYBER_REFERENCE_LAWS.md` ← Laws 1–10 (reference-first, flatgrass truth, brand matrix). Mandatory every session.
+0c. `lifepunch/addons/docs/LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md` ← machines not props; ModelDoc-first stack P0–P4. Mandatory for entity/ModelDoc work.
+0d. `lifepunch/addons/docs/MODELDOC_STUDIO_LANE.md` + `PACKAGE_STAGING_LAYOUT.md` ← lp* staging + standalone editor (no DXRP gamemode for mesh).
+0e. `lifepunch/addons/docs/LIFEPUNCH_WEAPON_IMPLEMENTATION_LAW.md` ← weapon platform not gun mesh; P0 attachments/collision/anims. Mandatory for weapon / lpweapons / AK lane work.
 1. The project's `.cursor/rules` (all alwaysApply): lifepunch-active-workstream-gate,
-   lifepunch-operating-context, lifepunch-quality-bar, dxrp-addon-foundation,
-   lifepunch-trademark-ip, lifepunch-rules-workflow, lifepunch-website-organization,
-   lifepunch-sbox-patches.
+   lifepunch-digital-machine, lifepunch-weapon-platform, lifepunch-operating-context, lifepunch-quality-bar,
+   dxrp-addon-foundation, lifepunch-trademark-ip, lifepunch-rules-workflow,
+   lifepunch-website-organization, lifepunch-sbox-patches.
 2. `lifepunch/docs/MACHINE_CAST.md` ← machine names (VENGEANCE, Cornerman, lifepunchnet). Mandatory.
 3. `lifepunch/docs/BLOODWAVE_ALIAS.md` ← Bloodwave visible · mrragerlp proprietary · Mr. Rager contact. Mandatory.
 4. `lifepunch/docs/OPS_CLARITY_CHECKPOINT.md` ← how we look at the web (at a glance, shortcut tiers, voice stack). Mandatory for ops/voice/multi-machine work.
@@ -139,6 +153,8 @@ CURRENT STATE (June 2026):
 - Admin menu (adminmenu) = v1 publish-ready, branded `lifepunch.ulx` / packageSlug `lifepunchulx`;
   in publishReadyAddons — export to lifepunch-published when owner says ship.
 - Bitcoin (bitcoinmining) = active dev, packageSlug `lifepunchbitcoin`; NOT in publishReadyAddons yet.
+  **Entity law:** machines not props — `LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md` (P0 ModelDoc sign-off
+  on `lpbitcoin/*` staging before prefab/gameplay). ModelDoc Studio: `Start-SboxModelDocStudio.ps1`.
 - Quarantine: hackerjob, ak47, bankerjob, etc. — read for concepts only; never copy into active addons.
 - AK-47 paused. GitLab lanes LIVE + synced (lanes-synced); shottaWEB + RDP agent provisioned.
   Re-export a lane after changes via setup-gitlab-projects.ps1.
@@ -305,7 +321,10 @@ OUT OF SCOPE:
   Do NOT merge lane/ak47 → main without owner sign-off + verified lp_give_ak first-person.
 
 HONEST STATUS: FP-AK-01 is likely a dead end (M4 invisible-master spaghetti). Clean endgame =
-owned VM rig per VIEWMODEL_RIG_PIPELINE.md, OR ship world AK only and abandon FP for now.
+owned VM rig per VIEWMODEL_RIG_PIPELINE.md + platform law P0–P1, OR ship world AK only and abandon FP.
+
+PLATFORM LAW: Read `LIFEPUNCH_WEAPON_IMPLEMENTATION_LAW.md` — attachments, convex collision,
+P1 anims, required WEAPON_PLATFORM_REPORT before calling AK "done".
 
 COMMIT: only on lane/ak47. Push to origin lane/ak47. Main integration is owner-only.
 

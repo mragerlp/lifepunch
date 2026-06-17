@@ -23,6 +23,7 @@ reference/**/third-party-bitcoin-mining-study/
 lifepunch/scripts/remote-hosts.local.json
 lifepunch/scripts/server-host-watch.local.json
 lifepunch/scripts/dxrp-editor.local.json
+lifepunch/scripts/modeldoc-studio.local.json
 lifepunch/scripts/.session-sync-state.json
 
 # Third-party study clones (local only — never commit)
@@ -45,3 +46,7 @@ lifepunch/secure/*
 # OS files
 Thumbs.db
 desktop.ini
+
+# Fab Blender sources — often >100MB; canonical mesh intake is FBX/OBJ under assets/source/.
+# Keep .blend on Desktop/OneDrive UPLOAD READY ADDONS; repo tracks FBX + textures only.
+**/assets/source/blend/*.blend

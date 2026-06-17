@@ -12,8 +12,9 @@ alwaysApply: true
 
 1. Read `ACTIVE_WORKSTREAM.md` in full.
 2. Read `CYBER_REFERENCE_LAWS.md` — especially Law 1 (reuse), Law 5 (flatgrass), Law 9 (no "while we're here").
-3. Read `OWNER_PROGRESS_TRACKER.txt` for the current unchecked checklist ID.
-4. Answer the §7 gate: does this work improve **Hub**, **Terminal**, or **GPU Rack** for `lifepunchbitcoin` only?
+3. For entity / ModelDoc / prefab work: read `LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md` + `MODEL_FOUNDATION_PASS.md`.
+4. Read `OWNER_PROGRESS_TRACKER.txt` for the current unchecked checklist ID.
+5. Answer the §7 gate: does this work improve **Hub**, **Terminal**, or **GPU Rack** for `lifepunchbitcoin` only?
 
 If **no** → stop; park in `BACKLOG_PARKING_LOT.md`. Do not implement.
 
@@ -37,6 +38,7 @@ Before adding functionality, state what Hacker / Banker / Government will reuse.
 
 - Law 2: Hub = machine, Terminal = control, Rack = scaling — player recognizes LIFEPUNCH machines.
 - Law 6: OFF / BOOTING / ONLINE / WORKING / WARNING / ERROR / UPGRADING obvious without menus.
+- **Digital machine stack:** ModelDoc → collision → physics → attachments → lights → anim → sound → state → gameplay. Canon: `LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md` · P0 gate: `MODEL_FOUNDATION_PASS.md`.
 - Law 7: verify against `TERMINAL_BRAND_MATRIX.md` — no ad-hoc wording or styles.
 
 ## One item at a time

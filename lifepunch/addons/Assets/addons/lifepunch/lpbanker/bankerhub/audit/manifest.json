@@ -1,0 +1,10 @@
+﻿{
+    "role":  "Banker Hub (Safe/Vault)",
+    "primary_mesh":  "assets/source/fbx/Safe_all.fbx",
+    "issues":  [
+                   "4K TGA dupes in source â€” game/textures has first-pass 2K/png subset only"
+               ],
+    "owner_confirmed":  "safe/vault",
+    "slot":  "bankerhub"
+}
+

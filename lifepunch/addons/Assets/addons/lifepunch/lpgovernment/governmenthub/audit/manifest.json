@@ -1,0 +1,10 @@
+﻿{
+    "texture_files":  6,
+    "role":  "Government HUB",
+    "primary_mesh":  "assets/source/fbx/Server_pillar.fbx",
+    "issues":  [
+
+               ],
+    "slot":  "governmenthub"
+}
+

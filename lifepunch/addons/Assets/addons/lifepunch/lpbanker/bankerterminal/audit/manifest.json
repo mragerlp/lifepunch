@@ -1,0 +1,10 @@
+﻿{
+    "texture_files":  22,
+    "role":  "Bank Terminal",
+    "primary_mesh":  "assets/source/fbx/Computer.fbx",
+    "issues":  [
+
+               ],
+    "slot":  "bankerterminal"
+}
+

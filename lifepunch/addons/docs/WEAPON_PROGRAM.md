@@ -1,7 +1,7 @@
 # LifePunch Weapon Program — Vision & Strategy
 
 The "why" and "in what order" layer. Pair this with `WEAPON_CLASS_SPEC.md` (the "how to
-build one" mechanical layer). Read this first.
+build one" mechanical layer). **Platform law:** `LIFEPUNCH_WEAPON_IMPLEMENTATION_LAW.md`. Read this first.
 
 Verified against DXRP source 2026-06-04 (`ShipmentEntity.cs`, `GameModeMarketItems.cs`,
 the `w_*`/`vm_*` weapon prefabs).

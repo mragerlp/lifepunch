@@ -1,0 +1,10 @@
+﻿{
+    "texture_files":  13,
+    "role":  "Electronics / upgrade table",
+    "primary_mesh":  "assets/source/fbx/Soldering_Kit.fbx",
+    "issues":  [
+
+               ],
+    "slot":  "electronicstable"
+}
+

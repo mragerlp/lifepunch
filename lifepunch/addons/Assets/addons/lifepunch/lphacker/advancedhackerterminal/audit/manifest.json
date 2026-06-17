@@ -1,0 +1,10 @@
+﻿{
+    "texture_files":  32,
+    "role":  "Advanced Hacker Terminal",
+    "primary_mesh":  "assets/source/fbx/PC_all_in_one.fbx",
+    "issues":  [
+
+               ],
+    "slot":  "advancedhackerterminal"
+}
+

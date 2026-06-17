@@ -1,7 +1,8 @@
 # ACTIVE WORKSTREAM — production gate (owner law)
 
 **Status:** HARD GATE — not a suggestion. Every agent session **starts here**.  
-**Canonical path:** `lifepunch/addons/docs/ACTIVE_WORKSTREAM.md`
+**Canonical path:** `lifepunch/addons/docs/ACTIVE_WORKSTREAM.md`  
+**Machine stack:** `LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md` · P0 mesh gate: `MODEL_FOUNDATION_PASS.md`
 
 ---
 

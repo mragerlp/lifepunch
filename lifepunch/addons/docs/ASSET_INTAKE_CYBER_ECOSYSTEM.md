@@ -2,9 +2,14 @@
 
 **Owner drop root (canonical):** `%USERPROFILE%\OneDrive\Desktop\LIFEPUNCH*\addons\`
 
+**Fab refresh (Jun 2026):** owner paste Fab URLs + roles in `FAB_MODEL_MANIFEST_TEMPLATE.md`. **Code stays intact** — swaps are Assets + ModelDoc + Phase 1 collision only. See `MODEL_INTAKE_DROP_MAP.md`.
+
+**Build law after intake:** every entity is a **digital machine** (not a static prop) — full stack in
+`LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md`. P0 = ModelDoc + owner mesh sign-off (`MODEL_FOUNDATION_PASS.md`).
+
 Resolver: `addons/scripts/LifePunch-AddonDropPaths.ps1` (scans Desktop for any folder containing `addons\`). Falls back to `Downloads\<folder>` for legacy drops.
 
-Tell Red the folder path after drop; scripts mirror into repo `Assets/addons/lifepunch/…`.
+Tell agent the folder path (or Fab row #) after drop; scripts mirror into repo `Assets/addons/lifepunch/…`.
 
 ---
 
@@ -12,16 +17,19 @@ Tell Red the folder path after drop; scripts mirror into repo `Assets/addons/lif
 
 | Package folder | Addon ident | Entity drops |
 |----------------|-------------|--------------|
-| `lifepunchhacker\hacker\serverrack` | `hackerjob` | Basic `Servers.fbx` + advanced `Servers_Rows.fbx` + shared trim/glass |
+| `lifepunchhacker\hacker\serverrack` | `hackerjob` | Basic server rack |
+| `lifepunchhacker\hacker\advancedserverrack` | `hackerjob` | Advanced server row |
 | `lifepunchhacker\hacker\hackerterminal` | `hackerjob` | Criminal hacker terminal |
+| `lifepunchhacker\hacker\advancedhackerterminal` | `hackerjob` | Advanced hacker CRT |
 | `lifepunchhacker\fbi\governmentserverrack` | `governmentdatacenter` | FBI / government server rack |
 | `lifepunchhacker\fbi\governmentterminal` | `governmentdatacenter` | Government terminal (lifepunchnet) |
 | `lifepunchbitcoin\bitcoinminer` | `bitcoinmining` | Steam Machine hub |
 | `lifepunchbitcoin\gpurack` | `bitcoinmining` | GPU racks |
 | `lifepunchbitcoin\bitcointerminal` | `bitcoinmining` | Hashd terminals |
 | `lifepunchblackmarketdealer\blackmarkethub` | `blackmarketdealer` (prep) | Vault dealer hub |
+| `lifepunchblackmarketdealer\blackmarketterminal` | `blackmarketdealer` (prep) | Dealer terminal |
 
-**Parked (not in active scope):** `advanced-hacker-terminal` / Vengeance terminal only.
+**Fab refresh:** advanced hacker + new entities un-parked when listed in owner manifest.
 
 ---
 

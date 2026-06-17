@@ -2,6 +2,9 @@
 
 Operational queue for the **5 Gun Dealer classes**. Canon strategy: `WEAPON_PROGRAM.md`. Per-class build steps: `WEAPON_CLASS_SPEC.md`.
 
+**Platform law:** `LIFEPUNCH_WEAPON_IMPLEMENTATION_LAW.md` — every kit must satisfy P0 attachments/collision
+before portal ship; required report per weapon.
+
 **Red (VENGEANCE) action plan:** `RED_WEAPON_MASS_PRODUCTION_PLAN.md` — start at **deagle** (#2).
 
 ## Queue

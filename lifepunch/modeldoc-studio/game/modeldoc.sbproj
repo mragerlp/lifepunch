@@ -1,0 +1,38 @@
+{
+  "Title": "LIFEPUNCH ModelDoc Studio",
+  "Type": "game",
+  "Org": "local",
+  "Ident": "lifepunch.modeldoc",
+  "Schema": 1,
+  "IncludeSourceFiles": false,
+  "Resources": "addons/lifepunch/lpbitcoin/**\nscenes/**",
+  "PackageReferences": [],
+  "EditorReferences": null,
+  "Mounts": null,
+  "IsStandaloneOnly": true,
+  "Metadata": {
+    "MaxPlayers": 1,
+    "MinPlayers": 1,
+    "TickRate": 50,
+    "GameNetworkType": "Singleplayer",
+    "MapSelect": "Unrestricted",
+    "MapList": [
+      "facepunch.flatgrass"
+    ],
+    "RankType": "None",
+    "PerMapRanking": false,
+    "LeaderboardType": "None",
+    "CsProjName": "",
+    "StartupScene": "scenes/modeldoc-blank.scene",
+    "Compiler": {
+      "RootNamespace": "LifePunch.ModelDoc",
+      "DefineConstants": "SANDBOX;ADDON;DEBUG;LIFEPUNCH_MODELDOC",
+      "Nullables": true,
+      "ReleaseMode": "Debug",
+      "IgnoreFolders": [
+        "editor",
+        "unittest"
+      ]
+    }
+  }
+}

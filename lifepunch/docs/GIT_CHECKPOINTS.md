@@ -59,7 +59,8 @@ Safe on `main` even when the addon is **not** active:
 
 - Product specs (`BANKER_JOB_SPEC.md`, research briefs)
 - `LIFEPUNCH_HUB_PATTERN.md` (model law)
-- Handoff / Cornerman outbox under `docs/handoff/`
+- **Foundation laws (Jun 2026):** `LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md`, `LIFEPUNCH_WEAPON_IMPLEMENTATION_LAW.md`, matching `.cursor/rules/lifepunch-digital-machine.mdc` + `lifepunch-weapon-platform.mdc`, onboarding updates in `AGENT_ONBOARDING.md` / `AGENT_PROMPT.md`
+- Handoff / Cornerman outbox under `docs/handoff/` (e.g. `JUNE_2026_FOUNDATION_CHECKPOINT.md`)
 
 **Do not** add quarantined addon **code or assets** in the same commit unless owner promotes in `portfolio.json`.
 

@@ -31,6 +31,28 @@ must keep the brand consistent in docs, UI copy, listings, and product names.
 Canonical trademark/IP detail: `lifepunch/legal/TRADEMARK_AND_IP.md` + **lifepunch-trademark-ip** rule.
 Business wrapper: `lifepunch/docs/BUSINESS_CONTEXT.md`.
 
+## Mandatory reads — entity / ModelDoc work
+
+| Order | Doc | Why |
+|-------|-----|-----|
+| 1 | `addons/docs/ACTIVE_WORKSTREAM.md` | Single lane gate |
+| 2 | `addons/docs/LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md` | Machines not props; P0–P4 |
+| 3 | `addons/docs/MODEL_FOUNDATION_PASS.md` | Mesh sign-off before prefab |
+| 4 | `addons/docs/MODELDOC_STUDIO_LANE.md` | Standalone editor (no DXRP) |
+| 5 | `addons/docs/PACKAGE_STAGING_LAYOUT.md` | `lp*` staging paths |
+| 6 | `addons/docs/CYBER_REFERENCE_LAWS.md` | Laws 1–10 |
+
+**Weapons (parallel track — not bitcoin gate):**
+
+| Order | Doc | Why |
+|-------|-----|-----|
+| 1 | `addons/docs/LIFEPUNCH_WEAPON_IMPLEMENTATION_LAW.md` | Platform stack P0–P5 |
+| 2 | `addons/docs/WEAPON_INTAKE.md` | Import + naming |
+| 3 | `addons/docs/VIEWMODEL_RIG_PIPELINE.md` | FP rig bind |
+| 4 | `docs/lanes/AK47_LANE.md` | Quarantine branch only |
+
+Cursor plugins: **Convex** = optional realtime backend only — not s&box entities or weapons.
+
 ## Publish addons (June 2026 — two-repo law)
 
 **Build in core. Export when portal-ready. Never invent law in the publish clone.**
@@ -249,6 +271,15 @@ The `lifepunch-operating-context` rule is law here; this is the orientation. We 
 
 ## Architecture patterns
 
+- **Digital machines, not props** — every entity = Model → Collision → Physics → Attachments →
+  Lights → Animation → Sound → State → Gameplay. Mesh is P0 only. Canon:
+  `lifepunch/addons/docs/LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md` + **lifepunch-digital-machine** rule.
+- **ModelDoc Studio** — standalone `modeldoc.sbproj` for mesh work without DXRP gamemode load:
+  `MODELDOC_STUDIO_LANE.md` · `Start-SboxModelDocStudio.ps1`.
+- **Package staging** — Fab intake under `lp{package}/{entity}/assets|code` (not legacy `_modeldoc/game/`):
+  `PACKAGE_STAGING_LAYOUT.md` · owner drop: `UPLOAD READY ADDONS` on Desktop.
+- **Weapon platform** — not gun mesh; attachments, bones, anims, states per
+  `LIFEPUNCH_WEAPON_IMPLEMENTATION_LAW.md` + **lifepunch-weapon-platform** rule (`lpweapons`, `lane/ak47`).
 - DXRP weapons/equipment = **prefab + component composition** (Equipment root + child
   WeaponComponents; separate ViewModel prefab) — not per-gun god classes. Mirror official
   `m4a1`.
@@ -281,18 +312,26 @@ The `lifepunch-operating-context` rule is law here; this is the orientation. We 
 | **Two repos** | Core `mragerlp/lifepunch` = law/WIP/quarantine. Publish `lifepunch-published` = export snapshot only. |
 | **Quarantine** | Active dev: `adminmenu` + `bitcoinmining` only. All other idents **frozen** — concepts/context OK, **no edits, no copy-paste ship paths** — `portfolio.json`, `QUARANTINE_REGISTER.md` |
 | **Publish now** | **`lifepunchulx`** (`adminmenu`) only — in `publishReadyAddons`; export via `Export-LifepunchPublishLane.ps1` |
-| **Bitcoin** | Ophion hub + CRT terminal v2 — active dev (`bitcoinmining` / `lifepunch.bitcoin`); hub admin vs typed terminal split; **not** publish export until visual sign-off |
+| **Bitcoin** | P0 ModelDoc on `lpbitcoin` staging (CPU GAMER hub first) — **digital machine** stack; entity C# stays reference until mesh sign-off · `LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md` |
 | **Ideation** | ChatGPT Step 1 → paste CURSOR BRIEF → Cursor VENGEANCE. Voice = **Cursor mic** (Whisper deferred). `WORKFLOW_IDEATION_FIRST.md` |
 | **ChatGPT templates** | Step1 · Visual pass · Edit session · Ship checklist — `handoff/CHATGPT_*.txt` · index: `briefs/BRIEF_INDEX.md` |
 | **Owner alias** | Visible: **Bloodwave** · Proprietary: **mrragerlp** · Contact: Mr. Rager — `BLOODWAVE_ALIAS.md` |
 | **Git checkpoints** | Agent recommends scope; owner approves. `GIT_CHECKPOINTS.md` · handoff: `handoff/JUNE_2026_FOUNDATION_CHECKPOINT.md` |
 | **Cornerman LM** | Headless `lms` on `:1234`. Dual MCP when Green Cursor active — `Restore-CornermanDualStack.ps1` |
 | **Dual s&box MCP** | `sbox` + `sbox-editor` on VENGEANCE every edit session. `SBOX_EDITOR_MCP.md` · bar: `SBOX_EDIT_STANDARDS.md` |
-| **Pre-launch** | `Test-PreLaunchCheckup.ps1 -Fix` then `Start-SboxDxrpEditor.ps1 -PreflightFix -SyncAddon <ident>` |
+| **ModelDoc Studio** | Standalone editor — **no DXRP gamemode** for mesh passes. `MODELDOC_STUDIO_LANE.md` · `Start-SboxModelDocStudio.ps1` |
+| **Digital machines** | Not props — full stack in `LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md` · P0 = ModelDoc sign-off first |
+| **Weapon platform** | Not gun mesh — `LIFEPUNCH_WEAPON_IMPLEMENTATION_LAW.md` · `lpweapons` + AK lane parallel to bitcoin |
+| **lp* staging** | `lpbitcoin/bitcoinhub/assets|code` · `PACKAGE_STAGING_LAYOUT.md` · Desktop: `UPLOAD READY ADDONS` |
+| **Pre-launch** | `Test-PreLaunchCheckup.ps1 -Fix` then `Start-SboxModelDocStudio.ps1` (mesh) or `Start-SboxDxrpEditor.ps1` (DXRP play) |
 
 **Handoff paste for any node:** `AGENT_SYNC_BROADCAST.txt` after `git pull --rebase`.
 
 **Recently landed (foundation is current as of this note):**
+- **Digital machine + weapon platform laws — June 2026.** Entity props = machines
+  (`LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md` + **lifepunch-digital-machine** rule). Weapons = platforms
+  (`LIFEPUNCH_WEAPON_IMPLEMENTATION_LAW.md` + **lifepunch-weapon-platform** rule). Block 0 items 0c–0e
+  in `AGENT_PROMPT.md`. Baselines tracked in `TECH_DEBT.md` (MACHINE-*, WEAPON-*).
 - **Ops clarity checkpoint — June 2026.** Voice web uniform (shortcut tiers, consoles, Explorer
   icons, PowerShell tab thumbnail, preflight surfaces) canonized in `OPS_CLARITY_CHECKPOINT.md`,
   `UNIFORM_STANDARDS.md`, `SHORTCUT_ICONS.md`, and agent sync broadcast. **Start Day** (tri-stack) =
@@ -334,7 +373,7 @@ The `lifepunch-operating-context` rule is law here; this is the orientation. We 
 
 **Current / next build:**
 - **Admin menu (`lifepunch.ulx`)** — **publish-ready v1**; export to `lifepunch-published`. Do not refactor without owner ask.
-- **Bitcoin miner hub** — hub/terminal UI chrome, gray CRT ops, v2 prefabs (active dev, not publish yet). `BITCOIN_OPHION_CURSOR_BRIEF.md` · `LIFEPUNCH_HUB_PATTERN.md`.
+- **Bitcoin miner hub** — ModelDoc foundation + machine hierarchy (P0 mesh → P1 attachments/lights → states). `LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md` · `MODEL_FOUNDATION_PASS.md`.
 - **Hub pattern law** — `addons/docs/LIFEPUNCH_HUB_PATTERN.md` for all computer-heavy jobs.
 - AK-47 and all quarantined idents — **paused** until promote + ChatGPT brief.
 - New products: ChatGPT Step 1 brief **before** code.

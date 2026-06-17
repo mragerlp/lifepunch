@@ -1,0 +1,10 @@
+﻿{
+    "texture_files":  32,
+    "role":  "Hacker Terminal",
+    "primary_mesh":  "assets/source/fbx/Computer.fbx",
+    "issues":  [
+
+               ],
+    "slot":  "hackerterminal"
+}
+

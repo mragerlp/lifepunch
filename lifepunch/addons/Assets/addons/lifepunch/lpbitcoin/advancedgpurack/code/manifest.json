@@ -1,0 +1,22 @@
+﻿{
+    "note":  "Physical code move happens on promotion. DXRP lane does not compile entity code from staging.",
+    "entitySlot":  "advancedgpurack",
+    "legacyRepoIdent":  "bitcoinmining",
+    "packageFolder":  "lpbitcoin",
+    "entityFiles":  [
+                        "LpBitcoinRackEntity.cs",
+                        "LpBitcoinRackVisuals.cs"
+                    ],
+    "legacyCodeRoot":  "Code/Addons/lifepunch/bitcoinmining",
+    "sharedPackageFiles":  [
+                               "LpBitcoinIdent.cs",
+                               "LpBitcoinEconomy.cs",
+                               "LpBitcoinWallet.cs",
+                               "LpBitcoinUi.cs",
+                               "LpBitcoinHudBridge.cs",
+                               "LpUiScale.cs",
+                               "LpUiScale.scss",
+                               "LpUiChrome.scss",
+                               "LpBitcoinDevSpawn.cs"
+                           ]
+}

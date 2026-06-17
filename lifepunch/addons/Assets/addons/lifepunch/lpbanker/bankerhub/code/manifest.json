@@ -1,0 +1,21 @@
+﻿{
+    "note":  "Physical code move happens on promotion. DXRP lane does not compile entity code from staging.",
+    "entitySlot":  "bankerhub",
+    "legacyRepoIdent":  "bankerjob",
+    "packageFolder":  "lpbanker",
+    "entityFiles":  [
+
+                    ],
+    "legacyCodeRoot":  "Code/Addons/lifepunch/bankerjob",
+    "sharedPackageFiles":  [
+                               "LpBitcoinIdent.cs",
+                               "LpBitcoinEconomy.cs",
+                               "LpBitcoinWallet.cs",
+                               "LpBitcoinUi.cs",
+                               "LpBitcoinHudBridge.cs",
+                               "LpUiScale.cs",
+                               "LpUiScale.scss",
+                               "LpUiChrome.scss",
+                               "LpBitcoinDevSpawn.cs"
+                           ]
+}

@@ -1,0 +1,143 @@
+{
+    "__guid":  "f4e8c291-7b2a-4f1c-a9d3-001000000001",
+    "GameObjects":  [
+                        {
+                            "__guid":  "0ea38e42-eb43-41f9-a887-5a66a5925603",
+                            "__version":  2,
+                            "Flags":  0,
+                            "Name":  "Ground",
+                            "Position":  "0,0,0",
+                            "Rotation":  "0,0,0,1",
+                            "Scale":  "100,100,1",
+                            "Tags":  "",
+                            "Enabled":  true,
+                            "NetworkMode":  2,
+                            "NetworkFlags":  0,
+                            "NetworkOrphaned":  0,
+                            "NetworkTransmit":  true,
+                            "OwnerTransfer":  1,
+                            "Components":  [
+                                               {
+                                                   "__guid":  "4c984bf2-b035-44ee-8dcd-b715e10282b2",
+                                                   "__enabled":  true,
+                                                   "Flags":  0,
+                                                   "BodyGroups":  18446744073709551615,
+                                                   "CreateAttachments":  false,
+                                                   "LodOverride":  null,
+                                                   "MaterialGroup":  null,
+                                                   "MaterialOverride":  null,
+                                                   "Materials":  null,
+                                                   "Model":  "models/dev/plane.vmdl",
+                                                   "OnComponentDestroy":  null,
+                                                   "OnComponentDisabled":  null,
+                                                   "OnComponentEnabled":  null,
+                                                   "OnComponentFixedUpdate":  null,
+                                                   "OnComponentStart":  null,
+                                                   "OnComponentUpdate":  null,
+                                                   "RenderOptions":  {
+                                                                         "GameLayer":  true,
+                                                                         "OverlayLayer":  false,
+                                                                         "BloomLayer":  false,
+                                                                         "AfterUILayer":  false
+                                                                     },
+                                                   "RenderType":  "On",
+                                                   "Tint":  "1,1,1,1"
+                                               },
+                                               {
+                                                   "__guid":  "f61afb71-547d-4a26-8116-b6a9da3ff7d3",
+                                                   "__enabled":  true,
+                                                   "Flags":  0,
+                                                   "Center":  "0,0,0",
+                                                   "ColliderFlags":  0,
+                                                   "Elasticity":  null,
+                                                   "Friction":  null,
+                                                   "IsTrigger":  false,
+                                                   "Normal":  "0,0,1",
+                                                   "OnComponentDestroy":  null,
+                                                   "OnComponentDisabled":  null,
+                                                   "OnComponentEnabled":  null,
+                                                   "OnComponentFixedUpdate":  null,
+                                                   "OnComponentStart":  null,
+                                                   "OnComponentUpdate":  null,
+                                                   "OnObjectTriggerEnter":  null,
+                                                   "OnObjectTriggerExit":  null,
+                                                   "OnTriggerEnter":  null,
+                                                   "OnTriggerExit":  null,
+                                                   "RollingResistance":  null,
+                                                   "Scale":  "100,100",
+                                                   "Static":  true,
+                                                   "Surface":  null,
+                                                   "SurfaceVelocity":  "0,0,0"
+                                               }
+                                           ],
+                            "Children":  [
+
+                                         ]
+                        },
+                        {
+                            "__guid":  "5783dd44-58ed-4e63-ba1f-b33a9535c2d4",
+                            "__version":  2,
+                            "Flags":  0,
+                            "Name":  "2D Skybox",
+                            "Position":  "-138.9693,80.55344,81.32954",
+                            "Rotation":  "0,0,0,1",
+                            "Scale":  "1,1,1",
+                            "Tags":  "skybox",
+                            "Enabled":  true,
+                            "NetworkMode":  2,
+                            "NetworkFlags":  0,
+                            "NetworkOrphaned":  0,
+                            "NetworkTransmit":  true,
+                            "OwnerTransfer":  1,
+                            "Components":  [
+                                               {
+                                                   "__guid":  "b8b01a3a-cf68-4ffd-9d6e-6b11eaee317d",
+                                                   "__enabled":  true,
+                                                   "Flags":  0,
+                                                   "OnComponentDestroy":  null,
+                                                   "OnComponentDisabled":  null,
+                                                   "OnComponentEnabled":  null,
+                                                   "OnComponentFixedUpdate":  null,
+                                                   "OnComponentStart":  null,
+                                                   "OnComponentUpdate":  null,
+                                                   "SkyIndirectLighting":  true,
+                                                   "SkyMaterial":  "materials/skybox/skybox_day_01.vmat",
+                                                   "Tint":  "1,1,1,1"
+                                               }
+                                           ],
+                            "Children":  [
+
+                                         ]
+                        }
+                    ],
+    "SceneProperties":  {
+                            "NetworkInterpolation":  true,
+                            "TimeScale":  1,
+                            "WantsSystemScene":  false,
+                            "Metadata":  {
+                                             "lifepunch_lane":  "modeldoc-studio-2026-06"
+                                         },
+                            "NavMesh":  {
+                                            "Enabled":  false,
+                                            "IncludeStaticBodies":  true,
+                                            "IncludeKeyframedBodies":  true,
+                                            "EditorAutoUpdate":  true,
+                                            "AgentHeight":  64,
+                                            "AgentRadius":  16,
+                                            "AgentStepSize":  18,
+                                            "AgentMaxSlope":  40,
+                                            "ExcludedBodies":  "",
+                                            "IncludedBodies":  ""
+                                        },
+                            "GameObjectSystems":  [
+
+                                                  ]
+                        },
+    "ResourceVersion":  3,
+    "Title":  "LIFEPUNCH ModelDoc Studio",
+    "Description":  "Standalone ModelDoc lane - no DXRP gamemode. Ground + sky only.",
+    "__references":  [
+
+                     ],
+    "__version":  3
+}

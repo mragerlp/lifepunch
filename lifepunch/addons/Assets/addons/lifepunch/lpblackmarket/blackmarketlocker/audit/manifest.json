@@ -1,0 +1,10 @@
+﻿{
+    "texture_files":  14,
+    "role":  "Black Market Locker",
+    "primary_mesh":  "assets/source/fbx/SF_Locker_19.fbx",
+    "issues":  [
+
+               ],
+    "slot":  "blackmarketlocker"
+}
+

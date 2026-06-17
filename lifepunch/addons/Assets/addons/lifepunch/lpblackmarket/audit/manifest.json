@@ -1,0 +1,52 @@
+﻿{
+    "packageSlug":  "TBD",
+    "healthScore":  72,
+    "slotCount":  3,
+    "package":  "lpblackmarket",
+    "role":  "Underground BTC economy",
+    "totalSizeMB":  125.56,
+    "generated":  "2026-06-17T00:38:06.4102776-04:00",
+    "slots":  [
+                  {
+                      "fbx":  1,
+                      "textures":  12,
+                      "blend":  1,
+                      "obj":  0,
+                      "sizeMB":  31.41,
+                      "role":  "Black Market Hub (Vault)",
+                      "issues":  [
+
+                                 ],
+                      "slot":  "blackmarkethub",
+                      "primary_mesh":  "assets/source/fbx/Safe_Vault_TRIO.fbx"
+                  },
+                  {
+                      "fbx":  1,
+                      "textures":  14,
+                      "blend":  0,
+                      "obj":  0,
+                      "sizeMB":  10.23,
+                      "role":  "Black Market Locker",
+                      "issues":  [
+
+                                 ],
+                      "slot":  "blackmarketlocker",
+                      "primary_mesh":  "assets/source/fbx/SF_Locker_19.fbx"
+                  },
+                  {
+                      "fbx":  0,
+                      "textures":  6,
+                      "blend":  1,
+                      "obj":  0,
+                      "sizeMB":  83.92,
+                      "role":  "Black Market Terminal",
+                      "issues":  [
+                                     "No FBX in pack â€” export FBX from blend before ModelDoc OR import blend via pipeline",
+                                     "BLOCKER: primary_mesh is blend-only â€” export FBX for ModelDoc or document blend import path"
+                                 ],
+                      "slot":  "blackmarketterminal",
+                      "primary_mesh":  "assets/source/blend/CRT COMPUTER.blend"
+                  }
+              ],
+    "priority":  "P2"
+}

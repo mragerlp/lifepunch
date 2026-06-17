@@ -2,6 +2,7 @@
 
 **Status:** HARD GATE — applies to every `lifepunchbitcoin` session and every future cyber lane.  
 **Parent gate:** `ACTIVE_WORKSTREAM.md`  
+**Digital machine canon:** `LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md`  
 **Brand canon:** `TERMINAL_BRAND_MATRIX.md`  
 **Bible (populate on sign-off):** `BITCOIN_REFERENCE_IMPLEMENTATION.md`
 
@@ -116,6 +117,8 @@ Play law: `game.scene` → Host Play (2–5 min cold) → `lp_map_flatgrass` →
 ---
 
 ## LAW 6 — Every state must be obvious
+
+**Implementation canon:** `LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md` (OFF → BOOTING → RUNNING → OVERCLOCK / BROKEN / HACKED; lights, fans, sound follow state — not texture-only).
 
 For **Hub**, **Terminal**, and **Rack**, these states must be readable **without opening a menu**:
 

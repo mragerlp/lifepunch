@@ -1,0 +1,13 @@
+﻿{
+    "slot":  "hackerhub",
+    "primary_mesh":  "assets/source/fbx/Servers.fbx",
+    "texture_files":  13,
+    "issues":  [
+
+               ],
+    "role":  "Hacker HUB",
+    "notes":  [
+                  "Glass cover 2K maps merged into game/textures"
+              ]
+}
+

@@ -16,12 +16,23 @@ Read: `BITCOIN_GREENFIELD_REBUILD.md`
 
 ## Session kickoff (VENGEANCE)
 
+**Default lane (Jun 2026): ModelDoc foundation — not play test.**
+
 ```powershell
 cd C:\Users\jared\Projects\lifepunchaddons
 git pull --rebase
 
-# Sync lifepunch.bitcoin into DXRP + open editor
-powershell -NoProfile -ExecutionPolicy Bypass -File lifepunch\scripts\Start-SboxDxrpEditor.ps1 -PreflightFix -SyncAddon bitcoinmining
+# ULX + _modeldoc staging only — no bitcoinmining code in DXRP
+powershell -NoProfile -ExecutionPolicy Bypass -File lifepunch\scripts\Set-DxrpLifepunchModelDocLane.ps1
+```
+
+See `DXRP_MODELDOC_GREENFIELD_LANE.md` · `MODEL_FOUNDATION_PASS.md`.
+
+**Play lane (after model sign-off):**
+
+```powershell
+powershell -File lifepunch\scripts\Set-DxrpLifepunchBitcoinOnly.ps1
+powershell -File lifepunch\scripts\Start-SboxDxrpEditor.ps1 -PreflightFix -SyncAddon bitcoinmining
 ```
 
 **Play law** (`BITCOINMINING_PLAYTEST.md` §0):

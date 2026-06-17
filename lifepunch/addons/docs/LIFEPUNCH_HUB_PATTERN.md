@@ -7,6 +7,10 @@
 Applies to: **bitcoinmining** (shipped pattern), **hackerjob** (shipped pattern), **bankerjob** (draft),
 **FBI / cybersecurity** (future), **governmentdatacenter** (treasury miner).
 
+**Physical build canon:** hub/terminal/satellite prefabs follow the **digital machine stack**
+(ModelDoc → collision → attachments → lights → state → gameplay) — `LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md`.
+Hub power/fan timing aligns with §7 of that doc.
+
 ---
 
 ## The pattern
