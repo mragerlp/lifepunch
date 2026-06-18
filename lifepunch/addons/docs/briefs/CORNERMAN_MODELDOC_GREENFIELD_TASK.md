@@ -34,7 +34,7 @@ C:\Users\jared\OneDrive\Desktop\UPLOAD READY ADDONS\addons
 | `MODEL_FOUNDATION_PASS.md` | P0 gate |
 | `LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md` | Machine vs prop doctrine |
 
-**Snapshot summary (Desktop, Jun 17):** 24 × MODELDOC_PENDING · 5 × FBX_ONLY · 13 × AUDIT_OR_EMPTY · 1 × MODELDOC_DONE (bitcoinhub cpu-gamer vmdl on Desktop).
+**Snapshot summary (Desktop, Jun 17):** 24 × MODELDOC_PENDING · 5 × FBX_ONLY · 13 × AUDIT_OR_EMPTY · 1 × MODELDOC_DONE (bitcoinhub vmdl on Desktop — **since superseded:** hub = `bitcoin-hub.vmdl`, not cpu-gamer).
 
 ---
 

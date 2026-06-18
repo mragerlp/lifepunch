@@ -47,8 +47,8 @@ function Test-EditorMcp([int]$Port) {
     return (Test-HttpEditorMcp "http://127.0.0.1:$Port/sbox-mcp")
 }
 
-function Test-JtcMcp([int]$Port, [string]$Path) {
-    return (Test-HttpEditorMcp "http://127.0.0.1:$Port$Path")
+function Test-JtcMcp([string]$Url) {
+    return (Test-HttpEditorMcp $Url)
 }
 
 function Test-BridgeIpc {
@@ -103,7 +103,7 @@ $checks = [ordered]@{}
 
 $checks['vengeance.sboxBridge'] = Test-BridgeIpc
 $checks['vengeance.sboxEditor'] = Test-EditorMcp -Port $EditorPort
-$checks['vengeance.sboxJtc'] = Test-JtcMcp -Port $JtcPort -Path $jtcPath
+$checks['vengeance.sboxJtc'] = Test-JtcMcp -Url $portCfg.JtcUrl
 $checks['vengeance.mcpStack'] = ('sbox' -in $mcpKeys) -and ('sbox-editor' -in $mcpKeys) -and ('sbox-jtc' -in $mcpKeys) -and ('cornerman-lm' -in $mcpKeys)
 # Legacy alias — chomnr + bridge keys only (pre-jtc probes)
 $checks['vengeance.mcpDual'] = ('sbox' -in $mcpKeys) -and ('sbox-editor' -in $mcpKeys)

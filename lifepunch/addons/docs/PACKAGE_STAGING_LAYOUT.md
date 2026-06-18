@@ -37,7 +37,7 @@ lpbitcoin/                          # package (maps to lifepunchbitcoin / repoId
 
 | Staging | Today’s ship path (repoIdent) | Future target |
 |---------|-------------------------------|---------------|
-| `lpbitcoin/bitcoinhub/assets/models/cpu-gamer.vmdl` | `bitcoinmining/models/.../bitcoin-miner/` | `bitcoin/bitcoinhub/assets/models/` |
+| `lpbitcoin/bitcoinhub/assets/models/bitcoin-hub.vmdl` | `bitcoinmining/models/.../bitcoin-miner/` | `bitcoin/bitcoinhub/assets/models/` |
 | `lpbitcoin/bitcoinhub/code/components/LpBitcoinHubEntity.cs` | `Code/.../bitcoinmining/` | `Code/.../bitcoin/bitcoinhub/` |
 | `lpbitcoin/bitcoinhub/assets/entities/*.prefab` | `bitcoinmining/entities/bitcoinminer/` | same pattern under `bitcoin/bitcoinhub/` |
 
@@ -78,7 +78,7 @@ powershell -File lifepunch\scripts\Set-DxrpLifepunchModelDocLane.ps1
 |--------|------|
 | `Normalize-LifepunchDesktopPackages.ps1` | Desktop drop → `assets/` layout |
 | `Sync-LifepunchDesktopToStaging.ps1` | Desktop → repo staging |
-| `Initialize-UploadReadyAddons.ps1` | Desktop **UPLOAD READY ADDONS** → skeleton + ModelDoc files |
+| `Initialize-UploadReadyAddons.ps1` | Desktop **UPLOAD READY ADDONS** / **PLACEHOLDER** → skeleton + ModelDoc files |
 | `Invoke-LifepunchAssetClassificationAudit.ps1` | Inventory + health reports |
 
 ---

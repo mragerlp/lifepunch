@@ -6,7 +6,7 @@
 
 | Folder | Ship entity | ModelDoc |
 |--------|-------------|----------|
-| `bitcoinhub/` | bitcoin-miner | `assets/models/cpu-gamer.vmdl` |
+| `bitcoinhub/` | bitcoin-miner | `assets/models/bitcoin-hub.vmdl` |
 | `hashdterminal/` | bitcoin-terminal | `assets/models/hashd-terminal.vmdl` |
 | `gpurack/` | gpu-rack | `assets/models/gpu-rack.vmdl` |
 | `advancedgpurack/` | advanced-gpu-rack | `assets/models/gpu-rack-stacked.vmdl` |

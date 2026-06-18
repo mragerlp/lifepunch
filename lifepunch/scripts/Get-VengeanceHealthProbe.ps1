@@ -14,7 +14,6 @@ $bloatHints = @(
     @{ Name = 'Discord'; Match = '(?i)^Discord$'; Why = 'Use lifepunchnet RDP Discord, not local on VENGEANCE' }
     @{ Name = 'Spotify'; Match = '(?i)^Spotify$'; Why = 'Run on lifepunchnet RDP or quit during s&box work' }
     @{ Name = 'Slack'; Match = '(?i)^slack$'; Why = 'Run on lifepunchnet if needed' }
-    @{ Name = 'iTunes'; Match = '(?i)^iTunes$'; Why = 'Run on lifepunchnet if needed' }
     @{ Name = 'LM Studio GUI'; Match = '(?i)LM Studio'; Why = 'Tier-3 LM lives on Cornerman headless, not Red' }
     @{ Name = 'Ollama'; Match = '(?i)^ollama$'; Why = 'Local LLM on Cornerman/lifepunchnet, not VENGEANCE' }
     @{ Name = 'Odysseus'; Match = '(?i)odysseus'; Why = 'Experimental Tier-3 belongs off Red' }

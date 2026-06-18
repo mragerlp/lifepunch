@@ -74,7 +74,7 @@ powershell -File lifepunch\scripts\Start-SboxModelDocStudio.ps1 -Package lpbitco
 
 - Project: `modeldoc-studio/game/modeldoc.sbproj`
 - Scene: `scenes/modeldoc-blank.scene`
-- ModelDoc: `addons/lifepunch/lpbitcoin/bitcoinhub/assets/models/cpu-gamer.vmdl`
+- ModelDoc: `addons/lifepunch/lpbitcoin/bitcoinhub/assets/models/bitcoin-hub.vmdl`
 
 **MCP:** use `sbox-editor` (chomnr) on port 9090 — same as DXRP lane, but project is ModelDoc Studio.
 

@@ -41,6 +41,12 @@
 
 `advanceddrugprocessing` props use **`import_scale = 0.3937`** at prefab `1.0` — not `39.37`. Treat `39.37` and `0.3937` as different orders of magnitude; never assume without measuring.
 
-## Playtest map
+## Playtest scene (canonical)
 
-Use **`facepunch.flatgrass`** (`game.scene` `MapName` or `lp_map_flatgrass`) so scale is visible without downtown clutter.
+Use **`scenes/blank.scene`** — open in the DXRP editor, then **Host Play**.
+
+- DXRP ships it: `Assets/scenes/blank.scene` (core prefab + `models/dev/plane` ground + skybox).
+- No hammer map load — faster and cleaner than `facepunch.flatgrass` for scale/prop work.
+- Console: `lp_dev_scene` prints the path if you forget.
+
+**Legacy:** from `game.scene` only, `lp_map_flatgrass` swaps to `facepunch.flatgrass` when you need hammer terrain.

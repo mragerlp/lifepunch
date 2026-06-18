@@ -1,4 +1,4 @@
-﻿<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:modeldoc30:version{8c2d7a91-9c42-4bf0-883a-5a3b1762d4f1} -->
+<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:modeldoc30:version{8c2d7a91-9c42-4bf0-883a-5a3b1762d4f1} -->
 {
 	rootNode = 
 	{
@@ -11,8 +11,11 @@
 				[
 					{
 						_class = "DefaultMaterialGroup"
+						remaps = 
+						[
+						]
 						use_global_default = true
-						global_default_material = "materials/default.vmat"
+						global_default_material = "addons/lifepunch/lpbitcoin/bitcoinhub/assets/models/materials/cpu-gamer-vertex.vmat"
 					},
 				]
 			},
@@ -39,7 +42,12 @@
 				[
 					{
 						_class = "PhysicsHullFromRender"
-						name = "default"
+						parent_bone = ""
+						surface_prop = "metal"
+						collision_tags = "solid"
+						faceMergeAngle = 20.0
+						maxHullVertices = 16
+						hull_mode = "SingleHull"
 					},
 				]
 			},
@@ -50,4 +58,3 @@
 		base_model_name = ""
 	}
 }
-

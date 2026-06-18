@@ -198,7 +198,7 @@ function Test-VengeanceMcpStack {
         Write-Check 'VENGEANCE sbox-editor MCP (chomnr)' $editorOk $editorUrl -Warning:(-not $editorOk)
     }
 
-    $jtcUrl = "http://127.0.0.1:$JtcPort$jtcPath"
+    $jtcUrl = $portCfg.JtcUrl
     $jtcOk = $false
     try {
         $null = Invoke-WebRequest -Uri $jtcUrl -Method Post -ContentType 'application/json' `

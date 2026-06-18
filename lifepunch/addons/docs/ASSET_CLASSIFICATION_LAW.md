@@ -81,14 +81,14 @@ These assets are **not** generic props. Every mesh belongs to a **specific gamep
 |------|----------------|----------------|
 | `gpurack` | GPU Rack | Entry |
 | `hashdterminal` | HASHD Terminal | Mid |
-| `bitcoinhub` | Bitcoin HUB (CPU GAMER) | Capstone |
+| `bitcoinhub` | Bitcoin HUB (admin capstone) | Capstone |
 | `advancedgpurack` | Advanced GPU Rack (stacked) | Advanced tier — same Fab family as `gpurack` |
 
 **Do not alter naming relationships** between slots and future entity slugs (`gpu-rack`, `bitcoin-terminal`, `bitcoin-miner`, `advanced-gpu-rack`).
 
 **P0 audit depth:** scale consistency · material consistency · texture consistency · triangle counts (after ModelDoc compile).
 
-**Active ModelDoc:** `bitcoinhub/cpu-gamer.vmdl` ← `cpu_gamer.fbx` (solid vertex colors; fan = child GO Phase 2).
+**Active ModelDoc:** `bitcoinhub/bitcoin-hub.vmdl` ← `generic-pc-desktop.fbx` + `generic-pc-desktop_basecolor.png` (Sketchfab CC BY Bryan). Fab CPU GAMER (`cpu_gamer.fbx`) **retired** for hub — fan spin = child GO Phase 2.
 
 ---
 

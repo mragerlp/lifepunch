@@ -144,6 +144,23 @@ if (-not (Test-Path -LiteralPath $repoUlxCode)) {
 if ($LASTEXITCODE -ge 8) { throw 'robocopy ulx code failed' }
 Write-Host '  Code/lifepunchulx mirrored' -ForegroundColor Green
 
+Write-Host 'Quarantine StaffMenuTestBots* (DXRP API drift — not needed for ModelDoc)' -ForegroundColor Cyan
+$testBotFiles = @(
+    'StaffMenuTestBots.cs',
+    'StaffMenuTestBotsAutoSpawn.cs'
+)
+foreach ($name in $testBotFiles) {
+    $path = Join-Path $dxrpUlxCode $name
+    if (-not (Test-Path -LiteralPath $path)) { continue }
+    $off = "$path.quarantine"
+    if (Test-Path -LiteralPath $off) {
+        Remove-Item -LiteralPath $path -Force
+        continue
+    }
+    Rename-Item -LiteralPath $path -NewName ($name + '.quarantine') -Force
+    Write-Host "  quarantine: $name" -ForegroundColor Yellow
+}
+
 $repoCodeRoot = Join-Path $repoAddons 'Code\Addons\lifepunch'
 $sharedRootFiles = @(Get-ChildItem -LiteralPath $repoCodeRoot -File -ErrorAction SilentlyContinue)
 if ($sharedRootFiles.Count -gt 0) {
@@ -181,13 +198,13 @@ $resourcesBlock = $content.Substring($valueStart, $valueEnd - $valueStart)
 $lines = $resourcesBlock -split '\\n' | Where-Object { $_ -and ($_ -notmatch 'addons/lifepunch/') }
 $lines += "addons/lifepunch/$ulxDxrpFolder/**"
 $lines += "addons/lifepunch/$devFolder/**"
-foreach ($pkg in $stagingPackages) {
-    $lines += "addons/lifepunch/$pkg/**"
-}
+# Phase A (Model Foundation): hub-only mount — full lpbitcoin/** auto-import stalls on cpu_gamer.fbx.
+$lines += 'addons/lifepunch/lpbitcoin/bitcoinhub/**'
 $newResources = ($lines | Select-Object -Unique) -join '\n'
 $content = $content.Substring(0, $valueStart) + $newResources + $content.Substring($valueEnd)
 [System.IO.File]::WriteAllText($sbprojPath, $content)
-Write-Host 'rp.sbproj Resources -> lifepunchulx + lp* staging + _dev' -ForegroundColor Green
+Write-Host 'rp.sbproj Resources -> lifepunchulx + _dev + lpbitcoin/bitcoinhub (Phase A hub-only)' -ForegroundColor Green
+Write-Host '  lp* assets synced to disk; mount terminal/racks in sbproj when Phase B/C starts.' -ForegroundColor DarkGray
 
 Write-Host ''
 Write-Host 'ModelDoc greenfield lane ready. Restart s&box editor.' -ForegroundColor Cyan

@@ -15,11 +15,11 @@ See ASSET_CLASSIFICATION_LAW.md - do not merge this package with visually simila
 - Note: Use static body in ModelDoc â€” not anim rig as body
 
 ### bitcoinhub
-- Role: Bitcoin HUB (CPU GAMER)
-- Primary: game/source/fbx/cpu_gamer.fbx
-- FBX/OBJ/Blend/Tex: 1/0/1/0 | 145.34 MB
-- Issues: none flagged
-- Note: Solid colors in source — vmats in ModelDoc
+- Role: Bitcoin HUB (admin capstone)
+- Primary: assets/source/fbx/generic-pc-desktop.fbx
+- Texture: assets/textures/generic-pc-desktop_basecolor.png
+- vmdl: assets/models/bitcoin-hub.vmdl
+- Retired: game/source/fbx/cpu_gamer.fbx (Fab CPU GAMER)
 - Note: Fan spin = child GO Phase 2
 
 ### gpurack

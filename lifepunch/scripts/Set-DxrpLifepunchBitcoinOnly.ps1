@@ -1,24 +1,41 @@
 <#
 .SYNOPSIS
-  Quarantine every LifePunch DXRP mount except lifepunchbitcoin (bitcoinmining) + _dev playtest helpers.
+  LEGACY playtest lane — old bitcoinmining ship tree (Steam Machine meshes). NOT Model Foundation.
 
 .DESCRIPTION
-  DXRP editor install only — monorepo source unchanged.
-  - **Deletes** non-bitcoin LifePunch addon folders from the DXRP game tree (repo keeps sources)
-  - Removes stale lifepunch._quarantine trees (they caused console spam even when not mounted)
-  - Syncs repo bitcoinmining + _dev
-  - Rewrites rp.sbproj Resources to addons/lifepunch/bitcoinmining/** only
+  BLOCKED by default while ACTIVE_WORKSTREAM is Model Foundation on lpbitcoin staging.
+
+  This mounts legacy bitcoinmining/models/ (quarantined for mesh work) and enables
+  lp_bitcoin_spawn_* commands that spawn Steam Machine prefabs — NOT the paid Fab meshes.
+
+  Use instead:
+    Prepare-LpBitcoinModelDoc.ps1
+    Set-DxrpLifepunchModelDocLane.ps1
+
+  Only run with -AllowLegacyPlaytest when owner explicitly wants legacy ship-tree play polish
+  AFTER Model Foundation sign-off + vmdl promotion — not for new mesh work.
 
 .EXAMPLE
-  powershell -File lifepunch\scripts\Set-DxrpLifepunchBitcoinOnly.ps1
+  powershell -File lifepunch\scripts\Set-DxrpLifepunchBitcoinOnly.ps1 -AllowLegacyPlaytest
 #>
 [CmdletBinding()]
 param(
-    [string] $ConfigPath = ''
+    [string] $ConfigPath = '',
+    [switch] $AllowLegacyPlaytest
 )
 
 $ErrorActionPreference = 'Stop'
 $Here = if ($PSScriptRoot) { $PSScriptRoot } else { Split-Path -Parent $MyInvocation.MyCommand.Path }
+
+if (-not $AllowLegacyPlaytest) {
+    Write-Host 'BLOCKED: Set-DxrpLifepunchBitcoinOnly mounts legacy bitcoinmining meshes (Steam Machine).' -ForegroundColor Red
+    Write-Host 'Active lane: lpbitcoin Model Foundation — see ACTIVE_WORKSTREAM.md + LPBITCOIN_TODAY_CHECKLIST.md' -ForegroundColor Yellow
+    Write-Host '  Prepare-LpBitcoinModelDoc.ps1' -ForegroundColor Cyan
+    Write-Host '  Set-DxrpLifepunchModelDocLane.ps1' -ForegroundColor Cyan
+    Write-Host 'Re-run with -AllowLegacyPlaytest only if owner explicitly wants legacy play polish.' -ForegroundColor DarkGray
+    exit 1
+}
+
 if (-not $ConfigPath) { $ConfigPath = Join-Path $Here 'dxrp-editor.local.json' }
 if (-not (Test-Path -LiteralPath $ConfigPath)) {
     throw "Missing $ConfigPath - copy dxrp-editor.local.json.example first."

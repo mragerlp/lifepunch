@@ -94,7 +94,9 @@
 
 ---
 
-## CPU GAMER hub — important
+## CPU GAMER hub — important (Fab listing — **superseded for Phase A hub mesh**)
+
+**June 2026:** Active hub mesh = Sketchfab Generic PC Desktop → `bitcoin-hub.vmdl` (see `bitcoinhub/assets/models/MODEL_BUILD.md`). Fab CPU GAMER below is inventory/history only — do not compile for hub.
 
 Listing notes: **no textures (solid colors)**; blend file includes RGB animation and fan movement.  
 **Ship approach:** static FBX body + LifePunch vmats for fence/LED; **child-GO fan spin** (same as Evo pattern) — do **not** import animated rig as body render mesh.

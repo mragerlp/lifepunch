@@ -19,7 +19,6 @@ $targets = @(
     @{ Label = 'Discord'; Match = '(?i)^Discord$' }
     @{ Label = 'Spotify'; Match = '(?i)^Spotify$' }
     @{ Label = 'Slack'; Match = '(?i)^slack$' }
-    @{ Label = 'iTunes'; Match = '(?i)^iTunes$' }
     @{ Label = 'LM Studio GUI'; Match = '(?i)LM Studio' }
     @{ Label = 'Ollama'; Match = '(?i)^ollama$' }
 )

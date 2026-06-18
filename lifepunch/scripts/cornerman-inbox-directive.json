@@ -1,43 +1,37 @@
 {
   "role": "cornerman-tier3",
   "issuedBy": "vengeance",
-  "issuedAt": "2026-06-11",
-  "title": "Green workflow — Inventory project (Visible Pocket P1)",
+  "issuedAt": "2026-06-17",
+  "title": "Green workflow — ModelDoc greenfield + Bitcoin distill (Red on Blue Dev)",
   "do": [
-    "Primary lane: INVENTORY PROJECT — read CORNERMAN_INVENTORY_PROJECT_TASK.md first",
-    "Tier-3 = catalog (3 on disk) + serve (distill+embed on :1234). Coder on disk only until WarmCoder — never load 35b+32b together (VRAM). Models: qwen/qwen3.6-35b-a3b, qwen2.5-coder-32b-instruct, text-embedding-nomic-embed-text-v1.5",
-    "Switch to coder ONLY when brief task 6 (HUD scss draft) or explicit WarmCoder: qwen2.5-coder-32b-instruct",
-    "Read CORNERMAN_MODEL_ROUTING.md on every inbox session — distill for docs, coder for assigned Razor/scss only",
-    "Ship inventory = lifepunch.visiblepocket on DXRP PocketSystem — llad MIS is study/UI notes only (LLAD_MODULAR_INVENTORY_STUDY.md)",
-    "Deliverables: outbox/VISIBLE_POCKET_* summaries + optional llad UI notes — no C# commits from Green",
+    "Primary lane: MODELDOC GREENFIELD — read CORNERMAN_MODELDOC_GREENFIELD_TASK.md + DESKTOP_ADDONS_INVENTORY_2026-06-17.md",
+    "Secondary lane: Bitcoin distill — job solidification + sound shortlist (outbox drafts only)",
+    "Tier-3 = catalog (3 on disk) + serve (distill+embed on :1234). Models: qwen/qwen3.6-35b-a3b, qwen2.5-coder-32b-instruct, text-embedding-nomic-embed-text-v1.5",
     "Sync clone via Cornerman (Sync from Red) before reading inbox; monorepo pull only, never force-push",
-    "Backlog (after inventory batch): deagle distill, coke intake — see CORNERMAN_WORK_QUEUE.md"
+    "Red dispatched FullPerformance + WarmDistill — LM headless on :1234 before you start",
+    "Canonical Discord: discord.gg/lifepunch"
   ],
   "doNot": [
-    "Do NOT run s&box editor, ModelDoc, or primary addon C# integration — that is VENGEANCE (Red)",
+    "Do NOT run s&box editor, ModelDoc compiles, or primary addon C# — that is VENGEANCE (Red)",
+    "Do NOT touch ULX revisions, lifepunchnet Dev server, or portal publish — Red owns Blue Dev tonight",
     "Do NOT host secrets, write-git creds, or hub tokens on this box",
-    "Do NOT use Lemonade — STT is lifepunchnet :9000 only",
-    "Do NOT keep Cursor open on Green for daily ops — Red dispatches via SSH/workflow"
+    "Do NOT use Lemonade — STT is lifepunchnet :9000 only"
   ],
   "activeQueue": {
     "master": "lifepunch/addons/docs/briefs/CORNERMAN_WORK_QUEUE.md",
     "onBox": "C:\\lifepunch\\cornerman\\inbox\\CORNERMAN_WORK_QUEUE.md",
+    "sessionNote": "C:\\lifepunch\\cornerman\\inbox\\to-cornerman-session-2026-06-17.txt",
     "tasks": [
-      { "order": 1, "id": "inventory-project", "brief": "CORNERMAN_INVENTORY_PROJECT_TASK.md", "model": "distill" },
-      { "order": 2, "id": "inventory-llad-ui", "brief": "LLAD_MODULAR_INVENTORY_STUDY.md", "model": "distill", "output": "outbox/VISIBLE_POCKET_UI_NOTES.txt" },
-      { "order": 3, "id": "inventory-hud-draft", "brief": "CORNERMAN_INVENTORY_PROJECT_TASK.md task 6", "model": "coder", "when": "Red assigns only" },
-      { "order": 10, "id": "deagle-distill", "brief": "CORNERMAN_DEAGLE_DISTILL_TASK.md", "model": "distill", "status": "backlog" },
-      { "order": 11, "id": "coke-intake", "brief": "CORNERMAN_COKE_DRUG_INTAKE_TASK.md", "model": "distill", "status": "backlog" }
-    ],
-    "weaponQueue": "lifepunch/addons/config/weapon-production.json",
-    "reference": "lifepunch/addons/docs/WEAPON_MASS_PRODUCTION.md"
+      { "order": 1, "id": "modeldoc-greenfield", "brief": "CORNERMAN_MODELDOC_GREENFIELD_TASK.md", "model": "distill" },
+      { "order": 2, "id": "bitcoin-job-solidification", "brief": "CORNERMAN_BITCOINMINING_JOB_SOLIDIFICATION_TASK.md", "model": "distill", "status": "parallel" },
+      { "order": 3, "id": "bitcoin-sounds", "brief": "CORNERMAN_BITCOINMINING_SOUNDS_TASK.md", "model": "distill", "status": "parallel" }
+    ]
   },
   "redCommands": {
-    "checkpoint": "Get-CvlUniversalCheckpoint.ps1",
+    "checkpoint": "Get-CvlCornermanProbe.ps1 on Green",
     "dispatch": "Send-CornermanWorkflow.ps1",
     "warmDistill": "Send-CornermanWorkflow.ps1 -Action WarmDistill",
-    "installLmWatchdog": "Send-CornermanWorkflow.ps1 -Action InstallLmWatchdog",
-    "warmCoder": "Send-CornermanWorkflow.ps1 -Action WarmCoder",
-    "fullPerformance": "Send-CornermanWorkflow.ps1 -Action FullPerformance"
+    "fullPerformance": "Send-CornermanWorkflow.ps1 -Action FullPerformance",
+    "status": "Get-CornermanWorkflowStatus.ps1"
   }
 }

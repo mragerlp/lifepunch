@@ -10,11 +10,15 @@
 
 ```text
 OWNER SOURCE OF TRUTH (assets):
-C:\Users\jared\OneDrive\Desktop\UPLOAD READY ADDONS\addons\lifepunch
+C:\Users\jared\OneDrive\Desktop\UPLOAD READY ADDONS PLACEHOLDER\addons\lifepunch   ← active bitcoin hub drop
+C:\Users\jared\OneDrive\Desktop\UPLOAD READY ADDONS\addons\lifepunch             ← other lp* / legacy Fab zips
 
 WORKING LAYOUT:
-{UPLOAD READY ADDONS}\addons\lifepunch\{lpPackage}\{entitySlot}\assets|code|audit
-Example: ...\lpbitcoin\bitcoinhub\assets\source\fbx\cpu_gamer.fbx
+{Desktop drop}\addons\lifepunch\{lpPackage}\{entitySlot}\assets|code|audit
+Example (hub): ...\lpbitcoin\bitcoinhub\assets\source\fbx\generic-pc-desktop.fbx
+Example (hub texture): ...\lpbitcoin\bitcoinhub\assets\textures\generic-pc-desktop_basecolor.png
+Hub vmdl (repo + ModelDoc): ...\bitcoinhub\assets\models\bitcoin-hub.vmdl
+Retired for hub: Fab CPU GAMER (cpu_gamer.fbx) — do not revive for Phase A
 
 ACTIVE PROJECT:
 lifepunchbitcoin (package folder: lpbitcoin)
@@ -46,7 +50,7 @@ UNLOCK CONDITION:
 Desktop lp* → ModelDoc sign-off → promote vmdl → flatgrass USE loop proof (§8)
 ```
 
-**Agents:** Work **only** under Desktop `UPLOAD READY ADDONS\addons\lifepunch\{lpPackage}\{entitySlot}\`. If the task touches legacy `bitcoinmining/models/` meshes or old reference FBX, **stop**. Park non-bitcoin ideas in `BACKLOG_PARKING_LOT.md`.
+**Agents:** Owner drops land on Desktop first (`UPLOAD READY ADDONS PLACEHOLDER` for current hub work; `UPLOAD READY ADDONS` for other packages). Sync into repo via `Prepare-LpBitcoinModelDoc.ps1` — do **not** MIR-wipe repo vmdl work. If the task touches legacy `bitcoinmining/models/` meshes, Fab `cpu_gamer.fbx`, or old reference FBX, **stop**. Park non-bitcoin ideas in `BACKLOG_PARKING_LOT.md`.
 
 ---
 
@@ -54,7 +58,7 @@ Desktop lp* → ModelDoc sign-off → promote vmdl → flatgrass USE loop proof 
 
 Scope creep happens when "finished" is undefined. **No new task starts until the current phase DONE criteria are written and understood.**
 
-### Phase A — Hub (CPU GAMER) — Model Foundation — DONE WHEN
+### Phase A — Hub (Generic PC / bitcoin-hub) — Model Foundation — DONE WHEN
 
 ```text
 ☐ Correct scale

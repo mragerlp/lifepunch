@@ -2,6 +2,10 @@
 
 **Generated:** 2026-06-17 00:38 | **Source:** Assets/addons/lifepunch/lp*
 
+> **Superseded (hub only, June 2026):** `bitcoinhub` no longer uses `cpu_gamer.fbx`. Active hub =
+> `generic-pc-desktop.fbx` → `bitcoin-hub.vmdl`. See `ASSET_CLASSIFICATION_LAW.md` and
+> `bitcoinhub/assets/models/MODEL_BUILD.md`. Regenerate this report after the next audit run.
+
 Canonical law: ASSET_CLASSIFICATION_LAW.md | Regenerate: Invoke-LifepunchAssetClassificationAudit.ps1
 
 ---
@@ -82,7 +86,7 @@ Canonical law: ASSET_CLASSIFICATION_LAW.md | Regenerate: Invoke-LifepunchAssetCl
 | lpweapons | ak47military | assets/source/fbx/AK47.fbx | FBX ready |
 | lpweapons | ar15military | assets/source/fbx/ar_15.fbx | FBX ready |
 
-**P0 order:** gpurack (resolve static body) -> hashdterminal -> bitcoinhub (cpu-gamer.vmdl in progress) -> advancedgpurack.
+**P0 order:** gpurack (resolve static body) -> hashdterminal -> bitcoinhub (`bitcoin-hub.vmdl` in progress; Fab cpu-gamer retired) -> advancedgpurack.
 
 ---
 

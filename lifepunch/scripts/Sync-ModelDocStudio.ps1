@@ -36,7 +36,15 @@ if ($start -lt 0) { throw 'modeldoc.sbproj Resources field not found' }
 $valueStart = $start + $marker.Length
 $valueEnd = $content.IndexOf('"', $valueStart)
 $lines = @('scenes/**')
-foreach ($pkg in $Package) { $lines += "addons/lifepunch/$pkg/**" }
+foreach ($pkg in $Package) {
+    if ($Entity) {
+        # Phase A: mount models only — source FBX stays on disk for vmdl refs, not boot-scanned.
+        $lines += "addons/lifepunch/$pkg/$Entity/assets/models/**"
+    }
+    else {
+        $lines += "addons/lifepunch/$pkg/**"
+    }
+}
 $newResources = ($lines -join '\n')
 $content = $content.Substring(0, $valueStart) + $newResources + $content.Substring($valueEnd)
 [System.IO.File]::WriteAllText($sbprojPath, $content)

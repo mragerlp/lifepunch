@@ -1,13 +1,10 @@
 ﻿{
-    "notes":  [
-                  "Solid colors in source — vmats in ModelDoc",
-                  "Fan spin = child GO Phase 2"
-              ],
-    "role":  "Bitcoin HUB (CPU GAMER)",
-    "primary_mesh":  "assets/source/fbx/cpu_gamer.fbx",
-    "issues":  [
-
-               ],
-    "slot":  "bitcoinhub"
+    "notes": [
+        "bitcoin-hub.vmdl + generic-pc-desktop.fbx (Sketchfab, CC BY Bryan)",
+        "Single atlas: generic-pc-desktop_basecolor.png"
+    ],
+    "role": "Bitcoin HUB (generic desktop PC)",
+    "primary_mesh": "assets/source/fbx/generic-pc-desktop.fbx",
+    "issues": [],
+    "slot": "bitcoinhub"
 }
-

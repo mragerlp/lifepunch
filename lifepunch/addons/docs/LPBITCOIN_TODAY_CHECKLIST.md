@@ -1,4 +1,4 @@
-# LPBITCOIN — today execution checklist (2026-06-10)
+# LPBITCOIN — today execution checklist (2026-06-18)
 
 **Gate:** `ACTIVE_WORKSTREAM.md` — Model Foundation only. No legacy `bitcoinmining/models/` polish.
 
@@ -22,24 +22,28 @@ Open DXRP project → scene `_dev/scenes/lifepunch-modeldoc.scene`
 
 | Phase | Path |
 |-------|------|
-| A Hub | `addons/lifepunch/lpbitcoin/bitcoinhub/assets/models/cpu-gamer.vmdl` |
+| A Hub | `addons/lifepunch/lpbitcoin/bitcoinhub/assets/models/bitcoin-hub.vmdl` |
 | B Terminal | `addons/lifepunch/lpbitcoin/hashdterminal/assets/models/hashd-terminal.vmdl` |
 | C Small rack | `addons/lifepunch/lpbitcoin/gpurack/assets/models/gpu-rack.vmdl` |
 | C Stacked | `addons/lifepunch/lpbitcoin/advancedgpurack/assets/models/gpu-rack-stacked.vmdl` |
 
 ---
 
-## Phase A — Hub (CPU GAMER) — ~45 min
+## Phase A — Hub (Generic PC / bitcoin-hub) — ~45 min
 
 **Done when:** ACTIVE_WORKSTREAM §2 Phase A all boxes + H10 sign-off.
 
-1. Compile `cpu-gamer.vmdl` (vertex colors → `materials/default.vmat` baseline).
-2. Tune `import_scale` vs citizen (~64–72u tall); start at **1.0**, adjust in ModelDoc.
-3. Verify **SingleHull** physics (16 verts) — feet on ground, no explode.
-4. Drop in review scene; day + night screenshots.
-5. Branding pass: BTC mark + amber HASHD admin readable (mesh audit, not code yet).
+1. Sync hub from Desktop PLACEHOLDER if owner dropped new files:
+   `Prepare-LpBitcoinModelDoc.ps1 -Entity bitcoinhub`
+2. Compile order: `generic-pc-desktop_basecolor.png` → `generic-pc-desktop.vmat` → `bitcoin-hub.vmdl`.
+3. Tune `import_scale` vs citizen (~55–65u tall); seed **2.4** — verify with `lp_staging_hub_scale_audit` in play.
+4. Verify **SingleHull** physics — feet on ground, no explode.
+5. Play: `blank.scene` → `lp_spawn_staging_hub` → day + night screenshots.
+6. Branding pass: BTC mark + amber HASHD admin readable (mesh audit, not code yet).
 
-**Blocker watch:** Fab mesh has no textures — if slots appear in ModelDoc, remap or keep global default.
+**Attribution:** Generic PC/Desktop by Bryan (Sketchfab) — CC BY. See entity `MODEL_BUILD.md`.
+
+**Retired:** Fab CPU GAMER (`cpu_gamer.fbx`) — solid colors, no albedo; do not use for hub.
 
 ---
 
@@ -82,7 +86,7 @@ Open DXRP project → scene `_dev/scenes/lifepunch-modeldoc.scene`
 
 | Entity | vmdl | vmats | FBX canonical |
 |--------|------|-------|---------------|
-| bitcoinhub | `cpu-gamer.vmdl` | default.vmat | `source/fbx/cpu_gamer.fbx` |
+| bitcoinhub | `bitcoin-hub.vmdl` | `generic-pc-desktop.vmat` | `source/fbx/generic-pc-desktop.fbx` |
 | hashdterminal | `hashd-terminal.vmdl` | monitor + keyboard | `source/fbx/PC.fbx` |
 | gpurack | `gpu-rack.vmdl` | 5 slot vmats | `source/fbx/gpu-rack-anim.fbx` (copied) |
 | advancedgpurack | `gpu-rack-stacked.vmdl` | shares gpurack | `source/fbx/gpu-rack-stacked-anim.fbx` |

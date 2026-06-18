@@ -48,7 +48,7 @@ powershell -File Start-SboxDxrpEditor.ps1 -PreflightFix -SyncAddon bitcoinmining
 | **Cursor → MCP** | 4 green: `sbox`, `sbox-editor`, `sbox-jtc`, `cornerman-lm` |
 | **Editor pill** | Green dot + `MCP · ≥1` (chomnr clients) |
 | **Claude Bridge** | `get_bridge_status` → connected, heartbeat &lt; 30s |
-| **Map** | `lp_map_flatgrass` — not saved test scenes |
+| **Map** | Host Play from **`scenes/blank.scene`** (canonical). `lp_map_flatgrass` = legacy from game.scene only |
 | **chomnr mode** | **Approve writes** (not Full access) |
 
 One-line probe:

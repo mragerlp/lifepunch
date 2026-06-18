@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "product": {
+    "displayName": "HASHD Terminal",
+    "entitySlug": "hashd-terminal",
+    "package": "lpbitcoin"
+  },
+  "model": {
+    "displayName": "HASHD terminal",
+    "slug": "hashd-terminal",
+    "activeSource": "assets/source/fbx/PC.fbx",
+    "targetModel": "assets/models/hashd-terminal.vmdl",
+    "importScale": 0.0272,
+    "notes": "Scale seeded from legacy computer.fbx pass — tune vs citizen after first compile."
+  },
+  "materials": [
+    {
+      "name": "hashd-terminal-monitor",
+      "fbxSlot": "Monitor",
+      "targetMaterial": "assets/models/materials/hashd-terminal-monitor.vmat",
+      "channels": {
+        "baseColor": "assets/textures/T_Monitor_BC.tga",
+        "normal": "assets/textures/T_Monitor_N.tga",
+        "orm": "assets/textures/T_Monitor_ORM.tga",
+        "emissive": "assets/textures/Monitor_Emissive.tga",
+        "ao": "assets/textures/Monitor_AO.tga"
+      }
+    },
+    {
+      "name": "hashd-terminal-keyboard",
+      "fbxSlot": "Keyboard_mause",
+      "targetMaterial": "assets/models/materials/hashd-terminal-keyboard.vmat",
+      "channels": {
+        "baseColor": "assets/textures/T_Keyboard_mause_BC.tga",
+        "normal": "assets/textures/T_Keyboard_mause_N.tga",
+        "orm": "assets/textures/T_Keyboard_mause_ORM.tga"
+      }
+    }
+  ]
+}

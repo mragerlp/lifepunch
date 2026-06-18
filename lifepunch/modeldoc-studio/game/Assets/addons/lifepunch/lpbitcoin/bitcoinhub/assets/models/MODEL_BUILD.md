@@ -1,22 +1,38 @@
-# Bitcoin hub (CPU GAMER) — ModelDoc foundation pass
+# Bitcoin hub — ModelDoc foundation pass
 
-**Source:** `game/source/fbx/cpu_gamer.fbx` (Fab — solid vertex colors, no textures)  
-**vmdl:** `cpu-gamer.vmdl`  
-**Phase:** Foundation only — no prefab / entity code until owner sign-off.
+**Mesh:** `assets/source/fbx/generic-pc-desktop.fbx` (Sketchfab generic office PC, ~2.3k verts)  
+**Texture:** `assets/textures/generic-pc-desktop_basecolor.png` (single atlas from download)  
+**vmdl:** `bitcoin-hub.vmdl`  
+**Attribution:** Generic PC/Desktop by Bryan (Sketchfab) — CC BY
 
-## ModelDoc settings (v1)
+## Compile order
+
+1. `generic-pc-desktop_basecolor.png`
+2. `generic-pc-desktop.vmat`
+3. `bitcoin-hub.vmdl`
+
+```powershell
+powershell -File lifepunch\scripts\Prepare-LpBitcoinModelDoc.ps1 -Entity bitcoinhub
+```
+
+ModelDoc: Asset Browser → `addons/lifepunch/lpbitcoin/bitcoinhub/assets/models/bitcoin-hub.vmdl` → F5
+
+Play: `blank.scene` → `lp_spawn_staging_hub`
+
+## ModelDoc settings
 
 | Field | Value |
 |-------|--------|
-| import_scale | 1.0 (tune vs citizen ~64–72u after first spawn) |
+| import_scale | **2.4** (tune via `lp_staging_hub_scale_audit` — target ~55–65u) |
 | import_rotation | 0,0,0 |
-| align | Center / Center / Bottom |
-| Materials | `materials/default.vmat` baseline — remap Fab slots after mesh group audit |
-| Animation | **Do not** use rigged body — fan spin = child GO Phase 2 |
 
-## Sign-off gate
+**Retired:** Fab `cpu_gamer.fbx` / `cpu-gamer.vmdl` — do not use for hub Phase A.
 
-- [ ] Mesh upright, feet on ground in `lifepunch-modeldoc.scene`
-- [ ] Scale vs dev plane / citizen reference
-- [ ] No explode / missing parts
-- [ ] Owner OK before promote to `bitcoinmining` ship tree
+Owner drop sync:
+
+```text
+UPLOAD READY ADDONS PLACEHOLDER\...\bitcoinhub\assets\source\*.fbx
+UPLOAD READY ADDONS PLACEHOLDER\...\bitcoinhub\assets\textures\*.png
+```
+
+Then re-run Prepare-LpBitcoinModelDoc and compile.

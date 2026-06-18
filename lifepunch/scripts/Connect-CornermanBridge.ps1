@@ -119,13 +119,12 @@ if (-not $SkipBridgeSync) {
         & (Join-Path $Here 'Install-CornermanBridgeShareMapTask.ps1') -SshTarget $SshTarget -RunNow
 
         if (-not (Test-CornermanBridgeShareReachable -SshTarget $SshTarget)) {
-            throw @'
-Headless SMB not reachable on Cornerman desktop session.
-Ensure Cornerman is logged in (RDP/console), then re-run Connect-CornermanBridge.ps1.
-OpenSSH cannot persist SMB creds; the LifePunch BridgeShare logon task maps the share for Cursor.
-'@
+            Write-Host '  WARN: SMB UNC not reachable from SSH — SSH mirror fallback is active for Green sbox MCP.' -ForegroundColor Yellow
+            Write-Host '  Map once on Green desktop: Map-CornermanBridgeShare.ps1' -ForegroundColor DarkGray
         }
-        Write-Host '  OK Cornerman SMB bridge (interactive session)' -ForegroundColor Green
+        else {
+            Write-Host '  OK Cornerman SMB bridge (interactive session)' -ForegroundColor Green
+        }
         & (Join-Path $Here 'Install-CornermanSboxBridgeMcp.ps1') -SshTarget $SshTarget -SkipShare -SkipLmClone
     }
 }

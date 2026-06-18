@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "product": {
+    "displayName": "Bitcoin Hub",
+    "entitySlug": "bitcoin-miner",
+    "package": "lpbitcoin"
+  },
+  "model": {
+    "displayName": "Generic desktop PC hub",
+    "slug": "bitcoin-hub",
+    "activeSource": "assets/source/fbx/generic-pc-desktop.fbx",
+    "targetModel": "assets/models/bitcoin-hub.vmdl",
+    "importScale": 1.0,
+    "importRotation": [0, 0, 0]
+  },
+  "materials": [
+    {
+      "name": "generic-pc-desktop",
+      "fbxSlot": "Team3_Sanchez_PC_Mesh",
+      "vmat": "assets/models/materials/generic-pc-desktop.vmat"
+    }
+  ],
+  "attribution": "Generic PC/Desktop by Bryan (Sketchfab) — CC BY"
+}

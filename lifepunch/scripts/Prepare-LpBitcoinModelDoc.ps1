@@ -4,7 +4,7 @@
 
 .DESCRIPTION
   - Does NOT mirror from Desktop (repo is ahead for terminal/racks).
-  - Copies only lpbitcoin package under Assets/addons/lifepunch/lpbitcoin.
+  - Copies only lpbitcoin package under game/addons/lifepunch/lpbitcoin (DXRP content root).
   - Run after vmdl/vmat edits, before ModelDoc compile in editor.
 
 .EXAMPLE
@@ -13,11 +13,13 @@
 #>
 [CmdletBinding()]
 param(
-    [switch] $RecompileViaBridge
+    [switch] $RecompileViaBridge,
+    [string] $Entity = ''
 )
 
 $ErrorActionPreference = 'Stop'
 $Here = if ($PSScriptRoot) { $PSScriptRoot } else { Split-Path -Parent $MyInvocation.MyCommand.Path }
+. (Join-Path $Here 'Dxrp-LifepunchPaths.ps1')
 $repoAddons = (Resolve-Path (Join-Path $Here '..\addons')).Path
 $src = Join-Path $repoAddons 'Assets\addons\lifepunch\lpbitcoin'
 if (-not (Test-Path -LiteralPath $src)) { throw "Missing staging package: $src" }
@@ -30,27 +32,58 @@ if (-not (Test-Path -LiteralPath $configPath)) {
 }
 
 $cfg = Get-Content -LiteralPath $configPath -Raw | ConvertFrom-Json
-$dxrpGame = Split-Path -Parent ([string]$cfg.projectPath)
-$dest = Join-Path $dxrpGame 'Assets\addons\lifepunch\lpbitcoin'
+$dxrpGame = Get-DxrpGameRootFromConfig -ConfigPath $configPath
+$dest = Join-Path (Get-DxrpLifepunchAddonsDiskRoot -DxrpGameRoot $dxrpGame) 'lpbitcoin'
 
 Write-Host 'LpBitcoin ModelDoc prep — repo -> DXRP' -ForegroundColor Cyan
 Write-Host "  From: $src" -ForegroundColor DarkGray
 Write-Host "  To:   $dest" -ForegroundColor DarkGray
 
 New-Item -ItemType Directory -Force -Path (Split-Path $dest -Parent) | Out-Null
-& robocopy $src $dest /E /NFL /NDL /NJH /NJS /nc /ns /np | Out-Null
+if ($Entity) {
+    $entitySrc = Join-Path $src $Entity
+    if (-not (Test-Path -LiteralPath $entitySrc)) { throw "Missing entity folder: $entitySrc" }
+    $entityDest = Join-Path $dest $Entity
+    $pkgMeta = @('README.md', 'duplicate_report.md', 'audit')
+    foreach ($meta in $pkgMeta) {
+        $mSrc = Join-Path $src $meta
+        if (Test-Path -LiteralPath $mSrc) {
+            $mDst = Join-Path $dest $meta
+            if ((Get-Item -LiteralPath $mSrc).PSIsContainer) {
+                & robocopy $mSrc $mDst /E /NFL /NDL /NJH /NJS /nc /ns /np | Out-Null
+            }
+            else {
+                New-Item -ItemType Directory -Force -Path (Split-Path $mDst -Parent) | Out-Null
+                Copy-Item -LiteralPath $mSrc -Destination $mDst -Force
+            }
+        }
+    }
+    & robocopy $entitySrc $entityDest /E /NFL /NDL /NJH /NJS /nc /ns /np | Out-Null
+    Write-Host "  synced lpbitcoin/$Entity only (Phase A hub lane)" -ForegroundColor Green
+}
+else {
+    & robocopy $src $dest /E /NFL /NDL /NJH /NJS /nc /ns /np | Out-Null
+    Write-Host '  synced full lpbitcoin package' -ForegroundColor Green
+}
 if ($LASTEXITCODE -ge 8) { throw "robocopy failed with exit $LASTEXITCODE" }
-Write-Host '  synced lpbitcoin assets' -ForegroundColor Green
 
-$vmdls = @(
-    'bitcoinhub\assets\models\cpu-gamer.vmdl',
-    'hashdterminal\assets\models\hashd-terminal.vmdl',
-    'gpurack\assets\models\gpu-rack.vmdl',
-    'advancedgpurack\assets\models\gpu-rack-stacked.vmdl'
-)
-Write-Host 'ModelDoc targets (open in editor):' -ForegroundColor Cyan
-foreach ($rel in $vmdls) {
-    Write-Host "  addons/lifepunch/lpbitcoin/$($rel -replace '\\','/')" -ForegroundColor White
+Write-Host '  rp.sbproj: run Enable-LpBitcoinHubRuntimeMount.ps1 after hub _c compiles (Assets/addons path).' -ForegroundColor DarkYellow
+
+$vmdlRels = if ($Entity) {
+    @("$Entity/assets/models/bitcoin-hub.vmdl", "$Entity/assets/models/hashd-terminal.vmdl", "$Entity/assets/models/gpu-rack.vmdl", "$Entity/assets/models/gpu-rack-stacked.vmdl") |
+        Where-Object { Test-Path -LiteralPath (Join-Path $dest ($_ -replace '/','\')) }
+}
+else {
+    @(
+        'bitcoinhub/assets/models/bitcoin-hub.vmdl',
+        'hashdterminal/assets/models/hashd-terminal.vmdl',
+        'gpurack/assets/models/gpu-rack.vmdl',
+        'advancedgpurack/assets/models/gpu-rack-stacked.vmdl'
+    ) | Where-Object { Test-Path -LiteralPath (Join-Path $dest ($_ -replace '/','\')) }
+}
+Write-Host 'ModelDoc targets (open in editor or ModelDoc Studio):' -ForegroundColor Cyan
+foreach ($rel in $vmdlRels) {
+    Write-Host "  addons/lifepunch/lpbitcoin/$rel" -ForegroundColor White
 }
 
 if ($RecompileViaBridge) {

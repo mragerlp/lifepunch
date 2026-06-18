@@ -1,0 +1,40 @@
+CORNERMAN SESSION — 2026-06-17 (Red on Blue Dev server)
+=======================================================
+
+Red is fixing lifepunchnet Development server (205.209.104.22). You run FULL Tier-3 in parallel.
+
+START (in order)
+----------------
+1. inbox/GREEN-WORKFLOW-DIRECTIVE.json
+2. inbox/CORNERMAN_MODELDOC_GREENFIELD_TASK.md
+3. inbox/CORNERMAN_WORK_QUEUE.md
+
+P0 — ModelDoc greenfield (distill only)
+---------------------------------------
+Continue entity readiness notes from DESKTOP_ADDONS_INVENTORY + REPO_ADDONS_SNAPSHOT.
+Deliverables → outbox/:
+  - Per-entity ModelDoc readiness one-liners (top 10 in MODELDOC_READINESS rollup)
+  - FBX/material slot gaps for lpbitcoin/* first
+
+P1 — Bitcoin lane prep (distill only)
+-------------------------------------
+Read: CORNERMAN_BITCOINMINING_JOB_SOLIDIFICATION_TASK.md (if in inbox)
+      CORNERMAN_BITCOINMINING_SOUNDS_TASK.md
+→ outbox/BITCOINMINING_JOB_ROLEPLAY_ONE_PAGER.md (draft)
+→ outbox/BITCOINMINING_SOUND_SHORTLIST.md (draft)
+
+MODEL
+-----
+WarmDistill = default. WarmCoder ONLY when brief explicitly says scss draft.
+
+DO NOT
+------
+- ULX portal revisions, Dev server scripts, or lifepunchnet SSH
+- C#, ModelDoc compiles, git push
+- Chase server compile errors — Red owns Blue Dev
+
+WHEN DONE
+---------
+Ping Red (outbox only): OK cornerman @ session — outbox/*.md ready
+
+Discord canonical: discord.gg/lifepunch

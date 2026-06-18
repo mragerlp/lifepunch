@@ -155,6 +155,9 @@ CURRENT STATE (June 2026):
 - Bitcoin (bitcoinmining) = active dev, packageSlug `lifepunchbitcoin`; NOT in publishReadyAddons yet.
   **Entity law:** machines not props — `LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md` (P0 ModelDoc sign-off
   on `lpbitcoin/*` staging before prefab/gameplay). ModelDoc Studio: `Start-SboxModelDocStudio.ps1`.
+  **Hub mesh (June 2026):** Phase A = `bitcoin-hub.vmdl` ← Sketchfab Generic PC Desktop (CC BY Bryan),
+  not Fab CPU GAMER. Owner drop: Desktop `UPLOAD READY ADDONS PLACEHOLDER`. Play spawn:
+  `lp_spawn_staging_hub` (`LpBitcoinStagingDevSpawn.cs`). Tune scale via `import_scale` (~2.4 seed).
 - Quarantine: hackerjob, ak47, bankerjob, etc. — read for concepts only; never copy into active addons.
 - AK-47 paused. GitLab lanes LIVE + synced (lanes-synced); shottaWEB + RDP agent provisioned.
   Re-export a lane after changes via setup-gitlab-projects.ps1.

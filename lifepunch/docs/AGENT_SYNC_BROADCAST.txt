@@ -58,7 +58,9 @@ FOUNDATION (June 2026 — after pull)
     NO edits, NO copy-paste into ship paths. portfolio.json + QUARANTINE_REGISTER.md
   PACKAGE SLUGS: lifepunchulx · lifepunchbitcoin · … — config/packages.json
   PUBLISH NOW: lifepunchulx only (publishReadyAddons) — Export-LifepunchPublishLane.ps1
-  BITCOIN: lifepunchbitcoin (s&box lifepunch.bitcoin) — hub admin + CRT terminal v2 — LIFEPUNCH_BITCOIN_START.md
+  BITCOIN: lifepunchbitcoin (s&box lifepunch.bitcoin) — P0 ModelDoc Phase A hub =
+    bitcoin-hub.vmdl (Sketchfab generic PC; Fab CPU GAMER retired) — LIFEPUNCH_BITCOIN_START.md
+    · ACTIVE_WORKSTREAM.md · LPBITCOIN_TODAY_CHECKLIST.md
 
   COMMUNITY: https://discord.gg/lifepunch · https://lifepunch.co
 
