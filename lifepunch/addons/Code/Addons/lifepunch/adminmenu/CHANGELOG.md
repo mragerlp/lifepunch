@@ -3,17 +3,6 @@
 Proprietary & Confidential — © 2026 lifepunch.co. Sole-owned IP of lifepunch.co.
 Portal package: **lifepunchulx** (s&box ident `lifepunch.ulx`).
 
-## v3.0.2 — publish gate + path law (2026-06-17)
-
-- **Staging path:** `prepare-publish.ps1` now writes `Code/Addons/lifepunch/lifepunchulx/` (packageSlug), not `adminmenu/`. Also mirrors to legacy `dxrpadminmenu/` for dedicated-server mount name.
-- **Hard gate:** publish aborts unless **11** code files ship (6-file r6/r7 revisions broke dedicated compile).
-- **Run:** `addons/scripts/Publish-LifepunchUlxRevision.ps1 -OpenFolder` → upload that folder to portal as **r8**. Download size should be **~90 KB+**, not ~47 KB.
-
-## v3.0.1 — publish bundle fix (2026-06-17)
-
-- **Dedicated-server compile fix:** `prepare-publish.ps1` now vendors shared UI helpers (`LifePunchUiScale`, `LifePunchUiScrollPolicy`, `LifePunchUiFooter`, `LifePunchSourceMark`) into the portal Code upload. r6 omitted them — caused `Compile of 'dxura.rp' Failed` on lifepunchnet when only `lifepunch.ulx` mounted.
-- Republish as **r7+** after staging; Dev server unblocks without removing the addon.
-
 ## v3.0.0 — first production publish (2026-06-16)
 
 **In-game title unchanged:** header still reads **Admin Menu** (subtitle **ULX Console**). Opens via `lifepunchulx`, `/lifepunchulx`, or aliases `menu` / `ulx`.
