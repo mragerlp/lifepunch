@@ -1,0 +1,40 @@
+================================================================================
+BLUE (lifepunchnet) — DEV SERVER = SAME AS VENGEANCE
+================================================================================
+VENGEANCE works:
+  cd D:\Steam\steamapps\common\sbox
+  dotnet run dxrp-server.cs --token <Development token>
+
+BLUE = same command, different folder:
+  cd C:\S&BOX DXRP Server
+  dotnet run dxrp-server.cs --token <Development token>
+
+Or: server2_start.bat (reads secure\development.local.env, adds port 27016)
+
+--------------------------------------------------------------------------------
+RDP STEPS (copy-paste)
+--------------------------------------------------------------------------------
+
+cd /d "C:\S&BOX DXRP Server"
+dotnet run dxrp-server.cs --token PASTE_DEV_TOKEN_HERE
+
+--------------------------------------------------------------------------------
+PASS
+--------------------------------------------------------------------------------
+  [7/7]
+  Connected to Steam
+  Portal: LIFEPUNCH Official | Development — Last Pulsed updates
+
+--------------------------------------------------------------------------------
+401 Unauthorized?
+--------------------------------------------------------------------------------
+  Old token in dxrp-server-config.json — use --token with NEW token once.
+
+--------------------------------------------------------------------------------
+DO NOT
+--------------------------------------------------------------------------------
+  taskkill dotnet.exe (kills Official 70p)
+  auto_update_all.bat
+  Gate0 / Run-DevServer / ULX patch scripts
+
+================================================================================

@@ -1,28 +1,45 @@
 @echo off
-setlocal
+setlocal EnableExtensions
+REM LIFEPUNCH Blue (lifepunchnet) — Official 70p server
+REM dotnet run dxrp-server.cs --token <OFFICIAL>
+REM Run as normal RDP user. NOT "Run as administrator".
+
 cd /d "%~dp0"
-REM 26.06.10+: dedicated server needs SteamCMD client DLL registry (same user as this console)
-for %%S in ("%~dp0Fix-LifepunchnetSteamClient.ps1" "C:\lifepunch\lifepunch-rdp-server\lifepunch\server\dxrp-host\scripts\Fix-LifepunchnetSteamClient.ps1") do (
-  if exist %%~S powershell -NoProfile -ExecutionPolicy Bypass -File "%%~S" 2>nul
-)
+
 if not exist "dxrp-server.cs" (
-  echo ERROR: dxrp-server.cs not found in %CD%
-  echo Install Dxura host files in this folder first.
+  echo ERROR: dxrp-server.cs missing in %CD%
   pause
   exit /b 1
 )
+
+if not exist "sbox-server.dll" (
+  echo ERROR: sbox-server.dll missing. Run auto_update.bat ^(elevated^).
+  pause
+  exit /b 1
+)
+
 if exist "secure\official.local.env" call "secure\official.local.env"
 if "%DXRP_TOKEN_OFFICIAL%"=="" (
-  echo ERROR: Set DXRP_TOKEN_OFFICIAL in secure\official.local.env
+  echo ERROR: Create secure\official.local.env with:
+  echo   DXRP_TOKEN_OFFICIAL=^<portal Official 70p token^>
   pause
   exit /b 1
 )
-if not exist "dxrp-server-config.json" if exist "dxrp-server-config.json.example" (
-  copy /Y "dxrp-server-config.json.example" "dxrp-server-config.json" >nul
+
+if exist "Set-DxrpServerConfig.ps1" (
+  powershell -NoProfile -ExecutionPolicy Bypass -Command ". '%~dp0Set-DxrpServerConfig.ps1'; Set-DxrpServerConfigForProfile -Profile Official -InstallRoot '%CD%'" 2>nul
 )
-echo [%date% %time%] Starting Server 1 (Official) via dxrp-server.cs ...
+
+echo.
+echo ============================================================
+echo   LIFEPUNCH OFFICIAL 70p — dotnet run dxrp-server.cs
+echo   Port 27015  ^|  User: %USERNAME%
+echo ============================================================
+echo.
+
 dotnet run dxrp-server.cs --token %DXRP_TOKEN_OFFICIAL%
 set EXIT=%ERRORLEVEL%
-echo Server 1 exited with code %EXIT%
+echo.
+echo Official server exited with code %EXIT%
 pause
 exit /b %EXIT%

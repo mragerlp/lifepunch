@@ -1,0 +1,14 @@
+﻿================================================================================
+BLUE RDP â€” paste after copying this package to C:\S&BOX DXRP Server\
+================================================================================
+1. Copy ALL files from blue-dev-package into C:\S&BOX DXRP Server\
+2. secure\development.local.env must have DXRP_TOKEN_DEVELOPMENT=<portal token>
+3. Portal Development server IP = 205.209.104.22  port 27016
+4. STOP any Dev server still running on VENGEANCE (Ctrl+C in that PowerShell)
+
+cd /d "C:\S&BOX DXRP Server"
+fix_steam.bat
+dotnet run dxrp-server.cs --token PASTE_DEV_TOKEN_HERE
+
+PASS: Connected to Steam + [7/7] + portal Last Pulsed on 205.209.104.22
+================================================================================

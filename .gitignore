@@ -1,4 +1,9 @@
-# S&box / DXRP generated output
+# Blue dev transfer package (binaries generated on VENGEANCE — run Package-BlueDevServerFromVengeance.ps1)
+lifepunch/server/blue-dev-package/*.dll
+lifepunch/server/blue-dev-package/*.exe
+lifepunch/server/blue-dev-package/*.runtimeconfig.json
+lifepunch/server/blue-dev-package/dxrp-server.cs
+
 .dxrp-publish/
 **/.dxrp-publish/
 upload-assets/

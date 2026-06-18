@@ -1,34 +1,25 @@
 @echo off
-setlocal
+setlocal EnableExtensions
+REM Blue + VENGEANCE — same Dxura flow that works on VENGEANCE:
+REM   dotnet run dxrp-server.cs --token <Development token>
+REM Blue only: stamp port 27016 (Official 70p uses 27015 on same host).
+
 cd /d "%~dp0"
-REM Prefer Run-DevServer.ps1 (visible Steam fix + single dotnet). Fallback: inline start.
 
-set "RUNNER=%~dp0Run-DevServer.ps1"
-if exist "%RUNNER%" (
-  powershell -NoProfile -ExecutionPolicy Bypass -File "%RUNNER%" -InstallRoot "%~dp0"
-  set EXIT=%ERRORLEVEL%
-  echo Server 2 exited with code %EXIT%
-  pause
-  exit /b %EXIT%
-)
-
-if not exist "dxrp-server.cs" (
-  echo ERROR: dxrp-server.cs not found in %CD%
-  pause
-  exit /b 1
-)
 if exist "secure\development.local.env" call "secure\development.local.env"
+
 if "%DXRP_TOKEN_DEVELOPMENT%"=="" (
-  echo ERROR: Set DXRP_TOKEN_DEVELOPMENT in secure\development.local.env
+  echo Paste token on command line instead:
+  echo   dotnet run dxrp-server.cs --token YOUR_DEV_TOKEN
+  echo Or create secure\development.local.env with DXRP_TOKEN_DEVELOPMENT=
   pause
   exit /b 1
 )
-if not exist "dxrp-server-config.json" if exist "dxrp-server-config.json.example" (
-  copy /Y "dxrp-server-config.json.example" "dxrp-server-config.json" >nul
+
+if exist "Set-DxrpServerConfig.ps1" (
+  powershell -NoProfile -ExecutionPolicy Bypass -Command ". '%~dp0Set-DxrpServerConfig.ps1'; Set-DxrpServerConfigForProfile -Profile Development -InstallRoot '%CD%'" 2>nul
 )
-echo [%date% %time%] Starting Server 2 (Development) via dxrp-server.cs ...
+
 dotnet run dxrp-server.cs --token %DXRP_TOKEN_DEVELOPMENT%
-set EXIT=%ERRORLEVEL%
-echo Server 2 exited with code %EXIT%
 pause
-exit /b %EXIT%
+exit /b %ERRORLEVEL%
