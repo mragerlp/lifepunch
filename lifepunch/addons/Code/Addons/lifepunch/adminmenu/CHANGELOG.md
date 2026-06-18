@@ -3,6 +3,13 @@
 Proprietary & Confidential — © 2026 lifepunch.co. Sole-owned IP of lifepunch.co.
 Portal package: **lifepunchulx** (s&box ident `lifepunch.ulx`).
 
+## Portal r9 — v3.0.0 republication (2026-06-17)
+
+- **Portal revision r9** — owner manual upload; **6 ship files** (~47 KB code). Same menu as r6; supersedes experimental r7/r8.
+- **Upload path:** `Code/Addons/lifepunch/adminmenu/` (repo ident `adminmenu`, portal slug `lifepunchulx`).
+- **Repo:** `997630a` reverted Jun 17 11-file publish gate; `prepare-publish.ps1 -Addon adminmenu` restores r6-shaped staging.
+- **Pin:** lifepunchulx **r9** on Development gamemode when ready; Blue `server2_start.bat` re-downloads from api.dxrp.net.
+
 ## v3.0.0 — first production publish (2026-06-16)
 
 **In-game title unchanged:** header still reads **Admin Menu** (subtitle **ULX Console**). Opens via `lifepunchulx`, `/lifepunchulx`, or aliases `menu` / `ulx`.
