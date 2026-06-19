@@ -95,7 +95,8 @@ if (-not $SkipBridgeSync) {
     Write-Step 'SSH IPC mirror to Green (SMB-free)'
     $mirror = Join-Path $Here 'Sync-CornermanBridgeIpcMirror.ps1'
     if (-not (Test-Path -LiteralPath $mirror)) { throw "Missing $mirror" }
-    & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $mirror -UpdateMcpJson -SshTarget $SshTarget
+    # Mirror sync only — do NOT -UpdateMcpJson (SMB UNC is primary; SSH mirror is stale fallback).
+    & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $mirror -SshTarget $SshTarget
 
     $watch = Join-Path $Here 'Start-CornermanBridgeIpcMirrorWatch.ps1'
     if (Test-Path -LiteralPath $watch) {
@@ -119,8 +120,8 @@ if (-not $SkipBridgeSync) {
         & (Join-Path $Here 'Install-CornermanBridgeShareMapTask.ps1') -SshTarget $SshTarget -RunNow
 
         if (-not (Test-CornermanBridgeShareReachable -SshTarget $SshTarget)) {
-            Write-Host '  WARN: SMB UNC not reachable from SSH — SSH mirror fallback is active for Green sbox MCP.' -ForegroundColor Yellow
-            Write-Host '  Map once on Green desktop: Map-CornermanBridgeShare.ps1' -ForegroundColor DarkGray
+            Write-Host '  NOTE: SMB UNC not visible from SSH batch session (expected). mcp.json -> UNC; map in Green desktop session.' -ForegroundColor Yellow
+            Write-Host '  On Green: Map-CornermanBridgeShare.ps1 then Cursor Reload Window.' -ForegroundColor DarkGray
         }
         else {
             Write-Host '  OK Cornerman SMB bridge (interactive session)' -ForegroundColor Green
