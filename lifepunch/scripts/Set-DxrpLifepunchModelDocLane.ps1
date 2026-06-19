@@ -176,6 +176,27 @@ foreach ($pkg in $stagingPackages) {
     $src = Join-Path $repoAssetsRoot $pkg
     if (-not (Test-Path -LiteralPath $src)) { continue }
     $dst = Join-Path $dxrpAssetsRoot $pkg
+
+    # Phase A: lpbitcoin on disk = bitcoinhub only (no terminal/racks/_archive compile noise).
+    if ($pkg -eq 'lpbitcoin') {
+        $hubSrc = Join-Path $src 'bitcoinhub'
+        if (-not (Test-Path -LiteralPath $hubSrc)) { continue }
+        $hubDst = Join-Path $dst 'bitcoinhub'
+        & robocopy $hubSrc $hubDst /E /XD '_archive' /NFL /NDL /NJH /NJS /nc /ns /np | Out-Null
+        if ($LASTEXITCODE -ge 8) { throw 'robocopy lpbitcoin/bitcoinhub failed' }
+        if (Test-Path -LiteralPath $dst) {
+            Get-ChildItem -LiteralPath $dst -Directory | ForEach-Object {
+                if ($_.Name -ne 'bitcoinhub') {
+                    Remove-DxrpTree -Path $_.FullName -Label "lpbitcoin/$($_.Name) (Phase A hub-only)"
+                }
+            }
+        }
+        $archiveOnDisk = Join-Path $hubDst '_archive'
+        Remove-DxrpTree -Path $archiveOnDisk -Label 'lpbitcoin/bitcoinhub/_archive'
+        Write-Host '  Assets/lpbitcoin/bitcoinhub mirrored (hub-only; _archive excluded)' -ForegroundColor Green
+        continue
+    }
+
     & robocopy $src $dst /MIR /NFL /NDL /NJH /NJS /nc /ns /np | Out-Null
     if ($LASTEXITCODE -ge 8) { throw "robocopy staging package failed: $pkg" }
     Write-Host "  Assets/$pkg mirrored" -ForegroundColor Green
@@ -198,12 +219,15 @@ $resourcesBlock = $content.Substring($valueStart, $valueEnd - $valueStart)
 $lines = $resourcesBlock -split '\\n' | Where-Object { $_ -and ($_ -notmatch 'addons/lifepunch/') }
 $lines += "addons/lifepunch/$ulxDxrpFolder/**"
 $lines += "addons/lifepunch/$devFolder/**"
-# Phase A (Model Foundation): hub-only mount — full lpbitcoin/** auto-import stalls on cpu_gamer.fbx.
-$lines += 'addons/lifepunch/lpbitcoin/bitcoinhub/**'
+# Phase A (Model Foundation): hub model/textures/source only — skip _archive sketchfab + entities until code remount.
+$lines += 'addons/lifepunch/lpbitcoin/bitcoinhub/assets/models/**'
+$lines += 'addons/lifepunch/lpbitcoin/bitcoinhub/assets/textures/**'
+$lines += 'addons/lifepunch/lpbitcoin/bitcoinhub/assets/source/**'
+$lines += 'addons/lifepunch/lpbitcoin/bitcoinhub/assets/entities/**'
 $newResources = ($lines | Select-Object -Unique) -join '\n'
 $content = $content.Substring(0, $valueStart) + $newResources + $content.Substring($valueEnd)
 [System.IO.File]::WriteAllText($sbprojPath, $content)
-Write-Host 'rp.sbproj Resources -> lifepunchulx + _dev + lpbitcoin/bitcoinhub (Phase A hub-only)' -ForegroundColor Green
+Write-Host 'rp.sbproj Resources -> lifepunchulx + _dev + lpbitcoin/bitcoinhub/assets (no _archive)' -ForegroundColor Green
 Write-Host '  lp* assets synced to disk; mount terminal/racks in sbproj when Phase B/C starts.' -ForegroundColor DarkGray
 
 Write-Host ''
