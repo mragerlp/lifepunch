@@ -11,6 +11,7 @@ using Sandbox;
 using LifePunch.DXRP.Addons;
 #if !LIFEPUNCH_LOCAL
 using Dxura.RP.Game;
+using DamageInfo = Dxura.RP.Game.DamageInfo;
 #endif
 
 namespace LifePunch.DXRP.Addons.Bitcoin;
@@ -21,10 +22,17 @@ namespace LifePunch.DXRP.Addons.Bitcoin;
 #if LIFEPUNCH_LOCAL
 public sealed class LpBitcoinHubEntity : Component, Component.IPressable
 #else
-public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable
+public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IAreaDamageReceiver
 #endif
 {
-	[Sync( SyncFlags.FromHost )] public bool IsPowered { get; set; } = true;
+#if !LIFEPUNCH_LOCAL
+	[Property]
+	[Group( "Effects" )]
+	public GameObject Explosion { get; set; }
+
+	bool _isExploding;
+#endif
+	[Sync( SyncFlags.FromHost )] public bool IsPowered { get; set; }
 	[Sync( SyncFlags.FromHost )] public bool AccessPinIsSet { get; set; }
 	[Sync( SyncFlags.FromHost )] public int AccessPinHash { get; set; }
 #if LIFEPUNCH_LOCAL
@@ -44,6 +52,7 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable
 
 	protected override void OnAwake()
 	{
+		LifePunchPropPhysics.DenyHandsGrabTags( GameObject );
 		LifePunchPropPhysics.SyncBoxColliderFromModel( GameObject );
 	}
 
@@ -53,7 +62,20 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable
 #if !LIFEPUNCH_LOCAL
 		this.TryBindSpawnOwnerHost();
 		if ( Networking.IsHost )
+		{
+			if ( HealthComponent.IsValid() )
+			{
+				HealthComponent.MaxHealth = LpBitcoinIdent.HubMaxHealth;
+				if ( HealthComponent.Health <= 0f || HealthComponent.Health > HealthComponent.MaxHealth )
+					HealthComponent.Health = HealthComponent.MaxHealth;
+			}
+
+			// Known-good main path: market spawn is ~30u above surface — snap feet immediately (no deferred settle).
+			var before = GameObject.WorldPosition;
 			LifePunchGroundContact.AlignMeshBottom( GameObject );
+			LifePunchPropPhysics.EnforceWorldMachine( GameObject );
+			Log.Info( $"HUB_GROUND_SETUP pos {before} -> {GameObject.WorldPosition}" );
+		}
 #endif
 		_modelRenderer = Components.Get<ModelRenderer>( FindMode.EverythingInSelf )
 		                 ?? Components.Get<SkinnedModelRenderer>( FindMode.EverythingInSelf ) as ModelRenderer;
@@ -75,6 +97,18 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable
 		}
 	}
 
+	/// <summary>Re-align feet after teleport (dev recall).</summary>
+	public void RestartPrinterSettle()
+	{
+#if !LIFEPUNCH_LOCAL
+		if ( !Networking.IsHost )
+			return;
+
+		LifePunchGroundContact.AlignMeshBottom( GameObject );
+		LifePunchPropPhysics.EnforceWorldMachine( GameObject );
+#endif
+	}
+
 	protected override void OnUpdate()
 	{
 		if ( IsPowered == _lastPoweredVisual )
@@ -88,6 +122,31 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable
 		// Hub wallet is session/entity-bound — do not leave BTC on a destroyed hub.
 		HubWalletBtc = 0f;
 	}
+
+#if !LIFEPUNCH_LOCAL
+	public void ApplyAreaDamage( AreaDamage component )
+	{
+		var dmg = new DamageInfo(
+			component.Attacker,
+			component.Damage,
+			component.Inflictor,
+			component.WorldPosition,
+			Flags: component.DamageFlags );
+
+		HealthComponent?.TakeDamageHost( dmg );
+	}
+
+	protected override void OnDestroyed()
+	{
+		if ( Networking.IsHost && !_isExploding )
+		{
+			_isExploding = true;
+			LifePunchMachineDestroyFx.SpawnPrinterStyleExplosion( this, Explosion, WorldPosition );
+		}
+
+		base.OnDestroyed();
+	}
+#endif
 
 	public bool CanPress( IPressable.Event e ) => LifePunchMenuInteractGate.CanPressMenu( GameObject );
 
@@ -594,14 +653,14 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable
 	{
 		_lastPoweredVisual = powered;
 
+		var visuals = Components.Get<LpBitcoinHubVisuals>( FindMode.EverythingInSelf );
+		if ( !visuals.IsValid() || !visuals.Enabled )
+			return;
+
 		if ( !_modelRenderer.IsValid() )
 			_modelRenderer = Components.Get<ModelRenderer>( FindMode.EverythingInSelf )
 			                 ?? Components.Get<SkinnedModelRenderer>( FindMode.EverythingInSelf ) as ModelRenderer;
 
-		if ( !_modelRenderer.IsValid() )
-			return;
-
-		// Chassis static; LpBitcoinHubVisuals spins fan_spin_* child only.
-		LpBitcoinPowerLeds.ApplyHubFenceLeds( _modelRenderer, powered );
+		visuals.ApplyPowerVisuals( powered );
 	}
 }

@@ -11,21 +11,32 @@
 using System.Collections.Generic;
 using System.Linq;
 using Sandbox;
+using LifePunch.DXRP.Addons;
+using LifePunch.DXRP.Addons.Bitcoin;
+#if !LIFEPUNCH_LOCAL
+using Dxura.RP.Game;
+#endif
 
 namespace LifePunch.DXRP.Addons.Dev;
 
 /// <summary>
 /// Model Foundation playtest — spawns <c>lpbitcoin</c> staging meshes and hub prop candidates.
+/// Spawn law: same as DXRP market — aim-ray surface + buffer, <see cref="Rotation.Identity"/> (orientation = vmdl import_rotation only).
 /// </summary>
 public static class LpBitcoinStagingDevSpawn
 {
 	public const string StagingHubVmdl =
-		"addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/bitcoin-miner.vmdl";
+		"addons/lifepunch/lpbitcoin/bitcoinhub/assets/models/bitcoinhub.vmdl";
+
+	public const string StagingHubPrefab =
+		"addons/lifepunch/lpbitcoin/bitcoinhub/assets/entities/bitcoinhub.prefab";
+
+	public const string DxrpPrinterPrefab = "gameplay/entities/printer/printer.prefab";
 
 	static readonly (string Id, string Vmdl, string Note)[] HubModelCandidates =
 	{
-		( "steam-machine", "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/bitcoin-miner.vmdl", "Legacy ship hub — sm_* vmats + _c in repo" ),
-		( "sketchfab-pc", "addons/lifepunch/lpbitcoin/bitcoinhub/assets/models/bitcoin-hub.vmdl", "PARKED — texture mount broken in play" ),
+		( "steam-machine", "addons/lifepunch/lpbitcoin/bitcoinhub/assets/models/bitcoinhub.vmdl", "Ship hub — lpbitcoin/bitcoinhub staging" ),
+		( "sketchfab-pc", "addons/lifepunch/lpbitcoin/bitcoinhub/_archive/sketchfab-generic-pc/assets/models/bitcoin-hub.vmdl", "PARKED — reference only" ),
 		( "dxrp-printer", "gameplay/entities/printer/models/printer.vmdl", "DXRP ingame prop — collider reference" ),
 		( "dxrp-slot", "gameplay/entities/jobs/casino_manager/slot_machine/model/slot_machine.vmdl", "DXRP ingame — boxy machine silhouette" ),
 		( "dxrp-dry-rack", "gameplay/entities/jobs/drug_dealer/dry_rack/model/dry_rack.vmdl", "DXRP ingame — rack/shelf form" ),
@@ -64,6 +75,35 @@ public static class LpBitcoinStagingDevSpawn
 		Log.Info( "lp_staging_model_lineup: hub candidates placed in a row — compare materials + scale in viewport." );
 	}
 
+	/// <summary>Four steam-machine previews @ Y=0/90/180/270 (identity spawn row) — pick correct front, bake Y into vmdl import_rotation.</summary>
+	[ConCmd( "lp_staging_hub_facing_row" )]
+	public static void StagingHubFacingRow()
+	{
+		var scene = Game.ActiveScene;
+		if ( scene is null )
+		{
+			Log.Warning( "lp_staging_hub_facing_row: no active scene — Host Play blank.scene first." );
+			return;
+		}
+
+		ClearModelPreviews( scene );
+
+		const float spacing = 80f;
+		var basePos = new Vector3( 0f, 160f, 0f );
+		var yaws = new[] { 0f, 90f, 180f, 270f };
+
+		for ( var i = 0; i < yaws.Length; i++ )
+		{
+			var yaw = yaws[i];
+			var pos = basePos + new Vector3( ( i - 1.5f ) * spacing, 0f, 0f );
+			var rot = Rotation.FromYaw( yaw );
+			SpawnModelPreview( scene, $"steam-y{yaw:F0}", StagingHubVmdl, new Transform( pos, rot ),
+				$"Y={yaw:F0}° — panel/LED side should read as FRONT toward -Y spawn" );
+		}
+
+		Log.Info( "lp_staging_hub_facing_row: stand @ origin facing +Y — whichever preview shows panel toward you wins; bake that Y into import_rotation." );
+	}
+
 	[ConCmd( "lp_spawn_staging_model" )]
 	public static void SpawnStagingModel( string id )
 	{
@@ -87,7 +127,7 @@ public static class LpBitcoinStagingDevSpawn
 			return;
 		}
 
-		if ( !TryGetSpawnTransform( out var transform ) )
+		if ( !LifePunchMarketSpawn.TryGetIdentitySpawnTransform( out var transform ) )
 		{
 			Log.Warning( "lp_spawn_staging_model: no local viewer." );
 			return;
@@ -133,34 +173,135 @@ public static class LpBitcoinStagingDevSpawn
 			return;
 		}
 
-		if ( !TryGetSpawnTransform( out var transform ) )
+		if ( !LifePunchMarketSpawn.TryGetIdentitySpawnTransform( out var transform ) )
 		{
 			Log.Warning( "lp_spawn_staging_hub: no local viewer." );
 			return;
 		}
 
-		foreach ( var existing in scene.GetAllObjects( true ) )
-		{
-			if ( existing.Name == "lpbitcoin_staging_hub" )
-				existing.Destroy();
-		}
+#if !LIFEPUNCH_LOCAL
+		LifePunchMarketSpawn.LogMarketSpawnAudit( "lp_spawn_staging_hub" );
+#endif
 
-		var model = Model.Load( StagingHubVmdl );
-		if ( !model.IsValid )
+		ClearStagingHub( scene );
+
+		var go = ClonePrefabAt( StagingHubPrefab, transform );
+		if ( !go.IsValid() )
 		{
-			Log.Error( $"lp_spawn_staging_hub: could not load '{StagingHubVmdl}' — compile bitcoin-hub.vmdl in ModelDoc first." );
+			Log.Error( $"lp_spawn_staging_hub: could not load '{StagingHubPrefab}' — compile bitcoinhub.prefab in editor." );
 			return;
 		}
 
-		var go = scene.CreateObject();
 		go.Name = "lpbitcoin_staging_hub";
-		go.WorldTransform = transform;
 
-		var renderer = go.Components.Create<ModelRenderer>();
-		renderer.Model = model;
+		LpBitcoinStagingHubPowerCommands.EnsureHubGameplayStack( go );
 
-		var bounds = model.Bounds;
-		Log.Info( $"lp_spawn_staging_hub: bitcoin hub placed at {go.WorldPosition} — bounds size={bounds.Size} center={bounds.Center}" );
+		NetworkSpawnIfNeeded( go );
+#if !LIFEPUNCH_LOCAL
+		if ( Networking.IsHost )
+			LifePunchPropPhysics.SetupWorldMachine( go, alignGround: true );
+#endif
+		LifePunchPropPhysics.LogModelPhysics( go, "staging_hub" );
+		Log.Info( $"lp_spawn_staging_hub: prefab placed at {go.WorldPosition} — market spawn + ground align" );
+	}
+
+	/// <summary>Dev only — re-place existing hub at current market spawn point (does not simulate purchase).</summary>
+	[ConCmd( "lp_recall_staging_hub" )]
+	public static void RecallStagingHub()
+	{
+		var scene = Game.ActiveScene;
+		if ( scene is null )
+		{
+			Log.Warning( "lp_recall_staging_hub: no active scene." );
+			return;
+		}
+
+		if ( !TryFindStagingHub( scene, out var hub ) )
+		{
+			Log.Warning( "lp_recall_staging_hub: no hub — run lp_spawn_staging_hub first." );
+			return;
+		}
+
+		if ( !LifePunchMarketSpawn.TryGetIdentitySpawnTransform( out var transform ) )
+		{
+			Log.Warning( "lp_recall_staging_hub: no local viewer." );
+			return;
+		}
+
+#if !LIFEPUNCH_LOCAL
+		LifePunchMarketSpawn.LogMarketSpawnAudit( "lp_recall_staging_hub" );
+#endif
+
+		hub.WorldTransform = transform;
+		hub.Components.Get<LpBitcoinHubEntity>( FindMode.EverythingInSelf )?.RestartPrinterSettle();
+		Log.Info( $"lp_recall_staging_hub: moved to {hub.WorldPosition} — ground realigned" );
+	}
+
+	[ConCmd( "lp_staging_hub_ground_fix" )]
+	public static void StagingHubGroundFix()
+	{
+		var scene = Game.ActiveScene;
+		if ( scene is null )
+		{
+			Log.Warning( "lp_staging_hub_ground_fix: no active scene." );
+			return;
+		}
+
+		if ( !TryFindStagingHub( scene, out var hub ) )
+		{
+			Log.Warning( "lp_staging_hub_ground_fix: no hub — run lp_spawn_staging_hub first." );
+			return;
+		}
+
+		LifePunchPropPhysics.SetupWorldMachine( hub, alignGround: true );
+		Log.Info( $"lp_staging_hub_ground_fix: feet aligned at {hub.WorldPosition}" );
+	}
+
+#if !LIFEPUNCH_LOCAL
+	[ConCmd( "lp_staging_hub_spawn_audit" )]
+	public static void StagingHubSpawnAudit()
+	{
+		LifePunchMarketSpawn.LogMarketSpawnAudit( "lp_staging_hub_spawn_audit" );
+		Log.Info( "lp_staging_hub_spawn_audit: aim at where you want the hub, then lp_spawn_staging_hub or lp_recall_staging_hub." );
+	}
+#endif
+
+	/// <summary>Side-by-side reference — DXRP money printer prefab with Rigidbody + BoxCollider.</summary>
+	[ConCmd( "lp_spawn_staging_printer_ref" )]
+	public static void SpawnStagingPrinterRef()
+	{
+		var scene = Game.ActiveScene;
+		if ( scene is null )
+		{
+			Log.Warning( "lp_spawn_staging_printer_ref: no active scene." );
+			return;
+		}
+
+		if ( !LifePunchMarketSpawn.TryGetIdentitySpawnTransform( out var transform ) )
+		{
+			Log.Warning( "lp_spawn_staging_printer_ref: no local viewer." );
+			return;
+		}
+
+		foreach ( var existing in scene.GetAllObjects( true ) )
+		{
+			if ( existing.Name == "lpbitcoin_staging_printer_ref" )
+				existing.Destroy();
+		}
+
+		var offset = transform.Rotation.Right * 180f;
+		var go = ClonePrefabAt( DxrpPrinterPrefab, transform.WithPosition( transform.Position + offset ) );
+		if ( !go.IsValid() )
+		{
+			Log.Error( $"lp_spawn_staging_printer_ref: could not load '{DxrpPrinterPrefab}'." );
+			return;
+		}
+
+		go.Name = "lpbitcoin_staging_printer_ref";
+		LifePunchGroundContact.AlignMeshBottom( go );
+		NetworkSpawnIfNeeded( go );
+		LifePunchPropPhysics.LogModelPhysics( go, "printer_ref" );
+		Log.Info( "lp_spawn_staging_printer_ref: DXRP printer placed beside aim point — compare feet-on-ground + collision." );
 	}
 
 	[ConCmd( "lp_staging_hub_scale_audit" )]
@@ -173,17 +314,7 @@ public static class LpBitcoinStagingDevSpawn
 			return;
 		}
 
-		GameObject hub = default;
-		foreach ( var go in scene.GetAllObjects( true ) )
-		{
-			if ( go.Name == "lpbitcoin_staging_hub" )
-			{
-				hub = go;
-				break;
-			}
-		}
-
-		if ( !hub.IsValid() )
+		if ( !TryFindStagingHub( scene, out var hub ) )
 		{
 			Log.Warning( "lp_staging_hub_scale_audit: run lp_spawn_staging_hub first." );
 			return;
@@ -196,43 +327,168 @@ public static class LpBitcoinStagingDevSpawn
 			return;
 		}
 
+		var rigidbody = hub.Components.Get<Rigidbody>( FindMode.EverythingInSelf );
+		var box = hub.Components.Get<BoxCollider>( FindMode.EverythingInSelf );
 		var b = renderer.Model.Bounds;
-		Log.Info( $"LPBITCOIN_STAGING_HUB_AUDIT center={b.Center} size={b.Size} worldPos={hub.WorldPosition}" );
+		Log.Info( $"LPBITCOIN_STAGING_HUB_AUDIT center={b.Center} size={b.Size} worldPos={hub.WorldPosition} rigidbody={rigidbody.IsValid()} gravity={rigidbody.IsValid() && rigidbody.Gravity} boxCollider={box.IsValid()}" );
+		LifePunchPropPhysics.LogModelPhysics( hub, "staging_hub_audit" );
 	}
 
-	static bool TryGetSpawnTransform( out Transform transform )
+	/// <summary>Trace from local player into staging hub — confirms solid hit (not walk-through).</summary>
+	[ConCmd( "lp_staging_hub_collision_probe" )]
+	public static void StagingHubCollisionProbe()
 	{
-		transform = default;
-		const float spawnDistance = 80f;
 		var scene = Game.ActiveScene;
+		if ( scene is null )
+		{
+			Log.Warning( "lp_staging_hub_collision_probe: no active scene." );
+			return;
+		}
+
+		if ( !TryFindStagingHub( scene, out var hub ) )
+		{
+			Log.Warning( "lp_staging_hub_collision_probe: run lp_spawn_staging_hub first." );
+			return;
+		}
+
+#if !LIFEPUNCH_LOCAL
 		var player = Player.Local;
-		if ( player.IsValid() && player.Controller.IsValid() )
+		if ( !player.IsValid() )
 		{
-			var flatForward = player.Controller.EyeAngles.ToRotation().Forward.WithZ( 0 ).Normal;
-			if ( flatForward.Length < 0.01f )
-				flatForward = Vector3.Forward;
-
-			var pos = player.WorldPosition + flatForward * spawnDistance;
-			pos = new Vector3( pos.x, pos.y, 0f );
-			transform = new Transform( pos, Rotation.LookAt( flatForward ) );
-			return true;
+			Log.Warning( "lp_staging_hub_collision_probe: no local player." );
+			return;
 		}
 
-		var camera = scene?.GetAllComponents<CameraComponent>().FirstOrDefault();
-		if ( camera.IsValid() )
+		var start = player.AimRay.Position;
+		var end = start + player.AimRay.Forward * 512f;
+#else
+		var camera = scene.GetAllComponents<CameraComponent>().FirstOrDefault();
+		if ( !camera.IsValid() )
 		{
-			var camForward = camera.WorldRotation.Forward.WithZ( 0 ).Normal;
-			if ( camForward.Length < 0.01f )
-				camForward = Vector3.Forward;
-
-			var pos = camera.WorldPosition + camForward * spawnDistance;
-			pos = new Vector3( pos.x, pos.y, 0f );
-			transform = new Transform( pos, Rotation.LookAt( camForward ) );
-			return true;
+			Log.Warning( "lp_staging_hub_collision_probe: no camera." );
+			return;
 		}
 
-		// blank.scene — spawn close to origin on the ground plane.
-		transform = new Transform( new Vector3( 0f, spawnDistance, 0f ), Rotation.Identity );
-		return true;
+		var start = camera.WorldPosition;
+		var end = start + camera.WorldRotation.Forward * 512f;
+#endif
+
+		var trace = scene.Trace.Ray( start, end )
+			.WithAnyTags( "solid", "entity" )
+			.Run();
+
+		var hitHub = trace.Hit && trace.GameObject.IsValid() &&
+		             ( trace.GameObject == hub || trace.GameObject.Root == hub );
+		Log.Info( $"LPBITCOIN_STAGING_HUB_COLLISION hit={trace.Hit} hitHub={hitHub} object={trace.GameObject?.Name ?? "(none)"} distance={trace.Distance:F1}" );
+
+		if ( trace.Hit && !hitHub )
+			Log.Warning( "lp_staging_hub_collision_probe: aim at hub — trace hit something else." );
+		else if ( !trace.Hit )
+			Log.Warning( "lp_staging_hub_collision_probe: no hit — collider missing or nocollide." );
+	}
+
+	static void ClearStagingHub( Scene scene )
+	{
+		foreach ( var existing in scene.GetAllObjects( true ) )
+		{
+			if ( existing.Name == "lpbitcoin_staging_hub" )
+				existing.Destroy();
+		}
+	}
+
+	static bool TryFindStagingHub( Scene scene, out GameObject hub )
+	{
+		hub = default;
+		foreach ( var go in scene.GetAllObjects( true ) )
+		{
+			if ( go.Name == "lpbitcoin_staging_hub" )
+			{
+				hub = go;
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	static void EnsurePhysicalPropComponents( GameObject go )
+	{
+		if ( !go.Components.Get<ModelRenderer>( FindMode.EverythingInSelf ).IsValid() )
+		{
+			var model = Model.Load( StagingHubVmdl );
+			if ( model.IsValid )
+			{
+				var renderer = go.Components.Create<ModelRenderer>();
+				renderer.Model = model;
+			}
+		}
+
+		if ( !go.Components.Get<Rigidbody>( FindMode.EverythingInSelf ).IsValid() )
+		{
+			var body = go.Components.Create<Rigidbody>();
+			body.Gravity = true;
+			body.MotionEnabled = false;
+		}
+
+		if ( !go.Components.Get<BoxCollider>( FindMode.EverythingInSelf ).IsValid() )
+			go.Components.Create<BoxCollider>();
+
+		LifePunchPropPhysics.SettleAsWorldMachine( go );
+	}
+
+	static GameObject ClonePrefabAt( string prefabPath, Transform transform )
+	{
+#if LIFEPUNCH_LOCAL
+		var prefab = GameObject.GetPrefab( prefabPath );
+		if ( !prefab.IsValid() )
+		{
+			Log.Error( $"lp_staging: could not load prefab '{prefabPath}'." );
+			return default;
+		}
+
+		return prefab.Clone( new CloneConfig { Transform = transform } );
+#else
+		var prefabFile = PrefabFile.Load( prefabPath );
+		if ( prefabFile == null )
+		{
+			Log.Error( $"lp_staging: PrefabFile.Load failed '{prefabPath}'." );
+			return default;
+		}
+
+		var prefabScene = SceneUtility.GetPrefabScene( prefabFile );
+		if ( prefabScene == null )
+		{
+			Log.Error( $"lp_staging: GetPrefabScene failed '{prefabPath}'." );
+			return default;
+		}
+
+		var clone = prefabScene.Clone();
+		if ( !clone.IsValid() )
+		{
+			Log.Error( "lp_staging: scene clone failed." );
+			return default;
+		}
+
+		clone.WorldTransform = transform;
+		return clone;
+#endif
+	}
+
+	static void NetworkSpawnIfNeeded( GameObject go )
+	{
+		if ( !go.IsValid() )
+			return;
+
+#if !LIFEPUNCH_LOCAL
+		var player = Player.Local;
+		var baseEntity = go.Components.Get<BaseEntity>( FindMode.EverythingInSelfAndDescendants );
+		if ( baseEntity.IsValid() && player.IsValid() )
+			baseEntity.BindOwnerFromPlayer( player );
+
+		if ( player.IsValid() )
+			go.NetworkSpawn( player.Network.Owner );
+		else
+			go.NetworkSpawn();
+#endif
 	}
 }
