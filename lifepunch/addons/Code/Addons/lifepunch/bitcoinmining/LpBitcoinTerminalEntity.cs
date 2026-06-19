@@ -30,6 +30,12 @@ public sealed class LpBitcoinTerminalEntity : BaseEntity, Component.IPressable, 
 	[Property] public float LinkRange { get; set; } = 512f;
 	[Property] public TextRenderer ScreenText { get; set; }
 
+	/// <summary>When true, prefab <c>lcd_screen</c> transform is authoritative — no bounds auto-align on spawn.</summary>
+	[Property] public bool ManualLcdPlacement { get; set; }
+
+	/// <summary>Hub that registered this terminal via admin Settings — not proximity auto-link.</summary>
+	[Sync( SyncFlags.FromHost )] public Guid LinkedHubId { get; set; }
+
 #if !LIFEPUNCH_LOCAL
 	[Property]
 	[Group( "Effects" )]
@@ -75,6 +81,9 @@ public sealed class LpBitcoinTerminalEntity : BaseEntity, Component.IPressable, 
 
 		if ( !ScreenText.IsValid() )
 			ScreenText = GameObject.Children.FirstOrDefault( c => c.Name == "lcd_screen" )?.GetComponent<TextRenderer>();
+
+		if ( ScreenText.IsValid() && !ManualLcdPlacement )
+			LifePunchTerminalLcd.TryAlignHashdScreen( GameObject, ScreenText );
 
 		RefreshScreenIdle();
 	}
@@ -179,6 +188,64 @@ public sealed class LpBitcoinTerminalEntity : BaseEntity, Component.IPressable, 
 		}
 	}
 
+	public bool IsLinkedToHub() => LinkedHubId != Guid.Empty && FindLinkedHub().IsValid();
+
+	public void LinkToHub( LpBitcoinHubEntity hub )
+	{
+		if ( !hub.IsValid() )
+			return;
+
+		if ( !IsWithinLinkRange( hub ) )
+			return;
+
+		LinkedHubId = hub.GameObject.Id;
+		RefreshScreenIdle();
+	}
+
+	public void UnlinkFromHub()
+	{
+		LinkedHubId = Guid.Empty;
+		RefreshScreenIdle();
+	}
+
+	public bool IsWithinLinkRange( LpBitcoinHubEntity hub )
+		=> hub.IsValid() && hub.WorldPosition.Distance( WorldPosition ) <= LinkRange;
+
+	internal LpBitcoinHubEntity FindLinkedHub()
+		=> LpBitcoinHubEntity.FindByGameObjectId( LinkedHubId, GameObject.Scene ?? Game.ActiveScene );
+
+	/// <summary>Nearest unlinked terminal within range (hub Settings link action).</summary>
+	internal static LpBitcoinTerminalEntity FindNearestUnlinked( LpBitcoinHubEntity hub )
+	{
+		if ( !hub.IsValid() )
+			return null;
+
+		var scene = hub.GameObject.Scene ?? Game.ActiveScene;
+		if ( scene is null )
+			return null;
+
+		LpBitcoinTerminalEntity best = null;
+		var bestDist = float.MaxValue;
+
+		foreach ( var terminal in scene.GetAllComponents<LpBitcoinTerminalEntity>() )
+		{
+			if ( !terminal.IsValid() || terminal.LinkedHubId != Guid.Empty )
+				continue;
+
+			if ( !terminal.IsWithinLinkRange( hub ) )
+				continue;
+
+			var dist = hub.WorldPosition.Distance( terminal.WorldPosition );
+			if ( dist >= bestDist )
+				continue;
+
+			bestDist = dist;
+			best = terminal;
+		}
+
+		return best;
+	}
+
 	public void RefreshScreenIdle()
 	{
 		if ( !ScreenText.IsValid() )
@@ -192,7 +259,8 @@ public sealed class LpBitcoinTerminalEntity : BaseEntity, Component.IPressable, 
 		ScreenText.Text = text;
 	}
 
-	public bool CanPress( IPressable.Event e ) => LifePunchMenuInteractGate.CanPressMenu( GameObject );
+	public bool CanPress( IPressable.Event e )
+		=> IsLinkedToHub() && LifePunchMenuInteractGate.CanPressMenu( GameObject );
 
 	public bool Press( IPressable.Event e )
 	{
@@ -219,7 +287,7 @@ public sealed class LpBitcoinTerminalEntity : BaseEntity, Component.IPressable, 
 		var hub = FindLinkedHub();
 		if ( hub is null )
 		{
-			Log.Warning( "[lifepunch.bitcoin] No hub in range for terminal." );
+			Log.Warning( "[lifepunch.bitcoin] Terminal not linked — register at hub admin → Settings." );
 			return;
 		}
 
@@ -246,42 +314,5 @@ public sealed class LpBitcoinTerminalEntity : BaseEntity, Component.IPressable, 
 	}
 
 	private static LpBitcoinHubEntity ResolveHub( Guid hubId )
-	{
-		var scene = Game.ActiveScene;
-		if ( scene is null )
-			return null;
-
-		foreach ( var hub in scene.GetAllComponents<LpBitcoinHubEntity>() )
-		{
-			if ( hub.IsValid() && hub.GameObject.Id == hubId )
-				return hub;
-		}
-
-		return null;
-	}
-
-	internal LpBitcoinHubEntity FindLinkedHub()
-	{
-		var scene = GameObject.Scene ?? Game.ActiveScene;
-		if ( scene is null )
-			return null;
-
-		LpBitcoinHubEntity best = null;
-		var bestDist = float.MaxValue;
-
-		foreach ( var hub in scene.GetAllComponents<LpBitcoinHubEntity>() )
-		{
-			if ( !hub.IsValid() )
-				continue;
-
-			var dist = hub.WorldPosition.Distance( WorldPosition );
-			if ( dist > LinkRange || dist >= bestDist )
-				continue;
-
-			bestDist = dist;
-			best = hub;
-		}
-
-		return best;
-	}
+		=> LpBitcoinHubEntity.FindByGameObjectId( hubId );
 }

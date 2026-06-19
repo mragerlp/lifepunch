@@ -68,7 +68,7 @@
 							<div class="boot-hint">click to skip boot</div>
 						</div>
 					}
-					<div class="log" @ref="LogPanel">
+					<div class="log lp-ui-scroll-region" @ref="LogPanel" onclick="@FocusLog">
 						@foreach ( var line in _lines )
 						{
 							<div class="log-line @LineClass( line )">@line.Text</div>
@@ -111,7 +111,7 @@
 	private TextEntry InputBox { get; set; }
 	private Panel LogPanel { get; set; }
 
-	private const int MaxLogLines = 36;
+	private const int MaxLogLines = 200;
 
 	private static readonly string[] _commandRefs =
 	{
@@ -138,7 +138,7 @@
 		LpUiScaleSize.ExtraLarge
 	};
 
-	private bool _scrollLogNextFrame;
+	private int _scrollLogPendingFrames;
 	private bool _urlCopied;
 	private string _copiedCommandFlash;
 	private RealTimeSince _copiedCommandFlashSince;
@@ -197,10 +197,10 @@
 		LpBitcoinHudBridge.SetMenuCursorMode( true );
 		LifePunchUiScrollPolicy.Apply( Panel );
 		ApplyCommandInputChrome();
-		WireLogCopyProvider();
+		WireLogPanel();
 	}
 
-	private void WireLogCopyProvider()
+	private void WireLogPanel()
 	{
 		if ( !LogPanel.IsValid() )
 			return;
@@ -231,6 +231,12 @@
 	{
 		if ( InputBox.IsValid() )
 			InputBox.Focus();
+	}
+
+	private void FocusLog()
+	{
+		if ( LogPanel.IsValid() )
+			LogPanel.Focus();
 	}
 
 	private void CopySidebarCommand( string cmd )
@@ -326,6 +332,7 @@
 	{
 		_lines.Add( new LogLine( kind, text ) );
 		TrimLog();
+		QueueScrollLogToBottom();
 	}
 
 	private void TrimLog()
@@ -334,7 +341,8 @@
 			_lines.RemoveAt( 0 );
 	}
 
-	private void QueueScrollLogToBottom() => _scrollLogNextFrame = true;
+	private void QueueScrollLogToBottom() =>
+		_scrollLogPendingFrames = Math.Max( _scrollLogPendingFrames, 6 );
 
 	private void ScrollLogToBottom( bool force = false )
 	{
@@ -345,6 +353,9 @@
 			return;
 
 		var viewHeight = LogPanel.Box.Bottom - LogPanel.Box.Top;
+		if ( viewHeight <= 1f )
+			return;
+
 		var maxY = Math.Max( 0f, LogPanel.ScrollSize.y - viewHeight );
 
 		if ( !force )
@@ -386,11 +397,11 @@
 			TickBoot();
 
 		ApplyCommandInputChrome();
-		WireLogCopyProvider();
+		WireLogPanel();
 
-		if ( _scrollLogNextFrame )
+		if ( _scrollLogPendingFrames > 0 )
 		{
-			_scrollLogNextFrame = false;
+			_scrollLogPendingFrames--;
 			ScrollLogToBottom( force: true );
 		}
 	}

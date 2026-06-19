@@ -12,12 +12,12 @@
 | Entity | Role | Player USE? |
 |--------|------|-------------|
 | **Bitcoin Miner** (`bitcoin-miner`) | Hub — power, PIN, wallet, rack upgrades | **Yes** → admin panel |
-| **HASHD monitor** (`bitcoin-terminal`) | rig0 ops console | **Yes** → CRT (nearest hub in range) |
+| **HASHD monitor** (`bitcoin-terminal`) | rig0 ops console | **Yes** → CRT (hub-linked + powered) |
 | **GPU Rack** (`gpu-rack` / large) | Linked compute — accrues BTC on rack | **No** — racks do not open the CRT |
 
 **Terminal access is only through the bitcoin terminal entity.** GPU Rack and Advanced GPU Rack never open the CRT. Mine/stop/deposit commands are typed at the terminal; rack USE is disabled.
 
-Terminal finds nearest hub within `LinkRange` (default 512u). A linked terminal is required to **deposit** rack BTC into the hub wallet. Racks link via `LinkedHubId` (kit spawn or placement flow).
+Terminal registers to a hub only when the operator links it from **hub admin → Settings** (within `LinkRange`, default 512u). Until linked, USE on the terminal is disabled and the LCD shows **NOT LINKED**. A linked terminal is required to **deposit** rack BTC into the hub wallet. Racks link via `LinkedHubId` (kit spawn or placement flow).
 
 ## Hub wallet flow (PIN-gated)
 
@@ -52,7 +52,7 @@ Populate exact payout constants in `BITCOIN_REFERENCE_IMPLEMENTATION.md` on sign
 ## Login / open flow
 
 1. **USE hub** → `LpHashdPanel` (PIN gate when configured).
-2. **USE bitcoin terminal** (not rack) → CRT boot splash → `rig0>` (blocked if hub off or no hub in range).
+2. **USE bitcoin terminal** (not rack) → CRT boot splash → `rig0>` (blocked until hub links terminal in Settings; blocked if hub off).
 3. **No player job verbs** in dev ConCmds in shipped builds — `LpBitcoinDevSpawn` removed before portal publish.
 
 ## Code seams (v2)

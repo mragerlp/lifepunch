@@ -29,8 +29,7 @@ public static class LpBitcoinHubAlertBridge
 		if ( scene is null )
 			return null;
 
-		var go = scene.Directory.FindByGuid( hubId );
-		return go.IsValid() ? go.GetComponent<LpBitcoinHubEntity>() : null;
+		return LpBitcoinHubEntity.FindByGameObjectId( hubId, scene );
 	}
 
 	public static void NotifyHubUnderAttack( LpBitcoinHubEntity hub, string attackerLabel )

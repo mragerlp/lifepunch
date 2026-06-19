@@ -19,6 +19,7 @@ $crt-text-dim: #9a9a9a;
 @import "LpUiScale.scss";
 @import "LpOpsCrtTerminal.scss";
 @import "../LifePunchUiFooter.razor.scss";
+@import "../LifePunchUiShell.scss";
 
 // Flat selectors only — s&box drops nested theme rules from LpOpsCrtTerminal.scss imports.
 .lp-ops-crt {
@@ -51,10 +52,12 @@ $crt-text-dim: #9a9a9a;
 	}
 
 	.crt-body {
-		flex: 1 1 auto;
+		flex: 1 1 0;
 		display: flex;
 		flex-direction: row;
 		min-height: 0;
+		min-width: 0;
+		overflow: hidden;
 	}
 
 	.crt-header {
@@ -79,8 +82,9 @@ $crt-text-dim: #9a9a9a;
 	}
 
 	.log {
-		flex: 1 1 auto;
+		flex: 1 1 0;
 		min-height: 0;
+		min-width: 0;
 		overflow-y: scroll;
 		overflow-x: hidden;
 		cursor: text;
@@ -97,7 +101,8 @@ $crt-text-dim: #9a9a9a;
 		flex-direction: column;
 		min-height: 0;
 		min-width: 0;
-		flex: 1 1 auto;
+		flex: 1 1 0;
+		overflow: hidden;
 		padding: 12px;
 	}
 
@@ -109,7 +114,6 @@ $crt-text-dim: #9a9a9a;
 		cursor: text;
 		pointer-events: all;
 		white-space: pre-wrap;
-		word-break: break-word;
 
 		&.dim {
 			color: #8a8a8a;
@@ -312,6 +316,34 @@ $crt-text-dim: #9a9a9a;
 }
 
 // CRT chrome — flat (imported LpOpsCrtTerminal nested rules may not compile).
+.lp-ops-crt .crt-frame {
+	flex: 1 1 0;
+	min-height: 0;
+	overflow: hidden;
+}
+
+.lp-ops-crt .crt-body {
+	flex: 1 1 0;
+	min-height: 0;
+	min-width: 0;
+	overflow: hidden;
+}
+
+.lp-ops-crt .screen {
+	flex: 1 1 0;
+	min-height: 0;
+	min-width: 0;
+	overflow: hidden;
+}
+
+.lp-ops-crt .log {
+	flex: 1 1 0;
+	min-height: 0;
+	min-width: 0;
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+
 .lp-ops-crt .crt-header {
 	display: flex;
 	flex-direction: row;

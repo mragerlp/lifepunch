@@ -148,6 +148,10 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 	{
 		// Hub wallet is session/entity-bound — do not leave BTC on a destroyed hub.
 		HubWalletBtc = 0f;
+#if !LIFEPUNCH_LOCAL
+		if ( Networking.IsHost )
+			GetLinkedTerminal()?.UnlinkFromHub();
+#endif
 	}
 
 #if !LIFEPUNCH_LOCAL
@@ -308,22 +312,109 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 	/// <summary>Legacy alias — cash out entire hub wallet.</summary>
 	public void RequestSellAllRacks() => RequestCashOutAllHub();
 
-	public bool HasLinkedTerminal()
+	/// <summary>Resolve hub by spawned <see cref="GameObject.Id"/> — scene component scan, not Directory.FindByGuid.</summary>
+	public static LpBitcoinHubEntity FindByGameObjectId( Guid hubId, Scene scene = null )
+	{
+		if ( hubId == Guid.Empty )
+			return null;
+
+		scene ??= Game.ActiveScene;
+		if ( scene is null )
+			return null;
+
+		foreach ( var hub in scene.GetAllComponents<LpBitcoinHubEntity>() )
+		{
+			if ( hub.IsValid() && hub.GameObject.Id == hubId )
+				return hub;
+		}
+
+		return null;
+	}
+
+	public bool HasLinkedTerminal() => GetLinkedTerminal().IsValid();
+
+	public LpBitcoinTerminalEntity GetLinkedTerminal()
 	{
 		var scene = GameObject.Scene ?? Game.ActiveScene;
 		if ( scene is null )
-			return false;
+			return null;
 
 		foreach ( var terminal in scene.GetAllComponents<LpBitcoinTerminalEntity>() )
 		{
 			if ( !terminal.IsValid() )
 				continue;
 
-			if ( terminal.WorldPosition.Distance( WorldPosition ) <= terminal.LinkRange )
-				return true;
+			if ( terminal.LinkedHubId == GameObject.Id )
+				return terminal;
 		}
 
-		return false;
+		return null;
+	}
+
+	public bool HasNearbyUnlinkedTerminal()
+		=> LpBitcoinTerminalEntity.FindNearestUnlinked( this ).IsValid();
+
+	public void RequestLinkNearbyTerminal() => LinkNearbyTerminalHost();
+
+	public void RequestUnlinkTerminal() => UnlinkTerminalHost();
+
+	[Rpc.Host]
+	private void LinkNearbyTerminalHost()
+	{
+		if ( !CanManageHub( Rpc.CallerId ) )
+			return;
+
+		var existing = GetLinkedTerminal();
+		if ( existing.IsValid() )
+		{
+			PushAlertHost( LpBitcoinHubAlertKind.TerminalCommand,
+				"Terminal already linked — unlink first to register another." );
+			return;
+		}
+
+		var terminal = LpBitcoinTerminalEntity.FindNearestUnlinked( this );
+		if ( !terminal.IsValid() )
+		{
+			PushAlertHost( LpBitcoinHubAlertKind.TerminalCommand,
+				"No unlinked terminal in range — place a bitcoin terminal nearby, then link again." );
+			return;
+		}
+
+		LinkTerminalHost( terminal );
+	}
+
+	[Rpc.Host]
+	private void UnlinkTerminalHost()
+	{
+		if ( !CanManageHub( Rpc.CallerId ) )
+			return;
+
+		var terminal = GetLinkedTerminal();
+		if ( !terminal.IsValid() )
+			return;
+
+		terminal.UnlinkFromHub();
+		PushAlertHost( LpBitcoinHubAlertKind.TerminalCommand, "Bitcoin terminal unlinked from hub." );
+	}
+
+	internal void LinkTerminalHost( LpBitcoinTerminalEntity terminal )
+	{
+		if ( !Networking.IsHost || !terminal.IsValid() )
+			return;
+
+		if ( terminal.LinkedHubId != Guid.Empty && terminal.LinkedHubId != GameObject.Id )
+			return;
+
+		if ( !terminal.IsWithinLinkRange( this ) )
+		{
+			PushAlertHost( LpBitcoinHubAlertKind.TerminalCommand,
+				"Terminal out of link range — move it closer to the hub." );
+			return;
+		}
+
+		terminal.LinkToHub( this );
+		PushAlertHost( LpBitcoinHubAlertKind.TerminalCommand, "Bitcoin terminal linked — rig0 ops enabled." );
+		RefreshLinkedTerminalScreens();
 	}
 
 	public float GetRackPendingBtc() => GetLinkedRacks().Sum( r => r.BitcoinAmount );

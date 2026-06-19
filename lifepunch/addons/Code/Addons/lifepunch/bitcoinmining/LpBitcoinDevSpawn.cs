@@ -162,6 +162,44 @@ public static class LpBitcoinDevSpawn
 		}
 	}
 
+	/// <summary>Log lcd_screen local transform — nudge in prefab editor, save, paste values into prefab or send to agent.</summary>
+	[ConCmd( "lp_bitcoin_lcd_tune" )]
+	public static void LcdTune()
+	{
+		var scene = Game.ActiveScene;
+		if ( scene is null )
+		{
+			Log.Warning( "lp_bitcoin_lcd_tune: no active scene." );
+			return;
+		}
+
+		var terminals = scene.GetAllComponents<LpBitcoinTerminalEntity>().Where( t => t.IsValid() ).ToList();
+		if ( terminals.Count == 0 )
+		{
+			Log.Warning( "lp_bitcoin_lcd_tune: no terminal — run lp_spawn_staging_terminal first." );
+			return;
+		}
+
+		foreach ( var terminal in terminals )
+		{
+			var lcdGo = terminal.GameObject.Children.FirstOrDefault( c => c.Name == "lcd_screen" );
+			if ( lcdGo is null || !lcdGo.IsValid() )
+			{
+				Log.Warning( "lp_bitcoin_lcd_tune: terminal missing lcd_screen child." );
+				continue;
+			}
+
+			var text = lcdGo.Components.Get<TextRenderer>( FindMode.EverythingInSelf );
+			var scale = text.IsValid() ? text.Scale : 0f;
+			var align = text.IsValid() ? text.HorizontalAlignment.ToString() : "n/a";
+			Log.Info( $"BITCOINMINING_LCD_TUNE terminal pos={terminal.WorldPosition} manualLcd={terminal.ManualLcdPlacement}" );
+			Log.Info( $"BITCOINMINING_LCD_TUNE lcd_screen localPos={lcdGo.LocalPosition} localRot={lcdGo.LocalRotation} localRotAngles={lcdGo.LocalRotation.Angles()} localScale={lcdGo.LocalScale}" );
+			Log.Info( $"BITCOINMINING_LCD_TUNE TextRenderer scale={scale} horizontalAlignment={align}" );
+		}
+
+		Log.Info( "lp_bitcoin_lcd_tune: set ManualLcdPlacement=true on prefab so spawn keeps these values." );
+	}
+
 	[ConCmd( "lp_bitcoin_hub_asset_audit" )]
 	public static void HubAssetAudit()
 	{

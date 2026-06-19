@@ -193,14 +193,7 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable, IAre
 	}
 
 	public LpBitcoinHubEntity GetLinkedHub()
-	{
-		if ( LinkedHubId == Guid.Empty )
-			return null;
-
-		var scene = GameObject.Scene ?? Game.ActiveScene;
-		var go = scene?.Directory.FindByGuid( LinkedHubId );
-		return go.IsValid() ? go.GetComponent<LpBitcoinHubEntity>() : null;
-	}
+		=> LpBitcoinHubEntity.FindByGameObjectId( LinkedHubId, GameObject.Scene ?? Game.ActiveScene );
 
 	public void RequestSetMining( bool on ) => SetMiningHost( on );
 
