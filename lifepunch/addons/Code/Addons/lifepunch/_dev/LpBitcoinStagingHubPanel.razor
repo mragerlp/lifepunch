@@ -1,0 +1,68 @@
+@* ─────────────────────────────────────────────────────────────────────────────
+   PROPRIETARY & CONFIDENTIAL — © 2026 lifepunch.co. All rights reserved.
+   "LifePunch Dev Tools" (s&box ident: lifepunch.dev · addon ident: dev)
+   ───────────────────────────────────────────────────────────────────────────── *@
+@namespace LifePunch.DXRP.Addons.Dev
+@using Sandbox.UI
+@inherits PanelComponent
+
+@attribute [StyleSheet]
+
+<root class="lpbitcoin-staging-hub-panel">
+	<div class="shell">
+		<header class="header">
+			<div class="title-block">
+				<div class="title">LIFEPUNCH Hub</div>
+				<div class="subtitle">Staging — power / LED pass</div>
+			</div>
+			<button class="close-btn" onclick="@Close">×</button>
+		</header>
+
+		<div class="body">
+			<div class="status-row">
+				<span class="status-dot @(IsPowered() ? "on" : "off")"></span>
+				<span class="status-label">@(IsPowered() ? "POWER ON" : "POWER OFF")</span>
+			</div>
+
+			<p class="hint">Fence emissive + status point light follow hub power. Off = red, on = green.</p>
+
+			<div class="rail-actions">
+				<button class="rail-btn power-on @(IsPowered() ? "active" : "")" onclick="@PowerOn">Power on</button>
+				<button class="rail-btn power-off @(!IsPowered() ? "active" : "")" onclick="@PowerOff">Power off</button>
+			</div>
+		</div>
+	</div>
+</root>
+
+@code
+{
+	private LpBitcoinStagingHubPower _hub;
+
+	public void BindHub( LpBitcoinStagingHubPower hub )
+	{
+		_hub = hub;
+		StateHasChanged();
+	}
+
+	private bool IsPowered() => _hub.IsValid() && _hub.IsPowered;
+
+	private void PowerOn() => _hub?.SetPowered( true );
+
+	private void PowerOff() => _hub?.SetPowered( false );
+
+	private void Close() => LpBitcoinStagingHubUiHost.CloseOpen();
+
+	protected override void OnUpdate()
+	{
+		base.OnUpdate();
+		if ( !_hub.IsValid() )
+			Close();
+	}
+
+	protected override int BuildHash()
+	{
+		var hash = new HashCode();
+		hash.Add( _hub?.IsPowered );
+		return hash.ToHashCode();
+	}
+}

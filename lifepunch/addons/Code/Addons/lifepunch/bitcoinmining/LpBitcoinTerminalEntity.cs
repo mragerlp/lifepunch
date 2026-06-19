@@ -11,6 +11,7 @@ using LifePunch.DXRP.Addons;
 #if !LIFEPUNCH_LOCAL
 using Dxura.RP.Game;
 using Dxura.RP.Shared;
+using DamageInfo = Dxura.RP.Game.DamageInfo;
 #endif
 
 namespace LifePunch.DXRP.Addons.Bitcoin;
@@ -21,13 +22,23 @@ namespace LifePunch.DXRP.Addons.Bitcoin;
 #if LIFEPUNCH_LOCAL
 public sealed class LpBitcoinTerminalEntity : Component, Component.IPressable
 #else
-public sealed class LpBitcoinTerminalEntity : BaseEntity, Component.IPressable
+public sealed class LpBitcoinTerminalEntity : BaseEntity, Component.IPressable, IAreaDamageReceiver
 #endif
 {
 	private const float ScreenRefreshSeconds = 0.25f;
 
 	[Property] public float LinkRange { get; set; } = 512f;
 	[Property] public TextRenderer ScreenText { get; set; }
+
+#if !LIFEPUNCH_LOCAL
+	[Property]
+	[Group( "Effects" )]
+	public GameObject Explosion { get; set; }
+
+	bool _isExploding;
+	int _spawnDropGraceTicks;
+	bool _colliderSyncedFromModel;
+#endif
 
 #if !LIFEPUNCH_LOCAL
 	public override string DisplayName => LpBitcoinIdent.TerminalDisplayName;
@@ -38,8 +49,7 @@ public sealed class LpBitcoinTerminalEntity : BaseEntity, Component.IPressable
 
 	protected override void OnAwake()
 	{
-		// Prefab editor + runtime: green BoxCollider must match ModelDoc white wireframe (model.Bounds).
-		LifePunchPropPhysics.SyncBoxColliderFromModel( GameObject );
+		// Collider sync after spawn grace in OnFixedUpdate (printer-style drop).
 	}
 
 	protected override void OnStart()
@@ -48,9 +58,19 @@ public sealed class LpBitcoinTerminalEntity : BaseEntity, Component.IPressable
 #if !LIFEPUNCH_LOCAL
 		this.TryBindSpawnOwnerHost();
 		if ( Networking.IsHost )
-			LifePunchGroundContact.AlignMeshBottom( GameObject );
-#else
-		LifePunchGroundContact.AlignMeshBottom( GameObject );
+		{
+			if ( HealthComponent.IsValid() )
+			{
+				HealthComponent.MaxHealth = LpBitcoinIdent.TerminalMaxHealth;
+				if ( HealthComponent.Health <= 0f || HealthComponent.Health > HealthComponent.MaxHealth )
+					HealthComponent.Health = HealthComponent.MaxHealth;
+			}
+
+			_spawnDropGraceTicks = 45;
+			_colliderSyncedFromModel = false;
+			LifePunchPropPhysics.BeginGrabbablePrinterDrop( GameObject, syncColliderFromModel: false );
+			Log.Info( $"TERMINAL_SPAWN_PHYSICS pos={GameObject.WorldPosition} gravity=on (printer drop, no ground snap)" );
+		}
 #endif
 
 		if ( !ScreenText.IsValid() )
@@ -59,7 +79,65 @@ public sealed class LpBitcoinTerminalEntity : BaseEntity, Component.IPressable
 		RefreshScreenIdle();
 	}
 
+	/// <summary>Re-align feet after dev recall / reposition.</summary>
+	public void RestartPrinterSettle()
+	{
 #if !LIFEPUNCH_LOCAL
+		if ( !Networking.IsHost )
+			return;
+
+		_spawnDropGraceTicks = 45;
+		_colliderSyncedFromModel = false;
+		LifePunchPropPhysics.BeginGrabbablePrinterDrop( GameObject, syncColliderFromModel: false );
+#endif
+	}
+
+	protected override void OnFixedUpdate()
+	{
+#if !LIFEPUNCH_LOCAL
+		if ( !Networking.IsHost )
+			return;
+
+		LifePunchPropPhysics.MaintainGrabbablePlaceableProp( GameObject );
+
+		if ( _spawnDropGraceTicks > 0 )
+		{
+			_spawnDropGraceTicks--;
+			return;
+		}
+
+		if ( !_colliderSyncedFromModel )
+		{
+			LifePunchPropPhysics.SyncBoxColliderFromModel( GameObject );
+			_colliderSyncedFromModel = true;
+		}
+#endif
+	}
+
+#if !LIFEPUNCH_LOCAL
+	public void ApplyAreaDamage( AreaDamage component )
+	{
+		var dmg = new DamageInfo(
+			component.Attacker,
+			component.Damage,
+			component.Inflictor,
+			component.WorldPosition,
+			Flags: component.DamageFlags );
+
+		HealthComponent?.TakeDamageHost( dmg );
+	}
+
+	protected override void OnDestroyed()
+	{
+		if ( Networking.IsHost && !_isExploding )
+		{
+			_isExploding = true;
+			LifePunchMachineDestroyFx.SpawnPrinterStyleExplosion( this, Explosion, WorldPosition );
+		}
+
+		base.OnDestroyed();
+	}
+
 	public override void OnOcclusionChanged( bool occlude )
 	{
 		base.OnOcclusionChanged( occlude );

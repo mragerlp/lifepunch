@@ -44,7 +44,18 @@ public static class LpJtcMcpAutostart
 			var serverType = ResolveJtcServerType();
 			if ( serverType is null )
 			{
-				Log.Info( "[LifePunch] jtc MCP not loaded — open Editor dock MCP Server for sbox-jtc." );
+				Log.Info( "[LifePunch] jtc MCP not loaded — add jtc/mcp-server in Library Manager." );
+				return;
+			}
+
+			// HTTP listener alone is insufficient — EditorBridge wires in McpServerDock ctor.
+			EditorWindow.DockManager.SetDockState( "MCP Server", true );
+
+			var dockType = ResolveJtcDockType();
+			var current = dockType?.GetProperty( "Current", BindingFlags.Public | BindingFlags.Static )?.GetValue( null );
+			if ( current is null )
+			{
+				Log.Warning( "[LifePunch] jtc MCP dock failed to open — Editor menu -> MCP Server (smart_toy)." );
 				return;
 			}
 
@@ -72,7 +83,7 @@ public static class LpJtcMcpAutostart
 			var port = serverType.GetProperty( "Port" )?.GetValue( server ) as int? ?? DefaultPort;
 
 			if ( isListening )
-				Log.Info( $"[LifePunch] jtc MCP autostart — http://localhost:{port}/mcp" );
+				Log.Info( $"[LifePunch] jtc MCP ready — http://localhost:{port}/mcp (dock + bridge)" );
 			else
 				Log.Warning( "[LifePunch] jtc MCP autostart: server not listening — open MCP Server dock." );
 		}
@@ -84,6 +95,22 @@ public static class LpJtcMcpAutostart
 			else
 				Log.Warning( $"[LifePunch] jtc MCP autostart skipped: {message}" );
 		}
+	}
+
+	static global::System.Type ResolveJtcDockType()
+	{
+		foreach ( var asm in AppDomain.CurrentDomain.GetAssemblies() )
+		{
+			var asmName = asm.GetName().Name;
+			if ( asmName is null || !asmName.Contains( "jtc.mcp-server", StringComparison.OrdinalIgnoreCase ) )
+				continue;
+
+			var t = asm.GetType( "SboxMcp.McpServerDock" );
+			if ( t is not null )
+				return t;
+		}
+
+		return null;
 	}
 
 	static global::System.Type ResolveJtcServerType()

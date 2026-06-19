@@ -21,9 +21,86 @@ public static class LpBitcoinIdent
 	public const string HashdProgram = "hashd";
 	public const string UiFooter = "lifepunch.bitcoin v2 — lifepunch.co";
 
-	public const string HubPrefabPath = "addons/lifepunch/bitcoinmining/entities/bitcoinminer/bitcoin-miner.prefab";
-	public const string HubDisplayName = "Bitcoin Miner";
+	public const string HubEntitySlug = "bitcoinhub";
+	public const string HubPrefabPath = "addons/lifepunch/lpbitcoin/bitcoinhub/assets/entities/bitcoinhub.prefab";
+	public const string HubModelPath = "addons/lifepunch/lpbitcoin/bitcoinhub/assets/models/bitcoinhub.vmdl";
+	public const string HubFanModelPath = "addons/lifepunch/lpbitcoin/bitcoinhub/assets/models/bitcoinhub-fan.vmdl";
+	public const string HubStartupSoundPath = "addons/lifepunch/bitcoinmining/sounds/bitcoinminer/hub-startup.sound";
+	public const string HubFanLoopSoundPath = "addons/lifepunch/bitcoinmining/sounds/bitcoinminer/hub-fan-loop.sound";
+	public const string HubFanDownSoundPath = "addons/lifepunch/bitcoinmining/sounds/bitcoinminer/hub-fan-down.sound";
+	public const string HubDisplayName = "Bitcoin Hub";
+
+	/// <summary>Hub durability — heavier than DXRP money printer (100).</summary>
+	public const float HubMaxHealth = 250f;
+
+	/// <summary>Standard GPU rack durability.</summary>
+	public const float RackMaxHealth = 250f;
+
+	/// <summary>Advanced (stacked) GPU rack durability.</summary>
+	public const float AdvancedRackMaxHealth = 500f;
+
+	/// <summary>Standard GPU rack mining yield multiplier.</summary>
+	public const float StandardRackYield = 1f;
+
+	/// <summary>Advanced GPU rack mining yield multiplier (2× standard).</summary>
+	public const float AdvancedRackYield = 2f;
+
+	/// <summary>HASHD / rig0 slot prefix — first standard rack = GPURack-1.</summary>
+	public const string StandardRackSlotPrefix = "GPURack";
+
+	/// <summary>HASHD / rig0 slot prefix — first advanced rack = AdvancedGPURack-1.</summary>
+	public const string AdvancedRackSlotPrefix = "AdvancedGPURack";
+
+	/// <summary>DXRP portal cap per hub (market/content rows — not enforced in dev spawn).</summary>
+	public const int PortalMaxStandardRacksPerHub = 2;
+
+	/// <summary>DXRP portal cap per hub (market/content rows — not enforced in dev spawn).</summary>
+	public const int PortalMaxAdvancedRacksPerHub = 2;
+
+	/// <summary>Operator-facing rack slot (1-based). Internal APIs stay 0-based.</summary>
+	public static int DisplayRackNumber( int zeroBasedIndex ) => zeroBasedIndex + 1;
+
+	/// <summary>Operator-facing rack ID — e.g. GPURack-1, AdvancedGPURack-1 (per-type slot).</summary>
+	public static string FormatRackSlotId( LpBitcoinRackEntity rack, IReadOnlyList<LpBitcoinRackEntity> linkedRacks )
+	{
+		if ( !rack.IsValid() )
+			return "GPURack-?";
+
+		var slot = 0;
+		foreach ( var candidate in linkedRacks )
+		{
+			if ( !candidate.IsValid() || candidate.AdvancedRack != rack.AdvancedRack )
+				continue;
+
+			slot++;
+			if ( candidate.GameObject.Id == rack.GameObject.Id )
+				return rack.AdvancedRack
+					? $"{AdvancedRackSlotPrefix}-{slot}"
+					: $"{StandardRackSlotPrefix}-{slot}";
+		}
+
+		return rack.AdvancedRack ? $"{AdvancedRackSlotPrefix}-?" : $"{StandardRackSlotPrefix}-?";
+	}
+
+	/// <summary>Parse operator rack slot (1..linkedRackCount) to internal 0-based index.</summary>
+	public static bool TryParseRackSlot( string token, int linkedRackCount, out int zeroBasedIndex )
+	{
+		zeroBasedIndex = -1;
+		if ( !int.TryParse( token, out var slot ) )
+			return false;
+
+		if ( slot < 1 || slot > linkedRackCount )
+			return false;
+
+		zeroBasedIndex = slot - 1;
+		return true;
+	}
 	public const string TerminalDisplayName = "Bitcoin Terminal";
+	public const string TerminalModelPath =
+		"addons/lifepunch/lpbitcoin/hashdterminal/assets/models/hashd-terminal.vmdl";
+
+	/// <summary>Terminal durability — matches DXRP money printer baseline (100).</summary>
+	public const float TerminalMaxHealth = 100f;
 	public const string RackDisplayName = "GPU Rack";
 	public const string AdvancedRackDisplayName = "Advanced GPU Rack";
 

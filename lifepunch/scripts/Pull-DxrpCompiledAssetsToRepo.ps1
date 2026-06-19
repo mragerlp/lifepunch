@@ -8,11 +8,13 @@
   so bitcoin-terminal, stacked rack, prefabs, and textures stay in git.
 
 .PARAMETER Addon
-  Addon ident under Assets/addons/lifepunch (default: bitcoinmining).
+  Asset folder ident under Assets/addons/lifepunch (default: bitcoinmining).
+  Use lpbitcoin for hub/terminal staging compiled outputs (bitcoinhub slot).
 
 .EXAMPLE
   powershell -File Pull-DxrpCompiledAssetsToRepo.ps1
   powershell -File Pull-DxrpCompiledAssetsToRepo.ps1 -Addon bitcoinmining
+  powershell -File Pull-DxrpCompiledAssetsToRepo.ps1 -Addon lpbitcoin
 #>
 [CmdletBinding()]
 param(
@@ -78,3 +80,4 @@ $pulled = @(Get-ChildItem -LiteralPath $to -Recurse -File -ErrorAction SilentlyC
 Write-Host "  $($pulled.Count) compiled files in repo tree" -ForegroundColor Green
 Write-Host ''
 Write-Host 'Next: git add the new *_c / textures, then normal repo -> DXRP sync is safe.' -ForegroundColor DarkGray
+Write-Host 'Hub slot: after ModelDoc compile, also run with -Addon lpbitcoin' -ForegroundColor DarkGray

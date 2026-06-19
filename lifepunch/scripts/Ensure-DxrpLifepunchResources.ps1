@@ -1,10 +1,11 @@
 <#
 .SYNOPSIS
-  Ensure rp.sbproj Resources includes addons/lifepunch/<ident>/** for synced addons.
+  Ensure rp.sbproj Resources includes LifePunch addon mounts (clean, one mount per line).
 #>
 [CmdletBinding()]
 param(
-    [string[]] $Ident = @('bitcoinmining', 'hackerjob', 'ak47'),
+    [string[]] $Ident = @('bitcoinmining'),
+    [switch] $IncludeStaging,
     [string] $ConfigPath = ''
 )
 
@@ -18,42 +19,31 @@ if (-not (Test-Path -LiteralPath $ConfigPath)) {
 
 $cfg = Get-Content -LiteralPath $ConfigPath -Raw | ConvertFrom-Json
 $sbprojPath = [string]$cfg.projectPath
-if ([string]::IsNullOrWhiteSpace( $sbprojPath ) -or -not (Test-Path -LiteralPath $sbprojPath)) {
+if ([string]::IsNullOrWhiteSpace($sbprojPath) -or -not (Test-Path -LiteralPath $sbprojPath)) {
     Write-Warning "Skip rp.sbproj Resources patch - bad projectPath: $sbprojPath"
     return
 }
 
-$content = Get-Content -LiteralPath $sbprojPath -Raw
-$added = @()
+$mounts = [System.Collections.Generic.List[string]]::new()
+$mounts.Add('ui/*')
+$mounts.Add('gameplay/entities/jobs/mayor/gun_license/gun_license.png')
+
 foreach ($ident in $Ident) {
-    $needle = "addons/lifepunch/$ident/**"
-    if ($content -notlike "*$needle*") {
-        $old = 'addons/lifepunch/bitcoinmining/**"'
-        $new = "addons/lifepunch/bitcoinmining/**\\naddons/lifepunch/$ident/**`""
-        if ($content -like "*$old*" -and $ident -ne 'bitcoinmining') {
-            $content = $content.Replace( $old, $new )
-            $added += $needle
-        }
-        elseif ($content -notlike "*addons/lifepunch/bitcoinmining/***") {
-            $marker = '"Resources": "'
-            $idx = $content.IndexOf( $marker )
-            if ($idx -ge 0) {
-                $insertAt = $content.IndexOf( '"', $idx + $marker.Length )
-                if ($insertAt -ge 0) {
-                    $content = $content.Insert( $insertAt, "$needle\\n" )
-                    $added += $needle
-                }
-            }
-        }
-    }
+    $mounts.Add("addons/lifepunch/$ident/**")
+}
+if ($IncludeStaging) {
+    $mounts.Add('addons/lifepunch/lpbitcoin/**')
 }
 
-if ($added.Count -eq 0) {
-    Write-Host 'rp.sbproj Resources already includes LifePunch addon mounts.' -ForegroundColor DarkGray
-    return
-}
+$resourcesForFile = ($mounts | Select-Object -Unique) -join '\n'
+$content = Get-Content -LiteralPath $sbprojPath -Raw
+$content = [regex]::Replace(
+    $content,
+    '"Resources"\s*:\s*"(?:[^"\\]|\\.)*"',
+    '"Resources": "' + ($resourcesForFile -replace '\\', '\\') + '"'
+)
 
-[System.IO.File]::WriteAllText( $sbprojPath, $content )
-Write-Host "rp.sbproj Resources +$($added.Count):" -ForegroundColor Green
-$added | ForEach-Object { Write-Host "  $_" -ForegroundColor DarkGray }
-Write-Host "Restart sbox editor if it was open (Resources changed)." -ForegroundColor Yellow
+[System.IO.File]::WriteAllText($sbprojPath, $content)
+Write-Host 'rp.sbproj Resources normalized:' -ForegroundColor Green
+$mounts | Select-Object -Unique | ForEach-Object { Write-Host "  $_" -ForegroundColor DarkGray }
+Write-Host 'Restart s&box editor if it was open (Resources changed).' -ForegroundColor Yellow

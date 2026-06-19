@@ -112,7 +112,11 @@ public static class LifePunchMenuInteractGate
 		if ( hands.IsValid() && hands.IsHolding( root ) )
 			return true;
 
-		if ( !root.Tags.Has( Constants.HandsInteractTag ) || !Input.Down( "attack1" ) )
+		if ( !root.Tags.Has( Constants.HandsInteractTag ) )
+			return false;
+
+		// Hands grab/rotate uses attack1 or use (E) — do not open LifePunch menu while manipulating.
+		if ( !Input.Down( "attack1" ) && !Input.Down( "use" ) )
 			return false;
 
 		var trace = player.Scene.Trace.Ray( player.AimRay, Config.Current.Game.ReachDistance )

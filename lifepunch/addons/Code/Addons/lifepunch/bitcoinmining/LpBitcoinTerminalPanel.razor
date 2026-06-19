@@ -21,7 +21,7 @@
 				<div class="crt-status-row">
 					<span class="@StatusPowerClass()">@StatusPowerLabel()</span>
 					<span>@LinkedRackCount() racks</span>
-					<span>sel #@_selectedIndex</span>
+					<span>sel @SelectedRackSlotLabel()</span>
 				</div>
 				<div class="lp-ui-chrome-actions">
 					<div class="lp-ui-scale-menu">
@@ -56,7 +56,7 @@
 							@( IsCommandCopied( cmd ) ? ">copied" : cmd )
 						</div>
 					}
-					<div class="sidebar-foot">sel #@_selectedIndex</div>
+					<div class="sidebar-foot">sel @SelectedRackSlotLabel()</div>
 				</div>
 				<div class="screen">
 					@if ( _showBootSplash )
@@ -433,7 +433,7 @@
 					continue;
 
 				_selectedIndex = i;
-				AppendLogLine( "ok", $"focused rack #{i}" );
+				AppendLogLine( "ok", $"focused {LpBitcoinIdent.FormatRackSlotId( racks[i], racks )}" );
 				break;
 			}
 		}
@@ -460,6 +460,15 @@
 
 		InputBox.SelectionColor = CmdSelectionTint;
 		InputBox.AcceptsFocus = true;
+	}
+
+	private string SelectedRackSlotLabel()
+	{
+		var racks = _hub?.GetLinkedRacks();
+		if ( racks is null || _selectedIndex < 0 || _selectedIndex >= racks.Count )
+			return "—";
+
+		return LpBitcoinIdent.FormatRackSlotId( racks[_selectedIndex], racks );
 	}
 
 	protected override int BuildHash()

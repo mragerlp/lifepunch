@@ -69,9 +69,27 @@ function Invoke-Mirror([string]$From, [string]$To, [string]$Label) {
     Write-Host "  $Label - $count files" -ForegroundColor Green
 }
 
+function Remove-StaleDxrpPath {
+    param([string]$Path, [string]$Label)
+    if (-not (Test-Path -LiteralPath $Path)) { return }
+    if ($WhatIf) {
+        Write-Host "[WhatIf] purge $Label" -ForegroundColor DarkGray
+        return
+    }
+    Remove-Item -LiteralPath $Path -Recurse -Force
+    Write-Host "  purged stale: $Label" -ForegroundColor Yellow
+}
+
 Write-Host 'Sync LifePunch addons -> DXRP game' -ForegroundColor Cyan
 Write-Host "  Repo:  $repoAddons" -ForegroundColor DarkGray
 Write-Host "  DXRP:  $dxrpGame" -ForegroundColor DarkGray
+
+if (-not $WhatIf) {
+    Write-Host 'Purge DXRP-only clutter (not in repo sync set)' -ForegroundColor Cyan
+    Remove-StaleDxrpPath -Path (Join-Path $dxrpGame 'Code\Addons\lifepunch._quarantine') -Label 'Code/Addons/lifepunch._quarantine'
+    Remove-StaleDxrpPath -Path (Join-Path $dxrpGame 'Assets\addons\lifepunch._quarantine') -Label 'Assets/addons/lifepunch._quarantine'
+    Remove-StaleDxrpPath -Path (Join-Path $dxrpGame 'addons\lifepunch\lpbitcoin') -Label 'addons/lifepunch/lpbitcoin (empty greenfield stub)'
+}
 
 # Shared lifepunch code (LifePunchSourceMark.cs, etc.) — not under a single addon ident.
 $sharedCodeFiles = @(Get-ChildItem -LiteralPath $repoCodeRoot -File -ErrorAction SilentlyContinue)
@@ -143,9 +161,28 @@ foreach ($ident in Get-AddonIdents) {
     }
 }
 
+# Publish staging packages (lp*) — hub/racks live here; not legacy repo idents.
+$lpStagingRoot = Join-Path $repoAssetsRoot 'lpbitcoin'
+if (Test-Path -LiteralPath $lpStagingRoot) {
+    Write-Host 'Staging: lpbitcoin' -ForegroundColor Cyan
+    Invoke-Mirror `
+        -From $lpStagingRoot `
+        -To   (Join-Path $dxrpAssetsRoot 'lpbitcoin') `
+        -Label 'Assets/lpbitcoin'
+}
+
+$lpCodeRoot = Join-Path $repoCodeRoot 'lpbitcoin'
+if (Test-Path -LiteralPath $lpCodeRoot) {
+    Write-Host 'Staging code map: lpbitcoin' -ForegroundColor Cyan
+    Invoke-Mirror `
+        -From $lpCodeRoot `
+        -To   (Join-Path $dxrpCodeRoot 'lpbitcoin') `
+        -Label 'Code/lpbitcoin (README maps — sources in bitcoinmining/)'
+}
+
 $ensureResources = Join-Path $Here 'Ensure-DxrpLifepunchResources.ps1'
 if (Test-Path -LiteralPath $ensureResources) {
-    & $ensureResources -Ident (Get-AddonIdents) -ConfigPath $ConfigPath
+    & $ensureResources -Ident (Get-AddonIdents) -ConfigPath $ConfigPath -IncludeStaging
 }
 
 if (-not $WhatIf) {
@@ -173,4 +210,4 @@ if (Test-Path -LiteralPath $tailwandConfigSrc) {
 
 Write-Host 'Sync OK' -ForegroundColor Green
 Write-Host '  If play shows ERROR models, recompile bitcoinmining .vmdl/.vmat in ModelDoc (sync invalidates _c checksums).' -ForegroundColor Yellow
-Write-Host '  Bridge: recompile_asset on gpu-rack.vmdl, gpu-rack-stacked.vmdl, bitcoin-miner.vmdl, bitcoin-terminal.vmdl, then entity prefabs.' -ForegroundColor DarkGray
+Write-Host '  Bridge: recompile_asset on bitcoinhub.vmdl, bitcoinhub-fan.vmdl, gpu-rack.vmdl, gpu-rack-stacked.vmdl, bitcoin-terminal.vmdl, then entity prefabs.' -ForegroundColor DarkGray

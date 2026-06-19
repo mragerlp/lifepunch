@@ -32,7 +32,7 @@ That stacked broken mesh orientation, guessed BoxColliders, and detached fan par
 
 | Prop | Prefab | Body vmdl |
 |------|--------|-----------|
-| Hub | `entities/bitcoinminer/bitcoin-miner.prefab` | `bitcoin-miner/bitcoin-miner.vmdl` |
+| Hub | `lpbitcoin/bitcoinhub/assets/entities/bitcoinhub.prefab` | `lpbitcoin/bitcoinhub/assets/models/bitcoinhub.vmdl` |
 | GPU rack | `entities/gpurack/gpu-rack.prefab` | `gpu-rack/gpu-rack.vmdl` |
 | Advanced rack | `entities/advancedgpurack/advanced-gpu-rack.prefab` | `gpu-rack/gpu-rack-stacked.vmdl` |
 | Terminal | `entities/bitcoin-terminal/bitcoin-terminal.prefab` | *(owner replacing model — pause)* |

@@ -91,10 +91,11 @@ if (Test-Path -LiteralPath $dxrpAssetsRoot) {
     }
 }
 
-Write-Host 'Quarantine Code/Addons/lifepunch/* (keep lifepunchulx only)' -ForegroundColor Cyan
+Write-Host 'Quarantine Code/Addons/lifepunch/* (keep lifepunchulx + _dev)' -ForegroundColor Cyan
+$keepCodeFolders = @($ulxDxrpFolder, $devFolder)
 if (Test-Path -LiteralPath $dxrpCodeRoot) {
     Get-ChildItem -LiteralPath $dxrpCodeRoot -Directory | ForEach-Object {
-        if ($_.Name -eq $ulxDxrpFolder) { return }
+        if ($keepCodeFolders -contains $_.Name) { return }
         Move-AddonFolder -From $_.FullName -ToRoot $quarantineCode -Name $_.Name
     }
     Get-ChildItem -LiteralPath $dxrpCodeRoot -File | ForEach-Object {
@@ -162,6 +163,15 @@ foreach ($name in $testBotFiles) {
 }
 
 $repoCodeRoot = Join-Path $repoAddons 'Code\Addons\lifepunch'
+$repoDevCode = Join-Path $repoCodeRoot $devFolder
+$dxrpDevCode = Join-Path $dxrpCodeRoot $devFolder
+if (Test-Path -LiteralPath $repoDevCode) {
+    New-Item -ItemType Directory -Force -Path $dxrpDevCode | Out-Null
+    & robocopy $repoDevCode $dxrpDevCode /MIR /NFL /NDL /NJH /NJS /nc /ns /np | Out-Null
+    if ($LASTEXITCODE -ge 8) { throw 'robocopy _dev code failed' }
+    Write-Host '  Code/_dev mirrored (flatgrass + staging spawn ConCmds)' -ForegroundColor Green
+}
+
 $sharedRootFiles = @(Get-ChildItem -LiteralPath $repoCodeRoot -File -ErrorAction SilentlyContinue)
 if ($sharedRootFiles.Count -gt 0) {
     New-Item -ItemType Directory -Force -Path $dxrpCodeRoot | Out-Null

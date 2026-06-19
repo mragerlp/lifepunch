@@ -1,13 +1,11 @@
-﻿{
+{
+    "slot":  "bitcoinhub",
+    "primary_mesh":  "assets/source/fbx/steam-machine.fbx",
+    "prefab":  "assets/entities/bitcoinhub.prefab",
+    "vmdl":  "assets/models/bitcoinhub.vmdl",
+    "role":  "Bitcoin HUB (Steam Machine)",
     "notes":  [
-                  "Solid colors in source — vmats in ModelDoc",
-                  "Fan spin = child GO Phase 2"
+                  "Jun 2026 promotion — canonical path is lpbitcoin/bitcoinhub"
               ],
-    "role":  "Bitcoin HUB (CPU GAMER)",
-    "primary_mesh":  "assets/source/fbx/cpu_gamer.fbx",
-    "issues":  [
-
-               ],
-    "slot":  "bitcoinhub"
+    "promotedFrom":  "bitcoinmining/models/.../bitcoin-miner"
 }
-

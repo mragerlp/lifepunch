@@ -45,14 +45,16 @@ internal static class LpBitcoinTerminalCommands
 				return ListRacks( racks );
 
 			case "select":
-				if ( parts.Length < 2 || !int.TryParse( parts[1], out var pick ) )
-					return new LpBitcoinCommandResult( false, "usage: select <index>" );
-
-				if ( pick < 0 || pick >= racks.Count )
-					return new LpBitcoinCommandResult( false, $"ERR rack #{pick} not found — type racks" );
+				if ( parts.Length < 2 || !LpBitcoinIdent.TryParseRackSlot( parts[1], racks.Count, out var pick ) )
+				{
+					var usage = racks.Count == 0
+						? "usage: select <n> — no linked racks"
+						: $"usage: select <n> (1–{racks.Count})";
+					return new LpBitcoinCommandResult( false, usage );
+				}
 
 				selectedIndex = pick;
-				return new LpBitcoinCommandResult( true, $"selected rack #{pick}" );
+				return new LpBitcoinCommandResult( true, $"selected {LpBitcoinIdent.FormatRackSlotId( racks[pick], racks )}" );
 
 			case "status":
 				return StatusSelected( hub, selectedIndex );
@@ -71,8 +73,17 @@ internal static class LpBitcoinTerminalCommands
 				if ( parts.Length > 1 && parts[1].Equals( "all", StringComparison.OrdinalIgnoreCase ) )
 					return DepositAll( hub );
 
-				if ( parts.Length > 1 && int.TryParse( parts[1], out var depositPick ) )
+				if ( parts.Length > 1 && int.TryParse( parts[1], out _ ) )
+				{
+					var rackCount = hub.GetLinkedRacks().Count;
+					if ( !LpBitcoinIdent.TryParseRackSlot( parts[1], rackCount, out var depositPick ) )
+					{
+						var range = rackCount == 0 ? "no linked racks" : $"1–{rackCount}";
+						return new LpBitcoinCommandResult( false, $"ERR rack slot not found — use deposit <n> ({range}) or deposit all" );
+					}
+
 					return DepositRack( hub, depositPick );
+				}
 
 				return DepositRack( hub, selectedIndex );
 
@@ -146,7 +157,7 @@ internal static class LpBitcoinTerminalCommands
 			if ( !rack.IsValid() )
 				continue;
 
-			lines.AppendLine( FormatRackLine( i, rack ) );
+			lines.AppendLine( FormatRackLine( rack, racks ) );
 		}
 
 		return new LpBitcoinCommandResult( true, lines.ToString().TrimEnd() );
@@ -154,6 +165,7 @@ internal static class LpBitcoinTerminalCommands
 
 	private static LpBitcoinCommandResult StatusSelected( LpBitcoinHubEntity hub, int index )
 	{
+		var racks = hub.GetLinkedRacks();
 		var rack = hub.FindRackByIndex( index );
 		if ( rack is null )
 			return new LpBitcoinCommandResult( false, "ERR no rack selected — type racks / select <n>" );
@@ -165,22 +177,23 @@ internal static class LpBitcoinTerminalCommands
 			state = "CAP FULL";
 
 		return new LpBitcoinCommandResult( true,
-			$"#{index} {RackLabel( rack )} | {state} | {rack.BitcoinAmount:F6}/{cap:F6} BTC ({fill}%)\n" +
+			$"{LpBitcoinIdent.FormatRackSlotId( rack, racks )} | {state} | {rack.BitcoinAmount:F6}/{cap:F6} BTC ({fill}%)\n" +
 			$"rate {rack.MiningRatePerMinute:F6} BTC/min | tick {( rack.MiningProgress * 100f ):F0}%\n" +
 			$"hub wallet {hub.HubWalletBtc:F6} BTC | pending {hub.GetRackPendingBtc():F6} BTC" );
 	}
 
 	private static LpBitcoinCommandResult InfoSelected( LpBitcoinHubEntity hub, int index )
 	{
+		var racks = hub.GetLinkedRacks();
 		var rack = hub.FindRackByIndex( index );
 		if ( rack is null )
 			return new LpBitcoinCommandResult( false, "ERR no rack selected — type racks / select <n>" );
 
 		var cap = LpBitcoinEconomy.RackBtcCapacity( rack.AdvancedRack );
 		return new LpBitcoinCommandResult( true,
-			$"#{index} {RackLabel( rack )}\n" +
+			$"{LpBitcoinIdent.FormatRackSlotId( rack, racks )}\n" +
 			$"CPU {rack.ClockGhz:F2} GHz (Lv {rack.CpuUpgradeLevel}) | cores x{rack.CoreCount} (Lv {rack.CoreUpgradeLevel})\n" +
-			$"yield x{rack.YieldMultiplier:F1} | cap {cap:F6} BTC | ${rack.UsdValue} rack value" );
+			$"yield ×{( rack.AdvancedRack ? 2 : 1 )} | cap {cap:F6} BTC | ${rack.UsdValue} rack value" );
 	}
 
 	private static LpBitcoinCommandResult WalletSummary( LpBitcoinHubEntity hub )
@@ -261,32 +274,36 @@ internal static class LpBitcoinTerminalCommands
 
 	private static LpBitcoinCommandResult MiningStart( LpBitcoinHubEntity hub, int index )
 	{
+		var racks = hub.GetLinkedRacks();
 		var rack = hub.FindRackByIndex( index );
 		if ( rack is null )
 			return new LpBitcoinCommandResult( false, "ERR no rack selected — type select <n>" );
 
+		var slotId = LpBitcoinIdent.FormatRackSlotId( rack, racks );
 		var cap = LpBitcoinEconomy.RackBtcCapacity( rack.AdvancedRack );
 		if ( rack.BitcoinAmount >= cap )
-			return new LpBitcoinCommandResult( false, $"ERR rack #{index} at capacity — deposit before mining" );
+			return new LpBitcoinCommandResult( false, $"ERR {slotId} at capacity — deposit before mining" );
 
 		if ( rack.IsMining )
-			return new LpBitcoinCommandResult( true, $"rack #{index} already mining" );
+			return new LpBitcoinCommandResult( true, $"{slotId} already mining" );
 
 		rack.RequestSetMining( true );
-		return new LpBitcoinCommandResult( true, $"mining started on rack #{index}" );
+		return new LpBitcoinCommandResult( true, $"mining started on {slotId}" );
 	}
 
 	private static LpBitcoinCommandResult MiningStop( LpBitcoinHubEntity hub, int index )
 	{
+		var racks = hub.GetLinkedRacks();
 		var rack = hub.FindRackByIndex( index );
 		if ( rack is null )
 			return new LpBitcoinCommandResult( false, "ERR no rack selected — type select <n>" );
 
+		var slotId = LpBitcoinIdent.FormatRackSlotId( rack, racks );
 		if ( !rack.IsMining )
-			return new LpBitcoinCommandResult( true, $"rack #{index} already idle" );
+			return new LpBitcoinCommandResult( true, $"{slotId} already idle" );
 
 		rack.RequestSetMining( false );
-		return new LpBitcoinCommandResult( true, $"mining stopped on rack #{index}" );
+		return new LpBitcoinCommandResult( true, $"mining stopped on {slotId}" );
 	}
 
 	private static LpBitcoinCommandResult MiningAll( LpBitcoinHubEntity hub, bool on )
@@ -353,7 +370,9 @@ internal static class LpBitcoinTerminalCommands
 
 		var amount = rack.BitcoinAmount;
 		hub.RequestDepositRack( index );
-		return new LpBitcoinCommandResult( true, $"deposited {amount:F6} BTC from rack #{index} to hub wallet" );
+		var racks = hub.GetLinkedRacks();
+		var slotId = rack.IsValid() ? LpBitcoinIdent.FormatRackSlotId( rack, racks ) : $"rack #{LpBitcoinIdent.DisplayRackNumber( index )}";
+		return new LpBitcoinCommandResult( true, $"deposited {amount:F6} BTC from {slotId} to hub wallet" );
 	}
 
 	private static LpBitcoinCommandResult DepositAll( LpBitcoinHubEntity hub )
@@ -369,18 +388,15 @@ internal static class LpBitcoinTerminalCommands
 		return new LpBitcoinCommandResult( true, $"deposited {pending:F6} BTC from all racks to hub wallet" );
 	}
 
-	private static string FormatRackLine( int index, LpBitcoinRackEntity rack )
+	private static string FormatRackLine( LpBitcoinRackEntity rack, IReadOnlyList<LpBitcoinRackEntity> racks )
 	{
 		var cap = LpBitcoinEconomy.RackBtcCapacity( rack.AdvancedRack );
 		var state = rack.IsMining ? "MINING" : "IDLE";
 		if ( rack.BitcoinAmount >= cap )
 			state = "FULL";
 
-		return $"#{index} {RackLabel( rack )} | {rack.BitcoinAmount:F6}/{cap:F6} BTC | {state}";
+		return $"{LpBitcoinIdent.FormatRackSlotId( rack, racks )} | {rack.BitcoinAmount:F6}/{cap:F6} BTC | {state}";
 	}
-
-	private static string RackLabel( LpBitcoinRackEntity rack )
-		=> rack.AdvancedRack ? LpBitcoinIdent.AdvancedRackDisplayName : LpBitcoinIdent.RackDisplayName;
 
 	private static string HelpText() =>
 		"── HASHD rig0 commands (space-separated) ──\n" +

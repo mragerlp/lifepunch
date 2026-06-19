@@ -158,14 +158,14 @@
 												}
 												else
 												{
-													<div class="lp-ui-scroll">
+													<div class="lp-ui-scroll lp-ui-scroll-region">
 														<div class="lp-ui-list">
 															@for ( var i = 0; i < GetLinkedRacks().Count; i++ )
 															{
 																var rack = GetLinkedRacks()[i];
 																<div class="lp-ui-list-row">
 																	<div class="lp-ui-list-main">
-																		<div class="lp-ui-list-title">@RackDisplayName( rack, i )</div>
+																		<div class="lp-ui-list-title">@RackSlotLabel( rack )</div>
 																		<div class="lp-ui-list-sub rack-stats">@RackOverviewSubline( rack )</div>
 																	</div>
 																	<div class="lp-ui-list-meta">
@@ -222,6 +222,7 @@
 												<div class="lp-ui-btn-row">
 													<button class="lp-ui-btn-primary" onclick="@SelectRacksTab">Manage racks</button>
 													<button class="lp-ui-btn-ghost" onclick="@SelectWalletTab">Wallet</button>
+													<button class="lp-ui-btn-ghost" onclick="@SelectTransfersTab">Transfers</button>
 												</div>
 											</div>
 										</div>
@@ -239,7 +240,7 @@
 											@if ( LinkedRackCount() > 0 )
 											{
 												<div class="lp-ui-intro">
-													Rack numbers <strong>#0–#@(LinkedRackCount() - 1)</strong> match rig0 at the terminal. Upgrade CPU and cores here — start/stop mining on the CRT.
+													Rack IDs (<strong>GPURack-1</strong>, <strong>AdvancedGPURack-1</strong>, …) match rig0 slots at the terminal. Upgrade CPU and cores here — start/stop mining on the CRT.
 												</div>
 											}
 
@@ -252,23 +253,23 @@
 											}
 											else
 											{
-												<div class="lp-ui-scroll">
+												<div class="lp-ui-scroll lp-ui-scroll-region racks-scroll">
 													<div class="rack-grid">
 														@for ( var i = 0; i < GetLinkedRacks().Count; i++ )
 														{
 															var rack = GetLinkedRacks()[i];
 															<div class="rack-card">
 																<div class="rack-card-head">
-																	<div class="rack-card-title">@RackDisplayName( rack, i )</div>
+																	<div class="rack-card-title">@RackSlotLabel( rack )</div>
 																	<div class="rack-card-badges">
 																		<span class="rack-badge @(rack.IsMining ? "on" : "")">@(rack.IsMining ? "Mining" : "Idle")</span>
-																		<span class="rack-badge dim">yield x@(rack.YieldMultiplier.ToString( "F1" ))</span>
+																		<span class="rack-badge dim">@RackYieldLabel( rack )</span>
 																	</div>
 																</div>
 																<div class="rack-card-stats">
-																	<span>@RackBtcLine( rack )</span>
-																	<span>@RackHardwareLine( rack )</span>
-																	<span>@RackUpgradeLine( rack )</span>
+																	<div class="rack-stat-line">@RackBtcLine( rack )</div>
+																	<div class="rack-stat-line">@RackHardwareLine( rack )</div>
+																	<div class="rack-stat-line">@RackUpgradeLine( rack )</div>
 																</div>
 																<div class="rack-card-actions">
 																	<button class="lp-ui-btn-ghost @(!CanUpgradeCpu( rack ) ? "disabled" : "")" onclick="@(() => UpgradeCpu( rack ))">CPU $@UpgradeCpuCost( rack )</button>
@@ -292,87 +293,130 @@
 											</div>
 
 											<div class="lp-ui-intro">
-												Your secured hub balance. Move rack earnings in at the linked terminal, send BTC to other operators there, then cash out to your bank here.
+												Your secured hub balance. Deposit rack earnings at the linked terminal, then cash out to your in-game bank here.
 											</div>
 
-											<div class="wallet-section-tabs">
-												<button class="wallet-section-tab @(_walletSection == WalletSection.CashOut ? "active" : "")"
-												        onclick="@(() => SelectWalletSection( WalletSection.CashOut ))">
-													Cash out
-												</button>
-												<button class="wallet-section-tab @(_walletSection == WalletSection.Send ? "active" : "")"
-												        onclick="@(() => SelectWalletSection( WalletSection.Send ))">
-													Send BTC
-												</button>
+											<div class="lp-ui-info">
+												<div class="lp-ui-info-row">
+													<span class="lp-ui-info-label">Hub wallet</span>
+													<span class="lp-ui-info-value accent">@HubWalletBtc().ToString("F6") BTC</span>
+												</div>
+												<div class="lp-ui-info-row">
+													<span class="lp-ui-info-label">Still on racks</span>
+													<span class="lp-ui-info-value">@RackPendingBtc().ToString("F6") BTC</span>
+												</div>
+												<div class="lp-ui-info-row">
+													<span class="lp-ui-info-label">Terminal linked</span>
+													<span class="lp-ui-info-value">@(HasLinkedTerminal() ? "Yes" : "No — place terminal near hub")</span>
+												</div>
+												<div class="lp-ui-info-row">
+													<span class="lp-ui-info-label">USD value (hub)</span>
+													<span class="lp-ui-info-value">$@HubWalletUsd().ToString("N2")</span>
+												</div>
+												<div class="lp-ui-info-row">
+													<span class="lp-ui-info-label">Exchange rate</span>
+													<span class="lp-ui-info-value">$@LpBitcoinEconomy.BitcoinValueUsd / BTC</span>
+												</div>
+												<div class="lp-ui-info-row">
+													<span class="lp-ui-info-label">Your cash</span>
+													<span class="lp-ui-info-value">$@LpHashdUiHost.GetLocalWalletCash()</span>
+												</div>
 											</div>
 
-											@if ( _walletSection == WalletSection.CashOut )
+											<div class="wallet-cashout-bar">
+												<i class="material-icons">payments</i>
+												<TextEntry class="wallet-cashout-input" Placeholder="BTC amount (e.g. 0.025)" Value:bind="@CashOutAmount"/>
+												<button class="lp-ui-btn-primary wallet-cashout-btn @GetPartialCashOutButtonClass()" onclick="@CashOutPartial">@PartialCashOutButtonLabel()</button>
+											</div>
+
+											<div class="wallet-cashout-row">
+												<button class="lp-ui-btn-primary wallet-cashout-all @(HubWalletBtc() <= 0f ? "disabled" : "")" onclick="@CashOutAll">@CashOutAllButtonLabel()</button>
+											</div>
+
+											@if ( _cashOutErrorActive )
 											{
-												<div class="lp-ui-info">
-													<div class="lp-ui-info-row">
-														<span class="lp-ui-info-label">Hub wallet</span>
-														<span class="lp-ui-info-value accent">@HubWalletBtc().ToString("F6") BTC</span>
-													</div>
-													<div class="lp-ui-info-row">
-														<span class="lp-ui-info-label">Still on racks</span>
-														<span class="lp-ui-info-value">@RackPendingBtc().ToString("F6") BTC</span>
-													</div>
-													<div class="lp-ui-info-row">
-														<span class="lp-ui-info-label">Terminal linked</span>
-														<span class="lp-ui-info-value">@(HasLinkedTerminal() ? "Yes" : "No — place terminal near hub")</span>
-													</div>
-													<div class="lp-ui-info-row">
-														<span class="lp-ui-info-label">USD value (hub)</span>
-														<span class="lp-ui-info-value">$@HubWalletUsd().ToString("N2")</span>
-													</div>
-													<div class="lp-ui-info-row">
-														<span class="lp-ui-info-label">Exchange rate</span>
-														<span class="lp-ui-info-value">$@LpBitcoinEconomy.BitcoinValueUsd / BTC</span>
-													</div>
-													<div class="lp-ui-info-row">
-														<span class="lp-ui-info-label">Your cash</span>
-														<span class="lp-ui-info-value">$@LpHashdUiHost.GetLocalWalletCash()</span>
-													</div>
-												</div>
-
-												<div class="wallet-cashout-bar">
-													<i class="material-icons">payments</i>
-													<TextEntry class="wallet-cashout-input" Placeholder="BTC amount (e.g. 0.025)" Value:bind="@CashOutAmount"/>
-													<button class="lp-ui-btn-primary wallet-cashout-btn @GetPartialCashOutButtonClass()" onclick="@CashOutPartial">@PartialCashOutButtonLabel()</button>
-												</div>
-
-												<div class="wallet-cashout-row">
-													<button class="lp-ui-btn-primary wallet-cashout-all @(HubWalletBtc() <= 0f ? "disabled" : "")" onclick="@CashOutAll">@CashOutAllButtonLabel()</button>
-												</div>
-
-												@if ( _cashOutErrorActive )
-												{
-													<div class="wallet-cashout-error @(_cashOutErrorVisible ? "visible" : "")">
-														<i class="material-icons">error_outline</i>
-														<span>@_cashOutErrorMessage</span>
-													</div>
-												}
-
-												@if ( _cashOutSuccessActive )
-												{
-													<div class="wallet-cashout-success @(_cashOutSuccessVisible ? "visible" : "")">
-														<i class="material-icons">check_circle</i>
-														<span>@_cashOutSuccessMessage</span>
-													</div>
-												}
-											}
-											else
-											{
-												<div class="wallet-send-placeholder">
-													<i class="material-icons">send</i>
-													<div class="wallet-send-title">Send to another hub</div>
-													<p>Use the linked bitcoin terminal: <strong>send &lt;steamid&gt; &lt;amount|all&gt;</strong>. BTC moves from this hub wallet to the recipient's hub (matched by their Steam ID).</p>
-													<div class="wallet-send-search disabled">
-														<i class="material-icons">terminal</i>
-														<span>Terminal only — rig@hub&gt; send …</span>
-													</div>
+												<div class="wallet-cashout-error @(_cashOutErrorVisible ? "visible" : "")">
+													<i class="material-icons">error_outline</i>
+													<span>@_cashOutErrorMessage</span>
 												</div>
 											}
+
+											@if ( _cashOutSuccessActive )
+											{
+												<div class="wallet-cashout-success @(_cashOutSuccessVisible ? "visible" : "")">
+													<i class="material-icons">check_circle</i>
+													<span>@_cashOutSuccessMessage</span>
+												</div>
+											}
+										</div>
+									</div>
+								}
+								else if ( _active == OpsTab.Transfers )
+								{
+									<div class="pane transfers">
+										<div class="lp-ui-panel transfers-panel">
+											<div class="lp-ui-panel-title">
+												<i class="material-icons">swap_horiz</i>
+												<span>Hub transfers</span>
+											</div>
+
+											<div class="lp-ui-intro">
+												Move BTC between operators. Share your Steam ID to receive; send from the linked terminal using <strong>send</strong>.
+											</div>
+
+											<div class="transfer-columns">
+												<div class="transfer-column receive">
+													<div class="transfer-column-head">
+														<i class="material-icons">south_west</i>
+														<span>Receive BTC</span>
+													</div>
+													<p class="transfer-column-copy">Share your hub receive address so other operators can send BTC to this wallet.</p>
+													<div class="transfer-address-card">
+														<div class="transfer-address-label">Your receive ID</div>
+														<div class="transfer-address-value">@ReceiveSteamIdLabel()</div>
+													</div>
+													<div class="lp-ui-info transfer-column-stats">
+														<div class="lp-ui-info-row">
+															<span class="lp-ui-info-label">Hub wallet</span>
+															<span class="lp-ui-info-value accent">@HubWalletBtc().ToString("F6") BTC</span>
+														</div>
+													</div>
+													<div class="lp-ui-btn-row transfer-btn-row">
+														<button class="lp-ui-btn-ghost transfer-copy-btn" onclick="@CopyReceiveAddress">
+															<i class="material-icons">content_copy</i>
+															<span>@ReceiveCopyLabel()</span>
+														</button>
+													</div>
+												</div>
+
+												<div class="transfer-column send">
+													<div class="transfer-column-head">
+														<i class="material-icons">north_east</i>
+														<span>Send BTC</span>
+													</div>
+													<p class="transfer-column-copy">Use the linked bitcoin terminal to move BTC from this hub to another operator.</p>
+													<div class="lp-ui-info transfer-column-stats">
+														<div class="lp-ui-info-row">
+															<span class="lp-ui-info-label">Terminal linked</span>
+															<span class="lp-ui-info-value">@(HasLinkedTerminal() ? "Yes — ready to send" : "No — place terminal near hub")</span>
+														</div>
+													</div>
+													<div class="transfer-command-card">
+														<div class="transfer-command-label">Command</div>
+														<div class="transfer-command-text">send &lt;steamid&gt; &lt;amount|all&gt;</div>
+													</div>
+													<div class="transfer-command-card">
+														<div class="transfer-command-label">Example</div>
+														<div class="transfer-command-text">send 76561198012345678 0.05</div>
+													</div>
+													<div class="lp-ui-btn-row transfer-btn-row">
+														<button class="lp-ui-btn-ghost transfer-copy-btn" onclick="@CopySendExample">
+															<i class="material-icons">content_copy</i>
+															<span>@SendExampleCopyLabel()</span>
+														</button>
+													</div>
+												</div>
+											</div>
 										</div>
 									</div>
 								}
@@ -398,7 +442,7 @@
 											}
 											else
 											{
-												<div class="lp-ui-scroll">
+												<div class="lp-ui-scroll lp-ui-scroll-region">
 													<div class="notif-list">
 														@foreach ( var alert in GetHubAlerts() )
 														{
@@ -456,15 +500,15 @@
 
 @code
 {
-	private enum OpsTab { Overview, Wallet, Racks, Logs, Settings }
-	private enum WalletSection { CashOut, Send }
+	private enum OpsTab { Overview, Wallet, Transfers, Racks, Logs, Settings }
 	private enum PerfRange { Day, Week, Month }
 
-	private static readonly OpsTab[] _tabs = { OpsTab.Overview, OpsTab.Wallet, OpsTab.Racks, OpsTab.Logs, OpsTab.Settings };
+	private static readonly OpsTab[] _tabs = { OpsTab.Overview, OpsTab.Wallet, OpsTab.Transfers, OpsTab.Racks, OpsTab.Logs, OpsTab.Settings };
 	private static readonly PerfRange[] _perfRanges = { PerfRange.Day, PerfRange.Week, PerfRange.Month };
 
 	private OpsTab _active = OpsTab.Overview;
-	private WalletSection _walletSection = WalletSection.CashOut;
+	private bool _receiveCopyAck;
+	private bool _sendExampleCopyAck;
 	private PerfRange _perfRange = PerfRange.Week;
 	private PerfRange _profitRange = PerfRange.Week;
 	private bool _pinUnlocked;
@@ -629,14 +673,13 @@
 		return hourlyBtc * multiplier * LpBitcoinEconomy.BitcoinValueUsd;
 	}
 
-	private static string RackDisplayName( LpBitcoinRackEntity rack, int index )
-	{
-		if ( !rack.IsValid() )
-			return $"Rack #{index}";
+	private string RackSlotLabel( LpBitcoinRackEntity rack )
+		=> LpBitcoinIdent.FormatRackSlotId( rack, GetLinkedRacks() );
 
-		var label = rack.AdvancedRack ? LpBitcoinIdent.AdvancedRackDisplayName : LpBitcoinIdent.RackDisplayName;
-		return $"#{index} {label}";
-	}
+	private static string RackYieldLabel( LpBitcoinRackEntity rack )
+		=> !rack.IsValid()
+			? "yield ×1"
+			: rack.AdvancedRack ? "yield ×2" : "yield ×1";
 
 	private static string RackOverviewSubline( LpBitcoinRackEntity rack )
 	{
@@ -665,8 +708,6 @@
 		var core = rack.CoreUpgradeLevel >= LpBitcoinEconomy.CoreUpgradeCosts.Length ? "Core max" : $"Core next ${LpBitcoinEconomy.CoreUpgradeCosts[rack.CoreUpgradeLevel]:N0}";
 		return $"{cpu} · {core}";
 	}
-
-	private void SelectWalletSection( WalletSection section ) => _walletSection = section;
 
 	private string HubDisplayName() => "HASHD Hub";
 
@@ -708,6 +749,7 @@
 	{
 		OpsTab.Overview => "home",
 		OpsTab.Wallet => "account_balance_wallet",
+		OpsTab.Transfers => "swap_horiz",
 		OpsTab.Racks => "dns",
 		OpsTab.Logs => "notifications",
 		OpsTab.Settings => "settings",
@@ -718,6 +760,7 @@
 	{
 		OpsTab.Overview => "Overview",
 		OpsTab.Wallet => "Wallet",
+		OpsTab.Transfers => "Transfers",
 		OpsTab.Racks => "Servers",
 		OpsTab.Logs => "Logs",
 		OpsTab.Settings => "Settings",
@@ -729,7 +772,58 @@
 		_active = tab;
 		LifePunchUiScrollPolicy.Apply( Panel );
 	}
+
+	private long ReceiveSteamId()
+	{
+		if ( Hub is { Owner: > 0 } )
+			return Hub.Owner;
+
+		return LocalSteamId();
+	}
+
+	private string ReceiveSteamIdLabel()
+	{
+		var steamId = ReceiveSteamId();
+		return steamId > 0 ? steamId.ToString() : "Unavailable — bind hub owner first";
+	}
+
+	private string ReceiveCopyLabel() => _receiveCopyAck ? "Copied!" : "Copy Steam ID";
+
+	private string SendExampleCopyLabel() => _sendExampleCopyAck ? "Copied!" : "Copy example command";
+
+	private void CopyReceiveAddress()
+	{
+		var steamId = ReceiveSteamId();
+		if ( steamId <= 0 )
+			return;
+
+		Clipboard.SetText( steamId.ToString() );
+		_receiveCopyAck = true;
+		_ = ClearReceiveCopyAckAsync();
+	}
+
+	private void CopySendExample()
+	{
+		Clipboard.SetText( "send 76561198012345678 0.05" );
+		_sendExampleCopyAck = true;
+		_ = ClearSendExampleCopyAckAsync();
+	}
+
+	private async System.Threading.Tasks.Task ClearReceiveCopyAckAsync()
+	{
+		await GameTask.DelayRealtimeSeconds( 2f );
+		_receiveCopyAck = false;
+		StateHasChanged();
+	}
+
+	private async System.Threading.Tasks.Task ClearSendExampleCopyAckAsync()
+	{
+		await GameTask.DelayRealtimeSeconds( 2f );
+		_sendExampleCopyAck = false;
+		StateHasChanged();
+	}
 	private void SelectWalletTab() => SelectTab( OpsTab.Wallet );
+	private void SelectTransfersTab() => SelectTab( OpsTab.Transfers );
 	private void SelectRacksTab() => SelectTab( OpsTab.Racks );
 	private void OpenSettings() => SelectTab( OpsTab.Settings );
 	private string GetRootClass() => $"lp-bitcoin-ops lp-ui-accent-hashd {LpUiScale.CssClass( LpUiScale.Default )}";
@@ -1032,7 +1126,8 @@
 	{
 		var hash = new HashCode();
 		hash.Add( _active );
-		hash.Add( _walletSection );
+		hash.Add( _receiveCopyAck );
+		hash.Add( _sendExampleCopyAck );
 		hash.Add( _pinUnlocked );
 		hash.Add( _pinBuffer );
 		hash.Add( _pinSetupPass );
@@ -1049,6 +1144,7 @@
 		hash.Add( TotalMiningRate() );
 		hash.Add( Hub?.UnreadAlertCount ?? 0 );
 		hash.Add( Hub?.AlertFeed );
+		hash.Add( Hub?.Owner ?? 0 );
 		return hash.ToHashCode();
 	}
 }

@@ -31,6 +31,19 @@ public static class LpBitcoinStagingDevSpawn
 	public const string StagingHubPrefab =
 		"addons/lifepunch/lpbitcoin/bitcoinhub/assets/entities/bitcoinhub.prefab";
 
+	public const string StagingTerminalVmdl =
+		"addons/lifepunch/lpbitcoin/hashdterminal/assets/models/hashd-terminal.vmdl";
+
+	/// <summary>Safe fallback when staging terminal materials are mid-compile (avoids vmat hot-loop lag).</summary>
+	public const string StagingTerminalSafeVmdl =
+		"addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-terminal/bitcoin-terminal.vmdl";
+
+	public const string LegacyTerminalVmdl =
+		"addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-terminal/bitcoin-terminal.vmdl";
+
+	public const string ShippedTerminalPrefab =
+		"addons/lifepunch/bitcoinmining/entities/bitcoin-terminal/bitcoin-terminal.prefab";
+
 	public const string DxrpPrinterPrefab = "gameplay/entities/printer/printer.prefab";
 
 	static readonly (string Id, string Vmdl, string Note)[] HubModelCandidates =
@@ -163,6 +176,175 @@ public static class LpBitcoinStagingDevSpawn
 			existing.Destroy();
 	}
 
+	/// <summary>Steam Machine PC workstation — mesh-only preview at market spawn.</summary>
+	[ConCmd( "lp_staging_terminal_clear" )]
+	public static void StagingTerminalClear()
+	{
+		var scene = Game.ActiveScene;
+		if ( scene is null )
+		{
+			Log.Warning( "lp_staging_terminal_clear: no active scene." );
+			return;
+		}
+
+		ClearStagingTerminal( scene );
+		Log.Info( "lp_staging_terminal_clear: removed staging terminal previews (stops hashd vmat hot-loop if compare was left spawned)." );
+	}
+
+	[ConCmd( "lp_spawn_staging_terminal" )]
+	public static void SpawnStagingTerminal()
+	{
+		var scene = Game.ActiveScene;
+		if ( scene is null )
+		{
+			Log.Warning( "lp_spawn_staging_terminal: no active scene — Host Play first." );
+			return;
+		}
+
+		if ( !LifePunchMarketSpawn.TryGetIdentitySpawnTransform( out var transform ) )
+		{
+			Log.Warning( "lp_spawn_staging_terminal: no local viewer." );
+			return;
+		}
+
+		ClearStagingTerminal( scene );
+		SpawnStagingTerminalEntity( scene, transform );
+	}
+
+	/// <summary>Mesh-only preview — scale/material compare without gameplay stack.</summary>
+	[ConCmd( "lp_spawn_staging_terminal_mesh" )]
+	public static void SpawnStagingTerminalMesh()
+	{
+		var scene = Game.ActiveScene;
+		if ( scene is null )
+		{
+			Log.Warning( "lp_spawn_staging_terminal_mesh: no active scene — Host Play first." );
+			return;
+		}
+
+		if ( !LifePunchMarketSpawn.TryGetIdentitySpawnTransform( out var transform ) )
+		{
+			Log.Warning( "lp_spawn_staging_terminal_mesh: no local viewer." );
+			return;
+		}
+
+		ClearStagingTerminal( scene );
+		SpawnModelPreview( scene, "hashd-terminal", StagingTerminalVmdl, transform,
+			"HASHD terminal mesh-only — use lp_spawn_staging_terminal for gameplay entity" );
+	}
+
+	/// <summary>Legacy CRT vs new HASHD mesh side-by-side (identity rotation).</summary>
+	[ConCmd( "lp_staging_terminal_compare" )]
+	public static void StagingTerminalCompare()
+	{
+		var scene = Game.ActiveScene;
+		if ( scene is null )
+		{
+			Log.Warning( "lp_staging_terminal_compare: no active scene." );
+			return;
+		}
+
+		if ( !LifePunchMarketSpawn.TryGetIdentitySpawnTransform( out var transform ) )
+		{
+			Log.Warning( "lp_staging_terminal_compare: no local viewer." );
+			return;
+		}
+
+		ClearStagingTerminal( scene );
+
+		const float spacing = 100f;
+		var left = transform.WithPosition( transform.Position - transform.Rotation.Right * spacing * 0.5f );
+		var right = transform.WithPosition( transform.Position + transform.Rotation.Right * spacing * 0.5f );
+		SpawnModelPreview( scene, "legacy-terminal", LegacyTerminalVmdl, left, "Shipped bitcoin-terminal.vmdl (left)" );
+		SpawnModelPreview( scene, "hashd-terminal", StagingTerminalVmdl, right, "Purchased hashd-terminal.vmdl (right)" );
+		Log.Info( "lp_staging_terminal_compare: legacy left, new HASHD right — same market spawn row." );
+	}
+
+	/// <summary>Four Y rotations @ staging terminal vmdl — pick front face for import_rotation bake.</summary>
+	[ConCmd( "lp_staging_terminal_facing_row" )]
+	public static void StagingTerminalFacingRow()
+	{
+		var scene = Game.ActiveScene;
+		if ( scene is null )
+		{
+			Log.Warning( "lp_staging_terminal_facing_row: no active scene." );
+			return;
+		}
+
+		ClearStagingTerminal( scene );
+
+		const float spacing = 80f;
+		var basePos = new Vector3( 0f, 160f, 0f );
+		var yaws = new[] { 0f, 90f, 180f, 270f };
+
+		for ( var i = 0; i < yaws.Length; i++ )
+		{
+			var yaw = yaws[i];
+			var pos = basePos + new Vector3( ( i - 1.5f ) * spacing, 0f, 0f );
+			SpawnModelPreview( scene, $"hashd-y{yaw:F0}", StagingTerminalVmdl, new Transform( pos, Rotation.FromYaw( yaw ) ),
+				$"Y={yaw:F0}° — monitor should face player at identity spawn" );
+		}
+
+		Log.Info( "lp_staging_terminal_facing_row: stand @ origin facing +Y — pick monitor-toward-you, bake Y into vmdl import_rotation." );
+	}
+
+	/// <summary>Alias — same as lp_spawn_staging_terminal (gameplay prefab + HASHD vmdl).</summary>
+	[ConCmd( "lp_spawn_staging_terminal_prop" )]
+	public static void SpawnStagingTerminalProp()
+	{
+		var scene = Game.ActiveScene;
+		if ( scene is null )
+		{
+			Log.Warning( "lp_spawn_staging_terminal_prop: no active scene." );
+			return;
+		}
+
+		if ( !LifePunchMarketSpawn.TryGetIdentitySpawnTransform( out var transform ) )
+		{
+			Log.Warning( "lp_spawn_staging_terminal_prop: no local viewer." );
+			return;
+		}
+
+		ClearStagingTerminal( scene );
+		SpawnStagingTerminalEntity( scene, transform );
+	}
+
+	static void SpawnStagingTerminalEntity( Scene scene, Transform transform )
+	{
+		var go = ClonePrefabAt( ShippedTerminalPrefab, transform );
+		if ( !go.IsValid() )
+		{
+			Log.Error( $"lp_spawn_staging_terminal: could not load '{ShippedTerminalPrefab}' — recompile prefab in editor." );
+			return;
+		}
+
+		go.Name = "lpbitcoin_staging_terminal";
+
+		var terminal = go.Components.Get<LpBitcoinTerminalEntity>( FindMode.EverythingInSelfAndDescendants );
+		if ( !terminal.IsValid() )
+		{
+			Log.Error( "lp_spawn_staging_terminal: prefab missing LpBitcoinTerminalEntity." );
+			go.Destroy();
+			return;
+		}
+
+		var model = Model.Load( StagingTerminalVmdl );
+		if ( model.IsValid )
+		{
+			var renderer = go.Components.Get<ModelRenderer>( FindMode.EverythingInSelf );
+			if ( renderer.IsValid() )
+				renderer.Model = model;
+		}
+		else
+		{
+			Log.Warning( $"lp_spawn_staging_terminal: staging vmdl not loaded — using prefab default '{LpBitcoinIdent.TerminalModelPath}'." );
+		}
+
+		NetworkSpawnIfNeeded( go );
+		LifePunchPropPhysics.LogModelPhysics( go, "staging_terminal" );
+		Log.Info( $"lp_spawn_staging_terminal: Bitcoin Terminal entity at {go.WorldPosition} — gravity drop, model collider, 100 HP, USE opens rig0." );
+	}
+
 	[ConCmd( "lp_spawn_staging_hub" )]
 	public static void SpawnStagingHub()
 	{
@@ -197,10 +379,7 @@ public static class LpBitcoinStagingDevSpawn
 		LpBitcoinStagingHubPowerCommands.EnsureHubGameplayStack( go );
 
 		NetworkSpawnIfNeeded( go );
-#if !LIFEPUNCH_LOCAL
-		if ( Networking.IsHost )
-			LifePunchPropPhysics.SetupWorldMachine( go, alignGround: true );
-#endif
+		LifePunchPropPhysics.SetupGrabbablePlaceableProp( go, alignGround: true );
 		LifePunchPropPhysics.LogModelPhysics( go, "staging_hub" );
 		Log.Info( $"lp_spawn_staging_hub: prefab placed at {go.WorldPosition} — market spawn + ground align" );
 	}
@@ -253,7 +432,7 @@ public static class LpBitcoinStagingDevSpawn
 			return;
 		}
 
-		LifePunchPropPhysics.SetupWorldMachine( hub, alignGround: true );
+		LifePunchPropPhysics.SetupGrabbablePlaceableProp( hub, alignGround: true );
 		Log.Info( $"lp_staging_hub_ground_fix: feet aligned at {hub.WorldPosition}" );
 	}
 
@@ -392,6 +571,17 @@ public static class LpBitcoinStagingDevSpawn
 		foreach ( var existing in scene.GetAllObjects( true ) )
 		{
 			if ( existing.Name == "lpbitcoin_staging_hub" )
+				existing.Destroy();
+		}
+	}
+
+	static void ClearStagingTerminal( Scene scene )
+	{
+		ClearModelPreviews( scene );
+
+		foreach ( var existing in scene.GetAllObjects( true ) )
+		{
+			if ( existing.Name is "lpbitcoin_staging_terminal_prop" or "lpbitcoin_staging_terminal" )
 				existing.Destroy();
 		}
 	}

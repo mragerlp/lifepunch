@@ -10,6 +10,7 @@ using LifePunch.DXRP.Addons;
 #if !LIFEPUNCH_LOCAL
 using Dxura.RP.Game;
 using Dxura.RP.Shared;
+using DamageInfo = Dxura.RP.Game.DamageInfo;
 #endif
 
 namespace LifePunch.DXRP.Addons.Bitcoin;
@@ -20,7 +21,7 @@ namespace LifePunch.DXRP.Addons.Bitcoin;
 #if LIFEPUNCH_LOCAL
 public sealed class LpBitcoinRackEntity : Component, Component.IPressable
 #else
-public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable
+public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable, IAreaDamageReceiver
 #endif
 {
 	/// <summary>Stacked rack (<see cref="LpBitcoinIdent.AdvancedRackSlug"/>) — <see cref="LpBitcoinIdent.AdvancedRackDisplayName"/>, 2× yield.</summary>
@@ -35,7 +36,7 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable
 	[Sync( SyncFlags.FromHost )] public int CoreUpgradeLevel { get; set; }
 	[Sync( SyncFlags.FromHost )] public float MiningProgress { get; set; }
 
-	public float YieldMultiplier => AdvancedRack ? 2f : 1f;
+	public float YieldMultiplier => AdvancedRack ? LpBitcoinIdent.AdvancedRackYield : LpBitcoinIdent.StandardRackYield;
 	public float MiningRatePerMinute => LpBitcoinEconomy.MiningRatePerMinute( ClockGhz, CoreCount, YieldMultiplier );
 	public int UsdValue => (int)(BitcoinAmount * LpBitcoinEconomy.BitcoinValueUsd);
 
@@ -50,21 +51,45 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable
 	private LpBitcoinRackVisuals _visuals;
 	private bool _lastMiningVisual;
 	private bool _capacityAlertSent;
+#if !LIFEPUNCH_LOCAL
+	[Property]
+	[Group( "Effects" )]
+	public GameObject Explosion { get; set; }
+
+	bool _isExploding;
+	int _spawnDropGraceTicks;
+	bool _colliderSyncedFromModel;
+#endif
 
 	protected override void OnAwake()
 	{
-		LifePunchPropPhysics.SyncBoxColliderFromModel( GameObject );
+		// Collider sync after spawn grace in OnFixedUpdate (printer-style drop).
 	}
 
 	protected override void OnStart()
 	{
 		base.OnStart();
 #if !LIFEPUNCH_LOCAL
-		if ( Networking.IsHost )
-			LifePunchGroundContact.AlignMeshBottom( GameObject );
 		this.TryBindSpawnOwnerHost();
+		if ( Networking.IsHost )
+		{
+			if ( HealthComponent.IsValid() )
+			{
+				HealthComponent.MaxHealth = AdvancedRack
+					? LpBitcoinIdent.AdvancedRackMaxHealth
+					: LpBitcoinIdent.RackMaxHealth;
+				if ( HealthComponent.Health <= 0f || HealthComponent.Health > HealthComponent.MaxHealth )
+					HealthComponent.Health = HealthComponent.MaxHealth;
+			}
+
+			_spawnDropGraceTicks = 45;
+			_colliderSyncedFromModel = false;
+			LifePunchPropPhysics.BeginGrabbablePrinterDrop( GameObject, syncColliderFromModel: false );
+			Log.Info( $"RACK_SPAWN_PHYSICS advanced={AdvancedRack} pos={GameObject.WorldPosition} gravity=on (printer drop)" );
+		}
 #endif
-		_modelRenderer = Components.Get<ModelRenderer>( FindMode.EverythingInSelf );
+		_modelRenderer = Components.Get<ModelRenderer>( FindMode.EverythingInSelf )
+		                 ?? Components.Get<SkinnedModelRenderer>( FindMode.EverythingInSelf ) as ModelRenderer;
 		_visuals = Components.Get<LpBitcoinRackVisuals>( FindMode.EverythingInSelf );
 		if ( !_visuals.IsValid() )
 		{
@@ -86,7 +111,22 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable
 	protected override void OnFixedUpdate()
 	{
 #if !LIFEPUNCH_LOCAL
-		TryAlignGroundWhenReleased();
+		if ( !Networking.IsHost )
+			return;
+
+		LifePunchPropPhysics.MaintainGrabbablePlaceableProp( GameObject );
+
+		if ( _spawnDropGraceTicks > 0 )
+		{
+			_spawnDropGraceTicks--;
+			return;
+		}
+
+		if ( !_colliderSyncedFromModel )
+		{
+			LifePunchPropPhysics.SyncBoxColliderFromModel( GameObject );
+			_colliderSyncedFromModel = true;
+		}
 #endif
 	}
 
@@ -278,20 +318,30 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable
 		GetLinkedHub()?.RefreshLinkedTerminalScreens();
 	}
 
-	private void TryAlignGroundWhenReleased()
+#if !LIFEPUNCH_LOCAL
+	public void ApplyAreaDamage( AreaDamage component )
 	{
-		if ( !Networking.IsHost || GameObject.Tags.Has( Constants.GrabbedTag ) )
-			return;
+		var dmg = new DamageInfo(
+			component.Attacker,
+			component.Damage,
+			component.Inflictor,
+			component.WorldPosition,
+			Flags: component.DamageFlags );
 
-		if ( !_modelRenderer.IsValid() )
-			_modelRenderer = Components.Get<ModelRenderer>( FindMode.EverythingInSelf );
-
-		if ( !_modelRenderer.IsValid() || _modelRenderer.Bounds.Mins.z > -0.15f )
-			return;
-
-		if ( Rigidbody.IsValid() && Rigidbody.Velocity.Length > 8f )
-			return;
-
-		LifePunchGroundContact.AlignMeshBottom( GameObject );
+		HealthComponent?.TakeDamageHost( dmg );
 	}
+
+	protected override void OnDestroyed()
+	{
+		if ( Networking.IsHost && !_isExploding )
+		{
+			_isExploding = true;
+			StopMiningHost();
+			BitcoinAmount = 0f;
+			LifePunchMachineDestroyFx.SpawnPrinterStyleExplosion( this, Explosion, WorldPosition );
+		}
+
+		base.OnDestroyed();
+	}
+#endif
 }

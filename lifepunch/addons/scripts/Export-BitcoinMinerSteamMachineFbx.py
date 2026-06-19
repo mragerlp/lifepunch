@@ -1,23 +1,28 @@
-"""Headless Blender export: bitcoinminer.blend -> steam-machine.fbx (Steam_Machine collection only).
+"""Headless Blender export: steam_machine blend -> steam-machine.fbx (Steam_Machine collection only).
 
-Builds a prop armature (one bone per hull part) so ModelDoc animated_model compiles bones + sequences.
-Object actions (fanAction, front_panelAction) are baked onto the armature before export.
+Phase 1 (default): STATIC assembled chassis — meshes only, no armature, no baked actions.
+  ModelDoc imports base_body + front_panel + back_body as rigid hull (fan excluded on body vmdl).
+  Fan mesh is included in the same FBX for bitcoinhub-fan.vmdl (child GO spin).
+
+Phase 2 (legacy --rigged): armature + baked actions — do not use for hub body ship.
 """
 import bpy
 import sys
-from mathutils import Vector
 
 argv = sys.argv
 argv = argv[argv.index("--") + 1 :] if "--" in argv else []
 blend_path = argv[0] if len(argv) > 0 else ""
 out_fbx = argv[1] if len(argv) > 1 else ""
+rigged = "--rigged" in argv
 
 if not blend_path or not out_fbx:
-    raise SystemExit("usage: blender --background blend --python script -- <blend> <out.fbx>")
+    raise SystemExit("usage: blender --background blend --python script -- <blend> <out.fbx> [--rigged]")
 
 EXPORT_COLLECTIONS = {"Steam_Machine"}
 ROOT_NAME = "base_body"
-PART_NAMES = ("base_body", "fan", "front_panel", "back_body")
+STATIC_HULL_NAMES = ("base_body", "front_panel", "back_body")
+FAN_MESH_NAME = "fan"
+RIG_PART_NAMES = ("base_body", "fan", "front_panel", "back_body")
 ARMATURE_NAME = "SteamMachineRig"
 ACTION_NAMES = ("fanAction", "front_panelAction")
 
@@ -47,7 +52,89 @@ def remove_existing_armatures():
             bpy.data.objects.remove(obj, do_unlink=True)
 
 
+def clear_rigging(obj):
+    if obj is None:
+        return
+
+    if obj.animation_data:
+        obj.animation_data_clear()
+
+    for mod in list(obj.modifiers):
+        if mod.type == "ARMATURE":
+            obj.modifiers.remove(mod)
+
+    obj.vertex_groups.clear()
+
+    if obj.parent is not None and obj.parent.type == "ARMATURE":
+        world = obj.matrix_world.copy()
+        obj.parent = None
+        obj.matrix_world = world
+
+
+def align_fan_to_front_panel():
+    """Authoring has fan on the rear hull — snap to front_panel before export."""
+    fan = bpy.data.objects.get(FAN_MESH_NAME)
+    front = bpy.data.objects.get("front_panel")
+    if fan is None or front is None:
+        return
+
+    fan.matrix_world.translation = front.matrix_world.translation.copy()
+    print(f"FAN_ALIGN: fan -> front_panel at {fan.matrix_world.translation}")
+
+
+def prepare_static_hull():
+    remove_existing_armatures()
+    ensure_parent_chain()
+    align_fan_to_front_panel()
+
+    for part_name in STATIC_HULL_NAMES:
+        clear_rigging(bpy.data.objects.get(part_name))
+
+    fan = bpy.data.objects.get(FAN_MESH_NAME)
+    if fan is not None:
+        clear_rigging(fan)
+        fan.hide_set(False)
+        fan.hide_render = False
+
+
+def export_static(out_path, mesh_names):
+    meshes = []
+    for name in mesh_names:
+        obj = bpy.data.objects.get(name)
+        if obj is not None and obj.type == "MESH":
+            meshes.append(obj)
+
+    if not meshes:
+        raise SystemExit(f"No static hull meshes: {mesh_names}")
+
+    bpy.ops.object.select_all(action="DESELECT")
+    for obj in meshes:
+        obj.select_set(True)
+    bpy.context.view_layer.objects.active = meshes[0]
+
+    bpy.ops.export_scene.fbx(
+        filepath=out_path,
+        use_selection=True,
+        object_types={"MESH"},
+        bake_anim=False,
+        add_leaf_bones=False,
+        path_mode="COPY",
+        embed_textures=False,
+        axis_forward="-Z",
+        axis_up="Y",
+    )
+
+    print(f"EXPORT_OK: {out_path}")
+    print(f"EXPORT_MODE: static")
+    print(f"EXPORT_MESHES: {[o.name for o in meshes]}")
+
+
+# --- Legacy rigged export (Phase 2 only — causes separated hull in static ModelDoc) ---
+
+
 def build_armature(part_objects):
+    from mathutils import Vector
+
     remove_existing_armatures()
 
     arm_data = bpy.data.armatures.new(ARMATURE_NAME)
@@ -71,7 +158,7 @@ def build_armature(part_objects):
     root_bone.tail = root_tail
     bone_map[ROOT_NAME] = root_bone
 
-    for part_name in PART_NAMES:
+    for part_name in RIG_PART_NAMES:
         if part_name == ROOT_NAME:
             continue
         obj = part_objects.get(part_name)
@@ -157,32 +244,7 @@ def bake_actions_to_armature(arm_obj, part_objects):
             print(f"BAKED_ACTION: {baked.name} frames={frame_start}-{frame_end}")
 
 
-def main():
-    bpy.ops.wm.open_mainfile(filepath=blend_path)
-
-    export_meshes = [
-        obj
-        for obj in bpy.data.objects
-        if obj.type == "MESH" and mesh_in_export_collections(obj)
-    ]
-    if not export_meshes:
-        raise SystemExit(f"No meshes found in collections: {sorted(EXPORT_COLLECTIONS)}")
-
-    ensure_parent_chain()
-
-    part_objects = {name: bpy.data.objects.get(name) for name in PART_NAMES}
-    if part_objects[ROOT_NAME] is None:
-        raise SystemExit(f"Missing root mesh: {ROOT_NAME}")
-
-    arm_obj, bone_map = build_armature(part_objects)
-
-    for part_name, obj in part_objects.items():
-        if obj is None or part_name not in bone_map:
-            continue
-        bind_mesh_to_bone(obj, arm_obj, part_name)
-
-    bake_actions_to_armature(arm_obj, part_objects)
-
+def export_rigged(out_path, export_meshes, arm_obj):
     bpy.ops.object.select_all(action="DESELECT")
     for obj in export_meshes:
         obj.select_set(True)
@@ -190,7 +252,7 @@ def main():
     bpy.context.view_layer.objects.active = arm_obj
 
     bpy.ops.export_scene.fbx(
-        filepath=out_fbx,
+        filepath=out_path,
         use_selection=True,
         object_types={"MESH", "ARMATURE"},
         bake_anim=True,
@@ -203,11 +265,39 @@ def main():
         axis_up="Y",
     )
 
-    print(f"EXPORT_OK: {out_fbx}")
+    print(f"EXPORT_OK: {out_path}")
+    print(f"EXPORT_MODE: rigged")
     print(f"EXPORT_MESHES: {[o.name for o in export_meshes]}")
-    print(f"EXPORT_ARMATURE: {arm_obj.name} bones={[b.name for b in arm_obj.data.bones]}")
-    for action in bpy.data.actions:
-        print(f"ACTION: {action.name}")
+
+
+def main():
+    bpy.ops.wm.open_mainfile(filepath=blend_path)
+
+    export_meshes = [
+        obj
+        for obj in bpy.data.objects
+        if obj.type == "MESH" and mesh_in_export_collections(obj)
+    ]
+    if not export_meshes:
+        raise SystemExit(f"No meshes found in collections: {sorted(EXPORT_COLLECTIONS)}")
+
+    if rigged:
+        ensure_parent_chain()
+        part_objects = {name: bpy.data.objects.get(name) for name in RIG_PART_NAMES}
+        if part_objects[ROOT_NAME] is None:
+            raise SystemExit(f"Missing root mesh: {ROOT_NAME}")
+
+        arm_obj, bone_map = build_armature(part_objects)
+        for part_name, obj in part_objects.items():
+            if obj is None or part_name not in bone_map:
+                continue
+            bind_mesh_to_bone(obj, arm_obj, part_name)
+        bake_actions_to_armature(arm_obj, part_objects)
+        export_rigged(out_fbx, export_meshes, arm_obj)
+        return
+
+    prepare_static_hull()
+    export_static(out_fbx, STATIC_HULL_NAMES)
 
 
 main()

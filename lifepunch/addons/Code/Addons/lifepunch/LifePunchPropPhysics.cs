@@ -124,10 +124,10 @@ public static class LifePunchPropPhysics
 		=> EnforceWorldMachine( go );
 
 	/// <summary>
-	/// Bitcoin hub @ spawn — printer-like hands grab (LMB move/rotate) without pocket.
-	/// Keeps dynamic RB + <c>hands_interact</c>; strips DXRP <c>grabbed</c> ghost tag on host tick.
+	/// DXRP printer spawn — dynamic RB + gravity, hands grab, no ground teleport.
+	/// Prefer <paramref name="syncColliderFromModel"/> false on first frame (bounds may lag).
 	/// </summary>
-	public static void SetupGrabbablePlaceableProp( GameObject go, bool alignGround = true )
+	public static void BeginGrabbablePrinterDrop( GameObject go, bool syncColliderFromModel = true )
 	{
 		if ( !go.IsValid() )
 			return;
@@ -135,16 +135,8 @@ public static class LifePunchPropPhysics
 		AllowHandsGrabTags( go );
 		go.Tags.Remove( "pocket_item" );
 
-		if ( alignGround )
-		{
-			var aligned = LifePunchGroundContact.AlignMeshBottom( go );
-#if !LIFEPUNCH_LOCAL
-			if ( !aligned )
-				Log.Warning( $"LIFEPUNCH_PROP_PHYSICS ground align missed for '{go.Name}' at {go.WorldPosition}" );
-#endif
-		}
-
-		SyncBoxColliderFromModel( go );
+		if ( syncColliderFromModel )
+			SyncBoxColliderFromModel( go );
 
 		var box = go.Components.Get<BoxCollider>( FindMode.EverythingInSelf );
 		if ( box.IsValid() )
@@ -159,10 +151,33 @@ public static class LifePunchPropPhysics
 		{
 			rb.Gravity = true;
 			rb.MotionEnabled = true;
+			rb.Velocity = Vector3.Zero;
+			rb.AngularVelocity = Vector3.Zero;
 		}
 
 		go.Tags.Add( "entity" );
 		go.Tags.Add( "solid" );
+	}
+
+	/// <summary>
+	/// Bitcoin hub @ spawn — printer-like hands grab (LMB move/rotate) without pocket.
+	/// Keeps dynamic RB + <c>hands_interact</c>; strips DXRP <c>grabbed</c> ghost tag on host tick.
+	/// </summary>
+	public static void SetupGrabbablePlaceableProp( GameObject go, bool alignGround = true )
+	{
+		if ( !go.IsValid() )
+			return;
+
+		BeginGrabbablePrinterDrop( go, syncColliderFromModel: true );
+
+		if ( alignGround )
+		{
+			var aligned = LifePunchGroundContact.AlignMeshBottom( go );
+#if !LIFEPUNCH_LOCAL
+			if ( !aligned )
+				Log.Warning( $"LIFEPUNCH_PROP_PHYSICS ground align missed for '{go.Name}' at {go.WorldPosition}" );
+#endif
+		}
 	}
 
 	/// <summary>Host — keep hub solid while hands move it; clear stuck post-release clip tags.</summary>

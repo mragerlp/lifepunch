@@ -33,9 +33,9 @@ lifepunch.bitcoin
 
 PHASE A HUB MESH (June 2026):
 Steam Machine — static assembled chassis (steam-machine.fbx)
-Active dev: bitcoinmining/models/.../bitcoin-miner/ (legacy paths OK during polish)
-Promote to: lpbitcoin/bitcoinhub/ when signed off
-Parked: Sketchfab Generic PC (bitcoin-hub.vmdl), Fab CPU GAMER (cpu_gamer.fbx)
+Canonical assets: lpbitcoin/bitcoinhub/assets/ (bitcoinhub.vmdl, bitcoinhub.prefab)
+Legacy bitcoin-miner tree: MOVED.md + _archive only under bitcoinmining/
+Parked: Sketchfab Generic PC (bitcoin-hub.vmdl in _archive), Fab CPU GAMER (cpu_gamer.fbx)
 
 CURRENT PHASE:
 Phase A Hub polish — scale, facing, collider, materials, USE, power LED, flatgrass proof

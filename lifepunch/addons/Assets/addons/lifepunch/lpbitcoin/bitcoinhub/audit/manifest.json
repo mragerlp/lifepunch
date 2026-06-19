@@ -1,10 +1,11 @@
-﻿{
-    "notes": [
-        "bitcoin-hub.vmdl + generic-pc-desktop.fbx (Sketchfab, CC BY Bryan)",
-        "Single atlas: generic-pc-desktop_basecolor.png"
-    ],
-    "role": "Bitcoin HUB (generic desktop PC)",
-    "primary_mesh": "assets/source/fbx/generic-pc-desktop.fbx",
-    "issues": [],
-    "slot": "bitcoinhub"
+{
+    "slot":  "bitcoinhub",
+    "primary_mesh":  "assets/source/fbx/steam-machine.fbx",
+    "prefab":  "assets/entities/bitcoinhub.prefab",
+    "vmdl":  "assets/models/bitcoinhub.vmdl",
+    "role":  "Bitcoin HUB (Steam Machine)",
+    "notes":  [
+                  "Jun 2026 promotion — canonical path is lpbitcoin/bitcoinhub"
+              ],
+    "promotedFrom":  "bitcoinmining/models/.../bitcoin-miner"
 }

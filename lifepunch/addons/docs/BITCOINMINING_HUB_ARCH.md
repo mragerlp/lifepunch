@@ -10,8 +10,12 @@
 | Rule | Value |
 |------|-------|
 | Max hubs | **2** |
-| Per hub — small racks | **3** (`gpu-rack`) |
-| Per hub — advanced rack | **1** (`advanced-gpu-rack`) |
+| Per hub — small racks | **2** (`gpu-rack`) — slots **GPURack-1 … GPURack-2** |
+| Per hub — advanced racks | **2** (`advanced-gpu-rack`) — slots **AdvancedGPURack-1 … AdvancedGPURack-2** |
+
+**Purchase caps are enforced by the DXRP portal / market content rows**, not by LifePunch dev spawn ConCmds. LifePunch code labels linked racks by type (`LpBitcoinIdent.FormatRackSlotId`); do not hard-cap in `LpBitcoinDevSpawn`.
+
+**Phase A prop baseline (owner sign-off Jun 2026):** printer-style gravity drop, grabbable (`hands_interact`), model-synced collider. Standard GPU rack = static open frame (fan child GOs **disabled**); advanced = stacked mesh with baked fan bank — intentional tier read, not a spawn bug.
 
 Each hub controls **only its linked racks** (same spawner `Owner` + within **8m / 4m** of hub). Racks are **separate Market purchases** — not bought inside hashd (Phase 2 deploy TBD).
 

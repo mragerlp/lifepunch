@@ -4,6 +4,7 @@
 // "LIFEPUNCH Bitcoin Miner for DXRP" (s&box ident: lifepunch.bitcoin · addon ident: bitcoinmining)
 // ─────────────────────────────────────────────────────────────────────────────
 
+using System;
 using Sandbox;
 
 namespace LifePunch.DXRP.Addons.Bitcoin;
@@ -24,18 +25,24 @@ public static class LpBitcoinPowerLeds
 	private static readonly Vector4 HubStatusOnTint = new( 0.15f, 1f, 0.45f, 0f );
 	private static readonly Vector4 HubStatusOffTint = new( 1f, 0.12f, 0.05f, 0f );
 
+	private static readonly string[] HubStatusMaterialTokens =
+	[
+		"fence-led",
+		"fence_led",
+		"sm_fence_led",
+		"bitcoinhub-sm-fence-led"
+	];
+
 	/// <summary>Hub fence LED — green ON, red OFF (static chassis, no anims).</summary>
 	public static void ApplyHubStatusLed( ModelRenderer renderer, bool powered )
 	{
 		if ( !renderer.IsValid() )
 			return;
 
-		var sceneObject = renderer.SceneObject;
-		if ( sceneObject is null || !sceneObject.IsValid() )
-			return;
+		var scale = powered ? HubStatusOnScale : HubStatusOffScale;
+		var tint = powered ? HubStatusOnTint : HubStatusOffTint;
 
-		sceneObject.Attributes.Set( SelfIllumTintAttr, powered ? HubStatusOnTint : HubStatusOffTint );
-		sceneObject.Attributes.Set( SelfIllumScaleAttr, powered ? HubStatusOnScale : HubStatusOffScale );
+		TryApplyHubStatusMaterialSlots( renderer, scale, tint );
 	}
 
 	/// <summary>Legacy name — routes to <see cref="ApplyHubStatusLed"/>.</summary>
@@ -58,5 +65,47 @@ public static class LpBitcoinPowerLeds
 			return;
 
 		sceneObject.Attributes.Set( SelfIllumScaleAttr, scale );
+	}
+
+	private static bool TryApplyHubStatusMaterialSlots( ModelRenderer renderer, float scale, Vector4 tint )
+	{
+		var materials = renderer.Materials;
+		if ( materials is null || materials.Count <= 0 )
+			return false;
+
+		var wrote = false;
+		for ( var i = 0; i < materials.Count; i++ )
+		{
+			var original = materials.GetOriginal( i );
+			if ( original is null || !original.IsValid() )
+				continue;
+
+			if ( !IsHubStatusLedMaterial( original ) )
+				continue;
+
+			var runtime = original.CreateCopy( $"{original.ResourceName}_status" );
+			runtime.Set( SelfIllumTintAttr, tint );
+			runtime.Set( SelfIllumScaleAttr, scale );
+			materials.SetOverride( i, runtime );
+			wrote = true;
+		}
+
+		if ( wrote )
+			materials.Apply();
+
+		return wrote;
+	}
+
+	private static bool IsHubStatusLedMaterial( Material material )
+	{
+		var path = material.ResourcePath ?? string.Empty;
+		foreach ( var token in HubStatusMaterialTokens )
+		{
+			if ( path.Contains( token, StringComparison.OrdinalIgnoreCase ) )
+				return true;
+		}
+
+		return material.GetFeature( "F_SELF_ILLUM" ) > 0
+		       && path.Contains( "fence", StringComparison.OrdinalIgnoreCase );
 	}
 }

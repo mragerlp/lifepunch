@@ -1,12 +1,12 @@
 [
   {
-    "name": "Bitcoin Miner Hub",
+    "name": "Bitcoin Hub",
     "type": 0,
-    "description": "Ophion hashd hub — power, rack linking, upgrades. Published by LIFEPUNCH.",
-    "primaryReference": "addons/lifepunch/bitcoinmining/entities/bitcoinminer/bitcoin-miner.prefab",
+    "description": "Steam Machine hashd hub — power, rack linking, upgrades. Published by LIFEPUNCH.",
+    "primaryReference": "addons/lifepunch/lpbitcoin/bitcoinhub/assets/entities/bitcoinhub.prefab",
     "secondaryReference": "",
     "grouping": "Entities",
-    "worldModelPath": "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/bitcoin-miner.vmdl",
+    "worldModelPath": "addons/lifepunch/lpbitcoin/bitcoinhub/assets/models/bitcoinhub.vmdl",
     "iconPath": ""
   },
   {

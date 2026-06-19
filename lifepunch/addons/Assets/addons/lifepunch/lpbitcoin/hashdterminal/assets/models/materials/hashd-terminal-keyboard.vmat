@@ -1,4 +1,4 @@
-// LIFEPUNCH lpbitcoin — HASHD terminal keyboard + mouse.
+// LIFEPUNCH lpbitcoin — HASHD terminal keyboard + mouse (4K TGA source — compile in ModelDoc).
 
 Layer0
 {
@@ -9,18 +9,19 @@ Layer0
 
 	g_flAmbientOcclusionDirectDiffuse "0.000"
 	g_flAmbientOcclusionDirectSpecular "0.000"
+	TextureAmbientOcclusion "addons/lifepunch/lpbitcoin/hashdterminal/assets/textures/keyboard_mause_ao.tga"
 
 	g_flModelTintAmount "1.000"
-	g_vColorTint "[1.000000 1.000000 1.000000 0.000000]"
-	TextureColor "addons/lifepunch/lpbitcoin/hashdterminal/assets/textures/T_Keyboard_mause_BC.tga"
+	g_vColorTint "[1.000000 1.000000 1.000000 1.000000]"
+	TextureColor "addons/lifepunch/lpbitcoin/hashdterminal/assets/textures/keyboard_mause_color.tga"
 
 	g_flFadeExponent "1.000"
 	g_bFogEnabled "1"
 
-	TextureMetalness "addons/lifepunch/lpbitcoin/hashdterminal/assets/textures/T_Keyboard_mause_ORM.tga@channels=B"
+	TextureMetalness "addons/lifepunch/lpbitcoin/hashdterminal/assets/textures/keyboard_mause_metallic.tga"
 
-	TextureNormal "addons/lifepunch/lpbitcoin/hashdterminal/assets/textures/T_Keyboard_mause_N.tga"
+	TextureNormal "addons/lifepunch/lpbitcoin/hashdterminal/assets/textures/keyboard_mause_normal.tga"
 
 	g_flRoughnessScaleFactor "1.000"
-	TextureRoughness "addons/lifepunch/lpbitcoin/hashdterminal/assets/textures/T_Keyboard_mause_ORM.tga@channels=G"
+	TextureRoughness "addons/lifepunch/lpbitcoin/hashdterminal/assets/textures/keyboard_mause_roughness.tga"
 }

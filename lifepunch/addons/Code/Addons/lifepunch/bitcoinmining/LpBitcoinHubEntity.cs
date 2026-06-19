@@ -48,7 +48,12 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 #endif
 
 	private ModelRenderer _modelRenderer;
-	private bool _lastPoweredVisual = true;
+	private bool _lastPoweredVisual;
+#if !LIFEPUNCH_LOCAL
+	/// <summary>Skip collider sync / ground hacks until renderer bounds are live (printer-style drop).</summary>
+	int _spawnDropGraceTicks;
+	bool _colliderSyncedFromModel;
+#endif
 
 	protected override void OnAwake()
 	{
@@ -69,9 +74,11 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 					HealthComponent.Health = HealthComponent.MaxHealth;
 			}
 
-			var before = GameObject.WorldPosition;
-			LifePunchPropPhysics.SetupGrabbablePlaceableProp( GameObject, alignGround: true );
-			Log.Info( $"HUB_GROUND_SETUP pos {before} -> {GameObject.WorldPosition}" );
+			// Printer drop — prefab collider first frame; no AlignMeshBottom teleport.
+			_spawnDropGraceTicks = 45;
+			_colliderSyncedFromModel = false;
+			LifePunchPropPhysics.BeginGrabbablePrinterDrop( GameObject, syncColliderFromModel: false );
+			Log.Info( $"HUB_SPAWN_PHYSICS pos={GameObject.WorldPosition} gravity=on (printer drop, no ground snap)" );
 		}
 #endif
 		_modelRenderer = Components.Get<ModelRenderer>( FindMode.EverythingInSelf )
@@ -101,7 +108,9 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 		if ( !Networking.IsHost )
 			return;
 
-		LifePunchPropPhysics.SetupGrabbablePlaceableProp( GameObject, alignGround: true );
+		_spawnDropGraceTicks = 45;
+		_colliderSyncedFromModel = false;
+		LifePunchPropPhysics.BeginGrabbablePrinterDrop( GameObject, syncColliderFromModel: false );
 #endif
 	}
 
@@ -112,25 +121,18 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 			return;
 
 		LifePunchPropPhysics.MaintainGrabbablePlaceableProp( GameObject );
-		TryAlignGroundWhenReleased();
-#endif
-	}
 
-	void TryAlignGroundWhenReleased()
-	{
-#if !LIFEPUNCH_LOCAL
-		if ( GameObject.Tags.Has( Constants.GrabbedTag ) )
+		if ( _spawnDropGraceTicks > 0 )
+		{
+			_spawnDropGraceTicks--;
 			return;
+		}
 
-		var renderer = _modelRenderer ?? Components.Get<ModelRenderer>( FindMode.EverythingInSelf );
-		if ( !renderer.IsValid() || renderer.Bounds.Mins.z > -0.15f )
-			return;
-
-		var rb = Components.Get<Rigidbody>( FindMode.EverythingInSelf );
-		if ( rb.IsValid() && rb.Velocity.Length > 8f )
-			return;
-
-		LifePunchGroundContact.AlignMeshBottom( GameObject );
+		if ( !_colliderSyncedFromModel )
+		{
+			LifePunchPropPhysics.SyncBoxColliderFromModel( GameObject );
+			_colliderSyncedFromModel = true;
+		}
 #endif
 	}
 
@@ -252,6 +254,8 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 
 		return scene.GetAllComponents<LpBitcoinRackEntity>()
 			.Where( r => r.IsValid() && r.LinkedHubId == GameObject.Id )
+			.OrderBy( r => r.AdvancedRack )
+			.ThenBy( r => r.GameObject.Id )
 			.ToList();
 	}
 
@@ -361,7 +365,9 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 
 	internal void PushRackCapacityAlertHost( int rackIndex, float amount, float capacity )
 	{
-		var label = rackIndex >= 0 ? $"Rack #{rackIndex}" : "GPU rack";
+		var racks = GetLinkedRacks();
+		var rack = FindRackByIndex( rackIndex );
+		var label = rack.IsValid() ? LpBitcoinIdent.FormatRackSlotId( rack, racks ) : "GPURack";
 		PushAlertHost(
 			LpBitcoinHubAlertKind.RackCapacity,
 			$"{label} at capacity ({amount:F6} / {capacity:F6} BTC) — deposit at terminal" );
