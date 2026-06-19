@@ -40,7 +40,7 @@ public static class LifePunchTerminalLcd
 		// HASHD import: text plane faces +Y after yaw — tune in prefab when ManualLcdPlacement is on.
 		lcdGo.LocalRotation = Rotation.From( 0f, 180f, 0f );
 		lcdGo.LocalScale = Vector3.One;
-		screen.Scale = 0.058f;
+		screen.Scale = 0.045f;
 
 		return true;
 	}

@@ -190,7 +190,7 @@
               "BloomLayer": true,
               "AfterUILayer": false
             },
-            "Scale": 0.05,
+            "Scale": 0.045,
             "TextScope": {
               "Text": "LIFEPUNCH hashd\nIDLE · 0/4 (2+2)\n\u20BF 0.00000000\n$0",
               "TextColor": "0.94,0.65,0,1",

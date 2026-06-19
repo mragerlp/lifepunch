@@ -71,12 +71,95 @@ public static class LpBitcoinDevSpawn
 #endif
 	}
 
+	[ConCmd( "lp_bitcoin_clear_spawns" )]
+	public static void ClearSpawns()
+	{
+		var scene = Game.ActiveScene;
+		if ( scene is null )
+		{
+			Log.Warning( "lp_bitcoin_clear_spawns: no active scene." );
+			return;
+		}
+
+		LpBitcoinUi.CloseAll();
+
+		var destroyed = 0;
+		foreach ( var hub in scene.GetAllComponents<LpBitcoinHubEntity>().ToArray() )
+		{
+			if ( !hub.IsValid() || !hub.GameObject.IsValid() )
+				continue;
+
+			hub.GameObject.Destroy();
+			destroyed++;
+		}
+
+		foreach ( var rack in scene.GetAllComponents<LpBitcoinRackEntity>().ToArray() )
+		{
+			if ( !rack.IsValid() || !rack.GameObject.IsValid() )
+				continue;
+
+			rack.GameObject.Destroy();
+			destroyed++;
+		}
+
+		foreach ( var terminal in scene.GetAllComponents<LpBitcoinTerminalEntity>().ToArray() )
+		{
+			if ( !terminal.IsValid() || !terminal.GameObject.IsValid() )
+				continue;
+
+			terminal.GameObject.Destroy();
+			destroyed++;
+		}
+
+		foreach ( var go in scene.GetAllObjects( true ).Where( g => g.Name == "lpbitcoin_staging_hub" ).ToArray() )
+		{
+			go.Destroy();
+			destroyed++;
+		}
+
+		Log.Info( $"lp_bitcoin_clear_spawns: removed {destroyed} object(s)." );
+	}
+
 	[ConCmd( "lp_bitcoin_spawn_kit" )]
 	public static void SpawnKit()
 	{
 		var hub = SpawnKitInternal();
 		if ( hub.IsValid() )
 			Log.Info( "lp_bitcoin_spawn_kit: full prefab kit placed — USE hub or terminal." );
+	}
+
+	/// <summary>Dev shortcut — link nearest unlinked terminal to nearest hub (playtest only).</summary>
+	[ConCmd( "lp_bitcoin_link_terminal" )]
+	public static void LinkTerminal()
+	{
+		var scene = Game.ActiveScene;
+		if ( scene is null )
+		{
+			Log.Warning( "lp_bitcoin_link_terminal: no active scene." );
+			return;
+		}
+
+		var hub = scene.GetAllComponents<LpBitcoinHubEntity>()
+			.Where( h => h.IsValid() )
+			.OrderBy( h => DistanceToViewer( h.WorldPosition ) )
+			.FirstOrDefault();
+
+		if ( !hub.IsValid() )
+		{
+			Log.Warning( "lp_bitcoin_link_terminal: no hub — run lp_bitcoin_spawn_kit first." );
+			return;
+		}
+
+		hub.BindOwnerFromLocalViewer();
+		var terminal = LpBitcoinTerminalEntity.FindNearestUnlinked( hub );
+		if ( !terminal.IsValid() )
+		{
+			Log.Warning( "lp_bitcoin_link_terminal: no unlinked terminal in range — spawn one near the hub." );
+			return;
+		}
+
+		hub.LinkTerminalHost( terminal );
+		Log.Info( $"lp_bitcoin_link_terminal: linked={hub.HasLinkedTerminal()} terminal={terminal.WorldPosition}" );
 	}
 
 	/// <summary>Dev shortcut — power hub + start all linked racks (host play only).</summary>

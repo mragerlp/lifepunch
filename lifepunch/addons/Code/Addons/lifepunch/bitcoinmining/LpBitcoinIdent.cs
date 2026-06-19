@@ -28,6 +28,8 @@ public static class LpBitcoinIdent
 	public const string HubStartupSoundPath = "addons/lifepunch/bitcoinmining/sounds/bitcoinminer/hub-startup.sound";
 	public const string HubFanLoopSoundPath = "addons/lifepunch/bitcoinmining/sounds/bitcoinminer/hub-fan-loop.sound";
 	public const string HubFanDownSoundPath = "addons/lifepunch/bitcoinmining/sounds/bitcoinminer/hub-fan-down.sound";
+	/// <summary>DXRP gamemode purchase cha-ching — HASHD PIN pad + rig0 terminal keystrokes.</summary>
+	public const string KeyboardSoundPath = "sounds/purchase.sound";
 	public const string HubDisplayName = "Bitcoin Hub";
 
 	/// <summary>Hub durability — heavier than DXRP money printer (100).</summary>

@@ -6,6 +6,7 @@
 @using System
 @using System.Collections.Generic
 @using System.Linq
+@using Sandbox
 @using Sandbox.UI
 @using LifePunch.DXRP.Addons
 @inherits PanelComponent
@@ -1087,6 +1088,8 @@
 	{
 		if ( Hub is null )
 			return;
+
+		LpBitcoinUiSounds.PlayKeyboardClick();
 
 		if ( key == "clr" )
 		{

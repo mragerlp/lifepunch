@@ -142,6 +142,7 @@
 	private bool _urlCopied;
 	private string _copiedCommandFlash;
 	private RealTimeSince _copiedCommandFlashSince;
+	private int _lastInputTextLength;
 
 	private static readonly string[] BootLines =
 	{
@@ -218,6 +219,7 @@
 		_bootElapsed = 0f;
 		_bootStatus = "INITIALIZING RIG...";
 		_pendingFocusRack = focusRack;
+		_lastInputTextLength = 0;
 	}
 
 	protected override void OnDisabled()
@@ -396,6 +398,7 @@
 		if ( !_bootComplete )
 			TickBoot();
 
+		TickCommandInputTypingSound();
 		ApplyCommandInputChrome();
 		WireLogPanel();
 
@@ -471,6 +474,19 @@
 
 		InputBox.SelectionColor = CmdSelectionTint;
 		InputBox.AcceptsFocus = true;
+	}
+
+	private void TickCommandInputTypingSound()
+	{
+		if ( !InputBox.IsValid() )
+			return;
+
+		var length = InputBox.Text?.Length ?? 0;
+		if ( length == _lastInputTextLength )
+			return;
+
+		_lastInputTextLength = length;
+		LpBitcoinUiSounds.PlayKeyboardClick();
 	}
 
 	private string SelectedRackSlotLabel()
