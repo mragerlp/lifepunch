@@ -1,6 +1,8 @@
 # Steam Machine hub — fan setup (ModelDoc)
 
-Same **Evo Bitminer pattern** as GPU racks: static body + child fan mesh.
+**Phase 1 (now):** Static box only — see `MODEL_BUILD.md` § Phase 1. Do **not** enable fan child or body anims until owner signs static hub.
+
+## Phase 2 — fan child (deferred)
 
 ## Open in ModelDoc (DXRP project scope)
 

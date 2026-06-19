@@ -1,5 +1,13 @@
 # Bitcoin hub — ModelDoc foundation pass
 
+**Phase A pivot (2026-06-19):** Ship hub = **Steam Machine** `bitcoin-miner.vmdl` (materials + prefab wired). Sketchfab `bitcoin-hub.vmdl` parked — custom texture mount unreliable in play.
+
+**Retired for hub:** `generic-pc-desktop.fbx` / `bitcoin-hub.vmdl` — keep for reference only until texture pipeline fixed.
+
+---
+
+# Archived — Sketchfab generic PC (parked)
+
 **Mesh:** `assets/source/fbx/generic-pc-desktop.fbx` (Sketchfab generic office PC, ~2.3k verts)  
 **Texture:** `assets/textures/generic-pc-desktop_basecolor.png` (single atlas from download)  
 **vmdl:** `bitcoin-hub.vmdl`  
@@ -23,7 +31,7 @@ Play: `blank.scene` → `lp_spawn_staging_hub`
 
 | Field | Value |
 |-------|--------|
-| import_scale | **2.4** (tune via `lp_staging_hub_scale_audit` — target ~55–65u) |
+| import_scale | **75.4** (bridge verified 2026-06-18 @ blank.scene: bounds **59.95 × 29.52 × 57.93** — target ~55–65u) |
 | import_rotation | 0,0,0 |
 | vmdl | `bitcoin-hub.vmdl` (not cpu-gamer) |
 

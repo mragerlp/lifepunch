@@ -60,8 +60,6 @@
 							exception_list = 
 							[
 								"base_body",
-								"front_panel",
-								"back_body",
 							]
 						}
 					},

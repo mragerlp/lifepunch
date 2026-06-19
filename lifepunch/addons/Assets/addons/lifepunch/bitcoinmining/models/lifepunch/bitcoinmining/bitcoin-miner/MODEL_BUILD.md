@@ -26,7 +26,7 @@ entities/bitcoinminer/
 | Field | Value | Why |
 |-------|-------|-----|
 | **Mesh** | `source/steam-machine.fbx` | Replaces static Ophion gaming PC |
-| **Import scale** | `0.152` (Custom) | Bridge-tuned Jun 2026 @ prefab `1,1,1` → mesh ~32×30×29 vs collider 32×20×28 |
+| **Import scale** | `0.152` (Custom) | Bridge verified 2026-06-19 — **`base_body` only** → mesh **29.36 × 30.4 × 31.97** |
 | **Import translation** | `0, 0, 0` | `align_origin_z_type = Bottom` — ground contact verified flatgrass |
 | **Import rotation** | `0, 0, 0` | FBX export axis: -Z forward, Y up |
 | **Align origin Z** | Bottom | Sit on ground at prefab root |
@@ -47,10 +47,10 @@ powershell -File lifepunch\addons\scripts\Export-BitcoinMinerSteamMachineFbx.ps1
 | Field | Value |
 |-------|-------|
 | Root scale | `1,1,1` |
-| BoxCollider Scale | `32, 20, 28` |
-| BoxCollider Center | `0, 0, 14` |
+| BoxCollider Scale | `29.36, 30.4, 31.97` |
+| BoxCollider Center | `18.46, 0.07, 14.01` |
 
-Measured mesh @ `import_scale 0.152`: **31.97 × 30.4 × 29.36** (flatgrass `lp_bitcoin_scale_audit`).
+Measured mesh @ `import_scale 0.152`, **`base_body` only** (blank.scene `lp_bitcoin_scale_audit`, 2026-06-19): **29.36 × 30.4 × 31.97**.
 
 Reference: DXRP `gameplay/entities/printer/printer.prefab` — `BoxCollider` from model feet; hub collider matches `Model.Bounds`.
 
@@ -67,7 +67,13 @@ Reference: DXRP `gameplay/entities/printer/printer.prefab` — `BoxCollider` fro
 Textures live under `entities/bitcoinminer/textures/` (intake copies from `Downloads\bitcoinminer\textures`).  
 **Compile note:** BaseColor maps must be `.png` — s&box texture compiler rejects `.jpeg` on `TextureColor`.
 
-## Fan spin (Evo pattern — Jun 2026)
+## Phase 1 — static box (2026-06-19)
+
+**Ship as one solid chassis.** ModelDoc imports **`base_body` only** — no `front_panel`, `back_body`, or `fan` on the body vmdl. Prefab has `fan_spin_hub` + `LpBitcoinHubVisuals` **disabled** until Phase 2.
+
+Why: multi-mesh FBX + fan child / anim experiments separated hull parts in play. Phase A = static box + collider + materials; animations later.
+
+## Fan spin (Phase 2 — deferred)
 
 **Only the fan moves.** Chassis, front panel, and back body are static.
 

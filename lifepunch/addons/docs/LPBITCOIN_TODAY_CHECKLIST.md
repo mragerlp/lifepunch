@@ -36,7 +36,7 @@ Open DXRP project → scene `_dev/scenes/lifepunch-modeldoc.scene`
 1. Sync hub from Desktop PLACEHOLDER if owner dropped new files:
    `Prepare-LpBitcoinModelDoc.ps1 -Entity bitcoinhub`
 2. Compile order: `generic-pc-desktop_basecolor.png` → `generic-pc-desktop.vmat` → `bitcoin-hub.vmdl`.
-3. Tune `import_scale` vs citizen (~55–65u tall); seed **2.4** — verify with `lp_staging_hub_scale_audit` in play.
+3. Tune `import_scale` vs citizen (~55–65u tall); seed **75.4** (bridge verified 2026-06-18) — verify with `lp_staging_hub_scale_audit` in play.
 4. Verify **SingleHull** physics — feet on ground, no explode.
 5. Play: `blank.scene` → `lp_spawn_staging_hub` → day + night screenshots.
 6. Branding pass: BTC mark + amber HASHD admin readable (mesh audit, not code yet).

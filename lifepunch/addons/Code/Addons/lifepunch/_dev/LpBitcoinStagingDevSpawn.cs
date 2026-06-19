@@ -8,18 +8,120 @@
 // Presence in this repository or on the DXRP portal grants no rights to anyone else.
 // ─────────────────────────────────────────────────────────────────────────────
 
+using System.Collections.Generic;
 using System.Linq;
 using Sandbox;
 
 namespace LifePunch.DXRP.Addons.Dev;
 
 /// <summary>
-/// Model Foundation playtest — spawns <c>lpbitcoin</c> staging meshes only (not legacy ship prefabs).
+/// Model Foundation playtest — spawns <c>lpbitcoin</c> staging meshes and hub prop candidates.
 /// </summary>
 public static class LpBitcoinStagingDevSpawn
 {
 	public const string StagingHubVmdl =
-		"addons/lifepunch/lpbitcoin/bitcoinhub/assets/models/bitcoin-hub.vmdl";
+		"addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/bitcoin-miner.vmdl";
+
+	static readonly (string Id, string Vmdl, string Note)[] HubModelCandidates =
+	{
+		( "steam-machine", "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-miner/bitcoin-miner.vmdl", "Legacy ship hub — sm_* vmats + _c in repo" ),
+		( "sketchfab-pc", "addons/lifepunch/lpbitcoin/bitcoinhub/assets/models/bitcoin-hub.vmdl", "PARKED — texture mount broken in play" ),
+		( "dxrp-printer", "gameplay/entities/printer/models/printer.vmdl", "DXRP ingame prop — collider reference" ),
+		( "dxrp-slot", "gameplay/entities/jobs/casino_manager/slot_machine/model/slot_machine.vmdl", "DXRP ingame — boxy machine silhouette" ),
+		( "dxrp-dry-rack", "gameplay/entities/jobs/drug_dealer/dry_rack/model/dry_rack.vmdl", "DXRP ingame — rack/shelf form" ),
+	};
+
+	[ConCmd( "lp_staging_model_list" )]
+	public static void StagingModelList()
+	{
+		Log.Info( "LPBITCOIN_HUB_MODEL_CANDIDATES (use lp_staging_model_lineup or lp_spawn_staging_model <id>)" );
+		foreach ( var (id, vmdl, note) in HubModelCandidates )
+			Log.Info( $"  {id}: {vmdl} — {note}" );
+	}
+
+	[ConCmd( "lp_staging_model_lineup" )]
+	public static void StagingModelLineup()
+	{
+		var scene = Game.ActiveScene;
+		if ( scene is null )
+		{
+			Log.Warning( "lp_staging_model_lineup: no active scene — Host Play blank.scene first." );
+			return;
+		}
+
+		ClearModelPreviews( scene );
+
+		const float spacing = 120f;
+		var rowStart = new Vector3( -(HubModelCandidates.Length - 1) * spacing * 0.5f, 120f, 0f );
+
+		for ( var i = 0; i < HubModelCandidates.Length; i++ )
+		{
+			var (id, vmdl, note) = HubModelCandidates[i];
+			var pos = rowStart + new Vector3( i * spacing, 0f, 0f );
+			SpawnModelPreview( scene, id, vmdl, new Transform( pos, Rotation.Identity ), note );
+		}
+
+		Log.Info( "lp_staging_model_lineup: hub candidates placed in a row — compare materials + scale in viewport." );
+	}
+
+	[ConCmd( "lp_spawn_staging_model" )]
+	public static void SpawnStagingModel( string id )
+	{
+		var scene = Game.ActiveScene;
+		if ( scene is null )
+		{
+			Log.Warning( "lp_spawn_staging_model: no active scene." );
+			return;
+		}
+
+		if ( string.IsNullOrWhiteSpace( id ) )
+		{
+			StagingModelList();
+			return;
+		}
+
+		var match = HubModelCandidates.FirstOrDefault( c => c.Id.Equals( id, System.StringComparison.OrdinalIgnoreCase ) );
+		if ( match.Vmdl is null )
+		{
+			Log.Warning( $"lp_spawn_staging_model: unknown id '{id}' — run lp_staging_model_list." );
+			return;
+		}
+
+		if ( !TryGetSpawnTransform( out var transform ) )
+		{
+			Log.Warning( "lp_spawn_staging_model: no local viewer." );
+			return;
+		}
+
+		ClearModelPreviews( scene );
+		SpawnModelPreview( scene, match.Id, match.Vmdl, transform, match.Note );
+	}
+
+	static void SpawnModelPreview( Scene scene, string id, string vmdlPath, Transform transform, string note )
+	{
+		var model = Model.Load( vmdlPath );
+		if ( !model.IsValid )
+		{
+			Log.Warning( $"LPBITCOIN_MODEL_PREVIEW {id}: FAILED load '{vmdlPath}' — mount/compile missing?" );
+			return;
+		}
+
+		var go = scene.CreateObject();
+		go.Name = $"lpbitcoin_model_preview_{id}";
+		go.WorldTransform = transform;
+
+		var renderer = go.Components.Create<ModelRenderer>();
+		renderer.Model = model;
+
+		var b = model.Bounds;
+		Log.Info( $"LPBITCOIN_MODEL_PREVIEW {id}: ok size={b.Size} center={b.Center} pos={go.WorldPosition} — {note}" );
+	}
+
+	static void ClearModelPreviews( Scene scene )
+	{
+		foreach ( var existing in scene.GetAllObjects( true ).Where( go => go.Name.StartsWith( "lpbitcoin_model_preview_" ) ).ToList() )
+			existing.Destroy();
+	}
 
 	[ConCmd( "lp_spawn_staging_hub" )]
 	public static void SpawnStagingHub()
