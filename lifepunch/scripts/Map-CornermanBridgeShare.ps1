@@ -37,8 +37,14 @@ $uncIp = "\\$VengeanceIp\$ShareName"
 Write-Host "Mapping bridge share (VENGEANCE Claude Bridge IPC)..." -ForegroundColor Cyan
 Write-Host "User: $User" -ForegroundColor DarkGray
 
-net use $uncHost /delete /y 2>$null | Out-Null
-net use $uncIp /delete /y 2>$null | Out-Null
+function Clear-BridgeNetUse([string] $Unc) {
+    $prev = $ErrorActionPreference
+    $ErrorActionPreference = 'SilentlyContinue'
+    net use $Unc /delete /y 2>$null | Out-Null
+    $ErrorActionPreference = $prev
+}
+Clear-BridgeNetUse -Unc $uncHost
+Clear-BridgeNetUse -Unc $uncIp
 
 function Invoke-BridgeNetUse([string]$Unc) {
     if ($Password) {
