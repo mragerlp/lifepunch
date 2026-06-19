@@ -6,15 +6,17 @@ alwaysApply: true
 # LifePunch — Active Workstream Gate (HARD LAW)
 
 **Canonical gate:** `lifepunch/addons/docs/ACTIVE_WORKSTREAM.md`  
+**Publish staging law:** `lifepunch/addons/docs/DXRP_ADDON_PUBLISH_DOCTRINE.md` (folder=slug; PLACEHOLDER hands-off)  
 **Production laws:** `lifepunch/addons/docs/CYBER_REFERENCE_LAWS.md` (Laws 1–10)
 
 ## Session start (mandatory — before any edit)
 
 1. Read `ACTIVE_WORKSTREAM.md` in full.
-2. Read `CYBER_REFERENCE_LAWS.md` — especially Law 1 (reuse), Law 5 (flatgrass), Law 9 (no "while we're here").
-3. For entity / ModelDoc / prefab work: read `LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md` + `MODEL_FOUNDATION_PASS.md`.
-4. Read `OWNER_PROGRESS_TRACKER.txt` for the current unchecked checklist ID.
-5. Answer the §7 gate: does this work improve **Hub**, **Terminal**, or **GPU Rack** for `lifepunchbitcoin` only?
+2. Read `DXRP_ADDON_PUBLISH_DOCTRINE.md` — lpbitcoin layout, folder=entity slug, do not touch PLACEHOLDER unless owner asks.
+3. Read `CYBER_REFERENCE_LAWS.md` — especially Law 1 (reuse), Law 5 (flatgrass), Law 9 (no "while we're here").
+4. For entity / ModelDoc / prefab work: read `LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md` + `MODEL_FOUNDATION_PASS.md`.
+5. Read `OWNER_PROGRESS_TRACKER.txt` for the current unchecked checklist ID.
+6. Answer the §7 gate: does this work improve **Hub**, **Terminal**, or **GPU Rack** for `lifepunchbitcoin` only?
 
 If **no** → stop; park in `BACKLOG_PARKING_LOT.md`. Do not implement.
 

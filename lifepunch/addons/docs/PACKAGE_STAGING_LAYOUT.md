@@ -1,6 +1,7 @@
 # LIFEPUNCH — package staging layout (publish-aligned)
 
-**June 2026** — Staging tree under `Assets/addons/lifepunch/{lpPackage}/{entitySlot}/`. Canonical manifest: `config/package-staging.json`.
+**June 2026** — Staging tree under `Assets/addons/lifepunch/{lpPackage}/{entitySlot}/`. Canonical manifest: `config/package-staging.json`.  
+**Publish law (agents):** `DXRP_ADDON_PUBLISH_DOCTRINE.md` — folder name = entity slug; PLACEHOLDER hands-off.
 
 ---
 
@@ -8,7 +9,7 @@
 
 ```text
 lpbitcoin/                          # package (maps to lifepunchbitcoin / repoIdent bitcoinmining)
-  bitcoinhub/                         # entity slot
+  bitcoinhub/                         # entity slot — slug: bitcoinhub (same as folder name)
     assets/
       source/fbx|blend|obj/           # Fab exports (keep alternates)
       textures/                       # 2K game-ready maps
@@ -24,22 +25,34 @@ lpbitcoin/                          # package (maps to lifepunchbitcoin / repoId
     audit/
       manifest.json
     docs/                             # optional slot notes
-  hashdterminal/
-    assets/ ...
-    code/ ...
+  hashdterminal/                      # slug: hashdterminal
+  gpurack/                            # slug: gpurack
+  advancedgpurack/                    # slug: advancedgpurack
 ```
 
-**Law:** `lpbitcoin` is the package folder. `bitcoinhub` is the entity folder. Never flatten to `lpbitcoinmining/bitcoinhub/game/`.
+**Law:** `lpbitcoin` is the package folder. `{entity}` folder name **is** the ship entity slug. Never flatten to `lpbitcoinmining/bitcoinhub/game/`.
+
+**Portal vs files:** Display names, market labels, and content row titles are set by the owner in **dxrp.net/addons** after upload — they do not require renaming folders or paths. See `DXRP_ADDON_PUBLISH_DOCTRINE.md`.
+
+---
+
+## UPLOAD READY ADDONS PLACEHOLDER (owner upload prep)
+
+```text
+C:\Users\jared\OneDrive\Desktop\UPLOAD READY ADDONS PLACEHOLDER\addons\lifepunch\
+```
+
+Finished, working addon packages land here when ready for portal upload prep. **Agents do not read/write/sync this path** unless the owner explicitly asks in session.
 
 ---
 
 ## Staging → ship (bitcoin example)
 
-| Staging | Today’s ship path (repoIdent) | Future target |
+| Staging (slug = folder) | Dev playtest (legacy, until promotion) | Upload-ready target |
 |---------|-------------------------------|---------------|
-| `lpbitcoin/bitcoinhub/assets/models/bitcoin-hub.vmdl` | `bitcoinmining/models/.../bitcoin-miner/` | `bitcoin/bitcoinhub/assets/models/` |
-| `lpbitcoin/bitcoinhub/code/components/LpBitcoinHubEntity.cs` | `Code/.../bitcoinmining/` | `Code/.../bitcoin/bitcoinhub/` |
-| `lpbitcoin/bitcoinhub/assets/entities/*.prefab` | `bitcoinmining/entities/bitcoinminer/` | same pattern under `bitcoin/bitcoinhub/` |
+| `lpbitcoin/bitcoinhub/assets/models/` | `bitcoinmining/models/.../bitcoin-miner/` (Steam Machine) | `lpbitcoin/bitcoinhub/` → PLACEHOLDER when owner-ready |
+| `lpbitcoin/bitcoinhub/code/components/` | `Code/.../bitcoinmining/` | same under `lpbitcoin/bitcoinhub/code/` |
+| `lpbitcoin/bitcoinhub/assets/entities/` | `bitcoinmining/entities/bitcoinminer/` | `lpbitcoin/bitcoinhub/assets/entities/` |
 
 Entity code still lives in **`Code/Addons/lifepunch/bitcoinmining/`** until owner promotes a physical split. Each entity’s `code/manifest.json` lists the files that belong there.
 
@@ -78,13 +91,14 @@ powershell -File lifepunch\scripts\Set-DxrpLifepunchModelDocLane.ps1
 |--------|------|
 | `Normalize-LifepunchDesktopPackages.ps1` | Desktop drop → `assets/` layout |
 | `Sync-LifepunchDesktopToStaging.ps1` | Desktop → repo staging |
-| `Initialize-UploadReadyAddons.ps1` | Desktop **UPLOAD READY ADDONS** / **PLACEHOLDER** → skeleton + ModelDoc files |
+| `Initialize-UploadReadyAddons.ps1` | Scaffold Desktop upload tree from repo — **owner-only unless explicit ask** |
 | `Invoke-LifepunchAssetClassificationAudit.ps1` | Inventory + health reports |
 
 ---
 
 ## Related
 
+- `DXRP_ADDON_PUBLISH_DOCTRINE.md` — DXRP context, PLACEHOLDER law, folder=slug, portal vs files
 - `LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md` — entity stack P0–P4 after intake
 - `LIFEPUNCH_WEAPON_IMPLEMENTATION_LAW.md` — weapon platform (`lpweapons`)
 - `ASSET_CLASSIFICATION_LAW.md`

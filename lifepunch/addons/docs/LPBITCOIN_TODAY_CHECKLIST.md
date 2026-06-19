@@ -1,6 +1,11 @@
 # LPBITCOIN — today execution checklist (2026-06-18)
 
-**Gate:** `ACTIVE_WORKSTREAM.md` — Model Foundation only. No legacy `bitcoinmining/models/` polish.
+> **Superseded in parts (June 2026):** Generic PC / Desktop-sync steps below are **parked**.  
+> **Canon:** `DXRP_ADDON_PUBLISH_DOCTRINE.md` · `ACTIVE_WORKSTREAM.md` · `OWNER_PROGRESS_TRACKER.txt`  
+> **Hub:** Steam Machine in `bitcoinmining/` dev tree → promote to `lpbitcoin/bitcoinhub/` when signed off.  
+> **PLACEHOLDER:** agents hands-off until owner says upload-ready.
+
+**Gate:** `ACTIVE_WORKSTREAM.md` — Phase A Hub (Steam Machine / `bitcoinhub` slot).
 
 **Prep done while you were away:** vmdl + vmat scaffolding for all 4 entity slots is in repo staging. s&box bridge was offline — compile happens when you're back at the editor.
 
@@ -9,43 +14,41 @@
 ## 0. Start (5 min)
 
 ```powershell
-# Repo already has ModelDoc files — do NOT full MIR sync from thin Desktop lpbitcoin
+# Repo staging → DXRP greenfield lane (do NOT init PLACEHOLDER unless owner asks)
 powershell -File lifepunch\scripts\Prepare-LpBitcoinModelDoc.ps1
 
 # If DXRP mounts are stale:
 powershell -File lifepunch\scripts\Set-DxrpLifepunchModelDocLane.ps1
 ```
 
-Open DXRP project → scene `_dev/scenes/lifepunch-modeldoc.scene`
+Open DXRP project → scene `_dev/scenes/lifepunch-modeldoc.scene` or flatgrass play for Steam Machine hub.
 
-**ModelDoc files to open (in order):**
+**ModelDoc paths (staging tree — folder = slug):**
 
 | Phase | Path |
 |-------|------|
-| A Hub | `addons/lifepunch/lpbitcoin/bitcoinhub/assets/models/bitcoin-hub.vmdl` |
+| A Hub | `addons/lifepunch/lpbitcoin/bitcoinhub/assets/models/` (promote Steam Machine here) |
 | B Terminal | `addons/lifepunch/lpbitcoin/hashdterminal/assets/models/hashd-terminal.vmdl` |
 | C Small rack | `addons/lifepunch/lpbitcoin/gpurack/assets/models/gpu-rack.vmdl` |
 | C Stacked | `addons/lifepunch/lpbitcoin/advancedgpurack/assets/models/gpu-rack-stacked.vmdl` |
 
+**Active dev playtest (legacy paths OK):** `bitcoinmining/models/.../bitcoin-miner/` · `lp_bitcoin_spawn_hub`
+
 ---
 
-## Phase A — Hub (Generic PC / bitcoin-hub) — ~45 min
+## Phase A — Hub (Steam Machine / `bitcoinhub`) — see OWNER_PROGRESS_TRACKER H1–H10
 
 **Done when:** ACTIVE_WORKSTREAM §2 Phase A all boxes + H10 sign-off.
 
-1. Sync hub from Desktop PLACEHOLDER if owner dropped new files:
-   `Prepare-LpBitcoinModelDoc.ps1 -Entity bitcoinhub`
-2. Compile order: `generic-pc-desktop_basecolor.png` → `generic-pc-desktop.vmat` → `bitcoin-hub.vmdl`.
-3. Tune `import_scale` vs citizen (~55–65u tall); seed **75.4** (bridge verified 2026-06-18) — verify with `lp_staging_hub_scale_audit` in play.
-4. Verify **SingleHull** physics — feet on ground, no explode.
-5. Play: `blank.scene` → `lp_spawn_staging_hub` → day + night screenshots.
-6. Branding pass: BTC mark + amber HASHD admin readable (mesh audit, not code yet).
+1. Work in repo dev tree: scale, facing (`import_rotation`), collider, materials, USE, power LED.
+2. Flatgrass proof: `lp_map_flatgrass` → `lp_bitcoin_spawn_hub` → scale/orient audits → USE → HASHD.
+3. When signed off: promote assets to `lpbitcoin/bitcoinhub/`; owner fills PLACEHOLDER when upload-ready.
 
-**Attribution:** Generic PC/Desktop by Bryan (Sketchfab) — CC BY. See entity `MODEL_BUILD.md`.
-
-**Retired:** Fab CPU GAMER (`cpu_gamer.fbx`) — solid colors, no albedo; do not use for hub.
+**Parked (do not revive for Phase A):** Sketchfab Generic PC (`bitcoin-hub.vmdl`), Fab CPU GAMER (`cpu_gamer.fbx`).
 
 ---
+
+## Phase A — LEGACY Generic PC steps (PARKED — reference only)
 
 ## Phase B — Terminal — ~60 min
 

@@ -9,48 +9,52 @@
 ## 1. Single active lane
 
 ```text
-OWNER SOURCE OF TRUTH (assets):
-C:\Users\jared\OneDrive\Desktop\UPLOAD READY ADDONS PLACEHOLDER\addons\lifepunch   ← active bitcoin hub drop
-C:\Users\jared\OneDrive\Desktop\UPLOAD READY ADDONS\addons\lifepunch             ← other lp* / legacy Fab zips
+PUBLISH DOCTRINE (read every session):
+lifepunch/addons/docs/DXRP_ADDON_PUBLISH_DOCTRINE.md
 
-WORKING LAYOUT:
-{Desktop drop}\addons\lifepunch\{lpPackage}\{entitySlot}\assets|code|audit
-Example (hub): ...\lpbitcoin\bitcoinhub\assets\source\fbx\generic-pc-desktop.fbx
-Example (hub texture): ...\lpbitcoin\bitcoinhub\assets\textures\generic-pc-desktop_basecolor.png
-Hub vmdl (repo + ModelDoc): ...\bitcoinhub\assets\models\bitcoin-hub.vmdl
-Retired for hub: Fab CPU GAMER (cpu_gamer.fbx) — do not revive for Phase A
+REPO STAGING (publish-aligned layout):
+lifepunch/addons/Assets/addons/lifepunch/lpbitcoin/{entity}/assets|code|audit
+Entities: bitcoinhub | hashdterminal | gpurack | advancedgpurack
+Law: folder name = entity slug (e.g. bitcoinhub — not bitcoin-miner)
+
+UPLOAD-READY DESKTOP (owner only — agents HANDS OFF):
+C:\Users\jared\OneDrive\Desktop\UPLOAD READY ADDONS PLACEHOLDER\addons\lifepunch
+→ Filled when an addon is fully working and ready for portal upload prep.
+→ Do NOT sync, scaffold, or treat as active dev drop unless owner explicitly asks.
 
 ACTIVE PROJECT:
 lifepunchbitcoin (package folder: lpbitcoin)
 
-REPO IDENT (code + UI only until promotion):
+REPO IDENT (code + DXRP playtest until promotion):
 bitcoinmining
 
 S&BOX PACKAGE:
 lifepunch.bitcoin
 
+PHASE A HUB MESH (June 2026):
+Steam Machine — static assembled chassis (steam-machine.fbx)
+Active dev: bitcoinmining/models/.../bitcoin-miner/ (legacy paths OK during polish)
+Promote to: lpbitcoin/bitcoinhub/ when signed off
+Parked: Sketchfab Generic PC (bitcoin-hub.vmdl), Fab CPU GAMER (cpu_gamer.fbx)
+
 CURRENT PHASE:
-Model Foundation — new Fab meshes on Desktop (NOT legacy ship-tree polish)
+Phase A Hub polish — scale, facing, collider, materials, USE, power LED, flatgrass proof
 
-NEXT PHASE (locked until Model Foundation sign-off per entity):
-Wire prefabs + play proof (hub → terminal → racks)
+NEXT PHASE (locked until Phase A owner sign-off H10):
+Terminal → GPU racks → full loop
 
-KEEP FROM PRIOR WORK:
-UI / menus / economy / USE logic only (Razor panels, themes, entity C#)
-
-QUARANTINED — DO NOT POLISH OR SYNC FOR MESH WORK:
-bitcoinmining/models/ (steam-machine, Ophion, old vmdl prefab mesh pass)
-bitcoinmining/entities/ prefabs tied to old meshes until promotion
+PORTAL PRESENTATION:
+Owner sets display names / market / content in dxrp.net — does not require folder renames.
 
 BLOCKED (no production work):
 Hacker, Banker, Government, Casino, Drug Chemist, Black Market
 All new cyber lanes · quarantined idents (QUARANTINE_REGISTER.md)
 
 UNLOCK CONDITION:
-Desktop lp* → ModelDoc sign-off → promote vmdl → flatgrass USE loop proof (§8)
+Working entity in lpbitcoin staging → flatgrass USE loop proof → owner sign-off → upload-ready PLACEHOLDER (§8)
 ```
 
-**Agents:** Owner drops land on Desktop first (`UPLOAD READY ADDONS PLACEHOLDER` for current hub work; `UPLOAD READY ADDONS` for other packages). Sync into repo via `Prepare-LpBitcoinModelDoc.ps1` — do **not** MIR-wipe repo vmdl work. If the task touches legacy `bitcoinmining/models/` meshes, Fab `cpu_gamer.fbx`, or old reference FBX, **stop**. Park non-bitcoin ideas in `BACKLOG_PARKING_LOT.md`.
+**Agents:** Work in the **repo**. Do **not** touch **UPLOAD READY ADDONS PLACEHOLDER** unless the owner explicitly asks. Portal-facing rename passes are **owner in dxrp.net**, not agent path refactors during dev. Park non-bitcoin ideas in `BACKLOG_PARKING_LOT.md`.
 
 ---
 
@@ -58,7 +62,7 @@ Desktop lp* → ModelDoc sign-off → promote vmdl → flatgrass USE loop proof 
 
 Scope creep happens when "finished" is undefined. **No new task starts until the current phase DONE criteria are written and understood.**
 
-### Phase A — Hub (Generic PC / bitcoin-hub) — Model Foundation — DONE WHEN
+### Phase A — Hub (Steam Machine / `bitcoinhub` slot) — DONE WHEN
 
 ```text
 ☐ Correct scale

@@ -40,7 +40,8 @@ READ FIRST (in this order), then follow them as law:
 0b. `lifepunch/addons/docs/CYBER_REFERENCE_LAWS.md` ← Laws 1–10 (reference-first, flatgrass truth, brand matrix). Mandatory every session.
 0c. `lifepunch/addons/docs/LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md` ← machines not props; ModelDoc-first stack P0–P4. Mandatory for entity/ModelDoc work.
 0d. `lifepunch/addons/docs/MODELDOC_STUDIO_LANE.md` + `PACKAGE_STAGING_LAYOUT.md` ← lp* staging + standalone editor (no DXRP gamemode for mesh).
-0e. `lifepunch/addons/docs/LIFEPUNCH_WEAPON_IMPLEMENTATION_LAW.md` ← weapon platform not gun mesh; P0 attachments/collision/anims. Mandatory for weapon / lpweapons / AK lane work.
+0e. `lifepunch/addons/docs/DXRP_ADDON_PUBLISH_DOCTRINE.md` ← DXRP context, lpbitcoin layout, folder=entity slug, PLACEHOLDER hands-off, portal vs files. Mandatory every session.
+0f. `lifepunch/addons/docs/LIFEPUNCH_WEAPON_IMPLEMENTATION_LAW.md` ← weapon platform not gun mesh; P0 attachments/collision/anims. Mandatory for weapon / lpweapons / AK lane work.
 1. The project's `.cursor/rules` (all alwaysApply): lifepunch-active-workstream-gate,
    lifepunch-digital-machine, lifepunch-weapon-platform, lifepunch-operating-context, lifepunch-quality-bar,
    dxrp-addon-foundation, lifepunch-trademark-ip, lifepunch-rules-workflow,
@@ -152,12 +153,14 @@ CURRENT STATE (June 2026):
 - Ops clarity checkpoint is law: OPS_CLARITY_CHECKPOINT.md + shortcut tiers (Start Day = tri-stack full stack).
 - Admin menu (adminmenu) = v1 publish-ready, branded `lifepunch.ulx` / packageSlug `lifepunchulx`;
   in publishReadyAddons — export to lifepunch-published when owner says ship.
-- Bitcoin (bitcoinmining) = active dev, packageSlug `lifepunchbitcoin`; NOT in publishReadyAddons yet.
-  **Entity law:** machines not props — `LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md` (P0 ModelDoc sign-off
-  on `lpbitcoin/*` staging before prefab/gameplay). ModelDoc Studio: `Start-SboxModelDocStudio.ps1`.
-  **Hub mesh (June 2026):** Phase A = `bitcoin-hub.vmdl` ← Sketchfab Generic PC Desktop (CC BY Bryan),
-  not Fab CPU GAMER. Owner drop: Desktop `UPLOAD READY ADDONS PLACEHOLDER`. Play spawn:
-  `lp_spawn_staging_hub` (`LpBitcoinStagingDevSpawn.cs`). Tune scale via `import_scale` (~2.4 seed).
+- Bitcoin (bitcoinmining repo ident / lifepunchbitcoin packageSlug) = active dev; NOT in publishReadyAddons yet.
+  **Entity law:** machines not props — `LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md`. Staging package folder: `lpbitcoin/`
+  with entities `bitcoinhub`, `hashdterminal`, `gpurack`, `advancedgpurack` — **folder name = entity slug**.
+  **Publish doctrine:** `DXRP_ADDON_PUBLISH_DOCTRINE.md` — PLACEHOLDER is upload-ready only; agents do NOT touch
+  `UPLOAD READY ADDONS PLACEHOLDER` unless owner explicitly asks. Portal display names = owner in dxrp.net.
+  **Hub mesh (June 2026):** Phase A = **Steam Machine** static chassis (dev tree: `bitcoin-miner.vmdl` in
+  `bitcoinmining/` until promoted to `lpbitcoin/bitcoinhub/`). Sketchfab Generic PC parked.
+  Play: `lp_bitcoin_spawn_hub` / flatgrass proof. ModelDoc Studio: `Start-SboxModelDocStudio.ps1`.
 - Quarantine: hackerjob, ak47, bankerjob, etc. — read for concepts only; never copy into active addons.
 - AK-47 paused. GitLab lanes LIVE + synced (lanes-synced); shottaWEB + RDP agent provisioned.
   Re-export a lane after changes via setup-gitlab-projects.ps1.

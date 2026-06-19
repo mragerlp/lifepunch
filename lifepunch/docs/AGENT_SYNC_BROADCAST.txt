@@ -31,7 +31,8 @@ STEP 2 — READ (in order)
   7. lifepunch/docs/handoff/JUNE_2026_FOUNDATION_CHECKPOINT.md ← all-node pull brief
   8. lifepunch/docs/handoff/DESKTOP_ORG_CHECKPOINT_2026-06.md ← Bloodwave Desktop org (local; optional for CVL)
   9. lifepunch/addons/docs/PACKAGE_NAMING_STANDARD.md ← public branch slugs (June 2026)
- 10. Your lane block in lifepunch/docs/AGENT_PROMPT.md (A/B/C/D)
+ 10. lifepunch/addons/docs/DXRP_ADDON_PUBLISH_DOCTRINE.md ← lpbitcoin layout, PLACEHOLDER law (June 2026)
+ 11. Your lane block in lifepunch/docs/AGENT_PROMPT.md (A/B/C/D)
 
 ------------------------------------------------------------------------
 STEP 3 — CONFIRM (reply in one short paragraph)
@@ -58,9 +59,10 @@ FOUNDATION (June 2026 — after pull)
     NO edits, NO copy-paste into ship paths. portfolio.json + QUARANTINE_REGISTER.md
   PACKAGE SLUGS: lifepunchulx · lifepunchbitcoin · … — config/packages.json
   PUBLISH NOW: lifepunchulx only (publishReadyAddons) — Export-LifepunchPublishLane.ps1
-  BITCOIN: lifepunchbitcoin (s&box lifepunch.bitcoin) — P0 ModelDoc Phase A hub =
-    bitcoin-hub.vmdl (Sketchfab generic PC; Fab CPU GAMER retired) — LIFEPUNCH_BITCOIN_START.md
-    · ACTIVE_WORKSTREAM.md · LPBITCOIN_TODAY_CHECKLIST.md
+  BITCOIN: lifepunchbitcoin (s&box lifepunch.bitcoin) — Phase A hub = Steam Machine
+    (dev: bitcoinmining/ · promote to lpbitcoin/bitcoinhub/ · slug = folder name)
+    · DXRP_ADDON_PUBLISH_DOCTRINE.md (PLACEHOLDER hands-off; portal names = owner in dxrp.net)
+    · ACTIVE_WORKSTREAM.md · OWNER_PROGRESS_TRACKER.txt
 
   COMMUNITY: https://discord.gg/lifepunch · https://lifepunch.co
 

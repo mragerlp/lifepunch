@@ -15,23 +15,23 @@
       "zipName": "lpbitcoin.zip",
       "entities": {
         "bitcoinhub": {
-          "displayName": "Bitcoin HUB (CPU GAMER)",
-          "shipEntitySlug": "bitcoin-miner",
+          "displayName": "Bitcoin HUB (Steam Machine)",
+          "shipEntitySlug": "bitcoinhub",
           "priority": "P0"
         },
         "hashdterminal": {
           "displayName": "HASHD Terminal",
-          "shipEntitySlug": "bitcoin-terminal",
+          "shipEntitySlug": "hashdterminal",
           "priority": "P0"
         },
         "gpurack": {
           "displayName": "GPU Rack",
-          "shipEntitySlug": "gpu-rack",
+          "shipEntitySlug": "gpurack",
           "priority": "P0"
         },
         "advancedgpurack": {
           "displayName": "Advanced GPU Rack (stacked)",
-          "shipEntitySlug": "advanced-gpu-rack",
+          "shipEntitySlug": "advancedgpurack",
           "priority": "P0"
         }
       }

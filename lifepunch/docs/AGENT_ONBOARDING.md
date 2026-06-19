@@ -40,7 +40,8 @@ Business wrapper: `lifepunch/docs/BUSINESS_CONTEXT.md`.
 | 3 | `addons/docs/MODEL_FOUNDATION_PASS.md` | Mesh sign-off before prefab |
 | 4 | `addons/docs/MODELDOC_STUDIO_LANE.md` | Standalone editor (no DXRP) |
 | 5 | `addons/docs/PACKAGE_STAGING_LAYOUT.md` | `lp*` staging paths |
-| 6 | `addons/docs/CYBER_REFERENCE_LAWS.md` | Laws 1–10 |
+| 6 | `addons/docs/DXRP_ADDON_PUBLISH_DOCTRINE.md` | Folder=slug, PLACEHOLDER hands-off, portal vs files |
+| 7 | `addons/docs/CYBER_REFERENCE_LAWS.md` | Laws 1–10 |
 
 **Weapons (parallel track — not bitcoin gate):**
 
@@ -277,13 +278,27 @@ The `lifepunch-operating-context` rule is law here; this is the orientation. We 
 - **ModelDoc Studio** — standalone `modeldoc.sbproj` for mesh work without DXRP gamemode load:
   `MODELDOC_STUDIO_LANE.md` · `Start-SboxModelDocStudio.ps1`.
 - **Package staging** — Fab intake under `lp{package}/{entity}/assets|code` (not legacy `_modeldoc/game/`):
-  `PACKAGE_STAGING_LAYOUT.md` · owner drop: **`UPLOAD READY ADDONS PLACEHOLDER`** (hub) + `UPLOAD READY ADDONS` (other lp*) on Desktop.
+  `PACKAGE_STAGING_LAYOUT.md` · **Publish doctrine:** `DXRP_ADDON_PUBLISH_DOCTRINE.md` (folder name = entity slug;
+  **UPLOAD READY ADDONS PLACEHOLDER** = finished addons only — agents hands-off unless owner asks).
 - **Weapon platform** — not gun mesh; attachments, bones, anims, states per
   `LIFEPUNCH_WEAPON_IMPLEMENTATION_LAW.md` + **lifepunch-weapon-platform** rule (`lpweapons`, `lane/ak47`).
 - DXRP weapons/equipment = **prefab + component composition** (Equipment root + child
   WeaponComponents; separate ViewModel prefab) — not per-gun god classes. Mirror official
   `m4a1`.
 - Build **reusable templates, not one-offs**. Reference `dxura/dxrp @develop` for compatibility.
+
+## DXRP & publish staging (June 2026 — agent law)
+
+**DXRP** (Dxura) = gamemode platform for community servers. **LIFEPUNCH** = our proprietary addon brand on top — unique content vs other DXRP hosts.
+
+**Canonical:** `lifepunch/addons/docs/DXRP_ADDON_PUBLISH_DOCTRINE.md`
+
+Quick rules:
+
+1. **`lpbitcoin/{entity}/`** — entity folder name **is** the slug (`bitcoinhub`, `hashdterminal`, …).
+2. **PLACEHOLDER** (`Desktop\UPLOAD READY ADDONS PLACEHOLDER\addons\lifepunch`) — finished, upload-ready packages only. **Agents do not touch** unless owner explicitly asks.
+3. **Portal names** (market, content rows, display labels) — owner sets in dxrp.net after upload; not a dev-path blocker.
+4. **Dev vs ship** — iterate in repo (`bitcoinmining` playtest OK); promote to `lpbitcoin/` when signed off; then owner fills PLACEHOLDER when ready to publish.
 
 ## Workflow & shipping
 
@@ -312,7 +327,7 @@ The `lifepunch-operating-context` rule is law here; this is the orientation. We 
 | **Two repos** | Core `mragerlp/lifepunch` = law/WIP/quarantine. Publish `lifepunch-published` = export snapshot only. |
 | **Quarantine** | Active dev: `adminmenu` + `bitcoinmining` only. All other idents **frozen** — concepts/context OK, **no edits, no copy-paste ship paths** — `portfolio.json`, `QUARANTINE_REGISTER.md` |
 | **Publish now** | **`lifepunchulx`** (`adminmenu`) only — in `publishReadyAddons`; export via `Export-LifepunchPublishLane.ps1` |
-| **Bitcoin** | P0 ModelDoc on `lpbitcoin` staging — **Phase A hub** = Sketchfab Generic PC Desktop → `bitcoin-hub.vmdl` + `generic-pc-desktop.vmat` (Fab CPU GAMER **retired**). **Digital machine** stack; entity C# stays reference until mesh sign-off · `LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md` · entity `MODEL_BUILD.md` |
+| **Bitcoin** | P0 hub = **Steam Machine** static chassis (dev: `bitcoinmining/` · promote to `lpbitcoin/bitcoinhub/`). Folder name = slug (`bitcoinhub`, not `bitcoin-miner`). **Digital machine** stack · `DXRP_ADDON_PUBLISH_DOCTRINE.md` · `LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md` |
 | **Ideation** | ChatGPT Step 1 → paste CURSOR BRIEF → Cursor VENGEANCE. Voice = **Cursor mic** (Whisper deferred). `WORKFLOW_IDEATION_FIRST.md` |
 | **ChatGPT templates** | Step1 · Visual pass · Edit session · Ship checklist — `handoff/CHATGPT_*.txt` · index: `briefs/BRIEF_INDEX.md` |
 | **Owner alias** | Visible: **Bloodwave** · Proprietary: **mrragerlp** · Contact: Mr. Rager — `BLOODWAVE_ALIAS.md` |
@@ -322,7 +337,7 @@ The `lifepunch-operating-context` rule is law here; this is the orientation. We 
 | **ModelDoc Studio** | Standalone editor — **no DXRP gamemode** for mesh passes. `MODELDOC_STUDIO_LANE.md` · `Start-SboxModelDocStudio.ps1` |
 | **Digital machines** | Not props — full stack in `LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md` · P0 = ModelDoc sign-off first |
 | **Weapon platform** | Not gun mesh — `LIFEPUNCH_WEAPON_IMPLEMENTATION_LAW.md` · `lpweapons` + AK lane parallel to bitcoin |
-| **lp* staging** | `lpbitcoin/bitcoinhub/assets|code` · `PACKAGE_STAGING_LAYOUT.md` · Desktop drop: **`UPLOAD READY ADDONS PLACEHOLDER`** (hub) · sync: `Prepare-LpBitcoinModelDoc.ps1` |
+| **lp* staging** | `lpbitcoin/bitcoinhub|hashdterminal|gpurack|advancedgpurack` · `PACKAGE_STAGING_LAYOUT.md` · `DXRP_ADDON_PUBLISH_DOCTRINE.md` · PLACEHOLDER = upload-ready only (agents hands-off) · sync: `Prepare-LpBitcoinModelDoc.ps1` |
 | **Pre-launch** | `Test-PreLaunchCheckup.ps1 -Fix` then `Start-SboxModelDocStudio.ps1` (mesh) or `Start-SboxDxrpEditor.ps1` (DXRP play) |
 
 **Handoff paste for any node:** `AGENT_SYNC_BROADCAST.txt` after `git pull --rebase`.

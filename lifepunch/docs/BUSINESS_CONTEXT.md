@@ -17,8 +17,7 @@
 
 ## Revenue model (what the business does / how it earns)
 
-- **Does:** custom LIFEPUNCH-owned content for DXRP (s&box) — addons/weapons/entities, staff/admin
-  tooling, server/community operations; licensing that content to other DXRP servers.
+- **Does:** custom LIFEPUNCH-owned content for **DXRP** (roleplay gamemode by **Dxura** on s&box) — addons/weapons/entities, staff/admin tooling, server/community operations; licensing that content to other DXRP servers so LifePunch can spotlight unique machines vs other community hosts.
 - **Earns:** digital products/addons, server/community, donations, and (potential) licensing —
   all under LIFEPUNCH as the single source. Original LIFEPUNCH content is proprietary IP (no resale/
   redistribution by others; anti-clone + DMCA via the website TOS §5–6).

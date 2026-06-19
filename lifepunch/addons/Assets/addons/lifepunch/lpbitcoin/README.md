@@ -1,15 +1,17 @@
 # lpbitcoin — Bitcoin mining package (staging)
 
-**Package slug:** `lifepunchbitcoin` · **Repo ident (ship today):** `bitcoinmining`
+**Package slug:** `lifepunchbitcoin` · **Repo ident (DXRP playtest):** `bitcoinmining`
+
+**Publish law:** `addons/docs/DXRP_ADDON_PUBLISH_DOCTRINE.md` — folder name = entity slug; PLACEHOLDER hands-off.
 
 ## Entity slots
 
-| Folder | Ship entity | ModelDoc |
-|--------|-------------|----------|
-| `bitcoinhub/` | bitcoin-miner | `assets/models/bitcoin-hub.vmdl` |
-| `hashdterminal/` | bitcoin-terminal | `assets/models/hashd-terminal.vmdl` |
-| `gpurack/` | gpu-rack | `assets/models/gpu-rack.vmdl` |
-| `advancedgpurack/` | advanced-gpu-rack | `assets/models/gpu-rack-stacked.vmdl` |
+| Folder | Entity slug | Hub mesh (Phase A) |
+|--------|-------------|-------------------|
+| `bitcoinhub/` | `bitcoinhub` | Steam Machine (promote from dev `bitcoin-miner` when signed off) |
+| `hashdterminal/` | `hashdterminal` | `hashd-terminal.vmdl` |
+| `gpurack/` | `gpurack` | `gpu-rack.vmdl` |
+| `advancedgpurack/` | `advancedgpurack` | `gpu-rack-stacked.vmdl` |
 
 Each entity folder:
 
