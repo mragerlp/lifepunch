@@ -50,7 +50,7 @@ Hub power/fan timing aligns with §7 of that doc.
 ## Hub responsibilities (checklist for new jobs)
 
 1. **Spawn owner** — `Owner` SteamId from network owner / first USE caller (`TryBindSpawnOwnerHost` pattern).
-2. **PIN gate** — optional 4-digit gatekeeper; session map per caller (reuse `*AccessPin` helpers).
+2. **PIN gate** — optional 4-digit gatekeeper; session map per caller (reuse `*AccessPin` helpers). **One SteamID per PIN:** the PIN is bound to the hub owner’s SteamID (hash on that hub only) — not a shared server password; other operators cannot set or unlock it.
 3. **Power** — hub offline disables satellites (mining, terminal link, vault accrual).
 4. **Link registry** — host-authoritative list of children in range (reuse `*Registry` static client cache pattern).
 5. **Ledger** — all money movement host-only (`[Rpc.Host]`); one service class per hub.

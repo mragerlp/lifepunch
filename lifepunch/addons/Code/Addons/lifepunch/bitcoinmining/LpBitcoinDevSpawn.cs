@@ -7,6 +7,7 @@
 using System;
 using System.Linq;
 using Sandbox;
+using LifePunch.DXRP.Addons;
 #if !LIFEPUNCH_LOCAL
 using Dxura.RP.Game;
 #endif
@@ -16,14 +17,13 @@ namespace LifePunch.DXRP.Addons.Bitcoin;
 /// <summary>Dev spawn — clones v2 prefabs for flatgrass playtest. Remove before portal publish.</summary>
 public static class LpBitcoinDevSpawn
 {
-	private const float SpawnDistanceUnits = 140f;
 	private const float GroundTraceUp = 2000f;
 	private const float GroundTraceDown = 20000f;
 
 	[ConCmd( "lp_bitcoin_spawn_hub" )]
 	public static void SpawnHub()
 	{
-		if ( !TryGetSpawnTransform( out var transform ) )
+		if ( !LifePunchMarketSpawn.TryGetIdentitySpawnTransform( out var transform ) )
 		{
 			Log.Warning( "lp_bitcoin_spawn_hub: no local viewer — play from game.scene first." );
 			return;
@@ -33,7 +33,42 @@ public static class LpBitcoinDevSpawn
 		if ( !hub.IsValid() )
 			return;
 
+#if !LIFEPUNCH_LOCAL
+		LifePunchMarketSpawn.LogMarketSpawnAudit( "lp_bitcoin_spawn_hub" );
+#endif
 		Log.Info( "lp_bitcoin_spawn_hub: Steam Machine hub prefab placed." );
+	}
+
+	[ConCmd( "lp_bitcoin_hub_ground_fix" )]
+	public static void HubGroundFix()
+	{
+#if !LIFEPUNCH_LOCAL
+		if ( !Networking.IsHost )
+		{
+			Log.Warning( "lp_bitcoin_hub_ground_fix: host only." );
+			return;
+		}
+
+		var hubs = Game.ActiveScene?.GetAllComponents<LpBitcoinHubEntity>();
+		if ( hubs is null || !hubs.Any() )
+		{
+			Log.Warning( "lp_bitcoin_hub_ground_fix: no hub — run lp_bitcoin_spawn_hub first." );
+			return;
+		}
+
+		foreach ( var hub in hubs )
+		{
+			if ( !hub.IsValid() )
+				continue;
+
+			var before = hub.GameObject.WorldPosition;
+			hub.RestartPrinterSettle();
+			LifePunchPropPhysics.LogModelPhysics( hub.GameObject, "hub_ground_fix" );
+			Log.Info( $"lp_bitcoin_hub_ground_fix: {before} -> {hub.GameObject.WorldPosition}" );
+		}
+#else
+		Log.Warning( "lp_bitcoin_hub_ground_fix: DXRP play only." );
+#endif
 	}
 
 	[ConCmd( "lp_bitcoin_spawn_kit" )]
@@ -111,11 +146,48 @@ public static class LpBitcoinDevSpawn
 		}
 	}
 
+	[ConCmd( "lp_bitcoin_hub_power_toggle" )]
+	public static void HubPowerToggle()
+	{
+		var hub = Game.ActiveScene?.GetAllComponents<LpBitcoinHubEntity>().FirstOrDefault( h => h.IsValid() );
+		if ( !hub.IsValid() )
+		{
+			Log.Warning( "lp_bitcoin_hub_power_toggle: no hub — run lp_bitcoin_spawn_hub first." );
+			return;
+		}
+
+		hub.ApplyPoweredState( !hub.IsPowered );
+		Log.Info( $"lp_bitcoin_hub_power_toggle: IsPowered={hub.IsPowered} (green=ON, red=OFF status LED)." );
+	}
+
+	[ConCmd( "lp_bitcoin_status_led_tune" )]
+	public static void StatusLedTune()
+	{
+		var scene = Game.ActiveScene;
+		if ( scene is null )
+		{
+			Log.Warning( "lp_bitcoin_status_led_tune: no active scene." );
+			return;
+		}
+
+		foreach ( var hub in scene.GetAllComponents<LpBitcoinHubEntity>().Where( h => h.IsValid() ) )
+		{
+			var visuals = hub.Components.Get<LpBitcoinHubVisuals>( FindMode.EverythingInSelf );
+			var led = hub.GameObject.Children.FirstOrDefault( c => c.Name == "status_led" );
+			if ( led.IsValid() )
+				Log.Info( $"BITCOINMINING_STATUS_LED hub powered={hub.IsPowered} pos={led.LocalPosition} rot={led.LocalRotation.Angles()}" );
+			else if ( visuals.IsValid() )
+				Log.Info( $"BITCOINMINING_STATUS_LED hub powered={hub.IsPowered} defaultPos={visuals.StatusLightLocalPosition} (child not spawned yet)" );
+			else
+				Log.Info( $"BITCOINMINING_STATUS_LED hub powered={hub.IsPowered} visuals=missing" );
+		}
+	}
+
 	/// <summary>Hub + terminal + one GPU rack + one Advanced GPU rack — flatgrass hero lineup.</summary>
 	[ConCmd( "lp_bitcoin_spawn_lineup" )]
 	public static void SpawnLineup()
 	{
-		if ( !TryGetSpawnTransform( out var transform ) )
+		if ( !LifePunchMarketSpawn.TryGetIdentitySpawnTransform( out var transform ) )
 		{
 			Log.Warning( "lp_bitcoin_spawn_lineup: no local viewer — play from game.scene first." );
 			return;
@@ -127,16 +199,17 @@ public static class LpBitcoinDevSpawn
 
 		var origin = hub.WorldPosition;
 		var rot = transform.Rotation;
-		SpawnTerminalPrefab( new Transform( SnapToGround( origin + rot.Forward * 100f ), rot ) );
-		SpawnRackPrefab( new Transform( SnapToGround( origin + rot.Right * 90f ), rot ), hub, advanced: false );
-		SpawnRackPrefab( new Transform( SnapToGround( origin + rot.Left * 90f ), rot ), hub, advanced: true );
-		Log.Info( "lp_bitcoin_spawn_lineup: Bitcoin Miner + Terminal + GPU Rack + Advanced GPU Rack placed." );
+		var groundZ = origin.z;
+		SpawnTerminalPrefab( new Transform( SnapToGround( origin + rot.Forward * 100f, groundZ ), rot ) );
+		SpawnRackPrefab( new Transform( SnapToGround( origin + rot.Right * 90f, groundZ ), rot ), hub, advanced: false );
+		SpawnRackPrefab( new Transform( SnapToGround( origin + rot.Left * 90f, groundZ ), rot ), hub, advanced: true );
+		Log.Info( "lp_bitcoin_spawn_lineup: Bitcoin Hub + Terminal + GPU Rack + Advanced GPU Rack placed." );
 	}
 
 	[ConCmd( "lp_bitcoin_spawn_terminal" )]
 	public static void SpawnTerminal()
 	{
-		if ( !TryGetSpawnTransform( out var transform ) )
+		if ( !LifePunchMarketSpawn.TryGetIdentitySpawnTransform( out var transform ) )
 		{
 			Log.Warning( "lp_bitcoin_spawn_terminal: no local viewer — play from game.scene first." );
 			return;
@@ -149,7 +222,7 @@ public static class LpBitcoinDevSpawn
 	[ConCmd( "lp_bitcoin_spawn_rack" )]
 	public static void SpawnRack()
 	{
-		if ( !TryGetSpawnTransform( out var transform ) )
+		if ( !LifePunchMarketSpawn.TryGetIdentitySpawnTransform( out var transform ) )
 		{
 			Log.Warning( "lp_bitcoin_spawn_rack: no local viewer — play from game.scene first." );
 			return;
@@ -169,7 +242,7 @@ public static class LpBitcoinDevSpawn
 	[ConCmd( "lp_spawn_advanced_gpu_rack" )]
 	public static void SpawnAdvancedRack()
 	{
-		if ( !TryGetSpawnTransform( out var transform ) )
+		if ( !LifePunchMarketSpawn.TryGetIdentitySpawnTransform( out var transform ) )
 		{
 			Log.Warning( "lp_spawn_advanced_gpu_rack: no local viewer — play from game.scene first." );
 			return;
@@ -373,7 +446,7 @@ public static class LpBitcoinDevSpawn
 			.FirstOrDefault();
 		if ( !hub.IsValid() )
 		{
-			if ( !TryGetSpawnTransform( out var transform ) )
+			if ( !LifePunchMarketSpawn.TryGetIdentitySpawnTransform( out var transform ) )
 			{
 				Log.Warning( "lp_bitcoin_scale_audit: no local viewer." );
 				return;
@@ -404,6 +477,108 @@ public static class LpBitcoinDevSpawn
 		Log.Info( "BITCOINMINING_SCALE_AUDIT end — bake BoxCollider from model.Bounds; close/reopen prefab tab if green wireframe still stale" );
 	}
 
+	/// <summary>Hub facing vs player (H1 orientation). Spawns hub if missing.</summary>
+	[ConCmd( "lp_bitcoin_hub_orient_audit" )]
+	public static void HubOrientAudit()
+	{
+		var scene = Game.ActiveScene;
+		if ( scene is null )
+		{
+			Log.Warning( "lp_bitcoin_hub_orient_audit: no active scene — Host Play blank.scene first." );
+			return;
+		}
+
+		var hub = scene.GetAllComponents<LpBitcoinHubEntity>()
+			.Where( h => h.IsValid() && !IsPreviewHub( h ) )
+			.FirstOrDefault();
+		if ( !hub.IsValid() )
+		{
+			if ( !LifePunchMarketSpawn.TryGetIdentitySpawnTransform( out var transform ) )
+			{
+				Log.Warning( "lp_bitcoin_hub_orient_audit: no local viewer." );
+				return;
+			}
+
+			hub = SpawnHubPrefab( transform );
+		}
+
+		if ( !hub.IsValid() )
+		{
+			Log.Warning( "lp_bitcoin_hub_orient_audit: hub spawn failed." );
+			return;
+		}
+
+		var go = hub.GameObject;
+		var hubForward = go.WorldRotation.Forward.WithZ( 0 ).Normal;
+		var hubRight = go.WorldRotation.Right.WithZ( 0 ).Normal;
+		var playerPos = GetLocalViewerPosition();
+		var toPlayer = ( playerPos - go.WorldPosition ).WithZ( 0 ).Normal;
+		var facingDot = hubForward.Dot( toPlayer );
+		var sideDot = hubRight.Dot( toPlayer );
+
+		Log.Info( "BITCOINMINING_ORIENT_AUDIT begin" );
+		Log.Info( $"  hubPos={go.WorldPosition} rot={go.WorldRotation.Angles()}" );
+		Log.Info( $"  hubForward(flat)={hubForward} hubRight(flat)={hubRight}" );
+		Log.Info( $"  playerPos={playerPos} toPlayer={toPlayer}" );
+		Log.Info( $"  panelDot={sideDot:F3} (want < -0.7 — sm_panel on entity -Right after import Y=270, market identity rot)" );
+		Log.Info( $"  forwardDot={facingDot:F3} (entity +Forward — fan/back axis; should NOT face player)" );
+
+		if ( sideDot < -0.7f )
+			Log.Info( "  PASS: panel/USE (front) toward player — matches DXRP market spawn (identity rotation)." );
+		else if ( sideDot > 0.7f )
+			Log.Info( "  FAIL: fan/back (+Right) toward player — try import_rotation Y -= 180 (e.g. 270 → 90)." );
+		else if ( facingDot > 0.7f || facingDot < -0.7f )
+			Log.Info( "  FAIL: long axis toward player — tune import_rotation Y in bitcoinhub.vmdl." );
+		else
+			Log.Info( "  WARN: ambiguous — use lp_bitcoin_hub_yaw_test or rotate with hands; check ModelDoc preview." );
+
+		Log.Info( "BITCOINMINING_ORIENT_AUDIT end" );
+	}
+
+	/// <summary>Spawn hub with extra yaw offset to find correct import_rotation bake.</summary>
+	[ConCmd( "lp_bitcoin_hub_yaw_test" )]
+	public static void HubYawTest( float yawOffsetDegrees = 0f )
+	{
+		if ( !LifePunchMarketSpawn.TryGetIdentitySpawnTransform( out var transform ) )
+		{
+			Log.Warning( "lp_bitcoin_hub_yaw_test: no local viewer." );
+			return;
+		}
+
+		var scene = Game.ActiveScene;
+		if ( scene is null )
+		{
+			Log.Warning( "lp_bitcoin_hub_yaw_test: no active scene." );
+			return;
+		}
+
+		foreach ( var old in scene.GetAllComponents<LpBitcoinHubEntity>().Where( h => h.IsValid() && !IsPreviewHub( h ) ) )
+			old.GameObject.Destroy();
+
+		transform.Rotation *= Rotation.FromYaw( yawOffsetDegrees );
+		var hub = SpawnHubPrefab( transform );
+		if ( !hub.IsValid() )
+			return;
+
+		Log.Info( $"lp_bitcoin_hub_yaw_test: spawned with extra yaw={yawOffsetDegrees:F0}° — if panel faces you, set import_rotation Y to this offset (mod 360) in bitcoinhub.vmdl." );
+		HubOrientAudit();
+	}
+
+	private static Vector3 GetLocalViewerPosition()
+	{
+#if LIFEPUNCH_LOCAL
+		var camera = Game.ActiveScene?.GetAllComponents<CameraComponent>().FirstOrDefault();
+		if ( camera.IsValid() )
+			return camera.WorldPosition;
+#else
+		var player = Player.Local;
+		if ( player.IsValid() )
+			return player.WorldPosition;
+#endif
+		var cam = Game.ActiveScene?.GetAllComponents<CameraComponent>().FirstOrDefault();
+		return cam.IsValid() ? cam.WorldPosition : Vector3.Zero;
+	}
+
 	/// <summary>Logs compiled vmdl sequences + power anim apply (BITCOINMINING-05).</summary>
 	[ConCmd( "lp_bitcoin_anim_audit" )]
 	public static void AnimAudit()
@@ -420,7 +595,7 @@ public static class LpBitcoinDevSpawn
 			.FirstOrDefault();
 		if ( !hub.IsValid() )
 		{
-			if ( !TryGetSpawnTransform( out var transform ) )
+			if ( !LifePunchMarketSpawn.TryGetIdentitySpawnTransform( out var transform ) )
 			{
 				Log.Warning( "lp_bitcoin_anim_audit: no hub — spawn with lp_bitcoin_spawn_hub first." );
 				return;
@@ -442,7 +617,7 @@ public static class LpBitcoinDevSpawn
 		Log.Info( $"BITCOINMINING_ANIM_AUDIT model={model?.ResourcePath ?? "(null)"} powered={hub.IsPowered} bones={model?.BoneCount ?? 0} animCount={model?.AnimationCount ?? 0}" );
 		if ( sequences.Count == 0 )
 		{
-			Log.Warning( "BITCOINMINING_ANIM_AUDIT sequences=0 — open bitcoin-miner.vmdl in ModelDoc, star-add fanAction from steam-machine.fbx, recompile, Pull-DxrpCompiledAssetsToRepo." );
+			Log.Warning( "BITCOINMINING_ANIM_AUDIT sequences=0 — open bitcoinhub.vmdl in ModelDoc, star-add fanAction from steam-machine.fbx, recompile, Pull-DxrpCompiledAssetsToRepo." );
 			return;
 		}
 
@@ -480,7 +655,7 @@ public static class LpBitcoinDevSpawn
 
 		if ( racks.Count == 0 )
 		{
-			if ( !TryGetSpawnTransform( out var transform ) )
+			if ( !LifePunchMarketSpawn.TryGetIdentitySpawnTransform( out var transform ) )
 			{
 				Log.Warning( "lp_bitcoin_rack_anim_audit: no racks — run lp_bitcoin_spawn_kit first." );
 				return;
@@ -585,7 +760,7 @@ public static class LpBitcoinDevSpawn
 
 	private static LpBitcoinHubEntity SpawnKitInternal()
 	{
-		if ( !TryGetSpawnTransform( out var transform ) )
+		if ( !LifePunchMarketSpawn.TryGetIdentitySpawnTransform( out var transform ) )
 		{
 			Log.Warning( "lp_bitcoin_spawn_kit: no local viewer — play from game.scene first." );
 			return null;
@@ -597,11 +772,12 @@ public static class LpBitcoinDevSpawn
 
 		var origin = hub.WorldPosition;
 		var rot = transform.Rotation;
-		SpawnRackPrefab( new Transform( SnapToGround( origin + rot.Right * 80f ), rot ), hub, advanced: false );
-		SpawnRackPrefab( new Transform( SnapToGround( origin + rot.Right * 160f ), rot ), hub, advanced: false );
-		SpawnRackPrefab( new Transform( SnapToGround( origin + rot.Left * 80f ), rot ), hub, advanced: false );
-		SpawnRackPrefab( new Transform( SnapToGround( origin + rot.Left * 160f ), rot ), hub, advanced: true );
-		SpawnTerminalPrefab( new Transform( SnapToGround( origin + rot.Forward * 100f ), rot ) );
+		var groundZ = origin.z;
+		SpawnRackPrefab( new Transform( SnapToGround( origin + rot.Right * 80f, groundZ ), rot ), hub, advanced: false );
+		SpawnRackPrefab( new Transform( SnapToGround( origin + rot.Right * 160f, groundZ ), rot ), hub, advanced: false );
+		SpawnRackPrefab( new Transform( SnapToGround( origin + rot.Left * 80f, groundZ ), rot ), hub, advanced: false );
+		SpawnRackPrefab( new Transform( SnapToGround( origin + rot.Left * 160f, groundZ ), rot ), hub, advanced: true );
+		SpawnTerminalPrefab( new Transform( SnapToGround( origin + rot.Forward * 100f, groundZ ), rot ) );
 		return hub;
 	}
 
@@ -610,24 +786,21 @@ public static class LpBitcoinDevSpawn
 		var go = ClonePrefabAt( LpBitcoinIdent.HubPrefabPath, transform );
 		if ( !go.IsValid() )
 		{
-			Log.Error( "lp_bitcoin: hub prefab missing — recompile bitcoin-miner.prefab in editor." );
+			Log.Error( "lp_bitcoin: hub prefab missing — recompile bitcoinhub.prefab in editor." );
 			return null;
 		}
 
 		var hub = go.Components.Get<LpBitcoinHubEntity>( FindMode.EverythingInSelfAndDescendants );
 		if ( !hub.IsValid() )
-			hub = go.AddComponent<LpBitcoinHubEntity>();
-
-		if ( !hub.IsValid() )
 		{
-			Log.Error( "lp_bitcoin: could not attach LpBitcoinHubEntity to hub prefab clone." );
+			Log.Error( "lp_bitcoin: bitcoinhub.prefab missing LpBitcoinHubEntity — recompile prefab in editor." );
 			go.Destroy();
 			return null;
 		}
 
 		hub.BindOwnerFromLocalViewer();
-		LifePunchPropPhysics.SetupPhysicalProp( go, alignGround: true );
 		NetworkSpawnIfNeeded( go );
+		LifePunchPropPhysics.SetupGrabbablePlaceableProp( go, alignGround: true );
 		return hub;
 	}
 
@@ -731,72 +904,29 @@ public static class LpBitcoinDevSpawn
 		return 0f;
 	}
 
-	private static bool TryGetSpawnTransform( out Transform transform )
-	{
-#if LIFEPUNCH_LOCAL
-		var scene = Game.ActiveScene;
-		var camera = scene?.GetAllComponents<CameraComponent>().FirstOrDefault();
-		if ( !camera.IsValid() )
-		{
-			transform = default;
-			return false;
-		}
-
-		var forward = camera.WorldRotation.Forward.WithZ( 0 ).Normal;
-		if ( forward.Length < 0.01f )
-			forward = Vector3.Forward;
-
-		var position = SnapToGround( camera.WorldPosition + forward * SpawnDistanceUnits );
-		transform = new Transform( position, Rotation.LookAt( forward ) );
-		return true;
-#else
-		var scene = Game.ActiveScene;
-		var player = Player.Local;
-		if ( player.IsValid() && player.Controller.IsValid() )
-		{
-			var aim = player.Controller.EyeAngles.ToRotation();
-			var flatForward = aim.Forward.WithZ( 0 ).Normal;
-			if ( flatForward.Length < 0.01f )
-				flatForward = Vector3.Forward;
-
-			var position = SnapToGround( player.WorldPosition + flatForward * SpawnDistanceUnits );
-			transform = new Transform( position, Rotation.LookAt( flatForward ) );
-			return true;
-		}
-
-		var cam = scene?.GetAllComponents<CameraComponent>().FirstOrDefault();
-		if ( !cam.IsValid() )
-		{
-			transform = default;
-			return false;
-		}
-
-		var camForward = cam.WorldRotation.Forward.WithZ( 0 ).Normal;
-		if ( camForward.Length < 0.01f )
-			camForward = Vector3.Forward;
-
-		var camPosition = SnapToGround( cam.WorldPosition + camForward * SpawnDistanceUnits );
-		transform = new Transform( camPosition, Rotation.LookAt( camForward ) );
-		return true;
-#endif
-	}
-
-	private static Vector3 SnapToGround( Vector3 horizontalPoint )
+	private static Vector3 SnapToGround( Vector3 horizontalPoint, float referenceZ )
 	{
 		var scene = Game.ActiveScene;
 		if ( scene is null )
-			return horizontalPoint;
+			return horizontalPoint.WithZ( referenceZ );
 
 		try
 		{
-			var start = horizontalPoint + Vector3.Up * GroundTraceUp;
-			var end = horizontalPoint - Vector3.Up * GroundTraceDown;
+			var start = horizontalPoint.WithZ( referenceZ ) + Vector3.Up * GroundTraceUp;
+			var end = horizontalPoint.WithZ( referenceZ ) - Vector3.Up * GroundTraceDown;
 			var trace = scene.Trace.Ray( start, end ).Run();
-			return trace.Hit ? trace.HitPosition : horizontalPoint;
+			if ( !trace.Hit )
+				return horizontalPoint.WithZ( referenceZ );
+
+			var hit = trace.HitPosition;
+			if ( MathF.Abs( hit.z - referenceZ ) > 256f )
+				return horizontalPoint.WithZ( referenceZ );
+
+			return hit;
 		}
 		catch ( Exception ex ) when ( ex.Message.Contains( "Default Surface", StringComparison.OrdinalIgnoreCase ) )
 		{
-			return horizontalPoint;
+			return horizontalPoint.WithZ( referenceZ );
 		}
 	}
 

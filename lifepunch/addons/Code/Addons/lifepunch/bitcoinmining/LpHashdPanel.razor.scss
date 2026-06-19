@@ -44,8 +44,8 @@ $shell-radius: 22px;
 		flex-shrink: 0;
 		display: flex;
 		flex-direction: column;
-		width: 1040px;
-		height: 640px;
+		width: 1100px;
+		height: 700px;
 		max-width: 94%;
 		max-height: 92%;
 		min-height: 0;
@@ -83,35 +83,6 @@ $shell-radius: 22px;
 		&.lp-window-watermark--rounded .lp-source-footer {
 			border-radius: 0 0 $shell-radius $shell-radius;
 		}
-	}
-
-	// Hub scale — L is the canonical layout; other steps only resize the shell.
-	// Do NOT nest tab/sidebar overrides here: s&box silently drops SCSS rules nested 4+ deep,
-	// so per-tab tweaks under &.lp-ui-size-* .shell { .pane.wallet { … } } never compile.
-	&.lp-ui-size-s .shell {
-		width: 920px;
-		height: 540px;
-	}
-
-	&.lp-ui-size-m .shell {
-		width: 980px;
-		height: 580px;
-	}
-
-	&.lp-ui-size-l .shell {
-		width: 1040px;
-		height: 640px;
-	}
-
-	&.lp-ui-size-xl .shell {
-		width: 1100px;
-		height: 700px;
-	}
-
-	// Flat selectors only (max 3 levels) for scale-specific chrome that must hide at small sizes.
-	&.lp-ui-size-s .date-chip,
-	&.lp-ui-size-m .date-chip {
-		display: none;
 	}
 
 	.hub-body {
@@ -402,6 +373,21 @@ $shell-radius: 22px;
 		color: $hashd-title;
 		font-size: 13px;
 		font-weight: 700;
+		overflow: hidden;
+
+		.sidebar-avatar-img {
+			width: 100%;
+			height: 100%;
+			border-radius: 999px;
+		}
+
+		.sidebar-avatar-fallback {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 100%;
+			height: 100%;
+		}
 	}
 
 	.workspace {
@@ -507,7 +493,6 @@ $shell-radius: 22px;
 			}
 
 			.notif-dot {
-				display: none;
 				position: absolute;
 				top: 7px;
 				right: 8px;
@@ -518,82 +503,11 @@ $shell-radius: 22px;
 				box-shadow: 0 0 8px rgba(240, 165, 0, 0.45);
 			}
 
-			&.has-unread .notif-dot {
-				display: block;
-			}
-
 			&:hover {
 				border-color: rgba(232, 125, 62, 0.35);
 				background-color: rgba(232, 125, 62, 0.08);
 			}
 		}
-	}
-
-	.notif-wrap {
-		position: relative;
-		flex-shrink: 0;
-	}
-
-	.notif-dropdown {
-		position: absolute;
-		top: calc(100% + 8px);
-		right: 0;
-		width: 320px;
-		max-width: 72vw;
-		max-height: 280px;
-		display: flex;
-		flex-direction: column;
-		border-radius: 14px;
-		background-color: $hashd-card;
-		border: 1px solid $hashd-border;
-		box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
-		overflow: hidden;
-		z-index: 20;
-	}
-
-	.notif-dropdown-head {
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		justify-content: space-between;
-		gap: 8px;
-		padding: 10px 12px;
-		border-bottom: 1px solid $hashd-border;
-		color: $hashd-title;
-		font-size: 12px;
-		font-weight: 700;
-		letter-spacing: 0.04em;
-		text-transform: uppercase;
-	}
-
-	.notif-close {
-		width: 24px;
-		height: 24px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		padding: 0;
-		border: none;
-		border-radius: 999px;
-		background-color: transparent;
-		color: $hashd-muted;
-		cursor: pointer;
-
-		.material-icons {
-			font-size: 16px;
-		}
-
-		&:hover {
-			color: $hashd-title;
-			background-color: rgba(255, 255, 255, 0.06);
-		}
-	}
-
-	.notif-empty {
-		padding: 14px 12px;
-		color: $hashd-muted;
-		font-size: 12px;
-		line-height: 1.45;
 	}
 
 	.notif-list {
@@ -961,10 +875,6 @@ $shell-radius: 22px;
 		font-size: 12px;
 		line-height: 1.45;
 		white-space: normal;
-
-		span {
-			display: block;
-		}
 	}
 
 	.rack-card-actions {
@@ -994,16 +904,7 @@ $shell-radius: 22px;
 		white-space: normal;
 	}
 
-	// Wallet cashout stacks on narrow workspace widths at every scale (not only S).
-	&.lp-ui-size-s .wallet-cashout-input,
-	&.lp-ui-size-s .wallet-cashout-btn,
-	&.lp-ui-size-m .wallet-cashout-input,
-	&.lp-ui-size-m .wallet-cashout-btn {
-		flex: 1 1 100%;
-		width: 100%;
-		max-width: none;
-	}
-
+	// Wallet cashout stacks on narrow workspace widths.
 	.wallet-cashout-bar {
 		display: flex;
 		flex-direction: row;
@@ -1058,7 +959,6 @@ $shell-radius: 22px;
 	.wallet-cashout-btn {
 		flex: 1 1 160px;
 		min-width: 0;
-		max-width: none;
 	}
 
 	.wallet-cashout-row {
@@ -1068,7 +968,6 @@ $shell-radius: 22px;
 
 		.wallet-cashout-all {
 			width: 100%;
-			max-width: none;
 		}
 	}
 

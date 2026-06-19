@@ -89,7 +89,16 @@
 						</nav>
 
 						<div class="sidebar-foot">
-							<div class="sidebar-avatar" title="@GreetingName()">@AvatarInitial()</div>
+							<div class="sidebar-avatar" title="@GreetingName()">
+								@if ( LocalSteamId() > 0 )
+								{
+									<img class="sidebar-avatar-img" src="avatar:@LocalSteamId()"/>
+								}
+								else
+								{
+									<span class="sidebar-avatar-fallback">@AvatarInitial()</span>
+								}
+							</div>
 						</div>
 					</aside>
 
@@ -109,45 +118,15 @@
 									<i class="material-icons">calendar_today</i>
 									<span>@HeaderDateLabel()</span>
 								</div>
-								<div class="notif-wrap">
-									<button class="header-chip notif-chip @(HasUnreadAlerts() ? "has-unread" : "")"
-									        tooltip="Hub alerts"
-									        onclick="@ToggleAlerts">
-										<i class="material-icons">notifications</i>
-										<span class="notif-dot"></span>
-									</button>
-									@if ( _alertsOpen )
+								<button class="header-chip notif-chip @(HasUnreadAlerts() ? "has-unread" : "")"
+								        tooltip="Hub logs"
+								        onclick="@SelectLogsTab">
+									<i class="material-icons">notifications</i>
+									@if ( HasUnreadAlerts() )
 									{
-										<div class="notif-dropdown">
-											<div class="notif-dropdown-head">
-												<span>Hub alerts</span>
-												<button class="notif-close" onclick="@CloseAlerts">
-													<i class="material-icons">close</i>
-												</button>
-											</div>
-											@if ( GetHubAlerts().Count == 0 )
-											{
-												<div class="notif-empty">No alerts yet — terminal commands, rack capacity, and intrusion attempts appear here.</div>
-											}
-											else
-											{
-												<div class="notif-list">
-													@foreach ( var alert in GetHubAlerts() )
-													{
-														<div class="notif-row">
-															<i class="material-icons">@AlertIcon(alert.Kind)</i>
-															<div class="notif-copy">
-																<div class="notif-kind">@AlertKindLabel(alert.Kind)</div>
-																<div class="notif-message">@alert.Message</div>
-																<div class="notif-time">@AlertTimeLabel(alert.Timestamp)</div>
-															</div>
-														</div>
-													}
-												</div>
-											}
-										</div>
+										<span class="notif-dot"></span>
 									}
-								</div>
+								</button>
 								<button class="lp-ui-chrome-btn close" tooltip="Close" onclick="@Close">
 									<i class="material-icons">close</i>
 								</button>
@@ -397,6 +376,47 @@
 										</div>
 									</div>
 								}
+								else if ( _active == OpsTab.Logs )
+								{
+									<div class="pane logs-pane">
+										<div class="lp-ui-panel">
+											<div class="lp-ui-panel-title">
+												<i class="material-icons">notifications</i>
+												<span>Hub logs</span>
+											</div>
+
+											<div class="lp-ui-intro">
+												Terminal commands, rack capacity warnings, intrusion attempts, and hub transfers appear here.
+											</div>
+
+											@if ( GetHubAlerts().Count == 0 )
+											{
+												<div class="lp-ui-empty">
+													<i class="material-icons">notifications_none</i>
+													<span>No alerts yet.</span>
+												</div>
+											}
+											else
+											{
+												<div class="lp-ui-scroll">
+													<div class="notif-list">
+														@foreach ( var alert in GetHubAlerts() )
+														{
+															<div class="notif-row">
+																<i class="material-icons">@AlertIcon(alert.Kind)</i>
+																<div class="notif-copy">
+																	<div class="notif-kind">@AlertKindLabel(alert.Kind)</div>
+																	<div class="notif-message">@alert.Message</div>
+																	<div class="notif-time">@AlertTimeLabel(alert.Timestamp)</div>
+																</div>
+															</div>
+														}
+													</div>
+												</div>
+											}
+										</div>
+									</div>
+								}
 								else if ( _active == OpsTab.Settings )
 								{
 									<div class="pane settings-pane">
@@ -404,20 +424,6 @@
 											<div class="lp-ui-panel-title">
 												<i class="material-icons">settings</i>
 												<span>Settings</span>
-											</div>
-
-											<div class="settings-group">
-												<div class="settings-label">UI Scale</div>
-												<div class="settings-hint">Resize the hub admin window.</div>
-												<div class="panel-size-row">
-													@foreach ( var size in _uiScaleOptions )
-													{
-														<button class="panel-size-opt @( _uiScale == size ? "active" : "" )"
-														        onclick="@(() => SetUiScale( size ))">
-															@LpUiScale.ShortLabel( size )
-														</button>
-													}
-												</div>
 											</div>
 
 											<div class="settings-group">
@@ -450,11 +456,11 @@
 
 @code
 {
-	private enum OpsTab { Overview, Wallet, Racks, Settings }
+	private enum OpsTab { Overview, Wallet, Racks, Logs, Settings }
 	private enum WalletSection { CashOut, Send }
 	private enum PerfRange { Day, Week, Month }
 
-	private static readonly OpsTab[] _tabs = { OpsTab.Overview, OpsTab.Wallet, OpsTab.Racks, OpsTab.Settings };
+	private static readonly OpsTab[] _tabs = { OpsTab.Overview, OpsTab.Wallet, OpsTab.Racks, OpsTab.Logs, OpsTab.Settings };
 	private static readonly PerfRange[] _perfRanges = { PerfRange.Day, PerfRange.Week, PerfRange.Month };
 
 	private OpsTab _active = OpsTab.Overview;
@@ -467,7 +473,6 @@
 	private string _pinError = "";
 	private int _pinSetupPass;
 	private static readonly string[] _pinKeys = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "clr", "0", "ok" };
-	private LpUiScaleSize _uiScale = LpUiScale.Default;
 	private string _cashOutAmount = "";
 	private bool _cashOutSuccessActive;
 	private bool _cashOutSuccessVisible;
@@ -475,7 +480,6 @@
 	private bool _cashOutErrorActive;
 	private bool _cashOutErrorVisible;
 	private string _cashOutErrorMessage = "";
-	private bool _alertsOpen;
 
 	private string CashOutAmount
 	{
@@ -486,13 +490,6 @@
 			ClearCashOutError();
 		}
 	}
-	private static readonly LpUiScaleSize[] _uiScaleOptions =
-	{
-		LpUiScaleSize.Small,
-		LpUiScaleSize.Medium,
-		LpUiScaleSize.Large,
-		LpUiScaleSize.ExtraLarge
-	};
 	private LpBitcoinHubEntity _hub;
 
 	public LpBitcoinHubEntity Hub => _hub;
@@ -541,14 +538,13 @@
 
 	private IReadOnlyList<LpBitcoinHubAlert> GetHubAlerts() => Hub?.GetAlerts() ?? Array.Empty<LpBitcoinHubAlert>();
 
-	private void ToggleAlerts()
+	private void SelectLogsTab()
 	{
-		_alertsOpen = !_alertsOpen;
-		if ( _alertsOpen )
-			Hub?.RequestMarkAlertsRead();
+		SelectTab( OpsTab.Logs );
+		Hub?.RequestMarkAlertsRead();
 	}
 
-	private void CloseAlerts() => _alertsOpen = false;
+	private static long LocalSteamId() => Game.SteamId;
 
 	private static string AlertIcon( LpBitcoinHubAlertKind kind ) => kind switch
 	{
@@ -713,6 +709,7 @@
 		OpsTab.Overview => "home",
 		OpsTab.Wallet => "account_balance_wallet",
 		OpsTab.Racks => "dns",
+		OpsTab.Logs => "notifications",
 		OpsTab.Settings => "settings",
 		_ => "home"
 	};
@@ -722,6 +719,7 @@
 		OpsTab.Overview => "Overview",
 		OpsTab.Wallet => "Wallet",
 		OpsTab.Racks => "Servers",
+		OpsTab.Logs => "Logs",
 		OpsTab.Settings => "Settings",
 		_ => "Overview"
 	};
@@ -734,13 +732,7 @@
 	private void SelectWalletTab() => SelectTab( OpsTab.Wallet );
 	private void SelectRacksTab() => SelectTab( OpsTab.Racks );
 	private void OpenSettings() => SelectTab( OpsTab.Settings );
-	private string GetRootClass() => $"lp-bitcoin-ops lp-ui-accent-hashd {LpUiScale.CssClass( _uiScale )}";
-	private void SetUiScale( LpUiScaleSize size )
-	{
-		_uiScale = size;
-		StateHasChanged();
-		LifePunchUiScrollPolicy.Apply( Panel, resetOffset: true );
-	}
+	private string GetRootClass() => $"lp-bitcoin-ops lp-ui-accent-hashd {LpUiScale.CssClass( LpUiScale.Default )}";
 	private void Close() => LpHashdUiHost.CloseOpen();
 	private void PowerOn() => Hub?.SetPowered( true );
 	private void PowerOff() => Hub?.SetPowered( false );
@@ -1041,7 +1033,6 @@
 		var hash = new HashCode();
 		hash.Add( _active );
 		hash.Add( _walletSection );
-		hash.Add( _uiScale );
 		hash.Add( _pinUnlocked );
 		hash.Add( _pinBuffer );
 		hash.Add( _pinSetupPass );
@@ -1056,7 +1047,6 @@
 		hash.Add( _cashOutAmount );
 		hash.Add( MiningRackCount() );
 		hash.Add( TotalMiningRate() );
-		hash.Add( _alertsOpen );
 		hash.Add( Hub?.UnreadAlertCount ?? 0 );
 		hash.Add( Hub?.AlertFeed );
 		return hash.ToHashCode();

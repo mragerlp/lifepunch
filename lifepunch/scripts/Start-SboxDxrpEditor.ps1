@@ -4,7 +4,8 @@
 
 .DESCRIPTION
   1. Mirror repo addon trees into the DXRP game project (default: bitcoinmining).
-  2. Launch s&box with -project only (normal DXRP route).
+  2. Launch s&box with -project only (normal DXRP route), unless an editor is already
+     running — then sync only (no second window). Use -ReplaceExisting for one clean relaunch.
 
   Portal API is a launch ConVar (+authorize), not an in-game console command.
   After host play, use:  lp_authorize <token from dxrp.net>
@@ -18,11 +19,24 @@
 .PARAMETER BitcoinOnly
   Purge all non-bitcoin LifePunch addons from DXRP before sync (fresh console).
 
+.PARAMETER SkipConnectivityWatch
+  Do not start Watch-CvlConnectivity.ps1 in the background.
+
+.PARAMETER NoLaunch
+  Sync/preflight only — never start s&box.
+
+.PARAMETER ReplaceExisting
+  Kill all sbox-dev instances, then launch one DXRP editor (use when stuck on blank/wrong project).
+
+.PARAMETER ForceNew
+  Always Start-Process even if sbox-dev is already running (causes a second editor — avoid unless intentional).
+
 .EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File lifepunch\scripts\Start-SboxDxrpEditor.ps1
   powershell -File lifepunch\scripts\Start-SboxDxrpEditor.ps1 -PreflightFix -BitcoinOnly -SyncAddon bitcoinmining
   powershell -File lifepunch\scripts\Start-SboxDxrpEditor.ps1 -NoSync
   powershell -File lifepunch\scripts\Start-SboxDxrpEditor.ps1 -WithAuthorize
+  powershell -File lifepunch\scripts\Start-SboxDxrpEditor.ps1 -ReplaceExisting -NoSync
 #>
 [CmdletBinding()]
 param(
@@ -34,11 +48,44 @@ param(
     [switch] $PreflightFix,
     [switch] $BitcoinOnly,
     [switch] $SkipConnectivityWatch,
+    [switch] $NoLaunch,
+    [switch] $ReplaceExisting,
+    [switch] $ForceNew,
     [string] $ConfigPath = ''
 )
 
 $ErrorActionPreference = 'Stop'
 $Here = if ($PSScriptRoot) { $PSScriptRoot } else { Split-Path -Parent $MyInvocation.MyCommand.Path }
+
+function Get-SboxDevProcesses {
+    @(Get-Process -Name 'sbox-dev' -ErrorAction SilentlyContinue | Where-Object { -not $_.HasExited })
+}
+
+function Stop-AllSboxDevEditors {
+    $procs = Get-SboxDevProcesses
+    if ($procs.Count -eq 0) { return 0 }
+    foreach ($proc in $procs) {
+        Stop-Process -Id $proc.Id -Force -ErrorAction SilentlyContinue
+    }
+    Start-Sleep -Seconds 2
+    return $procs.Count
+}
+
+function Focus-SboxDevEditor {
+    param([System.Diagnostics.Process]$Process)
+    if (-not $Process -or $Process.HasExited -or $Process.MainWindowHandle -eq [IntPtr]::Zero) { return }
+    Add-Type -TypeDefinition @'
+using System;
+using System.Runtime.InteropServices;
+public static class LifePunchSboxWindowFocus {
+    [DllImport("user32.dll")] public static extern bool SetForegroundWindow(IntPtr hWnd);
+    [DllImport("user32.dll")] public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+}
+'@ -ErrorAction SilentlyContinue | Out-Null
+    [LifePunchSboxWindowFocus]::ShowWindow($Process.MainWindowHandle, 9) | Out-Null
+    [LifePunchSboxWindowFocus]::SetForegroundWindow($Process.MainWindowHandle) | Out-Null
+}
+
 if (-not $ConfigPath) { $ConfigPath = Join-Path $Here 'dxrp-editor.local.json' }
 
 $upstreamGate = Join-Path $Here 'Ensure-DxrpUpstreamCurrent.ps1'
@@ -129,7 +176,7 @@ $project = [string]$cfg.projectPath
 $token = if ($cfg.serverToken) { [string]$cfg.serverToken } else { '' }
 $api = if ($cfg.api) { [string]$cfg.api } else { 'production' }
 
-if (-not (Test-Path -LiteralPath $sbox)) { throw "s&box not found: $sbox" }
+if (-not (Test-Path -LiteralPath $sbox)) { throw "sbox-dev not found: $sbox" }
 if (-not (Test-Path -LiteralPath $project)) { throw "DXRP project not found: $project" }
 
 $args = @('-project', $project)
@@ -141,27 +188,53 @@ if ($WithAuthorize) {
     $args += '+authorize', $token, '+api', $api
 }
 
-Write-Host 'Launching DXRP editor (normal project open)...' -ForegroundColor Green
+Write-Host 'DXRP editor launch...' -ForegroundColor Green
 Write-Host "  Project: $project" -ForegroundColor DarkGray
 if ($WithAuthorize) {
     Write-Host "  API:     $api (+authorize from config)" -ForegroundColor DarkGray
 }
 else {
-    Write-Host '  Portal API: host play then lp_authorize <token> (authorize is +launch only)' -ForegroundColor DarkGray
+    Write-Host '  Portal API: host play then lp_authorize YOUR_TOKEN (authorize is +launch only)' -ForegroundColor DarkGray
 }
 Write-Host ''
 
-Start-Process -FilePath $sbox -ArgumentList $args -WorkingDirectory (Split-Path -Parent $sbox)
-if ($WithAuthorize) {
-    Write-Host 'Editor started with +authorize. Wait for compile, then host play.' -ForegroundColor Cyan
-    Write-Host '  Rank bots auto-spawn when portal ranks load (lifepunch_auto_spawn_testbots 1).' -ForegroundColor DarkGray
+if ($NoLaunch) {
+    Write-Host 'NoLaunch - sync/preflight done; sbox was not started.' -ForegroundColor Cyan
+    exit 0
+}
+
+$existing = Get-SboxDevProcesses
+if ($ReplaceExisting -and $existing.Count -gt 0) {
+    $closed = Stop-AllSboxDevEditors
+    Write-Host ('ReplaceExisting - closed {0} sbox-dev instance(s).' -f $closed) -ForegroundColor Yellow
+    $existing = @()
+}
+
+if ($existing.Count -gt 0 -and -not $ForceNew) {
+    Focus-SboxDevEditor -Process $existing[0]
+    Write-Host 'sbox editor already running - skipped second launch (prevents duplicate windows).' -ForegroundColor Yellow
+    Write-Host "  Running: $($existing.Count) instance(s). Focused pid $($existing[0].Id)." -ForegroundColor DarkGray
+    Write-Host "  Open DXRP: File -> Open Project -> $project" -ForegroundColor Cyan
+    Write-Host '  One clean relaunch: Start-SboxDxrpEditor.ps1 -ReplaceExisting -NoSync' -ForegroundColor DarkGray
+    Write-Host '  Intentional second window: -ForceNew' -ForegroundColor DarkGray
 }
 else {
-    Write-Host 'Editor started. Host play, then lp_authorize <token> if you need portal/API data.' -ForegroundColor Cyan
-    Write-Host '  Rank bots wait for lp_authorize — vanilla editor play will NOT spawn them.' -ForegroundColor DarkGray
-    Write-Host '  sbox-jtc: open Editor dock "MCP Server" (jtc) — it does NOT autostart like chomnr.' -ForegroundColor Yellow
-    Write-Host '  LifePunch overlay autostarts jtc when Sync-DxrpEditorOverlays.ps1 ran (see dxrp-overlays/Editor).' -ForegroundColor DarkGray
-    Write-Host '  Then Cursor Reload Window if sbox-jtc MCP is red.' -ForegroundColor DarkGray
+    if ($existing.Count -gt 0 -and $ForceNew) {
+        Write-Host ('ForceNew - launching another editor ({0} already running).' -f $existing.Count) -ForegroundColor Yellow
+    }
+
+    Start-Process -FilePath $sbox -ArgumentList $args -WorkingDirectory (Split-Path -Parent $sbox)
+    if ($WithAuthorize) {
+        Write-Host 'Editor started with +authorize. Wait for compile, then host play.' -ForegroundColor Cyan
+        Write-Host '  Rank bots auto-spawn when portal ranks load (lifepunch_auto_spawn_testbots 1).' -ForegroundColor DarkGray
+    }
+    else {
+        Write-Host 'Editor started. Host play, then lp_authorize YOUR_TOKEN if you need portal/API data.' -ForegroundColor Cyan
+        Write-Host '  Rank bots wait for lp_authorize - vanilla editor play will NOT spawn them.' -ForegroundColor DarkGray
+        Write-Host '  sbox-jtc: open Editor dock MCP Server (jtc) - it does NOT autostart like chomnr.' -ForegroundColor Yellow
+        Write-Host '  LifePunch overlay autostarts jtc when Sync-DxrpEditorOverlays.ps1 ran (see dxrp-overlays/Editor).' -ForegroundColor DarkGray
+        Write-Host '  Then Cursor Reload Window if sbox-jtc MCP is red.' -ForegroundColor DarkGray
+    }
 }
 
 if (-not $SkipConnectivityWatch) {

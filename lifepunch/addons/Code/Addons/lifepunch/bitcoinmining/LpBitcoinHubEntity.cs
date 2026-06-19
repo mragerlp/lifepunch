@@ -52,8 +52,7 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 
 	protected override void OnAwake()
 	{
-		LifePunchPropPhysics.DenyHandsGrabTags( GameObject );
-		LifePunchPropPhysics.SyncBoxColliderFromModel( GameObject );
+		// Collider sync after ground align in OnStart (avoid self-hit trace).
 	}
 
 	protected override void OnStart()
@@ -70,10 +69,8 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 					HealthComponent.Health = HealthComponent.MaxHealth;
 			}
 
-			// Known-good main path: market spawn is ~30u above surface — snap feet immediately (no deferred settle).
 			var before = GameObject.WorldPosition;
-			LifePunchGroundContact.AlignMeshBottom( GameObject );
-			LifePunchPropPhysics.EnforceWorldMachine( GameObject );
+			LifePunchPropPhysics.SetupGrabbablePlaceableProp( GameObject, alignGround: true );
 			Log.Info( $"HUB_GROUND_SETUP pos {before} -> {GameObject.WorldPosition}" );
 		}
 #endif
@@ -97,15 +94,43 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 		}
 	}
 
-	/// <summary>Re-align feet after teleport (dev recall).</summary>
+	/// <summary>Re-align feet after dev recall / reposition.</summary>
 	public void RestartPrinterSettle()
 	{
 #if !LIFEPUNCH_LOCAL
 		if ( !Networking.IsHost )
 			return;
 
+		LifePunchPropPhysics.SetupGrabbablePlaceableProp( GameObject, alignGround: true );
+#endif
+	}
+
+	protected override void OnFixedUpdate()
+	{
+#if !LIFEPUNCH_LOCAL
+		if ( !Networking.IsHost )
+			return;
+
+		LifePunchPropPhysics.MaintainGrabbablePlaceableProp( GameObject );
+		TryAlignGroundWhenReleased();
+#endif
+	}
+
+	void TryAlignGroundWhenReleased()
+	{
+#if !LIFEPUNCH_LOCAL
+		if ( GameObject.Tags.Has( Constants.GrabbedTag ) )
+			return;
+
+		var renderer = _modelRenderer ?? Components.Get<ModelRenderer>( FindMode.EverythingInSelf );
+		if ( !renderer.IsValid() || renderer.Bounds.Mins.z > -0.15f )
+			return;
+
+		var rb = Components.Get<Rigidbody>( FindMode.EverythingInSelf );
+		if ( rb.IsValid() && rb.Velocity.Length > 8f )
+			return;
+
 		LifePunchGroundContact.AlignMeshBottom( GameObject );
-		LifePunchPropPhysics.EnforceWorldMachine( GameObject );
 #endif
 	}
 

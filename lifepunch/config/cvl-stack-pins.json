@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "lastVerified": "2026-06-10",
+  "lastVerified": "2026-06-19",
   "notes": "Known-good stack pins + where to update. Re-verify after any bump. Full runbook: lifepunch/docs/CVL_FULL_CAPACITY_UPDATES.md",
   "components": [
     {
@@ -28,7 +28,7 @@
       "id": "claudebridge",
       "role": "runtime MCP — play, console_run, screenshots",
       "library": "sboxskinsgg.claudebridge",
-      "verifiedVersion": "1.13.0",
+      "verifiedVersion": "1.15.0",
       "updateVia": "s&box Library Manager → update; restart editor; get_bridge_status versionsAligned"
     },
     {
