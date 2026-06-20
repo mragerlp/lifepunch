@@ -17,6 +17,7 @@ $crt-text-dim: #9a9a9a;
 
 @import "LpUiChrome.scss";
 @import "LpUiScale.scss";
+@import "LpUiMenuLayout.scss";
 @import "LpOpsCrtTerminal.scss";
 @import "../LifePunchUiFooter.razor.scss";
 @import "../LifePunchUiShell.scss";
@@ -63,7 +64,12 @@ $crt-text-dim: #9a9a9a;
 	.crt-header {
 		background-color: $crt-header-bg;
 		border-bottom: 1px solid #333333;
-		color: #b8b8b8;
+	}
+
+	.crt-header-title {
+		color: $hashd-amber;
+		font-weight: bold;
+		flex-shrink: 0;
 	}
 
 	.sidebar {
@@ -82,6 +88,7 @@ $crt-text-dim: #9a9a9a;
 	}
 
 	.log-shell {
+		// .prompt color lives on .hashd-prompt-accent (flat rule below — nested loses to LpOpsCrtTerminal import).
 		flex: 1 1 0;
 		min-height: 0;
 		min-width: 0;
@@ -94,12 +101,10 @@ $crt-text-dim: #9a9a9a;
 		flex: 1 1 0;
 		min-height: 0;
 		min-width: 0;
-		height: 100%;
-		overflow-y: scroll;
-		overflow-x: hidden;
 		cursor: text;
 		padding-right: 4px;
 		pointer-events: all;
+		overflow: hidden;
 	}
 
 	.log-stack {
@@ -282,14 +287,14 @@ $crt-text-dim: #9a9a9a;
 	gap: 10px;
 	width: 100%;
 	min-width: 100%;
-	height: 32px;
-	min-height: 32px;
-	max-height: 32px;
+	height: $lp-menu-footer-h;
+	min-height: $lp-menu-footer-h;
+	max-height: $lp-menu-footer-h;
 	padding: 0 16px;
 	border-radius: 0;
 	border-top: none;
 	background-color: #060606;
-	font-family: "Roboto Mono";
+	font-family: $lp-menu-mono;
 	font-size: 10px;
 	letter-spacing: 0.5px;
 	overflow: hidden;
@@ -298,11 +303,10 @@ $crt-text-dim: #9a9a9a;
 .lp-ops-crt.lp-ops-crt--gray .lp-window-watermark .lp-mark {
 	display: flex;
 	align-items: center;
-	color: #c8a45a;
-	font-weight: bold;
 	flex-shrink: 0;
 	line-height: 1;
 	white-space: nowrap;
+	letter-spacing: 0.06em;
 }
 
 .lp-ops-crt.lp-ops-crt--gray .lp-window-watermark .lp-url-copy {
@@ -313,7 +317,7 @@ $crt-text-dim: #9a9a9a;
 	border: none;
 	background-color: transparent;
 	color: rgba(255, 255, 255, 0.55);
-	font-family: "Roboto Mono";
+	font-family: $lp-menu-mono;
 	font-size: 10px;
 	letter-spacing: 0.5px;
 	line-height: 1;
@@ -329,6 +333,12 @@ $crt-text-dim: #9a9a9a;
 
 .lp-ops-crt.lp-ops-crt--gray .lp-window-watermark .lp-url-copy.copied {
 	color: #8ec8ff;
+}
+
+// Brand + prompt accent — flat only (must match rig@hub> / $hashd-amber).
+.lp-ops-crt.lp-ops-crt--gray .hashd-prompt-accent {
+	color: #f0a500;
+	font-weight: bold;
 }
 
 // CRT chrome — flat (imported LpOpsCrtTerminal nested rules may not compile).
@@ -365,9 +375,7 @@ $crt-text-dim: #9a9a9a;
 	flex: 1 1 0;
 	min-height: 0;
 	min-width: 0;
-	height: 100%;
-	overflow-y: scroll;
-	overflow-x: hidden;
+	overflow: hidden;
 	pointer-events: all;
 }
 
@@ -380,19 +388,12 @@ $crt-text-dim: #9a9a9a;
 }
 
 .lp-ops-crt .crt-header {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	align-items: center;
-	padding: 8px 12px;
 	font-size: 11px;
-	letter-spacing: 0.08em;
-	gap: 12px;
-	flex-shrink: 0;
 }
 
 .lp-ops-crt .sidebar {
-	width: 180px;
+	width: $lp-menu-sidebar-w;
+	flex: 0 0 $lp-menu-sidebar-w;
 	flex-shrink: 0;
 	padding: 10px;
 	font-size: 11px;
@@ -400,7 +401,16 @@ $crt-text-dim: #9a9a9a;
 	flex-direction: column;
 	gap: 4px;
 	min-height: 0;
-	overflow-y: scroll;
+	overflow: hidden;
+}
+
+.lp-ops-crt .sidebar-cmd-list {
+	flex: 1 1 0;
+	min-height: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	overflow: hidden;
 }
 
 .lp-ops-crt .sidebar-title {
@@ -416,9 +426,14 @@ $crt-text-dim: #9a9a9a;
 }
 
 .lp-ops-crt.lp-ui-size-s .sidebar {
-	width: 132px;
+	width: $lp-menu-sidebar-w-s;
+	flex: 0 0 $lp-menu-sidebar-w-s;
 	padding: 8px;
 	font-size: 10px;
+}
+
+.lp-ops-crt.lp-ui-size-s .terminal-sidebar-scroll {
+	width: 100%;
 }
 
 .lp-ops-crt.lp-ui-size-s .screen {
@@ -442,7 +457,8 @@ $crt-text-dim: #9a9a9a;
 }
 
 .lp-ops-crt.lp-ui-size-m .sidebar {
-	width: 156px;
+	width: $lp-menu-sidebar-w-m;
+	flex: 0 0 $lp-menu-sidebar-w-m;
 }
 
 .lp-ops-crt.lp-ui-size-m .screen {
@@ -450,7 +466,8 @@ $crt-text-dim: #9a9a9a;
 }
 
 .lp-ops-crt.lp-ui-size-l .sidebar {
-	width: 168px;
+	width: $lp-menu-sidebar-w-l;
+	flex: 0 0 $lp-menu-sidebar-w-l;
 }
 
 .lp-ops-crt.lp-ui-size-l .screen {
@@ -463,7 +480,8 @@ $crt-text-dim: #9a9a9a;
 }
 
 .lp-ops-crt.lp-ui-size-xl .sidebar {
-	width: 180px;
+	width: $lp-menu-sidebar-w-xl;
+	flex: 0 0 $lp-menu-sidebar-w-xl;
 }
 
 .lp-ops-crt.lp-ui-size-xl .screen {

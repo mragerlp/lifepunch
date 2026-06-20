@@ -17,7 +17,7 @@
 	<div class="shell">
 		<div class="crt-frame">
 			<div class="crt-header">
-				<span>LIFEPUNCH HASHD TERMINAL</span>
+				<span class="crt-header-title hashd-prompt-accent">LIFEPUNCH HASHD TERMINAL</span>
 				<div class="crt-status-row">
 					<span class="@StatusPowerClass()">@StatusPowerLabel()</span>
 					<span>@LinkedRackCount() racks</span>
@@ -49,6 +49,7 @@
 			<div class="crt-body">
 				<div class="sidebar">
 					<div class="sidebar-title">COMMANDS</div>
+					<div class="sidebar-cmd-list lp-ui-scroll-region terminal-sidebar-scroll">
 					@foreach ( var cmd in _commandRefs )
 					{
 						<div class="cmd-ref @( IsCommandCopied( cmd ) ? "copied" : "" )"
@@ -56,6 +57,7 @@
 							@( IsCommandCopied( cmd ) ? ">copied" : cmd )
 						</div>
 					}
+					</div>
 					<div class="sidebar-foot">sel @SelectedRackSlotLabel()</div>
 				</div>
 				<div class="screen">
@@ -69,17 +71,17 @@
 						</div>
 					}
 					<div class="log-shell">
-						<LifePunchScrollRegionPanel class="log lp-ui-scroll-region" @ref="LogPanel" onclick="@FocusLog">
+						<div class="log lp-ui-scroll-region terminal-log-scroll" onclick="@FocusLog">
 							<div class="log-stack">
 								@foreach ( var line in _lines )
 								{
 									<div class="log-line @LineClass( line )">@line.Text</div>
 								}
 							</div>
-						</LifePunchScrollRegionPanel>
+						</div>
 					</div>
 					<div class="prompt-row" onclick="@FocusInput">
-						<span class="prompt">rig@hub&gt;</span>
+						<span class="prompt hashd-prompt-accent">rig@hub&gt;</span>
 						<TextEntry class="cmd-input" @ref="InputBox" onsubmit="@Submit" Placeholder="type command..." />
 					</div>
 				</div>
@@ -87,7 +89,7 @@
 		</div>
 		<div class="lp-window-watermark lp-window-watermark--boxed">
 			<div class="lp-source-footer">
-				<span class="lp-mark">@LifePunchSourceMark.UiFooterMark</span>
+				<span class="lp-mark hashd-prompt-accent">@LifePunchSourceMark.UiFooterMark</span>
 				<button class="lp-url-copy @(_urlCopied ? "copied" : "")"
 				        tooltip="@($"Copy {LifePunchSourceMark.UiFooterUrl}")"
 				        onclick="@CopySourceUrl">
@@ -113,7 +115,6 @@
 	private bool _showScaleMenu;
 	private LpUiScaleSize _uiScale = LpUiScale.Default;
 	private TextEntry InputBox { get; set; }
-	private LifePunchScrollRegionPanel LogPanel { get; set; }
 
 	private const int MaxLogLines = 200;
 
@@ -144,6 +145,9 @@
 	};
 
 	private int _scrollLogPendingFrames;
+	private bool _scrollLogForce;
+	private int _scrollBootstrapFramesLeft;
+	private int _logRevision;
 	private bool _urlCopied;
 	private string _copiedCommandFlash;
 	private RealTimeSince _copiedCommandFlashSince;
@@ -195,8 +199,12 @@
 	{
 		_uiScale = size;
 		_showScaleMenu = false;
-		LifePunchUiScrollPolicy.Apply( Panel, resetOffset: true );
+		LifePunchUiScrollPolicy.ResetOffsets( Panel );
+		QueueScrollBootstrap();
+		QueueScrollLogToBottom( force: true );
 	}
+
+	private void QueueScrollBootstrap() => _scrollBootstrapFramesLeft = 4;
 
 	protected override void OnEnabled()
 	{
@@ -204,22 +212,15 @@
 		LpBitcoinHudBridge.SetMenuCursorMode( true );
 		LifePunchUiScrollPolicy.Apply( Panel );
 		ApplyCommandInputChrome();
-		WireLogPanel();
-	}
-
-	private void WireLogPanel()
-	{
-		if ( !LogPanel.IsValid() )
-			return;
-
-		LogPanel.AcceptsFocus = true;
-		LogPanel.PreferScrollToBottom = true;
+		QueueScrollBootstrap();
+		QueueScrollLogToBottom( force: true );
 	}
 
 	public void Bind( LpBitcoinHubEntity hub, LpBitcoinRackEntity focusRack = null )
 	{
 		_hub = hub;
 		_lines.Clear();
+		_logRevision = 0;
 		_showBootSplash = true;
 		_bootComplete = false;
 		_bootLineIndex = 0;
@@ -227,6 +228,7 @@
 		_bootStatus = "INITIALIZING RIG...";
 		_pendingFocusRack = focusRack;
 		_lastInputTextLength = 0;
+		QueueScrollBootstrap();
 	}
 
 	protected override void OnDisabled()
@@ -245,8 +247,9 @@
 
 	private void FocusLog()
 	{
-		if ( LogPanel.IsValid() )
-			LogPanel.Focus();
+		var log = ResolveLogScroll();
+		if ( log.IsValid() )
+			log.Focus();
 	}
 
 	private void CopySidebarCommand( string cmd )
@@ -260,9 +263,16 @@
 	}
 
 	private bool IsCommandCopied( string cmd ) =>
-		!string.IsNullOrEmpty( _copiedCommandFlash )
-		&& _copiedCommandFlash == cmd
-		&& _copiedCommandFlashSince < 1.5f;
+		!string.IsNullOrEmpty( _copiedCommandFlash ) && _copiedCommandFlash == cmd;
+
+	private void TickCopiedCommandFlash()
+	{
+		if ( string.IsNullOrEmpty( _copiedCommandFlash ) || _copiedCommandFlashSince < 1.5f )
+			return;
+
+		_copiedCommandFlash = null;
+		StateHasChanged();
+	}
 
 	private void SkipBoot()
 	{
@@ -299,9 +309,12 @@
 		if ( raw.Equals( "clear", StringComparison.OrdinalIgnoreCase ) )
 		{
 			_lines.Clear();
+			_logRevision++;
 			_hub?.RequestPushTerminalCommandAlert( raw, "log cleared" );
 			InputBox.Text = string.Empty;
 			InputBox.Focus();
+			QueueScrollBootstrap();
+			QueueScrollLogToBottom( force: true );
 			return;
 		}
 
@@ -342,6 +355,8 @@
 	{
 		_lines.Add( new LogLine( kind, text ) );
 		TrimLog();
+		_logRevision++;
+		QueueScrollBootstrap();
 		QueueScrollLogToBottom();
 	}
 
@@ -351,15 +366,64 @@
 			_lines.RemoveAt( 0 );
 	}
 
-	private void QueueScrollLogToBottom() =>
-		_scrollLogPendingFrames = Math.Max( _scrollLogPendingFrames, 6 );
-
-	private void ScrollLogToBottom( bool force = false )
+	private void QueueScrollLogToBottom( bool force = false )
 	{
-		if ( !LogPanel.IsValid() )
+		_scrollLogPendingFrames = Math.Max( _scrollLogPendingFrames, 3 );
+		if ( force )
+			_scrollLogForce = true;
+	}
+
+	private LifePunchScrollRegionPanel ResolveLogScroll()
+	{
+		return LifePunchScrollRegionBootstrap.FindFirst( Panel, "log" );
+	}
+
+	private void TickScrollBootstrap()
+	{
+		if ( _scrollBootstrapFramesLeft <= 0 )
 			return;
 
-		LogPanel.ScrollToBottom( force );
+		var stickBottom = true;
+		var scrollY = 0f;
+		var logBefore = ResolveLogScroll();
+		if ( logBefore.IsValid() )
+		{
+			stickBottom = logBefore.PreferScrollToBottom;
+			scrollY = logBefore.ScrollOffset.y;
+		}
+
+		LifePunchScrollRegionBootstrap.Upgrade( Panel );
+		_scrollBootstrapFramesLeft--;
+
+		var log = ResolveLogScroll();
+		if ( !log.IsValid() )
+			return;
+
+		log.PreferScrollToBottom = stickBottom;
+		if ( stickBottom )
+		{
+			log.ScrollToBottom( force: true );
+			return;
+		}
+
+		var maxY = log.GetMaxScrollY();
+		log.ScrollOffset = new Vector2( 0f, Math.Clamp( scrollY, 0f, maxY ) );
+	}
+
+	private void TickScrollLog()
+	{
+		if ( _scrollLogPendingFrames <= 0 )
+			return;
+
+		_scrollLogPendingFrames--;
+		var log = ResolveLogScroll();
+		if ( !log.IsValid() )
+			return;
+
+		log.ScrollToBottom( force: _scrollLogForce );
+
+		if ( _scrollLogPendingFrames <= 0 )
+			_scrollLogForce = false;
 	}
 
 	private void Close() => LpBitcoinTerminalUiHost.CloseOpen();
@@ -380,26 +444,23 @@
 	protected override void OnUpdate()
 	{
 		base.OnUpdate();
-		LifePunchUiScrollPolicy.Apply( Panel );
 		LifePunchMenuInputBlock.Apply();
+		LifePunchUiScrollPolicy.Apply( Panel );
 		if ( !_hub.IsValid() )
 		{
 			Close();
 			return;
 		}
 
+		TickScrollBootstrap();
+
 		if ( !_bootComplete )
 			TickBoot();
 
 		TickCommandInputTypingSound();
 		ApplyCommandInputChrome();
-		WireLogPanel();
-
-		if ( _scrollLogPendingFrames > 0 )
-		{
-			_scrollLogPendingFrames--;
-			ScrollLogToBottom( force: true );
-		}
+		TickCopiedCommandFlash();
+		TickScrollLog();
 	}
 
 	private void TickBoot()
@@ -440,7 +501,7 @@
 					continue;
 
 				_selectedIndex = i;
-				AppendLogLine( "ok", $"focused {LpBitcoinIdent.FormatRackSlotId( racks[i], racks )}" );
+				AppendLogLine( "ok", $"focused {LpBitcoinIdent.FormatRackSlotTerminalToken( racks[i], racks )}" );
 				break;
 			}
 		}
@@ -488,38 +549,26 @@
 		if ( racks is null || _selectedIndex < 0 || _selectedIndex >= racks.Count )
 			return "—";
 
-		return LpBitcoinIdent.FormatRackSlotId( racks[_selectedIndex], racks );
+		return LpBitcoinIdent.FormatRackSlotTerminalToken( racks[_selectedIndex], racks );
 	}
 
 	protected override int BuildHash()
 	{
-		var lineHash = 0;
-		foreach ( var line in _lines )
-			lineHash = HashCode.Combine( lineHash, line.Kind, line.Text );
-
+		// Never hash InputBox.Text every frame — rebuilds the whole CRT and scroll regions flicker.
+		// Hub power / rack count in header refresh when _logRevision or _selectedIndex changes.
 		return HashCode.Combine(
 			HashCode.Combine(
 				_selectedIndex,
-				InputBox?.Text,
-				_lines.Count,
-				lineHash,
+				_logRevision,
+				_hub?.IsPowered,
+				LinkedRackCount(),
 				_uiScale,
 				_showScaleMenu,
 				_showBootSplash,
 				_bootStatus ),
 			_bootLineIndex,
 			_bootComplete,
-			_hub?.IsPowered,
-			_hub?.GetLinkedRacks().Sum( r => r.BitcoinAmount ),
 			_urlCopied,
-			CopiedCommandFlashHash() );
-	}
-
-	private int CopiedCommandFlashHash()
-	{
-		if ( string.IsNullOrEmpty( _copiedCommandFlash ) || _copiedCommandFlashSince >= 1.5f )
-			return 0;
-
-		return HashCode.Combine( _copiedCommandFlash, (int)( _copiedCommandFlashSince * 10f ) );
+			_copiedCommandFlash );
 	}
 }

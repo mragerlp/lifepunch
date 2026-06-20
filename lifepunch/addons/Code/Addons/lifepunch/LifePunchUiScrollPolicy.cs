@@ -38,6 +38,17 @@ public static class LifePunchUiScrollPolicy
 		if ( resetOffset )
 		{
 			panel.ScrollOffset = Vector2.Zero;
+
+			if ( panel is LifePunchScrollRegionPanel scrollRegion )
+				scrollRegion.PreferScrollToBottom = true;
+
+			return;
+		}
+
+		// LifePunchScrollRegionPanel owns wheel scroll + stick-to-bottom; clamp only.
+		if ( panel is LifePunchScrollRegionPanel )
+		{
+			ClampManualScrollRegion( panel );
 			return;
 		}
 
@@ -111,7 +122,7 @@ public static class LifePunchUiScrollPolicy
 
 		foreach ( var child in panel.Children )
 		{
-			if ( !child.IsValid() )
+			if ( !child.IsValid )
 				continue;
 
 			contentHeight = Math.Max( contentHeight, child.Box.Rect.Height );
