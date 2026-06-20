@@ -141,7 +141,7 @@
 									<div class="pane overview">
 										<div class="lp-ui-intro overview-intro">
 											<div class="overview-intro-copy">
-												Manage linked GPU racks, wallet payout, and hub power from this panel. Place racks near the hub and they auto-link on spawn.
+												Manage linked GPU racks, wallet payout, and hub power from this panel. Set your PIN, power on, link the terminal here, then register racks at rig0 on the CRT.
 											</div>
 											<div class="overview-intro-terminal">
 												<div class="overview-intro-terminal-status">
@@ -176,7 +176,7 @@
 												{
 													<div class="lp-ui-empty">
 														<i class="material-icons">dns</i>
-														<span>Place GPU racks near this hub — they auto-link on spawn.</span>
+														<span>No racks linked — link the terminal above, then type <strong>link</strong> at rig0 on the CRT.</span>
 													</div>
 												}
 												else
@@ -274,7 +274,7 @@
 											{
 												<div class="lp-ui-empty">
 													<i class="material-icons">dns</i>
-													<span>Place GPU racks near this hub — they auto-link on spawn.</span>
+													<span>No racks linked — link the terminal at hub admin, then type <strong>link</strong> at rig0 on the CRT.</span>
 												</div>
 											}
 											else
@@ -344,24 +344,31 @@
 																<i class="material-icons">memory</i>
 																<span>CPU clock path</span>
 															</div>
-															<div class="upgrade-tier-list">
-																@for ( var tier = 0; tier < LpBitcoinEconomy.CpuUpgradeCosts.Length; tier++ )
-																{
-																	<div class="upgrade-tier @GetCpuTierClass( upgradeRack, tier )">
-																		<div class="upgrade-tier-main">
-																			<div class="upgrade-tier-label">@CpuTierLabel( tier )</div>
-																			<div class="upgrade-tier-detail">@CpuTierDetail( tier )</div>
-																		</div>
-																		<div class="upgrade-tier-side">
-																			<div class="upgrade-tier-status">@CpuTierStatus( upgradeRack, tier )</div>
-																			@if ( IsCpuTierNext( upgradeRack, tier ) )
-																			{
-																				<button class="lp-ui-btn-primary upgrade-tier-buy" onclick="@(() => UpgradeCpu( upgradeRack ))">Buy $@LpBitcoinEconomy.CpuUpgradeCosts[tier].ToString("N0")</button>
-																			}
-																		</div>
+															@if ( IsCpuPathMaxed( upgradeRack ) )
+															{
+																<div class="upgrade-tier-row maxed">
+																	<div class="upgrade-tier-main">
+																		<div class="upgrade-tier-label">All tiers owned</div>
+																		<div class="upgrade-tier-detail">@($"{upgradeRack.ClockGhz:F2} GHz clock")</div>
 																	</div>
-																}
-															</div>
+																	<div class="upgrade-tier-side">
+																		<span class="upgrade-tier-badge">Maxed</span>
+																	</div>
+																</div>
+															}
+															else
+															{
+																var cpuTier = upgradeRack.CpuUpgradeLevel;
+																<div class="upgrade-tier-row next">
+																	<div class="upgrade-tier-main">
+																		<div class="upgrade-tier-label">@CpuTierLabel( cpuTier )</div>
+																		<div class="upgrade-tier-detail">@CpuTierDetail( cpuTier )</div>
+																	</div>
+																	<div class="upgrade-tier-side">
+																		<button class="lp-ui-btn-primary upgrade-tier-buy" onclick="@(() => UpgradeCpu( upgradeRack ))">Buy $@LpBitcoinEconomy.CpuUpgradeCosts[cpuTier].ToString("N0")</button>
+																	</div>
+																</div>
+															}
 														</div>
 
 														<div class="upgrade-track">
@@ -369,24 +376,31 @@
 																<i class="material-icons">developer_board</i>
 																<span>Core count path</span>
 															</div>
-															<div class="upgrade-tier-list">
-																@for ( var tier = 0; tier < LpBitcoinEconomy.CoreUpgradeCosts.Length; tier++ )
-																{
-																	<div class="upgrade-tier @GetCoreTierClass( upgradeRack, tier )">
-																		<div class="upgrade-tier-main">
-																			<div class="upgrade-tier-label">@CoreTierLabel( tier )</div>
-																			<div class="upgrade-tier-detail">@CoreTierDetail( tier )</div>
-																		</div>
-																		<div class="upgrade-tier-side">
-																			<div class="upgrade-tier-status">@CoreTierStatus( upgradeRack, tier )</div>
-																			@if ( IsCoreTierNext( upgradeRack, tier ) )
-																			{
-																				<button class="lp-ui-btn-primary upgrade-tier-buy" onclick="@(() => UpgradeCores( upgradeRack ))">Buy $@LpBitcoinEconomy.CoreUpgradeCosts[tier].ToString("N0")</button>
-																			}
-																		</div>
+															@if ( IsCorePathMaxed( upgradeRack ) )
+															{
+																<div class="upgrade-tier-row maxed">
+																	<div class="upgrade-tier-main">
+																		<div class="upgrade-tier-label">All tiers owned</div>
+																		<div class="upgrade-tier-detail">@($"{upgradeRack.CoreCount} cores")</div>
 																	</div>
-																}
-															</div>
+																	<div class="upgrade-tier-side">
+																		<span class="upgrade-tier-badge">Maxed</span>
+																	</div>
+																</div>
+															}
+															else
+															{
+																var coreTier = upgradeRack.CoreUpgradeLevel;
+																<div class="upgrade-tier-row next">
+																	<div class="upgrade-tier-main">
+																		<div class="upgrade-tier-label">@CoreTierLabel( coreTier )</div>
+																		<div class="upgrade-tier-detail">@CoreTierDetail( coreTier )</div>
+																	</div>
+																	<div class="upgrade-tier-side">
+																		<button class="lp-ui-btn-primary upgrade-tier-buy" onclick="@(() => UpgradeCores( upgradeRack ))">Buy $@LpBitcoinEconomy.CoreUpgradeCosts[coreTier].ToString("N0")</button>
+																	</div>
+																</div>
+															}
 														</div>
 													</div>
 												</div>
@@ -871,61 +885,11 @@
 	private static int CoresAfterTier( int tier )
 		=> LpBitcoinEconomy.StartCores + (tier + 1) * LpBitcoinEconomy.CoresPerLevel;
 
-	private static bool IsCpuTierOwned( LpBitcoinRackEntity rack, int tier )
-		=> rack.CpuUpgradeLevel > tier;
+	private static bool IsCpuPathMaxed( LpBitcoinRackEntity rack )
+		=> rack.CpuUpgradeLevel >= LpBitcoinEconomy.CpuUpgradeCosts.Length;
 
-	private static bool IsCpuTierNext( LpBitcoinRackEntity rack, int tier )
-		=> rack.CpuUpgradeLevel == tier;
-
-	private static string GetCpuTierClass( LpBitcoinRackEntity rack, int tier )
-	{
-		if ( IsCpuTierOwned( rack, tier ) )
-			return "owned";
-
-		if ( IsCpuTierNext( rack, tier ) )
-			return "next";
-
-		return "locked";
-	}
-
-	private static string CpuTierStatus( LpBitcoinRackEntity rack, int tier )
-	{
-		if ( IsCpuTierOwned( rack, tier ) )
-			return "Owned";
-
-		if ( IsCpuTierNext( rack, tier ) )
-			return $"Next · ${LpBitcoinEconomy.CpuUpgradeCosts[tier]:N0}";
-
-		return "Locked";
-	}
-
-	private static bool IsCoreTierOwned( LpBitcoinRackEntity rack, int tier )
-		=> rack.CoreUpgradeLevel > tier;
-
-	private static bool IsCoreTierNext( LpBitcoinRackEntity rack, int tier )
-		=> rack.CoreUpgradeLevel == tier;
-
-	private static string GetCoreTierClass( LpBitcoinRackEntity rack, int tier )
-	{
-		if ( IsCoreTierOwned( rack, tier ) )
-			return "owned";
-
-		if ( IsCoreTierNext( rack, tier ) )
-			return "next";
-
-		return "locked";
-	}
-
-	private static string CoreTierStatus( LpBitcoinRackEntity rack, int tier )
-	{
-		if ( IsCoreTierOwned( rack, tier ) )
-			return "Owned";
-
-		if ( IsCoreTierNext( rack, tier ) )
-			return $"Next · ${LpBitcoinEconomy.CoreUpgradeCosts[tier]:N0}";
-
-		return "Locked";
-	}
+	private static bool IsCorePathMaxed( LpBitcoinRackEntity rack )
+		=> rack.CoreUpgradeLevel >= LpBitcoinEconomy.CoreUpgradeCosts.Length;
 
 	private string HubDisplayName() => "HASHD Hub";
 

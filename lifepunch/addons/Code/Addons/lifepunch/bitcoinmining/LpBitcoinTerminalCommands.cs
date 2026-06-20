@@ -100,6 +100,16 @@ internal static class LpBitcoinTerminalCommands
 
 				return new LpBitcoinCommandResult( false, "usage: deposit | deposit all | deposit <index> | wallet" );
 
+			case "link":
+				if ( !hub.HasLinkedTerminal() )
+					return new LpBitcoinCommandResult( false, "ERR link terminal at hub admin first" );
+
+				if ( !hub.HasNearbyUnlinkedRack() )
+					return new LpBitcoinCommandResult( false, "ERR no unlinked GPU rack in range — place a rack near the hub" );
+
+				hub.RequestLinkNearbyRack();
+				return new LpBitcoinCommandResult( true, "linking nearest unlinked rack — type racks to confirm" );
+
 			case "about":
 				return new LpBitcoinCommandResult( true,
 					"LIFEPUNCH HASHD rig console\n(c) 2026 lifepunch.co — cash out at hub admin wallet" );
@@ -400,7 +410,7 @@ internal static class LpBitcoinTerminalCommands
 
 	private static string HelpText() =>
 		"── HASHD rig0 commands (space-separated) ──\n" +
-		"help · clear · racks · select <n> · status · info · wallet\n" +
+		"help · clear · link · racks · select <n> · status · info · wallet\n" +
 		"mining start|stop · mining start all|stop all · mining all-start|all-stop\n" +
 		"deposit · deposit all · deposit <n>\n" +
 		"send <steamid> <amount|all> — transfer hub wallet BTC to another operator's hub\n" +

@@ -162,7 +162,7 @@ public static class LpBitcoinDevSpawn
 		Log.Info( $"lp_bitcoin_link_terminal: linked={hub.HasLinkedTerminal()} terminal={terminal.WorldPosition}" );
 	}
 
-	/// <summary>Dev shortcut — power hub + start all linked racks (host play only).</summary>
+	/// <summary>Dev shortcut — power hub + start all linked racks (does not link terminal or racks).</summary>
 	[ConCmd( "lp_bitcoin_playtest_mining" )]
 	public static void PlaytestMining()
 	{
@@ -184,7 +184,6 @@ public static class LpBitcoinDevSpawn
 
 		var hub = scene.GetAllComponents<LpBitcoinHubEntity>()
 			.Where( h => h.IsValid() )
-			.OrderByDescending( h => h.IsPowered )
 			.FirstOrDefault();
 
 		if ( !hub.IsValid() )
@@ -196,11 +195,59 @@ public static class LpBitcoinDevSpawn
 		hub.BindOwnerFromLocalViewer();
 		hub.ApplyPoweredState( true );
 
-		var racks = scene.GetAllComponents<LpBitcoinRackEntity>().Where( r => r.IsValid() ).ToList();
+		var racks = hub.GetLinkedRacks();
 		foreach ( var rack in racks )
 			rack.RequestSetMining( true );
 
-		Log.Info( $"lp_bitcoin_playtest_mining: hub ON, {racks.Count} rack(s) mining." );
+		Log.Info( $"lp_bitcoin_playtest_mining: hub ON, {racks.Count} linked rack(s) mining." );
+#endif
+	}
+
+	/// <summary>Dev shortcut — link nearest terminal + all unlinked racks in range (skips player setup).</summary>
+	[ConCmd( "lp_bitcoin_dev_link_all" )]
+	public static void DevLinkAll()
+	{
+#if LIFEPUNCH_LOCAL
+		Log.Warning( "lp_bitcoin_dev_link_all: DXRP project only." );
+#else
+		if ( !Networking.IsHost )
+		{
+			Log.Warning( "lp_bitcoin_dev_link_all: host only." );
+			return;
+		}
+
+		var scene = Game.ActiveScene;
+		if ( scene is null )
+			return;
+
+		var hub = scene.GetAllComponents<LpBitcoinHubEntity>().FirstOrDefault( h => h.IsValid() );
+		if ( !hub.IsValid() )
+		{
+			Log.Warning( "lp_bitcoin_dev_link_all: no hub." );
+			return;
+		}
+
+		hub.BindOwnerFromLocalViewer();
+
+		if ( !hub.HasLinkedTerminal() )
+		{
+			var terminal = LpBitcoinTerminalEntity.FindNearestUnlinked( hub );
+			if ( terminal.IsValid() )
+				hub.LinkTerminalHost( terminal );
+		}
+
+		var linked = 0;
+		while ( true )
+		{
+			var rack = LpBitcoinRackEntity.FindNearestUnlinked( hub, hub.RackLinkRange );
+			if ( !rack.IsValid() )
+				break;
+
+			rack.LinkToHub( hub );
+			linked++;
+		}
+
+		Log.Info( $"lp_bitcoin_dev_link_all: terminal={( hub.HasLinkedTerminal() ? "linked" : "none" )}, racks={linked}." );
 #endif
 	}
 
@@ -408,8 +455,8 @@ public static class LpBitcoinDevSpawn
 		var rot = transform.Rotation;
 		var groundZ = origin.z;
 		SpawnTerminalPrefab( new Transform( SnapToGround( origin + rot.Forward * 100f, groundZ ), rot ) );
-		SpawnRackPrefab( RackSpawnTransform( transform, sideOffset: 120f ), hub, advanced: false );
-		SpawnRackPrefab( RackSpawnTransform( transform, sideOffset: -120f ), hub, advanced: true );
+		SpawnRackPrefab( RackSpawnTransform( transform, sideOffset: 120f ), advanced: false );
+		SpawnRackPrefab( RackSpawnTransform( transform, sideOffset: -120f ), advanced: true );
 		Log.Info( "lp_bitcoin_spawn_lineup: Bitcoin Hub + Terminal + GPU Rack + Advanced GPU Rack placed." );
 	}
 
@@ -435,15 +482,8 @@ public static class LpBitcoinDevSpawn
 			return;
 		}
 
-		var hub = Game.ActiveScene?.GetAllComponents<LpBitcoinHubEntity>().FirstOrDefault( h => h.IsValid() );
-		if ( !hub.IsValid() )
-		{
-			Log.Warning( "lp_bitcoin_spawn_rack: no hub in scene — run lp_bitcoin_spawn_hub first." );
-			return;
-		}
-
-		SpawnRackPrefab( transform, hub, advanced: false );
-		Log.Info( "lp_bitcoin_spawn_rack: GPU Rack placed and linked." );
+		SpawnRackPrefab( transform, advanced: false );
+		Log.Info( "lp_bitcoin_spawn_rack: GPU Rack placed (unlinked — register at rig0> link)." );
 	}
 
 	[ConCmd( "lp_spawn_advanced_gpu_rack" )]
@@ -455,15 +495,8 @@ public static class LpBitcoinDevSpawn
 			return;
 		}
 
-		var hub = Game.ActiveScene?.GetAllComponents<LpBitcoinHubEntity>().FirstOrDefault( h => h.IsValid() );
-		if ( !hub.IsValid() )
-		{
-			Log.Warning( "lp_spawn_advanced_gpu_rack: no hub in scene — spawn kit or hub first." );
-			return;
-		}
-
-		SpawnRackPrefab( transform, hub, advanced: true );
-		Log.Info( "lp_spawn_advanced_gpu_rack: Advanced GPU Rack placed (2× yield)." );
+		SpawnRackPrefab( transform, advanced: true );
+		Log.Info( "lp_spawn_advanced_gpu_rack: Advanced GPU Rack placed (unlinked — register at rig0> link)." );
 	}
 
 	/// <summary>Legacy alias — docs/playtest still reference v1 command name.</summary>
@@ -992,10 +1025,10 @@ public static class LpBitcoinDevSpawn
 		var origin = transform.Position;
 		var rot = transform.Rotation;
 		var groundZ = origin.z;
-		SpawnRackPrefab( RackSpawnTransform( transform, sideOffset: 100f ), hub, advanced: false );
-		SpawnRackPrefab( RackSpawnTransform( transform, sideOffset: -100f ), hub, advanced: false );
-		SpawnRackPrefab( RackSpawnTransform( transform, sideOffset: 100f ), hub, advanced: true );
-		SpawnRackPrefab( RackSpawnTransform( transform, sideOffset: -200f ), hub, advanced: true );
+		SpawnRackPrefab( RackSpawnTransform( transform, sideOffset: 100f ), advanced: false );
+		SpawnRackPrefab( RackSpawnTransform( transform, sideOffset: -100f ), advanced: false );
+		SpawnRackPrefab( RackSpawnTransform( transform, sideOffset: 100f ), advanced: true );
+		SpawnRackPrefab( RackSpawnTransform( transform, sideOffset: -200f ), advanced: true );
 		SpawnTerminalPrefab( new Transform( SnapToGround( origin + rot.Forward * 100f, groundZ ), rot ) );
 		return hub;
 	}
@@ -1007,7 +1040,7 @@ public static class LpBitcoinDevSpawn
 		return new Transform( pos, rot );
 	}
 
-	private static LpBitcoinRackEntity SpawnRackPrefab( Transform transform, LpBitcoinHubEntity hub, bool advanced )
+	private static LpBitcoinRackEntity SpawnRackPrefab( Transform transform, bool advanced )
 	{
 		var path = advanced ? LpBitcoinIdent.AdvancedRackPrefabPath : LpBitcoinIdent.RackPrefabPath;
 		var label = advanced ? LpBitcoinIdent.AdvancedRackDisplayName : LpBitcoinIdent.RackDisplayName;
@@ -1023,13 +1056,10 @@ public static class LpBitcoinDevSpawn
 			rack = go.AddComponent<LpBitcoinRackEntity>();
 
 		if ( rack.IsValid() )
-		{
 			rack.AdvancedRack = advanced;
-			rack.LinkToHub( hub );
-		}
 
 		NetworkSpawnIfNeeded( go );
-		Log.Info( $"lp_bitcoin: {label} placed at {go.WorldPosition} (linked to hub)." );
+		Log.Info( $"lp_bitcoin: {label} placed at {go.WorldPosition} (unlinked — register at rig0> link)." );
 		return rack;
 	}
 

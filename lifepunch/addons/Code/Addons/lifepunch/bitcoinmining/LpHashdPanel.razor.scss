@@ -1037,27 +1037,20 @@ $shell-radius: 22px;
 		}
 	}
 
-	.upgrade-tier-list {
-		display: flex;
-		flex-direction: column;
-		gap: 8px;
-		width: 100%;
-	}
-
-	.upgrade-tier {
+	.upgrade-tier-row {
 		display: flex;
 		flex-direction: row;
-		flex-wrap: wrap;
+		flex-wrap: nowrap;
 		align-items: center;
 		justify-content: space-between;
-		gap: 8px 12px;
+		gap: 12px;
 		width: 100%;
 		padding: 10px 12px;
 		border-radius: 8px;
 		border: 1px solid rgba(255, 255, 255, 0.06);
 		background-color: rgba(0, 0, 0, 0.22);
 
-		&.owned {
+		&.maxed {
 			border-color: rgba(95, 211, 141, 0.35);
 			background-color: rgba(95, 211, 141, 0.08);
 		}
@@ -1065,10 +1058,6 @@ $shell-radius: 22px;
 		&.next {
 			border-color: rgba(232, 125, 62, 0.45);
 			background-color: rgba(232, 125, 62, 0.1);
-		}
-
-		&.locked {
-			opacity: 0.55;
 		}
 	}
 
@@ -1102,12 +1091,17 @@ $shell-radius: 22px;
 		gap: 6px;
 	}
 
-	.upgrade-tier-status {
+	.upgrade-tier-badge {
 		color: $hashd-text;
 		font-size: 11px;
-		font-weight: 700;
-		text-align: right;
-		white-space: normal;
+		font-weight: 800;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		padding: 6px 10px;
+		border-radius: 6px;
+		background-color: rgba(95, 211, 141, 0.15);
+		border: 1px solid rgba(95, 211, 141, 0.35);
+		white-space: nowrap;
 	}
 
 	.upgrade-tier-buy {

@@ -24,14 +24,16 @@ public static class LpBitcoinEconomy
 	public const float CpuGhzPerLevel = 1.5f;
 	public const int CoresPerLevel = 2;
 
+	/// <summary>Four purchasable CPU clock tiers per rack (hub upgrades panel shows one at a time).</summary>
 	public static readonly int[] CpuUpgradeCosts =
 	{
-		2000, 4000, 8000, 16000, 32000, 64000, 128000
+		2000, 4000, 8000, 16000
 	};
 
+	/// <summary>Four purchasable core-count tiers per rack (hub upgrades panel shows one at a time).</summary>
 	public static readonly int[] CoreUpgradeCosts =
 	{
-		50000, 100000, 175000
+		50000, 100000, 175000, 350000
 	};
 
 	public static float MiningRatePerMinute( float clockGhz, int cores, float rackYield = 1f )

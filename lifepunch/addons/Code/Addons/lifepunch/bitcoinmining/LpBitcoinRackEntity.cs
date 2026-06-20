@@ -73,6 +73,7 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable, IAre
 		this.TryBindSpawnOwnerHost();
 		if ( Networking.IsHost )
 		{
+			ApplyVirginSpawnDefaultsHost();
 			if ( HealthComponent.IsValid() )
 			{
 				HealthComponent.MaxHealth = AdvancedRack
@@ -309,6 +310,45 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable, IAre
 	private void RefreshLinkedTerminalScreens()
 	{
 		GetLinkedHub()?.RefreshLinkedTerminalScreens();
+	}
+
+	/// <summary>Market spawn baseline — unlinked racks stay idle until registered at rig0.</summary>
+	private void ApplyVirginSpawnDefaultsHost()
+	{
+		if ( LinkedHubId != Guid.Empty )
+			return;
+
+		IsMining = false;
+		MiningProgress = 0f;
+	}
+
+	internal static LpBitcoinRackEntity FindNearestUnlinked( LpBitcoinHubEntity hub, float maxRange )
+	{
+		if ( !hub.IsValid() )
+			return null;
+
+		var scene = hub.GameObject.Scene ?? Game.ActiveScene;
+		if ( scene is null )
+			return null;
+
+		LpBitcoinRackEntity best = null;
+		var bestDist = float.MaxValue;
+		var hubPos = hub.WorldPosition;
+
+		foreach ( var rack in scene.GetAllComponents<LpBitcoinRackEntity>() )
+		{
+			if ( !rack.IsValid() || rack.LinkedHubId != Guid.Empty )
+				continue;
+
+			var dist = hubPos.Distance( rack.WorldPosition );
+			if ( dist > maxRange || dist >= bestDist )
+				continue;
+
+			bestDist = dist;
+			best = rack;
+		}
+
+		return best;
 	}
 
 #if !LIFEPUNCH_LOCAL

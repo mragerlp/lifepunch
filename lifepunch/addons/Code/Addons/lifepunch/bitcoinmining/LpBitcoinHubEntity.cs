@@ -67,6 +67,7 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 		this.TryBindSpawnOwnerHost();
 		if ( Networking.IsHost )
 		{
+			ApplyVirginSpawnDefaultsHost();
 			if ( HealthComponent.IsValid() )
 			{
 				HealthComponent.MaxHealth = LpBitcoinIdent.HubMaxHealth;
@@ -354,6 +355,14 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 	public bool HasNearbyUnlinkedTerminal()
 		=> LpBitcoinTerminalEntity.FindNearestUnlinked( this ).IsValid();
 
+	/// <summary>Max distance from hub for terminal Settings link and rig0 <c>link</c> rack registration.</summary>
+	[Property] public float RackLinkRange { get; set; } = 512f;
+
+	public bool HasNearbyUnlinkedRack()
+		=> LpBitcoinRackEntity.FindNearestUnlinked( this, RackLinkRange ).IsValid();
+
+	public void RequestLinkNearbyRack() => LinkNearbyRackHost();
+
 	public void RequestLinkNearbyTerminal() => LinkNearbyTerminalHost();
 
 	public void RequestUnlinkTerminal() => UnlinkTerminalHost();
@@ -395,6 +404,36 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 
 		terminal.UnlinkFromHub();
 		PushAlertHost( LpBitcoinHubAlertKind.TerminalCommand, "Bitcoin terminal unlinked from hub." );
+	}
+
+	[Rpc.Host]
+	private void LinkNearbyRackHost()
+	{
+		if ( !CanOperateTerminal( Rpc.CallerId ) )
+			return;
+
+		if ( !HasLinkedTerminal() )
+			return;
+
+		var rack = LpBitcoinRackEntity.FindNearestUnlinked( this, RackLinkRange );
+		if ( !rack.IsValid() )
+		{
+			PushAlertHost( LpBitcoinHubAlertKind.TerminalCommand,
+				"No unlinked GPU rack in range — place a rack near the hub, then type link at rig0." );
+			return;
+		}
+
+		if ( Owner != 0 && rack.Owner != 0 && rack.Owner != Owner )
+		{
+			PushAlertHost( LpBitcoinHubAlertKind.TerminalCommand,
+				"That rack belongs to another operator — only your racks can link here." );
+			return;
+		}
+
+		rack.LinkToHub( this );
+		var label = rack.AdvancedRack ? LpBitcoinIdent.AdvancedRackDisplayName : LpBitcoinIdent.RackDisplayName;
+		PushAlertHost( LpBitcoinHubAlertKind.TerminalCommand, $"{label} linked — type racks to confirm." );
+		RefreshLinkedTerminalScreens();
 	}
 
 	internal void LinkTerminalHost( LpBitcoinTerminalEntity terminal )
@@ -750,6 +789,15 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 #else
 		LifePunchEntityOwnership.BindOwnerFromLocalViewer( this );
 #endif
+	}
+
+	/// <summary>Market spawn baseline — OFF until operator sets PIN and powers on at hub admin.</summary>
+	private void ApplyVirginSpawnDefaultsHost()
+	{
+		if ( AccessPinIsSet || HubWalletBtc > 0f )
+			return;
+
+		IsPowered = false;
 	}
 
 	private bool CallerIsOwner( Guid callerId )
