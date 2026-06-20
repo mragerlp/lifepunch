@@ -22,8 +22,8 @@ $wfId = New-CornermanWorkflowId
 $start = @"
 New-Item -ItemType Directory -Force -Path 'C:\lifepunch\cornerman\outbox' | Out-Null
 `$log = '$logRemote'
-`$cmd = "powershell -NoProfile -ExecutionPolicy Bypass -File '$runnerRemote' *> '$logRemote' 2>&1"
-`$p = Start-Process cmd.exe -ArgumentList @('/c', `$cmd) -PassThru -WindowStyle Hidden
+`$args = @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', '$runnerRemote')
+`$p = Start-Process -FilePath 'powershell.exe' -ArgumentList `$args -PassThru -WindowStyle Hidden -RedirectStandardOutput '$logRemote' -RedirectStandardError '$logRemote'
 Write-Output ('overnight_pid=' + `$p.Id)
 "@
 
