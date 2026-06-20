@@ -15,6 +15,7 @@
 
 <root class="@GetRootClass()">
 	<div class="shell">
+		<div class="shell-body">
 		@if ( ShowPinGate() )
 		{
 			<div class="pin-gate">
@@ -81,7 +82,7 @@
 						<nav class="sidebar-nav">
 							@foreach ( var tab in _tabs )
 							{
-								<button class="sidebar-btn @(tab == _active ? "active" : "")"
+								<button class="sidebar-btn @(IsSidebarTabActive( tab ) ? "sidebar-btn-sel" : "")"
 								        tooltip="@TabLabel(tab)"
 								        onclick="@(() => SelectTab(tab))">
 									<i class="material-icons">@TabIcon(tab)</i>
@@ -181,7 +182,7 @@
 												}
 												else
 												{
-													<div class="lp-ui-scroll lp-ui-scroll-region">
+													<LifePunchScrollRegionPanel class="lp-ui-scroll lp-ui-scroll-region">
 														<div class="lp-ui-list">
 															@for ( var i = 0; i < GetLinkedRacks().Count; i++ )
 															{
@@ -200,7 +201,7 @@
 																</div>
 															}
 														</div>
-													</div>
+													</LifePunchScrollRegionPanel>
 												}
 											</div>
 
@@ -279,7 +280,7 @@
 											}
 											else
 											{
-												<div class="lp-ui-scroll lp-ui-scroll-region racks-scroll">
+												<LifePunchScrollRegionPanel class="lp-ui-scroll lp-ui-scroll-region racks-scroll">
 													<div class="rack-grid">
 														@for ( var i = 0; i < GetLinkedRacks().Count; i++ )
 														{
@@ -303,7 +304,7 @@
 															</div>
 														}
 													</div>
-												</div>
+												</LifePunchScrollRegionPanel>
 											}
 										</div>
 									</div>
@@ -334,10 +335,10 @@
 											else
 											{
 												<div class="lp-ui-intro upgrades-intro">
-													<strong>@RackSlotLabel( upgradeRack )</strong> · @RackYieldLabel( upgradeRack ) · @RackHardwareLine( upgradeRack ). Purchases debit your in-game cash. Mining start/stop stays on the CRT.
+													<strong>@RackSlotLabel( upgradeRack )</strong> · @RackYieldLabel( upgradeRack ) · @RackHardwareLine( upgradeRack ) — Purchases debit your in-game cash. Mining start/stop stays on the CRT.
 												</div>
 
-												<div class="lp-ui-scroll lp-ui-scroll-region upgrades-scroll">
+												<LifePunchScrollRegionPanel class="lp-ui-scroll lp-ui-scroll-region upgrades-scroll">
 													<div class="upgrade-tracks">
 														<div class="upgrade-track">
 															<div class="upgrade-track-head">
@@ -403,7 +404,7 @@
 															}
 														</div>
 													</div>
-												</div>
+												</LifePunchScrollRegionPanel>
 											}
 										</div>
 									</div>
@@ -567,7 +568,7 @@
 											}
 											else
 											{
-												<div class="lp-ui-scroll lp-ui-scroll-region logs-scroll">
+												<LifePunchScrollRegionPanel class="lp-ui-scroll lp-ui-scroll-region logs-scroll">
 													<div class="notif-list">
 														@foreach ( var alert in GetHubAlerts() )
 														{
@@ -581,7 +582,7 @@
 															</div>
 														}
 													</div>
-												</div>
+												</LifePunchScrollRegionPanel>
 											}
 										</div>
 									</div>
@@ -641,15 +642,18 @@
 										</div>
 									</div>
 								}
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
+		}
+
 		</div>
-		</div>
+
 		<div class="lp-window-watermark lp-window-watermark--rounded">
 			<LifePunchUiFooter />
 		</div>
-	</div>
-		}
 	</div>
 </root>
 
@@ -713,12 +717,14 @@
 
 	protected override void OnEnabled()
 	{
+		LifePunchMenuInputBlock.NotifyMenuOpened();
 		LpBitcoinHudBridge.SetMenuCursorMode( true );
 		LifePunchUiScrollPolicy.Apply( Panel );
 	}
 
 	protected override void OnDisabled()
 	{
+		LifePunchMenuInputBlock.NotifyMenuClosed();
 		LpBitcoinHudBridge.SetMenuCursorMode( false );
 	}
 
@@ -957,6 +963,10 @@
 		_active = tab;
 		LifePunchUiScrollPolicy.Apply( Panel );
 	}
+
+	// Upgrades is a sub-view of Servers — keep the rack icon selected (Staff Menu tab-sel pattern).
+	private bool IsSidebarTabActive( OpsTab tab )
+		=> _active == tab || ( tab == OpsTab.Racks && _active == OpsTab.Upgrades );
 
 	private void OpenRackUpgrades( LpBitcoinRackEntity rack )
 	{
@@ -1361,6 +1371,7 @@
 	{
 		base.OnUpdate();
 		LifePunchUiScrollPolicy.Apply( Panel );
+		LifePunchMenuInputBlock.Apply();
 		if ( !_hub.IsValid() )
 			Close();
 	}

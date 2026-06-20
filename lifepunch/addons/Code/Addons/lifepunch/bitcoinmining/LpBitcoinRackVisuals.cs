@@ -1,353 +1,218 @@
 // ─────────────────────────────────────────────────────────────────────────────
-
 // PROPRIETARY & CONFIDENTIAL — © 2026 lifepunch.co. All rights reserved.
-
 //
-
 // "LIFEPUNCH Bitcoin Miner for DXRP" (s&box ident: lifepunch.bitcoin · addon ident: bitcoinmining)
-
 // ─────────────────────────────────────────────────────────────────────────────
 
-
-
 using System;
-
 using System.Linq;
-
 using Sandbox;
-
 #if !LIFEPUNCH_LOCAL
-
 using Dxura.RP.Game;
-
 using Dxura.RP.Shared;
-
 #endif
-
-
 
 namespace LifePunch.DXRP.Addons.Bitcoin;
 
-
-
 /// <summary>
-
 /// Client-side GPU rack visuals — Evo Bitminer pattern: child fan vmdls on the prefab, not vmdl bone animation.
-
+/// Fans stay hidden until rig0 starts mining; spin ramps up/down with <see cref="LpBitcoinRackEntity.IsMining"/>.
 /// </summary>
-
 public sealed class LpBitcoinRackVisuals : Component
-
 {
-
 	private const float FanMaxSpeed = 1200f;
-
 	private const float FanRampSeconds = 4f;
-
 	private const float VisualTickSeconds = 0.05f;
-
 	private const float FanMeshTiltDegrees = 10f;
-
-
+	private const float FanHideSpeedThreshold = 1f;
 
 	[Property] public LpBitcoinRackEntity Rack { get; set; }
 
-
-
 	private GameObject[] _fanChildren = Array.Empty<GameObject>();
-
 	private Rotation[] _fanBaseLocalRotation = Array.Empty<Rotation>();
-
+	private float[] _fanAngles = Array.Empty<float>();
 	private ModelRenderer _modelRenderer;
-
 	private float _fanSpeed;
-
 	private bool _occluded;
-
 #if !LIFEPUNCH_LOCAL
-
 	private SoundEvent _miningHumEvent;
-
 	private SoundHandle _miningHumHandle;
-
 #endif
-
-
 
 	protected override void OnStart()
-
 	{
-
 		if ( !Rack.IsValid() )
-
 			Rack = Components.Get<LpBitcoinRackEntity>( FindMode.EverythingInSelf );
 
-
-
 		CacheFanChildren();
-
 		_modelRenderer = ResolveBodyRenderer();
-
 #if !LIFEPUNCH_LOCAL
-
 		var soundPoint = Components.Get<ContinuousSoundPoint>( FindMode.EverythingInSelf );
-
 		if ( soundPoint.IsValid() && soundPoint.SoundEvent.IsValid() )
-
 			_miningHumEvent = soundPoint.SoundEvent;
-
 #endif
-
 	}
-
-
 
 	private ModelRenderer ResolveBodyRenderer()
-
 	{
-
 		return Components.Get<ModelRenderer>( FindMode.EverythingInSelf )
-
 		       ?? Components.Get<SkinnedModelRenderer>( FindMode.EverythingInSelf ) as ModelRenderer;
-
 	}
-
-
 
 	private void CacheFanChildren()
-
 	{
-
 		if ( !GameObject.IsValid() )
-
 			return;
-
-
 
 		_fanChildren = GameObject.Children
-
 			.Where( child => child.IsValid()
-
 			                   && ( child.Name.StartsWith( "fan_spin_", StringComparison.OrdinalIgnoreCase )
-
 			                        || child.Name.StartsWith( "fan_placeholder", StringComparison.OrdinalIgnoreCase ) ) )
-
 			.ToArray();
 
-
-
 		_fanBaseLocalRotation = new Rotation[_fanChildren.Length];
-
+		_fanAngles = new float[_fanChildren.Length];
 		var tilt = Rotation.FromAxis( Vector3.Right, FanMeshTiltDegrees );
 
-
-
 		for ( var i = 0; i < _fanChildren.Length; i++ )
-
 		{
-
 			var fan = _fanChildren[i];
-
 			fan.Flags |= GameObjectFlags.NoInterpolation;
-
 			_fanBaseLocalRotation[i] = tilt;
-
 			fan.LocalRotation = tilt;
-
+			fan.Enabled = false;
 		}
-
 	}
 
-
-
 #if !LIFEPUNCH_LOCAL
-
 	public void OnOcclusionChanged( bool occlude ) => _occluded = occlude;
 
-#endif
-
-
-
-	protected override void OnUpdate()
-
+	/// <summary>Host/client sync hook — refresh fan visibility immediately when mining toggles.</summary>
+	internal void SyncMiningVisualState()
 	{
-
-#if LIFEPUNCH_LOCAL
-
-		return;
-
-#else
-
-		if ( !Rack.IsValid() || _occluded || GameManager.IsHeadless )
-
+		if ( GameManager.IsHeadless || !Rack.IsValid() )
 			return;
-
-
-
-		if ( Cooldown.Current.CheckAndStartCooldown( $"{GameObject.Id}:rack-vis", VisualTickSeconds ) )
-
-			return;
-
-
 
 		UpdateFanRamp();
-
-		UpdateMiningHum();
-
+		UpdateFanChildEnabled();
 		UpdateMiningLeds();
-
-		SpinFans();
-
+	}
 #endif
 
+	protected override void OnUpdate()
+	{
+#if LIFEPUNCH_LOCAL
+		return;
+#else
+		if ( !Rack.IsValid() || _occluded || GameManager.IsHeadless )
+			return;
+
+		if ( Cooldown.Current.CheckAndStartCooldown( $"{GameObject.Id}:rack-vis", VisualTickSeconds ) )
+			return;
+
+		UpdateFanRamp();
+		UpdateFanChildEnabled();
+		UpdateMiningHum();
+		UpdateMiningLeds();
+		SpinFans();
+#endif
 	}
 
-
+	private bool IsMiningVisualActive()
+	{
+		var hub = Rack.GetLinkedHub();
+		return Rack.IsMining && hub is { IsPowered: true };
+	}
 
 	private void UpdateFanRamp()
-
 	{
-
-		var hub = Rack.GetLinkedHub();
-
-		var mining = Rack.IsMining && hub is { IsPowered: true };
-
-		var target = mining ? FanMaxSpeed : 0f;
-
+		var target = IsMiningVisualActive() ? FanMaxSpeed : 0f;
 		var step = ( FanMaxSpeed / FanRampSeconds ) * Time.Delta;
 
-
-
 		if ( _fanSpeed < target )
-
 			_fanSpeed = MathF.Min( _fanSpeed + step, target );
-
 		else if ( _fanSpeed > target )
-
 			_fanSpeed = MathF.Max( _fanSpeed - step, target );
-
 	}
 
-
-
-	private void SpinFans()
-
+	private void UpdateFanChildEnabled()
 	{
-
-		if ( _fanSpeed <= 0f || _fanChildren.Length == 0 )
-
-			return;
-
-
-
-		var spin = Rotation.FromAxis( Vector3.Forward, _fanSpeed * Time.Delta );
+		var miningActive = IsMiningVisualActive();
+		var fansVisible = miningActive || _fanSpeed > FanHideSpeedThreshold;
 
 		for ( var i = 0; i < _fanChildren.Length; i++ )
-
 		{
-
 			var fan = _fanChildren[i];
-
 			if ( !fan.IsValid() )
-
 				continue;
 
+			if ( fan.Enabled != fansVisible )
+				fan.Enabled = fansVisible;
 
-
-			fan.LocalRotation = _fanBaseLocalRotation[i];
-
-			fan.LocalRotation *= spin;
-
+			if ( !fansVisible )
+			{
+				_fanAngles[i] = 0f;
+				fan.LocalRotation = _fanBaseLocalRotation[i];
+			}
 		}
-
 	}
 
-
-
-	private void UpdateMiningHum()
-
+	private void SpinFans()
 	{
-
-		var hub = Rack.GetLinkedHub();
-
-		var shouldHum = Rack.IsMining && hub is { IsPowered: true } && !_occluded;
-
-
-
-		if ( shouldHum )
-
-		{
-
-			if ( !_miningHumHandle.IsValid() && _miningHumEvent.IsValid() )
-
-				_miningHumHandle = Sound.Play( _miningHumEvent, WorldPosition );
-
-
-
-			if ( _miningHumHandle.IsValid() )
-
-				_miningHumHandle.Position = WorldPosition;
-
-		}
-
-		else if ( _miningHumHandle.IsValid() )
-
-		{
-
-			_miningHumHandle.Stop( 0.15f );
-
-			_miningHumHandle = default;
-
-		}
-
-	}
-
-
-
-	private void UpdateMiningLeds()
-
-	{
-
-		if ( !_modelRenderer.IsValid() )
-
-			_modelRenderer = ResolveBodyRenderer();
-
-
-
-		if ( !_modelRenderer.IsValid() )
-
+		if ( _fanSpeed <= 0f || _fanChildren.Length == 0 )
 			return;
 
+		var delta = _fanSpeed * Time.Delta;
 
+		for ( var i = 0; i < _fanChildren.Length; i++ )
+		{
+			var fan = _fanChildren[i];
+			if ( !fan.IsValid() || !fan.Enabled )
+				continue;
 
-		var hub = Rack.GetLinkedHub();
-
-		var mining = Rack.IsMining && hub is { IsPowered: true };
-
-		var ledIntensity = mining && FanMaxSpeed > 0f ? Math.Clamp( _fanSpeed / FanMaxSpeed, 0f, 1f ) : 0f;
-
-		LpBitcoinPowerLeds.ApplyRackGpuLeds( _modelRenderer, mining, ledIntensity );
-
+			_fanAngles[i] += delta;
+			fan.LocalRotation = Rotation.FromAxis( Vector3.Forward, _fanAngles[i] ) * _fanBaseLocalRotation[i];
+		}
 	}
 
+	private void UpdateMiningHum()
+	{
+		var shouldHum = IsMiningVisualActive() && !_occluded;
 
+		if ( shouldHum )
+		{
+			if ( !_miningHumHandle.IsValid() && _miningHumEvent.IsValid() )
+				_miningHumHandle = Sound.Play( _miningHumEvent, WorldPosition );
+
+			if ( _miningHumHandle.IsValid() )
+				_miningHumHandle.Position = WorldPosition;
+		}
+		else if ( _miningHumHandle.IsValid() )
+		{
+			_miningHumHandle.Stop( 0.15f );
+			_miningHumHandle = default;
+		}
+	}
+
+	private void UpdateMiningLeds()
+	{
+		if ( !_modelRenderer.IsValid() )
+			_modelRenderer = ResolveBodyRenderer();
+
+		if ( !_modelRenderer.IsValid() )
+			return;
+
+		var mining = IsMiningVisualActive();
+		var ledIntensity = mining && FanMaxSpeed > 0f ? Math.Clamp( _fanSpeed / FanMaxSpeed, 0f, 1f ) : 0f;
+		LpBitcoinPowerLeds.ApplyRackGpuLeds( _modelRenderer, mining, ledIntensity );
+	}
 
 	protected override void OnDestroy()
-
 	{
-
 #if !LIFEPUNCH_LOCAL
-
 		if ( _miningHumHandle.IsValid() )
-
 			_miningHumHandle.Stop( 0.1f );
-
 #endif
-
 		base.OnDestroy();
-
 	}
-
 }
-
-

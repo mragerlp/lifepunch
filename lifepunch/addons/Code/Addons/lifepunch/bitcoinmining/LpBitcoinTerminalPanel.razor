@@ -68,11 +68,15 @@
 							<div class="boot-hint">click to skip boot</div>
 						</div>
 					}
-					<div class="log lp-ui-scroll-region" @ref="LogPanel" onclick="@FocusLog">
-						@foreach ( var line in _lines )
-						{
-							<div class="log-line @LineClass( line )">@line.Text</div>
-						}
+					<div class="log-shell">
+						<LifePunchScrollRegionPanel class="log lp-ui-scroll-region" @ref="LogPanel" onclick="@FocusLog">
+							<div class="log-stack">
+								@foreach ( var line in _lines )
+								{
+									<div class="log-line @LineClass( line )">@line.Text</div>
+								}
+							</div>
+						</LifePunchScrollRegionPanel>
 					</div>
 					<div class="prompt-row" onclick="@FocusInput">
 						<span class="prompt">rig@hub&gt;</span>
@@ -109,7 +113,7 @@
 	private bool _showScaleMenu;
 	private LpUiScaleSize _uiScale = LpUiScale.Default;
 	private TextEntry InputBox { get; set; }
-	private Panel LogPanel { get; set; }
+	private LifePunchScrollRegionPanel LogPanel { get; set; }
 
 	private const int MaxLogLines = 200;
 
@@ -117,6 +121,7 @@
 	{
 		"help",
 		"racks",
+		"link",
 		"select 0",
 		"status",
 		"info",
@@ -195,6 +200,7 @@
 
 	protected override void OnEnabled()
 	{
+		LifePunchMenuInputBlock.NotifyMenuOpened();
 		LpBitcoinHudBridge.SetMenuCursorMode( true );
 		LifePunchUiScrollPolicy.Apply( Panel );
 		ApplyCommandInputChrome();
@@ -207,6 +213,7 @@
 			return;
 
 		LogPanel.AcceptsFocus = true;
+		LogPanel.PreferScrollToBottom = true;
 	}
 
 	public void Bind( LpBitcoinHubEntity hub, LpBitcoinRackEntity focusRack = null )
@@ -224,6 +231,7 @@
 
 	protected override void OnDisabled()
 	{
+		LifePunchMenuInputBlock.NotifyMenuClosed();
 		LpBitcoinHudBridge.SetMenuCursorMode( false );
 	}
 
@@ -351,23 +359,7 @@
 		if ( !LogPanel.IsValid() )
 			return;
 
-		if ( !LogPanel.HasScrollY )
-			return;
-
-		var viewHeight = LogPanel.Box.Bottom - LogPanel.Box.Top;
-		if ( viewHeight <= 1f )
-			return;
-
-		var maxY = Math.Max( 0f, LogPanel.ScrollSize.y - viewHeight );
-
-		if ( !force )
-		{
-			var nearBottom = LogPanel.ScrollOffset.y >= maxY - 28f;
-			if ( !nearBottom )
-				return;
-		}
-
-		LogPanel.ScrollOffset = new Vector2( 0f, maxY );
+		LogPanel.ScrollToBottom( force );
 	}
 
 	private void Close() => LpBitcoinTerminalUiHost.CloseOpen();
@@ -389,6 +381,7 @@
 	{
 		base.OnUpdate();
 		LifePunchUiScrollPolicy.Apply( Panel );
+		LifePunchMenuInputBlock.Apply();
 		if ( !_hub.IsValid() )
 		{
 			Close();

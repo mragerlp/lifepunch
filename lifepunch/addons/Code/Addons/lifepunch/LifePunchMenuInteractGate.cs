@@ -42,6 +42,24 @@ public static class LifePunchMenuInteractGate
 		return !WouldHandsPickupTakePriority( viewerPos.Value, target );
 	}
 
+	public static bool CanPressHubMenu( GameObject target )
+	{
+		if ( !target.IsValid() )
+			return false;
+
+		var viewerPos = GetLocalViewerPosition( target.Scene );
+		if ( !viewerPos.HasValue )
+			return false;
+
+		if ( !LifePunchMenuInteractRange.IsHubInOpenRange( viewerPos.Value, target.WorldPosition ) )
+			return false;
+
+		if ( WouldHandsManipulationTakePriority( viewerPos.Value, target ) )
+			return false;
+
+		return !WouldHandsPickupTakePriority( viewerPos.Value, target );
+	}
+
 #if !LIFEPUNCH_LOCAL
 	public static bool IsCallerAllowed( Connection caller, GameObject target )
 	{
@@ -63,6 +81,27 @@ public static class LifePunchMenuInteractGate
 
 		return !WouldHandsPickupTakePriority( player, target );
 	}
+
+	public static bool IsCallerAllowedHub( Connection caller, GameObject target )
+	{
+		if ( !target.IsValid() || caller is null )
+			return false;
+
+		if ( !GameUtils.HasPermission( caller, target ) )
+			return false;
+
+		var player = GameUtils.GetPlayerByConnectionId( caller.Id );
+		if ( !player.IsValid() )
+			return false;
+
+		if ( !LifePunchMenuInteractRange.IsHubInOpenRange( player.WorldPosition, target.WorldPosition ) )
+			return false;
+
+		if ( WouldHandsManipulationTakePriority( player, target ) )
+			return false;
+
+		return !WouldHandsPickupTakePriority( player, target );
+	}
 #else
 	public static bool IsCallerAllowed( Connection caller, GameObject target )
 	{
@@ -74,6 +113,18 @@ public static class LifePunchMenuInteractGate
 			return false;
 
 		return LifePunchMenuInteractRange.IsInOpenRange( viewerPos.Value, target.WorldPosition );
+	}
+
+	public static bool IsCallerAllowedHub( Connection caller, GameObject target )
+	{
+		if ( !target.IsValid() )
+			return false;
+
+		var viewerPos = GetLocalViewerPosition( target.Scene );
+		if ( !viewerPos.HasValue )
+			return false;
+
+		return LifePunchMenuInteractRange.IsHubInOpenRange( viewerPos.Value, target.WorldPosition );
 	}
 #endif
 

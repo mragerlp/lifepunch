@@ -28,6 +28,12 @@ public static class LifePunchMenuInteractRange
 	/// <summary>~0.75 m vertical slack while opening.</summary>
 	public const float OpenVerticalMeters = 0.75f;
 
+	/// <summary>~1.15 m — floor-standing Bitcoin hub; slightly beyond console menu reach.</summary>
+	public const float HubOpenHorizontalMeters = 1.15f;
+
+	/// <summary>~1.0 m vertical slack for hub USE.</summary>
+	public const float HubOpenVerticalMeters = 1.0f;
+
 	/// <summary>~2.0 m — auto-close UI if the player walks away.</summary>
 	public const float UiCloseHorizontalMeters = 2.0f;
 
@@ -36,11 +42,16 @@ public static class LifePunchMenuInteractRange
 
 	public static float OpenHorizontalUnits => OpenHorizontalMeters * MetersToUnits;
 	public static float OpenVerticalUnits => OpenVerticalMeters * MetersToUnits;
+	public static float HubOpenHorizontalUnits => HubOpenHorizontalMeters * MetersToUnits;
+	public static float HubOpenVerticalUnits => HubOpenVerticalMeters * MetersToUnits;
 	public static float UiCloseHorizontalUnits => UiCloseHorizontalMeters * MetersToUnits;
 	public static float UiCloseVerticalUnits => UiCloseVerticalMeters * MetersToUnits;
 
 	public static bool IsInOpenRange( Vector3 viewerPos, Vector3 targetPos )
 		=> IsWithin( viewerPos, targetPos, OpenHorizontalUnits, OpenVerticalUnits, out _ );
+
+	public static bool IsHubInOpenRange( Vector3 viewerPos, Vector3 targetPos )
+		=> IsWithin( viewerPos, targetPos, HubOpenHorizontalUnits, HubOpenVerticalUnits, out _ );
 
 	public static bool IsInOpenRange( Vector3 viewerPos, Vector3 targetPos, out float horizontalDistance )
 		=> IsWithin( viewerPos, targetPos, OpenHorizontalUnits, OpenVerticalUnits, out horizontalDistance );

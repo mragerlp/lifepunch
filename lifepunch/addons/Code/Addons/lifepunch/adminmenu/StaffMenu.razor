@@ -742,15 +742,27 @@
 	protected override void OnStart()
 	{
 		RefreshRoster();
-		LifePunchUiScrollPolicy.Apply( Panel );
 
 		// Fetch owner settings on open so the network tag is click-to-copy immediately (not only after
 		// the Settings view is visited).
 		StaffMenuHost.RefreshSettings();
 	}
 
+	protected override void OnEnabled()
+	{
+		LifePunchMenuInputBlock.NotifyMenuOpened();
+		LifePunchUiScrollPolicy.Apply( Panel );
+	}
+
+	protected override void OnDisabled()
+	{
+		LifePunchMenuInputBlock.NotifyMenuClosed();
+	}
+
 	protected override void OnUpdate()
 	{
+		LifePunchMenuInputBlock.Apply();
+
 		// Wheel-only scroll: disable drag-scroll and clamp offsets every frame (sidebar roster, audit, etc.).
 		LifePunchUiScrollPolicy.Apply( Panel );
 

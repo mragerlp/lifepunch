@@ -46,6 +46,12 @@ public static class LifePunchUiScrollPolicy
 
 	private static void ClampScrollOffset( Panel panel )
 	{
+		if ( panel.HasClass( "lp-ui-scroll-region" ) )
+		{
+			ClampManualScrollRegion( panel );
+			return;
+		}
+
 		if ( !panel.HasScrollY && !panel.HasScrollX )
 		{
 			if ( panel.ScrollOffset != Vector2.Zero )
@@ -75,5 +81,42 @@ public static class LifePunchUiScrollPolicy
 
 		if ( Math.Abs( offset.x - x ) > 0.01f || Math.Abs( offset.y - y ) > 0.01f )
 			panel.ScrollOffset = new Vector2( x, y );
+	}
+
+	private static void ClampManualScrollRegion( Panel panel )
+	{
+		var maxY = GetManualScrollMaxY( panel );
+
+		if ( maxY <= 0f )
+		{
+			if ( panel.ScrollOffset != Vector2.Zero )
+				panel.ScrollOffset = Vector2.Zero;
+
+			return;
+		}
+
+		var y = Math.Clamp( panel.ScrollOffset.y, 0f, maxY );
+
+		if ( Math.Abs( panel.ScrollOffset.y - y ) > 0.01f )
+			panel.ScrollOffset = new Vector2( 0f, y );
+	}
+
+	private static float GetManualScrollMaxY( Panel panel )
+	{
+		var viewHeight = panel.Box.Rect.Height;
+		if ( viewHeight <= 1f )
+			return 0f;
+
+		var contentHeight = 0f;
+
+		foreach ( var child in panel.Children )
+		{
+			if ( !child.IsValid() )
+				continue;
+
+			contentHeight = Math.Max( contentHeight, child.Box.Rect.Height );
+		}
+
+		return Math.Max( 0f, contentHeight - viewHeight );
 	}
 }

@@ -290,13 +290,20 @@
 
     protected override void OnEnabled()
     {
+        LifePunchMenuInputBlock.NotifyMenuOpened();
         LifePunchUiScrollPolicy.Apply( Panel );
+    }
+
+    protected override void OnDisabled()
+    {
+        LifePunchMenuInputBlock.NotifyMenuClosed();
     }
 
     protected override void OnUpdate()
     {
         base.OnUpdate();
         LifePunchUiScrollPolicy.Apply( Panel );
+        LifePunchMenuInputBlock.Apply();
     }
 
     private string GetRootClass()

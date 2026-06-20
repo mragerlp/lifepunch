@@ -41,7 +41,7 @@ $crt-text-dim: #9a9a9a;
 	}
 
 	.crt-frame {
-		flex: 1 1 auto;
+		flex: 1 1 0;
 		min-height: 0;
 		background-color: $crt-frame-bg;
 		border: 3px solid #3a3a3a;
@@ -81,17 +81,33 @@ $crt-text-dim: #9a9a9a;
 		border-top: 1px solid $crt-border;
 	}
 
+	.log-shell {
+		flex: 1 1 0;
+		min-height: 0;
+		min-width: 0;
+		overflow: hidden;
+		display: flex;
+		flex-direction: column;
+	}
+
 	.log {
 		flex: 1 1 0;
 		min-height: 0;
 		min-width: 0;
+		height: 100%;
 		overflow-y: scroll;
 		overflow-x: hidden;
 		cursor: text;
+		padding-right: 4px;
+		pointer-events: all;
+	}
+
+	.log-stack {
 		display: flex;
 		flex-direction: column;
 		gap: 2px;
-		padding-right: 4px;
+		width: 100%;
+		flex-shrink: 0;
 	}
 
 	.screen {
@@ -336,12 +352,31 @@ $crt-text-dim: #9a9a9a;
 	overflow: hidden;
 }
 
+.lp-ops-crt .log-shell {
+	flex: 1 1 0;
+	min-height: 0;
+	min-width: 0;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+}
+
 .lp-ops-crt .log {
 	flex: 1 1 0;
 	min-height: 0;
 	min-width: 0;
+	height: 100%;
 	overflow-y: scroll;
 	overflow-x: hidden;
+	pointer-events: all;
+}
+
+.lp-ops-crt .log-stack {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	width: 100%;
+	flex-shrink: 0;
 }
 
 .lp-ops-crt .crt-header {

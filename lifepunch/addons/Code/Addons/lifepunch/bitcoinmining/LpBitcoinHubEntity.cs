@@ -180,7 +180,7 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 	}
 #endif
 
-	public bool CanPress( IPressable.Event e ) => LifePunchMenuInteractGate.CanPressMenu( GameObject );
+	public bool CanPress( IPressable.Event e ) => LifePunchMenuInteractGate.CanPressHubMenu( GameObject );
 
 	public bool Press( IPressable.Event e )
 	{
@@ -197,10 +197,10 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 	private void OpenHubHost()
 	{
 #if !LIFEPUNCH_LOCAL
-		if ( !LifePunchMenuInteractGate.IsCallerAllowed( Rpc.Caller, GameObject ) )
+		if ( !LifePunchMenuInteractGate.IsCallerAllowedHub( Rpc.Caller, GameObject ) )
 			return;
 #else
-		if ( !LifePunchMenuInteractGate.IsCallerAllowed( null, GameObject ) )
+		if ( !LifePunchMenuInteractGate.IsCallerAllowedHub( null, GameObject ) )
 			return;
 #endif
 

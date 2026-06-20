@@ -533,7 +533,13 @@
 
     protected override void OnEnabled()
     {
+        LifePunchMenuInputBlock.NotifyMenuOpened();
         LifePunchUiScrollPolicy.Apply( Panel );
+    }
+
+    protected override void OnDisabled()
+    {
+        LifePunchMenuInputBlock.NotifyMenuClosed();
     }
 
     protected override void OnUpdate()
@@ -550,13 +556,7 @@
         if ( _screen == LifePunchCyberScreen.Terminal && InputBox.IsValid() && !InputBox.HasFocus )
             InputBox.Focus();
 
-        if ( Input.Pressed( "Attack2" ) )
-            Input.Clear( "Attack2" );
-
-        if ( Input.Pressed( "Pocket" ) )
-            Input.Clear( "Pocket" );
-        if ( Input.Down( "Pocket" ) )
-            Input.Clear( "Pocket" );
+        LifePunchMenuInputBlock.Apply();
 
         if ( InputBox.IsValid() )
         {

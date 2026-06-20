@@ -190,6 +190,10 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable, IAre
 			return;
 
 		LinkedHubId = hub.GameObject.Id;
+#if !LIFEPUNCH_LOCAL
+		if ( Networking.IsHost )
+			StopMiningHost();
+#endif
 		hub.RefreshLinkedTerminalScreens();
 	}
 
@@ -304,7 +308,9 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable, IAre
 	private void ApplyRackMiningVisual( bool mining )
 	{
 		_lastMiningVisual = mining;
-		// Fan spin is prefab child GOs (Evo pattern) — LpBitcoinRackVisuals drives rotation.
+#if !LIFEPUNCH_LOCAL
+		_visuals?.SyncMiningVisualState();
+#endif
 	}
 
 	private void RefreshLinkedTerminalScreens()

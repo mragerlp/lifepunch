@@ -13,6 +13,7 @@
 using Dxura.RP.Game;
 using Dxura.RP.Game.Equipments;
 using Dxura.RP.Shared;
+using LifePunch.DXRP.Addons;
 using Sandbox;
 
 namespace LifePunch.DXRP.Addons.VisiblePocket;
@@ -25,6 +26,9 @@ internal sealed class VisiblePocketInputBridge : Component
 {
 	protected override void OnUpdate()
 	{
+		if ( LifePunchMenuInputBlock.IsAnyMenuOpen )
+			return;
+
 		if ( !Config.Current.Game.PocketEnabled )
 		{
 			return;

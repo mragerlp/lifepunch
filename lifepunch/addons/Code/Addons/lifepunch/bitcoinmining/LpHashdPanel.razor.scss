@@ -58,31 +58,56 @@ $shell-radius: 22px;
 		pointer-events: all;
 	}
 
+	// Scrollable body slot — footer stays a fixed 32px strip clipped by .shell.
+	.shell-body {
+		flex: 1 1 0;
+		min-height: 0;
+		display: flex;
+		flex-direction: column;
+		overflow: hidden;
+		background-color: $hashd-bg;
+	}
+
 	.lp-window-watermark {
 		flex: 0 0 32px;
 		flex-shrink: 0;
 		align-self: stretch;
 		width: 100%;
+		max-width: 100%;
 		height: 32px;
 		min-height: 32px;
 		max-height: 32px;
 		overflow: hidden;
+		border-top: 1px solid $hashd-border;
 		background-color: #0c0a08;
+		border-radius: 0 0 $shell-radius $shell-radius;
 
-		&.lp-window-watermark--rounded {
-			border-radius: 0 0 $shell-radius $shell-radius;
+		// LifePunchUiFooter @inherits Panel — constrain the component wrapper to the slot width.
+		> Panel {
+			width: 100%;
+			max-width: 100%;
+			height: 32px;
+			min-height: 32px;
+			max-height: 32px;
+			flex-shrink: 0;
+			overflow: hidden;
 		}
 
 		.lp-source-footer {
 			width: 100%;
+			max-width: 100%;
 			height: 32px;
 			min-height: 32px;
 			max-height: 32px;
 			flex: none;
-		}
-
-		&.lp-window-watermark--rounded .lp-source-footer {
+			padding: 0 14px;
+			border-top: 0;
+			background-color: #0c0a08;
 			border-radius: 0 0 $shell-radius $shell-radius;
+
+			.lp-mark {
+				color: $hashd-amber;
+			}
 		}
 	}
 
@@ -92,8 +117,7 @@ $shell-radius: 22px;
 		display: flex;
 		flex-direction: column;
 		overflow: hidden;
-		border-top-left-radius: $shell-radius;
-		border-top-right-radius: $shell-radius;
+		background-color: $hashd-bg;
 	}
 
 	.hub-main {
@@ -102,17 +126,16 @@ $shell-radius: 22px;
 		display: flex;
 		flex-direction: row;
 		overflow: hidden;
+		background-color: $hashd-bg;
 	}
 
 	.pin-gate {
-		flex: 1 1 auto;
+		flex: 1 1 0;
 		min-height: 0;
 		display: flex;
 		flex-direction: column;
 		background-color: $hashd-bg;
 		overflow: hidden;
-		border-top-left-radius: $shell-radius;
-		border-top-right-radius: $shell-radius;
 	}
 
 	.pin-header {
@@ -286,7 +309,6 @@ $shell-radius: 22px;
 		padding: 16px 10px 14px;
 		background-color: $hashd-surface;
 		border-right: 1px solid $hashd-border;
-		border-top-left-radius: $shell-radius;
 		overflow: hidden;
 	}
 
@@ -397,6 +419,8 @@ $shell-radius: 22px;
 		min-height: 0;
 		display: flex;
 		flex-direction: column;
+		background-color: $hashd-surface;
+		overflow: hidden;
 	}
 
 	.hub-header {
@@ -410,8 +434,7 @@ $shell-radius: 22px;
 		min-height: 68px;
 		padding: 14px 22px 12px;
 		border-bottom: 1px solid $hashd-border;
-		background-color: $hashd-bg;
-		border-top-right-radius: $shell-radius;
+		background-color: $hashd-surface;
 	}
 
 	.hub-title {
@@ -656,8 +679,42 @@ $shell-radius: 22px;
 	.main-panel > .pane:not(.overview) {
 		flex: 1 1 0;
 		min-height: 0;
-		padding: 16px 18px 18px;
+		padding: 0;
 		overflow: hidden;
+		background-color: $hashd-surface;
+	}
+
+	.pane.wallet,
+	.pane.transfers,
+	.pane.racks,
+	.pane.upgrades,
+	.pane.logs-pane,
+	.pane.settings-pane {
+		flex: 1 1 0;
+		min-height: 0;
+		min-width: 0;
+		overflow: hidden;
+		display: flex;
+		flex-direction: column;
+
+		> .lp-ui-panel,
+		> .wallet-panel,
+		> .transfers-panel,
+		> .racks-panel,
+		> .upgrades-panel,
+		> .logs-panel {
+			flex: 1 1 0;
+			min-height: 0;
+			min-width: 0;
+			width: 100%;
+			overflow: hidden;
+			display: flex;
+			flex-direction: column;
+			border: 0;
+			border-radius: 0;
+			background-color: transparent;
+			padding: 16px 18px 18px;
+		}
 	}
 
 	.main-panel {
@@ -679,6 +736,7 @@ $shell-radius: 22px;
 		gap: 14px;
 		padding: 16px 18px 18px;
 		overflow: hidden;
+		background-color: $hashd-surface;
 	}
 
 	.overview .lp-ui-split {
@@ -807,38 +865,9 @@ $shell-radius: 22px;
 		}
 	}
 
-	.pane.wallet,
-	.pane.racks,
-	.pane.upgrades,
-	.pane.logs-pane,
-	.pane.settings-pane {
-		flex: 1 1 0;
-		min-height: 0;
-		min-width: 0;
-		overflow: hidden;
-		display: flex;
-		flex-direction: column;
-
-		> .lp-ui-panel,
-		> .wallet-panel,
-		> .racks-panel,
-		> .upgrades-panel,
-		> .logs-panel {
-			flex: 1 1 0;
-			min-height: 0;
-			min-width: 0;
-			width: 100%;
-			overflow: hidden;
-			display: flex;
-			flex-direction: column;
-		}
-	}
-
 	.pane.racks .racks-panel,
 	.pane.upgrades .upgrades-panel,
 	.pane.logs-pane .logs-panel {
-		padding: 14px 16px;
-
 		.lp-ui-panel-title,
 		.lp-ui-intro,
 		.upgrades-toolbar,
@@ -998,6 +1027,10 @@ $shell-radius: 22px;
 		text-align: left;
 		font-size: 12px;
 		line-height: 1.45;
+		width: 100%;
+		max-width: 100%;
+		white-space: normal;
+		overflow-wrap: break-word;
 	}
 
 	.upgrade-tracks {
@@ -1106,10 +1139,13 @@ $shell-radius: 22px;
 
 	.upgrade-tier-buy {
 		flex: 0 0 auto;
-		min-width: 120px;
-		min-height: 34px;
-		padding: 8px 12px;
-		font-size: 10px;
+		min-width: 132px;
+		min-height: 36px;
+		padding: 8px 14px;
+		font-size: 11px;
+		line-height: 1.25;
+		white-space: nowrap;
+		text-align: center;
 	}
 
 	.pane.wallet,
@@ -2137,14 +2173,29 @@ $shell-radius: 22px;
 		color: $hashd-green;
 	}
 
-	.lp-window-watermark,
-	.lp-source-footer {
-		flex-shrink: 0;
-		border-top-color: $hashd-border;
-		background-color: #0c0a08;
+	// s&box drops compound `.sidebar-btn.active` — use a standalone sel class like Staff Menu `.tab-sel`.
+	.sidebar-btn.sidebar-btn-sel {
+		color: #fff;
+		background-color: $hashd-amber;
+		border-color: rgba(255, 255, 255, 0.08);
+		box-shadow: 0 10px 22px rgba(232, 125, 62, 0.35);
+	}
 
-		.lp-mark {
-			color: $hashd-amber;
-		}
+	// Global `.lp-ui-btn-primary` flex-shrink squashes long price labels inside upgrade rows.
+	.upgrade-tier-row .upgrade-tier-buy {
+		flex: 0 0 auto;
+		min-width: 132px;
+		width: auto;
+		max-width: none;
+		padding: 8px 14px;
+		font-size: 11px;
+		line-height: 1.25;
+		white-space: nowrap;
+		text-align: center;
+	}
+
+	.upgrade-tier-row .upgrade-tier-main {
+		flex: 1 1 auto;
+		min-width: 0;
 	}
 }
