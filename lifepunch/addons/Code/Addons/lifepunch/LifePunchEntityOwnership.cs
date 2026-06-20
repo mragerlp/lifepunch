@@ -81,6 +81,25 @@ public static class LifePunchEntityOwnership
 		var player = GameUtils.GetPlayerById( ownerSteamId );
 		return player.IsValid() ? player.DisplayName : ownerSteamId.ToString();
 	}
+
+	/// <summary>Hub↔terminal/rack may link only when both share the same non-zero operator Steam ID.</summary>
+	public static bool SharesOperator( long hubOwner, long equipmentOwner )
+		=> hubOwner != 0 && equipmentOwner != 0 && hubOwner == equipmentOwner;
+
+	/// <summary>Recover spawn bind — caller must already match <paramref name="hubOwner"/>.</summary>
+	public static bool TryClaimEquipmentForHub( this BaseEntity equipment, long hubOwner, Guid callerId )
+	{
+		if ( !equipment.IsValid() || hubOwner == 0 )
+			return false;
+
+		if ( equipment.Owner != 0 )
+			return SharesOperator( hubOwner, equipment.Owner );
+
+		if ( !CallerIsOwner( hubOwner, callerId ) )
+			return false;
+
+		return equipment.TryBindOwnerFromCaller( callerId ) && SharesOperator( hubOwner, equipment.Owner );
+	}
 #else
 	public static void TryBindSpawnOwnerHost( this Component entity ) { }
 
@@ -96,5 +115,9 @@ public static class LifePunchEntityOwnership
 
 	public static string GetOwnerLabel( long ownerSteamId )
 		=> ownerSteamId == 0 ? string.Empty : ownerSteamId.ToString();
+
+	public static bool SharesOperator( long hubOwner, long equipmentOwner ) => true;
+
+	public static bool TryClaimEquipmentForHub( this Component equipment, long hubOwner, Guid callerId ) => true;
 #endif
 }

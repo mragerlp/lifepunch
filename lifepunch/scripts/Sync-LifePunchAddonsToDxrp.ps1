@@ -105,6 +105,16 @@ if ($sharedCodeFiles.Count -gt 0) {
         Copy-Item -LiteralPath $file.FullName -Destination $dest -Force
         Write-Host "  $($file.Name)" -ForegroundColor Green
     }
+
+        if (-not $WhatIf) {
+        $repoNames = @($sharedCodeFiles | ForEach-Object { $_.Name })
+        Get-ChildItem -LiteralPath $dxrpCodeRoot -File -ErrorAction SilentlyContinue |
+            Where-Object { $repoNames -notcontains $_.Name } |
+            ForEach-Object {
+                Remove-Item -LiteralPath $_.FullName -Force
+                Write-Host "  Removed stale shared file: $($_.Name)" -ForegroundColor Yellow
+            }
+    }
 }
 
 $devSrc = Join-Path $repoCodeRoot '_dev'

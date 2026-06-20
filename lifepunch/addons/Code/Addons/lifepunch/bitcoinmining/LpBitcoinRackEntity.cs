@@ -27,6 +27,9 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable, IAre
 	/// <summary>Stacked rack (<see cref="LpBitcoinIdent.AdvancedRackSlug"/>) — <see cref="LpBitcoinIdent.AdvancedRackDisplayName"/>, 2× yield.</summary>
 	[Property] public bool AdvancedRack { get; set; }
 
+	/// <summary>Dev spawn (<see cref="LpBitcoinDevSpawn"/>) — feet on ground, frozen collider (no printer drop).</summary>
+	internal bool DevSpawnAsWorldMachine { get; set; }
+
 	[Sync( SyncFlags.FromHost )] public Guid LinkedHubId { get; set; }
 	[Sync( SyncFlags.FromHost )] public bool IsMining { get; set; }
 	[Sync( SyncFlags.FromHost )] public float BitcoinAmount { get; set; }
@@ -73,20 +76,39 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable, IAre
 		this.TryBindSpawnOwnerHost();
 		if ( Networking.IsHost )
 		{
-			ApplyVirginSpawnDefaultsHost();
-			if ( HealthComponent.IsValid() )
+			if ( DevSpawnAsWorldMachine )
 			{
-				HealthComponent.MaxHealth = AdvancedRack
-					? LpBitcoinIdent.AdvancedRackMaxHealth
-					: LpBitcoinIdent.RackMaxHealth;
-				if ( HealthComponent.Health <= 0f || HealthComponent.Health > HealthComponent.MaxHealth )
-					HealthComponent.Health = HealthComponent.MaxHealth;
-			}
+				ApplyVirginSpawnDefaultsHost();
+				if ( HealthComponent.IsValid() )
+				{
+					HealthComponent.MaxHealth = AdvancedRack
+						? LpBitcoinIdent.AdvancedRackMaxHealth
+						: LpBitcoinIdent.RackMaxHealth;
+					if ( HealthComponent.Health <= 0f || HealthComponent.Health > HealthComponent.MaxHealth )
+						HealthComponent.Health = HealthComponent.MaxHealth;
+				}
 
-			_spawnDropGraceTicks = 45;
-			_colliderSyncedFromModel = false;
-			LifePunchPropPhysics.BeginGrabbablePrinterDrop( GameObject, syncColliderFromModel: false );
-			Log.Info( $"RACK_SPAWN_PHYSICS advanced={AdvancedRack} pos={GameObject.WorldPosition} gravity=on (printer drop)" );
+				LifePunchPropPhysics.SetupWorldMachine( GameObject, alignGround: true );
+				_colliderSyncedFromModel = true;
+				Log.Info( $"RACK_SPAWN_PHYSICS advanced={AdvancedRack} pos={GameObject.WorldPosition} mode=dev-world-machine" );
+			}
+			else
+			{
+				ApplyVirginSpawnDefaultsHost();
+				if ( HealthComponent.IsValid() )
+				{
+					HealthComponent.MaxHealth = AdvancedRack
+						? LpBitcoinIdent.AdvancedRackMaxHealth
+						: LpBitcoinIdent.RackMaxHealth;
+					if ( HealthComponent.Health <= 0f || HealthComponent.Health > HealthComponent.MaxHealth )
+						HealthComponent.Health = HealthComponent.MaxHealth;
+				}
+
+				_spawnDropGraceTicks = 45;
+				_colliderSyncedFromModel = false;
+				LifePunchPropPhysics.BeginGrabbablePrinterDrop( GameObject, syncColliderFromModel: false );
+				Log.Info( $"RACK_SPAWN_PHYSICS advanced={AdvancedRack} pos={GameObject.WorldPosition} gravity=on (printer drop)" );
+			}
 		}
 #endif
 		_modelRenderer = Components.Get<ModelRenderer>( FindMode.EverythingInSelf )
@@ -345,6 +367,11 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable, IAre
 		{
 			if ( !rack.IsValid() || rack.LinkedHubId != Guid.Empty )
 				continue;
+
+#if !LIFEPUNCH_LOCAL
+			if ( !LifePunchEntityOwnership.SharesOperator( hub.Owner, rack.Owner ) )
+				continue;
+#endif
 
 			var dist = hubPos.Distance( rack.WorldPosition );
 			if ( dist > maxRange || dist >= bestDist )

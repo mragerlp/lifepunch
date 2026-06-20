@@ -28,8 +28,8 @@ public static class LpBitcoinIdent
 	public const string HubStartupSoundPath = "addons/lifepunch/bitcoinmining/sounds/bitcoinminer/hub-startup.sound";
 	public const string HubFanLoopSoundPath = "addons/lifepunch/bitcoinmining/sounds/bitcoinminer/hub-fan-loop.sound";
 	public const string HubFanDownSoundPath = "addons/lifepunch/bitcoinmining/sounds/bitcoinminer/hub-fan-down.sound";
-	/// <summary>DXRP gamemode purchase cha-ching — HASHD PIN pad + rig0 terminal keystrokes.</summary>
-	public const string KeyboardSoundPath = "sounds/purchase.sound";
+	/// <summary>Mechanical click — rig0 CRT command line only (same asset as hacker terminal).</summary>
+	public const string KeyboardSoundPath = "addons/lifepunch/bitcoinmining/sounds/bitcoinminer/keyboard.sound";
 	public const string HubDisplayName = "Bitcoin Hub";
 
 	/// <summary>Hub durability — heavier than DXRP money printer (100).</summary>
@@ -65,10 +65,42 @@ public static class LpBitcoinIdent
 	/// <summary>Operator-facing rack ID — e.g. GPURack-1, AdvancedGPURack-1 (per-type slot).</summary>
 	public static string FormatRackSlotId( LpBitcoinRackEntity rack, IReadOnlyList<LpBitcoinRackEntity> linkedRacks )
 	{
-		if ( !rack.IsValid() )
-			return "GPURack-?";
+		if ( !TryGetRackSlotNumber( rack, linkedRacks, out var slot ) )
+			return rack.IsValid() && rack.AdvancedRack ? $"{AdvancedRackSlotPrefix}-?" : $"{StandardRackSlotPrefix}-?";
 
-		var slot = 0;
+		return rack.AdvancedRack
+			? $"{AdvancedRackSlotPrefix}-{slot}"
+			: $"{StandardRackSlotPrefix}-{slot}";
+	}
+
+	/// <summary>Hub UI label — e.g. GPU Rack 1, Advanced GPU Rack 1.</summary>
+	public static string FormatRackSlotDisplayName( LpBitcoinRackEntity rack, IReadOnlyList<LpBitcoinRackEntity> linkedRacks )
+	{
+		if ( !TryGetRackSlotNumber( rack, linkedRacks, out var slot ) )
+			return rack.IsValid() && rack.AdvancedRack ? $"{AdvancedRackDisplayName} ?" : $"{RackDisplayName} ?";
+
+		return rack.AdvancedRack
+			? $"{AdvancedRackDisplayName} {slot}"
+			: $"{RackDisplayName} {slot}";
+	}
+
+	/// <summary>rig0 / CRT copy token — lowercase slot id (advancedgpurack-1).</summary>
+	/// <remarks>
+	/// Canonical pairs: GPU Rack 1 → gpurack-1 · Advanced GPU Rack 1 → advancedgpurack-1
+	/// (per-type slot — standard and advanced racks number independently).
+	/// </remarks>
+	public static string FormatRackSlotTerminalToken( LpBitcoinRackEntity rack, IReadOnlyList<LpBitcoinRackEntity> linkedRacks )
+		=> FormatRackSlotId( rack, linkedRacks ).ToLowerInvariant();
+
+	public static bool TryGetRackSlotNumber(
+		LpBitcoinRackEntity rack,
+		IReadOnlyList<LpBitcoinRackEntity> linkedRacks,
+		out int slot )
+	{
+		slot = 0;
+		if ( !rack.IsValid() )
+			return false;
+
 		foreach ( var candidate in linkedRacks )
 		{
 			if ( !candidate.IsValid() || candidate.AdvancedRack != rack.AdvancedRack )
@@ -76,12 +108,10 @@ public static class LpBitcoinIdent
 
 			slot++;
 			if ( candidate.GameObject.Id == rack.GameObject.Id )
-				return rack.AdvancedRack
-					? $"{AdvancedRackSlotPrefix}-{slot}"
-					: $"{StandardRackSlotPrefix}-{slot}";
+				return true;
 		}
 
-		return rack.AdvancedRack ? $"{AdvancedRackSlotPrefix}-?" : $"{StandardRackSlotPrefix}-?";
+		return false;
 	}
 
 	/// <summary>Parse operator rack slot (1..linkedRackCount) to internal 0-based index.</summary>

@@ -49,7 +49,7 @@
 			<div class="crt-body">
 				<div class="sidebar">
 					<div class="sidebar-title">COMMANDS</div>
-					<div class="sidebar-cmd-list lp-ui-scroll-region terminal-sidebar-scroll">
+					<div class="sidebar-cmd-list terminal-sidebar-scroll">
 					@foreach ( var cmd in _commandRefs )
 					{
 						<div class="cmd-ref @( IsCommandCopied( cmd ) ? "copied" : "" )"
@@ -71,7 +71,7 @@
 						</div>
 					}
 					<div class="log-shell">
-						<div class="log lp-ui-scroll-region terminal-log-scroll" onclick="@FocusLog">
+						<div class="log terminal-log-scroll" onclick="@FocusLog">
 							<div class="log-stack">
 								@foreach ( var line in _lines )
 								{
@@ -146,8 +146,7 @@
 
 	private int _scrollLogPendingFrames;
 	private bool _scrollLogForce;
-	private int _scrollBootstrapFramesLeft;
-	private int _logRevision;
+	private bool _logStickBottom = true;
 	private bool _urlCopied;
 	private string _copiedCommandFlash;
 	private RealTimeSince _copiedCommandFlashSince;
@@ -200,11 +199,9 @@
 		_uiScale = size;
 		_showScaleMenu = false;
 		LifePunchUiScrollPolicy.ResetOffsets( Panel );
-		QueueScrollBootstrap();
+		_logStickBottom = true;
 		QueueScrollLogToBottom( force: true );
 	}
-
-	private void QueueScrollBootstrap() => _scrollBootstrapFramesLeft = 4;
 
 	protected override void OnEnabled()
 	{
@@ -212,7 +209,7 @@
 		LpBitcoinHudBridge.SetMenuCursorMode( true );
 		LifePunchUiScrollPolicy.Apply( Panel );
 		ApplyCommandInputChrome();
-		QueueScrollBootstrap();
+		_logStickBottom = true;
 		QueueScrollLogToBottom( force: true );
 	}
 
@@ -220,7 +217,6 @@
 	{
 		_hub = hub;
 		_lines.Clear();
-		_logRevision = 0;
 		_showBootSplash = true;
 		_bootComplete = false;
 		_bootLineIndex = 0;
@@ -228,7 +224,7 @@
 		_bootStatus = "INITIALIZING RIG...";
 		_pendingFocusRack = focusRack;
 		_lastInputTextLength = 0;
-		QueueScrollBootstrap();
+		_logStickBottom = true;
 	}
 
 	protected override void OnDisabled()
@@ -247,7 +243,7 @@
 
 	private void FocusLog()
 	{
-		var log = ResolveLogScroll();
+		var log = FindScrollPanel( "log" );
 		if ( log.IsValid() )
 			log.Focus();
 	}
@@ -309,11 +305,11 @@
 		if ( raw.Equals( "clear", StringComparison.OrdinalIgnoreCase ) )
 		{
 			_lines.Clear();
-			_logRevision++;
+			_logStickBottom = true;
+			StateHasChanged();
 			_hub?.RequestPushTerminalCommandAlert( raw, "log cleared" );
 			InputBox.Text = string.Empty;
 			InputBox.Focus();
-			QueueScrollBootstrap();
 			QueueScrollLogToBottom( force: true );
 			return;
 		}
@@ -353,11 +349,16 @@
 
 	private void AppendLogLine( string kind, string text )
 	{
+		var log = FindScrollPanel( "log" );
+		if ( log.IsValid() )
+			_logStickBottom = IsScrollNearBottom( log );
+
 		_lines.Add( new LogLine( kind, text ) );
 		TrimLog();
-		_logRevision++;
-		QueueScrollBootstrap();
-		QueueScrollLogToBottom();
+		StateHasChanged();
+
+		if ( _logStickBottom )
+			QueueScrollLogToBottom();
 	}
 
 	private void TrimLog()
@@ -373,41 +374,47 @@
 			_scrollLogForce = true;
 	}
 
-	private LifePunchScrollRegionPanel ResolveLogScroll()
+	private Panel FindScrollPanel( string className )
 	{
-		return LifePunchScrollRegionBootstrap.FindFirst( Panel, "log" );
+		if ( Panel is null || !Panel.IsValid )
+			return null;
+
+		foreach ( var child in Panel.Descendants )
+		{
+			if ( child.IsValid && child.HasClass( className ) )
+				return child;
+		}
+
+		return null;
 	}
 
-	private void TickScrollBootstrap()
+	private static bool IsScrollNearBottom( Panel panel )
 	{
-		if ( _scrollBootstrapFramesLeft <= 0 )
+		if ( !panel.HasScrollY )
+			return true;
+
+		var viewHeight = panel.Box.Rect.Height;
+		if ( viewHeight <= 1f )
+			return true;
+
+		var maxY = Math.Max( 0f, panel.ScrollSize.y - viewHeight );
+		return panel.ScrollOffset.y >= maxY - 32f;
+	}
+
+	private static void ScrollPanelToBottom( Panel panel, bool force )
+	{
+		if ( !panel.IsValid() )
 			return;
 
-		var stickBottom = true;
-		var scrollY = 0f;
-		var logBefore = ResolveLogScroll();
-		if ( logBefore.IsValid() )
-		{
-			stickBottom = logBefore.PreferScrollToBottom;
-			scrollY = logBefore.ScrollOffset.y;
-		}
-
-		LifePunchScrollRegionBootstrap.Upgrade( Panel );
-		_scrollBootstrapFramesLeft--;
-
-		var log = ResolveLogScroll();
-		if ( !log.IsValid() )
+		if ( !force && !IsScrollNearBottom( panel ) )
 			return;
 
-		log.PreferScrollToBottom = stickBottom;
-		if ( stickBottom )
-		{
-			log.ScrollToBottom( force: true );
+		if ( !panel.HasScrollY )
 			return;
-		}
 
-		var maxY = log.GetMaxScrollY();
-		log.ScrollOffset = new Vector2( 0f, Math.Clamp( scrollY, 0f, maxY ) );
+		var viewHeight = panel.Box.Rect.Height;
+		var maxY = Math.Max( 0f, panel.ScrollSize.y - viewHeight );
+		panel.ScrollOffset = new Vector2( 0f, maxY );
 	}
 
 	private void TickScrollLog()
@@ -416,11 +423,11 @@
 			return;
 
 		_scrollLogPendingFrames--;
-		var log = ResolveLogScroll();
+		var log = FindScrollPanel( "log" );
 		if ( !log.IsValid() )
 			return;
 
-		log.ScrollToBottom( force: _scrollLogForce );
+		ScrollPanelToBottom( log, _scrollLogForce );
 
 		if ( _scrollLogPendingFrames <= 0 )
 			_scrollLogForce = false;
@@ -451,8 +458,6 @@
 			Close();
 			return;
 		}
-
-		TickScrollBootstrap();
 
 		if ( !_bootComplete )
 			TickBoot();
@@ -554,19 +559,17 @@
 
 	protected override int BuildHash()
 	{
-		// Never hash InputBox.Text every frame — rebuilds the whole CRT and scroll regions flicker.
-		// Hub power / rack count in header refresh when _logRevision or _selectedIndex changes.
+		// Never hash InputBox.Text or log line count — rebuilds the whole CRT and kills wheel scroll.
+		// Log lines refresh via StateHasChanged() only; header uses hub power / rack count here.
 		return HashCode.Combine(
 			HashCode.Combine(
 				_selectedIndex,
-				_logRevision,
 				_hub?.IsPowered,
 				LinkedRackCount(),
 				_uiScale,
 				_showScaleMenu,
 				_showBootSplash,
 				_bootStatus ),
-			_bootLineIndex,
 			_bootComplete,
 			_urlCopied,
 			_copiedCommandFlash );

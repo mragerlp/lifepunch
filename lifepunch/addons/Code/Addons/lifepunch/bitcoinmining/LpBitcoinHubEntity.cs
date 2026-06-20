@@ -47,6 +47,9 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 	public override string DisplayName => LpBitcoinIdent.HubDisplayName;
 #endif
 
+	/// <summary>Dev spawn (<see cref="LpBitcoinDevSpawn"/>) — feet on ground, frozen collider (no printer drop).</summary>
+	internal bool DevSpawnAsWorldMachine { get; set; }
+
 	private ModelRenderer _modelRenderer;
 	private bool _lastPoweredVisual;
 #if !LIFEPUNCH_LOCAL
@@ -67,19 +70,36 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 		this.TryBindSpawnOwnerHost();
 		if ( Networking.IsHost )
 		{
-			ApplyVirginSpawnDefaultsHost();
-			if ( HealthComponent.IsValid() )
+			if ( DevSpawnAsWorldMachine )
 			{
-				HealthComponent.MaxHealth = LpBitcoinIdent.HubMaxHealth;
-				if ( HealthComponent.Health <= 0f || HealthComponent.Health > HealthComponent.MaxHealth )
-					HealthComponent.Health = HealthComponent.MaxHealth;
-			}
+				ApplyVirginSpawnDefaultsHost();
+				if ( HealthComponent.IsValid() )
+				{
+					HealthComponent.MaxHealth = LpBitcoinIdent.HubMaxHealth;
+					if ( HealthComponent.Health <= 0f || HealthComponent.Health > HealthComponent.MaxHealth )
+						HealthComponent.Health = HealthComponent.MaxHealth;
+				}
 
-			// Printer drop — prefab collider first frame; no AlignMeshBottom teleport.
-			_spawnDropGraceTicks = 45;
-			_colliderSyncedFromModel = false;
-			LifePunchPropPhysics.BeginGrabbablePrinterDrop( GameObject, syncColliderFromModel: false );
-			Log.Info( $"HUB_SPAWN_PHYSICS pos={GameObject.WorldPosition} gravity=on (printer drop, no ground snap)" );
+				LifePunchPropPhysics.SetupWorldMachine( GameObject, alignGround: true );
+				_colliderSyncedFromModel = true;
+				Log.Info( $"HUB_SPAWN_PHYSICS pos={GameObject.WorldPosition} mode=dev-world-machine" );
+			}
+			else
+			{
+				ApplyVirginSpawnDefaultsHost();
+				if ( HealthComponent.IsValid() )
+				{
+					HealthComponent.MaxHealth = LpBitcoinIdent.HubMaxHealth;
+					if ( HealthComponent.Health <= 0f || HealthComponent.Health > HealthComponent.MaxHealth )
+						HealthComponent.Health = HealthComponent.MaxHealth;
+				}
+
+				// Printer drop — prefab collider first frame; no AlignMeshBottom teleport.
+				_spawnDropGraceTicks = 45;
+				_colliderSyncedFromModel = false;
+				LifePunchPropPhysics.BeginGrabbablePrinterDrop( GameObject, syncColliderFromModel: false );
+				Log.Info( $"HUB_SPAWN_PHYSICS pos={GameObject.WorldPosition} gravity=on (printer drop, no ground snap)" );
+			}
 		}
 #endif
 		_modelRenderer = Components.Get<ModelRenderer>( FindMode.EverythingInSelf )
@@ -278,6 +298,9 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 
 	public void RequestUnlockAccessPin( string pin ) => UnlockAccessPinHost( pin );
 
+	public void RequestChangeAccessPin( string currentPin, string newPin, string confirm )
+		=> ChangeAccessPinHost( currentPin, newPin, confirm );
+
 	public void RequestDepositRacksToHub() => DepositRacksToHubHost();
 
 	public void RequestDepositRack( int index ) => DepositRackHost( index );
@@ -373,6 +396,13 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 		if ( !CanManageHub( Rpc.CallerId ) )
 			return;
 
+		if ( Owner == 0 && !TryBindOwner( Rpc.CallerId ) )
+		{
+			PushAlertHost( LpBitcoinHubAlertKind.TerminalCommand,
+				"Claim this hub first (secure boot / PIN), then link your terminal." );
+			return;
+		}
+
 		var existing = GetLinkedTerminal();
 		if ( existing.IsValid() )
 		{
@@ -385,7 +415,13 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 		if ( !terminal.IsValid() )
 		{
 			PushAlertHost( LpBitcoinHubAlertKind.TerminalCommand,
-				"No unlinked terminal in range — place a bitcoin terminal nearby, then link again." );
+				"No unlinked terminal in range that belongs to you — place your terminal near this hub." );
+			return;
+		}
+
+		if ( !this.TryClaimLinkableEquipment( terminal, Rpc.CallerId, out var linkError ) )
+		{
+			PushAlertHost( LpBitcoinHubAlertKind.TerminalCommand, linkError );
 			return;
 		}
 
@@ -415,18 +451,24 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 		if ( !HasLinkedTerminal() )
 			return;
 
+		if ( Owner == 0 && !TryBindOwner( Rpc.CallerId ) )
+		{
+			PushAlertHost( LpBitcoinHubAlertKind.TerminalCommand,
+				"Claim this hub first (secure boot / PIN), then link your racks." );
+			return;
+		}
+
 		var rack = LpBitcoinRackEntity.FindNearestUnlinked( this, RackLinkRange );
 		if ( !rack.IsValid() )
 		{
 			PushAlertHost( LpBitcoinHubAlertKind.TerminalCommand,
-				"No unlinked GPU rack in range — place a rack near the hub, then type link at rig0." );
+				"No unlinked GPU rack in range that belongs to you — place your rack near this hub, then type link at rig0." );
 			return;
 		}
 
-		if ( Owner != 0 && rack.Owner != 0 && rack.Owner != Owner )
+		if ( !this.TryClaimLinkableEquipment( rack, Rpc.CallerId, out var linkError ) )
 		{
-			PushAlertHost( LpBitcoinHubAlertKind.TerminalCommand,
-				"That rack belongs to another operator — only your racks can link here." );
+			PushAlertHost( LpBitcoinHubAlertKind.TerminalCommand, linkError );
 			return;
 		}
 
@@ -450,6 +492,15 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 				"Terminal out of link range — move it closer to the hub." );
 			return;
 		}
+
+#if !LIFEPUNCH_LOCAL
+		if ( Owner != 0 && !LifePunchEntityOwnership.SharesOperator( Owner, terminal.Owner ) )
+		{
+			PushAlertHost( LpBitcoinHubAlertKind.TerminalCommand,
+				"That terminal belongs to another operator — only your terminal can link here." );
+			return;
+		}
+#endif
 
 		terminal.LinkToHub( this );
 		PushAlertHost( LpBitcoinHubAlertKind.TerminalCommand, "Bitcoin terminal linked — rig0 ops enabled." );
@@ -497,7 +548,7 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 	{
 		var racks = GetLinkedRacks();
 		var rack = FindRackByIndex( rackIndex );
-		var label = rack.IsValid() ? LpBitcoinIdent.FormatRackSlotId( rack, racks ) : "GPURack";
+		var label = rack.IsValid() ? LpBitcoinIdent.FormatRackSlotTerminalToken( rack, racks ) : "gpurack";
 		PushAlertHost(
 			LpBitcoinHubAlertKind.RackCapacity,
 			$"{label} at capacity ({amount:F6} / {capacity:F6} BTC) — deposit at terminal" );
@@ -614,6 +665,43 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 		}
 
 		SendPinResultToCaller( true, string.Empty );
+	}
+
+	[Rpc.Host]
+	private void ChangeAccessPinHost( string currentPin, string newPin, string confirm )
+	{
+		if ( !AccessPinIsSet )
+		{
+			SendPinChangeResultToCaller( false, "Hub PIN is not configured yet." );
+			return;
+		}
+
+		if ( !CallerIsOwner( Rpc.CallerId ) )
+		{
+			SendPinChangeResultToCaller( false, "Only the hub owner can change the PIN." );
+			return;
+		}
+
+		if ( !LpBitcoinHubPin.Matches( currentPin, AccessPinHash ) )
+		{
+			SendPinChangeResultToCaller( false, "Current PIN is incorrect." );
+			return;
+		}
+
+		if ( !LpBitcoinHubPin.IsValidFormat( newPin ) || newPin != confirm )
+		{
+			SendPinChangeResultToCaller( false, "New PIN must be 4 digits and match confirmation." );
+			return;
+		}
+
+		if ( currentPin == newPin )
+		{
+			SendPinChangeResultToCaller( false, "New PIN must differ from the current PIN." );
+			return;
+		}
+
+		AccessPinHash = LpBitcoinHubPin.Hash( newPin );
+		SendPinChangeResultToCaller( true, "Hub PIN updated." );
 	}
 
 	[Rpc.Host]
@@ -734,6 +822,14 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 			panel.OnPinGateResult( ok, message );
 	}
 
+	[Rpc.Owner]
+	private void SendPinChangeResultToCaller( bool ok, string message )
+	{
+		var panel = Game.ActiveScene?.GetAllComponents<LpHashdPanel>().FirstOrDefault();
+		if ( panel.IsValid() )
+			panel.OnPinChangeResult( ok, message );
+	}
+
 	[Rpc.Host]
 	private void UpgradeCpuHost( Guid rackId )
 	{
@@ -818,6 +914,41 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 		return this.TryBindOwnerFromCaller( callerId );
 #endif
 	}
+
+#if !LIFEPUNCH_LOCAL
+	private bool TryClaimLinkableEquipment( BaseEntity equipment, Guid callerId, out string error )
+	{
+		error = string.Empty;
+		if ( !equipment.IsValid() )
+		{
+			error = "Equipment missing — re-place and try again.";
+			return false;
+		}
+
+		if ( LifePunchEntityOwnership.SharesOperator( Owner, equipment.Owner ) )
+			return true;
+
+		if ( equipment.Owner != 0 )
+		{
+			error = "That equipment belongs to another operator — only your gear can link to this hub.";
+			return false;
+		}
+
+		if ( !LifePunchEntityOwnership.TryClaimEquipmentForHub( equipment, Owner, callerId ) )
+		{
+			error = "Could not claim equipment ownership — only gear you placed can link here.";
+			return false;
+		}
+
+		return true;
+	}
+#else
+	private bool TryClaimLinkableEquipment( Component equipment, Guid callerId, out string error )
+	{
+		error = string.Empty;
+		return equipment.IsValid();
+	}
+#endif
 
 	private void ApplyHubPowerVisual( bool powered )
 	{

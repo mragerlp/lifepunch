@@ -54,7 +54,7 @@ internal static class LpBitcoinTerminalCommands
 				}
 
 				selectedIndex = pick;
-				return new LpBitcoinCommandResult( true, $"selected {LpBitcoinIdent.FormatRackSlotId( racks[pick], racks )}" );
+				return new LpBitcoinCommandResult( true, $"selected {LpBitcoinIdent.FormatRackSlotTerminalToken( racks[pick], racks )}" );
 
 			case "status":
 				return StatusSelected( hub, selectedIndex );
@@ -105,10 +105,10 @@ internal static class LpBitcoinTerminalCommands
 					return new LpBitcoinCommandResult( false, "ERR link terminal at hub admin first" );
 
 				if ( !hub.HasNearbyUnlinkedRack() )
-					return new LpBitcoinCommandResult( false, "ERR no unlinked GPU rack in range — place a rack near the hub" );
+					return new LpBitcoinCommandResult( false, "ERR no unlinked GPU rack in range that belongs to you — place your rack near this hub" );
 
 				hub.RequestLinkNearbyRack();
-				return new LpBitcoinCommandResult( true, "linking nearest unlinked rack — type racks to confirm" );
+				return new LpBitcoinCommandResult( true, "linking nearest owned unlinked rack — type racks to confirm" );
 
 			case "about":
 				return new LpBitcoinCommandResult( true,
@@ -187,7 +187,7 @@ internal static class LpBitcoinTerminalCommands
 			state = "CAP FULL";
 
 		return new LpBitcoinCommandResult( true,
-			$"{LpBitcoinIdent.FormatRackSlotId( rack, racks )} | {state} | {rack.BitcoinAmount:F6}/{cap:F6} BTC ({fill}%)\n" +
+			$"{LpBitcoinIdent.FormatRackSlotTerminalToken( rack, racks )} | {state} | {rack.BitcoinAmount:F6}/{cap:F6} BTC ({fill}%)\n" +
 			$"rate {rack.MiningRatePerMinute:F6} BTC/min | tick {( rack.MiningProgress * 100f ):F0}%\n" +
 			$"hub wallet {hub.HubWalletBtc:F6} BTC | pending {hub.GetRackPendingBtc():F6} BTC" );
 	}
@@ -201,7 +201,7 @@ internal static class LpBitcoinTerminalCommands
 
 		var cap = LpBitcoinEconomy.RackBtcCapacity( rack.AdvancedRack );
 		return new LpBitcoinCommandResult( true,
-			$"{LpBitcoinIdent.FormatRackSlotId( rack, racks )}\n" +
+			$"{LpBitcoinIdent.FormatRackSlotTerminalToken( rack, racks )}\n" +
 			$"CPU {rack.ClockGhz:F2} GHz (Lv {rack.CpuUpgradeLevel}) | cores x{rack.CoreCount} (Lv {rack.CoreUpgradeLevel})\n" +
 			$"yield ×{( rack.AdvancedRack ? 2 : 1 )} | cap {cap:F6} BTC | ${rack.UsdValue} rack value" );
 	}
@@ -289,7 +289,7 @@ internal static class LpBitcoinTerminalCommands
 		if ( rack is null )
 			return new LpBitcoinCommandResult( false, "ERR no rack selected — type select <n>" );
 
-		var slotId = LpBitcoinIdent.FormatRackSlotId( rack, racks );
+		var slotId = LpBitcoinIdent.FormatRackSlotTerminalToken( rack, racks );
 		var cap = LpBitcoinEconomy.RackBtcCapacity( rack.AdvancedRack );
 		if ( rack.BitcoinAmount >= cap )
 			return new LpBitcoinCommandResult( false, $"ERR {slotId} at capacity — deposit before mining" );
@@ -308,7 +308,7 @@ internal static class LpBitcoinTerminalCommands
 		if ( rack is null )
 			return new LpBitcoinCommandResult( false, "ERR no rack selected — type select <n>" );
 
-		var slotId = LpBitcoinIdent.FormatRackSlotId( rack, racks );
+		var slotId = LpBitcoinIdent.FormatRackSlotTerminalToken( rack, racks );
 		if ( !rack.IsMining )
 			return new LpBitcoinCommandResult( true, $"{slotId} already idle" );
 
@@ -381,7 +381,7 @@ internal static class LpBitcoinTerminalCommands
 		var amount = rack.BitcoinAmount;
 		hub.RequestDepositRack( index );
 		var racks = hub.GetLinkedRacks();
-		var slotId = rack.IsValid() ? LpBitcoinIdent.FormatRackSlotId( rack, racks ) : $"rack #{LpBitcoinIdent.DisplayRackNumber( index )}";
+		var slotId = rack.IsValid() ? LpBitcoinIdent.FormatRackSlotTerminalToken( rack, racks ) : $"rack #{LpBitcoinIdent.DisplayRackNumber( index )}";
 		return new LpBitcoinCommandResult( true, $"deposited {amount:F6} BTC from {slotId} to hub wallet" );
 	}
 
@@ -405,7 +405,7 @@ internal static class LpBitcoinTerminalCommands
 		if ( rack.BitcoinAmount >= cap )
 			state = "FULL";
 
-		return $"{LpBitcoinIdent.FormatRackSlotId( rack, racks )} | {rack.BitcoinAmount:F6}/{cap:F6} BTC | {state}";
+		return $"{LpBitcoinIdent.FormatRackSlotTerminalToken( rack, racks )} | {rack.BitcoinAmount:F6}/{cap:F6} BTC | {state}";
 	}
 
 	private static string HelpText() =>

@@ -507,9 +507,92 @@ public static class LpBitcoinDevSpawn
 	[ConCmd( "lp_spawn_large_gpu_rack" )]
 	public static void SpawnLargeGpuRackLegacy() => SpawnAdvancedRack();
 
-	/// <summary>Legacy alias — hub + terminal + standard + advanced rack lineup.</summary>
+	/// <summary>Legacy — hub + terminal + standard GPU rack + advanced GPU rack (flatgrass hero kit).</summary>
 	[ConCmd( "lp_spawn_bitcoinmining_full_kit" )]
-	public static void SpawnBitcoinMiningFullKitLegacy() => SpawnLineup();
+	public static void SpawnBitcoinMiningFullKitLegacy()
+	{
+		if ( !LifePunchMarketSpawn.TryGetIdentitySpawnTransform( out var transform ) )
+		{
+			Log.Warning( "lp_spawn_bitcoinmining_full_kit: no local viewer — play from game.scene first." );
+			return;
+		}
+
+		var origin = transform.Position;
+		var rot = transform.Rotation;
+		var groundZ = origin.z;
+
+		var hub = SpawnHubPrefab( new Transform( SnapToGround( origin, groundZ ), rot ) );
+		var standard = SpawnRackPrefab( RackSpawnTransform( transform, sideOffset: 120f ), advanced: false );
+		var advanced = SpawnRackPrefab( RackSpawnTransform( transform, sideOffset: -120f ), advanced: true );
+		var terminal = SpawnTerminalPrefab(
+			new Transform( SnapToGround( origin + rot.Forward * 100f, groundZ ), rot ) );
+
+		if ( hub.IsValid() && terminal.IsValid() )
+			hub.LinkTerminalHost( terminal );
+
+		Log.Info(
+			$"lp_spawn_bitcoinmining_full_kit: hub={( hub.IsValid() ? "ok" : "FAIL" )} gpu-rack={( standard.IsValid() ? "ok" : "FAIL" )} advanced={( advanced.IsValid() ? "ok" : "FAIL" )} terminal={( terminal.IsValid() ? "ok" : "FAIL" )} linked={( hub.IsValid() && hub.HasLinkedTerminal() ).ToString().ToLowerInvariant()}." );
+
+		LogBitcoinSpawnAudit();
+	}
+
+	[ConCmd( "lp_gpu_rack_count" )]
+	public static void LogGpuRackCount() => LogBitcoinSpawnAudit();
+
+	[ConCmd( "lp_bitcoin_spawn_audit" )]
+	public static void LogBitcoinSpawnAudit()
+	{
+		var scene = Game.ActiveScene;
+		if ( scene is null )
+		{
+			Log.Warning( "lp_gpu_rack_count: no active scene." );
+			return;
+		}
+
+		var racks = scene.GetAllComponents<LpBitcoinRackEntity>().Where( r => r.IsValid() ).ToList();
+		var hubs = scene.GetAllComponents<LpBitcoinHubEntity>().Where( h => h.IsValid() ).ToList();
+		var terminals = scene.GetAllComponents<LpBitcoinTerminalEntity>().Where( t => t.IsValid() ).ToList();
+		var standard = racks.Count( r => !r.AdvancedRack );
+		var advanced = racks.Count( r => r.AdvancedRack );
+		Log.Info(
+			$"lp_bitcoin_spawn_audit: hubs={hubs.Count} racks={racks.Count} (standard={standard} advanced={advanced}) terminals={terminals.Count}" );
+
+		foreach ( var hub in hubs )
+			LogSpawnEntityRow( "bitcoin-hub", hub.GameObject, LpBitcoinIdent.HubModelPath );
+
+		foreach ( var terminal in terminals )
+		{
+			var linked = terminal.IsLinkedToHub();
+			LogSpawnEntityRow( "bitcoin-terminal", terminal.GameObject, LpBitcoinIdent.TerminalModelPath );
+			Log.Info( $"    terminal linkedToHub={linked} lcdManual={terminal.ManualLcdPlacement}" );
+		}
+
+		foreach ( var rack in racks )
+		{
+			var tag = rack.AdvancedRack ? "advanced-gpu-rack" : "gpu-rack";
+			var expected = rack.AdvancedRack
+				? "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/gpu-rack/gpu-rack-stacked.vmdl"
+				: "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/gpu-rack/gpu-rack.vmdl";
+			LogSpawnEntityRow( tag, rack.GameObject, expected );
+		}
+	}
+
+	private static void LogSpawnEntityRow( string tag, GameObject go, string expectedModelPath )
+	{
+		if ( !go.IsValid() )
+		{
+			Log.Warning( $"  {tag}: invalid GameObject" );
+			return;
+		}
+
+		var renderer = go.Components.Get<ModelRenderer>( FindMode.EverythingInSelf );
+		var model = renderer.IsValid() ? renderer.Model : null;
+		var modelPath = model.IsValid() ? model.ResourcePath : "(missing — recompile vmdl in ModelDoc)";
+		var bounds = model.IsValid() ? model.Bounds : default;
+		Log.Info( $"  {tag} pos={go.WorldPosition} model={modelPath} boundsSize={bounds.Size}" );
+		if ( !model.IsValid() )
+			Log.Warning( $"  {tag}: open '{expectedModelPath}' in ModelDoc and compile." );
+	}
 
 	/// <summary>Hub admin UI only — no world spawn. Closes terminal if open.</summary>
 	[ConCmd( "lp_bitcoin_preview_hub" )]
@@ -527,6 +610,25 @@ public static class LpBitcoinDevSpawn
 		var panel = LpHashdUiHost.Open( hub );
 		panel?.DevBypassPinGate();
 		Log.Info( "lp_bitcoin_preview_hub: hub admin open — amber dashboard (PIN bypassed for dev)." );
+	}
+
+	/// <summary>Hub admin on the upgrades sub-view — sample racks + buy buttons (PIN bypassed).</summary>
+	[ConCmd( "lp_bitcoin_preview_hub_upgrades" )]
+	public static void PreviewHubUpgradesUi()
+	{
+		WarnIfWrongPlayScene();
+		LpBitcoinUi.CloseAll();
+		var hub = LpBitcoinUi.GetOrCreatePreviewHub( withSampleRacks: true );
+		if ( !hub.IsValid() )
+		{
+			Log.Warning( "lp_bitcoin_preview_hub_upgrades: no active scene." );
+			return;
+		}
+
+		var panel = LpHashdUiHost.Open( hub );
+		panel?.DevBypassPinGate();
+		panel?.DevOpenUpgradesForFirstLinkedRack();
+		Log.Info( "lp_bitcoin_preview_hub_upgrades: rack upgrades open — check buy buttons + intro line." );
 	}
 
 	/// <summary>Hub admin with PIN gate presets — setup (default), unlock (PIN 4242), or blocked (wrong owner).</summary>
@@ -1036,7 +1138,9 @@ public static class LpBitcoinDevSpawn
 	private static Transform RackSpawnTransform( Transform marketSpawn, float sideOffset, float forwardOffset = 0f )
 	{
 		var rot = marketSpawn.Rotation;
-		var pos = marketSpawn.Position + rot.Right * sideOffset + rot.Forward * forwardOffset;
+		var groundZ = marketSpawn.Position.z;
+		var horizontal = marketSpawn.Position + rot.Right * sideOffset + rot.Forward * forwardOffset;
+		var pos = SnapToGround( horizontal, groundZ );
 		return new Transform( pos, rot );
 	}
 
@@ -1056,9 +1160,17 @@ public static class LpBitcoinDevSpawn
 			rack = go.AddComponent<LpBitcoinRackEntity>();
 
 		if ( rack.IsValid() )
+		{
 			rack.AdvancedRack = advanced;
+			rack.DevSpawnAsWorldMachine = true;
+		}
 
 		NetworkSpawnIfNeeded( go );
+
+		var renderer = go.Components.Get<ModelRenderer>( FindMode.EverythingInSelf );
+		if ( !renderer.IsValid() || !renderer.Model.IsValid() )
+			Log.Warning( $"lp_bitcoin: {label} spawned but model missing — open '{path}' + vmdl in ModelDoc and recompile." );
+
 		Log.Info( $"lp_bitcoin: {label} placed at {go.WorldPosition} (unlinked — register at rig0> link)." );
 		return rack;
 	}
@@ -1080,19 +1192,37 @@ public static class LpBitcoinDevSpawn
 			return null;
 		}
 
+		hub.DevSpawnAsWorldMachine = true;
 		hub.BindOwnerFromLocalViewer();
 		NetworkSpawnIfNeeded( go );
 		// Physics: LpBitcoinHubEntity.OnStart — printer gravity, no ground snap.
 		return hub;
 	}
 
-	private static void SpawnTerminalPrefab( Transform transform )
+	private static LpBitcoinTerminalEntity SpawnTerminalPrefab( Transform transform )
 	{
 		var go = ClonePrefabAt( LpBitcoinIdent.TerminalPrefabPath, transform );
 		if ( !go.IsValid() )
-			return;
+		{
+			Log.Error( $"lp_bitcoin: failed to spawn terminal — recompile '{LpBitcoinIdent.TerminalPrefabPath}'." );
+			return null;
+		}
+
+		var terminal = go.Components.Get<LpBitcoinTerminalEntity>( FindMode.EverythingInSelfAndDescendants );
+		if ( !terminal.IsValid() )
+			terminal = go.AddComponent<LpBitcoinTerminalEntity>();
+
+		if ( terminal.IsValid() )
+			terminal.DevSpawnAsWorldMachine = true;
 
 		NetworkSpawnIfNeeded( go );
+
+		var renderer = go.Components.Get<ModelRenderer>( FindMode.EverythingInSelf );
+		if ( !renderer.IsValid() || !renderer.Model.IsValid() )
+			Log.Warning( $"lp_bitcoin: terminal spawned but model missing — open '{LpBitcoinIdent.TerminalModelPath}' in ModelDoc and recompile." );
+
+		Log.Info( $"lp_bitcoin: terminal placed at {go.WorldPosition}" );
+		return terminal;
 	}
 
 	private static void NetworkSpawnIfNeeded( GameObject go )

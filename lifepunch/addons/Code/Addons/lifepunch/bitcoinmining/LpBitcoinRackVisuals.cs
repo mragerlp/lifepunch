@@ -15,11 +15,15 @@ using Dxura.RP.Shared;
 namespace LifePunch.DXRP.Addons.Bitcoin;
 
 /// <summary>
-/// Client-side GPU rack visuals — Evo Bitminer pattern: child fan vmdls on the prefab, not vmdl bone animation.
-/// Fans stay hidden until rig0 starts mining; spin ramps up/down with <see cref="LpBitcoinRackEntity.IsMining"/>.
+/// Client-side GPU rack visuals — Phase 0: static unified vmdl (fans baked in mesh). LEDs only.
+/// Phase 2+: separate fan child GOs or vmdl <c>power_on</c> when ModelDoc-signed-off.
 /// </summary>
 public sealed class LpBitcoinRackVisuals : Component
 {
+	/// <summary>
+	/// Phase 0 — static body only (gpu-rack-static.obj / stacked static FBX). No child fan GOs in prefab.
+	/// </summary>
+	private const bool RackFanVisualsParked = true;
 	private const float FanMaxSpeed = 1200f;
 	private const float FanRampSeconds = 4f;
 	private const float VisualTickSeconds = 0.05f;
@@ -34,10 +38,8 @@ public sealed class LpBitcoinRackVisuals : Component
 	private ModelRenderer _modelRenderer;
 	private float _fanSpeed;
 	private bool _occluded;
-#if !LIFEPUNCH_LOCAL
-	private SoundEvent _miningHumEvent;
-	private SoundHandle _miningHumHandle;
-#endif
+	private bool _vmdlAnimActive;
+	private bool _lastAppliedMiningVisual;
 
 	protected override void OnStart()
 	{
@@ -47,9 +49,8 @@ public sealed class LpBitcoinRackVisuals : Component
 		CacheFanChildren();
 		_modelRenderer = ResolveBodyRenderer();
 #if !LIFEPUNCH_LOCAL
-		var soundPoint = Components.Get<ContinuousSoundPoint>( FindMode.EverythingInSelf );
-		if ( soundPoint.IsValid() && soundPoint.SoundEvent.IsValid() )
-			_miningHumEvent = soundPoint.SoundEvent;
+		if ( !RackFanVisualsParked )
+			ApplyMiningPowerAnim( force: true );
 #endif
 	}
 
@@ -61,13 +62,19 @@ public sealed class LpBitcoinRackVisuals : Component
 
 	private void CacheFanChildren()
 	{
-		if ( !GameObject.IsValid() )
+		if ( RackFanVisualsParked || !GameObject.IsValid() )
+		{
+			_fanChildren = Array.Empty<GameObject>();
+			_fanBaseLocalRotation = Array.Empty<Rotation>();
+			_fanAngles = Array.Empty<float>();
 			return;
+		}
 
 		_fanChildren = GameObject.Children
 			.Where( child => child.IsValid()
 			                   && ( child.Name.StartsWith( "fan_spin_", StringComparison.OrdinalIgnoreCase )
-			                        || child.Name.StartsWith( "fan_placeholder", StringComparison.OrdinalIgnoreCase ) ) )
+			                        || child.Name.StartsWith( "fan_placeholder", StringComparison.OrdinalIgnoreCase ) )
+			                   && HasFanRenderer( child ) )
 			.ToArray();
 
 		_fanBaseLocalRotation = new Rotation[_fanChildren.Length];
@@ -84,6 +91,12 @@ public sealed class LpBitcoinRackVisuals : Component
 		}
 	}
 
+	private static bool HasFanRenderer( GameObject fan )
+	{
+		var renderer = fan.Components.Get<ModelRenderer>( FindMode.EverythingInSelf );
+		return renderer.IsValid() && renderer.Model.IsValid();
+	}
+
 #if !LIFEPUNCH_LOCAL
 	public void OnOcclusionChanged( bool occlude ) => _occluded = occlude;
 
@@ -93,8 +106,13 @@ public sealed class LpBitcoinRackVisuals : Component
 		if ( GameManager.IsHeadless || !Rack.IsValid() )
 			return;
 
-		UpdateFanRamp();
-		UpdateFanChildEnabled();
+		if ( !RackFanVisualsParked )
+		{
+			ApplyMiningPowerAnim( force: true );
+			UpdateFanRamp();
+			UpdateFanChildEnabled();
+		}
+
 		UpdateMiningLeds();
 	}
 #endif
@@ -110,11 +128,15 @@ public sealed class LpBitcoinRackVisuals : Component
 		if ( Cooldown.Current.CheckAndStartCooldown( $"{GameObject.Id}:rack-vis", VisualTickSeconds ) )
 			return;
 
-		UpdateFanRamp();
-		UpdateFanChildEnabled();
-		UpdateMiningHum();
+		if ( !RackFanVisualsParked )
+		{
+			ApplyMiningPowerAnim();
+			UpdateFanRamp();
+			UpdateFanChildEnabled();
+			SpinFans();
+		}
+
 		UpdateMiningLeds();
-		SpinFans();
 #endif
 	}
 
@@ -124,8 +146,48 @@ public sealed class LpBitcoinRackVisuals : Component
 		return Rack.IsMining && hub is { IsPowered: true };
 	}
 
+	/// <summary>
+	/// v1 dual path: play vmdl sequence when compiled; child-GO spin remains fallback (standard rack).
+	/// </summary>
+	private void ApplyMiningPowerAnim( bool force = false )
+	{
+#if LIFEPUNCH_LOCAL
+		return;
+#else
+		if ( RackFanVisualsParked )
+		{
+			_vmdlAnimActive = false;
+			return;
+		}
+		var miningActive = IsMiningVisualActive();
+		if ( !force && miningActive == _lastAppliedMiningVisual )
+			return;
+
+		_lastAppliedMiningVisual = miningActive;
+
+		if ( !_modelRenderer.IsValid() )
+			_modelRenderer = ResolveBodyRenderer();
+
+		if ( !_modelRenderer.IsValid() )
+		{
+			_vmdlAnimActive = false;
+			return;
+		}
+
+		_vmdlAnimActive = LpBitcoinPowerAnim.ApplyRackPower( _modelRenderer, miningActive, out _ );
+
+		if ( _vmdlAnimActive && miningActive )
+			_fanSpeed = FanMaxSpeed;
+		else if ( _vmdlAnimActive )
+			_fanSpeed = 0f;
+#endif
+	}
+
 	private void UpdateFanRamp()
 	{
+		if ( _vmdlAnimActive )
+			return;
+
 		var target = IsMiningVisualActive() ? FanMaxSpeed : 0f;
 		var step = ( FanMaxSpeed / FanRampSeconds ) * Time.Delta;
 
@@ -137,6 +199,21 @@ public sealed class LpBitcoinRackVisuals : Component
 
 	private void UpdateFanChildEnabled()
 	{
+		if ( _vmdlAnimActive )
+		{
+			for ( var i = 0; i < _fanChildren.Length; i++ )
+			{
+				var fan = _fanChildren[i];
+				if ( !fan.IsValid() )
+					continue;
+
+				if ( fan.Enabled )
+					fan.Enabled = false;
+			}
+
+			return;
+		}
+
 		var miningActive = IsMiningVisualActive();
 		var fansVisible = miningActive || _fanSpeed > FanHideSpeedThreshold;
 
@@ -159,7 +236,7 @@ public sealed class LpBitcoinRackVisuals : Component
 
 	private void SpinFans()
 	{
-		if ( _fanSpeed <= 0f || _fanChildren.Length == 0 )
+		if ( _vmdlAnimActive || _fanSpeed <= 0f || _fanChildren.Length == 0 )
 			return;
 
 		var delta = _fanSpeed * Time.Delta;
@@ -175,25 +252,6 @@ public sealed class LpBitcoinRackVisuals : Component
 		}
 	}
 
-	private void UpdateMiningHum()
-	{
-		var shouldHum = IsMiningVisualActive() && !_occluded;
-
-		if ( shouldHum )
-		{
-			if ( !_miningHumHandle.IsValid() && _miningHumEvent.IsValid() )
-				_miningHumHandle = Sound.Play( _miningHumEvent, WorldPosition );
-
-			if ( _miningHumHandle.IsValid() )
-				_miningHumHandle.Position = WorldPosition;
-		}
-		else if ( _miningHumHandle.IsValid() )
-		{
-			_miningHumHandle.Stop( 0.15f );
-			_miningHumHandle = default;
-		}
-	}
-
 	private void UpdateMiningLeds()
 	{
 		if ( !_modelRenderer.IsValid() )
@@ -205,14 +263,5 @@ public sealed class LpBitcoinRackVisuals : Component
 		var mining = IsMiningVisualActive();
 		var ledIntensity = mining && FanMaxSpeed > 0f ? Math.Clamp( _fanSpeed / FanMaxSpeed, 0f, 1f ) : 0f;
 		LpBitcoinPowerLeds.ApplyRackGpuLeds( _modelRenderer, mining, ledIntensity );
-	}
-
-	protected override void OnDestroy()
-	{
-#if !LIFEPUNCH_LOCAL
-		if ( _miningHumHandle.IsValid() )
-			_miningHumHandle.Stop( 0.1f );
-#endif
-		base.OnDestroy();
 	}
 }

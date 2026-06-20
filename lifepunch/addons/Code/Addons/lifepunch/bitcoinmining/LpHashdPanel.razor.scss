@@ -18,6 +18,19 @@ $hashd-title: #f8f9fc;
 $hashd-green: #5fd38d;
 $shell-radius: 22px;
 
+// Transfers tab = canonical surface/inset rhythm for all hub admin panes.
+$hashd-page-stack: 12px;
+$hashd-surface-pad: 14px;
+$hashd-surface-gap: 10px;
+$hashd-surface-radius: 10px;
+$hashd-surface-border: rgba(255, 255, 255, 0.08);
+$hashd-surface-bg: rgba(0, 0, 0, 0.28);
+$hashd-inset-pad: 12px;
+$hashd-inset-pad-tight: 10px 12px;
+$hashd-inset-radius: 8px;
+$hashd-inset-border: rgba(255, 255, 255, 0.06);
+$hashd-inset-bg: rgba(0, 0, 0, 0.35);
+
 @import "LpUiChrome.scss";
 @import "LpUiScale.scss";
 @import "../LifePunchUiFooter.razor.scss";
@@ -127,6 +140,79 @@ $shell-radius: 22px;
 		flex-direction: row;
 		overflow: hidden;
 		background-color: $hashd-bg;
+	}
+
+	// Shared card rhythm — match pane.transfers (transfer-column / address-card).
+	.lp-hashd-surface {
+		display: flex;
+		flex-direction: column;
+		gap: $hashd-surface-gap;
+		padding: $hashd-surface-pad;
+		border-radius: $hashd-surface-radius;
+		background-color: $hashd-surface-bg;
+		border: 1px solid $hashd-surface-border;
+	}
+
+	.lp-hashd-inset {
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+		padding: $hashd-inset-pad;
+		border-radius: $hashd-inset-radius;
+		background-color: $hashd-inset-bg;
+		border: 1px solid $hashd-inset-border;
+	}
+
+	.lp-hashd-section-head {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: 8px;
+		color: $hashd-title;
+		font-size: 13px;
+		font-weight: 900;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		line-height: 1.35;
+
+		> .material-icons {
+			color: $hashd-amber;
+			font-size: 18px;
+		}
+	}
+
+	.lp-hashd-copy {
+		margin: 0;
+		color: $hashd-muted;
+		font-size: 12px;
+		line-height: 1.5;
+		white-space: normal;
+	}
+
+	.lp-hashd-action-row {
+		margin-top: auto;
+		width: 100%;
+
+		.lp-ui-btn-primary,
+		.lp-ui-btn-ghost {
+			flex: 1 1 100%;
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: center;
+			gap: 6px;
+			min-height: 38px;
+			padding: 10px 14px;
+			font-size: 11px;
+			font-weight: 900;
+			line-height: 1.2;
+			text-align: center;
+			white-space: nowrap;
+
+			> .material-icons {
+				font-size: 16px;
+			}
+		}
 	}
 
 	.pin-gate {
@@ -380,7 +466,7 @@ $shell-radius: 22px;
 			color: #fff;
 			background-color: $hashd-amber;
 			border-color: rgba(255, 255, 255, 0.08);
-			box-shadow: 0 10px 22px rgba(232, 125, 62, 0.35);
+			box-shadow: 0 0 16px rgba(232, 125, 62, 0.45);
 		}
 	}
 
@@ -743,19 +829,24 @@ $shell-radius: 22px;
 		flex: 1 1 auto;
 		min-height: 0;
 		align-content: stretch;
+		align-items: stretch;
 	}
 
 	.overview .lp-ui-split > .lp-ui-panel {
 		flex: 1 1 240px;
 		min-height: 0;
+		min-width: 0;
 		overflow: hidden;
 		display: flex;
 		flex-direction: column;
-		padding: 14px 16px;
+		padding: 16px 18px;
+		border-radius: $hashd-surface-radius;
+		border: 1px solid $hashd-surface-border;
+		background-color: $hashd-surface-bg;
 
 		> .lp-ui-panel-title {
 			flex-shrink: 0;
-			margin-bottom: 10px;
+			margin-bottom: 12px;
 		}
 
 		> .lp-ui-scroll,
@@ -763,30 +854,57 @@ $shell-radius: 22px;
 			flex: 1 1 0;
 			min-height: 0;
 		}
+	}
 
-		> .overview-status-body {
-			flex: 0 0 auto;
+	.overview .lp-ui-split > .lp-ui-panel.overview-status-panel {
+		> .overview-status-stack {
+			flex: 1 1 auto;
 			min-height: 0;
+			display: flex;
+			flex-direction: column;
 		}
+	}
 
-		> .overview-status-actions {
-			flex-shrink: 0;
-		}
+	.overview-status-stack {
+		flex: 1 1 auto;
+		min-height: 0;
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
 	}
 
 	.overview-status-body {
 		flex: 0 0 auto;
+		min-height: 0;
+		overflow: visible;
 		display: flex;
 		flex-direction: column;
-		gap: 6px;
-		overflow: visible;
+		gap: 10px;
+		padding-bottom: 0;
+	}
+
+	.overview-status-footer {
+		flex: 0 0 auto;
+		flex-shrink: 0;
+		padding-top: 14px;
+		border-top: 1px solid rgba(255, 255, 255, 0.1);
+	}
+
+	.overview-status-breathe {
+		flex-shrink: 0;
+		width: 100%;
+		min-height: 22px;
+		height: 22px;
+		font-size: 14px;
+		line-height: 22px;
+		opacity: 0;
 	}
 
 	.overview-status-info {
 		flex-shrink: 0;
 		margin-bottom: 0;
 		padding: 0;
-		gap: 2px;
+		gap: 8px;
 		background-color: transparent;
 		border: 0;
 		border-radius: 0;
@@ -799,18 +917,18 @@ $shell-radius: 22px;
 		align-items: center;
 		width: 100%;
 		margin-bottom: 0;
-		gap: 8px;
-		min-height: 0;
+		gap: 12px;
+		min-height: 28px;
 	}
 
 	.overview-status-info .lp-ui-info-label {
 		flex: 1 1 auto;
 		width: auto;
-		font-size: 11px;
+		font-size: 13px;
 		font-weight: 700;
 		text-transform: uppercase;
-		letter-spacing: 0.03em;
-		line-height: 1.2;
+		letter-spacing: 0.04em;
+		line-height: 1.3;
 	}
 
 	.overview-status-info .lp-ui-info-value {
@@ -818,50 +936,85 @@ $shell-radius: 22px;
 		width: auto;
 		justify-content: flex-end;
 		text-align: right;
-		font-size: 12px;
-		line-height: 1.2;
+		font-size: 15px;
+		font-weight: 600;
+		line-height: 1.3;
 	}
 
 	.overview-status-perks {
 		flex-shrink: 0;
 		display: flex;
 		flex-direction: column;
-		gap: 3px;
-		margin: 4px 0 0;
-		padding: 0;
+		gap: 4px;
+		margin: 2px 0 0;
+		padding-bottom: 12px;
 		background-color: transparent;
 		border: 0;
 		border-radius: 0;
 	}
 
 	.overview-status-perk {
+		flex-shrink: 0;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
 		gap: 6px;
-		color: $hashd-text;
-		font-size: 11px;
-		line-height: 1.25;
+		color: rgba(255, 255, 255, 0.72);
+		font-size: 10px;
+		font-weight: 600;
+		line-height: 1.35;
+		min-height: 0;
 		white-space: normal;
+		letter-spacing: 0.01em;
 
 		&::before {
 			content: "•";
 			color: $hashd-amber;
 			font-weight: 700;
+			font-size: 11px;
 			flex-shrink: 0;
 		}
 	}
 
 	.overview-status-actions {
 		flex-shrink: 0;
-		margin-top: 8px;
-		gap: 6px;
-		width: 100%;
+		flex-direction: row;
+		flex-wrap: wrap;
+		margin-top: 0;
+		gap: 8px;
 
-		.lp-ui-btn-primary,
+		.lp-ui-btn-primary {
+			flex: 1 1 140px;
+			min-width: 96px;
+			min-height: 38px;
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: center;
+			padding: 10px 14px;
+			font-size: 11px;
+			font-weight: 900;
+			letter-spacing: 0.02em;
+			line-height: 1.25;
+			white-space: nowrap;
+			text-align: center;
+		}
+
 		.lp-ui-btn-ghost {
-			flex: 1 1 0;
-			min-width: 0;
+			flex: 1 1 120px;
+			min-width: 88px;
+			min-height: 38px;
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: center;
+			padding: 10px 14px;
+			font-size: 11px;
+			font-weight: 700;
+			letter-spacing: 0.02em;
+			line-height: 1.25;
+			white-space: nowrap;
+			text-align: center;
 		}
 	}
 
@@ -898,12 +1051,12 @@ $shell-radius: 22px;
 		display: flex;
 		flex-direction: column;
 		flex-shrink: 0;
-		gap: 10px;
+		gap: $hashd-surface-gap;
 		width: 100%;
-		padding: 14px 16px;
-		border-radius: 12px;
-		border: 1px solid $hashd-border;
-		background-color: rgba(255, 255, 255, 0.03);
+		padding: $hashd-surface-pad;
+		border-radius: $hashd-surface-radius;
+		border: 1px solid $hashd-surface-border;
+		background-color: $hashd-surface-bg;
 	}
 
 	.rack-card-head {
@@ -916,12 +1069,59 @@ $shell-radius: 22px;
 		gap: 8px 12px;
 	}
 
+	.rack-card-head-main {
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+		flex: 1 1 160px;
+		min-width: 0;
+	}
+
 	.rack-card-title {
 		color: $hashd-title;
 		font-size: 15px;
 		font-weight: 700;
 		line-height: 1.35;
 		white-space: normal;
+	}
+
+	.rack-slot-id-copy {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 4px 6px;
+		align-self: flex-start;
+		padding: 4px 8px;
+		border-radius: 6px;
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		background-color: rgba(0, 0, 0, 0.35);
+		color: $hashd-muted;
+		font-family: "Roboto Mono", monospace;
+		font-size: 10px;
+		font-weight: 600;
+		line-height: 1.3;
+		cursor: pointer;
+
+		> .material-icons {
+			font-size: 12px;
+			color: $hashd-amber;
+		}
+	}
+
+	.rack-slot-id-token {
+		color: $hashd-title;
+		font-weight: 700;
+		letter-spacing: 0.02em;
+	}
+
+	.rack-slot-id-hint {
+		color: $hashd-amber;
+		font-family: Montserrat, Arial, sans-serif;
+		font-size: 9px;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
 	}
 
 	.rack-card-badges {
@@ -982,11 +1182,21 @@ $shell-radius: 22px;
 		margin-top: 2px;
 
 		.rack-upgrade-btn {
-			flex: 1 1 100%;
+			flex: 0 0 auto;
 			width: 100%;
-			min-height: 38px;
+			min-height: 0;
+			height: auto;
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: center;
 			padding: 10px 14px;
 			font-size: 11px;
+			font-weight: 900;
+			line-height: 1.2;
+			letter-spacing: 0.03em;
+			text-align: center;
+			white-space: nowrap;
 		}
 	}
 
@@ -1030,7 +1240,6 @@ $shell-radius: 22px;
 		width: 100%;
 		max-width: 100%;
 		white-space: normal;
-		overflow-wrap: break-word;
 	}
 
 	.upgrade-tracks {
@@ -1045,12 +1254,12 @@ $shell-radius: 22px;
 	.upgrade-track {
 		display: flex;
 		flex-direction: column;
-		gap: 8px;
+		gap: $hashd-surface-gap;
 		width: 100%;
-		padding: 12px 14px;
-		border-radius: 10px;
-		border: 1px solid $hashd-border;
-		background-color: rgba(255, 255, 255, 0.03);
+		padding: $hashd-surface-pad;
+		border-radius: $hashd-surface-radius;
+		border: 1px solid $hashd-surface-border;
+		background-color: $hashd-surface-bg;
 	}
 
 	.upgrade-track-head {
@@ -1059,7 +1268,7 @@ $shell-radius: 22px;
 		align-items: center;
 		gap: 8px;
 		color: $hashd-title;
-		font-size: 12px;
+		font-size: 13px;
 		font-weight: 900;
 		text-transform: uppercase;
 		letter-spacing: 0.04em;
@@ -1076,12 +1285,12 @@ $shell-radius: 22px;
 		flex-wrap: nowrap;
 		align-items: center;
 		justify-content: space-between;
-		gap: 12px;
+		gap: 14px;
 		width: 100%;
-		padding: 10px 12px;
-		border-radius: 8px;
-		border: 1px solid rgba(255, 255, 255, 0.06);
-		background-color: rgba(0, 0, 0, 0.22);
+		padding: $hashd-inset-pad-tight;
+		border-radius: $hashd-inset-radius;
+		border: 1px solid $hashd-inset-border;
+		background-color: $hashd-inset-bg;
 
 		&.maxed {
 			border-color: rgba(95, 211, 141, 0.35);
@@ -1139,13 +1348,19 @@ $shell-radius: 22px;
 
 	.upgrade-tier-buy {
 		flex: 0 0 auto;
-		min-width: 132px;
-		min-height: 36px;
-		padding: 8px 14px;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		min-width: 156px;
+		min-height: 38px;
+		padding: 10px 20px;
 		font-size: 11px;
-		line-height: 1.25;
-		white-space: nowrap;
+		font-weight: 900;
+		line-height: 1.2;
+		letter-spacing: 0.03em;
 		text-align: center;
+		white-space: nowrap;
 	}
 
 	.pane.wallet,
@@ -1158,15 +1373,26 @@ $shell-radius: 22px;
 
 	.pane.wallet .lp-ui-intro,
 	.pane.transfers .lp-ui-intro,
-	.pane.racks .lp-ui-intro {
-		margin-bottom: 12px;
+	.pane.racks .lp-ui-intro,
+	.pane.upgrades .lp-ui-intro,
+	.pane.settings-pane .lp-ui-intro {
+		margin-bottom: $hashd-page-stack;
+	}
+
+	.pane.wallet .lp-ui-info {
+		margin-bottom: $hashd-page-stack;
+		padding: $hashd-inset-pad;
+		border-radius: $hashd-inset-radius;
+		background-color: $hashd-inset-bg;
+		border: 1px solid $hashd-inset-border;
+		gap: 8px;
 	}
 
 	.transfer-columns {
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;
-		gap: 12px;
+		gap: $hashd-page-stack;
 		align-items: stretch;
 	}
 
@@ -1175,11 +1401,11 @@ $shell-radius: 22px;
 		min-width: 0;
 		display: flex;
 		flex-direction: column;
-		gap: 10px;
-		padding: 14px;
-		border-radius: 10px;
-		background-color: rgba(0, 0, 0, 0.28);
-		border: 1px solid rgba(255, 255, 255, 0.08);
+		gap: $hashd-surface-gap;
+		padding: $hashd-surface-pad;
+		border-radius: $hashd-surface-radius;
+		background-color: $hashd-surface-bg;
+		border: 1px solid $hashd-surface-border;
 	}
 
 	.transfer-column-head {
@@ -1239,10 +1465,10 @@ $shell-radius: 22px;
 		display: flex;
 		flex-direction: column;
 		gap: 4px;
-		padding: 10px 12px;
-		border-radius: 8px;
-		background-color: rgba(0, 0, 0, 0.35);
-		border: 1px solid rgba(255, 255, 255, 0.06);
+		padding: $hashd-inset-pad-tight;
+		border-radius: $hashd-inset-radius;
+		background-color: $hashd-inset-bg;
+		border: 1px solid $hashd-inset-border;
 	}
 
 	.transfer-command-label {
@@ -1265,11 +1491,11 @@ $shell-radius: 22px;
 		display: flex;
 		flex-direction: column;
 		gap: 6px;
-		padding: 12px;
-		margin-bottom: 12px;
-		border-radius: 8px;
-		background-color: rgba(0, 0, 0, 0.35);
-		border: 1px solid rgba(255, 255, 255, 0.08);
+		padding: $hashd-inset-pad;
+		margin-bottom: 0;
+		border-radius: $hashd-inset-radius;
+		background-color: $hashd-inset-bg;
+		border: 1px solid $hashd-inset-border;
 	}
 
 	.transfer-address-label {
@@ -1334,12 +1560,12 @@ $shell-radius: 22px;
 		flex-direction: row;
 		flex-wrap: wrap;
 		align-items: stretch;
-		gap: 8px;
-		margin-top: 8px;
-		padding: 8px 10px;
-		border-radius: 8px;
-		background-color: rgba(0, 0, 0, 0.28);
-		border: 1px solid rgba(255, 255, 255, 0.08);
+		gap: $hashd-surface-gap;
+		margin-top: 0;
+		padding: $hashd-surface-pad;
+		border-radius: $hashd-surface-radius;
+		background-color: $hashd-surface-bg;
+		border: 1px solid $hashd-surface-border;
 
 		> .material-icons {
 			flex-shrink: 0;
@@ -1388,7 +1614,7 @@ $shell-radius: 22px;
 	.wallet-cashout-row {
 		display: flex;
 		flex-direction: row;
-		margin-top: 8px;
+		margin-top: $hashd-page-stack;
 
 		.wallet-cashout-all {
 			width: 100%;
@@ -1955,7 +2181,7 @@ $shell-radius: 22px;
 	.settings-sections {
 		display: flex;
 		flex-direction: column;
-		gap: 0;
+		gap: $hashd-page-stack;
 		flex: 1 1 auto;
 		min-height: 0;
 	}
@@ -1963,40 +2189,69 @@ $shell-radius: 22px;
 	.settings-section {
 		display: flex;
 		flex-direction: column;
-		gap: 6px;
-		padding: 14px 0;
-		border-top: 1px solid rgba(255, 255, 255, 0.08);
+		gap: $hashd-surface-gap;
+		padding: 0;
+		border-top: 0;
+	}
 
-		&:first-child {
-			border-top: 0;
-			padding-top: 0;
-		}
+	.settings-section.lp-hashd-surface {
+		padding: $hashd-surface-pad;
 	}
 
 	.settings-label {
 		color: $hashd-title;
 		font-size: 13px;
-		font-weight: 700;
-		white-space: normal;
+		font-weight: 900;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
 		line-height: 1.35;
+		white-space: normal;
 	}
 
 	.settings-hint {
 		color: $hashd-muted;
 		font-size: 12px;
-		line-height: 1.45;
+		line-height: 1.5;
 		white-space: normal;
+	}
+
+	.settings-hint-ok {
+		color: $hashd-green;
+		font-weight: 600;
+	}
+
+	.pin-change-entry {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: $hashd-surface-gap;
+		margin-top: 0;
+		padding: $hashd-surface-pad;
+		border-radius: $hashd-surface-radius;
+		border: 1px solid rgba($hashd-amber, 0.35);
+		background-color: rgba($hashd-amber, 0.06);
+	}
+
+	.pin-pad--compact {
+		max-width: 252px;
+		gap: 8px;
+
+		.pin-key {
+			width: 68px;
+			height: 46px;
+			font-size: 16px;
+		}
 	}
 
 	.settings-meta {
 		display: flex;
 		flex-direction: column;
-		gap: 4px;
-		margin-top: 2px;
-		padding: 0;
-		background-color: transparent;
-		border: 0;
-		border-radius: 0;
+		gap: 6px;
+		margin-top: 0;
+		padding: $hashd-inset-pad;
+		border-radius: $hashd-inset-radius;
+		background-color: $hashd-inset-bg;
+		border: 1px solid $hashd-inset-border;
 	}
 
 	.settings-meta-row {
@@ -2025,15 +2280,25 @@ $shell-radius: 22px;
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;
-		gap: 8px;
-		margin-top: 4px;
+		gap: $hashd-surface-gap;
+		margin-top: 2px;
+		width: 100%;
 
 		.lp-ui-btn-primary,
 		.lp-ui-btn-ghost {
-			flex: 0 1 auto;
+			flex: 1 1 140px;
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: center;
 			min-width: 120px;
+			min-height: 38px;
 			padding: 10px 14px;
 			font-size: 11px;
+			font-weight: 900;
+			line-height: 1.2;
+			text-align: center;
+			white-space: nowrap;
 		}
 	}
 
@@ -2178,24 +2443,386 @@ $shell-radius: 22px;
 		color: #fff;
 		background-color: $hashd-amber;
 		border-color: rgba(255, 255, 255, 0.08);
-		box-shadow: 0 10px 22px rgba(232, 125, 62, 0.35);
+		box-shadow: 0 0 16px rgba(232, 125, 62, 0.45);
 	}
 
 	// Global `.lp-ui-btn-primary` flex-shrink squashes long price labels inside upgrade rows.
 	.upgrade-tier-row .upgrade-tier-buy {
 		flex: 0 0 auto;
-		min-width: 132px;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		min-width: 156px;
 		width: auto;
-		max-width: none;
-		padding: 8px 14px;
+		min-height: 38px;
+		padding: 10px 20px;
 		font-size: 11px;
-		line-height: 1.25;
-		white-space: nowrap;
+		font-weight: 900;
+		line-height: 1.2;
+		letter-spacing: 0.03em;
 		text-align: center;
+		white-space: nowrap;
 	}
 
 	.upgrade-tier-row .upgrade-tier-main {
 		flex: 1 1 auto;
 		min-width: 0;
 	}
+
+	.lp-ui-empty-callout {
+		flex: 1 1 auto;
+		min-height: 168px;
+		margin: 0;
+		padding: 22px 18px 20px;
+		border-radius: 0;
+		border: 0;
+		border-top: 1px dashed rgba($hashd-amber, 0.45);
+		background-color: rgba($hashd-amber, 0.08);
+		box-shadow: none;
+		gap: 6px;
+	}
+
+	.lp-ui-empty-callout-badge {
+		padding: 4px 10px;
+		border-radius: 999px;
+		border: 1px solid rgba($hashd-amber-glow, 0.45);
+		background-color: rgba($hashd-amber, 0.18);
+		color: $hashd-amber-glow;
+		font-size: 10px;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		line-height: 1.2;
+	}
+
+	.lp-ui-empty-callout-icon {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 56px;
+		height: 56px;
+		margin-top: 2px;
+		border-radius: 16px;
+		border: 1px solid rgba($hashd-amber, 0.4);
+		background-color: rgba($hashd-amber, 0.14);
+		box-shadow: 0 0 18px rgba($hashd-amber, 0.22);
+
+		.material-icons {
+			font-size: 30px;
+			color: $hashd-amber-glow;
+		}
+	}
+
+	.lp-ui-empty-callout-title {
+		color: $hashd-title;
+		font-size: 17px;
+		font-weight: 700;
+		line-height: 1.25;
+		letter-spacing: 0.01em;
+	}
+
+	.lp-ui-empty-callout-body {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 4px;
+		max-width: 300px;
+	}
+
+	.lp-ui-empty-callout-step {
+		color: $hashd-text;
+		font-size: 13px;
+		line-height: 1.45;
+		text-align: center;
+	}
+
+	.lp-ui-empty-callout-cmd {
+		margin-top: 2px;
+		padding: 4px 14px;
+		border-radius: 6px;
+		border: 1px solid rgba($hashd-amber, 0.45);
+		background-color: rgba($hashd-amber, 0.2);
+		color: $hashd-amber-glow;
+		font-size: 14px;
+		font-weight: 700;
+		line-height: 1.2;
+		letter-spacing: 0.04em;
+		text-align: center;
+	}
+
+	.racks-empty-callout {
+		justify-content: center;
+	}
+}
+
+// Flat — transfers-canonical surface + inset (nested rules may not compile in s&box).
+.lp-bitcoin-ops .lp-hashd-surface {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	padding: 14px;
+	border-radius: 10px;
+	background-color: rgba(0, 0, 0, 0.28);
+	border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.lp-bitcoin-ops .pane.wallet .lp-ui-info {
+	margin-bottom: 12px;
+	padding: 12px;
+	border-radius: 8px;
+	background-color: rgba(0, 0, 0, 0.35);
+	border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.lp-bitcoin-ops .rack-card {
+	padding: 14px;
+	border-radius: 10px;
+	background-color: rgba(0, 0, 0, 0.28);
+	border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+// Flat — rack slot copy chip (overview + servers).
+.lp-bitcoin-ops .rack-slot-id-copy {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 6px;
+	padding: 4px 8px;
+	border-radius: 6px;
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	background-color: rgba(0, 0, 0, 0.35);
+	cursor: pointer;
+}
+
+// Flat — rack card Upgrade must not flex-grow (s&box drops nested btn rules).
+.lp-bitcoin-ops .rack-card-actions .rack-upgrade-btn {
+	flex: 0 0 auto;
+	width: 100%;
+	min-height: 0;
+	height: auto;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	padding: 10px 14px;
+	font-size: 11px;
+	font-weight: 900;
+	line-height: 1.2;
+	letter-spacing: 0.03em;
+	text-align: center;
+	white-space: nowrap;
+}
+
+// Flat — overview intro banner (clip corners + padding; nested rules often fail in s&box).
+.lp-bitcoin-ops .overview-intro-shell {
+	flex-shrink: 0;
+	width: 100%;
+	border-radius: 10px;
+	overflow: hidden;
+	border: 1px solid rgba(232, 125, 62, 0.35);
+	background-color: rgba(232, 125, 62, 0.12);
+}
+
+.lp-bitcoin-ops .overview-intro-shell .lp-ui-intro.overview-intro {
+	display: flex;
+	flex-direction: column;
+	gap: 0;
+	padding-top: 18px;
+	padding-right: 20px;
+	padding-bottom: 18px;
+	padding-left: 20px;
+	border: 0;
+	border-radius: 0;
+	background-color: transparent;
+	text-align: left;
+	font-size: 12px;
+	line-height: 1.5;
+}
+
+.lp-bitcoin-ops .overview-intro-terminal-spacer {
+	flex-shrink: 0;
+	width: 100%;
+	height: 14px;
+}
+
+.lp-bitcoin-ops .overview-intro-terminal {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 10px;
+	padding-top: 14px;
+	border-top: 1px solid rgba(232, 125, 62, 0.28);
+}
+
+// Flat — hub status: blank line + footer rule (do NOT zero padding here).
+.lp-bitcoin-ops .overview .lp-ui-panel.overview-status-panel {
+	padding-top: 18px;
+	padding-right: 20px;
+	padding-bottom: 18px;
+	padding-left: 20px;
+}
+
+.lp-bitcoin-ops .overview-status-breathe {
+	flex-shrink: 0;
+	width: 100%;
+	min-height: 22px;
+	height: 22px;
+	font-size: 14px;
+	line-height: 22px;
+	opacity: 0;
+}
+
+.lp-bitcoin-ops .overview-status-perks {
+	padding-bottom: 12px;
+}
+
+.lp-bitcoin-ops .overview-status-footer {
+	flex: 0 0 auto;
+	padding-top: 14px;
+	border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+// Flat — upgrades pane padding (nested .upgrade-* rules often do not compile in s&box).
+.lp-bitcoin-ops .lp-hashd-inset {
+	display: flex;
+	flex-direction: column;
+	padding-top: 14px;
+	padding-right: 16px;
+	padding-bottom: 14px;
+	padding-left: 16px;
+	border-radius: 8px;
+	background-color: rgba(0, 0, 0, 0.35);
+	border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.lp-bitcoin-ops .pane.upgrades .lp-ui-intro.upgrades-intro {
+	flex-shrink: 0;
+	padding-top: 16px;
+	padding-right: 18px;
+	padding-bottom: 16px;
+	padding-left: 18px;
+	text-align: left;
+	font-size: 12px;
+	line-height: 1.5;
+}
+
+.lp-bitcoin-ops .upgrade-track {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	padding-top: 16px;
+	padding-right: 16px;
+	padding-bottom: 16px;
+	padding-left: 16px;
+	border-radius: 10px;
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	background-color: rgba(0, 0, 0, 0.28);
+}
+
+.lp-bitcoin-ops .upgrade-track-head {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 8px;
+	padding-top: 0;
+	padding-right: 4px;
+	padding-bottom: 8px;
+	padding-left: 4px;
+}
+
+.lp-bitcoin-ops .upgrade-tier-row {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 14px;
+	width: 100%;
+	padding-top: 14px;
+	padding-right: 16px;
+	padding-bottom: 14px;
+	padding-left: 16px;
+	border-radius: 8px;
+	border: 1px solid rgba(255, 255, 255, 0.06);
+	background-color: rgba(0, 0, 0, 0.35);
+}
+
+.lp-bitcoin-ops .upgrade-tier-row.next {
+	border: 1px solid rgba(232, 125, 62, 0.45);
+	background-color: rgba(232, 125, 62, 0.1);
+}
+
+.lp-bitcoin-ops .upgrade-tier-row.maxed {
+	border: 1px solid rgba(95, 211, 141, 0.35);
+	background-color: rgba(95, 211, 141, 0.08);
+}
+
+.lp-bitcoin-ops .upgrade-tier-main {
+	flex: 1 1 160px;
+	min-width: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.lp-bitcoin-ops .upgrade-tier-side {
+	flex: 0 0 auto;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	gap: 6px;
+}
+
+// Flat — s&box may drop nested upgrade buy rules; flex-center label inside orange button.
+.lp-bitcoin-ops .upgrade-tier-row .upgrade-tier-buy {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	flex: 0 0 auto;
+	min-width: 156px;
+	min-height: 38px;
+	padding: 10px 20px;
+	font-size: 11px;
+	font-weight: 900;
+	line-height: 1.2;
+	letter-spacing: 0.03em;
+	text-align: center;
+	white-space: nowrap;
+}
+
+// Flat — overview/racks panel surfaces: one radius, flush empty callout (no corner ears).
+.lp-bitcoin-ops .overview .lp-ui-split > .lp-ui-panel {
+	border-radius: 10px;
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	background-color: rgba(0, 0, 0, 0.28);
+	overflow: hidden;
+}
+
+.lp-bitcoin-ops .overview .lp-ui-split > .lp-ui-panel > .lp-ui-panel-title {
+	flex-shrink: 0;
+	margin-bottom: 12px;
+}
+
+.lp-bitcoin-ops .lp-ui-panel > .lp-ui-empty-callout {
+	flex: 1 1 auto;
+	min-height: 168px;
+	margin: 0;
+	padding-top: 22px;
+	padding-right: 18px;
+	padding-bottom: 20px;
+	padding-left: 18px;
+	border-radius: 0;
+	border: 0;
+	border-top: 1px dashed rgba(232, 125, 62, 0.45);
+	background-color: rgba(232, 125, 62, 0.08);
+	box-shadow: none;
+}
+
+.lp-bitcoin-ops .pane.racks > .racks-panel > .lp-ui-panel-title {
+	flex-shrink: 0;
+	margin-bottom: 12px;
 }

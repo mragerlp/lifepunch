@@ -8,7 +8,7 @@ using Sandbox;
 
 namespace LifePunch.DXRP.Addons.Bitcoin;
 
-/// <summary>Shared UI feedback — PIN pad + rig0 terminal use DXRP purchase cha-ching.</summary>
+/// <summary>Terminal command-line keystroke feedback only.</summary>
 public static class LpBitcoinUiSounds
 {
 	public static void PlayKeyboardClick()

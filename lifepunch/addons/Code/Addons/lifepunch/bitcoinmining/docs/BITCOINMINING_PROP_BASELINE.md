@@ -8,19 +8,30 @@ Reset only the **prop layer** (vmdl + prefab + fan child GOs) using this order.
 Animation work (rigged FBX, bone spin, vmdl `power_on` sequences) ran **before** collision and origin were locked.
 That stacked broken mesh orientation, guessed BoxColliders, and detached fan parts. The game code is fine; the visuals/physics baseline is not.
 
-## Canonical pattern (Evo Bitminer — study only in Downloads)
+## Canonical pattern — Phase 0 (Jun 2026 reset)
 
 | Layer | Rule |
 |-------|------|
-| **Body vmdl** | Static mesh only. Fan blades **excluded** via ModelDoc import filter. No `AnimationList` / bone spin on body. |
-| **Fan vmdl(s)** | Separate small vmdls (`*-fan.vmdl`). |
-| **Prefab** | `ModelRenderer` on root. One child GO per fan (`fan_spin_*`) with its own `ModelRenderer`. |
-| **Code** | `LpBitcoinHubVisuals` / `LpBitcoinRackVisuals` — `LocalRotation *= Rotation.FromAxis(Vector3.Forward, speed)`. |
+| **Body vmdl** | **One static mesh** — fans **included** in import (baked blades). No `AnimationList` / no bone spin on body. |
+| **Prefab** | `ModelRenderer` on root only. **No** `fan_spin_*` child GOs until Phase 2 sign-off. |
+| **Code** | `LpBitcoinHubVisuals` / `LpBitcoinRackVisuals` — status LEDs only; fan spin parked. |
 | **Collider** | `BoxCollider` **Center (X,Y,Z)** + **Scale (X,Y,Z)** = `model.Bounds` — must match the **white** mesh wireframe on **all three axes**. In the prefab editor the Box gizmo shows **red / green / blue** edges for the collider volume; that entire box must sit on the white box (not just one axis). `OnAwake` → `LifePunchPropPhysics.SyncBoxColliderFromModel`. |
 | **Ground** | Host spawn → `LifePunchGroundContact.AlignMeshBottom` (mesh `Bounds.Mins.z` → surface). |
 | **Scale** | Prefab root **`1,1,1`**. Tune **`import_scale`** in vmdl only. |
 
-## Phase checklist (do in order — skip phase 2 until phase 1 is green)
+### Phase 2 — separate spinning fans (after Phase 0 + collision sign-off)
+
+Evo Bitminer pattern (study only): fan blades **excluded** from body vmdl; small `*-fan.vmdl` on child GOs; code spins `LocalRotation`.
+
+## Phase checklist (do in order — skip phase 2 until phase 0 + collision are green)
+
+### Phase 0 — Unified static models (current)
+
+1. **GPU rack:** `gpu-rack.vmdl` → `source/gpu-rack-static.obj` (scale 0.395, Z translation 21.382).
+2. **Advanced rack:** `gpu-rack-stacked.vmdl` → `source/gpu-rack-stacked-anim.fbx` (static mesh, no anim nodes).
+3. **Hub:** `bitcoinhub.vmdl` import_filter includes **`fan`** with body meshes.
+4. Prefabs: `ModelRenderer` only; **empty** `Children` on rack prefabs.
+5. ModelDoc compile all three vmdls → sync → flatgrass spawn kit.
 
 ### Phase 1 — Collision + feet (all props)
 
@@ -37,7 +48,7 @@ That stacked broken mesh orientation, guessed BoxColliders, and detached fan par
 | Advanced rack | `entities/advancedgpurack/advanced-gpu-rack.prefab` | `gpu-rack/gpu-rack-stacked.vmdl` |
 | Terminal | `entities/bitcoin-terminal/bitcoin-terminal.prefab` | *(owner replacing model — pause)* |
 
-### Phase 2 — Fans (after phase 1 sign-off)
+### Phase 2 — Separate spinning fans (after phase 0 + 1 sign-off)
 
 1. Enable **`fan_spin_hub`** (hub) — nudge in prefab editor until blade sits in cage.
 2. Enable **`fan_spin_rack_1`** first (rack) — clone offsets to siblings.

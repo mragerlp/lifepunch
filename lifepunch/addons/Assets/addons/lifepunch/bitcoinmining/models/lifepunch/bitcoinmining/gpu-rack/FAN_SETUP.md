@@ -1,5 +1,7 @@
 # GPU rack fan spin — Evo Bitminer pattern (Jun 2026)
 
+**Status: PARKED (Jun 2026)** — `LpBitcoinRackVisuals.RackFanVisualsParked = true`. Child `fan_spin_*` GOs stay disabled at runtime until an owner pass nudges each fan into its cage in the prefab editor (same workflow as terminal LCD). Do not enable mining fan spin in code until positions are signed off.
+
 **You do not need new models.** Fans spin as **child GameObjects** with their own `ModelRenderer`, same as the Evo Bitminer in Downloads.
 
 ## What is already wired

@@ -33,6 +33,9 @@ public sealed class LpBitcoinTerminalEntity : BaseEntity, Component.IPressable, 
 	/// <summary>When true, prefab <c>lcd_screen</c> transform is authoritative — no bounds auto-align on spawn.</summary>
 	[Property] public bool ManualLcdPlacement { get; set; }
 
+	/// <summary>Dev spawn (<see cref="LpBitcoinDevSpawn"/>) — feet on ground, frozen collider (no printer drop).</summary>
+	internal bool DevSpawnAsWorldMachine { get; set; }
+
 	/// <summary>Hub that registered this terminal via admin Settings — not proximity auto-link.</summary>
 	[Sync( SyncFlags.FromHost )] public Guid LinkedHubId { get; set; }
 
@@ -72,10 +75,19 @@ public sealed class LpBitcoinTerminalEntity : BaseEntity, Component.IPressable, 
 					HealthComponent.Health = HealthComponent.MaxHealth;
 			}
 
-			_spawnDropGraceTicks = 45;
-			_colliderSyncedFromModel = false;
-			LifePunchPropPhysics.BeginGrabbablePrinterDrop( GameObject, syncColliderFromModel: false );
-			Log.Info( $"TERMINAL_SPAWN_PHYSICS pos={GameObject.WorldPosition} gravity=on (printer drop, no ground snap)" );
+			if ( DevSpawnAsWorldMachine )
+			{
+				LifePunchPropPhysics.SetupWorldMachine( GameObject, alignGround: true );
+				_colliderSyncedFromModel = true;
+				Log.Info( $"TERMINAL_SPAWN_PHYSICS pos={GameObject.WorldPosition} mode=dev-world-machine" );
+			}
+			else
+			{
+				_spawnDropGraceTicks = 45;
+				_colliderSyncedFromModel = false;
+				LifePunchPropPhysics.BeginGrabbablePrinterDrop( GameObject, syncColliderFromModel: false );
+				Log.Info( $"TERMINAL_SPAWN_PHYSICS pos={GameObject.WorldPosition} gravity=on (printer drop, no ground snap)" );
+			}
 		}
 #endif
 
@@ -234,6 +246,11 @@ public sealed class LpBitcoinTerminalEntity : BaseEntity, Component.IPressable, 
 
 			if ( !terminal.IsWithinLinkRange( hub ) )
 				continue;
+
+#if !LIFEPUNCH_LOCAL
+			if ( !LifePunchEntityOwnership.SharesOperator( hub.Owner, terminal.Owner ) )
+				continue;
+#endif
 
 			var dist = hub.WorldPosition.Distance( terminal.WorldPosition );
 			if ( dist >= bestDist )

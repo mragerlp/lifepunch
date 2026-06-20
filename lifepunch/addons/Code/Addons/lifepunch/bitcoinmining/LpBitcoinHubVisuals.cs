@@ -10,8 +10,8 @@ using Sandbox;
 namespace LifePunch.DXRP.Addons.Bitcoin;
 
 /// <summary>
-/// Hub world visuals — fence emissive status LED (green ON / red OFF), fan child spin, fan loop audio.
-/// Chassis vmdl stays static; no model anims or world point lights on the panel.
+/// Hub world visuals — fence emissive status LED (green ON / red OFF).
+/// Phase 0: fan mesh is part of <c>bitcoinhub.vmdl</c> (no child GO spin). Phase 2: optional fan child.
 /// </summary>
 public sealed class LpBitcoinHubVisuals : Component
 {
@@ -27,8 +27,8 @@ public sealed class LpBitcoinHubVisuals : Component
 
 	[Property] public LpBitcoinHubEntity Hub { get; set; }
 
-	/// <summary>Seat fan child behind the front grill using body + fan renderer bounds.</summary>
-	[Property] public bool AutoAlignFanToGrille { get; set; } = true;
+	/// <summary>Phase 2 only — fan is baked into body vmdl for Phase 0.</summary>
+	[Property] public bool AutoAlignFanToGrille { get; set; } = false;
 
 	/// <summary>Fine-tune after auto-align (prefab editor values stack on top).</summary>
 	[Property] public Vector3 FanManualOffset { get; set; }
@@ -140,7 +140,9 @@ public sealed class LpBitcoinHubVisuals : Component
 			ApplyPowerVisuals( Hub.IsPowered );
 
 		UpdateFanRamp();
+#if !LIFEPUNCH_LOCAL
 		UpdateFanLoopVolume();
+#endif
 
 		if ( !_fanChild.IsValid() || !_fanChild.Enabled || _fanSpeed <= 0f )
 			return;
@@ -166,43 +168,20 @@ public sealed class LpBitcoinHubVisuals : Component
 #if !LIFEPUNCH_LOCAL
 	private void UpdateHubFanSounds( bool powered )
 	{
-		if ( !FanVisualActive )
+		// Phase A — no hub fan loop/startup/down until fan child GO is positioned (HUB_FAN_SETUP.md).
+		if ( _fanLoopPlaying && _fanLoopHandle is not null )
 		{
-			if ( _fanLoopPlaying && _fanLoopHandle is not null )
-			{
-				_fanLoopHandle.Stop();
-				_fanLoopPlaying = false;
-			}
-
-			return;
+			_fanLoopHandle.Stop();
+			_fanLoopPlaying = false;
 		}
-
-		if ( powered )
-		{
-			if ( _fanLoopPlaying )
-				return;
-
-			Sound.Play( LpBitcoinIdent.HubStartupSoundPath, WorldPosition );
-			_fanLoopHandle = Sound.Play( LpBitcoinIdent.HubFanLoopSoundPath, WorldPosition );
-			if ( _fanLoopHandle is null )
-			{
-				_fanLoopPlaying = false;
-				return;
-			}
-
-			_fanLoopHandle.Volume = 0f;
-			_fanLoopVolume = 0f;
-			_fanLoopPlaying = true;
-			return;
-		}
-
-		if ( !_fanLoopPlaying )
-			return;
-
-		Sound.Play( LpBitcoinIdent.HubFanDownSoundPath, WorldPosition );
-		_fanLoopPlaying = false;
 	}
+#else
+	private void UpdateHubFanSounds( bool powered )
+	{
+	}
+#endif
 
+#if !LIFEPUNCH_LOCAL
 	private void UpdateFanLoopVolume()
 	{
 		if ( !_fanLoopPlaying || _fanLoopHandle is null )

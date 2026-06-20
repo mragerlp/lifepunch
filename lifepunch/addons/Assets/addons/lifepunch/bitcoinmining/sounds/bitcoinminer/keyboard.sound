@@ -1,7 +1,7 @@
-﻿{
+{
     "SelectionMode":  "Random",
     "DistanceAttenuation":  true,
-    "UI":  false,
+    "UI":  true,
     "Volume":  "1",
     "Sounds":  [
                    "addons/lifepunch/bitcoinmining/sounds/bitcoinminer/keyboard.vsnd"

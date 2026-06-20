@@ -6,33 +6,59 @@
 
 using System.Linq;
 using Sandbox;
+#if !LIFEPUNCH_LOCAL
+using Dxura.RP.Game;
+#endif
 
 namespace LifePunch.DXRP.Addons;
 
 /// <summary>
-/// While a LifePunch menu is open, UI mouse clicks must not fire weapons or DXRP Hands actions.
-/// Panels call <see cref="NotifyMenuOpened"/> / <see cref="NotifyMenuClosed"/> from
-/// <c>OnEnabled</c> / <c>OnDisabled</c> (PIN gate included). A scene guard applies suppression
-/// every frame before equipment reads <c>Attack1</c>.
+/// While a LifePunch menu is open, block all combat / equipment / hands input so UI clicks
+/// cannot fire weapons, grab props, or USE world entities. Panels call
+/// <see cref="NotifyMenuOpened"/> / <see cref="NotifyMenuClosed"/> from <c>OnEnabled</c> /
+/// <c>OnDisabled</c>. A scene guard clears DXRP input actions every Update + FixedUpdate and
+/// holsters the local player's weapon on first open.
 /// </summary>
 public static class LifePunchMenuInputBlock
 {
 	private static int _openDepth;
 
+#if !LIFEPUNCH_LOCAL
+	private static bool _playerCombatLocked;
+	private static bool _savedCantSwitch;
+#endif
+
+	// DXRP mixes PascalCase (InputWeaponComponent) and lowercase (HandsEquipment, ShootWeapon).
 	private static readonly string[] SuppressedActions =
 	{
 		"Attack1",
+		"attack1",
 		"Attack2",
+		"attack2",
+		"Attack3",
+		"attack3",
 		"Use",
+		"use",
 		"Reload",
+		"reload",
 		"Pocket",
+		"pocket",
+		"Drop",
+		"drop",
 		"Slot1",
+		"slot1",
 		"Slot2",
+		"slot2",
 		"Slot3",
+		"slot3",
 		"Slot4",
+		"slot4",
 		"Slot5",
+		"slot5",
 		"SlotNext",
-		"SlotPrev"
+		"SlotPrev",
+		"slotnext",
+		"slotprev"
 	};
 
 	public static bool IsAnyMenuOpen => _openDepth > 0;
@@ -40,6 +66,9 @@ public static class LifePunchMenuInputBlock
 	public static void NotifyMenuOpened()
 	{
 		_openDepth++;
+		if ( _openDepth == 1 )
+			AcquirePlayerCombatLock();
+
 		LifePunchMenuInputGuard.Ensure( Game.ActiveScene );
 		Apply();
 	}
@@ -50,6 +79,8 @@ public static class LifePunchMenuInputBlock
 			return;
 
 		_openDepth--;
+		if ( _openDepth == 0 )
+			ReleasePlayerCombatLock();
 	}
 
 	public static void Apply()
@@ -57,6 +88,12 @@ public static class LifePunchMenuInputBlock
 		if ( !IsAnyMenuOpen )
 			return;
 
+		SuppressGameplayInput();
+		ReassertPlayerCombatLock();
+	}
+
+	private static void SuppressGameplayInput()
+	{
 		foreach ( var action in SuppressedActions )
 		{
 			Input.SetAction( action, false );
@@ -64,16 +101,68 @@ public static class LifePunchMenuInputBlock
 			Input.ReleaseAction( action );
 		}
 	}
+
+	private static void AcquirePlayerCombatLock()
+	{
+#if !LIFEPUNCH_LOCAL
+		var player = Player.Local;
+		if ( !player.IsValid() || _playerCombatLocked )
+			return;
+
+		_savedCantSwitch = player.CantSwitch;
+		player.CantSwitch = true;
+		player.Holster();
+		player.LockCamera = true;
+		_playerCombatLocked = true;
+#endif
+	}
+
+	private static void ReleasePlayerCombatLock()
+	{
+#if !LIFEPUNCH_LOCAL
+		if ( !_playerCombatLocked )
+			return;
+
+		var player = Player.Local;
+		if ( player.IsValid() )
+		{
+			player.CantSwitch = _savedCantSwitch;
+			player.LockCamera = false;
+		}
+
+		_playerCombatLocked = false;
+#endif
+	}
+
+	private static void ReassertPlayerCombatLock()
+	{
+#if !LIFEPUNCH_LOCAL
+		if ( !_playerCombatLocked )
+			return;
+
+		var player = Player.Local;
+		if ( !player.IsValid() )
+			return;
+
+		player.CantSwitch = true;
+		player.LockCamera = true;
+#endif
+	}
 }
 
 /// <summary>
-/// Runs input suppression early each frame while any LifePunch menu is registered open.
+/// Runs input suppression before equipment reads attack / use each frame.
 /// </summary>
 internal sealed class LifePunchMenuInputGuard : Component
 {
 	private const string GuardObjectName = "LifePunchMenuInputGuard";
 
 	protected override void OnUpdate()
+	{
+		LifePunchMenuInputBlock.Apply();
+	}
+
+	protected override void OnFixedUpdate()
 	{
 		LifePunchMenuInputBlock.Apply();
 	}

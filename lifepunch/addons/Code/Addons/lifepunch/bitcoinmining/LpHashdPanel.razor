@@ -140,11 +140,13 @@
 								@if ( _active == OpsTab.Overview )
 								{
 									<div class="pane overview">
-										<div class="lp-ui-intro overview-intro">
-											<div class="overview-intro-copy">
-												Manage linked GPU racks, wallet payout, and hub power from this panel. Set your PIN, power on, link the terminal here, then register racks at rig0 on the CRT.
-											</div>
-											<div class="overview-intro-terminal">
+										<div class="overview-intro-shell">
+											<div class="lp-ui-intro overview-intro">
+												<div class="overview-intro-copy">
+													Manage linked GPU racks, wallet payout, and hub power from this panel. Set your PIN, power on, link the terminal here, then register racks at rig0 on the CRT.
+												</div>
+												<div class="overview-intro-terminal-spacer"></div>
+												<div class="overview-intro-terminal">
 												<div class="overview-intro-terminal-status">
 													<span class="lp-ui-status-dot @(HasLinkedTerminal() ? "on" : HasNearbyUnlinkedTerminal() ? "warn" : "off")"></span>
 													<span class="overview-intro-terminal-label">@TerminalLinkStatusLabel()</span>
@@ -163,6 +165,7 @@
 														<button class="lp-ui-btn-ghost overview-intro-terminal-disabled" disabled>No terminal in range</button>
 													}
 												</div>
+												</div>
 											</div>
 										</div>
 
@@ -175,21 +178,34 @@
 
 												@if ( LinkedRackCount() == 0 )
 												{
-													<div class="lp-ui-empty">
-														<i class="material-icons">dns</i>
-														<span>No racks linked — link the terminal above, then type <strong>link</strong> at rig0 on the CRT.</span>
+													<div class="lp-ui-empty lp-ui-empty-callout racks-empty-callout">
+														<div class="lp-ui-empty-callout-badge">Action required</div>
+														<div class="lp-ui-empty-callout-icon">
+															<i class="material-icons">link_off</i>
+														</div>
+														<div class="lp-ui-empty-callout-title">No racks linked</div>
+														<div class="lp-ui-empty-callout-body">
+															<div class="lp-ui-empty-callout-step">Link the terminal above.</div>
+															<div class="lp-ui-empty-callout-step">At rig0 on the CRT, type:</div>
+															<div class="lp-ui-empty-callout-cmd">link</div>
+														</div>
 													</div>
 												}
 												else
 												{
-													<LifePunchScrollRegionPanel class="lp-ui-scroll lp-ui-scroll-region">
+													<div class="lp-ui-scroll lp-ui-scroll-region">
 														<div class="lp-ui-list">
 															@for ( var i = 0; i < GetLinkedRacks().Count; i++ )
 															{
 																var rack = GetLinkedRacks()[i];
 																<div class="lp-ui-list-row">
 																	<div class="lp-ui-list-main">
-																		<div class="lp-ui-list-title">@RackSlotLabel( rack )</div>
+																		<div class="lp-ui-list-title">@RackSlotDisplayLabel( rack )</div>
+																		<button class="rack-slot-id-copy" onclick="@(() => CopyRackTerminalId( rack ))">
+																			<span class="rack-slot-id-token">@RackSlotTerminalToken( rack )</span>
+																			<i class="material-icons">content_copy</i>
+																			<span class="rack-slot-id-hint">@RackSlotCopyHint( rack )</span>
+																		</button>
 																		<div class="lp-ui-list-sub rack-stats">@RackOverviewSubline( rack )</div>
 																	</div>
 																	<div class="lp-ui-list-meta">
@@ -201,55 +217,60 @@
 																</div>
 															}
 														</div>
-													</LifePunchScrollRegionPanel>
+													</div>
 												}
 											</div>
 
-											<div class="lp-ui-panel">
+											<div class="lp-ui-panel overview-status-panel">
 												<div class="lp-ui-panel-title">
 													<i class="material-icons">analytics</i>
 													<span>Hub status</span>
 												</div>
 
-												<div class="overview-status-body">
-													<div class="lp-ui-info overview-status-info">
-														<div class="lp-ui-info-row">
-															<span class="lp-ui-info-label">Total mined</span>
-															<span class="lp-ui-info-value">@CombinedBtc().ToString("F6") BTC</span>
+												<div class="overview-status-stack">
+													<div class="overview-status-body">
+														<div class="lp-ui-info overview-status-info">
+															<div class="lp-ui-info-row">
+																<span class="lp-ui-info-label">Total mined</span>
+																<span class="lp-ui-info-value">@CombinedBtc().ToString("F6") BTC</span>
+															</div>
+															<div class="lp-ui-info-row">
+																<span class="lp-ui-info-label">USD value</span>
+																<span class="lp-ui-info-value">$@CombinedUsd().ToString("N2")</span>
+															</div>
+															<div class="lp-ui-info-row">
+																<span class="lp-ui-info-label">Hash rate</span>
+																<span class="lp-ui-info-value">@HashRateLabel()</span>
+															</div>
+															<div class="lp-ui-info-row">
+																<span class="lp-ui-info-label">Hub power</span>
+																<span class="lp-ui-info-value">
+																	<span class="lp-ui-status-dot @(Hub?.IsPowered == true ? "on" : "off")"></span>
+																	<span>@HubPowerStatusLabel()</span>
+																</span>
+															</div>
+															<div class="lp-ui-info-row">
+																<span class="lp-ui-info-label">Load / draw</span>
+																<span class="lp-ui-info-value">@LoadDrawLabel()</span>
+															</div>
 														</div>
-														<div class="lp-ui-info-row">
-															<span class="lp-ui-info-label">USD value</span>
-															<span class="lp-ui-info-value">$@CombinedUsd().ToString("N2")</span>
+
+														<div class="overview-status-perks">
+															<div class="overview-status-perk">@LinkedRackCount() linked rack@(LinkedRackCount() == 1 ? "" : "s")</div>
+															<div class="overview-status-perk">@MiningRackCount() mining now</div>
+															<div class="overview-status-perk">Hub wallet @HubWalletBtc().ToString("F4") BTC</div>
+															<div class="overview-status-perk">@RackPendingBtc().ToString("F4") BTC pending on racks</div>
 														</div>
-														<div class="lp-ui-info-row">
-															<span class="lp-ui-info-label">Hash rate</span>
-															<span class="lp-ui-info-value">@HashRateLabel()</span>
-														</div>
-														<div class="lp-ui-info-row">
-															<span class="lp-ui-info-label">Hub power</span>
-															<span class="lp-ui-info-value">
-																<span class="lp-ui-status-dot @(Hub?.IsPowered == true ? "on" : "off")"></span>
-																<span>@HubPowerStatusLabel()</span>
-															</span>
-														</div>
-														<div class="lp-ui-info-row">
-															<span class="lp-ui-info-label">Load / draw</span>
-															<span class="lp-ui-info-value">@LoadDrawLabel()</span>
-														</div>
+														<div class="overview-status-breathe">&nbsp;</div>
 													</div>
 
-													<div class="overview-status-perks">
-														<div class="overview-status-perk">@LinkedRackCount() linked rack@(LinkedRackCount() == 1 ? "" : "s")</div>
-														<div class="overview-status-perk">@MiningRackCount() mining now</div>
-														<div class="overview-status-perk">Hub wallet @HubWalletBtc().ToString("F4") BTC</div>
-														<div class="overview-status-perk">@RackPendingBtc().ToString("F4") BTC pending on racks</div>
+													<div class="overview-status-footer">
+														<div class="lp-ui-btn-row overview-status-actions">
+															<button class="lp-ui-btn-primary" onclick="@SelectRacksTab">Manage racks</button>
+															<button class="lp-ui-btn-ghost" onclick="@SelectWalletTab">Wallet</button>
+															<button class="lp-ui-btn-ghost" onclick="@SelectTransfersTab">Transfers</button>
+														</div>
 													</div>
-												</div>
-
-												<div class="lp-ui-btn-row overview-status-actions">
-													<button class="lp-ui-btn-primary" onclick="@SelectRacksTab">Manage racks</button>
-													<button class="lp-ui-btn-ghost" onclick="@SelectWalletTab">Wallet</button>
-													<button class="lp-ui-btn-ghost" onclick="@SelectTransfersTab">Transfers</button>
 												</div>
 											</div>
 										</div>
@@ -273,21 +294,36 @@
 
 											@if ( LinkedRackCount() == 0 )
 											{
-												<div class="lp-ui-empty">
-													<i class="material-icons">dns</i>
-													<span>No racks linked — link the terminal at hub admin, then type <strong>link</strong> at rig0 on the CRT.</span>
+												<div class="lp-ui-empty lp-ui-empty-callout racks-empty-callout">
+													<div class="lp-ui-empty-callout-badge">Action required</div>
+													<div class="lp-ui-empty-callout-icon">
+														<i class="material-icons">link_off</i>
+													</div>
+													<div class="lp-ui-empty-callout-title">No racks linked</div>
+													<div class="lp-ui-empty-callout-body">
+														<div class="lp-ui-empty-callout-step">Link the terminal in hub admin.</div>
+														<div class="lp-ui-empty-callout-step">At rig0 on the CRT, type:</div>
+														<div class="lp-ui-empty-callout-cmd">link</div>
+													</div>
 												</div>
 											}
 											else
 											{
-												<LifePunchScrollRegionPanel class="lp-ui-scroll lp-ui-scroll-region racks-scroll">
+												<div class="lp-ui-scroll lp-ui-scroll-region racks-scroll">
 													<div class="rack-grid">
 														@for ( var i = 0; i < GetLinkedRacks().Count; i++ )
 														{
 															var rack = GetLinkedRacks()[i];
 															<div class="rack-card">
 																<div class="rack-card-head">
-																	<div class="rack-card-title">@RackSlotLabel( rack )</div>
+																	<div class="rack-card-head-main">
+																		<div class="rack-card-title">@RackSlotDisplayLabel( rack )</div>
+																		<button class="rack-slot-id-copy" onclick="@(() => CopyRackTerminalId( rack ))">
+																			<span class="rack-slot-id-token">@RackSlotTerminalToken( rack )</span>
+																			<i class="material-icons">content_copy</i>
+																			<span class="rack-slot-id-hint">@RackSlotCopyHint( rack )</span>
+																		</button>
+																	</div>
 																	<div class="rack-card-badges">
 																		<span class="rack-badge @(rack.IsMining ? "on" : "")">@(rack.IsMining ? "Mining" : "Idle")</span>
 																		<span class="rack-badge dim">@RackYieldLabel( rack )</span>
@@ -304,7 +340,7 @@
 															</div>
 														}
 													</div>
-												</LifePunchScrollRegionPanel>
+												</div>
 											}
 										</div>
 									</div>
@@ -321,7 +357,7 @@
 												</button>
 												<div class="lp-ui-panel-title upgrades-title">
 													<i class="material-icons">upgrade</i>
-													<span>@(upgradeRack.IsValid() ? $"{RackSlotLabel( upgradeRack )} upgrades" : "Rack upgrades")</span>
+													<span>@(upgradeRack.IsValid() ? $"{RackSlotDisplayLabel( upgradeRack )} upgrades" : "Rack upgrades")</span>
 												</div>
 											</div>
 
@@ -335,12 +371,12 @@
 											else
 											{
 												<div class="lp-ui-intro upgrades-intro">
-													<strong>@RackSlotLabel( upgradeRack )</strong> · @RackYieldLabel( upgradeRack ) · @RackHardwareLine( upgradeRack ) — Purchases debit your in-game cash. Mining start/stop stays on the CRT.
+													<strong>@RackSlotDisplayLabel( upgradeRack )</strong> · @RackYieldLabel( upgradeRack ) · @RackHardwareLine( upgradeRack ) — Purchases debit your in-game cash. Mining start/stop stays on the CRT. rig0 slot: <strong>@RackSlotTerminalToken( upgradeRack )</strong>
 												</div>
 
-												<LifePunchScrollRegionPanel class="lp-ui-scroll lp-ui-scroll-region upgrades-scroll">
+												<div class="lp-ui-scroll lp-ui-scroll-region upgrades-scroll">
 													<div class="upgrade-tracks">
-														<div class="upgrade-track">
+														<div class="upgrade-track lp-hashd-surface">
 															<div class="upgrade-track-head">
 																<i class="material-icons">memory</i>
 																<span>CPU clock path</span>
@@ -372,7 +408,7 @@
 															}
 														</div>
 
-														<div class="upgrade-track">
+														<div class="upgrade-track lp-hashd-surface">
 															<div class="upgrade-track-head">
 																<i class="material-icons">developer_board</i>
 																<span>Core count path</span>
@@ -404,7 +440,7 @@
 															}
 														</div>
 													</div>
-												</LifePunchScrollRegionPanel>
+												</div>
 											}
 										</div>
 									</div>
@@ -568,7 +604,7 @@
 											}
 											else
 											{
-												<LifePunchScrollRegionPanel class="lp-ui-scroll lp-ui-scroll-region logs-scroll">
+												<div class="lp-ui-scroll lp-ui-scroll-region logs-scroll">
 													<div class="notif-list">
 														@foreach ( var alert in GetHubAlerts() )
 														{
@@ -582,7 +618,7 @@
 															</div>
 														}
 													</div>
-												</LifePunchScrollRegionPanel>
+												</div>
 											}
 										</div>
 									</div>
@@ -596,8 +632,12 @@
 												<span>Settings</span>
 											</div>
 
+											<div class="lp-ui-intro">
+												Hub power, PIN security, and terminal linking. Changes apply immediately on this hub.
+											</div>
+
 											<div class="settings-sections">
-												<div class="settings-section">
+												<div class="settings-section lp-hashd-surface">
 													<div class="settings-label">Hub Power</div>
 													<div class="settings-hint">Turn the HASHD hub on or off. Racks stop accruing when power is off.</div>
 													<div class="settings-actions">
@@ -606,12 +646,69 @@
 													</div>
 												</div>
 
-												<div class="settings-section">
+												<div class="settings-section lp-hashd-surface">
 													<div class="settings-label">Security</div>
-													<div class="settings-hint">@( Hub?.AccessPinIsSet == true ? "Hub PIN is active. PIN change ships in a later pass." : "Set your PIN on first hub USE via Secure Boot." )</div>
+													@if ( _pinChangeActive )
+													{
+														<div class="settings-hint">Verify your current PIN, then enter a new 4-digit PIN twice.</div>
+														<div class="pin-change-entry">
+															<div class="pin-entry">
+																<div class="pin-label">@PinChangeEntryLabel()</div>
+																<div class="pin-dots">
+																	@for ( var i = 0; i < PinTargetLength(); i++ )
+																	{
+																		<span class="pin-dot @(i < _pinChangeBuffer.Length ? "filled" : "")"></span>
+																	}
+																</div>
+															</div>
+															@if ( !string.IsNullOrWhiteSpace( _pinChangeError ) )
+															{
+																<div class="pin-error">@_pinChangeError</div>
+															}
+															<div class="pin-pad pin-pad--compact">
+																@foreach ( var key in _pinKeys )
+																{
+																	<button class="pin-key @(key == "ok" ? "ok" : "") @(key == "clr" ? "clr" : "")"
+																	        onclick="@(() => PressPinChangeKey(key))">
+																		@if ( key == "clr" )
+																		{
+																			<i class="material-icons">backspace</i>
+																		}
+																		else if ( key == "ok" )
+																		{
+																			<i class="material-icons">check</i>
+																		}
+																		else
+																		{
+																			<span>@key</span>
+																		}
+																	</button>
+																}
+															</div>
+														</div>
+														<div class="settings-actions">
+															<button class="lp-ui-btn-ghost" onclick="@CancelPinChange">Cancel</button>
+														</div>
+													}
+													else
+													{
+														<div class="settings-hint @( !string.IsNullOrWhiteSpace( _pinChangeNotice ) ? "settings-hint-ok" : "" )">
+															@( !string.IsNullOrWhiteSpace( _pinChangeNotice )
+																? _pinChangeNotice
+																: Hub?.AccessPinIsSet == true
+																	? "Hub PIN protects wallet and settings. Owner can change it here."
+																	: "Set your PIN on first hub USE via Secure Boot." )
+														</div>
+														@if ( Hub?.AccessPinIsSet == true )
+														{
+															<div class="settings-actions lp-hashd-action-row">
+																<button class="lp-ui-btn-primary" onclick="@StartPinChange">Change PIN</button>
+															</div>
+														}
+													}
 												</div>
 
-												<div class="settings-section">
+												<div class="settings-section lp-hashd-surface">
 													<div class="settings-label">Bitcoin terminal</div>
 													<div class="settings-hint">
 														@( HasLinkedTerminal()
@@ -667,7 +764,7 @@
 
 	private OpsTab _active = OpsTab.Overview;
 	private Guid _upgradeRackId = Guid.Empty;
-	private bool _receiveCopyAck;
+	private Guid _rackSlotCopyAckId = Guid.Empty;
 	private bool _sendExampleCopyAck;
 	private PerfRange _perfRange = PerfRange.Week;
 	private PerfRange _profitRange = PerfRange.Week;
@@ -676,6 +773,13 @@
 	private string _pinConfirmDraft = "";
 	private string _pinError = "";
 	private int _pinSetupPass;
+	private bool _pinChangeActive;
+	private string _pinChangeBuffer = "";
+	private string _pinChangeCurrent = "";
+	private string _pinChangeNewDraft = "";
+	private string _pinChangeError = "";
+	private string _pinChangeNotice = "";
+	private int _pinChangePass;
 	private static readonly string[] _pinKeys = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "clr", "0", "ok" };
 	private string _cashOutAmount = "";
 	private bool _cashOutSuccessActive;
@@ -684,6 +788,13 @@
 	private bool _cashOutErrorActive;
 	private bool _cashOutErrorVisible;
 	private string _cashOutErrorMessage = "";
+
+	// Live rack BTC / mining stats refresh on a cadence — NOT every frame in BuildHash (rebuilds the
+	// whole hub chrome and scroll regions flicker / empty). Same pattern as StaffMenu _detailHash.
+	private TimeSince _sinceTelemetryRefresh;
+	private int _telemetryHash;
+	private int _scrollBootstrapFramesLeft;
+	private const float TelemetryRefreshInterval = 0.5f;
 
 	private string CashOutAmount
 	{
@@ -706,6 +817,10 @@
 		_pinConfirmDraft = "";
 		_pinError = "";
 		_pinSetupPass = 0;
+		ResetPinChangeState( keepNotice: false );
+		_sinceTelemetryRefresh = TelemetryRefreshInterval;
+		RecomputeTelemetryHash();
+		QueueScrollBootstrap();
 	}
 
 	/// <summary>Dev preview ConCmds — skip secure-boot gate so the dashboard is visible immediately.</summary>
@@ -715,11 +830,24 @@
 		StateHasChanged();
 	}
 
+	/// <summary>Dev preview — jump to first linked rack's upgrade tracks (buy buttons + intro).</summary>
+	public void DevOpenUpgradesForFirstLinkedRack()
+	{
+		var rack = GetLinkedRacks().FirstOrDefault( r => r.IsValid() );
+		if ( !rack.IsValid() )
+			return;
+
+		OpenRackUpgrades( rack );
+	}
+
 	protected override void OnEnabled()
 	{
 		LifePunchMenuInputBlock.NotifyMenuOpened();
 		LpBitcoinHudBridge.SetMenuCursorMode( true );
 		LifePunchUiScrollPolicy.Apply( Panel );
+		_sinceTelemetryRefresh = TelemetryRefreshInterval;
+		RecomputeTelemetryHash();
+		QueueScrollBootstrap();
 	}
 
 	protected override void OnDisabled()
@@ -837,6 +965,15 @@
 
 	private string RackSlotLabel( LpBitcoinRackEntity rack )
 		=> LpBitcoinIdent.FormatRackSlotId( rack, GetLinkedRacks() );
+
+	private string RackSlotDisplayLabel( LpBitcoinRackEntity rack )
+		=> LpBitcoinIdent.FormatRackSlotDisplayName( rack, GetLinkedRacks() );
+
+	private string RackSlotTerminalToken( LpBitcoinRackEntity rack )
+		=> LpBitcoinIdent.FormatRackSlotTerminalToken( rack, GetLinkedRacks() );
+
+	private string RackSlotCopyHint( LpBitcoinRackEntity rack )
+		=> _rackSlotCopyAckId == rack.GameObject.Id ? "Copied!" : "Copy";
 
 	private static string RackYieldLabel( LpBitcoinRackEntity rack )
 		=> !rack.IsValid()
@@ -962,7 +1099,10 @@
 
 		_active = tab;
 		LifePunchUiScrollPolicy.Apply( Panel );
+		QueueScrollBootstrap();
 	}
+
+	private void QueueScrollBootstrap() => _scrollBootstrapFramesLeft = 4;
 
 	// Upgrades is a sub-view of Servers — keep the rack icon selected (Staff Menu tab-sel pattern).
 	private bool IsSidebarTabActive( OpsTab tab )
@@ -976,6 +1116,7 @@
 		_upgradeRackId = rack.GameObject.Id;
 		_active = OpsTab.Upgrades;
 		LifePunchUiScrollPolicy.Apply( Panel );
+		QueueScrollBootstrap();
 	}
 
 	private void CloseRackUpgrades() => SelectTab( OpsTab.Racks );
@@ -1024,6 +1165,24 @@
 		_ = ClearSendExampleCopyAckAsync();
 	}
 
+	private void CopyRackTerminalId( LpBitcoinRackEntity rack )
+	{
+		if ( !rack.IsValid() )
+			return;
+
+		Clipboard.SetText( RackSlotTerminalToken( rack ) );
+		_rackSlotCopyAckId = rack.GameObject.Id;
+		_ = ClearRackSlotCopyAckAsync( rack.GameObject.Id );
+	}
+
+	private async System.Threading.Tasks.Task ClearRackSlotCopyAckAsync( Guid rackId )
+	{
+		await GameTask.DelayRealtimeSeconds( 2f );
+		if ( _rackSlotCopyAckId == rackId )
+			_rackSlotCopyAckId = Guid.Empty;
+		StateHasChanged();
+	}
+
 	private async System.Threading.Tasks.Task ClearReceiveCopyAckAsync()
 	{
 		await GameTask.DelayRealtimeSeconds( 2f );
@@ -1062,8 +1221,6 @@
 	{
 		if ( Hub is null )
 			return;
-
-		LpBitcoinUiSounds.PlayKeyboardClick();
 
 		if ( key == "clr" )
 		{
@@ -1127,6 +1284,118 @@
 			_pinSetupPass = 0;
 			_pinConfirmDraft = "";
 		}
+	}
+
+	private void StartPinChange()
+	{
+		if ( Hub?.AccessPinIsSet != true )
+			return;
+
+		_pinChangeActive = true;
+		_pinChangeBuffer = "";
+		_pinChangeCurrent = "";
+		_pinChangeNewDraft = "";
+		_pinChangeError = "";
+		_pinChangeNotice = "";
+		_pinChangePass = 0;
+	}
+
+	private void CancelPinChange() => ResetPinChangeState( keepNotice: false );
+
+	private void ResetPinChangeState( bool keepNotice )
+	{
+		_pinChangeActive = false;
+		_pinChangeBuffer = "";
+		_pinChangeCurrent = "";
+		_pinChangeNewDraft = "";
+		_pinChangeError = "";
+		_pinChangePass = 0;
+
+		if ( !keepNotice )
+			_pinChangeNotice = "";
+	}
+
+	private string PinChangeEntryLabel()
+	{
+		return _pinChangePass switch
+		{
+			0 => "CURRENT PIN",
+			1 => "NEW PIN",
+			_ => "CONFIRM NEW PIN",
+		};
+	}
+
+	private void PressPinChangeKey( string key )
+	{
+		if ( Hub is null || !_pinChangeActive )
+			return;
+
+		if ( key == "clr" )
+		{
+			_pinChangeBuffer = "";
+			_pinChangeError = "";
+
+			if ( _pinChangePass >= 2 )
+			{
+				_pinChangePass = 1;
+				_pinChangeNewDraft = "";
+			}
+			else if ( _pinChangePass == 1 )
+			{
+				_pinChangePass = 0;
+				_pinChangeCurrent = "";
+			}
+
+			return;
+		}
+
+		if ( key == "ok" )
+		{
+			if ( _pinChangeBuffer.Length < LpBitcoinHubPin.MinDigits )
+				return;
+
+			if ( _pinChangePass == 0 )
+			{
+				_pinChangeCurrent = _pinChangeBuffer;
+				_pinChangeBuffer = "";
+				_pinChangePass = 1;
+				_pinChangeError = "";
+				return;
+			}
+
+			if ( _pinChangePass == 1 )
+			{
+				_pinChangeNewDraft = _pinChangeBuffer;
+				_pinChangeBuffer = "";
+				_pinChangePass = 2;
+				_pinChangeError = "";
+				return;
+			}
+
+			Hub.RequestChangeAccessPin( _pinChangeCurrent, _pinChangeNewDraft, _pinChangeBuffer );
+			return;
+		}
+
+		if ( _pinChangeBuffer.Length >= LpBitcoinHubPin.MaxDigits )
+			return;
+
+		_pinChangeBuffer += key;
+	}
+
+	public void OnPinChangeResult( bool success, string message )
+	{
+		if ( success )
+		{
+			_pinChangeNotice = string.IsNullOrWhiteSpace( message ) ? "Hub PIN updated." : message;
+			ResetPinChangeState( keepNotice: true );
+			return;
+		}
+
+		_pinChangeBuffer = "";
+		_pinChangeError = string.IsNullOrWhiteSpace( message ) ? "Could not update PIN." : message;
+		_pinChangePass = 0;
+		_pinChangeCurrent = "";
+		_pinChangeNewDraft = "";
 	}
 
 	private float HubWalletBtc() => Hub?.HubWalletBtc ?? 0f;
@@ -1370,43 +1639,95 @@
 	protected override void OnUpdate()
 	{
 		base.OnUpdate();
-		LifePunchUiScrollPolicy.Apply( Panel );
 		LifePunchMenuInputBlock.Apply();
+		LifePunchUiScrollPolicy.Apply( Panel );
+
 		if ( !_hub.IsValid() )
+		{
 			Close();
+			return;
+		}
+
+		if ( _scrollBootstrapFramesLeft > 0 )
+		{
+			LifePunchScrollRegionBootstrap.Upgrade( Panel );
+			_scrollBootstrapFramesLeft--;
+		}
+
+		if ( _sinceTelemetryRefresh < TelemetryRefreshInterval )
+			return;
+
+		_sinceTelemetryRefresh = 0;
+		var previous = _telemetryHash;
+		RecomputeTelemetryHash();
+		if ( _telemetryHash != previous )
+			QueueScrollBootstrap();
+	}
+
+	private void RecomputeTelemetryHash()
+	{
+		var hash = new HashCode();
+		hash.Add( HubWalletBtc() );
+		hash.Add( RackPendingBtc() );
+		hash.Add( MiningRackCount() );
+		hash.Add( TotalMiningRate() );
+		hash.Add( Hub?.IsPowered );
+		hash.Add( HasLinkedTerminal() );
+		hash.Add( HasNearbyUnlinkedTerminal() );
+		hash.Add( Hub?.UnreadAlertCount ?? 0 );
+
+		var alerts = GetHubAlerts();
+		hash.Add( alerts.Count );
+		for ( var i = 0; i < alerts.Count && i < 12; i++ )
+		{
+			hash.Add( alerts[i].Kind );
+			hash.Add( alerts[i].Message );
+			hash.Add( (int)alerts[i].Timestamp );
+		}
+
+		foreach ( var rack in GetLinkedRacks() )
+		{
+			hash.Add( rack.GameObject.Id );
+			hash.Add( rack.IsMining );
+			hash.Add( (int)( rack.BitcoinAmount * 100f ) );
+			hash.Add( rack.CpuUpgradeLevel );
+			hash.Add( rack.CoreUpgradeLevel );
+		}
+
+		_telemetryHash = hash.ToHashCode();
 	}
 
 	protected override int BuildHash()
 	{
+		// _telemetryHash is refreshed on the throttled cadence above — never fold live rack BTC / mining
+		// rate into BuildHash directly or the whole hub menu rebuilds every frame (sidebar, scroll
+		// regions, and tab bodies flicker / vanish). Do not hash TextEntry bind values (_cashOutAmount).
 		var hash = new HashCode();
 		hash.Add( _active );
 		hash.Add( _upgradeRackId );
 		hash.Add( _receiveCopyAck );
 		hash.Add( _sendExampleCopyAck );
+		hash.Add( _rackSlotCopyAckId );
 		hash.Add( _pinUnlocked );
 		hash.Add( _pinBuffer );
 		hash.Add( _pinSetupPass );
 		hash.Add( _pinError );
+		hash.Add( _pinChangeActive );
+		hash.Add( _pinChangeBuffer );
+		hash.Add( _pinChangePass );
+		hash.Add( _pinChangeError );
+		hash.Add( _pinChangeNotice );
 		hash.Add( _hub?.IsPowered );
 		hash.Add( _hub?.AccessPinIsSet );
 		hash.Add( _perfRange );
 		hash.Add( _profitRange );
 		hash.Add( LinkedRackCount() );
-		hash.Add( HubWalletBtc() );
-		hash.Add( RackPendingBtc() );
-		hash.Add( _cashOutAmount );
-		hash.Add( MiningRackCount() );
-		hash.Add( TotalMiningRate() );
-		foreach ( var rack in GetLinkedRacks() )
-		{
-			hash.Add( rack.CpuUpgradeLevel );
-			hash.Add( rack.CoreUpgradeLevel );
-		}
-		hash.Add( HasLinkedTerminal() );
-		hash.Add( HasNearbyUnlinkedTerminal() );
-		hash.Add( Hub?.UnreadAlertCount ?? 0 );
-		hash.Add( Hub?.AlertFeed );
+		hash.Add( _telemetryHash );
 		hash.Add( Hub?.Owner ?? 0 );
+		hash.Add( _cashOutSuccessActive );
+		hash.Add( _cashOutSuccessVisible );
+		hash.Add( _cashOutErrorActive );
+		hash.Add( _cashOutErrorVisible );
 		return hash.ToHashCode();
 	}
 }

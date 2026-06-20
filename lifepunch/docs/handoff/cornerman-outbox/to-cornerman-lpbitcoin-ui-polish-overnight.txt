@@ -1,0 +1,33 @@
+CORNERMAN OVERNIGHT — LPBitcoin UI polish (~12h) — 2026-06-20
+
+Owner (Bloodwave) logged off until ~11:59 PM EST. Red pushed main; you run MonorepoPull then this queue.
+
+START HERE
+  lifepunch/addons/docs/briefs/CORNERMAN_LPBITCOIN_UI_POLISH_OVERNIGHT_TASK.md
+
+EYES COVERED
+  No bridge, no playtest claims. Outbox drafts only.
+
+SYNC
+  1. Cornerman (Sync from Red) OR: cd C:\Projects\lifepunch && git pull --rebase origin main
+  2. Read inbox copies of TERMINAL_BRAND_MATRIX.md + SBOX_RAZOR_SCSS_RULES.md
+
+TONIGHT (priority order)
+  A  LPBITCOIN_TERMINAL_SCROLL_ACCEPTANCE.md
+  B  LPBITCOIN_HUB_PANEL_ALIGNMENT_AUDIT.md
+  C  LPBITCOIN_HUB_TERMINAL_PARITY_MATRIX.md
+  D  LPBITCOIN_UI_SHELL_UNIFORM_PLAN.md
+  E  LPBITCOIN_HASHD_HOST_EXTRACTION_DRAFT.md  (WarmCoder)
+  F  LPBITCOIN_RAZOR_SCSS_VALIDATION_REPORT.md
+  G  LPBITCOIN_JULY_PUBLISH_CHECKLIST.md
+  H  BITCOINMINING_JOB_ROLEPLAY_ONE_PAGER.md (if missing)
+  I  BITCOINMINING_SOUND_SHORTLIST.md
+
+OUTPUT
+  C:\lifepunch\cornerman\outbox\*.md
+
+DONE PING
+  OK cornerman lpbitcoin-ui-polish-overnight @N files
+
+DO NOT
+  git push, s&box, ModelDoc, hacker lane
