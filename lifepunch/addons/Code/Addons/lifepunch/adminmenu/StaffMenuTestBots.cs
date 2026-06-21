@@ -31,12 +31,12 @@ namespace LifePunch.DXRP.Addons.StaffMenu;
 ///   lifepunch_spawn_testbot          → spawns "Test Dummy N" near the local player (fake id, no rank)
 ///   lifepunch_spawn_testbot Greg     → spawns a bot named "Greg"
 ///   lifepunch_spawn_rankbots         → spawns one bot per rank (Regular/VIP/EVIP/Mod/Admin/Super Admin)
-///                                      plus Player Bot 1/2. Pass `true` to also spawn Greg (Owner mirror).
-///   lifepunch_spawn_all_testbots     → alias for lifepunch_spawn_rankbots true (full roster incl. Greg)
+///                                      plus "Greg" as an Owner-mirror, each with a real public avatar.
+///                                      Pass `lifepunch_spawn_rankbots false` to skip Greg (targetable only).
+///   lifepunch_spawn_all_testbots     → alias for lifepunch_spawn_rankbots (full roster incl. Greg)
 ///   lifepunch_auto_spawn_testbots 1  → on editor host play, auto-spawn after portal API init (default 1)
 ///   lifepunch_list_ranks             → logs which rank names resolve (confirms the live portal strings)
 ///   lifepunch_botsay "Greg hi there" → makes a spawned bot talk in chat (first token = bot, rest = msg)
-///   lifepunch_remove_testbot Greg     → removes one spawned bot by name or SteamId
 ///   lifepunch_clear_testbots         → removes all spawned bots and clears their rank assignments
 /// </summary>
 public static class StaffMenuTestBots
@@ -151,60 +151,30 @@ public static class StaffMenuTestBots
 			return;
 		}
 
+		var manager = GameNetworkManager.Instance;
+		var ranks = RankSystem.Instance;
 		var removed = 0;
-		foreach ( var id in _spawned.ToArray() )
+
+		foreach ( var id in _spawned )
 		{
-			if ( RemoveBot( id ) )
-				removed++;
+			if ( manager.IsValid() && manager.Players.TryGetValue( id, out var player ) && player.IsValid() )
+			{
+				player.GameObject.Destroy();
+			}
+
+			manager?.Players.Remove( id );
+
+			// Drop any rank we assigned so placeholder ids don't linger in RankSystem between runs.
+			if ( ranks.IsValid() )
+			{
+				ranks.SetPlayerRanks( id, new List<Guid>() );
+			}
+
+			removed++;
 		}
 
 		_spawned.Clear();
 		Log.Info( $"lifepunch_clear_testbots: removed {removed} dummy player(s)." );
-	}
-
-	[ConCmd( "lifepunch_remove_testbot" )]
-	public static void RemoveTestBot( string nameOrId = "Greg" )
-	{
-		if ( !Application.IsEditor || !Networking.IsHost )
-		{
-			Log.Warning( "lifepunch_remove_testbot: editor host-only dev command." );
-			return;
-		}
-
-		var steamId = ResolveBotSteamId( nameOrId );
-		if ( steamId == 0 )
-			steamId = FindDebugBotSteamId( nameOrId );
-
-		if ( steamId == 0 )
-		{
-			Log.Warning( $"lifepunch_remove_testbot: no spawned bot matches '{nameOrId}'." );
-			return;
-		}
-
-		if ( !RemoveBot( steamId ) )
-		{
-			Log.Warning( $"lifepunch_remove_testbot: could not remove '{nameOrId}'." );
-			return;
-		}
-
-		_spawned.Remove( steamId );
-		Log.Info( $"lifepunch_remove_testbot: removed '{nameOrId}'." );
-	}
-
-	private static bool RemoveBot( long steamId )
-	{
-		var manager = GameNetworkManager.Instance;
-		var ranks = RankSystem.Instance;
-
-		if ( manager.IsValid() && manager.Players.TryGetValue( steamId, out var player ) && player.IsValid() )
-			player.GameObject.Destroy();
-
-		manager?.Players.Remove( steamId );
-
-		if ( ranks.IsValid() )
-			ranks.SetPlayerRanks( steamId, new List<Guid>() );
-
-		return true;
 	}
 
 	// One bot per rank, in display order. Rank "" means no assignment — a regular/default player who
@@ -234,7 +204,7 @@ public static class StaffMenuTestBots
 	}
 
 	[ConCmd( "lifepunch_spawn_rankbots" )]
-	public static void SpawnRankBots( bool includeOwner = false )
+	public static void SpawnRankBots( bool includeOwner = true )
 	{
 		if ( !Application.IsEditor )
 		{
@@ -385,29 +355,6 @@ public static class StaffMenuTestBots
 		{
 			if ( manager.Players.TryGetValue( id, out var player ) && player.IsValid() &&
 			     player.DisplayName.Contains( token, StringComparison.OrdinalIgnoreCase ) )
-			{
-				return id;
-			}
-		}
-
-		return 0;
-	}
-
-	// Fallback when _spawned was cleared or hot-reloaded — match debug players live in the roster.
-	private static long FindDebugBotSteamId( string token )
-	{
-		var manager = GameNetworkManager.Instance;
-		if ( !manager.IsValid() )
-			return 0;
-
-		foreach ( var (id, player) in manager.Players )
-		{
-			if ( !player.IsValid() || !player.IsDebugPlayer )
-				continue;
-
-			if ( id.ToString() == token
-			     || player.SteamName.Contains( token, StringComparison.OrdinalIgnoreCase )
-			     || player.DisplayName.Contains( token, StringComparison.OrdinalIgnoreCase ) )
 			{
 				return id;
 			}

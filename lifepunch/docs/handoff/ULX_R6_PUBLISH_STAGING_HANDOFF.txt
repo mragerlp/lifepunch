@@ -1,0 +1,80 @@
+ULX v3.0.0 — portal r6-shaped publish staging (handoff for agents)
+====================================================================
+Date: 2026-06-18
+Owner: Bloodwave · Package: lifepunchulx · s&box: lifepunch.ulx
+
+WHAT THIS IS
+------------
+The proven v3.0.0 ship bundle is **6 code files only** (same as portal revision 6).
+Repo ident: adminmenu · Portal mount folder: lifepunchulx · NOT dxrpadminmenu.
+
+DO NOT USE
+----------
+- .dxrp-publish/ulx-publish-verify.json if it lists **11 files** — that was the abandoned
+  Jun 17 r7/r8 experiment (shared UI vendoring). Superseded by revert 997630a.
+- Upload path adminmenu/ on the portal — portal expects lifepunchulx/ folder name.
+- *TestBots*.cs — excluded from staging by prepare-publish.ps1.
+
+CANONICAL GIT COMMITS (r6-equivalent source)
+--------------------------------------------
+- d5e294b  adminmenu code at v2.0.3 publish-ready (2026-06-16 06:00) — working waypoints
+- 997630a  revert(ulx): restore r6 publish *pipeline* and v3.0.0 changelog (scripts only)
+- 0ffd0e5  last commit before 11-file gate (d48a134)
+- 6b4a54c  DO NOT USE for menu code — scroll doctrine broke waypoints (same day as d5e294b)
+
+CHANGELOG + pins: lifepunch/addons/Code/Addons/lifepunch/adminmenu/CHANGELOG.md
+                 lifepunch/gamemode/config/addon-revisions.json (lifepunchulx row)
+
+REGENERATE STAGING (VENGEANCE / monorepo)
+-----------------------------------------
+cd C:\Users\jared\Projects\lifepunchaddons\lifepunch\addons
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts\prepare-publish.ps1 -Addon adminmenu
+
+STAGING ROOT (after prepare-publish)
+------------------------------------
+C:\Users\jared\Projects\lifepunchaddons\lifepunch\addons\.dxrp-publish\upload\
+
+CODE TO UPLOAD (6 files — repo folder name adminmenu until renamed)
+-------------------------------------------------------------------
+C:\Users\jared\Projects\lifepunchaddons\lifepunch\addons\.dxrp-publish\upload\Code\Addons\lifepunch\adminmenu\
+
+  StaffMenu.razor
+  StaffMenu.razor.scss
+  StaffMenuActions.cs
+  StaffMenuHost.cs
+  StaffSettingsService.cs
+  WaypointSyncService.cs
+
+Approx total: ~144 KB uncompressed source (~47 KB cited on portal download line).
+
+DESKTOP MIRROR (portal slug lifepunchulx — use this path for manual upload)
+-----------------------------------------------------------------------------
+powershell -NoProfile -ExecutionPolicy Bypass -File lifepunch\scripts\Sync-DesktopPublishFolder.ps1 -Addon adminmenu
+
+Then upload ALL files inside:
+  %USERPROFILE%\Desktop\lifepunch\addons\publish\lifepunchulx\upload\Code\Addons\lifepunch\lifepunchulx\
+
+PORTAL FIELDS
+-------------
+dxrpAddonId:       019e9cfa-3141-723c-a430-1a0e256472eb
+dxrpAddonIdentifier: lifepunchulx
+sboxIdentifier:    lifepunch.ulx
+marketingVersion:  3.0.0
+revision history:  r6 = good · r7/r8 = broken 11-file chase · r9 = manual re-upload same as r6
+
+Portal copy helpers (repo):
+  lifepunch/addons/.dxrp-publish/portal-about-lifepunchulx-v3.md
+  lifepunch/addons/.dxrp-publish/portal-revision-changelog-lifepunchulx-v3.txt
+
+AFTER PUBLISH
+-------------
+1. Pin new revision on LIFEPUNCH™ Development gamemode (not 70p).
+2. Blue server: restart server2_start.bat so api.dxrp.net re-downloads.
+3. Smoke: /lifepunchulx — menu opens, clicks work, waypoints tab OK.
+4. ULX is OFF Dev gamemode per LIFEPUNCHNET_PASTE_ALL.txt unless owner re-pins.
+
+RESTORE SOURCE TO EXACT r6 (optional, before prepare-publish)
+-------------------------------------------------------------
+cd C:\Users\jared\Projects\lifepunchaddons
+git checkout d5e294b -- lifepunch/addons/Code/Addons/lifepunch/adminmenu/
+# then prepare-publish + Sync-DesktopPublishFolder as above

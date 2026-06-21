@@ -3,63 +3,6 @@
 Proprietary & Confidential — © 2026 lifepunch.co. Sole-owned IP of lifepunch.co.
 Portal package: **lifepunchulx** (s&box ident `lifepunch.ulx`).
 
-## Portal r9 — v3.0.0 republication (2026-06-17)
-
-- **Portal revision r9** — owner manual upload; **6 ship files** (~47 KB code). Same menu as r6; supersedes experimental r7/r8.
-- **Upload path:** `Code/Addons/lifepunch/adminmenu/` (repo ident `adminmenu`, portal slug `lifepunchulx`).
-- **Repo:** `997630a` reverted Jun 17 11-file publish gate; `prepare-publish.ps1 -Addon adminmenu` restores r6-shaped staging.
-- **Pin:** lifepunchulx **r9** on Development gamemode when ready; Blue `server2_start.bat` re-downloads from api.dxrp.net.
-
-## v3.0.0 — first production publish (2026-06-16)
-
-**In-game title unchanged:** header still reads **Admin Menu** (subtitle **ULX Console**). Opens via `lifepunchulx`, `/lifepunchulx`, or aliases `menu` / `ulx`.
-
-### Architecture (unchanged promise)
-
-- Thin UX + dispatch layer over DXRP's native admin backend — no new authority, every action re-validated host-side.
-- Permission-gated UI via live `RankSystem.HasLocalPermission`; `CanLocalTarget` locks equal/higher ranks.
-- Code-only package (6 ship files); no Assets or content rows. Dev helpers (`*TestBots*`) excluded from publish staging.
-
-### Command catalog (25 actions)
-
-- **Moderation (7):** Kick, Ban, Jail, Gag, Warn, Spectate, Screenshot.
-- **Commands (13):** God, Cloak, Incognito, Fake Disconnect, Freeze, Set Health, Arrest, Unarrest, Force RP Name, Cancel Demote, Clear Props, Force Sell Door.
-- **Ability (5):** Goto, Bring, Return, Teleport All, Noclip.
-- Per-rank **ban-duration ceiling** (client UX guardrail) with quick-pick chips (1h → permanent).
-- Hover tooltips on every command and player row.
-
-### Tabs & tools
-
-- **Moderation / Commands / Ability** — uniform 4-per-row action grid; active-tab highlight preserves hover.
-- **Waypoints** — go / set / clear; live saved-waypoint list synced from the host via addon-owned `WaypointSyncService` (no DXRP core edits).
-- **Audit** — in-menu log with Player ID + Entity ID filters (portal-mirrored columns; live API bind pending — see TECH_DEBT STAFF-07).
-- **Settings** — owner-configurable network website URL (`lifepunchulx.settings.edit`); UI Scale S / M / L / XL (canonical **XL 1160×700**); read-only network tag + click-to-copy website link.
-
-### Player intelligence
-
-- Collapsible **Staff** + **Players** sidebar sections with tier grouping; live online count; empty reference tiers (Owner / Super Admin / Admin / Mod) for ladder context.
-- Search by name or paste **SteamID64** to target off-roster players.
-- Profile pane: avatar, Steam ID (copy), role (rank color), job (job color), time played, health, armor, cash/bank, kills/deaths — all live session reads.
-- Quick **Goto / Bring / Return** from profile; **Return a player** by SteamID64 on Waypoints tab.
-- **View Audit** shortcut from profile when permitted.
-
-### UX & stability
-
-- HUD-mounted panel (`GameManager.ShowUi`) — menu is fully clickable on DXRP servers; `LockCamera` while open.
-- Shared LIFEPUNCH chrome: `LifePunchUiFooter`, 22px shell radius, header network chip, ULX blue palette.
-- Copy-to-clipboard: network tag, profile Steam ID, website link — each with "Copied!" feedback.
-- Throttled roster rebuilds + cached stat hash (no sidebar/hover flicker); scroll-capped lists; locked header/tab heights.
-- **LifePunchUiScrollPolicy** — wheel-only scroll, drag-scroll disabled, clamped offsets (sidebar roster, audit, waypoints at XL).
-- Waypoints list layout fix at XL scale; collapsible sidebar rail with cog spacing polish.
-
-### Known / not in v3.0.0
-
-- Footer **Player & Staff Management** → "Coming Soon" placeholder.
-- Sanction history in profile pane (async API — TECH_DEBT STAFF-06).
-- Live audit fetch on dxrp.net build returns empty until `ServerApiClient` exposes the read (STAFF-07).
-
----
-
 ## v2.0.0
 
 Core updates
@@ -73,10 +16,6 @@ Core updates
 - **Roster overhaul** — collapsible player sidebar, de-duped Players vs. tiered Staff sections (no more double "Owner"/double-highlight), live "Online Players (N)" head-count, and online indicators on the collapsed rail.
 - **Stability & polish** — fixed sidebar/hover flicker (throttled per-frame rebuilds + cached stat hash), centered Material Icons glyphs, scroll-capped lists, locked header/tab heights, and pixel-aligned header controls.
 - **Command rebrand** — single entry point `lifepunchulx` / `/lifepunchulx` (removed `staffmenu` and `adminmenu` aliases).
-
-## v2.0.4
-
-- **UI Scale** — Settings uses S / M / L / XL steps anchored on **XL (1160×700)** as the canonical layout; smaller steps only trim the shell slightly (no per-step squish of buttons, sidebar, or icons). Default scale is XL. Sidebar **Staff / Players** roster uses section + tier wrappers with clearer header/rank/player spacing for long scrollable lists (~70 players).
 
 ## v2.0.3 — publish-ready
 
