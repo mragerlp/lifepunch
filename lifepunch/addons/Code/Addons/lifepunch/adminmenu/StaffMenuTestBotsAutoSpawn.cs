@@ -78,7 +78,7 @@ public sealed class StaffMenuTestBotsAutoSpawn : GameObjectSystem<StaffMenuTestB
 		}
 
 		var ranks = RankSystem.Instance;
-		if ( !ranks.IsValid() || !StaffMenuTestBots.TryFindRankIdByName( ranks, "VIP" ).HasValue )
+		if ( !ranks.IsValid() || !ranks.FindRankIdByName( "VIP" ).HasValue )
 		{
 			return;
 		}

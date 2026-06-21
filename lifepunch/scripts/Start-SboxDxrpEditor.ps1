@@ -51,6 +51,7 @@ param(
     [switch] $NoLaunch,
     [switch] $ReplaceExisting,
     [switch] $ForceNew,
+    [switch] $SkipOverlays,
     [string] $ConfigPath = ''
 )
 
@@ -124,8 +125,11 @@ if (Test-Path -LiteralPath $sweepExec) {
 }
 
 $overlaySync = Join-Path $Here 'Sync-DxrpEditorOverlays.ps1'
-if (Test-Path -LiteralPath $overlaySync) {
+if (-not $SkipOverlays -and (Test-Path -LiteralPath $overlaySync)) {
     & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $overlaySync -ConfigPath $ConfigPath
+}
+elseif ($SkipOverlays) {
+    Write-Host 'Skip LifePunch editor overlays (vanilla workbench).' -ForegroundColor DarkGray
 }
 
 if (-not $NoSync) {

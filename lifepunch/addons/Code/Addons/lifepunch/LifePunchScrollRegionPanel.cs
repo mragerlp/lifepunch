@@ -19,7 +19,7 @@ public class LifePunchScrollRegionPanel : Panel
 	private const float WheelStep = 48f;
 
 	/// <summary>When true, new log lines stick to the bottom; wheel-up clears until user returns near bottom.</summary>
-	public bool PreferScrollToBottom { get; set; } = true;
+	public new bool PreferScrollToBottom { get; set; } = true;
 
 	public LifePunchScrollRegionPanel()
 	{

@@ -28,6 +28,7 @@ reference/**/third-party-bitcoin-mining-study/
 lifepunch/scripts/remote-hosts.local.json
 lifepunch/scripts/server-host-watch.local.json
 lifepunch/scripts/dxrp-editor.local.json
+lifepunch/scripts/dxrp-vanilla-editor.local.json
 lifepunch/scripts/modeldoc-studio.local.json
 lifepunch/scripts/.session-sync-state.json
 

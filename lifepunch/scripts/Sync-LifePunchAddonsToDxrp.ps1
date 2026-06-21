@@ -26,11 +26,13 @@ param(
     [string[]] $Addon = @('lpbitcoin'),
     [switch] $All,
     [string] $ConfigPath = '',
-    [switch] $WhatIf
+    [switch] $WhatIf,
+    [switch] $AllowVanillaSync
 )
 
 $ErrorActionPreference = 'Stop'
 $Here = if ($PSScriptRoot) { $PSScriptRoot } else { Split-Path -Parent $MyInvocation.MyCommand.Path }
+. (Join-Path $Here 'Dxrp-VanillaWipe.ps1')
 if (-not $ConfigPath) { $ConfigPath = Join-Path $Here 'dxrp-editor.local.json' }
 if (-not (Test-Path -LiteralPath $ConfigPath)) {
     throw "Missing $ConfigPath - copy dxrp-editor.local.json.example first."
@@ -46,6 +48,14 @@ $repoAssetsRoot = Join-Path $repoAddons 'Assets\addons\lifepunch'
 $repoCodeRoot = Join-Path $repoAddons 'Code\Addons\lifepunch'
 $dxrpAssetsRoot = Join-Path $dxrpGame 'Assets\addons\lifepunch'
 $dxrpCodeRoot = Join-Path $dxrpGame 'Code\Addons\lifepunch'
+
+if ((Test-DxrpVanillaWorkbench -DxrpGameRoot $dxrpGame) -and -not $AllowVanillaSync) {
+    throw @"
+BLOCKED: refusing to sync LifePunch into dxrp-vanilla workbench (would restore lp_* commands).
+
+Use the polluted DXRP editor (dxrp-editor.local.json) for LifePunch sync, or pass -AllowVanillaSync deliberately.
+"@
+}
 
 function Get-AddonIdents {
     if ($All) {

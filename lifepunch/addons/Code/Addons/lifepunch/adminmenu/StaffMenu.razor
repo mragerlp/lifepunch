@@ -728,7 +728,7 @@
 	// Settings tab (opened by the header cog): UI scale + owner-configurable network website.
 	private string _websiteDraft = "";
 	private bool _websiteCopied;
-	private LifePunchUiScaleSize _uiScale = LifePunchUiScale.Default;
+	private LifePunchUiScaleSize _uiScale;
 	private static readonly LifePunchUiScaleSize[] _uiScaleOptions =
 	{
 		LifePunchUiScaleSize.Small,
@@ -748,6 +748,7 @@
 
 	protected override void OnStart()
 	{
+		_uiScale = StaffMenuHost.SavedUiScale;
 		RefreshRoster();
 		LifePunchUiScrollPolicy.Apply( Panel );
 
@@ -1207,6 +1208,7 @@
 	private void SetUiScale( LifePunchUiScaleSize size )
 	{
 		_uiScale = size;
+		StaffMenuHost.SavedUiScale = size;
 		StateHasChanged();
 		LifePunchUiScrollPolicy.Apply( Panel, resetOffset: true );
 	}

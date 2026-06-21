@@ -1,0 +1,7 @@
+﻿{
+    "api":  "production",
+    "sboxDevPath":  "D:/Steam/steamapps/common/sbox/sbox-dev.exe",
+    "projectPath":  "D:/Steam/steamapps/common/sbox/dxrp-vanilla/game/rp.sbproj",
+    "serverToken":  "",
+    "_notes":  "Vanilla DXRP workbench - no LifePunch mounts. Sync addons explicitly via Sync-LifePunchAddonsToDxrp.ps1 -ConfigPath dxrp-vanilla-editor.local.json -Addon \u003cident\u003e. Launch: Start-SboxDxrpVanillaEditor.ps1"
+}

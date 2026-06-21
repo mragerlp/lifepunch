@@ -14,7 +14,6 @@
 using System.Collections.Generic;
 using Sandbox;
 using Dxura.RP.Game;
-using Dxura.RP.Shared;
 
 namespace LifePunch.DXRP.Addons.StaffMenu;
 
@@ -50,33 +49,6 @@ public static class StaffMenuTestBots
 
 	private static int _spawnCount;
 	private static readonly List<long> _spawned = new();
-	private static readonly Dictionary<string, Guid> _rankIdsByName =
-		new( StringComparer.OrdinalIgnoreCase );
-
-	internal static void CacheRankDefinitions( IEnumerable<RankDto> definitions )
-	{
-		_rankIdsByName.Clear();
-		if ( definitions == null )
-		{
-			return;
-		}
-
-		foreach ( var rank in definitions )
-		{
-			if ( rank == null )
-			{
-				continue;
-			}
-
-			var name = NormalizeRankName( rank.Name );
-			if ( string.IsNullOrWhiteSpace( name ) )
-			{
-				continue;
-			}
-
-			_rankIdsByName[name] = rank.Id;
-		}
-	}
 
 	[ConCmd( "lifepunch_spawn_testbot" )]
 	public static void SpawnTestBot( string name = "" )
@@ -210,8 +182,8 @@ public static class StaffMenuTestBots
 
 	// One bot per rank, in display order. Rank "" means no assignment — a regular/default player who
 	// holds no explicit rank (so GetPlayerRank falls back to the portal's default "None"). Named ranks
-	// resolve against the live portal rank table via <see cref="TryFindRankIdByName"/> (lifepunch_list_ranks
-	// confirms strings). The SteamIds are PUBLIC placeholder accounts so each bot resolves a real Steam avatar in
+	// resolve against the live portal via RankSystem.FindRankIdByName (lifepunch_list_ranks confirms the
+	// strings). The SteamIds are PUBLIC placeholder accounts so each bot resolves a real Steam avatar in
 	// the menus/chat — swap freely; they only need to be valid, public, and NOT the dev's own id (a bot
 	// sharing the dev's id would share rank/CanTarget state). "Greg" mirrors Owner for killswitch tests.
 	private static readonly (string Name, string Rank, long SteamId)[] RankBots =
@@ -337,7 +309,7 @@ public static class StaffMenuTestBots
 				continue;
 			}
 
-			var rankId = TryFindRankIdByName( ranks, def.Rank );
+			var rankId = ranks.FindRankIdByName( def.Rank );
 			if ( !rankId.HasValue )
 			{
 				Log.Warning( $"lifepunch_spawn_rankbots: rank '{def.Rank}' not found for '{def.Name}' — left as regular." );
@@ -378,7 +350,7 @@ public static class StaffMenuTestBots
 		Log.Info( "[lifepunch_list_ranks] probing rank names (name -> rank Guid):" );
 		foreach ( var name in candidates )
 		{
-			var id = TryFindRankIdByName( ranks, name );
+			var id = ranks.FindRankIdByName( name );
 			Log.Info( $"  {name,-14} -> {(id.HasValue ? id.Value.ToString() : "(not found)")}" );
 		}
 
@@ -424,15 +396,7 @@ public static class StaffMenuTestBots
 			return;
 		}
 
-		var manager = GameNetworkManager.Instance;
-		var botName = botToken;
-		if ( manager.IsValid() && manager.Players.TryGetValue( steamId, out var bot ) && bot.IsValid() )
-		{
-			botName = bot.DisplayName;
-		}
-
-		// BroadcastBotChat was removed from DXRP — prefix the bot name in a global line for dev chat tests.
-		chat.BroadcastChat( $"{botName}: {message}", MessageType.GlobalChat );
+		chat.BroadcastBotChat( steamId, message, MessageType.GlobalChat );
 	}
 
 	// Resolve a spawned bot by raw SteamId or by a case-insensitive substring of its display name.
@@ -485,51 +449,6 @@ public static class StaffMenuTestBots
 		var rot = local.WorldRotation;
 		var lateral = ( index - 3 ) * 50f; // centre the row on the forward axis
 		return local.WorldPosition + rot.Forward * 110f + rot.Right * lateral + Vector3.Up * 10f;
-	}
-
-	/// <summary>Rank lookup uses portal cache from <see cref="CacheRankDefinitions"/> (no reflection).</summary>
-	internal static Guid? TryFindRankIdByName( RankSystem ranks, string rankName )
-	{
-		if ( !ranks.IsValid() || string.IsNullOrWhiteSpace( rankName ) )
-		{
-			return null;
-		}
-
-		var key = NormalizeRankName( rankName );
-		if ( _rankIdsByName.TryGetValue( key, out var id ) )
-		{
-			return id;
-		}
-
-		return null;
-	}
-
-	private static string NormalizeRankName( string raw )
-	{
-		if ( string.IsNullOrEmpty( raw ) )
-		{
-			return "";
-		}
-
-		var sb = new System.Text.StringBuilder( raw.Length );
-		foreach ( var c in raw )
-		{
-			if ( char.IsControl( c ) || char.IsSurrogate( c ) )
-			{
-				continue;
-			}
-
-			var cat = System.Globalization.CharUnicodeInfo.GetUnicodeCategory( c );
-			if ( cat is System.Globalization.UnicodeCategory.Format
-				or System.Globalization.UnicodeCategory.PrivateUse )
-			{
-				continue;
-			}
-
-			sb.Append( c );
-		}
-
-		return sb.ToString().Trim();
 	}
 }
 

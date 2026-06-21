@@ -114,6 +114,11 @@ internal static class StaffMenuHost
 #endif
 	}
 
+	/// <summary>
+	/// Client-local UI scale preference — survives menu close/reopen for the session (not portal-persisted).
+	/// </summary>
+	public static LifePunchUiScaleSize SavedUiScale { get; set; } = LifePunchUiScaleSize.ExtraLarge;
+
 	// --- Open / close ------------------------------------------------------
 
 	/// <summary>
