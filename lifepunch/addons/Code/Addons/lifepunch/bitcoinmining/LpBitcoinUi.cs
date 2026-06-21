@@ -67,12 +67,11 @@ internal static class LpBitcoinUi
 		if ( hub.GetLinkedRacks().Count > 0 )
 			return;
 
-		for ( var i = 0; i < 2; i++ )
+		for ( var i = 0; i < LpBitcoinIdent.PortalMaxRacksPerHub; i++ )
 		{
 			var rackGo = scene.CreateObject();
-			rackGo.Name = i == 0 ? "LpBitcoinPreviewRackStd" : "LpBitcoinPreviewRackAdv";
+			rackGo.Name = $"LpBitcoinPreviewRack{i + 1}";
 			var rack = rackGo.AddComponent<LpBitcoinRackEntity>();
-			rack.AdvancedRack = i == 1;
 			rack.LinkToHub( hub );
 		}
 	}

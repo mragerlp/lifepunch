@@ -35,60 +35,53 @@ public static class LpBitcoinIdent
 	/// <summary>Hub durability — heavier than DXRP money printer (100).</summary>
 	public const float HubMaxHealth = 250f;
 
-	/// <summary>Standard GPU rack durability.</summary>
-	public const float RackMaxHealth = 250f;
+	/// <summary>GPU rack farm durability (stacked mesh — single ship tier).</summary>
+	public const float RackMaxHealth = 500f;
 
-	/// <summary>Advanced (stacked) GPU rack durability.</summary>
-	public const float AdvancedRackMaxHealth = 500f;
+	/// <summary>Baseline rack yield multiplier — CPU/core upgrades drive effective rate (no small vs stacked tier).</summary>
+	public const float BaseRackYieldMultiplier = 1f;
 
-	/// <summary>Standard GPU rack mining yield multiplier.</summary>
-	public const float StandardRackYield = 1f;
+	/// <summary>DXRP Market caps per operator (portal content rows — enforced by gamemode at purchase/spawn).</summary>
+	public const int PortalMaxHubsPerOperator = 1;
+	public const int PortalMaxTerminalsPerOperator = 1;
 
-	/// <summary>Advanced GPU rack mining yield multiplier (2× standard).</summary>
-	public const float AdvancedRackYield = 2f;
+	/// <summary>HASHD / rig0 slot prefix — GPURack-1 … GPURack-3.</summary>
+	public const string RackSlotPrefix = "GPURack";
 
-	/// <summary>HASHD / rig0 slot prefix — first standard rack = GPURack-1.</summary>
-	public const string StandardRackSlotPrefix = "GPURack";
+	/// <summary>DXRP portal cap per hub (max GPU racks linked to one hub).</summary>
+	public const int PortalMaxRacksPerHub = 3;
 
-	/// <summary>HASHD / rig0 slot prefix — first advanced rack = AdvancedGPURack-1.</summary>
-	public const string AdvancedRackSlotPrefix = "AdvancedGPURack";
+	public const string RackSlug = "gpu-rack";
+	public const string RackDisplayName = "GPU Rack";
+	public const string RackModelPath =
+		"addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/gpu-rack/gpu-rack-stacked.vmdl";
 
-	/// <summary>DXRP portal cap per hub (market/content rows — not enforced in dev spawn).</summary>
-	public const int PortalMaxStandardRacksPerHub = 2;
-
-	/// <summary>DXRP portal cap per hub (market/content rows — not enforced in dev spawn).</summary>
-	public const int PortalMaxAdvancedRacksPerHub = 2;
+	/// <summary>Canonical prefab — prefab path rename to gpurack/gpu-rack pending (BITCOINMINING-07).</summary>
+	public const string RackPrefabPath =
+		"addons/lifepunch/bitcoinmining/entities/advancedgpurack/advanced-gpu-rack.prefab";
 
 	/// <summary>Operator-facing rack slot (1-based). Internal APIs stay 0-based.</summary>
 	public static int DisplayRackNumber( int zeroBasedIndex ) => zeroBasedIndex + 1;
 
-	/// <summary>Operator-facing rack ID — e.g. GPURack-1, AdvancedGPURack-1 (per-type slot).</summary>
+	/// <summary>Operator-facing rack ID — e.g. GPURack-1 … GPURack-3.</summary>
 	public static string FormatRackSlotId( LpBitcoinRackEntity rack, IReadOnlyList<LpBitcoinRackEntity> linkedRacks )
 	{
 		if ( !TryGetRackSlotNumber( rack, linkedRacks, out var slot ) )
-			return rack.IsValid() && rack.AdvancedRack ? $"{AdvancedRackSlotPrefix}-?" : $"{StandardRackSlotPrefix}-?";
+			return $"{RackSlotPrefix}-?";
 
-		return rack.AdvancedRack
-			? $"{AdvancedRackSlotPrefix}-{slot}"
-			: $"{StandardRackSlotPrefix}-{slot}";
+		return $"{RackSlotPrefix}-{slot}";
 	}
 
-	/// <summary>Hub UI label — e.g. GPU Rack 1, Advanced GPU Rack 1.</summary>
+	/// <summary>Hub UI label — e.g. GPU Rack 1 … GPU Rack 3.</summary>
 	public static string FormatRackSlotDisplayName( LpBitcoinRackEntity rack, IReadOnlyList<LpBitcoinRackEntity> linkedRacks )
 	{
 		if ( !TryGetRackSlotNumber( rack, linkedRacks, out var slot ) )
-			return rack.IsValid() && rack.AdvancedRack ? $"{AdvancedRackDisplayName} ?" : $"{RackDisplayName} ?";
+			return $"{RackDisplayName} ?";
 
-		return rack.AdvancedRack
-			? $"{AdvancedRackDisplayName} {slot}"
-			: $"{RackDisplayName} {slot}";
+		return $"{RackDisplayName} {slot}";
 	}
 
-	/// <summary>rig0 / CRT copy token — lowercase slot id (advancedgpurack-1).</summary>
-	/// <remarks>
-	/// Canonical pairs: GPU Rack 1 → gpurack-1 · Advanced GPU Rack 1 → advancedgpurack-1
-	/// (per-type slot — standard and advanced racks number independently).
-	/// </remarks>
+	/// <summary>rig0 / CRT copy token — e.g. gpurack-1 (lowercase slot id).</summary>
 	public static string FormatRackSlotTerminalToken( LpBitcoinRackEntity rack, IReadOnlyList<LpBitcoinRackEntity> linkedRacks )
 		=> FormatRackSlotId( rack, linkedRacks ).ToLowerInvariant();
 
@@ -103,7 +96,7 @@ public static class LpBitcoinIdent
 
 		foreach ( var candidate in linkedRacks )
 		{
-			if ( !candidate.IsValid() || candidate.AdvancedRack != rack.AdvancedRack )
+			if ( !candidate.IsValid() )
 				continue;
 
 			slot++;
@@ -127,19 +120,13 @@ public static class LpBitcoinIdent
 		zeroBasedIndex = slot - 1;
 		return true;
 	}
+
 	public const string TerminalDisplayName = "Bitcoin Terminal";
 	public const string TerminalModelPath =
 		"addons/lifepunch/lpbitcoin/hashdterminal/assets/models/hashd-terminal.vmdl";
 
 	/// <summary>Terminal durability — matches DXRP money printer baseline (100).</summary>
 	public const float TerminalMaxHealth = 100f;
-	public const string RackDisplayName = "GPU Rack";
-	public const string AdvancedRackDisplayName = "Advanced GPU Rack";
-
-	public const string AdvancedRackSlug = "advanced-gpu-rack";
-
-	public const string RackPrefabPath = "addons/lifepunch/bitcoinmining/entities/gpurack/gpu-rack.prefab";
-	public const string AdvancedRackPrefabPath = "addons/lifepunch/bitcoinmining/entities/advancedgpurack/advanced-gpu-rack.prefab";
 	public const string TerminalPrefabPath = "addons/lifepunch/bitcoinmining/entities/bitcoin-terminal/bitcoin-terminal.prefab";
 
 	/// <summary>HASHD hub + terminal UI — transparent Bitcoin mark (sidebar / PIN gate).</summary>
@@ -148,4 +135,38 @@ public static class LpBitcoinIdent
 
 	/// <summary>Canonical Bitcoin glyph for UI copy, server titles, and docs (Unicode U+20BF).</summary>
 	public const string BtcEmoji = "₿";
+
+	// Legacy aliases — remove when prefab paths and portal rows finish rename (BITCOINMINING-07).
+	[Obsolete( "Use RackPrefabPath — single GPU rack farm entity." )]
+	public const string AdvancedRackPrefabPath = RackPrefabPath;
+
+	[Obsolete( "Use RackDisplayName — advanced tier merged into GPU Rack." )]
+	public const string AdvancedRackDisplayName = RackDisplayName;
+
+	[Obsolete( "Use RackSlug." )]
+	public const string AdvancedRackSlug = RackSlug;
+
+	[Obsolete( "Use BaseRackYieldMultiplier — tier yield removed." )]
+	public const float AdvancedRackYield = BaseRackYieldMultiplier;
+
+	[Obsolete( "Use BaseRackYieldMultiplier." )]
+	public const float StandardRackYield = BaseRackYieldMultiplier;
+
+	[Obsolete( "Use RackMaxHealth." )]
+	public const float AdvancedRackMaxHealth = RackMaxHealth;
+
+	[Obsolete( "Use PortalMaxRacksPerHub." )]
+	public const int PortalMaxAdvancedRacksPerHub = PortalMaxRacksPerHub;
+
+	[Obsolete( "Single rack tier — always 0." )]
+	public const int PortalMaxStandardRacksPerHub = 0;
+
+	[Obsolete( "Single rack tier shipped." )]
+	public const bool StandardRackShipParked = true;
+
+	[Obsolete( "Use RackSlotPrefix." )]
+	public const string StandardRackSlotPrefix = RackSlotPrefix;
+
+	[Obsolete( "Use RackSlotPrefix." )]
+	public const string AdvancedRackSlotPrefix = RackSlotPrefix;
 }

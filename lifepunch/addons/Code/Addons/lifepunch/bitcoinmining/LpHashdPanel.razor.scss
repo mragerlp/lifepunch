@@ -620,6 +620,87 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		}
 	}
 
+	.header-power-switch {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: 10px;
+		height: 36px;
+		padding: 4px 12px 4px 6px;
+		border-radius: 999px;
+		background-color: $hashd-card;
+		border: 1px solid $hashd-border;
+		cursor: pointer;
+		flex-shrink: 0;
+
+		&:hover {
+			border-color: rgba(232, 125, 62, 0.35);
+		}
+
+		&.on {
+			border-color: rgba(95, 211, 141, 0.45);
+			background-color: rgba(95, 211, 141, 0.08);
+
+			.power-switch-track {
+				background-color: rgba(95, 211, 141, 0.35);
+				border-color: rgba(95, 211, 141, 0.55);
+			}
+
+			.power-switch-knob {
+				left: 18px;
+				background-color: $hashd-green;
+			}
+
+			.power-switch-label {
+				color: $hashd-green;
+			}
+		}
+
+		&.off {
+			.power-switch-label {
+				color: $hashd-muted;
+			}
+		}
+	}
+
+	.power-switch-track {
+		position: relative;
+		width: 36px;
+		height: 20px;
+		border-radius: 999px;
+		background-color: rgba(0, 0, 0, 0.45);
+		border: 1px solid rgba(255, 255, 255, 0.12);
+		flex-shrink: 0;
+	}
+
+	.power-switch-knob {
+		position: absolute;
+		top: 2px;
+		left: 2px;
+		width: 14px;
+		height: 14px;
+		border-radius: 999px;
+		background-color: #6b7280;
+		transition: left 0.12s ease, background-color 0.12s ease;
+	}
+
+	.power-switch-label {
+		font-size: 11px;
+		font-weight: 700;
+		letter-spacing: 0.04em;
+		color: $hashd-text;
+		white-space: nowrap;
+	}
+
+	.overview-intro-power-hint {
+		width: 100%;
+		font-size: 11px;
+		color: $hashd-amber-glow;
+		font-weight: 600;
+		text-align: right;
+		margin-top: 4px;
+	}
+
 	.notif-list {
 		display: flex;
 		flex-direction: column;
@@ -2184,6 +2265,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		gap: $hashd-page-stack;
 		flex: 1 1 auto;
 		min-height: 0;
+		padding: 0 6px 10px;
 	}
 
 	.settings-section {
@@ -2195,7 +2277,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	}
 
 	.settings-section.lp-hashd-surface {
-		padding: $hashd-surface-pad;
+		padding: 16px 18px 18px;
 	}
 
 	.settings-label {
@@ -2280,20 +2362,23 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;
-		gap: $hashd-surface-gap;
-		margin-top: 2px;
+		gap: 10px;
+		margin-top: 8px;
 		width: 100%;
+		padding: 0 2px;
+		box-sizing: border-box;
 
 		.lp-ui-btn-primary,
 		.lp-ui-btn-ghost {
-			flex: 1 1 140px;
+			flex: 1 1 0;
 			display: flex;
 			flex-direction: row;
 			align-items: center;
 			justify-content: center;
-			min-width: 120px;
-			min-height: 38px;
-			padding: 10px 14px;
+			min-width: 0;
+			max-width: 100%;
+			min-height: 40px;
+			padding: 10px 16px;
 			font-size: 11px;
 			font-weight: 900;
 			line-height: 1.2;

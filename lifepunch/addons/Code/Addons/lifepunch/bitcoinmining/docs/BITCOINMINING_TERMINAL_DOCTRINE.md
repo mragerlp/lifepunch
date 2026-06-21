@@ -15,9 +15,9 @@
 | **HASHD monitor** (`bitcoin-terminal`) | rig0 ops console | **Yes** → CRT (hub-linked + powered) |
 | **GPU Rack** (`gpu-rack` / large) | Linked compute — accrues BTC on rack | **No** — racks do not open the CRT |
 
-**Terminal access is only through the bitcoin terminal entity.** GPU Rack and Advanced GPU Rack never open the CRT. Mine/stop/deposit commands are typed at the terminal; rack USE is disabled.
+**Terminal access is only through the bitcoin terminal entity.** GPU Rack entities never open the CRT. Mine/stop/deposit commands are typed at the terminal; rack USE is disabled.
 
-Terminal registers to a hub only when the operator links it from **hub admin → Settings** (within `LinkRange`, default 512u). Until linked, USE on the terminal is disabled and the LCD shows **NOT LINKED**. A linked terminal is required to **deposit** rack BTC into the hub wallet. Racks link via `LinkedHubId` (kit spawn or placement flow).
+Terminal registers to a hub only when the operator links it from **hub admin → Overview or Settings** while **hub power is on** (within `LinkRange`, default 512u). Until linked, USE on the terminal is disabled and the LCD shows **NOT LINKED** or **POWER OFF**. A linked terminal is required to **deposit** rack BTC into the hub wallet. Racks link via rig0 **`link`** at the CRT (hub powered + terminal linked). Operator flow: `docs/BITCOINMINING_OPERATOR_FLOW.md`.
 
 ## Hub wallet flow (PIN-gated)
 

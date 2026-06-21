@@ -112,6 +112,14 @@
 							</div>
 
 							<div class="header-widgets">
+								<button class="header-power-switch @(Hub?.IsPowered == true ? "on" : "off")"
+								        tooltip="@(Hub?.IsPowered == true ? "Power off hub" : "Power on hub")"
+								        onclick="@ToggleHubPower">
+									<span class="power-switch-track">
+										<span class="power-switch-knob"></span>
+									</span>
+									<span class="power-switch-label">@(Hub?.IsPowered == true ? "POWER ON" : "POWER OFF")</span>
+								</button>
 								<button class="header-chip wallet-chip" onclick="@SelectWalletTab">
 									<i class="material-icons">account_balance_wallet</i>
 									<span>@HeaderWalletBtc() BTC</span>
@@ -143,7 +151,7 @@
 										<div class="overview-intro-shell">
 											<div class="lp-ui-intro overview-intro">
 												<div class="overview-intro-copy">
-													Manage linked GPU racks, wallet payout, and hub power from this panel. Set your PIN, power on, link the terminal here, then register racks at rig0 on the CRT.
+													Buy from DXRP Market → place hub → set PIN → <strong>power on</strong> (header switch) → link terminal → register up to @LpBitcoinIdent.PortalMaxRacksPerHub GPU racks at rig0 on the CRT.
 												</div>
 												<div class="overview-intro-terminal-spacer"></div>
 												<div class="overview-intro-terminal">
@@ -158,11 +166,15 @@
 													}
 													else if ( HasNearbyUnlinkedTerminal() )
 													{
-														<button class="lp-ui-btn-primary" onclick="@LinkNearbyTerminal">Link terminal</button>
+														<button class="lp-ui-btn-primary" disabled="@(!HubIsPowered())" onclick="@LinkNearbyTerminal">Link terminal</button>
 													}
 													else
 													{
 														<button class="lp-ui-btn-ghost overview-intro-terminal-disabled" disabled>No terminal in range</button>
+													}
+													@if ( !HubIsPowered() && !HasLinkedTerminal() )
+													{
+														<div class="overview-intro-power-hint">Power on before linking.</div>
 													}
 												</div>
 												</div>
@@ -185,6 +197,8 @@
 														</div>
 														<div class="lp-ui-empty-callout-title">No racks linked</div>
 														<div class="lp-ui-empty-callout-body">
+															<div class="lp-ui-empty-callout-step">Power on the hub (header switch).</div>
+															<div class="lp-ui-empty-callout-step">Power on the hub (header switch).</div>
 															<div class="lp-ui-empty-callout-step">Link the terminal above.</div>
 															<div class="lp-ui-empty-callout-step">At rig0 on the CRT, type:</div>
 															<div class="lp-ui-empty-callout-cmd">link</div>
@@ -288,7 +302,7 @@
 											@if ( LinkedRackCount() > 0 )
 											{
 												<div class="lp-ui-intro">
-													Rack IDs (<strong>GPURack-1</strong>, <strong>AdvancedGPURack-1</strong>, …) match rig0 slots at the terminal. Open <strong>Upgrade</strong> for CPU and core paths — start/stop mining on the CRT.
+													Rack slots (<strong>GPURack-1</strong> … <strong>GPURack-@LpBitcoinIdent.PortalMaxRacksPerHub</strong>) match rig0 at the terminal. Open <strong>Upgrade</strong> for CPU and core paths — start/stop mining on the CRT.
 												</div>
 											}
 
@@ -638,8 +652,8 @@
 
 											<div class="settings-sections">
 												<div class="settings-section lp-hashd-surface">
-													<div class="settings-label">Hub Power</div>
-													<div class="settings-hint">Turn the HASHD hub on or off. Racks stop accruing when power is off.</div>
+													<div class="settings-label">Hub power</div>
+													<div class="settings-hint">Turn the HASHD hub on or off. Matches the header switch — racks stop accruing when power is off; nothing links while off.</div>
 													<div class="settings-actions">
 														<button class="@(Hub?.IsPowered == true ? "lp-ui-btn-primary" : "lp-ui-btn-ghost")" onclick="@PowerOn">Power on</button>
 														<button class="@(Hub?.IsPowered != true ? "lp-ui-btn-primary" : "lp-ui-btn-ghost")" onclick="@PowerOff">Power off</button>
@@ -712,10 +726,12 @@
 													<div class="settings-label">Bitcoin terminal</div>
 													<div class="settings-hint">
 														@( HasLinkedTerminal()
-															? "Linked terminal can open rig0 when hub power is on."
-															: HasNearbyUnlinkedTerminal()
-																? "Unlinked terminal in range — register it to enable rig0 ops."
-																: "Place a bitcoin terminal within link range, then register it here." )
+															? "Linked terminal opens rig0 when hub power is on."
+															: !HubIsPowered()
+																? "Power on the hub before linking a terminal."
+																: HasNearbyUnlinkedTerminal()
+																	? "Unlinked terminal in range — register it to enable rig0 ops."
+																	: "Place a bitcoin terminal within link range, then register it here." )
 													</div>
 													<div class="settings-meta">
 														<div class="settings-meta-row">
@@ -731,7 +747,7 @@
 														}
 													</div>
 													<div class="settings-actions">
-														<button class="@(HasLinkedTerminal() ? "lp-ui-btn-ghost" : "lp-ui-btn-primary")" disabled="@HasLinkedTerminal()" onclick="@LinkNearbyTerminal">Link terminal</button>
+														<button class="@(HasLinkedTerminal() ? "lp-ui-btn-ghost" : "lp-ui-btn-primary")" disabled="@(HasLinkedTerminal() || !HubIsPowered())" onclick="@LinkNearbyTerminal">Link terminal</button>
 														<button class="@(HasLinkedTerminal() ? "lp-ui-btn-primary" : "lp-ui-btn-ghost")" disabled="@(!HasLinkedTerminal())" onclick="@UnlinkTerminal">Unlink terminal</button>
 													</div>
 												</div>
@@ -978,15 +994,15 @@
 
 	private static string RackYieldLabel( LpBitcoinRackEntity rack )
 		=> !rack.IsValid()
-			? "yield ×1"
-			: rack.AdvancedRack ? "yield ×2" : "yield ×1";
+			? "—"
+			: $"{rack.ClockGhz:F2} GHz · {rack.CoreCount} core(s)";
 
 	private static string RackOverviewSubline( LpBitcoinRackEntity rack )
 	{
 		if ( !rack.IsValid() )
 			return "—";
 
-		var cap = LpBitcoinEconomy.RackBtcCapacity( rack.AdvancedRack );
+		var cap = LpBitcoinEconomy.RackBtcCapacity;
 		var fill = cap > 0f ? (int)Math.Round( 100f * rack.BitcoinAmount / cap ) : 0;
 		var rate = rack.IsMining ? $"{rack.MiningRatePerMinute * 18.5f:F1} TH/s" : "idle";
 		return $"{rate} · {rack.BitcoinAmount:F4}/{cap:F4} BTC ({fill}%)";
@@ -994,7 +1010,7 @@
 
 	private static string RackBtcLine( LpBitcoinRackEntity rack )
 	{
-		var cap = LpBitcoinEconomy.RackBtcCapacity( rack.AdvancedRack );
+		var cap = LpBitcoinEconomy.RackBtcCapacity;
 		var state = rack.BitcoinAmount >= cap ? "full" : rack.IsMining ? "mining" : "idle";
 		return $"{rack.BitcoinAmount:F6} / {cap:F6} BTC · ${rack.UsdValue:N0} · {state}";
 	}
@@ -1205,6 +1221,15 @@
 	private void Close() => LpHashdUiHost.CloseOpen();
 	private void PowerOn() => Hub?.SetPowered( true );
 	private void PowerOff() => Hub?.SetPowered( false );
+	private void ToggleHubPower()
+	{
+		if ( Hub?.IsPowered == true )
+			Hub.SetPowered( false );
+		else
+			Hub?.SetPowered( true );
+	}
+
+	private bool HubIsPowered() => Hub?.IsPowered == true;
 
 	private bool ShowPinGate() => Hub is not null && !_pinUnlocked;
 	private bool PinSetupMode() => Hub is not null && !Hub.AccessPinIsSet;
@@ -1412,11 +1437,14 @@
 
 	private string TerminalLinkStatusLabel()
 	{
+		if ( !HubIsPowered() && !HasLinkedTerminal() )
+			return "Hub power off — turn on first";
+
 		if ( HasLinkedTerminal() )
 			return "Linked — rig0 ready";
 
 		if ( HasNearbyUnlinkedTerminal() )
-			return "In range — not linked";
+			return HubIsPowered() ? "In range — ready to link" : "In range — power on to link";
 
 		return "Not linked";
 	}

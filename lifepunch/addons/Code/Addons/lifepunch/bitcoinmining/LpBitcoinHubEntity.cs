@@ -279,7 +279,7 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 
 		return scene.GetAllComponents<LpBitcoinRackEntity>()
 			.Where( r => r.IsValid() && r.LinkedHubId == GameObject.Id )
-			.OrderBy( r => r.AdvancedRack )
+			.OrderBy( r => r.GameObject.Name )
 			.ThenBy( r => r.GameObject.Id )
 			.ToList();
 	}
@@ -396,6 +396,13 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 		if ( !CanManageHub( Rpc.CallerId ) )
 			return;
 
+		if ( !IsPowered )
+		{
+			PushAlertHost( LpBitcoinHubAlertKind.TerminalCommand,
+				"Hub power is off — use the power switch before linking equipment." );
+			return;
+		}
+
 		if ( Owner == 0 && !TryBindOwner( Rpc.CallerId ) )
 		{
 			PushAlertHost( LpBitcoinHubAlertKind.TerminalCommand,
@@ -448,8 +455,22 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 		if ( !CanOperateTerminal( Rpc.CallerId ) )
 			return;
 
+		if ( !IsPowered )
+		{
+			PushAlertHost( LpBitcoinHubAlertKind.TerminalCommand,
+				"Hub power is off — power on before linking GPU racks." );
+			return;
+		}
+
 		if ( !HasLinkedTerminal() )
 			return;
+
+		if ( GetLinkedRacks().Count >= LpBitcoinIdent.PortalMaxRacksPerHub )
+		{
+			PushAlertHost( LpBitcoinHubAlertKind.TerminalCommand,
+				$"This hub supports up to {LpBitcoinIdent.PortalMaxRacksPerHub} GPU racks — unlink or upgrade an existing slot first." );
+			return;
+		}
 
 		if ( Owner == 0 && !TryBindOwner( Rpc.CallerId ) )
 		{
@@ -473,7 +494,7 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 		}
 
 		rack.LinkToHub( this );
-		var label = rack.AdvancedRack ? LpBitcoinIdent.AdvancedRackDisplayName : LpBitcoinIdent.RackDisplayName;
+		var label = LpBitcoinIdent.FormatRackSlotDisplayName( rack, GetLinkedRacks() );
 		PushAlertHost( LpBitcoinHubAlertKind.TerminalCommand, $"{label} linked — type racks to confirm." );
 		RefreshLinkedTerminalScreens();
 	}
@@ -482,6 +503,13 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 	{
 		if ( !Networking.IsHost || !terminal.IsValid() )
 			return;
+
+		if ( !IsPowered )
+		{
+			PushAlertHost( LpBitcoinHubAlertKind.TerminalCommand,
+				"Hub power is off — turn the hub on before linking the terminal." );
+			return;
+		}
 
 		if ( terminal.LinkedHubId != Guid.Empty && terminal.LinkedHubId != GameObject.Id )
 			return;

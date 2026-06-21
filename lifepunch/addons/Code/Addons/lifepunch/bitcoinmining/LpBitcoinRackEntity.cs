@@ -24,8 +24,8 @@ public sealed class LpBitcoinRackEntity : Component, Component.IPressable
 public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable, IAreaDamageReceiver
 #endif
 {
-	/// <summary>Stacked rack (<see cref="LpBitcoinIdent.AdvancedRackSlug"/>) — <see cref="LpBitcoinIdent.AdvancedRackDisplayName"/>, 2× yield.</summary>
-	[Property] public bool AdvancedRack { get; set; }
+	/// <summary>GPU rack farm — stacked mesh; per-rack CPU/core upgrades drive mining rate.</summary>
+	[Property] public bool AdvancedRack { get; set; } = true;
 
 	/// <summary>Dev spawn (<see cref="LpBitcoinDevSpawn"/>) — feet on ground, frozen collider (no printer drop).</summary>
 	internal bool DevSpawnAsWorldMachine { get; set; }
@@ -39,14 +39,12 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable, IAre
 	[Sync( SyncFlags.FromHost )] public int CoreUpgradeLevel { get; set; }
 	[Sync( SyncFlags.FromHost )] public float MiningProgress { get; set; }
 
-	public float YieldMultiplier => AdvancedRack ? LpBitcoinIdent.AdvancedRackYield : LpBitcoinIdent.StandardRackYield;
+	public float YieldMultiplier => LpBitcoinIdent.BaseRackYieldMultiplier;
 	public float MiningRatePerMinute => LpBitcoinEconomy.MiningRatePerMinute( ClockGhz, CoreCount, YieldMultiplier );
 	public int UsdValue => (int)(BitcoinAmount * LpBitcoinEconomy.BitcoinValueUsd);
 
 #if !LIFEPUNCH_LOCAL
-	public override string DisplayName => AdvancedRack
-		? LpBitcoinIdent.AdvancedRackDisplayName
-		: LpBitcoinIdent.RackDisplayName;
+	public override string DisplayName => LpBitcoinIdent.RackDisplayName;
 #endif
 
 	private TimeSince _sincePayout;
@@ -81,9 +79,7 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable, IAre
 				ApplyVirginSpawnDefaultsHost();
 				if ( HealthComponent.IsValid() )
 				{
-					HealthComponent.MaxHealth = AdvancedRack
-						? LpBitcoinIdent.AdvancedRackMaxHealth
-						: LpBitcoinIdent.RackMaxHealth;
+					HealthComponent.MaxHealth = LpBitcoinIdent.RackMaxHealth;
 					if ( HealthComponent.Health <= 0f || HealthComponent.Health > HealthComponent.MaxHealth )
 						HealthComponent.Health = HealthComponent.MaxHealth;
 				}
@@ -97,9 +93,7 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable, IAre
 				ApplyVirginSpawnDefaultsHost();
 				if ( HealthComponent.IsValid() )
 				{
-					HealthComponent.MaxHealth = AdvancedRack
-						? LpBitcoinIdent.AdvancedRackMaxHealth
-						: LpBitcoinIdent.RackMaxHealth;
+					HealthComponent.MaxHealth = LpBitcoinIdent.RackMaxHealth;
 					if ( HealthComponent.Health <= 0f || HealthComponent.Health > HealthComponent.MaxHealth )
 						HealthComponent.Health = HealthComponent.MaxHealth;
 				}
@@ -178,7 +172,7 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable, IAre
 
 	private void TryHandleCapacityHost()
 	{
-		var capacity = LpBitcoinEconomy.RackBtcCapacity( AdvancedRack );
+		var capacity = LpBitcoinEconomy.RackBtcCapacity;
 		if ( BitcoinAmount < capacity )
 		{
 			_capacityAlertSent = false;
@@ -211,6 +205,9 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable, IAre
 		if ( !hub.IsValid() )
 			return;
 
+		if ( Networking.IsHost && !hub.IsPowered )
+			return;
+
 		LinkedHubId = hub.GameObject.Id;
 #if !LIFEPUNCH_LOCAL
 		if ( Networking.IsHost )
@@ -236,7 +233,7 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable, IAre
 			return;
 		}
 
-		if ( on && BitcoinAmount >= LpBitcoinEconomy.RackBtcCapacity( AdvancedRack ) )
+		if ( on && BitcoinAmount >= LpBitcoinEconomy.RackBtcCapacity )
 			on = false;
 
 		IsMining = on;

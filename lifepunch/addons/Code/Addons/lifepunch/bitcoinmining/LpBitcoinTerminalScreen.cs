@@ -42,23 +42,11 @@ public static class LpBitcoinTerminalScreen
 		return $"LIFEPUNCH hashd\nMINING · {miningCount}/{totalRacks} {mix} · {pct}%\n\u20BF {totalBtc:0.00000000}\n{rate:0.00000}/m · ${usd}";
 	}
 
-	/// <summary>Standard + advanced rack counts — e.g. <c>(2+2)</c> for two GPU + two Advanced GPU.</summary>
+	/// <summary>Linked rack count — e.g. <c>(2)</c>.</summary>
 	static string FormatRackMix( IEnumerable<LpBitcoinRackEntity> racks )
 	{
-		var standard = 0;
-		var advanced = 0;
-		foreach ( var rack in racks )
-		{
-			if ( !rack.IsValid() )
-				continue;
-
-			if ( rack.AdvancedRack )
-				advanced++;
-			else
-				standard++;
-		}
-
-		return $"({standard}+{advanced})";
+		var count = racks.Count( r => r.IsValid() );
+		return $"({count})";
 	}
 }
-
+

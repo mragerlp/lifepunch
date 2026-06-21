@@ -14,8 +14,8 @@ lifepunch/addons/docs/DXRP_ADDON_PUBLISH_DOCTRINE.md
 
 REPO STAGING (publish-aligned layout):
 lifepunch/addons/Assets/addons/lifepunch/lpbitcoin/{entity}/assets|code|audit
-Entities: bitcoinhub | hashdterminal | gpurack | advancedgpurack
-Law: folder name = entity slug (e.g. bitcoinhub — not bitcoin-miner)
+Entities: bitcoinhub | hashdterminal | gpurack
+Law: folder name = entity slug (e.g. bitcoinhub — not bitcoin-miner). GPU Rack = farm/stacked mesh only; `advancedgpurack` slot retired (see MOVED.md).
 
 UPLOAD-READY DESKTOP (owner only — agents HANDS OFF):
 C:\Users\jared\OneDrive\Desktop\UPLOAD READY ADDONS PLACEHOLDER\addons\lifepunch

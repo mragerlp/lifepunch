@@ -46,9 +46,11 @@ public static class LpBitcoinEconomy
 		=> clockGhz * BaseSpeed * cores * rackYield;
 
 	/// <summary>Undeposited BTC cap per rack before mining stops and hub alerts fire.</summary>
-	public const float StandardRackBtcCapacity = 0.05f;
-	public const float AdvancedRackBtcCapacity = 0.15f;
+	public const float RackBtcCapacity = 0.15f;
 
-	public static float RackBtcCapacity( bool advancedRack )
-		=> advancedRack ? AdvancedRackBtcCapacity : StandardRackBtcCapacity;
+	public static float RackBtcCapacityFor( LpBitcoinRackEntity rack )
+		=> RackBtcCapacity;
+
+	[Obsolete( "Single rack tier — use RackBtcCapacity or RackBtcCapacityFor." )]
+	public static float RackBtcCapacity( bool advancedRack ) => RackBtcCapacity;
 }

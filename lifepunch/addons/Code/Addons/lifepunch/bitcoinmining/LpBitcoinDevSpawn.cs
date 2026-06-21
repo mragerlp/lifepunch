@@ -125,7 +125,7 @@ public static class LpBitcoinDevSpawn
 	{
 		var hub = SpawnKitInternal();
 		if ( hub.IsValid() )
-			Log.Info( "lp_bitcoin_spawn_kit: full prefab kit placed — USE hub or terminal." );
+			Log.Info( "lp_bitcoin_spawn_kit: hub + terminal + 2× GPU Rack placed — USE hub or terminal." );
 	}
 
 	/// <summary>Dev shortcut — link nearest unlinked terminal to nearest hub (playtest only).</summary>
@@ -151,6 +151,12 @@ public static class LpBitcoinDevSpawn
 		}
 
 		hub.BindOwnerFromLocalViewer();
+		if ( !hub.IsPowered )
+		{
+			Log.Warning( "lp_bitcoin_link_terminal: hub power off — run lp_bitcoin_hub_power_toggle or use header switch first." );
+			return;
+		}
+
 		var terminal = LpBitcoinTerminalEntity.FindNearestUnlinked( hub );
 		if ( !terminal.IsValid() )
 		{
@@ -264,7 +270,7 @@ public static class LpBitcoinDevSpawn
 
 		foreach ( var rack in scene.GetAllComponents<LpBitcoinRackEntity>().Where( r => r.IsValid() ) )
 		{
-			var tag = rack.AdvancedRack ? "advanced" : "gpu-rack";
+			var tag = LpBitcoinIdent.RackSlug;
 			foreach ( var child in rack.GameObject.Children.Where( c => c.Name.StartsWith( "fan_spin_", StringComparison.OrdinalIgnoreCase ) ) )
 				Log.Info( $"BITCOINMINING_FAN_TUNE {tag} {child.Name} pos={child.LocalPosition} rot={child.LocalRotation.Angles()}" );
 		}
@@ -437,7 +443,7 @@ public static class LpBitcoinDevSpawn
 		}
 	}
 
-	/// <summary>Hub + terminal + one GPU rack + one Advanced GPU rack — flatgrass hero lineup.</summary>
+	/// <summary>Hub + terminal + one GPU rack farm — flatgrass hero lineup.</summary>
 	[ConCmd( "lp_bitcoin_spawn_lineup" )]
 	public static void SpawnLineup()
 	{
@@ -455,9 +461,8 @@ public static class LpBitcoinDevSpawn
 		var rot = transform.Rotation;
 		var groundZ = origin.z;
 		SpawnTerminalPrefab( new Transform( SnapToGround( origin + rot.Forward * 100f, groundZ ), rot ) );
-		SpawnRackPrefab( RackSpawnTransform( transform, sideOffset: 120f ), advanced: false );
-		SpawnRackPrefab( RackSpawnTransform( transform, sideOffset: -120f ), advanced: true );
-		Log.Info( "lp_bitcoin_spawn_lineup: Bitcoin Hub + Terminal + GPU Rack + Advanced GPU Rack placed." );
+		SpawnRackPrefab( RackSpawnTransform( transform, sideOffset: -120f ) );
+		Log.Info( "lp_bitcoin_spawn_lineup: Bitcoin Hub + Terminal + GPU Rack placed." );
 	}
 
 	[ConCmd( "lp_bitcoin_spawn_terminal" )]
@@ -482,22 +487,13 @@ public static class LpBitcoinDevSpawn
 			return;
 		}
 
-		SpawnRackPrefab( transform, advanced: false );
+		SpawnRackPrefab( transform );
 		Log.Info( "lp_bitcoin_spawn_rack: GPU Rack placed (unlinked — register at rig0> link)." );
 	}
 
+	/// <summary>Legacy alias — same as <see cref="SpawnRack"/> (advanced tier merged into GPU Rack).</summary>
 	[ConCmd( "lp_spawn_advanced_gpu_rack" )]
-	public static void SpawnAdvancedRack()
-	{
-		if ( !LifePunchMarketSpawn.TryGetIdentitySpawnTransform( out var transform ) )
-		{
-			Log.Warning( "lp_spawn_advanced_gpu_rack: no local viewer — play from game.scene first." );
-			return;
-		}
-
-		SpawnRackPrefab( transform, advanced: true );
-		Log.Info( "lp_spawn_advanced_gpu_rack: Advanced GPU Rack placed (unlinked — register at rig0> link)." );
-	}
+	public static void SpawnAdvancedRack() => SpawnRack();
 
 	/// <summary>Legacy alias — docs/playtest still reference v1 command name.</summary>
 	[ConCmd( "lp_spawn_gpu_rack" )]
@@ -507,7 +503,7 @@ public static class LpBitcoinDevSpawn
 	[ConCmd( "lp_spawn_large_gpu_rack" )]
 	public static void SpawnLargeGpuRackLegacy() => SpawnAdvancedRack();
 
-	/// <summary>Legacy — hub + terminal + standard GPU rack + advanced GPU rack (flatgrass hero kit).</summary>
+	/// <summary>Legacy — hub + terminal + advanced GPU rack (standard rack parked).</summary>
 	[ConCmd( "lp_spawn_bitcoinmining_full_kit" )]
 	public static void SpawnBitcoinMiningFullKitLegacy()
 	{
@@ -522,16 +518,15 @@ public static class LpBitcoinDevSpawn
 		var groundZ = origin.z;
 
 		var hub = SpawnHubPrefab( new Transform( SnapToGround( origin, groundZ ), rot ) );
-		var standard = SpawnRackPrefab( RackSpawnTransform( transform, sideOffset: 120f ), advanced: false );
-		var advanced = SpawnRackPrefab( RackSpawnTransform( transform, sideOffset: -120f ), advanced: true );
+		var advanced = SpawnRackPrefab( RackSpawnTransform( transform, sideOffset: -120f ) );
 		var terminal = SpawnTerminalPrefab(
 			new Transform( SnapToGround( origin + rot.Forward * 100f, groundZ ), rot ) );
 
-		if ( hub.IsValid() && terminal.IsValid() )
+		if ( hub.IsValid() && terminal.IsValid() && hub.IsPowered )
 			hub.LinkTerminalHost( terminal );
 
 		Log.Info(
-			$"lp_spawn_bitcoinmining_full_kit: hub={( hub.IsValid() ? "ok" : "FAIL" )} gpu-rack={( standard.IsValid() ? "ok" : "FAIL" )} advanced={( advanced.IsValid() ? "ok" : "FAIL" )} terminal={( terminal.IsValid() ? "ok" : "FAIL" )} linked={( hub.IsValid() && hub.HasLinkedTerminal() ).ToString().ToLowerInvariant()}." );
+			$"lp_spawn_bitcoinmining_full_kit: hub={( hub.IsValid() ? "ok" : "FAIL" )} advanced={( advanced.IsValid() ? "ok" : "FAIL" )} terminal={( terminal.IsValid() ? "ok" : "FAIL" )} linked={( hub.IsValid() && hub.HasLinkedTerminal() ).ToString().ToLowerInvariant()}." );
 
 		LogBitcoinSpawnAudit();
 	}
@@ -552,10 +547,8 @@ public static class LpBitcoinDevSpawn
 		var racks = scene.GetAllComponents<LpBitcoinRackEntity>().Where( r => r.IsValid() ).ToList();
 		var hubs = scene.GetAllComponents<LpBitcoinHubEntity>().Where( h => h.IsValid() ).ToList();
 		var terminals = scene.GetAllComponents<LpBitcoinTerminalEntity>().Where( t => t.IsValid() ).ToList();
-		var standard = racks.Count( r => !r.AdvancedRack );
-		var advanced = racks.Count( r => r.AdvancedRack );
 		Log.Info(
-			$"lp_bitcoin_spawn_audit: hubs={hubs.Count} racks={racks.Count} (standard={standard} advanced={advanced}) terminals={terminals.Count}" );
+			$"lp_bitcoin_spawn_audit: hubs={hubs.Count} racks={racks.Count} terminals={terminals.Count}" );
 
 		foreach ( var hub in hubs )
 			LogSpawnEntityRow( "bitcoin-hub", hub.GameObject, LpBitcoinIdent.HubModelPath );
@@ -568,13 +561,7 @@ public static class LpBitcoinDevSpawn
 		}
 
 		foreach ( var rack in racks )
-		{
-			var tag = rack.AdvancedRack ? "advanced-gpu-rack" : "gpu-rack";
-			var expected = rack.AdvancedRack
-				? "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/gpu-rack/gpu-rack-stacked.vmdl"
-				: "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/gpu-rack/gpu-rack.vmdl";
-			LogSpawnEntityRow( tag, rack.GameObject, expected );
-		}
+			LogSpawnEntityRow( LpBitcoinIdent.RackSlug, rack.GameObject, LpBitcoinIdent.RackModelPath );
 	}
 
 	private static void LogSpawnEntityRow( string tag, GameObject go, string expectedModelPath )
@@ -824,7 +811,7 @@ public static class LpBitcoinDevSpawn
 
 		foreach ( var rack in scene.GetAllComponents<LpBitcoinRackEntity>().Where( r => r.IsValid() ) )
 		{
-			var tag = rack.AdvancedRack ? "advanced-rack" : "gpu-rack";
+			var tag = LpBitcoinIdent.RackSlug;
 			LogScaleRow( tag, rack.GameObject );
 		}
 
@@ -1004,7 +991,7 @@ public static class LpBitcoinDevSpawn
 
 		var racks = scene.GetAllComponents<LpBitcoinRackEntity>()
 			.Where( r => r.IsValid() )
-			.OrderBy( r => r.AdvancedRack )
+			.OrderBy( r => r.GameObject.Name )
 			.ToList();
 
 		if ( racks.Count == 0 )
@@ -1019,7 +1006,7 @@ public static class LpBitcoinDevSpawn
 			SpawnKitInternal();
 			racks = scene.GetAllComponents<LpBitcoinRackEntity>()
 				.Where( r => r.IsValid() )
-				.OrderBy( r => r.AdvancedRack )
+				.OrderBy( r => r.GameObject.Name )
 				.ToList();
 		}
 
@@ -1032,7 +1019,7 @@ public static class LpBitcoinDevSpawn
 		if ( !rack.IsValid() )
 			return;
 
-		var tag = rack.AdvancedRack ? "advanced-rack" : "gpu-rack";
+		var tag = LpBitcoinIdent.RackSlug;
 		var renderer = rack.Components.Get<ModelRenderer>( FindMode.EverythingInSelf );
 		if ( !renderer.IsValid() )
 		{
@@ -1047,7 +1034,7 @@ public static class LpBitcoinDevSpawn
 
 		if ( sequences.Count == 0 )
 		{
-			var vmdl = rack.AdvancedRack ? "gpu-rack-stacked.vmdl" : "gpu-rack.vmdl";
+			var vmdl = "gpu-rack-stacked.vmdl";
 			Log.Warning( $"BITCOINMINING_RACK_ANIM_AUDIT {tag} sequences=0 — open {vmdl} in ModelDoc, star-add power_on from anim FBX, recompile, Pull-DxrpCompiledAssetsToRepo." );
 			return;
 		}
@@ -1127,10 +1114,8 @@ public static class LpBitcoinDevSpawn
 		var origin = transform.Position;
 		var rot = transform.Rotation;
 		var groundZ = origin.z;
-		SpawnRackPrefab( RackSpawnTransform( transform, sideOffset: 100f ), advanced: false );
-		SpawnRackPrefab( RackSpawnTransform( transform, sideOffset: -100f ), advanced: false );
-		SpawnRackPrefab( RackSpawnTransform( transform, sideOffset: 100f ), advanced: true );
-		SpawnRackPrefab( RackSpawnTransform( transform, sideOffset: -200f ), advanced: true );
+		SpawnRackPrefab( RackSpawnTransform( transform, sideOffset: 100f ) );
+		SpawnRackPrefab( RackSpawnTransform( transform, sideOffset: -100f ) );
 		SpawnTerminalPrefab( new Transform( SnapToGround( origin + rot.Forward * 100f, groundZ ), rot ) );
 		return hub;
 	}
@@ -1144,10 +1129,10 @@ public static class LpBitcoinDevSpawn
 		return new Transform( pos, rot );
 	}
 
-	private static LpBitcoinRackEntity SpawnRackPrefab( Transform transform, bool advanced )
+	private static LpBitcoinRackEntity SpawnRackPrefab( Transform transform )
 	{
-		var path = advanced ? LpBitcoinIdent.AdvancedRackPrefabPath : LpBitcoinIdent.RackPrefabPath;
-		var label = advanced ? LpBitcoinIdent.AdvancedRackDisplayName : LpBitcoinIdent.RackDisplayName;
+		var path = LpBitcoinIdent.RackPrefabPath;
+		var label = LpBitcoinIdent.RackDisplayName;
 		var go = ClonePrefabAt( path, transform );
 		if ( !go.IsValid() )
 		{
@@ -1161,7 +1146,7 @@ public static class LpBitcoinDevSpawn
 
 		if ( rack.IsValid() )
 		{
-			rack.AdvancedRack = advanced;
+			rack.AdvancedRack = true;
 			rack.DevSpawnAsWorldMachine = true;
 		}
 

@@ -45,7 +45,7 @@ Evo Bitminer pattern (study only): fan blades **excluded** from body vmdl; small
 |------|--------|-----------|
 | Hub | `lpbitcoin/bitcoinhub/assets/entities/bitcoinhub.prefab` | `lpbitcoin/bitcoinhub/assets/models/bitcoinhub.vmdl` |
 | GPU rack | `entities/gpurack/gpu-rack.prefab` | `gpu-rack/gpu-rack.vmdl` |
-| Advanced rack | `entities/advancedgpurack/advanced-gpu-rack.prefab` | `gpu-rack/gpu-rack-stacked.vmdl` |
+| GPU Rack (farm) | `entities/advancedgpurack/advanced-gpu-rack.prefab` | `gpu-rack/gpu-rack-stacked.vmdl` |
 | Terminal | `entities/bitcoin-terminal/bitcoin-terminal.prefab` | *(owner replacing model — pause)* |
 
 ### Phase 2 — Separate spinning fans (after phase 0 + 1 sign-off)

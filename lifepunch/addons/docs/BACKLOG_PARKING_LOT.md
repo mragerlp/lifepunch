@@ -14,6 +14,7 @@
 
 | Idea | Status | Notes | Unlock |
 |------|--------|-------|--------|
+| **Standard GPU rack (`gpu-rack` open frame)** | Parked | Merged into single **GPU Rack farm** entity — stacked mesh only; slots GPURack-1…4 | Stacking model upgrade in Blender + BITCOINMINING-07 |
 | **Hacker Job upgrades** (advanced rack, vengeance tier, wallet economy Phase 2) | Parked | Quarantined `hackerjob/` — concepts only | After Bitcoin sign-off |
 | **Banker / vault hub** | Parked | `BANKER_JOB_SPEC.md`, `bankerjob/` WIP on disk | After Bitcoin economy stable |
 | **Black Market Exchange** (optional BTC payments) | Parked | Dealer CRT + hub; BTC via Ophion pattern | After Bitcoin sign-off |

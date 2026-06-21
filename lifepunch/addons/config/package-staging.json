@@ -25,14 +25,10 @@
           "priority": "P0"
         },
         "gpurack": {
-          "displayName": "GPU Rack",
+          "displayName": "GPU Rack (farm / stacked mesh)",
           "shipEntitySlug": "gpurack",
-          "priority": "P0"
-        },
-        "advancedgpurack": {
-          "displayName": "Advanced GPU Rack (stacked)",
-          "shipEntitySlug": "advancedgpurack",
-          "priority": "P0"
+          "priority": "P0",
+          "notes": "Canonical lpbitcoin slot — small open-frame vmdl archived; stacked mesh is ship tier (BITCOINMINING-07)."
         }
       }
     },

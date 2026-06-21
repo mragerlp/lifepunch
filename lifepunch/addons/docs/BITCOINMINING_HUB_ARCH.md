@@ -10,12 +10,12 @@
 | Rule | Value |
 |------|-------|
 | Max hubs | **2** |
-| Per hub — small racks | **2** (`gpu-rack`) — slots **GPURack-1 … GPURack-2** |
-| Per hub — advanced racks | **2** (`advanced-gpu-rack`) — slots **AdvancedGPURack-1 … AdvancedGPURack-2** |
+| Per operator (DXRP Market) | **1** hub · **1** terminal · **3** GPU racks max |
+| Per hub — GPU racks | **3 max** (`gpu-rack` farm mesh) — slots **GPURack-1 … GPURack-3** |
 
 **Purchase caps are enforced by the DXRP portal / market content rows**, not by LifePunch dev spawn ConCmds. LifePunch code labels linked racks by type (`LpBitcoinIdent.FormatRackSlotId`); do not hard-cap in `LpBitcoinDevSpawn`.
 
-**Phase A prop baseline (owner sign-off Jun 2026):** printer-style gravity drop, grabbable (`hands_interact`), model-synced collider. Standard GPU rack = static open frame (fan child GOs **disabled**); advanced = stacked mesh with baked fan bank — intentional tier read, not a spawn bug.
+**Phase A prop baseline (owner sign-off Jun 2026):** printer-style gravity drop, grabbable (`hands_interact`), model-synced collider. **Ship tier:** one GPU rack farm entity (stacked mesh); small open-frame tier removed (`BITCOINMINING-07`). Stacking visual upgrades TBD in Blender/ModelDoc.
 
 Each hub controls **only its linked racks** (same spawner `Owner` + within **8m / 4m** of hub). Racks are **separate Market purchases** — not bought inside hashd (Phase 2 deploy TBD).
 
@@ -56,7 +56,6 @@ See `BITCOINMINING_ENCRYPTION_SPEC.md` — mirrors hacker server-rack offense.
 |--------|--------|
 | `bitcoin-miner` hub | 250 |
 | `gpu-rack` | 500 |
-| `advanced-gpu-rack` | 2000 |
 
 Damage → metal hit SFX → smoke → explode (existing `GpuRackEntity` path).
 
