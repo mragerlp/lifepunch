@@ -1,7 +1,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // PROPRIETARY & CONFIDENTIAL — © 2026 lifepunch.co. All rights reserved.
 //
-// "LifePunch Dev Tools" (s&box ident: lifepunch.dev · addon ident: dev) is the sole-owned
+// "LIFEPUNCH ULX for DXRP" (s&box ident: lifepunch.ulx · addon ident: lifepunchulx) is the sole-owned
 // intellectual property of lifepunch.co. It is NOT licensed for resale, redistribution,
 // sublicensing, copying, or reuse by ANY person or entity — including DXRP and
 // LifePunch staff, contributors, or community — EXCEPT the owner (lifepunch.co).
@@ -14,25 +14,26 @@
 using Sandbox;
 using Dxura.RP.Game;
 
-namespace LifePunch.DXRP.Addons.Dev;
+namespace LifePunch.DXRP.Addons.StaffMenu;
 
 /// <summary>
-/// Editor play only — optional auto-spawn via <c>lifepunch_auto_spawn_testbots</c>. Not part of lifepunchulx.
+/// Editor play only: spawns scroll-test fillers as soon as host + local pawn exist; adds the rank
+/// roster once the DXRP portal API is ready (<c>lp_authorize</c>). Fillers need no portal auth.
 /// </summary>
-public sealed class LifePunchEditorTestBotsAutoSpawn : GameObjectSystem<LifePunchEditorTestBotsAutoSpawn>, IGameEvents
+public sealed class StaffMenuTestBotsAutoSpawn : GameObjectSystem<StaffMenuTestBotsAutoSpawn>, IGameEvents
 {
 	[ConVar( "lifepunch_auto_spawn_testbots", ConVarFlags.Saved )]
 	public static bool AutoSpawn { get; set; } = true;
 
 	[ConVar( "lifepunch_auto_spawn_testbots_fill", ConVarFlags.Saved )]
-	public static int AutoSpawnFill { get; set; } = LifePunchEditorTestBots.DefaultScrollFillCount;
+	public static int AutoSpawnFill { get; set; } = StaffMenuTestBots.DefaultScrollFillCount;
 
 	private bool _spawnedScrollFill;
 	private bool _spawnedRankRoster;
 
-	public LifePunchEditorTestBotsAutoSpawn( Scene scene ) : base( scene )
+	public StaffMenuTestBotsAutoSpawn( Scene scene ) : base( scene )
 	{
-		Listen( Stage.StartUpdate, 0, Tick, "LifePunch editor test bot auto-spawn" );
+		Listen( Stage.StartUpdate, 0, Tick, "LifePunch test bot auto-spawn" );
 	}
 
 	private void Tick()
@@ -62,8 +63,8 @@ public sealed class LifePunchEditorTestBotsAutoSpawn : GameObjectSystem<LifePunc
 		if ( !_spawnedScrollFill )
 		{
 			_spawnedScrollFill = true;
-			var filled = LifePunchEditorTestBots.SpawnScrollFillBots( AutoSpawnFill );
-			Log.Info( $"lifepunch_auto_spawn_testbots: {filled} scroll fillers." );
+			var filled = StaffMenuTestBots.SpawnScrollFillBots( AutoSpawnFill );
+			Log.Info( $"lifepunch_auto_spawn_testbots: {filled} sidebar scroll fillers (no portal auth required)." );
 		}
 
 		if ( _spawnedRankRoster )
@@ -77,13 +78,13 @@ public sealed class LifePunchEditorTestBotsAutoSpawn : GameObjectSystem<LifePunc
 		}
 
 		var ranks = RankSystem.Instance;
-		if ( !ranks.IsValid() || !LifePunchEditorTestBots.TryFindRankIdByName( ranks, "VIP" ).HasValue )
+		if ( !ranks.IsValid() || !StaffMenuTestBots.TryFindRankIdByName( ranks, "VIP" ).HasValue )
 		{
 			return;
 		}
 
 		_spawnedRankRoster = true;
-		LifePunchEditorTestBots.SpawnRankBots( false );
+		StaffMenuTestBots.SpawnRankBots( false );
 		Log.Info( "lifepunch_auto_spawn_testbots: rank bot roster spawned (after portal auth)." );
 	}
 }

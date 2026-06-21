@@ -163,11 +163,12 @@
 
 				@{
 					var waypoints = StaffMenuHost.GetWaypoints();
+					var filteredWaypoints = FilteredWaypoints( waypoints );
 				}
 
 				<div class="wp-list-region">
 				<div class="wp-list">
-					@foreach ( var name in waypoints )
+					@foreach ( var name in filteredWaypoints )
 					{
 						<div class="wp-row">
 							<i class="material-icons">place</i>
@@ -187,7 +188,13 @@
 					@if ( waypoints.Count == 0 )
 					{
 						<div class="wp-empty">
-							Saved waypoints aren't listed in-menu yet — type a name above to Go or Set.
+							No saved waypoints yet — type a name above to Go or Set.
+						</div>
+					}
+					else if ( filteredWaypoints.Count == 0 )
+					{
+						<div class="wp-empty">
+							No waypoint matches "@_waypointName".
 						</div>
 					}
 				</div>
@@ -747,6 +754,11 @@
 		// Fetch owner settings on open so the network tag is click-to-copy immediately (not only after
 		// the Settings view is visited).
 		StaffMenuHost.RefreshSettings();
+
+		if ( StaffMenuHost.CanUseWaypoints() )
+		{
+			StaffMenuHost.RefreshWaypoints();
+		}
 	}
 
 	protected override void OnUpdate()
@@ -1197,6 +1209,20 @@
 		_uiScale = size;
 		StateHasChanged();
 		LifePunchUiScrollPolicy.Apply( Panel, resetOffset: true );
+	}
+
+	/// <summary>Waypoint list filter — typing in the bar narrows visible rows (Go/Set still use the typed name).</summary>
+	private List<string> FilteredWaypoints( IReadOnlyList<string> waypoints )
+	{
+		var query = _waypointName?.Trim() ?? "";
+		if ( query.Length == 0 )
+		{
+			return waypoints.ToList();
+		}
+
+		return waypoints
+			.Where( w => w.Contains( query, StringComparison.OrdinalIgnoreCase ) )
+			.ToList();
 	}
 
 	/// <summary>Open the Player &amp; Staff Management view (sidebar footer entry) — placeholder for now.</summary>

@@ -129,7 +129,7 @@ public static class DxrpPortalDevAuth
 			}
 		}
 
-		LifePunchEditorTestBots.CacheRankDefinitions( initResponse.Ranks );
+		LifePunch.DXRP.Addons.StaffMenu.StaffMenuTestBots.CacheRankDefinitions( initResponse.Ranks );
 		Log.Info( $"lp_authorize: cached {initResponse.Ranks.Count()} rank definition(s) for editor dev bots." );
 	}
 

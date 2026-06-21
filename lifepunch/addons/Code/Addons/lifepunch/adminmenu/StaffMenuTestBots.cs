@@ -1,7 +1,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // PROPRIETARY & CONFIDENTIAL — © 2026 lifepunch.co. All rights reserved.
 //
-// "LifePunch Dev Tools" (s&box ident: lifepunch.dev · addon ident: dev) is the sole-owned
+// "LIFEPUNCH ULX for DXRP" (s&box ident: lifepunch.ulx · addon ident: lifepunchulx) is the sole-owned
 // intellectual property of lifepunch.co. It is NOT licensed for resale, redistribution,
 // sublicensing, copying, or reuse by ANY person or entity — including DXRP and
 // LifePunch staff, contributors, or community — EXCEPT the owner (lifepunch.co).
@@ -12,32 +12,46 @@
 #if !LIFEPUNCH_LOCAL
 
 using System.Collections.Generic;
-using System.Linq;
 using Sandbox;
 using Dxura.RP.Game;
 using Dxura.RP.Shared;
 
-namespace LifePunch.DXRP.Addons.Dev;
+namespace LifePunch.DXRP.Addons.StaffMenu;
 
 /// <summary>
-/// DEV / EDITOR-TEST ONLY — lives under <c>Code/_dev</c>, not lifepunchulx. Never publish.
+/// DEV / EDITOR-TEST ONLY — DO NOT SHIP. Exclude before publishing the admin-menu addon.
 ///
-/// Spawns host-owned dummy players for solo editor playtests (menus, hacker scan, weapons, scroll UX).
-/// Registers clones in <see cref="GameNetworkManager.Players"/> like real roster entries.
+/// Spawns host-owned dummy "players" so staff-menu features that need a SECOND player can be tested
+/// solo in editor play: the profile-pane Goto/Bring/Return box, target selection, CanTarget gating,
+/// and the Waypoints "Return a player" list. The dummy is cloned from
+/// <see cref="GameNetworkManager.PlayerPrefab"/>, given a fake SteamId, host-spawned (no real
+/// connection — it simply stands there), and registered in <see cref="GameNetworkManager.Players"/>
+/// so the menu roster shows it as a non-staff (targetable) player.
 ///
-/// Console: lifepunch_spawn_testbot · lifepunch_spawn_rankbots · lifepunch_spawn_scroll_testbots ·
-/// lifepunch_clear_testbots · lifepunch_list_ranks · lifepunch_botsay
+/// Usage (in-game console during play):
+///   lifepunch_spawn_testbot          → spawns "Test Dummy N" near the local player (fake id, no rank)
+///   lifepunch_spawn_testbot Greg     → spawns a bot named "Greg"
+///   lifepunch_spawn_rankbots         → spawns one bot per rank (Regular/VIP/EVIP/Mod/Admin/Super Admin)
+///                                      plus "Greg" as an Owner-mirror, each with a real public avatar.
+///                                      Pass `lifepunch_spawn_rankbots false` to skip Greg (targetable only).
+///   lifepunch_spawn_all_testbots     → alias for lifepunch_spawn_rankbots (full roster incl. Greg)
+///   lifepunch_spawn_scroll_testbots  → rank roster + 18 regular fillers (sidebar scroll proof)
+///   ulx_bots                         → alias for lifepunch_spawn_scroll_testbots
+///   lifepunch_auto_spawn_testbots 1  → on editor host play, auto-spawn after portal API init (default 1)
+///   lifepunch_auto_spawn_testbots_fill 18 → extra regular bots when auto-spawn runs (default 18)
+///   lifepunch_list_ranks             → logs which rank names resolve (confirms the live portal strings)
+///   lifepunch_botsay "Greg hi there" → makes a spawned bot talk in chat (first token = bot, rest = msg)
+///   lifepunch_clear_testbots         → removes all spawned bots and clears their rank assignments
 /// </summary>
-public static class LifePunchEditorTestBots
+public static class StaffMenuTestBots
 {
+	// Obviously-fake SteamId base (not a real account), incremented per spawn so each is unique.
 	private const long FakeSteamIdBase = 76500000000000000L;
 
 	private static int _spawnCount;
 	private static readonly List<long> _spawned = new();
 	private static readonly Dictionary<string, Guid> _rankIdsByName =
 		new( StringComparer.OrdinalIgnoreCase );
-
-	public const int DefaultScrollFillCount = 18;
 
 	internal static void CacheRankDefinitions( IEnumerable<RankDto> definitions )
 	{
@@ -89,6 +103,13 @@ public static class LifePunchEditorTestBots
 		}
 	}
 
+	// Shared spawn path for every bot variant. Mirrors DXRP's own DebugPlayerSpawner: clone the player
+	// prefab, give it the supplied identity, mark it a debug player, kill its controller/physics so it
+	// just stands there, network-spawn it, then DROP OWNERSHIP. Dropping ownership is the critical bit —
+	// a host-owned pawn would share the host's ConnectionId and clobber the host's entry in
+	// GameNetworkManager.PlayersByConnectionIdCache, which made the host resolve OUR command caller as
+	// the bot (the "Missing permission for /goto" error). Unowned ⇒ ConnectionId = Guid.Empty ⇒ no
+	// collision with the real host connection. Returns the spawned player, or null on failure.
 	private static Player SpawnBot( string name, long steamId, Vector3 position )
 	{
 		var manager = GameNetworkManager.Instance;
@@ -141,7 +162,11 @@ public static class LifePunchEditorTestBots
 		go.Network.DropOwnership();
 
 		manager.Players[steamId] = player;
+
+		// Sane stats so the profile pane renders (bank balance, playtime, level, rp name).
 		player.InitalizeHost( 50000, 6000, 5, name );
+
+		// Proper body init + position (SpawnHost sets up the visible pawn).
 		player.SpawnHost();
 		player.TeleportHost( new Transform( position, Rotation.Identity ) );
 
@@ -170,6 +195,7 @@ public static class LifePunchEditorTestBots
 
 			manager?.Players.Remove( id );
 
+			// Drop any rank we assigned so placeholder ids don't linger in RankSystem between runs.
 			if ( ranks.IsValid() )
 			{
 				ranks.SetPlayerRanks( id, new List<Guid>() );
@@ -182,6 +208,12 @@ public static class LifePunchEditorTestBots
 		Log.Info( $"lifepunch_clear_testbots: removed {removed} dummy player(s)." );
 	}
 
+	// One bot per rank, in display order. Rank "" means no assignment — a regular/default player who
+	// holds no explicit rank (so GetPlayerRank falls back to the portal's default "None"). Named ranks
+	// resolve against the live portal rank table via <see cref="TryFindRankIdByName"/> (lifepunch_list_ranks
+	// confirms strings). The SteamIds are PUBLIC placeholder accounts so each bot resolves a real Steam avatar in
+	// the menus/chat — swap freely; they only need to be valid, public, and NOT the dev's own id (a bot
+	// sharing the dev's id would share rank/CanTarget state). "Greg" mirrors Owner for killswitch tests.
 	private static readonly (string Name, string Rank, long SteamId)[] RankBots =
 	{
 		( "Regular Bot", "", 76561198172576363L ),
@@ -191,6 +223,7 @@ public static class LifePunchEditorTestBots
 		( "Admin Bot", "Admin", 76561198042858602L ),
 		( "Super Admin Bot", "Super Admin", 76561198822683862L ),
 		( "Greg", "Owner", 76561198010565263L ),
+	// Extra regular players to push the roster count up for admin-menu layout/density testing.
 		( "Player Bot 1", "", 76561197964781654L ),
 		( "Player Bot 2", "", 76561198005079964L ),
 		( "Player Bot 3", "", 76561198012345678L ),
@@ -198,8 +231,21 @@ public static class LifePunchEditorTestBots
 		( "Player Bot 5", "", 76561198034567890L )
 	};
 
+	public const int DefaultScrollFillCount = 18;
+
 	[ConCmd( "lifepunch_spawn_scroll_testbots" )]
 	public static void SpawnScrollTestBots()
+	{
+		SpawnScrollTestBotsInternal();
+	}
+
+	[ConCmd( "ulx_bots" )]
+	public static void SpawnScrollTestBotsAlias()
+	{
+		SpawnScrollTestBotsInternal();
+	}
+
+	private static void SpawnScrollTestBotsInternal()
 	{
 		if ( !Application.IsEditor )
 		{
@@ -216,9 +262,10 @@ public static class LifePunchEditorTestBots
 		ClearTestBots();
 		SpawnRankBots( false );
 		var filled = SpawnScrollFillBots( DefaultScrollFillCount );
-		Log.Info( $"lifepunch_spawn_scroll_testbots: rank roster + {filled} scroll fillers spawned." );
+		Log.Info( $"lifepunch_spawn_scroll_testbots: rank roster + {filled} scroll fillers — open /lifepunchulx and wheel the sidebar." );
 	}
 
+	/// <summary>Regular (no-rank) bots with fake SteamIds — pushes <see cref="StaffMenu"/> sidebar past scroll height.</summary>
 	public static int SpawnScrollFillBots( int count )
 	{
 		if ( count <= 0 || !Application.IsEditor || !Networking.IsHost )
@@ -264,13 +311,15 @@ public static class LifePunchEditorTestBots
 		var ranks = RankSystem.Instance;
 		if ( !ranks.IsValid() )
 		{
-			Log.Error( "lifepunch_spawn_rankbots: RankSystem unavailable (run lp_authorize first?)." );
+			Log.Error( "lifepunch_spawn_rankbots: RankSystem unavailable (not connected to the portal yet?)." );
 			return;
 		}
 
 		var index = 0;
 		foreach ( var def in RankBots )
 		{
+			// The Owner-mirror ("Greg") can't be targeted by the owner and is only for killswitch/owner
+			// tests, so skip it unless explicitly requested (lifepunch_spawn_rankbots true).
 			if ( !includeOwner && def.Rank == "Owner" )
 			{
 				continue;
@@ -312,10 +361,13 @@ public static class LifePunchEditorTestBots
 		var ranks = RankSystem.Instance;
 		if ( !ranks.IsValid() )
 		{
-			Log.Error( "lifepunch_list_ranks: RankSystem unavailable." );
+			Log.Error( "lifepunch_list_ranks: RankSystem unavailable (not connected to the portal yet?)." );
 			return;
 		}
 
+		// RankSystem.Ranks is private and the editor bridge can't read the dictionary contents, so we
+		// probe the expected ladder plus common variants by name to confirm which strings the portal
+		// actually loaded. Anything that resolves to a Guid is a real rank we can assign to a bot.
 		var candidates = new[]
 		{
 			"Owner", "Super Admin", "Admin", "Mod", "Moderator", "Trial Mod",
@@ -330,10 +382,14 @@ public static class LifePunchEditorTestBots
 			Log.Info( $"  {name,-14} -> {(id.HasValue ? id.Value.ToString() : "(not found)")}" );
 		}
 
+		// Ground truth straight from the live data: the local player's resolved rank name + order.
 		var localId = Sandbox.Game.SteamId;
-		Log.Info( $"[lifepunch_list_ranks] local ({localId}) -> '{ranks.GetRankName( localId )}' (order {ranks.GetRankOrder( localId )})." );
+		Log.Info( $"[lifepunch_list_ranks] local ({localId}) resolves to rank '{ranks.GetRankName( localId )}' (order {ranks.GetRankOrder( localId )})." );
 	}
 
+	// One quoted string arg, e.g.  lifepunch_botsay "Greg hello world". The ConCmd binder rejects a
+	// string[] param (ToType can't build one from console input) and multi-arg binding is unreliable, so
+	// we take the whole thing and split the first token off as the bot, leaving the rest as the message.
 	[ConCmd( "lifepunch_botsay" )]
 	public static void BotSay( string args = "" )
 	{
@@ -356,10 +412,11 @@ public static class LifePunchEditorTestBots
 		var steamId = ResolveBotSteamId( botToken );
 		if ( steamId == 0 )
 		{
-			Log.Warning( $"lifepunch_botsay: no spawned bot matches '{botToken}'." );
+			Log.Warning( $"lifepunch_botsay: no spawned bot matches '{botToken}'. Spawn some with lifepunch_spawn_rankbots first." );
 			return;
 		}
 
+		// Chat.Current is a GameObjectSystem (not a Component), so it has no IsValid() — use a null check.
 		var chat = Chat.Current;
 		if ( chat == null )
 		{
@@ -374,28 +431,11 @@ public static class LifePunchEditorTestBots
 			botName = bot.DisplayName;
 		}
 
+		// BroadcastBotChat was removed from DXRP — prefix the bot name in a global line for dev chat tests.
 		chat.BroadcastChat( $"{botName}: {message}", MessageType.GlobalChat );
 	}
 
-	internal static Guid? TryFindRankIdByName( RankSystem ranks, string rankName )
-	{
-		if ( !ranks.IsValid() || string.IsNullOrWhiteSpace( rankName ) )
-		{
-			return null;
-		}
-
-		var key = NormalizeRankName( rankName );
-		if ( _rankIdsByName.TryGetValue( key, out var id ) )
-		{
-			return id;
-		}
-
-		return null;
-	}
-
-	internal static long ResolveSpawnedBotSteamId( string token )
-		=> ResolveBotSteamId( token );
-
+	// Resolve a spawned bot by raw SteamId or by a case-insensitive substring of its display name.
 	private static long ResolveBotSteamId( string token )
 	{
 		if ( long.TryParse( token, out var rawId ) && _spawned.Contains( rawId ) )
@@ -421,6 +461,7 @@ public static class LifePunchEditorTestBots
 		return 0;
 	}
 
+	// A spot a short distance in front of the local player so the dummy is easy to see and teleport-test.
 	private static Vector3 SpawnNearLocal()
 	{
 		var local = Player.Local;
@@ -432,6 +473,7 @@ public static class LifePunchEditorTestBots
 		return Vector3.Zero;
 	}
 
+	// Spread rank bots along a row in front of the local player so they don't stack on one spot.
 	private static Vector3 SpawnFannedOut( int index )
 	{
 		var local = Player.Local;
@@ -441,8 +483,25 @@ public static class LifePunchEditorTestBots
 		}
 
 		var rot = local.WorldRotation;
-		var lateral = ( index - 3 ) * 50f;
+		var lateral = ( index - 3 ) * 50f; // centre the row on the forward axis
 		return local.WorldPosition + rot.Forward * 110f + rot.Right * lateral + Vector3.Up * 10f;
+	}
+
+	/// <summary>Rank lookup uses portal cache from <see cref="CacheRankDefinitions"/> (no reflection).</summary>
+	internal static Guid? TryFindRankIdByName( RankSystem ranks, string rankName )
+	{
+		if ( !ranks.IsValid() || string.IsNullOrWhiteSpace( rankName ) )
+		{
+			return null;
+		}
+
+		var key = NormalizeRankName( rankName );
+		if ( _rankIdsByName.TryGetValue( key, out var id ) )
+		{
+			return id;
+		}
+
+		return null;
 	}
 
 	private static string NormalizeRankName( string raw )
