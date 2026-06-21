@@ -257,6 +257,31 @@ if ($null -ne $Manifest) {
     }
 }
 
+# lifepunchulx (adminmenu) — production ship gate: r6 exact six files only; no dev bots.
+$AdminMenuCodeRoot = Join-Path $Root 'Code\Addons\lifepunch\adminmenu'
+if (Test-Path -LiteralPath $AdminMenuCodeRoot -PathType Container) {
+    $AllowedAdminMenuShipFiles = @(
+        'StaffMenu.razor',
+        'StaffMenu.razor.scss',
+        'StaffMenuActions.cs',
+        'StaffMenuHost.cs',
+        'StaffSettingsService.cs',
+        'WaypointSyncService.cs'
+    )
+
+    Get-ChildItem -LiteralPath $AdminMenuCodeRoot -File -Force | ForEach-Object {
+        $Name = $_.Name
+        if ($Name -match '(?i)TestBots|DevGive|DevSpawn|ulx_bots') {
+            Add-LayoutError "adminmenu (lifepunchulx) must not contain dev/bot code: $Name"
+            return
+        }
+
+        if ($_.Extension -in @('.cs', '.razor', '.scss') -and $AllowedAdminMenuShipFiles -notcontains $Name) {
+            Add-LayoutError "adminmenu (lifepunchulx) unexpected ship source (expected r6 exact 6): $Name"
+        }
+    }
+}
+
 if ($Errors.Count -gt 0) {
     Write-Host 'DXRP layout validation failed:' -ForegroundColor Red
     foreach ($ErrorMessage in $Errors) {
