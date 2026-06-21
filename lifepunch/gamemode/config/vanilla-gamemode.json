@@ -1,0 +1,24 @@
+﻿{
+    "schemaVersion":  1,
+    "source":  "DXRP public API (canonical vanilla — not in dxura/dxrp git)",
+    "apiUrl":  "https://api.dxrp.net/v1/public/gamemode/default",
+    "fetchedAt":  "2026-06-21T04:30:22.0862363-04:00",
+    "gamemode":  {
+                     "id":  "11111111-1111-1111-1111-111111111111",
+                     "name":  "Vanilla",
+                     "description":  "The quintessential 2014 roleplay experience",
+                     "visibility":  1,
+                     "defaultJobId":  "1762b3f5-f216-5acf-92a8-012e32a2a9b7",
+                     "startingBalance":  1500,
+                     "addonCount":  1,
+                     "jobCount":  18,
+                     "created":  "2026-05-13T12:04:23.997708+00:00",
+                     "lastModified":  "2026-05-17T11:00:37.793979+00:00"
+                 },
+    "canonicalExport":  "gamemodes/vanilla.gamemode",
+    "notes":  [
+                  "Official DXRP Vanilla gamemode — Base Content @ rev 3 only. No LifePunch addons.",
+                  "Refresh: powershell -File lifepunch/gamemode/scripts/Pull-DxrpVanillaGamemode.ps1",
+                  "Portal Reset to Vanilla uses this same template via API."
+              ]
+}
