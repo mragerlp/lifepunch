@@ -51,7 +51,15 @@ function Get-AddonIdents {
     if ($All) {
         return @(Get-ChildItem -LiteralPath $repoAssetsRoot -Directory | ForEach-Object { $_.Name })
     }
-    return $Addon
+    $expanded = [System.Collections.Generic.List[string]]::new()
+    foreach ($entry in $Addon) {
+        if ([string]::IsNullOrWhiteSpace($entry)) { continue }
+        foreach ($part in ($entry -split ',')) {
+            $ident = $part.Trim()
+            if ($ident) { $expanded.Add($ident) | Out-Null }
+        }
+    }
+    return @($expanded | Select-Object -Unique)
 }
 
 function Resolve-LpBitcoinCodeIdent([string]$Ident) {
