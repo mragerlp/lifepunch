@@ -49,7 +49,7 @@
 			<div class="crt-body">
 				<div class="sidebar">
 					<div class="sidebar-title">COMMANDS</div>
-					<div class="sidebar-cmd-list terminal-sidebar-scroll">
+					<div class="sidebar-cmd-list lp-ui-scroll-region terminal-sidebar-scroll">
 					@foreach ( var cmd in _commandRefs )
 					{
 						<div class="cmd-ref @( IsCommandCopied( cmd ) ? "copied" : "" )"
@@ -71,11 +71,11 @@
 						</div>
 					}
 					<div class="log-shell">
-						<div class="log terminal-log-scroll" onclick="@FocusLog">
+						<div class="log lp-ui-scroll-region terminal-log-scroll" onclick="@FocusLog">
 							<div class="log-stack">
 								@foreach ( var line in _lines )
 								{
-									<div class="log-line @LineClass( line )">@line.Text</div>
+									<label class="log-line @LineClass( line )">@line.Text</label>
 								}
 							</div>
 						</div>
@@ -146,7 +146,8 @@
 
 	private int _scrollLogPendingFrames;
 	private bool _scrollLogForce;
-	private bool _logStickBottom = true;
+	private int _scrollBootstrapFramesLeft;
+	private static bool _scrollFactoryRegistered;
 	private bool _urlCopied;
 	private string _copiedCommandFlash;
 	private RealTimeSince _copiedCommandFlashSince;
@@ -194,22 +195,33 @@
 
 	private void ToggleScaleMenu() => _showScaleMenu = !_showScaleMenu;
 
+	private static void EnsureScrollFactory()
+	{
+		if ( _scrollFactoryRegistered )
+			return;
+
+		LifePunchScrollRegionBootstrap.SetCustomFactory( slotClass =>
+			slotClass == "log" ? new LpBitcoinTerminalLogPanel() : null );
+
+		_scrollFactoryRegistered = true;
+	}
+
 	private void SetUiScale( LpUiScaleSize size )
 	{
 		_uiScale = size;
 		_showScaleMenu = false;
 		LifePunchUiScrollPolicy.ResetOffsets( Panel );
-		_logStickBottom = true;
 		QueueScrollLogToBottom( force: true );
 	}
 
 	protected override void OnEnabled()
 	{
+		EnsureScrollFactory();
 		LifePunchMenuInputBlock.NotifyMenuOpened();
 		LpBitcoinHudBridge.SetMenuCursorMode( true );
 		LifePunchUiScrollPolicy.Apply( Panel );
 		ApplyCommandInputChrome();
-		_logStickBottom = true;
+		_scrollBootstrapFramesLeft = 4;
 		QueueScrollLogToBottom( force: true );
 	}
 
@@ -224,7 +236,7 @@
 		_bootStatus = "INITIALIZING RIG...";
 		_pendingFocusRack = focusRack;
 		_lastInputTextLength = 0;
-		_logStickBottom = true;
+		_scrollBootstrapFramesLeft = 4;
 	}
 
 	protected override void OnDisabled()
@@ -243,7 +255,7 @@
 
 	private void FocusLog()
 	{
-		var log = FindScrollPanel( "log" );
+		var log = GetLogScroll();
 		if ( log.IsValid() )
 			log.Focus();
 	}
@@ -305,11 +317,11 @@
 		if ( raw.Equals( "clear", StringComparison.OrdinalIgnoreCase ) )
 		{
 			_lines.Clear();
-			_logStickBottom = true;
 			StateHasChanged();
 			_hub?.RequestPushTerminalCommandAlert( raw, "log cleared" );
 			InputBox.Text = string.Empty;
 			InputBox.Focus();
+			QueueScrollBootstrap();
 			QueueScrollLogToBottom( force: true );
 			return;
 		}
@@ -349,15 +361,21 @@
 
 	private void AppendLogLine( string kind, string text )
 	{
-		var log = FindScrollPanel( "log" );
+		var log = GetLogScroll();
 		if ( log.IsValid() )
-			_logStickBottom = IsScrollNearBottom( log );
+		{
+			var maxY = log.GetMaxScrollY();
+			var nearBottom = maxY <= 0f || log.ScrollOffset.y >= maxY - 32f;
+			log.PreferScrollToBottom = nearBottom;
+		}
 
 		_lines.Add( new LogLine( kind, text ) );
 		TrimLog();
 		StateHasChanged();
+		QueueScrollBootstrap();
+		ApplyLogScrollChrome();
 
-		if ( _logStickBottom )
+		if ( log.IsValid() && log.PreferScrollToBottom )
 			QueueScrollLogToBottom();
 	}
 
@@ -369,65 +387,43 @@
 
 	private void QueueScrollLogToBottom( bool force = false )
 	{
-		_scrollLogPendingFrames = Math.Max( _scrollLogPendingFrames, 3 );
+		_scrollLogPendingFrames = Math.Max( _scrollLogPendingFrames, 4 );
 		if ( force )
 			_scrollLogForce = true;
 	}
 
-	private Panel FindScrollPanel( string className )
-	{
-		if ( Panel is null || !Panel.IsValid )
-			return null;
+	private void QueueScrollBootstrap() => _scrollBootstrapFramesLeft = Math.Max( _scrollBootstrapFramesLeft, 4 );
 
-		foreach ( var child in Panel.Descendants )
+	private LifePunchScrollRegionPanel GetLogScroll()
+		=> LifePunchScrollRegionBootstrap.FindFirst( Panel, "log" );
+
+	private void ApplyLogScrollChrome()
+	{
+		if ( GetLogScroll() is LpBitcoinTerminalLogPanel terminalLog )
 		{
-			if ( child.IsValid && child.HasClass( className ) )
-				return child;
+			terminalLog.CopyFallback = BuildLogClipboardText;
+			terminalLog.ApplyLineSelectionChrome();
 		}
-
-		return null;
-	}
-
-	private static bool IsScrollNearBottom( Panel panel )
-	{
-		if ( !panel.HasScrollY )
-			return true;
-
-		var viewHeight = panel.Box.Rect.Height;
-		if ( viewHeight <= 1f )
-			return true;
-
-		var maxY = Math.Max( 0f, panel.ScrollSize.y - viewHeight );
-		return panel.ScrollOffset.y >= maxY - 32f;
-	}
-
-	private static void ScrollPanelToBottom( Panel panel, bool force )
-	{
-		if ( !panel.IsValid() )
-			return;
-
-		if ( !force && !IsScrollNearBottom( panel ) )
-			return;
-
-		if ( !panel.HasScrollY )
-			return;
-
-		var viewHeight = panel.Box.Rect.Height;
-		var maxY = Math.Max( 0f, panel.ScrollSize.y - viewHeight );
-		panel.ScrollOffset = new Vector2( 0f, maxY );
 	}
 
 	private void TickScrollLog()
 	{
+		if ( _scrollBootstrapFramesLeft > 0 )
+		{
+			LifePunchScrollRegionBootstrap.Upgrade( Panel );
+			_scrollBootstrapFramesLeft--;
+			ApplyLogScrollChrome();
+		}
+
 		if ( _scrollLogPendingFrames <= 0 )
 			return;
 
 		_scrollLogPendingFrames--;
-		var log = FindScrollPanel( "log" );
+		var log = GetLogScroll();
 		if ( !log.IsValid() )
 			return;
 
-		ScrollPanelToBottom( log, _scrollLogForce );
+		log.ScrollToBottom( _scrollLogForce );
 
 		if ( _scrollLogPendingFrames <= 0 )
 			_scrollLogForce = false;
@@ -466,6 +462,7 @@
 		ApplyCommandInputChrome();
 		TickCopiedCommandFlash();
 		TickScrollLog();
+		ApplyLogScrollChrome();
 	}
 
 	private void TickBoot()
@@ -495,7 +492,7 @@
 		_bootComplete = true;
 		_showBootSplash = false;
 		AppendLogLine( "ok", _hub?.IsPowered == true ? "hub power: ON" : "hub power: OFF" );
-		AppendLogLine( "dim", $"type help for {PromptLabel} commands · ctrl+c copies log scrollback" );
+		AppendLogLine( "dim", $"type help for {PromptLabel} commands · ctrl+c copies selection or full scrollback" );
 
 		if ( _pendingFocusRack.IsValid() )
 		{

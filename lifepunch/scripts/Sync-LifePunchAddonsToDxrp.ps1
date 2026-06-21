@@ -150,10 +150,16 @@ if (Test-Path -LiteralPath $devSrc) {
 foreach ($ident in Get-AddonIdents) {
     Write-Host "Addon: $ident" -ForegroundColor Cyan
     $assetsSrc = Join-Path $repoAssetsRoot $ident
-    if (Test-Path -LiteralPath $assetsSrc) {
+    $assetsDest = Join-Path $dxrpAssetsRoot $ident
+    if ($ident -eq 'bitcoinmining') {
+        # Code-only ident — play assets live under lpbitcoin/ (see DXRP_ADDON_PUBLISH_DOCTRINE.md).
+        Remove-StaleDxrpPath -Path $assetsDest -Label 'Assets/bitcoinmining (legacy — purged)'
+        Write-Host '  Assets/bitcoinmining - skip (lpbitcoin is canonical in editor)' -ForegroundColor DarkGray
+    }
+    elseif (Test-Path -LiteralPath $assetsSrc) {
         Invoke-Mirror `
             -From $assetsSrc `
-            -To   (Join-Path $dxrpAssetsRoot $ident) `
+            -To   $assetsDest `
             -Label "Assets/$ident"
     }
     else {
@@ -219,5 +225,5 @@ if (Test-Path -LiteralPath $tailwandConfigSrc) {
 }
 
 Write-Host 'Sync OK' -ForegroundColor Green
-Write-Host '  If play shows ERROR models, recompile bitcoinmining .vmdl/.vmat in ModelDoc (sync invalidates _c checksums).' -ForegroundColor Yellow
-Write-Host '  Bridge: recompile_asset on bitcoinhub.vmdl, bitcoinhub-fan.vmdl, gpu-rack.vmdl, gpu-rack-stacked.vmdl, bitcoin-terminal.vmdl, then entity prefabs.' -ForegroundColor DarkGray
+Write-Host '  Editor assets: Assets/addons/lifepunch/lpbitcoin/{bitcoinhub,hashdterminal,gpurack} only.' -ForegroundColor Yellow
+Write-Host '  Recompile in ModelDoc: bitcoinhub.vmdl, gpu-rack-stacked.vmdl, hashd-terminal.vmdl, then entity prefabs.' -ForegroundColor DarkGray

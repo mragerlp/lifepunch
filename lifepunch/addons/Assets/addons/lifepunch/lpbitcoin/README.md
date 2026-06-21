@@ -1,25 +1,36 @@
-# lpbitcoin — Bitcoin mining package (staging)
+# lpbitcoin — LIFEPUNCH Bitcoin package (editor + publish staging)
 
-**Package slug:** `lifepunchbitcoin` · **Repo ident (DXRP playtest):** `bitcoinmining`
+**Package slug:** `lifepunchbitcoin` · **Code mount (repo):** `Code/Addons/lifepunch/bitcoinmining/`  
+**Editor Asset Browser:** `Assets/addons/lifepunch/lpbitcoin/` only — no `bitcoinmining` assets folder.
 
-**Publish law:** `addons/docs/DXRP_ADDON_PUBLISH_DOCTRINE.md` — folder name = entity slug; PLACEHOLDER hands-off.
+## Entity slots (folder name = slug)
 
-## Entity slots
+| Folder | What you edit / spawn | ModelDoc vmdl | Prefab |
+|--------|----------------------|---------------|--------|
+| `bitcoinhub/` | Steam Machine hub | `assets/models/bitcoinhub.vmdl` | `assets/entities/bitcoinhub.prefab` |
+| `hashdterminal/` | CRT terminal prop | `assets/models/hashd-terminal.vmdl` | `assets/entities/hashd-terminal.prefab` |
+| `gpurack/` | **GPU Rack** (stacked farm — one ship tier) | `assets/models/gpu-rack-stacked.vmdl` | `assets/entities/gpu-rack.prefab` |
 
-| Folder | Entity slug | Hub mesh (Phase A) |
-|--------|-------------|-------------------|
-| `bitcoinhub/` | `bitcoinhub` | Steam Machine (promote from dev `bitcoin-miner` when signed off) |
-| `hashdterminal/` | `hashdterminal` | `hashd-terminal.vmdl` |
-| `gpurack/` | `gpurack` | `gpu-rack.vmdl` |
-| `advancedgpurack/` | `advancedgpurack` | `gpu-rack-stacked.vmdl` |
+Shared sounds + HASHD UI mark: `bitcoinhub/assets/sounds/` · `bitcoinhub/assets/ui/hashd/`
 
-Each entity folder:
+## Dev spawn (flatgrass)
 
 ```text
-bitcoinhub/
-  assets/source|textures|models|entities|sounds|ui/
-  code/components|ui|docs/   + manifest.json (legacy file map)
-  audit/manifest.json
+lp_bitcoin_spawn_kit          # hub + terminal + 1× GPU rack
+lp_bitcoin_clear_spawns       # cleanup
 ```
 
-See `addons/docs/PACKAGE_STAGING_LAYOUT.md`.
+Paths resolve via `LpBitcoinIdent.cs` — all under `lpbitcoin/…`.
+
+## Archive (ignore in Asset Browser)
+
+- `_archive/advancedgpurack-intake/` — duplicate intake; merged into `gpurack/`
+- `gpurack/_archive/small-open-frame/` — parked single-unit mesh (not shipped)
+
+## Sync
+
+```powershell
+powershell -File lifepunch\scripts\Sync-LifePunchAddonsToDxrp.ps1 -Addon bitcoinmining
+```
+
+Purges legacy `Assets/bitcoinmining` from DXRP; mirrors `lpbitcoin` + `Code/bitcoinmining`.

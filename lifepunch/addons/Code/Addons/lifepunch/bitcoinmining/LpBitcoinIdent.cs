@@ -25,11 +25,11 @@ public static class LpBitcoinIdent
 	public const string HubPrefabPath = "addons/lifepunch/lpbitcoin/bitcoinhub/assets/entities/bitcoinhub.prefab";
 	public const string HubModelPath = "addons/lifepunch/lpbitcoin/bitcoinhub/assets/models/bitcoinhub.vmdl";
 	public const string HubFanModelPath = "addons/lifepunch/lpbitcoin/bitcoinhub/assets/models/bitcoinhub-fan.vmdl";
-	public const string HubStartupSoundPath = "addons/lifepunch/bitcoinmining/sounds/bitcoinminer/hub-startup.sound";
-	public const string HubFanLoopSoundPath = "addons/lifepunch/bitcoinmining/sounds/bitcoinminer/hub-fan-loop.sound";
-	public const string HubFanDownSoundPath = "addons/lifepunch/bitcoinmining/sounds/bitcoinminer/hub-fan-down.sound";
+	public const string HubStartupSoundPath = "addons/lifepunch/lpbitcoin/bitcoinhub/assets/sounds/bitcoinminer/hub-startup.sound";
+	public const string HubFanLoopSoundPath = "addons/lifepunch/lpbitcoin/bitcoinhub/assets/sounds/bitcoinminer/hub-fan-loop.sound";
+	public const string HubFanDownSoundPath = "addons/lifepunch/lpbitcoin/bitcoinhub/assets/sounds/bitcoinminer/hub-fan-down.sound";
 	/// <summary>Mechanical click — rig0 CRT command line only (same asset as hacker terminal).</summary>
-	public const string KeyboardSoundPath = "addons/lifepunch/bitcoinmining/sounds/bitcoinminer/keyboard.sound";
+	public const string KeyboardSoundPath = "addons/lifepunch/lpbitcoin/bitcoinhub/assets/sounds/bitcoinminer/keyboard.sound";
 	public const string HubDisplayName = "Bitcoin Hub";
 
 	/// <summary>Hub durability — heavier than DXRP money printer (100).</summary>
@@ -54,11 +54,10 @@ public static class LpBitcoinIdent
 	public const string RackSlug = "gpu-rack";
 	public const string RackDisplayName = "GPU Rack";
 	public const string RackModelPath =
-		"addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/gpu-rack/gpu-rack-stacked.vmdl";
+		"addons/lifepunch/lpbitcoin/gpurack/assets/models/gpu-rack-stacked.vmdl";
 
-	/// <summary>Canonical prefab — prefab path rename to gpurack/gpu-rack pending (BITCOINMINING-07).</summary>
 	public const string RackPrefabPath =
-		"addons/lifepunch/bitcoinmining/entities/advancedgpurack/advanced-gpu-rack.prefab";
+		"addons/lifepunch/lpbitcoin/gpurack/assets/entities/gpu-rack.prefab";
 
 	/// <summary>Operator-facing rack slot (1-based). Internal APIs stay 0-based.</summary>
 	public static int DisplayRackNumber( int zeroBasedIndex ) => zeroBasedIndex + 1;
@@ -127,11 +126,11 @@ public static class LpBitcoinIdent
 
 	/// <summary>Terminal durability — matches DXRP money printer baseline (100).</summary>
 	public const float TerminalMaxHealth = 100f;
-	public const string TerminalPrefabPath = "addons/lifepunch/bitcoinmining/entities/bitcoin-terminal/bitcoin-terminal.prefab";
+	public const string TerminalPrefabPath = "addons/lifepunch/lpbitcoin/hashdterminal/assets/entities/hashd-terminal.prefab";
 
 	/// <summary>HASHD hub + terminal UI — transparent Bitcoin mark (sidebar / PIN gate).</summary>
-	public const string BtcMarkPath = "addons/lifepunch/bitcoinmining/ui/hashd/btc.png";
-	public const string BtcMarkUrl = "/addons/lifepunch/bitcoinmining/ui/hashd/btc.png";
+	public const string BtcMarkPath = "addons/lifepunch/lpbitcoin/bitcoinhub/assets/ui/hashd/btc.png";
+	public const string BtcMarkUrl = "/addons/lifepunch/lpbitcoin/bitcoinhub/assets/ui/hashd/btc.png";
 
 	/// <summary>Canonical Bitcoin glyph for UI copy, server titles, and docs (Unicode U+20BF).</summary>
 	public const string BtcEmoji = "₿";

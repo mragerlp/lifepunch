@@ -13,20 +13,20 @@
     "name": "Bitcoin Terminal",
     "type": 0,
     "description": "HASHD CRT monitor — rig0 typed commands.",
-    "primaryReference": "addons/lifepunch/bitcoinmining/entities/bitcoin-terminal/bitcoin-terminal.prefab",
+    "primaryReference": "addons/lifepunch/lpbitcoin/hashdterminal/assets/entities/hashd-terminal.prefab",
     "secondaryReference": "",
     "grouping": "Entities",
-    "worldModelPath": "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-terminal/bitcoin-terminal.vmdl",
+    "worldModelPath": "addons/lifepunch/lpbitcoin/hashdterminal/assets/models/hashd-terminal.vmdl",
     "iconPath": ""
   },
   {
     "name": "GPU Rack",
     "type": 0,
     "description": "GPU mining farm — stacked mesh, max 3 per operator (GPURack-1…3). CPU/core upgrades drive yield.",
-    "primaryReference": "addons/lifepunch/bitcoinmining/entities/advancedgpurack/advanced-gpu-rack.prefab",
+    "primaryReference": "addons/lifepunch/lpbitcoin/gpurack/assets/entities/gpu-rack.prefab",
     "secondaryReference": "",
     "grouping": "Entities",
-    "worldModelPath": "addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/gpu-rack/gpu-rack-stacked.vmdl",
+    "worldModelPath": "addons/lifepunch/lpbitcoin/gpurack/assets/models/gpu-rack-stacked.vmdl",
     "iconPath": ""
   }
 ]

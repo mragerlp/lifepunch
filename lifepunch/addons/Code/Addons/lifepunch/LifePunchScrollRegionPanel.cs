@@ -87,6 +87,12 @@ public class LifePunchScrollRegionPanel : Panel
 /// </summary>
 public static class LifePunchScrollRegionBootstrap
 {
+	private static Func<string, LifePunchScrollRegionPanel> _customFactory;
+
+	/// <summary>Register slot-specific scroll panels (e.g. HASHD terminal log with copy support).</summary>
+	public static void SetCustomFactory( Func<string, LifePunchScrollRegionPanel> factory )
+		=> _customFactory = factory;
+
 	public static void Upgrade( Panel root )
 	{
 		if ( root is null || !root.IsValid )
@@ -124,7 +130,7 @@ public static class LifePunchScrollRegionBootstrap
 			if ( !source.Children.Any() )
 				continue;
 
-			var scroll = new LifePunchScrollRegionPanel();
+			var scroll = CreateScrollPanel( slotClass );
 
 			CopyPanelClasses( source, scroll );
 
@@ -140,6 +146,12 @@ public static class LifePunchScrollRegionBootstrap
 			if ( index >= 0 )
 				parent.SetChildIndex( scroll, index );
 		}
+	}
+
+	private static LifePunchScrollRegionPanel CreateScrollPanel( string slotClass )
+	{
+		var custom = _customFactory?.Invoke( slotClass );
+		return custom ?? new LifePunchScrollRegionPanel();
 	}
 
 	private static void MergeChildren( Panel from, Panel to )

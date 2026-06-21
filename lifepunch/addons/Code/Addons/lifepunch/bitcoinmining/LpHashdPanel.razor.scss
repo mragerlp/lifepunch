@@ -72,6 +72,8 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	}
 
 	// Scrollable body slot — footer stays a fixed 32px strip clipped by .shell.
+	// s&box: overflow + shell border-radius alone does not curve the top border — mirror the
+	// footer watermark pattern with explicit radii on the top-left/right chrome (sidebar + header).
 	.shell-body {
 		flex: 1 1 0;
 		min-height: 0;
@@ -79,6 +81,8 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		flex-direction: column;
 		overflow: hidden;
 		background-color: $hashd-bg;
+		border-top-left-radius: $shell-radius;
+		border-top-right-radius: $shell-radius;
 	}
 
 	.lp-window-watermark {
@@ -233,6 +237,8 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		padding: 16px 20px;
 		background-color: $hashd-surface;
 		border-bottom: 1px solid $hashd-border;
+		border-top-left-radius: $shell-radius;
+		border-top-right-radius: $shell-radius;
 	}
 
 	.pin-brand {
@@ -395,6 +401,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		padding: 16px 10px 14px;
 		background-color: $hashd-surface;
 		border-right: 1px solid $hashd-border;
+		border-top-left-radius: $shell-radius;
 		overflow: hidden;
 	}
 
@@ -420,7 +427,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	.brand-mark {
 		width: 100%;
 		height: 100%;
-		background-image: url(/addons/lifepunch/bitcoinmining/ui/hashd/btc.png);
+		background-image: url(/addons/lifepunch/lpbitcoin/bitcoinhub/assets/ui/hashd/btc.png);
 		background-size: contain;
 		background-repeat: no-repeat;
 		background-position: center;
@@ -506,6 +513,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		display: flex;
 		flex-direction: column;
 		background-color: $hashd-surface;
+		border-top-right-radius: $shell-radius;
 		overflow: hidden;
 	}
 
@@ -521,6 +529,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		padding: 14px 22px 12px;
 		border-bottom: 1px solid $hashd-border;
 		background-color: $hashd-surface;
+		border-top-right-radius: $shell-radius;
 	}
 
 	.hub-title {
@@ -753,6 +762,9 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	.notif-time {
 		color: $hashd-muted;
 		font-size: 10px;
+		line-height: 1.35;
+		min-height: 14px;
+		flex-shrink: 0;
 	}
 
 	.page-header {
@@ -938,8 +950,10 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	}
 
 	.overview .lp-ui-split > .lp-ui-panel.overview-status-panel {
+		overflow: visible;
+
 		> .overview-status-stack {
-			flex: 1 1 auto;
+			flex: 0 1 auto;
 			min-height: 0;
 			display: flex;
 			flex-direction: column;
@@ -947,7 +961,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	}
 
 	.overview-status-stack {
-		flex: 1 1 auto;
+		flex: 0 1 auto;
 		min-height: 0;
 		display: flex;
 		flex-direction: column;
@@ -967,18 +981,8 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	.overview-status-footer {
 		flex: 0 0 auto;
 		flex-shrink: 0;
-		padding-top: 14px;
+		padding-top: 10px;
 		border-top: 1px solid rgba(255, 255, 255, 0.1);
-	}
-
-	.overview-status-breathe {
-		flex-shrink: 0;
-		width: 100%;
-		min-height: 22px;
-		height: 22px;
-		font-size: 14px;
-		line-height: 22px;
-		opacity: 0;
 	}
 
 	.overview-status-info {
@@ -1028,7 +1032,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		flex-direction: column;
 		gap: 4px;
 		margin: 2px 0 0;
-		padding-bottom: 12px;
+		padding-bottom: 4px;
 		background-color: transparent;
 		border: 0;
 		border-radius: 0;
@@ -2366,7 +2370,6 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		margin-top: 8px;
 		width: 100%;
 		padding: 0 2px;
-		box-sizing: border-box;
 
 		.lp-ui-btn-primary,
 		.lp-ui-btn-ghost {
@@ -2459,12 +2462,10 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 
 	.overview-intro-terminal {
 		display: flex;
-		flex-direction: row;
-		flex-wrap: nowrap;
-		align-items: center;
-		justify-content: space-between;
+		flex-direction: column;
+		align-items: stretch;
 		gap: 10px;
-		padding-top: 8px;
+		padding-top: 10px;
 		border-top: 1px solid rgba(232, 125, 62, 0.28);
 	}
 
@@ -2483,8 +2484,8 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		font-weight: 800;
 		text-transform: uppercase;
 		letter-spacing: 0.03em;
-		line-height: 1.2;
-		white-space: nowrap;
+		line-height: 1.35;
+		white-space: normal;
 	}
 
 	.overview-intro-terminal-actions {
@@ -2494,6 +2495,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		align-items: center;
 		justify-content: flex-end;
 		flex: 0 0 auto;
+		width: 100%;
 	}
 
 	.overview-intro-terminal-actions .lp-ui-btn-primary,
@@ -2642,6 +2644,30 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 }
 
 // Flat — transfers-canonical surface + inset (nested rules may not compile in s&box).
+.lp-bitcoin-ops .shell-body {
+	border-top-left-radius: 22px;
+	border-top-right-radius: 22px;
+	overflow: hidden;
+}
+
+.lp-bitcoin-ops .sidebar {
+	border-top-left-radius: 22px;
+}
+
+.lp-bitcoin-ops .hub-header {
+	border-top-right-radius: 22px;
+}
+
+.lp-bitcoin-ops .workspace {
+	border-top-right-radius: 22px;
+	overflow: hidden;
+}
+
+.lp-bitcoin-ops .pin-header {
+	border-top-left-radius: 22px;
+	border-top-right-radius: 22px;
+}
+
 .lp-bitcoin-ops .lp-hashd-surface {
 	display: flex;
 	flex-direction: column;
@@ -2713,10 +2739,10 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	display: flex;
 	flex-direction: column;
 	gap: 0;
-	padding-top: 18px;
-	padding-right: 20px;
-	padding-bottom: 18px;
-	padding-left: 20px;
+	padding-top: 14px;
+	padding-right: 16px;
+	padding-bottom: 12px;
+	padding-left: 16px;
 	border: 0;
 	border-radius: 0;
 	background-color: transparent;
@@ -2725,49 +2751,40 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	line-height: 1.5;
 }
 
-.lp-bitcoin-ops .overview-intro-terminal-spacer {
-	flex-shrink: 0;
-	width: 100%;
-	height: 14px;
-}
-
 .lp-bitcoin-ops .overview-intro-terminal {
 	display: flex;
-	flex-direction: row;
-	flex-wrap: nowrap;
-	align-items: center;
-	justify-content: space-between;
+	flex-direction: column;
+	align-items: stretch;
 	gap: 10px;
-	padding-top: 14px;
+	padding-top: 10px;
 	border-top: 1px solid rgba(232, 125, 62, 0.28);
 }
 
 // Flat — hub status: blank line + footer rule (do NOT zero padding here).
-.lp-bitcoin-ops .overview .lp-ui-panel.overview-status-panel {
+.lp-bitcoin-ops .overview .lp-ui-split > .lp-ui-panel.overview-status-panel {
+	overflow: visible;
 	padding-top: 18px;
 	padding-right: 20px;
 	padding-bottom: 18px;
 	padding-left: 20px;
 }
 
-.lp-bitcoin-ops .overview-status-breathe {
-	flex-shrink: 0;
-	width: 100%;
-	min-height: 22px;
-	height: 22px;
-	font-size: 14px;
-	line-height: 22px;
-	opacity: 0;
-}
-
 .lp-bitcoin-ops .overview-status-perks {
-	padding-bottom: 12px;
+	padding-bottom: 4px;
 }
 
 .lp-bitcoin-ops .overview-status-footer {
 	flex: 0 0 auto;
-	padding-top: 14px;
+	padding-top: 10px;
 	border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.lp-bitcoin-ops .notif-list {
+	padding-bottom: 12px;
+}
+
+.lp-bitcoin-ops .notif-row {
+	min-height: 56px;
 }
 
 // Flat — upgrades pane padding (nested .upgrade-* rules often do not compile in s&box).

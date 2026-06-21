@@ -23,13 +23,22 @@
 					<div class="pin-brand">
 						<div class="brand-mark"></div>
 						<div class="pin-brand-copy">
-							<div class="pin-title">@( PinSetupMode() ? "SECURE BOOT SETUP" : "SECURE BOOT" )</div>
-							<div class="pin-sub">@( PinSetupMode() ? "Create a 4-digit hub PIN" : "Enter your 4-digit hub PIN" )</div>
+							<div class="pin-title">@PinGateTitle()</div>
+							<div class="pin-sub">@PinGateSubtitle()</div>
 						</div>
 					</div>
-					<button class="lp-ui-chrome-btn close" tooltip="Close" onclick="@Close">
-						<i class="material-icons">close</i>
-					</button>
+					@if ( PinChangeGateMode() )
+					{
+						<button class="lp-ui-chrome-btn close" tooltip="Cancel" onclick="@CancelPinChangeGate">
+							<i class="material-icons">close</i>
+						</button>
+					}
+					else
+					{
+						<button class="lp-ui-chrome-btn close" tooltip="Close" onclick="@Close">
+							<i class="material-icons">close</i>
+						</button>
+					}
 				</header>
 
 				<div class="pin-body">
@@ -153,30 +162,32 @@
 												<div class="overview-intro-copy">
 													Buy from DXRP Market → place hub → set PIN → <strong>power on</strong> (header switch) → link terminal → register up to @LpBitcoinIdent.PortalMaxRacksPerHub GPU racks at rig0 on the CRT.
 												</div>
-												<div class="overview-intro-terminal-spacer"></div>
 												<div class="overview-intro-terminal">
-												<div class="overview-intro-terminal-status">
-													<span class="lp-ui-status-dot @(HasLinkedTerminal() ? "on" : HasNearbyUnlinkedTerminal() ? "warn" : "off")"></span>
-													<span class="overview-intro-terminal-label">@TerminalLinkStatusLabel()</span>
-												</div>
-												<div class="overview-intro-terminal-actions">
-													@if ( HasLinkedTerminal() )
-													{
-														<button class="lp-ui-btn-ghost" onclick="@UnlinkTerminal">Unlink terminal</button>
-													}
-													else if ( HasNearbyUnlinkedTerminal() )
-													{
-														<button class="lp-ui-btn-primary" disabled="@(!HubIsPowered())" onclick="@LinkNearbyTerminal">Link terminal</button>
-													}
-													else
-													{
-														<button class="lp-ui-btn-ghost overview-intro-terminal-disabled" disabled>No terminal in range</button>
-													}
-													@if ( !HubIsPowered() && !HasLinkedTerminal() )
-													{
-														<div class="overview-intro-power-hint">Power on before linking.</div>
-													}
-												</div>
+													<div class="overview-intro-terminal-status">
+														<span class="lp-ui-status-dot @(HasLinkedTerminal() ? "on" : HasNearbyUnlinkedTerminal() ? "warn" : "off")"></span>
+														<span class="overview-intro-terminal-label">@TerminalLinkStatusLabel()</span>
+													</div>
+													<div class="overview-intro-terminal-actions">
+														@if ( HasLinkedTerminal() )
+														{
+															<button class="lp-ui-btn-ghost" onclick="@UnlinkTerminal">Unlink terminal</button>
+														}
+														else if ( HasNearbyUnlinkedTerminal() )
+														{
+															@if ( HubIsPowered() )
+															{
+																<button class="lp-ui-btn-primary" onclick="@LinkNearbyTerminal">Link terminal</button>
+															}
+															else
+															{
+																<button class="lp-ui-btn-ghost overview-intro-terminal-disabled" disabled>Power on to link</button>
+															}
+														}
+														else
+														{
+															<button class="lp-ui-btn-ghost overview-intro-terminal-disabled" disabled>No terminal in range</button>
+														}
+													</div>
 												</div>
 											</div>
 										</div>
@@ -197,7 +208,6 @@
 														</div>
 														<div class="lp-ui-empty-callout-title">No racks linked</div>
 														<div class="lp-ui-empty-callout-body">
-															<div class="lp-ui-empty-callout-step">Power on the hub (header switch).</div>
 															<div class="lp-ui-empty-callout-step">Power on the hub (header switch).</div>
 															<div class="lp-ui-empty-callout-step">Link the terminal above.</div>
 															<div class="lp-ui-empty-callout-step">At rig0 on the CRT, type:</div>
@@ -275,7 +285,6 @@
 															<div class="overview-status-perk">Hub wallet @HubWalletBtc().ToString("F4") BTC</div>
 															<div class="overview-status-perk">@RackPendingBtc().ToString("F4") BTC pending on racks</div>
 														</div>
-														<div class="overview-status-breathe">&nbsp;</div>
 													</div>
 
 													<div class="overview-status-footer">
@@ -662,63 +671,18 @@
 
 												<div class="settings-section lp-hashd-surface">
 													<div class="settings-label">Security</div>
-													@if ( _pinChangeActive )
+													<div class="settings-hint @( !string.IsNullOrWhiteSpace( _pinChangeNotice ) ? "settings-hint-ok" : "" )">
+														@( !string.IsNullOrWhiteSpace( _pinChangeNotice )
+															? _pinChangeNotice
+															: Hub?.AccessPinIsSet == true
+																? "Hub PIN protects wallet and settings. Change PIN opens Secure Boot — same flow as first hub USE."
+																: "Set your PIN on first hub USE via Secure Boot." )
+													</div>
+													@if ( Hub?.AccessPinIsSet == true )
 													{
-														<div class="settings-hint">Verify your current PIN, then enter a new 4-digit PIN twice.</div>
-														<div class="pin-change-entry">
-															<div class="pin-entry">
-																<div class="pin-label">@PinChangeEntryLabel()</div>
-																<div class="pin-dots">
-																	@for ( var i = 0; i < PinTargetLength(); i++ )
-																	{
-																		<span class="pin-dot @(i < _pinChangeBuffer.Length ? "filled" : "")"></span>
-																	}
-																</div>
-															</div>
-															@if ( !string.IsNullOrWhiteSpace( _pinChangeError ) )
-															{
-																<div class="pin-error">@_pinChangeError</div>
-															}
-															<div class="pin-pad pin-pad--compact">
-																@foreach ( var key in _pinKeys )
-																{
-																	<button class="pin-key @(key == "ok" ? "ok" : "") @(key == "clr" ? "clr" : "")"
-																	        onclick="@(() => PressPinChangeKey(key))">
-																		@if ( key == "clr" )
-																		{
-																			<i class="material-icons">backspace</i>
-																		}
-																		else if ( key == "ok" )
-																		{
-																			<i class="material-icons">check</i>
-																		}
-																		else
-																		{
-																			<span>@key</span>
-																		}
-																	</button>
-																}
-															</div>
+														<div class="settings-actions lp-hashd-action-row">
+															<button class="lp-ui-btn-primary" onclick="@StartPinChange">Change PIN</button>
 														</div>
-														<div class="settings-actions">
-															<button class="lp-ui-btn-ghost" onclick="@CancelPinChange">Cancel</button>
-														</div>
-													}
-													else
-													{
-														<div class="settings-hint @( !string.IsNullOrWhiteSpace( _pinChangeNotice ) ? "settings-hint-ok" : "" )">
-															@( !string.IsNullOrWhiteSpace( _pinChangeNotice )
-																? _pinChangeNotice
-																: Hub?.AccessPinIsSet == true
-																	? "Hub PIN protects wallet and settings. Owner can change it here."
-																	: "Set your PIN on first hub USE via Secure Boot." )
-														</div>
-														@if ( Hub?.AccessPinIsSet == true )
-														{
-															<div class="settings-actions lp-hashd-action-row">
-																<button class="lp-ui-btn-primary" onclick="@StartPinChange">Change PIN</button>
-															</div>
-														}
 													}
 												</div>
 
@@ -774,6 +738,7 @@
 {
 	private enum OpsTab { Overview, Wallet, Transfers, Racks, Upgrades, Logs, Settings }
 	private enum PerfRange { Day, Week, Month }
+	private enum PinGatePurpose { Unlock, ChangePin }
 
 	private static readonly OpsTab[] _tabs = { OpsTab.Overview, OpsTab.Wallet, OpsTab.Transfers, OpsTab.Racks, OpsTab.Logs, OpsTab.Settings };
 	private static readonly PerfRange[] _perfRanges = { PerfRange.Day, PerfRange.Week, PerfRange.Month };
@@ -790,11 +755,10 @@
 	private string _pinConfirmDraft = "";
 	private string _pinError = "";
 	private int _pinSetupPass;
-	private bool _pinChangeActive;
-	private string _pinChangeBuffer = "";
+	private PinGatePurpose _pinGatePurpose = PinGatePurpose.Unlock;
+	private OpsTab _returnTabAfterPinGate = OpsTab.Overview;
 	private string _pinChangeCurrent = "";
 	private string _pinChangeNewDraft = "";
-	private string _pinChangeError = "";
 	private string _pinChangeNotice = "";
 	private int _pinChangePass;
 	private static readonly string[] _pinKeys = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "clr", "0", "ok" };
@@ -809,9 +773,12 @@
 	// Live rack BTC / mining stats refresh on a cadence — NOT every frame in BuildHash (rebuilds the
 	// whole hub chrome and scroll regions flicker / empty). Same pattern as StaffMenu _detailHash.
 	private TimeSince _sinceTelemetryRefresh;
+	private TimeSince _sinceLogTimeRefresh;
 	private int _telemetryHash;
+	private int _logTimeBucket;
 	private int _scrollBootstrapFramesLeft;
 	private const float TelemetryRefreshInterval = 0.5f;
+	private const float LogTimeRefreshInterval = 30f;
 
 	private string CashOutAmount
 	{
@@ -834,8 +801,12 @@
 		_pinConfirmDraft = "";
 		_pinError = "";
 		_pinSetupPass = 0;
+		_pinGatePurpose = PinGatePurpose.Unlock;
+		_returnTabAfterPinGate = OpsTab.Overview;
 		ResetPinChangeState( keepNotice: false );
 		_sinceTelemetryRefresh = TelemetryRefreshInterval;
+		_sinceLogTimeRefresh = LogTimeRefreshInterval;
+		_logTimeBucket = (int)(Time.Now / LogTimeRefreshInterval);
 		RecomputeTelemetryHash();
 		QueueScrollBootstrap();
 	}
@@ -863,6 +834,8 @@
 		LpBitcoinHudBridge.SetMenuCursorMode( true );
 		LifePunchUiScrollPolicy.Apply( Panel );
 		_sinceTelemetryRefresh = TelemetryRefreshInterval;
+		_sinceLogTimeRefresh = LogTimeRefreshInterval;
+		_logTimeBucket = (int)(Time.Now / LogTimeRefreshInterval);
 		RecomputeTelemetryHash();
 		QueueScrollBootstrap();
 	}
@@ -893,6 +866,9 @@
 	{
 		SelectTab( OpsTab.Logs );
 		Hub?.RequestMarkAlertsRead();
+		_logTimeBucket = (int)(Time.Now / LogTimeRefreshInterval);
+		_sinceLogTimeRefresh = 0;
+		StateHasChanged();
 	}
 
 	private static long LocalSteamId() => Game.SteamId;
@@ -1116,7 +1092,8 @@
 
 		_active = tab;
 		LifePunchUiScrollPolicy.Apply( Panel );
-		QueueScrollBootstrap();
+		if ( tab != OpsTab.Logs )
+			QueueScrollBootstrap();
 	}
 
 	private void QueueScrollBootstrap() => _scrollBootstrapFramesLeft = 4;
@@ -1232,11 +1209,31 @@
 	private bool HubIsPowered() => Hub?.IsPowered == true;
 
 	private bool ShowPinGate() => Hub is not null && !_pinUnlocked;
-	private bool PinSetupMode() => Hub is not null && !Hub.AccessPinIsSet;
+	private bool PinSetupMode() => !PinChangeGateMode() && Hub is not null && !Hub.AccessPinIsSet;
+	private bool PinChangeGateMode() => _pinGatePurpose == PinGatePurpose.ChangePin;
 	private int PinTargetLength() => LpBitcoinHubPin.MaxDigits;
+
+	private string PinGateTitle()
+	{
+		if ( PinChangeGateMode() )
+			return "CHANGE HUB PIN";
+
+		return PinSetupMode() ? "SECURE BOOT SETUP" : "SECURE BOOT";
+	}
+
+	private string PinGateSubtitle()
+	{
+		if ( PinChangeGateMode() )
+			return "Verify current PIN, then enter a new 4-digit PIN twice.";
+
+		return PinSetupMode() ? "Create a 4-digit hub PIN" : "Enter your 4-digit hub PIN";
+	}
 
 	private string PinEntryLabel()
 	{
+		if ( PinChangeGateMode() )
+			return PinChangeEntryLabel();
+
 		if ( PinSetupMode() )
 			return _pinSetupPass == 1 ? "CONFIRM PIN" : "ENTER PIN";
 
@@ -1252,6 +1249,23 @@
 		{
 			_pinBuffer = "";
 			_pinError = "";
+
+			if ( PinChangeGateMode() )
+			{
+				if ( _pinChangePass >= 2 )
+				{
+					_pinChangePass = 1;
+					_pinChangeNewDraft = "";
+				}
+				else if ( _pinChangePass == 1 )
+				{
+					_pinChangePass = 0;
+					_pinChangeCurrent = "";
+				}
+
+				return;
+			}
+
 			if ( PinSetupMode() && _pinSetupPass == 1 )
 			{
 				_pinSetupPass = 0;
@@ -1265,6 +1279,30 @@
 		{
 			if ( _pinBuffer.Length < LpBitcoinHubPin.MinDigits )
 				return;
+
+			if ( PinChangeGateMode() )
+			{
+				if ( _pinChangePass == 0 )
+				{
+					_pinChangeCurrent = _pinBuffer;
+					_pinBuffer = "";
+					_pinChangePass = 1;
+					_pinError = "";
+					return;
+				}
+
+				if ( _pinChangePass == 1 )
+				{
+					_pinChangeNewDraft = _pinBuffer;
+					_pinBuffer = "";
+					_pinChangePass = 2;
+					_pinError = "";
+					return;
+				}
+
+				Hub.RequestChangeAccessPin( _pinChangeCurrent, _pinChangeNewDraft, _pinBuffer );
+				return;
+			}
 
 			if ( PinSetupMode() )
 			{
@@ -1296,6 +1334,7 @@
 		if ( success )
 		{
 			_pinUnlocked = true;
+			_pinGatePurpose = PinGatePurpose.Unlock;
 			_pinBuffer = "";
 			_pinConfirmDraft = "";
 			_pinError = "";
@@ -1317,24 +1356,33 @@
 		if ( Hub?.AccessPinIsSet != true )
 			return;
 
-		_pinChangeActive = true;
-		_pinChangeBuffer = "";
+		_returnTabAfterPinGate = OpsTab.Settings;
+		_pinGatePurpose = PinGatePurpose.ChangePin;
+		_pinUnlocked = false;
+		_pinBuffer = "";
 		_pinChangeCurrent = "";
 		_pinChangeNewDraft = "";
-		_pinChangeError = "";
-		_pinChangeNotice = "";
 		_pinChangePass = 0;
+		_pinError = "";
+		_pinChangeNotice = "";
 	}
 
-	private void CancelPinChange() => ResetPinChangeState( keepNotice: false );
+	private void CancelPinChangeGate()
+	{
+		_pinUnlocked = true;
+		_pinGatePurpose = PinGatePurpose.Unlock;
+		_pinBuffer = "";
+		_pinChangeCurrent = "";
+		_pinChangeNewDraft = "";
+		_pinChangePass = 0;
+		_pinError = "";
+		_active = _returnTabAfterPinGate;
+	}
 
 	private void ResetPinChangeState( bool keepNotice )
 	{
-		_pinChangeActive = false;
-		_pinChangeBuffer = "";
 		_pinChangeCurrent = "";
 		_pinChangeNewDraft = "";
-		_pinChangeError = "";
 		_pinChangePass = 0;
 
 		if ( !keepNotice )
@@ -1351,74 +1399,24 @@
 		};
 	}
 
-	private void PressPinChangeKey( string key )
-	{
-		if ( Hub is null || !_pinChangeActive )
-			return;
-
-		if ( key == "clr" )
-		{
-			_pinChangeBuffer = "";
-			_pinChangeError = "";
-
-			if ( _pinChangePass >= 2 )
-			{
-				_pinChangePass = 1;
-				_pinChangeNewDraft = "";
-			}
-			else if ( _pinChangePass == 1 )
-			{
-				_pinChangePass = 0;
-				_pinChangeCurrent = "";
-			}
-
-			return;
-		}
-
-		if ( key == "ok" )
-		{
-			if ( _pinChangeBuffer.Length < LpBitcoinHubPin.MinDigits )
-				return;
-
-			if ( _pinChangePass == 0 )
-			{
-				_pinChangeCurrent = _pinChangeBuffer;
-				_pinChangeBuffer = "";
-				_pinChangePass = 1;
-				_pinChangeError = "";
-				return;
-			}
-
-			if ( _pinChangePass == 1 )
-			{
-				_pinChangeNewDraft = _pinChangeBuffer;
-				_pinChangeBuffer = "";
-				_pinChangePass = 2;
-				_pinChangeError = "";
-				return;
-			}
-
-			Hub.RequestChangeAccessPin( _pinChangeCurrent, _pinChangeNewDraft, _pinChangeBuffer );
-			return;
-		}
-
-		if ( _pinChangeBuffer.Length >= LpBitcoinHubPin.MaxDigits )
-			return;
-
-		_pinChangeBuffer += key;
-	}
-
 	public void OnPinChangeResult( bool success, string message )
 	{
 		if ( success )
 		{
 			_pinChangeNotice = string.IsNullOrWhiteSpace( message ) ? "Hub PIN updated." : message;
-			ResetPinChangeState( keepNotice: true );
+			_pinUnlocked = true;
+			_pinGatePurpose = PinGatePurpose.Unlock;
+			_pinBuffer = "";
+			_pinChangeCurrent = "";
+			_pinChangeNewDraft = "";
+			_pinChangePass = 0;
+			_pinError = "";
+			_active = _returnTabAfterPinGate;
 			return;
 		}
 
-		_pinChangeBuffer = "";
-		_pinChangeError = string.IsNullOrWhiteSpace( message ) ? "Could not update PIN." : message;
+		_pinBuffer = "";
+		_pinError = string.IsNullOrWhiteSpace( message ) ? "Could not update PIN." : message;
 		_pinChangePass = 0;
 		_pinChangeCurrent = "";
 		_pinChangeNewDraft = "";
@@ -1684,13 +1682,40 @@
 		}
 
 		if ( _sinceTelemetryRefresh < TelemetryRefreshInterval )
+		{
+			TickLogTimeLabels();
 			return;
+		}
 
 		_sinceTelemetryRefresh = 0;
 		var previous = _telemetryHash;
 		RecomputeTelemetryHash();
 		if ( _telemetryHash != previous )
-			QueueScrollBootstrap();
+		{
+			if ( _active == OpsTab.Logs )
+				StateHasChanged();
+			else
+				QueueScrollBootstrap();
+		}
+
+		TickLogTimeLabels();
+	}
+
+	private void TickLogTimeLabels()
+	{
+		if ( _active != OpsTab.Logs )
+			return;
+
+		if ( _sinceLogTimeRefresh < LogTimeRefreshInterval )
+			return;
+
+		_sinceLogTimeRefresh = 0;
+		var bucket = (int)(Time.Now / LogTimeRefreshInterval);
+		if ( bucket == _logTimeBucket )
+			return;
+
+		_logTimeBucket = bucket;
+		StateHasChanged();
 	}
 
 	private void RecomputeTelemetryHash()
@@ -1711,7 +1736,6 @@
 		{
 			hash.Add( alerts[i].Kind );
 			hash.Add( alerts[i].Message );
-			hash.Add( (int)alerts[i].Timestamp );
 		}
 
 		foreach ( var rack in GetLinkedRacks() )
@@ -1741,11 +1765,11 @@
 		hash.Add( _pinBuffer );
 		hash.Add( _pinSetupPass );
 		hash.Add( _pinError );
-		hash.Add( _pinChangeActive );
-		hash.Add( _pinChangeBuffer );
+		hash.Add( (int)_pinGatePurpose );
 		hash.Add( _pinChangePass );
-		hash.Add( _pinChangeError );
 		hash.Add( _pinChangeNotice );
+		hash.Add( _logTimeBucket );
+		hash.Add( _active == OpsTab.Logs );
 		hash.Add( _hub?.IsPowered );
 		hash.Add( _hub?.AccessPinIsSet );
 		hash.Add( _perfRange );

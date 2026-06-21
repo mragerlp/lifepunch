@@ -2,8 +2,9 @@
 
 **Executive decision Jun 2026:** One ship tier — **GPU Rack** = stacked farm mesh. Small open-frame `gpu-rack.vmdl` in this folder is archived intent only (`_archive/small-open-frame/`).
 
-**Canonical play vmdl:** `bitcoinmining/models/lifepunch/bitcoinmining/gpu-rack/gpu-rack-stacked.vmdl`  
-**Canonical source FBX:** `assets/textures/GPU_Farm_Stacked_Anim.fbx` (also under `advancedgpurack/` staging copy)
+**Canonical play vmdl:** `lpbitcoin/gpurack/assets/models/gpu-rack-stacked.vmdl`  
+**Canonical prefab:** `lpbitcoin/gpurack/assets/entities/gpu-rack.prefab`  
+**Canonical source FBX:** `assets/source/fbx/gpu-rack-stacked-anim.fbx`
 
 ## Blender / art — owner action
 
