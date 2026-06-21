@@ -50,7 +50,4 @@ public static class LpBitcoinEconomy
 
 	public static float RackBtcCapacityFor( LpBitcoinRackEntity rack )
 		=> RackBtcCapacity;
-
-	[Obsolete( "Single rack tier — use RackBtcCapacity or RackBtcCapacityFor." )]
-	public static float RackBtcCapacity( bool advancedRack ) => RackBtcCapacity;
 }
