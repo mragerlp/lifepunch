@@ -65,7 +65,7 @@ public class LifePunchScrollRegionPanel : Panel
 		PreferScrollToBottom = true;
 	}
 
-	private float GetContentHeight()
+	protected virtual float GetContentHeight()
 		=> LifePunchScrollLayout.GetStackedContentHeight( this );
 }
 
@@ -150,9 +150,6 @@ public static class LifePunchScrollRegionBootstrap
 
 	private static string GetScrollSlotClass( Panel panel )
 	{
-		if ( panel.HasClass( "wp-list" ) )
-			return "wp-list";
-
 		if ( panel.HasClass( "upgrades-scroll" ) )
 			return "upgrades-scroll";
 

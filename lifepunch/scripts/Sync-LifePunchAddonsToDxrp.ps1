@@ -107,6 +107,10 @@ if (-not $WhatIf) {
     Remove-StaleDxrpPath -Path (Join-Path $dxrpGame 'Code\Addons\lifepunch._quarantine') -Label 'Code/Addons/lifepunch._quarantine'
     Remove-StaleDxrpPath -Path (Join-Path $dxrpGame 'Assets\addons\lifepunch._quarantine') -Label 'Assets/addons/lifepunch._quarantine'
     Remove-StaleDxrpPath -Path (Join-Path $dxrpGame 'addons\lifepunch\lpbitcoin') -Label 'addons/lifepunch/lpbitcoin (empty greenfield stub)'
+    # adminmenu sync uses Code/Addons/lifepunch/{adminmenu + shared root}. lifepunchulx is the
+    # publish slug copy from Set-DxrpLifepunchUlxOnly — if both exist, shared types compile twice.
+    Remove-StaleDxrpPath -Path (Join-Path $dxrpCodeRoot 'lifepunchulx') -Label 'Code/lifepunchulx (stale duplicate — use adminmenu sync)'
+    Remove-StaleDxrpPath -Path (Join-Path $dxrpAssetsRoot 'lifepunchulx') -Label 'Assets/lifepunchulx (stale duplicate)'
 }
 
 # Shared lifepunch code (LifePunchSourceMark.cs, etc.) — not under a single addon ident.

@@ -12,8 +12,10 @@
 #if !LIFEPUNCH_LOCAL
 
 using System.Collections.Generic;
+using System.Reflection;
 using Sandbox;
 using Dxura.RP.Game;
+using Dxura.RP.Shared;
 
 namespace LifePunch.DXRP.Addons.StaffMenu;
 
@@ -182,8 +184,8 @@ public static class StaffMenuTestBots
 
 	// One bot per rank, in display order. Rank "" means no assignment — a regular/default player who
 	// holds no explicit rank (so GetPlayerRank falls back to the portal's default "None"). Named ranks
-	// resolve against the live portal via RankSystem.FindRankIdByName (lifepunch_list_ranks confirms the
-	// strings). The SteamIds are PUBLIC placeholder accounts so each bot resolves a real Steam avatar in
+	// resolve against the live portal rank table via <see cref="TryFindRankIdByName"/> (lifepunch_list_ranks
+	// confirms strings). The SteamIds are PUBLIC placeholder accounts so each bot resolves a real Steam avatar in
 	// the menus/chat — swap freely; they only need to be valid, public, and NOT the dev's own id (a bot
 	// sharing the dev's id would share rank/CanTarget state). "Greg" mirrors Owner for killswitch tests.
 	private static readonly (string Name, string Rank, long SteamId)[] RankBots =
@@ -309,7 +311,7 @@ public static class StaffMenuTestBots
 				continue;
 			}
 
-			var rankId = ranks.FindRankIdByName( def.Rank );
+			var rankId = TryFindRankIdByName( ranks, def.Rank );
 			if ( !rankId.HasValue )
 			{
 				Log.Warning( $"lifepunch_spawn_rankbots: rank '{def.Rank}' not found for '{def.Name}' — left as regular." );
@@ -350,7 +352,7 @@ public static class StaffMenuTestBots
 		Log.Info( "[lifepunch_list_ranks] probing rank names (name -> rank Guid):" );
 		foreach ( var name in candidates )
 		{
-			var id = ranks.FindRankIdByName( name );
+			var id = TryFindRankIdByName( ranks, name );
 			Log.Info( $"  {name,-14} -> {(id.HasValue ? id.Value.ToString() : "(not found)")}" );
 		}
 
@@ -396,7 +398,15 @@ public static class StaffMenuTestBots
 			return;
 		}
 
-		chat.BroadcastBotChat( steamId, message, MessageType.GlobalChat );
+		var manager = GameNetworkManager.Instance;
+		var botName = botToken;
+		if ( manager.IsValid() && manager.Players.TryGetValue( steamId, out var bot ) && bot.IsValid() )
+		{
+			botName = bot.DisplayName;
+		}
+
+		// BroadcastBotChat was removed from DXRP — prefix the bot name in a global line for dev chat tests.
+		chat.BroadcastChat( $"{botName}: {message}", MessageType.GlobalChat );
 	}
 
 	// Resolve a spawned bot by raw SteamId or by a case-insensitive substring of its display name.
@@ -449,6 +459,50 @@ public static class StaffMenuTestBots
 		var rot = local.WorldRotation;
 		var lateral = ( index - 3 ) * 50f; // centre the row on the forward axis
 		return local.WorldPosition + rot.Forward * 110f + rot.Right * lateral + Vector3.Up * 10f;
+	}
+
+	/// <summary>DXRP removed public rank-by-name lookup — editor dev bots probe synced definitions.</summary>
+	internal static Guid? TryFindRankIdByName( RankSystem ranks, string rankName )
+	{
+		if ( !ranks.IsValid() || string.IsNullOrWhiteSpace( rankName ) )
+		{
+			return null;
+		}
+
+		foreach ( var rank in EnumerateRankDefinitions( ranks ) )
+		{
+			if ( string.Equals( rank.Name, rankName, StringComparison.OrdinalIgnoreCase ) )
+			{
+				return rank.Id;
+			}
+		}
+
+		return null;
+	}
+
+	private static IEnumerable<RankDto> EnumerateRankDefinitions( RankSystem ranks )
+	{
+		const BindingFlags flags = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
+		var prop = typeof( RankSystem ).GetProperty( "Ranks", flags );
+		var dict = prop?.GetValue( ranks );
+		if ( dict is not System.Collections.IEnumerable pairs )
+		{
+			yield break;
+		}
+
+		foreach ( var pair in pairs )
+		{
+			if ( pair is null )
+			{
+				continue;
+			}
+
+			var valueProp = pair.GetType().GetProperty( "Value", flags );
+			if ( valueProp?.GetValue( pair ) is RankDto rank )
+			{
+				yield return rank;
+			}
+		}
 	}
 }
 

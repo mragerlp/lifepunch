@@ -96,7 +96,9 @@ public static class LifePunchUiScrollPolicy
 
 	private static void ClampManualScrollRegion( Panel panel )
 	{
-		var maxY = GetManualScrollMaxY( panel );
+		var maxY = panel is LifePunchScrollRegionPanel scrollRegion
+			? scrollRegion.GetMaxScrollY()
+			: GetManualScrollMaxY( panel );
 
 		if ( maxY <= 0f )
 		{
@@ -118,15 +120,7 @@ public static class LifePunchUiScrollPolicy
 		if ( viewHeight <= 1f )
 			return 0f;
 
-		var contentHeight = 0f;
-
-		foreach ( var child in panel.Children )
-		{
-			if ( !child.IsValid )
-				continue;
-
-			contentHeight = Math.Max( contentHeight, child.Box.Rect.Height );
-		}
+		var contentHeight = LifePunchScrollLayout.GetStackedContentHeight( panel );
 
 		return Math.Max( 0f, contentHeight - viewHeight );
 	}
