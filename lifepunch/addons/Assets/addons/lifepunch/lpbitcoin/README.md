@@ -22,10 +22,15 @@ lp_bitcoin_clear_spawns       # cleanup
 
 Paths resolve via `LpBitcoinIdent.cs` — all under `lpbitcoin/…`.
 
-## Archive (ignore in Asset Browser)
+## Archive (docs only — no compile artifacts)
 
-- `_archive/advancedgpurack-intake/` — duplicate intake; merged into `gpurack/`
+s&box compiles **every** `.vmdl` / `.vmat` under `Assets/`. Archive folders must keep **MD/JSON/source FBX only** — never duplicate ModelDoc files.
+
+- `_archive/advancedgpurack-intake/` — retired intake; canonical mesh is `gpurack/assets/models/gpu-rack-stacked.vmdl`
+- `bitcoinhub/_archive/` — Sketchfab hub + phase2 fan experiments (retired)
 - `gpurack/_archive/small-open-frame/` — parked single-unit mesh (not shipped)
+
+Sync script strips any stray `_archive` compile artifacts from DXRP after mirror.
 
 ## Sync
 

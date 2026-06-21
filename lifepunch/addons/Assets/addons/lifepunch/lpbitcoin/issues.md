@@ -7,12 +7,9 @@ See ASSET_CLASSIFICATION_LAW.md - do not merge this package with visually simila
 ## Slot status
 
 ### advancedgpurack
-- Role: Advanced GPU Rack (stacked)
-- Primary: assets/source/fbx/GPU_Farm_Stacked_Anim.fbx
-- FBX/OBJ/Blend/Tex: 1/0/1/32 | 33.41 MB
-- Stacked anim FBX only â€” may need static stacked export from blend
-- Note: Stacked variant split from gpurack slot
-- Note: Use static body in ModelDoc â€” not anim rig as body
+- **Retired slot** — merged into `gpurack/` (single stacked farm tier).
+- Do not add assets under `_archive/advancedgpurack-intake/` except docs/source.
+- Canonical: `gpurack/assets/models/gpu-rack-stacked.vmdl` + `gpurack/assets/entities/gpu-rack.prefab`
 
 ### bitcoinhub
 - Role: Bitcoin HUB (admin capstone)

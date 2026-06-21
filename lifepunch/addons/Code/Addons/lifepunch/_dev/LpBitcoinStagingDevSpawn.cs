@@ -34,22 +34,13 @@ public static class LpBitcoinStagingDevSpawn
 	public const string StagingTerminalVmdl =
 		"addons/lifepunch/lpbitcoin/hashdterminal/assets/models/hashd-terminal.vmdl";
 
-	/// <summary>Safe fallback when staging terminal materials are mid-compile (avoids vmat hot-loop lag).</summary>
-	public const string StagingTerminalSafeVmdl =
-		"addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-terminal/bitcoin-terminal.vmdl";
-
-	public const string LegacyTerminalVmdl =
-		"addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-terminal/bitcoin-terminal.vmdl";
-
-	public const string ShippedTerminalPrefab =
-		"addons/lifepunch/bitcoinmining/entities/bitcoin-terminal/bitcoin-terminal.prefab";
+	public const string ShippedTerminalPrefab = LpBitcoinIdent.TerminalPrefabPath;
 
 	public const string DxrpPrinterPrefab = "gameplay/entities/printer/printer.prefab";
 
 	static readonly (string Id, string Vmdl, string Note)[] HubModelCandidates =
 	{
 		( "steam-machine", "addons/lifepunch/lpbitcoin/bitcoinhub/assets/models/bitcoinhub.vmdl", "Ship hub — lpbitcoin/bitcoinhub staging" ),
-		( "sketchfab-pc", "addons/lifepunch/lpbitcoin/bitcoinhub/_archive/sketchfab-generic-pc/assets/models/bitcoin-hub.vmdl", "PARKED — reference only" ),
 		( "dxrp-printer", "gameplay/entities/printer/models/printer.vmdl", "DXRP ingame prop — collider reference" ),
 		( "dxrp-slot", "gameplay/entities/jobs/casino_manager/slot_machine/model/slot_machine.vmdl", "DXRP ingame — boxy machine silhouette" ),
 		( "dxrp-dry-rack", "gameplay/entities/jobs/drug_dealer/dry_rack/model/dry_rack.vmdl", "DXRP ingame — rack/shelf form" ),
@@ -255,9 +246,11 @@ public static class LpBitcoinStagingDevSpawn
 		const float spacing = 100f;
 		var left = transform.WithPosition( transform.Position - transform.Rotation.Right * spacing * 0.5f );
 		var right = transform.WithPosition( transform.Position + transform.Rotation.Right * spacing * 0.5f );
-		SpawnModelPreview( scene, "legacy-terminal", LegacyTerminalVmdl, left, "Shipped bitcoin-terminal.vmdl (left)" );
-		SpawnModelPreview( scene, "hashd-terminal", StagingTerminalVmdl, right, "Purchased hashd-terminal.vmdl (right)" );
-		Log.Info( "lp_staging_terminal_compare: legacy left, new HASHD right — same market spawn row." );
+		var prefabGo = ClonePrefabAt( ShippedTerminalPrefab, left );
+		if ( prefabGo.IsValid() )
+			prefabGo.Name = "staging-terminal-prefab";
+		SpawnModelPreview( scene, "hashd-terminal", StagingTerminalVmdl, right, "hashd-terminal.vmdl (right)" );
+		Log.Info( "lp_staging_terminal_compare: prefab left, raw vmdl right — same market spawn row." );
 	}
 
 	/// <summary>Four Y rotations @ staging terminal vmdl — pick front face for import_rotation bake.</summary>

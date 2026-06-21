@@ -66,19 +66,7 @@ public class LifePunchScrollRegionPanel : Panel
 	}
 
 	private float GetContentHeight()
-	{
-		var contentHeight = 0f;
-
-		foreach ( var child in Children )
-		{
-			if ( !child.IsValid )
-				continue;
-
-			contentHeight = System.Math.Max( contentHeight, child.Box.Rect.Height );
-		}
-
-		return contentHeight;
-	}
+		=> LifePunchScrollLayout.GetStackedContentHeight( this );
 }
 
 /// <summary>
@@ -162,6 +150,9 @@ public static class LifePunchScrollRegionBootstrap
 
 	private static string GetScrollSlotClass( Panel panel )
 	{
+		if ( panel.HasClass( "wp-list" ) )
+			return "wp-list";
+
 		if ( panel.HasClass( "upgrades-scroll" ) )
 			return "upgrades-scroll";
 

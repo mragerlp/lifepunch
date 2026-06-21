@@ -56,7 +56,8 @@ VisiblePocketHud {
         }
 
         .pocket-count {
-            margin-left: auto;
+            flex-grow: 1;
+            text-align: right;
             color: $body-dim;
             font-size: 10px;
         }

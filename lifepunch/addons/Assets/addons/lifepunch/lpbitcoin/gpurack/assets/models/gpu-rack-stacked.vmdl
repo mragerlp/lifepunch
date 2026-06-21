@@ -33,6 +33,90 @@
 								from = "GPU"
 								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-gpu.vmat"
 							},
+							{
+								from = "FanBlades.005"
+								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-rack.vmat"
+							},
+							{
+								from = "FanBlades.006"
+								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-rack.vmat"
+							},
+							{
+								from = "FanBlades.007"
+								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-rack.vmat"
+							},
+							{
+								from = "FanBlades.008"
+								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-rack.vmat"
+							},
+							{
+								from = "FanBlades.009"
+								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-rack.vmat"
+							},
+							{
+								from = "FanBlades.010"
+								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-rack.vmat"
+							},
+							{
+								from = "FanBlades.011"
+								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-rack.vmat"
+							},
+							{
+								from = "FanBlades.012"
+								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-rack.vmat"
+							},
+							{
+								from = "FanBlades.013"
+								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-rack.vmat"
+							},
+							{
+								from = "FanBlades.014"
+								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-rack.vmat"
+							},
+							{
+								from = "FanBlades.015"
+								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-rack.vmat"
+							},
+							{
+								from = "FanBlades.016"
+								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-rack.vmat"
+							},
+							{
+								from = "FanBlades.017"
+								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-rack.vmat"
+							},
+							{
+								from = "FanBlades.018"
+								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-rack.vmat"
+							},
+							{
+								from = "FanBlades.019"
+								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-rack.vmat"
+							},
+							{
+								from = "GPU_Fan_1"
+								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-gpu.vmat"
+							},
+							{
+								from = "GPU_Fan_2"
+								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-gpu.vmat"
+							},
+							{
+								from = "GPU_Fan_3"
+								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-gpu.vmat"
+							},
+							{
+								from = "GPU_Fan_4"
+								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-gpu.vmat"
+							},
+							{
+								from = "GPU_Fan_5"
+								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-gpu.vmat"
+							},
+							{
+								from = "GPU_Fan_6"
+								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-gpu.vmat"
+							},
 						]
 						use_global_default = true
 						global_default_material = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-rack.vmat"

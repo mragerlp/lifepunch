@@ -80,6 +80,24 @@ function Remove-StaleDxrpPath {
     Write-Host "  purged stale: $Label" -ForegroundColor Yellow
 }
 
+function Remove-LpArchiveCompileArtifacts {
+    param([string]$LpBitcoinRoot)
+    if (-not (Test-Path -LiteralPath $LpBitcoinRoot)) { return }
+    $patterns = @('*.vmdl', '*.vmdl_c', '*.vmat', '*.vmat_c')
+    foreach ($pattern in $patterns) {
+        Get-ChildItem -LiteralPath $LpBitcoinRoot -Recurse -File -Filter $pattern -ErrorAction SilentlyContinue |
+            Where-Object { $_.FullName -match '[\\/]_archive[\\/]' } |
+            ForEach-Object {
+                if ($WhatIf) {
+                    Write-Host "  [WhatIf] purge archive compile artifact: $($_.FullName)" -ForegroundColor DarkGray
+                    return
+                }
+                Remove-Item -LiteralPath $_.FullName -Force
+                Write-Host "  purged archive compile artifact: $($_.Name)" -ForegroundColor Yellow
+            }
+    }
+}
+
 Write-Host 'Sync LifePunch addons -> DXRP game' -ForegroundColor Cyan
 Write-Host "  Repo:  $repoAddons" -ForegroundColor DarkGray
 Write-Host "  DXRP:  $dxrpGame" -ForegroundColor DarkGray
@@ -181,10 +199,13 @@ foreach ($ident in Get-AddonIdents) {
 $lpStagingRoot = Join-Path $repoAssetsRoot 'lpbitcoin'
 if (Test-Path -LiteralPath $lpStagingRoot) {
     Write-Host 'Staging: lpbitcoin' -ForegroundColor Cyan
+    $lpDest = Join-Path $dxrpAssetsRoot 'lpbitcoin'
     Invoke-Mirror `
         -From $lpStagingRoot `
-        -To   (Join-Path $dxrpAssetsRoot 'lpbitcoin') `
+        -To   $lpDest `
         -Label 'Assets/lpbitcoin'
+    Remove-LpArchiveCompileArtifacts -LpBitcoinRoot $lpDest
+    Remove-StaleDxrpPath -Path (Join-Path $lpDest 'advancedgpurack') -Label 'Assets/lpbitcoin/advancedgpurack (retired slot)'
 }
 
 $lpCodeRoot = Join-Path $repoCodeRoot 'lpbitcoin'
