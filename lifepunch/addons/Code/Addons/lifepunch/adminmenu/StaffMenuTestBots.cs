@@ -34,7 +34,10 @@ namespace LifePunch.DXRP.Addons.StaffMenu;
 ///                                      plus "Greg" as an Owner-mirror, each with a real public avatar.
 ///                                      Pass `lifepunch_spawn_rankbots false` to skip Greg (targetable only).
 ///   lifepunch_spawn_all_testbots     → alias for lifepunch_spawn_rankbots (full roster incl. Greg)
+///   lifepunch_spawn_scroll_testbots  → rank roster + 18 regular fillers (sidebar scroll proof)
+///   ulx_bots                         → alias for lifepunch_spawn_scroll_testbots
 ///   lifepunch_auto_spawn_testbots 1  → on editor host play, auto-spawn after portal API init (default 1)
+///   lifepunch_auto_spawn_testbots_fill 18 → extra regular bots when auto-spawn runs (default 18)
 ///   lifepunch_list_ranks             → logs which rank names resolve (confirms the live portal strings)
 ///   lifepunch_botsay "Greg hi there" → makes a spawned bot talk in chat (first token = bot, rest = msg)
 ///   lifepunch_clear_testbots         → removes all spawned bots and clears their rank assignments
@@ -192,10 +195,69 @@ public static class StaffMenuTestBots
 		( "Admin Bot", "Admin", 76561198042858602L ),
 		( "Super Admin Bot", "Super Admin", 76561198822683862L ),
 		( "Greg", "Owner", 76561198010565263L ),
-		// Extra regular players to push the roster count up for admin-menu layout/density testing.
+	// Extra regular players to push the roster count up for admin-menu layout/density testing.
 		( "Player Bot 1", "", 76561197964781654L ),
-		( "Player Bot 2", "", 76561198005079964L )
+		( "Player Bot 2", "", 76561198005079964L ),
+		( "Player Bot 3", "", 76561198012345678L ),
+		( "Player Bot 4", "", 76561198023456789L ),
+		( "Player Bot 5", "", 76561198034567890L )
 	};
+
+	public const int DefaultScrollFillCount = 18;
+
+	[ConCmd( "lifepunch_spawn_scroll_testbots" )]
+	public static void SpawnScrollTestBots()
+	{
+		SpawnScrollTestBotsInternal();
+	}
+
+	[ConCmd( "ulx_bots" )]
+	public static void SpawnScrollTestBotsAlias()
+	{
+		SpawnScrollTestBotsInternal();
+	}
+
+	private static void SpawnScrollTestBotsInternal()
+	{
+		if ( !Application.IsEditor )
+		{
+			Log.Warning( "lifepunch_spawn_scroll_testbots: editor-only dev command." );
+			return;
+		}
+
+		if ( !Networking.IsHost )
+		{
+			Log.Warning( "lifepunch_spawn_scroll_testbots: must be host (editor play)." );
+			return;
+		}
+
+		ClearTestBots();
+		SpawnRankBots( false );
+		var filled = SpawnScrollFillBots( DefaultScrollFillCount );
+		Log.Info( $"lifepunch_spawn_scroll_testbots: rank roster + {filled} scroll fillers — open /lifepunchulx and wheel the sidebar." );
+	}
+
+	/// <summary>Regular (no-rank) bots with fake SteamIds — pushes <see cref="StaffMenu"/> sidebar past scroll height.</summary>
+	public static int SpawnScrollFillBots( int count )
+	{
+		if ( count <= 0 || !Application.IsEditor || !Networking.IsHost )
+		{
+			return 0;
+		}
+
+		var spawned = 0;
+		for ( var i = 0; i < count; i++ )
+		{
+			var fakeId = FakeSteamIdBase + ++_spawnCount;
+			var name = $"Scroll Fill {i + 1}";
+			if ( SpawnBot( name, fakeId, SpawnFannedOut( RankBots.Length + i ) ).IsValid() )
+			{
+				spawned++;
+			}
+		}
+
+		return spawned;
+	}
 
 	[ConCmd( "lifepunch_spawn_all_testbots" )]
 	public static void SpawnAllTestBots()

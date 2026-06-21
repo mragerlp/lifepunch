@@ -163,10 +163,12 @@
 
 				@{
 					var waypoints = StaffMenuHost.GetWaypoints();
+					var filteredWaypoints = FilteredWaypoints( waypoints );
 				}
 
+				<div class="wp-list-region">
 				<div class="wp-list">
-					@foreach ( var name in waypoints )
+					@foreach ( var name in filteredWaypoints )
 					{
 						<div class="wp-row">
 							<i class="material-icons">place</i>
@@ -186,9 +188,16 @@
 					@if ( waypoints.Count == 0 )
 					{
 						<div class="wp-empty">
-							Saved waypoints aren't listed in-menu yet — type a name above to Go or Set.
+							No saved waypoints yet — type a name above to Go or Set.
 						</div>
 					}
+					else if ( filteredWaypoints.Count == 0 )
+					{
+						<div class="wp-empty">
+							No waypoint matches "@_waypointName".
+						</div>
+					}
+				</div>
 				</div>
 
 				@if ( StaffMenuHost.CanView( "ability.teleport" ) )
@@ -225,12 +234,16 @@
 				</div>
 
 				<div class="settings-group">
-					<div class="settings-label">Panel Size</div>
+					<div class="settings-label">UI Scale</div>
 					<div class="settings-hint">Resize the staff console window.</div>
 					<div class="panel-size-row">
-						<button class="panel-size-opt @( _panelSize == 0 ? "active" : "" )" onclick="@(() => SetPanelSize( 0 ))">Compact</button>
-						<button class="panel-size-opt @( _panelSize == 1 ? "active" : "" )" onclick="@(() => SetPanelSize( 1 ))">Standard</button>
-						<button class="panel-size-opt @( _panelSize == 2 ? "active" : "" )" onclick="@(() => SetPanelSize( 2 ))">Expanded</button>
+						@foreach ( var size in _uiScaleOptions )
+						{
+							<button class="panel-size-opt @( _uiScale == size ? "active" : "" )"
+							        onclick="@(() => SetUiScale( size ))">
+								@LifePunchUiScale.ShortLabel( size )
+							</button>
+						}
 					</div>
 				</div>
 
@@ -335,7 +348,7 @@
 
 					<div class="search-row">
 						<i class="material-icons">search</i>
-						<TextEntry class="search-input" Placeholder="Steam ID (ex. 765XXXXXXXXXXXXXX)" Value:bind="@_searchText"/>
+						<TextEntry class="search-input" Placeholder="Steam ID" Value:bind="@_searchText"/>
 						@if ( !string.IsNullOrEmpty( _searchText ) )
 						{
 							<button class="icon-btn" onclick="@ClearSearch"><i class="material-icons">close</i></button>
@@ -351,39 +364,59 @@
 					}
 
 					<div class="player-scroll">
-						<div class="parent-label">Staff (@staffCount)</div>
-						@foreach ( var group in staffGroups )
-						{
-							<div class="group-label">@group.Name (@group.Players.Count)</div>
-							@foreach ( var player in group.Players )
-							{
-								<button class="player-row @( ( _showProfile ? _profileSteamId : _selectedSteamId ) == player.SteamId ? "selected" : "" )"
-								        tooltip="View player profile"
-								        onclick="@(() => Select( player.SteamId ))">
-									<i class="material-icons avatar">person</i>
-									<span class="name">@player.Name</span>
-									@if ( !player.CanTarget )
-									{
-										<i class="material-icons lock" tooltip="Equal or higher rank — cannot target">lock</i>
-									}
-								</button>
-							}
-						}
-
-						<div class="parent-label">Players (@nonStaff.Count)</div>
-						@foreach ( var player in nonStaff )
-						{
-							<button class="player-row @( ( _showProfile ? _profileSteamId : _selectedSteamId ) == player.SteamId ? "selected" : "" )"
-							        tooltip="View player profile"
-							        onclick="@(() => Select( player.SteamId ))">
-								<i class="material-icons avatar">person</i>
-								<span class="name">@player.Name</span>
-								@if ( !player.CanTarget )
-								{
-									<i class="material-icons lock" tooltip="Equal or higher rank — cannot target">lock</i>
-								}
+						<div class="roster-section @(_staffSectionCollapsed ? "roster-section-collapsed" : "")">
+							<button class="parent-label" onclick="@ToggleStaffSection">
+								<span class="parent-label-text">Staff (@staffCount)</span>
+								<i class="material-icons parent-label-chevron">@(_staffSectionCollapsed ? "chevron_right" : "expand_more")</i>
 							</button>
-						}
+							@if ( !_staffSectionCollapsed )
+							{
+								@foreach ( var group in staffGroups )
+								{
+									<div class="roster-tier">
+										<div class="group-label">@group.Name (@group.Players.Count)</div>
+										@foreach ( var player in group.Players )
+										{
+											<button class="player-row @( ( _showProfile ? _profileSteamId : _selectedSteamId ) == player.SteamId ? "selected" : "" )"
+											        tooltip="View player profile"
+											        onclick="@(() => Select( player.SteamId ))">
+												<i class="material-icons avatar">person</i>
+												<span class="name">@player.Name</span>
+												@if ( !player.CanTarget )
+												{
+													<i class="material-icons lock" tooltip="Equal or higher rank — cannot target">lock</i>
+												}
+											</button>
+										}
+									</div>
+								}
+							}
+						</div>
+
+						<div class="roster-section @(_playersSectionCollapsed ? "roster-section-collapsed" : "")">
+							<button class="parent-label" onclick="@TogglePlayersSection">
+								<span class="parent-label-text">Players (@nonStaff.Count)</span>
+								<i class="material-icons parent-label-chevron">@(_playersSectionCollapsed ? "chevron_right" : "expand_more")</i>
+							</button>
+							@if ( !_playersSectionCollapsed )
+							{
+								<div class="roster-tier roster-tier-players">
+									@foreach ( var player in nonStaff )
+									{
+										<button class="player-row @( ( _showProfile ? _profileSteamId : _selectedSteamId ) == player.SteamId ? "selected" : "" )"
+										        tooltip="View player profile"
+										        onclick="@(() => Select( player.SteamId ))">
+											<i class="material-icons avatar">person</i>
+											<span class="name">@player.Name</span>
+											@if ( !player.CanTarget )
+											{
+												<i class="material-icons lock" tooltip="Equal or higher rank — cannot target">lock</i>
+											}
+										</button>
+									}
+								</div>
+							}
+						</div>
 					</div>
 				}
 
@@ -608,7 +641,9 @@
 
 		</div>
 
-		<LifePunchUiFooter />
+		<div class="lp-window-watermark lp-window-watermark--rounded">
+			<LifePunchUiFooter />
+		</div>
 	</div>
 </root>
 
@@ -628,6 +663,8 @@
 	// Collapsed = the Online Players sidebar shrinks to a slim rail, handing its width to the action
 	// area. Pure view state (no backend), folded into BuildHash so the toggle re-renders.
 	private bool _playersCollapsed;
+	private bool _staffSectionCollapsed;
+	private bool _playersSectionCollapsed;
 
 	// Rebuild throttle. The menu used to re-sample the roster AND fold live player stats into
 	// BuildHash every single frame, so any volatile value (e.g. the periodic salary bumping Bank)
@@ -688,10 +725,17 @@
 	// can return anyone they just brought (the id is the ultimate player handle, one-click copyable).
 	private string _returnSteamId = "";
 
-	// Settings tab (opened by the header cog): panel size + owner-configurable network website.
+	// Settings tab (opened by the header cog): UI scale + owner-configurable network website.
 	private string _websiteDraft = "";
 	private bool _websiteCopied;
-	private int _panelSize = 1;
+	private LifePunchUiScaleSize _uiScale;
+	private static readonly LifePunchUiScaleSize[] _uiScaleOptions =
+	{
+		LifePunchUiScaleSize.Small,
+		LifePunchUiScaleSize.Medium,
+		LifePunchUiScaleSize.Large,
+		LifePunchUiScaleSize.ExtraLarge
+	};
 	private bool _websiteSaved;
 	private bool _steamIdCopied;
 	private bool _currentCopied;
@@ -704,15 +748,25 @@
 
 	protected override void OnStart()
 	{
+		_uiScale = StaffMenuHost.SavedUiScale;
 		RefreshRoster();
+		LifePunchUiScrollPolicy.Apply( Panel );
 
 		// Fetch owner settings on open so the network tag is click-to-copy immediately (not only after
 		// the Settings view is visited).
 		StaffMenuHost.RefreshSettings();
+
+		if ( StaffMenuHost.CanUseWaypoints() )
+		{
+			StaffMenuHost.RefreshWaypoints();
+		}
 	}
 
 	protected override void OnUpdate()
 	{
+		// Wheel-only scroll: disable drag-scroll and clamp offsets every frame (sidebar roster, audit, etc.).
+		LifePunchUiScrollPolicy.Apply( Panel );
+
 		// Throttle: re-sampling every frame churned BuildHash and rebuilt the whole menu (sidebar/cog
 		// hover would flicker). A few refreshes a second is plenty for a staff roster + live stats.
 		if ( _sinceRefresh < RefreshInterval )
@@ -902,6 +956,8 @@
 			_websiteDraft = StaffMenuHost.WebsiteUrl;
 			StaffMenuHost.RefreshSettings();
 		}
+
+		LifePunchUiScrollPolicy.Apply( Panel );
 	}
 
 	private List<StaffAction> GetVisibleTabActions() =>
@@ -1127,6 +1183,18 @@
 		StateHasChanged();
 	}
 
+	private void ToggleStaffSection()
+	{
+		_staffSectionCollapsed = !_staffSectionCollapsed;
+		StateHasChanged();
+	}
+
+	private void TogglePlayersSection()
+	{
+		_playersSectionCollapsed = !_playersSectionCollapsed;
+		StateHasChanged();
+	}
+
 	/// <summary>Open the Settings view (header cog) and seed the network editor field.</summary>
 	private void OpenSettings()
 	{
@@ -1134,19 +1202,29 @@
 		SelectTab( TabSettings );
 	}
 
-	private string GetRootClass()
+	private string GetRootClass() =>
+		$"lifepunchulx ulx-v2 {LifePunchUiScale.CssClass( _uiScale )}";
+
+	private void SetUiScale( LifePunchUiScaleSize size )
 	{
-		var classes = new List<string> { "lifepunchulx", "ulx-v2" };
-		if ( _panelSize == 0 )
-			classes.Add( "compact" );
-		else if ( _panelSize == 2 )
-			classes.Add( "expanded" );
-		return string.Join( " ", classes );
+		_uiScale = size;
+		StaffMenuHost.SavedUiScale = size;
+		StateHasChanged();
+		LifePunchUiScrollPolicy.Apply( Panel, resetOffset: true );
 	}
 
-	private void SetPanelSize( int size )
+	/// <summary>Waypoint list filter — typing in the bar narrows visible rows (Go/Set still use the typed name).</summary>
+	private List<string> FilteredWaypoints( IReadOnlyList<string> waypoints )
 	{
-		_panelSize = Math.Clamp( size, 0, 2 );
+		var query = _waypointName?.Trim() ?? "";
+		if ( query.Length == 0 )
+		{
+			return waypoints.ToList();
+		}
+
+		return waypoints
+			.Where( w => w.Contains( query, StringComparison.OrdinalIgnoreCase ) )
+			.ToList();
 	}
 
 	/// <summary>Open the Player &amp; Staff Management view (sidebar footer entry) — placeholder for now.</summary>
@@ -1236,12 +1314,12 @@
 		// sidebar/cog hover would flicker.
 		return HashCode.Combine(
 			HashCode.Combine( _selectedSteamId, _profileSteamId, _showProfile, _searchText ),
-			HashCode.Combine( _players.Count, _playersCollapsed ),
+			HashCode.Combine( _players.Count, _playersCollapsed, _staffSectionCollapsed, _playersSectionCollapsed ),
 			_activeTab,
 			_pendingAction?.Key,
 			HashCode.Combine( _reason, _duration, _amount, _name ),
 			HashCode.Combine( _auditPlayerId, _auditEntity, _websiteDraft, _websiteCopied, _websiteSaved, _steamIdCopied, _currentCopied, StaffMenuHost.SettingsVersion ),
 			HashCode.Combine( _waypointName, StaffMenuHost.WaypointVersion, _returnSteamId ),
-			_detailHash );
+			HashCode.Combine( _uiScale, _detailHash ) );
 	}
 }

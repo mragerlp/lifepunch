@@ -85,25 +85,41 @@ if (Test-Path -LiteralPath $dxrpCodeRoot) {
     }
 }
 
-# s&box compiles every .cs under Code/ — quarantined sources must not remain as .cs
-if (Test-Path -LiteralPath $quarantineCode) {
-    $quarantineCs = Get-ChildItem -LiteralPath $quarantineCode -Recurse -File -Filter '*.cs' -ErrorAction SilentlyContinue
-    foreach ($cs in $quarantineCs) {
-        $off = "$($cs.FullName).quarantine"
-        if (-not (Test-Path -LiteralPath $off)) {
-            Rename-Item -LiteralPath $cs.FullName -NewName ($cs.Name + '.quarantine') -Force
+# s&box compiles every .cs / .razor under Code/ — quarantine must disable both
+function Disable-QuarantineCompileSources {
+    param([string]$Root)
+    if (-not (Test-Path -LiteralPath $Root)) { return }
+
+    $csCount = 0
+    Get-ChildItem -LiteralPath $Root -Recurse -File -Filter '*.cs' -ErrorAction SilentlyContinue |
+        Where-Object { $_.Extension -eq '.cs' } |
+        ForEach-Object {
+            Rename-Item -LiteralPath $_.FullName -NewName ($_.Name + '.quarantine') -Force
+            $csCount++
         }
+
+    $razorCount = 0
+    Get-ChildItem -LiteralPath $Root -Recurse -File -Filter '*.razor' -ErrorAction SilentlyContinue |
+        Where-Object { $_.Extension -eq '.razor' } |
+        ForEach-Object {
+            Rename-Item -LiteralPath $_.FullName -NewName ($_.Name + '.quarantine') -Force
+            $razorCount++
+        }
+
+    if ($csCount -gt 0) {
+        Write-Host "  quarantine: $csCount .cs -> .cs.quarantine" -ForegroundColor Yellow
     }
-    if ($quarantineCs.Count -gt 0) {
-        Write-Host "  quarantine: $($quarantineCs.Count) .cs renamed to .cs.quarantine (not compiled)" -ForegroundColor Yellow
+    if ($razorCount -gt 0) {
+        Write-Host "  quarantine: $razorCount .razor -> .razor.quarantine" -ForegroundColor Yellow
     }
 }
 
-# 2) Sync adminmenu → lifepunchulx
+Disable-QuarantineCompileSources -Root $quarantineCode
+
+# 2) Sync adminmenu → lifepunchulx (v3 ship files + editor-only shared deps — not full MIR)
 Write-Host "Sync repo $repoIdent -> DXRP $dxrpFolder" -ForegroundColor Cyan
 $dxrpFolderAssets = Join-Path $dxrpAssetsRoot $dxrpFolder
 $dxrpFolderCode = Join-Path $dxrpCodeRoot $dxrpFolder
-New-Item -ItemType Directory -Force -Path $dxrpFolderCode | Out-Null
 
 if (Test-Path -LiteralPath (Join-Path $repoAddons "Assets\addons\lifepunch\$repoIdent")) {
     & robocopy (Join-Path $repoAddons "Assets\addons\lifepunch\$repoIdent") $dxrpFolderAssets /MIR /NFL /NDL /NJH /NJS /nc /ns /np | Out-Null
@@ -120,22 +136,41 @@ else {
 if (-not (Test-Path -LiteralPath $repoCodeSrc)) {
     throw "Missing repo code: $repoCodeSrc"
 }
-& robocopy $repoCodeSrc $dxrpFolderCode /MIR /NFL /NDL /NJH /NJS /nc /ns /np | Out-Null
-if ($LASTEXITCODE -ge 8) { throw "robocopy code failed" }
 
-$sharedBundle = @(
+$shipFiles = @(
+    'StaffMenu.razor',
+    'StaffMenu.razor.scss',
+    'StaffMenuHost.cs',
+    'StaffMenuActions.cs',
+    'StaffSettingsService.cs',
+    'WaypointSyncService.cs'
+)
+$sharedRoot = Join-Path $repoAddons 'Code\Addons\lifepunch'
+$editorShared = @(
     'LifePunchUiScale.cs',
     'LifePunchUiScrollPolicy.cs',
     'LifePunchSourceMark.cs',
+    'LifePunchScrollRegionPanel.cs',
+    'LifePunchScrollLayout.cs',
     'LifePunchUiFooter.razor',
     'LifePunchUiFooter.razor.scss'
 )
-$sharedRoot = Join-Path $repoAddons 'Code\Addons\lifepunch'
-foreach ($name in $sharedBundle) {
+
+if (Test-Path -LiteralPath $dxrpFolderCode) {
+    Remove-Item -LiteralPath $dxrpFolderCode -Recurse -Force
+}
+New-Item -ItemType Directory -Force -Path $dxrpFolderCode | Out-Null
+
+foreach ($name in $shipFiles) {
+    $src = Join-Path $repoCodeSrc $name
+    if (-not (Test-Path -LiteralPath $src)) { throw "Missing ship file: $src" }
+    Copy-Item -LiteralPath $src -Destination (Join-Path $dxrpFolderCode $name) -Force
+}
+
+foreach ($name in $editorShared) {
     $src = Join-Path $sharedRoot $name
-    if (Test-Path -LiteralPath $src) {
-        Copy-Item -LiteralPath $src -Destination (Join-Path $dxrpFolderCode $name) -Force
-    }
+    if (-not (Test-Path -LiteralPath $src)) { throw "Missing editor shared: $src" }
+    Copy-Item -LiteralPath $src -Destination (Join-Path $dxrpFolderCode $name) -Force
 }
 $staffScss = Join-Path $dxrpFolderCode 'StaffMenu.razor.scss'
 if (Test-Path -LiteralPath $staffScss) {

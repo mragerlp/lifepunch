@@ -17,17 +17,19 @@ using Dxura.RP.Game;
 namespace LifePunch.DXRP.Addons.StaffMenu;
 
 /// <summary>
-/// Editor play only: after the DXRP portal API initializes (<c>authorize</c> + host play),
-/// clears any stale bots and spawns the full rank roster via <see cref="StaffMenuTestBots"/>.
-/// Skips vanilla editor runs without <see cref="ServerApiLink.HasAuthorizationKey"/> so rank
-/// assignments match the live LifePunch server node.
+/// Editor play only: spawns scroll-test fillers as soon as host + local pawn exist; adds the rank
+/// roster once the DXRP portal API is ready (<c>lp_authorize</c>). Fillers need no portal auth.
 /// </summary>
 public sealed class StaffMenuTestBotsAutoSpawn : GameObjectSystem<StaffMenuTestBotsAutoSpawn>, IGameEvents
 {
 	[ConVar( "lifepunch_auto_spawn_testbots", ConVarFlags.Saved )]
 	public static bool AutoSpawn { get; set; } = true;
 
-	private bool _spawnedThisSession;
+	[ConVar( "lifepunch_auto_spawn_testbots_fill", ConVarFlags.Saved )]
+	public static int AutoSpawnFill { get; set; } = StaffMenuTestBots.DefaultScrollFillCount;
+
+	private bool _spawnedScrollFill;
+	private bool _spawnedRankRoster;
 
 	public StaffMenuTestBotsAutoSpawn( Scene scene ) : base( scene )
 	{
@@ -43,11 +45,29 @@ public sealed class StaffMenuTestBotsAutoSpawn : GameObjectSystem<StaffMenuTestB
 
 		if ( !Networking.IsActive )
 		{
-			_spawnedThisSession = false;
+			_spawnedScrollFill = false;
+			_spawnedRankRoster = false;
 			return;
 		}
 
-		if ( _spawnedThisSession || !AutoSpawn || !Networking.IsHost )
+		if ( !AutoSpawn || !Networking.IsHost )
+		{
+			return;
+		}
+
+		if ( !Player.Local.IsValid() )
+		{
+			return;
+		}
+
+		if ( !_spawnedScrollFill )
+		{
+			_spawnedScrollFill = true;
+			var filled = StaffMenuTestBots.SpawnScrollFillBots( AutoSpawnFill );
+			Log.Info( $"lifepunch_auto_spawn_testbots: {filled} sidebar scroll fillers (no portal auth required)." );
+		}
+
+		if ( _spawnedRankRoster )
 		{
 			return;
 		}
@@ -63,15 +83,9 @@ public sealed class StaffMenuTestBotsAutoSpawn : GameObjectSystem<StaffMenuTestB
 			return;
 		}
 
-		if ( !Player.Local.IsValid() )
-		{
-			return;
-		}
-
-		_spawnedThisSession = true;
-		StaffMenuTestBots.ClearTestBots();
+		_spawnedRankRoster = true;
 		StaffMenuTestBots.SpawnRankBots( false );
-		Log.Info( "lifepunch_auto_spawn_testbots: spawned rank bot roster (no Owner mirror)." );
+		Log.Info( "lifepunch_auto_spawn_testbots: rank bot roster spawned (after portal auth)." );
 	}
 }
 

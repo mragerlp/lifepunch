@@ -114,6 +114,11 @@ internal static class StaffMenuHost
 #endif
 	}
 
+	/// <summary>
+	/// Client-local UI scale preference — survives menu close/reopen for the session (not portal-persisted).
+	/// </summary>
+	public static LifePunchUiScaleSize SavedUiScale { get; set; } = LifePunchUiScaleSize.ExtraLarge;
+
 	// --- Open / close ------------------------------------------------------
 
 	/// <summary>
@@ -798,54 +803,23 @@ internal static class StaffMenuHost
 
 #if !LIFEPUNCH_LOCAL
 /// <summary>
-/// Registers <c>/lifepunchulx</c> as an in-game chat command.
+/// Registers <c>/lifepunchulx</c>, <c>/menu</c>, and <c>/ulx</c> as in-game chat commands.
 /// <see cref="ExecuteLocal"/> opens the menu client-side and consumes the command, so it never round-trips to the host.
 /// Discovered automatically via TypeLibrary on the dxrp.net gamemode build.
 /// </summary>
 public sealed class LifepunchUlxChatCommand : ICommand
 {
 	public string Command => "lifepunchulx";
-	public string[] Aliases => [];
+	public string[] Aliases => ["menu", "ulx"];
 	public string Help => "Open LIFEPUNCH ULX.";
 	public bool IsUsableWhileDead => true;
 
-	public bool ExecuteLocal( string[] args, string raw ) => LifepunchUlxChatCommands.OpenMenu();
-
-	public bool ExecuteHost( Player caller, string[] args, string raw ) => true;
-}
-
-/// <summary>Chat alias: <c>/menu</c> opens the same ULX panel as <c>/lifepunchulx</c>.</summary>
-public sealed class LifepunchMenuChatCommand : ICommand
-{
-	public string Command => "menu";
-	public string[] Aliases => [];
-	public string Help => "Open LIFEPUNCH ULX (Admin Menu).";
-	public bool IsUsableWhileDead => true;
-
-	public bool ExecuteLocal( string[] args, string raw ) => LifepunchUlxChatCommands.OpenMenu();
-
-	public bool ExecuteHost( Player caller, string[] args, string raw ) => true;
-}
-
-/// <summary>Chat alias: <c>/ulx</c> opens the same ULX panel as <c>/lifepunchulx</c>.</summary>
-public sealed class LifepunchUlxAliasChatCommand : ICommand
-{
-	public string Command => "ulx";
-	public string[] Aliases => [];
-	public string Help => "Open LIFEPUNCH ULX.";
-	public bool IsUsableWhileDead => true;
-
-	public bool ExecuteLocal( string[] args, string raw ) => LifepunchUlxChatCommands.OpenMenu();
-
-	public bool ExecuteHost( Player caller, string[] args, string raw ) => true;
-}
-
-internal static class LifepunchUlxChatCommands
-{
-	internal static bool OpenMenu()
+	public bool ExecuteLocal( string[] args, string raw )
 	{
 		StaffMenuHost.Toggle();
 		return true;
 	}
+
+	public bool ExecuteHost( Player caller, string[] args, string raw ) => true;
 }
 #endif
