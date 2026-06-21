@@ -35,7 +35,7 @@ if (-not $isAdmin) {
 if (-not $CornermanPublicKey) {
     if (-not $SshTarget) { $SshTarget = Get-CornermanSshTarget }
     if (-not (Test-CornermanSshReady -SshTarget $SshTarget)) {
-        throw "Cannot fetch Cornerman public key — SSH not ready ($SshTarget). Pass -CornermanPublicKey."
+        throw "Cannot fetch Cornerman public key - SSH not ready ($SshTarget). Pass -CornermanPublicKey."
     }
     $r = Invoke-CornermanSshExec -SshTarget $SshTarget -ScriptBlock @'
 $pub = Join-Path $env:USERPROFILE '.ssh\id_ed25519.pub'
@@ -96,7 +96,7 @@ if (-not $rule) {
         -DisplayName 'OpenSSH Server (sshd) - LAN only' `
         -Enabled True -Direction Inbound -Protocol TCP -LocalPort 22 `
         -RemoteAddress $Subnet -Profile Private | Out-Null
-    Write-Note "Firewall: TCP/22 inbound ($Subnet, Private profile)"
+    Write-Note "Firewall: TCP/22 inbound ($Subnet / Private profile)"
 }
 else {
     Write-Note 'Firewall rule already present'
