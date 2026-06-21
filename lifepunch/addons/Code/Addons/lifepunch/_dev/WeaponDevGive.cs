@@ -15,7 +15,7 @@
 using System;
 using System.Linq;
 using Dxura.RP.Game;
-using LifePunch.DXRP.Addons.StaffMenu;
+using LifePunch.DXRP.Addons.Dev;
 using Ak47Weapon = LifePunch.DXRP.Addons.AK47.AK47;
 using DeagleWeapon = LifePunch.DXRP.Addons.Deagle.Deagle;
 using Mp9Weapon = LifePunch.DXRP.Addons.Mp9.Mp9;
@@ -71,7 +71,7 @@ public static class WeaponDevGive
 			return;
 		}
 
-		StaffMenuTestBots.SpawnTestBot( "Greg" );
+		LifePunchEditorTestBots.SpawnTestBot( "Greg" );
 		GiveAkBot( "Greg" );
 		Log.Info( "lp_smoke_ak_bot: orbit Greg — 3P rifle hold + drop test. Compare lp_give_ak_class on local for 1P." );
 	}

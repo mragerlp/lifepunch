@@ -3,7 +3,7 @@
   Sync LifePunch addons to DXRP, then launch s&box editor on the DXRP project.
 
 .DESCRIPTION
-  1. Mirror repo addon trees into the DXRP game project (default: bitcoinmining).
+  1. Mirror repo addon trees into the DXRP game project (default: lpbitcoin / lifepunchbitcoin).
   2. Launch s&box with -project only (normal DXRP route), unless an editor is already
      running — then sync only (no second window). Use -ReplaceExisting for one clean relaunch.
 
@@ -14,7 +14,7 @@
   With API connected, editor host play auto-spawns rank bots (lifepunch_auto_spawn_testbots, default 1).
 
 .PARAMETER SyncAddon
-  Addon idents to mirror before launch. Default: bitcoinmining only.
+  Addon idents to mirror before launch. Default: lpbitcoin (portal package lifepunchbitcoin).
 
 .PARAMETER BitcoinOnly
   Purge all non-bitcoin LifePunch addons from DXRP before sync (fresh console).
@@ -33,14 +33,14 @@
 
 .EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File lifepunch\scripts\Start-SboxDxrpEditor.ps1
-  powershell -File lifepunch\scripts\Start-SboxDxrpEditor.ps1 -PreflightFix -BitcoinOnly -SyncAddon bitcoinmining
+  powershell -File lifepunch\scripts\Start-SboxDxrpEditor.ps1 -PreflightFix -BitcoinOnly -SyncAddon lpbitcoin
   powershell -File lifepunch\scripts\Start-SboxDxrpEditor.ps1 -NoSync
   powershell -File lifepunch\scripts\Start-SboxDxrpEditor.ps1 -WithAuthorize
   powershell -File lifepunch\scripts\Start-SboxDxrpEditor.ps1 -ReplaceExisting -NoSync
 #>
 [CmdletBinding()]
 param(
-    [string[]] $SyncAddon = @('bitcoinmining'),
+    [string[]] $SyncAddon = @('lpbitcoin'),
     [switch] $SyncAllAddons,
     [switch] $NoSync,
     [switch] $WithAuthorize,

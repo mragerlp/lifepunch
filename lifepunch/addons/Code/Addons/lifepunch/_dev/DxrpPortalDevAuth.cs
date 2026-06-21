@@ -14,6 +14,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Dxura.RP.Game;
 using Dxura.RP.Shared;
+using LifePunch.DXRP.Addons.Dev;
 using Sandbox;
 
 namespace LifePunch.DXRP.Addons.Dev;
@@ -65,10 +66,11 @@ public static class DxrpPortalDevAuth
 		// Token alone is enough for InitializePlayer refresh (bank/playtime for local smoke).
 		if ( Game.ActiveScene?.IsEditor == true )
 		{
+			await SyncEditorRankTableFromPortal();
 			await RefreshConnectedPlayersFromPortal();
 			if ( ServerApiLink.HasAuthorizationKey )
 			{
-				Log.Info( "lp_authorize: editor mode — portal token set; player stats refreshed (skipped full server bootstrap)." );
+				Log.Info( "lp_authorize: editor mode — portal token set; rank table + player stats refreshed (skipped full server bootstrap)." );
 			}
 
 			return;
@@ -88,6 +90,49 @@ public static class DxrpPortalDevAuth
 	/// Editor host play spawns players before <see cref="ServerApiLink.HasAuthorizationKey"/> is set,
 	/// so DXRP applies a dev fallback (360000 minutes). Re-pull portal stats after auth.
 	/// </summary>
+	private static async Task SyncEditorRankTableFromPortal()
+	{
+		if ( !ServerApiLink.HasAuthorizationKey || !Networking.IsHost )
+		{
+			return;
+		}
+
+		InitalizeServerResponseDto? initResponse;
+		try
+		{
+			initResponse = await ServerApiClient.InitializeServer( new InitalizeServerDto
+			{
+				Version = Application.Version,
+				DefaultConfig = Json.Serialize( Config.Current.Game )
+			} );
+		}
+		catch ( System.Exception ex )
+		{
+			Log.Warning( $"lp_authorize: InitializeServer failed — {ex.Message}" );
+			return;
+		}
+
+		await GameTask.MainThread();
+
+		if ( initResponse?.Ranks == null )
+		{
+			Log.Warning( "lp_authorize: InitializeServer returned no rank table (dev rank bots unavailable)." );
+			return;
+		}
+
+		if ( RankSystem.Instance.IsValid() )
+		{
+			RankSystem.Instance.SetRanks( initResponse.Ranks );
+			if ( initResponse.RankAssignments != null )
+			{
+				RankSystem.Instance.SetRankAssignments( initResponse.RankAssignments );
+			}
+		}
+
+		LifePunchEditorTestBots.CacheRankDefinitions( initResponse.Ranks );
+		Log.Info( $"lp_authorize: cached {initResponse.Ranks.Count()} rank definition(s) for editor dev bots." );
+	}
+
 	private static async Task RefreshConnectedPlayersFromPortal()
 	{
 		if ( !ServerApiLink.HasAuthorizationKey )

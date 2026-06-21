@@ -10,19 +10,20 @@
   Uses robocopy /MIR so stale folders (e.g. legacy gpu-rack paths after rename) are removed.
 
 .PARAMETER Addon
-  One or more addon idents (e.g. bitcoinmining). Default: bitcoinmining.
+  One or more addon idents (e.g. lpbitcoin). Default: lpbitcoin.
+  Aliases: lpbitcoin / lifepunchbitcoin → assets under lpbitcoin/, code under bitcoinmining/ (legacy repo folder).
 
 .PARAMETER All
   Sync every lifepunch ident that exists under Assets/addons/lifepunch in the repo.
 
 .EXAMPLE
   powershell -File Sync-LifePunchAddonsToDxrp.ps1
-  powershell -File Sync-LifePunchAddonsToDxrp.ps1 -Addon ak47,bitcoinmining
+  powershell -File Sync-LifePunchAddonsToDxrp.ps1 -Addon ak47,lpbitcoin
   powershell -File Sync-LifePunchAddonsToDxrp.ps1 -All
 #>
 [CmdletBinding()]
 param(
-    [string[]] $Addon = @('bitcoinmining'),
+    [string[]] $Addon = @('lpbitcoin'),
     [switch] $All,
     [string] $ConfigPath = '',
     [switch] $WhatIf
@@ -51,6 +52,16 @@ function Get-AddonIdents {
         return @(Get-ChildItem -LiteralPath $repoAssetsRoot -Directory | ForEach-Object { $_.Name })
     }
     return $Addon
+}
+
+function Resolve-LpBitcoinCodeIdent([string]$Ident) {
+    if ($Ident -in @('lpbitcoin', 'lifepunchbitcoin')) { return 'bitcoinmining' }
+    return $Ident
+}
+
+function Resolve-LpBitcoinAssetIdent([string]$Ident) {
+    if ($Ident -in @('lpbitcoin', 'lifepunchbitcoin', 'bitcoinmining')) { return 'lpbitcoin' }
+    return $Ident
 }
 
 function Invoke-Mirror([string]$From, [string]$To, [string]$Label) {
@@ -171,31 +182,37 @@ if (Test-Path -LiteralPath $devSrc) {
 
 foreach ($ident in Get-AddonIdents) {
     Write-Host "Addon: $ident" -ForegroundColor Cyan
-    $assetsSrc = Join-Path $repoAssetsRoot $ident
-    $assetsDest = Join-Path $dxrpAssetsRoot $ident
+    $codeIdent = Resolve-LpBitcoinCodeIdent $ident
+    $assetIdent = Resolve-LpBitcoinAssetIdent $ident
+    $assetsSrc = Join-Path $repoAssetsRoot $assetIdent
+    $assetsDest = Join-Path $dxrpAssetsRoot $assetIdent
     if ($ident -eq 'bitcoinmining') {
-        # Code-only ident — play assets live under lpbitcoin/ (see DXRP_ADDON_PUBLISH_DOCTRINE.md).
-        Remove-StaleDxrpPath -Path $assetsDest -Label 'Assets/bitcoinmining (legacy — purged)'
+        # Legacy repo ident — purge stale Assets/bitcoinmining; ship tree is lpbitcoin/.
+        Remove-StaleDxrpPath -Path (Join-Path $dxrpAssetsRoot 'bitcoinmining') -Label 'Assets/bitcoinmining (legacy — purged)'
         Write-Host '  Assets/bitcoinmining - skip (lpbitcoin is canonical in editor)' -ForegroundColor DarkGray
     }
     elseif (Test-Path -LiteralPath $assetsSrc) {
         Invoke-Mirror `
             -From $assetsSrc `
             -To   $assetsDest `
-            -Label "Assets/$ident"
+            -Label "Assets/$assetIdent"
+        if ($assetIdent -eq 'lpbitcoin') {
+            Remove-LpArchiveCompileArtifacts -LpBitcoinRoot $assetsDest
+            Remove-StaleDxrpPath -Path (Join-Path $assetsDest 'advancedgpurack') -Label 'Assets/lpbitcoin/advancedgpurack (retired slot)'
+        }
     }
     else {
-        Write-Host "  Assets/$ident - skip (code-only addon)" -ForegroundColor DarkGray
+        Write-Host "  Assets/$assetIdent - skip (missing repo folder)" -ForegroundColor DarkGray
     }
-    $codeSrc = Join-Path $repoCodeRoot $ident
+    $codeSrc = Join-Path $repoCodeRoot $codeIdent
     if (Test-Path -LiteralPath $codeSrc) {
         Invoke-Mirror `
             -From $codeSrc `
-            -To   (Join-Path $dxrpCodeRoot $ident) `
-            -Label "Code/$ident"
+            -To   (Join-Path $dxrpCodeRoot $codeIdent) `
+            -Label "Code/$codeIdent"
     }
     else {
-        Write-Host "  Code/$ident - skip (no repo folder)" -ForegroundColor DarkGray
+        Write-Host "  Code/$codeIdent - skip (no repo folder)" -ForegroundColor DarkGray
     }
 }
 
