@@ -4,7 +4,7 @@
     "UI":  false,
     "Volume":  "1",
     "Sounds":  [
-                   "addons/lifepunch/bitcoinmining/sounds/bitcoinminer/hub-fan-loop.vsnd"
+                   "addons/lifepunch/lpbitcoin/bitcoinhub/assets/sounds/bitcoinminer/hub-fan-loop.vsnd"
                ],
     "Transmission":  true,
     "Pitch":  "1",

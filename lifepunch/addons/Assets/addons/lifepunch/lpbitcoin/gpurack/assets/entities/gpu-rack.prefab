@@ -129,7 +129,7 @@
         "OnComponentFixedUpdate": null,
         "OnComponentStart": null,
         "OnComponentUpdate": null,
-        "SoundEvent": "addons/lifepunch/bitcoinmining/sounds/bitcoinminer/server-hum.sound"
+        "SoundEvent": "addons/lifepunch/lpbitcoin/bitcoinhub/assets/sounds/bitcoinminer/server-hum.sound"
       },
       {
         "__type": "LifePunch.DXRP.Addons.Bitcoin.LpBitcoinRackVisuals",

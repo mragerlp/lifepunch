@@ -1,10 +1,10 @@
-﻿{
+{
     "SelectionMode":  "Random",
     "DistanceAttenuation":  true,
     "UI":  false,
     "Volume":  "1",
     "Sounds":  [
-                   "addons/lifepunch/bitcoinmining/sounds/bitcoinminer/glitch.vsnd"
+                   "addons/lifepunch/lpbitcoin/bitcoinhub/assets/sounds/bitcoinminer/glitch.vsnd"
                ],
     "Transmission":  true,
     "Pitch":  "1",

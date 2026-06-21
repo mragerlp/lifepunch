@@ -4,7 +4,7 @@
     "UI":  false,
     "Volume":  "1",
     "Sounds":  [
-                   "addons/lifepunch/bitcoinmining/sounds/bitcoinminer/server-hum.vsnd"
+                   "addons/lifepunch/lpbitcoin/bitcoinhub/assets/sounds/bitcoinminer/server-hum.vsnd"
                ],
     "Transmission":  true,
     "Pitch":  "1",
