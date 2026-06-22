@@ -3,6 +3,13 @@ LIFEPUNCH™ — AGENT SYNC (paste at start of next session on ANY machine)
 Send to: VENGEANCE · Cornerman · lifepunchnet · shottaWEB · any new chat
 ========================================================================
 
+ACTIVE SESSION (2026-06-22 — owner override on VENGEANCE):
+  Lane: lifepunchulx (adminmenu) — fix staff menu. Bitcoin gate PAUSED this session.
+  Editor: D:\Steam\steamapps\common\sbox\dxrp\game\rp.sbproj (clean vanilla — no LP mounts).
+  Launch: Start-SboxDxrpEditor.ps1 -ReplaceExisting -NoSync
+  LAW: Do NOT sync addons, add files, or create lp_* ConCmds until owner says so.
+  CVL: allOk green — Reload Cursor if MCP red after reboot.
+
 MANDATORY before work — machine names + ops clarity checkpoint canonized.
 Pull first, then read.
 

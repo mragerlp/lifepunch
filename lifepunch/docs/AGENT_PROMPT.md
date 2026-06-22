@@ -151,22 +151,22 @@ Do NOT let shottaWEB or RDP agent paths drift — they commit on GitLab lanes, y
 CURRENT STATE (June 2026):
 - Trademark/IP doctrine is law. Billing on Individual Ultra (Auto default).
 - Ops clarity checkpoint is law: OPS_CLARITY_CHECKPOINT.md + shortcut tiers (Start Day = tri-stack full stack).
+- **SESSION OVERRIDE (2026-06-22):** Owner lane = **lifepunchulx** (`adminmenu`) on **vanilla DXRP workbench**
+  `D:\Steam\steamapps\common\sbox\dxrp\game\rp.sbproj` — **no addon sync, no new files, no `lp_*` ConCmds**
+  until owner explicitly says so. CVL full capacity green (`Get-CvlConnectivityStatus.ps1`).
 - Admin menu (adminmenu) = v1 publish-ready, branded `lifepunch.ulx` / packageSlug `lifepunchulx`;
-  in publishReadyAddons — export to lifepunch-published when owner says ship.
-- Bitcoin (bitcoinmining repo ident / lifepunchbitcoin packageSlug) = active dev; NOT in publishReadyAddons yet.
-  **Entity law:** machines not props — `LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md`. Staging package folder: `lpbitcoin/`
-  with entities `bitcoinhub`, `hashdterminal`, `gpurack`, `advancedgpurack` — **folder name = entity slug**.
-  **Publish doctrine:** `DXRP_ADDON_PUBLISH_DOCTRINE.md` — PLACEHOLDER is upload-ready only; agents do NOT touch
-  `UPLOAD READY ADDONS PLACEHOLDER` unless owner explicitly asks. Portal display names = owner in dxrp.net.
-  **Hub mesh (June 2026):** Phase A = **Steam Machine** static chassis (dev tree: `bitcoin-miner.vmdl` in
-  `bitcoinmining/` until promoted to `lpbitcoin/bitcoinhub/`). Sketchfab Generic PC parked.
-  Play: `lp_bitcoin_spawn_hub` / flatgrass proof. ModelDoc Studio: `Start-SboxModelDocStudio.ps1`.
+  in publishReadyAddons — export to lifepunch-published when owner says ship. Baseline: v3.0.0 r6.
+- Bitcoin (bitcoinmining) = **paused** for this session — do not sync or extend unless owner re-opens lane.
+  Entity law when resumed: `LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md`. Staging: `lpbitcoin/`.
+  **Publish doctrine:** `DXRP_ADDON_PUBLISH_DOCTRINE.md` — PLACEHOLDER hands-off unless owner asks.
 - Quarantine: hackerjob, ak47, bankerjob, etc. — read for concepts only; never copy into active addons.
 - AK-47 paused. GitLab lanes LIVE + synced (lanes-synced); shottaWEB + RDP agent provisioned.
-  Re-export a lane after changes via setup-gitlab-projects.ps1.
 
-EDITOR / PLAYTEST on VENGEANCE: eyes-covered law applies. `get_bridge_status` first; disclose before
-answering "do you see this?"; screenshot/probe before claiming you see anything.
+EDITOR / PLAYTEST on VENGEANCE:
+- Workbench: `Start-SboxDxrpEditor.ps1 -NoSync` → clean `dxrp\game\rp.sbproj` (no LifePunch mounts).
+- When owner approves ULX sync only: `Sync-LifePunchAddonsToDxrp.ps1 -Addon adminmenu` (never `-SyncAllAddons` without ask).
+- Eyes-covered law: `get_bridge_status` first; screenshot/probe before visual claims.
+- Pre-launch: `Test-PreLaunchCheckup.ps1 -Fix` · full refresh: `Invoke-CvlFullCapacityRefresh.ps1`.
 
 NEXT: confirm grounding, then [YOUR TASK HERE].
 ```

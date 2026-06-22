@@ -320,7 +320,19 @@ Quick rules:
 
 ## Current direction (June 2026)
 
-**Tonight (2026-06-18) — foundation if you lose chat context:**
+**Tonight (2026-06-22) — ULX on vanilla DXRP workbench (owner session override):**
+
+| Topic | Canon |
+|-------|-------|
+| **Active task** | **`lifepunchulx`** (`adminmenu` ident) — fix staff menu issues. **Owner override:** bitcoin gate paused until ULX is signed off. |
+| **Editor workbench** | **Clean vanilla DXRP** — `D:\Steam\steamapps\common\sbox\dxrp\game\rp.sbproj`. No LifePunch addon trees mounted until owner says sync. |
+| **Launch** | `Start-SboxDxrpEditor.ps1 -ReplaceExisting -NoSync -SkipPreflight` (default config: `dxrp-editor.local.json`). **Do NOT** run `Sync-LifePunchAddonsToDxrp.ps1` unless owner explicitly names the addon. |
+| **`lp_*` ConCmds** | **None in editor** — vanilla tree has no LifePunch commands. **Do NOT create or add `lp_*` console commands without explicit owner permission.** |
+| **ULX baseline** | `adminmenu/` locked to **v3.0.0 r6** (`ba4a305`). No scroll-region migration on staff menu without owner sign-off. |
+| **CVL stack** | Full capacity verified (`Get-CvlConnectivityStatus.ps1` → `allOk: true`). Reload Cursor after MCP changes. |
+| **Cornerman** | Tier-3 LM `:1234` + SMB `\\VENGEANCE\SboxBridgeIpc`. Repair: `Start-CornermanTier3Interactive.ps1` · `Start-CornermanSmbBridgeInteractive.ps1` |
+
+**Prior (2026-06-18) — foundation if you lose older context:**
 
 | Topic | Canon |
 |-------|-------|
