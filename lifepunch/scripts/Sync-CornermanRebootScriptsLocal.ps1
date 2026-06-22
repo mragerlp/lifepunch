@@ -18,6 +18,7 @@ New-Item -ItemType Directory -Force -Path $onBox, $configDir | Out-Null
 $files = @(
     'Invoke-CornermanHeadlessBoot.ps1',
     'Start-CornermanLmStudio.ps1',
+    'Ensure-CornermanLmLanFirewall.ps1',
     'Install-CornermanHeadlessBoot.ps1',
     'Map-CornermanBridgeShare.ps1',
     'Ensure-CornermanBridgeShare.ps1',
