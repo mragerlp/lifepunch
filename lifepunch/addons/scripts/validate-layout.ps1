@@ -257,7 +257,8 @@ if ($null -ne $Manifest) {
     }
 }
 
-# lifepunchulx (adminmenu) — r6 ship gate: six publish files only. Test bots live in Code/_dev/.
+# lifepunchulx (adminmenu) — repo source gate: six addon files only (shared UI helpers bundle at publish).
+# prepare-publish.ps1 copies LifePunchUi* + scroll helpers into staging for dedicated-server compile.
 $AdminMenuCodeRoot = Join-Path $Root 'Code\Addons\lifepunch\adminmenu'
 if (Test-Path -LiteralPath $AdminMenuCodeRoot -PathType Container) {
     $AllowedAdminMenuShipFiles = @(

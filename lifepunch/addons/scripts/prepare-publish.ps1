@@ -92,6 +92,43 @@ function Clear-SensitiveBinaryStrings {
     [System.IO.File]::WriteAllBytes($Path, $Encoding.GetBytes($Text))
 }
 
+# lifepunchulx shares LifePunch UI helpers from Code/Addons/lifepunch/ in the editor sync,
+# but the portal ships only Code/Addons/lifepunch/lifepunchulx/ — bundle deps for dedicated-server compile.
+$Script:AdminMenuSharedShipFiles = @(
+    'LifePunchUiScale.cs',
+    'LifePunchUiScrollPolicy.cs',
+    'LifePunchScrollRegionPanel.cs',
+    'LifePunchScrollLayout.cs',
+    'LifePunchSourceMark.cs',
+    'LifePunchUiFooter.razor',
+    'LifePunchUiFooter.razor.scss'
+)
+
+function Add-AdminMenuSharedShipDeps {
+    param(
+        [string]$SharedCodeRoot,
+        [string]$CodeStage
+    )
+
+    foreach ($Name in $Script:AdminMenuSharedShipFiles) {
+        $Source = Join-Path $SharedCodeRoot $Name
+        if (-not (Test-Path -LiteralPath $Source -PathType Leaf)) {
+            throw "Missing lifepunchulx shared ship dependency: $Name (expected under $SharedCodeRoot)"
+        }
+
+        Copy-Item -LiteralPath $Source -Destination (Join-Path $CodeStage $Name) -Force
+    }
+
+    $StaffScss = Join-Path $CodeStage 'StaffMenu.razor.scss'
+    if (-not (Test-Path -LiteralPath $StaffScss -PathType Leaf)) {
+        throw "Missing staged StaffMenu.razor.scss for publish SCSS patch"
+    }
+
+    $ScssText = [System.IO.File]::ReadAllText($StaffScss)
+    $ScssText = $ScssText -replace '@import "\.\./LifePunchUiFooter\.razor\.scss";', '@import "LifePunchUiFooter.razor.scss";'
+    [System.IO.File]::WriteAllText($StaffScss, $ScssText)
+}
+
 & (Join-Path $PSScriptRoot 'validate-layout.ps1')
 
 $Manifest = Get-Content -LiteralPath $ManifestPath -Raw | ConvertFrom-Json
@@ -120,6 +157,11 @@ if ($Package.hasCode) {
     $CodeSource = Join-Path $Root "Code\Addons\$Org\$($Package.ident)"
     New-Item -ItemType Directory -Force -Path $CodeStage | Out-Null
     Copy-PublishItems -Source $CodeSource -Destination $CodeStage
+
+    if ($Package.ident -eq 'adminmenu') {
+        $SharedCodeRoot = Join-Path $Root "Code\Addons\$Org"
+        Add-AdminMenuSharedShipDeps -SharedCodeRoot $SharedCodeRoot -CodeStage $CodeStage
+    }
 }
 
 $ContentRows = @(@($Package.contents) | ForEach-Object {
