@@ -72,7 +72,7 @@ public sealed class StaffMenuTestBotsAutoSpawn : GameObjectSystem<StaffMenuTestB
 			return;
 		}
 
-		if ( !ServerApiLink.HasAuthorizationKey || !Config.Current.IsReady )
+		if ( !ServerApiLink.HasAuthorizationKey )
 		{
 			return;
 		}

@@ -14,6 +14,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Sandbox;
 using Sandbox.UI;
 using Dxura.RP.Game;
@@ -40,7 +41,8 @@ namespace LifePunch.DXRP.Addons.StaffMenu;
 ///                                      Pass `lifepunch_spawn_rankbots false` to skip Greg (targetable only).
 ///   lifepunch_spawn_all_testbots     → alias for lifepunch_spawn_rankbots (full roster incl. Greg)
 ///   lifepunch_spawn_scroll_testbots  → rank roster + 18 regular fillers (sidebar scroll proof)
-///   ulx_bots                         → alias for lifepunch_spawn_scroll_testbots
+///   lifepunch_spawn_staff_tier_bots   → Mod + Admin + Super Admin only (staff sidebar preview)
+///   ulx_staff_bots                    → alias for lifepunch_spawn_staff_tier_bots
 ///   lifepunch_auto_spawn_testbots 1  → on editor host play, auto-spawn after portal API init (default 1)
 ///   lifepunch_auto_spawn_testbots_fill 18 → extra regular bots when auto-spawn runs (default 18)
 ///   lifepunch_list_ranks             → logs which rank names resolve (confirms the live portal strings)
@@ -73,6 +75,93 @@ public static class StaffMenuTestBots
 		}
 	}
 
+	/// <summary>
+	/// Pulls the live portal rank table into <see cref="RankSystem"/> and the name cache.
+	/// Editor play must use this — <see cref="Game.ActiveScene.IsEditor"/> is false while playing.
+	/// </summary>
+	public static async Task<int> SyncPortalRankTableFromApiAsync()
+	{
+		if ( !ServerApiLink.HasAuthorizationKey || !Networking.IsHost )
+		{
+			return 0;
+		}
+
+		InitalizeServerResponseDto? initResponse;
+		try
+		{
+			initResponse = await ServerApiClient.InitializeServer( new InitalizeServerDto
+			{
+				Version = Application.Version,
+				DefaultConfig = Json.Serialize( Config.Current.Game )
+			} );
+		}
+		catch ( Exception ex )
+		{
+			Log.Warning( $"portal ranks: InitializeServer failed — {ex.Message}" );
+			return 0;
+		}
+
+		await GameTask.MainThread();
+
+		if ( initResponse?.Ranks == null )
+		{
+			Log.Warning( "portal ranks: InitializeServer returned no rank table." );
+			return 0;
+		}
+
+		EnsureEditorRankSystem();
+
+		var ranks = RankSystem.Instance;
+		if ( ranks.IsValid() )
+		{
+			ranks.SetRanks( initResponse.Ranks );
+			if ( initResponse.RankAssignments != null )
+			{
+				ranks.SetRankAssignments( initResponse.RankAssignments );
+			}
+		}
+		else
+		{
+			Log.Warning( "portal ranks: RankSystem unavailable — cached names only (scoreboard ROLE may stay empty)." );
+		}
+
+		CacheRankDefinitions( initResponse.Ranks );
+		var count = RankIdByName.Count;
+		Log.Info( $"portal ranks: cached {initResponse.Ranks.Count()} definition(s) ({count} lookup key(s))." );
+
+		if ( Application.IsEditor && !Config.Current.IsReady )
+		{
+			Config.Current.MarkReady();
+		}
+
+		ReapplySpawnedRankAssignments();
+		return count;
+	}
+
+	private static void EnsureEditorRankSystem()
+	{
+		if ( RankSystem.Instance.IsValid() )
+		{
+			return;
+		}
+
+		var anchor = GameNetworkManager.Instance;
+		if ( anchor.IsValid() )
+		{
+			anchor.GameObject.Components.Create<RankSystem>();
+			Log.Info( "portal ranks: created RankSystem on GameNetworkManager for editor dev play." );
+			return;
+		}
+
+		var go = Game.ActiveScene?.CreateObject();
+		if ( go != null )
+		{
+			go.Name = "RankSystem (editor dev)";
+			go.Components.Create<RankSystem>();
+			Log.Info( "portal ranks: created standalone RankSystem for editor dev play." );
+		}
+	}
+
 	public static Guid? FindRankIdByName( string rankName )
 	{
 		if ( string.IsNullOrWhiteSpace( rankName ) )
@@ -89,6 +178,115 @@ public static class StaffMenuTestBots
 		return sanitized.Length > 0 && RankIdByName.TryGetValue( sanitized, out id ) ? id : null;
 	}
 
+	/// <summary>Portal rank labels vary — try canonical bot names plus common portal aliases.</summary>
+	public static Guid? ResolveRankId( string canonicalRank )
+	{
+		foreach ( var candidate in GetRankNameCandidates( canonicalRank ) )
+		{
+			var id = FindRankIdByName( candidate );
+			if ( id.HasValue )
+			{
+				return id;
+			}
+		}
+
+		return null;
+	}
+
+	private static IEnumerable<string> GetRankNameCandidates( string canonicalRank )
+	{
+		yield return canonicalRank;
+
+		switch ( canonicalRank.Trim().ToLowerInvariant() )
+		{
+			case "mod":
+				yield return "Moderator";
+				yield return "Trial Mod";
+				break;
+			case "admin":
+				yield return "Administrator";
+				break;
+			case "super admin":
+				yield return "SuperAdmin";
+				yield return "Community Manager";
+				break;
+			case "vip":
+				yield return "Donator";
+				yield return "Donor";
+				break;
+			case "evip":
+				yield return "Extreme VIP";
+				yield return "Elite VIP";
+				break;
+		}
+	}
+
+	[ConCmd( "lifepunch_sync_portal_ranks" )]
+	public static void SyncPortalRanksCmd()
+	{
+		if ( !Application.IsEditor || !Networking.IsHost )
+		{
+			Log.Warning( "lifepunch_sync_portal_ranks: editor host-only." );
+			return;
+		}
+
+		_ = SyncPortalRankTableFromApiAsync();
+	}
+
+	/// <summary>After <c>lp_authorize</c> reloads the portal rank table, re-apply ranks to spawned bots.</summary>
+	[ConCmd( "lifepunch_reapply_testbot_ranks" )]
+	public static void ReapplySpawnedRankAssignments()
+	{
+		if ( !Application.IsEditor || !Networking.IsHost )
+		{
+			return;
+		}
+
+		if ( _spawned.Count == 0 )
+		{
+			Log.Info( "lifepunch_reapply_testbot_ranks: no spawned test bots to update." );
+			return;
+		}
+
+		var applied = 0;
+		foreach ( var def in RankBots )
+		{
+			if ( string.IsNullOrEmpty( def.Rank ) || !_spawned.Contains( def.SteamId ) )
+			{
+				continue;
+			}
+
+			if ( TryAssignBotRank( def.Name, def.SteamId, def.Rank ) )
+			{
+				applied++;
+			}
+		}
+
+		Log.Info( $"lifepunch_reapply_testbot_ranks: applied portal ranks to {applied} bot(s)." );
+	}
+
+	private static bool TryAssignBotRank( string botName, long steamId, string canonicalRank )
+	{
+		var ranks = RankSystem.Instance;
+		if ( !ranks.IsValid() )
+		{
+			Log.Warning( $"testbot ranks: RankSystem unavailable for '{botName}'." );
+			return false;
+		}
+
+		var rankId = ResolveRankId( canonicalRank );
+		if ( !rankId.HasValue )
+		{
+			Log.Warning( $"testbot ranks: no portal rank matched '{canonicalRank}' for '{botName}' (run lp_authorize first; cached: {string.Join( ", ", RankIdByName.Keys.Take( 12 ) )})." );
+			return false;
+		}
+
+		ranks.SetPlayerRanks( steamId, new List<Guid> { rankId.Value } );
+		var resolved = ranks.GetRankName( steamId );
+		Log.Info( $"testbot ranks: '{botName}' -> '{resolved}' ({canonicalRank})." );
+		return !string.IsNullOrWhiteSpace( resolved );
+	}
+
 	private static void RegisterRankName( string raw, Guid id )
 	{
 		if ( string.IsNullOrWhiteSpace( raw ) )
@@ -96,11 +294,15 @@ public static class StaffMenuTestBots
 			return;
 		}
 
-		RankIdByName[raw.Trim()] = id;
+		var trimmed = raw.Trim();
+		RankIdByName[trimmed] = id;
+		RankIdByName[trimmed.ToLowerInvariant()] = id;
+
 		var sanitized = SanitizeRankName( raw );
 		if ( sanitized.Length > 0 )
 		{
 			RankIdByName[sanitized] = id;
+			RankIdByName[sanitized.ToLowerInvariant()] = id;
 		}
 	}
 
@@ -227,6 +429,30 @@ public static class StaffMenuTestBots
 
 		_spawned.Add( steamId );
 		return player;
+	}
+
+	/// <summary>Drop a prior-session bot occupying a fixed SteamId so rank preview bots can respawn.</summary>
+	private static void EnsureBotSlot( long steamId )
+	{
+		var manager = GameNetworkManager.Instance;
+		if ( !manager.IsValid() )
+		{
+			return;
+		}
+
+		if ( manager.Players.TryGetValue( steamId, out var player ) && player.IsValid() )
+		{
+			player.GameObject.Destroy();
+		}
+
+		manager.Players.Remove( steamId );
+		_spawned.Remove( steamId );
+
+		var ranks = RankSystem.Instance;
+		if ( ranks.IsValid() )
+		{
+			ranks.SetPlayerRanks( steamId, new List<Guid>() );
+		}
 	}
 
 	[ConCmd( "lifepunch_clear_testbots" )]
@@ -394,33 +620,153 @@ public static class StaffMenuTestBots
 	[ConCmd( "lifepunch_spawn_rankbots" )]
 	public static void SpawnRankBots( bool includeOwner = true )
 	{
+		SpawnRankBotsInternal( includeOwner, null );
+	}
+
+	[ConCmd( "lifepunch_spawn_staff_tier_bots" )]
+	public static void SpawnStaffTierBots()
+	{
+		SpawnStaffTierBotsInternal();
+	}
+
+	[ConCmd( "ulx_staff_bots" )]
+	public static void SpawnStaffTierBotsAlias()
+	{
+		SpawnStaffTierBotsInternal();
+	}
+
+	private static void SpawnStaffTierBotsInternal()
+	{
 		if ( !Application.IsEditor )
 		{
-			Log.Warning( "lifepunch_spawn_rankbots: editor-only dev command." );
+			Log.Warning( "lifepunch_spawn_staff_tier_bots: editor-only dev command." );
 			return;
 		}
 
 		if ( !Networking.IsHost )
 		{
-			Log.Warning( "lifepunch_spawn_rankbots: must be host (editor play)." );
+			Log.Warning( "lifepunch_spawn_staff_tier_bots: must be host (editor play)." );
 			return;
+		}
+
+		SpawnStaffTierBotsSoon();
+	}
+
+	private static async void SpawnStaffTierBotsSoon()
+	{
+		var rankFilter = new HashSet<string>( StringComparer.OrdinalIgnoreCase )
+		{
+			"Mod",
+			"Admin",
+			"Super Admin"
+		};
+
+		ClearTestBots();
+		foreach ( var def in RankBots )
+		{
+			if ( rankFilter.Contains( def.Rank ) )
+			{
+				EnsureBotSlot( def.SteamId );
+			}
+		}
+
+		var spawned = SpawnRankBotsInternal( false, rankFilter );
+		if ( spawned == 0 )
+		{
+			Log.Warning( "lifepunch_spawn_staff_tier_bots: no bots spawned — is the player prefab ready?" );
+			return;
+		}
+
+		if ( !await WaitForRankCacheAsync( "Mod", 45f ) )
+		{
+			Log.Warning( "lifepunch_spawn_staff_tier_bots: portal ranks not ready — run lp_authorize, then ulx_staff_bots again to assign Mod/Admin/Super Admin tiers." );
+		}
+		else
+		{
+			ApplyRankAssignments( rankFilter );
+		}
+
+		Log.Info( $"lifepunch_spawn_staff_tier_bots: {spawned} bot(s) ready — open /lifepunchulx and check the Staff section." );
+
+		if ( !StaffMenuHost.IsOpen )
+		{
+			StaffMenuHost.Toggle();
+		}
+	}
+
+	private static async Task<bool> WaitForRankCacheAsync( string probeRank, float timeoutSeconds )
+	{
+		var deadline = DateTime.UtcNow.AddSeconds( timeoutSeconds );
+		while ( DateTime.UtcNow < deadline )
+		{
+			if ( ServerApiLink.HasAuthorizationKey )
+			{
+				if ( !ResolveRankId( probeRank ).HasValue && RankIdByName.Count == 0 )
+				{
+					await SyncPortalRankTableFromApiAsync();
+				}
+
+				if ( ResolveRankId( probeRank ).HasValue )
+				{
+					return true;
+				}
+			}
+
+			await GameTask.DelaySeconds( 0.5f );
+		}
+
+		return ResolveRankId( probeRank ).HasValue;
+	}
+
+	private static void ApplyRankAssignments( HashSet<string> rankFilter )
+	{
+		foreach ( var def in RankBots )
+		{
+			if ( string.IsNullOrEmpty( def.Rank ) || !rankFilter.Contains( def.Rank ) )
+			{
+				continue;
+			}
+
+			TryAssignBotRank( def.Name, def.SteamId, def.Rank );
+		}
+	}
+
+	private static int SpawnRankBotsInternal( bool includeOwner, HashSet<string> rankFilter )
+	{
+		if ( !Application.IsEditor )
+		{
+			Log.Warning( "lifepunch_spawn_rankbots: editor-only dev command." );
+			return 0;
+		}
+
+		if ( !Networking.IsHost )
+		{
+			Log.Warning( "lifepunch_spawn_rankbots: must be host (editor play)." );
+			return 0;
 		}
 
 		var ranks = RankSystem.Instance;
 		if ( !ranks.IsValid() )
 		{
 			Log.Error( "lifepunch_spawn_rankbots: RankSystem unavailable (not connected to the portal yet?)." );
-			return;
+			return 0;
 		}
 
 		var index = 0;
+		var spawned = 0;
 		foreach ( var def in RankBots )
 		{
-			// The Owner-mirror ("Greg") can't be targeted by the owner and is only for killswitch/owner
-			// tests, so skip it unless explicitly requested (lifepunch_spawn_rankbots true).
 			if ( !includeOwner && def.Rank == "Owner" )
 			{
 				continue;
+			}
+
+			if ( rankFilter != null )
+			{
+				if ( string.IsNullOrEmpty( def.Rank ) || !rankFilter.Contains( def.Rank ) )
+				{
+					continue;
+				}
 			}
 
 			var player = SpawnBot( def.Name, def.SteamId, SpawnFannedOut( index++ ) );
@@ -429,22 +775,18 @@ public static class StaffMenuTestBots
 				continue;
 			}
 
+			spawned++;
+
 			if ( string.IsNullOrEmpty( def.Rank ) )
 			{
 				Log.Info( $"lifepunch_spawn_rankbots: '{def.Name}' spawned as regular (no rank)." );
 				continue;
 			}
 
-			var rankId = FindRankIdByName( def.Rank );
-			if ( !rankId.HasValue )
-			{
-				Log.Warning( $"lifepunch_spawn_rankbots: rank '{def.Rank}' not found for '{def.Name}' — left as regular." );
-				continue;
-			}
-
-			ranks.SetPlayerRanks( def.SteamId, new List<Guid> { rankId.Value } );
-			Log.Info( $"lifepunch_spawn_rankbots: '{def.Name}' spawned as '{def.Rank}'." );
+			TryAssignBotRank( def.Name, def.SteamId, def.Rank );
 		}
+
+		return spawned;
 	}
 
 	[ConCmd( "lifepunch_list_ranks" )]
