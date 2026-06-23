@@ -1,51 +1,77 @@
 <!--
-lifepunch YouTube description TEMPLATE.
-Copy this file to `<addon-ident>-v<version>.md`, fill the {{PLACEHOLDERS}}, then paste the
-body (everything BELOW this comment) into the YouTube description field.
+lifepunch YouTube description TEMPLATE (v2 — box layout).
+Copy to `<packageSlug>-v<semver>-r<portalRev>.md`, fill {{PLACEHOLDERS}}, paste body below into YouTube.
 
-Fixed blocks that must appear on EVERY upload from here on out (do not edit per-video):
-  - "Enjoy ⛶" sign-off + author credit line
-  - The links block
-  - The proprietary / IP notice (swap only the addon name + version)
+Fixed footer on every upload: copy verbatim from `FOOTER.md` (swap portal URL + description hashtags only).
 
-Keep section dividers as the 28-em-dash bar: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Author credit is the uploader's handle; default is the owner credit shown below.
+Companion files:
+  - `FOOTER.md` — shared ENJOY / LINKS / network / IP block
+  - `tags/<packageSlug>-v<semver>-r<portalRev>.txt` — YouTube Tags field (comma-separated, no #)
+Chapters: update timestamps after final edit.
 -->
 
-{{EMOJI}} {{ADDON_DISPLAY_NAME}} v{{VERSION}}
-{{ONE_LINE_TAGLINE}}
+🛡️ {{PACKAGE_SLUG}} 
 
-{{ONE_OR_TWO_SENTENCE_PITCH}}
+══════════════════════════════
+LIFEPUNCH™ {{ADDON_TITLE}} for DXRP — v{{VERSION}} (portal r{{PORTAL_REV}})
+══════════════════════════════
+
+{{ONE_LINE_PITCH}}
+
+Opens in-game: {{OPEN_COMMANDS}}
+Header: {{IN_GAME_HEADER}}
+
+⛶ WHAT IT IS
+────────────────────────
+{{WHAT_IT_IS}}
+
+⛶ FEATURES
+────────────────────────
+• {{FEATURE_1}}
+• {{FEATURE_2}}
+• {{FEATURE_3}}
+• {{FEATURE_4}}
+• {{FEATURE_5}}
+• {{FEATURE_6}}
+
+⛶ SETUP
+────────────────────────
+1. {{SETUP_1}}
+2. {{SETUP_2}}
+3. {{SETUP_3}}
+4. {{SETUP_4}}
+
+════════════════════════════════════
+⚠️ Be sure to pin latest revisions as there will be updates
+════════════════════════════════════
+
+CHAPTERS
+0:00 — {{CHAPTER_1}}
+0:00 — {{CHAPTER_2}}
+0:00 — {{CHAPTER_3}}
+0:00 — {{CHAPTER_4}}
+0:00 — {{CHAPTER_5}}
+0:00 — {{CHAPTER_6}}
+0:00 — {{CHAPTER_7}}
+0:00 — {{CHAPTER_8}}
+0:00 — {{CHAPTER_9}}
+
+FEEDBACK
+{{FEEDBACK_BLURB}}
+
+<!-- FOOTER: paste from FOOTER.md — do not edit fixed lines -->
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-OVERVIEW
-{{WHAT_IT_IS_AND_HOW_IT_FITS_DXRP. Explain the architecture stance: thin UX/dispatch layer
-over DXRP's own backend, host-side re-validation, no client authority.}}
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-{{SECTION_HEADER_2 — e.g. REAL-TIME, PORTAL-DRIVEN — NOTHING IS HARDCODED}}
-{{Lead sentence.}}
-
-• {{Feature bullet — what + why it matters.}}
-
-• {{Feature bullet.}}
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-{{SECTION_HEADER_3 — e.g. BEST-IN-CLASS UI / UX}}
-• {{Feature bullet.}}
-
-• {{Feature bullet.}}
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Enjoy ⛶
+╭────────[ ⌬ ENJOY ⌬ ]─────────╮
+╰──────────────────────────╯
 
 Bloodwave | mrragerlp | lifepunch.co
 
------------------------------------------------------------------------------------
+{{PORTAL_ADDON_URL}}
+
+⛶ LINKS
+────────────────────────
 DXRP            @     | https://DXRP.net/
 Website        @     | https://lifepunch.co/
 Discord         @     | https://discord.gg/lifepunch
@@ -53,5 +79,10 @@ Steam           @     | https://steamcommunity.com/groups/lifepunchofficial
 
 Check out s&box | https://sbox.game/
 
------------------------------------------------------------------------------------
-© 2026 lifepunch.co. All rights reserved. {{ADDON_DISPLAY_NAME}} is the sole-owned intellectual property of lifepunch.co and is NOT licensed for resale, redistribution, sublicensing, copying, or reuse by any person or entity. It is available exclusively through the DXRP.net portal. "DXRP" and all other names shown are trademarks of their respective owners; their use here is nominative only and implies no affiliation or endorsement.
+┌──────────────────────────┐
+│       LIFEPUNCH™ OFFICIAL NETWORK       │
+└──────────────────────────┘
+
+LIFEPUNCH™ © 2026 lifepunch.co · Proprietary · Not licensed for resale, redistribution, or reuse.
+
+{{DESCRIPTION_HASHTAGS}}

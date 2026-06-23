@@ -43,8 +43,10 @@ For `hasAssets=false` addons, publish code only.
 The YouTube description for each showcase video is kept in the repo, not improvised per upload:
 
 ```text
-../../marketing/youtube/TEMPLATE.md          # reusable template + fixed footer/links/IP notice
+../../marketing/youtube/TEMPLATE.md          # body template (WHAT IT IS / FEATURES / SETUP / CHAPTERS)
+../../marketing/youtube/FOOTER.md            # fixed footer — ENJOY, links, network box, IP (all videos)
 ../../marketing/youtube/<ident>-v<version>.md # filled, paste-ready description per video
+../../marketing/youtube/tags/<ident>-*.txt   # YouTube Tags field (comma-separated, no #)
 ```
 
 Every description must carry the fixed footer blocks and the proprietary / IP notice (the public-facing
