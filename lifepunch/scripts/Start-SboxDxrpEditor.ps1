@@ -14,16 +14,16 @@
   With API connected, editor host play auto-spawns rank bots (lifepunch_auto_spawn_testbots, default 1).
 
 .PARAMETER SyncAddon
-  Ignored when using default owner-editor lane. Use with -RepoSync for legacy repo mirror idents.
+  Addon idents for repo -> DXRP sync (default: lpbitcoin,adminmenu).
 
 .PARAMETER RepoSync
-  Legacy: full robocopy /MIR from monorepo (includes repo art). Default is owner OneDrive drop.
+  Same as default sync path (kept for scripts that already pass -RepoSync).
 
 .PARAMETER PullCompiledToRepo
   After sync, pull ModelDoc *_c from DXRP back into repo (legacy publish loop).
 
 .PARAMETER OwnerEditorLane
-  Mirror OneDrive addon test + lifepunchulx + bitcoinmining code (default unless -RepoSync).
+  Opt-in: mirror OneDrive addon test drop instead of repo -> DXRP sync.
 
 .PARAMETER BitcoinOnly
   Purge all non-bitcoin LifePunch addons from DXRP before sync (fresh console).
@@ -49,11 +49,12 @@
 #>
 [CmdletBinding()]
 param(
-    [string[]] $SyncAddon = @('lpbitcoin'),
+    [string[]] $SyncAddon = @('lpbitcoin', 'adminmenu'),
     [switch] $SyncAllAddons,
     [switch] $NoSync,
     [switch] $RepoSync,
     [switch] $PullCompiledToRepo,
+    [switch] $OwnerEditorLane,
     [switch] $SkipOwnerEditorLane,
     [switch] $WithAuthorize,
     [switch] $SkipPreflight,
@@ -145,7 +146,14 @@ elseif ($SkipOverlays) {
 }
 
 if (-not $NoSync) {
-    if ($RepoSync) {
+    if ($OwnerEditorLane -and -not $SkipOwnerEditorLane) {
+        $ownerLane = Join-Path $Here 'Set-DxrpLifepunchOwnerEditorLane.ps1'
+        if (-not (Test-Path -LiteralPath $ownerLane)) { throw "Missing $ownerLane" }
+        Write-Host 'Owner editor lane (OneDrive addon test — opt-in)...' -ForegroundColor Yellow
+        & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $ownerLane -ConfigPath $ConfigPath
+        Write-Host ''
+    }
+    else {
         if ($BitcoinOnly -or ($PreflightFix -and -not $SyncAllAddons)) {
             $bitcoinOnlyScript = Join-Path $Here 'Set-DxrpLifepunchBitcoinOnly.ps1'
             if (Test-Path -LiteralPath $bitcoinOnlyScript) {
@@ -168,18 +176,11 @@ if (-not $NoSync) {
         }
         $syncScript = Join-Path $Here 'Sync-LifePunchAddonsToDxrp.ps1'
         if (-not (Test-Path -LiteralPath $syncScript)) { throw "Missing $syncScript" }
-        Write-Host 'WARNING: -RepoSync mirrors repo art into DXRP (legacy). Prefer default owner-editor lane.' -ForegroundColor Yellow
+        Write-Host 'DXRP editor lane (repo -> D:\Steam\...\dxrp\game)...' -ForegroundColor Cyan
         $syncArgs = @{ ConfigPath = $ConfigPath }
         if ($SyncAllAddons) { $syncArgs['All'] = $true }
         else { $syncArgs['Addon'] = $SyncAddon }
         & $syncScript @syncArgs
-        Write-Host ''
-    }
-    elseif (-not $SkipOwnerEditorLane) {
-        $ownerLane = Join-Path $Here 'Set-DxrpLifepunchOwnerEditorLane.ps1'
-        if (-not (Test-Path -LiteralPath $ownerLane)) { throw "Missing $ownerLane" }
-        Write-Host 'Owner editor lane (addon test + lifepunchulx + bitcoinmining code)...' -ForegroundColor Cyan
-        & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $ownerLane -ConfigPath $ConfigPath
         Write-Host ''
     }
 }

@@ -109,6 +109,107 @@ function Remove-StaleDxrpPath {
     Write-Host "  purged stale: $Label" -ForegroundColor Yellow
 }
 
+function Resolve-DxrpPackageFolder([string]$Ident) {
+    if ($Ident -eq 'adminmenu') { return 'lifepunchulx' }
+    if ($Ident -in @('lpbitcoin', 'lifepunchbitcoin', 'bitcoinmining')) { return 'lpbitcoin' }
+    return $Ident
+}
+
+function Sync-LifepunchUlxToDxrp {
+    $repoIdent = 'adminmenu'
+    $dxrpFolder = 'lifepunchulx'
+    $repoUlxCode = Join-Path $repoCodeRoot $repoIdent
+    $dxrpUlxAssets = Join-Path $dxrpAssetsRoot $dxrpFolder
+    $dxrpUlxCode = Join-Path $dxrpCodeRoot $dxrpFolder
+    $ulxAssetsSrc = Join-Path $repoAssetsRoot $repoIdent
+
+    Write-Host "Addon: lifepunchulx (repo $repoIdent)" -ForegroundColor Cyan
+
+    if (Test-Path -LiteralPath $ulxAssetsSrc) {
+        Invoke-Mirror -From $ulxAssetsSrc -To $dxrpUlxAssets -Label "Assets/$dxrpFolder"
+    }
+    else {
+        Write-Host "  Assets/$dxrpFolder - code-only (no repo assets)" -ForegroundColor DarkGray
+        Remove-StaleDxrpPath -Path $dxrpUlxAssets -Label "Assets/$dxrpFolder (empty stub)"
+    }
+
+    if (-not (Test-Path -LiteralPath $repoUlxCode)) {
+        throw "Missing repo code: $repoUlxCode"
+    }
+
+    $shipFiles = @(
+        'StaffMenu.razor',
+        'StaffMenu.razor.scss',
+        'StaffMenuHost.cs',
+        'StaffMenuActions.cs',
+        'StaffSettingsService.cs',
+        'WaypointSyncService.cs'
+    )
+
+    if ($WhatIf) {
+        Write-Host "  [WhatIf] Code/$dxrpFolder ship files (shared UI at Code/lifepunch root)" -ForegroundColor DarkGray
+        return
+    }
+
+    Remove-StaleDxrpPath -Path (Join-Path $dxrpCodeRoot $repoIdent) -Label "Code/$repoIdent (use lifepunchulx folder)"
+    Remove-StaleDxrpPath -Path (Join-Path $dxrpAssetsRoot $repoIdent) -Label "Assets/$repoIdent (use lifepunchulx folder)"
+
+    if (Test-Path -LiteralPath $dxrpUlxCode) {
+        Remove-Item -LiteralPath $dxrpUlxCode -Recurse -Force
+    }
+    New-Item -ItemType Directory -Force -Path $dxrpUlxCode | Out-Null
+
+    foreach ($name in $shipFiles) {
+        $src = Join-Path $repoUlxCode $name
+        if (-not (Test-Path -LiteralPath $src)) { throw "Missing ship file: $src" }
+        Copy-Item -LiteralPath $src -Destination (Join-Path $dxrpUlxCode $name) -Force
+    }
+
+    $staffScss = Join-Path $dxrpUlxCode 'StaffMenu.razor.scss'
+    if (Test-Path -LiteralPath $staffScss) {
+        $scss = [System.IO.File]::ReadAllText($staffScss)
+        $patched = $scss -replace '@import "\.\./LifePunchUiFooter\.razor\.scss";', '@import "../LifePunchUiFooter.razor.scss";'
+        if ($patched -ne $scss) { [System.IO.File]::WriteAllText($staffScss, $patched) }
+    }
+
+    $codeCount = (Get-ChildItem -LiteralPath $dxrpUlxCode -Recurse -File).Count
+    Write-Host "  Code/$dxrpFolder - $codeCount ship files (shared deps at Code/lifepunch root)" -ForegroundColor Green
+}
+
+function Remove-LegacyAddonTestArtifacts {
+    param([string]$LpBitcoinRoot)
+    if (-not (Test-Path -LiteralPath $LpBitcoinRoot)) { return }
+    Get-ChildItem -LiteralPath $LpBitcoinRoot -Recurse -Directory -ErrorAction SilentlyContinue |
+        Where-Object { $_.Name -eq 'textures4k' -or $_.FullName -match '[\\/]Textures[\\/]textures4k$' } |
+        ForEach-Object {
+            Remove-StaleDxrpPath -Path $_.FullName -Label "legacy OneDrive textures4k ($($_.FullName))"
+        }
+}
+
+function Repair-HashdTerminalFbx {
+    param([string]$FbxPath)
+    if (-not (Test-Path -LiteralPath $FbxPath)) { return }
+    $repair = Join-Path $repoAddons 'scripts\Repair-LpHashdTerminalFbxEmbeddedPaths.ps1'
+    if (-not (Test-Path -LiteralPath $repair)) {
+        Write-Host '  skip hashdterminal.fbx repair (script missing)' -ForegroundColor Yellow
+        return
+    }
+    & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $repair -FbxPath $FbxPath
+    if ($LASTEXITCODE -ne 0) { throw 'Repair-LpHashdTerminalFbxEmbeddedPaths.ps1 failed' }
+}
+
+function Remove-StaleHashdTerminalCompile {
+    param([string]$HashdRoot)
+    if (-not (Test-Path -LiteralPath $HashdRoot)) { return }
+    $models = Join-Path $HashdRoot 'assets\models'
+    foreach ($name in @('hashdterminal.vmdl_c', 'hashd-terminal.vmdl_c', 'hashd-terminal.vmdl')) {
+        $path = Join-Path $models $name
+        if (Test-Path -LiteralPath $path) {
+            Remove-StaleDxrpPath -Path $path -Label "stale compile/source: $name (recompile after FBX repair)"
+        }
+    }
+}
+
 function Remove-LpArchiveCompileArtifacts {
     param([string]$LpBitcoinRoot)
     if (-not (Test-Path -LiteralPath $LpBitcoinRoot)) { return }
@@ -128,7 +229,8 @@ function Remove-LpArchiveCompileArtifacts {
 }
 
 Write-Host 'Sync LifePunch addons -> DXRP game' -ForegroundColor Cyan
-Write-Host '  WARNING: full repo MIR includes repo art. For editor work use Set-DxrpLifepunchOwnerEditorLane.ps1' -ForegroundColor Yellow
+Write-Host '  Canonical editor path: D:\Steam\steamapps\common\sbox\dxrp\game (repo MIR).' -ForegroundColor DarkGray
+Write-Host '  OneDrive addon test is opt-in only: Start-SboxDxrpEditor.ps1 -OwnerEditorLane' -ForegroundColor DarkGray
 Write-Host "  Repo:  $repoAddons" -ForegroundColor DarkGray
 Write-Host "  DXRP:  $dxrpGame" -ForegroundColor DarkGray
 
@@ -137,10 +239,12 @@ if (-not $WhatIf) {
     Remove-StaleDxrpPath -Path (Join-Path $dxrpGame 'Code\Addons\lifepunch._quarantine') -Label 'Code/Addons/lifepunch._quarantine'
     Remove-StaleDxrpPath -Path (Join-Path $dxrpGame 'Assets\addons\lifepunch._quarantine') -Label 'Assets/addons/lifepunch._quarantine'
     Remove-StaleDxrpPath -Path (Join-Path $dxrpGame 'addons\lifepunch\lpbitcoin') -Label 'addons/lifepunch/lpbitcoin (empty greenfield stub)'
-    # adminmenu sync uses Code/Addons/lifepunch/{adminmenu + shared root}. lifepunchulx is the
-    # publish slug copy from Set-DxrpLifepunchUlxOnly — if both exist, shared types compile twice.
-    Remove-StaleDxrpPath -Path (Join-Path $dxrpCodeRoot 'lifepunchulx') -Label 'Code/lifepunchulx (stale duplicate — use adminmenu sync)'
-    Remove-StaleDxrpPath -Path (Join-Path $dxrpAssetsRoot 'lifepunchulx') -Label 'Assets/lifepunchulx (stale duplicate)'
+    # lifepunchulx is the DXRP folder for repo adminmenu (package slug). Purge only when not syncing adminmenu.
+    $syncIdents = @(Get-AddonIdents)
+    if ($syncIdents -notcontains 'adminmenu') {
+        Remove-StaleDxrpPath -Path (Join-Path $dxrpCodeRoot 'lifepunchulx') -Label 'Code/lifepunchulx (adminmenu not in sync set)'
+        Remove-StaleDxrpPath -Path (Join-Path $dxrpAssetsRoot 'lifepunchulx') -Label 'Assets/lifepunchulx (adminmenu not in sync set)'
+    }
 }
 
 # Shared lifepunch code (LifePunchSourceMark.cs, etc.) — not under a single addon ident.
@@ -259,6 +363,10 @@ if (Test-Path -LiteralPath $devSrc) {
 }
 
 foreach ($ident in Get-AddonIdents) {
+    if ($ident -eq 'adminmenu') {
+        Sync-LifepunchUlxToDxrp
+        continue
+    }
     Write-Host "Addon: $ident" -ForegroundColor Cyan
     $codeIdent = Resolve-LpBitcoinCodeIdent $ident
     $assetIdent = Resolve-LpBitcoinAssetIdent $ident
@@ -276,7 +384,10 @@ foreach ($ident in Get-AddonIdents) {
             -Label "Assets/$assetIdent"
         if ($assetIdent -eq 'lpbitcoin') {
             Remove-LpArchiveCompileArtifacts -LpBitcoinRoot $assetsDest
+            Remove-LegacyAddonTestArtifacts -LpBitcoinRoot $assetsDest
             Remove-StaleDxrpPath -Path (Join-Path $assetsDest 'advancedgpurack') -Label 'Assets/lpbitcoin/advancedgpurack (retired slot)'
+            $hashdFbxRepo = Join-Path $assetsSrc 'hashdterminal\assets\source\fbx\hashdterminal.fbx'
+            Repair-HashdTerminalFbx -FbxPath $hashdFbxRepo
         }
     }
     else {
@@ -316,7 +427,11 @@ if ($bitcoinLaneSync -and (Test-Path -LiteralPath $lpStagingRoot)) {
         -To   $lpDest `
         -Label 'Assets/lpbitcoin'
     Remove-LpArchiveCompileArtifacts -LpBitcoinRoot $lpDest
+    Remove-LegacyAddonTestArtifacts -LpBitcoinRoot $lpDest
     Remove-StaleDxrpPath -Path (Join-Path $lpDest 'advancedgpurack') -Label 'Assets/lpbitcoin/advancedgpurack (retired slot)'
+    $hashdFbxDxrp = Join-Path $lpDest 'hashdterminal\assets\source\fbx\hashdterminal.fbx'
+    Repair-HashdTerminalFbx -FbxPath $hashdFbxDxrp
+    Remove-StaleHashdTerminalCompile -HashdRoot (Join-Path $lpDest 'hashdterminal')
 }
 
 $lpCodeRoot = Join-Path $repoCodeRoot 'lpbitcoin'

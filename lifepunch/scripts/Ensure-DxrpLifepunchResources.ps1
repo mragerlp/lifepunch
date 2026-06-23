@@ -37,6 +37,7 @@ function Get-ResourceMountLines([string]$RawContent) {
 
 function Resolve-MountIdent([string]$Ident) {
     if ($Ident -in @('lpbitcoin', 'lifepunchbitcoin', 'bitcoinmining')) { return $null }
+    if ($Ident -eq 'adminmenu') { return 'lifepunchulx' }
     return $Ident
 }
 
