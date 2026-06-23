@@ -108,7 +108,9 @@ public static class LifePunchScrollRegionBootstrap
 
 				if ( existing.IsValid() )
 				{
-					if ( source.Children.Any() )
+					// HASHD CRT log lines are imperative — Razor re-emits an empty shell on unrelated
+					// StateHasChanged; merging would duplicate log-stack and spam "Fixing parent".
+					if ( slotClass != "log" && source.Children.Any() )
 						MergeChildren( source, existing );
 
 					source.Delete();

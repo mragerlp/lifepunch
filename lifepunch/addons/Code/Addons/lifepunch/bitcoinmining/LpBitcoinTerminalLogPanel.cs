@@ -81,4 +81,13 @@ public sealed class LpBitcoinTerminalLogPanel : LifePunchScrollRegionPanel
 
 		return false;
 	}
+
+	protected override float GetContentHeight()
+	{
+		var stack = Children.FirstOrDefault( child => child.HasClass( "log-stack" ) );
+		if ( stack.IsValid() )
+			return LifePunchScrollLayout.GetStackedContentHeight( stack );
+
+		return base.GetContentHeight();
+	}
 }

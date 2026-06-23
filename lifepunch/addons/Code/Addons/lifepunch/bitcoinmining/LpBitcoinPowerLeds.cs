@@ -39,11 +39,16 @@ public static class LpBitcoinPowerLeds
 		if ( !renderer.IsValid() )
 			return;
 
-		var scale = powered ? HubStatusOnScale : HubStatusOffScale;
-		var tint = powered ? HubStatusOnTint : HubStatusOffTint;
+		// Drop legacy per-slot CreateCopy overrides — they registered illegal paths like
+		// "bitcoinhub-sm-fence-led_status" (no .vmat) and spam FixupResourceName.
+		ClearHubStatusMaterialOverrides( renderer );
 
-		ClearStaleHubStatusOverrides( renderer );
-		TryApplyHubStatusMaterialSlots( renderer, scale, tint );
+		var sceneObject = renderer.SceneObject;
+		if ( sceneObject is null || !sceneObject.IsValid() )
+			return;
+
+		sceneObject.Attributes.Set( SelfIllumTintAttr, powered ? HubStatusOnTint : HubStatusOffTint );
+		sceneObject.Attributes.Set( SelfIllumScaleAttr, powered ? HubStatusOnScale : HubStatusOffScale );
 	}
 
 	/// <summary>Legacy name — routes to <see cref="ApplyHubStatusLed"/>.</summary>
@@ -68,35 +73,6 @@ public static class LpBitcoinPowerLeds
 		sceneObject.Attributes.Set( SelfIllumScaleAttr, scale );
 	}
 
-	private static bool TryApplyHubStatusMaterialSlots( ModelRenderer renderer, float scale, Vector4 tint )
-	{
-		var materials = renderer.Materials;
-		if ( materials is null || materials.Count <= 0 )
-			return false;
-
-		var wrote = false;
-		for ( var i = 0; i < materials.Count; i++ )
-		{
-			var original = materials.GetOriginal( i );
-			if ( original is null || !original.IsValid() )
-				continue;
-
-			if ( !IsHubStatusLedMaterial( original ) )
-				continue;
-
-			var runtime = original.CreateCopy();
-			runtime.Set( SelfIllumTintAttr, tint );
-			runtime.Set( SelfIllumScaleAttr, scale );
-			materials.SetOverride( i, runtime );
-			wrote = true;
-		}
-
-		if ( wrote )
-			materials.Apply();
-
-		return wrote;
-	}
-
 	private static bool IsHubStatusLedMaterial( Material material )
 	{
 		var path = material.ResourcePath ?? string.Empty;
@@ -110,8 +86,8 @@ public static class LpBitcoinPowerLeds
 		       && path.Contains( "fence", StringComparison.OrdinalIgnoreCase );
 	}
 
-	/// <summary>Drop snapshot/runtime copies that used the pre-fix illegal resource name.</summary>
-	private static void ClearStaleHubStatusOverrides( ModelRenderer renderer )
+	/// <summary>Remove runtime material overrides on hub fence LED slots (legacy CreateCopy path).</summary>
+	private static void ClearHubStatusMaterialOverrides( ModelRenderer renderer )
 	{
 		var materials = renderer.Materials;
 		if ( materials is null || materials.Count <= 0 )
@@ -123,16 +99,12 @@ public static class LpBitcoinPowerLeds
 			if ( !materials.HasOverride( i ) )
 				continue;
 
-			var path = materials.GetOverride( i )?.ResourcePath
-			           ?? materials.GetOverride( i )?.ResourceName
-			           ?? string.Empty;
+			var original = materials.GetOriginal( i );
+			if ( original is null || !IsHubStatusLedMaterial( original ) )
+				continue;
 
-			if ( path.Contains( "bitcoinhub-sm-fence-led_status", StringComparison.OrdinalIgnoreCase )
-			     && !path.EndsWith( ".vmat", StringComparison.OrdinalIgnoreCase ) )
-			{
-				materials.SetOverride( i, null );
-				cleared = true;
-			}
+			materials.SetOverride( i, null );
+			cleared = true;
 		}
 
 		if ( cleared )

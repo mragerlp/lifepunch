@@ -72,12 +72,7 @@
 					}
 					<div class="log-shell">
 						<div class="log lp-ui-scroll-region terminal-log-scroll" onclick="@FocusLog">
-							<div class="log-stack">
-								@foreach ( var line in _lines )
-								{
-									<label class="log-line @LineClass( line )">@line.Text</label>
-								}
-							</div>
+							<div class="log-stack"></div>
 						</div>
 					</div>
 					<div class="prompt-row" onclick="@FocusInput">
@@ -229,6 +224,7 @@
 	{
 		_hub = hub;
 		_lines.Clear();
+		ClearLogStack();
 		_showBootSplash = true;
 		_bootComplete = false;
 		_bootLineIndex = 0;
@@ -317,11 +313,10 @@
 		if ( raw.Equals( "clear", StringComparison.OrdinalIgnoreCase ) )
 		{
 			_lines.Clear();
-			StateHasChanged();
+			ClearLogStack();
 			_hub?.RequestPushTerminalCommandAlert( raw, "log cleared" );
 			InputBox.Text = string.Empty;
 			InputBox.Focus();
-			QueueScrollBootstrap();
 			QueueScrollLogToBottom( force: true );
 			return;
 		}
@@ -371,18 +366,77 @@
 
 		_lines.Add( new LogLine( kind, text ) );
 		TrimLog();
-		StateHasChanged();
-		QueueScrollBootstrap();
+
+		var stack = GetLogStack();
+		if ( stack.IsValid() )
+			AddLogLabel( stack, kind, text );
+		else
+			_scrollBootstrapFramesLeft = Math.Max( _scrollBootstrapFramesLeft, 4 );
+
 		ApplyLogScrollChrome();
 
 		if ( log.IsValid() && log.PreferScrollToBottom )
 			QueueScrollLogToBottom();
 	}
 
+	private Panel GetLogStack()
+	{
+		var log = GetLogScroll();
+		if ( !log.IsValid() )
+			return null;
+
+		return log.Children.FirstOrDefault( child => child.HasClass( "log-stack" ) );
+	}
+
+	private void ClearLogStack()
+	{
+		var stack = GetLogStack();
+		if ( !stack.IsValid() )
+			return;
+
+		foreach ( var child in stack.Children.ToList() )
+			child.Delete();
+	}
+
+	private void RebuildLogStackIfNeeded()
+	{
+		var stack = GetLogStack();
+		if ( !stack.IsValid() || stack.Children.Any() || _lines.Count == 0 )
+			return;
+
+		foreach ( var line in _lines )
+			AddLogLabel( stack, line.Kind, line.Text );
+	}
+
+	private void AddLogLabel( Panel stack, string kind, string text )
+	{
+		var label = new Label( stack )
+		{
+			Text = text,
+			Selectable = true,
+			ShouldDrawSelection = true,
+			SelectionColor = CmdSelectionTint
+		};
+
+		label.AddClass( "log-line" );
+
+		var cls = LineClass( new LogLine( kind, text ) );
+		if ( !string.IsNullOrEmpty( cls ) )
+			label.AddClass( cls );
+	}
+
 	private void TrimLog()
 	{
 		while ( _lines.Count > MaxLogLines )
+		{
 			_lines.RemoveAt( 0 );
+
+			var stack = GetLogStack();
+			if ( !stack.IsValid() || stack.Children.Count == 0 )
+				continue;
+
+			stack.Children.First().Delete();
+		}
 	}
 
 	private void QueueScrollLogToBottom( bool force = false )
@@ -413,6 +467,7 @@
 			LifePunchScrollRegionBootstrap.Upgrade( Panel );
 			_scrollBootstrapFramesLeft--;
 			ApplyLogScrollChrome();
+			RebuildLogStackIfNeeded();
 		}
 
 		if ( _scrollLogPendingFrames <= 0 )
@@ -556,8 +611,7 @@
 
 	protected override int BuildHash()
 	{
-		// Never hash InputBox.Text or log line count — rebuilds the whole CRT and kills wheel scroll.
-		// Log lines refresh via StateHasChanged() only; header uses hub power / rack count here.
+		// Never hash InputBox.Text or log line count — log lines are imperative (no Razor foreach).
 		return HashCode.Combine(
 			HashCode.Combine(
 				_selectedIndex,

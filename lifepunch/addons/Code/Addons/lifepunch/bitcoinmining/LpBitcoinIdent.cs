@@ -54,17 +54,17 @@ public static class LpBitcoinIdent
 	public const string RackSlug = "gpu-rack";
 	public const string RackDisplayName = "GPU Rack";
 	public const string RackModelPath =
-		"addons/lifepunch/lpbitcoin/gpurack/assets/models/gpu-rack.vmdl";
+		"addons/lifepunch/lpbitcoin/gpurack/assets/models/gpurack.vmdl";
 
 	public const string RackPrefabPath =
-		"addons/lifepunch/lpbitcoin/gpurack/assets/entities/gpu-rack.prefab";
+		"addons/lifepunch/lpbitcoin/gpurack/assets/entities/gpurack.prefab";
 
 	/// <summary>Four-tier farm mesh — upgrade tier; prefab has AdvancedRack.</summary>
 	public const string StackedRackModelPath =
-		"addons/lifepunch/lpbitcoin/gpurack/assets/models/gpu-rack-stacked.vmdl";
+		"addons/lifepunch/lpbitcoin/gpurack/assets/models/advancedgpurack.vmdl";
 
 	public const string StackedRackPrefabPath =
-		"addons/lifepunch/lpbitcoin/gpurack/assets/entities/gpu-rack-stacked.prefab";
+		"addons/lifepunch/lpbitcoin/gpurack/assets/entities/advancedgpurack.prefab";
 
 	/// <summary>Operator-facing rack slot (1-based). Internal APIs stay 0-based.</summary>
 	public static int DisplayRackNumber( int zeroBasedIndex ) => zeroBasedIndex + 1;

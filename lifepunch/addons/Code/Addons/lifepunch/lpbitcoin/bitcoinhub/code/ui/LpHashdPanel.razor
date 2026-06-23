@@ -160,7 +160,7 @@
 										<div class="overview-intro-shell">
 											<div class="lp-ui-intro overview-intro">
 												<div class="overview-intro-copy">
-													Buy from DXRP Market → place hub → set PIN → <strong>power on</strong> (header switch) → link terminal → register up to @LpBitcoinIdent.PortalMaxRacksPerHub GPU racks at rig0 on the CRT.
+													Buy from DXRP Market → place hub → set PIN → <strong>power on</strong> (header switch) → link terminal → register up to @($"{LpBitcoinIdent.PortalMaxRacksPerHub} GPU") racks at rig0 on the CRT.
 												</div>
 												<div class="overview-intro-terminal">
 													<div class="overview-intro-terminal-status">
@@ -217,30 +217,27 @@
 												}
 												else
 												{
-													<div class="lp-ui-scroll lp-ui-scroll-region overview-miners-scroll">
-														<div class="lp-ui-list">
-															@for ( var i = 0; i < GetLinkedRacks().Count; i++ )
-															{
-																var rack = GetLinkedRacks()[i];
-																<div class="lp-ui-list-row">
-																	<div class="lp-ui-list-main">
-																		<div class="lp-ui-list-title">@RackSlotDisplayLabel( rack )</div>
-																		<button class="rack-slot-id-copy" onclick="@(() => CopyRackTerminalId( rack ))">
-																			<span class="rack-slot-id-token">@RackSlotTerminalToken( rack )</span>
-																			<i class="material-icons">content_copy</i>
-																			<span class="rack-slot-id-hint">@RackSlotCopyHint( rack )</span>
-																		</button>
-																		<div class="lp-ui-list-sub rack-stats">@RackOverviewSubline( rack )</div>
-																	</div>
-																	<div class="lp-ui-list-meta">
-																		<div class="lp-ui-list-value">@(rack.IsMining ? "Mining" : "Idle")</div>
-																		<div class="lp-ui-list-tag">
-																			<span class="lp-ui-status-dot @(rack.IsMining ? "on" : "off")"></span>
-																		</div>
+													<div class="overview-miners-scroll">
+														@for ( var i = 0; i < GetLinkedRacks().Count; i++ )
+														{
+															var rack = GetLinkedRacks()[i];
+															<div class="overview-miner-card">
+																<div class="overview-miner-head">
+																	<div class="overview-miner-title">@RackSlotDisplayLabel( rack )</div>
+																	<div class="overview-miner-status @( rack.IsMining ? "on" : "off" )">
+																		<span class="lp-ui-status-dot @(rack.IsMining ? "on" : "off")"></span>
+																		<span>@(rack.IsMining ? "Mining" : "Idle")</span>
 																	</div>
 																</div>
-															}
-														</div>
+																<div class="overview-miner-stats">@RackOverviewSubline( rack )</div>
+																<button class="rack-slot-id-copy overview-miner-copy" onclick="@(() => CopyRackTerminalId( rack ))">
+																	<span class="rack-slot-id-token">@RackSlotTerminalToken( rack )</span>
+																	<i class="material-icons">content_copy</i>
+																	<span class="rack-slot-id-hint">@RackSlotCopyHint( rack )</span>
+																</button>
+															</div>
+														}
+														<div class="overview-miners-scroll-tail"></div>
 													</div>
 												}
 											</div>
@@ -332,7 +329,7 @@
 											}
 											else
 											{
-												<div class="lp-ui-scroll lp-ui-scroll-region racks-scroll">
+												<div class="racks-scroll">
 													<div class="rack-grid">
 														@for ( var i = 0; i < GetLinkedRacks().Count; i++ )
 														{
@@ -363,6 +360,7 @@
 															</div>
 														}
 													</div>
+													<div class="racks-scroll-tail"></div>
 												</div>
 											}
 										</div>
@@ -397,7 +395,7 @@
 													<strong>@RackSlotDisplayLabel( upgradeRack )</strong> · @RackYieldLabel( upgradeRack ) · @RackHardwareLine( upgradeRack ) — Purchases debit your in-game cash. Mining start/stop stays on the CRT. rig0 slot: <strong>@RackSlotTerminalToken( upgradeRack )</strong>
 												</div>
 
-												<div class="lp-ui-scroll lp-ui-scroll-region upgrades-scroll">
+												<div class="upgrades-scroll">
 													<div class="upgrade-tracks">
 														<div class="upgrade-track lp-hashd-surface">
 															<div class="upgrade-track-head">
@@ -463,6 +461,7 @@
 															}
 														</div>
 													</div>
+													<div class="upgrades-scroll-tail"></div>
 												</div>
 											}
 										</div>
@@ -627,7 +626,7 @@
 											}
 											else
 											{
-												<div class="lp-ui-scroll lp-ui-scroll-region logs-scroll">
+												<div class="logs-scroll">
 													<div class="notif-list">
 														@foreach ( var alert in GetHubAlerts() )
 														{
@@ -715,6 +714,7 @@
 														<button class="@(HasLinkedTerminal() ? "lp-ui-btn-primary" : "lp-ui-btn-ghost")" disabled="@(!HasLinkedTerminal())" onclick="@UnlinkTerminal">Unlink terminal</button>
 													</div>
 												</div>
+												<div class="settings-scroll-tail"></div>
 											</div>
 										</div>
 									</div>
@@ -778,7 +778,6 @@
 	private int _telemetryHash;
 	private int _metricsDisplayTick;
 	private int _logTimeBucket;
-	private int _scrollBootstrapFramesLeft;
 	private const float TelemetryRefreshInterval = 0.5f;
 	private const float MetricsDisplayInterval = 2f;
 	private const float LogTimeRefreshInterval = 30f;
@@ -811,10 +810,7 @@
 		_sinceLogTimeRefresh = LogTimeRefreshInterval;
 		_logTimeBucket = (int)(Time.Now / LogTimeRefreshInterval);
 		RecomputeTelemetryHash();
-		QueueScrollBootstrap();
 	}
-
-	/// <summary>Dev preview ConCmds — skip secure-boot gate so the dashboard is visible immediately.</summary>
 	public void DevBypassPinGate()
 	{
 		_pinUnlocked = true;
@@ -840,10 +836,9 @@
 		_sinceLogTimeRefresh = LogTimeRefreshInterval;
 		_logTimeBucket = (int)(Time.Now / LogTimeRefreshInterval);
 		RecomputeTelemetryHash();
-		QueueScrollBootstrap();
 	}
 
-	protected override void OnDisabled()
+	/// <summary>Dev preview ConCmds — skip secure-boot gate so the dashboard is visible immediately.</summary>
 	{
 		LifePunchMenuInputBlock.NotifyMenuClosed();
 		LpBitcoinHudBridge.SetMenuCursorMode( false );
@@ -1095,12 +1090,7 @@
 
 		_active = tab;
 		LifePunchUiScrollPolicy.Apply( Panel );
-		if ( tab != OpsTab.Logs )
-			QueueScrollBootstrap();
 	}
-
-	private void QueueScrollBootstrap()
-		=> _scrollBootstrapFramesLeft = Math.Max( _scrollBootstrapFramesLeft, 4 );
 
 	// Upgrades is a sub-view of Servers — keep the rack icon selected (Staff Menu tab-sel pattern).
 	private bool IsSidebarTabActive( OpsTab tab )
@@ -1114,7 +1104,6 @@
 		_upgradeRackId = rack.GameObject.Id;
 		_active = OpsTab.Upgrades;
 		LifePunchUiScrollPolicy.Apply( Panel );
-		QueueScrollBootstrap();
 	}
 
 	private void CloseRackUpgrades() => SelectTab( OpsTab.Racks );
@@ -1679,12 +1668,6 @@
 			return;
 		}
 
-		if ( _scrollBootstrapFramesLeft > 0 )
-		{
-			LifePunchScrollRegionBootstrap.Upgrade( Panel );
-			_scrollBootstrapFramesLeft--;
-		}
-
 		if ( _sinceTelemetryRefresh < TelemetryRefreshInterval )
 		{
 			TickMetricsDisplay();
@@ -1695,13 +1678,8 @@
 		_sinceTelemetryRefresh = 0;
 		var previous = _telemetryHash;
 		RecomputeTelemetryHash();
-		if ( _telemetryHash != previous )
-		{
-			if ( _active == OpsTab.Logs )
-				StateHasChanged();
-			else
-				QueueScrollBootstrap();
-		}
+		if ( _telemetryHash != previous && _active == OpsTab.Logs )
+			StateHasChanged();
 
 		TickMetricsDisplay();
 		TickLogTimeLabels();
