@@ -831,7 +831,7 @@
 	{
 		LifePunchMenuInputBlock.NotifyMenuOpened();
 		LpBitcoinHudBridge.SetMenuCursorMode( true );
-		LifePunchScrollRegionBootstrap.Upgrade( Panel );
+		LifePunchScrollRegionBootstrap.UpgradeScrollRegionsFromHost( this );
 		LifePunchUiScrollPolicy.Apply( Panel );
 		_sinceTelemetryRefresh = TelemetryRefreshInterval;
 		_sinceLogTimeRefresh = LogTimeRefreshInterval;
@@ -1665,7 +1665,7 @@
 		base.OnUpdate();
 		LifePunchMenuInputBlock.Apply();
 		// s&box flex scroll: upgrade lp-ui-scroll-region → LifePunchScrollRegionPanel (manual wheel).
-		LifePunchScrollRegionBootstrap.Upgrade( Panel );
+		LifePunchScrollRegionBootstrap.UpgradeScrollRegionsFromHost( this );
 		LifePunchUiScrollPolicy.Apply( Panel );
 
 		if ( !_hub.IsValid() )

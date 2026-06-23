@@ -410,9 +410,10 @@
 
 	private void AddLogLabel( Panel stack, string kind, string text )
 	{
-		var label = new Label( stack )
+		var label = new Label
 		{
 			Text = text,
+			Parent = stack,
 			Selectable = true,
 			ShouldDrawSelection = true,
 			SelectionColor = CmdSelectionTint
@@ -449,7 +450,7 @@
 	private void QueueScrollBootstrap() => _scrollBootstrapFramesLeft = Math.Max( _scrollBootstrapFramesLeft, 4 );
 
 	private LifePunchScrollRegionPanel GetLogScroll()
-		=> LifePunchScrollRegionBootstrap.FindFirst( root: Panel, className: "log" );
+		=> LifePunchScrollRegionBootstrap.FindFirstFromHost( this, "log" );
 
 	private void ApplyLogScrollChrome()
 	{
@@ -464,7 +465,7 @@
 	{
 		if ( _scrollBootstrapFramesLeft > 0 )
 		{
-			LifePunchScrollRegionBootstrap.Upgrade( root: Panel );
+			LifePunchScrollRegionBootstrap.UpgradeScrollRegionsFromHost( this );
 			_scrollBootstrapFramesLeft--;
 			ApplyLogScrollChrome();
 			RebuildLogStackIfNeeded();

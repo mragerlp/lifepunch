@@ -6,6 +6,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using Sandbox;
 using Sandbox.UI;
 
 namespace LifePunch.DXRP.Addons;
@@ -81,7 +82,7 @@ public static class LifePunchScrollRegionBootstrap
 	public static void SetCustomFactory( Func<string, LifePunchScrollRegionPanel> factory )
 		=> _customFactory = factory;
 
-	public static void Upgrade( Panel root )
+	public static void UpgradeScrollRegions( Panel root )
 	{
 		if ( root is null || !root.IsValid )
 			return;
@@ -203,6 +204,14 @@ public static class LifePunchScrollRegionBootstrap
 
 		return null;
 	}
+
+	/// <summary>Razor-safe entry — pass <see cref="PanelComponent"/>; avoids <c>Panel</c> type/name clashes in generated @code.</summary>
+	public static void UpgradeScrollRegionsFromHost( PanelComponent host )
+		=> UpgradeScrollRegions( host?.Panel );
+
+	/// <summary>Razor-safe lookup — pass <see cref="PanelComponent"/> instead of raw <see cref="Panel"/>.</summary>
+	public static LifePunchScrollRegionPanel FindFirstFromHost( PanelComponent host, string className )
+		=> FindFirst( host?.Panel, className );
 
 	private static void CopyPanelClasses( Panel from, Panel to )
 	{
