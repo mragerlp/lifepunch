@@ -5,7 +5,7 @@
 | Tier | vmdl (compile `_c` here) | prefab | FBX |
 |------|--------------------------|--------|-----|
 | Single (baseline) | **`gpurack.vmdl`** | `gpurack.prefab` | `source/fbx/gpu-rack-anim.fbx` |
-| Stacked farm | **`advancedgpurack.vmdl`** | `advancedgpurack.prefab` | `source/fbx/advancedgpurack.fbx` or `gpu-rack-stacked-anim.fbx` |
+| Stacked farm | **`advancedgpurack.vmdl`** | `advancedgpurack.prefab` | `source/fbx/gpu-rack-stacked-anim.fbx` |
 
 **Retired (do not compile):** `gpu-rack.vmdl`, `gpu-rack-stacked.vmdl`, `gpu-rack.prefab`, `gpu-rack-stacked.prefab` — removed Jun 2026.
 
