@@ -4,8 +4,8 @@
 
 | Tier | vmdl | prefab | FBX |
 |------|------|--------|-----|
-| Single (baseline) | `gpu-rack.vmdl` | `gpu-rack.prefab` | `GPU_Farm_Anim.fbx` |
-| Stacked farm | `gpu-rack-stacked.vmdl` | `gpu-rack-stacked.prefab` | `GPU_Farm_Stacked_Anim.fbx` |
+| Single (baseline) | `gpu-rack.vmdl` | `gpu-rack.prefab` | `source/fbx/gpu-rack-anim.fbx` |
+| Stacked farm | `gpu-rack-stacked.vmdl` | `gpu-rack-stacked.prefab` | `source/fbx/gpu-rack-stacked-anim.fbx` |
 
 **Texture roots:** `assets/textures/{Wires,GPU_Rack,Power_Supply,Motherboard,GPU_GraphicsCard}/`
 

@@ -165,7 +165,7 @@
 					{
 						_class = "RenderMeshFile"
 						name = "LOD0"
-						filename = "addons/lifepunch/lpbitcoin/gpurack/assets/source/GPU_Farm_Stacked_Anim.fbx"
+						filename = "addons/lifepunch/lpbitcoin/gpurack/assets/source/fbx/gpu-rack-stacked-anim.fbx"
 						import_translation = [ -1.389, -0.208, 27.682 ]
 						import_rotation = [ 0.0, 90.0, 0.0 ]
 						import_scale = 0.72

@@ -9,7 +9,7 @@
     {
       "displayName": "GPU rack (single)",
       "slug": "gpu-rack",
-      "sourceFbx": "assets/source/GPU_Farm_Anim.fbx",
+      "sourceFbx": "assets/source/fbx/gpu-rack-anim.fbx",
       "targetModel": "assets/models/gpu-rack.vmdl",
       "targetPrefab": "assets/entities/gpu-rack.prefab",
       "importScale": 0.72,
@@ -18,7 +18,7 @@
     {
       "displayName": "GPU rack (stacked farm)",
       "slug": "gpu-rack-stacked",
-      "sourceFbx": "assets/source/GPU_Farm_Stacked_Anim.fbx",
+      "sourceFbx": "assets/source/fbx/gpu-rack-stacked-anim.fbx",
       "staticObj": "assets/source/GPU_Farm_Static.obj",
       "targetModel": "assets/models/gpu-rack-stacked.vmdl",
       "targetPrefab": "assets/entities/gpu-rack-stacked.prefab",
