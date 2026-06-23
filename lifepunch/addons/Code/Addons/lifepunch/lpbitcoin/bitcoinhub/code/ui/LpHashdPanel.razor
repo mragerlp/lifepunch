@@ -770,14 +770,17 @@
 	private bool _cashOutErrorVisible;
 	private string _cashOutErrorMessage = "";
 
-	// Live rack BTC / mining stats refresh on a cadence — NOT every frame in BuildHash (rebuilds the
-	// whole hub chrome and scroll regions flicker / empty). Same pattern as StaffMenu _detailHash.
+	// Structure hash (racks linked, power, alerts) vs display tick (wallet BTC, rates) — never hash
+	// cent-level BTC in BuildHash or the whole hub chrome rebuilds and scroll regions vanish.
 	private TimeSince _sinceTelemetryRefresh;
 	private TimeSince _sinceLogTimeRefresh;
+	private TimeSince _sinceMetricsDisplay;
 	private int _telemetryHash;
+	private int _metricsDisplayTick;
 	private int _logTimeBucket;
 	private int _scrollBootstrapFramesLeft;
 	private const float TelemetryRefreshInterval = 0.5f;
+	private const float MetricsDisplayInterval = 2f;
 	private const float LogTimeRefreshInterval = 30f;
 
 	private string CashOutAmount
@@ -1684,6 +1687,7 @@
 
 		if ( _sinceTelemetryRefresh < TelemetryRefreshInterval )
 		{
+			TickMetricsDisplay();
 			TickLogTimeLabels();
 			return;
 		}
@@ -1699,7 +1703,17 @@
 				QueueScrollBootstrap();
 		}
 
+		TickMetricsDisplay();
 		TickLogTimeLabels();
+	}
+
+	private void TickMetricsDisplay()
+	{
+		if ( _sinceMetricsDisplay < MetricsDisplayInterval )
+			return;
+
+		_sinceMetricsDisplay = 0;
+		_metricsDisplayTick++;
 	}
 
 	private void TickLogTimeLabels()
@@ -1722,10 +1736,7 @@
 	private void RecomputeTelemetryHash()
 	{
 		var hash = new HashCode();
-		hash.Add( HubWalletBtc() );
-		hash.Add( RackPendingBtc() );
 		hash.Add( MiningRackCount() );
-		hash.Add( TotalMiningRate() );
 		hash.Add( Hub?.IsPowered );
 		hash.Add( HasLinkedTerminal() );
 		hash.Add( HasNearbyUnlinkedTerminal() );
@@ -1743,7 +1754,6 @@
 		{
 			hash.Add( rack.GameObject.Id );
 			hash.Add( rack.IsMining );
-			hash.Add( (int)( rack.BitcoinAmount * 100f ) );
 			hash.Add( rack.CpuUpgradeLevel );
 			hash.Add( rack.CoreUpgradeLevel );
 		}
@@ -1753,9 +1763,8 @@
 
 	protected override int BuildHash()
 	{
-		// _telemetryHash is refreshed on the throttled cadence above — never fold live rack BTC / mining
-		// rate into BuildHash directly or the whole hub menu rebuilds every frame (sidebar, scroll
-		// regions, and tab bodies flicker / vanish). Do not hash TextEntry bind values (_cashOutAmount).
+		// _telemetryHash = structure only; _metricsDisplayTick refreshes wallet/rates every 2s without
+		// cent-level rebuild storms. Do not hash TextEntry bind values (_cashOutAmount).
 		var hash = new HashCode();
 		hash.Add( _active );
 		hash.Add( _upgradeRackId );
@@ -1777,6 +1786,7 @@
 		hash.Add( _profitRange );
 		hash.Add( LinkedRackCount() );
 		hash.Add( _telemetryHash );
+		hash.Add( _metricsDisplayTick );
 		hash.Add( Hub?.Owner ?? 0 );
 		hash.Add( _cashOutSuccessActive );
 		hash.Add( _cashOutSuccessVisible );

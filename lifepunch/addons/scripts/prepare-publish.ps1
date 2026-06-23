@@ -11,10 +11,46 @@ $Root = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 $ManifestPath = Join-Path $Root 'config\addons.json'
 $UploadRoot = Join-Path $Root '.dxrp-publish\upload'
 
+$Script:ShipAssetExcludeExtensions = @('.blend', '.fbx', '.tga', '.obj')
+$Script:ShipAssetExcludeFolders = @('source', '_archive', 'audit', 'docs', '_dev')
+
+function Test-PublishShipFile {
+    param(
+        [System.IO.FileInfo]$File,
+        [string[]]$RelativeParts,
+        [switch]$ShipAssetsOnly
+    )
+
+    if ($File.Name -in @('.gitkeep', 'desktop.ini', 'Thumbs.db', 'material-map.json')) {
+        return $false
+    }
+
+    if ($File.Extension -eq '.md') {
+        return $false
+    }
+
+    foreach ($Folder in $Script:ShipAssetExcludeFolders) {
+        if ($RelativeParts -contains $Folder) {
+            return $false
+        }
+    }
+
+    if ($File.Name -match '(TestBots|DevGive|DevSpawn)') {
+        return $false
+    }
+
+    if ($ShipAssetsOnly -and $File.Extension -in $Script:ShipAssetExcludeExtensions) {
+        return $false
+    }
+
+    return $true
+}
+
 function Copy-PublishItems {
     param(
         [string]$Source,
-        [string]$Destination
+        [string]$Destination,
+        [switch]$ShipAssetsOnly
     )
 
     if (-not (Test-Path -LiteralPath $Source -PathType Container)) {
@@ -26,15 +62,7 @@ function Copy-PublishItems {
         Where-Object {
             $Relative = $_.FullName.Substring($SourceRoot.Length).TrimStart('\', '/')
             $RelativeParts = $Relative -split '[\\/]'
-
-            # Dev-only helpers never ship: *TestBots.cs, *DevGive.cs, *DevSpawn.cs, or anything
-            # under a `_dev/` folder, stays out of the publish staging. Keep this in sync with
-            # the dev-only files tracked in lifepunch/addons/docs/TECH_DEBT.md.
-            $_.Name -notin @('.gitkeep', 'desktop.ini', 'Thumbs.db', 'material-map.json') `
-                -and $_.Extension -ne '.md' `
-                -and $RelativeParts -notcontains 'docs' `
-                -and $RelativeParts -notcontains '_dev' `
-                -and $_.Name -notmatch '(TestBots|DevGive|DevSpawn)'
+            Test-PublishShipFile -File $_ -RelativeParts $RelativeParts -ShipAssetsOnly:$ShipAssetsOnly
         } |
         ForEach-Object {
             $Relative = $_.FullName.Substring($SourceRoot.Length).TrimStart('\', '/')
@@ -148,15 +176,27 @@ $AssetsStage = Join-Path $UploadRoot "Assets\addons\$Org\$($Package.ident)"
 $CodeStage = Join-Path $UploadRoot "Code\Addons\$Org\$($Package.ident)"
 
 if ($Package.hasAssets) {
-    $AssetsSource = Join-Path $Root "Assets\addons\$Org\$($Package.ident)"
+    if ($Package.ident -eq 'bitcoinmining') {
+        # Runtime paths use lpbitcoin/* — stage ship-tier assets there (not legacy bitcoinmining/).
+        $AssetsSource = Join-Path $Root "Assets\addons\$Org\lpbitcoin"
+        $AssetsStage = Join-Path $UploadRoot "Assets\addons\$Org\lpbitcoin"
+    } else {
+        $AssetsSource = Join-Path $Root "Assets\addons\$Org\$($Package.ident)"
+    }
+
     New-Item -ItemType Directory -Force -Path $AssetsStage | Out-Null
-    Copy-PublishItems -Source $AssetsSource -Destination $AssetsStage
+    Copy-PublishItems -Source $AssetsSource -Destination $AssetsStage -ShipAssetsOnly:($Package.ident -eq 'bitcoinmining')
 }
 
 if ($Package.hasCode) {
     $CodeSource = Join-Path $Root "Code\Addons\$Org\$($Package.ident)"
     New-Item -ItemType Directory -Force -Path $CodeStage | Out-Null
     Copy-PublishItems -Source $CodeSource -Destination $CodeStage
+
+    if ($Package.ident -eq 'bitcoinmining') {
+        $HubCodeSource = Join-Path $Root "Code\Addons\$Org\lpbitcoin\bitcoinhub\code"
+        Copy-PublishItems -Source $HubCodeSource -Destination $CodeStage
+    }
 
     if ($Package.ident -eq 'adminmenu') {
         $SharedCodeRoot = Join-Path $Root "Code\Addons\$Org"
@@ -244,8 +284,23 @@ $PackageExport |
     ConvertTo-Json -Depth 8 |
     Set-Content -LiteralPath (Join-Path $StagingRoot "package-$($Package.ident).json") -Encoding UTF8
 
+$UploadFiles = @()
+if (Test-Path -LiteralPath $UploadRoot) {
+    $UploadFiles = @(Get-ChildItem -LiteralPath $UploadRoot -Recurse -File -Force)
+}
+
+$UploadSizeMb = if ($UploadFiles.Count -gt 0) {
+    [math]::Round((($UploadFiles | Measure-Object Length -Sum).Sum / 1MB), 1)
+} else {
+    0
+}
+
 Write-Host "Prepared DXRP publish staging for $Org.$($Package.ident)" -ForegroundColor Green
 Write-Host "Upload root: $UploadRoot"
+Write-Host "Staging size: $UploadSizeMb MB ($($UploadFiles.Count) files)" -ForegroundColor $(if ($UploadSizeMb -gt 300) { 'Yellow' } else { 'Green' })
+if ($UploadSizeMb -gt 300) {
+    Write-Warning "Staging exceeds DXRP ~300 MB upload cap — trim source art or run ship-tier audit."
+}
 
 if ($OpenFolder) {
     Invoke-Item $UploadRoot

@@ -225,7 +225,7 @@ if (Test-Path -LiteralPath $devSrc) {
             }
         }
 
-        $bitcoinDevReady = $syncedIdents -contains 'bitcoinmining'
+        $bitcoinDevReady = @($syncedIdents | Where-Object { $_ -in @('bitcoinmining', 'lpbitcoin', 'lifepunchbitcoin') }).Count -gt 0
         if (Test-Path -LiteralPath $devRoot) {
             $bitcoinDevPatterns = @('LpBitcoin*.cs', 'LpBitcoin*.razor', 'LpBitcoin*.scss')
             if (-not $bitcoinDevReady) {

@@ -33,6 +33,10 @@ public static class LpBitcoinPowerLeds
 		"bitcoinhub-sm-fence-led"
 	];
 
+	/// <summary>Runtime copy label — must be content-relative and include <c>.vmat</c>.</summary>
+	private const string HubFenceLedStatusCopyPath =
+		"addons/lifepunch/lpbitcoin/bitcoinhub/assets/models/materials/bitcoinhub-sm-fence-led_status.vmat";
+
 	/// <summary>Hub fence LED — green ON, red OFF (static chassis, no anims).</summary>
 	public static void ApplyHubStatusLed( ModelRenderer renderer, bool powered )
 	{
@@ -42,6 +46,7 @@ public static class LpBitcoinPowerLeds
 		var scale = powered ? HubStatusOnScale : HubStatusOffScale;
 		var tint = powered ? HubStatusOnTint : HubStatusOffTint;
 
+		ClearStaleHubStatusOverrides( renderer );
 		TryApplyHubStatusMaterialSlots( renderer, scale, tint );
 	}
 
@@ -83,7 +88,7 @@ public static class LpBitcoinPowerLeds
 			if ( !IsHubStatusLedMaterial( original ) )
 				continue;
 
-			var runtime = original.CreateCopy( $"{original.ResourceName}_status" );
+			var runtime = original.CreateCopy( HubFenceLedStatusCopyPath );
 			runtime.Set( SelfIllumTintAttr, tint );
 			runtime.Set( SelfIllumScaleAttr, scale );
 			materials.SetOverride( i, runtime );
@@ -107,5 +112,34 @@ public static class LpBitcoinPowerLeds
 
 		return material.GetFeature( "F_SELF_ILLUM" ) > 0
 		       && path.Contains( "fence", StringComparison.OrdinalIgnoreCase );
+	}
+
+	/// <summary>Drop snapshot/runtime copies that used the pre-fix illegal resource name.</summary>
+	private static void ClearStaleHubStatusOverrides( ModelRenderer renderer )
+	{
+		var materials = renderer.Materials;
+		if ( materials is null || materials.Count <= 0 )
+			return;
+
+		var cleared = false;
+		for ( var i = 0; i < materials.Count; i++ )
+		{
+			if ( !materials.HasOverride( i ) )
+				continue;
+
+			var path = materials.GetOverride( i )?.ResourcePath
+			           ?? materials.GetOverride( i )?.ResourceName
+			           ?? string.Empty;
+
+			if ( path.Contains( "bitcoinhub-sm-fence-led_status", StringComparison.OrdinalIgnoreCase )
+			     && !path.EndsWith( ".vmat", StringComparison.OrdinalIgnoreCase ) )
+			{
+				materials.SetOverride( i, null );
+				cleared = true;
+			}
+		}
+
+		if ( cleared )
+			materials.Apply();
 	}
 }

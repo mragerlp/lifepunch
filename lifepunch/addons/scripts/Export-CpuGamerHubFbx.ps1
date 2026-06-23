@@ -4,11 +4,13 @@
 
 .EXAMPLE
   powershell -File lifepunch\addons\scripts\Export-CpuGamerHubFbx.ps1
+  powershell -File lifepunch\addons\scripts\Export-CpuGamerHubFbx.ps1 -BlendPath "C:\Users\jared\OneDrive\Desktop\bitcoinhubpc.blend"
   powershell -File lifepunch\addons\scripts\Export-CpuGamerHubFbx.ps1 -SyncDxrp
 #>
 [CmdletBinding()]
 param(
     [string] $BlenderExe = "${env:ProgramFiles}\Blender Foundation\Blender 5.1\blender.exe",
+    [string] $BlendPath = '',
     [double] $DecimateRatio = 0.04,
     [switch] $SyncDxrp,
     [switch] $WhatIf
@@ -17,7 +19,7 @@ param(
 $ErrorActionPreference = 'Stop'
 $AddonsRoot = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 $HubRoot = Join-Path $AddonsRoot 'Assets\addons\lifepunch\lpbitcoin\bitcoinhub\assets'
-$Blend = Join-Path $HubRoot 'source\blend\cpu_gamer.blend'
+$Blend = if ($BlendPath) { (Resolve-Path -LiteralPath $BlendPath).Path } else { Join-Path $HubRoot 'source\blend\cpu_gamer.blend' }
 $OutFbx = Join-Path $HubRoot 'source\fbx\cpu_gamer.fbx'
 $OutTex = Join-Path $HubRoot 'textures\cpu-gamer_BaseColor.png'
 New-Item -ItemType Directory -Force -Path (Split-Path $OutTex -Parent) | Out-Null

@@ -31,11 +31,12 @@ $hashd-inset-radius: 8px;
 $hashd-inset-border: rgba(255, 255, 255, 0.06);
 $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 
-@import "LpUiChrome.scss";
-@import "LpUiScale.scss";
-@import "../LifePunchUiFooter.razor.scss";
-@import "../LifePunchUiShell.scss";
-@import "LpUiMenuLayout.scss";
+// Promoted from bitcoinmining/ (Jun 2026) — imports must reach package-wide shared SCSS.
+@import "../../../../bitcoinmining/LpUiChrome.scss";
+@import "../../../../bitcoinmining/LpUiScale.scss";
+@import "../../../../LifePunchUiFooter.razor.scss";
+@import "../../../../LifePunchUiShell.scss";
+@import "../../../../bitcoinmining/LpUiMenuLayout.scss";
 
 .lp-bitcoin-ops {
 	position: absolute;
