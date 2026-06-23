@@ -839,7 +839,7 @@
 		RecomputeTelemetryHash();
 	}
 
-	/// <summary>Dev preview ConCmds — skip secure-boot gate so the dashboard is visible immediately.</summary>
+	protected override void OnDisabled()
 	{
 		LifePunchMenuInputBlock.NotifyMenuClosed();
 		LpBitcoinHudBridge.SetMenuCursorMode( false );

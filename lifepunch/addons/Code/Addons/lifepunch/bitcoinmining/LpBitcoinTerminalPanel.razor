@@ -432,7 +432,7 @@
 			_lines.RemoveAt( 0 );
 
 			var stack = GetLogStack();
-			if ( !stack.IsValid() || stack.Children.Count == 0 )
+			if ( !stack.IsValid() || !stack.Children.Any() )
 				continue;
 
 			stack.Children.First().Delete();
@@ -449,7 +449,7 @@
 	private void QueueScrollBootstrap() => _scrollBootstrapFramesLeft = Math.Max( _scrollBootstrapFramesLeft, 4 );
 
 	private LifePunchScrollRegionPanel GetLogScroll()
-		=> LifePunchScrollRegionBootstrap.FindFirst( Panel, "log" );
+		=> LifePunchScrollRegionBootstrap.FindFirst( root: Panel, className: "log" );
 
 	private void ApplyLogScrollChrome()
 	{
@@ -464,7 +464,7 @@
 	{
 		if ( _scrollBootstrapFramesLeft > 0 )
 		{
-			LifePunchScrollRegionBootstrap.Upgrade( Panel );
+			LifePunchScrollRegionBootstrap.Upgrade( root: Panel );
 			_scrollBootstrapFramesLeft--;
 			ApplyLogScrollChrome();
 			RebuildLogStackIfNeeded();
