@@ -285,7 +285,7 @@
       "sboxIdentifier": "lifepunch.bitcoin",
       "status": "in-development",
       "spec": "docs/BITCOINMINING_UX_SPEC.md",
-      "notes": "IP: docs/BITCOINMINING_IP_DOCTRINE.md. Hub + GPU Rack + Advanced GPU Rack (dual tier, max 3 racks/hub). Portal Rev 2 pinned on LIFEPUNCH™ Development gamemode. Ship-tier Rev 3+: upload from .dxrp-publish/upload via prepare-publish.ps1. Remove BitcoinMiningDevSpawn before ship publish.",
+      "notes": "IP: docs/BITCOINMINING_IP_DOCTRINE.md. Hub + GPU Rack farm (stacked mesh, max 3/operator). Portal Rev 2 pinned on LIFEPUNCH™ Development gamemode. Ship-tier Rev 3+: upload from .dxrp-publish/upload via prepare-publish.ps1. Remove BitcoinMiningDevSpawn before ship publish.",
       "contents": [
         {
           "slug": "bitcoin-terminal",
@@ -316,23 +316,11 @@
           "label": "GPU Rack",
           "type": 0,
           "primaryReference": "addons/lifepunch/lpbitcoin/gpurack/assets/entities/gpu-rack.prefab",
-          "worldModelPath": "addons/lifepunch/lpbitcoin/gpurack/assets/models/gpu-rack.vmdl",
-          "grouping": "Entities",
-          "implementationStatus": "gpu-rack-standard-phase1",
-          "modelBuild": "Assets/addons/lifepunch/lpbitcoin/gpurack/assets/models/MODEL_BUILD.md",
-          "notes": "Standard open-frame rack — AdvancedRack=false, ×1 yield."
-        },
-        {
-          "slug": "advanced-gpu-rack",
-          "name": "Advanced GPU Rack",
-          "label": "Advanced GPU Rack",
-          "type": 0,
-          "primaryReference": "addons/lifepunch/lpbitcoin/advancedgpurack/assets/entities/advanced-gpu-rack.prefab",
           "worldModelPath": "addons/lifepunch/lpbitcoin/gpurack/assets/models/gpu-rack-stacked.vmdl",
           "grouping": "Entities",
-          "implementationStatus": "gpu-rack-advanced-phase1",
+          "implementationStatus": "gpu-rack-farm-phase1",
           "modelBuild": "Assets/addons/lifepunch/lpbitcoin/gpurack/assets/models/MODEL_BUILD.md",
-          "notes": "Stacked farm rack — AdvancedRack=true, ×2 yield. Mesh/vmats shared from gpurack/."
+          "notes": "Single ship tier — stacked farm mesh (BITCOINMINING-07). Prefab path rename to gpurack/ pending."
         }
       ]
     },

@@ -491,22 +491,13 @@ public static class LpBitcoinDevSpawn
 		Log.Info( "lp_bitcoin_spawn_rack: GPU Rack placed (unlinked — register at rig0> link)." );
 	}
 
-	/// <summary>Legacy alias — spawns standard open-frame GPU Rack.</summary>
+	/// <summary>Legacy alias — same as <see cref="SpawnRack"/> (advanced tier merged into GPU Rack).</summary>
+	[ConCmd( "lp_spawn_advanced_gpu_rack" )]
+	public static void SpawnAdvancedRack() => SpawnRack();
+
+	/// <summary>Legacy alias — docs/playtest still reference v1 command name.</summary>
 	[ConCmd( "lp_spawn_gpu_rack" )]
 	public static void SpawnGpuRackLegacy() => SpawnRack();
-
-	[ConCmd( "lp_spawn_advanced_gpu_rack" )]
-	public static void SpawnAdvancedRack()
-	{
-		if ( !LifePunchMarketSpawn.TryGetIdentitySpawnTransform( out var transform ) )
-		{
-			Log.Warning( "lp_spawn_advanced_gpu_rack: no local viewer — play from game.scene first." );
-			return;
-		}
-
-		SpawnRackPrefab( transform, advanced: true );
-		Log.Info( "lp_bitcoin_spawn_rack: Advanced GPU Rack placed (unlinked — register at rig0> link)." );
-	}
 
 	/// <summary>Legacy alias — stacked rack spawn.</summary>
 	[ConCmd( "lp_spawn_large_gpu_rack" )]
@@ -527,7 +518,7 @@ public static class LpBitcoinDevSpawn
 		var groundZ = origin.z;
 
 		var hub = SpawnHubPrefab( new Transform( SnapToGround( origin, groundZ ), rot ) );
-		var advanced = SpawnRackPrefab( RackSpawnTransform( transform, sideOffset: -120f ), advanced: true );
+		var advanced = SpawnRackPrefab( RackSpawnTransform( transform, sideOffset: -120f ) );
 		var terminal = SpawnTerminalPrefab(
 			new Transform( SnapToGround( origin + rot.Forward * 100f, groundZ ), rot ) );
 
@@ -1123,8 +1114,8 @@ public static class LpBitcoinDevSpawn
 		var origin = transform.Position;
 		var rot = transform.Rotation;
 		var groundZ = origin.z;
-		SpawnRackPrefab( RackSpawnTransform( transform, sideOffset: 100f ), advanced: false );
-		SpawnRackPrefab( RackSpawnTransform( transform, sideOffset: -100f ), advanced: true );
+		SpawnRackPrefab( RackSpawnTransform( transform, sideOffset: 100f ) );
+		SpawnRackPrefab( RackSpawnTransform( transform, sideOffset: -100f ) );
 		SpawnTerminalPrefab( new Transform( SnapToGround( origin + rot.Forward * 100f, groundZ ), rot ) );
 		return hub;
 	}
@@ -1138,10 +1129,10 @@ public static class LpBitcoinDevSpawn
 		return new Transform( pos, rot );
 	}
 
-	private static LpBitcoinRackEntity SpawnRackPrefab( Transform transform, bool advanced = false )
+	private static LpBitcoinRackEntity SpawnRackPrefab( Transform transform )
 	{
-		var path = advanced ? LpBitcoinIdent.AdvancedRackPrefabPath : LpBitcoinIdent.RackPrefabPath;
-		var label = advanced ? LpBitcoinIdent.AdvancedRackDisplayName : LpBitcoinIdent.RackDisplayName;
+		var path = LpBitcoinIdent.RackPrefabPath;
+		var label = LpBitcoinIdent.RackDisplayName;
 		var go = ClonePrefabAt( path, transform );
 		if ( !go.IsValid() )
 		{
@@ -1155,7 +1146,7 @@ public static class LpBitcoinDevSpawn
 
 		if ( rack.IsValid() )
 		{
-			rack.AdvancedRack = advanced;
+			rack.AdvancedRack = true;
 			rack.DevSpawnAsWorldMachine = true;
 		}
 

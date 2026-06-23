@@ -24,12 +24,8 @@ public sealed class LpBitcoinRackEntity : Component, Component.IPressable
 public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable, IAreaDamageReceiver
 #endif
 {
-	/// <summary>Advanced stacked farm mesh + higher yield tier when true.</summary>
-	[Property] public bool AdvancedRack { get; set; }
-
-	public float YieldMultiplier => AdvancedRack
-		? LpBitcoinIdent.AdvancedRackYieldMultiplier
-		: LpBitcoinIdent.BaseRackYieldMultiplier;
+	/// <summary>GPU rack farm — stacked mesh; per-rack CPU/core upgrades drive mining rate.</summary>
+	[Property] public bool AdvancedRack { get; set; } = true;
 
 	/// <summary>Dev spawn (<see cref="LpBitcoinDevSpawn"/>) — feet on ground, frozen collider (no printer drop).</summary>
 	internal bool DevSpawnAsWorldMachine { get; set; }
@@ -43,6 +39,7 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable, IAre
 	[Sync( SyncFlags.FromHost )] public int CoreUpgradeLevel { get; set; }
 	[Sync( SyncFlags.FromHost )] public float MiningProgress { get; set; }
 
+	public float YieldMultiplier => LpBitcoinIdent.BaseRackYieldMultiplier;
 	public float MiningRatePerMinute => LpBitcoinEconomy.MiningRatePerMinute( ClockGhz, CoreCount, YieldMultiplier );
 	public int UsdValue => (int)(BitcoinAmount * LpBitcoinEconomy.BitcoinValueUsd);
 

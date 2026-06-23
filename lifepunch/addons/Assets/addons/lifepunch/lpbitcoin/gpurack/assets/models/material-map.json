@@ -6,7 +6,7 @@
     "package": "lpbitcoin"
   },
   "model": {
-    "displayName": "GPU rack (single open frame)",
+    "displayName": "GPU rack (small)",
     "slug": "gpu-rack",
     "activeSource": "assets/source/fbx/gpu-rack-anim.fbx",
     "stackedSource": "assets/source/fbx/gpu-rack-stacked-anim.fbx",
@@ -14,33 +14,14 @@
     "blendArchive": "assets/source/blend/gpu-farm.blend",
     "ownerDrop": "Desktop/addon test/addons/lifepunch/lpbitcoin/gpurack/assets/source/GPUFarm*",
     "targetModel": "assets/models/gpu-rack.vmdl",
-    "stackedTargetModel": "assets/models/gpu-rack-stacked.vmdl",
     "importScale": 0.395,
-    "importRotation": [0, 90, 0],
-    "importTranslation": [0, 0, 21.382],
-    "stackedImportScale": 0.72,
-    "stackedImportTranslation": [-1.389, -0.208, 27.682],
-    "notes": "Single FBX: named objects Wires_Cord, PSU_Power, Rack_Frame, etc. match import_filter exception_list. Stacked FBX uses Mining_Rig_Stacked — separate vmdl, not prefab default until BITCOINMINING-07."
+    "importRotation": [0, 90, 0]
   },
   "materials": [
-    { "name": "gpu-rack-cord", "fbxSlot": "Cord", "vmat": "assets/models/materials/gpu-rack-cord.vmat", "ownerSourceFolder": "assets/textures/Wires" },
-    { "name": "gpu-rack-psu", "fbxSlot": "PSU", "vmat": "assets/models/materials/gpu-rack-psu.vmat", "ownerSourceFolder": "assets/textures/Power_Supply" },
-    { "name": "gpu-rack-rack", "fbxSlot": "Rack", "vmat": "assets/models/materials/gpu-rack-rack.vmat", "ownerSourceFolder": "assets/textures/GPURack" },
-    { "name": "gpu-rack-motherboard", "fbxSlot": "Motherboard", "vmat": "assets/models/materials/gpu-rack-motherboard.vmat", "ownerSourceFolder": "assets/textures/Motherboard" },
-    {
-      "name": "gpu-rack-gpu",
-      "fbxSlot": "GPU",
-      "vmat": "assets/models/materials/gpu-rack-gpu.vmat",
-      "ownerSourceFolder": "assets/textures/GraphicsCard",
-      "channels": {
-        "baseColor": "assets/textures/GPU_BaseColor.png",
-        "normal": "assets/textures/GPU_Normal_GL.png",
-        "ao": "assets/textures/GPU_AO.png",
-        "metalness": "assets/textures/GPU_Metallic.png",
-        "roughness": "assets/textures/GPU_Roughness.png",
-        "emission": "assets/textures/GPU_Emission.png"
-      },
-      "notes": "Graphics cards + card fans. Owner drop GraphicsCard/ flattened to GPU_*.png."
-    }
+    { "name": "gpu-rack-cord", "fbxSlot": "Cord", "vmat": "assets/models/materials/gpu-rack-cord.vmat" },
+    { "name": "gpu-rack-psu", "fbxSlot": "PSU", "vmat": "assets/models/materials/gpu-rack-psu.vmat" },
+    { "name": "gpu-rack-rack", "fbxSlot": "Rack", "vmat": "assets/models/materials/gpu-rack-rack.vmat" },
+    { "name": "gpu-rack-motherboard", "fbxSlot": "Motherboard", "vmat": "assets/models/materials/gpu-rack-motherboard.vmat" },
+    { "name": "gpu-rack-gpu", "fbxSlot": "GPU", "vmat": "assets/models/materials/gpu-rack-gpu.vmat" }
   ]
 }

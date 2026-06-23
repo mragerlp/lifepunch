@@ -1,5 +1,5 @@
-# Archived note — stacked-only decision reversed
+# Archived — small open-frame GPU rack vmdl
 
-Jun 2026 briefly shipped **stacked farm mesh only** on `gpu-rack.prefab`. Owner direction: **perfect single open-frame rack first** (`gpu-rack.vmdl` + `gpu-rack-anim.fbx`), then stacking via economy / `gpu-rack-stacked.vmdl` (`BITCOINMINING-07`).
+The single-rack open-frame mesh is **not shipped**. Owner decision Jun 2026: one **GPU Rack farm** entity (stacked mesh) with slots GPURack-1…4.
 
-This folder name is legacy; the single-rack vmdl now lives at `assets/models/gpu-rack.vmdl`.
+Previous `gpu-rack.vmdl` (static open frame) lived here before canonical farm mesh promotion. Stacking visual upgrades are tracked in `BITCOINMINING-07`.

@@ -22,18 +22,8 @@
   {
     "name": "GPU Rack",
     "type": 0,
-    "description": "Standard open-frame GPU rack — ×1 yield. Max 3 racks per hub (GPURack-1…3).",
+    "description": "GPU mining farm — stacked mesh, max 3 per operator (GPURack-1…3). CPU/core upgrades drive yield.",
     "primaryReference": "addons/lifepunch/lpbitcoin/gpurack/assets/entities/gpu-rack.prefab",
-    "secondaryReference": "",
-    "grouping": "Entities",
-    "worldModelPath": "addons/lifepunch/lpbitcoin/gpurack/assets/models/gpu-rack.vmdl",
-    "iconPath": ""
-  },
-  {
-    "name": "Advanced GPU Rack",
-    "type": 0,
-    "description": "Stacked GPU farm — ×2 yield. Shares vmats from gpurack/.",
-    "primaryReference": "addons/lifepunch/lpbitcoin/advancedgpurack/assets/entities/advanced-gpu-rack.prefab",
     "secondaryReference": "",
     "grouping": "Entities",
     "worldModelPath": "addons/lifepunch/lpbitcoin/gpurack/assets/models/gpu-rack-stacked.vmdl",
