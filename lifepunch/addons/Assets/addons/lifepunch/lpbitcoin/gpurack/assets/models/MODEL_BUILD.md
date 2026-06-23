@@ -37,6 +37,7 @@ Then **Stop → Play**, recompile vmats → `gpu-rack.vmdl` → `gpu-rack-stacke
 | `GPUFarmStatic.obj` | `gpu-farm-static.obj` | Static reference / collision study |
 | `GPUFarmStackedAnim.fbx` | `gpu-rack-stacked-anim.fbx` | **Advanced tier** — `advanced-gpu-rack.prefab` + `gpu-rack-stacked.vmdl` |
 | Texture folders | Flat `assets/textures/*.png` | Cord, PSU, Rack, Motherboard, GraphicsCard → GPU |
+| `GPU_Blank_Textures (New)/` | Preserved under `textures/` | **Preferred GPU slot maps** — repair copies to flat `GPU_*.png`; `GPU_Emission.png` still from `GPU_GraphicsCard/` |
 
 ### Single rack FBX (what we ship now)
 

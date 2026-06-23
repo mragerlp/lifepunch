@@ -42,6 +42,38 @@ function Ensure-Dir([string]$Path) {
     }
 }
 
+function Apply-BlankGpuTextures([string]$TexDir) {
+    if (-not (Test-Path -LiteralPath $TexDir)) { return }
+
+    $blankDir = @(
+        (Join-Path $TexDir 'GPU_Blank_Textures (New)')
+        (Join-Path $TexDir 'GPU_Blank_Textures')
+    ) | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
+
+    if (-not $blankDir) { return }
+
+    $blankGpu = @(
+        'GPU_AO.png', 'GPU_BaseColor.png', 'GPU_Metallic.png',
+        'GPU_Normal_GL.png', 'GPU_Roughness.png'
+    )
+
+    foreach ($leaf in $blankGpu) {
+        $src = Join-Path $blankDir $leaf
+        if (-not (Test-Path -LiteralPath $src)) { continue }
+
+        $dest = Join-Path $TexDir $leaf
+        if ($WhatIf) {
+            Write-Host "  [WhatIf] blank GPU texture -> $leaf" -ForegroundColor DarkYellow
+            continue
+        }
+        Copy-Item -LiteralPath $src -Destination $dest -Force
+    }
+
+    if (-not $WhatIf) {
+        Write-Host "  applied owner blank GPU textures (from $(Split-Path $blankDir -Leaf))" -ForegroundColor Green
+    }
+}
+
 function Flatten-GpuRackTextures([string]$TexDir) {
     if (-not (Test-Path -LiteralPath $TexDir)) { return }
 
@@ -93,11 +125,13 @@ function Repair-RackRoot([string]$AssetsRoot, [string]$Label, [switch]$PullOwner
     $texDir = Join-Path $AssetsRoot 'textures'
     if (Test-Path -LiteralPath $texDir) {
         Flatten-GpuRackTextures $texDir
+        Apply-BlankGpuTextures $texDir
 
         $removed = 0
         Get-ChildItem -LiteralPath $texDir -Recurse -File -ErrorAction SilentlyContinue | ForEach-Object {
             $rel = $_.FullName.Substring($texDir.Length).TrimStart('\')
             $drop = $false
+            if ($rel -match '^GPU_Blank_Textures') { return }
             if ($rel -match '\\') { $drop = $true }
             elseif ($_.Extension -in @('.jpeg', '.jpg', '.fbx', '.obj', '.blend')) { $drop = $true }
             elseif ($_.Name -like '*generated.vtex*') { $drop = $true }
@@ -117,6 +151,7 @@ function Repair-RackRoot([string]$AssetsRoot, [string]$Label, [switch]$PullOwner
         }
 
         Get-ChildItem -LiteralPath $texDir -Directory -ErrorAction SilentlyContinue | ForEach-Object {
+            if ($_.Name -like 'GPU_Blank_Textures*') { return }
             if ($WhatIf) {
                 Write-Host "  [WhatIf] rmdir $($_.Name)" -ForegroundColor DarkGray
                 return
@@ -229,4 +264,4 @@ if ($SyncDxrp -and -not $WhatIf) {
     }
 }
 
-Write-Host 'Done. Recompile in ModelDoc: gpu-rack-*.vmat → gpu-rack.vmdl → gpu-rack-stacked.vmdl → both prefabs (gpurack + advancedgpurack).' -ForegroundColor Green
+Write-Host 'Done. Recompile in ModelDoc: gpu-rack-*.vmat -> gpu-rack.vmdl -> gpu-rack-stacked.vmdl -> both prefabs (gpurack + advancedgpurack).' -ForegroundColor Green
