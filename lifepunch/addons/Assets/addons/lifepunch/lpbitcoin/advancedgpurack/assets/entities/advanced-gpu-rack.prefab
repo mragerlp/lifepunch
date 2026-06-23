@@ -1,9 +1,9 @@
 {
   "RootObject": {
-    "__guid": "f1e2d3c4-b5a6-9780-1234-567890abcdef",
+    "__guid": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
     "__version": 2,
     "Flags": 0,
-    "Name": "GPU Rack",
+    "Name": "Advanced GPU Rack",
     "Position": "0,0,0",
     "Rotation": "0,0,0,1",
     "Scale": "1,1,1",
@@ -70,7 +70,7 @@
         "__guid": "d08803d2-1ed7-4e63-8293-e9cf67e75485",
         "__enabled": true,
         "Flags": 0,
-        "Center": "0,0,12",
+        "Center": "0,0,23.5",
         "ColliderFlags": 0,
         "Elasticity": null,
         "Friction": null,
@@ -86,7 +86,7 @@
         "OnTriggerEnter": null,
         "OnTriggerExit": null,
         "RollingResistance": null,
-        "Scale": "32,22,28",
+        "Scale": "52,27,47",
         "Static": false,
         "Surface": "surfaces/metal.surface",
         "SurfaceVelocity": "0,0,0"
@@ -102,7 +102,7 @@
         "MaterialGroup": null,
         "MaterialOverride": null,
         "Materials": null,
-        "Model": "addons/lifepunch/lpbitcoin/gpurack/assets/models/gpu-rack.vmdl",
+        "Model": "addons/lifepunch/lpbitcoin/gpurack/assets/models/gpu-rack-stacked.vmdl",
         "OnComponentDestroy": null,
         "OnComponentDisabled": null,
         "OnComponentEnabled": null,
@@ -139,7 +139,7 @@
         "Rack": {
           "_type": "component",
           "component_id": "6d47169b-65d4-45c5-961e-9c429d802e21",
-          "go": "f1e2d3c4-b5a6-9780-1234-567890abcdef",
+          "go": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
           "component_type": "LpBitcoinRackEntity"
         },
         "OnComponentDestroy": null,
@@ -154,18 +154,18 @@
         "__guid": "6d47169b-65d4-45c5-961e-9c429d802e21",
         "__enabled": true,
         "Flags": 0,
-        "AdvancedRack": false,
+        "AdvancedRack": true,
         "Explosion": null,
         "HealthComponent": {
           "_type": "component",
           "component_id": "375b9aa9-e8b3-4170-a70f-7e3f37eb76e7",
-          "go": "f1e2d3c4-b5a6-9780-1234-567890abcdef",
+          "go": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
           "component_type": "HealthComponent"
         },
         "Rigidbody": {
           "_type": "component",
           "component_id": "5ceb07a2-b10d-41c7-93ae-7ada8b29a9bf",
-          "go": "f1e2d3c4-b5a6-9780-1234-567890abcdef",
+          "go": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
           "component_type": "Rigidbody"
         },
         "OnComponentDestroy": null,

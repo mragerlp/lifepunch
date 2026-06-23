@@ -9,20 +9,20 @@
   "vmats": {
     "bitcoinhub-sm-body.vmat": {
       "shader": "complex",
-      "textures": ["sm_body_mat_BaseColor.jpeg", "sm_body_mat_Normal.png", "sm_body_mat_Metallic-sm_body_mat_Roughness@channels=G.png", "sm_body_mat_Metallic-sm_body_mat_Roughness@channels=B.png"]
+      "textures": ["sm_body_mat_BaseColor.png", "sm_body_mat_Normal.png", "sm_body_mat_Metallic-sm_body_mat_Roughness@channels=G.png", "sm_body_mat_Metallic-sm_body_mat_Roughness@channels=B.png"]
     },
     "bitcoinhub-sm-details-one.vmat": {
-      "textures": ["sm_details_one_mat_BaseColor.jpeg", "sm_details_one_mat_Normal.png", "sm_details_one_mat_Metallic-sm_details_one_mat_Roughness@cha.png"]
+      "textures": ["sm_details_one_mat_BaseColor.png", "sm_details_one_mat_Normal.png", "sm_details_one_mat_Metallic-sm_details_one_mat_Roughness@cha.png"]
     },
     "bitcoinhub-sm-details-two.vmat": {
-      "textures": ["sm_details_two_mat_BaseColor.jpeg", "sm_details_two_mat_Normal.png", "sm_details_two_mat_Metallic-sm_details_two_mat_Roughness@cha.png"]
+      "textures": ["sm_details_two_mat_BaseColor.png", "sm_details_two_mat_Normal.png", "sm_details_two_mat_Metallic-sm_details_two_mat_Roughness@cha.png"]
     },
     "bitcoinhub-sm-panel.vmat": {
-      "textures": ["sm_panel_mat_BaseColor.jpeg", "sm_panel_mat_Normal.png", "sm_panel_mat_Metallic-sm_panel_mat_Roughness@channels=G.png", "sm_panel_mat_Metallic-sm_panel_mat_Roughness@channels=B.png"]
+      "textures": ["sm_panel_mat_BaseColor.png", "sm_panel_mat_Normal.png", "sm_panel_mat_Metallic-sm_panel_mat_Roughness@channels=G.png", "sm_panel_mat_Metallic-sm_panel_mat_Roughness@channels=B.png"]
     },
     "bitcoinhub-sm-fence-led.vmat": {
       "shader": "complex + emissive",
-      "textures": ["sm_fence_led_mat_BaseColor-sm_fence_led_mat_Alpha.png", "sm_fence_led_mat_Normal.png", "sm_fence_led_mat_Emissive.jpeg", "sm_fence_led_mat_Metallic-sm_fence_led_mat_Roughness@channel.png"]
+      "textures": ["sm_fence_led_mat_BaseColor-sm_fence_led_mat_Alpha.png", "sm_fence_led_mat_Normal.png", "sm_fence_led_mat_Emissive.png", "sm_fence_led_mat_Metallic-sm_fence_led_mat_Roughness@channel.png"]
     }
   },
   "fbxSlots": {

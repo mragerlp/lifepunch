@@ -7,9 +7,15 @@ See ASSET_CLASSIFICATION_LAW.md - do not merge this package with visually simila
 ## Slot status
 
 ### advancedgpurack
-- **Retired slot** — merged into `gpurack/` (single stacked farm tier).
-- Do not add assets under `_archive/advancedgpurack-intake/` except docs/source.
-- Canonical: `gpurack/assets/models/gpu-rack-stacked.vmdl` + `gpurack/assets/entities/gpu-rack.prefab`
+- **Prefab slot** — stacked farm tier (`AdvancedRack=true`, ×2 yield).
+- Mesh + vmats shared from `gpurack/` (`gpu-rack-stacked.vmdl`).
+- Prefab: `advancedgpurack/assets/entities/advanced-gpu-rack.prefab`
+
+### gpurack
+- Role: GPU Rack (standard open-frame)
+- Primary: `assets/source/fbx/gpu-rack-anim.fbx` → `assets/models/gpu-rack.vmdl`
+- Stacked mesh (shared): `gpu-rack-stacked-anim.fbx` → `gpu-rack-stacked.vmdl`
+- Prefab: `assets/entities/gpu-rack.prefab`
 
 ### bitcoinhub
 - Role: Bitcoin HUB (admin capstone)
@@ -19,15 +25,6 @@ See ASSET_CLASSIFICATION_LAW.md - do not merge this package with visually simila
 - FBX/OBJ/Blend/Tex: 1/0/0/1 | ~2.3k verts (Sketchfab CC BY Bryan)
 - Retired: cpu_gamer.fbx (Fab CPU GAMER — do not use for hub)
 - Note: Fan spin = child GO Phase 2
-
-### gpurack
-- Role: GPU Rack (standard)
-- Primary: assets/source/obj/GPU_Farm_Static.obj
-- FBX/OBJ/Blend/Tex: 0/1/1/32 | 34.61 MB
-- Confirm static OBJ vs blend export for ModelDoc body
-- WARN: primary_mesh is OBJ â€” OK for ModelDoc OBJ import; prefer FBX if Fab provides one
-- Note: No static FBX in Fab pack â€” static OBJ + blend are source of truth
-- Note: Anim FBX archived under assets/source/fbx/_reference_anim for fan study only
 
 ### hashdterminal
 - Role: HASHD Terminal

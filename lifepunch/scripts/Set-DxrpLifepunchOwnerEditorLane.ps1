@@ -168,7 +168,7 @@ function Sync-RepoLpBitcoinShipAssets {
         return
     }
 
-    $shipSubdirs = @('models', 'entities', 'sounds')
+        $shipSubdirs = @('models', 'entities', 'sounds', 'source')
     $overlayCount = 0
 
     Get-ChildItem -LiteralPath $repoLpBitcoin -Directory -ErrorAction SilentlyContinue | ForEach-Object {
@@ -195,7 +195,11 @@ function Sync-RepoLpBitcoinShipAssets {
         if ((Test-Path -LiteralPath $texSrc) -and -not $WhatIf) {
             New-Item -ItemType Directory -Force -Path $texDst | Out-Null
             Get-ChildItem -LiteralPath $texSrc -File -ErrorAction SilentlyContinue |
-                Where-Object { $_.Extension -eq '.vtex_c' -or $_.Name -like '*_c' } |
+                Where-Object {
+                    $_.Extension -eq '.png' -or
+                    $_.Extension -eq '.vtex_c' -or
+                    $_.Name -like '*_c'
+                } |
                 ForEach-Object {
                     Copy-Item -LiteralPath $_.FullName -Destination (Join-Path $texDst $_.Name) -Force
                     $overlayCount++

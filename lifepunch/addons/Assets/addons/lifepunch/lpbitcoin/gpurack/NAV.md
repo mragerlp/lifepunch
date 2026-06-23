@@ -1,13 +1,15 @@
-# gpurack — GPU Rack (stacked farm)
+# gpurack — GPU Rack (standard open-frame)
 
-**One ship tier.** Edit here only — not `advancedgpurack` (archived under `_archive/`).
+**Dual-rack economy:** standard mesh here; stacked farm mesh + prefab under `../advancedgpurack/`.
 
 | Asset | Path |
 |-------|------|
-| ModelDoc | `assets/models/gpu-rack-stacked.vmdl` |
-| FBX source | `assets/source/fbx/gpu-rack-stacked-anim.fbx` |
+| ModelDoc (standard) | `assets/models/gpu-rack.vmdl` |
+| ModelDoc (stacked — shared) | `assets/models/gpu-rack-stacked.vmdl` |
+| FBX source | `assets/source/fbx/gpu-rack-anim.fbx` |
+| Stacked FBX | `assets/source/fbx/gpu-rack-stacked-anim.fbx` |
 | Materials | `assets/models/materials/gpu-rack-*.vmat` |
-| Prefab | `assets/entities/gpu-rack.prefab` |
-| Spawn | `lp_bitcoin_spawn_kit` or clone prefab in editor |
+| Prefab (standard) | `assets/entities/gpu-rack.prefab` |
+| Spawn | `lp_spawn_gpu_rack` or `lp_bitcoin_spawn_kit` |
 
-Small open-frame mesh: `_archive/small-open-frame/` (parked).
+Build notes: `assets/models/MODEL_BUILD.md`
