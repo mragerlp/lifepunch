@@ -299,7 +299,7 @@ Write-Host "Prepared DXRP publish staging for $Org.$($Package.ident)" -Foregroun
 Write-Host "Upload root: $UploadRoot"
 Write-Host "Staging size: $UploadSizeMb MB ($($UploadFiles.Count) files)" -ForegroundColor $(if ($UploadSizeMb -gt 300) { 'Yellow' } else { 'Green' })
 if ($UploadSizeMb -gt 300) {
-    Write-Warning "Staging exceeds DXRP ~300 MB upload cap — trim source art or run ship-tier audit."
+    Write-Warning "Staging exceeds DXRP ~300 MB upload cap - trim source art or run ship-tier audit."
 }
 
 if ($OpenFolder) {
