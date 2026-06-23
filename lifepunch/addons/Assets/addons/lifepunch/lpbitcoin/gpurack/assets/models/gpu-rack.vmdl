@@ -14,131 +14,131 @@
 						remaps = 
 						[
 							{
-								from = "Cord"
+								from = "cord.vmat"
 								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-cord.vmat"
 							},
 							{
-								from = "PSU"
+								from = "psu.vmat"
 								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-psu.vmat"
 							},
 							{
-								from = "Rack"
+								from = "rack.vmat"
 								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-rack.vmat"
 							},
 							{
-								from = "Motherboard"
+								from = "motherboard.vmat"
 								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-motherboard.vmat"
 							},
 							{
-								from = "GPU"
+								from = "gpu.vmat"
 								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-gpu.vmat"
 							},
 							{
-								from = "Wires_Cord"
+								from = "wires_cord.vmat"
 								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-cord.vmat"
 							},
 							{
-								from = "GPU_GraphicsCard"
+								from = "gpu_graphicscard.vmat"
 								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-gpu.vmat"
 							},
 							{
-								from = "PSU_Power"
+								from = "psu_power.vmat"
 								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-psu.vmat"
 							},
 							{
-								from = "Rack_Frame"
+								from = "rack_frame.vmat"
 								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-rack.vmat"
 							},
 							{
-								from = "Motherboard_Base"
+								from = "motherboard_base.vmat"
 								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-motherboard.vmat"
 							},
 							{
-								from = "FanBlades.005"
+								from = "fanblades.vmat"
 								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-rack.vmat"
 							},
 							{
-								from = "FanBlades.006"
+								from = "fanblades.vmat"
 								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-rack.vmat"
 							},
 							{
-								from = "FanBlades.007"
+								from = "fanblades.vmat"
 								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-rack.vmat"
 							},
 							{
-								from = "FanBlades.008"
+								from = "fanblades.vmat"
 								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-rack.vmat"
 							},
 							{
-								from = "FanBlades.009"
+								from = "fanblades.vmat"
 								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-rack.vmat"
 							},
 							{
-								from = "FanBlades.010"
+								from = "fanblades.vmat"
 								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-rack.vmat"
 							},
 							{
-								from = "FanBlades.011"
+								from = "fanblades.vmat"
 								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-rack.vmat"
 							},
 							{
-								from = "FanBlades.012"
+								from = "fanblades.vmat"
 								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-rack.vmat"
 							},
 							{
-								from = "FanBlades.013"
+								from = "fanblades.vmat"
 								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-rack.vmat"
 							},
 							{
-								from = "FanBlades.014"
+								from = "fanblades.vmat"
 								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-rack.vmat"
 							},
 							{
-								from = "FanBlades.015"
+								from = "fanblades.vmat"
 								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-rack.vmat"
 							},
 							{
-								from = "FanBlades.016"
+								from = "fanblades.vmat"
 								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-rack.vmat"
 							},
 							{
-								from = "FanBlades.017"
+								from = "fanblades.vmat"
 								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-rack.vmat"
 							},
 							{
-								from = "FanBlades.018"
+								from = "fanblades.vmat"
 								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-rack.vmat"
 							},
 							{
-								from = "FanBlades.019"
+								from = "fanblades.vmat"
 								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-rack.vmat"
 							},
 							{
-								from = "GPU_Fan_1"
+								from = "gpu_fan_1.vmat"
 								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-gpu.vmat"
 							},
 							{
-								from = "GPU_Fan_2"
+								from = "gpu_fan_2.vmat"
 								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-gpu.vmat"
 							},
 							{
-								from = "GPU_Fan_3"
+								from = "gpu_fan_3.vmat"
 								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-gpu.vmat"
 							},
 							{
-								from = "GPU_Fan_4"
+								from = "gpu_fan_4.vmat"
 								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-gpu.vmat"
 							},
 							{
-								from = "GPU_Fan_5"
+								from = "gpu_fan_5.vmat"
 								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-gpu.vmat"
 							},
 							{
-								from = "GPU_Fan_6"
+								from = "gpu_fan_6.vmat"
 								to = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-gpu.vmat"
 							},
 						]
-						use_global_default = true
+						use_global_default = false
 						global_default_material = "addons/lifepunch/lpbitcoin/gpurack/assets/models/materials/gpu-rack-rack.vmat"
 					},
 				]
@@ -165,44 +165,18 @@
 					{
 						_class = "RenderMeshFile"
 						name = "LOD0"
-						filename = "addons/lifepunch/lpbitcoin/gpurack/assets/source/GPU_Farm_Stacked_Anim.fbx"
-						import_translation = [ -1.389, -0.208, 27.682 ]
+						filename = "addons/lifepunch/lpbitcoin/gpurack/assets/source/gpu_farm_anim.fbx"
+						import_translation = [ -1.389, -0.208, 27.681999 ]
 						import_rotation = [ 0.0, 90.0, 0.0 ]
 						import_scale = 0.72
-						align_origin_x_type = "Center"
-						align_origin_y_type = "Center"
-						align_origin_z_type = "Bottom"
+						align_origin_x_type = "None"
+						align_origin_y_type = "None"
+						align_origin_z_type = "None"
 						parent_bone = ""
 						import_filter = 
 						{
-							exclude_by_default = true
-							exception_list = 
-							[
-								"Mining_Rig_Stacked",
-								"Wires_Cord",
-								"GPU_GraphicsCard",
-								"GPU_Fan_1",
-								"GPU_Fan_2",
-								"GPU_Fan_3",
-								"GPU_Fan_4",
-								"GPU_Fan_5",
-								"GPU_Fan_6",
-								"FanBlades.005",
-								"FanBlades.006",
-								"FanBlades.007",
-								"FanBlades.008",
-								"FanBlades.009",
-								"FanBlades.010",
-								"FanBlades.011",
-								"FanBlades.012",
-								"FanBlades.013",
-								"FanBlades.014",
-								"FanBlades.015",
-								"FanBlades.016",
-								"FanBlades.017",
-								"FanBlades.018",
-								"FanBlades.019",
-							]
+							exclude_by_default = false
+							exception_list = [  ]
 						}
 					},
 				]

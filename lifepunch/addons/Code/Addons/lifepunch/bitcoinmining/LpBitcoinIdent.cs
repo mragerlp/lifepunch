@@ -35,7 +35,7 @@ public static class LpBitcoinIdent
 	/// <summary>Hub durability — heavier than DXRP money printer (100).</summary>
 	public const float HubMaxHealth = 250f;
 
-	/// <summary>GPU rack farm durability (stacked mesh — single ship tier).</summary>
+	/// <summary>GPU rack durability — single + stacked share baseline HP.</summary>
 	public const float RackMaxHealth = 500f;
 
 	/// <summary>Baseline rack yield multiplier — CPU/core upgrades drive effective rate (no small vs stacked tier).</summary>
@@ -54,10 +54,17 @@ public static class LpBitcoinIdent
 	public const string RackSlug = "gpu-rack";
 	public const string RackDisplayName = "GPU Rack";
 	public const string RackModelPath =
-		"addons/lifepunch/lpbitcoin/gpurack/assets/models/gpu-rack-stacked.vmdl";
+		"addons/lifepunch/lpbitcoin/gpurack/assets/models/gpu-rack.vmdl";
 
 	public const string RackPrefabPath =
 		"addons/lifepunch/lpbitcoin/gpurack/assets/entities/gpu-rack.prefab";
+
+	/// <summary>Four-tier farm mesh — upgrade tier; prefab has AdvancedRack.</summary>
+	public const string StackedRackModelPath =
+		"addons/lifepunch/lpbitcoin/gpurack/assets/models/gpu-rack-stacked.vmdl";
+
+	public const string StackedRackPrefabPath =
+		"addons/lifepunch/lpbitcoin/gpurack/assets/entities/gpu-rack-stacked.prefab";
 
 	/// <summary>Operator-facing rack slot (1-based). Internal APIs stay 0-based.</summary>
 	public static int DisplayRackNumber( int zeroBasedIndex ) => zeroBasedIndex + 1;

@@ -1,13 +1,16 @@
-# gpurack — GPU Rack (stacked farm)
+# gpurack — GPU Rack
 
-**One ship tier.** Edit here only — not `advancedgpurack` (archived under `_archive/`).
+Fresh art lives under `assets/textures/{Wires,GPU_Rack,Power_Supply,Motherboard,GPU_GraphicsCard}/`.
 
-| Asset | Path |
-|-------|------|
-| ModelDoc | `assets/models/gpu-rack-stacked.vmdl` |
-| FBX source | `assets/source/fbx/gpu-rack-stacked-anim.fbx` |
-| Materials | `assets/models/materials/gpu-rack-*.vmat` |
-| Prefab | `assets/entities/gpu-rack.prefab` |
-| Spawn | `lp_bitcoin_spawn_kit` or clone prefab in editor |
+## Two prefabs (Jun 2026)
 
-Small open-frame mesh: `_archive/small-open-frame/` (parked).
+| Tier | Prefab | ModelDoc | FBX source | Role |
+|------|--------|----------|------------|------|
+| **Single rack** (baseline) | `assets/entities/gpu-rack.prefab` | `assets/models/gpu-rack.vmdl` | `assets/source/GPU_Farm_Anim.fbx` | One open-frame rack — perfect this first |
+| **Stacked farm** (upgrade) | `assets/entities/gpu-rack-stacked.prefab` | `assets/models/gpu-rack-stacked.vmdl` | `assets/source/GPU_Farm_Stacked_Anim.fbx` | Four-tier farm mesh |
+
+Shared: five `gpu-rack-*.vmat` · `material-map.json` · `LpBitcoinRackEntity` gameplay.
+
+**Do not open:** `assets/source/gpu_crypto_farm.fbx` — Blender master export with artist scale-reference human; not used by ship vmdls.
+
+**Spawn / ident:** `LpBitcoinIdent.RackPrefabPath` → **`gpu-rack.prefab`** (single). Stacked via `gpu-rack-stacked.prefab` when economy upgrade ships.

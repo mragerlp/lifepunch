@@ -10,23 +10,23 @@ Layer0
 
 	g_flAmbientOcclusionDirectDiffuse "0.000"
 	g_flAmbientOcclusionDirectSpecular "0.000"
-	TextureAmbientOcclusion "addons/lifepunch/lpbitcoin/gpurack/assets/textures/GPU_AO.png"
+	TextureAmbientOcclusion "addons/lifepunch/lpbitcoin/gpurack/assets/textures/GPU_GraphicsCard/GPU_AO.png"
 
 	g_flModelTintAmount "1.000"
 	g_vColorTint "[1.000000 1.000000 1.000000 0.000000]"
-	TextureColor "addons/lifepunch/lpbitcoin/gpurack/assets/textures/GPU_BaseColor.png"
+	TextureColor "addons/lifepunch/lpbitcoin/gpurack/assets/textures/GPU_GraphicsCard/GPU_BaseColor.png"
 
 	g_flFadeExponent "1.000"
 	g_bFogEnabled "1"
 
-	TextureMetalness "addons/lifepunch/lpbitcoin/gpurack/assets/textures/GPU_Metallic.png"
+	TextureMetalness "addons/lifepunch/lpbitcoin/gpurack/assets/textures/GPU_GraphicsCard/GPU_Metallic.png"
 
-	TextureNormal "addons/lifepunch/lpbitcoin/gpurack/assets/textures/GPU_Normal_GL.png"
+	TextureNormal "addons/lifepunch/lpbitcoin/gpurack/assets/textures/GPU_GraphicsCard/GPU_Normal_GL.png"
 
 	g_flRoughnessScaleFactor "1.000"
-	TextureRoughness "addons/lifepunch/lpbitcoin/gpurack/assets/textures/GPU_Roughness.png"
+	TextureRoughness "addons/lifepunch/lpbitcoin/gpurack/assets/textures/GPU_GraphicsCard/GPU_Roughness.png"
 
 	g_flSelfIllumScale "0.000"
 	g_vSelfIllumTint "[0.200000 0.800000 1.000000 0.000000]"
-	TextureSelfIllumMask "addons/lifepunch/lpbitcoin/gpurack/assets/textures/GPU_Emission.png"
+	TextureSelfIllumMask "addons/lifepunch/lpbitcoin/gpurack/assets/textures/GPU_GraphicsCard/GPU_Emission.png"
 }

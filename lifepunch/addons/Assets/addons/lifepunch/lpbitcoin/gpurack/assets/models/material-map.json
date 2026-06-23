@@ -1,27 +1,41 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "product": {
     "displayName": "GPU Rack",
     "entitySlug": "gpu-rack",
     "package": "lpbitcoin"
   },
-  "model": {
-    "displayName": "GPU rack (small)",
-    "slug": "gpu-rack",
-    "activeSource": "assets/source/fbx/gpu-rack-anim.fbx",
-    "stackedSource": "assets/source/fbx/gpu-rack-stacked-anim.fbx",
-    "staticSource": "assets/source/obj/gpu-farm-static.obj",
-    "blendArchive": "assets/source/blend/gpu-farm.blend",
-    "ownerDrop": "Desktop/addon test/addons/lifepunch/lpbitcoin/gpurack/assets/source/GPUFarm*",
-    "targetModel": "assets/models/gpu-rack.vmdl",
-    "importScale": 0.395,
-    "importRotation": [0, 90, 0]
-  },
+  "models": [
+    {
+      "displayName": "GPU rack (single)",
+      "slug": "gpu-rack",
+      "sourceFbx": "assets/source/GPU_Farm_Anim.fbx",
+      "targetModel": "assets/models/gpu-rack.vmdl",
+      "targetPrefab": "assets/entities/gpu-rack.prefab",
+      "importScale": 0.72,
+      "importRotation": [0, 90, 0]
+    },
+    {
+      "displayName": "GPU rack (stacked farm)",
+      "slug": "gpu-rack-stacked",
+      "sourceFbx": "assets/source/GPU_Farm_Stacked_Anim.fbx",
+      "staticObj": "assets/source/GPU_Farm_Static.obj",
+      "targetModel": "assets/models/gpu-rack-stacked.vmdl",
+      "targetPrefab": "assets/entities/gpu-rack-stacked.prefab",
+      "importScale": 0.72,
+      "importRotation": [0, 90, 0]
+    }
+  ],
   "materials": [
-    { "name": "gpu-rack-cord", "fbxSlot": "Cord", "vmat": "assets/models/materials/gpu-rack-cord.vmat" },
-    { "name": "gpu-rack-psu", "fbxSlot": "PSU", "vmat": "assets/models/materials/gpu-rack-psu.vmat" },
-    { "name": "gpu-rack-rack", "fbxSlot": "Rack", "vmat": "assets/models/materials/gpu-rack-rack.vmat" },
-    { "name": "gpu-rack-motherboard", "fbxSlot": "Motherboard", "vmat": "assets/models/materials/gpu-rack-motherboard.vmat" },
-    { "name": "gpu-rack-gpu", "fbxSlot": "GPU", "vmat": "assets/models/materials/gpu-rack-gpu.vmat" }
-  ]
+    { "name": "gpu-rack-cord", "fbxSlot": "Cord", "vmat": "assets/models/materials/gpu-rack-cord.vmat", "textures": "assets/textures/Wires/" },
+    { "name": "gpu-rack-psu", "fbxSlot": "PSU", "vmat": "assets/models/materials/gpu-rack-psu.vmat", "textures": "assets/textures/Power_Supply/" },
+    { "name": "gpu-rack-rack", "fbxSlot": "Rack", "vmat": "assets/models/materials/gpu-rack-rack.vmat", "textures": "assets/textures/GPU_Rack/" },
+    { "name": "gpu-rack-motherboard", "fbxSlot": "Motherboard", "vmat": "assets/models/materials/gpu-rack-motherboard.vmat", "textures": "assets/textures/Motherboard/" },
+    { "name": "gpu-rack-gpu", "fbxSlot": "GPU", "vmat": "assets/models/materials/gpu-rack-gpu.vmat", "textures": "assets/textures/GPU_GraphicsCard/" }
+  ],
+  "modelDoc": {
+    "useGlobalDefault": true,
+    "note": "KV3 true compiles full body; per-slot remaps still bind ship vmats. ModelDoc UI uncheck (false) only after every FBX slot is remapped — else fans-only _c.",
+    "extraRemaps": ["Wires_Cord", "GPU_GraphicsCard", "PSU_Power", "Rack_Frame", "Motherboard_Base", "FanBlades.*", "GPU_Fan_*"]
+  }
 }

@@ -1,30 +1,34 @@
-# GPU Rack (farm / stacked mesh) — ModelDoc
+# GPU Rack — ModelDoc
 
-**Executive decision Jun 2026:** One ship tier — **GPU Rack** = stacked farm mesh. Small open-frame `gpu-rack.vmdl` in this folder is archived intent only (`_archive/small-open-frame/`).
+**Two ship tiers** — single rack first, stacked farm as upgrade mesh.
 
-**Canonical play vmdl:** `lpbitcoin/gpurack/assets/models/gpu-rack-stacked.vmdl`  
-**Canonical prefab:** `lpbitcoin/gpurack/assets/entities/gpu-rack.prefab`  
-**Canonical source FBX:** `assets/source/fbx/gpu-rack-stacked-anim.fbx`
+| Tier | vmdl | prefab | FBX |
+|------|------|--------|-----|
+| Single (baseline) | `gpu-rack.vmdl` | `gpu-rack.prefab` | `GPU_Farm_Anim.fbx` |
+| Stacked farm | `gpu-rack-stacked.vmdl` | `gpu-rack-stacked.prefab` | `GPU_Farm_Stacked_Anim.fbx` |
 
-## Blender / art — owner action
+**Texture roots:** `assets/textures/{Wires,GPU_Rack,Power_Supply,Motherboard,GPU_GraphicsCard}/`
 
-**No Blender work required** for the rename/consolidation. The stacked farm mesh is already the product.
+## ModelDoc P0 (fresh pass)
 
-Future **stacking upgrade visuals** (1→2→3 unit tiers in one entity) are tracked in `BITCOINMINING-07` — that is when you revisit Blender/bodygroups or alternate vmdls.
-
-## ModelDoc settings (stacked — reference)
+| Step | Action |
+|------|--------|
+| 1 | Single: open `gpu-rack.vmdl` — FBX = `GPU_Farm_Anim.fbx`. Stacked: open `gpu-rack-stacked.vmdl` — FBX = `GPU_Farm_Stacked_Anim.fbx` (not `gpu_crypto_farm.fbx`) |
+| 2 | Stacked import filter must include **`Mining_Rig_Stacked`**. Single-rack names (`FanBox_*`, `Rack_Frame`, …) do not exist in the stacked FBX. |
+| 3 | Confirm remaps + five vmats compile clean (subfolder texture paths) |
+## ModelDoc settings
 
 | Field | Value |
 |-------|--------|
-| import_scale | TBD on flatgrass sign-off |
-| Materials | Cord, PSU, Rack, Motherboard, GPU (see `material-map.json`) |
-| **use_global_default** | **`true`** on stacked farm vmdl — fallback rack vmat for any unmapped slot; **do not set `false` until every stacked FBX material slot is remapped** or ModelDoc compiles fans-only (292466-byte `_c`) |
-| **Stacked remaps (required either way)** | `Cord`, `PSU`, `Rack`, `Motherboard`, `GPU`, `Wires_Cord`, `GPU_GraphicsCard`, `FanBlades.*`, `GPU_Fan_*` → ship vmats per `material-map.json` |
-| Physics | HullPerElement |
+| import_scale | **0.72** baseline — tune on flatgrass |
+| import_rotation | `[0, 90, 0]` |
+| Materials | See `material-map.json` + five `gpu-rack-*.vmat` |
+| **use_global_default** | **`true` in KV3 for compile** (full body). Per-slot remaps bind the five ship vmats. Unchecking in ModelDoc (`false`) without 100% slot coverage → fans-only `_c` (292466 bytes). Verify branding in viewport after vmat compile. |
+| Physics | HullPerElement (ModelDoc) + BoxCollider on prefab (gameplay baseline) |
 
 ## Sign-off gate (Phase C)
 
-- [ ] Stacked mesh compiles clean
-- [ ] GPU emission readable when mining on
-- [ ] Scale vs hub on flatgrass kit (max 3 racks)
-- [ ] Prefab rename to `bitcoinmining/entities/gpurack/gpu-rack.prefab`
+- [ ] Stacked mesh compiles clean (full body, not floating fans)
+- [ ] PSU / GPU branding readable (EV3X, RAZX-A9, orange wires)
+- [ ] Scale vs hub on flatgrass kit
+- [ ] Collider matches visible mesh
