@@ -10,7 +10,7 @@ param(
 if (-not $SoundRoot) {
     $scriptDir = if ($PSScriptRoot) { $PSScriptRoot } else { Split-Path -Parent $MyInvocation.MyCommand.Path }
     $AddonsRoot = (Resolve-Path (Join-Path $scriptDir '..')).Path
-    $SoundRoot = Join-Path $AddonsRoot 'Assets\addons\lifepunch\bitcoinmining\sounds\bitcoinminer'
+    $SoundRoot = Join-Path $AddonsRoot 'Assets\addons\lifepunch\lpbitcoin\bitcoinhub\assets\sounds\bitcoinminer'
 }
 
 $ErrorActionPreference = 'Stop'
@@ -38,7 +38,7 @@ foreach ( $slot in $Slots ) {
         DistanceAttenuation = $true
         UI = $false
         Volume = '1'
-        Sounds = @("addons/lifepunch/bitcoinmining/sounds/bitcoinminer/$($slot.Name).vsnd")
+        Sounds = @("addons/lifepunch/lpbitcoin/bitcoinhub/assets/sounds/bitcoinminer/$($slot.Name).vsnd")
         Transmission = $true
         Pitch = '1'
         AirAbsorption = $true
@@ -62,4 +62,4 @@ foreach ( $slot in $Slots ) {
 }
 
 Write-Host "Sound resources written under $SoundRoot" -ForegroundColor Cyan
-Write-Host 'Compile .vsnd in s&box editor after Sync-LifePunchAddonsToDxrp.ps1 -Addon bitcoinmining' -ForegroundColor DarkGray
+Write-Host 'Compile .vsnd in s&box editor after Sync-LifePunchAddonsToDxrp.ps1 -Addon lpbitcoin' -ForegroundColor DarkGray
