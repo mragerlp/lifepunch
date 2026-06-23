@@ -115,14 +115,6 @@ $crt-text-dim: #9a9a9a;
 		flex-shrink: 0;
 	}
 
-	.log-stack-spacer {
-		flex-shrink: 0;
-		height: 0;
-		overflow: hidden;
-		opacity: 0;
-		font-size: 0;
-	}
-
 	.screen {
 		position: relative;
 		background-color: $crt-bg;
@@ -410,10 +402,18 @@ $crt-text-dim: #9a9a9a;
 	gap: 2px;
 	width: 100%;
 	flex-shrink: 0;
+	padding-bottom: 12px;
+}
+
+.lp-ops-crt.lp-ops-crt--gray .shell {
+	border-radius: 10px 10px 0 0;
+	overflow: hidden;
 }
 
 .lp-ops-crt .crt-header {
 	font-size: 11px;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
 }
 
 .lp-ops-crt .sidebar {
@@ -443,6 +443,7 @@ $crt-text-dim: #9a9a9a;
 	flex-direction: column;
 	gap: 2px;
 	overflow: hidden;
+	padding-bottom: 8px;
 }
 
 .lp-ops-crt .sidebar-title {

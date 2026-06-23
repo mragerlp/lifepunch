@@ -139,9 +139,9 @@
 
 	private int _scrollLogPendingFrames;
 	private bool _scrollLogForce;
-	private int _scrollBootstrapFramesLeft;
 	private int _scrollBootstrapWarmupFrames = 2;
-	private static bool _scrollFactoryRegistered;
+	private int _scrollBootstrapRetriesLeft;
+	private bool _scrollBootstrapComplete;
 	private bool _urlCopied;
 	private string _copiedCommandFlash;
 	private RealTimeSince _copiedCommandFlashSince;
@@ -193,7 +193,6 @@
 	{
 		// Re-register every open — hot reload can leave a stale lambda factory from a prior compile.
 		LifePunchScrollRegionBootstrap.SetCustomFactory( CreateTerminalScrollPanel );
-		_scrollFactoryRegistered = true;
 	}
 
 	private static LifePunchScrollRegionPanel CreateTerminalScrollPanel( string slotClass )
@@ -214,8 +213,7 @@
 		LpBitcoinHudBridge.SetMenuCursorMode( true );
 		LifePunchUiScrollPolicy.Apply( Panel );
 		ApplyCommandInputChrome();
-		_scrollBootstrapWarmupFrames = 2;
-		_scrollBootstrapFramesLeft = 0;
+		ResetScrollBootstrap();
 		QueueScrollLogToBottom( force: true );
 	}
 
@@ -231,8 +229,14 @@
 		_bootStatus = "INITIALIZING RIG...";
 		_pendingFocusRack = focusRack;
 		_lastInputTextLength = 0;
+		ResetScrollBootstrap();
+	}
+
+	private void ResetScrollBootstrap()
+	{
 		_scrollBootstrapWarmupFrames = 2;
-		_scrollBootstrapFramesLeft = 0;
+		_scrollBootstrapRetriesLeft = 6;
+		_scrollBootstrapComplete = false;
 	}
 
 	protected override void OnDisabled()
@@ -370,8 +374,8 @@
 		var stack = GetLogStack();
 		if ( stack.IsValid() )
 			AddLogLabel( stack, kind, text );
-		else
-			_scrollBootstrapFramesLeft = Math.Max( _scrollBootstrapFramesLeft, 4 );
+		else if ( !_scrollBootstrapComplete )
+			_scrollBootstrapRetriesLeft = Math.Max( _scrollBootstrapRetriesLeft, 4 );
 
 		ApplyLogScrollChrome();
 
@@ -438,8 +442,6 @@
 			_scrollLogForce = true;
 	}
 
-	private void QueueScrollBootstrap() => _scrollBootstrapFramesLeft = Math.Max( _scrollBootstrapFramesLeft, 4 );
-
 	private LifePunchScrollRegionPanel GetLogScroll()
 		=> LifePunchScrollRegionBootstrap.FindFirstFromHost( this, "log" );
 
@@ -489,23 +491,38 @@
 		}
 	}
 
-	private void TickScrollLog()
+	private void TickScrollBootstrap()
 	{
+		if ( _scrollBootstrapComplete )
+			return;
+
 		if ( _scrollBootstrapWarmupFrames > 0 )
 		{
 			_scrollBootstrapWarmupFrames--;
-			if ( _scrollBootstrapWarmupFrames == 0 )
-				_scrollBootstrapFramesLeft = 4;
+			return;
 		}
 
-		if ( _scrollBootstrapFramesLeft > 0 )
+		EnsureLogStack();
+		LifePunchScrollRegionBootstrap.UpgradeScrollRegionsFromHost( this );
+		ApplyLogScrollChrome();
+		RebuildLogStackIfNeeded();
+
+		if ( GetLogScroll().IsValid() )
 		{
-			EnsureLogStack();
-			LifePunchScrollRegionBootstrap.UpgradeScrollRegionsFromHost( this );
-			_scrollBootstrapFramesLeft--;
-			ApplyLogScrollChrome();
-			RebuildLogStackIfNeeded();
+			_scrollBootstrapComplete = true;
+			QueueScrollLogToBottom( force: true );
+			return;
 		}
+
+		if ( _scrollBootstrapRetriesLeft > 0 )
+			_scrollBootstrapRetriesLeft--;
+		else
+			_scrollBootstrapComplete = true;
+	}
+
+	private void TickScrollLog()
+	{
+		TickScrollBootstrap();
 
 		if ( _scrollLogPendingFrames <= 0 )
 			return;

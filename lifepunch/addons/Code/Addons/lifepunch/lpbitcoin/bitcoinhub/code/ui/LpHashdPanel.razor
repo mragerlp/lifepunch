@@ -327,9 +327,8 @@
 											{
 												<div class="racks-scroll">
 													<div class="rack-grid">
-														@for ( var i = 0; i < GetLinkedRacks().Count; i++ )
+														@foreach ( var rack in GetLinkedRacks() )
 														{
-															var rack = GetLinkedRacks()[i];
 															<div class="rack-card">
 																<div class="rack-card-head">
 																	<div class="rack-card-head-main">
@@ -1105,7 +1104,7 @@
 			_upgradeRackId = Guid.Empty;
 
 		_active = tab;
-		LifePunchUiScrollPolicy.Apply( Panel );
+		LifePunchUiScrollPolicy.ResetOffsets( Panel );
 	}
 
 	// Upgrades is a sub-view of Servers — keep the rack icon selected (Staff Menu tab-sel pattern).
@@ -1119,7 +1118,7 @@
 
 		_upgradeRackId = rack.GameObject.Id;
 		_active = OpsTab.Upgrades;
-		LifePunchUiScrollPolicy.Apply( Panel );
+		LifePunchUiScrollPolicy.ResetOffsets( Panel );
 	}
 
 	private void CloseRackUpgrades() => SelectTab( OpsTab.Racks );

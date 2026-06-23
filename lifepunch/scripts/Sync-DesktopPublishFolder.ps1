@@ -31,7 +31,8 @@ $ManifestPath = Join-Path $AddonsRoot 'config\addons.json'
 $PortfolioPath = Join-Path $AddonsRoot 'config\portfolio.json'
 
 if (-not $DesktopRoot) {
-    $DesktopRoot = Join-Path $env:USERPROFILE 'Desktop\lifepunch'
+    # Use the shell Desktop (OneDrive-redir on VENGEANCE), not %USERPROFILE%\Desktop when they differ.
+    $DesktopRoot = Join-Path ([Environment]::GetFolderPath('Desktop')) 'lifepunch'
 }
 
 $Manifest = Get-Content -LiteralPath $ManifestPath -Raw | ConvertFrom-Json
