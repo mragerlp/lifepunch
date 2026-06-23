@@ -38,6 +38,7 @@ param(
     [string] $DevelopmentRoot = '',
     [string] $GitRoot = 'C:\lifepunch\lifepunch-rdp-server',
     [switch] $IncludeOfficial,
+    [switch] $UseStagingBranch,
     [switch] $SkipSteamUpdate,
     [switch] $NoRestart
 )
@@ -210,11 +211,14 @@ steamcmd.exe not found. Install SteamCMD on lifepunchnet, then re-run.
 '@
     }
 
-    Write-Step "SteamCMD update (app 1892930 validate)"
+    Write-Step "SteamCMD update (app 1892930 validate$(if ($UseStagingBranch) { ' — staging beta' }))"
     $steamDir = Split-Path -Parent $steamCmd
     Push-Location $steamDir
     try {
-        & $steamCmd @('+login', 'anonymous', '+app_update', '1892930', 'validate', '+quit')
+        $steamArgs = @('+login', 'anonymous', '+app_update', '1892930')
+        if ($UseStagingBranch) { $steamArgs += '-beta', 'staging' }
+        $steamArgs += 'validate', '+quit'
+        & $steamCmd @steamArgs
         if ($LASTEXITCODE -gt 1) { throw "steamcmd exited $LASTEXITCODE" }
     }
     finally { Pop-Location }
