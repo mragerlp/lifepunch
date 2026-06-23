@@ -71,9 +71,7 @@
 						</div>
 					}
 					<div class="log-shell">
-						<div class="log lp-ui-scroll-region terminal-log-scroll" onclick="@FocusLog">
-							<div class="log-stack"></div>
-						</div>
+						<div class="log lp-ui-scroll-region terminal-log-scroll" onclick="@FocusLog"></div>
 					</div>
 					<div class="prompt-row" onclick="@FocusInput">
 						<span class="prompt hashd-prompt-accent">rig@hub&gt;</span>
@@ -142,6 +140,7 @@
 	private int _scrollLogPendingFrames;
 	private bool _scrollLogForce;
 	private int _scrollBootstrapFramesLeft;
+	private int _scrollBootstrapWarmupFrames = 2;
 	private static bool _scrollFactoryRegistered;
 	private bool _urlCopied;
 	private string _copiedCommandFlash;
@@ -192,14 +191,13 @@
 
 	private static void EnsureScrollFactory()
 	{
-		if ( _scrollFactoryRegistered )
-			return;
-
-		LifePunchScrollRegionBootstrap.SetCustomFactory( slotClass =>
-			slotClass == "log" ? new LpBitcoinTerminalLogPanel() : null );
-
+		// Re-register every open — hot reload can leave a stale lambda factory from a prior compile.
+		LifePunchScrollRegionBootstrap.SetCustomFactory( CreateTerminalScrollPanel );
 		_scrollFactoryRegistered = true;
 	}
+
+	private static LifePunchScrollRegionPanel CreateTerminalScrollPanel( string slotClass )
+		=> slotClass == "log" ? new LpBitcoinTerminalLogPanel() : null;
 
 	private void SetUiScale( LpUiScaleSize size )
 	{
@@ -216,7 +214,8 @@
 		LpBitcoinHudBridge.SetMenuCursorMode( true );
 		LifePunchUiScrollPolicy.Apply( Panel );
 		ApplyCommandInputChrome();
-		_scrollBootstrapFramesLeft = 4;
+		_scrollBootstrapWarmupFrames = 2;
+		_scrollBootstrapFramesLeft = 0;
 		QueueScrollLogToBottom( force: true );
 	}
 
@@ -232,7 +231,8 @@
 		_bootStatus = "INITIALIZING RIG...";
 		_pendingFocusRack = focusRack;
 		_lastInputTextLength = 0;
-		_scrollBootstrapFramesLeft = 4;
+		_scrollBootstrapWarmupFrames = 2;
+		_scrollBootstrapFramesLeft = 0;
 	}
 
 	protected override void OnDisabled()
@@ -379,15 +379,6 @@
 			QueueScrollLogToBottom();
 	}
 
-	private Panel GetLogStack()
-	{
-		var log = GetLogScroll();
-		if ( !log.IsValid() )
-			return null;
-
-		return log.Children.FirstOrDefault( child => child.HasClass( "log-stack" ) );
-	}
-
 	private void ClearLogStack()
 	{
 		var stack = GetLogStack();
@@ -452,6 +443,43 @@
 	private LifePunchScrollRegionPanel GetLogScroll()
 		=> LifePunchScrollRegionBootstrap.FindFirstFromHost( this, "log" );
 
+	private Panel GetLogShell()
+	{
+		if ( Panel is null || !Panel.IsValid )
+			return null;
+
+		foreach ( var panel in Panel.Descendants )
+		{
+			if ( panel.IsValid() && panel.HasClass( "terminal-log-scroll" ) )
+				return panel;
+		}
+
+		return null;
+	}
+
+	private void EnsureLogStack()
+	{
+		if ( GetLogStack().IsValid() )
+			return;
+
+		var log = GetLogScroll() as Panel ?? GetLogShell();
+		if ( !log.IsValid() )
+			return;
+
+		var stack = new Panel();
+		stack.AddClass( "log-stack" );
+		stack.Parent = log;
+	}
+
+	private Panel GetLogStack()
+	{
+		var log = GetLogScroll() as Panel ?? GetLogShell();
+		if ( !log.IsValid() )
+			return null;
+
+		return log.Children.FirstOrDefault( child => child.HasClass( "log-stack" ) );
+	}
+
 	private void ApplyLogScrollChrome()
 	{
 		if ( GetLogScroll() is LpBitcoinTerminalLogPanel terminalLog )
@@ -463,8 +491,16 @@
 
 	private void TickScrollLog()
 	{
+		if ( _scrollBootstrapWarmupFrames > 0 )
+		{
+			_scrollBootstrapWarmupFrames--;
+			if ( _scrollBootstrapWarmupFrames == 0 )
+				_scrollBootstrapFramesLeft = 4;
+		}
+
 		if ( _scrollBootstrapFramesLeft > 0 )
 		{
+			EnsureLogStack();
 			LifePunchScrollRegionBootstrap.UpgradeScrollRegionsFromHost( this );
 			_scrollBootstrapFramesLeft--;
 			ApplyLogScrollChrome();

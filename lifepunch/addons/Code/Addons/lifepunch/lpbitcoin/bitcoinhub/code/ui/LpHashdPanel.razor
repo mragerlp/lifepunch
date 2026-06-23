@@ -215,10 +215,9 @@
 												}
 												else
 												{
-													<div class="lp-ui-scroll-region overview-miners-scroll">
-														@for ( var i = 0; i < GetLinkedRacks().Count; i++ )
+													<div class="overview-miners-scroll">
+														@foreach ( var rack in GetLinkedRacks() )
 														{
-															var rack = GetLinkedRacks()[i];
 															<div class="overview-miner-card">
 																<div class="overview-miner-head">
 																	<div class="overview-miner-title">@RackSlotDisplayLabel( rack )</div>
@@ -235,7 +234,6 @@
 																</button>
 															</div>
 														}
-														<div class="overview-miners-scroll-tail"></div>
 													</div>
 												}
 											</div>
@@ -327,7 +325,7 @@
 											}
 											else
 											{
-												<div class="lp-ui-scroll-region racks-scroll">
+												<div class="racks-scroll">
 													<div class="rack-grid">
 														@for ( var i = 0; i < GetLinkedRacks().Count; i++ )
 														{
@@ -358,7 +356,6 @@
 															</div>
 														}
 													</div>
-													<div class="racks-scroll-tail"></div>
 												</div>
 											}
 										</div>
@@ -393,7 +390,7 @@
 													<strong>@RackSlotDisplayLabel( upgradeRack )</strong> · @RackYieldLabel( upgradeRack ) · @RackHardwareLine( upgradeRack ) — Purchases debit your in-game cash. Mining start/stop stays on the CRT. rig0 slot: <strong>@RackSlotTerminalToken( upgradeRack )</strong>
 												</div>
 
-												<div class="lp-ui-scroll-region upgrades-scroll">
+												<div class="upgrades-scroll">
 													<div class="upgrade-tracks">
 														<div class="upgrade-track lp-hashd-surface">
 															<div class="upgrade-track-head">
@@ -459,7 +456,6 @@
 															}
 														</div>
 													</div>
-													<div class="upgrades-scroll-tail"></div>
 												</div>
 											}
 										</div>
@@ -624,7 +620,7 @@
 											}
 											else
 											{
-												<div class="lp-ui-scroll-region logs-scroll">
+												<div class="logs-scroll">
 													<div class="notif-list">
 														@foreach ( var alert in GetHubAlerts() )
 														{
@@ -652,7 +648,7 @@
 												<span>Settings</span>
 											</div>
 
-											<div class="lp-ui-scroll-region settings-scroll">
+											<div class="settings-scroll">
 												<div class="lp-ui-intro">
 													Hub power, PIN security, and terminal linking. Changes apply immediately on this hub.
 												</div>
@@ -728,7 +724,6 @@
 													</div>
 												</div>
 												</div>
-												<div class="settings-scroll-tail"></div>
 											</div>
 										</div>
 									</div>
@@ -792,16 +787,12 @@
 	private bool _cashOutErrorVisible;
 	private string _cashOutErrorMessage = "";
 
-	// Structure hash (racks linked, power, alerts) vs display tick (wallet BTC, rates) — never hash
-	// cent-level BTC in BuildHash or the whole hub chrome rebuilds and scroll regions vanish.
+	// Structure hash (racks linked, power, alerts, wallet display) — never hash TextEntry bind values.
 	private TimeSince _sinceTelemetryRefresh;
 	private TimeSince _sinceLogTimeRefresh;
-	private TimeSince _sinceMetricsDisplay;
 	private int _telemetryHash;
-	private int _metricsDisplayTick;
 	private int _logTimeBucket;
 	private const float TelemetryRefreshInterval = 0.5f;
-	private const float MetricsDisplayInterval = 2f;
 	private const float LogTimeRefreshInterval = 30f;
 
 	private string CashOutAmount
@@ -853,7 +844,6 @@
 	{
 		LifePunchMenuInputBlock.NotifyMenuOpened();
 		LpBitcoinHudBridge.SetMenuCursorMode( true );
-		LifePunchScrollRegionBootstrap.UpgradeScrollRegionsFromHost( this );
 		LifePunchUiScrollPolicy.Apply( Panel );
 		_sinceTelemetryRefresh = TelemetryRefreshInterval;
 		_sinceLogTimeRefresh = LogTimeRefreshInterval;
@@ -1692,8 +1682,6 @@
 	{
 		base.OnUpdate();
 		LifePunchMenuInputBlock.Apply();
-		// s&box flex scroll: upgrade lp-ui-scroll-region → LifePunchScrollRegionPanel (manual wheel).
-		LifePunchScrollRegionBootstrap.UpgradeScrollRegionsFromHost( this );
 		LifePunchUiScrollPolicy.Apply( Panel );
 
 		if ( !_hub.IsValid() )
@@ -1704,7 +1692,6 @@
 
 		if ( _sinceTelemetryRefresh < TelemetryRefreshInterval )
 		{
-			TickMetricsDisplay();
 			TickLogTimeLabels();
 			return;
 		}
@@ -1715,17 +1702,7 @@
 		if ( _telemetryHash != previous && _active == OpsTab.Logs )
 			StateHasChanged();
 
-		TickMetricsDisplay();
 		TickLogTimeLabels();
-	}
-
-	private void TickMetricsDisplay()
-	{
-		if ( _sinceMetricsDisplay < MetricsDisplayInterval )
-			return;
-
-		_sinceMetricsDisplay = 0;
-		_metricsDisplayTick++;
 	}
 
 	private void TickLogTimeLabels()
@@ -1753,6 +1730,7 @@
 		hash.Add( HasLinkedTerminal() );
 		hash.Add( HasNearbyUnlinkedTerminal() );
 		hash.Add( Hub?.UnreadAlertCount ?? 0 );
+		hash.Add( (int)(HubWalletBtc() * 10000f) );
 
 		var alerts = GetHubAlerts();
 		hash.Add( alerts.Count );
@@ -1775,8 +1753,8 @@
 
 	protected override int BuildHash()
 	{
-		// _telemetryHash = structure only; _metricsDisplayTick refreshes wallet/rates every 2s without
-		// cent-level rebuild storms. Do not hash TextEntry bind values (_cashOutAmount).
+		// _telemetryHash includes wallet (4dp) + rack structure — no per-frame display tick.
+		// Do not hash TextEntry bind values (_cashOutAmount).
 		var hash = new HashCode();
 		hash.Add( _active );
 		hash.Add( _upgradeRackId );
@@ -1798,7 +1776,6 @@
 		hash.Add( _profitRange );
 		hash.Add( LinkedRackCount() );
 		hash.Add( _telemetryHash );
-		hash.Add( _metricsDisplayTick );
 		hash.Add( Hub?.Owner ?? 0 );
 		hash.Add( _cashOutSuccessActive );
 		hash.Add( _cashOutSuccessVisible );

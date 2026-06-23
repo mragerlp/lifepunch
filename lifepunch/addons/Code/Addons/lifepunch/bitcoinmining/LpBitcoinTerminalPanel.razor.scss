@@ -115,6 +115,14 @@ $crt-text-dim: #9a9a9a;
 		flex-shrink: 0;
 	}
 
+	.log-stack-spacer {
+		flex-shrink: 0;
+		height: 0;
+		overflow: hidden;
+		opacity: 0;
+		font-size: 0;
+	}
+
 	.screen {
 		position: relative;
 		background-color: $crt-bg;

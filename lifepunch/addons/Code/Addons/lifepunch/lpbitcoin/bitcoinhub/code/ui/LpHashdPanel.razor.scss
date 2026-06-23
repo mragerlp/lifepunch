@@ -149,6 +149,8 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		flex-direction: column;
 		overflow: hidden;
 		background-color: $hashd-bg;
+		border-top-left-radius: $shell-radius;
+		border-top-right-radius: $shell-radius;
 	}
 
 	.hub-main {
@@ -941,13 +943,9 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 			display: flex;
 			flex-direction: column;
 			gap: 14px;
-			overflow: hidden;
-		}
-
-		.settings-scroll-tail {
-			flex-shrink: 0;
-			height: 24px;
-			width: 100%;
+			overflow-y: scroll;
+			overflow-x: hidden;
+			padding-bottom: 24px;
 		}
 	}
 
@@ -1004,7 +1002,9 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 			min-height: 0;
 			flex-direction: column;
 			gap: 10px;
-			overflow: hidden;
+			overflow-y: scroll;
+			overflow-x: hidden;
+			padding-bottom: 8px;
 		}
 	}
 
@@ -1069,12 +1069,6 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	.overview-miner-copy {
 		align-self: flex-start;
 		max-width: 100%;
-	}
-
-	.overview-miners-scroll-tail {
-		flex-shrink: 0;
-		height: 8px;
-		width: 100%;
 	}
 
 	.overview .lp-ui-split > .lp-ui-panel.overview-status-panel {
@@ -1234,14 +1228,13 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 			min-height: 0;
 			width: 100%;
 			flex-direction: column;
-			overflow: hidden;
+			overflow-y: scroll;
+			overflow-x: hidden;
 		}
 
-		.racks-scroll-tail,
-		.upgrades-scroll-tail {
-			flex-shrink: 0;
-			height: 24px;
-			width: 100%;
+		.racks-scroll,
+		.upgrades-scroll {
+			padding-bottom: 24px;
 		}
 	}
 
@@ -2395,12 +2388,6 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		padding: 0 0 14px;
 	}
 
-	.settings-scroll-tail {
-		flex-shrink: 0;
-		height: 24px;
-		width: 100%;
-	}
-
 	.settings-section {
 		display: flex;
 		flex-direction: column;
@@ -2810,6 +2797,12 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	border-radius: 0 0 22px 22px;
 }
 
+.lp-bitcoin-ops .hub-body {
+	border-top-left-radius: 22px;
+	border-top-right-radius: 22px;
+	overflow: hidden;
+}
+
 .lp-bitcoin-ops .hub-main {
 	border-top-left-radius: 22px;
 	border-top-right-radius: 22px;
@@ -2836,18 +2829,14 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	display: flex;
 	flex-direction: column;
 	gap: 14px;
-	overflow: hidden;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	padding-bottom: 24px;
 }
 
 .lp-bitcoin-ops .settings-scroll .lp-ui-intro {
 	flex-shrink: 0;
 	margin-bottom: 0;
-}
-
-.lp-bitcoin-ops .settings-scroll-tail {
-	flex-shrink: 0;
-	height: 24px;
-	width: 100%;
 }
 
 .lp-bitcoin-ops .pane.settings-pane .lp-ui-panel-title {
@@ -3048,11 +3037,19 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	width: 100%;
 	display: flex;
 	flex-direction: column;
-	overflow: hidden;
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+
+.lp-bitcoin-ops .racks-scroll,
+.lp-bitcoin-ops .upgrades-scroll,
+.lp-bitcoin-ops .settings-scroll {
+	padding-bottom: 24px;
 }
 
 .lp-bitcoin-ops .overview-miners-scroll {
 	gap: 10px;
+	padding-bottom: 8px;
 }
 
 .lp-bitcoin-ops .overview-miner-card {
@@ -3118,12 +3115,6 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 .lp-bitcoin-ops .overview-miner-copy {
 	align-self: flex-start;
 	max-width: 100%;
-}
-
-.lp-bitcoin-ops .overview-miners-scroll-tail {
-	flex-shrink: 0;
-	height: 8px;
-	width: 100%;
 }
 
 .lp-bitcoin-ops .overview-status-actions {
