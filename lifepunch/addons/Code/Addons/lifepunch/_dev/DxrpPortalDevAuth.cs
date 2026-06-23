@@ -11,7 +11,6 @@
 
 #if !LIFEPUNCH_LOCAL
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using Dxura.RP.Game;
 using Dxura.RP.Shared;
@@ -157,12 +156,7 @@ public static class DxrpPortalDevAuth
 			return;
 		}
 
-		var linkType = typeof( ServerApiLink );
-		linkType.GetProperty( "TenantId", BindingFlags.Instance | BindingFlags.Public )?
-			.SetValue( link, initResponse.TenantId.ToString() );
-		linkType.GetProperty( "ServerId", BindingFlags.Instance | BindingFlags.Public )?
-			.SetValue( link, initResponse.Id );
-		link.RulesetId = initResponse.RulesetId;
+		link.ApplyDevPortalContext( initResponse );
 
 		Log.Info( $"lp_authorize: tenant {initResponse.TenantId} (editor API context applied)." );
 	}
