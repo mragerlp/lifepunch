@@ -136,6 +136,11 @@ public static class LifePunchUiScrollPolicy
 		return panel.HasClass( "player-scroll" )
 		       || panel.HasClass( "profile-fields" )
 		       || panel.HasClass( "wp-list" )
-		       || panel.HasClass( "audit-scroll" );
+		       || panel.HasClass( "audit-scroll" )
+		       || panel.HasClass( "settings-scroll" )
+		       || panel.HasClass( "racks-scroll" )
+		       || panel.HasClass( "upgrades-scroll" )
+		       || panel.HasClass( "logs-scroll" )
+		       || panel.HasClass( "overview-miners-scroll" );
 	}
 }

@@ -160,7 +160,7 @@
 										<div class="overview-intro-shell">
 											<div class="lp-ui-intro overview-intro">
 												<div class="overview-intro-copy">
-													Buy from DXRP Market → place hub → set PIN → <strong>power on</strong> (header switch) → link terminal → register up to @($"{LpBitcoinIdent.PortalMaxRacksPerHub} GPU") racks at rig0 on the CRT.
+													<span class="overview-intro-copy-text">Buy from DXRP Market → place hub → set PIN → <strong>power on</strong> (header switch) → link terminal → register up to @($"{LpBitcoinIdent.PortalMaxRacksPerHub} GPU") racks at rig0 on the CRT.</span>
 												</div>
 												<div class="overview-intro-terminal">
 													<div class="overview-intro-terminal-status">
@@ -648,17 +648,18 @@
 								else if ( _active == OpsTab.Settings )
 								{
 									<div class="pane settings-pane">
-										<div class="lp-ui-panel">
+										<div class="lp-ui-panel settings-panel">
 											<div class="lp-ui-panel-title">
 												<i class="material-icons">settings</i>
 												<span>Settings</span>
 											</div>
 
-											<div class="lp-ui-intro">
-												Hub power, PIN security, and terminal linking. Changes apply immediately on this hub.
-											</div>
+											<div class="settings-scroll">
+												<div class="lp-ui-intro">
+													Hub power, PIN security, and terminal linking. Changes apply immediately on this hub.
+												</div>
 
-											<div class="settings-sections">
+												<div class="settings-sections">
 												<div class="settings-section lp-hashd-surface">
 													<div class="settings-label">Hub power</div>
 													<div class="settings-hint">Turn the HASHD hub on or off. Matches the header switch — racks stop accruing when power is off; nothing links while off.</div>
@@ -713,6 +714,7 @@
 														<button class="@(HasLinkedTerminal() ? "lp-ui-btn-ghost" : "lp-ui-btn-primary")" disabled="@(HasLinkedTerminal() || !HubIsPowered())" onclick="@LinkNearbyTerminal">Link terminal</button>
 														<button class="@(HasLinkedTerminal() ? "lp-ui-btn-primary" : "lp-ui-btn-ghost")" disabled="@(!HasLinkedTerminal())" onclick="@UnlinkTerminal">Unlink terminal</button>
 													</div>
+												</div>
 												</div>
 												<div class="settings-scroll-tail"></div>
 											</div>

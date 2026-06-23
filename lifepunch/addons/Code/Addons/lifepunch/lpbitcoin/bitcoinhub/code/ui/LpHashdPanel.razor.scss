@@ -910,18 +910,35 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		display: flex;
 		flex-direction: column;
 
-		> .lp-ui-panel {
+		> .lp-ui-panel,
+		> .settings-panel {
 			flex: 1 1 0;
 			min-height: 0;
 			min-width: 0;
 			width: 100%;
-			overflow-y: scroll;
+			overflow: hidden;
 			display: flex;
 			flex-direction: column;
 			border: 0;
 			border-radius: 0;
 			background-color: transparent;
 			padding: 16px 18px 18px;
+			gap: 12px;
+		}
+
+		.settings-scroll {
+			flex: 1 1 0;
+			min-height: 0;
+			display: flex;
+			flex-direction: column;
+			gap: 14px;
+			overflow-y: scroll;
+		}
+
+		.settings-scroll-tail {
+			flex-shrink: 0;
+			height: 24px;
+			width: 100%;
 		}
 	}
 
@@ -2557,7 +2574,19 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	}
 
 	.overview-intro-copy {
-		line-height: 1.45;
+		flex: 1 1 auto;
+		min-width: 0;
+		display: flex;
+		flex-direction: row;
+		align-items: flex-start;
+
+		.overview-intro-copy-text {
+			flex: 1 1 auto;
+			min-width: 0;
+			text-align: left;
+			line-height: 1.5;
+			white-space: normal;
+		}
 	}
 
 	.overview-intro-terminal {
@@ -2662,9 +2691,8 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		min-height: 168px;
 		margin: 0;
 		padding: 22px 18px 20px;
-		border-radius: 0;
-		border: 0;
-		border-top: 1px dashed rgba($hashd-amber, 0.45);
+		border-radius: $hashd-surface-radius;
+		border: 1px solid rgba($hashd-amber, 0.45);
 		background-color: rgba($hashd-amber, 0.08);
 		box-shadow: none;
 		gap: 6px;
@@ -2768,24 +2796,41 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	overflow: hidden;
 }
 
-// Flat — settings tab rhythm (mirror lifepunchulx .settings / .settings-group).
-.lp-bitcoin-ops .pane.settings-pane > .lp-ui-panel {
+// Flat — settings tab: pinned title + scroll body (StaffMenu profile-fields pattern).
+.lp-bitcoin-ops .pane.settings-pane > .settings-panel {
 	display: flex;
 	flex-direction: column;
-	gap: 14px;
+	flex: 1 1 0;
+	min-height: 0;
+	gap: 12px;
 	padding-top: 16px;
 	padding-right: 18px;
 	padding-bottom: 18px;
 	padding-left: 18px;
+	overflow: hidden;
+}
+
+.lp-bitcoin-ops .settings-scroll {
+	flex: 1 1 0;
+	min-height: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
 	overflow-y: scroll;
 }
 
-.lp-bitcoin-ops .pane.settings-pane .lp-ui-panel-title {
+.lp-bitcoin-ops .settings-scroll .lp-ui-intro {
 	flex-shrink: 0;
 	margin-bottom: 0;
 }
 
-.lp-bitcoin-ops .pane.settings-pane .lp-ui-intro {
+.lp-bitcoin-ops .settings-scroll-tail {
+	flex-shrink: 0;
+	height: 24px;
+	width: 100%;
+}
+
+.lp-bitcoin-ops .pane.settings-pane .lp-ui-panel-title {
 	flex-shrink: 0;
 	margin-bottom: 0;
 }
@@ -2926,7 +2971,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	flex-direction: row;
 	flex-wrap: wrap;
 	align-items: flex-start;
-	justify-content: space-between;
+	justify-content: flex-start;
 	gap: 12px 16px;
 	padding-top: 14px;
 	padding-right: 16px;
@@ -2941,9 +2986,19 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 }
 
 .lp-bitcoin-ops .overview-intro-copy {
-	flex: 1 1 320px;
+	flex: 1 1 280px;
 	min-width: 0;
+	display: flex;
+	flex-direction: row;
+	align-items: flex-start;
+}
+
+.lp-bitcoin-ops .overview-intro-copy-text {
+	flex: 1 1 auto;
+	min-width: 0;
+	text-align: left;
 	line-height: 1.5;
+	white-space: normal;
 }
 
 .lp-bitcoin-ops .overview-intro-terminal {
@@ -3213,7 +3268,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	white-space: nowrap;
 }
 
-// Flat — overview/racks panel surfaces: one radius, flush empty callout (no corner ears).
+// Flat — overview/racks panel surfaces.
 .lp-bitcoin-ops .overview .lp-ui-split > .lp-ui-panel {
 	border-radius: 10px;
 	border: 1px solid rgba(255, 255, 255, 0.08);
@@ -3226,6 +3281,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	margin-bottom: 12px;
 }
 
+// Flat — empty callout: rounded amber frame (matches hub card radius).
 .lp-bitcoin-ops .lp-ui-panel > .lp-ui-empty-callout {
 	flex: 1 1 auto;
 	min-height: 168px;
@@ -3234,9 +3290,8 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	padding-right: 18px;
 	padding-bottom: 20px;
 	padding-left: 18px;
-	border-radius: 0;
-	border: 0;
-	border-top: 1px dashed rgba(232, 125, 62, 0.45);
+	border-radius: 10px;
+	border: 1px solid rgba(232, 125, 62, 0.45);
 	background-color: rgba(232, 125, 62, 0.08);
 	box-shadow: none;
 }
