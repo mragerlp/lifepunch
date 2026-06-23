@@ -404,10 +404,22 @@ public static class LpBitcoinDevSpawn
 			return;
 		}
 
-		// Status LED is mesh emissive only (fence-led vmat) — no runtime point light.
 		foreach ( var hub in scene.GetAllComponents<LpBitcoinHubEntity>().Where( h => h.IsValid() ) )
 		{
-			Log.Info( $"BITCOINMINING_STATUS_LED hub powered={hub.IsPowered} mode=mesh-emissive (lp_bitcoin_hub_material_audit for slots)" );
+			var visuals = hub.Components.Get<LpBitcoinHubVisuals>( FindMode.EverythingInSelf );
+			var renderer = hub.Components.Get<ModelRenderer>( FindMode.EverythingInSelf );
+			var ledChild = hub.GameObject.Children
+				.FirstOrDefault( c => c.IsValid() && c.Name.Equals( "status_led", StringComparison.OrdinalIgnoreCase ) );
+			var pointLight = ledChild?.Components.Get<PointLight>( FindMode.EverythingInSelf );
+
+			Log.Info(
+				$"BITCOINMINING_STATUS_LED hub powered={hub.IsPowered} emissive=fence-led pointLight={( pointLight.IsValid() ? pointLight.LightColor : Color.White )} localPos={ledChild?.LocalPosition ?? Vector3.Zero} autoAlign={visuals?.AutoAlignStatusLed ?? true} manualOffset={visuals?.StatusLedManualOffset ?? Vector3.Zero}" );
+
+			if ( renderer.IsValid() )
+			{
+				var bounds = renderer.LocalBounds;
+				Log.Info( $"BITCOINMINING_STATUS_LED bodyBounds center={bounds.Center} size={bounds.Size} maxs={bounds.Maxs}" );
+			}
 		}
 	}
 

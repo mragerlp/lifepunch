@@ -161,11 +161,12 @@
 											<div class="overview-intro">
 												<div class="overview-intro-copy-text">@OverviewIntroCopyLine()</div>
 												<div class="overview-intro-terminal">
-													<div class="overview-intro-terminal-status">
-														<span class="lp-ui-status-dot @(HasLinkedTerminal() ? "on" : HasNearbyUnlinkedTerminal() ? "warn" : "off")"></span>
-														<span class="overview-intro-terminal-label">@TerminalLinkStatusLabel()</span>
-													</div>
-													<div class="overview-intro-terminal-actions">
+													<div class="overview-intro-terminal-row">
+														<div class="overview-intro-terminal-status">
+															<span class="lp-ui-status-dot @(HasLinkedTerminal() ? "on" : HasNearbyUnlinkedTerminal() ? "warn" : "off")"></span>
+															<span class="overview-intro-terminal-label">@TerminalLinkStatusLabel()</span>
+														</div>
+														<div class="overview-intro-terminal-actions">
 														@if ( HasLinkedTerminal() )
 														{
 															<button class="lp-ui-btn-ghost" onclick="@UnlinkTerminal">Unlink terminal</button>
@@ -185,6 +186,7 @@
 														{
 															<button class="lp-ui-btn-ghost overview-intro-terminal-disabled" disabled>No terminal in range</button>
 														}
+														</div>
 													</div>
 												</div>
 											</div>
@@ -215,7 +217,7 @@
 												}
 												else
 												{
-													<div class="overview-miners-scroll">
+													<div class="lp-ui-scroll-region overview-miners-scroll">
 														@foreach ( var rack in GetLinkedRacks() )
 														{
 															<div class="overview-miner-card">
@@ -325,7 +327,7 @@
 											}
 											else
 											{
-												<div class="racks-scroll">
+												<div class="lp-ui-scroll-region racks-scroll">
 													<div class="rack-grid">
 														@foreach ( var rack in GetLinkedRacks() )
 														{
@@ -389,7 +391,7 @@
 													<strong>@RackSlotDisplayLabel( upgradeRack )</strong> · @RackYieldLabel( upgradeRack ) · @RackHardwareLine( upgradeRack ) — Purchases debit your in-game cash. Mining start/stop stays on the CRT. rig0 slot: <strong>@RackSlotTerminalToken( upgradeRack )</strong>
 												</div>
 
-												<div class="upgrades-scroll">
+												<div class="lp-ui-scroll-region upgrades-scroll">
 													<div class="upgrade-tracks">
 														<div class="upgrade-track lp-hashd-surface">
 															<div class="upgrade-track-head">
@@ -619,7 +621,7 @@
 											}
 											else
 											{
-												<div class="logs-scroll">
+												<div class="lp-ui-scroll-region logs-scroll">
 													<div class="notif-list">
 														@foreach ( var alert in GetHubAlerts() )
 														{
@@ -647,7 +649,7 @@
 												<span>Settings</span>
 											</div>
 
-											<div class="settings-scroll">
+											<div class="lp-ui-scroll-region settings-scroll">
 												<div class="lp-ui-intro">
 													Hub power, PIN security, and terminal linking. Changes apply immediately on this hub.
 												</div>
@@ -1209,6 +1211,7 @@
 		_uiScale = size;
 		LifePunchUiScrollPolicy.ResetOffsets( Panel );
 	}
+
 	private void Close() => LpHashdUiHost.CloseOpen();
 	private void PowerOn() => Hub?.SetPowered( true );
 	private void PowerOff() => Hub?.SetPowered( false );

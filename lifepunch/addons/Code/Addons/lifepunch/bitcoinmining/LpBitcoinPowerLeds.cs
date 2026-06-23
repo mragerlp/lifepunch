@@ -39,16 +39,32 @@ public static class LpBitcoinPowerLeds
 		if ( !renderer.IsValid() )
 			return;
 
-		// Drop legacy per-slot CreateCopy overrides — they registered illegal paths like
-		// "bitcoinhub-sm-fence-led_status" (no .vmat) and spam FixupResourceName.
-		ClearHubStatusMaterialOverrides( renderer );
-
-		var sceneObject = renderer.SceneObject;
-		if ( sceneObject is null || !sceneObject.IsValid() )
+		var materials = renderer.Materials;
+		if ( materials is null || materials.Count <= 0 )
 			return;
 
-		sceneObject.Attributes.Set( SelfIllumTintAttr, powered ? HubStatusOnTint : HubStatusOffTint );
-		sceneObject.Attributes.Set( SelfIllumScaleAttr, powered ? HubStatusOnScale : HubStatusOffScale );
+		var tint = powered ? HubStatusOnTint : HubStatusOffTint;
+		var scale = powered ? HubStatusOnScale : HubStatusOffScale;
+		var changed = false;
+
+		for ( var i = 0; i < materials.Count; i++ )
+		{
+			var original = materials.GetOriginal( i );
+			if ( original is null || !IsHubStatusLedMaterial( original ) )
+				continue;
+
+			var copy = materials.GetOverride( i );
+			if ( !copy.IsValid() )
+				copy = original.CreateCopy();
+
+			copy.Set( SelfIllumTintAttr, tint );
+			copy.Set( SelfIllumScaleAttr, scale );
+			materials.SetOverride( i, copy );
+			changed = true;
+		}
+
+		if ( changed )
+			materials.Apply();
 	}
 
 	/// <summary>Legacy name — routes to <see cref="ApplyHubStatusLed"/>.</summary>
@@ -86,28 +102,4 @@ public static class LpBitcoinPowerLeds
 		       && path.Contains( "fence", StringComparison.OrdinalIgnoreCase );
 	}
 
-	/// <summary>Remove runtime material overrides on hub fence LED slots (legacy CreateCopy path).</summary>
-	private static void ClearHubStatusMaterialOverrides( ModelRenderer renderer )
-	{
-		var materials = renderer.Materials;
-		if ( materials is null || materials.Count <= 0 )
-			return;
-
-		var cleared = false;
-		for ( var i = 0; i < materials.Count; i++ )
-		{
-			if ( !materials.HasOverride( i ) )
-				continue;
-
-			var original = materials.GetOriginal( i );
-			if ( original is null || !IsHubStatusLedMaterial( original ) )
-				continue;
-
-			materials.SetOverride( i, null );
-			cleared = true;
-		}
-
-		if ( cleared )
-			materials.Apply();
-	}
 }

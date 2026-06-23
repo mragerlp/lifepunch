@@ -66,10 +66,10 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		max-height: 92%;
 		min-height: 0;
 		background-color: $hashd-bg;
-		border: 0;
+		border: 1px solid $hashd-border;
 		border-radius: $shell-radius;
 		overflow: hidden;
-		box-shadow: 0 0 0 1px $hashd-border, 0 28px 64px rgba(0, 0, 0, 0.72);
+		box-shadow: 0 28px 64px rgba(0, 0, 0, 0.72);
 		pointer-events: all;
 	}
 
@@ -82,6 +82,8 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		overflow: hidden;
 		background-color: $hashd-bg;
 		border: 0;
+		border-top-left-radius: $shell-radius;
+		border-top-right-radius: $shell-radius;
 	}
 
 	.lp-window-watermark {
@@ -943,8 +945,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 			display: flex;
 			flex-direction: column;
 			gap: 14px;
-			overflow-y: scroll;
-			overflow-x: hidden;
+			overflow: hidden;
 			padding-bottom: 24px;
 		}
 	}
@@ -1002,8 +1003,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 			min-height: 0;
 			flex-direction: column;
 			gap: 10px;
-			overflow-y: scroll;
-			overflow-x: hidden;
+			overflow: hidden;
 			padding-bottom: 8px;
 		}
 	}
@@ -1228,8 +1228,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 			min-height: 0;
 			width: 100%;
 			flex-direction: column;
-			overflow-y: scroll;
-			overflow-x: hidden;
+			overflow: hidden;
 		}
 
 		.racks-scroll,
@@ -2565,11 +2564,11 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	.overview-intro {
 		display: flex;
 		flex-direction: column;
-		gap: 12px;
+		gap: 8px;
 		flex-shrink: 0;
-		padding: 14px 16px 12px;
+		padding: 10px 14px;
 		text-align: left;
-		line-height: 1.5;
+		line-height: 1.45;
 		font-size: 12px;
 		color: $hashd-text;
 	}
@@ -2577,7 +2576,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	.overview-intro-copy-text {
 		width: 100%;
 		text-align: left;
-		line-height: 1.5;
+		line-height: 1.45;
 		white-space: normal;
 	}
 
@@ -2585,9 +2584,19 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		display: flex;
 		flex-direction: column;
 		align-items: stretch;
-		gap: 10px;
-		padding-top: 12px;
+		gap: 0;
+		padding-top: 8px;
 		border-top: 1px solid rgba(232, 125, 62, 0.28);
+	}
+
+	.overview-intro-terminal-row {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: 10px 12px;
+		width: 100%;
 	}
 
 	.overview-intro-terminal-status {
@@ -2616,7 +2625,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		align-items: center;
 		justify-content: flex-end;
 		flex: 0 0 auto;
-		width: 100%;
+		width: auto;
 	}
 
 	.overview-intro-terminal-actions .lp-ui-btn-primary,
@@ -2765,10 +2774,10 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 
 // Flat — single shell outline (StaffMenu .window); footer radius explicit for s&box clip.
 .lp-bitcoin-ops .shell {
-	border: 0;
+	border: 1px solid #374151;
 	border-radius: 22px;
 	overflow: hidden;
-	box-shadow: 0 0 0 1px #374151, 0 28px 64px rgba(0, 0, 0, 0.72);
+	box-shadow: 0 28px 64px rgba(0, 0, 0, 0.72);
 }
 
 .lp-bitcoin-ops .lp-window-watermark .lp-url-copy {
@@ -2782,6 +2791,14 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 
 .lp-bitcoin-ops .shell-body {
 	border: 0;
+	border-top-left-radius: 22px;
+	border-top-right-radius: 22px;
+	overflow: hidden;
+}
+
+.lp-bitcoin-ops .pin-gate {
+	border-top-left-radius: 22px;
+	border-top-right-radius: 22px;
 	overflow: hidden;
 }
 
@@ -2829,8 +2846,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	display: flex;
 	flex-direction: column;
 	gap: 14px;
-	overflow-y: scroll;
-	overflow-x: hidden;
+	overflow: hidden;
 	padding-bottom: 24px;
 }
 
@@ -2967,7 +2983,9 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 
 // Flat — overview intro banner (clip corners + padding; nested rules often fail in s&box).
 .lp-bitcoin-ops .overview-intro-shell {
+	flex: 0 0 auto;
 	flex-shrink: 0;
+	align-self: flex-start;
 	width: 100%;
 	border-radius: 10px;
 	overflow: hidden;
@@ -2978,14 +2996,15 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 .lp-bitcoin-ops .overview-intro {
 	display: flex;
 	flex-direction: column;
-	gap: 12px;
-	padding-top: 14px;
-	padding-right: 16px;
-	padding-bottom: 12px;
-	padding-left: 16px;
+	gap: 8px;
+	flex-shrink: 0;
+	padding-top: 10px;
+	padding-right: 14px;
+	padding-bottom: 10px;
+	padding-left: 14px;
 	text-align: left;
 	font-size: 12px;
-	line-height: 1.5;
+	line-height: 1.45;
 	color: #eceef3;
 }
 
@@ -3002,16 +3021,27 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	display: flex;
 	flex-direction: column;
 	align-items: stretch;
-	gap: 8px;
-	padding-top: 12px;
+	gap: 0;
+	padding-top: 8px;
 	padding-left: 0;
 	border-top: 1px solid rgba(232, 125, 62, 0.28);
 	border-left: 0;
 }
 
-.lp-bitcoin-ops .overview-intro-terminal-actions {
-	justify-content: flex-start;
+.lp-bitcoin-ops .overview-intro-terminal-row {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 10px 12px;
 	width: 100%;
+}
+
+.lp-bitcoin-ops .overview-intro-terminal-actions {
+	justify-content: flex-end;
+	flex: 0 0 auto;
+	width: auto;
 }
 
 .lp-bitcoin-ops .overview .lp-ui-split {
@@ -3037,8 +3067,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	width: 100%;
 	display: flex;
 	flex-direction: column;
-	overflow-y: scroll;
-	overflow-x: hidden;
+	overflow: hidden;
 }
 
 .lp-bitcoin-ops .racks-scroll,

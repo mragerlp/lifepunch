@@ -41,7 +41,7 @@ public static class DxrpPortalDevAuth
 		}
 
 		ServerApiLink.Token = token;
-		Log.Info( "lp_authorize: token set — initializing DXRP portal API..." );
+		Log.Info( "lp_authorize: token set — initializing DXRP portal API (player pulse waits for tenant ID)..." );
 		_ = InitializePortalApi();
 	}
 

@@ -31,4 +31,11 @@ public partial class ServerApiLink
 		_isInitialized = true;
 		LastPulseTime = 0;
 	}
+
+	/// <summary>
+	/// Player pulse requires <see cref="TenantId"/> (X-Tenant header). <c>lp_authorize</c> sets
+	/// <see cref="Token"/> before <see cref="ApplyDevPortalContext"/> finishes — gate until ready.
+	/// </summary>
+	public static bool IsPortalTenantReady =>
+		Current != null && !string.IsNullOrEmpty( Current.TenantId );
 }

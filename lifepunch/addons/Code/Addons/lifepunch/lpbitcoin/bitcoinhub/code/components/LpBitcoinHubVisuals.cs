@@ -32,12 +32,22 @@ public sealed class LpBitcoinHubVisuals : Component
 	/// <summary>Fine-tune after auto-align (prefab editor values stack on top).</summary>
 	[Property] public Vector3 FanManualOffset { get; set; }
 
+	/// <summary>Place <c>status_led</c> on the front-panel fence strip from body bounds (+X face).</summary>
+	[Property] public bool AutoAlignStatusLed { get; set; } = true;
+
+	/// <summary>Used when <see cref="AutoAlignStatusLed"/> is false — or nudge after auto-align.</summary>
+	[Property] public Vector3 StatusLedManualOffset { get; set; }
+
+	private GameObject _statusLedChild;
+	private PointLight _statusLight;
 	private GameObject _fanChild;
 	private Rotation _fanBaseLocalRotation = Rotation.Identity;
 	private float _fanSpeed;
 	private float _fanAngle;
 	private bool _lastPowered;
 	private bool _fanAlignPending = true;
+	private TimeSince _sinceStart;
+	private int _materialRefreshPasses;
 
 	private ModelRenderer _bodyRenderer;
 
@@ -52,8 +62,11 @@ public sealed class LpBitcoinHubVisuals : Component
 		                 ?? GameObject.Components.Get<SkinnedModelRenderer>( FindMode.EverythingInSelf ) as ModelRenderer;
 
 		CacheFanChild();
+		EnsureStatusLed();
 
 		_lastPowered = Hub is { IsPowered: true };
+		_sinceStart = 0;
+		_materialRefreshPasses = 0;
 		ApplyPowerVisuals( _lastPowered );
 	}
 
@@ -67,6 +80,7 @@ public sealed class LpBitcoinHubVisuals : Component
 		}
 
 		LpBitcoinPowerLeds.ApplyHubStatusLed( _bodyRenderer, powered );
+		UpdateStatusLight( powered );
 		UpdateHubFanSounds( powered );
 		_lastPowered = powered;
 
@@ -132,6 +146,13 @@ public sealed class LpBitcoinHubVisuals : Component
 		if ( Hub.IsPowered != _lastPowered )
 			ApplyPowerVisuals( Hub.IsPowered );
 
+		// Fence-led vmats/textures can compile a frame after spawn — reapply emissive briefly.
+		if ( _materialRefreshPasses < 6 && _sinceStart > _materialRefreshPasses * 0.35f )
+		{
+			_materialRefreshPasses++;
+			ApplyPowerVisuals( Hub.IsPowered );
+		}
+
 		UpdateFanRamp();
 
 		if ( !_fanChild.IsValid() || !_fanChild.Enabled || _fanSpeed <= 0f )
@@ -158,5 +179,71 @@ public sealed class LpBitcoinHubVisuals : Component
 	private void UpdateHubFanSounds( bool powered )
 	{
 		// Phase A — hub fan loop parked until fan child GO is positioned (HUB_FAN_SETUP.md).
+	}
+
+	private void EnsureStatusLed()
+	{
+		_statusLedChild = GameObject.Children
+			.FirstOrDefault( child => child.IsValid()
+			                          && child.Name.Equals( "status_led", System.StringComparison.OrdinalIgnoreCase ) );
+
+		if ( !_statusLedChild.IsValid() )
+		{
+			_statusLedChild = new GameObject( true, "status_led" );
+			_statusLedChild.Parent = GameObject;
+			_statusLedChild.LocalRotation = Rotation.Identity;
+		}
+
+		_statusLight = _statusLedChild.Components.Get<PointLight>( FindMode.EverythingInSelf );
+		if ( !_statusLight.IsValid() )
+			_statusLight = _statusLedChild.AddComponent<PointLight>();
+
+		_statusLight.Radius = 40f;
+		_statusLight.Attenuation = 2f;
+		_statusLight.Shadows = false;
+		AlignStatusLedPosition();
+	}
+
+	private void AlignStatusLedPosition()
+	{
+		if ( !_statusLedChild.IsValid() )
+			return;
+
+		if ( !AutoAlignStatusLed )
+		{
+			_statusLedChild.LocalPosition = StatusLedManualOffset;
+			return;
+		}
+
+		if ( !_bodyRenderer.IsValid() )
+			_bodyRenderer = GameObject.Components.Get<ModelRenderer>( FindMode.EverythingInSelf )
+			                 ?? GameObject.Components.Get<SkinnedModelRenderer>( FindMode.EverythingInSelf ) as ModelRenderer;
+
+		if ( !_bodyRenderer.IsValid() )
+			return;
+
+		var bounds = _bodyRenderer.LocalBounds;
+		if ( bounds.Size.Length < 0.01f )
+			return;
+
+		// Front grill / panel strip sits on +X after Y=90 ModelDoc import (see MODEL_BUILD.md).
+		_statusLedChild.LocalPosition = new Vector3(
+			bounds.Maxs.x - bounds.Size.x * 0.06f,
+			bounds.Center.y + bounds.Size.y * 0.12f,
+			bounds.Center.z ) + StatusLedManualOffset;
+	}
+
+	private void UpdateStatusLight( bool powered )
+	{
+		if ( !_statusLight.IsValid() )
+			EnsureStatusLed();
+
+		if ( !_statusLight.IsValid() )
+			return;
+
+		_statusLight.Enabled = true;
+		_statusLight.LightColor = powered
+			? new Color( 0.2f, 1f, 0.45f )
+			: new Color( 1f, 0.15f, 0.08f );
 	}
 }
