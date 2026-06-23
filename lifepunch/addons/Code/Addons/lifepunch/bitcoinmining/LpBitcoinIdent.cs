@@ -129,11 +129,11 @@ public static class LpBitcoinIdent
 
 	public const string TerminalDisplayName = "Bitcoin Terminal";
 	public const string TerminalModelPath =
-		"addons/lifepunch/lpbitcoin/hashdterminal/assets/models/hashd-terminal.vmdl";
+		"addons/lifepunch/lpbitcoin/hashdterminal/assets/models/hashdterminal.vmdl";
 
 	/// <summary>Terminal durability — matches DXRP money printer baseline (100).</summary>
 	public const float TerminalMaxHealth = 100f;
-	public const string TerminalPrefabPath = "addons/lifepunch/lpbitcoin/hashdterminal/assets/entities/hashd-terminal.prefab";
+	public const string TerminalPrefabPath = "addons/lifepunch/lpbitcoin/hashdterminal/assets/entities/hashdterminal.prefab";
 
 	/// <summary>HASHD hub + terminal UI — transparent Bitcoin mark (sidebar / PIN gate).</summary>
 	public const string BtcMarkPath = "addons/lifepunch/lpbitcoin/bitcoinhub/assets/ui/hashd/btc.png";

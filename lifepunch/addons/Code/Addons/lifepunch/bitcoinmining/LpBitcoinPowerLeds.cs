@@ -33,10 +33,6 @@ public static class LpBitcoinPowerLeds
 		"bitcoinhub-sm-fence-led"
 	];
 
-	/// <summary>Runtime copy label — must be content-relative and include <c>.vmat</c>.</summary>
-	private const string HubFenceLedStatusCopyPath =
-		"addons/lifepunch/lpbitcoin/bitcoinhub/assets/models/materials/bitcoinhub-sm-fence-led_status.vmat";
-
 	/// <summary>Hub fence LED — green ON, red OFF (static chassis, no anims).</summary>
 	public static void ApplyHubStatusLed( ModelRenderer renderer, bool powered )
 	{
@@ -88,7 +84,7 @@ public static class LpBitcoinPowerLeds
 			if ( !IsHubStatusLedMaterial( original ) )
 				continue;
 
-			var runtime = original.CreateCopy( HubFenceLedStatusCopyPath );
+			var runtime = original.CreateCopy();
 			runtime.Set( SelfIllumTintAttr, tint );
 			runtime.Set( SelfIllumScaleAttr, scale );
 			materials.SetOverride( i, runtime );

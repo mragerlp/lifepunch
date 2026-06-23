@@ -26,7 +26,8 @@ public static class LifePunchTerminalLcd
 			return false;
 
 		var modelPath = renderer.Model.ResourcePath ?? string.Empty;
-		if ( !modelPath.Contains( "hashd-terminal", StringComparison.OrdinalIgnoreCase ) )
+		if ( !modelPath.Contains( "hashdterminal", StringComparison.OrdinalIgnoreCase )
+		     && !modelPath.Contains( "hashd-terminal", StringComparison.OrdinalIgnoreCase ) )
 			return false;
 
 		var bounds = renderer.Model.Bounds;
