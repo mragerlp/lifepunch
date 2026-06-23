@@ -599,8 +599,15 @@ $shell-radius: 22px;
 			flex-direction: column;
 			min-height: 0;
 			overflow-y: auto;
-			padding: 6px 10px 16px 10px;
+			padding: 6px 10px 4px 10px;
 			gap: 0;
+
+			// Scroll slack so the last roster row clears the pinned settings footer.
+			.player-scroll-tail {
+				flex-shrink: 0;
+				height: 28px;
+				width: 100%;
+			}
 		}
 
 		.roster-section {
@@ -609,7 +616,7 @@ $shell-radius: 22px;
 			margin-bottom: 12px;
 
 			&:last-child {
-				margin-bottom: 4px;
+				margin-bottom: 0;
 			}
 
 			&.roster-section-collapsed {
