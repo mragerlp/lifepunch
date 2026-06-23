@@ -659,6 +659,20 @@
 
 												<div class="settings-sections">
 												<div class="settings-section lp-hashd-surface">
+													<div class="settings-label">UI Scale</div>
+													<div class="settings-hint">Resize the hub console window.</div>
+													<div class="panel-size-row">
+														@foreach ( var size in _uiScaleOptions )
+														{
+															<button class="panel-size-opt @( _uiScale == size ? "active" : "" )"
+															        onclick="@(() => SetUiScale( size ))">
+																@LpUiScale.ShortLabel( size )
+															</button>
+														}
+													</div>
+												</div>
+
+												<div class="settings-section lp-hashd-surface">
 													<div class="settings-label">Hub power</div>
 													<div class="settings-hint">Turn the HASHD hub on or off. Matches the header switch — racks stop accruing when power is off; nothing links while off.</div>
 													<div class="settings-actions">
@@ -744,6 +758,14 @@
 	private static readonly PerfRange[] _perfRanges = { PerfRange.Day, PerfRange.Week, PerfRange.Month };
 
 	private OpsTab _active = OpsTab.Overview;
+	private LpUiScaleSize _uiScale = LpUiScale.Default;
+	private static readonly LpUiScaleSize[] _uiScaleOptions =
+	{
+		LpUiScaleSize.Small,
+		LpUiScaleSize.Medium,
+		LpUiScaleSize.Large,
+		LpUiScaleSize.ExtraLarge
+	};
 	private Guid _upgradeRackId = Guid.Empty;
 	private Guid _rackSlotCopyAckId = Guid.Empty;
 	private bool _receiveCopyAck;
@@ -1191,7 +1213,13 @@
 	private void SelectTransfersTab() => SelectTab( OpsTab.Transfers );
 	private void SelectRacksTab() => SelectTab( OpsTab.Racks );
 	private void OpenSettings() => SelectTab( OpsTab.Settings );
-	private string GetRootClass() => $"lp-bitcoin-ops lp-ui-accent-hashd {LpUiScale.CssClass( LpUiScale.Default )}";
+	private string GetRootClass() => $"lp-bitcoin-ops lp-ui-accent-hashd {LpUiScale.CssClass( _uiScale )}";
+
+	private void SetUiScale( LpUiScaleSize size )
+	{
+		_uiScale = size;
+		LifePunchUiScrollPolicy.ResetOffsets( Panel );
+	}
 	private void Close() => LpHashdUiHost.CloseOpen();
 	private void PowerOn() => Hub?.SetPowered( true );
 	private void PowerOff() => Hub?.SetPowered( false );
@@ -1774,8 +1802,11 @@
 		hash.Add( Hub?.Owner ?? 0 );
 		hash.Add( _cashOutSuccessActive );
 		hash.Add( _cashOutSuccessVisible );
+		hash.Add( _cashOutSuccessMessage );
 		hash.Add( _cashOutErrorActive );
 		hash.Add( _cashOutErrorVisible );
+		hash.Add( _cashOutErrorMessage );
+		hash.Add( _uiScale );
 		return hash.ToHashCode();
 	}
 }
