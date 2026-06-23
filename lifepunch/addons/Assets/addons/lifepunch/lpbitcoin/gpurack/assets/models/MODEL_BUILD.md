@@ -4,8 +4,8 @@
 
 | Tier | vmdl (compile `_c` here) | prefab | FBX |
 |------|--------------------------|--------|-----|
-| Single (baseline) | **`gpurack.vmdl`** | `gpurack.prefab` | `source/fbx/gpu-rack-anim.fbx` |
-| Stacked farm | **`advancedgpurack.vmdl`** | `advancedgpurack.prefab` | `source/fbx/gpu-rack-stacked-anim.fbx` |
+| Single (baseline) | **`gpurack.vmdl`** | `gpurack.prefab` | `source/fbx/gpurack.fbx` |
+| Stacked farm | **`advancedgpurack.vmdl`** | `advancedgpurack.prefab` | `source/fbx/advancedgpurack.fbx` |
 
 **Retired (do not compile):** `gpu-rack.vmdl`, `gpu-rack-stacked.vmdl`, `gpu-rack.prefab`, `gpu-rack-stacked.prefab` — removed Jun 2026.
 
@@ -15,7 +15,7 @@
 
 | Step | Action |
 |------|--------|
-| 1 | Single: open **`gpurack.vmdl`** — FBX = `GPU_Farm_Anim.fbx`. Stacked: open **`advancedgpurack.vmdl`** — FBX = stacked farm (see vmdl import path) |
+| 1 | Single: open **`gpurack.vmdl`** — FBX = **`gpurack.fbx`**. Stacked: open **`advancedgpurack.vmdl`** — FBX = **`advancedgpurack.fbx`** |
 | 2 | Stacked import filter must include **`Mining_Rig_Stacked`**. Single-rack names (`FanBox_*`, `Rack_Frame`, …) do not exist in the stacked FBX. |
 | 3 | Confirm remaps + five vmats compile clean (subfolder texture paths) |
 

@@ -6,8 +6,8 @@ Fresh art lives under `assets/textures/{Wires,GPU_Rack,Power_Supply,Motherboard,
 
 | Tier | Prefab | ModelDoc | FBX source |
 |------|--------|----------|------------|
-| **Single rack** (baseline) | `assets/entities/gpurack.prefab` | **`assets/models/gpurack.vmdl`** | `assets/source/fbx/gpu-rack-anim.fbx` |
-| **Stacked farm** (upgrade) | `assets/entities/advancedgpurack.prefab` | **`assets/models/advancedgpurack.vmdl`** | `assets/source/fbx/gpu-rack-stacked-anim.fbx` |
+| **Single rack** (baseline) | `assets/entities/gpurack.prefab` | **`assets/models/gpurack.vmdl`** | `assets/source/fbx/gpurack.fbx` |
+| **Stacked farm** (upgrade) | `assets/entities/advancedgpurack.prefab` | **`assets/models/advancedgpurack.vmdl`** | `assets/source/fbx/advancedgpurack.fbx` |
 
 Shared: five `gpu-rack-*.vmat` · `material-map.json` · `LpBitcoinRackEntity` gameplay.
 

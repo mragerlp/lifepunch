@@ -9,7 +9,7 @@
     {
       "displayName": "GPU rack (single)",
       "slug": "gpurack",
-      "sourceFbx": "assets/source/fbx/gpu-rack-anim.fbx",
+      "sourceFbx": "assets/source/fbx/gpurack.fbx",
       "targetModel": "assets/models/gpurack.vmdl",
       "targetPrefab": "assets/entities/gpurack.prefab",
       "importScale": 0.72,
@@ -18,7 +18,7 @@
     {
       "displayName": "GPU rack (stacked farm)",
       "slug": "advancedgpurack",
-      "sourceFbx": "assets/source/fbx/gpu-rack-stacked-anim.fbx",
+      "sourceFbx": "assets/source/fbx/advancedgpurack.fbx",
       "staticObj": "assets/source/GPU_Farm_Static.obj",
       "targetModel": "assets/models/advancedgpurack.vmdl",
       "targetPrefab": "assets/entities/advancedgpurack.prefab",
