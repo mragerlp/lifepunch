@@ -7,9 +7,8 @@ See ASSET_CLASSIFICATION_LAW.md - do not merge this package with visually simila
 ## Slot status
 
 ### advancedgpurack
-- **Retired slot** — merged into `gpurack/` (single stacked farm tier).
-- Do not add assets under `_archive/advancedgpurack-intake/` except docs/source.
-- Canonical: `gpurack/assets/models/gpu-rack-stacked.vmdl` + `gpurack/assets/entities/gpu-rack.prefab`
+- **Stacked farm tier** — `gpurack/assets/models/advancedgpurack.vmdl` + `gpurack/assets/entities/advancedgpurack.prefab`
+- Compile target: **`advancedgpurack.vmdl_c`** only (not `gpu-rack-stacked.vmdl_c`)
 
 ### bitcoinhub
 - Role: Bitcoin HUB (admin capstone)
@@ -21,19 +20,19 @@ See ASSET_CLASSIFICATION_LAW.md - do not merge this package with visually simila
 - Note: Fan spin = child GO Phase 2
 
 ### gpurack
-- Role: GPU Rack (standard)
-- Primary: assets/source/obj/GPU_Farm_Static.obj
+- Role: GPU Rack (standard single + stacked farm in same slot folder)
+- Primary: `assets/models/gpurack.vmdl` (single) · `assets/models/advancedgpurack.vmdl` (stacked)
+- Prefabs: `assets/entities/gpurack.prefab` · `assets/entities/advancedgpurack.prefab`
+- Compile `_c`: **`gpurack.vmdl_c`** + **`advancedgpurack.vmdl_c`** only
 - FBX/OBJ/Blend/Tex: 0/1/1/32 | 34.61 MB
-- Confirm static OBJ vs blend export for ModelDoc body
-- WARN: primary_mesh is OBJ â€” OK for ModelDoc OBJ import; prefer FBX if Fab provides one
-- Note: No static FBX in Fab pack â€” static OBJ + blend are source of truth
-- Note: Anim FBX archived under assets/source/fbx/_reference_anim for fan study only
+- Note: Anim FBX under `assets/source/fbx/` for ModelDoc import
 
 ### hashdterminal
 - Role: HASHD Terminal
-- Primary: assets/source/fbx/PC.fbx
+- Primary: `assets/models/hashdterminal.vmdl` · `assets/entities/hashdterminal.prefab`
+- Source: `assets/source/fbx/PC.fbx`
+- Compile `_c`: **`hashdterminal.vmdl_c`** only (not `hashd-terminal.vmdl_c`)
 - FBX/OBJ/Blend/Tex: 1/0/1/22 | 585.64 MB
-- Issues: none flagged
 
 ## Pending ModelDoc metrics
 - Triangle counts: run after vmdl compile (not available from filesystem scan)

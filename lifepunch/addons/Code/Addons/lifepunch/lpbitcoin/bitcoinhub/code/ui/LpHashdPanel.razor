@@ -158,10 +158,8 @@
 								{
 									<div class="pane overview">
 										<div class="overview-intro-shell">
-											<div class="lp-ui-intro overview-intro">
-												<div class="overview-intro-copy">
-													<span class="overview-intro-copy-text">Buy from DXRP Market → place hub → set PIN → <strong>power on</strong> (header switch) → link terminal → register up to @($"{LpBitcoinIdent.PortalMaxRacksPerHub} GPU") racks at rig0 on the CRT.</span>
-												</div>
+											<div class="overview-intro">
+												<div class="overview-intro-copy-text">@OverviewIntroCopyLine()</div>
 												<div class="overview-intro-terminal">
 													<div class="overview-intro-terminal-status">
 														<span class="lp-ui-status-dot @(HasLinkedTerminal() ? "on" : HasNearbyUnlinkedTerminal() ? "warn" : "off")"></span>
@@ -217,7 +215,7 @@
 												}
 												else
 												{
-													<div class="overview-miners-scroll">
+													<div class="lp-ui-scroll-region overview-miners-scroll">
 														@for ( var i = 0; i < GetLinkedRacks().Count; i++ )
 														{
 															var rack = GetLinkedRacks()[i];
@@ -329,7 +327,7 @@
 											}
 											else
 											{
-												<div class="racks-scroll">
+												<div class="lp-ui-scroll-region racks-scroll">
 													<div class="rack-grid">
 														@for ( var i = 0; i < GetLinkedRacks().Count; i++ )
 														{
@@ -395,7 +393,7 @@
 													<strong>@RackSlotDisplayLabel( upgradeRack )</strong> · @RackYieldLabel( upgradeRack ) · @RackHardwareLine( upgradeRack ) — Purchases debit your in-game cash. Mining start/stop stays on the CRT. rig0 slot: <strong>@RackSlotTerminalToken( upgradeRack )</strong>
 												</div>
 
-												<div class="upgrades-scroll">
+												<div class="lp-ui-scroll-region upgrades-scroll">
 													<div class="upgrade-tracks">
 														<div class="upgrade-track lp-hashd-surface">
 															<div class="upgrade-track-head">
@@ -566,7 +564,7 @@
 														</div>
 													</div>
 													<div class="lp-ui-btn-row transfer-btn-row">
-														<button class="lp-ui-btn-ghost transfer-copy-btn" onclick="@CopyReceiveAddress">
+														<button class="lp-ui-btn-ghost transfer-copy-btn @(_receiveCopyAck ? "is-copied" : "")" onclick="@CopyReceiveAddress">
 															<i class="material-icons">content_copy</i>
 															<span>@ReceiveCopyLabel()</span>
 														</button>
@@ -594,7 +592,7 @@
 														<div class="transfer-command-text">send 76561198012345678 0.05</div>
 													</div>
 													<div class="lp-ui-btn-row transfer-btn-row">
-														<button class="lp-ui-btn-ghost transfer-copy-btn" onclick="@CopySendExample">
+														<button class="lp-ui-btn-ghost transfer-copy-btn @(_sendExampleCopyAck ? "is-copied" : "")" onclick="@CopySendExample">
 															<i class="material-icons">content_copy</i>
 															<span>@SendExampleCopyLabel()</span>
 														</button>
@@ -626,7 +624,7 @@
 											}
 											else
 											{
-												<div class="logs-scroll">
+												<div class="lp-ui-scroll-region logs-scroll">
 													<div class="notif-list">
 														@foreach ( var alert in GetHubAlerts() )
 														{
@@ -654,7 +652,7 @@
 												<span>Settings</span>
 											</div>
 
-											<div class="settings-scroll">
+											<div class="lp-ui-scroll-region settings-scroll">
 												<div class="lp-ui-intro">
 													Hub power, PIN security, and terminal linking. Changes apply immediately on this hub.
 												</div>
@@ -833,6 +831,7 @@
 	{
 		LifePunchMenuInputBlock.NotifyMenuOpened();
 		LpBitcoinHudBridge.SetMenuCursorMode( true );
+		LifePunchScrollRegionBootstrap.Upgrade( Panel );
 		LifePunchUiScrollPolicy.Apply( Panel );
 		_sinceTelemetryRefresh = TelemetryRefreshInterval;
 		_sinceLogTimeRefresh = LogTimeRefreshInterval;
@@ -967,6 +966,9 @@
 
 	private string RackSlotCopyHint( LpBitcoinRackEntity rack )
 		=> _rackSlotCopyAckId == rack.GameObject.Id ? "Copied!" : "Copy";
+
+	private static string OverviewIntroCopyLine()
+		=> $"Buy from DXRP Market → place hub → set PIN → power on (header switch) → link terminal → register up to {LpBitcoinIdent.PortalMaxRacksPerHub} GPU racks at rig0 on the CRT.";
 
 	private static string RackYieldLabel( LpBitcoinRackEntity rack )
 		=> !rack.IsValid()
@@ -1662,6 +1664,8 @@
 	{
 		base.OnUpdate();
 		LifePunchMenuInputBlock.Apply();
+		// s&box flex scroll: upgrade lp-ui-scroll-region → LifePunchScrollRegionPanel (manual wheel).
+		LifePunchScrollRegionBootstrap.Upgrade( Panel );
 		LifePunchUiScrollPolicy.Apply( Panel );
 
 		if ( !_hub.IsValid() )

@@ -154,6 +154,12 @@ public static class LifePunchScrollRegionBootstrap
 
 	private static string GetScrollSlotClass( Panel panel )
 	{
+		if ( panel.HasClass( "settings-scroll" ) )
+			return "settings-scroll";
+
+		if ( panel.HasClass( "overview-miners-scroll" ) )
+			return "overview-miners-scroll";
+
 		if ( panel.HasClass( "upgrades-scroll" ) )
 			return "upgrades-scroll";
 

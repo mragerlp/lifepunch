@@ -365,4 +365,4 @@ if (Test-Path -LiteralPath $tailwandConfigSrc) {
 
 Write-Host 'Sync OK' -ForegroundColor Green
 Write-Host '  Editor assets: Assets/addons/lifepunch/lpbitcoin/{bitcoinhub,hashdterminal,gpurack} only.' -ForegroundColor Yellow
-Write-Host '  Recompile in ModelDoc: bitcoinhub.vmdl, gpu-rack-stacked.vmdl, hashd-terminal.vmdl, then entity prefabs.' -ForegroundColor DarkGray
+Write-Host '  Recompile in ModelDoc: bitcoinhub.vmdl, gpurack.vmdl, advancedgpurack.vmdl, hashdterminal.vmdl, then entity prefabs.' -ForegroundColor DarkGray

@@ -1,8 +1,11 @@
 # HASHD Terminal — ModelDoc foundation pass
 
 **Source:** `assets/source/fbx/pc.fbx`  
-**vmdl:** `assets/models/hashd-terminal.vmdl`  
+**vmdl (compile `_c` here):** **`assets/models/hashdterminal.vmdl`**  
+**prefab:** `assets/entities/hashdterminal.prefab`  
 **Phase:** B — Terminal (Model Foundation)
+
+**Retired:** `hashd-terminal.vmdl`, `hashd-terminal.prefab` — do not compile or publish.
 
 ## ModelDoc settings (v1)
 
@@ -40,10 +43,16 @@ Saving vmats from the **Material Editor UI** can rewrite the file as `// THIS FI
 
 ## Compile order
 
-1. Open `hashd-terminal.vmdl` in ModelDoc
+1. Open **`hashdterminal.vmdl`** in ModelDoc
 2. Recompile vmats first, then vmdl
 3. Fix slot remaps if ModelDoc shows unmapped materials
-4. Scene proof: `_dev/scenes/lifepunch-modeldoc.scene`
+4. Pull compiled output:
+
+```powershell
+powershell -File lifepunch\scripts\Pull-DxrpCompiledAssetsToRepo.ps1 -Addon lpbitcoin
+```
+
+5. Scene proof: `_dev/scenes/lifepunch-modeldoc.scene`
 
 ## Sign-off gate (Phase B)
 

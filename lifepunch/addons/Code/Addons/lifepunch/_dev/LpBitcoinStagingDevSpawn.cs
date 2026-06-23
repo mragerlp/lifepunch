@@ -32,7 +32,7 @@ public static class LpBitcoinStagingDevSpawn
 		"addons/lifepunch/lpbitcoin/bitcoinhub/assets/entities/bitcoinhub.prefab";
 
 	public const string StagingTerminalVmdl =
-		"addons/lifepunch/lpbitcoin/hashdterminal/assets/models/hashd-terminal.vmdl";
+		"addons/lifepunch/lpbitcoin/hashdterminal/assets/models/hashdterminal.vmdl";
 
 	public const string ShippedTerminalPrefab = LpBitcoinIdent.TerminalPrefabPath;
 
@@ -220,7 +220,7 @@ public static class LpBitcoinStagingDevSpawn
 		}
 
 		ClearStagingTerminal( scene );
-		SpawnModelPreview( scene, "hashd-terminal", StagingTerminalVmdl, transform,
+		SpawnModelPreview( scene, "hashdterminal", StagingTerminalVmdl, transform,
 			"HASHD terminal mesh-only — use lp_spawn_staging_terminal for gameplay entity" );
 	}
 
@@ -249,7 +249,7 @@ public static class LpBitcoinStagingDevSpawn
 		var prefabGo = ClonePrefabAt( ShippedTerminalPrefab, left );
 		if ( prefabGo.IsValid() )
 			prefabGo.Name = "staging-terminal-prefab";
-		SpawnModelPreview( scene, "hashd-terminal", StagingTerminalVmdl, right, "hashd-terminal.vmdl (right)" );
+		SpawnModelPreview( scene, "hashdterminal", StagingTerminalVmdl, right, "hashdterminal.vmdl (right)" );
 		Log.Info( "lp_staging_terminal_compare: prefab left, raw vmdl right — same market spawn row." );
 	}
 

@@ -57,12 +57,12 @@ if (Test-Path -LiteralPath $StackedIn) {
 }
 
 Write-Host ''
-Write-Host 'Next: run with -UpdateVmdl to point gpu-rack*.vmdl at *-rigged.fbx, then compile in ModelDoc + Pull-DxrpCompiledAssetsToRepo.' -ForegroundColor Yellow
+Write-Host 'Next: run with -UpdateVmdl to point gpurack.vmdl / advancedgpurack.vmdl at *-rigged.fbx, then compile in ModelDoc + Pull-DxrpCompiledAssetsToRepo -Addon lpbitcoin.' -ForegroundColor Yellow
 
 if (-not $WhatIf -and $UpdateVmdl) {
-    $modelDir = Split-Path $ModelSource -Parent
-    $vmdlSingle = Join-Path $modelDir 'gpu-rack.vmdl'
-    $vmdlStacked = Join-Path $modelDir 'gpu-rack-stacked.vmdl'
+    $modelDir = Join-Path $AddonsRoot 'Assets\addons\lifepunch\lpbitcoin\gpurack\assets\models'
+    $vmdlSingle = Join-Path $modelDir 'gpurack.vmdl'
+    $vmdlStacked = Join-Path $modelDir 'advancedgpurack.vmdl'
     foreach ($pair in @(
             @{ Vmdl = $vmdlSingle; From = 'gpu-rack-anim.fbx'; To = 'gpu-rack-anim-rigged.fbx' },
             @{ Vmdl = $vmdlStacked; From = 'gpu-rack-stacked-anim.fbx'; To = 'gpu-rack-stacked-anim-rigged.fbx' }

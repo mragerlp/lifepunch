@@ -2,19 +2,20 @@
   "schemaVersion": 1,
   "product": {
     "displayName": "HASHD Terminal",
-    "entitySlug": "hashd-terminal",
+    "entitySlug": "hashdterminal",
     "package": "lpbitcoin"
   },
   "model": {
     "displayName": "HASHD terminal",
-    "slug": "hashd-terminal",
+    "slug": "hashdterminal",
     "activeSource": "assets/source/fbx/pc.fbx",
     "sourceCanonical": "assets/source/fbx/hashd-terminal.fbx",
     "blendArchive": "assets/source/blend/hashd-terminal.blend",
     "ownerDrop": "Desktop/addon test/addons/lifepunch/lpbitcoin/hashdterminal/assets/source/HASHDTerminal.{blend,fbx}",
-    "targetModel": "assets/models/hashd-terminal.vmdl",
+    "targetModel": "assets/models/hashdterminal.vmdl",
+    "targetPrefab": "assets/entities/hashdterminal.prefab",
     "importScale": 0.286,
-    "notes": "Greenfield HASHDTerminal export (Jun 2026). pc.fbx is vmdl alias. 0.286 targets ~legacy terminal bounds (~20u tall)."
+    "notes": "Greenfield HASHDTerminal export (Jun 2026). pc.fbx is vmdl alias. Compile hashdterminal.vmdl_c only — not hashd-terminal.vmdl."
   },
   "materials": [
     {

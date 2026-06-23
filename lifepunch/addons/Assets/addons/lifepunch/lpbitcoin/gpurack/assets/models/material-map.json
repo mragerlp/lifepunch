@@ -2,26 +2,26 @@
   "schemaVersion": 2,
   "product": {
     "displayName": "GPU Rack",
-    "entitySlug": "gpu-rack",
+    "entitySlug": "gpurack",
     "package": "lpbitcoin"
   },
   "models": [
     {
       "displayName": "GPU rack (single)",
-      "slug": "gpu-rack",
+      "slug": "gpurack",
       "sourceFbx": "assets/source/fbx/gpu-rack-anim.fbx",
-      "targetModel": "assets/models/gpu-rack.vmdl",
-      "targetPrefab": "assets/entities/gpu-rack.prefab",
+      "targetModel": "assets/models/gpurack.vmdl",
+      "targetPrefab": "assets/entities/gpurack.prefab",
       "importScale": 0.72,
       "importRotation": [0, 90, 0]
     },
     {
       "displayName": "GPU rack (stacked farm)",
-      "slug": "gpu-rack-stacked",
+      "slug": "advancedgpurack",
       "sourceFbx": "assets/source/fbx/gpu-rack-stacked-anim.fbx",
       "staticObj": "assets/source/GPU_Farm_Static.obj",
-      "targetModel": "assets/models/gpu-rack-stacked.vmdl",
-      "targetPrefab": "assets/entities/gpu-rack-stacked.prefab",
+      "targetModel": "assets/models/advancedgpurack.vmdl",
+      "targetPrefab": "assets/entities/advancedgpurack.prefab",
       "importScale": 0.72,
       "importRotation": [0, 90, 0]
     }
@@ -35,7 +35,7 @@
   ],
   "modelDoc": {
     "useGlobalDefault": true,
-    "note": "KV3 true compiles full body; per-slot remaps still bind ship vmats. ModelDoc UI uncheck (false) only after every FBX slot is remapped — else fans-only _c.",
+    "note": "KV3 true compiles full body; per-slot remaps still bind ship vmats. Compile gpurack.vmdl + advancedgpurack.vmdl only — not gpu-rack*.vmdl.",
     "extraRemaps": ["Wires_Cord", "GPU_GraphicsCard", "PSU_Power", "Rack_Frame", "Motherboard_Base", "FanBlades.*", "GPU_Fan_*"]
   }
 }

@@ -28,9 +28,9 @@ Open DXRP project → scene `_dev/scenes/lifepunch-modeldoc.scene` or flatgrass 
 | Phase | Path |
 |-------|------|
 | A Hub | `addons/lifepunch/lpbitcoin/bitcoinhub/assets/models/` (promote Steam Machine here) |
-| B Terminal | `addons/lifepunch/lpbitcoin/hashdterminal/assets/models/hashd-terminal.vmdl` |
-| C Small rack | `addons/lifepunch/lpbitcoin/gpurack/assets/models/gpu-rack.vmdl` |
-| C Stacked | `addons/lifepunch/lpbitcoin/advancedgpurack/assets/models/gpu-rack-stacked.vmdl` |
+| B Terminal | `addons/lifepunch/lpbitcoin/hashdterminal/assets/models/hashdterminal.vmdl` |
+| C Small rack | `addons/lifepunch/lpbitcoin/gpurack/assets/models/gpurack.vmdl` |
+| C Stacked | `addons/lifepunch/lpbitcoin/gpurack/assets/models/advancedgpurack.vmdl` |
 
 **Active dev playtest (legacy paths OK):** `bitcoinmining/models/.../bitcoin-miner/` · `lp_bitcoin_spawn_hub`
 
@@ -55,7 +55,7 @@ Open DXRP project → scene `_dev/scenes/lifepunch-modeldoc.scene` or flatgrass 
 **Done when:** T1–T6 in polish checklist + Phase B boxes in ACTIVE_WORKSTREAM.
 
 1. Compile vmats first (`hashd-terminal-monitor.vmat`, `hashd-terminal-keyboard.vmat`).
-2. Compile `hashd-terminal.vmdl` — fix remaps if PC.fbx slots differ from Monitor / Keyboard_mause.
+2. Compile **`hashdterminal.vmdl`** — fix remaps if PC.fbx slots differ from Monitor / Keyboard_mause.
 3. Tune scale (seed **0.0272** from legacy — likely needs adjustment vs hub).
 4. CRT glow: monitor emissive readable at night (amber HASHD).
 5. **Stop at mesh** — CRT UI / rig0 loop is code phase after mesh sign-off.
@@ -66,13 +66,13 @@ Open DXRP project → scene `_dev/scenes/lifepunch-modeldoc.scene` or flatgrass 
 
 **Done when:** R8 + Phase C boxes (small + stacked + flatgrass kit).
 
-### Small rack (`gpu-rack.vmdl`)
+### Small rack (`gpurack.vmdl`)
 
 1. Compile 5 vmats under `gpurack/assets/models/materials/`.
 2. Compile vmdl — source `source/fbx/gpu-rack-anim.fbx`, scale **0.395**, rot **0,90,0**.
 3. GPU emission on = mining readable.
 
-### Stacked rack (`gpu-rack-stacked.vmdl`)
+### Stacked rack (`advancedgpurack.vmdl`)
 
 1. Reuses gpurack vmats (advancedgpurack has no texture dupes).
 2. Compile stacked vmdl — verify `power_on` + `Mining_Rig_Stacked` anims.
@@ -90,9 +90,9 @@ Open DXRP project → scene `_dev/scenes/lifepunch-modeldoc.scene` or flatgrass 
 | Entity | vmdl | vmats | FBX canonical |
 |--------|------|-------|---------------|
 | bitcoinhub | `bitcoin-hub.vmdl` | `generic-pc-desktop.vmat` | `source/fbx/generic-pc-desktop.fbx` |
-| hashdterminal | `hashd-terminal.vmdl` | monitor + keyboard | `source/fbx/PC.fbx` |
-| gpurack | `gpu-rack.vmdl` | 5 slot vmats | `source/fbx/gpu-rack-anim.fbx` (copied) |
-| advancedgpurack | `gpu-rack-stacked.vmdl` | shares gpurack | `source/fbx/gpu-rack-stacked-anim.fbx` |
+| hashdterminal | `hashdterminal.vmdl` | monitor + keyboard | `source/fbx/PC.fbx` |
+| gpurack | `gpurack.vmdl` | 5 slot vmats | `source/fbx/gpu-rack-anim.fbx` (copied) |
+| advancedgpurack | `advancedgpurack.vmdl` | shares gpurack | `source/fbx/gpu-rack-stacked-anim.fbx` |
 
 Each entity has `assets/models/MODEL_BUILD.md` + `material-map.json` where applicable.
 

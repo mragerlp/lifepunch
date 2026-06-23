@@ -288,15 +288,15 @@
       "notes": "IP: docs/BITCOINMINING_IP_DOCTRINE.md. Hub + GPU Rack farm (stacked mesh, max 3/operator). Portal Rev 2 pinned on LIFEPUNCH™ Development gamemode. Ship-tier Rev 3+: upload from .dxrp-publish/upload via prepare-publish.ps1. Remove BitcoinMiningDevSpawn before ship publish.",
       "contents": [
         {
-          "slug": "bitcoin-terminal",
+          "slug": "hashdterminal",
           "name": "Bitcoin Terminal",
           "label": "Bitcoin Terminal",
           "type": 0,
-          "primaryReference": "addons/lifepunch/lpbitcoin/hashdterminal/assets/entities/hashd-terminal.prefab",
-          "worldModelPath": "addons/lifepunch/lpbitcoin/hashdterminal/assets/models/hashd-terminal.vmdl",
+          "primaryReference": "addons/lifepunch/lpbitcoin/hashdterminal/assets/entities/hashdterminal.prefab",
+          "worldModelPath": "addons/lifepunch/lpbitcoin/hashdterminal/assets/models/hashdterminal.vmdl",
           "grouping": "Entities",
           "implementationStatus": "terminal-hub-hashd",
-          "modelBuild": "Assets/addons/lifepunch/bitcoinmining/models/lifepunch/bitcoinmining/bitcoin-terminal/MODEL_BUILD.md"
+          "modelBuild": "Assets/addons/lifepunch/lpbitcoin/hashdterminal/assets/models/MODEL_BUILD.md"
         },
         {
           "slug": "bitcoinhub",
@@ -311,16 +311,28 @@
           "notes": "Steam Machine hub — canonical path lpbitcoin/bitcoinhub. Legacy bitcoin-miner tree MOVED.md only."
         },
         {
-          "slug": "gpu-rack",
+          "slug": "gpurack",
           "name": "GPU Rack",
           "label": "GPU Rack",
           "type": 0,
-          "primaryReference": "addons/lifepunch/lpbitcoin/gpurack/assets/entities/gpu-rack.prefab",
-          "worldModelPath": "addons/lifepunch/lpbitcoin/gpurack/assets/models/gpu-rack-stacked.vmdl",
+          "primaryReference": "addons/lifepunch/lpbitcoin/gpurack/assets/entities/gpurack.prefab",
+          "worldModelPath": "addons/lifepunch/lpbitcoin/gpurack/assets/models/gpurack.vmdl",
           "grouping": "Entities",
           "implementationStatus": "gpu-rack-farm-phase1",
           "modelBuild": "Assets/addons/lifepunch/lpbitcoin/gpurack/assets/models/MODEL_BUILD.md",
-          "notes": "Single ship tier — stacked farm mesh (BITCOINMINING-07). Prefab path rename to gpurack/ pending."
+          "notes": "Single rack baseline. Stacked tier: advancedgpurack.vmdl + advancedgpurack.prefab. Compile _c for gpurack + advancedgpurack only."
+        },
+        {
+          "slug": "advancedgpurack",
+          "name": "Advanced GPU Rack",
+          "label": "Advanced GPU Rack",
+          "type": 0,
+          "primaryReference": "addons/lifepunch/lpbitcoin/gpurack/assets/entities/advancedgpurack.prefab",
+          "worldModelPath": "addons/lifepunch/lpbitcoin/gpurack/assets/models/advancedgpurack.vmdl",
+          "grouping": "Entities",
+          "implementationStatus": "gpu-rack-farm-phase1",
+          "modelBuild": "Assets/addons/lifepunch/lpbitcoin/gpurack/assets/models/MODEL_BUILD.md",
+          "notes": "Stacked farm mesh — 2× yield tier when AdvancedRack gameplay ships."
         }
       ]
     },
