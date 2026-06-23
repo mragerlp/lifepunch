@@ -831,11 +831,9 @@
 	}
 
 	/// <summary>
-	/// Ordered staff sub-groups under the "Staff" parent. The configurable reference ladder
-	/// (<see cref="StaffMenuConfig.ReferenceTiers"/>) is always shown — even empty, as "(0)" — for at-a-
-	/// glance context. Online staff are merged into the matching tier by their real portal rank name
-	/// (case/whitespace-insensitive); any online staff whose rank doesn't match a reference tier (another
-	/// server's custom ranks) is appended afterwards, highest rank order first.
+	/// Staff sub-groups under the "Staff" parent — one row per portal rank name that has someone online
+	/// with staff-menu permissions, highest portal rank order first. Optional
+	/// <see cref="StaffMenuConfig.ReferenceTiers"/> may add empty "(0)" placeholder tiers when populated.
 	/// </summary>
 	private List<(string Name, List<StaffMenuPlayer> Players)> StaffTierGroups()
 	{
@@ -850,13 +848,13 @@
 				.ToList() ) );
 		}
 
-		foreach ( var extra in staff
+		foreach ( var online in staff
 			.Where( p => !StaffMenuConfig.ReferenceTiers.Any( t => string.Equals( t.Name.Trim(), p.GroupName.Trim(), StringComparison.OrdinalIgnoreCase ) ) )
 			.GroupBy( p => p.GroupName )
 			.OrderByDescending( g => g.Max( p => p.GroupOrder ) )
 			.ThenBy( g => g.Key ) )
 		{
-			groups.Add( ( extra.Key, extra.OrderBy( p => p.Name ).ToList() ) );
+			groups.Add( ( online.Key, online.OrderBy( p => p.Name ).ToList() ) );
 		}
 
 		return groups;

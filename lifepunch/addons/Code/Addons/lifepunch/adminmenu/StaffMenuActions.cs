@@ -202,36 +202,16 @@ public static class StaffMenuActions
 public static class StaffMenuConfig
 {
 	/// <summary>
-	/// Server-owner-configurable reference ladder (the ONLY per-server config in the whole addon).
+	/// Optional reference ladder placeholders under "Staff" (the only per-server config in the addon).
 	///
-	/// What's always automatic, regardless of this list:
-	///  • Which ACTIONS each viewer sees — gated purely by RankSystem.HasPermission against that server's
-	///    real portal ranks (by permission, not rank name). Fully server-agnostic, zero config.
-	///  • Online staff GROUPING — every online staffer is filed under their real portal rank name
-	///    (sanitized), so custom ranks ("Trial Mod", "Head Admin", …) appear automatically.
+	/// Default is empty — fully server-agnostic: the sidebar lists only portal ranks that have someone
+	/// online with real staff-menu permissions, grouped by their live portal rank name. No hardcoded
+	/// LifePunch empty "(0)" rows on other servers.
 	///
-	/// What this list controls: the ALWAYS-shown placeholder tiers under "Staff" (rendered even when nobody
-	/// of that rank is online, as "(0)") so staff see the ladder at a glance. Online staff are merged into a
-	/// matching placeholder by rank name (case/whitespace-insensitive); any online rank that doesn't match a
-	/// placeholder is appended afterwards as its own real category. Order only drives display sort.
-	///
-	/// Per-server / resale guidance (hybrid model):
-	///  • Default below = the DXRP.net ladder, so it works out-of-box on DXRP.net.
-	///  • Other servers: edit the names to match their portal ranks, OR clear this list entirely
-	///    (Array.Empty) for FULLY DYNAMIC behaviour — then only the ranks of players actually online are
-	///    shown, with no empty placeholders. Both degrade gracefully.
-	///
-	/// NOTE: DXRP doesn't expose the full rank ladder client-side (RankSystem.Ranks is private + host-only),
-	/// so we can't auto-derive empty tiers from the backend — this curated reference list is the clean
-	/// interim. See TECH_DEBT STAFF-05.
+	/// Always automatic: action visibility and staff vs Players come from portal permissions, not this list.
+	/// Optional override: populate tiers here if an owner wants always-visible empty rows merged by rank name.
 	/// </summary>
-	public static readonly IReadOnlyList<(string Name, int Order)> ReferenceTiers = new[]
-	{
-		("Owner", 100),
-		("Super Admin", 10),
-		("Admin", 5),
-		("Mod", 4)
-	};
+	public static readonly IReadOnlyList<(string Name, int Order)> ReferenceTiers = Array.Empty<(string Name, int Order)>();
 
 	/// <summary>Quick-pick ban durations. Tokens use DXRP's m/h/d grammar, or "perm".</summary>
 	public static readonly IReadOnlyList<(string Label, string Token, int Hours)> BanDurations = new[]

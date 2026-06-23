@@ -254,10 +254,6 @@ internal static class StaffMenuHost
 #endif
 	}
 
-	/// <summary>True if the viewer can use at least one catalog action (gates opening the menu).</summary>
-	public static bool HasAnyStaffAccess()
-		=> StaffMenuActions.All.Any( action => CanView( action.PermissionId ) );
-
 	/// <summary>Label for the "non-staff" roster bucket.</summary>
 	public const string NonStaffGroup = "Players";
 
