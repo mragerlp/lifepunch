@@ -36,7 +36,7 @@
       "addonIdent": "adminmenu",
       "dxrpAddonId": "019e9cfa-3141-723c-a430-1a0e256472eb",
       "dxrpAddonIdentifier": "lifepunchulx",
-      "sboxIdentifier": "lifepunch.ulx",
+      "sboxIdentifier": "lifepunch.lifepunchulx",
       "targetEnvironment": "lifepunchdevelopment",
       "publishStatus": "published-r9-owner-manual-upload",
       "marketingVersion": "3.0.0",
@@ -45,7 +45,7 @@
       "codeFileCount": 6,
       "stagingRoot": "../addons/.dxrp-publish/upload",
       "packageExport": "../addons/.dxrp-publish/package-adminmenu.json",
-      "uploadPath": "Code/Addons/lifepunch/adminmenu/",
+      "uploadPath": "Code/Addons/lifepunch/lifepunchulx/",
       "notes": [
         "Portal r9 (2026-06-17): owner manual upload — 6 code files (~47 KB), same v3.0.0 Staff Menu as r6.",
         "Ship files: StaffMenu.razor, StaffMenu.razor.scss, StaffMenuHost.cs, StaffMenuActions.cs, WaypointSyncService.cs, StaffSettingsService.cs.",

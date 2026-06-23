@@ -1,7 +1,7 @@
 # lifepunchulx — Changelog
 
 Proprietary & Confidential — © 2026 lifepunch.co. Sole-owned IP of lifepunch.co.
-Portal package: **lifepunchulx** (s&box ident `lifepunch.ulx`).
+Portal package: **lifepunchulx** (s&box ident `lifepunch.lifepunchulx`).
 
 ## v1.0.1 — portal r6 (2026-06-23)
 
@@ -86,7 +86,7 @@ Core updates
 ## v2.0.3 — publish-ready
 
 - **Settings panel size controls** — centered Compact / Standard / Expanded labels (flex + padding fix; no clipped top-edge text).
-- **Publish-ready** — first LIFEPUNCH addon cleared for portal publish (`lifepunchulx` / `lifepunch.ulx`).
+- **Publish-ready** — first LIFEPUNCH addon cleared for portal publish (`lifepunchulx` / `lifepunch.lifepunchulx`).
 
 ## v2.0.2
 

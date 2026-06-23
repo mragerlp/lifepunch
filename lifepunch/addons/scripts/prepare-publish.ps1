@@ -46,6 +46,23 @@ function Test-PublishShipFile {
     return $true
 }
 
+function Get-DxrpPublishFolderName {
+    param(
+        [Parameter(Mandatory = $true)]
+        $Package
+    )
+
+    if ($Package.PSObject.Properties['dxrpAddonIdentifier'] -and -not [string]::IsNullOrWhiteSpace( $Package.dxrpAddonIdentifier )) {
+        return [string]$Package.dxrpAddonIdentifier
+    }
+
+    if ($Package.PSObject.Properties['packageSlug'] -and -not [string]::IsNullOrWhiteSpace( $Package.packageSlug )) {
+        return [string]$Package.packageSlug
+    }
+
+    return [string]$Package.ident
+}
+
 function Copy-PublishItems {
     param(
         [string]$Source,
@@ -172,8 +189,9 @@ if (Test-Path -LiteralPath $UploadRoot) {
 }
 
 $Org = [string]$Manifest.org
-$AssetsStage = Join-Path $UploadRoot "Assets\addons\$Org\$($Package.ident)"
-$CodeStage = Join-Path $UploadRoot "Code\Addons\$Org\$($Package.ident)"
+$PublishFolder = Get-DxrpPublishFolderName -Package $Package
+$AssetsStage = Join-Path $UploadRoot "Assets\addons\$Org\$PublishFolder"
+$CodeStage = Join-Path $UploadRoot "Code\Addons\$Org\$PublishFolder"
 
 if ($Package.hasAssets) {
     if ($Package.ident -eq 'bitcoinmining') {
@@ -236,8 +254,9 @@ Package:
   HasCode:    $($Package.hasCode)
 
 Expected DXRP paths:
-  Assets/addons/$Org/$($Package.ident)/
-  Code/Addons/$Org/$($Package.ident)/
+  Assets/addons/$Org/$PublishFolder/
+  Code/Addons/$Org/$PublishFolder/
+  (repo source: $($Package.ident)/ when publish folder differs)
 
 Content rows:
 $(
@@ -271,6 +290,8 @@ $PackageExport = [ordered]@{
     package = [ordered]@{
         org = $Org
         ident = $Package.ident
+        publishFolder = $PublishFolder
+        sboxIdentifier = $Package.sboxIdentifier
         title = $Package.title
         kind = $Package.kind
         dxrpAddonId = $Package.dxrpAddonId

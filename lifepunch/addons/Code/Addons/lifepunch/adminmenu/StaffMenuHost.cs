@@ -1,7 +1,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // PROPRIETARY & CONFIDENTIAL — © 2026 lifepunch.co. All rights reserved.
 //
-// "lifepunchulx" (s&box ident: lifepunch.ulx · addon ident: lifepunchulx) is the sole-owned
+// "lifepunchulx" (s&box ident: lifepunch.lifepunchulx · addon ident: lifepunchulx) is the sole-owned
 // intellectual property of lifepunch.co. It is NOT licensed for resale, redistribution,
 // sublicensing, copying, or reuse by ANY person or entity — including DXRP and
 // LifePunch staff, contributors, or community — EXCEPT the owner (lifepunch.co).
@@ -154,7 +154,10 @@ internal static class StaffMenuHost
 		if ( _instance.IsValid() )
 		{
 			SetCursorMode( true );
+			return;
 		}
+
+		Log.Warning( "[lifepunchulx] Toggle failed — menu did not mount (see prior mount warnings)." );
 	}
 
 	/// <summary>Close and tear down the open menu, if any.</summary>
@@ -195,10 +198,24 @@ internal static class StaffMenuHost
 		}
 
 #if LIFEPUNCH_LOCAL
-		// Local editor build: no DXRP HUD root, so host the panel on a dedicated ScreenPanel object.
+		return MountOnScreenPanel();
+#else
+		// Prefer DXRP HUD root (proven clickable path). Dedicated / early join sometimes has no HUD root yet.
+		var panel = GameManager.ShowUi<StaffMenu>();
+		if ( panel.IsValid() )
+			return panel;
+
+		Log.Warning( "[lifepunchulx] GameManager.ShowUi returned null — falling back to ScreenPanel." );
+		return MountOnScreenPanel();
+#endif
+	}
+
+	private static StaffMenu? MountOnScreenPanel()
+	{
 		var scene = Sandbox.Game.ActiveScene;
 		if ( scene is null )
 		{
+			Log.Warning( "[lifepunchulx] ActiveScene is null — cannot mount menu." );
 			return null;
 		}
 
@@ -206,12 +223,6 @@ internal static class StaffMenuHost
 		go.Name = MenuObjectName;
 		go.AddComponent<ScreenPanel>();
 		return go.AddComponent<StaffMenu>();
-#else
-		// DXRP build: mount into the HUD root ScreenPanel (the panel the engine routes the cursor/clicks
-		// to). A standalone ScreenPanel never receives pointer input while the HUD owns the cursor — this
-		// is the proven HUD-mounted panel pattern. The panel still opts into clicks via pointer-events:all.
-		return GameManager.ShowUi<StaffMenu>();
-#endif
 	}
 
 	private const string MenuObjectName = "LifePunchUlx";
@@ -234,8 +245,11 @@ internal static class StaffMenuHost
 			menu.Destroy();
 		}
 #else
-		// DXRP ShowUi-mounted build shares the HUD root GameObject, so destroy only this component.
-		menu.Destroy();
+		// ShowUi shares the HUD root; ScreenPanel fallback uses MenuObjectName — match LpHashdUiHost teardown.
+		if ( menu.GameObject.IsValid() && menu.GameObject.Name == MenuObjectName )
+			menu.GameObject.Destroy();
+		else
+			menu.Destroy();
 #endif
 	}
 

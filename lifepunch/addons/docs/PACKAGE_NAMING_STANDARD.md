@@ -30,7 +30,7 @@ lifepunch{product}     (all lowercase — e.g. lifepunchbitcoin, lifepunchulx)
 
 | packageSlug | s&box | repoIdent (today) | Status |
 |-------------|-------|-------------------|--------|
-| `lifepunchulx` | `lifepunch.ulx` | adminmenu | publish-ready |
+| `lifepunchulx` | `lifepunch.lifepunchulx` | adminmenu | publish-ready |
 | `lifepunchbitcoin` | `lifepunch.bitcoin` | bitcoinmining | active dev |
 | `lifepunchhacker` | `lifepunch.hacker` | hackerjob | quarantine |
 | `lifepunchbanker` | `lifepunch.banker` | bankerjob | quarantine WIP |
