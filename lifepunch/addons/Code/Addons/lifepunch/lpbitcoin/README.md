@@ -6,8 +6,7 @@
 |-------|------|
 | Hub assets | `Assets/addons/lifepunch/lpbitcoin/bitcoinhub/assets/` |
 | Hub code map | `Code/Addons/lifepunch/lpbitcoin/bitcoinhub/README.md` |
-| Hub C# sources (today) | `Code/Addons/lifepunch/bitcoinmining/` — paths via `LpBitcoinIdent` |
+| Hub C# + UI | `Code/Addons/lifepunch/lpbitcoin/bitcoinhub/code/` |
+| Package-wide (terminal/rack/economy) | `Code/Addons/lifepunch/bitcoinmining/` |
 
-Shared UI/sounds/racks still under `Assets/bitcoinmining/` until those slots promote to `lpbitcoin/{entity}/`.
-
-Do not duplicate `.cs` here without a planned code promotion.
+Shared UI SCSS and rack/terminal C# still under `bitcoinmining/` until those slots promote.

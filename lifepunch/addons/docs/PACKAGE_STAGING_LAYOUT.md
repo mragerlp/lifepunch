@@ -51,10 +51,11 @@ Finished, working addon packages land here when ready for portal upload prep. **
 | Staging (slug = folder) | Dev playtest (legacy, until promotion) | Upload-ready target |
 |---------|-------------------------------|---------------|
 | `lpbitcoin/bitcoinhub/assets/models/` | `bitcoinmining/models/.../bitcoin-miner/` (Steam Machine) | `lpbitcoin/bitcoinhub/` → PLACEHOLDER when owner-ready |
-| `lpbitcoin/bitcoinhub/code/components/` | `Code/.../bitcoinmining/` | same under `lpbitcoin/bitcoinhub/code/` |
-| `lpbitcoin/bitcoinhub/assets/entities/` | `bitcoinmining/entities/bitcoinminer/` | `lpbitcoin/bitcoinhub/assets/entities/` |
+| `lpbitcoin/bitcoinhub/code/components/` | `Code/.../lpbitcoin/bitcoinhub/code/components/` | promoted Jun 2026 |
+| `lpbitcoin/bitcoinhub/code/ui/` | same | `LpHashdPanel.razor` |
+| Terminal / rack / economy | `Code/.../bitcoinmining/` | promotes per entity slot |
 
-Entity code still lives in **`Code/Addons/lifepunch/bitcoinmining/`** until owner promotes a physical split. Each entity’s `code/manifest.json` lists the files that belong there.
+Hub entity code lives in **`Code/Addons/lifepunch/lpbitcoin/bitcoinhub/code/`**. Package-wide code (terminal, rack, wallet, shared UI SCSS) remains in **`bitcoinmining/`** until each entity promotes. Each slot’s `code/manifest.json` lists its files.
 
 ---
 

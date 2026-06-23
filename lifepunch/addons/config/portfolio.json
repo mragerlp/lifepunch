@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "phase": "model-foundation-2026-06",
-  "law": "DXRP default lane = ModelDoc greenfield (ULX + lp* staging packages). Monorepo entity code/UI stays as reference under Code/Addons/lifepunch/bitcoinmining until promoted into lpbitcoin/{entity}/code/. See PACKAGE_STAGING_LAYOUT.md.",
+  "law": "DXRP default lane = ModelDoc greenfield (ULX + lp* staging packages). Hub code promoted to lpbitcoin/bitcoinhub/code/ (Jun 2026). Terminal/rack/economy still in bitcoinmining/ until per-entity promotion. See PACKAGE_STAGING_LAYOUT.md.",
   "jobRoadmap": "docs/JOB_PORTFOLIO_ROADMAP.md",
   "packageManifest": "config/packages.json",
   "activeAddons": [
@@ -13,7 +13,7 @@
   ],
   "activeNotes": {
     "adminmenu": "lifepunchulx (s&box lifepunch.ulx) — v1 publish-ready. Open via lifepunchulx / /lifepunchulx. LifePunch servers only; not for resale.",
-    "bitcoinmining": "lifepunchbitcoin — Fab intake under lpbitcoin/{entity}/assets|. Entity C# still in Code/.../bitcoinmining/; each slot has code/manifest.json mapping files until physical split. NOT publish export until Model Foundation sign-off."
+    "bitcoinmining": "lifepunchbitcoin — Fab intake under lpbitcoin/{entity}/assets|. Hub C# in lpbitcoin/bitcoinhub/code/; terminal/rack/economy still in bitcoinmining/. NOT publish export until Model Foundation sign-off."
   },
   "quarantinedAddons": [
     { "ident": "ak47", "reason": "Viewmodel baseline; resume after Ophion ship." },

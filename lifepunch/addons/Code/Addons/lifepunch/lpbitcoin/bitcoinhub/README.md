@@ -136,7 +136,7 @@ Or rely on `lp_spawn_staging_hub` — calls `EnsureHubGameplayStack` (power + de
 
 
 
-Sources below still live in **`Code/Addons/lifepunch/bitcoinmining/`** (same namespace, one DXRP addon mount).
+Sources below live in **`Code/Addons/lifepunch/lpbitcoin/bitcoinhub/code/`** (same namespace `LifePunch.DXRP.Addons.Bitcoin`, one DXRP compile tree). Package-wide helpers remain in **`bitcoinmining/`**.
 
 
 
@@ -144,25 +144,13 @@ Sources below still live in **`Code/Addons/lifepunch/bitcoinmining/`** (same nam
 
 |------|------|
 
-| `LpBitcoinIdent.cs` | `HubPrefabPath`, `HubMaxHealth` (250) |
-
-| `LpBitcoinHubEntity.cs` | Hub USE, power, PIN, hashd anchor, printer-style death |
-
-| `LpBitcoinHubVisuals.cs` | Mesh/state visuals |
-
-| `LpBitcoinHubPin.cs` | PIN gate |
-
-| `LpBitcoinHubAlert.cs` / `LpBitcoinHubAlertBridge.cs` | Alerts |
-
-| `LpBitcoinPowerAnim.cs` / `LpBitcoinPowerLeds.cs` | Fan / LED state |
-
-| `LpHashdPanel.razor` (+ `.scss`) | Hub terminal UI |
-
-| `LpHashdUiHost.cs` | UI host |
-
-| `LpBitcoinDevSpawn.cs` | Dev spawn / orient audit |
-
-| `LifePunchMachineDestroyFx.cs` | Shared printer explosion helper |
+| `LpBitcoinHubEntity.cs` | `code/components/LpBitcoinHubEntity.cs` | Hub USE, power, PIN, hashd anchor, printer-style death |
+| `LpBitcoinHubVisuals.cs` | `code/components/LpBitcoinHubVisuals.cs` | Mesh/state visuals |
+| `LpBitcoinHubPin.cs` | `code/components/LpBitcoinHubPin.cs` | PIN gate |
+| `LpBitcoinHubAlert.cs` / `LpBitcoinHubAlertBridge.cs` | `code/components/` | Alerts |
+| `LpHashdPanel.razor` (+ `.scss`) | `code/ui/` | Hub terminal UI |
+| `LpHashdUiHost.cs` | `code/components/LpHashdUiHost.cs` | UI host |
+| `LpBitcoinDevSpawn.cs` | `code/components/LpBitcoinDevSpawn.cs` | Dev spawn / orient audit |
 
 
 
@@ -170,5 +158,5 @@ Shared cyber helpers: `Code/Addons/lifepunch/LifePunch*.cs` (parent folder).
 
 
 
-**Endgame:** move these files here under `code/components/` per `PACKAGE_STAGING_LAYOUT.md`.
+**Endgame:** move terminal/rack files to `lpbitcoin/{entity}/code/` per `PACKAGE_STAGING_LAYOUT.md` (hub promoted 2026-06-23).
 

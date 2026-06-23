@@ -157,6 +157,23 @@ function Sync-LifepunchUlx {
     Write-Host '  Code/lifepunchulx (adminmenu ship files; shared UI at lifepunch root)' -ForegroundColor Green
 }
 
+function Sync-LpBitcoinEntityCode {
+    $repoLpBitcoinCode = Join-Path $repoCodeRoot 'lpbitcoin'
+    if (-not (Test-Path -LiteralPath $repoLpBitcoinCode)) { return }
+
+    $dest = Join-Path $dxrpCodeRoot 'lpbitcoin'
+    if ($WhatIf) {
+        Write-Host '  [WhatIf] Code/lpbitcoin (entity code slots)' -ForegroundColor DarkGray
+        return
+    }
+
+    New-Item -ItemType Directory -Force -Path $dest | Out-Null
+    & robocopy $repoLpBitcoinCode $dest /MIR /NFL /NDL /NJH /NJS /nc /ns /np | Out-Null
+    if ($LASTEXITCODE -ge 8) { throw 'robocopy lpbitcoin code failed' }
+    $count = (Get-ChildItem -LiteralPath $dest -Recurse -File -Include '*.cs','*.razor','*.scss' -ErrorAction SilentlyContinue).Count
+    Write-Host "  Code/lpbitcoin (entity slots, $count source files)" -ForegroundColor Green
+}
+
 function Sync-BitcoinCode {
     if (-not (Test-Path -LiteralPath $repoBitcoinCode)) {
         throw "Missing repo code: $repoBitcoinCode"
@@ -287,11 +304,12 @@ Write-Host 'Sync lifepunchulx from repo' -ForegroundColor Cyan
 Sync-LifepunchUlx
 
 if (-not $SkipCode) {
-    Write-Host 'Sync bitcoinmining code from repo (no repo art)' -ForegroundColor Cyan
+    Write-Host 'Sync bitcoin code from repo (lpbitcoin slots + bitcoinmining package)' -ForegroundColor Cyan
+    Sync-LpBitcoinEntityCode
     Sync-BitcoinCode
 
     if (-not $WhatIf) {
-        $keepCode = @($ulxDxrpFolder, $codeIdent, '_dev')
+        $keepCode = @($ulxDxrpFolder, $codeIdent, 'lpbitcoin', '_dev')
         Get-ChildItem -LiteralPath $dxrpCodeRoot -Directory -ErrorAction SilentlyContinue | ForEach-Object {
             if ($keepCode -contains $_.Name) { return }
             Remove-DxrpTree -Path $_.FullName -Label "Code/$($_.Name) (not in owner lane)"
@@ -305,4 +323,4 @@ Write-Host ''
 Write-Host 'Owner editor lane ready. Restart sbox editor if it was open.' -ForegroundColor Cyan
 Write-Host '  Art: OneDrive addon test\addons\lifepunch (not repo MIR)' -ForegroundColor DarkGray
 Write-Host '  ULX: lifepunchulx from repo adminmenu' -ForegroundColor DarkGray
-Write-Host '  Code: bitcoinmining + _dev from repo; recompile vmdl/vmat in ModelDoc after art edits.' -ForegroundColor DarkGray
+Write-Host '  Code: lpbitcoin/{entity}/code + bitcoinmining (terminal/rack/economy) + _dev from repo' -ForegroundColor DarkGray
