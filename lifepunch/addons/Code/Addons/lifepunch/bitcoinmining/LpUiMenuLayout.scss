@@ -77,7 +77,7 @@ $lp-menu-mono: "Roboto Mono", "Courier New", monospace;
 	min-width: 0;
 	width: 100%;
 	overflow-x: hidden;
-	overflow-y: auto;
+	overflow-y: scroll;
 }
 
 .lp-ops-crt .terminal-sidebar-scroll {
