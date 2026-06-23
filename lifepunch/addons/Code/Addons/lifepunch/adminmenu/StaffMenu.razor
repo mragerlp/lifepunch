@@ -36,7 +36,7 @@
 				        tooltip="@( StaffMenuHost.HasWebsite ? $"Copy link: {StaffMenuHost.WebsiteUrl}" : "Network identifier" )"
 				        onclick="@CopyWebsite">
 					<i class="material-icons">language</i>
-					<span>@(_websiteCopied ? "Link copied!" : NetworkIdentifier)</span>
+					<span>@(_websiteCopied ? "Link copied!" : StaffMenuHost.NetworkIdentifier)</span>
 				</button>
 				<button class="lp-ui-chrome-btn cog @( _activeTab == TabSettings ? "active" : "" )" tooltip="Settings" onclick="@OpenSettings">
 					<i class="material-icons">settings</i>
@@ -250,7 +250,7 @@
 				<div class="settings-group">
 					<div class="settings-label">Network Management</div>
 					<div class="settings-hint">
-						@($"Linked from the “{NetworkIdentifier}” tag in the tab bar — staff click it to copy your link.")
+						@($"Linked from the “{StaffMenuHost.NetworkIdentifier}” tag in the tab bar — staff click it to copy your link.")
 					</div>
 
 					@if ( StaffMenuHost.CanEditSettings() )
@@ -676,12 +676,6 @@
 	private TimeSince _sinceRefresh;
 	private int _detailHash;
 	private const float RefreshInterval = 0.2f;
-
-	// Network/brand identifier shown in the header chip. Mirrors the portal's "Network Identifier"
-	// (Settings → Network). It is server-AGNOSTIC: the stable, lowercase brand key that is identical
-	// across every server in the network — NOT the per-server Networking.ServerName. The portal value
-	// isn't plumbed into the game's server-config API, so this one line is the single rebrand point.
-	private const string NetworkIdentifier = "lifepunch";
 
 	// Non-category tab ids. The tab strip is Moderation / Commands / Ability (action catalog
 	// categories) plus these two full-window views, all driven by a single _activeTab.

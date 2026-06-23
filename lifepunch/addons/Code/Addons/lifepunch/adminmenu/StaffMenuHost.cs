@@ -678,6 +678,41 @@ internal static class StaffMenuHost
 	/// <summary>True when a website URL is configured — the network tag then becomes a click-to-copy link.</summary>
 	public static bool HasWebsite => !string.IsNullOrWhiteSpace( _websiteUrl );
 
+	/// <summary>
+	/// Lowercase network slug shown in the header chip — derived from <see cref="WebsiteUrl"/>
+	/// (e.g. <c>https://dxrp.net/</c> → <c>dxrp</c>). Neutral <c>network</c> when unset.
+	/// </summary>
+	public static string NetworkIdentifier => DeriveNetworkIdentifier( _websiteUrl );
+
+	static string DeriveNetworkIdentifier( string url )
+	{
+		if ( string.IsNullOrWhiteSpace( url ) )
+		{
+			return "network";
+		}
+
+		var trimmed = url.Trim();
+		if ( !trimmed.Contains( "://" ) )
+		{
+			trimmed = "https://" + trimmed;
+		}
+
+		if ( !Uri.TryCreate( trimmed, UriKind.Absolute, out var uri ) || string.IsNullOrWhiteSpace( uri.Host ) )
+		{
+			return "network";
+		}
+
+		var host = uri.Host.ToLowerInvariant();
+		if ( host.StartsWith( "www." ) )
+		{
+			host = host[4..];
+		}
+
+		var dot = host.IndexOf( '.' );
+		var slug = dot > 0 ? host[..dot] : host;
+		return string.IsNullOrWhiteSpace( slug ) ? "network" : slug;
+	}
+
 	/// <summary>Ask the host for the current owner settings (mirrors <see cref="RefreshWaypoints"/>). No-op in editor.</summary>
 	public static void RefreshSettings()
 	{
