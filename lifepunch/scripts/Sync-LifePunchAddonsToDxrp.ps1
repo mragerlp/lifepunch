@@ -115,6 +115,18 @@ function Resolve-DxrpPackageFolder([string]$Ident) {
     return $Ident
 }
 
+# lifepunchulx compiles as its own addon assembly — shared UI helpers must ship inside that folder
+# (same bundle as prepare-publish.ps1 Add-AdminMenuSharedShipDeps).
+$script:AdminMenuSharedShipFiles = @(
+    'LifePunchUiScale.cs',
+    'LifePunchUiScrollPolicy.cs',
+    'LifePunchScrollRegionPanel.cs',
+    'LifePunchScrollLayout.cs',
+    'LifePunchSourceMark.cs',
+    'LifePunchUiFooter.razor',
+    'LifePunchUiFooter.razor.scss'
+)
+
 function Sync-LifepunchUlxToDxrp {
     $repoIdent = 'adminmenu'
     $dxrpFolder = 'lifepunchulx'
@@ -147,7 +159,7 @@ function Sync-LifepunchUlxToDxrp {
     )
 
     if ($WhatIf) {
-        Write-Host "  [WhatIf] Code/$dxrpFolder ship files (shared UI at Code/lifepunch root)" -ForegroundColor DarkGray
+        Write-Host "  [WhatIf] Code/$dxrpFolder ship + shared UI deps (bundled in-folder)" -ForegroundColor DarkGray
         return
     }
 
@@ -165,15 +177,22 @@ function Sync-LifepunchUlxToDxrp {
         Copy-Item -LiteralPath $src -Destination (Join-Path $dxrpUlxCode $name) -Force
     }
 
+    $sharedRoot = $repoCodeRoot
+    foreach ($name in $script:AdminMenuSharedShipFiles) {
+        $src = Join-Path $sharedRoot $name
+        if (-not (Test-Path -LiteralPath $src)) { throw "Missing lifepunchulx shared dep: $src" }
+        Copy-Item -LiteralPath $src -Destination (Join-Path $dxrpUlxCode $name) -Force
+    }
+
     $staffScss = Join-Path $dxrpUlxCode 'StaffMenu.razor.scss'
     if (Test-Path -LiteralPath $staffScss) {
         $scss = [System.IO.File]::ReadAllText($staffScss)
-        $patched = $scss -replace '@import "\.\./LifePunchUiFooter\.razor\.scss";', '@import "../LifePunchUiFooter.razor.scss";'
+        $patched = $scss -replace '@import "\.\./LifePunchUiFooter\.razor\.scss";', '@import "./LifePunchUiFooter.razor.scss";'
         if ($patched -ne $scss) { [System.IO.File]::WriteAllText($staffScss, $patched) }
     }
 
     $codeCount = (Get-ChildItem -LiteralPath $dxrpUlxCode -Recurse -File).Count
-    Write-Host "  Code/$dxrpFolder - $codeCount ship files (shared deps at Code/lifepunch root)" -ForegroundColor Green
+    Write-Host "  Code/$dxrpFolder - $codeCount files (ship + shared UI bundled)" -ForegroundColor Green
 }
 
 function Remove-LegacyAddonTestArtifacts {
