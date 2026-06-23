@@ -1,6 +1,6 @@
 # HASHD Terminal — ModelDoc foundation pass
 
-**Source:** `assets/source/fbx/pc.fbx`  
+**Source:** `assets/source/fbx/hashdterminal.fbx`  
 **vmdl (compile `_c` here):** **`assets/models/hashdterminal.vmdl`**  
 **prefab:** `assets/entities/hashdterminal.prefab`  
 **Phase:** B — Terminal (Model Foundation)

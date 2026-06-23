@@ -19,7 +19,7 @@
 
 | File | Path |
 |------|------|
-| FBX | `assets/source/fbx/steam-machine.fbx` |
+| FBX | `assets/source/fbx/bitcoinhub.fbx` |
 | Blender archive | `assets/source/blend/bitcoinminer.blend` |
 | Textures (18 PNG) | `assets/textures/sm_*` |
 | Materials | `assets/models/materials/bitcoinhub-sm-*.vmat` |

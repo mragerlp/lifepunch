@@ -30,7 +30,7 @@ See ASSET_CLASSIFICATION_LAW.md - do not merge this package with visually simila
 ### hashdterminal
 - Role: HASHD Terminal
 - Primary: `assets/models/hashdterminal.vmdl` · `assets/entities/hashdterminal.prefab`
-- Source: `assets/source/fbx/PC.fbx`
+- Source: `assets/source/fbx/hashdterminal.fbx`
 - Compile `_c`: **`hashdterminal.vmdl_c`** only (not `hashd-terminal.vmdl_c`)
 - FBX/OBJ/Blend/Tex: 1/0/1/22 | 585.64 MB
 

@@ -1,7 +1,7 @@
 # Bitcoin Miner hub — Steam Machine world model
 
 **Entity slug:** `bitcoinhub` · **Disk folder:** `lpbitcoin/bitcoinhub/assets/entities/`  
-**Source:** owner `bitcoinminer.blend` → `steam-machine.fbx` + `sm_*` textures
+**Source:** owner `bitcoinminer.blend` → **`bitcoinhub.fbx`** + `sm_*` textures
 
 ## Ship tree
 
@@ -13,7 +13,7 @@ models/lifepunch/bitcoinmining/bitcoinhub/
   materials/              ← bitcoinhub-sm-*.vmat only (5)
   source/
     bitcoinminer.blend    ← owner archive
-    steam-machine.fbx     ← Blender export
+    bitcoinhub.fbx          ← Blender export (entity slug name)
   _archive/               ← Ophion era + duplicates (not shipped)
   MODEL_BUILD.md
 
@@ -27,7 +27,7 @@ lpbitcoin/bitcoinhub/assets/entities/
 
 | Field | Value | Why |
 |-------|-------|-----|
-| **Mesh** | `source/steam-machine.fbx` | Replaces static Ophion gaming PC |
+| **Mesh** | `source/fbx/bitcoinhub.fbx` | Steam Machine industrial miner mesh |
 | **Import scale** | `0.152` (Custom) | **`base_body` only (Phase 1 idle)** → ~**29 × 30 × 32**; full static hull after re-export |
 | **Import translation** | `0, 0, 0` | `align_origin_z_type = Bottom` — ground contact verified flatgrass |
 | **Import rotation** | `0, 0, 0` *(tune — see §Orientation)* | FBX export: `axis_forward=-Z`, `axis_up=Y` |

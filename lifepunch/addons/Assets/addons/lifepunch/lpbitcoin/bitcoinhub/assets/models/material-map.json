@@ -1,7 +1,6 @@
 {
   "model": "bitcoinhub.vmdl",
   "source": "source/fbx/bitcoinhub.fbx",
-  "sourceVmdlAlias": "source/fbx/steam-machine.fbx",
   "blendArchive": "source/blend/bitcoinhub.blend",
   "ownerDrop": "Desktop/addon test/addons/lifepunch/lpbitcoin/bitcoinhub/assets/source/bitcoinhub.{blend,fbx}",
   "textureRoot": "assets/textures",
