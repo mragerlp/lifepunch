@@ -128,6 +128,7 @@ function Remove-LpArchiveCompileArtifacts {
 }
 
 Write-Host 'Sync LifePunch addons -> DXRP game' -ForegroundColor Cyan
+Write-Host '  WARNING: full repo MIR includes repo art. For editor work use Set-DxrpLifepunchOwnerEditorLane.ps1' -ForegroundColor Yellow
 Write-Host "  Repo:  $repoAddons" -ForegroundColor DarkGray
 Write-Host "  DXRP:  $dxrpGame" -ForegroundColor DarkGray
 
@@ -178,6 +179,7 @@ if (Test-Path -LiteralPath $devSrc) {
         $syncedIdents = @(Get-AddonIdents)
         $weaponDevDeps = @('adminmenu', 'ak47', 'deagle', 'mp9', 'ssg08', 'xm1014')
         $weaponDevReady = @($weaponDevDeps | Where-Object { $syncedIdents -notcontains $_ }).Count -eq 0
+        $staffMenuDevReady = $syncedIdents -contains 'adminmenu'
         $weaponDevGive = Join-Path $dxrpCodeRoot '_dev\WeaponDevGive.cs'
         $weaponDevQuarantine = "$weaponDevGive.quarantine"
         if (-not $weaponDevReady) {
@@ -196,8 +198,34 @@ if (Test-Path -LiteralPath $devSrc) {
             }
         }
 
-        $bitcoinDevReady = $syncedIdents -contains 'bitcoinmining'
+        $staffMenuDevFiles = @('StaffMenuTestBots.cs', 'StaffMenuTestBotsAutoSpawn.cs')
         $devRoot = Join-Path $dxrpCodeRoot '_dev'
+        if (Test-Path -LiteralPath $devRoot) {
+            if (-not $staffMenuDevReady) {
+                foreach ($devFile in $staffMenuDevFiles) {
+                    $active = Join-Path $devRoot $devFile
+                    if (-not (Test-Path -LiteralPath $active)) { continue }
+                    $quarantine = "$active.quarantine"
+                    if (Test-Path -LiteralPath $quarantine) {
+                        Remove-Item -LiteralPath $quarantine -Force
+                    }
+                    Rename-Item -LiteralPath $active -NewName ($devFile + '.quarantine') -Force
+                    Write-Host "  Code/_dev: $devFile quarantined (adminmenu not in sync set; needs StaffMenuHost)" -ForegroundColor Yellow
+                }
+            }
+            else {
+                foreach ($devFile in $staffMenuDevFiles) {
+                    $quarantine = Join-Path $devRoot ($devFile + '.quarantine')
+                    $restore = Join-Path $devRoot $devFile
+                    if ((Test-Path -LiteralPath $quarantine) -and -not (Test-Path -LiteralPath $restore)) {
+                        Rename-Item -LiteralPath $quarantine -NewName $devFile -Force
+                        Write-Host "  Code/_dev: restored $devFile (adminmenu lane)" -ForegroundColor Green
+                    }
+                }
+            }
+        }
+
+        $bitcoinDevReady = $syncedIdents -contains 'bitcoinmining'
         if (Test-Path -LiteralPath $devRoot) {
             $bitcoinDevPatterns = @('LpBitcoin*.cs', 'LpBitcoin*.razor', 'LpBitcoin*.scss')
             if (-not $bitcoinDevReady) {

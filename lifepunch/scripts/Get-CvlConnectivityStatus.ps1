@@ -104,6 +104,7 @@ $checks = [ordered]@{}
 $checks['vengeance.sboxBridge'] = Test-BridgeIpc
 $checks['vengeance.sboxEditor'] = Test-EditorMcp -Port $EditorPort
 $checks['vengeance.sboxJtc'] = Test-JtcMcp -Url $portCfg.JtcUrl
+$checks['vengeance.blenderBridge'] = Test-BlenderBridgeStatus -StatusUrl $portCfg.BlenderBridgeStatusUrl
 $checks['vengeance.mcpStack'] = ('sbox' -in $mcpKeys) -and ('sbox-editor' -in $mcpKeys) -and ('sbox-jtc' -in $mcpKeys) -and ('cornerman-lm' -in $mcpKeys)
 # Legacy alias — chomnr + bridge keys only (pre-jtc probes)
 $checks['vengeance.mcpDual'] = ('sbox' -in $mcpKeys) -and ('sbox-editor' -in $mcpKeys)
@@ -120,6 +121,7 @@ $labels = @{
     'vengeance.sboxBridge'    = 'VENGEANCE sbox (Claude Bridge)'
     'vengeance.sboxEditor'    = 'VENGEANCE sbox-editor (chomnr :9090)'
     'vengeance.sboxJtc'       = 'VENGEANCE sbox-jtc (jtc :29015/mcp)'
+    'vengeance.blenderBridge' = 'VENGEANCE Blender Bridge (:8099, auto-start on load)'
     'vengeance.mcpStack'      = 'VENGEANCE mcp.json stack (4 keys)'
     'vengeance.mcpDual'       = 'VENGEANCE mcp.json bridge+chomnr keys'
     'cornerman.ssh'           = 'Cornerman SSH'

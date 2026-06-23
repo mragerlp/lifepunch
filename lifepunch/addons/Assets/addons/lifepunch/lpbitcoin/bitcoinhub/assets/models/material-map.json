@@ -5,7 +5,7 @@
   "blendArchive": "source/blend/bitcoinhub.blend",
   "ownerDrop": "Desktop/addon test/addons/lifepunch/lpbitcoin/bitcoinhub/assets/source/bitcoinhub.{blend,fbx}",
   "textureRoot": "assets/textures",
-  "note": "Steam Machine hub (Jun 2026 greenfield). FBX slot → vmdl remap → vmat. Animations in bitcoinhub.fbx: fanAction, front_panelAction, Steam_controllerAction. Recompile vmdl after ModelDoc Add Simple Animations.",
+  "note": "Steam Machine hub (Jun 2026 greenfield). FBX slot → vmdl remap → vmat. Expected anims after clean export: fanAction, front_panelAction only — purge orphan Steam_controllerAction in Blender before export.",
   "vmats": {
     "bitcoinhub-sm-body.vmat": {
       "shader": "complex",

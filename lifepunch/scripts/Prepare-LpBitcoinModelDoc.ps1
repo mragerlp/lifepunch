@@ -1,15 +1,14 @@
 <#
 .SYNOPSIS
-  One-shot prep: sync lpbitcoin ModelDoc assets repo -> DXRP greenfield lane.
+  One-shot prep: sync lpbitcoin ModelDoc assets owner drop -> DXRP.
 
 .DESCRIPTION
-  - Does NOT mirror from Desktop (repo is ahead for terminal/racks).
-  - Copies only lpbitcoin package under game/addons/lifepunch/lpbitcoin (DXRP content root).
-  - Run after vmdl/vmat edits, before ModelDoc compile in editor.
+  Source: %USERPROFILE%\OneDrive\Desktop\addon test\addons\lifepunch\lpbitcoin
+  (NOT repo staging — repo is for git/publish only).
 
 .EXAMPLE
   powershell -File lifepunch\scripts\Prepare-LpBitcoinModelDoc.ps1
-  powershell -File lifepunch\scripts\Prepare-LpBitcoinModelDoc.ps1 -RecompileViaBridge
+  powershell -File lifepunch\scripts\Prepare-LpBitcoinModelDoc.ps1 -Entity bitcoinhub
 #>
 [CmdletBinding()]
 param(
@@ -20,9 +19,13 @@ param(
 $ErrorActionPreference = 'Stop'
 $Here = if ($PSScriptRoot) { $PSScriptRoot } else { Split-Path -Parent $MyInvocation.MyCommand.Path }
 . (Join-Path $Here 'Dxrp-LifepunchPaths.ps1')
-$repoAddons = (Resolve-Path (Join-Path $Here '..\addons')).Path
-$src = Join-Path $repoAddons 'Assets\addons\lifepunch\lpbitcoin'
-if (-not (Test-Path -LiteralPath $src)) { throw "Missing staging package: $src" }
+$pathsScript = Join-Path (Split-Path $Here -Parent) 'addons\scripts\LifePunch-AddonDropPaths.ps1'
+. $pathsScript
+
+$src = Get-LifePunchLpBitcoinArtDrop
+if (-not (Test-Path -LiteralPath $src)) {
+    throw "Missing owner lpbitcoin drop: $src"
+}
 
 $configPath = Join-Path $Here 'dxrp-editor.local.json'
 if (-not (Test-Path -LiteralPath $configPath)) {
@@ -35,7 +38,7 @@ $cfg = Get-Content -LiteralPath $configPath -Raw | ConvertFrom-Json
 $dxrpGame = Get-DxrpGameRootFromConfig -ConfigPath $configPath
 $dest = Join-Path (Get-DxrpLifepunchAddonsDiskRoot -DxrpGameRoot $dxrpGame) 'lpbitcoin'
 
-Write-Host 'LpBitcoin ModelDoc prep — repo -> DXRP' -ForegroundColor Cyan
+Write-Host 'LpBitcoin ModelDoc prep — owner drop -> DXRP' -ForegroundColor Cyan
 Write-Host "  From: $src" -ForegroundColor DarkGray
 Write-Host "  To:   $dest" -ForegroundColor DarkGray
 
@@ -58,11 +61,11 @@ if ($Entity) {
             }
         }
     }
-    & robocopy $entitySrc $entityDest /E /NFL /NDL /NJH /NJS /nc /ns /np | Out-Null
+    & robocopy $entitySrc $entityDest /E /XD '_archive' /NFL /NDL /NJH /NJS /nc /ns /np | Out-Null
     Write-Host "  synced lpbitcoin/$Entity only (Phase A hub lane)" -ForegroundColor Green
 }
 else {
-    & robocopy $src $dest /E /NFL /NDL /NJH /NJS /nc /ns /np | Out-Null
+    & robocopy $src $dest /E /XD '_archive' /NFL /NDL /NJH /NJS /nc /ns /np | Out-Null
     Write-Host '  synced full lpbitcoin package' -ForegroundColor Green
 }
 if ($LASTEXITCODE -ge 8) { throw "robocopy failed with exit $LASTEXITCODE" }

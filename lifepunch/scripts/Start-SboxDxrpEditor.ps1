@@ -14,7 +14,16 @@
   With API connected, editor host play auto-spawns rank bots (lifepunch_auto_spawn_testbots, default 1).
 
 .PARAMETER SyncAddon
-  Addon idents to mirror before launch. Default: lpbitcoin (portal package lifepunchbitcoin).
+  Ignored when using default owner-editor lane. Use with -RepoSync for legacy repo mirror idents.
+
+.PARAMETER RepoSync
+  Legacy: full robocopy /MIR from monorepo (includes repo art). Default is owner OneDrive drop.
+
+.PARAMETER PullCompiledToRepo
+  After sync, pull ModelDoc *_c from DXRP back into repo (legacy publish loop).
+
+.PARAMETER OwnerEditorLane
+  Mirror OneDrive addon test + lifepunchulx + bitcoinmining code (default unless -RepoSync).
 
 .PARAMETER BitcoinOnly
   Purge all non-bitcoin LifePunch addons from DXRP before sync (fresh console).
@@ -43,6 +52,9 @@ param(
     [string[]] $SyncAddon = @('lpbitcoin'),
     [switch] $SyncAllAddons,
     [switch] $NoSync,
+    [switch] $RepoSync,
+    [switch] $PullCompiledToRepo,
+    [switch] $SkipOwnerEditorLane,
     [switch] $WithAuthorize,
     [switch] $SkipPreflight,
     [switch] $PreflightFix,
@@ -133,31 +145,43 @@ elseif ($SkipOverlays) {
 }
 
 if (-not $NoSync) {
-    if ($BitcoinOnly -or ($PreflightFix -and -not $SyncAllAddons)) {
-        $bitcoinOnlyScript = Join-Path $Here 'Set-DxrpLifepunchBitcoinOnly.ps1'
-        if (Test-Path -LiteralPath $bitcoinOnlyScript) {
-            Write-Host 'Bitcoin-only DXRP purge (remove quarantined addon trees)...' -ForegroundColor Cyan
-            & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $bitcoinOnlyScript -ConfigPath $ConfigPath
-            Write-Host ''
-        }
-    }
-    $pullCompiled = Join-Path $Here 'Pull-DxrpCompiledAssetsToRepo.ps1'
-    if (Test-Path -LiteralPath $pullCompiled) {
-        foreach ($ident in $(if ($SyncAllAddons) { @() } else { $SyncAddon })) {
-            if ($ident) {
-                Write-Host "Rescue compiled assets from DXRP ($ident)..." -ForegroundColor DarkGray
-                & $pullCompiled -Addon $ident -ConfigPath $ConfigPath
+    if ($RepoSync) {
+        if ($BitcoinOnly -or ($PreflightFix -and -not $SyncAllAddons)) {
+            $bitcoinOnlyScript = Join-Path $Here 'Set-DxrpLifepunchBitcoinOnly.ps1'
+            if (Test-Path -LiteralPath $bitcoinOnlyScript) {
+                Write-Host 'Bitcoin-only DXRP purge (legacy -AllowLegacyPlaytest required)...' -ForegroundColor Cyan
+                & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $bitcoinOnlyScript -ConfigPath $ConfigPath -AllowLegacyPlaytest
+                Write-Host ''
             }
         }
+        if ($PullCompiledToRepo) {
+            $pullCompiled = Join-Path $Here 'Pull-DxrpCompiledAssetsToRepo.ps1'
+            if (Test-Path -LiteralPath $pullCompiled) {
+                foreach ($ident in $(if ($SyncAllAddons) { @('lpbitcoin', 'bitcoinmining') } else { $SyncAddon })) {
+                    if ($ident) {
+                        Write-Host "Pull compiled assets DXRP -> repo ($ident)..." -ForegroundColor DarkGray
+                        & $pullCompiled -Addon $ident -ConfigPath $ConfigPath
+                    }
+                }
+                Write-Host ''
+            }
+        }
+        $syncScript = Join-Path $Here 'Sync-LifePunchAddonsToDxrp.ps1'
+        if (-not (Test-Path -LiteralPath $syncScript)) { throw "Missing $syncScript" }
+        Write-Host 'WARNING: -RepoSync mirrors repo art into DXRP (legacy). Prefer default owner-editor lane.' -ForegroundColor Yellow
+        $syncArgs = @{ ConfigPath = $ConfigPath }
+        if ($SyncAllAddons) { $syncArgs['All'] = $true }
+        else { $syncArgs['Addon'] = $SyncAddon }
+        & $syncScript @syncArgs
         Write-Host ''
     }
-    $syncScript = Join-Path $Here 'Sync-LifePunchAddonsToDxrp.ps1'
-    if (-not (Test-Path -LiteralPath $syncScript)) { throw "Missing $syncScript" }
-    $syncArgs = @{ ConfigPath = $ConfigPath }
-    if ($SyncAllAddons) { $syncArgs['All'] = $true }
-    else { $syncArgs['Addon'] = $SyncAddon }
-    & $syncScript @syncArgs
-    Write-Host ''
+    elseif (-not $SkipOwnerEditorLane) {
+        $ownerLane = Join-Path $Here 'Set-DxrpLifepunchOwnerEditorLane.ps1'
+        if (-not (Test-Path -LiteralPath $ownerLane)) { throw "Missing $ownerLane" }
+        Write-Host 'Owner editor lane (addon test + lifepunchulx + bitcoinmining code)...' -ForegroundColor Cyan
+        & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $ownerLane -ConfigPath $ConfigPath
+        Write-Host ''
+    }
 }
 
 if (-not (Test-Path -LiteralPath $ConfigPath)) {
@@ -236,6 +260,7 @@ else {
         Write-Host 'Editor started. Host play, then lp_authorize YOUR_TOKEN if you need portal/API data.' -ForegroundColor Cyan
         Write-Host '  Rank bots wait for lp_authorize - vanilla editor play will NOT spawn them.' -ForegroundColor DarkGray
         Write-Host '  sbox-jtc: open Editor dock MCP Server (jtc) - it does NOT autostart like chomnr.' -ForegroundColor Yellow
+        Write-Host '  Blender Bridge: Editor > Blender Bridge - verify Running :8099 + Auto-start ON (bridge_autostart 1).' -ForegroundColor Yellow
         Write-Host '  LifePunch overlay autostarts jtc when Sync-DxrpEditorOverlays.ps1 ran (see dxrp-overlays/Editor).' -ForegroundColor DarkGray
         Write-Host '  Then Cursor Reload Window if sbox-jtc MCP is red.' -ForegroundColor DarkGray
     }

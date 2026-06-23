@@ -17,7 +17,6 @@ public sealed class LpBitcoinHubVisuals : Component
 {
 	private const float FanMaxSpeed = 900f;
 	private const float FanRampSeconds = 6f;
-	private const float FanLoopMaxVolume = 1f;
 
 	/// <summary>Blender fanAction spins around world +Y; matches grill after ModelDoc Y=90 import.</summary>
 	private static readonly Vector3 FanSpinAxis = Vector3.Up;
@@ -43,12 +42,6 @@ public sealed class LpBitcoinHubVisuals : Component
 	private ModelRenderer _bodyRenderer;
 
 	private bool FanVisualActive => _fanChild.IsValid() && _fanChild.Enabled;
-
-#if !LIFEPUNCH_LOCAL
-	private SoundHandle _fanLoopHandle;
-	private bool _fanLoopPlaying;
-	private float _fanLoopVolume;
-#endif
 
 	protected override void OnStart()
 	{
@@ -140,9 +133,6 @@ public sealed class LpBitcoinHubVisuals : Component
 			ApplyPowerVisuals( Hub.IsPowered );
 
 		UpdateFanRamp();
-#if !LIFEPUNCH_LOCAL
-		UpdateFanLoopVolume();
-#endif
 
 		if ( !_fanChild.IsValid() || !_fanChild.Enabled || _fanSpeed <= 0f )
 			return;
@@ -165,52 +155,8 @@ public sealed class LpBitcoinHubVisuals : Component
 			_fanSpeed = MathF.Max( _fanSpeed - step, target );
 	}
 
-#if !LIFEPUNCH_LOCAL
 	private void UpdateHubFanSounds( bool powered )
 	{
-		// Phase A — no hub fan loop/startup/down until fan child GO is positioned (HUB_FAN_SETUP.md).
-		if ( _fanLoopPlaying && _fanLoopHandle is not null )
-		{
-			_fanLoopHandle.Stop();
-			_fanLoopPlaying = false;
-		}
+		// Phase A — hub fan loop parked until fan child GO is positioned (HUB_FAN_SETUP.md).
 	}
-#else
-	private void UpdateHubFanSounds( bool powered )
-	{
-	}
-#endif
-
-#if !LIFEPUNCH_LOCAL
-	private void UpdateFanLoopVolume()
-	{
-		if ( !_fanLoopPlaying || _fanLoopHandle is null )
-			return;
-
-		try
-		{
-			_fanLoopHandle.Position = WorldPosition;
-
-			var target = Hub.IsPowered ? FanLoopMaxVolume : 0f;
-			var step = ( FanLoopMaxVolume / FanRampSeconds ) * Time.Delta;
-
-			if ( _fanLoopVolume < target )
-				_fanLoopVolume = MathF.Min( _fanLoopVolume + step, target );
-			else if ( _fanLoopVolume > target )
-				_fanLoopVolume = MathF.Max( _fanLoopVolume - step, 0f );
-
-			_fanLoopHandle.Volume = _fanLoopVolume;
-
-			if ( !Hub.IsPowered && _fanLoopVolume <= 0f )
-			{
-				_fanLoopHandle.Stop();
-				_fanLoopPlaying = false;
-			}
-		}
-		catch
-		{
-			_fanLoopPlaying = false;
-		}
-	}
-#endif
 }

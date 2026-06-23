@@ -28,6 +28,15 @@
   "cornermanLm": {
     "cursorServerKey": "cornerman-lm"
   },
+  "blenderBridge": {
+    "host": "127.0.0.1",
+    "port": 8099,
+    "statusPath": "/status",
+    "library": "kamishell.blender_bridge",
+    "autoStartConVar": "bridge_autostart",
+    "autoStartDefault": true,
+    "notes": "Editor > Blender Bridge panel. Saved ConVar bridge_autostart (default 1). Blender addon Connect on N-panel s&box tab."
+  },
   "portConflictPolicy": {
     "claudeBridgeVsJtc": "No HTTP conflict — Bridge is file IPC only. get_bridge_status may mention :29015 as npm metadata; ignore for bind checks.",
     "changeChomnrPort": "chomnr MCP dock Settings → new port → Install-VengeanceSboxEditorMcp.ps1 -Port N",

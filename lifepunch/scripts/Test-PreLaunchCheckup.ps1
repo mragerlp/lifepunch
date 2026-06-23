@@ -222,6 +222,16 @@ function Test-VengeanceMcpStack {
     }
     catch { }
     Write-Check 'Cornerman LM API (LAN)' $lmOk "http://${cornermanIp}:1234"
+
+    $bbUrl = $portCfg.BlenderBridgeStatusUrl
+    $bbOk = Test-BlenderBridgeStatus -StatusUrl $bbUrl
+    $bbHint = ' — Editor > Blender Bridge: Auto-start ON (bridge_autostart 1); panel shows Running :8099'
+    if ($RequireEditor) {
+        Write-Check 'VENGEANCE Blender Bridge (:8099)' $bbOk ($bbUrl + $bbHint)
+    }
+    else {
+        Write-Check 'VENGEANCE Blender Bridge (:8099)' $bbOk ($bbUrl + $bbHint) -Warning:(-not $bbOk)
+    }
 }
 
 if (-not $Quiet) {

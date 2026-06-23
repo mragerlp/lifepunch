@@ -19,11 +19,30 @@ function Get-LifePunchUploadReadyRoot {
     Join-Path $env:USERPROFILE 'OneDrive\Desktop\UPLOAD READY ADDONS'
 }
 
+function Get-LifePunchOwnerEditorDropRoot {
+    <#
+      Canonical DXRP editor asset source — owner OneDrive drop (Jun 2026).
+      Sync scripts mirror this tree into DXRP Assets/addons/lifepunch/*.
+      Repo staging is for git/publish only; do not MIR repo art into the editor.
+    #>
+    $canonical = Join-Path $env:USERPROFILE 'OneDrive\Desktop\addon test\addons\lifepunch'
+    if (Test-Path -LiteralPath $canonical) {
+        return (Resolve-Path -LiteralPath $canonical).Path
+    }
+    return $canonical
+}
+
 function Get-LifePunchLpBitcoinArtDrop {
     <#
       Canonical lpbitcoin owner art (hub + terminal + rack), Jun 2026 greenfield.
       Blends stay here; repo tracks FBX + textures under lpbitcoin/*/assets/.
     #>
+    $editorRoot = Get-LifePunchOwnerEditorDropRoot
+    $canonical = Join-Path $editorRoot 'lpbitcoin'
+    if (Test-Path -LiteralPath $canonical) {
+        return (Resolve-Path -LiteralPath $canonical).Path
+    }
+
     $canonical = Join-Path $env:USERPROFILE 'OneDrive\Desktop\addon test\addons\lifepunch\lpbitcoin'
     if (Test-Path -LiteralPath $canonical) {
         return (Resolve-Path -LiteralPath $canonical).Path

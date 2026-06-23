@@ -198,16 +198,8 @@ if ($runRack) {
 
 if ($SyncDxrp -and -not $WhatIf) {
     $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
-    $prep = Join-Path $repoRoot 'scripts\Prepare-LpBitcoinModelDoc.ps1'
-    $entities = @()
-    if ($runHub) { $entities += 'bitcoinhub' }
-    if ($runTerminal) { $entities += 'hashdterminal' }
-    if ($runRack) { $entities += 'gpurack' }
-    foreach ($e in $entities) {
-        & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $prep -Entity $e
-    }
-    $sync = Join-Path $repoRoot 'scripts\Sync-LifePunchAddonsToDxrp.ps1'
-    & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $sync -Addon bitcoinmining
+    $lane = Join-Path $repoRoot 'scripts\Set-DxrpLifepunchOwnerEditorLane.ps1'
+    & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $lane
 }
 
 Write-Host 'Intake OK — owner drop is canonical; repo FBX/textures committed, blends gitignored.' -ForegroundColor Green

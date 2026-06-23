@@ -11,6 +11,7 @@
 | `sboxskinsgg.claudebridge` | Runtime bridge — **file IPC** (not HTTP), play mode, in-game screenshots |
 | `notpointless.chomnr_mcp` | Editor MCP — compile lane — HTTP `:9090/sbox-mcp` |
 | `jtc.mcp-server` | Editor MCP — automation + docs — HTTP `:29015/mcp` |
+| `kamishell.blender_bridge` | Blender ↔ s&box live mesh sync — HTTP `:8099` (not a Cursor MCP) |
 | `notpointless.chomnr_humanoid_retargeter` | Optional — human anim retarget (import as chomnr tools) |
 
 **Cursor MCP (`%USERPROFILE%\.cursor\mcp.json`):**
@@ -45,6 +46,7 @@ Change ports: edit `sbox-mcp-ports.json` + matching dock UI (chomnr Settings / j
 | **jtc dock "MCP Server"** | HTTP `:29015/mcp` | **Must open dock each editor session** — jtc has **no autostart** (unlike chomnr). Green dot + "Listening" in dock header. |
 | **Cursor → Settings → MCP** | Cursor-side MCP servers | **4 green** on VENGEANCE: `sbox`, `sbox-editor`, `sbox-jtc`, `cornerman-lm` |
 | **Claude Bridge** (play mode) | Runtime IPC | `get_bridge_status` → `connected: true`, heartbeat &lt; 30s |
+| **Blender Bridge** (mesh preview) | HTTP `:8099` | `GET /status` → `running: true`; **Auto-start on editor load** ON (`bridge_autostart 1`, default) |
 
 **You are NOT aiming for a magic number like “MCP 3” in the editor.** Zero clients (`MCP` with no number) = **not full** on editor MCP.
 
@@ -54,6 +56,7 @@ Change ports: edit `sbox-mcp-ports.json` + matching dock UI (chomnr Settings / j
 Cursor MCP:     4/4 green  (sbox + sbox-editor + sbox-jtc + cornerman-lm)
 Editor pill:    green dot + MCP · ≥1   (chomnr clients)
 jtc dock:       http://localhost:29015/mcp listening
+Blender Bridge: http://127.0.0.1:8099/status running + auto-start ON
 Bridge:         connected (play/screenshots/lp_spawn_*)
 Tier-3 (Green): :1234 distill+embed loaded (via cornerman-lm from Red)
 ```
@@ -72,7 +75,7 @@ powershell -File lifepunch\scripts\Invoke-CvlFullCapacityRefresh.ps1
 
 Runbook: `lifepunch/docs/CVL_FULL_CAPACITY_UPDATES.md` · pins: `lifepunch/config/cvl-stack-pins.json`
 
-Pass when: `vengeance.sboxBridge`, `vengeance.sboxEditor`, `vengeance.sboxJtc`, `vengeance.mcpStack`, `cornerman.tier3Serve`, `cornerman.mcpTriple` = **true**.
+Pass when: `vengeance.sboxBridge`, `vengeance.sboxEditor`, `vengeance.sboxJtc`, `vengeance.blenderBridge`, `vengeance.mcpStack`, `cornerman.tier3Serve`, `cornerman.mcpTriple` = **true**.
 
 ### Cornerman (Green) — 360° dual-stack (required every session)
 
@@ -94,12 +97,21 @@ On Green: restart Cursor → **3/3 green** when VENGEANCE editor is open.
 
 **Tier-3 models run on Green only** — VENGEANCE uses `cornerman-lm` as a LAN client to `:1234`. Do **not** run LM Studio on Red (competes with editor RAM).
 
-### Not full capacity → relaunch (no guilt, 2 minutes)
+### Not full capacity → relaunch (no guilt, ~2 minutes)
+
+**Canonical Red boot:** `lifepunch/docs/RED_FULL_CAPACITY_BOOT.md`
 
 ```powershell
-powershell -File lifepunch\scripts\Test-PreLaunchCheckup.ps1 -Fix
-powershell -File lifepunch\scripts\Start-SboxDxrpEditor.ps1 -PreflightFix -SyncAddon bitcoinmining
+cd C:\Users\jared\Projects\lifepunchaddons
+git pull --rebase
+powershell -File lifepunch\scripts\Start-SboxDxrpEditor.ps1
+powershell -File lifepunch\scripts\Install-CornermanSboxBridgeMcp.ps1
+powershell -File lifepunch\scripts\Connect-CornermanBridge.ps1 -SkipLmWarm
+powershell -File lifepunch\scripts\Start-VengeanceEditorTunnelToCornerman.ps1 -Background
+powershell -File lifepunch\scripts\Get-CvlConnectivityStatus.ps1 -Pretty
 ```
+
+Red-only (no Green Cursor): `Test-PreLaunchCheckup.ps1 -Fix` then `Start-SboxDxrpEditor.ps1` is enough.
 
 Then **Ctrl+Shift+P → Reload Window** in Cursor if MCP panel still red.
 
@@ -168,7 +180,7 @@ Cornerman **must dual-stack too** at full capacity — SMB for `sbox` + **SSH tu
 | Server | Green transport | Prerequisite |
 |--------|-----------------|--------------|
 | `sbox` | SMB `\\VENGEANCE\SboxBridgeIpc` | `Map-CornermanBridgeShare.ps1` (once) |
-| `sbox-editor` | SSH `-L 9090:127.0.0.1:9090` → VENGEANCE | `Start-CornermanSboxEditorTunnel.ps1 -Background` |
+| `sbox-editor` | SSH `-L 9090:127.0.0.1:9090` → VENGEANCE **or** reverse `-R` from Red | Green: `Start-CornermanSboxEditorTunnel.ps1 -Background` · Red: `Start-VengeanceEditorTunnelToCornerman.ps1 -Background` |
 | `cornerman-lm` | localhost `:1234` | LM Studio warm |
 
 ```text
@@ -178,21 +190,26 @@ Cornerman Cursor
   └─ cornerman-lm  → local distill
 ```
 
-**From VENGEANCE (one shot):**
+**From VENGEANCE (one shot):** `RED_FULL_CAPACITY_BOOT.md` or:
 
 ```powershell
-powershell -File lifepunch\scripts\Connect-CornermanBridge.ps1
+powershell -File lifepunch\scripts\Install-CornermanSboxBridgeMcp.ps1
+powershell -File lifepunch\scripts\Connect-CornermanBridge.ps1 -SkipLmWarm
+powershell -File lifepunch\scripts\Start-VengeanceEditorTunnelToCornerman.ps1 -Background
 ```
 
 **On Cornerman desktop (after SMB map once):**
 
 ```powershell
+powershell -File C:\lifepunch\cornerman\Map-CornermanBridgeShare.ps1
 powershell -File C:\lifepunch\cornerman\Start-CornermanSboxEditorTunnel.ps1 -Background
 ```
 
+Use **Green tunnel (path A)** only when Cornerman can reach VENGEANCE `:22`. When it cannot (common), skip Green tunnel — Red runs `Start-VengeanceEditorTunnelToCornerman.ps1 -Background` instead.
+
 Restart Cursor on Green → all three MCP servers should go green when VENGEANCE editor is open.
 
-**SSH key:** background tunnel needs passwordless `jared@192.168.1.236` from Cornerman (or run tunnel foreground and type password).
+**SSH key (path A only):** background tunnel needs passwordless `jared@192.168.1.236` from Cornerman (or run tunnel foreground and type password).
 
 Refresh mcp only: `Install-CornermanSboxBridgeMcp.ps1`
 

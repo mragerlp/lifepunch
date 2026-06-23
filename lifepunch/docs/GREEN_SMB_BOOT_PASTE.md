@@ -41,9 +41,13 @@ If mcp.json shows mirror path: tell Red to run Install-CornermanSboxBridgeMcp.ps
 
 ---
 
-**Red refreshes Green wiring:**
+**Red full boot (editor + SMB + tunnel):** `RED_FULL_CAPACITY_BOOT.md`
+
+**Red refreshes Green wiring (after editor is up):**
 
 ```powershell
-powershell -File lifepunch\scripts\Connect-CornermanBridge.ps1
+powershell -File lifepunch\scripts\Install-CornermanSboxBridgeMcp.ps1
+powershell -File lifepunch\scripts\Connect-CornermanBridge.ps1 -SkipLmWarm
+powershell -File lifepunch\scripts\Start-VengeanceEditorTunnelToCornerman.ps1 -Background
 powershell -File lifepunch\scripts\Get-CvlConnectivityStatus.ps1 -Pretty
 ```

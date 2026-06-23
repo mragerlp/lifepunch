@@ -35,11 +35,15 @@ Pass before heavy work. With editor already open:
 powershell -File Test-PreLaunchCheckup.ps1 -Fix -RequireEditor
 ```
 
-### 2. Launch editor (DXRP + active addon)
+### 2. Launch editor (DXRP + owner lane)
+
+Default syncs **art from OneDrive addon test drop** + **code from repo** (not full repo MIR):
 
 ```powershell
-powershell -File Start-SboxDxrpEditor.ps1 -PreflightFix -SyncAddon bitcoinmining
+powershell -File Start-SboxDxrpEditor.ps1
 ```
+
+Legacy full repo sync: `-RepoSync`. Full Red+Green boot: `../docs/RED_FULL_CAPACITY_BOOT.md`.
 
 ### 3. Full capacity checklist
 
@@ -48,7 +52,7 @@ powershell -File Start-SboxDxrpEditor.ps1 -PreflightFix -SyncAddon bitcoinmining
 | **Cursor → MCP** | 4 green: `sbox`, `sbox-editor`, `sbox-jtc`, `cornerman-lm` |
 | **Editor pill** | Green dot + `MCP · ≥1` (chomnr clients) |
 | **Claude Bridge** | `get_bridge_status` → connected, heartbeat &lt; 30s |
-| **Map** | Host Play from **`scenes/blank.scene`** (canonical). `lp_map_flatgrass` = legacy from game.scene only |
+| **Blender Bridge** | `http://127.0.0.1:8099/status` → `running: true`; **Auto-start Bridge on editor load** ON (saved `bridge_autostart 1`) |
 | **chomnr mode** | **Approve writes** (not Full access) |
 
 One-line probe:
@@ -72,7 +76,7 @@ Green is **not** required for Red-only edit sessions. When Green runs Cursor:
 
 - Triple MCP: SMB `sbox` + SSH tunnel `sbox-editor` + `cornerman-lm`
 - No LM Studio **GUI** on Green (headless `:1234` only)
-- Wire from Red: `Restore-CornermanDualStack.ps1`
+- Wire from Red: `RED_FULL_CAPACITY_BOOT.md` (or `Restore-CornermanDualStack.ps1`)
 
 Skip Green checks when `OFF_CURSOR_ACTIVE.txt` is on the box.
 

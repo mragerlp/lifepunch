@@ -202,11 +202,27 @@ Detail: `MCP_AGENT_ROUTING.md` · install: `SBOX_EDITOR_MCP.md`
 
 ## Session checklist (every work block)
 
+**Full stack (Red + Green Cursor):** `RED_FULL_CAPACITY_BOOT.md`
+
 ```powershell
-powershell -File lifepunch\scripts\Test-PreLaunchCheckup.ps1 -Fix
-powershell -File lifepunch\scripts\Start-SboxDxrpEditor.ps1 -PreflightFix -BitcoinOnly -SyncAddon bitcoinmining
+cd C:\Users\jared\Projects\lifepunchaddons
+git pull --rebase
+powershell -File lifepunch\scripts\Start-SboxDxrpEditor.ps1
+powershell -File lifepunch\scripts\Install-CornermanSboxBridgeMcp.ps1
+powershell -File lifepunch\scripts\Connect-CornermanBridge.ps1 -SkipLmWarm
+powershell -File lifepunch\scripts\Start-VengeanceEditorTunnelToCornerman.ps1 -Background
 powershell -File lifepunch\scripts\Get-CvlConnectivityStatus.ps1 -Pretty
 ```
+
+**Red-only edit session:**
+
+```powershell
+powershell -File lifepunch\scripts\Test-PreLaunchCheckup.ps1 -Fix
+powershell -File lifepunch\scripts\Start-SboxDxrpEditor.ps1
+powershell -File lifepunch\scripts\Get-CvlConnectivityStatus.ps1 -Pretty
+```
+
+Owner editor lane (art from OneDrive drop): `Set-DxrpLifepunchOwnerEditorLane.ps1` — default in `Start-SboxDxrpEditor.ps1`. Legacy full repo MIR: `-RepoSync`.
 
 If `allOk: false` on VENGEANCE-only work: Tier-3 + dual MCP on Red is enough; Green SMB/tunnel only matters for Green Cursor.
 
