@@ -19,6 +19,24 @@ function Get-LifePunchUploadReadyRoot {
     Join-Path $env:USERPROFILE 'OneDrive\Desktop\UPLOAD READY ADDONS'
 }
 
+function Get-LifePunchLpBitcoinArtDrop {
+    <#
+      Canonical lpbitcoin owner art (hub + terminal + rack), Jun 2026 greenfield.
+      Blends stay here; repo tracks FBX + textures under lpbitcoin/*/assets/.
+    #>
+    $canonical = Join-Path $env:USERPROFILE 'OneDrive\Desktop\addon test\addons\lifepunch\lpbitcoin'
+    if (Test-Path -LiteralPath $canonical) {
+        return (Resolve-Path -LiteralPath $canonical).Path
+    }
+
+    $uploadReady = Join-Path (Get-LifePunchUploadReadyPackageRoot) 'lpbitcoin'
+    if (Test-Path -LiteralPath $uploadReady) {
+        return (Resolve-Path -LiteralPath $uploadReady).Path
+    }
+
+    return $canonical
+}
+
 function Get-LifePunchUploadReadyPackageRoot {
     <#
       Owner source of truth for lp* package folders.

@@ -1,9 +1,11 @@
 {
   "model": "bitcoinhub.vmdl",
-  "source": "source/steam-machine.fbx",
-  "blendArchive": "source/bitcoinminer.blend",
-  "textureRoot": "addons/lifepunch/bitcoinmining/lpbitcoin/bitcoinhub/assets/entities/textures",
-  "note": "Steam Machine hub (Jun 2026). FBX slot → vmdl remap → vmat. Animations: fanAction (on), bindPose (off). Recompile vmdl after ModelDoc Add Simple Animations.",
+  "source": "source/fbx/bitcoinhub.fbx",
+  "sourceVmdlAlias": "source/fbx/steam-machine.fbx",
+  "blendArchive": "source/blend/bitcoinhub.blend",
+  "ownerDrop": "Desktop/addon test/addons/lifepunch/lpbitcoin/bitcoinhub/assets/source/bitcoinhub.{blend,fbx}",
+  "textureRoot": "assets/textures",
+  "note": "Steam Machine hub (Jun 2026 greenfield). FBX slot → vmdl remap → vmat. Animations in bitcoinhub.fbx: fanAction, front_panelAction, Steam_controllerAction. Recompile vmdl after ModelDoc Add Simple Animations.",
   "vmats": {
     "bitcoinhub-sm-body.vmat": {
       "shader": "complex",

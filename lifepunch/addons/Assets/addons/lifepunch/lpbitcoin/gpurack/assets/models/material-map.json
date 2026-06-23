@@ -9,6 +9,10 @@
     "displayName": "GPU rack (small)",
     "slug": "gpu-rack",
     "activeSource": "assets/source/fbx/gpu-rack-anim.fbx",
+    "stackedSource": "assets/source/fbx/gpu-rack-stacked-anim.fbx",
+    "staticSource": "assets/source/obj/gpu-farm-static.obj",
+    "blendArchive": "assets/source/blend/gpu-farm.blend",
+    "ownerDrop": "Desktop/addon test/addons/lifepunch/lpbitcoin/gpurack/assets/source/GPUFarm*",
     "targetModel": "assets/models/gpu-rack.vmdl",
     "importScale": 0.395,
     "importRotation": [0, 90, 0]
