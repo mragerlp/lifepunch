@@ -157,6 +157,57 @@ function Sync-LifepunchUlx {
     Write-Host '  Code/lifepunchulx (adminmenu ship files; shared UI at lifepunch root)' -ForegroundColor Green
 }
 
+function Sync-RepoLpBitcoinShipAssets {
+    <#
+      Owner drop holds source art (blend/fbx/png). Repo holds ModelDoc ship output
+      (vmdl, vmats, prefab, _c). Overlay ship layers without clobbering owner source/.
+    #>
+    $repoLpBitcoin = Join-Path $repoAssetsRoot 'lpbitcoin'
+    if (-not (Test-Path -LiteralPath $repoLpBitcoin)) {
+        Write-Host '  skip repo ship overlay - no repo lpbitcoin assets' -ForegroundColor DarkGray
+        return
+    }
+
+    $shipSubdirs = @('models', 'entities', 'sounds')
+    $overlayCount = 0
+
+    Get-ChildItem -LiteralPath $repoLpBitcoin -Directory -ErrorAction SilentlyContinue | ForEach-Object {
+        $entity = $_.Name
+        $assetsRoot = Join-Path $_.FullName 'assets'
+        if (-not (Test-Path -LiteralPath $assetsRoot)) { return }
+
+        foreach ($sub in $shipSubdirs) {
+            $src = Join-Path $assetsRoot $sub
+            if (-not (Test-Path -LiteralPath $src)) { continue }
+            $dst = Join-Path $dxrpAssetsRoot "lpbitcoin\$entity\assets\$sub"
+            if ($WhatIf) {
+                Write-Host "  [WhatIf] ship overlay $entity/assets/$sub" -ForegroundColor DarkGray
+                continue
+            }
+            New-Item -ItemType Directory -Force -Path $dst | Out-Null
+            & robocopy $src $dst /E /NFL /NDL /NJH /NJS /nc /ns /np | Out-Null
+            if ($LASTEXITCODE -ge 8) { throw "robocopy ship overlay failed: $entity/$sub" }
+            $overlayCount += (Get-ChildItem -LiteralPath $dst -Recurse -File -ErrorAction SilentlyContinue).Count
+        }
+
+        $texSrc = Join-Path $assetsRoot 'textures'
+        $texDst = Join-Path $dxrpAssetsRoot "lpbitcoin\$entity\assets\textures"
+        if ((Test-Path -LiteralPath $texSrc) -and -not $WhatIf) {
+            New-Item -ItemType Directory -Force -Path $texDst | Out-Null
+            Get-ChildItem -LiteralPath $texSrc -File -ErrorAction SilentlyContinue |
+                Where-Object { $_.Extension -eq '.vtex_c' -or $_.Name -like '*_c' } |
+                ForEach-Object {
+                    Copy-Item -LiteralPath $_.FullName -Destination (Join-Path $texDst $_.Name) -Force
+                    $overlayCount++
+                }
+        }
+    }
+
+    if (-not $WhatIf) {
+        Write-Host "  repo ship overlay (models/entities/sounds + vtex_c) - $overlayCount files under lpbitcoin" -ForegroundColor Green
+    }
+}
+
 function Sync-LpBitcoinEntityCode {
     $repoLpBitcoinCode = Join-Path $repoCodeRoot 'lpbitcoin'
     if (-not (Test-Path -LiteralPath $repoLpBitcoinCode)) { return }
@@ -291,6 +342,9 @@ foreach ($pkg in $ownerPackages) {
     Invoke-OwnerMirror -From $src -To $dst -Label "Assets/$pkg (owner drop)"
 }
 
+Write-Host 'Overlay repo lpbitcoin ship assets (vmdl/prefab/_c - not owner source/)' -ForegroundColor Cyan
+Sync-RepoLpBitcoinShipAssets
+
 # Remove DXRP asset folders not in owner drop (except lifepunchulx added next)
 if (Test-Path -LiteralPath $dxrpAssetsRoot) {
     $keepAssets = @($ownerPackages) + @($ulxDxrpFolder)
@@ -321,6 +375,6 @@ Update-RpSbprojResources -OwnerPackages $ownerPackages
 
 Write-Host ''
 Write-Host 'Owner editor lane ready. Restart sbox editor if it was open.' -ForegroundColor Cyan
-Write-Host '  Art: OneDrive addon test\addons\lifepunch (not repo MIR)' -ForegroundColor DarkGray
+Write-Host '  Art: OneDrive drop (source) + repo ship overlay (vmdl/prefab/_c)' -ForegroundColor DarkGray
 Write-Host '  ULX: lifepunchulx from repo adminmenu' -ForegroundColor DarkGray
 Write-Host '  Code: lpbitcoin/{entity}/code + bitcoinmining (terminal/rack/economy) + _dev from repo' -ForegroundColor DarkGray
