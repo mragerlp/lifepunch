@@ -217,7 +217,7 @@
 												}
 												else
 												{
-													<div class="lp-ui-scroll lp-ui-scroll-region">
+													<div class="lp-ui-scroll lp-ui-scroll-region overview-miners-scroll">
 														<div class="lp-ui-list">
 															@for ( var i = 0; i < GetLinkedRacks().Count; i++ )
 															{
@@ -1096,7 +1096,8 @@
 			QueueScrollBootstrap();
 	}
 
-	private void QueueScrollBootstrap() => _scrollBootstrapFramesLeft = 4;
+	private void QueueScrollBootstrap()
+		=> _scrollBootstrapFramesLeft = Math.Max( _scrollBootstrapFramesLeft, 4 );
 
 	// Upgrades is a sub-view of Servers — keep the rack icon selected (Staff Menu tab-sel pattern).
 	private bool IsSidebarTabActive( OpsTab tab )

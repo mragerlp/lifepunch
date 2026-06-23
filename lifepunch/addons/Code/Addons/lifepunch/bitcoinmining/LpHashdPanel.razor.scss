@@ -35,6 +35,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 @import "LpUiScale.scss";
 @import "../LifePunchUiFooter.razor.scss";
 @import "../LifePunchUiShell.scss";
+@import "LpUiMenuLayout.scss";
 
 .lp-bitcoin-ops {
 	position: absolute;
@@ -950,10 +951,10 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	}
 
 	.overview .lp-ui-split > .lp-ui-panel.overview-status-panel {
-		overflow: visible;
+		overflow: hidden;
 
 		> .overview-status-stack {
-			flex: 0 1 auto;
+			flex: 1 1 auto;
 			min-height: 0;
 			display: flex;
 			flex-direction: column;
@@ -1119,8 +1120,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 			flex: 1 1 0;
 			min-height: 0;
 			width: 100%;
-			overflow-y: scroll;
-			overflow-x: hidden;
+			overflow: hidden;
 		}
 	}
 
@@ -2660,6 +2660,11 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 
 .lp-bitcoin-ops .workspace {
 	border-top-right-radius: 22px;
+	overflow: hidden;
+}
+
+.lp-bitcoin-ops .lp-ui-scroll-region,
+.lp-bitcoin-ops .lp-ui-scroll {
 	overflow: hidden;
 }
 

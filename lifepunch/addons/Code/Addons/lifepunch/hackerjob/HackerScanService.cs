@@ -21,7 +21,7 @@ namespace LifePunch.DXRP.Addons.HackerJob;
 
 /// <summary>
 /// Player scan for wallet-hack targets. DXRP editor play uses live roster entries —
-/// including editor test bots spawned via <c>lifepunch_spawn_testbot</c> (<c>adminmenu/StaffMenuTestBots</c>).
+/// including editor test bots spawned via <c>lifepunch_spawn_testbot</c> (<c>Code/_dev/StaffMenuTestBots</c>).
 /// Phase 2: scan list must be built on host via <c>[Rpc.Host]</c> — client display only.
 /// </summary>
 public static class HackerScanService

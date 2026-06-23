@@ -216,6 +216,27 @@ powershell -File lifepunch\scripts\Sync-DesktopPublishFolder.ps1 -Addon $ident
 See ``portal-fields.json`` and ``package-export.json`` for machine-readable field values.
 "@
     Set-Content -LiteralPath (Join-Path $publishRoot 'UPLOAD_README.md') -Value $uploadReadme -Encoding UTF8
+
+    $ownershipNotice = @"
+LIFEPUNCH(tm) PROPRIETARY NOTICE
+============================
+
+Package: $($pkg.title) ($slug)
+Publisher: lifepunch.co (PEAK PERFORMANCE PRODUCTS LLC)
+s&box ident: $($pkg.sboxIdentifier)
+DXRP addon ident: $($pkg.dxrpAddonIdentifier)
+
+$($pkg.ownership)
+
+Every source file in this upload tree carries the matching proprietary header.
+Server operators may use this addon on their DXRP server under portal terms;
+redistribution, resale, sublicensing, or reuse of source or compiled output
+by third parties is not permitted.
+
+Generated: $(Get-Date -Format 'yyyy-MM-dd HH:mm') - Monorepo: $gitSha
+"@
+    $utf8Bom = New-Object System.Text.UTF8Encoding $true
+    [IO.File]::WriteAllText((Join-Path $publishRoot 'INTELLECTUAL_PROPERTY.txt'), $ownershipNotice, $utf8Bom)
 }
 
 Write-Host ''

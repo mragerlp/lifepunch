@@ -11,7 +11,7 @@ Portal package: **lifepunchulx** (s&box ident `lifepunch.ulx`).
 
 - Thin UX + dispatch layer over DXRP's native admin backend — no new authority, every action re-validated host-side.
 - Permission-gated UI via live `RankSystem.HasLocalPermission`; `CanLocalTarget` locks equal/higher ranks.
-- Code-only package (6 ship files); no Assets or content rows. Dev helpers (`*TestBots*`) excluded from publish staging.
+- Code-only package (6 ship files); no Assets or content rows. Editor test bots live in `Code/_dev/` (excluded from publish staging).
 
 ### Command catalog (25 actions)
 

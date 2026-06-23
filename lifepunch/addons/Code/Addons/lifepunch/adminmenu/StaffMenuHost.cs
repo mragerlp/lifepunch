@@ -1,7 +1,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // PROPRIETARY & CONFIDENTIAL — © 2026 lifepunch.co. All rights reserved.
 //
-// "LIFEPUNCH ULX for DXRP" (s&box ident: lifepunch.ulx · addon ident: lifepunchulx) is the sole-owned
+// "lifepunchulx" (s&box ident: lifepunch.ulx · addon ident: lifepunchulx) is the sole-owned
 // intellectual property of lifepunch.co. It is NOT licensed for resale, redistribution,
 // sublicensing, copying, or reuse by ANY person or entity — including DXRP and
 // LifePunch staff, contributors, or community — EXCEPT the owner (lifepunch.co).
@@ -96,6 +96,9 @@ internal static class StaffMenuHost
 
 	/// <summary>Whether the menu is currently mounted/open.</summary>
 	public static bool IsOpen => _instance.IsValid();
+
+	/// <summary>Editor dev: the live menu instance (for scroll probes / test bots).</summary>
+	internal static StaffMenu? DevMenu => _instance;
 
 	/// <summary>The local viewer's Steam ID. Define-free: valid in both builds.</summary>
 	public static long LocalSteamId => Sandbox.Game.SteamId;

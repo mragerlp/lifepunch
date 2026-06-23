@@ -257,7 +257,7 @@ if ($null -ne $Manifest) {
     }
 }
 
-# lifepunchulx (adminmenu) — r6 ship gate: six publish files + optional editor-only test bots (excluded by prepare-publish).
+# lifepunchulx (adminmenu) — r6 ship gate: six publish files only. Test bots live in Code/_dev/.
 $AdminMenuCodeRoot = Join-Path $Root 'Code\Addons\lifepunch\adminmenu'
 if (Test-Path -LiteralPath $AdminMenuCodeRoot -PathType Container) {
     $AllowedAdminMenuShipFiles = @(
@@ -268,22 +268,17 @@ if (Test-Path -LiteralPath $AdminMenuCodeRoot -PathType Container) {
         'StaffSettingsService.cs',
         'WaypointSyncService.cs'
     )
-    $AllowedAdminMenuDevFiles = @(
-        'StaffMenuTestBots.cs',
-        'StaffMenuTestBotsAutoSpawn.cs'
-    )
 
     Get-ChildItem -LiteralPath $AdminMenuCodeRoot -File -Force | ForEach-Object {
         $Name = $_.Name
-        if ($Name -match '(?i)DevGive|DevSpawn') {
-            Add-LayoutError "adminmenu (lifepunchulx) must not contain dev give/spawn helpers: $Name"
+        if ($Name -match '(?i)TestBots|DevGive|DevSpawn') {
+            Add-LayoutError "adminmenu (lifepunchulx) must not contain editor-only helpers (move to Code/_dev/): $Name"
             return
         }
 
         if ($_.Extension -in @('.cs', '.razor', '.scss') -and
-            $AllowedAdminMenuShipFiles -notcontains $Name -and
-            $AllowedAdminMenuDevFiles -notcontains $Name) {
-            Add-LayoutError "adminmenu (lifepunchulx) unexpected source (r6 ship 6 + optional TestBots): $Name"
+            $AllowedAdminMenuShipFiles -notcontains $Name) {
+            Add-LayoutError "adminmenu (lifepunchulx) unexpected source (r6 ship 6 only): $Name"
         }
     }
 }

@@ -108,7 +108,9 @@ public static class LifePunchScrollRegionBootstrap
 
 				if ( existing.IsValid() )
 				{
-					MergeChildren( source, existing );
+					if ( source.Children.Any() )
+						MergeChildren( source, existing );
+
 					source.Delete();
 					continue;
 				}
@@ -164,6 +166,18 @@ public static class LifePunchScrollRegionBootstrap
 
 		if ( panel.HasClass( "terminal-sidebar-scroll" ) )
 			return "terminal-sidebar-scroll";
+
+		if ( panel.HasClass( "staff-profile-fields-scroll" ) )
+			return "staff-profile-fields-scroll";
+
+		if ( panel.HasClass( "staff-waypoints-scroll" ) )
+			return "staff-waypoints-scroll";
+
+		if ( panel.HasClass( "staff-roster-scroll" ) )
+			return "staff-roster-scroll";
+
+		if ( panel.HasClass( "staff-audit-scroll" ) )
+			return "staff-audit-scroll";
 
 		return null;
 	}

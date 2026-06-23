@@ -1,7 +1,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // PROPRIETARY & CONFIDENTIAL — © 2026 lifepunch.co. All rights reserved.
 //
-// "LIFEPUNCH ULX for DXRP" (s&box ident: lifepunch.ulx · addon ident: lifepunchulx) is the sole-owned
+// "LifePunch editor dev lane" (Code/_dev — NOT shipped; lifepunchulx publishes six staff-menu files only) is the sole-owned
 // intellectual property of lifepunch.co. It is NOT licensed for resale, redistribution,
 // sublicensing, copying, or reuse by ANY person or entity — including DXRP and
 // LifePunch staff, contributors, or community — EXCEPT the owner (lifepunch.co).
@@ -11,14 +11,19 @@
 
 #if !LIFEPUNCH_LOCAL
 
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Sandbox;
+using Sandbox.UI;
 using Dxura.RP.Game;
+using Dxura.RP.Shared;
+using LifePunch.DXRP.Addons;
 
 namespace LifePunch.DXRP.Addons.StaffMenu;
 
 /// <summary>
-/// DEV / EDITOR-TEST ONLY — DO NOT SHIP. Exclude before publishing the admin-menu addon.
+/// DEV / EDITOR-TEST ONLY — lives in <c>Code/_dev/</c>; never in lifepunchulx publish tree.
 ///
 /// Spawns host-owned dummy "players" so staff-menu features that need a SECOND player can be tested
 /// solo in editor play: the profile-pane Goto/Bring/Return box, target selection, CanTarget gating,
@@ -49,6 +54,84 @@ public static class StaffMenuTestBots
 
 	private static int _spawnCount;
 	private static readonly List<long> _spawned = new();
+
+	// RankSystem.Ranks is host-private — portal init fills this cache (lp_authorize / DxrpPortalDevAuth).
+	private static readonly Dictionary<string, Guid> RankIdByName = new( StringComparer.OrdinalIgnoreCase );
+
+	/// <summary>Filled after <c>lp_authorize</c> so rank bots can resolve portal rank names.</summary>
+	public static void CacheRankDefinitions( IEnumerable<RankDto> definitions )
+	{
+		RankIdByName.Clear();
+		foreach ( var def in definitions )
+		{
+			if ( def == null || def.Id == Guid.Empty )
+			{
+				continue;
+			}
+
+			RegisterRankName( def.Name, def.Id );
+		}
+	}
+
+	public static Guid? FindRankIdByName( string rankName )
+	{
+		if ( string.IsNullOrWhiteSpace( rankName ) )
+		{
+			return null;
+		}
+
+		if ( RankIdByName.TryGetValue( rankName.Trim(), out var id ) )
+		{
+			return id;
+		}
+
+		var sanitized = SanitizeRankName( rankName );
+		return sanitized.Length > 0 && RankIdByName.TryGetValue( sanitized, out id ) ? id : null;
+	}
+
+	private static void RegisterRankName( string raw, Guid id )
+	{
+		if ( string.IsNullOrWhiteSpace( raw ) )
+		{
+			return;
+		}
+
+		RankIdByName[raw.Trim()] = id;
+		var sanitized = SanitizeRankName( raw );
+		if ( sanitized.Length > 0 )
+		{
+			RankIdByName[sanitized] = id;
+		}
+	}
+
+	private static string SanitizeRankName( string raw )
+	{
+		if ( string.IsNullOrEmpty( raw ) )
+		{
+			return "";
+		}
+
+		var sb = new System.Text.StringBuilder( raw.Length );
+		foreach ( var c in raw )
+		{
+			if ( char.IsControl( c ) || char.IsSurrogate( c ) )
+			{
+				continue;
+			}
+
+			var category = System.Globalization.CharUnicodeInfo.GetUnicodeCategory( c );
+			if ( category is System.Globalization.UnicodeCategory.Format
+			    or System.Globalization.UnicodeCategory.PrivateUse
+			    or System.Globalization.UnicodeCategory.OtherNotAssigned )
+			{
+				continue;
+			}
+
+			sb.Append( c );
+		}
+
+		return sb.ToString().Trim();
+	}
 
 	[ConCmd( "lifepunch_spawn_testbot" )]
 	public static void SpawnTestBot( string name = "" )
@@ -235,6 +318,49 @@ public static class StaffMenuTestBots
 		SpawnRankBots( false );
 		var filled = SpawnScrollFillBots( DefaultScrollFillCount );
 		Log.Info( $"lifepunch_spawn_scroll_testbots: rank roster + {filled} scroll fillers — open /lifepunchulx and wheel the sidebar." );
+
+		if ( !StaffMenuHost.IsOpen )
+		{
+			StaffMenuHost.Toggle();
+		}
+
+		LogScrollMetricsSoon();
+	}
+
+	private static async void LogScrollMetricsSoon()
+	{
+		await GameTask.DelaySeconds( 0.35f );
+		LogScrollMetrics();
+	}
+
+	private static void LogScrollMetrics()
+	{
+		if ( StaffMenuHost.DevMenu?.Panel is not { IsValid: true } root )
+		{
+			Log.Warning( "ulx scroll metrics: menu panel not ready." );
+			return;
+		}
+
+		LifePunchUiScrollPolicy.Apply( root );
+
+		foreach ( var panel in root.Descendants.Where( p => p.HasClass( "player-scroll" )
+		                                                 || p.HasClass( "profile-fields" )
+		                                                 || p.HasClass( "wp-list" )
+		                                                 || p.HasClass( "audit-scroll" ) ) )
+		{
+			var viewH = panel.Box.Rect.Height;
+			var contentH = LifePunchScrollLayout.GetStackedContentHeight( panel );
+			var maxY = LifePunchScrollLayout.GetManualScrollMaxY( panel );
+
+			Log.Info( $"ulx scroll metrics: {panel.GetType().Name} view={viewH:F0} content={contentH:F0} maxY={maxY:F0} offset={panel.ScrollOffset.y:F0} hasScrollY={panel.HasScrollY}" );
+
+			if ( maxY > 8f )
+			{
+				panel.ScrollOffset = new Vector2( 0f, 64f );
+				LifePunchUiScrollPolicy.Apply( root );
+				Log.Info( $"ulx scroll metrics: test offset -> {panel.ScrollOffset.y:F0}" );
+			}
+		}
 	}
 
 	/// <summary>Regular (no-rank) bots with fake SteamIds — pushes <see cref="StaffMenu"/> sidebar past scroll height.</summary>
@@ -309,7 +435,7 @@ public static class StaffMenuTestBots
 				continue;
 			}
 
-			var rankId = ranks.FindRankIdByName( def.Rank );
+			var rankId = FindRankIdByName( def.Rank );
 			if ( !rankId.HasValue )
 			{
 				Log.Warning( $"lifepunch_spawn_rankbots: rank '{def.Rank}' not found for '{def.Name}' — left as regular." );
@@ -350,7 +476,7 @@ public static class StaffMenuTestBots
 		Log.Info( "[lifepunch_list_ranks] probing rank names (name -> rank Guid):" );
 		foreach ( var name in candidates )
 		{
-			var id = ranks.FindRankIdByName( name );
+			var id = FindRankIdByName( name );
 			Log.Info( $"  {name,-14} -> {(id.HasValue ? id.Value.ToString() : "(not found)")}" );
 		}
 
@@ -396,7 +522,9 @@ public static class StaffMenuTestBots
 			return;
 		}
 
-		chat.BroadcastBotChat( steamId, message, MessageType.GlobalChat );
+		var player = GameUtils.Players.FirstOrDefault( p => p.IsValid() && p.SteamId == steamId );
+		var label = player.IsValid() ? player.DisplayName : botToken;
+		chat.BroadcastChat( $"{label}: {message}", MessageType.GlobalChat );
 	}
 
 	// Resolve a spawned bot by raw SteamId or by a case-insensitive substring of its display name.

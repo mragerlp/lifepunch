@@ -1,7 +1,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // PROPRIETARY & CONFIDENTIAL — © 2026 lifepunch.co. All rights reserved.
 //
-// "LIFEPUNCH ULX for DXRP" (s&box ident: lifepunch.ulx · addon ident: lifepunchulx) is the sole-owned
+// "LifePunch editor dev lane" (Code/_dev — NOT shipped; lifepunchulx publishes six staff-menu files only) is the sole-owned
 // intellectual property of lifepunch.co. It is NOT licensed for resale, redistribution,
 // sublicensing, copying, or reuse by ANY person or entity — including DXRP and
 // LifePunch staff, contributors, or community — EXCEPT the owner (lifepunch.co).
@@ -78,7 +78,7 @@ public sealed class StaffMenuTestBotsAutoSpawn : GameObjectSystem<StaffMenuTestB
 		}
 
 		var ranks = RankSystem.Instance;
-		if ( !ranks.IsValid() || !ranks.FindRankIdByName( "VIP" ).HasValue )
+		if ( !ranks.IsValid() || !StaffMenuTestBots.FindRankIdByName( "VIP" ).HasValue )
 		{
 			return;
 		}

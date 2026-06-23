@@ -195,6 +195,38 @@ if (Test-Path -LiteralPath $devSrc) {
                 Write-Host '  Code/_dev: WeaponDevGive.cs restored (weapon lane)' -ForegroundColor Green
             }
         }
+
+        $bitcoinDevReady = $syncedIdents -contains 'bitcoinmining'
+        $devRoot = Join-Path $dxrpCodeRoot '_dev'
+        if (Test-Path -LiteralPath $devRoot) {
+            $bitcoinDevPatterns = @('LpBitcoin*.cs', 'LpBitcoin*.razor', 'LpBitcoin*.scss')
+            if (-not $bitcoinDevReady) {
+                foreach ($pattern in $bitcoinDevPatterns) {
+                    Get-ChildItem -LiteralPath $devRoot -File -Filter $pattern -ErrorAction SilentlyContinue |
+                        Where-Object { $_.Name -notlike '*.quarantine' } |
+                        ForEach-Object {
+                            $active = $_.FullName
+                            $quarantine = "$active.quarantine"
+                            if (Test-Path -LiteralPath $quarantine) {
+                                Remove-Item -LiteralPath $quarantine -Force
+                            }
+                            Rename-Item -LiteralPath $active -NewName ($_.Name + '.quarantine') -Force
+                            Write-Host "  Code/_dev: $($_.Name) quarantined (bitcoinmining not in sync set)" -ForegroundColor Yellow
+                        }
+                }
+            }
+            else {
+                Get-ChildItem -LiteralPath $devRoot -File -ErrorAction SilentlyContinue |
+                    Where-Object { $_.Name -like 'LpBitcoin*' -and $_.Name -like '*.quarantine' } |
+                    ForEach-Object {
+                        $restore = Join-Path $devRoot ($_.Name -replace '\.quarantine$', '')
+                        if (-not (Test-Path -LiteralPath $restore)) {
+                            Rename-Item -LiteralPath $_.FullName -NewName ($_.Name -replace '\.quarantine$', '') -Force
+                            Write-Host "  Code/_dev: restored $($_.Name -replace '\.quarantine$','')" -ForegroundColor Green
+                        }
+                    }
+            }
+        }
     }
 }
 
@@ -224,19 +256,31 @@ foreach ($ident in Get-AddonIdents) {
     }
     $codeSrc = Join-Path $repoCodeRoot $codeIdent
     if (Test-Path -LiteralPath $codeSrc) {
+        $codeDest = Join-Path $dxrpCodeRoot $codeIdent
         Invoke-Mirror `
             -From $codeSrc `
-            -To   (Join-Path $dxrpCodeRoot $codeIdent) `
+            -To   $codeDest `
             -Label "Code/$codeIdent"
+        if ($ident -eq 'adminmenu' -and -not $WhatIf) {
+            foreach ($devOnly in @('StaffMenuTestBots.cs', 'StaffMenuTestBotsAutoSpawn.cs')) {
+                $stale = Join-Path $codeDest $devOnly
+                if (Test-Path -LiteralPath $stale) {
+                    Remove-Item -LiteralPath $stale -Force
+                    Write-Host "  Code/adminmenu: removed $devOnly (editor-only - lives in Code/_dev)" -ForegroundColor Yellow
+                }
+            }
+        }
     }
     else {
         Write-Host "  Code/$codeIdent - skip (no repo folder)" -ForegroundColor DarkGray
     }
 }
 
-# Publish staging packages (lp*) — hub/racks live here; not legacy repo idents.
+# Publish staging packages (lp*) — only when bitcoin lane is in the sync set.
+$syncedIdents = @(Get-AddonIdents)
+$bitcoinLaneSync = @($syncedIdents | Where-Object { $_ -in @('bitcoinmining', 'lpbitcoin', 'lifepunchbitcoin') }).Count -gt 0
 $lpStagingRoot = Join-Path $repoAssetsRoot 'lpbitcoin'
-if (Test-Path -LiteralPath $lpStagingRoot) {
+if ($bitcoinLaneSync -and (Test-Path -LiteralPath $lpStagingRoot)) {
     Write-Host 'Staging: lpbitcoin' -ForegroundColor Cyan
     $lpDest = Join-Path $dxrpAssetsRoot 'lpbitcoin'
     Invoke-Mirror `
@@ -248,7 +292,7 @@ if (Test-Path -LiteralPath $lpStagingRoot) {
 }
 
 $lpCodeRoot = Join-Path $repoCodeRoot 'lpbitcoin'
-if (Test-Path -LiteralPath $lpCodeRoot) {
+if ($bitcoinLaneSync -and (Test-Path -LiteralPath $lpCodeRoot)) {
     Write-Host 'Staging code map: lpbitcoin' -ForegroundColor Cyan
     Invoke-Mirror `
         -From $lpCodeRoot `
@@ -258,7 +302,14 @@ if (Test-Path -LiteralPath $lpCodeRoot) {
 
 $ensureResources = Join-Path $Here 'Ensure-DxrpLifepunchResources.ps1'
 if (Test-Path -LiteralPath $ensureResources) {
-    & $ensureResources -Ident (Get-AddonIdents) -ConfigPath $ConfigPath -IncludeStaging
+    $ensureArgs = @{
+        Ident      = (Get-AddonIdents)
+        ConfigPath = $ConfigPath
+    }
+    if ($bitcoinLaneSync) {
+        $ensureArgs['IncludeStaging'] = $true
+    }
+    & $ensureResources @ensureArgs
 }
 
 if (-not $WhatIf) {

@@ -4,7 +4,7 @@
 
 **Scale / map (Jun 2026):** `facepunch.flatgrass` + `addons/docs/MODEL_SCALE_DOCTRINE.md`. Prefab root **1.0**; shared `bitcoin-terminal.vmdl` **`import_scale` 0.0195** (was giant @ 1.0). Never default **39.37**. Recompile vmdl after edits.
 
-Solo editor testing uses **`StaffMenuTestBots`** (`adminmenu/StaffMenuTestBots.cs`) — same bots as staff menu / waypoint tests. No second human required.
+Solo editor testing uses **`StaffMenuTestBots`** (`Code/_dev/StaffMenuTestBots.cs`) — same bots as staff menu / waypoint tests. No second human required.
 
 ## Setup (host, editor play)
 
@@ -91,4 +91,4 @@ Govdb node list is stub until `governmentdatacenter` tax miners compile on map (
 powershell -File lifepunch/scripts/Sync-LifePunchAddonsToDxrp.ps1 -Addon hackerjob,adminmenu
 ```
 
-`adminmenu` carries `StaffMenuTestBots.cs` — required for bot spawn commands.
+`Code/_dev/` carries `StaffMenuTestBots.cs` — editor-only; not in lifepunchulx publish. Required for bot spawn commands during playtest.

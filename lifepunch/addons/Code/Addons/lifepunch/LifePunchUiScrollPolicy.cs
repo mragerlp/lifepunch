@@ -57,7 +57,7 @@ public static class LifePunchUiScrollPolicy
 
 	private static void ClampScrollOffset( Panel panel )
 	{
-		if ( panel.HasClass( "lp-ui-scroll-region" ) )
+		if ( IsManualScrollShell( panel ) )
 		{
 			ClampManualScrollRegion( panel );
 			return;
@@ -123,5 +123,19 @@ public static class LifePunchUiScrollPolicy
 		var contentHeight = LifePunchScrollLayout.GetStackedContentHeight( panel );
 
 		return Math.Max( 0f, contentHeight - viewHeight );
+	}
+
+	private static bool IsManualScrollShell( Panel panel )
+	{
+		if ( panel is LifePunchScrollRegionPanel )
+			return true;
+
+		if ( panel.HasClass( "lp-ui-scroll-region" ) )
+			return true;
+
+		return panel.HasClass( "player-scroll" )
+		       || panel.HasClass( "profile-fields" )
+		       || panel.HasClass( "wp-list" )
+		       || panel.HasClass( "audit-scroll" );
 	}
 }

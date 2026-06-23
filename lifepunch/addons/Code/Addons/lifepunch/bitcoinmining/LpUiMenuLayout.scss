@@ -67,6 +67,17 @@ $lp-menu-mono: "Roboto Mono", "Courier New", monospace;
 	overflow: hidden;
 }
 
+.lp-bitcoin-ops .lp-ui-scroll-region.overview-miners-scroll,
+.lp-bitcoin-ops .lp-ui-scroll-region.racks-scroll,
+.lp-bitcoin-ops .lp-ui-scroll-region.upgrades-scroll,
+.lp-bitcoin-ops .lp-ui-scroll-region.logs-scroll {
+	flex: 1 1 0;
+	min-height: 0;
+	min-width: 0;
+	width: 100%;
+	overflow: hidden;
+}
+
 .lp-ops-crt .terminal-sidebar-scroll {
 	width: 100%;
 	flex: 1 1 0;

@@ -1,7 +1,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // PROPRIETARY & CONFIDENTIAL — © 2026 lifepunch.co. All rights reserved.
 //
-// "LIFEPUNCH ULX for DXRP" (s&box ident: lifepunch.ulx · addon ident: lifepunchulx) is the sole-owned
+// "lifepunchulx" (s&box ident: lifepunch.ulx · addon ident: lifepunchulx) is the sole-owned
 // intellectual property of lifepunch.co. It is NOT licensed for resale, redistribution,
 // sublicensing, copying, or reuse by ANY person or entity — including DXRP and
 // LifePunch staff, contributors, or community — EXCEPT the owner (lifepunch.co).
@@ -400,6 +400,7 @@ $shell-radius: 22px;
 
 	.pane-label {
 		flex-direction: row;
+		flex-shrink: 0;
 		align-items: center;
 		justify-content: space-between;
 		padding: 12px 8px 10px 16px;
@@ -594,10 +595,8 @@ $shell-radius: 22px;
 		}
 
 		.player-scroll {
+			flex: 1 1 auto;
 			flex-direction: column;
-			flex-grow: 1;
-			// min-height:0 lets this region shrink below content size so it scrolls instead of
-			// expanding the panel when many players are listed below the staff tiers.
 			min-height: 0;
 			overflow-y: auto;
 			padding: 6px 10px 16px 10px;
@@ -1304,6 +1303,14 @@ $shell-radius: 22px;
 				overflow-y: scroll;
 				width: 100%;
 				gap: 2px;
+				padding-bottom: 4px;
+
+				// Scroll slack so the last stat row (Deaths) clears the pinned action buttons.
+				.profile-fields-tail {
+					flex-shrink: 0;
+					height: 24px;
+					width: 100%;
+				}
 
 				.field {
 					flex-direction: row;
@@ -1767,7 +1774,8 @@ $shell-radius: 22px;
 				height: 32px;
 				background-color: transparent;
 				color: $text;
-				font-size: 12px;
+				font-size: 13px;
+				line-height: 1.2;
 				border: 0;
 			}
 
@@ -1828,9 +1836,8 @@ $shell-radius: 22px;
 		}
 
 		.wp-list {
-			flex: 0 1 auto;
+			flex: 1 1 auto;
 			flex-direction: column;
-			max-height: 100%;
 			min-height: 0;
 			border-radius: 10px;
 			border: 1px solid $border;
