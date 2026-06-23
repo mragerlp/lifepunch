@@ -70,6 +70,7 @@ foreach ($line in $existing) {
     if ($line -notmatch '^addons/lifepunch/([^/]+)/') { continue }
     $folder = $Matches[1]
     if ($folder -eq 'bitcoinmining') { continue }
+    if ($folder -eq 'UPLOAD') { continue }
     $folderPath = Join-Path $dxrpAssetsRoot $folder
     if (Test-Path -LiteralPath $folderPath) {
         Add-Mount $line
