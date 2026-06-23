@@ -3,6 +3,18 @@
 Proprietary & Confidential — © 2026 lifepunch.co. Sole-owned IP of lifepunch.co.
 Portal package: **lifepunchulx** (s&box ident `lifepunch.ulx`).
 
+## v1.0.1 — portal r6 (2026-06-23)
+
+- **Scroll policy cleanup** — removed cross-lane class names from the lifepunchulx bundle; shared scroll helpers are addon-neutral (`lp-ui-scroll-region` only). StaffMenu scroll regions declare that class in markup.
+- No gameplay or permission changes; publish hygiene only.
+
+## v1.0.1 — portal r5 (2026-06-22)
+
+- **Dedicated-server compile fix** — self-contained 13-file bundle ships shared UI deps inside `lifepunchulx/` (`LifePunchUiScale`, scroll policy, footer) so dedicated servers no longer hit CS0246 on `LifePunchUiScaleSize`.
+- **Server-agnostic sidebar** — empty default reference tiers (no hard-coded Owner/Super Admin ladder on foreign servers).
+- **Sidebar scroll tail** — roster list bottom padding fix at XL scale.
+- Code-only; no feature regressions vs v1.0.0.
+
 ## v3.0.0 — first production publish (2026-06-16)
 
 **In-game title unchanged:** header still reads **Admin Menu** (subtitle **ULX Console**). Opens via `lifepunchulx`, `/lifepunchulx`, or aliases `menu` / `ulx`.

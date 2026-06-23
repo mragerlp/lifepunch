@@ -154,42 +154,7 @@ public static class LifePunchScrollRegionBootstrap
 	}
 
 	private static string GetScrollSlotClass( Panel panel )
-	{
-		if ( panel.HasClass( "settings-scroll" ) )
-			return "settings-scroll";
-
-		if ( panel.HasClass( "overview-miners-scroll" ) )
-			return "overview-miners-scroll";
-
-		if ( panel.HasClass( "upgrades-scroll" ) )
-			return "upgrades-scroll";
-
-		if ( panel.HasClass( "racks-scroll" ) )
-			return "racks-scroll";
-
-		if ( panel.HasClass( "logs-scroll" ) )
-			return "logs-scroll";
-
-		if ( panel.HasClass( "log" ) || panel.HasClass( "terminal-log-scroll" ) )
-			return "log";
-
-		if ( panel.HasClass( "terminal-sidebar-scroll" ) )
-			return "terminal-sidebar-scroll";
-
-		if ( panel.HasClass( "staff-profile-fields-scroll" ) )
-			return "staff-profile-fields-scroll";
-
-		if ( panel.HasClass( "staff-waypoints-scroll" ) )
-			return "staff-waypoints-scroll";
-
-		if ( panel.HasClass( "staff-roster-scroll" ) )
-			return "staff-roster-scroll";
-
-		if ( panel.HasClass( "staff-audit-scroll" ) )
-			return "staff-audit-scroll";
-
-		return null;
-	}
+		=> LifePunchScrollLayout.GetScrollSlotClass( panel );
 
 	public static LifePunchScrollRegionPanel FindFirst( Panel root, string className )
 	{

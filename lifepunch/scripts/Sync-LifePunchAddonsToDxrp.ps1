@@ -117,6 +117,7 @@ function Resolve-DxrpPackageFolder([string]$Ident) {
 
 # lifepunchulx compiles as its own addon assembly — shared UI helpers must ship inside that folder
 # (same bundle as prepare-publish.ps1 Add-AdminMenuSharedShipDeps).
+# Shared sources must stay addon-neutral — DXRP_ADDON_PUBLISH_DOCTRINE.md § Shared UI (no cross-lane class names).
 $script:AdminMenuSharedShipFiles = @(
     'LifePunchUiScale.cs',
     'LifePunchUiScrollPolicy.cs',

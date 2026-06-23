@@ -126,21 +126,5 @@ public static class LifePunchUiScrollPolicy
 	}
 
 	private static bool IsManualScrollShell( Panel panel )
-	{
-		if ( panel is LifePunchScrollRegionPanel )
-			return true;
-
-		if ( panel.HasClass( "lp-ui-scroll-region" ) )
-			return true;
-
-		return panel.HasClass( "player-scroll" )
-		       || panel.HasClass( "profile-fields" )
-		       || panel.HasClass( "wp-list" )
-		       || panel.HasClass( "audit-scroll" )
-		       || panel.HasClass( "settings-scroll" )
-		       || panel.HasClass( "racks-scroll" )
-		       || panel.HasClass( "upgrades-scroll" )
-		       || panel.HasClass( "logs-scroll" )
-		       || panel.HasClass( "overview-miners-scroll" );
-	}
+		=> LifePunchScrollLayout.IsManualScrollShell( panel );
 }

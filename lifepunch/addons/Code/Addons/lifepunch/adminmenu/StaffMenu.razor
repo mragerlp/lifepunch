@@ -115,7 +115,7 @@
 						<span class="c-desc">Description</span>
 					</div>
 
-					<div class="audit-scroll">
+					<div class="lp-ui-scroll-region audit-scroll">
 						@foreach ( var entry in entries )
 						{
 							<div class="audit-row">
@@ -167,7 +167,7 @@
 				}
 
 				<div class="wp-list-region">
-				<div class="wp-list">
+				<div class="lp-ui-scroll-region wp-list">
 					@foreach ( var name in filteredWaypoints )
 					{
 						<div class="wp-row">
@@ -363,7 +363,7 @@
 						</button>
 					}
 
-					<div class="player-scroll">
+					<div class="lp-ui-scroll-region player-scroll">
 						<div class="roster-section @(_staffSectionCollapsed ? "roster-section-collapsed" : "")">
 							<button class="parent-label" onclick="@ToggleStaffSection">
 								<span class="parent-label-text">Staff (@staffCount)</span>
@@ -480,7 +480,7 @@
 							<img class="profile-avatar" src="avatar:@profileSteamId"/>
 							<div class="profile-name">@( detail.Found ? detail.Name : "Off-roster target" )</div>
 
-							<div class="profile-fields">
+							<div class="lp-ui-scroll-region profile-fields">
 								<div class="field">
 									<span class="k">Steam ID</span>
 									<span class="v v-copy">

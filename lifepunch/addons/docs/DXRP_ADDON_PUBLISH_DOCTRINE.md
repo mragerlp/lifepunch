@@ -121,6 +121,30 @@ C:\Users\jared\OneDrive\Desktop\UPLOAD READY ADDONS\addons\lifepunch\
 
 ---
 
+## Shared UI at `Code/Addons/lifepunch/` (no cross-lane bleed)
+
+Files at the **lifepunch code root** (`LifePunchUiScale.cs`, `LifePunchScrollLayout.cs`, `LifePunchUiScrollPolicy.cs`, …) are **primitives only**. They compile into whichever addon folder DXRP mounts — each published package is its **own assembly**.
+
+**Hard law:**
+
+| Allowed in shared root | Forbidden in shared root |
+|------------------------|---------------------------|
+| Generic conventions (`lp-ui-scroll-region`, scale steps S/M/L/XL, wheel-only scroll policy) | CSS class names from another addon's Razor/SCSS (`racks-scroll`, `player-scroll`, …) |
+| Addon-neutral helpers (stacked content height, scroll clamp math) | `if (panel.HasClass("…"))` chains listing multiple packages' UI |
+| Short proprietary header (`lifepunch.*` / generic addon ident) | References to Bitcoin, ULX, or weapon lane behavior |
+
+**Per-addon ownership:**
+
+- **Markup** owns slot ids: `class="lp-ui-scroll-region audit-scroll"` lives in `StaffMenu.razor`, not in shared C#.
+- **Publish bundle** copies shared primitives **into** the package folder (`lifepunchulx/`, future `lifepunchbitcoin/`, …). What ships on the portal must not contain another lane's class names or comments.
+- **Editor monorepo** may mount several lanes at once for local playtest; that does **not** justify hardcoding Lane B's classes into shared files Lane A ships.
+
+**Violation example (fixed r6):** `LifePunchUiScrollPolicy` listed Bitcoin hub scroll classes inside the lifepunchulx portal bundle — ULX never used those panels, but dedicated servers still compiled the strings.
+
+**Bitcoin / hub scroll:** separate track (`TECH_DEBT.md` UI-03). Shared scroll primitives do not guarantee hub panels work; hub must own its markup + bootstrap + SCSS in the bitcoin lane.
+
+---
+
 ## Agent checklist (new session)
 
 1. Read `ACTIVE_WORKSTREAM.md` + this doc.
