@@ -539,31 +539,18 @@
 															<button class="wallet-cashout-tile-btn @GetPartialCashOutButtonClass()" onclick="@CashOutPartial">@PartialCashOutButtonLabel()</button>
 														</div>
 													</div>
-													<button class="wallet-cashout-all @(HubWalletBtc() <= 0f ? "disabled" : "")" onclick="@CashOutAll">
+													<button class="wallet-cashout-all @GetCashOutAllButtonClass()" onclick="@CashOutAll">
 														<i class="material-icons">savings</i>
 														<span class="wallet-cashout-all-text">
-															<span class="wallet-cashout-all-label">Cash out all</span>
-															<span class="wallet-cashout-all-amount">@CashOutAllSubline()</span>
+															<span class="wallet-cashout-all-label">@CashOutAllLabel()</span>
+															@if ( !HasCashOutAllFeedback() )
+															{
+																<span class="wallet-cashout-all-amount">@CashOutAllSubline()</span>
+															}
 														</span>
 													</button>
 												</div>
 											</div>
-
-											@if ( _cashOutErrorActive )
-											{
-												<div class="wallet-cashout-error @(_cashOutErrorVisible ? "visible" : "")">
-													<i class="material-icons">error_outline</i>
-													<span>@_cashOutErrorMessage</span>
-												</div>
-											}
-
-											@if ( _cashOutSuccessActive )
-											{
-												<div class="wallet-cashout-success @(_cashOutSuccessVisible ? "visible" : "")">
-													<i class="material-icons">check_circle</i>
-													<span>@_cashOutSuccessMessage</span>
-												</div>
-											}
 										</div>
 									</div>
 								}
@@ -652,6 +639,7 @@
 														<i class="material-icons">currency_exchange</i>
 														<span>Live hub rate</span>
 													</div>
+													<div class="transfers-rate-tip">Terminal send uses BTC amounts. Hub bank cashout uses the live rate.</div>
 													<span class="transfers-rate-badge">@LpBitcoinEconomy.FormatExchangeRateLabel()</span>
 												</div>
 												<div class="transfers-rate-grid">
@@ -665,9 +653,8 @@
 												</div>
 												<div class="transfers-rate-wallet">
 													<span class="transfers-rate-wallet-label">Still on racks</span>
-													<span class="transfers-rate-wallet-value">@TransferRackBalanceReference()</span>
+													<span class="transfers-rate-wallet-value @TransferRackBalanceValueClass()">@TransferRackBalanceReference()</span>
 												</div>
-												<div class="transfers-rate-foot">Terminal send uses BTC amounts. Hub bank cashout uses the live rate above.</div>
 											</div>
 										</div>
 									</div>
@@ -822,13 +809,13 @@
 	private string _pinChangeNotice = "";
 	private int _pinChangePass;
 	private static readonly string[] _pinKeys = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "clr", "0", "ok" };
+	private enum WalletCashOutFeedback { None, Error, Success }
+
 	private string _cashOutAmount = "";
-	private bool _cashOutSuccessActive;
-	private bool _cashOutSuccessVisible;
-	private string _cashOutSuccessMessage = "";
-	private bool _cashOutErrorActive;
-	private bool _cashOutErrorVisible;
-	private string _cashOutErrorMessage = "";
+	private WalletCashOutFeedback _partialCashOutFeedback;
+	private string _partialCashOutFeedbackText = "";
+	private WalletCashOutFeedback _allCashOutFeedback;
+	private string _allCashOutFeedbackText = "";
 
 	// Structure hash (racks linked, power, alerts, wallet display) — never hash TextEntry bind values.
 	private TimeSince _sinceTelemetryRefresh;
@@ -844,7 +831,7 @@
 		set
 		{
 			_cashOutAmount = value ?? string.Empty;
-			ClearCashOutError();
+			ClearPartialCashOutFeedback();
 			StateHasChanged();
 		}
 	}
@@ -1291,6 +1278,9 @@
 		return $"{btc.ToString( "F6" )} BTC on racks";
 	}
 
+	private string TransferRackBalanceValueClass()
+		=> RackPendingBtc() > 0f ? "accent" : string.Empty;
+
 	private string ReceiveCopyLabel() => _receiveCopyAck ? "Copied!" : "Copy Steam ID";
 
 	private string SendExampleCopyLabel() => _sendExampleCopyAck ? "Copied!" : "Copy example command";
@@ -1707,72 +1697,64 @@
 
 	public void OnCashOutSuccess( float btcAmount, uint usdPayout, bool soldAll )
 	{
-		ClearCashOutError();
-		_cashOutSuccessMessage = soldAll
-			? $"Cashed out all hub BTC — ${usdPayout:N2} deposited to your bank"
-			: $"Cashed out {btcAmount:F6} BTC — ${usdPayout:N2} deposited to your bank";
-
-		_cashOutSuccessActive = true;
-		_cashOutSuccessVisible = false;
 		_cashOutAmount = string.Empty;
-		_ = PlayCashOutSuccessAsync();
+
+		if ( soldAll )
+			ShowAllCashOutFeedback( WalletCashOutFeedback.Success, "Cashed out!" );
+		else
+			ShowPartialCashOutFeedback( WalletCashOutFeedback.Success, "Cashed out!" );
 	}
 
-	private void ClearCashOutError()
+	private void ClearPartialCashOutFeedback()
 	{
-		_cashOutErrorActive = false;
-		_cashOutErrorVisible = false;
-		_cashOutErrorMessage = string.Empty;
+		_partialCashOutFeedback = WalletCashOutFeedback.None;
+		_partialCashOutFeedbackText = string.Empty;
 	}
 
-	private void ShowCashOutError( string message )
+	private void ClearAllCashOutFeedback()
 	{
-		ClearCashOutSuccess();
-		_cashOutErrorMessage = message;
-		_cashOutErrorActive = true;
-		_cashOutErrorVisible = false;
-		_ = PlayCashOutErrorAsync();
+		_allCashOutFeedback = WalletCashOutFeedback.None;
+		_allCashOutFeedbackText = string.Empty;
 	}
 
-	private void ClearCashOutSuccess()
+	private void ShowPartialCashOutFeedback( WalletCashOutFeedback feedback, string message )
 	{
-		_cashOutSuccessActive = false;
-		_cashOutSuccessVisible = false;
-		_cashOutSuccessMessage = string.Empty;
+		ClearAllCashOutFeedback();
+		_partialCashOutFeedback = feedback;
+		_partialCashOutFeedbackText = message;
+		_ = ClearPartialCashOutFeedbackAsync();
 	}
 
-	private async System.Threading.Tasks.Task PlayCashOutErrorAsync()
+	private void ShowAllCashOutFeedback( WalletCashOutFeedback feedback, string message )
 	{
-		await GameTask.DelayRealtimeSeconds( 0.05f );
-		_cashOutErrorVisible = true;
-		StateHasChanged();
+		ClearPartialCashOutFeedback();
+		_allCashOutFeedback = feedback;
+		_allCashOutFeedbackText = message;
+		_ = ClearAllCashOutFeedbackAsync();
+	}
 
-		await GameTask.DelayRealtimeSeconds( 2.8f );
-		_cashOutErrorVisible = false;
-		StateHasChanged();
-
-		await GameTask.DelayRealtimeSeconds( 0.25f );
-		_cashOutErrorActive = false;
+	private async System.Threading.Tasks.Task ClearPartialCashOutFeedbackAsync()
+	{
+		await GameTask.DelayRealtimeSeconds( 2.5f );
+		ClearPartialCashOutFeedback();
 		StateHasChanged();
 	}
 
-	private async System.Threading.Tasks.Task PlayCashOutSuccessAsync()
+	private async System.Threading.Tasks.Task ClearAllCashOutFeedbackAsync()
 	{
-		await GameTask.DelayRealtimeSeconds( 0.05f );
-		_cashOutSuccessVisible = true;
-		StateHasChanged();
-
-		await GameTask.DelayRealtimeSeconds( 2.8f );
-		_cashOutSuccessVisible = false;
-		StateHasChanged();
-
-		await GameTask.DelayRealtimeSeconds( 0.25f );
-		_cashOutSuccessActive = false;
+		await GameTask.DelayRealtimeSeconds( 2.5f );
+		ClearAllCashOutFeedback();
 		StateHasChanged();
 	}
 
 	private string PartialCashOutButtonLabel()
 	{
+		if ( _partialCashOutFeedback == WalletCashOutFeedback.Error )
+			return _partialCashOutFeedbackText;
+
+		if ( _partialCashOutFeedback == WalletCashOutFeedback.Success )
+			return _partialCashOutFeedbackText;
+
 		if ( !TryParseCashOutAmount( out var amount ) || amount <= 0f )
 			return "Enter amount";
 
@@ -1787,6 +1769,20 @@
 		return LpBitcoinEconomy.FormatBtcToCash( amount );
 	}
 
+	private string CashOutAllLabel()
+	{
+		if ( _allCashOutFeedback == WalletCashOutFeedback.Error )
+			return _allCashOutFeedbackText;
+
+		if ( _allCashOutFeedback == WalletCashOutFeedback.Success )
+			return _allCashOutFeedbackText;
+
+		return "Cash out all";
+	}
+
+	private bool HasCashOutAllFeedback()
+		=> _allCashOutFeedback != WalletCashOutFeedback.None;
+
 	private string CashOutAllSubline()
 	{
 		if ( HubWalletBtc() <= 0f )
@@ -1796,7 +1792,26 @@
 	}
 
 	private string GetPartialCashOutButtonClass()
-		=> CanAttemptPartialCashOut() ? string.Empty : "disabled";
+	{
+		if ( _partialCashOutFeedback == WalletCashOutFeedback.Error )
+			return "is-error";
+
+		if ( _partialCashOutFeedback == WalletCashOutFeedback.Success )
+			return "is-success";
+
+		return CanAttemptPartialCashOut() ? "is-ready" : "disabled";
+	}
+
+	private string GetCashOutAllButtonClass()
+	{
+		if ( _allCashOutFeedback == WalletCashOutFeedback.Error )
+			return "is-error";
+
+		if ( _allCashOutFeedback == WalletCashOutFeedback.Success )
+			return "is-success";
+
+		return HubWalletBtc() <= 0f ? "disabled" : string.Empty;
+	}
 
 	private bool CanAttemptPartialCashOut()
 		=> TryParseCashOutAmount( out var amount ) && amount > 0f;
@@ -1814,7 +1829,7 @@
 
 		if ( amount > HubWalletBtc() )
 		{
-			ShowCashOutError( "Insufficient funds" );
+			ShowPartialCashOutFeedback( WalletCashOutFeedback.Error, "Insufficient funds" );
 			return;
 		}
 
@@ -1825,7 +1840,7 @@
 	{
 		if ( HubWalletBtc() <= 0f )
 		{
-			ShowCashOutError( "Insufficient funds" );
+			ShowAllCashOutFeedback( WalletCashOutFeedback.Error, "Insufficient funds" );
 			return;
 		}
 
@@ -2005,12 +2020,10 @@
 		hash.Add( LinkedRackCount() );
 		hash.Add( _telemetryHash );
 		hash.Add( Hub?.Owner ?? 0 );
-		hash.Add( _cashOutSuccessActive );
-		hash.Add( _cashOutSuccessVisible );
-		hash.Add( _cashOutSuccessMessage );
-		hash.Add( _cashOutErrorActive );
-		hash.Add( _cashOutErrorVisible );
-		hash.Add( _cashOutErrorMessage );
+		hash.Add( (int)_partialCashOutFeedback );
+		hash.Add( _partialCashOutFeedbackText );
+		hash.Add( (int)_allCashOutFeedback );
+		hash.Add( _allCashOutFeedbackText );
 		hash.Add( LpBitcoinEconomy.PortalBaseCashUsdPerBtc );
 		hash.Add( LpBitcoinEconomy.CashUsdPerBtc );
 		hash.Add( LpBitcoinEconomy.PortalEconomyRevision );
