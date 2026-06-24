@@ -4586,7 +4586,6 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	min-width: 0;
 	min-height: 0;
 	height: auto;
-	max-height: none;
 	padding-top: 8px;
 	padding-right: 10px;
 	padding-bottom: 8px;
@@ -4651,7 +4650,6 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 .lp-bitcoin-ops .wallet-cashout-panel .wallet-cashout-all {
 	min-height: 52px;
 	height: 100%;
-	max-height: none;
 }
 
 .lp-bitcoin-ops .wallet-cashout-all > .material-icons {
