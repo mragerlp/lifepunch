@@ -165,25 +165,25 @@
 												<div class="overview-intro-terminal-meta">
 													<div class="overview-intro-terminal-heading">Bitcoin terminal</div>
 													<div class="overview-intro-terminal-status">
-														<span class="lp-ui-status-dot @(HasLinkedTerminal() ? "on" : HasNearbyUnlinkedTerminal() ? "warn" : "off")"></span>
+														<span class="lp-ui-status-dot @OverviewTerminalStatusDotClass()"></span>
 														<span class="overview-intro-terminal-label">@TerminalLinkStatusLabel()</span>
 													</div>
 												</div>
 												<div class="overview-intro-terminal-actions">
-												@if ( HasLinkedTerminal() )
+												@if ( !HubIsPowered() )
+												{
+													<button class="overview-hub-power-btn off" onclick="@PowerOn">
+														<span class="lp-ui-status-dot off"></span>
+														<span>Power on hub</span>
+													</button>
+												}
+												else if ( HasLinkedTerminal() )
 												{
 													<button class="lp-ui-btn-ghost overview-intro-unlink-btn" onclick="@UnlinkTerminal">Unlink terminal</button>
 												}
 												else if ( HasNearbyUnlinkedTerminal() )
 												{
-													@if ( HubIsPowered() )
-													{
-														<button class="lp-ui-btn-ghost" onclick="@LinkNearbyTerminal">Link terminal</button>
-													}
-													else
-													{
-														<button class="lp-ui-btn-ghost disabled" disabled>Power on to link</button>
-													}
+													<button class="lp-ui-btn-ghost" onclick="@LinkNearbyTerminal">Link terminal</button>
 												}
 												else
 												{
@@ -263,10 +263,11 @@
 															</div>
 															<div class="lp-ui-info-row">
 																<span class="lp-ui-info-label">Hub power</span>
-																<span class="lp-ui-info-value">
+																<button class="overview-hub-power-toggle @(Hub?.IsPowered == true ? "on" : "off")"
+																        onclick="@ToggleHubPower">
 																	<span class="lp-ui-status-dot @(Hub?.IsPowered == true ? "on" : "off")"></span>
 																	<span>@HubPowerStatusLabel()</span>
-																</span>
+																</button>
 															</div>
 															<div class="lp-ui-info-row">
 																<span class="lp-ui-info-label">Load / draw</span>
@@ -313,12 +314,6 @@
 															<div class="rack-card-head">
 																<div class="rack-card-head-main">
 																	<div class="rack-card-title">@slot.DisplayLabel</div>
-																	<button class="rack-slot-id-copy"
-																	        onclick="@(() => CopyOverviewMinerToken( slot ))">
-																		<span class="rack-slot-id-token">@slot.TerminalToken</span>
-																		<i class="material-icons">content_copy</i>
-																		<span class="rack-slot-id-hint">@OverviewMinerCopyHint( slot )</span>
-																	</button>
 																</div>
 																<div class="rack-card-badges">
 																	@if ( slot.Rack.IsValid() )
@@ -330,6 +325,12 @@
 																	{
 																		<span class="rack-badge">Not linked</span>
 																	}
+																	<button class="rack-slot-id-copy"
+																	        onclick="@(() => CopyOverviewMinerToken( slot ))">
+																		<span class="rack-slot-id-token">@slot.TerminalToken</span>
+																		<i class="material-icons">content_copy</i>
+																		<span class="rack-slot-id-hint">@OverviewMinerCopyHint( slot )</span>
+																	</button>
 																</div>
 															</div>
 															<div class="rack-card-body">
@@ -362,19 +363,15 @@
 																	</div>
 																}
 															</div>
-															<div class="rack-card-actions">
-																@if ( slot.Rack.IsValid() )
-																{
+															@if ( slot.Rack.IsValid() )
+															{
+																<div class="rack-card-actions">
 																	<button class="lp-ui-btn-primary rack-upgrade-btn"
 																	        onclick="@(() => OpenRackUpgrades( slot.Rack ))">
 																		Upgrade
 																	</button>
-																}
-																else
-																{
-																	<button class="lp-ui-btn-ghost rack-upgrade-btn disabled" disabled>Not linked</button>
-																}
-															</div>
+																</div>
+															}
 														</div>
 													}
 												</div>
@@ -525,23 +522,30 @@
 											<div class="wallet-cashout-stack">
 												<div class="wallet-cashout-card">
 													<div class="wallet-cashout-row">
-														<div class="wallet-cashout-field">
-															<i class="material-icons">payments</i>
-															<TextEntry class="wallet-cashout-input" Placeholder="BTC amount (e.g. 0.025)" Value:bind="@CashOutAmount"/>
+														<div class="wallet-cashout-amount-col">
+															<div class="wallet-cashout-field-label">BTC amount</div>
+															<div class="wallet-cashout-field">
+																<i class="material-icons">payments</i>
+																<TextEntry class="wallet-cashout-input" Placeholder="e.g. 0.025" Value:bind="@CashOutAmount"/>
+															</div>
 														</div>
-														<div class="wallet-cashout-convert">
-															<span class="wallet-cashout-convert-label">Bank deposit</span>
-															<span class="wallet-cashout-convert-value">@PartialCashOutUsdPreview()</span>
+														<div class="wallet-cashout-convert-col">
+															<div class="wallet-cashout-field-label">Bank deposit</div>
+															<div class="wallet-cashout-convert">
+																<span class="wallet-cashout-convert-value">@PartialCashOutUsdPreview()</span>
+															</div>
 														</div>
 													</div>
-													<button class="lp-ui-btn-primary wallet-cashout-partial @GetPartialCashOutButtonClass()" onclick="@CashOutPartial">@PartialCashOutButtonLabel()</button>
-													<button class="wallet-cashout-all @(HubWalletBtc() <= 0f ? "disabled" : "")" onclick="@CashOutAll">
-														<i class="material-icons">savings</i>
-														<span class="wallet-cashout-all-text">
-															<span class="wallet-cashout-all-label">Cash out all</span>
-															<span class="wallet-cashout-all-amount">@CashOutAllSubline()</span>
-														</span>
-													</button>
+													<div class="wallet-cashout-card-actions">
+														<button class="lp-ui-btn-primary wallet-cashout-partial @GetPartialCashOutButtonClass()" onclick="@CashOutPartial">@PartialCashOutButtonLabel()</button>
+														<button class="wallet-cashout-all @(HubWalletBtc() <= 0f ? "disabled" : "")" onclick="@CashOutAll">
+															<i class="material-icons">savings</i>
+															<span class="wallet-cashout-all-text">
+																<span class="wallet-cashout-all-label">Cash out all</span>
+																<span class="wallet-cashout-all-amount">@CashOutAllSubline()</span>
+															</span>
+														</button>
+													</div>
 												</div>
 											</div>
 
@@ -578,19 +582,21 @@
 
 											<div class="transfer-columns">
 												<div class="transfer-column receive">
-													<div class="transfer-column-head">
-														<i class="material-icons">south_west</i>
-														<span>Receive BTC</span>
-													</div>
-													<p class="transfer-column-copy">Share your hub receive address so other operators can send BTC to this wallet.</p>
-													<div class="transfer-address-card">
-														<div class="transfer-address-label">Your receive ID</div>
-														<div class="transfer-address-value">@ReceiveSteamIdLabel()</div>
-													</div>
-													<div class="lp-ui-info transfer-column-stats">
-														<div class="lp-ui-info-row">
-															<span class="lp-ui-info-label">Hub wallet</span>
-															<span class="lp-ui-info-value accent">@HubWalletBtc().ToString("F6") BTC</span>
+													<div class="transfer-column-body">
+														<div class="transfer-column-head">
+															<i class="material-icons">south_west</i>
+															<span>Receive BTC</span>
+														</div>
+														<p class="transfer-column-copy">Share your hub receive address so other operators can send BTC to this wallet.</p>
+														<div class="transfer-address-card">
+															<div class="transfer-address-label">Your receive ID</div>
+															<div class="transfer-address-value">@ReceiveSteamIdLabel()</div>
+														</div>
+														<div class="lp-ui-info transfer-column-stats">
+															<div class="lp-ui-info-row">
+																<span class="lp-ui-info-label">Hub wallet</span>
+																<span class="lp-ui-info-value accent">@HubWalletBtc().ToString("F6") BTC</span>
+															</div>
 														</div>
 													</div>
 													<div class="lp-ui-btn-row transfer-btn-row">
@@ -602,24 +608,28 @@
 												</div>
 
 												<div class="transfer-column send">
-													<div class="transfer-column-head">
-														<i class="material-icons">north_east</i>
-														<span>Send BTC</span>
-													</div>
-													<p class="transfer-column-copy">Use the linked bitcoin terminal to move BTC from this hub to another operator.</p>
-													<div class="lp-ui-info transfer-column-stats">
-														<div class="lp-ui-info-row">
-															<span class="lp-ui-info-label">Terminal linked</span>
-															<span class="lp-ui-info-value">@(HasLinkedTerminal() ? "Yes — ready to send" : "No — link on Overview")</span>
+													<div class="transfer-column-body">
+														<div class="transfer-column-head">
+															<i class="material-icons">north_east</i>
+															<span>Send BTC</span>
 														</div>
-													</div>
-													<div class="transfer-command-card">
-														<div class="transfer-command-label">Command</div>
-														<div class="transfer-command-text">send &lt;steamid&gt; &lt;amount|all&gt;</div>
-													</div>
-													<div class="transfer-command-card">
-														<div class="transfer-command-label">Example</div>
-														<div class="transfer-command-text">send 76561198012345678 0.05</div>
+														<p class="transfer-column-copy">Use the linked bitcoin terminal to move BTC from this hub to another operator.</p>
+														<div class="lp-ui-info transfer-column-stats">
+															<div class="lp-ui-info-row">
+																<span class="lp-ui-info-label">Terminal linked</span>
+																<span class="lp-ui-info-value">@(HasLinkedTerminal() ? "Yes — ready to send" : "No — link on Overview")</span>
+															</div>
+														</div>
+														<div class="transfer-command-card transfer-command-card-stack">
+															<div class="transfer-command-line">
+																<div class="transfer-command-label">Command</div>
+																<div class="transfer-command-text">send &lt;steamid&gt; &lt;amount|all&gt;</div>
+															</div>
+															<div class="transfer-command-line">
+																<div class="transfer-command-label">Example</div>
+																<div class="transfer-command-text">send 76561198012345678 0.05</div>
+															</div>
+														</div>
 													</div>
 													<div class="lp-ui-btn-row transfer-btn-row">
 														<button class="lp-ui-btn-ghost transfer-copy-btn @(_sendExampleCopyAck ? "is-copied" : "")" onclick="@CopySendExample">
@@ -1596,9 +1606,23 @@
 			return "Linked — rig0 ready";
 
 		if ( HasNearbyUnlinkedTerminal() )
-			return HubIsPowered() ? "In range — ready to link" : "In range — power on to link";
+			return "In range — ready to link";
 
 		return "Not linked";
+	}
+
+	private string OverviewTerminalStatusDotClass()
+	{
+		if ( HasLinkedTerminal() )
+			return "on";
+
+		if ( !HubIsPowered() )
+			return "off";
+
+		if ( HasNearbyUnlinkedTerminal() )
+			return "warn";
+
+		return "off";
 	}
 
 	private string SettingsSecurityHint()
