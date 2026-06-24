@@ -543,13 +543,7 @@
 													</div>
 													<button class="wallet-cashout-all @GetCashOutAllButtonClass()" onclick="@CashOutAll">
 														<i class="material-icons">savings</i>
-														<span class="wallet-cashout-all-text">
-															<span class="wallet-cashout-all-label">@CashOutAllLabel()</span>
-															@if ( !HasCashOutAllFeedback() )
-															{
-																<span class="wallet-cashout-all-amount">@CashOutAllSubline()</span>
-															}
-														</span>
+														<span class="wallet-cashout-all-label">@CashOutAllLabel()</span>
 													</button>
 												</div>
 											</div>
@@ -578,13 +572,17 @@
 														</div>
 														<p class="transfer-column-copy">Share your hub receive address so other operators can send BTC to this wallet.</p>
 														<div class="transfer-mirror-stack">
-															<div class="transfer-subsection transfer-subsection-stat transfer-subsection-kv">
-																<span class="transfer-subsection-label">Your receive ID</span>
-																<span class="transfer-subsection-value transfer-subsection-value-mono">@ReceiveSteamIdLabel()</span>
+															<div class="transfer-subsection transfer-subsection-stat">
+																<div class="transfer-subsection-row">
+																	<span class="transfer-subsection-label">Your receive ID</span>
+																	<span class="transfer-subsection-value transfer-subsection-value-mono">@ReceiveSteamIdLabel()</span>
+																</div>
 															</div>
-															<div class="transfer-subsection transfer-subsection-detail transfer-subsection-kv">
-																<span class="transfer-subsection-label">Hub wallet</span>
-																<span class="transfer-subsection-value accent">@HubWalletBtc().ToString("F6") BTC</span>
+															<div class="transfer-subsection transfer-subsection-detail">
+																<div class="transfer-subsection-row">
+																	<span class="transfer-subsection-label">Hub wallet</span>
+																	<span class="transfer-subsection-value accent">@HubWalletBtc().ToString("F6") BTC</span>
+																</div>
 															</div>
 														</div>
 													</div>
@@ -1776,17 +1774,6 @@
 			return _allCashOutFeedbackText;
 
 		return "Cash out all";
-	}
-
-	private bool HasCashOutAllFeedback()
-		=> _allCashOutFeedback != WalletCashOutFeedback.None;
-
-	private string CashOutAllSubline()
-	{
-		if ( HubWalletBtc() <= 0f )
-			return "Deposit rack earnings at the terminal first";
-
-		return $"{HubWalletBtc():F4} BTC · {LpBitcoinEconomy.FormatBtcToCash( HubWalletBtc() )} to your bank";
 	}
 
 	private string GetPartialCashOutButtonClass()
