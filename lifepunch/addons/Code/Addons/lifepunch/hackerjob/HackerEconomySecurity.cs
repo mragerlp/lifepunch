@@ -26,8 +26,9 @@ public static class HackerEconomySecurity
 {
 	// ── Phase 2 economy skeleton (prep only — no wallet transfer until owner post-legal sign-off) ──
 	// Swap point checklist: hackerjob/docs/SECURITY.md + HACKER_PHASE2_ECONOMY_PREP.md
-	// 1. ProcessWalletTransferHost — debit target.WalletBalance, credit hacker (on-hand cash only)
-	// 2. ProcessRackUpgradeChargeHost — debit installer on INSTALL button (rack menu today is UI-only)
+	// 1. ProcessWalletTransferHost — debit target.WalletBalance, credit hacker wallet (on-hand cash only)
+	// 2. ProcessGovdbTaskPayoutHost — advanced hacker + gov police task rewards → PayHost(..., inBank: true)
+	// 3. ProcessRackUpgradeChargeHost — debit installer wallet on INSTALL button (rack menu today is UI-only)
 	// 3. BuildScanTargetsHost — host enumerates players + GovernmentTaxMinerEntity nodes
 	// 4. IssuePuzzleSessionHost — session id on hack/infil start (closes HACKER-02)
 	// 5. IsHackerJobHost + ValidateTerminalProximityHost — job + distance gates
@@ -92,7 +93,7 @@ public static class HackerEconomySecurity
 			return HackAttemptResult.Denied( "puzzle validation failed" );
 		}
 
-		// Phase 2: clamp transfer to target.WalletBalance; ChargeHost/PayHost; never touch bank.
+		// Phase 2: clamp transfer to target.WalletBalance; wallet PayHost only; never touch bank.
 		Log.Info( $"[LIFEPUNCH Hacker] wallet hack validated (stub) — hacker={hacker.SteamId} target={targetSteamId} kind={puzzleKind}" );
 		return HackAttemptResult.AcceptedNoTransfer( "validated — Phase 2 economy not enabled" );
 	}
@@ -120,6 +121,7 @@ public static class HackerEconomySecurity
 		}
 
 		Log.Info( $"[LIFEPUNCH Hacker] govdb infil validated (stub) — hacker={hacker.SteamId} node={nodeId}" );
+		// Phase 2: ProcessGovdbTaskPayoutHost — PayHost(..., inBank: true) for task reward (CYBER_ECONOMY_RAILS.md).
 		return HackAttemptResult.AcceptedNoTransfer( "validated — Phase 2 govdb not enabled" );
 	}
 #else

@@ -14,6 +14,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Dxura.RP.Game;
 using Dxura.RP.Shared;
+using LifePunch.DXRP.Addons.Bitcoin;
 using Sandbox;
 
 namespace LifePunch.DXRP.Addons.Dev;
@@ -65,6 +66,7 @@ public static class DxrpPortalDevAuth
 		{
 			var rankKeys = await SyncPortalRankTableFromApiAsync();
 			await RefreshConnectedPlayersFromPortal();
+			LpBitcoinPortalEconomySync.ForcePortalSyncAfterAuth( "lp_authorize editor" );
 			if ( ServerApiLink.HasAuthorizationKey )
 			{
 				Log.Info( $"lp_authorize: editor play — {rankKeys} portal rank lookup key(s); player stats refreshed (skipped full server bootstrap)." );
@@ -82,6 +84,7 @@ public static class DxrpPortalDevAuth
 		await ServerApiLink.Current.Initialize();
 		await SyncPortalRankTableFromApiAsync();
 		await RefreshConnectedPlayersFromPortal();
+		LpBitcoinPortalEconomySync.ForcePortalSyncAfterAuth( "lp_authorize" );
 	}
 
 	/// <summary>Editor/dev portal bootstrap — shared by <c>lp_authorize</c> (bitcoin lane does not sync adminmenu).</summary>

@@ -27,7 +27,9 @@ The hub is the operator's **wallet and control plane**:
 2. Operator USEs **bitcoin terminal** → CRT → `deposit` / `deposit all` / `deposit <index>` moves rack BTC into **`HubWalletBtc`** on the linked hub.
 3. Operator USEs **hub** → PIN unlock → **Wallet** tab → cash out a specific amount or **Cash out all** to in-game bank (DXRP wallet pay path).
 
-**Non-persistence:** Hub wallet BTC does **not** survive hub entity destruction or DXRP client disconnect cleanup — cash out before teardown. Rack pending BTC on destroyed racks is likewise lost. Future: hub-to-hub transfer, black market purchases from hub wallet.
+**Non-persistence:** Hub wallet BTC does **not** survive hub entity destruction or DXRP client disconnect cleanup — cash out to bank before teardown. Rack pending BTC on destroyed racks is likewise lost. P2P hub transfers (`send <steamid> <amount>`) move BTC between hub wallets by owner Steam ID; recipient must cash out to bank.
+
+**Economy rails:** `addons/docs/CYBER_ECONOMY_RAILS.md` — BTC always bank cashout; hacker attacks wallet-only.
 
 ## Surfaces (do not conflate)
 
@@ -42,7 +44,7 @@ The hub is the operator's **wallet and control plane**:
 
 - **BTC balance per linked rack** — mining ticks on host while hub powered + rack mining.
 - **Hub wallet** — `LpBitcoinHubEntity.HubWalletBtc`; filled by terminal deposit RPCs.
-- **Cash out** — hub admin Wallet tab or `RequestCashOutHub` / `RequestCashOutAllHub`; credits player bank via `LpBitcoinWallet.TryPay`.
+- **Cash out** — hub admin Wallet tab or `RequestCashOutHub` / `RequestCashOutAllHub`; credits player **bank** via `LpBitcoinWallet.TryPayBank` (`PayHost` with `inBank: true`).
 - **No rack USE → sell** — `sell` at CRT returns an error directing operators to hub wallet cashout.
 - **Hardware upgrades** — hub RPCs (`RequestUpgradeCpu` / `RequestUpgradeCores`); cash from player wallet.
 - **Hub authority** — `IsPowered`, `CanOperateTerminal`, owner/PIN (`LpBitcoinHubEntity`).

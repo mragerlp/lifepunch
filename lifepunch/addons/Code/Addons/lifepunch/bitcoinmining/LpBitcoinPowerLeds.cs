@@ -18,23 +18,12 @@ public static class LpBitcoinPowerLeds
 	private const string SelfIllumScaleAttr = "g_flSelfIllumScale";
 	private const string SelfIllumTintAttr = "g_vSelfIllumTint";
 
-	public const float HubStatusOnScale = 3.15f;
-	public const float HubStatusOffScale = 2.2f;
+	public const float HubStatusOnScale = 2.5f;
+	public const float HubStatusOffScale = 1.75f;
 	public const float RackGpuLedOn = 1.5f;
 
-	public const float HubStatusGlowRadius = 34f;
-	public const float HubStatusGlowAttenuation = 2.35f;
-	public const float HubStatusOnGlowStrength = 0.38f;
-	public const float HubStatusOffGlowStrength = 0.3f;
-
-	/// <summary>Fine-tune after bounds anchor (local space, stacks on prefab <c>StatusGlowLocalOffset</c>).</summary>
-	public static Vector3 HubStatusGlowLocalOffset { get; set; }
-
-	private static readonly Vector4 HubStatusOnTint = new( 0.18f, 1f, 0.52f, 0f );
-	private static readonly Vector4 HubStatusOffTint = new( 1f, 0.16f, 0.06f, 0f );
-
-	private static readonly Color HubStatusOnGlowColor = new( 0.14f, 0.98f, 0.44f );
-	private static readonly Color HubStatusOffGlowColor = new( 0.98f, 0.14f, 0.06f );
+	private static readonly Vector4 HubStatusOnTint = new( 0.15f, 1f, 0.45f, 0f );
+	private static readonly Vector4 HubStatusOffTint = new( 1f, 0.12f, 0.05f, 0f );
 
 	private static readonly string[] HubStatusMaterialTokens =
 	[
@@ -81,35 +70,6 @@ public static class LpBitcoinPowerLeds
 	/// <summary>Legacy name — routes to <see cref="ApplyHubStatusLed"/>.</summary>
 	public static void ApplyHubFenceLeds( ModelRenderer renderer, bool powered )
 		=> ApplyHubStatusLed( renderer, powered );
-
-	/// <summary>Soft spill on the fence LED strip — mesh emissive stays primary read.</summary>
-	public static Color GetHubStatusGlowColor( bool powered )
-	{
-		var baseColor = powered ? HubStatusOnGlowColor : HubStatusOffGlowColor;
-		var strength = powered ? HubStatusOnGlowStrength : HubStatusOffGlowStrength;
-		return baseColor * strength;
-	}
-
-	/// <summary>
-	/// Anchor on the front fence status LED (local space).
-	/// After ModelDoc Y=90 import the grill faces +X; viewer-right on that face is −Z (<see cref="BBox.Mins"/> on Z).
-	/// </summary>
-	public static Vector3 GetHubStatusGlowLocalPosition( ModelRenderer body, Vector3 extraOffset = default )
-	{
-		if ( !body.IsValid() )
-			return Vector3.Zero;
-
-		var bounds = body.LocalBounds;
-		if ( bounds.Size.Length < 0.01f )
-			return extraOffset + HubStatusGlowLocalOffset;
-
-		var anchor = bounds.Mins + new Vector3(
-			bounds.Size.x * 0.935f,
-			bounds.Size.y * 0.215f,
-			bounds.Size.z * 0.055f );
-
-		return anchor + HubStatusGlowLocalOffset + extraOffset;
-	}
 
 	public static void ApplyRackGpuLeds( ModelRenderer renderer, bool active, float intensity01 = 1f )
 	{

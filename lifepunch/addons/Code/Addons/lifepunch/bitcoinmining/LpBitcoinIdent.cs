@@ -51,6 +51,27 @@ public static class LpBitcoinIdent
 	/// <summary>DXRP portal cap per hub (max GPU racks linked to one hub).</summary>
 	public const int PortalMaxRacksPerHub = 3;
 
+	/// <summary>
+	/// Owner portal inventory item — stackable $BTC token (drop/trade/redeem).
+	/// Manage at dxrp.net/portal/inventory (not in-game mined float BTC).
+	///
+	/// Portal setup:
+	/// - Type: <b>Consumable</b>, stackable, Grant Identifier = <see cref="PortalBtcRedeemGrantName"/>
+	/// - Gamemode entity row on content <see cref="PortalBtcRedeemGrantName"/> → <see cref="PortalBtcRedeemPrefabPath"/>
+	/// - Redeem $/stack: store <c>lifepunch:bitcoin:portal_redeem_cash_usd</c> or item description JSON
+	///   <c>{"redeemCashUsd":5000}</c> (independent of hub mined BTC rate).
+	/// </summary>
+	public const string PortalBtcInventoryItemId = "019e4e7f-ab9c-7db8-9a3a-81ee6995bcb0";
+
+	public const string PortalBtcInventoryUrl =
+		"https://dxrp.net/portal/inventory/019e4e7f-ab9c-7db8-9a3a-81ee6995bcb0";
+
+	/// <summary>Consumable grant + gamemode content name — must match portal rows exactly.</summary>
+	public const string PortalBtcRedeemGrantName = "BTC Cash Redeem";
+
+	public const string PortalBtcRedeemPrefabPath =
+		"addons/lifepunch/lpbitcoin/bitcoinhub/assets/entities/btccashredeem.prefab";
+
 	public const string RackSlug = "gpu-rack";
 	public const string RackDisplayName = "GPU Rack";
 	public const string RackModelPath =

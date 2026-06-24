@@ -82,6 +82,8 @@ $lp-menu-mono: "Roboto Mono", "Courier New", monospace;
 .lp-bitcoin-ops .lp-ui-scroll-region.upgrades-scroll,
 .lp-bitcoin-ops .lp-ui-scroll-region.logs-scroll,
 .lp-bitcoin-ops .lp-ui-scroll-region.settings-scroll {
+	display: flex;
+	flex-direction: column;
 	flex: 1 1 0;
 	min-height: 0;
 	min-width: 0;

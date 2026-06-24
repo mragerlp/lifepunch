@@ -1,0 +1,40 @@
+{
+  "RootObject": {
+    "__guid": "7c4e9a21-b3d8-4f6e-9a1c-2d8e5f0b3c71",
+    "__version": 2,
+    "Flags": 0,
+    "Name": "btccashredeem",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "entity",
+    "Enabled": true,
+    "NetworkMode": 1,
+    "NetworkFlags": 0,
+    "NetworkOrphaned": 3,
+    "NetworkTransmit": true,
+    "OwnerTransfer": 1,
+    "Components": [
+      {
+        "__type": "LifePunch.DXRP.Addons.Bitcoin.LpBitcoinCashRedeemEntity",
+        "__guid": "8d5f0b32-c4e9-5a7f-0b2d-3e9f6a1c4d82",
+        "__enabled": true,
+        "Flags": 0,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null
+      }
+    ],
+    "Children": []
+  },
+  "ResourceVersion": 2,
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "DontBreakAsTemplate": false,
+  "__references": [],
+  "__version": 2
+}

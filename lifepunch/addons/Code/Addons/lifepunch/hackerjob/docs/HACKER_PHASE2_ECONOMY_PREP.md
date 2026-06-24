@@ -2,7 +2,8 @@
 
 **Status:** Skeleton comments only · **blocked on owner post-legal sign-off**  
 **Implementation tier:** Opus / Tier-1 before publish  
-**Canon:** `HackerJob.BankUntouchable` — wallet cash only
+**Canon:** `HackerJob.BankUntouchable` — wallet cash only for **player attacks**  
+**Task rewards:** Advanced `GovDbBypass` + gov police hacks → **bank** cashout — see `CYBER_ECONOMY_RAILS.md`
 
 ---
 
@@ -20,7 +21,8 @@ Phase 1 paths call `ValidatePuzzleOnHost` and return `AcceptedNoTransfer` always
 - [ ] `ValidateTerminalProximityHost( terminal, hacker )` — distance + LOS to linked rack
 - [ ] `IssuePuzzleSessionHost` — host-issued id on `hack` / `infil` start
 - [ ] `BuildScanTargetsHost` — players + map `GovernmentTaxMinerEntity` (requires `governmentdatacenter` compile)
-- [ ] `ProcessWalletTransferHost` — `min(requested, target.WalletBalance)`; never bank
+- [ ] `ProcessWalletTransferHost` — `min(requested, target.WalletBalance)`; credit hacker **wallet**; never bank
+- [ ] `ProcessGovdbTaskPayoutHost` — advanced/gov task success → `PayHost(..., inBank: true)` (bank reward, not steal)
 - [ ] `ProcessRackUpgradeChargeHost` — rack menu INSTALL debits installer wallet
 - [ ] Per-hacker + per-target cooldowns; daily steal cap
 - [ ] Audit log per attempt — `AUDIT_LOG_REFERENCE.md`

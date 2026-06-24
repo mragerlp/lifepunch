@@ -26,7 +26,8 @@ internal static class LpBitcoinWallet
 #endif
 	}
 
-	public static async Task<bool> TryPay( Guid callerId, uint amount, string reason )
+	/// <summary>Credit on-hand wallet cash (DXRP <c>PayHost</c> default). Not for BTC rails.</summary>
+	public static async Task<bool> TryPayWallet( Guid callerId, uint amount, string reason )
 	{
 #if LIFEPUNCH_LOCAL
 		await Task.CompletedTask;
@@ -34,6 +35,18 @@ internal static class LpBitcoinWallet
 #else
 		var player = GameUtils.GetPlayerByConnectionId( callerId );
 		return player.IsValid() && await player.PayHost( amount, reason );
+#endif
+	}
+
+	/// <summary>Credit bank balance — canonical payout for all BTC cashout rails (hub, portal redeem, legacy rack sell).</summary>
+	public static async Task<bool> TryPayBank( Guid callerId, uint amount, string reason )
+	{
+#if LIFEPUNCH_LOCAL
+		await Task.CompletedTask;
+		return true;
+#else
+		var player = GameUtils.GetPlayerByConnectionId( callerId );
+		return player.IsValid() && await player.PayHost( amount, reason, inBank: true );
 #endif
 	}
 

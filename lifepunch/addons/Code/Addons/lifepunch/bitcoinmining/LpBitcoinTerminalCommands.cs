@@ -215,8 +215,8 @@ internal static class LpBitcoinTerminalCommands
 		var pending = hub.GetRackPendingBtc();
 		var wallet = hub.HubWalletBtc;
 		return new LpBitcoinCommandResult( true,
-			$"hub wallet {wallet:F6} BTC (${(int)(wallet * LpBitcoinEconomy.BitcoinValueUsd):N0})\n" +
-			$"on racks {pending:F6} BTC (${(int)(pending * LpBitcoinEconomy.BitcoinValueUsd):N0})\n" +
+			$"hub wallet {wallet:F6} BTC (${LpBitcoinEconomy.BtcToCashUsd( wallet ):N0})\n" +
+			$"on racks {pending:F6} BTC (${LpBitcoinEconomy.BtcToCashUsd( pending ):N0})\n" +
 			"deposit rack BTC here — send to other hubs: send <steamid> <amount>\n" +
 			"cash out to bank from hub admin wallet tab" );
 	}

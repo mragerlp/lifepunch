@@ -23,13 +23,16 @@ do not re-derive them from long chats.
    - `lifepunch/addons/docs/ACTIVE_WORKSTREAM.md` (hard gate)
    - `lifepunch/addons/docs/LPBITCOIN_TODAY_CHECKLIST.md` (today's steps)
    - Lane docs referenced by the active workstream only — not the whole monorepo.
-4. **After reboot or bridge update:** run full-capacity probe before s&box work:
+4. **After reboot or Green Cursor work:** wire full capacity before s&box MCP:
    ```powershell
-   powershell -File lifepunch\scripts\Test-PreLaunchCheckup.ps1 -Fix
-   powershell -File lifepunch\scripts\Get-CvlConnectivityStatus.ps1 -Pretty
+   powershell -File lifepunch\scripts\Start-CvlFullCapacity.ps1
    ```
-   Target **4/4 MCP green** on VENGEANCE; Cornerman on **SMB primary** (not SSH mirror overwriting
-   Green `mcp.json`). Canon: `lifepunch/docs/GREEN_SMB_BOOT_PASTE.md`.
+   Or one shot with editor:
+   ```powershell
+   powershell -File lifepunch\scripts\Start-SboxDxrpEditor.ps1 -FullCapacity -PreflightFix
+   ```
+   Target: `Get-CvlConnectivityStatus.ps1 -Pretty` → `allOk: true`. Solo lean Red playtest: skip `-FullCapacity`.
+   Canon: `lifepunch/docs/RED_FULL_CAPACITY_BOOT.md` · Green SMB: `lifepunch/docs/GREEN_SMB_BOOT_PASTE.md`.
 
 ## Visual and model work (LPBitcoin Phase A)
 

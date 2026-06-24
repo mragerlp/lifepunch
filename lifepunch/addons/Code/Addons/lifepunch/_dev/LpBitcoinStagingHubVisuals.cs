@@ -15,7 +15,7 @@ using LifePunch.DXRP.Addons.Bitcoin;
 namespace LifePunch.DXRP.Addons.Dev;
 
 /// <summary>
-/// Hub OFF/ON world visuals — fence emissive plus subtle status glow spill (Phase A staging).
+/// Hub OFF/ON world visuals — fence emissive on the vmdl mesh only (Phase A staging).
 /// </summary>
 public sealed class LpBitcoinStagingHubVisuals : Component
 {
@@ -30,8 +30,6 @@ public sealed class LpBitcoinStagingHubVisuals : Component
 
 	[Property] public Vector3 FanManualOffset { get; set; }
 
-	[Property] public Vector3 StatusGlowLocalOffset { get; set; }
-
 	private GameObject _fanChild;
 	private Rotation _fanBaseLocalRotation = Rotation.Identity;
 	private float _fanSpeed;
@@ -40,8 +38,6 @@ public sealed class LpBitcoinStagingHubVisuals : Component
 	private bool _fanAlignPending = true;
 
 	private ModelRenderer _bodyRenderer;
-	private GameObject _statusGlowGo;
-	private PointLight _statusGlow;
 
 	protected override void OnStart()
 	{
@@ -51,6 +47,7 @@ public sealed class LpBitcoinStagingHubVisuals : Component
 		_bodyRenderer = GameObject.Components.Get<ModelRenderer>( FindMode.EverythingInSelf )
 		                 ?? GameObject.Components.Get<SkinnedModelRenderer>( FindMode.EverythingInSelf ) as ModelRenderer;
 
+		RemoveLegacyStatusLightChildren();
 		CacheFanChild();
 
 		_lastPowered = Power is { IsPowered: true };
@@ -66,7 +63,6 @@ public sealed class LpBitcoinStagingHubVisuals : Component
 		}
 
 		LpBitcoinStagingHubPowerLeds.ApplyHubStatusLed( _bodyRenderer, powered );
-		UpdateStatusGlow( powered );
 		_lastPowered = powered;
 
 		if ( !powered )
@@ -76,33 +72,21 @@ public sealed class LpBitcoinStagingHubVisuals : Component
 		}
 	}
 
-	private void UpdateStatusGlow( bool powered )
+	private static void RemoveLegacyStatusLightChildren( GameObject root )
 	{
-		if ( !_bodyRenderer.IsValid() )
-			return;
-
-		if ( !_statusGlow.IsValid() )
+		foreach ( var child in root.Children.ToList() )
 		{
-			_statusGlowGo = new GameObject( true, "hub_status_glow" );
-			_statusGlowGo.SetParent( GameObject );
-			_statusGlow = _statusGlowGo.AddComponent<PointLight>();
-			_statusGlow.Shadows = false;
-			_statusGlow.Attenuation = LpBitcoinPowerLeds.HubStatusGlowAttenuation;
-			_statusGlow.Radius = LpBitcoinPowerLeds.HubStatusGlowRadius;
+			if ( !child.IsValid() )
+				continue;
+
+			if ( child.Name.Equals( "status_led", System.StringComparison.OrdinalIgnoreCase )
+			     || child.Name.Equals( "hub_status_glow", System.StringComparison.OrdinalIgnoreCase ) )
+				child.Destroy();
 		}
-
-		_statusGlowGo.LocalPosition = LpBitcoinPowerLeds.GetHubStatusGlowLocalPosition( _bodyRenderer, StatusGlowLocalOffset );
-		_statusGlow.Enabled = true;
-		_statusGlow.LightColor = LpBitcoinPowerLeds.GetHubStatusGlowColor( powered );
 	}
 
-	protected override void OnDestroy()
-	{
-		if ( _statusGlowGo.IsValid() )
-			_statusGlowGo.Destroy();
-
-		base.OnDestroy();
-	}
+	private void RemoveLegacyStatusLightChildren()
+		=> RemoveLegacyStatusLightChildren( GameObject );
 
 	private void CacheFanChild()
 	{

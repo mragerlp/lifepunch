@@ -3293,7 +3293,8 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 .lp-bitcoin-ops .pane.transfers,
 .lp-bitcoin-ops .pane.racks,
 .lp-bitcoin-ops .pane.upgrades,
-.lp-bitcoin-ops .pane.logs-pane {
+.lp-bitcoin-ops .pane.logs-pane,
+.lp-bitcoin-ops .pane.settings-pane {
 	flex: 1 1 0;
 	min-height: 0;
 	min-width: 0;
@@ -3316,6 +3317,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	overflow: hidden;
 }
 
+.lp-bitcoin-ops .lp-ui-scroll-region.settings-scroll,
 .lp-bitcoin-ops .settings-scroll {
 	flex: 1 1 0;
 	min-height: 0;
@@ -3325,12 +3327,12 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	overflow-x: hidden;
 	overflow-y: scroll;
 	width: 100%;
-	padding-bottom: 20px;
+	padding-bottom: 28px;
 }
 
 .lp-bitcoin-ops .settings-scroll-tail {
 	flex-shrink: 0;
-	height: 48px;
+	height: 80px;
 	width: 100%;
 }
 
@@ -4107,7 +4109,8 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 .lp-bitcoin-ops .pane.transfers > .transfers-panel,
 .lp-bitcoin-ops .pane.racks > .racks-panel,
 .lp-bitcoin-ops .pane.upgrades > .upgrades-panel,
-.lp-bitcoin-ops .pane.logs-pane > .logs-panel {
+.lp-bitcoin-ops .pane.logs-pane > .logs-panel,
+.lp-bitcoin-ops .pane.settings-pane > .settings-panel {
 	flex: 1 1 0;
 	min-height: 0;
 	min-width: 0;
@@ -4128,7 +4131,8 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 .lp-bitcoin-ops .pane.transfers .lp-ui-panel-title,
 .lp-bitcoin-ops .pane.racks .lp-ui-panel-title,
 .lp-bitcoin-ops .pane.upgrades .lp-ui-panel-title,
-.lp-bitcoin-ops .pane.logs-pane .lp-ui-panel-title {
+.lp-bitcoin-ops .pane.logs-pane .lp-ui-panel-title,
+.lp-bitcoin-ops .pane.settings-pane .lp-ui-panel-title {
 	display: flex;
 	flex-direction: row;
 	align-items: flex-start;

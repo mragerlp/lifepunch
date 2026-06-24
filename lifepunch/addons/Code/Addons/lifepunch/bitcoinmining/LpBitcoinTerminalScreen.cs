@@ -34,7 +34,7 @@ public static class LpBitcoinTerminalScreen
 		var pct = miningCount > 0
 			? (int)( miningRacks.Average( r => r.MiningProgress ) * 100 )
 			: 0;
-		var usd = (int)( totalBtc * LpBitcoinEconomy.BitcoinValueUsd );
+		var usd = (int)LpBitcoinEconomy.BtcToCashUsd( totalBtc );
 
 		if ( miningCount == 0 )
 			return $"LIFEPUNCH hashd\nIDLE · 0/{totalRacks} {mix}\n\u20BF {totalBtc:0.00000000}\n${usd}";

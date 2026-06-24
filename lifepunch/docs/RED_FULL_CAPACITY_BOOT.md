@@ -14,25 +14,19 @@ Run from `C:\Users\jared\Projects\lifepunchaddons`:
 cd C:\Users\jared\Projects\lifepunchaddons
 git pull --rebase
 
-# 1) Editor + Claude Bridge (IPC must exist before SMB share works)
-powershell -File lifepunch\scripts\Start-SboxDxrpEditor.ps1
+# One shot (editor + full Green stack) — use whenever Green Cursor agents need play/MCP:
+powershell -File lifepunch\scripts\Start-SboxDxrpEditor.ps1 -FullCapacity -PreflightFix -BitcoinOnly -SyncAddon lpbitcoin,bitcoinmining
 
-# 2) Publish SMB share + refresh Green mcp.json (UNC, not mirror)
-powershell -File lifepunch\scripts\Install-CornermanSboxBridgeMcp.ps1
-powershell -File lifepunch\scripts\Connect-CornermanBridge.ps1 -SkipLmWarm
+# Or editor already open:
+powershell -File lifepunch\scripts\Start-CvlFullCapacity.ps1
+```
 
-# 3) sbox-editor tunnel — pick ONE path:
+Manual steps (same as `Start-CvlFullCapacity.ps1` internals):
 
-# A) Green can SSH to Red :22 (preferred if Enable-VengeanceSshTunnel was run):
-#    (Green runs Start-CornermanSboxEditorTunnel.ps1 -Background — nothing on Red)
-
-# B) Green CANNOT reach Red :22 (common) — reverse tunnel FROM Red:
+```powershell
+powershell -File lifepunch\scripts\Restore-CornermanDualStack.ps1
 powershell -File lifepunch\scripts\Start-VengeanceEditorTunnelToCornerman.ps1 -Background
-
-# 4) Verify Red stack
 powershell -File lifepunch\scripts\Get-CvlConnectivityStatus.ps1 -Pretty
-Test-Path "$env:TEMP\sbox-bridge-ipc\status.json"
-Get-SmbShare -Name SboxBridgeIpc
 ```
 
 **Pass when:**

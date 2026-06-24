@@ -41,7 +41,7 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable, IAre
 
 	public float YieldMultiplier => LpBitcoinIdent.BaseRackYieldMultiplier;
 	public float MiningRatePerMinute => LpBitcoinEconomy.MiningRatePerMinute( ClockGhz, CoreCount, YieldMultiplier );
-	public int UsdValue => (int)(BitcoinAmount * LpBitcoinEconomy.BitcoinValueUsd);
+	public int UsdValue => (int)LpBitcoinEconomy.BtcToCashUsd( BitcoinAmount );
 
 #if !LIFEPUNCH_LOCAL
 	public override string DisplayName => LpBitcoinIdent.RackDisplayName;
@@ -258,8 +258,8 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable, IAre
 		if ( hub is null || !hub.CanOperateTerminal( callerId ) )
 			return;
 
-		var value = (uint)(BitcoinAmount * LpBitcoinEconomy.BitcoinValueUsd);
-		if ( !await LpBitcoinWallet.TryPay( callerId, value, "LIFEPUNCH bitcoin sell" ) )
+		var value = LpBitcoinEconomy.BtcToCashPayout( BitcoinAmount );
+		if ( !await LpBitcoinWallet.TryPayBank( callerId, value, "LIFEPUNCH bitcoin sell" ) )
 			return;
 
 		BitcoinAmount = 0f;

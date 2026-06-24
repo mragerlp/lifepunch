@@ -238,13 +238,29 @@ These are **inconsistent with full ChatGPT exit fantasy** but **expected on this
 
 ---
 
+## LAW 11 — Cyber economy rails
+
+**Canonical detail:** `CYBER_ECONOMY_RAILS.md`
+
+Before any economy or payout code in a cyber lane, classify the action:
+
+| Class | Rule |
+|-------|------|
+| **BTC** (hub wallet, portal stack, P2P hub transfer → cashout) | Always **bank cashout** — `PayHost(..., inBank: true)` |
+| **Hacker player attack** (puzzle, scan steal) | **Wallet cash only** — `HackerJob.BankUntouchable`; never bank |
+| **Advanced hacker / gov police task reward** | **Bank cashout** for validated task completion — not a wallet steal |
+
+Do not route hub BTC cashout to on-hand wallet. Do not let standard hacker paths touch `BankBalance`. Future Banker/Government lanes inherit these three rails.
+
+---
+
 ## Agent session checklist (laws + gate)
 
 1. `ACTIVE_WORKSTREAM.md` — single lane, current phase.
-2. **This file** — Laws 1–10.
+2. **This file** — Laws 1–11.
 3. `OWNER_PROGRESS_TRACKER.txt` — one checklist ID.
 4. Law 1 reuse question — answer before coding.
 5. Law 9 — reject scope creep phrases.
 6. Law 5 — flatgrass proof before "done."
 
-**Last updated:** 2026-06-15 (ChatGPT laws merged + DXRP lane gaps)
+**Last updated:** 2026-06-22 (Law 11 economy rails + DXRP lane gaps)

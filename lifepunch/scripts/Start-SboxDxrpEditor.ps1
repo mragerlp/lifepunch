@@ -28,6 +28,10 @@
 .PARAMETER BitcoinOnly
   Purge all non-bitcoin LifePunch addons from DXRP before sync (fresh console).
 
+.PARAMETER FullCapacity
+  After launch, wire Green triple MCP (bridge SMB, reverse editor tunnel, LM GUI off).
+  Same as: Start-CvlFullCapacity.ps1
+
 .PARAMETER SkipConnectivityWatch
   Do not start Watch-CvlConnectivity.ps1 in the background.
 
@@ -61,6 +65,7 @@ param(
     [switch] $PreflightFix,
     [switch] $BitcoinOnly,
     [switch] $SkipConnectivityWatch,
+    [switch] $FullCapacity,
     [switch] $NoLaunch,
     [switch] $ReplaceExisting,
     [switch] $ForceNew,
@@ -264,6 +269,20 @@ else {
         Write-Host '  Blender Bridge: Editor > Blender Bridge - verify Running :8099 + Auto-start ON (bridge_autostart 1).' -ForegroundColor Yellow
         Write-Host '  LifePunch overlay autostarts jtc when Sync-DxrpEditorOverlays.ps1 ran (see dxrp-overlays/Editor).' -ForegroundColor DarkGray
         Write-Host '  Then Cursor Reload Window if sbox-jtc MCP is red.' -ForegroundColor DarkGray
+    }
+}
+
+if ($FullCapacity) {
+    $fullCap = Join-Path $Here 'Start-CvlFullCapacity.ps1'
+    if (-not (Test-Path -LiteralPath $fullCap)) {
+        Write-Host 'WARN: Start-CvlFullCapacity.ps1 missing — skip FullCapacity wiring.' -ForegroundColor Yellow
+    }
+    else {
+        Write-Host ''
+        Write-Host 'FullCapacity — wiring Green triple MCP...' -ForegroundColor Cyan
+        $fcArgs = @('-File', $fullCap)
+        if ($PreflightFix) { $fcArgs += '-SkipBloat' }
+        & powershell.exe -NoProfile -ExecutionPolicy Bypass @fcArgs
     }
 }
 

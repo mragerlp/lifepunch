@@ -780,11 +780,11 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 		if ( amount <= 0f || amount > HubWalletBtc )
 			return;
 
-		var payout = (uint)(amount * LpBitcoinEconomy.BitcoinValueUsd);
+		var payout = LpBitcoinEconomy.BtcToCashPayout( amount );
 		if ( payout == 0 )
 			return;
 
-		if ( !await LpBitcoinWallet.TryPay( Rpc.CallerId, payout, "LIFEPUNCH hub BTC cashout" ) )
+		if ( !await LpBitcoinWallet.TryPayBank( Rpc.CallerId, payout, "LIFEPUNCH hub BTC cashout" ) )
 			return;
 
 		HubWalletBtc -= amount;

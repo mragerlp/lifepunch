@@ -116,7 +116,7 @@ Textures live under `lpbitcoin/bitcoinhub/assets/entities/textures/` (intake cop
 | **Renderer** | `ModelRenderer` only — never `SkinnedModelRenderer` on body |
 | **Prefab** | `fan_spin_hub` child enabled — `bitcoinhub-fan.vmdl` + `LpBitcoinHubVisuals` spin |
 
-**Status LED:** `LpBitcoinHubVisuals` — green ON / red OFF via fence-led mesh emissive + subtle `hub_status_glow` point light. Glow anchor: front +X, viewer-right −Z (`GetHubStatusGlowLocalPosition`); prefab tune via `StatusGlowLocalOffset`. Emissive: `HubStatusOnScale` / tints; spill: `HubStatusOnGlowStrength` / `HubStatusGlowRadius`.
+**Status LED:** `LpBitcoinHubVisuals` — green ON / red OFF via fence-led mesh emissive only (`LpBitcoinPowerLeds`: `HubStatusOnScale`, tints). No runtime point light — respawn hub to purge legacy `hub_status_glow` children.
 
 **Why:** rigged FBX + baked actions separated `front_panel` / `back_body` from the chassis in play (floating “hanging” parts). Static export restores assembled idle box.
 

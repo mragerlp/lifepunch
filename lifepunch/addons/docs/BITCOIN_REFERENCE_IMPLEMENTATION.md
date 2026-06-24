@@ -68,7 +68,9 @@
 
 - Hub power gate
 - Rack link (`LinkedHubId`; terminal `LinkRange` 512u)
-- **Per-rack BTC** (`LpBitcoinRackEntity.BitcoinAmount`) — sell via terminal
+- **Per-rack BTC** (`LpBitcoinRackEntity.BitcoinAmount`) — deposit at terminal; cash out hub wallet to **bank**
+
+**Economy rails:** `CYBER_ECONOMY_RAILS.md` — BTC → bank; hacker attacks → wallet only.
 
 ---
 
