@@ -561,6 +561,8 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 
 	public void RequestMarkAlertsRead() => MarkAlertsReadHost();
 
+	public void RequestClearAlerts() => ClearAlertsHost();
+
 	public void RequestPushTerminalCommandAlert( string command, string result )
 		=> PushTerminalCommandAlertHost( command, result );
 
@@ -592,6 +594,16 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 		if ( !CanManageHub( Rpc.CallerId ) )
 			return;
 
+		UnreadAlertCount = 0;
+	}
+
+	[Rpc.Host]
+	private void ClearAlertsHost()
+	{
+		if ( !CanManageHub( Rpc.CallerId ) )
+			return;
+
+		AlertFeed = string.Empty;
 		UnreadAlertCount = 0;
 	}
 

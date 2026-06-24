@@ -303,9 +303,7 @@
 												<span>Servers</span>
 											</div>
 
-											<div class="lp-ui-intro racks-intro">
-												Slots: <strong>GPURack-1</strong>, <strong>GPURack-2</strong>, and <strong>Advanced GPU Rack</strong> (<strong>advancedgpurack</strong> at rig0). Open <strong>Upgrade</strong> for CPU and core paths — start/stop mining on the CRT.
-											</div>
+											<div class="lp-ui-intro racks-intro">@RacksIntroCopyLine()</div>
 
 											<div class="lp-ui-scroll-region racks-scroll">
 												<div class="rack-grid">
@@ -334,16 +332,34 @@
 																	}
 																</div>
 															</div>
-															<div class="rack-card-stats">
+															<div class="rack-card-body">
 																@if ( slot.Rack.IsValid() )
 																{
-																	<div class="rack-stat-line">@RackBtcLine( slot.Rack )</div>
-																	<div class="rack-stat-line">@RackHardwareLine( slot.Rack )</div>
-																	<div class="rack-stat-line">@RackUpgradeSummaryLine( slot.Rack )</div>
+																	<div class="rack-stat-tiles">
+																		<div class="rack-stat-tile">
+																			<div class="rack-stat-tile-label">Balance</div>
+																			<div class="rack-stat-tile-value accent">@RackBtcTileValue( slot.Rack )</div>
+																			<div class="rack-stat-tile-sub">@RackBtcTileSubline( slot.Rack )</div>
+																		</div>
+																		<div class="rack-stat-tile">
+																			<div class="rack-stat-tile-label">Hardware</div>
+																			<div class="rack-stat-tile-value">@RackHardwareTileValue( slot.Rack )</div>
+																			<div class="rack-stat-tile-sub">@RackHardwareTileSubline( slot.Rack )</div>
+																		</div>
+																		<div class="rack-stat-tile">
+																			<div class="rack-stat-tile-label">@( slot.Rack.IsMining ? "Mining" : "Status" )</div>
+																			<div class="rack-stat-tile-value @( slot.Rack.IsMining ? "on" : "" )">@( slot.Rack.IsMining ? "Active" : "Idle" )</div>
+																			<div class="rack-stat-tile-sub">@RackMiningTileSubline( slot.Rack )</div>
+																		</div>
+																	</div>
 																}
 																else
 																{
-																	<div class="rack-stat-line empty">Place rack near hub, then type <strong>link</strong> at rig0.</div>
+																	<div class="rack-stat-tiles empty">
+																		<div class="rack-stat-tile rack-stat-tile-wide">
+																			<div class="rack-stat-tile-value empty">Place rack near hub, then link at rig0 on the terminal.</div>
+																		</div>
+																	</div>
 																}
 															</div>
 															<div class="rack-card-actions">
@@ -518,13 +534,15 @@
 
 												<div class="wallet-cashout-panel">
 													<button class="lp-ui-btn-primary wallet-cashout-partial @GetPartialCashOutButtonClass()" onclick="@CashOutPartial">@PartialCashOutButtonLabel()</button>
-													<button class="wallet-cashout-all @(HubWalletBtc() <= 0f ? "disabled" : "")" onclick="@CashOutAll">
-														<i class="material-icons">savings</i>
-														<span class="wallet-cashout-all-text">
-															<span class="wallet-cashout-all-label">Cash out all</span>
-															<span class="wallet-cashout-all-amount">@CashOutAllSubline()</span>
-														</span>
-													</button>
+													<div class="wallet-cashout-all-shell">
+														<button class="wallet-cashout-all @(HubWalletBtc() <= 0f ? "disabled" : "")" onclick="@CashOutAll">
+															<i class="material-icons">savings</i>
+															<span class="wallet-cashout-all-text">
+																<span class="wallet-cashout-all-label">Cash out all</span>
+																<span class="wallet-cashout-all-amount">@CashOutAllSubline()</span>
+															</span>
+														</button>
+													</div>
 												</div>
 											</div>
 
@@ -726,6 +744,19 @@
 														<div class="settings-actions">
 															<button class="@(HasLinkedTerminal() ? "lp-ui-btn-ghost" : "lp-ui-btn-primary")" disabled="@(HasLinkedTerminal() || !HubIsPowered())" onclick="@LinkNearbyTerminal">Link terminal</button>
 															<button class="@(HasLinkedTerminal() ? "lp-ui-btn-primary" : "lp-ui-btn-ghost")" disabled="@(!HasLinkedTerminal())" onclick="@UnlinkTerminal">Unlink terminal</button>
+														</div>
+													</div>
+
+													<div class="settings-section lp-hashd-surface">
+														<div class="settings-section-head">
+															<div class="settings-label">Notifications</div>
+															<div class="settings-status-pills">
+																<span class="settings-pill @(GetHubAlerts().Count > 0 ? "warn" : "off")">@HubLogsCountLabel()</span>
+															</div>
+														</div>
+														<div class="settings-hint">Hub logs scroll on the alerts tab. Clear here for a fresh feed.</div>
+														<div class="settings-actions">
+															<button class="lp-ui-btn-primary" disabled="@(GetHubAlerts().Count == 0)" onclick="@ClearHubLogs">Clear hub logs</button>
 														</div>
 													</div>
 												</div>
@@ -1063,6 +1094,45 @@
 			? "Core maxed"
 			: $"Core L{rack.CoreUpgradeLevel + 1} next";
 		return $"{cpuTier} · {coreTier}";
+	}
+
+	private static string RacksIntroCopyLine()
+		=> "Slots: gpurack-1, gpurack-2, advancedgpurack at rig0. Upgrade CPU and cores here — start/stop mining on the CRT.";
+
+	private static string RackBtcTileValue( LpBitcoinRackEntity rack )
+		=> $"{rack.BitcoinAmount:F4} BTC";
+
+	private static string RackBtcTileSubline( LpBitcoinRackEntity rack )
+	{
+		var cap = LpBitcoinEconomy.RackBtcCapacity;
+		var state = rack.BitcoinAmount >= cap ? "full" : rack.IsMining ? "mining" : "idle";
+		return $"${rack.UsdValue:N0} · {state}";
+	}
+
+	private static string RackHardwareTileValue( LpBitcoinRackEntity rack )
+		=> $"{rack.ClockGhz:F2} GHz";
+
+	private static string RackHardwareTileSubline( LpBitcoinRackEntity rack )
+		=> $"{rack.CoreCount} cores · CPU L{rack.CpuUpgradeLevel} · Core L{rack.CoreUpgradeLevel}";
+
+	private static string RackMiningTileSubline( LpBitcoinRackEntity rack )
+	{
+		if ( rack.IsMining )
+			return $"{rack.MiningRatePerMinute * 18.5f:F1} TH/s · {RackUpgradeSummaryLine( rack )}";
+
+		return RackUpgradeSummaryLine( rack );
+	}
+
+	private string HubLogsCountLabel()
+	{
+		var count = GetHubAlerts().Count;
+		return count == 1 ? "1 entry" : $"{count} entries";
+	}
+
+	private void ClearHubLogs()
+	{
+		Hub?.RequestClearAlerts();
+		StateHasChanged();
 	}
 
 	private static string CpuTierLabel( int tier ) => $"Tier {tier + 1}";
