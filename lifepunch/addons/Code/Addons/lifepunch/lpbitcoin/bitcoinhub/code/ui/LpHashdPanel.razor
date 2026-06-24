@@ -609,6 +609,30 @@
 													</div>
 												</div>
 											</div>
+
+											<div class="transfers-rate-strip">
+												<div class="transfers-rate-head">
+													<div class="transfers-rate-title">
+														<i class="material-icons">currency_exchange</i>
+														<span>Live hub rate</span>
+													</div>
+													<span class="transfers-rate-badge">@LpBitcoinEconomy.FormatExchangeRateLabel()</span>
+												</div>
+												<div class="transfers-rate-grid">
+													@foreach ( var amount in TransferReferenceBtcAmounts )
+													{
+														<div class="transfers-rate-cell">
+															<span class="transfers-rate-cell-btc">@amount.ToString( "F2" ) BTC</span>
+															<span class="transfers-rate-cell-usd">@TransferReferenceUsd( amount )</span>
+														</div>
+													}
+												</div>
+												<div class="transfers-rate-wallet">
+													<span class="transfers-rate-wallet-label">Your hub wallet</span>
+													<span class="transfers-rate-wallet-value">@TransferHubWalletReference()</span>
+												</div>
+												<div class="transfers-rate-foot">Terminal send uses BTC amounts. Hub bank cashout uses the live rate above.</div>
+											</div>
 										</div>
 									</div>
 								}
@@ -1163,6 +1187,20 @@
 	{
 		var steamId = ReceiveSteamId();
 		return steamId > 0 ? steamId.ToString() : "Unavailable — bind hub owner first";
+	}
+
+	private static readonly float[] TransferReferenceBtcAmounts = { 0.01f, 0.05f, 0.10f, 0.25f };
+
+	private string TransferReferenceUsd( float btc )
+		=> $"≈ ${LpBitcoinEconomy.BtcToCashUsd( btc ):N2} bank";
+
+	private string TransferHubWalletReference()
+	{
+		var btc = HubWalletBtc();
+		if ( btc <= 0f )
+			return "0 BTC — deposit at terminal first";
+
+		return $"{btc.ToString( "F6" )} BTC ≈ ${LpBitcoinEconomy.BtcToCashUsd( btc ):N2} bank";
 	}
 
 	private string ReceiveCopyLabel() => _receiveCopyAck ? "Copied!" : "Copy Steam ID";
