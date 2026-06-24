@@ -34,6 +34,14 @@ public sealed class LpBitcoinTerminalLogPanel : LifePunchScrollRegionPanel
 
 	public override void OnButtonEvent( ButtonEvent e )
 	{
+		if ( e.Pressed && IsEndButton( e.Button ) )
+		{
+			PreferScrollToBottom = true;
+			ScrollToBottom( force: true );
+			e.StopPropagation = true;
+			return;
+		}
+
 		if ( e.Pressed && e.HasCtrl && e.Button is "c" or "C" )
 		{
 			if ( TryCopySelection() )
@@ -81,6 +89,10 @@ public sealed class LpBitcoinTerminalLogPanel : LifePunchScrollRegionPanel
 
 		return false;
 	}
+
+	private static bool IsEndButton( string button )
+		=> !string.IsNullOrEmpty( button )
+		   && button.Equals( "end", StringComparison.OrdinalIgnoreCase );
 
 	protected override float GetContentHeight()
 	{

@@ -75,7 +75,7 @@
 					</div>
 					<div class="prompt-row" onclick="@FocusInput">
 						<span class="prompt hashd-prompt-accent">rig@hub&gt;</span>
-						<TextEntry class="cmd-input" @ref="InputBox" onsubmit="@Submit" Placeholder="type command..." />
+						<LpBitcoinTerminalCommandInput @ref="InputBox" onsubmit="@Submit" Placeholder="type command..." />
 					</div>
 				</div>
 			</div>
@@ -107,9 +107,15 @@
 	private string _bootStatus = "INITIALIZING RIG...";
 	private bool _showScaleMenu;
 	private LpUiScaleSize _uiScale = LpUiScale.Default;
-	private TextEntry InputBox { get; set; }
+	private LpBitcoinTerminalCommandInput InputBox { get; set; }
 
 	private const int MaxLogLines = 200;
+	private const int MaxCommandHistory = 100;
+
+	private readonly List<string> _commandHistory = new();
+	private int _historyIndex;
+	private string _draftBeforeHistory = "";
+	private bool _commandInputWired;
 
 	private static readonly string[] _commandRefs =
 	{
@@ -229,6 +235,9 @@
 		_bootStatus = "INITIALIZING RIG...";
 		_pendingFocusRack = focusRack;
 		_lastInputTextLength = 0;
+		_commandHistory.Clear();
+		ResetCommandHistoryNavigation();
+		_commandInputWired = false;
 		ResetScrollBootstrap();
 	}
 
@@ -312,6 +321,9 @@
 		if ( string.IsNullOrWhiteSpace( raw ) )
 			return;
 
+		AppendCommandToHistory( raw );
+		ResetCommandHistoryNavigation();
+
 		AppendLogLine( "cmd", $"{PromptLabel} {raw}" );
 
 		if ( raw.Equals( "clear", StringComparison.OrdinalIgnoreCase ) )
@@ -321,7 +333,8 @@
 			_hub?.RequestPushTerminalCommandAlert( raw, "log cleared" );
 			InputBox.Text = string.Empty;
 			InputBox.Focus();
-			QueueScrollLogToBottom( force: true );
+			_lastInputTextLength = 0;
+			MaybeQueueScrollLogToBottom( force: true );
 			return;
 		}
 
@@ -331,7 +344,82 @@
 
 		InputBox.Text = string.Empty;
 		InputBox.Focus();
-		QueueScrollLogToBottom();
+		_lastInputTextLength = 0;
+		MaybeQueueScrollLogToBottom();
+	}
+
+	private void AppendCommandToHistory( string command )
+	{
+		if ( string.IsNullOrWhiteSpace( command ) )
+			return;
+
+		if ( _commandHistory.Count > 0
+		     && _commandHistory[^1].Equals( command, StringComparison.Ordinal ) )
+			return;
+
+		_commandHistory.Add( command );
+
+		while ( _commandHistory.Count > MaxCommandHistory )
+			_commandHistory.RemoveAt( 0 );
+
+		if ( _historyIndex > _commandHistory.Count )
+			_historyIndex = _commandHistory.Count;
+	}
+
+	private void ResetCommandHistoryNavigation()
+	{
+		_historyIndex = _commandHistory.Count;
+		_draftBeforeHistory = string.Empty;
+	}
+
+	private void NavigateHistoryUp()
+	{
+		if ( !InputBox.IsValid() || _commandHistory.Count == 0 )
+			return;
+
+		if ( _historyIndex == _commandHistory.Count )
+			_draftBeforeHistory = InputBox.Text ?? string.Empty;
+
+		if ( _historyIndex <= 0 )
+			return;
+
+		_historyIndex--;
+		SetInputTextWithoutTypingSound( _commandHistory[_historyIndex] );
+	}
+
+	private void NavigateHistoryDown()
+	{
+		if ( !InputBox.IsValid() || _commandHistory.Count == 0 )
+			return;
+
+		if ( _historyIndex >= _commandHistory.Count - 1 )
+		{
+			_historyIndex = _commandHistory.Count;
+			SetInputTextWithoutTypingSound( _draftBeforeHistory ?? string.Empty );
+			return;
+		}
+
+		_historyIndex++;
+		SetInputTextWithoutTypingSound( _commandHistory[_historyIndex] );
+	}
+
+	private void SetInputTextWithoutTypingSound( string text )
+	{
+		InputBox.Text = text ?? string.Empty;
+		InputBox.Focus();
+		_lastInputTextLength = InputBox.Text?.Length ?? 0;
+	}
+
+	private void MaybeQueueScrollLogToBottom( bool force = false )
+	{
+		var log = GetLogScroll();
+		if ( !log.IsValid() )
+			return;
+
+		if ( !force && !log.PreferScrollToBottom )
+			return;
+
+		QueueScrollLogToBottom( force );
 	}
 
 	private void AppendCommandResult( LpBitcoinCommandResult result )
@@ -612,7 +700,7 @@
 		_bootComplete = true;
 		_showBootSplash = false;
 		AppendLogLine( "ok", _hub?.IsPowered == true ? "hub power: ON" : "hub power: OFF" );
-		AppendLogLine( "dim", $"type help for {PromptLabel} commands · ctrl+c copies selection or full scrollback" );
+		AppendLogLine( "dim", $"type help for {PromptLabel} commands · ctrl+c copies selection or full scrollback · End follows log · ↑/↓ recalls commands" );
 
 		if ( _pendingFocusRack.IsValid() )
 		{
@@ -650,6 +738,13 @@
 
 		InputBox.SelectionColor = CmdSelectionTint;
 		InputBox.AcceptsFocus = true;
+
+		if ( !_commandInputWired )
+		{
+			InputBox.HistoryNavigateUp = NavigateHistoryUp;
+			InputBox.HistoryNavigateDown = NavigateHistoryDown;
+			_commandInputWired = true;
+		}
 	}
 
 	private void TickCommandInputTypingSound()
