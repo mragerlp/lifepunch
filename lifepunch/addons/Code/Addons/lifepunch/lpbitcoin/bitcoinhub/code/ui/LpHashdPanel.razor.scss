@@ -1111,10 +1111,10 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		flex-shrink: 0;
 		display: flex;
 		flex-direction: column;
-		justify-content: center;
-		min-height: 58px;
-		padding-top: 14px;
-		padding-bottom: 14px;
+		justify-content: flex-end;
+		min-height: 72px;
+		padding-top: 12px;
+		padding-bottom: 0;
 		border-top: 1px solid rgba(255, 255, 255, 0.1);
 	}
 
@@ -1196,28 +1196,36 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 
 	.overview-status-actions {
 		flex-shrink: 0;
+		flex: 1 1 auto;
 		flex-direction: row;
 		flex-wrap: nowrap;
+		align-items: stretch;
 		margin-top: 0;
 		gap: 8px;
 		width: 100%;
+		min-height: 56px;
 
-		.lp-ui-btn-primary,
-		.lp-ui-btn-ghost {
+		.overview-status-action {
 			flex: 1 1 0;
 			min-width: 0;
-			min-height: 38px;
+			min-height: 56px;
 			display: flex;
-			flex-direction: row;
+			flex-direction: column;
 			align-items: center;
 			justify-content: center;
-			padding: 10px 12px;
-			font-size: 11px;
+			gap: 4px;
+			padding: 8px 6px;
+			font-size: 10px;
 			font-weight: 800;
 			letter-spacing: 0.02em;
-			line-height: 1.25;
+			line-height: 1.15;
 			white-space: nowrap;
 			text-align: center;
+
+			.material-icons {
+				font-size: 22px;
+				line-height: 1;
+			}
 		}
 	}
 
@@ -3767,27 +3775,37 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	display: flex;
 	flex-direction: row;
 	flex-wrap: nowrap;
+	align-items: stretch;
 	gap: 8px;
 	width: 100%;
+	flex: 1 1 auto;
+	min-height: 56px;
 }
 
-.lp-bitcoin-ops .overview-status-actions .lp-ui-btn-primary,
-.lp-bitcoin-ops .overview-status-actions .lp-ui-btn-ghost {
+.lp-bitcoin-ops .overview-status-actions .overview-status-action {
 	flex: 1 1 0;
 	min-width: 0;
-	min-height: 38px;
+	min-height: 56px;
 	display: flex;
-	flex-direction: row;
+	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	padding-top: 10px;
-	padding-right: 12px;
-	padding-bottom: 10px;
-	padding-left: 12px;
-	font-size: 11px;
+	gap: 4px;
+	padding-top: 8px;
+	padding-right: 6px;
+	padding-bottom: 8px;
+	padding-left: 6px;
+	font-size: 10px;
 	font-weight: 800;
+	letter-spacing: 0.02em;
+	line-height: 1.15;
 	white-space: nowrap;
 	text-align: center;
+}
+
+.lp-bitcoin-ops .overview-status-actions .overview-status-action .material-icons {
+	font-size: 22px;
+	line-height: 1;
 }
 
 .lp-bitcoin-ops .overview .lp-ui-split > .lp-ui-panel {
@@ -4038,10 +4056,10 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	flex: 1 1 auto;
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
-	min-height: 58px;
-	padding-top: 14px;
-	padding-bottom: 14px;
+	justify-content: flex-end;
+	min-height: 72px;
+	padding-top: 12px;
+	padding-bottom: 0;
 	border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
