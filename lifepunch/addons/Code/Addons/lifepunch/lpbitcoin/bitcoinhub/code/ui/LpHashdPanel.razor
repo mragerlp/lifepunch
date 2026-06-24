@@ -552,8 +552,8 @@
 												<span>Hub transfers</span>
 											</div>
 
-											<div class="lp-ui-intro">
-												Move BTC between operators. Share your Steam ID to receive; send from the linked terminal using <strong>send</strong>.
+											<div class="lp-ui-intro transfers-intro">
+												Move BTC between operators. Share your Steam ID to receive; send from the linked terminal with the send command.
 											</div>
 
 											<div class="transfer-columns">
@@ -662,67 +662,45 @@
 												<span>Settings</span>
 											</div>
 
-											<div class="lp-ui-scroll-region settings-scroll">
-												<div class="lp-ui-intro">
-													Hub power, PIN security, and terminal linking. Changes apply immediately on this hub.
-												</div>
-
+											<div class="settings-body">
 												<div class="settings-sections">
-												<div class="settings-section lp-hashd-surface">
-													<div class="settings-label">Hub power</div>
-													<div class="settings-hint">Turn the HASHD hub on or off. Matches the header switch — racks stop accruing when power is off; nothing links while off.</div>
-													<div class="settings-actions">
-														<button class="@(Hub?.IsPowered == true ? "lp-ui-btn-primary" : "lp-ui-btn-ghost")" onclick="@PowerOn">Power on</button>
-														<button class="@(Hub?.IsPowered != true ? "lp-ui-btn-primary" : "lp-ui-btn-ghost")" onclick="@PowerOff">Power off</button>
-													</div>
-												</div>
-
-												<div class="settings-section lp-hashd-surface">
-													<div class="settings-label">Security</div>
-													<div class="settings-hint @( !string.IsNullOrWhiteSpace( _pinChangeNotice ) ? "settings-hint-ok" : "" )">
-														@( !string.IsNullOrWhiteSpace( _pinChangeNotice )
-															? _pinChangeNotice
-															: Hub?.AccessPinIsSet == true
-																? "Hub PIN protects wallet and settings. Change PIN opens Secure Boot — same flow as first hub USE."
-																: "Set your PIN on first hub USE via Secure Boot." )
-													</div>
-													@if ( Hub?.AccessPinIsSet == true )
-													{
-														<div class="settings-actions lp-hashd-action-row">
-															<button class="lp-ui-btn-primary" onclick="@StartPinChange">Change PIN</button>
+													<div class="settings-section lp-hashd-surface">
+														<div class="settings-section-head">
+															<div class="settings-label">Hub power</div>
 														</div>
-													}
-												</div>
-
-												<div class="settings-section lp-hashd-surface">
-													<div class="settings-label">Bitcoin terminal</div>
-													<div class="settings-hint">
-														@( HasLinkedTerminal()
-															? "Linked terminal opens rig0 when hub power is on."
-															: !HubIsPowered()
-																? "Power on the hub before linking a terminal."
-																: HasNearbyUnlinkedTerminal()
-																	? "Unlinked terminal in range — register it to enable rig0 ops."
-																	: "Place a bitcoin terminal within link range, then register it here." )
-													</div>
-													<div class="settings-meta">
-														<div class="settings-meta-row">
-															<span class="settings-meta-label">Status</span>
-															<span class="settings-meta-value">@(HasLinkedTerminal() ? "Linked" : "Not linked")</span>
+														<div class="settings-hint">Matches header switch. Off stops racks and blocks linking.</div>
+														<div class="settings-actions">
+															<button class="@(Hub?.IsPowered == true ? "lp-ui-btn-primary" : "lp-ui-btn-ghost")" onclick="@PowerOn">Power on</button>
+															<button class="@(Hub?.IsPowered != true ? "lp-ui-btn-primary" : "lp-ui-btn-ghost")" onclick="@PowerOff">Power off</button>
 														</div>
-														@if ( !HasLinkedTerminal() && HasNearbyUnlinkedTerminal() )
+													</div>
+
+													<div class="settings-section lp-hashd-surface">
+														<div class="settings-section-head">
+															<div class="settings-label">Security</div>
+														</div>
+														<div class="settings-hint @( !string.IsNullOrWhiteSpace( _pinChangeNotice ) ? "settings-hint-ok" : "" )">@SettingsSecurityHint()</div>
+														@if ( Hub?.AccessPinIsSet == true )
 														{
-															<div class="settings-meta-row">
-																<span class="settings-meta-label">Nearby</span>
-																<span class="settings-meta-value">Unlinked terminal ready</span>
+															<div class="settings-actions">
+																<button class="lp-ui-btn-primary" onclick="@StartPinChange">Change PIN</button>
 															</div>
 														}
 													</div>
-													<div class="settings-actions">
-														<button class="@(HasLinkedTerminal() ? "lp-ui-btn-ghost" : "lp-ui-btn-primary")" disabled="@(HasLinkedTerminal() || !HubIsPowered())" onclick="@LinkNearbyTerminal">Link terminal</button>
-														<button class="@(HasLinkedTerminal() ? "lp-ui-btn-primary" : "lp-ui-btn-ghost")" disabled="@(!HasLinkedTerminal())" onclick="@UnlinkTerminal">Unlink terminal</button>
+
+													<div class="settings-section lp-hashd-surface">
+														<div class="settings-section-head">
+															<div class="settings-label">Bitcoin terminal</div>
+															<div class="settings-status-pills">
+																<span class="settings-pill @TerminalSettingsStatusClass()">@TerminalSettingsStatusLabel()</span>
+															</div>
+														</div>
+														<div class="settings-hint">@SettingsTerminalHint()</div>
+														<div class="settings-actions">
+															<button class="@(HasLinkedTerminal() ? "lp-ui-btn-ghost" : "lp-ui-btn-primary")" disabled="@(HasLinkedTerminal() || !HubIsPowered())" onclick="@LinkNearbyTerminal">Link terminal</button>
+															<button class="@(HasLinkedTerminal() ? "lp-ui-btn-primary" : "lp-ui-btn-ghost")" disabled="@(!HasLinkedTerminal())" onclick="@UnlinkTerminal">Unlink terminal</button>
+														</div>
 													</div>
-												</div>
 												</div>
 											</div>
 										</div>
@@ -1511,6 +1489,56 @@
 			return HubIsPowered() ? "In range — ready to link" : "In range — power on to link";
 
 		return "Not linked";
+	}
+
+	private string SettingsSecurityHint()
+	{
+		if ( !string.IsNullOrWhiteSpace( _pinChangeNotice ) )
+			return _pinChangeNotice;
+
+		if ( Hub?.AccessPinIsSet == true )
+			return "PIN protects wallet and settings.";
+
+		return "Set PIN on first hub USE (Secure Boot).";
+	}
+
+	private string SettingsTerminalHint()
+	{
+		if ( HasLinkedTerminal() )
+			return "Linked — rig0 ready when hub power is on.";
+
+		if ( !HubIsPowered() )
+			return "Power on hub first, then link terminal.";
+
+		if ( HasNearbyUnlinkedTerminal() )
+			return "Terminal in range — tap Link below.";
+
+		return "Place terminal in range, then link.";
+	}
+
+	private string TerminalSettingsStatusLabel()
+	{
+		if ( HasLinkedTerminal() )
+			return "Linked";
+
+		if ( !HubIsPowered() )
+			return "Power off";
+
+		if ( HasNearbyUnlinkedTerminal() )
+			return "In range";
+
+		return "Not linked";
+	}
+
+	private string TerminalSettingsStatusClass()
+	{
+		if ( HasLinkedTerminal() )
+			return "on";
+
+		if ( HasNearbyUnlinkedTerminal() && HubIsPowered() )
+			return "warn";
+
+		return "off";
 	}
 
 	private string TerminalLinkPerkLabel()
