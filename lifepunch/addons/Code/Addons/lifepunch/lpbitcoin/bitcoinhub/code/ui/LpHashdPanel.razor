@@ -588,14 +588,18 @@
 															<span>Receive BTC</span>
 														</div>
 														<p class="transfer-column-copy">Share your hub receive address so other operators can send BTC to this wallet.</p>
-														<div class="transfer-address-card">
-															<div class="transfer-address-label">Your receive ID</div>
-															<div class="transfer-address-value">@ReceiveSteamIdLabel()</div>
-														</div>
-														<div class="lp-ui-info transfer-column-stats">
-															<div class="lp-ui-info-row">
-																<span class="lp-ui-info-label">Hub wallet</span>
-																<span class="lp-ui-info-value accent">@HubWalletBtc().ToString("F6") BTC</span>
+														<div class="transfer-mirror-stack">
+															<div class="transfer-subsection transfer-subsection-stat">
+																<div class="transfer-subsection-row">
+																	<span class="transfer-subsection-label">Your receive ID</span>
+																	<span class="transfer-subsection-value transfer-subsection-value-mono">@ReceiveSteamIdLabel()</span>
+																</div>
+															</div>
+															<div class="transfer-subsection transfer-subsection-detail">
+																<div class="transfer-subsection-row">
+																	<span class="transfer-subsection-label">Hub wallet</span>
+																	<span class="transfer-subsection-value accent">@HubWalletBtc().ToString("F6") BTC</span>
+																</div>
 															</div>
 														</div>
 													</div>
@@ -614,20 +618,22 @@
 															<span>Send BTC</span>
 														</div>
 														<p class="transfer-column-copy">Use the linked bitcoin terminal to move BTC from this hub to another operator.</p>
-														<div class="lp-ui-info transfer-column-stats">
-															<div class="lp-ui-info-row">
-																<span class="lp-ui-info-label">Terminal linked</span>
-																<span class="lp-ui-info-value">@(HasLinkedTerminal() ? "Yes — ready to send" : "No — link on Overview")</span>
+														<div class="transfer-mirror-stack">
+															<div class="transfer-subsection transfer-subsection-stat">
+																<div class="transfer-subsection-row">
+																	<span class="transfer-subsection-label">Terminal linked</span>
+																	<span class="transfer-subsection-value">@(HasLinkedTerminal() ? "Yes — ready to send" : "No — link on Overview")</span>
+																</div>
 															</div>
-														</div>
-														<div class="transfer-command-card transfer-command-card-stack">
-															<div class="transfer-command-line">
-																<div class="transfer-command-label">Command</div>
-																<div class="transfer-command-text">send &lt;steamid&gt; &lt;amount|all&gt;</div>
-															</div>
-															<div class="transfer-command-line">
-																<div class="transfer-command-label">Example</div>
-																<div class="transfer-command-text">send 76561198012345678 0.05</div>
+															<div class="transfer-subsection transfer-subsection-detail transfer-subsection-command">
+																<div class="transfer-command-line">
+																	<div class="transfer-command-label">Command</div>
+																	<div class="transfer-command-text">send &lt;steamid&gt; &lt;amount|all&gt;</div>
+																</div>
+																<div class="transfer-command-line">
+																	<div class="transfer-command-label">Example</div>
+																	<div class="transfer-command-text">send 76561198012345678 0.05</div>
+																</div>
 															</div>
 														</div>
 													</div>
