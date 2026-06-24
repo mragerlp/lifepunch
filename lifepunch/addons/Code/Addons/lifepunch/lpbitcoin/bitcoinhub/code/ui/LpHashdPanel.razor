@@ -162,9 +162,12 @@
 												<div class="overview-intro-copy-text">@OverviewIntroCopyLine()</div>
 											</div>
 											<div class="overview-intro-terminal-row">
-												<div class="overview-intro-terminal-status">
-													<span class="lp-ui-status-dot @(HasLinkedTerminal() ? "on" : HasNearbyUnlinkedTerminal() ? "warn" : "off")"></span>
-													<span class="overview-intro-terminal-label">@TerminalLinkStatusLabel()</span>
+												<div class="overview-intro-terminal-meta">
+													<div class="overview-intro-terminal-heading">Bitcoin terminal</div>
+													<div class="overview-intro-terminal-status">
+														<span class="lp-ui-status-dot @(HasLinkedTerminal() ? "on" : HasNearbyUnlinkedTerminal() ? "warn" : "off")"></span>
+														<span class="overview-intro-terminal-label">@TerminalLinkStatusLabel()</span>
+													</div>
 												</div>
 												<div class="overview-intro-terminal-actions">
 												@if ( HasLinkedTerminal() )
@@ -224,7 +227,7 @@
 															}
 															else
 															{
-																<div class="overview-miner-stats empty">Place rack nearby, then type <strong>link</strong> at rig0.</div>
+																<div class="overview-miner-stats empty">Place rack nearby, then link at rig0 on the terminal.</div>
 															}
 															<button class="rack-slot-id-copy overview-miner-copy"
 															        onclick="@(() => CopyOverviewMinerToken( slot ))">
@@ -975,7 +978,7 @@
 		=> _rackSlotCopyAckId == rack.GameObject.Id ? "Copied!" : "Copy";
 
 	private static string OverviewIntroCopyLine()
-		=> "Buy from DXRP Market → place hub → set PIN → power on (header switch) → link terminal → register 2 GPU racks + 1 Advanced GPU Rack at rig0 (gpurack-1, gpurack-2, advancedgpurack).";
+		=> "DXRP Market → place hub → set PIN → power on → link terminal → register 2 GPU racks + 1 Advanced rack at rig0.";
 
 	private readonly record struct OverviewMinerSlot( string DisplayLabel, string TerminalToken, LpBitcoinRackEntity Rack );
 
