@@ -1,6 +1,14 @@
 ================================================================================
 LIFEPUNCH ADDON PROGRESS TRACKER (owner copy — edit [ ] to [x] as you go)
 ================================================================================
+
+>>> OWNER REMINDER — 2026-06-25 login (delete this block after done) <<<
+>>> Sync Cornerman to latest main (docs df5b55f + hub UI):
+>>>   powershell -File lifepunch\scripts\Invoke-CornermanMonorepoSync.ps1
+>>> Or on Green: double-click "Cornerman (Sync from Red)"
+>>> Then: git log -1 --oneline on Green should show df5b55f or newer.
+================================================================================
+
 GATE LAW (read every session): lifepunch/addons/docs/ACTIVE_WORKSTREAM.md
 SHIP ROADMAP (handoff):        lifepunch/addons/docs/BITCOIN_SHIP_ROADMAP.md
 REFERENCE LAWS:                lifepunch/addons/docs/CYBER_REFERENCE_LAWS.md
