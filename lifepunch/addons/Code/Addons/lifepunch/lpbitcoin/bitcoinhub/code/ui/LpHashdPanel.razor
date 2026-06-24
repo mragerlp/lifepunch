@@ -524,8 +524,10 @@
 
 											<div class="wallet-cashout-stack">
 												<div class="wallet-cashout-bar">
-													<i class="material-icons">payments</i>
-													<TextEntry class="wallet-cashout-input" Placeholder="BTC amount (e.g. 0.025)" Value:bind="@CashOutAmount"/>
+													<div class="wallet-cashout-field">
+														<i class="material-icons">payments</i>
+														<TextEntry class="wallet-cashout-input" Placeholder="BTC amount (e.g. 0.025)" Value:bind="@CashOutAmount"/>
+													</div>
 													<div class="wallet-cashout-convert">
 														<span class="wallet-cashout-convert-label">Bank deposit</span>
 														<span class="wallet-cashout-convert-value">@PartialCashOutUsdPreview()</span>
@@ -533,16 +535,18 @@
 												</div>
 
 												<div class="wallet-cashout-panel">
-													<button class="lp-ui-btn-primary wallet-cashout-partial @GetPartialCashOutButtonClass()" onclick="@CashOutPartial">@PartialCashOutButtonLabel()</button>
-													<div class="wallet-cashout-all-shell">
-														<button class="wallet-cashout-all @(HubWalletBtc() <= 0f ? "disabled" : "")" onclick="@CashOutAll">
-															<i class="material-icons">savings</i>
-															<span class="wallet-cashout-all-text">
-																<span class="wallet-cashout-all-label">Cash out all</span>
-																<span class="wallet-cashout-all-amount">@CashOutAllSubline()</span>
-															</span>
-														</button>
+													<div class="wallet-cashout-panel-head">
+														<span class="wallet-cashout-panel-title">Cash out</span>
+														<span class="wallet-cashout-panel-amount">@CashOutPanelHeaderAmount()</span>
 													</div>
+													<button class="lp-ui-btn-primary wallet-cashout-partial @GetPartialCashOutButtonClass()" onclick="@CashOutPartial">@PartialCashOutButtonLabel()</button>
+													<button class="wallet-cashout-all @(HubWalletBtc() <= 0f ? "disabled" : "")" onclick="@CashOutAll">
+														<i class="material-icons">savings</i>
+														<span class="wallet-cashout-all-text">
+															<span class="wallet-cashout-all-label">Cash out all</span>
+															<span class="wallet-cashout-all-amount">@CashOutAllSubline()</span>
+														</span>
+													</button>
 												</div>
 											</div>
 
@@ -1765,6 +1769,14 @@
 			return "Deposit rack earnings at the terminal first";
 
 		return $"{LpBitcoinEconomy.FormatBtcToCash( HubWalletBtc() )} to your bank";
+	}
+
+	private string CashOutPanelHeaderAmount()
+	{
+		if ( HubWalletBtc() <= 0f )
+			return "—";
+
+		return $"{HubWalletBtc():F4} BTC · {LpBitcoinEconomy.FormatBtcToCash( HubWalletBtc() )}";
 	}
 
 	private string GetPartialCashOutButtonClass()
