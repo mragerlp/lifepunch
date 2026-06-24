@@ -520,31 +520,32 @@
 
 											<div class="wallet-cashout-stack">
 												<div class="wallet-cashout-card">
-													<div class="wallet-cashout-row">
-														<div class="wallet-cashout-amount-col">
-															<div class="wallet-cashout-field-label">BTC amount</div>
-															<div class="wallet-cashout-field">
+													<div class="wallet-cashout-tiles">
+														<div class="wallet-cashout-tile">
+															<div class="wallet-cashout-tile-label">BTC amount</div>
+															<div class="wallet-cashout-tile-body wallet-cashout-tile-input">
 																<i class="material-icons">payments</i>
-																<TextEntry class="wallet-cashout-input" Placeholder="e.g. 0.025" Value:bind="@CashOutAmount"/>
+																<TextEntry class="wallet-cashout-input" Placeholder="0.025" Value:bind="@CashOutAmount"/>
 															</div>
 														</div>
-														<div class="wallet-cashout-convert-col">
-															<div class="wallet-cashout-field-label">Bank deposit</div>
-															<div class="wallet-cashout-convert">
-																<span class="wallet-cashout-convert-value">@PartialCashOutUsdPreview()</span>
+														<div class="wallet-cashout-tile">
+															<div class="wallet-cashout-tile-label">Bank deposit</div>
+															<div class="wallet-cashout-tile-body">
+																<span class="wallet-cashout-tile-value">@PartialCashOutUsdPreview()</span>
 															</div>
 														</div>
+														<div class="wallet-cashout-tile">
+															<div class="wallet-cashout-tile-label">Cash out amount</div>
+															<button class="wallet-cashout-tile-btn @GetPartialCashOutButtonClass()" onclick="@CashOutPartial">@PartialCashOutButtonLabel()</button>
+														</div>
 													</div>
-													<div class="wallet-cashout-card-actions">
-														<button class="lp-ui-btn-primary wallet-cashout-partial @GetPartialCashOutButtonClass()" onclick="@CashOutPartial">@PartialCashOutButtonLabel()</button>
-														<button class="wallet-cashout-all @(HubWalletBtc() <= 0f ? "disabled" : "")" onclick="@CashOutAll">
-															<i class="material-icons">savings</i>
-															<span class="wallet-cashout-all-text">
-																<span class="wallet-cashout-all-label">Cash out all</span>
-																<span class="wallet-cashout-all-amount">@CashOutAllSubline()</span>
-															</span>
-														</button>
-													</div>
+													<button class="wallet-cashout-all @(HubWalletBtc() <= 0f ? "disabled" : "")" onclick="@CashOutAll">
+														<i class="material-icons">savings</i>
+														<span class="wallet-cashout-all-text">
+															<span class="wallet-cashout-all-label">Cash out all</span>
+															<span class="wallet-cashout-all-amount">@CashOutAllSubline()</span>
+														</span>
+													</button>
 												</div>
 											</div>
 
@@ -1767,9 +1768,9 @@
 	private string PartialCashOutButtonLabel()
 	{
 		if ( !TryParseCashOutAmount( out var amount ) || amount <= 0f )
-			return "Cash out amount";
+			return "Enter amount";
 
-		return $"Cash out {amount:F6} BTC";
+		return $"Cash out {amount:F4}";
 	}
 
 	private string PartialCashOutUsdPreview()
