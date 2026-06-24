@@ -3324,6 +3324,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	flex-direction: column;
 	overflow: hidden;
 	width: 100%;
+	padding-bottom: 6px;
 }
 
 .lp-bitcoin-ops .pane.settings-pane .lp-ui-panel-title {
@@ -3341,6 +3342,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	display: flex;
 	flex-direction: column;
 	gap: 6px;
+	padding-bottom: 8px;
 }
 
 .lp-bitcoin-ops .settings-section.lp-hashd-surface {
@@ -3355,6 +3357,10 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	padding-left: 8px;
 	justify-content: flex-start;
 	overflow: hidden;
+}
+
+.lp-bitcoin-ops .settings-sections > .settings-section.lp-hashd-surface:last-child {
+	padding-bottom: 10px;
 }
 
 .lp-bitcoin-ops .settings-section-head {
@@ -4216,6 +4222,10 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 }
 
 .lp-bitcoin-ops .pane.wallet > .wallet-panel {
+	padding-bottom: 28px;
+}
+
+.lp-bitcoin-ops .pane.settings-pane > .settings-panel {
 	padding-bottom: 28px;
 }
 
