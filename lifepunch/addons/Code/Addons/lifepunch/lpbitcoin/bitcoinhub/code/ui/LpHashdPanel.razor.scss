@@ -2605,54 +2605,104 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		border: 1px solid rgba(232, 125, 62, 0.22);
 	}
 
-	.overview-intro-terminal-status {
+	.overview-intro-terminal-switch {
 		display: flex;
 		flex-direction: row;
 		align-items: center;
+		justify-content: center;
 		gap: 10px;
 		flex: 1 1 50%;
 		min-width: 0;
-		padding: 10px 14px;
-		border-right: 1px solid rgba(232, 125, 62, 0.22);
-	}
-
-	.overview-intro-terminal-label {
-		color: $hashd-title;
-		font-size: 13px;
-		font-weight: 800;
-		text-transform: uppercase;
-		letter-spacing: 0.04em;
-		line-height: 1.35;
-		white-space: normal;
-	}
-
-	.overview-intro-terminal-actions {
-		display: flex;
-		flex-direction: row;
-		flex-wrap: nowrap;
-		align-items: center;
-		justify-content: center;
-		flex: 1 1 50%;
-		min-width: 0;
-		padding: 6px 10px;
-	}
-
-	.overview-intro-terminal-actions .lp-ui-btn-primary,
-	.overview-intro-terminal-actions .lp-ui-btn-ghost {
-		flex: 1 1 auto;
-		width: 100%;
-		max-width: 100%;
-		min-height: 34px;
-		justify-content: center;
-		text-align: center;
+		min-height: 46px;
 		padding: 8px 12px;
-		font-size: 11px;
-		white-space: nowrap;
-	}
+		margin: 0;
+		border: 0;
+		border-radius: 0;
+		background-color: transparent;
+		cursor: pointer;
 
-	.overview-intro-terminal-disabled {
-		opacity: 0.45;
-		cursor: default;
+		&:first-child {
+			border-right: 1px solid rgba(232, 125, 62, 0.22);
+		}
+
+		&:hover:not(:disabled) {
+			background-color: rgba(232, 125, 62, 0.08);
+		}
+
+		&:disabled {
+			opacity: 0.45;
+			cursor: default;
+		}
+
+		&.on {
+			background-color: rgba(95, 211, 141, 0.06);
+
+			.power-switch-track {
+				background-color: rgba(95, 211, 141, 0.35);
+				border-color: rgba(95, 211, 141, 0.55);
+			}
+
+			.power-switch-knob {
+				left: 18px;
+				background-color: $hashd-green;
+			}
+
+			.power-switch-label {
+				color: $hashd-green;
+			}
+		}
+
+		&.warn:not(.on) {
+			.power-switch-track {
+				background-color: rgba(240, 165, 0, 0.22);
+				border-color: rgba(240, 165, 0, 0.45);
+			}
+
+			.power-switch-knob {
+				background-color: $hashd-amber;
+			}
+
+			.power-switch-label {
+				color: $hashd-amber-glow;
+			}
+		}
+
+		&.off:not(.on) {
+			.power-switch-label {
+				color: $hashd-muted;
+			}
+		}
+
+		.power-switch-track {
+			position: relative;
+			width: 36px;
+			height: 20px;
+			border-radius: 999px;
+			background-color: rgba(0, 0, 0, 0.45);
+			border: 1px solid rgba(255, 255, 255, 0.12);
+			flex-shrink: 0;
+		}
+
+		.power-switch-knob {
+			position: absolute;
+			top: 2px;
+			left: 2px;
+			width: 14px;
+			height: 14px;
+			border-radius: 999px;
+			background-color: #6b7280;
+			transition: left 0.12s ease, background-color 0.12s ease;
+		}
+
+		.power-switch-label {
+			font-size: 11px;
+			font-weight: 700;
+			letter-spacing: 0.04em;
+			color: $hashd-text;
+			white-space: nowrap;
+			text-transform: uppercase;
+			line-height: 1.2;
+		}
 	}
 
 	.lp-ui-status-dot.warn {
@@ -3064,53 +3114,103 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	border: 1px solid rgba(232, 125, 62, 0.22);
 }
 
-.lp-bitcoin-ops .overview-intro-terminal-status {
+.lp-bitcoin-ops .overview-intro-terminal-switch {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
+	justify-content: center;
 	gap: 10px;
 	flex: 1 1 50%;
 	min-width: 0;
-	padding-top: 10px;
-	padding-right: 14px;
-	padding-bottom: 10px;
-	padding-left: 14px;
+	min-height: 46px;
+	padding-top: 8px;
+	padding-right: 12px;
+	padding-bottom: 8px;
+	padding-left: 12px;
+	margin: 0;
+	border: 0;
+	border-radius: 0;
+	background-color: transparent;
+	cursor: pointer;
+}
+
+.lp-bitcoin-ops .overview-intro-terminal-switch:first-child {
 	border-right: 1px solid rgba(232, 125, 62, 0.22);
 }
 
-.lp-bitcoin-ops .overview-intro-terminal-label {
-	color: #f8f9fc;
-	font-size: 13px;
-	font-weight: 800;
-	text-transform: uppercase;
+.lp-bitcoin-ops .overview-intro-terminal-switch:hover:not(:disabled) {
+	background-color: rgba(232, 125, 62, 0.08);
+}
+
+.lp-bitcoin-ops .overview-intro-terminal-switch:disabled {
+	opacity: 0.45;
+	cursor: default;
+}
+
+.lp-bitcoin-ops .overview-intro-terminal-switch.on {
+	background-color: rgba(95, 211, 141, 0.06);
+}
+
+.lp-bitcoin-ops .overview-intro-terminal-switch.on .power-switch-track {
+	background-color: rgba(95, 211, 141, 0.35);
+	border-color: rgba(95, 211, 141, 0.55);
+}
+
+.lp-bitcoin-ops .overview-intro-terminal-switch.on .power-switch-knob {
+	left: 18px;
+	background-color: #5fd38d;
+}
+
+.lp-bitcoin-ops .overview-intro-terminal-switch.on .power-switch-label {
+	color: #5fd38d;
+}
+
+.lp-bitcoin-ops .overview-intro-terminal-switch.warn:not(.on) .power-switch-track {
+	background-color: rgba(240, 165, 0, 0.22);
+	border-color: rgba(240, 165, 0, 0.45);
+}
+
+.lp-bitcoin-ops .overview-intro-terminal-switch.warn:not(.on) .power-switch-knob {
+	background-color: #f0a500;
+}
+
+.lp-bitcoin-ops .overview-intro-terminal-switch.warn:not(.on) .power-switch-label {
+	color: #ffc966;
+}
+
+.lp-bitcoin-ops .overview-intro-terminal-switch.off:not(.on) .power-switch-label {
+	color: #9aa3b2;
+}
+
+.lp-bitcoin-ops .overview-intro-terminal-switch .power-switch-track {
+	position: relative;
+	width: 36px;
+	height: 20px;
+	border-radius: 999px;
+	background-color: rgba(0, 0, 0, 0.45);
+	border: 1px solid rgba(255, 255, 255, 0.12);
+	flex-shrink: 0;
+}
+
+.lp-bitcoin-ops .overview-intro-terminal-switch .power-switch-knob {
+	position: absolute;
+	top: 2px;
+	left: 2px;
+	width: 14px;
+	height: 14px;
+	border-radius: 999px;
+	background-color: #6b7280;
+	transition: left 0.12s ease, background-color 0.12s ease;
+}
+
+.lp-bitcoin-ops .overview-intro-terminal-switch .power-switch-label {
+	font-size: 11px;
+	font-weight: 700;
 	letter-spacing: 0.04em;
-	line-height: 1.35;
-	white-space: normal;
-}
-
-.lp-bitcoin-ops .overview-intro-terminal-actions {
-	display: flex;
-	flex-direction: row;
-	flex-wrap: nowrap;
-	align-items: center;
-	justify-content: center;
-	flex: 1 1 50%;
-	min-width: 0;
-	width: auto;
-	padding-top: 6px;
-	padding-right: 10px;
-	padding-bottom: 6px;
-	padding-left: 10px;
-}
-
-.lp-bitcoin-ops .overview-intro-terminal-actions .lp-ui-btn-primary,
-.lp-bitcoin-ops .overview-intro-terminal-actions .lp-ui-btn-ghost {
-	flex: 1 1 auto;
-	width: 100%;
-	max-width: 100%;
-	min-height: 34px;
-	justify-content: center;
-	text-align: center;
+	color: #eceef3;
+	white-space: nowrap;
+	text-transform: uppercase;
+	line-height: 1.2;
 }
 
 .lp-bitcoin-ops .overview .lp-ui-split {

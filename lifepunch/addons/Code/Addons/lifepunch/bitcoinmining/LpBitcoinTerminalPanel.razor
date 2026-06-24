@@ -510,6 +510,7 @@
 		if ( GetLogScroll().IsValid() )
 		{
 			_scrollBootstrapComplete = true;
+			ResetLogScrollPosition();
 			QueueScrollLogToBottom( force: true );
 			return;
 		}
@@ -536,6 +537,16 @@
 
 		if ( _scrollLogPendingFrames <= 0 )
 			_scrollLogForce = false;
+	}
+
+	private void ResetLogScrollPosition()
+	{
+		var log = GetLogScroll();
+		if ( !log.IsValid() )
+			return;
+
+		if ( log.GetMaxScrollY() <= 0f )
+			log.ScrollOffset = Vector2.Zero;
 	}
 
 	private void Close() => LpBitcoinTerminalUiHost.CloseOpen();

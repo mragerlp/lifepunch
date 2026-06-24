@@ -104,7 +104,11 @@ $crt-text-dim: #9a9a9a;
 		cursor: text;
 		padding-right: 4px;
 		pointer-events: all;
-		overflow: hidden;
+		overflow-x: hidden;
+		overflow-y: scroll;
+		justify-content: flex-start;
+		align-items: flex-start;
+		align-content: flex-start;
 	}
 
 	.log-stack {
@@ -112,7 +116,12 @@ $crt-text-dim: #9a9a9a;
 		flex-direction: column;
 		gap: 2px;
 		width: 100%;
+		flex: 0 0 auto;
+		flex-grow: 0;
 		flex-shrink: 0;
+		justify-content: flex-start;
+		align-items: flex-start;
+		align-content: flex-start;
 	}
 
 	.screen {
@@ -384,16 +393,24 @@ $crt-text-dim: #9a9a9a;
 	flex: 1 1 0;
 	min-height: 0;
 	min-width: 0;
-	overflow: hidden;
+	overflow-x: hidden;
+	overflow-y: scroll;
 	pointer-events: all;
+	justify-content: flex-start;
+	align-items: flex-start;
+	align-content: flex-start;
 }
 
 .lp-ops-crt .log {
 	flex: 1 1 0;
 	min-height: 0;
 	min-width: 0;
-	overflow: hidden;
+	overflow-x: hidden;
+	overflow-y: scroll;
 	pointer-events: all;
+	justify-content: flex-start;
+	align-items: flex-start;
+	align-content: flex-start;
 }
 
 .lp-ops-crt .log-stack {
@@ -401,7 +418,12 @@ $crt-text-dim: #9a9a9a;
 	flex-direction: column;
 	gap: 2px;
 	width: 100%;
+	flex: 0 0 auto;
+	flex-grow: 0;
 	flex-shrink: 0;
+	justify-content: flex-start;
+	align-items: flex-start;
+	align-content: flex-start;
 	padding-bottom: 12px;
 }
 

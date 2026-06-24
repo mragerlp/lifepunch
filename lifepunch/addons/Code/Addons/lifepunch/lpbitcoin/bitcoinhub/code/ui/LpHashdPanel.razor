@@ -162,31 +162,24 @@
 												<div class="overview-intro-copy-text">@OverviewIntroCopyLine()</div>
 												<div class="overview-intro-terminal">
 													<div class="overview-intro-terminal-row">
-														<div class="overview-intro-terminal-status">
-															<span class="lp-ui-status-dot @(HasLinkedTerminal() ? "on" : HasNearbyUnlinkedTerminal() ? "warn" : "off")"></span>
-															<span class="overview-intro-terminal-label">@TerminalLinkStatusLabel()</span>
-														</div>
-														<div class="overview-intro-terminal-actions">
-														@if ( HasLinkedTerminal() )
-														{
-															<button class="lp-ui-btn-ghost" onclick="@UnlinkTerminal">Unlink terminal</button>
-														}
-														else if ( HasNearbyUnlinkedTerminal() )
-														{
-															@if ( HubIsPowered() )
-															{
-																<button class="lp-ui-btn-primary" onclick="@LinkNearbyTerminal">Link terminal</button>
-															}
-															else
-															{
-																<button class="lp-ui-btn-ghost overview-intro-terminal-disabled" disabled>Power on to link</button>
-															}
-														}
-														else
-														{
-															<button class="lp-ui-btn-ghost overview-intro-terminal-disabled" disabled>No terminal in range</button>
-														}
-														</div>
+														<button class="overview-intro-terminal-switch @(OverviewIntroLinkSwitchOn() ? "on" : "off") @(OverviewIntroLinkSwitchWarn() ? "warn" : "")"
+														        disabled="@(!OverviewIntroLinkSwitchEnabled())"
+														        tooltip="@OverviewIntroLinkSwitchTooltip()"
+														        onclick="@OverviewIntroLinkSwitchClick">
+															<span class="power-switch-track">
+																<span class="power-switch-knob"></span>
+															</span>
+															<span class="power-switch-label">@OverviewIntroLinkSwitchLabel()</span>
+														</button>
+														<button class="overview-intro-terminal-switch @(HasLinkedTerminal() ? "on" : "off")"
+														        disabled="@(!OverviewIntroUnlinkSwitchEnabled())"
+														        tooltip="@OverviewIntroUnlinkSwitchTooltip()"
+														        onclick="@UnlinkTerminal">
+															<span class="power-switch-track">
+																<span class="power-switch-knob"></span>
+															</span>
+															<span class="power-switch-label">@OverviewIntroUnlinkSwitchLabel()</span>
+														</button>
 													</div>
 												</div>
 											</div>
@@ -1450,6 +1443,84 @@
 	private bool HasNearbyUnlinkedTerminal() => Hub?.HasNearbyUnlinkedTerminal() == true;
 	private void LinkNearbyTerminal() => Hub?.RequestLinkNearbyTerminal();
 	private void UnlinkTerminal() => Hub?.RequestUnlinkTerminal();
+
+	private bool OverviewIntroLinkSwitchOn() => HasLinkedTerminal();
+
+	private bool OverviewIntroLinkSwitchWarn() => !HasLinkedTerminal() && HasNearbyUnlinkedTerminal();
+
+	private bool OverviewIntroLinkSwitchEnabled()
+	{
+		if ( HasLinkedTerminal() )
+			return false;
+
+		return HasNearbyUnlinkedTerminal();
+	}
+
+	private string OverviewIntroLinkSwitchLabel()
+	{
+		if ( HasLinkedTerminal() )
+			return "LINKED";
+
+		if ( !HasNearbyUnlinkedTerminal() )
+			return "NOT LINKED";
+
+		if ( !HubIsPowered() )
+			return "POWER ON";
+
+		return "LINK";
+	}
+
+	private string OverviewIntroLinkSwitchTooltip()
+	{
+		if ( HasLinkedTerminal() )
+			return "Terminal linked — rig0 ready";
+
+		if ( !HasNearbyUnlinkedTerminal() )
+			return "Place a bitcoin terminal within link range";
+
+		if ( !HubIsPowered() )
+			return "Power on hub, then link terminal";
+
+		return "Link nearby terminal";
+	}
+
+	private void OverviewIntroLinkSwitchClick()
+	{
+		if ( HasLinkedTerminal() || !HasNearbyUnlinkedTerminal() )
+			return;
+
+		if ( !HubIsPowered() )
+		{
+			PowerOn();
+			return;
+		}
+
+		LinkNearbyTerminal();
+	}
+
+	private bool OverviewIntroUnlinkSwitchEnabled() => HasLinkedTerminal();
+
+	private string OverviewIntroUnlinkSwitchLabel()
+	{
+		if ( HasLinkedTerminal() )
+			return "UNLINK";
+
+		if ( !HasNearbyUnlinkedTerminal() )
+			return "NO TERMINAL";
+
+		return "UNLINK";
+	}
+
+	private string OverviewIntroUnlinkSwitchTooltip()
+	{
+		if ( HasLinkedTerminal() )
+			return "Unlink terminal";
+
+		if ( !HasNearbyUnlinkedTerminal() )
+			return "No terminal in link range";
+
+		return "Link terminal first";
+	}
 
 	private string TerminalLinkStatusLabel()
 	{

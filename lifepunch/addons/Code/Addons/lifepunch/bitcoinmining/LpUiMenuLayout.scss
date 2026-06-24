@@ -58,8 +58,18 @@ $lp-menu-mono: "Roboto Mono", "Courier New", monospace;
 	flex-shrink: 0;
 }
 
-// Manual scroll regions — overflow hidden; LifePunchScrollRegionPanel drives ScrollOffset.
-.lp-ops-crt .lp-ui-scroll-region.terminal-log-scroll,
+// Terminal log — native overflow scroll (StaffMenu pattern); sidebar stays manual.
+.lp-ops-crt .lp-ui-scroll-region.terminal-log-scroll {
+	flex: 1 1 0;
+	min-height: 0;
+	min-width: 0;
+	overflow-x: hidden;
+	overflow-y: scroll;
+	justify-content: flex-start;
+	align-items: flex-start;
+	align-content: flex-start;
+}
+
 .lp-ops-crt .lp-ui-scroll-region.terminal-sidebar-scroll {
 	flex: 1 1 0;
 	min-height: 0;

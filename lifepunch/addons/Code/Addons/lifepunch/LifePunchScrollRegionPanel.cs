@@ -32,6 +32,13 @@ public class LifePunchScrollRegionPanel : Panel
 		if ( System.Math.Abs( value.y ) < 0.01f )
 			return;
 
+		if ( HasScrollY )
+		{
+			base.OnMouseWheel( value );
+			UpdatePreferScrollToBottom();
+			return;
+		}
+
 		var max = GetMaxScrollY();
 		if ( max <= 0f )
 			return;
@@ -50,6 +57,9 @@ public class LifePunchScrollRegionPanel : Panel
 		if ( viewHeight <= 1f )
 			return 0f;
 
+		if ( HasScrollY && ScrollSize.y > 0f )
+			return System.Math.Max( 0f, ScrollSize.y - viewHeight );
+
 		return System.Math.Max( 0f, GetContentHeight() - viewHeight );
 	}
 
@@ -57,13 +67,25 @@ public class LifePunchScrollRegionPanel : Panel
 	{
 		var max = GetMaxScrollY();
 		if ( max <= 0f )
+		{
+			if ( ScrollOffset != Vector2.Zero )
+				ScrollOffset = Vector2.Zero;
+
+			PreferScrollToBottom = true;
 			return;
+		}
 
 		if ( !force && !PreferScrollToBottom && ScrollOffset.y < max - 28f )
 			return;
 
 		ScrollOffset = new Vector2( 0f, max );
 		PreferScrollToBottom = true;
+	}
+
+	private void UpdatePreferScrollToBottom()
+	{
+		var max = GetMaxScrollY();
+		PreferScrollToBottom = max <= 0f || ScrollOffset.y >= max - 4f;
 	}
 
 	protected virtual float GetContentHeight()
