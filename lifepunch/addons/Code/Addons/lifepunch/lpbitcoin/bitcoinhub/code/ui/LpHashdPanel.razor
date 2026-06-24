@@ -157,37 +157,35 @@
 								@if ( _active == OpsTab.Overview )
 								{
 									<div class="pane overview">
-										<div class="overview-intro-shell">
-											<div class="overview-intro">
+										<div class="overview-intro-header">
+											<div class="overview-intro-shell">
 												<div class="overview-intro-copy-text">@OverviewIntroCopyLine()</div>
-												<div class="overview-intro-terminal">
-													<div class="overview-intro-terminal-row">
-														<div class="overview-intro-terminal-status">
-															<span class="lp-ui-status-dot @(HasLinkedTerminal() ? "on" : HasNearbyUnlinkedTerminal() ? "warn" : "off")"></span>
-															<span class="overview-intro-terminal-label">@TerminalLinkStatusLabel()</span>
-														</div>
-														<div class="overview-intro-terminal-actions">
-														@if ( HasLinkedTerminal() )
-														{
-															<button class="lp-ui-btn-ghost" onclick="@UnlinkTerminal">Unlink terminal</button>
-														}
-														else if ( HasNearbyUnlinkedTerminal() )
-														{
-															@if ( HubIsPowered() )
-															{
-																<button class="lp-ui-btn-primary" onclick="@LinkNearbyTerminal">Link terminal</button>
-															}
-															else
-															{
-																<button class="lp-ui-btn-ghost overview-intro-terminal-disabled" disabled>Power on to link</button>
-															}
-														}
-														else
-														{
-															<button class="lp-ui-btn-ghost overview-intro-terminal-disabled" disabled>No terminal in range</button>
-														}
-														</div>
-													</div>
+											</div>
+											<div class="overview-intro-terminal-row">
+												<div class="overview-intro-terminal-status">
+													<span class="lp-ui-status-dot @(HasLinkedTerminal() ? "on" : HasNearbyUnlinkedTerminal() ? "warn" : "off")"></span>
+													<span class="overview-intro-terminal-label">@TerminalLinkStatusLabel()</span>
+												</div>
+												<div class="overview-intro-terminal-actions">
+												@if ( HasLinkedTerminal() )
+												{
+													<button class="lp-ui-btn-ghost overview-intro-unlink-btn" onclick="@UnlinkTerminal">Unlink terminal</button>
+												}
+												else if ( HasNearbyUnlinkedTerminal() )
+												{
+													@if ( HubIsPowered() )
+													{
+														<button class="lp-ui-btn-ghost" onclick="@LinkNearbyTerminal">Link terminal</button>
+													}
+													else
+													{
+														<button class="lp-ui-btn-ghost disabled" disabled>Power on to link</button>
+													}
+												}
+												else
+												{
+													<button class="lp-ui-btn-ghost overview-intro-terminal-disabled" disabled>No terminal in range</button>
+												}
 												</div>
 											</div>
 										</div>
@@ -490,11 +488,11 @@
 												</div>
 												<div class="lp-ui-info-row">
 													<span class="lp-ui-info-label">USD value (hub)</span>
-													<span class="lp-ui-info-value">$@HubWalletUsd().ToString("N2")</span>
+													<span class="lp-ui-info-value">$@HubWalletCashUsd().ToString("N2")</span>
 												</div>
 												<div class="lp-ui-info-row">
 													<span class="lp-ui-info-label">Exchange rate</span>
-													<span class="lp-ui-info-value">$@LpBitcoinEconomy.BitcoinValueUsd / BTC</span>
+													<span class="lp-ui-info-value">@LpBitcoinEconomy.FormatExchangeRateLabel()</span>
 												</div>
 												<div class="lp-ui-info-row">
 													<span class="lp-ui-info-label">Your cash</span>
@@ -505,11 +503,21 @@
 											<div class="wallet-cashout-bar">
 												<i class="material-icons">payments</i>
 												<TextEntry class="wallet-cashout-input" Placeholder="BTC amount (e.g. 0.025)" Value:bind="@CashOutAmount"/>
-												<button class="lp-ui-btn-primary wallet-cashout-btn @GetPartialCashOutButtonClass()" onclick="@CashOutPartial">@PartialCashOutButtonLabel()</button>
+												<div class="wallet-cashout-convert">
+													<span class="wallet-cashout-convert-label">Bank deposit</span>
+													<span class="wallet-cashout-convert-value">@PartialCashOutUsdPreview()</span>
+												</div>
 											</div>
 
-											<div class="wallet-cashout-row">
-												<button class="lp-ui-btn-primary wallet-cashout-all @(HubWalletBtc() <= 0f ? "disabled" : "")" onclick="@CashOutAll">@CashOutAllButtonLabel()</button>
+											<div class="wallet-cashout-panel">
+												<button class="lp-ui-btn-primary wallet-cashout-partial @GetPartialCashOutButtonClass()" onclick="@CashOutPartial">@PartialCashOutButtonLabel()</button>
+												<button class="wallet-cashout-all @(HubWalletBtc() <= 0f ? "disabled" : "")" onclick="@CashOutAll">
+													<i class="material-icons">savings</i>
+													<span class="wallet-cashout-all-text">
+														<span class="wallet-cashout-all-label">Cash out all</span>
+														<span class="wallet-cashout-all-amount">@CashOutAllSubline()</span>
+													</span>
+												</button>
 											</div>
 
 											@if ( _cashOutErrorActive )
@@ -656,20 +664,6 @@
 
 												<div class="settings-sections">
 												<div class="settings-section lp-hashd-surface">
-													<div class="settings-label">UI Scale</div>
-													<div class="settings-hint">Resize the hub console window.</div>
-													<div class="panel-size-row">
-														@foreach ( var size in _uiScaleOptions )
-														{
-															<button class="panel-size-opt @( _uiScale == size ? "active" : "" )"
-															        onclick="@(() => SetUiScale( size ))">
-																@LpUiScale.ShortLabel( size )
-															</button>
-														}
-													</div>
-												</div>
-
-												<div class="settings-section lp-hashd-surface">
 													<div class="settings-label">Hub power</div>
 													<div class="settings-hint">Turn the HASHD hub on or off. Matches the header switch — racks stop accruing when power is off; nothing links while off.</div>
 													<div class="settings-actions">
@@ -755,14 +749,6 @@
 	private static readonly PerfRange[] _perfRanges = { PerfRange.Day, PerfRange.Week, PerfRange.Month };
 
 	private OpsTab _active = OpsTab.Overview;
-	private LpUiScaleSize _uiScale = LpUiScale.Default;
-	private static readonly LpUiScaleSize[] _uiScaleOptions =
-	{
-		LpUiScaleSize.Small,
-		LpUiScaleSize.Medium,
-		LpUiScaleSize.Large,
-		LpUiScaleSize.ExtraLarge
-	};
 	private Guid _upgradeRackId = Guid.Empty;
 	private Guid _rackSlotCopyAckId = Guid.Empty;
 	private bool _receiveCopyAck;
@@ -804,6 +790,7 @@
 		{
 			_cashOutAmount = value ?? string.Empty;
 			ClearCashOutError();
+			StateHasChanged();
 		}
 	}
 	private LpBitcoinHubEntity _hub;
@@ -966,7 +953,7 @@
 			_ => 24f * 7f
 		};
 
-		return hourlyBtc * multiplier * LpBitcoinEconomy.BitcoinValueUsd;
+		return hourlyBtc * multiplier * LpBitcoinEconomy.CashUsdPerBtc;
 	}
 
 	private string RackSlotLabel( LpBitcoinRackEntity rack )
@@ -1205,13 +1192,7 @@
 	private void SelectTransfersTab() => SelectTab( OpsTab.Transfers );
 	private void SelectRacksTab() => SelectTab( OpsTab.Racks );
 	private void OpenSettings() => SelectTab( OpsTab.Settings );
-	private string GetRootClass() => $"lp-bitcoin-ops lp-ui-accent-hashd {LpUiScale.CssClass( _uiScale )}";
-
-	private void SetUiScale( LpUiScaleSize size )
-	{
-		_uiScale = size;
-		LifePunchUiScrollPolicy.ResetOffsets( Panel );
-	}
+	private string GetRootClass() => $"lp-bitcoin-ops lp-ui-accent-hashd {LpUiScale.CssClass( LpUiScale.Default )}";
 
 	private void Close() => LpHashdUiHost.CloseOpen();
 	private void PowerOn() => Hub?.SetPowered( true );
@@ -1444,7 +1425,7 @@
 
 	private float RackPendingBtc() => Hub?.GetRackPendingBtc() ?? 0f;
 
-	private int HubWalletUsd() => (int)(HubWalletBtc() * LpBitcoinEconomy.BitcoinValueUsd);
+	private float HubWalletCashUsd() => LpBitcoinEconomy.BtcToCashUsd( HubWalletBtc() );
 
 	private bool HasLinkedTerminal() => Hub?.HasLinkedTerminal() == true;
 	private bool HasNearbyUnlinkedTerminal() => Hub?.HasNearbyUnlinkedTerminal() == true;
@@ -1493,8 +1474,8 @@
 	{
 		ClearCashOutError();
 		_cashOutSuccessMessage = soldAll
-			? "Sold all"
-			: $"Sold {btcAmount:F6} BTC for ${usdPayout:N2}";
+			? $"Cashed out all hub BTC — ${usdPayout:N2} deposited to your bank"
+			: $"Cashed out {btcAmount:F6} BTC — ${usdPayout:N2} deposited to your bank";
 
 		_cashOutSuccessActive = true;
 		_cashOutSuccessVisible = false;
@@ -1557,19 +1538,27 @@
 
 	private string PartialCashOutButtonLabel()
 	{
-		if ( !TryParseCashOutAmount( out var amount ) || amount <= 0f )
+		var btc = HubWalletBtc();
+		if ( btc <= 0f )
 			return "Cash out";
 
-		var usd = amount * LpBitcoinEconomy.BitcoinValueUsd;
-		return $"Cash out ${usd:N2}";
+		return $"Cash out {btc:F6} BTC";
 	}
 
-	private string CashOutAllButtonLabel()
+	private string PartialCashOutUsdPreview()
+	{
+		if ( !TryParseCashOutAmount( out var amount ) || amount <= 0f )
+			return "—";
+
+		return LpBitcoinEconomy.FormatBtcToCash( amount );
+	}
+
+	private string CashOutAllSubline()
 	{
 		if ( HubWalletBtc() <= 0f )
-			return "Cash out all";
+			return "Deposit rack earnings at the terminal first";
 
-		return $"Cash out all (${(HubWalletBtc() * LpBitcoinEconomy.BitcoinValueUsd):N2})";
+		return $"{LpBitcoinEconomy.FormatBtcToCash( HubWalletBtc() )} to your bank";
 	}
 
 	private string GetPartialCashOutButtonClass()
@@ -1628,7 +1617,7 @@
 
 	private float CombinedBtc() => HubWalletBtc() + RackPendingBtc();
 
-	private int CombinedUsd() => (int)(CombinedBtc() * LpBitcoinEconomy.BitcoinValueUsd);
+	private int CombinedUsd() => (int)LpBitcoinEconomy.BtcToCashUsd( CombinedBtc() );
 
 	private int TotalUsd() => GetLinkedRacks().Sum( r => r.UsdValue );
 
@@ -1786,7 +1775,9 @@
 		hash.Add( _cashOutErrorActive );
 		hash.Add( _cashOutErrorVisible );
 		hash.Add( _cashOutErrorMessage );
-		hash.Add( _uiScale );
+		hash.Add( LpBitcoinEconomy.PortalBaseCashUsdPerBtc );
+		hash.Add( LpBitcoinEconomy.CashUsdPerBtc );
+		hash.Add( LpBitcoinEconomy.PortalEconomyRevision );
 		return hash.ToHashCode();
 	}
 }

@@ -541,7 +541,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;
-		align-items: flex-start;
+		align-items: center;
 		justify-content: space-between;
 		gap: 12px 16px;
 		flex-shrink: 0;
@@ -947,7 +947,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 			gap: 14px;
 			overflow-x: hidden;
 			overflow-y: scroll;
-			padding-bottom: 4px;
+			padding-bottom: 20px;
 		}
 	}
 
@@ -1102,9 +1102,14 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	}
 
 	.overview-status-footer {
-		flex: 0 0 auto;
+		flex: 1 1 auto;
 		flex-shrink: 0;
-		padding-top: 10px;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		min-height: 58px;
+		padding-top: 14px;
+		padding-bottom: 14px;
 		border-top: 1px solid rgba(255, 255, 255, 0.1);
 	}
 
@@ -3154,8 +3159,9 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 
 .lp-bitcoin-ops .sidebar-btn.sidebar-btn-sel {
 	color: #ffffff;
-	background-color: #f0a500;
+	background-color: #e87d3e;
 	border-color: rgba(255, 255, 255, 0.08);
+	box-shadow: 0 0 16px rgba(232, 125, 62, 0.45);
 }
 
 .lp-bitcoin-ops .sidebar-avatar {
@@ -3196,18 +3202,49 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
-	align-items: flex-start;
+	align-items: center;
 	justify-content: space-between;
 	gap: 12px 16px;
 	flex-shrink: 0;
 	min-height: 68px;
-	padding-top: 14px;
+	padding-top: 12px;
 	padding-right: 22px;
 	padding-bottom: 12px;
 	padding-left: 22px;
 	border-bottom: 1px solid #374151;
 	background-color: #15181f;
 	border-top-right-radius: 22px;
+}
+
+.lp-bitcoin-ops .hub-header .hub-title {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: flex-start;
+	gap: 12px;
+	flex: 1 1 auto;
+	min-width: 0;
+	margin-bottom: 0;
+	color: #e87d3e;
+	font-family: Montserrat, Arial, sans-serif;
+	font-size: 22px;
+	font-weight: 900;
+	text-transform: uppercase;
+	letter-spacing: 0.07em;
+	line-height: 1;
+	white-space: nowrap;
+}
+
+.lp-bitcoin-ops .hub-header .hub-title .material-icons {
+	flex-shrink: 0;
+	font-size: 26px;
+	margin-top: 0;
+	color: #e87d3e;
+}
+
+.lp-bitcoin-ops .hub-header .hub-title span {
+	flex: 0 1 auto;
+	min-width: 0;
 }
 
 .lp-bitcoin-ops .pane {
@@ -3288,18 +3325,25 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	overflow-x: hidden;
 	overflow-y: scroll;
 	width: 100%;
-	padding-bottom: 4px;
+	padding-bottom: 20px;
 }
 
 .lp-bitcoin-ops .settings-scroll-tail {
 	flex-shrink: 0;
-	height: 24px;
+	height: 48px;
 	width: 100%;
 }
 
 .lp-bitcoin-ops .settings-scroll .lp-ui-intro {
 	flex-shrink: 0;
 	margin-bottom: 0;
+	padding-top: 12px;
+	padding-right: 14px;
+	padding-bottom: 12px;
+	padding-left: 14px;
+	font-size: 11px;
+	line-height: 1.45;
+	text-align: center;
 }
 
 .lp-bitcoin-ops .pane.settings-pane .lp-ui-panel-title {
@@ -3310,29 +3354,111 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 .lp-bitcoin-ops .settings-sections {
 	display: flex;
 	flex-direction: column;
-	gap: 14px;
+	gap: 12px;
 	flex-shrink: 0;
-	padding: 0 0 14px;
+	padding-top: 0;
+	padding-right: 0;
+	padding-bottom: 0;
+	padding-left: 0;
+}
+
+.lp-bitcoin-ops .settings-sections .settings-section:last-child {
+	margin-bottom: 4px;
 }
 
 .lp-bitcoin-ops .settings-section.lp-hashd-surface {
 	flex-shrink: 0;
 	display: flex;
 	flex-direction: column;
-	gap: 10px;
-	padding-top: 16px;
-	padding-right: 18px;
-	padding-bottom: 18px;
-	padding-left: 18px;
+	gap: 8px;
+	padding-top: 12px;
+	padding-right: 14px;
+	padding-bottom: 14px;
+	padding-left: 14px;
+}
+
+.lp-bitcoin-ops .settings-label {
+	color: #f8f9fc;
+	font-size: 12px;
+	font-weight: 900;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	line-height: 1.3;
+}
+
+.lp-bitcoin-ops .settings-hint {
+	color: #9ca3af;
+	font-size: 11px;
+	line-height: 1.45;
+	white-space: normal;
+}
+
+.lp-bitcoin-ops .settings-hint-ok {
+	color: #5fd38d;
+	font-weight: 600;
 }
 
 .lp-bitcoin-ops .settings-actions {
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
-	gap: 10px;
-	margin-top: 10px;
+	gap: 8px;
+	margin-top: 6px;
 	width: 100%;
+}
+
+.lp-bitcoin-ops .settings-actions .lp-ui-btn-primary,
+.lp-bitcoin-ops .settings-actions .lp-ui-btn-ghost {
+	flex: 1 1 0;
+	min-width: 0;
+	max-width: 100%;
+	min-height: 34px;
+	height: auto;
+	padding-top: 8px;
+	padding-right: 10px;
+	padding-bottom: 8px;
+	padding-left: 10px;
+	font-size: 10px;
+	font-weight: 800;
+	letter-spacing: 0.03em;
+	line-height: 1.2;
+	text-align: center;
+	white-space: nowrap;
+}
+
+.lp-bitcoin-ops .settings-meta {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	padding-top: 10px;
+	padding-right: 12px;
+	padding-bottom: 10px;
+	padding-left: 12px;
+	border-radius: 8px;
+	background-color: rgba(0, 0, 0, 0.35);
+	border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.lp-bitcoin-ops .settings-meta-row {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 10px;
+	font-size: 11px;
+	line-height: 1.35;
+}
+
+.lp-bitcoin-ops .settings-meta-label {
+	color: #9ca3af;
+	font-weight: 600;
+}
+
+.lp-bitcoin-ops .settings-meta-value {
+	color: #f8f9fc;
+	font-weight: 700;
+	text-align: right;
 }
 
 .lp-bitcoin-ops .lp-hashd-surface {
@@ -3410,90 +3536,82 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	white-space: nowrap;
 }
 
-// Flat — overview intro banner (clip corners + padding; nested rules often fail in s&box).
+// Flat — overview intro: orange tip header only; status + link row sits below unboxed.
+.lp-bitcoin-ops .overview-intro-header {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	flex-shrink: 0;
+	width: 100%;
+}
+
 .lp-bitcoin-ops .overview-intro-shell {
 	flex: 0 0 auto;
 	flex-shrink: 0;
-	align-self: flex-start;
 	width: 100%;
+	padding-top: 12px;
+	padding-right: 16px;
+	padding-bottom: 12px;
+	padding-left: 16px;
 	border-radius: 10px;
 	overflow: hidden;
 	border: 1px solid rgba(232, 125, 62, 0.35);
 	background-color: rgba(232, 125, 62, 0.12);
 }
 
-.lp-bitcoin-ops .overview-intro {
-	display: flex;
-	flex-direction: column;
-	gap: 8px;
-	flex-shrink: 0;
-	padding-top: 10px;
-	padding-right: 14px;
-	padding-bottom: 10px;
-	padding-left: 14px;
-	text-align: left;
-	font-size: 12px;
-	line-height: 1.45;
-	color: #eceef3;
-}
-
 .lp-bitcoin-ops .overview-intro-copy-text {
 	width: 100%;
-	text-align: left;
+	text-align: center;
+	font-size: 12px;
 	line-height: 1.5;
+	color: #eceef3;
 	white-space: normal;
-}
-
-.lp-bitcoin-ops .overview-intro-terminal {
-	flex: 0 0 auto;
-	width: 100%;
-	display: flex;
-	flex-direction: column;
-	align-items: stretch;
-	gap: 0;
-	padding-top: 10px;
-	padding-left: 0;
-	border-top: 1px solid rgba(232, 125, 62, 0.28);
-	border-left: 0;
 }
 
 .lp-bitcoin-ops .overview-intro-terminal-row {
 	display: flex;
 	flex-direction: row;
 	flex-wrap: nowrap;
-	align-items: stretch;
+	align-items: center;
 	justify-content: stretch;
-	gap: 0;
+	gap: 12px;
 	width: 100%;
-	min-height: 46px;
-	border-radius: 8px;
-	overflow: hidden;
-	background-color: rgba(0, 0, 0, 0.24);
-	border: 1px solid rgba(232, 125, 62, 0.22);
+	min-height: 0;
+	padding-top: 0;
+	padding-right: 0;
+	padding-bottom: 0;
+	padding-left: 0;
+	border: 0;
+	border-radius: 0;
+	background-color: transparent;
+	overflow: visible;
 }
 
 .lp-bitcoin-ops .overview-intro-terminal-status {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
+	justify-content: center;
 	gap: 10px;
 	flex: 1 1 50%;
 	min-width: 0;
-	padding-top: 10px;
-	padding-right: 14px;
-	padding-bottom: 10px;
-	padding-left: 14px;
-	border-right: 1px solid rgba(232, 125, 62, 0.22);
+	padding-top: 0;
+	padding-right: 0;
+	padding-bottom: 0;
+	padding-left: 0;
+	border: 0;
+	background-color: transparent;
 }
 
 .lp-bitcoin-ops .overview-intro-terminal-label {
 	color: #f8f9fc;
-	font-size: 13px;
+	font-size: 12px;
 	font-weight: 800;
 	text-transform: uppercase;
 	letter-spacing: 0.04em;
 	line-height: 1.35;
 	white-space: normal;
+	text-align: center;
 }
 
 .lp-bitcoin-ops .overview-intro-terminal-actions {
@@ -3505,10 +3623,9 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	flex: 1 1 50%;
 	min-width: 0;
 	width: auto;
-	padding-top: 6px;
-	padding-right: 10px;
-	padding-bottom: 6px;
-	padding-left: 10px;
+	padding: 0;
+	border: 0;
+	background-color: transparent;
 }
 
 .lp-bitcoin-ops .overview-intro-terminal-actions .lp-ui-btn-primary,
@@ -3528,6 +3645,31 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	padding-left: 12px;
 	font-size: 11px;
 	white-space: nowrap;
+}
+
+.lp-bitcoin-ops .overview-intro-unlink-btn {
+	flex: 1 1 auto;
+	width: 100%;
+	max-width: 100%;
+	min-height: 34px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	padding-top: 8px;
+	padding-right: 12px;
+	padding-bottom: 8px;
+	padding-left: 12px;
+	border-radius: 6px;
+	border: 1px solid rgba(239, 68, 68, 0.55);
+	background-color: rgba(239, 68, 68, 0.12);
+	color: #f87171;
+	font-size: 11px;
+	font-weight: 800;
+	line-height: 1.2;
+	text-align: center;
+	white-space: nowrap;
+	cursor: pointer;
 }
 
 .lp-bitcoin-ops .overview-intro-terminal-disabled {
@@ -3593,20 +3735,33 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 .lp-bitcoin-ops .overview .lp-ui-split > .lp-ui-panel {
 	flex: 1 1 0;
 	min-width: 0;
+	min-height: 0;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
 	padding-top: 16px;
 	padding-right: 18px;
 	padding-bottom: 16px;
 	padding-left: 18px;
+	border-radius: 10px;
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	background-color: rgba(0, 0, 0, 0.28);
+}
+
+.lp-bitcoin-ops .overview .lp-ui-split > .lp-ui-panel > .lp-ui-panel-title {
+	flex-shrink: 0;
+	margin-bottom: 12px;
 }
 
 .lp-bitcoin-ops .overview-miners-scroll,
 .lp-bitcoin-ops .racks-scroll,
 .lp-bitcoin-ops .upgrades-scroll,
 .lp-bitcoin-ops .logs-scroll {
+	display: flex;
+	flex-direction: column;
 	flex: 1 1 0;
 	min-height: 0;
 	width: 100%;
-	flex-direction: column;
 	overflow-x: hidden;
 	overflow-y: scroll;
 }
@@ -3692,17 +3847,92 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	overflow: hidden;
 	padding-top: 16px;
 	padding-right: 18px;
-	padding-bottom: 16px;
+	padding-bottom: 14px;
 	padding-left: 18px;
 }
 
 .lp-bitcoin-ops .overview-status-perks {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
 	padding-bottom: 4px;
 }
 
-.lp-bitcoin-ops .overview-status-footer {
+.lp-bitcoin-ops .overview-status-perk {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 6px;
+	color: rgba(255, 255, 255, 0.72);
+	font-size: 10px;
+	font-weight: 600;
+	line-height: 1.35;
+	white-space: normal;
+}
+
+.lp-bitcoin-ops .overview-status-perk::before {
+	content: "•";
+	color: #e87d3e;
+	font-weight: 700;
+	font-size: 11px;
+	flex-shrink: 0;
+}
+
+.lp-bitcoin-ops .overview-status-info {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	flex-shrink: 0;
+}
+
+.lp-bitcoin-ops .overview-status-info .lp-ui-info-row,
+.lp-bitcoin-ops .pane.wallet .lp-ui-info .lp-ui-info-row {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	width: 100%;
+	min-height: 28px;
+}
+
+.lp-bitcoin-ops .overview-status-info .lp-ui-info-label,
+.lp-bitcoin-ops .pane.wallet .lp-ui-info .lp-ui-info-label {
+	flex: 1 1 auto;
+	min-width: 0;
+	font-size: 13px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	line-height: 1.3;
+	white-space: normal;
+}
+
+.lp-bitcoin-ops .overview-status-info .lp-ui-info-value,
+.lp-bitcoin-ops .pane.wallet .lp-ui-info .lp-ui-info-value {
 	flex: 0 0 auto;
-	padding-top: 10px;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 6px;
+	text-align: right;
+	font-size: 15px;
+	font-weight: 600;
+	line-height: 1.3;
+	white-space: nowrap;
+}
+
+.lp-bitcoin-ops .overview-status-footer {
+	flex: 1 1 auto;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	min-height: 58px;
+	padding-top: 14px;
+	padding-bottom: 14px;
 	border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
@@ -3854,6 +4084,400 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 .lp-bitcoin-ops .pane.racks > .racks-panel > .lp-ui-panel-title {
 	flex-shrink: 0;
 	margin-bottom: 12px;
+}
+
+// Flat — hub tab bodies + header chrome (nested rules dropped by s&box).
+.lp-bitcoin-ops .material-icons {
+	font-family: Material Icons;
+	font-weight: normal;
+	font-style: normal;
+	text-transform: none;
+	letter-spacing: normal;
+}
+
+.lp-bitcoin-ops .main-panel > .pane:not(.overview) {
+	flex: 1 1 0;
+	min-height: 0;
+	padding: 0;
+	overflow: hidden;
+	background-color: #15181f;
+}
+
+.lp-bitcoin-ops .pane.wallet > .wallet-panel,
+.lp-bitcoin-ops .pane.transfers > .transfers-panel,
+.lp-bitcoin-ops .pane.racks > .racks-panel,
+.lp-bitcoin-ops .pane.upgrades > .upgrades-panel,
+.lp-bitcoin-ops .pane.logs-pane > .logs-panel {
+	flex: 1 1 0;
+	min-height: 0;
+	min-width: 0;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	padding-top: 16px;
+	padding-right: 18px;
+	padding-bottom: 18px;
+	padding-left: 18px;
+	border: 0;
+	border-radius: 0;
+	background-color: transparent;
+}
+
+.lp-bitcoin-ops .pane.wallet .lp-ui-panel-title,
+.lp-bitcoin-ops .pane.transfers .lp-ui-panel-title,
+.lp-bitcoin-ops .pane.racks .lp-ui-panel-title,
+.lp-bitcoin-ops .pane.upgrades .lp-ui-panel-title,
+.lp-bitcoin-ops .pane.logs-pane .lp-ui-panel-title {
+	display: flex;
+	flex-direction: row;
+	align-items: flex-start;
+	gap: 10px;
+	flex-shrink: 0;
+	margin-bottom: 0;
+	white-space: normal;
+	line-height: 1.25;
+}
+
+.lp-bitcoin-ops .pane.wallet > .wallet-panel > .lp-ui-panel-title {
+	margin-bottom: 14px;
+}
+
+.lp-bitcoin-ops .pane.wallet .lp-ui-intro,
+.lp-bitcoin-ops .pane.transfers .lp-ui-intro,
+.lp-bitcoin-ops .pane.racks .lp-ui-intro,
+.lp-bitcoin-ops .pane.upgrades .lp-ui-intro,
+.lp-bitcoin-ops .pane.logs-pane .lp-ui-intro {
+	flex-shrink: 0;
+	margin-bottom: 12px;
+}
+
+.lp-bitcoin-ops .pane.wallet .lp-ui-info {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	flex-shrink: 0;
+	margin-bottom: 12px;
+	padding-top: 12px;
+	padding-right: 12px;
+	padding-bottom: 12px;
+	padding-left: 12px;
+	border-radius: 8px;
+	background-color: rgba(0, 0, 0, 0.35);
+	border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.lp-bitcoin-ops .wallet-cashout-bar {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: stretch;
+	gap: 10px;
+	flex-shrink: 0;
+	padding-top: 12px;
+	padding-right: 14px;
+	padding-bottom: 12px;
+	padding-left: 14px;
+	border-radius: 10px;
+	background-color: rgba(0, 0, 0, 0.28);
+	border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.lp-bitcoin-ops .wallet-cashout-bar > .material-icons {
+	flex-shrink: 0;
+	align-self: center;
+	font-size: 18px;
+	color: #e87d3e;
+}
+
+.lp-bitcoin-ops .wallet-cashout-input {
+	flex: 1 1 160px;
+	min-width: 0;
+	height: 38px;
+	padding-top: 0;
+	padding-right: 10px;
+	padding-bottom: 0;
+	padding-left: 10px;
+	border-radius: 6px;
+	background-color: rgba(0, 0, 0, 0.35);
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	color: #f8f9fc;
+	font-size: 13px;
+}
+
+.lp-bitcoin-ops .wallet-cashout-convert {
+	flex: 1 1 160px;
+	min-width: 0;
+	min-height: 38px;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	justify-content: center;
+	gap: 2px;
+	padding-top: 4px;
+	padding-right: 4px;
+	padding-bottom: 4px;
+	padding-left: 12px;
+	border-radius: 6px;
+	background-color: rgba(0, 0, 0, 0.22);
+	border: 1px solid rgba(255, 255, 255, 0.06);
+	text-align: right;
+}
+
+.lp-bitcoin-ops .wallet-cashout-convert-label {
+	color: #9ca3af;
+	font-size: 10px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	line-height: 1.2;
+}
+
+.lp-bitcoin-ops .wallet-cashout-convert-value {
+	color: #e87d3e;
+	font-size: 12px;
+	font-weight: 800;
+	line-height: 1.3;
+	white-space: nowrap;
+}
+
+.lp-bitcoin-ops .wallet-cashout-hero {
+	flex: 1 1 auto;
+	min-height: 88px;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	margin-top: 12px;
+	padding-bottom: 2px;
+}
+
+.lp-bitcoin-ops .wallet-cashout-panel {
+	flex: 0 0 auto;
+	min-height: 0;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	margin-top: 12px;
+	padding-top: 0;
+	padding-right: 0;
+	padding-bottom: 0;
+	padding-left: 0;
+	border-radius: 12px;
+	border: 1px solid rgba(232, 125, 62, 0.55);
+	background-color: rgba(232, 125, 62, 0.08);
+	overflow: hidden;
+}
+
+.lp-bitcoin-ops .wallet-cashout-partial {
+	flex: 0 0 auto;
+	width: 100%;
+	min-height: 44px;
+	height: auto;
+	padding-top: 12px;
+	padding-right: 16px;
+	padding-bottom: 12px;
+	padding-left: 16px;
+	border-radius: 0;
+	border: 0;
+	border-bottom: 1px solid rgba(232, 125, 62, 0.35);
+	font-size: 11px;
+	font-weight: 900;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	line-height: 1.2;
+	text-align: center;
+	white-space: nowrap;
+}
+
+.lp-bitcoin-ops .wallet-cashout-partial.disabled {
+	opacity: 0.45;
+	cursor: default;
+}
+
+.lp-bitcoin-ops .wallet-cashout-all {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	flex: 0 0 auto;
+	width: 100%;
+	min-height: 44px;
+	height: auto;
+	padding-top: 10px;
+	padding-right: 14px;
+	padding-bottom: 10px;
+	padding-left: 14px;
+	border-radius: 0;
+	border: 0;
+	background-color: rgba(232, 125, 62, 0.14);
+	color: #f8f9fc;
+	cursor: pointer;
+}
+
+.lp-bitcoin-ops .wallet-cashout-all > .material-icons {
+	flex-shrink: 0;
+	font-size: 20px;
+	color: #e87d3e;
+}
+
+.lp-bitcoin-ops .wallet-cashout-all-text {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 2px;
+	min-width: 0;
+	text-align: left;
+}
+
+.lp-bitcoin-ops .wallet-cashout-all-label {
+	color: #f8f9fc;
+	font-size: 11px;
+	font-weight: 900;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	line-height: 1.2;
+}
+
+.lp-bitcoin-ops .wallet-cashout-all-amount {
+	color: #e87d3e;
+	font-size: 10px;
+	font-weight: 700;
+	line-height: 1.3;
+	white-space: normal;
+}
+
+.lp-bitcoin-ops .wallet-cashout-all.disabled {
+	opacity: 0.42;
+	cursor: default;
+}
+
+.lp-bitcoin-ops .wallet-cashout-all:not(.disabled):hover {
+	border-color: rgba(232, 125, 62, 0.85);
+	background-color: rgba(232, 125, 62, 0.24);
+}
+
+.lp-bitcoin-ops .header-widgets {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 8px;
+	flex: 1 1 240px;
+	min-width: 0;
+}
+
+.lp-bitcoin-ops .header-chip,
+.lp-bitcoin-ops .header-power-switch {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	align-items: center;
+	gap: 6px;
+	flex-shrink: 0;
+}
+
+.lp-bitcoin-ops .transfer-columns {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	gap: 12px;
+	align-items: stretch;
+	width: 100%;
+}
+
+.lp-bitcoin-ops .transfer-column {
+	flex: 1 1 280px;
+	min-width: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	padding-top: 14px;
+	padding-right: 14px;
+	padding-bottom: 14px;
+	padding-left: 14px;
+	border-radius: 10px;
+	background-color: rgba(0, 0, 0, 0.28);
+	border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.lp-bitcoin-ops .transfer-column-head {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 8px;
+	color: #f8f9fc;
+	font-size: 13px;
+	font-weight: 900;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+}
+
+.lp-bitcoin-ops .transfer-btn-row {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	width: 100%;
+	margin-top: auto;
+}
+
+.lp-bitcoin-ops .upgrades-toolbar {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	align-items: center;
+	gap: 12px;
+	flex-shrink: 0;
+	margin-bottom: 12px;
+}
+
+.lp-bitcoin-ops .upgrade-tracks {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	width: 100%;
+}
+
+.lp-bitcoin-ops .upgrade-track {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.lp-bitcoin-ops .upgrade-tier-row {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	width: 100%;
+}
+
+.lp-bitcoin-ops .rack-grid {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	width: 100%;
+}
+
+.lp-bitcoin-ops .rack-card {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	width: 100%;
+}
+
+.lp-bitcoin-ops .rack-card-head {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 10px;
+	width: 100%;
 }
 
 // Hub scale — XL = canonical 1100×700; smaller steps trim shell only (StaffMenu law).

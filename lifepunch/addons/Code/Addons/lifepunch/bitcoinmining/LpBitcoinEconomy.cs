@@ -16,7 +16,83 @@ public static class LpBitcoinEconomy
 {
 	public const float BaseSpeed = 0.005f;
 	public const float PayoutIntervalSeconds = 90f;
-	public const int BitcoinValueUsd = 5000;
+
+	/// <summary>Offline/dev fallback when portal sync has not run yet.</summary>
+	public const int DefaultBitcoinCashUsd = 5000;
+
+	/// <summary>Default $ paid per portal inventory BTC stack on Use (independent of hub mined BTC rate).</summary>
+	public const int DefaultPortalRedeemCashUsd = 5000;
+
+	/// <summary>
+	/// Live $ per 1 mined BTC in the hub wallet (hub cashout → DXRP bank via PayHost inBank).
+	/// Owner-controlled separately from <see cref="PortalRedeemCashUsdPerStack"/>.
+	/// </summary>
+	public static int PortalBaseCashUsdPerBtc { get; private set; } = DefaultBitcoinCashUsd;
+
+	/// <summary>
+	/// Live $ per 1 portal inventory $BTC stack when player Uses consumable
+	/// (<see cref="LpBitcoinIdent.PortalBtcRedeemGrantName"/>).
+	/// </summary>
+	public static int PortalRedeemCashUsdPerStack { get; private set; } = DefaultPortalRedeemCashUsd;
+
+	/// <summary>Runtime portal-backed base rate (was const $5000).</summary>
+	public static int BitcoinValueUsd => PortalBaseCashUsdPerBtc;
+
+	/// <summary>Live server/event multiplier on cash rate (1 = normal). UI + payout both read <see cref="CashUsdPerBtc"/>.</summary>
+	public static float CashRateMultiplier { get; set; } = 1f;
+
+	/// <summary>Effective $ per BTC for display and hub bank cashout (portal base × event multiplier).</summary>
+	public static float CashUsdPerBtc => PortalBaseCashUsdPerBtc * MathF.Max( 0f, CashRateMultiplier );
+
+	/// <summary>Host/event hook — hub mined BTC cashout rate + optional event multiplier.</summary>
+	public static void ApplyPortalBacking( int cashUsdPerBtc, float eventMultiplier = 1f )
+	{
+		PortalBaseCashUsdPerBtc = Math.Max( 0, cashUsdPerBtc );
+		CashRateMultiplier = MathF.Max( 0f, eventMultiplier );
+		PortalEconomyRevision++;
+	}
+
+	/// <summary>Portal inventory stack redeem rate (1 Use = 1 stack → this many dollars).</summary>
+	public static void ApplyPortalRedeemBacking( int cashUsdPerStack )
+	{
+		PortalRedeemCashUsdPerStack = Math.Max( 0, cashUsdPerStack );
+		PortalEconomyRevision++;
+	}
+
+	public static uint PortalRedeemCashPayout()
+	{
+		if ( PortalRedeemCashUsdPerStack <= 0 )
+		{
+			return 0;
+		}
+
+		return (uint)PortalRedeemCashUsdPerStack;
+	}
+
+	/// <summary>Monotonic tick — hub UI BuildHash includes economy fields.</summary>
+	public static int PortalEconomyRevision { get; private set; }
+
+	public static float BtcToCashUsd( float btc ) => btc * CashUsdPerBtc;
+
+	public static uint BtcToCashPayout( float btc )
+	{
+		var usd = BtcToCashUsd( btc );
+		if ( usd <= 0f )
+			return 0;
+
+		return (uint)MathF.Floor( usd );
+	}
+
+	public static string FormatExchangeRateLabel()
+	{
+		if ( MathF.Abs( CashRateMultiplier - 1f ) < 0.001f )
+			return $"${PortalBaseCashUsdPerBtc:N0} / BTC";
+
+		return $"${CashUsdPerBtc:N0} / BTC ({CashRateMultiplier:0.##}×)";
+	}
+
+	public static string FormatBtcToCash( float btc, string btcFormat = "F6" )
+		=> $"{btc.ToString( btcFormat )} BTC → ${BtcToCashUsd( btc ):N2}";
 
 	public const float StartClockGhz = 2.44f;
 	public const int StartCores = 1;
