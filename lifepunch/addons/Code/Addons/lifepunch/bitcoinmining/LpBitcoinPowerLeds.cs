@@ -22,10 +22,13 @@ public static class LpBitcoinPowerLeds
 	public const float HubStatusOffScale = 2.2f;
 	public const float RackGpuLedOn = 1.5f;
 
-	public const float HubStatusGlowRadius = 44f;
+	public const float HubStatusGlowRadius = 34f;
 	public const float HubStatusGlowAttenuation = 2.35f;
 	public const float HubStatusOnGlowStrength = 0.38f;
 	public const float HubStatusOffGlowStrength = 0.3f;
+
+	/// <summary>Fine-tune after bounds anchor (local space, stacks on prefab <c>StatusGlowLocalOffset</c>).</summary>
+	public static Vector3 HubStatusGlowLocalOffset { get; set; }
 
 	private static readonly Vector4 HubStatusOnTint = new( 0.18f, 1f, 0.52f, 0f );
 	private static readonly Vector4 HubStatusOffTint = new( 1f, 0.16f, 0.06f, 0f );
@@ -87,17 +90,25 @@ public static class LpBitcoinPowerLeds
 		return baseColor * strength;
 	}
 
-	/// <summary>Anchor near the front fence LED mesh (local space).</summary>
-	public static Vector3 GetHubStatusGlowLocalPosition( ModelRenderer body )
+	/// <summary>
+	/// Anchor on the front fence status LED (local space).
+	/// After ModelDoc Y=90 import the grill faces +X; viewer-right on that face is −Z (<see cref="BBox.Mins"/> on Z).
+	/// </summary>
+	public static Vector3 GetHubStatusGlowLocalPosition( ModelRenderer body, Vector3 extraOffset = default )
 	{
 		if ( !body.IsValid() )
 			return Vector3.Zero;
 
 		var bounds = body.LocalBounds;
-		return new Vector3(
-			bounds.Maxs.x - bounds.Size.x * 0.03f,
-			bounds.Center.y,
-			bounds.Maxs.z - bounds.Size.z * 0.12f );
+		if ( bounds.Size.Length < 0.01f )
+			return extraOffset + HubStatusGlowLocalOffset;
+
+		var anchor = bounds.Mins + new Vector3(
+			bounds.Size.x * 0.935f,
+			bounds.Size.y * 0.215f,
+			bounds.Size.z * 0.055f );
+
+		return anchor + HubStatusGlowLocalOffset + extraOffset;
 	}
 
 	public static void ApplyRackGpuLeds( ModelRenderer renderer, bool active, float intensity01 = 1f )

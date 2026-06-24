@@ -407,6 +407,7 @@ public static class LpBitcoinDevSpawn
 		foreach ( var hub in scene.GetAllComponents<LpBitcoinHubEntity>().Where( h => h.IsValid() ) )
 		{
 			var renderer = hub.Components.Get<ModelRenderer>( FindMode.EverythingInSelf );
+			var visuals = hub.Components.Get<LpBitcoinHubVisuals>( FindMode.EverythingInSelf );
 			var legacyLight = hub.GameObject.Children
 				.FirstOrDefault( c => c.IsValid() && c.Name.Equals( "status_led", StringComparison.OrdinalIgnoreCase ) );
 
@@ -415,6 +416,17 @@ public static class LpBitcoinDevSpawn
 
 			if ( !renderer.IsValid() )
 				continue;
+
+			var bounds = renderer.LocalBounds;
+			var extraOffset = visuals.IsValid() ? visuals.StatusGlowLocalOffset : Vector3.Zero;
+			var localGlow = LpBitcoinPowerLeds.GetHubStatusGlowLocalPosition( renderer, extraOffset );
+			var glowChild = hub.GameObject.Children
+				.FirstOrDefault( c => c.IsValid() && c.Name.Equals( "hub_status_glow", StringComparison.OrdinalIgnoreCase ) );
+
+			Log.Info(
+				$"BITCOINMINING_STATUS_LED bounds center={bounds.Center} size={bounds.Size} mins={bounds.Mins} maxs={bounds.Maxs}" );
+			Log.Info(
+				$"BITCOINMINING_STATUS_LED glow local={localGlow} extraOffset={extraOffset} staticOffset={LpBitcoinPowerLeds.HubStatusGlowLocalOffset} world={( glowChild.IsValid() ? glowChild.WorldPosition : hub.GameObject.Transform.PointToWorld( localGlow ) )}" );
 
 			for ( var i = 0; i < renderer.Materials.Count; i++ )
 			{

@@ -30,6 +30,8 @@ public sealed class LpBitcoinStagingHubVisuals : Component
 
 	[Property] public Vector3 FanManualOffset { get; set; }
 
+	[Property] public Vector3 StatusGlowLocalOffset { get; set; }
+
 	private GameObject _fanChild;
 	private Rotation _fanBaseLocalRotation = Rotation.Identity;
 	private float _fanSpeed;
@@ -89,7 +91,7 @@ public sealed class LpBitcoinStagingHubVisuals : Component
 			_statusGlow.Radius = LpBitcoinPowerLeds.HubStatusGlowRadius;
 		}
 
-		_statusGlowGo.LocalPosition = LpBitcoinPowerLeds.GetHubStatusGlowLocalPosition( _bodyRenderer );
+		_statusGlowGo.LocalPosition = LpBitcoinPowerLeds.GetHubStatusGlowLocalPosition( _bodyRenderer, StatusGlowLocalOffset );
 		_statusGlow.Enabled = true;
 		_statusGlow.LightColor = LpBitcoinPowerLeds.GetHubStatusGlowColor( powered );
 	}

@@ -32,6 +32,9 @@ public sealed class LpBitcoinHubVisuals : Component
 	/// <summary>Fine-tune after auto-align (prefab editor values stack on top).</summary>
 	[Property] public Vector3 FanManualOffset { get; set; }
 
+	/// <summary>Stacks on <see cref="LpBitcoinPowerLeds.GetHubStatusGlowLocalPosition"/> bounds anchor.</summary>
+	[Property] public Vector3 StatusGlowLocalOffset { get; set; }
+
 	private GameObject _fanChild;
 	private Rotation _fanBaseLocalRotation = Rotation.Identity;
 	private float _fanSpeed;
@@ -115,7 +118,7 @@ public sealed class LpBitcoinHubVisuals : Component
 			_statusGlow.Radius = LpBitcoinPowerLeds.HubStatusGlowRadius;
 		}
 
-		_statusGlowGo.LocalPosition = LpBitcoinPowerLeds.GetHubStatusGlowLocalPosition( _bodyRenderer );
+		_statusGlowGo.LocalPosition = LpBitcoinPowerLeds.GetHubStatusGlowLocalPosition( _bodyRenderer, StatusGlowLocalOffset );
 		_statusGlow.Enabled = true;
 		_statusGlow.LightColor = LpBitcoinPowerLeds.GetHubStatusGlowColor( powered );
 	}
