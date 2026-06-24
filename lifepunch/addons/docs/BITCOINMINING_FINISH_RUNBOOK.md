@@ -1,7 +1,8 @@
 # Bitcoin Mining — finish runbook (owner lanes)
 
 **Goal:** Shippable LIFEPUNCH™ three-entity bitcoin mining kit — terminal controls racks, hashd console, portal-ready addon.  
-**Canon:** `reference/BITCOINMINING_THREE_ENTITY_ARCH.md` · `reference/BITCOINMINING_REMOTE_RACK_SPEC.md`
+**Canon:** `reference/BITCOINMINING_THREE_ENTITY_ARCH.md` · `reference/BITCOINMINING_REMOTE_RACK_SPEC.md`  
+**Step order + agent handoff:** `BITCOIN_SHIP_ROADMAP.md` (owner law — read before this runbook)
 
 ---
 

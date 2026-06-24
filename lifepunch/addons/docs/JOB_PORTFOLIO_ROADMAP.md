@@ -20,14 +20,16 @@ Nothing in Tier 1–3 starts until Bitcoin Phase A–C hub/terminal/rack pattern
 
 ## Tier 1 — priority (build order after bitcoin)
 
+**Owner law (2026-06-24):** **Banker before Hacker** — Bitcoin economy + bank rail must ship first; Banker extends passive invest/growth; Hacker is highest UX/PvP complexity. Full rationale: `BITCOIN_SHIP_ROADMAP.md`.
+
 | Order | Job | Package / repo | UI pattern | Status | Notes |
 |-------|-----|----------------|------------|--------|-------|
-| **1** | **Hacker** | `lifepunchhacker` / `hackerjob` | Hub + terminal (Cornerman + VENGEANCE tiers) | **Blocked** | Criminal cyber lane; quarantined on disk. Checklist: `CYBER_JOBS_POLISH_CHECKLIST.md` Phase E. Unlock: Bitcoin Phases A–C sign-off. |
-| **2** | **Banker** | `lifepunchbanker` / `bankerjob` | Hub (`bank-vault-hub`) + teller terminal | Idea / concept | Spec: `BANKER_JOB_SPEC.md`, `bankerjob/docs/BANK_VAULT_HUB.md`. Blocked on bitcoin economy + Opus economy sign-off. |
+| **1** | **Banker** | `lifepunchbanker` / `bankerjob` | Hub (`bank-vault-hub`) + teller terminal | Idea / concept | Spec: `BANKER_JOB_SPEC.md`, `bankerjob/docs/BANK_VAULT_HUB.md`. **Next job after Bitcoin Law 10** — reuses `CYBER_ECONOMY_RAILS.md` bank side. |
+| **2** | **Hacker** | `lifepunchhacker` / `hackerjob` | Hub + terminal (Cornerman + VENGEANCE tiers) | **Blocked** | Criminal cyber lane; quarantined on disk. Checklist: `CYBER_JOBS_POLISH_CHECKLIST.md` Phase E. Unlock: Bitcoin Phases A–C + Law 10 sign-off. Distill/plan in parallel OK; no production until Bitcoin ships. |
 | **3** | **Black Market Dealer** | *TBD* (`blackmarketdealer` / `lpblackmarket`) | Hub + **register** (BTC → market grant) + locker (storage/customization) + terminal | Idea / concept | **`blackmarketregister`** = BTC checkout → DXRP market spawns. **`blackmarketlocker`** = weapon stash/customize prop only. Theme: `lp-ops-crt--blackmarket`. Phase H. |
 | **4** | **Drug Chemist** | `lifepunchdrugprocessing` / `advanceddrugprocessing` | **Hub likely; terminal probably not** | Idea / concept | Processing stations exist in repo; economy not signed off. Coke/meth canon: `COKE_DRUG_RESKIN_SPEC.md`, `advanceddrugprocessing/docs/`. |
 
-**Supporting cyber (Phase F — after Hacker Job):** Government / FBI **protagonist hacker** — `government-server-rack` (hub) + lifepunchnet **Government Terminal** + **Government Data Center** (autonomous tax miner, 0–30% mayor rate → city funds). Counters **advanced hacker (red)** breaches on miners, bank, city funds. **Not Tier 1** — finish Hacker Phase E first. See `CYBER_JOBS_POLISH_CHECKLIST.md` Phase F.
+**Supporting cyber (Phase F — after Hacker Phase E-D):** Government / FBI **protagonist hacker** — `government-server-rack` (hub) + lifepunchnet **Government Terminal** + **Government Data Center** (autonomous tax miner, 0–30% mayor rate → city funds). Counters **advanced hacker (red)** breaches on miners, bank, city funds. **Not Tier 1** — finish Hacker Phase E first. See `CYBER_JOBS_POLISH_CHECKLIST.md` Phase F.
 
 ### lifepunchbitcoin access (all jobs)
 
@@ -73,7 +75,8 @@ Gov treasury uses **Government Data Center** only — not player hashd hubs.
 
 | Task | Start here |
 |------|------------|
-| Bitcoin hub/terminal/rack | `bitcoinmining/docs/BITCOINMINING_POLISH_CHECKLIST.md` |
+| Bitcoin hub/terminal/rack — step order + handoff | `BITCOIN_SHIP_ROADMAP.md` |
+| Bitcoin hub/terminal/rack — checklist IDs | `bitcoinmining/docs/BITCOINMINING_POLISH_CHECKLIST.md` |
 | Hacker, banker, black market, gov cyber | `CYBER_JOBS_POLISH_CHECKLIST.md` |
 | Full portfolio priority | **this file** |
 | Active vs quarantine | `config/portfolio.json` |
@@ -85,4 +88,5 @@ Gov treasury uses **Government Data Center** only — not player hashd hubs.
 
 | Date | Change |
 |------|--------|
+| 2026-06-24 | Tier 1 order: **Banker before Hacker** (owner law); `BITCOIN_SHIP_ROADMAP.md` captures ship steps + quality bar + agent handoff. |
 | 2026-06-15 | FBI Phase F canon: gov server rack hub, lifepunchnet terminal, gov data center tax miner; hacker starter vs purchased red tier; gov/LE blocked from lifepunchbitcoin entities. |

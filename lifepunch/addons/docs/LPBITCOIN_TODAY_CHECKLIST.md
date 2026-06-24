@@ -5,7 +5,7 @@
 > **Hub:** Steam Machine in `bitcoinmining/` dev tree → promote to `lpbitcoin/bitcoinhub/` when signed off.  
 > **PLACEHOLDER:** agents hands-off until owner says upload-ready.
 
-**Gate:** `ACTIVE_WORKSTREAM.md` — Phase A Hub (Steam Machine / `bitcoinhub` slot).
+**Gate:** `ACTIVE_WORKSTREAM.md` · **Ship order:** `BITCOIN_SHIP_ROADMAP.md` · Phase A Hub (Steam Machine / `bitcoinhub` slot).
 
 **Prep done while you were away:** vmdl + vmat scaffolding for all 4 entity slots is in repo staging. s&box bridge was offline — compile happens when you're back at the editor.
 

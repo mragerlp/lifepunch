@@ -244,7 +244,7 @@ Place / spawn hub
 **Proof:** flatgrass **host play** + proof package (§3) + tracker checkboxes A–C.  
 **Known gaps:** `CYBER_REFERENCE_LAWS.md` § DXRP lane — market row, full world states, gov job block.
 
-Only then does Bitcoin become the **canonical cyber lane** and Tier 1 jobs (Hacker, Banker, …) enter active development per `JOB_PORTFOLIO_ROADMAP.md`.
+Only then does Bitcoin become the **canonical cyber lane** and Tier 1 jobs enter active development per `JOB_PORTFOLIO_ROADMAP.md` (**Banker first**, then Hacker — see `BITCOIN_SHIP_ROADMAP.md`).
 
 ---
 
@@ -252,14 +252,16 @@ Only then does Bitcoin become the **canonical cyber lane** and Tier 1 jobs (Hack
 
 1. Read **this file** (ACTIVE_WORKSTREAM.md).
 2. Read `CYBER_REFERENCE_LAWS.md` — Laws 1–10 (reference-first, flatgrass truth, no "while we're here").
-3. Read `OWNER_PROGRESS_TRACKER.txt` — note current unchecked ID.
-4. Read `BITCOINMINING_POLISH_CHECKLIST.md` — **only** that ID's "Done when" + proof.
-5. Confirm §7 gate (Hub / Terminal / Rack only).
-6. Answer Law 1 reuse question before coding.
-7. Execute **one** ID → play proof → wait for owner OK → check box → next.
+3. Read `BITCOIN_SHIP_ROADMAP.md` — step order, quality bar, publish gate, post-Bitcoin package order (**handoff-safe**).
+4. Read `OWNER_PROGRESS_TRACKER.txt` — note current unchecked ID.
+5. Read `BITCOINMINING_POLISH_CHECKLIST.md` — **only** that ID's "Done when" + proof.
+6. Confirm §7 gate (Hub / Terminal / Rack only).
+7. Answer Law 1 reuse question before coding.
+8. Execute **one** ID → play proof → wait for owner OK → check box → next.
 
 **Detail docs (downstream, not substitutes for this gate):**
 
+- `BITCOIN_SHIP_ROADMAP.md` — owner execution order + agent workflow + community package sequence
 - `CYBER_REFERENCE_LAWS.md` — production laws 1–10
 - `BITCOIN_REFERENCE_IMPLEMENTATION.md` — bible stub (populate on sign-off)
 - `TERMINAL_BRAND_MATRIX.md` — Law 7 brand verification
@@ -268,4 +270,4 @@ Only then does Bitcoin become the **canonical cyber lane** and Tier 1 jobs (Hack
 - `addons/docs/JOB_PORTFOLIO_ROADMAP.md`
 - `addons/docs/CYBER_JOBS_POLISH_CHECKLIST.md` (blocked lanes — read only)
 
-**Last updated:** 2026-06-15
+**Last updated:** 2026-06-24

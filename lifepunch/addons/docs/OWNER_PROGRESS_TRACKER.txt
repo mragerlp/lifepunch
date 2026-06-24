@@ -2,6 +2,7 @@
 LIFEPUNCH ADDON PROGRESS TRACKER (owner copy — edit [ ] to [x] as you go)
 ================================================================================
 GATE LAW (read every session): lifepunch/addons/docs/ACTIVE_WORKSTREAM.md
+SHIP ROADMAP (handoff):        lifepunch/addons/docs/BITCOIN_SHIP_ROADMAP.md
 REFERENCE LAWS:                lifepunch/addons/docs/CYBER_REFERENCE_LAWS.md
 PARKING LOT (no production):     lifepunch/addons/docs/BACKLOG_PARKING_LOT.md
 Repo mirror: lifepunch/addons/docs/OWNER_PROGRESS_TRACKER.txt
@@ -13,9 +14,10 @@ Law: one item at a time -> play proof on flatgrass -> your OK -> check box -> ne
 Proof package required for phase sign-off (day, night, USE, citizen, 30s clip).
 Play from: game.scene (NOT prefab tabs). Cold compile: wait 2-5 min.
 
-Last updated: 2026-06-15
-ACTIVE NOW: lifepunchbitcoin (LifePunch Bitcoin Mining) — Phase A Hub Polish
-BLOCKED: Hacker, Banker, Government, Casino, Drug Chemist, all new cyber lanes
+Last updated: 2026-06-24
+ACTIVE NOW: lifepunchbitcoin (LifePunch Bitcoin Mining) — Phase A Hub polish + admin UI shell signed (unlinked)
+NEXT SLICE: Phase B Terminal (T1) per BITCOIN_SHIP_ROADMAP.md
+BLOCKED: Hacker, Banker, Government, Casino, Drug Chemist, all new cyber lanes (until Bitcoin Law 10)
 
 Send edits to Cursor: paste changed sections or say "tracker: checked H1, start H2".
 
@@ -31,8 +33,8 @@ Session: game.scene -> Play -> lp_map_flatgrass -> lp_bitcoin_spawn_hub (or _kit
 [ ] H4  Powered vs off (world emissive/audio)
 [ ] H5  Hub audio baseline (startup / fan loop / fan down)
 [ ] H6  Prefab integrity (LpBitcoinHubEntity, collider, USE works)
-[~] H7  HASHD admin panel UI — overlay layout pass done; verify lp_bitcoin_preview_hub
-[ ] H8  Hub power + rack link UI (Overview / Racks tabs)
+[~] H7  HASHD admin panel UI — wallet, settings, overview, PIN UX shipped (unlinked owner OK); linked-rack UI pass pending H8
+[ ] H8  Hub power + rack link UI (Overview / Racks tabs) — full kit on flatgrass
 [ ] H9  PIN gatekeeper (or documented defer)
 [ ] H10 Hub-only hero sign-off (owner visual OK)
 
@@ -57,10 +59,19 @@ Session: game.scene -> Play -> lp_map_flatgrass -> lp_bitcoin_spawn_hub (or _kit
 BITCOIN SHIP GATE: Phases A + B + C signed off before promoting any job below.
 
 ================================================================================
-TIER 1 — AFTER BITCOIN (build order)
+TIER 1 — AFTER BITCOIN (build order — owner law 2026-06-24: Banker before Hacker)
+See BITCOIN_SHIP_ROADMAP.md + JOB_PORTFOLIO_ROADMAP.md
 ================================================================================
 
---- 1. LIFEPUNCH HACKER (lifepunchhacker / hackerjob) ---
+--- 1. LIFEPUNCH BANKER (lifepunchbanker / bankerjob) — NEXT AFTER BITCOIN LAW 10 ---
+[ ] G-A  Bank vault hub
+[ ] G-B  Teller terminal
+[ ] G-C  Security terminal
+[ ] G-D  Bank-owned miners
+Spec: lifepunch/addons/docs/BANKER_JOB_SPEC.md
+Purpose: protect and grow player money passively via bank invest — ties to economy rails.
+
+--- 2. LIFEPUNCH HACKER (lifepunchhacker / hackerjob) ---
 Starter: server-rack + hacker-terminal (green, cheap, wallet hacks)
 Purchased: advanced-server-rack + advanced-hacker-terminal (red, expensive, big targets)
 
@@ -81,13 +92,6 @@ Phase E-C Advanced server rack (purchased):
 
 Phase E-D Advanced hacker terminal (VENGEANCE red):
 [ ] E-D1 through E-D5
-
---- 2. LIFEPUNCH BANKER (lifepunchbanker / bankerjob) — spec only ---
-[ ] G-A  Bank vault hub
-[ ] G-B  Teller terminal
-[ ] G-C  Security terminal
-[ ] G-D  Bank-owned miners
-Spec: lifepunch/addons/docs/BANKER_JOB_SPEC.md
 
 --- 3. LIFEPUNCH BLACK MARKET DEALER (TBD ident) ---
 [ ] H-B1  Shop hub (optional BTC via hashd pattern)

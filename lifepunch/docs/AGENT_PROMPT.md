@@ -41,7 +41,8 @@ READ FIRST (in this order), then follow them as law:
 0c. `lifepunch/addons/docs/LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md` ← machines not props; ModelDoc-first stack P0–P4. Mandatory for entity/ModelDoc work.
 0d. `lifepunch/addons/docs/MODELDOC_STUDIO_LANE.md` + `PACKAGE_STAGING_LAYOUT.md` ← lp* staging + standalone editor (no DXRP gamemode for mesh).
 0e. `lifepunch/addons/docs/DXRP_ADDON_PUBLISH_DOCTRINE.md` ← DXRP context, lpbitcoin layout, folder=entity slug, PLACEHOLDER hands-off, portal vs files. Mandatory every session.
-0f. `lifepunch/addons/docs/LIFEPUNCH_WEAPON_IMPLEMENTATION_LAW.md` ← weapon platform not gun mesh; P0 attachments/collision/anims. Mandatory for weapon / lpweapons / AK lane work.
+0f. `lifepunch/addons/docs/BITCOIN_SHIP_ROADMAP.md` ← step order to portal, quality bar, agent handoff, post-Bitcoin package order. Mandatory every Bitcoin lane session.
+0g. `lifepunch/addons/docs/LIFEPUNCH_WEAPON_IMPLEMENTATION_LAW.md` ← weapon platform not gun mesh; P0 attachments/collision/anims. Mandatory for weapon / lpweapons / AK lane work.
 1. The project's `.cursor/rules` (all alwaysApply): lifepunch-active-workstream-gate,
    lifepunch-digital-machine, lifepunch-weapon-platform, lifepunch-operating-context,
    lifepunch-opus-usage, lifepunch-quality-bar,
