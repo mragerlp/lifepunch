@@ -3452,7 +3452,6 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	padding-bottom: 0;
 	padding-left: 4px;
 	align-items: stretch;
-	box-sizing: border-box;
 }
 
 .lp-bitcoin-ops .settings-actions .lp-ui-btn-primary,
@@ -4594,7 +4593,6 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	border-radius: 6px;
 	background-color: rgba(0, 0, 0, 0.28);
 	border: 1px solid rgba(255, 255, 255, 0.1);
-	box-sizing: border-box;
 }
 
 .lp-bitcoin-ops .wallet-cashout-tile-input {
@@ -4671,7 +4669,6 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	text-align: center;
 	white-space: normal;
 	cursor: pointer;
-	box-sizing: border-box;
 }
 
 .lp-bitcoin-ops .wallet-cashout-tile-btn.disabled {
