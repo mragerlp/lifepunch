@@ -45,11 +45,12 @@ internal static class LpBitcoinTerminalCommands
 				return ListRacks( racks );
 
 			case "select":
-				if ( parts.Length < 2 || !LpBitcoinIdent.TryParseRackSlot( parts[1], racks.Count, out var pick ) )
+				if ( parts.Length < 2
+				     || !LpBitcoinIdent.TryResolveLinkedRackIndex( parts[1], racks, out var pick ) )
 				{
 					var usage = racks.Count == 0
-						? "usage: select <n> — no linked racks"
-						: $"usage: select <n> (1–{racks.Count})";
+						? "usage: select <n|gpurack-n|advancedgpurack> — no linked racks"
+						: "usage: select 1|2|gpurack-1|gpurack-2|advancedgpurack";
 					return new LpBitcoinCommandResult( false, usage );
 				}
 
@@ -73,13 +74,12 @@ internal static class LpBitcoinTerminalCommands
 				if ( parts.Length > 1 && parts[1].Equals( "all", StringComparison.OrdinalIgnoreCase ) )
 					return DepositAll( hub );
 
-				if ( parts.Length > 1 && int.TryParse( parts[1], out _ ) )
+				if ( parts.Length > 1 )
 				{
-					var rackCount = hub.GetLinkedRacks().Count;
-					if ( !LpBitcoinIdent.TryParseRackSlot( parts[1], rackCount, out var depositPick ) )
+					if ( !LpBitcoinIdent.TryResolveLinkedRackIndex( parts[1], hub.GetLinkedRacks(), out var depositPick ) )
 					{
-						var range = rackCount == 0 ? "no linked racks" : $"1–{rackCount}";
-						return new LpBitcoinCommandResult( false, $"ERR rack slot not found — use deposit <n> ({range}) or deposit all" );
+						return new LpBitcoinCommandResult( false,
+							"ERR rack slot not found — use deposit 1|2|gpurack-1|gpurack-2|advancedgpurack or deposit all" );
 					}
 
 					return DepositRack( hub, depositPick );
@@ -106,7 +106,7 @@ internal static class LpBitcoinTerminalCommands
 
 				if ( racks.Count >= LpBitcoinIdent.PortalMaxRacksPerHub )
 					return new LpBitcoinCommandResult( false,
-						$"ERR rack limit — this hub supports up to {LpBitcoinIdent.PortalMaxRacksPerHub} GPU racks" );
+						"ERR rack limit — this hub supports 2 GPU racks + 1 Advanced GPU Rack" );
 
 				if ( !hub.HasNearbyUnlinkedRack() )
 					return new LpBitcoinCommandResult( false, "ERR no unlinked GPU rack in range that belongs to you — place your rack near this hub" );
@@ -414,9 +414,9 @@ internal static class LpBitcoinTerminalCommands
 
 	private static string HelpText() =>
 		"── HASHD rig0 commands (space-separated) ──\n" +
-		"help · clear · link · racks · select <n> · status · info · wallet\n" +
+		"help · clear · link · racks · select 1|2|gpurack-1|gpurack-2|advancedgpurack · status · info · wallet\n" +
 		"mining start|stop · mining start all|stop all · mining all-start|all-stop\n" +
-		"deposit · deposit all · deposit <n>\n" +
+		"deposit · deposit all · deposit 1|2|advancedgpurack\n" +
 		"send <steamid> <amount|all> — transfer hub wallet BTC to another operator's hub\n" +
 		"cash out to bank at hub admin wallet tab (not on this CRT)";
 }

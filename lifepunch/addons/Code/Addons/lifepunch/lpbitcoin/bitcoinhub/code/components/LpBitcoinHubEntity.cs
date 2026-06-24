@@ -277,11 +277,9 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 		if ( scene is null )
 			return Array.Empty<LpBitcoinRackEntity>();
 
-		return scene.GetAllComponents<LpBitcoinRackEntity>()
-			.Where( r => r.IsValid() && r.LinkedHubId == GameObject.Id )
-			.OrderBy( r => r.GameObject.Name )
-			.ThenBy( r => r.GameObject.Id )
-			.ToList();
+		return LpBitcoinIdent.OrderLinkedRacks(
+			scene.GetAllComponents<LpBitcoinRackEntity>()
+				.Where( r => r.IsValid() && r.LinkedHubId == GameObject.Id ) );
 	}
 
 	public LpBitcoinRackEntity FindRackByIndex( int index )
@@ -468,7 +466,7 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 		if ( GetLinkedRacks().Count >= LpBitcoinIdent.PortalMaxRacksPerHub )
 		{
 			PushAlertHost( LpBitcoinHubAlertKind.TerminalCommand,
-				$"This hub supports up to {LpBitcoinIdent.PortalMaxRacksPerHub} GPU racks — unlink or upgrade an existing slot first." );
+				$"This hub supports 2 GPU racks + 1 Advanced GPU Rack — unlink a slot first." );
 			return;
 		}
 
@@ -490,6 +488,12 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 		if ( !this.TryClaimLinkableEquipment( rack, Rpc.CallerId, out var linkError ) )
 		{
 			PushAlertHost( LpBitcoinHubAlertKind.TerminalCommand, linkError );
+			return;
+		}
+
+		if ( !LpBitcoinIdent.CanLinkRackToHub( rack, GetLinkedRacks(), out var rackSlotError ) )
+		{
+			PushAlertHost( LpBitcoinHubAlertKind.TerminalCommand, rackSlotError );
 			return;
 		}
 

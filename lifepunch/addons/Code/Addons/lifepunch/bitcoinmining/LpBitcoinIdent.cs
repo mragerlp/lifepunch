@@ -45,11 +45,25 @@ public static class LpBitcoinIdent
 	public const int PortalMaxHubsPerOperator = 1;
 	public const int PortalMaxTerminalsPerOperator = 1;
 
-	/// <summary>HASHD / rig0 slot prefix — GPURack-1 … GPURack-3.</summary>
+	/// <summary>HASHD / rig0 slot prefix — GPURack-1 … GPURack-2 (standard racks only).</summary>
 	public const string RackSlotPrefix = "GPURack";
 
-	/// <summary>DXRP portal cap per hub (max GPU racks linked to one hub).</summary>
-	public const int PortalMaxRacksPerHub = 3;
+	/// <summary>Standard GPU racks per hub (small farm mesh).</summary>
+	public const int PortalMaxStandardRacksPerHub = 2;
+
+	/// <summary>Advanced stacked GPU rack per hub.</summary>
+	public const int PortalMaxAdvancedRacksPerHub = 1;
+
+	/// <summary>DXRP portal cap per hub — 2× GPU Rack + 1× Advanced GPU Rack.</summary>
+	public const int PortalMaxRacksPerHub = PortalMaxStandardRacksPerHub + PortalMaxAdvancedRacksPerHub;
+
+	public const string AdvancedRackDisplayName = "Advanced GPU Rack";
+
+	/// <summary>rig0 / CRT copy token for the advanced slot — e.g. advancedgpurack.</summary>
+	public const string AdvancedRackTerminalToken = "advancedgpurack";
+
+	/// <summary>Hub docs / slot id for the advanced rack.</summary>
+	public const string AdvancedRackSlotId = "AdvancedGPURack";
 
 	/// <summary>
 	/// Owner portal inventory item — stackable $BTC token (drop/trade/redeem).
@@ -90,45 +104,194 @@ public static class LpBitcoinIdent
 	/// <summary>Operator-facing rack slot (1-based). Internal APIs stay 0-based.</summary>
 	public static int DisplayRackNumber( int zeroBasedIndex ) => zeroBasedIndex + 1;
 
-	/// <summary>Operator-facing rack ID — e.g. GPURack-1 … GPURack-3.</summary>
+	/// <summary>Operator-facing rack ID — GPURack-1 … GPURack-2 or AdvancedGPURack.</summary>
 	public static string FormatRackSlotId( LpBitcoinRackEntity rack, IReadOnlyList<LpBitcoinRackEntity> linkedRacks )
 	{
-		if ( !TryGetRackSlotNumber( rack, linkedRacks, out var slot ) )
+		if ( !rack.IsValid() )
+			return $"{RackSlotPrefix}-?";
+
+		if ( rack.AdvancedRack )
+			return AdvancedRackSlotId;
+
+		if ( !TryGetStandardRackSlotNumber( rack, linkedRacks, out var slot ) )
 			return $"{RackSlotPrefix}-?";
 
 		return $"{RackSlotPrefix}-{slot}";
 	}
 
-	/// <summary>Hub UI label — e.g. GPU Rack 1 … GPU Rack 3.</summary>
+	/// <summary>Hub UI label — GPU Rack 1 … 2 or Advanced GPU Rack.</summary>
 	public static string FormatRackSlotDisplayName( LpBitcoinRackEntity rack, IReadOnlyList<LpBitcoinRackEntity> linkedRacks )
 	{
-		if ( !TryGetRackSlotNumber( rack, linkedRacks, out var slot ) )
+		if ( !rack.IsValid() )
+			return $"{RackDisplayName} ?";
+
+		if ( rack.AdvancedRack )
+			return AdvancedRackDisplayName;
+
+		if ( !TryGetStandardRackSlotNumber( rack, linkedRacks, out var slot ) )
 			return $"{RackDisplayName} ?";
 
 		return $"{RackDisplayName} {slot}";
 	}
 
-	/// <summary>rig0 / CRT copy token — e.g. gpurack-1 (lowercase slot id).</summary>
+	/// <summary>rig0 / CRT copy token — gpurack-1 … gpurack-2 or advancedgpurack.</summary>
 	public static string FormatRackSlotTerminalToken( LpBitcoinRackEntity rack, IReadOnlyList<LpBitcoinRackEntity> linkedRacks )
-		=> FormatRackSlotId( rack, linkedRacks ).ToLowerInvariant();
+	{
+		if ( !rack.IsValid() )
+			return "gpurack-?";
 
-	public static bool TryGetRackSlotNumber(
+		if ( rack.AdvancedRack )
+			return AdvancedRackTerminalToken;
+
+		if ( !TryGetStandardRackSlotNumber( rack, linkedRacks, out var slot ) )
+			return "gpurack-?";
+
+		return $"{RackSlotPrefix}-{slot}".ToLowerInvariant();
+	}
+
+	public static int CountLinkedStandardRacks( IReadOnlyList<LpBitcoinRackEntity> linkedRacks )
+		=> linkedRacks.Count( rack => rack.IsValid() && !rack.AdvancedRack );
+
+	public static int CountLinkedAdvancedRacks( IReadOnlyList<LpBitcoinRackEntity> linkedRacks )
+		=> linkedRacks.Count( rack => rack.IsValid() && rack.AdvancedRack );
+
+	public static List<LpBitcoinRackEntity> OrderLinkedRacks( IEnumerable<LpBitcoinRackEntity> racks )
+		=> racks
+			.Where( rack => rack.IsValid() )
+			.OrderBy( rack => rack.AdvancedRack )
+			.ThenBy( rack => rack.GameObject.Name, StringComparer.Ordinal )
+			.ThenBy( rack => rack.GameObject.Id )
+			.ToList();
+
+	public static bool CanLinkRackToHub(
+		LpBitcoinRackEntity rack,
+		IReadOnlyList<LpBitcoinRackEntity> linkedRacks,
+		out string error )
+	{
+		error = string.Empty;
+		if ( !rack.IsValid() )
+		{
+			error = "Invalid rack.";
+			return false;
+		}
+
+		if ( rack.AdvancedRack )
+		{
+			if ( CountLinkedAdvancedRacks( linkedRacks ) >= PortalMaxAdvancedRacksPerHub )
+			{
+				error = "Advanced GPU rack slot full — unlink the existing Advanced GPU Rack first.";
+				return false;
+			}
+
+			return true;
+		}
+
+		if ( CountLinkedStandardRacks( linkedRacks ) >= PortalMaxStandardRacksPerHub )
+		{
+			error = "GPU rack slots full (2 max) — unlink a GPU Rack first.";
+			return false;
+		}
+
+		return true;
+	}
+
+	public static bool TryGetStandardRackSlotNumber(
 		LpBitcoinRackEntity rack,
 		IReadOnlyList<LpBitcoinRackEntity> linkedRacks,
 		out int slot )
 	{
 		slot = 0;
-		if ( !rack.IsValid() )
+		if ( !rack.IsValid() || rack.AdvancedRack )
 			return false;
 
-		foreach ( var candidate in linkedRacks )
+		foreach ( var candidate in OrderLinkedRacks( linkedRacks ) )
 		{
-			if ( !candidate.IsValid() )
+			if ( candidate.AdvancedRack )
 				continue;
 
 			slot++;
 			if ( candidate.GameObject.Id == rack.GameObject.Id )
 				return true;
+		}
+
+		return false;
+	}
+
+	/// <summary>Legacy alias — standard slot number only (advanced racks return false).</summary>
+	public static bool TryGetRackSlotNumber(
+		LpBitcoinRackEntity rack,
+		IReadOnlyList<LpBitcoinRackEntity> linkedRacks,
+		out int slot )
+		=> TryGetStandardRackSlotNumber( rack, linkedRacks, out slot );
+
+	public static bool TryResolveLinkedRackIndex(
+		string token,
+		IReadOnlyList<LpBitcoinRackEntity> linkedRacks,
+		out int zeroBasedIndex )
+	{
+		zeroBasedIndex = -1;
+		if ( string.IsNullOrWhiteSpace( token ) )
+			return false;
+
+		var normalized = token.Trim().ToLowerInvariant();
+		if ( normalized == AdvancedRackTerminalToken
+		     || normalized == AdvancedRackSlotId.ToLowerInvariant() )
+		{
+			for ( var i = 0; i < linkedRacks.Count; i++ )
+			{
+				if ( linkedRacks[i].IsValid() && linkedRacks[i].AdvancedRack )
+				{
+					zeroBasedIndex = i;
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		var prefix = $"{RackSlotPrefix}-".ToLowerInvariant();
+		if ( normalized.StartsWith( prefix, StringComparison.Ordinal )
+		     && int.TryParse( normalized[prefix.Length..], out var tokenSlot )
+		     && tokenSlot >= 1
+		     && tokenSlot <= PortalMaxStandardRacksPerHub )
+			return TryFindStandardRackBySlot( linkedRacks, tokenSlot, out zeroBasedIndex );
+
+		if ( int.TryParse( normalized, out var numericSlot ) )
+		{
+			if ( numericSlot >= 1 && numericSlot <= PortalMaxStandardRacksPerHub )
+				return TryFindStandardRackBySlot( linkedRacks, numericSlot, out zeroBasedIndex );
+
+			return TryParseRackSlot( normalized, linkedRacks.Count, out zeroBasedIndex );
+		}
+
+		return false;
+	}
+
+	private static bool TryFindStandardRackBySlot(
+		IReadOnlyList<LpBitcoinRackEntity> linkedRacks,
+		int slot,
+		out int zeroBasedIndex )
+	{
+		zeroBasedIndex = -1;
+		var slotIndex = 0;
+
+		foreach ( var candidate in OrderLinkedRacks( linkedRacks ) )
+		{
+			if ( candidate.AdvancedRack )
+				continue;
+
+			slotIndex++;
+			if ( slotIndex != slot )
+				continue;
+
+			for ( var i = 0; i < linkedRacks.Count; i++ )
+			{
+				if ( linkedRacks[i].GameObject.Id == candidate.GameObject.Id )
+				{
+					zeroBasedIndex = i;
+					return true;
+				}
+			}
 		}
 
 		return false;
@@ -167,9 +330,6 @@ public static class LpBitcoinIdent
 	[Obsolete( "Use RackPrefabPath — single GPU rack farm entity." )]
 	public const string AdvancedRackPrefabPath = RackPrefabPath;
 
-	[Obsolete( "Use RackDisplayName — advanced tier merged into GPU Rack." )]
-	public const string AdvancedRackDisplayName = RackDisplayName;
-
 	[Obsolete( "Use RackSlug." )]
 	public const string AdvancedRackSlug = RackSlug;
 
@@ -182,18 +342,6 @@ public static class LpBitcoinIdent
 	[Obsolete( "Use RackMaxHealth." )]
 	public const float AdvancedRackMaxHealth = RackMaxHealth;
 
-	[Obsolete( "Use PortalMaxRacksPerHub." )]
-	public const int PortalMaxAdvancedRacksPerHub = PortalMaxRacksPerHub;
-
-	[Obsolete( "Single rack tier — always 0." )]
-	public const int PortalMaxStandardRacksPerHub = 0;
-
 	[Obsolete( "Single rack tier shipped." )]
-	public const bool StandardRackShipParked = true;
-
-	[Obsolete( "Use RackSlotPrefix." )]
-	public const string StandardRackSlotPrefix = RackSlotPrefix;
-
-	[Obsolete( "Use RackSlotPrefix." )]
-	public const string AdvancedRackSlotPrefix = RackSlotPrefix;
+	public const bool StandardRackShipParked = false;
 }

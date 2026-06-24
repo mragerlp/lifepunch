@@ -58,16 +58,27 @@ $lp-menu-mono: "Roboto Mono", "Courier New", monospace;
 	flex-shrink: 0;
 }
 
-// Terminal log — native overflow scroll (StaffMenu pattern); sidebar stays manual.
+// Terminal log — top-aligned flex scroll + manual wheel (LifePunchScrollRegionPanel).
+.lp-ops-crt .log.lp-ui-scroll-region,
 .lp-ops-crt .lp-ui-scroll-region.terminal-log-scroll {
+	display: flex;
+	flex-direction: column;
 	flex: 1 1 0;
 	min-height: 0;
 	min-width: 0;
+	width: 100%;
 	overflow-x: hidden;
 	overflow-y: scroll;
+	pointer-events: all;
 	justify-content: flex-start;
-	align-items: flex-start;
+	align-items: stretch;
 	align-content: flex-start;
+}
+
+.lp-ops-crt .terminal-log-scroll > .log-stack {
+	flex: 0 0 auto;
+	align-self: stretch;
+	width: 100%;
 }
 
 .lp-ops-crt .lp-ui-scroll-region.terminal-sidebar-scroll {

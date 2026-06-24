@@ -24,22 +24,40 @@
 					<span>sel @SelectedRackSlotLabel()</span>
 				</div>
 				<div class="lp-ui-chrome-actions">
-					<div class="lp-ui-scale-menu">
-						<button class="lp-ui-chrome-btn cog" tooltip="UI scale" onclick="@ToggleScaleMenu">
+					<div class="lp-terminal-settings-menu">
+						<button class="lp-ui-chrome-btn cog" tooltip="Terminal settings" onclick="@ToggleSettingsMenu">
 							<i class="material-icons">settings</i>
 						</button>
-						@if ( _showScaleMenu )
+						@if ( _showSettingsMenu )
 						{
-							<div class="lp-ui-scale-dropdown">
-								<div class="lp-ui-scale-dropdown-title">UI Scale</div>
-								@foreach ( var size in _uiScaleOptions )
-								{
-									<button class="lp-ui-scale-opt @( _uiScale == size ? "active" : "" )"
-									        onclick="@(() => SetUiScale( size ))">
-										<span>@ScaleLabel( size )</span>
-										<span>@LpUiScale.ShortLabel( size )</span>
-									</button>
+							<div class="lp-terminal-settings-dropdown">
+								<div class="lp-terminal-settings-title">Linked racks</div>
+								@{
+									var linkedRacks = GetLinkedRacks();
 								}
+								@if ( linkedRacks.Count == 0 )
+								{
+									<div class="lp-terminal-settings-empty">No racks linked — type <span class="hashd-prompt-accent">link</span> at rig0.</div>
+								}
+								else
+								{
+									<div class="lp-terminal-settings-racks">
+										@for ( var rackIndex = 0; rackIndex < linkedRacks.Count; rackIndex++ )
+										{
+											var rack = linkedRacks[rackIndex];
+											<div class="lp-terminal-settings-rack-row @( rackIndex == _selectedIndex ? "selected" : "" )">
+												<div class="lp-terminal-settings-rack-head">
+													<span class="lp-terminal-settings-rack-name">@RackSlotDisplayLabel( rack, linkedRacks )</span>
+													<span class="lp-terminal-settings-rack-state @RackStateClass( rack )">@RackStateLabel( rack )</span>
+												</div>
+												<div class="lp-terminal-settings-rack-sub">@RackSlotTerminalToken( rack, linkedRacks ) · @RackSettingsSubline( rack )</div>
+											</div>
+										}
+									</div>
+								}
+								<div class="lp-terminal-settings-actions">
+									<button class="lp-terminal-settings-clear-btn" onclick="@ClearTerminalLog">Clear terminal log</button>
+								</div>
 							</div>
 						}
 					</div>
@@ -105,8 +123,7 @@
 	private int _bootLineIndex;
 	private float _bootElapsed;
 	private string _bootStatus = "INITIALIZING RIG...";
-	private bool _showScaleMenu;
-	private LpUiScaleSize _uiScale = LpUiScale.Default;
+	private bool _showSettingsMenu;
 	private LpBitcoinTerminalCommandInput InputBox { get; set; }
 
 	private const int MaxLogLines = 200;
@@ -135,14 +152,6 @@
 		"clear"
 	};
 
-	private static readonly LpUiScaleSize[] _uiScaleOptions =
-	{
-		LpUiScaleSize.Small,
-		LpUiScaleSize.Medium,
-		LpUiScaleSize.Large,
-		LpUiScaleSize.ExtraLarge
-	};
-
 	private int _scrollLogPendingFrames;
 	private bool _scrollLogForce;
 	private int _scrollBootstrapWarmupFrames = 2;
@@ -168,15 +177,7 @@
 	private static readonly Color CmdSelectionTint = (Color.Parse( "#f0a500" ) ?? new Color( 0.941f, 0.647f, 0f )).WithAlpha( 0.35f );
 
 	private string GetRootClass() =>
-		$"lp-ops-crt lp-ops-crt--gray {LpUiScale.CssClass( _uiScale )}";
-
-	private static string ScaleLabel( LpUiScaleSize size ) => size switch
-	{
-		LpUiScaleSize.Small => "Small",
-		LpUiScaleSize.Medium => "Medium",
-		LpUiScaleSize.Large => "Large",
-		_ => "Extra Large"
-	};
+		$"lp-ops-crt lp-ops-crt--gray {LpUiScale.CssClass( LpUiScale.Default )}";
 
 	private static string LineClass( LogLine line ) => line.Kind switch
 	{
@@ -187,13 +188,55 @@
 		_ => ""
 	};
 
-	private int LinkedRackCount() => _hub?.GetLinkedRacks().Count ?? 0;
+	private IReadOnlyList<LpBitcoinRackEntity> GetLinkedRacks()
+		=> _hub?.GetLinkedRacks() ?? Array.Empty<LpBitcoinRackEntity>();
+
+	private int LinkedRackCount() => GetLinkedRacks().Count;
 
 	private string StatusPowerLabel() => _hub?.IsPowered == true ? "hub power on" : "hub power off";
 
 	private string StatusPowerClass() => _hub?.IsPowered == true ? "status-ok" : "status-warn";
 
-	private void ToggleScaleMenu() => _showScaleMenu = !_showScaleMenu;
+	private void ToggleSettingsMenu() => _showSettingsMenu = !_showSettingsMenu;
+
+	private static string RackSlotDisplayLabel( LpBitcoinRackEntity rack, IReadOnlyList<LpBitcoinRackEntity> racks )
+		=> LpBitcoinIdent.FormatRackSlotDisplayName( rack, racks );
+
+	private static string RackSlotTerminalToken( LpBitcoinRackEntity rack, IReadOnlyList<LpBitcoinRackEntity> racks )
+		=> LpBitcoinIdent.FormatRackSlotTerminalToken( rack, racks );
+
+	private static string RackStateLabel( LpBitcoinRackEntity rack )
+	{
+		var cap = LpBitcoinEconomy.RackBtcCapacity;
+		if ( rack.BitcoinAmount >= cap )
+			return "FULL";
+
+		return rack.IsMining ? "MINING" : "IDLE";
+	}
+
+	private static string RackStateClass( LpBitcoinRackEntity rack )
+	{
+		var cap = LpBitcoinEconomy.RackBtcCapacity;
+		if ( rack.BitcoinAmount >= cap )
+			return "status-warn";
+
+		return rack.IsMining ? "status-ok" : "status-dim";
+	}
+
+	private static string RackSettingsSubline( LpBitcoinRackEntity rack )
+	{
+		var cap = LpBitcoinEconomy.RackBtcCapacity;
+		return $"{rack.BitcoinAmount:F4}/{cap:F4} BTC";
+	}
+
+	private void ClearTerminalLog()
+	{
+		_lines.Clear();
+		ClearLogStack();
+		_hub?.RequestPushTerminalCommandAlert( "clear", "log cleared" );
+		_showSettingsMenu = false;
+		MaybeQueueScrollLogToBottom( force: true );
+	}
 
 	private static void EnsureScrollFactory()
 	{
@@ -203,14 +246,6 @@
 
 	private static LifePunchScrollRegionPanel CreateTerminalScrollPanel( string slotClass )
 		=> slotClass == "log" ? new LpBitcoinTerminalLogPanel() : null;
-
-	private void SetUiScale( LpUiScaleSize size )
-	{
-		_uiScale = size;
-		_showScaleMenu = false;
-		LifePunchUiScrollPolicy.ResetOffsets( Panel );
-		QueueScrollLogToBottom( force: true );
-	}
 
 	protected override void OnEnabled()
 	{
@@ -328,13 +363,10 @@
 
 		if ( raw.Equals( "clear", StringComparison.OrdinalIgnoreCase ) )
 		{
-			_lines.Clear();
-			ClearLogStack();
-			_hub?.RequestPushTerminalCommandAlert( raw, "log cleared" );
+			ClearTerminalLog();
 			InputBox.Text = string.Empty;
 			InputBox.Focus();
 			_lastInputTextLength = 0;
-			MaybeQueueScrollLogToBottom( force: true );
 			return;
 		}
 
@@ -633,8 +665,8 @@
 		if ( !log.IsValid() )
 			return;
 
-		if ( log.GetMaxScrollY() <= 0f )
-			log.ScrollOffset = Vector2.Zero;
+		log.PreferScrollToBottom = true;
+		log.ScrollToBottom( force: true );
 	}
 
 	private void Close() => LpBitcoinTerminalUiHost.CloseOpen();
@@ -762,27 +794,35 @@
 
 	private string SelectedRackSlotLabel()
 	{
-		var racks = _hub?.GetLinkedRacks();
-		if ( racks is null || _selectedIndex < 0 || _selectedIndex >= racks.Count )
+		var racks = GetLinkedRacks();
+		if ( _selectedIndex < 0 || _selectedIndex >= racks.Count )
 			return "—";
 
-		return LpBitcoinIdent.FormatRackSlotTerminalToken( racks[_selectedIndex], racks );
+		return RackSlotTerminalToken( racks[_selectedIndex], racks );
 	}
 
 	protected override int BuildHash()
 	{
 		// Never hash InputBox.Text or log line count — log lines are imperative (no Razor foreach).
-		return HashCode.Combine(
-			HashCode.Combine(
-				_selectedIndex,
-				_hub?.IsPowered,
-				LinkedRackCount(),
-				_uiScale,
-				_showScaleMenu,
-				_showBootSplash,
-				_bootStatus ),
-			_bootComplete,
-			_urlCopied,
-			_copiedCommandFlash );
+		var hash = new HashCode();
+		hash.Add( _selectedIndex );
+		hash.Add( _hub?.IsPowered );
+		hash.Add( LinkedRackCount() );
+		hash.Add( _showSettingsMenu );
+		hash.Add( _showBootSplash );
+		hash.Add( _bootStatus );
+		hash.Add( _bootComplete );
+		hash.Add( _urlCopied );
+		hash.Add( _copiedCommandFlash );
+
+		foreach ( var rack in GetLinkedRacks() )
+		{
+			hash.Add( rack.GameObject.Id );
+			hash.Add( rack.AdvancedRack );
+			hash.Add( rack.IsMining );
+			hash.Add( (int)( rack.BitcoinAmount * 10000f ) );
+		}
+
+		return hash.ToHashCode();
 	}
 }

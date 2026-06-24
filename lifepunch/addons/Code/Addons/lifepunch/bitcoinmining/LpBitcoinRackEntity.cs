@@ -44,7 +44,9 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable, IAre
 	public int UsdValue => (int)LpBitcoinEconomy.BtcToCashUsd( BitcoinAmount );
 
 #if !LIFEPUNCH_LOCAL
-	public override string DisplayName => LpBitcoinIdent.RackDisplayName;
+	public override string DisplayName => AdvancedRack
+		? LpBitcoinIdent.AdvancedRackDisplayName
+		: LpBitcoinIdent.RackDisplayName;
 #endif
 
 	private TimeSince _sincePayout;

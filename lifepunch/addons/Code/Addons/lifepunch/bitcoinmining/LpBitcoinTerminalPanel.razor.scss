@@ -390,18 +390,23 @@ $crt-text-dim: #9a9a9a;
 
 .lp-ops-crt .log.lp-ui-scroll-region,
 .lp-ops-crt .lp-ui-scroll-region.terminal-log-scroll {
+	display: flex;
+	flex-direction: column;
 	flex: 1 1 0;
 	min-height: 0;
 	min-width: 0;
+	width: 100%;
 	overflow-x: hidden;
 	overflow-y: scroll;
 	pointer-events: all;
 	justify-content: flex-start;
-	align-items: flex-start;
+	align-items: stretch;
 	align-content: flex-start;
 }
 
 .lp-ops-crt .log {
+	display: flex;
+	flex-direction: column;
 	flex: 1 1 0;
 	min-height: 0;
 	min-width: 0;
@@ -409,8 +414,15 @@ $crt-text-dim: #9a9a9a;
 	overflow-y: scroll;
 	pointer-events: all;
 	justify-content: flex-start;
-	align-items: flex-start;
+	align-items: stretch;
 	align-content: flex-start;
+}
+
+.lp-ops-crt .terminal-log-scroll > .log-stack,
+.lp-ops-crt .log > .log-stack {
+	flex: 0 0 auto;
+	align-self: stretch;
+	width: 100%;
 }
 
 .lp-ops-crt .log-stack {
@@ -557,4 +569,128 @@ $crt-text-dim: #9a9a9a;
 .lp-ops-crt.lp-ui-size-xl .lp-window-watermark .lp-source-footer {
 	font-size: 11px;
 	padding: 0 18px;
+}
+
+.lp-ops-crt .status-dim {
+	color: $crt-text-dim;
+}
+
+.lp-terminal-settings-menu {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+}
+
+.lp-terminal-settings-dropdown {
+	position: absolute;
+	top: calc(100% + 6px);
+	right: 0;
+	display: flex;
+	flex-direction: column;
+	min-width: 260px;
+	max-width: 340px;
+	max-height: 360px;
+	padding: 8px;
+	border-radius: 8px;
+	border: 1px solid rgba(255, 255, 255, 0.12);
+	background-color: rgba(12, 14, 18, 0.98);
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+	z-index: 20;
+	overflow: hidden;
+}
+
+.lp-terminal-settings-title {
+	padding: 4px 8px 8px;
+	font-size: 10px;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	color: #8b95a8;
+	text-transform: uppercase;
+}
+
+.lp-terminal-settings-empty {
+	padding: 8px 10px 10px;
+	font-size: 11px;
+	line-height: 1.45;
+	color: $crt-text-dim;
+}
+
+.lp-terminal-settings-racks {
+	flex: 1 1 0;
+	min-height: 0;
+	max-height: 240px;
+	overflow-y: scroll;
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	padding: 0 2px 4px;
+}
+
+.lp-terminal-settings-rack-row {
+	padding: 8px 10px;
+	border-radius: 6px;
+	border: 1px solid rgba(255, 255, 255, 0.06);
+	background-color: rgba(255, 255, 255, 0.03);
+}
+
+.lp-terminal-settings-rack-row.selected {
+	border-color: rgba(240, 165, 0, 0.35);
+	background-color: rgba(240, 165, 0, 0.08);
+}
+
+.lp-terminal-settings-rack-head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+	margin-bottom: 4px;
+}
+
+.lp-terminal-settings-rack-name {
+	font-size: 12px;
+	font-weight: 700;
+	color: $crt-text;
+}
+
+.lp-terminal-settings-rack-state {
+	font-size: 10px;
+	font-weight: 700;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	flex-shrink: 0;
+}
+
+.lp-terminal-settings-rack-sub {
+	font-size: 10px;
+	line-height: 1.35;
+	color: $crt-text-dim;
+}
+
+.lp-terminal-settings-actions {
+	margin-top: 8px;
+	padding-top: 8px;
+	border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.lp-terminal-settings-clear-btn {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 32px;
+	padding: 0 12px;
+	border-radius: 6px;
+	border: 1px solid rgba(228, 0, 43, 0.35);
+	background-color: rgba(228, 0, 43, 0.08);
+	color: #f5b8c2;
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.04em;
+	cursor: pointer;
+
+	&:hover {
+		background-color: rgba(228, 0, 43, 0.18);
+		border-color: rgba(228, 0, 43, 0.55);
+		color: #ffd6dc;
+	}
 }

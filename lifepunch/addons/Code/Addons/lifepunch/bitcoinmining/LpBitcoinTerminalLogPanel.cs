@@ -102,6 +102,7 @@ public sealed class LpBitcoinTerminalLogPanel : LifePunchScrollRegionPanel
 
 		var lineCount = 0;
 		var total = 0f;
+		const float fallbackLineHeight = 15f;
 
 		foreach ( var line in stack.Children )
 		{
@@ -109,7 +110,11 @@ public sealed class LpBitcoinTerminalLogPanel : LifePunchScrollRegionPanel
 				continue;
 
 			lineCount++;
-			total += line.Box.Rect.Height;
+			var height = line.Box.Rect.Height;
+			if ( height <= 1f )
+				height = fallbackLineHeight;
+
+			total += height;
 		}
 
 		if ( lineCount <= 0 )
@@ -118,7 +123,20 @@ public sealed class LpBitcoinTerminalLogPanel : LifePunchScrollRegionPanel
 		if ( lineCount > 1 )
 			total += ( lineCount - 1 ) * 2f;
 
-		total += 12f;
+		total += 8f;
 		return total;
+	}
+
+	public override float GetMaxScrollY()
+	{
+		if ( !IsValid )
+			return 0f;
+
+		var viewHeight = Box.Rect.Height;
+		if ( viewHeight <= 1f )
+			return 0f;
+
+		// Engine ScrollSize often lies on flex CRT logs — always measure stacked labels.
+		return System.Math.Max( 0f, GetContentHeight() - viewHeight );
 	}
 }

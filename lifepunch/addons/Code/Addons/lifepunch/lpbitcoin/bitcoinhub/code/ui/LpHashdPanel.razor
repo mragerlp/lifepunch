@@ -197,45 +197,44 @@
 													<span>Active miners</span>
 												</div>
 
-												@if ( LinkedRackCount() == 0 )
-												{
-													<div class="lp-ui-empty lp-ui-empty-callout racks-empty-callout">
-														<div class="lp-ui-empty-callout-badge">Action required</div>
-														<div class="lp-ui-empty-callout-icon">
-															<i class="material-icons">link_off</i>
-														</div>
-														<div class="lp-ui-empty-callout-title">No racks linked</div>
-														<div class="lp-ui-empty-callout-body">
-															<div class="lp-ui-empty-callout-step">Power on the hub (header switch).</div>
-															<div class="lp-ui-empty-callout-step">Link the terminal above.</div>
-															<div class="lp-ui-empty-callout-step">At rig0 on the CRT, type:</div>
-															<div class="lp-ui-empty-callout-cmd">link</div>
-														</div>
-													</div>
-												}
-												else
-												{
-													<div class="lp-ui-scroll-region overview-miners-scroll">
-														@foreach ( var rack in GetLinkedRacks() )
-														{
-															<div class="overview-miner-card">
-																<div class="overview-miner-head">
-																	<div class="overview-miner-title">@RackSlotDisplayLabel( rack )</div>
-																	<div class="overview-miner-status @( rack.IsMining ? "on" : "off" )">
-																		<span class="lp-ui-status-dot @(rack.IsMining ? "on" : "off")"></span>
-																		<span>@(rack.IsMining ? "Mining" : "Idle")</span>
+												<div class="lp-ui-scroll-region overview-miners-scroll">
+													@foreach ( var slot in GetOverviewMinerSlots() )
+													{
+														<div class="overview-miner-card @( slot.Rack.IsValid() ? "" : "empty" )">
+															<div class="overview-miner-head">
+																<div class="overview-miner-title">@slot.DisplayLabel</div>
+																@if ( slot.Rack.IsValid() )
+																{
+																	<div class="overview-miner-status @( slot.Rack.IsMining ? "on" : "off" )">
+																		<span class="lp-ui-status-dot @(slot.Rack.IsMining ? "on" : "off")"></span>
+																		<span>@(slot.Rack.IsMining ? "Mining" : "Idle")</span>
 																	</div>
-																</div>
-																<div class="overview-miner-stats">@RackOverviewSubline( rack )</div>
-																<button class="rack-slot-id-copy overview-miner-copy" onclick="@(() => CopyRackTerminalId( rack ))">
-																	<span class="rack-slot-id-token">@RackSlotTerminalToken( rack )</span>
-																	<i class="material-icons">content_copy</i>
-																	<span class="rack-slot-id-hint">@RackSlotCopyHint( rack )</span>
-																</button>
+																}
+																else
+																{
+																	<div class="overview-miner-status off">
+																		<span class="lp-ui-status-dot off"></span>
+																		<span>Not linked</span>
+																	</div>
+																}
 															</div>
-														}
-													</div>
-												}
+															@if ( slot.Rack.IsValid() )
+															{
+																<div class="overview-miner-stats">@RackOverviewSubline( slot.Rack )</div>
+															}
+															else
+															{
+																<div class="overview-miner-stats empty">Place rack nearby, then type <strong>link</strong> at rig0.</div>
+															}
+															<button class="rack-slot-id-copy overview-miner-copy"
+															        onclick="@(() => CopyOverviewMinerToken( slot ))">
+																<span class="rack-slot-id-token">@slot.TerminalToken</span>
+																<i class="material-icons">content_copy</i>
+																<span class="rack-slot-id-hint">@OverviewMinerCopyHint( slot )</span>
+															</button>
+														</div>
+													}
+												</div>
 											</div>
 
 											<div class="lp-ui-panel overview-status-panel">
@@ -298,65 +297,69 @@
 										<div class="lp-ui-panel racks-panel">
 											<div class="lp-ui-panel-title">
 												<i class="material-icons">dns</i>
-												<span>GPU racks</span>
+												<span>Servers</span>
 											</div>
 
-											@if ( LinkedRackCount() > 0 )
-											{
-												<div class="lp-ui-intro">
-													Rack slots (<strong>GPURack-1</strong> … <strong>GPURack-@LpBitcoinIdent.PortalMaxRacksPerHub</strong>) match rig0 at the terminal. Open <strong>Upgrade</strong> for CPU and core paths — start/stop mining on the CRT.
-												</div>
-											}
+											<div class="lp-ui-intro racks-intro">
+												Slots: <strong>GPURack-1</strong>, <strong>GPURack-2</strong>, and <strong>Advanced GPU Rack</strong> (<strong>advancedgpurack</strong> at rig0). Open <strong>Upgrade</strong> for CPU and core paths — start/stop mining on the CRT.
+											</div>
 
-											@if ( LinkedRackCount() == 0 )
-											{
-												<div class="lp-ui-empty lp-ui-empty-callout racks-empty-callout">
-													<div class="lp-ui-empty-callout-badge">Action required</div>
-													<div class="lp-ui-empty-callout-icon">
-														<i class="material-icons">link_off</i>
-													</div>
-													<div class="lp-ui-empty-callout-title">No racks linked</div>
-													<div class="lp-ui-empty-callout-body">
-														<div class="lp-ui-empty-callout-step">Link the terminal in hub admin.</div>
-														<div class="lp-ui-empty-callout-step">At rig0 on the CRT, type:</div>
-														<div class="lp-ui-empty-callout-cmd">link</div>
-													</div>
-												</div>
-											}
-											else
-											{
-												<div class="lp-ui-scroll-region racks-scroll">
-													<div class="rack-grid">
-														@foreach ( var rack in GetLinkedRacks() )
-														{
-															<div class="rack-card">
-																<div class="rack-card-head">
-																	<div class="rack-card-head-main">
-																		<div class="rack-card-title">@RackSlotDisplayLabel( rack )</div>
-																		<button class="rack-slot-id-copy" onclick="@(() => CopyRackTerminalId( rack ))">
-																			<span class="rack-slot-id-token">@RackSlotTerminalToken( rack )</span>
-																			<i class="material-icons">content_copy</i>
-																			<span class="rack-slot-id-hint">@RackSlotCopyHint( rack )</span>
-																		</button>
-																	</div>
-																	<div class="rack-card-badges">
-																		<span class="rack-badge @(rack.IsMining ? "on" : "")">@(rack.IsMining ? "Mining" : "Idle")</span>
-																		<span class="rack-badge dim">@RackYieldLabel( rack )</span>
-																	</div>
+											<div class="lp-ui-scroll-region racks-scroll">
+												<div class="rack-grid">
+													@foreach ( var slot in GetOverviewMinerSlots() )
+													{
+														<div class="rack-card @( slot.Rack.IsValid() ? "" : "empty" )">
+															<div class="rack-card-head">
+																<div class="rack-card-head-main">
+																	<div class="rack-card-title">@slot.DisplayLabel</div>
+																	<button class="rack-slot-id-copy"
+																	        onclick="@(() => CopyOverviewMinerToken( slot ))">
+																		<span class="rack-slot-id-token">@slot.TerminalToken</span>
+																		<i class="material-icons">content_copy</i>
+																		<span class="rack-slot-id-hint">@OverviewMinerCopyHint( slot )</span>
+																	</button>
 																</div>
-																<div class="rack-card-stats">
-																	<div class="rack-stat-line">@RackBtcLine( rack )</div>
-																	<div class="rack-stat-line">@RackHardwareLine( rack )</div>
-																	<div class="rack-stat-line">@RackUpgradeSummaryLine( rack )</div>
-																</div>
-																<div class="rack-card-actions">
-																	<button class="lp-ui-btn-primary rack-upgrade-btn" onclick="@(() => OpenRackUpgrades( rack ))">Upgrade</button>
+																<div class="rack-card-badges">
+																	@if ( slot.Rack.IsValid() )
+																	{
+																		<span class="rack-badge @(slot.Rack.IsMining ? "on" : "")">@(slot.Rack.IsMining ? "Mining" : "Idle")</span>
+																		<span class="rack-badge dim">@RackYieldLabel( slot.Rack )</span>
+																	}
+																	else
+																	{
+																		<span class="rack-badge">Not linked</span>
+																	}
 																</div>
 															</div>
-														}
-													</div>
+															<div class="rack-card-stats">
+																@if ( slot.Rack.IsValid() )
+																{
+																	<div class="rack-stat-line">@RackBtcLine( slot.Rack )</div>
+																	<div class="rack-stat-line">@RackHardwareLine( slot.Rack )</div>
+																	<div class="rack-stat-line">@RackUpgradeSummaryLine( slot.Rack )</div>
+																}
+																else
+																{
+																	<div class="rack-stat-line empty">Place rack near hub, then type <strong>link</strong> at rig0.</div>
+																}
+															</div>
+															<div class="rack-card-actions">
+																@if ( slot.Rack.IsValid() )
+																{
+																	<button class="lp-ui-btn-primary rack-upgrade-btn"
+																	        onclick="@(() => OpenRackUpgrades( slot.Rack ))">
+																		Upgrade
+																	</button>
+																}
+																else
+																{
+																	<button class="lp-ui-btn-ghost rack-upgrade-btn disabled" disabled>Not linked</button>
+																}
+															</div>
+														</div>
+													}
 												</div>
-											}
+											</div>
 										</div>
 									</div>
 								}
@@ -968,7 +971,55 @@
 		=> _rackSlotCopyAckId == rack.GameObject.Id ? "Copied!" : "Copy";
 
 	private static string OverviewIntroCopyLine()
-		=> $"Buy from DXRP Market → place hub → set PIN → power on (header switch) → link terminal → register up to {LpBitcoinIdent.PortalMaxRacksPerHub} GPU racks at rig0 on the CRT.";
+		=> "Buy from DXRP Market → place hub → set PIN → power on (header switch) → link terminal → register 2 GPU racks + 1 Advanced GPU Rack at rig0 (gpurack-1, gpurack-2, advancedgpurack).";
+
+	private readonly record struct OverviewMinerSlot( string DisplayLabel, string TerminalToken, LpBitcoinRackEntity Rack );
+
+	private IReadOnlyList<OverviewMinerSlot> GetOverviewMinerSlots()
+	{
+		var racks = GetLinkedRacks();
+		LpBitcoinRackEntity standard1 = null;
+		LpBitcoinRackEntity standard2 = null;
+		LpBitcoinRackEntity advanced = null;
+		var standardCount = 0;
+
+		foreach ( var rack in racks )
+		{
+			if ( !rack.IsValid() )
+				continue;
+
+			if ( rack.AdvancedRack )
+			{
+				advanced = rack;
+				continue;
+			}
+
+			if ( standardCount == 0 )
+			{
+				standard1 = rack;
+				standardCount++;
+				continue;
+			}
+
+			if ( standardCount == 1 )
+			{
+				standard2 = rack;
+				standardCount++;
+			}
+		}
+
+		return new OverviewMinerSlot[]
+		{
+			new( "GPU Rack 1", "gpurack-1", standard1 ),
+			new( "GPU Rack 2", "gpurack-2", standard2 ),
+			new( LpBitcoinIdent.AdvancedRackDisplayName, LpBitcoinIdent.AdvancedRackTerminalToken, advanced )
+		};
+	}
+
+	private string OverviewMinerCopyHint( OverviewMinerSlot slot )
+		=> _overviewSlotCopyAck == slot.TerminalToken ? "Copied!" : "Copy";
+
+	private string _overviewSlotCopyAck;
 
 	private static string RackYieldLabel( LpBitcoinRackEntity rack )
 		=> !rack.IsValid()
@@ -1164,6 +1215,21 @@
 		Clipboard.SetText( RackSlotTerminalToken( rack ) );
 		_rackSlotCopyAckId = rack.GameObject.Id;
 		_ = ClearRackSlotCopyAckAsync( rack.GameObject.Id );
+	}
+
+	private void CopyOverviewMinerToken( OverviewMinerSlot slot )
+	{
+		Clipboard.SetText( slot.TerminalToken );
+		_overviewSlotCopyAck = slot.TerminalToken;
+		_ = ClearOverviewSlotCopyAckAsync( slot.TerminalToken );
+	}
+
+	private async System.Threading.Tasks.Task ClearOverviewSlotCopyAckAsync( string token )
+	{
+		await GameTask.DelayRealtimeSeconds( 2f );
+		if ( _overviewSlotCopyAck == token )
+			_overviewSlotCopyAck = null;
+		StateHasChanged();
 	}
 
 	private async System.Threading.Tasks.Task ClearRackSlotCopyAckAsync( Guid rackId )
@@ -1734,6 +1800,7 @@
 		foreach ( var rack in GetLinkedRacks() )
 		{
 			hash.Add( rack.GameObject.Id );
+			hash.Add( rack.AdvancedRack );
 			hash.Add( rack.IsMining );
 			hash.Add( rack.CpuUpgradeLevel );
 			hash.Add( rack.CoreUpgradeLevel );
@@ -1752,6 +1819,7 @@
 		hash.Add( _receiveCopyAck );
 		hash.Add( _sendExampleCopyAck );
 		hash.Add( _rackSlotCopyAckId );
+		hash.Add( _overviewSlotCopyAck );
 		hash.Add( _pinUnlocked );
 		hash.Add( _pinBuffer );
 		hash.Add( _pinSetupPass );

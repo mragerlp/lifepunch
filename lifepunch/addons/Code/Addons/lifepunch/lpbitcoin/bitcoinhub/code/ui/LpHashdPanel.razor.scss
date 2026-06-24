@@ -3791,6 +3791,17 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	background-color: rgba(0, 0, 0, 0.28);
 }
 
+.lp-bitcoin-ops .overview-miner-card.empty {
+	border-color: rgba(255, 255, 255, 0.05);
+	background-color: rgba(0, 0, 0, 0.16);
+}
+
+.lp-bitcoin-ops .overview-miner-stats.empty {
+	color: #8b95a8;
+	font-size: 11px;
+	line-height: 1.4;
+}
+
 .lp-bitcoin-ops .overview-miner-head {
 	display: flex;
 	flex-direction: row;
@@ -4083,7 +4094,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 
 .lp-bitcoin-ops .pane.racks > .racks-panel > .lp-ui-panel-title {
 	flex-shrink: 0;
-	margin-bottom: 12px;
+	margin-bottom: 8px;
 }
 
 // Flat — hub tab bodies + header chrome (nested rules dropped by s&box).
@@ -4493,6 +4504,110 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	justify-content: space-between;
 	gap: 10px;
 	width: 100%;
+}
+
+// Servers tab — 3 fixed rack slots (2 GPU + 1 Advanced), no scroll, uniform compact cards.
+.lp-bitcoin-ops .pane.racks .racks-intro {
+	margin-bottom: 8px;
+	padding-top: 8px;
+	padding-right: 10px;
+	padding-bottom: 8px;
+	padding-left: 10px;
+	font-size: 11px;
+	line-height: 1.35;
+}
+
+.lp-bitcoin-ops .pane.racks .racks-scroll {
+	overflow: hidden;
+	overflow-y: hidden;
+	padding-bottom: 0;
+}
+
+.lp-bitcoin-ops .pane.racks .rack-grid {
+	flex: 1 1 0;
+	min-height: 0;
+	gap: 8px;
+}
+
+.lp-bitcoin-ops .pane.racks .rack-card {
+	flex: 1 1 0;
+	min-height: 0;
+	gap: 5px;
+	padding-top: 10px;
+	padding-right: 12px;
+	padding-bottom: 10px;
+	padding-left: 12px;
+}
+
+.lp-bitcoin-ops .pane.racks .rack-card.empty {
+	border-color: rgba(255, 255, 255, 0.05);
+	background-color: rgba(0, 0, 0, 0.16);
+}
+
+.lp-bitcoin-ops .pane.racks .rack-card-head {
+	gap: 6px;
+}
+
+.lp-bitcoin-ops .pane.racks .rack-card-head-main {
+	gap: 4px;
+}
+
+.lp-bitcoin-ops .pane.racks .rack-card-title {
+	font-size: 13px;
+	line-height: 1.2;
+}
+
+.lp-bitcoin-ops .pane.racks .rack-slot-id-copy {
+	padding-top: 3px;
+	padding-right: 7px;
+	padding-bottom: 3px;
+	padding-left: 7px;
+}
+
+.lp-bitcoin-ops .pane.racks .rack-card-badges {
+	gap: 4px;
+}
+
+.lp-bitcoin-ops .pane.racks .rack-badge {
+	padding-top: 2px;
+	padding-right: 8px;
+	padding-bottom: 2px;
+	padding-left: 8px;
+	font-size: 9px;
+}
+
+.lp-bitcoin-ops .pane.racks .rack-card-stats {
+	gap: 2px;
+	flex: 1 1 0;
+	min-height: 0;
+}
+
+.lp-bitcoin-ops .pane.racks .rack-stat-line {
+	font-size: 10px;
+	line-height: 1.25;
+}
+
+.lp-bitcoin-ops .pane.racks .rack-stat-line.empty {
+	font-size: 10px;
+	line-height: 1.3;
+	color: #8b95a8;
+}
+
+.lp-bitcoin-ops .pane.racks .rack-card-actions {
+	margin-top: 0;
+}
+
+.lp-bitcoin-ops .pane.racks .rack-card-actions .rack-upgrade-btn {
+	padding-top: 6px;
+	padding-right: 10px;
+	padding-bottom: 6px;
+	padding-left: 10px;
+	font-size: 10px;
+	letter-spacing: 0.02em;
+}
+
+.lp-bitcoin-ops .pane.racks .rack-card-actions .rack-upgrade-btn.disabled {
+	opacity: 0.55;
 }
 
 // Hub scale — XL = canonical 1100×700; smaller steps trim shell only (StaffMenu law).

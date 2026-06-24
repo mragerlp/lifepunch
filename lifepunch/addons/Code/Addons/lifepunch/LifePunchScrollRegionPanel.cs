@@ -48,7 +48,7 @@ public class LifePunchScrollRegionPanel : Panel
 		PreferScrollToBottom = next >= max - 4f;
 	}
 
-	public float GetMaxScrollY()
+	public virtual float GetMaxScrollY()
 	{
 		if ( !IsValid )
 			return 0f;
