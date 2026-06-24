@@ -1457,6 +1457,13 @@
 			{
 				if ( _pinChangePass == 0 )
 				{
+					if ( !LpBitcoinHubPin.Matches( _pinBuffer, Hub.AccessPinHash ) )
+					{
+						_pinBuffer = "";
+						_pinError = "Current PIN incorrect.";
+						return;
+					}
+
 					_pinChangeCurrent = _pinBuffer;
 					_pinBuffer = "";
 					_pinChangePass = 1;
