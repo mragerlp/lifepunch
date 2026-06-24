@@ -534,9 +534,11 @@
 																<span class="wallet-cashout-tile-value">@PartialCashOutUsdPreview()</span>
 															</div>
 														</div>
-														<div class="wallet-cashout-tile">
+														<div class="wallet-cashout-tile wallet-cashout-tile-action">
 															<div class="wallet-cashout-tile-label">Cash out amount</div>
-															<button class="wallet-cashout-tile-btn @GetPartialCashOutButtonClass()" onclick="@CashOutPartial">@PartialCashOutButtonLabel()</button>
+															<div class="wallet-cashout-tile-body wallet-cashout-tile-body-btn">
+																<button class="wallet-cashout-tile-btn @GetPartialCashOutButtonClass()" onclick="@CashOutPartial">@PartialCashOutButtonLabel()</button>
+															</div>
 														</div>
 													</div>
 													<button class="wallet-cashout-all @GetCashOutAllButtonClass()" onclick="@CashOutAll">
@@ -1819,7 +1821,7 @@
 	private bool TryParseCashOutAmount( out float amount )
 	{
 		amount = 0f;
-		return float.TryParse( _cashOutAmount.Trim(), out amount );
+		return float.TryParse( _cashOutAmount.Trim(), System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out amount );
 	}
 
 	private void CashOutPartial()
@@ -2020,6 +2022,7 @@
 		hash.Add( LinkedRackCount() );
 		hash.Add( _telemetryHash );
 		hash.Add( Hub?.Owner ?? 0 );
+		hash.Add( _cashOutAmount );
 		hash.Add( (int)_partialCashOutFeedback );
 		hash.Add( _partialCashOutFeedbackText );
 		hash.Add( (int)_allCashOutFeedback );

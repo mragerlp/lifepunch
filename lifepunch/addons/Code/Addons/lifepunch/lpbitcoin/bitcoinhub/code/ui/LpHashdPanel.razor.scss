@@ -3351,10 +3351,10 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	display: flex;
 	flex-direction: column;
 	gap: 6px;
-	padding-top: 14px;
-	padding-right: 16px;
-	padding-bottom: 14px;
-	padding-left: 16px;
+	padding-top: 12px;
+	padding-right: 14px;
+	padding-bottom: 12px;
+	padding-left: 14px;
 	justify-content: flex-start;
 	overflow: hidden;
 }
@@ -3443,11 +3443,16 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	display: flex;
 	flex-direction: row;
 	flex-wrap: nowrap;
-	gap: 10px;
-	margin-top: auto;
+	gap: 8px;
+	margin-top: 8px;
 	flex-shrink: 0;
 	width: 100%;
+	padding-top: 0;
+	padding-right: 4px;
+	padding-bottom: 0;
+	padding-left: 4px;
 	align-items: stretch;
+	box-sizing: border-box;
 }
 
 .lp-bitcoin-ops .settings-actions .lp-ui-btn-primary,
@@ -3455,13 +3460,13 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	flex: 1 1 0;
 	min-width: 0;
 	max-width: 100%;
-	min-height: 40px;
+	min-height: 32px;
 	height: auto;
-	padding-top: 10px;
-	padding-right: 16px;
-	padding-bottom: 10px;
-	padding-left: 16px;
-	font-size: 12px;
+	padding-top: 7px;
+	padding-right: 10px;
+	padding-bottom: 7px;
+	padding-left: 10px;
+	font-size: 11px;
 	font-weight: 800;
 	letter-spacing: 0.03em;
 	line-height: 1.2;
@@ -4296,7 +4301,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 
 .lp-bitcoin-ops .pane.transfers .transfer-columns {
 	margin-top: 0;
-	flex: 1 1 0;
+	flex: 0 0 auto;
 	min-height: 0;
 	overflow: visible;
 }
@@ -4547,16 +4552,15 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 .lp-bitcoin-ops .wallet-cashout-tile {
 	flex: 1 1 0;
 	min-width: 0;
-	min-height: 58px;
 	display: flex;
 	flex-direction: column;
 	align-items: stretch;
 	justify-content: flex-start;
-	gap: 4px;
+	gap: 6px;
 	padding-top: 8px;
-	padding-right: 6px;
+	padding-right: 8px;
 	padding-bottom: 8px;
-	padding-left: 6px;
+	padding-left: 8px;
 	border-radius: 8px;
 	background-color: rgba(0, 0, 0, 0.35);
 	border: 1px solid rgba(255, 255, 255, 0.08);
@@ -4575,23 +4579,31 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 }
 
 .lp-bitcoin-ops .wallet-cashout-tile-body {
-	flex: 1 1 0;
-	min-height: 34px;
+	flex: 1 1 auto;
+	min-height: 36px;
 	display: flex;
 	flex-direction: row;
 	flex-wrap: nowrap;
 	align-items: center;
 	justify-content: center;
 	width: 100%;
+	padding-top: 6px;
+	padding-right: 8px;
+	padding-bottom: 6px;
+	padding-left: 8px;
+	border-radius: 6px;
+	background-color: rgba(0, 0, 0, 0.28);
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	box-sizing: border-box;
 }
 
 .lp-bitcoin-ops .wallet-cashout-tile-input {
 	justify-content: flex-start;
-	gap: 4px;
-	padding-top: 0;
-	padding-right: 2px;
-	padding-bottom: 0;
-	padding-left: 2px;
+	gap: 6px;
+	padding-top: 4px;
+	padding-right: 8px;
+	padding-bottom: 4px;
+	padding-left: 8px;
 }
 
 .lp-bitcoin-ops .wallet-cashout-tile-input > .material-icons {
@@ -4603,14 +4615,14 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 .lp-bitcoin-ops .wallet-cashout-input {
 	flex: 1 1 0;
 	min-width: 0;
-	height: 30px;
+	height: 28px;
 	padding-top: 0;
-	padding-right: 6px;
+	padding-right: 0;
 	padding-bottom: 0;
-	padding-left: 6px;
-	border-radius: 5px;
-	background-color: rgba(0, 0, 0, 0.28);
-	border: 1px solid rgba(255, 255, 255, 0.1);
+	padding-left: 0;
+	border-radius: 0;
+	background-color: transparent;
+	border: 0;
 	color: #f8f9fc;
 	font-size: 11px;
 	text-align: left;
@@ -4625,19 +4637,29 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	white-space: nowrap;
 }
 
+.lp-bitcoin-ops .wallet-cashout-tile-body-btn {
+	padding-top: 0;
+	padding-right: 0;
+	padding-bottom: 0;
+	padding-left: 0;
+	background-color: transparent;
+	border: 0;
+}
+
 .lp-bitcoin-ops .wallet-cashout-tile-btn {
-	flex: 1 1 0;
-	min-height: 34px;
+	flex: 1 1 auto;
+	min-height: 36px;
 	width: 100%;
+	height: 100%;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
 	justify-content: center;
 	padding-top: 6px;
-	padding-right: 4px;
+	padding-right: 6px;
 	padding-bottom: 6px;
-	padding-left: 4px;
-	border-radius: 5px;
+	padding-left: 6px;
+	border-radius: 6px;
 	background-color: rgba(0, 0, 0, 0.28);
 	border: 1px solid rgba(255, 255, 255, 0.1);
 	color: #f8f9fc;
@@ -4649,6 +4671,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	text-align: center;
 	white-space: normal;
 	cursor: pointer;
+	box-sizing: border-box;
 }
 
 .lp-bitcoin-ops .wallet-cashout-tile-btn.disabled {
@@ -4947,7 +4970,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	gap: 14px;
 	align-items: stretch;
 	width: 100%;
-	flex: 1 1 0;
+	flex: 0 0 auto;
 	min-height: 0;
 	margin-bottom: 0;
 	overflow: visible;
@@ -4961,10 +4984,10 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	display: flex;
 	flex-direction: column;
 	gap: 0;
-	padding-top: 16px;
-	padding-right: 16px;
-	padding-bottom: 16px;
-	padding-left: 16px;
+	padding-top: 14px;
+	padding-right: 14px;
+	padding-bottom: 14px;
+	padding-left: 14px;
 	border-radius: 10px;
 	background-color: rgba(0, 0, 0, 0.28);
 	border: 1px solid rgba(255, 255, 255, 0.08);
@@ -4972,20 +4995,20 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 }
 
 .lp-bitcoin-ops .transfer-column-body {
-	flex: 1 1 0;
+	flex: 0 1 auto;
 	min-height: 0;
 	display: flex;
 	flex-direction: column;
-	gap: 14px;
+	gap: 8px;
 	width: 100%;
 }
 
 .lp-bitcoin-ops .transfer-mirror-stack {
-	flex: 1 1 0;
+	flex: 0 0 auto;
 	min-height: 0;
 	display: flex;
 	flex-direction: column;
-	gap: 14px;
+	gap: 8px;
 	width: 100%;
 }
 
@@ -4994,10 +5017,10 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	flex-direction: column;
 	justify-content: center;
 	width: 100%;
-	padding-top: 14px;
-	padding-right: 14px;
-	padding-bottom: 14px;
-	padding-left: 14px;
+	padding-top: 12px;
+	padding-right: 12px;
+	padding-bottom: 12px;
+	padding-left: 12px;
 	border-radius: 8px;
 	background-color: rgba(0, 0, 0, 0.35);
 	border: 1px solid rgba(255, 255, 255, 0.06);
@@ -5005,12 +5028,12 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 
 .lp-bitcoin-ops .transfer-subsection-stat {
 	flex: 0 0 auto;
-	min-height: 52px;
+	min-height: 0;
 }
 
 .lp-bitcoin-ops .transfer-subsection-detail {
-	flex: 1 1 0;
-	min-height: 104px;
+	flex: 0 0 auto;
+	min-height: 0;
 }
 
 .lp-bitcoin-ops .transfer-subsection-command {
@@ -5110,10 +5133,10 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 .lp-bitcoin-ops .transfer-column-copy {
 	flex-shrink: 0;
 	margin: 0;
-	min-height: 52px;
+	min-height: 0;
 	color: #9ca3af;
 	font-size: 11px;
-	line-height: 1.5;
+	line-height: 1.45;
 	white-space: normal;
 }
 
@@ -5236,7 +5259,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	width: 100%;
 	margin-top: auto;
 	flex-shrink: 0;
-	padding-top: 14px;
+	padding-top: 10px;
 }
 
 .lp-bitcoin-ops .transfer-copy-btn {
