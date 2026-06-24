@@ -523,9 +523,15 @@
 													<div class="wallet-cashout-tiles">
 														<div class="wallet-cashout-tile">
 															<div class="wallet-cashout-tile-label">BTC amount</div>
-															<div class="wallet-cashout-tile-body wallet-cashout-tile-input">
-																<i class="material-icons">payments</i>
-																<TextEntry class="wallet-cashout-input" Placeholder="0.025" Value:bind="@CashOutAmount"/>
+															<div class="wallet-cashout-tile-body wallet-cashout-tile-input" onclick="@FocusCashOutInput">
+																<i class="material-icons wallet-cashout-input-icon">payments</i>
+																<div class="wallet-cashout-input-field">
+																	<TextEntry @ref="_cashOutInput" class="wallet-cashout-input" Placeholder="ex. 0.0025 BTC" Value:bind="@CashOutAmount"/>
+																	@if ( string.IsNullOrWhiteSpace( _cashOutAmount ) )
+																	{
+																		<span class="wallet-cashout-input-hint">ex. 0.0025 BTC</span>
+																	}
+																</div>
 															</div>
 														</div>
 														<div class="wallet-cashout-tile">
@@ -808,6 +814,7 @@
 	private enum WalletCashOutFeedback { None, Error, Success }
 
 	private string _cashOutAmount = "";
+	private TextEntry _cashOutInput;
 	private WalletCashOutFeedback _partialCashOutFeedback;
 	private string _partialCashOutFeedbackText = "";
 	private WalletCashOutFeedback _allCashOutFeedback;
@@ -826,11 +833,18 @@
 		get => _cashOutAmount;
 		set
 		{
-			_cashOutAmount = value ?? string.Empty;
-			ClearPartialCashOutFeedback();
-			StateHasChanged();
+			var next = value ?? string.Empty;
+			if ( _cashOutAmount == next && _partialCashOutFeedback == WalletCashOutFeedback.None )
+				return;
+
+			_cashOutAmount = next;
+
+			if ( _partialCashOutFeedback != WalletCashOutFeedback.None )
+				ClearPartialCashOutFeedback();
 		}
 	}
+
+	private void FocusCashOutInput() => _cashOutInput?.Focus();
 	private LpBitcoinHubEntity _hub;
 
 	public LpBitcoinHubEntity Hub => _hub;
@@ -866,6 +880,9 @@
 
 		OpenRackUpgrades( rack );
 	}
+
+	/// <summary>Dev preview — jump straight to the wallet tab (cash-out tiles).</summary>
+	public void DevOpenWalletTab() => SelectTab( OpsTab.Wallet );
 
 	protected override void OnEnabled()
 	{
@@ -1795,11 +1812,16 @@
 		if ( _allCashOutFeedback == WalletCashOutFeedback.Success )
 			return "is-success";
 
-		return HubWalletBtc() <= 0f ? "disabled" : string.Empty;
+		return HubWalletBtc() > 0f ? "is-ready" : "disabled";
 	}
 
 	private bool CanAttemptPartialCashOut()
-		=> TryParseCashOutAmount( out var amount ) && amount > 0f;
+	{
+		if ( HubWalletBtc() <= 0f )
+			return false;
+
+		return TryParseCashOutAmount( out var amount ) && amount > 0f;
+	}
 
 	private bool TryParseCashOutAmount( out float amount )
 	{

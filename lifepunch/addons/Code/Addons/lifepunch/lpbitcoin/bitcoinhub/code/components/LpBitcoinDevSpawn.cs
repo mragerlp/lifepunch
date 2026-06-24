@@ -680,6 +680,25 @@ public static class LpBitcoinDevSpawn
 		Log.Info( "lp_bitcoin_preview_hub_upgrades: rack upgrades open — check buy buttons + intro line." );
 	}
 
+	/// <summary>Hub admin on the wallet tab — cash-out tiles + bank deposit preview (PIN bypassed).</summary>
+	[ConCmd( "lp_bitcoin_preview_hub_wallet" )]
+	public static void PreviewHubWalletUi()
+	{
+		WarnIfWrongPlayScene();
+		LpBitcoinUi.CloseAll();
+		var hub = LpBitcoinUi.GetOrCreatePreviewHub( withSampleRacks: true );
+		if ( !hub.IsValid() )
+		{
+			Log.Warning( "lp_bitcoin_preview_hub_wallet: no active scene." );
+			return;
+		}
+
+		var panel = LpHashdUiHost.Open( hub );
+		panel?.DevBypassPinGate();
+		panel?.DevOpenWalletTab();
+		Log.Info( "lp_bitcoin_preview_hub_wallet: wallet tab open — check cash-out tile layout." );
+	}
+
 	/// <summary>Hub admin with PIN gate presets — setup (default), unlock (PIN 4242), or blocked (wrong owner).</summary>
 	[ConCmd( "lp_hashd_pin_preview" )]
 	public static void PreviewHubPinUi( string mode = "setup" )
