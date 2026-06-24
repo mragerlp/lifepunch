@@ -43,25 +43,28 @@ READ FIRST (in this order), then follow them as law:
 0e. `lifepunch/addons/docs/DXRP_ADDON_PUBLISH_DOCTRINE.md` ← DXRP context, lpbitcoin layout, folder=entity slug, PLACEHOLDER hands-off, portal vs files. Mandatory every session.
 0f. `lifepunch/addons/docs/LIFEPUNCH_WEAPON_IMPLEMENTATION_LAW.md` ← weapon platform not gun mesh; P0 attachments/collision/anims. Mandatory for weapon / lpweapons / AK lane work.
 1. The project's `.cursor/rules` (all alwaysApply): lifepunch-active-workstream-gate,
-   lifepunch-digital-machine, lifepunch-weapon-platform, lifepunch-operating-context, lifepunch-quality-bar,
+   lifepunch-digital-machine, lifepunch-weapon-platform, lifepunch-operating-context,
+   lifepunch-opus-usage, lifepunch-quality-bar,
    dxrp-addon-foundation, lifepunch-trademark-ip, lifepunch-rules-workflow,
    lifepunch-website-organization, lifepunch-sbox-patches.
-2. `lifepunch/docs/MACHINE_CAST.md` ← machine names (VENGEANCE, Cornerman, lifepunchnet). Mandatory.
-3. `lifepunch/docs/BLOODWAVE_ALIAS.md` ← Bloodwave visible · mrragerlp proprietary · Mr. Rager contact. Mandatory.
-4. `lifepunch/docs/OPS_CLARITY_CHECKPOINT.md` ← how we look at the web (at a glance, shortcut tiers, voice stack). Mandatory for ops/voice/multi-machine work.
-5. `lifepunch/docs/CVL_RGB_DOCTRINE.md` ← R/G/B primaries, yellow/cyan/magenta mixes, white=black integration states. Mandatory for CVL/multi-machine comms.
-6. `OneDrive/Desktop/uniforms/UNIFORM_STANDARDS.md` ← web uniform standards (Explorer icons, shortcut tiers, console cast). Repo mirror: `lifepunch/branding/lifepunch-ops/UNIFORM_STANDARDS.md`.
-7. `lifepunch/docs/AGENT_ONBOARDING.md` ← foundation + current state (read "Tonight" table if resuming mid-session).
-8. `lifepunch/docs/BUSINESS_CONTEXT.md` ← LIFEPUNCH™ entity, revenue, community links.
-9. `lifepunch/docs/PUBLISH_REPO_LANE.md` ← two-repo publish law (core vs lifepunch-published).
-10. `lifepunch/addons/docs/QUARANTINE_REGISTER.md` ← frozen idents; concepts only, no ship copy.
-11. `lifepunch/docs/GIT_CHECKPOINTS.md` ← commit/push/pull (agent recommends, owner approves).
-12. `lifepunch/docs/WORKSPACE_STRUCTURE.md`.
-13. `lifepunch/docs/GITLAB_ORGANIZATION.md` ← GitLab lane map (GitHub monorepo stays canonical).
-14. s&box MCP work: `lifepunch/docs/SBOX_EDITOR_MCP.md` (triple stack: `sbox` + `sbox-editor` + `sbox-jtc`) · ports: `lifepunch/config/sbox-mcp-ports.json` · routing: `lifepunch/docs/MCP_AGENT_ROUTING.md` · **updates:** `lifepunch/docs/CVL_FULL_CAPACITY_UPDATES.md`. `execute_csharp` OK when needed; **always** delete leftover `Editor/__Exec_*.cs` after exec sessions (see that doc). After MCP/library bumps: `Fix-SboxEditorMcpCursorToolNames.ps1 -ProbeEditorMcp`.
-15. Cornerman LM: `lifepunch/docs/CORNERMAN_MODEL_ROUTING.md` · catalog: `lifepunch/config/cornerman-tier3-models.json` · fix: `lifepunch/scripts/Fix-CornermanLmServe.ps1`.
-16. Before editor/project work: `lifepunch/scripts/Test-PreLaunchCheckup.ps1 -Fix` (Cornerman health, headless LM, dual MCP). Full refresh after stack updates: `Invoke-CvlFullCapacityRefresh.ps1`.
-17. s&box engine patches: `lifepunch/scripts/Get-SboxEnginePatchStatus.ps1` — if WARN, read `lifepunch/addons/docs/SBOX_ENGINE_PATCHES.md` and triage before UI/publish edits.
+2. `lifepunch/docs/OPUS_USAGE_LAW.md` ← Opus/API pool law, four-phase workflow, strict subsystem
+   scope (Hub → Terminal → GPU Rack). Mandatory before Tier-1 / major tasks.
+3. `lifepunch/docs/MACHINE_CAST.md` ← machine names (VENGEANCE, Cornerman, lifepunchnet). Mandatory.
+4. `lifepunch/docs/BLOODWAVE_ALIAS.md` ← Bloodwave visible · mrragerlp proprietary · Mr. Rager contact. Mandatory.
+5. `lifepunch/docs/OPS_CLARITY_CHECKPOINT.md` ← how we look at the web (at a glance, shortcut tiers, voice stack). Mandatory for ops/voice/multi-machine work.
+6. `lifepunch/docs/CVL_RGB_DOCTRINE.md` ← R/G/B primaries, yellow/cyan/magenta mixes, white=black integration states. Mandatory for CVL/multi-machine comms.
+7. `OneDrive/Desktop/uniforms/UNIFORM_STANDARDS.md` ← web uniform standards (Explorer icons, shortcut tiers, console cast). Repo mirror: `lifepunch/branding/lifepunch-ops/UNIFORM_STANDARDS.md`.
+8. `lifepunch/docs/AGENT_ONBOARDING.md` ← foundation + current state (read "Tonight" table if resuming mid-session).
+9. `lifepunch/docs/BUSINESS_CONTEXT.md` ← LIFEPUNCH™ entity, revenue, community links.
+10. `lifepunch/docs/PUBLISH_REPO_LANE.md` ← two-repo publish law (core vs lifepunch-published).
+11. `lifepunch/addons/docs/QUARANTINE_REGISTER.md` ← frozen idents; concepts only, no ship copy.
+12. `lifepunch/docs/GIT_CHECKPOINTS.md` ← commit/push/pull (agent recommends, owner approves).
+13. `lifepunch/docs/WORKSPACE_STRUCTURE.md`.
+14. `lifepunch/docs/GITLAB_ORGANIZATION.md` ← GitLab lane map (GitHub monorepo stays canonical).
+15. s&box MCP work: `lifepunch/docs/SBOX_EDITOR_MCP.md` (triple stack: `sbox` + `sbox-editor` + `sbox-jtc`) · ports: `lifepunch/config/sbox-mcp-ports.json` · routing: `lifepunch/docs/MCP_AGENT_ROUTING.md` · **updates:** `lifepunch/docs/CVL_FULL_CAPACITY_UPDATES.md`. `execute_csharp` OK when needed; **always** delete leftover `Editor/__Exec_*.cs` after exec sessions (see that doc). After MCP/library bumps: `Fix-SboxEditorMcpCursorToolNames.ps1 -ProbeEditorMcp`.
+16. Cornerman LM: `lifepunch/docs/CORNERMAN_MODEL_ROUTING.md` · catalog: `lifepunch/config/cornerman-tier3-models.json` · fix: `lifepunch/scripts/Fix-CornermanLmServe.ps1`.
+17. Before editor/project work: `lifepunch/scripts/Test-PreLaunchCheckup.ps1 -Fix` (Cornerman health, headless LM, dual MCP). Full refresh after stack updates: `Invoke-CvlFullCapacityRefresh.ps1`.
+18. s&box engine patches: `lifepunch/scripts/Get-SboxEnginePatchStatus.ps1` — if WARN, read `lifepunch/addons/docs/SBOX_ENGINE_PATCHES.md` and triage before UI/publish edits.
 
 OUT OF SCOPE (law): Do NOT reference, document, or build anything for legacy EVO / EVORP / SPL-mute /
 null-EVORP — not part of LifePunch. Remove stray mentions if you touch a file; never add new ones.
@@ -105,8 +108,10 @@ COMMIT CONSENT: never commit unprompted — when work hits a natural commit poin
 whether to commit (propose scope + message) and commit only on an explicit yes.
 
 HOW WE OPERATE (cost-safe — every token is real $USD):
-- Default model: Auto/Composer (Tier-2). Opus (Tier-1) only for architecture / multi-file C# /
-  subtle debugging / legal-structural work.
+- Default model: Auto/Composer (Tier-2). Opus (Tier-1) only per `lifepunch/docs/OPUS_USAGE_LAW.md`
+  (architecture, multi-file C#, MCP blockers, ModelDoc — not README/changelog/marketing).
+- Major tasks: Opus Phase 1 plan (no code) → Opus Phase 2 one slice → flatgrass proof → Opus Phase 4 review.
+- lifepunchbitcoin scope: Hub → Terminal → GPU Rack — one entity until flatgrass sign-off.
 - Session hygiene: one focused chat per task; attach specific files/ranges, not whole folders.
 - Guardrails: verify by stakes not model; commit only your lane; dev/clones only (production
   needs owner approval).

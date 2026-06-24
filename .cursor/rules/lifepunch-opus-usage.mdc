@@ -1,0 +1,46 @@
+---
+description: Opus/API pool discipline — four-phase workflow, strict subsystem scope, ship order
+alwaysApply: true
+---
+
+# LifePunch — Opus Usage Law
+
+**Canonical:** `lifepunch/docs/OPUS_USAGE_LAW.md`
+
+## Core law
+
+> Opus = scarce $400/mo API pool. **Plan once → implement one slice → flatgrass proof → review once.**
+> Do not burn Opus rediscovering context every turn.
+
+**Stack:** Cursor Ultra + Anthropic API key (Cursor Settings, never in git) + Opus + **strict subsystem scope**.
+
+## Use Opus for
+
+Architecture · debugging · MCP workflows · ModelDoc setup · multi-file C# · Razor UI **blockers** · agent planning (Phase 1, no code).
+
+## Avoid Opus for
+
+README · changelogs · Discord · marketing · doc formatting → **Auto / Composer**.
+
+## Four-phase workflow (major tasks)
+
+| Phase | Who | What |
+|-------|-----|------|
+| **1** | Opus | Plan only — files, risks, definition of done. **No code.** |
+| **2** | Opus | Implement **Phase A / one slice only** |
+| **3** | Any + bridge | **Flatgrass** play proof — not editor-only |
+| **4** | Opus | Review — find defects before next slice |
+
+One focused chat per major task; fresh chat + short summary for the next phase.
+
+## lifepunchbitcoin ship order (strict scope)
+
+Opus exclusively on **one entity until flatgrass proof + owner sign-off**, then advance:
+
+1. **Hub** (`lpbitcoin/bitcoinhub`) — active
+2. **Terminal** — after Hub Phase A + H10
+3. **GPU Rack** — after Terminal baseline
+
+Hub Opus slices (one per Phase 2): collision validation → power state → fan anim → LED state machine → telemetry overlays → interaction polish.
+
+**Gate:** `ACTIVE_WORKSTREAM.md` · machine stack: `LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md`.

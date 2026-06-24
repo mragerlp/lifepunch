@@ -54,6 +54,26 @@ Business wrapper: `lifepunch/docs/BUSINESS_CONTEXT.md`.
 
 Cursor plugins: **Convex** = optional realtime backend only — not s&box entities or weapons.
 
+## Opus usage law (Tier-1 / API pool)
+
+**Canonical:** `lifepunch/docs/OPUS_USAGE_LAW.md` · rule: **lifepunch-opus-usage**.
+
+| Use Opus for | Avoid Opus for |
+|--------------|----------------|
+| Architecture, debugging, MCP workflows, ModelDoc setup, multi-file C#, Razor UI **blockers**, Phase-1 planning (no code) | README, changelogs, Discord, marketing, doc formatting |
+
+**Four-phase workflow (major tasks):**
+
+1. **Opus — plan only** (files, risks; no code)
+2. **Opus — implement one slice** (Phase A / one checklist ID)
+3. **Flatgrass proof** (bridge + USE — Law 5)
+4. **Opus — review** (defects before next slice)
+
+**lifepunchbitcoin strict scope:** Opus on **Hub** until flatgrass sign-off → **Terminal** → **GPU Rack**.
+Connect Anthropic API key in Cursor Settings first; never commit keys.
+
+Hub Opus queue (one slice per Phase 2): collision validation → power state → fan animation → LED state machine → telemetry overlays → interaction polish.
+
 ## Publish addons (June 2026 — two-repo law)
 
 **Build in core. Export when portal-ready. Never invent law in the publish clone.**
@@ -159,7 +179,9 @@ agents work. See **Publish addons** + `PUBLISH_REPO_LANE.md` + `GIT_CHECKPOINTS.
 
 - **lifepunch-operating-context** — business style; **asset ownership default = ours**, do
   NOT raise provenance / "is this ok to ship" concerns (the user flags external work
-  explicitly); git workflow; publish notes.
+  explicitly); git workflow; publish notes; Tier 1/2/3 pools.
+- **lifepunch-opus-usage** — Opus/API pool law; four-phase workflow; Hub → Terminal → GPU Rack scope.
+  Full detail: `lifepunch/docs/OPUS_USAGE_LAW.md`.
 - **lifepunch-quality-bar** — **NO SPAGHETTI (≠ no hacks).** A simple, honest hack/baseline
   is fine and often necessary as we scale. The enemy is *spaghetti*: convoluted,
   unmaintainable, non-modular code with tangled interdependencies and unpredictable control

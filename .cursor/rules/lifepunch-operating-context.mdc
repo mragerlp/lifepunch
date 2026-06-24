@@ -38,8 +38,10 @@ alwaysApply: true
     free, so default here and reserve the API pool for Tier 1.
   - **Tier 3 — Cornerman (local, when live):** bulk summarize, log/RAG context-prep, first-draft
     boilerplate, classification — zero Cursor usage. Feed Cursor distilled context, not raw dumps.
-  - **Escalation:** start at the lowest tier that fits; jump to Opus the moment real complexity
-    appears; when unsure on something genuinely hard, use Opus.
+- **Escalation:** start at the lowest tier that fits; jump to Opus the moment real complexity
+  appears; when unsure on something genuinely hard, use Opus.
+- **Four-phase Opus workflow + strict subsystem scope:** `lifepunch/docs/OPUS_USAGE_LAW.md` +
+  **lifepunch-opus-usage** rule — plan (no code) → one slice → flatgrass → review; Hub → Terminal → GPU Rack.
 - **Session hygiene (kills the cache-read tax):** one focused chat per task; start fresh often;
   continue via a short summary into a NEW chat, not a multi-million-token context drag. Attach
   specific files/ranges, not whole folders. Ground once; reference by path.
