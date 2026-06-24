@@ -4161,17 +4161,35 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	gap: 18px;
 }
 
-.lp-bitcoin-ops .pane.wallet > .wallet-panel > .lp-ui-panel-title,
-.lp-bitcoin-ops .pane.logs-pane > .logs-panel > .lp-ui-panel-title {
+.lp-bitcoin-ops .pane.logs-pane > .logs-panel {
+	gap: 18px;
+}
+
+.lp-bitcoin-ops .pane.wallet > .wallet-panel > .lp-ui-panel-title {
 	margin-bottom: 14px;
 }
 
-.lp-bitcoin-ops .pane.transfers > .transfers-panel > .lp-ui-panel-title {
+.lp-bitcoin-ops .pane.transfers > .transfers-panel > .lp-ui-panel-title,
+.lp-bitcoin-ops .pane.logs-pane > .logs-panel > .lp-ui-panel-title {
 	margin-bottom: 0;
 }
 
 .lp-bitcoin-ops .pane.transfers .lp-ui-intro,
 .lp-bitcoin-ops .pane.transfers .transfers-intro {
+	flex-shrink: 0;
+	margin-top: 0;
+	margin-bottom: 0;
+	padding-top: 10px;
+	padding-right: 12px;
+	padding-bottom: 10px;
+	padding-left: 12px;
+	font-size: 11px;
+	line-height: 1.45;
+	text-align: center;
+}
+
+.lp-bitcoin-ops .pane.logs-pane .lp-ui-intro,
+.lp-bitcoin-ops .pane.logs-pane .logs-intro {
 	flex-shrink: 0;
 	margin-top: 0;
 	margin-bottom: 0;
@@ -4200,8 +4218,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 
 .lp-bitcoin-ops .pane.wallet .lp-ui-intro,
 .lp-bitcoin-ops .pane.racks .lp-ui-intro,
-.lp-bitcoin-ops .pane.upgrades .lp-ui-intro,
-.lp-bitcoin-ops .pane.logs-pane .lp-ui-intro {
+.lp-bitcoin-ops .pane.upgrades .lp-ui-intro {
 	flex-shrink: 0;
 	margin-bottom: 12px;
 }
