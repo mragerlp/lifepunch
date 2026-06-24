@@ -10,7 +10,7 @@ using Sandbox;
 namespace LifePunch.DXRP.Addons.Bitcoin;
 
 /// <summary>
-/// Hub world visuals — fence emissive status LED (green ON / red OFF) on the mesh only.
+/// Hub world visuals — fence emissive status LED (green ON / red OFF) plus a subtle point-light spill.
 /// Phase 0: fan mesh is part of <c>bitcoinhub.vmdl</c> (no child GO spin). Phase 2: optional fan child.
 /// </summary>
 public sealed class LpBitcoinHubVisuals : Component
@@ -42,6 +42,8 @@ public sealed class LpBitcoinHubVisuals : Component
 	private int _materialRefreshPasses;
 
 	private ModelRenderer _bodyRenderer;
+	private GameObject _statusGlowGo;
+	private PointLight _statusGlow;
 
 	protected override void OnStart()
 	{
@@ -70,6 +72,7 @@ public sealed class LpBitcoinHubVisuals : Component
 		}
 
 		LpBitcoinPowerLeds.ApplyHubStatusLed( _bodyRenderer, powered );
+		UpdateStatusGlow( powered );
 		UpdateHubFanSounds( powered );
 		_lastPowered = powered;
 
@@ -96,6 +99,34 @@ public sealed class LpBitcoinHubVisuals : Component
 
 	private void RemoveLegacyStatusLightChildren()
 		=> RemoveLegacyStatusLightChildren( GameObject );
+
+	private void UpdateStatusGlow( bool powered )
+	{
+		if ( !_bodyRenderer.IsValid() )
+			return;
+
+		if ( !_statusGlow.IsValid() )
+		{
+			_statusGlowGo = new GameObject( true, "hub_status_glow" );
+			_statusGlowGo.SetParent( GameObject );
+			_statusGlow = _statusGlowGo.AddComponent<PointLight>();
+			_statusGlow.Shadows = false;
+			_statusGlow.Attenuation = LpBitcoinPowerLeds.HubStatusGlowAttenuation;
+			_statusGlow.Radius = LpBitcoinPowerLeds.HubStatusGlowRadius;
+		}
+
+		_statusGlowGo.LocalPosition = LpBitcoinPowerLeds.GetHubStatusGlowLocalPosition( _bodyRenderer );
+		_statusGlow.Enabled = true;
+		_statusGlow.LightColor = LpBitcoinPowerLeds.GetHubStatusGlowColor( powered );
+	}
+
+	protected override void OnDestroy()
+	{
+		if ( _statusGlowGo.IsValid() )
+			_statusGlowGo.Destroy();
+
+		base.OnDestroy();
+	}
 
 	private void CacheFanChild()
 	{

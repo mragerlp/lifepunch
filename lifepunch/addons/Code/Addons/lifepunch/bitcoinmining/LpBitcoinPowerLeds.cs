@@ -18,12 +18,20 @@ public static class LpBitcoinPowerLeds
 	private const string SelfIllumScaleAttr = "g_flSelfIllumScale";
 	private const string SelfIllumTintAttr = "g_vSelfIllumTint";
 
-	public const float HubStatusOnScale = 2.5f;
-	public const float HubStatusOffScale = 1.75f;
+	public const float HubStatusOnScale = 3.15f;
+	public const float HubStatusOffScale = 2.2f;
 	public const float RackGpuLedOn = 1.5f;
 
-	private static readonly Vector4 HubStatusOnTint = new( 0.15f, 1f, 0.45f, 0f );
-	private static readonly Vector4 HubStatusOffTint = new( 1f, 0.12f, 0.05f, 0f );
+	public const float HubStatusGlowRadius = 44f;
+	public const float HubStatusGlowAttenuation = 2.35f;
+	public const float HubStatusOnGlowStrength = 0.38f;
+	public const float HubStatusOffGlowStrength = 0.3f;
+
+	private static readonly Vector4 HubStatusOnTint = new( 0.18f, 1f, 0.52f, 0f );
+	private static readonly Vector4 HubStatusOffTint = new( 1f, 0.16f, 0.06f, 0f );
+
+	private static readonly Color HubStatusOnGlowColor = new( 0.14f, 0.98f, 0.44f );
+	private static readonly Color HubStatusOffGlowColor = new( 0.98f, 0.14f, 0.06f );
 
 	private static readonly string[] HubStatusMaterialTokens =
 	[
@@ -70,6 +78,27 @@ public static class LpBitcoinPowerLeds
 	/// <summary>Legacy name — routes to <see cref="ApplyHubStatusLed"/>.</summary>
 	public static void ApplyHubFenceLeds( ModelRenderer renderer, bool powered )
 		=> ApplyHubStatusLed( renderer, powered );
+
+	/// <summary>Soft spill on the fence LED strip — mesh emissive stays primary read.</summary>
+	public static Color GetHubStatusGlowColor( bool powered )
+	{
+		var baseColor = powered ? HubStatusOnGlowColor : HubStatusOffGlowColor;
+		var strength = powered ? HubStatusOnGlowStrength : HubStatusOffGlowStrength;
+		return baseColor * strength;
+	}
+
+	/// <summary>Anchor near the front fence LED mesh (local space).</summary>
+	public static Vector3 GetHubStatusGlowLocalPosition( ModelRenderer body )
+	{
+		if ( !body.IsValid() )
+			return Vector3.Zero;
+
+		var bounds = body.LocalBounds;
+		return new Vector3(
+			bounds.Maxs.x - bounds.Size.x * 0.03f,
+			bounds.Center.y,
+			bounds.Maxs.z - bounds.Size.z * 0.12f );
+	}
 
 	public static void ApplyRackGpuLeds( ModelRenderer renderer, bool active, float intensity01 = 1f )
 	{

@@ -10,11 +10,12 @@
 
 using System.Linq;
 using Sandbox;
+using LifePunch.DXRP.Addons.Bitcoin;
 
 namespace LifePunch.DXRP.Addons.Dev;
 
 /// <summary>
-/// Hub OFF/ON world visuals — fence emissive only (Phase A staging).
+/// Hub OFF/ON world visuals — fence emissive plus subtle status glow spill (Phase A staging).
 /// </summary>
 public sealed class LpBitcoinStagingHubVisuals : Component
 {
@@ -37,6 +38,8 @@ public sealed class LpBitcoinStagingHubVisuals : Component
 	private bool _fanAlignPending = true;
 
 	private ModelRenderer _bodyRenderer;
+	private GameObject _statusGlowGo;
+	private PointLight _statusGlow;
 
 	protected override void OnStart()
 	{
@@ -61,6 +64,7 @@ public sealed class LpBitcoinStagingHubVisuals : Component
 		}
 
 		LpBitcoinStagingHubPowerLeds.ApplyHubStatusLed( _bodyRenderer, powered );
+		UpdateStatusGlow( powered );
 		_lastPowered = powered;
 
 		if ( !powered )
@@ -68,6 +72,34 @@ public sealed class LpBitcoinStagingHubVisuals : Component
 			_fanSpeed = 0f;
 			_fanAngle = 0f;
 		}
+	}
+
+	private void UpdateStatusGlow( bool powered )
+	{
+		if ( !_bodyRenderer.IsValid() )
+			return;
+
+		if ( !_statusGlow.IsValid() )
+		{
+			_statusGlowGo = new GameObject( true, "hub_status_glow" );
+			_statusGlowGo.SetParent( GameObject );
+			_statusGlow = _statusGlowGo.AddComponent<PointLight>();
+			_statusGlow.Shadows = false;
+			_statusGlow.Attenuation = LpBitcoinPowerLeds.HubStatusGlowAttenuation;
+			_statusGlow.Radius = LpBitcoinPowerLeds.HubStatusGlowRadius;
+		}
+
+		_statusGlowGo.LocalPosition = LpBitcoinPowerLeds.GetHubStatusGlowLocalPosition( _bodyRenderer );
+		_statusGlow.Enabled = true;
+		_statusGlow.LightColor = LpBitcoinPowerLeds.GetHubStatusGlowColor( powered );
+	}
+
+	protected override void OnDestroy()
+	{
+		if ( _statusGlowGo.IsValid() )
+			_statusGlowGo.Destroy();
+
+		base.OnDestroy();
 	}
 
 	private void CacheFanChild()
