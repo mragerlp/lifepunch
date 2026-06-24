@@ -4474,45 +4474,50 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 }
 
 .lp-bitcoin-ops .wallet-cashout-stack {
-	flex: 1 1 0;
-	min-height: 0;
-	flex-shrink: 0;
+	flex: 0 0 auto;
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	margin-top: auto;
+	padding-top: 0;
+	padding-right: 0;
+	padding-bottom: 18px;
+	padding-left: 0;
+}
+
+.lp-bitcoin-ops .wallet-cashout-card {
 	display: flex;
 	flex-direction: column;
 	gap: 8px;
 	width: 100%;
-	margin-top: auto;
-	padding-top: 0;
-	padding-right: 4px;
-	padding-bottom: 12px;
-	padding-left: 4px;
-}
-
-.lp-bitcoin-ops .wallet-cashout-bar {
-	display: flex;
-	flex-direction: row;
-	flex-wrap: nowrap;
-	align-items: stretch;
-	gap: 8px;
-	flex-shrink: 0;
-	width: 100%;
-	padding-top: 8px;
-	padding-right: 8px;
-	padding-bottom: 8px;
-	padding-left: 8px;
+	padding-top: 10px;
+	padding-right: 10px;
+	padding-bottom: 10px;
+	padding-left: 10px;
 	border-radius: 10px;
 	background-color: rgba(0, 0, 0, 0.28);
 	border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
+.lp-bitcoin-ops .wallet-cashout-row {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	align-items: stretch;
+	gap: 8px;
+	width: 100%;
+	flex-shrink: 0;
+}
+
 .lp-bitcoin-ops .wallet-cashout-field {
 	flex: 1 1 0;
 	min-width: 0;
-	min-height: 42px;
+	min-height: 48px;
 	display: flex;
 	flex-direction: row;
 	flex-wrap: nowrap;
 	align-items: center;
+	justify-content: flex-start;
 	gap: 8px;
 	padding-top: 0;
 	padding-right: 10px;
@@ -4532,9 +4537,9 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 .lp-bitcoin-ops .wallet-cashout-input {
 	flex: 1 1 0;
 	min-width: 0;
-	height: 36px;
+	height: 40px;
 	padding-top: 0;
-	padding-right: 10px;
+	padding-right: 0;
 	padding-bottom: 0;
 	padding-left: 0;
 	border-radius: 0;
@@ -4547,12 +4552,12 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 .lp-bitcoin-ops .wallet-cashout-convert {
 	flex: 1 1 0;
 	min-width: 0;
-	min-height: 42px;
+	min-height: 48px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	gap: 3px;
+	gap: 4px;
 	padding-top: 6px;
 	padding-right: 10px;
 	padding-bottom: 6px;
@@ -4580,75 +4585,18 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	white-space: nowrap;
 }
 
-.lp-bitcoin-ops .wallet-cashout-panel {
-	flex: 1 1 0;
-	min-height: 0;
-	display: flex;
-	flex-direction: column;
-	gap: 8px;
-	margin-top: 0;
-	margin-bottom: 0;
-	padding-top: 8px;
-	padding-right: 8px;
-	padding-bottom: 8px;
-	padding-left: 8px;
-	border-radius: 10px;
-	border: 1px solid rgba(232, 125, 62, 0.45);
-	background-color: rgba(232, 125, 62, 0.08);
-	overflow: hidden;
-}
-
-.lp-bitcoin-ops .wallet-cashout-panel-head {
-	display: flex;
-	flex-direction: row;
-	flex-wrap: nowrap;
-	align-items: center;
-	justify-content: space-between;
-	gap: 10px;
-	flex-shrink: 0;
-	padding-top: 4px;
-	padding-right: 6px;
-	padding-bottom: 4px;
-	padding-left: 6px;
-	border-radius: 6px;
-	background-color: rgba(0, 0, 0, 0.22);
-	border: 1px solid rgba(232, 125, 62, 0.25);
-}
-
-.lp-bitcoin-ops .wallet-cashout-panel-title {
-	color: #f8f9fc;
-	font-size: 10px;
-	font-weight: 900;
-	text-transform: uppercase;
-	letter-spacing: 0.04em;
-	line-height: 1.2;
-	white-space: nowrap;
-}
-
-.lp-bitcoin-ops .wallet-cashout-panel-amount {
-	flex: 1 1 auto;
-	min-width: 0;
-	color: #e87d3e;
-	font-size: 11px;
-	font-weight: 800;
-	line-height: 1.25;
-	text-align: right;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-}
-
-.lp-bitcoin-ops .wallet-cashout-panel .wallet-cashout-partial.lp-ui-btn-primary {
+.lp-bitcoin-ops .wallet-cashout-panel .wallet-cashout-partial.lp-ui-btn-primary,
+.lp-bitcoin-ops .wallet-cashout-card .wallet-cashout-partial.lp-ui-btn-primary {
 	flex: 0 0 auto;
 	width: 100%;
 	min-width: 0;
-	min-height: 34px;
+	min-height: 36px;
 	height: auto;
 	padding-top: 9px;
 	padding-right: 12px;
 	padding-bottom: 9px;
 	padding-left: 12px;
-	border-radius: 6px;
+	border-radius: 8px;
 	font-size: 10px;
 	font-weight: 900;
 	line-height: 1.15;
@@ -4660,13 +4608,13 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 .lp-bitcoin-ops .wallet-cashout-partial {
 	flex: 0 0 auto;
 	width: 100%;
-	min-height: 34px;
+	min-height: 36px;
 	height: auto;
 	padding-top: 9px;
 	padding-right: 12px;
 	padding-bottom: 9px;
 	padding-left: 12px;
-	border-radius: 6px;
+	border-radius: 8px;
 	border: 0;
 	font-size: 10px;
 	font-weight: 900;
@@ -4689,9 +4637,9 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	align-items: center;
 	justify-content: center;
 	gap: 10px;
-	flex: 1 1 0;
+	flex: 0 0 auto;
 	width: 100%;
-	min-height: 64px;
+	min-height: 58px;
 	padding-top: 12px;
 	padding-right: 14px;
 	padding-bottom: 12px;
@@ -4701,10 +4649,6 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	background-color: rgba(232, 125, 62, 0.14);
 	color: #f8f9fc;
 	cursor: pointer;
-}
-
-.lp-bitcoin-ops .wallet-cashout-panel .wallet-cashout-all {
-	min-height: 64px;
 }
 
 .lp-bitcoin-ops .wallet-cashout-all > .material-icons {

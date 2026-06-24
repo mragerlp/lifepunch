@@ -523,21 +523,16 @@
 											</div>
 
 											<div class="wallet-cashout-stack">
-												<div class="wallet-cashout-bar">
-													<div class="wallet-cashout-field">
-														<i class="material-icons">payments</i>
-														<TextEntry class="wallet-cashout-input" Placeholder="BTC amount (e.g. 0.025)" Value:bind="@CashOutAmount"/>
-													</div>
-													<div class="wallet-cashout-convert">
-														<span class="wallet-cashout-convert-label">Bank deposit</span>
-														<span class="wallet-cashout-convert-value">@PartialCashOutUsdPreview()</span>
-													</div>
-												</div>
-
-												<div class="wallet-cashout-panel">
-													<div class="wallet-cashout-panel-head">
-														<span class="wallet-cashout-panel-title">Cash out</span>
-														<span class="wallet-cashout-panel-amount">@CashOutPanelHeaderAmount()</span>
+												<div class="wallet-cashout-card">
+													<div class="wallet-cashout-row">
+														<div class="wallet-cashout-field">
+															<i class="material-icons">payments</i>
+															<TextEntry class="wallet-cashout-input" Placeholder="BTC amount (e.g. 0.025)" Value:bind="@CashOutAmount"/>
+														</div>
+														<div class="wallet-cashout-convert">
+															<span class="wallet-cashout-convert-label">Bank deposit</span>
+															<span class="wallet-cashout-convert-value">@PartialCashOutUsdPreview()</span>
+														</div>
 													</div>
 													<button class="lp-ui-btn-primary wallet-cashout-partial @GetPartialCashOutButtonClass()" onclick="@CashOutPartial">@PartialCashOutButtonLabel()</button>
 													<button class="wallet-cashout-all @(HubWalletBtc() <= 0f ? "disabled" : "")" onclick="@CashOutAll">
@@ -1748,11 +1743,10 @@
 
 	private string PartialCashOutButtonLabel()
 	{
-		var btc = HubWalletBtc();
-		if ( btc <= 0f )
-			return "Cash out";
+		if ( !TryParseCashOutAmount( out var amount ) || amount <= 0f )
+			return "Cash out amount";
 
-		return $"Cash out {btc:F6} BTC";
+		return $"Cash out {amount:F6} BTC";
 	}
 
 	private string PartialCashOutUsdPreview()
@@ -1768,15 +1762,7 @@
 		if ( HubWalletBtc() <= 0f )
 			return "Deposit rack earnings at the terminal first";
 
-		return $"{LpBitcoinEconomy.FormatBtcToCash( HubWalletBtc() )} to your bank";
-	}
-
-	private string CashOutPanelHeaderAmount()
-	{
-		if ( HubWalletBtc() <= 0f )
-			return "—";
-
-		return $"{HubWalletBtc():F4} BTC · {LpBitcoinEconomy.FormatBtcToCash( HubWalletBtc() )}";
+		return $"{HubWalletBtc():F4} BTC · {LpBitcoinEconomy.FormatBtcToCash( HubWalletBtc() )} to your bank";
 	}
 
 	private string GetPartialCashOutButtonClass()
