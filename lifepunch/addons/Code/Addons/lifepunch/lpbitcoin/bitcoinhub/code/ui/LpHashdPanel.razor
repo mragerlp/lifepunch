@@ -503,24 +503,26 @@
 												</div>
 											</div>
 
-											<div class="wallet-cashout-bar">
-												<i class="material-icons">payments</i>
-												<TextEntry class="wallet-cashout-input" Placeholder="BTC amount (e.g. 0.025)" Value:bind="@CashOutAmount"/>
-												<div class="wallet-cashout-convert">
-													<span class="wallet-cashout-convert-label">Bank deposit</span>
-													<span class="wallet-cashout-convert-value">@PartialCashOutUsdPreview()</span>
+											<div class="wallet-cashout-stack">
+												<div class="wallet-cashout-bar">
+													<i class="material-icons">payments</i>
+													<TextEntry class="wallet-cashout-input" Placeholder="BTC amount (e.g. 0.025)" Value:bind="@CashOutAmount"/>
+													<div class="wallet-cashout-convert">
+														<span class="wallet-cashout-convert-label">Bank deposit</span>
+														<span class="wallet-cashout-convert-value">@PartialCashOutUsdPreview()</span>
+													</div>
 												</div>
-											</div>
 
-											<div class="wallet-cashout-panel">
-												<button class="lp-ui-btn-primary wallet-cashout-partial @GetPartialCashOutButtonClass()" onclick="@CashOutPartial">@PartialCashOutButtonLabel()</button>
-												<button class="wallet-cashout-all @(HubWalletBtc() <= 0f ? "disabled" : "")" onclick="@CashOutAll">
-													<i class="material-icons">savings</i>
-													<span class="wallet-cashout-all-text">
-														<span class="wallet-cashout-all-label">Cash out all</span>
-														<span class="wallet-cashout-all-amount">@CashOutAllSubline()</span>
-													</span>
-												</button>
+												<div class="wallet-cashout-panel">
+													<button class="lp-ui-btn-primary wallet-cashout-partial @GetPartialCashOutButtonClass()" onclick="@CashOutPartial">@PartialCashOutButtonLabel()</button>
+													<button class="wallet-cashout-all @(HubWalletBtc() <= 0f ? "disabled" : "")" onclick="@CashOutAll">
+														<i class="material-icons">savings</i>
+														<span class="wallet-cashout-all-text">
+															<span class="wallet-cashout-all-label">Cash out all</span>
+															<span class="wallet-cashout-all-amount">@CashOutAllSubline()</span>
+														</span>
+													</button>
+												</div>
 											</div>
 
 											@if ( _cashOutErrorActive )
