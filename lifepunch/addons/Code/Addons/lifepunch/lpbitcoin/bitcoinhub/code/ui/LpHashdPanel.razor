@@ -315,6 +315,12 @@
 																	<div class="rack-card-title">@slot.DisplayLabel</div>
 																</div>
 																<div class="rack-card-badges">
+																	<button class="rack-slot-id-copy"
+																	        onclick="@(() => CopyOverviewMinerToken( slot ))">
+																		<span class="rack-slot-id-token">@slot.TerminalToken</span>
+																		<i class="material-icons">content_copy</i>
+																		<span class="rack-slot-id-hint">@OverviewMinerCopyHint( slot )</span>
+																	</button>
 																	@if ( slot.Rack.IsValid() )
 																	{
 																		<span class="rack-badge @(slot.Rack.IsMining ? "on" : "")">@(slot.Rack.IsMining ? "Mining" : "Idle")</span>
@@ -324,12 +330,6 @@
 																	{
 																		<span class="rack-badge">Not linked</span>
 																	}
-																	<button class="rack-slot-id-copy"
-																	        onclick="@(() => CopyOverviewMinerToken( slot ))">
-																		<span class="rack-slot-id-token">@slot.TerminalToken</span>
-																		<i class="material-icons">content_copy</i>
-																		<span class="rack-slot-id-hint">@OverviewMinerCopyHint( slot )</span>
-																	</button>
 																</div>
 															</div>
 															<div class="rack-card-body">
