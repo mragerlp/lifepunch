@@ -263,11 +263,10 @@
 															</div>
 															<div class="lp-ui-info-row">
 																<span class="lp-ui-info-label">Hub power</span>
-																<button class="overview-hub-power-toggle @(Hub?.IsPowered == true ? "on" : "off")"
-																        onclick="@ToggleHubPower">
+																<span class="lp-ui-info-value">
 																	<span class="lp-ui-status-dot @(Hub?.IsPowered == true ? "on" : "off")"></span>
 																	<span>@HubPowerStatusLabel()</span>
-																</button>
+																</span>
 															</div>
 															<div class="lp-ui-info-row">
 																<span class="lp-ui-info-label">Load / draw</span>
@@ -658,8 +657,8 @@
 													}
 												</div>
 												<div class="transfers-rate-wallet">
-													<span class="transfers-rate-wallet-label">Your hub wallet</span>
-													<span class="transfers-rate-wallet-value">@TransferHubWalletReference()</span>
+													<span class="transfers-rate-wallet-label">Still on racks</span>
+													<span class="transfers-rate-wallet-value">@TransferRackBalanceReference()</span>
 												</div>
 												<div class="transfers-rate-foot">Terminal send uses BTC amounts. Hub bank cashout uses the live rate above.</div>
 											</div>
@@ -1276,13 +1275,13 @@
 	private string TransferReferenceUsd( float btc )
 		=> $"≈ ${LpBitcoinEconomy.BtcToCashUsd( btc ):N2} bank";
 
-	private string TransferHubWalletReference()
+	private string TransferRackBalanceReference()
 	{
-		var btc = HubWalletBtc();
+		var btc = RackPendingBtc();
 		if ( btc <= 0f )
-			return "0 BTC — deposit at terminal first";
+			return "0 BTC — pull at terminal to deposit";
 
-		return $"{btc.ToString( "F6" )} BTC ≈ ${LpBitcoinEconomy.BtcToCashUsd( btc ):N2} bank";
+		return $"{btc.ToString( "F6" )} BTC on racks";
 	}
 
 	private string ReceiveCopyLabel() => _receiveCopyAck ? "Copied!" : "Copy Steam ID";
