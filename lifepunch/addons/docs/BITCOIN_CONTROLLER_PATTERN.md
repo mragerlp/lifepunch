@@ -50,15 +50,20 @@ Portal cap: **2 standard + 1 advanced** per operator/hub — locked.
 - Sending commands **to** hub/rack logic (never authoritative ledger)
 - Farm readout while open (mirror of hub + rack state)
 - Player education copy (`help`, errors, link hints)
-- **Defense and capability progression** (via universal Upgrades home — Terminal sub-tab): firewall, intrusion alerts, encryption policy, command auth, monitoring/audit (see DECISION-0010)
+- Its endpoint defense/capability profile (one authoritative logical record — see DECISION-0010)
 
 **Does NOT own:**
 
 - Mining tick loop
 - Wallet balance authority (displays hub truth)
 - Direct upgrade purchase UI on the CRT (universal home in LpHashdPanel)
+- Mining authority, the farm ledger, purchase billing, or Rack hardware state
 
-**Never mines.** Closing the terminal does not stop mining — Hub permission and Rack execution continue. Defense tracks on Terminal make the operator surface harder to attack.
+**G0 single-authority note:** HASHD Terminal owns presentation, command-session state, and its endpoint defense/capability profile. It does not own mining authority, the farm ledger, purchase billing, or Rack hardware state.
+
+If Hub persistence serializes the Terminal profile, the Hub acts as infrastructure only — there must not be two independently mutable copies.
+
+**Never mines.** Closing the terminal does not stop mining — Hub permission and Rack execution continue. Defense tracks on Terminal make the operator surface harder to attack. The Terminal CRT is an operating console, not a second shop.
 
 ---
 

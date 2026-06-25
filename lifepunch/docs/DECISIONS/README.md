@@ -7,7 +7,7 @@
 
 **Supersedes:** Inline log in `DESIGN_DECISION_LOG.md` (index only).
 
-|| [0010](DECISION-0010-Universal-Upgrades-Home.md) | Universal Upgrades Home and Terminal Defense Progression | 2026-06-25 | **Draft (pending owner)** |
+|| [0010](DECISION-0010-Universal-Upgrades-Home.md) | Universal Upgrades Home and Terminal Defense Progression | 2026-06-25 | **Active** |
 
 ---
 

@@ -62,11 +62,23 @@ Six Rack buckets today vs five target — **which category merges or retires is 
 
 Terminal is a real surface (defense + appearance) under the three-surface law (Hub / Terminal / Rack).
 
-- **Defense progression** lives here (firewall tiers, intrusion alerts, encryption policy, command auth, log retention, etc.).
+Canonical tracks (locked in DECISION-0010):
+
+- Endpoint Firewall
+- Command Authentication
+- Intrusion Detection
+- Audit Retention
+- Monitoring Suite
+
+- **Defense / capability progression** (the five tracks above) lives here via the universal Upgrades home. The Terminal defense profile is one authoritative logical record.
 - **Appearance** on the Bitcoin Terminal must stay within HASHD-safe donor cosmetics only (amber/gold/warm white/bronze/dark graphite + controlled accents). Full Cornerman green, VENGEANCE red, or lifepunchnet cyan-blue is prohibited on Bitcoin surfaces.
 - Transient hostile lane colors (green/red/cyan) may appear only as attack-state indicators during active breach visualization.
 
-The old blanket statement “Terminal upgrades: None” is superseded. See `CYBER_VISUAL_IDENTITY_DOCTRINE.md` and `DECISION-0010`. Terminal receives five defense/capability tracks via the universal Upgrades home (HUB · TERMINAL · GPU RACK sub-tabs). Purchases are not made on the CRT. Terminal never mines.
+HASHD Terminal owns presentation, command-session state, and its endpoint defense/capability profile. It does not own mining authority, the farm ledger, purchase billing, or Rack hardware state.
+
+The old blanket statement “Terminal upgrades: None” is superseded. See `CYBER_VISUAL_IDENTITY_DOCTRINE.md` and `DECISION-0010`. Purchases are made from LpHashdPanel (universal home), not on the CRT. Terminal never mines.
+
+If Hub persistence serializes the Terminal profile, Hub acts only as infrastructure — no two independently mutable copies.
 
 ---
 

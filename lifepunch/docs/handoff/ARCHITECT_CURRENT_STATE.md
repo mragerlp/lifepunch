@@ -41,7 +41,7 @@
 
 - No LIFEPUNCH NPC systems (G9, DECISION-0003)
 - Hub = operation policy + ledger · `LpHashdPanel` = hub admin shell (preserve) + Universal Upgrades home (HUB · TERMINAL · GPU RACK sub-tabs) per DECISION-0010
-- HASHD Terminal = real defense + capability surface (five tracks) purchased from universal Upgrades home; Terminal never mines (DECISION-0005)
+- HASHD Terminal owns presentation, command-session state, and its endpoint defense/capability profile (one authoritative logical record). Terminal never mines (DECISION-0005). Hub may persist the profile as infrastructure but must not create two independently mutable copies.
 - Three-surface upgrade law (Hub controller / Terminal defense / Rack hardware) is now canon for Bitcoin reference implementation.
 - Rack cap: **2 Standard + 1 Advanced** (DECISION-0004)
 - Fantasy Check **mandatory** after flatgrass proof (DECISION-0008)
@@ -53,17 +53,20 @@
 
 ## Unresolved Architect questions (do not implement silently)
 
-1. **Final five Hub upgrade categories**, **five Terminal defense tracks**, and **final five Rack upgrade categories** (see DECISION-0010)
-2. **Five tier labels** for each of the three surfaces
-3. **Clock Path gameplay meaning** — working abstraction only until approved
-4. **Core Count gameplay meaning** — working abstraction only until approved
-5. **Buffer** as a Rack category vs another system
-6. **Buffer formula** — USD/BTC floor source, dynamic vs snapshot conversion
-7. **Cost curves**
-8. **Is the full five-by-five-by-five upgrade tree required for v1.0, or part/all v1.1?** — **Bloodwave must confirm**
-9. **Intentional realism boundary** note — pending owner-approved wording
-10. **Rack USE → shared CRT** — if retained in code, label as quick-access delegation vs second Terminal owner
-11. **Terminal defense track names and exact gameplay effects** — to be finalized after owner review of DECISION-0010
+Category identities and tier names are locked in DECISION-0010 (v1.0 foundation). The following remain open:
+
+- Exact numerical effects per tier
+- Cost curves and purchase currency
+- Balance multipliers and BTC/USD buffer recalculation formulas
+- Save migration mechanics for legacy CPU/Core and per-rack upgrades
+- Future Hacker formulas and advanced intrusion simulation depth
+- Long-term economic balancing
+
+Clock Path / Core Count gameplay meaning, Buffer category details, cost curves, and intentional realism boundary wording remain pending owner-approved detail.
+
+Rack USE → shared CRT delegation vs second Terminal owner still needs a call.
+
+The five-by-five-by-five structure itself is v1.0 (three domains, fifteen canonical tracks, five-tier schema). Implementation is staged.
 
 ---
 
