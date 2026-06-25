@@ -58,9 +58,15 @@ Six Rack buckets today vs five target — **which category merges or retires is 
 
 ## Terminal upgrades
 
-**None.**
+**See `CYBER_VISUAL_IDENTITY_DOCTRINE.md` (2026-06-25).**
 
-Terminal is operator interface only. If a feature feels like an "upgrade" on the CRT, it belongs on hub or rack — or it is a **command unlock**, not a purchase tier.
+Terminal is a real surface (defense + appearance) under the three-surface law (Hub / Terminal / Rack).
+
+- **Defense progression** lives here (firewall tiers, intrusion alerts, encryption policy, command auth, log retention, etc.).
+- **Appearance** on the Bitcoin Terminal must stay within HASHD-safe donor cosmetics only (amber/gold/warm white/bronze/dark graphite + controlled accents). Full Cornerman green, VENGEANCE red, or lifepunchnet cyan-blue is prohibited on Bitcoin surfaces.
+- Transient hostile lane colors (green/red/cyan) may appear only as attack-state indicators during active breach visualization.
+
+The old blanket statement “Terminal upgrades: None” is superseded for Bitcoin Step 1 planning. See the doctrine for exact constraints on the upcoming Universal Upgrades tab.
 
 ---
 

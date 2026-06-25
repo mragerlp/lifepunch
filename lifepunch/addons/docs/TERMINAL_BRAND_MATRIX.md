@@ -2,6 +2,8 @@
 
 **“Terminal”** = placeable entity with an ops program UI attached — not a generic prop name. Player commands run only in the **in-fiction ops console** after **USE** on the entity. **Not** the s&box developer `>` console. Canon: `addons/docs/PHYSICAL_TERMINAL_DOCTRINE.md`.
 
+> **Visual identity law:** See `CYBER_VISUAL_IDENTITY_DOCTRINE.md` (2026-06-25). Green (Cornerman), Red (VENGEANCE), Cyan (lifepunchnet), and Amber (HASHD) are locked role identities — not interchangeable cosmetics. HASHD donor themes on Bitcoin surfaces must stay within the allowed amber/gold range. Full green/red/cyan impersonation of other lanes is prohibited.
+
 In-game terminals mirror **LifePunch Ops** machine uniforms (`branding/lifepunch-ops/THEME.md`).
 
 | Tier | Machine | Job / role | Program | Accent | Prompt | Terminal entity | Hub entity | Lane status |

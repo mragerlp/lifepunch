@@ -41,6 +41,8 @@ flowchart LR
 
 ## 2. UI families (three skins, one platform)
 
+> Colors are locked role identities per `CYBER_VISUAL_IDENTITY_DOCTRINE.md`. Green/red/cyan are not donor themes for Bitcoin. HASHD amber (with limited gold/bronze accents) is the only civilian mining identity.
+
 | Skin | Hex | Program | Addon | Interaction |
 |------|-----|---------|-------|-------------|
 | **Cornerman** | `#00FF7F` | `cornerman.exe` | `hackerjob` | Type command → click to confirm spends |
