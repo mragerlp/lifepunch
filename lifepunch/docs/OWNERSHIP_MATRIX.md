@@ -1,34 +1,59 @@
 # LIFEPUNCH™ — Ownership matrix
 
 > **Status:** Active  
-> **Why does this exist?** One lookup for *who decides what* — stops AI from mixing Architect briefs with Integrator commits or Distiller canon.
+> **Why does this exist?** One lookup for *who decides what* — stops AI from mixing Architect briefs with Integrator commits or Distiller canon.  
+> **Index only** — role detail lives in `ARCHITECT.md`, `MACHINE_CAST.md`, and `.cursor/rules`. Hosts are **not** cognitive owners.
 
 ---
 
-## Topic ownership
+## Cognitive / operational roles
 
-| Topic | Owner | Does | Does not |
-|-------|-------|------|----------|
-| **Gameplay philosophy** | **Architect** | Player fantasy, laws, patterns, RFCs, decisions | Commit code · claim playtest |
-| **Implementation** | **Integrator** (Cursor) | Repo law, MCP, slices, flatgrass proof | Redesign without brief |
-| **Final approval** | **Bloodwave** | Sign-off, commit consent, portal ship | — |
-| **Distill / prep** | **Distiller** (Cornerman) | Summarize, outbox, reference **DECISION-####** by ID | Ship code · override decisions |
-| **Infrastructure** | **lifepunchnet** | Hosted ops, voice, watchdog | Addon design |
-| **Legal / trademark** | **Bloodwave** + repo `lifepunch/legal/` | Filings, specimens, IP doctrine | — |
-| **Economy (DXRP)** | **Integrator** + owner for grants | Wire to gamemode APIs | Invent parallel currency without brief |
+| Role | Where | Decides | Does not |
+|------|-------|---------|----------|
+| **Bloodwave** | Everywhere | Final approval, commit consent, portal ship, trademark | — |
+| **Architect** | VENGEANCE (Red) — advisory | Player fantasy, laws, patterns, RFCs, decision *proposals* | Commit code · claim playtest · override repo law |
+| **Integrator** | VENGEANCE (Red) — Cursor | Repo law, MCP, slices, flatgrass proof, implementation | Redesign without brief |
+| **Distiller** | Cornerman (Green) — Tier-3 prep | Summarize, outbox, cite **DECISION-####** by ID | Ship code · override decisions · set law |
+| **RDP server agent** | lifepunchnet (Blue) | Ops tasks on hosted server **under Bloodwave authority** | Addon design · gameplay doctrine |
+
+---
+
+## Hosts and machines (not decision owners)
+
+| Host | Role | Notes |
+|------|------|-------|
+| **VENGEANCE** | Red primary PC | Checkout, Cursor, s&box MCP hub — not a "brain" separate from roles above |
+| **Cornerman** | Green LAN box | Local LM `:1234`, distill prep — not source of truth |
+| **lifepunchnet** | Blue hosted runtime | DXRP ops, Whisper, watchdog, session hub — **operational machine**, not owner of infrastructure *design* decisions |
+
+Infrastructure **design** routes to **Bloodwave** (+ Architect brief where applicable). lifepunchnet **runs** what Bloodwave approves.
+
+---
+
+## Topic routing
+
+| Topic | Route to |
+|-------|----------|
+| **Gameplay philosophy** | Architect proposes → Bloodwave approves → `LIFEPUNCH_GAMEPLAY_LAWS.md` |
+| **Implementation** | Integrator (Cursor) |
+| **Final approval** | Bloodwave |
+| **Distill / prep** | Distiller (Cornerman) |
+| **Legal / trademark** | Bloodwave + `lifepunch/legal/` |
+| **Economy (DXRP)** | Integrator + Bloodwave for grants |
+| **Hosted server ops** | RDP agent on lifepunchnet under Bloodwave |
 
 ---
 
 ## Document types
 
-| Type | Location | Owner proposes | Owner approves merge |
-|------|----------|----------------|----------------------|
+| Type | Location | Proposes | Approves merge |
+|------|----------|----------|----------------|
 | **Law** | `LIFEPUNCH_GAMEPLAY_LAWS.md`, `.cursor/rules`, `CYBER_REFERENCE_LAWS.md` | Architect | Bloodwave |
 | **Decision** | `DECISIONS/DECISION-####-*.md` | Architect | Bloodwave |
-| **RFC** (draft) | `RFC/RFC-####-*.md` | Architect | Bloodwave → becomes Decision |
-| **Knowledge** | `KNOWLEDGE/**` | Anyone | Architect curates; no gate for notes |
+| **RFC** (draft) | `RFC/RFC-0005` only (frozen) | Architect | Bloodwave → becomes Decision |
+| **Knowledge** | `KNOWLEDGE/**` *(optional / deferred)* | Anyone | Architect curates |
 | **Canon spec** | `addons/docs/BITCOIN_*.md` | Architect | Bloodwave before implementation |
-| **Scratch** | `scratch/**` | Anyone | **Never merged as canon** |
+| **Scratch / templates** | `scratch/**`, `templates/**` *(deferred)* | — | Never merged as law |
 
 ---
 
@@ -39,7 +64,7 @@
 | "Does this feel like LIFEPUNCH™?" | Architect · Fantasy Check |
 | "Does this compile and match law?" | Integrator |
 | "Is this decided already?" | `DECISIONS/` index · cite **DECISION-####** |
-| "Still under debate?" | `RFC/` — do not implement until promoted |
+| "Still under debate?" | `RFC-0005` only — Draft = do not implement |
 | Multi-file C# / economy | Integrator **Opus** slice |
 
 ---
@@ -48,11 +73,11 @@
 
 | Doc | Role |
 |-----|------|
-| `ARCHITECT.md` | Architect role detail |
+| `ARCHITECT.md` | Architect workflow detail |
+| `MACHINE_CAST.md` | CVL host map |
 | `DECISIONS/README.md` | Decision register index |
-| `RFC/README.md` | RFC workflow |
-| `KNOWLEDGE/README.md` | Accumulated knowledge vs law |
+| `DESIGN_DECISION_LOG.md` | Thin index → decisions |
 
 ---
 
-*v1.0 — 2026-06-25*
+*v1.1 — 2026-06-25 — Hosts vs cognitive roles; defer KNOWLEDGE/templates in routing*

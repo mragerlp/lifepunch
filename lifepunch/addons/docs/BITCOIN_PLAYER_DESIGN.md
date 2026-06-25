@@ -24,7 +24,7 @@ They own a powered hub, command a HASHD terminal like real ops software, link GP
 - Idle clicker (tap-to-mine with no machine literacy)
 - Spreadsheet simulator (unlimited racks, opaque columns)
 - Factory spam (props without machine states)
-- NPC-dependent progression (no quest-giver miner)
+- NPC-dependent progression — LIFEPUNCH™ must not introduce, require, or depend on NPCs (see G9). DXRP may contain third-party NPCs elsewhere; that is outside LIFEPUNCH™ design scope.
 
 ### Always remains
 

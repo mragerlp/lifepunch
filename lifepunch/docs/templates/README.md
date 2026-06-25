@@ -1,9 +1,9 @@
 # Design templates
 
-> **Status:** Active  
-> **Why does this exist?** Every new addon starts from the same skeleton — not a blank doc.
+> **Status:** Deferred — optional use only  
+> **Why does this exist?** Skeleton for **future** products when Architect opens a new lane.
 
-Copy the relevant template into `RFC/` or lane docs when Architect opens a new product.
+**Not in mandatory onboarding.** Copy into `RFC/` or lane docs only when explicitly starting a new product brief.
 
 ---
 

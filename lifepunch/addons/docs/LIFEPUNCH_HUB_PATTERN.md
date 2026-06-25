@@ -34,16 +34,18 @@ Hub power/fan timing aligns with §7 of that doc.
 | **Terminal** | In-fiction program (`cornerman.exe`, `vaultd`, `sentinel.exe`) | **Yes** — ops console commands |
 | **Satellite** | Passive link (GPU rack, server rack, bank miner, alarm panel) | **Rarely** — usually configured from hub rail |
 
+> **Bitcoin exception:** Hub admin UI (`LpHashdPanel`) and HASHD Terminal (`LpBitcoinTerminalPanel`) are **separate surfaces** — see [Shipped references](#shipped-references) below. Do not conflate hub rail with the CRT command console.
+
 ---
 
 ## Shipped references
 
-| Job | Hub entity | Terminal (USE → UI) | Satellites |
-|-----|------------|----------------------|------------|
-| **Bitcoin mining** | `BitcoinMinerHubEntity` | *(hub panel is the terminal)* · head CRT optional | `GpuRackEntity` |
-| **Hacker** | `HackerServerRackEntity` | `HackerTerminalEntity` | — (rack powers CRT) |
-| **Banker** *(draft)* | `BankVaultHubEntity` *(future)* | `BankTellerTerminalEntity` · `BankSecurityTerminalEntity` | `BankGpuRackEntity` *(reskin)* |
-| **FBI / cyber** *(future)* | `CyberOpsHubEntity` *(TBD)* | `CyberOpsTerminalEntity` | ties to bank + hacker alerts |
+| Job | Hub entity | Hub admin UI (preserve shell) | Operator terminal (USE → UI) | Satellites |
+|-----|------------|-------------------------------|------------------------------|------------|
+| **Bitcoin mining** | `BitcoinMinerHubEntity` — mining operation authority, controller state, wallet, linked racks | **`LpHashdPanel`** — hub administration interface (amber ops rail); not the HASHD Terminal | **`LpBitcoinTerminalEntity`** — **HASHD Terminal** CRT command console (`LpBitcoinTerminalPanel`); **never mines** | `GpuRackEntity` · advanced rack variant |
+| **Hacker** | `HackerServerRackEntity` | — | `HackerTerminalEntity` | — (rack powers CRT) |
+| **Banker** *(draft)* | `BankVaultHubEntity` *(future)* | vault hub rail *(future)* | `BankTellerTerminalEntity` · `BankSecurityTerminalEntity` | `BankGpuRackEntity` *(reskin)* |
+| **FBI / cyber** *(future)* | `CyberOpsHubEntity` *(TBD)* | — | `CyberOpsTerminalEntity` | ties to bank + hacker alerts |
 
 ---
 

@@ -1,49 +1,18 @@
 # Ownership pattern (knowledge)
 
-> **Status:** Active  
-> **Type:** Knowledge  
-> **Law:** DECISION-0001 · G0 · **Pattern:** `LIFEPUNCH_CYBER_SYSTEM_PATTERN.md`
+> **Status:** Seed — deferred expansion  
+> **Type:** Knowledge pointer only  
+> **Law:** `LIFEPUNCH_GAMEPLAY_LAWS.md` **G0** · **Decisions:** DECISION-0001, DECISION-0002 · **Bitcoin:** `BITCOIN_CONTROLLER_PATTERN.md`
 
-Quick reference — not a substitute for decisions or canon specs.
+Do **not** restate ownership law here. Read canon:
 
----
-
-## One sentence
-
-Every gameplay system has **one authoritative owner**. Mirrors present; workers compute; controller decides.
-
----
-
-## Bitcoin mapping
-
-| Role | Entity | Owns |
-|------|--------|------|
-| Controller | Hub | Mining state, wallet, dispatch, hub upgrades |
-| Operator | HASHD Terminal | Commands, CRT status (never mines) |
-| Worker | GPU Rack | Hash work, buffer, hardware upgrades |
-
-```text
-Hub owns mining.
-Terminal owns presentation.
-GPU Rack owns computation.
-```
+| Need | Go to |
+|------|-------|
+| General law | G0 in `LIFEPUNCH_GAMEPLAY_LAWS.md` |
+| Why we decided | `DECISIONS/DECISION-0001-Single-Authoritative-Owner.md`, `DECISION-0002-Hub-Owns-Mining.md` |
+| Bitcoin mapping | `addons/docs/BITCOIN_CONTROLLER_PATTERN.md` |
+| Cyber stack | `addons/docs/LIFEPUNCH_CYBER_SYSTEM_PATTERN.md` |
 
 ---
 
-## Cyber stack (all lanes)
-
-```text
-Controller → Operator Interface → Worker Nodes → Shared Economy → Persistent State
-```
-
----
-
-## When designing a new lane
-
-1. Name controller, operator, workers.
-2. Write DECISION or RFC before code.
-3. Check `PATTERN_LIBRARY.md` for clone targets.
-
----
-
-*Knowledge — 2026-06-25*
+*v1.1 — 2026-06-25 — Reduced to pointer (reconciliation)*

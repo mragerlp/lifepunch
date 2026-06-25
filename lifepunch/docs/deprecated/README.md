@@ -1,7 +1,9 @@
 # Deprecated documentation
 
-> **Status:** Active (this index)  
+> **Status:** Deferred — index only until first retirement  
 > **Why does this exist?** Retire docs without deleting history. AI must not treat **Deprecated** files as current law.
+
+**Not in mandatory onboarding.** Status-badge standard below is reference for future retirements — do not retrofit badges across the repo during the active lpbitcoin gate.
 
 ---
 
@@ -28,7 +30,7 @@
 | **Historical** | Checkpoint / dated snapshot |
 | **Experimental** | Playtest or spike — may be deleted |
 
-Full standard: `KNOWLEDGE/README.md` · enforced in onboarding Block 0.
+Full standard: optional reference when retiring a doc — not a repo-wide retrofit mandate.
 
 ---
 

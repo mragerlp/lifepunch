@@ -1,7 +1,9 @@
 # Scratch — never published as canon
 
-> **Status:** Experimental  
+> **Status:** Deferred — optional use only  
 > **Why does this exist?** Unfinished thinking stays out of `KNOWLEDGE/`, `DECISIONS/`, and `addons/docs/`.
+
+**Not in mandatory onboarding.** Do not reference scratch paths from law, decisions, or agent boot reads.
 
 ---
 

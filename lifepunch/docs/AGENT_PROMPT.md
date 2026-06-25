@@ -54,17 +54,27 @@ CVL TRI-STACK (memorize — LifePunch web = three nodes + edges; not one box):
 
 READ FIRST (in this order), then follow them as law:
 0. `lifepunch/addons/docs/ACTIVE_WORKSTREAM.md` ← HARD production gate; single active lane (lifepunchbitcoin). Mandatory every session.
-0a. `lifepunch/docs/LIFEPUNCH_GAMEPLAY_LAWS.md` ← Gameplay philosophy; single authoritative owner; Fantasy Check. Mandatory Architect + Integrator.
-0a1. `lifepunch/docs/LIFEPUNCH_FEEL.md` + `lifepunch/docs/TERMINOLOGY.md` ← feel bar, vocabulary.
-0a1b. `lifepunch/docs/OWNERSHIP_MATRIX.md` + `lifepunch/docs/DECISIONS/README.md` + `lifepunch/docs/KNOWLEDGE/README.md` ← cite DECISION-####; RFC Status Draft = not law.
-0a2. `lifepunch/docs/PATTERN_LIBRARY.md` + `lifepunch/addons/docs/LIFEPUNCH_CYBER_SYSTEM_PATTERN.md` ← Reuse before invent.
-0a3. Bitcoin design canon (when touching bitcoinmining): `BITCOIN_PLAYER_DESIGN.md`, `BITCOIN_CONTROLLER_PATTERN.md`, `BITCOIN_UPGRADE_TAXONOMY.md`, `BITCOIN_DATA_FLOW.md`.
-0b. `lifepunch/addons/docs/CYBER_REFERENCE_LAWS.md` ← Laws 1–10 (reference-first, flatgrass truth, brand matrix). Mandatory every session.
-0c. `lifepunch/addons/docs/LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md` ← machines not props; ModelDoc-first stack P0–P4. Mandatory for entity/ModelDoc work.
-0d. `lifepunch/addons/docs/MODELDOC_STUDIO_LANE.md` + `PACKAGE_STAGING_LAYOUT.md` ← lp* staging + standalone editor (no DXRP gamemode for mesh).
-0e. `lifepunch/addons/docs/DXRP_ADDON_PUBLISH_DOCTRINE.md` ← DXRP context, lpbitcoin layout, folder=entity slug, PLACEHOLDER hands-off, portal vs files. Mandatory every session.
-0f. `lifepunch/addons/docs/BITCOIN_SHIP_ROADMAP.md` ← step order to portal, quality bar, agent handoff, post-Bitcoin package order. Mandatory every Bitcoin lane session.
-0g. `lifepunch/addons/docs/LIFEPUNCH_WEAPON_IMPLEMENTATION_LAW.md` ← weapon platform not gun mesh; P0 attachments/collision/anims. Mandatory for weapon / lpweapons / AK lane work.
+0a. `.cursor/rules` (all alwaysApply) ← repo law; rules win over docs.
+0b. `lifepunch/addons/docs/CYBER_REFERENCE_LAWS.md` ← Laws 1–10. Mandatory for addon/entity sessions.
+0c. `lifepunch/addons/docs/BITCOIN_SHIP_ROADMAP.md` ← step order (bitcoin lane sessions).
+
+WHEN TOUCHING gameplay / product / UX / economy doctrine (not every boot):
+0p. `lifepunch/docs/LIFEPUNCH_GAMEPLAY_LAWS.md` ← G0–G9; Fantasy Check.
+0p1. `lifepunch/docs/LIFEPUNCH_FEEL.md` + `lifepunch/docs/TERMINOLOGY.md`
+0p2. Bitcoin canon: `BITCOIN_PLAYER_DESIGN.md`, `BITCOIN_CONTROLLER_PATTERN.md`, `BITCOIN_UPGRADE_TAXONOMY.md`, `BITCOIN_DATA_FLOW.md`
+
+ON DEMAND ONLY (read when the active task requires it):
+- `OWNERSHIP_MATRIX.md`, `DECISIONS/README.md` + cite `DECISION-####`
+- `KNOWLEDGE/**`, `templates/**`, `scratch/**` — optional / deferred; not boot reads
+- `RFC/RFC-0005-Hub-Upgrades.md` — hub upgrade slice only; Draft = HOLD implementation
+- `PATTERN_LIBRARY.md`, `LIFEPUNCH_CYBER_SYSTEM_PATTERN.md` — new pattern or clone search
+- `ARCHITECT.md` — Architect/Integrator handoff detail
+
+ENTITY / ModelDoc (when touching machines):
+0d. `lifepunch/addons/docs/LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md` ← machines not props; P0–P4.
+0e. `lifepunch/addons/docs/MODELDOC_STUDIO_LANE.md` + `PACKAGE_STAGING_LAYOUT.md`
+0f. `lifepunch/addons/docs/DXRP_ADDON_PUBLISH_DOCTRINE.md`
+0g. `lifepunch/addons/docs/LIFEPUNCH_WEAPON_IMPLEMENTATION_LAW.md` ← weapons / lpweapons / AK lane only.
 1. The project's `.cursor/rules` (all alwaysApply): lifepunch-active-workstream-gate,
    lifepunch-digital-machine, lifepunch-weapon-platform, lifepunch-operating-context,
    lifepunch-opus-usage, lifepunch-quality-bar,

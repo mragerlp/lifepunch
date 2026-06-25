@@ -44,18 +44,36 @@ must keep the brand consistent in docs, UI copy, listings, and product names.
 Canonical trademark/IP detail: `lifepunch/legal/TRADEMARK_AND_IP.md` + **lifepunch-trademark-ip** rule.
 Business wrapper: `lifepunch/docs/BUSINESS_CONTEXT.md`.
 
-## Mandatory reads — gameplay + design (Architect & Integrator)
+## Mandatory reads — every session (lean)
 
 | Order | Doc | Why |
 |-------|-----|-----|
-| 1 | `lifepunch/docs/LIFEPUNCH_GAMEPLAY_LAWS.md` | Gameplay philosophy; single authoritative owner; Fantasy Check |
+| 1 | `addons/docs/ACTIVE_WORKSTREAM.md` | Single lane gate |
+| 2 | `.cursor/rules` (alwaysApply) | Repo law |
+| 3 | `addons/docs/CYBER_REFERENCE_LAWS.md` | Cyber production gate (when on entity/addon work) |
+| 4 | `addons/docs/BITCOIN_SHIP_ROADMAP.md` | Step order (bitcoin lane only) |
+
+## Mandatory reads — gameplay / product (when touching design, UX, economy doctrine)
+
+| Order | Doc | Why |
+|-------|-----|-----|
+| 1 | `lifepunch/docs/LIFEPUNCH_GAMEPLAY_LAWS.md` | G0–G9; Fantasy Check |
 | 2 | `lifepunch/docs/LIFEPUNCH_FEEL.md` | Product identity bar |
 | 3 | `lifepunch/docs/TERMINOLOGY.md` | Shared vocabulary |
-| 4 | `lifepunch/docs/OWNERSHIP_MATRIX.md` | Who decides what |
-| 5 | `lifepunch/docs/DECISIONS/README.md` | Decision register — cite `DECISION-####` |
-| 6 | `lifepunch/docs/KNOWLEDGE/README.md` | Learned context (not law) |
-| 7 | `addons/docs/LIFEPUNCH_CYBER_SYSTEM_PATTERN.md` | Controller → operator → workers stack |
-| 8 | `lifepunch/docs/ARCHITECT.md` | CVL design brain; Fantasy Check + Architect Review |
+| 4 | `addons/docs/BITCOIN_PLAYER_DESIGN.md` | Bitcoin fantasy (bitcoin lane only) |
+
+## On demand only (do not read on every boot)
+
+| Doc | When |
+|-----|------|
+| `OWNERSHIP_MATRIX.md` | Role/routing confusion |
+| `DECISIONS/README.md` + specific `DECISION-####` | Cite settled design |
+| `KNOWLEDGE/**` | Balance, rejections, lane notes for active task |
+| `PATTERN_LIBRARY.md` | New pattern / clone target search |
+| `RFC/RFC-0005-Hub-Upgrades.md` | Hub upgrade work only (Draft — no implementation until GO) |
+| `templates/**` | Architect opening new product doc |
+| `scratch/**` | Brainstorm only — never canon |
+| `ARCHITECT.md` | Architect/Integrator handoff detail |
 
 ## Mandatory reads — entity / ModelDoc work
 

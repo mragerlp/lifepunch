@@ -15,9 +15,9 @@ Never duplicate ownership across entities. If two surfaces can change the same s
 
 | Entity role | Owns (authoritative) | Does NOT own |
 |-------------|----------------------|--------------|
-| **Hub** | Mining operation state, work dispatch, wallet, hub upgrades, linked rack registry | Typed command parsing, per-rack hash math display copy |
-| **Terminal** | Player presentation, command input, farm status readout | Mining ticks, payout ledger, upgrade ledger |
-| **GPU Rack** | Local hash work, thermals, undeposited buffer, rack-side upgrades | Hub wallet, pool connection, global job schedule |
+| **Hub** | Mining operation authority, controller state, operation-wide upgrades, wallet, linked-system state | Command console parsing, independent mining ticks, terminal presentation |
+| **HASHD Terminal** | Player interface and command console; farm status readout | Mining operation state, payout ledger, upgrade ledger — **never mines** |
+| **GPU Rack** | Worker computation, rack-local telemetry, rack-local mining buffer, rack-side hardware upgrades | Hub wallet, pool connection, global job schedule |
 
 ```text
 If you cannot name the single owner in one sentence, stop and redesign.
@@ -44,7 +44,7 @@ If Architect cannot write one plain-language sentence for an upgrade, it is not 
 **Preserve shell, evolve content.**
 
 - Add tabs, relabel panels, deepen status — do not replace working chrome because a mockup looks cleaner.
-- Bitcoin hub (`LpHashdPanel`) and CRT terminal (`LpBitcoinTerminalPanel`) are reference surfaces for all cyber jobs.
+- Bitcoin hub **`LpHashdPanel`** = hub administration UI (preserve shell). **HASHD Terminal** (`LpBitcoinTerminalPanel`) = separate CRT operator console.
 - Redesign requires owner + Architect brief + explicit "UX break" flag in `TECH_DEBT.md`.
 
 ---
@@ -110,15 +110,17 @@ Aligns with CYBER Law 1 (reference first) and Law 3 (pattern library).
 
 ---
 
-## Law G9 — Player-driven systems (no NPC dependency)
+## Law G9 — Player-driven systems (no LIFEPUNCH™ NPC dependency)
 
-Core progression must not depend on NPCs.
+LIFEPUNCH™ systems must **not introduce, require, or depend on NPCs**. Gameplay is **player-driven** and **machine/infrastructure-driven**.
 
 - Loops come from **player-owned machines**, **player interaction**, **economy**, **businesses**, **crime**, and **server systems**.
-- NPCs may appear later as **optional flavor or convenience** — never required infrastructure or quest givers for cyber professions.
+- Third-party NPC functionality that may exist elsewhere in DXRP is **outside LIFEPUNCH™ design scope** and must **never** become a LIFEPUNCH™ gameplay dependency.
 - Bitcoin → Hub / HASHD Terminal / GPU Racks. Banking → player-operated. Crime → PvP.
 
-Players operate **real infrastructure**, not scripted vendors.
+Players operate **real infrastructure**, not scripted vendors or quest-giver progression.
+
+> This is a **LIFEPUNCH™ product-design rule**. It does not claim DXRP itself cannot contain NPC systems.
 
 ---
 
@@ -166,12 +168,12 @@ Failure on any row → fix or park in `BACKLOG_PARKING_LOT.md` — do not "ship 
 | 4 | `ARCHITECT.md` | Design brain / workflow |
 | 5 | `OWNERSHIP_MATRIX.md` | Who decides what |
 | 6 | `DECISIONS/` | Settled design (cite by ID) |
-| 7 | `KNOWLEDGE/` | Accumulated learning (not law) |
-| 8 | `addons/docs/CYBER_REFERENCE_LAWS.md` | Cyber production gate |
-| 7 | `addons/docs/LIFEPUNCH_CYBER_SYSTEM_PATTERN.md` | Reusable machine pattern |
-| 8 | `PATTERN_LIBRARY.md` | Index of concrete patterns |
-| 9 | `RFC/` | Under discussion (Draft only) |
-| 10 | Lane docs (`BITCOIN_*`, …) | Per-addon canon |
+| 7 | `addons/docs/CYBER_REFERENCE_LAWS.md` | Cyber production gate |
+| 8 | `addons/docs/LIFEPUNCH_CYBER_SYSTEM_PATTERN.md` | Reusable machine pattern |
+| 9 | `PATTERN_LIBRARY.md` | Index of concrete patterns |
+| 10 | `RFC/` | Under discussion (Draft only) |
+| 11 | Lane docs (`BITCOIN_*`, …) | Per-addon canon |
+| — | `KNOWLEDGE/` | Optional — seed only; read when task touches balance/rejections |
 
 ---
 
@@ -191,4 +193,4 @@ Populate each pattern doc only when that lane unlocks — do not pre-write empty
 
 ---
 
-*v1.1 — 2026-06-25 — Architect Phase 2 (G9, Fantasy Check)*
+*v1.2 — 2026-06-25 — G9 hard NPC rule; G0 hub/HASHD clarity; document stack ordinals*

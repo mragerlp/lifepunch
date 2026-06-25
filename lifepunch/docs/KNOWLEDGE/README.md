@@ -1,9 +1,11 @@
 # LIFEPUNCH™ — Knowledge base
 
-> **Status:** Active  
-> **Why does this exist?** **Laws** say what we must do. **Terminology** says what we call things (`TERMINOLOGY.md`). **Knowledge** is what we learned — balance, rejections, player feel, lane notes. Lower ceremony; update when Architect or Bloodwave bounces ideas.
+> **Status:** Seed only — **expansion deferred until the active lpbitcoin gate exits** (Law 10 / owner sign-off).  
+> **Why does this exist?** **Laws** say what we must do. **Terminology** says what we call things (`TERMINOLOGY.md`). **Knowledge** is what we learned — balance, rejections, optional feel notes. Lower ceremony.
 
 **Not law.** If knowledge conflicts with `LIFEPUNCH_GAMEPLAY_LAWS.md`, `.cursor/rules`, or an **Active** `DECISION-####`, **law wins**.
+
+**Not mandatory on agent boot** — read files here only when the active task touches balance, rejections, or lane notes.
 
 ---
 

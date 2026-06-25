@@ -24,7 +24,7 @@
 |----|-------|------|--------|
 | [0001](DECISION-0001-Single-Authoritative-Owner.md) | Single authoritative owner | 2026-06-25 | **Active** |
 | [0002](DECISION-0002-Hub-Owns-Mining.md) | Hub owns mining state | 2026-06-25 | **Active** |
-| [0003](DECISION-0003-No-NPC-Core-Progression.md) | No NPC core progression | 2026-06-25 | **Active** |
+| [0003](DECISION-0003-No-NPC-Core-Progression.md) | No LIFEPUNCH™ NPC dependency | 2026-06-25 | **Active** |
 | [0004](DECISION-0004-Three-Rack-Limit.md) | Three rack limit (2+1) | 2026-06-25 | **Active** |
 | [0005](DECISION-0005-Terminal-Never-Mines.md) | Terminal never mines | 2026-06-25 | **Active** |
 | [0006](DECISION-0006-Hub-Controller-Upgrades.md) | Hub owns controller upgrades | 2026-06-25 | **Active** |

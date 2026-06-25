@@ -181,12 +181,10 @@ Owner sign-off → commit consent
 | 1 | `LIFEPUNCH_GAMEPLAY_LAWS.md` |
 | 2 | `LIFEPUNCH_FEEL.md` |
 | 3 | `TERMINOLOGY.md` |
-| 4 | `DECISIONS/README.md` |
-| 5 | `KNOWLEDGE/README.md` |
-| 6 | `OWNERSHIP_MATRIX.md` |
-| 7 | `PATTERN_LIBRARY.md` |
-| 8 | `addons/docs/LIFEPUNCH_CYBER_SYSTEM_PATTERN.md` |
-| 9 | Active lane docs (`BITCOIN_*`, `CYBER_REFERENCE_LAWS.md`) |
+| 4 | `DECISIONS/README.md` (cite `DECISION-####`) |
+| 5 | Active lane docs (`BITCOIN_*`, `CYBER_REFERENCE_LAWS.md`) |
+
+**On demand:** `KNOWLEDGE/**` (seed — deferred expansion), `OWNERSHIP_MATRIX.md`, `PATTERN_LIBRARY.md`, `RFC-0005` only, `ARCHITECT.md` workflow detail.
 
 ---
 
@@ -206,8 +204,8 @@ Owner sign-off → commit consent
 | `TERMINOLOGY.md` | Shared vocabulary |
 | `OWNERSHIP_MATRIX.md` | Topic ownership |
 | `DECISIONS/README.md` | Decision register index |
-| `KNOWLEDGE/README.md` | Accumulated knowledge |
-| `RFC/README.md` | RFC workflow |
+| `KNOWLEDGE/README.md` | Accumulated knowledge *(seed — on demand)* |
+| `RFC/README.md` | RFC workflow *(RFC-0005 only; frozen)* |
 | `DESIGN_DECISION_LOG.md` | Index → `DECISIONS/` |
 | `PATTERN_LIBRARY.md` | Reusable pattern index |
 | `addons/docs/LIFEPUNCH_CYBER_SYSTEM_PATTERN.md` | Cyber stack pattern |

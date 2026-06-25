@@ -1,7 +1,9 @@
 # Request for comments (RFC)
 
-> **Status:** Active  
+> **Status:** Frozen — **RFC-0005 only** until lpbitcoin gate exits  
 > **Why does this exist?** Separate **under discussion** from **decided**. Integrator does not implement RFC content until promoted.
+
+**Not in mandatory onboarding.** Do not create new RFC stubs during the active lpbitcoin gate.
 
 ---
 
@@ -36,7 +38,7 @@ RFC Status → Accepted (link decision) or Deprecated
 |----|-------|--------|
 | [RFC-0005](RFC-0005-Hub-Upgrades.md) | Hub upgrade overhaul (controller vs hardware) | **Draft** |
 
-Future: `RFC-0006-Hacker-Economy.md`, `RFC-0007-Banking.md` — create when lane unlocks, not empty stubs.
+Future RFCs — create when lane unlocks, not empty stubs during lpbitcoin gate.
 
 ---
 

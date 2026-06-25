@@ -1,7 +1,7 @@
 # Bitcoin — mining terminology (knowledge)
 
-> **Status:** Active  
-> **Type:** Knowledge — lane notes  
+> **Status:** Seed — deferred expansion  
+> **Type:** Knowledge — lane aliases/history only  
 > **Canonical names:** `lifepunch/docs/TERMINOLOGY.md` (repo-wide — read that first)
 
 This file holds **bitcoin lane context** and phrasing Bloodwave/Architect refine over time. **Entity names and slugs** are defined once in `TERMINOLOGY.md` — do not fork naming here.
