@@ -58,11 +58,11 @@ $pasteFiles = @(
     'CHATGPT_PROJECT_LIFEPUNCH_INSTRUCTIONS.txt'
     'CHATGPT_CONCEPT_BRIEF_TEMPLATE.txt'
     'BLANK_CURSOR_BRIEF.txt'
-    'WORKFLOW_IDEATION_FIRST.md'
 )
 foreach ($f in $pasteFiles) {
     Stage-File (Join-Path $Handoff $f) "paste\$f"
 }
+Stage-File (Join-Path $Docs 'WORKFLOW_IDEATION_FIRST.md') 'paste\WORKFLOW_IDEATION_FIRST.md'
 
 Stage-File (Join-Path $Handoff 'ARCHITECT_HANDOFF_README.md') 'START_HERE.md'
 
@@ -73,6 +73,7 @@ $canon = @(
     @{ Src = Join-Path $Docs 'OWNERSHIP_MATRIX.md'; Dest = 'canon\gameplay\OWNERSHIP_MATRIX.md' }
     @{ Src = Join-Path $Docs 'ARCHITECT.md'; Dest = 'canon\architect\ARCHITECT.md' }
     @{ Src = Join-Path $Docs 'CHATGPT_FOOD_PIPELINE.md'; Dest = 'canon\architect\CHATGPT_FOOD_PIPELINE.md' }
+    @{ Src = Join-Path $Docs 'WORKFLOW_IDEATION_FIRST.md'; Dest = 'canon\architect\WORKFLOW_IDEATION_FIRST.md' }
     @{ Src = Join-Path $Docs 'DESIGN_DECISION_LOG.md'; Dest = 'canon\architect\DESIGN_DECISION_LOG.md' }
     @{ Src = Join-Path $Docs 'PATTERN_LIBRARY.md'; Dest = 'canon\architect\PATTERN_LIBRARY.md' }
     @{ Src = Join-Path $Docs 'OPUS_USAGE_LAW.md'; Dest = 'canon\cvl\OPUS_USAGE_LAW.md' }
