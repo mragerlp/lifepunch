@@ -54,6 +54,11 @@ CVL TRI-STACK (memorize — LifePunch web = three nodes + edges; not one box):
 
 READ FIRST (in this order), then follow them as law:
 0. `lifepunch/addons/docs/ACTIVE_WORKSTREAM.md` ← HARD production gate; single active lane (lifepunchbitcoin). Mandatory every session.
+0a. `lifepunch/docs/LIFEPUNCH_GAMEPLAY_LAWS.md` ← Gameplay philosophy; single authoritative owner; Fantasy Check. Mandatory Architect + Integrator.
+0a1. `lifepunch/docs/LIFEPUNCH_FEEL.md` + `lifepunch/docs/TERMINOLOGY.md` ← feel bar, vocabulary.
+0a1b. `lifepunch/docs/OWNERSHIP_MATRIX.md` + `lifepunch/docs/DECISIONS/README.md` + `lifepunch/docs/KNOWLEDGE/README.md` ← cite DECISION-####; RFC Status Draft = not law.
+0a2. `lifepunch/docs/PATTERN_LIBRARY.md` + `lifepunch/addons/docs/LIFEPUNCH_CYBER_SYSTEM_PATTERN.md` ← Reuse before invent.
+0a3. Bitcoin design canon (when touching bitcoinmining): `BITCOIN_PLAYER_DESIGN.md`, `BITCOIN_CONTROLLER_PATTERN.md`, `BITCOIN_UPGRADE_TAXONOMY.md`, `BITCOIN_DATA_FLOW.md`.
 0b. `lifepunch/addons/docs/CYBER_REFERENCE_LAWS.md` ← Laws 1–10 (reference-first, flatgrass truth, brand matrix). Mandatory every session.
 0c. `lifepunch/addons/docs/LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md` ← machines not props; ModelDoc-first stack P0–P4. Mandatory for entity/ModelDoc work.
 0d. `lifepunch/addons/docs/MODELDOC_STUDIO_LANE.md` + `PACKAGE_STAGING_LAYOUT.md` ← lp* staging + standalone editor (no DXRP gamemode for mesh).

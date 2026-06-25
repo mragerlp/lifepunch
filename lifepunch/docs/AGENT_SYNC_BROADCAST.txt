@@ -34,6 +34,8 @@ STEP 2 — READ (in order)
   3. lifepunch/docs/BLOODWAVE_ALIAS.md         ← Bloodwave vs mragerlp (GitHub username: keep mragerlp)
   4. OneDrive/Desktop/uniforms/UNIFORM_STANDARDS.md ← web uniform (Explorer icons + PowerShell thumbnail + tiers)
   5. lifepunch/docs/AGENT_ONBOARDING.md       ← foundation (Tonight table = recovery)
+  5b. lifepunch/docs/TERMINOLOGY.md          ← repo-wide names (CVL, paths, entities)
+  5c. lifepunch/docs/DECISIONS/README.md     ← settled design by ID
   6. lifepunch/docs/GIT_CHECKPOINTS.md        ← commit/push/pull law
   7. lifepunch/docs/handoff/JUNE_2026_FOUNDATION_CHECKPOINT.md ← all-node pull brief
   8. lifepunch/docs/handoff/DESKTOP_ORG_CHECKPOINT_2026-06.md ← Bloodwave Desktop org (local; optional for CVL)
@@ -76,6 +78,14 @@ FOUNDATION (June 2026 — after pull)
   IDEATION: Architect Step 1 -> CURSOR BRIEF -> Cursor Integrator VENGEANCE
   ARCHITECT CANON: lifepunch/docs/ARCHITECT.md
     Paste: lifepunch/docs/handoff/CHATGPT_STEP1_PASTE.txt
+
+  DESIGN STACK (June 2026 — after pull):
+    Gameplay law:     lifepunch/docs/LIFEPUNCH_GAMEPLAY_LAWS.md
+    Terminology:      lifepunch/docs/TERMINOLOGY.md  (repo-wide names — Red/Green/Blue, lpbitcoin, Hub vs Terminal)
+    Knowledge:        lifepunch/docs/KNOWLEDGE/README.md  (learned notes — not law)
+    Decisions:        lifepunch/docs/DECISIONS/README.md  (cite DECISION-####)
+    Ownership:        lifepunch/docs/OWNERSHIP_MATRIX.md
+    RFC (draft only): lifepunch/docs/RFC/README.md
 
   GIT: agent recommends checkpoint; Bloodwave says commit / commit and push
     Law: GIT_CHECKPOINTS.md

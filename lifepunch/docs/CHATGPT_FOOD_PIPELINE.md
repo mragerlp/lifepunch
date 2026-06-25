@@ -55,10 +55,14 @@ Architect (infra CLV project) **passed** the roots test on naming:
 
 ```text
 You (typed or Cursor mic on Red)
-    → Architect ("banker job: player does X at hub Y")
+    → Architect Step 1 ("banker job: player does X at hub Y")
     → Architect expands (UX, loops, DXRP-flavored copy) → CURSOR BRIEF
     → YOU paste BRIEF into Cursor Integrator
-    → Integrator grounds in repo + MCP + ships or says what's missing
+    → Integrator grounds in repo + MCP + ships one slice
+    → Playtest (flatgrass + sbox MCP)
+    → Fantasy Check ("Does this still feel like LIFEPUNCH™?")
+    → Architect Review (major slices — full drift checklist)
+    → Owner sign-off → commit consent
 ```
 
 **Voice lane (current):** Cursor **mic plugin** in chat — not lifepunchnet Whisper / desk PTT unless owner re-enables.

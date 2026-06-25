@@ -22,12 +22,36 @@ Architect does **not** own compile success, MCP wiring, or git commits. Those ar
 
 ---
 
+## Design law vs architecture
+
+**Architecture** answers: *How does it work?*  
+**Gameplay** answers: *Why is this fun?*  
+**Both must agree** before owner sign-off.
+
+| Layer | Canon doc | Architect owns |
+|-------|-----------|----------------|
+| **Gameplay philosophy** | `LIFEPUNCH_GAMEPLAY_LAWS.md` | Maintenance, drift checks, G0–G8 compliance |
+| **Technical architecture** | `LIFEPUNCH_CYBER_SYSTEM_PATTERN.md`, lane `*_PATTERN.md` | Controller vs worker split, data flow |
+| **Production gate** | `CYBER_REFERENCE_LAWS.md`, `.cursor/rules` | Integrator enforces — Architect advises |
+
+If implementation compiles but breaks player fantasy → **Architect Review fails** even when CI is green.
+
+---
+
 ## Responsibilities
 
-Architect owns **advisory design** across the LIFEPUNCH™ portfolio:
+Architect owns **advisory design** across the LIFEPUNCH™ portfolio — protecting consistency across **all** systems, not only producing briefs:
 
 | Area | Examples |
 |------|----------|
+| **Product philosophy** | Industrial over arcade; complexity earned; premium over quantity |
+| **Gameplay law maintenance** | `LIFEPUNCH_GAMEPLAY_LAWS.md`; single authoritative owner per system |
+| **Pattern library stewardship** | `PATTERN_LIBRARY.md` — reuse before invent; new patterns need owner sign-off |
+| **Design decision log** | `DECISIONS/` — one file per `DECISION-####` |
+| **Terminology** | `TERMINOLOGY.md` — enforce shared vocabulary in briefs and docs |
+| **Product feel** | `LIFEPUNCH_FEEL.md` — subjective quality bar; Fantasy Check gate |
+| **Portfolio consistency** | Cross-addon machine language, brand matrix, Law 1 reuse |
+| **Long-term product direction** | Bitcoin reference → Banker → Hacker → … job order |
 | **Systems architecture** | Hub vs terminal vs worker racks; controller vs hardware upgrades |
 | **Gameplay loops** | Mine → deposit → cashout; hacker vs miner PvP; job fantasy |
 | **Economy design** | Yield, capacity buffers, upgrade tiers, portal pricing *concepts* |
@@ -37,7 +61,7 @@ Architect owns **advisory design** across the LIFEPUNCH™ portfolio:
 | **Cross-addon consistency** | Cyber jobs share machine language, brand matrix, Law 1 reuse |
 | **Design documentation** | CURSOR BRIEFs, one-pagers, taxonomy tables, merge shells |
 | **Agent brief refinement** | Step 1 ideation → structured brief for Cursor / Cornerman |
-| **Design-side code review** | "Does this implementation betray the fantasy?" — not syntax |
+| **Architect Review** | Post-playtest design pass — gameplay drift checklist (not syntax) |
 | **Long-term portfolio planning** | Bitcoin reference → Banker → Hacker → … job order |
 
 ---
@@ -125,6 +149,44 @@ If Architect conflicts with `.cursor/rules` or `AGENT_ONBOARDING.md`, **repo law
 | "Does this loop feel real?" | Spawn command / flatgrass proof |
 | Cross-tab UX without destroying shell | Single-file typo |
 | Portfolio ordering / cyber consistency | Owner said "skip ideation — execute X" |
+| **Architect Review** after flatgrass proof | Mid-slice compile fixes |
+
+---
+
+## Ship workflow (CVL)
+
+```text
+Architect Step 1 (CURSOR BRIEF)
+        ↓
+Integrator (one slice → repo + MCP)
+        ↓
+Playtest (flatgrass proof — Integrator + sbox MCP)
+        ↓
+Fantasy Check — "Does this still feel like LIFEPUNCH™?"
+        ↓
+Architect Review (full drift checklist — major slices)
+        ↓
+Owner sign-off → commit consent
+```
+
+**Fantasy Check** — one question only; mandatory every slice (`LIFEPUNCH_FEEL.md`).  
+**Architect Review** — full checklist in `LIFEPUNCH_GAMEPLAY_LAWS.md`; required for economy, UX overhaul, new patterns.
+
+---
+
+## Mandatory reads (Architect)
+
+| Order | Doc |
+|-------|-----|
+| 1 | `LIFEPUNCH_GAMEPLAY_LAWS.md` |
+| 2 | `LIFEPUNCH_FEEL.md` |
+| 3 | `TERMINOLOGY.md` |
+| 4 | `DECISIONS/README.md` |
+| 5 | `KNOWLEDGE/README.md` |
+| 6 | `OWNERSHIP_MATRIX.md` |
+| 7 | `PATTERN_LIBRARY.md` |
+| 8 | `addons/docs/LIFEPUNCH_CYBER_SYSTEM_PATTERN.md` |
+| 9 | Active lane docs (`BITCOIN_*`, `CYBER_REFERENCE_LAWS.md`) |
 
 ---
 
@@ -139,3 +201,17 @@ If Architect conflicts with `.cursor/rules` or `AGENT_ONBOARDING.md`, **repo law
 | `handoff/CHATGPT_PROJECT_CVL_INSTRUCTIONS.txt` | Infra-only CLV project (not Architect) |
 | `CHATGPT_FOOD_PIPELINE.md` | Lanes + food flow |
 | `MACHINE_CAST.md` | Machines + CVL brains vocabulary |
+| `LIFEPUNCH_GAMEPLAY_LAWS.md` | Gameplay philosophy (G0–G9) |
+| `LIFEPUNCH_FEEL.md` | Product identity / Fantasy Check |
+| `TERMINOLOGY.md` | Shared vocabulary |
+| `OWNERSHIP_MATRIX.md` | Topic ownership |
+| `DECISIONS/README.md` | Decision register index |
+| `KNOWLEDGE/README.md` | Accumulated knowledge |
+| `RFC/README.md` | RFC workflow |
+| `DESIGN_DECISION_LOG.md` | Index → `DECISIONS/` |
+| `PATTERN_LIBRARY.md` | Reusable pattern index |
+| `addons/docs/LIFEPUNCH_CYBER_SYSTEM_PATTERN.md` | Cyber stack pattern |
+| `addons/docs/BITCOIN_PLAYER_DESIGN.md` | Player fantasy + journey |
+| `addons/docs/BITCOIN_CONTROLLER_PATTERN.md` | Bitcoin responsibilities |
+| `addons/docs/BITCOIN_UPGRADE_TAXONOMY.md` | Upgrade ownership |
+| `addons/docs/BITCOIN_DATA_FLOW.md` | Data flow diagram |

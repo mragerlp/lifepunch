@@ -2,6 +2,10 @@
 
 **Status:** HARD GATE — applies to every `lifepunchbitcoin` session and every future cyber lane.  
 **Parent gate:** `ACTIVE_WORKSTREAM.md`  
+**Gameplay canon:** `lifepunch/docs/LIFEPUNCH_GAMEPLAY_LAWS.md` (Law G0 single owner — mandatory)  
+**Feel / terms:** `LIFEPUNCH_FEEL.md` · `TERMINOLOGY.md`  
+**Decisions / knowledge:** `DECISIONS/` (cite ID) · `KNOWLEDGE/` · `OWNERSHIP_MATRIX.md`  
+**Cyber pattern:** `LIFEPUNCH_CYBER_SYSTEM_PATTERN.md` · index: `lifepunch/docs/PATTERN_LIBRARY.md`  
 **Digital machine canon:** `LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md`  
 **Brand canon:** `TERMINAL_BRAND_MATRIX.md`  
 **Bible (populate on sign-off):** `BITCOIN_REFERENCE_IMPLEMENTATION.md`
@@ -68,7 +72,7 @@ Every solved problem becomes a **reusable pattern**. Do not solve the same UX pr
 | Error messaging | `log-line.err`, hub-off block | Consistent wording |
 | Power indicators | `IsPowered`, emissive/audio | All hubs |
 
-New patterns → document in `BITCOIN_REFERENCE_IMPLEMENTATION.md` when signed off.
+New patterns → add row to `lifepunch/docs/PATTERN_LIBRARY.md` when signed off; populate `BITCOIN_REFERENCE_IMPLEMENTATION.md` on Law 10 exit.
 
 ---
 

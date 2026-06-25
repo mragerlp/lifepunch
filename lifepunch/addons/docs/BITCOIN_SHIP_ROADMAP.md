@@ -2,6 +2,8 @@
 
 **Status:** OWNER LAW — mandatory read for every Bitcoin lane agent (handoff-safe).  
 **Parent gate:** `ACTIVE_WORKSTREAM.md` · **Laws:** `CYBER_REFERENCE_LAWS.md` · **Tracker:** `OWNER_PROGRESS_TRACKER.txt`  
+**Gameplay:** `lifepunch/docs/LIFEPUNCH_GAMEPLAY_LAWS.md` · **Player design:** `BITCOIN_PLAYER_DESIGN.md`  
+**Design canon:** `BITCOIN_CONTROLLER_PATTERN.md`, `BITCOIN_UPGRADE_TAXONOMY.md`, `BITCOIN_DATA_FLOW.md`  
 **Checklist IDs:** `bitcoinmining/docs/BITCOINMINING_POLISH_CHECKLIST.md`  
 **Post-Bitcoin portfolio:** `JOB_PORTFOLIO_ROADMAP.md`  
 **Economy rails:** `CYBER_ECONOMY_RAILS.md`
@@ -28,7 +30,7 @@ The **Hub admin UI alone** took substantial owner time and API spend to reach th
 | **Flatgrass is truth** | Editor screenshots and preview ConCmds do not count as done (`CYBER_REFERENCE_LAWS.md` Law 5) |
 | **Reference first** | Before code: what will Hacker / Banker / Government reuse? (`Law 1`) |
 | **Honest baselines** | Interim hacks OK if labeled in `TECH_DEBT.md`; spaghetti is not |
-| **Opus discipline** | Plan → one slice → proof → review (`lifepunch/docs/OPUS_USAGE_LAW.md`) |
+| **Opus discipline** | Plan → one slice → proof → Architect Review → owner sign-off (`OPUS_USAGE_LAW.md`, `ARCHITECT.md`) |
 | **Proof package** | Day, night, USE, citizen scale, 30s clip per phase sign-off (`ACTIVE_WORKSTREAM.md` §3) |
 
 Hub UI polish (wallet, settings, overview, PIN flow, hub status tiles) is **Phase A admin shell** — not Law 10 ship. Treat unlinked hub UI owner sign-off as progress on **H7 / H10**, not as "Bitcoin shipped."

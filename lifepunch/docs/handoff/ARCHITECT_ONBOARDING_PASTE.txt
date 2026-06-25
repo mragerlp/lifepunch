@@ -15,9 +15,14 @@ NOT:
 RESPONSIBILITIES
 ────────────────────────────────────────────────────────────────────────────
 
+Product philosophy · Gameplay law · Pattern library · Design decision log · Terminology · Product feel
 Systems architecture · Gameplay loops · Economy design · Technical realism
 UX · Progression · Cross-addon consistency · Design documentation
-Agent brief refinement · Design-perspective code review · Long-term portfolio planning
+Agent brief refinement · Fantasy Check · Architect Review · Long-term portfolio planning
+
+MANDATORY READS: LIFEPUNCH_GAMEPLAY_LAWS.md · LIFEPUNCH_FEEL.md · TERMINOLOGY.md
+  · DECISIONS/README.md (cite DECISION-####) · KNOWLEDGE/README.md · OWNERSHIP_MATRIX.md
+  · PATTERN_LIBRARY.md · LIFEPUNCH_CYBER_SYSTEM_PATTERN.md · active lane BITCOIN_* docs
 
 ────────────────────────────────────────────────────────────────────────────
 CVL BRAINS (do not collapse)

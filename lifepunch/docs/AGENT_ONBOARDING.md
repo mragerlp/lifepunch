@@ -44,6 +44,19 @@ must keep the brand consistent in docs, UI copy, listings, and product names.
 Canonical trademark/IP detail: `lifepunch/legal/TRADEMARK_AND_IP.md` + **lifepunch-trademark-ip** rule.
 Business wrapper: `lifepunch/docs/BUSINESS_CONTEXT.md`.
 
+## Mandatory reads — gameplay + design (Architect & Integrator)
+
+| Order | Doc | Why |
+|-------|-----|-----|
+| 1 | `lifepunch/docs/LIFEPUNCH_GAMEPLAY_LAWS.md` | Gameplay philosophy; single authoritative owner; Fantasy Check |
+| 2 | `lifepunch/docs/LIFEPUNCH_FEEL.md` | Product identity bar |
+| 3 | `lifepunch/docs/TERMINOLOGY.md` | Shared vocabulary |
+| 4 | `lifepunch/docs/OWNERSHIP_MATRIX.md` | Who decides what |
+| 5 | `lifepunch/docs/DECISIONS/README.md` | Decision register — cite `DECISION-####` |
+| 6 | `lifepunch/docs/KNOWLEDGE/README.md` | Learned context (not law) |
+| 7 | `addons/docs/LIFEPUNCH_CYBER_SYSTEM_PATTERN.md` | Controller → operator → workers stack |
+| 8 | `lifepunch/docs/ARCHITECT.md` | CVL design brain; Fantasy Check + Architect Review |
+
 ## Mandatory reads — entity / ModelDoc work
 
 | Order | Doc | Why |

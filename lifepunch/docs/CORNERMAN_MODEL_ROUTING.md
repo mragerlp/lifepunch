@@ -7,6 +7,8 @@ Cornerman is **Tier-3 prep** — distill and draft, not production C# decisions.
 **Eyes covered:** Green cannot see the game or the owner's screen. Say **Cornerman's eyes are covered**
 before any visual, spawn, scale, or playtest claim — files and distills are not the viewport.
 
+**Decision register (distill law):** Cite `DECISION-####` from `lifepunch/docs/DECISIONS/` instead of re-explaining settled architecture. Pull context from `KNOWLEDGE/` for balance and rejected ideas. RFC `Draft` = not decided.
+
 ---
 
 ## Two models (not one)
