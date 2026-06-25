@@ -1,0 +1,53 @@
+CORNERMAN — P0 PREP (distill only, no code commits)
+Date: 2026-06-25
+From: VENGEANCE / Red Cursor
+Owner: Bloodwave — final ChatGPT workflow plan incoming; HOLD implementation until Red says go.
+
+START HERE
+==========
+Read: CORNERMAN_BITCOINMINING_HUB_UPGRADE_ARCH_TASK.md (inbox)
+Read: BITCOINMINING_UPGRADE_ARCH_PREP_2026-06-25.md (inbox snapshot)
+
+Warm: WarmDistill
+Output: cornerman\outbox\ files listed in task doc (7 deliverables)
+
+LOCKED DESIGN RULE
+==================
+Every upgrade: controller smarter (HUB) OR hardware stronger (GPU RACK). Terminal never mines.
+
+LOCKED CAPS
+===========
+2 standard GPU Rack + 1 Advanced GPU Rack per hub (unchanged)
+
+YIELD (base)
+============
+Standard rack: 1.0x
+Advanced rack: 2.0x
+
+LOCAL BUFFER (undeposited on rack before deposit)
+=================================================
+Standard GPU Rack: max($10,000 USD, 1 BTC) per rack
+Advanced GPU Rack: max($20,000 USD, 2 BTC)
+
+UPGRADE TARGET SPLIT
+====================
+HUB (new tab — Hub Upgrades):
+  - CPU Clock Path → hash speed / dispatch
+  - CPU Core Count → block reward / yield
+  - Encryption / security (existing spec, later)
+
+SERVERS tab (GPU / hashing only):
+  - Per-rack GPU-side upgrades (OC, cooling, buffer tiers — draft names only)
+  - Status cards for 3 fixed slots (keep current layout)
+
+TERMINAL
+========
+Keyboard + monitor. STATUS block = farm readout. Commands stay at rig0.
+
+YOUR JOB NOW
+============
+1. Distill deliverables 1–6 into outbox (markdown).
+2. Leave BITCOINMINING_CHATGPT_PROMPT_MERGE.md as merge shell for owner's next paste.
+3. One-line ping Red when done.
+
+DO NOT ship C# or change monorepo on Green.

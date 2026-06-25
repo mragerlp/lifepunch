@@ -1,11 +1,11 @@
 # Cornerman work queue (Tier-3 prep)
 
-**Issued:** 2026-06-11 · **Updated:** 2026-06-12 — **P0 = Hacker Job · P1c = Bitcoin Miner job solidification · P1d = Bitcoin sounds research · P1b = asset test audit · P1 = Cyber ecosystem**
+**Issued:** 2026-06-11 · **Updated:** 2026-06-25 — **P0-prep = Hub/GPU upgrade architecture distill · P0 = Hacker Job · P1c = Bitcoin Miner job solidification · P1d = Bitcoin sounds research · P1b = asset test audit · P1 = Cyber ecosystem**
 
 **Green box:** RAG mirror + distill prep. **Red (VENGEANCE)** owns git push, C#, editor, Opus integration.  
 **Sync clone:** `Cornerman (Sync from Red)` or `git stash` + `git pull --rebase origin/main`
 
-**Push inbox:** `Push-CornermanCyberAssetAudit.ps1` (P0b) · `Push-CornermanHackerJobKickoff.ps1` (P0) · `Push-CornermanBitcoinMiningJobSolidification.ps1` (P1c) · `Push-CornermanBitcoinMiningSounds.ps1` (P1d) · `Push-CornermanBitcoinMiningAssetTestAudit.ps1` (P1b) · `Push-CornermanCyberEcosystemBrief.ps1` (P1)
+**Push inbox:** `Push-CornermanBitcoinMiningHubUpgradeArch.ps1` (P0-prep) · `Push-CornermanCyberAssetAudit.ps1` (P0b) · `Push-CornermanHackerJobKickoff.ps1` (P0) · `Push-CornermanBitcoinMiningJobSolidification.ps1` (P1c) · `Push-CornermanBitcoinMiningSounds.ps1` (P1d) · `Push-CornermanBitcoinMiningAssetTestAudit.ps1` (P1b) · `Push-CornermanCyberEcosystemBrief.ps1` (P1)
 
 ---
 
@@ -13,6 +13,7 @@
 
 | # | Task | Brief | Model | Deliverable |
 |---|------|-------|-------|-------------|
+| **P0-prep** | **Hub/GPU upgrade architecture** (owner ChatGPT plan incoming — **distill only, no code**) | `CORNERMAN_BITCOINMINING_HUB_UPGRADE_ARCH_TASK.md` | **distill** | `outbox/BITCOINMINING_CONTROLLER_VS_HARDWARE.md` + taxonomy + migration + UI tab plan + terminal copy + doc drift + merge shell |
 | **P0b** | **Cyber asset audit** (owner on legal) | `CORNERMAN_CYBER_ASSET_AUDIT_TASK.md` | **distill** | Validate `cornerman-outbox/*_2026-06-11.md` · ping Red one-liner |
 | **P0** | **Hacker Job distill** | `CORNERMAN_HACKER_JOB_TERMINAL_TASK.md` | **distill** | `outbox/HACKER_TERMINAL_FLOW_NOTES.md` · `TERMINAL_PUZZLE_CATALOG.md` · `HACKER_PVP_INFRA_FLOW.md` |
 | P0a | Auth pattern + UI review | `UPGRADE_TIER_STANDARD.md` + owner intake | distill | `HASHD_AUTH_PATTERN.md` · `HACKER_UI_REVIEW_NOTES.md` |
