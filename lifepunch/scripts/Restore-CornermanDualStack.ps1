@@ -73,11 +73,10 @@ if (Test-Path -LiteralPath '$tunnel') {
 Write-Host "  $($tr.Output)" -ForegroundColor $(if ($tr.ExitCode -eq 0) { 'Green' } else { 'Yellow' })
 
 Write-Step 'Close LM Studio GUI on Green (keep headless serve)'
-Invoke-CornermanSshExec -SshTarget $SshTarget -ScriptBlock @'
-Get-Process -ErrorAction SilentlyContinue | Where-Object { $_.ProcessName -match 'LM Studio' } | ForEach-Object {
-  $null = $_.CloseMainWindow(); Start-Sleep -Milliseconds 300
+$closeGui = Join-Path $Here 'Close-CornermanLmStudioGui.ps1'
+if (Test-Path -LiteralPath $closeGui) {
+    & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $closeGui -SshTarget $SshTarget -Quiet
 }
-'@ -ConnectTimeout 15 | Out-Null
 
 Write-Host ''
 Write-Host 'Green dual-stack restore done.' -ForegroundColor Green

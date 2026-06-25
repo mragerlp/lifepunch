@@ -70,6 +70,10 @@ elseif (-not $pre.checks.'cornerman.tier3Serve') {
 }
 else {
     if (-not $Quiet) { Write-Host '  OK Tier-3 already serving' -ForegroundColor Green }
+    $closeGui = Join-Path $Here 'Close-CornermanLmStudioGui.ps1'
+    if (Test-Path -LiteralPath $closeGui) {
+        & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $closeGui -SshTarget $SshTarget -Quiet
+    }
 }
 
 Write-Step 'Cursor MCP tool-name guard (chomnr)'

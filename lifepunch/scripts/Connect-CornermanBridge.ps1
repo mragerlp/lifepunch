@@ -130,6 +130,12 @@ if (-not $SkipBridgeSync) {
     }
 }
 
+Write-Step 'Close LM Studio GUI on Green (headless lms serve stays)'
+$closeGui = Join-Path $Here 'Close-CornermanLmStudioGui.ps1'
+if (Test-Path -LiteralPath $closeGui) {
+    & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $closeGui -SshTarget $SshTarget -Quiet
+}
+
 Write-Step 'Probe'
 $lmOk = $false
 $lmModels = @()

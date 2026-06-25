@@ -60,6 +60,12 @@ if ($SshTarget) { $restoreArgs += @('-SshTarget', $SshTarget) }
 Write-Step 'Red reverse tunnel (Green localhost:9090 -> chomnr)'
 & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $Here 'Start-VengeanceEditorTunnelToCornerman.ps1') -Background
 
+Write-Step 'Green SMB bridge (interactive session)'
+$smbMap = Join-Path $Here 'Start-CornermanSmbBridgeInteractive.ps1'
+if (Test-Path -LiteralPath $smbMap) {
+    & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $smbMap -SshTarget $SshTarget 2>$null | Out-Null
+}
+
 Write-Step 'Connectivity probe'
 & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $Here 'Get-CvlConnectivityStatus.ps1') -Pretty
 

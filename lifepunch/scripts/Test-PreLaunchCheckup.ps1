@@ -99,14 +99,6 @@ function Test-GreenTier3Healthy {
     return [bool]$health.lmServeOk -and [bool]$health.lmCatalogOk -and [bool]$health.lmWatchdogOk
 }
 
-function Close-GreenLmGui([string]$Target) {
-    Invoke-CornermanSshExec -SshTarget $Target -ScriptBlock @'
-Get-Process -ErrorAction SilentlyContinue | Where-Object { $_.ProcessName -match 'LM Studio' } | ForEach-Object {
-  $null = $_.CloseMainWindow(); Start-Sleep -Milliseconds 300
-}
-'@ -ConnectTimeout 15 | Out-Null
-}
-
 function Test-GreenOffCursor([string]$Target) {
     if (-not (Test-CornermanSshReady -SshTarget $Target)) { return $false }
     $marker = 'C:\lifepunch\cornerman\OFF_CURSOR_ACTIVE.txt'
@@ -292,14 +284,25 @@ if ($Fix) {
         }
         else {
             Write-FixStep 'Green Cursor mode — bridge + editor tunnel'
-            & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $Here 'Connect-CornermanBridge.ps1') 2>$null | Out-Null
+            & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $Here 'Connect-CornermanBridge.ps1') -SkipLmWarm 2>$null | Out-Null
             $tunnel = 'C:\lifepunch\cornerman\Start-CornermanSboxEditorTunnel.ps1'
             Invoke-CornermanSshExec -SshTarget $SshTarget -ScriptBlock @"
 if (Test-Path -LiteralPath '$tunnel') {
   & powershell -NoProfile -ExecutionPolicy Bypass -File '$tunnel' -Background
 }
 "@ -ConnectTimeout 25 | Out-Null
-            Close-GreenLmGui -Target $SshTarget
+        }
+
+        Write-FixStep 'Close LM Studio GUI on Green (headless lms serve stays)'
+        $closeGui = Join-Path $Here 'Close-CornermanLmStudioGui.ps1'
+        if (Test-Path -LiteralPath $closeGui) {
+            & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $closeGui -SshTarget $SshTarget -Quiet
+        }
+
+        Write-FixStep 'Green SMB bridge (interactive session map)'
+        $smbMap = Join-Path $Here 'Start-CornermanSmbBridgeInteractive.ps1'
+        if (Test-Path -LiteralPath $smbMap) {
+            & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $smbMap -SshTarget $SshTarget 2>$null | Out-Null
         }
     }
     else {

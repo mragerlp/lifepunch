@@ -489,8 +489,8 @@
 		var log = GetLogScroll();
 		if ( log.IsValid() )
 		{
-			var maxY = log.GetMaxScrollY();
-			var nearBottom = maxY <= 0f || log.ScrollOffset.y >= maxY - 32f;
+			var scrollMaxY = log.GetMaxScrollY();
+			var nearBottom = scrollMaxY <= 0f || log.ScrollOffset.y >= scrollMaxY - 32f;
 			log.PreferScrollToBottom = nearBottom;
 		}
 

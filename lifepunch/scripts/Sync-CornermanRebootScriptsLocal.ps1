@@ -29,7 +29,8 @@ $files = @(
     'Install-CornermanLmWatchdog.ps1',
     'Get-CvlCornermanProbe.ps1',
     'Get-CornermanHealthProbe.ps1',
-    'Remove-CornermanLemonade.ps1'
+    'Remove-CornermanLemonade.ps1',
+    'Close-CornermanLmStudioGui.ps1'
 )
 
 foreach ($name in $files) {

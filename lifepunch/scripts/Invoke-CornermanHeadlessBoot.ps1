@@ -87,6 +87,11 @@ if ($env:USERNAME -and $env:USERNAME -ne 'SYSTEM') {
         try {
             & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $lmsScript -WarmModel daily -Quiet
             Write-BootNote 'LM Studio Tier-3 serve OK (distill+embed; coder on disk)'
+            $closeGui = 'C:\lifepunch\cornerman\Close-CornermanLmStudioGui.ps1'
+            if (Test-Path -LiteralPath $closeGui) {
+                & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $closeGui -Quiet
+                Write-BootNote 'LM Studio GUI closed (headless serve kept)'
+            }
         }
         catch {
             Write-BootNote "LM Studio FAIL: $($_.Exception.Message)"
