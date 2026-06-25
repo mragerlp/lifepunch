@@ -10,14 +10,17 @@ Lightweight archive — **not** a database ledger. Git + owner checkpoint = merg
 | `PACKAGE_NAMING_STANDARD.md` | package law | **active** | Public branch slugs + s&box ids |
 | `BITCOINMINING_ENTITY_BRIEF.md` | product | reference | Entity arch |
 | `HACKER_JOB_TERMINAL_BRIEF.md` | product | quarantine | Not active compile |
+| `ARCHITECT.md` | canon | **active** | CVL design brain (ChatGPT on Red) |
+| `handoff/ARCHITECT_ONBOARDING_PASTE.txt` | template | template | Architect custom instructions |
+| `handoff/ARCHITECT_PROJECT_INSTRUCTIONS.txt` | template | template | Short Architect project instructions |
 | `BLANK_CURSOR_BRIEF.txt` (handoff) | template | template | Upload to ChatGPT Project |
-| `CHATGPT_STEP1_PASTE.txt` | template | template | Ideation Step 1 |
+| `CHATGPT_STEP1_PASTE.txt` | template | template | Architect Step 1 ideation |
 | `CHATGPT_VISUAL_PASS_PASTE.txt` | template | template | Visual pass Step 1b |
 | `CHATGPT_SBOX_EDIT_SESSION_PASTE.txt` | template | template | Pre-editor checklist |
 | `CHATGPT_ADDON_SHIP_CHECKLIST_PASTE.txt` | template | template | Portal advisory |
 
 **Status values:** `template` · `draft` · `active` · `reference` · `closed` · `quarantine`
 
-**Workflow:** ChatGPT paste → CURSOR BRIEF → Cursor VENGEANCE · Voice via **Cursor mic**, not Whisper.
+**Workflow:** Architect Step 1 paste → CURSOR BRIEF → Cursor Integrator on VENGEANCE · Voice via **Cursor mic**, not Whisper.
 
 Add a row when a new brief ships; mark `closed` when superseded.

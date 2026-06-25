@@ -73,7 +73,8 @@ FOUNDATION (June 2026 — after pull)
 
   COMMUNITY: https://discord.gg/lifepunch · https://lifepunch.co
 
-  IDEATION: ChatGPT Step 1 -> CURSOR BRIEF -> Cursor VENGEANCE
+  IDEATION: Architect Step 1 -> CURSOR BRIEF -> Cursor Integrator VENGEANCE
+  ARCHITECT CANON: lifepunch/docs/ARCHITECT.md
     Paste: lifepunch/docs/handoff/CHATGPT_STEP1_PASTE.txt
 
   GIT: agent recommends checkpoint; Bloodwave says commit / commit and push

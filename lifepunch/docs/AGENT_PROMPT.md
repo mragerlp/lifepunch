@@ -73,6 +73,7 @@ READ FIRST (in this order), then follow them as law:
 6. `lifepunch/docs/CVL_RGB_DOCTRINE.md` ← R/G/B primaries, yellow/cyan/magenta mixes, white=black integration states. Mandatory for CVL/multi-machine comms.
 7. `OneDrive/Desktop/uniforms/UNIFORM_STANDARDS.md` ← web uniform standards (Explorer icons, shortcut tiers, console cast). Repo mirror: `lifepunch/branding/lifepunch-ops/UNIFORM_STANDARDS.md`.
 8. `lifepunch/docs/AGENT_ONBOARDING.md` ← foundation + current state (read "Tonight" table if resuming mid-session).
+8b. `lifepunch/docs/ARCHITECT.md` ← CVL design brain (ChatGPT on Red); Integrator = Cursor.
 9. `lifepunch/docs/BUSINESS_CONTEXT.md` ← LIFEPUNCH™ entity, revenue, community links.
 10. `lifepunch/docs/PUBLISH_REPO_LANE.md` ← two-repo publish law (core vs lifepunch-published).
 11. `lifepunch/addons/docs/QUARANTINE_REGISTER.md` ← frozen idents; concepts only, no ship copy.
@@ -92,8 +93,9 @@ so the rules auto-apply and grounding is local. NEVER edit grounding in a lane �
 the monorepo on each export; change rules/docs in GitHub only.
 
 IDEATION FIRST (law — Bloodwave workflow):
-  New product / spaghetti / mixed infra+UX → owner runs ChatGPT Step 1 BEFORE you build:
+  New product / spaghetti / mixed infra+UX → owner runs **Architect** Step 1 BEFORE Integrator builds:
   `lifepunch/docs/handoff/CHATGPT_STEP1_PASTE.txt` → product line → filled CURSOR BRIEF → paste here.
+  Architect canon: `lifepunch/docs/ARCHITECT.md` · onboarding paste: `handoff/ARCHITECT_ONBOARDING_PASTE.txt`
   Process: `lifepunch/docs/WORKFLOW_IDEATION_FIRST.md`. If no brief, ask for Step 1 — do not guess.
 
 PUBLISH LANE (ship tree — not law):
@@ -107,7 +109,7 @@ QUARANTINE (law — frozen idents):
   Only adminmenu + bitcoinmining are active compile/ship work (portfolio.json activeAddons).
   Quarantined idents (hackerjob, ak47, bankerjob, drugs, …) are ON DISK for **concepts/context
   only** — do NOT edit, extend, export, or copy their code/prefabs/SCSS into active addons.
-  Promotion requires owner + portfolio.json + addons.csproj unblock + ChatGPT brief.
+  Promotion requires owner + portfolio.json + addons.csproj unblock + Architect brief.
   Register: lifepunch/addons/docs/QUARANTINE_REGISTER.md
 
 WHAT THIS IS: LIFEPUNCH™ builds custom, LIFEPUNCH-owned content for DXRP (a DarkRP-style game

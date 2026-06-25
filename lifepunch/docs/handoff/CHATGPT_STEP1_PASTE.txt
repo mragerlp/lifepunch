@@ -1,6 +1,6 @@
-LIFEPUNCH™ — fill the blank CURSOR BRIEF (Step 1 ideation)
+LIFEPUNCH™ — fill the blank CURSOR BRIEF (Architect Step 1 ideation)
 ===========================================================
-Bloodwave uses ChatGPT to turn ideas into structured food for Cursor on VENGEANCE.
+Bloodwave uses **Architect** (ChatGPT on VENGEANCE) to turn ideas into structured food for Cursor Integrator.
 
 YOUR JOB:
 1. Wait for Bloodwave's product line (next message), OR if included below, use it.

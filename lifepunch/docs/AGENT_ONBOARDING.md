@@ -13,6 +13,19 @@ high-quality custom content (weapons, entities, staff/admin tooling, UI, gamemod
 ops) for our server and to license to other DXRP servers. Treat this as a business: be
 direct, ship quality.
 
+## CVL design brain — Architect
+
+**Architect** = ChatGPT Plus/Pro on **VENGEANCE** (Red) — formal design role in the LifePunch web.
+Architect asks **"Does this make the game better?"** Cursor (Integrator) asks **"Does this ship?"**
+
+| Brain | Tool | Ships code? |
+|-------|------|-------------|
+| **Architect** | ChatGPT LIFEPUNCH™ Project | No — CURSOR BRIEFs + design docs |
+| **Integrator** | Cursor on Red | Yes (owner commit consent) |
+| **Distiller** | Cornerman LM on Green | No — outbox prep |
+
+Canon: `lifepunch/docs/ARCHITECT.md` · paste: `handoff/ARCHITECT_ONBOARDING_PASTE.txt`
+
 ## LIFEPUNCH™ branding (agents — law)
 
 **LIFEPUNCH™** is our only owned mark (legal entity: **Peak Performance Products LLC**). Agents
@@ -369,7 +382,8 @@ Quick rules:
 | **Quarantine** | Active dev: `adminmenu` + `bitcoinmining` only. All other idents **frozen** — concepts/context OK, **no edits, no copy-paste ship paths** — `portfolio.json`, `QUARANTINE_REGISTER.md` |
 | **Publish now** | **`lifepunchulx`** (`adminmenu`) only — in `publishReadyAddons`; export via `Export-LifepunchPublishLane.ps1` |
 | **Bitcoin** | P0 hub = **Steam Machine** static chassis (dev: `bitcoinmining/` · promote to `lpbitcoin/bitcoinhub/`). Folder name = slug (`bitcoinhub`, not `bitcoin-miner`). **Digital machine** stack · `DXRP_ADDON_PUBLISH_DOCTRINE.md` · `LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md` |
-| **Ideation** | ChatGPT Step 1 → paste CURSOR BRIEF → Cursor VENGEANCE. Voice = **Cursor mic** (Whisper deferred). `WORKFLOW_IDEATION_FIRST.md` |
+| **Ideation** | **Architect** (ChatGPT Step 1) → paste CURSOR BRIEF → Cursor Integrator on VENGEANCE. Voice = **Cursor mic** (Whisper deferred). `WORKFLOW_IDEATION_FIRST.md` |
+| **Architect** | Design brain on Red — `ARCHITECT.md` · `handoff/ARCHITECT_*.txt` |
 | **ChatGPT templates** | Step1 · Visual pass · Edit session · Ship checklist — `handoff/CHATGPT_*.txt` · index: `briefs/BRIEF_INDEX.md` |
 | **Owner alias** | Visible: **Bloodwave** · Proprietary: **mrragerlp** · Contact: Mr. Rager — `BLOODWAVE_ALIAS.md` |
 | **Git checkpoints** | Agent recommends scope; owner approves. `GIT_CHECKPOINTS.md` · handoff: `handoff/JUNE_2026_FOUNDATION_CHECKPOINT.md` |
@@ -432,4 +446,4 @@ Quick rules:
 - **Bitcoin miner hub** — ModelDoc foundation + machine hierarchy (P0 mesh → P1 attachments/lights → states). `LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md` · `MODEL_FOUNDATION_PASS.md`.
 - **Hub pattern law** — `addons/docs/LIFEPUNCH_HUB_PATTERN.md` for all computer-heavy jobs.
 - AK-47 and all quarantined idents — **paused** until promote + ChatGPT brief.
-- New products: ChatGPT Step 1 brief **before** code.
+- New products: **Architect** Step 1 brief **before** code (`ARCHITECT.md`).

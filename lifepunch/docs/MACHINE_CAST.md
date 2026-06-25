@@ -84,10 +84,13 @@ Prefer **Bloodwave** in agent prose; **mrragerlp** in proprietary headers.
 
 | Role | Runs on | Git write lane |
 |------|---------|----------------|
-| Owner / addons agent | **VENGEANCE** | GitHub monorepo |
+| Owner / addons agent (**Integrator**) | **VENGEANCE** | GitHub monorepo |
+| **Architect** (design brain) | **VENGEANCE** (ChatGPT — same desk as Integrator) | **No git** — CURSOR BRIEFs only |
 | **shottaWEB** (Brian) | Partner PC | GitLab `lifepunch-website` |
 | RDP server agent | **lifepunchnet** | GitLab `lifepunch-rdp-server` |
-| Cornerman agent | **Cornerman** | GitHub clone (read-only deploy key → patch handoff to VENGEANCE) |
+| Cornerman agent (**Distiller**) | **Cornerman** | GitHub clone (read-only deploy key → patch handoff to VENGEANCE) |
+
+**Architect** is not a machine — it is ChatGPT on Red. See `ARCHITECT.md`.
 
 When someone says **"RDP server agent"**, they mean the **Cursor agent on lifepunchnet** — not a separate machine name.
 
@@ -146,7 +149,7 @@ Refresh all shortcut icons: `lifepunch/scripts/Install-LifePunchShortcutIcons.ps
 
 | Machine | Runbook / prompt |
 |---------|------------------|
-| All agents | `AGENT_ONBOARDING.md`, `OPS_CLARITY_CHECKPOINT.md`, `AGENT_PROMPT.md` Block 0 |
+| All agents | `AGENT_ONBOARDING.md`, `ARCHITECT.md`, `OPS_CLARITY_CHECKPOINT.md`, `AGENT_PROMPT.md` Block 0 |
 | VENGEANCE | Block A |
 | **shottaWEB** | Block B, `SHOTTAWEB_HANDOFF.txt` |
 | lifepunchnet | Block C, `LIFEPUNCHNET_INSTRUCTIONS.txt`, `LIFEPUNCHNET_RDP_ODYSSEUS.txt` |

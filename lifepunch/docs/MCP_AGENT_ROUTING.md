@@ -3,7 +3,7 @@
 **Status:** Locked June 2026 · **Source:** CVL topology handoff + Red/Green ops  
 **Companion:** `SBOX_EDITOR_MCP.md` (install/wiring) · `CORNERMAN_MODEL_ROUTING.md` (Tier-3 models)
 
-ChatGPT Plus/Pro on the desk is **advisory** — paste `handoff/to-chatgpt-mcp-topology-handoff.txt` for refinement.
+ChatGPT Plus/Pro on the desk is **Architect** (design brain) — paste `handoff/to-chatgpt-mcp-topology-handoff.txt` for infra refinement only.
 **Cursor on VENGEANCE integrates and commits.** Green distill prep only; Red owns ship.
 
 **Stack updates / full capacity:** `CVL_FULL_CAPACITY_UPDATES.md` · `Invoke-CvlFullCapacityRefresh.ps1`
@@ -137,7 +137,7 @@ Load via **Cursor rules** pointing at these paths — not bridge addons.
 | `lifepunch/docs/memory/CONNECTIVITY_LAST_GOOD.md` | Last full-capacity probe timestamp | Red (script append) |
 | `lifepunch/docs/memory/GREEN_OUTBOX_INDEX.md` | Pointers to Cornerman outbox drops | Green distill → Red merges |
 
-**ChatGPT Plus tip:** mirror §0–§3 of `to-chatgpt-mcp-topology-handoff.txt` into a **ChatGPT Project** custom instruction — advisory only; repo rules still win.
+**Architect tip:** mirror §0–§3 of `to-chatgpt-mcp-topology-handoff.txt` into **CLV Project** (infra only). Product design uses **Architect** (`ARCHITECT.md`).
 
 ---
 
