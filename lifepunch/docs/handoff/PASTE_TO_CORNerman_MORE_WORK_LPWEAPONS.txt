@@ -1,0 +1,28 @@
+Paste this to Cornerman to add more work to the current long run:
+
+---
+
+Cornerman — additional work for the rest of the run (parallel to current lpaddons prep).
+
+You now have more high-value prep to do. lpbitcoin Phase 1 remains the top priority, but weapons (lpweapons) are an important parallel track.
+
+New directive to process in addition to the previous one:
+
+lifepunch/addons/docs/briefs/CORNerman_LPWEAPONS_PLATFORM_AUDIT_PREP.md
+
+Key points:
+- Use Green Deep the whole time.
+- All output must use the standardized LIFEPUNCH_AI_REPORT_TEMPLATE.md
+- Save reports to both lifepunch/docs/reports/ and C:\LIFEPUNCH\Reports\
+- Filename format: YYYY-MM-DD_HHMM_ShortTitle.md
+- Produce as many of the requested weapon reports as time allows before ~11:30 PM.
+
+You can interleave this with the broader lpaddons ecosystem prep. Focus on quality distillation and clear, structured reports that Red can act on when Bloodwave returns.
+
+Continue until ~11:30 PM EST or until you have solid coverage of the weapon platform prep.
+
+When you finish the overall run, send your normal completion signal and mention how many weapon reports you delivered.
+
+Start this additional work now after confirming Green Deep is still loaded correctly.
+
+---

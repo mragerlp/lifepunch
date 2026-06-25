@@ -1,0 +1,50 @@
+Paste this directly to Cornerman:
+
+---
+
+Cornerman — new long run starting now.
+
+1. Pull latest:
+cd C:\Users\jared\Projects\lifepunchaddons
+git fetch
+git pull --rebase
+
+Confirm you're on a clean descendant of 52ba8f3 or newer.
+
+2. Load Green Deep (this is mandatory for this batch):
+- Model: qwen/qwen3.6-27b
+- Quant: Q6_K_L (or highest stable Q6)
+- Context: 32768
+- Thinking: ON
+- Preserve Thinking: OFF
+- Temperature: 0.6
+- Top P: 0.95
+- Top K: 20
+- GPU offload: maximum stable
+
+Run:
+lms load qwen/qwen3.6-27b --gpu max -y
+
+Verify with `lms ps` that the 27B is loaded.
+
+3. Primary task for this entire run (until ~11:30 PM EST):
+
+lifepunch/addons/docs/briefs/CORNerman_LPADONS_FULL_ECOSYSTEM_PREP_UNTIL_1130PM.md
+
+Read that file first. It is the directive for the full lpaddons scope (priority = finish lpbitcoin Phase 1, but prepare connections across the whole addon family).
+
+You have until ~11:30 PM EST. Treat this as serious long unattended work.
+
+When done (or at cutoff), send exactly:
+
+OK cornerman lpaddons-full-ecosystem-prep complete @<time>
+head=<current commit>
+profile=Green Deep
+outputs=<number>
+eyes=covered
+no-code
+no-commit
+
+Then stop.
+
+Start now.

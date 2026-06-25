@@ -1,0 +1,37 @@
+Paste this directly to Cornerman:
+
+---
+
+Cornerman — change how you deliver reports for the rest of this run (and going forward).
+
+1. Pull latest so you have the new structure:
+cd C:\Users\jared\Projects\lifepunchaddons
+git pull --rebase
+
+2. All reports from now on must use the standard template:
+lifepunch/docs/handoff/LIFEPUNCH_AI_REPORT_TEMPLATE.md
+
+3. Save every completed report here:
+lifepunch/docs/reports/
+
+Use this exact filename format:
+YYYY-MM-DD_HHMM_ShortDescriptiveTitle.md
+
+Example:
+2026-06-25_1045_BitcoinHub_UniversalUpgrades.md
+2026-06-25_1420_DrugDealer_MenuExtensions.md
+
+Also drop an identical copy to this easy path for quick access:
+C:\LIFEPUNCH\Reports\
+
+This way when Bloodwave RDPs into VENGEANCE he can just:
+- git pull
+- open the newest file in lifepunch/docs/reports/
+- copy the whole thing
+- paste into ChatGPT
+
+Continue the current long lpaddons prep batch using Green Deep. Just change the output location and format to the above.
+
+When you finish or hit ~11:30 PM, still send your normal completion signal.
+
+Do this for all remaining reports.

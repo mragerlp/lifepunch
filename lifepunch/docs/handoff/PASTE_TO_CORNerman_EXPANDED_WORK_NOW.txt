@@ -1,0 +1,43 @@
+Paste this to Cornerman to expand the workload for the long run:
+
+---
+
+Cornerman — expanding the prep workload. lpbitcoin Phase 1 is still the top priority, but we have room for strong parallel work on the full lpaddons project.
+
+You are already handling the big lpaddons ecosystem prep. Add these in parallel. Stay on Green Deep.
+
+All reports must use the exact template:
+lifepunch/docs/handoff/LIFEPUNCH_AI_REPORT_TEMPLATE.md
+
+Save every report to both:
+- lifepunch/docs/reports/
+- C:\LIFEPUNCH\Reports/
+
+Use filename format: YYYY-MM-DD_HHMM_ShortTitle.md
+
+Additional work packages:
+
+1. Weapons platform (high priority parallel track):
+   Process: lifepunch/addons/docs/briefs/CORNerman_LPWEAPONS_PLATFORM_AUDIT_PREP.md
+   This includes platform law compliance, AK47 lane status, intake pipeline, viewmodel rig, mass production queue, weapon UI ideas, and how weapons should align with the new Universal Upgrades home and Bitcoin visual doctrine.
+
+2. Admin menu + shared patterns:
+   Process: lifepunch/addons/docs/briefs/CORNerman_LIFEPUNCHULX_AND_SHARED_PATTERNS_PREP.md
+   Review lifepunchulx current state, extract reusable UI patterns from ulx + Bitcoin surfaces, and map how future weapons and cyber jobs can stay consistent.
+
+3. Extra if time allows:
+   - How weapons could integrate with Black Market / Drug Dealer (high-level opportunity mapping only).
+   - Consistent donor cosmetic rules across weapons and machines.
+   - Any obvious documentation or canon gaps when cross-referencing the new report template against existing weapon and bitcoin docs.
+
+Prioritization order for you:
+- Finish any remaining core lpbitcoin pieces first.
+- Then weapons platform audit.
+- Then ulx + shared patterns.
+- Then the extra integration / cosmetic consistency notes.
+
+Keep producing clean, structured reports. When you hit ~11:30 PM or feel you have good coverage, send your normal completion signal and note roughly how many reports you delivered in the weapons and shared patterns areas.
+
+Start adding this work now.
+
+---

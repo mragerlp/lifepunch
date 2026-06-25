@@ -1,0 +1,66 @@
+Paste this directly to Cornerman (updated with correct loading instructions):
+
+---
+
+Cornerman — load Green Deep correctly and start the long run.
+
+1. Pull latest changes first:
+cd C:\Users\jared\Projects\lifepunchaddons
+git fetch
+git pull --rebase
+
+2. Load **Green Deep** (Qwen3.6-27B) with the exact correct steps:
+
+# Download only if Qwen3.6-27B Q6_K is not already present
+lms get qwen/qwen3.6-27b@q6_k --gguf
+
+# Find the exact local model key
+lms ls --llm --detailed
+
+# Load using that exact key (replace <EXACT_MODEL_KEY_FROM_LMS_LS>)
+lms load <EXACT_MODEL_KEY_FROM_LMS_LS> --gpu max --context-length 32768
+
+# Verify loaded model
+lms ps
+
+Important:
+- Use quant Q6_K (not Q6_K_L)
+- Do not use -y flag
+- Always load with --context-length 32768
+- Temperature, Top P, Top K, and Thinking are generation settings — set them in the model’s LM Studio defaults or send them with each request.
+
+Recommended generation defaults for this run:
+- Thinking: ON
+- Preserve Thinking: OFF
+- Temperature: 0.6
+- Top P: 0.95
+- Top K: 20
+
+3. Report format for everything you produce:
+Use the template exactly:
+lifepunch/docs/handoff/LIFEPUNCH_AI_REPORT_TEMPLATE.md
+
+Save reports to:
+- lifepunch/docs/reports/   (with git)
+- C:\LIFEPUNCH\Reports\   (easy grab)
+
+Filename format: YYYY-MM-DD_HHMM_ShortTitle.md
+
+4. Main task:
+Process the full directive:
+lifepunch/addons/docs/briefs/CORNerman_LPADONS_FULL_ECOSYSTEM_PREP_UNTIL_1130PM.md
+
+Use Green Deep for the entire run until ~11:30 PM EST.
+
+When finished or at cutoff, send:
+OK cornerman lpaddons-full-ecosystem-prep complete @<time>
+head=<current>
+profile=Green Deep (Qwen3.6-27B Q6_K)
+outputs=<number>
+eyes=covered
+no-code
+no-commit
+
+Start the model load and the batch now.
+
+---

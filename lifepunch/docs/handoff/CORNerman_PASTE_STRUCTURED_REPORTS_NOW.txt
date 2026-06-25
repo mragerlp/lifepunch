@@ -1,0 +1,33 @@
+Paste this to Cornerman right now:
+
+---
+
+Cornerman — important format change for all remaining work.
+
+From now on, every single deliverable and report you produce must follow the new standardized LIFEPUNCH AI Report format.
+
+Pull the template:
+cd C:\Users\jared\Projects\lifepunchaddons
+git pull --rebase
+
+Use this as the exact structure for everything you output from this point forward:
+lifepunch/docs/handoff/LIFEPUNCH_AI_REPORT_TEMPLATE.md
+
+Key rules:
+- Start every report with the full header block (Node, Date, Project, Commit, Confidence, Estimated tokens).
+- Always include the PROJECT CONTEXT block.
+- Separate FACTS from IDEAS clearly.
+- End with the self-scored CONFIDENCE table (Architecture, Gameplay, etc. + Needs Opus / Editor / Human).
+- Include a "CHATGPT TASKS" section that explicitly delegates review work.
+- Finish with a clear "CHATGPT REVIEW REQUEST" paragraph.
+- Keep Executive Summary to 5-10 tight bullets.
+
+This is so Bloodwave can quickly paste your output into ChatGPT while away from home without re-explaining context.
+
+Re-structure any work you've done so far into this format where possible. All new files from here on must use it.
+
+Continue the current long batch (lpaddons full ecosystem prep) but switch to this report style immediately.
+
+When you finish the run, still send the normal completion signal at the end.
+
+Start using the new format now.

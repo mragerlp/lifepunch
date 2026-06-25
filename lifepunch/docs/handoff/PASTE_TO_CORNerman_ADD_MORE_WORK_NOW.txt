@@ -1,0 +1,50 @@
+Paste this to Cornerman to add more work to the current long unattended run:
+
+---
+
+Cornerman — additional high-value prep work for the rest of the run.
+
+You are still on the main lpaddons full ecosystem prep (including lpbitcoin Phase 1 priority). Add these in parallel. Use Green Deep the whole time.
+
+All new output must use the standardized report template:
+lifepunch/docs/handoff/LIFEPUNCH_AI_REPORT_TEMPLATE.md
+
+Save every report to:
+- lifepunch/docs/reports/
+- C:\LIFEPUNCH\Reports/
+
+Filename format: YYYY-MM-DD_HHMM_ShortTitle.md
+
+New work to process:
+
+1. Main new directive:
+lifepunch/addons/docs/briefs/CORNerman_LPWEAPONS_PLATFORM_AUDIT_PREP.md
+
+This covers:
+- Current state of the weapon platform law
+- AK47 lane quarantine status
+- Intake pipeline health
+- Viewmodel rig readiness
+- Mass production queue prep (the 5 Gun Dealer classes)
+- How weapons should align (or deliberately differ) from Bitcoin patterns and the new Universal Upgrades home
+- Weapon UI / attachment / cosmetic ideas that fit the overall LifePunch ops style
+- Donor visual rules for weapons
+
+2. Additional supporting brief:
+lifepunch/addons/docs/briefs/CORNerman_LIFEPUNCHULX_AND_SHARED_PATTERNS_PREP.md
+
+This covers:
+- lifepunchulx (admin menu) current state and opportunities
+- Extracting reusable UI patterns across ulx + Bitcoin surfaces
+- How future weapons and cyber jobs can stay visually and interaction-wise consistent
+- Risks of the whole lpaddons project feeling disconnected
+
+Prioritize lpbitcoin-related and weapons work first. The ulx + shared patterns work is high-leverage for making the entire addon family feel cohesive.
+
+Continue producing structured reports using the template. You can interleave these with the previous ecosystem prep tasks.
+
+When you finish or hit ~11:30 PM, include in your completion signal roughly how many new reports you delivered in these areas.
+
+Start this additional work now.
+
+---
