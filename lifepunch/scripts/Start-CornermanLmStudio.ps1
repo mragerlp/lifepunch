@@ -14,7 +14,7 @@
 #>
 [CmdletBinding()]
 param(
-    [ValidateSet('daily', 'distill', 'coder', 'all', 'none')]
+    [ValidateSet('daily', 'distill', 'deep', 'coder', 'fast', 'all', 'none')]
     [string] $WarmModel = 'daily',
     [string] $BindHost = 'auto',
     [int] $Port = 1234,
@@ -263,8 +263,10 @@ function Get-WarmTargets([string]$Mode) {
         return @($profileIds | ForEach-Object { $byId[$_] } | Where-Object { $_ })
     }
     switch ($Mode) {
+        'deep'    { return @('qwen/qwen3.6-27b') }
         'daily'   { return @('qwen/qwen3.6-35b-a3b', 'text-embedding-nomic-embed-text-v1.5') }
         'distill' { return @('qwen/qwen3.6-35b-a3b') }
+        'fast'    { return @('qwen/qwen3.5-9b') }
         'coder'   { return @('qwen2.5-coder-32b-instruct') }
         'all'     { return @('qwen/qwen3.6-35b-a3b', 'text-embedding-nomic-embed-text-v1.5') }
         default   { return @() }

@@ -1,32 +1,48 @@
 {
-  "schemaVersion": 1,
-  "updated": "2026-06-15",
-  "notes": "Canonical Tier-3 catalog for Cornerman (Green). Sync: Start-CornermanLmStudio.ps1, Fix-CornermanLmServe.ps1, Push-CornermanWorkflowDirective.ps1. Upgrade procedure: lifepunch/docs/CVL_FULL_CAPACITY_UPDATES.md",
+  "schemaVersion": 2,
+  "updated": "2026-06-25",
+  "notes": "Three local Green profiles inside Cornerman Tier-3 (not global CVL tiers). Green Deep for long complex repo work, Green Daily for recurring, Green Fast for triage. See CORNERMAN_MODEL_ROUTING.md.",
   "catalog": [
+    {
+      "id": "deep",
+      "model": "qwen/qwen3.6-27b",
+      "role": "Green Deep — long repo analysis, architecture distillation, complex multi-file outbox batches (use for GO SHELL prep, big ecosystem mapping)",
+      "dailyServe": false,
+      "vramGbEstimate": 28
+    },
     {
       "id": "distill",
       "model": "qwen/qwen3.6-35b-a3b",
-      "role": "default distill — specs, inbox/outbox, RAG prep",
+      "role": "Green Daily (default) — faster recurring prep, comparisons, audits, structured Markdown, inbox/outbox",
       "dailyServe": true,
       "vramGbEstimate": 22
     },
     {
+      "id": "fast",
+      "model": "qwen/qwen3.5-9b",
+      "role": "Green Fast — triage, routing, indexing, short summaries",
+      "dailyServe": false,
+      "vramGbEstimate": 7
+    },
+    {
       "id": "coder",
       "model": "qwen2.5-coder-32b-instruct",
-      "role": "on-demand C#/Razor drafts — WarmCoder only; Red reviews before ship",
+      "role": "on-demand C#/Razor drafts — WarmCoder only; Red reviews before ship. Keep as experimental specialist.",
       "dailyServe": false,
       "vramGbEstimate": 20
     },
     {
       "id": "embed",
       "model": "text-embedding-nomic-embed-text-v1.5",
-      "role": "RAG embeddings — always paired with distill on daily boot",
+      "role": "RAG embeddings — paired with daily or deep when needed",
       "dailyServe": true,
       "vramGbEstimate": 1
     }
   ],
   "warmProfiles": {
+    "deep": ["deep"],
     "daily": ["distill", "embed"],
+    "fast": ["fast"],
     "distill": ["distill"],
     "coder": ["coder"],
     "all": ["distill", "embed"]

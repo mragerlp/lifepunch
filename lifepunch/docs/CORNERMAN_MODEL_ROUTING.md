@@ -18,7 +18,11 @@ before any visual, spawn, scale, or playtest claim — files and distills are no
 | **distill** (default) | `qwen/qwen3.6-35b-a3b` | Spec summaries, 10-line distills, inbox/outbox docs, RAG prep, work-queue hygiene |
 | **coder** | `qwen2.5-coder-32b-instruct` | Multi-file C# **drafts**, Razor/scss first passes, terminal command tables — **Red must review before ship** |
 
-**Default on boot:** `daily` = distill + embed (`Invoke-CornermanHeadlessBoot.ps1`). **Tier-3 catalog** = all three on disk; **Tier-3 serve** = distill + embed loaded — **not** both big models at once (~45 GB). Warm **coder** only when the brief says so.
+**Default on boot:** Green Daily + embed.
+
+For long, complex, repository-level work (e.g. full lpaddons ecosystem prep, big GO SHELL batches, cyber law + menu overhauls): explicitly load **Green Deep** (qwen/qwen3.6-27b) before starting.
+
+**Tier-3 catalog** now includes three local Green profiles. Warm the right one for the task.
 
 **Canonical catalog file:** `lifepunch/config/cornerman-tier3-models.json` — edit this when adopting a newer LLM; run `Fix-CornermanLmServe.ps1` + see `CVL_FULL_CAPACITY_UPDATES.md` § Cornerman LLM.
 
@@ -39,6 +43,25 @@ before any visual, spawn, scale, or playtest claim — files and distills are no
 ```powershell
 powershell -File lifepunch\scripts\Fix-CornermanLmServe.ps1
 ```
+
+**Load Green Deep manually on Cornerman (for long sessions):**
+
+```powershell
+# On Cornerman
+lms load qwen/qwen3.6-27b --gpu max -y
+```
+
+Recommended LM Studio settings for Green Deep:
+- Quant: Q6_K_L (or best stable Q6)
+- Context: 32768
+- Thinking: ON
+- Preserve Thinking: OFF
+- Temperature: 0.6
+- Top P: 0.95
+- Top K: 20
+- GPU offload: maximum stable
+
+Do not run Qwen3-Coder-Next as daily — minimum ~42 GB footprint leaves insufficient headroom on 64 GB unified.
 
 ---
 
