@@ -216,7 +216,8 @@ truth; secrets stay quarantined off it and the same git rules apply.
 **Canonical reference:** `lifepunch/docs/MACHINE_CAST.md` — **read on every new session** after
 `git pull --rebase`. Then read **`lifepunch/docs/OPS_CLARITY_CHECKPOINT.md`** (June 2026
 checkpoint: how we look at the LifePunch web — at a glance, not a telescope). Paste
-`AGENT_SYNC_BROADCAST.txt` into any stale chat to force alignment.
+`AGENT_SYNC_BROADCAST.txt` into any stale chat to force alignment. **Block 0** in
+`AGENT_PROMPT.md` now carries an inline CVL tri-stack summary — paste Block 0 even when skipping long reads.
 
 ### Operational clarity (checkpoint — law moving forward)
 

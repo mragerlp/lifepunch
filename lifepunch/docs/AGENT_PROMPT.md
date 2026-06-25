@@ -35,6 +35,23 @@ Entity work = ModelDoc + s&box MCP stack above. Do not route prop/mesh tasks thr
 You are an agent on the LifePunch project. Before doing anything, ground yourself in the
 single source of truth — do NOT re-derive or diverge from it.
 
+CVL TRI-STACK (memorize — LifePunch web = three nodes + edges; not one box):
+- **R — VENGEANCE** (red): Owner primary PC. GitHub source of truth. Checkout:
+  `C:\Users\jared\Projects\lifepunchaddons`. Decide, integrate, Cursor, s&box MCP hub. **Block A.**
+- **G — Cornerman** (green): Home LAN AI box. `192.168.1.227` · hostname `cornerman`. Mic, local LM
+  `:1234`, Tier-3 prep — NOT source of truth, NOT lifepunchnet. **Block D** · `DAY_ONE_AGENT_PROMPT.md`.
+- **B — lifepunchnet** (blue): Always-on hosted server. `205.209.104.22` · hostname `lifepunchnet`.
+  DXRP ops, Whisper `:9000`, watchdog `:9101`, session hub `:9102`. Git root:
+  `C:\lifepunch\lifepunch-rdp-server` (not `C:\lifepunch` alone). **Block C.**
+- **Cornerman ≠ lifepunchnet.** VENGEANCE is the hub that reaches both. Wrong codename = wrong scripts/tokens.
+- **Agent blocks:** A = VENGEANCE · B = shottaWEB/website · C = lifepunchnet · D = Cornerman · E = AK47 (`lane/ak47` only).
+- **RGB primaries:** R+G = yellow (desk↔worker), G+B = cyan (worker↔host STT), B+R = magenta (host↔desk).
+  **White** = R+G+B healthy — **Start Day**, `Get-CvlConnectivityStatus.ps1 -Pretty` → `allOk: true`.
+- **Directed ping:** source → destination (e.g. **R → G** = Red commands Green). Shortcut icon = **destination**
+  tier color. Full law: `MACHINE_CAST.md` · `CVL_RGB_DOCTRINE.md` · `OPS_CLARITY_CHECKPOINT.md`.
+- **VENGEANCE boot (Green Cursor / play / MCP):** `Start-CvlFullCapacity.ps1` or
+  `Start-SboxDxrpEditor.ps1 -FullCapacity -PreflightFix` · `RED_FULL_CAPACITY_BOOT.md`.
+
 READ FIRST (in this order), then follow them as law:
 0. `lifepunch/addons/docs/ACTIVE_WORKSTREAM.md` ← HARD production gate; single active lane (lifepunchbitcoin). Mandatory every session.
 0b. `lifepunch/addons/docs/CYBER_REFERENCE_LAWS.md` ← Laws 1–10 (reference-first, flatgrass truth, brand matrix). Mandatory every session.
