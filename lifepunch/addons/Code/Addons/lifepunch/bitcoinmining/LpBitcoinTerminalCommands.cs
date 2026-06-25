@@ -421,7 +421,7 @@ internal static class LpBitcoinTerminalCommands
 
 	private static string HelpText() =>
 		"── HASHD rig0 commands (space-separated) ──\n" +
-		"help · clear · link gpurack-1|gpurack-2|advancedgpurack · racks · select 1|2|gpurack-1|gpurack-2|advancedgpurack · status · info · wallet\n" +
+		"help · clear (or header CLEAR) · link gpurack-1|gpurack-2|advancedgpurack · racks · select 1|2|gpurack-1|gpurack-2|advancedgpurack · status · info · wallet\n" +
 		"mining start|stop · mining start all|stop all · mining all-start|all-stop\n" +
 		"deposit · deposit all · deposit 1|2|advancedgpurack\n" +
 		"send <steamid> <amount|all> — transfer hub wallet BTC to another operator's hub\n" +

@@ -61,6 +61,7 @@
 							</div>
 						}
 					</div>
+					<button class="lp-ui-chrome-btn clear-log" tooltip="Clear console scrollback" onclick="@ClearTerminalLog">CLEAR</button>
 					<button class="lp-ui-chrome-btn esc" tooltip="Close terminal" onclick="@Close">ESC</button>
 				</div>
 			</div>
@@ -251,7 +252,16 @@
 		ClearLogStack();
 		_hub?.RequestPushTerminalCommandAlert( "clear", "log cleared" );
 		_showSettingsMenu = false;
-		SyncLogScrollPosition();
+
+		var log = GetLogScroll();
+		if ( log.IsValid() )
+		{
+			log.ScrollToTop();
+			log.PreferScrollToBottom = true;
+		}
+
+		AppendLogLine( "dim", "console cleared — use CLEAR when scrollback floods (200 line cap)" );
+		FocusInput();
 	}
 
 	private static void EnsureScrollFactory()
@@ -749,7 +759,7 @@
 		_bootComplete = true;
 		_showBootSplash = false;
 		AppendLogLine( "ok", _hub?.IsPowered == true ? "hub power: ON" : "hub power: OFF" );
-		AppendLogLine( "dim", $"type help for {PromptLabel} commands · ctrl+c copies selection or full scrollback · End follows log · ↑/↓ recalls commands" );
+		AppendLogLine( "dim", $"type help for {PromptLabel} commands · CLEAR (header) or clear resets scrollback · ctrl+c copies · End follows log · ↑/↓ recalls commands" );
 
 		if ( _pendingFocusRack.IsValid() )
 		{

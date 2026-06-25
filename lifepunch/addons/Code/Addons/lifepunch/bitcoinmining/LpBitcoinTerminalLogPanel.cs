@@ -75,17 +75,24 @@ public sealed class LpBitcoinTerminalLogPanel : LifePunchScrollRegionPanel
 
 	public override void OnMouseWheel( Vector2 value )
 	{
-		// Engine ScrollSize under-reports flex CRT log height — never delegate to base wheel scroll.
 		if ( System.Math.Abs( value.y ) < 0.01f )
 			return;
 
-		var max = GetMaxScrollY();
-		if ( max <= 0f )
+		if ( HasScrollY )
+		{
+			base.OnMouseWheel( value );
+			var max = GetMaxScrollY();
+			PreferScrollToBottom = max <= 0f || ScrollOffset.y >= max - 4f;
+			return;
+		}
+
+		var maxManual = GetMaxScrollY();
+		if ( maxManual <= 0f )
 			return;
 
-		var next = System.Math.Clamp( ScrollOffset.y - value.y * WheelStep, 0f, max );
+		var next = System.Math.Clamp( ScrollOffset.y - value.y * WheelStep, 0f, maxManual );
 		ScrollOffset = new Vector2( 0f, next );
-		PreferScrollToBottom = next >= max - 4f;
+		PreferScrollToBottom = next >= maxManual - 4f;
 	}
 
 	public override void OnButtonEvent( ButtonEvent e )
@@ -258,7 +265,14 @@ public sealed class LpBitcoinTerminalLogPanel : LifePunchScrollRegionPanel
 		if ( viewHeight <= 1f )
 			return 0f;
 
-		// Engine ScrollSize often lies on flex CRT logs — always measure stacked labels.
-		return System.Math.Max( 0f, GetContentHeight() - viewHeight );
+		var measured = System.Math.Max( 0f, GetContentHeight() - viewHeight );
+
+		if ( HasScrollY && ScrollSize.y > viewHeight )
+		{
+			var engine = System.Math.Max( 0f, ScrollSize.y - viewHeight );
+			return System.Math.Max( measured, engine );
+		}
+
+		return measured;
 	}
 }
