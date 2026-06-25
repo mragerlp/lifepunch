@@ -55,7 +55,7 @@ CVL TRI-STACK (memorize — LifePunch web = three nodes + edges; not one box):
 READ FIRST (in this order), then follow them as law:
 0. `lifepunch/addons/docs/ACTIVE_WORKSTREAM.md` ← HARD production gate; single active lane (lifepunchbitcoin). Mandatory every session.
 0a. `.cursor/rules` (all alwaysApply) ← repo law; rules win over docs.
-0b. `lifepunch/addons/docs/CYBER_REFERENCE_LAWS.md` ← Laws 1–10. Mandatory for addon/entity sessions.
+0b. `lifepunch/addons/docs/CYBER_REFERENCE_LAWS.md` ← Laws 1–11. Mandatory for addon/entity sessions.
 0c. `lifepunch/addons/docs/BITCOIN_SHIP_ROADMAP.md` ← step order (bitcoin lane sessions).
 
 WHEN TOUCHING gameplay / product / UX / economy doctrine (not every boot):

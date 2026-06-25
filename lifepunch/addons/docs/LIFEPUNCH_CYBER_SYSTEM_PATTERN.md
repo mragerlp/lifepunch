@@ -17,7 +17,7 @@ Controller          — authoritative brain; persistent state; economy hooks
         ↓
 Operator Interface  — how the player sees and commands (terminal, panel, USE)
         ↓
-Worker Nodes        — world entities that do the work (racks, terminals, bots, …)
+Worker Nodes        — world entities that do the work (compute racks, worker devices, …)
         ↓
 Shared Economy      — DXRP wallet, portal items, job payouts (gamemode integration)
         ↓
@@ -46,7 +46,7 @@ Persistent State    — host-synced; survives UI close; single owner per field
 |--------------|---------------------|-----------------|
 | Controller | **Hub** (`bitcoinhub`) | Bank vault server, hack C2, factory PLC |
 | Operator Interface | **Hub admin panel** + **HASHD Terminal** (CRT) | Teller UI, exploit console |
-| Worker Nodes | **GPU Racks** (2 standard + 1 advanced) | ATMs, botnets, assembly lines |
+| Worker Nodes | **GPU Racks** (2 standard + 1 advanced) | Bank processing nodes, compromised compute devices, assembly machines |
 | Shared Economy | Hub wallet cashout, portal BTC redeem | Wire transfers, fence payouts |
 | Persistent State | Hub entity + linked rack registry | Account records, heat maps |
 
@@ -79,10 +79,14 @@ Controller updates config / state
         ↓
 Worker Nodes execute (may continue while UI closed)
         ↓
-Results accumulate → Controller ledger
+Results accumulate in the authoritative worker buffer or controller ledger defined by the lane
+        ↓
+Validated deposit/transfer moves value into the controller ledger
         ↓
 Operator Interface reflects state on next open
 ```
+
+**Bitcoin:** rack-local undeposited BTC until `deposit`; hub wallet after deposit.
 
 Mining continues when the terminal closes — the Controller keeps running.
 
@@ -107,7 +111,7 @@ Before Phase A code:
 
 | Doc | Role |
 |-----|------|
-| `CYBER_REFERENCE_LAWS.md` | Production gate Laws 1–10 |
+| `CYBER_REFERENCE_LAWS.md` | Production gate Laws 1–11 |
 | `PATTERN_LIBRARY.md` | Pattern index |
 | `BITCOIN_CONTROLLER_PATTERN.md` | Bitcoin slot fill-in |
 | `BITCOIN_DATA_FLOW.md` | Bitcoin data ownership diagram |

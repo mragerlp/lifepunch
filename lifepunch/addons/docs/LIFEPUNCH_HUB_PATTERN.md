@@ -4,8 +4,12 @@
 > ledger + power) and **satellite entities** (terminals, miners, security desks) that link to it.
 > New content = new prefabs that plug into the hub — not new economy spaghetti.
 
-Applies to: **bitcoinmining** (shipped pattern), **hackerjob** (shipped pattern), **bankerjob** (draft),
-**FBI / cybersecurity** (future), **governmentdatacenter** (treasury miner).
+Applies to: **bitcoinmining** (active reference implementation in progress — not Law 10 complete),
+**hackerjob** (quarantined / legacy concept reference — do not copy into Bitcoin lane),
+**bankerjob** (future / blocked), **FBI / cybersecurity** (future / blocked),
+**governmentdatacenter** (future / blocked).
+
+**Gate:** Only the active lane named by `ACTIVE_WORKSTREAM.md` may enter production. Other rows are conceptual or historical references.
 
 **Physical build canon:** hub/terminal/satellite prefabs follow the **digital machine stack**
 (ModelDoc → collision → attachments → lights → state → gameplay) — `LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md`.
@@ -34,18 +38,18 @@ Hub power/fan timing aligns with §7 of that doc.
 | **Terminal** | In-fiction program (`cornerman.exe`, `vaultd`, `sentinel.exe`) | **Yes** — ops console commands |
 | **Satellite** | Passive link (GPU rack, server rack, bank miner, alarm panel) | **Rarely** — usually configured from hub rail |
 
-> **Bitcoin exception:** Hub admin UI (`LpHashdPanel`) and HASHD Terminal (`LpBitcoinTerminalPanel`) are **separate surfaces** — see [Shipped references](#shipped-references) below. Do not conflate hub rail with the CRT command console.
+> **Bitcoin exception:** Hub admin UI (`LpHashdPanel`) and HASHD Terminal (`LpBitcoinTerminalPanel`) are **separate surfaces** — see [Current and legacy implementation references](#current-and-legacy-implementation-references) below. Do not conflate hub rail with the CRT command console.
 
 ---
 
-## Shipped references
+## Current and legacy implementation references
 
-| Job | Hub entity | Hub admin UI (preserve shell) | Operator terminal (USE → UI) | Satellites |
-|-----|------------|-------------------------------|------------------------------|------------|
-| **Bitcoin mining** | `BitcoinMinerHubEntity` — mining operation authority, controller state, wallet, linked racks | **`LpHashdPanel`** — hub administration interface (amber ops rail); not the HASHD Terminal | **`LpBitcoinTerminalEntity`** — **HASHD Terminal** CRT command console (`LpBitcoinTerminalPanel`); **never mines** | `GpuRackEntity` · advanced rack variant |
-| **Hacker** | `HackerServerRackEntity` | — | `HackerTerminalEntity` | — (rack powers CRT) |
-| **Banker** *(draft)* | `BankVaultHubEntity` *(future)* | vault hub rail *(future)* | `BankTellerTerminalEntity` · `BankSecurityTerminalEntity` | `BankGpuRackEntity` *(reskin)* |
-| **FBI / cyber** *(future)* | `CyberOpsHubEntity` *(TBD)* | — | `CyberOpsTerminalEntity` | ties to bank + hacker alerts |
+| Job | Hub entity | Hub admin UI (preserve shell) | Operator terminal (USE → UI) | Satellites | Lane status |
+|-----|------------|-------------------------------|------------------------------|------------|-------------|
+| **Bitcoin mining** | `BitcoinMinerHubEntity` — operation authority, controller state, wallet, linked racks | **`LpHashdPanel`** — hub administration interface (amber ops rail); not the HASHD Terminal | **`LpBitcoinTerminalEntity`** — **HASHD Terminal** CRT command console (`LpBitcoinTerminalPanel`); **never mines** | `GpuRackEntity` · advanced rack variant | **Active / in progress** |
+| **Hacker** | `HackerServerRackEntity` | — | `HackerTerminalEntity` | — (rack powers CRT) | **Quarantined / legacy reference** |
+| **Banker** *(draft)* | `BankVaultHubEntity` *(future)* | vault hub rail *(future)* | `BankTellerTerminalEntity` · `BankSecurityTerminalEntity` | `BankGpuRackEntity` *(reskin)* | **Future / blocked** |
+| **FBI / cyber** *(future)* | `CyberOpsHubEntity` *(TBD)* | — | `CyberOpsTerminalEntity` | ties to bank + hacker alerts | **Future / blocked** |
 
 ---
 

@@ -33,7 +33,23 @@ Directed ping shorthand: **R → G**, **G → B**, **B → R**. Full law: `MACHI
 
 ---
 
-## CVL brains (roles)
+## CVL Architect family (roles)
+
+| Term | Also called | Machine | Meaning |
+|------|-------------|---------|---------|
+| **CVL Architects** | — | Red + Green + Blue agents | Collective name for the agent team |
+| **Design Architect** | Architect (legacy) | Red — ChatGPT | Player fantasy, laws, patterns, briefs |
+| **Integration Architect** | Integrator (legacy) | Red — Cursor | Repo law, MCP, code, flatgrass proof |
+| **Distillation Architect** | Distiller (legacy) | Green — Cornerman LM | Distill, cite DECISION-#### — never ship canon |
+| **Operations Architect** | RDP server agent | Blue — lifepunchnet | Hosted ops under Bloodwave — not gameplay doctrine |
+
+**Machines are not roles:** VENGEANCE, Cornerman, and lifepunchnet are hosts. **Bloodwave** is owner and final authority. **Green never makes ship decisions.**
+
+Legacy aliases remain valid in file paths and paste filenames (`CHATGPT_*`, `Integrator`, `Distiller`).
+
+---
+
+## CVL brains (legacy table — see Architect family above)
 
 | Term | Machine | Meaning |
 |------|---------|---------|
@@ -52,7 +68,7 @@ Directed ping shorthand: **R → G**, **G → B**, **B → R**. Full law: `MACHI
 |------|---------|---------|
 | **Ident** | Legacy repo folder / code namespace | `bitcoinmining` |
 | **packageSlug** | Public branch / portal name | `lifepunchbitcoin` |
-| **sboxIdentifier** | Engine package id | `lifepunch.bitcoinmining` |
+| **sboxIdentifier** | Engine package id | `lifepunch.bitcoin` |
 | **lp\*** staging | ModelDoc / upload-ready tree | `lpbitcoin/bitcoinhub/` |
 | **Portal** | DXRP / s&box addon upload | Compiled `_c` required |
 
@@ -120,12 +136,12 @@ Code/Addons/lifepunch/bitcoinmining/
 
 | Term | Meaning |
 |------|---------|
-| **CURSOR BRIEF** | Architect Step 1 → Integrator |
+| **CURSOR BRIEF** | Design Architect Step 1 → **Integration Architect** |
 | **DECISION-####** | Settled design — `DECISIONS/` |
 | **RFC-####** | Draft — not law until promoted |
 | **Knowledge** | `KNOWLEDGE/` — learned, not law |
 | **Flatgrass** | Playtest truth map |
-| **Fantasy Check** | Optional feel gate — see `KNOWLEDGE/gameplay/player-feel.md` |
+| **Fantasy Check** | **Mandatory** feel gate after flatgrass proof, before owner sign-off — `LIFEPUNCH_FEEL.md` · DECISION-0008 |
 | **Law 10 exit** | Bitcoin reference done → next cyber lane |
 
 ---
@@ -137,8 +153,8 @@ Code/Addons/lifepunch/bitcoinmining/
 | "Green server" / "AI server" (ambiguous) | **Cornerman** (Green) or **lifepunchnet** (Blue) |
 | "Bitcoin computer" | **HASHD Terminal** |
 | "Miner prop" | **Hub** or **GPU Rack** (name the role) |
-| "ChatGPT" (role name) | **Architect** |
-| "Cursor" (role name) | **Integrator** |
+| "ChatGPT" (role name) | **Design Architect** |
+| "Cursor" (role name) | **Integration Architect** |
 | `bitcoinmining` folder | when you mean **portal** → `lifepunchbitcoin` |
 | DXRP Admin Menu (product) | **LIFEPUNCH Admin Menu for DXRP** |
 

@@ -8,7 +8,7 @@
 **Post-Bitcoin portfolio:** `JOB_PORTFOLIO_ROADMAP.md`  
 **Economy rails:** `CYBER_ECONOMY_RAILS.md`
 
-**Last updated:** 2026-06-24 (owner sign-off: unlinked hub admin UI shell)
+**Last updated:** 2026-06-25 (Phase A gate order; H4/H5 before H10; v1.0/v1.1 scope flag)
 
 ---
 
@@ -42,34 +42,52 @@ Hub UI polish (wallet, settings, overview, PIN flow, hub status tiles) is **Phas
 | Area | Status |
 |------|--------|
 | Hub admin UI (`LpHashdPanel`) — unlinked | Owner signed off — wallet, settings, overview, PIN change UX |
-| Hub world mesh / LED / audio | Phase A — tracker H1–H6 |
-| Terminal CRT + `rig0>` commands | Phase B — not started (T1–T6) |
-| GPU rack link + full kit UI | Phase C — not started (R1–R8) |
+| Hub world mesh / LED / audio | **Phase A in progress** — tracker H1–H6, H8–H10 |
+| Terminal CRT + `rig0>` commands | **Phase B locked** — starts only after H10 owner sign-off |
+| GPU rack link + full kit UI | **Phase C locked** — follows Terminal T1–T6 proof |
 | Economy send/receive + bank cashout | Integration slice after B + C baseline |
 | Law 10 publish loop | Blocked until A + B + C + economy proof |
 
-**Next recommended slice:** Phase B terminal (commands + hub-off gate), then linked full-rack UI pass on Overview/Racks.
+**Current executable slice:** `OWNER_PROGRESS_TRACKER.txt` — Phase A Hub (next unchecked H* ID).  
+**Phase B Terminal** begins only after **H10 owner sign-off** (`ACTIVE_WORKSTREAM.md` §2).
+
+**Planned after Phase A (not current):** Terminal commands + hub-off gate (T1–T6), then linked full-rack UI on Overview/Racks (H8 + R1–R8).
 
 ---
 
-## Owner roadmap → execution order
+## Phase A gate order (before H10)
 
-Owner seven-item list, reordered for **ship risk** (do in this order):
+Complete Hub checklist IDs in gate order. **H4/H5 (hub fan/LED state feedback) finish before H10** — not deferred to post-Terminal work.
+
+| Gate | Work | ID | Done when |
+|------|------|-----|-----------|
+| Mesh / collision / scale | Hub P0 foundation | H1–H3 | Flatgrass citizen comparison, honest collider |
+| State feedback | Hub fan + LED readability | **H4–H5** | Power on/off visibly communicated on hub |
+| Admin shell | `LpHashdPanel` polish | H6–H7 | Wallet, settings, overview, PIN — owner sign-off path |
+| Linked kit UI | Overview/racks when linked | H8 | Correct with real linked racks (may overlap late A) |
+| Proof package | Law 5 flatgrass bundle | H9–H10 | Day/night/USE/30s clip — **H10 owner sign-off unlocks Phase B** |
+
+---
+
+## Post-H10 roadmap (Phases B → C → economy → publish)
+
+Owner seven-item list, reordered for **ship risk** after Phase A H10:
 
 | Step | Work | Phase / ID | Done when |
 |------|------|------------|-----------|
-| **1** | Terminal UI + commands function correctly | **B** T1–T6 | `rig0>` loop, hub off blocks terminal, CRT theme, flatgrass proof |
-| **2** | Full GPU rack link + hub UI when linked | **C** R1–R8 + H8 | Overview/racks/status correct with real linked kit; fix UI breaks under load |
-| **3** | Send/receive BTC (test bots) | Economy + Law 10 slice | Wallet, transfers, hub cashout → **bank** per `CYBER_ECONOMY_RAILS.md`; not on-hand wallet |
-| **4** | Animations / LED — hub + GPU + advanced rack | **A/C** H4–H5, R4, R6, R7 | Power on: fans spin, LEDs live; power off: stop. Rack small LED like hub baseline |
-| **5** | More upgrades (cooling, security, VIP/EVIP cosmetic lighting) | **Post-core or v1.1** | Park in `BACKLOG_PARKING_LOT.md` until core loop proven — Law 9 |
+| **1** | Terminal UI + commands function correctly | **B** T1–T6 | `rig0>` loop, hub off blocks terminal, CRT theme, flatgrass proof — **after H10** |
+| **2** | Full GPU rack link + hub UI when linked | **C** R1–R8 + H8 polish | Overview/racks/status correct with real linked kit |
+| **3** | Send/receive BTC (test compute nodes / wallet targets) | Economy + Law 10 slice | Wallet, transfers, hub cashout → **bank** per `CYBER_ECONOMY_RAILS.md` |
+| **4** | Rack/advanced animation polish | **C** R4, R6, R7 | Rack LED/fan parity with hub baseline where applicable |
+| **5** | Extended upgrades (full five-by-five tree, VIP/EVIP cosmetic lighting) | **v1.0 vs v1.1 — owner decision pending** | See open question below — park in `BACKLOG_PARKING_LOT.md` until decided |
 | **6** | Max racks + small economy soak + bugfix | Law 10 exit | New player path, no dev ConCmds, full kit hero, proof package |
 | **7** | Publish → populate bible → next job | Portal + Law 8 | `prepare-publish.ps1 -Addon lpbitcoin` · `BITCOIN_REFERENCE_IMPLEMENTATION.md` |
 
-### Publish v1.0 vs v1.1
+### Publish v1.0 vs v1.1 — **owner question (unresolved)**
 
-**Ship v1.0 with steps 1 → 2 → 3 → 4 (baseline) → 6.**  
-Step **5** (extended upgrade tree + exclusive cosmetics) can follow as a fast portal revision without blocking first publish.
+Is the **full five-by-five upgrade tree** required for v1.0, or is part/all of it a v1.1 portal revision? Current roadmap allows extended upgrades as a fast follow — **Bloodwave must confirm** before economy implementation.
+
+**Baseline v1.0 path:** steps 1 → 2 → 3 → 4 (rack animation baseline) → 6 → 7, with step 5 scope per owner answer.
 
 ---
 

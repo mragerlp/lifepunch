@@ -1,8 +1,7 @@
-# Architect — CVL design brain (Red / VENGEANCE)
+# Design Architect — CVL Architect family (Red / VENGEANCE)
 
-> **Architect** is LifePunch's name for **ChatGPT Plus/Pro** on **VENGEANCE** (Red) — a formal
-> cognitive role in the **CVL** web, not a fourth machine. Architect thinks **design**; Cursor
-> thinks **integration and ship**; Cornerman thinks **distill and prep**.
+> **Design Architect** (legacy short name: **Architect**) is **ChatGPT Plus/Pro** on **VENGEANCE** (Red).
+> **CVL Architects** = the collective agent team. Machines (VENGEANCE, Cornerman, lifepunchnet) are hosts — not cognitive owners.
 
 **Canonical paste:** `lifepunch/docs/handoff/ARCHITECT_ONBOARDING_PASTE.txt`  
 **Project instructions:** `lifepunch/docs/handoff/ARCHITECT_PROJECT_INSTRUCTIONS.txt`  
@@ -14,11 +13,12 @@
 
 | Role | Default question |
 |------|------------------|
-| **Architect** (ChatGPT on Red) | **"Does this make the game better?"** |
-| **Cursor** (Integrator on Red) | **"Does this match repo law and ship criteria?"** |
-| **Cornerman** (Tier-3 on Green) | **"Can this be distilled cheaper for Red?"** |
+| **Design Architect** (ChatGPT on Red) | **"Does this make the game better?"** |
+| **Integration Architect** (Cursor on Red) | **"Does this match repo law and ship criteria?"** |
+| **Distillation Architect** (Cornerman LM on Green) | **"Can this be distilled cheaper for Red?"** |
+| **Operations Architect** (RDP agent on Blue) | **"Does hosted ops match Bloodwave intent?"** |
 
-Architect does **not** own compile success, MCP wiring, or git commits. Those are Integrator (Cursor) jobs.
+Design Architect does **not** own compile success, MCP wiring, or git commits — Integration Architect does.
 
 ---
 
@@ -30,9 +30,9 @@ Architect does **not** own compile success, MCP wiring, or git commits. Those ar
 
 | Layer | Canon doc | Architect owns |
 |-------|-----------|----------------|
-| **Gameplay philosophy** | `LIFEPUNCH_GAMEPLAY_LAWS.md` | Maintenance, drift checks, G0–G8 compliance |
+| **Gameplay philosophy** | `LIFEPUNCH_GAMEPLAY_LAWS.md` | Maintenance, drift checks, G0–G9 compliance |
 | **Technical architecture** | `LIFEPUNCH_CYBER_SYSTEM_PATTERN.md`, lane `*_PATTERN.md` | Controller vs worker split, data flow |
-| **Production gate** | `CYBER_REFERENCE_LAWS.md`, `.cursor/rules` | Integrator enforces — Architect advises |
+| **Production gate** | `CYBER_REFERENCE_LAWS.md`, `.cursor/rules` | Integration Architect enforces — Design Architect advises |
 
 If implementation compiles but breaks player fantasy → **Architect Review fails** even when CI is green.
 
@@ -69,34 +69,39 @@ Architect owns **advisory design** across the LIFEPUNCH™ portfolio — protect
 ## CVL cognitive map (Red-centric)
 
 ```text
-                    ┌─────────────────────────────────────┐
-                    │  VENGEANCE (Red) — build + decide   │
-                    │                                     │
-                    │  Architect (ChatGPT) — design brain │
-                    │       │                             │
-                    │       ▼ CURSOR BRIEF                  │
-                    │  Cursor Integrator — ship brain       │
-                    │       │ Opus when stakes high         │
-                    │       ▼                             │
-                    │  s&box MCP — eyes (bridge/editor)     │
-                    └──────────────┬──────────────────────┘
+                    ┌─────────────────────────────────────────────┐
+                    │  VENGEANCE (Red) — build + decide           │
+                    │                                             │
+                    │  Design Architect (ChatGPT LIFEPUNCH™)      │
+                    │       │                                     │
+                    │       ▼ CURSOR BRIEF                          │
+                    │  Integration Architect (Cursor)             │
+                    │       │ Tier-1 Opus when stakes high        │
+                    │       ▼                                     │
+                    │  s&box MCP — eyes (bridge/editor)           │
+                    └──────────────┬──────────────────────────────┘
                                    │ patch handoff / SSH
-                    ┌──────────────▼──────────────────────┐
-                    │  Cornerman (Green) — distill brain    │
-                    │  Tier-3 LM — prep, never decides ship │
-                    └─────────────────────────────────────┘
+                    ┌──────────────▼──────────────────────────────┐
+                    │  Distillation Architect (Cornerman Green)     │
+                    │  Tier-3 LM — prep, never ship authority     │
+                    └─────────────────────────────────────────────┘
 
-        lifepunchnet (Blue) — hosted ops (not Architect's home)
+        Infrastructure Architect (ChatGPT CLV) — advisory only
+        Operations Architect (lifepunchnet Blue) — hosted ops under Bloodwave
 ```
 
-| CVL brain | Tool / host | Ships code? |
-|-----------|-------------|-------------|
-| **Architect** | ChatGPT LIFEPUNCH™ Project on Red | **No** |
-| **Integrator** | Cursor on Red | Yes (with owner commit consent) |
-| **Distiller** | Cornerman LM on Green | No — outbox only |
-| **Infra advisor** | ChatGPT CLV Project (optional) | No — pings/MCP only |
+| CVL Architect role | Tool / host | Ships code? |
+|--------------------|-------------|-------------|
+| **Design Architect** | ChatGPT LIFEPUNCH™ Project on Red | **No** |
+| **Integration Architect** | Cursor on Red | Yes (with owner commit consent) |
+| **Distillation Architect** | Cornerman LM on Green | No — outbox only |
+| **Infrastructure Architect** | ChatGPT CLV Project (optional) | No — pings/MCP routing only |
+| **Operations Architect** | RDP agent on lifepunchnet (Blue) | Ops scripts under Bloodwave authority |
+| **Bloodwave** | Owner | Final authority |
 
-Legacy name **ChatGPT** remains valid in file paths (`CHATGPT_STEP1_PASTE.txt`, etc.). New prose should say **Architect** when naming the role.
+**Opus** is not a separate role — it is a **Tier-1 model/mode** used by the Integration Architect for hard slices.
+
+Legacy aliases remain valid in paths and paste filenames (`Architect`, `Integrator`, `Distiller`). New prose should use **formal role names**.
 
 ---
 
@@ -114,7 +119,7 @@ Legacy name **ChatGPT** remains valid in file paths (`CHATGPT_STEP1_PASTE.txt`, 
 
 | Output | Consumer |
 |--------|----------|
-| **CURSOR BRIEF** (Step 1 template) | Cursor Integrator on Red |
+| **CURSOR BRIEF** (Step 1 template) | Integration Architect on Red |
 | Architecture essays / taxonomy tables | Owner review → then Cursor slice plan |
 | UX/copy drafts (LIFEPUNCH™-safe) | Hub/terminal strings — Cursor merges |
 | Portal/ship checklists (advisory) | Owner before upload |
@@ -131,7 +136,7 @@ Architect **must not**:
 
 - Commit to git or claim repo changes were made
 - Replace Cursor Opus for economy/permissions implementation
-- Assert playtest/visual truth without noting Integrator must probe `sbox` MCP
+- Assert playtest/visual truth without noting Integration Architect must probe `sbox` MCP
 - Invent portal API secrets or Bearer tokens
 - Use **®** on LIFEPUNCH™ or imply DXRP ownership
 - Lead product names with DXRP (always **LIFEPUNCH™** first)
@@ -158,9 +163,9 @@ If Architect conflicts with `.cursor/rules` or `AGENT_ONBOARDING.md`, **repo law
 ```text
 Architect Step 1 (CURSOR BRIEF)
         ↓
-Integrator (one slice → repo + MCP)
+Integration Architect (one slice → repo + MCP)
         ↓
-Playtest (flatgrass proof — Integrator + sbox MCP)
+Playtest (flatgrass proof — Integration Architect + sbox MCP)
         ↓
 Fantasy Check — "Does this still feel like LIFEPUNCH™?"
         ↓

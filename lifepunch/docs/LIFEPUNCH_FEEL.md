@@ -52,7 +52,7 @@ Ask after flatgrass proof:
 2. Does powered vs off read in **under 2 seconds** without text?
 3. Does the hub panel feel like **software you'd use at work**?
 4. Does the terminal feel like a **real console** (scroll, copy, rig0)?
-5. Would a DarkRP player **brag about this prop** on Discord?
+5. Would a DarkRP player **brag about this machine** on Discord?
 
 Any "no" → design debt before owner sign-off, even if compile is green.
 

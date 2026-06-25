@@ -254,7 +254,7 @@ UI states: login, mining, error, hacked, seizure — not baked screen textures.
 | `MODELDOC_STUDIO_LANE.md` | Standalone editor (no DXRP) |
 | `PACKAGE_STAGING_LAYOUT.md` | `lpbitcoin/bitcoinhub/assets\|code` |
 | `LIFEPUNCH_HUB_PATTERN.md` | Hub vs terminal vs satellite |
-| `CYBER_REFERENCE_LAWS.md` | Laws 1–10 production gate |
+| `CYBER_REFERENCE_LAWS.md` | Laws 1–11 production gate |
 | `ACTIVE_WORKSTREAM.md` | Single active lane until sign-off |
 | `TECH_DEBT.md` | Baselines vs endgame (box collider, fan child GO, …) |
 | `LIFEPUNCH_WEAPON_IMPLEMENTATION_LAW.md` | Weapons — platform stack (parallel track) |

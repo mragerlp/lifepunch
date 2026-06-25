@@ -1,149 +1,68 @@
 ========================================================================
-LIFEPUNCH™ — AGENT SYNC (paste at start of next session on ANY machine)
-Send to: VENGEANCE · Cornerman · lifepunchnet · shottaWEB · any new chat
+LIFEPUNCH — AGENT SYNC (evergreen — paste at session start on ANY machine)
 ========================================================================
 
-ACTIVE SESSION (2026-06-22 — owner override on VENGEANCE):
-  Lane: lifepunchulx (adminmenu) — fix staff menu. Bitcoin gate PAUSED this session.
-  Editor: D:\Steam\steamapps\common\sbox\dxrp\game\rp.sbproj (clean vanilla — no LP mounts).
-  Launch: Start-SboxDxrpEditor.ps1 -ReplaceExisting -NoSync
-  LAW: Do NOT sync addons, add files, or create lp_* ConCmds until owner says so.
-  CVL: allOk green — Reload Cursor if MCP red after reboot.
-
-MANDATORY before work — machine names + ops clarity checkpoint canonized.
-Pull first, then read.
-
-BRANDING (law): **LIFEPUNCH™** = our mark (Peak Performance Products LLC). All-caps + ™ while
-pending; never ®. Lead product names with LIFEPUNCH. Community: https://discord.gg/lifepunch
+BRANDING: **LIFEPUNCH** = our mark (Peak Performance Products LLC). All-caps + tm while pending; never (R).
+Lead product names with LIFEPUNCH. Community: https://discord.gg/lifepunch
 
 ------------------------------------------------------------------------
-STEP 1 — SYNC (automatic if sessionStart hook is active; verify anyway)
+STEP 1 — SYNC
 ------------------------------------------------------------------------
 
   git fetch
   git pull --rebase
 
-If you have uncommitted changes AND you are behind: stop, commit or stash, then pull.
+If behind AND dirty: stop — commit or stash first.
 
 ------------------------------------------------------------------------
-STEP 2 — READ (in order)
+STEP 2 — READ (lean boot)
 ------------------------------------------------------------------------
 
-  1. lifepunch/docs/MACHINE_CAST.md           ← machine vocabulary (law)
-  2. lifepunch/docs/OPS_CLARITY_CHECKPOINT.md ← how we look at the web (law)
-  3. lifepunch/docs/BLOODWAVE_ALIAS.md         ← Bloodwave vs mragerlp (GitHub username: keep mragerlp)
-  4. OneDrive/Desktop/uniforms/UNIFORM_STANDARDS.md ← web uniform (Explorer icons + PowerShell thumbnail + tiers)
-  5. lifepunch/docs/AGENT_ONBOARDING.md       ← foundation (Tonight table = recovery)
-  5b. lifepunch/docs/TERMINOLOGY.md          ← repo-wide names (CVL, paths, entities)
-  5c. lifepunch/docs/DECISIONS/README.md     ← settled design by ID
-  6. lifepunch/docs/GIT_CHECKPOINTS.md        ← commit/push/pull law
-  7. lifepunch/docs/handoff/JUNE_2026_FOUNDATION_CHECKPOINT.md ← all-node pull brief
-  8. lifepunch/docs/handoff/DESKTOP_ORG_CHECKPOINT_2026-06.md ← Bloodwave Desktop org (local; optional for CVL)
-  9. lifepunch/addons/docs/PACKAGE_NAMING_STANDARD.md ← public branch slugs (June 2026)
- 10. lifepunch/addons/docs/DXRP_ADDON_PUBLISH_DOCTRINE.md ← lpbitcoin layout, PLACEHOLDER law (June 2026)
- 11. Your lane block in lifepunch/docs/AGENT_PROMPT.md (A/B/C/D)
+  1. lifepunch/addons/docs/ACTIVE_WORKSTREAM.md
+  2. lifepunch/addons/docs/BITCOIN_SHIP_ROADMAP.md
+  3. lifepunch/addons/docs/OWNER_PROGRESS_TRACKER.txt  (one ID only)
+  4. lifepunch/docs/handoff/ARCHITECT_CURRENT_STATE.md  (dated volatile state)
+  5. lifepunch/docs/MACHINE_CAST.md
+  6. lifepunch/docs/AGENT_ONBOARDING.md  (your lane section only)
+  7. lifepunch/docs/AGENT_PROMPT.md  (your lane block)
+
+Do NOT treat KNOWLEDGE/, RFC drafts, templates, scratch, or historical checkpoints as mandatory every boot.
 
 ------------------------------------------------------------------------
-STEP 3 — CONFIRM (reply in one short paragraph)
+STEP 3 — CONFIRM (one short paragraph)
 ------------------------------------------------------------------------
 
-State:
-  - Which machine you are on (VENGEANCE · Cornerman · lifepunchnet · or partner PC)
-  - That lifepunchnet = always-on hosted server at 205.209.104.22 — NOT Cornerman
-  - That VENGEANCE = primary PC / GitHub source of truth — NOT lifepunchnet
-  - That Cornerman = home LAN mic + local AI — NOT lifepunchnet
-  - That we diagnose at a glance (tier icon / preflight FAIL), not by telescope
-
-Then proceed with the task.
+State: which machine (VENGEANCE / Cornerman / lifepunchnet / partner PC), active lane, current phase from ACTIVE_WORKSTREAM, next tracker ID.
 
 ------------------------------------------------------------------------
-FOUNDATION (June 2026 — after pull)
+CURRENT LANE (unless ARCHITECT_CURRENT_STATE.md overrides)
 ------------------------------------------------------------------------
 
-  TWO REPOS:
-    Core     = github.com/mragerlp/lifepunch (law, WIP, quarantine)
-    Publish  = github.com/mragerlp/lifepunch-published (export only)
+  ACTIVE: lifepunchbitcoin / lpbitcoin / s&box lifepunch.bitcoin
+  PHASE: Phase A Hub polish — Terminal locked until H10
+  SLUGS: bitcoinhub | hashdterminal | gpurack (2 standard + 1 advanced)
+  LAWS: CYBER_REFERENCE_LAWS 1-11 · LIFEPUNCH_GAMEPLAY_LAWS G0-G9
+  HOLD: RFC-0005 hub upgrade migration + economy overhaul until Bloodwave GO
 
-  QUARANTINE: active dev = adminmenu + bitcoinmining only. Frozen idents = concepts/context —
-    NO edits, NO copy-paste into ship paths. portfolio.json + QUARANTINE_REGISTER.md
-  PACKAGE SLUGS: lifepunchulx · lifepunchbitcoin · … — config/packages.json
-  PUBLISH NOW: lifepunchulx only (publishReadyAddons) — Export-LifepunchPublishLane.ps1
-  BITCOIN: lifepunchbitcoin (s&box lifepunch.bitcoin) — Phase A hub = Steam Machine
-    (dev: bitcoinmining/ · promote to lpbitcoin/bitcoinhub/ · slug = folder name)
-    · DXRP_ADDON_PUBLISH_DOCTRINE.md (PLACEHOLDER hands-off; portal names = owner in dxrp.net)
-    · ACTIVE_WORKSTREAM.md · OWNER_PROGRESS_TRACKER.txt
-
-  COMMUNITY: https://discord.gg/lifepunch · https://lifepunch.co
-
-  IDEATION: Architect Step 1 -> CURSOR BRIEF -> Cursor Integrator VENGEANCE
-  ARCHITECT CANON: lifepunch/docs/ARCHITECT.md
-    Paste: lifepunch/docs/handoff/CHATGPT_STEP1_PASTE.txt
-
-  DESIGN STACK (June 2026 — after pull):
-    Gameplay law:     lifepunch/docs/LIFEPUNCH_GAMEPLAY_LAWS.md
-    Terminology:      lifepunch/docs/TERMINOLOGY.md  (repo-wide names — Red/Green/Blue, lpbitcoin, Hub vs Terminal)
-    Knowledge:        lifepunch/docs/KNOWLEDGE/README.md  (learned notes — not law)
-    Decisions:        lifepunch/docs/DECISIONS/README.md  (cite DECISION-####)
-    Ownership:        lifepunch/docs/OWNERSHIP_MATRIX.md
-    RFC (draft only): lifepunch/docs/RFC/README.md
-
-  GIT: agent recommends checkpoint; Bloodwave says commit / commit and push
-    Law: GIT_CHECKPOINTS.md
+  GIT: github.com/mragerlp/lifepunch (source of truth)
+  COMMIT: propose scope — Bloodwave approves before commit/push
 
 ------------------------------------------------------------------------
-QUICK CAST (no substitutes)
+CVL ARCHITECT FAMILY (roles — machines are hosts)
 ------------------------------------------------------------------------
 
-  VENGEANCE     = primary PC, Cursor, GitHub monorepo integration
-  Cornerman     = home LAN AI box, mic, voice relay (192.168.1.227)
-  lifepunchnet  = hosted always-on server, DXRP ops, Whisper, watchdog,
-                  session hub LIVE (:9102 /ingest), Odysseus (RDP) — 205.209.104.22
-  session hub   = POST http://205.209.104.22:9102/ingest (Bearer = status-token.txt)
-                  VENGEANCE bridge: start-session-sync.ps1 (Cornerman logs -> ingest)
-
-  PEOPLE: Bloodwave = visible (in-game/Discord/Steam/GitHub display name) · mragerlp = GitHub username (keep) · mrragerlp = proprietary author · Mr. Rager = email/legacy · shottaWEB = Brian
-  GITHUB: Do NOT rename account to bloodwave — BLOODWAVE_ALIAS.md § GitHub username
-
-  DEPRECATED: "Server Host", "RDP Server Host", "the server box" → lifepunchnet
+  Design Architect     = ChatGPT on Red (legacy: Architect)
+  Integration Architect = Cursor on Red (legacy: Integrator)
+  Distillation Architect = Cornerman LM on Green (legacy: Distiller)
+  Operations Architect  = RDP agent on Blue (legacy: RDP server agent)
+  Bloodwave             = owner / final authority
 
 ------------------------------------------------------------------------
-OPS CLARITY (shortcut tiers on VENGEANCE — icon = scope)
+QUICK CAST
 ------------------------------------------------------------------------
 
-  Tri-stack UNIVERSAL  = all 3 nodes → Start Day (full stack), Voice Preflight
-  RED (VENGEANCE)      = desk / voice TO Cursor → Voice Comms, Talk to Vengeance
-  GREEN (Cornerman)    = Cornerman (RDP)
-  BLUE (lifepunchnet)  = lifepunchnet (RDP)
-
-  Start Day = gate :9000 + 3 VENGEANCE watchers + SSH Cornerman PTT relay.
-  Full table: OPS_CLARITY_CHECKPOINT.md §4
-  PTT debug canon: VOICE_PTT_TROUBLESHOOTING.md
-  Lane sync rounds: SYNC_ROUND_*.txt in lifepunch/docs/ (pull after Red push)
-
-------------------------------------------------------------------------
-EXPLORER ICONS (all nodes — gray folder + gray .txt)
-------------------------------------------------------------------------
-
-  Art: OneDrive\Desktop\uniforms\PNGs\grayfoldericon.png · graynotes.png
-  Apply: lifepunch/branding/lifepunch-ops/Set-LifePunchExplorerIcons.ps1
-         (or Apply-LifePunchOpsConsole.ps1 per machine)
-  Win11 folders: HKLM Shell Icons 3/4 — approve UAC once per box.
-  Standards: UNIFORM_STANDARDS.md (OneDrive uniforms + repo lifepunch-ops mirror)
-
-------------------------------------------------------------------------
-LANE OWNERS
-------------------------------------------------------------------------
-
-  VENGEANCE (Block A)     → GitHub monorepo, all integration
-  shottaWEB (Block B)     → GitLab lifepunch-website only
-  lifepunchnet (Block C)  → GitLab lifepunch-rdp-server only
-  Cornerman (Block D)     → read-only clone, patch handoff to VENGEANCE
-
-------------------------------------------------------------------------
-STALE LANE?
-------------------------------------------------------------------------
-
-If MACHINE_CAST.md or OPS_CLARITY_CHECKPOINT.md is missing in your clone, you are behind.
-Tell the owner. GitLab lanes need a monorepo push + re-export to pick up new docs.
+  VENGEANCE    = primary PC, GitHub monorepo, Cursor, s&box MCP
+  Cornerman    = home LAN AI + mic (not source of truth)
+  lifepunchnet = hosted always-on server (ops runtime — not design owner)
 
 ========================================================================

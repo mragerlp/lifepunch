@@ -2,13 +2,14 @@
 
 > **Status:** Active  
 > **Date:** 2026-06-25  
-> **Owner:** Architect  
+> **Proposed by:** Design Architect  
+> **Approved by:** Bloodwave  
 > **Supersedes:** Legacy per-rack CPU upgrades (code migration pending)  
 > **RFC:** [RFC-0005](../RFC/RFC-0005-Hub-Upgrades.md) (implementation slice)
 
 ## Decision
 
-Clock path, core count, intelligence, and economy-facing controller tiers live on **Hub**. GPU racks own compute, cooling, power, efficiency, reliability.
+Operation-wide **controller upgrades** live on the **Hub**. Per-rack **hardware** and rack-local capacity upgrades live on **GPU Racks**. The exact five Hub categories, five Rack categories, names, effects, and tiers remain **pending Bloodwave approval**.
 
 ## Reason
 

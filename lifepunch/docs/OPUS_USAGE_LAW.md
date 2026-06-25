@@ -84,7 +84,7 @@ entity at a time** until flatgrass play proof + owner sign-off, then advance:
 | Order | Entity | Repo ident | Do not start until |
 |-------|--------|------------|-------------------|
 | 1 | **Hub** | `bitcoinmining` / `lpbitcoin/bitcoinhub` | — (current) |
-| 2 | **Terminal** | `lpbitcoin/bitcointerminal` | Hub Phase A DONE + H10 sign-off |
+| 2 | **Terminal** | `lpbitcoin/hashdterminal` | Hub Phase A DONE + H10 sign-off |
 | 3 | **GPU Rack** | `lpbitcoin/gpurack` | Terminal baseline proof |
 
 That keeps **cost** and **context** under control while maximizing Opus on architecture, state,

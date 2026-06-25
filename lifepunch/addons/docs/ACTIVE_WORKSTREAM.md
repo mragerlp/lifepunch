@@ -95,10 +95,10 @@ Scope creep happens when "finished" is undefined. **No new task starts until the
 ### Phase C — GPU Rack — DONE WHEN
 
 ```text
-☐ Small + large meshes compile clean
+☐ Standard + advanced tier meshes compile clean (gpurack standard ×2, gpurack advanced ×1)
 ☐ Mining on/off obvious per rack
 ☐ Hub link radius correct
-☐ Full kit hero on flatgrass (hub + 3 small + 1 large)
+☐ Full kit hero on flatgrass (hub + 2 Standard GPU Racks + 1 Advanced GPU Rack)
 ☐ Owner sign-off R8
 ```
 
@@ -251,7 +251,7 @@ Only then does Bitcoin become the **canonical cyber lane** and Tier 1 jobs enter
 ## Session start checklist (agents)
 
 1. Read **this file** (ACTIVE_WORKSTREAM.md).
-2. Read `CYBER_REFERENCE_LAWS.md` — Laws 1–10 (reference-first, flatgrass truth, no "while we're here").
+2. Read `CYBER_REFERENCE_LAWS.md` — Laws 1–11 (reference-first, flatgrass truth, no "while we're here").
 3. Read `BITCOIN_SHIP_ROADMAP.md` — step order, quality bar, publish gate, post-Bitcoin package order (**handoff-safe**).
 4. Read `OWNER_PROGRESS_TRACKER.txt` — note current unchecked ID.
 5. Read `BITCOINMINING_POLISH_CHECKLIST.md` — **only** that ID's "Done when" + proof.
@@ -262,7 +262,7 @@ Only then does Bitcoin become the **canonical cyber lane** and Tier 1 jobs enter
 **Detail docs (downstream, not substitutes for this gate):**
 
 - `BITCOIN_SHIP_ROADMAP.md` — owner execution order + agent workflow + community package sequence
-- `CYBER_REFERENCE_LAWS.md` — production laws 1–10
+- `CYBER_REFERENCE_LAWS.md` — production laws 1–11
 - `BITCOIN_REFERENCE_IMPLEMENTATION.md` — bible stub (populate on sign-off)
 - `TERMINAL_BRAND_MATRIX.md` — Law 7 brand verification
 - `bitcoinmining/docs/BITCOINMINING_POLISH_CHECKLIST.md`
@@ -270,4 +270,4 @@ Only then does Bitcoin become the **canonical cyber lane** and Tier 1 jobs enter
 - `addons/docs/JOB_PORTFOLIO_ROADMAP.md`
 - `addons/docs/CYBER_JOBS_POLISH_CHECKLIST.md` (blocked lanes — read only)
 
-**Last updated:** 2026-06-24
+**Last updated:** 2026-06-25

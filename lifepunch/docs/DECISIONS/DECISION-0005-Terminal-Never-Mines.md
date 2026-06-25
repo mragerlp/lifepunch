@@ -2,13 +2,14 @@
 
 > **Status:** Active  
 > **Date:** 2026-06-25  
-> **Owner:** Architect  
+> **Proposed by:** Design Architect  
+> **Approved by:** Bloodwave  
 > **Supersedes:** —  
 > **Related:** DECISION-0002
 
 ## Decision
 
-**HASHD Terminal** is presentation and commands only. Mining ticks run on hub + racks while CRT is closed.
+**HASHD Terminal** is presentation and commands only. Closing the HASHD Terminal does not alter the Hub's mining permission or the Rack's execution state. Rack accrual continues while Hub power and permission remain valid.
 
 ## Reason
 

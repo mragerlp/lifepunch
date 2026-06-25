@@ -78,9 +78,10 @@ Terminal has NO upgrade purchase path.
 | Data | Authoritative owner | Mirrors |
 |------|---------------------|---------|
 | Hub powered / PIN | Hub | Terminal STATUS, LCD |
-| Linked rack list | Hub | Terminal `racks`, hub Servers cards |
-| Selected rack index | Hub session (terminal command) | Terminal STATUS, hub highlight |
-| Mining on/off per rack | Hub + rack agreement | Terminal log, hub cards |
+| Linked rack list | Hub (registry) | Terminal `racks`, hub Servers cards |
+| Selected rack index | Terminal UI session (`LpBitcoinTerminalPanel._selectedIndex`) | Hub command targets via index at execute time |
+| Mining permission (start/stop command) | Hub validates + delegates | Terminal log, hub cards |
+| Mining execution state (`IsMining`, accrual tick) | Rack worker | Hub Servers telemetry, terminal STATUS |
 | Undeposited BTC | Rack buffer | Hub Servers telemetry |
 | Deposited BTC | Hub wallet | Hub Wallet tab |
 | Controller upgrade levels | Hub (target) | Hub Upgrades tab |

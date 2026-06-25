@@ -2,6 +2,7 @@
 
 > **Why does this exist?** Prevent one-off systems — every addon reuses solved patterns first.  
 > **Status:** Living index — add patterns when signed off, not when brainstormed.  
+> **Active** in this index means **approved design pattern** — not automatically flatgrass-proven, published, or shipped. Implementation proof is tracked separately.  
 > **Law:** Reuse before invent (`LIFEPUNCH_GAMEPLAY_LAWS.md` G8).  
 > **Terms:** `TERMINOLOGY.md` · **Cyber stack:** `addons/docs/LIFEPUNCH_CYBER_SYSTEM_PATTERN.md`
 
@@ -51,7 +52,7 @@ Every new addon **searches this index first**.
 |---------|---------------|--------|-------|
 | **Wallet** | Hub Wallet tab · deposited BTC | **active** (bitcoin) | Authoritative on hub |
 | **Hub wallet cashout** | `BITCOINMINING_UX_SPEC.md` | **active** | BTC → DXRP bank |
-| **Rack buffer → deposit** | `BITCOIN_DATA_FLOW.md` | **draft** | Local cap then deposit |
+| **Rack buffer → deposit** | `BITCOIN_DATA_FLOW.md` | **active design / partial implementation** | Local cap then deposit |
 | **Portal BTC redeem** | `LpBitcoinIdent` portal item | **active** | Class 9 ship path |
 | **Banking** | — | **future** | Quarantined `bankerjob` |
 | **ATM** | — | **future** | Player-operated, not NPC |
@@ -68,21 +69,26 @@ Every new addon **searches this index first**.
 | **Manufacturing** | **future** | Backlog |
 | **Crime** | **future** | PvP / player-driven |
 | **Vehicle** | **future** | Not bitcoin gate |
-| **NPC** | **reserved** | Optional flavor only — never core progression (Law G9) |
+
+### Prohibited patterns (LIFEPUNCH™)
+
+| Pattern | Status | Rule |
+|---------|--------|------|
+| **NPC systems** | **prohibited** | Law G9 · DECISION-0003 — no LIFEPUNCH NPC dependency; third-party DXRP NPCs remain out of scope |
 
 ---
 
 ## Bitcoin-specific (reference implementation)
 
-| Pattern | Doc | Status |
-|---------|-----|--------|
-| Player design | `BITCOIN_PLAYER_DESIGN.md` | **draft** |
-| Controller roles | `BITCOIN_CONTROLLER_PATTERN.md` | **draft** |
-| Upgrade ownership | `BITCOIN_UPGRADE_TAXONOMY.md` | **draft** |
-| Data flow | `BITCOIN_DATA_FLOW.md` | **draft** |
-| Encryption / PvP | `BITCOINMINING_ENCRYPTION_SPEC.md` | **spec** |
-| Ship roadmap | `BITCOIN_SHIP_ROADMAP.md` | **active** |
-| Signed-off bible | `BITCOIN_REFERENCE_IMPLEMENTATION.md` | **populate on Law 10 exit** |
+| Pattern | Doc | Design status | Implementation proof |
+|---------|-----|---------------|----------------------|
+| Player design | `BITCOIN_PLAYER_DESIGN.md` | **active** | unproven |
+| Controller roles | `BITCOIN_CONTROLLER_PATTERN.md` | **active design / partial legacy implementation** | partial (legacy CPU on rack) |
+| Upgrade ownership | `BITCOIN_UPGRADE_TAXONOMY.md` | **active ownership design / final five-by-five pending** | unproven |
+| Data flow | `BITCOIN_DATA_FLOW.md` | **active** | partial |
+| Encryption / PvP | `BITCOINMINING_ENCRYPTION_SPEC.md` | **spec** | not started |
+| Ship roadmap | `BITCOIN_SHIP_ROADMAP.md` | **active** | in progress |
+| Signed-off bible | `BITCOIN_REFERENCE_IMPLEMENTATION.md` | **stub** | populate on Law 10 exit |
 
 ---
 

@@ -2,7 +2,8 @@
 
 > **Status:** Active  
 > **Date:** 2026-06-25  
-> **Owner:** Architect  
+> **Proposed by:** Design Architect  
+> **Approved by:** Bloodwave  
 > **Supersedes:** —
 
 ## Decision
@@ -19,4 +20,4 @@ Technical and workflow law were strong; gameplay philosophy was implicit only.
 
 ## Systems affected
 
-Onboarding · Architect · Integrator mandatory reads
+Onboarding · Design Architect · Integration Architect mandatory reads

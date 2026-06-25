@@ -12,7 +12,7 @@
 ## How to add
 
 1. Architect drafts `DECISION-####-Short-Title.md` (next ID below).
-2. Owner approves → **Status: Active**.
+2. Owner approves → **Status: Active** · **Proposed by:** Design Architect · **Approved by:** Bloodwave
 3. If reversed → set **Status: Deprecated** · link successor · move copy to `deprecated/` if needed.
 4. Promote from `RFC/` when RFC is approved (see `RFC/README.md`).
 

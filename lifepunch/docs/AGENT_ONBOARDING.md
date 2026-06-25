@@ -85,7 +85,7 @@ Business wrapper: `lifepunch/docs/BUSINESS_CONTEXT.md`.
 | 4 | `addons/docs/MODELDOC_STUDIO_LANE.md` | Standalone editor (no DXRP) |
 | 5 | `addons/docs/PACKAGE_STAGING_LAYOUT.md` | `lp*` staging paths |
 | 6 | `addons/docs/DXRP_ADDON_PUBLISH_DOCTRINE.md` | Folder=slug, PLACEHOLDER hands-off, portal vs files |
-| 7 | `addons/docs/CYBER_REFERENCE_LAWS.md` | Laws 1–10 |
+| 7 | `addons/docs/CYBER_REFERENCE_LAWS.md` | Laws 1–11 |
 
 **Weapons (parallel track — not bitcoin gate):**
 
@@ -260,7 +260,7 @@ truth; secrets stay quarantined off it and the same git rules apply.
 **Canonical reference:** `lifepunch/docs/MACHINE_CAST.md` — **read on every new session** after
 `git pull --rebase`. Then read **`lifepunch/docs/OPS_CLARITY_CHECKPOINT.md`** (June 2026
 checkpoint: how we look at the LifePunch web — at a glance, not a telescope). Paste
-`AGENT_SYNC_BROADCAST.txt` into any stale chat to force alignment. **Block 0** in
+`AGENT_SYNC_BROADCAST.txt` into any stale chat to force **evergreen** alignment (pull/sync → identify node → read `ACTIVE_WORKSTREAM` → lane prompt). **Do not** treat dated session overrides inside old broadcasts as current law — product status lives in `handoff/ARCHITECT_CURRENT_STATE.md`. **Block 0** in
 `AGENT_PROMPT.md` now carries an inline CVL tri-stack summary — paste Block 0 even when skipping long reads.
 
 ### Operational clarity (checkpoint — law moving forward)
@@ -391,7 +391,7 @@ Quick rules:
 
 | Topic | Canon |
 |-------|-------|
-| **Active task** | **`lifepunchbitcoin`** / `lpbitcoin` — ship roadmap: `BITCOIN_SHIP_ROADMAP.md`. Hub admin UI done (unlinked); **next: Phase B Terminal T1**. Tracker: `OWNER_PROGRESS_TRACKER.txt`. |
+| **Active task** | **`lifepunchbitcoin`** / `lpbitcoin` — **Phase A Hub polish** (`ACTIVE_WORKSTREAM.md`). Current executable slice = next unchecked **H*** in `OWNER_PROGRESS_TRACKER.txt`. **Phase B Terminal** locked until H10 owner sign-off. Upgrade migration + economy overhaul **HOLD**. |
 | **Opus / API** | Owner wants **Opus on hard bitcoin slices** (terminal, economy, integration). Anthropic API pool via Cursor Settings; Auto/Composer for routine work. `OPUS_USAGE_LAW.md`. |
 | **Editor workbench** | DXRP + LifePunch mounts — sync `lpbitcoin` when coding: `Sync-LifePunchAddonsToDxrp.ps1 -Addon lpbitcoin`. Full stack: `Start-SboxDxrpEditor.ps1 -FullCapacity -PreflightFix -BitcoinOnly`. |
 | **`lp_*` ConCmds** | Bitcoin dev ConCmds OK for playtest (`lp_bitcoin_preview_hub`, spawn kit, etc.). Do not add unrelated ConCmds (Law 9). |
@@ -423,10 +423,10 @@ Quick rules:
 | **ModelDoc Studio** | Standalone editor — **no DXRP gamemode** for mesh passes. `MODELDOC_STUDIO_LANE.md` · `Start-SboxModelDocStudio.ps1` |
 | **Digital machines** | Not props — full stack in `LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md` · P0 = ModelDoc sign-off first |
 | **Weapon platform** | Not gun mesh — `LIFEPUNCH_WEAPON_IMPLEMENTATION_LAW.md` · `lpweapons` + AK lane parallel to bitcoin |
-| **lp* staging** | `lpbitcoin/bitcoinhub|hashdterminal|gpurack|advancedgpurack` · `PACKAGE_STAGING_LAYOUT.md` · `DXRP_ADDON_PUBLISH_DOCTRINE.md` · PLACEHOLDER = upload-ready only (agents hands-off) · sync: `Prepare-LpBitcoinModelDoc.ps1` |
+| **lp* staging** | `lpbitcoin/bitcoinhub|hashdterminal|gpurack` (advanced tier = gpurack variant; retired slug `advancedgpurack`) · `PACKAGE_STAGING_LAYOUT.md` · `DXRP_ADDON_PUBLISH_DOCTRINE.md` · PLACEHOLDER = upload-ready only (agents hands-off) · sync: `Prepare-LpBitcoinModelDoc.ps1` |
 | **Pre-launch** | `Test-PreLaunchCheckup.ps1 -Fix` then `Start-SboxModelDocStudio.ps1` (mesh) or `Start-SboxDxrpEditor.ps1` (DXRP play) |
 
-**Handoff paste for any node:** `AGENT_SYNC_BROADCAST.txt` after `git pull --rebase`.
+**Handoff paste for any node:** evergreen `AGENT_SYNC_BROADCAST.txt` after `git pull --rebase`; dated product state in `handoff/ARCHITECT_CURRENT_STATE.md`.
 
 **Recently landed (foundation is current as of this note):**
 - **Digital machine + weapon platform laws — June 2026.** Entity props = machines

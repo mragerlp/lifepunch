@@ -43,11 +43,11 @@ Prefer extending shared surfaces (`LpOpsCrtTerminal.scss`, `LpHashdPanel` patter
 
 By the end of Bitcoin, the player should **instantly** recognize:
 
-| Type | Visual identity | Bitcoin entity |
-|------|-----------------|----------------|
-| **Hub** | Physical machine + **modern admin dashboard** on USE | `bitcoin-miner` → `LpHashdPanel` |
-| **Terminal** | Information / control — typed commands | `bitcoin-terminal` → `LpBitcoinTerminalPanel` |
-| **Rack** | Scaling / expansion — production unit; USE opens CRT focused on rack | `gpu-rack` / `advanced-gpu-rack` |
+| Type | Visual identity | Bitcoin entity (canonical slug) |
+|------|-----------------|--------------------------------|
+| **Hub** | Physical machine + **modern admin dashboard** on USE | `bitcoinhub` → `LpHashdPanel` |
+| **Terminal** | Information / control — typed commands | `hashdterminal` → `LpBitcoinTerminalPanel` |
+| **Rack** | Scaling / expansion — production unit | `gpurack` (standard ×2 + advanced tier ×1) |
 | **Power / error** | Universal warning language | Off = dark; blocked = explicit message |
 | **Active / success** | Universal success language | Powered + mining = unmistakable live read |
 
@@ -223,22 +223,13 @@ Maps to `ACTIVE_WORKSTREAM.md` §8 and tracker gate **BITCOIN SHIP GATE**.
 
 ---
 
-## DXRP lane — known gaps (documented, not law violations)
+## DXRP lane — durable constraints (not live status)
 
-These are **inconsistent with full ChatGPT exit fantasy** but **expected on this lane today**. Do not pretend they are done.
+Volatile deployment status (portal revision, gamemode pin, H9/H10 progress, addon UUID) lives in
+`lifepunch/docs/handoff/ARCHITECT_CURRENT_STATE.md`, `OWNER_PROGRESS_TRACKER.txt`, and
+`BITCOIN_SHIP_ROADMAP.md` — **not in this law file**.
 
-| Gap | Status | Notes |
-|-----|--------|-------|
-| Market acquire / place | **Portal Rev 1 live** — addon `019ec9a4-d867-7668-b452-904f97493c7e` (`lifepunchbitcoin`); content snapshot published (4 entities); **not gamemode-pinned**; **no code/assets upload yet** | Rev 1 = content-row placeholder only. Ship-tier Rev 2+ needs `_c` + `prepare-publish.ps1` upload + gamemode pin before market acquire |
-| Gov/LE blocked from hashd | **Doc only** | `TERMINAL_BRAND_MATRIX.md`; not enforced in `LpBitcoinHubEntity` yet |
-| Full Law 6 world states | **Partial** | Boot splash = UI; emissive/audio = H4/R4 checklist |
-| PIN graphical gate | **H9 open** | `AccessPinIsSet` in code; full numpad flow TBD |
-| `lp_authorize` | **Optional for polish** | Wallet sell proof may need portal token |
-| Dedicated server `_c` | **Required for ship** | Compile + `Pull-DxrpCompiledAssetsToRepo.ps1` |
-| Dev ConCmds | **Strip before publish** | `LpBitcoinDevSpawn` is playtest-only |
-| Per-rack BTC balance | **v2 code** | `LpBitcoinRackEntity.BitcoinAmount` — bible must match code, not v1 hub-wallet doc |
-
-**s&box ceilings agents must respect:** no SCSS gradients · `HashCode.Combine` ≤ 8 args · host-authoritative mining RPCs · `RestrictCloudOrg = facepunch` (self-contained assets).
+**s&box ceilings agents must respect:** no SCSS gradients · `HashCode.Combine` ≤ 8 args · host-authoritative mining RPCs · `RestrictCloudOrg = facepunch` (self-contained assets). Compiled `_c` requirement and dev ConCmd playtest-only rules: publish doctrine and playtest law.
 
 ---
 
@@ -254,7 +245,7 @@ Before any economy or payout code in a cyber lane, classify the action:
 | **Hacker player attack** (puzzle, scan steal) | **Wallet cash only** — `HackerJob.BankUntouchable`; never bank |
 | **Advanced hacker / gov police task reward** | **Bank cashout** for validated task completion — not a wallet steal |
 
-Do not route hub BTC cashout to on-hand wallet. Do not let standard hacker paths touch `BankBalance`. Future Banker/Government lanes inherit these three rails.
+Do not route hub BTC cashout to on-hand wallet. Do not let standard hacker paths touch `BankBalance`. Future Banker/Government lanes inherit these **four rail families** (`CYBER_ECONOMY_RAILS.md`).
 
 ---
 

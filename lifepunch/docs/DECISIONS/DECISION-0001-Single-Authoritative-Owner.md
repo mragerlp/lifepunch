@@ -2,17 +2,18 @@
 
 > **Status:** Active  
 > **Date:** 2026-06-25  
-> **Owner:** Architect · **Approved by:** Bloodwave (design canon)  
+> **Proposed by:** Design Architect  
+> **Approved by:** Bloodwave  
 > **Supersedes:** —  
 > **Law:** `LIFEPUNCH_GAMEPLAY_LAWS.md` G0
 
 ## Decision
 
-Every gameplay system has **exactly one authoritative owner**. Hub = mining state; Terminal = presentation; GPU Rack = computation.
+Every gameplay field has **exactly one authoritative owner**: the **Hub** owns operation policy and ledger state; the **HASHD Terminal** owns presentation and command-session state; **GPU Racks** own worker execution, rack-local buffers, and telemetry.
 
 ## Reason
 
-Prevents duplicate ledgers, split-brain upgrades, and integrator spaghetti. Future cyber lanes inherit the same rule.
+Prevents duplicate ledgers, split-brain upgrades, and integration spaghetti. Future cyber lanes inherit the same rule.
 
 ## Alternatives considered
 

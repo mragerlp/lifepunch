@@ -1,9 +1,8 @@
 # Bitcoin — upgrade taxonomy (canonical ownership)
 
-> **Status:** Active  
+> **Status:** Active — **ownership canon**; final five-by-five upgrade taxonomy pending Architect + Bloodwave approval  
 > **Why does this exist?** Every upgrade must have one buyer surface and one authoritative owner.  
 > **How:** Hub Upgrades tab vs Servers per-rack UI — preserve `LpHashdPanel` chrome.  
-> **Status:** Design canon — implementation may still reflect legacy per-rack CPU upgrades until migration slice.  
 > **Parent:** `BITCOIN_CONTROLLER_PATTERN.md` · `LIFEPUNCH_GAMEPLAY_LAWS.md` G1
 
 ---
@@ -12,7 +11,10 @@
 
 Purchased from **Hub → Hub Upgrades** tab (new — preserve existing hub chrome).
 
-### Categories (canonical)
+### Categories (working draft — not final five-by-five)
+
+Bloodwave target: **five Hub upgrades × five tiers** + **five Rack upgrades × five tiers**.  
+Current buckets below are **ownership direction only** — not final names, effects, or tier labels.
 
 | Category | Includes (target) | Player-facing story |
 |----------|-------------------|---------------------|
@@ -24,10 +26,10 @@ Purchased from **Hub → Hub Upgrades** tab (new — preserve existing hub chrom
 
 | Tier name | Category | Gameplay effect (target) |
 |-----------|----------|---------------------------|
-| **Clock path** | Controller | Hash **speed** — farm effective hashrate |
-| **Core count** | Controller / Intelligence | **Yield** — block reward handling |
+| **Clock path** | Controller | **Working abstraction — Architect decision pending; do not implement** |
+| **Core count** | Controller / Intelligence | **Working abstraction — Architect decision pending; do not implement** |
 | **Security / encryption** | Economy | PvP defense vs hacker lane |
-| **Automation** (future) | Economy | Job queue polish — optional v1 |
+| **Automation** (future) | Economy | Job queue polish — optional v1; **unset for v1.0** |
 
 **Not on hub:** GPU die counts, rack thermal paste, per-rack OC sliders.
 
@@ -37,7 +39,9 @@ Purchased from **Hub → Hub Upgrades** tab (new — preserve existing hub chrom
 
 Purchased per linked rack from **Hub → Servers** → rack card → upgrade (preserve 3-card layout).
 
-### Categories (canonical)
+### Categories (working draft — not final five-by-five)
+
+Six Rack buckets today vs five target — **which category merges or retires is unset** (Architect + Bloodwave).
 
 | Category | Player-facing story | Gameplay effect (target) |
 |----------|---------------------|---------------------------|

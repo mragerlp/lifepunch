@@ -2,13 +2,14 @@
 
 > **Status:** Active  
 > **Date:** 2026-06-25  
-> **Owner:** Architect  
+> **Proposed by:** Design Architect  
+> **Approved by:** Bloodwave  
 > **Supersedes:** —  
 > **Related:** DECISION-0001 · `BITCOIN_CONTROLLER_PATTERN.md`
 
 ## Decision
 
-The **Hub** is the authoritative owner of mining operation state: dispatch, wallet, linked rack registry, mining on/off policy, and controller-tier upgrades.
+The **Hub** owns mining **operation policy and ledger state** (dispatch policy, wallet, linked rack registry, mining on/off permission, controller-tier upgrades). **GPU Racks** own mining **execution** and rack-local buffers.
 
 ## Reason
 

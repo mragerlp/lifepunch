@@ -1,4 +1,4 @@
-# LIFEPUNCH™ — Gameplay laws (v1.1)
+# LIFEPUNCH™ — Gameplay laws (v1.2)
 
 > **Status:** Active  
 > **Why does this exist?** Technical law says how we ship; gameplay law says what players should feel and what we refuse to build.  
@@ -51,9 +51,16 @@ If Architect cannot write one plain-language sentence for an upgrade, it is not 
 
 ## Law G3 — Complexity is earned
 
-Phase A = readable machine + honest baseline. Phase B = loop. Phase C = depth.
+Ship in layers — **Foundation → Core loop → Depth** — not by overloading workstream phase labels.
 
-- Do not ship fan sequences, encryption trees, or multi-currency paths before the player completes the core loop once without help.
+| Layer | Scope |
+|-------|--------|
+| **Foundation** | Readable machine, collision, basic lights/fans/sound, honest baseline |
+| **Core loop** | Power, link, mine, local buffer, deposit, wallet cashout |
+| **Depth** | Five-by-five upgrades, encryption, advanced failures, cross-lane PvP, extended automation |
+
+- Basic fan, LED, and sound behavior required to communicate machine state is **foundation work** and may precede the complete economy loop.
+- Do not ship encryption trees, multi-currency paths, or full five-by-five upgrade trees before the player completes the core loop once without help.
 - One new mechanic per slice until flatgrass proof.
 
 ---

@@ -14,9 +14,9 @@ Law: one item at a time -> play proof on flatgrass -> your OK -> check box -> ne
 Proof package required for phase sign-off (day, night, USE, citizen, 30s clip).
 Play from: game.scene (NOT prefab tabs). Cold compile: wait 2-5 min.
 
-Last updated: 2026-06-24
-ACTIVE NOW: lifepunchbitcoin (LifePunch Bitcoin Mining) — Phase A Hub polish + admin UI shell signed (unlinked)
-NEXT SLICE: Phase B Terminal (T1) per BITCOIN_SHIP_ROADMAP.md
+Last updated: 2026-06-25
+ACTIVE NOW: lifepunchbitcoin (LifePunch Bitcoin Mining) — Phase A Hub polish (H* tracker)
+NEXT SLICE: Next unchecked Phase A H* in this file — NOT Phase B until H10 owner sign-off
 BLOCKED: Hacker, Banker, Government, Casino, Drug Chemist, all new cyber lanes (until Bitcoin Law 10)
 
 Send edits to Cursor: paste changed sections or say "tracker: checked H1, start H2".
@@ -46,15 +46,15 @@ Session: game.scene -> Play -> lp_map_flatgrass -> lp_bitcoin_spawn_hub (or _kit
 [ ] T5  Hub off = terminal blocked
 [ ] T6  Terminal sign-off
 
---- Phase C: GPU Rack (small + large) ---
-[ ] R1  Small rack mesh + materials
-[ ] R2  Large stacked rack mesh
+--- Phase C: GPU Rack (2 Standard + 1 Advanced) ---
+[ ] R1  Standard gpurack mesh + materials
+[ ] R2  Advanced gpurack tier mesh (gpurack advanced variant)
 [ ] R3  Collider + perf (no hull storm)
 [ ] R4  Mining visuals (emissive on/off)
 [ ] R5  Hub link radius
 [ ] R6  Fan motion (ModelDoc or clean removal)
 [ ] R7  RGB LED shader (post-P0)
-[ ] R8  Full kit hero sign-off (hub + 3 small + 1 large)
+[ ] R8  Full kit hero sign-off (hub + 2 Standard GPU Racks + 1 Advanced GPU Rack)
 
 BITCOIN SHIP GATE: Phases A + B + C signed off before promoting any job below.
 

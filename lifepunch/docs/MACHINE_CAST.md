@@ -36,6 +36,16 @@ stack. Say a **node** when you mean one machine. Do **not** call the three-machi
 - **Cornerman** = home **helper** on the LAN (mic + cheap local AI).
 - **lifepunchnet** = hosted **venue** that stays on 24/7 (game server ops + shared services).
 
+### CVL Architect family (roles — machines are not roles)
+
+| Role | Host | Legacy alias |
+|------|------|--------------|
+| **Design Architect** | VENGEANCE — ChatGPT | Architect |
+| **Integration Architect** | VENGEANCE — Cursor | Integrator |
+| **Distillation Architect** | Cornerman — local LM | Distiller |
+| **Operations Architect** | lifepunchnet — RDP agent | RDP server agent |
+| **Bloodwave** | — | Owner / final authority |
+
 **lifepunchnet is NOT Cornerman. lifepunchnet is NOT VENGEANCE.**
 
 ---

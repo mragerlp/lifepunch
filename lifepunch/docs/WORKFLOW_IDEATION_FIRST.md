@@ -1,7 +1,7 @@
 # Workflow — ideation before build (anti-spaghetti)
 
 **Law:** When Bloodwave is all over the place, starting a **new** product, or mixing
-infra + UX + code in one rant → **Architect Step 1 first**, then Cursor Integrator. No exceptions.
+infra + UX + code in one rant → **Design Architect Step 1 first**, then Integration Architect (Cursor). No exceptions.
 
 ---
 

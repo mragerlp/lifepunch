@@ -1,9 +1,8 @@
 # Bitcoin — controller pattern (responsibilities only)
 
-> **Status:** Active  
+> **Status:** Active — canonical design roles; implementation proof tracked separately in `TECH_DEBT.md`  
 > **Why does this exist?** So every contributor knows **who owns what** before touching code.  
 > **How:** Implementation lives in `bitcoinmining` code; drift tracked in `TECH_DEBT.md`.  
-> **Status:** Canonical design — **no implementation** in this doc.  
 > **Parent:** `LIFEPUNCH_CYBER_SYSTEM_PATTERN.md` · `LIFEPUNCH_GAMEPLAY_LAWS.md` G0  
 > **Player fantasy:** `BITCOIN_PLAYER_DESIGN.md`
 
@@ -58,7 +57,7 @@ Portal cap: **2 standard + 1 advanced** per operator/hub — locked.
 - Upgrade purchases (hub panel or hub RPC — not terminal shop)
 - Wallet balance authority (displays hub truth)
 
-**Never mines.** Closing the terminal does not stop mining — hub + racks continue.
+**Never mines.** Closing the terminal does not stop mining — Hub permission and Rack execution continue.
 
 ---
 
@@ -70,13 +69,14 @@ Portal cap: **2 standard + 1 advanced** per operator/hub — locked.
 - Undeposited BTC **buffer** (per-rack cap before deposit required)
 - **Hardware upgrades** (target): thermals, OC, power, buffer expansion
 - Local telemetry (temp, fan, power draw — gameplay-facing)
-- Link/unlink registration at hub (via terminal `link` command → hub validates)
+- Local reference to linked hub (for telemetry RPC) — **rack owns link state locally**; hub owns registry membership and link/unlink **validation**
 
 **Does NOT own:**
 
 - Hub wallet
 - Global mining schedule policy
 - Controller-tier upgrades
+- Link/unlink **registry** (hub authoritative)
 
 **Standard rack:** 1.0× base yield · buffer `max($10,000 USD, 1 BTC)` (target).  
 **Advanced rack:** 2.0× base yield · buffer `max($20,000 USD, 2 BTC)` (target).
@@ -86,13 +86,12 @@ Portal cap: **2 standard + 1 advanced** per operator/hub — locked.
 ## Single-owner summary
 
 ```text
-Every gameplay system has ONE authoritative owner.
+Every gameplay field has ONE authoritative owner.
 
-Hub owns mining.
+Hub owns mining policy and operation authority.
+GPU Racks own mining execution and local buffers.
 
-Terminal owns presentation.
-
-GPU Racks own computation.
+Terminal owns presentation and command-session state.
 
 Never duplicate ownership across entities.
 ```
