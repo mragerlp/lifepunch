@@ -45,18 +45,27 @@ lifepunch/addons/docs/briefs/CORNerman_LPWEAPONS_PLATFORM_AUDIT_PREP.md
 C. ULX + shared patterns across addons:
 lifepunch/addons/docs/briefs/CORNerman_LIFEPUNCHULX_AND_SHARED_PATTERNS_PREP.md
 
-4. Report rules (mandatory for everything you produce):
+4. Report rules (strict — Architect correction):
 
-- Use this template exactly:
-  lifepunch/docs/handoff/LIFEPUNCH_AI_REPORT_TEMPLATE.md
+- Use template: lifepunch/docs/handoff/LIFEPUNCH_AI_REPORT_TEMPLATE.md
 
-- Save every report to BOTH places:
-  - lifepunch/docs/reports/     (git)
-  - C:\LIFEPUNCH\Reports\       (easy access)
+- Save every completed report to the local folders on Cornerman only:
+  - C:\LIFEPUNCH\Reports\          ← Authoritative (what Bloodwave will read)
+  - C:\lifepunch\cornerman\outbox\ ← Mirror
+
+- **NEVER** write reports into the monorepo clone (lifepunch/docs/reports/) on this machine.
+- **Do not** commit or push anything from Green.
 
 - Filename: YYYY-MM-DD_HHMM_ShortTitle.md
 
-5. When you finish or hit ~11:30 PM EST, send exactly:
+5. Execution order (sequential, fresh session per major directive):
+   A. lifepunch/addons/docs/briefs/CORNerman_LPADONS_FULL_ECOSYSTEM_PREP_UNTIL_1130PM.md
+   Then start a **fresh** Green Deep session/context for:
+   B. lifepunch/addons/docs/briefs/CORNerman_LPWEAPONS_PLATFORM_AUDIT_PREP.md
+   Then fresh again for:
+   C. lifepunch/addons/docs/briefs/CORNerman_LIFEPUNCHULX_AND_SHARED_PATTERNS_PREP.md
+
+6. When you finish or hit ~11:30 PM EST, send exactly this completion signal:
 
 OK cornerman lpaddons-long-run complete @<time>
 head=<current commit>
@@ -70,7 +79,7 @@ Then idle.
 
 ---
 
-When I return tomorrow I will RDP, pull, and read the reports from lifepunch/docs/reports/.
+Bloodwave will RDP to Cornerman, read from C:\LIFEPUNCH\Reports\, and copy approved reports into the monorepo later.
 
 Run this with Green Deep. Make it count.
 
