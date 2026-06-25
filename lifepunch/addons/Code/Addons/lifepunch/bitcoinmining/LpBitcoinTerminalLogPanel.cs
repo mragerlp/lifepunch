@@ -23,8 +23,10 @@ public sealed class LpBitcoinTerminalLogPanel : LifePunchScrollRegionPanel
 {
 	private const float LineGap = 2f;
 	private const float FallbackLineHeight = 16f;
-	private const float MaxSaneLineHeight = 40f;
-	private const float ContentBottomPad = 20f;
+	private const float WheelStep = 48f;
+	private const float ContentBottomPad = 48f;
+	private const float WrapLineHeight = FallbackLineHeight * 1.4f;
+	private const int WrapCharsPerLine = 72;
 	private const float ClickDragThreshold = 4f;
 
 	private static readonly Color SelectionTint = (Color.Parse( "#f0a500" ) ?? new Color( 0.941f, 0.647f, 0f )).WithAlpha( 0.35f );
@@ -69,6 +71,21 @@ public sealed class LpBitcoinTerminalLogPanel : LifePunchScrollRegionPanel
 		var moved = ( downPos - e.LocalPosition ).Length > ClickDragThreshold;
 		if ( !moved )
 			ClearLineSelection();
+	}
+
+	public override void OnMouseWheel( Vector2 value )
+	{
+		// Engine ScrollSize under-reports flex CRT log height — never delegate to base wheel scroll.
+		if ( System.Math.Abs( value.y ) < 0.01f )
+			return;
+
+		var max = GetMaxScrollY();
+		if ( max <= 0f )
+			return;
+
+		var next = System.Math.Clamp( ScrollOffset.y - value.y * WheelStep, 0f, max );
+		ScrollOffset = new Vector2( 0f, next );
+		PreferScrollToBottom = next >= max - 4f;
 	}
 
 	public override void OnButtonEvent( ButtonEvent e )
@@ -177,11 +194,7 @@ public sealed class LpBitcoinTerminalLogPanel : LifePunchScrollRegionPanel
 				continue;
 
 			lineCount++;
-			var height = line.Box.Rect.Height;
-			if ( height <= 1f || height > MaxSaneLineHeight )
-				height = FallbackLineHeight;
-
-			total += height;
+			total += GetLogLineHeight( line );
 		}
 
 		if ( lineCount <= 0 )
@@ -190,7 +203,36 @@ public sealed class LpBitcoinTerminalLogPanel : LifePunchScrollRegionPanel
 		if ( lineCount > 1 )
 			total += ( lineCount - 1 ) * LineGap;
 
+		// Wrapped labels: flex stack height beats per-child sum when layout lags a frame.
+		var stackHeight = stack.Box.Rect.Height;
+		if ( stackHeight > total + 2f )
+			total = stackHeight;
+
 		return total + ContentBottomPad;
+	}
+
+	private float GetLogLineHeight( Panel line )
+	{
+		var height = line.Box.Rect.Height;
+		if ( height > 1f )
+			return height;
+
+		if ( line is Label label && !string.IsNullOrWhiteSpace( label.Text ) )
+			return EstimateWrappedLabelHeight( label.Text );
+
+		return FallbackLineHeight;
+	}
+
+	private static float EstimateWrappedLabelHeight( string text )
+	{
+		var rows = 0;
+		foreach ( var segment in text.Split( '\n' ) )
+		{
+			var len = segment.TrimEnd().Length;
+			rows += System.Math.Max( 1, (int)System.Math.Ceiling( len / (float)WrapCharsPerLine ) );
+		}
+
+		return rows * WrapLineHeight;
 	}
 
 	public override void SyncTerminalScroll( bool forceFollowBottom = false )

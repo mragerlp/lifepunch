@@ -517,7 +517,7 @@
 		}
 
 		if ( log.PreferScrollToBottom )
-			SyncLogScrollPosition( forceFollowBottom: true );
+			QueueScrollLogToBottom( force: true );
 	}
 
 	private void ClearLogStack()
@@ -574,7 +574,7 @@
 
 	private void QueueScrollLogToBottom( bool force = false )
 	{
-		_scrollLogPendingFrames = Math.Max( _scrollLogPendingFrames, 2 );
+		_scrollLogPendingFrames = Math.Max( _scrollLogPendingFrames, 4 );
 		if ( force )
 			_scrollLogForce = true;
 	}
