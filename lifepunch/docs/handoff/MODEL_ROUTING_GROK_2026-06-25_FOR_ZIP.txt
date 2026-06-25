@@ -1,0 +1,52 @@
+MODEL ROUTING + VISUAL DOCTRINE UPDATE (for continuity kit / new ChatGPT Architect sessions)
+
+Date: 2026-06-25
+Owner approval: Yes — commit 19a2726 (model routing) + ffa29df (visual doctrine)
+
+Key new files (include these in the next ZIP):
+- lifepunch/docs/MODEL_ROUTING_AMENDMENT_GROK_BUILD_1.md
+- lifepunch/addons/docs/CYBER_VISUAL_IDENTITY_DOCTRINE.md
+
+Summary for new agents:
+
+1. Model Routing (Integration Architect on VENGEANCE)
+   - Tier-1: Opus (hard architecture, economy, permissions, multi-file C#, security)
+   - Tier-2A: Grok Build 1 (technical planning, ModelDoc/asset maps, bounded implementation slices)
+   - Tier-2B: Composer (routine work, continuity)
+   - Tier-3: Cornerman (distillation + prep only)
+
+2. Grok Output Law (every Grok technical response must label):
+   1. VERIFIED FROM REPO
+   2. INFERRED FROM EXISTING PATTERNS
+   3. NEEDS SBOX-EDITOR PROOF
+   4. NEEDS SBOX RUNTIME PROOF
+   5. OWNER DECISION REQUIRED
+   6. OUT OF SCOPE
+
+   Grok must cite exact repo sources for numbers and engine details.
+
+3. Visual Identity (locked)
+   - Cornerman = Hacker = Green
+   - VENGEANCE = Advanced Hacker = Red
+   - lifepunchnet = Gov = Cyan
+   - HASHD = Bitcoin = Amber (donor cosmetics limited to amber/gold family — no full green/red/cyan on Bitcoin surfaces)
+
+4. Terminal (Bitcoin)
+   - Now a real surface with defense progression.
+   - Purchases live in the universal Hub Upgrades area.
+   - Old "Terminal upgrades: None" language is superseded for lpbitcoin.
+
+5. Production Gates
+   - Active lane: Bitcoin Hub Phase A (lpbitcoin)
+   - Terminal world + full upgrades gated behind H10 + owner GO
+   - Hacker / Government lanes remain planning/reference only (quarantined)
+
+6. For fresh ChatGPT/Architect chats:
+   - Paste the full MODEL_ROUTING_AMENDMENT_GROK_BUILD_1.md + CYBER_VISUAL_IDENTITY_DOCTRINE.md early.
+   - Remind the agent that Grok is a tool the Integration Architect uses, not a new CVL role.
+
+Commit hashes for verification:
+- Visual doctrine: ffa29df
+- Model routing amendment: 19a2726
+
+This replaces older Tier-1/2 descriptions in previous handoff pastes.

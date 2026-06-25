@@ -1,0 +1,77 @@
+=== MASTER LOGOFF PASTE — SEND THIS TO CORNERMAN ===
+
+Copy everything below and send it to Cornerman before you log off and shut down VENGEANCE.
+
+---
+
+Cornerman — long unattended run starting now. Use Green Deep the entire time.
+
+1. Pull latest:
+cd C:\Users\jared\Projects\lifepunchaddons
+git fetch
+git pull --rebase
+
+2. Load Green Deep correctly (Qwen3.6-27B Q6_K):
+
+```powershell
+# Download only if needed
+lms get qwen/qwen3.6-27b@q6_k --gguf
+
+# Find the exact local model key
+lms ls --llm --detailed
+
+# Load using the exact key
+lms load <EXACT_MODEL_KEY_FROM_LMS_LS> --gpu max --context-length 32768
+
+# Verify
+lms ps
+```
+
+Generation settings:
+- Thinking: ON
+- Preserve Thinking: OFF
+- Temperature: 0.6
+- Top P: 0.95
+- Top K: 20
+
+3. Work for this run (interleave as needed):
+
+A. Main long directive:
+lifepunch/addons/docs/briefs/CORNerman_LPADONS_FULL_ECOSYSTEM_PREP_UNTIL_1130PM.md
+
+B. Weapons platform audit + prep:
+lifepunch/addons/docs/briefs/CORNerman_LPWEAPONS_PLATFORM_AUDIT_PREP.md
+
+C. ULX + shared patterns across addons:
+lifepunch/addons/docs/briefs/CORNerman_LIFEPUNCHULX_AND_SHARED_PATTERNS_PREP.md
+
+4. Report rules (mandatory for everything you produce):
+
+- Use this template exactly:
+  lifepunch/docs/handoff/LIFEPUNCH_AI_REPORT_TEMPLATE.md
+
+- Save every report to BOTH places:
+  - lifepunch/docs/reports/     (git)
+  - C:\LIFEPUNCH\Reports\       (easy access)
+
+- Filename: YYYY-MM-DD_HHMM_ShortTitle.md
+
+5. When you finish or hit ~11:30 PM EST, send exactly:
+
+OK cornerman lpaddons-long-run complete @<time>
+head=<current commit>
+profile=Green Deep (Qwen3.6-27B Q6_K)
+outputs=<number of reports>
+eyes=covered
+no-code
+no-commit
+
+Then idle.
+
+---
+
+When I return tomorrow I will RDP, pull, and read the reports from lifepunch/docs/reports/.
+
+Run this with Green Deep. Make it count.
+
+=== END OF PASTE ===
