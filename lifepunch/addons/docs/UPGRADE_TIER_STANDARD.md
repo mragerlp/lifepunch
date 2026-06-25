@@ -10,7 +10,7 @@ Applies across hacker, bitcoin, and government addons unless a job brief overrid
 |----------|-------|
 | Skill slots | **3** |
 | Points per skill | **1** (pick one branch per slot or linear — TBD per entity) |
-| Terminal upgrades | **None** — ON/OFF only |
+| Terminal upgrades | **Real defense/capability tracks** (five) via universal Upgrades home in LpHashdPanel (DECISION-0010). See BITCOIN_UPGRADE_TAXONOMY.md and CYBER_VISUAL_IDENTITY_DOCTRINE.md. Terminal never mines. |
 | Server / hub upgrades | ON/OFF + 3 basic skills |
 
 **Examples:** standard hacker server rack, standard terminal power gate.
