@@ -105,3 +105,20 @@
 ---
 
 *Integration Architect maintains on VENGEANCE after approved doc commits.*
+
+---
+
+## Model Routing Update (2026-06-25)
+
+**MODEL_ROUTING_AMENDMENT_GROK_BUILD_1.md** committed.
+
+- Grok Build 1 added as **Tier-2A** for the Integration Architect (technical planning, ModelDoc/asset work, bounded slices).
+- Opus remains Tier-1 for hard architecture/economy/permissions/multi-file.
+- Grok Output Law, Escalation Law, and Proof Law now apply to all Grok work.
+- See the amendment file for the full routing table and requirements.
+
+**Next continuity kit** must include this amendment + `CYBER_VISUAL_IDENTITY_DOCTRINE.md` so fresh ChatGPT/Architect sessions start with correct model law and visual identity rules.
+
+Commit for this update: will be recorded on push (see git log for `MODEL_ROUTING_AMENDMENT_GROK_BUILD_1.md` and related doc updates).
+
+**Terminal canon reconciliation** in progress — old "Terminal upgrades: None" language being replaced with reference to the new doctrine and upcoming DECISION-0010.

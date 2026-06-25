@@ -19,6 +19,32 @@ routing hard work to Opus.
 
 ---
 
+## Model Routing (June 2026)
+
+See the full amendment in `MODEL_ROUTING_AMENDMENT_GROK_BUILD_1.md`.
+
+| Model            | Route                                                                                                   |
+|------------------|---------------------------------------------------------------------------------------------------------|
+| **Opus**         | Tier-1: architecture, economy, permissions, persistence, security, multi-file C#, hard runtime debugging |
+| **Grok Build 1** | Tier-2A: technical planning, repo audits, ModelDoc plans, asset maps, bounded implementation slices     |
+| **Composer**     | Tier-2B: continuity, routine edits, documentation, familiar implementation                              |
+| **Cornerman**    | Tier-3: bulk distillation and preparation                                                               |
+
+**Grok Output Law (mandatory for all Grok responses):**
+Every technical claim must be labeled:
+1. VERIFIED FROM REPO
+2. INFERRED FROM EXISTING PATTERNS
+3. NEEDS SBOX-EDITOR PROOF
+4. NEEDS SBOX RUNTIME PROOF
+5. OWNER DECISION REQUIRED
+6. OUT OF SCOPE
+
+Grok must cite exact repo source for numbers and engine specifics. Escalate immediately on economy, permissions, security, cross-system contracts, or multi-subsystem work.
+
+Full details (including ESCALATION LAW and PROOF LAW) live in `MODEL_ROUTING_AMENDMENT_GROK_BUILD_1.md`.
+
+---
+
 ## Opus usage law
 
 ### Use Opus for

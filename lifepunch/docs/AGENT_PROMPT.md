@@ -143,10 +143,13 @@ COMMIT CONSENT: never commit unprompted — when work hits a natural commit poin
 whether to commit (propose scope + message) and commit only on an explicit yes.
 
 HOW WE OPERATE (cost-safe — every token is real $USD):
-- Default model: Auto/Composer (Tier-2) for routine scoped work. **Opus (Tier-1) encouraged** for
-  finishing lpbitcoin to portal — terminal, economy, multi-file C#, MCP blockers — per
-  `lifepunch/docs/OPUS_USAGE_LAW.md`. Opus uses the **Anthropic API pool** (Cursor Settings key);
-  Auto/Composer does not drain that pool.
+- Model routing (see `MODEL_ROUTING_AMENDMENT_GROK_BUILD_1.md`):
+  - Tier-1: Opus (architecture, economy, permissions, multi-file C#, hard problems)
+  - Tier-2A: Grok Build 1 (technical planning, ModelDoc/asset maps, bounded implementation)
+  - Tier-2B: Composer (routine continuity, edits, docs)
+  - Tier-3: Cornerman (distillation/prep only)
+- Default for most work: Tier-2 (Grok or Composer). Escalate to Opus on the hard ~20% per `OPUS_USAGE_LAW.md`.
+- Opus uses the Anthropic API pool (Cursor Settings). Tier-2 does not.
 - Major tasks: Opus Phase 1 plan (no code) → Opus Phase 2 one slice → flatgrass proof → Opus Phase 4 review.
 - lifepunchbitcoin scope: Hub → Terminal → GPU Rack — one checklist ID until flatgrass sign-off.
 - Session hygiene: one focused chat per task; attach specific files/ranges, not whole folders.

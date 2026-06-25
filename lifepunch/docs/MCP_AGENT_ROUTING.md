@@ -52,6 +52,8 @@ ChatGPT Plus/Pro on the desk is **Architect** (design brain) — paste `handoff/
 | Portal listing copy (Class 9 careful) | Opus | Tier-1 | Tier-3 | ITU / specimen law |
 | Portal publish staging (`prepare-publish`) | Tier-2 script | Tier-2 | MCP | Script + owner sign-off |
 | Architecture / TECH_DEBT decision | Opus | Tier-1 | `sbox` | Thinking in Cursor |
+| Repo-grounded technical planning + ModelDoc/asset maps | Grok Build 1 | Tier-2A | Opus (escalate on stakes) | See MODEL_ROUTING_AMENDMENT_GROK_BUILD_1.md (2026-06-25) |
+| Bounded Razor/SCSS implementation | Grok Build 1 or Composer | Tier-2A/2B | Tier-1 unless hard | Grok good for planning + bounded slices |
 | Green editor work via tunnel | `sbox-editor` on G | Tier-2 | Local chomnr on G | chomnr only on Red host |
 | Green play verify | `sbox` on G (SMB) | Tier-2 | Green-only without SMB | UNC must see heartbeat |
 
