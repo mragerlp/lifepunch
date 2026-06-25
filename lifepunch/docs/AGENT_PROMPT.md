@@ -109,10 +109,12 @@ COMMIT CONSENT: never commit unprompted — when work hits a natural commit poin
 whether to commit (propose scope + message) and commit only on an explicit yes.
 
 HOW WE OPERATE (cost-safe — every token is real $USD):
-- Default model: Auto/Composer (Tier-2). Opus (Tier-1) only per `lifepunch/docs/OPUS_USAGE_LAW.md`
-  (architecture, multi-file C#, MCP blockers, ModelDoc — not README/changelog/marketing).
+- Default model: Auto/Composer (Tier-2) for routine scoped work. **Opus (Tier-1) encouraged** for
+  finishing lpbitcoin to portal — terminal, economy, multi-file C#, MCP blockers — per
+  `lifepunch/docs/OPUS_USAGE_LAW.md`. Opus uses the **Anthropic API pool** (Cursor Settings key);
+  Auto/Composer does not drain that pool.
 - Major tasks: Opus Phase 1 plan (no code) → Opus Phase 2 one slice → flatgrass proof → Opus Phase 4 review.
-- lifepunchbitcoin scope: Hub → Terminal → GPU Rack — one entity until flatgrass sign-off.
+- lifepunchbitcoin scope: Hub → Terminal → GPU Rack — one checklist ID until flatgrass sign-off.
 - Session hygiene: one focused chat per task; attach specific files/ranges, not whole folders.
 - Guardrails: verify by stakes not model; commit only your lane; dev/clones only (production
   needs owner approval).
@@ -154,23 +156,28 @@ Primary write lane: lifepunch/addons/** — s&box packages, addons.json, validat
 You may edit any monorepo path; integrate partner GitLab lane commits back into GitHub.
 Do NOT let shottaWEB or RDP agent paths drift — they commit on GitLab lanes, you merge here.
 
-CURRENT STATE (June 2026):
-- Trademark/IP doctrine is law. Billing on Individual Ultra (Auto default).
+CURRENT STATE (June 2026 — updated 2026-06-25):
+- Trademark/IP doctrine is law. Billing: Cursor Individual Ultra + connected **Anthropic API key**
+  (Opus drains API pool at provider rates; Auto/Composer uses separate generous pool).
 - Ops clarity checkpoint is law: OPS_CLARITY_CHECKPOINT.md + shortcut tiers (Start Day = tri-stack full stack).
-- **SESSION OVERRIDE (2026-06-22):** Owner lane = **lifepunchulx** (`adminmenu`) on **vanilla DXRP workbench**
-  `D:\Steam\steamapps\common\sbox\dxrp\game\rp.sbproj` — **no addon sync, no new files, no `lp_*` ConCmds**
-  until owner explicitly says so. CVL full capacity green (`Get-CvlConnectivityStatus.ps1`).
-- Admin menu (adminmenu) = v1 publish-ready, branded `lifepunch.ulx` / packageSlug `lifepunchulx`;
-  in publishReadyAddons — export to lifepunch-published when owner says ship. Baseline: v3.0.0 r6.
-- Bitcoin (bitcoinmining) = **paused** for this session — do not sync or extend unless owner re-opens lane.
-  Entity law when resumed: `LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md`. Staging: `lpbitcoin/`.
+- **ACTIVE WORKSTREAM (hard gate):** **lifepunchbitcoin** / repo `bitcoinmining` / package `lpbitcoin`.
+  Read `BITCOIN_SHIP_ROADMAP.md` every session. Hub admin UI (unlinked) owner-signed; **next slice: Phase B
+  Terminal T1** (rig0> + hub-off authority). Opus **encouraged** for terminal, economy, rack integration,
+  and publish slices per `OPUS_USAGE_LAW.md` — not for README/changelog-only work.
+- Admin menu (`adminmenu` / `lifepunchulx`) = v1 publish-ready in `publishReadyAddons`; ship when owner says.
+  **Not** the active dev gate — do not let ULX work steal bitcoin lane scope (Law 9).
+- Entity law: `LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md`. Staging: `lpbitcoin/{bitcoinhub,hashdterminal,gpurack}/`.
   **Publish doctrine:** `DXRP_ADDON_PUBLISH_DOCTRINE.md` — PLACEHOLDER hands-off unless owner asks.
 - Quarantine: hackerjob, ak47, bankerjob, etc. — read for concepts only; never copy into active addons.
-- AK-47 paused. GitLab lanes LIVE + synced (lanes-synced); shottaWEB + RDP agent provisioned.
+  Tier 1 after Bitcoin Law 10: **Banker → Hacker** (`JOB_PORTFOLIO_ROADMAP.md`).
+- AK-47 paused (`lane/ak47` only). GitLab lanes LIVE + synced; shottaWEB + RDP agent provisioned.
 
 EDITOR / PLAYTEST on VENGEANCE:
-- Workbench: `Start-SboxDxrpEditor.ps1 -NoSync` → clean `dxrp\game\rp.sbproj` (no LifePunch mounts).
-- When owner approves ULX sync only: `Sync-LifePunchAddonsToDxrp.ps1 -Addon adminmenu` (never `-SyncAllAddons` without ask).
+- Default bitcoin lane: `Start-SboxDxrpEditor.ps1 -FullCapacity -PreflightFix -BitcoinOnly -SyncAddon lpbitcoin`
+  or editor already open → `Start-CvlFullCapacity.ps1` · probe: `Get-CvlConnectivityStatus.ps1 -Pretty`.
+- Sync repo → DXRP when owner asks or after code touch:
+  `Sync-LifePunchAddonsToDxrp.ps1 -Addon lpbitcoin` (never `-SyncAllAddons` without ask).
+- ULX-only sessions: `-NoSync` vanilla workbench + `-Addon adminmenu` sync only when owner names it.
 - Eyes-covered law: `get_bridge_status` first; screenshot/probe before visual claims.
 - Pre-launch: `Test-PreLaunchCheckup.ps1 -Fix` · full refresh: `Invoke-CvlFullCapacityRefresh.ps1`.
 
