@@ -39,6 +39,22 @@ Namespace: **`gitlab.com/mragerlp`**
 | `lifepunch-website` | `https://gitlab.com/mragerlp/lifepunch-website` | `lifepunch/website/**` | **shottaWEB** |
 | `lifepunch-rdp-server` | `https://gitlab.com/mragerlp/lifepunch-rdp-server` | `lifepunch/server`, `portal`, `gamemode`, `maps`, `admin-panel`, `economy`, `audit`, `players`, `discord`, `webhooks`, `API` | **RDP server agent** |
 
+**Red — `lifepunch-rdp-server` export hazard:** `Export-GitLabLane.ps1` **replaces entire
+`monorepoPaths` trees** from the GitHub monorepo on every export. Any GitLab-only files under
+`lifepunch/server/` (e.g. Official/Dev launcher scripts committed on-box at `aba788c`) are
+**wiped** until one of:
+
+1. **Port to GitHub** — merge Blue-only server scripts into the monorepo `lifepunch/server/`, then export; or
+2. **Exclude paths** — change export mapping so Blue-only paths are not overwritten (not implemented today).
+
+Until then, warn Blue after each `lifepunch-rdp-server` export if `lifepunch/server/dxrp-host/scripts/`
+or launcher bats differ from monorepo. Blue keeps on-box `aba788c` launcher fixes unless export
+intentionally changed server paths.
+
+Known GitLab-only files removed by export `@463dc02` (2026-06-25): `DEV_ENGINE_ROLLBACK.md`,
+`dxrp-host/development/tail_dev_server_log.bat`, `Pin-OfficialStableEngine.ps1`,
+`Populate-DevEngine.ps1`, `Restore-OfficialStableEngine.ps1`, `Update-DevStagingEngine.ps1`.
+
 **Git branch lane (not GitLab):** `lane/ak47` — quarantined AK viewmodel experiment. See
 `lifepunch/docs/lanes/AK47_LANE.md`. **Never merge to `main` without owner sign-off.**
 

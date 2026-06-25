@@ -100,7 +100,8 @@
                                                "lifepunch/discord",
                                                "lifepunch/webhooks",
                                                "lifepunch/API"
-                                           ]
+                                           ],
+                         "exportNote":  "Export-GitLabLane replaces entire monorepoPaths from GitHub. GitLab-only files under lifepunch/server/ are wiped each export until ported to monorepo or export excludes Blue-only paths. See GITLAB_ORGANIZATION.md (RDP export hazard)."
                      }
                  ],
     "gitBranchLanes":  [

@@ -1,4 +1,7 @@
 # One-shot lane export using Windows Git Credential Manager (no GITLAB_TOKEN env required).
+# WARNING: Replaces each monorepoPath entirely from GitHub — GitLab-only files in those trees are
+# wiped. lifepunch-rdp-server: lifepunch/server/ clobber risk until Blue scripts land in monorepo
+# or export excludes Blue-only paths. See lifepunch/docs/GITLAB_ORGANIZATION.md.
 param(
     [Parameter(Mandatory)]
     [string] $Slug,
@@ -11,6 +14,10 @@ $MapPath = Join-Path $RepoRoot 'lifepunch\docs\gitlab-projects.json'
 $Map = Get-Content -LiteralPath $MapPath -Raw | ConvertFrom-Json
 $Project = @($Map.projects | Where-Object { $_.slug -eq $Slug })[0]
 if (-not $Project) { throw "Unknown slug: $Slug" }
+
+if ($Slug -eq 'lifepunch-rdp-server') {
+    Write-Host 'WARN: export replaces lifepunch/server/ from GitHub — GitLab-only server scripts are wiped unless ported to monorepo or paths excluded (GITLAB_ORGANIZATION.md).' -ForegroundColor Yellow
+}
 
 $Grounding = @()
 if ($Map.PSObject.Properties.Name -contains 'groundingBundle' -and $Map.groundingBundle) {

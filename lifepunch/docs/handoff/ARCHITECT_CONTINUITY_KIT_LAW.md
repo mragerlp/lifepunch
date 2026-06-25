@@ -40,7 +40,7 @@ When in doubt, rebuild the kit.
 | **Green — Distillation Architect (Cornerman)** | **Sync from Red only** (`git pull --rebase` on GitHub clone); never ship canon independently |
 | **Design Architect (ChatGPT)** | **Reconcile** Red updates; regenerate / normalize packages when needed; integrity report + checksums |
 
-**Blue (Operations Architect / lifepunchnet):** GitLab `lifepunch-rdp-server` lane only — doc mirror arrives via **owner lane export**, not direct GitHub pull.
+**Blue (Operations Architect / lifepunchnet):** GitLab `lifepunch-rdp-server` lane only — doc mirror arrives via **owner lane export**, not direct GitHub pull. **Export replaces `lifepunch/server/` from GitHub** — GitLab-only launcher scripts are wiped until ported to monorepo or export excludes those paths (`GITLAB_ORGANIZATION.md`).
 
 ---
 
