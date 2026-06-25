@@ -1241,7 +1241,6 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 
 		.racks-scroll,
 		.upgrades-scroll,
-		.logs-scroll,
 		.overview-miners-scroll {
 			flex: 1 1 0;
 			min-height: 0;
@@ -1250,9 +1249,22 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 			overflow: hidden;
 		}
 
+		.logs-scroll {
+			flex: 1 1 0;
+			min-height: 0;
+			width: 100%;
+			flex-direction: column;
+			overflow-x: hidden;
+			overflow-y: scroll;
+		}
+
 		.racks-scroll,
 		.upgrades-scroll {
 			padding-bottom: 24px;
+		}
+
+		.logs-scroll {
+			padding-bottom: 12px;
 		}
 	}
 
@@ -5737,6 +5749,61 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 
 .lp-bitcoin-ops .pane.racks .rack-card-actions .rack-upgrade-btn.disabled {
 	opacity: 0.55;
+}
+
+// Servers — three slot cards stretch to fill pane (overview miners-scroll unchanged).
+.lp-bitcoin-ops .pane.racks .racks-scroll > .rack-grid {
+	flex: 1 1 0;
+	min-height: 0;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+.lp-bitcoin-ops .pane.racks .rack-card {
+	display: flex;
+	flex-direction: column;
+}
+
+.lp-bitcoin-ops .pane.racks .rack-card:not(.empty) .rack-card-body {
+	flex: 1 1 0;
+	min-height: 0;
+}
+
+.lp-bitcoin-ops .pane.racks .rack-card:not(.empty) .rack-stat-tiles {
+	flex: 1 1 0;
+	min-height: 0;
+	align-items: stretch;
+}
+
+.lp-bitcoin-ops .pane.racks .rack-card:not(.empty) .rack-stat-tile {
+	min-height: 0;
+	padding-top: 16px;
+	padding-bottom: 16px;
+}
+
+.lp-bitcoin-ops .pane.racks .rack-card:not(.empty) .rack-card-actions {
+	margin-top: auto;
+	width: 100%;
+}
+
+.lp-bitcoin-ops .pane.racks .rack-card.empty .rack-stat-tiles.empty {
+	flex: 1 1 0;
+	min-height: 0;
+	justify-content: center;
+}
+
+// Hub logs — scroll past intro; nested pane rule had clipped the 6th row.
+.lp-bitcoin-ops .pane.logs-pane > .logs-panel > .logs-scroll {
+	flex: 1 1 0;
+	min-height: 0;
+	overflow-x: hidden;
+	overflow-y: scroll;
+}
+
+.lp-bitcoin-ops .pane.logs-pane > .logs-panel > .logs-scroll > .notif-list {
+	flex-shrink: 0;
+	width: 100%;
 }
 
 // Hub scale — XL = canonical 1100×700; smaller steps trim shell only (StaffMenu law).

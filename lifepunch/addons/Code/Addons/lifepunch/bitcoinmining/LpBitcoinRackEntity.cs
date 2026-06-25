@@ -350,6 +350,13 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable, IAre
 	}
 
 	internal static LpBitcoinRackEntity FindNearestUnlinked( LpBitcoinHubEntity hub, float maxRange )
+		=> FindNearestUnlinked( hub, maxRange, advancedOnly: null );
+
+	/// <param name="advancedOnly">null = any rack; true = advanced only; false = standard GPU rack only.</param>
+	internal static LpBitcoinRackEntity FindNearestUnlinked(
+		LpBitcoinHubEntity hub,
+		float maxRange,
+		bool? advancedOnly )
 	{
 		if ( !hub.IsValid() )
 			return null;
@@ -365,6 +372,9 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable, IAre
 		foreach ( var rack in scene.GetAllComponents<LpBitcoinRackEntity>() )
 		{
 			if ( !rack.IsValid() || rack.LinkedHubId != Guid.Empty )
+				continue;
+
+			if ( advancedOnly.HasValue && rack.AdvancedRack != advancedOnly.Value )
 				continue;
 
 #if !LIFEPUNCH_LOCAL

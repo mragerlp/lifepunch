@@ -195,6 +195,79 @@ public static class LpBitcoinIdent
 		return true;
 	}
 
+	/// <summary>rig0 <c>link</c> token before the rack is registered — gpurack-1, gpurack-2, advancedgpurack.</summary>
+	public static bool TryParseLinkRackSlotToken(
+		string token,
+		out bool advanced,
+		out int standardSlotNumber )
+	{
+		advanced = false;
+		standardSlotNumber = 0;
+		if ( string.IsNullOrWhiteSpace( token ) )
+			return false;
+
+		var normalized = token.Trim().ToLowerInvariant();
+		if ( normalized == AdvancedRackTerminalToken
+		     || normalized == AdvancedRackSlotId.ToLowerInvariant() )
+		{
+			advanced = true;
+			return true;
+		}
+
+		var prefix = $"{RackSlotPrefix}-".ToLowerInvariant();
+		if ( !normalized.StartsWith( prefix, StringComparison.Ordinal )
+		     || !int.TryParse( normalized[prefix.Length..], out var slot )
+		     || slot < 1
+		     || slot > PortalMaxStandardRacksPerHub )
+			return false;
+
+		standardSlotNumber = slot;
+		return true;
+	}
+
+	/// <summary>Declared slot must fill in order — gpurack-1 before gpurack-2.</summary>
+	public static bool CanLinkToDeclaredSlot(
+		bool advanced,
+		int standardSlotNumber,
+		IReadOnlyList<LpBitcoinRackEntity> linkedRacks,
+		out string error )
+	{
+		error = string.Empty;
+		if ( advanced )
+		{
+			if ( CountLinkedAdvancedRacks( linkedRacks ) >= PortalMaxAdvancedRacksPerHub )
+			{
+				error = "ERR advancedgpurack slot full — unlink the Advanced GPU Rack first";
+				return false;
+			}
+
+			return true;
+		}
+
+		var linkedStandard = CountLinkedStandardRacks( linkedRacks );
+		var nextSlot = linkedStandard + 1;
+		if ( standardSlotNumber == nextSlot )
+			return true;
+
+		if ( linkedStandard == 0 )
+		{
+			error = "ERR link gpurack-1 first";
+			return false;
+		}
+
+		if ( standardSlotNumber <= linkedStandard )
+		{
+			error = $"ERR gpurack-{standardSlotNumber} already linked — unlink that slot first";
+			return false;
+		}
+
+		error = $"ERR link gpurack-{nextSlot} next (slots fill in order)";
+		return false;
+	}
+
+	public static string FormatDeclaredLinkSlotToken( bool advanced, int standardSlotNumber )
+		=> advanced ? AdvancedRackTerminalToken : $"{RackSlotPrefix}-{standardSlotNumber}".ToLowerInvariant();
+
 	public static bool TryGetStandardRackSlotNumber(
 		LpBitcoinRackEntity rack,
 		IReadOnlyList<LpBitcoinRackEntity> linkedRacks,

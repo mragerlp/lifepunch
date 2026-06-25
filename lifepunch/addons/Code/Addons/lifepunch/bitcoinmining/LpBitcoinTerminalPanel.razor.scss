@@ -421,8 +421,9 @@ $crt-text-dim: #9a9a9a;
 .lp-ops-crt .terminal-log-scroll > .log-stack,
 .lp-ops-crt .log > .log-stack {
 	flex: 0 0 auto;
-	align-self: stretch;
+	align-self: flex-start;
 	width: 100%;
+	min-height: 0;
 }
 
 .lp-ops-crt .log-stack {

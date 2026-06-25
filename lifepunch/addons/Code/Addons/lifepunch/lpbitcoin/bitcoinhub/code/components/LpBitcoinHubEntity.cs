@@ -384,6 +384,8 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 
 	public void RequestLinkNearbyRack() => LinkNearbyRackHost();
 
+	public void RequestLinkRack( string slotToken ) => LinkRackByTokenHost( slotToken );
+
 	public void RequestLinkNearbyTerminal() => LinkNearbyTerminalHost();
 
 	public void RequestUnlinkTerminal() => UnlinkTerminalHost();
@@ -500,6 +502,86 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 		rack.LinkToHub( this );
 		var label = LpBitcoinIdent.FormatRackSlotDisplayName( rack, GetLinkedRacks() );
 		PushAlertHost( LpBitcoinHubAlertKind.TerminalCommand, $"{label} linked — type racks to confirm." );
+		RefreshLinkedTerminalScreens();
+	}
+
+	[Rpc.Host]
+	private void LinkRackByTokenHost( string slotToken )
+	{
+		if ( !CanOperateTerminal( Rpc.CallerId ) )
+			return;
+
+		if ( !IsPowered )
+		{
+			PushAlertHost( LpBitcoinHubAlertKind.TerminalCommand,
+				"Hub power is off — power on before linking GPU racks." );
+			return;
+		}
+
+		if ( !HasLinkedTerminal() )
+			return;
+
+		if ( !LpBitcoinIdent.TryParseLinkRackSlotToken( slotToken, out var advanced, out var standardSlot ) )
+		{
+			PushAlertHost( LpBitcoinHubAlertKind.TerminalCommand,
+				"usage: link gpurack-1|gpurack-2|advancedgpurack" );
+			return;
+		}
+
+		var linked = GetLinkedRacks();
+		if ( !LpBitcoinIdent.CanLinkToDeclaredSlot( advanced, standardSlot, linked, out var slotError ) )
+		{
+			PushAlertHost( LpBitcoinHubAlertKind.TerminalCommand, slotError );
+			return;
+		}
+
+		if ( GetLinkedRacks().Count >= LpBitcoinIdent.PortalMaxRacksPerHub )
+		{
+			PushAlertHost( LpBitcoinHubAlertKind.TerminalCommand,
+				"This hub supports 2 GPU racks + 1 Advanced GPU Rack — unlink a slot first." );
+			return;
+		}
+
+		if ( Owner == 0 && !TryBindOwner( Rpc.CallerId ) )
+		{
+			PushAlertHost( LpBitcoinHubAlertKind.TerminalCommand,
+				"Claim this hub first (secure boot / PIN), then link your racks." );
+			return;
+		}
+
+		var rack = LpBitcoinRackEntity.FindNearestUnlinked( this, RackLinkRange, advancedOnly: advanced );
+		if ( !rack.IsValid() )
+		{
+			var kind = advanced ? "Advanced GPU" : "GPU";
+			PushAlertHost( LpBitcoinHubAlertKind.TerminalCommand,
+				$"No unlinked {kind} rack in range that belongs to you — place your rack near this hub." );
+			return;
+		}
+
+		if ( advanced != rack.AdvancedRack )
+		{
+			var expected = advanced ? "advancedgpurack" : $"gpurack-{standardSlot}";
+			PushAlertHost( LpBitcoinHubAlertKind.TerminalCommand,
+				$"ERR nearest rack in range is not {expected} — move the correct rack closer or unlink a mismatch." );
+			return;
+		}
+
+		if ( !this.TryClaimLinkableEquipment( rack, Rpc.CallerId, out var linkError ) )
+		{
+			PushAlertHost( LpBitcoinHubAlertKind.TerminalCommand, linkError );
+			return;
+		}
+
+		if ( !LpBitcoinIdent.CanLinkRackToHub( rack, linked, out var rackSlotError ) )
+		{
+			PushAlertHost( LpBitcoinHubAlertKind.TerminalCommand, rackSlotError );
+			return;
+		}
+
+		rack.LinkToHub( this );
+		var declared = LpBitcoinIdent.FormatDeclaredLinkSlotToken( advanced, standardSlot );
+		var label = LpBitcoinIdent.FormatRackSlotDisplayName( rack, GetLinkedRacks() );
+		PushAlertHost( LpBitcoinHubAlertKind.TerminalCommand, $"{label} linked as {declared} — type racks to confirm." );
 		RefreshLinkedTerminalScreens();
 	}
 

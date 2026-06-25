@@ -32,8 +32,23 @@ public sealed class LpBitcoinTerminalLogPanel : LifePunchScrollRegionPanel
 		AllowChildSelection = true;
 	}
 
+	public override void OnMouseDown( MousePanelEvent e )
+	{
+		if ( e.Button == MouseButtons.Left )
+			ClearLineSelection();
+
+		base.OnMouseDown( e );
+	}
+
 	public override void OnButtonEvent( ButtonEvent e )
 	{
+		if ( e.Pressed && e.Button == "escape" )
+		{
+			ClearLineSelection();
+			e.StopPropagation = true;
+			return;
+		}
+
 		if ( e.Pressed && IsEndButton( e.Button ) )
 		{
 			PreferScrollToBottom = true;
@@ -70,6 +85,28 @@ public sealed class LpBitcoinTerminalLogPanel : LifePunchScrollRegionPanel
 			label.ShouldDrawSelection = true;
 			label.SelectionColor = SelectionTint;
 		}
+	}
+
+	/// <summary>Collapse drag-select highlight — click log background or press Esc.</summary>
+	public void ClearLineSelection()
+	{
+		var hadSelection = false;
+		foreach ( var label in Descendants.OfType<Label>() )
+		{
+			if ( !label.HasSelection() )
+				continue;
+
+			label.Selectable = false;
+			hadSelection = true;
+		}
+
+		if ( !hadSelection )
+			return;
+
+		foreach ( var label in Descendants.OfType<Label>() )
+			label.Selectable = true;
+
+		ApplyLineSelectionChrome();
 	}
 
 	private bool TryCopySelection()

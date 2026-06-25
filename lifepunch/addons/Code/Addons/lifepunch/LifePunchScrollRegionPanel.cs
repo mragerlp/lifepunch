@@ -63,14 +63,18 @@ public class LifePunchScrollRegionPanel : Panel
 		return System.Math.Max( 0f, GetContentHeight() - viewHeight );
 	}
 
+	public void ScrollToTop()
+	{
+		if ( ScrollOffset != Vector2.Zero )
+			ScrollOffset = Vector2.Zero;
+	}
+
 	public void ScrollToBottom( bool force = false )
 	{
 		var max = GetMaxScrollY();
 		if ( max <= 0f )
 		{
-			if ( ScrollOffset != Vector2.Zero )
-				ScrollOffset = Vector2.Zero;
-
+			ScrollToTop();
 			PreferScrollToBottom = true;
 			return;
 		}
@@ -80,6 +84,21 @@ public class LifePunchScrollRegionPanel : Panel
 
 		ScrollOffset = new Vector2( 0f, max );
 		PreferScrollToBottom = true;
+	}
+
+	/// <summary>CMD-style: top-aligned when content fits; follow bottom only when overflowing.</summary>
+	public void SyncTerminalScroll( bool forceFollowBottom = false )
+	{
+		var max = GetMaxScrollY();
+		if ( max <= 0f )
+		{
+			ScrollToTop();
+			PreferScrollToBottom = true;
+			return;
+		}
+
+		if ( forceFollowBottom || PreferScrollToBottom )
+			ScrollToBottom( forceFollowBottom );
 	}
 
 	private void UpdatePreferScrollToBottom()

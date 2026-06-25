@@ -104,15 +104,22 @@ internal static class LpBitcoinTerminalCommands
 				if ( !hub.HasLinkedTerminal() )
 					return new LpBitcoinCommandResult( false, "ERR link terminal at hub admin first (hub must be powered on)" );
 
+				if ( parts.Length < 2 )
+					return new LpBitcoinCommandResult( false, "usage: link gpurack-1|gpurack-2|advancedgpurack" );
+
+				if ( !LpBitcoinIdent.TryParseLinkRackSlotToken( parts[1], out var linkAdvanced, out var linkStandardSlot ) )
+					return new LpBitcoinCommandResult( false, "usage: link gpurack-1|gpurack-2|advancedgpurack" );
+
+				if ( !LpBitcoinIdent.CanLinkToDeclaredSlot( linkAdvanced, linkStandardSlot, racks, out var declaredSlotError ) )
+					return new LpBitcoinCommandResult( false, declaredSlotError );
+
 				if ( racks.Count >= LpBitcoinIdent.PortalMaxRacksPerHub )
 					return new LpBitcoinCommandResult( false,
 						"ERR rack limit — this hub supports 2 GPU racks + 1 Advanced GPU Rack" );
 
-				if ( !hub.HasNearbyUnlinkedRack() )
-					return new LpBitcoinCommandResult( false, "ERR no unlinked GPU rack in range that belongs to you — place your rack near this hub" );
-
-				hub.RequestLinkNearbyRack();
-				return new LpBitcoinCommandResult( true, "linking nearest owned unlinked rack — type racks to confirm" );
+				var slotToken = LpBitcoinIdent.FormatDeclaredLinkSlotToken( linkAdvanced, linkStandardSlot );
+				hub.RequestLinkRack( parts[1] );
+				return new LpBitcoinCommandResult( true, $"linking {slotToken} — hub confirms when rack in range" );
 
 			case "about":
 				return new LpBitcoinCommandResult( true,
@@ -414,7 +421,7 @@ internal static class LpBitcoinTerminalCommands
 
 	private static string HelpText() =>
 		"── HASHD rig0 commands (space-separated) ──\n" +
-		"help · clear · link · racks · select 1|2|gpurack-1|gpurack-2|advancedgpurack · status · info · wallet\n" +
+		"help · clear · link gpurack-1|gpurack-2|advancedgpurack · racks · select 1|2|gpurack-1|gpurack-2|advancedgpurack · status · info · wallet\n" +
 		"mining start|stop · mining start all|stop all · mining all-start|all-stop\n" +
 		"deposit · deposit all · deposit 1|2|advancedgpurack\n" +
 		"send <steamid> <amount|all> — transfer hub wallet BTC to another operator's hub\n" +

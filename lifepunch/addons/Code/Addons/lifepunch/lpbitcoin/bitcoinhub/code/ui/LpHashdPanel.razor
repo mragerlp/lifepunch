@@ -314,7 +314,7 @@
 
 											<div class="lp-ui-intro racks-intro">@RacksIntroCopyLine()</div>
 
-											<div class="lp-ui-scroll-region racks-scroll">
+											<div class="racks-scroll">
 												<div class="rack-grid">
 													@foreach ( var slot in GetOverviewMinerSlots() )
 													{
@@ -897,6 +897,7 @@
 	{
 		LifePunchMenuInputBlock.NotifyMenuOpened();
 		LpBitcoinHudBridge.SetMenuCursorMode( true );
+		LifePunchScrollRegionBootstrap.UpgradeScrollRegionsFromHost( this );
 		LifePunchUiScrollPolicy.Apply( Panel );
 		_sinceTelemetryRefresh = TelemetryRefreshInterval;
 		_sinceLogTimeRefresh = LogTimeRefreshInterval;
@@ -1946,6 +1947,7 @@
 	{
 		base.OnUpdate();
 		LifePunchMenuInputBlock.Apply();
+		LifePunchScrollRegionBootstrap.UpgradeScrollRegionsFromHost( this );
 		LifePunchUiScrollPolicy.Apply( Panel );
 
 		if ( !_hub.IsValid() )

@@ -37,7 +37,7 @@
 								}
 								@if ( linkedRacks.Count == 0 )
 								{
-									<div class="lp-terminal-settings-empty">No racks linked — type <span class="hashd-prompt-accent">link</span> at rig0.</div>
+									<div class="lp-terminal-settings-empty">No racks linked — type <span class="hashd-prompt-accent">link gpurack-1</span> at rig0.</div>
 								}
 								else
 								{
@@ -138,7 +138,9 @@
 	{
 		"help",
 		"racks",
-		"link",
+		"link gpurack-1",
+		"link gpurack-2",
+		"link advancedgpurack",
 		"select 0",
 		"status",
 		"info",
@@ -235,7 +237,7 @@
 		ClearLogStack();
 		_hub?.RequestPushTerminalCommandAlert( "clear", "log cleared" );
 		_showSettingsMenu = false;
-		MaybeQueueScrollLogToBottom( force: true );
+		SyncLogScrollPosition();
 	}
 
 	private static void EnsureScrollFactory()
@@ -255,7 +257,7 @@
 		LifePunchUiScrollPolicy.Apply( Panel );
 		ApplyCommandInputChrome();
 		ResetScrollBootstrap();
-		QueueScrollLogToBottom( force: true );
+		SyncLogScrollPosition();
 	}
 
 	public void Bind( LpBitcoinHubEntity hub, LpBitcoinRackEntity focusRack = null )
@@ -299,9 +301,10 @@
 
 	private void FocusLog()
 	{
-		var log = GetLogScroll();
-		if ( log.IsValid() )
-			log.Focus();
+		if ( GetLogScroll() is LpBitcoinTerminalLogPanel terminalLog )
+			terminalLog.ClearLineSelection();
+
+		FocusInput();
 	}
 
 	private void CopySidebarCommand( string cmd )
@@ -377,7 +380,7 @@
 		InputBox.Text = string.Empty;
 		InputBox.Focus();
 		_lastInputTextLength = 0;
-		MaybeQueueScrollLogToBottom();
+		SyncLogScrollPosition( forceFollowBottom: true );
 	}
 
 	private void AppendCommandToHistory( string command )
@@ -451,7 +454,7 @@
 		if ( !force && !log.PreferScrollToBottom )
 			return;
 
-		QueueScrollLogToBottom( force );
+		SyncLogScrollPosition( forceFollowBottom: force );
 	}
 
 	private void AppendCommandResult( LpBitcoinCommandResult result )
@@ -500,7 +503,7 @@
 		ApplyLogScrollChrome();
 
 		if ( log.IsValid() && log.PreferScrollToBottom )
-			QueueScrollLogToBottom();
+			SyncLogScrollPosition( forceFollowBottom: log.GetMaxScrollY() > 0f );
 	}
 
 	private void ClearLogStack()
@@ -557,9 +560,18 @@
 
 	private void QueueScrollLogToBottom( bool force = false )
 	{
-		_scrollLogPendingFrames = Math.Max( _scrollLogPendingFrames, 4 );
+		_scrollLogPendingFrames = Math.Max( _scrollLogPendingFrames, 2 );
 		if ( force )
 			_scrollLogForce = true;
+	}
+
+	private void SyncLogScrollPosition( bool forceFollowBottom = false )
+	{
+		var log = GetLogScroll();
+		if ( !log.IsValid() )
+			return;
+
+		log.SyncTerminalScroll( forceFollowBottom );
 	}
 
 	private LifePunchScrollRegionPanel GetLogScroll()
@@ -630,8 +642,7 @@
 		if ( GetLogScroll().IsValid() )
 		{
 			_scrollBootstrapComplete = true;
-			ResetLogScrollPosition();
-			QueueScrollLogToBottom( force: true );
+			SyncLogScrollPosition();
 			return;
 		}
 
@@ -653,21 +664,14 @@
 		if ( !log.IsValid() )
 			return;
 
-		log.ScrollToBottom( _scrollLogForce );
+		log.SyncTerminalScroll( _scrollLogForce );
 
 		if ( _scrollLogPendingFrames <= 0 )
 			_scrollLogForce = false;
 	}
 
 	private void ResetLogScrollPosition()
-	{
-		var log = GetLogScroll();
-		if ( !log.IsValid() )
-			return;
-
-		log.PreferScrollToBottom = true;
-		log.ScrollToBottom( force: true );
-	}
+		=> SyncLogScrollPosition();
 
 	private void Close() => LpBitcoinTerminalUiHost.CloseOpen();
 
@@ -717,7 +721,6 @@
 				? $"{BootLines[_bootLineIndex + 1].Split( ' ' )[0].ToUpperInvariant()}..."
 				: "READY";
 			_bootLineIndex++;
-			QueueScrollLogToBottom();
 		}
 
 		var bootEnd = BootLineIntervalSeconds * BootLines.Length + BootSplashHoldSeconds;
@@ -749,7 +752,7 @@
 		}
 
 		_pendingFocusRack = null;
-		QueueScrollLogToBottom();
+		SyncLogScrollPosition();
 		FocusInput();
 	}
 
