@@ -3879,6 +3879,23 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	flex-direction: column;
 }
 
+.lp-bitcoin-ops .overview-miners-empty {
+	flex: 1 1 0;
+	min-height: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding-top: 24px;
+	padding-right: 16px;
+	padding-bottom: 24px;
+	padding-left: 16px;
+	color: #8b95a8;
+	font-size: 11px;
+	line-height: 1.45;
+	text-align: center;
+}
+
 .lp-bitcoin-ops .overview-miner-card {
 	display: flex;
 	flex-direction: column;
@@ -3896,6 +3913,11 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	background-color: rgba(0, 0, 0, 0.28);
 }
 
+.lp-bitcoin-ops .overview-miner-card.nearby {
+	border-color: rgba(232, 125, 62, 0.22);
+	background-color: rgba(232, 125, 62, 0.06);
+}
+
 .lp-bitcoin-ops .overview-miner-card.empty {
 	border-color: rgba(255, 255, 255, 0.05);
 	background-color: rgba(0, 0, 0, 0.16);
@@ -3905,6 +3927,14 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	color: #8b95a8;
 	font-size: 10px;
 	line-height: 1.35;
+}
+
+.lp-bitcoin-ops .overview-miner-stats.empty.market-hint,
+.lp-bitcoin-ops .pane.racks .rack-stat-tile-value.empty.market-hint {
+	color: #c8d0de;
+	font-size: 11px;
+	line-height: 1.4;
+	text-align: center;
 }
 
 .lp-bitcoin-ops .overview-miner-head {
@@ -3945,6 +3975,19 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 
 .lp-bitcoin-ops .overview-miner-status.on {
 	color: #e87d3e;
+}
+
+.lp-bitcoin-ops .overview-miner-status.nearby {
+	color: #e87d3e;
+}
+
+.lp-bitcoin-ops .lp-ui-status-dot.nearby {
+	background-color: #e87d3e;
+}
+
+.lp-bitcoin-ops .hashd-prompt-accent {
+	color: #e87d3e;
+	font-weight: 700;
 }
 
 .lp-bitcoin-ops .overview-miner-stats {
@@ -5644,6 +5687,8 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 }
 
 .lp-bitcoin-ops .pane.racks .rack-card.empty {
+	flex: 1 1 0;
+	min-height: 0;
 	border-color: rgba(255, 255, 255, 0.05);
 	background-color: rgba(0, 0, 0, 0.16);
 }
@@ -5739,6 +5784,8 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 
 .lp-bitcoin-ops .pane.racks .rack-card-actions .rack-upgrade-btn {
 	min-height: 34px;
+	width: 100%;
+	box-sizing: border-box;
 	padding-top: 8px;
 	padding-right: 12px;
 	padding-bottom: 8px;

@@ -242,12 +242,9 @@
 
 	private static void EnsureScrollFactory()
 	{
-		// Re-register every open — hot reload can leave a stale lambda factory from a prior compile.
-		LifePunchScrollRegionBootstrap.SetCustomFactory( CreateTerminalScrollPanel );
+		// Re-register every open — hot reload can leave a stale factory from a prior compile.
+		LpBitcoinScrollRegionFactory.Register();
 	}
-
-	private static LifePunchScrollRegionPanel CreateTerminalScrollPanel( string slotClass )
-		=> slotClass == "log" ? new LpBitcoinTerminalLogPanel() : null;
 
 	protected override void OnEnabled()
 	{

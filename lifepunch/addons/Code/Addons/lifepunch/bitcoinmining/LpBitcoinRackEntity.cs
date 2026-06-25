@@ -5,6 +5,8 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Sandbox;
 using LifePunch.DXRP.Addons;
 #if !LIFEPUNCH_LOCAL
@@ -378,7 +380,7 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable, IAre
 				continue;
 
 #if !LIFEPUNCH_LOCAL
-			if ( !LifePunchEntityOwnership.SharesOperator( hub.Owner, rack.Owner ) )
+			if ( hub.Owner != 0 && !LifePunchEntityOwnership.SharesOperator( hub.Owner, rack.Owner ) )
 				continue;
 #endif
 
@@ -391,6 +393,42 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable, IAre
 		}
 
 		return best;
+	}
+
+	internal static IReadOnlyList<LpBitcoinRackEntity> FindAllUnlinked( LpBitcoinHubEntity hub, float maxRange )
+	{
+		if ( !hub.IsValid() )
+			return Array.Empty<LpBitcoinRackEntity>();
+
+		var scene = hub.GameObject.Scene ?? Game.ActiveScene;
+		if ( scene is null )
+			return Array.Empty<LpBitcoinRackEntity>();
+
+		var matches = new List<(LpBitcoinRackEntity Rack, float Distance)>();
+		var hubPos = hub.WorldPosition;
+
+		foreach ( var rack in scene.GetAllComponents<LpBitcoinRackEntity>() )
+		{
+			if ( !rack.IsValid() || rack.LinkedHubId != Guid.Empty )
+				continue;
+
+#if !LIFEPUNCH_LOCAL
+			if ( hub.Owner != 0 && !LifePunchEntityOwnership.SharesOperator( hub.Owner, rack.Owner ) )
+				continue;
+#endif
+
+			var dist = hubPos.Distance( rack.WorldPosition );
+			if ( dist > maxRange )
+				continue;
+
+			matches.Add( (rack, dist) );
+		}
+
+		if ( matches.Count == 0 )
+			return Array.Empty<LpBitcoinRackEntity>();
+
+		matches.Sort( ( left, right ) => left.Distance.CompareTo( right.Distance ) );
+		return matches.ConvertAll( match => match.Rack );
 	}
 
 #if !LIFEPUNCH_LOCAL

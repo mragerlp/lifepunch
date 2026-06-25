@@ -150,9 +150,9 @@ public static class LifePunchScrollRegionBootstrap
 
 				if ( existing.IsValid() )
 				{
-					// HASHD CRT log lines are imperative — Razor re-emits an empty shell on unrelated
-					// StateHasChanged; merging would duplicate log-stack and spam "Fixing parent".
-					if ( slotClass != "log" && source.Children.Any() )
+					// Imperative scroll bodies (HASHD CRT log, hub logs) — Razor re-emits empty shells on
+					// unrelated StateHasChanged; merging would duplicate rows and flicker on hover.
+					if ( slotClass is not ("log" or "logs-scroll") && source.Children.Any() )
 						MergeChildren( source, existing );
 
 					source.Delete();

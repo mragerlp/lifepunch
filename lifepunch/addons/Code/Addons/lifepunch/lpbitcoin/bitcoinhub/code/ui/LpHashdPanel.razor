@@ -200,8 +200,8 @@
 													<span>Active miners</span>
 												</div>
 
-												<div class="lp-ui-scroll-region overview-miners-scroll">
-													@foreach ( var slot in GetOverviewMinerSlots() )
+												<div class="overview-miners-scroll">
+													@foreach ( var slot in GetServersRackSlots() )
 													{
 														<div class="overview-miner-card @( slot.Rack.IsValid() ? "" : "empty" )">
 															<div class="overview-miner-head">
@@ -217,18 +217,22 @@
 																{
 																	<div class="overview-miner-status off">
 																		<span class="lp-ui-status-dot off"></span>
-																		<span>Not linked</span>
+																		<span>@( HasAnyPlayerRacksNearbyOrLinked() ? "Not linked" : "Available" )</span>
 																	</div>
 																}
 															</div>
-															@if ( slot.Rack.IsValid() )
-															{
-																<div class="overview-miner-stats">@RackOverviewSubline( slot.Rack )</div>
-															}
-															else
-															{
-																<div class="overview-miner-stats empty">Place rack nearby, then link at rig0 on the terminal.</div>
-															}
+																@if ( slot.Rack.IsValid() )
+																{
+																	<div class="overview-miner-stats">@RackOverviewSubline( slot.Rack )</div>
+																}
+																else if ( !HasAnyPlayerRacksNearbyOrLinked() )
+																{
+																	<div class="overview-miner-stats empty market-hint">Purchase racks from the Market.</div>
+																}
+																else
+																{
+																	<div class="overview-miner-stats empty">Place rack near hub, then link at rig0 — <span class="hashd-prompt-accent">link @slot.TerminalToken</span></div>
+																}
 															<button class="rack-slot-id-copy overview-miner-copy"
 															        onclick="@(() => CopyOverviewMinerToken( slot ))">
 																<span class="rack-slot-id-token">@slot.TerminalToken</span>
@@ -316,7 +320,7 @@
 
 											<div class="racks-scroll">
 												<div class="rack-grid">
-													@foreach ( var slot in GetOverviewMinerSlots() )
+													@foreach ( var slot in GetServersRackSlots() )
 													{
 														<div class="rack-card @( slot.Rack.IsValid() ? "" : "empty" )">
 															<div class="rack-card-head">
@@ -337,7 +341,7 @@
 																	}
 																	else
 																	{
-																		<span class="rack-badge">Not linked</span>
+																		<span class="rack-badge">@( HasAnyPlayerRacksNearbyOrLinked() ? "Not linked" : "Available" )</span>
 																	}
 																</div>
 															</div>
@@ -362,11 +366,19 @@
 																		</div>
 																	</div>
 																}
+																else if ( !HasAnyPlayerRacksNearbyOrLinked() )
+																{
+																	<div class="rack-stat-tiles empty">
+																		<div class="rack-stat-tile rack-stat-tile-wide">
+																			<div class="rack-stat-tile-value empty market-hint">Purchase racks from the Market.</div>
+																		</div>
+																	</div>
+																}
 																else
 																{
 																	<div class="rack-stat-tiles empty">
 																		<div class="rack-stat-tile rack-stat-tile-wide">
-																			<div class="rack-stat-tile-value empty">Place rack near hub, then link at rig0 on the terminal.</div>
+																			<div class="rack-stat-tile-value empty">Place rack near hub, then link at rig0 on the terminal — <span class="hashd-prompt-accent">link @slot.TerminalToken</span></div>
 																		</div>
 																	</div>
 																}
@@ -692,21 +704,7 @@
 											}
 											else
 											{
-												<div class="lp-ui-scroll-region logs-scroll">
-													<div class="notif-list">
-														@foreach ( var alert in GetHubAlerts() )
-														{
-															<div class="notif-row">
-																<i class="material-icons">@AlertIcon(alert.Kind)</i>
-																<div class="notif-copy">
-																	<div class="notif-kind">@AlertKindLabel(alert.Kind)</div>
-																	<div class="notif-message">@alert.Message</div>
-																	<div class="notif-time">@AlertTimeLabel(alert.Timestamp)</div>
-																</div>
-															</div>
-														}
-													</div>
-												</div>
+												<div class="lp-ui-scroll-region logs-scroll"></div>
 											}
 										</div>
 									</div>
@@ -834,6 +832,10 @@
 	private TimeSince _sinceLogTimeRefresh;
 	private int _telemetryHash;
 	private int _logTimeBucket;
+	private int _lastHubLogsRenderCount = -1;
+	private int _lastHubAlertsContentHash;
+	private bool _hubLogsScrollReady;
+	private int _hubLogsBootstrapRetries;
 	private const float TelemetryRefreshInterval = 0.5f;
 	private const float LogTimeRefreshInterval = 30f;
 
@@ -897,11 +899,16 @@
 	{
 		LifePunchMenuInputBlock.NotifyMenuOpened();
 		LpBitcoinHudBridge.SetMenuCursorMode( true );
+		LpBitcoinScrollRegionFactory.Register();
 		LifePunchScrollRegionBootstrap.UpgradeScrollRegionsFromHost( this );
 		LifePunchUiScrollPolicy.Apply( Panel );
 		_sinceTelemetryRefresh = TelemetryRefreshInterval;
 		_sinceLogTimeRefresh = LogTimeRefreshInterval;
 		_logTimeBucket = (int)(Time.Now / LogTimeRefreshInterval);
+		_lastHubLogsRenderCount = -1;
+		_lastHubAlertsContentHash = 0;
+		_hubLogsScrollReady = false;
+		_hubLogsBootstrapRetries = 0;
 		RecomputeTelemetryHash();
 	}
 
@@ -933,7 +940,7 @@
 		Hub?.RequestMarkAlertsRead();
 		_logTimeBucket = (int)(Time.Now / LogTimeRefreshInterval);
 		_sinceLogTimeRefresh = 0;
-		StateHasChanged();
+		SyncHubLogs( force: true );
 	}
 
 	private static long LocalSteamId() => Game.SteamId;
@@ -1038,7 +1045,8 @@
 
 	private readonly record struct OverviewMinerSlot( string DisplayLabel, string TerminalToken, LpBitcoinRackEntity Rack );
 
-	private IReadOnlyList<OverviewMinerSlot> GetOverviewMinerSlots()
+	/// <summary>Fixed rig0 slots (2× GPU + 1× Advanced) — Overview + Servers.</summary>
+	private IReadOnlyList<OverviewMinerSlot> GetServersRackSlots()
 	{
 		var racks = GetLinkedRacks();
 		LpBitcoinRackEntity standard1 = null;
@@ -1077,6 +1085,17 @@
 			new( "GPU Rack 2", "gpurack-2", standard2 ),
 			new( LpBitcoinIdent.AdvancedRackDisplayName, LpBitcoinIdent.AdvancedRackTerminalToken, advanced )
 		};
+	}
+
+	private bool HasAnyPlayerRacksNearbyOrLinked()
+	{
+		if ( GetLinkedRacks().Any( rack => rack.IsValid() ) )
+			return true;
+
+		if ( !Hub.IsValid() )
+			return false;
+
+		return LpBitcoinRackEntity.FindAllUnlinked( Hub, Hub.RackLinkRange ).Any( rack => rack.IsValid() );
 	}
 
 	private string OverviewMinerCopyHint( OverviewMinerSlot slot )
@@ -1157,7 +1176,7 @@
 	private void ClearHubLogs()
 	{
 		Hub?.RequestClearAlerts();
-		StateHasChanged();
+		SyncHubLogs( force: true );
 	}
 
 	private static string CpuTierLabel( int tier ) => $"Tier {tier + 1}";
@@ -1947,7 +1966,6 @@
 	{
 		base.OnUpdate();
 		LifePunchMenuInputBlock.Apply();
-		LifePunchScrollRegionBootstrap.UpgradeScrollRegionsFromHost( this );
 		LifePunchUiScrollPolicy.Apply( Panel );
 
 		if ( !_hub.IsValid() )
@@ -1958,6 +1976,7 @@
 
 		if ( _sinceTelemetryRefresh < TelemetryRefreshInterval )
 		{
+			TickHubLogs();
 			TickLogTimeLabels();
 			return;
 		}
@@ -1965,10 +1984,243 @@
 		_sinceTelemetryRefresh = 0;
 		var previous = _telemetryHash;
 		RecomputeTelemetryHash();
-		if ( _telemetryHash != previous && _active == OpsTab.Logs )
-			StateHasChanged();
+		if ( _telemetryHash != previous )
+		{
+			if ( _active == OpsTab.Logs )
+				SyncHubLogs( force: true );
+			else
+				StateHasChanged();
+		}
 
+		TickHubLogs();
 		TickLogTimeLabels();
+	}
+
+	private void TickHubLogs()
+	{
+		if ( _active != OpsTab.Logs )
+			return;
+
+		SyncHubLogs();
+	}
+
+	private void SyncHubLogs( bool force = false )
+	{
+		if ( _active != OpsTab.Logs )
+			return;
+
+		var alerts = GetHubAlerts();
+		var count = alerts.Count;
+
+		if ( count == 0 )
+		{
+			if ( _lastHubLogsRenderCount != 0 )
+			{
+				_lastHubLogsRenderCount = 0;
+				_lastHubAlertsContentHash = 0;
+				_hubLogsScrollReady = false;
+				_hubLogsBootstrapRetries = 0;
+				StateHasChanged();
+			}
+
+			return;
+		}
+
+		if ( !FindLogsScrollShell().IsValid() )
+		{
+			if ( _lastHubLogsRenderCount != count )
+			{
+				_lastHubLogsRenderCount = count;
+				StateHasChanged();
+			}
+
+			return;
+		}
+
+		if ( !EnsureHubLogsScroll() )
+			return;
+
+		var contentHash = ComputeHubAlertsContentHash( alerts );
+		var list = GetHubLogsNotifList();
+		var needsRebuild = force
+		                   || contentHash != _lastHubAlertsContentHash
+		                   || !list.IsValid()
+		                   || PanelChildCount( list ) != count;
+
+		if ( !needsRebuild )
+			return;
+
+		_lastHubLogsRenderCount = count;
+		_lastHubAlertsContentHash = contentHash;
+		RebuildHubLogRows( alerts );
+	}
+
+	private Panel FindLogsScrollShell()
+	{
+		if ( Panel is null || !Panel.IsValid )
+			return null;
+
+		foreach ( var panel in Panel.Descendants )
+		{
+			if ( panel.IsValid() && panel.HasClass( "logs-scroll" ) )
+				return panel;
+		}
+
+		return null;
+	}
+
+	private bool EnsureHubLogsScroll()
+	{
+		if ( _hubLogsScrollReady && GetHubLogsScroll().IsValid() )
+			return true;
+
+		if ( _hubLogsBootstrapRetries >= 12 )
+			return GetHubLogsScroll().IsValid();
+
+		LifePunchScrollRegionBootstrap.UpgradeScrollRegionsFromHost( this );
+		_hubLogsBootstrapRetries++;
+
+		var scroll = GetHubLogsScroll();
+		_hubLogsScrollReady = scroll.IsValid();
+		return _hubLogsScrollReady;
+	}
+
+	private LifePunchScrollRegionPanel GetHubLogsScroll()
+		=> LifePunchScrollRegionBootstrap.FindFirstFromHost( this, "logs-scroll" );
+
+	private Panel GetHubLogsNotifList()
+	{
+		var scroll = GetHubLogsScroll();
+		if ( !scroll.IsValid() )
+			return null;
+
+		return scroll.Children.FirstOrDefault( child => child.HasClass( "notif-list" ) );
+	}
+
+	private void EnsureHubLogsNotifList()
+	{
+		if ( GetHubLogsNotifList().IsValid() )
+			return;
+
+		var scroll = GetHubLogsScroll();
+		if ( !scroll.IsValid() )
+			return;
+
+		var list = new Panel();
+		list.AddClass( "notif-list" );
+		list.Parent = scroll;
+	}
+
+	private void RebuildHubLogRows( IReadOnlyList<LpBitcoinHubAlert> alerts )
+	{
+		EnsureHubLogsNotifList();
+		var list = GetHubLogsNotifList();
+		if ( !list.IsValid() )
+			return;
+
+		foreach ( var child in list.Children.ToList() )
+			child.Delete();
+
+		foreach ( var alert in alerts )
+			AddHubLogRow( list, alert );
+	}
+
+	private void AddHubLogRow( Panel list, LpBitcoinHubAlert alert )
+	{
+		var row = new Panel();
+		row.AddClass( "notif-row" );
+		row.Parent = list;
+
+		var icon = new Label
+		{
+			Text = AlertIcon( alert.Kind ),
+			Parent = row
+		};
+		icon.AddClass( "material-icons" );
+
+		var copy = new Panel();
+		copy.AddClass( "notif-copy" );
+		copy.Parent = row;
+
+		var kind = new Label
+		{
+			Text = AlertKindLabel( alert.Kind ),
+			Parent = copy
+		};
+		kind.AddClass( "notif-kind" );
+
+		var message = new Label
+		{
+			Text = alert.Message,
+			Parent = copy
+		};
+		message.AddClass( "notif-message" );
+
+		var time = new Label
+		{
+			Text = AlertTimeLabel( alert.Timestamp ),
+			Parent = copy
+		};
+		time.AddClass( "notif-time" );
+	}
+
+	private static int ComputeHubAlertsContentHash( IReadOnlyList<LpBitcoinHubAlert> alerts )
+	{
+		var hash = new HashCode();
+		hash.Add( alerts.Count );
+		foreach ( var alert in alerts )
+		{
+			hash.Add( (int)alert.Kind );
+			hash.Add( alert.Message );
+			hash.Add( alert.Timestamp );
+		}
+
+		return hash.ToHashCode();
+	}
+
+	private void SyncHubLogTimeLabels( IReadOnlyList<LpBitcoinHubAlert> alerts )
+	{
+		var list = GetHubLogsNotifList();
+		if ( !list.IsValid() || PanelChildCount( list ) != alerts.Count )
+			return;
+
+		var rows = list.Children.ToList();
+		for ( var i = 0; i < alerts.Count; i++ )
+		{
+			if ( i >= rows.Count )
+				break;
+
+			var row = rows[i];
+			if ( !row.IsValid() )
+				continue;
+
+			var timeLabel = FindDescendantLabel( row, "notif-time" );
+			if ( timeLabel is null )
+				continue;
+
+			timeLabel.Text = AlertTimeLabel( alerts[i].Timestamp );
+		}
+	}
+
+	private static int PanelChildCount( Panel panel )
+		=> panel.IsValid() ? panel.Children.Count() : 0;
+
+	private static Label FindDescendantLabel( Panel root, string className )
+	{
+		foreach ( var child in root.Children )
+		{
+			if ( !child.IsValid() )
+				continue;
+
+			if ( child is Label label && label.HasClass( className ) )
+				return label;
+
+			var nested = FindDescendantLabel( child, className );
+			if ( nested is not null )
+				return nested;
+		}
+
+		return null;
 	}
 
 	private void TickLogTimeLabels()
@@ -1985,7 +2237,12 @@
 			return;
 
 		_logTimeBucket = bucket;
-		StateHasChanged();
+
+		var alerts = GetHubAlerts();
+		if ( alerts.Count == 0 )
+			return;
+
+		SyncHubLogTimeLabels( alerts );
 	}
 
 	private void RecomputeTelemetryHash()
@@ -2015,6 +2272,11 @@
 			hash.Add( rack.CoreUpgradeLevel );
 		}
 
+		if ( Hub.IsValid() )
+		{
+			hash.Add( HasAnyPlayerRacksNearbyOrLinked() );
+		}
+
 		_telemetryHash = hash.ToHashCode();
 	}
 
@@ -2036,8 +2298,6 @@
 		hash.Add( (int)_pinGatePurpose );
 		hash.Add( _pinChangePass );
 		hash.Add( _pinChangeNotice );
-		hash.Add( _logTimeBucket );
-		hash.Add( _active == OpsTab.Logs );
 		hash.Add( _hub?.IsPowered );
 		hash.Add( _hub?.AccessPinIsSet );
 		hash.Add( _perfRange );
