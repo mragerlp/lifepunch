@@ -2,7 +2,8 @@
 
 > **Regenerate** when phase, gates, or owner decisions change.  
 > **Package upload name:** `ARCHITECT_CURRENT_STATE.md` (same content; repo path below).  
-> **Continuity kit baseline commit:** `782ef35` (see `handoff/ARCHITECT_CONTINUITY_KIT_LAW.md`)  
+> **Continuity kit baseline commit:** `782ef35` (see `handoff/ARCHITECT_CONTINUITY_KIT_LAW.md`)
+**Latest reconciliation commit (three-surface upgrade canon):** `6eb2c74` (GO DOCS pass: DECISION-0010 + DECISION-0006 amendment + pattern alignment)  
 > **Source commit:** update on each regen · **Generated:** 2026-06-25  
 > **Evergreen law** lives in repo docs — this file is **dated state only**.  
 > **GitHub wins** over uploaded Project ZIP snapshots.
@@ -39,25 +40,30 @@
 ## Owner decisions (settled)
 
 - No LIFEPUNCH NPC systems (G9, DECISION-0003)
-- Hub = operation policy + ledger · `LpHashdPanel` = hub admin shell (preserve) · HASHD Terminal = interface only, never mines
+- Hub = operation policy + ledger · `LpHashdPanel` = hub admin shell (preserve) + Universal Upgrades home (HUB · TERMINAL · GPU RACK sub-tabs) per DECISION-0010
+- HASHD Terminal = real defense + capability surface (five tracks) purchased from universal Upgrades home; Terminal never mines (DECISION-0005)
+- Three-surface upgrade law (Hub controller / Terminal defense / Rack hardware) is now canon for Bitcoin reference implementation.
 - Rack cap: **2 Standard + 1 Advanced** (DECISION-0004)
 - Fantasy Check **mandatory** after flatgrass proof (DECISION-0008)
 - Canonical slugs: `bitcoinhub`, `hashdterminal`, `gpurack` (advanced variant); retired `advancedgpurack` folder slug
+- Model routing: Opus (Tier-1), Grok Build 1 (Tier-2A inside Integration Architect lane), Composer (Tier-2B), Cornerman (Tier-3). See `MODEL_ROUTING_AMENDMENT_GROK_BUILD_1.md`.
+- Visual identity: HASHD amber locked for Bitcoin; green/red/cyan reserved. See `CYBER_VISUAL_IDENTITY_DOCTRINE.md`.
 
 ---
 
 ## Unresolved Architect questions (do not implement silently)
 
-1. **Final five Hub upgrade categories** and **final five Rack upgrade categories**
-2. **Five tier labels** for each side
+1. **Final five Hub upgrade categories**, **five Terminal defense tracks**, and **final five Rack upgrade categories** (see DECISION-0010)
+2. **Five tier labels** for each of the three surfaces
 3. **Clock Path gameplay meaning** — working abstraction only until approved
 4. **Core Count gameplay meaning** — working abstraction only until approved
 5. **Buffer** as a Rack category vs another system
 6. **Buffer formula** — USD/BTC floor source, dynamic vs snapshot conversion
 7. **Cost curves**
-8. **Is the full five-by-five upgrade tree required for v1.0, or part/all v1.1?** — **Bloodwave must confirm**
+8. **Is the full five-by-five-by-five upgrade tree required for v1.0, or part/all v1.1?** — **Bloodwave must confirm**
 9. **Intentional realism boundary** note — pending owner-approved wording
 10. **Rack USE → shared CRT** — if retained in code, label as quick-access delegation vs second Terminal owner
+11. **Terminal defense track names and exact gameplay effects** — to be finalized after owner review of DECISION-0010
 
 ---
 

@@ -40,13 +40,15 @@ Hub power/fan timing aligns with §7 of that doc.
 
 > **Bitcoin exception:** Hub admin UI (`LpHashdPanel`) and HASHD Terminal (`LpBitcoinTerminalPanel`) are **separate surfaces** — see [Current and legacy implementation references](#current-and-legacy-implementation-references) below. Do not conflate hub rail with the CRT command console.
 
+`LpHashdPanel` now hosts the **Universal Upgrades home** (per DECISION-0010): top-level tab with sub-tabs HUB · TERMINAL · GPU RACK. This is the single purchase surface for controller, defense, and hardware tracks. Preserve the shell (DECISION-0007).
+
 ---
 
 ## Current and legacy implementation references
 
 | Job | Hub entity | Hub admin UI (preserve shell) | Operator terminal (USE → UI) | Satellites | Lane status |
 |-----|------------|-------------------------------|------------------------------|------------|-------------|
-| **Bitcoin mining** | `BitcoinMinerHubEntity` — operation authority, controller state, wallet, linked racks | **`LpHashdPanel`** — hub administration interface (amber ops rail); not the HASHD Terminal | **`LpBitcoinTerminalEntity`** — **HASHD Terminal** CRT command console (`LpBitcoinTerminalPanel`); **never mines** | `GpuRackEntity` · advanced rack variant | **Active / in progress** |
+| **Bitcoin mining** | `BitcoinMinerHubEntity` — operation authority, controller state, wallet, linked racks | **`LpHashdPanel`** — hub administration interface (amber ops rail) + **Universal Upgrades home** (HUB · TERMINAL · GPU RACK sub-tabs, DECISION-0010); not the HASHD Terminal | **`LpBitcoinTerminalEntity`** — **HASHD Terminal** CRT command console (`LpBitcoinTerminalPanel`); real defense tracks via universal home; **never mines** | `GpuRackEntity` · advanced rack variant | **Active / in progress** |
 | **Hacker** | `HackerServerRackEntity` | — | `HackerTerminalEntity` | — (rack powers CRT) | **Quarantined / legacy reference** |
 | **Banker** *(draft)* | `BankVaultHubEntity` *(future)* | vault hub rail *(future)* | `BankTellerTerminalEntity` · `BankSecurityTerminalEntity` | `BankGpuRackEntity` *(reskin)* | **Future / blocked** |
 | **FBI / cyber** *(future)* | `CyberOpsHubEntity` *(TBD)* | — | `CyberOpsTerminalEntity` | ties to bank + hacker alerts | **Future / blocked** |

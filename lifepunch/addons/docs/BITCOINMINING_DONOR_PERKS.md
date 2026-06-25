@@ -24,6 +24,8 @@
 **Visual doctrine (see `CYBER_VISUAL_IDENTITY_DOCTRINE.md`):**  
 Donor themes on HASHD / Bitcoin surfaces must never apply full Cornerman green, VENGEANCE red, or lifepunchnet cyan-blue. These are role identities for other lanes. HASHD donor range is limited to amber/gold/warm white/bronze/dark graphite + controlled metallic/scanline accents. Reserved state colors (Warning / Error / Hacked / etc.) always override cosmetics.
 
+Terminal defense tracks (DECISION-0010) are gameplay (firewall, alerts, etc.) purchased via the universal Upgrades home. They are not donor cosmetics. Cosmetic donor rules remain amber-only on Bitcoin surfaces.
+
 ---
 
 ## Cosmetic catalog (proposed)

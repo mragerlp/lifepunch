@@ -30,7 +30,7 @@ Every new addon **searches this index first**.
 | **Hub pattern** | Hub USE → PIN → powered admin | **active** (bitcoin) | All controller entities |
 | **Terminal pattern** | Linked CRT → rig0 commands | **active** (bitcoin) | All operator interfaces |
 | **Worker pattern** | Placeable rack → link → mine → deposit | **active** (bitcoin) | Farm/scaling units |
-| **Upgrade pattern** | Controller tab vs Servers tab split | **draft** (bitcoin overhaul) | Per-lane hardware tiers |
+| **Upgrade pattern** | Universal Upgrades home in LpHashdPanel (HUB · TERMINAL · GPU RACK sub-tabs per DECISION-0010) | **draft → active after owner review** | All cyber lanes (Bitcoin reference) |
 | **Scroll region** | `LifePunchScrollRegionPanel` + `lp-ui-scroll-region` | **active** | Hub logs, CRT log |
 | **Menu chrome** | `LpUiChrome.scss` · `LpUiMenuLayout.scss` | **active** | All Razor ops panels |
 

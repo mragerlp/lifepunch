@@ -3,7 +3,7 @@
 **Status:** OWNER LAW — mandatory read for every Bitcoin lane agent (handoff-safe).  
 **Parent gate:** `ACTIVE_WORKSTREAM.md` · **Laws:** `CYBER_REFERENCE_LAWS.md` · **Tracker:** `OWNER_PROGRESS_TRACKER.txt`  
 **Gameplay:** `lifepunch/docs/LIFEPUNCH_GAMEPLAY_LAWS.md` · **Player design:** `BITCOIN_PLAYER_DESIGN.md`  
-**Design canon:** `BITCOIN_CONTROLLER_PATTERN.md`, `BITCOIN_UPGRADE_TAXONOMY.md`, `BITCOIN_DATA_FLOW.md`  
+**Design canon:** `BITCOIN_CONTROLLER_PATTERN.md`, `BITCOIN_UPGRADE_TAXONOMY.md`, `BITCOIN_DATA_FLOW.md`, `DECISION-0010` (Universal Upgrades Home), `CYBER_VISUAL_IDENTITY_DOCTRINE.md`, `MODEL_ROUTING_AMENDMENT_GROK_BUILD_1.md`  
 **Checklist IDs:** `bitcoinmining/docs/BITCOINMINING_POLISH_CHECKLIST.md`  
 **Post-Bitcoin portfolio:** `JOB_PORTFOLIO_ROADMAP.md`  
 **Economy rails:** `CYBER_ECONOMY_RAILS.md`
@@ -85,7 +85,9 @@ Owner seven-item list, reordered for **ship risk** after Phase A H10:
 
 ### Publish v1.0 vs v1.1 — **owner question (unresolved)**
 
-Is the **full five-by-five upgrade tree** required for v1.0, or is part/all of it a v1.1 portal revision? Current roadmap allows extended upgrades as a fast follow — **Bloodwave must confirm** before economy implementation.
+Is the **full five-by-five-by-five upgrade tree** (Hub controller + Terminal defense + Rack hardware) required for v1.0, or is part/all of it a v1.1 portal revision per DECISION-0010? Current roadmap allows extended upgrades as a fast follow — **Bloodwave must confirm** before economy implementation.
+
+Universal Upgrades home lives in LpHashdPanel (sub-tabs: HUB · TERMINAL · GPU RACK). Terminal never mines.
 
 **Baseline v1.0 path:** steps 1 → 2 → 3 → 4 (rack animation baseline) → 6 → 7, with step 5 scope per owner answer.
 

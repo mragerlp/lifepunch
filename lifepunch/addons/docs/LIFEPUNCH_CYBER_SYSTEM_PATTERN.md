@@ -45,7 +45,7 @@ Persistent State    — host-synced; survives UI close; single owner per field
 | Pattern slot | Bitcoin (lpbitcoin) | Future examples |
 |--------------|---------------------|-----------------|
 | Controller | **Hub** (`bitcoinhub`) | Bank vault server, hack C2, factory PLC |
-| Operator Interface | **Hub admin panel** + **HASHD Terminal** (CRT) | Teller UI, exploit console |
+| Operator Interface | **Hub admin panel** (Universal Upgrades home: HUB · TERMINAL · GPU RACK sub-tabs per DECISION-0010) + **HASHD Terminal** (CRT + defense state) | Teller UI, exploit console |
 | Worker Nodes | **GPU Racks** (2 standard + 1 advanced) | Bank processing nodes, compromised compute devices, assembly machines |
 | Shared Economy | Hub wallet cashout, portal BTC redeem | Wire transfers, fence payouts |
 | Persistent State | Hub entity + linked rack registry | Account records, heat maps |
