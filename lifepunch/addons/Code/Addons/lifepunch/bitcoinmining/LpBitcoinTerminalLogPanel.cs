@@ -32,9 +32,9 @@ public sealed class LpBitcoinTerminalLogPanel : LifePunchScrollRegionPanel
 		AllowChildSelection = true;
 	}
 
-	public override void OnMouseDown( MousePanelEvent e )
+	protected override void OnMouseDown( MousePanelEvent e )
 	{
-		if ( e.Button == MouseButtons.Left )
+		if ( e.MouseButton == MouseButtons.Left )
 			ClearLineSelection();
 
 		base.OnMouseDown( e );
