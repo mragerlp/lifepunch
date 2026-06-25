@@ -1,0 +1,86 @@
+=== FINAL LOGOFF PASTE FOR CORNERMAN ===
+
+Send this to Cornerman before shutting down VENGEANCE.
+
+---
+
+Cornerman — starting long unattended run.
+
+1. Pull the latest (important — we just pushed the full setup):
+cd C:\Users\jared\Projects\lifepunchaddons
+git fetch
+git pull --rebase
+
+You should now be on commit 864f0f7 or newer.
+
+2. Load Green Deep correctly (Qwen3.6-27B Q6_K):
+
+```powershell
+# Download only if needed
+lms get qwen/qwen3.6-27b@q6_k --gguf
+
+# Find the exact local model key
+lms ls --llm --detailed
+
+# Load using the exact key from the command above
+lms load <EXACT_MODEL_KEY_FROM_LMS_LS> --gpu max --context-length 32768
+
+# Verify
+lms ps
+```
+
+Generation settings (set in LM Studio model defaults or per request):
+- Thinking: ON
+- Preserve Thinking: OFF
+- Temperature: 0.6
+- Top P: 0.95
+- Top K: 20
+
+3. Main work for this run (until ~11:30 PM EST):
+
+Process these directives (you can interleave):
+
+A. Primary long directive:
+lifepunch/addons/docs/briefs/CORNerman_LPADONS_FULL_ECOSYSTEM_PREP_UNTIL_1130PM.md
+
+B. Weapons platform (high value parallel work):
+lifepunch/addons/docs/briefs/CORNerman_LPWEAPONS_PLATFORM_AUDIT_PREP.md
+
+C. Admin menu + shared patterns across addons:
+lifepunch/addons/docs/briefs/CORNerman_LIFEPUNCHULX_AND_SHARED_PATTERNS_PREP.md
+
+4. Report rules (mandatory):
+
+- Use the exact template for every report:
+  lifepunch/docs/handoff/LIFEPUNCH_AI_REPORT_TEMPLATE.md
+
+- Save every completed report to BOTH locations:
+  - lifepunch/docs/reports/          (git versioned)
+  - C:\LIFEPUNCH\Reports\           (easy grab)
+
+- Filename format: YYYY-MM-DD_HHMM_ShortTitle.md
+
+5. When you finish or hit ~11:30 PM, send exactly this:
+
+OK cornerman lpaddons-long-run complete @<time>
+head=<current commit>
+profile=Green Deep (Qwen3.6-27B Q6_K)
+outputs=<number of reports>
+eyes=covered
+no-code
+no-commit
+
+Then stop and idle.
+
+---
+
+When Bloodwave returns tomorrow he will:
+- RDP into VENGEANCE
+- git pull
+- Go to lifepunch/docs/reports/
+- Open the newest files
+- Copy + paste into ChatGPT using the structured format
+
+Good luck on the run. Focus on high-signal, well-structured reports.
+
+=== END OF PASTE ===
