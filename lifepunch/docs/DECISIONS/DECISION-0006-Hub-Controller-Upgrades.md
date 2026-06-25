@@ -18,7 +18,9 @@ Controller upgrades affect the mining operation globally. Per-rack CPU upgrades 
 ## Alternatives considered
 
 - CPU upgrades per rack — **rejected** (legacy code to migrate)
-- Terminal upgrade shop — **rejected**
+- Terminal upgrade shop directly on CRT — **rejected** (see DECISION-0010)
+
+Terminal receives real defense and capability progression tracks, but purchases live in the **universal Hub Upgrades home** (HUB · TERMINAL · GPU RACK sub-tabs), not a shop on the operator CRT. Terminal never mines (DECISION-0005 remains in force).
 
 ## Systems affected
 

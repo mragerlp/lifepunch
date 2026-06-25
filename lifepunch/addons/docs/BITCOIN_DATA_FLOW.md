@@ -42,6 +42,8 @@ Player types at rig0>
 
 Terminal never writes wallet balance without hub confirmation.
 
+Upgrade purchases (including Terminal defense tracks) are initiated from the universal Upgrades home in the Hub panel and executed by hub RPC. Terminal surface can display defense state and trigger commands, but authority lives on the hub.
+
 ---
 
 ## Mining path (player AFK)

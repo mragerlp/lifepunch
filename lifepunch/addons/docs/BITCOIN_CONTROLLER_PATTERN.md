@@ -42,7 +42,7 @@ Portal cap: **2 standard + 1 advanced** per operator/hub — locked.
 
 ---
 
-## Terminal (operator interface) — presentation only
+## Terminal (operator interface + defense surface)
 
 **Owns:**
 
@@ -50,14 +50,15 @@ Portal cap: **2 standard + 1 advanced** per operator/hub — locked.
 - Sending commands **to** hub/rack logic (never authoritative ledger)
 - Farm readout while open (mirror of hub + rack state)
 - Player education copy (`help`, errors, link hints)
+- **Defense and capability progression** (via universal Upgrades home — Terminal sub-tab): firewall, intrusion alerts, encryption policy, command auth, monitoring/audit (see DECISION-0010)
 
 **Does NOT own:**
 
 - Mining tick loop
-- Upgrade purchases (hub panel or hub RPC — not terminal shop)
 - Wallet balance authority (displays hub truth)
+- Direct upgrade purchase UI on the CRT (universal home in LpHashdPanel)
 
-**Never mines.** Closing the terminal does not stop mining — Hub permission and Rack execution continue.
+**Never mines.** Closing the terminal does not stop mining — Hub permission and Rack execution continue. Defense tracks on Terminal make the operator surface harder to attack.
 
 ---
 

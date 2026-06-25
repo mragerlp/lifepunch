@@ -66,7 +66,7 @@ Terminal is a real surface (defense + appearance) under the three-surface law (H
 - **Appearance** on the Bitcoin Terminal must stay within HASHD-safe donor cosmetics only (amber/gold/warm white/bronze/dark graphite + controlled accents). Full Cornerman green, VENGEANCE red, or lifepunchnet cyan-blue is prohibited on Bitcoin surfaces.
 - Transient hostile lane colors (green/red/cyan) may appear only as attack-state indicators during active breach visualization.
 
-The old blanket statement “Terminal upgrades: None” is superseded for Bitcoin Step 1 planning. See the doctrine for exact constraints on the upcoming Universal Upgrades tab.
+The old blanket statement “Terminal upgrades: None” is superseded. See `CYBER_VISUAL_IDENTITY_DOCTRINE.md` and `DECISION-0010`. Terminal receives five defense/capability tracks via the universal Upgrades home (HUB · TERMINAL · GPU RACK sub-tabs). Purchases are not made on the CRT. Terminal never mines.
 
 ---
 
