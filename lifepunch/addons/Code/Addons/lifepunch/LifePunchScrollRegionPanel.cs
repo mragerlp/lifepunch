@@ -87,7 +87,7 @@ public class LifePunchScrollRegionPanel : Panel
 	}
 
 	/// <summary>CMD-style: top-aligned when content fits; follow bottom only when overflowing.</summary>
-	public void SyncTerminalScroll( bool forceFollowBottom = false )
+	public virtual void SyncTerminalScroll( bool forceFollowBottom = false )
 	{
 		var max = GetMaxScrollY();
 		if ( max <= 0f )

@@ -21,7 +21,16 @@ namespace LifePunch.DXRP.Addons.Bitcoin;
 /// </summary>
 public sealed class LpBitcoinTerminalLogPanel : LifePunchScrollRegionPanel
 {
+	private const float LineGap = 2f;
+	private const float FallbackLineHeight = 16f;
+	private const float MaxSaneLineHeight = 40f;
+	private const float ContentBottomPad = 20f;
+	private const float ClickDragThreshold = 4f;
+
 	private static readonly Color SelectionTint = (Color.Parse( "#f0a500" ) ?? new Color( 0.941f, 0.647f, 0f )).WithAlpha( 0.35f );
+
+	private Vector2 _mouseDownLocal;
+	private bool _leftMouseDown;
 
 	public Func<string> CopyFallback { get; set; }
 
@@ -30,14 +39,36 @@ public sealed class LpBitcoinTerminalLogPanel : LifePunchScrollRegionPanel
 		CanDragScroll = false;
 		AcceptsFocus = true;
 		AllowChildSelection = true;
+		PreferScrollToBottom = true;
 	}
 
 	protected override void OnMouseDown( MousePanelEvent e )
 	{
 		if ( e.MouseButton == MouseButtons.Left )
-			ClearLineSelection();
+		{
+			_leftMouseDown = true;
+			_mouseDownLocal = e.LocalPosition;
+		}
 
 		base.OnMouseDown( e );
+	}
+
+	protected override void OnMouseUp( MousePanelEvent e )
+	{
+		var leftUp = e.MouseButton == MouseButtons.Left && _leftMouseDown;
+		var downPos = _mouseDownLocal;
+
+		if ( e.MouseButton == MouseButtons.Left )
+			_leftMouseDown = false;
+
+		base.OnMouseUp( e );
+
+		if ( !leftUp )
+			return;
+
+		var moved = ( downPos - e.LocalPosition ).Length > ClickDragThreshold;
+		if ( !moved )
+			ClearLineSelection();
 	}
 
 	public override void OnButtonEvent( ButtonEvent e )
@@ -139,7 +170,6 @@ public sealed class LpBitcoinTerminalLogPanel : LifePunchScrollRegionPanel
 
 		var lineCount = 0;
 		var total = 0f;
-		const float fallbackLineHeight = 15f;
 
 		foreach ( var line in stack.Children )
 		{
@@ -148,8 +178,8 @@ public sealed class LpBitcoinTerminalLogPanel : LifePunchScrollRegionPanel
 
 			lineCount++;
 			var height = line.Box.Rect.Height;
-			if ( height <= 1f )
-				height = fallbackLineHeight;
+			if ( height <= 1f || height > MaxSaneLineHeight )
+				height = FallbackLineHeight;
 
 			total += height;
 		}
@@ -158,10 +188,23 @@ public sealed class LpBitcoinTerminalLogPanel : LifePunchScrollRegionPanel
 			return 0f;
 
 		if ( lineCount > 1 )
-			total += ( lineCount - 1 ) * 2f;
+			total += ( lineCount - 1 ) * LineGap;
 
-		total += 8f;
-		return total;
+		return total + ContentBottomPad;
+	}
+
+	public override void SyncTerminalScroll( bool forceFollowBottom = false )
+	{
+		var max = GetMaxScrollY();
+		if ( max <= 0f )
+		{
+			ScrollToTop();
+			PreferScrollToBottom = true;
+			return;
+		}
+
+		if ( forceFollowBottom || PreferScrollToBottom )
+			ScrollToBottom( forceFollowBottom );
 	}
 
 	public override float GetMaxScrollY()

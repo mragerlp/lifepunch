@@ -76,7 +76,21 @@
 						</div>
 					}
 					</div>
-					<div class="sidebar-foot">sel @SelectedRackSlotLabel()</div>
+					<div class="sidebar-status">
+						<div class="sidebar-status-title">STATUS</div>
+						<div class="sidebar-status-row">
+							<span class="sidebar-status-k">Power</span>
+							<span class="@StatusPowerClass()">@(_hub?.IsPowered == true ? "ON" : "OFF")</span>
+						</div>
+						<div class="sidebar-status-row">
+							<span class="sidebar-status-k">Racks</span>
+							<span>@LinkedRackCount() linked</span>
+						</div>
+						<div class="sidebar-status-row">
+							<span class="sidebar-status-k">Selected</span>
+							<span class="sidebar-status-v">@SelectedRackSlotLabel()</span>
+						</div>
+					</div>
 				</div>
 				<div class="screen">
 					@if ( _showBootSplash )
@@ -89,7 +103,7 @@
 						</div>
 					}
 					<div class="log-shell">
-						<div class="log lp-ui-scroll-region terminal-log-scroll" onclick="@FocusLog"></div>
+						<div class="log lp-ui-scroll-region terminal-log-scroll"></div>
 					</div>
 					<div class="prompt-row" onclick="@FocusInput">
 						<span class="prompt hashd-prompt-accent">rig@hub&gt;</span>
@@ -296,14 +310,6 @@
 			InputBox.Focus();
 	}
 
-	private void FocusLog()
-	{
-		if ( GetLogScroll() is LpBitcoinTerminalLogPanel terminalLog )
-			terminalLog.ClearLineSelection();
-
-		FocusInput();
-	}
-
 	private void CopySidebarCommand( string cmd )
 	{
 		if ( !_bootComplete )
@@ -499,8 +505,19 @@
 
 		ApplyLogScrollChrome();
 
-		if ( log.IsValid() && log.PreferScrollToBottom )
-			SyncLogScrollPosition( forceFollowBottom: log.GetMaxScrollY() > 0f );
+		if ( !log.IsValid() )
+			return;
+
+		var maxY = log.GetMaxScrollY();
+		if ( maxY <= 0f )
+		{
+			log.ScrollToTop();
+			log.PreferScrollToBottom = true;
+			return;
+		}
+
+		if ( log.PreferScrollToBottom )
+			SyncLogScrollPosition( forceFollowBottom: true );
 	}
 
 	private void ClearLogStack()
@@ -749,6 +766,11 @@
 		}
 
 		_pendingFocusRack = null;
+
+		var log = GetLogScroll();
+		if ( log.IsValid() && log.GetMaxScrollY() <= 0f )
+			log.ScrollToTop();
+
 		SyncLogScrollPosition();
 		FocusInput();
 	}

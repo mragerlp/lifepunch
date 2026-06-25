@@ -77,7 +77,7 @@ $lp-menu-mono: "Roboto Mono", "Courier New", monospace;
 
 .lp-ops-crt .terminal-log-scroll > .log-stack {
 	flex: 0 0 auto;
-	align-self: stretch;
+	align-self: flex-start;
 	width: 100%;
 }
 
