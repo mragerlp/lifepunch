@@ -6,8 +6,8 @@ $RepoRoot = (Resolve-Path (Join-Path $Here '..\..')).Path
 
 $files = @(
     @{ rel = 'lifepunch\addons\docs\briefs\CORNERMAN_BITCOINMINING_SOUNDS_TASK.md'; inbox = 'CORNERMAN_BITCOINMINING_SOUNDS_TASK.md' },
-    @{ rel = 'lifepunch\addons\Assets\addons\lifepunch\bitcoinmining\sounds\bitcoinminer\README.md'; inbox = 'BITCOINMINER_SOUNDS_README.md' },
-    @{ rel = 'lifepunch\addons\Code\Addons\lifepunch\bitcoinmining\BitcoinMiningAddon.cs'; inbox = 'BitcoinMiningAddon.cs' },
+    @{ rel = 'lifepunch\addons\Assets\addons\lifepunch\lpbitcoin\bitcoinhub\assets\sounds\bitcoinminer\README.md'; inbox = 'BITCOINMINER_SOUNDS_README.md' },
+    @{ rel = 'lifepunch\addons\Code\Addons\lifepunch\bitcoinmining\LpBitcoinIdent.cs'; inbox = 'LpBitcoinIdent.cs' },
     @{ rel = 'lifepunch\addons\scripts\Intake-BitcoinMinerSounds.ps1'; inbox = 'Intake-BitcoinMinerSounds.ps1' },
     @{ rel = 'lifepunch\addons\Code\Addons\lifepunch\bitcoinmining\docs\BITCOINMINING_PLAYTEST.md'; inbox = 'BITCOINMINING_PLAYTEST.md' },
     @{ rel = 'lifepunch\addons\docs\briefs\BITCOINMINING_PROTECTION_CHECKLIST.md'; inbox = 'BITCOINMINING_PROTECTION_CHECKLIST.md' },
