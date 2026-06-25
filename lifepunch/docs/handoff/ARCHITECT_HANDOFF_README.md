@@ -1,16 +1,39 @@
-# SUPERSEDED — Architect handoff package (2026-06-25)
+# LIFEPUNCH™ Design Architect — continuity kit
 
-**Do not use this folder as the primary upload method.**
+**Law:** `ARCHITECT_CONTINUITY_KIT_LAW.md`  
+**Baseline commit:** `782ef35`  
+**Builder (Red):** `lifepunch/scripts/Build-ArchitectChatGptOnboardZip.ps1 -Build`
 
-**Replacement:** Run `lifepunch/scripts/Build-ArchitectChatGptOnboardZip.ps1 -Build` after approved doc commits.
+GitHub monorepo is authoritative. ZIP bundles are **snapshots only**.
 
-Upload order:
+## Build + upload
 
-1. `LIFEPUNCH-Architect-ChatGPT-<date>-<commit>-00-README.zip`
-2. Chunk zips `01` and `02` (flat unique filenames; 19 content + chunk readme each)
-3. Project custom instructions from `ARCHITECT_PROJECT_INSTRUCTIONS.txt` (in chunk 01)
-4. New chat: `NEW_CHAT_BOOTSTRAP_PASTE.txt` only
+1. Red commits canon on GitHub → Cornerman `git pull --rebase`.
+2. Red runs builder (or Design Architect reconciles a Red export).
+3. Design Architect integrity pass + checksums (hashes may differ from Red reference after normalization).
+4. Upload to ChatGPT Project in order:
+   - `…-00-README.zip`
+   - `…-01-chunk.zip` · `…-02-chunk.zip`
+5. Project instructions: `ARCHITECT_PROJECT_INSTRUCTIONS.txt`
+6. New chat: `NEW_CHAT_BOOTSTRAP_PASTE.txt` only
 
-**Repo-only files** (not in compact package): `AGENT_ONBOARDING.md`, `MACHINE_CAST.md`, `DESIGN_DECISION_LOG.md`
+## Refresh discipline
 
-Canon: `lifepunch/docs/ARCHITECT.md`
+| Trigger | Action |
+|---------|--------|
+| Small localized doc edits | Delta refresh in Project knowledge |
+| Laws, onboarding, `ARCHITECT_CURRENT_STATE.md`, decisions, `ACTIVE_WORKSTREAM.md` | **Full kit rebuild** |
+
+Red sends **commit hash + changed files** to Design Architect for each refresh.
+
+## CVL roles
+
+- **Red:** Maintain canonical commits.
+- **Green:** Sync from Red only.
+- **Design Architect:** Reconcile updates; regenerate packages when needed.
+
+## Excluded from compact package (repo-only)
+
+`AGENT_ONBOARDING.md` · `MACHINE_CAST.md` · `DESIGN_DECISION_LOG.md` · `AGENT_SYNC_BROADCAST.txt`
+
+Canon detail: `lifepunch/docs/ARCHITECT.md`

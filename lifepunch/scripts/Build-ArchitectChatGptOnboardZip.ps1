@@ -5,6 +5,8 @@
 .DESCRIPTION
   Package format v2 — two content chunks (19 + readme each) plus README zip.
   Writes UTF-8 without BOM. Records SHA-256 per zip in PACKAGE_MANIFEST.md.
+  Continuity kit law: lifepunch/docs/handoff/ARCHITECT_CONTINUITY_KIT_LAW.md
+  GitHub authoritative; ZIP = snapshot. Full rebuild on law/onboarding/CURRENT_STATE/decisions/ACTIVE_WORKSTREAM changes.
 
 .EXAMPLE
   powershell -File lifepunch\scripts\Build-ArchitectChatGptOnboardZip.ps1 -Build

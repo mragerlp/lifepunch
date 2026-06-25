@@ -179,6 +179,18 @@ Owner sign-off → commit consent
 
 ---
 
+## Continuity kit (ChatGPT Project)
+
+**Law:** `handoff/ARCHITECT_CONTINUITY_KIT_LAW.md` · builder: `scripts/Build-ArchitectChatGptOnboardZip.ps1`
+
+- **Baseline commit:** `782ef35` until superseded.
+- **GitHub is authoritative;** uploaded ZIPs are snapshots only.
+- **Red:** maintain canonical commits; send commit hash + changed files when Design Architect should refresh.
+- **Green:** sync from Red only.
+- **Design Architect:** reconcile updates; delta refresh for small edits; **full kit rebuild** for laws, onboarding, `ARCHITECT_CURRENT_STATE.md`, decisions, or `ACTIVE_WORKSTREAM.md`.
+
+---
+
 ## Mandatory reads (Architect)
 
 | Order | Doc |
@@ -198,6 +210,8 @@ Owner sign-off → commit consent
 | File | Role |
 |------|------|
 | `handoff/ARCHITECT_ONBOARDING_PASTE.txt` | Paste into ChatGPT Project custom instructions |
+| `handoff/ARCHITECT_CONTINUITY_KIT_LAW.md` | Kit baseline, refresh triggers, Red/Green/Architect roles |
+| `handoff/ARCHITECT_HANDOFF_README.md` | Kit build + upload order |
 | `handoff/ARCHITECT_PROJECT_INSTRUCTIONS.txt` | Short project instructions variant |
 | `handoff/CHATGPT_STEP1_PASTE.txt` | Step 1 → CURSOR BRIEF |
 | `handoff/CHATGPT_FULL_ONBOARDING_PASTE.txt` | Full knowledge upload bundle |

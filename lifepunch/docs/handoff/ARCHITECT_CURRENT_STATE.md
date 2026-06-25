@@ -2,8 +2,10 @@
 
 > **Regenerate** when phase, gates, or owner decisions change.  
 > **Package upload name:** `ARCHITECT_CURRENT_STATE.md` (same content; repo path below).  
+> **Continuity kit baseline commit:** `782ef35` (see `handoff/ARCHITECT_CONTINUITY_KIT_LAW.md`)  
 > **Source commit:** update on each regen · **Generated:** 2026-06-25  
-> **Evergreen law** lives in repo docs — this file is **dated state only**.
+> **Evergreen law** lives in repo docs — this file is **dated state only**.  
+> **GitHub wins** over uploaded Project ZIP snapshots.
 
 ---
 
@@ -88,6 +90,17 @@
 
 - Stale `AGENT_SYNC_BROADCAST.txt` session overrides (e.g. 2026-06-22 ULX-only lane)
 - ChatGPT package copies older than source commit — **GitHub monorepo wins**
+- VENGEANCE reference ZIP checksums when Design Architect has rebuilt/normalized the kit (see `ARCHITECT_CONTINUITY_KIT_LAW.md`)
+
+---
+
+## Continuity kit refresh
+
+**Law:** `handoff/ARCHITECT_CONTINUITY_KIT_LAW.md`
+
+- Red sends **commit hash + changed files** after canonical doc commits.
+- Delta refresh for small edits; **full kit rebuild** for laws, onboarding, this file, decisions, or `ACTIVE_WORKSTREAM.md`.
+- Green syncs GitHub only; Design Architect reconciles packages.
 
 ---
 
