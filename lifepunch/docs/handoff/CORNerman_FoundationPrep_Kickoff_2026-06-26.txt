@@ -1,0 +1,29 @@
+Cornerman — start the foundation loop now.
+
+We need the real platform structure for the entire LifePunch addons ecosystem on our DXRP community server so we can do the actual "dirty work" in the editor when we return.
+
+lpbitcoin is included and is the current production gate, but treat it as the anchor inside a larger feasible cyber ecosystem (ULX patterns, Banker, Dealer/Black Market roles, economy rails, roleplay functions, DXRP integration, reusable UI/admin primitives, etc.).
+
+Use the running script (CORNerman-FoundationPrepLoop.ps1 or CORNerman_FOUNDATION_PREP_3DAYS.ps1) as the driver.
+
+CRITICAL RULE: Finish one deliverable → immediately start the next highest-value piece. Do not stop. Do not wait for messages.
+
+Every deliverable must help us do dirty work without blindness:
+- Strong current-state inventories with file paths
+- Architecture / data models / flows
+- DXRP integration notes
+- Open questions
+- Concrete Editor Return Actionables (prioritized dirty work slices with target files)
+- Risks and sequencing
+
+Primary living artifact: keep updating LPADDONS_DXRP_DIRTY_WORK_FOUNDATION.md (this is what we open first on return).
+
+Prioritize depth on:
+- Overall LifePunch Cyber Ecosystem architecture on DXRP
+- lpbitcoin deep architecture + Universal Upgrades + pain points + return roadmaps
+- Feasible roleplay functions and economy that make the server fun
+- DXRP-native patterns and reusable library
+
+Keep the loop running for days. No idle time.
+
+Start now.

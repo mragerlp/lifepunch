@@ -1,0 +1,51 @@
+=== HOW TO START REAL MULTI-DAY IDLE FOUNDATION WORK ON CORNERMAN (2026-06-26) ===
+
+This is the loop for building the actual platform we need to do the "dirty work" when we return to the editor.
+
+We want Cornerman to push real structure for the entire LifePunch addons ecosystem on DXRP (lpbitcoin as the current anchor + the broader cyber roleplay functions, economy, ULX patterns, DXRP integration, etc.) so that we are not working blind.
+
+STEPS ON THE CORNERMAN MACHINE (run these before leaving):
+
+1. Open a clean PowerShell window as the normal user.
+
+2. Close the LM Studio GUI completely (the headless server keeps running):
+   Get-Process | Where Name -like '*LM Studio*' | Stop-Process -Force
+
+3. Load Green Deep (the right long-context model):
+   lms load qwen/qwen3.6-27b --gpu max --context-length 32768
+
+4. Copy the latest driver script to Cornerman Desktop if it isn't already there:
+   - lifepunch/scripts/CORNerman-FoundationPrepLoop.ps1   (from repo)
+   - Or the Desktop variant: CORNerman_FOUNDATION_PREP_3DAYS.ps1
+
+5. In its own dedicated PowerShell window, run:
+   & "C:\Users\jared\Desktop\CORNerman-FoundationPrepLoop.ps1"
+
+   (or the exact name you copied).
+
+   Minimize the window and leave it running. It will keep forcing one structural deliverable after another.
+
+6. (Recommended) Also paste the short kickoff (see CORNerman_FoundationPrep_Kickoff_2026-06-26.txt) into the LM Studio chat once as an initial nudge. Then let the loop script drive.
+
+What the mission is tuned for:
+- Real LifePunch Cyber Ecosystem architecture on DXRP (not isolated lpbitcoin).
+- Feasible roleplay functions, player loops, and economy rails (Banker, Dealer/Black Market, etc.).
+- DXRP integration patterns and attachment points.
+- Deep lpbitcoin current state (Hub / Terminal / Racks / Universal Upgrades) + pain points.
+- Concrete "Editor Return Actionables" and "Dirty Work Slices" with file paths.
+- A living master document (LPADDONS_DXRP_DIRTY_WORK_FOUNDATION.md) that you will open first on return.
+- Every output must have Current State Inventory + Open Questions + prioritized next slices.
+
+Rules enforced on Cornerman:
+- Finish one → immediately start the next. No idle gaps.
+- Save to both C:\LIFEPUNCH\Reports\ and C:\lifepunch\cornerman\outbox\
+- Maintain the foundation-index.txt
+- No commits/pushes from Green.
+- Eyes covered.
+
+When you return, the highest-leverage thing will be:
+C:\LIFEPUNCH\Reports\LPADDONS_DXRP_DIRTY_WORK_FOUNDATION.md  (or the latest dated version of the living kit)
+
+To stop later: close the dedicated PowerShell window or Ctrl+C.
+
+Run this before you log off. Let it run while you are on freelancing.
