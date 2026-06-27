@@ -5872,3 +5872,180 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	width: 1100px;
 	height: 700px;
 }
+
+// Universal Upgrades home (three-surface shell — DECISION-0010, HASHD amber only)
+.lp-bitcoin-ops {
+	.upgrade-surface-chips,
+	.upgrade-rack-selector {
+		display: flex;
+		gap: 8px;
+		margin: 12px 0;
+		flex-wrap: wrap;
+	}
+
+	.upgrade-surface-chip,
+	.upgrade-rack-chip {
+		flex: 0 0 auto;
+		padding: 8px 18px;
+		border-radius: 8px;
+		border: 1px solid $hashd-border;
+		background-color: $hashd-inset-bg;
+		color: $hashd-muted;
+		font-size: 12px;
+		font-weight: 800;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		cursor: pointer;
+		transition: border-color .1s ease, color .1s ease, background-color .1s ease;
+
+		&:hover {
+			border-color: $hashd-amber;
+			color: $hashd-text;
+		}
+
+		&.active {
+			border-color: $hashd-amber;
+			color: $hashd-title;
+			background-color: rgba(232, 125, 62, 0.16);
+		}
+	}
+
+	.upgrade-rack-selector {
+		margin-top: 0;
+	}
+
+	.upgrade-rack-chip {
+		padding: 6px 14px;
+		font-size: 11px;
+	}
+
+	.universal-upgrades-scroll {
+		display: flex;
+		flex-direction: column;
+		gap: 18px;
+	}
+
+	.upgrade-section {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+		width: 100%;
+	}
+
+	.upgrade-section-head {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		color: $hashd-title;
+		font-size: 12px;
+		font-weight: 900;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+
+		.material-icons {
+			color: $hashd-amber;
+			font-size: 18px;
+		}
+
+		&.cosmetic {
+			color: $hashd-muted;
+
+			.material-icons {
+				color: $hashd-muted;
+			}
+		}
+	}
+
+	.upgrade-track-cards {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+		width: 100%;
+	}
+
+	.upgrade-track-card {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		width: 100%;
+		padding: $hashd-surface-pad;
+		border-radius: $hashd-surface-radius;
+		border: 1px solid $hashd-surface-border;
+		background-color: $hashd-surface-bg;
+
+		&.cosmetic {
+			border-style: dashed;
+			opacity: 0.92;
+		}
+
+		&.placeholder {
+			// purely informational shell — not a live purchase surface
+			cursor: default;
+		}
+	}
+
+	.upgrade-track-card-head {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		color: $hashd-title;
+		font-size: 13px;
+		font-weight: 800;
+
+		.material-icons {
+			color: $hashd-amber;
+			font-size: 18px;
+		}
+	}
+
+	.upgrade-track-card-tier {
+		color: $hashd-text;
+		font-size: 12px;
+		font-weight: 600;
+	}
+
+	.upgrade-tier-ladder {
+		display: flex;
+		flex-direction: row;
+		gap: 6px;
+		align-items: center;
+	}
+
+	.upgrade-tier-step {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		min-width: 26px;
+		padding: 3px 0;
+		border-radius: 5px;
+		border: 1px solid $hashd-inset-border;
+		background-color: $hashd-inset-bg;
+		color: $hashd-muted;
+		font-size: 11px;
+		font-weight: 800;
+		letter-spacing: 0.03em;
+
+		&.active {
+			border-color: $hashd-amber;
+			color: $hashd-title;
+			background-color: rgba(232, 125, 62, 0.18);
+		}
+
+		&.cap {
+			border-style: dashed;
+		}
+	}
+
+	.upgrade-track-card-status {
+		align-self: flex-start;
+		padding: 4px 10px;
+		border-radius: 5px;
+		border: 1px solid $hashd-inset-border;
+		background-color: $hashd-inset-bg;
+		color: $hashd-muted;
+		font-size: 10px;
+		font-weight: 900;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+	}
+}

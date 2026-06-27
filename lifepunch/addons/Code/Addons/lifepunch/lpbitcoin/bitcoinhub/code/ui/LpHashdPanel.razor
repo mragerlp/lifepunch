@@ -403,27 +403,20 @@
 								{
 									var upgradeRack = GetUpgradeRack();
 									<div class="pane upgrades">
-										<div class="lp-ui-panel upgrades-panel">
-											<div class="upgrades-toolbar">
-												<button class="lp-ui-btn-ghost upgrades-back-btn" onclick="@CloseRackUpgrades">
-													<i class="material-icons">arrow_back</i>
-													<span>Servers</span>
-												</button>
-												<div class="lp-ui-panel-title upgrades-title">
-													<i class="material-icons">upgrade</i>
-													<span>@(upgradeRack.IsValid() ? $"{RackSlotDisplayLabel( upgradeRack )} upgrades" : "Rack upgrades")</span>
+										@if ( upgradeRack.IsValid() )
+										{
+											<div class="lp-ui-panel upgrades-panel">
+												<div class="upgrades-toolbar">
+													<button class="lp-ui-btn-ghost upgrades-back-btn" onclick="@CloseRackUpgrades">
+														<i class="material-icons">arrow_back</i>
+														<span>Servers</span>
+													</button>
+													<div class="lp-ui-panel-title upgrades-title">
+														<i class="material-icons">upgrade</i>
+														<span>@($"{RackSlotDisplayLabel( upgradeRack )} upgrades")</span>
+													</div>
 												</div>
-											</div>
 
-											@if ( !upgradeRack.IsValid() )
-											{
-												<div class="lp-ui-empty">
-													<i class="material-icons">dns</i>
-													<span>Rack unavailable — return to Servers and pick a linked rack.</span>
-												</div>
-											}
-											else
-											{
 												<div class="lp-ui-intro upgrades-intro">
 													<strong>@RackSlotDisplayLabel( upgradeRack )</strong> · @RackYieldLabel( upgradeRack ) · @RackHardwareLine( upgradeRack ) — Purchases debit your in-game cash. Mining start/stop stays on the CRT. rig0 slot: <strong>@RackSlotTerminalToken( upgradeRack )</strong>
 												</div>
@@ -495,8 +488,210 @@
 														</div>
 													</div>
 												</div>
-											}
-										</div>
+											</div>
+										}
+										else
+										{
+											<div class="lp-ui-panel upgrades-home">
+												<div class="lp-ui-panel-title">
+													<i class="material-icons">upgrade</i>
+													<span>Universal Upgrades</span>
+												</div>
+
+												<div class="lp-ui-intro">
+													One home for all progression. Purchases will route here — shell preview only.
+												</div>
+
+												<div class="upgrade-surface-chips">
+													<button class="upgrade-surface-chip @UpgradeSurfaceChipClass( UpgradeSurface.Hub )" onclick="@(() => SelectUpgradeSurface( UpgradeSurface.Hub ))">
+														<span>HUB</span>
+													</button>
+													<button class="upgrade-surface-chip @UpgradeSurfaceChipClass( UpgradeSurface.Terminal )" onclick="@(() => SelectUpgradeSurface( UpgradeSurface.Terminal ))">
+														<span>TERMINAL</span>
+													</button>
+													<button class="upgrade-surface-chip @UpgradeSurfaceChipClass( UpgradeSurface.GpuRack )" onclick="@(() => SelectUpgradeSurface( UpgradeSurface.GpuRack ))">
+														<span>GPU RACK</span>
+													</button>
+												</div>
+
+												@if ( _upgradeSurface == UpgradeSurface.GpuRack )
+												{
+													<div class="upgrade-rack-selector">
+														<button class="upgrade-rack-chip @UpgradeRackChipClass( UpgradeRackSelector.Rack1 )" onclick="@(() => SelectUpgradeRackSlot( UpgradeRackSelector.Rack1 ))">
+															<span>RACK 1</span>
+														</button>
+														<button class="upgrade-rack-chip @UpgradeRackChipClass( UpgradeRackSelector.Rack2 )" onclick="@(() => SelectUpgradeRackSlot( UpgradeRackSelector.Rack2 ))">
+															<span>RACK 2</span>
+														</button>
+														<button class="upgrade-rack-chip @UpgradeRackChipClass( UpgradeRackSelector.Advanced )" onclick="@(() => SelectUpgradeRackSlot( UpgradeRackSelector.Advanced ))">
+															<span>ADVANCED</span>
+														</button>
+													</div>
+												}
+
+												<div class="lp-ui-scroll-region upgrades-scroll universal-upgrades-scroll">
+													@if ( _upgradeSurface == UpgradeSurface.Hub )
+													{
+														<div class="upgrade-section">
+															<div class="upgrade-section-head">
+																<i class="material-icons">dns</i>
+																<span>Controller tracks</span>
+															</div>
+															<div class="upgrade-track-cards">
+																@foreach ( var track in HubUpgradeTracks )
+																{
+																	<div class="upgrade-track-card placeholder">
+																		<div class="upgrade-track-card-head">
+																			<i class="material-icons">@track.Icon</i>
+																			<span>@track.Name</span>
+																		</div>
+																		<div class="upgrade-track-card-tier">Tier I · @track.TierOneLabel</div>
+																		<div class="upgrade-tier-ladder">
+																			<span class="upgrade-tier-step active">I</span>
+																			<span class="upgrade-tier-step">II</span>
+																			<span class="upgrade-tier-step">III</span>
+																			<span class="upgrade-tier-step">IV</span>
+																			<span class="upgrade-tier-step cap">V</span>
+																		</div>
+																		<div class="upgrade-track-card-status">PLANNED · NOT ENABLED</div>
+																	</div>
+																}
+															</div>
+														</div>
+
+														<div class="upgrade-section">
+															<div class="upgrade-section-head cosmetic">
+																<i class="material-icons">palette</i>
+																<span>Cosmetics</span>
+															</div>
+															<div class="upgrade-track-cards">
+																<div class="upgrade-track-card cosmetic placeholder">
+																	<div class="upgrade-track-card-head">
+																		<i class="material-icons">@HubSoundPackCosmetic.Icon</i>
+																		<span>@HubSoundPackCosmetic.Name</span>
+																	</div>
+																	<div class="upgrade-track-card-tier">Tier I · @HubSoundPackCosmetic.TierOneLabel</div>
+																	<div class="upgrade-tier-ladder">
+																		<span class="upgrade-tier-step active">I</span>
+																		<span class="upgrade-tier-step">II</span>
+																		<span class="upgrade-tier-step">III</span>
+																		<span class="upgrade-tier-step">IV</span>
+																		<span class="upgrade-tier-step cap">V</span>
+																	</div>
+																	<div class="upgrade-track-card-status">PLANNED · NOT ENABLED</div>
+																</div>
+															</div>
+														</div>
+													}
+													else if ( _upgradeSurface == UpgradeSurface.Terminal )
+													{
+														<div class="upgrade-section">
+															<div class="upgrade-section-head">
+																<i class="material-icons">shield</i>
+																<span>Defense &amp; capabilities</span>
+															</div>
+															<div class="upgrade-track-cards">
+																@foreach ( var track in TerminalUpgradeTracks )
+																{
+																	<div class="upgrade-track-card placeholder">
+																		<div class="upgrade-track-card-head">
+																			<i class="material-icons">@track.Icon</i>
+																			<span>@track.Name</span>
+																		</div>
+																		<div class="upgrade-track-card-tier">Tier I · @track.TierOneLabel</div>
+																		<div class="upgrade-tier-ladder">
+																			<span class="upgrade-tier-step active">I</span>
+																			<span class="upgrade-tier-step">II</span>
+																			<span class="upgrade-tier-step">III</span>
+																			<span class="upgrade-tier-step">IV</span>
+																			<span class="upgrade-tier-step cap">V</span>
+																		</div>
+																		<div class="upgrade-track-card-status">PLANNED · NOT ENABLED</div>
+																	</div>
+																}
+															</div>
+														</div>
+
+														<div class="upgrade-section">
+															<div class="upgrade-section-head cosmetic">
+																<i class="material-icons">palette</i>
+																<span>Appearance</span>
+															</div>
+															<div class="upgrade-track-cards">
+																<div class="upgrade-track-card cosmetic placeholder">
+																	<div class="upgrade-track-card-head">
+																		<i class="material-icons">brush</i>
+																		<span>HASHD donor skins</span>
+																	</div>
+																	<div class="upgrade-track-card-tier">Tier I · Stock bezel</div>
+																	<div class="upgrade-tier-ladder">
+																		<span class="upgrade-tier-step active">I</span>
+																		<span class="upgrade-tier-step">II</span>
+																		<span class="upgrade-tier-step">III</span>
+																		<span class="upgrade-tier-step">IV</span>
+																		<span class="upgrade-tier-step cap">V</span>
+																	</div>
+																	<div class="upgrade-track-card-status">PLANNED · NOT ENABLED</div>
+																</div>
+															</div>
+														</div>
+													}
+													else
+													{
+														<div class="upgrade-section">
+															<div class="upgrade-section-head">
+																<i class="material-icons">memory</i>
+																<span>@UpgradeRackSelectorHeadline()</span>
+															</div>
+															<div class="upgrade-track-cards">
+																@foreach ( var track in GpuRackUpgradeTracks )
+																{
+																	<div class="upgrade-track-card placeholder">
+																		<div class="upgrade-track-card-head">
+																			<i class="material-icons">@track.Icon</i>
+																			<span>@track.Name</span>
+																		</div>
+																		<div class="upgrade-track-card-tier">Tier I · @track.TierOneLabel</div>
+																		<div class="upgrade-tier-ladder">
+																			<span class="upgrade-tier-step active">I</span>
+																			<span class="upgrade-tier-step">II</span>
+																			<span class="upgrade-tier-step">III</span>
+																			<span class="upgrade-tier-step">IV</span>
+																			<span class="upgrade-tier-step cap">V</span>
+																		</div>
+																		<div class="upgrade-track-card-status">PLANNED · NOT ENABLED</div>
+																	</div>
+																}
+															</div>
+														</div>
+
+														<div class="upgrade-section">
+															<div class="upgrade-section-head cosmetic">
+																<i class="material-icons">palette</i>
+																<span>Cosmetics</span>
+															</div>
+															<div class="upgrade-track-cards">
+																<div class="upgrade-track-card cosmetic placeholder">
+																	<div class="upgrade-track-card-head">
+																		<i class="material-icons">@RackFanRgbCosmetic.Icon</i>
+																		<span>@RackFanRgbCosmetic.Name</span>
+																	</div>
+																	<div class="upgrade-track-card-tier">Tier I · @RackFanRgbCosmetic.TierOneLabel</div>
+																	<div class="upgrade-tier-ladder">
+																		<span class="upgrade-tier-step active">I</span>
+																		<span class="upgrade-tier-step">II</span>
+																		<span class="upgrade-tier-step">III</span>
+																		<span class="upgrade-tier-step">IV</span>
+																		<span class="upgrade-tier-step cap">V</span>
+																	</div>
+																	<div class="upgrade-track-card-status">PLANNED · NOT ENABLED</div>
+																</div>
+															</div>
+														</div>
+													}
+												</div>
+											</div>
+										}
 									</div>
 								}
 								else if ( _active == OpsTab.Wallet )
@@ -795,12 +990,52 @@
 	private enum OpsTab { Overview, Wallet, Transfers, Racks, Upgrades, Logs, Settings }
 	private enum PerfRange { Day, Week, Month }
 	private enum PinGatePurpose { Unlock, ChangePin }
+	private enum UpgradeSurface { Hub, Terminal, GpuRack }
+	private enum UpgradeRackSelector { Rack1, Rack2, Advanced }
 
-	private static readonly OpsTab[] _tabs = { OpsTab.Overview, OpsTab.Wallet, OpsTab.Transfers, OpsTab.Racks, OpsTab.Logs, OpsTab.Settings };
+	// UI-only shell descriptor (DECISION-0010). No economy/persistence — display copy only.
+	private readonly record struct UpgradeTrackShell( string Name, string Icon, string TierOneLabel );
+
+	private static readonly UpgradeTrackShell[] HubUpgradeTracks =
+	{
+		new( "Job Scheduler", "schedule", "Basic Queue" ),
+		new( "Share Pipeline", "call_split", "Single Handler" ),
+		new( "Pool Client", "lan", "Basic Stratum Client" ),
+		new( "Farm Firmware", "settings_applications", "Manual Control" ),
+		new( "Trust Policy", "verified_user", "Local Trust" )
+	};
+
+	private static readonly UpgradeTrackShell HubSoundPackCosmetic =
+		new( "Sound Pack", "volume_up", "Stock ambient loop" );
+
+	private static readonly UpgradeTrackShell[] TerminalUpgradeTracks =
+	{
+		new( "Endpoint Firewall", "shield", "Open Rules" ),
+		new( "Command Authentication", "key", "PIN Session" ),
+		new( "Intrusion Detection", "radar", "Manual Review" ),
+		new( "Audit Retention", "history", "Volatile Logs" ),
+		new( "Monitoring Suite", "monitor_heart", "Basic Status" )
+	};
+
+	private static readonly UpgradeTrackShell[] GpuRackUpgradeTracks =
+	{
+		new( "Compute Profile", "speed", "Stock Clocks" ),
+		new( "Cooling System", "ac_unit", "Open-Air Cooling" ),
+		new( "Power Delivery", "bolt", "Consumer PSU" ),
+		new( "Efficiency Tuning", "eco", "Stock Voltage" ),
+		new( "Payout Buffer", "savings", "Base Payout Buffer" )
+	};
+
+	private static readonly UpgradeTrackShell RackFanRgbCosmetic =
+		new( "Fan RGB", "palette", "Stock fan lighting" );
+
+	private static readonly OpsTab[] _tabs = { OpsTab.Overview, OpsTab.Wallet, OpsTab.Transfers, OpsTab.Racks, OpsTab.Upgrades, OpsTab.Logs, OpsTab.Settings };
 	private static readonly PerfRange[] _perfRanges = { PerfRange.Day, PerfRange.Week, PerfRange.Month };
 
 	private OpsTab _active = OpsTab.Overview;
 	private Guid _upgradeRackId = Guid.Empty;
+	private UpgradeSurface _upgradeSurface = UpgradeSurface.Hub;
+	private UpgradeRackSelector _upgradeRackSlot = UpgradeRackSelector.Rack1;
 	private Guid _rackSlotCopyAckId = Guid.Empty;
 	private bool _receiveCopyAck;
 	private bool _sendExampleCopyAck;
@@ -1243,6 +1478,7 @@
 		OpsTab.Wallet => "account_balance_wallet",
 		OpsTab.Transfers => "swap_horiz",
 		OpsTab.Racks => "dns",
+		OpsTab.Upgrades => "upgrade",
 		OpsTab.Logs => "notifications",
 		OpsTab.Settings => "settings",
 		_ => "home"
@@ -1254,6 +1490,7 @@
 		OpsTab.Wallet => "Wallet",
 		OpsTab.Transfers => "Transfers",
 		OpsTab.Racks => "Servers",
+		OpsTab.Upgrades => "Upgrades",
 		OpsTab.Logs => "Logs",
 		OpsTab.Settings => "Settings",
 		_ => "Overview"
@@ -1268,9 +1505,36 @@
 		LifePunchUiScrollPolicy.ResetOffsets( Panel );
 	}
 
-	// Upgrades is a sub-view of Servers — keep the rack icon selected (Staff Menu tab-sel pattern).
+	// Legacy rack drill-in keeps Servers highlighted (Staff Menu tab-sel pattern).
 	private bool IsSidebarTabActive( OpsTab tab )
-		=> _active == tab || ( tab == OpsTab.Racks && _active == OpsTab.Upgrades );
+		=> _active == tab || ( tab == OpsTab.Racks && _active == OpsTab.Upgrades && GetUpgradeRack().IsValid() );
+
+	private void SelectUpgradeSurface( UpgradeSurface surface )
+	{
+		_upgradeRackId = Guid.Empty;
+		_upgradeSurface = surface;
+		LifePunchUiScrollPolicy.ResetOffsets( Panel );
+	}
+
+	private void SelectUpgradeRackSlot( UpgradeRackSelector slot )
+	{
+		_upgradeRackSlot = slot;
+		LifePunchUiScrollPolicy.ResetOffsets( Panel );
+	}
+
+	private string UpgradeSurfaceChipClass( UpgradeSurface surface )
+		=> _upgradeSurface == surface ? "active" : string.Empty;
+
+	private string UpgradeRackChipClass( UpgradeRackSelector slot )
+		=> _upgradeRackSlot == slot ? "active" : string.Empty;
+
+	private string UpgradeRackSelectorHeadline() => _upgradeRackSlot switch
+	{
+		UpgradeRackSelector.Rack1 => "Rack 1 hardware tracks",
+		UpgradeRackSelector.Rack2 => "Rack 2 hardware tracks",
+		UpgradeRackSelector.Advanced => "Advanced rack hardware tracks",
+		_ => "Hardware tracks"
+	};
 
 	private void OpenRackUpgrades( LpBitcoinRackEntity rack )
 	{
@@ -2287,6 +2551,8 @@
 		var hash = new HashCode();
 		hash.Add( _active );
 		hash.Add( _upgradeRackId );
+		hash.Add( (int)_upgradeSurface );
+		hash.Add( (int)_upgradeRackSlot );
 		hash.Add( _receiveCopyAck );
 		hash.Add( _sendExampleCopyAck );
 		hash.Add( _rackSlotCopyAckId );
