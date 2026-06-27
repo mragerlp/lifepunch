@@ -493,11 +493,8 @@
 				if ( _terminalPinBuffer.Length >= LpBitcoinHubPin.MaxDigits )
 					break;
 
+				// Match the hub PIN flow: digits only fill the buffer — submit requires the OK key.
 				_terminalPinBuffer += key;
-
-				// Auto-submit the moment the 4 digits are in.
-				if ( _terminalPinBuffer.Length >= LpBitcoinHubPin.MaxDigits )
-					_hub?.RequestTerminalUnlock( _terminalPinBuffer );
 				break;
 		}
 

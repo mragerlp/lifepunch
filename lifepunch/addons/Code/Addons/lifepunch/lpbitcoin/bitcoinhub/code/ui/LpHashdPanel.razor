@@ -545,15 +545,20 @@
 																			<i class="material-icons">@track.Icon</i>
 																			<span>@track.Name</span>
 																		</div>
-																		<div class="upgrade-track-card-tier">Tier I · @track.TierOneLabel</div>
-																		<div class="upgrade-tier-ladder">
-																			<span class="upgrade-tier-step active">I</span>
-																			<span class="upgrade-tier-step">II</span>
-																			<span class="upgrade-tier-step">III</span>
-																			<span class="upgrade-tier-step">IV</span>
-																			<span class="upgrade-tier-step cap">V</span>
+																		<div class="upgrade-track-card-tier">@CurrentTierLabel( track )</div>
+																		<div class="upgrade-tier-grid">
+																			@for ( int _tier = 1; _tier <= 5; _tier++ )
+																			{
+																				var _state = TierState( track.Name, _tier );
+																				<button class="upgrade-tier-box @_state @( _tier == 5 ? "cap" : "" )"
+																				        tooltip="@TierTooltip( track, _tier )"
+																				        onclick="@(() => PreviewBuyTier( track.Name, _tier ))">
+																					<span class="tier-roman">@TierRoman( _tier )</span>
+																					<span class="tier-price">@TierBoxCaption( track, _tier )</span>
+																				</button>
+																			}
 																		</div>
-																		<div class="upgrade-track-card-status">PLANNED · NOT ENABLED</div>
+																		<div class="upgrade-track-card-status">@TrackStatusLabel( track )</div>
 																	</div>
 																}
 															</div>
@@ -570,15 +575,20 @@
 																		<i class="material-icons">@HubSoundPackCosmetic.Icon</i>
 																		<span>@HubSoundPackCosmetic.Name</span>
 																	</div>
-																	<div class="upgrade-track-card-tier">Tier I · @HubSoundPackCosmetic.TierOneLabel</div>
-																	<div class="upgrade-tier-ladder">
-																		<span class="upgrade-tier-step active">I</span>
-																		<span class="upgrade-tier-step">II</span>
-																		<span class="upgrade-tier-step">III</span>
-																		<span class="upgrade-tier-step">IV</span>
-																		<span class="upgrade-tier-step cap">V</span>
+																	<div class="upgrade-track-card-tier">@CurrentTierLabel( HubSoundPackCosmetic )</div>
+																	<div class="upgrade-tier-grid">
+																		@for ( int _tier = 1; _tier <= 5; _tier++ )
+																		{
+																			var _state = TierState( HubSoundPackCosmetic.Name, _tier );
+																			<button class="upgrade-tier-box @_state @( _tier == 5 ? "cap" : "" )"
+																			        tooltip="@TierTooltip( HubSoundPackCosmetic, _tier )"
+																			        onclick="@(() => PreviewBuyTier( HubSoundPackCosmetic.Name, _tier ))">
+																				<span class="tier-roman">@TierRoman( _tier )</span>
+																				<span class="tier-price">@TierBoxCaption( HubSoundPackCosmetic, _tier )</span>
+																			</button>
+																		}
 																	</div>
-																	<div class="upgrade-track-card-status">PLANNED · NOT ENABLED</div>
+																	<div class="upgrade-track-card-status">@TrackStatusLabel( HubSoundPackCosmetic )</div>
 																</div>
 															</div>
 														</div>
@@ -598,15 +608,20 @@
 																			<i class="material-icons">@track.Icon</i>
 																			<span>@track.Name</span>
 																		</div>
-																		<div class="upgrade-track-card-tier">Tier I · @track.TierOneLabel</div>
-																		<div class="upgrade-tier-ladder">
-																			<span class="upgrade-tier-step active">I</span>
-																			<span class="upgrade-tier-step">II</span>
-																			<span class="upgrade-tier-step">III</span>
-																			<span class="upgrade-tier-step">IV</span>
-																			<span class="upgrade-tier-step cap">V</span>
+																		<div class="upgrade-track-card-tier">@CurrentTierLabel( track )</div>
+																		<div class="upgrade-tier-grid">
+																			@for ( int _tier = 1; _tier <= 5; _tier++ )
+																			{
+																				var _state = TierState( track.Name, _tier );
+																				<button class="upgrade-tier-box @_state @( _tier == 5 ? "cap" : "" )"
+																				        tooltip="@TierTooltip( track, _tier )"
+																				        onclick="@(() => PreviewBuyTier( track.Name, _tier ))">
+																					<span class="tier-roman">@TierRoman( _tier )</span>
+																					<span class="tier-price">@TierBoxCaption( track, _tier )</span>
+																				</button>
+																			}
 																		</div>
-																		<div class="upgrade-track-card-status">PLANNED · NOT ENABLED</div>
+																		<div class="upgrade-track-card-status">@TrackStatusLabel( track )</div>
 																	</div>
 																}
 															</div>
@@ -620,18 +635,23 @@
 															<div class="upgrade-track-cards">
 																<div class="upgrade-track-card cosmetic placeholder">
 																	<div class="upgrade-track-card-head">
-																		<i class="material-icons">brush</i>
-																		<span>HASHD donor skins</span>
+																		<i class="material-icons">@TerminalSkinCosmetic.Icon</i>
+																		<span>@TerminalSkinCosmetic.Name</span>
 																	</div>
-																	<div class="upgrade-track-card-tier">Tier I · Stock bezel</div>
-																	<div class="upgrade-tier-ladder">
-																		<span class="upgrade-tier-step active">I</span>
-																		<span class="upgrade-tier-step">II</span>
-																		<span class="upgrade-tier-step">III</span>
-																		<span class="upgrade-tier-step">IV</span>
-																		<span class="upgrade-tier-step cap">V</span>
+																	<div class="upgrade-track-card-tier">@CurrentTierLabel( TerminalSkinCosmetic )</div>
+																	<div class="upgrade-tier-grid">
+																		@for ( int _tier = 1; _tier <= 5; _tier++ )
+																		{
+																			var _state = TierState( TerminalSkinCosmetic.Name, _tier );
+																			<button class="upgrade-tier-box @_state @( _tier == 5 ? "cap" : "" )"
+																			        tooltip="@TierTooltip( TerminalSkinCosmetic, _tier )"
+																			        onclick="@(() => PreviewBuyTier( TerminalSkinCosmetic.Name, _tier ))">
+																				<span class="tier-roman">@TierRoman( _tier )</span>
+																				<span class="tier-price">@TierBoxCaption( TerminalSkinCosmetic, _tier )</span>
+																			</button>
+																		}
 																	</div>
-																	<div class="upgrade-track-card-status">PLANNED · NOT ENABLED</div>
+																	<div class="upgrade-track-card-status">@TrackStatusLabel( TerminalSkinCosmetic )</div>
 																</div>
 															</div>
 														</div>
@@ -651,15 +671,20 @@
 																			<i class="material-icons">@track.Icon</i>
 																			<span>@track.Name</span>
 																		</div>
-																		<div class="upgrade-track-card-tier">Tier I · @track.TierOneLabel</div>
-																		<div class="upgrade-tier-ladder">
-																			<span class="upgrade-tier-step active">I</span>
-																			<span class="upgrade-tier-step">II</span>
-																			<span class="upgrade-tier-step">III</span>
-																			<span class="upgrade-tier-step">IV</span>
-																			<span class="upgrade-tier-step cap">V</span>
+																		<div class="upgrade-track-card-tier">@CurrentTierLabel( track )</div>
+																		<div class="upgrade-tier-grid">
+																			@for ( int _tier = 1; _tier <= 5; _tier++ )
+																			{
+																				var _state = TierState( track.Name, _tier );
+																				<button class="upgrade-tier-box @_state @( _tier == 5 ? "cap" : "" )"
+																				        tooltip="@TierTooltip( track, _tier )"
+																				        onclick="@(() => PreviewBuyTier( track.Name, _tier ))">
+																					<span class="tier-roman">@TierRoman( _tier )</span>
+																					<span class="tier-price">@TierBoxCaption( track, _tier )</span>
+																				</button>
+																			}
 																		</div>
-																		<div class="upgrade-track-card-status">PLANNED · NOT ENABLED</div>
+																		<div class="upgrade-track-card-status">@TrackStatusLabel( track )</div>
 																	</div>
 																}
 															</div>
@@ -676,15 +701,20 @@
 																		<i class="material-icons">@RackFanRgbCosmetic.Icon</i>
 																		<span>@RackFanRgbCosmetic.Name</span>
 																	</div>
-																	<div class="upgrade-track-card-tier">Tier I · @RackFanRgbCosmetic.TierOneLabel</div>
-																	<div class="upgrade-tier-ladder">
-																		<span class="upgrade-tier-step active">I</span>
-																		<span class="upgrade-tier-step">II</span>
-																		<span class="upgrade-tier-step">III</span>
-																		<span class="upgrade-tier-step">IV</span>
-																		<span class="upgrade-tier-step cap">V</span>
+																	<div class="upgrade-track-card-tier">@CurrentTierLabel( RackFanRgbCosmetic )</div>
+																	<div class="upgrade-tier-grid">
+																		@for ( int _tier = 1; _tier <= 5; _tier++ )
+																		{
+																			var _state = TierState( RackFanRgbCosmetic.Name, _tier );
+																			<button class="upgrade-tier-box @_state @( _tier == 5 ? "cap" : "" )"
+																			        tooltip="@TierTooltip( RackFanRgbCosmetic, _tier )"
+																			        onclick="@(() => PreviewBuyTier( RackFanRgbCosmetic.Name, _tier ))">
+																				<span class="tier-roman">@TierRoman( _tier )</span>
+																				<span class="tier-price">@TierBoxCaption( RackFanRgbCosmetic, _tier )</span>
+																			</button>
+																		}
 																	</div>
-																	<div class="upgrade-track-card-status">PLANNED · NOT ENABLED</div>
+																	<div class="upgrade-track-card-status">@TrackStatusLabel( RackFanRgbCosmetic )</div>
 																</div>
 															</div>
 														</div>
@@ -993,41 +1023,137 @@
 	private enum UpgradeSurface { Hub, Terminal, GpuRack }
 	private enum UpgradeRackSelector { Rack1, Rack2, Advanced }
 
-	// UI-only shell descriptor (DECISION-0010). No economy/persistence — display copy only.
-	private readonly record struct UpgradeTrackShell( string Name, string Icon, string TierOneLabel );
+	// UI-only shell descriptor (DECISION-0010). No economy/persistence yet — display copy + preview
+	// progression state only. Tiers carries II..V (index 0 = Tier II). Tier I = TierOneLabel baseline.
+	private readonly record struct UpgradeTierShell( string Label, int Price, string Detail );
+	private readonly record struct UpgradeTrackShell( string Name, string Icon, string TierOneLabel, UpgradeTierShell[] Tiers );
+
+	// Standard hardware ladder pricing (BTC-economy placeholder $). Cosmetics use a cheaper ladder.
+	private static UpgradeTierShell[] HwTiers( string two, string three, string four, string five ) => new[]
+	{
+		new UpgradeTierShell( two, 1_500, "Early efficiency gain over the baseline." ),
+		new UpgradeTierShell( three, 4_000, "Meaningful throughput and reliability step." ),
+		new UpgradeTierShell( four, 9_000, "High-end capability for serious operators." ),
+		new UpgradeTierShell( five, 20_000, "Best-in-class capstone — the top of this track." )
+	};
+
+	private static UpgradeTierShell[] CosmeticTiers( string two, string three, string four, string five ) => new[]
+	{
+		new UpgradeTierShell( two, 800, "Cosmetic only — no performance change." ),
+		new UpgradeTierShell( three, 1_600, "Cosmetic only — no performance change." ),
+		new UpgradeTierShell( four, 2_400, "Cosmetic only — no performance change." ),
+		new UpgradeTierShell( five, 3_200, "Cosmetic only — no performance change." )
+	};
 
 	private static readonly UpgradeTrackShell[] HubUpgradeTracks =
 	{
-		new( "Job Scheduler", "schedule", "Basic Queue" ),
-		new( "Share Pipeline", "call_split", "Single Handler" ),
-		new( "Pool Client", "lan", "Basic Stratum Client" ),
-		new( "Farm Firmware", "settings_applications", "Manual Control" ),
-		new( "Trust Policy", "verified_user", "Local Trust" )
+		new( "Job Scheduler", "schedule", "Basic Queue", HwTiers( "Priority Queue", "Batch Dispatch", "Predictive Scheduler", "Autonomous Orchestrator" ) ),
+		new( "Share Pipeline", "call_split", "Single Handler", HwTiers( "Dual Handler", "Parallel Lanes", "Stream Aggregator", "Zero-Loss Pipeline" ) ),
+		new( "Pool Client", "lan", "Basic Stratum Client", HwTiers( "Stratum v2", "Failover Pool", "Multi-Pool Router", "Smart Pool Mesh" ) ),
+		new( "Farm Firmware", "settings_applications", "Manual Control", HwTiers( "Assisted Control", "Scheduled Tuning", "Adaptive Firmware", "Autonomous Farm OS" ) ),
+		new( "Trust Policy", "verified_user", "Local Trust", HwTiers( "Signed Peers", "Verified Network", "Zero-Trust Gates", "Hardened Enclave" ) )
 	};
 
 	private static readonly UpgradeTrackShell HubSoundPackCosmetic =
-		new( "Sound Pack", "volume_up", "Stock ambient loop" );
+		new( "Sound Pack", "volume_up", "Stock ambient loop", CosmeticTiers( "Server Room", "Cyber Hum", "Retro Arcade", "Custom Upload" ) );
 
 	private static readonly UpgradeTrackShell[] TerminalUpgradeTracks =
 	{
-		new( "Endpoint Firewall", "shield", "Open Rules" ),
-		new( "Command Authentication", "key", "PIN Session" ),
-		new( "Intrusion Detection", "radar", "Manual Review" ),
-		new( "Audit Retention", "history", "Volatile Logs" ),
-		new( "Monitoring Suite", "monitor_heart", "Basic Status" )
+		new( "Endpoint Firewall", "shield", "Open Rules", HwTiers( "Basic Ruleset", "Stateful Firewall", "Deep Packet Filter", "Adaptive Defense Grid" ) ),
+		new( "Command Authentication", "key", "PIN Session", HwTiers( "Timed Sessions", "Two-Factor", "Biometric Token", "Hardware Key Vault" ) ),
+		new( "Intrusion Detection", "radar", "Manual Review", HwTiers( "Log Alerts", "Signature IDS", "Behavioral IDS", "Autonomous Response" ) ),
+		new( "Audit Retention", "history", "Volatile Logs", HwTiers( "Local Archive", "Encrypted Logs", "Off-site Backup", "Immutable Ledger" ) ),
+		new( "Monitoring Suite", "monitor_heart", "Basic Status", HwTiers( "Live Metrics", "Alert Routing", "Health Forecast", "Ops Command Deck" ) )
 	};
+
+	private static readonly UpgradeTrackShell TerminalSkinCosmetic =
+		new( "HASHD donor skins", "brush", "Stock bezel", CosmeticTiers( "Carbon Bezel", "Amber Glass", "Neon Edge", "Custom Wrap" ) );
 
 	private static readonly UpgradeTrackShell[] GpuRackUpgradeTracks =
 	{
-		new( "Compute Profile", "speed", "Stock Clocks" ),
-		new( "Cooling System", "ac_unit", "Open-Air Cooling" ),
-		new( "Power Delivery", "bolt", "Consumer PSU" ),
-		new( "Efficiency Tuning", "eco", "Stock Voltage" ),
-		new( "Payout Buffer", "savings", "Base Payout Buffer" )
+		new( "Compute Profile", "speed", "Stock Clocks", HwTiers( "Mild OC", "Tuned Clocks", "Aggressive OC", "Curve Optimizer" ) ),
+		new( "Cooling System", "ac_unit", "Open-Air Cooling", HwTiers( "Fan Wall", "Liquid Loop", "Sub-Ambient", "Immersion Bath" ) ),
+		new( "Power Delivery", "bolt", "Consumer PSU", HwTiers( "Server PSU", "Redundant PSU", "PDU Array", "Grid Tie-In" ) ),
+		new( "Efficiency Tuning", "eco", "Stock Voltage", HwTiers( "Undervolt", "Power Curve", "Eco Profile", "Peak Efficiency" ) ),
+		new( "Payout Buffer", "savings", "Base Payout Buffer", HwTiers( "Extended Buffer", "Smart Buffer", "Auto-Compound", "Yield Optimizer" ) )
 	};
 
 	private static readonly UpgradeTrackShell RackFanRgbCosmetic =
-		new( "Fan RGB", "palette", "Stock fan lighting" );
+		new( "Fan RGB", "palette", "Stock fan lighting", CosmeticTiers( "Amber Glow", "Spectrum Cycle", "Reactive Sync", "Custom Profile" ) );
+
+	// Preview-only purchase progression (no economy). Keyed by track name; default Tier I owned.
+	// Swap point: replace PreviewBuyTier with a real purchase RPC when economy lands.
+	private readonly Dictionary<string, int> _previewTier = new();
+	private int _previewTierRev;
+
+	private int OwnedTier( string key ) => _previewTier.TryGetValue( key, out var t ) ? t : 1;
+
+	private void PreviewBuyTier( string key, int tier )
+	{
+		// Only the immediate next tier is purchasable — enforces the locked-until-previous rule.
+		if ( tier != OwnedTier( key ) + 1 || tier > 5 )
+			return;
+
+		_previewTier[key] = tier;
+		_previewTierRev++;
+	}
+
+	// owned (<= ownedTier), available (ownedTier + 1), or locked (beyond).
+	private string TierState( string key, int tier )
+	{
+		var owned = OwnedTier( key );
+		if ( tier <= owned ) return "owned";
+		if ( tier == owned + 1 ) return "available";
+		return "locked";
+	}
+
+	private static string TierRoman( int n ) => n switch
+	{
+		1 => "I",
+		2 => "II",
+		3 => "III",
+		4 => "IV",
+		5 => "V",
+		_ => n.ToString()
+	};
+
+	private string TierBoxCaption( UpgradeTrackShell track, int tier )
+	{
+		var state = TierState( track.Name, tier );
+		if ( state == "owned" ) return tier == 1 ? "Base" : "Owned";
+		if ( state == "locked" ) return "Locked";
+		return $"${track.Tiers[tier - 2].Price:N0}";
+	}
+
+	private string TierTooltip( UpgradeTrackShell track, int tier )
+	{
+		if ( tier == 1 )
+			return $"Tier I · {track.TierOneLabel}\nBaseline — included";
+
+		var t = track.Tiers[tier - 2];
+		var state = TierState( track.Name, tier );
+		if ( state == "owned" )
+			return $"Tier {TierRoman( tier )} · {t.Label}\nOwned";
+
+		return $"Tier {TierRoman( tier )} · {t.Label}\nPrice: ${t.Price:N0}\n{t.Detail}";
+	}
+
+	private string CurrentTierLabel( UpgradeTrackShell track )
+	{
+		var owned = OwnedTier( track.Name );
+		var label = owned == 1 ? track.TierOneLabel : track.Tiers[owned - 2].Label;
+		return $"Tier {TierRoman( owned )} · {label}";
+	}
+
+	private string TrackStatusLabel( UpgradeTrackShell track )
+	{
+		var owned = OwnedTier( track.Name );
+		if ( owned >= 5 )
+			return "MAX TIER · PREVIEW";
+
+		var next = track.Tiers[owned - 1];
+		return $"NEXT · TIER {TierRoman( owned + 1 )} · ${next.Price:N0}";
+	}
 
 	private static readonly OpsTab[] _tabs = { OpsTab.Overview, OpsTab.Wallet, OpsTab.Transfers, OpsTab.Racks, OpsTab.Upgrades, OpsTab.Logs, OpsTab.Settings };
 	private static readonly PerfRange[] _perfRanges = { PerfRange.Day, PerfRange.Week, PerfRange.Month };
@@ -1129,6 +1255,14 @@
 
 	/// <summary>Dev preview — jump straight to the wallet tab (cash-out tiles).</summary>
 	public void DevOpenWalletTab() => SelectTab( OpsTab.Wallet );
+
+	/// <summary>Dev preview — Universal Upgrades home (tier tile grid), not a per-rack view.</summary>
+	public void DevOpenUpgradesHome()
+	{
+		_upgradeRackId = Guid.Empty;
+		_active = OpsTab.Upgrades;
+		LifePunchUiScrollPolicy.ResetOffsets( Panel );
+	}
 
 	protected override void OnEnabled()
 	{
@@ -2553,6 +2687,7 @@
 		hash.Add( _upgradeRackId );
 		hash.Add( (int)_upgradeSurface );
 		hash.Add( (int)_upgradeRackSlot );
+		hash.Add( _previewTierRev );
 		hash.Add( _receiveCopyAck );
 		hash.Add( _sendExampleCopyAck );
 		hash.Add( _rackSlotCopyAckId );

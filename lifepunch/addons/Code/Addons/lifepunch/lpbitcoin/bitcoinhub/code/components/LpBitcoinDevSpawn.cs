@@ -711,6 +711,25 @@ public static class LpBitcoinDevSpawn
 		Log.Info( "lp_bitcoin_preview_hub_upgrades: rack upgrades open — check buy buttons + intro line." );
 	}
 
+	/// <summary>Hub admin on the Universal Upgrades home — tier tile grid (HUB/TERMINAL/GPU RACK).</summary>
+	[ConCmd( "lp_bitcoin_preview_upgrades_home" )]
+	public static void PreviewUpgradesHomeUi()
+	{
+		WarnIfWrongPlayScene();
+		LpBitcoinUi.CloseAll();
+		var hub = LpBitcoinUi.GetOrCreatePreviewHub( withSampleRacks: true );
+		if ( !hub.IsValid() )
+		{
+			Log.Warning( "lp_bitcoin_preview_upgrades_home: no active scene." );
+			return;
+		}
+
+		var panel = LpHashdUiHost.Open( hub );
+		panel?.DevBypassPinGate();
+		panel?.DevOpenUpgradesHome();
+		Log.Info( "lp_bitcoin_preview_upgrades_home: Universal Upgrades home — Tier I owned, II available, III–V locked." );
+	}
+
 	/// <summary>Hub admin on the wallet tab — cash-out tiles + bank deposit preview (PIN bypassed).</summary>
 	[ConCmd( "lp_bitcoin_preview_hub_wallet" )]
 	public static void PreviewHubWalletUi()

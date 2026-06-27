@@ -5966,7 +5966,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	.upgrade-track-card {
 		display: flex;
 		flex-direction: column;
-		gap: 8px;
+		gap: 10px;
 		width: 100%;
 		padding: $hashd-surface-pad;
 		border-radius: $hashd-surface-radius;
@@ -6000,40 +6000,105 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	}
 
 	.upgrade-track-card-tier {
-		color: $hashd-text;
-		font-size: 12px;
-		font-weight: 600;
-	}
-
-	.upgrade-tier-ladder {
-		display: flex;
-		flex-direction: row;
-		gap: 6px;
-		align-items: center;
-	}
-
-	.upgrade-tier-step {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		min-width: 26px;
-		padding: 3px 0;
-		border-radius: 5px;
-		border: 1px solid $hashd-inset-border;
-		background-color: $hashd-inset-bg;
 		color: $hashd-muted;
 		font-size: 11px;
-		font-weight: 800;
-		letter-spacing: 0.03em;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+	}
 
-		&.active {
-			border-color: $hashd-amber;
-			color: $hashd-title;
-			background-color: rgba(232, 125, 62, 0.18);
+	// Tier tiles mirror the LIFEPUNCH ULX command grid (.action-btn): box icon + caption, accent
+	// fill when owned, hover when available, greyed + pointer-events:none when locked.
+	.upgrade-tier-grid {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		gap: 6px;
+		width: 100%;
+	}
+
+	.upgrade-tier-box {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 3px;
+		flex-grow: 1;
+		flex-shrink: 0;
+		flex-basis: 0;
+		min-width: 84px;
+		padding: 8px 4px;
+		border-radius: 8px;
+		border: 1px solid $hashd-inset-border;
+		background-color: $hashd-inset-bg;
+		cursor: pointer;
+		transition: background-color 0.12s ease-out, border-color 0.12s ease-out, color 0.12s ease-out;
+
+		.tier-roman {
+			color: $hashd-text;
+			font-size: 13px;
+			font-weight: 800;
+			letter-spacing: 0.04em;
 		}
 
-		&.cap {
-			border-color: rgba(232, 125, 62, 0.4);
+		.tier-price {
+			color: $hashd-muted;
+			font-size: 9px;
+			font-weight: 700;
+			text-transform: uppercase;
+			letter-spacing: 0.05em;
+		}
+
+		// Owned (incl. Tier I baseline): amber fill, not clickable.
+		&.owned {
+			border-color: $hashd-amber;
+			background-color: rgba(232, 125, 62, 0.18);
+			pointer-events: none;
+			cursor: default;
+
+			.tier-roman {
+				color: $hashd-title;
+			}
+
+			.tier-price {
+				color: $hashd-amber;
+			}
+		}
+
+		// Available (next purchasable): clickable, brightens on hover.
+		&.available {
+			border-color: rgba(232, 125, 62, 0.5);
+
+			.tier-price {
+				color: $hashd-amber-glow;
+			}
+
+			&:hover {
+				background-color: rgba(232, 125, 62, 0.14);
+				border-color: $hashd-amber;
+
+				.tier-roman {
+					color: $hashd-title;
+				}
+			}
+		}
+
+		// Locked (later tiers): cannot be hovered or clicked until the prior tier is owned.
+		&.locked,
+		&.locked:hover {
+			pointer-events: none;
+			cursor: default;
+			opacity: 0.5;
+			border-color: rgba(255, 255, 255, 0.04);
+			background-color: rgba(0, 0, 0, 0.25);
+
+			.tier-roman {
+				color: $hashd-muted;
+			}
+
+			.tier-price {
+				color: $hashd-muted;
+			}
 		}
 	}
 
