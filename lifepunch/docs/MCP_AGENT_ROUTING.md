@@ -12,6 +12,26 @@ See `CORNERMAN_MODEL_ROUTING.md` for the four Green profiles (Code / Deep / Dail
 
 ---
 
+## Route tags (Cursor Auto is not a routing guarantee)
+
+Cursor **Auto is fine for routine work** but does **not** lock or expose the exact model it picked — so it
+is not proof of route. Honor any **route tag** on a task; if the required route is not active, switch to it
+or **stop and tell Bloodwave** — never silently substitute.
+
+| Tag | Route | Lane |
+|-----|-------|------|
+| `AUTO OK` | Auto / Composer | Routine / low-risk |
+| `OPUS REQUIRED` | Manually select Opus | Tier-1 |
+| `GROK REQUIRED` | Manually select Grok Build 1 | Tier-2A |
+| `GREEN CODE REQUIRED` | Cornerman / LM Studio (Qwen Coder) | Tier-3 candidate patch |
+| `GREEN DEEP REQUIRED` | Cornerman / LM Studio (Qwen dense) | Tier-3 distill / warm |
+
+Auto may **never** silently substitute for economy · persistence · `[Sync(FromHost)]` · RPCs · purchase
+routing · migration · power/link state machines · final major-slice review. **Canonical definition:**
+`OPUS_USAGE_LAW.md` § Task route tags.
+
+---
+
 ## Machine roles (do not collapse)
 
 | Node | IP | Owns |

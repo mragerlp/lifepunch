@@ -45,6 +45,39 @@ Full details (including ESCALATION LAW and PROOF LAW) live in `MODEL_ROUTING_AME
 
 ---
 
+## Task route tags — Cursor Auto is NOT a routing guarantee
+
+**Canonical home for the route tags.** Cursor **Auto is allowed for routine work**, but Auto is **not a
+routing guarantee**: it picks a model with its own router and does **not** reliably expose or lock which
+model actually ran. Never trust Auto to satisfy a strict route by itself.
+
+Every task may carry a **route tag**. The Integration Architect (Cursor on VENGEANCE) must honor it:
+
+| Tag | Meaning | Integration Architect must |
+|-----|---------|----------------------------|
+| `AUTO OK` | Routine / low-risk — Auto / Composer fine | Proceed on Auto |
+| `OPUS REQUIRED` | Tier-1 only | **Manually select Opus**, or stop and tell Bloodwave the route is not active |
+| `GROK REQUIRED` | Grok Build 1 (Tier-2A) only | **Manually select Grok**, or stop and tell Bloodwave |
+| `GREEN CODE REQUIRED` | Cornerman Qwen Coder candidate patch | Send to the **Cornerman / LM Studio** lane — Auto will not replace it |
+| `GREEN DEEP REQUIRED` | Cornerman Qwen dense distill / warm packet | Send to the **Cornerman / LM Studio** lane |
+
+**If a required route is not active, do not silently substitute** — switch to it, or stop and report.
+
+**Auto may NEVER silently substitute models** for: economy · persistence · `[Sync(FromHost)]` authority ·
+RPCs · purchase routing · CPU/Core → Compute Profile migration · hub power/link cascade · terminal
+defense systems · final major-slice / commit-critical review.
+
+**May stay on Auto** (low-risk): docs · reports · Razor/SCSS cleanup · static UI shell changes ·
+read-only status-dashboard planning · small refactors.
+
+**Untagged tasks:** default Auto for routine; escalate per the Opus tables below the moment real
+complexity, money, persistence, `[Sync]`, or cross-system integration appears.
+
+**Architect-only:** the Design Architect (ChatGPT) marks every paste with one of
+`AUTO OK` / `OPUS REQUIRED` / `GROK REQUIRED` / `GREEN CODE REQUIRED` / `GREEN DEEP REQUIRED`.
+
+---
+
 ## Opus usage law
 
 ### Use Opus for

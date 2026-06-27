@@ -22,6 +22,23 @@ Architecture · debugging · MCP workflows · ModelDoc setup · multi-file C# ·
 
 README · changelogs · Discord · marketing · doc formatting → **Auto / Composer**.
 
+## Task route tags (Cursor Auto is NOT a routing guarantee)
+
+Auto is fine for routine work but does **not** lock/expose the model it picked. Honor any route tag on a
+task; if the required route is not active, **switch to it or stop and tell Bloodwave** — never silently substitute.
+
+| Tag | Do |
+|-----|----|
+| `AUTO OK` | Auto / Composer |
+| `OPUS REQUIRED` | Manually select Opus (Tier-1) |
+| `GROK REQUIRED` | Manually select Grok Build 1 (Tier-2A) |
+| `GREEN CODE REQUIRED` | Cornerman / LM Studio Qwen Coder (Tier-3 candidate) |
+| `GREEN DEEP REQUIRED` | Cornerman / LM Studio Qwen dense (Tier-3 distill/warm) |
+
+**Never let Auto silently substitute** for: economy · persistence · `[Sync(FromHost)]` · RPCs · purchase
+routing · CPU/Core→Compute Profile migration · hub power/link cascade · terminal defense · final
+major-slice / commit-critical review. Canonical: `lifepunch/docs/OPUS_USAGE_LAW.md` § Task route tags.
+
 ## Four-phase workflow (major tasks)
 
 | Phase | Who | What |

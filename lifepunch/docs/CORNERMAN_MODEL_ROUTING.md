@@ -136,11 +136,13 @@ powershell -File C:\lifepunch\cornerman\Start-CornermanLmStudio.ps1 -WarmModel c
 | Hub upgrade effects | **Opus required** |
 | Terminal defense/capability upgrades | **Opus required** |
 
-Auto/Composer is fine for routine work but is **not** a routing guarantee. When a task says
+Auto/Composer is fine for routine work (`AUTO OK`) but is **not** a routing guarantee. When a task says
 `OPUS REQUIRED` / `GROK REQUIRED` / `GREEN CODE REQUIRED` / `GREEN DEEP REQUIRED`, the Integration
 Architect must either switch to that route or stop and tell Bloodwave the required route is not active.
 Auto may not silently substitute models for economy, persistence, `[Sync(FromHost)]`, RPCs, purchase
-routing, migration, power/link state machines, or final major-slice review.
+routing, migration, power/link state machines, or final major-slice review. **Canonical tag definition:**
+`OPUS_USAGE_LAW.md` § Task route tags (mirrored in `MCP_AGENT_ROUTING.md` + the always-applied
+`lifepunch-opus-usage` rule).
 
 ---
 

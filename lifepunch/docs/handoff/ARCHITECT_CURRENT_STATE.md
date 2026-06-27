@@ -145,3 +145,14 @@ Commit for this update: will be recorded on push (see git log for `MODEL_ROUTING
 - Docs touched: `config/cornerman-tier3-models.json`, `CORNERMAN_MODEL_ROUTING.md`, `MCP_AGENT_ROUTING.md`,
   `OPUS_USAGE_LAW.md`, `MODEL_ROUTING_AMENDMENT_GROK_BUILD_1.md`, this file. Docs-only; model keys left
   profile-named (verify on box).
+
+### Route tags canonized — Cursor Auto is not a routing guarantee (2026-06-27)
+
+- **Canonical tag home:** `OPUS_USAGE_LAW.md` § Task route tags; mirrored in `MCP_AGENT_ROUTING.md`
+  and the **always-applied** `.cursor/rules/lifepunch-opus-usage.mdc` (so every agent auto-picks it up).
+- Tags: `AUTO OK` (routine), `OPUS REQUIRED` (Tier-1, manual select), `GROK REQUIRED` (Tier-2A, manual),
+  `GREEN CODE REQUIRED` / `GREEN DEEP REQUIRED` (Cornerman/LM Studio lane — Auto cannot replace it).
+- Auto is fine for routine but **never a routing proof**; it must not silently substitute models for
+  economy · persistence · `[Sync(FromHost)]` · RPCs · purchase routing · migration · power/link state
+  machines · final major-slice / commit-critical review.
+- **Architect duty:** mark every paste with one of those tags so VENGEANCE routes (or stops) correctly.
