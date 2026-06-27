@@ -94,7 +94,45 @@
 					</div>
 				</div>
 				<div class="screen">
-					@if ( _showBootSplash )
+					@if ( _showTerminalPinGate )
+					{
+						<div class="boot-splash term-pin-gate">
+							<div class="boot-mark"></div>
+							<div class="boot-title">LIFEPUNCH HASHD</div>
+							<div class="term-pin-sub">secure rig — enter hub PIN</div>
+							<div class="term-pin-dots">
+								@for ( var i = 0; i < LpBitcoinHubPin.MaxDigits; i++ )
+								{
+									<span class="term-pin-dot @(i < _terminalPinBuffer.Length ? "filled" : "")"></span>
+								}
+							</div>
+							@if ( !string.IsNullOrWhiteSpace( _terminalPinError ) )
+							{
+								<div class="term-pin-error">@_terminalPinError</div>
+							}
+							<div class="term-pin-pad">
+								@foreach ( var key in _terminalPinKeys )
+								{
+									<button class="term-pin-key @(key == "ok" ? "ok" : "") @(key == "clr" ? "clr" : "")"
+									        onclick="@(() => PressTerminalPinKey(key))">
+										@if ( key == "clr" )
+										{
+											<i class="material-icons">backspace</i>
+										}
+										else if ( key == "ok" )
+										{
+											<i class="material-icons">check</i>
+										}
+										else
+										{
+											<span>@key</span>
+										}
+									</button>
+								}
+							</div>
+						</div>
+					}
+					else if ( _showBootSplash )
 					{
 						<div class="boot-splash" onclick="@SkipBoot">
 							<div class="boot-mark"></div>
@@ -107,7 +145,7 @@
 						<div class="log lp-ui-scroll-region terminal-log-scroll"></div>
 					</div>
 					<div class="prompt-row" onclick="@FocusInput">
-						<span class="prompt hashd-prompt-accent">rig@hub&gt;</span>
+						<span class="prompt hashd-prompt-accent">@PromptLabel</span>
 						<LpBitcoinTerminalCommandInput @ref="InputBox" onsubmit="@Submit" Placeholder="type command..." />
 					</div>
 				</div>
@@ -140,6 +178,14 @@
 	private string _bootStatus = "INITIALIZING RIG...";
 	private bool _showSettingsMenu;
 	private LpBitcoinTerminalCommandInput InputBox { get; set; }
+
+	// Terminal PIN gate — reuses the linked Hub's AccessPinHash exactly.
+	// Visual keypad overlay (HASHD CRT art) gates the rig before the boot loading screen runs.
+	private bool _terminalUnlocked = true;
+	private bool _showTerminalPinGate;
+	private string _terminalPinBuffer = "";
+	private string _terminalPinError = "";
+	private static readonly string[] _terminalPinKeys = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "clr", "0", "ok" };
 
 	private const int MaxLogLines = 200;
 	private const int MaxCommandHistory = 100;
@@ -190,7 +236,7 @@
 
 	private const float BootLineIntervalSeconds = 0.35f;
 	private const float BootSplashHoldSeconds = 0.4f;
-	private static readonly string PromptLabel = "rig@hub>";
+	private string PromptLabel => "rig@hub>";
 	private static readonly Color CmdSelectionTint = (Color.Parse( "#f0a500" ) ?? new Color( 0.941f, 0.647f, 0f )).WithAlpha( 0.35f );
 
 	private string GetRootClass() =>
@@ -297,6 +343,24 @@
 		ResetCommandHistoryNavigation();
 		_commandInputWired = false;
 		ResetScrollBootstrap();
+
+		// PIN session state — matches the hub's AccessPin.
+		// When a PIN is set, the visual keypad gate shows FIRST and the cool boot
+		// loading screen is held back until a correct PIN unlocks the rig.
+		_terminalPinBuffer = "";
+		_terminalPinError = "";
+		if ( hub.IsValid() && hub.AccessPinIsSet )
+		{
+			_terminalUnlocked = false;
+			_showTerminalPinGate = true;
+			_showBootSplash = false;
+		}
+		else
+		{
+			_terminalUnlocked = true;
+			_showTerminalPinGate = false;
+			_showBootSplash = true;
+		}
 	}
 
 	private void ResetScrollBootstrap()
@@ -361,6 +425,15 @@
 		if ( !InputBox.IsValid() )
 			return;
 
+		// Locked rig — the visual PIN gate owns input; never run commands until unlocked.
+		if ( _showTerminalPinGate || ( _hub.IsValid() && _hub.AccessPinIsSet && !_terminalUnlocked ) )
+		{
+			InputBox.Text = string.Empty;
+			InputBox.Focus();
+			_lastInputTextLength = 0;
+			return;
+		}
+
 		if ( !_bootComplete )
 		{
 			SkipBoot();
@@ -394,6 +467,73 @@
 		InputBox.Focus();
 		_lastInputTextLength = 0;
 		SyncLogScrollPosition( forceFollowBottom: true );
+	}
+
+	/// <summary>Visual keypad input on the terminal PIN gate (mirrors the hub keypad).</summary>
+	private void PressTerminalPinKey( string key )
+	{
+		if ( !_showTerminalPinGate )
+			return;
+
+		_terminalPinError = "";
+
+		switch ( key )
+		{
+			case "clr":
+				if ( _terminalPinBuffer.Length > 0 )
+					_terminalPinBuffer = _terminalPinBuffer[..^1];
+				break;
+
+			case "ok":
+				if ( _terminalPinBuffer.Length >= LpBitcoinHubPin.MinDigits )
+					_hub?.RequestTerminalUnlock( _terminalPinBuffer );
+				break;
+
+			default:
+				if ( _terminalPinBuffer.Length >= LpBitcoinHubPin.MaxDigits )
+					break;
+
+				_terminalPinBuffer += key;
+
+				// Auto-submit the moment the 4 digits are in.
+				if ( _terminalPinBuffer.Length >= LpBitcoinHubPin.MaxDigits )
+					_hub?.RequestTerminalUnlock( _terminalPinBuffer );
+				break;
+		}
+
+		StateHasChanged();
+	}
+
+	/// <summary>Called by the linked hub after a terminal PIN unlock attempt (reuses the same hash secret).</summary>
+	public void OnTerminalPinResult( bool success )
+	{
+		if ( success )
+		{
+			_terminalUnlocked = true;
+			_showTerminalPinGate = false;
+			_terminalPinError = "";
+			_terminalPinBuffer = "";
+
+			// PIN cleared — now run the cool boot loading screen.
+			StartBootSequence();
+		}
+		else
+		{
+			_terminalPinError = "incorrect pin";
+			_terminalPinBuffer = "";
+		}
+
+		StateHasChanged();
+	}
+
+	/// <summary>(Re)arms the HASHD boot loading screen from the top.</summary>
+	private void StartBootSequence()
+	{
+		_showBootSplash = true;
+		_bootComplete = false;
+		_bootLineIndex = 0;
+		_bootElapsed = 0f;
+		_bootStatus = "INITIALIZING RIG...";
 	}
 
 	private void AppendCommandToHistory( string command )
@@ -723,7 +863,8 @@
 			return;
 		}
 
-		if ( !_bootComplete )
+		// Hold the boot loading screen until the PIN gate is cleared.
+		if ( !_showTerminalPinGate && !_bootComplete )
 			TickBoot();
 
 		TickCommandInputTypingSound();
@@ -759,6 +900,10 @@
 		_bootComplete = true;
 		_showBootSplash = false;
 		AppendLogLine( "ok", _hub?.IsPowered == true ? "hub power: ON" : "hub power: OFF" );
+
+		if ( _hub.IsValid() && _hub.AccessPinIsSet && _terminalUnlocked )
+			AppendLogLine( "ok", "secure access granted" );
+
 		AppendLogLine( "dim", $"type help for {PromptLabel} commands · CLEAR (header) or clear resets scrollback · ctrl+c copies · End follows log · ↑/↓ recalls commands" );
 
 		if ( _pendingFocusRack.IsValid() )
@@ -844,6 +989,10 @@
 		hash.Add( _showBootSplash );
 		hash.Add( _bootStatus );
 		hash.Add( _bootComplete );
+		hash.Add( _showTerminalPinGate );
+		hash.Add( _terminalPinBuffer.Length );
+		hash.Add( _terminalPinError );
+		hash.Add( _terminalUnlocked );
 		hash.Add( _urlCopied );
 		hash.Add( _copiedCommandFlash );
 

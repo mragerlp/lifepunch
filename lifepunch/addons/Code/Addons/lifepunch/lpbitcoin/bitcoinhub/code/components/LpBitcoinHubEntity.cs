@@ -793,6 +793,36 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 		SendPinResultToCaller( true, string.Empty );
 	}
 
+	/// <summary>Terminal (rig0>) uses the exact same PIN secret as the hub admin panel.</summary>
+	public void RequestTerminalUnlock( string pin ) => RequestTerminalUnlockHost( pin );
+
+	[Rpc.Host]
+	private void RequestTerminalUnlockHost( string pin )
+	{
+		if ( !AccessPinIsSet )
+		{
+			SendTerminalUnlockResultToCaller( true );
+			return;
+		}
+
+		if ( !LpBitcoinHubPin.Matches( pin, AccessPinHash ) )
+		{
+			SendTerminalUnlockResultToCaller( false );
+			return;
+		}
+
+		SendTerminalUnlockResultToCaller( true );
+	}
+
+	[Rpc.Owner]
+	private void SendTerminalUnlockResultToCaller( bool ok )
+	{
+		// Notify the open terminal panel on this player's client (if any).
+		var terminalPanel = Game.ActiveScene?.GetAllComponents<LpBitcoinTerminalPanel>().FirstOrDefault( p => p.IsValid() );
+		if ( terminalPanel.IsValid() )
+			terminalPanel.OnTerminalPinResult( ok );
+	}
+
 	[Rpc.Host]
 	private void ChangeAccessPinHost( string currentPin, string newPin, string confirm )
 	{
