@@ -1,0 +1,87 @@
+CORNERMAN WARM — DXRP Party System Step 4 (/party menu UI) — 2026-06-27
+
+CONTEXT
+  Bounty dxura/dxrp#73. Steps 1-3 DONE + pushed (branch bounty/73-party-system on
+  github.com/mragerlp/dxrp-public). Step 3 = always-on Party HUD just shipped (clean
+  commit a4c43d7, author mragerlp, no Cursor trailer). Step 4 = the full /party
+  MANAGEMENT MENU (cursor-unlocked UI). This is a WARM / prep pass: distill patterns +
+  first-draft scaffolding only. Cursor (Opus) integrates + verifies on VENGEANCE.
+  You do NOT have the dxrp-public repo — this brief is self-contained.
+
+EYES COVERED
+  No s&box bridge, no playtest, no scale/render claims. Outbox drafts only.
+
+ROLE / LIMITS (Tier-3)
+  - Distill + first-draft Razor/SCSS scaffolding + checklists. Never ship C# alone.
+  - No git push (read-only key). No commits to dxrp-public. Drafts -> your outbox.
+  - Final C# (RPCs, client/host split) = Opus on VENGEANCE, bridge-verified.
+
+TASK = Step 4: /party management menu
+  A cursor-unlocked panel to manage the party, reusing the Step 3 card style. Must
+  cover (Dimmer + Bloodwave): roster with per-member actions (kick, promote / leader
+  transfer), invite by name, leave / disband, set party color (hex), and the HUD
+  minimize / X-close + reopen path (the menu is the "home" that restores the HUD).
+
+KEY API SURFACE (from repo, current)
+  PartySystem (host-authoritative singleton; client-readable helpers):
+    - PartySystem.Instance ; Settings.MaxPartySize (default 4)
+    - DefaultPartyColor = 0x2ECC40 (packed 0xRRGGBB)
+    - GetPartyColorForMember(long steamId) -> uint
+    - Host mutations (host-side, via PartyCommand.ExecuteHost):
+        HostInvite, HostKick, HostAccept, HostLeave, HostDisband, HostInfo,
+        HostSetColor(caller, uint color)
+  PartyRoom (client view):
+    - PartyRoom.Current -> room or null ; .Count ; .Id (Guid)
+    - .Members : IReadOnlyList<PartyMember>
+    - PartyMember { long Id (SteamId), string Name, bool IsLeader }
+  PartyCommand ("/party"): invite|accept|kick|leave|disband|info|color <hex>.
+    Bare "/party" is ALREADY reserved in code "to open the management UI later".
+  Player (client-readable [Sync(FromHost)]): DisplayName, JobDisplayName,
+    PlayerColor.Hex, WalletBalance (cash; show), BankBalance (DO NOT show),
+    HealthComponent.Health/MaxHealth/State, ArmorComponent.Armor/HasHelmet.
+  GameUtils.GetPlayerById(long) -> Player.
+
+ARCH NOTE (critical)
+  ExecuteHost runs HOST-side; opening a MENU is a CLIENT concern. So /party menu must
+  toggle a CLIENT panel (client command path or RPC-to-caller), NOT a host mutation.
+  Per-member actions (kick / promote) still route to host mutations from the client UI.
+
+STYLE / CONVENTIONS (reuse Step 3)
+  - Razor: @namespace Dxura.RP.Game.UI ; @inherits Panel ; @attribute [StyleSheet].
+  - SCSS root selector uses the COMPONENT TYPE name (DXRP house style), not a class.
+  - pointer-events: all | none ONLY (NOT "auto"). Root HUD is pointer-events:none
+    until IsCursorUnlocked (Input.Down("Mouse") = Alt) -> "all".
+  - Clickable: onclick="@Method" ; set child glyphs pointer-events:none so the whole
+    bar/row routes to the parent handler.
+  - PanelComponent/Panel BuildHash() MUST include every private UI flag that changes
+    markup (open tab, collapsed, selected member, error/invite state).
+  - Tokens: $color-primary #191919 ; $color-good #199c3b (cash) ;
+    $counter-terror-color #08B2E3 (armor) ; $color-bad ; $color-gray-400 ;
+    $rounding 2px ; $space-3 12px. Health bar uses DXRP native health gradient
+    (see PlayerInfo HealthColorHex). Material icons: group, star, expand_more/less,
+    favorite, shield, person_add, logout, close.
+  - Reuse PartyMemberCard as the row template; the menu is a larger surface, same DNA.
+  - Brand: DXRP is third-party; lead UI labels with the ACTION, not a third-party mark.
+
+KEEP-OUT / PLACEMENT (from Step 3)
+  HUD lives top-left clear of AdminTickets (top: $space-3, z 999000, staff-only) and
+  Waila (top: 20%). Self excluded from roster -> max 3 cards. The MENU is its own
+  cursor-unlocked surface (center / dedicated), not pinned into that contested column.
+
+DELIVERABLES (drafts -> outbox, all marked DRAFT / unverified)
+  1  PARTY_STEP4_MENU_SPEC.md            — panel layout, states, BuildHash flags, full
+                                           action map (per-member + party-wide).
+  2  PARTY_STEP4_CLIENT_TOGGLE_NOTE.md   — exact client-vs-host wiring for /party menu
+                                           and HUD show / hide / restore (X-close reopen).
+  3  PARTY_STEP4_RAZOR_SCSS_SCAFFOLD.md  — first-draft PartyMenu.razor + .scss skeleton
+                                           reusing Step 3 tokens (clearly DRAFT).
+  4  PARTY_STEP4_ACCEPTANCE_CHECKLIST.md — review + playtest checklist for Opus+bridge.
+
+OUTPUT
+  C:\lifepunch\cornerman\outbox\*.md   (your standard outbox)
+
+DONE PING
+  OK cornerman party-step4-warm @N files
+
+DO NOT
+  git push ; commit to dxrp-public ; claim playtest/render ; ship final RPC C# as done.
