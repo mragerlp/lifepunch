@@ -4,7 +4,9 @@
 **Companion:** `SBOX_EDITOR_MCP.md` (install/wiring) · `CORNERMAN_MODEL_ROUTING.md` (Tier-3 models)
 
 ChatGPT Plus/Pro on the desk is **Architect** (design brain) — paste `handoff/to-chatgpt-mcp-topology-handoff.txt` for infra refinement only.
-**Cursor on VENGEANCE integrates and commits.** Green distill prep only; Red owns ship.
+**Cursor on VENGEANCE integrates and commits.** Green is the **Tier-3 local worker lane** (code candidates +
+distill/prep — cheap, untrusted, not final authority); Red compiles, proves in s&box, and owns ship.
+See `CORNERMAN_MODEL_ROUTING.md` for the four Green profiles (Code / Deep / Daily / Fast).
 
 **Stack updates / full capacity:** `CVL_FULL_CAPACITY_UPDATES.md` · `Invoke-CvlFullCapacityRefresh.ps1`
 
@@ -157,6 +159,11 @@ Load via **Cursor rules** pointing at these paths — not bridge addons.
 | Regex for log parsing | Yes | No |
 | Razor HUD layout from screenshot desc | Yes draft | Red + play verify |
 | "Is this hub scale correct?" | No | **Yes** + `sbox` screenshot |
+
+**Green Code lane:** "draft" above means a real **candidate patch** the local Qwen Coder profile may
+write (contained Razor/SCSS/C# cleanup, read-only view models, patch-ready diffs). It is still
+**untrusted** — VENGEANCE applies/recreates, compiles, and proves in s&box; economy, persistence,
+`[Sync(FromHost)]`, and commits stay Tier-1 + Bloodwave. See `CORNERMAN_MODEL_ROUTING.md`.
 
 ---
 

@@ -46,7 +46,7 @@
 - Rack cap: **2 Standard + 1 Advanced** (DECISION-0004)
 - Fantasy Check **mandatory** after flatgrass proof (DECISION-0008)
 - Canonical slugs: `bitcoinhub`, `hashdterminal`, `gpurack` (advanced variant); retired `advancedgpurack` folder slug
-- Model routing: Opus (Tier-1), Grok Build 1 (Tier-2A inside Integration Architect lane), Composer (Tier-2B), Cornerman (Tier-3). See `MODEL_ROUTING_AMENDMENT_GROK_BUILD_1.md`.
+- Model routing: Opus (Tier-1), Grok Build 1 (Tier-2A inside Integration Architect lane), Composer (Tier-2B), Cornerman (Tier-3 **local worker lane** — Green Code / Deep / Daily / Fast profiles; cheap + untrusted, not final ship authority). See `MODEL_ROUTING_AMENDMENT_GROK_BUILD_1.md` + `CORNERMAN_MODEL_ROUTING.md`.
 - Visual identity: HASHD amber locked for Bitcoin; green/red/cyan reserved. See `CYBER_VISUAL_IDENTITY_DOCTRINE.md`.
 
 ---
@@ -131,3 +131,17 @@ The five-by-five-by-five structure itself is v1.0 (three domains, fifteen canoni
 Commit for this update: will be recorded on push (see git log for `MODEL_ROUTING_AMENDMENT_GROK_BUILD_1.md` and related doc updates).
 
 **Terminal canon reconciliation** in progress — old "Terminal upgrades: None" language being replaced with reference to the new doctrine and upcoming DECISION-0010.
+
+### Cornerman Qwen profiles / Tier-3 worker lane (2026-06-27)
+
+- **Tier-3 reframed** from "weak helper / distill-only" to **local, cheap, untrusted worker lane** —
+  real work + code candidates, but checked by VENGEANCE compile/proof + Bloodwave approval.
+- **Four Green profiles** defined: **Green Code** (Qwen Coder — contained C#/Razor/SCSS candidate
+  patches), **Green Deep** (distiller + architecture warmer), **Green Daily** (reports/audits/handoffs),
+  **Green Fast** (triage). Exact LM Studio keys verified on Cornerman via `lms ls --llm --detailed`.
+- Role law: Qwen Coder = local code worker · Green Deep warms · Grok scouts · Opus owns risky recipe ·
+  Bloodwave approves the meal. `OPUS REQUIRED` / `GROK REQUIRED` / `GREEN CODE/DEEP REQUIRED` routes may
+  not be silently substituted by Auto for economy/persistence/`[Sync]`/RPC/migration/state-machine work.
+- Docs touched: `config/cornerman-tier3-models.json`, `CORNERMAN_MODEL_ROUTING.md`, `MCP_AGENT_ROUTING.md`,
+  `OPUS_USAGE_LAW.md`, `MODEL_ROUTING_AMENDMENT_GROK_BUILD_1.md`, this file. Docs-only; model keys left
+  profile-named (verify on box).

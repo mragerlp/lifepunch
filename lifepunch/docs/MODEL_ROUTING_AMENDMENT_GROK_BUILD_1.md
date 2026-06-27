@@ -23,7 +23,7 @@ Grok Build 1 is **NOT**:
 | **Opus**         | Tier-1 architecture, economy, permissions, persistence, security, multi-file C#, hard runtime debugging |
 | **Grok Build 1** | Tier-2A — technical planning, repository audits, ModelDoc plans, asset maps, bounded implementation slices |
 | **Composer**     | Tier-2B — continuity, routine edits, documentation, familiar implementation work                        |
-| **Cornerman**    | Tier-3 — bulk distillation and preparation                                                              |
+| **Cornerman**    | Tier-3 **local worker lane** (cheap, untrusted) — Green Code (contained code candidates) / Green Deep (distill + warm) / Green Daily (reports/audits) / Green Fast (triage); not final ship authority. See `CORNERMAN_MODEL_ROUTING.md` (amended 2026-06-27). |
 
 ## Grok Output Law (mandatory)
 
@@ -82,7 +82,9 @@ This amendment must be included in the next Design Architect / ChatGPT continuit
 
 **Red action (Integration Architect):** formalize routing, reconcile Terminal canon, keep all Grok work labeled per the Output Law.
 
-**Green action:** unchanged (distillation/prep only).
+**Green action:** Tier-3 local worker lane — Green Code may write contained code candidates (VENGEANCE
+proves, Bloodwave approves commit); Green Deep/Daily/Fast for distill, reports, and triage. Not final
+ship authority. See `CORNERMAN_MODEL_ROUTING.md` (Green-profiles amendment 2026-06-27).
 
 **Commit only after owner approval** — owner has approved.
 

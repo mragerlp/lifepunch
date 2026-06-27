@@ -1,33 +1,52 @@
 {
   "schemaVersion": 2,
-  "updated": "2026-06-25",
-  "notes": "Three local Green profiles inside Cornerman Tier-3 (not global CVL tiers). Green Deep for long complex repo work, Green Daily for recurring, Green Fast for triage. See CORNERMAN_MODEL_ROUTING.md.",
+  "updated": "2026-06-27",
+  "notes": "Four local Green profiles inside the Cornerman Tier-3 LOCAL WORKER LANE (not a 'weak helper'; not global CVL tiers). Green Code = local code worker for contained C#/Razor/SCSS candidate patches; Green Deep = distiller + architecture warmer; Green Daily = report/audit worker; Green Fast = triage clerk. Tier-3 is cheap + untrusted: good for real work and code candidates, but NOT final authority — VENGEANCE compiles/proves and Bloodwave approves commits. Verify exact model keys on Cornerman with `lms ls --llm --detailed` before relying on them. See CORNERMAN_MODEL_ROUTING.md.",
+  "routingLaw": {
+    "tier3": "local, cheap, untrusted worker lane",
+    "untrustedMeans": [
+      "Good for real work, code candidates, reports, and prep",
+      "NOT final authority for ship decisions",
+      "Must be checked by VENGEANCE compile/proof and Bloodwave approval"
+    ],
+    "roles": {
+      "Qwen Coder": "local code worker (Green Code)",
+      "Qwen 27B / Deep": "local distiller and architecture warmer (Green Deep)",
+      "Qwen Daily / MoE": "faster report and audit worker (Green Daily)",
+      "Qwen Fast": "triage clerk (Green Fast)",
+      "Grok": "repo scout / technical planner (Tier-2A)",
+      "Opus": "senior hard-slice architect, authority reviewer, final high-risk implementation (Tier-1)",
+      "Bloodwave": "final GO / commit approval"
+    },
+    "ruleOfThumb": "Qwen Coder can cook contained code. Green Deep warms the kitchen. Grok finds the ingredients. Opus owns the risky recipe. Bloodwave approves the meal.",
+    "greenCodeNotFor": ["economy", "persistence", "[Sync(FromHost)] authority", "RPCs", "purchase routing", "migration", "power/link state machines", "commits"]
+  },
   "catalog": [
     {
       "id": "deep",
       "model": "qwen/qwen3.6-27b",
-      "role": "Green Deep — long repo analysis, architecture distillation, complex multi-file outbox batches (use for GO SHELL prep, big ecosystem mapping)",
+      "role": "Green Deep — local distiller + architecture warmer: long repo/canon distill, DECISION-vs-code comparison, Opus/Grok packet prep, scope-risk review. NOT for fast triage; NOT final authority on money/persistence/[Sync]/migration/commit.",
       "dailyServe": false,
       "vramGbEstimate": 28
     },
     {
       "id": "distill",
       "model": "qwen/qwen3.6-35b-a3b",
-      "role": "Green Daily (default) — faster recurring prep, comparisons, audits, structured Markdown, inbox/outbox",
+      "role": "Green Daily (default) — report/audit worker: recurring prep, comparisons, audits, structured Markdown, inbox/outbox, Red handoffs, daily long runs. NOT deep authority decisions.",
       "dailyServe": true,
       "vramGbEstimate": 22
     },
     {
       "id": "fast",
       "model": "qwen/qwen3.5-9b",
-      "role": "Green Fast — triage, routing, indexing, short summaries",
+      "role": "Green Fast — triage clerk: quick file location, short summaries, routing checks, fast task classification. NOT important implementation.",
       "dailyServe": false,
       "vramGbEstimate": 7
     },
     {
       "id": "coder",
       "model": "qwen2.5-coder-32b-instruct",
-      "role": "on-demand C#/Razor drafts — WarmCoder only; Red reviews before ship. Keep as experimental specialist.",
+      "role": "Green Code — local code worker: contained C#/Razor/SCSS candidate patches, refactors, read-only view models, patch-ready diff proposals. VENGEANCE applies/recreates + compiles + proves in s&box; Bloodwave approves commit. NOT final authority on economy, persistence, [Sync(FromHost)], purchase routing, or commits.",
       "dailyServe": false,
       "vramGbEstimate": 20
     },

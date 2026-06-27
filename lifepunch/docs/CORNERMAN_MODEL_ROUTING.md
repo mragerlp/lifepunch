@@ -2,7 +2,12 @@
 
 **Box:** Green (Cornerman) · **Runtime:** LM Studio `:1234` · **Red warms from VENGEANCE**
 
-Cornerman is **Tier-3 prep** — distill and draft, not production C# decisions. Red (VENGEANCE / Cursor Opus) owns integration.
+Cornerman is the **Tier-3 local worker lane** — cheap, local, and **untrusted** (not "weak"). It does real
+work: code candidates, distill, reports, and prep. It is **not final authority** for ship decisions — VENGEANCE
+(Cursor / Opus) compiles + proves in s&box, and **Bloodwave approves commits**. Red owns integration.
+
+> **Rule of thumb:** Qwen Coder can cook contained code. Green Deep warms the kitchen. Grok finds the
+> ingredients. Opus owns the risky recipe. Bloodwave approves the meal.
 
 **Eyes covered:** Green cannot see the game or the owner's screen. Say **Cornerman's eyes are covered**
 before any visual, spawn, scale, or playtest claim — files and distills are not the viewport.
@@ -11,18 +16,32 @@ before any visual, spawn, scale, or playtest claim — files and distills are no
 
 ---
 
-## Two models (not one)
+## Four Green profiles (warm the right one)
 
-| Mode | LM Studio model | Use when |
-|------|-----------------|----------|
-| **distill** (default) | `qwen/qwen3.6-35b-a3b` | Spec summaries, 10-line distills, inbox/outbox docs, RAG prep, work-queue hygiene |
-| **coder** | `qwen2.5-coder-32b-instruct` | Multi-file C# **drafts**, Razor/scss first passes, terminal command tables — **Red must review before ship** |
+Tier-3 is a **lane**, not one model. Cornerman runs several local Qwen profiles — different jobs, not
+the same worker. Exact LM Studio keys must be verified on Cornerman with `lms ls --llm --detailed`;
+do not hardcode a key that does not exist on the box.
 
-**Default on boot:** Green Daily + embed.
+| Profile | Model role (LM Studio key) | Use for | Not for |
+|---------|----------------------------|---------|---------|
+| **Green Code** | Qwen Coder / Qwen3 Coder (`qwen2.5-coder-32b-instruct`) | Contained C#/Razor/SCSS candidate patches, refactors, read-only view models, patch-ready diffs | Final authority on economy, persistence, `[Sync(FromHost)]`, purchase routing, commits |
+| **Green Deep** | Qwen dense reasoning (`qwen/qwen3.6-27b`) | Long repo/canon distill, architecture warm packets, Opus/Grok packet prep, scope-risk review, migration warm-up | Fast triage |
+| **Green Daily** (default) | Qwen daily/MoE (`qwen/qwen3.6-35b-a3b`) | Reports, summaries, audits, Red handoffs, daily long runs, plan-drift comparison | Deep authority decisions |
+| **Green Fast** | Small Qwen (`qwen/qwen3.5-9b`) | Quick file location, short summaries, routing checks, fast task classification | Important implementation |
 
-For long, complex, repository-level work (e.g. full lpaddons ecosystem prep, big GO SHELL batches, cyber law + menu overhauls): explicitly load **Green Deep** (qwen/qwen3.6-27b) before starting.
+**Default on boot:** Green Daily + embed. Warm **Green Deep** for long repository-level work (full
+lpaddons ecosystem prep, big GO SHELL batches, cyber-law + menu overhauls). Warm **Green Code** for
+contained implementation candidates (Razor/SCSS cleanup, static UI shell cleanup, read-only status
+dashboards, helper refactors, patch-ready diff proposals) — VENGEANCE then applies/recreates, compiles,
+proves in s&box, and decides whether to ask Opus for review **before** any Bloodwave-approved commit.
 
-**Tier-3 catalog** now includes three local Green profiles. Warm the right one for the task.
+### Green Code may write candidate patches — VENGEANCE owns the rest
+
+Green Code can propose real code, but VENGEANCE owns: applying/recreating the patch, compiling, proving
+in s&box, deciding whether Opus review is needed, and commit/push **only after Bloodwave approval**.
+High-risk slices (Hub off→unlink cascade, CPU/Core→Compute Profile migration, purchase routing, Terminal
+defense, cross-entity logic, money/persistence/`[Sync]`) require an **Opus plan**; Green Code may
+implement a candidate only **after** that plan.
 
 **Canonical catalog file:** `lifepunch/config/cornerman-tier3-models.json` — edit this when adopting a newer LLM; run `Fix-CornermanLmServe.ps1` + see `CVL_FULL_CAPACITY_UPDATES.md` § Cornerman LLM.
 
@@ -100,6 +119,28 @@ powershell -File C:\lifepunch\cornerman\Start-CornermanLmStudio.ps1 -WarmModel c
 | Voice PTT only | Model irrelevant — STT is lifepunchnet |
 
 **Off-Cursor (June 2026):** Green has no Cursor. If the brief does not say `WarmCoder`, assume **distill**.
+
+---
+
+## Current lpbitcoin slice routing
+
+| Slice | Preferred route |
+|-------|-----------------|
+| Static Upgrades shell cleanup | Green Code or Composer; Opus optional review |
+| 3-box Upgrades home launcher | Green Code candidate; VENGEANCE proof |
+| GPU Rack target-home UI | Green Code candidate; VENGEANCE proof |
+| U1 Servers status dashboard (read-only) | Green Code candidate first; Opus review optional |
+| U2 Hub power/link cascade | **Opus plan required**; Green Code may implement candidate after plan |
+| U3 CPU/Core → Compute Profile migration | Green Deep warm packet → **Opus required** |
+| U4 full GPU Rack upgrade economy | **Opus required** |
+| Hub upgrade effects | **Opus required** |
+| Terminal defense/capability upgrades | **Opus required** |
+
+Auto/Composer is fine for routine work but is **not** a routing guarantee. When a task says
+`OPUS REQUIRED` / `GROK REQUIRED` / `GREEN CODE REQUIRED` / `GREEN DEEP REQUIRED`, the Integration
+Architect must either switch to that route or stop and tell Bloodwave the required route is not active.
+Auto may not silently substitute models for economy, persistence, `[Sync(FromHost)]`, RPCs, purchase
+routing, migration, power/link state machines, or final major-slice review.
 
 ---
 

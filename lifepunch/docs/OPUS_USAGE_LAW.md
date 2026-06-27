@@ -28,7 +28,7 @@ See the full amendment in `MODEL_ROUTING_AMENDMENT_GROK_BUILD_1.md`.
 | **Opus**         | Tier-1: architecture, economy, permissions, persistence, security, multi-file C#, hard runtime debugging |
 | **Grok Build 1** | Tier-2A: technical planning, repo audits, ModelDoc plans, asset maps, bounded implementation slices     |
 | **Composer**     | Tier-2B: continuity, routine edits, documentation, familiar implementation                              |
-| **Cornerman**    | Tier-3: bulk distillation and preparation                                                               |
+| **Cornerman**    | Tier-3 **local worker lane** (cheap, untrusted): Green Code = contained C#/Razor/SCSS candidate patches; Green Deep = distill + architecture warm; Green Daily = reports/audits; Green Fast = triage. Not final ship authority — VENGEANCE proves, Bloodwave approves. See `CORNERMAN_MODEL_ROUTING.md`. |
 
 **Grok Output Law (mandatory for all Grok responses):**
 Every technical claim must be labeled:
@@ -70,7 +70,9 @@ Full details (including ESCALATION LAW and PROOF LAW) live in `MODEL_ROUTING_AME
 | Documentation formatting | Auto / Composer |
 
 Routine ~80% stays on **Auto / Composer** (separate generous pool). Escalate to Opus the moment
-real complexity appears — never gamble a hard problem on a weak model to save cost.
+real complexity appears — never gamble a hard problem on a cheaper/local model to save cost. Tier-3 is
+not "weak," it is **untrusted**: great for candidates and prep, but VENGEANCE proof + Bloodwave approval
+gate the ship.
 
 ---
 
