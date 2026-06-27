@@ -498,43 +498,113 @@
 													<span>Universal Upgrades</span>
 												</div>
 
-												<div class="lp-ui-intro upgrades-home-intro">
-													Pick a surface, then open a path to view its full five tiers. Upgrades is the one place you buy progression.
-												</div>
-
-												<div class="upgrade-surface-chips">
-													<button class="upgrade-surface-chip @UpgradeSurfaceChipClass( UpgradeSurface.Hub )" onclick="@(() => SelectUpgradeSurface( UpgradeSurface.Hub ))">
-														<span>HUB</span>
-													</button>
-													<button class="upgrade-surface-chip @UpgradeSurfaceChipClass( UpgradeSurface.Terminal )" onclick="@(() => SelectUpgradeSurface( UpgradeSurface.Terminal ))">
-														<span>TERMINAL</span>
-													</button>
-													<button class="upgrade-surface-chip @UpgradeSurfaceChipClass( UpgradeSurface.GpuRack )" onclick="@(() => SelectUpgradeSurface( UpgradeSurface.GpuRack ))">
-														<span>GPU RACK</span>
-													</button>
-												</div>
-
-												@if ( _upgradeSurface == UpgradeSurface.GpuRack )
+												@if ( !_inUpgradeSurface )
 												{
-													<div class="upgrade-rack-selector">
-														<button class="upgrade-rack-chip @UpgradeRackChipClass( UpgradeRackSelector.Rack1 )" onclick="@(() => SelectUpgradeRackSlot( UpgradeRackSelector.Rack1 ))">
-															<span>RACK 1</span>
+													<div class="lp-ui-intro upgrades-home-intro">
+														Choose what to upgrade. Each surface opens its own upgrade paths.
+													</div>
+
+													<div class="upgrade-home-grid">
+														<button class="upgrade-home-box" onclick="@(() => EnterUpgradeSurface( UpgradeSurface.Hub ))">
+															<i class="material-icons upgrade-home-box-icon">dns</i>
+															<div class="upgrade-home-box-body">
+																<span class="upgrade-home-box-title">HUB</span>
+																<span class="upgrade-home-box-sub">Controller &amp; Farm Operations</span>
+																<span class="upgrade-home-box-desc">Scheduler, share flow, pool client, firmware, and trust policy.</span>
+															</div>
+															<div class="upgrade-home-box-foot">
+																<span class="upgrade-home-box-meta">5 tracks · PLANNED</span>
+																<i class="material-icons upgrade-home-box-chevron">chevron_right</i>
+															</div>
 														</button>
-														<button class="upgrade-rack-chip @UpgradeRackChipClass( UpgradeRackSelector.Rack2 )" onclick="@(() => SelectUpgradeRackSlot( UpgradeRackSelector.Rack2 ))">
-															<span>RACK 2</span>
+														<button class="upgrade-home-box" onclick="@(() => EnterUpgradeSurface( UpgradeSurface.Terminal ))">
+															<i class="material-icons upgrade-home-box-icon">security</i>
+															<div class="upgrade-home-box-body">
+																<span class="upgrade-home-box-title">TERMINAL</span>
+																<span class="upgrade-home-box-sub">Defense &amp; Monitoring</span>
+																<span class="upgrade-home-box-desc">Firewall, command security, intrusion detection, audit logs, and monitoring.</span>
+															</div>
+															<div class="upgrade-home-box-foot">
+																<span class="upgrade-home-box-meta">5 tracks · PLANNED</span>
+																<i class="material-icons upgrade-home-box-chevron">chevron_right</i>
+															</div>
 														</button>
-														<button class="upgrade-rack-chip @UpgradeRackChipClass( UpgradeRackSelector.Advanced )" onclick="@(() => SelectUpgradeRackSlot( UpgradeRackSelector.Advanced ))">
-															<span>ADVANCED</span>
+														<button class="upgrade-home-box" onclick="@(() => EnterUpgradeSurface( UpgradeSurface.GpuRack ))">
+															<i class="material-icons upgrade-home-box-icon">memory</i>
+															<div class="upgrade-home-box-body">
+																<span class="upgrade-home-box-title">GPU RACK</span>
+																<span class="upgrade-home-box-sub">Hardware &amp; Output</span>
+																<span class="upgrade-home-box-desc">Choose a rack, then upgrade its hardware profile.</span>
+															</div>
+															<div class="upgrade-home-box-foot">
+																<span class="upgrade-home-box-meta">3 racks · 5 tracks · PLANNED</span>
+																<i class="material-icons upgrade-home-box-chevron">chevron_right</i>
+															</div>
 														</button>
 													</div>
 												}
+												else if ( _upgradeSurface == UpgradeSurface.GpuRack && !_rackTargetSelected )
+												{
+													<button class="lp-ui-btn-ghost upgrades-back-btn" onclick="@BackToUpgradesHome">
+														<i class="material-icons">arrow_back</i>
+														<span>Upgrades Home</span>
+													</button>
 
-												<div class="lp-ui-scroll-region upgrades-scroll universal-upgrades-scroll">
+													<div class="upgrade-home-grid">
+														<button class="upgrade-home-box" onclick="@(() => EnterRackTarget( UpgradeRackSelector.Rack1 ))">
+															<i class="material-icons upgrade-home-box-icon">memory</i>
+															<div class="upgrade-home-box-body">
+																<span class="upgrade-home-box-title">GPU RACK 1</span>
+																<span class="upgrade-home-box-sub">Standard worker node</span>
+																<span class="upgrade-home-box-desc">Hardware upgrades apply only to Rack 1.</span>
+															</div>
+															<div class="upgrade-home-box-foot">
+																<span class="upgrade-home-box-meta">5 tracks · PLANNED</span>
+																<i class="material-icons upgrade-home-box-chevron">chevron_right</i>
+															</div>
+														</button>
+														<button class="upgrade-home-box" onclick="@(() => EnterRackTarget( UpgradeRackSelector.Rack2 ))">
+															<i class="material-icons upgrade-home-box-icon">memory</i>
+															<div class="upgrade-home-box-body">
+																<span class="upgrade-home-box-title">GPU RACK 2</span>
+																<span class="upgrade-home-box-sub">Standard worker node</span>
+																<span class="upgrade-home-box-desc">Hardware upgrades apply only to Rack 2.</span>
+															</div>
+															<div class="upgrade-home-box-foot">
+																<span class="upgrade-home-box-meta">5 tracks · PLANNED</span>
+																<i class="material-icons upgrade-home-box-chevron">chevron_right</i>
+															</div>
+														</button>
+														<button class="upgrade-home-box" onclick="@(() => EnterRackTarget( UpgradeRackSelector.Advanced ))">
+															<i class="material-icons upgrade-home-box-icon">developer_board</i>
+															<div class="upgrade-home-box-body">
+																<span class="upgrade-home-box-title">ADVANCED GPU RACK</span>
+																<span class="upgrade-home-box-sub">Advanced worker node</span>
+																<span class="upgrade-home-box-desc">Higher baseline rack; same upgrade structure.</span>
+															</div>
+															<div class="upgrade-home-box-foot">
+																<span class="upgrade-home-box-meta">5 tracks · PLANNED</span>
+																<i class="material-icons upgrade-home-box-chevron">chevron_right</i>
+															</div>
+														</button>
+													</div>
+												}
+												else
+												{
+													@if ( _openPath is null )
+													{
+														<button class="lp-ui-btn-ghost upgrades-back-btn" onclick="@BackFromPathList">
+															<i class="material-icons">arrow_back</i>
+															<span>@PathListBackLabel()</span>
+														</button>
+													}
+
+													<div class="lp-ui-scroll-region upgrades-scroll universal-upgrades-scroll">
 													@if ( _openPath is null )
 													{
 														@foreach ( var section in CurrentUpgradeSections() )
 														{
-															<div class="upgrade-section">
+															<div class="upgrade-section @( section.Cosmetic ? "upgrade-section-cosmetic" : "upgrade-section-fill" )">
 																<div class="upgrade-section-head @( section.Cosmetic ? "cosmetic" : "" )">
 																	<i class="material-icons">@section.Icon</i>
 																	<span>@section.Title</span>
@@ -548,7 +618,7 @@
 																				<span class="upgrade-path-btn-name">@track.Name</span>
 																				<span class="upgrade-path-btn-tier">@CurrentTierLabel( track )</span>
 																			</div>
-																			<span class="upgrade-path-btn-status">@TrackStatusLabel( track )</span>
+																			<span class="upgrade-path-btn-status">@( section.Cosmetic ? "NOT ENABLED" : "PLANNED" )</span>
 																			<i class="material-icons upgrade-path-btn-chevron">chevron_right</i>
 																		</button>
 																	}
@@ -559,6 +629,7 @@
 													else
 													{
 														var openTrack = ResolveOpenPath();
+														var openCosmetic = IsCosmetic( openTrack.Name );
 														<div class="upgrade-path-detail">
 															<button class="lp-ui-btn-ghost upgrades-back-btn upgrade-path-back" onclick="@CloseUpgradePath">
 																<i class="material-icons">arrow_back</i>
@@ -568,26 +639,29 @@
 																<i class="material-icons">@openTrack.Icon</i>
 																<div class="upgrade-path-detail-headtext">
 																	<span class="upgrade-path-detail-name">@openTrack.Name</span>
-																	<span class="upgrade-path-detail-sub">@CurrentTierLabel( openTrack ) · @TrackStatusLabel( openTrack )</span>
+																	<span class="upgrade-path-detail-sub">@CurrentTierLabel( openTrack ) · @( openCosmetic ? "NOT ENABLED" : "PLANNED" )</span>
 																</div>
 															</div>
 															<div class="upgrade-tier-line">
 																@for ( int _tier = 1; _tier <= 5; _tier++ )
 																{
-																	var _state = TierState( openTrack.Name, _tier );
-																	<button class="upgrade-tier-cell @_state @( _tier == 5 ? "cap" : "" )"
-																	        tooltip="@TierTooltip( openTrack, _tier )"
-																	        onclick="@(() => PreviewBuyTier( openTrack.Name, _tier ))">
+																	<div class="upgrade-tier-cell @TierLineState( _tier ) @( _tier == 5 ? "cap" : "" )"
+																	     tooltip="@TierTooltip( openTrack, _tier )">
 																		<i class="material-icons upgrade-tier-cell-icon">@openTrack.Icon</i>
 																		<span class="upgrade-tier-cell-roman">Tier @TierRoman( _tier )</span>
 																		<span class="upgrade-tier-cell-label">@TierLineLabel( openTrack, _tier )</span>
-																		<span class="upgrade-tier-cell-price">@TierBoxCaption( openTrack, _tier )</span>
-																	</button>
+																		<span class="upgrade-tier-cell-state">@( _tier == 1 ? "BASE" : "PLANNED" )</span>
+																	</div>
 																}
+															</div>
+															<div class="upgrades-not-enabled-banner">
+																<i class="material-icons">lock</i>
+																<span>PURCHASES NOT YET ENABLED</span>
 															</div>
 														</div>
 													}
-												</div>
+													</div>
+												}
 											</div>
 										}
 									</div>
@@ -893,24 +967,25 @@
 
 	// UI-only shell descriptor (DECISION-0010). No economy/persistence yet — display copy + preview
 	// progression state only. Tiers carries II..V (index 0 = Tier II). Tier I = TierOneLabel baseline.
-	private readonly record struct UpgradeTierShell( string Label, int Price, string Detail );
+	private readonly record struct UpgradeTierShell( string Label, string Detail );
 	private readonly record struct UpgradeTrackShell( string Name, string Icon, string TierOneLabel, UpgradeTierShell[] Tiers );
 
-	// Standard hardware ladder pricing (BTC-economy placeholder $). Cosmetics use a cheaper ladder.
+	// Static UI shell — Tier II–V rung names + a plain-language description (G1). No prices:
+	// purchases are not yet enabled (DECISION-0010 — economy/cost curves staged, on HOLD).
 	private static UpgradeTierShell[] HwTiers( string two, string three, string four, string five ) => new[]
 	{
-		new UpgradeTierShell( two, 1_500, "Early efficiency gain over the baseline." ),
-		new UpgradeTierShell( three, 4_000, "Meaningful throughput and reliability step." ),
-		new UpgradeTierShell( four, 9_000, "High-end capability for serious operators." ),
-		new UpgradeTierShell( five, 20_000, "Best-in-class capstone — the top of this track." )
+		new UpgradeTierShell( two, "Early efficiency gain over the baseline." ),
+		new UpgradeTierShell( three, "Meaningful throughput and reliability step." ),
+		new UpgradeTierShell( four, "High-end capability for serious operators." ),
+		new UpgradeTierShell( five, "Best-in-class capstone — the top of this track." )
 	};
 
 	private static UpgradeTierShell[] CosmeticTiers( string two, string three, string four, string five ) => new[]
 	{
-		new UpgradeTierShell( two, 800, "Cosmetic only — no performance change." ),
-		new UpgradeTierShell( three, 1_600, "Cosmetic only — no performance change." ),
-		new UpgradeTierShell( four, 2_400, "Cosmetic only — no performance change." ),
-		new UpgradeTierShell( five, 3_200, "Cosmetic only — no performance change." )
+		new UpgradeTierShell( two, "Cosmetic only — no performance change." ),
+		new UpgradeTierShell( three, "Cosmetic only — no performance change." ),
+		new UpgradeTierShell( four, "Cosmetic only — no performance change." ),
+		new UpgradeTierShell( five, "Cosmetic only — no performance change." )
 	};
 
 	private static readonly UpgradeTrackShell[] HubUpgradeTracks =
@@ -1002,31 +1077,16 @@
 	private string TierLineLabel( UpgradeTrackShell track, int tier )
 		=> tier == 1 ? track.TierOneLabel : TierAt( track, tier ).Label;
 
-	// Preview-only purchase progression (no economy). Keyed by track name; default Tier I owned.
-	// Swap point: replace PreviewBuyTier with a real purchase RPC when economy lands.
-	private readonly Dictionary<string, int> _previewTier = new();
-	private int _previewTierRev;
+	// Static UI shell — no economy, no purchase state, no mutation. Tier I is the included
+	// baseline; Tiers II–V are planned and not yet enabled. Swap point: when the economy lands,
+	// a real owned-tier source + purchase RPC replace these static helpers.
+	private static bool IsCosmetic( string name )
+		=> name == HubSoundPackCosmetic.Name
+		|| name == TerminalSkinCosmetic.Name
+		|| name == RackFanRgbCosmetic.Name;
 
-	private int OwnedTier( string key ) => _previewTier.TryGetValue( key, out var t ) ? t : 1;
-
-	private void PreviewBuyTier( string key, int tier )
-	{
-		// Only the immediate next tier is purchasable — enforces the locked-until-previous rule.
-		if ( tier != OwnedTier( key ) + 1 || tier > 5 )
-			return;
-
-		_previewTier[key] = tier;
-		_previewTierRev++;
-	}
-
-	// owned (<= ownedTier), available (ownedTier + 1), or locked (beyond).
-	private string TierState( string key, int tier )
-	{
-		var owned = OwnedTier( key );
-		if ( tier <= owned ) return "owned";
-		if ( tier == owned + 1 ) return "available";
-		return "locked";
-	}
+	// Visual state for a static tier cell: Tier I = included baseline, Tiers II–V = planned.
+	private static string TierLineState( int tier ) => tier == 1 ? "base" : "planned";
 
 	private static string TierRoman( int n ) => n switch
 	{
@@ -1045,17 +1105,9 @@
 		var tiers = track.Tiers;
 		var idx = tier - 2;
 		if ( tiers is null || idx < 0 || idx >= tiers.Length )
-			return new UpgradeTierShell( track.TierOneLabel ?? "—", 0, "" );
+			return new UpgradeTierShell( track.TierOneLabel ?? "—", "" );
 
 		return tiers[idx];
-	}
-
-	private string TierBoxCaption( UpgradeTrackShell track, int tier )
-	{
-		var state = TierState( track.Name, tier );
-		if ( state == "owned" ) return tier == 1 ? "Base" : "Owned";
-		if ( state == "locked" ) return "Locked";
-		return $"${TierAt( track, tier ).Price:N0}";
 	}
 
 	private string TierTooltip( UpgradeTrackShell track, int tier )
@@ -1064,29 +1116,12 @@
 			return $"Tier I · {track.TierOneLabel}\nBaseline — included";
 
 		var t = TierAt( track, tier );
-		var state = TierState( track.Name, tier );
-		if ( state == "owned" )
-			return $"Tier {TierRoman( tier )} · {t.Label}\nOwned";
-
-		return $"Tier {TierRoman( tier )} · {t.Label}\nPrice: ${t.Price:N0}\n{t.Detail}";
+		return $"Tier {TierRoman( tier )} · {t.Label}\n{t.Detail}\nPlanned — purchases not yet enabled";
 	}
 
+	// Static baseline label — always Tier I (the included baseline) on this UI-only shell.
 	private string CurrentTierLabel( UpgradeTrackShell track )
-	{
-		var owned = OwnedTier( track.Name );
-		var label = owned == 1 ? track.TierOneLabel : TierAt( track, owned ).Label;
-		return $"Tier {TierRoman( owned )} · {label}";
-	}
-
-	private string TrackStatusLabel( UpgradeTrackShell track )
-	{
-		var owned = OwnedTier( track.Name );
-		if ( owned >= 5 )
-			return "MAX TIER · PREVIEW";
-
-		var next = TierAt( track, owned + 1 );
-		return $"NEXT · TIER {TierRoman( owned + 1 )} · ${next.Price:N0}";
-	}
+		=> $"Tier I · {track.TierOneLabel}";
 
 	private static readonly OpsTab[] _tabs = { OpsTab.Overview, OpsTab.Wallet, OpsTab.Transfers, OpsTab.Racks, OpsTab.Upgrades, OpsTab.Logs, OpsTab.Settings };
 	private static readonly PerfRange[] _perfRanges = { PerfRange.Day, PerfRange.Week, PerfRange.Month };
@@ -1095,6 +1130,8 @@
 	private Guid _upgradeRackId = Guid.Empty;
 	private UpgradeSurface _upgradeSurface = UpgradeSurface.Hub;
 	private UpgradeRackSelector _upgradeRackSlot = UpgradeRackSelector.Rack1;
+	private bool _inUpgradeSurface;     // false = Upgrades home (3 surface boxes)
+	private bool _rackTargetSelected;   // GPU only: false = rack target home (3 rack boxes)
 	private Guid _rackSlotCopyAckId = Guid.Empty;
 	private bool _receiveCopyAck;
 	private bool _sendExampleCopyAck;
@@ -1567,6 +1604,13 @@
 	{
 		if ( tab != OpsTab.Upgrades )
 			_upgradeRackId = Guid.Empty;
+		else
+		{
+			// Always enter the universal Upgrades at the 3-box home (one decision per screen).
+			_inUpgradeSurface = false;
+			_rackTargetSelected = false;
+			_openPath = null;
+		}
 
 		_active = tab;
 		LifePunchUiScrollPolicy.ResetOffsets( Panel );
@@ -1576,26 +1620,52 @@
 	private bool IsSidebarTabActive( OpsTab tab )
 		=> _active == tab || ( tab == OpsTab.Racks && _active == OpsTab.Upgrades && GetUpgradeRack().IsValid() );
 
-	private void SelectUpgradeSurface( UpgradeSurface surface )
+	// Upgrades home → surface submenu. GPU enters its rack target home first (rack not yet chosen).
+	private void EnterUpgradeSurface( UpgradeSurface surface )
 	{
 		_upgradeRackId = Guid.Empty;
 		_upgradeSurface = surface;
+		_inUpgradeSurface = true;
+		_rackTargetSelected = false;
 		_openPath = null;
 		LifePunchUiScrollPolicy.ResetOffsets( Panel );
 	}
 
-	private void SelectUpgradeRackSlot( UpgradeRackSelector slot )
+	private void BackToUpgradesHome()
+	{
+		_inUpgradeSurface = false;
+		_rackTargetSelected = false;
+		_openPath = null;
+		LifePunchUiScrollPolicy.ResetOffsets( Panel );
+	}
+
+	// GPU rack target home → that rack's hardware paths.
+	private void EnterRackTarget( UpgradeRackSelector slot )
 	{
 		_upgradeRackSlot = slot;
+		_rackTargetSelected = true;
 		_openPath = null;
 		LifePunchUiScrollPolicy.ResetOffsets( Panel );
 	}
 
-	private string UpgradeSurfaceChipClass( UpgradeSurface surface )
-		=> _upgradeSurface == surface ? "active" : string.Empty;
+	private void BackToRackTargets()
+	{
+		_rackTargetSelected = false;
+		_openPath = null;
+		LifePunchUiScrollPolicy.ResetOffsets( Panel );
+	}
 
-	private string UpgradeRackChipClass( UpgradeRackSelector slot )
-		=> _upgradeRackSlot == slot ? "active" : string.Empty;
+	// Path-list back target: GPU returns to the rack target home; Hub/Terminal to the Upgrades home.
+	private void BackFromPathList()
+	{
+		if ( _upgradeSurface == UpgradeSurface.GpuRack )
+			BackToRackTargets();
+		else
+			BackToUpgradesHome();
+	}
+
+	private string PathListBackLabel()
+		=> _upgradeSurface == UpgradeSurface.GpuRack ? "GPU Rack targets" : "Upgrades Home";
 
 	private string UpgradeRackSelectorHeadline() => _upgradeRackSlot switch
 	{
@@ -2622,8 +2692,9 @@
 		hash.Add( _upgradeRackId );
 		hash.Add( (int)_upgradeSurface );
 		hash.Add( (int)_upgradeRackSlot );
+		hash.Add( _inUpgradeSurface );
+		hash.Add( _rackTargetSelected );
 		hash.Add( _openPath ?? string.Empty );
-		hash.Add( _previewTierRev );
 		hash.Add( _receiveCopyAck );
 		hash.Add( _sendExampleCopyAck );
 		hash.Add( _rackSlotCopyAckId );

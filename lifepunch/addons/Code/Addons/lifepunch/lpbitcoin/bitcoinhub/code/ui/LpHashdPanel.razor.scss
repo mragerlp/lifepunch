@@ -5919,10 +5919,107 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		font-size: 11px;
 	}
 
+	// Low-clutter launcher boxes (Upgrades home + GPU Rack target home)
+	.upgrade-home-grid {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		gap: 14px;
+		margin-top: 16px;
+		width: 100%;
+		flex: 1 1 auto;
+	}
+
+	.upgrade-home-box {
+		display: flex;
+		align-items: center;
+		gap: 16px;
+		width: 100%;
+		flex: 1 1 0;
+		min-height: 84px;
+		max-height: 140px;
+		padding: 18px 20px;
+		border-radius: 12px;
+		border: 1px solid $hashd-border;
+		background-color: $hashd-inset-bg;
+		text-align: left;
+		cursor: pointer;
+		transition: border-color .1s ease, background-color .1s ease, transform .05s ease;
+
+		&:hover {
+			border-color: $hashd-amber;
+			background-color: rgba(232, 125, 62, 0.10);
+		}
+
+		&:active {
+			transform: translateY(1px);
+		}
+	}
+
+	.upgrade-home-box-icon {
+		flex: 0 0 auto;
+		color: $hashd-amber;
+		font-size: 40px;
+		width: 48px;
+		text-align: center;
+	}
+
+	.upgrade-home-box-body {
+		display: flex;
+		flex-direction: column;
+		gap: 3px;
+		flex: 1 1 auto;
+		min-width: 0;
+	}
+
+	.upgrade-home-box-title {
+		color: $hashd-title;
+		font-size: 18px;
+		font-weight: 900;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+	}
+
+	.upgrade-home-box-sub {
+		color: $hashd-amber;
+		font-size: 12px;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.03em;
+	}
+
+	.upgrade-home-box-desc {
+		color: $hashd-muted;
+		font-size: 12px;
+		line-height: 16px;
+	}
+
+	.upgrade-home-box-foot {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+		gap: 8px;
+		flex: 0 0 auto;
+	}
+
+	.upgrade-home-box-meta {
+		color: $hashd-muted;
+		font-size: 10px;
+		font-weight: 800;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+	}
+
+	.upgrade-home-box-chevron {
+		color: $hashd-amber;
+		font-size: 24px;
+	}
+
 	.universal-upgrades-scroll {
 		display: flex;
 		flex-direction: column;
 		gap: 18px;
+		margin-top: 16px;
 	}
 
 	.upgrade-section {
@@ -6115,16 +6212,72 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		letter-spacing: 0.06em;
 	}
 
-	// Centered header + intro for the Universal Upgrades home (match other menu pages' breathing room).
+	// Match the standard section header format used by every other pane (Wallet, Logs,
+	// Settings, …) so Universal Upgrades follows suit — no center alignment, no extra top margin.
 	.upgrades-home-title {
-		justify-content: center;
-		align-items: center;
-		margin-top: 6px;
+		align-items: flex-start;
+		margin-top: 0;
 		margin-bottom: 14px;
 	}
 
 	.upgrades-home-intro {
 		text-align: center;
+		flex: 0 0 auto;
+		margin-top: 20px;
+	}
+
+	// Back navigation in the Universal Upgrades surface is a light, left-aligned link —
+	// not a full-width centered bar — so the short label sits under the header without
+	// crowding it (the column flex would otherwise stretch it edge to edge).
+	.upgrades-home .upgrades-back-btn {
+		flex: 0 0 auto;
+		align-self: flex-start;
+		justify-content: flex-start;
+		min-height: 0;
+		margin-top: 16px;
+		padding: 4px 6px;
+		border: 0;
+		border-radius: 5px;
+		text-align: left;
+		color: $hashd-muted;
+
+		&:hover {
+			border: 0;
+			color: $hashd-amber;
+			background-color: rgba(255, 255, 255, 0.04);
+		}
+	}
+
+	// GPU Rack target home: the launcher grid that follows the back bar fills flush
+	// (no center gap), so the back bar sits balanced under the header instead of
+	// hugging it with dead space below.
+	.upgrades-back-btn + .upgrade-home-grid {
+		justify-content: flex-start;
+		margin-top: 16px;
+
+		.upgrade-home-box {
+			max-height: 220px;
+		}
+	}
+
+	// Path-list sections fill the menu: the main track section grows so its cards
+	// distribute down and the cosmetic section sits flush near the bottom.
+	.upgrade-section-fill {
+		flex: 1 1 auto;
+
+		.upgrade-path-list {
+			flex: 1 1 auto;
+		}
+
+		.upgrade-path-btn {
+			flex: 1 1 0;
+			min-height: 52px;
+			max-height: 104px;
+		}
+	}
+
+	.upgrade-section-cosmetic {
+		flex: 0 0 auto;
 	}
 
 	// Path list — one compact button per track; opens the five-tier detail.
@@ -6250,8 +6403,8 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		letter-spacing: 0.04em;
 	}
 
-	// Five tiers in a row — each a tall cell (icon + tier + label + price), with the same
-	// owned/available/locked/cap state styling as the ULX command grid tiles.
+	// Five tiers in a row — each a tall, non-interactive cell (icon + tier + label + state).
+	// Static UI shell: Tier I = included baseline, Tiers II–V = planned (not enabled).
 	.upgrade-tier-line {
 		display: flex;
 		flex-direction: row;
@@ -6272,8 +6425,8 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		border-radius: 10px;
 		border: 1px solid $hashd-inset-border;
 		background-color: $hashd-inset-bg;
-		cursor: pointer;
-		transition: background-color 0.12s ease-out, border-color 0.12s ease-out, color 0.12s ease-out;
+		pointer-events: none;
+		cursor: default;
 
 		.upgrade-tier-cell-icon {
 			color: $hashd-muted;
@@ -6294,7 +6447,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 			text-align: center;
 		}
 
-		.upgrade-tier-cell-price {
+		.upgrade-tier-cell-state {
 			color: $hashd-muted;
 			font-size: 10px;
 			font-weight: 800;
@@ -6302,47 +6455,23 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 			letter-spacing: 0.05em;
 		}
 
-		&.owned {
+		// Tier I — the included baseline (amber, present today).
+		&.base {
 			border-color: $hashd-amber;
 			background-color: rgba(232, 125, 62, 0.18);
-			pointer-events: none;
-			cursor: default;
 
 			.upgrade-tier-cell-icon,
 			.upgrade-tier-cell-roman {
 				color: $hashd-title;
 			}
 
-			.upgrade-tier-cell-price {
+			.upgrade-tier-cell-state {
 				color: $hashd-amber;
 			}
 		}
 
-		&.available {
-			border-color: rgba(232, 125, 62, 0.5);
-
-			.upgrade-tier-cell-icon {
-				color: $hashd-amber;
-			}
-
-			.upgrade-tier-cell-price {
-				color: $hashd-amber-glow;
-			}
-
-			&:hover {
-				background-color: rgba(232, 125, 62, 0.14);
-				border-color: $hashd-amber;
-
-				.upgrade-tier-cell-roman {
-					color: $hashd-title;
-				}
-			}
-		}
-
-		&.locked,
-		&.locked:hover {
-			pointer-events: none;
-			cursor: default;
+		// Tiers II–V — planned, not enabled (dimmed, clearly not purchasable).
+		&.planned {
 			opacity: 0.5;
 			border-color: rgba(255, 255, 255, 0.04);
 			background-color: rgba(0, 0, 0, 0.25);
@@ -6350,9 +6479,33 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 			.upgrade-tier-cell-icon,
 			.upgrade-tier-cell-roman,
 			.upgrade-tier-cell-label,
-			.upgrade-tier-cell-price {
+			.upgrade-tier-cell-state {
 				color: $hashd-muted;
 			}
+		}
+	}
+
+	// Honest "no live purchase" banner under the tier ladder.
+	.upgrades-not-enabled-banner {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		gap: 8px;
+		width: 100%;
+		padding: 10px 12px;
+		border-radius: 8px;
+		border: 1px solid rgba(232, 125, 62, 0.25);
+		background-color: rgba(232, 125, 62, 0.06);
+		color: $hashd-amber-glow;
+		font-size: 11px;
+		font-weight: 900;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+
+		.material-icons {
+			font-size: 16px;
+			color: $hashd-amber-glow;
 		}
 	}
 }
