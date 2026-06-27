@@ -3374,142 +3374,178 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	margin-bottom: 8px;
 }
 
-.lp-bitcoin-ops .settings-sections {
-	flex: 1 1 0;
-	min-height: 0;
-	display: flex;
-	flex-direction: column;
-	gap: 8px;
-	padding-bottom: 0;
-	justify-content: flex-start;
-}
-
-.lp-bitcoin-ops .settings-section.lp-hashd-surface {
+// Settings tab is a left-aligned grouped list (iOS-style): each row has its label +
+// hint on the left and a control on the right — a switch for true toggles, a compact
+// button for momentary actions.
+.lp-bitcoin-ops .settings-list {
 	flex: 0 0 auto;
 	display: flex;
 	flex-direction: column;
-	gap: 3px;
-	padding-top: 9px;
-	padding-right: 14px;
-	padding-bottom: 9px;
-	padding-left: 14px;
-	justify-content: flex-start;
-	overflow: hidden;
+	gap: 0;
+	padding-top: 2px;
+	padding-bottom: 2px;
 }
 
-.lp-bitcoin-ops .settings-sections > .settings-section.lp-hashd-surface:last-child {
-	padding-bottom: 14px;
-}
-
-.lp-bitcoin-ops .settings-section-head {
+.lp-bitcoin-ops .settings-row {
 	display: flex;
 	flex-direction: row;
 	flex-wrap: nowrap;
 	align-items: center;
 	justify-content: space-between;
-	gap: 6px;
-	flex-shrink: 0;
+	gap: 14px;
+	padding-top: 12px;
+	padding-bottom: 12px;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.07);
 }
 
-.lp-bitcoin-ops .settings-status-pills {
+.lp-bitcoin-ops .settings-list > .settings-row:last-child {
+	border-bottom: 0;
+}
+
+.lp-bitcoin-ops .settings-row-main {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 3px;
+	min-width: 0;
+	flex: 1 1 auto;
+}
+
+.lp-bitcoin-ops .settings-row-label {
+	color: #f8f9fc;
+	font-size: 13px;
+	font-weight: 900;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	line-height: 1.2;
+}
+
+.lp-bitcoin-ops .settings-row-hint {
+	color: #9ca3af;
+	font-size: 11px;
+	line-height: 1.4;
+	white-space: normal;
+}
+
+.lp-bitcoin-ops .settings-row-control {
 	display: flex;
 	flex-direction: row;
 	flex-wrap: nowrap;
-	gap: 4px;
+	align-items: center;
+	gap: 8px;
 	flex-shrink: 0;
 }
 
-.lp-bitcoin-ops .settings-pill {
-	padding-top: 4px;
-	padding-right: 9px;
-	padding-bottom: 4px;
-	padding-left: 9px;
-	border-radius: 999px;
-	border: 1px solid rgba(255, 255, 255, 0.12);
-	background-color: rgba(255, 255, 255, 0.05);
-	color: #9ca3af;
-	font-size: 10px;
+.lp-bitcoin-ops .settings-switch {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	padding: 0;
+	border: 0;
+	background-color: transparent;
+	cursor: pointer;
+	flex-shrink: 0;
+
+	&:disabled {
+		opacity: 0.4;
+		cursor: default;
+	}
+}
+
+// Momentary actions read as real, tappable buttons (filled inset + clear border).
+.lp-bitcoin-ops .settings-row-action {
+	flex-shrink: 0;
+	min-height: 34px;
+	padding-top: 7px;
+	padding-right: 18px;
+	padding-bottom: 7px;
+	padding-left: 18px;
+	border-radius: 7px;
+	border: 1px solid rgba(255, 255, 255, 0.16);
+	background-color: rgba(255, 255, 255, 0.06);
+	color: $hashd-text;
+	font-size: 12px;
 	font-weight: 800;
+	letter-spacing: 0.03em;
+	line-height: 1.2;
+	text-align: center;
+	white-space: nowrap;
+	cursor: pointer;
+
+	&:hover {
+		border-color: rgba(232, 125, 62, 0.5);
+		color: $hashd-amber;
+		background-color: rgba(232, 125, 62, 0.12);
+	}
+
+	&:disabled {
+		opacity: 0.4;
+		cursor: default;
+	}
+}
+
+// Getting-started + credits block fills the space freed by the iOS-switch list.
+.lp-bitcoin-ops .settings-footnote {
+	flex: 0 0 auto;
+	gap: 6px;
+	margin-top: 12px;
+}
+
+.lp-bitcoin-ops .settings-footnote-title {
+	color: #f8f9fc;
+	font-size: 11px;
+	font-weight: 900;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	line-height: 1.2;
+}
+
+.lp-bitcoin-ops .settings-footnote-text {
+	color: #9ca3af;
+	font-size: 11px;
+	line-height: 1.45;
+	white-space: normal;
+}
+
+.lp-bitcoin-ops .settings-footnote-credit {
+	color: #6b7280;
+	font-size: 10px;
+	line-height: 1.3;
+	white-space: normal;
+}
+
+// Quiet status chips — they annotate the row, they do NOT compete with the switch.
+.lp-bitcoin-ops .settings-pill {
+	padding-top: 3px;
+	padding-right: 8px;
+	padding-bottom: 3px;
+	padding-left: 8px;
+	border-radius: 999px;
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	background-color: transparent;
+	color: #9ca3af;
+	font-size: 9px;
+	font-weight: 700;
 	text-transform: uppercase;
 	letter-spacing: 0.04em;
 	line-height: 1.2;
 	white-space: nowrap;
 }
 
-.lp-bitcoin-ops .settings-pill.on {
-	color: #12100c;
-	background-color: #e87d3e;
-	border-color: #e87d3e;
-}
-
+.lp-bitcoin-ops .settings-pill.on,
 .lp-bitcoin-ops .settings-pill.warn {
-	color: #f8f9fc;
-	background-color: rgba(232, 125, 62, 0.22);
-	border-color: rgba(232, 125, 62, 0.45);
+	color: #e0a06a;
+	background-color: rgba(232, 125, 62, 0.08);
+	border-color: rgba(232, 125, 62, 0.4);
 }
 
 .lp-bitcoin-ops .settings-pill.off {
 	color: #9ca3af;
 }
 
-.lp-bitcoin-ops .settings-label {
-	color: #f8f9fc;
-	font-size: 13px;
-	font-weight: 900;
-	text-transform: uppercase;
-	letter-spacing: 0.04em;
-	line-height: 1.25;
-}
-
-.lp-bitcoin-ops .settings-hint {
-	color: #9ca3af;
-	font-size: 12px;
-	line-height: 1.45;
-	white-space: normal;
-	flex: 0 0 auto;
-	flex-shrink: 0;
-	margin-top: 0;
-	margin-bottom: 0;
-}
-
 .lp-bitcoin-ops .settings-hint-ok {
 	color: #5fd38d;
 	font-weight: 600;
-}
-
-.lp-bitcoin-ops .settings-actions {
-	display: flex;
-	flex-direction: row;
-	flex-wrap: nowrap;
-	gap: 10px;
-	margin-top: 5px;
-	margin-bottom: 0;
-	flex-shrink: 0;
-	width: 100%;
-	padding-top: 0;
-	padding-right: 0;
-	padding-bottom: 0;
-	padding-left: 0;
-	align-items: stretch;
-}
-
-.lp-bitcoin-ops .settings-actions .lp-ui-btn-primary,
-.lp-bitcoin-ops .settings-actions .lp-ui-btn-ghost {
-	flex: 1 1 0;
-	min-width: 0;
-	max-width: 100%;
-	min-height: 36px;
-	height: auto;
-	padding-top: 7px;
-	padding-right: 14px;
-	padding-bottom: 7px;
-	padding-left: 14px;
-	font-size: 11px;
-	font-weight: 800;
-	letter-spacing: 0.03em;
-	line-height: 1.2;
-	text-align: center;
-	white-space: nowrap;
 }
 
 .lp-bitcoin-ops .lp-hashd-surface {
@@ -3594,33 +3630,6 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	gap: 8px;
 	flex-shrink: 0;
 	width: 100%;
-}
-
-.lp-bitcoin-ops .overview-intro-shell {
-	flex: 0 0 auto;
-	flex-shrink: 0;
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: center;
-	width: 100%;
-	padding-top: 7px;
-	padding-right: 12px;
-	padding-bottom: 7px;
-	padding-left: 12px;
-	border-radius: 8px;
-	overflow: hidden;
-	border: 1px solid rgba(232, 125, 62, 0.35);
-	background-color: rgba(232, 125, 62, 0.12);
-}
-
-.lp-bitcoin-ops .overview-intro-copy-text {
-	width: 100%;
-	text-align: center;
-	font-size: 10px;
-	line-height: 1.35;
-	color: #eceef3;
-	white-space: normal;
 }
 
 .lp-bitcoin-ops .overview-intro-terminal-row {
@@ -4307,6 +4316,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	background-color: transparent;
 }
 
+.lp-bitcoin-ops .pane.overview > .lp-ui-panel-title,
 .lp-bitcoin-ops .pane.wallet .lp-ui-panel-title,
 .lp-bitcoin-ops .pane.transfers .lp-ui-panel-title,
 .lp-bitcoin-ops .pane.racks .lp-ui-panel-title,
@@ -4573,10 +4583,6 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 .lp-bitcoin-ops .pane.upgrades .lp-ui-intro {
 	flex-shrink: 0;
 	margin-bottom: 12px;
-	text-align: center;
-}
-
-.lp-bitcoin-ops .overview-intro-copy-text {
 	text-align: center;
 }
 
@@ -5010,18 +5016,16 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	padding-bottom: 4px;
 	padding-left: 6px;
 	border-radius: 999px;
-	background-color: rgba(0, 0, 0, 0.35);
-	border: 1px solid rgba(255, 255, 255, 0.08);
+	background-color: $hashd-card;
+	border: 1px solid $hashd-border;
 }
 
-.lp-bitcoin-ops .header-power-switch.on {
-	border-color: rgba(95, 211, 141, 0.45);
-	background-color: rgba(95, 211, 141, 0.1);
-}
-
+// Pill stays uniform with the wallet/date chips in both states — the on/off colour
+// lives ONLY inside the switch (track + knob), like an iOS toggle.
+.lp-bitcoin-ops .header-power-switch.on,
 .lp-bitcoin-ops .header-power-switch.off {
-	border-color: rgba(239, 107, 95, 0.45);
-	background-color: rgba(239, 107, 95, 0.1);
+	background-color: $hashd-card;
+	border-color: $hashd-border;
 }
 
 .lp-bitcoin-ops .power-switch-track {
@@ -5034,16 +5038,19 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	flex-shrink: 0;
 }
 
-.lp-bitcoin-ops .header-power-switch.on .power-switch-track {
+.lp-bitcoin-ops .header-power-switch.on .power-switch-track,
+.lp-bitcoin-ops .settings-switch.on .power-switch-track {
 	background-color: rgba(95, 211, 141, 0.35);
 	border-color: rgba(95, 211, 141, 0.55);
 }
 
-.lp-bitcoin-ops .header-power-switch.off .power-switch-track {
+.lp-bitcoin-ops .header-power-switch.off .power-switch-track,
+.lp-bitcoin-ops .settings-switch.off .power-switch-track {
 	background-color: rgba(239, 107, 95, 0.28);
 	border-color: rgba(239, 107, 95, 0.5);
 }
 
+// iOS-style: the knob is always white; only the track carries the green/red state colour.
 .lp-bitcoin-ops .power-switch-knob {
 	position: absolute;
 	top: 2px;
@@ -5051,17 +5058,36 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	width: 14px;
 	height: 14px;
 	border-radius: 999px;
-	background-color: #6b7280;
+	background-color: #ffffff;
 }
 
 .lp-bitcoin-ops .header-power-switch.on .power-switch-knob {
 	left: 18px;
-	background-color: #5fd38d;
 }
 
 .lp-bitcoin-ops .header-power-switch.off .power-switch-knob {
 	left: 2px;
-	background-color: #ef6b5f;
+}
+
+// Settings switches sit a touch larger than the compact header toggle.
+.lp-bitcoin-ops .settings-switch .power-switch-track {
+	width: 46px;
+	height: 26px;
+}
+
+.lp-bitcoin-ops .settings-switch .power-switch-knob {
+	width: 20px;
+	height: 20px;
+	top: 3px;
+	left: 3px;
+}
+
+.lp-bitcoin-ops .settings-switch.on .power-switch-knob {
+	left: 23px;
+}
+
+.lp-bitcoin-ops .settings-switch.off .power-switch-knob {
+	left: 3px;
 }
 
 .lp-bitcoin-ops .power-switch-label {
@@ -5071,62 +5097,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	text-transform: uppercase;
 	line-height: 1.2;
 	white-space: nowrap;
-}
-
-.lp-bitcoin-ops .header-power-switch.on .power-switch-label {
-	color: #5fd38d;
-}
-
-.lp-bitcoin-ops .header-power-switch.off .power-switch-label {
-	color: #ef6b5f;
-}
-
-.lp-bitcoin-ops .overview-hub-power-btn,
-.lp-bitcoin-ops .overview-hub-power-toggle {
-	display: flex;
-	flex-direction: row;
-	flex-wrap: nowrap;
-	align-items: center;
-	justify-content: center;
-	gap: 8px;
-	min-height: 34px;
-	padding-top: 7px;
-	padding-right: 12px;
-	padding-bottom: 7px;
-	padding-left: 12px;
-	border-radius: 8px;
-	border: 1px solid rgba(255, 255, 255, 0.1);
-	background-color: rgba(0, 0, 0, 0.28);
-	color: #f8f9fc;
-	font-size: 11px;
-	font-weight: 800;
-	text-transform: uppercase;
-	letter-spacing: 0.03em;
-	line-height: 1.2;
-	cursor: pointer;
-}
-
-.lp-bitcoin-ops .overview-hub-power-btn {
-	flex: 1 1 auto;
-	width: 100%;
-}
-
-.lp-bitcoin-ops .overview-hub-power-toggle {
-	flex: 0 0 auto;
-}
-
-.lp-bitcoin-ops .overview-hub-power-btn.on,
-.lp-bitcoin-ops .overview-hub-power-toggle.on {
-	border-color: rgba(95, 211, 141, 0.45);
-	background-color: rgba(95, 211, 141, 0.12);
-	color: #5fd38d;
-}
-
-.lp-bitcoin-ops .overview-hub-power-btn.off,
-.lp-bitcoin-ops .overview-hub-power-toggle.off {
-	border-color: rgba(239, 107, 95, 0.45);
-	background-color: rgba(239, 107, 95, 0.12);
-	color: #ef6b5f;
+	color: $hashd-text;
 }
 
 .lp-bitcoin-ops .lp-ui-status-dot {

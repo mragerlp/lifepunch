@@ -749,6 +749,25 @@ public static class LpBitcoinDevSpawn
 		Log.Info( "lp_bitcoin_preview_hub_wallet: wallet tab open — check cash-out tile layout." );
 	}
 
+	/// <summary>Hub admin on the settings tab — left-aligned toggle list + iOS switches (PIN bypassed).</summary>
+	[ConCmd( "lp_bitcoin_preview_settings" )]
+	public static void PreviewHubSettingsUi()
+	{
+		WarnIfWrongPlayScene();
+		LpBitcoinUi.CloseAll();
+		var hub = LpBitcoinUi.GetOrCreatePreviewHub( withSampleRacks: true );
+		if ( !hub.IsValid() )
+		{
+			Log.Warning( "lp_bitcoin_preview_settings: no active scene." );
+			return;
+		}
+
+		var panel = LpHashdUiHost.Open( hub );
+		panel?.DevBypassPinGate();
+		panel?.DevOpenSettingsTab();
+		Log.Info( "lp_bitcoin_preview_settings: settings tab open — check toggle list + header power switch." );
+	}
+
 	/// <summary>Hub admin with PIN gate presets — setup (default), unlock (PIN 4242), or blocked (wrong owner).</summary>
 	[ConCmd( "lp_hashd_pin_preview" )]
 	public static void PreviewHubPinUi( string mode = "setup" )

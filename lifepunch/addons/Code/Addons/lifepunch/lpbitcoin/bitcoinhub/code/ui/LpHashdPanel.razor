@@ -157,10 +157,11 @@
 								@if ( _active == OpsTab.Overview )
 								{
 									<div class="pane overview">
+										<div class="lp-ui-panel-title overview-dash-title">
+											<i class="material-icons">home</i>
+											<span>Dashboard</span>
+										</div>
 										<div class="overview-intro-header">
-											<div class="overview-intro-shell">
-												<div class="overview-intro-copy-text">@OverviewIntroCopyLine()</div>
-											</div>
 											<div class="overview-intro-terminal-row">
 												<div class="overview-intro-terminal-meta">
 													<div class="overview-intro-terminal-heading">Bitcoin terminal</div>
@@ -170,20 +171,13 @@
 													</div>
 												</div>
 												<div class="overview-intro-terminal-actions">
-												@if ( !HubIsPowered() )
-												{
-													<button class="overview-hub-power-btn off" onclick="@PowerOn">
-														<span class="lp-ui-status-dot off"></span>
-														<span>Power on hub</span>
-													</button>
-												}
-												else if ( HasLinkedTerminal() )
+												@if ( HasLinkedTerminal() )
 												{
 													<button class="lp-ui-btn-ghost overview-intro-unlink-btn" onclick="@UnlinkTerminal">Unlink terminal</button>
 												}
 												else if ( HasNearbyUnlinkedTerminal() )
 												{
-													<button class="lp-ui-btn-ghost" onclick="@LinkNearbyTerminal">Link terminal</button>
+													<button class="lp-ui-btn-ghost" disabled="@(!HubIsPowered())" onclick="@LinkNearbyTerminal">Link terminal</button>
 												}
 												else
 												{
@@ -886,57 +880,57 @@
 											</div>
 
 											<div class="settings-body">
-												<div class="settings-sections">
-													<div class="settings-section lp-hashd-surface">
-														<div class="settings-section-head">
-															<div class="settings-label">Hub power</div>
+												<div class="settings-list lp-hashd-surface">
+													<div class="settings-row">
+														<div class="settings-row-main">
+															<div class="settings-row-label">Hub power</div>
+															<div class="settings-row-hint">Matches header switch. Off stops racks and blocks linking.</div>
 														</div>
-														<div class="settings-hint">Matches header switch. Off stops racks and blocks linking.</div>
-														<div class="settings-actions">
-															<button class="@(Hub?.IsPowered == true ? "lp-ui-btn-primary" : "lp-ui-btn-ghost")" onclick="@PowerOn">Power on</button>
-															<button class="@(Hub?.IsPowered != true ? "lp-ui-btn-primary" : "lp-ui-btn-ghost")" onclick="@PowerOff">Power off</button>
-														</div>
+														<button class="settings-switch @(Hub?.IsPowered == true ? "on" : "off")" tooltip="@(Hub?.IsPowered == true ? "Power off hub" : "Power on hub")" onclick="@ToggleHubPower">
+															<span class="power-switch-track"><span class="power-switch-knob"></span></span>
+														</button>
 													</div>
 
-													<div class="settings-section lp-hashd-surface">
-														<div class="settings-section-head">
-															<div class="settings-label">Security</div>
+													<div class="settings-row">
+														<div class="settings-row-main">
+															<div class="settings-row-label">Security</div>
+															<div class="settings-row-hint @( !string.IsNullOrWhiteSpace( _pinChangeNotice ) ? "settings-hint-ok" : "" )">@SettingsSecurityHint()</div>
 														</div>
-														<div class="settings-hint @( !string.IsNullOrWhiteSpace( _pinChangeNotice ) ? "settings-hint-ok" : "" )">@SettingsSecurityHint()</div>
 														@if ( Hub?.AccessPinIsSet == true )
 														{
-															<div class="settings-actions">
-																<button class="lp-ui-btn-primary" onclick="@StartPinChange">Change PIN</button>
-															</div>
+															<button class="settings-row-action" onclick="@StartPinChange">Change PIN</button>
 														}
 													</div>
 
-													<div class="settings-section lp-hashd-surface">
-														<div class="settings-section-head">
-															<div class="settings-label">Bitcoin terminal</div>
-															<div class="settings-status-pills">
-																<span class="settings-pill @TerminalSettingsStatusClass()">@TerminalSettingsStatusLabel()</span>
-															</div>
+													<div class="settings-row">
+														<div class="settings-row-main">
+															<div class="settings-row-label">Bitcoin terminal</div>
+															<div class="settings-row-hint">@SettingsTerminalHint()</div>
 														</div>
-														<div class="settings-hint">@SettingsTerminalHint()</div>
-														<div class="settings-actions">
-															<button class="@(HasLinkedTerminal() ? "lp-ui-btn-ghost" : "lp-ui-btn-primary")" disabled="@(HasLinkedTerminal() || !HubIsPowered())" onclick="@LinkNearbyTerminal">Link terminal</button>
-															<button class="@(HasLinkedTerminal() ? "lp-ui-btn-primary" : "lp-ui-btn-ghost")" disabled="@(!HasLinkedTerminal())" onclick="@UnlinkTerminal">Unlink terminal</button>
+														<div class="settings-row-control">
+															<span class="settings-pill @TerminalSettingsStatusClass()">@TerminalSettingsStatusLabel()</span>
+															<button class="settings-switch @(HasLinkedTerminal() ? "on" : "off")" disabled="@(!HasLinkedTerminal() && !HubIsPowered())" tooltip="@(HasLinkedTerminal() ? "Unlink terminal" : "Link nearby terminal")" onclick="@ToggleTerminalLink">
+																<span class="power-switch-track"><span class="power-switch-knob"></span></span>
+															</button>
 														</div>
 													</div>
 
-													<div class="settings-section lp-hashd-surface">
-														<div class="settings-section-head">
-															<div class="settings-label">Notifications</div>
-															<div class="settings-status-pills">
-																<span class="settings-pill @(GetHubAlerts().Count > 0 ? "warn" : "off")">@HubLogsCountLabel()</span>
-															</div>
+													<div class="settings-row">
+														<div class="settings-row-main">
+															<div class="settings-row-label">Notifications</div>
+															<div class="settings-row-hint">Hub logs scroll on the alerts tab. Clear here for a fresh feed.</div>
 														</div>
-														<div class="settings-hint">Hub logs scroll on the alerts tab. Clear here for a fresh feed.</div>
-														<div class="settings-actions">
-															<button class="lp-ui-btn-primary" disabled="@(GetHubAlerts().Count == 0)" onclick="@ClearHubLogs">Clear hub logs</button>
+														<div class="settings-row-control">
+															<span class="settings-pill @(GetHubAlerts().Count > 0 ? "warn" : "off")">@HubLogsCountLabel()</span>
+															<button class="settings-row-action" disabled="@(GetHubAlerts().Count == 0)" onclick="@ClearHubLogs">Clear</button>
 														</div>
 													</div>
+												</div>
+
+												<div class="settings-footnote lp-hashd-surface">
+													<div class="settings-footnote-title">Getting started</div>
+													<div class="settings-footnote-text">@OverviewIntroCopyLine()</div>
+													<div class="settings-footnote-credit">LIFEPUNCH™ Bitcoin Ops · proprietary IP · lifepunch.co</div>
 												</div>
 											</div>
 										</div>
@@ -1225,6 +1219,9 @@
 
 	/// <summary>Dev preview — jump straight to the wallet tab (cash-out tiles).</summary>
 	public void DevOpenWalletTab() => SelectTab( OpsTab.Wallet );
+
+	/// <summary>Dev preview — jump straight to the settings tab (toggle list).</summary>
+	public void DevOpenSettingsTab() => SelectTab( OpsTab.Settings );
 
 	/// <summary>Dev preview — Universal Upgrades home (tier tile grid), not a per-rack view.</summary>
 	public void DevOpenUpgradesHome()
@@ -1801,14 +1798,23 @@
 	private string GetRootClass() => $"lp-bitcoin-ops lp-ui-accent-hashd {LpUiScale.CssClass( LpUiScale.Default )}";
 
 	private void Close() => LpHashdUiHost.CloseOpen();
-	private void PowerOn() => Hub?.SetPowered( true );
-	private void PowerOff() => Hub?.SetPowered( false );
 	private void ToggleHubPower()
 	{
 		if ( Hub?.IsPowered == true )
 			Hub.SetPowered( false );
 		else
 			Hub?.SetPowered( true );
+	}
+
+	// Settings terminal switch: linked → unlink, unlinked → attempt link (link guards on
+	// power + nearby terminal inside LinkNearbyTerminal; the switch is disabled when neither
+	// path is available).
+	private void ToggleTerminalLink()
+	{
+		if ( HasLinkedTerminal() )
+			UnlinkTerminal();
+		else
+			LinkNearbyTerminal();
 	}
 
 	private bool HubIsPowered() => Hub?.IsPowered == true;
