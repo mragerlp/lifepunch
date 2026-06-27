@@ -64,11 +64,17 @@
 
 ## 5. Upgrade & progression rules
 
-*(Populate after hub + rack economy signed off)*
+*(Populate after hub + rack economy signed off — see current working draft in `BITCOIN_UPGRADE_TAXONOMY.md`)*
 
-- Hub power gate
+- Hub power gate + link cascade (HUB off → Terminal + all racks unlink; re-link in order)
 - Rack link (`LinkedHubId`; terminal `LinkRange` 512u)
 - **Per-rack BTC** (`LpBitcoinRackEntity.BitcoinAmount`) — deposit at terminal; cash out hub wallet to **bank**
+- **Universal Upgrades home** (single purchase surface): surface chips (HUB / TERMINAL / RACK) → path buttons → 5-tier horizontal line. No buy UI on the status page.
+- **Servers / status dashboard** (read-only): power, link state, per-upgrade tier readouts (e.g. 2/5), mining stats (hashrate, balance) when active. "How to link" guidance for workers lives here.
+
+**Cross-lane contract:** Hacker (and future lanes) reuse the three-surface shape + universal home + status dashboard + power cascade. See the full steer request and constraints:
+
+`lifepunch/docs/handoff/ARCHITECT_BRIEF_BITCOIN_UPGRADE_SYSTEM_AND_SERVERS_STATUS_2026-06-27.md`
 
 **Economy rails:** `CYBER_ECONOMY_RAILS.md` — BTC → bank; hacker attacks → wallet only.
 

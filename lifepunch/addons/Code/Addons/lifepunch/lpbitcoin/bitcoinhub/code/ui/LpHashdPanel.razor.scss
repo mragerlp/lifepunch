@@ -6114,4 +6114,245 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		text-transform: uppercase;
 		letter-spacing: 0.06em;
 	}
+
+	// Centered header + intro for the Universal Upgrades home (match other menu pages' breathing room).
+	.upgrades-home-title {
+		justify-content: center;
+		align-items: center;
+		margin-top: 6px;
+		margin-bottom: 14px;
+	}
+
+	.upgrades-home-intro {
+		text-align: center;
+	}
+
+	// Path list — one compact button per track; opens the five-tier detail.
+	.upgrade-path-list {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		width: 100%;
+	}
+
+	.upgrade-path-btn {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: 12px;
+		width: 100%;
+		padding: 12px 14px;
+		border-radius: $hashd-surface-radius;
+		border: 1px solid $hashd-surface-border;
+		background-color: $hashd-surface-bg;
+		cursor: pointer;
+		transition: background-color 0.12s ease-out, border-color 0.12s ease-out;
+
+		&:hover {
+			border-color: $hashd-amber;
+			background-color: rgba(232, 125, 62, 0.1);
+		}
+
+		&.cosmetic {
+			border-color: rgba(232, 125, 62, 0.28);
+		}
+	}
+
+	.upgrade-path-btn-icon {
+		color: $hashd-amber;
+		font-size: 22px;
+		flex-shrink: 0;
+	}
+
+	.upgrade-path-btn-body {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+		flex-grow: 1;
+		min-width: 0;
+	}
+
+	.upgrade-path-btn-name {
+		color: $hashd-title;
+		font-size: 14px;
+		font-weight: 800;
+	}
+
+	.upgrade-path-btn-tier {
+		color: $hashd-muted;
+		font-size: 11px;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+	}
+
+	.upgrade-path-btn-status {
+		flex-shrink: 0;
+		color: $hashd-amber-glow;
+		font-size: 10px;
+		font-weight: 900;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+	}
+
+	.upgrade-path-btn-chevron {
+		color: $hashd-muted;
+		font-size: 22px;
+		flex-shrink: 0;
+	}
+
+	// Path detail — back action, path header, then the full five tiers laid out in one line.
+	.upgrade-path-detail {
+		display: flex;
+		flex-direction: column;
+		gap: 14px;
+		width: 100%;
+	}
+
+	.upgrade-path-back {
+		align-self: flex-start;
+	}
+
+	.upgrade-path-detail-head {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: 12px;
+		width: 100%;
+
+		.material-icons {
+			color: $hashd-amber;
+			font-size: 30px;
+			flex-shrink: 0;
+		}
+	}
+
+	.upgrade-path-detail-headtext {
+		display: flex;
+		flex-direction: column;
+		gap: 3px;
+		min-width: 0;
+	}
+
+	.upgrade-path-detail-name {
+		color: $hashd-title;
+		font-size: 18px;
+		font-weight: 900;
+		text-transform: uppercase;
+		letter-spacing: 0.03em;
+	}
+
+	.upgrade-path-detail-sub {
+		color: $hashd-muted;
+		font-size: 11px;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+	}
+
+	// Five tiers in a row — each a tall cell (icon + tier + label + price), with the same
+	// owned/available/locked/cap state styling as the ULX command grid tiles.
+	.upgrade-tier-line {
+		display: flex;
+		flex-direction: row;
+		gap: 8px;
+		width: 100%;
+	}
+
+	.upgrade-tier-cell {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 6px;
+		flex-grow: 1;
+		flex-shrink: 0;
+		flex-basis: 0;
+		min-width: 0;
+		padding: 14px 8px;
+		border-radius: 10px;
+		border: 1px solid $hashd-inset-border;
+		background-color: $hashd-inset-bg;
+		cursor: pointer;
+		transition: background-color 0.12s ease-out, border-color 0.12s ease-out, color 0.12s ease-out;
+
+		.upgrade-tier-cell-icon {
+			color: $hashd-muted;
+			font-size: 24px;
+		}
+
+		.upgrade-tier-cell-roman {
+			color: $hashd-text;
+			font-size: 13px;
+			font-weight: 800;
+			letter-spacing: 0.04em;
+		}
+
+		.upgrade-tier-cell-label {
+			color: $hashd-muted;
+			font-size: 11px;
+			font-weight: 600;
+			text-align: center;
+		}
+
+		.upgrade-tier-cell-price {
+			color: $hashd-muted;
+			font-size: 10px;
+			font-weight: 800;
+			text-transform: uppercase;
+			letter-spacing: 0.05em;
+		}
+
+		&.owned {
+			border-color: $hashd-amber;
+			background-color: rgba(232, 125, 62, 0.18);
+			pointer-events: none;
+			cursor: default;
+
+			.upgrade-tier-cell-icon,
+			.upgrade-tier-cell-roman {
+				color: $hashd-title;
+			}
+
+			.upgrade-tier-cell-price {
+				color: $hashd-amber;
+			}
+		}
+
+		&.available {
+			border-color: rgba(232, 125, 62, 0.5);
+
+			.upgrade-tier-cell-icon {
+				color: $hashd-amber;
+			}
+
+			.upgrade-tier-cell-price {
+				color: $hashd-amber-glow;
+			}
+
+			&:hover {
+				background-color: rgba(232, 125, 62, 0.14);
+				border-color: $hashd-amber;
+
+				.upgrade-tier-cell-roman {
+					color: $hashd-title;
+				}
+			}
+		}
+
+		&.locked,
+		&.locked:hover {
+			pointer-events: none;
+			cursor: default;
+			opacity: 0.5;
+			border-color: rgba(255, 255, 255, 0.04);
+			background-color: rgba(0, 0, 0, 0.25);
+
+			.upgrade-tier-cell-icon,
+			.upgrade-tier-cell-roman,
+			.upgrade-tier-cell-label,
+			.upgrade-tier-cell-price {
+				color: $hashd-muted;
+			}
+		}
+	}
 }

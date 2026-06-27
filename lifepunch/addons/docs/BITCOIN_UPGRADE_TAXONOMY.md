@@ -121,3 +121,31 @@ Examples:
 ---
 
 *v1.1 — 2026-06-25 — Architect Phase 2*
+
+---
+
+## Cross-lane reuse contract (Hacker, Banker, Government, …)
+
+Bitcoin is the **reference**. Future jobs (Hacker "Server Rack HUB" + Hacker Terminal, etc.) will reuse the same structural contract:
+
+- **Three-surface model**: Hub (controller) / Terminal (operator + defense) / Satellite workers (racks / miners / processors).
+- **Universal Upgrades home**: Single purchase surface (`LpHashdPanel` style with surface chips + path buttons + 5-tier line detail). Not per-satellite shops.
+- **Servers / status dashboard**: Pure read-only live status for the linked entities (power, link state, per-upgrade tier readouts 1/5, derived runtime stats like hashrate/balance when active). No buy buttons here.
+- **Power/link cascade**: Hub power-off unlinks Terminal + all workers. Player must re-link in order. Status page reflects "unlinked / hub offline".
+- **Upgrade taxonomy shape**: 5 paths × 5 tiers per surface is the working target. Paths map to real stats on the owning entity. Cosmetics are visual-only.
+- **UI invariants** (s&box Razor):
+  - `BuildHash()` must capture every flag that changes markup (open path, preview tier rev, surface, link/power state).
+  - SCSS must pass `Validate-SboxRazorScss.ps1` (no dashed borders, no gradients, no `display:block/none`, class root on `<root>`).
+- **Authority**: Host owns state via `[Sync(FromHost)]`. Purchases are host-validated RPCs from the panel. Client never mutates sync fields directly.
+- **Reference first (Law 1)**: Before implementing a new job's HUB/Terminal upgrades or status page, state explicitly what it reuses from this Bitcoin contract.
+
+**See also (do not re-derive in every lane):**
+- `lifepunch/docs/handoff/ARCHITECT_BRIEF_BITCOIN_UPGRADE_SYSTEM_AND_SERVERS_STATUS_2026-06-27.md` (the full steer request + constraints)
+- `DECISION-0010-Universal-Upgrades-Home.md`
+- `BITCOIN_CONTROLLER_PATTERN.md`
+- `LIFEPUNCH_HUB_PATTERN.md`
+- `CYBER_REFERENCE_LAWS.md` (Law 1, Law 8)
+
+When a new lane (e.g. hackerjob) is unblocked, clone the **contract shape** (universal home + status dashboard + 5×5 + cascade), not the Bitcoin numbers or exact track names. Populate `BITCOIN_REFERENCE_IMPLEMENTATION.md` on Law 10 sign-off so future lanes have a complete bible.
+
+Track any temporary deviations in `TECH_DEBT.md` with a single, obvious swap point back to the reference.

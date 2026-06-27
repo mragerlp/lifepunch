@@ -493,13 +493,13 @@
 										else
 										{
 											<div class="lp-ui-panel upgrades-home">
-												<div class="lp-ui-panel-title">
+												<div class="lp-ui-panel-title upgrades-home-title">
 													<i class="material-icons">upgrade</i>
 													<span>Universal Upgrades</span>
 												</div>
 
-												<div class="lp-ui-intro">
-													One home for all progression. Purchases will route here — shell preview only.
+												<div class="lp-ui-intro upgrades-home-intro">
+													Pick a surface, then open a path to view its full five tiers. Upgrades is the one place you buy progression.
 												</div>
 
 												<div class="upgrade-surface-chips">
@@ -530,192 +530,60 @@
 												}
 
 												<div class="lp-ui-scroll-region upgrades-scroll universal-upgrades-scroll">
-													@if ( _upgradeSurface == UpgradeSurface.Hub )
+													@if ( _openPath is null )
 													{
-														<div class="upgrade-section">
-															<div class="upgrade-section-head">
-																<i class="material-icons">dns</i>
-																<span>Controller tracks</span>
-															</div>
-															<div class="upgrade-track-cards">
-																@foreach ( var track in HubUpgradeTracks )
-																{
-																	<div class="upgrade-track-card placeholder">
-																		<div class="upgrade-track-card-head">
-																			<i class="material-icons">@track.Icon</i>
-																			<span>@track.Name</span>
-																		</div>
-																		<div class="upgrade-track-card-tier">@CurrentTierLabel( track )</div>
-																		<div class="upgrade-tier-grid">
-																			@for ( int _tier = 1; _tier <= 5; _tier++ )
-																			{
-																				var _state = TierState( track.Name, _tier );
-																				<button class="upgrade-tier-box @_state @( _tier == 5 ? "cap" : "" )"
-																				        tooltip="@TierTooltip( track, _tier )"
-																				        onclick="@(() => PreviewBuyTier( track.Name, _tier ))">
-																					<span class="tier-roman">@TierRoman( _tier )</span>
-																					<span class="tier-price">@TierBoxCaption( track, _tier )</span>
-																				</button>
-																			}
-																		</div>
-																		<div class="upgrade-track-card-status">@TrackStatusLabel( track )</div>
-																	</div>
-																}
-															</div>
-														</div>
-
-														<div class="upgrade-section">
-															<div class="upgrade-section-head cosmetic">
-																<i class="material-icons">palette</i>
-																<span>Cosmetics</span>
-															</div>
-															<div class="upgrade-track-cards">
-																<div class="upgrade-track-card cosmetic placeholder">
-																	<div class="upgrade-track-card-head">
-																		<i class="material-icons">@HubSoundPackCosmetic.Icon</i>
-																		<span>@HubSoundPackCosmetic.Name</span>
-																	</div>
-																	<div class="upgrade-track-card-tier">@CurrentTierLabel( HubSoundPackCosmetic )</div>
-																	<div class="upgrade-tier-grid">
-																		@for ( int _tier = 1; _tier <= 5; _tier++ )
-																		{
-																			var _state = TierState( HubSoundPackCosmetic.Name, _tier );
-																			<button class="upgrade-tier-box @_state @( _tier == 5 ? "cap" : "" )"
-																			        tooltip="@TierTooltip( HubSoundPackCosmetic, _tier )"
-																			        onclick="@(() => PreviewBuyTier( HubSoundPackCosmetic.Name, _tier ))">
-																				<span class="tier-roman">@TierRoman( _tier )</span>
-																				<span class="tier-price">@TierBoxCaption( HubSoundPackCosmetic, _tier )</span>
-																			</button>
-																		}
-																	</div>
-																	<div class="upgrade-track-card-status">@TrackStatusLabel( HubSoundPackCosmetic )</div>
+														@foreach ( var section in CurrentUpgradeSections() )
+														{
+															<div class="upgrade-section">
+																<div class="upgrade-section-head @( section.Cosmetic ? "cosmetic" : "" )">
+																	<i class="material-icons">@section.Icon</i>
+																	<span>@section.Title</span>
+																</div>
+																<div class="upgrade-path-list">
+																	@foreach ( var track in section.Tracks )
+																	{
+																		<button class="upgrade-path-btn @( section.Cosmetic ? "cosmetic" : "" )" onclick="@(() => OpenUpgradePath( track.Name ))">
+																			<i class="material-icons upgrade-path-btn-icon">@track.Icon</i>
+																			<div class="upgrade-path-btn-body">
+																				<span class="upgrade-path-btn-name">@track.Name</span>
+																				<span class="upgrade-path-btn-tier">@CurrentTierLabel( track )</span>
+																			</div>
+																			<span class="upgrade-path-btn-status">@TrackStatusLabel( track )</span>
+																			<i class="material-icons upgrade-path-btn-chevron">chevron_right</i>
+																		</button>
+																	}
 																</div>
 															</div>
-														</div>
-													}
-													else if ( _upgradeSurface == UpgradeSurface.Terminal )
-													{
-														<div class="upgrade-section">
-															<div class="upgrade-section-head">
-																<i class="material-icons">shield</i>
-																<span>Defense &amp; capabilities</span>
-															</div>
-															<div class="upgrade-track-cards">
-																@foreach ( var track in TerminalUpgradeTracks )
-																{
-																	<div class="upgrade-track-card placeholder">
-																		<div class="upgrade-track-card-head">
-																			<i class="material-icons">@track.Icon</i>
-																			<span>@track.Name</span>
-																		</div>
-																		<div class="upgrade-track-card-tier">@CurrentTierLabel( track )</div>
-																		<div class="upgrade-tier-grid">
-																			@for ( int _tier = 1; _tier <= 5; _tier++ )
-																			{
-																				var _state = TierState( track.Name, _tier );
-																				<button class="upgrade-tier-box @_state @( _tier == 5 ? "cap" : "" )"
-																				        tooltip="@TierTooltip( track, _tier )"
-																				        onclick="@(() => PreviewBuyTier( track.Name, _tier ))">
-																					<span class="tier-roman">@TierRoman( _tier )</span>
-																					<span class="tier-price">@TierBoxCaption( track, _tier )</span>
-																				</button>
-																			}
-																		</div>
-																		<div class="upgrade-track-card-status">@TrackStatusLabel( track )</div>
-																	</div>
-																}
-															</div>
-														</div>
-
-														<div class="upgrade-section">
-															<div class="upgrade-section-head cosmetic">
-																<i class="material-icons">palette</i>
-																<span>Appearance</span>
-															</div>
-															<div class="upgrade-track-cards">
-																<div class="upgrade-track-card cosmetic placeholder">
-																	<div class="upgrade-track-card-head">
-																		<i class="material-icons">@TerminalSkinCosmetic.Icon</i>
-																		<span>@TerminalSkinCosmetic.Name</span>
-																	</div>
-																	<div class="upgrade-track-card-tier">@CurrentTierLabel( TerminalSkinCosmetic )</div>
-																	<div class="upgrade-tier-grid">
-																		@for ( int _tier = 1; _tier <= 5; _tier++ )
-																		{
-																			var _state = TierState( TerminalSkinCosmetic.Name, _tier );
-																			<button class="upgrade-tier-box @_state @( _tier == 5 ? "cap" : "" )"
-																			        tooltip="@TierTooltip( TerminalSkinCosmetic, _tier )"
-																			        onclick="@(() => PreviewBuyTier( TerminalSkinCosmetic.Name, _tier ))">
-																				<span class="tier-roman">@TierRoman( _tier )</span>
-																				<span class="tier-price">@TierBoxCaption( TerminalSkinCosmetic, _tier )</span>
-																			</button>
-																		}
-																	</div>
-																	<div class="upgrade-track-card-status">@TrackStatusLabel( TerminalSkinCosmetic )</div>
-																</div>
-															</div>
-														</div>
+														}
 													}
 													else
 													{
-														<div class="upgrade-section">
-															<div class="upgrade-section-head">
-																<i class="material-icons">memory</i>
-																<span>@UpgradeRackSelectorHeadline()</span>
-															</div>
-															<div class="upgrade-track-cards">
-																@foreach ( var track in GpuRackUpgradeTracks )
-																{
-																	<div class="upgrade-track-card placeholder">
-																		<div class="upgrade-track-card-head">
-																			<i class="material-icons">@track.Icon</i>
-																			<span>@track.Name</span>
-																		</div>
-																		<div class="upgrade-track-card-tier">@CurrentTierLabel( track )</div>
-																		<div class="upgrade-tier-grid">
-																			@for ( int _tier = 1; _tier <= 5; _tier++ )
-																			{
-																				var _state = TierState( track.Name, _tier );
-																				<button class="upgrade-tier-box @_state @( _tier == 5 ? "cap" : "" )"
-																				        tooltip="@TierTooltip( track, _tier )"
-																				        onclick="@(() => PreviewBuyTier( track.Name, _tier ))">
-																					<span class="tier-roman">@TierRoman( _tier )</span>
-																					<span class="tier-price">@TierBoxCaption( track, _tier )</span>
-																				</button>
-																			}
-																		</div>
-																		<div class="upgrade-track-card-status">@TrackStatusLabel( track )</div>
-																	</div>
-																}
-															</div>
-														</div>
-
-														<div class="upgrade-section">
-															<div class="upgrade-section-head cosmetic">
-																<i class="material-icons">palette</i>
-																<span>Cosmetics</span>
-															</div>
-															<div class="upgrade-track-cards">
-																<div class="upgrade-track-card cosmetic placeholder">
-																	<div class="upgrade-track-card-head">
-																		<i class="material-icons">@RackFanRgbCosmetic.Icon</i>
-																		<span>@RackFanRgbCosmetic.Name</span>
-																	</div>
-																	<div class="upgrade-track-card-tier">@CurrentTierLabel( RackFanRgbCosmetic )</div>
-																	<div class="upgrade-tier-grid">
-																		@for ( int _tier = 1; _tier <= 5; _tier++ )
-																		{
-																			var _state = TierState( RackFanRgbCosmetic.Name, _tier );
-																			<button class="upgrade-tier-box @_state @( _tier == 5 ? "cap" : "" )"
-																			        tooltip="@TierTooltip( RackFanRgbCosmetic, _tier )"
-																			        onclick="@(() => PreviewBuyTier( RackFanRgbCosmetic.Name, _tier ))">
-																				<span class="tier-roman">@TierRoman( _tier )</span>
-																				<span class="tier-price">@TierBoxCaption( RackFanRgbCosmetic, _tier )</span>
-																			</button>
-																		}
-																	</div>
-																	<div class="upgrade-track-card-status">@TrackStatusLabel( RackFanRgbCosmetic )</div>
+														var openTrack = ResolveOpenPath();
+														<div class="upgrade-path-detail">
+															<button class="lp-ui-btn-ghost upgrades-back-btn upgrade-path-back" onclick="@CloseUpgradePath">
+																<i class="material-icons">arrow_back</i>
+																<span>All paths</span>
+															</button>
+															<div class="upgrade-path-detail-head">
+																<i class="material-icons">@openTrack.Icon</i>
+																<div class="upgrade-path-detail-headtext">
+																	<span class="upgrade-path-detail-name">@openTrack.Name</span>
+																	<span class="upgrade-path-detail-sub">@CurrentTierLabel( openTrack ) · @TrackStatusLabel( openTrack )</span>
 																</div>
+															</div>
+															<div class="upgrade-tier-line">
+																@for ( int _tier = 1; _tier <= 5; _tier++ )
+																{
+																	var _state = TierState( openTrack.Name, _tier );
+																	<button class="upgrade-tier-cell @_state @( _tier == 5 ? "cap" : "" )"
+																	        tooltip="@TierTooltip( openTrack, _tier )"
+																	        onclick="@(() => PreviewBuyTier( openTrack.Name, _tier ))">
+																		<i class="material-icons upgrade-tier-cell-icon">@openTrack.Icon</i>
+																		<span class="upgrade-tier-cell-roman">Tier @TierRoman( _tier )</span>
+																		<span class="upgrade-tier-cell-label">@TierLineLabel( openTrack, _tier )</span>
+																		<span class="upgrade-tier-cell-price">@TierBoxCaption( openTrack, _tier )</span>
+																	</button>
+																}
 															</div>
 														</div>
 													}
@@ -1081,6 +949,59 @@
 	private static readonly UpgradeTrackShell RackFanRgbCosmetic =
 		new( "Fan RGB", "palette", "Stock fan lighting", CosmeticTiers( "Amber Glow", "Spectrum Cycle", "Reactive Sync", "Custom Profile" ) );
 
+	// A section groups path tracks under a header (functional tracks vs cosmetics) for the home list.
+	private readonly record struct UpgradeSectionShell( string Title, string Icon, bool Cosmetic, UpgradeTrackShell[] Tracks );
+
+	// Sections for the currently selected surface — drives the path-button list on the Upgrades home.
+	private UpgradeSectionShell[] CurrentUpgradeSections() => _upgradeSurface switch
+	{
+		UpgradeSurface.Hub => new[]
+		{
+			new UpgradeSectionShell( "Controller tracks", "dns", false, HubUpgradeTracks ),
+			new UpgradeSectionShell( "Cosmetics", "palette", true, new[] { HubSoundPackCosmetic } )
+		},
+		UpgradeSurface.Terminal => new[]
+		{
+			new UpgradeSectionShell( "Defense & capabilities", "shield", false, TerminalUpgradeTracks ),
+			new UpgradeSectionShell( "Appearance", "palette", true, new[] { TerminalSkinCosmetic } )
+		},
+		_ => new[]
+		{
+			new UpgradeSectionShell( UpgradeRackSelectorHeadline(), "memory", false, GpuRackUpgradeTracks ),
+			new UpgradeSectionShell( "Cosmetics", "palette", true, new[] { RackFanRgbCosmetic } )
+		}
+	};
+
+	// Open path on the Upgrades home (null = path list). Stored by track Name; resolved within the
+	// active surface, so switching surface/rack clears it (see SelectUpgradeSurface/SelectUpgradeRackSlot).
+	private string _openPath;
+
+	private void OpenUpgradePath( string name )
+	{
+		_openPath = name;
+		LifePunchUiScrollPolicy.ResetOffsets( Panel );
+	}
+
+	private void CloseUpgradePath()
+	{
+		_openPath = null;
+		LifePunchUiScrollPolicy.ResetOffsets( Panel );
+	}
+
+	private UpgradeTrackShell ResolveOpenPath()
+	{
+		foreach ( var section in CurrentUpgradeSections() )
+			foreach ( var track in section.Tracks )
+				if ( track.Name == _openPath )
+					return track;
+
+		return HubUpgradeTracks[0];
+	}
+
+	// Per-tier label for the detail line: Tier I shows the baseline label, II–V show each rung's name.
+	private string TierLineLabel( UpgradeTrackShell track, int tier )
+		=> tier == 1 ? track.TierOneLabel : TierAt( track, tier ).Label;
+
 	// Preview-only purchase progression (no economy). Keyed by track name; default Tier I owned.
 	// Swap point: replace PreviewBuyTier with a real purchase RPC when economy lands.
 	private readonly Dictionary<string, int> _previewTier = new();
@@ -1117,12 +1038,24 @@
 		_ => n.ToString()
 	};
 
+	// Safe tier accessor — tier 2..5 maps to Tiers[0..3]. Guards against hotload-transient null
+	// or out-of-range so a partial reload can never crash the render tree (NRE in build tree).
+	private static UpgradeTierShell TierAt( UpgradeTrackShell track, int tier )
+	{
+		var tiers = track.Tiers;
+		var idx = tier - 2;
+		if ( tiers is null || idx < 0 || idx >= tiers.Length )
+			return new UpgradeTierShell( track.TierOneLabel ?? "—", 0, "" );
+
+		return tiers[idx];
+	}
+
 	private string TierBoxCaption( UpgradeTrackShell track, int tier )
 	{
 		var state = TierState( track.Name, tier );
 		if ( state == "owned" ) return tier == 1 ? "Base" : "Owned";
 		if ( state == "locked" ) return "Locked";
-		return $"${track.Tiers[tier - 2].Price:N0}";
+		return $"${TierAt( track, tier ).Price:N0}";
 	}
 
 	private string TierTooltip( UpgradeTrackShell track, int tier )
@@ -1130,7 +1063,7 @@
 		if ( tier == 1 )
 			return $"Tier I · {track.TierOneLabel}\nBaseline — included";
 
-		var t = track.Tiers[tier - 2];
+		var t = TierAt( track, tier );
 		var state = TierState( track.Name, tier );
 		if ( state == "owned" )
 			return $"Tier {TierRoman( tier )} · {t.Label}\nOwned";
@@ -1141,7 +1074,7 @@
 	private string CurrentTierLabel( UpgradeTrackShell track )
 	{
 		var owned = OwnedTier( track.Name );
-		var label = owned == 1 ? track.TierOneLabel : track.Tiers[owned - 2].Label;
+		var label = owned == 1 ? track.TierOneLabel : TierAt( track, owned ).Label;
 		return $"Tier {TierRoman( owned )} · {label}";
 	}
 
@@ -1151,7 +1084,7 @@
 		if ( owned >= 5 )
 			return "MAX TIER · PREVIEW";
 
-		var next = track.Tiers[owned - 1];
+		var next = TierAt( track, owned + 1 );
 		return $"NEXT · TIER {TierRoman( owned + 1 )} · ${next.Price:N0}";
 	}
 
@@ -1647,12 +1580,14 @@
 	{
 		_upgradeRackId = Guid.Empty;
 		_upgradeSurface = surface;
+		_openPath = null;
 		LifePunchUiScrollPolicy.ResetOffsets( Panel );
 	}
 
 	private void SelectUpgradeRackSlot( UpgradeRackSelector slot )
 	{
 		_upgradeRackSlot = slot;
+		_openPath = null;
 		LifePunchUiScrollPolicy.ResetOffsets( Panel );
 	}
 
@@ -2687,6 +2622,7 @@
 		hash.Add( _upgradeRackId );
 		hash.Add( (int)_upgradeSurface );
 		hash.Add( (int)_upgradeRackSlot );
+		hash.Add( _openPath ?? string.Empty );
 		hash.Add( _previewTierRev );
 		hash.Add( _receiveCopyAck );
 		hash.Add( _sendExampleCopyAck );

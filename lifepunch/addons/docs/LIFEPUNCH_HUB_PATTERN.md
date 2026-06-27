@@ -108,9 +108,26 @@ Hacker terminal ──hack──► wallet ONLY
 
 ---
 
+## UI surface contract (admin menu)
+
+Every hub line ships with the same two admin surfaces in its panel (modeled on `LpHashdPanel`):
+
+- **Universal Upgrades home** — the single purchase surface. Surface chips (HUB / TERMINAL / WORKER) → path buttons → 5-tier line detail view. Purchases route here. No buy UI on the status page.
+- **Servers / status dashboard** — read-only live status for the linked entities (HUB power, Terminal link, each worker link, mining/active state, per-upgrade tier readouts e.g. 2/5, derived runtime stats). "How to link" guidance lives here for workers. No purchases.
+
+**Power/link cascade (reference behavior):** HUB power-off unlinks Terminal + all workers. Player must re-link in order. Status reflects unlinked/offline. Worker balances persist; active contribution stops.
+
+See:
+- `BITCOIN_UPGRADE_TAXONOMY.md` § "Cross-lane reuse contract"
+- `lifepunch/docs/handoff/ARCHITECT_BRIEF_BITCOIN_UPGRADE_SYSTEM_AND_SERVERS_STATUS_2026-06-27.md`
+- `DECISION-0010`
+
+When a new job (Hacker Server Rack HUB, Hacker Terminal, …) is unblocked, reuse this surface contract and the three-surface (Hub/Terminal/Worker) upgrade taxonomy shape. Only the track names and stat mappings change.
+
 ## Related
 
 - `PHYSICAL_TERMINAL_DOCTRINE.md` — hub + terminal pairing
 - `BANKER_JOB_SPEC.md` — banker draft
 - `bankerjob/docs/BANK_VAULT_HUB.md` — banker hub detail
 - `TERMINAL_PLAYTEST_NOW.md` — live playtest commands
+- `CYBER_REFERENCE_LAWS.md` Law 1 (reference first) and Law 8 (populate the bible)
