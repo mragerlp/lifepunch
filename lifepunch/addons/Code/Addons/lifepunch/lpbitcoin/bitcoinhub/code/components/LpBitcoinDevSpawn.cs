@@ -789,6 +789,42 @@ public static class LpBitcoinDevSpawn
 		Log.Info( "lp_bitcoin_preview_terminal: CRT terminal only (rig@hub>)." );
 	}
 
+	/// <summary>Terminal with hub PIN armed — visual keypad gate, then boot splash (PIN 4242).</summary>
+	[ConCmd( "lp_bitcoin_terminal_pin_preview" )]
+	public static void PreviewTerminalPinGate()
+	{
+		WarnIfWrongPlayScene();
+		LpBitcoinUi.CloseAll();
+
+		var hub = ResolvePreviewOrNearestHub();
+		if ( !hub.IsValid() )
+		{
+			Log.Warning( "lp_bitcoin_terminal_pin_preview: no active scene." );
+			return;
+		}
+
+		hub.BindOwnerFromLocalViewer();
+		hub.AccessPinIsSet = true;
+		hub.AccessPinHash = LpBitcoinHubPin.Hash( "4242" );
+
+		LpBitcoinTerminalUiHost.Open( hub );
+		Log.Info( "lp_bitcoin_terminal_pin_preview: PIN gate open — enter 4242, expect boot splash after unlock." );
+	}
+
+	private static LpBitcoinHubEntity ResolvePreviewOrNearestHub()
+	{
+		var scene = Game.ActiveScene;
+		if ( scene is null )
+			return null;
+
+		var nearest = scene.GetAllComponents<LpBitcoinHubEntity>()
+			.Where( h => h.IsValid() )
+			.OrderBy( h => DistanceToViewer( h.WorldPosition ) )
+			.FirstOrDefault();
+
+		return nearest.IsValid() ? nearest : LpBitcoinUi.GetOrCreatePreviewHub();
+	}
+
 	/// <summary>Close whichever bitcoin UI is open.</summary>
 	[ConCmd( "lp_bitcoin_ui_close" )]
 	public static void CloseUi()
