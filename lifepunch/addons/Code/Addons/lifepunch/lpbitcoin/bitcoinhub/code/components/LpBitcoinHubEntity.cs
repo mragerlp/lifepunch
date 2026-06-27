@@ -645,6 +645,20 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 
 	public void RequestClearAlerts() => ClearAlertsHost();
 
+	/// <summary>Dev only — seed varied sample alerts so the Hub logs page can be verified in flatgrass.</summary>
+	internal void DevSeedSampleAlerts()
+	{
+		if ( !Networking.IsHost )
+			return;
+
+		PushAlertHost( LpBitcoinHubAlertKind.TerminalCommand, "rig0> link gpurack-01 — registered" );
+		PushAlertHost( LpBitcoinHubAlertKind.HubTransfer, "Swept 0.004210 BTC from gpurack-01 to hub wallet" );
+		PushAlertHost( LpBitcoinHubAlertKind.RackCapacity, "gpurack-02 at capacity (0.010000 / 0.010000 BTC) — deposit at terminal" );
+		PushAlertHost( LpBitcoinHubAlertKind.HackAttack, "HASHD intrusion attempt — unknown operator" );
+		PushAlertHost( LpBitcoinHubAlertKind.TerminalCommand, "rig0> racks — 2 linked, 1 mining" );
+		PushAlertHost( LpBitcoinHubAlertKind.HubTransfer, "Cashed out 0.025000 BTC at terminal" );
+	}
+
 	public void RequestPushTerminalCommandAlert( string command, string result )
 		=> PushTerminalCommandAlertHost( command, result );
 

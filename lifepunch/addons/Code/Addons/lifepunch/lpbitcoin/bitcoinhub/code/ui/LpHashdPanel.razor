@@ -894,11 +894,11 @@
 													<div class="settings-row">
 														<div class="settings-row-main">
 															<div class="settings-row-label">Security</div>
-															<div class="settings-row-hint @( !string.IsNullOrWhiteSpace( _pinChangeNotice ) ? "settings-hint-ok" : "" )">@SettingsSecurityHint()</div>
+															<div class="settings-row-hint">@SettingsSecurityHint()</div>
 														</div>
 														@if ( Hub?.AccessPinIsSet == true )
 														{
-															<button class="settings-row-action" onclick="@StartPinChange">Change PIN</button>
+															<button class="settings-row-action @( PinJustUpdated() ? "confirmed" : "" )" onclick="@StartPinChange">@( PinJustUpdated() ? "PIN updated" : "Change PIN" )</button>
 														}
 													</div>
 
@@ -922,7 +922,7 @@
 														</div>
 														<div class="settings-row-control">
 															<span class="settings-pill @(GetHubAlerts().Count > 0 ? "warn" : "off")">@HubLogsCountLabel()</span>
-															<button class="settings-row-action" disabled="@(GetHubAlerts().Count == 0)" onclick="@ClearHubLogs">Clear</button>
+															<button class="settings-row-action @( LogsJustCleared() ? "confirmed" : "" )" disabled="@(GetHubAlerts().Count == 0 && !LogsJustCleared())" onclick="@ClearHubLogs">@( LogsJustCleared() ? "Cleared" : "Clear" )</button>
 														</div>
 													</div>
 												</div>
@@ -1161,6 +1161,19 @@
 	private int _lastHubAlertsContentHash;
 	private bool _hubLogsScrollReady;
 	private int _hubLogsBootstrapRetries;
+
+	// Transient settings confirmations — rendered inside their own button (PIN updated → Change PIN,
+	// Cleared flash → Clear) and auto-dismissed instead of lingering in the settings hint text.
+	private TimeSince _sincePinUpdatedNotice = 9999f;
+	private TimeSince _sinceLogsClearedNotice = 9999f;
+	private bool _pinNoticeWasActive;
+	private bool _logsClearedWasActive;
+	private const float PinNoticeHoldSeconds = 2.6f;
+	private const float LogsClearedHoldSeconds = 1.6f;
+
+	private bool PinJustUpdated() => !string.IsNullOrEmpty( _pinChangeNotice );
+	private bool LogsJustCleared() => _sinceLogsClearedNotice < LogsClearedHoldSeconds;
+
 	private const float TelemetryRefreshInterval = 0.5f;
 	private const float LogTimeRefreshInterval = 30f;
 
@@ -1222,6 +1235,9 @@
 
 	/// <summary>Dev preview — jump straight to the settings tab (toggle list).</summary>
 	public void DevOpenSettingsTab() => SelectTab( OpsTab.Settings );
+
+	/// <summary>Dev preview — jump straight to the Hub logs/alerts tab.</summary>
+	public void DevOpenLogsTab() => SelectTab( OpsTab.Logs );
 
 	/// <summary>Dev preview — Universal Upgrades home (tier tile grid), not a per-rack view.</summary>
 	public void DevOpenUpgradesHome()
@@ -1512,6 +1528,7 @@
 	private void ClearHubLogs()
 	{
 		Hub?.RequestClearAlerts();
+		_sinceLogsClearedNotice = 0;
 		SyncHubLogs( force: true );
 	}
 
@@ -2022,6 +2039,7 @@
 		if ( success )
 		{
 			_pinChangeNotice = string.IsNullOrWhiteSpace( message ) ? "Hub PIN updated." : message;
+			_sincePinUpdatedNotice = 0;
 			_pinUnlocked = true;
 			_pinGatePurpose = PinGatePurpose.Unlock;
 			_pinBuffer = "";
@@ -2081,9 +2099,6 @@
 
 	private string SettingsSecurityHint()
 	{
-		if ( !string.IsNullOrWhiteSpace( _pinChangeNotice ) )
-			return _pinChangeNotice;
-
 		if ( Hub?.AccessPinIsSet == true )
 			return "PIN protects wallet and settings.";
 
@@ -2383,6 +2398,8 @@
 			return;
 		}
 
+		TickTransientNotices();
+
 		if ( _sinceTelemetryRefresh < TelemetryRefreshInterval )
 		{
 			TickHubLogs();
@@ -2403,6 +2420,24 @@
 
 		TickHubLogs();
 		TickLogTimeLabels();
+	}
+
+	// Expire the in-button confirmations (PIN updated / Cleared) and re-render only on the
+	// active→inactive (or inactive→active) edge — no per-frame markup thrash.
+	private void TickTransientNotices()
+	{
+		if ( PinJustUpdated() && _sincePinUpdatedNotice >= PinNoticeHoldSeconds )
+			_pinChangeNotice = "";
+
+		var pinActive = PinJustUpdated();
+		var logsClearedActive = LogsJustCleared();
+
+		if ( pinActive == _pinNoticeWasActive && logsClearedActive == _logsClearedWasActive )
+			return;
+
+		_pinNoticeWasActive = pinActive;
+		_logsClearedWasActive = logsClearedActive;
+		StateHasChanged();
 	}
 
 	private void TickHubLogs()
@@ -2712,6 +2747,7 @@
 		hash.Add( (int)_pinGatePurpose );
 		hash.Add( _pinChangePass );
 		hash.Add( _pinChangeNotice );
+		hash.Add( LogsJustCleared() );
 		hash.Add( _hub?.IsPowered );
 		hash.Add( _hub?.AccessPinIsSet );
 		hash.Add( _perfRange );

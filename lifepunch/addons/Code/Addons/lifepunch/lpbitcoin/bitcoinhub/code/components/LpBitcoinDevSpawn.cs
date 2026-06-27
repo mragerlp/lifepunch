@@ -768,6 +768,29 @@ public static class LpBitcoinDevSpawn
 		Log.Info( "lp_bitcoin_preview_settings: settings tab open — check toggle list + header power switch." );
 	}
 
+	/// <summary>Hub admin on the Hub logs tab — seeds varied sample alerts so the feed renders (PIN bypassed).</summary>
+	[ConCmd( "lp_bitcoin_preview_alerts" )]
+	public static void PreviewHubAlertsUi()
+	{
+		WarnIfWrongPlayScene();
+		LpBitcoinUi.CloseAll();
+		var hub = LpBitcoinUi.GetOrCreatePreviewHub( withSampleRacks: true );
+		if ( !hub.IsValid() )
+		{
+			Log.Warning( "lp_bitcoin_preview_alerts: no active scene." );
+			return;
+		}
+
+		hub.DevSeedSampleAlerts();
+		if ( hub.GetAlerts().Count == 0 )
+			Log.Warning( "lp_bitcoin_preview_alerts: no alerts seeded — run during Host Play (Networking.IsHost required)." );
+
+		var panel = LpHashdUiHost.Open( hub );
+		panel?.DevBypassPinGate();
+		panel?.DevOpenLogsTab();
+		Log.Info( "lp_bitcoin_preview_alerts: Hub logs open with seeded alerts — verify rows render + Clear works." );
+	}
+
 	/// <summary>Hub admin with PIN gate presets — setup (default), unlock (PIN 4242), or blocked (wrong owner).</summary>
 	[ConCmd( "lp_hashd_pin_preview" )]
 	public static void PreviewHubPinUi( string mode = "setup" )
