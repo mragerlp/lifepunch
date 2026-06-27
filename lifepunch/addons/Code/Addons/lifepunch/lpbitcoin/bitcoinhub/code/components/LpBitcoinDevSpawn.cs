@@ -553,6 +553,37 @@ public static class LpBitcoinDevSpawn
 		LogBitcoinSpawnAudit();
 	}
 
+	/// <summary>Full realistic set: 1 Hub + 1 Terminal + 2 standard GPU Racks + 1 Advanced GPU Rack.</summary>
+	[ConCmd( "lp_bitcoin_spawn_five_prefabs" )]
+	public static void SpawnFivePrefabs()
+	{
+		if ( !LifePunchMarketSpawn.TryGetIdentitySpawnTransform( out var transform ) )
+		{
+			Log.Warning( "lp_bitcoin_spawn_five_prefabs: no local viewer — play from game.scene first." );
+			return;
+		}
+
+		var hub = SpawnHubPrefab( transform );
+		if ( !hub.IsValid() )
+			return;
+
+		var origin = transform.Position;
+		var rot = transform.Rotation;
+		var groundZ = origin.z;
+
+		SpawnTerminalPrefab( new Transform( SnapToGround( origin + rot.Forward * 110f, groundZ ), rot ) );
+
+		// Two standard racks on the left side
+		SpawnRackPrefab( RackSpawnTransform( transform, sideOffset: -130f ) );
+		SpawnRackPrefab( RackSpawnTransform( transform, sideOffset: -260f ) );
+
+		// One advanced rack on the right side
+		SpawnStackedRackPrefab( RackSpawnTransform( transform, sideOffset: +130f ) );
+
+		Log.Info( "lp_bitcoin_spawn_five_prefabs: 1 hub + 1 terminal + 2× standard rack + 1 advanced rack placed (unlinked)." );
+		LogBitcoinSpawnAudit();
+	}
+
 	/// <summary>Legacy alias — same as <see cref="SpawnRack"/> (advanced tier merged into GPU Rack).</summary>
 	[ConCmd( "lp_spawn_advanced_gpu_rack" )]
 	public static void SpawnAdvancedRack() => SpawnRack();
