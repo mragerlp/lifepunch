@@ -730,6 +730,44 @@ public static class LpBitcoinDevSpawn
 		Log.Info( "lp_bitcoin_preview_upgrades_home: Universal Upgrades home — Tier I owned, II available, III–V locked." );
 	}
 
+	/// <summary>Hub admin on the Servers tab — low-clutter home grid (one box per slot, PIN bypassed).</summary>
+	[ConCmd( "lp_bitcoin_preview_servers" )]
+	public static void PreviewHubServersUi()
+	{
+		WarnIfWrongPlayScene();
+		LpBitcoinUi.CloseAll();
+		var hub = LpBitcoinUi.GetOrCreatePreviewHub( withSampleRacks: true );
+		if ( !hub.IsValid() )
+		{
+			Log.Warning( "lp_bitcoin_preview_servers: no active scene." );
+			return;
+		}
+
+		var panel = LpHashdUiHost.Open( hub );
+		panel?.DevBypassPinGate();
+		panel?.DevOpenServersTab();
+		Log.Info( "lp_bitcoin_preview_servers: Servers home grid open — pick a box to drill into a server." );
+	}
+
+	/// <summary>Hub admin on a Servers slot's drill-in detail (back link → Servers, PIN bypassed).</summary>
+	[ConCmd( "lp_bitcoin_preview_server_detail" )]
+	public static void PreviewHubServerDetailUi()
+	{
+		WarnIfWrongPlayScene();
+		LpBitcoinUi.CloseAll();
+		var hub = LpBitcoinUi.GetOrCreatePreviewHub( withSampleRacks: true );
+		if ( !hub.IsValid() )
+		{
+			Log.Warning( "lp_bitcoin_preview_server_detail: no active scene." );
+			return;
+		}
+
+		var panel = LpHashdUiHost.Open( hub );
+		panel?.DevBypassPinGate();
+		panel?.DevOpenServerDetail();
+		Log.Info( "lp_bitcoin_preview_server_detail: Servers drill-in open — stat tiles + Upgrade + back link." );
+	}
+
 	/// <summary>Hub admin on the wallet tab — cash-out tiles + bank deposit preview (PIN bypassed).</summary>
 	[ConCmd( "lp_bitcoin_preview_hub_wallet" )]
 	public static void PreviewHubWalletUi()

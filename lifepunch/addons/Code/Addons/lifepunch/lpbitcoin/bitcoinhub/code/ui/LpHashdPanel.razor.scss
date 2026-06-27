@@ -5053,8 +5053,8 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 
 .lp-bitcoin-ops .power-switch-track {
 	position: relative;
-	width: 36px;
-	height: 20px;
+	width: 38px;
+	height: 22px;
 	border-radius: 999px;
 	background-color: rgba(0, 0, 0, 0.45);
 	border: 1px solid rgba(255, 255, 255, 0.12);
@@ -5100,8 +5100,8 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 }
 
 .lp-bitcoin-ops .settings-switch .power-switch-knob {
-	width: 22px;
-	height: 22px;
+	width: 20px;
+	height: 20px;
 	top: 2px;
 	left: 2px;
 }
@@ -5832,6 +5832,21 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	flex: 1 1 0;
 	min-height: 0;
 	justify-content: center;
+}
+
+// Servers home grid — reuse the low-clutter launcher boxes; dim empty (unlinked) slots.
+.lp-bitcoin-ops .servers-home-grid {
+	margin-top: 8px;
+}
+
+.lp-bitcoin-ops .server-home-box.empty {
+	opacity: 0.78;
+}
+
+.lp-bitcoin-ops .server-home-box.empty .upgrade-home-box-icon,
+.lp-bitcoin-ops .server-home-box.empty .upgrade-home-box-sub,
+.lp-bitcoin-ops .server-home-box.empty .upgrade-home-box-chevron {
+	color: $hashd-muted;
 }
 
 // Hub logs — scroll past intro; nested pane rule had clipped the 6th row.

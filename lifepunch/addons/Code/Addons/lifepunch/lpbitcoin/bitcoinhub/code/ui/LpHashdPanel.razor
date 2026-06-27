@@ -303,19 +303,54 @@
 								}
 								else if ( _active == OpsTab.Racks )
 								{
+									var serverDetail = GetServerDetailSlot();
 									<div class="pane racks">
 										<div class="lp-ui-panel racks-panel">
+										@if ( serverDetail is null )
+										{
 											<div class="lp-ui-panel-title">
 												<i class="material-icons">dns</i>
 												<span>Servers</span>
 											</div>
 
-											<div class="lp-ui-intro racks-intro">@RacksIntroCopyLine()</div>
+											<div class="lp-ui-intro racks-intro">Pick a server to see its stats and open its hardware upgrades.</div>
+
+											<div class="racks-scroll">
+												<div class="upgrade-home-grid servers-home-grid">
+													@foreach ( var slot in GetServersRackSlots() )
+													{
+														<button class="upgrade-home-box server-home-box @( slot.Rack.IsValid() ? "" : "empty" )" onclick="@(() => EnterServerDetail( slot ))">
+															<i class="material-icons upgrade-home-box-icon">@ServerSlotIcon( slot )</i>
+															<div class="upgrade-home-box-body">
+																<span class="upgrade-home-box-title">@slot.DisplayLabel</span>
+																<span class="upgrade-home-box-sub">@ServerSlotStatusLabel( slot )</span>
+																<span class="upgrade-home-box-desc">@ServerSlotHomeDesc( slot )</span>
+															</div>
+															<div class="upgrade-home-box-foot">
+																<span class="upgrade-home-box-meta">@ServerSlotHomeMeta( slot )</span>
+																<i class="material-icons upgrade-home-box-chevron">chevron_right</i>
+															</div>
+														</button>
+													}
+												</div>
+											</div>
+										}
+										else
+										{
+											var slot = serverDetail.Value;
+											<div class="upgrades-toolbar">
+												<button class="lp-ui-btn-ghost upgrades-back-btn" onclick="@BackToServersHome">
+													<i class="material-icons">arrow_back</i>
+													<span>Servers</span>
+												</button>
+												<div class="lp-ui-panel-title upgrades-title">
+													<i class="material-icons">@ServerSlotIcon( slot )</i>
+													<span>@slot.DisplayLabel</span>
+												</div>
+											</div>
 
 											<div class="racks-scroll">
 												<div class="rack-grid">
-													@foreach ( var slot in GetServersRackSlots() )
-													{
 														<div class="rack-card @( slot.Rack.IsValid() ? "" : "empty" )">
 															<div class="rack-card-head">
 																<div class="rack-card-head-main">
@@ -387,9 +422,9 @@
 																</div>
 															}
 														</div>
-													}
 												</div>
 											</div>
+										}
 										</div>
 									</div>
 								}
@@ -1126,6 +1161,7 @@
 	private UpgradeRackSelector _upgradeRackSlot = UpgradeRackSelector.Rack1;
 	private bool _inUpgradeSurface;     // false = Upgrades home (3 surface boxes)
 	private bool _rackTargetSelected;   // GPU only: false = rack target home (3 rack boxes)
+	private string _serverDetailToken;  // null = Servers home grid; token = that slot's drill-in detail
 	private Guid _rackSlotCopyAckId = Guid.Empty;
 	private bool _receiveCopyAck;
 	private bool _sendExampleCopyAck;
@@ -1238,6 +1274,28 @@
 
 	/// <summary>Dev preview — jump straight to the Hub logs/alerts tab.</summary>
 	public void DevOpenLogsTab() => SelectTab( OpsTab.Logs );
+
+	/// <summary>Dev preview — Servers tab at its low-clutter home grid (one box per slot).</summary>
+	public void DevOpenServersTab() => SelectTab( OpsTab.Racks );
+
+	/// <summary>Dev preview — Servers tab drilled into the first populated slot's detail.</summary>
+	public void DevOpenServerDetail()
+	{
+		SelectTab( OpsTab.Racks );
+		var slots = GetServersRackSlots();
+		// Prefer a linked/valid rack so the detail shows live stat tiles; otherwise drill into the
+		// first slot anyway so the drill-in detail + back link always render for the preview.
+		foreach ( var slot in slots )
+		{
+			if ( slot.Rack.IsValid() )
+			{
+				EnterServerDetail( slot );
+				return;
+			}
+		}
+		if ( slots.Count > 0 )
+			EnterServerDetail( slots[0] );
+	}
 
 	/// <summary>Dev preview — Universal Upgrades home (tier tile grid), not a per-rack view.</summary>
 	public void DevOpenUpgradesHome()
@@ -1439,6 +1497,57 @@
 		};
 	}
 
+	// Servers low-clutter nav: home grid (one box per slot) → drill into one server's detail → back.
+	private OverviewMinerSlot? GetServerDetailSlot()
+	{
+		if ( string.IsNullOrEmpty( _serverDetailToken ) )
+			return null;
+
+		foreach ( var slot in GetServersRackSlots() )
+		{
+			if ( slot.TerminalToken == _serverDetailToken )
+				return slot;
+		}
+
+		return null;
+	}
+
+	private void EnterServerDetail( OverviewMinerSlot slot )
+	{
+		_serverDetailToken = slot.TerminalToken;
+		LifePunchUiScrollPolicy.ResetOffsets( Panel );
+	}
+
+	private void BackToServersHome()
+	{
+		_serverDetailToken = null;
+		LifePunchUiScrollPolicy.ResetOffsets( Panel );
+	}
+
+	private static string ServerSlotIcon( OverviewMinerSlot slot )
+		=> slot.TerminalToken == LpBitcoinIdent.AdvancedRackTerminalToken ? "developer_board" : "memory";
+
+	private string ServerSlotStatusLabel( OverviewMinerSlot slot )
+	{
+		if ( slot.Rack.IsValid() )
+			return slot.Rack.IsMining ? "Mining" : "Idle";
+
+		return HasAnyPlayerRacksNearbyOrLinked() ? "Not linked" : "Available";
+	}
+
+	private string ServerSlotHomeDesc( OverviewMinerSlot slot )
+	{
+		if ( slot.Rack.IsValid() )
+			return RackYieldLabel( slot.Rack );
+
+		return HasAnyPlayerRacksNearbyOrLinked()
+			? "Place rack near hub, then link at rig0 on the terminal."
+			: "Purchase racks from the Market, then link at rig0.";
+	}
+
+	private static string ServerSlotHomeMeta( OverviewMinerSlot slot )
+		=> slot.Rack.IsValid() ? RackBtcTileValue( slot.Rack ) : slot.TerminalToken;
+
 	private bool HasAnyPlayerRacksNearbyOrLinked()
 	{
 		if ( GetLinkedRacks().Any( rack => rack.IsValid() ) )
@@ -1492,8 +1601,6 @@
 		return $"{cpuTier} · {coreTier}";
 	}
 
-	private static string RacksIntroCopyLine()
-		=> "Slots: gpurack-1, gpurack-2, advancedgpurack at rig0. Upgrade CPU and cores here — start/stop mining on the CRT.";
 
 	private static string RackBtcTileValue( LpBitcoinRackEntity rack )
 		=> $"{rack.BitcoinAmount:F4} BTC";
@@ -1625,6 +1732,9 @@
 			_rackTargetSelected = false;
 			_openPath = null;
 		}
+
+		// Servers always opens at its home grid (one decision per screen).
+		_serverDetailToken = null;
 
 		_active = tab;
 		LifePunchUiScrollPolicy.ResetOffsets( Panel );
@@ -2735,6 +2845,7 @@
 		hash.Add( (int)_upgradeRackSlot );
 		hash.Add( _inUpgradeSurface );
 		hash.Add( _rackTargetSelected );
+		hash.Add( _serverDetailToken ?? string.Empty );
 		hash.Add( _openPath ?? string.Empty );
 		hash.Add( _receiveCopyAck );
 		hash.Add( _sendExampleCopyAck );
