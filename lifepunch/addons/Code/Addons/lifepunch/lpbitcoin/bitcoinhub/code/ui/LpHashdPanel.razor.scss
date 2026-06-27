@@ -2355,7 +2355,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		padding: 36px 24px;
 		border-radius: 16px;
 		background-color: $hashd-card;
-		border: 1px dashed rgba(255, 255, 255, 0.12);
+		border: 1px solid rgba(255, 255, 255, 0.12);
 		color: $hashd-muted;
 		text-align: center;
 		font-size: 13px;
@@ -5974,7 +5974,8 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		background-color: $hashd-surface-bg;
 
 		&.cosmetic {
-			border-style: dashed;
+			// s&box: border-style dashed unsupported — softer amber outline reads cosmetic
+			border-color: rgba(232, 125, 62, 0.28);
 			opacity: 0.92;
 		}
 
@@ -6032,7 +6033,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		}
 
 		&.cap {
-			border-style: dashed;
+			border-color: rgba(232, 125, 62, 0.4);
 		}
 	}
 
