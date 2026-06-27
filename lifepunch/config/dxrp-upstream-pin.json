@@ -9,10 +9,10 @@
                      "branch":  "develop"
                  },
     "pinned":  {
-                   "sha":  "7fcbf03c4f4fd2250469269c4da1ed28f999ad17",
-                   "shortSha":  "7fcbf03",
-                   "subject":  "Fix current tool info UI",
-                   "syncedAt":  "2026-06-15T05:54:57Z"
+                   "sha":  "7194fe1eaeb87f364351668f786db002a0fb94aa",
+                   "shortSha":  "7194fe1",
+                   "subject":  "Merge pull request #62 from PikPakPik/feature/46-afk-inactivity-timer",
+                   "syncedAt":  "2026-06-27T05:46:23Z"
                },
     "localPaths":  {
                        "forkCheckout":  "C:/Users/jared/Projects/dxrp-public",

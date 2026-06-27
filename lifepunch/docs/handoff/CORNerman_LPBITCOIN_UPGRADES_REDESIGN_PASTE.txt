@@ -1,0 +1,26 @@
+Cornerman — new background task.
+
+Focus: Design the full realistic Bitcoin mining upgrade system for lpbitcoin using the three-surface law (Hub / Terminal / Rack).
+
+Read this brief in full:
+lifepunch/addons/docs/briefs/CORNerman_LPBITCOIN_REALISTIC_MINING_UPGRADES_REDESIGN.md
+
+Key goals:
+- Make upgrades feel like they affect a real industrial crypto mining operation (hashrate, power, heat/thermal, efficiency, stability, buffers, defense, monitoring).
+- Clean 5 tracks per surface (15 total), locked names.
+- Tier I–V with concrete, believable effects.
+- Clear ownership (Hub = controller/policy, Racks = physical hardware, Terminal = defense + ops capability).
+- Strong in-world explanations.
+- Data model suggestions for the entities.
+- UI implications for the Universal Upgrades home.
+
+Rules:
+- Eyes covered.
+- Save major deliverables to C:\LIFEPUNCH\Reports\ and C:\lifepunch\cornerman\outbox\
+- Append short status lines to foundation-index.txt after each big piece.
+- No commits from this machine.
+- Be implementation-ready and specific.
+
+Start with the 15-track catalog + Law G1 flavor sentences, then tier effects.
+
+Work steadily in the background while Red builds the UI. Produce a consolidated design doc when you have a good first pass on tracks + effects.
