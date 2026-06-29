@@ -245,6 +245,12 @@ agents work. See **Publish addons** + `PUBLISH_REPO_LANE.md` + `GIT_CHECKPOINTS.
   (EIN, domicile address) — those stay off the repo.
 - **lifepunch-rules-workflow** + **lifepunch-website-organization** — website/rules deploy.
 - **lifepunch-sbox-patches** — engine patch log, version check, UI/publish regression gate.
+- **lifepunch-commit-hygiene** — **no AI/agent attribution in commits** (no `Co-authored-by: Cursor`,
+  Claude, Copilot, …); author is `mragerlp` only. Keep Cursor **Settings → Agent → Attribution**
+  (Commit + PR) OFF; install the backstop hook per clone via `Install-CommitHygieneHook.ps1`. Critical
+  on the public DXRP fork (`dxrp-public` → `dxura/dxrp`). Recovery (already-committed trailer): the
+  Cursor wrapper hooks `git commit*`, so strip with `git filter-branch --msg-filter` then
+  `--force-with-lease`. Upstream lane detail: `lifepunch/docs/DXRP_CONTRIBUTOR_LANE.md`.
 
 Also read `lifepunch/docs/WORKSPACE_STRUCTURE.md` and `lifepunch/docs/GITLAB_ORGANIZATION.md`.
 **s&box engine:** `lifepunch/addons/docs/SBOX_ENGINE_PATCHES.md` — run `lifepunch/scripts/Get-SboxEnginePatchStatus.ps1` each session.

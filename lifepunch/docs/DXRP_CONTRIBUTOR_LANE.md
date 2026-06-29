@@ -92,17 +92,40 @@ Commit **only** intentional `.cs` / `.razor` / `.scss` / `dxrp.json` party (or b
 
 ---
 
-## Current bounty: Party system (#73)
+## Commit hygiene — NO AI attribution (hard law)
 
-| Commit | Scope |
-|--------|--------|
-| `1936af0` | Core `PartySystem`, `/party` command |
-| `e388f5f` | FF bypass, team highlight, party chat |
-| `a4c43d7` | Party HUD + member vitals |
-| `9e424f2` | `/party menu`, `/p` alias, DraggablePanel HUD shell, localization |
+Full law + recovery: **`.cursor/rules/lifepunch-commit-hygiene.mdc`**. Upstream-specific points:
+
+- **No AI/agent co-author trailers ever** (`Co-authored-by: Cursor <cursoragent@cursor.com>`, Claude,
+  Copilot, etc.). They render Cursor as a co-author on the public PR — a bad look on a bounty.
+  **June 2026 incident:** PR #77 shipped the Cursor trailer; cleaned via `filter-branch` + force-with-lease.
+- **Root cause:** Cursor **Settings → Agent → Attribution** (Commit + PR Attribution) auto-injects it.
+  Keep both **OFF** (UI toggle, not `settings.json`). It also wraps `git commit*`, so `commit --amend`
+  can't strip it — use `git filter-branch --msg-filter` (see the rule).
+- **Install the backstop hook per clone** (blocks any AI trailer at commit time):
+  ```powershell
+  powershell -File lifepunch\scripts\Install-CommitHygieneHook.ps1
+  ```
+- **Don't spam `#73` in every commit.** Clean commit subjects (`fix(party): align HUD drag + collapse`);
+  reference the issue in the **PR title/body** (`feat: … (#73)`), not each commit — that's what posts
+  every commit into the issue timeline.
+- **Pre-push scan:**
+  ```powershell
+  git log <upstream-base>..HEAD --format='%H%n%B' | Select-String 'cursoragent|Co-authored'
+  ```
+
+---
+
+## Current bounty: Party system (#73) — SHIPPED to PR #77
+
+PR **#77** (`mragerlp:bounty/73-party-system` → `dxura/dxrp:develop`): **open · mergeable: clean**,
+22 files / +2609 / -5, head `914967a`. Dimmer approved ("you can continue"); his one criticism (4
+syncvars → 1 GUID→struct netdict) is implemented as a single `[Sync(FromHost)] NetDictionary<Guid,
+PartyData> Parties`. All commits authored by `mragerlp`, **no AI trailer** (history cleaned 2026-06-29).
 
 **Branch:** `bounty/73-party-system` on `mragerlp/dxrp-public`  
-**Open (editor proof):** Party HUD drag + accordion chevron — mirror `AdminTickets` + `DraggablePanel`.
+**Done:** Party HUD Alt-gated drag + collapse chevron (mirrors `AdminTickets` + `DraggablePanel`);
+`/party` menu equal-width roster cards. Awaiting Dimmer's review/merge.
 
 ---
 
