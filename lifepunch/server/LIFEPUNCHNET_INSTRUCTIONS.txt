@@ -158,11 +158,14 @@ Paste Block C from lifepunch/docs/AGENT_PROMPT.md into Cursor on lifepunchnet
 for lane-scoped work (server audits, portal docs, Whisper hub, etc.).
 
 --------------------------------------------------------------------------------
-STEP 10 — DXRP SERVER 1 / 2 LAUNCHERS (Official must use dxrp-server.cs)
+STEP 10 — DXRP SERVER 1 / 2 LAUNCHERS (addons live — dxrp-server.cs required)
 --------------------------------------------------------------------------------
 
-  Problem:  sbox-server.exe +game dxura.rp +authorize … → "no code archive"
-  Fix:      Same as Server 2 (Dev): dotnet run dxrp-server.cs --token <portal token>
+  Canon:    lifepunch\server\LAUNCHING_SERVER_WITH_ADDONS.md
+  Upstream: https://docs.dxrp.net/launching-server-with-addons
+
+  Problem:  sbox-server.exe +game dxura.rp +authorize … → "no code archive" + no portal addon pull
+  Fix:      dotnet run dxrp-server.cs --token <portal token>  (Official AND Development)
 
   Repo (versioned wrappers):
     lifepunch\server\dxrp-host\

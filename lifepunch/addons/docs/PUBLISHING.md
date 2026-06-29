@@ -56,7 +56,7 @@ counterpart to the in-code proprietary header). See `../../marketing/youtube/REA
 
 Publishing an addon package revision is not the same thing as attaching it to a gamemode.
 
-Review `../../docs/DXRP_DOCS_REFERENCE.md` and the DXRP `Launching Server with Addons` documentation before changing publish/server assumptions.
+Review `../../docs/DXRP_DOCS_REFERENCE.md` and **`../../server/LAUNCHING_SERVER_WITH_ADDONS.md`** before changing publish/server assumptions. Published addons reach dedicated hosts only via portal **Add to Server** + `dxrp-server.cs` API pull — not by copying repo folders onto lifepunchnet.
 
 Keep these steps separate:
 

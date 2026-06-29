@@ -2,6 +2,8 @@
 
 **Law:** Nothing else is testable until Dev is **Steam-connected** and `dxrp-server.cs` reaches **`[7/7]`**.
 
+**Canon:** `LAUNCHING_SERVER_WITH_ADDONS.md` · https://docs.dxrp.net/launching-server-with-addons
+
 Dxura's launcher (not bare `sbox-server.exe +game dxura.rp`):
 
 ```bat

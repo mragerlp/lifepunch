@@ -67,11 +67,11 @@ Observed on-page links:
 
 The Operator docs are directly relevant to:
 
-- `lifepunch/server`
+- `lifepunch/server` — **canon runbook:** `lifepunch/server/LAUNCHING_SERVER_WITH_ADDONS.md`
 - `lifepunch/addons`
 - `lifepunch/gamemode`
 
-The `Launching Server with Addons` page should be reviewed before we automate or document server launch/sync flows.
+Both hosted LifePunch servers (`lifepunchmainserver`, `lifepunchdevelopment`) must use **`dotnet run dxrp-server.cs`** per [Launching Server with Addons](https://docs.dxrp.net/launching-server-with-addons). Portal token drives `GET /v1/server/addons` on every startup.
 
 The DXRP `develop` repository is source-available, not open source. Treat it as a compatibility and contribution reference, not as material to copy into LifePunch. Any official-project improvements should be small, original, and submitted only through Dxura-approved contribution channels.
 
@@ -167,8 +167,27 @@ Recommended sync loop:
 
 ## Confirmation Needed
 
-- Full `Launching Server with Addons` contents.
 - Whether Developer docs expand beyond `TODO`.
-- Whether docs include official addon package/content row rules.
+- Whether docs include official addon package/content row rules beyond portal UI.
 - Whether API behavior is documented under a separate page or only in portal UI.
 - Whether public pull requests are currently enabled and what Dxura's preferred issue/PR workflow is for infrastructure contributions.
+
+## Launching Server with Addons (confirmed 2026-06-29)
+
+Upstream: https://docs.dxrp.net/launching-server-with-addons
+
+**Prerequisites:** .NET 10 SDK, Git, `sbox-server.dll`, `dxrp-server.cs` in same folder.
+
+**Launch:** `dotnet run dxrp-server.cs --token YOUR_TOKEN`
+
+**Each startup:**
+
+1. Pull latest DXRP from GitHub (`repoUrl` / `branch` in config)
+2. Fetch addons from `apiEndpoint` for the server token
+3. Clear and re-download addon files
+4. Build / optional verify (`verifyAddons`)
+5. Launch server; auto-restart on stop
+
+**Config keys:** `token`, `repoUrl`, `branch`, `apiEndpoint`, `map`, `extraArgs`, `verifyAddons`
+
+LifePunch mapping: `lifepunch/server/LAUNCHING_SERVER_WITH_ADDONS.md`

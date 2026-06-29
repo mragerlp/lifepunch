@@ -1,8 +1,10 @@
 # LifePunch Official Server — online quickfix (lifepunchnet)
 
+**Canon runbook:** `LAUNCHING_SERVER_WITH_ADDONS.md` · Upstream: https://docs.dxrp.net/launching-server-with-addons
+
 **Symptom:** Portal shows **INACTIVE** or server never pulses; console shows **This game has no code archive!**
 
-**Cause:** Bare `sbox-server.exe +game dxura.rp` no longer works — cloud `dxura.rp` has no dedicated-server code archive.
+**Cause:** Bare `sbox-server.exe +game dxura.rp` no longer works — cloud `dxura.rp` has no dedicated-server code archive. **Live portal addons also require `dxrp-server.cs`** (API fetch on every start).
 
 **Fix:** Official (70p) must use Dxura's **`dotnet run dxrp-server.cs`** launcher — same as Development Server 2.
 
@@ -38,7 +40,7 @@ Template: `lifepunch/secure/templates/` → copy to on-box `secure\`.
 ## 3. Start Official
 
 1. **Stop** any old shortcut running `sbox-server.exe +game dxura.rp`.
-2. Run **`C:\S&BOX DXRP Server\official\server1_start.bat`** (or desktop shortcut from deploy script).
+2. Run **`C:\S&BOX DXRP Server\server1_start.bat`** (or desktop shortcut from deploy script).
 3. Wait for launcher steps **`[2/7]`–`[7/7]`** (first run: clone dxrp + build — several minutes).
 4. Confirm DXRP portal **Last Pulsed** updates for **LifePunch Official | 70p**.
 

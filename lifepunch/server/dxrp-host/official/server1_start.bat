@@ -18,6 +18,13 @@ if not exist "sbox-server.dll" (
   exit /b 1
 )
 
+where dotnet >nul 2>&1
+if errorlevel 1 (
+  echo ERROR: .NET SDK missing. Install .NET 10: https://dotnet.microsoft.com/download/dotnet/10.0
+  pause
+  exit /b 1
+)
+
 if exist "secure\official.local.env" call "secure\official.local.env"
 if "%DXRP_TOKEN_OFFICIAL%"=="" (
   echo ERROR: Create secure\official.local.env with:

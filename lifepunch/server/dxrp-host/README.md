@@ -1,15 +1,17 @@
-﻿# DXRP dedicated host â€” LifePunch launch wrappers (lifepunchnet)
+﻿# DXRP dedicated host — LifePunch launch wrappers (lifepunchnet)
 
-**Problem:** `sbox-server.exe +game dxura.rp +authorize â€¦` fails with **This game has no code archive!** â€” cloud `dxura.rp` no longer ships compiled server code to bare dedicated binaries.
+**Canon:** `../LAUNCHING_SERVER_WITH_ADDONS.md` · Upstream: https://docs.dxrp.net/launching-server-with-addons
 
-**Fix:** Use Dxuraâ€™s official launcher (`dxrp-server.cs`) â€” same path **Server 2 (Development)** already uses:
+**Problem:** `sbox-server.exe +game dxura.rp +authorize …` fails with **This game has no code archive!** — and live portal addons are not mounted without the launcher API path.
+
+**Fix:** Use Dxura's official launcher (`dxrp-server.cs`) — **both Official (70p) and Development**:
 
 ```text
 dotnet run dxrp-server.cs --token <portal-token>
-  â†’ clone/pull dxrp
-  â†’ GET /v1/server/addons
-  â†’ dotnet build rp.csproj
-  â†’ sbox-server.dll +game "<local rp.sbproj>" +authorize <token>
+  → clone/pull dxrp
+  → GET /v1/server/addons
+  → dotnet build rp.csproj
+  → sbox-server.dll +game "<local rp.sbproj>" +authorize <token>
 ```
 
 **Do not fork `dxrp-server.cs`.** LifePunch only versions wrappers, config examples, and deploy scripts in this folder.
@@ -20,14 +22,14 @@ dotnet run dxrp-server.cs --token <portal-token>
 
 | Server | Portal name | Start script | Game port |
 |--------|-------------|--------------|-----------|
-| **Server 1 â€” Official (70p)** | LifePunch Official \| 70p | `server1_start.bat` | **27015** |
-| **Server 2 â€” Development** | DEVELOPMENT SERVER | `server2_start.bat` (same root) | 27016 (typical) |
+| **Server 1 — Official (70p)** | LifePunch Official \| 70p | `server1_start.bat` | **27015** |
+| **Server 2 — Development** | DEVELOPMENT SERVER | `server2_start.bat` (same root) | 27016 (typical) |
 
 **Single install root on lifepunchnet:** `C:\S&BOX DXRP Server\` — Dev and Official share this folder (different bat + token). No `Server Dev` path.
 
 Each install must already contain Dxura's host files (`dxrp-server.cs`, `sbox-server.dll`, etc.). This repo does **not** ship those binaries.
 
-### Versioned (git â†’ deploy to box)
+### Versioned (git → deploy to box)
 
 ```text
 lifepunch/server/dxrp-host/
@@ -53,7 +55,7 @@ lifepunch/server/dxrp-host/
 <install-root>/logs/                          # optional local logs
 ```
 
-Copy env templates from `lifepunch/secure/templates/` into each install rootâ€™s `secure\` folder.
+Copy env templates from `lifepunch/secure/templates/` into each install root's `secure\` folder.
 
 ---
 
@@ -92,25 +94,21 @@ From VENGEANCE: `powershell -File lifepunch\scripts\Invoke-LifepunchnetServerUpd
 
 Copied to `C:\S&BOX DXRP Server\` (same folder for Dev + Official launchers).
 
-
-Then **migrate Official** (one-time):
+Then **migrate Official** (one-time if still on legacy bat):
 
 1. Stop the old `sbox-server.exe +game dxura.rp` shortcut / batch.
 2. Ensure `secure\official.local.env` has `DXRP_TOKEN_OFFICIAL=<portal Server 1 token>`.
-3. Double-click desktop shortcut â†’ `server1_start.bat` (or run `restart_official.ps1`).
-4. Wait for launcher steps `[2/7]`â€“`[7/7]` (first run can take several minutes).
+3. Double-click desktop shortcut → `server1_start.bat` (or run `restart_official.ps1`).
+4. Wait for launcher steps `[2/7]`–`[7/7]` (first run can take several minutes).
 5. Confirm portal **Last Pulsed** updates for Official.
-
----
-
-## Portal parallel track
-
-If Dxura later republishes `dxura.rp` with a server code archive, bare `+game dxura.rp` may work again. Until then, **Official must use `dxrp-server.cs`**.
+6. Portal: confirm LifePunch addons are **Add to Server** on Official gamemode.
 
 ---
 
 ## Related
 
+- **Canon runbook:** `../LAUNCHING_SERVER_WITH_ADDONS.md`
 - Runbook: `lifepunch/server/LIFEPUNCHNET_INSTRUCTIONS.txt` (STEP 10)
+- Change log: `lifepunch/server/change-log/2026-06-29-addons-live-launcher-law.md`
 - Change template: `lifepunch/templates/server-change.md`
 - Secrets: `lifepunch/secure/README.md`
