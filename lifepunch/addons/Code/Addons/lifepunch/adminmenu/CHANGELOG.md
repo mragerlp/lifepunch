@@ -3,6 +3,11 @@
 Proprietary & Confidential — © 2026 lifepunch.co. Sole-owned IP of lifepunch.co.
 Portal package: **lifepunchulx** (s&box ident `lifepunch.lifepunchulx`).
 
+## v1.0.2 — portal r9 (2026-06-29)
+
+- **Dedicated compile fix** — DXRP `Player.PlayTime` is `TimeSince` (elapsed seconds); roster + profile pane now convert to minutes explicitly (`/ 60f`, same as DXRP VoteSystem). Fixes CS1503 on portal r8 when the dedicated host compiles against current DXRP.
+- **Refresh throttle** — roster rebuild cadence uses `RealTimeSince` (matches LifePunch bitcoin sync pattern; avoids Razor `TimeSince` compile edge on newer engine builds).
+
 ## v1.0.1 — portal r6 (2026-06-23)
 
 - **Scroll policy cleanup** — removed cross-lane class names from the lifepunchulx bundle; shared scroll helpers are addon-neutral (`lp-ui-scroll-region` only). StaffMenu scroll regions declare that class in markup.

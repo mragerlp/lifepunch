@@ -41,7 +41,7 @@
       "targetGamemodeId": "019eca7a-d259-747f-9670-c6642e0d3c19",
       "targetGamemodeName": "LIFEPUNCH™ Development",
       "publishStatus": "published-r7-pinned-dev-staging-proof",
-      "marketingVersion": "1.0.1",
+      "marketingVersion": "1.0.2",
       "revisionId": null,
       "revisionNumber": 7,
       "codeFileCount": 13,
@@ -56,6 +56,7 @@
         "Upload folder: contents of lifepunchulx/ (13 files), not Code/ parent. code-only; no content rows.",
         "Gamemode pin: LIFEPUNCH Development 019eca7a — lifepunchulx revision 7.",
         "PROOF 2026-06-23: menu opens on Dev join after lifepunchnet + client on s&box STAGING branch (Dimmer: release mounter broken).",
+        "PENDING r9 (2026-06-29): PlayTime TimeSince→minutes + RealTimeSince refresh throttle — fixes dedicated compile on portal r8 (CS1503). Publish prepare-publish.ps1 -Addon adminmenu then re-pin.",
         "Engine gate: steamcmd +app_update 1892930 -beta staging on Blue; do not auto_update.bat (pulls release). Revert both hosts when Facepunch fixes release.",
         "Opens via lifepunchulx / /lifepunchulx (aliases menu, ulx).",
         "Supersedes legacy package 019e9cfa (old lifepunch.ulx era)."

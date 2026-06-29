@@ -271,6 +271,14 @@ internal static class StaffMenuHost
 	/// <summary>Label for the "non-staff" roster bucket.</summary>
 	public const string NonStaffGroup = "Players";
 
+#if !LIFEPUNCH_LOCAL
+	/// <summary>
+	/// DXRP stores cumulative playtime in <see cref="Player.PlayTime"/> as elapsed seconds
+	/// (<see cref="TimeSince"/>); divide by 60 for portal-style minutes (matches VoteSystem checks).
+	/// </summary>
+	static int PlayTimeMinutesFrom( Player player ) => (int)( player.PlayTime / 60f );
+#endif
+
 	/// <summary>The online players the menu can list, grouped by staff tier, targetability resolved.</summary>
 	public static IReadOnlyList<StaffMenuPlayer> OnlinePlayers()
 	{
@@ -300,7 +308,7 @@ internal static class StaffMenuHost
 					order,
 					RealRole( player.SteamId ),
 					RankColorHex( player.SteamId ),
-					player.PlayTime );
+					PlayTimeMinutesFrom( player ) );
 			} )
 			.ToList();
 #endif
@@ -351,7 +359,7 @@ internal static class StaffMenuHost
 			player.DisplayName,
 			RealRole( player.SteamId ),
 			RankColorHex( player.SteamId ),
-			player.PlayTime,
+			PlayTimeMinutesFrom( player ),
 			job,
 			jobColor,
 			(int)player.WalletBalance,

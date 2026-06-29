@@ -673,7 +673,7 @@
 	// rebuilt the WHOLE menu — including the sidebar/cog — which replayed their hover state and read
 	// as a flicker. We now refresh on a fixed cadence and cache the volatile stat hash, so the menu
 	// only rebuilds when something actually changed at most a few times a second.
-	private TimeSince _sinceRefresh;
+	private RealTimeSince _sinceRefresh;
 	private int _detailHash;
 	private const float RefreshInterval = 0.2f;
 
