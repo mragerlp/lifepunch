@@ -64,7 +64,7 @@ Operational rules:
 - Never trigger server sync without explicit owner approval.
 - Keep `lifepunchmainserver` and `lifepunchdevelopment` procedures separate.
 - Test addon/gamemode/beta-feature changes on `lifepunchdevelopment` before considering `lifepunchmainserver`.
-- **On-box launch wrappers** (versioned): `dxrp-host/` — deploy to `C:\S&BOX DXRP Server` via `Deploy-DxrpHostLaunchers.ps1`. Tokens stay in on-box `secure/*.local.env` only.
+- **On-box launch wrappers** (versioned): `dxrp-host/` — deploy via `Deploy-DxrpHostLaunchers.ps1`. Split roots: Official `C:\SBOX-DXRP-Server`, Dev Steam `sbox`. See `LIFEPUNCHNET_HOST_LAYOUT.md`.
 - **Launch law (addons live):** `LAUNCHING_SERVER_WITH_ADDONS.md` — both servers use `dotnet run dxrp-server.cs`; portal token controls addon pull.
 - **Server won't pulse / INACTIVE?** → `SERVER_ONLINE_QUICKFIX.md` (Official must use `dotnet run dxrp-server.cs`, not `+game dxura.rp`).
 - Do not commit live tokens, `dxrp-server-config.json` with secrets, or fork upstream `dxrp-server.cs`.

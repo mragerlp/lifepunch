@@ -16,7 +16,7 @@
 #>
 [CmdletBinding()]
 param(
-    [string] $InstallRoot = 'C:\S&BOX DXRP Server',
+    [string] $InstallRoot = 'C:\Program Files (x86)\Steam\steamapps\common\sbox',
     [switch] $SkipSteamFix,
     [switch] $NoStart
 )
@@ -73,6 +73,7 @@ try {
         throw 'dxrp-server.cs missing in install root — Dxura host files must live here.'
     }
 
+    Import-LocalEnvFile (Join-Path 'C:\SBOX-DXRP-Server\secure' 'development.local.env')
     Import-LocalEnvFile (Join-Path $InstallRoot 'secure\development.local.env')
     if (-not $env:DXRP_TOKEN_DEVELOPMENT) {
         throw 'DXRP_TOKEN_DEVELOPMENT not set — create secure\development.local.env (portal Development server token).'
@@ -114,7 +115,7 @@ try {
     }
     if (Test-Path -LiteralPath $setConfigScript) {
         . $setConfigScript
-        Set-DxrpServerConfigForProfile -Profile Development -InstallRoot $InstallRoot | Out-Null
+        Set-DxrpServerConfigForProfile -Profile Development -InstallRoot $InstallRoot -Token $env:DXRP_TOKEN_DEVELOPMENT | Out-Null
         Test-DxrpServerConfigForProfile -Profile Development -InstallRoot $InstallRoot
     }
     else {

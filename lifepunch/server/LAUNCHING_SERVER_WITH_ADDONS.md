@@ -37,28 +37,26 @@ Portal **Add to Server** + gamemode pins are the source of truth — not files i
 4. **Dxura launcher** — download `dxrp-server.cs` from the [official guide](https://docs.dxrp.net/launching-server-with-addons) into the **same folder** as `sbox-server.dll`
 
 ```text
-C:\S&BOX DXRP Server\
-├── sbox-server.dll
-├── sbox-server.exe
-├── dxrp-server.cs          ← upstream; do NOT fork in LifePunch git
-├── dxrp-server-config.json ← created/updated by launcher + Set-DxrpServerConfig.ps1
-├── server1_start.bat       ← Official 70p (deployed from repo)
-├── server2_start.bat       ← Development (deployed from repo)
-└── secure\
-    ├── official.local.env      DXRP_TOKEN_OFFICIAL
-    └── development.local.env   DXRP_TOKEN_DEVELOPMENT
+C:\SBOX-DXRP-Server\                    ← Official 70p (SteamCMD staging)
+├── sbox-server.dll, dxrp-server.cs, server1_start.bat
+└── secure\official.local.env + development.local.env   ← BOTH tokens here
+
+C:\Program Files (x86)\Steam\steamapps\common\sbox\   ← Development (Steam staging)
+├── sbox-server.dll, dxrp-server.cs, server2_start.bat
 ```
+
+**Canon:** `LIFEPUNCHNET_HOST_LAYOUT.md`
 
 ---
 
 ## LifePunch server mapping
 
-| Portal name | Config key | Start | Game port | Token env |
-|-------------|------------|-------|-----------|-----------|
-| **LifePunch Official \| 70p** | `lifepunchmainserver` | `server1_start.bat` | **27015** | `DXRP_TOKEN_OFFICIAL` |
-| **LifePunch Official \| DEVELOPMENT SERVER** | `lifepunchdevelopment` | `server2_start.bat` | **27016** | `DXRP_TOKEN_DEVELOPMENT` |
+| Portal name | Config key | Install root | Start | Game port | Token env |
+|-------------|------------|--------------|-------|-----------|-----------|
+| **LifePunch Official \| 70p** | `lifepunchmainserver` | `C:\SBOX-DXRP-Server` | `server1_start.bat` | **27015** | `DXRP_TOKEN_OFFICIAL` |
+| **DEVELOPMENT SERVER** | `lifepunchdevelopment` | Steam `sbox` | `server2_start.bat` | **27016** | `DXRP_TOKEN_DEVELOPMENT` |
 
-**Install root (lifepunchnet):** `C:\S&BOX DXRP Server\` — Dev and Official share one folder; they differ by **token** and **port**, not directory.
+**Tokens:** both in `C:\SBOX-DXRP-Server\secure\` (Dev launcher reads central path).
 
 **Gamemode / map / addon list:** assigned in [dxrp.net portal](https://dxrp.net/portal) for each server token. LifePunch does **not** set `+game` or `+map` in config — `dxrp-server.cs` owns `+game rp.sbproj`.
 
@@ -77,14 +75,16 @@ powershell -ExecutionPolicy Bypass -File .\Deploy-DxrpHostLaunchers.ps1
 
 ### 2. Place upstream host files (if missing)
 
-Copy from a working install or download per Dxura guide into `C:\S&BOX DXRP Server\`:
+Copy from a working install or download per Dxura guide into **each** install root:
 
-- `dxrp-server.cs`
-- `sbox-server.dll` (+ siblings from Steam)
+- Official: `C:\SBOX-DXRP-Server\`
+- Development: Steam `sbox\`
+
+Required files: `dxrp-server.cs`, `sbox-server.dll` (+ siblings)
 
 ### 3. Tokens (on-box only — never commit)
 
-Copy templates from `lifepunch/secure/templates/` → `C:\S&BOX DXRP Server\secure\`:
+Copy templates from `lifepunch/secure/templates/` → `C:\SBOX-DXRP-Server\secure\`:
 
 ```text
 official.local.env      → DXRP_TOKEN_OFFICIAL=<Server 1 portal token>
@@ -104,17 +104,17 @@ For each server in portal:
 ### 5. Start Official (70p)
 
 1. **Stop** any legacy shortcut using `sbox-server.exe +game dxura.rp`
-2. Run `C:\S&BOX DXRP Server\server1_start.bat` as the **normal RDP user** (not elevated)
+2. Run `C:\SBOX-DXRP-Server\server1_start.bat` as the **normal RDP user** (not elevated)
 3. Wait for launcher **`[1/7]`–`[7/7]`** (first run: git clone + build — several minutes)
 4. Confirm portal **Last Pulsed** for **LifePunch Official \| 70p**
 
-Development: same flow with `server2_start.bat` and dev token. Full Dev runbook: `START_DEV_SERVER.md`.
+Development: run `server2_start.bat` from Steam `sbox`. Full Dev runbook: `START_DEV_SERVER.md`.
 
 ---
 
 ## Config (`dxrp-server-config.json`)
 
-Shared file on disk — **each start script stamps the correct profile** via `Set-DxrpServerConfig.ps1` before `dotnet run`.
+Shared per install root — **each start script stamps the correct profile** via `Set-DxrpServerConfig.ps1` before `dotnet run`.
 
 | Key | LifePunch value | Notes |
 |-----|-----------------|-------|

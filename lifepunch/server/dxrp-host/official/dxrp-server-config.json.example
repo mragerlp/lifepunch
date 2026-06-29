@@ -5,5 +5,5 @@
   "apiEndpoint": "https://api.dxrp.net",
   "verifyAddons": false,
   "map": "",
-  "extraArgs": "+port 27015 +net_query_port 27016 +hostname \"LIFEPUNCH™ Official | 70p | ₿\""
+  "extraArgs": "+port 27015 +net_query_port 27018"
 }

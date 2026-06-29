@@ -7,29 +7,28 @@
 Dxura's launcher (not bare `sbox-server.exe +game dxura.rp`):
 
 ```bat
-cd /d "C:\S&BOX DXRP Server"
-start_dev_server.bat
+cd /d "C:\Program Files (x86)\Steam\steamapps\common\sbox"
+server2_start.bat
 ```
 
-Or `server2_start.bat` (delegates to the same `Run-DevServer.ps1` when deployed).
+Or `start_dev_server.bat` when deployed from repo.
+
+**Layout:** `LIFEPUNCHNET_HOST_LAYOUT.md` — Dev uses Steam `sbox`; Official 70p is `C:\SBOX-DXRP-Server`.
 
 ---
 
-## Dev vs Official — do not kill both
-
-Dev and Official share **`C:\S&BOX DXRP Server`**. They differ by **portal token** and **port** (Dev 27016, Official 27015), not by folder.
-
-They also share **`dxrp-server-config.json`** on disk. `start_dev_server.bat` stamps **Development** ports before launch; `server1_start.bat` stamps **Official** ports. Never hand-edit `+port` in that file.
+## Dev vs Official — separate install roots
 
 | Field | Development | Official (70p) |
 |-------|-------------|----------------|
-| Portal row | LifePunch Official \| DEVELOPMENT SERVER | LifePunch Official \| 70p |
+| Install root | Steam `sbox` | `C:\SBOX-DXRP-Server` |
+| Portal row | DEVELOPMENT SERVER | LifePunch Official \| 70p |
 | Token env | `DXRP_TOKEN_DEVELOPMENT` | `DXRP_TOKEN_OFFICIAL` |
-| Game port | **27016** | **27015** |
-| Host IP (portal) | **205.209.104.22** | **205.209.104.22** |
-| Gamemode | Portal-assigned via token — **not** in `extraArgs` | Same |
+| Token file | `C:\SBOX-DXRP-Server\secure\development.local.env` | `C:\SBOX-DXRP-Server\secure\official.local.env` |
+| Game port | **27016** / query **27017** | **27015** / query **27018** |
+| Start script | `server2_start.bat` | `server1_start.bat` |
 
-`dxrp-server.cs` always launches `+game "<local rp.sbproj>" +authorize <token>`. Addons/gamemode pins come from `GET /v1/server/addons` for that token. LifePunch does **not** override gamemode in config.
+Each root has its own `dxrp-server-config.json`. Launch scripts stamp ports before `dotnet run`.
 
 ---
 
@@ -45,7 +44,7 @@ They also share **`dxrp-server-config.json`** on disk. `start_dev_server.bat` st
 ## Recovery (same RDP user — NOT elevated)
 
 ```bat
-cd /d "C:\S&BOX DXRP Server"
+cd /d "C:\Program Files (x86)\Steam\steamapps\common\sbox"
 fix_steam.bat
 ```
 
@@ -53,11 +52,11 @@ Or:
 
 ```powershell
 cd C:\lifepunch\lifepunch-rdp-server\lifepunch\server\dxrp-host\scripts
-powershell -ExecutionPolicy Bypass -File .\Fix-LifepunchnetSteamClient.ps1 -SteamCmdExe 'C:\S&BOX DXRP Server\steamcmd.exe' -InstallRoots @('C:\S&BOX DXRP Server')
+powershell -ExecutionPolicy Bypass -File .\Fix-LifepunchnetSteamClient.ps1 -InstallRoots @('C:\Program Files (x86)\Steam\steamapps\common\sbox','C:\SBOX-DXRP-Server')
 ```
 
-1. `start_dev_server.bat` stops **Development only** (dev token / port 27016) — **Official 70p is not touched**
-2. **One** `start_dev_server.bat` — wait for console
+1. `restart_development.ps1` stops **Development only** (dev token / port 27016) — **Official 70p is not touched**
+2. Run **`server2_start.bat`** from Steam `sbox` — wait for console
 
 **Pass:** `Connected to Steam` (not "not connected to Steam") + launcher **`[7/7]`** + portal **DEVELOPMENT SERVER** Last Pulsed refreshes.
 

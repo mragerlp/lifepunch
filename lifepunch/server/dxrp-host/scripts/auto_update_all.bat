@@ -24,13 +24,13 @@ if not exist "%SCRIPTS%Update-LifepunchnetSboxServers.ps1" (
 
 echo.
 echo ============================================================
-echo   LIFEPUNCH AUTO UPDATE ALL - Dev + Official (70p)
-echo   Engine target: 26.06.10+
+echo   LIFEPUNCH AUTO UPDATE ALL - Dev + Official 70p (staging engine)
+echo   Official: SteamCMD staging -^> C:\SBOX-DXRP-Server
 echo ============================================================
 echo.
 
 cd /d "%SCRIPTS%"
-powershell -NoProfile -ExecutionPolicy Bypass -File "%SCRIPTS%Update-LifepunchnetSboxServers.ps1" -IncludeOfficial
+powershell -NoProfile -ExecutionPolicy Bypass -File "%SCRIPTS%Update-LifepunchnetSboxServers.ps1" -IncludeOfficial -UpdateOfficialBinaries -UpdateDevelopmentBinaries -UseStagingBranch
 set EXIT=%ERRORLEVEL%
 
 echo.

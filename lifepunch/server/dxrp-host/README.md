@@ -1,6 +1,6 @@
 ﻿# DXRP dedicated host — LifePunch launch wrappers (lifepunchnet)
 
-**Canon:** `../LAUNCHING_SERVER_WITH_ADDONS.md` · Upstream: https://docs.dxrp.net/launching-server-with-addons
+**Canon:** `../LIFEPUNCHNET_HOST_LAYOUT.md` · `../LAUNCHING_SERVER_WITH_ADDONS.md` · Upstream: https://docs.dxrp.net/launching-server-with-addons
 
 **Problem:** `sbox-server.exe +game dxura.rp +authorize …` fails with **This game has no code archive!** — and live portal addons are not mounted without the launcher API path.
 
@@ -10,7 +10,7 @@
 dotnet run dxrp-server.cs --token <portal-token>
   → clone/pull dxrp
   → GET /v1/server/addons
-  → dotnet build rp.csproj
+  → dotnet build rp.csproj (at launch — verifyAddons false on host)
   → sbox-server.dll +game "<local rp.sbproj>" +authorize <token>
 ```
 
@@ -18,44 +18,41 @@ dotnet run dxrp-server.cs --token <portal-token>
 
 ---
 
-## On-box layout (lifepunchnet)
+## On-box layout (lifepunchnet — split roots)
 
-| Server | Portal name | Start script | Game port |
-|--------|-------------|--------------|-----------|
-| **Server 1 — Official (70p)** | LifePunch Official \| 70p | `server1_start.bat` | **27015** |
-| **Server 2 — Development** | DEVELOPMENT SERVER | `server2_start.bat` (same root) | 27016 (typical) |
+| Server | Portal name | Install root | Start script | Game port |
+|--------|-------------|--------------|--------------|-----------|
+| **Server 1 — Official (70p)** | LifePunch Official \| 70p | `C:\SBOX-DXRP-Server` | `server1_start.bat` | **27015** |
+| **Server 2 — Development** | DEVELOPMENT SERVER | `C:\Program Files (x86)\Steam\steamapps\common\sbox` | `server2_start.bat` | **27016** |
 
-**Single install root on lifepunchnet:** `C:\S&BOX DXRP Server\` — Dev and Official share this folder (different bat + token). No `Server Dev` path.
+Each root must contain Dxura's host files (`dxrp-server.cs`, `sbox-server.dll`, etc.). This repo does **not** ship those binaries.
 
-Each install must already contain Dxura's host files (`dxrp-server.cs`, `sbox-server.dll`, etc.). This repo does **not** ship those binaries.
+**Tokens (both profiles):** `C:\SBOX-DXRP-Server\secure\official.local.env` + `development.local.env`
 
 ### Versioned (git → deploy to box)
 
 ```text
 lifepunch/server/dxrp-host/
-  official/server1_start.bat
-  official/restart_official.ps1
-  official/dxrp-server-config.json.example
-  development/server2_start.bat
-  development/restart_development.ps1
-  development/dxrp-server-config.json.example
+  official/server1_start.bat, restart_official.ps1, dxrp-server-config.json.example
+  development/server2_start.bat, start_dev_server.bat, show_dev_server_log.bat,
+    restart_development.ps1, dxrp-server-config.json.example
   scripts/Deploy-DxrpHostLaunchers.ps1
+  scripts/Remove-StaleDxrpHostFiles.ps1
   scripts/Update-LifepunchnetSboxServers.ps1
-  scripts/auto_update.bat
-  scripts/auto_update_all.bat
+  scripts/auto_update.bat, auto_update_all.bat, auto_update_official_staging.bat
 ```
+
+Deploy copies **Official files → Official root only** and **Development files → Dev root only**. Shared helpers go to both; profile-specific update scripts stay on the correct root.
 
 ### On-box only (never commit)
 
 ```text
-<install-root>/secure/official.local.env      # DXRP_TOKEN_OFFICIAL
-<install-root>/secure/development.local.env   # DXRP_TOKEN_DEVELOPMENT
-<install-root>/dxrp-server-config.json        # token written by launcher after first run
-<install-root>/dxrp/                          # live git checkout (launcher-managed)
-<install-root>/logs/                          # optional local logs
+C:\SBOX-DXRP-Server\secure\*.local.env
+<each-root>/dxrp-server-config.json
+<each-root>/dxrp/                          # launcher-managed git checkout
 ```
 
-Copy env templates from `lifepunch/secure/templates/` into each install root's `secure\` folder.
+Copy env templates from `lifepunch/secure/templates/` into `C:\SBOX-DXRP-Server\secure\`.
 
 ---
 
@@ -66,49 +63,41 @@ cd C:\lifepunch\lifepunch-rdp-server\lifepunch\server\dxrp-host\scripts
 powershell -ExecutionPolicy Bypass -File .\Deploy-DxrpHostLaunchers.ps1
 ```
 
+Runs cleanup automatically (removes wrong-profile bats, legacy `dev-engine/`, etc.).
+
 ## Engine update (26.06.10+)
 
 **Read first:** `../START_DEV_SERVER.md` — Steam + `[7/7]` before any addon or portal work.
 
-After s&box Steam updates:
-
-1. **Binaries** (elevated): `Update-LifepunchnetSboxServers.ps1` or `auto_update.bat`
-2. **Steam fix** (normal RDP user): `fix_steam.bat`
-3. **Start** (same user): `server2_start.bat`
-4. **Verify** portal Last Pulsed + Steam connected in console
+| Action | Where to run |
+|--------|----------------|
+| Dev only | `auto_update.bat` in **Dev** root, or `Update-LifepunchnetSboxServers.ps1` |
+| Dev + Official | `auto_update_all.bat` in **Official** root, or `-IncludeOfficial` |
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\Update-LifepunchnetSboxServers.ps1
-# After Dev pulses OK on portal:
 powershell -ExecutionPolicy Bypass -File .\Update-LifepunchnetSboxServers.ps1 -IncludeOfficial
 ```
 
 From VENGEANCE: `powershell -File lifepunch\scripts\Invoke-LifepunchnetServerUpdate.ps1`
 
-**Double-click on lifepunchnet** (after `Deploy-DxrpHostLaunchers.ps1`):
+**Desktop shortcuts** (Administrator desktop): **LIFEPUNCH Official** / **LIFEPUNCH Development** — created by deploy script.
 
-| File | Action |
-|------|--------|
-| `auto_update.bat` | steamcmd + restart **Development** only |
-| `auto_update_all.bat` | steamcmd + restart **Dev + Official** |
+---
 
-Copied to `C:\S&BOX DXRP Server\` (same folder for Dev + Official launchers).
+## Official migration checklist
 
-Then **migrate Official** (one-time if still on legacy bat):
-
-1. Stop the old `sbox-server.exe +game dxura.rp` shortcut / batch.
-2. Ensure `secure\official.local.env` has `DXRP_TOKEN_OFFICIAL=<portal Server 1 token>`.
-3. Double-click desktop shortcut → `server1_start.bat` (or run `restart_official.ps1`).
-4. Wait for launcher steps `[2/7]`–`[7/7]` (first run can take several minutes).
-5. Confirm portal **Last Pulsed** updates for Official.
-6. Portal: confirm LifePunch addons are **Add to Server** on Official gamemode.
+1. Stop legacy `sbox-server.exe +game dxura.rp` if still running.
+2. Ensure `C:\SBOX-DXRP-Server\secure\official.local.env` has `DXRP_TOKEN_OFFICIAL=…`
+3. Run `server1_start.bat` from **`C:\SBOX-DXRP-Server`** (not Dev root).
+4. Wait for `[2/7]`–`[7/7]`; confirm portal **Last Pulsed** for Official.
 
 ---
 
 ## Related
 
-- **Canon runbook:** `../LAUNCHING_SERVER_WITH_ADDONS.md`
-- Runbook: `lifepunch/server/LIFEPUNCHNET_INSTRUCTIONS.txt` (STEP 10)
-- Change log: `lifepunch/server/change-log/2026-06-29-addons-live-launcher-law.md`
-- Change template: `lifepunch/templates/server-change.md`
+- **Split layout canon:** `../LIFEPUNCHNET_HOST_LAYOUT.md`
+- **VENGEANCE handoff:** `../VENGEANCE_TO_BLUE.md`
+- Runbook: `../LIFEPUNCHNET_INSTRUCTIONS.txt` (STEP 10)
+- Change log: `change-log/2026-06-09-lifepunchnet-split-install-layout.md`
 - Secrets: `lifepunch/secure/README.md`

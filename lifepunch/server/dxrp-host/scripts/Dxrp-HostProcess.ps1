@@ -1,5 +1,13 @@
 # Shared helpers — stop ONE dxrp-server instance without killing the other server.
-# Dev (27016) and Official (27015) share C:\S&BOX DXRP Server but use different portal tokens.
+# Official: C:\SBOX-DXRP-Server (27015). Development: Steam sbox folder (27016).
+# Both tokens live in C:\SBOX-DXRP-Server\secure\ (canonical on lifepunchnet).
+
+function Get-DxrpSecretsRoot {
+    param([string] $InstallRoot)
+    $central = 'C:\SBOX-DXRP-Server\secure'
+    if (Test-Path -LiteralPath $central) { return $central }
+    return Join-Path $InstallRoot 'secure'
+}
 
 function Stop-DxrpServerForToken {
     param(
@@ -39,10 +47,10 @@ function Stop-SboxServerOnPort {
 
 function Stop-DevelopmentDxrpServer {
     param(
-        [string] $InstallRoot = 'C:\S&BOX DXRP Server',
+        [string] $InstallRoot = 'C:\Program Files (x86)\Steam\steamapps\common\sbox',
         [int] $GamePort = 27016
     )
-    $envFile = Join-Path $InstallRoot 'secure\development.local.env'
+    $envFile = Join-Path (Get-DxrpSecretsRoot -InstallRoot $InstallRoot) 'development.local.env'
     $token = $null
     if (Test-Path -LiteralPath $envFile) {
         Get-Content -LiteralPath $envFile | ForEach-Object {
@@ -63,10 +71,10 @@ function Stop-DevelopmentDxrpServer {
 
 function Stop-OfficialDxrpServer {
     param(
-        [string] $InstallRoot = 'C:\S&BOX DXRP Server',
+        [string] $InstallRoot = 'C:\SBOX-DXRP-Server',
         [int] $GamePort = 27015
     )
-    $envFile = Join-Path $InstallRoot 'secure\official.local.env'
+    $envFile = Join-Path (Get-DxrpSecretsRoot -InstallRoot $InstallRoot) 'official.local.env'
     $token = $null
     if (Test-Path -LiteralPath $envFile) {
         Get-Content -LiteralPath $envFile | ForEach-Object {

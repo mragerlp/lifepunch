@@ -28,26 +28,79 @@
   cd C:\lifepunch\lifepunch-rdp-server\lifepunch\server\dxrp-host\scripts
   powershell -ExecutionPolicy Bypass -File .\Update-LifepunchnetSboxServers.ps1
 
+.PARAMETER UseStagingBranch
+  Legacy switch: staging for both roots when syncing from SteamCMD. Prefer -OfficialUseStaging.
+
+.PARAMETER OfficialStaging
+  Deprecated alias; staging is already the default for Official (staging gamemode on portal).
+
+.PARAMETER OfficialRelease
+  Use SteamCMD release (no beta) for Official. Default is staging — matches Dev + portal staging gamemode.
+
+.PARAMETER UpdateOfficialBinaries
+  Run SteamCMD and copy sbox-server.* into OfficialRoot. auto_update_all / auto_update_official pass this.
+
+.PARAMETER UpdateDevelopmentBinaries
+  Copy SteamCMD dedicated server into DevelopmentRoot. Default off — Dev uses Steam Betas -> staging.
+
 .EXAMPLE
-  powershell -ExecutionPolicy Bypass -File .\Update-LifepunchnetSboxServers.ps1 -IncludeOfficial
+  powershell -ExecutionPolicy Bypass -File .\Update-LifepunchnetSboxServers.ps1 -UpdateOfficialBinaries -IncludeOfficial
 #>
 [CmdletBinding()]
 param(
     [string] $SteamCmdExe = '',
-    [string] $OfficialRoot = 'C:\S&BOX DXRP Server',
-    [string] $DevelopmentRoot = '',
+    [string] $OfficialRoot = 'C:\SBOX-DXRP-Server',
+    [string] $DevelopmentRoot = 'C:\Program Files (x86)\Steam\steamapps\common\sbox',
     [string] $GitRoot = 'C:\lifepunch\lifepunch-rdp-server',
     [switch] $IncludeOfficial,
     [switch] $UseStagingBranch,
+    [switch] $OfficialStaging,
+    [switch] $OfficialRelease,
+    [switch] $UpdateOfficialBinaries,
+    [switch] $UpdateDevelopmentBinaries,
+    [switch] $OfficialOnly,
     [switch] $SkipSteamUpdate,
     [switch] $NoRestart
 )
 
+function Invoke-SteamCmdAppUpdate {
+    param(
+        [string] $SteamCmdPath,
+        [bool] $Staging,
+        [string] $ForceInstallDir = ''
+    )
+    $label = if ($Staging) { 'staging beta' } else { 'release' }
+    $dirNote = if ($ForceInstallDir) { " -> $ForceInstallDir" } else { '' }
+    Write-Step "SteamCMD app_update 1892930 ($label$dirNote)"
+    $steamDir = Split-Path -Parent $SteamCmdPath
+    Push-Location $steamDir
+    try {
+        $steamArgs = @()
+        if ($ForceInstallDir) { $steamArgs += '+force_install_dir', $ForceInstallDir }
+        $steamArgs += '+login', 'anonymous', '+app_update', '1892930'
+        if ($Staging) { $steamArgs += '-beta', 'staging' }
+        $steamArgs += 'validate', '+quit'
+        & $SteamCmdPath @steamArgs
+        if ($LASTEXITCODE -gt 1) { throw "steamcmd exited $LASTEXITCODE" }
+    }
+    finally { Pop-Location }
+}
+
 $ErrorActionPreference = 'Stop'
 
-if (-not $DevelopmentRoot) {
-    $DevelopmentRoot = $OfficialRoot
+if ($UseStagingBranch) {
+    if (-not $UpdateDevelopmentBinaries) { $UpdateDevelopmentBinaries = $true }
 }
+
+if ($IncludeOfficial -and -not $UpdateOfficialBinaries) {
+    $UpdateOfficialBinaries = $true
+}
+
+if ($UseStagingBranch -and ($IncludeOfficial -or $UpdateOfficialBinaries) -and -not $UpdateDevelopmentBinaries) {
+    $UpdateDevelopmentBinaries = $true
+}
+
+$officialUseStaging = -not $OfficialRelease.IsPresent
 
 $isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()
           ).IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator)
@@ -116,7 +169,13 @@ function Sync-SboxServerBinaries {
         return
     }
 
-    $patterns = @('sbox-server.exe', 'sbox-server.dll', 'sbox-server.runtimeconfig.json', 'sbox-server.deps.json')
+    $patterns = @(
+        '.version',
+        'sbox-server.exe',
+        'sbox-server.dll',
+        'sbox-server.runtimeconfig.json',
+        'sbox-server.deps.json'
+    )
     foreach ($pat in $patterns) {
         Get-ChildItem -LiteralPath $SourceRoot -Filter $pat -File -ErrorAction SilentlyContinue | ForEach-Object {
             Copy-Item -LiteralPath $_.FullName -Destination (Join-Path $DestRoot $_.Name) -Force
@@ -176,23 +235,23 @@ function Start-DxrpHost {
         [string] $RestartScript,
         [string] $Label
     )
-    $startBat = Join-Path $InstallRoot 'start_dev_server.bat'
-    if (Test-Path -LiteralPath $startBat) {
-        Write-Host "Starting $Label in visible CMD window: start_dev_server.bat" -ForegroundColor Green
-        Start-Process -FilePath 'cmd.exe' -ArgumentList @('/c', 'start', 'LIFEPUNCH DEV SERVER', 'cmd', '/k', 'start_dev_server.bat') -WorkingDirectory $InstallRoot
-        return
+
+    $startBat = if ($Label -eq 'Official') { 'server1_start.bat' } else { 'server2_start.bat' }
+    $startPath = Join-Path $InstallRoot $startBat
+    if (-not (Test-Path -LiteralPath $startPath)) {
+        throw ('Missing ' + $startPath)
     }
-    if (-not (Test-Path -LiteralPath $RestartScript)) {
-        throw "Missing $RestartScript"
-    }
-    Write-Host "Starting $Label in visible CMD window ($InstallRoot)..." -ForegroundColor Green
-    Start-Process -FilePath 'cmd.exe' -ArgumentList @('/c', 'start', "LIFEPUNCH $Label", 'cmd', '/k', 'powershell.exe', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', $RestartScript, '-InstallRoot', $InstallRoot) -WorkingDirectory $InstallRoot
+
+    $windowTitle = if ($Label -eq 'Official') { 'LIFEPUNCH Official 70p' } else { 'LIFEPUNCH Development' }
+    Write-Host ('Starting ' + $Label + ' in visible CMD: ' + $startBat) -ForegroundColor Green
+    Start-Process -FilePath 'cmd.exe' -ArgumentList @('/c', 'start', $windowTitle, 'cmd', '/k', $startBat) -WorkingDirectory $InstallRoot
 }
 
 Write-Host ''
 Write-Host '============================================================' -ForegroundColor Cyan
 Write-Host '  LIFEPUNCH — lifepunchnet s&box + DXRP server update' -ForegroundColor Cyan
-Write-Host '  Target engine: 26.06.10+ (post Steam update)' -ForegroundColor Cyan
+$officialEngineLabel = if ($officialUseStaging) { 'staging (SteamCMD -beta staging)' } else { 'release (SteamCMD validate, no beta)' }
+Write-Host "  Official engine: s&box $officialEngineLabel -> C:\SBOX-DXRP-Server" -ForegroundColor Cyan
 Write-Host '============================================================' -ForegroundColor Cyan
 Write-Host ''
 
@@ -211,31 +270,49 @@ steamcmd.exe not found. Install SteamCMD on lifepunchnet, then re-run.
 '@
     }
 
-    Write-Step "SteamCMD update (app 1892930 validate$(if ($UseStagingBranch) { ' — staging beta' }))"
-    $steamDir = Split-Path -Parent $steamCmd
-    Push-Location $steamDir
-    try {
-        $steamArgs = @('+login', 'anonymous', '+app_update', '1892930')
-        if ($UseStagingBranch) { $steamArgs += '-beta', 'staging' }
-        $steamArgs += 'validate', '+quit'
-        & $steamCmd @steamArgs
-        if ($LASTEXITCODE -gt 1) { throw "steamcmd exited $LASTEXITCODE" }
+    if ($UpdateOfficialBinaries) {
+        Invoke-SteamCmdAppUpdate -SteamCmdPath $steamCmd -Staging:$officialUseStaging -ForceInstallDir $OfficialRoot
+        $dedicatedRoot = Find-DedicatedServerRoot -SteamCmdPath $steamCmd
+        if (-not $dedicatedRoot) {
+            $dedicatedRoot = Join-Path $OfficialRoot 'steamapps\common\sbox dedicated server'
+            if (-not (Test-Path -LiteralPath $dedicatedRoot)) { $dedicatedRoot = $null }
+        }
+        if ($dedicatedRoot) {
+            Write-Step "Sync $(if ($officialUseStaging) { 'staging' } else { 'release' }) binaries -> Official ($OfficialRoot)"
+            Sync-SboxServerBinaries -SourceRoot $dedicatedRoot -DestRoot $OfficialRoot -Label 'Official'
+        }
+        else {
+            Write-Host 'WARN: dedicated server folder not found — skipping Official binary sync.' -ForegroundColor Yellow
+        }
     }
-    finally { Pop-Location }
+    else {
+        Write-Host 'UpdateOfficialBinaries skipped — Official sbox-server.* unchanged (use -UpdateOfficialBinaries or auto_update_all.bat).' -ForegroundColor DarkGray
+    }
+
+    if ($UpdateDevelopmentBinaries) {
+        $devStaging = if ($UseStagingBranch) { $true } else { $false }
+        if (-not $UpdateOfficialBinaries -or ($devStaging -ne $officialUseStaging)) {
+            Invoke-SteamCmdAppUpdate -SteamCmdPath $steamCmd -Staging:$devStaging -ForceInstallDir $OfficialRoot
+        }
+        $devSource = Find-DedicatedServerRoot -SteamCmdPath $steamCmd
+        if (-not $devSource) {
+            $devSource = Join-Path $OfficialRoot 'steamapps\common\sbox dedicated server'
+            if (-not (Test-Path -LiteralPath $devSource)) { $devSource = $null }
+        }
+        if ($devSource) {
+            Write-Step "Sync $(if ($devStaging) { 'staging' } else { 'release' }) binaries -> Development ($DevelopmentRoot)"
+            Sync-SboxServerBinaries -SourceRoot $devSource -DestRoot $DevelopmentRoot -Label 'Development'
+        }
+        else {
+            Write-Host 'WARN: dedicated server folder not found — skipping Development binary sync.' -ForegroundColor Yellow
+        }
+    }
+    else {
+        Write-Host 'Development binaries: Steam client folder (not overwritten by SteamCMD). Set Steam Betas -> staging on the RDP user.' -ForegroundColor DarkGray
+    }
 
     Write-Step 'Wire Steam client DLLs + copy redist into install roots'
     Invoke-SteamFixAsInteractiveUser -SteamCmdPath $steamCmd -InstallRoots $installRoots
-
-    $dedicatedRoot = Find-DedicatedServerRoot -SteamCmdPath $steamCmd
-    if (-not $dedicatedRoot) {
-        Write-Host 'WARN: dedicated server folder not found under steamcmd — skipping binary sync.' -ForegroundColor Yellow
-        Write-Host '      If installs use per-root copies, verify sbox-server.dll manually.' -ForegroundColor Yellow
-    }
-    else {
-        Write-Step "Sync binaries from $dedicatedRoot"
-        Sync-SboxServerBinaries -SourceRoot $dedicatedRoot -DestRoot $OfficialRoot -Label 'Official'
-        Sync-SboxServerBinaries -SourceRoot $dedicatedRoot -DestRoot $DevelopmentRoot -Label 'Development'
-    }
 }
 else {
     Write-Host 'SkipSteamUpdate — launcher deploy + restart only.' -ForegroundColor Yellow
@@ -263,6 +340,10 @@ if ($NoRestart) {
 }
 
 Write-Step 'Stop + restart Development (Server 2)'
+if ($OfficialOnly) {
+    Write-Host 'OfficialOnly — Development not restarted.' -ForegroundColor DarkGray
+}
+else {
 $devRestart = Join-Path $DevelopmentRoot 'restart_development.ps1'
 if (-not (Test-Path -LiteralPath $devRestart)) {
     $devRestart = Join-Path (Join-Path $PSScriptRoot '..\development') 'restart_development.ps1'
@@ -270,8 +351,9 @@ if (-not (Test-Path -LiteralPath $devRestart)) {
 }
 & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $devRestart -InstallRoot $DevelopmentRoot -NoStart
 Start-DxrpHost -InstallRoot $DevelopmentRoot -RestartScript (Join-Path $DevelopmentRoot 'restart_development.ps1') -Label 'Development'
+}
 
-if ($IncludeOfficial) {
+if ($IncludeOfficial -or $OfficialOnly) {
     Write-Step 'Stop + restart Official (Server 1 / 70p)'
     $offRestart = Join-Path $OfficialRoot 'restart_official.ps1'
     if (-not (Test-Path -LiteralPath $offRestart)) {
@@ -283,7 +365,7 @@ if ($IncludeOfficial) {
 }
 else {
     Write-Host ''
-    Write-Host 'Official NOT restarted (default). After Dev smoke OK, re-run with -IncludeOfficial.' -ForegroundColor Yellow
+    Write-Host 'Official NOT restarted. Use -IncludeOfficial, -OfficialOnly, or auto_update_all.bat.' -ForegroundColor Yellow
 }
 
 Write-Host ''

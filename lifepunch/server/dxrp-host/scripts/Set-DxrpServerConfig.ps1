@@ -1,7 +1,13 @@
-# Write dxrp-server-config.json for ONE portal server before dotnet run.
-# Upstream dxrp-server.cs reads only "dxrp-server-config.json" — Dev and Official share
-# the install root, so each start must stamp the correct port/extraArgs for that profile.
-# Gamemode is NOT set here — portal assigns addons/gamemode via --token +authorize.
+# Write dxrp-server-config.json for ONE portal server (optional dxrp-server.cs launcher path).
+# Primary lifepunchnet launch: server1_start.bat / server2_start.bat — dotnet run dxrp-server.cs --token.
+
+function Get-DxrpOfficialInstallRoot {
+    return 'C:\SBOX-DXRP-Server'
+}
+
+function Get-DxrpDevelopmentInstallRoot {
+    return 'C:\Program Files (x86)\Steam\steamapps\common\sbox'
+}
 
 function Set-DxrpServerConfigForProfile {
     param(
@@ -9,27 +15,39 @@ function Set-DxrpServerConfigForProfile {
         [ValidateSet('Development', 'Official')]
         [string] $Profile,
 
-        [string] $InstallRoot = 'C:\S&BOX DXRP Server'
+        [string] $InstallRoot = '',
+        [string] $Token = ''
     )
+
+    if (-not $InstallRoot) {
+        $InstallRoot = if ($Profile -eq 'Development') { Get-DxrpDevelopmentInstallRoot } else { Get-DxrpOfficialInstallRoot }
+    }
 
     $profiles = @{
         Development = @{
             GamePort  = 27016
             QueryPort = 27017
-            Hostname  = 'LifePunch Official | DEVELOPMENT SERVER'
         }
         Official = @{
             GamePort  = 27015
-            QueryPort = 27016
-            Hostname  = 'LIFEPUNCH™ Official | 70p | ₿'
+            QueryPort = 27018
         }
     }
 
     $p = $profiles[$Profile]
-    $extraArgs = "+port $($p.GamePort) +net_query_port $($p.QueryPort) +hostname `"$($p.Hostname)`""
+    $extraArgs = '+port ' + $p.GamePort + ' +net_query_port ' + $p.QueryPort
+
+    $configPath = Join-Path $InstallRoot 'dxrp-server-config.json'
+    if (-not $Token -and (Test-Path -LiteralPath $configPath)) {
+        try {
+            $existing = Get-Content -LiteralPath $configPath -Raw | ConvertFrom-Json
+            if ($existing.token) { $Token = [string]$existing.token }
+        }
+        catch { }
+    }
 
     $config = [ordered]@{
-        token        = ''
+        token        = $Token
         repoUrl      = 'https://github.com/dxura/dxrp.git'
         branch       = 'main'
         apiEndpoint  = 'https://api.dxrp.net'
@@ -38,12 +56,10 @@ function Set-DxrpServerConfigForProfile {
         extraArgs    = $extraArgs
     }
 
-    $configPath = Join-Path $InstallRoot 'dxrp-server-config.json'
     $json = ($config | ConvertTo-Json -Depth 5)
     Set-Content -LiteralPath $configPath -Value $json -Encoding UTF8
 
-    Write-Host "Config: $Profile -> port $($p.GamePort), query $($p.QueryPort)" -ForegroundColor DarkGray
-    Write-Host "        gamemode/map NOT overridden (portal token controls addons)" -ForegroundColor DarkGray
+    Write-Host ('Config: ' + $Profile + ' -> port ' + $p.GamePort + ', query ' + $p.QueryPort + ', verifyAddons=false (dedicated host)') -ForegroundColor DarkGray
 
     return @{
         GamePort  = $p.GamePort
@@ -58,23 +74,31 @@ function Test-DxrpServerConfigForProfile {
         [ValidateSet('Development', 'Official')]
         [string] $Profile,
 
-        [string] $InstallRoot = 'C:\S&BOX DXRP Server'
+        [string] $InstallRoot = ''
     )
 
+    if (-not $InstallRoot) {
+        $InstallRoot = if ($Profile -eq 'Development') { Get-DxrpDevelopmentInstallRoot } else { Get-DxrpOfficialInstallRoot }
+    }
+
     $expectedPort = if ($Profile -eq 'Development') { 27016 } else { 27015 }
+    $expectedQueryPort = if ($Profile -eq 'Development') { 27017 } else { 27018 }
     $configPath = Join-Path $InstallRoot 'dxrp-server-config.json'
     if (-not (Test-Path -LiteralPath $configPath)) {
-        throw "Missing $configPath — run Set-DxrpServerConfigForProfile first."
+        throw ('Missing ' + $configPath)
     }
 
     $raw = Get-Content -LiteralPath $configPath -Raw
-    if ($raw -match '\+map\s') {
-        throw 'dxrp-server-config.json must not set +map — gamemode/map come from portal assignment.'
+    if ($raw -match '\+game\b') {
+        throw 'dxrp-server-config.json must not include +game in extraArgs — dxrp-server.cs sets the local game path.'
     }
-    if ($raw -match '\+game\s') {
-        throw 'dxrp-server-config.json must not set +game — dxrp-server.cs owns +game rp.sbproj.'
+    if ($raw -match '"verifyAddons"\s*:\s*true') {
+        throw 'dxrp-server-config.json must not set verifyAddons true on lifepunchnet — dedicated install lacks rp.csproj / full sbox SDK; compile is validated at sbox-server launch.'
     }
-    if ($raw -notmatch "\+port\s+$expectedPort\b") {
-        throw "dxrp-server-config.json has wrong +port for $Profile (expected $expectedPort). Shared config was likely stamped by the other server."
+    if ($raw -notmatch ('\+port\s+' + $expectedPort + '\b')) {
+        throw ('dxrp-server-config.json has wrong +port for ' + $Profile + ' (expected ' + $expectedPort + ').')
+    }
+    if ($raw -notmatch ('\+net_query_port\s+' + $expectedQueryPort + '\b')) {
+        throw ('dxrp-server-config.json has wrong +net_query_port for ' + $Profile + ' (expected ' + $expectedQueryPort + ').')
     }
 }

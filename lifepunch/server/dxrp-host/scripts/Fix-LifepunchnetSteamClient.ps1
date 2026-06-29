@@ -22,7 +22,10 @@ param(
 $ErrorActionPreference = 'Stop'
 
 if (-not $InstallRoots -or $InstallRoots.Count -eq 0) {
-    $InstallRoots = @('C:\S&BOX DXRP Server')
+    $InstallRoots = @(
+        'C:\SBOX-DXRP-Server',
+        'C:\Program Files (x86)\Steam\steamapps\common\sbox'
+    )
 }
 
 function Find-SteamCmdExe {
@@ -154,12 +157,12 @@ else {
 }
 
 if ($steamCmd -and -not $SkipSteamCmdUpdate) {
-    Write-Host 'Updating s&box dedicated server (app 1892930)...' -ForegroundColor Yellow
+    Write-Host 'Updating sbox dedicated server (app 1892930)...' -ForegroundColor Yellow
     Push-Location $steamDir
     try {
         & $steamCmd @('+login', 'anonymous', '+app_update', '1892930', 'validate', '+quit')
         if ($LASTEXITCODE -gt 1) {
-            Write-Host "WARN: steamcmd app_update exited $LASTEXITCODE — continuing with on-disk DLLs." -ForegroundColor Yellow
+            Write-Host ('WARN: steamcmd app_update exited ' + $LASTEXITCODE + ' - continuing with on-disk DLLs.') -ForegroundColor Yellow
         }
     }
     finally { Pop-Location }
@@ -171,8 +174,8 @@ if ($steamCmd) {
 
 $dll64 = Find-SteamClientDll64 -SteamDir $steamDir -SearchRoots $InstallRoots
 if (-not $dll64) {
-    $steamHint = Join-Path 'C:\S&BOX DXRP Server' 'steamcmd.exe'
-    throw "steamclient64.dll not found. lifepunchnet expects steamcmd at: $steamHint Or install Steam desktop client, then re-run."
+    $steamHint = ('C:\S' + '&BOX DXRP Server\steamcmd.exe')
+    throw ('steamclient64.dll not found. lifepunchnet expects steamcmd at: ' + $steamHint + ' Or install Steam desktop client, then re-run.')
 }
 
 $regPath = 'HKCU:\SOFTWARE\Valve\Steam\ActiveProcess'
@@ -185,7 +188,7 @@ if (Test-Path -LiteralPath $dll32) {
 }
 
 Write-Host 'Registry wired (HKCU for current user).' -ForegroundColor Green
-Write-Host "  SteamClientDll64 = $dll64" -ForegroundColor DarkGray
+Write-Host ('  SteamClientDll64 = ' + $dll64) -ForegroundColor DarkGray
 
 $sources = Get-SteamDllSources -SteamDir $(if ($steamDir) { $steamDir } else { $InstallRoots[0] })
 foreach ($root in $InstallRoots) {

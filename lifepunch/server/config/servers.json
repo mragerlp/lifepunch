@@ -53,8 +53,8 @@
     "70p may run Vanilla until LIFEPUNCH™ ship gamemode is assigned after bitcoin publish-ready sign-off.",
     "Development server tests LIFEPUNCH™ gamemode pins before 70p promotion.",
     "Do not design workflows around unmanaged or external servers unless the owner adds them later.",
-    "lifepunchnet: single install root C:\\S&BOX DXRP Server — server1_start.bat (70p) vs server2_start.bat (Dev); no separate Server Dev folder.",
-    "Engine bump (26.06.10+): on lifepunchnet run dxrp-host/scripts/Update-LifepunchnetSboxServers.ps1 — Dev first, then -IncludeOfficial for 70p.",
+    "lifepunchnet: Official C:\\SBOX-DXRP-Server (27015/27018) + Development Steam sbox (27016/27017). Both: dotnet run dxrp-server.cs, verifyAddons false on host (compile at launch), tokens in C:\\SBOX-DXRP-Server\\secure\\*.local.env. Staging engine; Official 70p uses portal staging gamemode for now. See LIFEPUNCHNET_HOST_LAYOUT.md.",
+    "Engine bump: Dev-only auto_update.bat (no Official binary overwrite). Official staging: auto_update_official.bat or Update-LifepunchnetSboxServers.ps1 -UpdateOfficialBinaries -OfficialOnly.",
     "Internal server ids are lifepunchdevelopment and lifepunchmainserver.",
     "Development and 70p procedures must remain separate."
   ]

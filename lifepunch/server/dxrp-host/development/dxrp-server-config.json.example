@@ -5,5 +5,5 @@
   "apiEndpoint": "https://api.dxrp.net",
   "verifyAddons": false,
   "map": "",
-  "extraArgs": "+port 27016 +net_query_port 27017 +hostname \"LifePunch Official | DEVELOPMENT SERVER\""
+  "extraArgs": "+port 27016 +net_query_port 27017"
 }

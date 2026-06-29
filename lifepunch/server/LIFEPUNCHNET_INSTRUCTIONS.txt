@@ -176,21 +176,25 @@ STEP 10 — DXRP SERVER 1 / 2 LAUNCHERS (addons live — dxrp-server.cs required
     cd C:\lifepunch\lifepunch-rdp-server\lifepunch\server\dxrp-host\scripts
     powershell -ExecutionPolicy Bypass -File .\Deploy-DxrpHostLaunchers.ps1
 
-  On-box secrets (NEVER commit) — both in the same install root:
-    C:\S&BOX DXRP Server\secure\official.local.env       → DXRP_TOKEN_OFFICIAL
-    C:\S&BOX DXRP Server\secure\development.local.env    → DXRP_TOKEN_DEVELOPMENT
+  On-box secrets (NEVER commit) — canonical folder for BOTH tokens:
+    C:\SBOX-DXRP-Server\secure\official.local.env       → DXRP_TOKEN_OFFICIAL
+    C:\SBOX-DXRP-Server\secure\development.local.env    → DXRP_TOKEN_DEVELOPMENT
     Templates: lifepunch\secure\templates\*.local.env.example
 
-  Install root (lifepunchnet — ONE folder for both servers):
-    C:\S&BOX DXRP Server
+  Install roots (lifepunchnet — TWO folders, split June 2026):
+    Official (70p):   C:\SBOX-DXRP-Server
+    Development:      C:\Program Files (x86)\Steam\steamapps\common\sbox
+    Canon:            lifepunch\server\LIFEPUNCHNET_HOST_LAYOUT.md
 
   Official (70p):
-    Start:         server1_start.bat  OR  restart_official.ps1
-    Game port:     27015  (in dxrp-server-config.json.example extraArgs)
-    Desktop shortcut must point at server1_start.bat — NOT legacy +game dxura.rp
+    Start:         C:\SBOX-DXRP-Server\server1_start.bat  OR  restart_official.ps1
+    Game port:     27015 / query 27018
+    Engine:        SteamCMD -beta staging -> C:\SBOX-DXRP-Server
 
   Development:
-    Start:         server2_start.bat  OR  restart_development.ps1
+    Start:         <Steam sbox>\server2_start.bat  OR  restart_development.ps1
+    Game port:     27016 / query 27017
+    Engine:        Steam client Betas -> staging (same folder)
 
   dxrp-server.cs stays upstream/pristine on the box — do not fork in LifePunch git.
 
