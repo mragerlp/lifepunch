@@ -1,0 +1,55 @@
+DXRP #73 Party System — branch manifest (read-only distill input)
+Generated: 2026-06-28 (Red / VENGEANCE)
+Repo: https://github.com/mragerlp/dxrp-public
+Branch: bounty/73-party-system
+HEAD: 9e424f2 feat(party): add /party management menu, draggable HUD, and command shortcuts
+Base: dxura/dxrp develop (fork upstream)
+
+Commits (oldest → newest):
+  1936af0 feat(party): add standalone session party system and /party command
+  e388f5f feat(party): friendly-fire bypass, team highlighting, and party chat
+  a4c43d7 feat(party): add party HUD with live member vitals
+  9e424f2 feat(party): add /party management menu, draggable HUD, and command shortcuts
+
+Diff stat vs develop (22 files, +2614 / -5):
+  game/Assets/prefabs/core.prefab
+  game/Code/Chat/Chat.Handler.cs
+  game/Code/Chat/Commands/PartyChatCommand.cs
+  game/Code/Chat/Commands/PartyCommand.cs
+  game/Code/Chat/Commands/ProfileCommand.cs
+  game/Code/Chat/MessageType.cs
+  game/Code/Player/Player.Health.cs
+  game/Code/System/RP/PartyRoom.cs
+  game/Code/System/RP/PartySystem.cs
+  game/Code/UI/Components/PlayerNameplate.razor
+  game/Code/UI/Components/PlayerNameplate.razor.scss
+  game/Code/UI/HUD/Chat/Chat.razor
+  game/Code/UI/HUD/Chat/Chat.razor.scss
+  game/Code/UI/HUD/Components/PartyHud.razor
+  game/Code/UI/HUD/Components/PartyHud.razor.scss
+  game/Code/UI/HUD/Components/PartyMemberCard.razor
+  game/Code/UI/HUD/Components/PartyMemberCard.razor.scss
+  game/Code/UI/HUD/Components/PartyMenu.razor
+  game/Code/UI/HUD/Components/PartyMenu.razor.scss
+  game/Code/UI/HUD/HUD.razor
+  game/Code/Utilities/PackedColorExtensions.cs
+  game/Localization/en/dxrp.json
+
+Architecture notes (from code comments — verify in distill):
+  - PartySystem: host-authoritative, session-only, Sync(FromHost) NetDictionary<Guid, PartyData>
+  - Explicitly separate from FactionSystem (no reads/writes)
+  - PartyRoom: client read-only view built from synced PartySystem
+  - RankSystem cited as replication pattern precedent
+  - PartyHud: DraggablePanel StorageKey party-hud, AdminTickets parity for drag/chevron
+  - PartyMenu: cursor unlock via HUD.SetCursorUnlockRequest while open
+  - Commands: /party, /p alias, party chat, /pf for profile (ProfileCommand tweak)
+
+Bounty context (GitHub #73 — Party System):
+  Deliver standalone on-the-fly party squads for DXRP (not factions).
+  Expected: invites, leader transfer, size limits, FF bypass option, team highlight, party chat, UI.
+
+Red manual proof still required (NOT verified by this manifest):
+  - Stop → Play flatgrass
+  - /p menu open → drag PARTY HUD header → chevron collapse/expand
+  - Position + collapsed state persist via StorageKey
+  - Multiplayer invite flow if possible

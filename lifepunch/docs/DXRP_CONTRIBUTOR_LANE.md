@@ -129,6 +129,18 @@ PartyData> Parties`. All commits authored by `mragerlp`, **no AI trailer** (hist
 
 ---
 
+## After upstream closeout → resume LifePunch lane
+
+When a bounty/PR is handed off and Red returns to the monorepo active gate:
+
+1. Do **not** merge bounty branches into `lifepunchaddons`.
+2. Run CVL sync (`Send-CornermanWorkflow.ps1 -Action MonorepoPull`).
+3. Follow **`lifepunch/docs/WORKSTREAM_RESTART_WORKFLOW.md`** — Green restart packet → Red report-first → owner GO.
+
+Templates: `lifepunch/docs/handoff/templates/CORNERMAN_RESTART_PACKET_BRIEF.md`, `VENGEANCE_RESUME_REPORT_TEMPLATE.md`, `CODEX_LANE_PLAN_PASTE.md`.
+
+---
+
 ## External docs for Dimmer / PR workflow
 
 | Doc | URL / path |

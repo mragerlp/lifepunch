@@ -66,6 +66,7 @@ Business wrapper: `lifepunch/docs/BUSINESS_CONTEXT.md`.
 
 | Doc | When |
 |-----|------|
+| `WORKSTREAM_RESTART_WORKFLOW.md` | Parallel work closed (upstream bounty, side lane) → resume active gate |
 | `OWNERSHIP_MATRIX.md` | Role/routing confusion |
 | `DECISIONS/README.md` + specific `DECISION-####` | Cite settled design |
 | `KNOWLEDGE/**` | Balance, rejections, lane notes for active task |

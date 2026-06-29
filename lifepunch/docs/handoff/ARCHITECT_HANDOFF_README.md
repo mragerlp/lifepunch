@@ -23,6 +23,7 @@ GitHub monorepo is authoritative. ZIP bundles are **snapshots only**.
 |---------|--------|
 | Small localized doc edits | Delta refresh in Project knowledge |
 | Laws, onboarding, `ARCHITECT_CURRENT_STATE.md`, decisions, `ACTIVE_WORKSTREAM.md` | **Full kit rebuild** |
+| Parallel work closeout → lane resume | Red follows `WORKSTREAM_RESTART_WORKFLOW.md`; paste packet summary into Architect chat |
 
 Red sends **commit hash + changed files** to Design Architect for each refresh.
 

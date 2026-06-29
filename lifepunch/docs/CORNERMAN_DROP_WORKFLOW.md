@@ -133,6 +133,7 @@ Save as `lifepunch/addons/docs/briefs/CORNERMAN_<TASK>.md` or push directly to i
 |---------|---------|
 | Cursor handoff | `to-vengeance-<slice>.md` |
 | Distill rollup | `<TOPIC>_SUMMARY_YYYY-MM-DD.md` |
+| **Lane restart** | `RESTART_PACKET_<lane>_YYYY-MM-DD_HHmm.md` |
 | DXRP lane | `DXRP_<issue>-<topic>.md` |
 | Status ack | `SWEEP_STATUS.json` |
 
@@ -163,6 +164,20 @@ Cornerman's eyes are covered — distill from repo/inbox only; not playtest or v
 | **DXRP upstream** | `dxrp-public` only, **no** LIFEPUNCH headers | `DXRP_` / `#73` |
 
 See `DXRP_CONTRIBUTOR_LANE.md`.
+
+---
+
+## Lane restart (after parallel work closes)
+
+When upstream or side work finishes and the **active workstream** resumes (e.g. DXRP bounty closed → lpbitcoin):
+
+1. Red closes/parks parallel repo work (separate clone — never mix commits).
+2. `MonorepoPull` on Green + drop restart brief from `lifepunch/docs/handoff/templates/CORNERMAN_RESTART_PACKET_BRIEF.md`.
+3. Green writes `outbox/RESTART_PACKET_<lane>_*.md` (read-only; eyes covered).
+4. Red runs report-first using `lifepunch/docs/handoff/templates/VENGEANCE_RESUME_REPORT_TEMPLATE.md` — **no code until owner GO**.
+5. Architect/Codex plan via `CODEX_LANE_PLAN_PASTE.md` → owner GO → one slice.
+
+**Canon:** `lifepunch/docs/WORKSTREAM_RESTART_WORKFLOW.md` · example packet: `handoff/cornerman-outbox/LPBITCOIN_RESTART_PACKET_2026-06-29_1035.md`
 
 ---
 
