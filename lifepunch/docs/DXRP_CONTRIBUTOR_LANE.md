@@ -55,6 +55,46 @@ Do NOT edit dxrp-public unless explicitly bouncing an upstream fix back to the f
 
 ---
 
+## Dual IDE: Cursor (Agent) + VS Code (Copilot)
+
+**Why:** Dxura staff (Dimmer) works in **VS Code + GitHub Copilot**. Copilot is **not supported inside Cursor** (not in Cursor’s extension marketplace; VS Code core integration conflicts). Bloodwave keeps **Cursor Agent** for implementation; adds **VS Code** for Copilot parity when pairing, reviewing, or matching upstream style.
+
+| IDE | Tooling | Use for |
+|-----|---------|---------|
+| **Cursor** | Agent, Composer, rules, s&box MCP | Multi-file DXRP slices, flatgrass proof, PR prep, commit |
+| **VS Code** | GitHub Copilot + Copilot Chat | Inline completions the way Dimmer writes; PR/diff chat; quick single-file edits |
+
+**One-time setup (VENGEANCE)**
+
+1. Install [VS Code](https://code.visualstudio.com/) if missing.
+2. Extensions (`Ctrl+Shift+X`): **GitHub Copilot**, **GitHub Copilot Chat** (official GitHub publisher).
+3. `Ctrl+Shift+P` → **GitHub Copilot: Sign In** — GitHub account with Copilot access.
+4. **File → Open Folder** → `C:\Users\jared\Projects\dxrp-public` (same clone as Cursor; do not duplicate the repo).
+
+**Cursor side (avoid fighting autocomplete)**
+
+- When VS Code is open on `dxrp-public`, disable inline AI in Cursor: `Ctrl+Shift+P` → **Disable Cursor Tab** (or status bar **Tab** → Disable globally).
+- Re-enable Cursor Tab when back to Cursor-only sessions (LifePunch monorepo, agent work without VS Code).
+
+**Daily workflow with Dimmer**
+
+1. **Implement** in Cursor (Agent session, contributor lane paste, branch on `dxrp-public`).
+2. **Spot-check** changed `.cs` / `.razor` files in VS Code — Copilot inline should feel like Dimmer’s environment.
+3. **Review** Dimmer’s PRs or issue comments in VS Code with **Copilot Chat** on the diff.
+4. **Commit once** from one IDE per slice (save all files first; other IDE reloads on focus if prompted).
+5. **Never** VSIX-hack Copilot into Cursor or run Cursor Tab + Copilot inline on the same file.
+
+**Repo split**
+
+| Repo | Cursor | VS Code + Copilot |
+|------|--------|-------------------|
+| `dxrp-public` (upstream) | Yes — primary for Agent | Yes — Copilot parity / review |
+| `lifepunchaddons` (private) | Yes — only IDE | No — proprietary + MCP stack stays Cursor |
+
+Commit hygiene applies in **both** IDEs: author `mragerlp` only, no Cursor/Copilot co-author trailers (see below).
+
+---
+
 ## Sync loop (DXRP fork)
 
 ```powershell
