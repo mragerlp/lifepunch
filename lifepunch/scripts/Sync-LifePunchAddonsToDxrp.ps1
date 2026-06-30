@@ -154,8 +154,7 @@ function Sync-LifepunchUlxToDxrp {
         'StaffMenu.razor.scss',
         'StaffMenuHost.cs',
         'StaffMenuActions.cs',
-        'StaffSettingsService.cs',
-        'WaypointSyncService.cs'
+        'StaffMenuBridgeService.cs'
     )
 
     if ($WhatIf) {

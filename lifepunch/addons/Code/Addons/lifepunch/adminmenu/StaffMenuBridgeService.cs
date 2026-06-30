@@ -21,28 +21,16 @@ using Sandbox;
 namespace LifePunch.DXRP.Addons.StaffMenu;
 
 /// <summary>
-/// Self-contained host bridge for the admin menu's Waypoints list — DROP-IN, no DXRP core edits required.
-///
-/// The waypoint store is host/token-scoped (<see cref="ServerApiClient"/> needs the server authorization
-/// key), so the client-side menu can't read it directly. This component is auto-attached to the networked
-/// core root on every peer by DXRP's <c>AddonServiceRegistry</c> (via <see cref="AddonServiceAttribute"/>),
-/// giving the addon its OWN host RPC: the client asks the host, the host reads its per-server store and
-/// returns the names to just the calling client (mirrors the ForceScreenshot filtered round-trip).
-///
-/// Server-agnostic by construction: each server reads its own token-scoped store, so every owner sees their
-/// own waypoints with zero config — and because it lives entirely in the addon, it works on any DXRP server
-/// the addon is dropped into without modifying <c>AdminSystem</c> or anything else in core.
+/// Single host bridge for lifepunchulx client-only reads/writes that need the server token store.
+/// On-demand RPC round-trips only — no <c>[Sync]</c> state. Replaces separate waypoint + settings services.
 /// </summary>
 [AddonService]
-public sealed class WaypointSyncService : SingletonComponent<WaypointSyncService>
+public sealed class StaffMenuBridgeService : SingletonComponent<StaffMenuBridgeService>
 {
-	// Must match Dxura.RP.Game.Commands.WaypointCommand.StorePrefix so we read exactly what /waypoint writes.
 	private const string WaypointStorePrefix = "commands:waypoint:";
+	private const string WebsiteStoreKey = "lifepunchulx:settings:website";
+	private const string SettingsEditPermission = "lifepunchulx.settings.edit";
 
-	/// <summary>
-	/// Client→host request for the saved waypoint names. Re-validates <see cref="Permission.CommandWaypointUse"/>
-	/// host-side (the menu's UI gating is cosmetic only), then reads + returns asynchronously.
-	/// </summary>
 	[Rpc.Host]
 	public void RequestWaypointsHost()
 	{
@@ -53,6 +41,24 @@ public sealed class WaypointSyncService : SingletonComponent<WaypointSyncService
 		}
 
 		_ = SendWaypointsToCaller( caller );
+	}
+
+	[Rpc.Host]
+	public void RequestSettingsHost()
+	{
+		_ = SendSettingsToCaller( Rpc.Caller );
+	}
+
+	[Rpc.Host]
+	public void SetWebsiteHost( string url )
+	{
+		var caller = Rpc.Caller;
+		if ( !RankSystem.HasPermission( caller.SteamId, SettingsEditPermission ) )
+		{
+			return;
+		}
+
+		_ = SaveWebsite( url );
 	}
 
 	private async Task SendWaypointsToCaller( Connection connection )
@@ -70,17 +76,66 @@ public sealed class WaypointSyncService : SingletonComponent<WaypointSyncService
 
 		await GameTask.MainThread();
 
-		// A stale connection (caller disconnected mid-read) simply matches nothing here — safe no-op.
 		using ( Rpc.FilterInclude( c => c == connection ) )
 		{
 			ReceiveWaypointsClient( names );
 		}
 	}
 
+	private async Task SendSettingsToCaller( Connection connection )
+	{
+		var website = string.Empty;
+		try
+		{
+			website = await ServerApiClient.GetStore( WebsiteStoreKey ) ?? string.Empty;
+		}
+		catch ( Exception e )
+		{
+			Log.Warning( $"[lifepunchulx] website read failed (offline?): {e.Message}" );
+		}
+
+		await GameTask.MainThread();
+
+		using ( Rpc.FilterInclude( c => c == connection ) )
+		{
+			ReceiveSettingsClient( website );
+		}
+	}
+
+	private async Task SaveWebsite( string url )
+	{
+		url = ( url ?? string.Empty ).Trim();
+
+		try
+		{
+			if ( url.Length == 0 )
+			{
+				await ServerApiClient.DeleteStore( WebsiteStoreKey );
+			}
+			else
+			{
+				await ServerApiClient.SetStore( WebsiteStoreKey, url );
+			}
+		}
+		catch ( Exception e )
+		{
+			Log.Warning( $"[lifepunchulx] website persist failed (offline?): {e.Message}" );
+		}
+
+		await GameTask.MainThread();
+		ReceiveSettingsClient( url );
+	}
+
 	[Rpc.Broadcast( NetFlags.HostOnly | NetFlags.Reliable )]
 	private void ReceiveWaypointsClient( string[] names )
 	{
 		StaffMenuHost.OnWaypointsReceived( names );
+	}
+
+	[Rpc.Broadcast( NetFlags.HostOnly | NetFlags.Reliable )]
+	private void ReceiveSettingsClient( string website )
+	{
+		StaffMenuHost.OnSettingsReceived( website );
 	}
 }
 #endif

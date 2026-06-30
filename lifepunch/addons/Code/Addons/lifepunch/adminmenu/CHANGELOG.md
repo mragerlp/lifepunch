@@ -3,6 +3,12 @@
 Proprietary & Confidential — © 2026 lifepunch.co. Sole-owned IP of lifepunch.co.
 Portal package: **lifepunchulx** (s&box ident `lifepunch.lifepunchulx`).
 
+## v1.0.3 — portal r10 (2026-06-29)
+
+- **Set Job (Commands tab)** — pick a player, click **Set Job**, search/pick from the live gamemode job list (each server's custom jobs), confirm. Dispatches to DXRP native `/job` (`command.job.manage`); no duplicate command implementation in the addon.
+- **Bridge compaction** — merged `WaypointSyncService` + `StaffSettingsService` into one `StaffMenuBridgeService` (on-demand RPC only — still zero `[Sync]` replication).
+- **Removed** duplicate `LifepunchUlxJobCommand` — authority stays in DXRP core; menu is thin dispatch.
+
 ## v1.0.2 — portal r9 (2026-06-29)
 
 - **Dedicated compile fix** — DXRP `Player.PlayTime` is `TimeSince` (elapsed seconds); roster + profile pane now convert to minutes explicitly (`/ 60f`, same as DXRP VoteSystem). Fixes CS1503 on portal r8 when the dedicated host compiles against current DXRP.
@@ -30,10 +36,10 @@ Portal package: **lifepunchulx** (s&box ident `lifepunch.lifepunchulx`).
 - Permission-gated UI via live `RankSystem.HasLocalPermission`; `CanLocalTarget` locks equal/higher ranks.
 - Code-only package (6 ship files); no Assets or content rows. Editor test bots live in `Code/_dev/` (excluded from publish staging).
 
-### Command catalog (25 actions)
+### Command catalog (26 actions)
 
 - **Moderation (7):** Kick, Ban, Jail, Gag, Warn, Spectate, Screenshot.
-- **Commands (13):** God, Cloak, Incognito, Fake Disconnect, Freeze, Set Health, Arrest, Unarrest, Force RP Name, Cancel Demote, Clear Props, Force Sell Door.
+- **Commands (14):** God, Cloak, Incognito, Fake Disconnect, Freeze, Set Health, **Set Job**, Arrest, Unarrest, Force RP Name, Cancel Demote, Clear Props, Force Sell Door.
 - **Ability (5):** Goto, Bring, Return, Teleport All, Noclip.
 - Per-rank **ban-duration ceiling** (client UX guardrail) with quick-pick chips (1h → permanent).
 - Hover tooltips on every command and player row.

@@ -142,8 +142,7 @@ $shipFiles = @(
     'StaffMenu.razor.scss',
     'StaffMenuHost.cs',
     'StaffMenuActions.cs',
-    'StaffSettingsService.cs',
-    'WaypointSyncService.cs'
+    'StaffMenuBridgeService.cs'
 )
 $sharedRoot = Join-Path $repoAddons 'Code\Addons\lifepunch'
 $editorShared = @(

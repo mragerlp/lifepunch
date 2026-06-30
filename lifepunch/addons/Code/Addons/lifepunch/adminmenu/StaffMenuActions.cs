@@ -46,7 +46,8 @@ public enum StaffArgKind
 {
 	Text,
 	Duration,
-	Number
+	Number,
+	Job
 }
 
 /// <summary>
@@ -82,6 +83,8 @@ public sealed record StaffAction(
 /// <summary>
 /// The LifePunch staff command catalog + categories, mirroring the DXRP portal permission taxonomy
 /// (Moderation / Commands / Ability). Growing the menu = adding rows here.
+/// Chat-only commands stay out of <see cref="All"/>; job force-set is menu-only via Set Job below
+/// (still dispatches to DXRP <c>/job</c> — portal <c>command.job.manage</c>).
 /// Catalog reconciled against the live portal Super Admin permission set (2026-06).
 /// </summary>
 public static class StaffMenuActions
@@ -154,6 +157,11 @@ public static class StaffMenuActions
 		new( "sethealth", "Set Health", CategoryCommands, "command.sethealth",
 			StaffDispatchKind.ChatCommand, "sethealth", StaffActionTarget.OtherPlayer,
 			new[] { new StaffActionArg( "amount", "Health", StaffArgKind.Number, true, "e.g. 100" ) }, "favorite", "Set player's health" ),
+
+		new( "setjob", "Set Job", CategoryCommands, "command.job.manage",
+			StaffDispatchKind.ChatCommand, "job", StaffActionTarget.OtherPlayer,
+			new[] { new StaffActionArg( "job", "Job", StaffArgKind.Job, true, "Search or pick a job" ) },
+			"work", "Force-set the player's job (gamemode job list)" ),
 
 		new( "arrest", "Arrest", CategoryCommands, "command.arrest",
 			StaffDispatchKind.ChatCommand, "arrest", StaffActionTarget.OtherPlayer,

@@ -593,6 +593,22 @@
 								{
 									<TextEntry class="arg-input" Numeric="@true" Placeholder="@arg.Placeholder" Value:bind="@_amount"/>
 								}
+								else if ( arg.Kind == StaffArgKind.Job )
+								{
+									<TextEntry class="arg-input" Placeholder="@arg.Placeholder" Value:bind="@_jobFilter"/>
+									<div class="lp-ui-scroll-region job-picker">
+										<div class="chips">
+											@foreach ( var job in FilteredJobOptions() )
+											{
+												<button class="chip @( _job == job.Token ? "active" : "" )"
+												        style="border-left: 3px solid @job.ColorHex"
+												        onclick="@(() => SetJob( job.Token ))">
+													@job.Label
+												</button>
+											}
+										</div>
+									</div>
+								}
 								else if ( arg.Name == "name" )
 								{
 									<TextEntry class="arg-input" Placeholder="@arg.Placeholder" Value:bind="@_name"/>
@@ -741,6 +757,8 @@
 	private string _duration = "";
 	private string _amount = "";
 	private string _name = "";
+	private string _job = "";
+	private string _jobFilter = "";
 
 	protected override void OnStart()
 	{
@@ -992,6 +1010,8 @@
 		_duration = "";
 		_amount = "";
 		_name = "";
+		_job = "";
+		_jobFilter = "";
 		StateHasChanged();
 	}
 
@@ -1010,6 +1030,26 @@
 
 		_duration = token;
 		StateHasChanged();
+	}
+
+	private void SetJob( string token )
+	{
+		_job = token;
+		StateHasChanged();
+	}
+
+	private IEnumerable<StaffJobOption> FilteredJobOptions()
+	{
+		var query = _jobFilter?.Trim() ?? "";
+		var jobs = StaffMenuHost.AssignableJobs();
+		if ( query.Length == 0 )
+		{
+			return jobs;
+		}
+
+		return jobs.Where( job =>
+			job.Label.Contains( query, StringComparison.OrdinalIgnoreCase )
+			|| job.Token.Contains( query, StringComparison.OrdinalIgnoreCase ) );
 	}
 
 	private void ConfirmArgs( StaffMenuPlayer selected )
@@ -1041,6 +1081,7 @@
 		"duration" => _duration,
 		"amount" => _amount,
 		"name" => _name,
+		"job" => _job,
 		_ => ""
 	};
 
@@ -1311,7 +1352,7 @@
 			HashCode.Combine( _players.Count, _playersCollapsed, _staffSectionCollapsed, _playersSectionCollapsed ),
 			_activeTab,
 			_pendingAction?.Key,
-			HashCode.Combine( _reason, _duration, _amount, _name ),
+			HashCode.Combine( _reason, _duration, _amount, _name, _job, _jobFilter ),
 			HashCode.Combine( _auditPlayerId, _auditEntity, _websiteDraft, _websiteCopied, _websiteSaved, _steamIdCopied, _currentCopied, StaffMenuHost.SettingsVersion ),
 			HashCode.Combine( _waypointName, StaffMenuHost.WaypointVersion, _returnSteamId ),
 			HashCode.Combine( _uiScale, _detailHash ) );

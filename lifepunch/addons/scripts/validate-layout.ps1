@@ -266,8 +266,7 @@ if (Test-Path -LiteralPath $AdminMenuCodeRoot -PathType Container) {
         'StaffMenu.razor.scss',
         'StaffMenuActions.cs',
         'StaffMenuHost.cs',
-        'StaffSettingsService.cs',
-        'WaypointSyncService.cs'
+        'StaffMenuBridgeService.cs'
     )
 
     Get-ChildItem -LiteralPath $AdminMenuCodeRoot -File -Force | ForEach-Object {
@@ -279,7 +278,7 @@ if (Test-Path -LiteralPath $AdminMenuCodeRoot -PathType Container) {
 
         if ($_.Extension -in @('.cs', '.razor', '.scss') -and
             $AllowedAdminMenuShipFiles -notcontains $Name) {
-            Add-LayoutError "adminmenu (lifepunchulx) unexpected source (r6 ship 6 only): $Name"
+            Add-LayoutError "adminmenu (lifepunchulx) unexpected source (ship bundle): $Name"
         }
     }
 }

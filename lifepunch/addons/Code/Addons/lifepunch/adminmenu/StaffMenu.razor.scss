@@ -1104,6 +1104,15 @@ $shell-radius: 22px;
 		}
 	}
 
+	.job-picker {
+		max-height: 180px;
+		margin-top: 4px;
+		padding: 6px 4px;
+		border: 1px solid $border;
+		border-radius: 8px;
+		background-color: $bg-row;
+	}
+
 	.confirm-btn {
 		flex-direction: row;
 		align-items: center;

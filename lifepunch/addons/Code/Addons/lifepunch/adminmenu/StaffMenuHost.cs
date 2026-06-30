@@ -78,6 +78,12 @@ public readonly record struct StaffAuditEntry(
 	string Description );
 
 /// <summary>
+/// One gamemode job row for the Set Job picker. Define-free so the razor compiles in the editor build.
+/// <see cref="Token"/> is dispatched to DXRP's <c>/job</c> command (internal job name).
+/// </summary>
+public readonly record struct StaffJobOption( string Token, string Label, string ColorHex );
+
+/// <summary>
 /// Dual-build host bindings for LIFEPUNCH ULX (<c>lifepunchulx</c>).
 ///
 /// All DXRP coupling lives here behind <c>#if !LIFEPUNCH_LOCAL</c> so <c>StaffMenu.razor</c> and
@@ -487,7 +493,7 @@ internal static class StaffMenuHost
 #else
 	// dxrp.net build: host-synced. The waypoint store is host/token-scoped (ServerApiClient needs the
 	// server authorization key), so the client can't read it directly — RefreshWaypoints asks the host
-	// (via the addon-owned WaypointSyncService) to read its own per-server store and push the names back
+	// (via the addon-owned StaffMenuBridgeService) to read its own per-server store and push the names back
 	// (OnWaypointsReceived). Self-contained in the addon: no DXRP core changes needed to drop it in.
 	private static readonly List<string> _waypoints = new();
 #endif
@@ -503,18 +509,17 @@ internal static class StaffMenuHost
 	public static void RefreshWaypoints()
 	{
 #if !LIFEPUNCH_LOCAL
-		// Routes through the addon's OWN host bridge (WaypointSyncService), not DXRP core — so the saved
-		// list works on any server the addon is dropped into with zero core edits.
-		if ( WaypointSyncService.Instance.IsValid() )
+		// Routes through the addon bridge (StaffMenuBridgeService), not DXRP core.
+		if ( StaffMenuBridgeService.Instance.IsValid() )
 		{
-			WaypointSyncService.Instance.RequestWaypointsHost();
+			StaffMenuBridgeService.Instance.RequestWaypointsHost();
 		}
 #endif
 	}
 
 #if !LIFEPUNCH_LOCAL
 	/// <summary>
-	/// Host→client callback (invoked by the addon-owned <see cref="WaypointSyncService"/> filtered RPC):
+	/// Host→client callback (invoked by <see cref="StaffMenuBridgeService"/> filtered RPC):
 	/// replace the cached list with the server's real waypoint names and bump the version so the razor's
 	/// <c>BuildHash</c> re-renders.
 	/// </summary>
@@ -662,7 +667,7 @@ internal static class StaffMenuHost
 	/// Owner-grant permission gating edits to the menu's owner customizations (currently the network
 	/// website link). The Owner rank's <c>"*"</c> wildcard satisfies it automatically; an owner may also
 	/// grant <c>lifepunchulx.settings.edit</c> to other ranks in the portal. UX gating only — the host
-	/// (<see cref="StaffSettingsService"/>) re-checks every write.
+	/// (<see cref="StaffMenuBridgeService"/>) re-checks every write.
 	/// </summary>
 	public const string SettingsEditPermissionId = "lifepunchulx.settings.edit";
 
@@ -676,7 +681,7 @@ internal static class StaffMenuHost
 	// Editor build: a live in-memory value so the input + click-to-copy work with no backend.
 	private static string _websiteUrl = "https://lifepunch.co";
 #else
-	// dxrp.net build: host-synced from the token-scoped store via StaffSettingsService (RefreshSettings).
+	// dxrp.net build: host-synced from the token-scoped store via StaffMenuBridgeService (RefreshSettings).
 	private static string _websiteUrl = string.Empty;
 #endif
 
@@ -725,9 +730,9 @@ internal static class StaffMenuHost
 	public static void RefreshSettings()
 	{
 #if !LIFEPUNCH_LOCAL
-		if ( StaffSettingsService.Instance.IsValid() )
+		if ( StaffMenuBridgeService.Instance.IsValid() )
 		{
-			StaffSettingsService.Instance.RequestSettingsHost();
+			StaffMenuBridgeService.Instance.RequestSettingsHost();
 		}
 #endif
 	}
@@ -740,16 +745,16 @@ internal static class StaffMenuHost
 		SettingsVersion++;
 		Log.Info( $"[lifepunchulx] (local stub) website set '{_websiteUrl}'" );
 #else
-		if ( StaffSettingsService.Instance.IsValid() )
+		if ( StaffMenuBridgeService.Instance.IsValid() )
 		{
-			StaffSettingsService.Instance.SetWebsiteHost( url ?? string.Empty );
+			StaffMenuBridgeService.Instance.SetWebsiteHost( url ?? string.Empty );
 		}
 #endif
 	}
 
 #if !LIFEPUNCH_LOCAL
 	/// <summary>
-	/// Host→client callback (invoked by the addon-owned <see cref="StaffSettingsService"/>): replace the
+	/// Host→client callback (invoked by <see cref="StaffMenuBridgeService"/>): replace the
 	/// cached website with the server's stored value and bump the version so the razor re-renders.
 	/// </summary>
 	internal static void OnSettingsReceived( string website )
@@ -758,6 +763,37 @@ internal static class StaffMenuHost
 		SettingsVersion++;
 	}
 #endif
+
+	// --- Jobs (force-set via DXRP /job — menu picker reads live gamemode config) ----
+
+	/// <summary>Portal permission for force-setting jobs (<c>/job &lt;player&gt; &lt;job&gt;</c>).</summary>
+	public const string JobManagePermissionId = "command.job.manage";
+
+	/// <summary>
+	/// Jobs from the active gamemode config — each server's custom job list, sorted for the Set Job picker.
+	/// Force-set dispatches to DXRP's native <c>/job</c> command (host re-validates permission).
+	/// </summary>
+	public static IReadOnlyList<StaffJobOption> AssignableJobs()
+	{
+#if LIFEPUNCH_LOCAL
+		return new List<StaffJobOption>
+		{
+			new( "Citizen", "Citizen", "#FFFFFF" ),
+			new( "Police", "Police Officer", "#3498DB" ),
+			new( "Mayor", "Mayor", "#E74C3C" ),
+			new( "Gun Dealer", "Gun Dealer", "#F39C12" ),
+			new( "Bitcoin Miner", "Bitcoin Miner", "#F1C40F" )
+		};
+#else
+		return GameModeJobs.All
+			.OrderBy( job => job.DisplayName() )
+			.Select( job => new StaffJobOption(
+				job.Name,
+				job.DisplayName(),
+				$"#{job.Color & 0xFFFFFFu:X6}" ) )
+			.ToList();
+#endif
+	}
 
 	// --- Dispatch ----------------------------------------------------------
 
