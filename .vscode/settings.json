@@ -1,0 +1,17 @@
+{
+  "files.exclude": {
+    "**/.git": true,
+    "**/.cursor": false
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/.dxrp-publish": true,
+    "**/Assets/**/_c": true,
+    "**/Code/**/_c": true,
+    "**/game/Libraries": true
+  },
+  "files.watcherExclude": {
+    "**/.dxrp-publish/**": true,
+    "**/Assets/**/_c/**": true
+  }
+}
