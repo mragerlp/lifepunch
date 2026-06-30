@@ -19,10 +19,15 @@ public static class LpBitcoinDevSpawn
 {
 	private const float GroundTraceUp = 2000f;
 	private const float GroundTraceDown = 20000f;
+	private const float DualTesterLaneSpacingUnits = 380f;
+	private const float PlayerKitForwardOffsetUnits = 120f;
 
 	[ConCmd( "lp_bitcoin_spawn_hub" )]
 	public static void SpawnHub()
 	{
+		if ( !EnsureHostSpawnAuthority( "lp_bitcoin_spawn_hub" ) )
+			return;
+
 		if ( !LifePunchMarketSpawn.TryGetIdentitySpawnTransform( out var transform ) )
 		{
 			Log.Warning( "lp_bitcoin_spawn_hub: no local viewer — play from game.scene first." );
@@ -123,9 +128,79 @@ public static class LpBitcoinDevSpawn
 	[ConCmd( "lp_bitcoin_spawn_kit" )]
 	public static void SpawnKit()
 	{
+		if ( !EnsureHostSpawnAuthority( "lp_bitcoin_spawn_kit" ) )
+			return;
+
 		var hub = SpawnKitInternal();
 		if ( hub.IsValid() )
 			Log.Info( "lp_bitcoin_spawn_kit: hub + terminal + 2× GPU Rack placed — USE hub or terminal." );
+	}
+
+	/// <summary>Host-only — spawn kit at a connected player, bound to their Steam ID (dual-tester loop).</summary>
+	[ConCmd( "lp_bitcoin_spawn_kit_for" )]
+	public static void SpawnKitFor( string target = "" )
+	{
+		if ( !EnsureHostSpawnAuthority( "lp_bitcoin_spawn_kit_for" ) )
+			return;
+
+		var owner = ResolveSpawnTargetPlayer( target );
+		if ( !owner.IsValid() )
+		{
+			Log.Warning( "lp_bitcoin_spawn_kit_for: no player — usage: lp_bitcoin_spawn_kit_for <steamId|name substring>. Run lp_bitcoin_dual_tester_list." );
+			return;
+		}
+
+		var hub = SpawnKitInternal( owner );
+		if ( hub.IsValid() )
+			Log.Info( $"lp_bitcoin_spawn_kit_for: kit placed for {FormatPlayerLabel( owner )} — they set PIN on first USE." );
+	}
+
+	/// <summary>Host-only — one kit per connected player, spaced in parallel lanes.</summary>
+	[ConCmd( "lp_bitcoin_dual_tester" )]
+	public static void DualTesterSpawn()
+	{
+		if ( !EnsureHostSpawnAuthority( "lp_bitcoin_dual_tester" ) )
+			return;
+
+#if LIFEPUNCH_LOCAL
+		Log.Warning( "lp_bitcoin_dual_tester: DXRP multiplayer play only." );
+#else
+		var players = GetConnectedPlayers();
+		if ( players.Count == 0 )
+		{
+			Log.Warning( "lp_bitcoin_dual_tester: no connected players." );
+			return;
+		}
+
+		for ( var i = 0; i < players.Count; i++ )
+		{
+			var owner = players[i];
+			var laneOffset = ( i - ( players.Count - 1 ) * 0.5f ) * DualTesterLaneSpacingUnits;
+			if ( SpawnFivePrefabsInternal( owner, laneOffset ) )
+				Log.Info( $"lp_bitcoin_dual_tester: lane {i + 1}/{players.Count} → {FormatPlayerLabel( owner )} (hub + terminal + 2× rack + advanced rack)" );
+		}
+
+		Log.Info( "lp_bitcoin_dual_tester: each operator USE their hub → set 4-digit PIN → power on." );
+#endif
+	}
+
+	[ConCmd( "lp_bitcoin_dual_tester_list" )]
+	public static void DualTesterListPlayers()
+	{
+#if LIFEPUNCH_LOCAL
+		Log.Info( "lp_bitcoin_dual_tester_list: DXRP play only." );
+#else
+		var players = GetConnectedPlayers();
+		if ( players.Count == 0 )
+		{
+			Log.Warning( "lp_bitcoin_dual_tester_list: no connected players." );
+			return;
+		}
+
+		Log.Info( $"lp_bitcoin_dual_tester_list: {players.Count} player(s)" );
+		foreach ( var player in players )
+			Log.Info( $"  {FormatPlayerLabel( player )}" );
+#endif
 	}
 
 	/// <summary>Dev shortcut — link nearest unlinked terminal to nearest hub (playtest only).</summary>
@@ -557,31 +632,28 @@ public static class LpBitcoinDevSpawn
 	[ConCmd( "lp_bitcoin_spawn_five_prefabs" )]
 	public static void SpawnFivePrefabs()
 	{
-		if ( !LifePunchMarketSpawn.TryGetIdentitySpawnTransform( out var transform ) )
+		if ( !EnsureHostSpawnAuthority( "lp_bitcoin_spawn_five_prefabs" ) )
+			return;
+
+		if ( SpawnFivePrefabsInternal() )
+			Log.Info( "lp_bitcoin_spawn_five_prefabs: 1 hub + 1 terminal + 2× standard rack + 1 advanced rack placed (unlinked)." );
+	}
+
+	[ConCmd( "lp_bitcoin_spawn_five_prefabs_for" )]
+	public static void SpawnFivePrefabsFor( string target = "" )
+	{
+		if ( !EnsureHostSpawnAuthority( "lp_bitcoin_spawn_five_prefabs_for" ) )
+			return;
+
+		var owner = ResolveSpawnTargetPlayer( target );
+		if ( !owner.IsValid() )
 		{
-			Log.Warning( "lp_bitcoin_spawn_five_prefabs: no local viewer — play from game.scene first." );
+			Log.Warning( "lp_bitcoin_spawn_five_prefabs_for: no player — usage: lp_bitcoin_spawn_five_prefabs_for <steamId|name>. Run lp_bitcoin_dual_tester_list." );
 			return;
 		}
 
-		var hub = SpawnHubPrefab( transform );
-		if ( !hub.IsValid() )
-			return;
-
-		var origin = transform.Position;
-		var rot = transform.Rotation;
-		var groundZ = origin.z;
-
-		SpawnTerminalPrefab( new Transform( SnapToGround( origin + rot.Forward * 110f, groundZ ), rot ) );
-
-		// Two standard racks on the left side
-		SpawnRackPrefab( RackSpawnTransform( transform, sideOffset: -130f ) );
-		SpawnRackPrefab( RackSpawnTransform( transform, sideOffset: -260f ) );
-
-		// One advanced rack on the right side
-		SpawnStackedRackPrefab( RackSpawnTransform( transform, sideOffset: +130f ) );
-
-		Log.Info( "lp_bitcoin_spawn_five_prefabs: 1 hub + 1 terminal + 2× standard rack + 1 advanced rack placed (unlinked)." );
-		LogBitcoinSpawnAudit();
+		if ( SpawnFivePrefabsInternal( owner ) )
+			Log.Info( $"lp_bitcoin_spawn_five_prefabs_for: full set placed for {FormatPlayerLabel( owner )}." );
 	}
 
 	/// <summary>Legacy alias — same as <see cref="SpawnRack"/> (advanced tier merged into GPU Rack).</summary>
@@ -1346,26 +1418,150 @@ public static class LpBitcoinDevSpawn
 		LifePunchPropPhysics.LogModelPhysics( go, tag );
 	}
 
-	private static LpBitcoinHubEntity SpawnKitInternal()
+	private static LpBitcoinHubEntity SpawnKitInternal( Player ownerPlayer = null, float laneOffsetUnits = 0f )
 	{
-		if ( !LifePunchMarketSpawn.TryGetIdentitySpawnTransform( out var transform ) )
+		var owner = ownerPlayer.IsValid() ? ownerPlayer : Player.Local;
+		if ( !TryGetSpawnTransformForPlayer( owner, laneOffsetUnits, out var transform ) )
 		{
-			Log.Warning( "lp_bitcoin_spawn_kit: no local viewer — play from game.scene first." );
+			Log.Warning( "lp_bitcoin_spawn_kit: no spawn target — play from game.scene with a valid player." );
 			return null;
 		}
 
-		var hub = SpawnHubPrefab( transform );
+		var hub = SpawnHubPrefab( transform, owner );
 		if ( !hub.IsValid() )
 			return null;
 
-		var origin = transform.Position;
-		var rot = transform.Rotation;
-		var groundZ = origin.z;
-		SpawnRackPrefab( RackSpawnTransform( transform, sideOffset: 100f ) );
-		SpawnRackPrefab( RackSpawnTransform( transform, sideOffset: -100f ) );
-		SpawnTerminalPrefab( new Transform( SnapToGround( origin + rot.Forward * 100f, groundZ ), rot ) );
+		SpawnRackPrefab( RackSpawnTransform( transform, sideOffset: 100f ), owner );
+		SpawnRackPrefab( RackSpawnTransform( transform, sideOffset: -100f ), owner );
+		SpawnTerminalForHub( hub, owner );
 		return hub;
 	}
+
+	private static bool SpawnFivePrefabsInternal( Player ownerPlayer = null, float laneOffsetUnits = 0f )
+	{
+		var owner = ownerPlayer.IsValid() ? ownerPlayer : Player.Local;
+		if ( !TryGetSpawnTransformForPlayer( owner, laneOffsetUnits, out var transform ) )
+		{
+			Log.Warning( "lp_bitcoin_spawn_five_prefabs: no spawn target — play from game.scene first." );
+			return false;
+		}
+
+		var hub = SpawnHubPrefab( transform, owner );
+		if ( !hub.IsValid() )
+			return false;
+
+		SpawnTerminalForHub( hub, owner );
+		SpawnRackPrefab( RackSpawnTransform( transform, sideOffset: -130f ), owner );
+		SpawnRackPrefab( RackSpawnTransform( transform, sideOffset: -260f ), owner );
+		SpawnStackedRackPrefab( RackSpawnTransform( transform, sideOffset: +130f ), owner );
+		LogBitcoinSpawnAudit();
+		return true;
+	}
+
+	private static void SpawnTerminalForHub( LpBitcoinHubEntity hub, Player ownerPlayer )
+	{
+		if ( !hub.IsValid() )
+			return;
+
+		var hubPos = hub.WorldPosition;
+		var hubRot = hub.WorldRotation;
+		var forward = hubRot.Forward.WithZ( 0 );
+		if ( forward.Length <= 0.01f )
+			forward = Vector3.Forward;
+		else
+			forward = forward.Normal;
+
+		var terminalPos = SnapToGround( hubPos + forward * 110f, hubPos.z );
+		SpawnTerminalPrefab( new Transform( terminalPos, hubRot ), ownerPlayer );
+	}
+
+#if !LIFEPUNCH_LOCAL
+	private static bool EnsureHostSpawnAuthority( string command )
+	{
+		if ( !Networking.IsActive || Networking.IsHost )
+			return true;
+
+		Log.Warning( $"{command}: host only in multiplayer — ask host to run lp_bitcoin_dual_tester or lp_bitcoin_spawn_kit_for <your SteamId>." );
+		return false;
+	}
+
+	private static System.Collections.Generic.List<Player> GetConnectedPlayers()
+	{
+		var manager = GameNetworkManager.Instance;
+		if ( manager is null )
+			return new System.Collections.Generic.List<Player>();
+
+		return manager.Players.Values
+			.Where( player => player.IsValid() )
+			.OrderBy( player => player.SteamId )
+			.ToList();
+	}
+
+	private static Player ResolveSpawnTargetPlayer( string token )
+	{
+		if ( string.IsNullOrWhiteSpace( token ) )
+			return Player.Local;
+
+		if ( long.TryParse( token, out var steamId ) )
+		{
+			var byId = GameUtils.GetPlayerById( steamId );
+			if ( byId.IsValid() )
+				return byId;
+		}
+
+		var players = GetConnectedPlayers();
+		var exact = players.FirstOrDefault( player => player.SteamId.ToString() == token.Trim() );
+		if ( exact.IsValid() )
+			return exact;
+
+		return players.FirstOrDefault( player =>
+			player.DisplayName.Contains( token.Trim(), StringComparison.OrdinalIgnoreCase ) );
+	}
+
+	private static string FormatPlayerLabel( Player player )
+		=> player.IsValid()
+			? $"{player.DisplayName} (SteamId {player.SteamId})"
+			: "(invalid player)";
+
+	private static bool TryGetSpawnTransformForPlayer( Player player, float laneOffsetUnits, out Transform transform )
+	{
+		if ( !player.IsValid() )
+		{
+			transform = default;
+			return false;
+		}
+
+		var forward = player.WorldRotation.Forward.WithZ( 0 );
+		if ( forward.Length <= 0.01f )
+			forward = Vector3.Forward;
+		else
+			forward = forward.Normal;
+
+		var right = player.WorldRotation.Right.WithZ( 0 );
+		if ( right.Length <= 0.01f )
+			right = Vector3.Right;
+		else
+			right = right.Normal;
+
+		var anchor = player.WorldPosition + forward * PlayerKitForwardOffsetUnits + right * laneOffsetUnits;
+		var spawnPos = SnapToGround( anchor, player.WorldPosition.z );
+		transform = new Transform( spawnPos, Rotation.Identity );
+		return true;
+	}
+
+	private static void BindHubOwnerHost( LpBitcoinHubEntity hub, Player owner )
+	{
+		if ( !Networking.IsHost || !hub.IsValid() || !owner.IsValid() )
+			return;
+
+		hub.Owner = owner.SteamId;
+	}
+#else
+	private static bool EnsureHostSpawnAuthority( string command ) => true;
+
+	private static bool TryGetSpawnTransformForPlayer( Player player, float laneOffsetUnits, out Transform transform )
+		=> LifePunchMarketSpawn.TryGetIdentitySpawnTransform( out transform );
+#endif
 
 	private static Transform RackSpawnTransform( Transform marketSpawn, float sideOffset, float forwardOffset = 0f )
 	{
@@ -1376,11 +1572,11 @@ public static class LpBitcoinDevSpawn
 		return new Transform( pos, rot );
 	}
 
-	private static LpBitcoinRackEntity SpawnRackPrefab( Transform transform )
-		=> SpawnRackPrefabInternal( transform, stacked: false );
+	private static LpBitcoinRackEntity SpawnRackPrefab( Transform transform, Player ownerPlayer = null )
+		=> SpawnRackPrefabInternal( transform, stacked: false, ownerPlayer );
 
-	private static LpBitcoinRackEntity SpawnStackedRackPrefab( Transform transform )
-		=> SpawnRackPrefabInternal( transform, stacked: true );
+	private static LpBitcoinRackEntity SpawnStackedRackPrefab( Transform transform, Player ownerPlayer = null )
+		=> SpawnRackPrefabInternal( transform, stacked: true, ownerPlayer );
 
 	private static void ApplyStackedRackModel( GameObject go )
 	{
@@ -1397,7 +1593,7 @@ public static class LpBitcoinDevSpawn
 			renderer.Model = stackedModel;
 	}
 
-	private static LpBitcoinRackEntity SpawnRackPrefabInternal( Transform transform, bool stacked )
+	private static LpBitcoinRackEntity SpawnRackPrefabInternal( Transform transform, bool stacked, Player ownerPlayer = null )
 	{
 		var path = stacked ? LpBitcoinIdent.StackedRackPrefabPath : LpBitcoinIdent.RackPrefabPath;
 		var label = stacked ? $"{LpBitcoinIdent.RackDisplayName} (stacked)" : LpBitcoinIdent.RackDisplayName;
@@ -1427,7 +1623,7 @@ public static class LpBitcoinDevSpawn
 			rack.DevSpawnAsWorldMachine = true;
 		}
 
-		NetworkSpawnIfNeeded( go );
+		NetworkSpawnIfNeeded( go, ownerPlayer );
 
 		var renderer = go.Components.Get<ModelRenderer>( FindMode.EverythingInSelf );
 		if ( !renderer.IsValid() || !renderer.Model.IsValid() )
@@ -1437,7 +1633,7 @@ public static class LpBitcoinDevSpawn
 		return rack;
 	}
 
-	private static LpBitcoinHubEntity SpawnHubPrefab( Transform transform )
+	private static LpBitcoinHubEntity SpawnHubPrefab( Transform transform, Player ownerPlayer = null )
 	{
 		var go = ClonePrefabAt( LpBitcoinIdent.HubPrefabPath, transform );
 		if ( !go.IsValid() )
@@ -1469,13 +1665,19 @@ public static class LpBitcoinDevSpawn
 			visuals.Hub = hub;
 
 		hub.DevSpawnAsWorldMachine = true;
-		hub.BindOwnerFromLocalViewer();
-		NetworkSpawnIfNeeded( go );
+#if !LIFEPUNCH_LOCAL
+		if ( ownerPlayer.IsValid() )
+			BindHubOwnerHost( hub, ownerPlayer );
+		else
+#endif
+			hub.BindOwnerFromLocalViewer();
+
+		NetworkSpawnIfNeeded( go, ownerPlayer );
 		// Physics: LpBitcoinHubEntity.OnStart — printer gravity, no ground snap.
 		return hub;
 	}
 
-	private static LpBitcoinTerminalEntity SpawnTerminalPrefab( Transform transform )
+	private static LpBitcoinTerminalEntity SpawnTerminalPrefab( Transform transform, Player ownerPlayer = null )
 	{
 		var go = ClonePrefabAt( LpBitcoinIdent.TerminalPrefabPath, transform );
 		if ( !go.IsValid() )
@@ -1491,29 +1693,49 @@ public static class LpBitcoinDevSpawn
 		if ( terminal.IsValid() )
 			terminal.DevSpawnAsWorldMachine = true;
 
-		NetworkSpawnIfNeeded( go );
+		NetworkSpawnIfNeeded( go, ownerPlayer );
 
 		var renderer = go.Components.Get<ModelRenderer>( FindMode.EverythingInSelf );
 		if ( !renderer.IsValid() || !renderer.Model.IsValid() )
 			Log.Warning( $"lp_bitcoin: terminal spawned but model missing — open '{LpBitcoinIdent.TerminalModelPath}' in ModelDoc and recompile." );
 
-		Log.Info( $"lp_bitcoin: terminal placed at {go.WorldPosition}" );
+		Log.Info( $"lp_bitcoin: terminal placed at {go.WorldPosition} owner={( ownerPlayer.IsValid() ? ownerPlayer.SteamId.ToString() : "host-local" )}" );
 		return terminal;
 	}
 
-	private static void NetworkSpawnIfNeeded( GameObject go )
+	private static void BindDevSpawnOwners( GameObject go, Player owner )
+	{
+		if ( !go.IsValid() || !owner.IsValid() )
+			return;
+
+		foreach ( var entity in go.Components.GetAll<BaseEntity>( FindMode.EverythingInSelfAndDescendants ) )
+		{
+			if ( entity.IsValid() )
+				entity.BindOwnerFromPlayer( owner );
+		}
+
+		foreach ( var hub in go.Components.GetAll<LpBitcoinHubEntity>( FindMode.EverythingInSelfAndDescendants ) )
+		{
+			if ( hub.IsValid() )
+				hub.Owner = owner.SteamId;
+		}
+	}
+
+	private static void NetworkSpawnIfNeeded( GameObject go, Player ownerPlayer = null )
 	{
 		if ( !go.IsValid() )
 			return;
 
 #if !LIFEPUNCH_LOCAL
-		var player = Player.Local;
-		var baseEntity = go.Components.Get<BaseEntity>( FindMode.EverythingInSelfAndDescendants );
-		if ( baseEntity.IsValid() && player.IsValid() )
-			baseEntity.BindOwnerFromPlayer( player );
+		if ( !Networking.IsHost )
+			return;
 
-		if ( player.IsValid() )
-			go.NetworkSpawn( player.Network.Owner );
+		var owner = ownerPlayer.IsValid() ? ownerPlayer : Player.Local;
+		BindDevSpawnOwners( go, owner );
+
+		// Host spawns for all clients; network owner = target operator so PIN/UI RPCs reach the right client.
+		if ( owner.IsValid() && owner.Network?.Owner is { } networkOwner )
+			go.NetworkSpawn( networkOwner );
 		else
 			go.NetworkSpawn();
 #endif

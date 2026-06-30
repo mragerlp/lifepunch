@@ -169,6 +169,7 @@
 	private readonly record struct LogLine( string Kind, string Text );
 
 	private LpBitcoinHubEntity _hub;
+	public LpBitcoinHubEntity Hub => _hub;
 	private int _selectedIndex;
 	private readonly List<LogLine> _lines = new();
 	private bool _showBootSplash = true;

@@ -479,6 +479,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		position: relative;
 		border-radius: 14px;
 		background-color: transparent;
 		border: 1px solid transparent;
@@ -500,6 +501,19 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 			border-color: rgba(255, 255, 255, 0.08);
 			box-shadow: 0 0 16px rgba(232, 125, 62, 0.45);
 		}
+	}
+
+	.sidebar-alert-dot {
+		position: absolute;
+		top: 8px;
+		right: 8px;
+		width: 9px;
+		height: 9px;
+		border-radius: 999px;
+		background-color: #f59e0b;
+		border: 2px solid #12141a;
+		box-shadow: 0 0 8px rgba(245, 158, 11, 0.55);
+		pointer-events: none;
 	}
 
 	.sidebar-avatar {
@@ -612,6 +626,55 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 			&:hover {
 				border-color: rgba(232, 125, 62, 0.35);
 				background-color: rgba(232, 125, 62, 0.08);
+			}
+		}
+
+		&.cashout-all-chip {
+			cursor: pointer;
+			max-width: 220px;
+
+			span {
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+
+			&:hover {
+				border-color: rgba(232, 125, 62, 0.35);
+				background-color: rgba(232, 125, 62, 0.08);
+			}
+
+			&.is-ready {
+				border-color: rgba(95, 211, 141, 0.45);
+				background-color: rgba(95, 211, 141, 0.08);
+
+				.material-icons {
+					color: #5fd38d;
+				}
+			}
+
+			&.is-error {
+				border-color: rgba(248, 113, 113, 0.55);
+				background-color: rgba(248, 113, 113, 0.12);
+				color: #fca5a5;
+
+				.material-icons {
+					color: #f87171;
+				}
+			}
+
+			&.is-success {
+				border-color: rgba(95, 211, 141, 0.55);
+				background-color: rgba(95, 211, 141, 0.12);
+				color: #b8f5d0;
+
+				.material-icons {
+					color: #5fd38d;
+				}
+			}
+
+			&.disabled {
+				opacity: 0.45;
+				cursor: default;
 			}
 		}
 
@@ -2680,6 +2743,13 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		cursor: default;
 	}
 
+	.overview-intro-link-ready {
+		border-color: rgba(95, 211, 141, 0.55);
+		background-color: rgba(95, 211, 141, 0.18);
+		color: #b8f5d0;
+		box-shadow: 0 0 12px rgba(95, 211, 141, 0.25);
+	}
+
 	.lp-ui-status-dot.warn {
 		background-color: $hashd-amber;
 	}
@@ -3177,11 +3247,25 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	flex-direction: row;
 	align-items: center;
 	justify-content: center;
+	position: relative;
 	border-radius: 14px;
 	background-color: transparent;
 	border: 1px solid transparent;
 	color: #6f7785;
 	cursor: pointer;
+}
+
+.lp-bitcoin-ops .sidebar-alert-dot {
+	position: absolute;
+	top: 8px;
+	right: 8px;
+	width: 9px;
+	height: 9px;
+	border-radius: 999px;
+	background-color: #f59e0b;
+	border: 2px solid #12141a;
+	box-shadow: 0 0 8px rgba(245, 158, 11, 0.55);
+	pointer-events: none;
 }
 
 .lp-bitcoin-ops .sidebar-btn .material-icons {
@@ -3787,6 +3871,13 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	cursor: default;
 }
 
+.lp-bitcoin-ops .overview-intro-link-ready {
+	border-color: rgba(95, 211, 141, 0.55);
+	background-color: rgba(95, 211, 141, 0.18);
+	color: #b8f5d0;
+	box-shadow: 0 0 12px rgba(95, 211, 141, 0.25);
+}
+
 .lp-bitcoin-ops .overview .lp-ui-split {
 	display: flex;
 	flex-direction: row;
@@ -4063,6 +4154,35 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	padding-right: 18px;
 	padding-bottom: 14px;
 	padding-left: 18px;
+}
+
+.lp-bitcoin-ops .overview-status-head {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 10px;
+	width: 100%;
+	margin-bottom: 10px;
+}
+
+.lp-bitcoin-ops .overview-status-title {
+	flex: 1 1 auto;
+	min-width: 0;
+	margin-bottom: 0;
+}
+
+.lp-bitcoin-ops .overview-status-upgrade-btn {
+	flex: 0 0 auto;
+	min-height: 32px;
+	padding-top: 6px;
+	padding-right: 14px;
+	padding-bottom: 6px;
+	padding-left: 14px;
+	font-size: 11px;
+	font-weight: 800;
+	white-space: nowrap;
 }
 
 .lp-bitcoin-ops .overview-status-perks {
@@ -5030,6 +5150,67 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	gap: 8px;
 	flex-shrink: 0;
 	cursor: pointer;
+}
+
+.lp-bitcoin-ops .header-chip.cashout-all-chip {
+	max-width: 220px;
+	min-height: 36px;
+	padding-top: 8px;
+	padding-right: 14px;
+	padding-bottom: 8px;
+	padding-left: 14px;
+	border-radius: 999px;
+	background-color: $hashd-card;
+	border: 1px solid $hashd-border;
+	color: $hashd-text;
+	font-size: 12px;
+	font-weight: 600;
+}
+
+.lp-bitcoin-ops .header-chip.cashout-all-chip span {
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.lp-bitcoin-ops .header-chip.cashout-all-chip .material-icons {
+	font-size: 16px;
+	color: $hashd-amber;
+}
+
+.lp-bitcoin-ops .header-chip.cashout-all-chip.is-ready {
+	border-color: rgba(95, 211, 141, 0.45);
+	background-color: rgba(95, 211, 141, 0.08);
+}
+
+.lp-bitcoin-ops .header-chip.cashout-all-chip.is-ready .material-icons {
+	color: #5fd38d;
+}
+
+.lp-bitcoin-ops .header-chip.cashout-all-chip.is-error {
+	border-color: rgba(248, 113, 113, 0.55);
+	background-color: rgba(248, 113, 113, 0.12);
+	color: #fca5a5;
+}
+
+.lp-bitcoin-ops .header-chip.cashout-all-chip.is-error .material-icons {
+	color: #f87171;
+}
+
+.lp-bitcoin-ops .header-chip.cashout-all-chip.is-success {
+	border-color: rgba(95, 211, 141, 0.55);
+	background-color: rgba(95, 211, 141, 0.12);
+	color: #b8f5d0;
+}
+
+.lp-bitcoin-ops .header-chip.cashout-all-chip.is-success .material-icons {
+	color: #5fd38d;
+}
+
+.lp-bitcoin-ops .header-chip.cashout-all-chip.disabled {
+	opacity: 0.45;
+	cursor: default;
 }
 
 .lp-bitcoin-ops .header-power-switch {

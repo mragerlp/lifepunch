@@ -91,10 +91,14 @@
 						<nav class="sidebar-nav">
 							@foreach ( var tab in _tabs )
 							{
-								<button class="sidebar-btn @(IsSidebarTabActive( tab ) ? "sidebar-btn-sel" : "")"
+								<button class="sidebar-btn @(IsSidebarTabActive( tab ) ? "sidebar-btn-sel" : "") @(ShowSidebarAlertBadge( tab ) ? "sidebar-btn-has-alert" : "")"
 								        tooltip="@TabLabel(tab)"
-								        onclick="@(() => SelectTab(tab))">
+								        onclick="@(() => SelectSidebarTab( tab ))">
 									<i class="material-icons">@TabIcon(tab)</i>
+									@if ( ShowSidebarAlertBadge( tab ) )
+									{
+										<span class="sidebar-alert-dot"></span>
+									}
 								</button>
 							}
 						</nav>
@@ -133,18 +137,11 @@
 									<i class="material-icons">account_balance_wallet</i>
 									<span>@HeaderWalletBtc() BTC</span>
 								</button>
-								<div class="header-chip date-chip">
-									<i class="material-icons">calendar_today</i>
-									<span>@HeaderDateLabel()</span>
-								</div>
-								<button class="header-chip notif-chip @(HasUnreadAlerts() ? "has-unread" : "")"
-								        tooltip="Hub logs"
-								        onclick="@SelectLogsTab">
-									<i class="material-icons">notifications</i>
-									@if ( HasUnreadAlerts() )
-									{
-										<span class="notif-dot"></span>
-									}
+								<button class="header-chip cashout-all-chip @GetCashOutAllButtonClass()"
+								        tooltip="Cash out all hub wallet BTC to bank"
+								        onclick="@CashOutAll">
+									<i class="material-icons">savings</i>
+									<span>@CashOutAllLabel()</span>
 								</button>
 								<button class="lp-ui-chrome-btn close" tooltip="Close" onclick="@Close">
 									<i class="material-icons">close</i>
@@ -159,7 +156,7 @@
 									<div class="pane overview">
 										<div class="lp-ui-panel-title overview-dash-title">
 											<i class="material-icons">home</i>
-											<span>Dashboard</span>
+											<span>Overview</span>
 										</div>
 										<div class="overview-intro-header">
 											<div class="overview-intro-terminal-row">
@@ -177,7 +174,7 @@
 												}
 												else if ( HasNearbyUnlinkedTerminal() )
 												{
-													<button class="lp-ui-btn-ghost" disabled="@(!HubIsPowered())" onclick="@LinkNearbyTerminal">Link terminal</button>
+													<button class="@LinkTerminalButtonClass()" disabled="@(!HubIsPowered())" onclick="@LinkNearbyTerminal">Link terminal</button>
 												}
 												else
 												{
@@ -239,9 +236,12 @@
 											</div>
 
 											<div class="lp-ui-panel overview-status-panel">
-												<div class="lp-ui-panel-title">
-													<i class="material-icons">analytics</i>
-													<span>Hub status</span>
+												<div class="overview-status-head">
+													<div class="lp-ui-panel-title overview-status-title">
+														<i class="material-icons">analytics</i>
+														<span>Hub status</span>
+													</div>
+													<button class="lp-ui-btn-primary overview-status-upgrade-btn" onclick="@SelectUpgradesTab">Upgrade</button>
 												</div>
 
 												<div class="overview-status-stack">
@@ -1152,7 +1152,7 @@
 	private string CurrentTierLabel( UpgradeTrackShell track )
 		=> $"Tier I · {track.TierOneLabel}";
 
-	private static readonly OpsTab[] _tabs = { OpsTab.Overview, OpsTab.Wallet, OpsTab.Transfers, OpsTab.Racks, OpsTab.Upgrades, OpsTab.Logs, OpsTab.Settings };
+	private static readonly OpsTab[] _tabs = { OpsTab.Overview, OpsTab.Upgrades, OpsTab.Racks, OpsTab.Wallet, OpsTab.Transfers, OpsTab.Logs, OpsTab.Settings };
 	private static readonly PerfRange[] _perfRanges = { PerfRange.Day, PerfRange.Week, PerfRange.Month };
 
 	private OpsTab _active = OpsTab.Overview;
@@ -1338,9 +1338,10 @@
 
 	private string HeaderWalletBtc() => HubWalletBtc().ToString( "F4" );
 
-	private static string HeaderDateLabel() => DateTime.Now.ToString( "MMMM, yyyy" );
-
 	private bool HasUnreadAlerts() => Hub?.UnreadAlertCount > 0;
+
+	private bool ShowSidebarAlertBadge( OpsTab tab )
+		=> tab == OpsTab.Logs && HasUnreadAlerts() && _active != OpsTab.Logs;
 
 	private IReadOnlyList<LpBitcoinHubAlert> GetHubAlerts() => Hub?.GetAlerts() ?? Array.Empty<LpBitcoinHubAlert>();
 
@@ -1714,12 +1715,23 @@
 		OpsTab.Overview => "Overview",
 		OpsTab.Wallet => "Wallet",
 		OpsTab.Transfers => "Transfers",
-		OpsTab.Racks => "Servers",
+		OpsTab.Racks => "Manage racks",
 		OpsTab.Upgrades => "Upgrades",
-		OpsTab.Logs => "Logs",
+		OpsTab.Logs => "Logs / Alerts",
 		OpsTab.Settings => "Settings",
 		_ => "Overview"
 	};
+
+	private void SelectSidebarTab( OpsTab tab )
+	{
+		if ( tab == OpsTab.Logs )
+		{
+			SelectLogsTab();
+			return;
+		}
+
+		SelectTab( tab );
+	}
 
 	private void SelectTab( OpsTab tab )
 	{
@@ -1921,6 +1933,7 @@
 	private void SelectWalletTab() => SelectTab( OpsTab.Wallet );
 	private void SelectTransfersTab() => SelectTab( OpsTab.Transfers );
 	private void SelectRacksTab() => SelectTab( OpsTab.Racks );
+	private void SelectUpgradesTab() => SelectTab( OpsTab.Upgrades );
 	private void OpenSettings() => SelectTab( OpsTab.Settings );
 	private string GetRootClass() => $"lp-bitcoin-ops lp-ui-accent-hashd {LpUiScale.CssClass( LpUiScale.Default )}";
 
@@ -2179,6 +2192,20 @@
 	private void LinkNearbyTerminal() => Hub?.RequestLinkNearbyTerminal();
 	private void UnlinkTerminal() => Hub?.RequestUnlinkTerminal();
 
+	private string LinkTerminalButtonClass()
+	{
+		if ( HasLinkedTerminal() )
+			return "lp-ui-btn-ghost overview-intro-unlink-btn";
+
+		if ( !HasNearbyUnlinkedTerminal() )
+			return "lp-ui-btn-ghost overview-intro-terminal-disabled";
+
+		if ( HubIsPowered() )
+			return "lp-ui-btn-primary overview-intro-link-ready";
+
+		return "lp-ui-btn-ghost overview-intro-link-waiting";
+	}
+
 	private string TerminalLinkStatusLabel()
 	{
 		if ( !HubIsPowered() && !HasLinkedTerminal() )
@@ -2283,7 +2310,7 @@
 		_cashOutAmount = string.Empty;
 
 		if ( soldAll )
-			ShowAllCashOutFeedback( WalletCashOutFeedback.Success, "Cashed out!" );
+			ShowAllCashOutFeedback( WalletCashOutFeedback.Success, "Cash out completed" );
 		else
 			ShowPartialCashOutFeedback( WalletCashOutFeedback.Success, "Cashed out!" );
 	}
@@ -2874,6 +2901,7 @@
 		hash.Add( LpBitcoinEconomy.PortalBaseCashUsdPerBtc );
 		hash.Add( LpBitcoinEconomy.CashUsdPerBtc );
 		hash.Add( LpBitcoinEconomy.PortalEconomyRevision );
+		hash.Add( Hub?.UnreadAlertCount ?? 0 );
 		return hash.ToHashCode();
 	}
 }

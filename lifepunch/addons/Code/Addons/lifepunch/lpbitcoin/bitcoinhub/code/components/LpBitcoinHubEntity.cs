@@ -828,11 +828,19 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 		SendTerminalUnlockResultToCaller( true );
 	}
 
-	[Rpc.Owner]
 	private void SendTerminalUnlockResultToCaller( bool ok )
+		=> NotifyTerminalUnlockResult( Rpc.CallerId, ok );
+
+	[Rpc.Broadcast]
+	private void NotifyTerminalUnlockResult( Guid callerId, bool ok )
 	{
-		// Notify the open terminal panel on this player's client (if any).
-		var terminalPanel = Game.ActiveScene?.GetAllComponents<LpBitcoinTerminalPanel>().FirstOrDefault( p => p.IsValid() );
+		if ( Connection.Local.Id != callerId )
+			return;
+
+		var terminalPanel = Game.ActiveScene?.GetAllComponents<LpBitcoinTerminalPanel>()
+			.FirstOrDefault( p => p.IsValid() && p.Hub == this )
+			?? Game.ActiveScene?.GetAllComponents<LpBitcoinTerminalPanel>().FirstOrDefault( p => p.IsValid() );
+
 		if ( terminalPanel.IsValid() )
 			terminalPanel.OnTerminalPinResult( ok );
 	}
@@ -984,20 +992,43 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 			panel.OnCashOutSuccess( btcAmount, usdPayout, soldAll );
 	}
 
-	[Rpc.Owner]
 	private void SendPinResultToCaller( bool ok, string message )
+		=> NotifyPinResult( Rpc.CallerId, ok, message );
+
+	[Rpc.Broadcast]
+	private void NotifyPinResult( Guid callerId, bool ok, string message )
 	{
-		var panel = Game.ActiveScene?.GetAllComponents<LpHashdPanel>().FirstOrDefault();
+		if ( Connection.Local.Id != callerId )
+			return;
+
+		var panel = FindHashdPanelForCaller();
 		if ( panel.IsValid() )
 			panel.OnPinGateResult( ok, message );
 	}
 
-	[Rpc.Owner]
 	private void SendPinChangeResultToCaller( bool ok, string message )
+		=> NotifyPinChangeResult( Rpc.CallerId, ok, message );
+
+	[Rpc.Broadcast]
+	private void NotifyPinChangeResult( Guid callerId, bool ok, string message )
 	{
-		var panel = Game.ActiveScene?.GetAllComponents<LpHashdPanel>().FirstOrDefault();
+		if ( Connection.Local.Id != callerId )
+			return;
+
+		var panel = FindHashdPanelForCaller();
 		if ( panel.IsValid() )
 			panel.OnPinChangeResult( ok, message );
+	}
+
+	private LpHashdPanel FindHashdPanelForCaller()
+	{
+		var scene = Game.ActiveScene;
+		if ( scene is null )
+			return null;
+
+		return scene.GetAllComponents<LpHashdPanel>()
+			.FirstOrDefault( p => p.IsValid() && p.Hub == this )
+			?? scene.GetAllComponents<LpHashdPanel>().FirstOrDefault( p => p.IsValid() );
 	}
 
 	[Rpc.Host]
