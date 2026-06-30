@@ -35,10 +35,10 @@ When restructure is signed off, resume from `ACTIVE_WORKSTREAM.md` and `OWNER_PR
 | Phase | Name | Moves code/assets? | Owner sign-off |
 |-------|------|--------------------|----------------|
 | **0** | Domain map | No | ✅ Done (`1343abc`) |
-| **1** | Export & canon alignment | No | Required before Phase 2 |
-| **2** | Quarantine visibility | Optional small moves | Required before Phase 4 |
-| **3** | Config source-of-truth matrix | No | — |
-| **4** | Addon path migration | Yes (`git mv`, one package) | Per package |
+| **1** | Export & canon alignment | No | ✅ Done (pending GitLab re-export) |
+| **2** | Quarantine visibility | Optional small moves | ✅ 2a done · 2b optional |
+| **3** | Config source-of-truth matrix | No | ✅ Done |
+| **4** | Addon path migration | Yes (`git mv`, one package) | Per package — **needs owner GO** |
 | **5** | Tooling lane export | Optional | — |
 | **6** | Per-addon s&box projects | Yes (project files) | After Phase 4 + flatgrass |
 
@@ -53,11 +53,11 @@ When restructure is signed off, resume from `ACTIVE_WORKSTREAM.md` and `OWNER_PR
 
 ---
 
-## Phase 1 — Export & canon alignment (in progress)
+## Phase 1 — Export & canon alignment ✅
 
 **Goal:** GitLab lane exports match documented domains. No folder moves.
 
-### Phase 1a — Foundation export paths ✅ (this commit)
+### Phase 1a — Foundation export paths ✅ (`7b94333`)
 
 Add to `lifepunch-foundation` export (`gitlab-projects.json`):
 
@@ -75,13 +75,15 @@ cd C:\Users\jared\Projects\lifepunchaddons
 # or: .\lifepunch\scripts\Export-GitLabLane.ps1 -Slug lifepunch-foundation
 ```
 
-### Phase 1b — Boot path consolidation (next slice)
+### Phase 1b — Boot path consolidation ✅
 
-- [ ] `AGENT_PROMPT.md` Block 0: add `REPO_DOMAIN_MAP.md` + `RESTRUCTURE_ROADMAP.md` to read order
-- [ ] `GITLAB_ORGANIZATION.md` → link `REPO_DOMAIN_MAP.md` in Related
-- [ ] `WORKSPACE_STRUCTURE.md` banner: superseded by domain map for lane ownership
+- [x] `AGENT_PROMPT.md` Block 0: `REPO_DOMAIN_MAP.md` + `RESTRUCTURE_ROADMAP.md` + config/quarantine index
+- [x] `GITLAB_ORGANIZATION.md` → link `REPO_DOMAIN_MAP.md` in Related
+- [x] `WORKSPACE_STRUCTURE.md` banner: superseded by domain map for lane ownership
+- [x] `CURSOR_NEW_CHAT_BOOTSTRAP_PASTE.txt` restructure read order
+- [x] `handoff/RESTRUCTURE_AGENT_BOOTSTRAP_PASTE.txt`
 
-### Phase 1c — Monorepo-only tooling (decision slice)
+### Phase 1c — Monorepo-only tooling ✅
 
 Decide export vs stay mono-only:
 
@@ -92,7 +94,7 @@ Decide export vs stay mono-only:
 | `lifepunch/dxrp-overlays/` | Stay monorepo-only (local DXRP dev) |
 | `lifepunch/publish-lane/` | Stay mono scaffold; live ship = `lifepunch-published` |
 
-Document decision in `REPO_DOMAIN_MAP.md` — no moves.
+Documented in `REPO_DOMAIN_MAP.md` — no moves.
 
 **Phase 1 done when:** 1a–1c checked · GitLab foundation re-exported · owner OK.
 
@@ -102,10 +104,10 @@ Document decision in `REPO_DOMAIN_MAP.md` — no moves.
 
 **Goal:** Active vs frozen addons obvious in tree and docs. **Do not** block on mass `git mv`.
 
-### Phase 2a — Docs + index (no moves)
+### Phase 2a — Docs + index (no moves) ✅
 
-- [ ] `lifepunch/addons/_QUARANTINE_INDEX.md` — links to `portfolio.json` + `QUARANTINE_REGISTER.md` + list of frozen idents
-- [ ] Root of each quarantined ident: optional one-line `QUARANTINED.md` stub (only if owner GO — many files)
+- [x] `lifepunch/addons/_QUARANTINE_INDEX.md` — links to `portfolio.json` + `QUARANTINE_REGISTER.md` + list of frozen idents
+- [ ] Root of each quarantined ident: optional one-line `QUARANTINED.md` stub (deferred — too noisy)
 
 ### Phase 2b — Physical separation (optional, one ident pilot)
 
@@ -117,22 +119,11 @@ Document decision in `REPO_DOMAIN_MAP.md` — no moves.
 
 ---
 
-## Phase 3 — Config source-of-truth matrix
+## Phase 3 — Config source-of-truth matrix ✅
 
 **Goal:** One doc answers “which config file is law?”
 
-- [ ] `lifepunch/docs/CONFIG_SOURCE_OF_TRUTH.md`
-
-| Domain | Canonical path | Notes |
-|--------|----------------|-------|
-| Addon registry | `lifepunch/addons/config/addons.json` | Portal titles, ownership |
-| Package slugs | `lifepunch/addons/config/packages.json` | packageSlug vs repoIdent |
-| Portfolio / quarantine | `lifepunch/addons/config/portfolio.json` | active vs frozen |
-| MCP / CVL machine | `lifepunch/config/` | Ports, pins |
-| GitLab lanes | `lifepunch/docs/gitlab-projects.json` | Export paths |
-| Website auth/store | `lifepunch/website/config/` | shottaWEB lane |
-
-No file moves unless a duplicate is proven harmful.
+- [x] `lifepunch/docs/CONFIG_SOURCE_OF_TRUTH.md`
 
 ---
 
@@ -201,7 +192,8 @@ When Bloodwave signs restructure complete:
 
 ## Related
 
-- `REPO_DOMAIN_MAP.md` — folder → domain → lane
-- `GITLAB_ORGANIZATION.md` — export mechanics
-- `PUBLISH_REPO_LANE.md` — core vs lifepunch-published
+- `REPO_DOMAIN_MAP.md`
+- `RESTRUCTURE_ROADMAP.md`
+- `CONFIG_SOURCE_OF_TRUTH.md`
+- `PUBLISH_REPO_LANE.md`
 - `BACKLOG_PARKING_LOT.md` — product ideas deferred during restructure

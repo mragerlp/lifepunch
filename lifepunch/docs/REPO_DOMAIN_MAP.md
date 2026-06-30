@@ -105,6 +105,15 @@ All rows export to **`lifepunch-rdp-server`** unless noted. Primary agent: **RDP
 
 \* *Monorepo-only until explicitly added to a GitLab `monorepoPaths` list.*
 
+### Monorepo-only tooling (Phase 1c — locked)
+
+| Path | Stays monorepo-only | Why |
+|------|---------------------|-----|
+| `lifepunch/scripts/` | Yes | VENGEANCE automation; large; owner-only |
+| `lifepunch/modeldoc-studio/` | Yes until Phase 6 | Standalone ModelDoc project |
+| `lifepunch/dxrp-overlays/` | Yes | Local DXRP dev overlays |
+| `lifepunch/publish-lane/` | Yes (scaffold) | Live ship tree = `lifepunch-published` repo |
+
 **Root `scripts/` vs `lifepunch/scripts/`:** Root `scripts/` = workspace-wide validation and GitLab tooling (foundation export). `lifepunch/scripts/` = LifePunch product/ops automation (VENGEANCE-heavy).
 
 ---
@@ -182,8 +191,10 @@ Unsure?
 Phased plan (owner paused addon dev until structure sign-off): **`RESTRUCTURE_ROADMAP.md`**
 
 - **Phase 0 ✅** — this domain map + root README
-- **Phase 1 in progress** — GitLab export alignment (`marketing/`, `branding/`, `lifepunch/config/` → foundation)
-- **Later phases** — quarantine visibility, config SoT matrix, per-addon path migration — see roadmap
+- **Phase 1 ✅** — GitLab export alignment + boot path consolidation
+- **Phase 2a ✅** — `_QUARANTINE_INDEX.md`
+- **Phase 3 ✅** — `CONFIG_SOURCE_OF_TRUTH.md`
+- **Phase 2b / 4+** — owner GO per slice (see roadmap)
 
 When restructuring, use one slice per session and re-validate against `scripts/validate-workspace.ps1`.
 

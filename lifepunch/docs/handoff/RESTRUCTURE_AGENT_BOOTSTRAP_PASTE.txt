@@ -1,0 +1,40 @@
+LIFEPUNCH™ — Restructure agent bootstrap (VENGEANCE)
+Updated: 2026-06-30 · Paste alone for repo organization / doc slices only.
+
+══════════════════════════════════════════════════════════════════════════════
+STEP 0 — SYNC
+══════════════════════════════════════════════════════════════════════════════
+  cd C:\Users\jared\Projects\lifepunchaddons
+  git fetch; git pull --rebase
+
+══════════════════════════════════════════════════════════════════════════════
+STEP 1 — READ ORDER (restructure track — owner paused addon dev)
+══════════════════════════════════════════════════════════════════════════════
+  1. lifepunch/docs/RESTRUCTURE_ROADMAP.md     ← which phase, what's in scope
+  2. lifepunch/docs/REPO_DOMAIN_MAP.md         ← folder → domain → GitLab lane
+  3. lifepunch/docs/CONFIG_SOURCE_OF_TRUTH.md  ← which config file is law
+  4. lifepunch/addons/_QUARANTINE_INDEX.md     ← active vs frozen idents
+  5. .cursor/rules (alwaysApply)
+
+Product canon still applies (quarantine, publish doctrine) — do NOT implement Hub H4/H5
+or extend quarantined code unless owner unpause says so.
+
+══════════════════════════════════════════════════════════════════════════════
+RULES
+══════════════════════════════════════════════════════════════════════════════
+  - Docs + export-map alignment unless owner GO's a git mv slice (Phase 4+)
+  - One slice per session · update RESTRUCTURE_ROADMAP checkboxes when done
+  - GitHub monorepo canonical · no new GitHub repo splits
+  - Propose commit scope; owner approves (unless autopilot GO in chat)
+  - Run: .\scripts\validate-workspace.ps1 (expect known lpbitcoin path drift until Phase 4)
+
+══════════════════════════════════════════════════════════════════════════════
+PHASE STATUS (update from roadmap — do not guess)
+══════════════════════════════════════════════════════════════════════════════
+  Phase 0 ✅  Phase 1 ✅  Phase 2a ✅  Phase 3 ✅
+  Phase 2b / 4 / 5 / 6 — owner GO per slice
+
+Owner task line (optional):
+  [ e.g. GO Phase 4 adminmenu path migration plan-only ]
+
+— END RESTRUCTURE BOOTSTRAP —

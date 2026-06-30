@@ -53,7 +53,14 @@ CVL TRI-STACK (memorize — LifePunch web = three nodes + edges; not one box):
   `Start-SboxDxrpEditor.ps1 -FullCapacity -PreflightFix` · `RED_FULL_CAPACITY_BOOT.md`.
 
 READ FIRST (in this order), then follow them as law:
-0. `lifepunch/addons/docs/ACTIVE_WORKSTREAM.md` ← HARD production gate; single active lane (lifepunchbitcoin). Mandatory every session.
+
+RESTRUCTURE TRACK (June 2026 — owner paused addon implementation until structure sign-off):
+0m. `lifepunch/docs/RESTRUCTURE_ROADMAP.md` ← active phase + slice scope.
+0n. `lifepunch/docs/REPO_DOMAIN_MAP.md` ← folder → domain → GitLab lane.
+0o. `lifepunch/docs/CONFIG_SOURCE_OF_TRUTH.md` ← which config file is law.
+0q. `lifepunch/addons/_QUARANTINE_INDEX.md` ← active vs quarantined idents.
+
+0. `lifepunch/addons/docs/ACTIVE_WORKSTREAM.md` ← product canon + lane gate (implementation paused during restructure).
 0a. `.cursor/rules` (all alwaysApply) ← repo law; rules win over docs.
 0b. `lifepunch/addons/docs/CYBER_REFERENCE_LAWS.md` ← Laws 1–11. Mandatory for addon/entity sessions.
 0c. `lifepunch/addons/docs/BITCOIN_SHIP_ROADMAP.md` ← step order (bitcoin lane sessions).
@@ -93,7 +100,7 @@ ENTITY / ModelDoc (when touching machines):
 10. `lifepunch/docs/PUBLISH_REPO_LANE.md` ← two-repo publish law (core vs lifepunch-published).
 11. `lifepunch/addons/docs/QUARANTINE_REGISTER.md` ← frozen idents; concepts only, no ship copy.
 12. `lifepunch/docs/GIT_CHECKPOINTS.md` ← commit/push/pull (agent recommends, owner approves).
-13. `lifepunch/docs/WORKSPACE_STRUCTURE.md`.
+13. `lifepunch/docs/WORKSPACE_STRUCTURE.md` ← folder responsibilities (lane ownership: prefer REPO_DOMAIN_MAP.md).
 14. `lifepunch/docs/GITLAB_ORGANIZATION.md` ← GitLab lane map (GitHub monorepo stays canonical).
 15. s&box MCP work: `lifepunch/docs/SBOX_EDITOR_MCP.md` (triple stack: `sbox` + `sbox-editor` + `sbox-jtc`) · ports: `lifepunch/config/sbox-mcp-ports.json` · routing: `lifepunch/docs/MCP_AGENT_ROUTING.md` · **updates:** `lifepunch/docs/CVL_FULL_CAPACITY_UPDATES.md`. `execute_csharp` OK when needed; **always** delete leftover `Editor/__Exec_*.cs` after exec sessions (see that doc). After MCP/library bumps: `Fix-SboxEditorMcpCursorToolNames.ps1 -ProbeEditorMcp`.
 16. Cornerman LM: `lifepunch/docs/CORNERMAN_MODEL_ROUTING.md` · catalog: `lifepunch/config/cornerman-tier3-models.json` · fix: `lifepunch/scripts/Fix-CornermanLmServe.ps1`.

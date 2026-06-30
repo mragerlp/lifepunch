@@ -1,5 +1,9 @@
 # LifePunch DXRP Workspace Structure
 
+> **Lane ownership:** use **`lifepunch/docs/REPO_DOMAIN_MAP.md`** first.  
+> **Restructure track:** **`lifepunch/docs/RESTRUCTURE_ROADMAP.md`**.  
+> This doc describes folder *responsibilities*; GitLab export paths live in `GITLAB_ORGANIZATION.md`.
+
 This repository is the organizing reference for the LifePunch community server on DXRP.
 
 ## GitLab hosting (June 2026+)

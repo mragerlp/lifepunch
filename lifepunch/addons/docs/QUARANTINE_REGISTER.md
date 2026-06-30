@@ -4,6 +4,8 @@
 **Source of truth:** `config/portfolio.json`  
 **Production gate:** `docs/ACTIVE_WORKSTREAM.md` — single active lane until Bitcoin sign-off.
 
+**Quick index:** `../_QUARANTINE_INDEX.md` (repo root of addons) — active vs frozen at a glance.
+
 Bloodwave reset: **only** `adminmenu` (lifepunch.ulx) + `bitcoinmining` (Ophion) are active.
 Everything else is frozen — not deleted, not extended, **not used as a ship template**.
 

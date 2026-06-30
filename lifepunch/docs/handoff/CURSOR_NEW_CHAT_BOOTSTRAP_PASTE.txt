@@ -12,17 +12,19 @@ If behind AND dirty: STOP — tell Bloodwave (commit or stash first).
 ══════════════════════════════════════════════════════════════════════════════
 STEP 1 — READ ORDER (law — agent executes, do not skip)
 ══════════════════════════════════════════════════════════════════════════════
-  1. lifepunch/addons/docs/ACTIVE_WORKSTREAM.md
-  2. lifepunch/addons/docs/BITCOIN_SHIP_ROADMAP.md
-  3. lifepunch/addons/docs/OWNER_PROGRESS_TRACKER.txt
-  4. lifepunch/addons/docs/CYBER_REFERENCE_LAWS.md
-  5. lifepunch/docs/handoff/ARCHITECT_CURRENT_STATE.md
+  RESTRUCTURE TRACK (active — owner paused addon implementation):
+  1. lifepunch/docs/RESTRUCTURE_ROADMAP.md
+  2. lifepunch/docs/REPO_DOMAIN_MAP.md
+  3. lifepunch/docs/CONFIG_SOURCE_OF_TRUTH.md
+  4. lifepunch/addons/_QUARANTINE_INDEX.md
+
+  Product canon (do not implement hub slices until restructure sign-off):
+  5. lifepunch/addons/docs/ACTIVE_WORKSTREAM.md
   6. .cursor/rules (alwaysApply)
 
-  Depth on demand (full business + gameplay grounding):
-  lifepunch/docs/BUSINESS_CONTEXT.md · LIFEPUNCH_GAMEPLAY_LAWS.md · LIFEPUNCH_FEEL.md
-  TERMINOLOGY.md · MACHINE_CAST.md · OPUS_USAGE_LAW.md · DECISION-0010
-  DXRP_ADDON_PUBLISH_DOCTRINE.md · CYBER_VISUAL_IDENTITY_DOCTRINE.md
+  Depth on demand (resume dev / gameplay):
+  BITCOIN_SHIP_ROADMAP.md · OWNER_PROGRESS_TRACKER.txt · CYBER_REFERENCE_LAWS.md
+  ARCHITECT_CURRENT_STATE.md · BUSINESS_CONTEXT.md · OPUS_USAGE_LAW.md
 
 ══════════════════════════════════════════════════════════════════════════════
 BUSINESS + CVL (one screen — agent must internalize)
@@ -38,17 +40,11 @@ BUSINESS + CVL (one screen — agent must internalize)
   Commit:     propose scope first — Bloodwave approves — no AI trailers in commits
 
 ══════════════════════════════════════════════════════════════════════════════
-ACTIVE LANE (hard gate)
+ACTIVE LANE (canon frozen — implementation paused for restructure)
 ══════════════════════════════════════════════════════════════════════════════
-  Machine:      VENGEANCE (Integration Architect / Cursor Red)
-  Product:      lifepunchbitcoin
-  Repo ident:   bitcoinmining (playtest ConCmds) · staging: lpbitcoin/
-  s&box ident:  lifepunch.bitcoin
-  Entity slugs: bitcoinhub · hashdterminal · gpurack (2 standard + 1 advanced)
-  Phase:        A — Hub polish (Steam Machine / bitcoinhub)
-  NEXT SLICE:   H4 + H5 — hub powered/off world feedback + audio baseline
-  GO GATE:      Wait for "GO H4/H5 HUB STATE" before hub implementation
-  LOCKED:       Phase B Terminal (T1+) until H10 owner sign-off · Tier 1 jobs until Law 10
+  Product:      lifepunchbitcoin · Phase A Hub · H4/H5 next when owner unpause
+  Restructure:  Phases 0–3 done — see RESTRUCTURE_ROADMAP.md before any git mv
+  Default:      restructure/doc slices only · no hub code unless owner unpause
 
 Tracker quick view:
   [~] H1  scale/ground — pipeline fixed; owner sign-off pending (do not reopen unless broken)

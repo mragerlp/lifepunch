@@ -61,6 +61,8 @@ Bloodwave paused **hub/feature implementation** until monorepo structure is sign
 |-------|-----|-----|
 | 1 | `lifepunch/docs/REPO_DOMAIN_MAP.md` | Folder → domain → GitLab lane |
 | 2 | `lifepunch/docs/RESTRUCTURE_ROADMAP.md` | Phased plan; one slice per session |
+| 3 | `lifepunch/docs/CONFIG_SOURCE_OF_TRUTH.md` | Which config file is law |
+| 4 | `lifepunch/addons/_QUARANTINE_INDEX.md` | Active vs quarantined idents |
 
 Product canon (`ACTIVE_WORKSTREAM`, quarantine, Bitcoin design) still applies — do not ship or extend quarantined lanes. Resume hub slices only after restructure sign-off in the roadmap.
 
