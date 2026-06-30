@@ -10,11 +10,13 @@
 #   powershell -File lifepunch\scripts\Prepare-LpMonnowPrinterPublish.ps1 -OpenFolder
 
 param(
-    [string]$SourceRoot = "$env:USERPROFILE\OneDrive\Desktop\Monnow's Printer Addon\LifePunch",
+    [string]$MonnowRoot = "$env:USERPROFILE\OneDrive\Desktop\monnowsaddons",
     [switch]$OpenFolder
 )
 
 $ErrorActionPreference = 'Stop'
+
+$SourceRoot = Join-Path $MonnowRoot "Monnow's Printer Addon\LifePunch"
 
 $RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
 $UploadRoot = Join-Path $RepoRoot 'lifepunch\addons\.dxrp-publish\upload'

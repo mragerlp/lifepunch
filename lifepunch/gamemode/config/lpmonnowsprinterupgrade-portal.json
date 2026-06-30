@@ -10,7 +10,8 @@
     "contentTier2": "019f15da-7dc4-7332-bd9b-77c5908b8c6a",
     "contentTier3": "019f15da-7dc4-7d15-950c-3bafb7407c8a"
   },
-  "addonIdentifier": "lpmonnowsprinterupgrade",
+  "monnowSourceRoot": "C:\\Users\\jared\\OneDrive\\Desktop\\monnowsaddons",
+  "monnowLifePunchRoot": "C:\\Users\\jared\\OneDrive\\Desktop\\monnowsaddons\\Monnow's Printer Addon\\LifePunch",
   "dxrpAddonIdentifier": "lpmonnowsprinterupgrade",
   "sboxIdentifier": "lifepunch.lpmonnowsprinterupgrade",
   "sharedPaths": {
