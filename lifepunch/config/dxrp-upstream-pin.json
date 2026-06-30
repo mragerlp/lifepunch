@@ -9,10 +9,10 @@
                      "branch":  "develop"
                  },
     "pinned":  {
-                   "sha":  "7194fe1eaeb87f364351668f786db002a0fb94aa",
-                   "shortSha":  "7194fe1",
-                   "subject":  "Merge pull request #62 from PikPakPik/feature/46-afk-inactivity-timer",
-                   "syncedAt":  "2026-06-27T05:46:23Z"
+                   "sha":  "e8d29545fc4995bccc7bbf441bbf9d1d4b15bdbd",
+                   "shortSha":  "e8d2954",
+                   "subject":  "Fix jail doors",
+                   "syncedAt":  "2026-06-30T00:53:43Z"
                },
     "localPaths":  {
                        "forkCheckout":  "C:/Users/jared/Projects/dxrp-public",

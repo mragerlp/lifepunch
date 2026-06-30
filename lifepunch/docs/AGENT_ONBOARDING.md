@@ -395,15 +395,17 @@ Quick rules:
 
 ## Current direction (June 2026)
 
-**Current (2026-06-25) — lifepunchbitcoin active to portal:**
+**Current (2026-06-30) — lifepunchbitcoin active to portal:**
 
 | Topic | Canon |
 |-------|-------|
-| **Active task** | **`lifepunchbitcoin`** / `lpbitcoin` — **Phase A Hub polish** (`ACTIVE_WORKSTREAM.md`). Current executable slice = next unchecked **H*** in `OWNER_PROGRESS_TRACKER.txt`. **Phase B Terminal** locked until H10 owner sign-off. Upgrade migration + economy overhaul **HOLD**. |
+| **Active task** | **`lifepunchbitcoin`** / `lpbitcoin` — **Phase A Hub polish** (`ACTIVE_WORKSTREAM.md`). **Next slice: H4 + H5** (world power/audio — plan done; **GO H4/H5 HUB STATE** before code). **Phase B Terminal** locked until H10. Upgrade migration + economy overhaul **HOLD**. |
+| **New chat boot** | `lifepunch/docs/handoff/CURSOR_NEW_CHAT_BOOTSTRAP_PASTE.txt` — paste at fresh Cursor session start on VENGEANCE. |
 | **Opus / API** | Owner wants **Opus on hard bitcoin slices** (terminal, economy, integration). Anthropic API pool via Cursor Settings; Auto/Composer for routine work. `OPUS_USAGE_LAW.md`. |
-| **Editor workbench** | DXRP + LifePunch mounts — sync `lpbitcoin` when coding: `Sync-LifePunchAddonsToDxrp.ps1 -Addon lpbitcoin`. Full stack: `Start-SboxDxrpEditor.ps1 -FullCapacity -PreflightFix -BitcoinOnly`. |
+| **Editor workbench** | DXRP + LifePunch mounts — sync `lpbitcoin` when coding: `Sync-LifePunchAddonsToDxrp.ps1 -Addon lpbitcoin`. Full stack: `Start-SboxDxrpEditor.ps1 -FullCapacity -PreflightFix -BitcoinOnly -SyncAddon lpbitcoin,adminmenu`. |
 | **`lp_*` ConCmds** | Bitcoin dev ConCmds OK for playtest (`lp_bitcoin_preview_hub`, spawn kit, etc.). Do not add unrelated ConCmds (Law 9). |
-| **ULX** | `adminmenu` publish-ready — parallel ship when owner says; does not pause bitcoin gate. |
+| **ULX** | `adminmenu` r10 Set Job committed — parallel portal ship when owner says; does not pause bitcoin gate. |
+| **Monnow** | Rev 9 path `monnowprinterlp/monnowprinter.prefab` — staging ready; portal pin pending (parallel lane). |
 | **CVL stack** | `Start-CvlFullCapacity.ps1` · `Get-CvlConnectivityStatus.ps1 -Pretty` → `allOk: true`. Reload Cursor after MCP changes. |
 
 **Prior (2026-06-22) — ULX vanilla workbench session (historical — superseded for bitcoin lane):**

@@ -8,15 +8,15 @@
     "gamemodeEntityRows": 1,
     "marketItemRows": 1
   },
-  "knownIssueRev2": "Rev 2 download has models/sounds under addons/lifepunch/lpmonnowsprinterupgrade/ but NO prefab. Gamemode PrimaryReference is addons/lifepunch/monnow-printer-lp/monnow_printer.prefab — GetPrefab fails silently after charge. Fixed in Rev 6 publish (Prepare-LpMonnowPrinterPublish.ps1 layout).",
+  "knownIssueRev2": "Rev 2 download has models/sounds under addons/lifepunch/lpmonnowsprinterupgrade/ but NO prefab — GetPrefab fails silently after charge. Canonical path (Rev 6+ layout, Rev 9+ slug): addons/lifepunch/monnowprinterlp/monnowprinter.prefab. Fixed via Prepare-LpMonnowPrinterPublish.ps1.",
   "knownIssueThreeAddonContents": "Rev 2 portal wrongly created THREE addon content rows (Tier 1/2/3). Keep one Monnowlith Printer addon row; delete the rest.",
   "knownIssueThreeMarketListings": "Rev 2 portal wrongly created THREE market items / gamemode content / entity rows for tier 1/2/3. Delete two of each on the gamemode — keep ONE Monnowlith Printer market listing. Upgrade tiers are bought in-game on the printer UI (L1/L2/L3 in MonnowPrinterConfig), not from the market.",
   "dxrpIds": {
     "addonId": "019f0c85-d5df-798c-8c9d-3bbd228793cf",
-    "pinnedRevision": 5,
-    "targetRevision": 6,
+    "pinnedRevision": 8,
+    "marketingVersion": "1.0.0",
     "gamemodeId": "019f15a3-679e-7162-bf9f-c8318515300c",
-    "addonContentId": "PLACEHOLDER_ADDON_CONTENT_MONNOWLITH_PRINTER",
+    "addonContentId": "019f162f-db57-7c79-87d7-8117144f7378",
     "gamemodeContentId": "019f15da-7dc4-7e47-8ca2-0aba18d39f86",
     "gamemodeEntityId": "PLACEHOLDER_GM_ENTITY_MONNOWLITH_PRINTER",
     "marketItemId": "PLACEHOLDER_MARKET_MONNOWLITH_PRINTER",
@@ -30,8 +30,8 @@
   "dxrpAddonIdentifier": "lpmonnowsprinterupgrade",
   "sboxIdentifier": "lifepunch.lpmonnowsprinterupgrade",
   "sharedPaths": {
-    "primaryReference": "addons/lifepunch/monnow-printer-lp/monnow_printer.prefab",
-    "worldModelPath": "addons/lifepunch/monnow-printer-lp/models/money_printer.vmdl",
+    "primaryReference": "addons/lifepunch/monnowprinterlp/monnowprinter.prefab",
+    "worldModelPath": "addons/lifepunch/monnowprinterlp/models/money_printer.vmdl",
     "contentGrouping": "#entity.category.printer",
     "marketGrouping": "#entity.category.printer"
   },
@@ -42,9 +42,9 @@
       "label": "Monnowlith Printer",
       "description": "Monnowlith upgradable money printer. One market listing; L1/L2/L3 upgrades purchased in-game on the printer.",
       "type": 0,
-      "primaryReference": "addons/lifepunch/monnow-printer-lp/monnow_printer.prefab",
-      "worldModelPath": "addons/lifepunch/monnow-printer-lp/models/money_printer.vmdl",
-      "grouping": "#entity.category.printer"
+      "primaryReference": "addons/lifepunch/monnowprinterlp/monnowprinter.prefab",
+      "worldModelPath": "addons/lifepunch/monnowprinterlp/models/money_printer.vmdl",
+      "grouping": "printer"
     }
   ],
   "gamemodeAddonEnable": {
@@ -55,16 +55,16 @@
   "gamemodeContents": [
     {
       "id": "019f15da-7dc4-7e47-8ca2-0aba18d39f86",
-      "addonContentId": "PLACEHOLDER_ADDON_CONTENT_MONNOWLITH_PRINTER",
+      "addonContentId": "019f162f-db57-7c79-87d7-8117144f7378",
       "label": "Monnowlith Printer",
       "name": "Monnowlith Printer",
       "description": "Upgradable money printer — upgrade tiers bought on the printer, not from market.",
       "type": 0,
-      "primaryReference": "addons/lifepunch/monnow-printer-lp/monnow_printer.prefab",
+      "primaryReference": "addons/lifepunch/monnowprinterlp/monnowprinter.prefab",
       "secondaryReference": null,
-      "grouping": "#entity.category.printer",
+      "grouping": "printer",
       "iconPath": null,
-      "worldModelPath": "addons/lifepunch/monnow-printer-lp/models/money_printer.vmdl",
+      "worldModelPath": "addons/lifepunch/monnowprinterlp/models/money_printer.vmdl",
       "worldModelScale": null,
       "baseConfig": "{}",
       "configOverride": {
@@ -121,7 +121,6 @@
       "type": 0,
       "referenceId": "PLACEHOLDER_GM_ENTITY_MONNOWLITH_PRINTER",
       "grouping": "#entity.category.printer",
-      "cost": 500,
       "color": 53503,
       "quantity": 1,
       "whitelistJobIds": [],
@@ -133,8 +132,8 @@
   "portalChecklist": [
     "0. Run Prepare-LpMonnowPrinterPublish.ps1 -OpenFolder; compile prefab/vmdl/sounds; re-run to pick up _c files.",
     "1. Addon -> Content: ONE row — Monnowlith Printer (delete any extra Tier 2/3 addon rows from Rev 2).",
-    "2. Publish Rev 6 with prefab at addons/lifepunch/monnow-printer-lp/monnow_printer.prefab (handoff: Publish-Prep-LpMonnowPrinterRev6.ps1).",
-    "3. Gamemode -> Addons -> enable lpmonnowsprinterupgrade + pin Rev 6.",
+    "2. Published v1.0.0 Rev 9+ — folder slug: addons/lifepunch/monnowprinterlp/ (no dashes in path segments). PrimaryReference: monnowprinter.prefab. worldModelPath may keep asset underscores (e.g. models/money_printer.vmdl). Update portal gamemode rows before Sync Servers.",
+    "3. Gamemode -> Addons -> pin Rev 8 on LIFEPUNCH Dev.",
     "4. Gamemode -> Content: ONE row — Monnowlith Printer; link addon content id; paste configOverridePortalPaste. DELETE tier 2/3 content rows if present.",
     "5. Gamemode -> Entities: ONE row -> gameModeAddonContentId above; limit 2; name Monnowlith Printer. DELETE tier 2/3 entity rows.",
     "6. Gamemode -> Market: ONE Entity item — Monnowlith Printer; grouping #entity.category.printer; referenceId = entity id; cost $500 (tune as needed). DELETE tier 2/3 market rows.",

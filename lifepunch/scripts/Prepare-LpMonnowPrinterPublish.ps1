@@ -3,7 +3,7 @@
 #
 # Root cause this fixes: Rev 2 shipped models/sounds under lpmonnowsprinterupgrade/ but
 # NO prefab, while gamemode PrimaryReference expects:
-#   addons/lifepunch/monnow-printer-lp/monnow_printer.prefab
+#   addons/lifepunch/monnowprinterlp/monnowprinter.prefab
 #
 # Usage:
 #   powershell -File lifepunch\scripts\Prepare-LpMonnowPrinterPublish.ps1
@@ -21,8 +21,8 @@ $SourceRoot = Join-Path $MonnowRoot "Monnow's Printer Addon\LifePunch"
 $RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
 $UploadRoot = Join-Path $RepoRoot 'lifepunch\addons\.dxrp-publish\upload'
 
-$AssetsSource = Join-Path $SourceRoot 'assets\monnow-printer-lp'
-$CodeSource = Join-Path $SourceRoot 'code\monnow-printer-lp'
+$AssetsSource = Join-Path $SourceRoot 'assets\monnowprinterlp'
+$CodeSource = Join-Path $SourceRoot 'code\monnowprinterlp'
 
 if (-not (Test-Path -LiteralPath $AssetsSource)) {
     throw "Missing assets source: $AssetsSource"
@@ -32,12 +32,12 @@ if (-not (Test-Path -LiteralPath $CodeSource)) {
     throw "Missing code source: $CodeSource"
 }
 
-$PrefabSource = Join-Path $AssetsSource 'monnow_printer.prefab'
+$PrefabSource = Join-Path $AssetsSource 'monnowprinter.prefab'
 if (-not (Test-Path -LiteralPath $PrefabSource)) {
     throw "Missing prefab (required for market spawn): $PrefabSource"
 }
 
-$AssetsStage = Join-Path $UploadRoot 'Assets\addons\lifepunch\monnow-printer-lp'
+$AssetsStage = Join-Path $UploadRoot 'Assets\addons\lifepunch\monnowprinterlp'
 $CodeStage = Join-Path $UploadRoot 'Code\Addons\lifepunch\lpmonnowsprinterupgrade'
 
 if (Test-Path -LiteralPath $UploadRoot) {
@@ -77,7 +77,7 @@ Copy-Tree -From $AssetsSource -To $AssetsStage
 Copy-Tree -From $CodeSource -To $CodeStage
 
 $RequiredAssetPaths = @(
-    'monnow_printer.prefab',
+    'monnowprinter.prefab',
     'models\money_printer.vmdl',
     'sounds\generate.sound',
     'sounds\idle.sound'
@@ -105,15 +105,15 @@ Source: $SourceRoot
 
 UPLOAD (portal -> addon -> new revision):
   1. Upload everything under: $UploadRoot\Assets
-     (must mount as addons/lifepunch/monnow-printer-lp/...)
+     (must mount as addons/lifepunch/monnowprinterlp/...)
   2. Upload everything under: $UploadRoot\Code
      (mounts as Code/Addons/lifepunch/lpmonnowsprinterupgrade/)
 
 Gamemode content PrimaryReference (already configured):
-  addons/lifepunch/monnow-printer-lp/monnow_printer.prefab
+  addons/lifepunch/monnowprinterlp/monnowprinter.prefab
 
 Before upload - compile in sbox editor (ModelDoc Studio or DXRP project):
-  - monnow_printer.prefab (and prefab_c)
+  - monnowprinter.prefab (and prefab_c)
   - money_printer.vmdl (and vmdl_c)
   - sounds (and vsnd_c)
   Re-run this script after compile so _c files are included.
@@ -135,8 +135,8 @@ Set-Content -LiteralPath (Join-Path $PublishRoot 'README-monnow-printer.txt') -V
 
 Write-Host 'Prepared lpmonnowsprinterupgrade publish staging.' -ForegroundColor Green
 Write-Host "Upload root: $UploadRoot"
-Write-Host 'Assets path law: addons/lifepunch/monnow-printer-lp/monnow_printer.prefab' -ForegroundColor Cyan
-Write-Host "Prefab staged: $(Join-Path $AssetsStage 'monnow_printer.prefab')" -ForegroundColor Green
+Write-Host 'Assets path law: addons/lifepunch/monnowprinterlp/monnowprinter.prefab' -ForegroundColor Cyan
+Write-Host "Prefab staged: $(Join-Path $AssetsStage 'monnowprinter.prefab')" -ForegroundColor Green
 
 if ($OpenFolder) {
     Invoke-Item $UploadRoot

@@ -18,9 +18,9 @@ if (-not (Test-Path -LiteralPath $ConfigPath)) {
 $Config = Get-Content -LiteralPath $ConfigPath -Raw | ConvertFrom-Json
 $DxrpGame = Split-Path -Parent $Config.projectPath
 
-$AssetsSource = Join-Path $SourceRoot 'assets\monnow-printer-lp'
-$CodeSource = Join-Path $SourceRoot 'code\monnow-printer-lp'
-$AssetsDest = Join-Path $DxrpGame 'Assets\addons\lifepunch\monnow-printer-lp'
+$AssetsSource = Join-Path $SourceRoot 'assets\monnowprinterlp'
+$CodeSource = Join-Path $SourceRoot 'code\monnowprinterlp'
+$AssetsDest = Join-Path $DxrpGame 'Assets\addons\lifepunch\monnowprinterlp'
 $CodeDest = Join-Path $DxrpGame 'Code\Addons\lifepunch\lpmonnowsprinterupgrade'
 
 foreach ($pair in @(
@@ -42,5 +42,5 @@ foreach ($pair in @(
 }
 
 Write-Host "DXRP mount paths:" -ForegroundColor Cyan
-Write-Host "  addons/lifepunch/monnow-printer-lp/monnow_printer.prefab"
+Write-Host "  addons/lifepunch/monnowprinterlp/monnowprinter.prefab"
 Write-Host "  Code/Addons/lifepunch/lpmonnowsprinterupgrade/"

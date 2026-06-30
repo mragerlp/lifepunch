@@ -1,0 +1,91 @@
+LIFEPUNCH™ — Cursor new-chat bootstrap (VENGEANCE / Integration Architect)
+Updated: 2026-06-30 · Repo: github.com/mragerlp/lifepunch · Paste Block 0 + this file OR paste alone.
+
+══════════════════════════════════════════════════════════════════════════════
+STEP 0 — SYNC (before reading or editing)
+══════════════════════════════════════════════════════════════════════════════
+  cd C:\Users\jared\Projects\lifepunchaddons
+  git fetch && git pull --rebase
+If behind AND dirty: STOP — tell Bloodwave (commit or stash first).
+
+══════════════════════════════════════════════════════════════════════════════
+STEP 1 — READ ORDER (law)
+══════════════════════════════════════════════════════════════════════════════
+  1. lifepunch/addons/docs/ACTIVE_WORKSTREAM.md
+  2. lifepunch/addons/docs/BITCOIN_SHIP_ROADMAP.md
+  3. lifepunch/addons/docs/OWNER_PROGRESS_TRACKER.txt
+  4. lifepunch/addons/docs/CYBER_REFERENCE_LAWS.md
+  5. lifepunch/docs/handoff/ARCHITECT_CURRENT_STATE.md
+  6. .cursor/rules (alwaysApply)
+
+On demand: DECISION-0010 · CYBER_VISUAL_IDENTITY_DOCTRINE.md · TECH_DEBT.md
+
+══════════════════════════════════════════════════════════════════════════════
+ACTIVE LANE (hard gate)
+══════════════════════════════════════════════════════════════════════════════
+  Product:      lifepunchbitcoin
+  Repo ident:   bitcoinmining (playtest ConCmds) · staging: lpbitcoin/
+  s&box ident:  lifepunch.bitcoin
+  Phase:        A — Hub polish (Steam Machine / bitcoinhub)
+  NEXT SLICE:   H4 + H5 — hub powered/off world feedback + audio baseline
+  GO GATE:      Wait for "GO H4/H5 HUB STATE" before implementation
+  LOCKED:       Phase B Terminal until H10 owner sign-off
+
+Tracker quick view:
+  [~] H1  scale/ground — pipeline fixed; owner sign-off pending (do not reopen unless broken)
+  [ ] H4  powered vs off world readability (emissive + optional point light)
+  [ ] H5  hub audio baseline (startup / fan loop / fan down — compile _c first)
+  [~] H7  HASHD admin UI unlinked — owner OK
+  [ ] H10 hub hero sign-off — unlocks Phase B
+
+══════════════════════════════════════════════════════════════════════════════
+H4/H5 PLAN SUMMARY (plan complete — no code until GO)
+══════════════════════════════════════════════════════════════════════════════
+  Power SoT: [Sync(FromHost)] IsPowered on LpBitcoinHubEntity
+  Visuals:   LpBitcoinHubVisuals → LpBitcoinPowerLeds (fence emissive green ON / red OFF)
+  Audio:     UpdateHubFanSounds() is EMPTY — wire hub-startup / hub-fan-loop / hub-fan-down
+  Assets:    sounds exist as .sound only — compile vsnd_c before proof (log ERROR_FILEOPEN today)
+  Fan spin:  PARKED Phase 2 (HUB_FAN_SETUP.md · TECH_DEBT BITCOINMINING-05) — not in H4/H5
+  Owner Q:   world LED green/red vs HASHD amber? optional point light on ON?
+
+  Files (when GO): LpBitcoinHubVisuals.cs · LpBitcoinPowerLeds.cs (tune) · hub sound _c · prefab optional light
+  Do NOT touch: LpHashdPanel · terminal/rack · economy · upgrades · Monnow lane unless asked
+
+══════════════════════════════════════════════════════════════════════════════
+VENGEANCE SESSION BOOT (before playtest / MCP)
+══════════════════════════════════════════════════════════════════════════════
+  powershell -File lifepunch\scripts\Start-SboxDxrpEditor.ps1 -FullCapacity -PreflightFix -BitcoinOnly -SyncAddon lpbitcoin,adminmenu
+  powershell -File lifepunch\scripts\Get-CvlConnectivityStatus.ps1 -Pretty
+Target: allOk true · MCP: sbox · sbox-editor · sbox-jtc · cornerman-lm
+
+Mandatory loop: get_bridge_status → one slice → compile → flatgrass proof → screenshot → owner GO → commit
+Playtest: game.scene → Host Play → lp_map_flatgrass → lp_bitcoin_spawn_hub
+Bloodwave runs lp_authorize manually. Flatgrass is truth (Law 5).
+
+Eyes-covered: no visual claims without bridge screenshot or owner screenshot.
+
+══════════════════════════════════════════════════════════════════════════════
+PARALLEL LANES (not active gate — context only)
+══════════════════════════════════════════════════════════════════════════════
+  lifepunchulx r10: Set Job picker + StaffMenuBridgeService — committed; portal publish when owner says
+  lpmonnowsprinterupgrade Rev 9: path canon monnowprinterlp/monnowprinter.prefab
+    Staging: lifepunch/addons/.dxrp-publish/upload/ · Desktop/.../lpmonnowsprinterupgrade-rev9/
+    Portal: fix addon + gamemode PrimaryReference; pin Rev 9; Sync Servers; secondaryReference=null
+
+══════════════════════════════════════════════════════════════════════════════
+ROUTE TAGS · COMMIT · OPUS
+══════════════════════════════════════════════════════════════════════════════
+  OPUS REQUIRED: architecture · economy · [Sync] · RPC · multi-file C#
+  GROK REQUIRED: bounded ModelDoc / asset maps / H4-H5 slice if owner tags it
+  AUTO OK: routine docs · search · validators
+  Never commit unprompted — propose scope; Bloodwave approves.
+  Git author: mragerlp <mragerlp@gmail.com> · no AI trailers in commits.
+
+══════════════════════════════════════════════════════════════════════════════
+CONFIRM IN FIRST REPLY
+══════════════════════════════════════════════════════════════════════════════
+  Machine · active lane · phase · next tracker ID · whether GO received · bridge status
+
+Then: [YOUR TASK HERE]
+
+— END CURSOR NEW CHAT BOOTSTRAP —

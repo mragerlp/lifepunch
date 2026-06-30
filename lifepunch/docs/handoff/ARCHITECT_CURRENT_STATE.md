@@ -1,12 +1,13 @@
 # LIFEPUNCH Architect — current project state (volatile)
 
 > **Regenerate** when phase, gates, or owner decisions change.  
-> **Package upload name:** `ARCHITECT_CURRENT_STATE.md` (same content; repo path below).  
-> **Continuity kit baseline commit:** `782ef35` (see `handoff/ARCHITECT_CONTINUITY_KIT_LAW.md`)
-**Latest reconciliation commit (three-surface upgrade canon):** `6eb2c74` (GO DOCS pass: DECISION-0010 + DECISION-0006 amendment + pattern alignment)  
-> **Source commit:** update on each regen · **Generated:** 2026-06-25  
+> **Cursor boot paste:** `handoff/CURSOR_NEW_CHAT_BOOTSTRAP_PASTE.txt`  
+> **Architect boot paste:** `handoff/NEW_CHAT_BOOTSTRAP_PASTE.txt` + `ARCHITECT_ONBOARDING_PASTE.txt`  
 > **Evergreen law** lives in repo docs — this file is **dated state only**.  
 > **GitHub wins** over uploaded Project ZIP snapshots.
+
+**Last updated:** 2026-06-30  
+**Integration commit anchor:** see `git log -1` on `main` after pull
 
 ---
 
@@ -17,10 +18,13 @@
 | **Package** | `lifepunchbitcoin` / repo ident `bitcoinmining` / s&box `lifepunch.bitcoin` |
 | **Staging** | `lpbitcoin/{bitcoinhub,hashdterminal,gpurack}` |
 | **Current phase** | **Phase A — Hub polish** |
+| **Next executable slice** | **H4 + H5** — hub powered/off world feedback + audio baseline |
+| **Implementation gate** | **PLAN DONE** — wait for Bloodwave **GO H4/H5 HUB STATE** |
 | **Next legal phase** | Phase B HASHD Terminal — **only after H10 owner sign-off** |
 | **After B** | Phase C GPU Racks (2 Standard + 1 Advanced) |
 
-**Executable slice:** next unchecked **H*** in `addons/docs/OWNER_PROGRESS_TRACKER.txt`.
+**Tracker:** `addons/docs/OWNER_PROGRESS_TRACKER.txt`  
+**H1:** pipeline fixed — **owner sign-off pending** (do not reopen unless flatgrass scale fails)
 
 ---
 
@@ -28,59 +32,62 @@
 
 | Gate | Status |
 |------|--------|
-| Phase A Hub mesh + proof (H1–H10) | **In progress** — H4/H5 before H10 |
-| Hub/Rack upgrade ownership migration (RFC-0005) | **HOLD** — no code until Bloodwave GO |
-| Economy overhaul (five-by-five taxonomy, buffer semantics) | **HOLD** — Architect questions open |
-| Already-authorized Phase A work | **Allowed** under `ACTIVE_WORKSTREAM.md` |
+| Phase A Hub mesh + proof (H1–H10) | **In progress** — **H4/H5 next**; H4/H5 before H10 |
+| Hub admin UI unlinked (`LpHashdPanel`) | **Owner signed off** (2026-06-24) |
+| Hub world power/audio flatgrass (H4/H5) | **Planned — GO pending** |
+| Phase B Terminal (T1–T6) | **Locked until H10** |
+| Hub/Rack upgrade ownership (RFC-0005) | **HOLD** — no code until Bloodwave GO |
+| Economy / five-by-five implementation | **HOLD** — Architect questions open |
+| Law 10 publish loop | **Blocked** until A + B + C + economy proof |
 
-**HOLD does not freeze** authorized Phase A hub polish governed by the tracker.
+---
+
+## Hub H4/H5 repo snapshot (2026-06-30)
+
+| Layer | Current state |
+|-------|----------------|
+| **Power SoT** | `[Sync(FromHost)] IsPowered` on `LpBitcoinHubEntity`; spawn OFF |
+| **UI toggle** | `LpHashdPanel` power switch → `SetPoweredHost()` |
+| **World visuals** | `LpBitcoinHubVisuals` → `LpBitcoinPowerLeds` fence emissive (green ON / red OFF) |
+| **Point light** | Removed legacy children; optional single light = owner decision |
+| **Fan motion** | **Parked** — no `fan_spin_hub` on prefab (`TECH_DEBT` BITCOINMINING-05) |
+| **Audio** | `UpdateHubFanSounds()` **empty stub**; `.sound` sources exist; **`vsnd_c` missing in repo** |
+| **Prefab** | `lpbitcoin/bitcoinhub/assets/entities/bitcoinhub.prefab` — hub entity + visuals wired |
+
+**Owner decisions open for H4/H5:** world LED green/red vs HASHD amber; point light yes/no; H4+H5 one commit vs split.
 
 ---
 
 ## Owner decisions (settled)
 
 - No LIFEPUNCH NPC systems (G9, DECISION-0003)
-- Hub = operation policy + ledger · `LpHashdPanel` = hub admin shell (preserve) + Universal Upgrades home (HUB · TERMINAL · GPU RACK sub-tabs) per DECISION-0010
-- HASHD Terminal owns presentation, command-session state, and its endpoint defense/capability profile (one authoritative logical record). Terminal never mines (DECISION-0005). Hub may persist the profile as infrastructure but must not create two independently mutable copies.
-- Three-surface upgrade law (Hub controller / Terminal defense / Rack hardware) is now canon for Bitcoin reference implementation.
+- Hub = ops policy + ledger · `LpHashdPanel` = admin shell + Universal Upgrades home (HUB · TERMINAL · GPU RACK) per **DECISION-0010**
+- Terminal never mines (DECISION-0005); owns defense/capability profile
+- Three-surface upgrade law: Hub controller / Terminal defense / Rack hardware
 - Rack cap: **2 Standard + 1 Advanced** (DECISION-0004)
-- Fantasy Check **mandatory** after flatgrass proof (DECISION-0008)
-- Canonical slugs: `bitcoinhub`, `hashdterminal`, `gpurack` (advanced variant); retired `advancedgpurack` folder slug
-- Model routing: Opus (Tier-1), Grok Build 1 (Tier-2A inside Integration Architect lane), Composer (Tier-2B), Cornerman (Tier-3 **local worker lane** — Green Code / Deep / Daily / Fast profiles; cheap + untrusted, not final ship authority). See `MODEL_ROUTING_AMENDMENT_GROK_BUILD_1.md` + `CORNERMAN_MODEL_ROUTING.md`.
-- Visual identity: HASHD amber locked for Bitcoin; green/red/cyan reserved. See `CYBER_VISUAL_IDENTITY_DOCTRINE.md`.
+- Fantasy Check mandatory after flatgrass proof (DECISION-0008)
+- Slugs: `bitcoinhub`, `hashdterminal`, `gpurack` — retired `advancedgpurack` folder slug
+- Visual identity: HASHD amber for **UI**; world status LED color = **open for H4**
+- Model routing: Opus (Tier-1) · Grok Build 1 (Tier-2A) · Auto/Composer (Tier-2B) · Cornerman (Tier-3 prep only)
+
+---
+
+## Parallel lanes (not bitcoin gate)
+
+| Lane | Status |
+|------|--------|
+| **lifepunchulx r10** | Set Job picker + `StaffMenuBridgeService` compaction — **committed**; portal v1.0.3 / r10 when owner uploads |
+| **lpmonnowsprinterupgrade Rev 9** | Path canon: `addons/lifepunch/monnowprinterlp/monnowprinter.prefab`; staging ready; **portal pin + gamemode PrimaryReference update pending**; never `secondaryReference` → `.prefab_c` |
 
 ---
 
 ## Unresolved Architect questions (do not implement silently)
 
-Category identities and tier names are locked in DECISION-0010 (v1.0 foundation). The following remain open:
-
-- Exact numerical effects per tier
-- Cost curves and purchase currency
-- Balance multipliers and BTC/USD buffer recalculation formulas
-- Save migration mechanics for legacy CPU/Core and per-rack upgrades
-- Future Hacker formulas and advanced intrusion simulation depth
-- Long-term economic balancing
-
-Clock Path / Core Count gameplay meaning, Buffer category details, cost curves, and intentional realism boundary wording remain pending owner-approved detail.
-
-Rack USE → shared CRT delegation vs second Terminal owner still needs a call.
-
-The five-by-five-by-five structure itself is v1.0 (three domains, fifteen canonical tracks, five-tier schema). Implementation is staged.
-
----
-
-## Known implementation gaps (volatile — not hard law)
-
-| Gap | Status | Notes |
-|-----|--------|-------|
-| Market acquire / place | Portal Rev 1 content row live; **not gamemode-pinned**; no code/assets upload yet | Ship needs `_c` + `prepare-publish.ps1` + gamemode pin |
-| Gov/LE blocked from hashd | **Doc only** | `TERMINAL_BRAND_MATRIX.md`; not enforced in hub code yet |
-| Full Law 6 world states | **Partial** | Boot splash = UI; emissive/audio = H4/R4 checklist |
-| PIN graphical gate | **H9 open** | `AccessPinIsSet` in code; full numpad flow TBD |
-| Dedicated server `_c` | **Required for ship** | Compile + pull compiled assets |
-| Dev ConCmds | **Playtest only** | Strip before publish |
-| Per-rack BTC balance | **v2 code** | `LpBitcoinRackEntity.BitcoinAmount` — docs must match code |
+- v1.0 vs v1.1: full 5×5×5 tree required for first portal ship?
+- Tier costs, curves, balance multipliers, buffer recalc
+- Save migration: legacy CPU/Core → Compute Profile
+- Rack USE → shared CRT vs second Terminal owner
+- RFC-0005 upgrade ownership migration timing
 
 ---
 
@@ -88,18 +95,22 @@ The five-by-five-by-five structure itself is v1.0 (three domains, fifteen canoni
 
 | Slice | Status |
 |-------|--------|
-| Hub admin UI (`LpHashdPanel`) unlinked | Owner signed off (2026-06-24) |
-| Hub world mesh / flatgrass Phase A | **Not complete** — H10 open |
-| Terminal Phase B | **Locked until H10** |
+| Hub admin UI unlinked | Owner signed off |
+| Hub world H4/H5 flatgrass | **Not done** |
+| H10 hub hero | **Open** |
+| Terminal Phase B | **Locked** |
 | Law 10 exit | **Blocked** |
 
 ---
 
-## Supersedes
+## Session boot (VENGEANCE)
 
-- Stale `AGENT_SYNC_BROADCAST.txt` session overrides (e.g. 2026-06-22 ULX-only lane)
-- ChatGPT package copies older than source commit — **GitHub monorepo wins**
-- VENGEANCE reference ZIP checksums when Design Architect has rebuilt/normalized the kit (see `ARCHITECT_CONTINUITY_KIT_LAW.md`)
+```powershell
+powershell -File lifepunch\scripts\Start-SboxDxrpEditor.ps1 -FullCapacity -PreflightFix -BitcoinOnly -SyncAddon lpbitcoin,adminmenu
+powershell -File lifepunch\scripts\Get-CvlConnectivityStatus.ps1 -Pretty
+```
+
+Probe: `get_bridge_status` before visual claims. Owner: `lp_authorize` after Host Play.
 
 ---
 
@@ -107,52 +118,8 @@ The five-by-five-by-five structure itself is v1.0 (three domains, fifteen canoni
 
 **Law:** `handoff/ARCHITECT_CONTINUITY_KIT_LAW.md`
 
-- Red sends **commit hash + changed files** after canonical doc commits.
-- Delta refresh for small edits; **full kit rebuild** for laws, onboarding, this file, decisions, or `ACTIVE_WORKSTREAM.md`.
-- Green syncs GitHub only; Design Architect reconciles packages.
+Full kit rebuild warranted by this update (CURRENT_STATE + onboarding + Monnow Rev 9 path canon).
 
 ---
 
 *Integration Architect maintains on VENGEANCE after approved doc commits.*
-
----
-
-## Model Routing Update (2026-06-25)
-
-**MODEL_ROUTING_AMENDMENT_GROK_BUILD_1.md** committed.
-
-- Grok Build 1 added as **Tier-2A** for the Integration Architect (technical planning, ModelDoc/asset work, bounded slices).
-- Opus remains Tier-1 for hard architecture/economy/permissions/multi-file.
-- Grok Output Law, Escalation Law, and Proof Law now apply to all Grok work.
-- See the amendment file for the full routing table and requirements.
-
-**Next continuity kit** must include this amendment + `CYBER_VISUAL_IDENTITY_DOCTRINE.md` so fresh ChatGPT/Architect sessions start with correct model law and visual identity rules.
-
-Commit for this update: will be recorded on push (see git log for `MODEL_ROUTING_AMENDMENT_GROK_BUILD_1.md` and related doc updates).
-
-**Terminal canon reconciliation** in progress — old "Terminal upgrades: None" language being replaced with reference to the new doctrine and upcoming DECISION-0010.
-
-### Cornerman Qwen profiles / Tier-3 worker lane (2026-06-27)
-
-- **Tier-3 reframed** from "weak helper / distill-only" to **local, cheap, untrusted worker lane** —
-  real work + code candidates, but checked by VENGEANCE compile/proof + Bloodwave approval.
-- **Four Green profiles** defined: **Green Code** (Qwen Coder — contained C#/Razor/SCSS candidate
-  patches), **Green Deep** (distiller + architecture warmer), **Green Daily** (reports/audits/handoffs),
-  **Green Fast** (triage). Exact LM Studio keys verified on Cornerman via `lms ls --llm --detailed`.
-- Role law: Qwen Coder = local code worker · Green Deep warms · Grok scouts · Opus owns risky recipe ·
-  Bloodwave approves the meal. `OPUS REQUIRED` / `GROK REQUIRED` / `GREEN CODE/DEEP REQUIRED` routes may
-  not be silently substituted by Auto for economy/persistence/`[Sync]`/RPC/migration/state-machine work.
-- Docs touched: `config/cornerman-tier3-models.json`, `CORNERMAN_MODEL_ROUTING.md`, `MCP_AGENT_ROUTING.md`,
-  `OPUS_USAGE_LAW.md`, `MODEL_ROUTING_AMENDMENT_GROK_BUILD_1.md`, this file. Docs-only; model keys left
-  profile-named (verify on box).
-
-### Route tags canonized — Cursor Auto is not a routing guarantee (2026-06-27)
-
-- **Canonical tag home:** `OPUS_USAGE_LAW.md` § Task route tags; mirrored in `MCP_AGENT_ROUTING.md`
-  and the **always-applied** `.cursor/rules/lifepunch-opus-usage.mdc` (so every agent auto-picks it up).
-- Tags: `AUTO OK` (routine), `OPUS REQUIRED` (Tier-1, manual select), `GROK REQUIRED` (Tier-2A, manual),
-  `GREEN CODE REQUIRED` / `GREEN DEEP REQUIRED` (Cornerman/LM Studio lane — Auto cannot replace it).
-- Auto is fine for routine but **never a routing proof**; it must not silently substitute models for
-  economy · persistence · `[Sync(FromHost)]` · RPCs · purchase routing · migration · power/link state
-  machines · final major-slice / commit-critical review.
-- **Architect duty:** mark every paste with one of those tags so VENGEANCE routes (or stops) correctly.

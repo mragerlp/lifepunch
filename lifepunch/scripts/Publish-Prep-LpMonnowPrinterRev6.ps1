@@ -33,8 +33,8 @@ if (-not $SkipDxrpSync) {
 }
 
 if ($PullCompiledFromDxrp -and $dxrpGame) {
-    $compiledSource = Join-Path $dxrpGame 'Assets\addons\lifepunch\monnow-printer-lp'
-    $compiledDest = Join-Path $SourceRoot 'assets\monnow-printer-lp'
+    $compiledSource = Join-Path $dxrpGame 'Assets\addons\lifepunch\monnowprinterlp'
+    $compiledDest = Join-Path $SourceRoot 'assets\monnowprinterlp'
     if (Test-Path -LiteralPath $compiledSource) {
         Get-ChildItem -LiteralPath $compiledSource -Recurse -File -Filter '*_c' | ForEach-Object {
             $rel = $_.FullName.Substring($compiledSource.Length).TrimStart('\', '/')
@@ -52,9 +52,9 @@ if ($PullCompiledFromDxrp -and $dxrpGame) {
 & $PrepareScript -MonnowRoot $MonnowRoot
 
 $required = @(
-    'Assets\addons\lifepunch\monnow-printer-lp\monnow_printer.prefab',
-    'Assets\addons\lifepunch\monnow-printer-lp\monnow_printer.prefab_c',
-    'Assets\addons\lifepunch\monnow-printer-lp\models\money_printer.vmdl_c',
+    'Assets\addons\lifepunch\monnowprinterlp\monnowprinter.prefab',
+    'Assets\addons\lifepunch\monnowprinterlp\monnowprinter.prefab_c',
+    'Assets\addons\lifepunch\monnowprinterlp\models\money_printer.vmdl_c',
     'Code\Addons\lifepunch\lpmonnowsprinterupgrade\MonnowPrinterEntity.cs'
 )
 
@@ -91,8 +91,8 @@ Portal addon: lpmonnowsprinterupgrade (019f0c85-d5df-798c-8c9d-3bbd228793cf)
    $DesktopPublish\Assets\
 
    MUST include:
-   addons/lifepunch/monnow-printer-lp/monnow_printer.prefab
-   addons/lifepunch/monnow-printer-lp/monnow_printer.prefab_c
+   addons/lifepunch/monnowprinterlp/monnowprinter.prefab
+   addons/lifepunch/monnowprinterlp/monnowprinter.prefab_c
 
 2. Code tab upload -> everything under:
    $DesktopPublish\Code\

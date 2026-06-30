@@ -361,17 +361,19 @@
       "dxrpAddonId": "019f0c85-d5df-798c-8c9d-3bbd228793cf",
       "dxrpAddonIdentifier": "lpmonnowsprinterupgrade",
       "sboxIdentifier": "lifepunch.lpmonnowsprinterupgrade",
-      "status": "portal-rev6-pending",
-      "notes": "Canonical source: OneDrive monnowsaddons. Portal law: 1 addon content + 1 gamemode content + 1 entity + 1 market item (Monnowlith Printer). See lpmonnowsprinterupgrade-portal.json.",
+      "status": "published-rev8",
+      "marketingVersion": "1.0.0",
+      "dxrpContentId": "019f162f-db57-7c79-87d7-8117144f7378",
+      "notes": "v1.0.0 Rev 8 published 2026-06-29 (monnow-printer-lp path). Rev 9+ republish: monnowprinterlp/monnowprinter.prefab — update portal gamemode PrimaryReference before pin.",
       "contents": [
         {
           "slug": "monnowlith-printer",
           "name": "Monnowlith Printer",
           "label": "Monnowlith Printer",
           "type": 0,
-          "primaryReference": "addons/lifepunch/monnow-printer-lp/monnow_printer.prefab",
-          "worldModelPath": "addons/lifepunch/monnow-printer-lp/models/money_printer.vmdl",
-          "grouping": "#entity.category.printer",
+          "primaryReference": "addons/lifepunch/monnowprinterlp/monnowprinter.prefab",
+          "worldModelPath": "addons/lifepunch/monnowprinterlp/models/money_printer.vmdl",
+          "grouping": "printer",
           "implementationStatus": "monnow-tier-via-gamemode-config",
           "notes": "Single market listing. L1/L2/L3 are in-game upgrade tracks on MonnowPrinterEntity, not separate portal content or market rows."
         }

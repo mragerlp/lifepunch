@@ -38,6 +38,7 @@ function Get-ResourceMountLines([string]$RawContent) {
 function Resolve-MountIdent([string]$Ident) {
     if ($Ident -in @('lpbitcoin', 'lifepunchbitcoin', 'bitcoinmining')) { return $null }
     if ($Ident -eq 'adminmenu') { return 'lifepunchulx' }
+    if ($Ident -in @('lpmonnowsprinterupgrade', 'monnowprinter', 'monnowprinterlp')) { return 'monnowprinterlp' }
     return $Ident
 }
 
@@ -75,6 +76,14 @@ foreach ($line in $existing) {
     $folderPath = Join-Path $dxrpAssetsRoot $folder
     if (Test-Path -LiteralPath $folderPath) {
         Add-Mount $line
+    }
+}
+
+# Discover any LifePunch asset folders on disk not already listed (e.g. new monnowprinterlp).
+if (Test-Path -LiteralPath $dxrpAssetsRoot) {
+    Get-ChildItem -LiteralPath $dxrpAssetsRoot -Directory | ForEach-Object {
+        if ($_.Name -in @('bitcoinmining', 'UPLOAD')) { return }
+        Add-Mount "addons/lifepunch/$($_.Name)/**"
     }
 }
 

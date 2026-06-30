@@ -1,14 +1,18 @@
 LIFEPUNCH Design Architect — new chat bootstrap
 ================================================
 
-Read dated state first: ARCHITECT_CURRENT_STATE.md (repo: handoff/ARCHITECT_CURRENT_STATE.md — repo wins over uploaded copies).
-Continuity kit baseline: commit 782ef35 · GitHub authoritative · ZIP = snapshot (handoff/ARCHITECT_CONTINUITY_KIT_LAW.md).
+Read dated state first: handoff/ARCHITECT_CURRENT_STATE.md (GitHub repo wins over uploaded copies).
+Continuity kit: handoff/ARCHITECT_CONTINUITY_KIT_LAW.md · baseline 782ef35 · ZIP = snapshot only.
 
 Active lane: lifepunchbitcoin · Phase A Hub polish · Terminal locked until H10.
-Laws: LIFEPUNCH_GAMEPLAY_LAWS G0-G9 · CYBER_REFERENCE_LAWS 1-11.
+Next slice: H4 + H5 hub world power/audio (plan done — Integration Architect waits for GO H4/H5 HUB STATE).
 Slugs: bitcoinhub · hashdterminal · gpurack (2 standard + 1 advanced).
-HOLD: RFC-0005 upgrade migration + economy overhaul — Phase A tracker work still allowed.
+Laws: LIFEPUNCH_GAMEPLAY_LAWS G0-G9 · CYBER_REFERENCE_LAWS 1-11 · DECISION-0010 three-surface upgrades.
+HOLD: RFC-0005 upgrade migration + economy overhaul — Phase A H* tracker work still allowed.
 
-Reply with: current phase, next legal phase, and any conflict with ARCHITECT_CURRENT_STATE.md.
+Parallel (context only): lifepunchulx r10 committed · Monnow Rev 9 path monnowprinterlp (portal pin pending).
 
-For new product ideation, continue with CHATGPT_STEP1_PASTE.txt.
+Reply with: current phase, next H* slice, any conflict with ARCHITECT_CURRENT_STATE.md, and owner decisions needed for H4 (amber vs green/red world LED, point light).
+
+For new product ideation: CHATGPT_STEP1_PASTE.txt.
+For Cursor implementation: handoff/CURSOR_NEW_CHAT_BOOTSTRAP_PASTE.txt.

@@ -193,15 +193,17 @@ Primary write lane: lifepunch/addons/** — s&box packages, addons.json, validat
 You may edit any monorepo path; integrate partner GitLab lane commits back into GitHub.
 Do NOT let shottaWEB or RDP agent paths drift — they commit on GitLab lanes, you merge here.
 
-CURRENT STATE (June 2026 — updated 2026-06-25):
+CURRENT STATE (June 2026 — updated 2026-06-30):
 - Trademark/IP doctrine is law. Billing: Cursor Individual Ultra + connected **Anthropic API key**
   (Opus drains API pool at provider rates; Auto/Composer uses separate generous pool).
 - Ops clarity checkpoint is law: OPS_CLARITY_CHECKPOINT.md + shortcut tiers (Start Day = tri-stack full stack).
 - **ACTIVE WORKSTREAM (hard gate):** **lifepunchbitcoin** / repo `bitcoinmining` / package `lpbitcoin`.
-  Read `BITCOIN_SHIP_ROADMAP.md` every session. Hub admin UI (unlinked) owner-signed; **next slice: Phase B
-  Terminal T1** (rig0> + hub-off authority). Opus **encouraged** for terminal, economy, rack integration,
-  and publish slices per `OPUS_USAGE_LAW.md` — not for README/changelog-only work.
-- Admin menu (`adminmenu` / `lifepunchulx`) = v1 publish-ready in `publishReadyAddons`; ship when owner says.
+  Read `BITCOIN_SHIP_ROADMAP.md` every session. Hub admin UI (unlinked) owner-signed; **next slice: H4 + H5**
+  (hub powered/off world feedback + audio baseline — plan done; wait for **GO H4/H5 HUB STATE**). Phase B
+  Terminal locked until **H10**. Opus **encouraged** for terminal, economy, rack integration, and publish
+  slices per `OPUS_USAGE_LAW.md` — not for README/changelog-only work.
+- **New Cursor chat boot:** `lifepunch/docs/handoff/CURSOR_NEW_CHAT_BOOTSTRAP_PASTE.txt`
+- Admin menu (`adminmenu` / `lifepunchulx`) = r10 Set Job committed; publish when owner says.
   **Not** the active dev gate — do not let ULX work steal bitcoin lane scope (Law 9).
 - Entity law: `LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md`. Staging: `lpbitcoin/{bitcoinhub,hashdterminal,gpurack}/`.
   **Publish doctrine:** `DXRP_ADDON_PUBLISH_DOCTRINE.md` — PLACEHOLDER hands-off unless owner asks.

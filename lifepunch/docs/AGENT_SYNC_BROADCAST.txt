@@ -40,6 +40,7 @@ CURRENT LANE (unless ARCHITECT_CURRENT_STATE.md overrides)
 
   ACTIVE: lifepunchbitcoin / lpbitcoin / s&box lifepunch.bitcoin
   PHASE: Phase A Hub polish — Terminal locked until H10
+  NEXT:  H4 + H5 hub world power/audio (GO pending) · see CURSOR_NEW_CHAT_BOOTSTRAP_PASTE.txt
   SLUGS: bitcoinhub | hashdterminal | gpurack (2 standard + 1 advanced)
   LAWS: CYBER_REFERENCE_LAWS 1-11 · LIFEPUNCH_GAMEPLAY_LAWS G0-G9
   HOLD: RFC-0005 hub upgrade migration + economy overhaul until Bloodwave GO
