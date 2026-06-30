@@ -1152,7 +1152,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	}
 
 	.overview-status-stack {
-		flex: 0 1 auto;
+		flex: 1 1 auto;
 		min-height: 0;
 		display: flex;
 		flex-direction: column;
@@ -1165,18 +1165,19 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		overflow: visible;
 		display: flex;
 		flex-direction: column;
-		gap: 10px;
+		gap: 8px;
 		padding-bottom: 0;
 	}
 
 	.overview-status-footer {
-		flex: 1 1 auto;
+		flex: 0 0 auto;
 		flex-shrink: 0;
 		display: flex;
 		flex-direction: column;
 		justify-content: flex-end;
-		min-height: 72px;
-		padding-top: 12px;
+		min-height: 0;
+		margin-top: auto;
+		padding-top: 8px;
 		padding-bottom: 0;
 		border-top: 1px solid rgba(255, 255, 255, 0.1);
 	}
@@ -1185,7 +1186,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		flex-shrink: 0;
 		margin-bottom: 0;
 		padding: 0;
-		gap: 8px;
+		gap: 6px;
 		background-color: transparent;
 		border: 0;
 		border-radius: 0;
@@ -1199,7 +1200,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		width: 100%;
 		margin-bottom: 0;
 		gap: 12px;
-		min-height: 28px;
+		min-height: 24px;
 	}
 
 	.overview-status-info .lp-ui-info-label {
@@ -1231,7 +1232,9 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		gap: 0;
 		width: 100%;
 		flex-shrink: 0;
-		padding-top: 4px;
+		margin-top: 2px;
+		padding-top: 6px;
+		padding-bottom: 10px;
 	}
 
 	.overview-status-upgrades-grid {
@@ -1239,7 +1242,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		flex-direction: row;
 		flex-wrap: nowrap;
 		align-items: stretch;
-		gap: 16px;
+		gap: 12px;
 		flex: 1 1 auto;
 		min-width: 0;
 		width: 100%;
@@ -1248,7 +1251,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	.overview-status-upgrade-surface {
 		display: flex;
 		flex-direction: column;
-		gap: 3px;
+		gap: 1px;
 		flex: 1 1 0;
 		min-width: 0;
 	}
@@ -1257,17 +1260,17 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		display: flex;
 		flex-direction: row;
 		align-items: center;
-		gap: 5px;
-		margin-bottom: 2px;
+		gap: 4px;
+		margin-bottom: 3px;
 		color: #e87d3e;
-		font-size: 10px;
+		font-size: 8px;
 		font-weight: 800;
 		text-transform: uppercase;
-		letter-spacing: 0.06em;
-		line-height: 1.2;
+		letter-spacing: 0.05em;
+		line-height: 1.15;
 
 		.material-icons {
-			font-size: 13px;
+			font-size: 11px;
 			flex-shrink: 0;
 		}
 	}
@@ -1278,17 +1281,17 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		flex-wrap: nowrap;
 		align-items: baseline;
 		justify-content: space-between;
-		gap: 8px;
-		min-height: 16px;
+		gap: 6px;
+		min-height: 12px;
 	}
 
 	.overview-status-upgrade-track-name {
 		flex: 1 1 auto;
 		min-width: 0;
-		color: rgba(255, 255, 255, 0.62);
-		font-size: 9px;
+		color: rgba(255, 255, 255, 0.58);
+		font-size: 8px;
 		font-weight: 600;
-		line-height: 1.35;
+		line-height: 1.2;
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
@@ -1296,10 +1299,10 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 
 	.overview-status-upgrade-track-tier {
 		flex: 0 0 auto;
-		color: rgba(255, 255, 255, 0.88);
-		font-size: 9px;
+		color: rgba(255, 255, 255, 0.82);
+		font-size: 8px;
 		font-weight: 700;
-		line-height: 1.35;
+		line-height: 1.2;
 		white-space: nowrap;
 	}
 
@@ -1322,29 +1325,33 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		flex-wrap: nowrap;
 		align-items: stretch;
 		margin-top: 0;
-		gap: 8px;
+		gap: 5px;
 		width: 100%;
-		min-height: 56px;
+		min-height: 0;
 
 		.overview-status-action {
 			flex: 1 1 0;
 			min-width: 0;
-			min-height: 56px;
+			min-height: 46px;
 			display: flex;
 			flex-direction: column;
 			align-items: center;
 			justify-content: center;
-			gap: 4px;
-			padding: 8px 6px;
-			font-size: 10px;
+			gap: 3px;
+			padding-top: 6px;
+			padding-right: 4px;
+			padding-bottom: 6px;
+			padding-left: 4px;
+			font-size: 9px;
 			font-weight: 800;
 			letter-spacing: 0.02em;
-			line-height: 1.15;
+			line-height: 1.1;
 			white-space: nowrap;
 			text-align: center;
+			text-transform: none;
 
 			.material-icons {
-				font-size: 22px;
+				font-size: 18px;
 				line-height: 1;
 			}
 		}
@@ -3987,49 +3994,65 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	flex-direction: column;
 	flex: 1 1 auto;
 	min-height: 0;
+	justify-content: flex-start;
 }
 
 .lp-bitcoin-ops .overview-status-body {
 	display: flex;
 	flex-direction: column;
-	gap: 10px;
+	gap: 8px;
 	flex: 0 0 auto;
+	padding-bottom: 0;
 }
 
-.lp-bitcoin-ops .overview-status-actions {
+.lp-bitcoin-ops .overview-status-actions.lp-ui-btn-row {
 	display: flex;
 	flex-direction: row;
 	flex-wrap: nowrap;
 	align-items: stretch;
-	gap: 8px;
+	gap: 5px;
 	width: 100%;
 	flex: 1 1 auto;
-	min-height: 56px;
+	min-height: 0;
+	margin-top: 0;
 }
 
 .lp-bitcoin-ops .overview-status-actions .overview-status-action {
 	flex: 1 1 0;
 	min-width: 0;
-	min-height: 56px;
+	min-height: 46px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	gap: 4px;
-	padding-top: 8px;
-	padding-right: 6px;
-	padding-bottom: 8px;
-	padding-left: 6px;
-	font-size: 10px;
+	gap: 3px;
+	padding-top: 6px;
+	padding-right: 4px;
+	padding-bottom: 6px;
+	padding-left: 4px;
+	font-size: 9px;
 	font-weight: 800;
 	letter-spacing: 0.02em;
-	line-height: 1.15;
+	line-height: 1.1;
 	white-space: nowrap;
 	text-align: center;
+	text-transform: none;
+}
+
+.lp-bitcoin-ops .overview-status-actions .overview-status-action.lp-ui-btn-primary,
+.lp-bitcoin-ops .overview-status-actions .overview-status-action.lp-ui-btn-ghost {
+	flex: 1 1 0;
+	min-width: 0;
+	padding-top: 6px;
+	padding-right: 4px;
+	padding-bottom: 6px;
+	padding-left: 4px;
+	font-size: 9px;
+	line-height: 1.1;
 }
 
 .lp-bitcoin-ops .overview-status-actions .overview-status-action .material-icons {
-	font-size: 22px;
+	font-size: 18px;
 	line-height: 1;
 }
 
@@ -4273,7 +4296,9 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	gap: 0;
 	width: 100%;
 	flex-shrink: 0;
-	padding-top: 4px;
+	margin-top: 2px;
+	padding-top: 6px;
+	padding-bottom: 10px;
 }
 
 .lp-bitcoin-ops .overview-status-upgrades-grid {
@@ -4281,7 +4306,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	flex-direction: row;
 	flex-wrap: nowrap;
 	align-items: stretch;
-	gap: 16px;
+	gap: 12px;
 	flex: 1 1 auto;
 	min-width: 0;
 	width: 100%;
@@ -4290,7 +4315,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 .lp-bitcoin-ops .overview-status-upgrade-surface {
 	display: flex;
 	flex-direction: column;
-	gap: 3px;
+	gap: 1px;
 	flex: 1 1 0;
 	min-width: 0;
 }
@@ -4299,18 +4324,18 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	gap: 5px;
-	margin-bottom: 2px;
+	gap: 4px;
+	margin-bottom: 3px;
 	color: #e87d3e;
-	font-size: 10px;
+	font-size: 8px;
 	font-weight: 800;
 	text-transform: uppercase;
-	letter-spacing: 0.06em;
-	line-height: 1.2;
+	letter-spacing: 0.05em;
+	line-height: 1.15;
 }
 
 .lp-bitcoin-ops .overview-status-upgrade-surface-head .material-icons {
-	font-size: 13px;
+	font-size: 11px;
 	flex-shrink: 0;
 }
 
@@ -4320,17 +4345,17 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	flex-wrap: nowrap;
 	align-items: baseline;
 	justify-content: space-between;
-	gap: 8px;
-	min-height: 16px;
+	gap: 6px;
+	min-height: 12px;
 }
 
 .lp-bitcoin-ops .overview-status-upgrade-track-name {
 	flex: 1 1 auto;
 	min-width: 0;
-	color: rgba(255, 255, 255, 0.62);
-	font-size: 9px;
+	color: rgba(255, 255, 255, 0.58);
+	font-size: 8px;
 	font-weight: 600;
-	line-height: 1.35;
+	line-height: 1.2;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -4338,10 +4363,10 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 
 .lp-bitcoin-ops .overview-status-upgrade-track-tier {
 	flex: 0 0 auto;
-	color: rgba(255, 255, 255, 0.88);
-	font-size: 9px;
+	color: rgba(255, 255, 255, 0.82);
+	font-size: 8px;
 	font-weight: 700;
-	line-height: 1.35;
+	line-height: 1.2;
 	white-space: nowrap;
 }
 
@@ -4360,7 +4385,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 .lp-bitcoin-ops .overview-status-info {
 	display: flex;
 	flex-direction: column;
-	gap: 8px;
+	gap: 6px;
 	flex-shrink: 0;
 }
 
@@ -4373,7 +4398,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	justify-content: space-between;
 	gap: 12px;
 	width: 100%;
-	min-height: 28px;
+	min-height: 24px;
 }
 
 .lp-bitcoin-ops .overview-status-info .lp-ui-info-label,
@@ -4405,12 +4430,13 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 }
 
 .lp-bitcoin-ops .overview-status-footer {
-	flex: 1 1 auto;
+	flex: 0 0 auto;
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-end;
-	min-height: 72px;
-	padding-top: 12px;
+	min-height: 0;
+	margin-top: auto;
+	padding-top: 8px;
 	padding-bottom: 0;
 	border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
@@ -6207,10 +6233,17 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 }
 
 .lp-bitcoin-ops .server-detail-info,
-.lp-bitcoin-ops .server-detail-tracks {
+.lp-bitcoin-ops .server-detail-legacy,
+.lp-bitcoin-ops .server-detail-legacy-info {
 	display: flex;
 	flex-direction: column;
 	gap: 8px;
+}
+
+.lp-bitcoin-ops .server-detail-legacy-intro {
+	font-size: 11px;
+	line-height: 1.45;
+	color: $hashd-muted;
 }
 
 .lp-bitcoin-ops .server-detail-tracks-head {
@@ -6222,7 +6255,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 }
 
 .lp-bitcoin-ops .server-detail-info .lp-ui-info-row,
-.lp-bitcoin-ops .server-detail-tracks .lp-ui-info-row {
+.lp-bitcoin-ops .server-detail-legacy-info .lp-ui-info-row {
 	flex-direction: row;
 	flex-wrap: nowrap;
 	align-items: center;
@@ -6232,7 +6265,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 }
 
 .lp-bitcoin-ops .server-detail-info .lp-ui-info-label,
-.lp-bitcoin-ops .server-detail-tracks .lp-ui-info-label {
+.lp-bitcoin-ops .server-detail-legacy-info .lp-ui-info-label {
 	flex: 1 1 auto;
 	font-size: 13px;
 	font-weight: 700;
@@ -6241,7 +6274,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 }
 
 .lp-bitcoin-ops .server-detail-info .lp-ui-info-value,
-.lp-bitcoin-ops .server-detail-tracks .lp-ui-info-value {
+.lp-bitcoin-ops .server-detail-legacy-info .lp-ui-info-value {
 	flex: 0 0 auto;
 	font-size: 15px;
 	font-weight: 600;

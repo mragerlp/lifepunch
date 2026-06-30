@@ -471,17 +471,23 @@
 																			<span class="lp-ui-info-value dim">Mining start/stop on CRT</span>
 																		</div>
 																	</div>
-																	<div class="server-detail-tracks">
-																		<div class="server-detail-tracks-head">Hardware tracks</div>
-																		@foreach ( var track in GpuRackUpgradeTracks )
-																		{
+																	<div class="server-detail-legacy">
+																		<div class="server-detail-legacy-intro">
+																			Hardware purchases are moving to Universal Upgrades. Current installed hardware levels are shown below.
+																		</div>
+																		<div class="server-detail-tracks-head">Current active hardware levels</div>
+																		<div class="lp-ui-info server-detail-legacy-info">
 																			<div class="lp-ui-info-row">
-																				<span class="lp-ui-info-label">@track.Name</span>
-																				<span class="lp-ui-info-value">@ServerTrackTierLabel( track, slot.Rack )</span>
+																				<span class="lp-ui-info-label">CPU Clock</span>
+																				<span class="lp-ui-info-value">@RackLegacyCpuClockLabel( slot.Rack )</span>
 																			</div>
-																		}
+																			<div class="lp-ui-info-row">
+																				<span class="lp-ui-info-label">Core Count</span>
+																				<span class="lp-ui-info-value">@RackLegacyCoreCountLabel( slot.Rack )</span>
+																			</div>
+																		</div>
 																	</div>
-																	<div class="server-detail-footnote">Status only — purchase hardware upgrades on <strong>Upgrades</strong> → GPU Rack.</div>
+																	<div class="server-detail-footnote">Status only — purchase hardware on <strong>Upgrades</strong> → GPU Rack.</div>
 																</div>
 															}
 														</div>
@@ -1564,20 +1570,11 @@
 		return multLabel;
 	}
 
-	private string ServerTrackTierLabel( UpgradeTrackShell track, LpBitcoinRackEntity rack )
-	{
-		if ( track.Name == GpuRackUpgradeTracks[0].Name )
-		{
-			var legacyLevel = Math.Max( rack.CpuUpgradeLevel, rack.CoreUpgradeLevel );
-			if ( legacyLevel <= 0 )
-				return $"Base · {track.TierOneLabel}";
+	private static string RackLegacyCpuClockLabel( LpBitcoinRackEntity rack )
+		=> $"{rack.CpuUpgradeLevel}/{LpBitcoinEconomy.CpuUpgradeCosts.Length}";
 
-			var tierIndex = Math.Min( legacyLevel + 1, 5 );
-			return $"Tier {TierRoman( tierIndex )} · {TierLineLabel( track, tierIndex )}";
-		}
-
-		return $"Base · {track.TierOneLabel}";
-	}
+	private static string RackLegacyCoreCountLabel( LpBitcoinRackEntity rack )
+		=> $"{rack.CoreUpgradeLevel}/{LpBitcoinEconomy.CoreUpgradeCosts.Length}";
 
 	private static string RackOverviewSubline( LpBitcoinRackEntity rack )
 	{
@@ -1624,9 +1621,7 @@
 		=> $"{rack.ClockGhz:F2} GHz";
 
 	private static string RackHardwareTileSubline( LpBitcoinRackEntity rack )
-		=> rack.CpuUpgradeLevel > 0 || rack.CoreUpgradeLevel > 0
-			? "Legacy tuning applied"
-			: "Stock clocks";
+		=> $"CPU {RackLegacyCpuClockLabel( rack )} · Core {RackLegacyCoreCountLabel( rack )}";
 
 	private static string RackMiningTileSubline( LpBitcoinRackEntity rack )
 		=> rack.IsMining
