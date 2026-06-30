@@ -1,66 +1,69 @@
 # LIFEPUNCH™ DXRP Workspace
 
-This repository is the working reference for the **LIFEPUNCH™** community inside the DXRP gamemode.
+This repository is the **canonical source of truth** for the **LIFEPUNCH™** community on DXRP (s&box).
 
-**Canonical repo:** [github.com/mragerlp/lifepunch](https://github.com/mragerlp/lifepunch)
-
+**Canonical repo:** [github.com/mragerlp/lifepunch](https://github.com/mragerlp/lifepunch)  
 **Community:** [discord.gg/lifepunch](https://discord.gg/lifepunch) · [lifepunch.co](https://lifepunch.co)
 
-**GitLab (June 2026+):** Per-lane partner workspaces under `gitlab.com/mragerlp` — supplements
-GitHub, does not replace it. See `lifepunch/docs/GITLAB_ORGANIZATION.md` and `AGENT_PROMPT.md`.
+---
 
-All community operations live under the main `lifepunch/` folder:
+## Start here (agents)
+
+1. **Sync:** `git fetch` · `git pull --rebase` (stop if behind + dirty).
+2. **Domain map:** [`lifepunch/docs/REPO_DOMAIN_MAP.md`](lifepunch/docs/REPO_DOMAIN_MAP.md) — every folder → domain, GitLab lane, owner.
+3. **Production gate:** [`lifepunch/addons/docs/ACTIVE_WORKSTREAM.md`](lifepunch/addons/docs/ACTIVE_WORKSTREAM.md)
+4. **Agent boot:** [`lifepunch/docs/AGENT_PROMPT.md`](lifepunch/docs/AGENT_PROMPT.md) Block 0
+
+---
+
+## Repo layout (two levels)
+
+**GitHub monorepo root** — small on purpose:
 
 ```text
-lifepunch/
-  addons/        # DXRP addon packages
-  gamemode/      # LifePunch gamemode exports/imports and gamemode config
-  server/        # Hosted server configuration and server-page audit trail
-  maps/          # Mapping plans, source references, and future map workflow
-  portal/        # DXRP.net portal tab documentation
-  admin-panel/   # Staff hierarchy and permission policy
-  players/       # Player support procedures and privacy-safe operations
-  economy/       # Economy, inventory, market, and money-flow policy
-  audit/         # Portal/staff/admin accountability workflows
-  website/       # LifePunch.co website planning and integrations
-  discord/       # Discord community operations and bot planning
-  webhooks/      # Webhook routes and integration docs
-  API/           # API contracts, schemas, and integration notes
-  secure/        # Local sensitive information, ignored by git except templates
-  docs/          # Workspace-wide documentation
-  templates/     # Operational templates
+.cursor/          # Agent rules + hooks (foundation lane)
+.vscode/          # Dev ergonomics (monorepo-only)
+scripts/          # Workspace validation, GitLab export (foundation lane)
+reference/        # Third-party study — never ship
+lifepunch/        # All product, platform, business, tooling trees (see domain map)
+README.md
 ```
 
-DXRP.net/portal connects the hosted/RDP server side to the DXRP gamemode in S&box on Steam. This repo tracks the structure and procedures around that connection without mixing addon package source, gamemode data, server config, staff policy, and secrets.
+**Everything operational lives under `lifepunch/`**, grouped by **domain**:
 
-## Core Folders
+| Domain | Folders | GitLab lane (export) |
+|--------|---------|----------------------|
+| **PRODUCT** | `addons/`, `publish-lane/` (scaffold) | `lifepunch-addons` · publish → `lifepunch-published` repo |
+| **PLATFORM** | `server/`, `gamemode/`, `portal/`, `admin-panel/`, `economy/`, `maps/`, `players/`, `audit/`, `discord/`, `webhooks/`, `API/` | `lifepunch-rdp-server` |
+| **BUSINESS** | `website/`, `legal/`, `marketing/`, `branding/` | `lifepunch-website` · `lifepunch-foundation` (legal) · marketing/branding monorepo-only today |
+| **TOOLING** | `docs/`, `templates/`, `scripts/`, `config/`, `modeldoc-studio/`, `dxrp-overlays/` | `lifepunch-foundation` (docs, templates) · rest monorepo-only today |
+| **LOCAL-ONLY** | `secure/` | Never exported |
 
-- `lifepunch/addons`: AK47, future weapons, Hacker Job entities, and all LifePunch DXRP addon packages.
-- `lifepunch/gamemode`: LifePunch gamemode exports/imports, addon revision pins, equipment/market rows, and gamemode validation.
-- `lifepunch/server`: `lifepunchmainserver` (`70p`) and `lifepunchdevelopment` (`Development`) server records, field inventory, and change logs.
-- `lifepunch/maps`: mapping plans and future S&box map workflow.
-- `lifepunch/portal`: DXRP portal tab notes and future portal review findings.
-- `lifepunch/admin-panel`: staff hierarchy, roles, and permission boundaries.
-- `lifepunch/players`: player support procedures without bulk private data.
-- `lifepunch/economy`: balance, inventory, market, and money-flow operations.
-- `lifepunch/audit`: admin/developer accountability and portal change review.
-- `lifepunch/website`: website plans and future `lifepunch.co` integration work.
-- `lifepunch/discord`: Discord community operations and bot planning.
-- `lifepunch/webhooks`: webhook routing and integration documentation.
-- `lifepunch/API`: API contracts, schemas, and non-secret integration notes.
-- `lifepunch/secure`: local-only sensitive information such as webhooks/API/server details.
+Full table (every folder, primary agent, notes): **[`lifepunch/docs/REPO_DOMAIN_MAP.md`](lifepunch/docs/REPO_DOMAIN_MAP.md)**
 
-Keep these folders separate even though they work together.
+---
+
+## GitHub + GitLab + publish (one screen)
+
+| Layer | Remote | Role |
+|-------|--------|------|
+| **Monorepo** | `github.com/mragerlp/lifepunch` | All WIP, law, quarantine — edit here on VENGEANCE |
+| **GitLab lanes** | `gitlab.com/mragerlp/lifepunch-*` | Partner/agent focused exports — supplements GitHub |
+| **Publish snapshot** | `github.com/mragerlp/lifepunch-published` | Portal-ready addons only — export from core |
+
+Details: [`lifepunch/docs/GITLAB_ORGANIZATION.md`](lifepunch/docs/GITLAB_ORGANIZATION.md) · [`lifepunch/docs/PUBLISH_REPO_LANE.md`](lifepunch/docs/PUBLISH_REPO_LANE.md)
+
+---
 
 ## Validate
 
-Run the workspace validation from the repo root:
+From repo root:
 
 ```powershell
 .\scripts\validate-workspace.ps1
 ```
 
-Run addon validation from the addon lane:
+Addon layout:
 
 ```powershell
 cd .\lifepunch\addons
