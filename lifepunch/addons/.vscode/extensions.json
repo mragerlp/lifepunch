@@ -1,0 +1,11 @@
+{
+	"recommendations": [
+		"anysphere.csharp",
+		"alexistb2904.sbox-api-tools",
+		"shader-slang.slang-language-extension"
+	],
+	"unwantedRecommendations": [
+		"ms-dotnettools.csdevkit",
+		"ms-dotnettools.csharp"
+	]
+}

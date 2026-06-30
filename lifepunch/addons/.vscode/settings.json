@@ -1,0 +1,20 @@
+{
+	"dotnet.defaultSolution": "addons.slnx",
+	"sboxValidator.enable": true,
+	"sboxValidator.validateOnChange": false,
+	"sboxValidator.lintObsoleteApi": true,
+	"sboxValidator.unknownSymbolSeverity": "warning",
+	"sboxValidator.missingUsingSeverity": "information",
+	"sboxValidator.maxCompletionItems": 800,
+	"files.associations": {
+		"*.shader": "slang",
+		"*.hlsl": "slang"
+	},
+	"slang.workspaceFlavor": "vfx",
+	"slang.additionalSearchPaths": [
+		"D:/Steam/steamapps/common/sbox/core/shaders",
+		"D:/Steam/steamapps/common/sbox/addons/base/Assets/shaders",
+		"D:/Steam/steamapps/common/sbox/addons/tools/Assets/shaders",
+		"D:/Steam/steamapps/common/sbox/editor/ShaderGraph/Assets/shaders"
+	]
+}
