@@ -14,9 +14,10 @@ Law: one item at a time -> play proof on flatgrass -> your OK -> check box -> ne
 Proof package required for phase sign-off (day, night, USE, citizen, 30s clip).
 Play from: game.scene (NOT prefab tabs). Cold compile: wait 2-5 min.
 
-Last updated: 2026-06-25
+Last updated: 2026-06-30
 ACTIVE NOW: lifepunchbitcoin (LifePunch Bitcoin Mining) — Phase A Hub polish (H* tracker)
-NEXT SLICE: Next unchecked Phase A H* in this file — NOT Phase B until H10 owner sign-off
+NEXT SLICE: H4 + H5 hub world power/audio (GO H4/H5 HUB STATE before code) — NOT Phase B until H10
+CURSOR BOOT: lifepunch/docs/handoff/CURSOR_NEW_CHAT_BOOTSTRAP_PASTE.txt (paste alone)
 BLOCKED: Hacker, Banker, Government, Casino, Drug Chemist, all new cyber lanes (until Bitcoin Law 10)
 
 Send edits to Cursor: paste changed sections or say "tracker: checked H1, start H2".

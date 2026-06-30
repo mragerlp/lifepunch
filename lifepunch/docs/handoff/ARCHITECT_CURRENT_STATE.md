@@ -7,7 +7,8 @@
 > **GitHub wins** over uploaded Project ZIP snapshots.
 
 **Last updated:** 2026-06-30  
-**Integration commit anchor:** see `git log -1` on `main` after pull
+**Integration commit anchor:** see `git log -1` on `main` after pull  
+**Cursor boot:** paste `handoff/CURSOR_NEW_CHAT_BOOTSTRAP_PASTE.txt` alone — full grounding, no extra directions
 
 ---
 
@@ -15,6 +16,7 @@
 
 | Field | Value |
 |-------|-------|
+| **Machine** | **VENGEANCE** (Integration Architect / Cursor Red) |
 | **Package** | `lifepunchbitcoin` / repo ident `bitcoinmining` / s&box `lifepunch.bitcoin` |
 | **Staging** | `lpbitcoin/{bitcoinhub,hashdterminal,gpurack}` |
 | **Current phase** | **Phase A — Hub polish** |
@@ -55,6 +57,15 @@
 | **Prefab** | `lpbitcoin/bitcoinhub/assets/entities/bitcoinhub.prefab` — hub entity + visuals wired |
 
 **Owner decisions open for H4/H5:** world LED green/red vs HASHD amber; point light yes/no; H4+H5 one commit vs split.
+
+**Owner GO paste (Integration Architect — locks routing):**
+
+```text
+GO H4/H5 HUB STATE — World LED: [green/red | HASHD amber]. Point light on ON: [yes | no].
+Route: [GROK REQUIRED | AUTO OK | OPUS REQUIRED]. H4+H5 one commit.
+```
+
+**Default without GO:** plan-only · no hub code · agent uses FIRST REPLY block in Cursor bootstrap paste.
 
 ---
 

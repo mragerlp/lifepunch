@@ -202,7 +202,9 @@ CURRENT STATE (June 2026 — updated 2026-06-30):
   (hub powered/off world feedback + audio baseline — plan done; wait for **GO H4/H5 HUB STATE**). Phase B
   Terminal locked until **H10**. Opus **encouraged** for terminal, economy, rack integration, and publish
   slices per `OPUS_USAGE_LAW.md` — not for README/changelog-only work.
-- **New Cursor chat boot:** `lifepunch/docs/handoff/CURSOR_NEW_CHAT_BOOTSTRAP_PASTE.txt`
+- **New Cursor chat boot:** `lifepunch/docs/handoff/CURSOR_NEW_CHAT_BOOTSTRAP_PASTE.txt` — paste **alone**; agent FIRST REPLY block = full grounding confirm.
+- **H4/H5 GO paste:** `GO H4/H5 HUB STATE — World LED: [green/red | HASHD amber]. Point light on ON: [yes | no]. Route: [GROK REQUIRED | AUTO OK | OPUS REQUIRED]. H4+H5 one commit.`
+- **Machine confirm:** VENGEANCE (Integration Architect / Cursor Red) in first reply.
 - Admin menu (`adminmenu` / `lifepunchulx`) = r10 Set Job committed; publish when owner says.
   **Not** the active dev gate — do not let ULX work steal bitcoin lane scope (Law 9).
 - Entity law: `LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md`. Staging: `lpbitcoin/{bitcoinhub,hashdterminal,gpurack}/`.

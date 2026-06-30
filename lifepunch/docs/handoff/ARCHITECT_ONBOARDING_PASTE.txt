@@ -32,7 +32,11 @@ Parallel (context): lifepunchulx r10 committed · Monnow Rev 9 monnowprinterlp (
 Five-by-five upgrade taxonomy: PENDING — do not treat current category lists as final.
 
 OUTPUT → Integration Architect via CURSOR BRIEF (CHATGPT_STEP1_PASTE.txt shape).
-Cursor boot paste: handoff/CURSOR_NEW_CHAT_BOOTSTRAP_PASTE.txt
+Cursor boot paste: handoff/CURSOR_NEW_CHAT_BOOTSTRAP_PASTE.txt (paste ALONE on Red — full grounding).
+
+Owner GO for hub H4/H5 (Integration Architect only):
+  GO H4/H5 HUB STATE — World LED: [green/red | HASHD amber]. Point light on ON: [yes | no].
+  Route: [GROK REQUIRED | AUTO OK | OPUS REQUIRED]. H4+H5 one commit.
 
 New chat: paste NEW_CHAT_BOOTSTRAP_PASTE.txt first, then Step 1 when ideating.
 

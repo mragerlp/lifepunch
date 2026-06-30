@@ -15,7 +15,7 @@ GitHub monorepo is authoritative. ZIP bundles are **snapshots only**.
    - `…-00-README.zip`
    - `…-01-chunk.zip` · `…-02-chunk.zip`
 5. Project instructions: `ARCHITECT_PROJECT_INSTRUCTIONS.txt`
-6. New chat: `NEW_CHAT_BOOTSTRAP_PASTE.txt` (Architect) · Cursor: `CURSOR_NEW_CHAT_BOOTSTRAP_PASTE.txt`
+6. New chat: `NEW_CHAT_BOOTSTRAP_PASTE.txt` (Architect) · Cursor: `CURSOR_NEW_CHAT_BOOTSTRAP_PASTE.txt` (**paste alone** — FIRST REPLY block = full grounding)
 
 ## Refresh discipline
 

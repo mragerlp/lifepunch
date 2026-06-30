@@ -15,4 +15,7 @@ Parallel (context only): lifepunchulx r10 committed · Monnow Rev 9 path monnowp
 Reply with: current phase, next H* slice, any conflict with ARCHITECT_CURRENT_STATE.md, and owner decisions needed for H4 (amber vs green/red world LED, point light).
 
 For new product ideation: CHATGPT_STEP1_PASTE.txt.
-For Cursor implementation: handoff/CURSOR_NEW_CHAT_BOOTSTRAP_PASTE.txt.
+For Cursor implementation: handoff/CURSOR_NEW_CHAT_BOOTSTRAP_PASTE.txt (paste ALONE — full grounding).
+Owner GO for H4/H5:
+  GO H4/H5 HUB STATE — World LED: [green/red | HASHD amber]. Point light on ON: [yes | no].
+  Route: [GROK REQUIRED | AUTO OK | OPUS REQUIRED]. H4+H5 one commit.

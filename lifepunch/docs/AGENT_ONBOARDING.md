@@ -399,8 +399,10 @@ Quick rules:
 
 | Topic | Canon |
 |-------|-------|
-| **Active task** | **`lifepunchbitcoin`** / `lpbitcoin` — **Phase A Hub polish** (`ACTIVE_WORKSTREAM.md`). **Next slice: H4 + H5** (world power/audio — plan done; **GO H4/H5 HUB STATE** before code). **Phase B Terminal** locked until H10. Upgrade migration + economy overhaul **HOLD**. |
-| **New chat boot** | `lifepunch/docs/handoff/CURSOR_NEW_CHAT_BOOTSTRAP_PASTE.txt` — paste at fresh Cursor session start on VENGEANCE. |
+| **Active task** | **`lifepunchbitcoin`** / `lpbitcoin` — **Phase A Hub polish** (`ACTIVE_WORKSTREAM.md`). **Next slice: H4 + H5** (world power/audio — **GO H4/H5 HUB STATE** before code). **Phase B Terminal** locked until H10. Upgrade migration + economy overhaul **HOLD**. |
+| **New chat boot** | **`lifepunch/docs/handoff/CURSOR_NEW_CHAT_BOOTSTRAP_PASTE.txt`** — paste **alone** at fresh Cursor session; agent fills FIRST REPLY block; no extra owner directions unless task line appended. |
+| **Machine (Cursor)** | **VENGEANCE** (Integration Architect / Cursor Red) — confirm in first reply, not "digital machine stack" product law. |
+| **Owner GO (H4/H5)** | `GO H4/H5 HUB STATE — World LED: … Point light: … Route: GROK REQUIRED \| AUTO OK \| OPUS REQUIRED. H4+H5 one commit.` |
 | **Opus / API** | Owner wants **Opus on hard bitcoin slices** (terminal, economy, integration). Anthropic API pool via Cursor Settings; Auto/Composer for routine work. `OPUS_USAGE_LAW.md`. |
 | **Editor workbench** | DXRP + LifePunch mounts — sync `lpbitcoin` when coding: `Sync-LifePunchAddonsToDxrp.ps1 -Addon lpbitcoin`. Full stack: `Start-SboxDxrpEditor.ps1 -FullCapacity -PreflightFix -BitcoinOnly -SyncAddon lpbitcoin,adminmenu`. |
 | **`lp_*` ConCmds** | Bitcoin dev ConCmds OK for playtest (`lp_bitcoin_preview_hub`, spawn kit, etc.). Do not add unrelated ConCmds (Law 9). |
