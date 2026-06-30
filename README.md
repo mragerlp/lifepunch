@@ -11,11 +11,12 @@ This repository is the **canonical source of truth** for the **LIFEPUNCH™** co
 
 1. **Sync:** `git fetch` · `git pull --rebase` (stop if behind + dirty).
 2. **Domain map:** [`lifepunch/docs/REPO_DOMAIN_MAP.md`](lifepunch/docs/REPO_DOMAIN_MAP.md) — every folder → domain, GitLab lane, owner.
-3. **Restructure track:** [`lifepunch/docs/RESTRUCTURE_ROADMAP.md`](lifepunch/docs/RESTRUCTURE_ROADMAP.md) — phased plan (Phases 0–3 done).
-4. **Config SoT:** [`lifepunch/docs/CONFIG_SOURCE_OF_TRUTH.md`](lifepunch/docs/CONFIG_SOURCE_OF_TRUTH.md) — which JSON is law.
-5. **Quarantine index:** [`lifepunch/addons/_QUARANTINE_INDEX.md`](lifepunch/addons/_QUARANTINE_INDEX.md) — active vs frozen idents.
-6. **Production gate:** [`lifepunch/addons/docs/ACTIVE_WORKSTREAM.md`](lifepunch/addons/docs/ACTIVE_WORKSTREAM.md) — product canon; implementation paused during restructure.
-7. **Agent boot:** [`lifepunch/docs/AGENT_PROMPT.md`](lifepunch/docs/AGENT_PROMPT.md) Block 0
+3. **Target layout:** [`lifepunch/docs/RESTRUCTURE_TARGET_LAYOUT.md`](lifepunch/docs/RESTRUCTURE_TARGET_LAYOUT.md) — end-state trees (business + lpbitcoin package).
+4. **Restructure track:** [`lifepunch/docs/RESTRUCTURE_ROADMAP.md`](lifepunch/docs/RESTRUCTURE_ROADMAP.md) — phased plan (Phases 0–3 done).
+5. **Config SoT:** [`lifepunch/docs/CONFIG_SOURCE_OF_TRUTH.md`](lifepunch/docs/CONFIG_SOURCE_OF_TRUTH.md) — which JSON is law.
+6. **Quarantine index:** [`lifepunch/addons/_QUARANTINE_INDEX.md`](lifepunch/addons/_QUARANTINE_INDEX.md) — active vs frozen idents.
+7. **Production gate:** [`lifepunch/addons/docs/ACTIVE_WORKSTREAM.md`](lifepunch/addons/docs/ACTIVE_WORKSTREAM.md) — product canon; implementation paused during restructure.
+8. **Agent boot:** [`lifepunch/docs/AGENT_PROMPT.md`](lifepunch/docs/AGENT_PROMPT.md) Block 0
 
 ---
 

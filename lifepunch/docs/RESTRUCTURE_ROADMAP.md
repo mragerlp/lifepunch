@@ -131,10 +131,12 @@ Documented in `REPO_DOMAIN_MAP.md` — no moves.
 
 **Goal:** Align folders with `PACKAGE_NAMING_STANDARD.md` (`packageSlug` / entity slugs).
 
+**Target spec:** `RESTRUCTURE_TARGET_LAYOUT.md` §2–4 (business folders + `lpbitcoin` package end state).
+
 **Order (owner law):**
 
-1. `lifepunchbitcoin` / `lpbitcoin` — **last** among products (active dev tree; highest risk)
-2. `lifepunchulx` / `adminmenu` — after bitcoin path stable or in parallel only if isolated
+1. `lifepunchulx` / `adminmenu` — optional first (lower risk than bitcoin)
+2. `lifepunchbitcoin` / `lpbitcoin` — **highest risk**; split into **4a** (code consolidate) → **4b** (retire `bitcoinmining` ident) before Phase 6
 3. Quarantined packages — only on **promotion**, not during quarantine
 
 Each slice:
@@ -154,9 +156,11 @@ If partners need ModelDoc or overlays on lane clones — add to `gitlab-projects
 
 ## Phase 6 — Per-addon s&box projects (post-ship)
 
-Separate `.sbproj` per publishable package. **Not** before Phase 4 for that package.
+Separate `.sbproj` per publishable package. **Not** before Phase 4b for that package.
 
-Reference: `lifepunch/modeldoc-studio/game/modeldoc.sbproj` pattern.
+**First extract:** `lifepunch/addons/packages/lpbitcoin/bitcoin.sbproj` — see `RESTRUCTURE_TARGET_LAYOUT.md`.
+
+Reference: `lifepunch/modeldoc-studio/game/modeldoc.sbproj` · current `lifepunch/addons/addons.sbproj`.
 
 ---
 
@@ -194,6 +198,6 @@ When Bloodwave signs restructure complete:
 
 - `REPO_DOMAIN_MAP.md`
 - `RESTRUCTURE_ROADMAP.md`
-- `CONFIG_SOURCE_OF_TRUTH.md`
+- `RESTRUCTURE_TARGET_LAYOUT.md` — end-state trees (business folders + lpbitcoin package)
 - `PUBLISH_REPO_LANE.md`
 - `BACKLOG_PARKING_LOT.md` — product ideas deferred during restructure
