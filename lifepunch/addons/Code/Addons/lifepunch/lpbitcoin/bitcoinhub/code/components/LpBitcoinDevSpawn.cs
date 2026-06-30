@@ -780,7 +780,7 @@ public static class LpBitcoinDevSpawn
 		var panel = LpHashdUiHost.Open( hub );
 		panel?.DevBypassPinGate();
 		panel?.DevOpenUpgradesForFirstLinkedRack();
-		Log.Info( "lp_bitcoin_preview_hub_upgrades: rack upgrades open — check buy buttons + intro line." );
+		Log.Info( "lp_bitcoin_preview_hub_upgrades: Universal Upgrades → GPU Rack target home (read-only tier shell)." );
 	}
 
 	/// <summary>Hub admin on the Universal Upgrades home — tier tile grid (HUB/TERMINAL/GPU RACK).</summary>

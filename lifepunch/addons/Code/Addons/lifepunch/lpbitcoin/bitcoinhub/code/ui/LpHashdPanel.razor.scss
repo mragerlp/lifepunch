@@ -1227,24 +1227,29 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		flex-direction: row;
 		flex-wrap: nowrap;
 		align-items: stretch;
-		justify-content: space-between;
-		gap: 12px;
+		justify-content: flex-start;
+		gap: 0;
 		width: 100%;
 		flex-shrink: 0;
+		padding-top: 4px;
 	}
 
 	.overview-status-upgrades-grid {
-		display: grid;
-		grid-template-columns: 1fr 1fr;
-		gap: 10px 14px;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		align-items: stretch;
+		gap: 16px;
 		flex: 1 1 auto;
 		min-width: 0;
+		width: 100%;
 	}
 
 	.overview-status-upgrade-surface {
 		display: flex;
 		flex-direction: column;
 		gap: 3px;
+		flex: 1 1 0;
 		min-width: 0;
 	}
 
@@ -1298,24 +1303,14 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		white-space: nowrap;
 	}
 
-	.overview-status-upgrade-col {
-		display: flex;
-		flex-direction: row;
-		flex-wrap: nowrap;
-		align-items: center;
-		justify-content: flex-end;
-		flex: 0 0 auto;
-		align-self: center;
-	}
-
 	.overview-status-upgrade-btn {
 		flex: 0 0 auto;
-		min-height: 34px;
-		padding-top: 8px;
-		padding-right: 16px;
-		padding-bottom: 8px;
-		padding-left: 16px;
-		font-size: 11px;
+		min-height: 32px;
+		padding-top: 7px;
+		padding-right: 14px;
+		padding-bottom: 7px;
+		padding-left: 14px;
+		font-size: 10px;
 		font-weight: 800;
 		white-space: nowrap;
 	}
@@ -3588,7 +3583,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	cursor: pointer;
 	flex-shrink: 0;
 
-	&:disabled {
+	&.is-disabled {
 		opacity: 0.4;
 		cursor: default;
 	}
@@ -3631,7 +3626,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		border-color: rgba(232, 125, 62, 0.8);
 	}
 
-	&:disabled {
+	&.is-disabled {
 		opacity: 0.4;
 		cursor: default;
 	}
@@ -4256,8 +4251,11 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	flex-direction: row;
 	flex-wrap: nowrap;
 	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
 	width: 100%;
 	margin-bottom: 10px;
+	flex-shrink: 0;
 }
 
 .lp-bitcoin-ops .overview-status-title {
@@ -4271,24 +4269,29 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	flex-direction: row;
 	flex-wrap: nowrap;
 	align-items: stretch;
-	justify-content: space-between;
-	gap: 12px;
+	justify-content: flex-start;
+	gap: 0;
 	width: 100%;
 	flex-shrink: 0;
+	padding-top: 4px;
 }
 
 .lp-bitcoin-ops .overview-status-upgrades-grid {
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	gap: 10px 14px;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	align-items: stretch;
+	gap: 16px;
 	flex: 1 1 auto;
 	min-width: 0;
+	width: 100%;
 }
 
 .lp-bitcoin-ops .overview-status-upgrade-surface {
 	display: flex;
 	flex-direction: column;
 	gap: 3px;
+	flex: 1 1 0;
 	min-width: 0;
 }
 
@@ -4342,24 +4345,14 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	white-space: nowrap;
 }
 
-.lp-bitcoin-ops .overview-status-upgrade-col {
-	display: flex;
-	flex-direction: row;
-	flex-wrap: nowrap;
-	align-items: center;
-	justify-content: flex-end;
-	flex: 0 0 auto;
-	align-self: center;
-}
-
 .lp-bitcoin-ops .overview-status-upgrade-btn {
 	flex: 0 0 auto;
-	min-height: 34px;
-	padding-top: 8px;
-	padding-right: 16px;
-	padding-bottom: 8px;
-	padding-left: 16px;
-	font-size: 11px;
+	min-height: 32px;
+	padding-top: 7px;
+	padding-right: 14px;
+	padding-bottom: 7px;
+	padding-left: 14px;
+	font-size: 10px;
 	font-weight: 800;
 	white-space: nowrap;
 }
@@ -4864,12 +4857,34 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	color: #e87d3e;
 }
 
-.lp-bitcoin-ops .pane.logs-pane > .logs-panel > .lp-ui-empty {
-	flex: 0 0 auto;
-	align-self: stretch;
-	margin-bottom: 14px;
+.lp-bitcoin-ops .pane.logs-pane > .logs-panel > .logs-feed {
+	display: flex;
+	flex-direction: column;
+	flex: 1 1 0;
+	min-height: 0;
+	width: 100%;
+	position: relative;
+	overflow: hidden;
+}
+
+.lp-bitcoin-ops .pane.logs-pane > .logs-panel > .logs-feed > .logs-scroll {
+	flex: 1 1 0;
+	min-height: 0;
+}
+
+.lp-bitcoin-ops .pane.logs-pane > .logs-panel > .logs-empty {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
 	padding-top: 20px;
 	padding-bottom: 20px;
+	pointer-events: none;
 }
 
 .lp-bitcoin-ops .pane.wallet .lp-ui-intro,
@@ -6182,7 +6197,65 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	color: $hashd-muted;
 }
 
+.lp-bitcoin-ops .server-detail-status {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	margin-top: 12px;
+	padding-top: 12px;
+	border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.lp-bitcoin-ops .server-detail-info,
+.lp-bitcoin-ops .server-detail-tracks {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.lp-bitcoin-ops .server-detail-tracks-head {
+	font-size: 11px;
+	font-weight: 900;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+	color: $hashd-muted;
+}
+
+.lp-bitcoin-ops .server-detail-info .lp-ui-info-row,
+.lp-bitcoin-ops .server-detail-tracks .lp-ui-info-row {
+	flex-direction: row;
+	flex-wrap: nowrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	min-height: 28px;
+}
+
+.lp-bitcoin-ops .server-detail-info .lp-ui-info-label,
+.lp-bitcoin-ops .server-detail-tracks .lp-ui-info-label {
+	flex: 1 1 auto;
+	font-size: 13px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+}
+
+.lp-bitcoin-ops .server-detail-info .lp-ui-info-value,
+.lp-bitcoin-ops .server-detail-tracks .lp-ui-info-value {
+	flex: 0 0 auto;
+	font-size: 15px;
+	font-weight: 600;
+	text-align: right;
+}
+
+.lp-bitcoin-ops .server-detail-footnote {
+	font-size: 12px;
+	line-height: 1.45;
+	color: $hashd-muted;
+}
+
 // Hub logs — scroll past intro; nested pane rule had clipped the 6th row.
+.lp-bitcoin-ops .pane.logs-pane > .logs-panel > .logs-feed > .logs-scroll,
 .lp-bitcoin-ops .pane.logs-pane > .logs-panel > .logs-scroll {
 	flex: 1 1 0;
 	min-height: 0;
@@ -6190,6 +6263,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	overflow-y: scroll;
 }
 
+.lp-bitcoin-ops .pane.logs-pane > .logs-panel > .logs-feed > .logs-scroll > .notif-list,
 .lp-bitcoin-ops .pane.logs-pane > .logs-panel > .logs-scroll > .notif-list {
 	flex-shrink: 0;
 	width: 100%;

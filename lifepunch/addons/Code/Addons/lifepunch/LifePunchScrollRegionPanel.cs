@@ -161,7 +161,8 @@ public static class LifePunchScrollRegionBootstrap
 			}
 
 			// Razor may emit the scroll shell a frame before its body — wait for content.
-			if ( !source.Children.Any() )
+			// Hub logs + CRT log populate rows imperatively after upgrade.
+			if ( !source.Children.Any() && slotClass is not ("log" or "logs-scroll") )
 				continue;
 
 			var scroll = CreateScrollPanel( slotClass );

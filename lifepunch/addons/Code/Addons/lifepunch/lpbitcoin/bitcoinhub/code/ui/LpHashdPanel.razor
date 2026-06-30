@@ -243,6 +243,7 @@
 														<i class="material-icons">analytics</i>
 														<span>Hub status</span>
 													</div>
+													<button class="lp-ui-btn-primary overview-status-upgrade-btn" onclick="@SelectUpgradesTab">Upgrade all</button>
 												</div>
 
 												<div class="overview-status-stack">
@@ -302,9 +303,6 @@
 																	}
 																</div>
 															</div>
-															<div class="overview-status-upgrade-col">
-																<button class="lp-ui-btn-primary overview-status-upgrade-btn" onclick="@SelectUpgradesTab">Upgrade all</button>
-															</div>
 														</div>
 													</div>
 
@@ -341,7 +339,7 @@
 												<span>Servers</span>
 											</div>
 
-											<div class="lp-ui-intro racks-intro">Pick a server to see its stats and open its hardware upgrades.</div>
+											<div class="lp-ui-intro racks-intro">Pick a server for balance, hardware, and mining status. Upgrades are on the Upgrades tab.</div>
 
 											<div class="racks-scroll">
 												<div class="upgrade-home-grid servers-home-grid">
@@ -394,7 +392,7 @@
 																	@if ( slot.Rack.IsValid() )
 																	{
 																		<span class="rack-badge @(slot.Rack.IsMining ? "on" : "")">@(slot.Rack.IsMining ? "Mining" : "Idle")</span>
-																		<span class="rack-badge dim">@RackYieldLabel( slot.Rack )</span>
+																		<span class="rack-badge dim">@RackYieldBadge( slot.Rack )</span>
 																	}
 																	else
 																	{
@@ -442,11 +440,48 @@
 															</div>
 															@if ( slot.Rack.IsValid() )
 															{
-																<div class="rack-card-actions">
-																	<button class="lp-ui-btn-primary rack-upgrade-btn"
-																	        onclick="@(() => OpenRackUpgrades( slot.Rack ))">
-																		Upgrade
-																	</button>
+																<div class="server-detail-status">
+																	<div class="lp-ui-info server-detail-info">
+																		<div class="lp-ui-info-row">
+																			<span class="lp-ui-info-label">Hash rate</span>
+																			<span class="lp-ui-info-value">@RackHashRateStatus( slot.Rack )</span>
+																		</div>
+																		<div class="lp-ui-info-row">
+																			<span class="lp-ui-info-label">BTC buffer</span>
+																			<span class="lp-ui-info-value">@RackCapacityStatus( slot.Rack )</span>
+																		</div>
+																		<div class="lp-ui-info-row">
+																			<span class="lp-ui-info-label">Compute</span>
+																			<span class="lp-ui-info-value">@RackHardwareLine( slot.Rack )</span>
+																		</div>
+																		<div class="lp-ui-info-row">
+																			<span class="lp-ui-info-label">Yield</span>
+																			<span class="lp-ui-info-value">@RackYieldStatus( slot.Rack )</span>
+																		</div>
+																		<div class="lp-ui-info-row">
+																			<span class="lp-ui-info-label">Power</span>
+																			<span class="lp-ui-info-value">@( Hub?.IsPowered == true ? "Online" : "Offline" )</span>
+																		</div>
+																		<div class="lp-ui-info-row">
+																			<span class="lp-ui-info-label">Link</span>
+																			<span class="lp-ui-info-value on">Linked · rig0 <span class="hashd-prompt-accent">@slot.TerminalToken</span></span>
+																		</div>
+																		<div class="lp-ui-info-row">
+																			<span class="lp-ui-info-label">Control</span>
+																			<span class="lp-ui-info-value dim">Mining start/stop on CRT</span>
+																		</div>
+																	</div>
+																	<div class="server-detail-tracks">
+																		<div class="server-detail-tracks-head">Hardware tracks</div>
+																		@foreach ( var track in GpuRackUpgradeTracks )
+																		{
+																			<div class="lp-ui-info-row">
+																				<span class="lp-ui-info-label">@track.Name</span>
+																				<span class="lp-ui-info-value">@ServerTrackTierLabel( track, slot.Rack )</span>
+																			</div>
+																		}
+																	</div>
+																	<div class="server-detail-footnote">Status only — purchase hardware upgrades on <strong>Upgrades</strong> → GPU Rack.</div>
 																</div>
 															}
 														</div>
@@ -458,98 +493,8 @@
 								}
 								else if ( _active == OpsTab.Upgrades )
 								{
-									var upgradeRack = GetUpgradeRack();
 									<div class="pane upgrades">
-										@if ( upgradeRack.IsValid() )
-										{
-											<div class="lp-ui-panel upgrades-panel">
-												<div class="upgrades-toolbar">
-													<button class="lp-ui-btn-ghost upgrades-back-btn" onclick="@CloseRackUpgrades">
-														<i class="material-icons">arrow_back</i>
-														<span>Servers</span>
-													</button>
-													<div class="lp-ui-panel-title upgrades-title">
-														<i class="material-icons">upgrade</i>
-														<span>@($"{RackSlotDisplayLabel( upgradeRack )} upgrades")</span>
-													</div>
-												</div>
-
-												<div class="lp-ui-intro upgrades-intro">
-													<strong>@RackSlotDisplayLabel( upgradeRack )</strong> · @RackYieldLabel( upgradeRack ) · @RackHardwareLine( upgradeRack ) — Purchases debit your in-game cash. Mining start/stop stays on the CRT. rig0 slot: <strong>@RackSlotTerminalToken( upgradeRack )</strong>
-												</div>
-
-												<div class="lp-ui-scroll-region upgrades-scroll">
-													<div class="upgrade-tracks">
-														<div class="upgrade-track lp-hashd-surface">
-															<div class="upgrade-track-head">
-																<i class="material-icons">memory</i>
-																<span>CPU clock path</span>
-															</div>
-															@if ( IsCpuPathMaxed( upgradeRack ) )
-															{
-																<div class="upgrade-tier-row maxed">
-																	<div class="upgrade-tier-main">
-																		<div class="upgrade-tier-label">All tiers owned</div>
-																		<div class="upgrade-tier-detail">@($"{upgradeRack.ClockGhz:F2} GHz clock")</div>
-																	</div>
-																	<div class="upgrade-tier-side">
-																		<span class="upgrade-tier-badge">Maxed</span>
-																	</div>
-																</div>
-															}
-															else
-															{
-																var cpuTier = upgradeRack.CpuUpgradeLevel;
-																<div class="upgrade-tier-row next">
-																	<div class="upgrade-tier-main">
-																		<div class="upgrade-tier-label">@CpuTierLabel( cpuTier )</div>
-																		<div class="upgrade-tier-detail">@CpuTierDetail( cpuTier )</div>
-																	</div>
-																	<div class="upgrade-tier-side">
-																		<button class="lp-ui-btn-primary upgrade-tier-buy" onclick="@(() => UpgradeCpu( upgradeRack ))">Buy $@LpBitcoinEconomy.CpuUpgradeCosts[cpuTier].ToString("N0")</button>
-																	</div>
-																</div>
-															}
-														</div>
-
-														<div class="upgrade-track lp-hashd-surface">
-															<div class="upgrade-track-head">
-																<i class="material-icons">developer_board</i>
-																<span>Core count path</span>
-															</div>
-															@if ( IsCorePathMaxed( upgradeRack ) )
-															{
-																<div class="upgrade-tier-row maxed">
-																	<div class="upgrade-tier-main">
-																		<div class="upgrade-tier-label">All tiers owned</div>
-																		<div class="upgrade-tier-detail">@($"{upgradeRack.CoreCount} cores")</div>
-																	</div>
-																	<div class="upgrade-tier-side">
-																		<span class="upgrade-tier-badge">Maxed</span>
-																	</div>
-																</div>
-															}
-															else
-															{
-																var coreTier = upgradeRack.CoreUpgradeLevel;
-																<div class="upgrade-tier-row next">
-																	<div class="upgrade-tier-main">
-																		<div class="upgrade-tier-label">@CoreTierLabel( coreTier )</div>
-																		<div class="upgrade-tier-detail">@CoreTierDetail( coreTier )</div>
-																	</div>
-																	<div class="upgrade-tier-side">
-																		<button class="lp-ui-btn-primary upgrade-tier-buy" onclick="@(() => UpgradeCores( upgradeRack ))">Buy $@LpBitcoinEconomy.CoreUpgradeCosts[coreTier].ToString("N0")</button>
-																	</div>
-																</div>
-															}
-														</div>
-													</div>
-												</div>
-											</div>
-										}
-										else
-										{
-											<div class="lp-ui-panel upgrades-home">
+										<div class="lp-ui-panel upgrades-home">
 												<div class="lp-ui-panel-title upgrades-home-title">
 													<i class="material-icons">upgrade</i>
 													<span>Universal Upgrades</span>
@@ -720,7 +665,6 @@
 													</div>
 												}
 											</div>
-										}
 									</div>
 								}
 								else if ( _active == OpsTab.Wallet )
@@ -919,17 +863,16 @@
 												Terminal commands, rack capacity warnings, intrusion attempts, and hub transfers appear here.
 											</div>
 
-											@if ( GetHubAlerts().Count == 0 )
-											{
-												<div class="lp-ui-empty">
-													<i class="material-icons">notifications_none</i>
-													<span>No alerts yet.</span>
-												</div>
-											}
-											else
-											{
+											<div class="logs-feed">
 												<div class="lp-ui-scroll-region logs-scroll"></div>
-											}
+												@if ( GetHubAlerts().Count == 0 )
+												{
+													<div class="lp-ui-empty logs-empty">
+														<i class="material-icons">notifications_none</i>
+														<span>No alerts yet.</span>
+													</div>
+												}
+											</div>
 										</div>
 									</div>
 								}
@@ -972,7 +915,7 @@
 														</div>
 														<div class="settings-row-control">
 															<span class="settings-pill @TerminalSettingsStatusClass()">@TerminalSettingsStatusLabel()</span>
-															<button class="settings-switch @(HasLinkedTerminal() ? "on" : "off")" disabled="@(!HasLinkedTerminal() && !HubIsPowered())" tooltip="@(HasLinkedTerminal() ? "Unlink terminal" : "Link nearby terminal")" onclick="@ToggleTerminalLink">
+															<button class="settings-switch @(HasLinkedTerminal() ? "on" : "off") @( !HasLinkedTerminal() && !HubIsPowered() ? "is-disabled" : "" )" tooltip="@(HasLinkedTerminal() ? "Unlink terminal" : "Link nearby terminal")" onclick="@ToggleTerminalLink">
 																<span class="power-switch-track"><span class="power-switch-knob"></span></span>
 															</button>
 														</div>
@@ -985,7 +928,7 @@
 														</div>
 														<div class="settings-row-control">
 															<span class="settings-pill @(GetHubAlerts().Count > 0 ? "warn" : "off")">@HubLogsCountLabel()</span>
-															<button class="settings-row-action @( LogsJustCleared() ? "confirmed" : "" )" disabled="@(GetHubAlerts().Count == 0 && !LogsJustCleared())" onclick="@ClearHubLogs">@( LogsJustCleared() ? "Cleared" : "Clear" )</button>
+															<button class="settings-row-action @( LogsJustCleared() ? "confirmed" : "" ) @( GetHubAlerts().Count == 0 && !LogsJustCleared() ? "is-disabled" : "" )" onclick="@ClearHubLogs">@( LogsJustCleared() ? "Cleared" : "Clear" )</button>
 														</div>
 													</div>
 												</div>
@@ -1189,7 +1132,6 @@
 	private static readonly PerfRange[] _perfRanges = { PerfRange.Day, PerfRange.Week, PerfRange.Month };
 
 	private OpsTab _active = OpsTab.Overview;
-	private Guid _upgradeRackId = Guid.Empty;
 	private UpgradeSurface _upgradeSurface = UpgradeSurface.Hub;
 	private UpgradeRackSelector _upgradeRackSlot = UpgradeRackSelector.Rack1;
 	private bool _inUpgradeSurface;     // false = Upgrades home (3 surface boxes)
@@ -1289,14 +1231,11 @@
 		StateHasChanged();
 	}
 
-	/// <summary>Dev preview — jump to first linked rack's upgrade tracks (buy buttons + intro).</summary>
+	/// <summary>Dev preview — jump to GPU Rack target home on Universal Upgrades (no legacy buy panel).</summary>
 	public void DevOpenUpgradesForFirstLinkedRack()
 	{
-		var rack = GetLinkedRacks().FirstOrDefault( r => r.IsValid() );
-		if ( !rack.IsValid() )
-			return;
-
-		OpenRackUpgrades( rack );
+		SelectTab( OpsTab.Upgrades );
+		EnterUpgradeSurface( UpgradeSurface.GpuRack );
 	}
 
 	/// <summary>Dev preview — jump straight to the wallet tab (cash-out tiles).</summary>
@@ -1333,9 +1272,7 @@
 	/// <summary>Dev preview — Universal Upgrades home (tier tile grid), not a per-rack view.</summary>
 	public void DevOpenUpgradesHome()
 	{
-		_upgradeRackId = Guid.Empty;
-		_active = OpsTab.Upgrades;
-		LifePunchUiScrollPolicy.ResetOffsets( Panel );
+		SelectTab( OpsTab.Upgrades );
 	}
 
 	protected override void OnEnabled()
@@ -1572,7 +1509,13 @@
 	private string ServerSlotHomeDesc( OverviewMinerSlot slot )
 	{
 		if ( slot.Rack.IsValid() )
-			return RackYieldLabel( slot.Rack );
+		{
+			var rack = slot.Rack;
+			if ( rack.IsMining )
+				return $"{rack.MiningRatePerMinute * 18.5f:F1} TH/s · {rack.BitcoinAmount:F4} BTC";
+
+			return $"{rack.ClockGhz:F2} GHz · {rack.CoreCount} cores · {rack.BitcoinAmount:F4} BTC";
+		}
 
 		return HasAnyPlayerRacksNearbyOrLinked()
 			? "Place rack near hub, then link at rig0 on the terminal."
@@ -1598,10 +1541,43 @@
 
 	private string _overviewSlotCopyAck;
 
-	private static string RackYieldLabel( LpBitcoinRackEntity rack )
-		=> !rack.IsValid()
-			? "—"
-			: $"{rack.ClockGhz:F2} GHz · {rack.CoreCount} core(s)";
+	private static string RackYieldBadge( LpBitcoinRackEntity rack )
+	{
+		if ( !rack.IsValid() )
+			return "—";
+
+		var mult = rack.YieldMultiplier;
+		var multLabel = mult > 1.001f ? $"{mult:0.#}× yield" : "1.0× yield";
+		return rack.IsMining ? $"{multLabel} · active" : multLabel;
+	}
+
+	private static string RackYieldStatus( LpBitcoinRackEntity rack )
+	{
+		if ( !rack.IsValid() )
+			return "—";
+
+		var mult = rack.YieldMultiplier;
+		var multLabel = mult > 1.001f ? $"{mult:0.#}× yield multiplier" : "1.0× base yield";
+		if ( rack.IsMining )
+			return $"{rack.MiningRatePerMinute:F6} BTC/min · {multLabel}";
+
+		return multLabel;
+	}
+
+	private string ServerTrackTierLabel( UpgradeTrackShell track, LpBitcoinRackEntity rack )
+	{
+		if ( track.Name == GpuRackUpgradeTracks[0].Name )
+		{
+			var legacyLevel = Math.Max( rack.CpuUpgradeLevel, rack.CoreUpgradeLevel );
+			if ( legacyLevel <= 0 )
+				return $"Base · {track.TierOneLabel}";
+
+			var tierIndex = Math.Min( legacyLevel + 1, 5 );
+			return $"Tier {TierRoman( tierIndex )} · {TierLineLabel( track, tierIndex )}";
+		}
+
+		return $"Base · {track.TierOneLabel}";
+	}
 
 	private static string RackOverviewSubline( LpBitcoinRackEntity rack )
 	{
@@ -1622,19 +1598,17 @@
 	}
 
 	private static string RackHardwareLine( LpBitcoinRackEntity rack )
-		=> $"{rack.ClockGhz:F2} GHz · {rack.CoreCount} cores · CPU L{rack.CpuUpgradeLevel} · Core L{rack.CoreUpgradeLevel}";
+		=> $"{rack.ClockGhz:F2} GHz · {rack.CoreCount} cores";
 
-	private static string RackUpgradeSummaryLine( LpBitcoinRackEntity rack )
+	private static string RackHashRateStatus( LpBitcoinRackEntity rack )
+		=> rack.IsMining ? $"{rack.MiningRatePerMinute * 18.5f:F1} TH/s" : "Idle — not hashing";
+
+	private static string RackCapacityStatus( LpBitcoinRackEntity rack )
 	{
-		var cpuTier = rack.CpuUpgradeLevel >= LpBitcoinEconomy.CpuUpgradeCosts.Length
-			? "CPU maxed"
-			: $"CPU L{rack.CpuUpgradeLevel + 1} next";
-		var coreTier = rack.CoreUpgradeLevel >= LpBitcoinEconomy.CoreUpgradeCosts.Length
-			? "Core maxed"
-			: $"Core L{rack.CoreUpgradeLevel + 1} next";
-		return $"{cpuTier} · {coreTier}";
+		var cap = LpBitcoinEconomy.RackBtcCapacity;
+		var pct = cap > 0f ? (int)Math.Round( 100f * rack.BitcoinAmount / cap ) : 0;
+		return $"{rack.BitcoinAmount:F4} / {cap:F4} BTC ({pct}%)";
 	}
-
 
 	private static string RackBtcTileValue( LpBitcoinRackEntity rack )
 		=> $"{rack.BitcoinAmount:F4} BTC";
@@ -1650,15 +1624,14 @@
 		=> $"{rack.ClockGhz:F2} GHz";
 
 	private static string RackHardwareTileSubline( LpBitcoinRackEntity rack )
-		=> $"{rack.CoreCount} cores · CPU L{rack.CpuUpgradeLevel} · Core L{rack.CoreUpgradeLevel}";
+		=> rack.CpuUpgradeLevel > 0 || rack.CoreUpgradeLevel > 0
+			? "Legacy tuning applied"
+			: "Stock clocks";
 
 	private static string RackMiningTileSubline( LpBitcoinRackEntity rack )
-	{
-		if ( rack.IsMining )
-			return $"{rack.MiningRatePerMinute * 18.5f:F1} TH/s · {RackUpgradeSummaryLine( rack )}";
-
-		return RackUpgradeSummaryLine( rack );
-	}
+		=> rack.IsMining
+			? $"{rack.MiningRatePerMinute * 18.5f:F1} TH/s"
+			: "Not hashing";
 
 	private string HubLogsCountLabel()
 	{
@@ -1668,32 +1641,13 @@
 
 	private void ClearHubLogs()
 	{
+		if ( GetHubAlerts().Count == 0 && !LogsJustCleared() )
+			return;
+
 		Hub?.RequestClearAlerts();
 		_sinceLogsClearedNotice = 0;
 		SyncHubLogs( force: true );
 	}
-
-	private static string CpuTierLabel( int tier ) => $"Tier {tier + 1}";
-
-	private static string CpuTierDetail( int tier )
-		=> $"{CpuGhzAfterTier( tier ):0.00} GHz clock";
-
-	private static string CoreTierLabel( int tier ) => $"Tier {tier + 1}";
-
-	private static string CoreTierDetail( int tier )
-		=> $"{CoresAfterTier( tier )} cores";
-
-	private static float CpuGhzAfterTier( int tier )
-		=> LpBitcoinEconomy.StartClockGhz + (tier + 1) * LpBitcoinEconomy.CpuGhzPerLevel;
-
-	private static int CoresAfterTier( int tier )
-		=> LpBitcoinEconomy.StartCores + (tier + 1) * LpBitcoinEconomy.CoresPerLevel;
-
-	private static bool IsCpuPathMaxed( LpBitcoinRackEntity rack )
-		=> rack.CpuUpgradeLevel >= LpBitcoinEconomy.CpuUpgradeCosts.Length;
-
-	private static bool IsCorePathMaxed( LpBitcoinRackEntity rack )
-		=> rack.CoreUpgradeLevel >= LpBitcoinEconomy.CoreUpgradeCosts.Length;
 
 	private string HubDisplayName() => "HASHD Hub";
 
@@ -1768,9 +1722,7 @@
 
 	private void SelectTab( OpsTab tab )
 	{
-		if ( tab != OpsTab.Upgrades )
-			_upgradeRackId = Guid.Empty;
-		else
+		if ( tab == OpsTab.Upgrades )
 		{
 			// Always enter the universal Upgrades at the 3-box home (one decision per screen).
 			_inUpgradeSurface = false;
@@ -1785,14 +1737,11 @@
 		LifePunchUiScrollPolicy.ResetOffsets( Panel );
 	}
 
-	// Legacy rack drill-in keeps Servers highlighted (Staff Menu tab-sel pattern).
-	private bool IsSidebarTabActive( OpsTab tab )
-		=> _active == tab || ( tab == OpsTab.Racks && _active == OpsTab.Upgrades && GetUpgradeRack().IsValid() );
+	private bool IsSidebarTabActive( OpsTab tab ) => _active == tab;
 
 	// Upgrades home → surface submenu. GPU enters its rack target home first (rack not yet chosen).
 	private void EnterUpgradeSurface( UpgradeSurface surface )
 	{
-		_upgradeRackId = Guid.Empty;
 		_upgradeSurface = surface;
 		_inUpgradeSurface = true;
 		_rackTargetSelected = false;
@@ -1843,26 +1792,6 @@
 		UpgradeRackSelector.Advanced => "Advanced rack hardware tracks",
 		_ => "Hardware tracks"
 	};
-
-	private void OpenRackUpgrades( LpBitcoinRackEntity rack )
-	{
-		if ( !rack.IsValid() )
-			return;
-
-		_upgradeRackId = rack.GameObject.Id;
-		_active = OpsTab.Upgrades;
-		LifePunchUiScrollPolicy.ResetOffsets( Panel );
-	}
-
-	private void CloseRackUpgrades() => SelectTab( OpsTab.Racks );
-
-	private LpBitcoinRackEntity GetUpgradeRack()
-	{
-		if ( _upgradeRackId == Guid.Empty )
-			return null;
-
-		return GetLinkedRacks().FirstOrDefault( r => r.IsValid() && r.GameObject.Id == _upgradeRackId );
-	}
 
 	private long ReceiveSteamId()
 	{
@@ -1984,6 +1913,9 @@
 	// path is available).
 	private void ToggleTerminalLink()
 	{
+		if ( !HasLinkedTerminal() && !HubIsPowered() )
+			return;
+
 		if ( HasLinkedTerminal() )
 			UnlinkTerminal();
 		else
@@ -2528,34 +2460,6 @@
 		return (int)Math.Round( 100f * MiningRackCount() / total );
 	}
 
-	private bool CanUpgradeCpu( LpBitcoinRackEntity rack )
-		=> rack.IsValid() && rack.CpuUpgradeLevel < LpBitcoinEconomy.CpuUpgradeCosts.Length;
-
-	private bool CanUpgradeCores( LpBitcoinRackEntity rack )
-		=> rack.IsValid() && rack.CoreUpgradeLevel < LpBitcoinEconomy.CoreUpgradeCosts.Length;
-
-	private string UpgradeCpuCost( LpBitcoinRackEntity rack )
-		=> CanUpgradeCpu( rack ) ? $"{LpBitcoinEconomy.CpuUpgradeCosts[rack.CpuUpgradeLevel]:N0}" : "MAX";
-
-	private string UpgradeCoreCost( LpBitcoinRackEntity rack )
-		=> CanUpgradeCores( rack ) ? $"{LpBitcoinEconomy.CoreUpgradeCosts[rack.CoreUpgradeLevel]:N0}" : "MAX";
-
-	private void UpgradeCpu( LpBitcoinRackEntity rack )
-	{
-		if ( !CanUpgradeCpu( rack ) )
-			return;
-
-		_hub?.RequestUpgradeCpu( rack.GameObject.Id );
-	}
-
-	private void UpgradeCores( LpBitcoinRackEntity rack )
-	{
-		if ( !CanUpgradeCores( rack ) )
-			return;
-
-		_hub?.RequestUpgradeCores( rack.GameObject.Id );
-	}
-
 	protected override void OnUpdate()
 	{
 		base.OnUpdate();
@@ -2702,9 +2606,15 @@
 	private LifePunchScrollRegionPanel GetHubLogsScroll()
 		=> LifePunchScrollRegionBootstrap.FindFirstFromHost( this, "logs-scroll" );
 
-	private Panel GetHubLogsNotifList()
+	private Panel GetHubLogsScrollHost()
 	{
 		var scroll = GetHubLogsScroll();
+		return scroll.IsValid() ? scroll : FindLogsScrollShell();
+	}
+
+	private Panel GetHubLogsNotifList()
+	{
+		var scroll = GetHubLogsScrollHost();
 		if ( !scroll.IsValid() )
 			return null;
 
@@ -2716,7 +2626,7 @@
 		if ( GetHubLogsNotifList().IsValid() )
 			return;
 
-		var scroll = GetHubLogsScroll();
+		var scroll = GetHubLogsScrollHost();
 		if ( !scroll.IsValid() )
 			return;
 
@@ -2900,7 +2810,6 @@
 		// Do not hash TextEntry bind values (_cashOutAmount).
 		var hash = new HashCode();
 		hash.Add( _active );
-		hash.Add( _upgradeRackId );
 		hash.Add( (int)_upgradeSurface );
 		hash.Add( (int)_upgradeRackSlot );
 		hash.Add( _inUpgradeSurface );
@@ -2935,6 +2844,7 @@
 		hash.Add( LpBitcoinEconomy.CashUsdPerBtc );
 		hash.Add( LpBitcoinEconomy.PortalEconomyRevision );
 		hash.Add( Hub?.UnreadAlertCount ?? 0 );
+		hash.Add( Hub?.AlertFeed ?? string.Empty );
 		return hash.ToHashCode();
 	}
 }
