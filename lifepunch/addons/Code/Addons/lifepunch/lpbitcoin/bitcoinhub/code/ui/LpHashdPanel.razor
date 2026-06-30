@@ -133,7 +133,9 @@
 									</span>
 									<span class="power-switch-label">@(Hub?.IsPowered == true ? "POWER ON" : "POWER OFF")</span>
 								</button>
-								<button class="header-chip wallet-chip" onclick="@SelectWalletTab">
+								<button class="header-chip wallet-chip"
+								        tooltip="BTC Wallet"
+								        onclick="@SelectWalletTab">
 									<i class="material-icons">account_balance_wallet</i>
 									<span>@HeaderWalletBtc() BTC</span>
 								</button>
