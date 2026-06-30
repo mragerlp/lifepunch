@@ -75,6 +75,19 @@ All rows export to **`lifepunch-rdp-server`** unless noted. Primary agent: **RDP
 | `lifepunch/players/` | Player support procedures (privacy-safe) |
 | `lifepunch/portal/` | DXRP.net portal tab documentation |
 | `lifepunch/server/` | `lifepunchmainserver` / `lifepunchdevelopment` records, dxrp-host, observability |
+
+**`lifepunch/server/` subtree (RDP lane detail):**
+
+| Path | Role |
+|------|------|
+| `server/LIFEPUNCHNET_HOST_LAYOUT.md` | **Canon** for lifepunchnet Official vs Dev install roots, ports, engine policy |
+| `server/LAUNCHING_SERVER_WITH_ADDONS.md` | Dxura launcher law (`dotnet run dxrp-server.cs`) |
+| `server/config/servers.json` | Portal server rows + operational notes |
+| `server/dxrp-host/official/` | Server 1 bat templates → `C:\SBOX-DXRP-Server` |
+| `server/dxrp-host/development/` | Server 2 bat templates → Steam `sbox` |
+| `server/dxrp-host/scripts/` | Deploy, update, token-scoped process kill, compile hotfixes |
+| `server/change-log/` | Server-page and host change records |
+| `server/blue-dev-package/` | Reference / handoff copies (not auto-deployed) |
 | `lifepunch/webhooks/` | Webhook routes and integration docs |
 
 **Export hazard:** `Export-GitLabLane.ps1` **replaces** entire PLATFORM paths from GitHub. GitLab-only files under `lifepunch/server/` are wiped on export until ported to monorepo — see `GITLAB_ORGANIZATION.md`.

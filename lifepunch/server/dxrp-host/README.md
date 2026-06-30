@@ -33,16 +33,26 @@ Each root must contain Dxura's host files (`dxrp-server.cs`, `sbox-server.dll`, 
 
 ```text
 lifepunch/server/dxrp-host/
-  official/server1_start.bat, restart_official.ps1, dxrp-server-config.json.example
-  development/server2_start.bat, start_dev_server.bat, show_dev_server_log.bat,
-    restart_development.ps1, dxrp-server-config.json.example
-  scripts/Deploy-DxrpHostLaunchers.ps1
-  scripts/Remove-StaleDxrpHostFiles.ps1
-  scripts/Update-LifepunchnetSboxServers.ps1
-  scripts/auto_update.bat, auto_update_all.bat, auto_update_official_staging.bat
+  README.md
+  official/          → deploy to C:\SBOX-DXRP-Server only
+  development/       → deploy to Steam sbox only
+  scripts/           → shared + profile update bats (see Deploy-DxrpHostLaunchers.ps1)
+  vendor/ulx-shared/ → manual ULX patch (not deployed by default)
 ```
 
-Deploy copies **Official files → Official root only** and **Development files → Dev root only**. Shared helpers go to both; profile-specific update scripts stay on the correct root.
+**Scripts in git (deploy copies subset to box):**
+
+| Script | Official root | Dev root |
+|--------|---------------|----------|
+| `Deploy-DxrpHostLaunchers.ps1` | run from repo clone | same |
+| `server1_start.bat` / `server2_start.bat` | yes | yes |
+| `auto_update.bat` | yes | yes |
+| `auto_update_all.bat` | yes | no |
+| `auto_update_official.bat` | yes (staging — caution on 70p) | no |
+| `Run-DevServer.ps1` | no | yes |
+| `Update-LifepunchnetSboxServers.ps1` | yes | yes |
+
+Legacy file `auto_update_official_staging.bat` remains in repo for reference; deploy uses `auto_update_official.bat`.
 
 ### On-box only (never commit)
 

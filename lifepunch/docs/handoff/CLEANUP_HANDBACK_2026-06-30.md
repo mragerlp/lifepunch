@@ -74,28 +74,22 @@ Green `C:\Projects\lifepunch` fast-forwarded to `20b3b00`. SSH alias: **`cornerm
 
 ---
 
-## lifepunchnet (Blue) sync — Red done; Blue pull pending
+## lifepunchnet (Blue) sync — complete (2026-06-30)
 
-**Red (VENGEANCE) completed:**
+**GitLab `lifepunch-rdp-server`:** **`c418f2a`** — Blue host layout + live ops docs (on top of export **`12748c1`** / mono **`20b3b00`**). Linear history; no merge conflicts.
 
-```powershell
-powershell -File lifepunch\scripts\Export-GitLabLane.ps1 -Slug lifepunch-rdp-server
-```
+**VENGEANCE:** cherry-picked **`c418f2a`** into GitHub monorepo (6 files under `lifepunch/docs/` + `lifepunch/server/`).
 
-- GitLab `lifepunch-rdp-server` @ **`12748c1`** (mono **`20b3b00`**)
-
-**Blue pull blocked from VENGEANCE:** SSH `:22`, watchdog `:9101`, session hub `:9102` all **closed** from this network (RDP `:3389` open). Paste on lifepunchnet RDP:
+**On-box (lifepunchnet RDP)** — if local clone is not yet at **`c418f2a`**, paste (non-elevated CMD):
 
 ```bat
 cd C:\lifepunch\lifepunch-rdp-server
 git pull --rebase
 cd lifepunch\server\dxrp-host\scripts
 powershell -ExecutionPolicy Bypass -File .\Deploy-DxrpHostLaunchers.ps1
-cd /d C:\S&BOX DXRP Server
-start_dev_server.bat
 ```
 
-Or from VENGEANCE: `powershell -File lifepunch\scripts\Invoke-LifepunchnetServerUpdate.ps1` (copies one-liner + opens RDP).
+Remote SSH/watchdog from VENGEANCE still blocked (`:22`, `:9101`, `:9102` closed; RDP `:3389` open). Use `Invoke-LifepunchnetServerUpdate.ps1` for clipboard one-liner + RDP shortcut.
 
 ---
 

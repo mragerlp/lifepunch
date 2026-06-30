@@ -23,6 +23,8 @@ When two files disagree, **fix the canonical file** listed here — do not fork 
 | DXRP upstream pin (fork)? | `lifepunch/config/dxrp-upstream-pin.json` |
 | Gamemode addon revision pins? | `lifepunch/gamemode/config/addon-revisions.json` |
 | Hosted server records? | `lifepunch/server/config/servers.json` |
+| lifepunchnet install layout (Official vs Dev roots)? | `lifepunch/server/LIFEPUNCHNET_HOST_LAYOUT.md` |
+| DXRP host launchers + deploy? | `lifepunch/server/dxrp-host/README.md` |
 | Staff roles? | `lifepunch/admin-panel/config/admin-roles.json` |
 | lifepunch.co pages? | `lifepunch/website/config/*.json` |
 | Publish export manifest (live ship repo)? | `lifepunch-published/config/addons.json` (export output) |
@@ -59,6 +61,8 @@ When two files disagree, **fix the canonical file** listed here — do not fork 
 | `lifepunch/gamemode/config/gamemode-page.json` | Portal gamemode page fields | Owner |
 | `lifepunch/gamemode/config/lpmonnowsprinterupgrade-portal.json` | Side-lane portal row | Owner |
 | `lifepunch/server/config/servers.json` | lifepunchmainserver / development | RDP agent |
+| `lifepunch/server/LIFEPUNCHNET_HOST_LAYOUT.md` | lifepunchnet split roots, engine policy, deploy law | RDP agent |
+| `lifepunch/server/dxrp-host/README.md` | Launcher wrappers + `Deploy-DxrpHostLaunchers.ps1` | RDP agent |
 | `lifepunch/server/config/server-page-fields.json` | dxrp.net server page | RDP agent |
 | `lifepunch/portal/config/*.json` | Portal tab docs | RDP agent |
 | `lifepunch/admin-panel/config/admin-roles.json` | Staff hierarchy | Owner |

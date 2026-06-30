@@ -35,7 +35,7 @@
       "targetVersion": "26.06.10",
       "created": "1 month ago",
       "lastPulsed": "9 minutes ago",
-      "purpose": "70-player vanilla-style DXRP server that mirrors official DXRP limitations.",
+      "purpose": "70-player DXRP server — public s&box 26.06.24, Dev-promoted portal addon pins (June 2026).",
       "profile": "official-limits",
       "risk": "live-community",
       "addonPolicy": "Do not deploy custom addon or beta feature changes here until they are proven safe and compatible with official DXRP limitations.",
@@ -53,8 +53,9 @@
     "70p may run Vanilla until LIFEPUNCH™ ship gamemode is assigned after bitcoin publish-ready sign-off.",
     "Development server tests LIFEPUNCH™ gamemode pins before 70p promotion.",
     "Do not design workflows around unmanaged or external servers unless the owner adds them later.",
-    "lifepunchnet: Official C:\\SBOX-DXRP-Server (27015/27018) + Development Steam sbox (27016/27017). Both: dotnet run dxrp-server.cs, verifyAddons false on host (compile at launch), tokens in C:\\SBOX-DXRP-Server\\secure\\*.local.env. Staging engine; Official 70p uses portal staging gamemode for now. See LIFEPUNCHNET_HOST_LAYOUT.md.",
-    "Engine bump: Dev-only auto_update.bat (no Official binary overwrite). Official staging: auto_update_official.bat or Update-LifepunchnetSboxServers.ps1 -UpdateOfficialBinaries -OfficialOnly.",
+    "lifepunchnet: Official C:\\SBOX-DXRP-Server (27015/27018) public 26.06.24; Dev Steam sbox (27016/27017) staging. Layout: LIFEPUNCHNET_HOST_LAYOUT.md; deploy: dxrp-host/scripts/Deploy-DxrpHostLaunchers.ps1.",
+    "Engine: Official public 26.06.24 pinned on-box (buildid 23900007) — avoid auto_update_official.bat unless testing staging. Dev: auto_update.bat or auto_update_all.bat.",
+    "Portal pins (June 2026): kevlar r16, base r6, ulx r10, monnow r2 — promote on dxrp.net; Dev first.",
     "Internal server ids are lifepunchdevelopment and lifepunchmainserver.",
     "Development and 70p procedures must remain separate."
   ]
