@@ -57,11 +57,15 @@ Do NOT edit dxrp-public unless explicitly bouncing an upstream fix back to the f
 
 ## Dual IDE: Cursor (Agent) + VS Code (Copilot)
 
-**Canon:** `lifepunch/docs/DUAL_IDE_CURSOR_VSCODE.md` — applies to **both** `lifepunchaddons` and `dxrp-public` (Dimmer-aligned mirror on addon code + upstream fork).
+**Canon:** `lifepunch/docs/DUAL_IDE_CURSOR_VSCODE.md`
 
-**Short version:** Cursor Agent + MCP implement and prove; VS Code Copilot inline/Chat spot-checks the same files Dimmer would edit. Disable **Cursor Tab** while VS Code is open on that repo. Copilot credit tips: [VS Code optimize-usage guide](https://code.visualstudio.com/docs/agents/guides/optimize-usage).
+```text
+Cursor = writer / MCP / proof / commit
+VS Code + Copilot = mirror reviewer (not second writer unless Bloodwave switches)
+Codex = PASS · REVISE · HOLD before upstream PR ship
+```
 
-Commit hygiene applies in **both** IDEs: author `mragerlp` only, no Cursor/Copilot co-author trailers (see below).
+Disable **Cursor Tab** while VS Code is open on the same repo. Commit hygiene in both IDEs: `mragerlp` only, no AI trailers.
 
 ---
 

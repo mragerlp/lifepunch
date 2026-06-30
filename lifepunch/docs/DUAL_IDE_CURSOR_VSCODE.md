@@ -1,23 +1,61 @@
 # Dual IDE: Cursor (Agent) + VS Code (Copilot)
 
 **Status:** Active on VENGEANCE (June 2026).  
-**Why:** Dxura staff (Dimmer) ships in **VS Code + GitHub Copilot**. Copilot is **not supported inside Cursor**. Bloodwave uses **both IDEs on both repos** so LifePunch addon code and upstream DXRP work stay Dimmer-aligned and actually compile/review the same way upstream does.
+**Why:** Dxura staff (Dimmer) ships in **VS Code + GitHub Copilot**. Copilot is **not supported inside Cursor**. Bloodwave uses **both IDEs on both repos** so LifePunch addon code and upstream DXRP work stay Dimmer-aligned.
 
-**Copilot credit tips:** [Optimize AI credit usage in VS Code](https://code.visualstudio.com/docs/agents/guides/optimize-usage) — plan in one chat, implement in another; exclude noisy paths; disable unused MCP in VS Code.
+**Copilot credit tips:** [Optimize AI credit usage in VS Code](https://code.visualstudio.com/docs/agents/guides/optimize-usage)
 
 ---
 
-## Role split (both repos)
+## Tool canon (June 2026)
 
-| Tool | Owns |
-|------|------|
-| **Cursor Agent / Composer** | Multi-file slices, architecture, s&box MCP (bridge, editor), flatgrass proof, git commit/push, `.cursor/rules` |
-| **Cursor Tab** | Inline completions in Cursor when VS Code is **closed** on that folder |
-| **VS Code Copilot (inline)** | Ghost-text completions the way Dimmer writes — spot-check after Cursor lands a slice |
-| **VS Code Copilot Chat** | Single-file / diff review, “does this match DXRP TabMenu/Razor patterns?” |
-| **VS Code Copilot Agent** | Small planning forks only — **not** whole-repo refactors (burns credits; use Cursor instead) |
+```text
+Cursor           = writer / MCP / proof / commit
+VS Code + Copilot = mirror reviewer / upstream-style sanity pass
+Cornerman        = cheap distill / prep
+Codex            = strict reviewer / PASS · REVISE · HOLD gate
+Bloodwave        = GO / commit / ship authority
+```
 
-**Never:** VSIX-hack Copilot into Cursor · run Cursor Tab + Copilot inline on the **same file** · run Copilot Agent + Cursor Agent on the **same slice** in parallel.
+### Primary risk: two editors becoming two writers
+
+**VS Code is a review mirror — not a second implementation lane** unless Bloodwave explicitly chooses to edit there.
+
+| Do in VS Code | Do not in VS Code (default) |
+|---------------|----------------------------|
+| Open touched `.cs` / `.razor` / `.scss` after Cursor lands a slice | Multi-file refactors |
+| Copilot inline — read suggestions, compare to DXRP style | Accept large Copilot rewrites without Cursor re-proof |
+| Copilot Chat — “does this match TabMenu / Sync patterns?” | Copilot Agent on whole-repo tasks |
+| Read-only walkthrough of Dimmer PRs | Stop → Play / flatgrass proof |
+| | `git commit` (unless Bloodwave explicitly switched writer to VS Code) |
+
+**Cursor remains the only implementation + MCP proof authority** unless Bloodwave explicitly switches tools.
+
+---
+
+## Gate discipline
+
+### LifePunch addons
+
+```text
+Cursor Agent implements slice
+VS Code opens touched .cs / .razor / .scss
+Copilot sanity-checks DXRP-style patterns (review only — no rewrite)
+Cursor performs MCP / Stop → Play / flatgrass proof
+Bloodwave approves commit
+```
+
+### DXRP upstream
+
+```text
+Issue approved first (e.g. #111)
+Cursor Agent implements bounded PR slice
+VS Code Copilot mirror pass
+Codex final scope/proof review (PASS · REVISE · HOLD)
+Flatgrass proof (Cursor + MCP)
+Clean PR, no AI trailers
+Bloodwave GO / ship
+```
 
 ---
 
@@ -26,23 +64,35 @@
 1. Install [VS Code](https://code.visualstudio.com/).
 2. Extensions (`Ctrl+Shift+X`): **GitHub Copilot**, **GitHub Copilot Chat** (publisher: **GitHub**).
 3. `Ctrl+Shift+P` → **GitHub Copilot: Sign In**.
-4. Open workspace folders (same clones Cursor uses — **do not duplicate repos**):
-   - `C:\Users\jared\Projects\lifepunchaddons` — LifePunch monorepo (addons, docs, scripts)
-   - `C:\Users\jared\Projects\dxrp-public` — upstream DXRP fork
+4. **File → Open Folder** → `C:\Users\jared\Projects\lifepunchaddons` (loads `.vscode/extensions.json`).
+5. Optional second window: `C:\Users\jared\Projects\dxrp-public`.
 
-Opening the monorepo root loads `.vscode/extensions.json` (Copilot recommendations) and shared exclusion hints.
+### Smoke test (mirror live — do not rewrite)
+
+Open in VS Code:
+
+```text
+lifepunch/addons/Code/Addons/lifepunch/lpbitcoin/bitcoinhub/code/ui/LpHashdPanel.razor
+```
+
+Confirm Copilot inline (gray suggestion) and Copilot Chat respond. **Do not ask Copilot to rewrite the file** — activation check only.
+
+When VS Code is open on a repo: Cursor → **Disable Cursor Tab** (`Ctrl+Shift+P`).
 
 ---
 
-## Cursor Tab vs Copilot (one inline engine per folder)
+## Role detail
 
-When VS Code is open on a repo:
+| Tool | Owns |
+|------|------|
+| **Cursor Agent / Composer** | Multi-file slices, architecture, s&box MCP, flatgrass proof, commits (with Bloodwave GO) |
+| **Cursor Tab** | Inline in Cursor when VS Code is **closed** on that folder |
+| **VS Code Copilot** | Mirror reviewer — inline + Chat on **already-written** files |
+| **Cornerman** | Distill, inbox prep, Tier-3 drafts — not writer, not proof |
+| **Codex** | Strict reviewer gate before upstream PR ship |
+| **Bloodwave** | GO, commit consent, ship authority |
 
-- Cursor: `Ctrl+Shift+P` → **Disable Cursor Tab** (or status bar **Tab** → Disable globally).
-
-When back to Cursor-only (e.g. MCP playtest session without VS Code on that tree):
-
-- Re-enable Cursor Tab.
+**Never:** VSIX-hack Copilot into Cursor · Cursor Tab + Copilot inline on the same file · Copilot Agent + Cursor Agent on the same slice in parallel.
 
 ---
 
@@ -50,85 +100,69 @@ When back to Cursor-only (e.g. MCP playtest session without VS Code on that tree
 
 ### LifePunch monorepo (`lifepunchaddons`)
 
-| Phase | Cursor | VS Code + Copilot |
-|-------|--------|-------------------|
-| **Plan** | Agent + `ACTIVE_WORKSTREAM.md` / rules | Optional Copilot Chat on a pasted slice plan |
-| **Implement** | Agent — `lifepunch/addons/Code`, Razor, ModelDoc prep | Open **touched files only**; inline suggests DXRP-style C#/Razor |
-| **DXRP-facing code** | Sync mount: `Sync-LifePunchAddonsToDxrp.ps1` | Match patterns from `dxrp-public` (TabMenu, `[Sync(FromHost)]`, `dxrp.json` keys) |
-| **Playtest** | s&box MCP, flatgrass, `lp_*` ConCmds | **Do not** playtest from VS Code — eyes stay in Cursor |
-| **Commit** | Preferred (MCP context, hooks) | OK if Cursor Tab off and files saved — author `mragerlp` only |
-
-**Dimmer-aligned mirror:** LifePunch addons that run **on** DXRP should read like upstream gamemode code — same Razor SCSS class-root rules, same host-authoritative sync patterns, no LifePunch headers in `dxrp-public`. Use Copilot in VS Code on **both** trees when touching shared concepts (party UI, admin panels, rank permissions).
+- **Implement + prove:** Cursor only (`ACTIVE_WORKSTREAM.md`, MCP, flatgrass).
+- **Mirror:** VS Code on touched addon files — DXRP-facing code should match upstream patterns (`SBOX_RAZOR_SCSS_RULES.md`, `[Sync(FromHost)]`, TabMenu).
+- **Sync mount before playtest:** `Sync-LifePunchAddonsToDxrp.ps1 -Addon lpbitcoin`.
 
 ### DXRP upstream (`dxrp-public`)
 
-| Phase | Cursor | VS Code + Copilot |
-|-------|--------|-------------------|
-| **Implement** | Agent on `lifepunch/*` or `mragerlp-party-phase-2` branches | Parity pass on changed `.cs` / `.razor` |
-| **Review Dimmer** | PR prep, rebase | Copilot Chat on his diffs / issues |
-| **Commit / PR** | Primary | Same hygiene as Cursor |
-
-Canon: `lifepunch/docs/DXRP_CONTRIBUTOR_LANE.md` · tracker [#111](https://github.com/dxura/dxrp/issues/111) (Party Phase 2).
+- **Implement:** Cursor on approved issue branches (`mragerlp-party-phase-2`, etc.).
+- **Mirror + Dimmer parity:** VS Code Copilot on changed gamemode files.
+- **Canon:** `lifepunch/docs/DXRP_CONTRIBUTOR_LANE.md` · [#111](https://github.com/dxura/dxrp/issues/111).
 
 ---
 
-## Daily loop (any lane)
-
-```text
-1. Plan     → Cursor (or one short Copilot Plan pass) — issue link + slice name only
-2. Build    → Cursor Agent — one focused slice
-3. Mirror   → VS Code — open changed files; Copilot inline + Chat sanity check
-4. Prove    → Cursor only — flatgrass / bridge / compile
-5. Commit   → one IDE per slice; save all; no AI co-author trailers
-```
-
-**New chat per slice** (`Ctrl+N` in Copilot Chat; fresh Cursor chat with bootstrap paste).
-
-**Exclude noise** (both IDEs): `_c` outputs, `.dxrp-publish/`, `game/Libraries/*`, large logs — see `.vscode/settings.json` in monorepo.
-
----
-
-## Model / credit discipline
+## Model / credit routing
 
 | Task | Route |
 |------|--------|
-| Bitcoin hub C# / Razor blockers | Cursor **Opus** (API pool) per `OPUS_USAGE_LAW.md` |
-| Routine edits, localization, docs | Cursor **Auto / Composer** |
-| DXRP party slice (#111) | Cursor Agent; VS Code Copilot **review only** |
-| Inline “next line” completion | VS Code Copilot |
-| Bulk distill / classify | Cornerman (Tier-3) — not Copilot |
-
-VS Code: lighter models for boilerplate; reasoning models only for plan/debug; `/compact` long chats; [full guide](https://code.visualstudio.com/docs/agents/guides/optimize-usage).
+| Bitcoin hub C# / Razor blockers | Cursor **Opus** — `OPUS_USAGE_LAW.md` |
+| Routine edits, docs | Cursor **Auto / Composer** |
+| DXRP party slice (#111) | Cursor write; VS Code **review only** |
+| Bulk distill / classify | **Cornerman** — not Copilot |
+| Pre-PR strict review (upstream) | **Codex** PASS · REVISE · HOLD |
 
 ---
 
-## Commit hygiene (both IDEs)
+## Commit hygiene
 
 - Author: **`mragerlp <mragerlp@gmail.com>`** only.
-- **No** `Co-authored-by: Cursor / Copilot / Claude` — Cursor **Settings → Agent → Attribution OFF**.
-- Hook: `lifepunch\scripts\Install-CommitHygieneHook.ps1` on each clone that commits.
+- **No** AI co-author trailers — Cursor **Settings → Agent → Attribution OFF**.
+- Hook: `lifepunch\scripts\Install-CommitHygieneHook.ps1`.
+
+---
+
+## Active blockers (June 2026)
+
+| Lane | Blocker |
+|------|---------|
+| **LPBitcoin** | U1.1 — Stop → Play / flatgrass proof before U2 |
+| **DXRP Party #111** | Wait for Dimmer/Dxura approval before `outline-defaults` |
+| **Copilot in Cursor** | Not supported — do not chase |
+
+**Red (VENGEANCE):** verify VS Code Copilot mirror smoke test, then return to active proof gate.  
+**Green (Cornerman):** no change.  
+**Architect:** Cursor = only implementation/proof authority unless Bloodwave switches tools.
 
 ---
 
 ## Quick reference
 
 ```text
-LifePunch ship day:
-  Cursor Agent → lifepunchaddons (implement + MCP proof)
-  VS Code Copilot → mirror pass on touched addon files
-  Cursor Tab OFF while VS Code open on lifepunchaddons
+LifePunch ship:
+  Cursor writes + MCP proves
+  VS Code mirrors (review only)
+  Bloodwave GO → commit
 
-DXRP upstream day:
-  Cursor Agent → dxrp-public (branch from develop)
-  VS Code Copilot → Dimmer parity + PR review
-  Cursor Tab OFF while VS Code open on dxrp-public
+DXRP upstream:
+  Issue GO → Cursor slice → VS Code mirror → Codex review → flatgrass → PR
 ```
 
 ---
 
 ## Related
 
-- `lifepunch/docs/DXRP_CONTRIBUTOR_LANE.md` — fork paths, #111, sync scripts
-- `lifepunch/docs/OPUS_USAGE_LAW.md` — when not to burn API pool
-- `lifepunch/docs/SBOX_RAZOR_SCSS_RULES.md` — Razor patterns Copilot should match
+- `lifepunch/docs/DXRP_CONTRIBUTOR_LANE.md`
+- `lifepunch/docs/OPUS_USAGE_LAW.md`
+- `lifepunch/docs/SBOX_RAZOR_SCSS_RULES.md`
 - `.cursor/rules/lifepunch-commit-hygiene.mdc`
