@@ -17,6 +17,20 @@ Codex            = strict reviewer / PASS · REVISE · HOLD gate
 Bloodwave        = GO / commit / ship authority
 ```
 
+### Primary use (Bloodwave — June 2026)
+
+**Main Copilot job:** draft instructions, slice briefs, and review notes **for Cursor Agent** — not to edit repo files.
+
+```text
+Copilot Chat  → Bloodwave shapes the prompt / acceptance criteria / scope
+Cursor Agent  → implements, MCP proof, proposes commit
+Bloodwave     → GO / commit / ship
+```
+
+VS Code file mirror (open `.razor` / `.cs` for inline sanity) is **optional**, not daily. Use it when you want Dimmer-style inline feedback on code Cursor already wrote. Default path is **instruction relay only** — avoids two-writers entirely.
+
+**Never paste secrets** (tokens, portal keys) into Copilot Chat.
+
 ### Primary risk: two editors becoming two writers
 
 **VS Code is a review mirror — not a second implementation lane** unless Bloodwave explicitly chooses to edit there.
