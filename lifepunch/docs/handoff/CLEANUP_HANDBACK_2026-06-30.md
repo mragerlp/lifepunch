@@ -64,17 +64,38 @@ All VENGEANCE cleanup items from the audit are **done**. Steam DXRP is reset, sy
 
 ---
 
-## Cornerman sync
+## Cornerman sync — DONE @ `20b3b00`
 
 ```powershell
-# After Red push to main:
 powershell -File lifepunch\scripts\Invoke-CornermanMonorepoSync.ps1
-
-# Or:
-powershell -File lifepunch\scripts\Send-CornermanWorkflow.ps1 -Action MonorepoPull
 ```
 
-Green clone: `C:\Projects\lifepunch` (read-only deploy key — pull only).
+Green `C:\Projects\lifepunch` fast-forwarded to `20b3b00`. SSH alias: **`cornerman` → `192.168.1.229`**.
+
+---
+
+## lifepunchnet (Blue) sync — Red done; Blue pull pending
+
+**Red (VENGEANCE) completed:**
+
+```powershell
+powershell -File lifepunch\scripts\Export-GitLabLane.ps1 -Slug lifepunch-rdp-server
+```
+
+- GitLab `lifepunch-rdp-server` @ **`12748c1`** (mono **`20b3b00`**)
+
+**Blue pull blocked from VENGEANCE:** SSH `:22`, watchdog `:9101`, session hub `:9102` all **closed** from this network (RDP `:3389` open). Paste on lifepunchnet RDP:
+
+```bat
+cd C:\lifepunch\lifepunch-rdp-server
+git pull --rebase
+cd lifepunch\server\dxrp-host\scripts
+powershell -ExecutionPolicy Bypass -File .\Deploy-DxrpHostLaunchers.ps1
+cd /d C:\S&BOX DXRP Server
+start_dev_server.bat
+```
+
+Or from VENGEANCE: `powershell -File lifepunch\scripts\Invoke-LifepunchnetServerUpdate.ps1` (copies one-liner + opens RDP).
 
 ---
 
