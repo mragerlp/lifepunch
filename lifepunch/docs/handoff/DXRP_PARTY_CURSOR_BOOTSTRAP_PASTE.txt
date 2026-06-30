@@ -1,0 +1,154 @@
+DXRP UPSTREAM — Party System bounty (#73) — Cursor bootstrap
+Updated: 2026-06-30 · Issue: dxura/dxrp#73 · PR: mragerlp/dxrp-public → dxura/dxrp develop (#77)
+
+Paste THIS FILE ALONE at session start. Append your task line at the bottom.
+
+══════════════════════════════════════════════════════════════════════════════
+FOCUS SWITCH — NOT LIFEPUNCH ADDON LANE
+══════════════════════════════════════════════════════════════════════════════
+  FOCUS:     DXRP upstream (public fork → dxura/dxrp develop)
+  Clone:     C:\Users\jared\Projects\dxrp-public
+  Branch:    bounty/73-party-system  (NOT lifepunch main · NOT develop for ship work)
+  PR:        #77 open · head 914967a (Alt-gated HUD drag + collapse · equal roster cards)
+  Monorepo:  C:\Users\jared\Projects\lifepunchaddons — lane law/docs READ ONLY; no party commits here
+
+  Bloodwave: Dxura DXRP dev team · bounty owner · Dimmer reviews/merges upstream
+
+FORBIDDEN this session:
+  - LifePunch proprietary headers (© lifepunch.co blocks)
+  - lifepunch/ addon paths, addons.json, LIFEPUNCH™ branding, bitcoin lane, portal publish
+  - Copying LifePunch addon C# into dxrp-public
+  - game/Libraries/* (local MCP dev tools) — never commit
+  - D:/Steam paths, editor noise, machine-specific csproj/slnx in commits
+  - AI co-author trailers (Cursor/Claude/Copilot) — commit hygiene hook ON
+
+REQUIRED:
+  - Match DXRP style: TabMenu patterns, dxrp.json localization, existing HUD components
+  - Small scoped commits: fix(party): … — cite #73 in PR title/body, NOT every commit
+  - Rebase before push: lifepunch\scripts\sync-dxrp-fork.ps1
+  - Flatgrass / bridge proof for HUD interactivity (not editor-only)
+
+Canon: lifepunch/docs/DXRP_CONTRIBUTOR_LANE.md
+Manifest: lifepunch/docs/handoff/dxrp/DXRP_73_BRANCH_MANIFEST.txt
+Short block: lifepunch/docs/AGENT_PROMPT.md · Block F
+
+══════════════════════════════════════════════════════════════════════════════
+STEP 0 — SYNC (dxrp-public)
+══════════════════════════════════════════════════════════════════════════════
+  cd C:\Users\jared\Projects\dxrp-public
+  git fetch origin upstream
+  git checkout bounty/73-party-system
+  git pull --rebase origin bounty/73-party-system
+  git status -sb
+
+If dirty with editor noise BEFORE work:
+  git restore -- game/Assets game/Code/rp.csproj game/Editor/rp.editor.csproj game/rp.slnx
+  git restore -- game/Code/Chat/Chat.Handler.cs game/Code/Chat/MessageType.cs game/Code/System/RP/PartyRoom.cs
+  git restore -- game/Code/UI/HUD/Chat/
+  (Only restore paths you did NOT intentionally edit — see DXRP_CONTRIBUTOR_LANE.md)
+
+Optional monorepo pin sync (from lifepunchaddons):
+  powershell -File lifepunch\scripts\sync-dxrp-fork.ps1
+
+Editor gate (when Bloodwave opens editor):
+  powershell -File lifepunch\scripts\Ensure-DxrpUpstreamCurrent.ps1 -Sync -UpdatePin -SyncSteam
+  Steam runtime: D:\Steam\steamapps\common\sbox\dxrp — NEVER commit from there
+
+══════════════════════════════════════════════════════════════════════════════
+WHAT'S ALREADY SHIPPED ON BRANCH (verify before re-implementing)
+══════════════════════════════════════════════════════════════════════════════
+  Core: PartySystem host singleton · NetDictionary<Guid,PartyData> [Sync(FromHost)]
+        PartyRoom client view · separate from FactionSystem (by design)
+  Chat: /party · /p alias · party chat · ProfileCommand tweak
+  Gameplay: FF bypass · team highlight (Player.Health)
+  UI: PartyHud (DraggablePanel, AdminTickets parity, Alt-gated drag, collapse chevron)
+      PartyMemberCard · PartyMenu (/party management — cursor unlock)
+      PlayerNameplate · HUD.razor wiring · dxrp.json strings
+  Latest fix: 914967a — HUD drag/collapse + equal-width roster cards
+
+══════════════════════════════════════════════════════════════════════════════
+LIKELY "FINISH" WORK (ONE slice per session — owner GO)
+══════════════════════════════════════════════════════════════════════════════
+  A) Dimmer review feedback — address open PR comments only (no scope creep)
+  B) Rebase bounty/73-party-system on latest dxura/dxrp develop · resolve conflicts · push
+  C) Multiplayer proof — invite / kick / promote / leave / disband / color / party chat
+  D) HUD/menu polish — BuildHash flags, scroll, edge cases, localization gaps
+  E) PR hygiene — description, test plan, pre-push trailer scan, clean diff (party files only)
+  F) Post-merge — WORKSTREAM_RESTART_WORKFLOW.md back to lpbitcoin (separate session)
+
+  Do NOT start new bounty features without Bloodwave + Dimmer alignment.
+
+══════════════════════════════════════════════════════════════════════════════
+KEY FILES (party slice)
+══════════════════════════════════════════════════════════════════════════════
+  game/Code/System/RP/PartySystem.cs
+  game/Code/System/RP/PartyRoom.cs
+  game/Code/Chat/Commands/PartyCommand.cs
+  game/Code/Chat/Commands/PartyChatCommand.cs
+  game/Code/UI/HUD/Components/PartyHud.razor (+ .scss)
+  game/Code/UI/HUD/Components/PartyMenu.razor (+ .scss)
+  game/Code/UI/HUD/Components/PartyMemberCard.razor (+ .scss)
+  game/Code/UI/HUD/HUD.razor
+  game/Code/Player/Player.Health.cs
+  game/Localization/en/dxrp.json
+  game/Assets/prefabs/core.prefab
+
+ARCHITECTURE REMINDERS:
+  - Host mutations: PartyCommand.ExecuteHost (invite/kick/accept/leave/disband/color)
+  - /party menu open = CLIENT UI toggle — not a host mutation
+  - PartyHud: StorageKey party-hud · pointer-events none until Alt (Input.Down Mouse)
+  - SCSS: component-type root selector (DXRP house style)
+  - BuildHash must include every UI flag that changes markup
+
+══════════════════════════════════════════════════════════════════════════════
+MODEL ROUTING (this lane)
+══════════════════════════════════════════════════════════════════════════════
+  OPUS REQUIRED: PartySystem/PartyRoom, [Sync], host RPC authority, Player.Health FF bypass,
+                  multiplayer edge cases, client/host menu wiring
+  AUTO OK:        localization keys, SCSS polish, PR description, checklist docs
+  GREEN:          read-only distill only — eyes covered — no dxrp-public commits
+
+══════════════════════════════════════════════════════════════════════════════
+PROOF CHECKLIST (flatgrass — Bloodwave or bridge)
+══════════════════════════════════════════════════════════════════════════════
+  [ ] Stop → Play · flatgrass (or DXRP test map)
+  [ ] /party or /p opens management menu · cursor unlock works
+  [ ] Invite / accept / kick / leave / disband / color (as implemented)
+  [ ] Party HUD: Alt-gated drag · chevron collapse · position persists (StorageKey)
+  [ ] Party chat distinct from global · FF bypass with party member
+  [ ] Nameplate/team highlight visible
+  [ ] No console errors · no pink UI
+  [ ] 2+ players if testing invite flow
+
+══════════════════════════════════════════════════════════════════════════════
+COMMIT / PUSH
+══════════════════════════════════════════════════════════════════════════════
+  Author: mragerlp <mragerlp@gmail.com>
+  Hook:   powershell -File lifepunch\scripts\Install-CommitHygieneHook.ps1  (dxrp-public clone)
+  Scan:   git log upstream/develop..HEAD --format='%H%n%B' | Select-String 'cursoragent|Co-authored'
+  Push:   powershell -File lifepunch\scripts\sync-dxrp-fork.ps1 -PushOrigin
+  Target: mragerlp/dxrp-public:bounty/73-party-system → dxura/dxrp:develop
+
+  Propose commit scope — Bloodwave approves before git commit.
+
+══════════════════════════════════════════════════════════════════════════════
+VENGEANCE SESSION BOOT (when editor allowed)
+══════════════════════════════════════════════════════════════════════════════
+  powershell -File lifepunch\scripts\Start-SboxDxrpEditor.ps1 -FullCapacity -PreflightFix
+  powershell -File lifepunch\scripts\Get-CvlConnectivityStatus.ps1 -Pretty
+  get_bridge_status → screenshot before visual claims
+
+══════════════════════════════════════════════════════════════════════════════
+FIRST REPLY (agent fills before edits)
+══════════════════════════════════════════════════════════════════════════════
+  ## Focus — DXRP upstream #73 Party (NOT lpbitcoin)
+  ## Sync — branch · HEAD · clean/dirty (dxrp-public)
+  ## PR — #77 state · local vs origin/bounty/73-party-system
+  ## Bridge — [connected | eyes covered]
+  ## Recommended next slice — [A–E from list above]
+  ## Standing by — [task line or wait for Bloodwave GO]
+
+Optional task line:
+  [YOUR TASK HERE]
+
+— END DXRP PARTY BOOTSTRAP —

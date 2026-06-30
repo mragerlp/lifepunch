@@ -210,6 +210,7 @@ Verified tip is recorded in `lifepunch/config/dxrp-upstream-pin.json` (commit af
 1. **`mragerlp/dxrp-public`** → our DXRP fork (`origin=dxrp-public`, `upstream=dxura/dxrp`).
    Local clone: `C:\Users\jared\Projects\dxrp-public`. Synced via `sync-dxrp-fork.ps1` (ff-merge upstream `develop`).
    **Upstream bounty / vanilla DXRP work:** read **`lifepunch/docs/DXRP_CONTRIBUTOR_LANE.md`** first — separate focus from LifePunch proprietary addons; never commit LifePunch headers or local MCP `game/Libraries/*` into the fork.
+   **Party #73 new chat:** paste **`lifepunch/docs/handoff/DXRP_PARTY_CURSOR_BOOTSTRAP_PASTE.txt`** alone, or **Block F** in `AGENT_PROMPT.md`.
 2. **The Steam checkout** (`D:\Steam\steamapps\common\sbox\dxrp`, `origin=dxura/dxrp`) →
    read-only **upstream** runtime/test copy where the editor runs. Aligned via `Sync-DxrpSteamCheckout.ps1`.
    **Never** commit LifePunch work here.

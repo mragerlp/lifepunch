@@ -21,6 +21,8 @@
 
 ## Agent focus switch (paste at session start)
 
+**Party #73 (full boot):** paste `lifepunch/docs/handoff/DXRP_PARTY_CURSOR_BOOTSTRAP_PASTE.txt` alone in a new Cursor chat, or **Block F** in `AGENT_PROMPT.md`.
+
 ### DXRP upstream session
 
 ```text
@@ -145,6 +147,9 @@ Templates: `lifepunch/docs/handoff/templates/CORNERMAN_RESTART_PACKET_BRIEF.md`,
 
 | Doc | URL / path |
 |-----|------------|
+| Party #73 Cursor boot | `lifepunch/docs/handoff/DXRP_PARTY_CURSOR_BOOTSTRAP_PASTE.txt` |
+| Agent Block F | `lifepunch/docs/AGENT_PROMPT.md` |
+| Branch manifest | `lifepunch/docs/handoff/dxrp/DXRP_73_BRANCH_MANIFEST.txt` |
 | DXRP fork bridge | `lifepunch/docs/DXRP_DOCS_REFERENCE.md` |
 | Upstream pin | `lifepunch/config/dxrp-upstream-pin.json` |
 | Operator wiki | `https://github.com/dxura/dxrp-public/wiki/Operator` |

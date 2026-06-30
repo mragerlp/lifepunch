@@ -14,7 +14,7 @@
 > (must create/accept a GitLab account). **RDP agent** provisioned via an SSH deploy key + ACTIVE
 > (Block C is its official prompt). **Cornerman** launches via `DAY_ONE_AGENT_PROMPT.md`.
 >
-> **Blocks:** A = owner/addons · B = shottaWEB/website · C = lifepunchnet (RDP server agent) · D = Cornerman · **E = AK47 quarantine (`lane/ak47` only)**
+> **Blocks:** A = owner/addons · B = shottaWEB/website · C = lifepunchnet (RDP server agent) · D = Cornerman · **E = AK47 quarantine (`lane/ak47` only)** · **F = DXRP upstream party (#73)**
 
 ---
 
@@ -44,7 +44,7 @@ CVL TRI-STACK (memorize — LifePunch web = three nodes + edges; not one box):
   DXRP ops, Whisper `:9000`, watchdog `:9101`, session hub `:9102`. Git root:
   `C:\lifepunch\lifepunch-rdp-server` (not `C:\lifepunch` alone). **Block C.**
 - **Cornerman ≠ lifepunchnet.** VENGEANCE is the hub that reaches both. Wrong codename = wrong scripts/tokens.
-- **Agent blocks:** A = VENGEANCE · B = shottaWEB/website · C = lifepunchnet · D = Cornerman · E = AK47 (`lane/ak47` only).
+- **Agent blocks:** A = VENGEANCE · B = shottaWEB/website · C = lifepunchnet · D = Cornerman · E = AK47 (`lane/ak47` only) · F = DXRP upstream party (#73).
 - **RGB primaries:** R+G = yellow (desk↔worker), G+B = cyan (worker↔host STT), B+R = magenta (host↔desk).
   **White** = R+G+B healthy — **Start Day**, `Get-CvlConnectivityStatus.ps1 -Pretty` → `allOk: true`.
 - **Directed ping:** source → destination (e.g. **R → G** = Red commands Green). Shortcut icon = **destination**
@@ -389,4 +389,41 @@ P1 anims, required WEAPON_PLATFORM_REPORT before calling AK "done".
 COMMIT: only on lane/ak47. Push to origin lane/ak47. Main integration is owner-only.
 
 NEXT: confirm branch + read AK47_LANE.md, then [YOUR AK TASK HERE].
+```
+
+---
+
+## Block F — DXRP upstream party (#73)
+
+**Separate repo.** Use when finishing the Party System bounty on **`mragerlp/dxrp-public`** — not the LifePunch monorepo ship lane.
+
+**Full paste:** `lifepunch/docs/handoff/DXRP_PARTY_CURSOR_BOOTSTRAP_PASTE.txt` (paste **alone** at new-chat start).
+
+```text
+[Paste DXRP_PARTY_CURSOR_BOOTSTRAP_PASTE.txt alone — or Block 0 + summary below:]
+
+YOU ARE: agent on VENGEANCE finishing DXRP upstream bounty #73 (Party System).
+
+FOCUS: C:\Users\jared\Projects\dxrp-public · branch bounty/73-party-system · PR #77 → dxura/dxrp develop
+NOT: lifepunchaddons commits · no LIFEPUNCH proprietary headers · no bitcoin/U1/U2 lane
+
+BEFORE EDIT:
+  cd C:\Users\jared\Projects\dxrp-public
+  git checkout bounty/73-party-system
+  git pull --rebase origin bounty/73-party-system
+  Clean editor noise per DXRP_CONTRIBUTOR_LANE.md before commit
+
+SHIPPED (verify, don't redo): PartySystem/PartyRoom · /party commands · FF bypass · PartyHud drag/collapse · PartyMenu
+HEAD anchor: 914967a+ · Dimmer review/merge pending
+
+FINISH SLICES (one per session): review feedback · rebase develop · multiplayer proof · HUD polish · PR hygiene
+OPUS: [Sync], host RPC, client/host menu wiring · AUTO: SCSS/localization/PR text
+
+COMMIT: mragerlp only · no AI trailers · Install-CommitHygieneHook on dxrp-public clone
+Proof: flatgrass + bridge — not editor-only for HUD drag/menu
+
+Canon: lifepunch/docs/DXRP_CONTRIBUTOR_LANE.md
+After merge: WORKSTREAM_RESTART_WORKFLOW.md — resume lpbitcoin in a **separate** chat (Block A)
+
+NEXT: confirm dxrp-public sync + PR state, then [YOUR PARTY TASK HERE].
 ```
