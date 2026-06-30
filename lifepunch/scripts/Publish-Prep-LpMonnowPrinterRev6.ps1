@@ -1,6 +1,7 @@
-# Rev 3 publish prep: sync editor -> stage upload -> desktop handoff folder + gate checks.
+# Rev 6 publish prep: sync editor -> stage upload -> desktop handoff folder + gate checks.
 param(
     [string]$MonnowRoot = "$env:USERPROFILE\OneDrive\Desktop\monnowsaddons",
+    [int]$RevisionNumber = 6,
     [switch]$SkipDxrpSync,
     [switch]$OpenFolder,
     [switch]$PullCompiledFromDxrp
@@ -18,7 +19,7 @@ if (Test-Path -LiteralPath (Join-Path $RepoRoot 'lifepunch\addons')) {
     $MonorepoRoot = (Resolve-Path (Join-Path $Here '..\..')).Path
 }
 $UploadRoot = Join-Path $MonorepoRoot 'lifepunch\addons\.dxrp-publish\upload'
-$DesktopPublish = Join-Path ([Environment]::GetFolderPath('Desktop')) 'lifepunch\addons\publish\lpmonnowsprinterupgrade-rev3'
+$DesktopPublish = Join-Path ([Environment]::GetFolderPath('Desktop')) "lifepunch\addons\publish\lpmonnowsprinterupgrade-rev$RevisionNumber"
 
 $configPath = Join-Path $Here 'dxrp-editor.local.json'
 $dxrpGame = $null
@@ -81,8 +82,8 @@ if ($LASTEXITCODE -ge 8) {
 }
 
 $readme = @"
-lpmonnowsprinterupgrade REV 3 - PORTAL UPLOAD HANDOFF
-=====================================================
+lpmonnowsprinterupgrade REV $RevisionNumber - PORTAL UPLOAD HANDOFF
+===================================================================
 
 Portal addon: lpmonnowsprinterupgrade (019f0c85-d5df-798c-8c9d-3bbd228793cf)
 
@@ -96,10 +97,13 @@ Portal addon: lpmonnowsprinterupgrade (019f0c85-d5df-798c-8c9d-3bbd228793cf)
 2. Code tab upload -> everything under:
    $DesktopPublish\Code\
 
-3. Verify all 3 content rows Primary Reference:
-   addons/lifepunch/monnow-printer-lp/monnow_printer.prefab
+3. Addon -> Content: ONE Entity row (Monnowlith Printer).
 
-4. Gamemode LIFEPUNCH Dev -> pin Rev 3 -> Save -> Sync Servers
+4. Gamemode LIFEPUNCH Dev:
+   - Content: ONE Monnowlith Printer row (delete tier 2/3 if present)
+   - Entities: ONE row -> Monnowlith Printer
+   - Market: ONE listing under #entity.category.printer
+   - Pin Rev $RevisionNumber -> Save -> Sync Servers
 
 Generated: $(Get-Date -Format 'yyyy-MM-dd HH:mm')
 "@
@@ -107,7 +111,7 @@ Generated: $(Get-Date -Format 'yyyy-MM-dd HH:mm')
 Set-Content -LiteralPath (Join-Path $DesktopPublish 'UPLOAD_README.txt') -Value $readme -Encoding UTF8
 
 Write-Host ''
-Write-Host 'REV 3 PUBLISH PREP OK' -ForegroundColor Green
+Write-Host "REV $RevisionNumber PUBLISH PREP OK" -ForegroundColor Green
 Write-Host "Desktop handoff: $DesktopPublish" -ForegroundColor Cyan
 Write-Host "Repo staging:    $UploadRoot" -ForegroundColor DarkGray
 

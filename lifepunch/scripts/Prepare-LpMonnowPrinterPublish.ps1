@@ -119,6 +119,8 @@ Before upload - compile in sbox editor (ModelDoc Studio or DXRP project):
   Re-run this script after compile so _c files are included.
 
 After publish:
+  - Addon Content: ONE row (Monnowlith Printer) — not three tier rows on the addon
+  - Gamemode: ONE content + ONE entity + ONE market row (Monnowlith Printer). L1/L2/L3 = in-game upgrades only.
   - Pin new revision on LIFEPUNCH Dev gamemode
   - Sync Servers (owner approval)
   - Market buy test: printer appears at aim ray; no silent charge-without-spawn

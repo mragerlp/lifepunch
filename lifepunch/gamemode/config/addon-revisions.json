@@ -82,6 +82,29 @@
         "NEXT ship tier (Rev 3+): ModelDoc _c → prepare-publish.ps1 -Addon bitcoinmining → portal upload Code+Assets → re-pin on LIFEPUNCH™ ship gamemode after dev playtest.",
         "70p (lifepunchmainserver): assign LIFEPUNCH™ gamemode only after development playtest sign-off (replaces Vanilla)."
       ]
+    },
+    {
+      "package": "lpmonnowsprinterupgrade",
+      "addonIdent": "lpmonnowsprinterupgrade",
+      "dxrpAddonId": "019f0c85-d5df-798c-8c9d-3bbd228793cf",
+      "dxrpAddonIdentifier": "lpmonnowsprinterupgrade",
+      "sboxIdentifier": "lifepunch.lpmonnowsprinterupgrade",
+      "targetEnvironment": "lifepunchdevelopment",
+      "targetGamemodeId": "019f15a3-679e-7162-bf9f-c8318515300c",
+      "targetGamemodeName": "LIFEPUNCH Dev",
+      "publishStatus": "rev6-upload-pending",
+      "revisionId": null,
+      "revisionNumber": 6,
+      "stagingRoot": "../addons/.dxrp-publish/upload",
+      "desktopHandoff": "Desktop/lifepunch/addons/publish/lpmonnowsprinterupgrade-rev6",
+      "portalUrl": "https://dxrp.net/portal/addons/019f0c85-d5df-798c-8c9d-3bbd228793cf",
+      "notes": [
+        "Rev 6: monnow_printer.prefab under addons/lifepunch/monnow-printer-lp/ (fixes Rev 2 silent spawn failure).",
+        "Portal law: ONE addon content + ONE gamemode content/entity/market row — Monnowlith Printer (#entity.category.printer).",
+        "L1/L2/L3 = in-game MonnowPrinterConfig upgrades, not separate market listings.",
+        "Prep: lifepunch/scripts/Publish-Prep-LpMonnowPrinterRev6.ps1",
+        "Gamemode config paste: lifepunch/gamemode/config/lpmonnowsprinterupgrade-portal.json"
+      ]
     }
   ]
 }
