@@ -271,12 +271,34 @@
 															</div>
 														</div>
 
-														<div class="overview-status-perks-row">
-															<div class="overview-status-perks">
-																<div class="overview-status-perk">@LinkedRackCount() linked rack@(LinkedRackCount() == 1 ? "" : "s")</div>
-																<div class="overview-status-perk">@MiningRackCount() mining now</div>
-																<div class="overview-status-perk">Hub wallet @HubWalletBtc().ToString("F4") BTC</div>
-																<div class="overview-status-perk">@RackPendingBtc().ToString("F4") BTC pending on racks</div>
+														<div class="overview-status-upgrades-row">
+															<div class="overview-status-upgrades-grid">
+																<div class="overview-status-upgrade-surface">
+																	<div class="overview-status-upgrade-surface-head">
+																		<i class="material-icons">dns</i>
+																		<span>Hub</span>
+																	</div>
+																	@foreach ( var track in HubUpgradeTracks )
+																	{
+																		<div class="overview-status-upgrade-track">
+																			<span class="overview-status-upgrade-track-name">@track.Name</span>
+																			<span class="overview-status-upgrade-track-tier">@OverviewTrackCurrentTier( track )</span>
+																		</div>
+																	}
+																</div>
+																<div class="overview-status-upgrade-surface">
+																	<div class="overview-status-upgrade-surface-head">
+																		<i class="material-icons">terminal</i>
+																		<span>HASHD Terminal</span>
+																	</div>
+																	@foreach ( var track in TerminalUpgradeTracks )
+																	{
+																		<div class="overview-status-upgrade-track">
+																			<span class="overview-status-upgrade-track-name">@track.Name</span>
+																			<span class="overview-status-upgrade-track-tier">@OverviewTrackCurrentTier( track )</span>
+																		</div>
+																	}
+																</div>
 															</div>
 															<div class="overview-status-upgrade-col">
 																<button class="lp-ui-btn-primary overview-status-upgrade-btn" onclick="@SelectUpgradesTab">Upgrade all</button>
@@ -1155,6 +1177,11 @@
 	// Static baseline label — always Tier I (the included baseline) on this UI-only shell.
 	private string CurrentTierLabel( UpgradeTrackShell track )
 		=> $"Tier I · {track.TierOneLabel}";
+
+	// Overview hub-status column — one line per functional track (no Tier I–V ladder here).
+	// Swap point: read owned tier from upgrade profile when economy lands.
+	private static string OverviewTrackCurrentTier( UpgradeTrackShell track )
+		=> "Base";
 
 	private static readonly OpsTab[] _tabs = { OpsTab.Overview, OpsTab.Upgrades, OpsTab.Racks, OpsTab.Wallet, OpsTab.Transfers, OpsTab.Logs, OpsTab.Settings };
 	private static readonly PerfRange[] _perfRanges = { PerfRange.Day, PerfRange.Week, PerfRange.Month };
