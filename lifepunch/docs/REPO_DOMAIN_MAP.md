@@ -87,10 +87,8 @@ All rows export to **`lifepunch-rdp-server`** unless noted. Primary agent: **RDP
 |--------|-------------|---------------|---------|
 | `lifepunch/website/` | `lifepunch-website` | **shottaWEB** (owner integrates) | lifepunch.co — Cloudflare worker, rules mirrors, deployments |
 | `lifepunch/legal/` | `lifepunch-foundation` | Owner | Trademark, IP doctrine, specimens, filing runbooks — no secrets in git |
-| `lifepunch/marketing/` | — (monorepo-only)* | Owner | YouTube/social copy templates, release tags — **assigned BUSINESS Phase 0** |
-| `lifepunch/branding/` | — (monorepo-only)* | Owner | Ops console assets, shortcut icons, UNIFORM_STANDARDS mirror — **assigned BUSINESS Phase 0** |
-
-\* *Not in `gitlab-projects.json` export paths today. Canonical edits on GitHub; add to foundation or website export in a future Phase 1 if partner lanes need them.*
+| `lifepunch/marketing/` | `lifepunch-foundation` | Owner | YouTube/social copy templates, release tags |
+| `lifepunch/branding/` | `lifepunch-foundation` | Owner | Ops console assets, shortcut icons, UNIFORM_STANDARDS mirror |
 
 ---
 
@@ -101,7 +99,7 @@ All rows export to **`lifepunch-rdp-server`** unless noted. Primary agent: **RDP
 | `lifepunch/docs/` | `lifepunch-foundation` | Owner | Onboarding, CVL, MCP, handoff, business context — **grounding bundle** |
 | `lifepunch/templates/` | `lifepunch-foundation` | Owner | Operational templates |
 | `lifepunch/scripts/` | — (monorepo-only)* | Owner | VENGEANCE automation — s&box boot, GitLab export, Cornerman, publish prep |
-| `lifepunch/config/` | — (monorepo-only)* | Owner | Machine pins — MCP ports, CVL stack, Cornerman models, DXRP upstream pin |
+| `lifepunch/config/` | `lifepunch-foundation` | Owner | Machine pins — MCP ports, CVL stack, Cornerman models, DXRP upstream pin |
 | `lifepunch/modeldoc-studio/` | — (monorepo-only)* | Owner | Standalone ModelDoc s&box project (`lifepunch.modeldoc`) — mesh P0 without full DXRP gamemode |
 | `lifepunch/dxrp-overlays/` | — (monorepo-only)* | Owner | Local DXRP dev overlays (MCP autostart, dev API hooks) — not upstream DXRP |
 
@@ -123,7 +121,7 @@ All rows export to **`lifepunch-rdp-server`** unless noted. Primary agent: **RDP
 
 | GitLab project | Monorepo paths (export) | Write access |
 |----------------|-------------------------|--------------|
-| `lifepunch-foundation` | `.cursor/rules`, `.cursor/hooks*`, `lifepunch/docs`, `lifepunch/legal`, `lifepunch/templates`, `scripts/`, `README.md` | Owner |
+| `lifepunch-foundation` | `.cursor/rules`, `.cursor/hooks*`, `lifepunch/docs`, `lifepunch/legal`, `lifepunch/marketing`, `lifepunch/branding`, `lifepunch/config`, `lifepunch/templates`, `scripts/`, `README.md` | Owner |
 | `lifepunch-addons` | `lifepunch/addons/**` | Owner |
 | `lifepunch-website` | `lifepunch/website/**` | shottaWEB + owner |
 | `lifepunch-rdp-server` | PLATFORM folders listed above | RDP agent + owner |
@@ -179,17 +177,21 @@ Unsure?
 
 ---
 
-## Phase 0 scope (this document)
+## Restructure track
 
-- **Done:** Every `lifepunch/*` top-level folder has domain + lane assignment.
-- **Not done yet (future phases):** Physical folder moves, new GitHub repos, adding monorepo-only paths to GitLab export, per-addon `.sbproj` split.
+Phased plan (owner paused addon dev until structure sign-off): **`RESTRUCTURE_ROADMAP.md`**
 
-When restructuring begins, use one slice per session and re-validate against `scripts/validate-workspace.ps1`.
+- **Phase 0 ✅** — this domain map + root README
+- **Phase 1 in progress** — GitLab export alignment (`marketing/`, `branding/`, `lifepunch/config/` → foundation)
+- **Later phases** — quarantine visibility, config SoT matrix, per-addon path migration — see roadmap
+
+When restructuring, use one slice per session and re-validate against `scripts/validate-workspace.ps1`.
 
 ---
 
 ## Related
 
-- `WORKSPACE_STRUCTURE.md` — original folder responsibilities (historical; this map supersedes for lane ownership)
+- `RESTRUCTURE_ROADMAP.md` — phased restructure track (active)
+- `WORKSPACE_STRUCTURE.md` — original folder responsibilities (lane ownership: use this map first)
 - `AGENT_PROMPT.md` Block 0 — agent boot read order
 - `AGENT_ONBOARDING.md` — full foundation

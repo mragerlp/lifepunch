@@ -34,7 +34,7 @@ Namespace: **`gitlab.com/mragerlp`**
 
 | Project slug | URL | Monorepo paths | Primary agent |
 |--------------|-----|----------------|---------------|
-| `lifepunch-foundation` | `https://gitlab.com/mragerlp/lifepunch-foundation` | `.cursor/rules`, `lifepunch/docs`, `lifepunch/legal`, `scripts/`, `README.md` | All read; owner writes (via GitHub monorepo) |
+| `lifepunch-foundation` | `https://gitlab.com/mragerlp/lifepunch-foundation` | `.cursor/rules`, `lifepunch/docs`, `lifepunch/legal`, `lifepunch/marketing`, `lifepunch/branding`, `lifepunch/config`, `lifepunch/templates`, `scripts/`, `README.md` | All read; owner writes (via GitHub monorepo) |
 | `lifepunch-addons` | `https://gitlab.com/mragerlp/lifepunch-addons` | `lifepunch/addons/**` | Owner |
 | `lifepunch-website` | `https://gitlab.com/mragerlp/lifepunch-website` | `lifepunch/website/**` | **shottaWEB** |
 | `lifepunch-rdp-server` | `https://gitlab.com/mragerlp/lifepunch-rdp-server` | `lifepunch/server`, `portal`, `gamemode`, `maps`, `admin-panel`, `economy`, `audit`, `players`, `discord`, `webhooks`, `API` | **RDP server agent** |
@@ -126,6 +126,8 @@ separately — GitHub stays `origin`; GitLab is additional lane remotes.
 
 ## Related
 
+- `lifepunch/docs/REPO_DOMAIN_MAP.md` — folder → domain → lane (foundation index)
+- `lifepunch/docs/RESTRUCTURE_ROADMAP.md` — phased restructure track (owner pause on addon dev)
 - `lifepunch/docs/AGENT_PROMPT.md` — copy/paste per lane
 - `lifepunch/docs/AGENT_ONBOARDING.md` — full foundation
 - `lifepunch/docs/OPS_CLARITY_CHECKPOINT.md` — voice web + shortcut tiers (June 2026 checkpoint)

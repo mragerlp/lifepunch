@@ -53,6 +53,17 @@ Business wrapper: `lifepunch/docs/BUSINESS_CONTEXT.md`.
 | 3 | `addons/docs/CYBER_REFERENCE_LAWS.md` | Cyber production gate (when on entity/addon work) |
 | 4 | `addons/docs/BITCOIN_SHIP_ROADMAP.md` | Step order (bitcoin lane only) |
 
+## Restructure track (June 2026 — owner pause on addon implementation)
+
+Bloodwave paused **hub/feature implementation** until monorepo structure is signed off. During this window:
+
+| Order | Doc | Why |
+|-------|-----|-----|
+| 1 | `lifepunch/docs/REPO_DOMAIN_MAP.md` | Folder → domain → GitLab lane |
+| 2 | `lifepunch/docs/RESTRUCTURE_ROADMAP.md` | Phased plan; one slice per session |
+
+Product canon (`ACTIVE_WORKSTREAM`, quarantine, Bitcoin design) still applies — do not ship or extend quarantined lanes. Resume hub slices only after restructure sign-off in the roadmap.
+
 ## Mandatory reads — gameplay / product (when touching design, UX, economy doctrine)
 
 | Order | Doc | Why |

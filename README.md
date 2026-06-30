@@ -11,8 +11,9 @@ This repository is the **canonical source of truth** for the **LIFEPUNCH™** co
 
 1. **Sync:** `git fetch` · `git pull --rebase` (stop if behind + dirty).
 2. **Domain map:** [`lifepunch/docs/REPO_DOMAIN_MAP.md`](lifepunch/docs/REPO_DOMAIN_MAP.md) — every folder → domain, GitLab lane, owner.
-3. **Production gate:** [`lifepunch/addons/docs/ACTIVE_WORKSTREAM.md`](lifepunch/addons/docs/ACTIVE_WORKSTREAM.md)
-4. **Agent boot:** [`lifepunch/docs/AGENT_PROMPT.md`](lifepunch/docs/AGENT_PROMPT.md) Block 0
+3. **Restructure track:** [`lifepunch/docs/RESTRUCTURE_ROADMAP.md`](lifepunch/docs/RESTRUCTURE_ROADMAP.md) — phased plan (active until owner sign-off).
+4. **Production gate:** [`lifepunch/addons/docs/ACTIVE_WORKSTREAM.md`](lifepunch/addons/docs/ACTIVE_WORKSTREAM.md) — product canon; implementation paused during restructure.
+5. **Agent boot:** [`lifepunch/docs/AGENT_PROMPT.md`](lifepunch/docs/AGENT_PROMPT.md) Block 0
 
 ---
 
@@ -35,8 +36,8 @@ README.md
 |--------|---------|----------------------|
 | **PRODUCT** | `addons/`, `publish-lane/` (scaffold) | `lifepunch-addons` · publish → `lifepunch-published` repo |
 | **PLATFORM** | `server/`, `gamemode/`, `portal/`, `admin-panel/`, `economy/`, `maps/`, `players/`, `audit/`, `discord/`, `webhooks/`, `API/` | `lifepunch-rdp-server` |
-| **BUSINESS** | `website/`, `legal/`, `marketing/`, `branding/` | `lifepunch-website` · `lifepunch-foundation` (legal) · marketing/branding monorepo-only today |
-| **TOOLING** | `docs/`, `templates/`, `scripts/`, `config/`, `modeldoc-studio/`, `dxrp-overlays/` | `lifepunch-foundation` (docs, templates) · rest monorepo-only today |
+| **BUSINESS** | `website/`, `legal/`, `marketing/`, `branding/` | `lifepunch-website` · `lifepunch-foundation` (legal, marketing, branding) |
+| **TOOLING** | `docs/`, `templates/`, `scripts/`, `config/`, `modeldoc-studio/`, `dxrp-overlays/` | `lifepunch-foundation` (docs, templates, config) · scripts/modeldoc/overlays monorepo-only |
 | **LOCAL-ONLY** | `secure/` | Never exported |
 
 Full table (every folder, primary agent, notes): **[`lifepunch/docs/REPO_DOMAIN_MAP.md`](lifepunch/docs/REPO_DOMAIN_MAP.md)**

@@ -37,6 +37,9 @@
                                                ".cursor/rules",
                                                "lifepunch/docs",
                                                "lifepunch/legal",
+                                               "lifepunch/marketing",
+                                               "lifepunch/branding",
+                                               "lifepunch/config",
                                                "lifepunch/templates",
                                                "scripts",
                                                "README.md"
