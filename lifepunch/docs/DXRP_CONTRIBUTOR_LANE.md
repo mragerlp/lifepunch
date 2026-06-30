@@ -57,39 +57,9 @@ Do NOT edit dxrp-public unless explicitly bouncing an upstream fix back to the f
 
 ## Dual IDE: Cursor (Agent) + VS Code (Copilot)
 
-**Why:** Dxura staff (Dimmer) works in **VS Code + GitHub Copilot**. Copilot is **not supported inside Cursor** (not in Cursor’s extension marketplace; VS Code core integration conflicts). Bloodwave keeps **Cursor Agent** for implementation; adds **VS Code** for Copilot parity when pairing, reviewing, or matching upstream style.
+**Canon:** `lifepunch/docs/DUAL_IDE_CURSOR_VSCODE.md` — applies to **both** `lifepunchaddons` and `dxrp-public` (Dimmer-aligned mirror on addon code + upstream fork).
 
-| IDE | Tooling | Use for |
-|-----|---------|---------|
-| **Cursor** | Agent, Composer, rules, s&box MCP | Multi-file DXRP slices, flatgrass proof, PR prep, commit |
-| **VS Code** | GitHub Copilot + Copilot Chat | Inline completions the way Dimmer writes; PR/diff chat; quick single-file edits |
-
-**One-time setup (VENGEANCE)**
-
-1. Install [VS Code](https://code.visualstudio.com/) if missing.
-2. Extensions (`Ctrl+Shift+X`): **GitHub Copilot**, **GitHub Copilot Chat** (official GitHub publisher).
-3. `Ctrl+Shift+P` → **GitHub Copilot: Sign In** — GitHub account with Copilot access.
-4. **File → Open Folder** → `C:\Users\jared\Projects\dxrp-public` (same clone as Cursor; do not duplicate the repo).
-
-**Cursor side (avoid fighting autocomplete)**
-
-- When VS Code is open on `dxrp-public`, disable inline AI in Cursor: `Ctrl+Shift+P` → **Disable Cursor Tab** (or status bar **Tab** → Disable globally).
-- Re-enable Cursor Tab when back to Cursor-only sessions (LifePunch monorepo, agent work without VS Code).
-
-**Daily workflow with Dimmer**
-
-1. **Implement** in Cursor (Agent session, contributor lane paste, branch on `dxrp-public`).
-2. **Spot-check** changed `.cs` / `.razor` files in VS Code — Copilot inline should feel like Dimmer’s environment.
-3. **Review** Dimmer’s PRs or issue comments in VS Code with **Copilot Chat** on the diff.
-4. **Commit once** from one IDE per slice (save all files first; other IDE reloads on focus if prompted).
-5. **Never** VSIX-hack Copilot into Cursor or run Cursor Tab + Copilot inline on the same file.
-
-**Repo split**
-
-| Repo | Cursor | VS Code + Copilot |
-|------|--------|-------------------|
-| `dxrp-public` (upstream) | Yes — primary for Agent | Yes — Copilot parity / review |
-| `lifepunchaddons` (private) | Yes — only IDE | No — proprietary + MCP stack stays Cursor |
+**Short version:** Cursor Agent + MCP implement and prove; VS Code Copilot inline/Chat spot-checks the same files Dimmer would edit. Disable **Cursor Tab** while VS Code is open on that repo. Copilot credit tips: [VS Code optimize-usage guide](https://code.visualstudio.com/docs/agents/guides/optimize-usage).
 
 Commit hygiene applies in **both** IDEs: author `mragerlp` only, no Cursor/Copilot co-author trailers (see below).
 
@@ -158,16 +128,15 @@ Full law + recovery: **`.cursor/rules/lifepunch-commit-hygiene.mdc`**. Upstream-
 
 ---
 
-## Current bounty: Party system (#73) — SHIPPED to PR #77
+## Current upstream: Party Phase 2 ([#111](https://github.com/dxura/dxrp/issues/111))
 
-PR **#77** (`mragerlp:bounty/73-party-system` → `dxura/dxrp:develop`): **open · mergeable: clean**,
-22 files / +2609 / -5, head `914967a`. Dimmer approved ("you can continue"); his one criticism (4
-syncvars → 1 GUID→struct netdict) is implemented as a single `[Sync(FromHost)] NetDictionary<Guid,
-PartyData> Parties`. All commits authored by `mragerlp`, **no AI trailer** (history cleaned 2026-06-29).
+**#73 merged** to `develop`. Follow-up scope in **#111** (names, browse, per-member outline, party size UI, optional staff panel).
 
-**Branch:** `bounty/73-party-system` on `mragerlp/dxrp-public`  
-**Done:** Party HUD Alt-gated drag + collapse chevron (mirrors `AdminTickets` + `DraggablePanel`);
-`/party` menu equal-width roster cards. Awaiting Dimmer's review/merge.
+**Branch:** `mragerlp-party-phase-2` on `mragerlp/dxrp-public`  
+**PR order:** `outline+defaults` → `party-size` → `names` → `browse` → `staff` (P2 blocked on Dimmer portal/rank)  
+**Gate:** Implementation after Dxura approves #111 (owner **GO** on slice 1).
+
+Related: [#98](https://github.com/dxura/dxrp/issues/98) names · [#101](https://github.com/dxura/dxrp/issues/101) directory/admin proposal · member highlight PR #95 (may adjust when outline becomes per-client).
 
 ---
 
@@ -187,7 +156,9 @@ Templates: `lifepunch/docs/handoff/templates/CORNERMAN_RESTART_PACKET_BRIEF.md`,
 
 | Doc | URL / path |
 |-----|------------|
+| Dual IDE (Cursor + Copilot) | `lifepunch/docs/DUAL_IDE_CURSOR_VSCODE.md` |
 | Party #73 Cursor boot | `lifepunch/docs/handoff/DXRP_PARTY_CURSOR_BOOTSTRAP_PASTE.txt` |
+| Party Phase 2 tracker | https://github.com/dxura/dxrp/issues/111 |
 | Agent Block F | `lifepunch/docs/AGENT_PROMPT.md` |
 | Branch manifest | `lifepunch/docs/handoff/dxrp/DXRP_73_BRANCH_MANIFEST.txt` |
 | DXRP fork bridge | `lifepunch/docs/DXRP_DOCS_REFERENCE.md` |

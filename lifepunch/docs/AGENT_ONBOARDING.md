@@ -410,6 +410,7 @@ Quick rules:
 | **ULX** | `adminmenu` r10 Set Job committed — parallel portal ship when owner says; does not pause bitcoin gate. |
 | **Monnow** | Rev 9 path `monnowprinterlp/monnowprinter.prefab` — staging ready; portal pin pending (parallel lane). |
 | **CVL stack** | `Start-CvlFullCapacity.ps1` · `Get-CvlConnectivityStatus.ps1 -Pretty` → `allOk: true`. Reload Cursor after MCP changes. |
+| **Dual IDE** | **Cursor Agent + MCP** implement/prove; **VS Code Copilot** Dimmer-aligned mirror on **both** `lifepunchaddons` and `dxrp-public`. Disable Cursor Tab when VS Code open on same repo. `DUAL_IDE_CURSOR_VSCODE.md` |
 
 **Prior (2026-06-22) — ULX vanilla workbench session (historical — superseded for bitcoin lane):**
 
