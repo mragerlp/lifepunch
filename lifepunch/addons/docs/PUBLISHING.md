@@ -9,7 +9,22 @@ Assets/addons/lifepunch/<ident>/
 Code/Addons/lifepunch/<ident>/
 ```
 
-The generated upload root must preserve the DXRP game project shape:
+The generated upload root shape depends on the addon:
+
+**Bitcoin (`lifepunchbitcoin`) — portal network ident layout:**
+
+```text
+.dxrp-publish/upload/
+  lifepunch/
+    lpbitcoin/
+      Assets/          # pick this folder on portal Assets upload
+        addons/lifepunch/lpbitcoin/{bitcoinhub,hashdterminal,gpurack}/
+      Code/            # pick this folder on portal Code upload
+```
+
+Combined **Assets + Code** must stay **≤ 300 MB**. `prepare-publish.ps1` reports size and prunes non-ship files (e.g. `btccashredeem`, dev-only C#).
+
+**Other addons — game-mirror layout:**
 
 ```text
 .dxrp-publish/upload/
@@ -26,11 +41,30 @@ upload-code/
 
 ## Generate Staging
 
+**Repo-only (legacy / code-only addons):**
+
 ```powershell
 .\scripts\prepare-publish.ps1 -Addon ak47
 ```
 
-The script reads `config/addons.json`, validates the repo, creates `.dxrp-publish/upload`, and copies only the selected addon's mounted asset/code folders.
+**Ship-tier (Assets + Code from DXRP editor game — bitcoin and future `_c` lanes):**
+
+```powershell
+# Bitcoin one-shot (recommended)
+powershell -File lifepunch\scripts\Prepare-LpBitcoinPublish.ps1 -OpenFolder
+
+# Or generic flag
+.\scripts\prepare-publish.ps1 -Addon bitcoinmining -FromDxrpGame -OpenFolder
+```
+
+DXRP game compile truth:
+
+```text
+D:\Steam\steamapps\common\sbox\dxrp\game\Assets\addons\lifepunch\lpbitcoin\
+D:\Steam\steamapps\common\sbox\dxrp\game\Code\Addons\lifepunch\bitcoinmining\
+```
+
+The script reads `config/addons.json`, validates the repo, creates `.dxrp-publish/upload`, and copies the selected addon's mounted asset/code folders.
 
 It also writes `.dxrp-publish/package-<ident>.json` with the package identity and content-row values to use when checking the DXRP portal fields.
 

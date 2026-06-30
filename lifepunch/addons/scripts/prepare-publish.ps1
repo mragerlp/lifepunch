@@ -2,7 +2,12 @@ param(
     [Parameter(Mandatory = $true)]
     [string]$Addon,
 
-    [switch]$OpenFolder
+    [switch]$OpenFolder,
+
+    # Ship-tier: read Assets (*_c) + Code from the live DXRP editor game tree.
+    [switch]$FromDxrpGame,
+
+    [string]$DxrpConfigPath = ''
 )
 
 $ErrorActionPreference = 'Stop'
@@ -10,9 +15,30 @@ $ErrorActionPreference = 'Stop'
 $Root = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 $ManifestPath = Join-Path $Root 'config\addons.json'
 $UploadRoot = Join-Path $Root '.dxrp-publish\upload'
+$Script:AssetsSourceKind = 'repo'
+$Script:AssetsSourcePath = ''
+$Script:CodeSourceKind = 'repo'
+$Script:CodeSourcePath = ''
+$Script:HubCodeSourcePath = ''
 
 $Script:ShipAssetExcludeExtensions = @('.blend', '.fbx', '.tga', '.obj')
 $Script:ShipAssetExcludeFolders = @('source', '_archive', 'audit', 'docs', '_dev')
+$Script:PortalUploadMaxMb = 300
+
+# Parked — not in Rev 3 ship set (portal BTC redeem rail deferred).
+$Script:BitcoinShipAssetPrunePatterns = @(
+    'btccashredeem.prefab',
+    'btccashredeem.prefab_c',
+    'btccashredeem.vmdl',
+    'btccashredeem.vmdl_c'
+)
+
+function Test-BitcoinParkedAssetFile {
+    param([string]$FileName)
+
+    if ($FileName -like 'btccashredeem*') { return $true }
+    return $FileName -in $Script:BitcoinShipAssetPrunePatterns
+}
 
 function Test-PublishShipFile {
     param(
@@ -39,11 +65,205 @@ function Test-PublishShipFile {
         return $false
     }
 
+    if ($ShipAssetsOnly -and (Test-BitcoinParkedAssetFile -FileName $File.Name)) {
+        return $false
+    }
+
     if ($ShipAssetsOnly -and $File.Extension -in $Script:ShipAssetExcludeExtensions) {
         return $false
     }
 
     return $true
+}
+
+function Resolve-DxrpGameRoot {
+    param([string]$ConfigPath)
+
+    if ([string]::IsNullOrWhiteSpace($ConfigPath)) {
+        $ConfigPath = Join-Path $Root '..\scripts\dxrp-editor.local.json'
+    }
+
+    if (-not (Test-Path -LiteralPath $ConfigPath)) {
+        throw "Missing DXRP editor config: $ConfigPath (copy dxrp-editor.local.json.example)."
+    }
+
+    $cfg = Get-Content -LiteralPath $ConfigPath -Raw | ConvertFrom-Json
+    $project = [string]$cfg.projectPath
+    if ([string]::IsNullOrWhiteSpace($project) -or -not (Test-Path -LiteralPath $project)) {
+        throw "DXRP project not found in config: $project"
+    }
+
+    return (Split-Path -Parent $project)
+}
+
+function Get-PublishAssetFolderName {
+    param([string]$Ident)
+
+    if ($Ident -eq 'bitcoinmining') { return 'lpbitcoin' }
+    return $Ident
+}
+
+function Resolve-PortalUploadLayout {
+    param(
+        [Parameter(Mandatory = $true)]
+        $Package,
+        [string]$Org,
+        [string]$UploadRoot
+    )
+
+    $publishFolder = Get-DxrpPublishFolderName -Package $Package
+    $assetFolder = Get-PublishAssetFolderName -Ident $Package.ident
+
+    if ($Package.ident -eq 'bitcoinmining') {
+        $packageRoot = Join-Path $UploadRoot (Join-Path $Org $assetFolder)
+        return [ordered]@{
+            Layout          = 'lifepunch-package'
+            NetworkFolder   = $Org
+            PackageFolder   = $assetFolder
+            PackageRoot     = $packageRoot
+            AssetsStage     = Join-Path $packageRoot 'Assets'
+            AssetsMountRoot = Join-Path $packageRoot (Join-Path 'Assets' (Join-Path 'addons' (Join-Path $Org $assetFolder)))
+            CodeStage       = Join-Path $packageRoot 'Code'
+            PublishFolder   = $assetFolder
+        }
+    }
+
+    return [ordered]@{
+        Layout          = 'game-mirror'
+        NetworkFolder   = $Org
+        PackageFolder   = $publishFolder
+        PackageRoot     = $UploadRoot
+        AssetsStage     = Join-Path $UploadRoot (Join-Path 'Assets' (Join-Path 'addons' (Join-Path $Org $assetFolder)))
+        AssetsMountRoot = Join-Path $UploadRoot (Join-Path 'Assets' (Join-Path 'addons' (Join-Path $Org $assetFolder)))
+        CodeStage       = Join-Path $UploadRoot (Join-Path 'Code' (Join-Path 'Addons' (Join-Path $Org $publishFolder)))
+        PublishFolder   = $publishFolder
+    }
+}
+
+function Invoke-PruneLpBitcoinPublishStaging {
+    param(
+        [string]$AssetsMountRoot,
+        [string]$CodeStage
+    )
+
+    $removed = 0
+
+    if (Test-Path -LiteralPath $AssetsMountRoot) {
+        foreach ($pattern in $Script:BitcoinShipAssetPrunePatterns) {
+            Get-ChildItem -LiteralPath $AssetsMountRoot -Recurse -File -Force -Filter $pattern -ErrorAction SilentlyContinue |
+                ForEach-Object {
+                    Remove-Item -LiteralPath $_.FullName -Force
+                    $removed++
+                }
+        }
+
+        Get-ChildItem -LiteralPath $AssetsMountRoot -Recurse -File -Force -Filter 'btccashredeem*' -ErrorAction SilentlyContinue |
+            ForEach-Object {
+                Remove-Item -LiteralPath $_.FullName -Force
+                $removed++
+            }
+
+        # Retired top-level slot folder (advanced rack lives under gpurack/).
+        $retiredSlot = Join-Path $AssetsMountRoot 'advancedgpurack'
+        if (Test-Path -LiteralPath $retiredSlot) {
+            Remove-Item -LiteralPath $retiredSlot -Recurse -Force
+            $removed++
+        }
+    }
+
+    if (Test-Path -LiteralPath $CodeStage) {
+        Get-ChildItem -LiteralPath $CodeStage -Recurse -File -Force -ErrorAction SilentlyContinue |
+            Where-Object { $_.Name -match '(DevSpawn|TestBots|DevGive)' } |
+            ForEach-Object {
+                Remove-Item -LiteralPath $_.FullName -Force
+                $removed++
+            }
+    }
+
+    if ($removed -gt 0) {
+        Write-Host "  pruned $removed non-ship / dev-only file(s)" -ForegroundColor DarkGray
+    }
+}
+
+function Write-PublishSizeReport {
+    param(
+        [string]$UploadRoot,
+        [string]$AssetsStage,
+        [string]$CodeStage
+    )
+
+    $assetsBytes = 0L
+    $codeBytes = 0L
+    if (Test-Path -LiteralPath $AssetsStage) {
+        $assetsBytes = (Get-ChildItem -LiteralPath $AssetsStage -Recurse -File -Force -ErrorAction SilentlyContinue |
+            Measure-Object Length -Sum).Sum
+    }
+    if (Test-Path -LiteralPath $CodeStage) {
+        $codeBytes = (Get-ChildItem -LiteralPath $CodeStage -Recurse -File -Force -ErrorAction SilentlyContinue |
+            Measure-Object Length -Sum).Sum
+    }
+
+    $totalMb = [math]::Round((($assetsBytes + $codeBytes) / 1MB), 1)
+    $assetsMb = [math]::Round(($assetsBytes / 1MB), 1)
+    $codeMb = [math]::Round(($codeBytes / 1MB), 1)
+
+    Write-Host "  size budget: $totalMb MB total (Assets $assetsMb MB + Code $codeMb MB) cap $($Script:PortalUploadMaxMb) MB" -ForegroundColor $(if ($totalMb -gt $Script:PortalUploadMaxMb) { 'Yellow' } else { 'Green' })
+
+    if ($totalMb -gt $Script:PortalUploadMaxMb) {
+        Write-Warning "Over DXRP portal cap ($totalMb MB > $($Script:PortalUploadMaxMb) MB). Trim source art, drop non-ship assets, or re-run after ModelDoc ship audit."
+        $largest = @(Get-ChildItem -LiteralPath $UploadRoot -Recurse -File -Force -ErrorAction SilentlyContinue |
+            Sort-Object Length -Descending |
+            Select-Object -First 8)
+        foreach ($file in $largest) {
+            $rel = $file.FullName.Substring($UploadRoot.Length).TrimStart('\', '/')
+            $mb = [math]::Round($file.Length / 1MB, 2)
+            Write-Host "    $mb MB  $rel" -ForegroundColor DarkYellow
+        }
+    }
+
+    return [ordered]@{
+        totalMb  = $totalMb
+        assetsMb = $assetsMb
+        codeMb   = $codeMb
+    }
+}
+
+function Test-PublishCompiledAssetCoverage {
+    param([string]$AssetsRoot)
+
+    if (-not (Test-Path -LiteralPath $AssetsRoot)) {
+        return [ordered]@{ compiled = 0; total = 0; missing = @('(assets root missing)') }
+    }
+
+    $shipFiles = @(Get-ChildItem -LiteralPath $AssetsRoot -Recurse -File -Force -ErrorAction SilentlyContinue |
+        Where-Object {
+            $Relative = $_.FullName.Substring($AssetsRoot.Length).TrimStart('\', '/')
+            $RelativeParts = $Relative -split '[\\/]'
+            Test-PublishShipFile -File $_ -RelativeParts $RelativeParts -ShipAssetsOnly
+        })
+
+    $compiled = @($shipFiles | Where-Object { $_.Extension -match '_c$' })
+    $missing = @()
+
+    foreach ($prefab in @($shipFiles | Where-Object { $_.Extension -eq '.prefab' })) {
+        $compiledSibling = $prefab.FullName + '_c'
+        if (-not (Test-Path -LiteralPath $compiledSibling)) {
+            $missing += ($prefab.FullName.Substring($AssetsRoot.Length).TrimStart('\', '/'))
+        }
+    }
+
+    foreach ($vmdl in @($shipFiles | Where-Object { $_.Extension -eq '.vmdl' })) {
+        $compiledSibling = $vmdl.FullName + '_c'
+        if (-not (Test-Path -LiteralPath $compiledSibling)) {
+            $missing += ($vmdl.FullName.Substring($AssetsRoot.Length).TrimStart('\', '/'))
+        }
+    }
+
+    return [ordered]@{
+        compiled = $compiled.Count
+        total    = $shipFiles.Count
+        missing  = @($missing | Select-Object -Unique)
+    }
 }
 
 function Get-DxrpPublishFolderName {
@@ -190,37 +410,101 @@ if (Test-Path -LiteralPath $UploadRoot) {
 
 $Org = [string]$Manifest.org
 $PublishFolder = Get-DxrpPublishFolderName -Package $Package
-$AssetsStage = Join-Path $UploadRoot "Assets\addons\$Org\$PublishFolder"
-$CodeStage = Join-Path $UploadRoot "Code\Addons\$Org\$PublishFolder"
+$Layout = Resolve-PortalUploadLayout -Package $Package -Org $Org -UploadRoot $UploadRoot
+$AssetsStage = [string]$Layout.AssetsStage
+$AssetsMountRoot = [string]$Layout.AssetsMountRoot
+$CodeStage = [string]$Layout.CodeStage
+$Script:PortalLayout = [string]$Layout.Layout
+$dxrpGame = $null
+if ($FromDxrpGame) {
+    $dxrpGame = Resolve-DxrpGameRoot -ConfigPath $DxrpConfigPath
+}
 
 if ($Package.hasAssets) {
-    if ($Package.ident -eq 'bitcoinmining') {
-        # Runtime paths use lpbitcoin/* — stage ship-tier assets there (not legacy bitcoinmining/).
+    $assetFolder = Get-PublishAssetFolderName -Ident $Package.ident
+
+    if ($FromDxrpGame) {
+        $AssetsSource = Join-Path $dxrpGame "Assets\addons\$Org\$assetFolder"
+        $Script:AssetsSourceKind = 'dxrp-game'
+        $Script:AssetsSourcePath = $AssetsSource
+
+        if (-not (Test-Path -LiteralPath $AssetsSource -PathType Container)) {
+            throw "FromDxrpGame: DXRP assets missing at: $AssetsSource. Run Sync-LifePunchAddonsToDxrp.ps1, compile in ModelDoc, then retry."
+        }
+    } elseif ($Package.ident -eq 'bitcoinmining') {
         $AssetsSource = Join-Path $Root "Assets\addons\$Org\lpbitcoin"
-        $AssetsStage = Join-Path $UploadRoot "Assets\addons\$Org\lpbitcoin"
+        $Script:AssetsSourcePath = $AssetsSource
     } else {
         $AssetsSource = Join-Path $Root "Assets\addons\$Org\$($Package.ident)"
+        $Script:AssetsSourcePath = $AssetsSource
     }
 
-    New-Item -ItemType Directory -Force -Path $AssetsStage | Out-Null
-    Copy-PublishItems -Source $AssetsSource -Destination $AssetsStage -ShipAssetsOnly:($Package.ident -eq 'bitcoinmining')
+    New-Item -ItemType Directory -Force -Path $AssetsMountRoot | Out-Null
+    Copy-PublishItems -Source $AssetsSource -Destination $AssetsMountRoot -ShipAssetsOnly:($Package.ident -eq 'bitcoinmining')
+
+    $coverage = Test-PublishCompiledAssetCoverage -AssetsRoot $AssetsMountRoot
+    Write-Host "Assets source: $Script:AssetsSourceKind -> $Script:AssetsSourcePath" -ForegroundColor Cyan
+    Write-Host "  ship files: $($coverage.total) | compiled _c: $($coverage.compiled)" -ForegroundColor $(if ($coverage.compiled -gt 0) { 'Green' } else { 'Yellow' })
+    if ($coverage.missing.Count -gt 0) {
+        Write-Warning "Missing compiled siblings for $($coverage.missing.Count) prefab/vmdl - open ModelDoc on DXRP game Assets and recompile before portal upload."
+        $coverage.missing | Select-Object -First 8 | ForEach-Object { Write-Host "    $_" -ForegroundColor DarkYellow }
+        if ($coverage.missing.Count -gt 8) {
+            Write-Host "    ... + $($coverage.missing.Count - 8) more" -ForegroundColor DarkYellow
+        }
+    }
 }
 
 if ($Package.hasCode) {
-    $CodeSource = Join-Path $Root "Code\Addons\$Org\$($Package.ident)"
+    if ($FromDxrpGame) {
+        $CodeSource = Join-Path $dxrpGame "Code\Addons\$Org\$($Package.ident)"
+        $Script:CodeSourceKind = 'dxrp-game'
+        $Script:CodeSourcePath = $CodeSource
+
+        if (-not (Test-Path -LiteralPath $CodeSource -PathType Container)) {
+            throw "FromDxrpGame: DXRP code missing at: $CodeSource. Run Sync-LifePunchAddonsToDxrp.ps1, Stop then Play (compile), then retry."
+        }
+    } else {
+        $CodeSource = Join-Path $Root "Code\Addons\$Org\$($Package.ident)"
+        $Script:CodeSourcePath = $CodeSource
+    }
+
     New-Item -ItemType Directory -Force -Path $CodeStage | Out-Null
     Copy-PublishItems -Source $CodeSource -Destination $CodeStage
 
     if ($Package.ident -eq 'bitcoinmining') {
-        $HubCodeSource = Join-Path $Root "Code\Addons\$Org\lpbitcoin\bitcoinhub\code"
+        if ($FromDxrpGame) {
+            $HubCodeSource = Join-Path $dxrpGame "Code\Addons\$Org\lpbitcoin\bitcoinhub\code"
+        } else {
+            $HubCodeSource = Join-Path $Root "Code\Addons\$Org\lpbitcoin\bitcoinhub\code"
+        }
+
+        $Script:HubCodeSourcePath = $HubCodeSource
         Copy-PublishItems -Source $HubCodeSource -Destination $CodeStage
     }
 
     if ($Package.ident -eq 'adminmenu') {
-        $SharedCodeRoot = Join-Path $Root "Code\Addons\$Org"
+        if ($FromDxrpGame) {
+            $SharedCodeRoot = Join-Path $dxrpGame "Code\Addons\$Org"
+        } else {
+            $SharedCodeRoot = Join-Path $Root "Code\Addons\$Org"
+        }
+
         Add-AdminMenuSharedShipDeps -SharedCodeRoot $SharedCodeRoot -CodeStage $CodeStage
     }
+
+    $codeFiles = @(Get-ChildItem -LiteralPath $CodeStage -Recurse -File -Force -ErrorAction SilentlyContinue)
+    Write-Host "Code source: $Script:CodeSourceKind -> $Script:CodeSourcePath" -ForegroundColor Cyan
+    if ($Script:HubCodeSourcePath) {
+        Write-Host "  + hub code: $Script:HubCodeSourcePath" -ForegroundColor DarkGray
+    }
+    Write-Host "  staged code files: $($codeFiles.Count)" -ForegroundColor Green
 }
+
+if ($Package.ident -eq 'bitcoinmining') {
+    Invoke-PruneLpBitcoinPublishStaging -AssetsMountRoot $AssetsMountRoot -CodeStage $CodeStage
+}
+
+$sizeReport = Write-PublishSizeReport -UploadRoot $UploadRoot -AssetsStage $AssetsStage -CodeStage $CodeStage
 
 $ContentRows = @(@($Package.contents) | ForEach-Object {
     [ordered]@{
@@ -244,8 +528,19 @@ DXRP publish staging for $Org.$($Package.ident)
 Generated from:
   $Root
 
+Assets source ($Script:AssetsSourceKind):
+  $Script:AssetsSourcePath
+
+Code source ($Script:CodeSourceKind):
+  $Script:CodeSourcePath
+$(if ($Script:HubCodeSourcePath) { "  + hub: $Script:HubCodeSourcePath" } else { '' })
+
 Upload root:
   $UploadRoot
+
+Portal upload layout ($Script:PortalLayout):
+  lifepunch/lpbitcoin/Assets/   (bitcoin: runtime paths under addons/lifepunch/lpbitcoin/)
+  lifepunch/lpbitcoin/Code/
 
 Package:
   Title:      $($Package.title)
@@ -253,10 +548,15 @@ Package:
   HasAssets:  $($Package.hasAssets)
   HasCode:    $($Package.hasCode)
 
-Expected DXRP paths:
+Expected portal paths (bitcoin):
+  upload/lifepunch/lpbitcoin/Assets/addons/lifepunch/lpbitcoin/{bitcoinhub,hashdterminal,gpurack}/
+  upload/lifepunch/lpbitcoin/Code/
+
+Expected DXRP paths (other addons, game-mirror layout):
   Assets/addons/$Org/$PublishFolder/
   Code/Addons/$Org/$PublishFolder/
-  (repo source: $($Package.ident)/ when publish folder differs)
+
+Size (Assets + Code): $($sizeReport.totalMb) MB (cap $($Script:PortalUploadMaxMb) MB)
 
 Content rows:
 $(
@@ -290,7 +590,10 @@ $PackageExport = [ordered]@{
     package = [ordered]@{
         org = $Org
         ident = $Package.ident
-        publishFolder = $PublishFolder
+        publishFolder = $Layout.PublishFolder
+        portalLayout = $Layout.Layout
+        uploadAssetsRoot = if ($Layout.Layout -eq 'lifepunch-package') { "lifepunch/$($Layout.PackageFolder)/Assets" } else { "Assets/addons/$Org/$($Layout.PublishFolder)" }
+        uploadCodeRoot = if ($Layout.Layout -eq 'lifepunch-package') { "lifepunch/$($Layout.PackageFolder)/Code" } else { "Code/Addons/$Org/$($Layout.PublishFolder)" }
         sboxIdentifier = $Package.sboxIdentifier
         title = $Package.title
         kind = $Package.kind
@@ -305,23 +608,23 @@ $PackageExport |
     ConvertTo-Json -Depth 8 |
     Set-Content -LiteralPath (Join-Path $StagingRoot "package-$($Package.ident).json") -Encoding UTF8
 
+Write-Host "Prepared DXRP publish staging for $Org.$($Package.ident)" -ForegroundColor Green
+Write-Host "Upload root: $UploadRoot"
+if ($Layout.Layout -eq 'lifepunch-package') {
+    Write-Host "Portal pick:" -ForegroundColor Cyan
+    Write-Host "  Assets -> lifepunch\lpbitcoin\Assets" -ForegroundColor Cyan
+    Write-Host "  Code   -> lifepunch\lpbitcoin\Code" -ForegroundColor Cyan
+}
+Write-Host "Staging size: $($sizeReport.totalMb) MB (Assets $($sizeReport.assetsMb) + Code $($sizeReport.codeMb))" -ForegroundColor $(if ($sizeReport.totalMb -gt $Script:PortalUploadMaxMb) { 'Yellow' } else { 'Green' })
+if ($sizeReport.totalMb -gt $Script:PortalUploadMaxMb) {
+    Write-Warning "Staging exceeds DXRP $($Script:PortalUploadMaxMb) MB upload cap - trim before portal upload."
+}
+
 $UploadFiles = @()
 if (Test-Path -LiteralPath $UploadRoot) {
     $UploadFiles = @(Get-ChildItem -LiteralPath $UploadRoot -Recurse -File -Force)
 }
-
-$UploadSizeMb = if ($UploadFiles.Count -gt 0) {
-    [math]::Round((($UploadFiles | Measure-Object Length -Sum).Sum / 1MB), 1)
-} else {
-    0
-}
-
-Write-Host "Prepared DXRP publish staging for $Org.$($Package.ident)" -ForegroundColor Green
-Write-Host "Upload root: $UploadRoot"
-Write-Host "Staging size: $UploadSizeMb MB ($($UploadFiles.Count) files)" -ForegroundColor $(if ($UploadSizeMb -gt 300) { 'Yellow' } else { 'Green' })
-if ($UploadSizeMb -gt 300) {
-    Write-Warning "Staging exceeds DXRP ~300 MB upload cap - trim source art or run ship-tier audit."
-}
+Write-Host "  $($UploadFiles.Count) files staged" -ForegroundColor DarkGray
 
 if ($OpenFolder) {
     Invoke-Item $UploadRoot

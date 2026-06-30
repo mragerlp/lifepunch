@@ -100,13 +100,24 @@ C:\Users\jared\OneDrive\Desktop\UPLOAD READY ADDONS\addons\lifepunch\
 
 ## Publish flow (when owner says ship)
 
-1. Entity **done** — flatgrass proof, owner sign-off (e.g. H10 for hub).
-2. Promote assets + code into **`lpbitcoin/{entity}/`** in repo (folder name = slug).
-3. Owner copies finished package(s) into **UPLOAD READY ADDONS PLACEHOLDER** (agents do not do this unless asked).
-4. `prepare-publish.ps1 -Addon <repoIdent>` → `.dxrp-publish/upload/` with compiled `_c`.
-5. Owner uploads to **dxrp.net/addons** and sets display names / content rows / market copy in the portal.
+**Compile truth:** the DXRP editor game tree — not the monorepo alone.
 
-**Repo ident today:** `bitcoinmining` (code mount) · **Package slug:** `lifepunchbitcoin` · **Staging package folder:** `lpbitcoin`.
+| Layer | DXRP editor path (ship source with `-FromDxrpGame`) |
+|-------|-----------------------------------------------------|
+| **Assets** | `D:\Steam\steamapps\common\sbox\dxrp\game\Assets\addons\lifepunch\lpbitcoin\` |
+| **Code** | `D:\Steam\steamapps\common\sbox\dxrp\game\Code\Addons\lifepunch\bitcoinmining\` |
+| **Hub code** | `...\Code\Addons\lifepunch\lpbitcoin\bitcoinhub\code\` (merged into portal Code bundle) |
+
+**Repo** remains git source of truth for edits; **sync → compile in editor → publish from DXRP game** for Rev 3+ portal upload.
+
+1. Entity **done** — flatgrass proof, owner sign-off (e.g. H10 for hub).
+2. `Sync-LifePunchAddonsToDxrp.ps1 -Addon lpbitcoin` → editor game Assets + Code.
+3. ModelDoc compile all four entities (`bitcoinhub`, `hashdterminal`, `gpurack`, `advancedgpurack` prefabs + vmdls).
+4. Stop → Play — green compile on DXRP game Code.
+5. **`Prepare-LpBitcoinPublish.ps1`** (or `prepare-publish.ps1 -Addon bitcoinmining -FromDxrpGame`) → `.dxrp-publish/upload/lifepunch/lpbitcoin/{Assets,Code}/`.
+6. Owner uploads to **dxrp.net/addons** — portal picks **`lifepunch/lpbitcoin/Assets`** and **`lifepunch/lpbitcoin/Code`** (≤ 300 MB combined).
+
+**Repo ident today:** `bitcoinmining` (code mount) · **Package slug:** `lifepunchbitcoin` · **Asset folder:** `lpbitcoin`.
 
 ---
 
@@ -117,7 +128,9 @@ C:\Users\jared\OneDrive\Desktop\UPLOAD READY ADDONS\addons\lifepunch\
 | `Prepare-LpBitcoinModelDoc.ps1` | Repo `lpbitcoin/` → DXRP editor greenfield lane |
 | `Sync-LifepunchDesktopToStaging.ps1` | Desktop → repo (owner-driven) |
 | `Initialize-UploadReadyAddons.ps1` | Scaffold Desktop upload tree from repo — **owner-only unless explicit** |
-| `prepare-publish.ps1` | Portal staging folder from repo ident |
+| `Prepare-LpBitcoinPublish.ps1` | **Bitcoin ship** — stage from DXRP game → `upload/lifepunch/lpbitcoin/{Assets,Code}/` |
+| `prepare-publish.ps1` | Portal staging; use `-FromDxrpGame` for ship-tier Assets + Code from editor game |
+| `Pull-DxrpCompiledAssetsToRepo.ps1` | Backport ModelDoc `*_c` from DXRP Assets → repo (before publish git backup) |
 
 ---
 

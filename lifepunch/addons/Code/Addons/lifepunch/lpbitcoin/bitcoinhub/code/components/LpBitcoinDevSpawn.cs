@@ -221,7 +221,7 @@ public static class LpBitcoinDevSpawn
 
 		if ( !hub.IsValid() )
 		{
-			Log.Warning( "lp_bitcoin_link_terminal: no hub — run lp_bitcoin_spawn_kit first." );
+			Log.Warning( "lp_bitcoin_link_terminal: no hub — run lp_bitcoin_spawn_five_prefabs first." );
 			return;
 		}
 
@@ -269,7 +269,7 @@ public static class LpBitcoinDevSpawn
 
 		if ( !hub.IsValid() )
 		{
-			Log.Warning( "lp_bitcoin_playtest_mining: no hub — run lp_bitcoin_spawn_kit first." );
+			Log.Warning( "lp_bitcoin_playtest_mining: no hub — run lp_bitcoin_spawn_five_prefabs first." );
 			return;
 		}
 
@@ -1317,7 +1317,7 @@ public static class LpBitcoinDevSpawn
 		{
 			if ( !LifePunchMarketSpawn.TryGetIdentitySpawnTransform( out var transform ) )
 			{
-				Log.Warning( "lp_bitcoin_rack_anim_audit: no racks — run lp_bitcoin_spawn_kit first." );
+				Log.Warning( "lp_bitcoin_rack_anim_audit: no racks — run lp_bitcoin_spawn_five_prefabs first." );
 				return;
 			}
 
@@ -1481,7 +1481,7 @@ public static class LpBitcoinDevSpawn
 		if ( !Networking.IsActive || Networking.IsHost )
 			return true;
 
-		Log.Warning( $"{command}: host only in multiplayer — ask host to run lp_bitcoin_dual_tester or lp_bitcoin_spawn_kit_for <your SteamId>." );
+		Log.Warning( $"{command}: host only in multiplayer — ask host to run lp_bitcoin_dual_tester or lp_bitcoin_spawn_five_prefabs_for <your SteamId>." );
 		return false;
 	}
 

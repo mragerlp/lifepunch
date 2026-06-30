@@ -3730,7 +3730,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	white-space: nowrap;
 }
 
-// Flat — overview intro: compact orange tip + terminal link strip.
+// Flat — overview intro: terminal link strip (green = ready; amber reserved for HASHD accents elsewhere).
 .lp-bitcoin-ops .overview-intro-header {
 	display: flex;
 	flex-direction: column;
@@ -3769,7 +3769,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 }
 
 .lp-bitcoin-ops .overview-intro-terminal-heading {
-	color: #e87d3e;
+	color: $hashd-muted;
 	font-size: 10px;
 	font-weight: 900;
 	text-transform: uppercase;
@@ -3856,14 +3856,30 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	padding-left: 10px;
 	border-radius: 6px;
 	border: 1px solid rgba(239, 68, 68, 0.55);
-	background-color: rgba(239, 68, 68, 0.12);
-	color: #f87171;
+	background-color: rgba(239, 68, 68, 0.18);
+	color: #fca5a5;
 	font-size: 10px;
 	font-weight: 800;
 	line-height: 1.2;
 	text-align: center;
 	white-space: nowrap;
 	cursor: pointer;
+	box-shadow: 0 0 12px rgba(239, 68, 68, 0.25);
+}
+
+// Same hover contract as link-ready — red palette; overrides lp-ui-btn-ghost white hover.
+.lp-bitcoin-ops .overview-intro-terminal-actions .lp-ui-btn-ghost.overview-intro-unlink-btn {
+	border: 1px solid rgba(239, 68, 68, 0.55);
+	background-color: rgba(239, 68, 68, 0.18);
+	color: #fca5a5;
+	box-shadow: 0 0 12px rgba(239, 68, 68, 0.25);
+
+	&:hover {
+		border-color: rgba(239, 68, 68, 0.75);
+		background-color: rgba(239, 68, 68, 0.32);
+		color: #ffe8e8;
+		box-shadow: 0 0 14px rgba(239, 68, 68, 0.38);
+	}
 }
 
 .lp-bitcoin-ops .overview-intro-terminal-disabled {
@@ -3872,10 +3888,26 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 }
 
 .lp-bitcoin-ops .overview-intro-link-ready {
+	border: 1px solid rgba(95, 211, 141, 0.55);
 	border-color: rgba(95, 211, 141, 0.55);
 	background-color: rgba(95, 211, 141, 0.18);
 	color: #b8f5d0;
 	box-shadow: 0 0 12px rgba(95, 211, 141, 0.25);
+}
+
+// lp-ui-accent-hashd paints .lp-ui-btn-primary orange — keep link CTA green on hover too.
+.lp-bitcoin-ops .overview-intro-terminal-actions .lp-ui-btn-primary.overview-intro-link-ready {
+	border: 1px solid rgba(95, 211, 141, 0.55);
+	background-color: rgba(95, 211, 141, 0.18);
+	color: #b8f5d0;
+	box-shadow: 0 0 12px rgba(95, 211, 141, 0.25);
+
+	&:hover {
+		border-color: rgba(95, 211, 141, 0.75);
+		background-color: rgba(95, 211, 141, 0.32);
+		color: #e8fff0;
+		box-shadow: 0 0 14px rgba(95, 211, 141, 0.38);
+	}
 }
 
 .lp-bitcoin-ops .overview .lp-ui-split {
@@ -4161,8 +4193,6 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	flex-direction: row;
 	flex-wrap: nowrap;
 	align-items: center;
-	justify-content: space-between;
-	gap: 10px;
 	width: 100%;
 	margin-bottom: 10px;
 }
@@ -4173,13 +4203,34 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	margin-bottom: 0;
 }
 
+.lp-bitcoin-ops .overview-status-perks-row {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	width: 100%;
+	flex-shrink: 0;
+}
+
+.lp-bitcoin-ops .overview-status-upgrade-col {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	align-items: center;
+	justify-content: flex-end;
+	flex: 0 0 auto;
+	align-self: center;
+}
+
 .lp-bitcoin-ops .overview-status-upgrade-btn {
 	flex: 0 0 auto;
-	min-height: 32px;
-	padding-top: 6px;
-	padding-right: 14px;
-	padding-bottom: 6px;
-	padding-left: 14px;
+	min-height: 34px;
+	padding-top: 8px;
+	padding-right: 16px;
+	padding-bottom: 8px;
+	padding-left: 16px;
 	font-size: 11px;
 	font-weight: 800;
 	white-space: nowrap;
@@ -4189,6 +4240,8 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	display: flex;
 	flex-direction: column;
 	gap: 4px;
+	flex: 1 1 auto;
+	min-width: 0;
 	padding-bottom: 4px;
 }
 

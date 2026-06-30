@@ -442,6 +442,13 @@ if ($bitcoinLaneSync -and (Test-Path -LiteralPath $lpStagingRoot)) {
     Remove-LpArchiveCompileArtifacts -LpBitcoinRoot $lpDest
     Remove-LegacyAddonTestArtifacts -LpBitcoinRoot $lpDest
     Remove-StaleDxrpPath -Path (Join-Path $lpDest 'advancedgpurack') -Label 'Assets/lpbitcoin/advancedgpurack (retired slot)'
+    $btcRedeemEntities = Join-Path $lpDest 'bitcoinhub\assets\entities'
+    if (Test-Path -LiteralPath $btcRedeemEntities) {
+        Get-ChildItem -LiteralPath $btcRedeemEntities -File -Force -Filter 'btccashredeem*' -ErrorAction SilentlyContinue |
+            ForEach-Object {
+                Remove-StaleDxrpPath -Path $_.FullName -Label "parked btccashredeem ($($_.Name))"
+            }
+    }
     $hashdFbxDxrp = Join-Path $lpDest 'hashdterminal\assets\source\fbx\hashdterminal.fbx'
     Repair-HashdTerminalFbx -FbxPath $hashdFbxDxrp
     Remove-StaleHashdTerminalCompile -HashdRoot (Join-Path $lpDest 'hashdterminal')

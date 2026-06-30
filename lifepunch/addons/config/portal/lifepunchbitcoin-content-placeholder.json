@@ -38,15 +38,5 @@
     "grouping": "Entities",
     "worldModelPath": "addons/lifepunch/lpbitcoin/gpurack/assets/models/advancedgpurack.vmdl",
     "iconPath": ""
-  },
-  {
-    "name": "BTC Cash Redeem",
-    "type": 0,
-    "description": "Portal $BTC stack redeem — inventory Use pays in-game cash (not a world prop).",
-    "primaryReference": "addons/lifepunch/lpbitcoin/bitcoinhub/assets/entities/btccashredeem.prefab",
-    "secondaryReference": "",
-    "grouping": "Entities",
-    "worldModelPath": "",
-    "iconPath": ""
   }
 ]

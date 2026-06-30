@@ -241,7 +241,6 @@
 														<i class="material-icons">analytics</i>
 														<span>Hub status</span>
 													</div>
-													<button class="lp-ui-btn-primary overview-status-upgrade-btn" onclick="@SelectUpgradesTab">Upgrade</button>
 												</div>
 
 												<div class="overview-status-stack">
@@ -272,11 +271,16 @@
 															</div>
 														</div>
 
-														<div class="overview-status-perks">
-															<div class="overview-status-perk">@LinkedRackCount() linked rack@(LinkedRackCount() == 1 ? "" : "s")</div>
-															<div class="overview-status-perk">@MiningRackCount() mining now</div>
-															<div class="overview-status-perk">Hub wallet @HubWalletBtc().ToString("F4") BTC</div>
-															<div class="overview-status-perk">@RackPendingBtc().ToString("F4") BTC pending on racks</div>
+														<div class="overview-status-perks-row">
+															<div class="overview-status-perks">
+																<div class="overview-status-perk">@LinkedRackCount() linked rack@(LinkedRackCount() == 1 ? "" : "s")</div>
+																<div class="overview-status-perk">@MiningRackCount() mining now</div>
+																<div class="overview-status-perk">Hub wallet @HubWalletBtc().ToString("F4") BTC</div>
+																<div class="overview-status-perk">@RackPendingBtc().ToString("F4") BTC pending on racks</div>
+															</div>
+															<div class="overview-status-upgrade-col">
+																<button class="lp-ui-btn-primary overview-status-upgrade-btn" onclick="@SelectUpgradesTab">Upgrade all</button>
+															</div>
 														</div>
 													</div>
 
@@ -1712,17 +1716,15 @@
 
 	private static string TabLabel( OpsTab tab ) => tab switch
 	{
-		OpsTab.Overview => "Overview",
+		OpsTab.Overview => "Dashboard",
 		OpsTab.Wallet => "Wallet",
 		OpsTab.Transfers => "Transfers",
 		OpsTab.Racks => "Manage racks",
 		OpsTab.Upgrades => "Upgrades",
 		OpsTab.Logs => "Logs / Alerts",
 		OpsTab.Settings => "Settings",
-		_ => "Overview"
+		_ => "Dashboard"
 	};
-
-	private void SelectSidebarTab( OpsTab tab )
 	{
 		if ( tab == OpsTab.Logs )
 		{
@@ -2229,7 +2231,7 @@
 			return "off";
 
 		if ( HasNearbyUnlinkedTerminal() )
-			return "warn";
+			return "on";
 
 		return "off";
 	}

@@ -83,6 +83,7 @@ public static class LpBitcoinIdent
 	/// <summary>Consumable grant + gamemode content name — must match portal rows exactly.</summary>
 	public const string PortalBtcRedeemGrantName = "BTC Cash Redeem";
 
+	/// <summary>Parked — prefab not in Rev 3 ship; rail 2 redeem deferred. <see cref="LpBitcoinCashRedeemEntity"/> kept for later.</summary>
 	public const string PortalBtcRedeemPrefabPath =
 		"addons/lifepunch/lpbitcoin/bitcoinhub/assets/entities/btccashredeem.prefab";
 
@@ -384,7 +385,7 @@ public static class LpBitcoinIdent
 		return true;
 	}
 
-	public const string TerminalDisplayName = "Bitcoin Terminal";
+	public const string TerminalDisplayName = "HASHD Terminal";
 	public const string TerminalModelPath =
 		"addons/lifepunch/lpbitcoin/hashdterminal/assets/models/hashdterminal.vmdl";
 

@@ -79,7 +79,7 @@
       "notes": [
         "Rev 1 (2026-06-10): content-row snapshot — Hub, Terminal, GPU Rack, Large GPU Rack. No Code/Assets.",
         "Rev 2 (2026-06-10): rename Large GPU Rack → Advanced GPU Rack; primaryReference → advanced-gpu-rack.prefab. Content-only. Pinned Rev 2 on LIFEPUNCH™ Development gamemode (019eca7a) for lifepunchdevelopment — NOT 70p.",
-        "NEXT ship tier (Rev 3+): ModelDoc _c → prepare-publish.ps1 -Addon bitcoinmining → portal upload Code+Assets → re-pin on LIFEPUNCH™ ship gamemode after dev playtest.",
+        "NEXT ship tier (Rev 3+): ModelDoc _c on DXRP game Assets + editor Code compile → Prepare-LpBitcoinPublish.ps1 (or prepare-publish -FromDxrpGame) → portal upload → re-pin on LIFEPUNCH™ ship gamemode after dev playtest.",
         "70p (lifepunchmainserver): assign LIFEPUNCH™ gamemode only after development playtest sign-off (replaces Vanilla)."
       ]
     },
