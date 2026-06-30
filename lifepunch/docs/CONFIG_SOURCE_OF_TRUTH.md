@@ -13,7 +13,7 @@ When two files disagree, **fix the canonical file** listed here — do not fork 
 | Question | Canonical file |
 |----------|----------------|
 | Which addons exist / ownership headers? | `lifepunch/addons/config/addons.json` |
-| Public package slug vs repo folder? | `lifepunch/addons/config/packages.json` |
+| Public package slug vs packageFolder parent? | `lifepunch/addons/config/packages.json` + `package-staging.json` |
 | Active vs quarantined idents? | `lifepunch/addons/config/portfolio.json` |
 | Entity staging layout? | `lifepunch/addons/config/package-staging.json` |
 | GitLab export paths? | `lifepunch/docs/gitlab-projects.json` |

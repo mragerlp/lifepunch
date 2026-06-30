@@ -1,6 +1,7 @@
 {
   "schemaVersion": 1,
   "law": "Package folder (lp*) -> entity slot folder -> assets/ + code/. Staging mirrors future publish tree. Do not merge packages.",
+  "packageParentPathLaw": "Every shippable package parent = lifepunch/addons/{packageFolder}/ (Code/, Assets/, docs/, .sbproj). Locked 2026-06-30. See PACKAGE_STAGING_LAYOUT.md.",
   "stagingAssetsRoot": "Assets/addons/lifepunch",
   "devRoot": "_dev",
   "legacyDesktopFolderMap": {

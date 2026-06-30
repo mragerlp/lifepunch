@@ -32,6 +32,7 @@ RULES
 PHASE STATUS (update from roadmap — do not guess)
 ══════════════════════════════════════════════════════════════════════════════
   Phase 0 ✅  Phase 1 ✅  Phase 2a ✅  Phase 3 ✅
+  Package parent law locked: lifepunch/addons/lp*/
   Phase 2b / 4 / 5 / 6 — owner GO per slice
 
 Owner task line (optional):

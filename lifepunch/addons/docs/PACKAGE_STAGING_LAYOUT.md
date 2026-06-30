@@ -1,14 +1,54 @@
 # LIFEPUNCH — package staging layout (publish-aligned)
 
-**June 2026** — Staging tree under `Assets/addons/lifepunch/{lpPackage}/{entitySlot}/`. Canonical manifest: `config/package-staging.json`.  
+**June 2026** — Canonical manifest: `config/package-staging.json`.  
 **Publish law (agents):** `DXRP_ADDON_PUBLISH_DOCTRINE.md` — folder name = entity slug; PLACEHOLDER hands-off.
 
 ---
 
-## Pattern
+## Package parent path (HARD LAW — locked 2026-06-30)
+
+Every shippable addon package uses **one parent folder** under the addons workspace:
 
 ```text
-lpbitcoin/                          # package (maps to lifepunchbitcoin / repoIdent bitcoinmining)
+lifepunch/addons/lp{product}/          # e.g. lpbitcoin, lphacker, lpbanker, lifepunchulx
+├── Code/
+│   └── Addons/lifepunch/lp{product}/
+│       ├── _shared/                   # package-wide C# (when needed)
+│       └── {entitySlug}/code/…        # per-entity components, ui, docs
+├── Assets/
+│   └── addons/lifepunch/lp{product}/
+│       └── {entitySlug}/assets/…
+├── docs/                              # package-level checklists, playtest notes
+├── {product}.sbproj                   # Phase 6 — standalone s&box project per package
+└── {product}.slnx                     # optional
+```
+
+| Rule | Detail |
+|------|--------|
+| **Parent path** | Always `lifepunch/addons/lp*/` (or `lifepunchulx/` for ULX) — **never** only `Code/.../repoIdent/` without the package parent |
+| **Entity slots** | `{entitySlug}/` under Code + Assets — folder name = ship slug |
+| **Shared code** | `Code/Addons/lifepunch/lp{product}/_shared/` — not a top-level `System/` unless we add a real game system type |
+| **Registry** | `lifepunch/addons/config/` (`packages.json`, `portfolio.json`) — workspace-level; not duplicated per package |
+| **Legacy `repoIdent`** | e.g. `bitcoinmining`, `hackerjob` — **transitional** until Phase 4 migration; do not create new work there |
+| **Umbrella dev project** | `lifepunch/addons/addons.sbproj` — temporary until each package has its own `.sbproj` (Phase 6) |
+
+**Today vs law:** Assets for most `lp*` packages already live under `Assets/.../lp*/`. Full package roots (`lifepunch/addons/lpbitcoin/` with Code + Assets + `.sbproj`) are **target** — see `RESTRUCTURE_TARGET_LAYOUT.md` and migration Phase 4–6.
+
+**Examples:**
+
+| packageFolder | packageSlug | s&box ident | Status |
+|---------------|-------------|-------------|--------|
+| `lpbitcoin` | `lifepunchbitcoin` | `lifepunch.bitcoin` | active — partial (legacy `bitcoinmining/` code) |
+| `lphacker` | `lifepunchhacker` | `lifepunch.hacker` | quarantine — assets only; code in `hackerjob/` |
+| `lpbanker` | `lifepunchbanker` | `lifepunch.banker` | quarantine — assets only; code in `bankerjob/` |
+| `lifepunchulx` | `lifepunchulx` | `lifepunch.lifepunchulx` | publish-ready — still under monolithic `adminmenu/` until extract |
+
+---
+
+## Entity pattern (inside each package)
+
+```text
+lpbitcoin/                          # package (maps to lifepunchbitcoin)
   bitcoinhub/                         # entity slot — slug: bitcoinhub (same as folder name)
     assets/
       source/fbx|blend|obj/           # Fab exports (keep alternates)
@@ -27,12 +67,25 @@ lpbitcoin/                          # package (maps to lifepunchbitcoin / repoId
     docs/                             # optional slot notes
   hashdterminal/                      # slug: hashdterminal
   gpurack/                            # slug: gpurack
-  advancedgpurack/                    # slug: advancedgpurack
 ```
 
-**Law:** `lpbitcoin` is the package folder. `{entity}` folder name **is** the ship entity slug. Never flatten to `lpbitcoinmining/bitcoinhub/game/`.
+**Law:** `{entity}` folder name **is** the ship entity slug. Never flatten to `lpbitcoinmining/bitcoinhub/game/`.
 
 **Portal vs files:** Display names, market labels, and content row titles are set by the owner in **dxrp.net/addons** after upload — they do not require renaming folders or paths. See `DXRP_ADDON_PUBLISH_DOCTRINE.md`.
+
+---
+
+## Transitional layout (until Phase 4–6)
+
+Until each package is physically under `lifepunch/addons/lp*/`, dev paths may still be split:
+
+| Layer | Transitional path (today) | Target path |
+|-------|---------------------------|-------------|
+| Code | `lifepunch/addons/Code/Addons/lifepunch/{lpPackage\|repoIdent}/` | `lifepunch/addons/lp{product}/Code/Addons/lifepunch/lp{product}/` |
+| Assets | `lifepunch/addons/Assets/addons/lifepunch/lp{product}/` | `lifepunch/addons/lp{product}/Assets/addons/lifepunch/lp{product}/` |
+| s&box project | `lifepunch/addons/addons.sbproj` | `lifepunch/addons/lp{product}/{product}.sbproj` |
+
+New agent work: **author toward target paths** inside existing trees; bulk `git mv` is Phase 4+ with owner GO.
 
 ---
 
@@ -53,13 +106,13 @@ Finished, working addon packages land here when ready for portal upload prep. **
 | `lpbitcoin/bitcoinhub/assets/models/` | `bitcoinmining/models/.../bitcoin-miner/` (Steam Machine) | `lpbitcoin/bitcoinhub/` → PLACEHOLDER when owner-ready |
 | `lpbitcoin/bitcoinhub/code/components/` | `Code/.../lpbitcoin/bitcoinhub/code/components/` | promoted Jun 2026 |
 | `lpbitcoin/bitcoinhub/code/ui/` | same | `LpHashdPanel.razor` |
-| Terminal / rack / economy | `Code/.../bitcoinmining/` | promotes per entity slot |
+| Terminal / rack / economy | `Code/.../bitcoinmining/` | → `lpbitcoin/_shared/` + entity slots (Phase 4a) |
 
-Hub entity code lives in **`Code/Addons/lifepunch/lpbitcoin/bitcoinhub/code/`**. Package-wide code (terminal, rack, wallet, shared UI SCSS) remains in **`bitcoinmining/`** until each entity promotes. Each slot’s `code/manifest.json` lists its files.
+Hub entity code lives in **`lpbitcoin/bitcoinhub/code/`** (target) or **`Code/Addons/lifepunch/lpbitcoin/bitcoinhub/code/`** (today). Package-wide code remains in **`bitcoinmining/`** until Phase 4a.
 
 ---
 
-## Package folders (8)
+## Package folders (registered `lp*` staging)
 
 | Folder | Was | ZIP |
 |--------|-----|-----|
@@ -73,6 +126,8 @@ Hub entity code lives in **`Code/Addons/lifepunch/lpbitcoin/bitcoinhub/code/`**.
 | `lpchemist` | `lpchemist` | `lpchemist.zip` |
 | `lpdrugdrops` | `lpdrugdrops` | `lpdrugdrops.zip` |
 | `lpweapons` | `lpweapons` | `lpweapons.zip` |
+
+ULX: target folder **`lifepunchulx/`** (packageSlug `lifepunchulx`; repoIdent `adminmenu` today).
 
 ---
 
@@ -99,6 +154,8 @@ powershell -File lifepunch\scripts\Set-DxrpLifepunchModelDocLane.ps1
 
 ## Related
 
+- `RESTRUCTURE_TARGET_LAYOUT.md` — end-state trees + Phase 4–6 migration
+- `PACKAGE_NAMING_STANDARD.md` — packageSlug vs packageFolder vs repoIdent
 - `DXRP_ADDON_PUBLISH_DOCTRINE.md` — DXRP context, PLACEHOLDER law, folder=slug, portal vs files
 - `LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md` — entity stack P0–P4 after intake
 - `LIFEPUNCH_WEAPON_IMPLEMENTATION_LAW.md` — weapon platform (`lpweapons`)

@@ -1,6 +1,6 @@
 # LIFEPUNCH™ — Target repo layout (end state)
 
-**Status:** Restructure target spec — **not implemented yet**.  
+**Status:** **LAW LOCKED** 2026-06-30 — implementation via Phase 4–6 migration.  
 **Updated:** 2026-06-30  
 **Read with:** `REPO_DOMAIN_MAP.md` · `RESTRUCTURE_ROADMAP.md` · `PACKAGE_STAGING_LAYOUT.md`
 
@@ -42,41 +42,47 @@ github.com/mragerlp/lifepunch          ← canonical monorepo (always)
 
 ---
 
-## 2. `lpbitcoin` — target package layout (PRODUCT)
+## 2. Addon package parent path (HARD LAW — all `lp*` packages)
 
-**Public names:** `packageSlug` **`lifepunchbitcoin`** · s&box **`lifepunch.bitcoin`** · entity slugs **`bitcoinhub`**, **`hashdterminal`**, **`gpurack`**.
+**Every shippable package** uses parent folder:
+
+```text
+lifepunch/addons/lp{product}/          # lpbitcoin, lphacker, lpbanker, lifepunchulx, …
+```
+
+Not `lifepunch/addons/packages/lp*/`. Not legacy `Code/.../repoIdent/` alone.
+
+**Public names (lpbitcoin example):** `packageSlug` **`lifepunchbitcoin`** · s&box **`lifepunch.bitcoin`** · entity slugs **`bitcoinhub`**, **`hashdterminal`**, **`gpurack`**.
 
 ### End state (Phase 4 + 6)
 
 Standalone s&box addon project **inside the monorepo**, publishable to DXRP portal and exportable to `lifepunch-published`:
 
 ```text
-lifepunch/addons/packages/lpbitcoin/          # Phase 6 root (or lifepunch/addons/lpbitcoin/ — pick on GO)
+lifepunch/addons/lpbitcoin/
 ├── bitcoin.sbproj                              # Ident: lifepunch.bitcoin · ParentPackage: dxura.rp
 ├── bitcoin.slnx                                # Optional; mirror addons.slnx pattern
 ├── Code/
-│   ├── Addons/lifepunch/lpbitcoin/
-│   │   ├── _shared/                            # Was bitcoinmining/ package-wide (wallet, economy, UI bridge)
-│   │   │   ├── LpBitcoinWallet.cs
-│   │   │   ├── LpBitcoinEconomy.cs
-│   │   │   └── …
-│   │   ├── bitcoinhub/
-│   │   │   └── code/components/              # LpBitcoinHubEntity.cs, LpBitcoinHubVisuals.cs, …
-│   │   ├── hashdterminal/
-│   │   │   └── code/components/              # LpBitcoinTerminalEntity.cs, …
-│   │   └── gpurack/
-│   │       └── code/components/              # LpBitcoinRackEntity.cs, …
-│   └── lpbitcoin.csproj                        # Compiles package only
+│   └── Addons/lifepunch/lpbitcoin/
+│       ├── _shared/                            # Was bitcoinmining/ package-wide (wallet, economy, UI bridge)
+│       │   ├── LpBitcoinWallet.cs
+│       │   ├── LpBitcoinEconomy.cs
+│       │   └── …
+│       ├── bitcoinhub/code/components/         # LpBitcoinHubEntity.cs, LpBitcoinHubVisuals.cs, …
+│       ├── hashdterminal/code/components/      # LpBitcoinTerminalEntity.cs, …
+│       └── gpurack/code/components/            # LpBitcoinRackEntity.cs, …
+│   └── lpbitcoin.csproj                        # Compiles package only (Phase 6)
 ├── Assets/
 │   └── addons/lifepunch/lpbitcoin/
-│       ├── bitcoinhub/assets/…                 # vmdl, prefab, sounds (already here today)
+│       ├── bitcoinhub/assets/…
 │       ├── hashdterminal/assets/…
 │       └── gpurack/assets/…
 └── docs/
-    ├── BITCOINMINING_POLISH_CHECKLIST.md       # Moved from bitcoinmining/docs on promotion
-    ├── LPBITCOIN_PLAYTEST.md
+    ├── BITCOINMINING_POLISH_CHECKLIST.md
     └── …
 ```
+
+Same pattern for **`lphacker/`**, **`lpbanker/`**, etc. when promoted from quarantine.
 
 ### Correction vs flat “Copilot sketch”
 
@@ -93,12 +99,8 @@ Your sketch listed `LpBitcoinHubEntity.cs` directly under `Addons/lifepunch/lpbi
 
 | Area | Today | Target |
 |------|-------|--------|
-| Package root | Single `lifepunch/addons/addons.sbproj` compiles everything | `packages/lpbitcoin/bitcoin.sbproj` + slim monolithic dev project for ULX only |
-| Code — hub | `lpbitcoin/bitcoinhub/code/` ✅ | Same (keep) |
-| Code — terminal/rack/economy | `bitcoinmining/*.cs` (~20 files) | `lpbitcoin/_shared/` + entity slots |
-| Assets | `Assets/.../lpbitcoin/{entity}/` ✅ | Same (keep) |
-| repoIdent | `bitcoinmining` in portfolio + validators | Retire; portfolio → `lpbitcoin` or `lifepunchbitcoin` row only |
-| Docs | Split `bitcoinmining/docs/` + entity NAV | Single `packages/lpbitcoin/docs/` |
+| Package root | Single `lifepunch/addons/addons.sbproj` + split Code/Assets trees | **`lifepunch/addons/lpbitcoin/`** full package root + `bitcoin.sbproj` |
+| Docs | Split `bitcoinmining/docs/` + entity NAV | `lifepunch/addons/lpbitcoin/docs/` |
 
 ---
 
@@ -120,7 +122,7 @@ Your sketch listed `LpBitcoinHubEntity.cs` directly under `Addons/lifepunch/lpbi
 
 ### Phase 6 — Extract `bitcoin.sbproj`
 
-1. Create `packages/lpbitcoin/bitcoin.sbproj` from `addons.sbproj` + `modeldoc.sbproj` patterns
+1. Create `lifepunch/addons/lpbitcoin/bitcoin.sbproj` from `addons.sbproj` + `modeldoc.sbproj` patterns
 2. Point DXRP editor Bitcoin-only lane at new project
 3. Monolithic `addons.sbproj` retains `adminmenu` (+ dev tools) until next package extracts
 
@@ -133,12 +135,10 @@ Your sketch listed `LpBitcoinHubEntity.cs` directly under `Addons/lifepunch/lpbi
 ```text
 lifepunch/addons/
 ├── addons.sbproj              # Dev umbrella: adminmenu + _dev until ULX extracted
-├── packages/
-│   └── lpbitcoin/               # lifepunch.bitcoin — standalone
-│   └── lifepunchulx/            # future Phase 6 sibling
-├── Code/Addons/lifepunch/adminmenu/
-├── Assets/addons/lifepunch/adminmenu/
-└── config/                      # addons.json, packages.json, portfolio.json (registry for all packages)
+├── lpbitcoin/                 # lifepunch.bitcoin — standalone (Phase 6)
+├── lifepunchulx/              # future Phase 6 sibling (from adminmenu)
+├── config/                    # addons.json, packages.json, portfolio.json (registry)
+└── …                          # transitional Code/Assets trees until Phase 4 completes
 ```
 
 Registry JSON stays at **`lifepunch/addons/config/`** — not duplicated inside each package.

@@ -1,7 +1,8 @@
 # Addon quarantine index
 
 **Status:** Restructure Phase 2a — visibility only (no folder moves).  
-**Updated:** 2026-06-30
+**Updated:** 2026-06-30  
+**Package parent law:** all packages → `lifepunch/addons/lp*/` — see `docs/PACKAGE_STAGING_LAYOUT.md`.
 
 Agents: read this **before** editing anything under `Code/Addons/lifepunch/` or `Assets/addons/lifepunch/`.
 

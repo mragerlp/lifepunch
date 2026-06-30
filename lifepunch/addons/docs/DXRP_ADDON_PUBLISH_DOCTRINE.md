@@ -26,6 +26,22 @@
 
 ---
 
+## Package parent path (locked 2026-06-30)
+
+All addon packages:
+
+```text
+lifepunch/addons/lp{product}/     # e.g. lpbitcoin, lphacker, lpbanker
+  Code/Addons/lifepunch/lp{product}/{entitySlug}/…
+  Assets/addons/lifepunch/lp{product}/{entitySlug}/…
+  docs/
+  {product}.sbproj                 # Phase 6 per package
+```
+
+Canonical detail: **`PACKAGE_STAGING_LAYOUT.md`**. Legacy `repoIdent` folders are transitional until Phase 4 migration.
+
+---
+
 ## Package & entity naming (final names)
 
 **Folder name = entity slug = identity in the tree.** Not a staging alias for a different ship name.
@@ -55,7 +71,8 @@ Each entity folder uses the standard layout:
 
 Same shape in:
 
-- **Repo staging:** `lifepunch/addons/Assets/addons/lifepunch/lpbitcoin/{entity}/`
+- **Target (law):** `lifepunch/addons/lpbitcoin/{entity}/assets|code/…`
+- **Transitional (today):** `lifepunch/addons/Assets/addons/lifepunch/lpbitcoin/{entity}/` + `Code/Addons/lifepunch/…`
 - **Upload-ready Desktop (when owner fills it):**  
   `C:\Users\jared\OneDrive\Desktop\UPLOAD READY ADDONS PLACEHOLDER\addons\lifepunch\lpbitcoin\{entity}/`
 

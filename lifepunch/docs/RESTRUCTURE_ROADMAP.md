@@ -158,7 +158,7 @@ If partners need ModelDoc or overlays on lane clones — add to `gitlab-projects
 
 Separate `.sbproj` per publishable package. **Not** before Phase 4b for that package.
 
-**First extract:** `lifepunch/addons/packages/lpbitcoin/bitcoin.sbproj` — see `RESTRUCTURE_TARGET_LAYOUT.md`.
+**First extract:** `lifepunch/addons/lpbitcoin/bitcoin.sbproj` — see `RESTRUCTURE_TARGET_LAYOUT.md` · **`PACKAGE_STAGING_LAYOUT.md`** (parent path law).
 
 Reference: `lifepunch/modeldoc-studio/game/modeldoc.sbproj` · current `lifepunch/addons/addons.sbproj`.
 

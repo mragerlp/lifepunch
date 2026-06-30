@@ -17,10 +17,13 @@ lifepunch{product}     (all lowercase — e.g. lifepunchbitcoin, lifepunchulx)
 | Layer | Rule | Example |
 |-------|------|---------|
 | **packageSlug** | Public name, Git branch, ChatGPT briefs, publish folder target | `lifepunchbitcoin` |
+| **packageFolder** | **Parent path on disk** — always `lp{product}` under `lifepunch/addons/` | `lpbitcoin`, `lphacker`, `lpbanker`, `lifepunchulx` |
 | **s&box identifier** | `lifepunch.` + slug without `lifepunch` prefix | `lifepunch.bitcoin` |
 | **LIFEPUNCH™ display** | Lead mark on titles; DXRP nominative only; ™ not ® | LIFEPUNCH™ Bitcoin Miner for DXRP |
-| **repoIdent** | Legacy monorepo folder until path migration | `bitcoinmining` |
+| **repoIdent** | **Legacy** monorepo code folder until Phase 4 migration — do not add new files | `bitcoinmining`, `hackerjob`, `adminmenu` |
 | **Proprietary** | Headers + `addons.json` ownership on **every** package — server-only now, sellable later | always on |
+
+**Package parent path (locked 2026-06-30):** all addon work lives under `lifepunch/addons/{packageFolder}/` with `Code/`, `Assets/`, `docs/`, and eventually `{product}.sbproj`. Detail: `PACKAGE_STAGING_LAYOUT.md`.
 
 **SWAT:** package slug `lifepunchswat` (lowercase on disk). Player-facing may say SWAT.
 
@@ -57,12 +60,15 @@ Weapons/mp9/ssg08/xm1014 and others **not** in this public set until owner adds 
 
 ## Migration (repo paths)
 
-Monorepo paths still use **repoIdent** (`Assets/.../bitcoinmining/`) until a deliberate rename migration. **Do not** mix package slugs into paths halfway through a visual pass.
+**Law locked 2026-06-30:** target parent = `lifepunch/addons/{packageFolder}/`. Legacy **`repoIdent`** paths (`Code/.../bitcoinmining/`, `hackerjob/`, …) are transitional until Phase 4 `git mv` slices.
 
 | When promoted | Action |
 |---------------|--------|
 | Portal/public | Export under `packageSlug`; `sboxIdentifier` from manifest |
-| Full rename | Single migration: folder + namespace swap — track in `TECH_DEBT.md` |
+| Phase 4a–4b | Consolidate code/assets under `lifepunch/addons/lp*/`; retire `repoIdent` folder |
+| Phase 6 | Extract per-package `.sbproj` — see `RESTRUCTURE_TARGET_LAYOUT.md` |
+
+Do **not** add new files under legacy `repoIdent` folders when `packageFolder` exists in `package-staging.json`.
 
 ---
 
@@ -81,5 +87,5 @@ Addon ident (s&box): lifepunch.bitcoin
 
 - `config/packages.json` — machine manifest
 - `config/portfolio.json` — active vs quarantine vs publish
-- `PUBLISH_REPO_LANE.md` — export law
+- `PACKAGE_STAGING_LAYOUT.md` — packageFolder parent path law
 - `legal/TRADEMARK_AND_IP.md` — mark doctrine
