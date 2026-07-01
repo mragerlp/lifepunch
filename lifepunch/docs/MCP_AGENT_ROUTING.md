@@ -1,12 +1,14 @@
 # LifePunch — MCP agent routing (CVL canon)
 
-**Status:** Locked June 2026 · **Source:** CVL topology handoff + Red/Green ops  
+**Status:** Updated July 2026 · **Source:** CVL topology handoff + Red/Green ops  
 **Companion:** `SBOX_EDITOR_MCP.md` (install/wiring) · `CORNERMAN_MODEL_ROUTING.md` (Tier-3 models)
 
 ChatGPT Plus/Pro on the desk is **Architect** (design brain) — paste `handoff/to-chatgpt-mcp-topology-handoff.txt` for infra refinement only.
-**Cursor on VENGEANCE integrates and commits.** Green is the **Tier-3 local worker lane** (code candidates +
+**GitHub Copilot on VENGEANCE integrates and commits** (promoted from Cursor July 2026). Green is the **Tier-3 local worker lane** (code candidates +
 distill/prep — cheap, untrusted, not final authority); Red compiles, proves in s&box, and owns ship.
 See `CORNERMAN_MODEL_ROUTING.md` for the four Green profiles (Code / Deep / Daily / Fast).
+
+**MCP config:** `.vscode/mcp.json` in repo root — all 4 servers (`sbox`, `sbox-editor`, `cornerman-lm`, `sbox-jtc`). Cursor `~/.cursor/mcp.json` remains as fallback reference only.
 
 **Stack updates / full capacity:** `CVL_FULL_CAPACITY_UPDATES.md` · `Invoke-CvlFullCapacityRefresh.ps1`
 
@@ -90,7 +92,7 @@ routing · migration · power/link state machines · final major-slice review. *
 1. `git pull --rebase` (clean tree)
 2. `powershell -File lifepunch\scripts\Test-PreLaunchCheckup.ps1 -Fix`
 3. `powershell -File lifepunch\scripts\Start-SboxDxrpEditor.ps1 -PreflightFix`
-4. Cursor → Reload Window → MCP **4/4 green** (`sbox`, `sbox-editor`, `sbox-jtc`, `cornerman-lm`)
+4. GitHub Copilot → open workspace `lifepunchaddons` → MCP **4/4 green** (`sbox`, `sbox-editor`, `sbox-jtc`, `cornerman-lm`)
 5. Editor pill → green + **MCP · ≥1** (chomnr); jtc dock → **listening on :29015/mcp**
 
 **CORNERMAN (Green) — second** (requires Red editor up for tunnel + bridge heartbeat)
