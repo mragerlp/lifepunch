@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
   Point Claude Code (or any Anthropic client) at Cornerman LM Studio.
 
@@ -14,7 +14,7 @@
 #>
 [CmdletBinding()]
 param(
-    [string] $CornermanHost = '192.168.1.227',
+    [string] $CornermanHost = '192.168.1.229',
     [int] $Port = 1234,
     [string] $Model = 'qwen/qwen3.6-35b-a3b',
     [switch] $LaunchClaude,

@@ -173,7 +173,7 @@ rollout (LM Studio account; batched access).
 | **Host (GPU)** | Cornerman — distill / coder / embed on Green's Vulkan iGPU |
 | **Client** | VENGEANCE — LM Studio desktop sees Green's models in the loader |
 | **API surface** | Unchanged: `http://localhost:1234/v1` on the client; LM Link routes to remote weights |
-| **LAN today** | Red still uses `Send-CornermanWorkflow.ps1` + SSH to warm models on Green; direct `http://192.168.1.227:1234` also works on subnet |
+| **LAN today** | Red still uses `Send-CornermanWorkflow.ps1` + SSH to warm models on Green; direct `http://192.168.1.229:1234` also works on subnet |
 
 ### What LM Link could simplify
 

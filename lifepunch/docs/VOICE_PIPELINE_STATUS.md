@@ -63,7 +63,7 @@ Cornerman outbox (SSH) → start-session-sync.ps1 → POST http://205.209.104.22
 Bearer = same token as `:9101`. Started by **LifePunch Voice Comms** shortcut.
 
 **Direct Cornerman → `/ingest`:** not implemented in `relay.py` yet. If added later, traffic
-egresses via your **home public IP** (same as VENGEANCE), not `192.168.1.227` — firewall already
+egresses via your **home public IP** (same as VENGEANCE), not `192.168.1.229` — firewall already
 allows `71.250.46.224` for ingest.
 
 ### 3. Paste into Cursor

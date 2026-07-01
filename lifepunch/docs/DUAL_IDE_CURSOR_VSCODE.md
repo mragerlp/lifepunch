@@ -1,38 +1,39 @@
 # Dual IDE: Cursor (Agent) + VS Code (Copilot)
 
 **Status:** Active on VENGEANCE (June 2026).  
-**Why:** Dimmer ships in **VS Code + GitHub Copilot**. Copilot does **not** run inside Cursor. Bloodwave uses Copilot mainly to **draft instructions for Cursor**; **VS Code can** run Copilot mirror review when **Cursor Agent routes it**.
+**Why:** Dimmer ships in **VS Code + GitHub Copilot**. Copilot does **not** run inside Cursor. Copilot is the **primary in-editor writer** on the full monorepo; Cursor is peer for MCP bridge, flatgrass proof, and heavy plumbing.
 
 **Copilot credit tips:** [Optimize AI credit usage in VS Code](https://code.visualstudio.com/docs/agents/guides/optimize-usage)
+
+**Full-repo handoff:** `.github/instructions/copilot-repo-ownership.instructions.md` · paste: `lifepunch/docs/handoff/COPILOT_SBOX_EDITOR_BOOTSTRAP_PASTE.txt`
 
 ---
 
 ## Tool canon (June 2026)
 
 ```text
-Cursor            = writer / MCP / proof / commit / STYLE routing judgment
-VS Code + Copilot = instruction relay + Copilot mirror (when Agent says VS_MIRROR)
-Cornerman         = cheap distill / prep
-Codex             = strict reviewer / PASS · REVISE · HOLD gate
+VS Code + Copilot = primary writer (editor, DXRP-native, workflow/stack, whole repo)
+Cursor            = MCP bridge / flatgrass proof / sync scripts / legal-ops plumbing
+Cornerman         = cheap distill / prep (Tier-3)
+Codex             = strict reviewer / PASS · REVISE · HOLD gate (upstream DXRP)
 Bloodwave         = GO / commit / ship authority
 ```
 
-**VS Code can; Cursor cannot (for Copilot):** GitHub Copilot inline + Chat work in **VS Code**. Cursor supports many **other** VS Code-format extensions (C#, Razor, etc.) — install those in Cursor for authoring; do **not** VSIX-hack Copilot into Cursor.
+**VS Code can; Cursor cannot (for Copilot):** GitHub Copilot inline + Chat work in **VS Code**. Cursor supports many **other** VS Code-format extensions (C#, Razor, etc.) — install those in Cursor for MCP sessions; do **not** VSIX-hack Copilot into Cursor.
 
 ---
 
-## STYLE routing (Agent judgment — Bloodwave does not pick)
+## STYLE routing (simplified — Copilot owns Dimmer lane)
 
-After each DXRP-facing or upstream slice, Cursor Agent **must** emit one line:
+After each DXRP-facing slice, the **active writer** emits one line when upstream pattern fit is uncertain:
 
-| Verdict | Meaning | Bloodwave action |
-|---------|---------|------------------|
-| **`STYLE: PASS`** | Agent read upstream refs; patterns match | None — proceed to flatgrass / commit proposal |
-| **`STYLE: VS_MIRROR`** | Agent wants Copilot’s Dimmer-environment pass | Open listed files in **VS Code** only; paste supplied Copilot prompt; **do not edit** unless Agent revises after |
+| Verdict | Meaning | Action |
+|---------|---------|--------|
+| **`STYLE: PASS`** | Patterns match dxrp-public + law docs | Proceed to proof / commit proposal |
+| **`STYLE: REVISE`** | Copilot or Cursor lists mismatch vs upstream | Fix before commit |
+| **`STYLE: CURSOR_PROOF`** | Needs Claude Bridge flatgrass / replication check | Handoff packet → Cursor |
 
-**Agent default:** try `STYLE: PASS` via reference reads in `dxrp-public` + law docs. Escalate to `VS_MIRROR` when: new UI surface, unfamiliar DXRP subsystem, first slice on a pattern, or agent uncertainty on TabMenu / Sync / Razor SCSS.
-
-**Bloodwave + Copilot (daily):** Copilot Chat → instructions/scope for Cursor — not file editing.
+**Default:** Copilot implements Dimmer-style patterns directly in VS Code. Escalate to Cursor only for bridge proof, sync scripts, or multi-file integration Cursor already owns.
 
 **Never paste secrets** into Copilot Chat.
 
@@ -43,22 +44,18 @@ After each DXRP-facing or upstream slice, Cursor Agent **must** emit one line:
 ### LifePunch addons (DXRP-mounted code)
 
 ```text
-Copilot (optional) → Bloodwave drafts Cursor instruction
-Cursor Agent implements slice
-Agent emits STYLE: PASS | VS_MIRROR
-[If VS_MIRROR] VS Code Copilot mirror on listed files only
-Cursor MCP / Stop → Play / flatgrass proof
-Bloodwave GO → commit
+Copilot implements in VS Code + s&box editor
+[If needed] HANDOFF → Cursor for bridge flatgrass proof
+Bloodwave GO → commit (either IDE; one writer per file)
 ```
 
 ### DXRP upstream
 
 ```text
 Issue approved first (e.g. #111)
-Cursor Agent implements bounded PR slice
-Agent STYLE gate → VS_MIRROR if needed
+Copilot or Cursor implements bounded PR slice in dxrp-public
 Codex PASS · REVISE · HOLD
-Flatgrass proof (Cursor + MCP)
+Flatgrass proof (Cursor + MCP when Copilot cannot see runtime)
 Clean PR, no AI trailers
 Bloodwave GO → ship
 ```
@@ -67,23 +64,25 @@ Bloodwave GO → ship
 
 ## One-time setup (VENGEANCE)
 
-**VS Code:** Copilot + Copilot Chat signed in · folders: `lifepunchaddons`, `dxrp-public`.
+**VS Code:** Copilot + Copilot Chat signed in · workspace root: `lifepunchaddons` (not a subfolder) · folders: `lifepunchaddons`, `dxrp-public`.
 
 **Cursor:** C# / Razor extensions as needed · **Disable Cursor Tab** when VS Code is open on the same repo.
 
-**Smoke test (once):** open `lifepunch/.../LpHashdPanel.razor` in VS Code — confirm Copilot live; no rewrite.
+**Instructions auto-load:** `.github/instructions/*.instructions.md` + `copilot-instructions.md` (see `.vscode/settings.json`).
+
+**Smoke test (once):** open `lifepunch/.../LpHashdPanel.razor` in VS Code — confirm Copilot live; `@workspace` finds repo law.
 
 ---
 
 ## Primary risk: two writers
 
-VS Code **edits** only when Bloodwave explicitly switches writer there. `VS_MIRROR` = **review** (read Copilot suggestions; report back to Cursor if REVISE).
+| VS Code (Copilot) | Cursor |
+|-------------------|--------|
+| Editor, prefab, ModelDoc, Razor, workflow scripts | MCP / bridge screenshots |
+| Full monorepo edits (active lane) | Sync/publish plumbing |
+| Cut loops in docs/scripts | Legal, Cloudflare, complex multi-agent routing |
 
-| VS Code | Cursor |
-|---------|--------|
-| Copilot mirror when Agent routes | All implementation |
-| Instruction drafting (Bloodwave) | MCP / flatgrass proof |
-| Read Dimmer PRs | Commits (with GO) |
+**One writer per file.** Announce lane switch in chat before touching a file the other IDE owns.
 
 ---
 
@@ -91,11 +90,11 @@ VS Code **edits** only when Bloodwave explicitly switches writer there. `VS_MIRR
 
 | Task | Route |
 |------|--------|
-| Instruction / scope draft | **Copilot Chat** (Bloodwave → Cursor) |
-| Implement + STYLE gate | **Cursor Agent** |
-| Copilot mirror | **VS Code** when `VS_MIRROR` only |
+| In-editor + DXRP implement | **Copilot (VS Code)** |
+| Flatgrass / bridge proof | **Cursor** |
 | Bulk distill | **Cornerman** |
 | Upstream PR gate | **Codex** |
+| Local Ollama (Blue) | Odysseus prep only — not primary ship path |
 
 Law: `.cursor/rules/lifepunch-dxrp-style-gate.mdc`
 
@@ -115,3 +114,4 @@ Law: `.cursor/rules/lifepunch-dxrp-style-gate.mdc`
 - `lifepunch/docs/DXRP_CONTRIBUTOR_LANE.md`
 - `lifepunch/docs/SBOX_RAZOR_SCSS_RULES.md`
 - `.cursor/rules/lifepunch-dxrp-style-gate.mdc`
+- `.github/instructions/copilot-repo-ownership.instructions.md`

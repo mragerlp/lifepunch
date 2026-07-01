@@ -38,7 +38,7 @@ single source of truth — do NOT re-derive or diverge from it.
 CVL TRI-STACK (memorize — LifePunch web = three nodes + edges; not one box):
 - **R — VENGEANCE** (red): Owner primary PC. GitHub source of truth. Checkout:
   `C:\Users\jared\Projects\LIFEPUNCH`. Decide, integrate, Cursor, s&box MCP hub. **Block A.**
-- **G — Cornerman** (green): Home LAN AI box. `192.168.1.227` · hostname `cornerman`. Mic, local LM
+- **G — Cornerman** (green): Home LAN AI box. `192.168.1.229` · hostname `cornerman`. Mic, local LM
   `:1234`, Tier-3 prep — NOT source of truth, NOT lifepunchnet. **Block D** · `DAY_ONE_AGENT_PROMPT.md`.
 - **B — lifepunchnet** (blue): Always-on hosted server. `205.209.104.22` · hostname `lifepunchnet`.
   DXRP ops, Whisper `:9000`, watchdog `:9101`, session hub `:9102`. Git root:

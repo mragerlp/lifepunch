@@ -19,7 +19,7 @@
 [CmdletBinding()]
 param(
     [string] $CornermanSsh = $(if ($env:CORNERMAN_SSH) { $env:CORNERMAN_SSH } else { 'cornerman' }),
-    [string] $CornermanIp = '192.168.1.227',
+    [string] $CornermanIp = '192.168.1.229',
     [string] $LifepunchnetHost = '205.209.104.22',
     [string] $RemoteAddress = '71.250.46.224',
     [string] $VengeanceLanIp = '',

@@ -49,14 +49,14 @@ STEP C — REBOOT & UNPLUG KEYBOARD
   After reboot Cornerman should go straight to desktop with NO keyboard attached.
 
   From VENGEANCE:
-    - Double-click  Cornerman (RDP)  on desktop (192.168.1.227)
+    - Double-click  Cornerman (RDP)  on desktop (192.168.1.229)
     - Or:  ssh cornerman
 
 --------------------------------------------------------------------------------
 STEP D — VERIFY FROM VENGEANCE
 --------------------------------------------------------------------------------
 
-    ping 192.168.1.227
+    ping 192.168.1.229
     ssh cornerman "hostname; whoami"
 
 --------------------------------------------------------------------------------

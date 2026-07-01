@@ -13,7 +13,7 @@
         <mxCell id="vengeance" value="VENGEANCE (V / R)&#xa;System Integration&#xa;192.168.1.236" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#3d0a14;strokeColor=#E4002B;fontColor=#FFFFFF;" vertex="1" parent="1">
           <mxGeometry x="60" y="400" width="220" height="90" as="geometry" />
         </mxCell>
-        <mxCell id="cornerman" value="CORNERMAN (C / G)&#xa;Defense + voice capture&#xa;192.168.1.227" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1a3d1a;strokeColor=#00FF7F;fontColor=#FFFFFF;" vertex="1" parent="1">
+        <mxCell id="cornerman" value="CORNERMAN (C / G)&#xa;Defense + voice capture&#xa;192.168.1.229" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1a3d1a;strokeColor=#00FF7F;fontColor=#FFFFFF;" vertex="1" parent="1">
           <mxGeometry x="620" y="400" width="220" height="90" as="geometry" />
         </mxCell>
         <mxCell id="firewall" value="FIREWALL / BRIDGE / SECURITY / TRAFFIC INTERCEPTION" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#222222;strokeColor=#888888;fontColor=#BBBBBB;fontStyle=1" vertex="1" parent="1">

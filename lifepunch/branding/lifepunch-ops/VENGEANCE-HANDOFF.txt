@@ -24,7 +24,7 @@ VENGEANCE (Enhanced Hacker Terminal, red):
   .\Apply-LifePunchOpsConsole.ps1 -Machine vengeance -NodeIp <desk-LAN-IP>
 
 Cornerman (Hacker Terminal, green):
-  .\Apply-LifePunchOpsConsole.ps1 -Machine cornerman -NodeIp 192.168.1.227
+  .\Apply-LifePunchOpsConsole.ps1 -Machine cornerman -NodeIp 192.168.1.229
 
 lifepunchnet (Government Terminal, cyan):
   .\Apply-LifePunchOpsConsole.ps1 -Machine lifepunchnet

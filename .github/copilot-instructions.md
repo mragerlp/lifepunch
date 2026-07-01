@@ -15,7 +15,7 @@ Regenerate after any rule change:
 powershell -File lifepunch\scripts\Sync-CursorRulesToCopilotInstructions.ps1
 ```
 
-Last sync: **2026-06-30 21:57 UTC** Â· **20** rule files
+Last sync: **2026-06-30 22:04 UTC** Â· **20** rule files
 
 ## How Copilot loads this
 
@@ -44,9 +44,10 @@ Blocked: Hacker, Banker, Government, Casino, â€¦
 
 ## Copilot â†” Cursor handoff
 
-- **Copilot (VS Code):** DXRP/s&box editor-native work, Razor, prefab/ModelDoc, Dimmer-style patterns
-- **Cursor:** MCP bridge, flatgrass proof, sync scripts, multi-file integration
+- **Copilot (VS Code):** Full monorepo â€” in-editor work, workflow/stack simplification, Dimmer-style DXRP
+- **Cursor:** MCP bridge, flatgrass proof, heavy plumbing when Copilot hands off
 - One **writer** per file; `git pull --rebase` before picking up handoff
+- **Manual law (not from .mdc):** `instructions/copilot-repo-ownership.instructions.md`
 
 ## Mirrored rules (20)
 

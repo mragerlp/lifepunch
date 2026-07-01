@@ -224,7 +224,7 @@ no port-forwarding. Win11 **Pro/Enterprise** is what makes the RDP host availabl
 - **RDP (Remote Desktop)** — occasional GUI (LM Studio, AMD Adrenalin). NLA required; uses the
   account **password** (not the Windows Hello PIN, which only works at the physical machine).
 
-**Verified working 2026-06-10 (cornerman @ 192.168.1.227):** key-only SSH (`ssh cornerman` →
+**Verified working 2026-06-10 (cornerman @ 192.168.1.229):** key-only SSH (`ssh cornerman` →
 `cornerman\jared`, password + keyboard-interactive disabled), RDP reachable, and the LAN model
 endpoint serving (`qwen2.5-coder-32b-instruct`). Firewall rules scoped to LocalSubnet/Private.
 
@@ -289,7 +289,7 @@ to the public internet). Partnership: [lmstudio.ai/link](https://lmstudio.ai/lin
 | Client | VENGEANCE | LM Studio lists + routes to remote weights |
 
 **Status:** captured for evaluation; **not enabled** (preview / batched access). v1 stays LAN +
-`Send-CornermanWorkflow.ps1` + direct `http://192.168.1.227:1234` on subnet.
+`Send-CornermanWorkflow.ps1` + direct `http://192.168.1.229:1234` on subnet.
 
 **Does not replace:** Claude Bridge (s&box visibility), lifepunchnet STT, inbox/outbox handoff, or
 Tier-3 vs Opus routing — see `CORNERMAN_MODEL_ROUTING.md` § LM Link.

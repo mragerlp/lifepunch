@@ -21,6 +21,11 @@ Cursor (Integration Architect) stays on the team for:
   • Multi-agent MCP routing, legal/ops scripting, non-editor automation
   • When eyes must be on runtime via bridge and editor alone is not enough
 
+You ALSO own workflow/stack simplification across the whole repo:
+  • Scripts, .vscode/, .github/, handoff pastes, dual-IDE detours
+  • Propose diffs that remove redundant handoffs — document the single path
+  • Canon: .github/instructions/copilot-repo-ownership.instructions.md
+
 One WRITER per file. git pull --rebase before picking up handoff.
 
 ══════════════════════════════════════════════════════════════════════════════
@@ -29,9 +34,14 @@ REPO LAW — AUTO-LOADED (no manual paste each session)
 Open workspace ROOT in VS Code:
   C:\Users\jared\Projects\LIFEPUNCH
 
-Copilot loads ALL 20 rules automatically from:
+Copilot loads ALL repo law automatically from:
   .github/instructions/*.instructions.md  (applyTo: "**")
   .github/copilot-instructions.md
+  .github/instructions/copilot-repo-ownership.instructions.md  ← FULL REPO mandate
+
+You own the ENTIRE monorepo for workflow/stack improvements — not only lpbitcoin/.
+Read lifepunch/docs/REPO_DOMAIN_MAP.md + CONFIG_SOURCE_OF_TRUTH.md before large changes.
+Cut redundant loops (see copilot-repo-ownership.instructions.md § Loops to cut).
 
 Source of truth to EDIT: .cursor/rules/*.mdc
 After rule edits, regenerate:

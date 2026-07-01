@@ -423,7 +423,7 @@ Quick rules:
 | **ULX** | `adminmenu` r10 Set Job committed — parallel portal ship when owner says; does not pause bitcoin gate. |
 | **Monnow** | Rev 9 path `monnowprinterlp/monnowprinter.prefab` — staging ready; portal pin pending (parallel lane). |
 | **CVL stack** | `Start-CvlFullCapacity.ps1` · `Get-CvlConnectivityStatus.ps1 -Pretty` → `allOk: true`. Reload Cursor after MCP changes. |
-| **Dual IDE** | **Cursor** = write / MCP / proof / commit. **VS Code Copilot** = mirror reviewer only (not second writer). **Cornerman** = distill. **Codex** = PASS·REVISE·HOLD. **Bloodwave** = GO. `DUAL_IDE_CURSOR_VSCODE.md` |
+| **Dual IDE** | **VS Code Copilot** = primary in-editor writer + full-repo workflow/stack. **Cursor** = MCP / flatgrass proof / plumbing. **Cornerman** = distill. **Codex** = PASS·REVISE·HOLD. **Bloodwave** = GO. `DUAL_IDE_CURSOR_VSCODE.md` |
 
 **Prior (2026-06-22) — ULX vanilla workbench session (historical — superseded for bitcoin lane):**
 

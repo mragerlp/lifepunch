@@ -60,8 +60,8 @@ Do NOT edit dxrp-public unless explicitly bouncing an upstream fix back to the f
 **Canon:** `lifepunch/docs/DUAL_IDE_CURSOR_VSCODE.md`
 
 ```text
-Cursor = writer / MCP / proof / commit
-VS Code + Copilot = mirror reviewer (not second writer unless Bloodwave switches)
+VS Code + Copilot = primary in-editor writer + full-repo workflow (see copilot-repo-ownership.instructions.md)
+Cursor = MCP / flatgrass proof / plumbing / commit when Copilot hands off
 Codex = PASS · REVISE · HOLD before upstream PR ship
 ```
 

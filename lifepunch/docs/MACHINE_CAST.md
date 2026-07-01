@@ -24,7 +24,7 @@ stack. Say a **node** when you mean one machine. Do **not** call the three-machi
 | Codename | What it is | Where | Primary job |
 |----------|------------|-------|-------------|
 | **VENGEANCE** | Owner's primary PC | Desk — `C:\Users\jared\Projects\LIFEPUNCH` | Cursor, agents, **GitHub monorepo = source of truth**, integrate partner work |
-| **Cornerman** | Local AI workstation | Home LAN — `192.168.1.227`, hostname `cornerman` | Mic (AT2020), local LLM/STT, voice relay, Tier-3 prep/RAG — **not** source of truth |
+| **Cornerman** | Local AI workstation | Home LAN — `192.168.1.229`, hostname `cornerman` | Mic (AT2020), local LLM/STT, voice relay, Tier-3 prep/RAG — **not** source of truth |
 | **lifepunchnet** | Always-on hosted server | Internet — `205.209.104.22`, Windows hostname **`lifepunchnet`** | DXRP/server ops, Whisper (`:9000`), watchdog (`:9101`), session hub (`:9102`), Odysseus (optional), GitLab `lifepunch-rdp-server` |
 
 **lifepunchnet git root:** `C:\lifepunch\lifepunch-rdp-server` — `C:\lifepunch` is only a parent folder
@@ -143,7 +143,7 @@ Icons = **destination / scope** (at a glance, not a telescope). Full checkpoint:
 | **LifePunch Voice Preflight** | Universal | Cross-node health check |
 | **LifePunch Voice Comms** | Red (VENGEANCE) | VENGEANCE watchers only |
 | **Talk to Vengeance** | Red (VENGEANCE) | Cornerman PTT (icon red: voice **to** VENGEANCE) |
-| **Cornerman (RDP)** | Green | `192.168.1.227` |
+| **Cornerman (RDP)** | Green | `192.168.1.229` |
 | **lifepunchnet (RDP)** | Blue | `205.209.104.22` |
 
 Config: `lifepunch/scripts/remote-hosts.json` + gitignored `remote-hosts.local.json`.

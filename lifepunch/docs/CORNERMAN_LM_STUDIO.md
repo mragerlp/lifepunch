@@ -5,7 +5,7 @@ API pool and keeps long agent sessions off cloud frontier. Default prep: warm Ti
 run `Start-ClaudeBridge.ps1` on VENGEANCE, then `claude --model …` (or persistent
 `claudeCode.environmentVariables`). Escalate to Cursor Opus only when Bridge + Auto are insufficient.
 
-Tier-3 on **Cornerman** (`192.168.1.227:1234`). VENGEANCE reaches the endpoint over LAN; no tunnel unless the server is bound to loopback only.
+Tier-3 on **Cornerman** (`192.168.1.229:1234`). VENGEANCE reaches the endpoint over LAN; no tunnel unless the server is bound to loopback only.
 
 ## The three models
 
@@ -36,7 +36,7 @@ split GPU offload (`0.05` / `0.45` / `0.45` in `Start-CornermanLmStudio.ps1`). I
 | Max loaded models | **3** | Matches routing table |
 | JIT TTL | 3600s (or taste) | Specialists unload after idle |
 
-Bind server to **LAN IP** (`192.168.1.227`), not `0.0.0.0` public. Firewall: port `1234` scoped to Private/LAN only (`LOCAL_AI_WORKSTATION.md` §6).
+Bind server to **LAN IP** (`192.168.1.229`), not `0.0.0.0` public. Firewall: port `1234` scoped to Private/LAN only (`LOCAL_AI_WORKSTATION.md` §6).
 
 ## Start Tier-3 (Cornerman)
 
@@ -76,7 +76,7 @@ claude --model qwen2.5-coder-32b-instruct
 ### Persistent env (PowerShell profile on VENGEANCE)
 
 ```powershell
-$env:ANTHROPIC_BASE_URL = 'http://192.168.1.227:1234'
+$env:ANTHROPIC_BASE_URL = 'http://192.168.1.229:1234'
 $env:ANTHROPIC_AUTH_TOKEN = 'lmstudio'
 ```
 
@@ -84,7 +84,7 @@ $env:ANTHROPIC_AUTH_TOKEN = 'lmstudio'
 
 ```json
 "claudeCode.environmentVariables": [
-  { "name": "ANTHROPIC_BASE_URL", "value": "http://192.168.1.227:1234" },
+  { "name": "ANTHROPIC_BASE_URL", "value": "http://192.168.1.229:1234" },
   { "name": "ANTHROPIC_AUTH_TOKEN", "value": "lmstudio" }
 ]
 ```

@@ -97,9 +97,15 @@ $body
     $written += $destName
 }
 
+# Manual Copilot instruction files (no .mdc source) — never delete on sync
+$ManualInstructionFiles = @(
+    'copilot-repo-ownership.instructions.md'
+)
+
 # Remove instruction files whose source rule was deleted
 $existing = @(Get-ChildItem -LiteralPath $InstructionsDir -Filter '*.instructions.md' -ErrorAction SilentlyContinue)
 foreach ($stale in $existing) {
+    if ($stale.Name -in $ManualInstructionFiles) { continue }
     if ($stale.Name -notmatch '^(.+)\.instructions\.md$') { continue }
     $ruleStem = $Matches[1]
     $sourceRule = Join-Path $RulesDir "$ruleStem.mdc"
@@ -162,9 +168,10 @@ Blocked: Hacker, Banker, Government, Casino, …
 
 ## Copilot ↔ Cursor handoff
 
-- **Copilot (VS Code):** DXRP/s&box editor-native work, Razor, prefab/ModelDoc, Dimmer-style patterns
-- **Cursor:** MCP bridge, flatgrass proof, sync scripts, multi-file integration
+- **Copilot (VS Code):** Full monorepo — in-editor work, workflow/stack simplification, Dimmer-style DXRP
+- **Cursor:** MCP bridge, flatgrass proof, heavy plumbing when Copilot hands off
 - One **writer** per file; ``git pull --rebase`` before picking up handoff
+- **Manual law (not from .mdc):** ``instructions/copilot-repo-ownership.instructions.md``
 
 ## Mirrored rules ($($ruleFiles.Count))
 

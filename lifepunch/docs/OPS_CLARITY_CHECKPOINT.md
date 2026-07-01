@@ -89,7 +89,7 @@ powershell -ExecutionPolicy Bypass -File .\Install-LifePunchShortcutIcons.ps1
 | **LifePunch Voice Comms** | **VENGEANCE (red)** | VENGEANCE watchers only — paste, session sync, host watch | `start-voice-comms.ps1` |
 | **Cornerman — Talk to Vengeance** | **Cornerman (green)** | **On VENGEANCE desktop:** Red→Green signal (SSH relay + RDP to Cornerman) | `Start-TalkToVengeance.ps1` |
 | **Talk to Vengeance** | **VENGEANCE (red)** | **On Cornerman desktop only:** PTT relay (red = voice **to** VENGEANCE) | `Talk to Vengeance.cmd` |
-| **Cornerman (RDP)** | **Cornerman (green)** | RDP `192.168.1.227` | `Install-LifePunchRemoteShortcuts.ps1` |
+| **Cornerman (RDP)** | **Cornerman (green)** | RDP `192.168.1.229` | `Install-LifePunchRemoteShortcuts.ps1` |
 | **lifepunchnet (RDP)** | **lifepunchnet (blue)** | RDP `205.209.104.22` | same |
 
 ### Daily habit (Bloodwave)
