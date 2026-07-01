@@ -43,6 +43,8 @@ If mcp.json shows mirror path: tell Red to run Install-CornermanSboxBridgeMcp.ps
 
 **Red full boot (editor + SMB + tunnel):** `RED_FULL_CAPACITY_BOOT.md`
 
+**MacBook remote to Green (RDP, not SMB on Mac):** `handoff/MACBOOK_GREEN_QUICKSTART.md` · full guide `handoff/MACBOOK_CORNERMAN_MOBILE.md`
+
 **Red refreshes Green wiring (after editor is up):**
 
 ```powershell
