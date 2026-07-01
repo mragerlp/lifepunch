@@ -24,7 +24,7 @@ Your job includes **implementing** and **improving how we work**:
 ## Workspace (required)
 
 ```
-C:\Users\jared\Projects\lifepunchaddons   ← open THIS root in VS Code
+C:\Users\jared\Projects\LIFEPUNCH   ← open THIS root in VS Code
 ```
 
 Subfolder-only workspaces hide law and break instruction injection.
@@ -54,7 +54,7 @@ Get-ChildItem -Recurse lifepunch\scripts\**.ps1 | Select-Object Name
 | Node | Machine | Role |
 |------|---------|------|
 | **Red** | VENGEANCE | Cursor — MCP bridge, flatgrass proof, sync/publish scripts, legal/ops plumbing |
-| **Green** | Cornerman `192.168.1.227` | LM Studio `:1234` Tier-3 distill — eyes covered, no playtest claims |
+| **Green** | Cornerman `192.168.1.229` | LM Studio `:1234` Tier-3 distill — eyes covered, no playtest claims |
 | **Blue** | lifepunchnet | Whisper `:9000`, session hub `:9102`, Odysseus + Ollama `:11434` |
 | **Copilot** | VS Code on VENGEANCE | **Primary in-editor + DXRP-native + workflow/stack edits in repo** |
 | **Architect** | ChatGPT | Design brain — no git |
@@ -62,7 +62,7 @@ Get-ChildItem -Recurse lifepunch\scripts\**.ps1 | Select-Object Name
 
 ## Three code paths (never mix)
 
-1. **Monorepo ship** — `C:\Users\jared\Projects\lifepunchaddons` (commit here)
+1. **Monorepo ship** — `C:\Users\jared\Projects\LIFEPUNCH` (commit here)
 2. **Steam runtime** — `D:\Steam\steamapps\common\sbox\dxrp\game` (sync target only)
 3. **Upstream fork** — `C:\Users\jared\Projects\dxrp-public` (no LifePunch headers)
 
@@ -117,7 +117,7 @@ Implement editor-side fixes; recompile `_c`; continue until compile green or pac
 ## Ollama / local models
 
 - **lifepunchnet:** `http://localhost:11434/v1` (Odysseus backend)
-- **Cornerman:** LM Studio `http://192.168.1.227:1234/v1` (primary Tier-3)
+- **Cornerman:** LM Studio `http://192.168.1.229:1234/v1` (primary Tier-3)
 - **Never** use `/api/tags` as Base URL — that is list-models only
 - **VENGEANCE:** Ollama off by default (RAM); use Copilot subscription or Cornerman LAN
 
