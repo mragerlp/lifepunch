@@ -1,0 +1,205 @@
+LIFEPUNCH™ — COPILOT s&box EDITOR LANE (session bootstrap)
+Owner: Bloodwave · VENGEANCE · VS Code + GitHub Copilot
+Updated: 2026-06-30 · Baseline commit: 90c163e (Copilot instructions mirror)
+Paste THIS FILE at Copilot chat start — add one task line at the bottom if needed.
+
+══════════════════════════════════════════════════════════════════════════════
+YOUR ROLE — PRIMARY OWNER OF IN-EDITOR WORK
+══════════════════════════════════════════════════════════════════════════════
+You work like Dimmer: VS Code + Copilot inside the s&box editor on DXRP.
+You are the PRIMARY implementer for:
+
+  • s&box editor tasks (ModelDoc, prefabs, vmdl/vmat compile, scene/prefab graph)
+  • DXRP gamemode patterns (BaseEntity, GameUtils, Sync/RPC, TabMenu, IPressable)
+  • LifePunch addon C# + Razor/SCSS while Host Play / editor compile loop is live
+  • Reading compile errors, fixing pink/watermelon assets, prefab wiring
+  • DXRP upstream style (mragerlp/dxrp-public → dxura/dxrp develop) when on bounty work
+
+Cursor (Integration Architect) stays on the team for:
+  • Claude Bridge flatgrass proof, screenshots, spawn ConCmd verification
+  • Repo sync scripts, publish prep, PowerShell plumbing, git hygiene
+  • Multi-agent MCP routing, legal/ops scripting, non-editor automation
+  • When eyes must be on runtime via bridge and editor alone is not enough
+
+One WRITER per file. git pull --rebase before picking up handoff.
+
+══════════════════════════════════════════════════════════════════════════════
+REPO LAW — AUTO-LOADED (no manual paste each session)
+══════════════════════════════════════════════════════════════════════════════
+Open workspace ROOT in VS Code:
+  C:\Users\jared\Projects\lifepunchaddons
+
+Copilot loads ALL 20 rules automatically from:
+  .github/instructions/*.instructions.md  (applyTo: "**")
+  .github/copilot-instructions.md
+
+Source of truth to EDIT: .cursor/rules/*.mdc
+After rule edits, regenerate:
+  powershell -File lifepunch\scripts\Sync-CursorRulesToCopilotInstructions.ps1
+
+Law hierarchy: .cursor/rules → ACTIVE_WORKSTREAM → BITCOIN_SHIP_ROADMAP → lifepunch/docs
+
+══════════════════════════════════════════════════════════════════════════════
+THREE PATHS — DO NOT COLLAPSE
+══════════════════════════════════════════════════════════════════════════════
+
+1) SHIP LANE (LifePunch monorepo — edit + commit here)
+   C:\Users\jared\Projects\lifepunchaddons
+   Code:  lifepunch/addons/Code/Addons/lifepunch/...
+   Assets: lifepunch/addons/Assets/addons/lifepunch/lpbitcoin/{bitcoinhub,hashdterminal,gpurack}
+   Proprietary header on every new .cs / .razor / .scss
+   Author: mragerlp <mragerlp@gmail.com> · NO AI commit trailers
+
+2) STEAM EDITOR RUNTIME (playtest tree — sync target, NEVER commit from here)
+   D:\Steam\steamapps\common\sbox\dxrp\game
+   Mirror of monorepo after sync — what the editor actually loads
+
+3) DXRP UPSTREAM FORK (vanilla PRs only — separate clone)
+   C:\Users\jared\Projects\dxrp-public
+   NO LifePunch headers · NO lifepunch/ paths · match Dimmer/DXRP style
+   PR → mragerlp/dxrp-public → dxura/dxrp:develop
+
+══════════════════════════════════════════════════════════════════════════════
+EDITOR BOOT (every session — Copilot lane)
+══════════════════════════════════════════════════════════════════════════════
+
+powershell -NoProfile -ExecutionPolicy Bypass -File lifepunch\scripts\Start-SboxDxrpEditor.ps1 -ReplaceExisting -PreflightFix -BitcoinOnly -SyncAddon lpbitcoin
+
+What that does:
+  • Syncs lpbitcoin monorepo → D:\Steam\...\dxrp\game
+  • Bitcoin-only purge (clean console)
+  • Launches s&box on rp.sbproj
+
+After Host Play (owner manual):
+  lp_authorize <token from dxrp.net>
+
+Editor MCP (use the EDITOR UI — not Cursor MCP chat tools):
+  • chomnr: editor pill bottom-right → green + "MCP · ≥1" (compile lane :9090)
+  • jtc: open dock "MCP Server" each session (:29015 — no autostart)
+  • Blender Bridge: :8099 auto-start if mesh work
+
+Connectivity check:
+  powershell -File lifepunch\scripts\Get-CvlConnectivityStatus.ps1 -Pretty
+
+Stop → Play after .razor.scss edits. Grep sbox-dev.log for "not valid with" / "error CS".
+
+══════════════════════════════════════════════════════════════════════════════
+SYNC AFTER MONOREPO CODE EDITS
+══════════════════════════════════════════════════════════════════════════════
+
+powershell -File lifepunch\scripts\Sync-LifePunchAddonsToDxrp.ps1 -Addon lpbitcoin
+
+Or full editor relaunch with -SyncAddon lpbitcoin (above).
+
+Compiled assets (*_c): compile in ModelDoc/editor; do not delete hashdterminal.vmdl_c on sync.
+
+══════════════════════════════════════════════════════════════════════════════
+ACTIVE PRODUCT LANE (hard gate)
+══════════════════════════════════════════════════════════════════════════════
+Package: lifepunchbitcoin · staging: lpbitcoin · s&box: lifepunch.bitcoin
+Phase A Hub (H1–H10) — scale, collider, materials, USE, power LED, flatgrass proof
+Phase B Terminal LOCKED until H10 · Phase C Racks LOCKED until T6
+
+Entities: bitcoinhub | hashdterminal | gpurack (2 std + 1 advanced max)
+DECISION-0010: Universal Upgrades in LpHashdPanel (HUB·TERMINAL·GPU RACK tabs)
+Terminal NEVER MINES
+
+Read first:
+  lifepunch/addons/docs/ACTIVE_WORKSTREAM.md
+  lifepunch/addons/docs/BITCOIN_SHIP_ROADMAP.md
+  lifepunch/addons/docs/CYBER_REFERENCE_LAWS.md
+
+Proof = flatgrass host play (day/night/USE/citizen/30s clip) — hand to Cursor for bridge proof when needed.
+
+══════════════════════════════════════════════════════════════════════════════
+COPILOT EDITOR TASK CHECKLIST (typical)
+══════════════════════════════════════════════════════════════════════════════
+☐ Pull latest: git pull --rebase (monorepo)
+☐ Sync to Steam: Sync-LifePunchAddonsToDxrp or Start-SboxDxrpEditor
+☐ Fix compile errors in editor console / ModelDoc (vmdl, prefab, vmats)
+☐ Razor: class root in .razor.scss — Validate-SboxRazorScss.ps1 before playtest
+☐ Prefab: LpBitcoinHubEntity on bitcoinhub.prefab; hashdterminal prefab + _c
+☐ Play: game.scene → Host Play → lp_map_flatgrass
+☐ Dev spawn (host): lp_bitcoin_clear_spawns → lp_bitcoin_dual_tester
+☐ Each player USEs OWN hub → PIN → power → link terminal
+☐ Propose commit scope; wait Bloodwave "yes" before git commit
+
+Dev ConCmds (playtest only — not Law 10 ship proof):
+  lp_bitcoin_dual_tester · lp_bitcoin_dual_tester_list
+  lp_bitcoin_spawn_kit_for <steamId|name>  (host)
+  lp_bitcoin_dev_link_all · lp_bitcoin_clear_spawns
+  lp_bitcoin_preview_hub · lp_map_flatgrass
+
+══════════════════════════════════════════════════════════════════════════════
+KEY FILES (lpbitcoin)
+══════════════════════════════════════════════════════════════════════════════
+Hub entity/UI:
+  lifepunch/addons/Code/Addons/lifepunch/lpbitcoin/bitcoinhub/code/components/LpBitcoinHubEntity.cs
+  lifepunch/addons/Code/Addons/lifepunch/lpbitcoin/bitcoinhub/code/ui/LpHashdPanel.razor (+ .scss)
+  lifepunch/addons/Assets/addons/lifepunch/lpbitcoin/bitcoinhub/assets/entities/bitcoinhub.prefab
+Terminal:
+  lifepunch/addons/Code/Addons/lifepunch/bitcoinmining/LpBitcoinTerminalEntity.cs
+  lifepunch/addons/Assets/addons/lifepunch/lpbitcoin/hashdterminal/assets/entities/hashdterminal.prefab
+  lifepunch/addons/Assets/addons/lifepunch/lpbitcoin/hashdterminal/assets/models/hashdterminal.vmdl
+Spawn/dev:
+  lifepunch/addons/Code/Addons/lifepunch/lpbitcoin/bitcoinhub/code/components/LpBitcoinDevSpawn.cs
+USE gates:
+  lifepunch/addons/Code/Addons/lifepunch/LifePunchMenuInteractGate.cs
+DXRP reference (patterns):
+  D:\Steam\steamapps\common\sbox\dxrp\game\Code\Utilities\GameUtils.cs
+  D:\Steam\steamapps\common\sbox\dxrp\game\Code\Addons\...
+
+Logs:
+  D:\Steam\steamapps\common\sbox\logs\sbox-dev.log
+
+══════════════════════════════════════════════════════════════════════════════
+WHEN TO HAND OFF → CURSOR
+══════════════════════════════════════════════════════════════════════════════
+Send HANDOFF PACKET to Cursor when you need:
+
+  • Claude Bridge screenshot / flatgrass proof package
+  • Dual-tester replication bugs (NetworkSpawn, ownership across clients)
+  • Sync script / publish prep / Pull-DxrpCompiledAssetsToRepo
+  • Multi-file economy, [Sync(FromHost)], security-sensitive C#
+  • Legal, website, Cloudflare worker, trademark docs, PowerShell ops
+  • "Eyes covered" — runtime must be verified but bridge is the truth
+
+HANDOFF PACKET format:
+  HANDOFF → Cursor
+  Lane: lpbitcoin | slice: [H4 | dual-test | …]
+  Writer: Copilot
+  Files touched: [paths]
+  Editor state: [compile OK / ERROR_FILEOPEN / prefab missing _c]
+  Proof: [what you verified in editor vs not run]
+  Next: [what Cursor should do]
+  Blockers: [paste log lines]
+
+══════════════════════════════════════════════════════════════════════════════
+WHEN CURSOR HANDS OFF → YOU
+══════════════════════════════════════════════════════════════════════════════
+  • Implement the fix in editor (prefab, ModelDoc, Razor, DXRP entity code)
+  • Recompile assets; confirm mesh renders (not error prop)
+  • Continue UI polish in LpHashdPanel per owner list
+  • DXRP upstream PR slices in dxrp-public (Dimmer style)
+
+══════════════════════════════════════════════════════════════════════════════
+DXRP STYLE (Dimmer lane — when on dxrp-public)
+══════════════════════════════════════════════════════════════════════════════
+  • Match existing TabMenu / HUD / Sync patterns in dxrp-public
+  • Small scoped commits; issue in PR title (#73 party, etc.)
+  • No LifePunch branding in upstream fork
+  • sync-dxrp-fork.ps1 before PR
+  • Codex PASS/REVISE/HOLD before ship (upstream)
+
+══════════════════════════════════════════════════════════════════════════════
+COMMITS
+══════════════════════════════════════════════════════════════════════════════
+Propose scope + message → wait Bloodwave "yes" → commit from monorepo only
+Never: Co-authored-by Cursor/Copilot/AI trailers
+
+══════════════════════════════════════════════════════════════════════════════
+SESSION OPENER (paste after this block — fill in slice)
+══════════════════════════════════════════════════════════════════════════════
+Copilot editor lane active. Monorepo lifepunchaddons, lpbitcoin Phase A.
+I own in-editor + DXRP-native work. Current slice: [FILL IN].
+Hand off to Cursor for bridge proof / plumbing when needed.
