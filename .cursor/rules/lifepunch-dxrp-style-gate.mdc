@@ -1,5 +1,5 @@
----
-description: STYLE routing — Agent judges PASS vs VS Code Copilot mirror; Bloodwave does not pick manually
+﻿---
+description: STYLE routing — Copilot agent judges PASS vs REVIEW; Bloodwave does not pick manually
 alwaysApply: false
 globs:
   - "lifepunch/addons/Code/**/*.cs"
@@ -7,9 +7,9 @@ globs:
   - "lifepunch/addons/Code/**/*.scss"
 ---
 
-# LifePunch — DXRP STYLE gate (Cursor Agent)
+# LifePunch — DXRP STYLE gate (Copilot Agent)
 
-**VS Code can** run Copilot mirror review. **Cursor cannot** run Copilot. Agent **routes** — Bloodwave does not manually decide mirror vs skip.
+**Copilot is the primary IDE.** The agent routes — Bloodwave does not manually decide.
 
 ## After each DXRP-facing or upstream slice
 
@@ -19,28 +19,23 @@ globs:
 
 ### `STYLE: PASS`
 
-Agent verified against named reference paths. Proceed to flatgrass / commit proposal. Bloodwave takes no VS Code action.
+Agent verified against named reference paths. Proceed to flatgrass / commit proposal.
 
-### `STYLE: VS_MIRROR`
+### `STYLE: REVIEW`
 
-Agent needs Copilot in Dimmer's environment. Provide:
+Agent needs a review pass. Provide:
 
 - **Files** (paths only, touched this slice)
-- **Copilot prompt** (paste into VS Code Copilot Chat — review only, no rewrite):
+- **What to check** (e.g. "TabMenu pattern, Sync convention, Razor SCSS class root")
 
-  ```text
-  Review only — do not rewrite. Do these files match DXRP TabMenu / Party / Sync / Razor SCSS conventions? List mismatches in bullets.
-  ```
-
-Bloodwave opens files in **VS Code**, runs prompt, pastes Copilot reply back to Cursor if REVISE needed.
+Agent reviews inline; revises if needed before proposing commit.
 
 ## Default
 
-Prefer **`STYLE: PASS`** when references are clear. Use **`VS_MIRROR`** for new UI surfaces, first use of a subsystem, or genuine uncertainty.
+Prefer **`STYLE: PASS`** when references are clear. Use **`STYLE: REVIEW`** for new UI surfaces, first use of a subsystem, or genuine uncertainty.
 
 ## Do not
 
-- Ask Bloodwave to mirror routinely without a STYLE verdict.
-- Install Copilot inside Cursor.
-- Treat Copilot output as playtest proof.
-- Edit files in VS Code during `VS_MIRROR` unless Bloodwave explicitly switches writer.
+- Ask Bloodwave to route to a second IDE for review — Copilot handles this natively.
+- Treat Cornerman output as playtest proof.
+- Edit files in Cursor unless `GROK REQUIRED` route tag is active.

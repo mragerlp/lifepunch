@@ -15,7 +15,7 @@ Regenerate after any rule change:
 powershell -File lifepunch\scripts\Sync-CursorRulesToCopilotInstructions.ps1
 ```
 
-Last sync: **2026-06-30 21:37 UTC** Â· **20** rule files
+Last sync: **2026-06-30 21:57 UTC** Â· **20** rule files
 
 ## How Copilot loads this
 

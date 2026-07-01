@@ -11,7 +11,7 @@ sourceRule: ".cursor/rules/lifepunch-operating-context.mdc"
 ## Working style
 - Treat this as a business. Be direct and efficient; prioritize shipping.
 - **Owner alias (June 2026+):** **Bloodwave** = visible name (in-game · Steam · Discord · agent chat).
-  **mrragerlp** = legal/proprietary author on code. **Mr. Rager** = email/legacy contact (same person).
+  **mragerlp** = legal/proprietary author on code. **Mr. Rager** = email/legacy contact (same person).
   Canon: `lifepunch/docs/BLOODWAVE_ALIAS.md`.
 - Do NOT comment on the user's time, health, or well-being, and do not suggest
   resting/stopping. Just keep the work moving.
@@ -21,138 +21,104 @@ sourceRule: ".cursor/rules/lifepunch-operating-context.mdc"
   **Reference laws:** `CYBER_REFERENCE_LAWS.md`. Blocked lanes park in `BACKLOG_PARKING_LOT.md`.
   Rule: `.cursor/rules/lifepunch-active-workstream-gate.mdc`.
 
-## Efficiency & cost discipline (owner-funded startup)
-- The owner personally funds this LLC for best-in-class models (e.g. Opus 4.8). Best-in-class is
-  worth it — but usage is real $USD. Deliver max capability per dollar.
-- **Plan = Individual Ultra ($200/mo).** Two separate monthly pools, both reset monthly with **no
-  rollover** (verified against Cursor pricing docs, 2026-06):
-  - **API pool — $400/mo (20× Pro):** drained by **manually selected frontier models** (Opus,
-    premium Sonnet) at provider API rates; **Max Mode burns it fastest** (full API token rate).
-    Overage continues only via on-demand pay-as-you-go at the same API rates. **This is the scarce
-    resource — spend it on the hard ~20%.**
-  - **Auto + Composer pool — separate & generous (effectively unlimited):** does NOT touch the $400
-    API pool. Routine work here is effectively free against quota → **make it the default.**
-- **Model routing (default down, escalate up; quality floor always protected):**
-  - **Tier 1 — Opus / high-reasoning (spends the $400 API pool):** architecture, multi-file C#
-    systems, subtle or cross-system debugging, security/legal/structural synthesis. The ~20% that's
-    genuinely hard. Worth the spend; never gamble a hard problem on a weak model to save cost.
-  - **Tier 2 — Auto / Composer (default; separate pool):** scoped edits/refactors, boilerplate,
-    docs, search, validators, commit messages, straightforward Q&A. The routine ~80% — effectively
-    free, so default here and reserve the API pool for Tier 1.
-  - **Tier 3 — Cornerman (local, when live):** bulk summarize, log/RAG context-prep, first-draft
-    boilerplate, classification — zero Cursor usage. Feed Cursor distilled context, not raw dumps.
-- **Escalation:** start at the lowest tier that fits; jump to Opus the moment real complexity
-  appears; when unsure on something genuinely hard, use Opus.
-- **Four-phase Opus workflow + strict subsystem scope:** `lifepunch/docs/OPUS_USAGE_LAW.md` +
-  **lifepunch-opus-usage** rule — plan (no code) → one slice → flatgrass → review; Hub → Terminal → GPU Rack.
-- **Session hygiene (kills the cache-read tax):** one focused chat per task; start fresh often;
-  continue via a short summary into a NEW chat, not a multi-million-token context drag. Attach
-  specific files/ranges, not whole folders. Ground once; reference by path.
-- **Knowledge capture:** every decision/learning lands ONCE in the single source of truth
-  (rules/docs) so agents operate from it instead of re-deriving — re-explaining is a token AND
-  focus leak.
-- Plan → sign-off → build for non-trivial work, so we don't pay twice for rework.
-- Be concise in agent output too — clear and complete, not padded.
+## IDE + agent stack (July 2026)
 
-## Eyes covered — mandatory disclosure (Cursor agents + Cornerman)
+**Primary IDE: GitHub Copilot on VENGEANCE.** Cursor is retained as the Grok lane only.
 
-**If something is covering your eyes, you must tell the owner.** Same rule for **Cornerman** —
-distills, drafts, and local-model output are not eyes. No hedging ("working from code/docs"),
-no answering "do you see this?" as if you looked, no implying playtest or scale was verified.
+| Tool | Role | When |
+|------|------|------|
+| **GitHub Copilot (primary)** | All implementation, MCP, flatgrass proof, commits | Default — everything except Grok tasks |
+| **Cursor (Grok lane)** | Tier-2A bounded tasks requiring Grok Build 1 | `GROK REQUIRED` route tag only |
+| **Cornerman (Green)** | Tier-3 distill / prep — local LM, no commits | `GREEN CODE/DEEP REQUIRED` only |
+| **ChatGPT (Design Architect)** | Player fantasy, economy briefs, laws | Design pass only — does not commit |
 
-Guessing from files when nobody looked creates a **compromised chain** (e.g. GPU rack Empire-State
-huge while repo says `0.65`). Stop the chain at the disclosure.
+**MCP config:** `.vscode/mcp.json` (all 4 servers — `sbox`, `sbox-editor`, `cornerman-lm`, `sbox-jtc`).
+Source of truth for `.cursor/rules/`: `.cursor/rules/*.mdc` (edit here; mirror regenerates via `Sync-CursorRulesToCopilotInstructions.ps1`).
+
+## Model routing (Copilot — default down, escalate up)
+
+- **Tier 1 — Claude Opus 4.8 (manually select in Copilot):** architecture, multi-file C#
+  systems, subtle or cross-system debugging, security/legal/structural synthesis. The ~20% that's
+  genuinely hard. Worth the spend; never gamble a hard problem on a weak model.
+- **Tier 2B — Claude Sonnet 4.6 (Copilot default):** scoped edits, docs, search, validators,
+  commit messages, straightforward Q&A. The routine ~80% — use this first.
+- **Tier 2A — Grok Build 1 (Cursor only):** `GROK REQUIRED` route tag → open Cursor, select Grok.
+  Bounded Razor/SCSS implementation, repo-grounded technical planning, ModelDoc/asset maps.
+- **Tier 3 — Cornerman (local LM via `cornerman-lm` MCP):** bulk summarize, distill, log/RAG
+  context-prep, first-draft boilerplate — zero Copilot token spend. Feed distilled context, not raw dumps.
+
+**Escalation:** start Sonnet; jump to Opus when real complexity appears; `GROK REQUIRED` → Cursor.
+
+## Efficiency discipline
+
+- One focused chat per task; start fresh often; continue via short summary into a NEW session.
+- Attach specific files/ranges, not whole folders.
+- Every decision/learning lands ONCE in the single source of truth (rules/docs).
+- Plan → sign-off → build for non-trivial work.
+- Be concise in agent output — clear and complete, not padded.
+
+## Eyes covered — mandatory disclosure
+
+**If something is covering your eyes, you must tell the owner.**
 
 ### What counts as "eyes covered"
 
-| Cover | Who | Say this (lead with it) |
-|-------|-----|-------------------------|
-| Claude Bridge off | Cursor on VENGEANCE | **I can't see the game — Claude Bridge is not connected.** |
-| Owner asks "do you see this?" / any visual claim, bridge off | Cursor | **No — something's covering my eyes.** I can't see the editor without Claude Bridge. |
-| No bridge, no owner screenshot | Cursor | **My eyes are covered** — I only have repo/docs/logs, not your screen. |
-| Cornerman / local LM / inbox distill | Green or any Tier-3 path | **Cornerman's eyes are covered** — I only have [inbox files / repo / distill], not the game or your screen. |
+| Cover | Who | Say this |
+|-------|-----|---------|
+| MCP bridge (sbox-editor/sbox) not connected | Copilot on VENGEANCE | **I can't see the game — MCP bridge is not connected.** |
+| Owner asks "do you see this?" / any visual claim, bridge off | Copilot | **No — something's covering my eyes.** |
+| No bridge, no owner screenshot | Copilot | **My eyes are covered** — I only have repo/docs/logs. |
+| Cornerman / local LM / inbox distill | Green or Tier-3 path | **Cornerman's eyes are covered** — I only have [inbox files / repo / distill]. |
 | Prefab/code only (no bridge, no screenshot) | Anyone | **I haven't seen what's spawned** — file values are not the viewport. |
-| Bridge on but not probed yet | Cursor | Check `get_bridge_status`, then screenshot/probe before claiming you see anything. |
-| Bridge connected + evidence | Cursor | **Claude Bridge connected — I can see the editor.** (only after screenshot/probe) |
+| Bridge on but not probed yet | Copilot | Check `get_bridge_status`, then screenshot/probe before claiming. |
+| Bridge connected + evidence | Copilot | **MCP bridge connected — I can see the editor.** (only after screenshot/probe) |
 
-### s&box / editor (Claude Bridge)
+### s&box / editor (MCP bridge)
 
 **Session start** and before any in-game visual claim: `get_bridge_status`.
 
-- **Off:** do not claim props rendered, UI opened, scale looked right, pink materials explained, or
-  playtest passed. Ask for a screenshot or wait for bridge.
-- **On:** `take_screenshot`, scene hierarchy, or spawn probes — read the image; do not guess from code.
-- Re-check when owner says editor is up.
+- **Off:** do not claim props rendered, UI opened, scale looked right, or playtest passed.
+- **On:** take screenshot, scene hierarchy, or spawn probes — read the image; do not guess from code.
 
 ### Cornerman (same law)
 
-Cornerman has **no** Claude Bridge by default and **no** view of Bloodwave's screen unless the owner
-pastes a screenshot or connects RDP. Inbox distills and Qwen output must **not** imply in-editor
-verification. When Green (or Red relaying Green output) touches visuals, playtest, or spawn scale,
-lead with **Cornerman's eyes are covered**.
+Cornerman has no bridge by default. Inbox distills and Qwen output must not imply in-editor
+verification. Lead with **Cornerman's eyes are covered** on any visual claim.
 
 ## Safeguards (multi-agent + autonomy)
-- **Verify by stakes, not model:** anything touching C# systems, economy, permissions, or
-  multi-file integration is validated/tested or Opus-reviewed before "done" — regardless of which
-  model wrote it (see quality-bar).
-- **Local preps, doesn't decide:** Cornerman/local models do distillation/drafts; spot-check
-  critical context before it drives a real decision. A local summary is never the sole basis.
-- **Lanes + clean commits:** agents commit only their own lane; an agent (incl. Cornerman)
-  commits nothing it didn't author, and **never commits unprompted — ask the owner first** (see
-  Git workflow → Commit consent). Always `pull --rebase`; never force-push.
-- **Dev/prod separation:** agents operate on dev/clones only. Production servers, live DBs, and
-  economy-wide changes require explicit owner approval (mirrors admin-panel least-privilege).
-- **Auto-commit hook:** the stop hook refuses to commit/push files containing merge-conflict
-  markers (left for review). A full validate-before-push gate activates once the workspace
-  validator is green (see `lifepunch/addons/docs/TECH_DEBT.md`).
+- **Verify by stakes:** anything touching C# systems, economy, permissions, or multi-file
+  integration is validated/tested or Opus-reviewed before "done".
+- **Local preps, doesn't decide:** Cornerman distills/drafts; spot-check critical context. A local
+  summary is never the sole basis.
+- **Lanes + clean commits:** agents commit only their own lane. Never commit unprompted — ask
+  the owner first. Always `pull --rebase`; never force-push.
+- **Dev/prod separation:** agents operate on dev/clones only.
+- **No auto-commit hook in Copilot:** commits are explicit shell steps after Bloodwave GO.
+  Cursor `auto-commit-push.ps1` is a Cursor-only mechanism — do not assume it runs here.
 
 ## Asset ownership (default = ours)
-- Assume everything the user provides is theirs to use (self-made, owned, or
-  licensed/paid-for). Do NOT raise provenance or "is this OK to ship" concerns.
-- The user will explicitly flag when something is external/someone else's work.
-  Only then treat crediting/tweaking as a consideration.
+- Assume everything the user provides is theirs to use. Do NOT raise provenance concerns.
+- The user will explicitly flag when something is external/licensed.
 
 ## Third-party-modeled work is not shippable
-- Any addon built on a third party's model/assets is **their** IP, not LifePunch IP.
-  Such material stays under `reference/` for study only and is **never** published as
-  LifePunch content, never listed in `addons.json`, and never referenced from shipped
-  code, proprietary docs, or public info.
-- A future in-house version of any such addon must reuse only our own code paired with
-  ORIGINAL, self-authored models/assets before it can ship.
-- DXRP servers enforce `RestrictCloudOrg = "facepunch"`, so non-facepunch cloud
-  packages never mount — addon models must be self-contained, not cloud-referenced.
+- Any addon built on a third party's model/assets stays under `reference/` for study only.
+- Never published as LifePunch content, never listed in `addons.json`, never referenced from
+  shipped code or public info.
+- DXRP servers enforce `RestrictCloudOrg = "facepunch"` — addon models must be self-contained.
 
 ## Git workflow
-- **Source of truth:** `https://github.com/mragerlp/lifepunch` (private monorepo). Primary PC
-  checkout: `C:\Users\jared\Projects\lifepunchaddons`. Git `origin` is always GitHub.
-- **GitLab (June 2026+)** — per-lane partner workspaces under `gitlab.com/mragerlp` (foundation,
-  addons, website, rdp-server). Does NOT replace GitHub; map in `lifepunch/docs/GITLAB_ORGANIZATION.md`.
-- Single shared `main`. A user-level auto-commit+push hook runs on `stop` (separate safety net).
-- **Always-current — session-start auto-sync (FAILSAFE):** before reading or editing anything in a
-  new session, sync your clone — `git fetch`, and if the working tree is **clean**, `git pull --rebase`
-  to land on the latest. If you are **behind AND have uncommitted changes**, STOP and tell the owner
-  (commit or stash first); never start work on a stale clone or silently discard local work. A
-  `sessionStart` hook (`.cursor/hooks/session-sync.*`, bundled into every lane) automates this where it
-  can run; **this rule is the guaranteed layer — it auto-applies even when no onboarding prompt was
-  pasted.** Purpose: partners (esp. shottaWEB) always work on the newest data without having to
-  remember to pull.
-- **Commit consent — ask first (always):** an agent NEVER creates a commit unprompted. When changes
-  reach a natural commit point, *ask the owner* whether to commit (propose the scope/message) and
-  commit only on an explicit yes. This holds for every agent/lane and takes precedence over silent
-  committing; the `stop` hook is a backstop, not a license to commit without asking.
-- **Lanes:** owner integrates on GitHub monorepo; shottaWEB writes `lifepunch-website` on GitLab;
-  RDP server agent writes `lifepunch-rdp-server` on GitLab. Always `pull --rebase` + normal
-  `push`; NEVER force-push.
-- **Read-only clones publish via patch-handoff:** a box whose deploy key is *read-only* by design
-  (e.g. **Cornerman**) can commit locally but cannot push — keeping push credentials (a secret) off
-  the box. To publish, it commits on its clone and pings the primary PC with the commit count +
-  subjects; the primary PC pulls those commits over SSH (`format-patch origin/main..HEAD` → `scp`
-  → `git am`, preserving authorship) and pushes. The read-only box then `git pull --rebase` to
-  reconcile (rebase auto-drops the now-duplicate locals). Never put a write token on Cornerman.
-  Operational detail: `lifepunch/docs/LOCAL_AI_WORKSTATION.md` §7c.
-- Agent onboarding copy/paste: `lifepunch/docs/AGENT_PROMPT.md`.
+- **Source of truth:** `https://github.com/mragerlp/lifepunch` (private monorepo).
+  Primary checkout: `C:\Users\jared\Projects\lifepunchaddons`. Git `origin` = GitHub.
+- **GitLab (June 2026+):** per-lane partner workspaces under `gitlab.com/mragerlp`. Does NOT
+  replace GitHub. Map: `lifepunch/docs/GITLAB_ORGANIZATION.md`.
+- Single shared `main`. Always `pull --rebase`; never force-push.
+- **Commit consent — ask first (always):** never create a commit unprompted. Propose scope/message;
+  commit only on explicit Bloodwave yes.
+- **Cornerman:** read-only deploy key — commits locally, pings Red; Red pulls via SSH patch-handoff.
+  Never put a write token on Cornerman. Detail: `lifepunch/docs/LOCAL_AI_WORKSTATION.md` §7c.
+- Agent onboarding: `lifepunch/docs/COPILOT_AGENT_ONBOARDING.md` (Copilot) · `lifepunch/docs/AGENT_PROMPT.md` (legacy).
 
 ## DXRP publish notes
-- Addons must ship compiled `_c` files (the dedicated server does not compile).
-- Publish staging: `scripts/prepare-publish.ps1 -Addon <ident>` → upload the
-  `Assets` and `Code` roots from `.dxrp-publish/upload/` on the portal.
+- Addons must ship compiled `_c` files (dedicated server does not compile).
+- Publish staging: `scripts/prepare-publish.ps1 -Addon <ident>` → upload `Assets` and `Code`
+  roots from `.dxrp-publish/upload/` on the portal.
