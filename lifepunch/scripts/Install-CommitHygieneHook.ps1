@@ -24,7 +24,7 @@
 param(
     [string[]] $RepoPath = @(
         'C:\Users\jared\Projects\dxrp-public',
-        'C:\Users\jared\Projects\lifepunchaddons'
+        'C:\Users\jared\Projects\LIFEPUNCH'
     )
 )
 

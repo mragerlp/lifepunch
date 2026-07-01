@@ -23,7 +23,7 @@ stack. Say a **node** when you mean one machine. Do **not** call the three-machi
 
 | Codename | What it is | Where | Primary job |
 |----------|------------|-------|-------------|
-| **VENGEANCE** | Owner's primary PC | Desk — `C:\Users\jared\Projects\lifepunchaddons` | Cursor, agents, **GitHub monorepo = source of truth**, integrate partner work |
+| **VENGEANCE** | Owner's primary PC | Desk — `C:\Users\jared\Projects\LIFEPUNCH` | Cursor, agents, **GitHub monorepo = source of truth**, integrate partner work |
 | **Cornerman** | Local AI workstation | Home LAN — `192.168.1.227`, hostname `cornerman` | Mic (AT2020), local LLM/STT, voice relay, Tier-3 prep/RAG — **not** source of truth |
 | **lifepunchnet** | Always-on hosted server | Internet — `205.209.104.22`, Windows hostname **`lifepunchnet`** | DXRP/server ops, Whisper (`:9000`), watchdog (`:9101`), session hub (`:9102`), Odysseus (optional), GitLab `lifepunch-rdp-server` |
 

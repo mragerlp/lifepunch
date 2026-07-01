@@ -21,7 +21,7 @@ Wake-phrase mode always listens and runs STT to detect `"send message"`. That wa
 ## Deploy from VENGEANCE
 
 ```powershell
-cd C:\Users\jared\Projects\lifepunchaddons
+cd C:\Users\jared\Projects\LIFEPUNCH
 powershell -ExecutionPolicy Bypass -File .\lifepunch\scripts\cornerman-relay\Apply-CornermanPushToTalk.ps1
 ```
 

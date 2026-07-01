@@ -21,7 +21,7 @@ powershell -ExecutionPolicy Bypass -File .\Apply-LifePunchOpsConsole.ps1 -Machin
 ## SCP (when port 22 is open)
 
 ```powershell
-scp -r C:\Users\jared\Projects\lifepunchaddons\lifepunch\branding\lifepunch-ops `
+scp -r C:\Users\jared\Projects\LIFEPUNCH\lifepunch\branding\lifepunch-ops `
   jared@205.209.104.22:C:/lifepunch/branding/
 ```
 

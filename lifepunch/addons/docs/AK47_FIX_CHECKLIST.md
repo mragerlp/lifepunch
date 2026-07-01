@@ -5,7 +5,7 @@ One page. Do the steps **in order**. Check each box before moving on.
 **Open project once:**
 
 ```text
-C:\Users\jared\Projects\lifepunchaddons\lifepunch\addons\addons.sbproj
+C:\Users\jared\Projects\LIFEPUNCH\lifepunch\addons\addons.sbproj
 ```
 
 **M4A1 pictures to keep open:** shipment crate (world height) + first person (gun lower-right with hands).
@@ -98,7 +98,7 @@ Open **`equipment/vm_ak47/vm_ak47.prefab`**. Match M4A1 — do **not** guess pat
 Copy-paste in PowerShell:
 
 ```powershell
-cd C:\Users\jared\Projects\lifepunchaddons\lifepunch\addons
+cd C:\Users\jared\Projects\LIFEPUNCH\lifepunch\addons
 .\scripts\validate-layout.ps1
 .\scripts\prepare-publish.ps1 -Addon ak47
 ```

@@ -10,7 +10,7 @@
 
 | Lane | Clone path | Remote | Commit? | Contains |
 |------|------------|--------|---------|----------|
-| **LifePunch (private)** | `C:\Users\jared\Projects\lifepunchaddons` | `github.com/mragerlp/lifepunch` | Yes (owner approves) | LIFEPUNCH™ addons, legal, portal, server ops, proprietary headers |
+| **LifePunch (private)** | `C:\Users\jared\Projects\LIFEPUNCH` | `github.com/mragerlp/lifepunch` | Yes (owner approves) | LIFEPUNCH™ addons, legal, portal, server ops, proprietary headers |
 | **DXRP fork (public upstream)** | `C:\Users\jared\Projects\dxrp-public` | `origin` → `mragerlp/dxrp-public`, `upstream` → `dxura/dxrp` | Yes (bounty/PR branches) | Vanilla DXRP gamemode only — **no LifePunch IP** |
 
 **Steam editor checkout:** `D:\Steam\steamapps\common\sbox\dxrp` — runtime only; **never commit** from there.
@@ -72,7 +72,7 @@ Disable **Cursor Tab** while VS Code is open on the same repo. Commit hygiene in
 ## Sync loop (DXRP fork)
 
 ```powershell
-cd C:\Users\jared\Projects\lifepunchaddons
+cd C:\Users\jared\Projects\LIFEPUNCH
 git pull --rebase
 
 powershell -File lifepunch\scripts\sync-dxrp-fork.ps1

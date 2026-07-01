@@ -17,7 +17,7 @@ do not re-derive them from long chats.
 1. **Ground from the repo — not chat history.** Chat is context; law lives in rules + docs.
 2. **Git sync gate** (VENGEANCE / `lifepunchaddons`):
    ```powershell
-   cd C:\Users\jared\Projects\lifepunchaddons
+   cd C:\Users\jared\Projects\LIFEPUNCH
    git fetch
    git pull --rebase
    ```

@@ -1,5 +1,5 @@
 {
   "sboxDevPath": "D:/Steam/steamapps/common/sbox/sbox-dev.exe",
-  "projectPath": "C:/Users/jared/Projects/lifepunchaddons/lifepunch/modeldoc-studio/game/modeldoc.sbproj",
+  "projectPath": "C:/Users/jared/Projects/LIFEPUNCH/lifepunch/modeldoc-studio/game/modeldoc.sbproj",
   "_notes": "Standalone ModelDoc lane — NOT dxura.rp / DXRP. No portal API, no gamemode scene, no entity C#. Start-SboxModelDocStudio.ps1 syncs lp* assets then opens this project."
 }

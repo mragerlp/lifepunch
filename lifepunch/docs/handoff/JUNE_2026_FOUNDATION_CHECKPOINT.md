@@ -26,7 +26,7 @@
 
 ### VENGEANCE (primary)
 ```powershell
-cd C:\Users\jared\Projects\lifepunchaddons
+cd C:\Users\jared\Projects\LIFEPUNCH
 git pull --rebase
 # Already pushed by integrator — verify: git log -1 --oneline
 ```

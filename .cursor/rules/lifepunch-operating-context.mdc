@@ -1,4 +1,4 @@
-﻿---
+---
 description: LifePunch operating context, ownership defaults, and workflow
 alwaysApply: true
 ---
@@ -105,7 +105,7 @@ verification. Lead with **Cornerman's eyes are covered** on any visual claim.
 
 ## Git workflow
 - **Source of truth:** `https://github.com/mragerlp/lifepunch` (private monorepo).
-  Primary checkout: `C:\Users\jared\Projects\lifepunchaddons`. Git `origin` = GitHub.
+  Primary checkout: `C:\Users\jared\Projects\LIFEPUNCH`. Git `origin` = GitHub.
 - **GitLab (June 2026+):** per-lane partner workspaces under `gitlab.com/mragerlp`. Does NOT
   replace GitHub. Map: `lifepunch/docs/GITLAB_ORGANIZATION.md`.
 - Single shared `main`. Always `pull --rebase`; never force-push.

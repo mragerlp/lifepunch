@@ -72,7 +72,7 @@ VENGEANCE (Red)                    CORNERMAN (Green)
 ## Red commands (VENGEANCE — copy/paste)
 
 ```powershell
-cd C:\Users\jared\Projects\lifepunchaddons\lifepunch\scripts
+cd C:\Users\jared\Projects\LIFEPUNCH\lifepunch\scripts
 
 # 0. Probe + warm (do before every drop batch)
 powershell -File ..\scripts\Get-CvlConnectivityStatus.ps1 -Pretty

@@ -5,7 +5,7 @@ Paste THIS FILE ALONE at session start — no extra owner directions required un
 ══════════════════════════════════════════════════════════════════════════════
 STEP 0 — SYNC (before reading or editing)
 ══════════════════════════════════════════════════════════════════════════════
-  cd C:\Users\jared\Projects\lifepunchaddons
+  cd C:\Users\jared\Projects\LIFEPUNCH
   git fetch; git pull --rebase
 If behind AND dirty: STOP — tell Bloodwave (commit or stash first).
 

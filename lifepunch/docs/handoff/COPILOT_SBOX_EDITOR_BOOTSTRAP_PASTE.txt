@@ -27,7 +27,7 @@ One WRITER per file. git pull --rebase before picking up handoff.
 REPO LAW — AUTO-LOADED (no manual paste each session)
 ══════════════════════════════════════════════════════════════════════════════
 Open workspace ROOT in VS Code:
-  C:\Users\jared\Projects\lifepunchaddons
+  C:\Users\jared\Projects\LIFEPUNCH
 
 Copilot loads ALL 20 rules automatically from:
   .github/instructions/*.instructions.md  (applyTo: "**")
@@ -44,7 +44,7 @@ THREE PATHS — DO NOT COLLAPSE
 ══════════════════════════════════════════════════════════════════════════════
 
 1) SHIP LANE (LifePunch monorepo — edit + commit here)
-   C:\Users\jared\Projects\lifepunchaddons
+   C:\Users\jared\Projects\LIFEPUNCH
    Code:  lifepunch/addons/Code/Addons/lifepunch/...
    Assets: lifepunch/addons/Assets/addons/lifepunch/lpbitcoin/{bitcoinhub,hashdterminal,gpurack}
    Proprietary header on every new .cs / .razor / .scss

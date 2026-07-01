@@ -3,7 +3,7 @@
 ## 1. Pull the latest changes on Cornerman
 
 ```powershell
-cd C:\Users\jared\Projects\lifepunchaddons   # or wherever the clone lives
+cd C:\Users\jared\Projects\LIFEPUNCH   # or wherever the clone lives
 git fetch
 git pull --rebase
 ```

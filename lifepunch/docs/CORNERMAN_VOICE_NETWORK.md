@@ -117,7 +117,7 @@ Read back: `GET /tail?lines=50` on lifepunchnet or RDP + Odysseus later.
 ## Deploy voice-network modules to Cornerman
 
 ```powershell
-cd C:\Users\jared\Projects\lifepunchaddons
+cd C:\Users\jared\Projects\LIFEPUNCH
 powershell -ExecutionPolicy Bypass -File .\lifepunch\scripts\cornerman-relay\Apply-CornermanVoiceNetwork.ps1
 ```
 

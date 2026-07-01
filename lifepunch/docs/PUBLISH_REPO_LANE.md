@@ -73,7 +73,7 @@ Day-to-day: **always commit on core.** Export to publish when an addon is **read
 From VENGEANCE (after `gh auth login`):
 
 ```powershell
-cd C:\Users\jared\Projects\lifepunchaddons
+cd C:\Users\jared\Projects\LIFEPUNCH
 powershell -File lifepunch\scripts\Export-LifepunchPublishLane.ps1 -Init -Target C:\Users\jared\Projects\lifepunch-published
 cd C:\Users\jared\Projects\lifepunch-published
 git init

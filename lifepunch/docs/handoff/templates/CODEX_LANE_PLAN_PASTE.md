@@ -1,6 +1,6 @@
 # CODEX — <LANE> RETURN PLAN (build from this)
 
-**Owner:** Bloodwave · **Machine:** VENGEANCE · **Repo:** `C:\Users\jared\Projects\lifepunchaddons`  
+**Owner:** Bloodwave · **Machine:** VENGEANCE · **Repo:** `C:\Users\jared\Projects\LIFEPUNCH`  
 **Mode:** Plan only — no file edits until Bloodwave GO on a **named slice**.  
 **Eyes:** Flatgrass-prove any visual claim; Cornerman/Green distills are not viewport proof.
 

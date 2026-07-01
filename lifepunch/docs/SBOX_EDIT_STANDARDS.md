@@ -25,7 +25,7 @@ This doc is the **minimum bar** before ModelDoc, shaders, prefabs, or playtest w
 ### 1. Pre-launch gate (required)
 
 ```powershell
-cd C:\Users\jared\Projects\lifepunchaddons\lifepunch\scripts
+cd C:\Users\jared\Projects\LIFEPUNCH\lifepunch\scripts
 powershell -File Test-PreLaunchCheckup.ps1 -Fix
 ```
 

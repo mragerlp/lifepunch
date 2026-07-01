@@ -205,7 +205,7 @@ Detail: `MCP_AGENT_ROUTING.md` · install: `SBOX_EDITOR_MCP.md`
 **Full stack (Red + Green Cursor):** `RED_FULL_CAPACITY_BOOT.md`
 
 ```powershell
-cd C:\Users\jared\Projects\lifepunchaddons
+cd C:\Users\jared\Projects\LIFEPUNCH
 git pull --rebase
 powershell -File lifepunch\scripts\Start-SboxDxrpEditor.ps1
 powershell -File lifepunch\scripts\Install-CornermanSboxBridgeMcp.ps1

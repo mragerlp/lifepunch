@@ -32,7 +32,7 @@ All VENGEANCE cleanup items from the audit are **done**. Steam DXRP is reset, sy
 ## Current git / mount state
 
 ### Canonical monorepo
-- **Path:** `C:\Users\jared\Projects\lifepunchaddons`
+- **Path:** `C:\Users\jared\Projects\LIFEPUNCH`
 - **Branch:** `main`
 - **Role:** source of truth → GitHub `mragerlp/lifepunch`
 

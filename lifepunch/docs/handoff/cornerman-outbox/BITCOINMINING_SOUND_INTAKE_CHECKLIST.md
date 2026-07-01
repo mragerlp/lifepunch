@@ -1,4 +1,4 @@
-﻿# Bitcoin mining — sound intake checklist (Red / VENGEANCE)
+# Bitcoin mining — sound intake checklist (Red / VENGEANCE)
 
 **After owner picks sources** from `BITCOINMINING_SOUND_SHORTLIST.md` · **Cornerman does not run this lane**
 
@@ -35,7 +35,7 @@ Required filenames (stem — `.wav`, `.mp3`, or `.ogg`):
 From repo addons root:
 
 ```powershell
-cd C:\Users\jared\Projects\lifepunchaddons
+cd C:\Users\jared\Projects\LIFEPUNCH
 powershell -File lifepunch\addons\scripts\Intake-BitcoinMinerSounds.ps1
 ```
 

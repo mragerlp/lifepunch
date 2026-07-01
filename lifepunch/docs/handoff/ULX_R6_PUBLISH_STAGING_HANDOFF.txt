@@ -27,7 +27,7 @@ WRONG RESTORE TARGETS (do NOT use)
 
 RESTORE SOURCE (run from monorepo root)
 ---------------------------------------
-cd C:\Users\jared\Projects\lifepunchaddons
+cd C:\Users\jared\Projects\LIFEPUNCH
 git checkout 0ffd0e5 -- lifepunch/addons/Code/Addons/lifepunch/adminmenu/StaffMenu.razor lifepunch/addons/Code/Addons/lifepunch/adminmenu/StaffMenu.razor.scss lifepunch/addons/Code/Addons/lifepunch/adminmenu/StaffMenuHost.cs lifepunch/addons/Code/Addons/lifepunch/adminmenu/StaffMenuActions.cs lifepunch/addons/Code/Addons/lifepunch/adminmenu/StaffSettingsService.cs lifepunch/addons/Code/Addons/lifepunch/adminmenu/WaypointSyncService.cs
 
 REGENERATE STAGING

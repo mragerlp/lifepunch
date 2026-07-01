@@ -70,7 +70,7 @@ Update: `GITLAB_ORGANIZATION.md`, `REPO_DOMAIN_MAP.md`, this file.
 **After push (owner on VENGEANCE):**
 
 ```powershell
-cd C:\Users\jared\Projects\lifepunchaddons
+cd C:\Users\jared\Projects\LIFEPUNCH
 .\lifepunch\scripts\setup-gitlab-projects.ps1 -GitLabNamespace mragerlp
 # or: .\lifepunch\scripts\Export-GitLabLane.ps1 -Slug lifepunch-foundation
 ```

@@ -5,7 +5,7 @@ Paste this directly to Cornerman (updated with correct loading instructions):
 Cornerman — load Green Deep correctly and start the long run.
 
 1. Pull latest changes first:
-cd C:\Users\jared\Projects\lifepunchaddons
+cd C:\Users\jared\Projects\LIFEPUNCH
 git fetch
 git pull --rebase
 

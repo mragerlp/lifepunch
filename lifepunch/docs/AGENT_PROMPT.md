@@ -37,7 +37,7 @@ single source of truth — do NOT re-derive or diverge from it.
 
 CVL TRI-STACK (memorize — LifePunch web = three nodes + edges; not one box):
 - **R — VENGEANCE** (red): Owner primary PC. GitHub source of truth. Checkout:
-  `C:\Users\jared\Projects\lifepunchaddons`. Decide, integrate, Cursor, s&box MCP hub. **Block A.**
+  `C:\Users\jared\Projects\LIFEPUNCH`. Decide, integrate, Cursor, s&box MCP hub. **Block A.**
 - **G — Cornerman** (green): Home LAN AI box. `192.168.1.227` · hostname `cornerman`. Mic, local LM
   `:1234`, Tier-3 prep — NOT source of truth, NOT lifepunchnet. **Block D** · `DAY_ONE_AGENT_PROMPT.md`.
 - **B — lifepunchnet** (blue): Always-on hosted server. `205.209.104.22` · hostname `lifepunchnet`.
@@ -187,7 +187,7 @@ one-paragraph summary of where we are before work.
 ## Block A — Owner / addons agent (Primary PC — **R / red**)
 
 **Canonical repo:** `https://github.com/mragerlp/lifepunch`  
-**Local checkout:** `C:\Users\jared\Projects\lifepunchaddons`
+**Local checkout:** `C:\Users\jared\Projects\LIFEPUNCH`
 
 ```text
 [Paste Block 0 above, then:]
@@ -195,7 +195,7 @@ one-paragraph summary of where we are before work.
 YOU ARE: an agent on **VENGEANCE** — Bloodwave's primary PC (owner; see MACHINE_CAST.md).
 
 YOUR REPO: https://github.com/mragerlp/lifepunch (GitHub monorepo — source of truth).
-Workspace root: C:\Users\jared\Projects\lifepunchaddons. Git origin = GitHub.
+Workspace root: C:\Users\jared\Projects\LIFEPUNCH. Git origin = GitHub.
 Primary write lane: lifepunch/addons/** — s&box packages, addons.json, validators, publish scripts.
 You may edit any monorepo path; integrate partner GitLab lane commits back into GitHub.
 Do NOT let shottaWEB or RDP agent paths drift — they commit on GitLab lanes, you merge here.

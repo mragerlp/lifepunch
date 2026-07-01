@@ -81,7 +81,7 @@ COMMUNITY:
 
 REPO (private — owner may grant ChatGPT connector or paste excerpts):
   https://github.com/mragerlp/lifepunch
-  Primary PC checkout: C:\Users\jared\Projects\lifepunchaddons
+  Primary PC checkout: C:\Users\jared\Projects\LIFEPUNCH
 
 DXRP REFERENCES (public):
   Docs: https://docs.dxrp.net/

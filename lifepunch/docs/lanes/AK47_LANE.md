@@ -26,7 +26,7 @@ baseline). Experimental prefab/FBX/blender churn stays on `lane/ak47` only.
 ## Switch branches (VENGEANCE)
 
 ```powershell
-cd C:\Users\jared\Projects\lifepunchaddons
+cd C:\Users\jared\Projects\LIFEPUNCH
 git fetch origin
 
 # Ship work (bitcoin, hacker, staff, entities)

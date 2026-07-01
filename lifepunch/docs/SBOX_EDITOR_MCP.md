@@ -102,7 +102,7 @@ On Green: restart Cursor → **3/3 green** when VENGEANCE editor is open.
 **Canonical Red boot:** `lifepunch/docs/RED_FULL_CAPACITY_BOOT.md`
 
 ```powershell
-cd C:\Users\jared\Projects\lifepunchaddons
+cd C:\Users\jared\Projects\LIFEPUNCH
 git pull --rebase
 powershell -File lifepunch\scripts\Start-SboxDxrpEditor.ps1
 powershell -File lifepunch\scripts\Install-CornermanSboxBridgeMcp.ps1

@@ -187,7 +187,7 @@ Register + reasons: `lifepunch/addons/docs/QUARANTINE_REGISTER.md`. Ideation gat
 ### 1. GitHub monorepo → THE SOURCE OF TRUTH
 
 **`https://github.com/mragerlp/lifepunch`** (private monorepo). Live local checkout:
-`C:\Users\jared\Projects\lifepunchaddons`. Holds all lanes — `lifepunch/addons/`, `website/`,
+`C:\Users\jared\Projects\LIFEPUNCH`. Holds all lanes — `lifepunch/addons/`, `website/`,
 `server/`, `portal/`, `gamemode/`, `admin-panel/`, `.cursor/rules`, `docs/`, `legal/`, etc.
 **Owner does all design/build integration here.** Git `origin` is always this repo.
 (Do **not** use any OneDrive clone — removed June 2026 as a git-corruption risk.)

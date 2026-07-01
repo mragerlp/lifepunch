@@ -24,14 +24,14 @@ Pack path on-box after copy: `C:\lifepunch\branding\lifepunch-ops\`
 From VENGEANCE, copy this entire folder to the server:
 
 ```
-C:\Users\jared\Projects\lifepunchaddons\lifepunch\branding\lifepunch-ops\
+C:\Users\jared\Projects\LIFEPUNCH\lifepunch\branding\lifepunch-ops\
   →  C:\lifepunch\branding\lifepunch-ops\
 ```
 
 Or use the zip Bloodwave prepared:
 
 ```
-C:\Users\jared\Projects\lifepunchaddons\lifepunch\branding\lifepunch-ops-deploy.zip
+C:\Users\jared\Projects\LIFEPUNCH\lifepunch\branding\lifepunch-ops-deploy.zip
   →  extract to C:\lifepunch\branding\
 ```
 
@@ -64,7 +64,7 @@ The applier uses **`oh-my-posh print primary`** in a custom `prompt` function �
 From VENGEANCE:
 
 ```powershell
-scp -r C:\Users\jared\Projects\lifepunchaddons\lifepunch\branding\lifepunch-ops jared@205.209.104.22:C:/lifepunch/branding/
+scp -r C:\Users\jared\Projects\LIFEPUNCH\lifepunch\branding\lifepunch-ops jared@205.209.104.22:C:/lifepunch/branding/
 ssh jared@205.209.104.22 "powershell -ExecutionPolicy Bypass -File C:\lifepunch\branding\lifepunch-ops\Apply-LifePunchOpsConsole.ps1 -Machine lifepunchnet"
 ```
 

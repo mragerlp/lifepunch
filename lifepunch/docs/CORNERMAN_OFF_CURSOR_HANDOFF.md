@@ -90,7 +90,7 @@ Red warms **distill** before Green inventory session: `Send-CornermanWorkflow.ps
 ## Red push inbox to Cornerman
 
 ```powershell
-cd C:\Users\jared\Projects\lifepunchaddons\lifepunch\scripts
+cd C:\Users\jared\Projects\LIFEPUNCH\lifepunch\scripts
 .\Push-CornermanInventoryProject.ps1
 .\Send-CornermanWorkflow.ps1 -Action WarmDistill
 .\Push-CornermanOffCursorHandoff.ps1

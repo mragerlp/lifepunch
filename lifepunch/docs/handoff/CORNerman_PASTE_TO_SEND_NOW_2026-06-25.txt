@@ -5,7 +5,7 @@ Paste this directly to Cornerman:
 Cornerman — new long run starting now.
 
 1. Pull latest:
-cd C:\Users\jared\Projects\lifepunchaddons
+cd C:\Users\jared\Projects\LIFEPUNCH
 git fetch
 git pull --rebase
 

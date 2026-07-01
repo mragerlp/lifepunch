@@ -5,7 +5,7 @@ SUPERSEDES off-Cursor-only layout. Both machines at full capacity.
 
 ON VENGEANCE (Red — integrate lane):
 
-  cd C:\Users\jared\Projects\lifepunchaddons
+  cd C:\Users\jared\Projects\LIFEPUNCH
   git pull --rebase
   powershell -File lifepunch\scripts\Test-PreLaunchCheckup.ps1 -Fix
   powershell -File lifepunch\scripts\Start-SboxDxrpEditor.ps1 -PreflightFix

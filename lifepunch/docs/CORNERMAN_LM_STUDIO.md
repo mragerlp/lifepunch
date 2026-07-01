@@ -1,4 +1,4 @@
-﻿# Cornerman LM Studio — three models + Claude Bridge
+# Cornerman LM Studio — three models + Claude Bridge
 
 **Policy:** **Use Claude Bridge whenever you can** — local LM Studio costs $0 against Cursor's $400
 API pool and keeps long agent sessions off cloud frontier. Default prep: warm Tier-3 on Cornerman,
@@ -61,7 +61,7 @@ LM Studio **0.4.1+** ships an Anthropic-compatible `/v1/messages` endpoint ([LM 
 ### One-shot terminal session
 
 ```powershell
-cd C:\Users\jared\Projects\lifepunchaddons
+cd C:\Users\jared\Projects\LIFEPUNCH
 powershell -ExecutionPolicy Bypass -File lifepunch\scripts\Start-ClaudeBridge.ps1
 claude --model "qwen/qwen3.6-35b-a3b"
 ```

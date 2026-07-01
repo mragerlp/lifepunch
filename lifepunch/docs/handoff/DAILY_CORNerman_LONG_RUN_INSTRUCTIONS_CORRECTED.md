@@ -5,7 +5,7 @@ This is the repeatable process going forward.
 ## On Cornerman (start of run)
 
 ```powershell
-cd C:\Users\jared\Projects\lifepunchaddons
+cd C:\Users\jared\Projects\LIFEPUNCH
 git fetch
 git pull --rebase
 ```
