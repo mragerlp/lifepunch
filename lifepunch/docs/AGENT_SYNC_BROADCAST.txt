@@ -29,13 +29,13 @@ STEP 2 — READ (lean boot)
 Do NOT treat KNOWLEDGE/, RFC drafts, templates, scratch, or historical checkpoints as mandatory every boot.
 
 ------------------------------------------------------------------------
-STEP 3 — CONFIRM (structured — match CURSOR_NEW_CHAT_BOOTSTRAP_PASTE.txt FIRST REPLY block)
+STEP 3 — CONFIRM (structured — match COPILOT_NEW_SESSION_BOOTSTRAP.txt FIRST REPLY block)
 ------------------------------------------------------------------------
 
-Sync · Machine (VENGEANCE / Integration Architect / Cursor Red) · active lane · phase ·
+Sync · Machine (VENGEANCE / Integration Architect / Copilot Red) · active lane · phase ·
 next tracker ID (H4+H5) · GO received? · bridge status · parallel lanes (non-gate) · standing by.
 
-On GO: owner paste must include LED + point-light + Route tag — see Cursor bootstrap paste.
+On GO: owner paste must include LED + point-light + Route tag — see Copilot bootstrap paste.
 Default without GO: plan-only · no hub code.
 
 ------------------------------------------------------------------------
@@ -45,7 +45,7 @@ CURRENT LANE (unless ARCHITECT_CURRENT_STATE.md overrides)
   ACTIVE: lifepunchbitcoin / lpbitcoin / s&box lifepunch.bitcoin
   PHASE: Phase A Hub polish — Terminal locked until H10
   NEXT:  H4 + H5 hub world power/audio (GO pending) · paste ALONE:
-         lifepunch/docs/handoff/CURSOR_NEW_CHAT_BOOTSTRAP_PASTE.txt
+         lifepunch/docs/handoff/COPILOT_NEW_SESSION_BOOTSTRAP.txt
   SLUGS: bitcoinhub | hashdterminal | gpurack (2 standard + 1 advanced)
   LAWS: CYBER_REFERENCE_LAWS 1-11 · LIFEPUNCH_GAMEPLAY_LAWS G0-G9
   HOLD: RFC-0005 hub upgrade migration + economy overhaul until Bloodwave GO
