@@ -160,170 +160,115 @@
 											<i class="material-icons">home</i>
 											<span>Overview</span>
 										</div>
-										<div class="overview-intro-header">
-											<div class="overview-intro-terminal-row">
-												<div class="overview-intro-terminal-meta">
-													<div class="overview-intro-terminal-heading">Bitcoin terminal</div>
-													<div class="overview-intro-terminal-status">
-														<span class="lp-ui-status-dot @OverviewTerminalStatusDotClass()"></span>
-														<span class="overview-intro-terminal-label">@TerminalLinkStatusLabel()</span>
+										<div class="lp-ui-intro overview-command-center-intro">
+											This home page is your setup and status checkpoint. Detailed management lives in Servers, Wallet, Transfers, and Upgrades.
+										</div>
+										@{
+											var linkedRacks = GetLinkedRacks();
+											var linkedRackCount = linkedRacks.Count;
+											var setupComplete = HubIsPowered() && HasLinkedTerminal() && linkedRackCount > 0;
+										}
+										<div class="overview-command-center">
+											<div class="lp-ui-panel overview-checklist-panel">
+												<div class="lp-ui-panel-title">
+													<i class="material-icons">checklist</i>
+													<span>Getting started</span>
+												</div>
+												<div class="overview-checklist">
+													<div class="overview-checklist-item">
+														<div class="overview-checklist-status">
+															<span class="lp-ui-status-dot @(HubIsPowered() ? "on" : "off")"></span>
+															<span>@(HubIsPowered() ? "Done" : "Required")</span>
+														</div>
+														<div class="overview-checklist-copy">
+															<div class="overview-checklist-title">Power on hub</div>
+															<div class="overview-checklist-sub">Turn the machine on before linking terminal and racks.</div>
+														</div>
+														<button class="lp-ui-btn-ghost overview-checklist-action" onclick="@ToggleHubPower">
+															@(HubIsPowered() ? "Power off" : "Power on")
+														</button>
+													</div>
+													<div class="overview-checklist-item">
+														<div class="overview-checklist-status">
+															<span class="lp-ui-status-dot @OverviewTerminalStatusDotClass()"></span>
+															<span>@(HasLinkedTerminal() ? "Done" : "Required")</span>
+														</div>
+														<div class="overview-checklist-copy">
+															<div class="overview-checklist-title">Link terminal</div>
+															<div class="overview-checklist-sub">@TerminalLinkStatusLabel()</div>
+														</div>
+														<div class="overview-checklist-action-group">
+														@if ( HasLinkedTerminal() )
+														{
+															<button class="lp-ui-btn-ghost overview-intro-unlink-btn" onclick="@UnlinkTerminal">Unlink terminal</button>
+														}
+														else if ( HasNearbyUnlinkedTerminal() )
+														{
+															<button class="@LinkTerminalButtonClass()" disabled="@(!HubIsPowered())" onclick="@LinkNearbyTerminal">Link terminal</button>
+														}
+														else
+														{
+															<button class="lp-ui-btn-ghost overview-intro-terminal-disabled" disabled>No terminal in range</button>
+														}
+														</div>
+													</div>
+													<div class="overview-checklist-item">
+														<div class="overview-checklist-status">
+															<span class="lp-ui-status-dot @(linkedRackCount > 0 ? "on" : "off")"></span>
+															<span>@(linkedRackCount > 0 ? "Done" : "Required")</span>
+														</div>
+														<div class="overview-checklist-copy">
+															<div class="overview-checklist-title">Link GPU racks</div>
+															<div class="overview-checklist-sub">Use Servers to verify slots and rig0 link workflow.</div>
+														</div>
+														<button class="lp-ui-btn-primary overview-checklist-action" onclick="@SelectRacksTab">Open servers</button>
 													</div>
 												</div>
-												<div class="overview-intro-terminal-actions">
-												@if ( HasLinkedTerminal() )
-												{
-													<button class="lp-ui-btn-ghost overview-intro-unlink-btn" onclick="@UnlinkTerminal">Unlink terminal</button>
-												}
-												else if ( HasNearbyUnlinkedTerminal() )
-												{
-													<button class="@LinkTerminalButtonClass()" disabled="@(!HubIsPowered())" onclick="@LinkNearbyTerminal">Link terminal</button>
-												}
-												else
-												{
-													<button class="lp-ui-btn-ghost overview-intro-terminal-disabled" disabled>No terminal in range</button>
-												}
+											</div>
+											<div class="lp-ui-panel overview-snapshot-panel">
+												<div class="lp-ui-panel-title">
+													<i class="material-icons">insights</i>
+													<span>Snapshot</span>
+												</div>
+												<div class="overview-snapshot-grid">
+													<div class="overview-snapshot-card">
+														<div class="overview-snapshot-label">Setup</div>
+														<div class="overview-snapshot-value @(setupComplete ? "on" : "off")">@(setupComplete ? "Ready" : "In progress")</div>
+														<div class="overview-snapshot-sub">Power + terminal + at least one linked rack</div>
+													</div>
+													<div class="overview-snapshot-card">
+														<div class="overview-snapshot-label">Linked racks</div>
+														<div class="overview-snapshot-value">@linkedRackCount / @LpBitcoinIdent.PortalMaxRacksPerHub</div>
+														<div class="overview-snapshot-sub">Standard x2 + Advanced x1 max</div>
+													</div>
+													<div class="overview-snapshot-card">
+														<div class="overview-snapshot-label">Hub wallet</div>
+														<div class="overview-snapshot-value">@HeaderWalletBtc() BTC</div>
+														<div class="overview-snapshot-sub">$@CombinedUsd().ToString("N2") estimated value</div>
+													</div>
+												</div>
+												<div class="overview-snapshot-note">
+													Need deeper details? Use <strong>Servers</strong> for rack stats and <strong>Upgrades</strong> for track tiers.
 												</div>
 											</div>
 										</div>
-
-										<div class="lp-ui-split">
-											<div class="lp-ui-panel">
-												<div class="lp-ui-panel-title">
-													<i class="material-icons">dns</i>
-													<span>Active miners</span>
-												</div>
-
-												<div class="overview-miners-scroll">
-													@foreach ( var slot in GetServersRackSlots() )
-													{
-														<div class="overview-miner-card @( slot.Rack.IsValid() ? "" : "empty" )">
-															<div class="overview-miner-head">
-																<div class="overview-miner-title">@slot.DisplayLabel</div>
-																@if ( slot.Rack.IsValid() )
-																{
-																	<div class="overview-miner-status @( slot.Rack.IsMining ? "on" : "off" )">
-																		<span class="lp-ui-status-dot @(slot.Rack.IsMining ? "on" : "off")"></span>
-																		<span>@(slot.Rack.IsMining ? "Mining" : "Idle")</span>
-																	</div>
-																}
-																else
-																{
-																	<div class="overview-miner-status off">
-																		<span class="lp-ui-status-dot off"></span>
-																		<span>@( HasAnyPlayerRacksNearbyOrLinked() ? "Not linked" : "Available" )</span>
-																	</div>
-																}
-															</div>
-																@if ( slot.Rack.IsValid() )
-																{
-																	<div class="overview-miner-stats">@RackOverviewSubline( slot.Rack )</div>
-																}
-																else if ( !HasAnyPlayerRacksNearbyOrLinked() )
-																{
-																	<div class="overview-miner-stats empty market-hint">Purchase racks from the Market.</div>
-																}
-																else
-																{
-																	<div class="overview-miner-stats empty">Place rack near hub, then link at rig0 — <span class="hashd-prompt-accent">link @slot.TerminalToken</span></div>
-																}
-															<button class="rack-slot-id-copy overview-miner-copy"
-															        onclick="@(() => CopyOverviewMinerToken( slot ))">
-																<span class="rack-slot-id-token">@slot.TerminalToken</span>
-																<i class="material-icons">content_copy</i>
-																<span class="rack-slot-id-hint">@OverviewMinerCopyHint( slot )</span>
-															</button>
-														</div>
-													}
-												</div>
-											</div>
-
-											<div class="lp-ui-panel overview-status-panel">
-												<div class="overview-status-head">
-													<div class="lp-ui-panel-title overview-status-title">
-														<i class="material-icons">analytics</i>
-														<span>Hub status</span>
-													</div>
-													<button class="lp-ui-btn-primary overview-status-upgrade-btn" onclick="@SelectUpgradesTab">Upgrade all</button>
-												</div>
-
-												<div class="overview-status-stack">
-													<div class="overview-status-body">
-														<div class="lp-ui-info overview-status-info">
-															<div class="lp-ui-info-row">
-																<span class="lp-ui-info-label">Total mined</span>
-																<span class="lp-ui-info-value">@CombinedBtc().ToString("F6") BTC</span>
-															</div>
-															<div class="lp-ui-info-row">
-																<span class="lp-ui-info-label">USD value</span>
-																<span class="lp-ui-info-value">$@CombinedUsd().ToString("N2")</span>
-															</div>
-															<div class="lp-ui-info-row">
-																<span class="lp-ui-info-label">Hash rate</span>
-																<span class="lp-ui-info-value">@HashRateLabel()</span>
-															</div>
-															<div class="lp-ui-info-row">
-																<span class="lp-ui-info-label">Hub power</span>
-																<span class="lp-ui-info-value">
-																	<span class="lp-ui-status-dot @(Hub?.IsPowered == true ? "on" : "off")"></span>
-																	<span>@HubPowerStatusLabel()</span>
-																</span>
-															</div>
-															<div class="lp-ui-info-row">
-																<span class="lp-ui-info-label">Load / draw</span>
-																<span class="lp-ui-info-value">@LoadDrawLabel()</span>
-															</div>
-														</div>
-
-														<div class="overview-status-upgrades-row">
-															<div class="overview-status-upgrades-grid">
-																<div class="overview-status-upgrade-surface">
-																	<div class="overview-status-upgrade-surface-head">
-																		<i class="material-icons">dns</i>
-																		<span>Hub</span>
-																	</div>
-																	@foreach ( var track in HubUpgradeTracks )
-																	{
-																		<div class="overview-status-upgrade-track">
-																			<span class="overview-status-upgrade-track-name">@track.Name</span>
-																			<span class="overview-status-upgrade-track-tier">@OverviewTrackCurrentTier( track )</span>
-																		</div>
-																	}
-																</div>
-																<div class="overview-status-upgrade-surface">
-																	<div class="overview-status-upgrade-surface-head">
-																		<i class="material-icons">terminal</i>
-																		<span>HASHD Terminal</span>
-																	</div>
-																	@foreach ( var track in TerminalUpgradeTracks )
-																	{
-																		<div class="overview-status-upgrade-track">
-																			<span class="overview-status-upgrade-track-name">@track.Name</span>
-																			<span class="overview-status-upgrade-track-tier">@OverviewTrackCurrentTier( track )</span>
-																		</div>
-																	}
-																</div>
-															</div>
-														</div>
-													</div>
-
-													<div class="overview-status-footer">
-														<div class="lp-ui-btn-row overview-status-actions">
-															<button class="lp-ui-btn-primary overview-status-action" onclick="@SelectRacksTab">
-																<i class="material-icons">dns</i>
-																<span>Manage racks</span>
-															</button>
-															<button class="lp-ui-btn-ghost overview-status-action" onclick="@SelectWalletTab">
-																<i class="material-icons">account_balance_wallet</i>
-																<span>Wallet</span>
-															</button>
-															<button class="lp-ui-btn-ghost overview-status-action" onclick="@SelectTransfersTab">
-																<i class="material-icons">swap_horiz</i>
-																<span>Transfers</span>
-															</button>
-														</div>
-													</div>
-												</div>
-											</div>
+										<div class="lp-ui-btn-row overview-command-actions">
+											<button class="lp-ui-btn-primary overview-command-action" onclick="@SelectRacksTab">
+												<i class="material-icons">dns</i>
+												<span>Servers</span>
+											</button>
+											<button class="lp-ui-btn-ghost overview-command-action" onclick="@SelectWalletTab">
+												<i class="material-icons">account_balance_wallet</i>
+												<span>Wallet</span>
+											</button>
+											<button class="lp-ui-btn-ghost overview-command-action" onclick="@SelectTransfersTab">
+												<i class="material-icons">swap_horiz</i>
+												<span>Transfers</span>
+											</button>
+											<button class="lp-ui-btn-ghost overview-command-action" onclick="@SelectUpgradesTab">
+												<i class="material-icons">upgrade</i>
+												<span>Upgrades</span>
+											</button>
 										</div>
 									</div>
 								}

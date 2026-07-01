@@ -22,7 +22,7 @@ public sealed class LpBitcoinHubVisuals : Component
 	private const float FanMaxSpeed = 900f;
 	private const float FanRampSeconds = 6f;
 	private const float SoundFadeSeconds = 0.25f;
-	private const float MaxFanLoopVolume = 0.85f;
+	private const float MaxFanLoopVolume = 0.3f;
 
 	private static readonly Vector3 FanSpinAxis = Vector3.Up;
 	private const float FanSpinSign = -1f;

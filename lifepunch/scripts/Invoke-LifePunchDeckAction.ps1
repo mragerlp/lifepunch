@@ -6,6 +6,7 @@ param(
         'OpenLpBitcoinFiles',
         'StartSboxEditor',
         'SyncAddons',
+        'OpenDxrpPortalChrome',
         'McpHealth',
         'GitStatus',
         'GitPullRebase',
@@ -17,6 +18,28 @@ param(
 $ErrorActionPreference = 'Stop'
 $scriptsRoot = if ($PSScriptRoot) { $PSScriptRoot } else { Split-Path -Parent $MyInvocation.MyCommand.Path }
 $repoRoot = (Resolve-Path (Join-Path $scriptsRoot '..')).Path
+
+function Get-PreferredCodeEditor {
+    $preferred = @(
+        'C:\Users\jared\AppData\Local\Programs\Microsoft VS Code\bin\code.cmd',
+        'C:\Users\jared\AppData\Local\Programs\Microsoft VS Code\Code.exe',
+        'C:\Users\jared\AppData\Local\Programs\Microsoft VS Code Insiders\bin\code-insiders.cmd',
+        'C:\Users\jared\AppData\Local\Programs\Microsoft VS Code Insiders\Code - Insiders.exe'
+    )
+
+    foreach ($candidate in $preferred) {
+        if (Test-Path -LiteralPath $candidate) {
+            return $candidate
+        }
+    }
+
+    $codeCmd = Get-Command code -ErrorAction SilentlyContinue
+    if ($codeCmd -and $codeCmd.Source -notmatch '\\cursor\\') {
+        return $codeCmd.Source
+    }
+
+    return $null
+}
 
 function Invoke-RepoScript {
     param(
@@ -42,6 +65,18 @@ function Test-McpEndpoint {
             return [bool]($r.data)
         }
 
+        function Get-ChromePath {
+            $candidates = @(
+                'C:\Program Files\Google\Chrome\Application\chrome.exe'
+                'C:\Program Files (x86)\Google\Chrome\Application\chrome.exe'
+                (Join-Path $env:LOCALAPPDATA 'Google\Chrome\Application\chrome.exe')
+            )
+            foreach ($candidate in $candidates) {
+                if (Test-Path -LiteralPath $candidate) { return $candidate }
+            }
+            return $null
+        }
+
         $body = '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-06-18","capabilities":{},"clientInfo":{"name":"deck-probe","version":"1"}}}'
         $null = Invoke-WebRequest -Uri $Url -Method Post -ContentType 'application/json' -Body $body -TimeoutSec 4 -UseBasicParsing
         return $true
@@ -57,9 +92,9 @@ switch ($Action) {
         break
     }
     'OpenLpBitcoinFiles' {
-        $codeCmd = Get-Command code -ErrorAction SilentlyContinue
-        if (-not $codeCmd) {
-            throw 'VS Code CLI (code) is not on PATH. Run "Shell Command: Install code command in PATH" from VS Code once.'
+        $editor = Get-PreferredCodeEditor
+        if (-not $editor) {
+            throw 'No VS Code executable found. Install VS Code or update Get-PreferredCodeEditor in Invoke-LifePunchDeckAction.ps1.'
         }
 
         $files = @(
@@ -71,7 +106,7 @@ switch ($Action) {
 
         foreach ($file in $files) {
             if (Test-Path -LiteralPath $file) {
-                Start-Process $codeCmd.Source -ArgumentList @('-g', $file)
+                Start-Process -FilePath $editor -ArgumentList @('-g', $file)
             }
         }
         break
@@ -84,10 +119,21 @@ switch ($Action) {
         Invoke-RepoScript -Name 'Sync-LifePunchAddonsToDxrp.ps1' -Arguments @('-Addon', 'lpbitcoin,adminmenu')
         break
     }
+    'OpenDxrpPortalChrome' {
+        $url = 'https://dxrp.net/portal'
+        $chrome = Get-ChromePath
+        if ($chrome) {
+            Start-Process -FilePath $chrome -ArgumentList @('--new-tab', $url)
+        }
+        else {
+            throw 'Chrome not found. Install Chrome or update Get-ChromePath candidates.'
+        }
+        break
+    }
     'McpHealth' {
         $checks = @(
             @{ Name = 'sbox-editor'; Url = 'http://127.0.0.1:9090/sbox-mcp'; OpenAi = $false }
-            @{ Name = 'jtc'; Url = 'http://127.0.0.1:29015/mcp'; OpenAi = $false }
+            @{ Name = 'jtc'; Url = 'http://localhost:29015/mcp'; OpenAi = $false }
             @{ Name = 'cornerman-lm'; Url = 'http://192.168.1.229:1234/v1/models'; OpenAi = $true }
         )
 

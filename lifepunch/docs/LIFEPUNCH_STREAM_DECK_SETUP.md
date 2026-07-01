@@ -26,6 +26,12 @@ powershell -NoProfile -ExecutionPolicy Bypass -File C:\Users\jared\Projects\life
 |---|---|---|
 | MCP Health | Checks `sbox-editor`, `sbox-jtc`, `cornerman-lm` via CVL probe + jtc listener | `... -Action McpHealth` |
 
+## Portal quick access
+
+| Key label | Action | Command |
+|---|---|---|
+| DXRP Portal | Open `https://dxrp.net/portal` in Google Chrome | `... -Action OpenDxrpPortalChrome` |
+
 ## 4. Git safety
 
 | Key label | Action | Command |
@@ -39,14 +45,15 @@ powershell -NoProfile -ExecutionPolicy Bypass -File C:\Users\jared\Projects\life
 |---|---|---|
 | CVL Health | VENGEANCE memory/bloat health + CVL connectivity checks | `... -Action CvlObservability` |
 
-## Recommended first 9 keys
+## Recommended first 10 keys
 
 1. LP Repo
 2. LP Bitcoin Files
 3. Start DXRP Editor
 4. Sync Addons
-5. MCP Health
-6. Git Status
-7. Pull Rebase
-8. CVL Health
-9. Start LifePunch Day (`powershell -File C:\Users\jared\Projects\lifepunch\lifepunch\scripts\Start-LifePunchDay.ps1`)
+5. DXRP Portal (Chrome)
+6. MCP Health
+7. Git Status
+8. Pull Rebase
+9. CVL Health
+10. Start LifePunch Day (`powershell -File C:\Users\jared\Projects\lifepunch\lifepunch\scripts\Start-LifePunchDay.ps1`)

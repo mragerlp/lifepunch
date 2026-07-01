@@ -141,10 +141,9 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 		if ( !Networking.IsHost )
 			return;
 
-		LifePunchPropPhysics.MaintainGrabbablePlaceableProp( GameObject );
-
 		if ( _spawnDropGraceTicks > 0 )
 		{
+			LifePunchPropPhysics.MaintainGrabbablePlaceableProp( GameObject );
 			_spawnDropGraceTicks--;
 			return;
 		}
@@ -154,6 +153,9 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 			LifePunchPropPhysics.SyncBoxColliderFromModel( GameObject );
 			_colliderSyncedFromModel = true;
 		}
+
+		// Once initial spawn settle finishes, force world-machine tags/physics so USE opens the hub.
+		LifePunchPropPhysics.EnforceWorldMachine( GameObject );
 #endif
 	}
 
