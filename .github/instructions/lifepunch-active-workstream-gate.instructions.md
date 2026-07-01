@@ -1,0 +1,58 @@
+---
+applyTo: "**"
+description: "Hard production gate — single active lane (lifepunchbitcoin) until owner sign-off"
+sourceRule: ".cursor/rules/lifepunch-active-workstream-gate.mdc"
+---
+
+> **Synced from** `.cursor/rules/lifepunch-active-workstream-gate.mdc` â€” edit source there, then re-run `Sync-CursorRulesToCopilotInstructions.ps1`.
+
+# LifePunch — Active Workstream Gate (HARD LAW)
+
+**Canonical gate:** `lifepunch/addons/docs/ACTIVE_WORKSTREAM.md`  
+**Ship roadmap (handoff):** `lifepunch/addons/docs/BITCOIN_SHIP_ROADMAP.md`  
+**Publish staging law:** `lifepunch/addons/docs/DXRP_ADDON_PUBLISH_DOCTRINE.md` (folder=slug; PLACEHOLDER hands-off)  
+**Production laws:** `lifepunch/addons/docs/CYBER_REFERENCE_LAWS.md` (Laws 1–11)
+
+## Session start (mandatory — before any edit)
+
+1. Read `ACTIVE_WORKSTREAM.md` in full.
+2. Read `BITCOIN_SHIP_ROADMAP.md` — step order, quality bar, one-ID workflow (handoff-safe).
+3. Read `DXRP_ADDON_PUBLISH_DOCTRINE.md` — lpbitcoin layout, folder=entity slug, do not touch PLACEHOLDER unless owner asks.
+4. Read `CYBER_REFERENCE_LAWS.md` — especially Law 1 (reuse), Law 5 (flatgrass), Law 9 (no "while we're here").
+5. For entity / ModelDoc / prefab work: read `LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md` + `MODEL_FOUNDATION_PASS.md`.
+6. Read `OWNER_PROGRESS_TRACKER.txt` for the current unchecked checklist ID.
+7. Answer the §7 gate: does this work improve **Hub**, **Terminal**, or **GPU Rack** for `lifepunchbitcoin` only?
+
+If **no** → stop; park in `BACKLOG_PARKING_LOT.md`. Do not implement.
+
+## Law 1 — Reference first
+
+Before adding functionality, state what Hacker / Banker / Government will reuse. If **nothing** — stop and reconsider.
+
+## Single active lane
+
+- **Active:** `lifepunchbitcoin` / repo `bitcoinmining` / Phase A → B → C only.
+- **Blocked:** Hacker, Banker, Government, Casino, Drug Chemist, Black Market, all quarantined idents.
+- **Unlock:** Law 10 exit — new player completes full loop without help + flatgrass proof.
+
+## Done = proof, not opinion
+
+- Phase A hub work is **NOT DONE** without proof package (day, night, USE, citizen comparison, 30s clip).
+- **Flatgrass is the truth** — editor screenshots do not count (Law 5).
+- **No Phase B** until Phase A every DONE box checked + owner H10 sign-off.
+
+## Visual & brand
+
+- Law 2: Hub = machine, Terminal = control, Rack = scaling — player recognizes LIFEPUNCH machines.
+- Law 6: OFF / BOOTING / ONLINE / WORKING / WARNING / ERROR / UPGRADING obvious without menus.
+- **Digital machine stack:** ModelDoc → collision → physics → attachments → lights → anim → sound → state → gameplay. Canon: `LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md` · P0 gate: `MODEL_FOUNDATION_PASS.md`.
+- Law 7: verify against `TERMINAL_BRAND_MATRIX.md` — no ad-hoc wording or styles.
+
+## One item at a time
+
+- Execute **one** checklist ID (H*, T*, R*) per session slice.
+- Law 9: "While we're here…" / "It would be cool if…" → `BACKLOG_PARKING_LOT.md` only.
+
+## Bitcoin = reference architecture
+
+Ship quality here caps all future cyber lanes. On sign-off, populate `BITCOIN_REFERENCE_IMPLEMENTATION.md` (Law 8).

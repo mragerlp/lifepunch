@@ -1,0 +1,60 @@
+---
+applyTo: "**"
+description: "LifePunch menu UI scale (S/M/L/XL) + flex-scroll layout law for hub/admin panels"
+sourceRule: ".cursor/rules/lifepunch-ui-scale.mdc"
+---
+
+> **Synced from** `.cursor/rules/lifepunch-ui-scale.mdc` â€” edit source there, then re-run `Sync-CursorRulesToCopilotInstructions.ps1`.
+
+# LifePunch — UI scale + flex scroll
+
+All **hub/admin menus** we ship should offer **S / M / L / XL** (player ease of use). Scaling works only when layout follows this law.
+
+## Scale steps — shell only
+
+- Root gets `lp-ui-size-s|m|l|xl` via `LifePunchUiScale.CssClass()` / `LpUiScale.CssClass()`.
+- Each step **only changes outer shell width/height** (`.window` or `.shell`).
+- **Never** nest tab/sidebar/pane tweaks under `&.lp-ui-size-* .shell { … }` — s&box **silently drops SCSS nested 4+ deep**.
+- **Never** set `font-size` on hub/admin shells — fixed px chrome desyncs. CRT terminals (`.lp-ops-crt`) may scale font because the whole surface is monospace + scrollback.
+
+Canonical dimensions live in:
+- `LifePunchUiScale.scss` (CRT defaults)
+- `StaffMenu.razor.scss` (`.lifepunchulx .window`)
+- `LpHashdPanel.razor.scss` (`.lp-bitcoin-ops .shell`)
+
+## Flex-scroll chain — required with UI scale
+
+When the shell shrinks, **content scrolls** — it must not clip or push chrome off-screen.
+
+```
+.shell / .window     flex column; overflow hidden; border-radius on shell
+  chrome (header, tabs, footer)   flex-shrink: 0   (.lp-ui-chrome-slot)
+  .lp-ui-workspace               flex 1 1 0; min-height 0; overflow hidden
+    tab body / sidebar+main      flex column/row; min-height 0
+      .lp-ui-scroll / .lp-ui-scroll-region   flex 1 1 auto; min-height 0; overflow-y scroll
+```
+
+**Do**
+- Pin header, tab bar, sidebar rail, watermark footer — `flex-shrink: 0`.
+- Give every tab a **scroll slot** for variable-length content (lists, settings, audit, waypoints, wallet).
+- Use shared classes from `LifePunchUiShell.scss`: `.lp-ui-workspace`, `.lp-ui-scroll`, `.lp-ui-scroll-region`, `.lp-ui-chrome-slot`.
+- Use `flex-wrap` on toolbars (search bars with action buttons) instead of fixed widths.
+
+**Don't**
+- Fixed `max-height` on lists as a substitute for flex scroll (breaks at some scale steps).
+- `overflow-y: scroll` on short tabs (Settings, two-group forms) — s&box enables drag-scroll and content can look "stuck" offset with empty space below.
+- `overflow-y: scroll` on the whole tab if chrome should stay pinned — scroll the **inner region** only.
+- Per-scale overrides for individual tabs (they won't compile reliably).
+
+**Drag scroll — disabled**
+- LifePunch menus use **wheel scroll only**. Call `LifePunchUiScrollPolicy.Apply( Panel )` **every frame** in `OnUpdate` while the menu is open — sets `CanDragScroll = false`, clears drag state, and clamps scroll offsets so short lists cannot be “pulled” into empty space.
+- After UI scale change: `LifePunchUiScrollPolicy.Apply( Panel, resetOffset: true )`.
+
+## New panel checklist
+
+1. Settings cog → UI scale picker (S/M/L/XL) — match StaffMenu / LpHashdPanel pattern.
+2. Shell size tiers in panel `.razor.scss` — shell dimensions only.
+3. Every tab: flex-scroll chain verified at **S** and **XL**.
+4. Red close / ESC + settings cog via `LpUiChrome.scss` where applicable.
+
+Reference implementations: `StaffMenu` (waypoints list, audit, settings), `LpHashdPanel` (tab panes + wallet cashout wrap).

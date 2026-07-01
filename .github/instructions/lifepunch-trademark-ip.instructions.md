@@ -1,0 +1,100 @@
+---
+applyTo: "**"
+description: "LifePunch trademark, brand architecture, and proprietary-IP doctrine — applies repo-wide"
+sourceRule: ".cursor/rules/lifepunch-trademark-ip.mdc"
+---
+
+> **Synced from** `.cursor/rules/lifepunch-trademark-ip.mdc` â€” edit source there, then re-run `Sync-CursorRulesToCopilotInstructions.ps1`.
+
+# LifePunch — Trademark & IP Doctrine
+
+Canonical detail lives in `lifepunch/legal/TRADEMARK_AND_IP.md`. This is FOUNDATIONAL — apply
+it across the whole repo (addons, gamemode, website, portal, docs) and in every agent's work.
+Assume LIFEPUNCH-branded paid/distributed goods WILL ship and that others WILL try to clone them
+for profit. Build so the trademark is supportable up front — never band-aid the legal basis later.
+
+## Brand architecture — LIFEPUNCH is ours; DXRP and s&box are third-party
+- **LIFEPUNCH** = the ONLY mark we own. Owning legal entity: **PEAK PERFORMANCE PRODUCTS LLC**
+  (NJ single-member LLC); LIFEPUNCH is a *brand* of that LLC, surfaced at `lifepunch.co`.
+- **DXRP** = a roleplay gamemode/platform owned by **Dxura** (a third party), running on **s&box**
+  (Facepunch). **We are NOT legally affiliated with DXRP, Dxura, s&box, or Facepunch.** We *use* the
+  DXRP gamemode and publish LIFEPUNCH content for DXRP servers — we never claim to own DXRP.
+- Our goods/services are **LIFEPUNCH-branded**: LIFEPUNCH servers/community (Class 41) and LIFEPUNCH
+  downloadable content/addons that *run on* DXRP (Class 9). LIFEPUNCH must be the **source/publisher**
+  on those goods — listings show "Published by LIFEPUNCH"; the mark appears in-product + file metadata.
+  That LIFEPUNCH source use (NOT DXRP) is what makes our Class 9 registration provable.
+
+## Third-party marks — nominative use only
+- Never register, claim, or imply ownership of **DXRP / Dxura / s&box / Facepunch**.
+- Reference them only descriptively ("a LIFEPUNCH addon **for DXRP**", "built **on s&box**"), never in
+  a way that implies affiliation, sponsorship, or endorsement.
+- **Lead product names with LIFEPUNCH**, not a third party's mark, so LIFEPUNCH is the source identifier
+  (e.g. "LIFEPUNCH Admin Menu for DXRP", not "DXRP Admin Menu").
+
+## Trademark posture (USPTO via Trademark Engine)
+- **#402997 — LIFEPUNCH wordmark.** Mixed-basis single application:
+  - Class **041** online video-game services → **§1(a) in use** (servers live; first use anywhere
+    04/26/2026, first use in commerce 04/30/2026).
+  - Class **009** downloadable game software → **§1(b) intent-to-use** (convert with a Statement
+    of Use once the LIFEPUNCH-branded download ships). Do NOT claim Class 9 use until a real
+    LIFEPUNCH-branded download + specimen exist.
+- **#397871 — LIFEPUNCH logo** (design mark). Keep owner, classes, and dates identical to the wordmark.
+- **Owner = PEAK PERFORMANCE PRODUCTS LLC on EVERY filing** — not "Jared Zerillo" individually, not
+  "LifePunch." A wrong-entity filing voids the registration. Keep it identical across #402997 and
+  #397871; confirm exact suffix/punctuation vs. the NJ Certificate of Formation.
+- **A DBA cannot own a mark — only the LLC can.** Applicant name need not match the mark
+  (`Peak Performance Products LLC` owns `LIFEPUNCH`). One LLC = umbrella over many of *our* brands
+  (LIFEPUNCH + future LIFEPUNCH-owned brands — NOT DXRP, which is Dxura's); a NJ "Alternate Name"/DBA
+  is operational only and must never gate a filing.
+- **Never commit sensitive identifiers** (EIN, domicile street address) to the repo — they stay in
+  OneDrive. Entity name is public (USPTO) and fine to record.
+
+## "Use in commerce" facts — do not conflate
+- Trademark use = WE distribute the branded goods/services in commerce AND a specimen shows the mark
+  as the source. **Charging money is NOT required** — a free download qualifies if genuinely
+  distributed under the mark with a valid specimen.
+- Whether others may resell is a **copyright / EULA** matter, NOT trademark use. "Use on your own
+  server; no copy, redistribution, or resale" *strengthens* single-source — keep that clause.
+
+## Operating under ™ while pending (™ now; ® only after registration)
+- **We can run the business under LIFEPUNCH right now.** Trademark rights arise from **use in
+  commerce**, not registration — LIFEPUNCH already has common-law rights from live use (servers,
+  site, community). Filing is pending (#402997 + #397871), not required to operate.
+- **Use `™`, never `®`, until the USPTO actually issues a registration.** `™` asserts an unregistered
+  /common-law claim and is correct while pending. Using `®` before registration is unlawful and can
+  jeopardize the application. When both marks register, switch to `®`.
+- **Spell it `LIFEPUNCH™`** (consistent all-caps source identifier per the brand-integrity rule).
+  Avoid drifting to `LifePunch™` styling — consistency protects the wordmark.
+- **Class nuance:** Class 41 (services) is in actual use → `™` clearly proper. Class 9 (downloadable
+  addons) is intent-to-use/not yet shipped → branding the project/site LIFEPUNCH™ is fine, but do
+  **not** represent an addon as an established/registered Class 9 good, and never put `®` on it,
+  until it ships with a valid specimen (see "Use in commerce" above).
+- **Keep dated evidence of use** (git commits, launch dates, screenshots, listings) — it supports
+  common-law priority and the recorded first-use dates (Class 41 first use 04/26/2026).
+
+## Finishing the filings
+- **To complete a trademark filing, START at `lifepunch/legal/FINALIZE_TRADEMARK.md`** — the
+  action-ordered runbook (copy-paste TE-support messages, exact per-order field values, definition of
+  done, and the post-filing repo updates). Both #402997 and #397871 are blocked on the same TE contact.
+
+## Filing assets & current state (where things live)
+- **Specimens:** `lifepunch/legal/specimens/` (`SPECIMEN_NOTES.md`). Class 041 specimen = live
+  `lifepunch.co` screenshot (LIFEPUNCH mark + joinable server list). **Class 009 has only a PLACEHOLDER
+  specimen** on #402997 (the intake forced a file); it MUST be filed §1(b) ITU and the placeholder
+  removed by the TE paralegal — never treat the website image as a real Class 9 specimen.
+- **Mark drawings / logo:** `lifepunch/legal/marks/` (`MARK_DRAWINGS.md`). The logo (#397871) is the
+  circular "LP" monogram, filed **in COLOR claiming blue** — use `lifepunch-logo_drawing_color_900.jpg`
+  with the recorded color-claim statement + mark description.
+- **Clearance evidence:** `lifepunch/legal/clearance-evidence/` (lifepunch.net dormancy).
+- Filing progress + open items are logged in `TRADEMARK_AND_IP.md` (§7 open items, §8 progress log).
+  Update those when a filing step changes — do not let the legal state drift from reality.
+
+## Proprietary / anti-clone (uniform)
+- Original LIFEPUNCH content is **proprietary IP of the owner** — not for resale, redistribution,
+  sublicensing, or reuse by anyone else (including DXRP, staff, contributors, community). Mirror the
+  `addons.json` ownership wording on every new addon.
+- Enforce via the website **TOS §5 (Intellectual Property)** + **§6 (DMCA)** in
+  `lifepunch/website/deployments/cloudflare-worker.mjs`.
+- Don't dilute the mark: always spell **LIFEPUNCH** consistently and use it as a source identifier.
+- Exception still stands: explicitly flagged third-party work (anything built on someone else's
+  model/assets) is NOT LIFEPUNCH IP and stays under `reference/` — see the operating-context rule.
