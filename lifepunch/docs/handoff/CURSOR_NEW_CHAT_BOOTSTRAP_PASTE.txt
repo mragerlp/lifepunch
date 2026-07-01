@@ -27,6 +27,19 @@ STEP 1 — READ ORDER (law — agent executes, do not skip)
   ARCHITECT_CURRENT_STATE.md · BUSINESS_CONTEXT.md · OPUS_USAGE_LAW.md
 
 ══════════════════════════════════════════════════════════════════════════════
+NEW-CHAT FALLBACK PACK (when context is lost / session is fresh)
+══════════════════════════════════════════════════════════════════════════════
+  Paste order:
+  1) handoff/CURSOR_NEW_CHAT_BOOTSTRAP_PASTE.txt
+  2) handoff/ARCHITECT_CURRENT_STATE.md
+  3) addons/docs/ACTIVE_WORKSTREAM.md
+  4) addons/docs/BITCOIN_SHIP_ROADMAP.md
+
+  If working DXRP lane in a separate repo/session:
+  - Keep strict lane split (LP work in lifepunch repo, DXRP work in dxura/dxrp).
+  - Commit hygiene matches LP: author-only commit identity, no AI attribution trailers.
+
+══════════════════════════════════════════════════════════════════════════════
 BUSINESS + CVL (one screen — agent must internalize)
 ══════════════════════════════════════════════════════════════════════════════
   Entity:     Peak Performance Products LLC · brand LIFEPUNCH™ · lifepunch.co
@@ -37,7 +50,7 @@ BUSINESS + CVL (one screen — agent must internalize)
   This host:  VENGEANCE (Red) = Integration Architect (Cursor) = build + integrate + MCP
   Not gate:   Design Architect (ChatGPT advisory) · Cornerman (Green prep, eyes covered)
   Git:        github.com/mragerlp/lifepunch · author mragerlp <mragerlp@gmail.com>
-  Commit:     propose scope first — Bloodwave approves — no AI trailers in commits
+  Commit:     propose scope first — Bloodwave approves — no AI trailers in commits (LP + DXRP)
 
 ══════════════════════════════════════════════════════════════════════════════
 ACTIVE LANE (canon frozen — implementation paused for restructure)

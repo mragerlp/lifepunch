@@ -6,7 +6,7 @@
 > **Evergreen law** lives in repo docs — this file is **dated state only**.  
 > **GitHub wins** over uploaded Project ZIP snapshots.
 
-**Last updated:** 2026-06-30  
+**Last updated:** 2026-07-01  
 **Integration commit anchor:** see `git log -1` on `main` after pull  
 **Cursor boot:** paste `handoff/CURSOR_NEW_CHAT_BOOTSTRAP_PASTE.txt` alone — full grounding, no extra directions
 
@@ -89,6 +89,15 @@ Route: [GROK REQUIRED | AUTO OK | OPUS REQUIRED]. H4+H5 one commit.
 |------|--------|
 | **lifepunchulx r10** | Set Job picker + `StaffMenuBridgeService` compaction — **committed**; portal v1.0.3 / r10 when owner uploads |
 | **lpmonnowsprinterupgrade Rev 9** | Path canon: `addons/lifepunch/monnowprinterlp/monnowprinter.prefab`; staging ready; **portal pin + gamemode PrimaryReference update pending**; never `secondaryReference` → `.prefab_c` |
+
+---
+
+## Cross-repo fallback + commit hygiene
+
+- **New chat fallback order:** `handoff/CURSOR_NEW_CHAT_BOOTSTRAP_PASTE.txt` → `handoff/ARCHITECT_CURRENT_STATE.md` → `addons/docs/ACTIVE_WORKSTREAM.md` → `addons/docs/BITCOIN_SHIP_ROADMAP.md`.
+- **Strict lane split:** LP Bitcoin implementation stays in `mragerlp/lifepunch`; DXRP issue/PR work stays in `dxura/dxrp`.
+- **Commit hygiene applies to both lanes:** author-only identity (`mragerlp <mragerlp@gmail.com>`), no AI attribution trailers.
+- **Checkpoint before lane switch:** commit + push + issue/PR status note before moving between LP and DXRP sessions.
 
 ---
 
