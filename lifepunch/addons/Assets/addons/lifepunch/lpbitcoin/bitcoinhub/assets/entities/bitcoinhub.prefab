@@ -7,7 +7,7 @@
     "Position": "0,0,0",
     "Rotation": "0,0,0,1",
     "Scale": "1,1,1",
-    "Tags": "entity,solid,noblockaudio,occludable,lifepunch_nopocket,hands_interact",
+    "Tags": "entity,solid,noblockaudio,occludable,lifepunch_nopocket",
     "Enabled": true,
     "NetworkMode": 1,
     "NetworkFlags": 0,

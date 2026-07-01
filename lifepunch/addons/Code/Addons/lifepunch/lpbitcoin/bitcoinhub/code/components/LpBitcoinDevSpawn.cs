@@ -1733,11 +1733,8 @@ public static class LpBitcoinDevSpawn
 		var owner = ownerPlayer.IsValid() ? ownerPlayer : Player.Local;
 		BindDevSpawnOwners( go, owner );
 
-		// Host spawns for all clients; network owner = target operator so PIN/UI RPCs reach the right client.
-		if ( owner.IsValid() && owner.Network?.Owner is { } networkOwner )
-			go.NetworkSpawn( networkOwner );
-		else
-			go.NetworkSpawn();
+		// Host broadcast spawn — every client sees every kit prop. BaseEntity.Owner (SteamId) gates PIN/manage.
+		go.NetworkSpawn();
 #endif
 	}
 

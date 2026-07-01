@@ -103,7 +103,7 @@ internal sealed class VisiblePocketInputBridge : Component
 	private static bool IsHandsEquipped( Player player )
 	{
 		var equipment = player.CurrentEquipment;
-		return equipment.IsValid() && equipment.Identifier == "hands";
+		return equipment.IsValid() && equipment.EquipmentId == Constants.HandsEquipmentId;
 	}
 }
 #endif

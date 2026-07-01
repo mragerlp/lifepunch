@@ -215,10 +215,11 @@ function Remove-StaleHashdTerminalCompile {
     param([string]$HashdRoot)
     if (-not (Test-Path -LiteralPath $HashdRoot)) { return }
     $models = Join-Path $HashdRoot 'assets\models'
-    foreach ($name in @('hashdterminal.vmdl_c', 'hashd-terminal.vmdl_c', 'hashd-terminal.vmdl')) {
+    # Legacy slot names only — do NOT delete hashdterminal.vmdl_c (repo ships compiled _c; MIR already syncs it).
+    foreach ($name in @('hashd-terminal.vmdl_c', 'hashd-terminal.vmdl')) {
         $path = Join-Path $models $name
         if (Test-Path -LiteralPath $path) {
-            Remove-StaleDxrpPath -Path $path -Label "stale compile/source: $name (recompile after FBX repair)"
+            Remove-StaleDxrpPath -Path $path -Label "stale legacy compile/source: $name"
         }
     }
 }

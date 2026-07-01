@@ -156,7 +156,7 @@ public static class LifePunchMenuInteractGate
 			return true;
 
 		var equipment = player.CurrentEquipment;
-		if ( !equipment.IsValid() || equipment.Identifier != "hands" )
+		if ( !equipment.IsValid() || equipment.EquipmentId != Constants.HandsEquipmentId )
 			return false;
 
 		var hands = equipment.Components.Get<HandsEquipment>( FindMode.EverythingInSelf );
