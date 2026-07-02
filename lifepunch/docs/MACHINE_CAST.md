@@ -50,6 +50,24 @@ stack. Say a **node** when you mean one machine. Do **not** call the three-machi
 
 ---
 
+## Green surfaces (July 2026 — dual IDE)
+
+Green **comms + integration** can run on two surfaces. **Red (VENGEANCE) always owns runtime**
+(s&box, Claude Bridge, Host Play, flatgrass proof, primary git push).
+
+| Surface | Where | IDE | Use when |
+|---------|--------|-----|----------|
+| **Green A** | MacBook (macOS) | Cursor + Copilot native | Comms, docs, planning, edits — **eyes covered** for play until Red proofs |
+| **Green B** | Cornerman via RDP (`192.168.1.229`) | Cursor + Copilot on Windows | Bridge MCP 3/3, SMB to Red, Cornerman LM, flatgrass-driven slices |
+
+**Cornerman** remains: mic relay, Tier-3 LM host, and **Green B Windows IDE** — not deleted when Mac is Green A.
+
+Handoff pastes: `handoff/MAC_GREEN_NATIVE_GROUNDING_PASTE.txt` (A) ·
+`handoff/GREEN_CORNERMAN_CURSOR_GROUNDING_PASTE.txt` (B) ·
+`handoff/MACBOOK_GREEN_QUICKSTART.md` (B steps).
+
+---
+
 ## How agents should refer to people (alias-first)
 
 **June 2026 aliases:** **Bloodwave** = visible (in-game · Steam · Discord). **mrragerlp** = proprietary /

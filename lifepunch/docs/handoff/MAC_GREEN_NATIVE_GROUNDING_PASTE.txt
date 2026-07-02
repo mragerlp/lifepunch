@@ -1,0 +1,88 @@
+LIFEPUNCH™ — Green A: Mac native grounding (Cursor + Copilot on macOS)
+Updated: 2026-07-01 · Path A — no RDP, no Cornerman bridge scripts
+Paste at session start when working on the MacBook locally (not inside Cornerman RDP).
+
+══════════════════════════════════════════════════════════════════════════════
+CONTEXT (read first)
+══════════════════════════════════════════════════════════════════════════════
+  Green A = MacBook runs Cursor + Copilot natively (comms + integration edits).
+  Green B = RDP to Cornerman when you need bridge MCP / SMB / Windows Green IDE.
+  Red (VENGEANCE) = s&box runtime + Claude Bridge + Host Play + flatgrass proof + git push.
+
+  On Green A you are EYES-COVERED for play/visual claims until Red proofs or you switch to Green B.
+
+══════════════════════════════════════════════════════════════════════════════
+STEP 0 — SYNC (before reading or editing)
+══════════════════════════════════════════════════════════════════════════════
+  cd ~/Projects/lifepunch
+  (or your Mac clone path — keep ONE canonical path documented locally)
+
+  git fetch origin
+  git checkout checkpoint-lpbitcoin-pre-sleep-20260701
+  git pull --rebase
+
+  If behind AND dirty: STOP — tell Bloodwave (commit or stash first).
+
+  LP lane only in this repo. DXRP work stays in dxura/dxrp (separate session/repo).
+
+══════════════════════════════════════════════════════════════════════════════
+STEP 1 — WHEN TO STAY ON GREEN A vs RDP TO GREEN B
+══════════════════════════════════════════════════════════════════════════════
+  Stay on Mac (Green A):
+  - Docs, canon, handoffs, planning, restructure slices
+  - Code edits without flatgrass proof this session
+  - Copilot/Cursor comms that do not need get_bridge_status
+
+  RDP to Cornerman (Green B) when:
+  - Need get_bridge_status + bridge screenshots
+  - Need MCP 3/3 over SMB (sbox · sbox-editor · cornerman-lm)
+  - Need Cornerman heavy LM in same session as bridge work
+  - Use: handoff/GREEN_CORNERMAN_CURSOR_GROUNDING_PASTE.txt
+
+══════════════════════════════════════════════════════════════════════════════
+STEP 2 — READ ORDER (law — agent executes, do not skip)
+══════════════════════════════════════════════════════════════════════════════
+  1. lifepunch/docs/MACHINE_CAST.md  (Green A / Green B section)
+  2. lifepunch/addons/docs/ACTIVE_WORKSTREAM.md
+  3. lifepunch/docs/handoff/ARCHITECT_CURRENT_STATE.md
+  4. .cursor/rules (alwaysApply)
+
+  Depth on demand: BITCOIN_SHIP_ROADMAP.md · GREEN_PATCH_HANDOFF_QUICKREF.txt (when shipping)
+
+══════════════════════════════════════════════════════════════════════════════
+ACTIVE LANE
+══════════════════════════════════════════════════════════════════════════════
+  Product: lifepunchbitcoin · Phase A Hub · H4/H5 GO pending
+  Default: plan-only / doc slices unless owner GO — no hub code without GO paste
+
+══════════════════════════════════════════════════════════════════════════════
+COMMIT HYGIENE (mandatory)
+══════════════════════════════════════════════════════════════════════════════
+  Author: mragerlp <mragerlp@gmail.com>
+  No AI attribution / co-author trailers
+  Propose commit scope first — Bloodwave approves before commit/push
+
+  Mac clone may push to origin directly (unlike Cornerman read-only key).
+  If you also edited on Green B (Cornerman), sync one surface before push.
+
+══════════════════════════════════════════════════════════════════════════════
+FIRST REPLY (agent fills before edits)
+══════════════════════════════════════════════════════════════════════════════
+  ## Surface
+  Green A — Mac native (Cursor or Copilot)
+
+  ## Sync
+  Branch · HEAD · clean/dirty
+
+  ## Bridge
+  eyes covered — no get_bridge_status on Green A unless owner switched to Green B
+
+  ## Active lane
+  lpbitcoin Phase A · H4/H5 GO received? [yes/no]
+
+  ## Standing by
+  [One line — or wait for task]
+
+Optional task line: [YOUR TASK HERE]
+
+— END GREEN A MAC NATIVE GROUNDING —

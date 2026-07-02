@@ -1,0 +1,51 @@
+LIFEPUNCH™ — Green B: Cornerman Cursor grounding (Mac → RDP → Cursor on Windows)
+Updated: 2026-07-01 · Paste as first message in new Cursor agent chat ON Cornerman desktop
+Prerequisite: RDP from Mac to 192.168.1.229 · Red editor + bridge must be up
+
+══════════════════════════════════════════════════════════════════════════════
+GROUNDING + STARTUP (execute in order, no skips)
+══════════════════════════════════════════════════════════════════════════════
+
+Context:
+- MacBook → RDP to Cornerman 192.168.1.229 → Cursor on Green Windows desktop
+- Green B = bridge-capable IDE (MCP 3/3 over SMB to Red)
+- Red (VENGEANCE) hosts s&box + Claude Bridge + Host Play + flatgrass proof
+
+Repo + branch truth:
+- Worktree: C:\Projects\lifepunch
+- Branch: checkpoint-lpbitcoin-pre-sleep-20260701
+- LP lane only. DXRP work stays in dxura/dxrp (separate repo/session).
+- Green git: read-only deploy key — local commits OK; origin push via patch-handoff on Red
+
+Preflight (PowerShell on Cornerman desktop — interactive, not SSH):
+
+cd C:\Projects\lifepunch
+git fetch origin
+git checkout checkpoint-lpbitcoin-pre-sleep-20260701
+git pull --rebase
+
+powershell -NoProfile -ExecutionPolicy Bypass -File C:\lifepunch\cornerman\Map-CornermanBridgeShare.ps1
+powershell -NoProfile -ExecutionPolicy Bypass -File C:\lifepunch\cornerman\Start-CornermanSboxEditorTunnel.ps1 -Background
+Test-Path \\VENGEANCE\SboxBridgeIpc\status.json
+
+If Test-Path is not True: STOP — report blocker (ask Red to start editor/bridge).
+If True: Cursor → Reload Window → confirm MCP 3/3 green: sbox · sbox-editor · cornerman-lm
+
+Law: lifepunch/docs/GREEN_SMB_BOOT_PASTE.md · lifepunch/docs/MACHINE_CAST.md
+Full boot depth: lifepunch/docs/handoff/GREEN_CURSOR_NEW_CHAT_BOOTSTRAP_PASTE.txt
+Patch-handoff when shipping: lifepunch/docs/handoff/GREEN_PATCH_HANDOFF_QUICKREF.txt
+
+Then run and report:
+- get_bridge_status
+- git status -sb
+
+Commit hygiene (mandatory):
+- Author only: mragerlp <mragerlp@gmail.com>
+- No AI attribution / co-author trailers
+- Propose commit scope first — owner approval before commit
+- Push: ping Red — GREEN_PATCH_HANDOFF_QUICKREF.txt
+
+Active lane: lpbitcoin Phase A · H4/H5 GO pending
+Default without GO: plan-only · no hub code
+
+— END GREEN B CORNERMAN CURSOR GROUNDING —
