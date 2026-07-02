@@ -153,9 +153,11 @@ If mcp.json shows mirror path: tell Red to run Install-CornermanSboxBridgeMcp.ps
 ══════════════════════════════════════════════════════════════════════════════
 PATCH-HANDOFF (Green cannot push — after local commit)
 ══════════════════════════════════════════════════════════════════════════════
+  Quick paste: handoff/GREEN_PATCH_HANDOFF_QUICKREF.txt
+
   On Green: git log origin/main..HEAD --oneline
   Ping Bloodwave with commit count + subjects.
-  On VENGEANCE: pull patches over SSH (format-patch → scp → git am) then push.
+  On VENGEANCE: powershell -File lifepunch\scripts\Pull-CornermanPatches.ps1 -Push
   Detail: lifepunch/docs/LOCAL_AI_WORKSTATION.md §7c
 
 ══════════════════════════════════════════════════════════════════════════════

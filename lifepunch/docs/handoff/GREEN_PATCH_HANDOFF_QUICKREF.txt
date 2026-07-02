@@ -1,0 +1,60 @@
+LIFEPUNCH™ — Green → Red patch handoff (one screen)
+Updated: 2026-07-01 · Branch context: checkpoint-lpbitcoin-pre-sleep-20260701
+Paste when Green has local commits and needs origin updated without a push credential on Cornerman.
+
+══════════════════════════════════════════════════════════════════════════════
+CORE RULE
+══════════════════════════════════════════════════════════════════════════════
+  Green (Cornerman) = read-only deploy key. Local commits OK. Never push from Green.
+  Red (VENGEANCE) = git push origin. Secrets stay off Green.
+
+══════════════════════════════════════════════════════════════════════════════
+3-STEP HANDOFF
+══════════════════════════════════════════════════════════════════════════════
+  1. GREEN — commit locally, then list unpushed commits:
+       cd C:\Projects\lifepunch
+       git log origin/main..HEAD --oneline
+
+  2. GREEN — ping Bloodwave / Red (paste template below).
+
+  3. RED — after ping, on VENGEANCE:
+       cd C:\Projects\lifepunch
+       powershell -File lifepunch\scripts\Pull-CornermanPatches.ps1 -Push
+
+     Then GREEN reconciles:
+       cd C:\Projects\lifepunch
+       git fetch origin
+       git pull --rebase
+
+══════════════════════════════════════════════════════════════════════════════
+PING TEMPLATE (copy, fill brackets)
+══════════════════════════════════════════════════════════════════════════════
+  Green patch-handoff ready — [N] commit(s) on checkpoint-lpbitcoin-pre-sleep-20260701
+
+  Subjects:
+  - [one-line subject 1]
+  - [one-line subject 2]
+
+  Green HEAD: [short hash]
+  Branch: checkpoint-lpbitcoin-pre-sleep-20260701
+  Ready for Pull-CornermanPatches.ps1 -Push on Red.
+
+══════════════════════════════════════════════════════════════════════════════
+AFTER RED PUSHES — GREEN SYNC
+══════════════════════════════════════════════════════════════════════════════
+  cd C:\Projects\lifepunch
+  git fetch origin
+  git checkout checkpoint-lpbitcoin-pre-sleep-20260701
+  git pull --rebase
+
+  If rebase drops duplicates cleanly, you land on upstream.
+  If stuck (clean tree only): git reset --hard origin/checkpoint-lpbitcoin-pre-sleep-20260701
+
+══════════════════════════════════════════════════════════════════════════════
+FULLER DOCS
+══════════════════════════════════════════════════════════════════════════════
+  lifepunch/docs/LOCAL_AI_WORKSTATION.md §7c  (canonical)
+  lifepunch/scripts/Pull-CornermanPatches.ps1
+  handoff/GREEN_CURSOR_NEW_CHAT_BOOTSTRAP_PASTE.txt  (session boot)
+
+— END GREEN PATCH HANDOFF QUICKREF —
