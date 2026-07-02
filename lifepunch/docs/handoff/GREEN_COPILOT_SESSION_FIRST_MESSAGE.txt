@@ -1,16 +1,16 @@
 GREEN SESSION — Cornerman Integration Architect (Copilot) · Green B
 
 Machine: Cornerman 192.168.1.229 · repo C:\Projects\lifepunch
-Red: VENGEANCE hosts s&box + Claude Bridge · flatgrass proof on Red
-Law: lifepunch/docs/MACHINE_CAST.md · ACTIVE_WORKSTREAM.md
-Full boot: lifepunch/docs/handoff/COPILOT_NEW_SESSION_BOOTSTRAP.txt
-Grounding: lifepunch/docs/handoff/GREEN_CORNERMAN_COPILOT_GROUNDING_PASTE.txt
+Red: VENGEANCE hosts s&box + Claude Bridge · SMB \\VENGEANCE\SboxBridgeIpc
+Law: lifepunch/docs/MACHINE_CAST.md · GREEN_SMB_BOOT_PASTE.md
+Full grounding: lifepunch/docs/handoff/GREEN_CORNERMAN_COPILOT_GROUNDING_PASTE.txt
 Patch-handoff (when shipping): lifepunch/docs/handoff/GREEN_PATCH_HANDOFF_QUICKREF.txt
 
 Boot confirm:
 1. git status -sb
-2. Summarize active lane + H4/H5 GO? [yes/no]
-3. Bridge preflight only if play-adjacent — else eyes covered until Red proofs
+2. Test-Path \\VENGEANCE\SboxBridgeIpc\status.json → True
+3. MCP 3/3: claudebridge · chromr-mcp · jct-server (no Reload Window — project open picks up MCP)
+4. Summarize active lane + H4/H5 GO? [yes/no]
 
 Active lane: lpbitcoin Phase A · H4/H5 GO pending
 Git: read-only deploy key — patch-handoff to VENGEANCE for push
