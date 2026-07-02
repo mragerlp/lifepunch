@@ -98,7 +98,7 @@ After RDP to Cornerman:
 1. Red must have editor up (`Start-SboxDxrpEditor.ps1 -FullCapacity …` on VENGEANCE).
 2. On Cornerman desktop, run SMB + tunnel scripts — **`GREEN_SMB_BOOT_PASTE.md`** (full paste block).
 3. Open Cursor on Cornerman → `C:\Projects\lifepunch`.
-4. New agent chat → paste **`handoff/GREEN_CURSOR_NEW_CHAT_BOOTSTRAP_PASTE.txt`**.
+4. New agent chat → paste **`handoff/GREEN_SESSION_FIRST_MESSAGE.txt`** (or full **`GREEN_CURSOR_NEW_CHAT_BOOTSTRAP_PASTE.txt`** if depth needed).
 5. Agent runs `get_bridge_status` + `git status -sb`.
 
 **Git on Green:** read-only deploy key — local commits OK; push via patch-handoff on Red (`LOCAL_AI_WORKSTATION.md` §7c · `Pull-CornermanPatches.ps1`).
@@ -128,7 +128,8 @@ Current law: **LAN-only** for RDP/SSH/model endpoint. For travel later:
 
 | Doc | Purpose |
 |-----|---------|
-| `handoff/MACBOOK_GREEN_QUICKSTART.md` | One-page copy-paste steps |
+| `handoff/MACBOOK_GREEN_QUICKSTART.md` | Mac → Cornerman → Cursor copy/paste pack (§1–6) |
+| `handoff/GREEN_SESSION_FIRST_MESSAGE.txt` | Short Green chat paste (session start) |
 | `GREEN_SMB_BOOT_PASTE.md` | SMB + MCP 3/3 on Cornerman |
 | `handoff/GREEN_CURSOR_NEW_CHAT_BOOTSTRAP_PASTE.txt` | Green agent session boot |
 | `RED_FULL_CAPACITY_BOOT.md` | Red editor + bridge |
