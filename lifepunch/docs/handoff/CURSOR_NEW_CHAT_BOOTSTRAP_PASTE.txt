@@ -1,6 +1,7 @@
-LIFEPUNCH™ — Cursor new-chat bootstrap (VENGEANCE / Integration Architect)
-Updated: 2026-06-30 · Repo: github.com/mragerlp/lifepunch
-Paste THIS FILE ALONE at session start — no extra owner directions required unless you add a task line below.
+LIFEPUNCH™ — Cursor new-chat bootstrap (VENGEANCE / Red orchestration + runtime)
+Updated: 2026-07-01 · Repo: github.com/mragerlp/lifepunch
+Quick paste: lifepunch/docs/handoff/RED_CURSOR_GROUNDING_PASTE.txt
+Workflow: lifepunch/docs/GREEN_EXECUTION_MODEL.md · Paste THIS FILE for full depth.
 
 ══════════════════════════════════════════════════════════════════════════════
 STEP 0 — SYNC (before reading or editing)

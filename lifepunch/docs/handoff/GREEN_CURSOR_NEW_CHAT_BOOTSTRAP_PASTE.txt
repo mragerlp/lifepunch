@@ -23,9 +23,10 @@ STEP 1 — READ ORDER (law — agent executes, do not skip)
   5. lifepunch/addons/docs/ACTIVE_WORKSTREAM.md
   6. .cursor/rules (alwaysApply)
 
-  Green wiring (this machine):
-  7. lifepunch/docs/GREEN_SMB_BOOT_PASTE.md
-  8. lifepunch/docs/MACHINE_CAST.md
+  Green wiring + execution model:
+  7. lifepunch/docs/GREEN_EXECUTION_MODEL.md
+  8. lifepunch/docs/GREEN_SMB_BOOT_PASTE.md
+  9. lifepunch/docs/MACHINE_CAST.md
 
   Depth on demand (resume dev / gameplay):
   BITCOIN_SHIP_ROADMAP.md · OWNER_PROGRESS_TRACKER.txt · CYBER_REFERENCE_LAWS.md

@@ -1,0 +1,17 @@
+MAC SESSION — Green A Control Plane (Cursor or Copilot native)
+
+Machine: MacBook · repo ~/Projects/lifepunch
+Red: VENGEANCE — runtime · proof · push
+Green B: RDP Cornerman for heavy work + bridge MCP
+Law: lifepunch/docs/GREEN_EXECUTION_MODEL.md
+
+Boot confirm:
+1. git fetch + checkout checkpoint-lpbitcoin-pre-sleep-20260701 + pull --rebase
+2. git status -sb
+3. Eyes covered for play — RDP Cornerman if bridge needed
+
+Cursor paste: handoff/MAC_GREEN_CURSOR_GROUNDING_PASTE.txt
+Copilot paste: handoff/MAC_GREEN_COPILOT_GROUNDING_PASTE.txt
+Cornerman RDP: handoff/MACBOOK_GREEN_QUICKSTART.md
+
+Active lane: lpbitcoin Phase A · H4/H5 GO pending

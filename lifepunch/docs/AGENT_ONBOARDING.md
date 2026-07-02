@@ -21,8 +21,8 @@ Architect asks **"Does this make the game better?"** Cursor (Integrator) asks **
 | Brain | Tool | Ships code? |
 |-------|------|-------------|
 | **Architect** | ChatGPT LIFEPUNCH™ Project | No — CURSOR BRIEFs + design docs |
-| **Integrator** | Cursor on Red | Yes (owner commit consent) |
-| **Distiller** | Cornerman LM on Green | No — outbox prep |
+| **Integrator** | Cursor on Red + Green B (+ Copilot) | Yes (Red push; Cornerman patch-handoff) |
+| **Distiller + executor** | Cornerman LM + agents on Green B | Local commits → Red patch-handoff |
 
 Canon: `lifepunch/docs/ARCHITECT.md` · paste: `handoff/ARCHITECT_ONBOARDING_PASTE.txt`
 
@@ -48,6 +48,9 @@ Business wrapper: `lifepunch/docs/BUSINESS_CONTEXT.md`.
 
 | Order | Doc | Why |
 |-------|-----|-----|
+| 0 | `lifepunch/docs/MACHINE_CAST.md` | Red · Mac · Cornerman codenames |
+| 0a | `lifepunch/docs/GREEN_EXECUTION_MODEL.md` | Three agent groups + sync law |
+| 0b | `lifepunch/docs/handoff/AGENT_GROUNDING_INDEX.md` | Cursor + Copilot paste per machine |
 | 1 | `addons/docs/ACTIVE_WORKSTREAM.md` | Single lane gate |
 | 2 | `.cursor/rules` (alwaysApply) | Repo law |
 | 3 | `addons/docs/CYBER_REFERENCE_LAWS.md` | Cyber production gate (when on entity/addon work) |
@@ -206,7 +209,17 @@ partner commits on GitLab integrate back into GitHub. Full map:
 | `lifepunch-website` | `lifepunch/website/**` | **shottaWEB** |
 | `lifepunch-rdp-server` | server, portal, gamemode, ops | **RDP server agent** |
 
-**Copy/paste for new chats:** `lifepunch/docs/AGENT_PROMPT.md`.
+**Copy/paste for new chats:** `lifepunch/docs/handoff/AGENT_GROUNDING_INDEX.md` · workflow: `GREEN_EXECUTION_MODEL.md`.
+
+## Three-node execution (July 2026)
+
+| Node | Job |
+|------|-----|
+| **Red (VENGEANCE)** | Orchestrate · s&box · bridge · proof · push (`C:\Users\jared\Projects\LIFEPUNCH`) |
+| **Cornerman (Green B)** | Warm · distill · heavy agent work (`C:\Projects\lifepunch` · patch-handoff to Red) |
+| **Mac (Green A)** | Control plane · native Cursor + Copilot · RDP → Cornerman |
+
+After heavy work on Green: **`git pull --rebase`** on the other nodes (Cornerman → Red: `GREEN_PATCH_HANDOFF_QUICKREF.txt`).
 
 ### 3. Upstream / integration (GitHub, third-party)
 

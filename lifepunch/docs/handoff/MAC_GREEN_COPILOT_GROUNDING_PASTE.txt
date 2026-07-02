@@ -1,39 +1,30 @@
-LIFEPUNCH™ — Green B: Cornerman Cursor grounding (warm · distill · execute)
-Updated: 2026-07-01 · Mac → RDP → Cursor on Cornerman · Red editor + bridge must be up
-Full depth: lifepunch/docs/handoff/GREEN_CURSOR_NEW_CHAT_BOOTSTRAP_PASTE.txt
+LIFEPUNCH™ — Green A: MacBook Copilot grounding (control plane)
+Updated: 2026-07-01 · Native macOS Copilot — not Cornerman RDP
+For bridge/workshop: RDP → GREEN_CORNERMAN_COPILOT_GROUNDING_PASTE.txt
 
 ══════════════════════════════════════════════════════════════════════════════
-ROLE — GREEN B (workshop + bridge MCP)
+ROLE — GREEN A (Mac control plane)
 ══════════════════════════════════════════════════════════════════════════════
-  Cornerman warms LM, distills, and executes heavy agent implementation.
-  Local mirror: C:\Projects\lifepunch (fast disk I/O).
-  Bloodwave orchestrates on Red; Mac controls Cornerman via RDP.
-  Red owns flatgrass proof + git push — patch-handoff after local commits.
+  MacBook Copilot for comms, planning, in-repo integration chat.
+  Heavy work + bridge → RDP Cornerman (Green B). Proof + push → Red.
+
+  EYES COVERED for play claims on Green A.
 
 ══════════════════════════════════════════════════════════════════════════════
-PREFLIGHT (PowerShell on Cornerman desktop)
+STEP 0 — SYNC
 ══════════════════════════════════════════════════════════════════════════════
-  cd C:\Projects\lifepunch
+  cd ~/Projects/lifepunch
   git fetch origin
   git checkout checkpoint-lpbitcoin-pre-sleep-20260701
   git pull --rebase
 
-  powershell -NoProfile -ExecutionPolicy Bypass -File C:\lifepunch\cornerman\Map-CornermanBridgeShare.ps1
-  powershell -NoProfile -ExecutionPolicy Bypass -File C:\lifepunch\cornerman\Start-CornermanSboxEditorTunnel.ps1 -Background
-  Test-Path \\VENGEANCE\SboxBridgeIpc\status.json
-
-  If False: STOP — ask Red to start editor/bridge.
-  If True: Cursor → Reload Window → MCP 3/3: sbox · sbox-editor · cornerman-lm
-
 ══════════════════════════════════════════════════════════════════════════════
-LAW · SHIPPING
+READ ORDER · REPORT
 ══════════════════════════════════════════════════════════════════════════════
-  GREEN_SMB_BOOT_PASTE.md · GREEN_EXECUTION_MODEL.md · MACHINE_CAST.md
-  Read-only deploy key — GREEN_PATCH_HANDOFF_QUICKREF.txt when shipping to Red
+  GREEN_EXECUTION_MODEL.md · ACTIVE_WORKSTREAM.md · ARCHITECT_CURRENT_STATE.md
 
-  Report: get_bridge_status · git status -sb · MCP 3/3
+  Report: git status -sb · ACTIVE_WORKSTREAM one line · H4/H5 GO? [yes/no]
 
-  Active lane: lpbitcoin Phase A · H4/H5 GO pending · plan-only without GO
-  Author mragerlp · no AI trailers · owner GO before commit
+  Commit: mragerlp · no AI trailers · owner GO before push
 
-— END GREEN B CORNERMAN CURSOR —
+— END GREEN A MAC COPILOT —

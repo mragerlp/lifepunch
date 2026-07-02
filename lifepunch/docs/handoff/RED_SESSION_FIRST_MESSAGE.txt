@@ -1,0 +1,15 @@
+RED SESSION — VENGEANCE Orchestration + Runtime (Cursor)
+
+Machine: VENGEANCE (Red) · repo C:\Users\jared\Projects\LIFEPUNCH
+Green B: Cornerman executes heavy work · pull from Green before orchestrate
+Green A: MacBook control plane · RDP to Cornerman when needed
+Law: lifepunch/docs/GREEN_EXECUTION_MODEL.md · MACHINE_CAST.md
+Full boot: lifepunch/docs/handoff/RED_CURSOR_GROUNDING_PASTE.txt
+
+Boot confirm:
+1. git pull --rebase (merge Green work if any)
+2. Start-SboxDxrpEditor -FullCapacity if play/bridge needed
+3. get_bridge_status + git status -sb
+
+Active lane: lpbitcoin Phase A · H4/H5 GO pending
+Red owns: flatgrass proof · git push · owner GO before commit

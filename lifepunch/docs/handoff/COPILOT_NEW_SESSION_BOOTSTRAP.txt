@@ -1,13 +1,16 @@
-LIFEPUNCH™ — Copilot new-session bootstrap (VENGEANCE / Integration Architect)
-Updated: 2026-06-30 · Repo: github.com/mragerlp/lifepunch
-Open this project in the GitHub Copilot app on VENGEANCE. No extra directions needed unless you append a task line.
+LIFEPUNCH™ — Copilot new-session bootstrap (VENGEANCE / Red orchestration + runtime)
+Updated: 2026-07-01 · Repo: github.com/mragerlp/lifepunch
+Quick paste: lifepunch/docs/handoff/RED_COPILOT_GROUNDING_PASTE.txt
+Workflow: lifepunch/docs/GREEN_EXECUTION_MODEL.md
+Open GitHub Copilot on VENGEANCE. Cornerman (Green B) executes heavy work — pull from Green first.
 
 ══════════════════════════════════════════════════════════════════════════════
 STEP 0 — SYNC (before reading or editing)
 ══════════════════════════════════════════════════════════════════════════════
-  cd C:\Users\jared\Projects\lifepunchaddons
-  git fetch; git pull --rebase
+  cd C:\Users\jared\Projects\LIFEPUNCH
+  git fetch; git checkout checkpoint-lpbitcoin-pre-sleep-20260701; git pull --rebase
 If behind AND dirty: STOP — tell Bloodwave (commit or stash first).
+If Cornerman shipped work: Pull-CornermanPatches.ps1 -Push before new orchestration.
 
 ══════════════════════════════════════════════════════════════════════════════
 STEP 1 — READ ORDER (law — agent executes, do not skip)
@@ -32,8 +35,10 @@ BUSINESS + CVL (one screen — agent must internalize)
   Product:    Proprietary DXRP addons + servers; reference-quality cyber machines
   Platform:   DXRP (Dxura) on s&box (Facepunch) — nominative use only; we do NOT own DXRP
   Moat:       Machine stack + economy rails + flatgrass proof + one-slice workflow
-  This host:  VENGEANCE (Red) = Integration Architect (Copilot) = build + integrate + MCP
-  Not gate:   Design Architect (ChatGPT advisory) · Cornerman (Green prep, eyes covered)
+  This host:  VENGEANCE (Red) = orchestrate · runtime · Copilot in-editor · MCP · push
+  Green B:    Cornerman = warm · distill · execute (pull from Green after heavy slices)
+  Green A:    MacBook = control plane · RDP → Cornerman when needed
+  Not gate:   Design Architect (ChatGPT advisory) · lifepunchnet (Blue ops lane)
   Git:        github.com/mragerlp/lifepunch · author mragerlp <mragerlp@gmail.com>
   Commit:     propose scope first — Bloodwave approves — no AI trailers in commits
 
@@ -104,7 +109,7 @@ Bloodwave runs lp_authorize manually. Eyes-covered until bridge connected + scre
 ══════════════════════════════════════════════════════════════════════════════
 COMMIT WORKFLOW (manual — no auto-hook)
 ══════════════════════════════════════════════════════════════════════════════
-  cd C:\Users\jared\Projects\lifepunchaddons
+  cd C:\Users\jared\Projects\LIFEPUNCH
   git add <files>
   git commit -m "<type>(<scope>): <description>"
   git push

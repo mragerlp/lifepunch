@@ -1,64 +1,53 @@
-LIFEPUNCH™ — Green A: Mac native Copilot grounding (GitHub Copilot on macOS)
-Updated: 2026-07-01 · Path A — no RDP, no Cornerman bridge scripts
-Paste at Copilot session start on the MacBook (not inside Cornerman RDP).
+LIFEPUNCH™ — Red: VENGEANCE Copilot grounding (orchestration + runtime)
+Updated: 2026-07-01 · Paste at new GitHub Copilot session on VENGEANCE
+Full depth: lifepunch/docs/handoff/COPILOT_NEW_SESSION_BOOTSTRAP.txt
 
 ══════════════════════════════════════════════════════════════════════════════
-CONTEXT
+ROLE — RED (orchestrator + runtime truth)
 ══════════════════════════════════════════════════════════════════════════════
-  Green A = MacBook Copilot + Cursor natively (comms + integration edits).
-  Green B = RDP Cornerman when bridge / Windows IDE needed — use GREEN_CORNERMAN_COPILOT_GROUNDING_PASTE.txt
-  Red (VENGEANCE) = s&box runtime + Claude Bridge + Host Play + flatgrass proof + primary publish.
+  You are on VENGEANCE (Red). Bloodwave orchestrates and composes here.
+  Cornerman (Green B) executes heavy agent work on local mirror — Red pulls + proofs + pushes.
+  MacBook (Green A) controls Cornerman via RDP for bridge-heavy slices.
 
-  Green A Copilot: EYES COVERED for play/visual claims — Red proofs or switch to Green B.
+  Red owns: s&box editor · in-editor integration · Host Play · flatgrass proof · git push.
 
 ══════════════════════════════════════════════════════════════════════════════
 STEP 0 — SYNC
 ══════════════════════════════════════════════════════════════════════════════
-  cd ~/Projects/lifepunch
+  cd C:\Users\jared\Projects\LIFEPUNCH
   git fetch origin
   git checkout checkpoint-lpbitcoin-pre-sleep-20260701
   git pull --rebase
 
-  LP lane only. DXRP work stays in dxura/dxrp (separate repo/session).
+  If Cornerman shipped local commits: Pull-CornermanPatches.ps1 -Push first.
 
 ══════════════════════════════════════════════════════════════════════════════
-STEP 1 — READ ORDER (execute, do not skip)
+STEP 1 — RUNTIME (when play-adjacent)
 ══════════════════════════════════════════════════════════════════════════════
-  1. lifepunch/docs/MACHINE_CAST.md  (Green A / Green B)
+  powershell -File lifepunch\scripts\Start-SboxDxrpEditor.ps1 -FullCapacity -PreflightFix -BitcoinOnly -SyncAddon lpbitcoin,adminmenu
+
+  Bloodwave runs lp_authorize manually before bridge proof work.
+
+══════════════════════════════════════════════════════════════════════════════
+STEP 2 — READ ORDER
+══════════════════════════════════════════════════════════════════════════════
+  1. lifepunch/docs/GREEN_EXECUTION_MODEL.md
   2. lifepunch/addons/docs/ACTIVE_WORKSTREAM.md
   3. lifepunch/docs/handoff/ARCHITECT_CURRENT_STATE.md
-  4. lifepunch/addons/docs/BITCOIN_SHIP_ROADMAP.md
-
-  Full Copilot depth: lifepunch/docs/handoff/COPILOT_NEW_SESSION_BOOTSTRAP.txt
-  (ignore VENGEANCE-only paths — use Mac clone path above)
+  4. lifepunch/docs/MACHINE_CAST.md
 
 ══════════════════════════════════════════════════════════════════════════════
-ACTIVE LANE
+ACTIVE LANE · COMMIT HYGIENE
 ══════════════════════════════════════════════════════════════════════════════
-  lifepunchbitcoin · Phase A Hub · H4/H5 GO pending
-  Default without GO: plan-only · no hub code
-
-══════════════════════════════════════════════════════════════════════════════
-COMMIT HYGIENE
-══════════════════════════════════════════════════════════════════════════════
-  Author: mragerlp <mragerlp@gmail.com> · no AI trailers
-  Propose scope — Bloodwave approves before commit/push
+  lpbitcoin Phase A · H4/H5 GO pending · plan-only without GO
+  Author mragerlp · no AI trailers · propose scope before commit/push
 
 ══════════════════════════════════════════════════════════════════════════════
-FIRST REPLY
+REPORT NOW
 ══════════════════════════════════════════════════════════════════════════════
-  ## Surface
-  Green A — Mac Copilot native
+  - git status -sb
+  - One-line ACTIVE_WORKSTREAM gate
+  - H4/H5 GO? [yes/no]
+  - Editor/bridge up if play-adjacent? [yes/no/n/a]
 
-  ## Sync
-  Branch · HEAD · clean/dirty
-
-  ## Bridge
-  eyes covered — no play claims on Green A
-
-  ## Active lane + H4/H5 GO? [yes/no]
-
-  ## Standing by
-  [one line]
-
-— END GREEN A MAC COPILOT NATIVE —
+— END RED COPILOT GROUNDING —

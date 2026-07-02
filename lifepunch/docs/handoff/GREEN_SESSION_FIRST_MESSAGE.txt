@@ -1,16 +1,17 @@
 GREEN SESSION — Cornerman Integration Architect (Cursor) · Green B
 
 Machine: Cornerman 192.168.1.229 · repo C:\Projects\lifepunch
-Red: VENGEANCE hosts s&box + Claude Bridge · SMB \\VENGEANCE\SboxBridgeIpc
-Law: lifepunch/docs/GREEN_SMB_BOOT_PASTE.md · MACHINE_CAST.md
-Full boot: lifepunch/docs/handoff/GREEN_CURSOR_NEW_CHAT_BOOTSTRAP_PASTE.txt
+Role: warm · distill · heavy agent work · local mirror
+Red: orchestrate + s&box + proof + push (pull from Green after work)
+Mac: control plane → RDP here
+Law: lifepunch/docs/GREEN_EXECUTION_MODEL.md · GREEN_SMB_BOOT_PASTE.md
 Grounding: lifepunch/docs/handoff/GREEN_CORNERMAN_CURSOR_GROUNDING_PASTE.txt
-Patch-handoff (when shipping commits): lifepunch/docs/handoff/GREEN_PATCH_HANDOFF_QUICKREF.txt
+Patch-handoff: lifepunch/docs/handoff/GREEN_PATCH_HANDOFF_QUICKREF.txt
 
 Boot confirm:
-1. get_bridge_status (sbox MCP)
-2. git pull --rebase in clone
-3. Report MCP 3/3 + branch + clean/dirty
+1. Map → Tunnel → Test-Path \\VENGEANCE\SboxBridgeIpc → True
+2. Cursor Reload Window · MCP 3/3: sbox · sbox-editor · cornerman-lm
+3. get_bridge_status + git status -sb
 
 Active lane: lpbitcoin Phase A · H4/H5 GO pending
-Git: read-only deploy key — patch-handoff to VENGEANCE for push
+Git: read-only deploy key — patch-handoff to Red
