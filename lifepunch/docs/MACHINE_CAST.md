@@ -19,34 +19,55 @@ stack. Say a **node** when you mean one machine. Do **not** call the three-machi
 
 ---
 
-## The three machines
+## The three machines (+ Mac control plane)
 
 | Codename | What it is | Where | Primary job |
 |----------|------------|-------|-------------|
-| **VENGEANCE** | Owner's primary PC | Desk — `C:\Users\jared\Projects\LIFEPUNCH` | Cursor, agents, **GitHub monorepo = source of truth**, integrate partner work |
-| **Cornerman** | Local AI workstation | Home LAN — `192.168.1.229`, hostname `cornerman` | Mic (AT2020), local LLM/STT, voice relay, Tier-3 prep/RAG — **not** source of truth |
-| **lifepunchnet** | Always-on hosted server | Internet — `205.209.104.22`, Windows hostname **`lifepunchnet`** | DXRP/server ops, Whisper (`:9000`), watchdog (`:9101`), session hub (`:9102`), Odysseus (optional), GitLab `lifepunch-rdp-server` |
+| **VENGEANCE** | Owner's primary PC (**Red**) | Desk — `C:\Users\jared\Projects\LIFEPUNCH` | **Orchestrate** · s&box editor · bridge · flatgrass proof · **git push** · GitHub source of truth |
+| **MacBook** | Portable control plane (**Green A**) | macOS — `~/Projects/lifepunch` | Native **Cursor + Copilot** · comms · RDP → Cornerman for workshop/bridge |
+| **Cornerman** | Green execution workshop (**Green B**) | LAN — `192.168.1.229` · `C:\Projects\lifepunch` | **Warm LM · distill · heavy agent work** · mic · bridge MCP (SMB to Red) |
+| **lifepunchnet** | Always-on hosted server (**Blue**) | `205.209.104.22` | DXRP/server ops, Whisper, watchdog, session hub, GitLab RDP lane |
 
 **lifepunchnet git root:** `C:\lifepunch\lifepunch-rdp-server` — `C:\lifepunch` is only a parent folder
 (clones + `C:\lifepunch\status\` for watchdog). Do not `git pull` at `C:\lifepunch` itself.
 
 ### One-line disambiguation (memorize)
 
-- **VENGEANCE** = where the owner **builds and decides** (GitHub).
-- **Cornerman** = home **helper** on the LAN (mic + cheap local AI).
-- **lifepunchnet** = hosted **venue** that stays on 24/7 (game server ops + shared services).
+- **VENGEANCE (Red)** = orchestrate · runtime truth · proof · publish.
+- **MacBook (Green A)** = control plane · native dual IDE · RDP to Cornerman when needed.
+- **Cornerman (Green B)** = warm · distill · execute heavy work on local mirror.
+- **lifepunchnet (Blue)** = hosted venue 24/7 (game server ops + shared services).
+
+Full workflow: **`GREEN_EXECUTION_MODEL.md`** · agent pastes: **`handoff/AGENT_GROUNDING_INDEX.md`**
 
 ### CVL Architect family (roles — machines are not roles)
 
 | Role | Host | Legacy alias |
 |------|------|--------------|
-| **Design Architect** | VENGEANCE — ChatGPT | Architect |
-| **Integration Architect** | VENGEANCE — Cursor | Integrator |
-| **Distillation Architect** | Cornerman — local LM | Distiller |
+| **Design Architect** | **MacBook (Green A)** · VENGEANCE (Red at desk) — ChatGPT | Architect |
+| **Integration Architect** | Red + Cornerman (Green B) + Mac comms | Integrator |
+| **Distillation Architect** | Cornerman — warm + distill + execute | Distiller |
 | **Operations Architect** | lifepunchnet — RDP agent | RDP server agent |
 | **Bloodwave** | — | Owner / final authority |
 
 **lifepunchnet is NOT Cornerman. lifepunchnet is NOT VENGEANCE.**
+
+---
+
+## Green surfaces (July 2026 — execution model)
+
+**Bloodwave orchestrates on Red.** Cornerman **warms, distills, and executes** heavy agent work.
+MacBook is the **control plane** (native Cursor + Copilot; RDP → Cornerman for workshop/bridge).
+**Red always owns runtime** (s&box, Claude Bridge, Host Play, flatgrass proof, primary git push).
+
+| Surface | Where | IDE | Use when |
+|---------|--------|-----|----------|
+| **Green A** | MacBook (macOS) | Cursor + Copilot · **ChatGPT Design Architect** | Control plane · ideation · CURSOR BRIEFs · RDP → Cornerman |
+| **Green B** | Cornerman (`192.168.1.229`) | Cursor + Copilot on Windows | Heavy implementation · bridge MCP · Cornerman LM |
+
+**Sync law:** whoever did heavy work — other nodes **`git pull --rebase`** (Cornerman → Red via patch-handoff).
+
+Agent pastes (Cursor + Copilot × Red · Cornerman · Mac): **`handoff/AGENT_GROUNDING_INDEX.md`**
 
 ---
 
@@ -94,11 +115,12 @@ Prefer **Bloodwave** in agent prose; **mrragerlp** in proprietary headers.
 
 | Role | Runs on | Git write lane |
 |------|---------|----------------|
-| Owner / addons agent (**Integrator**) | **VENGEANCE** | GitHub monorepo |
+| Owner / addons agent (**Integrator**) | **VENGEANCE (Red)** orchestrate · **Cornerman (Green B)** execute | GitHub monorepo (Red push; Cornerman patch-handoff) |
+| **Mac control plane** | **MacBook (Green A)** | Mac clone (optional push; sync with Red/Green B) |
 | **Architect** (design brain) | **VENGEANCE** (ChatGPT — same desk as Integrator) | **No git** — CURSOR BRIEFs only |
 | **shottaWEB** (Brian) | Partner PC | GitLab `lifepunch-website` |
 | RDP server agent | **lifepunchnet** | GitLab `lifepunch-rdp-server` |
-| Cornerman agent (**Distiller**) | **Cornerman** | GitHub clone (read-only deploy key → patch handoff to VENGEANCE) |
+| Cornerman agent (**Distiller + executor**) | **Cornerman (Green B)** | Read-only deploy key → patch handoff to Red |
 
 **Architect** is not a machine — it is ChatGPT on Red. See `ARCHITECT.md`.
 
@@ -159,11 +181,12 @@ Refresh all shortcut icons: `lifepunch/scripts/Install-LifePunchShortcutIcons.ps
 
 | Machine | Runbook / prompt |
 |---------|------------------|
-| All agents | `AGENT_ONBOARDING.md`, `ARCHITECT.md`, `OPS_CLARITY_CHECKPOINT.md`, `AGENT_PROMPT.md` Block 0 |
-| VENGEANCE | Block A |
+| All agents | `AGENT_ONBOARDING.md`, `GREEN_EXECUTION_MODEL.md`, `handoff/AGENT_GROUNDING_INDEX.md`, `ARCHITECT.md`, `AGENT_PROMPT.md` Block 0 |
+| VENGEANCE (Red) | Block A · `RED_CURSOR_GROUNDING_PASTE.txt` · `RED_COPILOT_GROUNDING_PASTE.txt` · `RED_FULL_CAPACITY_BOOT.md` |
+| MacBook (Green A) | Block M · `MAC_GREEN_*` · **`ARCHITECT_ONBOARDING_PASTE.txt`** · `ARCHITECT.md` |
+| Cornerman (Green B) | Block D · `GREEN_CORNERMAN_*_GROUNDING_PASTE.txt` · `GREEN_SMB_BOOT_PASTE.md` · `LOCAL_AI_WORKSTATION.md` |
 | **shottaWEB** | Block B, `SHOTTAWEB_HANDOFF.txt` |
 | lifepunchnet | Block C, `LIFEPUNCHNET_INSTRUCTIONS.txt`, `LIFEPUNCHNET_RDP_ODYSSEUS.txt` |
-| Cornerman | Block D, `DAY_ONE_AGENT_PROMPT.md`, `LOCAL_AI_WORKSTATION.md` |
 
 ---
 

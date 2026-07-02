@@ -1,0 +1,53 @@
+LIFEPUNCH™ — Red: VENGEANCE Copilot grounding (orchestration + runtime)
+Updated: 2026-07-01 · Paste at new GitHub Copilot session on VENGEANCE
+Full depth: lifepunch/docs/handoff/COPILOT_NEW_SESSION_BOOTSTRAP.txt
+
+══════════════════════════════════════════════════════════════════════════════
+ROLE — RED (orchestrator + runtime truth)
+══════════════════════════════════════════════════════════════════════════════
+  You are on VENGEANCE (Red). Bloodwave orchestrates and composes here.
+  Cornerman (Green B) executes heavy agent work on local mirror — Red pulls + proofs + pushes.
+  MacBook (Green A) controls Cornerman via RDP for bridge-heavy slices.
+
+  Red owns: s&box editor · in-editor integration · Host Play · flatgrass proof · git push.
+
+══════════════════════════════════════════════════════════════════════════════
+STEP 0 — SYNC
+══════════════════════════════════════════════════════════════════════════════
+  cd C:\Users\jared\Projects\LIFEPUNCH
+  git fetch origin
+  git checkout checkpoint-lpbitcoin-pre-sleep-20260701
+  git pull --rebase
+
+  If Cornerman shipped local commits: Pull-CornermanPatches.ps1 -Push first.
+
+══════════════════════════════════════════════════════════════════════════════
+STEP 1 — RUNTIME (when play-adjacent)
+══════════════════════════════════════════════════════════════════════════════
+  powershell -File lifepunch\scripts\Start-SboxDxrpEditor.ps1 -FullCapacity -PreflightFix -BitcoinOnly -SyncAddon lpbitcoin,adminmenu
+
+  Bloodwave runs lp_authorize manually before bridge proof work.
+
+══════════════════════════════════════════════════════════════════════════════
+STEP 2 — READ ORDER
+══════════════════════════════════════════════════════════════════════════════
+  1. lifepunch/docs/GREEN_EXECUTION_MODEL.md
+  2. lifepunch/addons/docs/ACTIVE_WORKSTREAM.md
+  3. lifepunch/docs/handoff/ARCHITECT_CURRENT_STATE.md
+  4. lifepunch/docs/MACHINE_CAST.md
+
+══════════════════════════════════════════════════════════════════════════════
+ACTIVE LANE · COMMIT HYGIENE
+══════════════════════════════════════════════════════════════════════════════
+  lpbitcoin Phase A · H4/H5 GO pending · plan-only without GO
+  Author mragerlp · no AI trailers · propose scope before commit/push
+
+══════════════════════════════════════════════════════════════════════════════
+REPORT NOW
+══════════════════════════════════════════════════════════════════════════════
+  - git status -sb
+  - One-line ACTIVE_WORKSTREAM gate
+  - H4/H5 GO? [yes/no]
+  - Editor/bridge up if play-adjacent? [yes/no/n/a]
+
+— END RED COPILOT GROUNDING —

@@ -1,0 +1,46 @@
+LIFEPUNCH™ — Green B: Cornerman Copilot grounding (warm · distill · execute)
+Updated: 2026-07-01 · Mac → RDP → Copilot on Cornerman · Red editor + bridge must be up
+
+══════════════════════════════════════════════════════════════════════════════
+ROLE — GREEN B (workshop + in-editor integration)
+══════════════════════════════════════════════════════════════════════════════
+  Cornerman warms LM, distills, and executes heavy agent work on local mirror.
+  MacBook control plane → RDP here. Red orchestrates + proofs + pushes.
+  Read-only deploy key — patch-handoff to Red when shipping.
+
+══════════════════════════════════════════════════════════════════════════════
+PREFLIGHT (PowerShell on Cornerman desktop)
+══════════════════════════════════════════════════════════════════════════════
+  cd C:\Projects\lifepunch
+  git fetch origin
+  git checkout checkpoint-lpbitcoin-pre-sleep-20260701
+  git pull --rebase
+
+  powershell -NoProfile -ExecutionPolicy Bypass -File C:\lifepunch\cornerman\Map-CornermanBridgeShare.ps1
+  powershell -NoProfile -ExecutionPolicy Bypass -File C:\lifepunch\cornerman\Start-CornermanSboxEditorTunnel.ps1 -Background
+  Test-Path \\VENGEANCE\SboxBridgeIpc\status.json
+
+  If False: STOP — ask Red to start editor/bridge.
+  If True: open project in Copilot → MCP 3/3: claudebridge · chromr-mcp · jct-server
+  No Reload Window — Copilot picks up MCP on project open.
+
+  Bridge/play eyes via Cursor Green B if needed — not this Copilot chat alone.
+
+══════════════════════════════════════════════════════════════════════════════
+READ ORDER
+══════════════════════════════════════════════════════════════════════════════
+  1. lifepunch/docs/GREEN_EXECUTION_MODEL.md
+  2. lifepunch/docs/MACHINE_CAST.md
+  3. lifepunch/addons/docs/ACTIVE_WORKSTREAM.md
+  4. lifepunch/docs/handoff/ARCHITECT_CURRENT_STATE.md
+
+  Full Copilot law: COPILOT_NEW_SESSION_BOOTSTRAP.txt (paths = C:\Projects\lifepunch)
+  Shipping: GREEN_PATCH_HANDOFF_QUICKREF.txt
+
+══════════════════════════════════════════════════════════════════════════════
+REPORT · COMMIT
+══════════════════════════════════════════════════════════════════════════════
+  git status -sb · Test-Path result · MCP 3/3? · H4/H5 GO? [yes/no]
+  mragerlp · no AI trailers · propose scope before commit
+
+— END GREEN B CORNERMAN COPILOT —

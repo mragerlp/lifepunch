@@ -1,0 +1,15 @@
+GREEN SESSION — Cornerman Integration Architect (Copilot) · Green B
+
+Machine: Cornerman 192.168.1.229 · repo C:\Projects\lifepunch
+Role: warm · distill · heavy agent work · local mirror
+Red: orchestrate + proof + push
+Grounding: lifepunch/docs/handoff/GREEN_CORNERMAN_COPILOT_GROUNDING_PASTE.txt
+Patch-handoff: lifepunch/docs/handoff/GREEN_PATCH_HANDOFF_QUICKREF.txt
+
+Boot confirm:
+1. Map → Tunnel → Test-Path → True
+2. MCP 3/3: claudebridge · chromr-mcp · jct-server (no Reload Window)
+3. git status -sb + ACTIVE_WORKSTREAM + H4/H5 GO?
+
+Active lane: lpbitcoin Phase A · H4/H5 GO pending
+Git: read-only deploy key — patch-handoff to Red

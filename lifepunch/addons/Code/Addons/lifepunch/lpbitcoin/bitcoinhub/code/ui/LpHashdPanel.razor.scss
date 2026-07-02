@@ -6304,23 +6304,181 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 
 // Hub scale — XL = canonical 1100×700; smaller steps trim shell only (StaffMenu law).
 .lp-bitcoin-ops.lp-ui-size-s .shell {
-	width: 1040px;
-	height: 640px;
+	width: 1240px;
+	height: 760px;
 }
 
 .lp-bitcoin-ops.lp-ui-size-m .shell {
-	width: 1060px;
-	height: 660px;
+	width: 1400px;
+	height: 860px;
 }
 
 .lp-bitcoin-ops.lp-ui-size-l .shell {
-	width: 1080px;
-	height: 680px;
+	width: 1560px;
+	height: 960px;
 }
 
 .lp-bitcoin-ops.lp-ui-size-xl .shell {
-	width: 1100px;
-	height: 700px;
+	width: 1720px;
+	height: 1040px;
+}
+
+// Overview simplification — command-center layout with progressive detail.
+.lp-bitcoin-ops .overview-command-center-intro {
+	margin-top: 6px;
+}
+
+.lp-bitcoin-ops .overview-command-center {
+	display: flex;
+	align-items: stretch;
+	gap: 14px;
+	min-height: 0;
+}
+
+.lp-bitcoin-ops .overview-checklist-panel,
+.lp-bitcoin-ops .overview-snapshot-panel {
+	display: flex;
+	flex-direction: column;
+	flex: 1 1 0;
+	gap: 12px;
+	min-height: 0;
+}
+
+.lp-bitcoin-ops .overview-checklist {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.lp-bitcoin-ops .overview-checklist-item {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 10px 12px;
+	border: 1px solid rgba(255, 255, 255, 0.12);
+	border-radius: 8px;
+	background: rgba(8, 12, 18, 0.55);
+}
+
+.lp-bitcoin-ops .overview-checklist-status {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	font-size: 11px;
+	font-weight: 800;
+	letter-spacing: 0.05em;
+	text-transform: uppercase;
+	color: $hashd-muted;
+}
+
+.lp-bitcoin-ops .overview-checklist-copy {
+	display: flex;
+	flex-direction: column;
+	gap: 3px;
+	min-width: 0;
+}
+
+.lp-bitcoin-ops .overview-checklist-title {
+	font-size: 13px;
+	font-weight: 800;
+	letter-spacing: 0.02em;
+	color: #e8edf7;
+}
+
+.lp-bitcoin-ops .overview-checklist-sub {
+	font-size: 11px;
+	line-height: 1.35;
+	color: $hashd-muted;
+}
+
+.lp-bitcoin-ops .overview-checklist-action-group,
+.lp-bitcoin-ops .overview-checklist-action {
+	flex: 0 0 auto;
+}
+
+.lp-bitcoin-ops .overview-checklist-action,
+.lp-bitcoin-ops .overview-checklist-action-group .lp-ui-btn-primary,
+.lp-bitcoin-ops .overview-checklist-action-group .lp-ui-btn-ghost {
+	min-height: 34px;
+	padding: 8px 12px;
+	font-size: 11px;
+}
+
+.lp-bitcoin-ops .overview-snapshot-grid {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.lp-bitcoin-ops .overview-snapshot-card {
+	display: flex;
+	flex-direction: column;
+	gap: 3px;
+	padding: 10px 12px;
+	border: 1px solid rgba(255, 255, 255, 0.11);
+	border-radius: 8px;
+	background: rgba(8, 12, 18, 0.55);
+}
+
+.lp-bitcoin-ops .overview-snapshot-label {
+	font-size: 10px;
+	font-weight: 900;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: $hashd-muted;
+}
+
+.lp-bitcoin-ops .overview-snapshot-value {
+	font-size: 16px;
+	font-weight: 800;
+	letter-spacing: 0.01em;
+	color: #e8edf7;
+}
+
+.lp-bitcoin-ops .overview-snapshot-value.on {
+	color: #8cf8b3;
+}
+
+.lp-bitcoin-ops .overview-snapshot-value.off {
+	color: #ffd089;
+}
+
+.lp-bitcoin-ops .overview-snapshot-sub {
+	font-size: 11px;
+	line-height: 1.35;
+	color: $hashd-muted;
+}
+
+.lp-bitcoin-ops .overview-snapshot-note {
+	font-size: 11px;
+	line-height: 1.45;
+	color: $hashd-muted;
+}
+
+.lp-bitcoin-ops .overview-command-actions {
+	margin-top: 12px;
+	gap: 10px;
+}
+
+.lp-bitcoin-ops .overview-command-action {
+	min-height: 36px;
+	padding: 8px 12px;
+	font-size: 11px;
+}
+
+.lp-bitcoin-ops .overview-command-action .material-icons {
+	font-size: 14px;
+}
+
+@media (max-width: 1040px) {
+	.lp-bitcoin-ops .overview-command-center {
+		flex-direction: column;
+	}
+
+	.lp-bitcoin-ops .overview-checklist-item {
+		flex-direction: column;
+		align-items: flex-start;
+	}
 }
 
 // Universal Upgrades home (three-surface shell — DECISION-0010, HASHD amber only)

@@ -1,0 +1,12 @@
+RED SESSION — VENGEANCE Orchestration + Runtime (Copilot)
+
+Machine: VENGEANCE (Red) · repo C:\Users\jared\Projects\LIFEPUNCH
+Law: lifepunch/docs/GREEN_EXECUTION_MODEL.md
+Full boot: lifepunch/docs/handoff/RED_COPILOT_GROUNDING_PASTE.txt
+
+Boot confirm:
+1. git pull --rebase
+2. git status -sb + ACTIVE_WORKSTREAM one-liner
+3. H4/H5 GO? [yes/no]
+
+Red owns proof + push · Cornerman did heavy work → pull first

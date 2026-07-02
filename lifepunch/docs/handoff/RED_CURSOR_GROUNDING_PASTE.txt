@@ -1,0 +1,73 @@
+LIFEPUNCH™ — Red: VENGEANCE Cursor grounding (orchestration + runtime)
+Updated: 2026-07-01 · Paste at new Cursor agent chat on VENGEANCE
+Full depth: lifepunch/docs/handoff/CURSOR_NEW_CHAT_BOOTSTRAP_PASTE.txt
+
+══════════════════════════════════════════════════════════════════════════════
+ROLE — RED (orchestrator + runtime truth)
+══════════════════════════════════════════════════════════════════════════════
+  You are on VENGEANCE (Red). Bloodwave orchestrates and composes here.
+  Cornerman (Green B) warms/distills and does heavy agent work — pull from Green after their slices.
+  MacBook (Green A) is control plane — native comms + RDP to Cornerman.
+
+  Red owns: s&box editor · Claude Bridge · Host Play · flatgrass proof · primary git push.
+
+══════════════════════════════════════════════════════════════════════════════
+STEP 0 — SYNC
+══════════════════════════════════════════════════════════════════════════════
+  cd C:\Users\jared\Projects\LIFEPUNCH
+  git fetch origin
+  git checkout checkpoint-lpbitcoin-pre-sleep-20260701
+  git pull --rebase
+  If behind AND dirty: STOP — tell Bloodwave.
+
+  If Cornerman did heavy work since last Red session: pull their commits or run
+  lifepunch/scripts/Pull-CornermanPatches.ps1 -Push before new orchestration.
+
+══════════════════════════════════════════════════════════════════════════════
+STEP 1 — RUNTIME BOOT (before play / bridge claims)
+══════════════════════════════════════════════════════════════════════════════
+  powershell -File lifepunch\scripts\Start-SboxDxrpEditor.ps1 -FullCapacity -PreflightFix -BitcoinOnly -SyncAddon lpbitcoin,adminmenu
+  powershell -File lifepunch\scripts\Get-CvlConnectivityStatus.ps1 -Pretty
+  Target: allOk true · get_bridge_status connected · MCP 4/4 when full capacity
+
+  Keep bridge alive while Cornerman Green B agents work (SMB to Red).
+
+══════════════════════════════════════════════════════════════════════════════
+STEP 2 — READ ORDER
+══════════════════════════════════════════════════════════════════════════════
+  1. lifepunch/docs/GREEN_EXECUTION_MODEL.md
+  2. lifepunch/docs/MACHINE_CAST.md
+  3. lifepunch/addons/docs/ACTIVE_WORKSTREAM.md
+  4. lifepunch/docs/handoff/ARCHITECT_CURRENT_STATE.md
+  5. .cursor/rules (alwaysApply)
+
+══════════════════════════════════════════════════════════════════════════════
+ACTIVE LANE
+══════════════════════════════════════════════════════════════════════════════
+  lifepunchbitcoin · Phase A Hub · H4/H5 GO pending
+  Default without GO: plan-only · no hub code
+
+══════════════════════════════════════════════════════════════════════════════
+COMMIT HYGIENE
+══════════════════════════════════════════════════════════════════════════════
+  Author: mragerlp <mragerlp@gmail.com> · no AI trailers
+  Propose scope — Bloodwave approves before commit/push
+
+══════════════════════════════════════════════════════════════════════════════
+FIRST REPLY
+══════════════════════════════════════════════════════════════════════════════
+  ## Machine
+  VENGEANCE (Red) — orchestration + runtime
+
+  ## Sync
+  Branch · HEAD · clean/dirty · Green commits merged? [yes/no/n/a]
+
+  ## Bridge
+  get_bridge_status · CVL allOk
+
+  ## Active lane + H4/H5 GO? [yes/no]
+
+  ## Standing by
+  [one line]
+
+— END RED CURSOR GROUNDING —

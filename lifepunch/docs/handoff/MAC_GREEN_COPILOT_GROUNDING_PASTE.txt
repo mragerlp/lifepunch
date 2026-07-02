@@ -1,0 +1,29 @@
+LIFEPUNCH™ — Green A: MacBook Copilot grounding (control plane)
+Updated: 2026-07-01 · Native macOS Copilot — not Cornerman RDP
+For bridge/workshop: RDP → GREEN_CORNERMAN_COPILOT_GROUNDING_PASTE.txt
+
+══════════════════════════════════════════════════════════════════════════════
+ROLE — GREEN A (Mac · Design Architect + Copilot integration)
+══════════════════════════════════════════════════════════════════════════════
+  ChatGPT on Mac = Design Architect (no git). Copilot = integration comms on ~/Projects/lifepunch.
+  Architect: ARCHITECT_ONBOARDING_PASTE.txt · ARCHITECT.md
+  Heavy work + bridge → RDP Cornerman. Proof + push → Red.
+
+══════════════════════════════════════════════════════════════════════════════
+STEP 0 — SYNC
+══════════════════════════════════════════════════════════════════════════════
+  cd ~/Projects/lifepunch
+  git fetch origin
+  git checkout checkpoint-lpbitcoin-pre-sleep-20260701
+  git pull --rebase
+
+══════════════════════════════════════════════════════════════════════════════
+READ ORDER · REPORT
+══════════════════════════════════════════════════════════════════════════════
+  GREEN_EXECUTION_MODEL.md · ACTIVE_WORKSTREAM.md · ARCHITECT_CURRENT_STATE.md
+
+  Report: git status -sb · ACTIVE_WORKSTREAM one line · H4/H5 GO? [yes/no]
+
+  Commit: mragerlp · no AI trailers · owner GO before push
+
+— END GREEN A MAC COPILOT —
