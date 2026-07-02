@@ -1,0 +1,45 @@
+CVL LIVE TEST PREP (DRAFT - HOLD UNTIL BLOODWAVE GO)
+
+Target:
+- Reproduce/fix Green->Red editor join timeout from last night
+- Keep this run strictly in LIFEPUNCH lane
+- No commits/pushes from this packet
+
+Primary run sequence (Red / VENGEANCE):
+1) Pull + re-ground
+   git fetch
+   git checkout checkpoint-lpbitcoin-pre-sleep-20260701
+   git pull --rebase
+
+2) Preflight + auto-fix blockers
+   powershell -NoProfile -ExecutionPolicy Bypass -File lifepunch\scripts\Test-PreLaunchCheckup.ps1 -Fix
+
+3) Launch editor with full-capacity wiring
+   powershell -NoProfile -ExecutionPolicy Bypass -File lifepunch\scripts\Start-SboxDxrpEditor.ps1 -PreflightFix -FullCapacity -SyncAddon lpbitcoin,adminmenu
+
+4) Probe connectivity snapshot (paste JSON result)
+   powershell -NoProfile -ExecutionPolicy Bypass -File lifepunch\scripts\Get-CvlConnectivityStatus.ps1 -Pretty
+
+If Green (Cornerman) still reports "connection timed out":
+A) Force dual-stack restore on Green from Red
+   powershell -NoProfile -ExecutionPolicy Bypass -File lifepunch\scripts\Restore-CornermanDualStack.ps1
+
+B) Re-run quick checkpoint probe
+   powershell -NoProfile -ExecutionPolicy Bypass -File lifepunch\scripts\Send-CornermanWorkflow.ps1 -Action Checkpoint -NoHubIngest
+   powershell -NoProfile -ExecutionPolicy Bypass -File lifepunch\scripts\Get-CvlConnectivityStatus.ps1 -Pretty
+
+C) If tunnel is still down, restart editor tunnel path
+   powershell -NoProfile -ExecutionPolicy Bypass -File lifepunch\scripts\Start-VengeanceEditorTunnelToCornerman.ps1 -Background
+   powershell -NoProfile -ExecutionPolicy Bypass -File lifepunch\scripts\Get-CvlConnectivityStatus.ps1 -Pretty
+
+Expected good state before join test:
+- VENGEANCE: sbox, sbox-editor, sbox-jtc, cornerman-lm present
+- Cornerman: sbox + sbox-editor + cornerman-lm triple MCP
+- Get-CvlConnectivityStatus allOk=true (or only non-blocking warnings)
+- Green editor tunnel :9090 = true
+
+Join test:
+- Cornerman joins VENGEANCE hosted editor session only after above health checks pass
+- Capture exact timestamp + error text if timeout repeats
+- End with CVL handoff baton
+
