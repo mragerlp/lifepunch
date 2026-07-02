@@ -1,7 +1,9 @@
-# Design Architect — CVL Architect family (Red / VENGEANCE)
+# Design Architect — CVL Architect family (Mac + Red)
 
-> **Design Architect** (legacy short name: **Architect**) is **ChatGPT Plus/Pro** on **VENGEANCE** (Red).
-> **CVL Architects** = the collective agent team. Machines (VENGEANCE, Cornerman, lifepunchnet) are hosts — not cognitive owners.
+> **Design Architect** (legacy short name: **Architect**) is **ChatGPT Plus/Pro** on the **LIFEPUNCH™ Project**.
+> **Primary host (July 2026):** **MacBook (Green A)** — mobile ideation + CURSOR BRIEFs.
+> **Also available:** **VENGEANCE (Red)** — same project when at the desk.
+> **CVL Architects** = the collective agent team. Machines are hosts — not cognitive owners.
 
 **Canonical paste:** `lifepunch/docs/handoff/ARCHITECT_ONBOARDING_PASTE.txt`  
 **Project instructions:** `lifepunch/docs/handoff/ARCHITECT_PROJECT_INSTRUCTIONS.txt`  
@@ -13,8 +15,8 @@
 
 | Role | Default question |
 |------|------------------|
-| **Design Architect** (ChatGPT on Red) | **"Does this make the game better?"** |
-| **Integration Architect** (Cursor on Red) | **"Does this match repo law and ship criteria?"** |
+| **Design Architect** (ChatGPT — **Mac Green A primary**, Red when at desk) | **"Does this make the game better?"** |
+| **Integration Architect** (Cursor/Copilot — Red orchestrate · Cornerman execute · Mac comms) | **"Does this match repo law and ship criteria?"** |
 | **Distillation Architect** (Cornerman LM on Green) | **"Can this be distilled cheaper for Red?"** |
 | **Operations Architect** (RDP agent on Blue) | **"Does hosted ops match Bloodwave intent?"** |
 
@@ -66,34 +68,26 @@ Architect owns **advisory design** across the LIFEPUNCH™ portfolio — protect
 
 ---
 
-## CVL cognitive map (Red-centric)
+## CVL cognitive map (three-node + Architect)
 
 ```text
-                    ┌─────────────────────────────────────────────┐
-                    │  VENGEANCE (Red) — build + decide           │
-                    │                                             │
-                    │  Design Architect (ChatGPT LIFEPUNCH™)      │
-                    │       │                                     │
-                    │       ▼ CURSOR BRIEF                          │
-                    │  Integration Architect (Cursor)             │
-                    │       │ Tier-1 Opus when stakes high        │
-                    │       ▼                                     │
-                    │  s&box MCP — eyes (bridge/editor)           │
-                    └──────────────┬──────────────────────────────┘
-                                   │ patch handoff / SSH
-                    ┌──────────────▼──────────────────────────────┐
-                    │  Distillation Architect (Cornerman Green)     │
-                    │  Tier-3 LM — prep, never ship authority     │
-                    └─────────────────────────────────────────────┘
+  MacBook (Green A)                    VENGEANCE (Red)
+  ─────────────────                    ───────────────
+  Design Architect (ChatGPT) ◄────────► also at desk
+  Control plane · Cursor + Copilot       Orchestrate · s&box · proof · push
+         │ RDP                                    ▲ SMB bridge
+         ▼                                        │
+  Cornerman (Green B) ────────────────────────────┘
+  Warm · distill · execute (Integration slices)
+  Distillation Architect (Tier-3 LM)
 
-        Infrastructure Architect (ChatGPT CLV) — advisory only
-        Operations Architect (lifepunchnet Blue) — hosted ops under Bloodwave
+  Operations Architect (lifepunchnet Blue) — hosted ops
 ```
 
 | CVL Architect role | Tool / host | Ships code? |
 |--------------------|-------------|-------------|
-| **Design Architect** | ChatGPT LIFEPUNCH™ Project on Red | **No** |
-| **Integration Architect** | Cursor on Red | Yes (with owner commit consent) |
+| **Design Architect** | ChatGPT LIFEPUNCH™ — **Mac (primary)** · Red (desk) | **No** |
+| **Integration Architect** | Cursor/Copilot — Red · Cornerman · Mac | Yes (owner GO; Cornerman patch-handoff) |
 | **Distillation Architect** | Cornerman LM on Green | No — outbox only |
 | **Infrastructure Architect** | ChatGPT CLV Project (optional) | No — pings/MCP routing only |
 | **Operations Architect** | RDP agent on lifepunchnet (Blue) | Ops scripts under Bloodwave authority |

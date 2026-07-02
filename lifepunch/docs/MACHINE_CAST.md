@@ -44,8 +44,8 @@ Full workflow: **`GREEN_EXECUTION_MODEL.md`** · agent pastes: **`handoff/AGENT_
 
 | Role | Host | Legacy alias |
 |------|------|--------------|
-| **Design Architect** | VENGEANCE — ChatGPT | Architect |
-| **Integration Architect** | Red + Green B (+ Green A comms) | Integrator |
+| **Design Architect** | **MacBook (Green A)** · VENGEANCE (Red at desk) — ChatGPT | Architect |
+| **Integration Architect** | Red + Cornerman (Green B) + Mac comms | Integrator |
 | **Distillation Architect** | Cornerman — warm + distill + execute | Distiller |
 | **Operations Architect** | lifepunchnet — RDP agent | RDP server agent |
 | **Bloodwave** | — | Owner / final authority |
@@ -62,7 +62,7 @@ MacBook is the **control plane** (native Cursor + Copilot; RDP → Cornerman for
 
 | Surface | Where | IDE | Use when |
 |---------|--------|-----|----------|
-| **Green A** | MacBook (macOS) | Cursor + Copilot native | Comms, planning, edits — **eyes covered** for play until Red proofs |
+| **Green A** | MacBook (macOS) | Cursor + Copilot · **ChatGPT Design Architect** | Control plane · ideation · CURSOR BRIEFs · RDP → Cornerman |
 | **Green B** | Cornerman (`192.168.1.229`) | Cursor + Copilot on Windows | Heavy implementation · bridge MCP · Cornerman LM |
 
 **Sync law:** whoever did heavy work — other nodes **`git pull --rebase`** (Cornerman → Red via patch-handoff).
@@ -183,7 +183,7 @@ Refresh all shortcut icons: `lifepunch/scripts/Install-LifePunchShortcutIcons.ps
 |---------|------------------|
 | All agents | `AGENT_ONBOARDING.md`, `GREEN_EXECUTION_MODEL.md`, `handoff/AGENT_GROUNDING_INDEX.md`, `ARCHITECT.md`, `AGENT_PROMPT.md` Block 0 |
 | VENGEANCE (Red) | Block A · `RED_CURSOR_GROUNDING_PASTE.txt` · `RED_COPILOT_GROUNDING_PASTE.txt` · `RED_FULL_CAPACITY_BOOT.md` |
-| MacBook (Green A) | Block M · `MAC_GREEN_CURSOR_GROUNDING_PASTE.txt` · `MAC_GREEN_COPILOT_GROUNDING_PASTE.txt` |
+| MacBook (Green A) | Block M · `MAC_GREEN_*` · **`ARCHITECT_ONBOARDING_PASTE.txt`** · `ARCHITECT.md` |
 | Cornerman (Green B) | Block D · `GREEN_CORNERMAN_*_GROUNDING_PASTE.txt` · `GREEN_SMB_BOOT_PASTE.md` · `LOCAL_AI_WORKSTATION.md` |
 | **shottaWEB** | Block B, `SHOTTAWEB_HANDOFF.txt` |
 | lifepunchnet | Block C, `LIFEPUNCHNET_INSTRUCTIONS.txt`, `LIFEPUNCHNET_RDP_ODYSSEUS.txt` |

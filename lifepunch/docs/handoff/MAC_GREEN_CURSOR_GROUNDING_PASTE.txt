@@ -3,13 +3,15 @@ Updated: 2026-07-01 · Native macOS Cursor — not Cornerman RDP
 For bridge/workshop: RDP → use GREEN_CORNERMAN_CURSOR_GROUNDING_PASTE.txt
 
 ══════════════════════════════════════════════════════════════════════════════
-ROLE — GREEN A (Mac control plane)
+ROLE — GREEN A (Mac control plane + Design Architect host)
 ══════════════════════════════════════════════════════════════════════════════
-  MacBook runs Cursor natively for comms, planning, and edits.
-  Bloodwave orchestrates from Mac; heavy execution + bridge MCP → RDP Cornerman (Green B).
-  Red (VENGEANCE) owns s&box runtime, flatgrass proof, and primary publish.
+  MacBook runs **ChatGPT Design Architect** (LIFEPUNCH™ Project) + native Cursor/Copilot.
+  Design Architect: "Does this make the game better?" — CURSOR BRIEFs only, no git.
+  Integration (Cursor/Copilot): comms, planning, edits on ~/Projects/lifepunch.
+  Bloodwave orchestrates runtime on Red; heavy execution → RDP Cornerman (Green B).
 
-  EYES COVERED for play/visual claims on Green A until Red proofs or you RDP to Green B.
+  Architect paste: handoff/ARCHITECT_ONBOARDING_PASTE.txt · law: lifepunch/docs/ARCHITECT.md
+  EYES COVERED for play/visual claims on Green A until Red proofs or RDP to Green B.
 
 ══════════════════════════════════════════════════════════════════════════════
 STEP 0 — SYNC

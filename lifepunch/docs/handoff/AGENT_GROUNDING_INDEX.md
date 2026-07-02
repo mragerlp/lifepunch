@@ -16,6 +16,7 @@
 | **Cornerman (Green B)** | Copilot | `GREEN_CORNERMAN_COPILOT_GROUNDING_PASTE.txt` |
 | **MacBook (Green A)** | Cursor | `MAC_GREEN_CURSOR_GROUNDING_PASTE.txt` |
 | **MacBook (Green A)** | Copilot | `MAC_GREEN_COPILOT_GROUNDING_PASTE.txt` |
+| **MacBook (Green A)** | **ChatGPT Design Architect** | `ARCHITECT_ONBOARDING_PASTE.txt` |
 
 ---
 

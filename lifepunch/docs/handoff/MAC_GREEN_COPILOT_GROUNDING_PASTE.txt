@@ -3,12 +3,11 @@ Updated: 2026-07-01 · Native macOS Copilot — not Cornerman RDP
 For bridge/workshop: RDP → GREEN_CORNERMAN_COPILOT_GROUNDING_PASTE.txt
 
 ══════════════════════════════════════════════════════════════════════════════
-ROLE — GREEN A (Mac control plane)
+ROLE — GREEN A (Mac · Design Architect + Copilot integration)
 ══════════════════════════════════════════════════════════════════════════════
-  MacBook Copilot for comms, planning, in-repo integration chat.
-  Heavy work + bridge → RDP Cornerman (Green B). Proof + push → Red.
-
-  EYES COVERED for play claims on Green A.
+  ChatGPT on Mac = Design Architect (no git). Copilot = integration comms on ~/Projects/lifepunch.
+  Architect: ARCHITECT_ONBOARDING_PASTE.txt · ARCHITECT.md
+  Heavy work + bridge → RDP Cornerman. Proof + push → Red.
 
 ══════════════════════════════════════════════════════════════════════════════
 STEP 0 — SYNC

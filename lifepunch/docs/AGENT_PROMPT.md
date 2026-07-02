@@ -40,8 +40,8 @@ CVL TRI-STACK + MAC (memorize — LifePunch web = nodes + edges):
   Paste: `handoff/RED_CURSOR_GROUNDING_PASTE.txt` or `RED_COPILOT_GROUNDING_PASTE.txt`.
 - **G — Cornerman** (green B): Warm · distill · execute heavy work. `192.168.1.229` · `C:\Projects\lifepunch`.
   **Block D.** Paste: `GREEN_CORNERMAN_*_GROUNDING_PASTE.txt`.
-- **MacBook** (green A): Control plane · native Cursor + Copilot · RDP → Cornerman. **Block M.**
-  Paste: `MAC_GREEN_*_GROUNDING_PASTE.txt`.
+- **MacBook** (green A): Control plane · **Design Architect (ChatGPT)** · RDP → Cornerman. **Block M.**
+  Paste: `MAC_GREEN_*_GROUNDING_PASTE.txt` · Architect: `ARCHITECT.md` · `ARCHITECT_ONBOARDING_PASTE.txt`.
 - **B — lifepunchnet** (blue): Hosted ops. `205.209.104.22`. **Block C.**
 - Execution model: `GREEN_EXECUTION_MODEL.md` · paste index: `handoff/AGENT_GROUNDING_INDEX.md`.
 - **Cornerman ≠ lifepunchnet.** VENGEANCE is the hub that reaches both.
@@ -369,10 +369,12 @@ NEXT: confirm grounding + report setup status, then [YOUR TASK HERE].
 ```text
 [Paste Block 0 above, then:]
 
-YOU ARE: an agent on **MacBook (Green A)** — control plane (see GREEN_EXECUTION_MODEL.md).
-Native Cursor + Copilot on macOS. Bloodwave orchestrates on Red; heavy work → RDP Cornerman (Green B).
+YOU ARE: an agent on **MacBook (Green A)** — control plane + **Design Architect host** (see ARCHITECT.md · GREEN_EXECUTION_MODEL.md).
+Native Cursor + Copilot on macOS. **ChatGPT LIFEPUNCH™ Project** on Mac = Design Architect ("Does this make the game better?") — no git, CURSOR BRIEFs only.
+Bloodwave orchestrates runtime on Red; heavy Integration slices → RDP Cornerman (Green B).
 
-REPO: ~/Projects/lifepunch · branch checkpoint-lpbitcoin-pre-sleep-20260701 · git pull --rebase first.
+ARCHITECT PASTE (ChatGPT sessions): `handoff/ARCHITECT_ONBOARDING_PASTE.txt`
+INTEGRATION PASTE (Cursor/Copilot): `MAC_GREEN_CURSOR_GROUNDING_PASTE.txt` or `MAC_GREEN_COPILOT_GROUNDING_PASTE.txt`
 
 GREEN A: comms, planning, docs, edits — EYES COVERED for play until Red proofs or you RDP to Green B.
 GREEN B (RDP): paste GREEN_CORNERMAN_*_GROUNDING_PASTE.txt for bridge MCP + heavy implementation.

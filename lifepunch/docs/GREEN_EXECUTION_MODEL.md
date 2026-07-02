@@ -1,7 +1,7 @@
 # LifePunch — Green execution model (three agent groups)
 
 > **July 2026 canon.** Bloodwave orchestrates on **Red**; **Cornerman** warms/distills and executes
-> heavy agent work; **MacBook** is the Green control plane (native dual IDE + RDP into Cornerman).
+> heavy agent work; **MacBook** is Green control plane + **Design Architect (ChatGPT)** · RDP → Cornerman.
 > **Red always owns runtime truth** (s&box, bridge, flatgrass proof, primary publish).
 
 Every agent session: **`git pull --rebase`** on the machine you are on before work.
@@ -14,7 +14,7 @@ Every agent session: **`git pull --rebase`** on the machine you are on before wo
 |-------|---------|-----------|-------------|
 | **Red** | VENGEANCE | `C:\Users\jared\Projects\LIFEPUNCH` | Orchestrate · compose · s&box editor · bridge · Host Play · proof · **git push** |
 | **Green B** | Cornerman (`192.168.1.229`) | `C:\Projects\lifepunch` | Warm LM · distill · **heavy agent implementation** · bridge MCP (via SMB to Red) |
-| **Green A** | MacBook (macOS) | `~/Projects/lifepunch` | Control plane · native Cursor + Copilot · RDP → Cornerman when bridge/workshop needed |
+| **Green A** | MacBook (macOS) | `~/Projects/lifepunch` | **Design Architect (ChatGPT)** · control plane · Cursor + Copilot · RDP → Cornerman |
 
 **lifepunchnet** (blue) is a separate ops lane — not part of this Green/Red dev triangle.
 

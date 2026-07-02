@@ -15,13 +15,14 @@ direct, ship quality.
 
 ## CVL design brain — Architect
 
-**Architect** = ChatGPT Plus/Pro on **VENGEANCE** (Red) — formal design role in the LifePunch web.
-Architect asks **"Does this make the game better?"** Cursor (Integrator) asks **"Does this ship?"**
+**Architect** = ChatGPT Plus/Pro **LIFEPUNCH™ Project** — formal design role in the LifePunch web.
+**Primary host (July 2026): MacBook (Green A).** Also available on **VENGEANCE (Red)** at the desk.
+Architect asks **"Does this make the game better?"** Integration asks **"Does this ship?"**
 
 | Brain | Tool | Ships code? |
 |-------|------|-------------|
-| **Architect** | ChatGPT LIFEPUNCH™ Project | No — CURSOR BRIEFs + design docs |
-| **Integrator** | Cursor on Red + Green B (+ Copilot) | Yes (Red push; Cornerman patch-handoff) |
+| **Architect** | ChatGPT LIFEPUNCH™ — **Mac (primary)** · Red at desk | No — CURSOR BRIEFs + design docs |
+| **Integrator** | Cursor/Copilot — Red · Cornerman · Mac comms | Yes (Red push; Cornerman patch-handoff) |
 | **Distiller + executor** | Cornerman LM + agents on Green B | Local commits → Red patch-handoff |
 
 Canon: `lifepunch/docs/ARCHITECT.md` · paste: `handoff/ARCHITECT_ONBOARDING_PASTE.txt`
@@ -217,7 +218,7 @@ partner commits on GitLab integrate back into GitHub. Full map:
 |------|-----|
 | **Red (VENGEANCE)** | Orchestrate · s&box · bridge · proof · push (`C:\Users\jared\Projects\LIFEPUNCH`) |
 | **Cornerman (Green B)** | Warm · distill · heavy agent work (`C:\Projects\lifepunch` · patch-handoff to Red) |
-| **Mac (Green A)** | Control plane · native Cursor + Copilot · RDP → Cornerman |
+| **Mac (Green A)** | Control plane · **Design Architect (ChatGPT)** · native Cursor + Copilot · RDP → Cornerman |
 
 After heavy work on Green: **`git pull --rebase`** on the other nodes (Cornerman → Red: `GREEN_PATCH_HANDOFF_QUICKREF.txt`).
 
