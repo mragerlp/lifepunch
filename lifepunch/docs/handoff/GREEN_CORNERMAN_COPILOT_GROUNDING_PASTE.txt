@@ -1,96 +1,60 @@
 LIFEPUNCH™ — Green B: Cornerman Copilot grounding (Mac → RDP → Copilot on Windows)
-Updated: 2026-07-01 · Paste at session start in GitHub Copilot on Cornerman desktop
-Prerequisite: RDP from Mac to 192.168.1.229 · Red editor + bridge must be up
+Updated: 2026-07-01 · Paste as first message in new GitHub Copilot chat ON Cornerman desktop
+Prerequisite: RDP from Mac to 192.168.1.229 · open repo in Copilot / VS Code on Cornerman
 
 ══════════════════════════════════════════════════════════════════════════════
-CONTEXT (read first)
+GROUNDING + STARTUP (execute in order, no skips)
 ══════════════════════════════════════════════════════════════════════════════
-  Green B = MacBook → RDP to Cornerman 192.168.1.229 → Copilot on Green Windows desktop
-  Green A = MacBook runs Cursor + Copilot natively (comms/docs/planning — eyes covered for play)
-  Red (VENGEANCE) = s&box runtime + Claude Bridge + Host Play + flatgrass proof + git push
 
-  Green B: bridge-capable when Red is up. Read-only deploy key — local commits OK; push via Red.
-  On Green B you are EYES-COVERED for play/visual claims until Red proofs.
+Context:
+- MacBook → RDP to Cornerman 192.168.1.229 → GitHub Copilot on Green Windows desktop
+- Green B = Windows IDE surface (pair with Cursor Green B when bridge MCP needed)
+- Red (VENGEANCE) hosts s&box + Claude Bridge + Host Play + flatgrass proof
 
-══════════════════════════════════════════════════════════════════════════════
-STEP 0 — PREFLIGHT (PowerShell on Cornerman desktop — interactive, not SSH)
-══════════════════════════════════════════════════════════════════════════════
-  cd C:\Projects\lifepunch
-  git fetch origin
-  git checkout checkpoint-lpbitcoin-pre-sleep-20260701
-  git pull --rebase
+Repo + branch truth:
+- Worktree: C:\Projects\lifepunch
+- Branch: checkpoint-lpbitcoin-pre-sleep-20260701
+- LP lane only. DXRP work stays in dxura/dxrp (separate repo/session).
+- Green git: read-only deploy key — local commits OK; origin push via patch-handoff on Red
 
-  powershell -NoProfile -ExecutionPolicy Bypass -File C:\lifepunch\cornerman\Map-CornermanBridgeShare.ps1
-  powershell -NoProfile -ExecutionPolicy Bypass -File C:\lifepunch\cornerman\Start-CornermanSboxEditorTunnel.ps1 -Background
-  Test-Path \\VENGEANCE\SboxBridgeIpc\status.json
+Preflight (PowerShell on Cornerman desktop — interactive, not SSH):
 
-  If Test-Path returns False: STOP — report blocker (ask Red to start editor/bridge first).
-  If True: open project in Copilot → confirm MCP 3/3: claudebridge · chromr-mcp · jct-server
+cd C:\Projects\lifepunch
+git fetch origin
+git checkout checkpoint-lpbitcoin-pre-sleep-20260701
+git pull --rebase
 
-  No "Reload Window" needed — Copilot picks up MCP config on project open.
+If this session needs bridge / play-adjacent work, also run (Red editor must be up):
 
-══════════════════════════════════════════════════════════════════════════════
-STEP 1 — READ ORDER (law — agent executes, do not skip)
-══════════════════════════════════════════════════════════════════════════════
-  1. lifepunch/docs/MACHINE_CAST.md  (Green A / Green B section)
-  2. lifepunch/addons/docs/ACTIVE_WORKSTREAM.md
-  3. lifepunch/addons/docs/BITCOIN_SHIP_ROADMAP.md
-  4. lifepunch/docs/handoff/ARCHITECT_CURRENT_STATE.md
-  5. .cursor/rules (alwaysApply — shared with Cursor)
+powershell -NoProfile -ExecutionPolicy Bypass -File C:\lifepunch\cornerman\Map-CornermanBridgeShare.ps1
+powershell -NoProfile -ExecutionPolicy Bypass -File C:\lifepunch\cornerman\Start-CornermanSboxEditorTunnel.ps1 -Background
+Test-Path \\VENGEANCE\SboxBridgeIpc\status.json
 
-  Depth on demand: GREEN_PATCH_HANDOFF_QUICKREF.txt (when shipping)
+Bridge check True → use Cursor Green B for get_bridge_status / MCP; Copilot stays integration + in-editor.
 
-══════════════════════════════════════════════════════════════════════════════
-REPO TRUTH
-══════════════════════════════════════════════════════════════════════════════
-  Worktree: C:\Projects\lifepunch
-  Branch: checkpoint-lpbitcoin-pre-sleep-20260701
-  LP lane only. DXRP work stays in dxura/dxrp (separate repo/session).
-  Read-only deploy key — local commits OK; origin push via patch-handoff on Red only.
-  Patch-handoff: lifepunch/docs/handoff/GREEN_PATCH_HANDOFF_QUICKREF.txt
+Read order (summarize in first reply):
+- lifepunch/addons/docs/ACTIVE_WORKSTREAM.md
+- lifepunch/docs/handoff/ARCHITECT_CURRENT_STATE.md
+- lifepunch/docs/MACHINE_CAST.md
 
-══════════════════════════════════════════════════════════════════════════════
-BUSINESS + CVL
-══════════════════════════════════════════════════════════════════════════════
-  Entity:   Peak Performance Products LLC · brand LIFEPUNCH™ · lifepunch.co
-  Owner:    Bloodwave (visible) · mragerlp (code author) · final GO on commit/ship
-  This host: Cornerman Green B (Copilot) = bridge-capable integration surface
-  Not gate: Design Architect (ChatGPT advisory on Red) · Red owns runtime/proof
+Full Copilot law: lifepunch/docs/handoff/COPILOT_NEW_SESSION_BOOTSTRAP.txt
+(use C:\Projects\lifepunch paths — not lifepunchaddons)
 
-══════════════════════════════════════════════════════════════════════════════
-ACTIVE LANE
-══════════════════════════════════════════════════════════════════════════════
-  Product: lifepunchbitcoin · Phase A Hub · H4/H5 GO pending
-  Default: plan-only / doc slices unless owner GO — no hub code without GO paste
-  HOLD (no code until Bloodwave GO): RFC-0005 upgrade migration · full economy tree
+Patch-handoff when shipping: lifepunch/docs/handoff/GREEN_PATCH_HANDOFF_QUICKREF.txt
 
-══════════════════════════════════════════════════════════════════════════════
-COMMIT HYGIENE (mandatory)
-══════════════════════════════════════════════════════════════════════════════
-  Author: mragerlp <mragerlp@gmail.com>
-  No AI attribution / co-author trailers — repo commit-msg guard enforces this
-  Propose commit scope first — Bloodwave approves before commit
-  Push: ping Red — use GREEN_PATCH_HANDOFF_QUICKREF.txt
+Report now:
+- git status -sb
+- Summarize ACTIVE_WORKSTREAM gate in one line
+- H4/H5 GO received? [yes/no]
+- If bridge preflight ran: Test-Path result
 
-══════════════════════════════════════════════════════════════════════════════
-FIRST REPLY (agent fills every line before any edits)
-══════════════════════════════════════════════════════════════════════════════
-  ## Surface
-  Green B — Cornerman Copilot (Mac → RDP → Copilot on Windows)
+Commit hygiene (mandatory):
+- Author only: mragerlp <mragerlp@gmail.com>
+- No AI attribution / co-author trailers
+- Propose commit scope first — owner approval before commit
+- Push: ping Red — GREEN_PATCH_HANDOFF_QUICKREF.txt
 
-  ## Sync
-  Branch · HEAD · clean/dirty
-
-  ## Bridge
-  Test-Path result: [True | False] · MCP 3/3? [yes/no] · claudebridge · chromr-mcp · jct-server
-
-  ## Active lane
-  lpbitcoin Phase A · H4/H5 GO received? [yes/no]
-
-  ## Standing by
-  [One line — or wait for owner task line]
-
-Optional owner task line (append after paste):
-  [YOUR TASK HERE]
+Active lane: lpbitcoin Phase A · H4/H5 GO pending
+Default without GO: plan-only · no hub code
 
 — END GREEN B CORNERMAN COPILOT GROUNDING —

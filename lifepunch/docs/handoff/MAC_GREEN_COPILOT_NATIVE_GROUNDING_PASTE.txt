@@ -1,0 +1,64 @@
+LIFEPUNCH™ — Green A: Mac native Copilot grounding (GitHub Copilot on macOS)
+Updated: 2026-07-01 · Path A — no RDP, no Cornerman bridge scripts
+Paste at Copilot session start on the MacBook (not inside Cornerman RDP).
+
+══════════════════════════════════════════════════════════════════════════════
+CONTEXT
+══════════════════════════════════════════════════════════════════════════════
+  Green A = MacBook Copilot + Cursor natively (comms + integration edits).
+  Green B = RDP Cornerman when bridge / Windows IDE needed — use GREEN_CORNERMAN_COPILOT_GROUNDING_PASTE.txt
+  Red (VENGEANCE) = s&box runtime + Claude Bridge + Host Play + flatgrass proof + primary publish.
+
+  Green A Copilot: EYES COVERED for play/visual claims — Red proofs or switch to Green B.
+
+══════════════════════════════════════════════════════════════════════════════
+STEP 0 — SYNC
+══════════════════════════════════════════════════════════════════════════════
+  cd ~/Projects/lifepunch
+  git fetch origin
+  git checkout checkpoint-lpbitcoin-pre-sleep-20260701
+  git pull --rebase
+
+  LP lane only. DXRP work stays in dxura/dxrp (separate repo/session).
+
+══════════════════════════════════════════════════════════════════════════════
+STEP 1 — READ ORDER (execute, do not skip)
+══════════════════════════════════════════════════════════════════════════════
+  1. lifepunch/docs/MACHINE_CAST.md  (Green A / Green B)
+  2. lifepunch/addons/docs/ACTIVE_WORKSTREAM.md
+  3. lifepunch/docs/handoff/ARCHITECT_CURRENT_STATE.md
+  4. lifepunch/addons/docs/BITCOIN_SHIP_ROADMAP.md
+
+  Full Copilot depth: lifepunch/docs/handoff/COPILOT_NEW_SESSION_BOOTSTRAP.txt
+  (ignore VENGEANCE-only paths — use Mac clone path above)
+
+══════════════════════════════════════════════════════════════════════════════
+ACTIVE LANE
+══════════════════════════════════════════════════════════════════════════════
+  lifepunchbitcoin · Phase A Hub · H4/H5 GO pending
+  Default without GO: plan-only · no hub code
+
+══════════════════════════════════════════════════════════════════════════════
+COMMIT HYGIENE
+══════════════════════════════════════════════════════════════════════════════
+  Author: mragerlp <mragerlp@gmail.com> · no AI trailers
+  Propose scope — Bloodwave approves before commit/push
+
+══════════════════════════════════════════════════════════════════════════════
+FIRST REPLY
+══════════════════════════════════════════════════════════════════════════════
+  ## Surface
+  Green A — Mac Copilot native
+
+  ## Sync
+  Branch · HEAD · clean/dirty
+
+  ## Bridge
+  eyes covered — no play claims on Green A
+
+  ## Active lane + H4/H5 GO? [yes/no]
+
+  ## Standing by
+  [one line]
+
+— END GREEN A MAC COPILOT NATIVE —
