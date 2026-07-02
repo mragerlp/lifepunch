@@ -20,6 +20,29 @@
 
 ## LATEST BATON
 
+<!-- CVL_BATON_LATEST_START -->
+
+```text
+── CVL HANDOFF ──
+FROM:   Red/Cursor/Opus
+LANE:   LIFEPUNCH (docs/tooling - CVL signal bus)
+DID:    Wired git-based signal bus: Send-CvlHandoff.ps1 + CVL_FIRST_BROADCAST.txt + baton LATEST/HISTORY markers.
+STATE:  DOCS+TOOLING ONLY - no gameplay code.
+NEXT:   Bloodwave sends handoff/CVL_FIRST_BROADCAST.txt to Cornerman + Mac; they git pull --rebase + re-read CVL_AGENT_ONBOARDING.md before any work.
+TO:     Cornerman + Mac: pull + re-ground. Red: implement H4/H5 on owner GO.
+PASTE:  lifepunch/docs/handoff/CVL_FIRST_BROADCAST.txt
+COMMIT: in this push
+```
+
+<!-- CVL_BATON_LATEST_END -->
+
+---
+
+## BATON HISTORY (most recent first)
+
+<!-- CVL_BATON_HISTORY_START -->
+
+### 2026-07-02 03:04
 ```text
 ── CVL HANDOFF ──
 FROM:   Red / Cursor / Opus

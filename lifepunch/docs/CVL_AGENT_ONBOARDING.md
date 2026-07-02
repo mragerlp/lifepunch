@@ -286,6 +286,17 @@ Current relay state lives in **`lifepunch/docs/handoff/CVL_RELAY_BATON.md`** (co
 reads **this onboarding doc + the baton** and knows exactly where the work stands and what to do next.
 Cornerman writes to `handoff/cornerman-outbox/`; Red absorbs into one commit.
 
+**Emit / update the baton with one command** (Red, git-based signal bus — complements the live SSH
+transport in `Send-CornermanWorkflow.ps1`):
+
+```powershell
+powershell -File lifepunch\scripts\Send-CvlHandoff.ps1 -From "Red/Cursor/Opus" -Lane "LIFEPUNCH lpbitcoin" -Did "…" -State "NEEDS PROOF" -Next "…" -To "Red prove" -Signal cornerman
+```
+
+It rewrites LATEST (archiving the prior baton to HISTORY), prints the baton for copy/paste, and optionally
+drops a `to-<node>-*.txt` signal into `cornerman-outbox/`. It does **not** commit — owner gate holds.
+**First-time broadcast to every node:** `handoff/CVL_FIRST_BROADCAST.txt`.
+
 ### 10.4 Sync law (mandatory)
 
 Whoever did heavy work → the other nodes **`git pull --rebase`** before their next session. Cornerman uses a

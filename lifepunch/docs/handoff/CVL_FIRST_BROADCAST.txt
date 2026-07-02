@@ -1,0 +1,36 @@
+CVL — FIRST BROADCAST  (send to EVERY node/IDE before any work: Cursor · Copilot · ChatGPT)
+============================================================================================
+
+We shipped ONE grounding document for all LIFEPUNCH + DXRP work. Do this now, in order.
+
+1) PULL — full rebase onto the latest branch tip:
+     git fetch
+     git checkout checkpoint-lpbitcoin-pre-sleep-20260701
+     git pull --rebase
+   (Cornerman uses its read-only deploy key; if pull is blocked, Red patch-handoffs — see
+    handoff/GREEN_PATCH_HANDOFF_QUICKREF.txt.)
+
+2) RE-GROUND — a pull that changes the onboarding doc means the ground moved. Do NOT skip:
+     - Read  lifepunch/docs/CVL_AGENT_ONBOARDING.md  IN FULL  (this is THE paste).
+     - Read  lifepunch/docs/handoff/CVL_RELAY_BATON.md  (current state + the single next action).
+     - Read your LANE'S MANDATORY READS (section 12 of the onboarding doc). Do not skip the repo.
+
+3) CONFIRM in your first reply:
+     - NODE:  Red (VENGEANCE) | Green B (Cornerman) | Green A (Mac)
+     - IDE:   Cursor | GitHub Copilot | ChatGPT (Design Architect)
+     - LANE:  LIFEPUNCH proprietary  OR  DXRP official   (never mix the two)
+     - ROUTE: Opus | Grok | Composer-Auto | Cornerman  — and that you will honor route tags
+
+4) (optional) Mirror the doc to your own desktop for quick copy/paste:
+     Windows:  Copy-Item lifepunch\docs\CVL_AGENT_ONBOARDING.md "$env:USERPROFILE\OneDrive\Desktop\CVL_AGENT_ONBOARDING.txt" -Force
+     macOS:    cp lifepunch/docs/CVL_AGENT_ONBOARDING.md ~/Desktop/CVL_AGENT_ONBOARDING.txt
+
+5) END every turn with a CVL HANDOFF baton (onboarding section 10.2). On Red you can emit/update it:
+     powershell -File lifepunch\scripts\Send-CvlHandoff.ps1 -From "Red/Cursor/Opus" -Lane "LIFEPUNCH lpbitcoin" -Did "..." -State "NEEDS PROOF" -Next "..." -To "Red prove"
+
+FIXED LAWS (apply everywhere):
+  - Editor truth + flatgrass proof = Red (VENGEANCE) only. Cornerman bridges in; it has no editor.
+  - Never commit unprompted — propose scope, wait for Bloodwave GO. Author mragerlp; NO AI trailers.
+  - Eyes-covered: no visual/playtest claim without an sbox bridge screenshot from Red.
+
+ACTIVE LANE: lifepunchbitcoin / lpbitcoin — Phase A Hub. Holding for Bloodwave `GO H4/H5 HUB STATE` (+ route tag).
