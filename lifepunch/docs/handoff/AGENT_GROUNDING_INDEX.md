@@ -1,6 +1,8 @@
 # Agent grounding index — Red · Cornerman · Mac (Cursor + Copilot)
 
 > **July 2026.** Paste **one file** at session start for your machine + IDE.
+> **First-time / full grounding on any node or IDE: paste `lifepunch/docs/CVL_AGENT_ONBOARDING.md`** (the
+> single master doc). The per-machine files below are the shorter per-surface pastes that build on it.
 > Canon workflow: `lifepunch/docs/GREEN_EXECUTION_MODEL.md` · `MACHINE_CAST.md`
 > Branch: `checkpoint-lpbitcoin-pre-sleep-20260701` (full checkout — do not cherry-pick alone)
 

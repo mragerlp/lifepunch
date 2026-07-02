@@ -1,5 +1,10 @@
 # LIFEPUNCH™ × DXRP — Agent Foundation
 
+> **START HERE (July 2026): the single grounding paste is now `lifepunch/docs/CVL_AGENT_ONBOARDING.md`**
+> (mirrored on the Vengeance desktop as `CVL_AGENT_ONBOARDING.txt`). Paste that whole file into any
+> ChatGPT / Cursor / Copilot session on any machine. This Foundation doc remains valid **deep reference**;
+> CVL_AGENT_ONBOARDING is the top-level "one paste" that points here.
+
 > Read this first. Hand it to any agent in any of our repos so it operates inside
 > the established foundation instead of re-deriving (or diverging from) it.
 > This doc **mirrors** the always-on `.cursor/rules` — the rules are the law; if
