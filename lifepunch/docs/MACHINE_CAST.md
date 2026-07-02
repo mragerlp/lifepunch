@@ -63,7 +63,8 @@ Green **comms + integration** can run on two surfaces. **Red (VENGEANCE) always 
 **Cornerman** remains: mic relay, Tier-3 LM host, and **Green B Windows IDE** — not deleted when Mac is Green A.
 
 Handoff pastes: `handoff/MAC_GREEN_NATIVE_GROUNDING_PASTE.txt` (A) ·
-`handoff/GREEN_CORNERMAN_CURSOR_GROUNDING_PASTE.txt` (B) ·
+`handoff/GREEN_CORNERMAN_CURSOR_GROUNDING_PASTE.txt` (B — Cursor) ·
+`handoff/GREEN_CORNERMAN_COPILOT_GROUNDING_PASTE.txt` (B — Copilot) ·
 `handoff/MACBOOK_GREEN_QUICKSTART.md` (B steps).
 
 ---
