@@ -24,14 +24,14 @@
 
 ```text
 ── CVL HANDOFF ──
-FROM:   Red/Cursor/Opus
-LANE:   LIFEPUNCH (docs/tooling - CVL signal bus)
-DID:    Wired git-based signal bus: Send-CvlHandoff.ps1 + CVL_FIRST_BROADCAST.txt + baton LATEST/HISTORY markers.
-STATE:  DOCS+TOOLING ONLY - no gameplay code.
-NEXT:   Bloodwave sends handoff/CVL_FIRST_BROADCAST.txt to Cornerman + Mac; they git pull --rebase + re-read CVL_AGENT_ONBOARDING.md before any work.
-TO:     Cornerman + Mac: pull + re-ground. Red: implement H4/H5 on owner GO.
-PASTE:  lifepunch/docs/handoff/CVL_FIRST_BROADCAST.txt
-COMMIT: in this push
+FROM:   Red/Cursor
+LANE:   DXRP OFFICIAL (party-browse) + LifePunch adminmenu (#126) — STANDBY
+DID:    Merged origin/develop into party-browse (local); P0 staff menu party-purple tokens + /menu /adminmenu /staffmenu commands; wrote DXRP_PARTY_STAFF_STANDBY.md.
+STATE:  STAND BY — no push, no dxrp-public commit until flatgrass proof.
+NEXT:   Bloodwave return → vanilla dxrp-vanilla Host Play → prove /party (Browse + current/max) + /menu|/adminmenu|/staffmenu; then owner GO to commit party-browse.
+TO:     ALL AGENTS: read lifepunch/docs/handoff/DXRP_PARTY_STAFF_STANDBY.md — warm UI only, no ship.
+PASTE:  lifepunch/docs/handoff/DXRP_PARTY_STAFF_STANDBY.md
+COMMIT: lifepunch only (this baton + adminmenu); dxrp-public uncommitted.
 ```
 
 <!-- CVL_BATON_LATEST_END -->
