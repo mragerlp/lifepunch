@@ -4,7 +4,7 @@
 
 .DESCRIPTION
   Red agents call this when CVL_OFFLOAD_SIGNAL.md triggers fire.
-  Bloodwave sees: "CVL — OFFLOAD TO CORNERMAN" + reason line.
+  Bloodwave sees: "CVL - OFFLOAD TO CORNERMAN" + reason line.
 
 .EXAMPLE
   powershell -File Send-CvlOffloadSignal.ps1 -Reason "GREEN CODE: ModelDoc audit while owner playtests party"
@@ -22,14 +22,14 @@ $Here = if ($PSScriptRoot) { $PSScriptRoot } else { Split-Path -Parent $MyInvoca
 . (Join-Path $Here 'Send-LifePunchToast.ps1')
 
 $msg = if ($Test) {
-    "TEST — offload signal armed. Party playtest = Red only (no toast). See handoff/CVL_OFFLOAD_SIGNAL.md"
+    'TEST - offload signal armed. Party playtest = Red only (no toast). See handoff/CVL_OFFLOAD_SIGNAL.md'
 }
 else {
     if ($Reason.Length -gt 200) { $Reason = $Reason.Substring(0, 197) + '...' }
     $Reason
 }
 
-$ok = Send-LifePunchToast -Title 'CVL — OFFLOAD TO CORNERMAN' -Message $msg -Tone 'warning'
+$ok = Send-LifePunchToast -Title 'CVL - OFFLOAD TO CORNERMAN' -Message $msg -Tone 'warning'
 if ($ok) {
     Write-Host "Offload signal sent: $msg" -ForegroundColor Yellow
 }
