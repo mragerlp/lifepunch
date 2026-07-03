@@ -5738,60 +5738,146 @@ export default {
               .tos-container { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 40px; backdrop-filter: blur(16px); margin-top: 10px; text-align: left; }
               .tos-section { margin-bottom: 30px; }
               .tos-section h2 { color: var(--lp-blue); font-family: 'Montserrat', sans-serif; font-size: 16px; text-transform: uppercase; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 15px; }
+              .tos-section h3 { color: var(--text-main); font-family: 'Montserrat', sans-serif; font-size: 13px; text-transform: uppercase; letter-spacing: .04em; margin: 18px 0 8px; }
               .tos-section p, .tos-section li { font-size: 14px; color: var(--text-main); border-left: 2px solid var(--lp-blue); padding-left: 15px; line-height: 1.6; }
-              .tos-section ol { list-style-position: inside; }
-              .effective-date { font-style: italic; margin-bottom: 20px; color: var(--text-muted); }
+              .tos-section ul, .tos-section ol { margin: 10px 0; padding-left: 22px; }
+              .tos-section li { margin-bottom: 6px; }
+              .effective-date { font-style: italic; margin-bottom: 6px; color: var(--text-muted); }
+              .tos-entity { color: var(--text-muted); font-size: 13px; line-height: 1.6; margin-bottom: 18px; }
+              .tos-notice { border: 1px solid var(--lp-blue); border-radius: 8px; padding: 14px 16px; margin-bottom: 26px; font-size: 13px; color: var(--text-main); line-height: 1.6; background: rgba(0,0,0,0.15); }
           </style>
 
           <div class="tos-container">
-              <p class="effective-date">Last Updated: May 11, 2026</p>
+              <p class="effective-date">Last Updated: July 3, 2026</p>
+              <p class="tos-entity">These Terms of Service ("Terms") are a binding agreement between you and <strong>Peak Performance Products LLC</strong>, a New Jersey limited liability company that operates the <strong>LIFEPUNCH&trade;</strong> brand, servers, website, and related services ("LifePunch," "we," "us," or "our").</p>
+
+              <div class="tos-notice"><strong>PLEASE READ CAREFULLY.</strong> These Terms include a <strong>binding individual arbitration provision and class-action waiver</strong> (Section 16), <strong>disclaimers of warranties and limitations of our liability</strong> (Sections 13&ndash;14), and a <strong>final-sale / no-chargeback purchase policy</strong> (Section 7) that affect your legal rights. If you do not agree, do not access or use LifePunch services.</div>
 
               <div class="tos-section">
                   <h2>1. Acceptance of Terms</h2>
-                  <p>By accessing or using LifePunch services, including our servers, website, and related platforms, you agree to be bound by these Terms of Service and our Privacy Policy. If you are under the age of 13 (or 16 in certain jurisdictions), you represent that you have obtained parental consent to use these services.</p>
-                  <p>If you do not agree to these Terms, you must immediately cease all use of LifePunch services. Continued use constitutes a legally binding agreement to these terms and any future modifications.</p>
-              </div>
-              
-              <div class="tos-section">
-                  <h2>2. User Conduct & Rule Compliance</h2>
-                  <p>Access to LifePunch is a privilege, not a right. All users must comply with server-specific rules, community guidelines, and staff directives. We reserve the right, at our sole discretion, to terminate or suspend access to any user for any reason, including but not limited to: toxicity, harassment, exploitation of bugs, or disruption of the community environment.</p>
-                  <p>Staff interpretations of rules are final. "Roleplay" standards are enforced to maintain community integrity; "FailRP" or "Metagaming" may result in immediate administrative action without prior warning.</p>
-              </div>
-              
-              <div class="tos-section">
-                  <h2>3. Virtual Goods, Credits & Referrals</h2>
-                  <p>Any financial contributions, referral rewards, or "Store Credit" earned or used on LifePunch are considered payments for a limited, revocable, non-transferable license to use specific virtual items, ranks, or "perks" within the LifePunch ecosystem. These items, including "Store Credit," have no real-world monetary value and cannot be traded for "real world" currency or assets.</p>
-                  <p><strong>WIP & Roadmap:</strong> You acknowledge that LifePunch is a live, evolving service. Some virtual goods, ranks, or 'perks' may include features currently in development ('Work in Progress' or 'WIP'). The purchase of a rank provides access to the rank's current 'As Available' features; missing or upcoming features do not constitute a failure of service or grounds for a refund.</p>
-                  <p><strong>Store Credit & Referrals:</strong> Referral rewards and Store Credit are provided at our sole discretion as a community benefit. We reserve the right to revoke any rewards, credits, or related perks if we determine, in our sole judgment, that the system has been abused (e.g., self-referral, exploitation, or fraudulent activity). Credit is non-transferable and cannot be "cashed out."</p>
-                  <p><strong>Refund Policy:</strong> All transactions are final. By completing a purchase or applying credit, you waive any right to a refund unless required by local consumer law. Verbal or written statements made by staff members or community leads regarding refunds do not override these written Terms. Only a formal notice from our billing department/legal email can authorize an exception to the 'No Refund' policy. Attempting to circumvent this via "chargebacks" through payment processors will result in a permanent ban and potential legal or collection action to recover lost funds and fees.</p>
+                  <p>By accessing or using LifePunch services &mdash; including our game servers, website at lifepunch.co, store, Discord, and related platforms (collectively, the "Services") &mdash; you agree to be bound by these Terms and the practices described in Section 3 (Privacy &amp; Data). If you use the Services on behalf of another person or organization, you represent that you are authorized to accept these Terms on their behalf.</p>
+                  <p>If you do not agree to these Terms, you must immediately cease all use of the Services. Your continued use constitutes a legally binding acceptance of these Terms and of any future modifications made in accordance with Section 18.</p>
               </div>
 
               <div class="tos-section">
-                  <h2>4. Disclaimer of Warranties & Limitation of Liability</h2>
-                  <p>LIFEPUNCH SERVICES ARE PROVIDED "AS IS" AND "AS AVAILABLE." WE EXPRESSLY DISCLAIM ALL WARRANTIES OF ANY KIND, WHETHER EXPRESS OR IMPLIED. WE DO NOT WARRANT THAT ANY SPECIFIC PERK, JOB, OR ADMINISTRATIVE POWER WILL BE AVAILABLE AT ALL TIMES OR REMAIN UNCHANGED. WE RESERVE THE RIGHT TO MODIFY, REMOVE, OR DELAY THE IMPLEMENTATION OF ANY VIRTUAL FEATURE WITHOUT NOTICE AND WITHOUT PROVIDING A REFUND.</p>
-                  <p>LIFEPUNCH SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES ARISING FROM YOUR USE OF THE SERVICE, INCLUDING BUT NOT LIMITED TO SERVER DOWNTIME, LOSS OF VIRTUAL ASSETS, OR DATA BREACHES.</p>
-                  <p>In no event shall our total liability to you for all damages exceed the amount paid by you to LifePunch in the six (6) months preceding the claim.</p>
-              </div>
-              
-              <div class="tos-section">
-                  <h2>5. Intellectual Property</h2>
-                  <p>All original content created by LifePunch—including logos, custom code, UI design, and branding—is the exclusive property of LifePunch. You are granted a limited license to view and interact with this content for personal, non-commercial use only.</p>
-                  <p>Third-party assets (such as those from s&box or DXRP) remain the property of their respective owners. Any unauthorized replication of LifePunch’s unique site layout or proprietary assets for use in "clone" servers is strictly prohibited and will be met with legal action.</p>
+                  <h2>2. Eligibility &amp; Accounts</h2>
+                  <p>You must be at least <strong>13 years old</strong> (or 16 in jurisdictions that require it) to use the Services. If you are under the age of majority where you live, you represent that a parent or legal guardian has reviewed and agreed to these Terms on your behalf. We do not knowingly collect personal information from children under 13; if you believe a child under 13 has provided us information, contact legal@lifepunch.co and we will delete it.</p>
+                  <p>Access to the Services may require linking third-party accounts, including <strong>Steam</strong> and <strong>Discord</strong>. You are responsible for all activity that occurs through your linked accounts, for keeping your credentials secure, and for any purchases or in-game actions taken under them. You agree to provide accurate information and to notify us promptly of any unauthorized use. We may refuse, suspend, or terminate access at our discretion as described in these Terms.</p>
               </div>
 
               <div class="tos-section">
-                  <h2>6. DMCA & Copyright Agent</h2>
-                  <p>If you believe your work has been used in a way that constitutes copyright infringement, please provide our Copyright Agent (<strong>dmca@lifepunch.co</strong>) with: (1) a description of the work; (2) the location on our site; (3) your contact info; and (4) a statement of good faith belief that the use is unauthorized.</p>
+                  <h2>3. Privacy &amp; Data</h2>
+                  <p>To operate the Services we collect and process limited data, including: your <strong>Steam ID and public Steam profile</strong>, your <strong>Discord ID</strong> and related linking data, <strong>purchase and transaction records</strong> processed by our payment provider (Stripe), reward/referral activity, and technical data such as IP address and request logs handled by our infrastructure provider (Cloudflare) for security, fraud prevention, and reliability.</p>
+                  <p>We use this data to provide and secure the Services, fulfill purchases and perks, prevent abuse and fraud, and communicate with you. We share data only with service providers acting on our behalf (such as Steam, Discord, Stripe, and Cloudflare), or where required by law or to protect our rights. We do not sell your personal information. Data is processed in the United States; by using the Services you consent to this processing and transfer. To request access to or deletion of your data, contact legal@lifepunch.co; we will honor verified requests to the extent required by applicable law.</p>
               </div>
 
               <div class="tos-section">
-                  <h2>7. Governing Law & Dispute Resolution</h2>
-                  <p>These Terms are governed by the laws of the State of Michigan, USA. You agree that any legal action arising out of these Terms shall be filed exclusively in the courts of Wayne County, Michigan. You hereby waive any right to a class action lawsuit or class-wide arbitration.</p>
+                  <h2>4. Community Rules &amp; Conduct</h2>
+                  <p>Access to LifePunch is a privilege, not a right. All users must comply with our server rules, community guidelines, and staff directives, which are incorporated into these Terms by reference and may be updated at any time. Staff interpretations of the rules are final. "Roleplay" standards are enforced to protect community integrity; conduct such as "FailRP" or "Metagaming" may result in immediate administrative action without prior warning.</p>
+                  <p>You agree not to: harass, threaten, or defame others; use cheats, exploits, macros, or unauthorized third-party software; exploit bugs or economy flaws; disrupt or attempt to gain unauthorized access to the Services; buy, sell, or transfer accounts, virtual items, or credit outside the Services; impersonate staff; post illegal, infringing, or sexually exploitative content; or advertise or recruit for competing servers. We may issue warnings, mutes, kicks, temporary or permanent bans, and may remove or reset virtual items, ranks, or credit, in our sole discretion and without notice or refund.</p>
               </div>
 
               <div class="tos-section">
-                  <h2>8. Contact</h2>
-                  <p>For legal inquiries, contact: <strong>legal@lifepunch.co</strong>. For general support, please use our official community discord or support ticket system.</p>
+                  <h2>5. Virtual Goods, Ranks &amp; Store Credit</h2>
+                  <p>Any financial contributions, referral rewards, or "Store Credit" earned or used on LifePunch are payments for a <strong>limited, revocable, non-transferable license</strong> to access specific virtual items, ranks, or "perks" within the LifePunch ecosystem. These items, including Store Credit, have <strong>no real-world monetary value</strong>, are not your property, and cannot be sold, transferred, redeemed, or "cashed out" for real-world currency or assets.</p>
+                  <h3>Work in Progress &amp; Roadmap</h3>
+                  <p>You acknowledge that LifePunch is a live, evolving service. Some virtual goods, ranks, or perks may include features that are in development ("Work in Progress" or "WIP"). A purchase provides access to the item's current, "As Available" features; missing or upcoming features do not constitute a failure of service or grounds for a refund. We may modify, rebalance, suspend, or remove any virtual item, perk, or administrative power at any time without notice or refund.</p>
+              </div>
+
+              <div class="tos-section">
+                  <h2>6. Payments, Subscriptions &amp; Referrals</h2>
+                  <p>Payments are processed by our third-party payment processor, <strong>Stripe</strong>. By purchasing, you agree to Stripe's terms and authorize the charge, plus any applicable taxes, to your selected payment method. We do not store full card details.</p>
+                  <h3>Subscriptions</h3>
+                  <p>VIP and EVIP are <strong>recurring monthly subscriptions</strong>. By subscribing, you authorize LifePunch (through Stripe) to charge your payment method the then-current price each billing cycle until you cancel. You may cancel at any time; cancellation stops future renewals but does not refund the current or any prior billing period, and perks generally remain active through the end of the paid period. We may change subscription prices or features on a going-forward basis, with reasonable notice via the site or Discord.</p>
+                  <h3>Store Credit &amp; Referrals</h3>
+                  <p>Referral rewards and Store Credit are provided at our sole discretion as a community benefit. We may reduce, revoke, or withhold any rewards, credit, or related perks if we determine, in our sole judgment, that the system has been abused &mdash; for example through self-referral, multiple accounts, exploitation, or fraudulent activity. Credit is non-transferable, has no cash value, and cannot be cashed out.</p>
+              </div>
+
+              <div class="tos-section">
+                  <h2>7. Refunds &amp; Chargebacks</h2>
+                  <p><strong>All sales are final.</strong> By completing a purchase or applying credit, you waive any right to a refund except where a refund is required by applicable law. Because purchases unlock digital items and perks immediately, you consent to immediate delivery and acknowledge that this may extinguish any statutory right of withdrawal where the law permits such waiver.</p>
+                  <p>Verbal or written statements by staff members or community leads regarding refunds do not override these written Terms. Only a formal written notice from our billing/legal contact (legal@lifepunch.co) can authorize an exception to this policy.</p>
+                  <p><strong>Chargebacks and payment disputes.</strong> If you initiate a chargeback, reversal, or payment dispute instead of contacting us first, we may immediately suspend or permanently ban your accounts, revoke all virtual items and credit, and pursue recovery of the disputed amounts plus any fees and reasonable costs, including through collections. We encourage you to contact us first at legal@lifepunch.co to resolve any billing concern.</p>
+              </div>
+
+              <div class="tos-section">
+                  <h2>8. Service Availability, Changes &amp; Virtual-Item Risk</h2>
+                  <p>The Services are provided on an "as available" basis. We may add, modify, suspend, wipe, reset, or discontinue any part of the Services &mdash; including servers, maps, economies, ranks, perks, or virtual items &mdash; at any time, with or without notice. We do not guarantee that any specific perk, job, item, or administrative power will be available at all times or remain unchanged.</p>
+                  <p>You accept the risk that server downtime, data loss, resets, wipes, or discontinuation may result in the loss of virtual items, credit, or progress, and that we are not liable for any such loss, to the maximum extent permitted by law.</p>
+              </div>
+
+              <div class="tos-section">
+                  <h2>9. User Content &amp; Feedback</h2>
+                  <p>You retain ownership of content you submit to the Services (such as chat, roleplay text, names, and media) ("User Content"), but you grant LifePunch a worldwide, non-exclusive, royalty-free, sublicensable license to host, store, reproduce, display, and use that content to operate, moderate, and promote the Services. You are solely responsible for your User Content and represent that you have the rights to submit it. We may remove or moderate User Content at our discretion.</p>
+                  <p>If you send us suggestions, ideas, or feedback, you grant us a perpetual, irrevocable, royalty-free right to use them for any purpose without obligation or compensation to you.</p>
+              </div>
+
+              <div class="tos-section">
+                  <h2>10. Intellectual Property</h2>
+                  <p>All original content created by LifePunch &mdash; including the <strong>LIFEPUNCH&trade;</strong> name and logo, custom code, addons, weapons, entities, UI design, artwork, and branding &mdash; is the exclusive property of Peak Performance Products LLC and is protected by intellectual-property laws. You are granted a limited, revocable, non-exclusive license to view and interact with this content for personal, non-commercial use only.</p>
+                  <p>You may not copy, redistribute, resell, sublicense, publicly perform, reverse engineer, scrape, or create derivative works from our proprietary content except as expressly authorized in writing. Any unauthorized replication of LifePunch's unique site layout, code, or proprietary assets &mdash; including for use in "clone" servers &mdash; is strictly prohibited and may be met with enforcement, including DMCA action and litigation. Where server owners receive our content, their permitted use is governed by a separate license/EULA; absent that, no resale or redistribution is permitted.</p>
+              </div>
+
+              <div class="tos-section">
+                  <h2>11. Third-Party Services &amp; Non-Affiliation</h2>
+                  <p>The Services rely on and interoperate with third parties, including <strong>Steam / Valve</strong>, <strong>Discord</strong>, <strong>Stripe</strong>, <strong>Cloudflare</strong>, the <strong>s&amp;box</strong> engine (Facepunch), and the <strong>DXRP</strong> gamemode/platform (Dxura). Your use of those services is subject to their own terms, and we are not responsible for them.</p>
+                  <p>LifePunch is an independent community and is <strong>not affiliated with, endorsed by, or sponsored by</strong> Dxura, Facepunch, Valve, Discord, Stripe, or Cloudflare. All third-party names, marks, and assets remain the property of their respective owners and are referenced only nominatively to describe interoperability.</p>
+              </div>
+
+              <div class="tos-section">
+                  <h2>12. DMCA &amp; Copyright</h2>
+                  <p>We respect intellectual-property rights and respond to valid notices under the Digital Millennium Copyright Act. If you believe content on our site infringes your copyright, send our Copyright Agent (<strong>dmca@lifepunch.co</strong>): (1) a description of the copyrighted work; (2) the location of the material on our site; (3) your contact information; (4) a statement of good-faith belief that the use is unauthorized; (5) a statement, under penalty of perjury, that the information is accurate and that you are authorized to act; and (6) your physical or electronic signature.</p>
+                  <p>If your content was removed and you believe it was in error, you may submit a counter-notice to the same address with the corresponding statutory information. We maintain a policy of terminating, in appropriate circumstances, the access of users who are repeat infringers.</p>
+              </div>
+
+              <div class="tos-section">
+                  <h2>13. Disclaimer of Warranties</h2>
+                  <p>LIFEPUNCH SERVICES ARE PROVIDED "AS IS" AND "AS AVAILABLE," WITH ALL FAULTS AND WITHOUT WARRANTY OF ANY KIND. TO THE MAXIMUM EXTENT PERMITTED BY LAW, WE EXPRESSLY DISCLAIM ALL WARRANTIES, WHETHER EXPRESS, IMPLIED, OR STATUTORY, INCLUDING THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT.</p>
+                  <p>WE DO NOT WARRANT THAT THE SERVICES WILL BE UNINTERRUPTED, SECURE, ERROR-FREE, OR FREE OF DATA LOSS, OR THAT ANY SPECIFIC PERK, JOB, ITEM, OR ADMINISTRATIVE POWER WILL BE AVAILABLE OR REMAIN UNCHANGED. SOME JURISDICTIONS DO NOT ALLOW CERTAIN WARRANTY EXCLUSIONS, SO SOME OF THESE EXCLUSIONS MAY NOT APPLY TO YOU.</p>
+              </div>
+
+              <div class="tos-section">
+                  <h2>14. Limitation of Liability</h2>
+                  <p>TO THE MAXIMUM EXTENT PERMITTED BY LAW, LIFEPUNCH AND PEAK PERFORMANCE PRODUCTS LLC, AND OUR OWNERS, STAFF, AND CONTRACTORS, SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, EXEMPLARY, OR PUNITIVE DAMAGES, OR FOR ANY LOSS OF PROFITS, DATA, GOODWILL, OR VIRTUAL ITEMS, ARISING FROM OR RELATED TO YOUR USE OF THE SERVICES, INCLUDING SERVER DOWNTIME, LOSS OF VIRTUAL ASSETS, OR SECURITY INCIDENTS.</p>
+                  <p>OUR TOTAL LIABILITY TO YOU FOR ALL CLAIMS ARISING OUT OF OR RELATED TO THE SERVICES SHALL NOT EXCEED THE GREATER OF (a) THE TOTAL AMOUNTS YOU PAID TO LIFEPUNCH IN THE SIX (6) MONTHS PRECEDING THE EVENT GIVING RISE TO THE CLAIM, OR (b) ONE HUNDRED U.S. DOLLARS (USD 100). THESE LIMITATIONS APPLY EVEN IF A REMEDY FAILS OF ITS ESSENTIAL PURPOSE. SOME JURISDICTIONS DO NOT ALLOW CERTAIN LIMITATIONS, SO SOME MAY NOT APPLY TO YOU.</p>
+              </div>
+
+              <div class="tos-section">
+                  <h2>15. Indemnification</h2>
+                  <p>You agree to indemnify, defend, and hold harmless LifePunch, Peak Performance Products LLC, and our owners, staff, and contractors from and against any claims, damages, liabilities, losses, and expenses (including reasonable attorneys' fees) arising out of or related to your use of the Services, your User Content, your violation of these Terms or our rules, or your violation of any law or the rights of a third party.</p>
+              </div>
+
+              <div class="tos-section">
+                  <h2>16. Dispute Resolution, Arbitration &amp; Governing Law</h2>
+                  <p>These Terms are governed by the laws of the <strong>State of New Jersey</strong>, USA, without regard to its conflict-of-laws principles.</p>
+                  <h3>Informal Resolution</h3>
+                  <p>Before starting any formal proceeding, you agree to first contact us at legal@lifepunch.co and attempt in good faith to resolve the dispute for at least 30 days.</p>
+                  <h3>Binding Arbitration</h3>
+                  <p>Except as carved out below, any dispute arising out of or relating to these Terms or the Services shall be resolved by <strong>final and binding individual arbitration</strong> administered by the American Arbitration Association (AAA) under its Consumer Arbitration Rules, seated in New Jersey (or conducted remotely), before a single arbitrator. The Federal Arbitration Act governs the interpretation and enforcement of this provision. <strong>Carve-outs:</strong> either party may bring an individual claim in small-claims court, and we may seek injunctive relief in court to protect our intellectual property or stop misuse of the Services.</p>
+                  <h3>Class-Action &amp; Jury Waiver</h3>
+                  <p>You and LifePunch agree that disputes will be brought only in an <strong>individual capacity</strong>, and not as a plaintiff or class member in any purported class, consolidated, or representative proceeding. <strong>You and LifePunch waive any right to a jury trial and to class-wide arbitration.</strong> If the class-action waiver is found unenforceable as to a particular claim, that claim shall proceed in court, but the remainder of this Section still applies.</p>
+                  <h3>Venue &amp; Time Limit</h3>
+                  <p>For any dispute not subject to arbitration, you agree to the exclusive jurisdiction and venue of the state and federal courts located in the State of New Jersey. Any claim must be brought within <strong>one (1) year</strong> after it arises, to the extent permitted by law, or it is permanently barred.</p>
+              </div>
+
+              <div class="tos-section">
+                  <h2>17. Suspension &amp; Termination</h2>
+                  <p>We may suspend or terminate your access to the Services at any time, with or without notice, for any reason, including violation of these Terms or our rules. You may stop using the Services at any time. Upon termination, your licenses to virtual items, ranks, and credit end immediately, no refunds are owed, and any outstanding obligations survive. Sections that by their nature should survive termination (including Sections 5&ndash;16 and 18) will survive.</p>
+              </div>
+
+              <div class="tos-section">
+                  <h2>18. Changes to These Terms</h2>
+                  <p>We may update these Terms from time to time. When we do, we will revise the "Last Updated" date above, and material changes will be communicated through the site or our Discord. Your continued use of the Services after changes take effect constitutes acceptance of the revised Terms. If you do not agree, you must stop using the Services.</p>
+              </div>
+
+              <div class="tos-section">
+                  <h2>19. Miscellaneous</h2>
+                  <p>These Terms, together with the rules and policies referenced herein, are the entire agreement between you and LifePunch regarding the Services and supersede prior agreements. If any provision is held unenforceable, the remaining provisions remain in effect and the unenforceable provision will be modified to the minimum extent necessary. Our failure to enforce any provision is not a waiver. You may not assign these Terms without our consent; we may assign them, including in connection with a merger, acquisition, or sale of assets. We are not liable for delays or failures caused by events beyond our reasonable control (force majeure). Section headings are for convenience only.</p>
+              </div>
+
+              <div class="tos-section">
+                  <h2>20. Contact</h2>
+                  <p>Legal &amp; billing: <strong>legal@lifepunch.co</strong>. Copyright / DMCA: <strong>dmca@lifepunch.co</strong>. General support: our official <a href="https://discord.gg/lifepunch" target="_blank" rel="noopener">community Discord</a> or the support ticket system. Entity: Peak Performance Products LLC (New Jersey, USA), operator of the LIFEPUNCH&trade; brand.</p>
               </div>
 
           </div>
