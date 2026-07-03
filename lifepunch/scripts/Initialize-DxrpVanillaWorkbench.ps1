@@ -1,3 +1,10 @@
+# =====================================================================
+# RISK: DANGEROUS IF UNGROUNDED (seeds/refreshes a vanilla DXRP workbench; moves LifePunch mounts offline)
+# GO:   BLOODWAVE GO REQUIRED (especially -ForceRefresh)
+# NODE: Red only  |  BRANCH: n/a (operates on a DXRP game tree, not the monorepo index)
+# PRE:  grounded per START_HERE_AGENTS.md
+# WHAT: Mirror the live DXRP game folder into a clean vanilla workbench (no lifepunch mounts).
+# =====================================================================
 <#
 .SYNOPSIS
   Seed a clean DXRP editor workbench - sibling folder, no LifePunch mounts by default.

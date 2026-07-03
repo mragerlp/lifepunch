@@ -1,3 +1,9 @@
+# =====================================================================
+# RISK: SYNC/PUSH (with -Push)  |  GO: BLOODWAVE GO REQUIRED to push
+# NODE: Red only  |  BRANCH: develop (or main per task)
+# PRE:  clean tree on the right branch; grounded per START_HERE_AGENTS.md
+# WHAT: Pull Cornerman (Green) local commits via SSH patch + git am; optionally push origin.
+# =====================================================================
 # VENGEANCE (Red): pull Cornerman local commits via SSH format-patch + scp, git am, optional push.
 [CmdletBinding()]
 param(

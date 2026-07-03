@@ -1,3 +1,9 @@
+# =====================================================================
+# RISK: SYNC/PUSH  |  GO: BLOODWAVE GO REQUIRED
+# NODE: Red only  |  BRANCH: main (export from a main checkout only)
+# PRE:  clean tree on the right branch; grounded per START_HERE_AGENTS.md
+# WHAT: Export a monorepo lane to its GitLab project (overwrites the remote tree).
+# =====================================================================
 # One-shot lane export using Windows Git Credential Manager (no GITLAB_TOKEN env required).
 # WARNING: Replaces each monorepoPath entirely from GitHub — GitLab-only files in those trees are
 # wiped. lifepunch-rdp-server: lifepunch/server/ clobber risk until Blue scripts land in monorepo

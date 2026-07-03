@@ -1,3 +1,10 @@
+# =====================================================================
+# RISK: SYNC/PUSH + DANGEROUS IF UNGROUNDED (touches the official DXRP upstream fork dxrp-public)
+# GO:   BLOODWAVE GO REQUIRED for -Sync / -UpdatePin / -SyncSteam
+# NODE: Red only  |  BRANCH: dxrp-public develop (from upstream/develop) - NOT the monorepo
+# PRE:  grounded per START_HERE_AGENTS.md; official-DXRP lane only (see DXRP_CONTRIBUTOR_LANE.md)
+# WHAT: Verify/sync the dxrp-public fork develop against dxura/dxrp upstream; update the pin.
+# =====================================================================
 <#
 .SYNOPSIS
   Verify (and optionally sync) mragerlp/dxrp-public develop with dxura/dxrp upstream.

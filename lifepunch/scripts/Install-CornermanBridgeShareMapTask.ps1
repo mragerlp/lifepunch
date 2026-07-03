@@ -1,3 +1,10 @@
+# =====================================================================
+# RISK: MODIFIES WORKTREE (installs a persistent Windows logon scheduled task)
+# GO:   no GO needed; do not run blind
+# NODE: Red only  |  BRANCH: n/a
+# PRE:  grounded per START_HERE_AGENTS.md
+# WHAT: Install a logon task that maps the VENGEANCE SboxBridgeIpc share on Green.
+# =====================================================================
 <#
 .SYNOPSIS
   Install Cornerman logon task to map VENGEANCE SboxBridgeIpc in the interactive session.

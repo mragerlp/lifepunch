@@ -1,3 +1,10 @@
+# =====================================================================
+# RISK: DANGEROUS IF UNGROUNDED (strips LifePunch / lp_* sources from a DXRP game root)
+# GO:   BLOODWAVE GO REQUIRED
+# NODE: Red only  |  BRANCH: n/a (operates on a DXRP game tree)
+# PRE:  grounded per START_HERE_AGENTS.md; confirm the target is the vanilla workbench
+# WHAT: Shared helpers to remove LifePunch trees / lp_* command sources from a DXRP game root.
+# =====================================================================
 # Shared helpers: strip LifePunch / lp_* command sources from a DXRP game root.
 
 function Get-DxrpGameRootFromConfigPath {
