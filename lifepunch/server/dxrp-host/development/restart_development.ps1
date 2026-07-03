@@ -28,4 +28,4 @@ if (-not (Test-Path -LiteralPath $startBat)) {
 }
 
 Write-Host 'Starting Development in visible CMD (server2_start.bat)...' -ForegroundColor Green
-Start-Process -FilePath 'cmd.exe' -ArgumentList @('/c', 'start', 'LIFEPUNCH Development', 'cmd', '/k', 'server2_start.bat') -WorkingDirectory $InstallRoot
+Start-Process -FilePath 'cmd.exe' -ArgumentList @('/k', 'server2_start.bat') -WorkingDirectory $InstallRoot

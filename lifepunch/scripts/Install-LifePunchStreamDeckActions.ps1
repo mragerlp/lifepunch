@@ -23,7 +23,7 @@ $items = @(
     @{ File = '07-Git-Status.cmd'; Title = 'Git Status'; Args = '-Action GitStatus'; NoExit = $true },
     @{ File = '08-Pull-Rebase.cmd'; Title = 'Pull Rebase'; Args = '-Action GitPullRebase'; NoExit = $true },
     @{ File = '09-CVL-Health.cmd'; Title = 'CVL Health'; Args = '-Action CvlObservability'; NoExit = $true },
-    @{ File = '10-Start-LifePunch-Day.cmd'; Title = 'Start LifePunch Day'; Args = '-NoProfile -ExecutionPolicy Bypass -File "C:\Users\jared\Projects\lifepunch\lifepunch\scripts\Start-LifePunchDay.ps1"'; NoExit = $true; IsDirect = $true }
+    @{ File = '10-Start-LifePunch-Day.cmd'; Title = 'Start LifePunch Day'; Args = '-NoProfile -ExecutionPolicy Bypass -File "C:\Users\jared\Projects\lifepunchdxrp\lifepunch\scripts\Start-LifePunchDay.ps1"'; NoExit = $true; IsDirect = $true }
 )
 
 foreach ($item in $items) {

@@ -9,14 +9,15 @@
 // Presence in this repository or on the DXRP portal grants no rights to anyone else.
 // ─────────────────────────────────────────────────────────────────────────────
 
-// Active palette (DXRP-tinted — armor cyan folded in subtly)
+// Party-menu parity palette (DXRP $color-accent — issue #126 / dxura/dxrp#73)
 $bg: #14161c;
 $bg-raised: #1c1f27;
 $bg-row: #252932;
-$accent: #4f8cff;
-$accent-hover: #3d7af0;
-$accent-soft: rgba(79, 140, 255, 0.12);
-$accent-glow: rgba(79, 140, 255, 0.14);
+$accent: #7170e6;
+$accent-hover: #5f5ed4;
+$accent-soft: rgba(113, 112, 230, 0.08);
+$accent-glow: rgba(113, 112, 230, 0.14);
+$accent-border: rgba(113, 112, 230, 0.35);
 $dxrp-cyan: #08b2e3;
 $danger: #e7544a;
 $text: #e8eaed;
@@ -172,7 +173,7 @@ $shell-radius: 22px;
 		cursor: pointer;
 
 		&:hover {
-			border-color: rgba(79, 140, 255, 0.35);
+			border-color: $accent-border;
 			background-color: $accent-soft;
 			color: $text;
 
@@ -183,7 +184,7 @@ $shell-radius: 22px;
 	}
 
 	.header-chip-copied {
-		border-color: rgba(79, 140, 255, 0.35);
+		border-color: $accent-border;
 		color: $accent;
 
 		.material-icons {
@@ -892,7 +893,7 @@ $shell-radius: 22px;
 			color: $text;
 			font-weight: 600;
 			background-color: $accent-soft;
-			border: 1px solid rgba(79, 140, 255, 0.35);
+			border: 1px solid $accent-border;
 			margin-bottom: -1px;
 
 			.tab-icon {
@@ -902,7 +903,7 @@ $shell-radius: 22px;
 			&:hover {
 				color: $text;
 				background-color: $accent-soft;
-				border-color: rgba(79, 140, 255, 0.35);
+				border-color: $accent-border;
 
 				.tab-icon {
 					color: $accent;
@@ -967,7 +968,7 @@ $shell-radius: 22px;
 				}
 
 				.network-block-value {
-					color: #6ea2ff;
+					color: $accent-hover;
 				}
 			}
 		}
@@ -1002,7 +1003,7 @@ $shell-radius: 22px;
 		// Clearer "a player is selected" state: accent border + tint + full-strength text.
 		&.active {
 			background-color: $accent-soft;
-			border: 1px solid rgba(79, 140, 255, 0.35);
+			border: 1px solid $accent-border;
 			color: $text;
 			font-weight: 500;
 		}
@@ -1090,7 +1091,7 @@ $shell-radius: 22px;
 			&.active {
 				background-color: $accent-soft;
 				color: $accent;
-				border: 1px solid rgba(79, 140, 255, 0.35);
+				border: 1px solid $accent-border;
 			}
 
 			&.disabled,
@@ -1132,7 +1133,7 @@ $shell-radius: 22px;
 		}
 
 		&:hover {
-			background-color: #3d7af0;
+			background-color: $accent-hover;
 		}
 	}
 
@@ -1186,7 +1187,7 @@ $shell-radius: 22px;
 
 		&:hover {
 			background-color: #2d323d;
-			border-color: rgba(79, 140, 255, 0.28);
+			border-color: rgba(113, 112, 230, 0.28);
 			color: $text;
 
 			.material-icons {
@@ -1630,7 +1631,7 @@ $shell-radius: 22px;
 
 			&.active {
 				background-color: $accent-soft;
-				border-color: rgba(79, 140, 255, 0.45);
+				border-color: rgba(113, 112, 230, 0.45);
 				color: $accent;
 			}
 		}
@@ -1684,7 +1685,7 @@ $shell-radius: 22px;
 					color: #fff;
 
 					&:hover {
-						background-color: #3d7af0;
+						background-color: $accent-hover;
 					}
 				}
 
@@ -1818,7 +1819,7 @@ $shell-radius: 22px;
 					color: #fff;
 
 					&:hover {
-						background-color: #3d7af0;
+						background-color: $accent-hover;
 					}
 				}
 
@@ -1911,7 +1912,7 @@ $shell-radius: 22px;
 				}
 
 				&:hover {
-					background-color: #3d7af0;
+					background-color: $accent-hover;
 				}
 			}
 
@@ -2017,7 +2018,7 @@ $shell-radius: 22px;
 			height: 42px;
 			border-radius: 12px;
 			background-color: $accent-soft;
-			border: 1px solid rgba(79, 140, 255, 0.28);
+			border: 1px solid rgba(113, 112, 230, 0.28);
 			box-shadow: 0 0 18px $accent-glow;
 
 			.material-icons {

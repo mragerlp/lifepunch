@@ -82,9 +82,10 @@ Push-OnBoxScript 'Map-CornermanBridgeShare.ps1'
 Push-OnBoxScript 'Ensure-CornermanBridgeShare.ps1'
 Push-OnBoxScript 'Start-CornermanLmStudio.ps1'
 Push-OnBoxScript 'Start-CornermanSboxEditorTunnel.ps1'
+Push-OnBoxScript 'Install-CornermanIdeMcp.ps1'
 
-Write-Step 'Refresh Cornerman mcp.json'
-& (Join-Path $Here 'Install-CornermanSboxBridgeMcp.ps1') -SshTarget $SshTarget -SkipShare -SkipLmClone
+Write-Step 'Refresh Cornerman IDE MCP (Cursor + Copilot)'
+& (Join-Path $Here 'Install-CornermanIdeMcp.ps1') -SshTarget $SshTarget -SkipShare -SkipLmClone
 
 if (-not $SkipLmWarm) {
     Write-Step 'Warm LM Studio on Green'

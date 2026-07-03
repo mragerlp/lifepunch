@@ -9,7 +9,7 @@
 
 - Holds all lanes: `lifepunch/addons/`, `lifepunch/website/`, `lifepunch/server/`, `.cursor/rules`,
   `lifepunch/docs/`, everything.
-- Primary PC checkout: `C:\Users\jared\Projects\LIFEPUNCH`
+- Primary PC checkout: `C:\Users\jared\Projects\lifepunchdxrp`
 - Git `origin` stays GitHub. Always `git pull --rebase` + `git push` to `origin`.
 - Do **not** use OneDrive clones (removed June 2026 — git-corruption risk).
 
@@ -98,7 +98,7 @@ self-contained and the rules auto-apply at the lane root — no separate foundat
 2. From the GitHub monorepo on Primary PC:
 
    ```powershell
-   cd C:\Users\jared\Projects\LIFEPUNCH
+   cd C:\Users\jared\Projects\lifepunchdxrp
    .\lifepunch\scripts\setup-gitlab-projects.ps1 -GitLabNamespace mragerlp
    ```
 

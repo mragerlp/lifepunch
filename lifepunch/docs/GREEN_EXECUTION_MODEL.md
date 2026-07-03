@@ -12,7 +12,7 @@ Every agent session: **`git pull --rebase`** on the machine you are on before wo
 
 | Group | Machine | Repo path | Primary job |
 |-------|---------|-----------|-------------|
-| **Red** | VENGEANCE | `C:\Users\jared\Projects\LIFEPUNCH` | Orchestrate · compose · s&box editor · bridge · Host Play · proof · **git push** |
+| **Red** | VENGEANCE | `C:\Users\jared\Projects\lifepunchdxrp` | Orchestrate · compose · s&box editor · bridge · Host Play · proof · **git push** |
 | **Green B** | Cornerman (`192.168.1.229`) | `C:\Projects\lifepunch` | Warm LM · distill · **heavy agent implementation** · bridge MCP (via SMB to Red) |
 | **Green A** | MacBook (macOS) | `~/Projects/lifepunch` | **Design Architect (ChatGPT)** · control plane · Cursor + Copilot · RDP → Cornerman |
 

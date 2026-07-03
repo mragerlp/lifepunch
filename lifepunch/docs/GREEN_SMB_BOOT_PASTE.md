@@ -47,6 +47,8 @@ If mcp.json shows mirror path: tell Red to run Install-CornermanSboxBridgeMcp.ps
 
 **MacBook Green A (native, no RDP):** `handoff/MAC_GREEN_NATIVE_GROUNDING_PASTE.txt` · full guide `handoff/MACBOOK_CORNERMAN_MOBILE.md`
 
+**Green MCP full checklist (step-by-step):** `handoff/CORNERMAN_MCP_SETUP_PASTE.txt`
+
 **Red refreshes Green wiring (after editor is up):**
 
 ```powershell

@@ -1,6 +1,6 @@
 RED SESSION — VENGEANCE Orchestration + Runtime (Cursor)
 
-Machine: VENGEANCE (Red) · repo C:\Users\jared\Projects\LIFEPUNCH
+Machine: VENGEANCE (Red) · repo C:\Users\jared\Projects\lifepunchdxrp
 Green B: Cornerman executes heavy work · pull from Green before orchestrate
 Green A: MacBook control plane · RDP to Cornerman when needed
 Law: lifepunch/docs/GREEN_EXECUTION_MODEL.md · MACHINE_CAST.md

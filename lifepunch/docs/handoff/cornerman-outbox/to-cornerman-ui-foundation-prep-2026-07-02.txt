@@ -1,0 +1,53 @@
+LIFEPUNCH UI FOUNDATION PREP (DRAFT - HOLD UNTIL BLOODWAVE GO)
+
+Goal:
+- Build a reusable UI/menu visual baseline for new Lifepunch addons/custom jobs
+- Keep behavior frozen (styling/layout only)
+- Keep all output as draft (no push)
+
+Scope anchor:
+- Target addon UI now: lifepunch/addons/Code/Addons/lifepunch/adminmenu/StaffMenu.razor + StaffMenu.razor.scss
+- Reference language: DXRP PartyMenu + TabMenu + UI tokens
+- Approved design direction: accent #7170e6, include sidebar refactor, keep ops window 1160x700
+
+Autopilot prep packets (parallel-safe):
+
+Packet A - Token remap groundwork (no DOM changes)
+1) Inventory top-level StaffMenu tokens and direct accent uses.
+2) Prepare a single token block remap for:
+   - $accent, $accent-hover, $accent-soft, $accent-glow
+   - shell/bg/border rounding parity targets
+3) Patch selected row and tab active visuals:
+   - .player-row.selected -> low-opacity accent wash
+   - .tab-sel -> wash/opacity model (remove heavy ring style)
+4) Keep no linear-gradient rule intact.
+
+Packet B - Chrome weight reduction
+1) Flatten heavy header chips/glow treatment.
+2) Flatten .action-btn tile weight (icon badge + tile emphasis down).
+3) Preserve all command wiring and button behavior.
+
+Packet C - Sidebar parity prep (layout)
+1) Draft Razor/SCSS move from horizontal .tabs strip to left sidebar pattern.
+2) Keep content panes untouched except container flow.
+3) Keep existing 1160x700 shell size.
+
+Packet D - Visual proof checklist prep
+1) Build screenshot checklist against:
+   dxrp-public/dxrp-staffmenu/handoff/DIMMER_REVIEW_CHECKLIST.md
+2) Require Red flatgrass screenshot proof (eyes-covered rule).
+
+Hard constraints:
+- No permission/RPC/server behavior edits
+- No package ident changes
+- No LifePunch proprietary code moved into dxrp-public game tree
+- No commit/push without Bloodwave GO
+
+Deliverables to hand back (draft):
+- Selector-level change list per packet
+- Risk notes (what may break layout)
+- Suggested PR split:
+  1) feat/lifepunchulx-party-style-tokens
+  2) feat/lifepunchulx-party-chrome
+  3) feat/lifepunchulx-party-sidebar
+

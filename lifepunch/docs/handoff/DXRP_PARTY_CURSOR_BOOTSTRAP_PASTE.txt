@@ -7,10 +7,10 @@ Paste THIS FILE ALONE at session start. Append your task line at the bottom.
 FOCUS SWITCH — NOT LIFEPUNCH ADDON LANE
 ══════════════════════════════════════════════════════════════════════════════
   FOCUS:     DXRP upstream (public fork → dxura/dxrp develop)
-  Clone:     C:\Users\jared\Projects\dxrp-public
+  Clone:     C:\Users\jared\Projects\dxrp
   Branch:    bounty/73-party-system  (NOT lifepunch main · NOT develop for ship work)
   PR:        #77 open · head 914967a (Alt-gated HUD drag + collapse · equal roster cards)
-  Monorepo:  C:\Users\jared\Projects\LIFEPUNCH — lane law/docs READ ONLY; no party commits here
+  Monorepo:  C:\Users\jared\Projects\lifepunchdxrp — lane law/docs READ ONLY; no party commits here
 
   Bloodwave: Dxura DXRP dev team · bounty owner · Dimmer reviews/merges upstream
 
@@ -35,7 +35,7 @@ Short block: lifepunch/docs/AGENT_PROMPT.md · Block F
 ══════════════════════════════════════════════════════════════════════════════
 STEP 0 — SYNC (dxrp-public)
 ══════════════════════════════════════════════════════════════════════════════
-  cd C:\Users\jared\Projects\dxrp-public
+  cd C:\Users\jared\Projects\dxrp
   git fetch origin upstream
   git checkout bounty/73-party-system
   git pull --rebase origin bounty/73-party-system

@@ -35,7 +35,7 @@ Required filenames (stem — `.wav`, `.mp3`, or `.ogg`):
 From repo addons root:
 
 ```powershell
-cd C:\Users\jared\Projects\LIFEPUNCH
+cd C:\Users\jared\Projects\lifepunchdxrp
 powershell -File lifepunch\addons\scripts\Intake-BitcoinMinerSounds.ps1
 ```
 

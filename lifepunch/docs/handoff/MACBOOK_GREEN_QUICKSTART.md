@@ -122,7 +122,7 @@ Then paste your task.
 ## Red (VENGEANCE) — keep bridge alive
 
 ```powershell
-cd C:\Users\jared\Projects\LIFEPUNCH
+cd C:\Users\jared\Projects\lifepunchdxrp
 powershell -File lifepunch\scripts\Start-SboxDxrpEditor.ps1 -FullCapacity -PreflightFix -BitcoinOnly -SyncAddon lpbitcoin,adminmenu
 ```
 

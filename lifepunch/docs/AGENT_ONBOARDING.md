@@ -196,7 +196,7 @@ Register + reasons: `lifepunch/addons/docs/QUARANTINE_REGISTER.md`. Ideation gat
 ### 1. GitHub monorepo → THE SOURCE OF TRUTH
 
 **`https://github.com/mragerlp/lifepunch`** (private monorepo). Live local checkout:
-`C:\Users\jared\Projects\LIFEPUNCH`. Holds all lanes — `lifepunch/addons/`, `website/`,
+`C:\Users\jared\Projects\lifepunchdxrp`. Holds all lanes — `lifepunch/addons/`, `website/`,
 `server/`, `portal/`, `gamemode/`, `admin-panel/`, `.cursor/rules`, `docs/`, `legal/`, etc.
 **Owner does all design/build integration here.** Git `origin` is always this repo.
 (Do **not** use any OneDrive clone — removed June 2026 as a git-corruption risk.)
@@ -221,7 +221,7 @@ partner commits on GitLab integrate back into GitHub. Full map:
 
 | Node | Job |
 |------|-----|
-| **Red (VENGEANCE)** | Orchestrate · s&box · bridge · proof · push (`C:\Users\jared\Projects\LIFEPUNCH`) |
+| **Red (VENGEANCE)** | Orchestrate · s&box · bridge · proof · push (`C:\Users\jared\Projects\lifepunchdxrp`) |
 | **Cornerman (Green B)** | Warm · distill · heavy agent work (`C:\Projects\lifepunch` · patch-handoff to Red) |
 | **Mac (Green A)** | Control plane · **Design Architect (ChatGPT)** · native Cursor + Copilot · RDP → Cornerman |
 
@@ -240,7 +240,7 @@ Verified tip is recorded in `lifepunch/config/dxrp-upstream-pin.json` (commit af
 `Start-SboxDxrpEditor.ps1` blocks launch when the pin is behind (`-FailIfBehind`).
 
 1. **`mragerlp/dxrp-public`** → our DXRP fork (`origin=dxrp-public`, `upstream=dxura/dxrp`).
-   Local clone: `C:\Users\jared\Projects\dxrp-public`. Synced via `sync-dxrp-fork.ps1` (ff-merge upstream `develop`).
+   Local clone: `C:\Users\jared\Projects\dxrp`. Synced via `sync-dxrp-fork.ps1` (ff-merge upstream `develop`).
    **Upstream bounty / vanilla DXRP work:** read **`lifepunch/docs/DXRP_CONTRIBUTOR_LANE.md`** first — separate focus from LifePunch proprietary addons; never commit LifePunch headers or local MCP `game/Libraries/*` into the fork.
    **Party #73 new chat:** paste **`lifepunch/docs/handoff/DXRP_PARTY_CURSOR_BOOTSTRAP_PASTE.txt`** alone, or **Block F** in `AGENT_PROMPT.md`.
 2. **The Steam checkout** (`D:\Steam\steamapps\common\sbox\dxrp`, `origin=dxura/dxrp`) →

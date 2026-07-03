@@ -41,7 +41,7 @@ C:\SBOX-DXRP-Server\                    ← Official 70p (SteamCMD staging)
 ├── sbox-server.dll, dxrp-server.cs, server1_start.bat
 └── secure\official.local.env + development.local.env   ← BOTH tokens here
 
-C:\Program Files (x86)\Steam\steamapps\common\sbox\   ← Development (Steam staging)
+C:\Program Files (x86)\Steam\steamapps\common\sbox\   ← Development (public release via auto_update.bat)
 ├── sbox-server.dll, dxrp-server.cs, server2_start.bat
 ```
 

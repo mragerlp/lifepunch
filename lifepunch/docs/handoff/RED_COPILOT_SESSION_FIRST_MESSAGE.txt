@@ -1,6 +1,6 @@
 RED SESSION — VENGEANCE Orchestration + Runtime (Copilot)
 
-Machine: VENGEANCE (Red) · repo C:\Users\jared\Projects\LIFEPUNCH
+Machine: VENGEANCE (Red) · repo C:\Users\jared\Projects\lifepunchdxrp
 Law: lifepunch/docs/GREEN_EXECUTION_MODEL.md
 Full boot: lifepunch/docs/handoff/RED_COPILOT_GROUNDING_PASTE.txt
 

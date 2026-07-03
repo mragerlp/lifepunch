@@ -2,7 +2,7 @@
 
 **Status:** Active — Bloodwave on Dxura DXRP dev team (June 2026).  
 **When:** Any session touching **`mragerlp/dxrp-public`** or opening PRs to **`dxura/dxrp:develop`**.  
-**Not when:** LifePunch addon ship lane (`lifepunchaddons` monorepo, proprietary addons, portal publish).
+**Not when:** LifePunch addon ship lane (`lifepunchdxrp` monorepo, proprietary addons, portal publish).
 
 ---
 
@@ -10,8 +10,8 @@
 
 | Lane | Clone path | Remote | Commit? | Contains |
 |------|------------|--------|---------|----------|
-| **LifePunch (private)** | `C:\Users\jared\Projects\LIFEPUNCH` | `github.com/mragerlp/lifepunch` | Yes (owner approves) | LIFEPUNCH™ addons, legal, portal, server ops, proprietary headers |
-| **DXRP fork (public upstream)** | `C:\Users\jared\Projects\dxrp-public` | `origin` → `mragerlp/dxrp-public`, `upstream` → `dxura/dxrp` | Yes (bounty/PR branches) | Vanilla DXRP gamemode only — **no LifePunch IP** |
+| **LifePunch (private)** | `C:\Users\jared\Projects\lifepunchdxrp` | `github.com/mragerlp/lifepunch` | Yes (owner approves) | LIFEPUNCH™ addons, legal, portal, server ops, proprietary headers |
+| **DXRP fork (public upstream)** | `C:\Users\jared\Projects\dxrp` | `origin` → `mragerlp/dxrp-public`, `upstream` → `dxura/dxrp` | Yes (bounty/PR branches) | Vanilla DXRP gamemode only — **no LifePunch IP** |
 
 **Steam editor checkout:** `D:\Steam\steamapps\common\sbox\dxrp` — runtime only; **never commit** from there.
 
@@ -27,7 +27,7 @@
 
 ```text
 FOCUS: DXRP upstream (mragerlp/dxrp-public → dxura/dxrp develop)
-Clone: C:\Users\jared\Projects\dxrp-public
+Clone: C:\Users\jared\Projects\dxrp
 Branch: bounty/* or lifepunch/fix-* from develop — NOT lifepunch main
 
 FORBIDDEN in this session:
@@ -72,7 +72,7 @@ Disable **Cursor Tab** while VS Code is open on the same repo. Commit hygiene in
 ## Sync loop (DXRP fork)
 
 ```powershell
-cd C:\Users\jared\Projects\LIFEPUNCH
+cd C:\Users\jared\Projects\lifepunchdxrp
 git pull --rebase
 
 powershell -File lifepunch\scripts\sync-dxrp-fork.ps1
@@ -93,7 +93,7 @@ Canon: `lifepunch/docs/DXRP_DOCS_REFERENCE.md` § LifePunch to DXRP Fork Bridge.
 Before every commit / before asking Dimmer for review:
 
 ```powershell
-cd C:\Users\jared\Projects\dxrp-public
+cd C:\Users\jared\Projects\dxrp
 git status -sb
 
 # Discard local editor noise + machine-specific csproj/slnx (NEVER commit these):

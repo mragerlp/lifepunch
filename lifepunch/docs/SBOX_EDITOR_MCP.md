@@ -4,15 +4,15 @@
 **Port registry:** `lifepunch/config/sbox-mcp-ports.json`  
 **Agent law:** `.cursor/rules/lifepunch-sbox-mcp-stack.mdc` · `lifepunch/docs/MCP_AGENT_ROUTING.md`
 
-**Libraries (DXRP `game/Libraries/`):**
+**Libraries (DXRP `game/Libraries/` or editor Library Manager):**
 
-| Package | Role |
-|---------|------|
-| `sboxskinsgg.claudebridge` | Runtime bridge — **file IPC** (not HTTP), play mode, in-game screenshots |
-| `notpointless.chomnr_mcp` | Editor MCP — compile lane — HTTP `:9090/sbox-mcp` |
-| `jtc.mcp-server` | Editor MCP — automation + docs — HTTP `:29015/mcp` |
-| `kamishell.blender_bridge` | Blender ↔ s&box live mesh sync — HTTP `:8099` (not a Cursor MCP) |
-| `notpointless.chomnr_humanoid_retargeter` | Optional — human anim retarget (import as chomnr tools) |
+| Package | sbox.game | Cursor key | Role |
+|---------|-----------|------------|------|
+| `sboxskinsgg.claudebridge` | [claudebridge](https://sbox.game/sboxskinsgg/claudebridge/) | `sbox` | Runtime bridge — **file IPC** (not HTTP), play mode, in-game screenshots |
+| `notpointless.chomnr_mcp` | [chomnr_mcp](https://sbox.game/notpointless/chomnr_mcp/) | `sbox-editor` | Editor MCP — compile lane — HTTP `:9090/sbox-mcp` |
+| `jtc.mcp-server` | [mcp-server](https://sbox.game/jtc/mcp-server) | `sbox-jtc` | Editor MCP — automation + docs — HTTP `:29015/mcp` |
+| `kamishell.blender_bridge` | — | — | Blender ↔ s&box live mesh sync — HTTP `:8099` (not a Cursor MCP) |
+| `notpointless.chomnr_humanoid_retargeter` | — | — | Optional — human anim retarget (import as chomnr tools) |
 
 **Cursor MCP (`%USERPROFILE%\.cursor\mcp.json`):**
 
@@ -102,7 +102,7 @@ On Green: restart Cursor → **3/3 green** when VENGEANCE editor is open.
 **Canonical Red boot:** `lifepunch/docs/RED_FULL_CAPACITY_BOOT.md`
 
 ```powershell
-cd C:\Users\jared\Projects\LIFEPUNCH
+cd C:\Users\jared\Projects\lifepunchdxrp
 git pull --rebase
 powershell -File lifepunch\scripts\Start-SboxDxrpEditor.ps1
 powershell -File lifepunch\scripts\Install-CornermanSboxBridgeMcp.ps1

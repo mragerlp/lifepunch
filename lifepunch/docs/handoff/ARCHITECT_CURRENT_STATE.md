@@ -6,7 +6,7 @@
 > **Evergreen law** lives in repo docs — this file is **dated state only**.  
 > **GitHub wins** over uploaded Project ZIP snapshots.
 
-**Last updated:** 2026-07-01  
+**Last updated:** 2026-07-02  
 **Integration commit anchor:** see `git log -1` on `main` after pull  
 **Cursor boot:** paste `handoff/CURSOR_NEW_CHAT_BOOTSTRAP_PASTE.txt` alone — full grounding, no extra directions
 
@@ -36,7 +36,7 @@
 |------|--------|
 | Phase A Hub mesh + proof (H1–H10) | **In progress** — **H4/H5 next**; H4/H5 before H10 |
 | Hub admin UI unlinked (`LpHashdPanel`) | **Owner signed off** (2026-06-24) |
-| Hub world power/audio flatgrass (H4/H5) | **Planned — GO pending** |
+| Hub world power/audio flatgrass (H4/H5) | **Code landed — flatgrass proof partial; owner GO + sign-off pending** |
 | Phase B Terminal (T1–T6) | **Locked until H10** |
 | Hub/Rack upgrade ownership (RFC-0005) | **HOLD** — no code until Bloodwave GO |
 | Economy / five-by-five implementation | **HOLD** — Architect questions open |
@@ -44,19 +44,21 @@
 
 ---
 
-## Hub H4/H5 repo snapshot (2026-06-30)
+## Hub H4/H5 repo snapshot (2026-07-02)
 
 | Layer | Current state |
 |-------|----------------|
 | **Power SoT** | `[Sync(FromHost)] IsPowered` on `LpBitcoinHubEntity`; spawn OFF |
 | **UI toggle** | `LpHashdPanel` power switch → `SetPoweredHost()` |
 | **World visuals** | `LpBitcoinHubVisuals` → `LpBitcoinPowerLeds` fence emissive (green ON / red OFF) |
-| **Point light** | Removed legacy children; optional single light = owner decision |
+| **Point light** | `hub_power_glow` PointLight (green, radius 140) when `EnablePowerGlow=true` — **owner keep/remove decision still open** |
 | **Fan motion** | **Parked** — no `fan_spin_hub` on prefab (`TECH_DEBT` BITCOINMINING-05) |
-| **Audio** | `UpdateHubFanSounds()` **empty stub**; `.sound` sources exist; **`vsnd_c` missing in repo** |
+| **Audio** | `UpdateHubFanSounds()` wired — startup / fan loop / fan down via `LpBitcoinIdent` paths; **`hub-*.vsnd_c` present in repo** |
 | **Prefab** | `lpbitcoin/bitcoinhub/assets/entities/bitcoinhub.prefab` — hub entity + visuals wired |
 
-**Owner decisions open for H4/H5:** world LED green/red vs HASHD amber; point light yes/no; H4+H5 one commit vs split.
+**Red autopilot proof (2026-07-02):** flatgrass `game.scene` Host Play → `lp_bitcoin_spawn_hub` → `lp_bitcoin_hub_power_toggle` ON/OFF; material audit 5 slots OK; status LED emissive on slot 1 (`bitcoinhub-sm-fence-led.vmat`); log proof in `AUTOPILOT_BITCOIN_2026-07-02.md`. **Not owner-signed** — needs Bloodwave GO paste + ear check on fan audio + day/night hero for H10.
+
+**Owner decisions open for H4/H5:** world LED green/red vs HASHD amber; point light yes/no; H4+H5 tracker checkboxes vs split sign-off.
 
 **Owner GO paste (Integration Architect — locks routing):**
 
@@ -116,7 +118,7 @@ Route: [GROK REQUIRED | AUTO OK | OPUS REQUIRED]. H4+H5 one commit.
 | Slice | Status |
 |-------|--------|
 | Hub admin UI unlinked | Owner signed off |
-| Hub world H4/H5 flatgrass | **Not done** |
+| Hub world H4/H5 flatgrass | **Partial** — MCP proof 2026-07-02; owner GO + audio/visual sign-off pending |
 | H10 hub hero | **Open** |
 | Terminal Phase B | **Locked** |
 | Law 10 exit | **Blocked** |

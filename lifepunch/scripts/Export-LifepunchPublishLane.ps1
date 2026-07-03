@@ -8,8 +8,8 @@
   Writes slim addons.json + SYNC_FROM.md.
 
 .EXAMPLE
-  powershell -File lifepunch\scripts\Export-LifepunchPublishLane.ps1 -Init -Target C:\Users\jared\Projects\lifepunch-published
-  powershell -File lifepunch\scripts\Export-LifepunchPublishLane.ps1 -Target C:\Users\jared\Projects\lifepunch-published
+  powershell -File lifepunch\scripts\Export-LifepunchPublishLane.ps1 -Init -Target C:\Users\jared\Projects\lifepunchdxrp-published
+  powershell -File lifepunch\scripts\Export-LifepunchPublishLane.ps1 -Target C:\Users\jared\Projects\lifepunchdxrp-published
 #>
 [CmdletBinding()]
 param(

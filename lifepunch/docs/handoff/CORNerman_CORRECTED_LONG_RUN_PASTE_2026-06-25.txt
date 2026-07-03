@@ -5,7 +5,7 @@ Cornerman — long unattended run. Use Green Deep the entire time.
 IMPORTANT: Follow the corrected report delivery rules below exactly.
 
 1. Pull latest:
-cd C:\Users\jared\Projects\LIFEPUNCH
+cd C:\Users\jared\Projects\lifepunchdxrp
 git fetch
 git pull --rebase
 

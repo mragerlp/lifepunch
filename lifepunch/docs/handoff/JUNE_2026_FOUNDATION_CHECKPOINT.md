@@ -26,7 +26,7 @@
 
 ### VENGEANCE (primary)
 ```powershell
-cd C:\Users\jared\Projects\LIFEPUNCH
+cd C:\Users\jared\Projects\lifepunchdxrp
 git pull --rebase
 # Already pushed by integrator — verify: git log -1 --oneline
 ```
@@ -59,12 +59,12 @@ GitLab `lifepunch-website` — pull after monorepo export if foundation docs ref
 |------|-------|
 | Display | **LIFEPUNCH™ Published Addons** |
 | GitHub | `mragerlp/lifepunch-published` (private) |
-| Local | `C:\Users\jared\Projects\lifepunch-published` |
+| Local | `C:\Users\jared\Projects\lifepunchdxrp-published` |
 | Contents | `adminmenu` only until bitcoin Ophion sign-off |
 
 Re-export:
 ```powershell
-powershell -File lifepunch\scripts\Export-LifepunchPublishLane.ps1 -Target C:\Users\jared\Projects\lifepunch-published
+powershell -File lifepunch\scripts\Export-LifepunchPublishLane.ps1 -Target C:\Users\jared\Projects\lifepunchdxrp-published
 ```
 
 ---

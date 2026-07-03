@@ -70,7 +70,7 @@ First-person needs a **viewmodel** file (`v_ak47.vmdl`) and a prefab wired like 
 3. Navigate to this file and open it:
 
 ```text
-C:\Users\jared\Projects\LIFEPUNCH\lifepunch\addons\addons.sbproj
+C:\Users\jared\Projects\lifepunchdxrp\lifepunch\addons\addons.sbproj
 ```
 
 4. Wait until the editor finishes loading (bottom status bar stops saying “compiling” for a long time).
@@ -166,7 +166,7 @@ Use Blender 3.x or 4.x (free).
 2. Open:
 
 ```text
-C:\Users\jared\Projects\LIFEPUNCH\lifepunch\addons\Assets\addons\lifepunch\ak47\models\lifepunch\ak47\w_ak47\source\ak47.fbx
+C:\Users\jared\Projects\lifepunchdxrp\lifepunch\addons\Assets\addons\lifepunch\ak47\models\lifepunch\ak47\w_ak47\source\ak47.fbx
 ```
 
 ### 2.3 Orient for first person
@@ -189,7 +189,7 @@ Tip: Export a version that looks like a gun held in the lower-right of the scree
 2. Save as:
 
 ```text
-C:\Users\jared\Projects\LIFEPUNCH\lifepunch\addons\Assets\addons\lifepunch\ak47\models\lifepunch\ak47\v_ak47\source\ak47_vm.fbx
+C:\Users\jared\Projects\lifepunchdxrp\lifepunch\addons\Assets\addons\lifepunch\ak47\models\lifepunch\ak47\v_ak47\source\ak47_vm.fbx
 ```
 
 3. In export options, include **Armature** / bones if offered.
@@ -310,7 +310,7 @@ Use only after local prefab looks sane in editor preview.
 In PowerShell:
 
 ```powershell
-cd C:\Users\jared\Projects\LIFEPUNCH\lifepunch\addons
+cd C:\Users\jared\Projects\lifepunchdxrp\lifepunch\addons
 .\scripts\validate-layout.ps1
 .\scripts\prepare-publish.ps1 -Addon ak47
 ```

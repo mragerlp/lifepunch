@@ -182,7 +182,8 @@ Write-Host ''
 Write-Host 'Next on Cornerman:' -ForegroundColor Cyan
 Write-Host '  1. Map SMB (once): Map-CornermanBridgeShare.ps1' -ForegroundColor Cyan
 Write-Host '  2. Editor MCP tunnel: Start-CornermanSboxEditorTunnel.ps1 -Background' -ForegroundColor Cyan
-Write-Host '  3. Cursor -> MCP green: sbox + sbox-editor + cornerman-lm' -ForegroundColor Cyan
-Write-Host '  4. VENGEANCE editor open (Start-SboxDxrpEditor.ps1)' -ForegroundColor Cyan
+Write-Host '  3. Cursor Reload -> MCP 3/3: sbox + sbox-editor + cornerman-lm' -ForegroundColor Cyan
+Write-Host '  4. Copilot: open C:\Projects\lifepunch in VS Code (uses .vscode/mcp.json)' -ForegroundColor Cyan
+Write-Host '  5. VENGEANCE editor open (Start-SboxDxrpEditor.ps1)' -ForegroundColor Cyan
 Write-Host "  IPC share: $uncIpc" -ForegroundColor DarkGray
 Write-Host "  Editor tunnel -> http://127.0.0.1:$EditorMcpPort/sbox-mcp (via SSH to VENGEANCE)" -ForegroundColor DarkGray

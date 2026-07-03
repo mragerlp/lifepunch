@@ -7,7 +7,7 @@ Open GitHub Copilot on VENGEANCE. Cornerman (Green B) executes heavy work — pu
 ══════════════════════════════════════════════════════════════════════════════
 STEP 0 — SYNC (before reading or editing)
 ══════════════════════════════════════════════════════════════════════════════
-  cd C:\Users\jared\Projects\LIFEPUNCH
+  cd C:\Users\jared\Projects\lifepunchdxrp
   git fetch; git checkout checkpoint-lpbitcoin-pre-sleep-20260701; git pull --rebase
 If behind AND dirty: STOP — tell Bloodwave (commit or stash first).
 If Cornerman shipped work: Pull-CornermanPatches.ps1 -Push before new orchestration.
@@ -109,7 +109,7 @@ Bloodwave runs lp_authorize manually. Eyes-covered until bridge connected + scre
 ══════════════════════════════════════════════════════════════════════════════
 COMMIT WORKFLOW (manual — no auto-hook)
 ══════════════════════════════════════════════════════════════════════════════
-  cd C:\Users\jared\Projects\LIFEPUNCH
+  cd C:\Users\jared\Projects\lifepunchdxrp
   git add <files>
   git commit -m "<type>(<scope>): <description>"
   git push

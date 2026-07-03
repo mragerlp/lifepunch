@@ -36,7 +36,7 @@ You are an agent on the LifePunch project. Before doing anything, ground yoursel
 single source of truth — do NOT re-derive or diverge from it.
 
 CVL TRI-STACK + MAC (memorize — LifePunch web = nodes + edges):
-- **R — VENGEANCE** (red): Orchestrate · runtime · proof · push. `C:\Users\jared\Projects\LIFEPUNCH`. **Block A.**
+- **R — VENGEANCE** (red): Orchestrate · runtime · proof · push. `C:\Users\jared\Projects\lifepunchdxrp`. **Block A.**
   Paste: `handoff/RED_CURSOR_GROUNDING_PASTE.txt` or `RED_COPILOT_GROUNDING_PASTE.txt`.
 - **G — Cornerman** (green B): Warm · distill · execute heavy work. `192.168.1.229` · `C:\Projects\lifepunch`.
   **Block D.** Paste: `GREEN_CORNERMAN_*_GROUNDING_PASTE.txt`.
@@ -187,14 +187,14 @@ one-paragraph summary of where we are before work.
 ## Block A — Owner / addons agent (Primary PC — **R / red**)
 
 **Canonical repo:** `https://github.com/mragerlp/lifepunch`  
-**Local checkout:** `C:\Users\jared\Projects\LIFEPUNCH`
+**Local checkout:** `C:\Users\jared\Projects\lifepunchdxrp`
 
 ```text
 [Paste Block 0 above, then:]
 
 YOU ARE: an agent on **VENGEANCE (Red)** — orchestration + runtime (see MACHINE_CAST.md · GREEN_EXECUTION_MODEL.md).
 
-YOUR REPO: https://github.com/mragerlp/lifepunch · `C:\Users\jared\Projects\LIFEPUNCH`
+YOUR REPO: https://github.com/mragerlp/lifepunch · `C:\Users\jared\Projects\lifepunchdxrp`
 YOU ORCHESTRATE: Cornerman (Green B) executes heavy work — pull from Green before proof/push.
 MacBook (Green A) controls Cornerman via RDP.
 
@@ -434,11 +434,11 @@ NEXT: confirm branch + read AK47_LANE.md, then [YOUR AK TASK HERE].
 
 YOU ARE: agent on VENGEANCE finishing DXRP upstream bounty #73 (Party System).
 
-FOCUS: C:\Users\jared\Projects\dxrp-public · branch bounty/73-party-system · PR #77 → dxura/dxrp develop
+FOCUS: C:\Users\jared\Projects\dxrp · branch bounty/73-party-system · PR #77 → dxura/dxrp develop
 NOT: lifepunchaddons commits · no LIFEPUNCH proprietary headers · no bitcoin/U1/U2 lane
 
 BEFORE EDIT:
-  cd C:\Users\jared\Projects\dxrp-public
+  cd C:\Users\jared\Projects\dxrp
   git checkout bounty/73-party-system
   git pull --rebase origin bounty/73-party-system
   Clean editor noise per DXRP_CONTRIBUTOR_LANE.md before commit

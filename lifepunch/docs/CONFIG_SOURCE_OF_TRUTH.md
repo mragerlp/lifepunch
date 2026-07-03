@@ -2,7 +2,7 @@
 
 **Status:** Restructure Phase 3 — index only (no file moves).  
 **Updated:** 2026-06-30  
-**Read with:** `REPO_DOMAIN_MAP.md` · `CONFIG_SOURCE_OF_TRUTH` is the answer to *“which file is law?”*
+**Read with:** `REPO_DOMAIN_MAP.md` · `PATH_CANON_VENGEANCE.md` (desk clone paths) · `CONFIG_SOURCE_OF_TRUTH` is the answer to *“which file is law?”*
 
 When two files disagree, **fix the canonical file** listed here — do not fork duplicates.
 
@@ -12,6 +12,8 @@ When two files disagree, **fix the canonical file** listed here — do not fork 
 
 | Question | Canonical file |
 |----------|----------------|
+| Branch model (main / develop)? | `lifepunch/docs/BRANCH_MODEL.md` |
+| Commit / push / pull law? | `lifepunch/docs/GIT_CHECKPOINTS.md` |
 | Which addons exist / ownership headers? | `lifepunch/addons/config/addons.json` |
 | Public package slug vs packageFolder parent? | `lifepunch/addons/config/packages.json` + `package-staging.json` |
 | Active vs quarantined idents? | `lifepunch/addons/config/portfolio.json` |

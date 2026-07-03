@@ -1,6 +1,7 @@
 LIFEPUNCH™ — Green B: Cornerman Cursor grounding (warm · distill · execute)
-Updated: 2026-07-01 · Mac → RDP → Cursor on Cornerman · Red editor + bridge must be up
+Updated: 2026-07-03 · Mac → RDP → Cursor on Cornerman · Red editor + bridge must be up
 Full depth: lifepunch/docs/handoff/GREEN_CURSOR_NEW_CHAT_BOOTSTRAP_PASTE.txt
+MCP wiring (step-by-step): lifepunch/docs/handoff/CORNERMAN_MCP_SETUP_PASTE.txt
 
 ══════════════════════════════════════════════════════════════════════════════
 ROLE — GREEN B (workshop + bridge MCP)
@@ -24,6 +25,7 @@ PREFLIGHT (PowerShell on Cornerman desktop)
 
   If False: STOP — ask Red to start editor/bridge.
   If True: Cursor → Reload Window → MCP 3/3: sbox · sbox-editor · cornerman-lm
+  Full MCP checklist: lifepunch/docs/handoff/CORNERMAN_MCP_SETUP_PASTE.txt
 
 ══════════════════════════════════════════════════════════════════════════════
 LAW · SHIPPING

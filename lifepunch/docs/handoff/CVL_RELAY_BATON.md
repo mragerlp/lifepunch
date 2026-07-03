@@ -10,7 +10,7 @@
 ## ON PULL — DO THIS FIRST (every node)
 
 **Pulling a change to `CVL_AGENT_ONBOARDING.md` or this baton means the ground moved.** On every node
-(Cornerman Green B, Mac Green A, Red), after `git fetch`:
+(Red, Cornerman Green B, **Mac Green A**), after `git fetch`:
 
 1. **`git pull --rebase`** — full rebase onto the latest branch tip (`checkpoint-lpbitcoin-pre-sleep-20260701`).
 2. **Re-read `lifepunch/docs/CVL_AGENT_ONBOARDING.md` in full**, then your lane's **mandatory reads (§12)**.
@@ -24,14 +24,18 @@
 
 ```text
 ── CVL HANDOFF ──
-FROM:   Red/Cursor/Opus
-LANE:   LIFEPUNCH (docs/tooling - CVL signal bus)
-DID:    Wired git-based signal bus: Send-CvlHandoff.ps1 + CVL_FIRST_BROADCAST.txt + baton LATEST/HISTORY markers.
-STATE:  DOCS+TOOLING ONLY - no gameplay code.
-NEXT:   Bloodwave sends handoff/CVL_FIRST_BROADCAST.txt to Cornerman + Mac; they git pull --rebase + re-read CVL_AGENT_ONBOARDING.md before any work.
-TO:     Cornerman + Mac: pull + re-ground. Red: implement H4/H5 on owner GO.
-PASTE:  lifepunch/docs/handoff/CVL_FIRST_BROADCAST.txt
-COMMIT: in this push
+FROM:   Red/Cursor/Auto
+LANE:   DXRP party verify (vanilla) + lpbitcoin Phase A parallel
+DID:    Green A MacBook Air M2 back online — root cause was failed charger, not dead hardware.
+        CORNERMAN_MCP_SETUP_PASTE on origin; Red vanilla editor + chomnr/jtc MCP live on VENGEANCE.
+STATE:  Green A BACK IN WEB (replace charger; verify battery health). Red owns editor + git push.
+        Party lane active: flatgrass /party proof on dxrp-vanilla. Cornerman: MCP paste + distill OK.
+NEXT:   All nodes: git pull --rebase. Mac: MAC_GREEN_CURSOR_GROUNDING_PASTE + pull checkpoint branch.
+        Red: continue party flatgrass proof. Cornerman: CORNERMAN_MCP_SETUP_PASTE for MCP 3/3.
+        Architect: Mac ChatGPT OR Red browser — owner choice. No Apple repair block unless battery fails.
+TO:     Mac/Cornerman: pull before new sessions. Red: sbox-editor = chomnr in Cursor (not named chomnr).
+PASTE:  handoff/CORNERMAN_MCP_SETUP_PASTE.txt · handoff/CVL_RELAY_BATON.md
+COMMIT: this baton (Green A restored + party/MCP pins).
 ```
 
 <!-- CVL_BATON_LATEST_END -->
@@ -41,6 +45,54 @@ COMMIT: in this push
 ## BATON HISTORY (most recent first)
 
 <!-- CVL_BATON_HISTORY_START -->
+
+### 2026-07-03 02:35
+```text
+── CVL HANDOFF ──
+FROM:   Red/Cursor/Auto
+LANE:   LIFEPUNCH lpbitcoin Phase A — Green A (MacBook) OUT OF WORKFLOW
+DID:    Bloodwave reports MacBook Air M2 dead (no power, stiff trackpad, was charging, no liquid).
+        Suspected battery/hardware — unplugged, Apple repair pending. CVL continues on Red + Cornerman only.
+STATE:  Green A OFFLINE — superseded 2026-07-03: charger failed, Mac back online.
+NEXT:   (historical)
+TO:     ALL AGENTS: Mac is out of the web until further notice. Red owns editor truth + push.
+PASTE:  lifepunch/docs/handoff/CVL_RELAY_BATON.md
+COMMIT: d3d53b9 era baton — do not use for current Green A status.
+```
+
+### 2026-07-02 21:32
+```text
+── CVL HANDOFF ──
+FROM:   Red/Cursor/Auto
+LANE:   LIFEPUNCH lpbitcoin Phase A — AUTOPILOT ACTIVE (owner GO 2026-07-02 ~18:06 ET)
+DID:    Sync lpbitcoin→dxrp; flatgrass H4/H5 partial proof (spawn, power toggle, material/LED audit);
+        Universal Upgrades home UI preview; fixed ARCHITECT_CURRENT_STATE H4/H5 doc drift;
+        wrote AUTOPILOT_BITCOIN_2026-07-02.md. Party/staff lane unchanged (standby, uncommitted).
+STATE:  Bloodwave AWAY — review on return. Red may automate safe Phase A slices (H2/H6 proof, docs,
+        screenshots, tracker notes). NO push. NO dxrp-public commit. NO new H4/H5 hub code unless
+        owner paste locks LED/point-light decisions on return.
+NEXT:   Red: finish H6 prefab audit + screenshot recapture + review package in proof folder.
+        Cornerman/Mac: pull when baton commits — read-only prep/distill only until push.
+        Bloodwave return: ear-check fan audio, LED/point-light call, approve commit scope + push.
+TO:     Red: lifepunch/docs/handoff/AUTOPILOT_BITCOIN_2026-07-02.md + ARCHITECT_CURRENT_STATE.md
+        Cornerman: eyes covered — no playtest claims; inbox distill if asked.
+        Party lane: still STANDBY — DXRP_PARTY_STAFF_STANDBY.md unchanged.
+PASTE:  lifepunch/docs/handoff/AUTOPILOT_BITCOIN_2026-07-02.md
+COMMIT: local only pending Bloodwave review (baton + autopilot docs + prior adminmenu ahead 2).
+```
+
+### 2026-07-02 18:06
+```text
+── CVL HANDOFF ──
+FROM:   Red/Cursor
+LANE:   DXRP OFFICIAL (party-browse) + LifePunch adminmenu (#126) — STANDBY
+DID:    Merged origin/develop into party-browse (local); P0 staff menu party-purple tokens + /menu /adminmenu /staffmenu commands; wrote DXRP_PARTY_STAFF_STANDBY.md.
+STATE:  STAND BY — no push, no dxrp-public commit until flatgrass proof.
+NEXT:   Bloodwave return → vanilla dxrp-vanilla Host Play → prove /party (Browse + current/max) + /menu|/adminmenu|/staffmenu; then owner GO to commit party-browse.
+TO:     ALL AGENTS: read lifepunch/docs/handoff/DXRP_PARTY_STAFF_STANDBY.md — warm UI only, no ship.
+PASTE:  lifepunch/docs/handoff/DXRP_PARTY_STAFF_STANDBY.md
+COMMIT: lifepunch only (this baton + adminmenu); dxrp-public uncommitted.
+```
 
 ### 2026-07-02 03:04
 ```text
@@ -61,14 +113,24 @@ COMMIT: committed + pushed to checkpoint-lpbitcoin-pre-sleep-20260701 (see `git 
 
 ---
 
+## PIN — OFFLOAD SIGNAL (Cornerman Green B)
+
+- **Law:** `lifepunch/docs/handoff/CVL_OFFLOAD_SIGNAL.md` — agents **toast + chat** when triggers fire.
+- **Command:** `powershell -File lifepunch\scripts\Send-CvlOffloadSignal.ps1 -Reason "<why>"`
+- **Right now (party PR verify):** **NO OFFLOAD** — Bloodwave on Red flatgrass; Cornerman idle is OK.
+- **Spin up Cornerman when toast says:** GREEN CODE candidate, distill/kit, heavy parallel slice, or Tier-3 only.
+
+## PIN — Green A (MacBook) — BACK ONLINE
+
+- **Status:** **ONLINE** (2026-07-03). Prior no-power episode was a **failed charger**, not dead Mac hardware. Replace charger; monitor battery health.
+- **CVL impact:** Green A **rejoins the web** — mobile Architect, native Green Cursor/Copilot, git pull on checkpoint branch. Still **no editor/MCP truth on Mac** (Red owns s&box + push).
+- **Design Architect:** Mac ChatGPT **or** Red browser — owner choice.
+- **Boot paste:** `handoff/MAC_GREEN_CURSOR_GROUNDING_PASTE.txt` · `handoff/MACBOOK_GREEN_QUICKSTART.md`
+
 ## PIN — active lane
 
-- **Lane:** `lifepunchbitcoin` / `lpbitcoin` — **Phase A Hub polish**.
-- **Next slice:** **H4 + H5** (world power / audio). **Owner GO required before code:**
-  `GO H4/H5 HUB STATE — World LED: … Point light: … Route: GROK REQUIRED | AUTO OK | OPUS REQUIRED. H4+H5 one commit.`
-- **Locked:** Phase B Terminal until H10 · economy overhaul HOLD.
-- **Branch:** `checkpoint-lpbitcoin-pre-sleep-20260701`.
-- **Proof:** flatgrass Host Play on Red + `sbox` screenshot.
+- **Lane:** **DXRP party** — PR `mragerlp-party-browse-tab` stacks #115; Bloodwave flatgrass verify on **dxrp-vanilla**.
+- **Cornerman:** idle OK until **OFFLOAD SIGNAL** toast.
 
 ## PIN — DXRP official lane (parallel, separate brain)
 
