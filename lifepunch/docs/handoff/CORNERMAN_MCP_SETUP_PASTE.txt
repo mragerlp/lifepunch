@@ -1,0 +1,140 @@
+CORNERMAN MCP SETUP — Green B (July 2026)
+
+You are on CORNERMAN (Green B). Goal: Cursor MCP 3/3 green — sbox · sbox-editor · cornerman-lm.
+
+IMPORTANT: Green does NOT get sbox-jtc (:29015). jtc is Red-only today. Ignore any jtc errors on Green.
+
+══════════════════════════════════════════════════════════════════════════════
+PREREQ — Red (VENGEANCE) must be up first
+══════════════════════════════════════════════════════════════════════════════
+Ask Red to confirm before you proceed:
+  • s&box editor open (currently vanilla party lane: dxrp-vanilla)
+  • chomnr listening :9090 (editor bottom-right: green MCP pill)
+  • Claude Bridge IPC heartbeat present
+
+Red refresh (if anything is red on Red):
+  cd C:\Users\jared\Projects\lifepunch
+  powershell -File lifepunch\scripts\Install-CornermanSboxBridgeMcp.ps1
+  powershell -File lifepunch\scripts\Connect-CornermanBridge.ps1 -SkipLmWarm
+  powershell -File lifepunch\scripts\Start-VengeanceEditorTunnelToCornerman.ps1 -Background
+
+══════════════════════════════════════════════════════════════════════════════
+STEP 0 — Repo (Cornerman desktop PowerShell, interactive)
+══════════════════════════════════════════════════════════════════════════════
+cd C:\Projects\lifepunch
+git fetch origin
+git checkout checkpoint-lpbitcoin-pre-sleep-20260701
+git pull --rebase
+
+══════════════════════════════════════════════════════════════════════════════
+STEP 1 — Map SMB bridge (once per reboot; MUST be interactive desktop)
+══════════════════════════════════════════════════════════════════════════════
+powershell -NoProfile -ExecutionPolicy Bypass -File C:\lifepunch\cornerman\Map-CornermanBridgeShare.ps1
+
+Verify:
+  Test-Path \\VENGEANCE\SboxBridgeIpc\status.json
+Expected: True
+
+If False:
+  • Map failed (error 86/1326) → tell Bloodwave; lpbridge password on Red, not Windows Hello PIN
+  • Share missing → tell Red to run Install-CornermanSboxBridgeMcp.ps1 (elevated once for SMB)
+
+Law: sbox MCP MUST use UNC \\VENGEANCE\SboxBridgeIpc — NOT the SSH mirror path
+      C:\lifepunch\cornerman\sbox-bridge-ipc-mirror (fallback/emergency only)
+
+══════════════════════════════════════════════════════════════════════════════
+STEP 2 — Editor MCP tunnel (chomnr :9090 → Red)
+══════════════════════════════════════════════════════════════════════════════
+powershell -NoProfile -ExecutionPolicy Bypass -File C:\lifepunch\cornerman\Start-CornermanSboxEditorTunnel.ps1 -Background
+
+Verify tunnel:
+  Get-NetTCPConnection -LocalPort 9090 -State Listen -ErrorAction SilentlyContinue
+
+If tunnel fails (no passwordless SSH Green→Red):
+  • Tell Red to run instead: Start-VengeanceEditorTunnelToCornerman.ps1 -Background
+  • Path B (reverse tunnel from Red) is the common fix when Green cannot SSH to 192.168.1.236
+
+Probe chomnr through tunnel:
+  Invoke-WebRequest -Uri "http://127.0.0.1:9090/sbox-mcp" -Method Post `
+    -ContentType "application/json" `
+    -Body '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-06-18","capabilities":{},"clientInfo":{"name":"probe","version":"1"}}}' `
+    -TimeoutSec 5 -UseBasicParsing
+Expected: HTTP 200
+
+══════════════════════════════════════════════════════════════════════════════
+STEP 3 — Verify mcp.json (Cornerman)
+══════════════════════════════════════════════════════════════════════════════
+Get-Content $env:USERPROFILE\.cursor\mcp.json -Raw | ConvertFrom-Json |
+  Select-Object -ExpandProperty mcpServers | Format-List
+
+Expected THREE servers:
+
+  sbox
+    command: cmd
+    args: npx -y sbox-mcp-server
+    env.SBOX_BRIDGE_IPC_DIR = \\VENGEANCE\SboxBridgeIpc
+
+  sbox-editor
+    url = http://127.0.0.1:9090/sbox-mcp
+
+  cornerman-lm
+    command: node
+    args: C:\Projects\local-llm-mcp-server\dist\index.js
+
+WRONG if you see:
+  • SBOX_BRIDGE_IPC_DIR pointing at sbox-bridge-ipc-mirror
+  • sbox-jtc or :29015 (Green should not have this)
+  • Missing sbox-editor
+
+Fix: tell Red to re-run Install-CornermanSboxBridgeMcp.ps1, then Reload Window here.
+
+══════════════════════════════════════════════════════════════════════════════
+STEP 4 — Tier-3 LM (local on Green)
+══════════════════════════════════════════════════════════════════════════════
+LM Studio headless should be on :1234 (distill + embed loaded).
+If cornerman-lm is red, tell Bloodwave — Red may run Fix-CornermanLmServe.ps1 via SSH.
+
+Quick probe:
+  Invoke-WebRequest http://127.0.0.1:1234/v1/models -TimeoutSec 5 -UseBasicParsing
+
+══════════════════════════════════════════════════════════════════════════════
+STEP 5 — Cursor reload + MCP verify
+══════════════════════════════════════════════════════════════════════════════
+Ctrl+Shift+P → Developer: Reload Window
+
+Settings → MCP → expect 3/3 GREEN:
+  ✓ sbox
+  ✓ sbox-editor
+  ✓ cornerman-lm
+
+In this chat, run MCP tools:
+  1. sbox → get_bridge_status
+     Must show: connected: true, heartbeatAgeMs < 30000
+
+  2. sbox-editor → editor_get_project_info
+     Must return DXRP project (Red editor open)
+
+  3. cornerman-lm → (any simple query if tools listed)
+
+Report back exactly:
+  • MCP panel: N/3 green + which are red
+  • get_bridge_status JSON (connected + heartbeatAgeMs)
+  • Test-Path \\VENGEANCE\SboxBridgeIpc\status.json
+  • Port 9090 listening Y/N
+  • git status -sb
+
+══════════════════════════════════════════════════════════════════════════════
+ROLE LAW (do not drift)
+══════════════════════════════════════════════════════════════════════════════
+  • Cornerman = Tier-3 distill/prep + patch-handoff — read-only deploy key
+  • No git push to remotes from Green; commit locally → VENGEANCE pulls/pushes
+  • No playtest/visual claims without Red bridge screenshot (eyes covered)
+  • Active party flatgrass proof = Red only — no OFFLOAD SIGNAL unless triggers fire
+  • MacBook Green A is OUT OF WORKFLOW until hardware restored
+
+Docs if stuck:
+  lifepunch/docs/GREEN_SMB_BOOT_PASTE.md
+  lifepunch/docs/SBOX_EDITOR_MCP.md (Cornerman dual-stack section)
+  lifepunch/docs/handoff/GREEN_CORNERMAN_CURSOR_GROUNDING_PASTE.txt
+
+— END CORNERMAN MCP SETUP —
