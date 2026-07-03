@@ -38,9 +38,9 @@ single source of truth — do NOT re-derive or diverge from it.
 CVL TRI-STACK + MAC (memorize — LifePunch web = nodes + edges):
 - **R — VENGEANCE** (red): Orchestrate · runtime · proof · push. `C:\Users\jared\Projects\lifepunchdxrp`. **Block A.**
   Paste: `handoff/RED_CURSOR_GROUNDING_PASTE.txt` or `RED_COPILOT_GROUNDING_PASTE.txt`.
-- **G — Cornerman** (green B): Warm · distill · execute heavy work. `192.168.1.229` · `C:\Projects\lifepunch`.
+- **G — Cornerman** (Green): Warm · distill · execute heavy work. `192.168.1.229` · `C:\Projects\lifepunch`.
   **Block D.** Paste: `GREEN_CORNERMAN_*_GROUNDING_PASTE.txt`.
-- **MacBook** (green A): Control plane · **Design Architect (ChatGPT)** · RDP → Cornerman. **Block M.**
+- **Architect — MacBook** (Mac): Planner · **Design Architect (ChatGPT)** · RDP → Green. **Block M.**
   Paste: `MAC_GREEN_*_GROUNDING_PASTE.txt` · Architect: `ARCHITECT.md` · `ARCHITECT_ONBOARDING_PASTE.txt`.
 - **B — lifepunchnet** (blue): Hosted ops. `205.209.104.22`. **Block C.**
 - Execution model: `GREEN_EXECUTION_MODEL.md` · paste index: `handoff/AGENT_GROUNDING_INDEX.md`.
@@ -58,12 +58,12 @@ RESTRUCTURE TRACK (June 2026 — owner paused addon implementation until structu
 0m. `lifepunch/docs/RESTRUCTURE_ROADMAP.md` ← active phase + slice scope.
 0n. `lifepunch/docs/REPO_DOMAIN_MAP.md` ← folder → domain → GitLab lane.
 0o. `lifepunch/docs/CONFIG_SOURCE_OF_TRUTH.md` ← which config file is law.
-0q. `lifepunch/addons/_QUARANTINE_INDEX.md` ← active vs quarantined idents.
+0q. `lifepunchaddons/_QUARANTINE_INDEX.md` ← active vs quarantined idents.
 
-0. `lifepunch/addons/docs/ACTIVE_WORKSTREAM.md` ← product canon + lane gate (implementation paused during restructure).
+0. `lifepunchaddons/docs/ACTIVE_WORKSTREAM.md` ← product canon + lane gate (implementation paused during restructure).
 0a. `.cursor/rules` (all alwaysApply) ← repo law; rules win over docs.
-0b. `lifepunch/addons/docs/CYBER_REFERENCE_LAWS.md` ← Laws 1–11. Mandatory for addon/entity sessions.
-0c. `lifepunch/addons/docs/BITCOIN_SHIP_ROADMAP.md` ← step order (bitcoin lane sessions).
+0b. `lifepunchaddons/docs/CYBER_REFERENCE_LAWS.md` ← Laws 1–11. Mandatory for addon/entity sessions.
+0c. `lifepunchaddons/docs/BITCOIN_SHIP_ROADMAP.md` ← step order (bitcoin lane sessions).
 
 WHEN TOUCHING gameplay / product / UX / economy doctrine (not every boot):
 0p. `lifepunch/docs/LIFEPUNCH_GAMEPLAY_LAWS.md` ← G0–G9; Fantasy Check.
@@ -78,10 +78,10 @@ ON DEMAND ONLY (read when the active task requires it):
 - `ARCHITECT.md` — Architect/Integrator handoff detail
 
 ENTITY / ModelDoc (when touching machines):
-0d. `lifepunch/addons/docs/LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md` ← machines not props; P0–P4.
-0e. `lifepunch/addons/docs/MODELDOC_STUDIO_LANE.md` + `PACKAGE_STAGING_LAYOUT.md`
-0f. `lifepunch/addons/docs/DXRP_ADDON_PUBLISH_DOCTRINE.md`
-0g. `lifepunch/addons/docs/LIFEPUNCH_WEAPON_IMPLEMENTATION_LAW.md` ← weapons / lpweapons / AK lane only.
+0d. `lifepunchaddons/docs/LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md` ← machines not props; P0–P4.
+0e. `lifepunchaddons/docs/MODELDOC_STUDIO_LANE.md` + `PACKAGE_STAGING_LAYOUT.md`
+0f. `lifepunchaddons/docs/DXRP_ADDON_PUBLISH_DOCTRINE.md`
+0g. `lifepunchaddons/docs/LIFEPUNCH_WEAPON_IMPLEMENTATION_LAW.md` ← weapons / lpweapons / AK lane only.
 1. The project's `.cursor/rules` (all alwaysApply): lifepunch-active-workstream-gate,
    lifepunch-digital-machine, lifepunch-weapon-platform, lifepunch-operating-context,
    lifepunch-opus-usage, lifepunch-quality-bar,
@@ -98,14 +98,14 @@ ENTITY / ModelDoc (when touching machines):
 8b. `lifepunch/docs/ARCHITECT.md` ← CVL design brain (ChatGPT on Red); Integrator = Cursor.
 9. `lifepunch/docs/BUSINESS_CONTEXT.md` ← LIFEPUNCH™ entity, revenue, community links.
 10. `lifepunch/docs/PUBLISH_REPO_LANE.md` ← two-repo publish law (core vs lifepunch-published).
-11. `lifepunch/addons/docs/QUARANTINE_REGISTER.md` ← frozen idents; concepts only, no ship copy.
+11. `lifepunchaddons/docs/QUARANTINE_REGISTER.md` ← frozen idents; concepts only, no ship copy.
 12. `lifepunch/docs/GIT_CHECKPOINTS.md` ← commit/push/pull (agent recommends, owner approves).
 13. `lifepunch/docs/WORKSPACE_STRUCTURE.md` ← folder responsibilities (lane ownership: prefer REPO_DOMAIN_MAP.md).
 14. `lifepunch/docs/GITLAB_ORGANIZATION.md` ← GitLab lane map (GitHub monorepo stays canonical).
 15. s&box MCP work: `lifepunch/docs/SBOX_EDITOR_MCP.md` (triple stack: `sbox` + `sbox-editor` + `sbox-jtc`) · ports: `lifepunch/config/sbox-mcp-ports.json` · routing: `lifepunch/docs/MCP_AGENT_ROUTING.md` · **updates:** `lifepunch/docs/CVL_FULL_CAPACITY_UPDATES.md`. `execute_csharp` OK when needed; **always** delete leftover `Editor/__Exec_*.cs` after exec sessions (see that doc). After MCP/library bumps: `Fix-SboxEditorMcpCursorToolNames.ps1 -ProbeEditorMcp`.
 16. Cornerman LM: `lifepunch/docs/CORNERMAN_MODEL_ROUTING.md` · catalog: `lifepunch/config/cornerman-tier3-models.json` · fix: `lifepunch/scripts/Fix-CornermanLmServe.ps1`.
 17. Before editor/project work: `lifepunch/scripts/Test-PreLaunchCheckup.ps1 -Fix` (Cornerman health, headless LM, dual MCP). Full refresh after stack updates: `Invoke-CvlFullCapacityRefresh.ps1`.
-18. s&box engine patches: `lifepunch/scripts/Get-SboxEnginePatchStatus.ps1` — if WARN, read `lifepunch/addons/docs/SBOX_ENGINE_PATCHES.md` and triage before UI/publish edits.
+18. s&box engine patches: `lifepunch/scripts/Get-SboxEnginePatchStatus.ps1` — if WARN, read `lifepunchaddons/docs/SBOX_ENGINE_PATCHES.md` and triage before UI/publish edits.
 
 OUT OF SCOPE (law): Do NOT reference, document, or build anything for legacy EVO / EVORP / SPL-mute /
 null-EVORP — not part of LifePunch. Remove stray mentions if you touch a file; never add new ones.
@@ -132,7 +132,7 @@ QUARANTINE (law — frozen idents):
   Quarantined idents (hackerjob, ak47, bankerjob, drugs, …) are ON DISK for **concepts/context
   only** — do NOT edit, extend, export, or copy their code/prefabs/SCSS into active addons.
   Promotion requires owner + portfolio.json + addons.csproj unblock + Architect brief.
-  Register: lifepunch/addons/docs/QUARANTINE_REGISTER.md
+  Register: lifepunchaddons/docs/QUARANTINE_REGISTER.md
 
 WHAT THIS IS: LIFEPUNCH™ builds custom, LIFEPUNCH-owned content for DXRP (a DarkRP-style game
 on s&box / Facepunch). Treat it as a business: direct, ship quality, no spaghetti (honest
@@ -199,7 +199,7 @@ YOU ORCHESTRATE: Cornerman (Green B) executes heavy work — pull from Green bef
 MacBook (Green A) controls Cornerman via RDP.
 
 SESSION PASTE: `lifepunch/docs/handoff/RED_CURSOR_GROUNDING_PASTE.txt` or `RED_COPILOT_GROUNDING_PASTE.txt`
-Primary write lane: lifepunch/addons/** — s&box packages, addons.json, validators, publish scripts.
+Primary write lane: lifepunchaddons/** — s&box packages, addons.json, validators, publish scripts.
 You may edit any monorepo path; integrate partner GitLab lane commits back into GitHub.
 Do NOT let shottaWEB or RDP agent paths drift — they commit on GitLab lanes, you merge here.
 
@@ -402,9 +402,9 @@ BEFORE ANY EDIT:
   Confirm: git branch --show-current → lane/ak47
 
 SCOPE (and only this):
-  lifepunch/addons/**/ak47/**
-  lifepunch/addons/scripts/Invoke-Ak47Vm*.ps1
-  lifepunch/addons/scripts/blender/*ak47*
+  lifepunchaddons/**/ak47/**
+  lifepunchaddons/scripts/Invoke-Ak47Vm*.ps1
+  lifepunchaddons/scripts/blender/*ak47*
 
 OUT OF SCOPE:
   bitcoinmining, hackerjob, adminmenu, entities, website, server — use main + Block A.

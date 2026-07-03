@@ -5,14 +5,14 @@ $RepoRoot = (Resolve-Path (Join-Path $Here '..\..')).Path
 . (Join-Path $Here 'Cornerman-Workflow.ps1')
 
 $files = @(
-    @{ rel = 'lifepunch\addons\docs\briefs\CORNERMAN_LPBITCOIN_UI_POLISH_OVERNIGHT_TASK.md'; inbox = 'CORNERMAN_LPBITCOIN_UI_POLISH_OVERNIGHT_TASK.md' },
+    @{ rel = 'lifepunchaddons\docs\briefs\CORNERMAN_LPBITCOIN_UI_POLISH_OVERNIGHT_TASK.md'; inbox = 'CORNERMAN_LPBITCOIN_UI_POLISH_OVERNIGHT_TASK.md' },
     @{ rel = 'lifepunch\docs\handoff\cornerman-outbox\to-cornerman-lpbitcoin-ui-polish-overnight.txt'; inbox = 'to-cornerman-lpbitcoin-ui-polish-overnight.txt' },
-    @{ rel = 'lifepunch\addons\docs\ACTIVE_WORKSTREAM.md'; inbox = 'ACTIVE_WORKSTREAM.md' },
-    @{ rel = 'lifepunch\addons\docs\TERMINAL_BRAND_MATRIX.md'; inbox = 'TERMINAL_BRAND_MATRIX.md' },
-    @{ rel = 'lifepunch\addons\docs\SBOX_RAZOR_SCSS_RULES.md'; inbox = 'SBOX_RAZOR_SCSS_RULES.md' },
-    @{ rel = 'lifepunch\addons\docs\TECH_DEBT.md'; inbox = 'TECH_DEBT.md' },
-    @{ rel = 'lifepunch\addons\Code\Addons\lifepunch\bitcoinmining\LpUiMenuLayout.scss'; inbox = 'LpUiMenuLayout.scss' },
-    @{ rel = 'lifepunch\addons\Code\Addons\lifepunch\LifePunchUiShell.scss'; inbox = 'LifePunchUiShell.scss' }
+    @{ rel = 'lifepunchaddons\docs\ACTIVE_WORKSTREAM.md'; inbox = 'ACTIVE_WORKSTREAM.md' },
+    @{ rel = 'lifepunchaddons\docs\TERMINAL_BRAND_MATRIX.md'; inbox = 'TERMINAL_BRAND_MATRIX.md' },
+    @{ rel = 'lifepunchaddons\docs\SBOX_RAZOR_SCSS_RULES.md'; inbox = 'SBOX_RAZOR_SCSS_RULES.md' },
+    @{ rel = 'lifepunchaddons\docs\TECH_DEBT.md'; inbox = 'TECH_DEBT.md' },
+    @{ rel = 'lifepunchaddons\Code\Addons\lifepunch\bitcoinmining\LpUiMenuLayout.scss'; inbox = 'LpUiMenuLayout.scss' },
+    @{ rel = 'lifepunchaddons\Code\Addons\lifepunch\LifePunchUiShell.scss'; inbox = 'LifePunchUiShell.scss' }
 )
 
 foreach ($f in $files) {

@@ -12,7 +12,7 @@
 **Pulling a change to `CVL_AGENT_ONBOARDING.md` or this baton means the ground moved.** On every node
 (Red, Cornerman Green B, **Mac Green A**), after `git fetch`:
 
-1. **`git pull --rebase`** — full rebase onto the latest branch tip (`checkpoint-lpbitcoin-pre-sleep-20260701`).
+1. **`git pull --rebase`** — Red/Mac on **`develop`**; Cornerman distill on **`main`** (see `BRANCH_MODEL.md`).
 2. **Re-read `lifepunch/docs/CVL_AGENT_ONBOARDING.md` in full**, then your lane's **mandatory reads (§12)**.
 3. Only then resume work. Do **not** act on stale grounding or continue an old chat past a pull.
 
@@ -25,17 +25,20 @@
 ```text
 ── CVL HANDOFF ──
 FROM:   Red/Cursor/Auto
-LANE:   DXRP party verify (vanilla) + lpbitcoin Phase A parallel
-DID:    Green A MacBook Air M2 back online — root cause was failed charger, not dead hardware.
-        CORNERMAN_MCP_SETUP_PASTE on origin; Red vanilla editor + chomnr/jtc MCP live on VENGEANCE.
-STATE:  Green A BACK IN WEB (replace charger; verify battery health). Red owns editor + git push.
-        Party lane active: flatgrass /party proof on dxrp-vanilla. Cornerman: MCP paste + distill OK.
-NEXT:   All nodes: git pull --rebase. Mac: MAC_GREEN_CURSOR_GROUNDING_PASTE + pull checkpoint branch.
-        Red: continue party flatgrass proof. Cornerman: CORNERMAN_MCP_SETUP_PASTE for MCP 3/3.
-        Architect: Mac ChatGPT OR Red browser — owner choice. No Apple repair block unless battery fails.
-TO:     Mac/Cornerman: pull before new sessions. Red: sbox-editor = chomnr in Cursor (not named chomnr).
-PASTE:  handoff/CORNERMAN_MCP_SETUP_PASTE.txt · handoff/CVL_RELAY_BATON.md
-COMMIT: this baton (Green A restored + party/MCP pins).
+LANE:   LIFEPUNCH repo hygiene — main + develop branch model
+DID:    GitHub default = develop. main = truth (ruleset: pattern main, no delete/force-push, PR required).
+        Cornerman MCP modes: RedEditor | LocalEditor | DualEditor (Set-CornermanMcpMode.ps1).
+        Green local editor uses chomnr :9091 + local bridge IPC; Red tunnel must be OFF.
+STATE:  develop = daily test lane (Red push). main = protected truth (PR develop→main on owner GO).
+        Cornerman pulls main for distill. Red tunnel :9090 OFF when Green uses local chomnr.
+NEXT:   ALL NODES: git fetch --prune · re-read CVL_AGENT_ONBOARDING.md + this baton.
+        Red/Mac: checkout develop && git pull --rebase origin develop.
+        Cornerman (MCP work): checkout develop && pull · Set-CornermanMcpMode.ps1 -Mode LocalEditor
+        Red before Green local editor: Start-VengeanceEditorTunnelToCornerman.ps1 -Stop
+        Green chomnr dock -> port 9091 -> Apply · Cursor Reload Window
+TO:     Mac · Cornerman · Architect — branch law changed; do not use checkpoint-* branches.
+PASTE:  handoff/NEW_CHAT_BRANCH_LAW_PASTE.txt · lifepunch/docs/BRANCH_MODEL.md
+COMMIT: docs(cvl): main ruleset + CVL handoff rebase for develop/main
 ```
 
 <!-- CVL_BATON_LATEST_END -->

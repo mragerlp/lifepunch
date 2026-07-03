@@ -5,20 +5,20 @@ $RepoRoot = (Resolve-Path (Join-Path $Here '..\..')).Path
 . (Join-Path $Here 'Cornerman-Workflow.ps1')
 
 $briefs = @(
-    @{ rel = 'lifepunch\addons\docs\reference\WEED_ENGINE_ENTITY_INDEX.md'; inbox = 'WEED_ENGINE_ENTITY_INDEX.md' },
-    @{ rel = 'lifepunch\addons\Assets\addons\lifepunch\advanceddrugprocessing\ASSET_INVENTORY.md'; inbox = 'COKE_ASSET_INVENTORY.md' },
-    @{ rel = 'lifepunch\addons\Assets\addons\lifepunch\advanceddrugprocessing\COKE_LINE_MAP.md'; inbox = 'COKE_LINE_MAP.md' },
-    @{ rel = 'lifepunch\addons\Assets\addons\lifepunch\bitcoinmining\ASSET_INVENTORY.md'; inbox = 'BITCOINMINING_ASSET_INVENTORY.md' },
-    @{ rel = 'lifepunch\addons\docs\briefs\CORNERMAN_HACKER_JOB_TERMINAL_TASK.md'; inbox = 'CORNERMAN_HACKER_JOB_TERMINAL_TASK.md' },
-    @{ rel = 'lifepunch\addons\docs\briefs\HACKER_JOB_TERMINAL_BRIEF.md'; inbox = 'HACKER_JOB_TERMINAL_BRIEF.md' },
-    @{ rel = 'lifepunch\addons\docs\HACKER_JOB_SPEC.md'; inbox = 'HACKER_JOB_SPEC.md' },
-    @{ rel = 'lifepunch\addons\docs\reference\HACKER_TERMINAL_FLOW.md'; inbox = 'HACKER_TERMINAL_FLOW_SCAFFOLD.md' },
-    @{ rel = 'lifepunch\addons\docs\reference\TERMINAL_PUZZLE_CATALOG.md'; inbox = 'TERMINAL_PUZZLE_CATALOG_SCAFFOLD.md' },
-    @{ rel = 'lifepunch\addons\docs\reference\GOVERNMENT_DATABASE_TERMINAL_SPEC.md'; inbox = 'GOVERNMENT_DATABASE_TERMINAL_SPEC_SCAFFOLD.md' },
-    @{ rel = 'lifepunch\addons\docs\briefs\TERMINAL_PLATFORM_TOKENS.scss'; inbox = 'TERMINAL_PLATFORM_TOKENS.scss' }
+    @{ rel = 'lifepunchaddons\docs\reference\WEED_ENGINE_ENTITY_INDEX.md'; inbox = 'WEED_ENGINE_ENTITY_INDEX.md' },
+    @{ rel = 'lifepunchaddons\Assets\addons\lifepunch\advanceddrugprocessing\ASSET_INVENTORY.md'; inbox = 'COKE_ASSET_INVENTORY.md' },
+    @{ rel = 'lifepunchaddons\Assets\addons\lifepunch\advanceddrugprocessing\COKE_LINE_MAP.md'; inbox = 'COKE_LINE_MAP.md' },
+    @{ rel = 'lifepunchaddons\Assets\addons\lifepunch\bitcoinmining\ASSET_INVENTORY.md'; inbox = 'BITCOINMINING_ASSET_INVENTORY.md' },
+    @{ rel = 'lifepunchaddons\docs\briefs\CORNERMAN_HACKER_JOB_TERMINAL_TASK.md'; inbox = 'CORNERMAN_HACKER_JOB_TERMINAL_TASK.md' },
+    @{ rel = 'lifepunchaddons\docs\briefs\HACKER_JOB_TERMINAL_BRIEF.md'; inbox = 'HACKER_JOB_TERMINAL_BRIEF.md' },
+    @{ rel = 'lifepunchaddons\docs\HACKER_JOB_SPEC.md'; inbox = 'HACKER_JOB_SPEC.md' },
+    @{ rel = 'lifepunchaddons\docs\reference\HACKER_TERMINAL_FLOW.md'; inbox = 'HACKER_TERMINAL_FLOW_SCAFFOLD.md' },
+    @{ rel = 'lifepunchaddons\docs\reference\TERMINAL_PUZZLE_CATALOG.md'; inbox = 'TERMINAL_PUZZLE_CATALOG_SCAFFOLD.md' },
+    @{ rel = 'lifepunchaddons\docs\reference\GOVERNMENT_DATABASE_TERMINAL_SPEC.md'; inbox = 'GOVERNMENT_DATABASE_TERMINAL_SPEC_SCAFFOLD.md' },
+    @{ rel = 'lifepunchaddons\docs\briefs\TERMINAL_PLATFORM_TOKENS.scss'; inbox = 'TERMINAL_PLATFORM_TOKENS.scss' }
 )
 
-$queue = Join-Path $RepoRoot 'lifepunch\addons\docs\briefs\CORNERMAN_WORK_QUEUE.md'
+$queue = Join-Path $RepoRoot 'lifepunchaddons\docs\briefs\CORNERMAN_WORK_QUEUE.md'
 Push-CornermanText -Path 'C:\lifepunch\cornerman\inbox\CORNERMAN_WORK_QUEUE.md' -Text (Get-Content -LiteralPath $queue -Raw)
 Write-Host 'OK inbox\CORNERMAN_WORK_QUEUE.md' -ForegroundColor Green
 
@@ -51,6 +51,6 @@ $directive = @{
 Push-CornermanText -Path 'C:\lifepunch\cornerman\inbox\CORNERMAN_WORK_QUEUE.json' -Text $directive
 Write-Host 'OK inbox\CORNERMAN_WORK_QUEUE.json' -ForegroundColor Green
 
-$hackerBrief = Join-Path $RepoRoot 'lifepunch\addons\docs\briefs\HACKER_JOB_TERMINAL_BRIEF.md'
+$hackerBrief = Join-Path $RepoRoot 'lifepunchaddons\docs\briefs\HACKER_JOB_TERMINAL_BRIEF.md'
 Push-CornermanText -Path 'C:\lifepunch\cornerman\outbox\HACKER_JOB_TERMINAL_BRIEF.md' -Text (Get-Content -LiteralPath $hackerBrief -Raw)
 Write-Host 'OK outbox\HACKER_JOB_TERMINAL_BRIEF.md' -ForegroundColor Green

@@ -1,6 +1,6 @@
 ---
 description: AK47 quarantine lane — branch lane/ak47 only; do not pollute main ship work
-globs: lifepunch/addons/**/ak47/**,lifepunch/addons/scripts/**/ak47*,lifepunch/addons/scripts/blender/*ak47*
+globs: lifepunchaddons/**/ak47/**,lifepunchaddons/scripts/**/ak47*,lifepunchaddons/scripts/blender/*ak47*
 alwaysApply: false
 ---
 

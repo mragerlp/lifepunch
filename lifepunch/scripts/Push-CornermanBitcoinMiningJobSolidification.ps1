@@ -5,13 +5,13 @@ $RepoRoot = (Resolve-Path (Join-Path $Here '..\..')).Path
 . (Join-Path $Here 'Cornerman-Workflow.ps1')
 
 $files = @(
-    @{ rel = 'lifepunch\addons\docs\briefs\CORNERMAN_BITCOINMINING_JOB_SOLIDIFICATION_TASK.md'; inbox = 'CORNERMAN_BITCOINMINING_JOB_SOLIDIFICATION_TASK.md' },
-    @{ rel = 'lifepunch\addons\docs\BITCOINMINING_HUB_ARCH.md'; inbox = 'BITCOINMINING_HUB_ARCH.md' },
-    @{ rel = 'lifepunch\addons\docs\LIFEPUNCH_CYBER_ECOSYSTEM.md'; inbox = 'LIFEPUNCH_CYBER_ECOSYSTEM.md' },
-    @{ rel = 'lifepunch\addons\Code\Addons\lifepunch\bitcoinmining\docs\BITCOINMINING_TERMINAL_DOCTRINE.md'; inbox = 'BITCOINMINING_TERMINAL_DOCTRINE.md' },
-    @{ rel = 'lifepunch\addons\docs\PHYSICAL_TERMINAL_DOCTRINE.md'; inbox = 'PHYSICAL_TERMINAL_DOCTRINE.md' },
-    @{ rel = 'lifepunch\addons\docs\reference\BITCOINMINING_PORTAL_LISTING.md'; inbox = 'BITCOINMINING_PORTAL_LISTING.md' },
-    @{ rel = 'lifepunch\addons\Code\Addons\lifepunch\bitcoinmining\docs\BITCOINMINING_PLAYTEST.md'; inbox = 'BITCOINMINING_PLAYTEST.md' },
+    @{ rel = 'lifepunchaddons\docs\briefs\CORNERMAN_BITCOINMINING_JOB_SOLIDIFICATION_TASK.md'; inbox = 'CORNERMAN_BITCOINMINING_JOB_SOLIDIFICATION_TASK.md' },
+    @{ rel = 'lifepunchaddons\docs\BITCOINMINING_HUB_ARCH.md'; inbox = 'BITCOINMINING_HUB_ARCH.md' },
+    @{ rel = 'lifepunchaddons\docs\LIFEPUNCH_CYBER_ECOSYSTEM.md'; inbox = 'LIFEPUNCH_CYBER_ECOSYSTEM.md' },
+    @{ rel = 'lifepunchaddons\Code\Addons\lifepunch\bitcoinmining\docs\BITCOINMINING_TERMINAL_DOCTRINE.md'; inbox = 'BITCOINMINING_TERMINAL_DOCTRINE.md' },
+    @{ rel = 'lifepunchaddons\docs\PHYSICAL_TERMINAL_DOCTRINE.md'; inbox = 'PHYSICAL_TERMINAL_DOCTRINE.md' },
+    @{ rel = 'lifepunchaddons\docs\reference\BITCOINMINING_PORTAL_LISTING.md'; inbox = 'BITCOINMINING_PORTAL_LISTING.md' },
+    @{ rel = 'lifepunchaddons\Code\Addons\lifepunch\bitcoinmining\docs\BITCOINMINING_PLAYTEST.md'; inbox = 'BITCOINMINING_PLAYTEST.md' },
     @{ rel = 'lifepunch\docs\handoff\cornerman-outbox\to-cornerman-bitcoinmining-job-solidification.txt'; inbox = 'to-cornerman-bitcoinmining-job-solidification.txt' }
 )
 

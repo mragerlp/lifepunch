@@ -1,7 +1,7 @@
 # LPBITCOIN RESTART PACKET — read-only distill
 
 **Generated:** 2026-06-29 (Cornerman prep — eyes covered)  
-**Monorepo:** `C:\Users\jared\Projects\lifepunchdxrp` (Green clone synced @ `732fc40`)  
+**Monorepo:** `C:\Users\jared\Projects\lifepunch` (Green clone synced @ `732fc40`)  
 **Mode:** read-only · no code · no commits · no compile/editor/flatgrass claims  
 **Author:** Cornerman distill (Tier-3) — not ship authority
 
@@ -152,8 +152,8 @@
 - New economy · purchase RPCs · migration · power/link cascade · fake five-track state · Hub/Terminal upgrade purchases · cosmetics · commit without GO
 
 **Primary touch files:**
-- `lifepunch/addons/Code/Addons/lifepunch/lpbitcoin/bitcoinhub/code/ui/LpHashdPanel.razor`
-- `lifepunch/addons/Code/Addons/lifepunch/lpbitcoin/bitcoinhub/code/ui/LpHashdPanel.razor.scss`
+- `lifepunchaddons/Code/Addons/lifepunch/lpbitcoin/bitcoinhub/code/ui/LpHashdPanel.razor`
+- `lifepunchaddons/Code/Addons/lifepunch/lpbitcoin/bitcoinhub/code/ui/LpHashdPanel.razor.scss`
 - Possibly retire or gate: `OpenRackUpgrades`, legacy `GetUpgradeRack()` CPU/Core block (~435–521)
 
 **Route:** Plan = GREEN DEEP / Architect · Implementation = AUTO OK for Razor/SCSS **after GO** · Legacy removal + economy = **OPUS REQUIRED**
@@ -178,7 +178,7 @@
 ```text
 VENGEANCE — RESUME LPBITCOIN AFTER DXRP #73 CLOSEOUT
 
-1. cd C:\Users\jared\Projects\lifepunchdxrp && git fetch && git pull --rebase && git status -sb
+1. cd C:\Users\jared\Projects\lifepunch && git fetch && git pull --rebase && git status -sb
 2. Confirm DXRP bounty is closed on dxrp-public only (PR #77) — do not mix into monorepo work
 3. Read: ACTIVE_WORKSTREAM.md, BITCOIN_SHIP_ROADMAP.md, ARCHITECT_CURRENT_STATE.md, DECISION-0010, DECISION-0007
 4. Read Cornerman outbox: LPBITCOIN_RESTART_PACKET_2026-06-29_1035.md

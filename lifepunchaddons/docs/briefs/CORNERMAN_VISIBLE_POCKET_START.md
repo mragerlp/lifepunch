@@ -1,0 +1,68 @@
+# Cornerman — Visible Pocket start brief (no Cursor required)
+
+**Superseded by:** `CORNERMAN_INVENTORY_PROJECT_TASK.md` — read that first (full P0 queue + deliverables).
+
+**You are:** Tier-3 prep on Green · **VENGEANCE owns:** C#, DXRP editor, git push  
+**Model:** **distill** (default) — `CORNERMAN_MODEL_ROUTING.md`. **coder** only for assigned HUD scss (task 6).  
+**Package:** `lifepunch.visiblepocket` — **not** llad MIS (study only)
+
+---
+
+## Sync first
+
+```powershell
+cd C:\Projects\lifepunch
+git fetch origin
+git reset --hard origin/main
+```
+
+Expect HEAD: `a5e4461` or newer (`feat(visiblepocket): …`).
+
+Read inbox after VENGEANCE push:
+
+- `C:\lifepunch\cornerman\inbox\CORNERMAN_VISIBLE_POCKET_START.md` (this file)
+- `lifepunchaddons/docs/VISIBLE_POCKET_SPEC.md`
+- `lifepunchaddons/docs/reference/DXRP_POCKET_DISCOVERY.md`
+
+---
+
+## Your lane (docs + study — no C# commits)
+
+| # | Task | Output |
+|---|------|--------|
+| 1 | **Review** spec § DXRP integration + repo `VISIBLE_POCKET_DXRP_SUMMARY.txt` (VENGEANCE pre-distilled) | Add corrections only if you find gaps |
+| 2 | **llad UI study** (optional) — if package mounted, note grid/HUD patterns only | `cornerman/outbox/VISIBLE_POCKET_UI_NOTES.txt` |
+| 3 | **Watch** VENGEANCE reply slot | `cornerman/outbox/to-cornerman-visible-pocket.txt` — fold blockers into spec § Architecture |
+| 4 | **Do not** add `visiblepocket` code or `addons.json` ship rows | VENGEANCE only |
+
+---
+
+## What VENGEANCE is testing now
+
+```text
+lp_pocket_policy        # your slot tier vs DXRP global max
+lp_pocket_apply_dev     # host dev: apply your tier to global max
+```
+
+Play-test: pocket a `pocket_item` prop until full; confirm bitcoinmining **cannot** pocket (`lifepunch_nopocket`).
+
+Full steps: `lifepunchaddons/Code/Addons/lifepunch/visiblepocket/docs/VISIBLE_POCKET_PLAYTEST.md`
+
+---
+
+## Push inbox refresh (VENGEANCE runs)
+
+```powershell
+powershell -File lifepunch\scripts\Push-CornermanVisiblePocketBrief.ps1
+```
+
+---
+
+## When VENGEANCE fills reply slot
+
+Copy `to-cornerman-visible-pocket.txt` findings into:
+
+- `VISIBLE_POCKET_SPEC.md` § Architecture (if needed)
+- `TECH_DEBT.md` POCKET-01 swap point
+
+Ping owner: "OK cornerman visible-pocket @&lt;sha&gt;" one line.

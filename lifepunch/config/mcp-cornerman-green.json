@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "notes": "Green B (Cornerman) MCP — 3 servers. Same JSON for Cursor (~/.cursor/mcp.json) and Copilot (workspace .vscode/mcp.json). Install via Install-CornermanIdeMcp.ps1 from Red or on-box at C:\\lifepunch\\cornerman\\. No sbox-jtc on Green.",
+  "notes": "Green B MCP modes: RedEditor (tunnel+SMB) | LocalEditor/DualEditor (local IPC + chomnr :9091). Install: Set-CornermanMcpMode.ps1. No sbox-jtc on Green.",
   "mcpServers": {
     "sbox": {
       "command": "cmd",

@@ -23,7 +23,7 @@ Per `ACTIVE_WORKSTREAM.md` §3 proof package + `lifepunch-ui-scale` law dev chec
 
 ## Target file paths (for Red's reference during capture)
 
-- `lifepunch/addons/Code/Addons/lifepunch/adminmenu/StaffMenu.razor.scss` (styles under proof)
+- `lifepunchaddons/Code/Addons/lifepunch/adminmenu/StaffMenu.razor.scss` (styles under proof)
 - Sibling `.razor` (markup) — not read this session (SCSS-only distill); Red should confirm class wiring
   matches the selectors named above (`.tab-sel`, `.player-row.selected`, `.settings-entry-on`, `.collapsed`).
 

@@ -206,9 +206,9 @@ Target: `allOk: true` · MCP: `sbox` · `sbox-editor` · `cornerman-lm` · `sbox
 
 ## Read Order (lean boot)
 
-1. `lifepunch/addons/docs/ACTIVE_WORKSTREAM.md` — hard gate
-2. `lifepunch/addons/docs/BITCOIN_SHIP_ROADMAP.md` — step order
-3. `lifepunch/addons/docs/OWNER_PROGRESS_TRACKER.txt` — current state (one ID)
+1. `lifepunchaddons/docs/ACTIVE_WORKSTREAM.md` — hard gate
+2. `lifepunchaddons/docs/BITCOIN_SHIP_ROADMAP.md` — step order
+3. `lifepunchaddons/docs/OWNER_PROGRESS_TRACKER.txt` — current state (one ID)
 4. `lifepunch/docs/handoff/ARCHITECT_CURRENT_STATE.md` — dated volatile state
 5. `lifepunch/docs/MACHINE_CAST.md` — CVL topology
 

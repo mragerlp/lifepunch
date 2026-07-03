@@ -151,7 +151,7 @@ Open workspace root ``lifepunchaddons`` in VS Code (not a subfolder only).
 ## Law hierarchy (conflicts — repo wins)
 
 1. ``.cursor/rules`` / ``.github/instructions`` (this mirror)
-2. ``lifepunch/addons/docs/ACTIVE_WORKSTREAM.md`` + ``BITCOIN_SHIP_ROADMAP.md``
+2. ``lifepunchaddons/docs/ACTIVE_WORKSTREAM.md`` + ``BITCOIN_SHIP_ROADMAP.md``
 3. ``lifepunch/docs`` canon · ``DECISIONS/``
 4. Chat history (lowest)
 

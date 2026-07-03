@@ -89,9 +89,9 @@ addons-structure:
   image: node:20-alpine
   interruptible: true
   rules:
-    - changes: ["lifepunch/addons/**/*"]
+    - changes: ["lifepunchaddons/**/*"]
   script:
-    - node lifepunch/addons/scripts/validate-addons.mjs   # TODO: port from the PS validators
+    - node lifepunchaddons/scripts/validate-addons.mjs   # TODO: port from the PS validators
 ```
 
 > Note: the existing PowerShell validators stay the canonical local check. The CI port should cover

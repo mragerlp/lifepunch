@@ -7,7 +7,7 @@ $RepoRoot = (Resolve-Path (Join-Path $Here '..\..')).Path
 $files = @(
     @{ rel = 'lifepunch\docs\handoff\cornerman-outbox\CORNERMAN_MENU_UI_FIX_2026-06-13.md'; inbox = 'CORNERMAN_MENU_UI_FIX_2026-06-13.md' },
     @{ rel = 'lifepunch\docs\handoff\cornerman-outbox\to-cornerman-menu-ui-fix.txt'; inbox = 'to-cornerman-menu-ui-fix.txt' },
-    @{ rel = 'lifepunch\addons\docs\SBOX_RAZOR_SCSS_RULES.md'; inbox = 'SBOX_RAZOR_SCSS_RULES.md' }
+    @{ rel = 'lifepunchaddons\docs\SBOX_RAZOR_SCSS_RULES.md'; inbox = 'SBOX_RAZOR_SCSS_RULES.md' }
 )
 
 foreach ($f in $files) {

@@ -81,7 +81,7 @@ COMMUNITY:
 
 REPO (private — owner may grant ChatGPT connector or paste excerpts):
   https://github.com/mragerlp/lifepunch
-  Primary PC checkout: C:\Users\jared\Projects\lifepunchdxrp
+  Primary PC checkout: C:\Users\jared\Projects\lifepunch
 
 DXRP REFERENCES (public):
   Docs: https://docs.dxrp.net/
@@ -159,11 +159,11 @@ Foundation:
   lifepunch/legal/TRADEMARK_AND_IP.md
 
 Bitcoin lane:
-  lifepunch/addons/docs/ACTIVE_WORKSTREAM.md
-  lifepunch/addons/docs/BITCOIN_SHIP_ROADMAP.md
-  lifepunch/addons/docs/DXRP_ADDON_PUBLISH_DOCTRINE.md
-  lifepunch/addons/docs/CYBER_REFERENCE_LAWS.md
-  lifepunch/addons/docs/LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md
+  lifepunchaddons/docs/ACTIVE_WORKSTREAM.md
+  lifepunchaddons/docs/BITCOIN_SHIP_ROADMAP.md
+  lifepunchaddons/docs/DXRP_ADDON_PUBLISH_DOCTRINE.md
+  lifepunchaddons/docs/CYBER_REFERENCE_LAWS.md
+  lifepunchaddons/docs/LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md
 
 Workflow:
   lifepunch/docs/WORKFLOW_IDEATION_FIRST.md
@@ -172,7 +172,7 @@ Workflow:
   lifepunch/docs/handoff/to-chatgpt-mcp-topology-handoff.txt
 
 Cornerman hub upgrade prep:
-  lifepunch/addons/docs/briefs/CORNERMAN_BITCOINMINING_HUB_UPGRADE_ARCH_TASK.md
+  lifepunchaddons/docs/briefs/CORNERMAN_BITCOINMINING_HUB_UPGRADE_ARCH_TASK.md
   lifepunch/docs/handoff/cornerman-inbox/BITCOINMINING_UPGRADE_ARCH_PREP_2026-06-25.md
 
 ────────────────────────────────────────────────────────────────────────────

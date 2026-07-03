@@ -13,9 +13,11 @@ ROLE — GREEN B (workshop + in-editor integration)
 PREFLIGHT (PowerShell on Cornerman desktop)
 ══════════════════════════════════════════════════════════════════════════════
   cd C:\Projects\lifepunch
-  git fetch origin
-  git checkout checkpoint-lpbitcoin-pre-sleep-20260701
-  git pull --rebase
+  git fetch origin --prune
+  git checkout main
+  git pull origin main
+
+  Branch law: main = truth on Cornerman · handoff/NEW_CHAT_BRANCH_LAW_PASTE.txt
 
   powershell -NoProfile -ExecutionPolicy Bypass -File C:\lifepunch\cornerman\Map-CornermanBridgeShare.ps1
   powershell -NoProfile -ExecutionPolicy Bypass -File C:\lifepunch\cornerman\Start-CornermanSboxEditorTunnel.ps1 -Background
@@ -32,7 +34,7 @@ READ ORDER
 ══════════════════════════════════════════════════════════════════════════════
   1. lifepunch/docs/GREEN_EXECUTION_MODEL.md
   2. lifepunch/docs/MACHINE_CAST.md
-  3. lifepunch/addons/docs/ACTIVE_WORKSTREAM.md
+  3. lifepunchaddons/docs/ACTIVE_WORKSTREAM.md
   4. lifepunch/docs/handoff/ARCHITECT_CURRENT_STATE.md
 
   Full Copilot law: COPILOT_NEW_SESSION_BOOTSTRAP.txt (paths = C:\Projects\lifepunch)

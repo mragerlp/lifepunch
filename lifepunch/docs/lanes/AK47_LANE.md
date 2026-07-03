@@ -15,7 +15,7 @@ burned sessions without a shippable FP result. AK work is isolated so **ship lan
 | Item | Location |
 |------|----------|
 | **Git branch** | `lane/ak47` on `github.com/mragerlp/lifepunch` |
-| **Monorepo paths** | `lifepunch/addons/**/ak47/**`, `lifepunch/addons/scripts/blender/*ak47*`, `lifepunch/addons/scripts/Invoke-Ak47Vm*.ps1` |
+| **Monorepo paths** | `lifepunchaddons/**/ak47/**`, `lifepunchaddons/scripts/blender/*ak47*`, `lifepunchaddons/scripts/Invoke-Ak47Vm*.ps1` |
 | **Tech debt** | `TECH_DEBT.md` FP-AK-01, WEAPON-* |
 | **Platform law** | `LIFEPUNCH_WEAPON_IMPLEMENTATION_LAW.md` |
 | **Agent block** | `AGENT_PROMPT.md` Block E |
@@ -39,7 +39,7 @@ git pull --rebase
 ```
 
 After switching to `main`, if untracked AK blender backups linger locally, ignore them or
-`git clean -fd` under `lifepunch/addons/**/ak47/` only when you intend to discard lane-only files.
+`git clean -fd` under `lifepunchaddons/**/ak47/` only when you intend to discard lane-only files.
 
 ## Honest assessment (Jun 2026)
 
@@ -66,7 +66,7 @@ defer FP to a future weapon-class template shared across the portfolio.
 
 ## References
 
-- `lifepunch/addons/docs/VIEWMODEL_RIG_PIPELINE.md`
-- `lifepunch/addons/docs/SBOX_EDITOR_REFERENCE.md` §5 (first-person weapons)
-- `lifepunch/addons/docs/briefs/AK47_CS2_STUDY_BRIEF.md`
-- `lifepunch/addons/config/addons.json` → `ak47` entry
+- `lifepunchaddons/docs/VIEWMODEL_RIG_PIPELINE.md`
+- `lifepunchaddons/docs/SBOX_EDITOR_REFERENCE.md` §5 (first-person weapons)
+- `lifepunchaddons/docs/briefs/AK47_CS2_STUDY_BRIEF.md`
+- `lifepunchaddons/config/addons.json` → `ak47` entry

@@ -5,15 +5,15 @@ $RepoRoot = (Resolve-Path (Join-Path $Here '..\..')).Path
 . (Join-Path $Here 'Cornerman-Workflow.ps1')
 
 $files = @(
-    @{ rel = 'lifepunch\addons\docs\briefs\CORNERMAN_BITCOINMINING_ASSET_TEST_AUDIT_TASK.md'; inbox = 'CORNERMAN_BITCOINMINING_ASSET_TEST_AUDIT_TASK.md' },
-    @{ rel = 'lifepunch\addons\Assets\addons\lifepunch\bitcoinmining\ASSET_INVENTORY.md'; inbox = 'BITCOINMINING_ASSET_INVENTORY.md' },
-    @{ rel = 'lifepunch\addons\Code\Addons\lifepunch\bitcoinmining\docs\BITCOINMINING_PLAYTEST.md'; inbox = 'BITCOINMINING_PLAYTEST.md' },
-    @{ rel = 'lifepunch\addons\docs\BITCOINMINING_HUB_ARCH.md'; inbox = 'BITCOINMINING_HUB_ARCH.md' },
-    @{ rel = 'lifepunch\addons\docs\BITCOINMINING_ENCRYPTION_SPEC.md'; inbox = 'BITCOINMINING_ENCRYPTION_SPEC.md' },
-    @{ rel = 'lifepunch\addons\docs\TECH_DEBT.md'; inbox = 'TECH_DEBT.md' },
-    @{ rel = 'lifepunch\addons\docs\briefs\BITCOINMINING_PROTECTION_CHECKLIST.md'; inbox = 'BITCOINMINING_PROTECTION_CHECKLIST.md' },
-    @{ rel = 'lifepunch\addons\docs\ASSET_INTAKE_CYBER_ECOSYSTEM.md'; inbox = 'ASSET_INTAKE_CYBER_ECOSYSTEM.md' },
-    @{ rel = 'lifepunch\addons\docs\briefs\CORNERMAN_WORK_QUEUE.md'; inbox = 'CORNERMAN_WORK_QUEUE.md' },
+    @{ rel = 'lifepunchaddons\docs\briefs\CORNERMAN_BITCOINMINING_ASSET_TEST_AUDIT_TASK.md'; inbox = 'CORNERMAN_BITCOINMINING_ASSET_TEST_AUDIT_TASK.md' },
+    @{ rel = 'lifepunchaddons\Assets\addons\lifepunch\bitcoinmining\ASSET_INVENTORY.md'; inbox = 'BITCOINMINING_ASSET_INVENTORY.md' },
+    @{ rel = 'lifepunchaddons\Code\Addons\lifepunch\bitcoinmining\docs\BITCOINMINING_PLAYTEST.md'; inbox = 'BITCOINMINING_PLAYTEST.md' },
+    @{ rel = 'lifepunchaddons\docs\BITCOINMINING_HUB_ARCH.md'; inbox = 'BITCOINMINING_HUB_ARCH.md' },
+    @{ rel = 'lifepunchaddons\docs\BITCOINMINING_ENCRYPTION_SPEC.md'; inbox = 'BITCOINMINING_ENCRYPTION_SPEC.md' },
+    @{ rel = 'lifepunchaddons\docs\TECH_DEBT.md'; inbox = 'TECH_DEBT.md' },
+    @{ rel = 'lifepunchaddons\docs\briefs\BITCOINMINING_PROTECTION_CHECKLIST.md'; inbox = 'BITCOINMINING_PROTECTION_CHECKLIST.md' },
+    @{ rel = 'lifepunchaddons\docs\ASSET_INTAKE_CYBER_ECOSYSTEM.md'; inbox = 'ASSET_INTAKE_CYBER_ECOSYSTEM.md' },
+    @{ rel = 'lifepunchaddons\docs\briefs\CORNERMAN_WORK_QUEUE.md'; inbox = 'CORNERMAN_WORK_QUEUE.md' },
     @{ rel = 'lifepunch\docs\handoff\cornerman-outbox\to-cornerman-bitcoinmining-asset-test.txt'; inbox = 'to-cornerman-bitcoinmining-asset-test.txt' }
 )
 

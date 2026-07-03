@@ -46,7 +46,7 @@ powershell -File C:\lifepunch\cornerman\inbox\Export-CornermanIdle.ps1 `
 See `CORNERMAN_MENU_UI_FIX_2026-06-13.md` + `SBOX_RAZOR_SCSS_RULES.md`.
 
 ```powershell
-powershell -File lifepunch\addons\scripts\Validate-SboxRazorScss.ps1
+powershell -File lifepunchaddons\scripts\Validate-SboxRazorScss.ps1
 ```
 
 **Pass:** bitcoin hub GATEKEEPER → numpad → hub panel; hacker rack PIN; zero `not valid with` in log.
@@ -87,7 +87,7 @@ powershell -File lifepunch\addons\scripts\Validate-SboxRazorScss.ps1
 | ID | Task |
 |----|------|
 | B1 | Run `scripts/validate-workspace.ps1` — log pass/fail (STAFF-09 may still fail) |
-| B2 | `lifepunch/addons/scripts/validate-layout.ps1` for bitcoinmining + hackerjob |
+| B2 | `lifepunchaddons/scripts/validate-layout.ps1` for bitcoinmining + hackerjob |
 | B3 | Draft `BITCOINMINING_PHASE2` wireframe notes — `CORNERMAN_BITCOINMINING_PHASE2_MENU_TASK.md` |
 | B4 | Hacker `server-rack` ModelDoc **checklist only** — no compile on Green |
 

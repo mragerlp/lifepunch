@@ -90,7 +90,7 @@ if (Test-Path -LiteralPath $OutboxRoot) {
 }
 
 # --- validator ---
-$validatorPath = Join-Path $RepoRoot 'lifepunch\addons\scripts\Validate-SboxRazorScss.ps1'
+$validatorPath = Join-Path $RepoRoot 'lifepunchaddons\scripts\Validate-SboxRazorScss.ps1'
 if (Test-Path -LiteralPath $validatorPath) {
     & powershell -NoProfile -File $validatorPath 2>&1 |
         Out-File (Join-Path $logs 'validate-sbox-razor-scss.txt') -Encoding utf8

@@ -10,7 +10,7 @@
              + <dxrp-game>\Code\Addons\lifepunch\lpbitcoin\bitcoinhub\code\  (merged into portal bundle)
 
   Default: Pull-DxrpCompiledAssetsToRepo.ps1 backports *_c into git, then stages from DXRP game paths.
-  Output:  lifepunch/addons/.dxrp-publish/upload/lifepunch/lpbitcoin/{Assets,Code}/
+  Output:  lifepunchaddons/.dxrp-publish/upload/lifepunch/lpbitcoin/{Assets,Code}/
 
 .PARAMETER SkipPull
   Do not backport compiled *_c from DXRP into the repo before staging (default: pull first).
@@ -90,5 +90,5 @@ Write-Host ''
 Write-Host 'Portal upload (pick these two folders on dxrp.net):' -ForegroundColor Green
 Write-Host '  lifepunch\lpbitcoin\Assets' -ForegroundColor Green
 Write-Host '  lifepunch\lpbitcoin\Code' -ForegroundColor Green
-Write-Host 'Staging root: lifepunch/addons/.dxrp-publish/upload/' -ForegroundColor DarkGray
+Write-Host 'Staging root: lifepunchaddons/.dxrp-publish/upload/' -ForegroundColor DarkGray
 Write-Host 'Package export: .dxrp-publish/package-bitcoinmining.json' -ForegroundColor DarkGray

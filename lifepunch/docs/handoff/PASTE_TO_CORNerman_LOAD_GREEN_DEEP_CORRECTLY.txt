@@ -5,7 +5,7 @@ Paste this directly to Cornerman (updated with correct loading instructions):
 Cornerman — load Green Deep correctly and start the long run.
 
 1. Pull latest changes first:
-cd C:\Users\jared\Projects\lifepunchdxrp
+cd C:\Users\jared\Projects\lifepunch
 git fetch
 git pull --rebase
 
@@ -48,7 +48,7 @@ Filename format: YYYY-MM-DD_HHMM_ShortTitle.md
 
 4. Main task:
 Process the full directive:
-lifepunch/addons/docs/briefs/CORNerman_LPADONS_FULL_ECOSYSTEM_PREP_UNTIL_1130PM.md
+lifepunchaddons/docs/briefs/CORNerman_LPADONS_FULL_ECOSYSTEM_PREP_UNTIL_1130PM.md
 
 Use Green Deep for the entire run until ~11:30 PM EST.
 

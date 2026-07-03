@@ -35,17 +35,17 @@ Required filenames (stem — `.wav`, `.mp3`, or `.ogg`):
 From repo addons root:
 
 ```powershell
-cd C:\Users\jared\Projects\lifepunchdxrp
-powershell -File lifepunch\addons\scripts\Intake-BitcoinMinerSounds.ps1
+cd C:\Users\jared\Projects\lifepunch
+powershell -File lifepunchaddons\scripts\Intake-BitcoinMinerSounds.ps1
 ```
 
 - Archives to `C:\lifepunch\reference-intake\bitcoinmining\sounds\` (local, not published)
-- Copies into `lifepunch/addons/Assets/addons/lifepunch/bitcoinmining/sounds/bitcoinminer/`
+- Copies into `lifepunchaddons/Assets/addons/lifepunch/bitcoinmining/sounds/bitcoinminer/`
 
 Dry run:
 
 ```powershell
-powershell -File lifepunch\addons\scripts\Intake-BitcoinMinerSounds.ps1 -WhatIf
+powershell -File lifepunchaddons\scripts\Intake-BitcoinMinerSounds.ps1 -WhatIf
 ```
 
 ---
@@ -111,8 +111,8 @@ addons/lifepunch/bitcoinmining/sounds/bitcoinminer/error.sound
 ```
 
 ```powershell
-rg "bitcoinminer/" lifepunch/addons/Code/Addons/lifepunch/bitcoinmining/BitcoinMiningAddon.cs
-Get-ChildItem lifepunch/addons/Assets/addons/lifepunch/bitcoinmining/sounds/bitcoinminer -File
+rg "bitcoinminer/" lifepunchaddons/Code/Addons/lifepunch/bitcoinmining/BitcoinMiningAddon.cs
+Get-ChildItem lifepunchaddons/Assets/addons/lifepunch/bitcoinmining/sounds/bitcoinminer -File
 ```
 
 ---
@@ -151,7 +151,7 @@ Re-enable hub sound props if nulled during prior playtest (per `BITCOINMINING_PL
 ## 7 — Ship gate
 
 ```powershell
-powershell -File lifepunch/addons/scripts/validate-layout.ps1
+powershell -File lifepunchaddons/scripts/validate-layout.ps1
 powershell -File scripts/validate-workspace.ps1
 ```
 

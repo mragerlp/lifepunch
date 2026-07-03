@@ -3,7 +3,7 @@
 ## 1. Pull the latest changes on Cornerman
 
 ```powershell
-cd C:\Users\jared\Projects\lifepunchdxrp   # or wherever the clone lives
+cd C:\Users\jared\Projects\lifepunch   # or wherever the clone lives
 git fetch
 git pull --rebase
 ```
@@ -37,7 +37,7 @@ You should see the 27B model loaded as the heavy model.
 
 Process this file as the primary task:
 
-`lifepunch/addons/docs/briefs/CORNerman_LPADONS_FULL_ECOSYSTEM_PREP_UNTIL_1130PM.md`
+`lifepunchaddons/docs/briefs/CORNerman_LPADONS_FULL_ECOSYSTEM_PREP_UNTIL_1130PM.md`
 
 This directive covers:
 - lpbitcoin Phase 1 priority (Hub/Terminal/Rack overhaul pain points + GO SHELL follow-up)

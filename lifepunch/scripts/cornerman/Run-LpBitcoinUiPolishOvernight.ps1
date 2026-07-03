@@ -144,13 +144,13 @@ $brief = if (Test-Path -LiteralPath $briefPath) { Get-Content -LiteralPath $brie
 
 $contextBundle = @(
     "=== ACTIVE_WORKSTREAM ==="
-    (Read-ContextFile 'lifepunch\addons\docs\ACTIVE_WORKSTREAM.md' 6000)
+    (Read-ContextFile 'lifepunchaddons\docs\ACTIVE_WORKSTREAM.md' 6000)
     "=== TERMINAL PANEL RAZOR (excerpt) ==="
-    (Read-ContextFile 'lifepunch\addons\Code\Addons\lifepunch\bitcoinmining\LpBitcoinTerminalPanel.razor' 8000)
+    (Read-ContextFile 'lifepunchaddons\Code\Addons\lifepunch\bitcoinmining\LpBitcoinTerminalPanel.razor' 8000)
     "=== HASHD PANEL SCSS (excerpt) ==="
-    (Read-ContextFile 'lifepunch\addons\Code\Addons\lifepunch\bitcoinmining\LpHashdPanel.razor.scss' 10000)
+    (Read-ContextFile 'lifepunchaddons\Code\Addons\lifepunch\bitcoinmining\LpHashdPanel.razor.scss' 10000)
     "=== SCSS RULES ==="
-    (Read-ContextFile 'lifepunch\addons\docs\SBOX_RAZOR_SCSS_RULES.md' 6000)
+    (Read-ContextFile 'lifepunchaddons\docs\SBOX_RAZOR_SCSS_RULES.md' 6000)
 ) -join "`n`n"
 
 $systemPrompt = @"

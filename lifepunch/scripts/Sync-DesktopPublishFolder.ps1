@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-  Refresh Desktop\lifepunch\addons\publish\<packageSlug> from monorepo prepare-publish staging.
+  Refresh Desktop\lifepunchaddons\publish\<packageSlug> from monorepo prepare-publish staging.
 
 .DESCRIPTION
   Bloodwave local organization — NOT a second source of truth.

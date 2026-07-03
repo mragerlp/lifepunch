@@ -106,12 +106,12 @@ Documented in `REPO_DOMAIN_MAP.md` — no moves.
 
 ### Phase 2a — Docs + index (no moves) ✅
 
-- [x] `lifepunch/addons/_QUARANTINE_INDEX.md` — links to `portfolio.json` + `QUARANTINE_REGISTER.md` + list of frozen idents
+- [x] `lifepunchaddons/_QUARANTINE_INDEX.md` — links to `portfolio.json` + `QUARANTINE_REGISTER.md` + list of frozen idents
 - [ ] Root of each quarantined ident: optional one-line `QUARANTINED.md` stub (deferred — too noisy)
 
 ### Phase 2b — Physical separation (optional, one ident pilot)
 
-- [ ] Pilot: move **one** quarantined ident to `lifepunch/addons/_quarantined/{ident}/` using `git mv`
+- [ ] Pilot: move **one** quarantined ident to `lifepunchaddons/_quarantined/{ident}/` using `git mv`
 - [ ] Update `addons.csproj` Remove paths + validators + docs
 - [ ] **Do not** move active `adminmenu` / `bitcoinmining` / `lpbitcoin` in this phase
 
@@ -158,9 +158,9 @@ If partners need ModelDoc or overlays on lane clones — add to `gitlab-projects
 
 Separate `.sbproj` per publishable package. **Not** before Phase 4b for that package.
 
-**First extract:** `lifepunch/addons/lpbitcoin/bitcoin.sbproj` — see `RESTRUCTURE_TARGET_LAYOUT.md` · **`PACKAGE_STAGING_LAYOUT.md`** (parent path law).
+**First extract:** `lifepunchaddons/lpbitcoin/bitcoin.sbproj` — see `RESTRUCTURE_TARGET_LAYOUT.md` · **`PACKAGE_STAGING_LAYOUT.md`** (parent path law).
 
-Reference: `lifepunch/modeldoc-studio/game/modeldoc.sbproj` · current `lifepunch/addons/addons.sbproj`.
+Reference: `lifepunch/modeldoc-studio/game/modeldoc.sbproj` · current `lifepunchaddons/addons.sbproj`.
 
 ---
 
@@ -168,7 +168,7 @@ Reference: `lifepunch/modeldoc-studio/game/modeldoc.sbproj` · current `lifepunc
 
 ```powershell
 .\scripts\validate-workspace.ps1
-cd .\lifepunch\addons; .\scripts\validate-layout.ps1
+cd .\lifepunchaddons; .\scripts\validate-layout.ps1
 ```
 
 ---

@@ -5,13 +5,13 @@
 **Staging command (when ready):**
 
 ```powershell
-cd lifepunch\addons\scripts
+cd lifepunchaddons\scripts
 .\prepare-publish.ps1 -Addon hackerjob
 .\prepare-publish.ps1 -Addon bitcoinmining
 .\prepare-publish.ps1 -Addon governmentdatacenter
 ```
 
-Inspect: `lifepunch/addons/.dxrp-publish/upload-<ident>/`
+Inspect: `lifepunchaddons/.dxrp-publish/upload-<ident>/`
 
 ---
 

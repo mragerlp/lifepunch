@@ -1,3 +1,6 @@
+# Nested DXRP fork clone (separate git root — not part of monorepo index)
+/lifepunchdxrp/
+
 # Blue dev transfer package (binaries generated on VENGEANCE — run Package-BlueDevServerFromVengeance.ps1)
 lifepunch/server/blue-dev-package/*.dll
 lifepunch/server/blue-dev-package/*.exe
@@ -21,7 +24,7 @@ obj/
 !.vscode/settings.json
 
 # Local s&box scratch/test project (not shipped)
-lifepunch/addons/test/
+lifepunchaddons/test/
 
 # Third-party bitcoin mining study archives — never commit (LifePunch ships original assets only)
 reference/**/third-party-bitcoin-mining-study/

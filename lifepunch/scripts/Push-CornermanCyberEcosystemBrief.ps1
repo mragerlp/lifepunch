@@ -5,17 +5,17 @@ $RepoRoot = (Resolve-Path (Join-Path $Here '..\..')).Path
 . (Join-Path $Here 'Cornerman-Workflow.ps1')
 
 $files = @(
-    @{ rel = 'lifepunch\addons\docs\LIFEPUNCH_CYBER_ECOSYSTEM.md'; inbox = 'LIFEPUNCH_CYBER_ECOSYSTEM.md' },
-    @{ rel = 'lifepunch\addons\docs\ASSET_INTAKE_CYBER_ECOSYSTEM.md'; inbox = 'ASSET_INTAKE_CYBER_ECOSYSTEM.md' },
-    @{ rel = 'lifepunch\addons\docs\briefs\CORNERMAN_CYBER_ECOSYSTEM_TASK.md'; inbox = 'CORNERMAN_CYBER_ECOSYSTEM_TASK.md' },
-    @{ rel = 'lifepunch\addons\docs\GOVERNMENT_DATABASE_SPEC.md'; inbox = 'GOVERNMENT_DATABASE_SPEC.md' },
-    @{ rel = 'lifepunch\addons\docs\HACKER_OPS_CONSOLE_SPEC.md'; inbox = 'HACKER_OPS_CONSOLE_SPEC.md' },
-    @{ rel = 'lifepunch\addons\Code\Addons\lifepunch\hackerjob\docs\HACKER_SERVER_RACK_SPEC.md'; inbox = 'HACKER_SERVER_RACK_SPEC.md' },
-    @{ rel = 'lifepunch\addons\docs\BITCOINMINING_HUB_ARCH.md'; inbox = 'BITCOINMINING_HUB_ARCH.md' },
-    @{ rel = 'lifepunch\addons\docs\BITCOINMINING_ENCRYPTION_SPEC.md'; inbox = 'BITCOINMINING_ENCRYPTION_SPEC.md' },
-    @{ rel = 'lifepunch\addons\docs\HACKER_PVP_INFRA.md'; inbox = 'HACKER_PVP_INFRA.md' },
-    @{ rel = 'lifepunch\addons\docs\GOV_DATACENTER_ROLEPLAY.md'; inbox = 'GOV_DATACENTER_ROLEPLAY.md' },
-    @{ rel = 'lifepunch\addons\docs\UPGRADE_TIER_STANDARD.md'; inbox = 'UPGRADE_TIER_STANDARD.md' },
+    @{ rel = 'lifepunchaddons\docs\LIFEPUNCH_CYBER_ECOSYSTEM.md'; inbox = 'LIFEPUNCH_CYBER_ECOSYSTEM.md' },
+    @{ rel = 'lifepunchaddons\docs\ASSET_INTAKE_CYBER_ECOSYSTEM.md'; inbox = 'ASSET_INTAKE_CYBER_ECOSYSTEM.md' },
+    @{ rel = 'lifepunchaddons\docs\briefs\CORNERMAN_CYBER_ECOSYSTEM_TASK.md'; inbox = 'CORNERMAN_CYBER_ECOSYSTEM_TASK.md' },
+    @{ rel = 'lifepunchaddons\docs\GOVERNMENT_DATABASE_SPEC.md'; inbox = 'GOVERNMENT_DATABASE_SPEC.md' },
+    @{ rel = 'lifepunchaddons\docs\HACKER_OPS_CONSOLE_SPEC.md'; inbox = 'HACKER_OPS_CONSOLE_SPEC.md' },
+    @{ rel = 'lifepunchaddons\Code\Addons\lifepunch\hackerjob\docs\HACKER_SERVER_RACK_SPEC.md'; inbox = 'HACKER_SERVER_RACK_SPEC.md' },
+    @{ rel = 'lifepunchaddons\docs\BITCOINMINING_HUB_ARCH.md'; inbox = 'BITCOINMINING_HUB_ARCH.md' },
+    @{ rel = 'lifepunchaddons\docs\BITCOINMINING_ENCRYPTION_SPEC.md'; inbox = 'BITCOINMINING_ENCRYPTION_SPEC.md' },
+    @{ rel = 'lifepunchaddons\docs\HACKER_PVP_INFRA.md'; inbox = 'HACKER_PVP_INFRA.md' },
+    @{ rel = 'lifepunchaddons\docs\GOV_DATACENTER_ROLEPLAY.md'; inbox = 'GOV_DATACENTER_ROLEPLAY.md' },
+    @{ rel = 'lifepunchaddons\docs\UPGRADE_TIER_STANDARD.md'; inbox = 'UPGRADE_TIER_STANDARD.md' },
     @{ rel = 'lifepunch\docs\handoff\cornerman-outbox\to-cornerman-cyber-ecosystem.txt'; inbox = 'to-cornerman-cyber-ecosystem.txt' }
 )
 

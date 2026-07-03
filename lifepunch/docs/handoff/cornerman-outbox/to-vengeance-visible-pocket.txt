@@ -1,7 +1,7 @@
 VENGEANCE P1 — LIFEPUNCH Visible Pocket (owner handoff)
 
-READ FIRST: lifepunch/addons/docs/VISIBLE_POCKET_SPEC.md
-BUILD: lifepunch/addons/docs/RED_VENGEANCE_VISIBLE_POCKET_BUILD.md
+READ FIRST: lifepunchaddons/docs/VISIBLE_POCKET_SPEC.md
+BUILD: lifepunchaddons/docs/RED_VENGEANCE_VISIBLE_POCKET_BUILD.md
 
 SLOTS: 6 default | $100k→8 | $250k→10 | $500k→12 | $1M→15
 RANKS: VIP=8 instant | EVIP=12 instant

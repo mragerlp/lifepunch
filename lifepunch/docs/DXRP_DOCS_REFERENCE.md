@@ -68,7 +68,7 @@ Observed on-page links:
 The Operator docs are directly relevant to:
 
 - `lifepunch/server` — **canon runbook:** `lifepunch/server/LAUNCHING_SERVER_WITH_ADDONS.md`
-- `lifepunch/addons`
+- `lifepunchaddons`
 - `lifepunch/gamemode`
 
 Both hosted LifePunch servers (`lifepunchmainserver`, `lifepunchdevelopment`) must use **`dotnet run dxrp-server.cs`** per [Launching Server with Addons](https://docs.dxrp.net/launching-server-with-addons). Portal token drives `GET /v1/server/addons` on every startup.

@@ -6,7 +6,7 @@
 
 ## Package names (public branch law)
 
-Canonical slugs live in `lifepunch/addons/config/packages.json`. Each **packageSlug** (e.g. `lifepunchbitcoin`, `lifepunchulx`) is the intended **public branch / publish export name** on LIFEPUNCH™.
+Canonical slugs live in `lifepunchaddons/config/packages.json`. Each **packageSlug** (e.g. `lifepunchbitcoin`, `lifepunchulx`) is the intended **public branch / publish export name** on LIFEPUNCH™.
 
 | packageSlug | repoIdent (monorepo paths today) | s&box |
 |-------------|----------------------------------|-------|
@@ -92,7 +92,7 @@ powershell -File lifepunch\scripts\Export-LifepunchPublishLane.ps1 -Target C:\Us
 
 ## GitLab `lifepunch-addons`
 
-GitLab lane = **mirror slice** of core `lifepunch/addons/**` for export tooling.  
+GitLab lane = **mirror slice** of core `lifepunchaddons/**` for export tooling.  
 **Publish repo** = slimmer **customer/portal** tree. Different jobs — do not merge the concepts.
 
 ---

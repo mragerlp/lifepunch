@@ -14,8 +14,8 @@ This repository is the **canonical source of truth** for the **LIFEPUNCH™** co
 3. **Target layout:** [`lifepunch/docs/RESTRUCTURE_TARGET_LAYOUT.md`](lifepunch/docs/RESTRUCTURE_TARGET_LAYOUT.md) — end-state trees (business + lpbitcoin package).
 4. **Restructure track:** [`lifepunch/docs/RESTRUCTURE_ROADMAP.md`](lifepunch/docs/RESTRUCTURE_ROADMAP.md) — phased plan (Phases 0–3 done).
 5. **Config SoT:** [`lifepunch/docs/CONFIG_SOURCE_OF_TRUTH.md`](lifepunch/docs/CONFIG_SOURCE_OF_TRUTH.md) — which JSON is law.
-6. **Quarantine index:** [`lifepunch/addons/_QUARANTINE_INDEX.md`](lifepunch/addons/_QUARANTINE_INDEX.md) — active vs frozen idents.
-7. **Production gate:** [`lifepunch/addons/docs/ACTIVE_WORKSTREAM.md`](lifepunch/addons/docs/ACTIVE_WORKSTREAM.md) — product canon; implementation paused during restructure.
+6. **Quarantine index:** [`lifepunchaddons/_QUARANTINE_INDEX.md`](lifepunchaddons/_QUARANTINE_INDEX.md) — active vs frozen idents.
+7. **Production gate:** [`lifepunchaddons/docs/ACTIVE_WORKSTREAM.md`](lifepunchaddons/docs/ACTIVE_WORKSTREAM.md) — product canon; implementation paused during restructure.
 8. **Agent boot:** [`lifepunch/docs/AGENT_PROMPT.md`](lifepunch/docs/AGENT_PROMPT.md) Block 0
 
 ---
@@ -29,15 +29,17 @@ This repository is the **canonical source of truth** for the **LIFEPUNCH™** co
 .vscode/          # Dev ergonomics (monorepo-only)
 scripts/          # Workspace validation, GitLab export (foundation lane)
 reference/        # Third-party study — never ship
-lifepunch/        # All product, platform, business, tooling trees (see domain map)
+lifepunch/        # Ops � platform, business, tooling (see domain map)
+lifepunchaddons/  # Product � s&box addon packages (lpbitcoin, �)
+lifepunchdxrp/    # Nested DXRP fork (separate git root; local playtest mount)
 README.md
 ```
 
-**Everything operational lives under `lifepunch/`**, grouped by **domain**:
+**Ops and platform** live under **`lifepunch/`**; **addon product** lives in **`lifepunchaddons/`** at repo root (see `lifepunch/docs/LIFEPUNCH_REPO_LAYOUT.md`).
 
 | Domain | Folders | GitLab lane (export) |
 |--------|---------|----------------------|
-| **PRODUCT** | `addons/`, `publish-lane/` (scaffold) | `lifepunch-addons` · publish → `lifepunch-published` repo |
+| **PRODUCT** | `lifepunchaddons/`, `lifepunch/publish-lane/` (scaffold) | `lifepunch-addons` · publish → `lifepunch-published` repo |
 | **PLATFORM** | `server/`, `gamemode/`, `portal/`, `admin-panel/`, `economy/`, `maps/`, `players/`, `audit/`, `discord/`, `webhooks/`, `API/` | `lifepunch-rdp-server` |
 | **BUSINESS** | `website/`, `legal/`, `marketing/`, `branding/` | `lifepunch-website` · `lifepunch-foundation` (legal, marketing, branding) |
 | **TOOLING** | `docs/`, `templates/`, `scripts/`, `config/`, `modeldoc-studio/`, `dxrp-overlays/` | `lifepunch-foundation` (docs, templates, config) · scripts/modeldoc/overlays monorepo-only |
@@ -70,6 +72,6 @@ From repo root:
 Addon layout:
 
 ```powershell
-cd .\lifepunch\addons
+cd .\lifepunchaddons
 .\scripts\validate-layout.ps1
 ```

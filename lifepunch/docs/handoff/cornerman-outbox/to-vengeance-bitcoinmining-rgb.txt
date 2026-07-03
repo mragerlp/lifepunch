@@ -6,7 +6,7 @@ Pull main on lifepunchaddons, then:
 
 PLAY-TEST: hashd → START → card fan RGB rainbow ramps with fan spin (8s). STOP → both off.
 
-Full runbook: lifepunch/addons/docs/RED_VENGEANCE_TOOLING_HANDOFF.md
+Full runbook: lifepunchaddons/docs/RED_VENGEANCE_TOOLING_HANDOFF.md
 
 Shipped in repo:
   shaders/lifepunch_rgb_fan_led.shader

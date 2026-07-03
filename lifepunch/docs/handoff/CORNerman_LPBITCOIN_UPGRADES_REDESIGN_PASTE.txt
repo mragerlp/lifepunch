@@ -3,7 +3,7 @@ Cornerman — new background task.
 Focus: Design the full realistic Bitcoin mining upgrade system for lpbitcoin using the three-surface law (Hub / Terminal / Rack).
 
 Read this brief in full:
-lifepunch/addons/docs/briefs/CORNerman_LPBITCOIN_REALISTIC_MINING_UPGRADES_REDESIGN.md
+lifepunchaddons/docs/briefs/CORNerman_LPBITCOIN_REALISTIC_MINING_UPGRADES_REDESIGN.md
 
 Key goals:
 - Make upgrades feel like they affect a real industrial crypto mining operation (hashrate, power, heat/thermal, efficiency, stability, buffers, defense, monitoring).

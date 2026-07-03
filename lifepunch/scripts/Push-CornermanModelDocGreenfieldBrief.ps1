@@ -5,11 +5,11 @@ $RepoRoot = (Resolve-Path (Join-Path $Here '..\..')).Path
 . (Join-Path $Here 'Cornerman-Workflow.ps1')
 
 $files = @(
-    'lifepunch\addons\docs\briefs\CORNERMAN_MODELDOC_GREENFIELD_TASK.md',
-    'lifepunch\addons\config\package-staging.json',
-    'lifepunch\addons\docs\PACKAGE_STAGING_LAYOUT.md',
-    'lifepunch\addons\docs\MODEL_FOUNDATION_PASS.md',
-    'lifepunch\addons\docs\LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md',
+    'lifepunchaddons\docs\briefs\CORNERMAN_MODELDOC_GREENFIELD_TASK.md',
+    'lifepunchaddons\config\package-staging.json',
+    'lifepunchaddons\docs\PACKAGE_STAGING_LAYOUT.md',
+    'lifepunchaddons\docs\MODEL_FOUNDATION_PASS.md',
+    'lifepunchaddons\docs\LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md',
     'lifepunch\docs\handoff\cornerman-inbox\DESKTOP_ADDONS_INVENTORY_2026-06-17.json',
     'lifepunch\docs\handoff\cornerman-inbox\DESKTOP_ADDONS_INVENTORY_2026-06-17.md',
     'lifepunch\docs\handoff\cornerman-inbox\REPO_ADDONS_SNAPSHOT_2026-06-17.json'
@@ -27,7 +27,7 @@ foreach ($rel in $files) {
 }
 
 # Also push the brief under its canonical name if filename differs
-$briefSrc = Join-Path $RepoRoot 'lifepunch\addons\docs\briefs\CORNERMAN_MODELDOC_GREENFIELD_TASK.md'
+$briefSrc = Join-Path $RepoRoot 'lifepunchaddons\docs\briefs\CORNERMAN_MODELDOC_GREENFIELD_TASK.md'
 Push-CornermanText -Path 'C:\lifepunch\cornerman\inbox\CORNERMAN_MODELDOC_GREENFIELD_TASK.md' -Text (Get-Content -LiteralPath $briefSrc -Raw)
 
 $directive = @{

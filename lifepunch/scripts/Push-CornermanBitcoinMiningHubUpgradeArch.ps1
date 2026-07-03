@@ -5,15 +5,15 @@ $RepoRoot = (Resolve-Path (Join-Path $Here '..\..')).Path
 . (Join-Path $Here 'Cornerman-Workflow.ps1')
 
 $files = @(
-    @{ rel = 'lifepunch\addons\docs\briefs\CORNERMAN_BITCOINMINING_HUB_UPGRADE_ARCH_TASK.md'; inbox = 'CORNERMAN_BITCOINMINING_HUB_UPGRADE_ARCH_TASK.md' },
+    @{ rel = 'lifepunchaddons\docs\briefs\CORNERMAN_BITCOINMINING_HUB_UPGRADE_ARCH_TASK.md'; inbox = 'CORNERMAN_BITCOINMINING_HUB_UPGRADE_ARCH_TASK.md' },
     @{ rel = 'lifepunch\docs\handoff\cornerman-outbox\to-cornerman-bitcoinmining-hub-upgrade-arch.txt'; inbox = 'to-cornerman-bitcoinmining-hub-upgrade-arch.txt' },
     @{ rel = 'lifepunch\docs\handoff\cornerman-inbox\BITCOINMINING_UPGRADE_ARCH_PREP_2026-06-25.md'; inbox = 'BITCOINMINING_UPGRADE_ARCH_PREP_2026-06-25.md' },
-    @{ rel = 'lifepunch\addons\docs\BITCOINMINING_HUB_ARCH.md'; inbox = 'BITCOINMINING_HUB_ARCH.md' },
-    @{ rel = 'lifepunch\addons\docs\BITCOINMINING_UX_SPEC.md'; inbox = 'BITCOINMINING_UX_SPEC.md' },
-    @{ rel = 'lifepunch\addons\Code\Addons\lifepunch\bitcoinmining\docs\BITCOINMINING_TERMINAL_DOCTRINE.md'; inbox = 'BITCOINMINING_TERMINAL_DOCTRINE.md' },
-    @{ rel = 'lifepunch\addons\Code\Addons\lifepunch\bitcoinmining\LpBitcoinEconomy.cs'; inbox = 'LpBitcoinEconomy.cs' },
-    @{ rel = 'lifepunch\addons\Code\Addons\lifepunch\bitcoinmining\LpBitcoinRackEntity.cs'; inbox = 'LpBitcoinRackEntity.cs' },
-    @{ rel = 'lifepunch\addons\Code\Addons\lifepunch\bitcoinmining\LpBitcoinIdent.cs'; inbox = 'LpBitcoinIdent.cs' }
+    @{ rel = 'lifepunchaddons\docs\BITCOINMINING_HUB_ARCH.md'; inbox = 'BITCOINMINING_HUB_ARCH.md' },
+    @{ rel = 'lifepunchaddons\docs\BITCOINMINING_UX_SPEC.md'; inbox = 'BITCOINMINING_UX_SPEC.md' },
+    @{ rel = 'lifepunchaddons\Code\Addons\lifepunch\bitcoinmining\docs\BITCOINMINING_TERMINAL_DOCTRINE.md'; inbox = 'BITCOINMINING_TERMINAL_DOCTRINE.md' },
+    @{ rel = 'lifepunchaddons\Code\Addons\lifepunch\bitcoinmining\LpBitcoinEconomy.cs'; inbox = 'LpBitcoinEconomy.cs' },
+    @{ rel = 'lifepunchaddons\Code\Addons\lifepunch\bitcoinmining\LpBitcoinRackEntity.cs'; inbox = 'LpBitcoinRackEntity.cs' },
+    @{ rel = 'lifepunchaddons\Code\Addons\lifepunch\bitcoinmining\LpBitcoinIdent.cs'; inbox = 'LpBitcoinIdent.cs' }
 )
 
 foreach ( $f in $files ) {

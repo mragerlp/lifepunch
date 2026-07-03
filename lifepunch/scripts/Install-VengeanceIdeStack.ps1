@@ -20,7 +20,7 @@ $ErrorActionPreference = 'Stop'
 $here = Split-Path -Parent $MyInvocation.MyCommand.Path
 $repoRoot = Resolve-Path (Join-Path $here '..\..')
 if ( -not $AddonsRoot ) {
-	$AddonsRoot = Join-Path $repoRoot 'lifepunch\addons'
+	$AddonsRoot = Join-Path $repoRoot 'lifepunchaddons'
 }
 
 $script:CursorExe = $null

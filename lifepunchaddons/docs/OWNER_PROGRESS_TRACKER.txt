@@ -1,0 +1,180 @@
+================================================================================
+LIFEPUNCH ADDON PROGRESS TRACKER (owner copy — edit [ ] to [x] as you go)
+================================================================================
+GATE LAW (read every session): lifepunchaddons/docs/ACTIVE_WORKSTREAM.md
+SHIP ROADMAP (handoff):        lifepunchaddons/docs/BITCOIN_SHIP_ROADMAP.md
+REFERENCE LAWS:                lifepunchaddons/docs/CYBER_REFERENCE_LAWS.md
+PARKING LOT (no production):     lifepunchaddons/docs/BACKLOG_PARKING_LOT.md
+Repo mirror: lifepunchaddons/docs/OWNER_PROGRESS_TRACKER.txt
+Detail docs:  lifepunchaddons/docs/JOB_PORTFOLIO_ROADMAP.md
+              lifepunchaddons/Code/Addons/lifepunch/bitcoinmining/docs/BITCOINMINING_POLISH_CHECKLIST.md
+              lifepunchaddons/docs/CYBER_JOBS_POLISH_CHECKLIST.md
+
+Law: one item at a time -> play proof on flatgrass -> your OK -> check box -> next.
+Proof package required for phase sign-off (day, night, USE, citizen, 30s clip).
+Play from: game.scene (NOT prefab tabs). Cold compile: wait 2-5 min.
+
+Last updated: 2026-06-30
+ACTIVE NOW: lifepunchbitcoin (LifePunch Bitcoin Mining) — Phase A Hub polish (H* tracker)
+NEXT SLICE: H4 + H5 hub world power/audio (GO H4/H5 HUB STATE before code) — NOT Phase B until H10
+CURSOR BOOT: lifepunch/docs/handoff/CURSOR_NEW_CHAT_BOOTSTRAP_PASTE.txt (paste alone)
+BLOCKED: Hacker, Banker, Government, Casino, Drug Chemist, all new cyber lanes (until Bitcoin Law 10)
+
+Send edits to Cursor: paste changed sections or say "tracker: checked H1, start H2".
+
+================================================================================
+GATE 0 — LIFEPUNCH BITCOIN MINING (lifepunchbitcoin / repo: bitcoinmining)
+================================================================================
+Session: game.scene -> Play -> lp_map_flatgrass -> lp_bitcoin_spawn_hub (or _kit)
+
+--- Phase A: Bitcoin Miner Hub (Steam Machine) — IN PROGRESS ---
+[~] H1  Scale + ground contact — mesh ~32×30×29 @ import 0.152; export pipeline fixed; YOUR sign-off pending
+[ ] H2  Material remap audit (sm_* slots, no checkerboard)
+[ ] H3  Acrylic / glass side panels
+[ ] H4  Powered vs off (world emissive/audio)
+[ ] H5  Hub audio baseline (startup / fan loop / fan down)
+[ ] H6  Prefab integrity (LpBitcoinHubEntity, collider, USE works)
+[~] H7  HASHD admin panel UI — wallet, settings, overview, PIN UX shipped (unlinked owner OK); linked-rack UI pass pending H8
+[ ] H8  Hub power + rack link UI (Overview / Racks tabs) — full kit on flatgrass
+[ ] H9  PIN gatekeeper (or documented defer)
+[ ] H10 Hub-only hero sign-off (owner visual OK)
+
+--- Phase B: Bitcoin Terminal (CRT rig0>) ---
+[ ] T1  World mesh compiles; monitor vmats
+[ ] T2  Terminal placement on kit
+[ ] T3  CRT UI (LpBitcoinTerminalPanel, rig0> prompt)
+[ ] T4  Command loop (mine / stop / sell / status)
+[ ] T5  Hub off = terminal blocked
+[ ] T6  Terminal sign-off
+
+--- Phase C: GPU Rack (2 Standard + 1 Advanced) ---
+[ ] R1  Standard gpurack mesh + materials
+[ ] R2  Advanced gpurack tier mesh (gpurack advanced variant)
+[ ] R3  Collider + perf (no hull storm)
+[ ] R4  Mining visuals (emissive on/off)
+[ ] R5  Hub link radius
+[ ] R6  Fan motion (ModelDoc or clean removal)
+[ ] R7  RGB LED shader (post-P0)
+[ ] R8  Full kit hero sign-off (hub + 2 Standard GPU Racks + 1 Advanced GPU Rack)
+
+BITCOIN SHIP GATE: Phases A + B + C signed off before promoting any job below.
+
+================================================================================
+TIER 1 — AFTER BITCOIN (build order — owner law 2026-06-24: Banker before Hacker)
+See BITCOIN_SHIP_ROADMAP.md + JOB_PORTFOLIO_ROADMAP.md
+================================================================================
+
+--- 1. LIFEPUNCH BANKER (lifepunchbanker / bankerjob) — NEXT AFTER BITCOIN LAW 10 ---
+[ ] G-A  Bank vault hub
+[ ] G-B  Teller terminal
+[ ] G-C  Security terminal
+[ ] G-D  Bank-owned miners
+Spec: lifepunchaddons/docs/BANKER_JOB_SPEC.md
+Purpose: protect and grow player money passively via bank invest — ties to economy rails.
+
+--- 2. LIFEPUNCH HACKER (lifepunchhacker / hackerjob) ---
+Starter: server-rack + hacker-terminal (green, cheap, wallet hacks)
+Purchased: advanced-server-rack + advanced-hacker-terminal (red, expensive, big targets)
+
+Phase E-A Basic server rack:
+[ ] E-A1  Mesh compile
+[ ] E-A2  Scale + ground contact
+[ ] E-A3  Collider + perf
+[ ] E-A4  Power state
+[ ] E-A5  Rack menu UI
+[ ] E-A6  Link radius
+[ ] E-A7  Basic rack sign-off
+
+Phase E-B Standard hacker terminal (Cornerman green):
+[ ] E-B1 through E-B6 (see CYBER_JOBS_POLISH_CHECKLIST.md)
+
+Phase E-C Advanced server rack (purchased):
+[ ] E-C1 through E-C5
+
+Phase E-D Advanced hacker terminal (VENGEANCE red):
+[ ] E-D1 through E-D5
+
+--- 3. LIFEPUNCH BLACK MARKET DEALER (TBD ident) ---
+[ ] H-B1  Shop hub (optional BTC via hashd pattern)
+[ ] H-B2  Dealer CRT catalog (lp-ops-crt--blackmarket)
+[ ] H-B3  Sell flow + job gate
+[ ] H-B4  Black market sign-off
+
+--- 4. LIFEPUNCH DRUG CHEMIST (lifepunchdrugprocessing / advanceddrugprocessing) ---
+Hub likely; terminal probably NOT.
+[ ] Drug processing stations + economy sign-off (Opus)
+[ ] Hub pattern wired (when promoted)
+Spec: lifepunchaddons/docs/COKE_DRUG_RESKIN_SPEC.md
+
+================================================================================
+PHASE F — LIFEPUNCH GOV / FBI (protagonist cyber) — AFTER HACKER E-D
+================================================================================
+Do NOT deep-dive until Hacker advanced terminal (E-D) is done.
+
+[ ] F-A1  Government Data Center (autonomous tax miner, 0-30% mayor)
+[ ] F-A2  Mining loop + city cash drip
+[ ] F-A3  Mayor tax rate RPC
+[ ] F-A4  Gov/LE blocked from player bitcoin entities
+[ ] F-A5  Data center sign-off
+[ ] F-B1  Government Server Rack (hub)
+[ ] F-B2  Hub menu + link gov terminal
+[ ] F-B3  Job gate (gov jobs only)
+[ ] F-B4  Gov rack sign-off
+[ ] F-C1  Government Terminal (lifepunchnet cyan)
+[ ] F-C2  CRT UI lifepunch-ops.exe
+[ ] F-C3  Counter-hack tools (trace / audit / alert)
+[ ] F-C4  Job gate
+[ ] F-C5  FBI desk sign-off
+
+================================================================================
+TIER 2 — FOR LATER
+================================================================================
+[ ] 5. Security Guard — freelance hire UI (no hub/terminal)
+[ ] 6. LIFEPUNCH SWAT (lifepunchswat) — simple job kit
+[ ] 7. Secret Service — simple job
+
+================================================================================
+TIER 3 — DXRP EXISTS; LIFEPUNCH MUST INNOVATE
+================================================================================
+[ ] 8. Hitman — replace Dxura place-a-hit (hub/terminal candidate)
+[ ] 9. Casino Manager — hub/terminal if entities persist (lp-ops-crt--casino)
+
+================================================================================
+CROSS-JOB LAWS (do not forget)
+================================================================================
+* Every job MAY use lifepunchbitcoin entities EXCEPT Government / Law Enforcement.
+* Gov treasury = Government Data Center only (not player hashd hubs).
+* Hackers steal WALLET only — not bank vault (bank is separate lane).
+* Criminal (green/red) vs protagonist (cyan lifepunchnet) — never swap palettes.
+
+================================================================================
+SIGN-OFF LOG (you fill in)
+================================================================================
+Date       | ID  | OK? | Notes
+-----------|-----|-----|------------------------------------------
+           | H1  |     |
+           | H10 |     | Phase A hub complete
+           | T6  |     | Phase B terminal complete
+           | R8  |     | Phase C racks complete = BITCOIN SHIP
+           | E-D5|     | Hacker advanced = unlock FBI Phase F
+
+================================================================================
+QUICK COMMANDS (bitcoin)
+================================================================================
+lp_map_flatgrass
+lp_bitcoin_spawn_hub
+lp_bitcoin_spawn_kit
+lp_bitcoin_scale_audit
+lp_bitcoin_preview_hub
+lp_bitcoin_preview_terminal
+
+Handoff: bitcoinmining/docs/BITCOIN_SESSION_HANDOFF.md
+Proof:   addons/docs/proof/2026-06-15-hub/H1-mesh-assembled.png
+  powershell -File lifepunch\scripts\Sync-LifePunchAddonsToDxrp.ps1 -Addon bitcoinmining
+  powershell -File lifepunch\scripts\Pull-DxrpCompiledAssetsToRepo.ps1 -Addon bitcoinmining
+
+Launch editor:
+  powershell -File lifepunch\scripts\Start-SboxDxrpEditor.ps1 -PreflightFix -BitcoinOnly -SyncAddon bitcoinmining
+
+Fresh DXRP (purge ak47/hackerjob quarantine console spam):
+  powershell -File lifepunch\scripts\Set-DxrpLifepunchBitcoinOnly.ps1

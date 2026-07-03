@@ -6,9 +6,13 @@ Workflow: lifepunch/docs/GREEN_EXECUTION_MODEL.md · Paste THIS FILE for full de
 ══════════════════════════════════════════════════════════════════════════════
 STEP 0 — SYNC (before reading or editing)
 ══════════════════════════════════════════════════════════════════════════════
-  cd C:\Users\jared\Projects\lifepunchdxrp
-  git fetch; git pull --rebase
+  cd C:\Users\jared\Projects\lifepunch
+  git fetch origin
+  git checkout develop
+  git pull --rebase origin develop
 If behind AND dirty: STOP — tell Bloodwave (commit or stash first).
+
+Branch law: main = truth · develop = test · handoff/NEW_CHAT_BRANCH_LAW_PASTE.txt
 
 ══════════════════════════════════════════════════════════════════════════════
 STEP 1 — READ ORDER (law — agent executes, do not skip)
@@ -17,10 +21,10 @@ STEP 1 — READ ORDER (law — agent executes, do not skip)
   1. lifepunch/docs/RESTRUCTURE_ROADMAP.md
   2. lifepunch/docs/REPO_DOMAIN_MAP.md
   3. lifepunch/docs/CONFIG_SOURCE_OF_TRUTH.md
-  4. lifepunch/addons/_QUARANTINE_INDEX.md
+  4. lifepunchaddons/_QUARANTINE_INDEX.md
 
   Product canon (do not implement hub slices until restructure sign-off):
-  5. lifepunch/addons/docs/ACTIVE_WORKSTREAM.md
+  5. lifepunchaddons/docs/ACTIVE_WORKSTREAM.md
   6. .cursor/rules (alwaysApply)
 
   Depth on demand (resume dev / gameplay):
@@ -82,8 +86,8 @@ H4/H5 PLAN (repo-verified — plan complete until GO)
   Fan spin:    PARKED Phase 2 (HUB_FAN_SETUP.md · TECH_DEBT BITCOINMINING-05) — not H4/H5
 
   Code paths (when GO):
-    lifepunch/addons/Code/Addons/lifepunch/lpbitcoin/bitcoinhub/code/components/LpBitcoinHubVisuals.cs
-    lifepunch/addons/Code/Addons/lifepunch/bitcoinmining/LpBitcoinPowerLeds.cs
+    lifepunchaddons/Code/Addons/lifepunch/lpbitcoin/bitcoinhub/code/components/LpBitcoinHubVisuals.cs
+    lifepunchaddons/Code/Addons/lifepunch/bitcoinmining/LpBitcoinPowerLeds.cs
     lpbitcoin/bitcoinhub/assets/sounds/bitcoinminer/ (+ compiled vsnd_c)
     lpbitcoin/bitcoinhub/assets/entities/bitcoinhub.prefab (optional point light)
 

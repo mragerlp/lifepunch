@@ -4,9 +4,9 @@ $Here = $PSScriptRoot
 $RepoRoot = (Resolve-Path (Join-Path $Here '..\..')).Path
 . (Join-Path $Here 'Cornerman-Workflow.ps1')
 foreach ($rel in @(
-        'lifepunch\addons\docs\briefs\CORNERMAN_BITCOINMINING_VMAT_TASK.md',
-        'lifepunch\addons\Assets\addons\lifepunch\bitcoinmining\models\lifepunch\bitcoinmining\gpu-rack\BITCOINMINING_VMAT_OWNER_GUIDE.md',
-        'lifepunch\addons\Assets\addons\lifepunch\bitcoinmining\models\lifepunch\bitcoinmining\gpu-rack\material-map.json'
+        'lifepunchaddons\docs\briefs\CORNERMAN_BITCOINMINING_VMAT_TASK.md',
+        'lifepunchaddons\Assets\addons\lifepunch\bitcoinmining\models\lifepunch\bitcoinmining\gpu-rack\BITCOINMINING_VMAT_OWNER_GUIDE.md',
+        'lifepunchaddons\Assets\addons\lifepunch\bitcoinmining\models\lifepunch\bitcoinmining\gpu-rack\material-map.json'
     )) {
     $src = Join-Path $RepoRoot $rel
     if (-not (Test-Path -LiteralPath $src)) { throw "Missing $src" }

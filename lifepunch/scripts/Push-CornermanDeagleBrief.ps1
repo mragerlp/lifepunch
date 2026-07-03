@@ -3,7 +3,7 @@ $ErrorActionPreference = 'Stop'
 $Here = $PSScriptRoot
 $RepoRoot = (Resolve-Path (Join-Path $Here '..\..')).Path
 . (Join-Path $Here 'Cornerman-Workflow.ps1')
-$src = Join-Path $RepoRoot 'lifepunch\addons\docs\briefs\DEAGLE_WEAPON_BRIEF.md'
+$src = Join-Path $RepoRoot 'lifepunchaddons\docs\briefs\DEAGLE_WEAPON_BRIEF.md'
 if (-not (Test-Path -LiteralPath $src)) { throw "Missing $src" }
 $text = Get-Content -LiteralPath $src -Raw
 foreach ($dest in @(

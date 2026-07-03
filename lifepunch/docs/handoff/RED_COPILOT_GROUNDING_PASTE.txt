@@ -14,10 +14,12 @@ ROLE — RED (orchestrator + runtime truth)
 ══════════════════════════════════════════════════════════════════════════════
 STEP 0 — SYNC
 ══════════════════════════════════════════════════════════════════════════════
-  cd C:\Users\jared\Projects\lifepunchdxrp
-  git fetch origin
-  git checkout checkpoint-lpbitcoin-pre-sleep-20260701
-  git pull --rebase
+  cd C:\Users\jared\Projects\lifepunch
+  git fetch origin --prune
+  git checkout develop
+  git pull --rebase origin develop
+
+  Branch law: handoff/NEW_CHAT_BRANCH_LAW_PASTE.txt · main ruleset = PR only
 
   If Cornerman shipped local commits: Pull-CornermanPatches.ps1 -Push first.
 
@@ -32,7 +34,7 @@ STEP 1 — RUNTIME (when play-adjacent)
 STEP 2 — READ ORDER
 ══════════════════════════════════════════════════════════════════════════════
   1. lifepunch/docs/GREEN_EXECUTION_MODEL.md
-  2. lifepunch/addons/docs/ACTIVE_WORKSTREAM.md
+  2. lifepunchaddons/docs/ACTIVE_WORKSTREAM.md
   3. lifepunch/docs/handoff/ARCHITECT_CURRENT_STATE.md
   4. lifepunch/docs/MACHINE_CAST.md
 

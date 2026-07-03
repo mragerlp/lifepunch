@@ -17,12 +17,26 @@ param(
     [string] $SshTarget = '',
     [int] $RemotePort = 9090,
     [switch] $Background,
-    [switch] $Stop
+    [switch] $Stop,
+    [switch] $Force
 )
 
 $ErrorActionPreference = 'Stop'
 $Here = if ($PSScriptRoot) { $PSScriptRoot } else { Split-Path -Parent $MyInvocation.MyCommand.Path }
 . (Join-Path $Here 'Cornerman-Workflow.ps1')
+. (Join-Path $Here 'Get-SboxMcpPortConfig.ps1')
+
+function Get-CornermanRemoteMcpMode {
+    param([string] $Target)
+    $cfg = Get-SboxMcpPortConfig
+    $path = $cfg.CornermanModeStateFile -replace '\\', '/'
+    $prev = $ErrorActionPreference
+    $ErrorActionPreference = 'SilentlyContinue'
+    $raw = & ssh -o BatchMode=yes -o ConnectTimeout=8 $Target "type `"$($cfg.CornermanModeStateFile)`"" 2>$null
+    $ErrorActionPreference = $prev
+    if ($LASTEXITCODE -ne 0 -or -not $raw) { return $null }
+    try { return ($raw -join "`n" | ConvertFrom-Json) } catch { return $null }
+}
 
 if (-not $SshTarget) { $SshTarget = Get-CornermanSshTarget }
 if (-not (Test-CornermanSshReady -SshTarget $SshTarget)) {
@@ -53,6 +67,16 @@ if ($Stop) {
         Write-Host "Stopped ssh pid $($p.ProcessId)" -ForegroundColor Yellow
     }
     exit 0
+}
+
+$remoteMode = Get-CornermanRemoteMcpMode -Target $SshTarget
+if ($remoteMode -and $remoteMode.mode -in @('LocalEditor', 'DualEditor') -and -not $Force) {
+    throw @"
+Cornerman MCP mode is '$($remoteMode.mode)' — reverse tunnel would steal localhost:$RemotePort from local chomnr.
+Run Start-VengeanceEditorTunnelToCornerman.ps1 -Stop (already done?) or switch Green to RedEditor:
+  powershell -File lifepunch\scripts\Set-CornermanMcpMode.ps1 -Mode RedEditor
+Or override once: -Force
+"@
 }
 
 $existing = Get-TunnelPids

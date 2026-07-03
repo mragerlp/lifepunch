@@ -7,7 +7,7 @@ Send this to Cornerman before shutting down VENGEANCE.
 Cornerman — starting long unattended run.
 
 1. Pull the latest (important — we just pushed the full setup):
-cd C:\Users\jared\Projects\lifepunchdxrp
+cd C:\Users\jared\Projects\lifepunch
 git fetch
 git pull --rebase
 
@@ -41,13 +41,13 @@ Generation settings (set in LM Studio model defaults or per request):
 Process these directives (you can interleave):
 
 A. Primary long directive:
-lifepunch/addons/docs/briefs/CORNerman_LPADONS_FULL_ECOSYSTEM_PREP_UNTIL_1130PM.md
+lifepunchaddons/docs/briefs/CORNerman_LPADONS_FULL_ECOSYSTEM_PREP_UNTIL_1130PM.md
 
 B. Weapons platform (high value parallel work):
-lifepunch/addons/docs/briefs/CORNerman_LPWEAPONS_PLATFORM_AUDIT_PREP.md
+lifepunchaddons/docs/briefs/CORNerman_LPWEAPONS_PLATFORM_AUDIT_PREP.md
 
 C. Admin menu + shared patterns across addons:
-lifepunch/addons/docs/briefs/CORNerman_LIFEPUNCHULX_AND_SHARED_PATTERNS_PREP.md
+lifepunchaddons/docs/briefs/CORNerman_LIFEPUNCHULX_AND_SHARED_PATTERNS_PREP.md
 
 4. Report rules (mandatory):
 

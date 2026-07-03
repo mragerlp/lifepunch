@@ -27,12 +27,12 @@ WRONG RESTORE TARGETS (do NOT use)
 
 RESTORE SOURCE (run from monorepo root)
 ---------------------------------------
-cd C:\Users\jared\Projects\lifepunchdxrp
-git checkout 0ffd0e5 -- lifepunch/addons/Code/Addons/lifepunch/adminmenu/StaffMenu.razor lifepunch/addons/Code/Addons/lifepunch/adminmenu/StaffMenu.razor.scss lifepunch/addons/Code/Addons/lifepunch/adminmenu/StaffMenuHost.cs lifepunch/addons/Code/Addons/lifepunch/adminmenu/StaffMenuActions.cs lifepunch/addons/Code/Addons/lifepunch/adminmenu/StaffSettingsService.cs lifepunch/addons/Code/Addons/lifepunch/adminmenu/WaypointSyncService.cs
+cd C:\Users\jared\Projects\lifepunch
+git checkout 0ffd0e5 -- lifepunchaddons/Code/Addons/lifepunch/adminmenu/StaffMenu.razor lifepunchaddons/Code/Addons/lifepunch/adminmenu/StaffMenu.razor.scss lifepunchaddons/Code/Addons/lifepunch/adminmenu/StaffMenuHost.cs lifepunchaddons/Code/Addons/lifepunch/adminmenu/StaffMenuActions.cs lifepunchaddons/Code/Addons/lifepunch/adminmenu/StaffSettingsService.cs lifepunchaddons/Code/Addons/lifepunch/adminmenu/WaypointSyncService.cs
 
 REGENERATE STAGING
 ------------------
-cd lifepunch\addons
+cd lifepunchaddons
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts\prepare-publish.ps1 -Addon adminmenu
 powershell -NoProfile -ExecutionPolicy Bypass -File ..\scripts\Sync-DesktopPublishFolder.ps1 -Addon adminmenu
 
@@ -46,7 +46,7 @@ Portal upload remains 6 files only — shared deps are editor compile helpers, n
 
 UPLOAD PATH (portal)
 --------------------
-C:\Users\jared\Desktop\lifepunch\addons\publish\lifepunchulx\upload\Code\Addons\lifepunch\lifepunchulx\
+C:\Users\jared\Desktop\lifepunchaddons\publish\lifepunchulx\upload\Code\Addons\lifepunch\lifepunchulx\
 
 6 files: StaffMenu.razor, StaffMenu.razor.scss, StaffMenuHost.cs, StaffMenuActions.cs, StaffSettingsService.cs, WaypointSyncService.cs
 

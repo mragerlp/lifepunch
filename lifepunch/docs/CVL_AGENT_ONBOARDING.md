@@ -9,14 +9,16 @@
 > desktop (`CVL_AGENT_ONBOARDING.txt`).** If it ever disagrees with the always-on `.cursor/rules`, the
 > **rules win** — then update this file in the GitHub monorepo (never patch only a clone).
 >
-> **Owner:** Bloodwave (`mragerlp`). **Repo:** `github.com/mragerlp/lifepunch`. **Updated:** July 2026.
+> **Owner:** Bloodwave (legal author **mrragerlp** · mrragerlp@lifepunch.co; git commits **mragerlp**).
+> **Repo:** `github.com/mragerlp/lifepunch`. **Updated:** July 2026.
 
 ---
 
 ## 0. IF YOU READ NOTHING ELSE (10-line boot)
 
-1. **`git pull --rebase`** on the clone you are in **before** doing anything.
-2. **Name your node** (Red / Green B / Green A / Blue) and **your IDE** (Cursor / Copilot / ChatGPT).
+1. **`git pull --rebase`** on **`develop`** (Red/Mac WIP) or **`main`** (Cornerman distill) **before** doing anything.
+2. **Name your node** (Red / Green / Blue / Architect) and **your IDE** (Cursor / Copilot / ChatGPT).
+   **CVL** = Cornerman · Vengeance · lifepunchnet (Green · Red · Blue). Architect (Mac) is outside CVL.
 3. **Pick your LANE — this is the most important decision:**
    **LIFEPUNCH proprietary** (`mragerlp/lifepunch`) **OR DXRP official** (`mragerlp/dxrp-public` → `dxura/dxrp`). They have **different repos, headers, and rules. Never mix them.**
 4. **Read your lane's MANDATORY READS (§12). You are not grounded until you do. Do not skip the repo.**
@@ -41,8 +43,9 @@ the source-available DarkRP-style roleplay game by **Dxura / Dimmer**, built on 
 Source 2 engine). We build **proprietary** custom content — weapons, entities, jobs, staff/admin tooling,
 UI, economy, server ops — for **our** LIFEPUNCH servers and to license to other DXRP servers.
 
-The owner, **Bloodwave**, drives everything through **CVL** — a coordinated team of AI "Architects" plus a
-multi-machine hardware web. Treat this as a **business**: be direct, protect the IP, ship quality.
+The owner, **Bloodwave**, drives everything through **CVL** — Cornerman · Vengeance · lifepunchnet
+(Green · Red · Blue), plus a coordinated team of AI Architects and **Architect** (Mac planner) on the side.
+Treat this as a **business**: be direct, protect the IP, ship quality.
 
 Two jobs exist here, and you must always know which one you are doing:
 
@@ -79,7 +82,7 @@ optional — they are the reputation.**
 | | **LIFEPUNCH (proprietary)** | **DXRP OFFICIAL (upstream)** |
 |---|---|---|
 | **Repo** | `github.com/mragerlp/lifepunch` (private monorepo) | `github.com/mragerlp/dxrp-public` (our fork) → PR to `github.com/dxura/dxrp` |
-| **Clone (Red)** | `C:\Users\jared\Projects\lifepunchdxrp` | `C:\Users\jared\Projects\dxrp` |
+| **Clone (Red)** | `C:\Users\jared\Projects\lifepunch` | `C:\Users\jared\Projects\dxrp` |
 | **Branch** | `checkpoint-lpbitcoin-pre-sleep-20260701` (current) / `main` | `bounty/*` or `lifepunch/fix-*` cut from latest `develop` |
 | **Owner** | Bloodwave (ours) | Dxura/Dimmer (theirs — **All Rights Reserved**, source-available) |
 | **File headers** | **PROPRIETARY & CONFIDENTIAL © 2026 lifepunch.co** block on every `.cs`/`.razor`/`.scss` | **DXRP conventions only — NO LIFEPUNCH headers** |
@@ -117,16 +120,15 @@ The machines are **nodes in one web**, not separate boxes. Colors are **primarie
 
 | Node | Machine (spec) | Role | Repo path | Net |
 |------|----------------|------|-----------|-----|
-| **Red — VENGEANCE** | Corsair Vengeance i8200 · i9-14900KF · **RTX 5080** · 64GB DDR5 · Win 11 Pro · 2×2TB | **Orchestrate · s&box editor · all 3 editor MCPs · flatgrass proof · git push.** Bloodwave's **true eyes** — the only node that sees real-time editor/gameplay truth. | `C:\Users\jared\Projects\lifepunchdxrp` | LAN `192.168.1.236` |
-| **Green B — Cornerman** | Corsair AI Workstation 300 · **Ryzen AI Max 385** · Radeon 8050S iGPU (up to **48GB VRAM**) · **64GB LPDDR5X** · 1TB | **Warm LM · distill · heavy headless agent implementation · MCP bridge relay.** Segway between Mac and Vengeance. **No editor of its own** — tunnels into Red's editor. Read-only deploy key → **patch-handoff** to Red. | `C:\Projects\lifepunch` | LAN `192.168.1.229` |
-| **Green A — MacBook** | MacBook Air **M2** (2022) · **8GB RAM** · macOS Tahoe 26.5.2 | **Design Architect host (ChatGPT) · control plane · native Cursor + Copilot · RDP → Cornerman.** Keep it light (8GB) — ideation + comms, not heavy compute. Editor MCP not required (capable if recommended). | `~/Projects/lifepunch` | — |
+| **Red — VENGEANCE** | Corsair Vengeance i8200 · i9-14900KF · **RTX 5080** · 64GB DDR5 · Win 11 Pro · 2×2TB | **Orchestrate · s&box editor · all 3 editor MCPs · flatgrass proof · git push.** Bloodwave's **true eyes** — the only node that sees real-time editor/gameplay truth. | `C:\Users\jared\Projects\lifepunch` | LAN `192.168.1.236` |
+| **Green — Cornerman** | Corsair AI Workstation 300 · **Ryzen AI Max 385** · Radeon 8050S iGPU (up to **48GB VRAM**) · **64GB LPDDR5X** · 1TB | **Warm LM · distill · heavy headless agent implementation · MCP bridge relay.** Segway between Architect and Vengeance. **No editor of its own** — tunnels into Red's editor. Read-only deploy key → **patch-handoff** to Red. | `C:\Projects\lifepunch` | LAN `192.168.1.229` |
+| **Architect — MacBook** | MacBook Air **M2** (2022) · **8GB RAM** · macOS Tahoe 26.5.2 | **Design Architect host (ChatGPT) · planner · native Cursor + Copilot · RDP → Green.** Keep it light (8GB) — ideation + comms, not heavy compute. Editor MCP not required (capable if recommended). | `~/Projects/lifepunch` | — |
 | **Blue — LifepunchNET** | B650D4U-2L2T/BCM · **Ryzen 9 9950X3D** · 96GB DDR5 · 4TB NVMe · 1Gbps · Win 11 Pro | **Hosted server host.** Runs **LIFEPUNCH Official (Server 1, public)** + **Development (Server 2, addon testing before shipping to Server 1)**, Odysseus voice, Whisper STT, watchdog. Editor sessions reachable via API. **Not** DXRP Official (that is Dimmer's separate host). | `C:\lifepunch\lifepunch-rdp-server` | `205.209.104.22` |
 
-**One-line disambiguation:** Red = runtime truth + push · Green B = warm/distill/execute · Green A =
-Architect + control plane · Blue = hosted venue (our servers). Full detail: **`MACHINE_CAST.md`**.
+**One-line disambiguation:** Red = runtime truth + push · Green = warm/distill/execute · Architect =
+planner on Mac · Blue = hosted venue (our servers). Full detail: **`MACHINE_CAST.md`**.
 
-> Legacy names you may see: the Red clone is written `LIFEPUNCH` in older docs and the Cursor workspace may
-> display **`lifepunchaddons`** (retired) — the real live clone is `C:\Users\jared\Projects\lifepunchdxrp`.
+> Legacy: the monorepo clone was `C:\Users\jared\Projects\lifepunchdxrp` at Projects root; product addons lived under `lifepunch/addons`. **Current:** clone `C:\Users\jared\Projects\lifepunch` with product tree **`lifepunchaddons/`** at repo root and nested **`lifepunchdxrp/`** for the DXRP fork.
 
 ---
 
@@ -137,7 +139,7 @@ Architect + control plane · Blue = hosted venue (our servers). Full detail: **`
 | **Bloodwave** | Owner (Red desk) | *"Is this what the player needs to see?"* — ideas, QA, GitHub issues, final GO | Final authority |
 | **Design Architect** | **ChatGPT** — Mac (primary) · Red (at desk) | *"Does this make the game better?"* | **No** — CURSOR BRIEFs + design docs |
 | **Integration Architect** | **Cursor / Copilot** — Red (push) · Cornerman (execute) · Mac (comms) | *"Does this match repo law and ship criteria?"* | **Yes** (owner GO; Cornerman via patch-handoff) |
-| **Distillation Architect** | **Cornerman LM** (Tier-3, Green B) | *"Can this be distilled cheaper for Red?"* | No — outbox candidates only |
+| **Distillation Architect** | **Cornerman LM** (Tier-3, Green) | *"Can this be distilled cheaper for Red?"* | No — outbox candidates only |
 | **Operations Architect** | **RDP agent** on lifepunchnet (Blue) | *"Does hosted ops match Bloodwave intent?"* | Ops scripts under owner authority |
 
 **Opus is not a role — it is a Tier-1 model** the Integration Architect uses for hard slices. **Grok Build 1
@@ -209,7 +211,7 @@ routing: **`MCP_AGENT_ROUTING.md`**.
 `connected` heartbeat <30s. Probe: `Get-CvlConnectivityStatus.ps1 -Pretty`. Refresh after any stack
 change: `Invoke-CvlFullCapacityRefresh.ps1`.
 
-**Cornerman bridge (Green B triple stack):** `sbox` via SMB `\\VENGEANCE\SboxBridgeIpc`, `sbox-editor` via
+**Cornerman bridge (Green triple stack):** `sbox` via SMB `\\VENGEANCE\SboxBridgeIpc`, `sbox-editor` via
 SSH tunnel `localhost:9090`, `cornerman-lm` local. Preflight (Red editor up first):
 **Map → Tunnel → `Test-Path \\VENGEANCE\SboxBridgeIpc\status.json`**. jtc has no Green tunnel yet.
 
@@ -334,12 +336,13 @@ work otherwise.** These force full-repo understanding without pasting every file
 
 ### Always (any LIFEPUNCH session)
 1. `lifepunch/docs/CVL_AGENT_ONBOARDING.md` (this file)
-2. `lifepunch/docs/MACHINE_CAST.md` — nodes + roles
-3. `lifepunch/docs/GREEN_EXECUTION_MODEL.md` — three-group workflow + sync law
-4. `.cursor/rules` (alwaysApply) — **repo law (wins over this doc)**
-5. `lifepunch/addons/docs/ACTIVE_WORKSTREAM.md` — the single active lane gate
-6. `README.md` (repo root) — 8-step boot + domain map
-7. `lifepunch/docs/handoff/CVL_RELAY_BATON.md` — current relay state
+2. `lifepunch/docs/BRANCH_MODEL.md` — **`main` = truth**, **`develop` = test**
+3. `lifepunch/docs/MACHINE_CAST.md` — nodes + roles
+4. `lifepunch/docs/GREEN_EXECUTION_MODEL.md` — three-group workflow + sync law
+5. `.cursor/rules` (alwaysApply) — **repo law (wins over this doc)**
+6. `lifepunchaddons/docs/ACTIVE_WORKSTREAM.md` — the single active lane gate
+7. `README.md` (repo root) — 8-step boot + domain map
+8. `lifepunch/docs/handoff/CVL_RELAY_BATON.md` — current relay state
 
 ### Product / gameplay (design, UX, economy)
 `LIFEPUNCH_GAMEPLAY_LAWS.md` (G0–G9 + Fantasy Check) · `LIFEPUNCH_FEEL.md` · `TERMINOLOGY.md` ·
@@ -367,7 +370,7 @@ Minigame, Event, Recovery), `Chat/Commands/`, `Sentinel/` (anti-cheat), `Api/` (
 
 ### LIFEPUNCH repo shape
 All product/platform/business/tooling under `lifepunch/`. s&box code = one umbrella project
-`lifepunch/addons/addons.sbproj` (+ `Code/addons.csproj`), split `Code/Addons/lifepunch/<addon>` +
+`lifepunchaddons/addons.sbproj` (+ `Code/addons.csproj`), split `Code/Addons/lifepunch/<addon>` +
 `Assets/addons/lifepunch/<addon>`. **Active addons only:** `adminmenu` (→ `lifepunchulx`) + `bitcoinmining`
 (→ `lifepunchbitcoin`, staging `lpbitcoin`). Everything else is **quarantined** (concepts only — no edits,
 no copy-paste ship paths): registry `config/portfolio.json`, `packages.json`, `addons/_QUARANTINE_INDEX.md`.
@@ -379,7 +382,7 @@ no copy-paste ship paths): registry `config/portfolio.json`, `packages.json`, `a
 - **Git:** always `git pull --rebase` first; **never force-push**; author `mragerlp <mragerlp@gmail.com>`;
   **no AI/agent co-author trailers** (keep Cursor Attribution OFF; critical on the public DXRP fork).
 - **Commit consent:** never commit unprompted — propose **scope + one-line summary**, wait for Bloodwave
-  **GO** (`commit to main` / `commit and push`). `GIT_CHECKPOINTS.md`.
+  **GO** (`commit to develop` / `merge to main` / `commit and push`). `GIT_CHECKPOINTS.md` · `BRANCH_MODEL.md`.
 - **Proprietary header** on every LIFEPUNCH source file (`.cs`/`.razor`/`.scss`): the
   `PROPRIETARY & CONFIDENTIAL — © 2026 lifepunch.co` block (name from `addons.json`) before any
   `using`/`namespace`/style. **Never** in the DXRP fork.
@@ -406,7 +409,7 @@ no copy-paste ship paths): registry `config/portfolio.json`, `packages.json`, `a
 |-------|-------|
 | **Active lane** | **`lifepunchbitcoin` / `lpbitcoin` — Phase A Hub polish.** Next slice **H4 + H5** (world power/audio) — **owner GO `GO H4/H5 HUB STATE` (+ route tag) before code.** Phase B Terminal locked until H10. Economy overhaul on HOLD. `ACTIVE_WORKSTREAM.md`. |
 | **Bitcoin three-surface** | **Hub** (controller/ops — owns mining) + **Terminal** (defense/capability — **never mines**) + **GPU Rack** (hardware, 3-rack limit). Universal Upgrades Home in `LpHashdPanel` (HUB / TERMINAL / GPU RACK tabs). `DECISIONS/DECISION-0001…0010`. |
-| **Branch** | `checkpoint-lpbitcoin-pre-sleep-20260701` (lifepunch) — synced with origin. DXRP `develop` current (`a132116`). |
+| **Branch** | **`develop`** = test (Red daily) · **`main`** = truth (Cornerman distill, export). Merge **`develop` → `main`** on owner GO; sync **`main` → `develop`** after. `BRANCH_MODEL.md`. |
 | **Publish-ready** | Only **`lifepunchulx`** (`adminmenu`) — export via `Export-LifepunchPublishLane.ps1`. Bitcoin active but **not** publish-ready. |
 | **DXRP upstream** | Party Phase 2 (**#111**) on `mragerlp-party-phase-2`; implement only after Dxura GO on slice 1. `DXRP_CONTRIBUTOR_LANE.md`. |
 | **Editor workbench** | `Start-SboxDxrpEditor.ps1 -FullCapacity -PreflightFix -BitcoinOnly -SyncAddon lpbitcoin,adminmenu`. |

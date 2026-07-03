@@ -5,14 +5,14 @@ $RepoRoot = (Resolve-Path (Join-Path $Here '..\..')).Path
 . (Join-Path $Here 'Cornerman-Workflow.ps1')
 
 $files = @(
-    @{ rel = 'lifepunch\addons\docs\briefs\CORNERMAN_CYBER_CONSOLE_SOUNDS_SUPPLEMENT.md'; inbox = 'CORNERMAN_CYBER_CONSOLE_SOUNDS_SUPPLEMENT.md' },
+    @{ rel = 'lifepunchaddons\docs\briefs\CORNERMAN_CYBER_CONSOLE_SOUNDS_SUPPLEMENT.md'; inbox = 'CORNERMAN_CYBER_CONSOLE_SOUNDS_SUPPLEMENT.md' },
     @{ rel = 'lifepunch\docs\handoff\cornerman-outbox\OWNER_ASK_GPU_FAN_LIFECYCLE.txt'; inbox = 'OWNER_ASK_GPU_FAN_LIFECYCLE.txt' },
     @{ rel = 'lifepunch\docs\handoff\cornerman-outbox\OWNER_ASK_UNIVERSAL_CONSOLE_KEYBOARD.txt'; inbox = 'OWNER_ASK_UNIVERSAL_CONSOLE_KEYBOARD.txt' },
     @{ rel = 'lifepunch\docs\handoff\cornerman-outbox\OWNER_ASK_HACKERJOB_SOUNDS.txt'; inbox = 'OWNER_ASK_HACKERJOB_SOUNDS.txt' },
     @{ rel = 'lifepunch\docs\handoff\cornerman-outbox\OWNER_ASK_LOUD_CLICK_TYPING.txt'; inbox = 'OWNER_ASK_LOUD_CLICK_TYPING.txt' },
-    @{ rel = 'lifepunch\addons\Code\Addons\lifepunch\hackerjob\HackerJob.cs'; inbox = 'HackerJob.cs' },
-    @{ rel = 'lifepunch\addons\docs\HACKER_JOB_SPEC.md'; inbox = 'HACKER_JOB_SPEC.md' },
-    @{ rel = 'lifepunch\addons\Code\Addons\lifepunch\bitcoinmining\GpuRackEntity.cs'; inbox = 'GpuRackEntity_sounds_ref.cs' }
+    @{ rel = 'lifepunchaddons\Code\Addons\lifepunch\hackerjob\HackerJob.cs'; inbox = 'HackerJob.cs' },
+    @{ rel = 'lifepunchaddons\docs\HACKER_JOB_SPEC.md'; inbox = 'HACKER_JOB_SPEC.md' },
+    @{ rel = 'lifepunchaddons\Code\Addons\lifepunch\bitcoinmining\GpuRackEntity.cs'; inbox = 'GpuRackEntity_sounds_ref.cs' }
 )
 
 foreach ($f in $files) {

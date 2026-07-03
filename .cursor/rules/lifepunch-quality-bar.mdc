@@ -43,7 +43,7 @@ code) — not just the current task.
 ## Be honest; track the temporary
 1. Never present an interim baseline (or an unmaintainable mess) as the finished thing.
 2. Offer the clean endgame so the user can choose baseline-now vs. clean-now.
-3. If something is genuinely temporary, TRACK it in `lifepunch/addons/docs/TECH_DEBT.md`:
+3. If something is genuinely temporary, TRACK it in `lifepunchaddons/docs/TECH_DEBT.md`:
    what's temporary, why, the clean endgame, and the single swap point. A placeholder must
    never silently become permanent.
 

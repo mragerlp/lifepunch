@@ -1,6 +1,6 @@
 ---
 description: LifePunch menu UI scale (S/M/L/XL) + flex-scroll layout law for hub/admin panels
-globs: lifepunch/addons/Code/Addons/lifepunch/**/*.{razor,scss}
+globs: lifepunchaddons/Code/Addons/lifepunch/**/*.{razor,scss}
 alwaysApply: false
 ---
 

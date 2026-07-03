@@ -3,7 +3,7 @@ CORNERMAN OVERNIGHT — LPBitcoin UI polish (~12h) — 2026-06-20
 Owner (Bloodwave) logged off until ~11:59 PM EST. Red pushed main; you run MonorepoPull then this queue.
 
 START HERE
-  lifepunch/addons/docs/briefs/CORNERMAN_LPBITCOIN_UI_POLISH_OVERNIGHT_TASK.md
+  lifepunchaddons/docs/briefs/CORNERMAN_LPBITCOIN_UI_POLISH_OVERNIGHT_TASK.md
 
 EYES COVERED
   No bridge, no playtest claims. Outbox drafts only.

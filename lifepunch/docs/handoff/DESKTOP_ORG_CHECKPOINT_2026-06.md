@@ -9,7 +9,7 @@
 
 | Layer | Path | Who uses it | Role |
 |-------|------|-------------|------|
-| **Monorepo** | `C:\Users\jared\Projects\lifepunchdxrp` | VENGEANCE + agents | Law, WIP, git checkpoints |
+| **Monorepo** | `C:\Users\jared\Projects\lifepunch` | VENGEANCE + agents | Law, WIP, git checkpoints |
 | **Desktop org** | `Desktop\lifepunch` | Bloodwave only | Local filing + portal-ready upload copies |
 
 CVL nodes (Cornerman, lifepunchnet, shottaWEB) **pull the monorepo**. They do **not** need the Desktop folder unless you explicitly copy something to them.
@@ -97,6 +97,6 @@ No CVL action required unless you are publishing ULX or pulling for addon work.
 
 - `lifepunch/docs/GIT_CHECKPOINTS.md`
 - `lifepunch/docs/PUBLISH_REPO_LANE.md`
-- `lifepunch/addons/docs/PUBLISHING.md`
-- `lifepunch/addons/docs/DXRP_ULX_ONLY_LANE.md`
+- `lifepunchaddons/docs/PUBLISHING.md`
+- `lifepunchaddons/docs/DXRP_ULX_ONLY_LANE.md`
 - `lifepunch/scripts/Sync-DesktopPublishFolder.ps1`

@@ -1,7 +1,7 @@
 # Packet A — StaffMenu token remap notes + tab/selected-row wash (DRAFT, no SCSS applied)
 
 **Node:** Green B (Cornerman) · distill only · unattended · 2026-07-02
-**Source read:** `lifepunch/addons/Code/Addons/lifepunch/adminmenu/StaffMenu.razor.scss` (current, `ulx-v2` palette)
+**Source read:** `lifepunchaddons/Code/Addons/lifepunch/adminmenu/StaffMenu.razor.scss` (current, `ulx-v2` palette)
 **Status:** NOTES ONLY — nothing written to StaffMenu.razor.scss. Owner GO required before apply.
 
 **Note on work packets:** the two named source packets

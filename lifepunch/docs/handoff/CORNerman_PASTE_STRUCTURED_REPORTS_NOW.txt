@@ -7,7 +7,7 @@ Cornerman — important format change for all remaining work.
 From now on, every single deliverable and report you produce must follow the new standardized LIFEPUNCH AI Report format.
 
 Pull the template:
-cd C:\Users\jared\Projects\lifepunchdxrp
+cd C:\Users\jared\Projects\lifepunch
 git pull --rebase
 
 Use this as the exact structure for everything you output from this point forward:

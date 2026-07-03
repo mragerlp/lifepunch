@@ -5,12 +5,12 @@ $RepoRoot = (Resolve-Path (Join-Path $Here '..\..')).Path
 . (Join-Path $Here 'Cornerman-Workflow.ps1')
 
 $files = @(
-    @{ rel = 'lifepunch\addons\docs\briefs\CORNERMAN_STAFF_MENU_TASK.md'; inbox = 'CORNERMAN_STAFF_MENU_TASK.md' },
-    @{ rel = 'lifepunch\addons\Code\Addons\lifepunch\adminmenu\StaffMenu.razor'; inbox = 'StaffMenu.razor' },
-    @{ rel = 'lifepunch\addons\Code\Addons\lifepunch\adminmenu\StaffMenu.razor.scss'; inbox = 'StaffMenu.razor.scss' },
-    @{ rel = 'lifepunch\addons\Code\Addons\lifepunch\adminmenu\StaffMenuHost.cs'; inbox = 'StaffMenuHost.cs' },
-    @{ rel = 'lifepunch\addons\Code\Addons\lifepunch\adminmenu\StaffMenuActions.cs'; inbox = 'StaffMenuActions.cs' },
-    @{ rel = 'lifepunch\addons\Code\Addons\lifepunch\bitcoinmining\HashdTerminal.razor.scss'; inbox = 'BITCOINMINING_GRADIENT_FIX_REFERENCE.scss' },
+    @{ rel = 'lifepunchaddons\docs\briefs\CORNERMAN_STAFF_MENU_TASK.md'; inbox = 'CORNERMAN_STAFF_MENU_TASK.md' },
+    @{ rel = 'lifepunchaddons\Code\Addons\lifepunch\adminmenu\StaffMenu.razor'; inbox = 'StaffMenu.razor' },
+    @{ rel = 'lifepunchaddons\Code\Addons\lifepunch\adminmenu\StaffMenu.razor.scss'; inbox = 'StaffMenu.razor.scss' },
+    @{ rel = 'lifepunchaddons\Code\Addons\lifepunch\adminmenu\StaffMenuHost.cs'; inbox = 'StaffMenuHost.cs' },
+    @{ rel = 'lifepunchaddons\Code\Addons\lifepunch\adminmenu\StaffMenuActions.cs'; inbox = 'StaffMenuActions.cs' },
+    @{ rel = 'lifepunchaddons\Code\Addons\lifepunch\bitcoinmining\HashdTerminal.razor.scss'; inbox = 'BITCOINMINING_GRADIENT_FIX_REFERENCE.scss' },
     @{ rel = 'lifepunch\docs\handoff\cornerman-outbox\to-cornerman-staff-menu.txt'; inbox = 'to-cornerman-staff-menu.txt' }
 )
 

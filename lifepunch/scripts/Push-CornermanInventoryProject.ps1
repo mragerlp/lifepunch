@@ -5,16 +5,16 @@ $RepoRoot = (Resolve-Path (Join-Path $Here '..\..')).Path
 . (Join-Path $Here 'Cornerman-Workflow.ps1')
 
 $files = @(
-    @{ rel = 'lifepunch\addons\docs\briefs\CORNERMAN_INVENTORY_PROJECT_TASK.md'; inbox = 'CORNERMAN_INVENTORY_PROJECT_TASK.md' },
-    @{ rel = 'lifepunch\addons\docs\briefs\CORNERMAN_VISIBLE_POCKET_START.md'; inbox = 'CORNERMAN_VISIBLE_POCKET_START.md' },
-    @{ rel = 'lifepunch\addons\docs\briefs\CORNERMAN_WORK_QUEUE.md'; inbox = 'CORNERMAN_WORK_QUEUE.md' },
+    @{ rel = 'lifepunchaddons\docs\briefs\CORNERMAN_INVENTORY_PROJECT_TASK.md'; inbox = 'CORNERMAN_INVENTORY_PROJECT_TASK.md' },
+    @{ rel = 'lifepunchaddons\docs\briefs\CORNERMAN_VISIBLE_POCKET_START.md'; inbox = 'CORNERMAN_VISIBLE_POCKET_START.md' },
+    @{ rel = 'lifepunchaddons\docs\briefs\CORNERMAN_WORK_QUEUE.md'; inbox = 'CORNERMAN_WORK_QUEUE.md' },
     @{ rel = 'lifepunch\docs\CORNERMAN_MODEL_ROUTING.md'; inbox = 'CORNERMAN_MODEL_ROUTING.md' },
     @{ rel = 'lifepunch\docs\CORNERMAN_OFF_CURSOR_HANDOFF.md'; inbox = 'CORNERMAN_OFF_CURSOR_HANDOFF.md' },
-    @{ rel = 'lifepunch\addons\docs\VISIBLE_POCKET_SPEC.md'; inbox = 'VISIBLE_POCKET_SPEC.md' },
-    @{ rel = 'lifepunch\addons\docs\reference\DXRP_POCKET_DISCOVERY.md'; inbox = 'DXRP_POCKET_DISCOVERY.md' },
-    @{ rel = 'lifepunch\addons\docs\reference\LLAD_MODULAR_INVENTORY_STUDY.md'; inbox = 'LLAD_MODULAR_INVENTORY_STUDY.md' },
-    @{ rel = 'lifepunch\addons\docs\RED_VENGEANCE_VISIBLE_POCKET_BUILD.md'; inbox = 'RED_VENGEANCE_VISIBLE_POCKET_BUILD.md' },
-    @{ rel = 'lifepunch\addons\Code\Addons\lifepunch\visiblepocket\docs\VISIBLE_POCKET_PLAYTEST.md'; inbox = 'VISIBLE_POCKET_PLAYTEST.md' },
+    @{ rel = 'lifepunchaddons\docs\VISIBLE_POCKET_SPEC.md'; inbox = 'VISIBLE_POCKET_SPEC.md' },
+    @{ rel = 'lifepunchaddons\docs\reference\DXRP_POCKET_DISCOVERY.md'; inbox = 'DXRP_POCKET_DISCOVERY.md' },
+    @{ rel = 'lifepunchaddons\docs\reference\LLAD_MODULAR_INVENTORY_STUDY.md'; inbox = 'LLAD_MODULAR_INVENTORY_STUDY.md' },
+    @{ rel = 'lifepunchaddons\docs\RED_VENGEANCE_VISIBLE_POCKET_BUILD.md'; inbox = 'RED_VENGEANCE_VISIBLE_POCKET_BUILD.md' },
+    @{ rel = 'lifepunchaddons\Code\Addons\lifepunch\visiblepocket\docs\VISIBLE_POCKET_PLAYTEST.md'; inbox = 'VISIBLE_POCKET_PLAYTEST.md' },
     @{ rel = 'lifepunch\docs\handoff\cornerman-outbox\to-cornerman-visible-pocket.txt'; inbox = 'to-cornerman-visible-pocket.txt' },
     @{ rel = 'lifepunch\docs\handoff\cornerman-outbox\VISIBLE_POCKET_DXRP_SUMMARY.txt'; inbox = 'VISIBLE_POCKET_DXRP_SUMMARY.txt' }
 )

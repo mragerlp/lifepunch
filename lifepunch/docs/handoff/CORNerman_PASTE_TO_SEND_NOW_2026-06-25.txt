@@ -5,7 +5,7 @@ Paste this directly to Cornerman:
 Cornerman — new long run starting now.
 
 1. Pull latest:
-cd C:\Users\jared\Projects\lifepunchdxrp
+cd C:\Users\jared\Projects\lifepunch
 git fetch
 git pull --rebase
 
@@ -29,7 +29,7 @@ Verify with `lms ps` that the 27B is loaded.
 
 3. Primary task for this entire run (until ~11:30 PM EST):
 
-lifepunch/addons/docs/briefs/CORNerman_LPADONS_FULL_ECOSYSTEM_PREP_UNTIL_1130PM.md
+lifepunchaddons/docs/briefs/CORNerman_LPADONS_FULL_ECOSYSTEM_PREP_UNTIL_1130PM.md
 
 Read that file first. It is the directive for the full lpaddons scope (priority = finish lpbitcoin Phase 1, but prepare connections across the whole addon family).
 

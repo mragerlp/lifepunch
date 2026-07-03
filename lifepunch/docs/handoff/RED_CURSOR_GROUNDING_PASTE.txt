@@ -14,11 +14,14 @@ ROLE — RED (orchestrator + runtime truth)
 ══════════════════════════════════════════════════════════════════════════════
 STEP 0 — SYNC
 ══════════════════════════════════════════════════════════════════════════════
-  cd C:\Users\jared\Projects\lifepunchdxrp
+  cd C:\Users\jared\Projects\lifepunch
   git fetch origin
-  git checkout checkpoint-lpbitcoin-pre-sleep-20260701
-  git pull --rebase
+  git checkout develop
+  git pull --rebase origin develop
   If behind AND dirty: STOP — tell Bloodwave.
+
+  Branch law: main = truth · develop = test · ship = develop → main (owner GO).
+  Full canon: lifepunch/docs/BRANCH_MODEL.md · paste: handoff/NEW_CHAT_BRANCH_LAW_PASTE.txt
 
   If Cornerman did heavy work since last Red session: pull their commits or run
   lifepunch/scripts/Pull-CornermanPatches.ps1 -Push before new orchestration.
@@ -37,7 +40,7 @@ STEP 2 — READ ORDER
 ══════════════════════════════════════════════════════════════════════════════
   1. lifepunch/docs/GREEN_EXECUTION_MODEL.md
   2. lifepunch/docs/MACHINE_CAST.md
-  3. lifepunch/addons/docs/ACTIVE_WORKSTREAM.md
+  3. lifepunchaddons/docs/ACTIVE_WORKSTREAM.md
   4. lifepunch/docs/handoff/ARCHITECT_CURRENT_STATE.md
   5. .cursor/rules (alwaysApply)
 

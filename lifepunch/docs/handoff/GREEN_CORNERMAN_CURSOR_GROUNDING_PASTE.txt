@@ -15,9 +15,12 @@ ROLE — GREEN B (workshop + bridge MCP)
 PREFLIGHT (PowerShell on Cornerman desktop)
 ══════════════════════════════════════════════════════════════════════════════
   cd C:\Projects\lifepunch
-  git fetch origin
-  git checkout checkpoint-lpbitcoin-pre-sleep-20260701
-  git pull --rebase
+  git fetch origin --prune
+  git checkout main
+  git pull origin main
+
+  Branch law: main = truth (Cornerman distill). Red daily work uses develop on VENGEANCE.
+  lifepunch/docs/BRANCH_MODEL.md · handoff/NEW_CHAT_BRANCH_LAW_PASTE.txt
 
   powershell -NoProfile -ExecutionPolicy Bypass -File C:\lifepunch\cornerman\Map-CornermanBridgeShare.ps1
   powershell -NoProfile -ExecutionPolicy Bypass -File C:\lifepunch\cornerman\Start-CornermanSboxEditorTunnel.ps1 -Background

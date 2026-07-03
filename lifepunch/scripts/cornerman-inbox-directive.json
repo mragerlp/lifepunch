@@ -18,7 +18,7 @@
     "Do NOT use Lemonade — STT is lifepunchnet :9000 only"
   ],
   "activeQueue": {
-    "master": "lifepunch/addons/docs/briefs/CORNERMAN_WORK_QUEUE.md",
+    "master": "lifepunchaddons/docs/briefs/CORNERMAN_WORK_QUEUE.md",
     "onBox": "C:\\lifepunch\\cornerman\\inbox\\CORNERMAN_WORK_QUEUE.md",
     "sessionNote": "C:\\lifepunch\\cornerman\\inbox\\to-cornerman-session-2026-06-17.txt",
     "tasks": [

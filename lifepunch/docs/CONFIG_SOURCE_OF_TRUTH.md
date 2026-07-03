@@ -14,12 +14,13 @@ When two files disagree, **fix the canonical file** listed here — do not fork 
 |----------|----------------|
 | Branch model (main / develop)? | `lifepunch/docs/BRANCH_MODEL.md` |
 | Commit / push / pull law? | `lifepunch/docs/GIT_CHECKPOINTS.md` |
-| Which addons exist / ownership headers? | `lifepunch/addons/config/addons.json` |
-| Public package slug vs packageFolder parent? | `lifepunch/addons/config/packages.json` + `package-staging.json` |
-| Active vs quarantined idents? | `lifepunch/addons/config/portfolio.json` |
-| Entity staging layout? | `lifepunch/addons/config/package-staging.json` |
+| Which addons exist / ownership headers? | `lifepunchaddons/config/addons.json` |
+| Public package slug vs packageFolder parent? | `lifepunchaddons/config/packages.json` + `package-staging.json` |
+| Active vs quarantined idents? | `lifepunchaddons/config/portfolio.json` |
+| Entity staging layout? | `lifepunchaddons/config/package-staging.json` |
 | GitLab export paths? | `lifepunch/docs/gitlab-projects.json` |
 | MCP port law? | `lifepunch/config/sbox-mcp-ports.json` |
+| Cornerman MCP modes? | `lifepunch/docs/CORNERMAN_MCP_MODES.md` |
 | CVL machine pins? | `lifepunch/config/cvl-stack-pins.json` |
 | Cornerman Tier-3 models? | `lifepunch/config/cornerman-tier3-models.json` |
 | DXRP upstream pin (fork)? | `lifepunch/config/dxrp-upstream-pin.json` |
@@ -39,15 +40,15 @@ When two files disagree, **fix the canonical file** listed here — do not fork 
 
 | Path | Role | Editor |
 |------|------|--------|
-| `lifepunch/addons/config/addons.json` | Addon titles, s&box idents, proprietary metadata | Owner |
-| `lifepunch/addons/config/packages.json` | `packageSlug` ↔ `repoIdent` ↔ s&box ident | Owner |
-| `lifepunch/addons/config/portfolio.json` | `activeAddons`, `publishReadyAddons`, quarantine list | Owner |
-| `lifepunch/addons/config/package-staging.json` | `lp*` entity folder staging | Owner |
-| `lifepunch/addons/config/portal/*.json` | Portal content placeholders (dev) | Owner |
-| `lifepunch/addons/config/weapon-production.json` | Weapon pipeline queue (quarantine lane) | Owner |
-| `lifepunch/addons/config/cs2-weapon-catalog.json` | Reference catalog | Owner |
-| `lifepunch/addons/config/gear-production.json` | Gear pipeline | Owner |
-| `lifepunch/addons/config/drop-sites.json` | Map drop coords (quarantine) | Owner |
+| `lifepunchaddons/config/addons.json` | Addon titles, s&box idents, proprietary metadata | Owner |
+| `lifepunchaddons/config/packages.json` | `packageSlug` ↔ `repoIdent` ↔ s&box ident | Owner |
+| `lifepunchaddons/config/portfolio.json` | `activeAddons`, `publishReadyAddons`, quarantine list | Owner |
+| `lifepunchaddons/config/package-staging.json` | `lp*` entity folder staging | Owner |
+| `lifepunchaddons/config/portal/*.json` | Portal content placeholders (dev) | Owner |
+| `lifepunchaddons/config/weapon-production.json` | Weapon pipeline queue (quarantine lane) | Owner |
+| `lifepunchaddons/config/cs2-weapon-catalog.json` | Reference catalog | Owner |
+| `lifepunchaddons/config/gear-production.json` | Gear pipeline | Owner |
+| `lifepunchaddons/config/drop-sites.json` | Map drop coords (quarantine) | Owner |
 
 **Not source of truth:** `lifepunch/publish-lane/scaffold/config/addons.json` — scaffold only; live ship = `lifepunch-published`.
 

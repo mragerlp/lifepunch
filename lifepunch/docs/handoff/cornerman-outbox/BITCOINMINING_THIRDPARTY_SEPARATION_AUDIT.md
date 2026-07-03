@@ -2,7 +2,7 @@
 
 **Issued:** 2026-06-13 · **Lane:** Tier-3 distill prep · **Eyes:** covered (file diff only)  
 **Study source (never repo):** `C:\lifepunch\reference-intake\bitcoinmining\third-party-bitminer-study\` on Green  
-**LifePunch ship tree:** `lifepunch/addons/{Code,Assets}/addons/lifepunch/bitcoinmining/`
+**LifePunch ship tree:** `lifepunchaddons/{Code,Assets}/addons/lifepunch/bitcoinmining/`
 
 ---
 
@@ -45,7 +45,7 @@ Study Razor is a **genre reference** (terminal lines, command shell shape) — n
 ## 3. Ship-tree leak scan (LifePunch monorepo)
 
 ```text
-rg -i "forbidden-third-party-tokens" lifepunch/addons --glob "**/bitcoinmining/**"  → 0 matches
+rg -i "forbidden-third-party-tokens" lifepunchaddons --glob "**/bitcoinmining/**"  → 0 matches
 ```
 
 No third-party slug strings in the LifePunch ship tree. `addons.json` lists four content rows under `lifepunch.bitcoinmining`.

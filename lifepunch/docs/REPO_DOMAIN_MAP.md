@@ -52,7 +52,7 @@ This document answers: *where does this folder live, who owns edits, and which G
 
 | Folder | GitLab lane | Primary agent | Purpose |
 |--------|-------------|---------------|---------|
-| `lifepunch/addons/` | `lifepunch-addons` | Owner | s&box addon project — Code, Assets, config, docs. **Active ship:** `adminmenu`, `bitcoinmining` / `lpbitcoin` staging. Quarantine law: `addons/config/portfolio.json`, `addons/docs/QUARANTINE_REGISTER.md`. |
+| `lifepunchaddons/` | `lifepunch-addons` | Owner | s&box addon project — Code, Assets, config, docs. **Active ship:** `adminmenu`, `bitcoinmining` / `lpbitcoin` staging. Quarantine law: `addons/config/portfolio.json`, `addons/docs/QUARANTINE_REGISTER.md`. |
 | `lifepunch/publish-lane/` | — (monorepo-only) | Owner | **Pointer/scaffold** for the external publish repo — not the live publish tree. Canonical export: `lifepunch-published` per `PUBLISH_REPO_LANE.md`. Contains scaffold README + sample `addons.json` only. |
 
 **External PRODUCT repo (not a folder here):** `mragerlp/lifepunch-published` — populated by `Export-LifepunchPublishLane.ps1`, not by editing `publish-lane/` as source of truth.
@@ -144,7 +144,7 @@ All rows export to **`lifepunch-rdp-server`** unless noted. Primary agent: **RDP
 | GitLab project | Monorepo paths (export) | Write access |
 |----------------|-------------------------|--------------|
 | `lifepunch-foundation` | `.cursor/rules`, `.cursor/hooks*`, `lifepunch/docs`, `lifepunch/legal`, `lifepunch/marketing`, `lifepunch/branding`, `lifepunch/config`, `lifepunch/templates`, `scripts/`, `README.md` | Owner |
-| `lifepunch-addons` | `lifepunch/addons/**` | Owner |
+| `lifepunch-addons` | `lifepunchaddons/**` | Owner |
 | `lifepunch-website` | `lifepunch/website/**` | shottaWEB + owner |
 | `lifepunch-rdp-server` | PLATFORM folders listed above | RDP agent + owner |
 
@@ -158,7 +158,7 @@ Machine-readable: `lifepunch/docs/gitlab-projects.json`.
 
 | Branch | Scope | Law |
 |--------|-------|-----|
-| `lane/ak47` | `lifepunch/addons/**/ak47/**` + AK scripts | Quarantined FP experiment — never merge to `main` without owner sign-off. `lifepunch/docs/lanes/AK47_LANE.md`. |
+| `lane/ak47` | `lifepunchaddons/**/ak47/**` + AK scripts | Quarantined FP experiment — never merge to `main` without owner sign-off. `lifepunch/docs/lanes/AK47_LANE.md`. |
 
 ---
 
@@ -179,7 +179,7 @@ Machine-readable: `lifepunch/docs/gitlab-projects.json`.
 
 ```text
 Touching s&box addon code/assets?
-  → PRODUCT · lifepunch/addons · check ACTIVE_WORKSTREAM + portfolio.json first
+  → PRODUCT · lifepunchaddons · check ACTIVE_WORKSTREAM + portfolio.json first
 
 Touching server/gamemode/portal/staff?
   → PLATFORM · lifepunch-rdp-server lane · integrate via GitHub

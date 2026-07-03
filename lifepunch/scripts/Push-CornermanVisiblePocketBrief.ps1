@@ -5,10 +5,10 @@ $RepoRoot = (Resolve-Path (Join-Path $Here '..\..')).Path
 . (Join-Path $Here 'Cornerman-Workflow.ps1')
 
 $files = @(
-    @{ rel = 'lifepunch\addons\docs\briefs\CORNERMAN_VISIBLE_POCKET_START.md'; inbox = 'CORNERMAN_VISIBLE_POCKET_START.md' },
-    @{ rel = 'lifepunch\addons\docs\VISIBLE_POCKET_SPEC.md'; inbox = 'VISIBLE_POCKET_SPEC.md' },
-    @{ rel = 'lifepunch\addons\docs\reference\DXRP_POCKET_DISCOVERY.md'; inbox = 'DXRP_POCKET_DISCOVERY.md' },
-    @{ rel = 'lifepunch\addons\Code\Addons\lifepunch\visiblepocket\docs\VISIBLE_POCKET_PLAYTEST.md'; inbox = 'VISIBLE_POCKET_PLAYTEST.md' },
+    @{ rel = 'lifepunchaddons\docs\briefs\CORNERMAN_VISIBLE_POCKET_START.md'; inbox = 'CORNERMAN_VISIBLE_POCKET_START.md' },
+    @{ rel = 'lifepunchaddons\docs\VISIBLE_POCKET_SPEC.md'; inbox = 'VISIBLE_POCKET_SPEC.md' },
+    @{ rel = 'lifepunchaddons\docs\reference\DXRP_POCKET_DISCOVERY.md'; inbox = 'DXRP_POCKET_DISCOVERY.md' },
+    @{ rel = 'lifepunchaddons\Code\Addons\lifepunch\visiblepocket\docs\VISIBLE_POCKET_PLAYTEST.md'; inbox = 'VISIBLE_POCKET_PLAYTEST.md' },
     @{ rel = 'lifepunch\docs\handoff\cornerman-outbox\to-cornerman-visible-pocket.txt'; inbox = 'to-cornerman-visible-pocket.txt' },
     @{ rel = 'lifepunch\docs\handoff\cornerman-outbox\VISIBLE_POCKET_DXRP_SUMMARY.txt'; inbox = 'VISIBLE_POCKET_DXRP_SUMMARY.txt' }
 )

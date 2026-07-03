@@ -10,8 +10,8 @@ $files = @(
     @{ rel = 'lifepunch\docs\handoff\cornerman-outbox\to-cornerman-menu-ui-fix.txt'; inbox = 'to-cornerman-menu-ui-fix.txt' },
     @{ rel = 'lifepunch\docs\handoff\cornerman-outbox\to-cornerman-session-2026-06-13.txt'; inbox = 'to-cornerman-session-2026-06-13.txt' },
     @{ rel = 'lifepunch\docs\handoff\cornerman-outbox\to-cornerman-idle-folder-2026-06-13.txt'; inbox = 'to-cornerman-idle-folder-2026-06-13.txt' },
-    @{ rel = 'lifepunch\addons\docs\SBOX_RAZOR_SCSS_RULES.md'; inbox = 'SBOX_RAZOR_SCSS_RULES.md' },
-    @{ rel = 'lifepunch\addons\docs\briefs\CORNERMAN_WORK_QUEUE.md'; inbox = 'CORNERMAN_WORK_QUEUE.md' },
+    @{ rel = 'lifepunchaddons\docs\SBOX_RAZOR_SCSS_RULES.md'; inbox = 'SBOX_RAZOR_SCSS_RULES.md' },
+    @{ rel = 'lifepunchaddons\docs\briefs\CORNERMAN_WORK_QUEUE.md'; inbox = 'CORNERMAN_WORK_QUEUE.md' },
     @{ rel = 'lifepunch\docs\CORNERMAN_IDLE_FOLDER.md'; inbox = 'CORNERMAN_IDLE_FOLDER.md' },
     @{ rel = 'lifepunch\scripts\Export-CornermanIdle.ps1'; inbox = 'Export-CornermanIdle.ps1' }
 )

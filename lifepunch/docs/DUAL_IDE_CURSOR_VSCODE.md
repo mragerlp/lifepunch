@@ -129,6 +129,6 @@ Law: `.cursor/rules/lifepunch-dxrp-style-gate.mdc`
 
 - `lifepunch/docs/DXRP_CONTRIBUTOR_LANE.md`
 - `lifepunch/docs/MCP_AGENT_ROUTING.md`
-- `lifepunch/addons/docs/SBOX_RAZOR_SCSS_RULES.md`
+- `lifepunchaddons/docs/SBOX_RAZOR_SCSS_RULES.md`
 - `.cursor/rules/lifepunch-dxrp-style-gate.mdc`
 - `.github/instructions/copilot-repo-ownership.instructions.md`
