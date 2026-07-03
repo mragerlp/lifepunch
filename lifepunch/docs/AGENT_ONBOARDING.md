@@ -1,6 +1,6 @@
 # LIFEPUNCH™ × DXRP — Agent Foundation
 
-> **START HERE (July 2026): the single grounding paste is now `lifepunch/docs/CVL_AGENT_ONBOARDING.md`**
+> **START HERE (July 2026): read `lifepunch/docs/START_HERE_AGENTS.md` first (thin router), then the single grounding paste `lifepunch/docs/CVL_AGENT_ONBOARDING.md`**
 > (mirrored on the Vengeance desktop as `CVL_AGENT_ONBOARDING.txt`). Paste that whole file into any
 > ChatGPT / Cursor / Copilot session on any machine. This Foundation doc remains valid **deep reference**;
 > CVL_AGENT_ONBOARDING is the top-level "one paste" that points here.
@@ -58,14 +58,14 @@ Business wrapper: `lifepunch/docs/BUSINESS_CONTEXT.md`.
 | 0 | `lifepunch/docs/MACHINE_CAST.md` | Red · Mac · Cornerman codenames |
 | 0a | `lifepunch/docs/GREEN_EXECUTION_MODEL.md` | Three agent groups + sync law |
 | 0b | `lifepunch/docs/handoff/AGENT_GROUNDING_INDEX.md` | Cursor + Copilot paste per machine |
-| 1 | `addons/docs/ACTIVE_WORKSTREAM.md` | Single lane gate |
+| 1 | `lifepunchaddons/docs/ACTIVE_WORKSTREAM.md` | Single lane gate |
 | 2 | `.cursor/rules` (alwaysApply) | Repo law |
-| 3 | `addons/docs/CYBER_REFERENCE_LAWS.md` | Cyber production gate (when on entity/addon work) |
-| 4 | `addons/docs/BITCOIN_SHIP_ROADMAP.md` | Step order (bitcoin lane only) |
+| 3 | `lifepunchaddons/docs/CYBER_REFERENCE_LAWS.md` | Cyber production gate (when on entity/addon work) |
+| 4 | `lifepunchaddons/docs/BITCOIN_SHIP_ROADMAP.md` | Step order (bitcoin lane only) |
 
-## Restructure track (June 2026 — owner pause on addon implementation)
+## Restructure track (June 2026 — complete; historical reference)
 
-Bloodwave paused **hub/feature implementation** until monorepo structure is signed off. During this window:
+The monorepo restructure (Phases 0–3) is **complete**; the active lane is **lpbitcoin** via the active-workstream gate. These docs remain for structure reference:
 
 | Order | Doc | Why |
 |-------|-----|-----|
@@ -74,7 +74,7 @@ Bloodwave paused **hub/feature implementation** until monorepo structure is sign
 | 3 | `lifepunch/docs/CONFIG_SOURCE_OF_TRUTH.md` | Which config file is law |
 | 4 | `lifepunchaddons/_QUARANTINE_INDEX.md` | Active vs quarantined idents |
 
-Product canon (`ACTIVE_WORKSTREAM`, quarantine, Bitcoin design) still applies — do not ship or extend quarantined lanes. Resume hub slices only after restructure sign-off in the roadmap.
+Product canon (`ACTIVE_WORKSTREAM`, quarantine, Bitcoin design) governs — do not ship or extend quarantined lanes. Route active work through `.cursor/rules/lifepunch-active-workstream-gate.mdc`.
 
 ## Mandatory reads — gameplay / product (when touching design, UX, economy doctrine)
 
@@ -83,7 +83,7 @@ Product canon (`ACTIVE_WORKSTREAM`, quarantine, Bitcoin design) still applies �
 | 1 | `lifepunch/docs/LIFEPUNCH_GAMEPLAY_LAWS.md` | G0–G9; Fantasy Check |
 | 2 | `lifepunch/docs/LIFEPUNCH_FEEL.md` | Product identity bar |
 | 3 | `lifepunch/docs/TERMINOLOGY.md` | Shared vocabulary |
-| 4 | `addons/docs/BITCOIN_PLAYER_DESIGN.md` | Bitcoin fantasy (bitcoin lane only) |
+| 4 | `lifepunchaddons/docs/BITCOIN_PLAYER_DESIGN.md` | Bitcoin fantasy (bitcoin lane only) |
 
 ## On demand only (do not read on every boot)
 
@@ -103,21 +103,21 @@ Product canon (`ACTIVE_WORKSTREAM`, quarantine, Bitcoin design) still applies �
 
 | Order | Doc | Why |
 |-------|-----|-----|
-| 1 | `addons/docs/ACTIVE_WORKSTREAM.md` | Single lane gate |
-| 2 | `addons/docs/LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md` | Machines not props; P0–P4 |
-| 3 | `addons/docs/MODEL_FOUNDATION_PASS.md` | Mesh sign-off before prefab |
-| 4 | `addons/docs/MODELDOC_STUDIO_LANE.md` | Standalone editor (no DXRP) |
-| 5 | `addons/docs/PACKAGE_STAGING_LAYOUT.md` | `lp*` staging paths |
-| 6 | `addons/docs/DXRP_ADDON_PUBLISH_DOCTRINE.md` | Folder=slug, PLACEHOLDER hands-off, portal vs files |
-| 7 | `addons/docs/CYBER_REFERENCE_LAWS.md` | Laws 1–11 |
+| 1 | `lifepunchaddons/docs/ACTIVE_WORKSTREAM.md` | Single lane gate |
+| 2 | `lifepunchaddons/docs/LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md` | Machines not props; P0–P4 |
+| 3 | `lifepunchaddons/docs/MODEL_FOUNDATION_PASS.md` | Mesh sign-off before prefab |
+| 4 | `lifepunchaddons/docs/MODELDOC_STUDIO_LANE.md` | Standalone editor (no DXRP) |
+| 5 | `lifepunchaddons/docs/PACKAGE_STAGING_LAYOUT.md` | `lp*` staging paths |
+| 6 | `lifepunchaddons/docs/DXRP_ADDON_PUBLISH_DOCTRINE.md` | Folder=slug, PLACEHOLDER hands-off, portal vs files |
+| 7 | `lifepunchaddons/docs/CYBER_REFERENCE_LAWS.md` | Laws 1–11 |
 
 **Weapons (parallel track — not bitcoin gate):**
 
 | Order | Doc | Why |
 |-------|-----|-----|
-| 1 | `addons/docs/LIFEPUNCH_WEAPON_IMPLEMENTATION_LAW.md` | Platform stack P0–P5 |
-| 2 | `addons/docs/WEAPON_INTAKE.md` | Import + naming |
-| 3 | `addons/docs/VIEWMODEL_RIG_PIPELINE.md` | FP rig bind |
+| 1 | `lifepunchaddons/docs/LIFEPUNCH_WEAPON_IMPLEMENTATION_LAW.md` | Platform stack P0–P5 |
+| 2 | `lifepunchaddons/docs/WEAPON_INTAKE.md` | Import + naming |
+| 3 | `lifepunchaddons/docs/VIEWMODEL_RIG_PIPELINE.md` | FP rig bind |
 | 4 | `docs/lanes/AK47_LANE.md` | Quarantine branch only |
 
 Cursor plugins: **Convex** = optional realtime backend only — not s&box entities or weapons.
@@ -197,7 +197,7 @@ Register + reasons: `lifepunchaddons/docs/QUARANTINE_REGISTER.md`. Ideation gate
 ### 1. GitHub monorepo → THE SOURCE OF TRUTH
 
 **`https://github.com/mragerlp/lifepunch`** (private monorepo). Live local checkout:
-`C:\Users\jared\Projects\lifepunchdxrp`. Holds all lanes — `lifepunchaddons/`, `website/`,
+`C:\Users\jared\Projects\lifepunch` (monorepo root; nested DXRP mirror = `lifepunchdxrp/`). Holds all lanes — `lifepunchaddons/`, `website/`,
 `server/`, `portal/`, `gamemode/`, `admin-panel/`, `.cursor/rules`, `docs/`, `legal/`, etc.
 **Owner does all design/build integration here.** Git `origin` is always this repo.
 (Do **not** use any OneDrive clone — removed June 2026 as a git-corruption risk.)
@@ -222,7 +222,7 @@ partner commits on GitLab integrate back into GitHub. Full map:
 
 | Node | Job |
 |------|-----|
-| **Red (VENGEANCE)** | Orchestrate · s&box · bridge · proof · push (`C:\Users\jared\Projects\lifepunchdxrp`) |
+| **Red (VENGEANCE)** | Orchestrate · s&box · bridge · proof · push (`C:\Users\jared\Projects\lifepunch`) |
 | **Cornerman (Green B)** | Warm · distill · heavy agent work (`C:\Projects\lifepunch` · patch-handoff to Red) |
 | **Mac (Green A)** | Control plane · **Design Architect (ChatGPT)** · native Cursor + Copilot · RDP → Cornerman |
 
@@ -241,7 +241,7 @@ Verified tip is recorded in `lifepunch/config/dxrp-upstream-pin.json` (commit af
 `Start-SboxDxrpEditor.ps1` blocks launch when the pin is behind (`-FailIfBehind`).
 
 1. **`mragerlp/dxrp-public`** → our DXRP fork (`origin=dxrp-public`, `upstream=dxura/dxrp`).
-   Local clone: `C:\Users\jared\Projects\dxrp`. Synced via `sync-dxrp-fork.ps1` (ff-merge upstream `develop`).
+   Local clone: `C:\Users\jared\Projects\dxrp-public` (separate official-upstream sibling; legacy `C:\Users\jared\Projects\dxrp` retired). Synced via `sync-dxrp-fork.ps1` (ff-merge upstream `develop`).
    **Upstream bounty / vanilla DXRP work:** read **`lifepunch/docs/DXRP_CONTRIBUTOR_LANE.md`** first — separate focus from LifePunch proprietary addons; never commit LifePunch headers or local MCP `game/Libraries/*` into the fork.
    **Party #73 new chat:** paste **`lifepunch/docs/handoff/DXRP_PARTY_CURSOR_BOOTSTRAP_PASTE.txt`** alone, or **Block F** in `AGENT_PROMPT.md`.
 2. **The Steam checkout** (`D:\Steam\steamapps\common\sbox\dxrp`, `origin=dxura/dxrp`) →
@@ -330,7 +330,7 @@ Full checkpoint (shortcuts, voice flow, per-node cheat sheet, failure surfaces):
 
 | Codename | One line |
 |----------|----------|
-| **VENGEANCE** | Primary PC — Cursor, GitHub source of truth (`lifepunchaddons` checkout) |
+| **VENGEANCE** | Primary PC — Cursor, GitHub source of truth (`C:\Users\jared\Projects\lifepunch` monorepo checkout) |
 | **Cornerman** | Home LAN AI box — mic, local LLM/STT, Tier-3 prep (`LOCAL_AI_WORKSTATION.md`, `CORNERMAN_MODEL_ROUTING.md`) |
 | **lifepunchnet** | Hosted always-on server — DXRP ops, Whisper, watchdog (`LIFEPUNCHNET_INSTRUCTIONS.txt`) |
 | **LPDXRP** | **LifePunch DXRP** — shorthand for our server + addon portfolio on DXRP (`LPDXRP_OG_SUPPORTERS.md`) |
@@ -433,7 +433,7 @@ Quick rules:
 
 | Topic | Canon |
 |-------|-------|
-| **Active task** | **`lifepunchbitcoin`** / `lpbitcoin` — **Phase A Hub polish** (`ACTIVE_WORKSTREAM.md`). **Next slice: H4 + H5** (world power/audio — **GO H4/H5 HUB STATE** before code). **Phase B Terminal** locked until H10. Upgrade migration + economy overhaul **HOLD**. |
+| **Active task** | **`lifepunchbitcoin`** / `lpbitcoin` — **Phase A Hub polish** (`lifepunchaddons/docs/ACTIVE_WORKSTREAM.md`). Take the **current unchecked ID** from `ACTIVE_WORKSTREAM` + `OWNER_PROGRESS_TRACKER` + current baton (do not assume a stale slice) — **owner GO (+ route tag) before code**. **Phase B Terminal** locked until H10. Upgrade migration + economy overhaul **HOLD**. |
 | **New chat boot** | **`lifepunch/docs/handoff/CURSOR_NEW_CHAT_BOOTSTRAP_PASTE.txt`** — paste **alone** at fresh Cursor session; agent fills FIRST REPLY block; no extra owner directions unless task line appended. |
 | **Machine (Cursor)** | **VENGEANCE** (Integration Architect / Cursor Red) — confirm in first reply, not "digital machine stack" product law. |
 | **Owner GO (H4/H5)** | `GO H4/H5 HUB STATE — World LED: … Point light: … Route: GROK REQUIRED \| AUTO OK \| OPUS REQUIRED. H4+H5 one commit.` |
@@ -522,6 +522,6 @@ Quick rules:
 **Current / next build:**
 - **Admin menu (`lifepunch.ulx`)** — **publish-ready v1**; export to `lifepunch-published`. Do not refactor without owner ask.
 - **Bitcoin miner hub** — ModelDoc foundation + machine hierarchy (P0 mesh → P1 attachments/lights → states). `LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md` · `MODEL_FOUNDATION_PASS.md`.
-- **Hub pattern law** — `addons/docs/LIFEPUNCH_HUB_PATTERN.md` for all computer-heavy jobs.
+- **Hub pattern law** — `lifepunchaddons/docs/LIFEPUNCH_HUB_PATTERN.md` for all computer-heavy jobs.
 - AK-47 and all quarantined idents — **paused** until promote + ChatGPT brief.
 - New products: **Architect** Step 1 brief **before** code (`ARCHITECT.md`).

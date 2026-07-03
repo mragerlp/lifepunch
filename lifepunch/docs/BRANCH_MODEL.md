@@ -2,10 +2,10 @@
 
 **Status:** Active — July 2026  
 **Repo:** `github.com/mragerlp/lifepunch`  
-**Clone (VENGEANCE):** `C:\Users\jared\Projects\lifepunchdxrp` (junction `lifepunch` OK)  
-**Parallel:** DXRP fork — same **`main` + `develop`** shape at `C:\Users\jared\Projects\dxrp`.
+**Clone (VENGEANCE):** `C:\Users\jared\Projects\lifepunch` (monorepo root; nested DXRP mirror = `lifepunchdxrp/`)  
+**Parallel:** official DXRP upstream contributor clone at `C:\Users\jared\Projects\dxrp-public` (fork `mragerlp/dxrp-public` → `dxura/dxrp`, from `upstream/develop`; legacy `C:\Users\jared\Projects\dxrp` retired).
 
-Read with: `GIT_CHECKPOINTS.md` · `DXRP_CONTRIBUTOR_LANE.md` · `PATH_CANON_VENGEANCE.md`  
+Start here: `START_HERE_AGENTS.md` · Read with: `GIT_CHECKPOINTS.md` · `DXRP_CONTRIBUTOR_LANE.md` · `PATH_CANON_VENGEANCE.md`  
 **New-chat paste:** `handoff/NEW_CHAT_BRANCH_LAW_PASTE.txt`
 
 ---
@@ -45,7 +45,7 @@ Fork from **`develop`**, merge back to **`develop`**.
 
 **Hotfix on production:** branch off **`main`** → fix → merge **`main`** → merge **`main` → `develop`**.
 
-**Never** commit LifePunch IP on the DXRP fork — see `DXRP_CONTRIBUTOR_LANE.md`.
+**Never** commit LifePunch IP on the DXRP fork. Private LIFEPUNCH work lives in `C:\Users\jared\Projects\lifepunch` on `develop`; official DXRP upstream PRs live only in `C:\Users\jared\Projects\dxrp-public` from `upstream/develop`. Never cross-contaminate IP, headers, paths, or assumptions — see `DXRP_CONTRIBUTOR_LANE.md`.
 
 ---
 
@@ -82,7 +82,7 @@ git push origin develop
 |---------|--------|-------|
 | **VENGEANCE (Red)** | **`develop`** daily | Writes; merge to **`main`** on GO |
 | **MacBook (Green A)** | **`develop`** for WIP; **`main`** for stable read | Match task |
-| **Cornerman (Green B)** | **`main`** | Distill / mirror truth; patch-handoff to Red |
+| **Cornerman (Green B)** | **`main`** (default) | Truth mirror / distill; may read **`develop`** only when the task targets active / `develop`-bound work; read-only / outbox unless Bloodwave opens patch-handoff to Red |
 | **lifepunchnet (Blue)** | GitLab `lifepunch-rdp-server` **`main`** | Server lane — not GitHub direct |
 
 ---
@@ -113,9 +113,10 @@ git push origin develop
 
 ```text
 BRANCH LAW — mragerlp/lifepunch
-  main    = TRUTH (never delete; Cornerman pulls this)
-  develop = TEST (daily commits; default branch on GitHub)
-  ship    = PR develop → main on owner GO (main ruleset: no direct push / no delete)
-  clone   = C:\Users\jared\Projects\lifepunchdxrp
-  dxrp    = separate repo C:\Users\jared\Projects\dxrp (develop upstream)
+  main          = TRUTH (never delete; Cornerman mirrors this)
+  develop       = TEST/active (daily commits; default branch on GitHub)
+  ship          = PR develop → main on owner GO (main ruleset: no direct push / no delete)
+  clone         = C:\Users\jared\Projects\lifepunch   (monorepo root)
+  lifepunchdxrp = nested private DXRP mirror inside the monorepo (server testing / flatgrass)
+  dxrp-public   = SEPARATE official upstream clone C:\Users\jared\Projects\dxrp-public (from upstream/develop)
 ```
