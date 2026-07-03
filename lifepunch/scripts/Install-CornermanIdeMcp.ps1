@@ -141,11 +141,11 @@ function Install-CornermanMcpConfigs {
 
 $portCfg = Get-SboxMcpPortConfig
 $layout = Get-CornermanModeLayout -ModeName $Mode -VengeanceHostName $VengeanceHost -Share $ShareName -PortOverride $EditorMcpPort
-$mcpJson = New-CornermanMcpJson -BridgeIcpDir $layout.BridgeIpcDir -LmClone $CornermanLmClone -Port $layout.ChomnrPort
+$mcpJson = New-CornermanMcpJson -BridgeIpcDir $layout.BridgeIpcDir -LmClone $CornermanLmClone -Port $layout.ChomnrPort
 $modeStatePath = $portCfg.CornermanModeStateFile
 
 if ($LocalOnly -or ($env:COMPUTERNAME -match 'CORNERMAN' -and -not $SshTarget)) {
-    Write-Host "Cornerman local IDE MCP install — mode: $Mode" -ForegroundColor Cyan
+    Write-Host "Cornerman local IDE MCP install - mode: $Mode" -ForegroundColor Cyan
     Install-CornermanMcpConfigs -McpJson $mcpJson -MonorepoRootPath $MonorepoRoot -ModeStatePath $modeStatePath -Layout $layout
     Write-Host ''
     switch ($Mode) {
@@ -210,7 +210,7 @@ Push-CornermanText -Path $cursorRemote -Text $mcpJson -SshTarget $SshTarget
 Write-Host "OK Cornerman Cursor -> $cursorRemote" -ForegroundColor Green
 
 Write-Host ''
-Write-Host "Cornerman IDE MCP done — mode: $Mode" -ForegroundColor Green
+Write-Host "Cornerman IDE MCP done - mode: $Mode" -ForegroundColor Green
 if ($Mode -eq 'RedEditor') {
     & (Join-Path $Here 'Start-VengeanceEditorTunnelToCornerman.ps1') -Stop -ErrorAction SilentlyContinue | Out-Null
     Write-Host '  Red: Start-VengeanceEditorTunnelToCornerman.ps1 -Background (after Red editor :9090 up)' -ForegroundColor Cyan

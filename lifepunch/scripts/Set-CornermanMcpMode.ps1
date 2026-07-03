@@ -41,7 +41,7 @@ if (-not $SkipTunnelStop -and (Test-Path -LiteralPath $tunnelScript)) {
 }
 
 if ($Mode -in @('LocalEditor', 'DualEditor')) {
-    Write-Host 'Local Green editor mode — ask Red to run:' -ForegroundColor Yellow
+    Write-Host 'Local Green editor mode - ask Red to run:' -ForegroundColor Yellow
     Write-Host '  powershell -File lifepunch\scripts\Start-VengeanceEditorTunnelToCornerman.ps1 -Stop' -ForegroundColor Yellow
 }
 
