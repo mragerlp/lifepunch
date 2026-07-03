@@ -44,7 +44,7 @@ WHAT THIS BOX OWNS
 
 NOT this box:
   - Addon code, website
-  - Cornerman LLM (:1234 on 192.168.1.229)
+  - Cornerman LLM (:1234 on 192.168.1.227)
   - Voice microphone (AT2020 lives on Cornerman)
 
 --------------------------------------------------------------------------------
@@ -146,7 +146,7 @@ STEP 6 — CONNECT FROM VENGEANCE
 
 To change IP later (on VENGEANCE):
 
-  cd C:\Users\jared\Projects\lifepunchdxrp\lifepunch\scripts
+  cd C:\Users\jared\Projects\lifepunchaddons\lifepunch\scripts
   Edit remote-hosts.local.json  ->  lifepunchnet.host
   .\Install-LifePunchRemoteShortcuts.ps1
 

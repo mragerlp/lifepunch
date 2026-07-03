@@ -4,7 +4,7 @@ title LIFEPUNCH Official 70p - dxrp-server.cs
 cd /d "%~dp0"
 
 REM lifepunchnet Official 70p — C:\SBOX-DXRP-Server
-REM Dxura launcher: dotnet run dxrp-server.cs (public 26.06.24 engine; portal pins match Dev).
+REM Dxura launcher: dotnet run dxrp-server.cs (public release engine; portal pins match Dev).
 
 if not exist "dxrp-server.cs" (
   echo ERROR: dxrp-server.cs missing in %CD%
@@ -44,9 +44,9 @@ if exist "Set-DxrpServerConfig.ps1" (
 echo.
 echo ============================================================
 echo   LIFEPUNCH OFFICIAL 70p
-echo   dotnet run dxrp-server.cs  ^|  Port 27015 / Query 27018  ^|  s^&box PUBLIC 26.06.24
+echo   dotnet run dxrp-server.cs  ^|  Port 27015 / Query 27018  ^|  s^&box PUBLIC (release)
 echo   Wait for [7/7] + Connected to Steam before players join.
-echo   Pins: Dev-promoted (portal). Do not run auto_update_official.bat unless testing staging.
+echo   Pins: Dev-promoted (portal). Public release engine — no Steam beta required.
 echo ============================================================
 echo.
 

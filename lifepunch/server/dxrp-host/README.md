@@ -40,19 +40,14 @@ lifepunch/server/dxrp-host/
   vendor/ulx-shared/ → manual ULX patch (not deployed by default)
 ```
 
-**Scripts in git (deploy copies subset to box):**
+**Engine bumps (both servers, same version):** double-click `auto_update.bat` in either install root after a public s&box ship. It runs SteamCMD public release, syncs binaries to Official + Dev, and restarts both.
 
-| Script | Official root | Dev root |
-|--------|---------------|----------|
-| `Deploy-DxrpHostLaunchers.ps1` | run from repo clone | same |
-| `server1_start.bat` / `server2_start.bat` | yes | yes |
-| `auto_update.bat` | yes | yes |
-| `auto_update_all.bat` | yes | no |
-| `auto_update_official.bat` | yes (staging — caution on 70p) | no |
-| `Run-DevServer.ps1` | no | yes |
-| `Update-LifepunchnetSboxServers.ps1` | yes | yes |
-
-Legacy file `auto_update_official_staging.bat` remains in repo for reference; deploy uses `auto_update_official.bat`.
+| Script | What it does |
+|--------|----------------|
+| `auto_update.bat` | **Canonical** — both servers, public release, version lock |
+| `auto_update_all.bat` | Alias → `auto_update.bat` |
+| `auto_update_official.bat` | Alias → `auto_update.bat` |
+| `auto_update_official_staging.bat` | Staging beta test only (both roots if used with `-UseStagingBranch`) |
 
 ### On-box only (never commit)
 

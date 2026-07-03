@@ -16,10 +16,23 @@ function Stop-DxrpServerForToken {
     )
     if (-not $Token) { return }
 
-    Get-CimInstance Win32_Process -Filter "Name='dotnet.exe'" -ErrorAction SilentlyContinue |
+    Get-CimInstance Win32_Process -ErrorAction SilentlyContinue |
         Where-Object { $_.CommandLine -and $_.CommandLine.Contains($Token) } |
         ForEach-Object {
-            Write-Host "  Stop dotnet pid $($_.ProcessId) (matched token)" -ForegroundColor DarkGray
+            Write-Host "  Stop $($_.Name) pid $($_.ProcessId) (matched token)" -ForegroundColor DarkGray
+            Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue
+        }
+}
+
+function Stop-DxrpLauncherCmdWindows {
+    param(
+        [Parameter(Mandatory)]
+        [string] $StartBatName
+    )
+    Get-CimInstance Win32_Process -Filter "Name='cmd.exe'" -ErrorAction SilentlyContinue |
+        Where-Object { $_.CommandLine -and $_.CommandLine -match [regex]::Escape($StartBatName) } |
+        ForEach-Object {
+            Write-Host "  Stop cmd pid $($_.ProcessId) ($StartBatName)" -ForegroundColor DarkGray
             Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue
         }
 }
@@ -34,8 +47,8 @@ function Stop-SboxServerOnPort {
             Select-Object -ExpandProperty OwningProcess -Unique |
             ForEach-Object {
                 $p = Get-Process -Id $_ -ErrorAction SilentlyContinue
-                if ($p -and $p.Name -eq 'sbox-server') {
-                    Write-Host "  Stop sbox-server pid $_ (port $Port)" -ForegroundColor DarkGray
+                if ($p -and $p.Name -match '^(sbox-server|dotnet|dxrp-server)') {
+                    Write-Host "  Stop $($p.Name) pid $_ (port $Port)" -ForegroundColor DarkGray
                     Stop-Process -Id $_ -Force -ErrorAction SilentlyContinue
                 }
             }
@@ -61,12 +74,14 @@ function Stop-DevelopmentDxrpServer {
     }
     if ($token) {
         Write-Host "Stopping Development dxrp-server only (token match)..." -ForegroundColor Cyan
+        Stop-DxrpLauncherCmdWindows -StartBatName 'server2_start.bat'
         Stop-DxrpServerForToken -Token $token
     }
     else {
         Write-Host 'WARN: No DXRP_TOKEN_DEVELOPMENT — skip dotnet kill (will not touch Official).' -ForegroundColor Yellow
     }
     Stop-SboxServerOnPort -Port $GamePort
+    Start-Sleep -Seconds 2
 }
 
 function Stop-OfficialDxrpServer {
@@ -85,7 +100,9 @@ function Stop-OfficialDxrpServer {
     }
     if ($token) {
         Write-Host "Stopping Official dxrp-server only (token match)..." -ForegroundColor Cyan
+        Stop-DxrpLauncherCmdWindows -StartBatName 'server1_start.bat'
         Stop-DxrpServerForToken -Token $token
     }
     Stop-SboxServerOnPort -Port $GamePort
+    Start-Sleep -Seconds 2
 }

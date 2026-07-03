@@ -62,20 +62,18 @@ dotnet run dxrp-server.cs --token <portal-token>
 
 ## Engine source
 
-| Profile | How binaries update | Branch (June 2026 operational) |
-|---------|---------------------|----------------------------------|
-| **Official 70p** | SteamCMD public pin on-box (`betakey` cleared, `validate`) | **public 26.06.24** (buildid `23900007`) — players use Default Public, no Steam beta |
-| **Development** | Steam client + Betas → staging, or `auto_update_all.bat` sync | **staging** |
+**Version lock:** Official 70p and Development **always run the same s&box public release** (e.g. `26.07.01`). After any Facepunch public engine ship, run **`auto_update.bat`** on lifepunchnet (either install root).
 
-**Warning:** `auto_update_official.bat` runs SteamCMD **staging** into Official — use only when intentionally testing staging on 70p. Dev engine bumps: `auto_update.bat` (Dev root) or `auto_update_all.bat` (Dev + optional Official staging).
+| Profile | Install root | Ports |
+|---------|--------------|-------|
+| **Official 70p** | `C:\SBOX-DXRP-Server` | 27015 / 27018 |
+| **Development** | Steam `sbox` | 27016 / 27017 |
 
-Update scripts (after `git pull` + deploy):
+**How binaries update:** `auto_update.bat` → SteamCMD public release (`betakey` cleared, `validate`) → sync `sbox-server.*` + `.version` to **both** roots → restart both servers.
 
-- **Dev only:** `auto_update.bat` (in Dev root) or `Update-LifepunchnetSboxServers.ps1`
-- **Dev + Official staging test:** `auto_update_all.bat` (Official root) — `-UpdateDevelopmentBinaries -UseStagingBranch`
-- **Official staging only:** `auto_update_official.bat` (Official root)
+**Staging (opt-in only):** `auto_update_official_staging.bat` or `-UseStagingBranch` on the PowerShell script — never for routine bumps.
 
-Official **26.06.24 public** was pinned manually on lifepunchnet (June 2026); there is no separate pin script in git — preserve with care when running update bats.
+`auto_update_all.bat` and `auto_update_official.bat` are aliases of `auto_update.bat`.
 
 ---
 

@@ -63,7 +63,7 @@ VENGEANCE is the only host that reaches BOTH Cornerman (LAN SSH) and lifepunchne
 
 Leave this running beside the voice watcher (second PowerShell window):
 
-  cd C:\Users\jared\Projects\lifepunchdxrp
+  cd C:\Users\jared\Projects\lifepunchaddons
   powershell -File lifepunch\scripts\start-session-sync.ps1
 
 It polls Cornerman outbox (session.log, to-vengeance.txt, stt-path.log) and POSTs new lines to

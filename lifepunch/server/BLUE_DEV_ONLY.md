@@ -23,7 +23,7 @@ If processes remain, close them. **Do not leave VENGEANCE pulsing the Developmen
 ## Step 1 — Package working files on VENGEANCE
 
 ```powershell
-cd C:\Users\jared\Projects\lifepunchdxrp
+cd C:\Users\jared\Projects\lifepunchaddons
 powershell -ExecutionPolicy Bypass -File lifepunch\scripts\Package-BlueDevServerFromVengeance.ps1
 ```
 

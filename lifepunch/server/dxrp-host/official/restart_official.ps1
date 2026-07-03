@@ -31,4 +31,4 @@ if (-not (Test-Path -LiteralPath $startBat)) {
 }
 
 Write-Host 'Starting Official in visible CMD (server1_start.bat)...' -ForegroundColor Green
-Start-Process -FilePath 'cmd.exe' -ArgumentList @('/c', 'start', 'LIFEPUNCH Official 70p', 'cmd', '/k', 'server1_start.bat') -WorkingDirectory $InstallRoot
+Start-Process -FilePath 'cmd.exe' -ArgumentList @('/k', 'server1_start.bat') -WorkingDirectory $InstallRoot
