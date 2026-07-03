@@ -120,12 +120,12 @@ The machines are **nodes in one web**, not separate boxes. Colors are **primarie
 | Node | Machine (spec) | Role | Repo path | Net |
 |------|----------------|------|-----------|-----|
 | **Red — VENGEANCE** | Corsair Vengeance i8200 · i9-14900KF · **RTX 5080** · 64GB DDR5 · Win 11 Pro · 2×2TB | **Orchestrate · s&box editor · all 3 editor MCPs · flatgrass proof · git push.** Bloodwave's **true eyes** — the only node that sees real-time editor/gameplay truth. | `C:\Users\jared\Projects\lifepunchdxrp` | LAN `192.168.1.236` |
-| **Green B — Cornerman** | Corsair AI Workstation 300 · **Ryzen AI Max 385** · Radeon 8050S iGPU (up to **48GB VRAM**) · **64GB LPDDR5X** · 1TB | **Warm LM · distill · heavy headless agent implementation · MCP bridge relay.** Segway between Mac and Vengeance. **No editor of its own** — tunnels into Red's editor. Read-only deploy key → **patch-handoff** to Red. | `C:\Projects\lifepunch` | LAN `192.168.1.229` |
-| **Green A — MacBook** | MacBook Air **M2** (2022) · **8GB RAM** · macOS Tahoe 26.5.2 | **Design Architect host (ChatGPT) · control plane · native Cursor + Copilot · RDP → Cornerman.** Keep it light (8GB) — ideation + comms, not heavy compute. Editor MCP not required (capable if recommended). | `~/Projects/lifepunch` | — |
+| **Green — Cornerman** | Corsair AI Workstation 300 · **Ryzen AI Max 385** · Radeon 8050S iGPU (up to **48GB VRAM**) · **64GB LPDDR5X** · 1TB | **Warm LM · distill · heavy headless agent implementation · MCP bridge relay.** Segway between Architect and Vengeance. **No editor of its own** — tunnels into Red's editor. Read-only deploy key → **patch-handoff** to Red. | `C:\Projects\lifepunch` | LAN `192.168.1.229` |
+| **Architect — MacBook** | MacBook Air **M2** (2022) · **8GB RAM** · macOS Tahoe 26.5.2 | **Design Architect host (ChatGPT) · planner · native Cursor + Copilot · RDP → Green.** Keep it light (8GB) — ideation + comms, not heavy compute. Editor MCP not required (capable if recommended). | `~/Projects/lifepunch` | — |
 | **Blue — LifepunchNET** | B650D4U-2L2T/BCM · **Ryzen 9 9950X3D** · 96GB DDR5 · 4TB NVMe · 1Gbps · Win 11 Pro | **Hosted server host.** Runs **LIFEPUNCH Official (Server 1, public)** + **Development (Server 2, addon testing before shipping to Server 1)**, Odysseus voice, Whisper STT, watchdog. Editor sessions reachable via API. **Not** DXRP Official (that is Dimmer's separate host). | `C:\lifepunch\lifepunch-rdp-server` | `205.209.104.22` |
 
-**One-line disambiguation:** Red = runtime truth + push · Green B = warm/distill/execute · Green A =
-Architect + control plane · Blue = hosted venue (our servers). Full detail: **`MACHINE_CAST.md`**.
+**One-line disambiguation:** Red = runtime truth + push · Green = warm/distill/execute · Architect =
+planner on Mac · Blue = hosted venue (our servers). Full detail: **`MACHINE_CAST.md`**.
 
 > Legacy names you may see: the Red clone is written `LIFEPUNCH` in older docs and the Cursor workspace may
 > display **`lifepunchaddons`** (retired) — the real live clone is `C:\Users\jared\Projects\lifepunchdxrp`.
@@ -139,7 +139,7 @@ Architect + control plane · Blue = hosted venue (our servers). Full detail: **`
 | **Bloodwave** | Owner (Red desk) | *"Is this what the player needs to see?"* — ideas, QA, GitHub issues, final GO | Final authority |
 | **Design Architect** | **ChatGPT** — Mac (primary) · Red (at desk) | *"Does this make the game better?"* | **No** — CURSOR BRIEFs + design docs |
 | **Integration Architect** | **Cursor / Copilot** — Red (push) · Cornerman (execute) · Mac (comms) | *"Does this match repo law and ship criteria?"* | **Yes** (owner GO; Cornerman via patch-handoff) |
-| **Distillation Architect** | **Cornerman LM** (Tier-3, Green B) | *"Can this be distilled cheaper for Red?"* | No — outbox candidates only |
+| **Distillation Architect** | **Cornerman LM** (Tier-3, Green) | *"Can this be distilled cheaper for Red?"* | No — outbox candidates only |
 | **Operations Architect** | **RDP agent** on lifepunchnet (Blue) | *"Does hosted ops match Bloodwave intent?"* | Ops scripts under owner authority |
 
 **Opus is not a role — it is a Tier-1 model** the Integration Architect uses for hard slices. **Grok Build 1
@@ -211,7 +211,7 @@ routing: **`MCP_AGENT_ROUTING.md`**.
 `connected` heartbeat <30s. Probe: `Get-CvlConnectivityStatus.ps1 -Pretty`. Refresh after any stack
 change: `Invoke-CvlFullCapacityRefresh.ps1`.
 
-**Cornerman bridge (Green B triple stack):** `sbox` via SMB `\\VENGEANCE\SboxBridgeIpc`, `sbox-editor` via
+**Cornerman bridge (Green triple stack):** `sbox` via SMB `\\VENGEANCE\SboxBridgeIpc`, `sbox-editor` via
 SSH tunnel `localhost:9090`, `cornerman-lm` local. Preflight (Red editor up first):
 **Map → Tunnel → `Test-Path \\VENGEANCE\SboxBridgeIpc\status.json`**. jtc has no Green tunnel yet.
 

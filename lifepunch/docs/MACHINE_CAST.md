@@ -57,11 +57,11 @@ Full workflow: **`GREEN_EXECUTION_MODEL.md`** · agent pastes: **`handoff/AGENT_
 
 ### CVL Architect family (roles — machines are not roles)
 
-| Role | Host | Legacy alias |
-|------|------|--------------|
-| **Design Architect** | **MacBook (Green A)** · VENGEANCE (Red at desk) — ChatGPT | Architect |
-| **Integration Architect** | Red + Cornerman (Green B) + Mac comms | Integrator |
-| **Distillation Architect** | Cornerman — warm + distill + execute | Distiller |
+| Role | Host | Alias |
+|------|------|-------|
+| **Design Architect** | **Architect (Mac)** · VENGEANCE (Red at desk) — ChatGPT | Architect |
+| **Integration Architect** | Red + Green + Mac comms | Integrator |
+| **Distillation Architect** | Cornerman (Green) — warm + distill + execute | Distiller |
 | **Operations Architect** | lifepunchnet — RDP agent | RDP server agent |
 | **Bloodwave** | — | Owner / final authority |
 
@@ -69,16 +69,16 @@ Full workflow: **`GREEN_EXECUTION_MODEL.md`** · agent pastes: **`handoff/AGENT_
 
 ---
 
-## Green surfaces (July 2026 — execution model)
+## Execution surfaces (July 2026)
 
 **Bloodwave orchestrates on Red.** Cornerman **warms, distills, and executes** heavy agent work.
-MacBook is the **control plane** (native Cursor + Copilot; RDP → Cornerman for workshop/bridge).
+**Architect (Mac)** is the planner (native Cursor + Copilot; RDP → Green when needed).
 **Red always owns runtime** (s&box, Claude Bridge, Host Play, flatgrass proof, primary git push).
 
 | Surface | Where | IDE | Use when |
 |---------|--------|-----|----------|
-| **Green A** | MacBook (macOS) | Cursor + Copilot · **ChatGPT Design Architect** | Control plane · ideation · CURSOR BRIEFs · RDP → Cornerman |
-| **Green B** | Cornerman (`192.168.1.229`) | Cursor + Copilot on Windows | Heavy implementation · bridge MCP · Cornerman LM |
+| **Architect** | MacBook (macOS) | Cursor + Copilot · **ChatGPT Design Architect** | Planning · ideation · CURSOR BRIEFs · RDP → Green |
+| **Green** | Cornerman (`192.168.1.229`) | Cursor + Copilot on Windows | Heavy implementation · bridge MCP · Cornerman LM |
 
 **Sync law:** whoever did heavy work — other nodes **`git pull --rebase`** (Cornerman → Red via patch-handoff).
 
@@ -130,14 +130,14 @@ Prefer **Bloodwave** in agent prose; **mrragerlp** in proprietary headers.
 
 | Role | Runs on | Git write lane |
 |------|---------|----------------|
-| Owner / addons agent (**Integrator**) | **VENGEANCE (Red)** orchestrate · **Cornerman (Green B)** execute | GitHub monorepo (Red push; Cornerman patch-handoff) |
-| **Mac control plane** | **MacBook (Green A)** | Mac clone (optional push; sync with Red/Green B) |
-| **Architect** (design brain) | **VENGEANCE** (ChatGPT — same desk as Integrator) | **No git** — CURSOR BRIEFs only |
+| Owner / addons agent (**Integrator**) | **VENGEANCE (Red)** orchestrate · **Cornerman (Green)** execute | GitHub monorepo (Red push; Cornerman patch-handoff) |
+| **Architect** (planner) | **MacBook (Mac)** | Mac clone (optional push; sync with Red/Green) |
+| **Design Architect** (ChatGPT) | **Architect (Mac)** primary · Red when at desk | **No git** — CURSOR BRIEFs only |
 | **shottaWEB** (Brian) | Partner PC | GitLab `lifepunch-website` |
-| RDP server agent | **lifepunchnet** | GitLab `lifepunch-rdp-server` |
-| Cornerman agent (**Distiller + executor**) | **Cornerman (Green B)** | Read-only deploy key → patch handoff to Red |
+| RDP server agent | **lifepunchnet (Blue)** | GitLab `lifepunch-rdp-server` |
+| Cornerman agent (**Distiller + executor**) | **Cornerman (Green)** | Read-only deploy key → patch handoff to Red |
 
-**Architect** is not a machine — it is ChatGPT on Red. See `ARCHITECT.md`.
+**Architect** is the Mac planner lane (ChatGPT + Cursor). See `ARCHITECT.md`.
 
 When someone says **"RDP server agent"**, they mean the **Cursor agent on lifepunchnet** — not a separate machine name.
 
@@ -151,6 +151,7 @@ When someone says **"RDP server agent"**, they mean the **Cursor agent on lifepu
 | Primary PC (in agent chat) | **VENGEANCE** |
 | `serverHost` in JSON configs | `lifepunchnet` (legacy `serverHost` still accepted in `remote-hosts.local.json`) |
 | "RDP" alone | Name the machine: **lifepunchnet** or **Cornerman** |
+| Green A, Green B | **Architect (Mac)** · **Green (Cornerman)** |
 
 ---
 
@@ -198,8 +199,8 @@ Refresh all shortcut icons: `lifepunch/scripts/Install-LifePunchShortcutIcons.ps
 |---------|------------------|
 | All agents | `AGENT_ONBOARDING.md`, `GREEN_EXECUTION_MODEL.md`, `handoff/AGENT_GROUNDING_INDEX.md`, `ARCHITECT.md`, `AGENT_PROMPT.md` Block 0 |
 | VENGEANCE (Red) | Block A · `RED_CURSOR_GROUNDING_PASTE.txt` · `RED_COPILOT_GROUNDING_PASTE.txt` · `RED_FULL_CAPACITY_BOOT.md` |
-| MacBook (Green A) | Block M · `MAC_GREEN_*` · **`ARCHITECT_ONBOARDING_PASTE.txt`** · `ARCHITECT.md` |
-| Cornerman (Green B) | Block D · `GREEN_CORNERMAN_*_GROUNDING_PASTE.txt` · `GREEN_SMB_BOOT_PASTE.md` · `LOCAL_AI_WORKSTATION.md` |
+| MacBook (Architect) | Block M · `MAC_GREEN_*` · **`ARCHITECT_ONBOARDING_PASTE.txt`** · `ARCHITECT.md` |
+| Cornerman (Green) | Block D · `GREEN_CORNERMAN_*_GROUNDING_PASTE.txt` · `GREEN_SMB_BOOT_PASTE.md` · `LOCAL_AI_WORKSTATION.md` |
 | **shottaWEB** | Block B, `SHOTTAWEB_HANDOFF.txt` |
 | lifepunchnet | Block C, `LIFEPUNCHNET_INSTRUCTIONS.txt`, `LIFEPUNCHNET_RDP_ODYSSEUS.txt` |
 

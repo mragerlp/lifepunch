@@ -38,9 +38,9 @@ single source of truth — do NOT re-derive or diverge from it.
 CVL TRI-STACK + MAC (memorize — LifePunch web = nodes + edges):
 - **R — VENGEANCE** (red): Orchestrate · runtime · proof · push. `C:\Users\jared\Projects\lifepunchdxrp`. **Block A.**
   Paste: `handoff/RED_CURSOR_GROUNDING_PASTE.txt` or `RED_COPILOT_GROUNDING_PASTE.txt`.
-- **G — Cornerman** (green B): Warm · distill · execute heavy work. `192.168.1.229` · `C:\Projects\lifepunch`.
+- **G — Cornerman** (Green): Warm · distill · execute heavy work. `192.168.1.229` · `C:\Projects\lifepunch`.
   **Block D.** Paste: `GREEN_CORNERMAN_*_GROUNDING_PASTE.txt`.
-- **MacBook** (green A): Control plane · **Design Architect (ChatGPT)** · RDP → Cornerman. **Block M.**
+- **Architect — MacBook** (Mac): Planner · **Design Architect (ChatGPT)** · RDP → Green. **Block M.**
   Paste: `MAC_GREEN_*_GROUNDING_PASTE.txt` · Architect: `ARCHITECT.md` · `ARCHITECT_ONBOARDING_PASTE.txt`.
 - **B — lifepunchnet** (blue): Hosted ops. `205.209.104.22`. **Block C.**
 - Execution model: `GREEN_EXECUTION_MODEL.md` · paste index: `handoff/AGENT_GROUNDING_INDEX.md`.
