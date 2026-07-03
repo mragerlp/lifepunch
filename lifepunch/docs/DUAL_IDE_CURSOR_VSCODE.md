@@ -67,7 +67,7 @@ Bloodwave GO → ship
 ## Commit workflow (explicit — no auto-commit hook)
 
 ```powershell
-cd C:\Users\jared\Projects\lifepunchaddons
+cd C:\Users\jared\Projects\lifepunchdxrpaddons
 git add <files>
 git commit -m "<type>(<scope>): <description>"
 git push

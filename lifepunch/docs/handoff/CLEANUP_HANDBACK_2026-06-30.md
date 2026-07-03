@@ -32,7 +32,7 @@ All VENGEANCE cleanup items from the audit are **done**. Steam DXRP is reset, sy
 ## Current git / mount state
 
 ### Canonical monorepo
-- **Path:** `C:\Users\jared\Projects\LIFEPUNCH`
+- **Path:** `C:\Users\jared\Projects\lifepunchdxrp`
 - **Branch:** `main`
 - **Role:** source of truth → GitHub `mragerlp/lifepunch`
 
@@ -40,7 +40,7 @@ All VENGEANCE cleanup items from the audit are **done**. Steam DXRP is reset, sy
 | Path | Branch | Role |
 |------|--------|------|
 | `Projects\dxrp` | develop | Upstream reference |
-| `Projects\dxrp-public` | `lifepunch/party-names` | **Party PR work — git home** |
+| `Projects\dxrp` | `lifepunch/party-names` | **Party PR work — git home** |
 | `D:\Steam\...\sbox\dxrp` | develop | **Editor compile mount** (synced lifepunch trees) |
 
 ### Steam LifePunch mount (post-sync)
@@ -60,7 +60,7 @@ All VENGEANCE cleanup items from the audit are **done**. Steam DXRP is reset, sy
 | `steam-dxrp-status.txt` | git status snapshot |
 | `lifepunch-dxrp-addons-status.txt` | dirty paths before delete |
 
-**Party work canonical path:** `C:\Users\jared\Projects\dxrp-public` on branch `lifepunch/party-names`.
+**Party work canonical path:** `C:\Users\jared\Projects\dxrp` on branch `lifepunch/party-names`.
 
 ---
 

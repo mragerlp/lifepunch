@@ -23,7 +23,7 @@ stack. Say a **node** when you mean one machine. Do **not** call the three-machi
 
 | Codename | What it is | Where | Primary job |
 |----------|------------|-------|-------------|
-| **VENGEANCE** | Owner's primary PC (**Red**) | Desk — `C:\Users\jared\Projects\LIFEPUNCH` | **Orchestrate** · s&box editor · bridge · flatgrass proof · **git push** · GitHub source of truth |
+| **VENGEANCE** | Owner's primary PC (**Red**) | Desk — `C:\Users\jared\Projects\lifepunchdxrp` | **Orchestrate** · s&box editor · bridge · flatgrass proof · **git push** · GitHub source of truth |
 | **MacBook** | Portable control plane (**Green A**) | macOS — `~/Projects/lifepunch` | Native **Cursor + Copilot** · comms · RDP → Cornerman for workshop/bridge |
 | **Cornerman** | Green execution workshop (**Green B**) | LAN — `192.168.1.229` · `C:\Projects\lifepunch` | **Warm LM · distill · heavy agent work** · mic · bridge MCP (SMB to Red) |
 | **lifepunchnet** | Always-on hosted server (**Blue**) | `205.209.104.22` | DXRP/server ops, Whisper, watchdog, session hub, GitLab RDP lane |

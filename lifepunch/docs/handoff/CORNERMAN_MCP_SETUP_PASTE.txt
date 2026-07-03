@@ -18,7 +18,7 @@ Ask Red to confirm before you proceed:
   • Claude Bridge IPC heartbeat present
 
 Red refresh (if anything is red on Red):
-  cd C:\Users\jared\Projects\lifepunch
+  cd C:\Users\jared\Projects\lifepunchdxrp
   powershell -File lifepunch\scripts\Install-CornermanSboxBridgeMcp.ps1
   powershell -File lifepunch\scripts\Connect-CornermanBridge.ps1 -SkipLmWarm
   powershell -File lifepunch\scripts\Start-VengeanceEditorTunnelToCornerman.ps1 -Background

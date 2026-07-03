@@ -32,7 +32,7 @@ See `AGENT_ONBOARDING.md` § Named systems.
 - This box is a **private local inference + RAG node** for LifePunch. It is **NOT** the
   source of truth.
 - Source of truth stays the GitHub monorepo (`https://github.com/mragerlp/lifepunch`) on the
-  primary dev machine (`C:\Users\jared\Projects\LIFEPUNCH`). This box is a read-only or
+  primary dev machine (`C:\Users\jared\Projects\lifepunchdxrp`). This box is a read-only or
   lane-scoped clone — never the canonical host.
 - It runs local LLMs (coding assist, summarization, embeddings/RAG) and local MCP servers.
 - Frontier cloud models still do the hardest agentic coding. This box handles **private,

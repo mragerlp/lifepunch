@@ -9,7 +9,7 @@
 
 | Layer | Path | Who uses it | Role |
 |-------|------|-------------|------|
-| **Monorepo** | `C:\Users\jared\Projects\LIFEPUNCH` | VENGEANCE + agents | Law, WIP, git checkpoints |
+| **Monorepo** | `C:\Users\jared\Projects\lifepunchdxrp` | VENGEANCE + agents | Law, WIP, git checkpoints |
 | **Desktop org** | `Desktop\lifepunch` | Bloodwave only | Local filing + portal-ready upload copies |
 
 CVL nodes (Cornerman, lifepunchnet, shottaWEB) **pull the monorepo**. They do **not** need the Desktop folder unless you explicitly copy something to them.

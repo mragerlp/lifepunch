@@ -1,4 +1,4 @@
-﻿{
+{
     "schemaVersion":  1,
     "fork":  {
                  "remote":  "https://github.com/mragerlp/dxrp-public.git",
@@ -15,7 +15,7 @@
                    "syncedAt":  "2026-07-02T21:33:27Z"
                },
     "localPaths":  {
-                       "forkCheckout":  "C:/Users/jared/Projects/dxrp-public",
+                       "forkCheckout":  "C:/Users/jared/Projects/dxrp",
                        "steamCheckout":  "D:/Steam/steamapps/common/sbox/dxrp"
                    },
     "gateScript":  "lifepunch/scripts/Ensure-DxrpUpstreamCurrent.ps1",

@@ -79,7 +79,7 @@ optional — they are the reputation.**
 | | **LIFEPUNCH (proprietary)** | **DXRP OFFICIAL (upstream)** |
 |---|---|---|
 | **Repo** | `github.com/mragerlp/lifepunch` (private monorepo) | `github.com/mragerlp/dxrp-public` (our fork) → PR to `github.com/dxura/dxrp` |
-| **Clone (Red)** | `C:\Users\jared\Projects\lifepunch` | `C:\Users\jared\Projects\dxrp-public` |
+| **Clone (Red)** | `C:\Users\jared\Projects\lifepunchdxrp` | `C:\Users\jared\Projects\dxrp` |
 | **Branch** | `checkpoint-lpbitcoin-pre-sleep-20260701` (current) / `main` | `bounty/*` or `lifepunch/fix-*` cut from latest `develop` |
 | **Owner** | Bloodwave (ours) | Dxura/Dimmer (theirs — **All Rights Reserved**, source-available) |
 | **File headers** | **PROPRIETARY & CONFIDENTIAL © 2026 lifepunch.co** block on every `.cs`/`.razor`/`.scss` | **DXRP conventions only — NO LIFEPUNCH headers** |
@@ -117,7 +117,7 @@ The machines are **nodes in one web**, not separate boxes. Colors are **primarie
 
 | Node | Machine (spec) | Role | Repo path | Net |
 |------|----------------|------|-----------|-----|
-| **Red — VENGEANCE** | Corsair Vengeance i8200 · i9-14900KF · **RTX 5080** · 64GB DDR5 · Win 11 Pro · 2×2TB | **Orchestrate · s&box editor · all 3 editor MCPs · flatgrass proof · git push.** Bloodwave's **true eyes** — the only node that sees real-time editor/gameplay truth. | `C:\Users\jared\Projects\lifepunch` | LAN `192.168.1.236` |
+| **Red — VENGEANCE** | Corsair Vengeance i8200 · i9-14900KF · **RTX 5080** · 64GB DDR5 · Win 11 Pro · 2×2TB | **Orchestrate · s&box editor · all 3 editor MCPs · flatgrass proof · git push.** Bloodwave's **true eyes** — the only node that sees real-time editor/gameplay truth. | `C:\Users\jared\Projects\lifepunchdxrp` | LAN `192.168.1.236` |
 | **Green B — Cornerman** | Corsair AI Workstation 300 · **Ryzen AI Max 385** · Radeon 8050S iGPU (up to **48GB VRAM**) · **64GB LPDDR5X** · 1TB | **Warm LM · distill · heavy headless agent implementation · MCP bridge relay.** Segway between Mac and Vengeance. **No editor of its own** — tunnels into Red's editor. Read-only deploy key → **patch-handoff** to Red. | `C:\Projects\lifepunch` | LAN `192.168.1.229` |
 | **Green A — MacBook** | MacBook Air **M2** (2022) · **8GB RAM** · macOS Tahoe 26.5.2 | **Design Architect host (ChatGPT) · control plane · native Cursor + Copilot · RDP → Cornerman.** Keep it light (8GB) — ideation + comms, not heavy compute. Editor MCP not required (capable if recommended). | `~/Projects/lifepunch` | — |
 | **Blue — LifepunchNET** | B650D4U-2L2T/BCM · **Ryzen 9 9950X3D** · 96GB DDR5 · 4TB NVMe · 1Gbps · Win 11 Pro | **Hosted server host.** Runs **LIFEPUNCH Official (Server 1, public)** + **Development (Server 2, addon testing before shipping to Server 1)**, Odysseus voice, Whisper STT, watchdog. Editor sessions reachable via API. **Not** DXRP Official (that is Dimmer's separate host). | `C:\lifepunch\lifepunch-rdp-server` | `205.209.104.22` |
@@ -126,7 +126,7 @@ The machines are **nodes in one web**, not separate boxes. Colors are **primarie
 Architect + control plane · Blue = hosted venue (our servers). Full detail: **`MACHINE_CAST.md`**.
 
 > Legacy names you may see: the Red clone is written `LIFEPUNCH` in older docs and the Cursor workspace may
-> display **`lifepunchaddons`** (retired) — the real live clone is `C:\Users\jared\Projects\lifepunch`.
+> display **`lifepunchaddons`** (retired) — the real live clone is `C:\Users\jared\Projects\lifepunchdxrp`.
 
 ---
 

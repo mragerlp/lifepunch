@@ -86,7 +86,7 @@ From Batch 2 (full ecosystem):
 
 ```powershell
 # On VENGEANCE, after returning
-cd C:\Users\jared\Projects\LIFEPUNCH
+cd C:\Users\jared\Projects\lifepunchdxrp
 git pull --rebase
 
 # Check what Cornerman produced

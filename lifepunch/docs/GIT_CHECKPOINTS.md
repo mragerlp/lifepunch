@@ -134,4 +134,4 @@ Ideation and structure live in **core**. Clean customer tree lives in **publish*
 - **Branch:** `main`, **6 commits ahead** of `origin/main` (quarantine + Ophion + MCP workflow)
 - **Ready to commit now:** publish lane doc + scaffold + export script + agent/workflow doc tweaks
 - **Hold:** `bankerjob/` trees, `governmentdatacenter/intake-raw/`
-- **Publish folder:** `C:\Users\jared\Projects\lifepunch-published` — local export exists; GitHub repo not created until you run one-time `gh repo create`
+- **Publish folder:** `C:\Users\jared\Projects\lifepunchdxrp-published` — local export exists; GitHub repo not created until you run one-time `gh repo create`

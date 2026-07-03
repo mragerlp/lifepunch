@@ -40,7 +40,7 @@ STT runs on **lifepunchnet** (same as before). Cornerman is **not** in the path.
 ## One-time install
 
 ```powershell
-cd C:\Users\jared\Projects\LIFEPUNCH
+cd C:\Users\jared\Projects\lifepunchdxrp
 powershell -ExecutionPolicy Bypass -File lifepunch\scripts\vengeance-ptt\Install-VengeancePtt.ps1
 ```
 

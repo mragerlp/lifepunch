@@ -146,7 +146,7 @@ STEP 6 — CONNECT FROM VENGEANCE
 
 To change IP later (on VENGEANCE):
 
-  cd C:\Users\jared\Projects\LIFEPUNCH\lifepunch\scripts
+  cd C:\Users\jared\Projects\lifepunchdxrp\lifepunch\scripts
   Edit remote-hosts.local.json  ->  lifepunchnet.host
   .\Install-LifePunchRemoteShortcuts.ps1
 

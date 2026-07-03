@@ -32,7 +32,7 @@ One WRITER per file. git pull --rebase before picking up handoff.
 REPO LAW — AUTO-LOADED (no manual paste each session)
 ══════════════════════════════════════════════════════════════════════════════
 Open workspace ROOT in VS Code:
-  C:\Users\jared\Projects\LIFEPUNCH
+  C:\Users\jared\Projects\lifepunchdxrp
 
 Copilot loads ALL repo law automatically from:
   .github/instructions/*.instructions.md  (applyTo: "**")
@@ -54,7 +54,7 @@ THREE PATHS — DO NOT COLLAPSE
 ══════════════════════════════════════════════════════════════════════════════
 
 1) SHIP LANE (LifePunch monorepo — edit + commit here)
-   C:\Users\jared\Projects\LIFEPUNCH
+   C:\Users\jared\Projects\lifepunchdxrp
    Code:  lifepunch/addons/Code/Addons/lifepunch/...
    Assets: lifepunch/addons/Assets/addons/lifepunch/lpbitcoin/{bitcoinhub,hashdterminal,gpurack}
    Proprietary header on every new .cs / .razor / .scss
@@ -65,7 +65,7 @@ THREE PATHS — DO NOT COLLAPSE
    Mirror of monorepo after sync — what the editor actually loads
 
 3) DXRP UPSTREAM FORK (vanilla PRs only — separate clone)
-   C:\Users\jared\Projects\dxrp-public
+   C:\Users\jared\Projects\dxrp
    NO LifePunch headers · NO lifepunch/ paths · match Dimmer/DXRP style
    PR → mragerlp/dxrp-public → dxura/dxrp:develop
 

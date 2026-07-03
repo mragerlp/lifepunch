@@ -138,7 +138,7 @@ Bitcoin operators (amber/HASHD) mine BTC → Hackers (green/red) steal wallets
 ## Commit Hygiene
 
 ```powershell
-cd C:\Users\jared\Projects\LIFEPUNCH
+cd C:\Users\jared\Projects\lifepunchdxrp
 git add <files>
 git commit -m "<type>(<scope>): <description>"
 git push
@@ -155,9 +155,9 @@ git push
 
 | Path | Purpose |
 |------|---------|
-| `C:\Users\jared\Projects\LIFEPUNCH` | **Source of truth** — GitHub monorepo, edit here |
+| `C:\Users\jared\Projects\lifepunchdxrp` | **Source of truth** — GitHub monorepo, edit here |
 | `D:\Steam\steamapps\common\sbox\dxrp\game` | Steam runtime — sync target, NEVER commit from here |
-| `C:\Users\jared\Projects\dxrp-public` | DXRP upstream fork — vanilla PRs only, no LifePunch headers |
+| `C:\Users\jared\Projects\dxrp` | DXRP upstream fork — vanilla PRs only, no LifePunch headers |
 
 ---
 
@@ -190,7 +190,7 @@ git push
 
 ```powershell
 # 1. Sync
-cd C:\Users\jared\Projects\LIFEPUNCH
+cd C:\Users\jared\Projects\lifepunchdxrp
 git fetch; git pull --rebase
 
 # 2. Start editor + sync addons

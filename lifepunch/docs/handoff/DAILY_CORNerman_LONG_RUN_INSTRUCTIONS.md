@@ -13,7 +13,7 @@ Use this process every day you want Cornerman to run long prep (e.g. the next 3 
 Run these steps in order:
 
 ```powershell
-cd C:\Users\jared\Projects\LIFEPUNCH
+cd C:\Users\jared\Projects\lifepunchdxrp
 git fetch
 git pull --rebase
 ```
@@ -69,7 +69,7 @@ no-commit
 1. RDP into VENGEANCE.
 2. Open a terminal and run:
    ```powershell
-   cd C:\Users\jared\Projects\LIFEPUNCH
+   cd C:\Users\jared\Projects\lifepunchdxrp
    git pull --rebase
    ```
 3. Go to `lifepunch/docs/reports/`

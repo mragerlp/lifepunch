@@ -7,7 +7,7 @@ Copy everything below and send it to Cornerman before you log off and shut down 
 Cornerman — long unattended run starting now. Use Green Deep the entire time.
 
 1. Pull latest:
-cd C:\Users\jared\Projects\LIFEPUNCH
+cd C:\Users\jared\Projects\lifepunchdxrp
 git fetch
 git pull --rebase
 
