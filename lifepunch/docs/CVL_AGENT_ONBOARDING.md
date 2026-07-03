@@ -9,7 +9,8 @@
 > desktop (`CVL_AGENT_ONBOARDING.txt`).** If it ever disagrees with the always-on `.cursor/rules`, the
 > **rules win** — then update this file in the GitHub monorepo (never patch only a clone).
 >
-> **Owner:** Bloodwave (`mragerlp`). **Repo:** `github.com/mragerlp/lifepunch`. **Updated:** July 2026.
+> **Owner:** Bloodwave (legal author **mrragerlp** · mrragerlp@lifepunch.co; git commits **mragerlp**).
+> **Repo:** `github.com/mragerlp/lifepunch`. **Updated:** July 2026.
 
 ---
 

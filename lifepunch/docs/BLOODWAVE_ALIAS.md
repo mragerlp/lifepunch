@@ -20,9 +20,10 @@ that spirit of serious development — not impersonation, but respect carried fo
 
 | Layer | Identifier | Use when |
 |-------|------------|----------|
-| **Legal / proprietary author** | **mrragerlp** | Proprietary headers, git author account, code ownership notes |
+| **Legal / proprietary author** | **mrragerlp** · **mrragerlp@lifepunch.co** | Proprietary headers, code ownership notes, legal contact on IP |
 | **Visible / in-game** | **Bloodwave** | s&box, Steam, Discord display; agent chat; community |
-| **Contact / recognition** | **Mr. Rager** | Email and legacy contact — still valid; same person |
+| **Contact / recognition** | **Mr. Rager** | Legacy contact — still valid; same person |
+| **Git commits (GitHub)** | **mragerlp** · **mragerlp@gmail.com** | `git commit` author on monorepo — infrastructure handle, not the legal display name |
 
 **IP entity** remains **lifepunch.co** (Peak Performance Products LLC) on all proprietary headers.
 
@@ -33,7 +34,7 @@ that spirit of serious development — not impersonation, but respect carried fo
 After `EXCEPT the owner (lifepunch.co).` add:
 
 ```text
-Author account: mrragerlp · Public alias (in-game · Steam · Discord): Bloodwave
+Author account: mrragerlp (mrragerlp@lifepunch.co) · Public alias (in-game · Steam · Discord): Bloodwave
 ```
 
 Template: `.cursor/rules/dxrp-addon-foundation.mdc`
@@ -47,7 +48,8 @@ Template: `.cursor/rules/dxrp-addon-foundation.mdc`
 | GitHub monorepo remote | `github.com/mragerlp/lifepunch` |
 | GitHub username | **`mragerlp`** — keep; do **not** rename to `bloodwave` (see below) |
 | GitHub display name | **Bloodwave** (profile only — no URL change) |
-| Git author / legal account | **mrragerlp** (also **mragerlp** where used historically) |
+| Legal / code author | **mrragerlp** · **mrragerlp@lifepunch.co** |
+| Git commit author | **mragerlp** · **mragerlp@gmail.com** (monorepo commits only) |
 | Windows login | `jared` |
 | USPTO / LLC | Jared Zerillo · Peak Performance Products LLC |
 
@@ -73,7 +75,7 @@ Do **not** change the GitHub account username to `bloodwave`:
 ## Agent law
 
 1. **Agent prose:** Bloodwave.
-2. **Proprietary / code:** mrragerlp as author account; lifepunch.co as IP owner.
+2. **Proprietary / code:** **mrragerlp** (`mrragerlp@lifepunch.co`) as legal author; lifepunch.co as IP owner.
 3. **Do not** rename GitHub URLs or Windows paths.
 4. **Email / Mr. Rager:** fine for contact context — not the in-game or Discord display name.
 

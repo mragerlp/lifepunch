@@ -88,12 +88,13 @@ Agent pastes (Cursor + Copilot × Red · Cornerman · Mac): **`handoff/AGENT_GRO
 
 ## How agents should refer to people (alias-first)
 
-**June 2026 aliases:** **Bloodwave** = visible (in-game · Steam · Discord). **mrragerlp** = proprietary /
-legal author on code. **Mr. Rager** = email and legacy contact. Full policy: `BLOODWAVE_ALIAS.md`.
+**June 2026 aliases:** **Bloodwave** = visible (in-game · Steam · Discord). **mrragerlp**
+(`mrragerlp@lifepunch.co`) = proprietary / legal author on code. **Mr. Rager** = legacy contact.
+Full policy: `BLOODWAVE_ALIAS.md`.
 
 | Who | Visible / agent | Proprietary / legal | Contact |
 |-----|-----------------|---------------------|---------|
-| Owner | **Bloodwave** | **mrragerlp** | Mr. Rager, Jared; GitHub remote `mragerlp` |
+| Owner | **Bloodwave** | **mrragerlp** · mrragerlp@lifepunch.co | Mr. Rager, Jared; GitHub remote `mragerlp` |
 | Partner | **shottaWEB** | — | Brian |
 
 Prefer **Bloodwave** in agent prose; **mrragerlp** in proprietary headers.
@@ -105,10 +106,10 @@ Prefer **Bloodwave** in agent prose; **mrragerlp** in proprietary headers.
 | Context | Names |
 |---------|--------|
 | Agent default | **Bloodwave** (in-game · Steam · Discord · agent chat) |
-| Proprietary / legal author | **mrragerlp** |
+| Proprietary / legal author | **mrragerlp** · **mrragerlp@lifepunch.co** |
 | Contact / legacy | Mr. Rager, Jared |
 | GitHub monorepo remote | mragerlp |
-| Git author accounts | mrragerlp, mragerlp |
+| Git commit author | **mragerlp** · mragerlp@gmail.com |
 
 **lifepunchnet RDP** may show Windows user **`administrator`** — still Bloodwave/owner. Watchdog `allowedUsers`: `jared`, `administrator`.
 

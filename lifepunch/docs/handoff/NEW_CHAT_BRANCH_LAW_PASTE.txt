@@ -35,7 +35,8 @@ STEP 0 — SYNC (every session)
 COMMIT LAW
 ══════════════════════════════════════════════════════════════════════════════
   Propose scope → wait for Bloodwave GO → commit on develop
-  Author: mragerlp <mragerlp@gmail.com> · no AI trailers
+  Git commit author: mragerlp <mragerlp@gmail.com> · no AI trailers
+  Legal / code author on proprietary work: mrragerlp (mrragerlp@lifepunch.co)
   Merge to main only on explicit GO ("merge to main")
 
 ══════════════════════════════════════════════════════════════════════════════
