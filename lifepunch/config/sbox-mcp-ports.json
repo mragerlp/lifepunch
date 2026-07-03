@@ -8,14 +8,16 @@
     "ipcDirDefault": "%TEMP%\\sbox-bridge-ipc",
     "cursorServerKey": "sbox",
     "npmPackage": "sbox-mcp-server",
-    "library": "sboxskinsgg.claudebridge"
+    "library": "sboxskinsgg.claudebridge",
+    "sboxGameUrl": "https://sbox.game/sboxskinsgg/claudebridge/"
   },
   "chomnr": {
     "host": "127.0.0.1",
     "port": 9090,
     "path": "/sbox-mcp",
     "cursorServerKey": "sbox-editor",
-    "library": "notpointless.chomnr_mcp"
+    "library": "notpointless.chomnr_mcp",
+    "sboxGameUrl": "https://sbox.game/notpointless/chomnr_mcp/"
   },
   "jtc": {
     "host": "localhost",
@@ -23,6 +25,7 @@
     "path": "/mcp",
     "cursorServerKey": "sbox-jtc",
     "library": "jtc.mcp-server",
+    "sboxGameUrl": "https://sbox.game/jtc/mcp-server",
     "hostnameNote": "jtc HttpListener binds localhost only — Cursor must use localhost, not 127.0.0.1 (HTTP 400 Invalid Hostname)"
   },
   "cornermanLm": {
