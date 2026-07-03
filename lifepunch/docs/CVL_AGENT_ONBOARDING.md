@@ -13,6 +13,8 @@
 > **Repo:** `github.com/mragerlp/lifepunch`. **Updated:** July 2026.
 >
 > **New here?** Start at **`lifepunch/docs/START_HERE_AGENTS.md`** (thin router) — then read this whole file.
+>
+> **Shared worktree:** one writable agent per `lifepunch` worktree — before switching lanes, park or commit dirty work per `lifepunch/docs/WORKTREE_LANE_SAFETY.md`.
 
 ---
 

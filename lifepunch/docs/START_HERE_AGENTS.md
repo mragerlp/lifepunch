@@ -31,6 +31,7 @@ git status -sb
   - `lifepunchaddons/` — product / addon lanes (`lpbitcoin`, `lphacker`, …). **An in-repo folder — never a repo root, never a `cd` target treated as "the repo."**
   - `lifepunchdxrp/` — **nested private DXRP mirror** for LIFEPUNCH server testing / Red Host Play (own `.git`, gitignored).
 - **Official DXRP upstream:** `C:\Users\jared\Projects\dxrp-public` — a **separate clone** for Dimmer/Dxura PRs only (`mragerlp/dxrp-public` → `dxura/dxrp`, cut from `upstream/develop`).
+- **Worktree safety (one writable agent per worktree):** Before switching lanes or allowing another writable agent into this repo, read `lifepunch/docs/WORKTREE_LANE_SAFETY.md`.
 
 ## 3. Hard separation (the #1 costly mistake)
 
