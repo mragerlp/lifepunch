@@ -15,7 +15,7 @@ Copy `lifepunch/secure/templates/xai.local.env.example` → `lifepunch/secure/xa
 ```env
 XAI_API_KEY=xai-...
 XAI_API_BASE=https://api.x.ai/v1
-XAI_GROK_MODEL=grok-4.3
+XAI_GROK_MODEL=grok-build-0.1
 ```
 
 Never commit `xai.local.env`. Rotate keys at [console.x.ai](https://console.x.ai/) if exposed.
@@ -41,7 +41,7 @@ Responses-only test (optional): `lifepunch/scripts/Test-XaiGrokApi.ps1`
 |-------|--------|
 | **OpenAI API Key** | Your **`xai-...`** key (same as `XAI_API_KEY`) |
 | **Override OpenAI Base URL** | **On** → `https://api.x.ai/v1` |
-| **Custom model** | Add **`grok-4.3`** (or your `XAI_GROK_MODEL`) and **enable** it |
+| **Custom model** | Add **`grok-build-0.1`** (or your `XAI_GROK_MODEL`) and **enable** it |
 
 **Common mistakes**
 

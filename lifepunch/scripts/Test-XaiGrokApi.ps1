@@ -31,7 +31,7 @@ Get-Content -LiteralPath $EnvFile | ForEach-Object {
 
 if (-not $env:XAI_API_KEY) { throw 'XAI_API_KEY not set in env file' }
 $base = if ($env:XAI_API_BASE) { $env:XAI_API_BASE.TrimEnd('/') } else { 'https://api.x.ai/v1' }
-$model = if ($env:XAI_GROK_MODEL) { $env:XAI_GROK_MODEL } else { 'grok-4.3' }
+$model = if ($env:XAI_GROK_MODEL) { $env:XAI_GROK_MODEL } else { 'grok-build-0.1' }
 
 $body = @{
     model = $model

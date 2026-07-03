@@ -6,7 +6,7 @@
   Cursor routes custom Grok through **OpenAI-compatible** settings:
     - OpenAI API Key  = your xai-... key
     - Override OpenAI Base URL = https://api.x.ai/v1
-    - Add custom model = grok-4.3 (or XAI_GROK_MODEL from env file)
+    - Add custom model = grok-build-0.1 (or XAI_GROK_MODEL from env file)
 
   Reads key from lifepunch/secure/xai.local.env (gitignored).
   Validates /v1/chat/completions (what Cursor uses), not only /v1/responses.
@@ -77,7 +77,7 @@ if (-not $env:XAI_API_KEY) { throw 'XAI_API_KEY empty in env file' }
 if ($env:XAI_API_KEY -notmatch '^xai-') { throw 'XAI_API_KEY must start with xai-' }
 
 $base = if ($env:XAI_API_BASE) { $env:XAI_API_BASE.TrimEnd('/') } else { 'https://api.x.ai/v1' }
-$model = if ($env:XAI_GROK_MODEL) { $env:XAI_GROK_MODEL } else { 'grok-4.3' }
+$model = if ($env:XAI_GROK_MODEL) { $env:XAI_GROK_MODEL } else { 'grok-build-0.1' }
 
 if (-not $SkipApiTest) {
     Test-XaiChatCompletions -ApiKey $env:XAI_API_KEY -Base $base -Model $model
