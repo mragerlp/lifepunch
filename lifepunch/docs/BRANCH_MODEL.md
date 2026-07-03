@@ -87,13 +87,15 @@ git push origin develop
 
 ---
 
-## GitHub settings (recommended)
+## GitHub settings (July 2026 — applied)
 
-| Setting | Value |
-|---------|--------|
-| **Default branch** | **`develop`** |
-| **Protect `main`** | Require PR or owner-only push; no force-push |
-| **Protect `develop`** | Optional; allow agent pushes with commit hygiene hook |
+| Setting | Value | Status |
+|---------|--------|--------|
+| **Default branch** | **`develop`** | ✓ Applied |
+| **Protect `main`** | Ruleset · **Include by pattern `main`** · block deletion + force push · require PR (0 approvals) | ✓ Applied |
+| **Protect `develop`** | Optional — not ruleset-protected (daily agent pushes) | Open |
+
+**Ship to truth:** open PR **`develop` → `main`** on GitHub (direct push to `main` is blocked by ruleset).
 
 ---
 
@@ -113,7 +115,7 @@ git push origin develop
 BRANCH LAW — mragerlp/lifepunch
   main    = TRUTH (never delete; Cornerman pulls this)
   develop = TEST (daily commits; default branch on GitHub)
-  ship    = PR develop → main on owner GO, then merge main → develop
+  ship    = PR develop → main on owner GO (main ruleset: no direct push / no delete)
   clone   = C:\Users\jared\Projects\lifepunchdxrp
   dxrp    = separate repo C:\Users\jared\Projects\dxrp (develop upstream)
 ```

@@ -15,9 +15,11 @@ ROLE — RED (orchestrator + runtime truth)
 STEP 0 — SYNC
 ══════════════════════════════════════════════════════════════════════════════
   cd C:\Users\jared\Projects\lifepunchdxrp
-  git fetch origin
-  git checkout checkpoint-lpbitcoin-pre-sleep-20260701
-  git pull --rebase
+  git fetch origin --prune
+  git checkout develop
+  git pull --rebase origin develop
+
+  Branch law: handoff/NEW_CHAT_BRANCH_LAW_PASTE.txt · main ruleset = PR only
 
   If Cornerman shipped local commits: Pull-CornermanPatches.ps1 -Push first.
 

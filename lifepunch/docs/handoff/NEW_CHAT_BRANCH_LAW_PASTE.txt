@@ -13,7 +13,7 @@ BRANCH LAW (memorize)
 ══════════════════════════════════════════════════════════════════════════════
   main    = SOURCE OF TRUTH — stable, handoff, Cornerman distill, GitLab export
   develop = TEST LANE — commit and playtest here first
-  ship    = develop → main (PR or owner GO merge), then sync main → develop
+  ship    = PR develop → main (main ruleset: no direct push / no delete), then sync main → develop
   default = develop on GitHub (daily work lands here)
 
   NEVER delete main or develop.

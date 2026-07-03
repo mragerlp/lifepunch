@@ -17,9 +17,11 @@ ROLE — GREEN A (Mac control plane + Design Architect host)
 STEP 0 — SYNC
 ══════════════════════════════════════════════════════════════════════════════
   cd ~/Projects/lifepunch
-  git fetch origin
-  git checkout checkpoint-lpbitcoin-pre-sleep-20260701
-  git pull --rebase
+  git fetch origin --prune
+  git checkout develop
+  git pull --rebase origin develop
+
+  Branch law: develop = test · main = truth · handoff/NEW_CHAT_BRANCH_LAW_PASTE.txt
 
   LP lane only. DXRP → separate repo/session.
 
