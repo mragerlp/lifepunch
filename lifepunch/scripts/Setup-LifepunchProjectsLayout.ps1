@@ -98,7 +98,7 @@ if (Test-Path -LiteralPath $LegacyDxrpPath) {
     }
 }
 elseif (-not (Test-Path -LiteralPath $nestedDxrpPath)) {
-    Write-Host "No legacy dxrp at $LegacyDxrpPath — clone manually into $nestedDxrpPath" -ForegroundColor Yellow
+    Write-Host "No legacy dxrp at $LegacyDxrpPath - clone manually into $nestedDxrpPath" -ForegroundColor Yellow
     Write-Host '  git clone https://github.com/mragerlp/dxrp-public.git lifepunchdxrp' -ForegroundColor DarkGray
 }
 
@@ -107,7 +107,7 @@ if ((Test-Path -LiteralPath $legacyMonorepoPath) -and -not (Get-Item -LiteralPat
     $resolvedMonorepo = (Resolve-Path -LiteralPath $monorepoPath).Path
     $resolvedLegacy = (Resolve-Path -LiteralPath $legacyMonorepoPath).Path
     if ($resolvedMonorepo -ne $resolvedLegacy) {
-        Write-Host "NOTE: Two monorepo folders exist ($MonorepoName and $LegacyMonorepoName)." -ForegroundColor Yellow
+        Write-Host ('NOTE: Two monorepo folders exist ({0} and {1}).' -f $MonorepoName, $LegacyMonorepoName) -ForegroundColor Yellow
         Write-Host '      Use lifepunch only; archive or remove the duplicate after syncing git.' -ForegroundColor Yellow
     }
 }
