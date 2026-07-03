@@ -1,5 +1,8 @@
 # CVL / GRB — RGB integration doctrine
 
+> **CVL** = **C**ornerman · **V**engeance · **L**ifepunchnet. Spoken aliases: Cornerman → **Green**,
+> Vengeance → **Red**, lifepunchnet → **Blue**. Full vocabulary: `MACHINE_CAST.md`.
+>
 > **June 2026.** This is systems-integration law, not a nickname for "all three agents."
 > Uniform colors are **primary channels**. The **rainbow** is what emerges when channels mix at
 > the right intensities — we are at **standard RGB** today; full gradient maturity comes later.

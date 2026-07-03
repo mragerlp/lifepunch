@@ -19,6 +19,23 @@ stack. Say a **node** when you mean one machine. Do **not** call the three-machi
 
 ---
 
+## CVL naming (mandatory)
+
+**CVL** = **C**ornerman · **V**engeance · **L**ifepunchnet — the three-node integration web (RGB tri-stack).
+
+| Machine | Spoken alias | Letter |
+|---------|--------------|--------|
+| **Cornerman** | **Green** | **C** |
+| **VENGEANCE** | **Red** | **V** |
+| **lifepunchnet** | **Blue** | **L** |
+
+**Architect** (Mac / MacBook) is **not** a CVL letter — planner and design lane outside the RGB tri-stack.
+Integration law: **`CVL_RGB_DOCTRINE.md`**.
+
+Legacy labels **Green A** (Mac) and **Green B** (Cornerman) still appear in older handoffs; prefer **Architect** and **Green** in new prose.
+
+---
+
 ## The three machines (+ Mac control plane)
 
 | Codename | What it is | Where | Primary job |
@@ -34,8 +51,8 @@ stack. Say a **node** when you mean one machine. Do **not** call the three-machi
 ### One-line disambiguation (memorize)
 
 - **VENGEANCE (Red)** = orchestrate · runtime truth · proof · publish.
-- **MacBook (Green A)** = control plane · native dual IDE · RDP to Cornerman when needed.
-- **Cornerman (Green B)** = warm · distill · execute heavy work on local mirror.
+- **Architect (Mac)** = planner · design briefs · RDP to Green when needed.
+- **Cornerman (Green)** = warm · distill · execute heavy work on local mirror.
 - **lifepunchnet (Blue)** = hosted venue 24/7 (game server ops + shared services).
 
 Full workflow: **`GREEN_EXECUTION_MODEL.md`** · agent pastes: **`handoff/AGENT_GROUNDING_INDEX.md`**

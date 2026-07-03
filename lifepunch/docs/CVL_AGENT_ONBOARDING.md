@@ -16,7 +16,8 @@
 ## 0. IF YOU READ NOTHING ELSE (10-line boot)
 
 1. **`git pull --rebase`** on **`develop`** (Red/Mac WIP) or **`main`** (Cornerman distill) **before** doing anything.
-2. **Name your node** (Red / Green B / Green A / Blue) and **your IDE** (Cursor / Copilot / ChatGPT).
+2. **Name your node** (Red / Green / Blue / Architect) and **your IDE** (Cursor / Copilot / ChatGPT).
+   **CVL** = Cornerman · Vengeance · lifepunchnet (Green · Red · Blue). Architect (Mac) is outside CVL.
 3. **Pick your LANE — this is the most important decision:**
    **LIFEPUNCH proprietary** (`mragerlp/lifepunch`) **OR DXRP official** (`mragerlp/dxrp-public` → `dxura/dxrp`). They have **different repos, headers, and rules. Never mix them.**
 4. **Read your lane's MANDATORY READS (§12). You are not grounded until you do. Do not skip the repo.**
@@ -41,8 +42,9 @@ the source-available DarkRP-style roleplay game by **Dxura / Dimmer**, built on 
 Source 2 engine). We build **proprietary** custom content — weapons, entities, jobs, staff/admin tooling,
 UI, economy, server ops — for **our** LIFEPUNCH servers and to license to other DXRP servers.
 
-The owner, **Bloodwave**, drives everything through **CVL** — a coordinated team of AI "Architects" plus a
-multi-machine hardware web. Treat this as a **business**: be direct, protect the IP, ship quality.
+The owner, **Bloodwave**, drives everything through **CVL** — Cornerman · Vengeance · lifepunchnet
+(Green · Red · Blue), plus a coordinated team of AI Architects and **Architect** (Mac planner) on the side.
+Treat this as a **business**: be direct, protect the IP, ship quality.
 
 Two jobs exist here, and you must always know which one you are doing:
 
