@@ -1,5 +1,6 @@
 LIFEPUNCH™ — Green B: Cornerman Copilot grounding (warm · distill · execute)
-Updated: 2026-07-01 · Mac → RDP → Copilot on Cornerman · Red editor + bridge must be up
+Updated: 2026-07-03 · RDP or local desktop · Red editor + bridge must be up
+MCP wiring: lifepunch/docs/handoff/CORNERMAN_MCP_SETUP_PASTE.txt (STEP 6 = Copilot)
 
 ══════════════════════════════════════════════════════════════════════════════
 ROLE — GREEN B (workshop + in-editor integration)
@@ -21,10 +22,10 @@ PREFLIGHT (PowerShell on Cornerman desktop)
   Test-Path \\VENGEANCE\SboxBridgeIpc\status.json
 
   If False: STOP — ask Red to start editor/bridge.
-  If True: open project in Copilot → MCP 3/3: claudebridge · chromr-mcp · jct-server
-  No Reload Window — Copilot picks up MCP on project open.
-
-  Bridge/play eyes via Cursor Green B if needed — not this Copilot chat alone.
+  If True:
+    Cursor → Reload Window → MCP 3/3: sbox · sbox-editor · cornerman-lm
+    Copilot → open C:\Projects\lifepunch in VS Code → MCP 3/3 (same server keys)
+  Full checklist: CORNERMAN_MCP_SETUP_PASTE.txt
 
 ══════════════════════════════════════════════════════════════════════════════
 READ ORDER

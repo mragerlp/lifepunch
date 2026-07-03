@@ -113,10 +113,10 @@ Ctrl+Shift+P → Developer: Reload Window
 
 Settings → MCP → expect 3/3 GREEN:
   ✓ sbox
-  ✓ sbox-editor
+  ✓ sbox-editor          (chomnr — listed as sbox-editor, not "chomnr")
   ✓ cornerman-lm
 
-In this chat, run MCP tools:
+In this Cursor chat, run MCP tools:
   1. sbox → get_bridge_status
      Must show: connected: true, heartbeatAgeMs < 30000
 
@@ -133,13 +133,35 @@ Report back exactly:
   • git status -sb
 
 ══════════════════════════════════════════════════════════════════════════════
+STEP 6 — GitHub Copilot (VS Code on Cornerman)
+══════════════════════════════════════════════════════════════════════════════
+Same 3 MCP servers as Cursor — workspace file:
+  C:\Projects\lifepunch\.vscode\mcp.json
+
+Red pushes this when you run Install-CornermanIdeMcp.ps1 from VENGEANCE.
+On Green desktop re-write locally:
+  powershell -NoProfile -ExecutionPolicy Bypass -File C:\lifepunch\cornerman\Install-CornermanIdeMcp.ps1
+
+Copilot boot:
+  1. Open folder C:\Projects\lifepunch in VS Code (repo root — not lifepunchaddons subfolder)
+  2. GitHub Copilot Chat → MCP tools should list sbox · sbox-editor · cornerman-lm
+  3. No Reload Window — close/reopen workspace if MCP list is empty
+
+Template (reference): lifepunch/config/mcp-cornerman-green.json
+Grounding paste: handoff/GREEN_CORNERMAN_COPILOT_GROUNDING_PASTE.txt
+
+In Copilot chat, verify:
+  • Bridge path uses \\VENGEANCE\SboxBridgeIpc (same as Cursor)
+  • sbox-editor → editor_get_project_info when Red editor is open
+
+══════════════════════════════════════════════════════════════════════════════
 ROLE LAW (do not drift)
 ══════════════════════════════════════════════════════════════════════════════
   • Cornerman = Tier-3 distill/prep + patch-handoff — read-only deploy key
   • No git push to remotes from Green; commit locally → VENGEANCE pulls/pushes
   • No playtest/visual claims without Red bridge screenshot (eyes covered)
   • Active party flatgrass proof = Red only — no OFFLOAD SIGNAL unless triggers fire
-  • MacBook Green A is OUT OF WORKFLOW until hardware restored
+  • MacBook Green A is BACK ONLINE (charger failed) — mobile Architect optional; editor truth stays on Red
 
 Docs if stuck:
   lifepunch/docs/handoff/CORNERMAN_MCP_SETUP_PASTE.txt (this file)

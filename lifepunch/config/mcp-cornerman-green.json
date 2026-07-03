@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "notes": "Green B (Cornerman) MCP — 3 servers. Same JSON for Cursor (~/.cursor/mcp.json) and Copilot (workspace .vscode/mcp.json). Install via Install-CornermanIdeMcp.ps1 from Red or on-box at C:\\lifepunch\\cornerman\\. No sbox-jtc on Green.",
+  "mcpServers": {
+    "sbox": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "sbox-mcp-server"],
+      "env": {
+        "SBOX_BRIDGE_IPC_DIR": "\\\\VENGEANCE\\SboxBridgeIpc"
+      }
+    },
+    "sbox-editor": {
+      "url": "http://127.0.0.1:9090/sbox-mcp"
+    },
+    "cornerman-lm": {
+      "command": "node",
+      "args": ["C:\\Projects\\local-llm-mcp-server\\dist\\index.js"]
+    }
+  }
+}
