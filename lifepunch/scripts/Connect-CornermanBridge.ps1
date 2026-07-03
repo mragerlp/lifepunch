@@ -1,3 +1,10 @@
+# =====================================================================
+# RISK: DANGEROUS IF UNGROUNDED (cross-machine wiring: SMB share, pushes scripts to Green, warms LM)
+# GO:   no GO needed for bridge wiring; do not run blind
+# NODE: Red only  |  BRANCH: n/a
+# PRE:  Red editor up first; grounded per START_HERE_AGENTS.md
+# WHAT: Wire the Cornerman sbox MCP + cornerman-lm + SMB bridge IPC from Red to Green.
+# =====================================================================
 <#
 .SYNOPSIS
   First-priority wiring: Cornerman sbox MCP + cornerman-lm + SMB bridge IPC.

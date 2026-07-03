@@ -11,6 +11,10 @@
 >
 > **Owner:** Bloodwave (legal author **mrragerlp** · mrragerlp@lifepunch.co; git commits **mragerlp**).
 > **Repo:** `github.com/mragerlp/lifepunch`. **Updated:** July 2026.
+>
+> **New here?** Start at **`lifepunch/docs/START_HERE_AGENTS.md`** (thin router) — then read this whole file.
+>
+> **Shared worktree:** one writable agent per `lifepunch` worktree — before switching lanes, park or commit dirty work per `lifepunch/docs/WORKTREE_LANE_SAFETY.md`.
 
 ---
 
@@ -23,7 +27,7 @@
    **LIFEPUNCH proprietary** (`mragerlp/lifepunch`) **OR DXRP official** (`mragerlp/dxrp-public` → `dxura/dxrp`). They have **different repos, headers, and rules. Never mix them.**
 4. **Read your lane's MANDATORY READS (§12). You are not grounded until you do. Do not skip the repo.**
 5. **Route by stakes (§7):** Opus = hard/architecture/economy/security · Grok = planning/audits · Composer/Auto = routine · Cornerman = distill/candidates. Honor route tags; never silently substitute.
-6. **Editor truth lives on Vengeance (Red)** — all 3 s&box MCPs bind there. Cornerman reaches them over the bridge. **Flatgrass proof = Red Host Play only.**
+6. **Editor truth lives on Vengeance (Red)** — all 3 s&box MCPs bind there. Cornerman reaches them over the bridge. **Runtime proof before "done";** use flatgrass / `lp_map_flatgrass` when appropriate as the low-demand proof map (Red Host Play) — not a universal requirement for every change.
 7. **Never commit unprompted.** Propose scope → wait for Bloodwave **GO** → commit as `mragerlp <mragerlp@gmail.com>` with **no AI trailers**.
 8. **Eyes-covered law:** no visual/playtest claim without an `sbox` bridge screenshot from Red.
 9. **Owner gates:** design/economy/publish need Bloodwave **GO**. "No code during a docs/canon pass."
@@ -82,8 +86,8 @@ optional — they are the reputation.**
 | | **LIFEPUNCH (proprietary)** | **DXRP OFFICIAL (upstream)** |
 |---|---|---|
 | **Repo** | `github.com/mragerlp/lifepunch` (private monorepo) | `github.com/mragerlp/dxrp-public` (our fork) → PR to `github.com/dxura/dxrp` |
-| **Clone (Red)** | `C:\Users\jared\Projects\lifepunch` | `C:\Users\jared\Projects\dxrp` |
-| **Branch** | `checkpoint-lpbitcoin-pre-sleep-20260701` (current) / `main` | `bounty/*` or `lifepunch/fix-*` cut from latest `develop` |
+| **Clone (Red)** | `C:\Users\jared\Projects\lifepunch` (monorepo root; nested mirror `lifepunchdxrp/`) | `C:\Users\jared\Projects\dxrp-public` (separate official-upstream clone) |
+| **Branch** | **`develop`** = active work/testing/finalization · **`main`** = finalized truth | `bounty/*` or `lifepunch/fix-*` cut from `upstream/develop` |
 | **Owner** | Bloodwave (ours) | Dxura/Dimmer (theirs — **All Rights Reserved**, source-available) |
 | **File headers** | **PROPRIETARY & CONFIDENTIAL © 2026 lifepunch.co** block on every `.cs`/`.razor`/`.scss` | **DXRP conventions only — NO LIFEPUNCH headers** |
 | **Rules** | `.cursor/rules` + this doc | `dxura/dxrp` `CONTRIBUTING.md` + `CLA.md` + `.editorconfig` |
@@ -306,6 +310,10 @@ Whoever did heavy work → the other nodes **`git pull --rebase`** before their 
 (`Pull-CornermanPatches.ps1 -Push`; quickref `handoff/GREEN_PATCH_HANDOFF_QUICKREF.txt`). Full model:
 **`GREEN_EXECUTION_MODEL.md`**.
 
+**Cornerman branch nuance:** Cornerman defaults to **`main`** as a clean truth mirror / export-stability reader;
+it may read **`develop`** only when the inbox task explicitly targets active work, current testing, or a
+`develop`-bound audit. Green stays read-only / distill / outbox unless Bloodwave explicitly opens a patch-handoff lane.
+
 ---
 
 ## 11. Session boot — per node + IDE
@@ -389,8 +397,9 @@ no copy-paste ship paths): registry `config/portfolio.json`, `packages.json`, `a
 - **Quality bar — NO SPAGHETTI (≠ no hacks).** Honest baselines are fine and tracked in
   `addons/docs/TECH_DEBT.md`; the enemy is tangled, unmaintainable, non-modular code. Use engine systems as
   designed; prefer the fully-owned solution; no dead/orphan assets.
-- **Eyes-covered:** no visual/playtest/scale claim without an `sbox` bridge screenshot from **Red**. Use
-  `lp_map_flatgrass` + fresh spawn — never a saved test scene as proof.
+- **Eyes-covered:** no visual/playtest/scale claim without an `sbox` bridge screenshot from **Red**.
+  **Runtime proof before "done";** use `lp_map_flatgrass` + fresh spawn when appropriate as the low-demand
+  proof map (never a saved test scene) — not a universal requirement for non-gameplay / docs changes.
 - **Owner gates:** new product / economy / permissions / publish need Bloodwave **GO**. During a
   **docs/canon reconciliation pass, do zero code** — docs + decisions + handoff only.
 - **Trademark/IP:** **LIFEPUNCH™** is the only mark we own (`™` only, never `®` while pending); DXRP /
@@ -407,7 +416,7 @@ no copy-paste ship paths): registry `config/portfolio.json`, `packages.json`, `a
 
 | Topic | Canon |
 |-------|-------|
-| **Active lane** | **`lifepunchbitcoin` / `lpbitcoin` — Phase A Hub polish.** Next slice **H4 + H5** (world power/audio) — **owner GO `GO H4/H5 HUB STATE` (+ route tag) before code.** Phase B Terminal locked until H10. Economy overhaul on HOLD. `ACTIVE_WORKSTREAM.md`. |
+| **Active lane** | **`lifepunchbitcoin` / `lpbitcoin` — Phase A Hub polish.** Take the **current unchecked ID** from `ACTIVE_WORKSTREAM.md` + `OWNER_PROGRESS_TRACKER` + the current baton (do not assume a stale slice) — **owner GO (+ route tag) before code.** Phase B Terminal locked until H10. Economy overhaul on HOLD. |
 | **Bitcoin three-surface** | **Hub** (controller/ops — owns mining) + **Terminal** (defense/capability — **never mines**) + **GPU Rack** (hardware, 3-rack limit). Universal Upgrades Home in `LpHashdPanel` (HUB / TERMINAL / GPU RACK tabs). `DECISIONS/DECISION-0001…0010`. |
 | **Branch** | **`develop`** = test (Red daily) · **`main`** = truth (Cornerman distill, export). Merge **`develop` → `main`** on owner GO; sync **`main` → `develop`** after. `BRANCH_MODEL.md`. |
 | **Publish-ready** | Only **`lifepunchulx`** (`adminmenu`) — export via `Export-LifepunchPublishLane.ps1`. Bitcoin active but **not** publish-ready. |

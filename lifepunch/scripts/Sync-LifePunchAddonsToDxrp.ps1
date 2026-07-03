@@ -1,3 +1,10 @@
+# =====================================================================
+# RISK: MODIFIES WORKTREE (robocopy /MIR into the nested lifepunchdxrp/ tree; removes stale target folders)
+# GO:   no GO needed (routine editor-testing sync)
+# NODE: Red only  |  BRANCH: develop
+# PRE:  clean tree on the right branch; grounded per START_HERE_AGENTS.md
+# WHAT: Mirror LifePunch addon source from lifepunchaddons/ into the nested lifepunchdxrp/ game tree.
+# =====================================================================
 <#
 .SYNOPSIS
   Mirror LifePunch addon source from the monorepo into the local DXRP game project.

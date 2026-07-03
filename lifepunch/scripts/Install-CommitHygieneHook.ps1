@@ -1,3 +1,10 @@
+# =====================================================================
+# RISK: MODIFIES WORKTREE (installs a persistent .git/hooks/commit-msg guard per clone)
+# GO:   no GO needed (protective; blocks AI/agent commit trailers)
+# NODE: any  |  BRANCH: n/a (per-clone hook)
+# PRE:  grounded per START_HERE_AGENTS.md; run once per clone (incl. dxrp-public)
+# WHAT: Install the fail-closed commit-msg hook that blocks AI/agent attribution trailers.
+# =====================================================================
 <#
 .SYNOPSIS
   Install the LifePunch commit-msg guard into one or more git clones.

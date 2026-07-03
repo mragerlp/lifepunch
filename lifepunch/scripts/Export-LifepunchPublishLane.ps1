@@ -1,3 +1,9 @@
+# =====================================================================
+# RISK: SYNC/PUSH  |  GO: BLOODWAVE GO REQUIRED
+# NODE: Red only  |  BRANCH: main (publish-ready export set only)
+# PRE:  clean tree on the right branch; grounded per START_HERE_AGENTS.md
+# WHAT: Export publishReadyAddons from the monorepo to the LIFEPUNCH publish lane repo.
+# =====================================================================
 <#
 .SYNOPSIS
   Export active portfolio addons from core monorepo to LIFEPUNCH publish lane repo.

@@ -1,3 +1,10 @@
+# =====================================================================
+# RISK: SYNC/PUSH + DANGEROUS IF UNGROUNDED (ff-merges upstream; pushes dxrp-public with -PushOrigin)
+# GO:   BLOODWAVE GO REQUIRED for -PushOrigin
+# NODE: Red only  |  BRANCH: dxrp-public develop (official upstream lane) - NOT the monorepo
+# PRE:  grounded per START_HERE_AGENTS.md; official-DXRP lane only (see DXRP_CONTRIBUTOR_LANE.md)
+# WHAT: Fast-forward the dxrp-public fork from dxura/dxrp upstream develop; optionally push origin.
+# =====================================================================
 param(
     [string]$DxrpPath = (Join-Path $PSScriptRoot '..\..\..\dxrp-public'),
     [switch]$PushOrigin

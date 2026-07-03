@@ -2,7 +2,7 @@
 
 **Status:** Active — Bloodwave on Dxura DXRP dev team (June 2026).  
 **When:** Any session touching **`mragerlp/dxrp-public`** or opening PRs to **`dxura/dxrp:develop`**.  
-**Not when:** LifePunch addon ship lane (`lifepunchdxrp` monorepo, proprietary addons, portal publish).
+**Not when:** LifePunch addon ship lane (private `lifepunch` monorepo, proprietary addons, portal publish).
 
 ---
 
@@ -10,12 +10,16 @@
 
 | Lane | Clone path | Remote | Commit? | Contains |
 |------|------------|--------|---------|----------|
-| **LifePunch (private)** | `C:\Users\jared\Projects\lifepunchdxrp` | `github.com/mragerlp/lifepunch` | Yes (owner approves) | LIFEPUNCH™ addons, legal, portal, server ops, proprietary headers |
-| **DXRP fork (public upstream)** | `C:\Users\jared\Projects\dxrp` | `origin` → `mragerlp/dxrp-public`, `upstream` → `dxura/dxrp` | Yes (bounty/PR branches) | Vanilla DXRP gamemode only — **no LifePunch IP** |
+| **LifePunch (private)** | `C:\Users\jared\Projects\lifepunch` | `github.com/mragerlp/lifepunch` | Yes (owner approves) | LIFEPUNCH™ addons, legal, portal, server ops, proprietary headers |
+| **DXRP fork (public upstream)** | `C:\Users\jared\Projects\dxrp-public` | `origin` → `mragerlp/dxrp-public`, `upstream` → `dxura/dxrp` (cut from `upstream/develop`) | Yes (bounty/PR branches) | Vanilla DXRP gamemode only — **no LifePunch IP** |
 
 **Steam editor checkout:** `D:\Steam\steamapps\common\sbox\dxrp` — runtime only; **never commit** from there.
 
 **Do not** add `dxura/dxrp` as a remote inside the LifePunch monorepo (different history + disclosure rules).
+
+- **`lifepunchdxrp/`** is a **nested private DXRP mirror** inside the LifePunch monorepo (in-repo reference/testing only) — it is **not** the upstream contributor clone. Official DXRP upstream work happens only in the separate `C:\Users\jared\Projects\dxrp-public` clone.
+
+> **Hard separation:** Private LIFEPUNCH work lives in `C:\Users\jared\Projects\lifepunch` on `develop`; official DXRP upstream PRs live only in `C:\Users\jared\Projects\dxrp-public` from `upstream/develop`. Never cross-contaminate IP, headers, paths, or assumptions between the two.
 
 ---
 
@@ -27,7 +31,7 @@
 
 ```text
 FOCUS: DXRP upstream (mragerlp/dxrp-public → dxura/dxrp develop)
-Clone: C:\Users\jared\Projects\dxrp
+Clone: C:\Users\jared\Projects\dxrp-public
 Branch: bounty/* or lifepunch/fix-* from develop — NOT lifepunch main
 
 FORBIDDEN in this session:
@@ -72,7 +76,7 @@ Disable **Cursor Tab** while VS Code is open on the same repo. Commit hygiene in
 ## Sync loop (DXRP fork)
 
 ```powershell
-cd C:\Users\jared\Projects\lifepunchdxrp
+cd C:\Users\jared\Projects\lifepunch
 git pull --rebase
 
 powershell -File lifepunch\scripts\sync-dxrp-fork.ps1
@@ -93,7 +97,7 @@ Canon: `lifepunch/docs/DXRP_DOCS_REFERENCE.md` § LifePunch to DXRP Fork Bridge.
 Before every commit / before asking Dimmer for review:
 
 ```powershell
-cd C:\Users\jared\Projects\dxrp
+cd C:\Users\jared\Projects\dxrp-public
 git status -sb
 
 # Discard local editor noise + machine-specific csproj/slnx (NEVER commit these):
