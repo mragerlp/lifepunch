@@ -1,8 +1,20 @@
 # LIFEPUNCH™ — Git checkpoints (commit / push / pull law)
 
-**June 2026** — Bloodwave + agents. Read with `PUBLISH_REPO_LANE.md` and `portfolio.json`.
+**July 2026** — Bloodwave + agents. Read with `BRANCH_MODEL.md`, `PUBLISH_REPO_LANE.md`, and `portfolio.json`.
 
-This doc answers: *what goes on `main`, what stays local, what goes to publish, and when.*
+This doc answers: *what goes on `develop` vs `main`, what stays local, what goes to publish, and when.*
+
+---
+
+## Branch model (summary)
+
+| Branch | Purpose |
+|--------|---------|
+| **`develop`** | Daily integration — commit here |
+| **`main`** | Ship-ready — merge from `develop` on owner GO |
+| **`bitcoin/*`, `lane/*`, `fix/*`** | Short-lived off `develop` |
+
+Full law: **`BRANCH_MODEL.md`**
 
 ---
 
@@ -10,17 +22,17 @@ This doc answers: *what goes on `main`, what stays local, what goes to publish, 
 
 ```text
 Is it law, WIP, quarantine, legal, MCP, website, or ideation?
-  YES → core monorepo (mragerlp/lifepunch) — commit here
+  YES → core monorepo (mragerlp/lifepunch) — commit on develop
 
 Is it portal-ready addon Assets + Code for active portfolio only?
   YES → export to lifepunch-published — never hand-edit publish as source of truth
 ```
 
-| Action | Core (`lifepunchaddons`) | Publish (`lifepunch-published`) |
-|--------|--------------------------|----------------------------------|
-| Daily dev | **Always** | Never day-to-day |
-| Commit | Yes — checkpoints | Only after export + owner says push publish |
-| Pull | Session start (clean tree) | Only on publish machine before portal upload |
+| Action | Core (`lifepunchdxrp`) | Publish (`lifepunch-published`) |
+|--------|------------------------|----------------------------------|
+| Daily dev | **Always** on **`develop`** | Never day-to-day |
+| Commit | Yes — checkpoints on **`develop`** | Only after export + owner says push publish |
+| Pull | Session start: `git pull --rebase origin develop` | Only on publish machine before portal upload |
 | Push | After agent says **"good to commit"** + you confirm | After export when ship-ready |
 | Quarantine code | Stays in core, excluded from compile | **Never** |
 | ChatGPT briefs / specs | Core `addons/docs/briefs/` | Never |
@@ -33,15 +45,15 @@ Agents **recommend**, you **approve**. Not: *"Want me to commit?"*
 
 **Agent says:**
 
-> **Checkpoint ready for `main`.** Scope: [files]. Reason: [one line].  
+> **Checkpoint ready for `develop`.** Scope: [files]. Reason: [one line].  
 > **Recommend: commit.** Push after? [yes/no + count of unpushed commits].  
 > **Exclude:** [files that must NOT ship in this commit].
 
-**You say:** `commit to main` · `commit and push` · `hold` · `commit only X`
+**You say:** `commit to develop` · `commit and push` · `hold` · `commit only X` · `merge to main` (ship GO)
 
 ---
 
-## Always commit to core `main`
+## Always commit to core `develop`
 
 - `.cursor/rules`, `lifepunch/docs/**` (law, workflow, MCP, checkpoints)
 - `lifepunch/legal/**` (no EIN / street address)
@@ -55,14 +67,25 @@ Agents **recommend**, you **approve**. Not: *"Want me to commit?"*
 
 ## Commit to core — docs only (quarantine planning)
 
-Safe on `main` even when the addon is **not** active:
+Safe on **`develop`** even when the addon is **not** active:
 
 - Product specs (`BANKER_JOB_SPEC.md`, research briefs)
 - `LIFEPUNCH_HUB_PATTERN.md` (model law)
 - **Foundation laws (Jun 2026):** `LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md`, `LIFEPUNCH_WEAPON_IMPLEMENTATION_LAW.md`, matching `.cursor/rules/lifepunch-digital-machine.mdc` + `lifepunch-weapon-platform.mdc`, onboarding updates in `AGENT_ONBOARDING.md` / `AGENT_PROMPT.md`
-- Handoff / Cornerman outbox under `docs/handoff/` (e.g. `JUNE_2026_FOUNDATION_CHECKPOINT.md`)
+- Handoff / Cornerman outbox under `docs/handoff/`
 
 **Do not** add quarantined addon **code or assets** in the same commit unless owner promotes in `portfolio.json`.
+
+---
+
+## Merge to `main` (owner GO only)
+
+When a lane milestone is ship-ready:
+
+1. `develop` is clean and pushed
+2. Owner says **merge to main** or opens PR `develop` → `main`
+3. Optional: `Export-GitLabLane.ps1 -Slug lifepunch-rdp-server` from **`main`**
+4. Note SHA in `handoff/` for big milestones
 
 ---
 
@@ -93,24 +116,25 @@ Publish tree = **export script output only** (`Export-LifepunchPublishLane.ps1`)
 
 | When | Rule |
 |------|------|
-| **New Cursor session** | `git fetch`; if working tree **clean**, `git pull --rebase` |
+| **New Cursor session** | `git fetch`; checkout **`develop`**; if working tree **clean**, `git pull --rebase origin develop` |
 | **Uncommitted changes + behind remote** | **Stop** — commit or stash first; never pull over WIP |
 | **Cornerman read-only clone** | No push; patch-handoff to VENGEANCE (see `LOCAL_AI_WORKSTATION.md`) |
 | **Publish clone** | Pull only before portal upload; prefer re-export from core |
 
-**Never:** `git push --force` on `main` · `git reset --hard` without explicit owner ask.
+**Never:** `git push --force` on **`main`** or **`develop`** · `git reset --hard` without explicit owner ask.
 
 ---
 
 ## Push law
 
-| Repo | When to push |
-|------|----------------|
-| **Core `main`** | After a coherent checkpoint commit; you have **6 unpushed commits** today — push is recommended after the next commit |
+| Repo / branch | When to push |
+|---------------|--------------|
+| **Core `develop`** | After every coherent checkpoint commit |
+| **Core `main`** | After owner GO merge from `develop` |
 | **Publish** | After export + owner sign-off that active addons are portal-presentable |
 | **GitLab lanes** | Partner lanes only — shottaWEB website, etc. — not a substitute for core |
 
-**Checkpoint habit:** commit → push → note SHA in chat or `handoff/` if it was a big infra/addon milestone.
+**Checkpoint habit:** commit on **`develop`** → push → note SHA in chat or `handoff/` if it was a big infra/addon milestone.
 
 ---
 
@@ -118,20 +142,21 @@ Publish tree = **export script output only** (`Export-LifepunchPublishLane.ps1`)
 
 ```text
 1. ChatGPT Step 1 → filled CURSOR BRIEF (paste)
-2. Cursor builds in CORE only
-3. Agent: "Checkpoint ready" → you: "commit to main"
+2. Cursor builds in CORE on develop
+3. Agent: "Checkpoint ready" → you: "commit to develop"
 4. Optional: push (separate yes if you want control)
-5. When portal-ready: Export-LifepunchPublishLane.ps1 → publish repo → prepare-publish → portal
-6. **Desktop org (Bloodwave local):** `Sync-DesktopPublishFolder.ps1` → `%USERPROFILE%\Desktop\lifepunch\addons\publish\` — see `handoff/DESKTOP_ORG_CHECKPOINT_2026-06.md`
+5. Ship GO → merge develop → main → optional GitLab export
+6. When portal-ready: Export-LifepunchPublishLane.ps1 → publish repo → prepare-publish → portal
+7. **Desktop org (Bloodwave local):** Sync-DesktopPublishFolder.ps1 → Desktop publish folder
 ```
 
-Ideation and structure live in **core**. Clean customer tree lives in **publish**.
+Ideation and structure live in **core on develop**. Clean customer tree lives in **publish**.
 
 ---
 
 ## Current snapshot (update when stale)
 
-- **Branch:** `main`, **6 commits ahead** of `origin/main` (quarantine + Ophion + MCP workflow)
-- **Ready to commit now:** publish lane doc + scaffold + export script + agent/workflow doc tweaks
+- **Integration branch:** `develop` @ `3c69965` (migrated from `checkpoint-lpbitcoin-pre-sleep-20260701`, July 2026)
+- **`main`:** behind `develop` — merge on next owner GO
 - **Hold:** `bankerjob/` trees, `governmentdatacenter/intake-raw/`
-- **Publish folder:** `C:\Users\jared\Projects\lifepunchdxrp-published` — local export exists; GitHub repo not created until you run one-time `gh repo create`
+- **Publish folder:** `C:\Users\jared\Projects\lifepunch-published` — local export; GitHub repo when owner runs `gh repo create`

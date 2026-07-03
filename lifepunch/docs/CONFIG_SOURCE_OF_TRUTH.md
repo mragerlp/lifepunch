@@ -12,6 +12,8 @@ When two files disagree, **fix the canonical file** listed here — do not fork 
 
 | Question | Canonical file |
 |----------|----------------|
+| Branch model (main / develop)? | `lifepunch/docs/BRANCH_MODEL.md` |
+| Commit / push / pull law? | `lifepunch/docs/GIT_CHECKPOINTS.md` |
 | Which addons exist / ownership headers? | `lifepunch/addons/config/addons.json` |
 | Public package slug vs packageFolder parent? | `lifepunch/addons/config/packages.json` + `package-staging.json` |
 | Active vs quarantined idents? | `lifepunch/addons/config/portfolio.json` |
