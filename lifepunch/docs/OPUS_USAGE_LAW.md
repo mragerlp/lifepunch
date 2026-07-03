@@ -137,7 +137,7 @@ chat**, not a multi-million-token drag. Attach specific files/ranges, not whole 
 
 ## Strict subsystem scope — lifepunchbitcoin example
 
-**Gate:** `lifepunch/addons/docs/ACTIVE_WORKSTREAM.md` — single active lane until Law 10 exit.
+**Gate:** `lifepunchaddons/docs/ACTIVE_WORKSTREAM.md` — single active lane until Law 10 exit.
 
 Once the Anthropic API key is connected and Opus is available, use it **exclusively on one
 entity at a time** until flatgrass play proof + owner sign-off, then advance:
@@ -177,7 +177,7 @@ ChatGPT Step 1 brief (optional) → Opus Phase 1 plan → Opus Phase 2 slice
        → prepare-publish.ps1 → portal upload (when publishReady)
 ```
 
-Publish law: `lifepunch/addons/docs/DXRP_ADDON_PUBLISH_DOCTRINE.md` · active gate:
+Publish law: `lifepunchaddons/docs/DXRP_ADDON_PUBLISH_DOCTRINE.md` · active gate:
 `ACTIVE_WORKSTREAM.md`.
 
 ---
@@ -200,5 +200,5 @@ Publish law: `lifepunch/addons/docs/DXRP_ADDON_PUBLISH_DOCTRINE.md` · active ga
 | `lifepunch/docs/AGENT_ONBOARDING.md` | Foundation onboarding |
 | `.cursor/rules/lifepunch-operating-context.mdc` | Tier 1/2/3 pools + eyes covered |
 | `.cursor/rules/lifepunch-active-workstream-gate.mdc` | Single lane gate |
-| `lifepunch/addons/docs/LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md` | Machine stack P0–P4 |
+| `lifepunchaddons/docs/LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md` | Machine stack P0–P4 |
 | `lifepunch/docs/MCP_AGENT_ROUTING.md` | s&box MCP task routing |

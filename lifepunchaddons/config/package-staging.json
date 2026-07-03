@@ -1,0 +1,200 @@
+{
+  "schemaVersion": 1,
+  "law": "Package folder (lp*) -> entity slot folder -> assets/ + code/. Staging mirrors future publish tree. Do not merge packages.",
+  "packageParentPathLaw": "Every shippable package parent = lifepunchaddons/{packageFolder}/ (Code/, Assets/, docs/, .sbproj). Locked 2026-06-30. See PACKAGE_STAGING_LAYOUT.md.",
+  "stagingAssetsRoot": "Assets/addons/lifepunch",
+  "devRoot": "_dev",
+  "legacyDesktopFolderMap": {
+    "lpbitcoinmining": "lpbitcoin",
+    "lppolicehacker": "lppolice"
+  },
+  "packages": {
+    "lpbitcoin": {
+      "packageSlug": "lifepunchbitcoin",
+      "repoIdent": "bitcoinmining",
+      "publishAssetsMount": "addons/lifepunch/bitcoinmining",
+      "zipName": "lpbitcoin.zip",
+      "entities": {
+        "bitcoinhub": {
+          "displayName": "Bitcoin HUB (Steam Machine)",
+          "shipEntitySlug": "bitcoinhub",
+          "priority": "P0"
+        },
+        "hashdterminal": {
+          "displayName": "HASHD Terminal",
+          "shipEntitySlug": "hashdterminal",
+          "priority": "P0"
+        },
+        "gpurack": {
+          "displayName": "GPU Rack (farm / stacked mesh)",
+          "shipEntitySlug": "gpurack",
+          "priority": "P0",
+          "notes": "Canonical lpbitcoin slot — small open-frame vmdl archived; stacked mesh is ship tier (BITCOINMINING-07)."
+        }
+      }
+    },
+    "lphacker": {
+      "packageSlug": "lifepunchhacker",
+      "repoIdent": "hackerjob",
+      "publishAssetsMount": "addons/lifepunch/hackerjob",
+      "zipName": "lphacker.zip",
+      "entities": {
+        "hackerhub": { "displayName": "Hacker HUB", "shipEntitySlug": "server-rack" },
+        "hackerterminal": { "displayName": "Hacker Terminal", "shipEntitySlug": "hacker-terminal" },
+        "advancedhackerhub": { "displayName": "Advanced Hacker HUB", "shipEntitySlug": "advanced-server-rack" },
+        "advancedhackerterminal": { "displayName": "Advanced Hacker Terminal", "shipEntitySlug": "advanced-hacker-terminal" }
+      }
+    },
+    "lppolice": {
+      "packageSlug": "TBD",
+      "repoIdent": "governmentdatacenter",
+      "publishAssetsMount": "addons/lifepunch/governmentdatacenter",
+      "zipName": "lppolice.zip",
+      "entities": {
+        "policehackerhub": { "displayName": "Police HUB", "shipEntitySlug": "government-server-rack" },
+        "policehackerterminal": { "displayName": "Police Terminal", "shipEntitySlug": "police-terminal" }
+      }
+    },
+    "lpgovernment": {
+      "packageSlug": "TBD",
+      "repoIdent": "governmentdatacenter",
+      "publishAssetsMount": "addons/lifepunch/governmentdatacenter",
+      "zipName": "lpgovernment.zip",
+      "entities": {
+        "governmenthub": { "displayName": "Government HUB", "shipEntitySlug": "government-server-rack" },
+        "governmentterminal": { "displayName": "Government Terminal", "shipEntitySlug": "police-terminal" }
+      }
+    },
+    "lpblackmarket": {
+      "packageSlug": "TBD",
+      "repoIdent": "blackmarketdealer",
+      "publishAssetsMount": "addons/lifepunch/blackmarketdealer",
+      "zipName": "lpblackmarket.zip",
+      "entities": {
+        "blackmarkethub": { "displayName": "Black Market Hub", "shipEntitySlug": "black-market-hub" },
+        "blackmarketterminal": { "displayName": "Black Market Terminal", "shipEntitySlug": "black-market-terminal" },
+        "blackmarketregister": { "displayName": "Black Market Register", "shipEntitySlug": "black-market-register", "notes": "BTC payment → DXRP market grant spawnable entities" },
+        "blackmarketlocker": { "displayName": "Black Market Locker", "shipEntitySlug": "black-market-locker", "notes": "Weapon storage / customization prop only" }
+      }
+    },
+    "lpbanker": {
+      "packageSlug": "lifepunchbanker",
+      "repoIdent": "bankerjob",
+      "publishAssetsMount": "addons/lifepunch/bankerjob",
+      "zipName": "lpbanker.zip",
+      "entities": {
+        "bankerhub": { "displayName": "Banker HUB", "shipEntitySlug": "banker-hub" },
+        "bankerterminal": { "displayName": "Bank Terminal", "shipEntitySlug": "banker-terminal" },
+        "bankeratm": { "displayName": "Banker ATM", "shipEntitySlug": "banker-atm" }
+      }
+    },
+    "lpflashdrive": {
+      "packageSlug": "TBD",
+      "repoIdent": "TBD",
+      "publishAssetsMount": "addons/lifepunch/flashdrive",
+      "zipName": "lpflashdrive.zip",
+      "entities": {
+        "usbflashdrive": { "displayName": "USB Flash Drive", "shipEntitySlug": "usb-flash-drive" },
+        "electronicstable": { "displayName": "Electronics Table", "shipEntitySlug": "electronics-table" }
+      }
+    },
+    "lpweapons": {
+      "packageSlug": "lifepunchak47",
+      "repoIdent": "ak47",
+      "publishAssetsMount": "addons/lifepunch/ak47",
+      "zipName": "lpweapons.zip",
+      "entities": {
+        "ak47military": { "displayName": "AK-47 Military", "shipEntitySlug": "ak47" },
+        "ar15military": { "displayName": "AR-15 Military", "shipEntitySlug": "ar15" }
+      }
+    },
+    "lpchemist": {
+      "packageSlug": "TBD",
+      "repoIdent": "advanceddrugprocessing",
+      "publishAssetsMount": "addons/lifepunch/advanceddrugprocessing",
+      "zipName": "lpchemist.zip",
+      "entities": {
+        "druglab": {
+          "displayName": "Meth Lab Bench",
+          "shipEntitySlug": "meth-lab-bench",
+          "priority": "P2",
+          "notes": "Fab Props FOR Labs hero merge (UE export)"
+        },
+        "drugtable": { "displayName": "Drug Table", "shipEntitySlug": "drug-table" },
+        "laboven": { "displayName": "Lab Drying Oven", "shipEntitySlug": "lab-oven" },
+        "chemicalprocessor": { "displayName": "Chemical Processor", "shipEntitySlug": "chemical-processor" },
+        "chemicaljar": { "displayName": "Chemical Jar", "shipEntitySlug": "chemical-jar" },
+        "iodinebarrel": { "displayName": "Iodine Barrel", "shipEntitySlug": "iodine-barrel" },
+        "sulfurbarrel": { "displayName": "Sulfur Barrel", "shipEntitySlug": "sulfur-barrel" },
+        "redphosphorusbarrel": { "displayName": "Red Phosphorus Barrel", "shipEntitySlug": "red-phosphorus-barrel" },
+        "cocaseed": { "displayName": "Coca Seed", "shipEntitySlug": "coca-seed" },
+        "cocaleaf": { "displayName": "Coca Leaf", "shipEntitySlug": "coca-leaf" }
+      }
+    },
+    "lpdrugdrops": {
+      "packageSlug": "TBD",
+      "repoIdent": "TBD",
+      "publishAssetsMount": "addons/lifepunch/drugdrops",
+      "zipName": "lpdrugdrops.zip",
+      "entities": {
+        "methbag": { "displayName": "Meth Bag", "shipEntitySlug": "meth-bag" },
+        "methbrick": { "displayName": "Meth Brick", "shipEntitySlug": "meth-brick" },
+        "rawmeth": { "displayName": "Raw Meth", "shipEntitySlug": "raw-meth" },
+        "cocainebag": { "displayName": "Cocaine Bag", "shipEntitySlug": "cocaine-bag" },
+        "cocainebrick": { "displayName": "Cocaine Brick", "shipEntitySlug": "coke-brick" },
+        "traindrop": { "displayName": "Train Drug Drop", "shipEntitySlug": "train-drop" },
+        "truckdrop": { "displayName": "Truck Drug Drop", "shipEntitySlug": "truck-drop" }
+      }
+    }
+  },
+  "entityLayout": {
+    "assetsSubfolders": ["source/fbx", "source/blend", "source/obj", "textures", "models", "entities", "sounds", "ui"],
+    "codeSubfolders": ["components", "ui", "docs"],
+    "siblingFolders": ["audit", "docs"]
+  },
+  "bitcoinCodeMap": {
+    "bitcoinhub": [
+      "LpBitcoinHubEntity.cs",
+      "LpBitcoinHubVisuals.cs",
+      "LpBitcoinHubPin.cs",
+      "LpBitcoinHubAlert.cs",
+      "LpBitcoinHubAlertBridge.cs",
+      "LpBitcoinPowerAnim.cs",
+      "LpBitcoinPowerLeds.cs"
+    ],
+    "hashdterminal": [
+      "LpBitcoinTerminalEntity.cs",
+      "LpBitcoinTerminalPanel.razor",
+      "LpBitcoinTerminalPanel.razor.scss",
+      "LpBitcoinTerminalUiHost.cs",
+      "LpBitcoinTerminalScreen.cs",
+      "LpBitcoinTerminalLogPanel.cs",
+      "LpBitcoinTerminalCommandInput.cs",
+      "LpBitcoinTerminalCommands.cs",
+      "LpHashdPanel.razor",
+      "LpHashdPanel.razor.scss",
+      "LpHashdUiHost.cs",
+      "LpOpsCrtTheme.cs",
+      "LpOpsCrtTerminal.scss"
+    ],
+    "gpurack": [
+      "LpBitcoinRackEntity.cs",
+      "LpBitcoinRackVisuals.cs"
+    ],
+    "advancedgpurack": [
+      "LpBitcoinRackEntity.cs",
+      "LpBitcoinRackVisuals.cs"
+    ],
+    "shared": [
+      "LpBitcoinIdent.cs",
+      "LpBitcoinEconomy.cs",
+      "LpBitcoinWallet.cs",
+      "LpBitcoinUi.cs",
+      "LpBitcoinHudBridge.cs",
+      "LpUiScale.cs",
+      "LpUiScale.scss",
+      "LpUiChrome.scss",
+      "LpBitcoinDevSpawn.cs"
+    ]
+  }
+}

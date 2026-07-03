@@ -5,11 +5,11 @@ $RepoRoot = (Resolve-Path (Join-Path $Here '..\..')).Path
 . (Join-Path $Here 'Cornerman-Workflow.ps1')
 
 $files = @(
-    @{ rel = 'lifepunch\addons\docs\briefs\CORNERMAN_PHYSICAL_TERMINAL_ALIGNMENT_TASK.md'; inbox = 'CORNERMAN_PHYSICAL_TERMINAL_ALIGNMENT_TASK.md' },
-    @{ rel = 'lifepunch\addons\docs\PHYSICAL_TERMINAL_DOCTRINE.md'; inbox = 'PHYSICAL_TERMINAL_DOCTRINE.md' },
-    @{ rel = 'lifepunch\addons\Code\Addons\lifepunch\bitcoinmining\docs\BITCOINMINING_TERMINAL_DOCTRINE.md'; inbox = 'BITCOINMINING_TERMINAL_DOCTRINE.md' },
-    @{ rel = 'lifepunch\addons\Code\Addons\lifepunch\hackerjob\docs\TERMINAL_SESSION_DOCTRINE.md'; inbox = 'TERMINAL_SESSION_DOCTRINE.md' },
-    @{ rel = 'lifepunch\addons\docs\TERMINAL_BRAND_MATRIX.md'; inbox = 'TERMINAL_BRAND_MATRIX.md' },
+    @{ rel = 'lifepunchaddons\docs\briefs\CORNERMAN_PHYSICAL_TERMINAL_ALIGNMENT_TASK.md'; inbox = 'CORNERMAN_PHYSICAL_TERMINAL_ALIGNMENT_TASK.md' },
+    @{ rel = 'lifepunchaddons\docs\PHYSICAL_TERMINAL_DOCTRINE.md'; inbox = 'PHYSICAL_TERMINAL_DOCTRINE.md' },
+    @{ rel = 'lifepunchaddons\Code\Addons\lifepunch\bitcoinmining\docs\BITCOINMINING_TERMINAL_DOCTRINE.md'; inbox = 'BITCOINMINING_TERMINAL_DOCTRINE.md' },
+    @{ rel = 'lifepunchaddons\Code\Addons\lifepunch\hackerjob\docs\TERMINAL_SESSION_DOCTRINE.md'; inbox = 'TERMINAL_SESSION_DOCTRINE.md' },
+    @{ rel = 'lifepunchaddons\docs\TERMINAL_BRAND_MATRIX.md'; inbox = 'TERMINAL_BRAND_MATRIX.md' },
     @{ rel = 'lifepunch\docs\handoff\cornerman-outbox\to-cornerman-physical-terminal.txt'; inbox = 'to-cornerman-physical-terminal.txt' },
     @{ rel = 'lifepunch\docs\handoff\cornerman-outbox\to-vengeance-physical-terminal-red.txt'; inbox = 'to-vengeance-physical-terminal-red.txt' }
 )

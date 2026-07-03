@@ -18,9 +18,9 @@ If behind AND dirty: stop — commit or stash first.
 STEP 2 — READ (lean boot)
 ------------------------------------------------------------------------
 
-  1. lifepunch/addons/docs/ACTIVE_WORKSTREAM.md
-  2. lifepunch/addons/docs/BITCOIN_SHIP_ROADMAP.md
-  3. lifepunch/addons/docs/OWNER_PROGRESS_TRACKER.txt  (one ID only)
+  1. lifepunchaddons/docs/ACTIVE_WORKSTREAM.md
+  2. lifepunchaddons/docs/BITCOIN_SHIP_ROADMAP.md
+  3. lifepunchaddons/docs/OWNER_PROGRESS_TRACKER.txt  (one ID only)
   4. lifepunch/docs/handoff/ARCHITECT_CURRENT_STATE.md  (dated volatile state)
   5. lifepunch/docs/MACHINE_CAST.md
   6. lifepunch/docs/AGENT_ONBOARDING.md  (your lane section only)

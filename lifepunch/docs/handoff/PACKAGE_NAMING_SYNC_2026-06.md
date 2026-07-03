@@ -1,6 +1,6 @@
 # Package naming sync — all CVL nodes (June 2026)
 
-**Git:** after `git pull --rebase`, read `lifepunch/addons/docs/PACKAGE_NAMING_STANDARD.md` and `config/packages.json`.
+**Git:** after `git pull --rebase`, read `lifepunchaddons/docs/PACKAGE_NAMING_STANDARD.md` and `config/packages.json`.
 
 ---
 

@@ -5,13 +5,13 @@ $RepoRoot = (Resolve-Path (Join-Path $Here '..\..')).Path
 . (Join-Path $Here 'Cornerman-Workflow.ps1')
 
 $files = @(
-    @{ rel = 'lifepunch\addons\docs\briefs\CORNERMAN_BITCOINMINING_SOUNDS_TASK.md'; inbox = 'CORNERMAN_BITCOINMINING_SOUNDS_TASK.md' },
-    @{ rel = 'lifepunch\addons\Assets\addons\lifepunch\lpbitcoin\bitcoinhub\assets\sounds\bitcoinminer\README.md'; inbox = 'BITCOINMINER_SOUNDS_README.md' },
-    @{ rel = 'lifepunch\addons\Code\Addons\lifepunch\bitcoinmining\LpBitcoinIdent.cs'; inbox = 'LpBitcoinIdent.cs' },
-    @{ rel = 'lifepunch\addons\scripts\Intake-BitcoinMinerSounds.ps1'; inbox = 'Intake-BitcoinMinerSounds.ps1' },
-    @{ rel = 'lifepunch\addons\Code\Addons\lifepunch\bitcoinmining\docs\BITCOINMINING_PLAYTEST.md'; inbox = 'BITCOINMINING_PLAYTEST.md' },
-    @{ rel = 'lifepunch\addons\docs\briefs\BITCOINMINING_PROTECTION_CHECKLIST.md'; inbox = 'BITCOINMINING_PROTECTION_CHECKLIST.md' },
-    @{ rel = 'lifepunch\addons\docs\briefs\CORNERMAN_WORK_QUEUE.md'; inbox = 'CORNERMAN_WORK_QUEUE.md' },
+    @{ rel = 'lifepunchaddons\docs\briefs\CORNERMAN_BITCOINMINING_SOUNDS_TASK.md'; inbox = 'CORNERMAN_BITCOINMINING_SOUNDS_TASK.md' },
+    @{ rel = 'lifepunchaddons\Assets\addons\lifepunch\lpbitcoin\bitcoinhub\assets\sounds\bitcoinminer\README.md'; inbox = 'BITCOINMINER_SOUNDS_README.md' },
+    @{ rel = 'lifepunchaddons\Code\Addons\lifepunch\bitcoinmining\LpBitcoinIdent.cs'; inbox = 'LpBitcoinIdent.cs' },
+    @{ rel = 'lifepunchaddons\scripts\Intake-BitcoinMinerSounds.ps1'; inbox = 'Intake-BitcoinMinerSounds.ps1' },
+    @{ rel = 'lifepunchaddons\Code\Addons\lifepunch\bitcoinmining\docs\BITCOINMINING_PLAYTEST.md'; inbox = 'BITCOINMINING_PLAYTEST.md' },
+    @{ rel = 'lifepunchaddons\docs\briefs\BITCOINMINING_PROTECTION_CHECKLIST.md'; inbox = 'BITCOINMINING_PROTECTION_CHECKLIST.md' },
+    @{ rel = 'lifepunchaddons\docs\briefs\CORNERMAN_WORK_QUEUE.md'; inbox = 'CORNERMAN_WORK_QUEUE.md' },
     @{ rel = 'lifepunch\docs\handoff\cornerman-outbox\to-cornerman-bitcoinmining-sounds.txt'; inbox = 'to-cornerman-bitcoinmining-sounds.txt' }
 )
 

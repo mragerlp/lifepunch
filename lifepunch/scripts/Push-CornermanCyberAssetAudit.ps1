@@ -5,16 +5,16 @@ $RepoRoot = (Resolve-Path (Join-Path $Here '..\..')).Path
 . (Join-Path $Here 'Cornerman-Workflow.ps1')
 
 $files = @(
-    @{ rel = 'lifepunch\addons\docs\briefs\CORNERMAN_CYBER_ASSET_AUDIT_TASK.md'; inbox = 'CORNERMAN_CYBER_ASSET_AUDIT_TASK.md' },
+    @{ rel = 'lifepunchaddons\docs\briefs\CORNERMAN_CYBER_ASSET_AUDIT_TASK.md'; inbox = 'CORNERMAN_CYBER_ASSET_AUDIT_TASK.md' },
     @{ rel = 'lifepunch\docs\handoff\cornerman-outbox\CYBER_ASSET_AUDIT_2026-06-11.md'; inbox = 'CYBER_ASSET_AUDIT_2026-06-11.md' },
     @{ rel = 'lifepunch\docs\handoff\cornerman-outbox\MODELDOC_CHECKLIST_CYBER_2026-06-11.md'; inbox = 'MODELDOC_CHECKLIST_CYBER_2026-06-11.md' },
     @{ rel = 'lifepunch\docs\handoff\cornerman-outbox\PROTECTION_GREP_CYBER_2026-06-11.md'; inbox = 'PROTECTION_GREP_CYBER_2026-06-11.md' },
     @{ rel = 'lifepunch\docs\handoff\cornerman-outbox\PUBLISH_STAGING_DRYRUN_2026-06-11.md'; inbox = 'PUBLISH_STAGING_DRYRUN_2026-06-11.md' },
     @{ rel = 'lifepunch\docs\handoff\cornerman-outbox\to-cornerman-cyber-asset-audit.txt'; inbox = 'to-cornerman-cyber-asset-audit.txt' },
-    @{ rel = 'lifepunch\addons\Assets\addons\lifepunch\bitcoinmining\ASSET_INVENTORY.md'; inbox = 'BITCOINMINING_ASSET_INVENTORY.md' },
-    @{ rel = 'lifepunch\addons\docs\ASSET_INTAKE_CYBER_ECOSYSTEM.md'; inbox = 'ASSET_INTAKE_CYBER_ECOSYSTEM.md' },
-    @{ rel = 'lifepunch\addons\docs\LIFEPUNCH_CYBER_ECOSYSTEM.md'; inbox = 'LIFEPUNCH_CYBER_ECOSYSTEM.md' },
-    @{ rel = 'lifepunch\addons\docs\briefs\CORNERMAN_WORK_QUEUE.md'; inbox = 'CORNERMAN_WORK_QUEUE.md' }
+    @{ rel = 'lifepunchaddons\Assets\addons\lifepunch\bitcoinmining\ASSET_INVENTORY.md'; inbox = 'BITCOINMINING_ASSET_INVENTORY.md' },
+    @{ rel = 'lifepunchaddons\docs\ASSET_INTAKE_CYBER_ECOSYSTEM.md'; inbox = 'ASSET_INTAKE_CYBER_ECOSYSTEM.md' },
+    @{ rel = 'lifepunchaddons\docs\LIFEPUNCH_CYBER_ECOSYSTEM.md'; inbox = 'LIFEPUNCH_CYBER_ECOSYSTEM.md' },
+    @{ rel = 'lifepunchaddons\docs\briefs\CORNERMAN_WORK_QUEUE.md'; inbox = 'CORNERMAN_WORK_QUEUE.md' }
 )
 
 foreach ($f in $files) {

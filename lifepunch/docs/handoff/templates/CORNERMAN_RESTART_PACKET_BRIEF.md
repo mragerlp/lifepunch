@@ -29,8 +29,8 @@ If dirty or cannot fast-forward: **stop and report**. Do not clean/reset/stash u
 
 ## Step 2 — Read canon (current repo versions)
 
-- `lifepunch/addons/docs/ACTIVE_WORKSTREAM.md`
-- `lifepunch/addons/docs/<LANE>_SHIP_ROADMAP.md` (or equivalent)
+- `lifepunchaddons/docs/ACTIVE_WORKSTREAM.md`
+- `lifepunchaddons/docs/<LANE>_SHIP_ROADMAP.md` (or equivalent)
 - `lifepunch/docs/handoff/ARCHITECT_CURRENT_STATE.md`
 - Relevant `lifepunch/docs/DECISIONS/DECISION-####*.md`
 - Lane-specific pattern/taxonomy docs

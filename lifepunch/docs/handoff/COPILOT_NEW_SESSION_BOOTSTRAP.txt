@@ -7,7 +7,7 @@ Open GitHub Copilot on VENGEANCE. Cornerman (Green B) executes heavy work — pu
 ══════════════════════════════════════════════════════════════════════════════
 STEP 0 — SYNC (before reading or editing)
 ══════════════════════════════════════════════════════════════════════════════
-  cd C:\Users\jared\Projects\lifepunchdxrp
+  cd C:\Users\jared\Projects\lifepunch
   git fetch; git checkout checkpoint-lpbitcoin-pre-sleep-20260701; git pull --rebase
 If behind AND dirty: STOP — tell Bloodwave (commit or stash first).
 If Cornerman shipped work: Pull-CornermanPatches.ps1 -Push before new orchestration.
@@ -15,9 +15,9 @@ If Cornerman shipped work: Pull-CornermanPatches.ps1 -Push before new orchestrat
 ══════════════════════════════════════════════════════════════════════════════
 STEP 1 — READ ORDER (law — agent executes, do not skip)
 ══════════════════════════════════════════════════════════════════════════════
-  1. lifepunch/addons/docs/ACTIVE_WORKSTREAM.md
-  2. lifepunch/addons/docs/BITCOIN_SHIP_ROADMAP.md
-  3. lifepunch/addons/docs/OWNER_PROGRESS_TRACKER.txt
+  1. lifepunchaddons/docs/ACTIVE_WORKSTREAM.md
+  2. lifepunchaddons/docs/BITCOIN_SHIP_ROADMAP.md
+  3. lifepunchaddons/docs/OWNER_PROGRESS_TRACKER.txt
   4. lifepunch/docs/handoff/ARCHITECT_CURRENT_STATE.md  (dated volatile state)
   5. lifepunch/docs/MACHINE_CAST.md
   6. lifepunch/docs/AGENT_ONBOARDING.md  (your lane section only)
@@ -69,8 +69,8 @@ H4/H5 PLAN (repo-verified — plan complete until GO)
   Fan spin:    PARKED Phase 2 (TECH_DEBT BITCOINMINING-05) — not H4/H5
 
   Code paths (when GO):
-    lifepunch/addons/Code/Addons/lifepunch/lpbitcoin/bitcoinhub/code/components/LpBitcoinHubVisuals.cs
-    lifepunch/addons/Code/Addons/lifepunch/bitcoinmining/LpBitcoinPowerLeds.cs
+    lifepunchaddons/Code/Addons/lifepunch/lpbitcoin/bitcoinhub/code/components/LpBitcoinHubVisuals.cs
+    lifepunchaddons/Code/Addons/lifepunch/bitcoinmining/LpBitcoinPowerLeds.cs
     lpbitcoin/bitcoinhub/assets/sounds/bitcoinminer/ (+ compiled vsnd_c)
     lpbitcoin/bitcoinhub/assets/entities/bitcoinhub.prefab (optional point light)
 
@@ -109,7 +109,7 @@ Bloodwave runs lp_authorize manually. Eyes-covered until bridge connected + scre
 ══════════════════════════════════════════════════════════════════════════════
 COMMIT WORKFLOW (manual — no auto-hook)
 ══════════════════════════════════════════════════════════════════════════════
-  cd C:\Users\jared\Projects\lifepunchdxrp
+  cd C:\Users\jared\Projects\lifepunch
   git add <files>
   git commit -m "<type>(<scope>): <description>"
   git push

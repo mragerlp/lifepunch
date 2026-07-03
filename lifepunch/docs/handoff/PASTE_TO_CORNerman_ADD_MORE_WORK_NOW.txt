@@ -18,7 +18,7 @@ Filename format: YYYY-MM-DD_HHMM_ShortTitle.md
 New work to process:
 
 1. Main new directive:
-lifepunch/addons/docs/briefs/CORNerman_LPWEAPONS_PLATFORM_AUDIT_PREP.md
+lifepunchaddons/docs/briefs/CORNerman_LPWEAPONS_PLATFORM_AUDIT_PREP.md
 
 This covers:
 - Current state of the weapon platform law
@@ -31,7 +31,7 @@ This covers:
 - Donor visual rules for weapons
 
 2. Additional supporting brief:
-lifepunch/addons/docs/briefs/CORNerman_LIFEPUNCHULX_AND_SHARED_PATTERNS_PREP.md
+lifepunchaddons/docs/briefs/CORNerman_LIFEPUNCHULX_AND_SHARED_PATTERNS_PREP.md
 
 This covers:
 - lifepunchulx (admin menu) current state and opportunities

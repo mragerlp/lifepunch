@@ -10,7 +10,7 @@ NOT the problem: CS8669/CS8603 nullable warnings in console — ignore.
 
 Workflow:
 1. git pull --rebase (read-only clone: patch-handoff to VENGEANCE if needed)
-2. powershell -File lifepunch\addons\scripts\Validate-SboxRazorScss.ps1
+2. powershell -File lifepunchaddons\scripts\Validate-SboxRazorScss.ps1
    (currently flags: hackerjob\HackerTerminal.razor.scss gradients x3 — bitcoin SCSS clean)
 3. Fix all validator hits + any new log "not valid with" lines
 4. Sync-LifePunchAddonsToDxrp.ps1 -Addon bitcoinmining then hackerjob
@@ -21,6 +21,6 @@ Workflow:
 Red push to Green inbox (run once on VENGEANCE before owner leaves):
   powershell -File lifepunch\scripts\Push-CornermanMenuUiFix.ps1
 
-SCSS law (canonical): lifepunch\addons\docs\SBOX_RAZOR_SCSS_RULES.md
+SCSS law (canonical): lifepunchaddons\docs\SBOX_RAZOR_SCSS_RULES.md
 
 Do not commit unless owner asks. Green without Cursor: audit + WarmCoder SCSS drafts to outbox only.

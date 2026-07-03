@@ -5,10 +5,10 @@ $RepoRoot = (Resolve-Path (Join-Path $Here '..\..')).Path
 . (Join-Path $Here 'Cornerman-Workflow.ps1')
 
 $files = @(
-    'lifepunch\addons\docs\briefs\CORNERMAN_COKE_DRUG_INTAKE_TASK.md',
-    'lifepunch\addons\docs\COKE_DRUG_RESKIN_SPEC.md',
-    'lifepunch\addons\Assets\addons\lifepunch\advanceddrugprocessing\ASSET_INVENTORY.md',
-    'lifepunch\addons\Assets\addons\lifepunch\advanceddrugprocessing\COKE_LINE_MAP.md'
+    'lifepunchaddons\docs\briefs\CORNERMAN_COKE_DRUG_INTAKE_TASK.md',
+    'lifepunchaddons\docs\COKE_DRUG_RESKIN_SPEC.md',
+    'lifepunchaddons\Assets\addons\lifepunch\advanceddrugprocessing\ASSET_INVENTORY.md',
+    'lifepunchaddons\Assets\addons\lifepunch\advanceddrugprocessing\COKE_LINE_MAP.md'
 )
 
 foreach ($rel in $files) {

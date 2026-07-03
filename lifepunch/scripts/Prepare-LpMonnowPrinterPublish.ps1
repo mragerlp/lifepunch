@@ -19,7 +19,7 @@ $ErrorActionPreference = 'Stop'
 $SourceRoot = Join-Path $MonnowRoot "Monnow's Printer Addon\LifePunch"
 
 $RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
-$UploadRoot = Join-Path $RepoRoot 'lifepunch\addons\.dxrp-publish\upload'
+$UploadRoot = Join-Path $RepoRoot 'lifepunchaddons\.dxrp-publish\upload'
 
 $AssetsSource = Join-Path $SourceRoot 'assets\monnowprinterlp'
 $CodeSource = Join-Path $SourceRoot 'code\monnowprinterlp'
@@ -130,7 +130,7 @@ Rev 2 failure mode (fixed by this layout):
   - GetPrefab() failed - money charged, nothing spawned
 "@
 
-$PublishRoot = Join-Path $RepoRoot 'lifepunch\addons\.dxrp-publish'
+$PublishRoot = Join-Path $RepoRoot 'lifepunchaddons\.dxrp-publish'
 Set-Content -LiteralPath (Join-Path $PublishRoot 'README-monnow-printer.txt') -Value $Readme -Encoding UTF8
 
 Write-Host 'Prepared lpmonnowsprinterupgrade publish staging.' -ForegroundColor Green

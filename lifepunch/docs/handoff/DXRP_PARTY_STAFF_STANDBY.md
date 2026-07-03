@@ -41,7 +41,7 @@ On return we run **one vanilla session** proving **both** surfaces below.
 ## Launch recipe (Red)
 
 ```powershell
-cd C:\Users\jared\Projects\lifepunchdxrp
+cd C:\Users\jared\Projects\lifepunch
 # Party overlay from dxrp-public working tree:
 Copy-Item C:\Users\jared\Projects\dxrp\game\Code\UI\HUD\Components\PartyMenu.* `
   D:\Steam\steamapps\common\sbox\dxrp-vanilla\game\Code\UI\HUD\Components\ -Force

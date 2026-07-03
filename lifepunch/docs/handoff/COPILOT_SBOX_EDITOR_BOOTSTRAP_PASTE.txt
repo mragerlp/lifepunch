@@ -32,7 +32,7 @@ One WRITER per file. git pull --rebase before picking up handoff.
 REPO LAW — AUTO-LOADED (no manual paste each session)
 ══════════════════════════════════════════════════════════════════════════════
 Open workspace ROOT in VS Code:
-  C:\Users\jared\Projects\lifepunchdxrp
+  C:\Users\jared\Projects\lifepunch
 
 Copilot loads ALL repo law automatically from:
   .github/instructions/*.instructions.md  (applyTo: "**")
@@ -54,9 +54,9 @@ THREE PATHS — DO NOT COLLAPSE
 ══════════════════════════════════════════════════════════════════════════════
 
 1) SHIP LANE (LifePunch monorepo — edit + commit here)
-   C:\Users\jared\Projects\lifepunchdxrp
-   Code:  lifepunch/addons/Code/Addons/lifepunch/...
-   Assets: lifepunch/addons/Assets/addons/lifepunch/lpbitcoin/{bitcoinhub,hashdterminal,gpurack}
+   C:\Users\jared\Projects\lifepunch
+   Code:  lifepunchaddons/Code/Addons/lifepunch/...
+   Assets: lifepunchaddons/Assets/addons/lifepunch/lpbitcoin/{bitcoinhub,hashdterminal,gpurack}
    Proprietary header on every new .cs / .razor / .scss
    Author: mragerlp <mragerlp@gmail.com> · NO AI commit trailers
 
@@ -115,9 +115,9 @@ DECISION-0010: Universal Upgrades in LpHashdPanel (HUB·TERMINAL·GPU RACK tabs)
 Terminal NEVER MINES
 
 Read first:
-  lifepunch/addons/docs/ACTIVE_WORKSTREAM.md
-  lifepunch/addons/docs/BITCOIN_SHIP_ROADMAP.md
-  lifepunch/addons/docs/CYBER_REFERENCE_LAWS.md
+  lifepunchaddons/docs/ACTIVE_WORKSTREAM.md
+  lifepunchaddons/docs/BITCOIN_SHIP_ROADMAP.md
+  lifepunchaddons/docs/CYBER_REFERENCE_LAWS.md
 
 Proof = flatgrass host play (day/night/USE/citizen/30s clip) — hand to Cursor for bridge proof when needed.
 
@@ -144,17 +144,17 @@ Dev ConCmds (playtest only — not Law 10 ship proof):
 KEY FILES (lpbitcoin)
 ══════════════════════════════════════════════════════════════════════════════
 Hub entity/UI:
-  lifepunch/addons/Code/Addons/lifepunch/lpbitcoin/bitcoinhub/code/components/LpBitcoinHubEntity.cs
-  lifepunch/addons/Code/Addons/lifepunch/lpbitcoin/bitcoinhub/code/ui/LpHashdPanel.razor (+ .scss)
-  lifepunch/addons/Assets/addons/lifepunch/lpbitcoin/bitcoinhub/assets/entities/bitcoinhub.prefab
+  lifepunchaddons/Code/Addons/lifepunch/lpbitcoin/bitcoinhub/code/components/LpBitcoinHubEntity.cs
+  lifepunchaddons/Code/Addons/lifepunch/lpbitcoin/bitcoinhub/code/ui/LpHashdPanel.razor (+ .scss)
+  lifepunchaddons/Assets/addons/lifepunch/lpbitcoin/bitcoinhub/assets/entities/bitcoinhub.prefab
 Terminal:
-  lifepunch/addons/Code/Addons/lifepunch/bitcoinmining/LpBitcoinTerminalEntity.cs
-  lifepunch/addons/Assets/addons/lifepunch/lpbitcoin/hashdterminal/assets/entities/hashdterminal.prefab
-  lifepunch/addons/Assets/addons/lifepunch/lpbitcoin/hashdterminal/assets/models/hashdterminal.vmdl
+  lifepunchaddons/Code/Addons/lifepunch/bitcoinmining/LpBitcoinTerminalEntity.cs
+  lifepunchaddons/Assets/addons/lifepunch/lpbitcoin/hashdterminal/assets/entities/hashdterminal.prefab
+  lifepunchaddons/Assets/addons/lifepunch/lpbitcoin/hashdterminal/assets/models/hashdterminal.vmdl
 Spawn/dev:
-  lifepunch/addons/Code/Addons/lifepunch/lpbitcoin/bitcoinhub/code/components/LpBitcoinDevSpawn.cs
+  lifepunchaddons/Code/Addons/lifepunch/lpbitcoin/bitcoinhub/code/components/LpBitcoinDevSpawn.cs
 USE gates:
-  lifepunch/addons/Code/Addons/lifepunch/LifePunchMenuInteractGate.cs
+  lifepunchaddons/Code/Addons/lifepunch/LifePunchMenuInteractGate.cs
 DXRP reference (patterns):
   D:\Steam\steamapps\common\sbox\dxrp\game\Code\Utilities\GameUtils.cs
   D:\Steam\steamapps\common\sbox\dxrp\game\Code\Addons\...

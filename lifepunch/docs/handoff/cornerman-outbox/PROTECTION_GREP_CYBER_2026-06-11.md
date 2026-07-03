@@ -6,9 +6,9 @@
 
 ```powershell
 rg -i "LIFEPUNCH|lifepunch\.co" `
-  lifepunch/addons/Code/Addons/lifepunch/hackerjob `
-  lifepunch/addons/Code/Addons/lifepunch/bitcoinmining `
-  lifepunch/addons/Code/Addons/lifepunch/governmentdatacenter `
+  lifepunchaddons/Code/Addons/lifepunch/hackerjob `
+  lifepunchaddons/Code/Addons/lifepunch/bitcoinmining `
+  lifepunchaddons/Code/Addons/lifepunch/governmentdatacenter `
   --glob "*.{cs,razor,scss}"
 ```
 
@@ -31,9 +31,9 @@ Get-ChildItem reference -Recurse -Directory -Filter 'third-party-bitcoin-mining-
 
 ```powershell
 rg -i "cloud\.facepunch|packages\.facepunch" `
-  lifepunch/addons/Assets/addons/lifepunch/hackerjob `
-  lifepunch/addons/Assets/addons/lifepunch/bitcoinmining `
-  lifepunch/addons/Assets/addons/lifepunch/governmentdatacenter
+  lifepunchaddons/Assets/addons/lifepunch/hackerjob `
+  lifepunchaddons/Assets/addons/lifepunch/bitcoinmining `
+  lifepunchaddons/Assets/addons/lifepunch/governmentdatacenter
 ```
 
 Run on Green box after pull — expect **zero** hits.

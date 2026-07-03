@@ -57,9 +57,9 @@ Include exact line citations (file + line range) for removed/added blocks.
 
 **Read first:**
 
-- `lifepunch/addons/docs/BITCOIN_UPGRADE_TAXONOMY.md`
-- `lifepunch/addons/docs/DECISIONS/DECISION-0010-Universal-Upgrades-Home.md` (if present)
-- `lifepunch/addons/docs/CYBER_VISUAL_IDENTITY_DOCTRINE.md`
+- `lifepunchaddons/docs/BITCOIN_UPGRADE_TAXONOMY.md`
+- `lifepunchaddons/docs/DECISIONS/DECISION-0010-Universal-Upgrades-Home.md` (if present)
+- `lifepunchaddons/docs/CYBER_VISUAL_IDENTITY_DOCTRINE.md`
 - `LpHashdPanel.razor` — `HubUpgradeTracks`, `TerminalUpgradeTracks`, `GpuRackUpgradeTracks`, tier shell helpers
 
 **Owner tier semantics (record, do not implement):**

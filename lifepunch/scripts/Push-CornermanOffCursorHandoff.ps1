@@ -5,12 +5,12 @@ $RepoRoot = (Resolve-Path (Join-Path $Here '..\..')).Path
 . (Join-Path $Here 'Cornerman-Workflow.ps1')
 
 $files = @(
-    @{ rel = 'lifepunch\addons\docs\briefs\CORNERMAN_INVENTORY_PROJECT_TASK.md'; inbox = 'CORNERMAN_INVENTORY_PROJECT_TASK.md' },
+    @{ rel = 'lifepunchaddons\docs\briefs\CORNERMAN_INVENTORY_PROJECT_TASK.md'; inbox = 'CORNERMAN_INVENTORY_PROJECT_TASK.md' },
     @{ rel = 'lifepunch\docs\CORNERMAN_OFF_CURSOR_HANDOFF.md'; inbox = 'CORNERMAN_OFF_CURSOR_HANDOFF.md' },
     @{ rel = 'lifepunch\docs\CORNERMAN_MODEL_ROUTING.md'; inbox = 'CORNERMAN_MODEL_ROUTING.md' },
-    @{ rel = 'lifepunch\addons\docs\briefs\CORNERMAN_WORK_QUEUE.md'; inbox = 'CORNERMAN_WORK_QUEUE.md' },
-    @{ rel = 'lifepunch\addons\docs\BITCOINMINING_FINISH_RUNBOOK.md'; inbox = 'BITCOINMINING_FINISH_RUNBOOK.md' },
-    @{ rel = 'lifepunch\addons\docs\reference\BITCOINMINING_PORTAL_LISTING.md'; inbox = 'BITCOINMINING_PORTAL_LISTING.md' }
+    @{ rel = 'lifepunchaddons\docs\briefs\CORNERMAN_WORK_QUEUE.md'; inbox = 'CORNERMAN_WORK_QUEUE.md' },
+    @{ rel = 'lifepunchaddons\docs\BITCOINMINING_FINISH_RUNBOOK.md'; inbox = 'BITCOINMINING_FINISH_RUNBOOK.md' },
+    @{ rel = 'lifepunchaddons\docs\reference\BITCOINMINING_PORTAL_LISTING.md'; inbox = 'BITCOINMINING_PORTAL_LISTING.md' }
 )
 
 foreach ($f in $files) {

@@ -8,7 +8,7 @@ You now have more high-value prep to do. lpbitcoin Phase 1 remains the top prior
 
 New directive to process in addition to the previous one:
 
-lifepunch/addons/docs/briefs/CORNerman_LPWEAPONS_PLATFORM_AUDIT_PREP.md
+lifepunchaddons/docs/briefs/CORNerman_LPWEAPONS_PLATFORM_AUDIT_PREP.md
 
 Key points:
 - Use Green Deep the whole time.

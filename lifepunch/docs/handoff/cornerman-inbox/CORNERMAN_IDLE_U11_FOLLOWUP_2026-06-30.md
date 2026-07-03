@@ -45,13 +45,13 @@ Grep + read; for each hit document:
 
 **Seed list (expand via grep):**
 
-- `lifepunch/addons/docs/BITCOIN_UPGRADE_TAXONOMY.md` — Servers purchase path
-- `lifepunch/addons/Code/.../bitcoinmining/docs/BITCOINMINING_PLAYTEST.md` — `upgrade cpu/cores`
-- `lifepunch/addons/Code/.../bitcoinmining/docs/BITCOINMINING_TERMINAL_DOCTRINE.md` — hub RPC upgrades
-- `lifepunch/addons/docs/UPGRADE_TIER_STANDARD.md` — CRT upgrade commands
-- `lifepunch/addons/docs/BITCOIN_DATA_FLOW.md` — Servers upgrade sub-view
-- `lifepunch/addons/docs/reference/BITCOINMINING_REMOTE_RACK_SPEC.md`
-- `lifepunch/addons/docs/briefs/BITCOINMINING_PHASE2_WIREFRAME.md`
+- `lifepunchaddons/docs/BITCOIN_UPGRADE_TAXONOMY.md` — Servers purchase path
+- `lifepunchaddons/Code/.../bitcoinmining/docs/BITCOINMINING_PLAYTEST.md` — `upgrade cpu/cores`
+- `lifepunchaddons/Code/.../bitcoinmining/docs/BITCOINMINING_TERMINAL_DOCTRINE.md` — hub RPC upgrades
+- `lifepunchaddons/docs/UPGRADE_TIER_STANDARD.md` — CRT upgrade commands
+- `lifepunchaddons/docs/BITCOIN_DATA_FLOW.md` — Servers upgrade sub-view
+- `lifepunchaddons/docs/reference/BITCOINMINING_REMOTE_RACK_SPEC.md`
+- `lifepunchaddons/docs/briefs/BITCOINMINING_PHASE2_WIREFRAME.md`
 - `lifepunch/docs/handoff/cornerman-outbox/LPBITCOIN_RESTART_PACKET_2026-06-29_1035.md` — pre-U1 state (mark historical)
 
 **Do not edit repo files.** Bloodwave runs GO DOCS pass after U1.1 Codex PASS.

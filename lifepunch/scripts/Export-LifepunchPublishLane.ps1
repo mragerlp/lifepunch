@@ -3,7 +3,7 @@
   Export active portfolio addons from core monorepo to LIFEPUNCH publish lane repo.
 
 .DESCRIPTION
-  Reads lifepunch/addons/config/portfolio.json publishReadyAddons (fallback: activeAddons).
+  Reads lifepunchaddons/config/portfolio.json publishReadyAddons (fallback: activeAddons).
   Copies ship-ready Assets + Code (same filters as prepare-publish.ps1).
   Writes slim addons.json + SYNC_FROM.md.
 
@@ -20,7 +20,7 @@ param(
 
 $ErrorActionPreference = 'Stop'
 $RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
-$AddonsRoot = Join-Path $RepoRoot 'lifepunch\addons'
+$AddonsRoot = Join-Path $RepoRoot 'lifepunchaddons'
 $PortfolioPath = Join-Path $AddonsRoot 'config\portfolio.json'
 $ManifestPath = Join-Path $AddonsRoot 'config\addons.json'
 $ScaffoldRoot = Join-Path $RepoRoot 'lifepunch\publish-lane\scaffold'

@@ -3,5 +3,5 @@
   "projectPath": "D:/Steam/steamapps/common/sbox/dxrp/game/rp.sbproj",
   "serverToken": "",
   "api": "production",
-  "_notes": "Start-SboxDxrpEditor.ps1 mirrors lifepunch/addons -> dxrp/game, then opens rp.sbproj normally. Portal API: +authorize at launch (-WithAuthorize), or lp_authorize <token> after host play. authorize is NOT a runtime console command."
+  "_notes": "Start-SboxDxrpEditor.ps1 mirrors lifepunchaddons -> dxrp/game, then opens rp.sbproj normally. Portal API: +authorize at launch (-WithAuthorize), or lp_authorize <token> after host play. authorize is NOT a runtime console command."
 }

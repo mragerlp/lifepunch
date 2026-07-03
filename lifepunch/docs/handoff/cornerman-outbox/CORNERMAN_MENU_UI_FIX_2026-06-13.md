@@ -30,7 +30,7 @@
 **Grep before ship:**
 
 ```powershell
-rg -n "box-sizing|display:\s*(block|none)|max-height:\s*none|linear-gradient|word-break" lifepunch/addons/Code/Addons/lifepunch/bitcoinmining lifepunch/addons/Code/Addons/lifepunch/hackerjob --glob *.scss
+rg -n "box-sizing|display:\s*(block|none)|max-height:\s*none|linear-gradient|word-break" lifepunchaddons/Code/Addons/lifepunch/bitcoinmining lifepunchaddons/Code/Addons/lifepunch/hackerjob --glob *.scss
 ```
 
 **Known still-bad (hacker CRT, not hub menu):** `HackerTerminal.razor.scss` lines ~118–129 — gradients.
@@ -93,7 +93,7 @@ powershell -File lifepunch\scripts\Sync-LifePunchAddonsToDxrp.ps1 -Addon hackerj
 
 ### 4. Document s&box SCSS rules (30m)
 
-Add short section to `lifepunch/addons/docs/BITCOINMINING_PLAYTEST.md` § log triage — **forbidden SCSS** list (table above). Prevents repeat.
+Add short section to `lifepunchaddons/docs/BITCOINMINING_PLAYTEST.md` § log triage — **forbidden SCSS** list (table above). Prevents repeat.
 
 ### 5. Optional — assets (only if menus green)
 

@@ -14,7 +14,7 @@ ROLE — RED (orchestrator + runtime truth)
 ══════════════════════════════════════════════════════════════════════════════
 STEP 0 — SYNC
 ══════════════════════════════════════════════════════════════════════════════
-  cd C:\Users\jared\Projects\lifepunchdxrp
+  cd C:\Users\jared\Projects\lifepunch
   git fetch origin
   git checkout develop
   git pull --rebase origin develop
@@ -40,7 +40,7 @@ STEP 2 — READ ORDER
 ══════════════════════════════════════════════════════════════════════════════
   1. lifepunch/docs/GREEN_EXECUTION_MODEL.md
   2. lifepunch/docs/MACHINE_CAST.md
-  3. lifepunch/addons/docs/ACTIVE_WORKSTREAM.md
+  3. lifepunchaddons/docs/ACTIVE_WORKSTREAM.md
   4. lifepunch/docs/handoff/ARCHITECT_CURRENT_STATE.md
   5. .cursor/rules (alwaysApply)
 

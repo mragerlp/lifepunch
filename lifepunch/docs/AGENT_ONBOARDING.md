@@ -72,7 +72,7 @@ Bloodwave paused **hub/feature implementation** until monorepo structure is sign
 | 1 | `lifepunch/docs/REPO_DOMAIN_MAP.md` | Folder → domain → GitLab lane |
 | 2 | `lifepunch/docs/RESTRUCTURE_ROADMAP.md` | Phased plan; one slice per session |
 | 3 | `lifepunch/docs/CONFIG_SOURCE_OF_TRUTH.md` | Which config file is law |
-| 4 | `lifepunch/addons/_QUARANTINE_INDEX.md` | Active vs quarantined idents |
+| 4 | `lifepunchaddons/_QUARANTINE_INDEX.md` | Active vs quarantined idents |
 
 Product canon (`ACTIVE_WORKSTREAM`, quarantine, Bitcoin design) still applies — do not ship or extend quarantined lanes. Resume hub slices only after restructure sign-off in the roadmap.
 
@@ -153,9 +153,9 @@ Hub Opus queue (one slice per Phase 2): collision validation → power state →
 
 **Manifests (read every addons session):**
 
-- `lifepunch/addons/config/portfolio.json` — `activeAddons` (in-scope dev) · `publishReadyAddons` (export set)
-- `lifepunch/addons/config/packages.json` — **packageSlug** law (`lifepunchulx`, `lifepunchbitcoin`, …)
-- `lifepunch/addons/docs/PACKAGE_NAMING_STANDARD.md` — public branch + s&box ident naming
+- `lifepunchaddons/config/portfolio.json` — `activeAddons` (in-scope dev) · `publishReadyAddons` (export set)
+- `lifepunchaddons/config/packages.json` — **packageSlug** law (`lifepunchulx`, `lifepunchbitcoin`, …)
+- `lifepunchaddons/docs/PACKAGE_NAMING_STANDARD.md` — public branch + s&box ident naming
 
 **Workflow:**
 
@@ -190,14 +190,14 @@ Everything in `portfolio.json` → `quarantinedAddons` is **frozen on disk** —
 
 **Promotion (owner-only):** name ident → move to `activeAddons` in `portfolio.json` → remove `<Compile Remove>` in `addons.csproj` → ChatGPT Step 1 brief if new UX.
 
-Register + reasons: `lifepunch/addons/docs/QUARANTINE_REGISTER.md`. Ideation gate: `WORKFLOW_IDEATION_FIRST.md`.
+Register + reasons: `lifepunchaddons/docs/QUARANTINE_REGISTER.md`. Ideation gate: `WORKFLOW_IDEATION_FIRST.md`.
 
 ## Repos — know where you are
 
 ### 1. GitHub monorepo → THE SOURCE OF TRUTH
 
 **`https://github.com/mragerlp/lifepunch`** (private monorepo). Live local checkout:
-`C:\Users\jared\Projects\lifepunchdxrp`. Holds all lanes — `lifepunch/addons/`, `website/`,
+`C:\Users\jared\Projects\lifepunchdxrp`. Holds all lanes — `lifepunchaddons/`, `website/`,
 `server/`, `portal/`, `gamemode/`, `admin-panel/`, `.cursor/rules`, `docs/`, `legal/`, etc.
 **Owner does all design/build integration here.** Git `origin` is always this repo.
 (Do **not** use any OneDrive clone — removed June 2026 as a git-corruption risk.)
@@ -212,7 +212,7 @@ partner commits on GitLab integrate back into GitHub. Full map:
 | GitLab project | Lane | Primary agent |
 |----------------|------|---------------|
 | `lifepunch-foundation` | rules, docs, legal | All read |
-| `lifepunch-addons` | `lifepunch/addons/**` | Owner |
+| `lifepunch-addons` | `lifepunchaddons/**` | Owner |
 | `lifepunch-website` | `lifepunch/website/**` | **shottaWEB** |
 | `lifepunch-rdp-server` | server, portal, gamemode, ops | **RDP server agent** |
 
@@ -267,7 +267,7 @@ agents work. See **Publish addons** + `PUBLISH_REPO_LANE.md` + `GIT_CHECKPOINTS.
   unmaintainable, non-modular code with tangled interdependencies and unpredictable control
   flow. Keep solutions modular/swappable, use the engine's systems as designed, prefer the
   fully-owned solution, no dead/orphan assets. Don't present an interim baseline as the
-  polished endgame; track genuinely-temporary work in `lifepunch/addons/docs/TECH_DEBT.md`.
+  polished endgame; track genuinely-temporary work in `lifepunchaddons/docs/TECH_DEBT.md`.
 - **dxrp-addon-foundation** — folder lane + validators; `addons.json` is source of truth.
   Also mandates the **proprietary header on every source file** (`.cs`/`.razor`/`.scss`): every
   file opens with the `PROPRIETARY & CONFIDENTIAL — © 2026 lifepunch.co` block (name slot filled
@@ -288,7 +288,7 @@ agents work. See **Publish addons** + `PUBLISH_REPO_LANE.md` + `GIT_CHECKPOINTS.
   `--force-with-lease`. Upstream lane detail: `lifepunch/docs/DXRP_CONTRIBUTOR_LANE.md`.
 
 Also read `lifepunch/docs/WORKSPACE_STRUCTURE.md` and `lifepunch/docs/GITLAB_ORGANIZATION.md`.
-**s&box engine:** `lifepunch/addons/docs/SBOX_ENGINE_PATCHES.md` — run `lifepunch/scripts/Get-SboxEnginePatchStatus.ps1` each session.
+**s&box engine:** `lifepunchaddons/docs/SBOX_ENGINE_PATCHES.md` — run `lifepunch/scripts/Get-SboxEnginePatchStatus.ps1` each session.
 **LPDXRP** = LifePunch DXRP (shorthand). **VIP (OG)** / **EVIP (OG)** = early donors at first addon launch — `lifepunch/docs/LPDXRP_OG_SUPPORTERS.md`.
 Don't fork parallel grounding/docs — update the existing single source of truth.
 
@@ -383,7 +383,7 @@ The `lifepunch-operating-context` rule is law here; this is the orientation. We 
 
 - **Digital machines, not props** — every entity = Model → Collision → Physics → Attachments →
   Lights → Animation → Sound → State → Gameplay. Mesh is P0 only. Canon:
-  `lifepunch/addons/docs/LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md` + **lifepunch-digital-machine** rule.
+  `lifepunchaddons/docs/LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md` + **lifepunch-digital-machine** rule.
 - **ModelDoc Studio** — standalone `modeldoc.sbproj` for mesh work without DXRP gamemode load:
   `MODELDOC_STUDIO_LANE.md` · `Start-SboxModelDocStudio.ps1`.
 - **Package staging** — Fab intake under `lp{package}/{entity}/assets|code` (not legacy `_modeldoc/game/`):
@@ -400,7 +400,7 @@ The `lifepunch-operating-context` rule is law here; this is the orientation. We 
 
 **DXRP** (Dxura) = gamemode platform for community servers. **LIFEPUNCH** = our proprietary addon brand on top — unique content vs other DXRP hosts.
 
-**Canonical:** `lifepunch/addons/docs/DXRP_ADDON_PUBLISH_DOCTRINE.md`
+**Canonical:** `lifepunchaddons/docs/DXRP_ADDON_PUBLISH_DOCTRINE.md`
 
 Quick rules:
 
@@ -424,7 +424,7 @@ Quick rules:
 - Addons must ship compiled `_c` files (the dedicated server doesn't compile). Servers enforce
   `RestrictCloudOrg="facepunch"` → assets must be **self-contained**, never cloud-referenced.
 - Publish staging: `scripts/prepare-publish.ps1 -Addon <ident>`. Validate:
-  `scripts/validate-workspace.ps1` (root) and `lifepunch/addons/scripts/validate-layout.ps1`.
+  `scripts/validate-workspace.ps1` (root) and `lifepunchaddons/scripts/validate-layout.ps1`.
 - Don't publish a portal revision just to test a prefab offset — iterate locally first.
 
 ## Current direction (June 2026)
@@ -511,7 +511,7 @@ Quick rules:
   an SSH deploy key (clone + grounding verified). The RDP/server lane is core to Cornerman's security
   posture ("0 leaky pipes"). Its official prompt is Block C in `AGENT_PROMPT.md`.
 
-**Open tracked items (see `lifepunch/addons/docs/TECH_DEBT.md`):**
+**Open tracked items (see `lifepunchaddons/docs/TECH_DEBT.md`):**
 - **STAFF-09** — `StaffMenuTestBots.cs` (dev-only test helper) is in `namespace Dxura.RP.Game;`
   (should move to a LifePunch namespace). It is now **excluded from publish staging**
   (`prepare-publish` skips `*TestBots.cs` / `*DevGive.cs` / `_dev/`), so it no longer blocks shipping;

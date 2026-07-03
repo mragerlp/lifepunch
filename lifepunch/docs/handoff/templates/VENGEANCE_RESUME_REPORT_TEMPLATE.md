@@ -2,7 +2,7 @@
 
 **Owner:** Bloodwave  
 **Role:** Integration Architect on VENGEANCE  
-**Repo:** `C:\Users\jared\Projects\lifepunchdxrp`  
+**Repo:** `C:\Users\jared\Projects\lifepunch`  
 **Mode:** report first — **no implementation until Bloodwave GO**
 
 ---
@@ -10,7 +10,7 @@
 ## Step 1 — Sync
 
 ```powershell
-cd C:\Users\jared\Projects\lifepunchdxrp
+cd C:\Users\jared\Projects\lifepunch
 git fetch
 git pull --rebase
 git status -sb

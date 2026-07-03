@@ -13,7 +13,7 @@ $Inbox  = 'C:\lifepunch\cornerman\inbox'
 $OutRag = 'C:\Projects\cornerman-rag\outbox'
 $OutLp  = 'C:\lifepunch\cornerman\outbox'
 $Repo   = 'C:\Projects\lifepunch'
-$Assets = Join-Path $Repo 'lifepunch\addons\Assets\addons\lifepunch'
+$Assets = Join-Path $Repo 'lifepunchaddons\Assets\addons\lifepunch'
 
 New-Item -ItemType Directory -Force -Path $OutRag, $OutLp | Out-Null
 

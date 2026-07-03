@@ -5,11 +5,11 @@ $RepoRoot = (Resolve-Path (Join-Path $Here '..\..')).Path
 . (Join-Path $Here 'Cornerman-Workflow.ps1')
 
 $files = @(
-    'lifepunch\addons\docs\briefs\CORNERMAN_BITCOINMINING_TERMINAL_TASK.md',
-    'lifepunch\addons\docs\BITCOINMINING_UX_SPEC.md',
-    'lifepunch\addons\docs\briefs\BITCOINMINING_ENTITY_BRIEF.md',
-    'lifepunch\addons\Code\Addons\lifepunch\bitcoinmining\docs\RUNTIME_PATTERN.md',
-    'lifepunch\addons\Code\Addons\lifepunch\bitcoinmining\BitcoinMiningAddon.cs'
+    'lifepunchaddons\docs\briefs\CORNERMAN_BITCOINMINING_TERMINAL_TASK.md',
+    'lifepunchaddons\docs\BITCOINMINING_UX_SPEC.md',
+    'lifepunchaddons\docs\briefs\BITCOINMINING_ENTITY_BRIEF.md',
+    'lifepunchaddons\Code\Addons\lifepunch\bitcoinmining\docs\RUNTIME_PATTERN.md',
+    'lifepunchaddons\Code\Addons\lifepunch\bitcoinmining\BitcoinMiningAddon.cs'
 )
 
 foreach ($rel in $files) {
@@ -30,11 +30,11 @@ $directive = @{
     summary     = 'LIFEPUNCH hashd terminal; open via hashd/mine commands; menu command stubs Phase 2. IP: BITCOINMINING_IP_DOCTRINE.md'
     primaryDoc  = 'CORNERMAN_BITCOINMINING_TERMINAL_TASK.md'
     reference   = @(
-        'lifepunch/addons/docs/BITCOINMINING_IP_DOCTRINE.md'
-        'lifepunch/addons/Code/Addons/lifepunch/adminmenu/StaffMenuHost.cs'
+        'lifepunchaddons/docs/BITCOINMINING_IP_DOCTRINE.md'
+        'lifepunchaddons/Code/Addons/lifepunch/adminmenu/StaffMenuHost.cs'
     )
     validation  = @(
-        'lifepunch/addons/scripts/validate-layout.ps1'
+        'lifepunchaddons/scripts/validate-layout.ps1'
     )
     commitScope = 'feat(bitcoinmining): Cornerman CLI terminal + hashd command gate (Phase 1)'
     opusReview  = $true

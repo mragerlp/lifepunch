@@ -3,7 +3,7 @@
   Mirror LifePunch addon source from the monorepo into the local DXRP game project.
 
 .DESCRIPTION
-  Repo is source of truth (lifepunch/addons). DXRP editor reads:
+  Repo is source of truth (lifepunchaddons). DXRP editor reads:
     <dxrp-game>/Assets/addons/lifepunch/<ident>/
     <dxrp-game>/Code/Addons/lifepunch/<ident>/
 

@@ -5,7 +5,7 @@ $Here = $PSScriptRoot
 $RepoRoot = (Resolve-Path (Join-Path $Here '..\..')).Path
 . (Join-Path $Here 'Cornerman-Workflow.ps1')
 
-$brief = 'lifepunch\addons\docs\briefs\CORNERMAN_LIFEPUNCH_UI_UPGRADE_PATTERN_DISTILL.md'
+$brief = 'lifepunchaddons\docs\briefs\CORNERMAN_LIFEPUNCH_UI_UPGRADE_PATTERN_DISTILL.md'
 $src = Join-Path $RepoRoot $brief
 if ( -not ( Test-Path -LiteralPath $src ) ) { throw "Missing $src" }
 

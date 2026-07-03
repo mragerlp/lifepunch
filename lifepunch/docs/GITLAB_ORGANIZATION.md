@@ -7,7 +7,7 @@
 
 **`https://github.com/mragerlp/lifepunch`** — the private **monorepo** on GitHub.
 
-- Holds all lanes: `lifepunch/addons/`, `lifepunch/website/`, `lifepunch/server/`, `.cursor/rules`,
+- Holds all lanes: `lifepunchaddons/`, `lifepunch/website/`, `lifepunch/server/`, `.cursor/rules`,
   `lifepunch/docs/`, everything.
 - Primary PC checkout: `C:\Users\jared\Projects\lifepunchdxrp`
 - Git `origin` stays GitHub. Always `git pull --rebase` + `git push` to `origin`.
@@ -35,7 +35,7 @@ Namespace: **`gitlab.com/mragerlp`**
 | Project slug | URL | Monorepo paths | Primary agent |
 |--------------|-----|----------------|---------------|
 | `lifepunch-foundation` | `https://gitlab.com/mragerlp/lifepunch-foundation` | `.cursor/rules`, `lifepunch/docs`, `lifepunch/legal`, `lifepunch/marketing`, `lifepunch/branding`, `lifepunch/config`, `lifepunch/templates`, `scripts/`, `README.md` | All read; owner writes (via GitHub monorepo) |
-| `lifepunch-addons` | `https://gitlab.com/mragerlp/lifepunch-addons` | `lifepunch/addons/**` | Owner |
+| `lifepunch-addons` | `https://gitlab.com/mragerlp/lifepunch-addons` | `lifepunchaddons/**` | Owner |
 | `lifepunch-website` | `https://gitlab.com/mragerlp/lifepunch-website` | `lifepunch/website/**` | **shottaWEB** |
 | `lifepunch-rdp-server` | `https://gitlab.com/mragerlp/lifepunch-rdp-server` | `lifepunch/server`, `portal`, `gamemode`, `maps`, `admin-panel`, `economy`, `audit`, `players`, `discord`, `webhooks`, `API` | **RDP server agent** |
 

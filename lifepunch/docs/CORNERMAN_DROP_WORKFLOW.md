@@ -103,7 +103,7 @@ powershell -File Pull-CornermanGreenfieldSweep.ps1   # template — extend file 
 
 ## Inbox brief template (every drop)
 
-Save as `lifepunch/addons/docs/briefs/CORNERMAN_<TASK>.md` or push directly to inbox.
+Save as `lifepunchaddons/docs/briefs/CORNERMAN_<TASK>.md` or push directly to inbox.
 
 ```markdown
 # CORNERMAN — <one-line task>
@@ -117,7 +117,7 @@ Save as `lifepunch/addons/docs/briefs/CORNERMAN_<TASK>.md` or push directly to i
 - **Owner gate:** DECISION-#### if canon locked
 
 ## Inputs
-- `lifepunch/addons/docs/...`
+- `lifepunchaddons/docs/...`
 - `lifepunch/docs/DECISIONS/...`
 
 ## Output (write to outbox)

@@ -195,4 +195,4 @@ When `ACTIVE_WORKSTREAM.md` moves to a new package (e.g. `lifepunchulx`, future 
 | `lifepunch/docs/handoff/templates/CODEX_LANE_PLAN_PASTE.md` | Codex plan builder skeleton |
 | `lifepunch/docs/CORNERMAN_DROP_WORKFLOW.md` | Daily drop loop + MonorepoPull |
 | `lifepunch/docs/DXRP_CONTRIBUTOR_LANE.md` | Upstream fork separation |
-| `lifepunch/addons/docs/ACTIVE_WORKSTREAM.md` | Single active production gate |
+| `lifepunchaddons/docs/ACTIVE_WORKSTREAM.md` | Single active production gate |

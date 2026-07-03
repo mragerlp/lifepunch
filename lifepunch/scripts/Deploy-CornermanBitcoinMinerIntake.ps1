@@ -19,7 +19,7 @@ param(
 $ErrorActionPreference = 'Stop'
 $Here = if ($PSScriptRoot) { $PSScriptRoot } else { Split-Path -Parent $MyInvocation.MyCommand.Path }
 $RepoRoot = (Resolve-Path (Join-Path $Here '..\..')).Path
-$AddonsRoot = Join-Path $RepoRoot 'lifepunch\addons'
+$AddonsRoot = Join-Path $RepoRoot 'lifepunchaddons'
 $ReorganizeScript = Join-Path $AddonsRoot 'scripts\Reorganize-BitcoinMinerGpuRack.ps1'
 $ArchiveRoot = 'C:\lifepunch\reference-intake\bitcoinmining\gpu-rack-export'
 $GreenIntake = 'C:\lifepunch\reference-intake\bitcoinmining\gpu-rack-export'

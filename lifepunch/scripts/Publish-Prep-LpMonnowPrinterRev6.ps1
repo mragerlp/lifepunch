@@ -13,13 +13,13 @@ $SourceRoot = Join-Path $MonnowRoot "Monnow's Printer Addon\LifePunch"
 $PrepareScript = Join-Path $Here 'Prepare-LpMonnowPrinterPublish.ps1'
 $SyncScript = Join-Path $Here 'Sync-LpMonnowPrinterToDxrp.ps1'
 $RepoRoot = (Resolve-Path (Join-Path $Here '..')).Path
-if (Test-Path -LiteralPath (Join-Path $RepoRoot 'lifepunch\addons')) {
+if (Test-Path -LiteralPath (Join-Path $RepoRoot 'lifepunchaddons')) {
     $MonorepoRoot = $RepoRoot
 } else {
     $MonorepoRoot = (Resolve-Path (Join-Path $Here '..\..')).Path
 }
-$UploadRoot = Join-Path $MonorepoRoot 'lifepunch\addons\.dxrp-publish\upload'
-$DesktopPublish = Join-Path ([Environment]::GetFolderPath('Desktop')) "lifepunch\addons\publish\lpmonnowsprinterupgrade-rev$RevisionNumber"
+$UploadRoot = Join-Path $MonorepoRoot 'lifepunchaddons\.dxrp-publish\upload'
+$DesktopPublish = Join-Path ([Environment]::GetFolderPath('Desktop')) "lifepunchaddons\publish\lpmonnowsprinterupgrade-rev$RevisionNumber"
 
 $configPath = Join-Path $Here 'dxrp-editor.local.json'
 $dxrpGame = $null

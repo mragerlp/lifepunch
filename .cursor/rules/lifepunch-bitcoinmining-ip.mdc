@@ -1,17 +1,17 @@
 ---
 description: LIFEPUNCH Bitcoin Miner IP — original work, no third-party credits
 globs:
-  - lifepunch/addons/Code/Addons/lifepunch/bitcoinmining/**
-  - lifepunch/addons/Assets/addons/lifepunch/bitcoinmining/**
-  - lifepunch/addons/docs/BITCOINMINING*.md
-  - lifepunch/addons/docs/briefs/BITCOINMINING*.md
-  - lifepunch/addons/config/addons.json
+  - lifepunchaddons/Code/Addons/lifepunch/bitcoinmining/**
+  - lifepunchaddons/Assets/addons/lifepunch/bitcoinmining/**
+  - lifepunchaddons/docs/BITCOINMINING*.md
+  - lifepunchaddons/docs/briefs/BITCOINMINING*.md
+  - lifepunchaddons/config/addons.json
 alwaysApply: false
 ---
 
 # LIFEPUNCH Bitcoin Miner — IP (agents)
 
-Canonical: `lifepunch/addons/docs/BITCOINMINING_IP_DOCTRINE.md`
+Canonical: `lifepunchaddons/docs/BITCOINMINING_IP_DOCTRINE.md`
 
 ## Non-negotiable
 

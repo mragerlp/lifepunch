@@ -5,7 +5,7 @@ Paste this directly to Cornerman:
 Cornerman — change how you deliver reports for the rest of this run (and going forward).
 
 1. Pull latest so you have the new structure:
-cd C:\Users\jared\Projects\lifepunchdxrp
+cd C:\Users\jared\Projects\lifepunch
 git pull --rebase
 
 2. All reports from now on must use the standard template:

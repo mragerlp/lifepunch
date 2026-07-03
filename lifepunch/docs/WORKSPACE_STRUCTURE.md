@@ -54,9 +54,9 @@ Promote files into this repo only after they are cleaned, named, reviewed, and r
 Use this folder for package source:
 
 ```text
-lifepunch/addons/Assets/addons/lifepunch/<ident>/
-lifepunch/addons/Code/Addons/lifepunch/<ident>/
-lifepunch/addons/config/addons.json
+lifepunchaddons/Assets/addons/lifepunch/<ident>/
+lifepunchaddons/Code/Addons/lifepunch/<ident>/
+lifepunchaddons/config/addons.json
 ```
 
 This is where AK47, Hacker Job entities, and future LifePunch addon packages are built.
@@ -139,9 +139,9 @@ Raw credentials and secrets for these areas belong in `lifepunch/secure`.
 Do not mix these responsibilities:
 
 - Addon assets/code do not belong in `lifepunch/gamemode`, `lifepunch/server`, `lifepunch/portal`, or `lifepunch/admin-panel`.
-- Gamemode exports do not belong in `lifepunch/addons`.
+- Gamemode exports do not belong in `lifepunchaddons`.
 - Server records do not belong in `lifepunch/gamemode`.
-- Map source does not belong in `lifepunch/addons`, `lifepunch/gamemode`, or `lifepunch/server`.
+- Map source does not belong in `lifepunchaddons`, `lifepunch/gamemode`, or `lifepunch/server`.
 - Player private data and raw economy exports should not be stored in tracked docs.
 - Audit records should summarize evidence without exposing secrets or unnecessary private player data.
 - Website, Discord, webhook, and API secrets do not belong in tracked docs. Use `lifepunch/secure`.

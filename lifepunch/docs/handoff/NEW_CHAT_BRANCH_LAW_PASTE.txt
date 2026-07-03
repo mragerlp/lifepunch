@@ -5,7 +5,7 @@ Updated: 2026-07-03 · Canon: lifepunch/docs/BRANCH_MODEL.md
 REPO + CLONE
 ══════════════════════════════════════════════════════════════════════════════
   GitHub: github.com/mragerlp/lifepunch
-  Red clone: C:\Users\jared\Projects\lifepunchdxrp
+  Red clone: C:\Users\jared\Projects\lifepunch
   DXRP fork (separate): C:\Users\jared\Projects\dxrp — never mix IP
 
 ══════════════════════════════════════════════════════════════════════════════
@@ -23,7 +23,7 @@ BRANCH LAW (memorize)
 ══════════════════════════════════════════════════════════════════════════════
 STEP 0 — SYNC (every session)
 ══════════════════════════════════════════════════════════════════════════════
-  cd C:\Users\jared\Projects\lifepunchdxrp
+  cd C:\Users\jared\Projects\lifepunch
   git fetch origin
   git checkout develop
   git pull --rebase origin develop
@@ -44,7 +44,7 @@ THEN READ (do not skip)
 ══════════════════════════════════════════════════════════════════════════════
   1. lifepunch/docs/CVL_AGENT_ONBOARDING.md (full one-paste)
   2. lifepunch/docs/MACHINE_CAST.md
-  3. lifepunch/addons/docs/ACTIVE_WORKSTREAM.md
+  3. lifepunchaddons/docs/ACTIVE_WORKSTREAM.md
   4. .cursor/rules
   5. handoff/ARCHITECT_CURRENT_STATE.md
 

@@ -7,7 +7,7 @@ Copy everything below and send it to Cornerman before you log off and shut down 
 Cornerman — long unattended run starting now. Use Green Deep the entire time.
 
 1. Pull latest:
-cd C:\Users\jared\Projects\lifepunchdxrp
+cd C:\Users\jared\Projects\lifepunch
 git fetch
 git pull --rebase
 
@@ -37,13 +37,13 @@ Generation settings:
 3. Work for this run (interleave as needed):
 
 A. Main long directive:
-lifepunch/addons/docs/briefs/CORNerman_LPADONS_FULL_ECOSYSTEM_PREP_UNTIL_1130PM.md
+lifepunchaddons/docs/briefs/CORNerman_LPADONS_FULL_ECOSYSTEM_PREP_UNTIL_1130PM.md
 
 B. Weapons platform audit + prep:
-lifepunch/addons/docs/briefs/CORNerman_LPWEAPONS_PLATFORM_AUDIT_PREP.md
+lifepunchaddons/docs/briefs/CORNerman_LPWEAPONS_PLATFORM_AUDIT_PREP.md
 
 C. ULX + shared patterns across addons:
-lifepunch/addons/docs/briefs/CORNerman_LIFEPUNCHULX_AND_SHARED_PATTERNS_PREP.md
+lifepunchaddons/docs/briefs/CORNerman_LIFEPUNCHULX_AND_SHARED_PATTERNS_PREP.md
 
 4. Report rules (strict — Architect correction):
 
@@ -59,11 +59,11 @@ lifepunch/addons/docs/briefs/CORNerman_LIFEPUNCHULX_AND_SHARED_PATTERNS_PREP.md
 - Filename: YYYY-MM-DD_HHMM_ShortTitle.md
 
 5. Execution order (sequential, fresh session per major directive):
-   A. lifepunch/addons/docs/briefs/CORNerman_LPADONS_FULL_ECOSYSTEM_PREP_UNTIL_1130PM.md
+   A. lifepunchaddons/docs/briefs/CORNerman_LPADONS_FULL_ECOSYSTEM_PREP_UNTIL_1130PM.md
    Then start a **fresh** Green Deep session/context for:
-   B. lifepunch/addons/docs/briefs/CORNerman_LPWEAPONS_PLATFORM_AUDIT_PREP.md
+   B. lifepunchaddons/docs/briefs/CORNerman_LPWEAPONS_PLATFORM_AUDIT_PREP.md
    Then fresh again for:
-   C. lifepunch/addons/docs/briefs/CORNerman_LIFEPUNCHULX_AND_SHARED_PATTERNS_PREP.md
+   C. lifepunchaddons/docs/briefs/CORNerman_LIFEPUNCHULX_AND_SHARED_PATTERNS_PREP.md
 
 6. When you finish or hit ~11:30 PM EST, send exactly this completion signal:
 

@@ -5,7 +5,7 @@ Cornerman — long unattended run. Use Green Deep the entire time.
 IMPORTANT: Follow the corrected report delivery rules below exactly.
 
 1. Pull latest:
-cd C:\Users\jared\Projects\lifepunchdxrp
+cd C:\Users\jared\Projects\lifepunch
 git fetch
 git pull --rebase
 
@@ -35,13 +35,13 @@ Generation settings (set in LM Studio model defaults or per request):
 3. Work for this run — execute **sequentially** (A then B then C). Start a fresh model session/context for each major directive.
 
 A. Main long directive:
-lifepunch/addons/docs/briefs/CORNerman_LPADONS_FULL_ECOSYSTEM_PREP_UNTIL_1130PM.md
+lifepunchaddons/docs/briefs/CORNerman_LPADONS_FULL_ECOSYSTEM_PREP_UNTIL_1130PM.md
 
 B. Weapons platform audit + prep:
-lifepunch/addons/docs/briefs/CORNerman_LPWEAPONS_PLATFORM_AUDIT_PREP.md
+lifepunchaddons/docs/briefs/CORNerman_LPWEAPONS_PLATFORM_AUDIT_PREP.md
 
 C. ULX + shared patterns across addons:
-lifepunch/addons/docs/briefs/CORNerman_LIFEPUNCHULX_AND_SHARED_PATTERNS_PREP.md
+lifepunchaddons/docs/briefs/CORNerman_LIFEPUNCHULX_AND_SHARED_PATTERNS_PREP.md
 
 4. Report rules (mandatory):
 

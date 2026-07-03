@@ -3,8 +3,8 @@ $ErrorActionPreference = 'Stop'
 $Here = $PSScriptRoot
 $RepoRoot = (Resolve-Path (Join-Path $Here '..\..')).Path
 $roots = @(
-    (Join-Path $RepoRoot 'lifepunch\addons\Assets\addons\lifepunch'),
-    (Join-Path $RepoRoot 'lifepunch\addons\Code\Addons\lifepunch')
+    (Join-Path $RepoRoot 'lifepunchaddons\Assets\addons\lifepunch'),
+    (Join-Path $RepoRoot 'lifepunchaddons\Code\Addons\lifepunch')
 )
 $rows = @()
 foreach ($root in $roots) {

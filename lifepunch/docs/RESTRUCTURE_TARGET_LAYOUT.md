@@ -47,10 +47,10 @@ github.com/mragerlp/lifepunch          ← canonical monorepo (always)
 **Every shippable package** uses parent folder:
 
 ```text
-lifepunch/addons/lp{product}/          # lpbitcoin, lphacker, lpbanker, lifepunchulx, …
+lifepunchaddons/lp{product}/          # lpbitcoin, lphacker, lpbanker, lifepunchulx, …
 ```
 
-Not `lifepunch/addons/packages/lp*/`. Not legacy `Code/.../repoIdent/` alone.
+Not `lifepunchaddons/packages/lp*/`. Not legacy `Code/.../repoIdent/` alone.
 
 **Public names (lpbitcoin example):** `packageSlug` **`lifepunchbitcoin`** · s&box **`lifepunch.bitcoin`** · entity slugs **`bitcoinhub`**, **`hashdterminal`**, **`gpurack`**.
 
@@ -59,7 +59,7 @@ Not `lifepunch/addons/packages/lp*/`. Not legacy `Code/.../repoIdent/` alone.
 Standalone s&box addon project **inside the monorepo**, publishable to DXRP portal and exportable to `lifepunch-published`:
 
 ```text
-lifepunch/addons/lpbitcoin/
+lifepunchaddons/lpbitcoin/
 ├── bitcoin.sbproj                              # Ident: lifepunch.bitcoin · ParentPackage: dxura.rp
 ├── bitcoin.slnx                                # Optional; mirror addons.slnx pattern
 ├── Code/
@@ -99,8 +99,8 @@ Your sketch listed `LpBitcoinHubEntity.cs` directly under `Addons/lifepunch/lpbi
 
 | Area | Today | Target |
 |------|-------|--------|
-| Package root | Single `lifepunch/addons/addons.sbproj` + split Code/Assets trees | **`lifepunch/addons/lpbitcoin/`** full package root + `bitcoin.sbproj` |
-| Docs | Split `bitcoinmining/docs/` + entity NAV | `lifepunch/addons/lpbitcoin/docs/` |
+| Package root | Single `lifepunchaddons/addons.sbproj` + split Code/Assets trees | **`lifepunchaddons/lpbitcoin/`** full package root + `bitcoin.sbproj` |
+| Docs | Split `bitcoinmining/docs/` + entity NAV | `lifepunchaddons/lpbitcoin/docs/` |
 
 ---
 
@@ -122,7 +122,7 @@ Your sketch listed `LpBitcoinHubEntity.cs` directly under `Addons/lifepunch/lpbi
 
 ### Phase 6 — Extract `bitcoin.sbproj`
 
-1. Create `lifepunch/addons/lpbitcoin/bitcoin.sbproj` from `addons.sbproj` + `modeldoc.sbproj` patterns
+1. Create `lifepunchaddons/lpbitcoin/bitcoin.sbproj` from `addons.sbproj` + `modeldoc.sbproj` patterns
 2. Point DXRP editor Bitcoin-only lane at new project
 3. Monolithic `addons.sbproj` retains `adminmenu` (+ dev tools) until next package extracts
 
@@ -130,10 +130,10 @@ Your sketch listed `LpBitcoinHubEntity.cs` directly under `Addons/lifepunch/lpbi
 
 ---
 
-## 5. What stays in monorepo `lifepunch/addons/` after Phase 6
+## 5. What stays in monorepo `lifepunchaddons/` after Phase 6
 
 ```text
-lifepunch/addons/
+lifepunchaddons/
 ├── addons.sbproj              # Dev umbrella: adminmenu + _dev until ULX extracted
 ├── lpbitcoin/                 # lifepunch.bitcoin — standalone (Phase 6)
 ├── lifepunchulx/              # future Phase 6 sibling (from adminmenu)
@@ -141,7 +141,7 @@ lifepunch/addons/
 └── …                          # transitional Code/Assets trees until Phase 4 completes
 ```
 
-Registry JSON stays at **`lifepunch/addons/config/`** — not duplicated inside each package.
+Registry JSON stays at **`lifepunchaddons/config/`** — not duplicated inside each package.
 
 ---
 

@@ -5,7 +5,7 @@ Owner approval: Yes — commit 19a2726 (model routing) + ffa29df (visual doctrin
 
 Key new files (include these in the next ZIP):
 - lifepunch/docs/MODEL_ROUTING_AMENDMENT_GROK_BUILD_1.md
-- lifepunch/addons/docs/CYBER_VISUAL_IDENTITY_DOCTRINE.md
+- lifepunchaddons/docs/CYBER_VISUAL_IDENTITY_DOCTRINE.md
 
 Summary for new agents:
 

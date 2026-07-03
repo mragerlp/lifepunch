@@ -6,7 +6,7 @@ Goal:
 - Keep all output as draft (no push)
 
 Scope anchor:
-- Target addon UI now: lifepunch/addons/Code/Addons/lifepunch/adminmenu/StaffMenu.razor + StaffMenu.razor.scss
+- Target addon UI now: lifepunchaddons/Code/Addons/lifepunch/adminmenu/StaffMenu.razor + StaffMenu.razor.scss
 - Reference language: DXRP PartyMenu + TabMenu + UI tokens
 - Approved design direction: accent #7170e6, include sidebar refactor, keep ops window 1160x700
 

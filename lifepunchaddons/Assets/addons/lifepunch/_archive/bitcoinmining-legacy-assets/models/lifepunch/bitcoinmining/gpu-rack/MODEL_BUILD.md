@@ -1,0 +1,221 @@
+# GPU rack — world model (Bitcoin Miner entity)
+
+Two names, two jobs:
+
+| Layer | Name | Repo slug | Ships |
+|-------|------|-----------|-------|
+| **Entity** | Bitcoin Miner | `bitcoin-miner` | prefab, code, sounds, terminal UI |
+| **World mesh** | GPU rack | `gpu-rack` | this folder → `gpu-rack.vmdl` |
+
+No underscores in ship slugs (`gpu-rack`, not `gpu_rack` or `GPU_Farm`).
+
+## Owner drop + intake
+
+```powershell
+powershell -File lifepunchaddons/scripts/Reorganize-BitcoinMinerGpuRack.ps1
+```
+
+**Drop:** `OneDrive\Desktop\LIFEPUNCH*\addons\gpurack` (Fab crypto farm pack)
+
+## Ship tree (publish)
+
+```text
+models/lifepunch/bitcoinmining/gpu-rack/
+  source/
+    gpu-rack-static.obj          ← primary ModelDoc import
+    gpu-rack-anim.fbx            ← optional rack fan motion
+    gpu-rack-stacked-anim.fbx    ← optional stacked variant
+  textures/
+    cord/        OBJ usemtl Cord       (Wires_Cord)
+    psu/         OBJ usemtl PSU        (PSU_Power)
+    rack/        OBJ usemtl Rack       (frame + 5 fan boxes + blades)
+    motherboard/ OBJ usemtl Motherboard (Motherboard_Base)
+    gpu/         OBJ usemtl GPU        (graphics card + 6 card fans)
+  materials/
+    gpu-rack-cord.vmat
+    gpu-rack-psu.vmat
+    gpu-rack-rack.vmat
+    gpu-rack-motherboard.vmat
+    gpu-rack-gpu.vmat
+  gpu-rack.vmdl                  ← compile output
+  material-map.json              ← Blender object → slot → textures
+```
+
+```text
+entities/bitcoin-miner/bitcoin-miner.prefab   ← points at gpu-rack.vmdl
+sounds/bitcoin-miner/                         ← hum, keyboard, etc.
+```
+
+## Why one vmdl, five materials
+
+The OBJ is **one assembled rack** (21 Blender objects) collapsed into **5 material slots**:
+
+1. **Cord** — cable harness only  
+2. **PSU** — power supply block  
+3. **Rack** — steel frame + all rack cooling fans (shared PBR set)  
+4. **Motherboard** — board  
+5. **GPU** — graphics cards + per-card fans (emission map for LED glow)
+
+Do **not** split into separate vmdls per fan — fans are part of the rack assembly.
+
+## Materials quick reference (ModelDoc)
+
+**You only create 5 `.vmat` files** — not one per PNG. The OBJ already groups 21 parts into 5 slots (`Cord`, `PSU`, `Rack`, `Motherboard`, `GPU`).
+
+| # | ModelDoc material slot (from OBJ) | `.vmat` to create | Base color | Normal | AO | Metal | Rough | Extra |
+|---|-----------------------------------|-------------------|------------|--------|----|-------|-------|-------|
+| 1 | **Cord** | `materials/gpu-rack-cord.vmat` | `textures/cord/Wires_Cord_BaseColor.png` | — | `Wires_AO.png` | `Wires_Cord_Metallic.png` | `Wires_Cord_Roughness.png` | |
+| 2 | **PSU** | `materials/gpu-rack-psu.vmat` | `textures/psu/PSU_BaseColor.png` | `PSU_Normal_GL.png` | `PSU_AO.png` | `PSU_Metallic.png` | `PSU_Roughness.png` | |
+| 3 | **Rack** | `materials/gpu-rack-rack.vmat` | `textures/rack/Rack_BaseColor.png` | `Rack_Normal_GL.png` | `Rack_AO.png` | `Rack_Metallic.png` | `Rack_Roughness.png` | frame + 5 fan boxes + blades |
+| 4 | **Motherboard** | `materials/gpu-rack-motherboard.vmat` | `textures/motherboard/Motherboard_BaseColor.png` | `Motherboard_Normal_GL.png` | `MotherB_AO.png` | `Motherboard_Metallic.png` | `Motherboard_Roughness.png` | |
+| 5 | **GPU** | `materials/gpu-rack-gpu.vmat` | `textures/gpu/GPU_BaseColor.png` | `GPU_Normal_GL.png` | `GPU_AO.png` | `GPU_Metallic.png` | `GPU_Roughness.png` | **`GPU_Emission.png`** (mining glow) |
+
+**Ignore in ModelDoc (duplicates / wrong convention):**
+
+- `*_Normal_DX.png` — use the matching `*_Normal_GL.png` (OpenGL normals for s&box).
+- Extra PNGs not listed above — already folded into the five PBR sets.
+
+**ModelDoc order:**
+
+1. Import `source/gpu-rack-static.obj`.
+2. Confirm five material slots appear (Cord, PSU, Rack, Motherboard, GPU).
+3. For each slot, create the `.vmat` in `materials/` and assign textures from the table.
+4. Compile `gpu-rack.vmdl`.
+
+**World orientation:** standing **open-frame crypto mining rig** (Sketchfab [Crypto Farm / Mining Rig](https://sketchfab.com/3d-models/crypto-farm-mining-rig-049f02ffd15c41ca8cb8020feb43993f) — same asset family as `gpu-rack-anim.fbx`). **Single and stacked racks share the same ModelDoc axis treatment:** `import_rotation = [ 0, 90, 0 ]`, align **Center / Center / Bottom**, prefab root **`1,1,1`**.
+
+| Variant | `import_scale` | `import_translation` Z | Notes |
+|---------|----------------|------------------------|-------|
+| **gpu-rack** | **0.395** | **21.382** | Bridge tune Jun 2026 — lifts mesh bottom toward ground |
+| **gpu-rack-stacked** | **0.72** | **27.682** | ~1.8× single import scale (two-tier); was 0.85 — oversized |
+
+## Prefab collider (match DXRP printer + bitcoin-miner hub)
+
+**Problem (Jun 2026):** hand-authored `BoxCollider` used tall **Z** half-extents while the mesh is **Y-rotated** in ModelDoc → players walked through the visible frame; feet clipped into flatgrass.
+
+**Fix:** drive collider from **`Model.Bounds`** (same as DXRP `Prop.Modify` + `gameplay/entities/printer/printer.prefab`):
+
+| Reference | BoxCollider Center | BoxCollider Scale |
+|-----------|-------------------|-------------------|
+| **DXRP printer** | `0, 0, 0` | `35, 35, 10` |
+| **bitcoin-miner hub** | `0, 0, 14` | `32, 20, 28` |
+| **gpu-rack / stacked** | **`model.Bounds.Center`** | **`model.Bounds.Size`** |
+
+**Runtime (host):** `LifePunchPropPhysics.SetupPhysicalProp` — sync box from vmdl + ground-align mesh feet.
+
+**Editor bake (optional):** host play → `lp_bitcoin_scale_audit` → copy `LIFEPUNCH_PROP_PHYSICS` `modelBounds center/size` into prefab JSON → recompile prefab.
+
+Canonical JSON: `material-map.json` in this folder.
+
+## Rigged fan animation (required for power_on)
+
+The shipped `gpu-rack-anim.fbx` has **mesh only** (no armature) → ModelDoc reports `bones=0`.
+Run the headless Blender rig export (same pattern as hub `Export-BitcoinMinerSteamMachineFbx.ps1`):
+
+```powershell
+powershell -File lifepunchaddons\scripts\Export-GpuRackAnimFbx.ps1
+```
+
+Then point both vmdls at `*-rigged.fbx` (mesh **RenderMeshFile** + animation **AnimFile** nodes can share the same FBX path).
+
+### ModelDoc: Simple Animation nodes (one per take)
+
+ModelDoc is node-based — mesh, materials, physics, and animations are **separate nodes**. Animations are **not** auto-imported with the mesh.
+
+1. Open `gpu-rack.vmdl` (or `gpu-rack-stacked.vmdl`) in ModelDoc.
+2. Under **AnimationList**, use **Add Simple Animations** (★ star next to ➕ Add, or right-click AnimationList).
+3. Pick `source/gpu-rack-anim-rigged.fbx` (or `gpu-rack-stacked-anim-rigged.fbx`).
+4. ModelDoc creates one **`AnimFile`** node per FBX take. **Repeat the star-add for every take** — do not copy/paste one node for all clips.
+5. On each node, set **Take** in the properties dropdown (top of node inspector). Our rigged exports:
+   | vmdl | Sequence name | Take index | FBX action |
+   |------|---------------|------------|------------|
+   | `gpu-rack.vmdl` | `power_on` | **0** | `power_on` |
+   | `gpu-rack.vmdl` | `GPU_Farm_Final` | **1** | alias of `power_on` |
+   | `gpu-rack-stacked.vmdl` | `power_on` | **0** | `power_on` |
+   | `gpu-rack-stacked.vmdl` | `Mining_Rig_Stacked` | **1** | alias of `power_on` |
+6. Keep **AnimBindPose** (`bindPose`). Set fan clips **looping**. Archetype = **Animated Model** (`model_archetype = "animated_model"`).
+7. Compile → `Pull-DxrpCompiledAssetsToRepo.ps1 -Addon bitcoinmining`.
+
+**Runtime (Jun 2026):** code holds `bindPose` and spins fan bones in C# — it does **not** play `power_on` on the live mesh (that sequence mis-rotates hull bones). Sequences still need to compile so `bones>0` and audit passes.
+
+Owner `.blend` (if present): `GPU_Farm_Final.blend` — pass as `-GpuRackSource` only when re-exporting from Blender; default input is the existing anim FBX.
+
+## Archive (do not upload)
+
+```text
+C:/lifepunch/reference-intake/bitcoinmining/gpu-rack-export/
+```
+
+Raw export keeps Blender names (`GPU_Farm_Static.obj`, `GPU_GraphicsCard/`, etc.).
+
+## Reorganize after a fresh export
+
+```powershell
+powershell -File lifepunchaddons/scripts/Reorganize-BitcoinMinerGpuRack.ps1 -SourceRoot "C:\path\to\export"
+```
+
+## Editor project (required — not `addons.sbproj`)
+
+ModelDoc, prefab wiring, play-test, and `PayHost` economy all need the **DXRP game project**
+with the **server API token** applied. The standalone LifePunch `addons.sbproj` compiles
+`LIFEPUNCH_LOCAL` stubs only — no real DXRP data, entities, or portal sync.
+
+**Launch (VENGEANCE):**
+
+```powershell
+powershell -File lifepunch/scripts/Start-SboxDxrpEditor.ps1
+```
+
+Uses `lifepunch/scripts/dxrp-editor.local.json` → `rp.sbproj` (normal open). Paste `authorize <token>` in console when portal data is needed.
+Wait until compile finishes; host play → **Start Hosting** → Play.
+
+**Work path in DXRP install** (typical):
+
+```text
+D:/Steam/steamapps/common/sbox/dxrp/game/
+  Assets/addons/lifepunch/bitcoinmining/   ← must match repo tree
+  Code/Addons/lifepunch/bitcoinmining/
+```
+
+Repo source of truth: `lifepunchaddons/` in the monorepo. **Before ModelDoc**, mirror into DXRP:
+
+```powershell
+powershell -File lifepunch/scripts/Sync-LifePunchAddonsToDxrp.ps1
+# or launch editor (syncs bitcoinmining by default):
+powershell -File lifepunch/scripts/Start-SboxDxrpEditor.ps1
+```
+
+After editor work, sync compiled outputs (`gpu-rack.vmdl`, `_c`, vmats, prefab) **back into the monorepo** paths above.
+
+See `lifepunchaddons/docs/SBOX_EDITOR_REFERENCE.md` §0–1.
+
+## Power animation (on / off)
+
+Rack fans and card LEDs **only run while mining** — idle when powered off.
+
+| Sequence | When | Source |
+|----------|------|--------|
+| `power_on` | `IsMining == true` | Loop from `source/gpu-rack-anim.fbx` (FBX stack `GPU_Farm_Final`, take 0) |
+| `power_off` | `IsMining == false` | `bindPose` (single take in source FBX) |
+
+`gpu-rack-stacked.vmdl` uses `source/gpu-rack-stacked-anim.fbx` — FBX stack **`Mining_Rig_Stacked`** (take 0). Same `power_on` / `bindPose` contract as small rack.
+
+**Code:** `LpBitcoinRackEntity` + `LpBitcoinPowerAnim.ApplyRackPower` switch vmdl sequence on `IsMining` (replaces legacy child-fan spin when compiled `_c` exposes sequences — see `TECH_DEBT` BITCOINMINING-01).
+
+## Terminal prop (separate from rack vmdl)
+
+**Intaked:** `models/.../bitcoin-terminal/` (`computer.fbx` → `bitcoin-terminal.vmdl`).  
+Re-run: `addons/scripts/Intake-BitcoinTerminalAssets.ps1`  
+Archive: `C:/lifepunch/reference-intake/bitcoinmining/bitcoin-terminal-export/`
+
+Razor UI ships under `Code/Addons/lifepunch/bitcoinmining/` — author in Downloads `bitcointerminal/` lane.
+
+## ModelDoc checklist (inside DXRP project)
+
+1. Asset Browser → **Project scope "DXRP"** → `addons/lifepunch/bitcoinmining/models/.../gpu-rack/`.
+2. Import `source/gpu-rack-static.obj` in ModelDoc.
+3. **Render mesh** from `source/gpu-rack-anim-rigged.fbx` (stacked: `gpu-rack-stacked-anim-rigged.fbx`). **Animations:** star-add **one Simple Animation node per take** (see § Rigged fan animation); set Take dropdown per table; do not duplicate one node with `take=0` for every name.
+4. Create five vmats per `material-map.json` (GPU slot uses emission).
+5. Compile `gpu-rack.vmdl` in this folder; recompile after external edits.
+6. Prefab `entities/bitcoin-miner/bitcoin-miner.prefab` — tune scale vs citizen; wire anim driver to `GpuRackEntity`.
+7. Play-test: `mining start` → rack anim + hum; `mining stop` → power down.

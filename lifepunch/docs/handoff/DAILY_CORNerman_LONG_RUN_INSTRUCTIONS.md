@@ -13,7 +13,7 @@ Use this process every day you want Cornerman to run long prep (e.g. the next 3 
 Run these steps in order:
 
 ```powershell
-cd C:\Users\jared\Projects\lifepunchdxrp
+cd C:\Users\jared\Projects\lifepunch
 git fetch
 git pull --rebase
 ```
@@ -38,9 +38,9 @@ Set generation defaults in LM Studio for the model (or send per request):
 
 Point Cornerman at the current active directive(s). As of 2026-06-25 these are the main ones:
 
-- `lifepunch/addons/docs/briefs/CORNerman_LPADONS_FULL_ECOSYSTEM_PREP_UNTIL_1130PM.md` (main long directive)
-- `lifepunch/addons/docs/briefs/CORNerman_LPWEAPONS_PLATFORM_AUDIT_PREP.md`
-- `lifepunch/addons/docs/briefs/CORNerman_LIFEPUNCHULX_AND_SHARED_PATTERNS_PREP.md`
+- `lifepunchaddons/docs/briefs/CORNerman_LPADONS_FULL_ECOSYSTEM_PREP_UNTIL_1130PM.md` (main long directive)
+- `lifepunchaddons/docs/briefs/CORNerman_LPWEAPONS_PLATFORM_AUDIT_PREP.md`
+- `lifepunchaddons/docs/briefs/CORNerman_LIFEPUNCHULX_AND_SHARED_PATTERNS_PREP.md`
 
 ## Report Rules (always)
 
@@ -69,7 +69,7 @@ no-commit
 1. RDP into VENGEANCE.
 2. Open a terminal and run:
    ```powershell
-   cd C:\Users\jared\Projects\lifepunchdxrp
+   cd C:\Users\jared\Projects\lifepunch
    git pull --rebase
    ```
 3. Go to `lifepunch/docs/reports/`

@@ -5,19 +5,37 @@
 
 When docs or scripts disagree, **this file wins** for desk clone paths on VENGEANCE.
 
+Full in-repo trees: **`LIFEPUNCH_REPO_LAYOUT.md`**.
+
 ---
 
 ## Clone layout (`C:\Users\jared\Projects\`)
 
 | Lane | Path | Remote | Purpose |
 |------|------|--------|---------|
-| **LifePunch monorepo** (addons, ops, docs, scripts) | `C:\Users\jared\Projects\lifepunchdxrp` | `github.com/mragerlp/lifepunch` | Private LIFEPUNCH™ ship lane — commit here |
-| **DXRP fork** (public upstream / Dimmer / party / bounty) | `C:\Users\jared\Projects\dxrp` | `origin` → `mragerlp/dxrp-public`, `upstream` → `dxura/dxrp` | Vanilla DXRP only — no LifePunch IP |
+| **LifePunch monorepo** | `C:\Users\jared\Projects\lifepunch` | `github.com/mragerlp/lifepunch` | Private LIFEPUNCH™ ship lane — commit here |
+| **DXRP fork (nested)** | `{monorepo}\lifepunchdxrp` | `mragerlp/dxrp-public` + `upstream` → `dxura/dxrp` | Editor testing mount — **not** a sibling Projects folder |
 | **Publish export** (optional) | `C:\Users\jared\Projects\lifepunch-published` | GitLab publish lane | Export output — not the edit root |
 
-**Do not** use a separate `dxrp-public` folder — the fork lives at **`dxrp`**.
+**Retired as Projects roots:** `lifepunchaddons`, `lifepunchdxrp` (sibling clone name).  
+**Product addons** live at **`lifepunchaddons/`** inside the monorepo.
 
-**Do not** use `C:\Users\jared\Projects\lifepunch` — renamed to **`lifepunchdxrp`** (July 2026).
+Bootstrap nested DXRP + Projects alignment:
+
+```powershell
+cd C:\Users\jared\Projects\lifepunch
+powershell -File lifepunch\scripts\Setup-LifepunchProjectsLayout.ps1
+```
+
+---
+
+## In-repo layout (monorepo root)
+
+```text
+lifepunch/           # ops — docs, scripts, server, platform
+lifepunchaddons/     # product — lpbitcoin, lphacker, … (develop=test · main=publish-ready)
+lifepunchdxrp/       # nested DXRP fork (ignored by monorepo git)
+```
 
 ---
 
@@ -34,26 +52,22 @@ When docs or scripts disagree, **this file wins** for desk clone paths on VENGEA
 
 | Machine | Monorepo root |
 |---------|----------------|
-| **Cornerman** (Green B) | `C:\Projects\lifepunch` |
-| **MacBook** (Green A) | `~/Projects/lifepunch` |
-| **lifepunchnet** (Blue) | `C:\lifepunch\lifepunch-rdp-server` (git root) |
-
-Cornerman patch-handoff and deploy keys still target **`C:\Projects\lifepunch`** on Green — not the VENGEANCE folder name.
+| **Cornerman (Green)** | `C:\Projects\lifepunch` |
+| **Architect (Mac)** | `~/Projects/lifepunch` |
+| **lifepunchnet (Blue)** | `C:\lifepunch\lifepunch-rdp-server` (git root) |
 
 ---
 
 ## Archive
 
-Redundant plain upstream clone (dxura-only, no fork branches) was moved to:
-
-`C:\Users\jared\Projects\_archive\dxrp-dxura-upstream-*`
-
-Use **`C:\Users\jared\Projects\dxrp`** (fork with `upstream` remote) for all DXRP git work.
+Redundant plain upstream clone: `C:\Users\jared\Projects\_archive\dxrp-dxura-upstream-*`  
+Legacy sibling DXRP fork `C:\Users\jared\Projects\dxrp` → migrate into `{monorepo}\lifepunchdxrp`.
 
 ---
 
 ## Related docs
 
+- `LIFEPUNCH_REPO_LAYOUT.md` — branch law for lifepunchaddons
 - `MACHINE_CAST.md` — machine codenames
 - `DXRP_CONTRIBUTOR_LANE.md` — two-repo law (monorepo vs dxrp fork)
 - `CONFIG_SOURCE_OF_TRUTH.md` — which config file is law

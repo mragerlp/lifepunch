@@ -5,7 +5,7 @@ This is the repeatable process going forward.
 ## On Cornerman (start of run)
 
 ```powershell
-cd C:\Users\jared\Projects\lifepunchdxrp
+cd C:\Users\jared\Projects\lifepunch
 git fetch
 git pull --rebase
 ```
@@ -43,11 +43,11 @@ Set generation defaults in the model profile:
 
 Run directives **sequentially** with a fresh model session/context for each major directive:
 
-A. `lifepunch/addons/docs/briefs/CORNerman_LPADONS_FULL_ECOSYSTEM_PREP_UNTIL_1130PM.md`
+A. `lifepunchaddons/docs/briefs/CORNerman_LPADONS_FULL_ECOSYSTEM_PREP_UNTIL_1130PM.md`
 
-B. `lifepunch/addons/docs/briefs/CORNerman_LPWEAPONS_PLATFORM_AUDIT_PREP.md`
+B. `lifepunchaddons/docs/briefs/CORNerman_LPWEAPONS_PLATFORM_AUDIT_PREP.md`
 
-C. `lifepunch/addons/docs/briefs/CORNerman_LIFEPUNCHULX_AND_SHARED_PATTERNS_PREP.md`
+C. `lifepunchaddons/docs/briefs/CORNerman_LIFEPUNCHULX_AND_SHARED_PATTERNS_PREP.md`
 
 Do not interleave them inside one long context.
 

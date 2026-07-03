@@ -18,11 +18,11 @@ Use filename format: YYYY-MM-DD_HHMM_ShortTitle.md
 Additional work packages:
 
 1. Weapons platform (high priority parallel track):
-   Process: lifepunch/addons/docs/briefs/CORNerman_LPWEAPONS_PLATFORM_AUDIT_PREP.md
+   Process: lifepunchaddons/docs/briefs/CORNerman_LPWEAPONS_PLATFORM_AUDIT_PREP.md
    This includes platform law compliance, AK47 lane status, intake pipeline, viewmodel rig, mass production queue, weapon UI ideas, and how weapons should align with the new Universal Upgrades home and Bitcoin visual doctrine.
 
 2. Admin menu + shared patterns:
-   Process: lifepunch/addons/docs/briefs/CORNerman_LIFEPUNCHULX_AND_SHARED_PATTERNS_PREP.md
+   Process: lifepunchaddons/docs/briefs/CORNerman_LIFEPUNCHULX_AND_SHARED_PATTERNS_PREP.md
    Review lifepunchulx current state, extract reusable UI patterns from ulx + Bitcoin surfaces, and map how future weapons and cyber jobs can stay consistent.
 
 3. Extra if time allows:
