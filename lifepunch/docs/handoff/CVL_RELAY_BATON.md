@@ -99,6 +99,13 @@ COMMIT: committed + pushed to checkpoint-lpbitcoin-pre-sleep-20260701 (see `git 
 
 ---
 
+## PIN — OFFLOAD SIGNAL (Cornerman Green B)
+
+- **Law:** `lifepunch/docs/handoff/CVL_OFFLOAD_SIGNAL.md` — agents **toast + chat** when triggers fire.
+- **Command:** `powershell -File lifepunch\scripts\Send-CvlOffloadSignal.ps1 -Reason "<why>"`
+- **Right now (party PR verify):** **NO OFFLOAD** — Bloodwave on Red flatgrass; Cornerman idle is OK.
+- **Spin up Cornerman when toast says:** GREEN CODE candidate, distill/kit, heavy parallel slice, or Tier-3 only.
+
 ## PIN — Green A (MacBook) — OUT OF WORKFLOW
 
 - **Status:** **OFFLINE / hardware failure suspected** (2026-07-02). No power, power button dead, trackpad stiff; was on charger; no spill. Unplugged — Apple repair pending.
@@ -108,13 +115,8 @@ COMMIT: committed + pushed to checkpoint-lpbitcoin-pre-sleep-20260701 (see `git 
 
 ## PIN — active lane
 
-- **Lane:** `lifepunchbitcoin` / `lpbitcoin` — **Phase A Hub polish · AUTOPILOT ACTIVE**.
-- **Owner GO:** Bloodwave **2026-07-02 ~18:06 ET** — Red may automate safe slices while owner away; **review on return** before commit/push.
-- **H4/H5:** code landed + partial flatgrass proof; **sign-off pending** (ear check, LED color, point light keep/remove).
-- **Next autopilot (safe):** H6 prefab integrity · H2 material audit doc · screenshot recapture · review package.
-- **Locked:** Phase B Terminal until H10 · economy overhaul HOLD · no new H4/H5 code without owner paste on return.
-- **Branch:** `checkpoint-lpbitcoin-pre-sleep-20260701` (ahead 2 local + uncommitted autopilot docs).
-- **Proof:** `handoff/proof/2026-07-02-bitcoin-autopilot/` + `AUTOPILOT_BITCOIN_2026-07-02.md`.
+- **Lane:** **DXRP party** — PR `mragerlp-party-browse-tab` stacks #115; Bloodwave flatgrass verify on **dxrp-vanilla**.
+- **Cornerman:** idle OK until **OFFLOAD SIGNAL** toast.
 
 ## PIN — DXRP official lane (parallel, separate brain)
 
