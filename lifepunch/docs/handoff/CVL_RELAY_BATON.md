@@ -10,7 +10,7 @@
 ## ON PULL — DO THIS FIRST (every node)
 
 **Pulling a change to `CVL_AGENT_ONBOARDING.md` or this baton means the ground moved.** On every node
-(Cornerman Green B, Red), after `git fetch` — **Green A (MacBook) is OUT OF WORKFLOW until repaired:**
+(Red, Cornerman Green B, **Mac Green A**), after `git fetch`:
 
 1. **`git pull --rebase`** — full rebase onto the latest branch tip (`checkpoint-lpbitcoin-pre-sleep-20260701`).
 2. **Re-read `lifepunch/docs/CVL_AGENT_ONBOARDING.md` in full**, then your lane's **mandatory reads (§12)**.
@@ -25,17 +25,17 @@
 ```text
 ── CVL HANDOFF ──
 FROM:   Red/Cursor/Auto
-LANE:   LIFEPUNCH lpbitcoin Phase A — Green A (MacBook) OUT OF WORKFLOW
-DID:    Bloodwave reports MacBook Air M2 dead (no power, stiff trackpad, was charging, no liquid).
-        Suspected battery/hardware — unplugged, Apple repair pending. CVL continues on Red + Cornerman only.
-STATE:  Green A OFFLINE — do not wait for Mac pull, ChatGPT-on-Mac, or Mac RDP. Design Architect moves to
-        Red desk (ChatGPT browser) or pauses until replacement. Active lane unchanged: lpbitcoin Phase A.
-NEXT:   Red + Cornerman: git pull --rebase this baton, resume lpbitcoin / party-staff as owner directs.
-        No Mac-specific handoffs or Green A sync until Bloodwave clears hardware restored.
-TO:     ALL AGENTS: Mac is out of the web until further notice. Red owns editor truth + push.
-        Cornerman: distill/execute only — no Mac relay assumptions.
-PASTE:  lifepunch/docs/handoff/CVL_RELAY_BATON.md (PIN — Green A + active lane)
-COMMIT: this baton pushed — prior autopilot docs may still be local until next commit.
+LANE:   DXRP party verify (vanilla) + lpbitcoin Phase A parallel
+DID:    Green A MacBook Air M2 back online — root cause was failed charger, not dead hardware.
+        CORNERMAN_MCP_SETUP_PASTE on origin; Red vanilla editor + chomnr/jtc MCP live on VENGEANCE.
+STATE:  Green A BACK IN WEB (replace charger; verify battery health). Red owns editor + git push.
+        Party lane active: flatgrass /party proof on dxrp-vanilla. Cornerman: MCP paste + distill OK.
+NEXT:   All nodes: git pull --rebase. Mac: MAC_GREEN_CURSOR_GROUNDING_PASTE + pull checkpoint branch.
+        Red: continue party flatgrass proof. Cornerman: CORNERMAN_MCP_SETUP_PASTE for MCP 3/3.
+        Architect: Mac ChatGPT OR Red browser — owner choice. No Apple repair block unless battery fails.
+TO:     Mac/Cornerman: pull before new sessions. Red: sbox-editor = chomnr in Cursor (not named chomnr).
+PASTE:  handoff/CORNERMAN_MCP_SETUP_PASTE.txt · handoff/CVL_RELAY_BATON.md
+COMMIT: this baton (Green A restored + party/MCP pins).
 ```
 
 <!-- CVL_BATON_LATEST_END -->
@@ -45,6 +45,20 @@ COMMIT: this baton pushed — prior autopilot docs may still be local until next
 ## BATON HISTORY (most recent first)
 
 <!-- CVL_BATON_HISTORY_START -->
+
+### 2026-07-03 02:35
+```text
+── CVL HANDOFF ──
+FROM:   Red/Cursor/Auto
+LANE:   LIFEPUNCH lpbitcoin Phase A — Green A (MacBook) OUT OF WORKFLOW
+DID:    Bloodwave reports MacBook Air M2 dead (no power, stiff trackpad, was charging, no liquid).
+        Suspected battery/hardware — unplugged, Apple repair pending. CVL continues on Red + Cornerman only.
+STATE:  Green A OFFLINE — superseded 2026-07-03: charger failed, Mac back online.
+NEXT:   (historical)
+TO:     ALL AGENTS: Mac is out of the web until further notice. Red owns editor truth + push.
+PASTE:  lifepunch/docs/handoff/CVL_RELAY_BATON.md
+COMMIT: d3d53b9 era baton — do not use for current Green A status.
+```
 
 ### 2026-07-02 21:32
 ```text
@@ -106,12 +120,12 @@ COMMIT: committed + pushed to checkpoint-lpbitcoin-pre-sleep-20260701 (see `git 
 - **Right now (party PR verify):** **NO OFFLOAD** — Bloodwave on Red flatgrass; Cornerman idle is OK.
 - **Spin up Cornerman when toast says:** GREEN CODE candidate, distill/kit, heavy parallel slice, or Tier-3 only.
 
-## PIN — Green A (MacBook) — OUT OF WORKFLOW
+## PIN — Green A (MacBook) — BACK ONLINE
 
-- **Status:** **OFFLINE / hardware failure suspected** (2026-07-02). No power, power button dead, trackpad stiff; was on charger; no spill. Unplugged — Apple repair pending.
-- **CVL impact:** Green A **removed from active web** until Bloodwave clears restored or replaced. Do **not** block work on Mac pull, Mac Cursor, or ChatGPT-on-Mac.
-- **Design Architect:** use ChatGPT on **Red** (browser) or pause design sessions until a replacement control plane exists.
-- **Cornerman:** no Mac relay / RDP-from-Mac assumptions.
+- **Status:** **ONLINE** (2026-07-03). Prior no-power episode was a **failed charger**, not dead Mac hardware. Replace charger; monitor battery health.
+- **CVL impact:** Green A **rejoins the web** — mobile Architect, native Green Cursor/Copilot, git pull on checkpoint branch. Still **no editor/MCP truth on Mac** (Red owns s&box + push).
+- **Design Architect:** Mac ChatGPT **or** Red browser — owner choice.
+- **Boot paste:** `handoff/MAC_GREEN_CURSOR_GROUNDING_PASTE.txt` · `handoff/MACBOOK_GREEN_QUICKSTART.md`
 
 ## PIN — active lane
 
