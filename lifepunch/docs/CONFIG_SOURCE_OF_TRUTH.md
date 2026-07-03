@@ -20,6 +20,7 @@ When two files disagree, **fix the canonical file** listed here — do not fork 
 | Entity staging layout? | `lifepunch/addons/config/package-staging.json` |
 | GitLab export paths? | `lifepunch/docs/gitlab-projects.json` |
 | MCP port law? | `lifepunch/config/sbox-mcp-ports.json` |
+| Cornerman MCP modes? | `lifepunch/docs/CORNERMAN_MCP_MODES.md` |
 | CVL machine pins? | `lifepunch/config/cvl-stack-pins.json` |
 | Cornerman Tier-3 models? | `lifepunch/config/cornerman-tier3-models.json` |
 | DXRP upstream pin (fork)? | `lifepunch/config/dxrp-upstream-pin.json` |

@@ -30,6 +30,11 @@ function Get-SboxMcpPortConfig {
     $blenderBridgeStatusPath = '/status'
     $blenderBridgeHost = '127.0.0.1'
 
+    $cornermanModes = @{}
+    $cornermanModeStateFile = 'C:\lifepunch\cornerman\mcp-mode.json'
+    $cornermanRedChomnrPort = 9090
+    $cornermanRedJtcPort = 29015
+    $raw = $null
     if (Test-Path -LiteralPath $ConfigPath) {
         $raw = Get-Content -LiteralPath $ConfigPath -Raw | ConvertFrom-Json
         if ($raw.chomnr.port) { $chomnrPort = [int]$raw.chomnr.port }
@@ -41,6 +46,14 @@ function Get-SboxMcpPortConfig {
         if ($raw.blenderBridge.port) { $blenderBridgePort = [int]$raw.blenderBridge.port }
         if ($raw.blenderBridge.statusPath) { $blenderBridgeStatusPath = [string]$raw.blenderBridge.statusPath }
         if ($raw.blenderBridge.host) { $blenderBridgeHost = [string]$raw.blenderBridge.host }
+        if ($raw.cornerman) {
+            if ($raw.cornerman.modeStateFile) { $cornermanModeStateFile = [string]$raw.cornerman.modeStateFile -replace '/', '\' }
+            if ($raw.cornerman.red.chomnrPort) { $cornermanRedChomnrPort = [int]$raw.cornerman.red.chomnrPort }
+            if ($raw.cornerman.red.jtcPort) { $cornermanRedJtcPort = [int]$raw.cornerman.red.jtcPort }
+            foreach ($prop in $raw.cornerman.modes.PSObject.Properties) {
+                $cornermanModes[$prop.Name] = $prop.Value
+            }
+        }
     }
 
     $chomnrUrl = "http://${chomnrHost}:$chomnrPort$chomnrPath"
@@ -58,6 +71,10 @@ function Get-SboxMcpPortConfig {
         BridgeIpcDir            = $ipcDir
         BlenderBridgePort       = $blenderBridgePort
         BlenderBridgeStatusUrl  = $blenderBridgeStatusUrl
+        CornermanModeStateFile  = $cornermanModeStateFile
+        CornermanModes          = $cornermanModes
+        CornermanRedChomnrPort  = $cornermanRedChomnrPort
+        CornermanRedJtcPort     = $cornermanRedJtcPort
     }
 }
 

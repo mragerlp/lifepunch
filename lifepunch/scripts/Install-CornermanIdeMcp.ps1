@@ -1,31 +1,33 @@
 <#
 .SYNOPSIS
-  Wire Cornerman Cursor + Copilot (VS Code) to the Green MCP triple-stack.
+  Wire Cornerman Cursor + Copilot to the Green MCP stack (mode-aware).
 
 .DESCRIPTION
-  Writes the same 3-server MCP config to BOTH:
-    - %USERPROFILE%\.cursor\mcp.json          (Cursor on Green)
-    - C:\Projects\lifepunch\.vscode\mcp.json  (GitHub Copilot workspace MCP)
+  Modes (see lifepunch/docs/CORNERMAN_MCP_MODES.md):
+    RedEditor   — Green drives Red editor via tunnel; sbox IPC via \\VENGEANCE\SboxBridgeIpc
+    LocalEditor — Green local editor; local bridge IPC + chomnr on :9091 (no Red tunnel)
+    DualEditor  — Red + Green editors parallel; same as LocalEditor ports on Green
 
-  Run FROM VENGEANCE (pushes over SSH):
-    powershell -File lifepunch\scripts\Install-CornermanIdeMcp.ps1
+  Run FROM VENGEANCE:
+    powershell -File lifepunch\scripts\Install-CornermanIdeMcp.ps1 -Mode RedEditor
 
-  Run ON Cornerman desktop (local rewrite):
-    powershell -File C:\lifepunch\cornerman\Install-CornermanIdeMcp.ps1
-
-  Prereq on Green: Map-CornermanBridgeShare.ps1 + editor tunnel :9090 + Red editor open.
+  Run ON Cornerman:
+    powershell -File lifepunch\scripts\Set-CornermanMcpMode.ps1 -Mode LocalEditor
 
 .EXAMPLE
-  powershell -File lifepunch\scripts\Install-CornermanIdeMcp.ps1
-  powershell -File lifepunch\scripts\Install-CornermanIdeMcp.ps1 -SkipLmClone
+  powershell -File lifepunch\scripts\Install-CornermanIdeMcp.ps1 -Mode RedEditor
+  powershell -File lifepunch\scripts\Install-CornermanIdeMcp.ps1 -LocalOnly -Mode LocalEditor
 #>
 [CmdletBinding()]
 param(
+    [ValidateSet('RedEditor', 'LocalEditor', 'DualEditor')]
+    [string] $Mode = 'RedEditor',
     [string] $SshTarget = '',
     [string] $ShareName = 'SboxBridgeIpc',
+    [string] $VengeanceHost = 'VENGEANCE',
     [string] $CornermanLmClone = 'C:\Projects\local-llm-mcp-server',
     [string] $MonorepoRoot = 'C:\Projects\lifepunch',
-    [int] $EditorMcpPort = 9090,
+    [int] $EditorMcpPort = 0,
     [switch] $SkipLmClone,
     [switch] $SkipShare,
     [switch] $LocalOnly
@@ -34,6 +36,7 @@ param(
 $ErrorActionPreference = 'Stop'
 $Here = if ($PSScriptRoot) { $PSScriptRoot } else { Split-Path -Parent $MyInvocation.MyCommand.Path }
 . (Join-Path $Here 'Cornerman-Workflow.ps1')
+. (Join-Path $Here 'Get-SboxMcpPortConfig.ps1')
 
 function Write-Utf8NoBom {
     param([string] $Path, [string] $Text)
@@ -45,9 +48,43 @@ function Write-Utf8NoBom {
     [IO.File]::WriteAllText($Path, $Text, $utf8)
 }
 
-function New-CornermanGreenMcpJson {
+function Get-CornermanModeLayout {
     param(
-        [string] $UncIpc,
+        [string] $ModeName,
+        [string] $VengeanceHostName,
+        [string] $Share,
+        [int] $PortOverride
+    )
+
+    $cfg = Get-SboxMcpPortConfig
+    $modeCfg = $cfg.CornermanModes[$ModeName]
+    if (-not $modeCfg) {
+        throw "Unknown Cornerman MCP mode: $ModeName"
+    }
+
+    $port = if ($PortOverride -gt 0) { $PortOverride } else { [int]$modeCfg.chomnrPort }
+    $bridgeKind = [string]$modeCfg.bridgeIpc
+
+    $ipcDir = if ($bridgeKind -eq 'local') {
+        Join-Path $env:LOCALAPPDATA 'Temp\sbox-bridge-ipc'
+    }
+    else {
+        "\\$VengeanceHostName\$Share"
+    }
+
+    [pscustomobject]@{
+        Mode                   = $ModeName
+        BridgeIpcDir           = $ipcDir
+        ChomnrPort             = $port
+        ChomnrUrl              = "http://127.0.0.1:$port/sbox-mcp"
+        AllowRedReverseTunnel  = [bool]$modeCfg.allowRedReverseTunnel
+        JtcPort                = $modeCfg.jtcPort
+    }
+}
+
+function New-CornermanMcpJson {
+    param(
+        [string] $BridgeIpcDir,
         [string] $LmClone,
         [int] $Port
     )
@@ -56,7 +93,7 @@ function New-CornermanGreenMcpJson {
             command = 'cmd'
             args    = @('/c', 'npx', '-y', 'sbox-mcp-server')
             env     = @{
-                SBOX_BRIDGE_IPC_DIR = $UncIpc
+                SBOX_BRIDGE_IPC_DIR = $BridgeIpcDir
             }
         }
         'sbox-editor' = @{
@@ -70,21 +107,61 @@ function New-CornermanGreenMcpJson {
     return (@{ mcpServers = $servers } | ConvertTo-Json -Depth 8)
 }
 
-$vengeanceHost = $env:COMPUTERNAME
-$uncIpc = "\\$vengeanceHost\$ShareName"
+function Write-CornermanMcpModeState {
+    param(
+        [string] $StatePath,
+        [pscustomobject] $Layout
+    )
+    $state = [ordered]@{
+        mode                  = $Layout.Mode
+        chomnrPort            = $Layout.ChomnrPort
+        bridgeIpcDir          = $Layout.BridgeIpcDir
+        allowRedReverseTunnel = $Layout.AllowRedReverseTunnel
+        updatedAt             = (Get-Date).ToUniversalTime().ToString('o')
+    }
+    Write-Utf8NoBom -Path $StatePath -Text (($state | ConvertTo-Json -Depth 4) + "`n")
+}
 
-if ($LocalOnly -or ($env:COMPUTERNAME -match 'CORNERMAN' -and -not $SshTarget)) {
-    Write-Host 'Cornerman local IDE MCP install' -ForegroundColor Cyan
-    $mcpJson = New-CornermanGreenMcpJson -UncIpc $uncIpc -LmClone $CornermanLmClone -Port $EditorMcpPort
+function Install-CornermanMcpConfigs {
+    param(
+        [string] $McpJson,
+        [string] $MonorepoRootPath,
+        [string] $ModeStatePath,
+        [pscustomobject] $Layout
+    )
     $cursorPath = Join-Path $env:USERPROFILE '.cursor\mcp.json'
-    $vscodePath = Join-Path $MonorepoRoot '.vscode\mcp.json'
-    Write-Utf8NoBom -Path $cursorPath -Text $mcpJson
-    Write-Utf8NoBom -Path $vscodePath -Text $mcpJson
+    $vscodePath = Join-Path $MonorepoRootPath '.vscode\mcp.json'
+    Write-Utf8NoBom -Path $cursorPath -Text $McpJson
+    Write-Utf8NoBom -Path $vscodePath -Text $McpJson
+    Write-CornermanMcpModeState -StatePath $ModeStatePath -Layout $Layout
     Write-Host "OK Cursor  -> $cursorPath" -ForegroundColor Green
     Write-Host "OK Copilot -> $vscodePath" -ForegroundColor Green
+    Write-Host "OK mode    -> $ModeStatePath ($($Layout.Mode))" -ForegroundColor Green
+}
+
+$portCfg = Get-SboxMcpPortConfig
+$layout = Get-CornermanModeLayout -ModeName $Mode -VengeanceHostName $VengeanceHost -Share $ShareName -PortOverride $EditorMcpPort
+$mcpJson = New-CornermanMcpJson -BridgeIcpDir $layout.BridgeIpcDir -LmClone $CornermanLmClone -Port $layout.ChomnrPort
+$modeStatePath = $portCfg.CornermanModeStateFile
+
+if ($LocalOnly -or ($env:COMPUTERNAME -match 'CORNERMAN' -and -not $SshTarget)) {
+    Write-Host "Cornerman local IDE MCP install — mode: $Mode" -ForegroundColor Cyan
+    Install-CornermanMcpConfigs -McpJson $mcpJson -MonorepoRootPath $MonorepoRoot -ModeStatePath $modeStatePath -Layout $layout
     Write-Host ''
-    Write-Host 'Next: Map-CornermanBridgeShare.ps1 · Start-CornermanSboxEditorTunnel.ps1 -Background' -ForegroundColor Cyan
-    Write-Host '      Cursor Reload Window · reopen C:\Projects\lifepunch in VS Code for Copilot MCP' -ForegroundColor Cyan
+    switch ($Mode) {
+        'RedEditor' {
+            Write-Host 'Next: Map-CornermanBridgeShare.ps1 · editor tunnel :9090 · Red editor open' -ForegroundColor Cyan
+            Write-Host '      Or ask Red: Start-VengeanceEditorTunnelToCornerman.ps1 -Background' -ForegroundColor Cyan
+        }
+        'LocalEditor' {
+            Write-Host 'Next: Ensure Red tunnel STOPPED (Start-VengeanceEditorTunnelToCornerman.ps1 -Stop on Red)' -ForegroundColor Yellow
+            Write-Host '      chomnr dock on Green -> port' $layout.ChomnrPort '-> Apply -> restart MCP server' -ForegroundColor Cyan
+        }
+        'DualEditor' {
+            Write-Host 'Next: Red uses :9090 · Green chomnr on' $layout.ChomnrPort '- no tunnels between machines' -ForegroundColor Cyan
+        }
+    }
+    Write-Host '      Cursor Reload Window · Copilot reopen C:\Projects\lifepunch' -ForegroundColor Cyan
     exit 0
 }
 
@@ -93,32 +170,55 @@ if (-not (Test-CornermanSshReady -SshTarget $SshTarget)) {
     throw "Cornerman SSH not ready ($SshTarget)"
 }
 
-# Reuse bridge + LM wiring from the existing installer, then add Copilot workspace path.
-$bridgeArgs = @{
-    SshTarget      = $SshTarget
-    ShareName      = $ShareName
-    CornermanLmClone = $CornermanLmClone
-    EditorMcpPort  = $EditorMcpPort
+foreach ($scriptName in @('Install-CornermanIdeMcp.ps1', 'Set-CornermanMcpMode.ps1')) {
+    $src = Join-Path $Here $scriptName
+    $dest = Join-Path 'C:\lifepunch\cornerman' $scriptName
+    if (Test-Path -LiteralPath $src) {
+        Push-CornermanFile -Path $dest -FileBytes ([IO.File]::ReadAllBytes($src)) -SshTarget $SshTarget | Out-Null
+        Write-Host "OK on-box script -> $dest" -ForegroundColor DarkGray
+    }
 }
-if ($SkipLmClone) { $bridgeArgs['SkipLmClone'] = $true }
-if ($SkipShare) { $bridgeArgs['SkipShare'] = $true }
-& (Join-Path $Here 'Install-CornermanSboxBridgeMcp.ps1') @bridgeArgs
 
-$mcpJson = New-CornermanGreenMcpJson -UncIpc $uncIpc -LmClone $CornermanLmClone -Port $EditorMcpPort
+if ($Mode -eq 'RedEditor') {
+    $bridgeArgs = @{
+        SshTarget        = $SshTarget
+        ShareName        = $ShareName
+        CornermanLmClone = $CornermanLmClone
+        EditorMcpPort    = $layout.ChomnrPort
+    }
+    if ($SkipLmClone) { $bridgeArgs['SkipLmClone'] = $true }
+    if ($SkipShare) { $bridgeArgs['SkipShare'] = $true }
+    & (Join-Path $Here 'Install-CornermanSboxBridgeMcp.ps1') @bridgeArgs
+}
+
 $vscodePath = Join-Path $MonorepoRoot '.vscode\mcp.json'
 Push-CornermanText -Path $vscodePath -Text $mcpJson -SshTarget $SshTarget
 Write-Host "OK Cornerman Copilot .vscode/mcp.json -> $vscodePath" -ForegroundColor Green
 
-# On-box copy for local re-run without Red SSH.
-$onBox = Join-Path $Here 'Install-CornermanIdeMcp.ps1'
-$onBoxDest = 'C:\lifepunch\cornerman\Install-CornermanIdeMcp.ps1'
-if (Test-Path -LiteralPath $onBox) {
-    Push-CornermanFile -Path $onBoxDest -FileBytes ([IO.File]::ReadAllBytes($onBox)) -SshTarget $SshTarget | Out-Null
-    Write-Host "OK on-box script -> $onBoxDest" -ForegroundColor DarkGray
-}
+$stateJson = (@{
+    mode                  = $layout.Mode
+    chomnrPort            = $layout.ChomnrPort
+    bridgeIpcDir          = $layout.BridgeIpcDir
+    allowRedReverseTunnel = $layout.AllowRedReverseTunnel
+    updatedAt             = (Get-Date).ToUniversalTime().ToString('o')
+} | ConvertTo-Json -Depth 4) + "`n"
+Push-CornermanText -Path $modeStatePath -Text $stateJson -SshTarget $SshTarget
+Write-Host "OK mode state -> $modeStatePath ($Mode)" -ForegroundColor Green
+
+$cursorRemote = 'C:\Users\jared\.cursor\mcp.json'
+Push-CornermanText -Path $cursorRemote -Text $mcpJson -SshTarget $SshTarget
+Write-Host "OK Cornerman Cursor -> $cursorRemote" -ForegroundColor Green
 
 Write-Host ''
-Write-Host 'Cornerman IDE MCP done (Cursor + Copilot).' -ForegroundColor Green
-Write-Host '  Cursor:  Reload Window -> MCP 3/3 (sbox, sbox-editor, cornerman-lm)' -ForegroundColor Cyan
-Write-Host '  Copilot: Open folder C:\Projects\lifepunch in VS Code -> MCP tools on chat' -ForegroundColor Cyan
-Write-Host '  Paste:   lifepunch/docs/handoff/CORNERMAN_MCP_SETUP_PASTE.txt' -ForegroundColor DarkGray
+Write-Host "Cornerman IDE MCP done — mode: $Mode" -ForegroundColor Green
+if ($Mode -eq 'RedEditor') {
+    & (Join-Path $Here 'Start-VengeanceEditorTunnelToCornerman.ps1') -Stop -ErrorAction SilentlyContinue | Out-Null
+    Write-Host '  Red: Start-VengeanceEditorTunnelToCornerman.ps1 -Background (after Red editor :9090 up)' -ForegroundColor Cyan
+}
+else {
+    & (Join-Path $Here 'Start-VengeanceEditorTunnelToCornerman.ps1') -Stop
+    Write-Host '  Red reverse tunnel stopped (required for local Green editor).' -ForegroundColor Yellow
+    Write-Host "  Green: chomnr MCP dock -> port $($layout.ChomnrPort) -> Apply" -ForegroundColor Cyan
+}
+Write-Host '  Green: Cursor Reload Window -> MCP 3/3' -ForegroundColor Cyan
+Write-Host '  Doc:   lifepunch/docs/CORNERMAN_MCP_MODES.md' -ForegroundColor DarkGray

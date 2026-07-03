@@ -27,15 +27,15 @@
 FROM:   Red/Cursor/Auto
 LANE:   LIFEPUNCH repo hygiene — main + develop branch model
 DID:    GitHub default = develop. main = truth (ruleset: pattern main, no delete/force-push, PR required).
-        Docs: BRANCH_MODEL.md · NEW_CHAT_BRANCH_LAW_PASTE.txt · handoffs rebased off checkpoint-* retirement.
-        Blue server import e827512 on develop. MCP sbox.game URLs canon. Stale copilot/* branches deleted.
+        Cornerman MCP modes: RedEditor | LocalEditor | DualEditor (Set-CornermanMcpMode.ps1).
+        Green local editor uses chomnr :9091 + local bridge IPC; Red tunnel must be OFF.
 STATE:  develop = daily test lane (Red push). main = protected truth (PR develop→main on owner GO).
         Cornerman pulls main for distill. Red tunnel :9090 OFF when Green uses local chomnr.
 NEXT:   ALL NODES: git fetch --prune · re-read CVL_AGENT_ONBOARDING.md + this baton.
         Red/Mac: checkout develop && git pull --rebase origin develop.
-        Cornerman: checkout main && git pull origin main (path C:\Projects\lifepunch on Green).
-        New chat: paste handoff/NEW_CHAT_BRANCH_LAW_PASTE.txt first.
-        Ship: open PR develop → main when lane clean (main ruleset blocks direct push).
+        Cornerman (MCP work): checkout develop && pull · Set-CornermanMcpMode.ps1 -Mode LocalEditor
+        Red before Green local editor: Start-VengeanceEditorTunnelToCornerman.ps1 -Stop
+        Green chomnr dock -> port 9091 -> Apply · Cursor Reload Window
 TO:     Mac · Cornerman · Architect — branch law changed; do not use checkpoint-* branches.
 PASTE:  handoff/NEW_CHAT_BRANCH_LAW_PASTE.txt · lifepunch/docs/BRANCH_MODEL.md
 COMMIT: docs(cvl): main ruleset + CVL handoff rebase for develop/main

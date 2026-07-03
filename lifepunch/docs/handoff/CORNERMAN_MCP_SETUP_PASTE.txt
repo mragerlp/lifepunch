@@ -2,12 +2,19 @@ CORNERMAN MCP SETUP — Green B (July 2026)
 
 Paste this whole file into a fresh Cornerman Cursor chat after git pull.
 Canonical: lifepunch/docs/handoff/CORNERMAN_MCP_SETUP_PASTE.txt
-Related: lifepunch/docs/GREEN_SMB_BOOT_PASTE.md · lifepunch/docs/SBOX_EDITOR_MCP.md · handoff/GREEN_CORNERMAN_CURSOR_GROUNDING_PASTE.txt
+Modes: lifepunch/docs/CORNERMAN_MCP_MODES.md · Set-CornermanMcpMode.ps1
 
-You are on CORNERMAN (Green B). Goal: Cursor MCP 3/3 green — sbox · sbox-editor · cornerman-lm.
+══════════════════════════════════════════════════════════════════════════════
+PICK MODE FIRST (July 2026)
+══════════════════════════════════════════════════════════════════════════════
+  RedEditor   — Green drives Red editor (tunnel :9090, SMB bridge) [default CVL]
+  LocalEditor — Green local s&box editor (:9091 chomnr, local IPC, NO Red tunnel)
+  DualEditor  — Both editors live (Green :9091, no tunnel)
 
-IMPORTANT: Green does NOT get sbox-jtc (:29015). jtc is Red-only today. Ignore any jtc errors on Green.
-Red runs 4/4 MCP (adds sbox-jtc); Green never configures :29015.
+  Local editor today:
+    Red:  Start-VengeanceEditorTunnelToCornerman.ps1 -Stop
+    Green: Set-CornermanMcpMode.ps1 -Mode LocalEditor
+    Editor MCP dock -> port 9091 -> Apply
 
 ══════════════════════════════════════════════════════════════════════════════
 PREREQ — Red (VENGEANCE) must be up first
@@ -31,9 +38,11 @@ Red pass targets: vengeance.sboxBridge + vengeance.sboxEditor true; cornerman.sm
 STEP 0 — Repo (Cornerman desktop PowerShell, interactive)
 ══════════════════════════════════════════════════════════════════════════════
 cd C:\Projects\lifepunch
-git fetch origin
-git checkout checkpoint-lpbitcoin-pre-sleep-20260701
-git pull --rebase
+git fetch origin --prune
+git checkout develop
+git pull --rebase origin develop
+
+Re-read: lifepunch/docs/CORNERMAN_MCP_MODES.md · handoff/CVL_RELAY_BATON.md
 
 ══════════════════════════════════════════════════════════════════════════════
 STEP 1 — Map SMB bridge (once per reboot; MUST be interactive desktop)
