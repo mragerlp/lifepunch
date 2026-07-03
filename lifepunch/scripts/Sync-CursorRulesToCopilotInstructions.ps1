@@ -124,7 +124,9 @@ $generatedAt = (Get-Date).ToString('yyyy-MM-dd HH:mm UTC', [System.Globalization
 $index = @"
 # LifePunch — GitHub Copilot repository instructions
 
-**Machine:** VENGEANCE · **Workspace:** ``lifepunchaddons`` (github.com/mragerlp/lifepunch)
+> **START HERE:** Before reviewing or suggesting changes, read ``lifepunch/docs/START_HERE_AGENTS.md`` first and follow its repo/branch/lane rules. If older text conflicts, START_HERE and ``.cursor/rules`` win.
+
+**Machine:** VENGEANCE - **Workspace root:** ``C:\Users\jared\Projects\lifepunch`` (repo ``lifepunch``, github.com/mragerlp/lifepunch)
 
 ## Source of truth
 
@@ -146,7 +148,14 @@ Last sync: **$generatedAt** · **$($ruleFiles.Count)** rule files
 VS Code applies **every** file in ``.github/instructions/`` with ``applyTo: "**"`` on **all** chat requests
 in this workspace, **plus** this file (``copilot-instructions.md``).
 
-Open workspace root ``lifepunchaddons`` in VS Code (not a subfolder only).
+Open workspace root ``lifepunch`` (``C:\Users\jared\Projects\lifepunch``) in VS Code, not a subfolder only.
+
+## Repo roots and folders
+
+- ``lifepunch`` = repo root (this monorepo; open THIS in the editor)
+- ``lifepunchaddons`` = in-repo addon/product folder, NOT the repo root
+- ``lifepunchdxrp`` = nested private DXRP mirror for LIFEPUNCH server testing
+- ``dxrp-public`` = separate official DXRP upstream contributor clone (never mix with this repo)
 
 ## Law hierarchy (conflicts — repo wins)
 
