@@ -1,14 +1,19 @@
 CORNERMAN MCP SETUP — Green B (July 2026)
 
+Paste this whole file into a fresh Cornerman Cursor chat after git pull.
+Canonical: lifepunch/docs/handoff/CORNERMAN_MCP_SETUP_PASTE.txt
+Related: lifepunch/docs/GREEN_SMB_BOOT_PASTE.md · lifepunch/docs/SBOX_EDITOR_MCP.md · handoff/GREEN_CORNERMAN_CURSOR_GROUNDING_PASTE.txt
+
 You are on CORNERMAN (Green B). Goal: Cursor MCP 3/3 green — sbox · sbox-editor · cornerman-lm.
 
 IMPORTANT: Green does NOT get sbox-jtc (:29015). jtc is Red-only today. Ignore any jtc errors on Green.
+Red runs 4/4 MCP (adds sbox-jtc); Green never configures :29015.
 
 ══════════════════════════════════════════════════════════════════════════════
 PREREQ — Red (VENGEANCE) must be up first
 ══════════════════════════════════════════════════════════════════════════════
 Ask Red to confirm before you proceed:
-  • s&box editor open (currently vanilla party lane: dxrp-vanilla)
+  • s&box editor open (party lane: dxrp-vanilla — NOT lpbitcoin mount)
   • chomnr listening :9090 (editor bottom-right: green MCP pill)
   • Claude Bridge IPC heartbeat present
 
@@ -17,6 +22,10 @@ Red refresh (if anything is red on Red):
   powershell -File lifepunch\scripts\Install-CornermanSboxBridgeMcp.ps1
   powershell -File lifepunch\scripts\Connect-CornermanBridge.ps1 -SkipLmWarm
   powershell -File lifepunch\scripts\Start-VengeanceEditorTunnelToCornerman.ps1 -Background
+  powershell -File lifepunch\scripts\Sync-DxrpEditorOverlays.ps1 -ConfigPath lifepunch\scripts\dxrp-vanilla-editor.local.json
+  powershell -File lifepunch\scripts\Get-CvlConnectivityStatus.ps1 -Pretty
+
+Red pass targets: vengeance.sboxBridge + vengeance.sboxEditor true; cornerman.smbBridge + cornerman.editorTunnel true after Green steps below.
 
 ══════════════════════════════════════════════════════════════════════════════
 STEP 0 — Repo (Cornerman desktop PowerShell, interactive)
@@ -133,8 +142,12 @@ ROLE LAW (do not drift)
   • MacBook Green A is OUT OF WORKFLOW until hardware restored
 
 Docs if stuck:
+  lifepunch/docs/handoff/CORNERMAN_MCP_SETUP_PASTE.txt (this file)
   lifepunch/docs/GREEN_SMB_BOOT_PASTE.md
   lifepunch/docs/SBOX_EDITOR_MCP.md (Cornerman dual-stack section)
   lifepunch/docs/handoff/GREEN_CORNERMAN_CURSOR_GROUNDING_PASTE.txt
+  lifepunch/docs/handoff/CVL_OFFLOAD_SIGNAL.md (offload toast law — party proof stays Red-only)
+
+Patch-handoff: commit locally on Green → tell Red to Pull-CornermanLatestPatch.ps1 or Pull-CornermanPatches.ps1 → Red pushes origin.
 
 — END CORNERMAN MCP SETUP —
