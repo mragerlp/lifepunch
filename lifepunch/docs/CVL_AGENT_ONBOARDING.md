@@ -15,7 +15,7 @@
 
 ## 0. IF YOU READ NOTHING ELSE (10-line boot)
 
-1. **`git pull --rebase`** on the clone you are in **before** doing anything.
+1. **`git pull --rebase`** on **`develop`** (Red/Mac WIP) or **`main`** (Cornerman distill) **before** doing anything.
 2. **Name your node** (Red / Green B / Green A / Blue) and **your IDE** (Cursor / Copilot / ChatGPT).
 3. **Pick your LANE — this is the most important decision:**
    **LIFEPUNCH proprietary** (`mragerlp/lifepunch`) **OR DXRP official** (`mragerlp/dxrp-public` → `dxura/dxrp`). They have **different repos, headers, and rules. Never mix them.**
@@ -334,12 +334,13 @@ work otherwise.** These force full-repo understanding without pasting every file
 
 ### Always (any LIFEPUNCH session)
 1. `lifepunch/docs/CVL_AGENT_ONBOARDING.md` (this file)
-2. `lifepunch/docs/MACHINE_CAST.md` — nodes + roles
-3. `lifepunch/docs/GREEN_EXECUTION_MODEL.md` — three-group workflow + sync law
-4. `.cursor/rules` (alwaysApply) — **repo law (wins over this doc)**
-5. `lifepunch/addons/docs/ACTIVE_WORKSTREAM.md` — the single active lane gate
-6. `README.md` (repo root) — 8-step boot + domain map
-7. `lifepunch/docs/handoff/CVL_RELAY_BATON.md` — current relay state
+2. `lifepunch/docs/BRANCH_MODEL.md` — **`main` = truth**, **`develop` = test**
+3. `lifepunch/docs/MACHINE_CAST.md` — nodes + roles
+4. `lifepunch/docs/GREEN_EXECUTION_MODEL.md` — three-group workflow + sync law
+5. `.cursor/rules` (alwaysApply) — **repo law (wins over this doc)**
+6. `lifepunch/addons/docs/ACTIVE_WORKSTREAM.md` — the single active lane gate
+7. `README.md` (repo root) — 8-step boot + domain map
+8. `lifepunch/docs/handoff/CVL_RELAY_BATON.md` — current relay state
 
 ### Product / gameplay (design, UX, economy)
 `LIFEPUNCH_GAMEPLAY_LAWS.md` (G0–G9 + Fantasy Check) · `LIFEPUNCH_FEEL.md` · `TERMINOLOGY.md` ·
@@ -379,7 +380,7 @@ no copy-paste ship paths): registry `config/portfolio.json`, `packages.json`, `a
 - **Git:** always `git pull --rebase` first; **never force-push**; author `mragerlp <mragerlp@gmail.com>`;
   **no AI/agent co-author trailers** (keep Cursor Attribution OFF; critical on the public DXRP fork).
 - **Commit consent:** never commit unprompted — propose **scope + one-line summary**, wait for Bloodwave
-  **GO** (`commit to main` / `commit and push`). `GIT_CHECKPOINTS.md`.
+  **GO** (`commit to develop` / `merge to main` / `commit and push`). `GIT_CHECKPOINTS.md` · `BRANCH_MODEL.md`.
 - **Proprietary header** on every LIFEPUNCH source file (`.cs`/`.razor`/`.scss`): the
   `PROPRIETARY & CONFIDENTIAL — © 2026 lifepunch.co` block (name from `addons.json`) before any
   `using`/`namespace`/style. **Never** in the DXRP fork.
@@ -406,7 +407,7 @@ no copy-paste ship paths): registry `config/portfolio.json`, `packages.json`, `a
 |-------|-------|
 | **Active lane** | **`lifepunchbitcoin` / `lpbitcoin` — Phase A Hub polish.** Next slice **H4 + H5** (world power/audio) — **owner GO `GO H4/H5 HUB STATE` (+ route tag) before code.** Phase B Terminal locked until H10. Economy overhaul on HOLD. `ACTIVE_WORKSTREAM.md`. |
 | **Bitcoin three-surface** | **Hub** (controller/ops — owns mining) + **Terminal** (defense/capability — **never mines**) + **GPU Rack** (hardware, 3-rack limit). Universal Upgrades Home in `LpHashdPanel` (HUB / TERMINAL / GPU RACK tabs). `DECISIONS/DECISION-0001…0010`. |
-| **Branch** | `checkpoint-lpbitcoin-pre-sleep-20260701` (lifepunch) — synced with origin. DXRP `develop` current (`a132116`). |
+| **Branch** | **`develop`** = test (Red daily) · **`main`** = truth (Cornerman distill, export). Merge **`develop` → `main`** on owner GO; sync **`main` → `develop`** after. `BRANCH_MODEL.md`. |
 | **Publish-ready** | Only **`lifepunchulx`** (`adminmenu`) — export via `Export-LifepunchPublishLane.ps1`. Bitcoin active but **not** publish-ready. |
 | **DXRP upstream** | Party Phase 2 (**#111**) on `mragerlp-party-phase-2`; implement only after Dxura GO on slice 1. `DXRP_CONTRIBUTOR_LANE.md`. |
 | **Editor workbench** | `Start-SboxDxrpEditor.ps1 -FullCapacity -PreflightFix -BitcoinOnly -SyncAddon lpbitcoin,adminmenu`. |

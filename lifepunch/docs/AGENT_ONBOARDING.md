@@ -54,6 +54,7 @@ Business wrapper: `lifepunch/docs/BUSINESS_CONTEXT.md`.
 
 | Order | Doc | Why |
 |-------|-----|-----|
+| 0 | `lifepunch/docs/BRANCH_MODEL.md` | **`main` = truth**, **`develop` = test** |
 | 0 | `lifepunch/docs/MACHINE_CAST.md` | Red · Mac · Cornerman codenames |
 | 0a | `lifepunch/docs/GREEN_EXECUTION_MODEL.md` | Three agent groups + sync law |
 | 0b | `lifepunch/docs/handoff/AGENT_GROUNDING_INDEX.md` | Cursor + Copilot paste per machine |

@@ -2,37 +2,50 @@
 
 **Status:** Active — July 2026  
 **Repo:** `github.com/mragerlp/lifepunch`  
-**Parallel:** DXRP fork uses the same **`main` + `develop`** mental model (`C:\Users\jared\Projects\dxrp` → `upstream` `dxura/dxrp`).
+**Clone (VENGEANCE):** `C:\Users\jared\Projects\lifepunchdxrp` (junction `lifepunch` OK)  
+**Parallel:** DXRP fork — same **`main` + `develop`** shape at `C:\Users\jared\Projects\dxrp`.
 
-Read with: `GIT_CHECKPOINTS.md` · `DXRP_CONTRIBUTOR_LANE.md` · `PATH_CANON_VENGEANCE.md`
+Read with: `GIT_CHECKPOINTS.md` · `DXRP_CONTRIBUTOR_LANE.md` · `PATH_CANON_VENGEANCE.md`  
+**New-chat paste:** `handoff/NEW_CHAT_BRANCH_LAW_PASTE.txt`
+
+---
+
+## One sentence
+
+**`main` is truth.** **`develop` is where we test.** When develop is clean and owner says GO → merge **`develop` → `main`**, then sync **`main` → `develop`**.
 
 ---
 
 ## Branches (two long-lived lines)
 
-| Branch | Role | Who pulls | When to merge |
-|--------|------|-----------|---------------|
-| **`develop`** | Daily integration — agents, docs, scripts, active addon WIP | **VENGEANCE (Red)** every session; Mac optional | — |
-| **`main`** | Ship-ready snapshot — handoff, GitLab export source, “Green is safe on this” | **Cornerman** distill mirror; Blue after Red export | Owner **GO** after lane milestone |
+| Branch | Role | Who pulls | Merge when |
+|--------|------|-----------|------------|
+| **`main`** | **Source of truth** — stable, handoff, Cornerman distill, GitLab export | **Cornerman**, Blue after export, anyone needing canon | Owner **GO** only (via PR or approved merge from `develop`) |
+| **`develop`** | **Test / integration** — agents commit, playtest, break safely | **VENGEANCE (Red)** every session; Mac for WIP | Merge to **`main`** when clean + owner GO |
 
-**Do not** use `lifepunch/main` or `lifepunch/develop` as branch names — use plain **`main`** and **`develop`**.
+**GitHub default branch:** **`develop`** (where daily work and new PRs land).  
+**Never delete `main` or `develop`.**
 
-**Retired pattern:** long-lived `checkpoint-*` branches → replaced by **`develop`** + short-lived `lane/*` or `bitcoin/*` feature branches.
+**Do not** use `lifepunch/main` or `lifepunch/develop` as branch names — plain **`main`** and **`develop`** only.
+
+**Retired:** long-lived `checkpoint-*` branches, `copilot/*` scratch branches.
 
 ---
 
 ## Feature branches (short-lived)
 
-Fork from **`develop`**, merge back to **`develop`** via PR or owner-approved merge.
+Fork from **`develop`**, merge back to **`develop`**.
 
 | Prefix | Example | Use |
 |--------|---------|-----|
-| `bitcoin/*` | `bitcoin/ui-polish` | Active workstream (sole lane per ACTIVE_WORKSTREAM) |
-| `lane/*` | `lane/ak47` | Scoped addon or asset lanes |
+| `bitcoin/*` | `bitcoin/ui-polish` | Active workstream |
+| `lane/*` | `lane/ak47` | Scoped addon lanes |
 | `fix/*` | `fix/spawn-prefab` | Focused bugfix |
-| `docs/*` | `docs/handoff-kit` | Large doc-only passes (GO DOCS) |
+| `docs/*` | `docs/handoff-kit` | GO DOCS / canon passes |
 
-**Never** commit LifePunch proprietary work on `dxrp` fork branches — see `DXRP_CONTRIBUTOR_LANE.md`.
+**Hotfix on production:** branch off **`main`** → fix → merge **`main`** → merge **`main` → `develop`**.
+
+**Never** commit LifePunch IP on the DXRP fork — see `DXRP_CONTRIBUTOR_LANE.md`.
 
 ---
 
@@ -43,19 +56,23 @@ git fetch origin
 git checkout develop
 git pull --rebase origin develop
 
-# work …
+# work, test, commit …
+git push origin develop
 
-# daily checkpoint
-git commit → push origin develop
-
-# ship milestone (owner GO)
-git checkout main && git pull --rebase origin main
-git merge --ff-only origin/develop   # or PR develop → main on GitHub
+# ship (owner GO — develop must be clean)
+# GitHub PR: develop → main   (preferred)
+# or locally:
+git checkout main && git pull origin main
+git merge origin/develop
 git push origin main
+
+# sync test lane with truth (required after every main merge)
 git checkout develop
+git merge origin/main
+git push origin develop
 ```
 
-**Export law:** `Export-GitLabLane.ps1 -Slug lifepunch-rdp-server` runs from a **`main`** checkout (or immediately after merging develop → main).
+**Export law:** `Export-GitLabLane.ps1 -Slug lifepunch-rdp-server` from a **`main`** checkout only.
 
 ---
 
@@ -63,35 +80,40 @@ git checkout develop
 
 | Machine | Branch | Notes |
 |---------|--------|-------|
-| **VENGEANCE (Red)** | `develop` daily; `main` for export/tag | Source of truth writes |
-| **MacBook (Green A)** | `develop` or `main` | Match whatever Red last pushed for the task |
-| **Cornerman (Green B)** | `main` preferred for distill | Read-only deploy key; patch-handoff to Red |
-| **lifepunchnet (Blue)** | GitLab `lifepunch-rdp-server` `main` | Server lane — not GitHub direct |
-
----
-
-## Migration (July 2026)
-
-- **`develop`** created at `3c69965` from former `checkpoint-lpbitcoin-pre-sleep-20260701` tip.
-- **`main`** lags until next owner GO merge from `develop`.
-- Open PRs targeting `checkpoint-*` should retarget **`develop`**.
-- Stale **`copilot/*`** remote branches: safe to delete (merged, no unique commits).
+| **VENGEANCE (Red)** | **`develop`** daily | Writes; merge to **`main`** on GO |
+| **MacBook (Green A)** | **`develop`** for WIP; **`main`** for stable read | Match task |
+| **Cornerman (Green B)** | **`main`** | Distill / mirror truth; patch-handoff to Red |
+| **lifepunchnet (Blue)** | GitLab `lifepunch-rdp-server` **`main`** | Server lane — not GitHub direct |
 
 ---
 
 ## GitHub settings (recommended)
 
-- **Default branch for new PRs:** `develop` (change in repo Settings → Branches when ready).
-- **Branch protection (optional):** `main` — require PR + owner review; `develop` — allow agent pushes with hygiene hook.
+| Setting | Value |
+|---------|--------|
+| **Default branch** | **`develop`** |
+| **Protect `main`** | Require PR or owner-only push; no force-push |
+| **Protect `develop`** | Optional; allow agent pushes with commit hygiene hook |
+
+---
+
+## Pre-merge checklist (`develop` → `main`)
+
+- [ ] Lane proof done (compile / flatgrass / owner test)
+- [ ] No accidental asset deletes
+- [ ] Docs/handoff updated if canon changed
+- [ ] Bloodwave **GO** (`merge to main` / open PR)
+- [ ] After merge: **`main` → `develop`** sync on Red
 
 ---
 
 ## Quick agent paste
 
 ```text
-BRANCH LAW: mragerlp/lifepunch
-  develop = daily commits (pull --rebase here)
-  main    = ship snapshot only (owner GO)
-  feature = bitcoin/* or lane/* off develop
-  dxrp fork = separate repo at C:\Users\jared\Projects\dxrp (develop upstream)
+BRANCH LAW — mragerlp/lifepunch
+  main    = TRUTH (never delete; Cornerman pulls this)
+  develop = TEST (daily commits; default branch on GitHub)
+  ship    = PR develop → main on owner GO, then merge main → develop
+  clone   = C:\Users\jared\Projects\lifepunchdxrp
+  dxrp    = separate repo C:\Users\jared\Projects\dxrp (develop upstream)
 ```

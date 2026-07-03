@@ -7,8 +7,12 @@ Workflow: lifepunch/docs/GREEN_EXECUTION_MODEL.md · Paste THIS FILE for full de
 STEP 0 — SYNC (before reading or editing)
 ══════════════════════════════════════════════════════════════════════════════
   cd C:\Users\jared\Projects\lifepunchdxrp
-  git fetch; git pull --rebase
+  git fetch origin
+  git checkout develop
+  git pull --rebase origin develop
 If behind AND dirty: STOP — tell Bloodwave (commit or stash first).
+
+Branch law: main = truth · develop = test · handoff/NEW_CHAT_BRANCH_LAW_PASTE.txt
 
 ══════════════════════════════════════════════════════════════════════════════
 STEP 1 — READ ORDER (law — agent executes, do not skip)

@@ -1,0 +1,51 @@
+LIFEPUNCH™ — Branch law (paste at top of any new Cursor/Copilot chat)
+Updated: 2026-07-03 · Canon: lifepunch/docs/BRANCH_MODEL.md
+
+══════════════════════════════════════════════════════════════════════════════
+REPO + CLONE
+══════════════════════════════════════════════════════════════════════════════
+  GitHub: github.com/mragerlp/lifepunch
+  Red clone: C:\Users\jared\Projects\lifepunchdxrp
+  DXRP fork (separate): C:\Users\jared\Projects\dxrp — never mix IP
+
+══════════════════════════════════════════════════════════════════════════════
+BRANCH LAW (memorize)
+══════════════════════════════════════════════════════════════════════════════
+  main    = SOURCE OF TRUTH — stable, handoff, Cornerman distill, GitLab export
+  develop = TEST LANE — commit and playtest here first
+  ship    = develop → main (PR or owner GO merge), then sync main → develop
+  default = develop on GitHub (daily work lands here)
+
+  NEVER delete main or develop.
+  NEVER commit daily work directly to main.
+  RETIRED: checkpoint-* branches, copilot/* scratch branches.
+
+══════════════════════════════════════════════════════════════════════════════
+STEP 0 — SYNC (every session)
+══════════════════════════════════════════════════════════════════════════════
+  cd C:\Users\jared\Projects\lifepunchdxrp
+  git fetch origin
+  git checkout develop
+  git pull --rebase origin develop
+  If dirty + behind: STOP — tell Bloodwave.
+
+  Cornerman / distill readers: git checkout main && git pull origin main
+
+══════════════════════════════════════════════════════════════════════════════
+COMMIT LAW
+══════════════════════════════════════════════════════════════════════════════
+  Propose scope → wait for Bloodwave GO → commit on develop
+  Author: mragerlp <mragerlp@gmail.com> · no AI trailers
+  Merge to main only on explicit GO ("merge to main")
+
+══════════════════════════════════════════════════════════════════════════════
+THEN READ (do not skip)
+══════════════════════════════════════════════════════════════════════════════
+  1. lifepunch/docs/CVL_AGENT_ONBOARDING.md (full one-paste)
+  2. lifepunch/docs/MACHINE_CAST.md
+  3. lifepunch/addons/docs/ACTIVE_WORKSTREAM.md
+  4. .cursor/rules
+  5. handoff/ARCHITECT_CURRENT_STATE.md
+
+  Red Cursor depth: handoff/RED_CURSOR_GROUNDING_PASTE.txt
+  DXRP upstream session: handoff/DXRP_PARTY_CURSOR_BOOTSTRAP_PASTE.txt (different repo)

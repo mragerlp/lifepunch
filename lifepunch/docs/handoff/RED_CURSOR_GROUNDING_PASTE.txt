@@ -16,9 +16,12 @@ STEP 0 — SYNC
 ══════════════════════════════════════════════════════════════════════════════
   cd C:\Users\jared\Projects\lifepunchdxrp
   git fetch origin
-  git checkout checkpoint-lpbitcoin-pre-sleep-20260701
-  git pull --rebase
+  git checkout develop
+  git pull --rebase origin develop
   If behind AND dirty: STOP — tell Bloodwave.
+
+  Branch law: main = truth · develop = test · ship = develop → main (owner GO).
+  Full canon: lifepunch/docs/BRANCH_MODEL.md · paste: handoff/NEW_CHAT_BRANCH_LAW_PASTE.txt
 
   If Cornerman did heavy work since last Red session: pull their commits or run
   lifepunch/scripts/Pull-CornermanPatches.ps1 -Push before new orchestration.

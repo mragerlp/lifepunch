@@ -1,6 +1,8 @@
 # LIFEPUNCH™ — Git checkpoints (commit / push / pull law)
 
-**July 2026** — Bloodwave + agents. Read with `BRANCH_MODEL.md`, `PUBLISH_REPO_LANE.md`, and `portfolio.json`.
+**July 2026** — Bloodwave + agents. Read with **`BRANCH_MODEL.md`**, `PUBLISH_REPO_LANE.md`, and `portfolio.json`.
+
+**One line:** **`main` is truth.** **`develop` is where we test.** Ship = merge **`develop` → `main`**, then sync **`main` → `develop`**.
 
 This doc answers: *what goes on `develop` vs `main`, what stays local, what goes to publish, and when.*
 
@@ -156,7 +158,7 @@ Ideation and structure live in **core on develop**. Clean customer tree lives in
 
 ## Current snapshot (update when stale)
 
-- **Integration branch:** `develop` @ `3c69965` (migrated from `checkpoint-lpbitcoin-pre-sleep-20260701`, July 2026)
-- **`main`:** behind `develop` — merge on next owner GO
+- **Truth branch:** `main` @ merge PR #2 line (`6c3408b`) — behind `develop` until next owner GO merge
+- **Test branch:** `develop` @ latest integration (default on GitHub)
 - **Hold:** `bankerjob/` trees, `governmentdatacenter/intake-raw/`
-- **Publish folder:** `C:\Users\jared\Projects\lifepunch-published` — local export; GitHub repo when owner runs `gh repo create`
+- **Publish folder:** `C:\Users\jared\Projects\lifepunch-published`
