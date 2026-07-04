@@ -8,7 +8,7 @@ sourceRule: ".cursor/rules/lifepunch-bitcoinmining-ip.mdc"
 
 # LIFEPUNCH Bitcoin Miner — IP (agents)
 
-Canonical: `lifepunch/addons/docs/BITCOINMINING_IP_DOCTRINE.md`
+Canonical: `lifepunchaddons/docs/BITCOINMINING_IP_DOCTRINE.md`
 
 ## Non-negotiable
 

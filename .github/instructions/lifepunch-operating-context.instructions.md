@@ -16,7 +16,7 @@ sourceRule: ".cursor/rules/lifepunch-operating-context.mdc"
 - Do NOT comment on the user's time, health, or well-being, and do not suggest
   resting/stopping. Just keep the work moving.
 - Goal: build a shippable addon portfolio (weapons + entities) for DXRP servers.
-- **Active workstream gate (hard law):** `lifepunch/addons/docs/ACTIVE_WORKSTREAM.md` — only
+- **Active workstream gate (hard law):** `lifepunchaddons/docs/ACTIVE_WORKSTREAM.md` — only
   `lifepunchbitcoin` (Hub → Terminal → GPU Rack) until flatgrass proof + owner sign-off.
   **Reference laws:** `CYBER_REFERENCE_LAWS.md`. Blocked lanes park in `BACKLOG_PARKING_LOT.md`.
   Rule: `.cursor/rules/lifepunch-active-workstream-gate.mdc`.

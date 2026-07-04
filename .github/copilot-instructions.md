@@ -17,7 +17,7 @@ Regenerate after any rule change:
 powershell -File lifepunch\scripts\Sync-CursorRulesToCopilotInstructions.ps1
 ```
 
-Last sync: **2026-07-03 08:22 UTC** Â· **20** rule files
+Last sync: **2026-07-04 05:55 UTC** Â· **21** rule files
 
 ## How Copilot loads this
 
@@ -58,7 +58,7 @@ Blocked: Hacker, Banker, Government, Casino, â€¦
 - One **writer** per file; `git pull --rebase` before picking up handoff
 - **Manual law (not from .mdc):** `instructions/copilot-repo-ownership.instructions.md`
 
-## Mirrored rules (20)
+## Mirrored rules (21)
 
 - `dxrp-addon-foundation.mdc` â†’ `instructions/dxrp-addon-foundation.instructions.md`
 - `lifepunch-active-workstream-gate.mdc` â†’ `instructions/lifepunch-active-workstream-gate.instructions.md`
@@ -66,6 +66,7 @@ Blocked: Hacker, Banker, Government, Casino, â€¦
 - `lifepunch-ak47-lane.mdc` â†’ `instructions/lifepunch-ak47-lane.instructions.md`
 - `lifepunch-bitcoinmining-ip.mdc` â†’ `instructions/lifepunch-bitcoinmining-ip.instructions.md`
 - `lifepunch-commit-hygiene.mdc` â†’ `instructions/lifepunch-commit-hygiene.instructions.md`
+- `lifepunch-cursor-plugins.mdc` â†’ `instructions/lifepunch-cursor-plugins.instructions.md`
 - `lifepunch-digital-machine.mdc` â†’ `instructions/lifepunch-digital-machine.instructions.md`
 - `lifepunch-dxrp-style-gate.mdc` â†’ `instructions/lifepunch-dxrp-style-gate.instructions.md`
 - `lifepunch-explorer-icons.mdc` â†’ `instructions/lifepunch-explorer-icons.instructions.md`

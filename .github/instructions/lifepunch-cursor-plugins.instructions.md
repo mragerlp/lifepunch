@@ -1,0 +1,31 @@
+---
+applyTo: "**"
+description: "LifePunch repo law (Cursor alwaysApply rule)"
+sourceRule: ".cursor/rules/lifepunch-cursor-plugins.mdc"
+---
+
+> **Synced from** `.cursor/rules/lifepunch-cursor-plugins.mdc` â€” edit source there, then re-run `Sync-CursorRulesToCopilotInstructions.ps1`.
+
+# LifePunch — Cursor Plugin Stack (July 2026)
+
+Curated after the July 2026 prune (23 → 9). Detail + routing: `lifepunch/docs/MCP_AGENT_ROUTING.md` § Cursor plugins.
+These are **Cursor plugins** — separate from the four s&box MCP servers (`sbox`, `sbox-editor`, `sbox-jtc`, `cornerman-lm`), which are user-level and always take priority for game work.
+
+## Installed plugins — reach for them, don't re-derive
+
+| Plugin | Use it for |
+|---|---|
+| **Cloudflare** (docs/bindings/builds/observability MCPs) | lifepunch.co worker (`cloudflare-worker.mjs`) — deploys, build logs, worker debugging, platform docs. Prefer its MCP tools over guessing Cloudflare behavior. |
+| **Stripe** (MCP + best-practices skill) | Website payment processing. Read the `stripe-best-practices` skill before touching any payment surface. |
+| **GitLab** (MCP + workflow rule) | Per-lane partner repos under `gitlab.com/mragerlp`. Use the MCP for issues/MRs instead of raw git remotes. |
+| **Aikido** (security scanning MCP) | Security scans of LifePunch repos — trial phase; use when owner asks for a security pass. |
+| **Agent Compatibility** | Repo compatibility audits (`compatibility-scan-review` subagent) when evaluating agent-readiness of a repo. |
+| **Continual Learning** | Maintains `AGENTS.md` memory. Run after significant canon/handoff sessions or before kit rebuilds. |
+| **Cursor Team Kit** | Workflow skills: `fix-ci`, `verify-this`, `review-and-ship`, `deslop`, `fix-merge-conflicts` — use in the DXRP PR lane. |
+| **Docs Canvas / PR Review Canvas** | Rendering docs and DXRP PR diffs as interactive canvases when presenting analysis to the owner. |
+
+## Law
+
+- **Do not recommend or install new plugins** without owner sign-off — the stack was deliberately pruned for context economy.
+- If a task matches a plugin above, **use its MCP tools / skills first** instead of hand-rolling (e.g. Cloudflare deploy questions → Cloudflare MCP, not memory).
+- Removed July 2026 (do not assume present): Convex, Sentry, Datadog, Grafana, PagerDuty, Arize, Linear, Notion, Slack, Auth0, Browserbase, 1Password, Figma. Figma returns only if a marketing/brand design push starts.

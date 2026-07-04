@@ -10,7 +10,12 @@ param(
         'McpHealth',
         'GitStatus',
         'GitPullRebase',
-        'CvlObservability'
+        'CvlObservability',
+        'StartLifePunchDay',
+        'CvlConnectivity',
+        'PreLaunchCheckup',
+        'OpenCursor',
+        'ValidateWorkspace'
     )]
     [string] $Action
 )
@@ -18,6 +23,19 @@ param(
 $ErrorActionPreference = 'Stop'
 $scriptsRoot = if ($PSScriptRoot) { $PSScriptRoot } else { Split-Path -Parent $MyInvocation.MyCommand.Path }
 $repoRoot = (Resolve-Path (Join-Path $scriptsRoot '..')).Path
+$monoRoot = (Resolve-Path (Join-Path $repoRoot '..')).Path
+
+function Get-ChromePath {
+    $candidates = @(
+        'C:\Program Files\Google\Chrome\Application\chrome.exe'
+        'C:\Program Files (x86)\Google\Chrome\Application\chrome.exe'
+        (Join-Path $env:LOCALAPPDATA 'Google\Chrome\Application\chrome.exe')
+    )
+    foreach ($candidate in $candidates) {
+        if (Test-Path -LiteralPath $candidate) { return $candidate }
+    }
+    return $null
+}
 
 function Get-PreferredCodeEditor {
     $preferred = @(
@@ -63,18 +81,6 @@ function Test-McpEndpoint {
         if ($OpenAiModels) {
             $r = Invoke-RestMethod -Uri $Url -Method Get -TimeoutSec 4
             return [bool]($r.data)
-        }
-
-        function Get-ChromePath {
-            $candidates = @(
-                'C:\Program Files\Google\Chrome\Application\chrome.exe'
-                'C:\Program Files (x86)\Google\Chrome\Application\chrome.exe'
-                (Join-Path $env:LOCALAPPDATA 'Google\Chrome\Application\chrome.exe')
-            )
-            foreach ($candidate in $candidates) {
-                if (Test-Path -LiteralPath $candidate) { return $candidate }
-            }
-            return $null
         }
 
         $body = '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-06-18","capabilities":{},"clientInfo":{"name":"deck-probe","version":"1"}}}'
@@ -172,6 +178,50 @@ switch ($Action) {
     'CvlObservability' {
         Invoke-RepoScript -Name 'Get-VengeanceHealthProbe.ps1' -Arguments @('-Pretty')
         Invoke-RepoScript -Name 'Get-CvlConnectivityStatus.ps1' -Arguments @('-Pretty')
+        break
+    }
+    'StartLifePunchDay' {
+        Invoke-RepoScript -Name 'Start-LifePunchDay.ps1'
+        break
+    }
+    'CvlConnectivity' {
+        Invoke-RepoScript -Name 'Get-CvlConnectivityStatus.ps1' -Arguments @('-Pretty')
+        break
+    }
+    'PreLaunchCheckup' {
+        Invoke-RepoScript -Name 'Test-PreLaunchCheckup.ps1' -Arguments @('-Fix')
+        break
+    }
+    'OpenCursor' {
+        $cursor = 'C:\Users\jared\AppData\Local\Programs\cursor\Cursor.exe'
+        if (-not (Test-Path -LiteralPath $cursor)) {
+            $cursorCmd = Get-Command cursor -ErrorAction SilentlyContinue
+            if ($cursorCmd) { $cursor = $cursorCmd.Source }
+        }
+        if (Test-Path -LiteralPath $cursor) {
+            Start-Process -FilePath $cursor -ArgumentList @($monoRoot)
+        }
+        else {
+            throw 'Cursor executable not found. Update the OpenCursor case in Invoke-LifePunchDeckAction.ps1.'
+        }
+        break
+    }
+    'ValidateWorkspace' {
+        $workspaceValidator = Join-Path $monoRoot 'scripts\validate-workspace.ps1'
+        if (Test-Path -LiteralPath $workspaceValidator) {
+            & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $workspaceValidator
+        }
+        else {
+            Write-Host ("SKIP  missing {0}" -f $workspaceValidator) -ForegroundColor Yellow
+        }
+
+        $layoutValidator = Join-Path $monoRoot 'lifepunchaddons\scripts\validate-layout.ps1'
+        if (Test-Path -LiteralPath $layoutValidator) {
+            & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $layoutValidator
+        }
+        else {
+            Write-Host ("SKIP  missing {0}" -f $layoutValidator) -ForegroundColor Yellow
+        }
         break
     }
 }
