@@ -8,7 +8,7 @@ sourceRule: ".cursor/rules/lifepunch-weapon-platform.mdc"
 
 # LifePunch — Weapon Platform Law
 
-**Canonical:** `lifepunch/addons/docs/LIFEPUNCH_WEAPON_IMPLEMENTATION_LAW.md`
+**Canonical:** `lifepunchaddons/docs/LIFEPUNCH_WEAPON_IMPLEMENTATION_LAW.md`
 
 ## Core law
 

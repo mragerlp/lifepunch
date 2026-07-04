@@ -15,14 +15,14 @@ publish work on assumptions from training data — check the live engine.
 
 1. Run `lifepunch/scripts/Get-SboxEnginePatchStatus.ps1`.
 2. If **WARN**: fetch latest `https://sbox.game/news`, update
-   `lifepunch/addons/docs/SBOX_ENGINE_PATCHES.md`, run its regression checklist.
+   `lifepunchaddons/docs/SBOX_ENGINE_PATCHES.md`, run its regression checklist.
 3. If Bloodwave posts a news URL: triage same session — summarize LifePunch impact in the patch log.
 
 ## UI panels (Razor / SCSS) — non-negotiable
 
-- Canonical rules: `lifepunch/addons/docs/SBOX_RAZOR_SCSS_RULES.md`.
+- Canonical rules: `lifepunchaddons/docs/SBOX_RAZOR_SCSS_RULES.md`.
 - **Class root** on `<root class="...">` — never `ComponentName { }` in `.razor.scss` (silently skipped → title-only empty body).
-- Run `lifepunch/addons/scripts/Validate-SboxRazorScss.ps1` before playtest.
+- Run `lifepunchaddons/scripts/Validate-SboxRazorScss.ps1` before playtest.
 - **`PanelComponent`:** `BuildHash` must include every private UI flag that changes markup (PIN digits, entry open, errors, module tab).
 - **Stop play → Play** after SCSS edits; grep `D:\Steam\steamapps\common\sbox\logs\sbox-dev.log` for `not valid with` and `error CS`.
 - Smoke **world USE**, not only dev ConCmd preview (owner/PIN gates differ).
@@ -32,4 +32,4 @@ publish work on assumptions from training data — check the live engine.
 - Games ship **precompiled DLLs** (26.06.10+); LifePunch addons still ship compiled `_c` on portal.
 - After engine bump: re-smoke DXRP join + `prepare-publish.ps1` for touched addons.
 
-Full patch history + checklist: `lifepunch/addons/docs/SBOX_ENGINE_PATCHES.md`.
+Full patch history + checklist: `lifepunchaddons/docs/SBOX_ENGINE_PATCHES.md`.

@@ -1,18 +1,18 @@
 ---
 applyTo: "**"
-description: "STYLE routing — Copilot agent judges PASS vs REVIEW; Bloodwave does not pick manually"
+description: "STYLE routing � Copilot agent judges PASS vs REVIEW; Bloodwave does not pick manually"
 sourceRule: ".cursor/rules/lifepunch-dxrp-style-gate.mdc"
 ---
 
 > **Synced from** `.cursor/rules/lifepunch-dxrp-style-gate.mdc` â€” edit source there, then re-run `Sync-CursorRulesToCopilotInstructions.ps1`.
 
-# LifePunch — DXRP STYLE gate (Copilot Agent)
+# LifePunch � DXRP STYLE gate (Copilot Agent)
 
-**Copilot is the primary IDE.** The agent routes — Bloodwave does not manually decide.
+**Copilot is the primary IDE.** The agent routes � Bloodwave does not manually decide.
 
 ## After each DXRP-facing or upstream slice
 
-1. **Read upstream reference** in `C:\Users\jared\Projects\dxrp-public` (or cited merged pattern) — TabMenu, Party, Rank, `[Sync(FromHost)]`, `dxrp.json`, Razor class root (`SBOX_RAZOR_SCSS_RULES.md`).
+1. **Read upstream reference** in `C:\Users\jared\Projects\dxrp-public` (or cited merged pattern) � TabMenu, Party, Rank, `[Sync(FromHost)]`, `dxrp.json`, Razor class root (`SBOX_RAZOR_SCSS_RULES.md`).
 2. **Implement** to match; no LifePunch headers in `dxrp-public`.
 3. **Emit exactly one STYLE verdict** in the handoff:
 
@@ -35,6 +35,6 @@ Prefer **`STYLE: PASS`** when references are clear. Use **`STYLE: REVIEW`** for 
 
 ## Do not
 
-- Ask Bloodwave to route to a second IDE for review — Copilot handles this natively.
+- Ask Bloodwave to route to a second IDE for review � Copilot handles this natively.
 - Treat Cornerman output as playtest proof.
 - Edit files in Cursor unless `GROK REQUIRED` route tag is active.
