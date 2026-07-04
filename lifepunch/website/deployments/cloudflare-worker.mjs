@@ -538,9 +538,10 @@ export default {
             const lite = options.lite === true;
             return `
             <!DOCTYPE html>
-            <html>
+            <html lang="en">
             <head>
                 <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1">
                 ${lite ? "" : `<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">`}
                 ${lite ? "" : `<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Inter:wght@400;600&display=swap" rel="stylesheet">`}
                 <style>
@@ -2080,6 +2081,14 @@ export default {
         const isSboxRules = isSbox && path === "/rules";
         const sharedHead = `
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#017AEF">
+        <meta name="description" content="LIFEPUNCH — official s&box DXRP roleplay servers, rules, store, and community.">
+        <meta property="og:site_name" content="LIFEPUNCH">
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="LIFEPUNCH | s&box DXRP Servers">
+        <meta property="og:description" content="Official LIFEPUNCH s&box DXRP roleplay servers, rules, store, and community.">
+        <meta property="og:image" content="https://assets.lifepunch.co/logo.png">
         ${isSboxRules ? "" : `<meta name="view-transition" content="same-origin">`}
         <link rel="icon" type="image/png" href="https://i.imgur.com/WTosTpq.png">
         ${isSboxRules ? `<link rel="preload" as="image" href="https://assets.lifepunch.co/logo.png">` : ""}
@@ -2234,6 +2243,39 @@ export default {
                 text-decoration: none;
                 font-weight: bold;
             }
+            img, video { max-width: 100%; }
+            html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+
+            /* Account pill (top-right on desktop, inline on mobile) */
+            .account-pill {
+                position: absolute;
+                top: 10px;
+                right: 20px;
+                z-index: 100;
+            }
+
+            /* --- MOBILE --- */
+            @media (max-width: 700px) {
+                .container { padding: 20px 14px; }
+                h1 { font-size: 34px; letter-spacing: -1px; }
+                .logo { width: 100px; margin-bottom: 10px; }
+                .account-pill {
+                    position: static;
+                    display: flex;
+                    justify-content: center;
+                    margin-bottom: 14px;
+                }
+                .links { padding-bottom: 20px; margin-bottom: 20px; }
+                .links a { padding: 12px 14px; margin: 4px 3px; font-size: 11px; }
+                .sub-h { letter-spacing: 1px; }
+                footer { padding: 20px 14px; }
+                /* Prevent iOS zoom-on-focus (inputs must be >=16px) */
+                input, select, textarea { font-size: 16px; }
+            }
+            @media (max-width: 380px) {
+                h1 { font-size: 28px; }
+                .links a { padding: 11px 10px; margin: 3px 2px; font-size: 10px; }
+            }
         </style>
         `;
 
@@ -2244,7 +2286,7 @@ export default {
             return `
         <header style="${isSbox ? 'margin-bottom: 20px;' : ''}">
             ${isSbox ? '' : `
-            <div style="position: absolute; top: 10px; right: 20px; z-index: 100;">
+            <div class="account-pill">
                 ${steamid ? `
                     <div style="display: flex; align-items: center; gap: 10px; background: var(--surface); padding: 8px 15px; border-radius: 20px; border: 1px solid var(--border); backdrop-filter: blur(10px);">
                         ${userIsAdmin ? `<a href="/admin" style="color: var(--lp-blue); text-decoration: none; font-size: 11px; font-weight: 900; transition: 0.2s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">PANEL</a>` : ''}
@@ -2260,7 +2302,7 @@ export default {
                 `}
             </div>
             `}
-            <img src="https://assets.lifepunch.co/logo.png" class="logo">
+            <img src="https://assets.lifepunch.co/logo.png" class="logo" alt="LIFEPUNCH logo">
 
             <h1>LifePunch</h1>
             <div class="sub-h">${subTitle}</div>
@@ -3719,7 +3761,7 @@ export default {
             // Common structure for admin pages
             let finalHtml = `
             <!DOCTYPE html>
-            <html>
+            <html lang="en">
             <head>
                 <title>${pageTitle}</title>
                 ${sharedHead}
@@ -3733,7 +3775,14 @@ export default {
             </body>
             </html>
             `;
-            return new Response(finalHtml, { headers: { "Content-Type": "text/html;charset=UTF-8" } });
+            return new Response(finalHtml, {
+                headers: {
+                    "Content-Type": "text/html;charset=UTF-8",
+                    "X-Content-Type-Options": "nosniff",
+                    "Referrer-Policy": "strict-origin-when-cross-origin",
+                    ...buildSecurityHeaders(false)
+                }
+            });
         }
 
         // --- PROFILE PAGE (MUST BE BEFORE OTHER ROUTES) ---
@@ -4364,7 +4413,7 @@ export default {
 
             let finalHtml = `
             <!DOCTYPE html>
-            <html>
+            <html lang="en">
             <head>
                 <title>${pageTitle}</title>
                 ${sharedHead}
@@ -4440,7 +4489,7 @@ export default {
           <style>
               .intro-text { background: rgba(var(--lp-blue-rgb), 0.07); border: 1px solid rgba(var(--lp-blue-rgb), 0.35); padding: 25px; border-radius: 10px; margin-bottom: 25px; font-size: 14px; line-height: 1.6; color: #fff; text-align: center; }
               
-              .search-wrapper { position: sticky; top: 10px; z-index: 100; margin-bottom: 30px; position: relative; }
+              .search-wrapper { position: sticky; top: 10px; z-index: 100; margin-bottom: 30px; }
               
               .search-container {
                 position: relative;
@@ -4448,7 +4497,7 @@ export default {
                 background: rgba(0, 0, 0, 0.85); 
                 border: 1px solid rgba(var(--lp-blue-rgb), 0.35); 
                 border-radius: 8px;
-                backdrop-filter: null;
+                backdrop-filter: blur(10px);
                 box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
                 display: flex;
                 align-items: center;
@@ -4598,6 +4647,18 @@ export default {
               .rule-text { flex: 1; padding-right: 20px; min-width: 0; line-height: 1.5; }
               .rule-actions { display: flex; gap: 8px; opacity: 0.4; flex-shrink: 0; align-self: flex-start; margin-top: 1px; transition: opacity 0.3s; }
               .rule-line:hover .rule-actions { opacity: 1; }
+              @media (max-width: 650px) {
+                  .cat-btn { padding: 15px 16px; font-size: 14px; gap: 12px; }
+                  .icon-box { width: 30px; height: 30px; font-size: 15px; }
+                  .sub-cat { margin: 8px 10px; }
+                  .sub-btn { padding: 12px 14px; font-size: 13px; }
+                  .content-inner { padding: 14px 12px 16px; }
+                  .sub-cat .content-inner { padding: 12px 10px 14px; }
+                  .rule-line { flex-wrap: wrap; padding: 8px 10px; gap: 8px; }
+                  .rule-num { min-width: auto; }
+                  .rule-text { padding-right: 0; flex-basis: 100%; }
+                  .rule-actions { opacity: 0.8; margin-left: auto; }
+              }
               .action-btn { 
                   background: transparent; border: 1px solid var(--border); color: var(--text-dim); 
                   cursor: pointer; padding: 6px; border-radius: 4px; font-size: 12px; transition: 0.2s;
@@ -6544,8 +6605,12 @@ export default {
             bodyContent = `
             <style>
                 .top-disclaimer { text-align: center; color: var(--text-dim); margin-bottom: 30px; font-size: 14px; text-transform: uppercase; font-weight: bold; letter-spacing: 1px; }
-                .server-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 30px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; }
+                .server-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 30px; display: flex; align-items: center; justify-content: space-between; gap: 15px; flex-wrap: wrap; margin-bottom: 15px; }
                 .server-card:last-child { margin-bottom: 0; }
+                @media (max-width: 700px) {
+                    .server-card { padding: 20px; }
+                    .server-card .copy-btn { width: 100%; padding: 14px; }
+                }
                 .server-info h3 { margin: 0; color: #fff; font-family: 'Montserrat', sans-serif; font-size: 18px; }
                 .server-info p { margin: 5px 0 0; color: var(--lp-blue); font-weight: bold; font-size: 11px; text-transform: uppercase; }
                 .copy-btn { background: var(--lp-blue); color: #fff; border: none; padding: 12px 25px; border-radius: 6px; font-weight: 900; cursor: pointer; transition: 0.3s; white-space: nowrap; }
@@ -6626,7 +6691,7 @@ export default {
         // Final HTML Generation
         let finalHtml = `
         <!DOCTYPE html>
-        <html>
+        <html lang="en">
         <head>
             <title>${pageTitle}</title>
             ${sharedHead}
