@@ -9,27 +9,31 @@ $hashd-amber-deep: #d06b2f;
 $hashd-amber-glow: #f0a500;
 $hashd-bg: #000000;
 // Transparent BTC mark — ui/hashd/btc.png (edited in Sbox UI Designer).
-$hashd-surface: #15181f;
-$hashd-card: #12151a;
-$hashd-border: #374151;
-$hashd-muted: #9ca3af;
-$hashd-text: #eceef3;
-$hashd-title: #f8f9fc;
+// Darker industrial graphite for natural squared HASHD look (prep slice).
+$hashd-surface: #0c0f14;
+$hashd-card: #080b10;
+$hashd-border: #22262e;
+$hashd-muted: #8a909c;
+$hashd-text: #e6e8ee;
+$hashd-title: #f4f6fa;
 $hashd-green: #5fd38d;
-$shell-radius: 22px;
+
+// Squared industrial — no soft app rounding. 0 for hard plates, 2px max for micro-insets.
+$shell-radius: 0;
+$hashd-surface-radius: 2px;
+$hashd-inset-radius: 0;
 
 // Transfers tab = canonical surface/inset rhythm for all hub admin panes.
+// Squared + darker natural graphite (see top vars). Small 2px only on surface cards for subtle plate edge.
 $hashd-page-stack: 12px;
 $hashd-surface-pad: 14px;
 $hashd-surface-gap: 10px;
-$hashd-surface-radius: 10px;
-$hashd-surface-border: rgba(255, 255, 255, 0.08);
-$hashd-surface-bg: rgba(0, 0, 0, 0.28);
+$hashd-surface-border: rgba(255, 255, 255, 0.06);
+$hashd-surface-bg: rgba(0, 0, 0, 0.45);
 $hashd-inset-pad: 12px;
 $hashd-inset-pad-tight: 10px 12px;
-$hashd-inset-radius: 8px;
-$hashd-inset-border: rgba(255, 255, 255, 0.06);
-$hashd-inset-bg: rgba(0, 0, 0, 0.35);
+$hashd-inset-border: rgba(255, 255, 255, 0.04);
+$hashd-inset-bg: rgba(0, 0, 0, 0.55);
 
 // Promoted from bitcoinmining/ (Jun 2026) — imports must reach package-wide shared SCSS.
 @import "../../../../bitcoinmining/LpUiChrome.scss";
@@ -69,7 +73,8 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		border: 1px solid $hashd-border;
 		border-radius: $shell-radius;
 		overflow: hidden;
-		box-shadow: 0 28px 64px rgba(0, 0, 0, 0.72);
+		// Grounded industrial panel — less floating app shadow, more rackmount plate.
+		box-shadow: 0 6px 18px rgba(0, 0, 0, 0.55);
 		pointer-events: all;
 	}
 
@@ -330,7 +335,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	.pin-dot {
 		width: 14px;
 		height: 14px;
-		border-radius: 999px;
+		border-radius: 0;
 		border: 2px solid rgba(240, 165, 0, 0.35);
 		background-color: transparent;
 
@@ -366,7 +371,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		border-radius: 14px;
+		border-radius: 0; // squared pin keys for industrial gate
 		background-color: $hashd-card;
 		border: 1px solid $hashd-border;
 		color: $hashd-title;
@@ -409,6 +414,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 
 	.wallet-card {
 		max-width: 520px;
+		border-radius: $hashd-surface-radius;
 		border-left: 4px solid $hashd-amber;
 	}
 
@@ -438,7 +444,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		align-items: center;
 		justify-content: center;
 		margin-bottom: 22px;
-		border-radius: 14px;
+		border-radius: $hashd-surface-radius;
 		background-color: rgba(232, 125, 62, 0.14);
 		border: 1px solid rgba(232, 125, 62, 0.35);
 		box-shadow: 0 0 18px rgba(232, 125, 62, 0.12);
@@ -480,7 +486,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		align-items: center;
 		justify-content: center;
 		position: relative;
-		border-radius: 14px;
+		border-radius: 0; // squared nav for natural industrial menu
 		background-color: transparent;
 		border: 1px solid transparent;
 		color: #6f7785;
@@ -509,7 +515,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		right: 8px;
 		width: 9px;
 		height: 9px;
-		border-radius: 999px;
+		border-radius: 0;
 		background-color: #f59e0b;
 		border: 2px solid #12141a;
 		box-shadow: 0 0 8px rgba(245, 158, 11, 0.55);
@@ -519,7 +525,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	.sidebar-avatar {
 		width: 38px;
 		height: 38px;
-		border-radius: 999px;
+		border-radius: 0;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -533,7 +539,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		.sidebar-avatar-img {
 			width: 100%;
 			height: 100%;
-			border-radius: 999px;
+			border-radius: 0;
 		}
 
 		.sidebar-avatar-fallback {
@@ -599,7 +605,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		height: auto;
 		min-height: 36px;
 		padding: 8px 14px;
-		border-radius: 999px;
+		border-radius: 0;
 		background-color: $hashd-card;
 		border: 1px solid $hashd-border;
 		color: $hashd-text;
@@ -705,7 +711,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 				right: 8px;
 				width: 7px;
 				height: 7px;
-				border-radius: 999px;
+				border-radius: 0;
 				background-color: $hashd-amber;
 				box-shadow: 0 0 8px rgba(240, 165, 0, 0.45);
 			}
@@ -724,7 +730,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		gap: 10px;
 		height: 36px;
 		padding: 4px 12px 4px 6px;
-		border-radius: 999px;
+		border-radius: 0;
 		background-color: $hashd-card;
 		border: 1px solid $hashd-border;
 		cursor: pointer;
@@ -764,7 +770,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		position: relative;
 		width: 36px;
 		height: 20px;
-		border-radius: 999px;
+		border-radius: 0;
 		background-color: rgba(0, 0, 0, 0.45);
 		border: 1px solid rgba(255, 255, 255, 0.12);
 		flex-shrink: 0;
@@ -776,7 +782,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		left: 2px;
 		width: 14px;
 		height: 14px;
-		border-radius: 999px;
+		border-radius: 0;
 		background-color: #6b7280;
 		transition: left 0.12s ease, background-color 0.12s ease;
 	}
@@ -900,7 +906,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		gap: 8px;
 		flex-shrink: 0;
 		padding: 7px 14px;
-		border-radius: 999px;
+		border-radius: 0;
 		background-color: rgba(255, 255, 255, 0.03);
 		border: 1px solid $hashd-border;
 		color: #aeb8cb;
@@ -911,7 +917,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		.dot {
 			width: 7px;
 			height: 7px;
-			border-radius: 999px;
+			border-radius: 0;
 			background-color: #6b7280;
 		}
 
@@ -1491,7 +1497,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 
 	.rack-badge {
 		padding: 4px 10px;
-		border-radius: 999px;
+		border-radius: 0;
 		background-color: rgba(255, 255, 255, 0.06);
 		border: 1px solid $hashd-border;
 		color: #aeb8cb;
@@ -1884,7 +1890,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		max-width: 360px;
 		margin-top: 6px;
 		padding: 10px 14px;
-		border-radius: 8px;
+		border-radius: 0;
 		border: 1px solid $hashd-border;
 		background-color: rgba(255, 255, 255, 0.03);
 		color: $hashd-muted;
@@ -1989,7 +1995,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		gap: 10px;
 		margin-top: 10px;
 		padding: 12px 16px;
-		border-radius: 8px;
+		border-radius: 0;
 		background-color: rgba(239, 107, 95, 0.1);
 		border: 1px solid rgba(239, 107, 95, 0.45);
 		color: #ef6b5f;
@@ -2024,7 +2030,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		gap: 10px;
 		margin-top: 10px;
 		padding: 12px 16px;
-		border-radius: 8px;
+		border-radius: 0;
 		background-color: rgba(0, 200, 83, 0.1);
 		border: 1px solid rgba(0, 200, 83, 0.42);
 		color: #00c853;
@@ -2111,7 +2117,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		flex-direction: column;
 		gap: 8px;
 		padding: 18px 20px;
-		border-radius: 16px;
+		border-radius: 0;
 		background-color: $hashd-card;
 		border: 1px solid $hashd-border;
 	}
@@ -2147,7 +2153,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 
 	.tag-pill {
 		padding: 4px 10px;
-		border-radius: 999px;
+		border-radius: 0;
 		background-color: rgba(255, 255, 255, 0.05);
 		border: 1px solid $hashd-border;
 		color: #aeb8cb;
@@ -2267,7 +2273,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		align-items: center;
 		gap: 12px;
 		padding: 10px 12px;
-		border-radius: 12px;
+		border-radius: 0;
 		background-color: rgba(255, 255, 255, 0.02);
 		border: 1px solid rgba(255, 255, 255, 0.04);
 	}
@@ -2279,7 +2285,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		border-radius: 12px;
+		border-radius: 0;
 		background-color: rgba(240, 165, 0, 0.1);
 
 		.material-icons {
@@ -2310,7 +2316,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	.status-pill {
 		flex-shrink: 0;
 		padding: 5px 10px;
-		border-radius: 999px;
+		border-radius: 0;
 		font-size: 10px;
 		font-weight: 700;
 		letter-spacing: 0.04em;
@@ -2334,7 +2340,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		align-items: center;
 		gap: 10px;
 		padding: 12px 14px;
-		border-radius: 12px;
+		border-radius: 0;
 		background-color: rgba(240, 165, 0, 0.06);
 		border: 1px solid rgba(240, 165, 0, 0.18);
 		color: #c7d0df;
@@ -2373,7 +2379,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		justify-content: center;
 		gap: 8px;
 		padding: 22px 12px;
-		border-radius: 16px;
+		border-radius: 0;
 		background-color: $hashd-card;
 		border: 1px solid $hashd-border;
 
@@ -2426,14 +2432,14 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 
 	.gauge-track {
 		height: 8px;
-		border-radius: 999px;
+		border-radius: 0;
 		background-color: rgba(255, 255, 255, 0.06);
 		overflow: hidden;
 	}
 
 	.gauge-fill {
 		height: 100%;
-		border-radius: 999px;
+		border-radius: 0;
 		background-color: rgba(255, 255, 255, 0.18);
 		min-width: 4px;
 
@@ -2446,7 +2452,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	.cta-pill {
 		width: 100%;
 		padding: 12px 16px;
-		border-radius: 999px;
+		border-radius: 0;
 		background-color: $hashd-amber;
 		border: 1px solid $hashd-amber;
 		color: #12100c;
@@ -2481,7 +2487,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		justify-content: center;
 		gap: 10px;
 		padding: 36px 24px;
-		border-radius: 16px;
+		border-radius: 0;
 		background-color: $hashd-card;
 		border: 1px solid rgba(255, 255, 255, 0.12);
 		color: $hashd-muted;
@@ -2497,7 +2503,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 
 	.ghost {
 		padding: 8px 12px;
-		border-radius: 999px;
+		border-radius: 0;
 		background-color: rgba(255, 255, 255, 0.04);
 		border: 1px solid rgba(255, 255, 255, 0.1);
 		color: #d5dbe7;
@@ -2675,7 +2681,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		justify-content: center;
 		height: 34px;
 		padding: 0 10px;
-		border-radius: 999px;
+		border-radius: 0;
 		border: 1px solid rgba(255, 255, 255, 0.1);
 		background-color: rgba(255, 255, 255, 0.04);
 		color: #9aa6ba;
@@ -2752,7 +2758,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		gap: 0;
 		width: 100%;
 		min-height: 46px;
-		border-radius: 8px;
+		border-radius: 0;
 		overflow: hidden;
 		background-color: rgba(0, 0, 0, 0.24);
 		border: 1px solid rgba(232, 125, 62, 0.22);
@@ -2874,7 +2880,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 
 	.lp-ui-empty-callout-badge {
 		padding: 4px 10px;
-		border-radius: 999px;
+		border-radius: 0;
 		border: 1px solid rgba($hashd-amber-glow, 0.45);
 		background-color: rgba($hashd-amber, 0.18);
 		color: $hashd-amber-glow;
@@ -2892,7 +2898,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		width: 56px;
 		height: 56px;
 		margin-top: 2px;
-		border-radius: 16px;
+		border-radius: 0;
 		border: 1px solid rgba($hashd-amber, 0.4);
 		background-color: rgba($hashd-amber, 0.14);
 		box-shadow: 0 0 18px rgba($hashd-amber, 0.22);
@@ -2978,7 +2984,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	min-height: 0;
 	background-color: #000000;
 	border: 1px solid #374151;
-	border-radius: 22px;
+	border-radius: $shell-radius;
 	overflow: hidden;
 	box-shadow: 0 28px 64px rgba(0, 0, 0, 0.72);
 	pointer-events: all;
@@ -2992,8 +2998,8 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	overflow: hidden;
 	background-color: #000000;
 	border: 0;
-	border-top-left-radius: 22px;
-	border-top-right-radius: 22px;
+	border-top-left-radius: $shell-radius;
+	border-top-right-radius: $shell-radius;
 }
 
 // Flat — PIN gate (nested .pin-* rules are dropped by s&box — full layout here).
@@ -3004,8 +3010,8 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	flex-direction: column;
 	background-color: #000000;
 	overflow: hidden;
-	border-top-left-radius: 22px;
-	border-top-right-radius: 22px;
+	border-top-left-radius: $shell-radius;
+	border-top-right-radius: $shell-radius;
 }
 
 .lp-bitcoin-ops .pin-header {
@@ -3018,10 +3024,10 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	padding-right: 20px;
 	padding-bottom: 16px;
 	padding-left: 20px;
-	background-color: #15181f;
+	background-color: $hashd-surface;
 	border-bottom: 1px solid #374151;
-	border-top-left-radius: 22px;
-	border-top-right-radius: 22px;
+	border-top-left-radius: $shell-radius;
+	border-top-right-radius: $shell-radius;
 }
 
 .lp-bitcoin-ops .pin-brand {
@@ -3098,7 +3104,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 .lp-bitcoin-ops .pin-dot {
 	width: 14px;
 	height: 14px;
-	border-radius: 999px;
+	border-radius: 0;
 	border: 2px solid rgba(240, 165, 0, 0.35);
 	background-color: transparent;
 }
@@ -3137,7 +3143,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	align-items: center;
 	justify-content: center;
 	border-radius: 14px;
-	background-color: #12151a;
+	background-color: $hashd-card;
 	border: 1px solid #374151;
 	color: #f8f9fc;
 	font-size: 18px;
@@ -3217,11 +3223,11 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 }
 
 .lp-bitcoin-ops .lp-window-watermark.lp-window-watermark--rounded {
-	border-radius: 0 0 22px 22px;
+	border-radius: 0 0 $shell-radius $shell-radius;
 }
 
 .lp-bitcoin-ops .lp-window-watermark.lp-window-watermark--rounded .lp-source-footer {
-	border-radius: 0 0 22px 22px;
+	border-radius: 0 0 $shell-radius $shell-radius;
 }
 
 .lp-bitcoin-ops .hub-body {
@@ -3231,8 +3237,8 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	flex-direction: column;
 	overflow: hidden;
 	background-color: #000000;
-	border-top-left-radius: 22px;
-	border-top-right-radius: 22px;
+	border-top-left-radius: $shell-radius;
+	border-top-right-radius: $shell-radius;
 }
 
 .lp-bitcoin-ops .hub-main {
@@ -3242,8 +3248,8 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	flex-direction: row;
 	overflow: hidden;
 	background-color: #000000;
-	border-top-left-radius: 22px;
-	border-top-right-radius: 22px;
+	border-top-left-radius: $shell-radius;
+	border-top-right-radius: $shell-radius;
 }
 
 .lp-bitcoin-ops .sidebar {
@@ -3256,9 +3262,9 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	padding-right: 10px;
 	padding-bottom: 14px;
 	padding-left: 10px;
-	background-color: #15181f;
+	background-color: $hashd-surface;
 	border-right: 1px solid #374151;
-	border-top-left-radius: 22px;
+	border-top-left-radius: $shell-radius;
 	overflow: hidden;
 }
 
@@ -3326,7 +3332,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	right: 8px;
 	width: 9px;
 	height: 9px;
-	border-radius: 999px;
+	border-radius: 0;
 	background-color: #f59e0b;
 	border: 2px solid #12141a;
 	box-shadow: 0 0 8px rgba(245, 158, 11, 0.55);
@@ -3347,7 +3353,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 .lp-bitcoin-ops .sidebar-avatar {
 	width: 38px;
 	height: 38px;
-	border-radius: 999px;
+	border-radius: 0;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
@@ -3364,7 +3370,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 .lp-bitcoin-ops .sidebar-avatar .sidebar-avatar-img {
 	width: 100%;
 	height: 100%;
-	border-radius: 999px;
+	border-radius: 0;
 }
 
 .lp-bitcoin-ops .workspace {
@@ -3373,8 +3379,8 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	min-height: 0;
 	display: flex;
 	flex-direction: column;
-	background-color: #15181f;
-	border-top-right-radius: 22px;
+	background-color: $hashd-surface;
+	border-top-right-radius: $shell-radius;
 	overflow: hidden;
 }
 
@@ -3392,8 +3398,8 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	padding-bottom: 12px;
 	padding-left: 22px;
 	border-bottom: 1px solid #374151;
-	background-color: #15181f;
-	border-top-right-radius: 22px;
+	background-color: $hashd-surface;
+	border-top-right-radius: $shell-radius;
 }
 
 .lp-bitcoin-ops .hub-header .hub-title {
@@ -3466,7 +3472,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	padding-bottom: 16px;
 	padding-left: 16px;
 	overflow: hidden;
-	background-color: #15181f;
+	background-color: $hashd-surface;
 }
 
 .lp-bitcoin-ops .pane.wallet,
@@ -3606,7 +3612,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	padding-right: 18px;
 	padding-bottom: 7px;
 	padding-left: 18px;
-	border-radius: 8px;
+	border-radius: 0;
 	border: 1px solid rgba(255, 255, 255, 0.28);
 	background-color: rgba(255, 255, 255, 0.10);
 	color: $hashd-text;
@@ -3697,7 +3703,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	padding-right: 8px;
 	padding-bottom: 3px;
 	padding-left: 8px;
-	border-radius: 999px;
+	border-radius: 0;
 	border: 1px solid rgba(255, 255, 255, 0.1);
 	background-color: transparent;
 	color: #9ca3af;
@@ -3733,7 +3739,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 .lp-bitcoin-ops .pane.wallet .lp-ui-info {
 	margin-bottom: 12px;
 	padding: 12px;
-	border-radius: 8px;
+	border-radius: 0;
 	background-color: rgba(0, 0, 0, 0.35);
 	border: 1px solid rgba(255, 255, 255, 0.06);
 }
@@ -4144,7 +4150,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	padding-right: 14px;
 	padding-bottom: 12px;
 	padding-left: 14px;
-	border-radius: 8px;
+	border-radius: 0;
 	border: 1px solid rgba(255, 255, 255, 0.08);
 	background-color: rgba(0, 0, 0, 0.28);
 }
@@ -4457,7 +4463,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	padding-right: 16px;
 	padding-bottom: 14px;
 	padding-left: 16px;
-	border-radius: 8px;
+	border-radius: 0;
 	background-color: rgba(0, 0, 0, 0.35);
 	border: 1px solid rgba(255, 255, 255, 0.06);
 }
@@ -4509,7 +4515,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	padding-right: 16px;
 	padding-bottom: 14px;
 	padding-left: 16px;
-	border-radius: 8px;
+	border-radius: 0;
 	border: 1px solid rgba(255, 255, 255, 0.06);
 	background-color: rgba(0, 0, 0, 0.35);
 }
@@ -4605,7 +4611,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	min-height: 0;
 	padding: 0;
 	overflow: hidden;
-	background-color: #15181f;
+	background-color: $hashd-surface;
 }
 
 .lp-bitcoin-ops .pane.wallet > .wallet-panel,
@@ -4735,7 +4741,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	padding-right: 12px;
 	padding-bottom: 12px;
 	padding-left: 12px;
-	border-radius: 8px;
+	border-radius: 0;
 	border: 1px solid rgba(255, 255, 255, 0.06);
 	background-color: rgba(0, 0, 0, 0.35);
 	overflow: hidden;
@@ -4789,7 +4795,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	padding-right: 6px;
 	padding-bottom: 1px;
 	padding-left: 6px;
-	border-radius: 999px;
+	border-radius: 0;
 	border: 1px solid rgba(255, 255, 255, 0.1);
 	background-color: rgba(0, 0, 0, 0.25);
 	color: #f8f9fc;
@@ -4932,7 +4938,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	padding-right: 12px;
 	padding-bottom: 12px;
 	padding-left: 12px;
-	border-radius: 8px;
+	border-radius: 0;
 	background-color: rgba(0, 0, 0, 0.35);
 	border: 1px solid rgba(255, 255, 255, 0.06);
 }
@@ -4988,7 +4994,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	padding-right: 10px;
 	padding-bottom: 10px;
 	padding-left: 10px;
-	border-radius: 8px;
+	border-radius: 0;
 	background-color: rgba(0, 0, 0, 0.28);
 	border: 1px solid rgba(255, 255, 255, 0.08);
 	overflow: visible;
@@ -5352,7 +5358,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	padding-right: 14px;
 	padding-bottom: 8px;
 	padding-left: 14px;
-	border-radius: 999px;
+	border-radius: 0;
 	background-color: $hashd-card;
 	border: 1px solid $hashd-border;
 	color: $hashd-text;
@@ -5412,7 +5418,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	padding-right: 12px;
 	padding-bottom: 4px;
 	padding-left: 6px;
-	border-radius: 999px;
+	border-radius: 0;
 	background-color: $hashd-card;
 	border: 1px solid $hashd-border;
 }
@@ -5429,7 +5435,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	position: relative;
 	width: 38px;
 	height: 22px;
-	border-radius: 999px;
+	border-radius: 0;
 	background-color: rgba(0, 0, 0, 0.45);
 	border: 1px solid rgba(255, 255, 255, 0.12);
 	flex-shrink: 0;
@@ -5455,7 +5461,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	left: 2px;
 	width: 16px;
 	height: 16px;
-	border-radius: 999px;
+	border-radius: 0;
 	background-color: #ffffff;
 }
 
@@ -5501,7 +5507,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 .lp-bitcoin-ops .lp-ui-status-dot {
 	width: 8px;
 	height: 8px;
-	border-radius: 999px;
+	border-radius: 0;
 	background-color: #6b7280;
 	flex-shrink: 0;
 }
@@ -5576,7 +5582,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	padding-right: 12px;
 	padding-bottom: 12px;
 	padding-left: 12px;
-	border-radius: 8px;
+	border-radius: 0;
 	background-color: rgba(0, 0, 0, 0.35);
 	border: 1px solid rgba(255, 255, 255, 0.06);
 }
@@ -5654,7 +5660,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	padding-right: 10px;
 	padding-bottom: 8px;
 	padding-left: 10px;
-	border-radius: 8px;
+	border-radius: 0;
 	background-color: rgba(0, 0, 0, 0.35);
 	border: 1px solid rgba(255, 255, 255, 0.06);
 }
@@ -5708,7 +5714,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	padding-right: 12px;
 	padding-bottom: 10px;
 	padding-left: 12px;
-	border-radius: 8px;
+	border-radius: 0;
 	background-color: rgba(0, 0, 0, 0.35);
 	border: 1px solid rgba(255, 255, 255, 0.06);
 }
@@ -5751,7 +5757,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	padding-right: 12px;
 	padding-bottom: 10px;
 	padding-left: 12px;
-	border-radius: 8px;
+	border-radius: 0;
 	background-color: rgba(0, 0, 0, 0.35);
 	border: 1px solid rgba(255, 255, 255, 0.06);
 }
@@ -5782,7 +5788,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	padding-right: 10px;
 	padding-bottom: 8px;
 	padding-left: 10px;
-	border-radius: 8px;
+	border-radius: 0;
 	background-color: rgba(0, 0, 0, 0.35);
 	border: 1px solid rgba(255, 255, 255, 0.06);
 }
@@ -5990,7 +5996,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	padding-right: 10px;
 	padding-bottom: 14px;
 	padding-left: 10px;
-	border-radius: 8px;
+	border-radius: 0;
 	border: 1px solid rgba(255, 255, 255, 0.08);
 	background-color: rgba(0, 0, 0, 0.22);
 }
@@ -6356,7 +6362,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	gap: 12px;
 	padding: 10px 12px;
 	border: 1px solid rgba(255, 255, 255, 0.12);
-	border-radius: 8px;
+	border-radius: 0;
 	background: rgba(8, 12, 18, 0.55);
 }
 
@@ -6416,7 +6422,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	gap: 3px;
 	padding: 10px 12px;
 	border: 1px solid rgba(255, 255, 255, 0.11);
-	border-radius: 8px;
+	border-radius: 0;
 	background: rgba(8, 12, 18, 0.55);
 }
 
@@ -6495,7 +6501,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 	.upgrade-rack-chip {
 		flex: 0 0 auto;
 		padding: 8px 18px;
-		border-radius: 8px;
+		border-radius: 0;
 		border: 1px solid $hashd-border;
 		background-color: $hashd-inset-bg;
 		color: $hashd-muted;
@@ -6547,7 +6553,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		min-height: 84px;
 		max-height: 140px;
 		padding: 18px 20px;
-		border-radius: 12px;
+		border-radius: 0; // squared tiles — natural rack hardware menu
 		border: 1px solid $hashd-border;
 		background-color: $hashd-inset-bg;
 		text-align: left;
@@ -6733,7 +6739,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		flex-basis: 0;
 		min-width: 84px;
 		padding: 8px 4px;
-		border-radius: 8px;
+		border-radius: 0;
 		border: 1px solid $hashd-inset-border;
 		background-color: $hashd-inset-bg;
 		cursor: pointer;
@@ -7102,7 +7108,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.35);
 		gap: 8px;
 		width: 100%;
 		padding: 10px 12px;
-		border-radius: 8px;
+		border-radius: 0;
 		border: 1px solid rgba(232, 125, 62, 0.25);
 		background-color: rgba(232, 125, 62, 0.06);
 		color: $hashd-amber-glow;
