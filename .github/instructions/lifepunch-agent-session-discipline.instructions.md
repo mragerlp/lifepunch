@@ -23,9 +23,9 @@ do not re-derive them from long chats.
    ```
    If **behind upstream AND dirty working tree**: **STOP**. Tell Bloodwave — commit or stash first.
 3. **Read law in order:**
-   - `lifepunch/addons/docs/ACTIVE_WORKSTREAM.md` (hard gate)
-   - `lifepunch/addons/docs/BITCOIN_SHIP_ROADMAP.md` (step order, quality bar, handoff)
-   - `lifepunch/addons/docs/LPBITCOIN_TODAY_CHECKLIST.md` (today's steps)
+   - `lifepunchaddons/docs/ACTIVE_WORKSTREAM.md` (hard gate)
+   - `lifepunchaddons/docs/BITCOIN_SHIP_ROADMAP.md` (step order, quality bar, handoff)
+   - `lifepunchaddons/docs/LPBITCOIN_TODAY_CHECKLIST.md` (today's steps)
    - Lane docs referenced by the active workstream only — not the whole monorepo.
 4. **After reboot or Green Cursor work:** wire full capacity before s&box MCP:
    ```powershell

@@ -8,7 +8,7 @@ sourceRule: ".cursor/rules/lifepunch-digital-machine.mdc"
 
 # LifePunch — Digital Machine Standard
 
-**Canonical:** `lifepunch/addons/docs/LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md`
+**Canonical:** `lifepunchaddons/docs/LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md`
 
 ## Core law
 

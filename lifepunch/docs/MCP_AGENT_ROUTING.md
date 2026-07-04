@@ -243,3 +243,24 @@ write (contained Razor/SCSS/C# cleanup, read-only view models, patch-ready diffs
 5. **Screenshot + scale vs citizen** → Red `sbox`
 6. **Powered emissive / grille** → Red `sbox` (+ `sbox-editor` if material)
 7. **Portal publish** → Red script + Opus review — **not** until owner visual sign-off
+
+---
+
+## Cursor plugins (pruned July 2026 — 23 → 9)
+
+Rule: `.cursor/rules/lifepunch-cursor-plugins.mdc`. Plugins are **separate from the four s&box MCP
+servers** above — game work always routes through `sbox` / `sbox-editor` / `sbox-jtc` / `cornerman-lm`.
+
+| Plugin | Route to it for |
+|---|---|
+| **Cloudflare** | lifepunch.co worker: deploys, build logs, observability, platform docs — use its MCPs over memory |
+| **Stripe** | Website payment processing — read `stripe-best-practices` skill before touching payment surfaces |
+| **GitLab** | Partner-lane repos (`gitlab.com/mragerlp`) — issues/MRs via MCP, not raw remotes |
+| **Aikido** | Security scans of LifePunch repos (trial — owner-initiated) |
+| **Agent Compatibility** | Repo agent-readiness audits (`compatibility-scan-review`) |
+| **Continual Learning** | `AGENTS.md` memory upkeep after canon/handoff sessions |
+| **Cursor Team Kit** | PR-lane workflow skills: `fix-ci`, `verify-this`, `review-and-ship`, `deslop` |
+| **Docs Canvas / PR Review Canvas** | Interactive doc/diff rendering when presenting analysis |
+
+**Do not install new plugins without owner sign-off.** Removed (do not assume present): Convex, Sentry,
+Datadog, Grafana, PagerDuty, Arize, Linear, Notion, Slack, Auth0, Browserbase, 1Password, Figma.

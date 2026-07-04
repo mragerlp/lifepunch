@@ -8,10 +8,11 @@ sourceRule: ".cursor/rules/lifepunch-active-workstream-gate.mdc"
 
 # LifePunch — Active Workstream Gate (HARD LAW)
 
-**Canonical gate:** `lifepunch/addons/docs/ACTIVE_WORKSTREAM.md`  
-**Ship roadmap (handoff):** `lifepunch/addons/docs/BITCOIN_SHIP_ROADMAP.md`  
-**Publish staging law:** `lifepunch/addons/docs/DXRP_ADDON_PUBLISH_DOCTRINE.md` (folder=slug; PLACEHOLDER hands-off)  
-**Production laws:** `lifepunch/addons/docs/CYBER_REFERENCE_LAWS.md` (Laws 1–11)
+**Canonical gate:** `lifepunchaddons/docs/ACTIVE_WORKSTREAM.md`  
+**Ship roadmap (handoff):** `lifepunchaddons/docs/BITCOIN_SHIP_ROADMAP.md`  
+**Publish staging law:** `lifepunchaddons/docs/DXRP_ADDON_PUBLISH_DOCTRINE.md` (folder=slug; PLACEHOLDER hands-off)  
+**Production laws:** `lifepunchaddons/docs/CYBER_REFERENCE_LAWS.md` (Laws 1–11)  
+**Lane:** this gate governs **private LIFEPUNCH work** in `C:\Users\jared\Projects\lifepunch` on `develop`. **Official DXRP upstream PRs** live only in the separate `C:\Users\jared\Projects\dxrp-public` (from `upstream/develop`) — never mix IP / headers / paths (see `DXRP_CONTRIBUTOR_LANE.md`).
 
 ## Session start (mandatory — before any edit)
 
@@ -37,8 +38,8 @@ Before adding functionality, state what Hacker / Banker / Government will reuse.
 
 ## Done = proof, not opinion
 
-- Phase A hub work is **NOT DONE** without proof package (day, night, USE, citizen comparison, 30s clip).
-- **Flatgrass is the truth** — editor screenshots do not count (Law 5).
+- Phase A hub work is **NOT DONE** without its proof package (day, night, USE, citizen comparison, 30s clip).
+- **Runtime proof before "done"** — for gameplay/UI, use flatgrass / `lp_map_flatgrass` when appropriate as the low-demand proof map; editor-only preview is not sign-off. Flatgrass is not a universal requirement for every change (Law 5).
 - **No Phase B** until Phase A every DONE box checked + owner H10 sign-off.
 
 ## Visual & brand

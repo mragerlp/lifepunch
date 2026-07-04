@@ -17,6 +17,35 @@ export default {
         const isSbox = userAgent.includes("sbox") || path.startsWith("/sbox") || url.searchParams.get("sbox") === "true";
         const isEmbed = url.searchParams.get("embed") === "true" || isSbox;
 
+        // --- SECURITY HEADERS (CSP + HSTS) ---
+        // Inline scripts/styles are used throughout the generated HTML, so 'unsafe-inline'
+        // stays until pages move to nonced scripts. Embed/sbox pages must remain frameable.
+        const buildSecurityHeaders = (embed) => {
+            const csp = [
+                "default-src 'self'",
+                "script-src 'self' 'unsafe-inline'",
+                "style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com",
+                "font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com",
+                "img-src 'self' data: https:",
+                "connect-src 'self'",
+                "object-src 'none'",
+                "base-uri 'self'",
+                "form-action 'self'",
+                embed ? "frame-ancestors *" : "frame-ancestors 'none'"
+            ].join("; ");
+
+            const headers = {
+                "Content-Security-Policy": csp,
+                "Strict-Transport-Security": "max-age=31536000; includeSubDomains"
+            };
+
+            if (!embed) {
+                headers["X-Frame-Options"] = "DENY";
+            }
+
+            return headers;
+        };
+
         // --- COOKIE HELPERS ---
         const getCookie = (name) => {
             const cookies = request.headers.get("Cookie");
@@ -4354,12 +4383,10 @@ export default {
                 "Content-Type": "text/html;charset=UTF-8",
                 "X-Content-Type-Options": "nosniff",
                 "Referrer-Policy": "strict-origin-when-cross-origin",
-                "Access-Control-Allow-Origin": "*"
+                "Access-Control-Allow-Origin": "*",
+                ...buildSecurityHeaders(isEmbed)
             };
 
-            if (!isEmbed) {
-                responseHeaders["X-Frame-Options"] = "DENY";
-            }
             return new Response(finalHtml, { headers: responseHeaders });
         }
 
@@ -6618,14 +6645,9 @@ export default {
             "Content-Type": "text/html;charset=UTF-8",
             "X-Content-Type-Options": "nosniff",
             "Referrer-Policy": "strict-origin-when-cross-origin",
-            "Access-Control-Allow-Origin": "*"
+            "Access-Control-Allow-Origin": "*",
+            ...buildSecurityHeaders(isEmbed)
         };
-
-        if (isEmbed) {
-            responseHeaders["Content-Security-Policy"] = "frame-ancestors *;";
-        } else {
-            responseHeaders["X-Frame-Options"] = "DENY";
-        }
 
         if (path === "/rules" || path === "/rules/raw") {
             responseHeaders["Cache-Control"] = "public, max-age=120, stale-while-revalidate=600";
