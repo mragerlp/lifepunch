@@ -2248,13 +2248,12 @@ export default {
             img, video { max-width: 100%; }
             html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 
-            /* Account pill — pinned to the true top-right of the viewport on all sizes.
-               position: fixed escapes the centered 900px container so it no longer
-               floats mid-screen on wide desktops. */
+            /* Account pill — top-right of the site column (not the monitor edge).
+               Fixed + calc keeps it aligned with the 900px container on wide screens. */
             .account-pill {
                 position: fixed;
                 top: 12px;
-                right: 16px;
+                right: max(20px, calc((100vw - min(900px, 100vw)) / 2 + 20px));
                 z-index: 100;
             }
 
@@ -2264,8 +2263,11 @@ export default {
                 h1 { font-size: 34px; letter-spacing: -1px; }
                 .logo { width: 100px; margin-bottom: 10px; }
                 header { padding-top: 26px; }
-                /* Keep pill top-right on mobile too, just smaller */
-                .account-pill { top: 8px; right: 10px; }
+                /* Keep pill top-right of content column on mobile, scaled down */
+                .account-pill {
+                    top: 8px;
+                    right: max(14px, calc((100vw - min(900px, 100vw)) / 2 + 14px));
+                }
                 .account-pill > div,
                 .account-pill > a {
                     padding: 5px 10px !important;
