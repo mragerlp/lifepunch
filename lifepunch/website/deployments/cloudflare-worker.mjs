@@ -2114,29 +2114,31 @@ export default {
                 navigation: auto;
             }
 
+            /* Opacity-only: a transform here would make .container the containing
+               block for the fixed .account-pill, pinning it to the 900px column
+               instead of the viewport corner. */
             @keyframes pageReveal {
-                0% { opacity: 0; transform: translateY(10px) scale(0.98); }
-                100% { opacity: 1; transform: translateY(0) scale(1); }
+                0% { opacity: 0; }
+                100% { opacity: 1; }
             }
 
-            /* Custom Scrollbar */
+            /* Custom Scrollbar (slim, transparent track so it doesn't read as a full-height bar) */
             ::-webkit-scrollbar {
-                width: 10px;
+                width: 8px;
             }
             ::-webkit-scrollbar-track {
-                background: var(--surface);
+                background: transparent;
             }
             ::-webkit-scrollbar-thumb {
-                background: var(--lp-blue);
-                border-radius: 10px;
-                border: 2px solid var(--bg);
+                background: rgba(var(--lp-blue-rgb), 0.55);
+                border-radius: 8px;
             }
             ::-webkit-scrollbar-thumb:hover {
-                background: var(--lp-blue-hover);
+                background: var(--lp-blue);
             }
             * {
                 scrollbar-width: thin;
-                scrollbar-color: var(--lp-blue) var(--surface);
+                scrollbar-color: rgba(var(--lp-blue-rgb), 0.55) transparent;
             }
             html {
                 scrollbar-gutter: stable;
@@ -2246,11 +2248,13 @@ export default {
             img, video { max-width: 100%; }
             html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 
-            /* Account pill (top-right on desktop, inline on mobile) */
+            /* Account pill — pinned to the true top-right of the viewport on all sizes.
+               position: fixed escapes the centered 900px container so it no longer
+               floats mid-screen on wide desktops. */
             .account-pill {
-                position: absolute;
-                top: 10px;
-                right: 20px;
+                position: fixed;
+                top: 12px;
+                right: 16px;
                 z-index: 100;
             }
 
@@ -2259,14 +2263,35 @@ export default {
                 .container { padding: 20px 14px; }
                 h1 { font-size: 34px; letter-spacing: -1px; }
                 .logo { width: 100px; margin-bottom: 10px; }
-                .account-pill {
-                    position: static;
-                    display: flex;
-                    justify-content: center;
-                    margin-bottom: 14px;
+                header { padding-top: 26px; }
+                /* Keep pill top-right on mobile too, just smaller */
+                .account-pill { top: 8px; right: 10px; }
+                .account-pill > div,
+                .account-pill > a {
+                    padding: 5px 10px !important;
+                    gap: 7px !important;
                 }
-                .links { padding-bottom: 20px; margin-bottom: 20px; }
-                .links a { padding: 12px 14px; margin: 4px 3px; font-size: 11px; }
+                .account-pill a { font-size: 10px !important; }
+                .account-pill span { height: 14px !important; }
+                /* Nav tabs: even 3x2 grid, order preserved left-to-right */
+                .links {
+                    padding-bottom: 20px;
+                    margin-bottom: 20px;
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
+                    gap: 8px;
+                }
+                .links a {
+                    margin: 0;
+                    padding: 12px 6px;
+                    font-size: 11px;
+                    display: block;
+                    text-align: center;
+                    box-sizing: border-box;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
                 .sub-h { letter-spacing: 1px; }
                 footer { padding: 20px 14px; }
                 /* Prevent iOS zoom-on-focus (inputs must be >=16px) */
@@ -2274,7 +2299,8 @@ export default {
             }
             @media (max-width: 380px) {
                 h1 { font-size: 28px; }
-                .links a { padding: 11px 10px; margin: 3px 2px; font-size: 10px; }
+                .links { grid-template-columns: repeat(2, 1fr); gap: 6px; }
+                .links a { padding: 11px 6px; font-size: 10px; }
             }
         </style>
         `;
