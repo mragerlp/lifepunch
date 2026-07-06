@@ -18,7 +18,7 @@
 | 2 | **S&box API Tools** (`alexistb2904.sbox-api-tools`) | ✅ Installed via VSIX v0.1.0 (not in Cursor marketplace index) |
 | 3 | **Slang** (`shader-slang.slang-language-extension`) | ✅ v2.0.10 — `.shader`/`.hlsl` highlighting, VFX intellisense; `slang.workspaceFlavor: vfx` in `lifepunchaddons/.vscode/settings.json` |
 | 4 | **SboxShare** | Editor Library Manager only — not Cursor |
-| 5 | **Open folder** | `C:\Users\jared\Projects\lifepunchdxrp\lifepunchaddons\` (not `C:\Projects\lifepunch\…` — that path is absent on Red) |
+| 5 | **Open folder** | `C:\Users\jared\Projects\lifepunch\lifepunchaddons\` (not `C:\Projects\lifepunch\…` — that path is absent on Red) |
 | 6 | **Solution** | Open `addons.slnx` → Solution Explorer loads LifePunch `Code/addons.csproj` + s&box base/tools refs |
 
 Workspace config: `lifepunchaddons/.vscode/settings.json` + `extensions.json`.

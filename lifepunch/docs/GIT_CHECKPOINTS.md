@@ -30,7 +30,7 @@ Is it portal-ready addon Assets + Code for active portfolio only?
   YES → export to lifepunch-published — never hand-edit publish as source of truth
 ```
 
-| Action | Core (`lifepunchdxrp`) | Publish (`lifepunch-published`) |
+| Action | Core (`lifepunch`) | Publish (`lifepunch-published`) |
 |--------|------------------------|----------------------------------|
 | Daily dev | **Always** on **`develop`** | Never day-to-day |
 | Commit | Yes — checkpoints on **`develop`** | Only after export + owner says push publish |

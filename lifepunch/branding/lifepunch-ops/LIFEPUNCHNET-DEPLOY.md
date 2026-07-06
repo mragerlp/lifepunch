@@ -24,14 +24,14 @@ Pack path on-box after copy: `C:\lifepunch\branding\lifepunch-ops\`
 From VENGEANCE, copy this entire folder to the server:
 
 ```
-C:\Users\jared\Projects\lifepunchdxrp\lifepunch\branding\lifepunch-ops\
+C:\Users\jared\Projects\lifepunch\lifepunch\branding\lifepunch-ops\
   →  C:\lifepunch\branding\lifepunch-ops\
 ```
 
 Or use the zip Bloodwave prepared:
 
 ```
-C:\Users\jared\Projects\lifepunchdxrp\lifepunch\branding\lifepunch-ops-deploy.zip
+C:\Users\jared\Projects\lifepunch\lifepunch\branding\lifepunch-ops-deploy.zip
   →  extract to C:\lifepunch\branding\
 ```
 

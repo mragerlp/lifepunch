@@ -61,7 +61,7 @@ LM Studio **0.4.1+** ships an Anthropic-compatible `/v1/messages` endpoint ([LM 
 ### One-shot terminal session
 
 ```powershell
-cd C:\Users\jared\Projects\lifepunchdxrp
+cd C:\Users\jared\Projects\lifepunch
 powershell -ExecutionPolicy Bypass -File lifepunch\scripts\Start-ClaudeBridge.ps1
 claude --model "qwen/qwen3.6-35b-a3b"
 ```

@@ -3,7 +3,7 @@
 Use one PowerShell launcher so every key stays stable:
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File C:\Users\jared\Projects\lifepunchdxrp\lifepunch\scripts\Invoke-LifePunchDeckAction.ps1 -Action <ACTION>
+powershell -NoProfile -ExecutionPolicy Bypass -File C:\Users\jared\Projects\lifepunch\lifepunch\scripts\Invoke-LifePunchDeckAction.ps1 -Action <ACTION>
 ```
 
 ## 1. Copilot/lane control
@@ -56,4 +56,4 @@ powershell -NoProfile -ExecutionPolicy Bypass -File C:\Users\jared\Projects\life
 7. Git Status
 8. Pull Rebase
 9. CVL Health
-10. Start LifePunch Day (`powershell -File C:\Users\jared\Projects\lifepunchdxrp\lifepunch\scripts\Start-LifePunchDay.ps1`)
+10. Start LifePunch Day (`powershell -File C:\Users\jared\Projects\lifepunch\lifepunch\scripts\Start-LifePunchDay.ps1`)

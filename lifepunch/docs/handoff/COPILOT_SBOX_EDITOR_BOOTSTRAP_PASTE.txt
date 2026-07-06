@@ -65,7 +65,7 @@ THREE PATHS — DO NOT COLLAPSE
    Mirror of monorepo after sync — what the editor actually loads
 
 3) DXRP UPSTREAM FORK (vanilla PRs only — separate clone)
-   C:\Users\jared\Projects\dxrp
+   C:\Users\jared\Projects\dxrp-public
    NO LifePunch headers · NO lifepunch/ paths · match Dimmer/DXRP style
    PR → mragerlp/dxrp-public → dxura/dxrp:develop
 

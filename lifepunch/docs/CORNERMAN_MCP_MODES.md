@@ -37,7 +37,7 @@ Red always uses **9090** (chomnr) and **29015** (jtc). Green does **not** run jt
 
 **On Red first:**
 ```powershell
-cd C:\Users\jared\Projects\lifepunchdxrp
+cd C:\Users\jared\Projects\lifepunch
 powershell -File lifepunch\scripts\Start-VengeanceEditorTunnelToCornerman.ps1 -Stop
 ```
 
