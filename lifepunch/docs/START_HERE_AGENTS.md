@@ -19,6 +19,8 @@ git status -sb
 
 ## 1. Ground (in order)
 
+**First, the *why*:** `lifepunch/docs/LIFEPUNCH_MISSION.md` — the goal, the two-lane logic, and quality-as-moat. Read it before the *how* below.
+
 1. `lifepunch/docs/CVL_AGENT_ONBOARDING.md` — the one paste (who / lanes / laws / state).
 2. `lifepunch/docs/handoff/AGENT_GROUNDING_INDEX.md` — pick your machine + IDE paste.
 3. `lifepunch/docs/BRANCH_MODEL.md` · `lifepunch/docs/LIFEPUNCH_REPO_LAYOUT.md` · `lifepunch/docs/MACHINE_CAST.md`.
