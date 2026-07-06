@@ -3,7 +3,7 @@
     "Editor": {
       "commandName": "Executable",
       "executablePath": "D:/Steam/steamapps/common/sbox/sbox-dev.exe",
-      "commandLineArgs": "-project \"C:\\Users\\jared\\Projects\\lifepunchdxrp\\lifepunch\\modeldoc-studio\\game\\modeldoc.sbproj\""
+      "commandLineArgs": "-project \"C:\\Users\\jared\\Projects\\lifepunch\\lifepunch\\modeldoc-studio\\game\\modeldoc.sbproj\""
     }
   }
 }

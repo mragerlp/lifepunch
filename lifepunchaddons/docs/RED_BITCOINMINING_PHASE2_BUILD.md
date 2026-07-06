@@ -8,7 +8,7 @@
 ## Step 0 — Sync
 
 ```powershell
-cd C:\Users\jared\Projects\lifepunchdxrp
+cd C:\Users\jared\Projects\lifepunch
 git pull --rebase origin main
 powershell -File lifepunchaddons\scripts\Sync-LifePunchAddonsToDxrp.ps1 -Addon bitcoinmining
 ```

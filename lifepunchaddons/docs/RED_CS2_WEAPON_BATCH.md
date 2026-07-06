@@ -9,7 +9,7 @@ One sitting on VENGEANCE with CS2 installed. Goal: **reference glTF + sounds** f
 ## 0. Sync
 
 ```powershell
-cd C:\Users\jared\Projects\lifepunchdxrp
+cd C:\Users\jared\Projects\lifepunch
 git pull --rebase
 .\lifepunchaddons\scripts\Sync-LifePunchAddonsToDxrp.ps1
 ```

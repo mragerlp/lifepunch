@@ -23,7 +23,7 @@ Red draft lives in `lifepunch/docs/handoff/cornerman-outbox/` — diff against r
 ## Commands (Green box)
 
 ```powershell
-cd C:\Users\jared\Projects\lifepunchdxrp
+cd C:\Users\jared\Projects\lifepunch
 git pull --rebase origin main
 
 # Protection (identity + study-tree absent — no legacy third-party name greps)

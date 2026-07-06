@@ -57,7 +57,7 @@ Detail: `lifepunch/docs/DXRP_CONTRIBUTOR_LANE.md`
 ## Step 2 — CVL sync commands (Red)
 
 ```powershell
-cd C:\Users\jared\Projects\lifepunchdxrp
+cd C:\Users\jared\Projects\lifepunch
 git fetch
 git pull --rebase
 git status -sb

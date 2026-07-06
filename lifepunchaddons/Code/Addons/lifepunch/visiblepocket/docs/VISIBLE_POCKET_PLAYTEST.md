@@ -8,7 +8,7 @@
 ## 1. Sync addon to DXRP
 
 ```powershell
-cd C:\Users\jared\Projects\lifepunchdxrp
+cd C:\Users\jared\Projects\lifepunch
 git pull --rebase
 powershell -File lifepunch\scripts\Sync-LifePunchAddonsToDxrp.ps1
 ```

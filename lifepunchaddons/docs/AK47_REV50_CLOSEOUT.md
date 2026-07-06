@@ -47,7 +47,7 @@ All three pass → publish staging → portal Rev 50 → pin gamemode → sync d
 ## Publish (copy-paste)
 
 ```powershell
-cd C:\Users\jared\Projects\lifepunchdxrp\lifepunchaddons
+cd C:\Users\jared\Projects\lifepunch\lifepunchaddons
 .\scripts\validate-layout.ps1
 .\scripts\prepare-publish.ps1 -Addon ak47
 ```

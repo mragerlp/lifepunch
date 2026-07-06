@@ -30,8 +30,8 @@
 [CmdletBinding()]
 param(
     [string[]] $RepoPath = @(
-        'C:\Users\jared\Projects\dxrp',
-        'C:\Users\jared\Projects\lifepunchdxrp'
+        'C:\Users\jared\Projects\dxrp-public',
+        'C:\Users\jared\Projects\lifepunch'
     )
 )
 

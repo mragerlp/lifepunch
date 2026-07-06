@@ -73,9 +73,9 @@ Day-to-day: **always commit on core.** Export to publish when an addon is **read
 From VENGEANCE (after `gh auth login`):
 
 ```powershell
-cd C:\Users\jared\Projects\lifepunchdxrp
-powershell -File lifepunch\scripts\Export-LifepunchPublishLane.ps1 -Init -Target C:\Users\jared\Projects\lifepunchdxrp-published
-cd C:\Users\jared\Projects\lifepunchdxrp-published
+cd C:\Users\jared\Projects\lifepunch
+powershell -File lifepunch\scripts\Export-LifepunchPublishLane.ps1 -Init -Target C:\Users\jared\Projects\lifepunch-published
+cd C:\Users\jared\Projects\lifepunch-published
 git init
 git add -A
 git commit -m "chore: LIFEPUNCH publish lane scaffold (active portfolio only)"
@@ -85,7 +85,7 @@ gh repo create mragerlp/lifepunch-published --private --source=. --remote=origin
 Re-export after ship progress:
 
 ```powershell
-powershell -File lifepunch\scripts\Export-LifepunchPublishLane.ps1 -Target C:\Users\jared\Projects\lifepunchdxrp-published
+powershell -File lifepunch\scripts\Export-LifepunchPublishLane.ps1 -Target C:\Users\jared\Projects\lifepunch-published
 ```
 
 ---

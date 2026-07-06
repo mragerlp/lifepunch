@@ -19,7 +19,7 @@ Read: `BITCOIN_GREENFIELD_REBUILD.md`
 **Default lane (Jun 2026): ModelDoc foundation — not play test.**
 
 ```powershell
-cd C:\Users\jared\Projects\lifepunchdxrp
+cd C:\Users\jared\Projects\lifepunch
 git pull --rebase
 
 # ULX + _modeldoc staging only — no bitcoinmining code in DXRP

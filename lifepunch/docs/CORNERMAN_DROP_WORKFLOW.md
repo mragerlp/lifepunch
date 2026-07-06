@@ -77,7 +77,7 @@ design: `handoff/CORNERMAN_HEADLESS_DROP_WORKER_OPUS_V2_PLAN_2026-07-06.md`.
 ## Red commands (VENGEANCE — copy/paste)
 
 ```powershell
-cd C:\Users\jared\Projects\lifepunchdxrp\lifepunch\scripts
+cd C:\Users\jared\Projects\lifepunch\lifepunch\scripts
 
 # 0. Probe + warm (do before every drop batch)
 powershell -File ..\scripts\Get-CvlConnectivityStatus.ps1 -Pretty
