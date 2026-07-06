@@ -62,7 +62,7 @@ OG rewards must pass **all** of:
 
 ### Locked: donor-only cosmetics (zero earn)
 
-See `lifepunchaddons/docs/BITCOINMINING_DONOR_PERKS.md` — applies to **VIP / EVIP / VIP (OG) / EVIP (OG)** for cosmetic lanes:
+See `lifepunch/docs/BITCOINMINING_DONOR_PERKS.md` — applies to **VIP / EVIP / VIP (OG) / EVIP (OG)** for cosmetic lanes:
 
 - HASHD UI skin / panel theme  
 - GPU fan RGB variant  
@@ -119,7 +119,7 @@ OG tiers should get **at least** the same cosmetic ladder as their tier, plus **
 
 - `lifepunch/economy/README.md` — store, VIP/EVIP, no admin on supporter ranks  
 - `lifepunch/players/ranks/` — rank baselines (`vip-rank.json`, `evip-rank.json`)  
-- `lifepunchaddons/docs/BITCOINMINING_DONOR_PERKS.md` — bitcoinminer cosmetic donor lane  
+- `lifepunch/docs/BITCOINMINING_DONOR_PERKS.md` — bitcoinminer cosmetic donor lane  
 - `lifepunchaddons/docs/VISIBLE_POCKET_SPEC.md` — VIP 8 / EVIP 12 slots  
 - `lifepunch/legal/TRADEMARK_AND_IP.md` — LIFEPUNCH™ source identifier on shipped addons  
 

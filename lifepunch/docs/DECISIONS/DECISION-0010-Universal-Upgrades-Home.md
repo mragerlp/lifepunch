@@ -74,7 +74,7 @@ Implementation remains staged. v1.0 does not require every future Hacker interac
 - `TERMINAL_BRAND_MATRIX.md`
 - `BITCOIN_SHIP_ROADMAP.md`
 - `ARCHITECT_CURRENT_STATE.md`
-- `BITCOINMINING_DONOR_PERKS.md` (alignment only)
+- `lifepunch/docs/BITCOINMINING_DONOR_PERKS.md` (alignment only)
 - New: `DECISION-0010` (this file)
 - Reference: `CYBER_VISUAL_IDENTITY_DOCTRINE.md` and `MODEL_ROUTING_AMENDMENT_GROK_BUILD_1.md`
 
