@@ -141,7 +141,7 @@ Disables offenders in `D:\Steam\steamapps\common\sbox\config\tools.json` → `Sb
 | **Daily serve** | `qwen/qwen3.6-35b-a3b` + `text-embedding-nomic-embed-text-v1.5` | Always loaded on boot |
 | **On-demand** | `qwen2.5-coder-32b-instruct` | `WarmCoder` only — never with 35b |
 
-Green has ~16 GB RAM — **never load distill + coder big models together**.
+Green has **64 GB unified LPDDR5X (~48 GB VRAM ceiling)** — keep one big model in VRAM: **never load distill + coder big models together**.
 
 ### When a better model releases
 
@@ -205,7 +205,7 @@ Detail: `MCP_AGENT_ROUTING.md` · install: `SBOX_EDITOR_MCP.md`
 **Full stack (Red + Green Cursor):** `RED_FULL_CAPACITY_BOOT.md`
 
 ```powershell
-cd C:\Users\jared\Projects\lifepunchdxrp
+cd C:\Users\jared\Projects\lifepunch
 git pull --rebase
 powershell -File lifepunch\scripts\Start-SboxDxrpEditor.ps1
 powershell -File lifepunch\scripts\Install-CornermanSboxBridgeMcp.ps1

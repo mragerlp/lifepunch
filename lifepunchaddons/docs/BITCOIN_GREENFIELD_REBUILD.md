@@ -56,7 +56,7 @@ Enable when lane needs them. **P0:** skip shader_graph_extras unless leaving `co
 
 | Step | Deliverable |
 |------|-------------|
-| **0** | v1 code → `reference-intake/`; v2 compiles clean |
+| **0** | v1 code → `lifepunch/history/bitcoinmining-v1-code/`; v2 compiles clean |
 | **1** | `LpBitcoinHub` + modern ops UI (`LpHashdPanel`) + dev spawn placeholders |
 | **2** | Host economy loop (90s tick, sell, upgrades) wired to UI |
 | **3** | `LpBitcoinRack` link + yield; flatgrass full-kit proof |

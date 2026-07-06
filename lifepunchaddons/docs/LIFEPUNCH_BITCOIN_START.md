@@ -8,7 +8,7 @@ Read first: `briefs/BITCOIN_OPHION_VISUAL_PASS_BRIEF.md` · `PACKAGE_NAMING_STAN
 
 ## What “from scratch” means
 
-**Greenfield v2 is live.** v1 C#/UI archived to `reference-intake/bitcoinmining-v1-code/`. v1 **assets** remain on disk as reference — v2 dev spawn uses **placeholder boxes** until new prefabs.
+**Greenfield v2 is live.** v1 C#/UI archived to `lifepunch/history/bitcoinmining-v1-code/`. v1 **assets** remain on disk as reference — v2 dev spawn uses **placeholder boxes** until new prefabs.
 
 Read: `BITCOIN_GREENFIELD_REBUILD.md`
 

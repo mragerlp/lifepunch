@@ -28,7 +28,7 @@ Files to cross-reference:
 - `CYBER_VISUAL_IDENTITY_DOCTRINE.md`
 - `TERMINAL_BRAND_MATRIX.md`
 - `BITCOIN_UPGRADE_TAXONOMY.md`
-- `BITCOINMINING_DONOR_PERKS.md`
+- `lifepunch/docs/BITCOINMINING_DONOR_PERKS.md`
 - `LIFEPUNCH_CYBER_ECOSYSTEM.md`
 - `ACTIVE_WORKSTREAM.md` (Bitcoin section)
 - `BITCOIN_SHIP_ROADMAP.md`
@@ -84,7 +84,7 @@ Tasks:
 Produce a planning artifact: something like `TERMINAL_CRT_LCD_PATTERN_PREP.md`.
 
 ### Task 4: Donor Cosmetics Guard Requirements (1–2 hours)
-From `BITCOINMINING_DONOR_PERKS.md` + the new doctrine.
+From `lifepunch/docs/BITCOINMINING_DONOR_PERKS.md` + the new doctrine.
 
 - List every current or planned place where a skin/theme/RGB/sound choice could be made.
 - Mark exactly where we will need:

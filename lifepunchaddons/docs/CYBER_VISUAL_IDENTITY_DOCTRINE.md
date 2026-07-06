@@ -152,7 +152,7 @@ Grok (and other agents) will be routed through these constraints when implementi
 
 - `TERMINAL_BRAND_MATRIX.md` — primary identity table (now references this doctrine).
 - `BITCOIN_UPGRADE_TAXONOMY.md` — Terminal section updated for defense vs appearance split.
-- `BITCOINMINING_DONOR_PERKS.md` — explicit color restrictions added.
+- `lifepunch/docs/BITCOINMINING_DONOR_PERKS.md` — explicit color restrictions added.
 - `LIFEPUNCH_CYBER_ECOSYSTEM.md` — UI families marked as cross-addon identity anchors.
 - `ACTIVE_WORKSTREAM.md` + `BITCOIN_SHIP_ROADMAP.md` — remain the execution gates.
 - `QUARANTINE_REGISTER.md` — Hacker and Government lanes stay blocked.

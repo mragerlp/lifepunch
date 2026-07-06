@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "updated": "2026-06-27",
+  "updated": "2026-07-06",
   "notes": "Four local Green profiles inside the Cornerman Tier-3 LOCAL WORKER LANE (not a 'weak helper'; not global CVL tiers). Green Code = local code worker for contained C#/Razor/SCSS candidate patches; Green Deep = distiller + architecture warmer; Green Daily = report/audit worker; Green Fast = triage clerk. Tier-3 is cheap + untrusted: good for real work and code candidates, but NOT final authority — VENGEANCE compiles/proves and Bloodwave approves commits. Verify exact model keys on Cornerman with `lms ls --llm --detailed` before relying on them. See CORNERMAN_MODEL_ROUTING.md.",
   "routingLaw": {
     "tier3": "local, cheap, untrusted worker lane",
@@ -40,6 +40,8 @@
       "id": "fast",
       "model": "qwen/qwen3.5-9b",
       "role": "Green Fast — triage clerk: quick file location, short summaries, routing checks, fast task classification. NOT important implementation.",
+      "installed": false,
+      "installNote": "Not yet installed on Green — on-demand / deferred role; catalog entry retained (do not delete).",
       "dailyServe": false,
       "vramGbEstimate": 7
     },

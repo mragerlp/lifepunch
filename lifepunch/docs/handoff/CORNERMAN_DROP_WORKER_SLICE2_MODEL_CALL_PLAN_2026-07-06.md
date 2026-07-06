@@ -88,7 +88,7 @@ deployed live to `C:\lifepunch\cornerman\config\model-endpoints.json`):
 
 | routeTag | Intent | Proposed default (loaded on Green at plan time) |
 |---|---|---|
-| `GREEN DEEP REQUIRED` | distill / deep reasoning | `qwen/qwen3.6-35b-a3b` (owner confirms at GO; alt `qwen/qwen3.6-27b`) |
+| `GREEN DEEP REQUIRED` | deep reasoning | `qwen/qwen3.6-27b` (owner-confirmed) |
 | `GREEN CODE REQUIRED` | coder | `qwen2.5-coder-32b-instruct` |
 | `AUTO OK` | not routed to Green | **rejected** (AUTO OK belongs on Red) |
 

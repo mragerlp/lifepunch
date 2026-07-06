@@ -51,9 +51,10 @@ Cornerman: **read-only deploy key** — local commits OK; origin via **patch-han
 | Surface | Cursor MCP 3/3 | Copilot MCP 3/3 | Reload after bridge |
 |---------|----------------|-----------------|---------------------|
 | **Red** | `sbox` · `sbox-editor` · `sbox-jtc` (+ `cornerman-lm` in full capacity) | In-editor · Red stack | Cursor reload as needed |
-| **Cornerman Cursor** | `sbox` · `sbox-editor` · `cornerman-lm` | — | **Reload Window** |
-| **Cornerman Copilot** | — | `claudebridge` · `chromr-mcp` · `jct-server` | **No reload** — project open |
+| **Cornerman (headless — no IDE)** | none — runs no Cursor/editor **by role** | none | Bridge/relay as headless services: `claudebridge` · `chromr-mcp` · `jct-server`. Editor MCPs (`sbox` · `sbox-editor`) live on **Red only**. |
 | **Mac native** | Not wired to Red bridge by default | — | — |
+
+**Cornerman is headless by role** — it is capable of running an IDE but deliberately does not; its lane is distill / prep / implementation with patch-handoff to Red. Editor work and proof live on Red.
 
 Preflight on Cornerman (Red editor up first): **Map → Tunnel → `Test-Path \\VENGEANCE\SboxBridgeIpc\status.json`**
 
