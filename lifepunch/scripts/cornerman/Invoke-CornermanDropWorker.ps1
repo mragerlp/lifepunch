@@ -351,7 +351,8 @@ try {
         else {
             # -------------------------------------------- model call
             $reqBuild = Build-CdwModelRequest -Packet $packet -ProfileName $profileName -ModelId $modelId `
-                -PackedInputs ([string]$packedInputs.PackedText) -Config $modelConfig
+                -PackedInputs ([string]$packedInputs.PackedText) `
+                -ReferenceInputs ([string]$packedInputs.ReferenceText) -Config $modelConfig
             $callStart = (Get-Date).ToUniversalTime().ToString('o')
             $call = Invoke-CdwModelCall -Config $modelConfig -Body $reqBuild.Body
             $callEnd = (Get-Date).ToUniversalTime().ToString('o')

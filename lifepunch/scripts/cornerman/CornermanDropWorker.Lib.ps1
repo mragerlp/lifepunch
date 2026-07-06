@@ -420,8 +420,14 @@ function Test-CdwInputPaths {
     if ($Packet.inputs.PSObject.Properties.Name -contains 'readGlobs' -and $Packet.inputs.readGlobs) {
         $readGlobs = @($Packet.inputs.readGlobs)
     }
+    # requiredDocs (canon) get BYTE-IDENTICAL treatment to readFiles: same repo-relative
+    # / no-'..' / forbid-prefix rules -- closes the dxrp-official private-canon smuggle hole.
+    $requiredDocs = @()
+    if ($Packet.inputs.PSObject.Properties.Name -contains 'requiredDocs' -and $Packet.inputs.requiredDocs) {
+        $requiredDocs = @($Packet.inputs.requiredDocs)
+    }
 
-    foreach ($rel in ($readFiles + $readGlobs)) {
+    foreach ($rel in ($readFiles + $readGlobs + $requiredDocs)) {
         $r = [string]$rel
         if ($r -match '^[A-Za-z]:' -or $r.StartsWith('\\') -or $r.StartsWith('/') -or $r.StartsWith('\')) {
             $errors.Add("input path must be repo-relative (absolute rejected): $r")
@@ -441,7 +447,7 @@ function Test-CdwInputPaths {
     }
 
     if ($errors.Count -eq 0) {
-        foreach ($rel in $readFiles) {
+        foreach ($rel in ($readFiles + $requiredDocs)) {
             $full = Join-Path $clone (([string]$rel) -replace '/', '\')
             if (-not (Test-Path -LiteralPath $full -PathType Leaf)) {
                 $errors.Add("input file not found in clone: $rel")
@@ -590,6 +596,11 @@ function Invoke-CdwInputContentScan {
     if ($Packet.inputs.PSObject.Properties.Name -contains 'readFiles' -and $Packet.inputs.readFiles) {
         $readFiles = @($Packet.inputs.readFiles)
     }
+    # requiredDocs (canon) contents are scanned identically to readFiles for dxrp-official.
+    $requiredDocs = @()
+    if ($Packet.inputs.PSObject.Properties.Name -contains 'requiredDocs' -and $Packet.inputs.requiredDocs) {
+        $requiredDocs = @($Packet.inputs.requiredDocs)
+    }
     $unscannedGlobs = @()
     if (-not $GlobsExpanded -and
         $Packet.inputs.PSObject.Properties.Name -contains 'readGlobs' -and $Packet.inputs.readGlobs) {
@@ -598,6 +609,10 @@ function Invoke-CdwInputContentScan {
 
     $targets = New-Object System.Collections.Generic.List[string]
     foreach ($rel in $readFiles) {
+        $norm = ([string]$rel) -replace '\\', '/'
+        if (-not $targets.Contains($norm)) { $targets.Add($norm) }
+    }
+    foreach ($rel in $requiredDocs) {
         $norm = ([string]$rel) -replace '\\', '/'
         if (-not $targets.Contains($norm)) { $targets.Add($norm) }
     }
@@ -936,6 +951,35 @@ function Get-CdwPackedInputs {
     }
 
     $totalBytes = [long]0
+
+    # canon/reference docs (inputs.requiredDocs) -- packed SEPARATELY from the drift
+    # targets, but counted toward the SAME maxBytes + maxPromptChars caps (fail-closed
+    # over-cap, no truncation). Path safety/existence enforced in Test-CdwInputPaths.
+    $requiredDocs = @()
+    if ($Packet.inputs.PSObject.Properties.Name -contains 'requiredDocs' -and $Packet.inputs.requiredDocs) {
+        $requiredDocs = @($Packet.inputs.requiredDocs | ForEach-Object { ([string]$_) -replace '\\', '/' })
+    }
+    $refOrdered = New-Object System.Collections.Generic.List[string]
+    foreach ($f in $requiredDocs) {
+        if (-not $refOrdered.Contains($f) -and -not $ordered.Contains($f)) { $refOrdered.Add($f) }
+    }
+    $refSb = New-Object System.Text.StringBuilder
+    foreach ($rel in $refOrdered) {
+        $full = Join-Path $clone ($rel -replace '/', '\')
+        if (-not (Test-Path -LiteralPath $full -PathType Leaf)) {
+            $errors.Add("required canon doc not found in clone: $rel")
+            continue
+        }
+        $len = (Get-Item -LiteralPath $full).Length
+        $totalBytes += $len
+        $content = [IO.File]::ReadAllText($full)
+        [void]$refSb.AppendLine("=== CANON/REFERENCE: $rel ($len bytes) ===")
+        [void]$refSb.AppendLine($content)
+        [void]$refSb.AppendLine("=== END CANON/REFERENCE: $rel ===")
+        [void]$refSb.AppendLine('')
+    }
+    $reference = $refSb.ToString()
+
     $sb = New-Object System.Text.StringBuilder
     foreach ($rel in $ordered) {
         $full = Join-Path $clone ($rel -replace '/', '\')
@@ -953,19 +997,22 @@ function Get-CdwPackedInputs {
     }
 
     if ($totalBytes -gt $maxBytes) {
-        $errors.Add("combined input bytes $totalBytes (readFiles + expanded globs) exceed inputs.maxBytes $maxBytes")
+        $errors.Add("combined input bytes $totalBytes (requiredDocs + readFiles + expanded globs) exceed inputs.maxBytes $maxBytes")
     }
     $packed = $sb.ToString()
-    if ($errors.Count -eq 0 -and $packed.Length -gt $MaxPromptChars) {
-        $errors.Add("packed input length $($packed.Length) chars exceeds prompt context ceiling $MaxPromptChars -- reduce inputs or raise the ceiling deliberately (no silent truncation)")
+    $combinedLen = $reference.Length + $packed.Length
+    if ($errors.Count -eq 0 -and $combinedLen -gt $MaxPromptChars) {
+        $errors.Add("packed input length $combinedLen chars (canon + drift-targets) exceeds prompt context ceiling $MaxPromptChars -- reduce inputs or raise the ceiling deliberately (no silent truncation)")
     }
 
     return @{
-        Ok         = ($errors.Count -eq 0)
-        Errors     = @($errors)
-        Files      = @($ordered)
-        TotalBytes = $totalBytes
-        PackedText = $packed
+        Ok            = ($errors.Count -eq 0)
+        Errors        = @($errors)
+        Files         = @($ordered)
+        ReferenceDocs = @($refOrdered)
+        TotalBytes    = $totalBytes
+        PackedText    = $packed
+        ReferenceText = $reference
     }
 }
 
@@ -981,6 +1028,7 @@ function Build-CdwModelRequest {
         [Parameter(Mandatory)][string] $ProfileName,
         [Parameter(Mandatory)][string] $ModelId,
         [Parameter(Mandatory)][AllowEmptyString()][string] $PackedInputs,
+        [AllowEmptyString()][string] $ReferenceInputs = '',
         [Parameter(Mandatory)] $Config
     )
     $d = $Packet.deliverable
@@ -1005,6 +1053,9 @@ function Build-CdwModelRequest {
     if ($ProfileName -eq 'dxrp-official') {
         $sys.Add('This output is for a PUBLIC upstream repository. Never mention private LifePunch branding, private repository paths, proprietary headers, or any AI attribution trailers.')
     }
+    if ($ReferenceInputs) {
+        $sys.Add('Some inputs are marked CANON/REFERENCE and are authoritative. Treat canon as the source of truth; report where the other INPUT FILES disagree with it. Never flag the canon itself as drift.')
+    }
 
     $usr = New-Object System.Collections.Generic.List[string]
     $usr.Add("TASK: $($Packet.instruction)")
@@ -1017,7 +1068,15 @@ function Build-CdwModelRequest {
     if ($sections.Count -gt 0) { $usr.Add("EXPECTED SECTIONS: $($sections -join ' | ')") }
     if ($d.PSObject.Properties.Name -contains 'audience' -and $d.audience) { $usr.Add("AUDIENCE: $($d.audience)") }
     $usr.Add('')
-    $usr.Add('INPUT FILES:')
+    if ($ReferenceInputs) {
+        $usr.Add('CANON / REFERENCE (authoritative source of truth -- compare the drift targets against this):')
+        $usr.Add($ReferenceInputs)
+        $usr.Add('')
+        $usr.Add('INPUT FILES (drift targets -- check each against the CANON / REFERENCE above):')
+    }
+    else {
+        $usr.Add('INPUT FILES:')
+    }
     $usr.Add($PackedInputs)
 
     $temperature = 0.2
