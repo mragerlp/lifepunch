@@ -1,13 +1,18 @@
 # =====================================================================
-# RISK: READ-ONLY (validation + report only)  |  Slice 1 -- dry-run
+# RISK: READ-ONLY on repos; localhost-only model HTTP  |  Slice 2
 # NODE: Green (Cornerman) -- testable on Red with scratch dirs
 # WHAT: Shared functions for the Cornerman headless drop worker.
 #       Packet schema validation, repo-profile registry, clone identity,
 #       dirty-tree gate, input path safety, no-IP / AI-trailer scan,
 #       lock handling, outbox/ack/history/log writers.
+#       Slice 2 adds: model-call opt-in policy, model endpoint config,
+#       localhost-only HTTP (probe + chat), routeTag -> model resolution,
+#       glob expansion, input packing, format-aware output validation.
 # LAW:  lifepunch/docs/handoff/CORNERMAN_HEADLESS_DROP_WORKER_OPUS_V2_PLAN_2026-07-06.md
-#       (Part B authoritative). Slice 1: NO model calls, NO scheduler,
-#       NO patches, NO commit/push, NO git mutation of any kind.
+#       lifepunch/docs/handoff/CORNERMAN_DROP_WORKER_SLICE2_MODEL_CALL_PLAN_2026-07-06.md
+#       Still NO scheduler, NO patches, NO commit/push, NO git mutation,
+#       NO network egress beyond localhost. Model calls require BOTH the
+#       -EnableModelCall switch AND packet modelCall.enabled=true.
 # =====================================================================
 
 Set-StrictMode -Version Latest
@@ -270,6 +275,22 @@ function Test-CdwPacketSchema {
         $errors.Add('deliverable.format must be markdown | json | text')
     }
 
+    # modelCall (optional; Slice 2). Absent object = enabled:false (dry-run).
+    if ($Packet.PSObject.Properties.Name -contains 'modelCall' -and $null -ne $Packet.modelCall) {
+        $mc = $Packet.modelCall
+        if (-not ($mc.PSObject.Properties.Name -contains 'enabled') -or ($mc.enabled -isnot [bool])) {
+            $errors.Add('modelCall.enabled must be present and boolean when modelCall is supplied')
+        }
+        if ($mc.PSObject.Properties.Name -contains 'requiredModel' -and $null -ne $mc.requiredModel -and
+            ($mc.requiredModel -isnot [string] -or [string]::IsNullOrWhiteSpace([string]$mc.requiredModel))) {
+            $errors.Add('modelCall.requiredModel must be null or a non-empty string')
+        }
+        if ($mc.PSObject.Properties.Name -contains 'allowFallback' -and $null -ne $mc.allowFallback -and
+            ($mc.allowFallback -isnot [bool])) {
+            $errors.Add('modelCall.allowFallback must be boolean')
+        }
+    }
+
     return @{ Ok = ($errors.Count -eq 0); Errors = @($errors) }
 }
 
@@ -361,7 +382,7 @@ function Test-CdwBaseRefReadable {
     $ref = "$($Packet.baseRemote)/$($Packet.baseBranch)"
     & git -C ([string]$Profile.cloneWindows) rev-parse --verify --quiet $ref 2>$null | Out-Null
     if ($LASTEXITCODE -ne 0) {
-        return @{ Ok = $true; Warning = "base ref '$ref' not resolvable locally (no fetch performed in Slice 1 dry-run)" }
+        return @{ Ok = $true; Warning = "base ref '$ref' not resolvable locally (the worker never fetches; sync the clone out-of-band)" }
     }
     return @{ Ok = $true; Warning = $null }
 }
@@ -545,16 +566,21 @@ function Invoke-CdwNoIpScan {
 function Invoke-CdwInputContentScan {
     <#
     .SYNOPSIS
-      Scan CITED input file contents (inputs.readFiles) for a dxrp-official packet.
-      Only files the packet explicitly asks the worker to read are loaded and
-      scanned -- never the whole repo. readGlobs are NOT expanded in Slice 1,
-      so their content is honestly reported as not scanned.
+      Scan CITED input file contents for a dxrp-official packet: every file in
+      inputs.readFiles PLUS every glob-expanded file passed via -GlobFiles
+      (Slice 2 closes the Slice 1 "globs not scanned" gap). Only files the
+      packet explicitly cites (directly or via its own globs) are loaded and
+      scanned -- never the whole repo.
       Returns @{ Ok; ScannedFiles[]; UnscannedGlobs[]; Failures[] } where each
       failure carries the blocked token detail and the offending file path.
+      UnscannedGlobs is non-empty only when the caller did not supply expansion
+      results (legacy dry-run path without glob support).
     #>
     param(
         [Parameter(Mandatory)] $Packet,
-        [Parameter(Mandatory)] $Profile
+        [Parameter(Mandatory)] $Profile,
+        [string[]] $GlobFiles = @(),
+        [bool] $GlobsExpanded = $false
     )
     $scanned = New-Object System.Collections.Generic.List[string]
     $failures = New-Object System.Collections.Generic.List[string]
@@ -565,19 +591,30 @@ function Invoke-CdwInputContentScan {
         $readFiles = @($Packet.inputs.readFiles)
     }
     $unscannedGlobs = @()
-    if ($Packet.inputs.PSObject.Properties.Name -contains 'readGlobs' -and $Packet.inputs.readGlobs) {
+    if (-not $GlobsExpanded -and
+        $Packet.inputs.PSObject.Properties.Name -contains 'readGlobs' -and $Packet.inputs.readGlobs) {
         $unscannedGlobs = @($Packet.inputs.readGlobs)
     }
 
+    $targets = New-Object System.Collections.Generic.List[string]
     foreach ($rel in $readFiles) {
-        $full = Join-Path $clone (([string]$rel) -replace '/', '\')
+        $norm = ([string]$rel) -replace '\\', '/'
+        if (-not $targets.Contains($norm)) { $targets.Add($norm) }
+    }
+    foreach ($rel in $GlobFiles) {
+        $norm = ([string]$rel) -replace '\\', '/'
+        if (-not $targets.Contains($norm)) { $targets.Add($norm) }
+    }
+
+    foreach ($rel in $targets) {
+        $full = Join-Path $clone ($rel -replace '/', '\')
         if (-not (Test-Path -LiteralPath $full -PathType Leaf)) {
             # Existence is enforced earlier by Test-CdwInputPaths; skip defensively.
             continue
         }
         $content = [IO.File]::ReadAllText($full)
         $scan = Invoke-CdwNoIpScan -Text $content
-        $scanned.Add([string]$rel)
+        $scanned.Add($rel)
         if (-not $scan.Ok) {
             foreach ($m in $scan.Matches) {
                 $failures.Add("cited input '$rel': $m")
@@ -653,4 +690,552 @@ function Move-CdwPacketToHistory {
     $dest = Join-Path $Paths.History ("{0}.{1}.json" -f $name, $Status)
     Move-Item -LiteralPath $PacketFile -Destination $dest -Force
     return $dest
+}
+
+# =====================================================================
+# Slice 2 -- local model call support (LM Studio, localhost only)
+# =====================================================================
+# HARD LAW: no HTTP request of any kind (including the /v1/models probe)
+# until every pre-call gate has passed in the orchestrator. Functions in
+# this section that perform HTTP say so explicitly; everything else is
+# pure validation/packing and network-silent.
+
+function Test-CdwModelCallPolicy {
+    <#
+    .SYNOPSIS
+      Double opt-in decision table (canonical: SLICE2_MODEL_CALL_PLAN section 1).
+      Returns @{ Action = 'dry-run' | 'model-call' | 'fail'; Error;
+                 PacketRequested (bool) }. Never performs HTTP.
+    #>
+    param(
+        [Parameter(Mandatory)] $Packet,
+        [Parameter(Mandatory)][bool] $EnableModelCall
+    )
+    $requested = $false
+    if ($Packet.PSObject.Properties.Name -contains 'modelCall' -and $null -ne $Packet.modelCall -and
+        ($Packet.modelCall.PSObject.Properties.Name -contains 'enabled')) {
+        $requested = [bool]$Packet.modelCall.enabled
+    }
+    $noModelCall = $false
+    if ($Packet.PSObject.Properties.Name -contains 'constraints' -and $null -ne $Packet.constraints -and
+        ($Packet.constraints.PSObject.Properties.Name -contains 'noModelCall')) {
+        $noModelCall = [bool]$Packet.constraints.noModelCall
+    }
+
+    if (-not $requested) {
+        # Legacy Slice 1 packets and non-opted packets always dry-run,
+        # regardless of the worker switch.
+        return @{ Action = 'dry-run'; Error = $null; PacketRequested = $false }
+    }
+    if (-not $EnableModelCall) {
+        return @{
+            Action = 'fail'
+            Error  = 'model-call-requested-but-worker-not-enabled: packet sets modelCall.enabled=true but the worker was not started with -EnableModelCall'
+            PacketRequested = $true
+        }
+    }
+    if ($noModelCall) {
+        return @{
+            Action = 'fail'
+            Error  = 'packet self-contradiction: modelCall.enabled=true AND constraints.noModelCall=true -- resolve the packet intent'
+            PacketRequested = $true
+        }
+    }
+    return @{ Action = 'model-call'; Error = $null; PacketRequested = $true }
+}
+
+function Read-CdwModelConfig {
+    <#
+    .SYNOPSIS
+      Read model-endpoints.json. Returns @{Ok; Error; Config}. No HTTP.
+    #>
+    param([Parameter(Mandatory)][string] $Path)
+    if (-not (Test-Path -LiteralPath $Path)) {
+        return @{ Ok = $false; Error = "model config missing: $Path"; Config = $null }
+    }
+    try {
+        $cfg = Get-Content -LiteralPath $Path -Raw | ConvertFrom-Json
+    }
+    catch {
+        return @{ Ok = $false; Error = "model config unreadable: $($_.Exception.Message)"; Config = $null }
+    }
+    foreach ($f in @('endpoint', 'routes', 'request')) {
+        if (-not ($cfg.PSObject.Properties.Name -contains $f)) {
+            return @{ Ok = $false; Error = "model config missing '$f' object"; Config = $null }
+        }
+    }
+    foreach ($f in @('probeUrl', 'chatUrl')) {
+        if (-not ($cfg.endpoint.PSObject.Properties.Name -contains $f) -or
+            [string]::IsNullOrWhiteSpace([string]$cfg.endpoint.$f)) {
+            return @{ Ok = $false; Error = "model config endpoint.$f required"; Config = $null }
+        }
+    }
+    return @{ Ok = $true; Error = $null; Config = $cfg }
+}
+
+function Test-CdwModelEndpointLocal {
+    <#
+    .SYNOPSIS
+      Localhost-only enforcement IN CODE (not config trust). Both probe and
+      chat URLs must start with http://127.0.0.1: or http://localhost:.
+      Returns @{Ok; Error}. No HTTP.
+    #>
+    param([Parameter(Mandatory)] $Config)
+    foreach ($u in @([string]$Config.endpoint.probeUrl, [string]$Config.endpoint.chatUrl)) {
+        $isLocal = $u.StartsWith('http://127.0.0.1:', [System.StringComparison]::OrdinalIgnoreCase) -or
+                   $u.StartsWith('http://localhost:', [System.StringComparison]::OrdinalIgnoreCase)
+        if (-not $isLocal) {
+            return @{ Ok = $false; Error = "model endpoint is not localhost -- refused (no egress beyond localhost): $u" }
+        }
+    }
+    return @{ Ok = $true; Error = $null }
+}
+
+function Resolve-CdwModelRoute {
+    <#
+    .SYNOPSIS
+      routeTag -> configured model id. AUTO OK is rejected (belongs on Red).
+      If packet modelCall.requiredModel is set it must agree with the routed
+      model (model-route-conflict otherwise). Returns @{Ok; Error; ModelId;
+      AllowFallbackIgnoredWarning}. No HTTP.
+    #>
+    param(
+        [Parameter(Mandatory)] $Packet,
+        [Parameter(Mandatory)] $Config
+    )
+    $route = [string]$Packet.routeTag
+    if ($route -eq 'AUTO OK') {
+        return @{ Ok = $false; Error = "routeTag 'AUTO OK' is not routed to a Green model -- rejected"; ModelId = $null; AllowFallbackIgnoredWarning = $null }
+    }
+    $entry = $Config.routes.PSObject.Properties | Where-Object { $_.Name -eq $route } | Select-Object -First 1
+    if (-not $entry -or [string]::IsNullOrWhiteSpace([string]$entry.Value)) {
+        return @{ Ok = $false; Error = "routeTag '$route' has no configured model in model-endpoints config"; ModelId = $null; AllowFallbackIgnoredWarning = $null }
+    }
+    $modelId = [string]$entry.Value
+
+    $warning = $null
+    if ($Packet.PSObject.Properties.Name -contains 'modelCall' -and $null -ne $Packet.modelCall) {
+        $mc = $Packet.modelCall
+        if ($mc.PSObject.Properties.Name -contains 'requiredModel' -and $mc.requiredModel) {
+            $req = [string]$mc.requiredModel
+            if ($req -ne $modelId) {
+                return @{ Ok = $false; Error = "model-route-conflict: packet requiredModel '$req' disagrees with routeTag '$route' configured model '$modelId'"; ModelId = $null; AllowFallbackIgnoredWarning = $null }
+            }
+        }
+        if ($mc.PSObject.Properties.Name -contains 'allowFallback' -and $mc.allowFallback -eq $true) {
+            $warning = 'modelCall.allowFallback=true is ignored in Slice 2 (fallback not implemented; missing model still fails closed)'
+        }
+    }
+    return @{ Ok = $true; Error = $null; ModelId = $modelId; AllowFallbackIgnoredWarning = $warning }
+}
+
+function Expand-CdwReadGlobs {
+    <#
+    .SYNOPSIS
+      Expand inputs.readGlobs inside the resolved clone. Glob language:
+      ** = any path segments, * = within one segment, ? = one char.
+      Enumeration is rooted at the glob's fixed prefix directory; results
+      are repo-relative, verified against profile forbid-prefixes.
+      Returns @{Ok; Errors[]; Files[]}. No HTTP. Read-only.
+    #>
+    param(
+        [Parameter(Mandatory)] $Packet,
+        [Parameter(Mandatory)] $Profile
+    )
+    $errors = New-Object System.Collections.Generic.List[string]
+    $files = New-Object System.Collections.Generic.List[string]
+    $clone = [string]$Profile.cloneWindows
+
+    $readGlobs = @()
+    if ($Packet.inputs.PSObject.Properties.Name -contains 'readGlobs' -and $Packet.inputs.readGlobs) {
+        $readGlobs = @($Packet.inputs.readGlobs)
+    }
+    if ($readGlobs.Count -eq 0) {
+        return @{ Ok = $true; Errors = @(); Files = @() }
+    }
+
+    $forbidPrefixes = @()
+    if ($Profile.PSObject.Properties.Name -contains 'forbidInputPrefixes' -and $Profile.forbidInputPrefixes) {
+        $forbidPrefixes = @($Profile.forbidInputPrefixes)
+    }
+
+    $cloneFull = (Resolve-Path -LiteralPath $clone).Path.TrimEnd('\')
+
+    foreach ($glob in $readGlobs) {
+        $g = ([string]$glob) -replace '\\', '/'
+
+        # fixed prefix = segments before the first wildcard segment
+        $segments = $g -split '/'
+        $fixed = New-Object System.Collections.Generic.List[string]
+        foreach ($seg in $segments) {
+            if ($seg -match '[\*\?]') { break }
+            $fixed.Add($seg)
+        }
+        $baseRel = ($fixed -join '\')
+        $baseDir = if ($baseRel) { Join-Path $cloneFull $baseRel } else { $cloneFull }
+        if (-not (Test-Path -LiteralPath $baseDir -PathType Container)) {
+            # No matching directory -> zero matches (not an error by itself)
+            continue
+        }
+
+        # glob -> anchored regex on the repo-relative forward-slash path
+        $rx = [regex]::Escape($g)
+        $rx = $rx -replace '\\\*\\\*/', '(?:[^/]+/)*'   # '**/' = zero or more segments
+        $rx = $rx -replace '\\\*\\\*', '.*'             # bare '**'
+        $rx = $rx -replace '\\\*', '[^/]*'
+        $rx = $rx -replace '\\\?', '[^/]'
+        $rx = '^' + $rx + '$'
+
+        $candidates = Get-ChildItem -LiteralPath $baseDir -Recurse -File -Force -ErrorAction SilentlyContinue |
+            Where-Object { $_.FullName -notmatch '\\\.git\\' }
+        foreach ($c in $candidates) {
+            $rel = $c.FullName.Substring($cloneFull.Length).TrimStart('\') -replace '\\', '/'
+            if ($rel -notmatch $rx) { continue }
+            $blocked = $false
+            foreach ($prefix in $forbidPrefixes) {
+                $pNorm = ([string]$prefix) -replace '\\', '/'
+                if ($rel.StartsWith($pNorm, [System.StringComparison]::OrdinalIgnoreCase)) {
+                    $errors.Add("glob '$glob' expanded to '$rel' which is under forbidden prefix '$prefix'")
+                    $blocked = $true
+                    break
+                }
+            }
+            if (-not $blocked) { $files.Add($rel) }
+        }
+    }
+
+    return @{ Ok = ($errors.Count -eq 0); Errors = @($errors); Files = @($files | Sort-Object -Unique) }
+}
+
+function Get-CdwPackedInputs {
+    <#
+    .SYNOPSIS
+      Load readFiles + expanded glob files (deduped, packet order first),
+      enforce inputs.maxBytes over the COMBINED set and the prompt context
+      ceiling (config request.maxPromptChars). Returns @{Ok; Errors[];
+      Files[]; TotalBytes; PackedText}. No HTTP. Read-only. No truncation:
+      over-cap fails closed.
+    #>
+    param(
+        [Parameter(Mandatory)] $Packet,
+        [Parameter(Mandatory)] $Profile,
+        [Parameter(Mandatory)][AllowEmptyCollection()][string[]] $GlobFiles,
+        [long] $MaxPromptChars = 120000
+    )
+    $errors = New-Object System.Collections.Generic.List[string]
+    $clone = [string]$Profile.cloneWindows
+    $maxBytes = [long]$Packet.inputs.maxBytes
+
+    $readFiles = @()
+    if ($Packet.inputs.PSObject.Properties.Name -contains 'readFiles' -and $Packet.inputs.readFiles) {
+        $readFiles = @($Packet.inputs.readFiles | ForEach-Object { ([string]$_) -replace '\\', '/' })
+    }
+    $ordered = New-Object System.Collections.Generic.List[string]
+    foreach ($f in ($readFiles + @($GlobFiles))) {
+        if (-not $ordered.Contains($f)) { $ordered.Add($f) }
+    }
+
+    $totalBytes = [long]0
+    $sb = New-Object System.Text.StringBuilder
+    foreach ($rel in $ordered) {
+        $full = Join-Path $clone ($rel -replace '/', '\')
+        if (-not (Test-Path -LiteralPath $full -PathType Leaf)) {
+            $errors.Add("packed input not found in clone: $rel")
+            continue
+        }
+        $len = (Get-Item -LiteralPath $full).Length
+        $totalBytes += $len
+        $content = [IO.File]::ReadAllText($full)
+        [void]$sb.AppendLine("=== FILE: $rel ($len bytes) ===")
+        [void]$sb.AppendLine($content)
+        [void]$sb.AppendLine("=== END FILE: $rel ===")
+        [void]$sb.AppendLine('')
+    }
+
+    if ($totalBytes -gt $maxBytes) {
+        $errors.Add("combined input bytes $totalBytes (readFiles + expanded globs) exceed inputs.maxBytes $maxBytes")
+    }
+    $packed = $sb.ToString()
+    if ($errors.Count -eq 0 -and $packed.Length -gt $MaxPromptChars) {
+        $errors.Add("packed input length $($packed.Length) chars exceeds prompt context ceiling $MaxPromptChars -- reduce inputs or raise the ceiling deliberately (no silent truncation)")
+    }
+
+    return @{
+        Ok         = ($errors.Count -eq 0)
+        Errors     = @($errors)
+        Files      = @($ordered)
+        TotalBytes = $totalBytes
+        PackedText = $packed
+    }
+}
+
+function Build-CdwModelRequest {
+    <#
+    .SYNOPSIS
+      Build the OpenAI-compatible chat request body. Worker-owned system
+      prompt (packets cannot override). Returns @{Body (hashtable);
+      SystemPrompt; UserPrompt}. No HTTP.
+    #>
+    param(
+        [Parameter(Mandatory)] $Packet,
+        [Parameter(Mandatory)][string] $ProfileName,
+        [Parameter(Mandatory)][string] $ModelId,
+        [Parameter(Mandatory)][AllowEmptyString()][string] $PackedInputs,
+        [Parameter(Mandatory)] $Config
+    )
+    $d = $Packet.deliverable
+    $format = [string]$d.format
+    $sections = @()
+    if ($d.PSObject.Properties.Name -contains 'expectedSections' -and $d.expectedSections) {
+        $sections = @($d.expectedSections)
+    }
+
+    $sys = New-Object System.Collections.Generic.List[string]
+    $sys.Add('You are a headless audit/distill worker running on an offline workstation (Green).')
+    $sys.Add('Your eyes are covered: you have NO runtime, editor, or game access. Never claim runtime proof, playtest results, or visual verification.')
+    $sys.Add('Respond ONLY from the provided input files and instruction. Never fabricate file contents, paths, commits, or quotes.')
+    $sys.Add('Never include commit or push instructions beyond restating any handoff hints already present in the task.')
+    $sys.Add("Output format: $format.")
+    if ($format -eq 'markdown' -and $sections.Count -gt 0) {
+        $sys.Add("Your markdown output MUST contain these sections as headings, in order: $($sections -join ' | ').")
+    }
+    elseif ($format -eq 'json') {
+        $sys.Add('Your ENTIRE output must be a single valid JSON document. No prose before or after.')
+    }
+    if ($ProfileName -eq 'dxrp-official') {
+        $sys.Add('This output is for a PUBLIC upstream repository. Never mention private LifePunch branding, private repository paths, proprietary headers, or any AI attribution trailers.')
+    }
+
+    $usr = New-Object System.Collections.Generic.List[string]
+    $usr.Add("TASK: $($Packet.instruction)")
+    if ($Packet.inputs.PSObject.Properties.Name -contains 'contextNotes' -and $Packet.inputs.contextNotes) {
+        $usr.Add('')
+        $usr.Add("CONTEXT NOTES: $($Packet.inputs.contextNotes)")
+    }
+    $usr.Add('')
+    $usr.Add("DELIVERABLE: name=$($d.outboxName) format=$format")
+    if ($sections.Count -gt 0) { $usr.Add("EXPECTED SECTIONS: $($sections -join ' | ')") }
+    if ($d.PSObject.Properties.Name -contains 'audience' -and $d.audience) { $usr.Add("AUDIENCE: $($d.audience)") }
+    $usr.Add('')
+    $usr.Add('INPUT FILES:')
+    $usr.Add($PackedInputs)
+
+    $temperature = 0.2
+    $maxTokens = 4096
+    if ($Config.request.PSObject.Properties.Name -contains 'temperature' -and $null -ne $Config.request.temperature) {
+        $temperature = [double]$Config.request.temperature
+    }
+    if ($Config.request.PSObject.Properties.Name -contains 'maxTokens' -and $null -ne $Config.request.maxTokens) {
+        $maxTokens = [int]$Config.request.maxTokens
+    }
+
+    $systemPrompt = ($sys -join ' ')
+    $userPrompt = ($usr -join [Environment]::NewLine)
+    $body = @{
+        model       = $ModelId
+        messages    = @(
+            @{ role = 'system'; content = $systemPrompt },
+            @{ role = 'user'; content = $userPrompt }
+        )
+        temperature = $temperature
+        max_tokens  = $maxTokens
+        stream      = $false
+    }
+    return @{ Body = $body; SystemPrompt = $systemPrompt; UserPrompt = $userPrompt }
+}
+
+function Invoke-CdwHttpGet {
+    # PERFORMS HTTP (localhost only; caller must have passed all gates).
+    param(
+        [Parameter(Mandatory)][string] $Url,
+        [int] $TimeoutSec = 5
+    )
+    $req = [System.Net.HttpWebRequest]::Create($Url)
+    $req.Method = 'GET'
+    $req.Timeout = $TimeoutSec * 1000
+    $req.ReadWriteTimeout = $TimeoutSec * 1000
+    $resp = $req.GetResponse()
+    try {
+        $reader = New-Object IO.StreamReader($resp.GetResponseStream())
+        return $reader.ReadToEnd()
+    }
+    finally { $resp.Dispose() }
+}
+
+function Invoke-CdwModelProbe {
+    <#
+    .SYNOPSIS
+      PERFORMS HTTP: GET the /v1/models probe URL. First permitted network
+      action of a run. Returns @{Ok; Error; Models[]}.
+    #>
+    param([Parameter(Mandatory)] $Config)
+    $url = [string]$Config.endpoint.probeUrl
+    $timeout = 5
+    if ($Config.endpoint.PSObject.Properties.Name -contains 'probeTimeoutSec' -and $Config.endpoint.probeTimeoutSec) {
+        $timeout = [int]$Config.endpoint.probeTimeoutSec
+    }
+    try {
+        $raw = Invoke-CdwHttpGet -Url $url -TimeoutSec $timeout
+        $parsed = $raw | ConvertFrom-Json
+        $models = @()
+        if ($parsed.PSObject.Properties.Name -contains 'data' -and $parsed.data) {
+            $models = @($parsed.data | ForEach-Object { [string]$_.id })
+        }
+        return @{ Ok = $true; Error = $null; Models = $models }
+    }
+    catch {
+        return @{ Ok = $false; Error = "endpoint probe failed ($url): $($_.Exception.Message)"; Models = @() }
+    }
+}
+
+function Invoke-CdwModelCall {
+    <#
+    .SYNOPSIS
+      PERFORMS HTTP: POST the chat completion. Returns @{Ok; Stage; Error;
+      Content; FinishReason; DurationSeconds; HttpStatus}. Stage on failure:
+      model-timeout | model-invalid | endpoint-down. One retry ONLY for
+      transient connect failures (never for timeout).
+    #>
+    param(
+        [Parameter(Mandatory)] $Config,
+        [Parameter(Mandatory)] $Body
+    )
+    $url = [string]$Config.endpoint.chatUrl
+    $timeout = 300
+    if ($Config.endpoint.PSObject.Properties.Name -contains 'callTimeoutSec' -and $Config.endpoint.callTimeoutSec) {
+        $timeout = [int]$Config.endpoint.callTimeoutSec
+    }
+    $json = $Body | ConvertTo-Json -Depth 10
+    $bytes = [Text.Encoding]::UTF8.GetBytes($json)
+
+    $attempt = 0
+    $maxAttempts = 2   # 2nd attempt only on transient connect failure
+    while ($true) {
+        $attempt++
+        $sw = [Diagnostics.Stopwatch]::StartNew()
+        try {
+            $req = [System.Net.HttpWebRequest]::Create($url)
+            $req.Method = 'POST'
+            $req.ContentType = 'application/json'
+            $req.Timeout = $timeout * 1000
+            $req.ReadWriteTimeout = $timeout * 1000
+            $reqStream = $req.GetRequestStream()
+            try { $reqStream.Write($bytes, 0, $bytes.Length) } finally { $reqStream.Dispose() }
+            $resp = $req.GetResponse()
+            try {
+                $reader = New-Object IO.StreamReader($resp.GetResponseStream())
+                $raw = $reader.ReadToEnd()
+            }
+            finally { $resp.Dispose() }
+            $sw.Stop()
+
+            try { $parsed = $raw | ConvertFrom-Json }
+            catch {
+                return @{ Ok = $false; Stage = 'model-invalid'; Error = "response body is not valid JSON: $($_.Exception.Message)"; Content = $null; FinishReason = $null; DurationSeconds = [math]::Round($sw.Elapsed.TotalSeconds, 1); HttpStatus = 200 }
+            }
+            if (-not ($parsed.PSObject.Properties.Name -contains 'choices') -or -not $parsed.choices -or @($parsed.choices).Count -lt 1) {
+                return @{ Ok = $false; Stage = 'model-invalid'; Error = 'response JSON has no choices'; Content = $null; FinishReason = $null; DurationSeconds = [math]::Round($sw.Elapsed.TotalSeconds, 1); HttpStatus = 200 }
+            }
+            $choice = @($parsed.choices)[0]
+            $content = $null
+            if ($choice.PSObject.Properties.Name -contains 'message' -and $choice.message -and
+                ($choice.message.PSObject.Properties.Name -contains 'content')) {
+                $content = [string]$choice.message.content
+            }
+            $finish = ''
+            if ($choice.PSObject.Properties.Name -contains 'finish_reason') { $finish = [string]$choice.finish_reason }
+            if ([string]::IsNullOrWhiteSpace($content)) {
+                return @{ Ok = $false; Stage = 'model-empty'; Error = "model returned empty content (finish_reason: $finish)"; Content = $null; FinishReason = $finish; DurationSeconds = [math]::Round($sw.Elapsed.TotalSeconds, 1); HttpStatus = 200 }
+            }
+            return @{ Ok = $true; Stage = $null; Error = $null; Content = $content; FinishReason = $finish; DurationSeconds = [math]::Round($sw.Elapsed.TotalSeconds, 1); HttpStatus = 200 }
+        }
+        catch [System.Net.WebException] {
+            $sw.Stop()
+            $we = $_.Exception
+            if ($we.Status -eq [System.Net.WebExceptionStatus]::Timeout) {
+                return @{ Ok = $false; Stage = 'model-timeout'; Error = "model call exceeded timeout ${timeout}s (elapsed $([math]::Round($sw.Elapsed.TotalSeconds,1))s)"; Content = $null; FinishReason = $null; DurationSeconds = [math]::Round($sw.Elapsed.TotalSeconds, 1); HttpStatus = $null }
+            }
+            $transient = $we.Status -in @([System.Net.WebExceptionStatus]::ConnectFailure, [System.Net.WebExceptionStatus]::NameResolutionFailure)
+            if ($transient -and $attempt -lt $maxAttempts) {
+                Start-Sleep -Seconds 2
+                continue
+            }
+            return @{ Ok = $false; Stage = 'endpoint-down'; Error = "model call failed ($url): $($we.Message)"; Content = $null; FinishReason = $null; DurationSeconds = [math]::Round($sw.Elapsed.TotalSeconds, 1); HttpStatus = $null }
+        }
+        catch {
+            $sw.Stop()
+            return @{ Ok = $false; Stage = 'endpoint-down'; Error = "model call failed ($url): $($_.Exception.Message)"; Content = $null; FinishReason = $null; DurationSeconds = [math]::Round($sw.Elapsed.TotalSeconds, 1); HttpStatus = $null }
+        }
+    }
+}
+
+function Test-CdwModelOutput {
+    <#
+    .SYNOPSIS
+      Format-aware output validation (deliverable.format dispatch).
+      markdown: non-empty; expectedSections best-effort (missing = warning,
+                ALL missing = fail model-invalid).
+      json:     full body must parse after optional outer code-fence strip.
+      text:     non-empty (non-whitespace).
+      Unknown format: fail closed (defense-in-depth; schema catches earlier).
+      Scan is the caller's job and runs BEFORE this on raw output for
+      dxrp-official. Returns @{Ok; Stage; Errors[]; Warnings[];
+      MissingSections[]; OutputText}. No HTTP.
+    #>
+    param(
+        [Parameter(Mandatory)][AllowEmptyString()][string] $OutputText,
+        [Parameter(Mandatory)][string] $Format,
+        [string[]] $ExpectedSections = @()
+    )
+    $warnings = New-Object System.Collections.Generic.List[string]
+    $missing = New-Object System.Collections.Generic.List[string]
+
+    if ([string]::IsNullOrWhiteSpace($OutputText)) {
+        return @{ Ok = $false; Stage = 'model-empty'; Errors = @('model output is empty or whitespace'); Warnings = @(); MissingSections = @(); OutputText = $OutputText }
+    }
+
+    switch ($Format) {
+        'markdown' {
+            if ($ExpectedSections.Count -gt 0) {
+                $matched = 0
+                foreach ($s in $ExpectedSections) {
+                    $needle = [regex]::Escape([string]$s)
+                    # heading line or bold pseudo-heading containing the label
+                    if ($OutputText -match "(?im)^\s{0,3}(#{1,6}\s.*$needle|\*\*.*$needle.*\*\*\s*$)") {
+                        $matched++
+                    }
+                    else {
+                        $missing.Add([string]$s)
+                    }
+                }
+                if ($matched -eq 0) {
+                    return @{ Ok = $false; Stage = 'model-invalid'; Errors = @("output contains none of the $($ExpectedSections.Count) expected sections -- contract ignored"); Warnings = @(); MissingSections = @($missing); OutputText = $OutputText }
+                }
+                foreach ($m in $missing) {
+                    $warnings.Add("expected section not found (best-effort match): $m")
+                }
+            }
+            return @{ Ok = $true; Stage = $null; Errors = @(); Warnings = @($warnings); MissingSections = @($missing); OutputText = $OutputText }
+        }
+        'json' {
+            $candidate = $OutputText.Trim()
+            # strip ONE outer code fence if present
+            if ($candidate -match '(?s)^```[a-zA-Z]*\r?\n(.*)\r?\n```$') {
+                $candidate = $Matches[1]
+            }
+            try {
+                $null = $candidate | ConvertFrom-Json
+            }
+            catch {
+                return @{ Ok = $false; Stage = 'model-invalid'; Errors = @("output is not valid JSON for a json deliverable: $($_.Exception.Message)"); Warnings = @(); MissingSections = @(); OutputText = $OutputText }
+            }
+            return @{ Ok = $true; Stage = $null; Errors = @(); Warnings = @(); MissingSections = @(); OutputText = $candidate }
+        }
+        'text' {
+            return @{ Ok = $true; Stage = $null; Errors = @(); Warnings = @(); MissingSections = @(); OutputText = $OutputText }
+        }
+        default {
+            return @{ Ok = $false; Stage = 'model-invalid'; Errors = @("unsupported deliverable.format '$Format' reached output validation (should have failed at schema)"); Warnings = @(); MissingSections = @(); OutputText = $OutputText }
+        }
+    }
 }

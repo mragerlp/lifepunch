@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://lifepunch.co/schemas/cornerman-task-packet.schema.json",
   "title": "Cornerman drop-worker task packet (schema v2)",
-  "description": "Task packet contract for the Cornerman headless drop worker. Models the full lifecycle (idea -> brief -> agent -> proof -> review -> commit/PR) even though the Slice 1 worker only validates and reports. Slice 1 never performs model calls, scheduler installs, patch creation, commits, pushes, PRs, or proof. Authoritative design: lifepunch/docs/handoff/CORNERMAN_HEADLESS_DROP_WORKER_OPUS_V2_PLAN_2026-07-06.md (Part B).",
+  "description": "Task packet contract for the Cornerman headless drop worker. Models the full lifecycle (idea -> brief -> agent -> proof -> review -> commit/PR). Slice 2 adds an opt-in local model call (see modelCall); the worker still never performs scheduler installs, patch creation, commits, pushes, PRs, proof, or any network egress beyond localhost. Authoritative design: lifepunch/docs/handoff/CORNERMAN_HEADLESS_DROP_WORKER_OPUS_V2_PLAN_2026-07-06.md (Part B) + lifepunch/docs/handoff/CORNERMAN_DROP_WORKER_SLICE2_MODEL_CALL_PLAN_2026-07-06.md.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -87,7 +87,7 @@
     "routeTag": {
       "type": "string",
       "enum": ["GREEN DEEP REQUIRED", "GREEN CODE REQUIRED", "AUTO OK"],
-      "description": "Model routing tag (warm target on Green). Slice 1 records it; no model is called."
+      "description": "Model routing tag. On model runs the worker resolves this to an exact model id via model-endpoints.json (GREEN DEEP = deep/distill model, GREEN CODE = coder model). AUTO OK is rejected for model runs (belongs on Red)."
     },
     "focus": {
       "type": "string",
@@ -98,12 +98,35 @@
     "model": {
       "type": "object",
       "additionalProperties": false,
-      "description": "Reserved for Slice 2+. Local model endpoint config. Slice 1 validates shape only and never calls it.",
+      "description": "Reserved (unused). Endpoint/request tuning lives in the worker-side model-endpoints.json config, not in packets. Kept for shape compatibility only.",
       "properties": {
         "endpoint": { "type": "string", "pattern": "^https?://(127\\.0\\.0\\.1|localhost)[:/]" },
         "name": { "type": "string" },
         "maxTokens": { "type": "integer", "minimum": 1, "maximum": 32768 },
         "temperature": { "type": "number", "minimum": 0, "maximum": 2 }
+      }
+    },
+
+    "modelCall": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Slice 2 packet-side model-call opt-in. A model call requires BOTH this object with enabled=true AND the worker being started with -EnableModelCall (double opt-in). Absent object = enabled:false = dry-run. enabled=true without the worker switch fails closed (model-call-requested-but-worker-not-enabled). enabled=true combined with constraints.noModelCall=true fails closed (packet self-contradiction).",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Packet-side opt-in. Default false; legacy packets never call a model."
+        },
+        "requiredModel": {
+          "type": ["string", "null"],
+          "default": null,
+          "description": "Optional exact model id. Must appear in the endpoint's /v1/models list AND agree with the routeTag's configured model (model-route-conflict otherwise). Null = resolve purely from routeTag."
+        },
+        "allowFallback": {
+          "type": "boolean",
+          "default": false,
+          "description": "Reserved for a future slice. Slice 2 ignores true (warning only); a missing requested/routed model ALWAYS fails closed as model-unavailable."
+        }
       }
     },
 

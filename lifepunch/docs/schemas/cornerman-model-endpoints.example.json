@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "comment": "Cornerman drop-worker model endpoint config (Slice 2). Deploy the live copy to C:\\lifepunch\\cornerman\\config\\model-endpoints.json on Green. LOCALHOST ONLY: the worker refuses (in code) any URL that does not start with http://127.0.0.1: or http://localhost: -- no cloud fallback, no egress. A model call additionally requires the -EnableModelCall worker switch AND packet modelCall.enabled=true (double opt-in). routes maps routeTag -> exact LM Studio model id; a routed/required model missing from /v1/models ALWAYS fails closed (no substitution, allowFallback ignored in Slice 2). AUTO OK is never routed to a Green model.",
+  "endpoint": {
+    "probeUrl": "http://127.0.0.1:1234/v1/models",
+    "chatUrl": "http://127.0.0.1:1234/v1/chat/completions",
+    "probeTimeoutSec": 5,
+    "callTimeoutSec": 300
+  },
+  "routes": {
+    "GREEN DEEP REQUIRED": "qwen/qwen3.6-35b-a3b",
+    "GREEN CODE REQUIRED": "qwen2.5-coder-32b-instruct"
+  },
+  "request": {
+    "temperature": 0.2,
+    "maxTokens": 4096,
+    "maxPromptChars": 120000
+  }
+}
