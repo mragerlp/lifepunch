@@ -56,6 +56,11 @@ param(
     [string[]] $ReadFiles = @(),
     [string[]] $ReadGlobs = @(),
 
+    # Canon/reference docs (inputs.requiredDocs): loaded as authoritative reference
+    # context, packed separately from the readFiles/readGlobs drift targets. Additive
+    # only -- does NOT satisfy the readFiles/readGlobs requirement.
+    [string[]] $RequiredDocs = @(),
+
     # Packet-side model-call opt-in (modelCall.enabled=true). The worker
     # additionally requires its own -EnableModelCall switch (double opt-in).
     [switch] $RequestModelCall,
@@ -107,7 +112,7 @@ if (@($ReadFiles).Count -eq 0 -and @($ReadGlobs).Count -eq 0) {
     Write-Output 'ERROR: at least one of -ReadFiles / -ReadGlobs is required (schema: inputs anyOf).'
     exit 1
 }
-foreach ($p in @($ReadFiles) + @($ReadGlobs)) {
+foreach ($p in @($ReadFiles) + @($ReadGlobs) + @($RequiredDocs)) {
     if ([IO.Path]::IsPathRooted($p) -or $p -match '\.\.') {
         Write-Output "ERROR: input path must be repo-relative with no '..' traversal: $p"
         exit 1
@@ -177,6 +182,7 @@ if (@($AllowedOutputTypes).Count -eq 0) {
 $inputs = [ordered]@{}
 if (@($ReadFiles).Count -gt 0) { $inputs.readFiles = @($ReadFiles | ForEach-Object { $_ -replace '\\', '/' }) }
 if (@($ReadGlobs).Count -gt 0) { $inputs.readGlobs = @($ReadGlobs | ForEach-Object { $_ -replace '\\', '/' }) }
+if (@($RequiredDocs).Count -gt 0) { $inputs.requiredDocs = @($RequiredDocs | ForEach-Object { $_ -replace '\\', '/' }) }
 $inputs.maxBytes = $MaxBytes
 if ($ContextNotes) { $inputs.contextNotes = $ContextNotes }
 
