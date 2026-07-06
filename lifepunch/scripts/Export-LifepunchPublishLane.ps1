@@ -61,10 +61,13 @@ function Copy-PublishTree {
             $parts = $rel -split '[\\/]'
             $_.Name -notin @('.gitkeep', 'desktop.ini', 'Thumbs.db', 'material-map.json') `
                 -and $_.Extension -ne '.md' `
+                -and $_.Extension -notin @('.blend', '.fbx', '.tga', '.obj') `
                 -and $parts -notcontains 'docs' `
                 -and $parts -notcontains '_dev' `
                 -and $parts -notcontains '_archive' `
                 -and $parts -notcontains 'reference-intake' `
+                -and $parts -notcontains 'source' `
+                -and $parts -notcontains 'audit' `
                 -and $_.Name -notmatch '(TestBots|DevGive|DevSpawn)'
         } |
         ForEach-Object {

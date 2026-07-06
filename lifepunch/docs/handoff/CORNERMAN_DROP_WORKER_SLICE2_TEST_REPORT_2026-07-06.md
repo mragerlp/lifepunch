@@ -1,5 +1,7 @@
 # Cornerman drop worker — Slice 2 test evidence (model call)
 
+> **Note (2026-07-06):** This run executed under the pre-correction Deep→35b-a3b mapping. Deep=27b is canon as of commit b70ef1c. Results below reflect the old routing.
+
 **Date:** 2026-07-06
 **Scope:** Slice 2 — opt-in local model call + real report generation for the headless drop worker
 **Code under test:**

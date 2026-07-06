@@ -62,7 +62,7 @@ See `AGENT_ONBOARDING.md` § Named systems.
 - Keyboard, mouse, and a DisplayPort/HDMI or USB-C cable to a monitor (none are included).
 - Confirm the codename (used for hostname + git author; and Tailscale if remote is ever added).
 
-## 2. First-boot hardening (Windows 11 Home)
+## 2. First-boot hardening (Windows 11 Pro)
 
 1. Windows Update → install everything, reboot until clean.
 2. BIOS/firmware: update to latest Corsair/AMD firmware (Strix Halo perf + security fixes).
@@ -94,8 +94,8 @@ See `AGENT_ONBOARDING.md` § Named systems.
    (MFA-protected) — fine; also keep an **offline copy** (USB + password manager). **Local account:**
    no escrow → **save the key yourself** (USB + password manager, never the cloud). Pro also lets you
    pick **XTS-AES 256** and encrypt any second/data drive — do the OS drive now, add data-drive
-   encryption only if one is attached. (Win11 Home would give *Device Encryption* only; lockout isn't
-   catastrophic anyway — the box is a clone.)
+   encryption only if one is attached. (This box runs **Win11 Pro** — full BitLocker applies; Home would
+   give *Device Encryption* only. Lockout isn't catastrophic anyway — the box is a clone.)
 7. Firewall: keep Windows Firewall ON, default-deny inbound. Ports are opened later, **LAN-scoped only**.
 8. Disable what you won't use (WAN-facing RDP, internet-facing SMB, etc.).
 9. Review preinstalled AI apps (Jan.ai, Amuse.ai, Corsair AI Software Stack). Keep what we use;
