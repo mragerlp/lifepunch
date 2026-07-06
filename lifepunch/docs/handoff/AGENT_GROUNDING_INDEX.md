@@ -54,6 +54,7 @@
 | `GREEN_SMB_BOOT_PASTE.md` | Cornerman Map/Tunnel/SMB law |
 | `GREEN_PATCH_HANDOFF_QUICKREF.txt` | Cornerman → Red publish |
 | `RED_FULL_CAPACITY_BOOT.md` | Red editor + bridge boot |
+| `../CORNERMAN_HEADLESS_DROP_WORKER.md` | Headless drop worker (Slice 1 dry-run) — packet schema v2 + repo profiles |
 
 ---
 

@@ -1,0 +1,304 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://lifepunch.co/schemas/cornerman-task-packet.schema.json",
+  "title": "Cornerman drop-worker task packet (schema v2)",
+  "description": "Task packet contract for the Cornerman headless drop worker. Models the full lifecycle (idea -> brief -> agent -> proof -> review -> commit/PR). Slice 2 adds an opt-in local model call (see modelCall); the worker still never performs scheduler installs, patch creation, commits, pushes, PRs, proof, or any network egress beyond localhost. Authoritative design: lifepunch/docs/handoff/CORNERMAN_HEADLESS_DROP_WORKER_OPUS_V2_PLAN_2026-07-06.md (Part B) + lifepunch/docs/handoff/CORNERMAN_DROP_WORKER_SLICE2_MODEL_CALL_PLAN_2026-07-06.md.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "id",
+    "type",
+    "createdBy",
+    "createdTs",
+    "repoProfile",
+    "repoPath",
+    "baseRemote",
+    "baseBranch",
+    "focus",
+    "routeTag",
+    "inputs",
+    "instruction",
+    "allowedOutputTypes",
+    "forbiddenScope",
+    "requiresMaintainerApproval",
+    "deliverable",
+    "mode"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 2,
+      "description": "Packet schema version. Slice 1 worker accepts version 2 only."
+    },
+
+    "id": {
+      "type": "string",
+      "pattern": "^task-[0-9]{8}-[0-9]{6}-[a-z0-9][a-z0-9-]*$",
+      "description": "Unique packet id: task-YYYYMMDD-HHmmss-<slug>. Must match the inbox filename (<id>.json)."
+    },
+    "title": {
+      "type": "string",
+      "maxLength": 200,
+      "description": "Optional human-readable one-line task title."
+    },
+    "type": {
+      "type": "string",
+      "enum": ["distill", "audit", "summarize", "pr-review", "style-check", "ip-scan", "file-map", "pr-body"],
+      "description": "Task kind. dxrp-official packets are limited to review/audit kinds by allowedOutputTypes."
+    },
+    "createdBy": {
+      "type": "string",
+      "description": "Authoring node/agent, e.g. 'vengeance'."
+    },
+    "createdTs": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO-8601 UTC creation timestamp."
+    },
+    "owner": {
+      "type": "string",
+      "description": "Optional accountable owner for the task (default: Bloodwave)."
+    },
+
+    "repoProfile": {
+      "type": "string",
+      "enum": ["lifepunch-private", "dxrp-official"],
+      "description": "Repo/lane profile. Resolved against the profile registry (repo-profiles.json) on the worker node. The worker never infers a profile."
+    },
+    "repoPath": {
+      "type": "string",
+      "minLength": 3,
+      "description": "Authoring-node repo path (informational). The worker resolves the actual clone from the profile registry and verifies remotes; it does not trust this path."
+    },
+    "baseRemote": {
+      "type": "string",
+      "enum": ["origin", "upstream"],
+      "description": "Base remote. lifepunch-private: origin. dxrp-official: upstream (law)."
+    },
+    "baseBranch": {
+      "type": "string",
+      "enum": ["main", "develop"],
+      "description": "Base branch. lifepunch-private: main default, develop only when explicitly targeted. dxrp-official: develop (read as upstream/develop)."
+    },
+    "reviewBranch": {
+      "type": "string",
+      "description": "Optional. Required when reviewing an existing PR branch (dxrp-official). Read-only; never checked out."
+    },
+    "routeTag": {
+      "type": "string",
+      "enum": ["GREEN DEEP REQUIRED", "GREEN CODE REQUIRED", "AUTO OK"],
+      "description": "Model routing tag. On model runs the worker resolves this to an exact model id via model-endpoints.json (GREEN DEEP = deep/distill model, GREEN CODE = coder model). AUTO OK is rejected for model runs (belongs on Red)."
+    },
+    "focus": {
+      "type": "string",
+      "enum": ["LifePunch", "DXRP"],
+      "description": "Lane focus. Must agree with repoProfile (LifePunch <-> lifepunch-private, DXRP <-> dxrp-official). Never both."
+    },
+
+    "model": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Reserved (unused). Endpoint/request tuning lives in the worker-side model-endpoints.json config, not in packets. Kept for shape compatibility only.",
+      "properties": {
+        "endpoint": { "type": "string", "pattern": "^https?://(127\\.0\\.0\\.1|localhost)[:/]" },
+        "name": { "type": "string" },
+        "maxTokens": { "type": "integer", "minimum": 1, "maximum": 32768 },
+        "temperature": { "type": "number", "minimum": 0, "maximum": 2 }
+      }
+    },
+
+    "modelCall": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Slice 2 packet-side model-call opt-in. A model call requires BOTH this object with enabled=true AND the worker being started with -EnableModelCall (double opt-in). Absent object = enabled:false = dry-run. enabled=true without the worker switch fails closed (model-call-requested-but-worker-not-enabled). enabled=true combined with constraints.noModelCall=true fails closed (packet self-contradiction).",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Packet-side opt-in. Default false; legacy packets never call a model."
+        },
+        "requiredModel": {
+          "type": ["string", "null"],
+          "default": null,
+          "description": "Optional exact model id. Must appear in the endpoint's /v1/models list AND agree with the routeTag's configured model (model-route-conflict otherwise). Null = resolve purely from routeTag."
+        },
+        "allowFallback": {
+          "type": "boolean",
+          "default": false,
+          "description": "Reserved for a future slice. Slice 2 ignores true (warning only); a missing requested/routed model ALWAYS fails closed as model-unavailable."
+        }
+      }
+    },
+
+    "inputs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["maxBytes"],
+      "description": "Grounding inputs. All paths are repo-relative to the resolved profile clone; absolute paths and '..' traversal are rejected.",
+      "properties": {
+        "readFiles": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "description": "Repo-relative files to read."
+        },
+        "readGlobs": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "description": "Repo-relative bounded globs."
+        },
+        "maxBytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10000000,
+          "description": "Hard cap on total input bytes."
+        },
+        "requiredDocs": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Optional canon docs the task depends on (repo-relative)."
+        },
+        "contextNotes": {
+          "type": "string",
+          "maxLength": 8000,
+          "description": "Optional free-text context from the authoring node."
+        }
+      },
+      "anyOf": [
+        { "required": ["readFiles"] },
+        { "required": ["readGlobs"] }
+      ]
+    },
+    "instruction": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 8000,
+      "description": "What the task asks for. Distill/audit instruction, not an implementation order."
+    },
+
+    "allowedOutputTypes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "enum": ["distill", "audit", "summary", "file-map", "pr-review", "style-check", "ip-scan", "pr-body", "checklist", "prompt-packet"]
+      },
+      "description": "Explicit allow-list. The worker refuses to emit any artifact type not listed here."
+    },
+    "forbiddenScope": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Explicit deny-list, e.g. ['portal', 'permissions-backend', 'lifepunch-ip']. The worker rejects work touching these."
+    },
+    "requiresMaintainerApproval": {
+      "type": "boolean",
+      "description": "Default true for any implementation-adjacent dxrp-official task. When true, implementation-adjacent output is blocked without a maintainer-approval GO flag."
+    },
+    "mode": {
+      "type": "string",
+      "enum": ["report", "candidate-patch"],
+      "description": "report = distill/audit output only (Slice 1). candidate-patch = future GO-gated mode (Slice 5); ALWAYS rejected by the Slice 1 worker."
+    },
+    "slice": {
+      "type": "string",
+      "description": "Optional workstream slice id (e.g. H10, T3) for traceability."
+    },
+    "phase": {
+      "type": "string",
+      "description": "Optional lifecycle phase label (idea | brief | agent | proof | review | commit-pr)."
+    },
+    "doNotTouch": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Optional explicit path/topic deny-list layered on top of forbiddenScope."
+    },
+
+    "deliverable": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["outboxName", "format"],
+      "description": "Output contract for the outbox artifact.",
+      "properties": {
+        "outboxName": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+          "description": "Base name for outbox artifacts (no path separators or extensions)."
+        },
+        "format": {
+          "type": "string",
+          "enum": ["markdown", "json", "text"],
+          "description": "Primary report format."
+        },
+        "expectedSections": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Optional required sections in the report."
+        },
+        "audience": {
+          "type": "string",
+          "description": "Optional audience hint (e.g. 'vengeance-cursor', 'architect', 'dxrp-maintainers')."
+        }
+      }
+    },
+
+    "proof": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Reserved: proof/verification EXPECTATIONS for downstream Red work. Cornerman never claims runtime proof; these fields only drive checklist generation.",
+      "properties": {
+        "required": { "type": "boolean" },
+        "type": { "type": "string", "description": "e.g. 'flatgrass', 'docs-only', 'compile'." },
+        "mapHint": { "type": "string", "description": "e.g. 'lp_map_flatgrass'." },
+        "evidenceExpected": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Evidence items Red must produce (screenshots, clips, status output)."
+        }
+      }
+    },
+
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Reserved: review gates for the downstream lifecycle. Slice 1 records them into the report checklist only.",
+      "properties": {
+        "codexRequired": { "type": "boolean" },
+        "architectRequired": { "type": "boolean" },
+        "ownerGoRequired": { "type": "boolean" }
+      }
+    },
+
+    "commit": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Reserved: commit AUTHORITY hints for Red. The worker never commits or pushes; when commit.allowed is false the report must state 'commit forbidden' and carry no commit instructions.",
+      "properties": {
+        "allowed": { "type": "boolean" },
+        "messageSuggestion": { "type": "string", "maxLength": 500 }
+      }
+    },
+    "pr": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Reserved: PR authority hints for Red. The worker never opens PRs; pr-body drafting additionally requires 'pr-body' in allowedOutputTypes.",
+      "properties": {
+        "allowed": { "type": "boolean" },
+        "target": { "type": "string", "description": "e.g. 'dxura/dxrp:develop'." }
+      }
+    },
+
+    "constraints": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Safety policy. Defaults are enforced by the worker regardless of what the packet says; the packet may only restate or tighten, never loosen.",
+      "properties": {
+        "noCommit": { "type": "boolean" },
+        "noPush": { "type": "boolean" },
+        "noProof": { "type": "boolean" },
+        "noModelCall": { "type": "boolean" },
+        "noPatch": { "type": "boolean" },
+        "noScheduler": { "type": "boolean" },
+        "noSourceEdit": { "type": "boolean" }
+      }
+    }
+  }
+}
