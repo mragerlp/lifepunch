@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "comment": "Cornerman drop-worker repo profile registry. Deploy the live copy to C:\\lifepunch\\cornerman\\config\\repo-profiles.json on Green. The worker fails closed if a packet's repoProfile is not found here, if the clone path is missing, or if the clone's git remotes do not match expectedRemotes.",
+  "profiles": {
+    "lifepunch-private": {
+      "cloneWindows": "C:\\Projects\\lifepunch",
+      "authoringPathRed": "C:\\Users\\jared\\Projects\\lifepunch",
+      "expectedRemotes": {
+        "origin": "mragerlp/lifepunch"
+      },
+      "branchLaw": {
+        "baseRemote": "origin",
+        "allowedBaseBranches": ["main", "develop"],
+        "defaultBaseBranch": "main",
+        "note": "main = clean truth/export/stability (Green default). develop only when the packet explicitly targets active work / current testing / develop-bound audits."
+      },
+      "focus": "LifePunch",
+      "ipPosture": "private-ok",
+      "noIpScan": false
+    },
+    "dxrp-official": {
+      "cloneWindows": "C:\\Projects\\dxrp-public",
+      "authoringPathRed": "C:\\Users\\jared\\Projects\\dxrp-public",
+      "expectedRemotes": {
+        "origin": "mragerlp/dxrp-public",
+        "upstream": "dxura/dxrp"
+      },
+      "branchLaw": {
+        "baseRemote": "upstream",
+        "allowedBaseBranches": ["develop"],
+        "defaultBaseBranch": "develop",
+        "note": "Base is always upstream/develop. Reviewing an existing PR branch requires an explicit reviewBranch in the packet. The worker never creates, checks out, or pushes branches."
+      },
+      "focus": "DXRP",
+      "ipPosture": "no-private-ip",
+      "noIpScan": true,
+      "forbidInputPrefixes": ["lifepunch/", "lifepunchaddons/", "lifepunchdxrp/"]
+    }
+  }
+}

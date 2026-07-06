@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 2,
+  "id": "task-20260706-020000-hub-vs-hashd-style",
+  "title": "Compare HUB panel styling to HASHD terminal doctrine",
+  "type": "distill",
+  "createdBy": "vengeance",
+  "createdTs": "2026-07-06T02:00:00Z",
+  "owner": "Bloodwave",
+
+  "repoProfile": "lifepunch-private",
+  "repoPath": "C:\\Users\\jared\\Projects\\lifepunch",
+  "baseRemote": "origin",
+  "baseBranch": "main",
+  "routeTag": "GREEN DEEP REQUIRED",
+  "focus": "LifePunch",
+
+  "model": {
+    "endpoint": "http://127.0.0.1:1234/v1/chat/completions",
+    "name": "qwen-distill",
+    "maxTokens": 4096,
+    "temperature": 0.2
+  },
+
+  "inputs": {
+    "readFiles": [
+      "lifepunch/docs/CVL_RGB_DOCTRINE.md"
+    ],
+    "readGlobs": [],
+    "maxBytes": 400000,
+    "requiredDocs": [
+      "lifepunch/docs/handoff/CORNERMAN_HEADLESS_DROP_WORKER_OPUS_V2_PLAN_2026-07-06.md"
+    ],
+    "contextNotes": "Style comparison only; no implementation. Example packet for dry-run validation."
+  },
+  "instruction": "Compare the HUB panel styling doctrine to the HASHD terminal doctrine; list traits to borrow and functions not to touch. Output a paste-ready Cursor brief.",
+
+  "allowedOutputTypes": ["distill", "checklist", "prompt-packet"],
+  "forbiddenScope": ["portal", "permissions-backend"],
+  "requiresMaintainerApproval": false,
+  "mode": "report",
+  "slice": "H10",
+  "phase": "brief",
+  "doNotTouch": ["lifepunchaddons/Code/**/*.cs"],
+
+  "deliverable": {
+    "outboxName": "HUB_VS_HASHD_STYLE",
+    "format": "markdown",
+    "expectedSections": ["Traits to borrow", "Do not touch", "Open questions"],
+    "audience": "vengeance-cursor"
+  },
+
+  "proof": {
+    "required": false,
+    "type": "docs-only",
+    "evidenceExpected": []
+  },
+  "review": {
+    "codexRequired": false,
+    "architectRequired": false,
+    "ownerGoRequired": true
+  },
+  "commit": {
+    "allowed": false,
+    "messageSuggestion": ""
+  },
+  "pr": {
+    "allowed": false,
+    "target": ""
+  },
+  "constraints": {
+    "noCommit": true,
+    "noPush": true,
+    "noProof": true,
+    "noModelCall": true,
+    "noPatch": true,
+    "noScheduler": true,
+    "noSourceEdit": true
+  }
+}

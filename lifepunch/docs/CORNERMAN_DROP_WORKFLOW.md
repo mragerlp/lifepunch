@@ -32,6 +32,11 @@ VENGEANCE (Red)                    CORNERMAN (Green)
 
 **Hermes / lifepunchnet (optional later):** may **read** `outbox/` and format daily status — does **not** replace Green distill.
 
+**Headless automation (Slice 1 shipped):** structured `task-*.json` packets can be validated
+by the **headless drop worker** — dry-run report mode only for now (no model calls, no
+scheduler, no patches, no commits). Runbook: `CORNERMAN_HEADLESS_DROP_WORKER.md` ·
+design: `handoff/CORNERMAN_HEADLESS_DROP_WORKER_OPUS_V2_PLAN_2026-07-06.md`.
+
 ---
 
 ## Green paths
@@ -217,3 +222,4 @@ When upstream or side work finishes and the **active workstream** resumes (e.g. 
 | `Get-CornermanWorkflowStatus.ps1` | Ack tail |
 | `Pull-CornermanIdle.ps1` | Owner-return idle sessions |
 | `Fix-CornermanLmServe.ps1` | Cold start / serve recovery |
+| `cornerman/Invoke-CornermanDropWorker.ps1` | Headless dry-run packet worker (Slice 1) — see `CORNERMAN_HEADLESS_DROP_WORKER.md` |
