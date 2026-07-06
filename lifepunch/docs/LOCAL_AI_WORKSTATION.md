@@ -3,7 +3,7 @@
 > Codename: **Cornerman** *(confirmed)*
 > Hardware: Corsair AI Workstation 300 — Ryzen AI Max 385 / Radeon 8050S
 > (AMD "Strix Halo", `gfx1151`), 64 GB LPDDR5X-8000 unified (up to ~48 GB as VRAM),
-> 1 TB NVMe, 2.5 GbE + Wi-Fi 6E + USB4, ships **Windows 11 Home** preinstalled.
+> 1 TB NVMe, 2.5 GbE + Wi-Fi 6E + USB4, runs **Windows 11 Pro** (shipped with Windows 11 Home; Pro required for RDP host + managed BitLocker).
 >
 > This guide is for any agent or operator setting up or working on the local AI box.
 > It does not change the law: the monorepo's `.cursor/rules` still govern. See
@@ -366,8 +366,8 @@ Generic setup guides (and some LLM answers) push steps that conflict with Corner
   account; local serving uses local models.
 - **Do NOT fork per-project `/AI` doc trees.** Grounding already lives once in `.cursor/rules` +
   `lifepunch/docs`. Adding parallel `AI/README.md` etc. violates the single-source-of-truth rule.
-- **Win11 Home (preinstalled) is fine** — no mandatory fresh "Win11 Pro" reinstall. Pro is optional
-  only if we later want managed BitLocker/remote policy (Section 2.5).
+- **Runs Win11 Pro** — required for the RDP host role and managed BitLocker/remote policy (Section 2.5).
+  (Box shipped with Win11 Home; Pro is the operating edition.)
 - **Prefer native Odysseus + host Ollama over Docker-GPU on this AMD box.** Docker GPU passthrough
   for the Radeon iGPU on Windows is weak/ROCm-immature; the native launcher pointing at the host
   Ollama endpoint is the reliable path (Section 8).

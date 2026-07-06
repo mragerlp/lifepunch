@@ -398,7 +398,7 @@ The `lifepunch-operating-context` rule is law here; this is the orientation. We 
 
 ## DXRP & publish staging (June 2026 — agent law)
 
-**DXRP** (Dxura) = gamemode platform for community servers. **LIFEPUNCH** = our proprietary addon brand on top — unique content vs other DXRP hosts.
+Both lanes are the **same game — DXRP** (Dxura/Dimmer). The lane is set by **destination + ownership**, not by name. **Official/upstream lane:** changes to DXRP core that ship **upstream to Dxura** (his IP, his review) — carry nothing proprietary. **LIFEPUNCH lane:** additive addon content **we own**, layered on clean DXRP and shipped to **our LIFEPUNCH portal** (our IP, our servers).
 
 **Canonical:** `lifepunchaddons/docs/DXRP_ADDON_PUBLISH_DOCTRINE.md`
 

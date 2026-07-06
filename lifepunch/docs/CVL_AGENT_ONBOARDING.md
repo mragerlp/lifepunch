@@ -264,7 +264,7 @@ plus a durable baton file so a **fresh chat is instantly grounded on "where we a
 10. PUBLISH       export lane when portal-ready (owner GO)                  (Red script)
 ```
 
-**Key correction to the prior flow:** Cornerman **cannot** do in-editor QA (it has no editor/GPU). Its "QA"
+**Key correction to the prior flow:** Cornerman does **not** do in-editor QA — **by role** it runs headless (no IDE), not for lack of hardware. Its "QA"
 is **code review, distillation, and candidate patches** — **in-editor QA and the eyes are always Red +
 Bloodwave.** This removes the Cornerman↔Vengeance ping-pong that was causing the confusion. Cornerman is
 **warm-up and heavy hands**, not the proving ground.

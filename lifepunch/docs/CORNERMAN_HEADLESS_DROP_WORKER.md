@@ -79,7 +79,7 @@ sides opt in:
 - Probe: `http://127.0.0.1:1234/v1/models` · Call: `http://127.0.0.1:1234/v1/chat/completions`
 - **Localhost only, enforced in code** — a non-`127.0.0.1`/`localhost` URL fails closed.
 - routeTag → model id via the config `routes` map:
-  `GREEN DEEP REQUIRED` → deep/distill model (first live: `qwen/qwen3.6-35b-a3b`),
+  `GREEN DEEP REQUIRED` → deep model (`qwen/qwen3.6-27b`),
   `GREEN CODE REQUIRED` → coder model (`qwen2.5-coder-32b-instruct`).
   `AUTO OK` is **rejected** for model runs (belongs on Red).
 - Request tuning (temperature, maxTokens, maxPromptChars context ceiling) lives in the

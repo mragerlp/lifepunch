@@ -6,7 +6,7 @@ REPO + CLONE
 ══════════════════════════════════════════════════════════════════════════════
   GitHub: github.com/mragerlp/lifepunch
   Red clone: C:\Users\jared\Projects\lifepunch
-  DXRP fork (separate): C:\Users\jared\Projects\dxrp — never mix IP
+  DXRP fork (separate): C:\Users\jared\Projects\dxrp-public — never mix IP
 
 ══════════════════════════════════════════════════════════════════════════════
 BRANCH LAW (memorize)

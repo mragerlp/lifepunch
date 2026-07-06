@@ -64,7 +64,7 @@ The applier uses **`oh-my-posh print primary`** in a custom `prompt` function â€
 From VENGEANCE:
 
 ```powershell
-scp -r C:\Users\jared\Projects\lifepunchdxrp\lifepunch\branding\lifepunch-ops jared@205.209.104.22:C:/lifepunch/branding/
+scp -r C:\Users\jared\Projects\lifepunch\lifepunch\branding\lifepunch-ops jared@205.209.104.22:C:/lifepunch/branding/
 ssh jared@205.209.104.22 "powershell -ExecutionPolicy Bypass -File C:\lifepunch\branding\lifepunch-ops\Apply-LifePunchOpsConsole.ps1 -Machine lifepunchnet"
 ```
 

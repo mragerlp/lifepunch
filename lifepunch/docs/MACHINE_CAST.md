@@ -78,7 +78,7 @@ Full workflow: **`GREEN_EXECUTION_MODEL.md`** · agent pastes: **`handoff/AGENT_
 | Surface | Where | IDE | Use when |
 |---------|--------|-----|----------|
 | **Architect** | MacBook (macOS) | Cursor + Copilot · **ChatGPT Design Architect** | Planning · ideation · CURSOR BRIEFs · RDP → Green |
-| **Green** | Cornerman (`192.168.1.229`) | Cursor + Copilot on Windows | Heavy implementation · bridge MCP · Cornerman LM |
+| **Green** | Cornerman (`192.168.1.229`) | **Headless — no IDE (by role)** | Heavy implementation · distill · bridge MCP · Cornerman LM · patch-handoff to Red |
 
 **Sync law:** whoever did heavy work — other nodes **`git pull --rebase`** (Cornerman → Red via patch-handoff).
 

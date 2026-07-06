@@ -63,6 +63,8 @@ function Copy-PublishTree {
                 -and $_.Extension -ne '.md' `
                 -and $parts -notcontains 'docs' `
                 -and $parts -notcontains '_dev' `
+                -and $parts -notcontains '_archive' `
+                -and $parts -notcontains 'reference-intake' `
                 -and $_.Name -notmatch '(TestBots|DevGive|DevSpawn)'
         } |
         ForEach-Object {

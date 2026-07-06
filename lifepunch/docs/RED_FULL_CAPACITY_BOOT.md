@@ -8,10 +8,10 @@
 
 ## Red boot sequence (copy/paste)
 
-Run from `C:\Users\jared\Projects\lifepunchdxrp`:
+Run from `C:\Users\jared\Projects\lifepunch`:
 
 ```powershell
-cd C:\Users\jared\Projects\lifepunchdxrp
+cd C:\Users\jared\Projects\lifepunch
 git pull --rebase
 
 # One shot (editor + full Green stack) — use whenever Green Cursor agents need play/MCP:

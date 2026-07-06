@@ -44,7 +44,7 @@ WHAT THIS BOX OWNS
 
 NOT this box:
   - Addon code, website
-  - Cornerman LLM (:1234 on 192.168.1.227)
+  - Cornerman LLM (:1234 on 192.168.1.229)
   - Voice microphone (AT2020 lives on Cornerman)
 
 --------------------------------------------------------------------------------
