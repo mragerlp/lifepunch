@@ -1,6 +1,6 @@
-# Cornerman headless drop worker — runbook (Slice 2: opt-in model call)
+# Cornerman headless drop worker — runbook (Slice 3: operator workflow)
 
-**Status:** Slice 2 shipped — dry-run by default; opt-in local model call + real report generation
+**Status:** Slice 3 shipped — worker unchanged (dry-run default, double opt-in model call); manual operator helpers added
 **Node:** Green (Cornerman) · testable anywhere with `-BaseDir` scratch dirs
 **Authoritative design:** `lifepunch/docs/handoff/CORNERMAN_HEADLESS_DROP_WORKER_OPUS_V2_PLAN_2026-07-06.md` (Part B supersedes Part A) · `lifepunch/docs/handoff/CORNERMAN_DROP_WORKER_SLICE2_MODEL_CALL_PLAN_2026-07-06.md`
 **Read with:** `CORNERMAN_DROP_WORKFLOW.md` · `GREEN_EXECUTION_MODEL.md` · `BRANCH_MODEL.md` · `WORKTREE_LANE_SAFETY.md`
@@ -23,14 +23,18 @@ writes a real generated report.
 | Verify clone path + git remotes | Commit, push, or open PRs |
 | Dirty-tree gate (untracked = dirty) | Claim runtime/editor proof |
 | Focus/profile + branch-law checks | Mutate git in any way (no fetch/checkout/pull) |
-| Input path safety + glob expansion | Ship a Red drop helper |
+| Input path safety + glob expansion | Send packets itself (Red-side send helper is a separate Slice 3 script) |
 | Output-type gate + forbidden-scope gate | Loosen constraints from packet content |
 | No-IP / AI-trailer scan (dxrp-official), pre **and** post model call | Make any network request beyond localhost |
 | Opt-in local model call (LM Studio `:1234`) + real report | Fall back to a different/cloud model |
 | Report + `meta.json` + ack + history move | |
 
-Future slices (scheduler, Red drop helper, candidate-patch mode) each require a
-separate Bloodwave GO. `mode: candidate-patch` packets are **rejected**.
+Slice 3 added **manual operator helpers** around the worker (packet builder, Green
+inbox send, one-shot runner, status reader, config validator — see *Operator
+workflow* below); the worker itself is unchanged. **The roadmap is closed at
+Slice 3** — scheduler and candidate-patch mode are not planned; reopening either
+requires a new explicit Bloodwave GO. `mode: candidate-patch` packets are
+**rejected**.
 
 ---
 
@@ -126,6 +130,11 @@ Startup guard: `-StaleLockMinutes` (default 30) must exceed the configured
 |---|---|
 | `lifepunch/scripts/cornerman/Invoke-CornermanDropWorker.ps1` | Orchestrator (one packet per run) |
 | `lifepunch/scripts/cornerman/CornermanDropWorker.Lib.ps1` | Shared validation/scan/lock/IO/model functions |
+| `lifepunch/scripts/cornerman/New-CornermanTaskPacket.ps1` | Slice 3 (Red): build a schema-valid packet from parameters |
+| `lifepunch/scripts/cornerman/Send-CornermanTaskPacket.ps1` | Slice 3 (Red): drop a packet into the Green inbox (ssh, banner-safe) |
+| `lifepunch/scripts/cornerman/Invoke-CornermanWorkerOnce.ps1` | Slice 3 (Green): run the worker ONCE + print artifact locations |
+| `lifepunch/scripts/cornerman/Get-CornermanLatestReport.ps1` | Slice 3 (Green): read-only latest ack/meta/report status |
+| `lifepunch/scripts/cornerman/Test-CornermanWorkerConfig.ps1` | Slice 3 (Green): offline deployment/config validation |
 | `lifepunch/docs/schemas/cornerman-task-packet.schema.json` | Task packet schema v2 (JSON Schema draft-07) |
 | `lifepunch/docs/schemas/cornerman-task-packet.example.json` | Valid example packet (`lifepunch-private`) |
 | `lifepunch/docs/schemas/cornerman-repo-profiles.example.json` | Repo-profile registry template |
@@ -251,6 +260,82 @@ First-time Green setup: copy `cornerman-repo-profiles.example.json` to
 
 ---
 
+## Operator workflow (Slice 3)
+
+Manual, one-command-per-step helpers. **Nothing here loops, schedules, patches, or
+commits** — each step is an explicit operator action.
+
+### 1. Create a packet (Red)
+
+```powershell
+powershell -NoProfile -File lifepunch\scripts\cornerman\New-CornermanTaskPacket.ps1 `
+    -RepoProfile lifepunch-private -RouteTag 'GREEN DEEP REQUIRED' `
+    -Title 'Runbook drift check' `
+    -Instruction 'Compare the drop workflow doc against the headless worker runbook and list drift.' `
+    -ReadFiles lifepunch/docs/CORNERMAN_HEADLESS_DROP_WORKER.md `
+    -OutputDir C:\Users\jared\Projects\lifepunch-packets
+```
+
+- Defaults are safe: `mode=report`, all safety constraints true, **no model call**
+  (`constraints.noModelCall=true`) unless you pass `-RequestModelCall`.
+- `-RequestModelCall` emits `modelCall.enabled=true` — the worker still needs its own
+  `-EnableModelCall` switch (double opt-in stays intact). `AUTO OK` + model call is refused.
+- The helper validates the packet with the worker's own `Test-CdwPacketSchema` before writing.
+
+### 2. Send it to the Green inbox (Red)
+
+```powershell
+powershell -NoProfile -File lifepunch\scripts\cornerman\Send-CornermanTaskPacket.ps1 `
+    -PacketFile C:\Users\jared\Projects\lifepunch-packets\task-...json
+```
+
+- Transfers over `ssh` exec as base64 chunks (Green's shell banner breaks scp/sftp);
+  SHA256-verified end to end. Refuses missing/invalid packets and duplicate inbox
+  names (use `-Force` to overwrite). **Never runs the worker; never touches a clone.**
+- Local mode for scratch testing / on Green: `-LocalInboxPath C:\tmp\cdw\inbox`.
+
+### 3. Run the worker once (Green)
+
+```powershell
+powershell -NoProfile -File C:\Projects\lifepunch\lifepunch\scripts\cornerman\Invoke-CornermanWorkerOnce.ps1
+# model-opted packets only:
+powershell -NoProfile -File ...\Invoke-CornermanWorkerOnce.ps1 -EnableModelCall
+```
+
+One worker invocation, then it prints exactly where the ack line, report/error,
+`meta.json`, and history file landed, and confirms the lock released. Run it again
+manually for the next packet — it never loops.
+
+### 4. Inspect the result (Green)
+
+```powershell
+powershell -NoProfile -File ...\Get-CornermanLatestReport.ps1                # latest run
+powershell -NoProfile -File ...\Get-CornermanLatestReport.ps1 -TaskId task-... -ShowContent
+```
+
+Read-only: ack line, meta summary (status / dryRun / failureStage / model), artifact
+paths, optional body preview. Never deletes, moves, or archives anything.
+
+### Troubleshooting
+
+| Symptom | Check |
+|---|---|
+| Anything before a run | `Test-CornermanWorkerConfig.ps1` — offline PASS/FAIL on worker files, folders, registry, model config (localhost-only, routes); `-CheckClones` on Green |
+| Send fails `PRE:NO-INBOX` | Inbox path missing on Green — run the config check there |
+| Send hash mismatch | Bad copy is removed automatically; re-send |
+| Run reports `SKIP` | Lock held — a worker run is live (or stale; reclaimed after `-StaleLockMinutes`) |
+| Run reports `IDLE` | Inbox empty — packet was never sent or already consumed |
+| `FAIL` + `error.md` | Read `failureStage` in `meta.json`; dirty clone / scan hits are human problems, never auto-fixed |
+
+### Hard forbidden (Slice 3 — unchanged law)
+
+No scheduler, no recurring worker, no background daemon, no patch generation or
+application, no commit/push/PR automation, no source/product edits, no git mutation
+of any clone, no cloud fallback, no network egress beyond localhost (helpers' ssh
+transport goes only to Green on the LAN).
+
+---
+
 ## Task schema v2 — lifecycle contract
 
 The schema models the full lifecycle (idea → brief → agent → proof → review → commit/PR)
@@ -271,10 +356,13 @@ even though Slice 1 only validates/reports. Highlights:
 
 ---
 
-## Slice roadmap (each future slice = separate Bloodwave GO)
+## Slice roadmap — CLOSED at Slice 3 (owner decision, 2026-07-06)
 
 1. **Slice 1:** docs + schema v2 + dry-run worker with repo profiles ✅
-2. **Slice 2 (this):** opt-in model call (LM Studio `:1234`) + real report generation ✅
-3. Scheduler install (Windows Task Scheduler, logon user)
-4. Red drop helper (`Push-CornermanTaskPacket.ps1`) + status extension
-5. Candidate-patch mode (outbox-only patches; explicit GO + allowlist)
+2. **Slice 2:** opt-in model call (LM Studio `:1234`) + real report generation ✅
+3. **Slice 3 (final):** manual operator helpers — packet builder, Green-inbox send,
+   one-shot runner, status reader, config validator ✅
+
+**No further slices.** The formerly-listed scheduler install and candidate-patch
+mode are intentionally NOT built — the drop worker stays a manual, operator-driven
+tool. Reopening the roadmap requires a new explicit Bloodwave GO.
