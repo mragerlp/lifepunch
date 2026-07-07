@@ -48,7 +48,7 @@ $dxrpGame = Split-Path -Parent $sbprojPath
 $repoIdent = 'bitcoinmining'
 $keepCodeFolders = @($repoIdent, '_dev')
 
-$repoAddons = (Resolve-Path (Join-Path $Here '..\addons')).Path
+$repoAddons = (Resolve-Path (Join-Path $Here '..\..\lifepunchaddons')).Path
 $repoCodeRoot = Join-Path $repoAddons 'Code\Addons\lifepunch'
 $repoCodeSrc = Join-Path $repoCodeRoot $repoIdent
 $repoDevSrc = Join-Path $repoCodeRoot '_dev'

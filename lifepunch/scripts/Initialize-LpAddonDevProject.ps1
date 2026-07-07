@@ -29,7 +29,7 @@ $cfg = Get-Content -LiteralPath $ConfigPath -Raw | ConvertFrom-Json
 $dxrpGame = Split-Path -Parent ([string]$cfg.projectPath)
 if (-not (Test-Path -LiteralPath $dxrpGame)) { throw "DXRP game folder not found: $dxrpGame" }
 
-$repoAddons = (Resolve-Path (Join-Path $Here '..\addons')).Path
+$repoAddons = (Resolve-Path (Join-Path $Here '..\..\lifepunchaddons')).Path
 $repoAssetsRoot = Join-Path $repoAddons 'Assets\addons\lifepunch'
 $dxrpAssetsRoot = Join-Path $dxrpGame 'Assets\addons\lifepunch'
 $devFolder = '_dev'

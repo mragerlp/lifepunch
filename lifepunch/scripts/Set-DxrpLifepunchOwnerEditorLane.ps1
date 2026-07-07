@@ -63,7 +63,7 @@ $ulxRepoIdent = 'adminmenu'
 $ulxDxrpFolder = 'lifepunchulx'
 $codeIdent = 'bitcoinmining'
 
-$repoAddons = (Resolve-Path (Join-Path $Here '..\addons')).Path
+$repoAddons = (Resolve-Path (Join-Path $Here '..\..\lifepunchaddons')).Path
 $repoAssetsRoot = Join-Path $repoAddons 'Assets\addons\lifepunch'
 $repoCodeRoot = Join-Path $repoAddons 'Code\Addons\lifepunch'
 $repoUlxCode = Join-Path $repoCodeRoot $ulxRepoIdent

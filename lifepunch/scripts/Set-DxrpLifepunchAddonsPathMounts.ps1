@@ -30,7 +30,7 @@ $sbprojPath = [string]$cfg.projectPath
 $dxrpGame = Split-Path -Parent $sbprojPath
 $dxrpAssetsRoot = Join-Path $dxrpGame 'addons\lifepunch'
 
-$repoAddons = (Resolve-Path (Join-Path $Here '..\addons')).Path
+$repoAddons = (Resolve-Path (Join-Path $Here '..\..\lifepunchaddons')).Path
 $repoAssetsRoot = Join-Path $repoAddons 'Assets\addons\lifepunch'
 $stagingPath = Join-Path $repoAddons 'config\package-staging.json'
 $staging = Get-Content -LiteralPath $stagingPath -Raw | ConvertFrom-Json

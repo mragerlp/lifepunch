@@ -2,7 +2,7 @@
 # Exit 0 = OK (in sync). Exit 1 = WARN (engine newer than doc — triage required).
 param(
     [string]$SboxRoot = 'D:\Steam\steamapps\common\sbox',
-    [string]$PatchDoc = (Join-Path $PSScriptRoot '..\addons\docs\SBOX_ENGINE_PATCHES.md')
+    [string]$PatchDoc = (Join-Path $PSScriptRoot '..\..\lifepunchaddons\docs\SBOX_ENGINE_PATCHES.md')
 )
 
 $ErrorActionPreference = 'Stop'
