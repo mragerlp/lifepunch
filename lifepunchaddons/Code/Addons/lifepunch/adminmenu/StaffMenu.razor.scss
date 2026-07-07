@@ -468,13 +468,6 @@ $shell-radius: 22px;
 		&.collapsed {
 			flex: 0 0 40px;
 			width: 40px;
-
-			.pane-label,
-			.search-row,
-			.steamid-pick,
-			.player-scroll {
-				display: none;
-			}
 		}
 
 		.search-row {
@@ -692,7 +685,6 @@ $shell-radius: 22px;
 			padding: 0 10px 5px 18px;
 			margin-top: 2px;
 			margin-bottom: 0;
-			border-left: 2px solid rgba(79, 140, 255, 0.4);
 		}
 
 		.roster-tier .player-row {
@@ -1031,6 +1023,7 @@ $shell-radius: 22px;
 
 	.arg-form {
 		flex-direction: column;
+		flex-shrink: 0;
 		margin: 0 16px 12px 16px;
 		padding: 12px;
 		border-radius: 10px;
@@ -1105,13 +1098,86 @@ $shell-radius: 22px;
 		}
 	}
 
-	.job-picker {
-		max-height: 180px;
-		margin-top: 4px;
-		padding: 6px 4px;
+	.job-dropdown {
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+	}
+
+	.job-dropdown-header {
+		width: 100%;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: 8px;
+		background-color: $bg-row;
+		color: $text;
 		border: 1px solid $border;
 		border-radius: 8px;
-		background-color: $bg-row;
+		padding: 8px 12px;
+		font-size: 14px;
+		cursor: pointer;
+		text-align: left;
+	}
+
+	.job-swatch {
+		width: 14px;
+		height: 14px;
+		border-radius: 3px;
+		flex-shrink: 0;
+		border: 1px solid rgba(255,255,255,0.2);
+	}
+
+	.job-placeholder {
+		color: $text-dim;
+		white-space: nowrap;
+	}
+
+	.job-chevron {
+		margin-left: auto;
+		font-size: 18px;
+	}
+
+	.job-dropdown-list {
+		display: flex;
+		flex-direction: column;
+		flex-shrink: 0;
+		margin-top: 4px;
+		max-height: 260px;
+		overflow-y: auto;
+		border: 1px solid $border;
+		border-radius: 8px;
+		background-color: $bg-raised;
+		padding: 4px;
+	}
+
+	.job-filter {
+		width: 100%;
+		margin-bottom: 4px;
+	}
+
+	.job-option {
+		width: 100%;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: 8px;
+		padding: 6px 8px;
+		border-radius: 6px;
+		background: transparent;
+		color: $text;
+		font-size: 13px;
+		cursor: pointer;
+		text-align: left;
+	}
+
+	.job-option:hover {
+		background-color: #2d323d;
+	}
+
+	.job-option.active {
+		background-color: $accent-soft;
+		color: $accent;
 	}
 
 	.confirm-btn {
@@ -1301,7 +1367,7 @@ $shell-radius: 22px;
 				width: 64px;
 				height: 64px;
 				border-radius: 50%;
-				border: 2px solid rgba(79, 140, 255, 0.3);
+				border: 2px solid rgba(113, 112, 230, 0.3);
 			}
 
 			.profile-name {

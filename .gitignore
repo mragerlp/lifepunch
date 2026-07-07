@@ -37,6 +37,10 @@ lifepunch/scripts/dxrp-vanilla-editor.local.json
 lifepunch/scripts/modeldoc-studio.local.json
 lifepunch/scripts/.session-sync-state.json
 
+# Stopgap junction lifepunch/addons -> lifepunchaddons (removed when the
+# Sync-LifePunchAddonsToDxrp path fix lands — task_cfead1e7). Never commit it.
+/lifepunch/addons/
+
 # Third-party study clones (local only — never commit)
 .study-drawio/
 
