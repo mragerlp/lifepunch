@@ -88,7 +88,7 @@ See `AGENT_ONBOARDING.md` § Named systems.
    - **Diagnostics:** Required only; tailored experiences + advertising ID → **Off**.
    - **Office / 365 apps (if installed):** default Save = **This PC**; don't connect cloud storage.
 5. Rename the PC to the codename (Settings → System → About → Rename).
-6. Storage encryption: this box runs **Win11 Pro/Enterprise = full managed BitLocker**. Turn on **BitLocker**
+6. Storage encryption: this box runs **Win11 Pro = full managed BitLocker**. Turn on **BitLocker**
    for the OS drive (Control Panel → System and Security → **BitLocker Drive Encryption**, or search
    "BitLocker"). **Microsoft account:** the recovery key auto-escrows to account.microsoft.com
    (MFA-protected) — fine; also keep an **offline copy** (USB + password manager). **Local account:**
@@ -213,7 +213,7 @@ Principles: **LAN-only by default, encrypted in transit, one source of truth, se
 
 You drive Cornerman **from VENGEANCE** — you don't sit at the box. v1 stays LAN-only: every
 rule is scoped to the LAN subnet + Private profile, nothing is exposed to the public internet,
-no port-forwarding. Win11 **Pro/Enterprise** is what makes the RDP host available (Home can't host RDP).
+no port-forwarding. Win11 **Pro** is what makes the RDP host available (Home can't host RDP).
 
 **Two channels:**
 - **SSH (OpenSSH Server)** — terminal + agent ops. Key auth only; client public key lives in
