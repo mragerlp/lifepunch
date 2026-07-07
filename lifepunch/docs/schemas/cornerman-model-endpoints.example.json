@@ -9,6 +9,7 @@
   },
   "routes": {
     "GREEN DEEP REQUIRED": "qwen/qwen3.6-27b",
+    "GREEN DAILY REQUIRED": "qwen/qwen3.6-35b-a3b",
     "GREEN CODE REQUIRED": "qwen2.5-coder-32b-instruct"
   },
   "request": {

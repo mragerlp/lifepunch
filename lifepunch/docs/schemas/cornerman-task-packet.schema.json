@@ -86,8 +86,8 @@
     },
     "routeTag": {
       "type": "string",
-      "enum": ["GREEN DEEP REQUIRED", "GREEN CODE REQUIRED", "AUTO OK"],
-      "description": "Model routing tag. On model runs the worker resolves this to an exact model id via model-endpoints.json (GREEN DEEP = deep/distill model, GREEN CODE = coder model). AUTO OK is rejected for model runs (belongs on Red)."
+      "enum": ["GREEN DEEP REQUIRED", "GREEN DAILY REQUIRED", "GREEN CODE REQUIRED", "AUTO OK"],
+      "description": "Model routing tag. On model runs the worker resolves this to an exact model id via model-endpoints.json (GREEN DEEP = deep model, GREEN DAILY = fast MoE report/audit model, GREEN CODE = coder model). AUTO OK is rejected for model runs (belongs on Red)."
     },
     "focus": {
       "type": "string",

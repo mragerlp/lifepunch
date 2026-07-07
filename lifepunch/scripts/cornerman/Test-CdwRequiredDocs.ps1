@@ -110,6 +110,14 @@ $json = Get-Content $pkFile.FullName -Raw | ConvertFrom-Json
 Assert (@($json.inputs.requiredDocs) -contains 'docs/canon.md') 'C9 packet carries inputs.requiredDocs'
 Assert ($json.mode -eq 'report' -and $json.constraints.noPatch -eq $true) 'C9 packet is report-mode / noPatch (flags only)'
 
+Write-Output "== Case 11: GREEN DAILY route (tag validates + resolves) =="
+$o11 = & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $script -RepoProfile lifepunch-private -RouteTag 'GREEN DAILY REQUIRED' -Type audit -Slug 'daily-route-case' -Instruction 'compare specs against canon and report drift' -ReadFiles target_clean.md -OutputDir $outDir 2>&1
+Assert ($LASTEXITCODE -eq 0 -and (($o11 -join '|') -match 'OK: packet written')) 'C11 builder accepts GREEN DAILY REQUIRED (ValidateSet + schema)'
+$dailyCfg = '{"routes":{"GREEN DEEP REQUIRED":"qwen/qwen3.6-27b","GREEN DAILY REQUIRED":"qwen/qwen3.6-35b-a3b","GREEN CODE REQUIRED":"qwen2.5-coder-32b-instruct"}}' | ConvertFrom-Json
+$dailyPk = '{"routeTag":"GREEN DAILY REQUIRED","modelCall":{"enabled":true,"requiredModel":null,"allowFallback":false}}' | ConvertFrom-Json
+$r11 = Resolve-CdwModelRoute -Packet $dailyPk -Config $dailyCfg
+Assert ($r11.Ok -and $r11.ModelId -eq 'qwen/qwen3.6-35b-a3b') 'C11 Daily tag resolves to qwen/qwen3.6-35b-a3b'
+
 Write-Output "== Case 10: live 27b audit run =="
 Write-Output "  SKIP  C10 real model run -- deferred to Part B (separate GO)"
 

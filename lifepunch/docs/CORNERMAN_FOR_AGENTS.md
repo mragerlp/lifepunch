@@ -50,16 +50,20 @@ tasks for the **loaded** model, not the theoretically optimal one.
 
 | Model | Route tag | Job | When |
 |---|---|---|---|
-| **Deep — `qwen/qwen3.6-27b`** | `GREEN DEEP REQUIRED` | Distill, prep, draft, audit (slower) | **Session default. Load this.** Serves ~80% of offloads. |
+| **Daily — `qwen/qwen3.6-35b-a3b`** | `GREEN DAILY REQUIRED` | Audits, drift reports (fast MoE) | **LIVE — session default for audits.** 76s proven on a live drift audit where Deep timed out. |
+| **Deep — `qwen/qwen3.6-27b`** | `GREEN DEEP REQUIRED` | Light distill/prep only (demoted — audit-size prompts time out) | Load for distill/prep drafting sessions. |
 | **Code — `qwen2.5-coder-32b-instruct`** | `GREEN CODE REQUIRED` | Contained C#/Razor/SCSS candidate patches | Deliberate "coding mode" swap only. Rare. Red compiles/proves everything. |
-| **Daily — `qwen/qwen3.6-35b-a3b`** | *(no route yet — deferred)* | Fast MoE audits | NOT USABLE until the Daily route is built. Do not route to it. |
 | embed — nomic-embed-text-v1.5 | — | RAG embeddings | Tiny; can stay resident always. |
 
 **Runtime rules (violating these caused hours of failures — they are law):**
 - ONE big model in VRAM at a time. `neverLoadTogether: [distill, coder]`.
-- **27b runs with thinking OFF** for prep/audit tasks. Thinking ON + large prompt
-  = model burns its output budget reasoning and returns empty (`finish_reason:
-  length`). Confirmed fix: thinking off → clean 214s completion.
+- **Thinking is enforced OFF per-request by the worker** (`chat_template_kwargs:
+  enable_thinking=false` in the request body). LM Studio UI toggles do NOT govern
+  API calls — never rely on them. Thinking ON + large prompt = model burns its
+  output budget reasoning and returns empty (`finish_reason: length`).
+- **Default Context Length = Custom 32000.** Never Model-maximum on unified
+  memory.
+- **Runtime auto-update OFF.** **Max idle TTL 240.**
 - Context math: 27b loads at 32k tokens. Keep packed inputs (canon + drift files)
   under ~86k chars. Big single files (e.g. `LOCAL_AI_WORKSTATION.md`) get their
   own packet.
@@ -70,8 +74,9 @@ tasks for the **loaded** model, not the theoretically optimal one.
 When Bloodwave states the session's work ("I'm building the Terminal panel"),
 the agent:
 
-1. **Names the session model.** Default: *"Load Deep (27b), thinking off, only
-   model."* If the session is candidate-patch coding: Code instead.
+1. **Names the session model.** Default: *"Load Daily (35b-a3b), only model."*
+   Deep (27b) only for light distill/prep drafting sessions; Code for
+   candidate-patch coding. (Thinking is enforced off by the worker per-request.)
 2. **Recognizes offload moments** — anything matching DOES above that would pull
    Bloodwave out of the editor. Proactively offers: *"Cornerman can distill
    DECISION-0010 + the Hub arch while you build — want me to queue it?"*
@@ -92,9 +97,11 @@ the agent:
    the proven transport; SMB bridge is a future upgrade).
 5. **Gives Bloodwave the one-line trigger** to run ON GREEN:
    `powershell -NoProfile -File C:\Projects\lifepunch\lifepunch\scripts\cornerman\Invoke-CornermanWorkerOnce.ps1 -EnableModelCall`
-   — run SYNCHRONOUSLY on the box (paste into a Green terminal / one RDP admin
-   window). **Never** launch detached over SSH (Start-Process dies on disconnect),
-   never poll with CIM/WMI (hangs under load), never schtasks (no-scheduler law).
+   — run SYNCHRONOUSLY **on the box ONLY** (paste into a Green terminal / one RDP
+   admin window). SSH-launched runs have killed two live runs — the trigger is
+   never launched over SSH, detached or otherwise (Start-Process dies on
+   disconnect), never polled with CIM/WMI (hangs under load), never schtasks
+   (no-scheduler law).
 6. **Collects:** `Get-CornermanLatestReport.ps1 -ShowContent` (from Red) and tells
    Bloodwave the result is in and he's clear to proceed.
 
@@ -115,17 +122,14 @@ transport failures on their own.
 
 ## Session bootstrap (Bloodwave's two-minute startup)
 
-1. Cornerman on → LM Studio → load the session model (default **Deep/27b,
-   thinking off**). Leave it warm all session. JIT stays OFF.
+1. Cornerman on → LM Studio → load the session model (default **Daily/35b-a3b**;
+   context length Custom 32000). Leave it warm all session. JIT stays OFF.
 2. Vengeance: open the editor + Copilot. State the session's work.
 3. Agent names the model (confirm it matches what's loaded), then offers offloads
    as they arise. Bloodwave runs triggers when given; agent collects and reports.
 
 ## Deferred (do not attempt without explicit Bloodwave GO)
 
-- **Daily route** (`GREEN DAILY REQUIRED` → 35b-a3b): 4-place code change
-  (schema enum, Lib allow-list, builder ValidateSet, config routes). Makes audits
-  fast. Next session.
 - **SMB work-queue bridge** (share Green's inbox/outbox → mounted by Red):
   transport upgrade, must be built interactively on-box (SSH sessions can't
   persist `net use` to the desktop session). Not a prerequisite.
