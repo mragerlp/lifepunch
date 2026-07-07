@@ -25,6 +25,7 @@ git status -sb
 2. `lifepunch/docs/handoff/AGENT_GROUNDING_INDEX.md` — pick your machine + IDE paste.
 3. `lifepunch/docs/BRANCH_MODEL.md` · `lifepunch/docs/LIFEPUNCH_REPO_LAYOUT.md` · `lifepunch/docs/MACHINE_CAST.md`.
 4. `.cursor/rules/` (alwaysApply) — **repo law; wins over this page**.
+5. **Development sessions:** `lifepunch/docs/CORNERMAN_FOR_AGENTS.md` — how to use the Cornerman work queue (offload pattern, model policy, fast-fail).
 
 ## 2. Know where you are (folder + branch law)
 
