@@ -15,7 +15,7 @@ WHO/WHAT
   business: be direct, ship quality, no spaghetti (honest simple baselines are fine).
 - THIS MACHINE (codename "Cornerman") is a Corsair AI Workstation 300: AMD Ryzen AI Max 385,
   Radeon 8050S iGPU ("Strix Halo", gfx1151), 64GB unified LPDDR5X (up to ~48GB as VRAM),
-  1TB NVMe, Windows 11 Pro/Enterprise. Its job: a PRIVATE LOCAL INFERENCE + RAG node.
+  1TB NVMe, Windows 11 Pro. Its job: a PRIVATE LOCAL INFERENCE + RAG node.
 
 NON-NEGOTIABLE GUARDRAILS
 - This box is NOT the source of truth. Source of truth is the GitHub monorepo
@@ -82,7 +82,7 @@ Phase 1 — Secure the OS (verify the account/sync posture, then harden)
    Downloads; an Adrenalin "Preview/Press" driver may be provided for large-model loads).
 4. Rename the PC to "Cornerman" (Settings > System > About > Rename) if not already.
 5. Account hardening: strong password + Windows Hello PIN; no shared/blank admin.
-6. Storage encryption (this box is Win11 Pro/Enterprise = full managed BitLocker): turn on BitLocker for the
+6. Storage encryption (this box is Win11 Pro = full managed BitLocker): turn on BitLocker for the
    OS drive (Control Panel > System and Security > BitLocker Drive Encryption, or search "BitLocker").
    Microsoft account: recovery key auto-escrows to account.microsoft.com (MFA-protected) — ALSO keep
    an OFFLINE copy (USB + password manager). Local account: no escrow — guide me to SAVE the key
