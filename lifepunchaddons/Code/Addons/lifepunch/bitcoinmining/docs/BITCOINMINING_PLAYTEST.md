@@ -52,7 +52,7 @@
 
 | File | Gradients | Undefined vars | `transform:` (non text-) | Red verify |
 |------|-----------|----------------|--------------------------|------------|
-| `adminmenu/StaffMenu.razor.scss` | 0 | 0 | 0 | `staffmenu` open — no gradient log spam |
+| `adminmenu/StaffMenu.razor.scss` | 0 | 0 | 0 | `lifepunchulx` open — no gradient log spam |
 | `bitcoinmining/HashdTerminal.razor.scss` | 0 | 0 | 1 (`scale(0.98)` active state) | `lp_hashd_preview` — UI paints |
 | `hackerjob/HackerTerminal.razor.scss` | 0 | 0 | 0 | `hacker` terminal open — no compile fail |
 | `hackerjob/HackerServerRackMenu.razor.scss` | 0 | 0 | 0 | rack menu if wired |

@@ -28,7 +28,7 @@
 				</div>
 				<div class="title-stack">
 					<span class="title-primary">Admin Menu</span>
-					<span class="title-sub">Staff Console</span>
+					<span class="title-sub">ULX Console</span>
 				</div>
 			</div>
 			<div class="header-actions">
@@ -595,18 +595,34 @@
 								}
 								else if ( arg.Kind == StaffArgKind.Job )
 								{
-									<TextEntry class="arg-input" Placeholder="@arg.Placeholder" Value:bind="@_jobFilter"/>
-									<div class="lp-ui-scroll-region job-picker">
-										<div class="chips">
-											@foreach ( var job in FilteredJobOptions() )
+									<div class="job-dropdown">
+										<button type="button" class="job-dropdown-header" onclick="@ToggleJobDropdown">
+											@if ( !string.IsNullOrEmpty( _job ) )
 											{
-												<button class="chip @( _job == job.Token ? "active" : "" )"
-												        style="border-left: 3px solid @job.ColorHex"
-												        onclick="@(() => SetJob( job.Token ))">
-													@job.Label
-												</button>
+												var sel = StaffMenuHost.AssignableJobs().FirstOrDefault( j => j.Token == _job );
+												<span class="job-swatch" style="background-color: @( sel.ColorHex ?? "#888" )"></span>
+												<span>@( sel.Label ?? _job )</span>
 											}
-										</div>
+											else
+											{
+												<span class="job-placeholder">Select a job…</span>
+											}
+											<i class="material-icons job-chevron">@(_jobDropdownOpen ? "expand_less" : "expand_more")</i>
+										</button>
+										@if ( _jobDropdownOpen )
+										{
+											<div class="job-dropdown-list">
+												<TextEntry class="arg-input job-filter" Placeholder="Filter jobs" Value:bind="@_jobFilter"/>
+												@foreach ( var job in FilteredJobOptions() )
+												{
+													<button type="button" class="job-option @( _job == job.Token ? "active" : "" )"
+													        onclick="@(() => SetJob( job.Token ))">
+														<span class="job-swatch" style="background-color: @job.ColorHex"></span>
+														<span>@job.Label</span>
+													</button>
+												}
+											</div>
+										}
 									</div>
 								}
 								else if ( arg.Name == "name" )
@@ -759,6 +775,7 @@
 	private string _name = "";
 	private string _job = "";
 	private string _jobFilter = "";
+	private bool _jobDropdownOpen;
 
 	protected override void OnStart()
 	{
@@ -1012,12 +1029,14 @@
 		_name = "";
 		_job = "";
 		_jobFilter = "";
+		_jobDropdownOpen = false;
 		StateHasChanged();
 	}
 
 	private void CancelArgs()
 	{
 		_pendingAction = null;
+		_jobDropdownOpen = false;
 		StateHasChanged();
 	}
 
@@ -1035,6 +1054,13 @@
 	private void SetJob( string token )
 	{
 		_job = token;
+		_jobDropdownOpen = false;
+		StateHasChanged();
+	}
+
+	private void ToggleJobDropdown()
+	{
+		_jobDropdownOpen = !_jobDropdownOpen;
 		StateHasChanged();
 	}
 
@@ -1352,7 +1378,7 @@
 			HashCode.Combine( _players.Count, _playersCollapsed, _staffSectionCollapsed, _playersSectionCollapsed ),
 			_activeTab,
 			_pendingAction?.Key,
-			HashCode.Combine( _reason, _duration, _amount, _name, _job, _jobFilter ),
+			HashCode.Combine( _reason, _duration, _amount, _name, _job, _jobFilter, _jobDropdownOpen ),
 			HashCode.Combine( _auditPlayerId, _auditEntity, _websiteDraft, _websiteCopied, _websiteSaved, _steamIdCopied, _currentCopied, StaffMenuHost.SettingsVersion ),
 			HashCode.Combine( _waypointName, StaffMenuHost.WaypointVersion, _returnSteamId ),
 			HashCode.Combine( _uiScale, _detailHash ) );

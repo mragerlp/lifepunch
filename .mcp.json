@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "sbox": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "sbox-mcp-server"]
+    },
+    "sbox-editor": {
+      "type": "http",
+      "url": "http://127.0.0.1:9090/sbox-mcp"
+    },
+    "sbox-jtc": {
+      "type": "http",
+      "url": "http://localhost:29015/mcp"
+    }
+  }
+}
