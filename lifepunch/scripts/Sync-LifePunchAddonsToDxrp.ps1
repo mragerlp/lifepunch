@@ -50,7 +50,7 @@ $project = [string]$cfg.projectPath
 if (-not (Test-Path -LiteralPath $project)) { throw "DXRP project not found: $project" }
 
 $dxrpGame = Split-Path -Parent $project
-$repoAddons = (Resolve-Path (Join-Path $Here '..\addons')).Path
+$repoAddons = (Resolve-Path (Join-Path $Here '..\..\lifepunchaddons')).Path
 $repoAssetsRoot = Join-Path $repoAddons 'Assets\addons\lifepunch'
 $repoCodeRoot = Join-Path $repoAddons 'Code\Addons\lifepunch'
 $dxrpAssetsRoot = Join-Path $dxrpGame 'Assets\addons\lifepunch'

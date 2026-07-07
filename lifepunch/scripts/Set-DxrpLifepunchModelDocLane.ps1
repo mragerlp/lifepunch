@@ -43,7 +43,7 @@ $config = Get-Content -LiteralPath $configPath -Raw | ConvertFrom-Json
 $stagingPackages = @($config.packages.PSObject.Properties.Name)
 $keepAssetFolders = @($ulxDxrpFolder, $devFolder) + $stagingPackages
 
-$repoAddons = (Resolve-Path (Join-Path $Here '..\addons')).Path
+$repoAddons = (Resolve-Path (Join-Path $Here '..\..\lifepunchaddons')).Path
 $repoUlxCode = Join-Path $repoAddons "Code\Addons\lifepunch\$ulxRepoIdent"
 $repoAssetsRoot = Join-Path $repoAddons 'Assets\addons\lifepunch'
 

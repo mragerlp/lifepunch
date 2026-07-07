@@ -33,7 +33,7 @@ $dxrpGame = Split-Path -Parent $sbprojPath
 $repoIdent = 'adminmenu'
 $dxrpFolder = 'lifepunchulx'
 
-$repoAddons = (Resolve-Path (Join-Path $Here '..\addons')).Path
+$repoAddons = (Resolve-Path (Join-Path $Here '..\..\lifepunchaddons')).Path
 $repoCodeSrc = Join-Path $repoAddons "Code\Addons\lifepunch\$repoIdent"
 
 $dxrpAssetsRoot = Join-Path $dxrpGame 'Assets\addons\lifepunch'
