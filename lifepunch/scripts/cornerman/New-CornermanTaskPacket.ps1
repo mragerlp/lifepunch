@@ -33,7 +33,7 @@ param(
     [string] $RepoProfile,
 
     [Parameter(Mandatory)]
-    [ValidateSet('GREEN DEEP REQUIRED', 'GREEN CODE REQUIRED', 'AUTO OK')]
+    [ValidateSet('GREEN DEEP REQUIRED', 'GREEN DAILY REQUIRED', 'GREEN CODE REQUIRED', 'AUTO OK')]
     [string] $RouteTag,
 
     # What the task asks for (schema: 10..8000 chars).

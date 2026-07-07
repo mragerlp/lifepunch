@@ -94,7 +94,7 @@ if ($cfg.Ok) {
     $local = Test-CdwModelEndpointLocal -Config $cfg.Config
     Write-Check $local.Ok 'endpoints are localhost-only' ($(if ($local.Ok) { [string]$cfg.Config.endpoint.chatUrl } else { $local.Error }))
 
-    foreach ($route in @('GREEN DEEP REQUIRED', 'GREEN CODE REQUIRED')) {
+    foreach ($route in @('GREEN DEEP REQUIRED', 'GREEN DAILY REQUIRED', 'GREEN CODE REQUIRED')) {
         $entry = $cfg.Config.routes.PSObject.Properties |
             Where-Object { $_.Name -eq $route } | Select-Object -First 1
         $routed = [bool]($entry -and -not [string]::IsNullOrWhiteSpace([string]$entry.Value))

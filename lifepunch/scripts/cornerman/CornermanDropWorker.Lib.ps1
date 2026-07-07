@@ -232,7 +232,7 @@ function Test-CdwPacketSchema {
     if ([string]$Packet.focus -notin @('LifePunch', 'DXRP')) {
         $errors.Add("focus must be 'LifePunch' or 'DXRP' (got '$($Packet.focus)')")
     }
-    if ([string]$Packet.routeTag -notin @('GREEN DEEP REQUIRED', 'GREEN CODE REQUIRED', 'AUTO OK')) {
+    if ([string]$Packet.routeTag -notin @('GREEN DEEP REQUIRED', 'GREEN DAILY REQUIRED', 'GREEN CODE REQUIRED', 'AUTO OK')) {
         $errors.Add("routeTag invalid (got '$($Packet.routeTag)')")
     }
     if ([string]$Packet.mode -notin @('report', 'candidate-patch')) {
@@ -676,12 +676,13 @@ function Add-CdwAck {
         [Parameter(Mandatory)] $Paths,
         [Parameter(Mandatory)][string] $TaskId,
         [Parameter(Mandatory)][bool] $Ok,
-        [string] $Detail = ''
+        [string] $Detail = '',
+        [string] $Action = 'drop-worker-dryrun'
     )
     $ack = @{
         ts     = (Get-Date).ToUniversalTime().ToString('o')
         id     = $TaskId
-        action = 'drop-worker-dryrun'
+        action = $Action
         ok     = $Ok
         detail = $Detail
     } | ConvertTo-Json -Compress
@@ -1099,6 +1100,10 @@ function Build-CdwModelRequest {
         temperature = $temperature
         max_tokens  = $maxTokens
         stream      = $false
+        # Disable Qwen3 thinking via the API (the LM Studio UI toggle does not
+        # govern API requests; the /no_think soft switch is rejected by newer
+        # Qwen chat templates). All current lanes want thinking off.
+        chat_template_kwargs = @{ enable_thinking = $false }
     }
     return @{ Body = $body; SystemPrompt = $systemPrompt; UserPrompt = $userPrompt }
 }
@@ -1219,7 +1224,22 @@ function Invoke-CdwModelCall {
                 Start-Sleep -Seconds 2
                 continue
             }
-            return @{ Ok = $false; Stage = 'endpoint-down'; Error = "model call failed ($url): $($we.Message)"; Content = $null; FinishReason = $null; DurationSeconds = [math]::Round($sw.Elapsed.TotalSeconds, 1); HttpStatus = $null }
+            # Capture the HTTP status + error response body -- a 400's reason
+            # lives in the body and must never be discarded (fail loudly).
+            $httpStatus = $null
+            $errBody = ''
+            if ($we.Response) {
+                try {
+                    $httpStatus = [int]$we.Response.StatusCode
+                    $sr = New-Object IO.StreamReader($we.Response.GetResponseStream())
+                    $errBody = $sr.ReadToEnd()
+                    if ($errBody.Length -gt 600) { $errBody = $errBody.Substring(0, 600) + '...[trunc]' }
+                }
+                catch {}
+            }
+            $detail = "model call failed ($url): $($we.Message)"
+            if ($errBody) { $detail += " | response body: $errBody" }
+            return @{ Ok = $false; Stage = 'endpoint-down'; Error = $detail; Content = $null; FinishReason = $null; DurationSeconds = [math]::Round($sw.Elapsed.TotalSeconds, 1); HttpStatus = $httpStatus }
         }
         catch {
             $sw.Stop()

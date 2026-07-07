@@ -563,6 +563,7 @@ try {
     }
 
     $isModelRun = ($runAction -eq 'model-call')
+    $ackAction = if ($isModelRun) { 'drop-worker-live' } else { 'drop-worker-dryrun' }
     $status = 'failed'
     if ($ok) {
         if ($isModelRun) { $status = 'ok' } else { $status = 'dry-run-ok' }
@@ -602,7 +603,7 @@ try {
         Write-CdwUtf8NoBom -Path (Join-Path $outDir 'meta.json') -Text (($meta | ConvertTo-Json -Depth 8))
         $detail = 'dry-run validation passed'
         if ($isModelRun) { $detail = "model report generated ($modelId)" }
-        Add-CdwAck -Paths $paths -TaskId $taskId -Ok $true -Detail $detail
+        Add-CdwAck -Paths $paths -TaskId $taskId -Ok $true -Detail $detail -Action $ackAction
         $hist = Move-CdwPacketToHistory -Paths $paths -PacketFile $packetPath -Status 'ok'
         Write-CdwLog -LogDir $paths.Logs -Message "OK: $taskId -> $outDir (history: $hist)"
         Write-Output "OK: $taskId $detail. Report: $outDir\$reportFileName"
@@ -613,7 +614,7 @@ try {
         $errLines += @($failures | ForEach-Object { "- $_" })
         $errText = ($errLines -join [Environment]::NewLine)
         $outDir = Write-CdwOutboxArtifacts -Paths $paths -TaskId $taskId -ReportText '' -Meta $meta -ErrorText $errText
-        Add-CdwAck -Paths $paths -TaskId $taskId -Ok $false -Detail ($failures -join ' | ')
+        Add-CdwAck -Paths $paths -TaskId $taskId -Ok $false -Detail ($failures -join ' | ') -Action $ackAction
         $hist = Move-CdwPacketToHistory -Paths $paths -PacketFile $packetPath -Status 'fail'
         Write-CdwLog -LogDir $paths.Logs -Message "FAIL: $taskId -- $($failures -join ' | ')"
         Write-Output "FAIL: $taskId -- $($failures.Count) failure(s). Error report: $outDir\error.md"
