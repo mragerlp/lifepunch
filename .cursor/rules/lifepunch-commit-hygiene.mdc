@@ -17,6 +17,10 @@ PR is a bad look and was a real June 2026 incident on PR #77.
   - `Generated with â€¦`, `Assisted-by:`, `AI-authored-by:`, `noreply@anthropic.com`
 - **Author is Bloodwave / `mragerlp <mragerlp@gmail.com>` only.** Tools are mentioned **nowhere**
   in commits or PRs unless the maintainer explicitly asks.
+- **Scope: ALL git surfaces.** The no-AI-attribution rule covers commit messages, PR titles,
+  PR descriptions, and merge-commit messages alike. No generated-with footers anywhere.
+  (Precedent: the July 2026 PR #32 body slip - a harness-injected footer reached a PR
+  description. PR bodies become part of the merge record; scrub them like commit messages.)
 
 ## Root cause (know it so you can stop it)
 

@@ -54,7 +54,7 @@ git status -sb
 
 ## 6. Commit / push / trailer law
 
-- Agents do **not** commit or push by default. Propose scope → Bloodwave **GO** → commit as `mragerlp <mragerlp@gmail.com>` → **no AI trailers** (`Co-authored-by: Cursor`, `Co-authored-by: AI`, `Generated-by`, `Assisted-by`, or any agent attribution are forbidden).
+- Agents do **not** commit or push by default. Propose scope → Bloodwave **GO** → commit as `mragerlp <mragerlp@gmail.com>` → **no AI trailers on any git surface** — commit messages, PR titles, PR descriptions, merge-commit messages (`Co-authored-by: Cursor`, `Co-authored-by: AI`, `Generated-by`, `Assisted-by`, generated-with footers, or any agent attribution are forbidden).
 - **Cornerman (Green) branch nuance:** defaults to **`main`** as a clean truth mirror / export-stability reader; may read **`develop`** only when the inbox task explicitly targets active work, current testing, or a `develop`-bound audit. Green stays read-only / distill / outbox unless Bloodwave explicitly opens a patch-handoff lane.
 
 ---
