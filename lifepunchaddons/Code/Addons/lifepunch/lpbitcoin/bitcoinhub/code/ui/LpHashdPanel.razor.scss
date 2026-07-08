@@ -6347,10 +6347,22 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	text-align: right;
 }
 
-.lp-bitcoin-ops .server-detail-footnote {
-	font-size: 12px;
-	line-height: 1.45;
-	color: $hashd-muted;
+.lp-bitcoin-ops .server-detail-upgrade-btn {
+	align-self: flex-start;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	// Hard clamp — inside the detail column the button otherwise grows into a slab.
+	flex: 0 0 auto;
+	height: 36px;
+	padding: 0 16px;
+	margin-top: 10px;
+
+	.material-icons {
+		font-size: 16px;
+	}
 }
 
 // Hub logs — scroll past intro; nested pane rule had clipped the 6th row.

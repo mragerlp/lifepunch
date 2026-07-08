@@ -413,8 +413,12 @@
 																		</div>
 																	</div>
 																	@* Legacy hardware-levels section removed — purchases live on Universal Upgrades.
-																	   Rack CoreCount/ClockGhz data untouched; the economy still reads it. *@
-																	<div class="server-detail-footnote">Status only — purchase hardware on Upgrades → GPU Rack.</div>
+																	   Rack CoreCount/ClockGhz data untouched; the economy still reads it.
+																	   The space below stays clean for the inline upgrade stepper (later arc). *@
+																	<button class="lp-ui-btn-primary server-detail-upgrade-btn" onclick="@(() => OpenUpgradesForRackSlot( slot ))">
+																		<span>Upgrade this rack</span>
+																		<i class="material-icons">arrow_forward</i>
+																	</button>
 																</div>
 															}
 														</div>
@@ -1769,6 +1773,22 @@
 		_rackTargetSelected = true;
 		_openPath = null;
 		LifePunchUiScrollPolicy.ResetOffsets( Panel );
+	}
+
+	// Server-detail deep link: Upgrades pre-selected on this rack's track.
+	private void OpenUpgradesForRackSlot( OverviewMinerSlot slot )
+	{
+		SelectTab( OpsTab.Upgrades );
+		EnterUpgradeSurface( UpgradeSurface.GpuRack );
+		EnterRackTarget( RackSelectorForSlot( slot ) );
+	}
+
+	private static UpgradeRackSelector RackSelectorForSlot( OverviewMinerSlot slot )
+	{
+		if ( slot.TerminalToken == LpBitcoinIdent.AdvancedRackTerminalToken )
+			return UpgradeRackSelector.Advanced;
+
+		return slot.TerminalToken == "gpurack-2" ? UpgradeRackSelector.Rack2 : UpgradeRackSelector.Rack1;
 	}
 
 	private void BackToRackTargets()
