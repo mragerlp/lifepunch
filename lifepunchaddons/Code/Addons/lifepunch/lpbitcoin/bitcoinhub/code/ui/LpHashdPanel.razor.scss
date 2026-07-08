@@ -767,11 +767,13 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 		}
 	}
 
+	// Toggle switches are exempt from radius-flattening: the pill-and-circle is
+	// functional shape (state affordance), not chrome.
 	.power-switch-track {
 		position: relative;
 		width: 36px;
 		height: 20px;
-		border-radius: 0;
+		border-radius: 10px;
 		background-color: rgba(0, 0, 0, 0.45);
 		border: 1px solid rgba(255, 255, 255, 0.12);
 		flex-shrink: 0;
@@ -783,7 +785,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 		left: 2px;
 		width: 14px;
 		height: 14px;
-		border-radius: 0;
+		border-radius: 7px;
 		background-color: #6b7280;
 		transition: left 0.12s ease, background-color 0.12s ease;
 	}
@@ -5479,11 +5481,13 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	border-color: $hashd-border;
 }
 
+// Toggle switches are exempt from radius-flattening: the pill-and-circle is
+// functional shape (state affordance), not chrome.
 .lp-bitcoin-ops .power-switch-track {
 	position: relative;
 	width: 38px;
 	height: 22px;
-	border-radius: 0;
+	border-radius: 11px;
 	background-color: rgba(0, 0, 0, 0.45);
 	border: 1px solid rgba(255, 255, 255, 0.12);
 	flex-shrink: 0;
@@ -5509,7 +5513,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	left: 2px;
 	width: 16px;
 	height: 16px;
-	border-radius: 0;
+	border-radius: 8px;
 	background-color: #ffffff;
 }
 
@@ -5525,6 +5529,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 .lp-bitcoin-ops .settings-switch .power-switch-track {
 	width: 46px;
 	height: 26px;
+	border-radius: 13px;
 }
 
 .lp-bitcoin-ops .settings-switch .power-switch-knob {
@@ -5532,6 +5537,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	height: 20px;
 	top: 2px;
 	left: 2px;
+	border-radius: 10px;
 }
 
 .lp-bitcoin-ops .settings-switch.on .power-switch-knob {
