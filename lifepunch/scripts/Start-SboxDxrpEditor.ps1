@@ -265,10 +265,8 @@ else {
     else {
         Write-Host 'Editor started. Host play, then lp_authorize YOUR_TOKEN if you need portal/API data.' -ForegroundColor Cyan
         Write-Host '  Rank bots wait for lp_authorize - vanilla editor play will NOT spawn them.' -ForegroundColor DarkGray
-        Write-Host '  sbox-jtc: open Editor dock MCP Server (jtc) - it does NOT autostart like chomnr.' -ForegroundColor Yellow
         Write-Host '  Blender Bridge: Editor > Blender Bridge - verify Running :8099 + Auto-start ON (bridge_autostart 1).' -ForegroundColor Yellow
-        Write-Host '  LifePunch overlay autostarts jtc when Sync-DxrpEditorOverlays.ps1 ran (see dxrp-overlays/Editor).' -ForegroundColor DarkGray
-        Write-Host '  Then Cursor Reload Window if sbox-jtc MCP is red.' -ForegroundColor DarkGray
+        Write-Host '  Boot order law: editor first, THEN agent session (HTTP MCP servers live in-editor).' -ForegroundColor DarkGray
     }
 }
 

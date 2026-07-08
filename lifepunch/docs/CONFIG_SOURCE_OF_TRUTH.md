@@ -85,7 +85,7 @@ When two files disagree, **fix the canonical file** listed here — do not fork 
 
 | Path | Role | Editor |
 |------|------|--------|
-| `lifepunch/config/sbox-mcp-ports.json` | chomnr `:9090`, jtc `:29015`, bridge IPC | Owner |
+| `lifepunch/config/sbox-mcp-ports.json` | chomnr `:9090`, bridge IPC | Owner |
 | `lifepunch/config/cvl-stack-pins.json` | CVL node pins | Owner |
 | `lifepunch/config/cornerman-tier3-models.json` | Local LM catalog | Owner |
 | `lifepunch/config/dxrp-upstream-pin.json` | dxrp-public fork baseline | Owner |

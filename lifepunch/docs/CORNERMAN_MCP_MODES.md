@@ -27,7 +27,7 @@ Port **9090 on Cornerman** can only be one thing:
 | **LocalEditor** | Green runs local s&box | `%LOCALAPPDATA%\Temp\sbox-bridge-ipc` | **`:9091`** local chomnr | **Off** |
 | **DualEditor** | Red + Green editors same time | local on Green | **`:9091`** on Green | **Off** |
 
-Red always uses **9090** (chomnr) and **29015** (jtc). Green does **not** run jtc today (3/3 MCP).
+Red always uses **9090** (chomnr). Both stacks are 3/3 MCP (jtc uninstalled 2026-07-08).
 
 ---
 
@@ -86,7 +86,6 @@ Red reverse tunnel **refuses to start** if mode is `LocalEditor` or `DualEditor`
 |-----|-----|-------|
 | `sbox` | local IPC | mode-dependent |
 | `sbox-editor` | `:9090` | `:9090` tunnel or `:9091` local |
-| `sbox-jtc` | `:29015` | ❌ |
 | `cornerman-lm` | LAN → Green | local |
 
 ---

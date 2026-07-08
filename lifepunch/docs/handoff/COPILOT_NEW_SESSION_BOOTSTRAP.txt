@@ -100,7 +100,7 @@ VENGEANCE SESSION BOOT (before playtest / MCP)
 ══════════════════════════════════════════════════════════════════════════════
   powershell -File lifepunch\scripts\Start-SboxDxrpEditor.ps1 -FullCapacity -PreflightFix -BitcoinOnly -SyncAddon lpbitcoin,adminmenu
   powershell -File lifepunch\scripts\Get-CvlConnectivityStatus.ps1 -Pretty
-Target: allOk true · MCP: sbox · sbox-editor · cornerman-lm · sbox-jtc (all 4 in .vscode/mcp.json)
+Target: allOk true · MCP: sbox · sbox-editor · cornerman-lm (all 3 in .vscode/mcp.json)
 
 Mandatory loop: bridge status → one slice → compile → flatgrass proof → screenshot → owner GO → commit
 Playtest: game.scene → Host Play → lp_map_flatgrass → lp_bitcoin_spawn_hub

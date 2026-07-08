@@ -21,7 +21,7 @@ Bloodwave         = GO / commit / ship authority
 
 **VS Code can; Cursor cannot (for Copilot):** GitHub Copilot inline + Chat work in **VS Code**. Cursor supports many **other** VS Code-format extensions (C#, Razor, etc.) — install those in Cursor for bridge-heavy sessions; do **not** VSIX-hack Copilot into Cursor.
 
-**MCP stack (VS Code — `.vscode/mcp.json`):** `sbox` · `sbox-editor` · `cornerman-lm` · `sbox-jtc`  
+**MCP stack (VS Code — `.vscode/mcp.json`):** `sbox` · `sbox-editor` · `cornerman-lm`  
 **Commit hygiene:** No AI co-authored-by trailers. Bloodwave GO before commit/push.  
 **Cursor rules (.mdc):** Copilot loads mirror via `.github/instructions/` — edit source in `.cursor/rules/`, then `Sync-CursorRulesToCopilotInstructions.ps1`.
 

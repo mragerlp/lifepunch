@@ -46,15 +46,6 @@
       "updateVia": "s&box Library Manager → update; restart editor MCP server; Fix-SboxEditorMcpCursorToolNames.ps1 after import changes"
     },
     {
-      "id": "jtc_mcp_server",
-      "role": "editor MCP — scene automation, files, built-in docs/API search",
-      "library": "jtc.mcp-server",
-      "endpoint": "http://localhost:29015/mcp",
-      "cursorServerKey": "sbox-jtc",
-      "portRegistry": "lifepunch/config/sbox-mcp-ports.json",
-      "updateVia": "s&box Library Manager → update jtc/mcp-server; confirm MCP Server dock listening; Install-VengeanceSboxEditorMcp.ps1"
-    },
-    {
       "id": "sbox-mcp-server",
       "role": "Cursor npm bridge to Claude Bridge IPC",
       "package": "sbox-mcp-server",

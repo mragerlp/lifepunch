@@ -1,24 +1,22 @@
 <#
 .SYNOPSIS
-  Wire Cursor to the LifePunch triple s&box MCP stack on VENGEANCE.
+  Wire Cursor to the LifePunch s&box MCP stack on VENGEANCE.
 
 .DESCRIPTION
-  Triple-stack on VENGEANCE:
+  Stack on VENGEANCE:
     sbox         — sboxskinsgg.claudebridge via npx sbox-mcp-server (file IPC, play mode / runtime)
     sbox-editor  — notpointless.chomnr_mcp (HTTP 127.0.0.1:9090/sbox-mcp, ModelDoc / compile)
-    sbox-jtc     — jtc.mcp-server (HTTP localhost:29015/mcp, scene automation + docs/API)
 
   Port registry: lifepunch/config/sbox-mcp-ports.json
-  Claude Bridge does NOT bind HTTP :29015 — no conflict with jtc.
+  Claude Bridge is file IPC only — it does not bind an HTTP port.
 
 .EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File lifepunch\scripts\Install-VengeanceSboxEditorMcp.ps1
-  powershell -File lifepunch\scripts\Install-VengeanceSboxEditorMcp.ps1 -Port 9091 -JtcPort 29016
+  powershell -File lifepunch\scripts\Install-VengeanceSboxEditorMcp.ps1 -Port 9091
 #>
 [CmdletBinding()]
 param(
     [int] $Port = 0,
-    [int] $JtcPort = 0,
     [string] $ConfigPath = '',
     [switch] $SkipProbe
 )
@@ -35,10 +33,8 @@ function Write-Utf8NoBom {
 
 $portCfg = Get-SboxMcpPortConfig
 if ($Port -le 0) { $Port = $portCfg.ChomnrPort }
-if ($JtcPort -le 0) { $JtcPort = $portCfg.JtcPort }
 
 $chomnrUrl = if ($Port -eq $portCfg.ChomnrPort) { $portCfg.ChomnrUrl } else { "http://127.0.0.1:$Port$($portCfg.ChomnrPath)" }
-$jtcUrl = if ($JtcPort -eq $portCfg.JtcPort) { $portCfg.JtcUrl } else { "http://localhost:$JtcPort$($portCfg.JtcPath)" }
 
 if (-not $ConfigPath) { $ConfigPath = Join-Path $Here 'dxrp-editor.local.json' }
 
@@ -53,19 +49,16 @@ if (Test-Path -LiteralPath $ConfigPath) {
 $libRoot = Join-Path $dxrpGame 'Libraries'
 $chomnr = Join-Path $libRoot 'notpointless.chomnr_mcp'
 $bridge = Join-Path $libRoot 'sboxskinsgg.claudebridge'
-$jtc = Join-Path $libRoot 'jtc.mcp-server'
 $retarget = Join-Path $libRoot 'notpointless.chomnr_humanoid_retargeter'
 
-Write-Host 'VENGEANCE s&box MCP triple-stack check' -ForegroundColor Cyan
+Write-Host 'VENGEANCE s&box MCP stack check' -ForegroundColor Cyan
 Write-Host "  DXRP game: $dxrpGame" -ForegroundColor DarkGray
 Write-Host "  chomnr: $chomnrUrl" -ForegroundColor DarkGray
-Write-Host "  jtc:    $jtcUrl" -ForegroundColor DarkGray
 Write-Host '  bridge: file IPC (no HTTP port)' -ForegroundColor DarkGray
 
 foreach ($pair in @(
         @{ Label = 'chomnr_mcp (editor compile)'; Path = $chomnr }
         @{ Label = 'claudebridge (runtime IPC)'; Path = $bridge }
-        @{ Label = 'jtc.mcp-server (editor automation)'; Path = $jtc }
         @{ Label = 'humanoid_retargeter (optional)'; Path = $retarget }
     )) {
     if (Test-Path -LiteralPath $pair.Path) {
@@ -73,10 +66,7 @@ foreach ($pair in @(
     }
     else {
         Write-Host "  MISSING $($pair.Label) -> $($pair.Path)" -ForegroundColor Red
-        if ($pair.Label -match 'jtc') {
-            Write-Host '    Install in s&box: Library Manager -> jtc/mcp-server' -ForegroundColor Yellow
-        }
-        elseif ($pair.Label -match 'chomnr|claudebridge') {
+        if ($pair.Label -match 'chomnr|claudebridge') {
             Write-Host '    Install in s&box: Library Manager -> notpointless/chomnr_mcp + sboxskinsgg/claudebridge' -ForegroundColor Yellow
         }
     }
@@ -119,17 +109,11 @@ $servers['sbox-editor'] = @{
     url = $chomnrUrl
 }
 
-# Editor MCP (HTTP) — jtc; scene automation + docs/API
-$servers['sbox-jtc'] = @{
-    url = $jtcUrl
-}
-
 Write-Utf8NoBom -Path $mcpPath -Text (@{ mcpServers = $servers } | ConvertTo-Json -Depth 8)
 Write-Host ''
 Write-Host "OK $mcpPath" -ForegroundColor Green
 Write-Host '  sbox         -> Claude Bridge (runtime / play mode, file IPC)' -ForegroundColor DarkGray
 Write-Host "  sbox-editor  -> $chomnrUrl" -ForegroundColor DarkGray
-Write-Host "  sbox-jtc     -> $jtcUrl" -ForegroundColor DarkGray
 
 function Test-HttpMcp([string]$Url, [string]$Label) {
     try {
@@ -150,7 +134,6 @@ if (-not $SkipProbe) {
     Write-Host ''
     Write-Host 'Probing editor MCP servers (editor must be open)...' -ForegroundColor Cyan
     Test-HttpMcp -Url $chomnrUrl -Label 'chomnr (sbox-editor)' | Out-Null
-    Test-HttpMcp -Url $jtcUrl -Label 'jtc (sbox-jtc)' | Out-Null
 
     $statusPath = Join-Path $ipcDir 'status.json'
     if (Test-Path -LiteralPath $statusPath) {
@@ -165,9 +148,8 @@ Write-Host ''
 Write-Host 'Next:' -ForegroundColor Cyan
 Write-Host '  1. Start-SboxDxrpEditor.ps1' -ForegroundColor White
 Write-Host '  2. Editor -> chomnr MCP dock -> Approve writes' -ForegroundColor White
-Write-Host '  3. Editor -> MCP Server dock (jtc) -> confirm :29015/mcp listening' -ForegroundColor White
-Write-Host '  4. Restart Cursor -> Settings -> MCP -> 4 green (sbox + sbox-editor + sbox-jtc + cornerman-lm)' -ForegroundColor White
-Write-Host '  5. Doc: lifepunch/docs/SBOX_EDITOR_MCP.md' -ForegroundColor DarkGray
+Write-Host '  3. Restart Cursor -> Settings -> MCP -> 3 green (sbox + sbox-editor + cornerman-lm)' -ForegroundColor White
+Write-Host '  4. Doc: lifepunch/docs/SBOX_EDITOR_MCP.md' -ForegroundColor DarkGray
 
 $cursorNameFix = Join-Path $Here 'Fix-SboxEditorMcpCursorToolNames.ps1'
 if (Test-Path -LiteralPath $cursorNameFix) {
