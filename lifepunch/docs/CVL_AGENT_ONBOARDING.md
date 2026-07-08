@@ -388,7 +388,9 @@ no copy-paste ship paths): registry `config/portfolio.json`, `packages.json`, `a
 ## 13. Laws that never bend
 
 - **Git:** always `git pull --rebase` first; **never force-push**; author `mragerlp <mragerlp@gmail.com>`;
-  **no AI/agent co-author trailers** (keep Cursor Attribution OFF; critical on the public DXRP fork).
+  **no AI/agent attribution on ANY git surface** — commit messages, PR titles, PR descriptions,
+  merge-commit messages; no generated-with footers anywhere (keep Cursor Attribution OFF; critical
+  on the public DXRP fork).
 - **Commit consent:** never commit unprompted — propose **scope + one-line summary**, wait for Bloodwave
   **GO** (`commit to develop` / `merge to main` / `commit and push`). `GIT_CHECKPOINTS.md` · `BRANCH_MODEL.md`.
 - **Proprietary header** on every LIFEPUNCH source file (`.cs`/`.razor`/`.scss`): the
