@@ -122,7 +122,10 @@ public static class LifePunchUiScrollPolicy
 
 		var contentHeight = LifePunchScrollLayout.GetStackedContentHeight( panel );
 
-		return Math.Max( 0f, contentHeight - viewHeight );
+		// Box heights are screen px; ScrollOffset is panel-local. At non-1 UI scale the
+		// unconverted difference over- or under-clamps (engine ScrollSize is no better —
+		// it disagrees with stacked Box heights on these flex stacks).
+		return Math.Max( 0f, (contentHeight - viewHeight) * panel.ScaleFromScreen );
 	}
 
 	private static bool IsManualScrollShell( Panel panel )

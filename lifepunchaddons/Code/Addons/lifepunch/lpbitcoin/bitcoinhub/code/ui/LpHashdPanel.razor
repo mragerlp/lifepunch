@@ -137,7 +137,7 @@
 								        tooltip="BTC Wallet"
 								        onclick="@SelectWalletTab">
 									<i class="material-icons">account_balance_wallet</i>
-									<span>@HeaderWalletBtc() BTC</span>
+									<span>@($"{HeaderWalletBtc()} BTC")</span>
 								</button>
 								<button class="header-chip cashout-all-chip @GetCashOutAllButtonClass()"
 								        tooltip="Cash out all hub wallet BTC to bank"
@@ -182,9 +182,11 @@
 														</div>
 														<div class="overview-checklist-copy">
 															<div class="overview-checklist-title">Power on hub</div>
-															<div class="overview-checklist-sub">Turn the machine on before linking terminal and racks.</div>
+															<div class="overview-checklist-sub">Turn the hub on first.</div>
 														</div>
-														<button class="lp-ui-btn-ghost overview-checklist-action" onclick="@ToggleHubPower">
+														@* Same lane language as link/unlink terminal: green tinted ghost invites the
+														   positive action (Power on), red tinted ghost for the teardown (Power off). *@
+														<button class="lp-ui-btn-ghost overview-checklist-action @( HubIsPowered() ? "overview-intro-unlink-btn" : "overview-intro-link-ready" )" onclick="@ToggleHubPower">
 															@(HubIsPowered() ? "Power off" : "Power on")
 														</button>
 													</div>
@@ -219,10 +221,18 @@
 														</div>
 														<div class="overview-checklist-copy">
 															<div class="overview-checklist-title">Link GPU racks</div>
-															<div class="overview-checklist-sub">Use Servers to verify slots and rig0 link workflow.</div>
+															<div class="overview-checklist-sub">Verify slots, then link at rig0.</div>
 														</div>
-														<button class="lp-ui-btn-primary overview-checklist-action" onclick="@SelectRacksTab">Open servers</button>
+														<button class="lp-ui-btn-primary overview-checklist-action" onclick="@SelectRacksTab">
+															<i class="material-icons">dns</i>
+															<span>Servers</span>
+														</button>
 													</div>
+												</div>
+												@* Footer note lane — mirrors the snapshot's note so both card stacks share
+												 the same shape (3 boxes + note) and the lanes stay pairwise parallel. *@
+												<div class="overview-checklist-note">
+											Complete all three steps to start mining.
 												</div>
 											</div>
 											<div class="lp-ui-panel overview-snapshot-panel">
@@ -243,19 +253,22 @@
 													</div>
 													<div class="overview-snapshot-card">
 														<div class="overview-snapshot-label">Hub wallet</div>
-														<div class="overview-snapshot-value">@HeaderWalletBtc() BTC</div>
-														<div class="overview-snapshot-sub">$@CombinedUsd().ToString("N2") estimated value</div>
+														<div class="overview-snapshot-value">@($"{HeaderWalletBtc()} BTC")</div>
+														<div class="overview-snapshot-sub">@($"${CombinedUsd():N2} estimated value")</div>
 													</div>
 												</div>
 												<div class="overview-snapshot-note">
-													Need deeper details? Use <strong>Servers</strong> for rack stats and <strong>Upgrades</strong> for track tiers.
+													@* Plain text run — s&box eats the spaces around inline tags ("UseServersfor rack stats"). *@
+											Deeper details: Servers tab for rack stats, Upgrades tab for track tiers.
 												</div>
 											</div>
 										</div>
+										@* Upgrades leads (new primary system); Servers removed — the checklist's
+										"Link GPU racks" row is its single entry point. *@
 										<div class="lp-ui-btn-row overview-command-actions">
-											<button class="lp-ui-btn-primary overview-command-action" onclick="@SelectRacksTab">
-												<i class="material-icons">dns</i>
-												<span>Servers</span>
+											<button class="lp-ui-btn-primary overview-command-action" onclick="@SelectUpgradesTab">
+												<i class="material-icons">upgrade</i>
+												<span>Upgrades</span>
 											</button>
 											<button class="lp-ui-btn-ghost overview-command-action" onclick="@SelectWalletTab">
 												<i class="material-icons">account_balance_wallet</i>
@@ -264,10 +277,6 @@
 											<button class="lp-ui-btn-ghost overview-command-action" onclick="@SelectTransfersTab">
 												<i class="material-icons">swap_horiz</i>
 												<span>Transfers</span>
-											</button>
-											<button class="lp-ui-btn-ghost overview-command-action" onclick="@SelectUpgradesTab">
-												<i class="material-icons">upgrade</i>
-												<span>Upgrades</span>
 											</button>
 										</div>
 									</div>
@@ -345,28 +354,13 @@
 																	}
 																</div>
 															</div>
+															@* Header tile strip removed — Balance/Status duplicated the info list below and
+															   Hardware showed legacy levels. The key-value list IS the page; hint tiles remain
+															   for slots without a linked rack (no info list exists there). *@
+															@if ( !slot.Rack.IsValid() )
+															{
 															<div class="rack-card-body">
-																@if ( slot.Rack.IsValid() )
-																{
-																	<div class="rack-stat-tiles">
-																		<div class="rack-stat-tile">
-																			<div class="rack-stat-tile-label">Balance</div>
-																			<div class="rack-stat-tile-value accent">@RackBtcTileValue( slot.Rack )</div>
-																			<div class="rack-stat-tile-sub">@RackBtcTileSubline( slot.Rack )</div>
-																		</div>
-																		<div class="rack-stat-tile">
-																			<div class="rack-stat-tile-label">Hardware</div>
-																			<div class="rack-stat-tile-value">@RackHardwareTileValue( slot.Rack )</div>
-																			<div class="rack-stat-tile-sub">@RackHardwareTileSubline( slot.Rack )</div>
-																		</div>
-																		<div class="rack-stat-tile">
-																			<div class="rack-stat-tile-label">@( slot.Rack.IsMining ? "Mining" : "Status" )</div>
-																			<div class="rack-stat-tile-value @( slot.Rack.IsMining ? "on" : "" )">@( slot.Rack.IsMining ? "Active" : "Idle" )</div>
-																			<div class="rack-stat-tile-sub">@RackMiningTileSubline( slot.Rack )</div>
-																		</div>
-																	</div>
-																}
-																else if ( !HasAnyPlayerRacksNearbyOrLinked() )
+																@if ( !HasAnyPlayerRacksNearbyOrLinked() )
 																{
 																	<div class="rack-stat-tiles empty">
 																		<div class="rack-stat-tile rack-stat-tile-wide">
@@ -383,6 +377,7 @@
 																	</div>
 																}
 															</div>
+															}
 															@if ( slot.Rack.IsValid() )
 															{
 																<div class="server-detail-status">
@@ -409,30 +404,26 @@
 																		</div>
 																		<div class="lp-ui-info-row">
 																			<span class="lp-ui-info-label">Link</span>
-																			<span class="lp-ui-info-value on">Linked · rig0 <span class="hashd-prompt-accent">@slot.TerminalToken</span></span>
+																			@* Single text run — the space before the nested accent span gets eaten ("rig0token"). Accent styling can return in Phase C. *@
+																		<span class="lp-ui-info-value on">@($"Linked · rig0 {slot.TerminalToken}")</span>
 																		</div>
 																		<div class="lp-ui-info-row">
 																			<span class="lp-ui-info-label">Control</span>
 																			<span class="lp-ui-info-value dim">Mining start/stop on CRT</span>
 																		</div>
 																	</div>
-																	<div class="server-detail-legacy">
-																		<div class="server-detail-legacy-intro">
-																			Hardware purchases are moving to Universal Upgrades. Current installed hardware levels are shown below.
-																		</div>
-																		<div class="server-detail-tracks-head">Current active hardware levels</div>
-																		<div class="lp-ui-info server-detail-legacy-info">
-																			<div class="lp-ui-info-row">
-																				<span class="lp-ui-info-label">CPU Clock</span>
-																				<span class="lp-ui-info-value">@RackLegacyCpuClockLabel( slot.Rack )</span>
-																			</div>
-																			<div class="lp-ui-info-row">
-																				<span class="lp-ui-info-label">Core Count</span>
-																				<span class="lp-ui-info-value">@RackLegacyCoreCountLabel( slot.Rack )</span>
-																			</div>
-																		</div>
+																	@* Legacy hardware-levels section removed — purchases live on Universal Upgrades.
+																	   Rack CoreCount/ClockGhz data untouched; the economy still reads it. *@
+																	@* Bottom action row — content-left/action-right (checklist idiom). The lead slot
+																	   is the reserved seat for the inline upgrade stepper (this rack's I→V
+																	   progression); it drops in with zero relayout. *@
+																	<div class="server-detail-action-row">
+																		<div class="server-detail-action-lead"></div>
+																		<button class="lp-ui-btn-primary server-detail-upgrade-btn" onclick="@(() => OpenUpgradesForRackSlot( slot ))">
+																			<span>Upgrade this rack</span>
+																			<i class="material-icons">arrow_forward</i>
+																		</button>
 																	</div>
-																	<div class="server-detail-footnote">Status only — purchase hardware on <strong>Upgrades</strong> → GPU Rack.</div>
 																</div>
 															}
 														</div>
@@ -592,7 +583,7 @@
 																<i class="material-icons">@openTrack.Icon</i>
 																<div class="upgrade-path-detail-headtext">
 																	<span class="upgrade-path-detail-name">@openTrack.Name</span>
-																	<span class="upgrade-path-detail-sub">@CurrentTierLabel( openTrack ) · @( openCosmetic ? "NOT ENABLED" : "PLANNED" )</span>
+																	<span class="upgrade-path-detail-sub">@($"{CurrentTierLabel( openTrack )} · {( openCosmetic ? "NOT ENABLED" : "PLANNED" )}")</span>
 																</div>
 															</div>
 															<div class="upgrade-tier-line">
@@ -600,8 +591,10 @@
 																{
 																	<div class="upgrade-tier-cell @TierLineState( _tier ) @( _tier == 5 ? "cap" : "" )"
 																	     tooltip="@TierTooltip( openTrack, _tier )">
-																		<i class="material-icons upgrade-tier-cell-icon">@openTrack.Icon</i>
-																		<span class="upgrade-tier-cell-roman">Tier @TierRoman( _tier )</span>
+																		@* Tier numeral, not the track icon — the icon repeated identically on all five
+																		   cards (decoration); the numeral is information. Track icon lives in the header. *@
+																		<span class="upgrade-tier-cell-numeral">@TierRoman( _tier )</span>
+																		<span class="upgrade-tier-cell-roman">@($"Tier {TierRoman( _tier )}")</span>
 																		<span class="upgrade-tier-cell-label">@TierLineLabel( openTrack, _tier )</span>
 																		<span class="upgrade-tier-cell-state">@( _tier == 1 ? "BASE" : "PLANNED" )</span>
 																	</div>
@@ -634,11 +627,11 @@
 											<div class="lp-ui-info">
 												<div class="lp-ui-info-row">
 													<span class="lp-ui-info-label">Hub wallet</span>
-													<span class="lp-ui-info-value accent">@HubWalletBtc().ToString("F6") BTC</span>
+													<span class="lp-ui-info-value accent">@($"{HubWalletBtc():F6} BTC")</span>
 												</div>
 												<div class="lp-ui-info-row">
 													<span class="lp-ui-info-label">Still on racks</span>
-													<span class="lp-ui-info-value">@RackPendingBtc().ToString("F6") BTC</span>
+													<span class="lp-ui-info-value">@($"{RackPendingBtc():F6} BTC")</span>
 												</div>
 												<div class="lp-ui-info-row">
 													<span class="lp-ui-info-label">Terminal linked</span>
@@ -646,7 +639,7 @@
 												</div>
 												<div class="lp-ui-info-row">
 													<span class="lp-ui-info-label">USD value (hub)</span>
-													<span class="lp-ui-info-value">$@HubWalletCashUsd().ToString("N2")</span>
+													<span class="lp-ui-info-value">@($"${HubWalletCashUsd():N2}")</span>
 												</div>
 												<div class="lp-ui-info-row">
 													<span class="lp-ui-info-label">Exchange rate</span>
@@ -654,7 +647,7 @@
 												</div>
 												<div class="lp-ui-info-row">
 													<span class="lp-ui-info-label">Your cash</span>
-													<span class="lp-ui-info-value">$@LpHashdUiHost.GetLocalWalletCash()</span>
+													<span class="lp-ui-info-value">@($"${LpHashdUiHost.GetLocalWalletCash()}")</span>
 												</div>
 											</div>
 
@@ -727,7 +720,7 @@
 															<div class="transfer-subsection transfer-subsection-detail">
 																<div class="transfer-subsection-row">
 																	<span class="transfer-subsection-label">Hub wallet</span>
-																	<span class="transfer-subsection-value accent">@HubWalletBtc().ToString("F6") BTC</span>
+																	<span class="transfer-subsection-value accent">@($"{HubWalletBtc():F6} BTC")</span>
 																</div>
 															</div>
 														</div>
@@ -788,7 +781,7 @@
 													@foreach ( var amount in TransferReferenceBtcAmounts )
 													{
 														<div class="transfers-rate-cell">
-															<span class="transfers-rate-cell-btc">@amount.ToString( "F2" ) BTC</span>
+															<span class="transfers-rate-cell-btc">@($"{amount:F2} BTC")</span>
 															<span class="transfers-rate-cell-usd">@TransferReferenceUsd( amount )</span>
 														</div>
 													}
@@ -814,13 +807,38 @@
 												Terminal commands, rack capacity warnings, intrusion attempts, and hub transfers appear here.
 											</div>
 
+											@* Razor-owned feed — no lp-ui-scroll-region marker (the OnEnabled bootstrap would
+											 eat razor rows on upgrade) and no imperative rebuild: imperative panels inside a
+											 re-rendering razor subtree fought razor's diff (duplicate shells splitting the
+											 feed, delete/emit flicker). Razor renders the rows; native scroll + policy clamp. *@
 											<div class="logs-feed">
-												<div class="lp-ui-scroll-region logs-scroll"></div>
-												@if ( GetHubAlerts().Count == 0 )
+												@{
+													var hubAlerts = GetHubAlerts();
+												}
+												@if ( hubAlerts.Count == 0 )
 												{
 													<div class="lp-ui-empty logs-empty">
 														<i class="material-icons">notifications_none</i>
 														<span>No alerts yet.</span>
+													</div>
+												}
+												else
+												{
+													<div class="logs-scroll lp-ui-manual-scroll" @ref="_logsScroll">
+														<div class="notif-list">
+															@foreach ( var alert in hubAlerts )
+															{
+																<div class="notif-row @AlertLaneClass( alert.Kind )">
+																	<i class="material-icons">@AlertIcon( alert.Kind )</i>
+																	<div class="notif-copy">
+																		<div class="notif-kind">@AlertKindLabel( alert.Kind )</div>
+																		<div class="notif-message">@alert.Message</div>
+																		<div class="notif-time">@AlertTimeLabel( alert.Timestamp )</div>
+																	</div>
+																</div>
+															}
+															<div class="notif-list-tail"></div>
+														</div>
 													</div>
 												}
 											</div>
@@ -1119,10 +1137,10 @@
 	private TimeSince _sinceLogTimeRefresh;
 	private int _telemetryHash;
 	private int _logTimeBucket;
-	private int _lastHubLogsRenderCount = -1;
-	private int _lastHubAlertsContentHash;
-	private bool _hubLogsScrollReady;
-	private int _hubLogsBootstrapRetries;
+	// (hub-logs feed is razor-owned — no imperative scroll/rebuild state)
+	// Scroll-anchor state: the head alert's key + the scroll panel ref (razor @ref).
+	private Panel _logsScroll;
+	private string _logsAnchorKey;
 
 	// Transient settings confirmations — rendered inside their own button (PIN updated → Change PIN,
 	// Cleared flash → Clear) and auto-dismissed instead of lingering in the settings hint text.
@@ -1198,6 +1216,26 @@
 	/// <summary>Dev preview — jump straight to the Hub logs/alerts tab.</summary>
 	public void DevOpenLogsTab() => SelectTab( OpsTab.Logs );
 
+	/// <summary>Dev proof — set the logs feed scroll offset (scroll-contract verification).</summary>
+	public void DevScrollLogs( float y )
+	{
+		if ( _logsScroll.IsValid() )
+			_logsScroll.ScrollOffset = new Vector2( 0f, y );
+	}
+
+	/// <summary>Dev proof — report the logs feed scroll state (offset/viewport/content/rows).</summary>
+	public string DevLogsProbe()
+	{
+		if ( !_logsScroll.IsValid() )
+			return "no logs scroll";
+
+		var list = _logsScroll.GetChild( 0 );
+		return $"offset={_logsScroll.ScrollOffset.y:F1} viewport={_logsScroll.Box.Rect.Height:F1} " +
+			$"content={(list.IsValid() ? list.Box.Rect.Height : 0f):F1} rows={(list.IsValid() ? list.ChildrenCount : 0)} " +
+			$"hasScrollY={_logsScroll.HasScrollY} scaleFrom={_logsScroll.ScaleFromScreen:F3} " +
+			$"scrollSize={_logsScroll.ScrollSize.y:F1}";
+	}
+
 	/// <summary>Dev preview — Servers tab at its low-clutter home grid (one box per slot).</summary>
 	public void DevOpenServersTab() => SelectTab( OpsTab.Racks );
 
@@ -1226,6 +1264,34 @@
 		SelectTab( OpsTab.Upgrades );
 	}
 
+	/// <summary>Dev sweep — enter an Upgrades surface by name: Hub, Terminal, or GpuRack.</summary>
+	public void DevEnterUpgradeSurface( string surface )
+	{
+		SelectTab( OpsTab.Upgrades );
+		EnterUpgradeSurface( surface?.ToLowerInvariant() switch
+		{
+			"terminal" => UpgradeSurface.Terminal,
+			"gpurack" => UpgradeSurface.GpuRack,
+			_ => UpgradeSurface.Hub
+		} );
+	}
+
+	/// <summary>Dev sweep — jump to a GPU rack target's track list: Rack1, Rack2, or Advanced.</summary>
+	public void DevEnterUpgradeRackSlot( string slot )
+	{
+		SelectTab( OpsTab.Upgrades );
+		EnterUpgradeSurface( UpgradeSurface.GpuRack );
+		EnterRackTarget( slot?.ToLowerInvariant() switch
+		{
+			"rack2" => UpgradeRackSelector.Rack2,
+			"advanced" => UpgradeRackSelector.Advanced,
+			_ => UpgradeRackSelector.Rack1
+		} );
+	}
+
+	/// <summary>Dev sweep — open a track's tier detail by exact name on the current surface.</summary>
+	public void DevOpenUpgradeTrack( string name ) => OpenUpgradePath( name );
+
 	protected override void OnEnabled()
 	{
 		LifePunchMenuInputBlock.NotifyMenuOpened();
@@ -1236,10 +1302,6 @@
 		_sinceTelemetryRefresh = TelemetryRefreshInterval;
 		_sinceLogTimeRefresh = LogTimeRefreshInterval;
 		_logTimeBucket = (int)(Time.Now / LogTimeRefreshInterval);
-		_lastHubLogsRenderCount = -1;
-		_lastHubAlertsContentHash = 0;
-		_hubLogsScrollReady = false;
-		_hubLogsBootstrapRetries = 0;
 		RecomputeTelemetryHash();
 	}
 
@@ -1272,7 +1334,6 @@
 		Hub?.RequestMarkAlertsRead();
 		_logTimeBucket = (int)(Time.Now / LogTimeRefreshInterval);
 		_sinceLogTimeRefresh = 0;
-		SyncHubLogs( force: true );
 	}
 
 	private static long LocalSteamId() => Game.SteamId;
@@ -1294,6 +1355,19 @@
 		LpBitcoinHubAlertKind.HubTransfer => "Hub transfer",
 		_ => "Alert"
 	};
+
+	// Severity lane per alert kind — new kinds declare a lane here, never styled ad hoc.
+	// Lanes color the icon + kind label only (accent for state, not decoration).
+	private static string AlertLaneClass( LpBitcoinHubAlertKind kind ) => kind switch
+	{
+		LpBitcoinHubAlertKind.HackAttack => "notif-sev-security",
+		LpBitcoinHubAlertKind.RackCapacity => "notif-sev-warn",
+		LpBitcoinHubAlertKind.HubTransfer => "notif-sev-money",
+		_ => ""
+	};
+
+	private static string AlertKey( LpBitcoinHubAlert alert )
+		=> $"{(int)alert.Kind}\x1f{alert.Timestamp:F3}\x1f{alert.Message}";
 
 	private static string AlertTimeLabel( double timestamp )
 	{
@@ -1465,7 +1539,7 @@
 			if ( rack.IsMining )
 				return $"{rack.MiningRatePerMinute * 18.5f:F1} TH/s · {rack.BitcoinAmount:F4} BTC";
 
-			return $"{rack.ClockGhz:F2} GHz · {rack.CoreCount} cores · {rack.BitcoinAmount:F4} BTC";
+			return $"{rack.ClockGhz:F2} GHz · {rack.CoreCount} {( rack.CoreCount == 1 ? "core" : "cores" )} · {rack.BitcoinAmount:F4} BTC";
 		}
 
 		return HasAnyPlayerRacksNearbyOrLinked()
@@ -1540,7 +1614,7 @@
 	}
 
 	private static string RackHardwareLine( LpBitcoinRackEntity rack )
-		=> $"{rack.ClockGhz:F2} GHz · {rack.CoreCount} cores";
+		=> $"{rack.ClockGhz:F2} GHz · {rack.CoreCount} {( rack.CoreCount == 1 ? "core" : "cores" )}";
 
 	private static string RackHashRateStatus( LpBitcoinRackEntity rack )
 		=> rack.IsMining ? $"{rack.MiningRatePerMinute * 18.5f:F1} TH/s" : "Idle — not hashing";
@@ -1586,7 +1660,7 @@
 
 		Hub?.RequestClearAlerts();
 		_sinceLogsClearedNotice = 0;
-		SyncHubLogs( force: true );
+		StateHasChanged();
 	}
 
 	private string HubDisplayName() => "HASHD Hub";
@@ -1704,6 +1778,22 @@
 		_rackTargetSelected = true;
 		_openPath = null;
 		LifePunchUiScrollPolicy.ResetOffsets( Panel );
+	}
+
+	// Server-detail deep link: Upgrades pre-selected on this rack's track.
+	private void OpenUpgradesForRackSlot( OverviewMinerSlot slot )
+	{
+		SelectTab( OpsTab.Upgrades );
+		EnterUpgradeSurface( UpgradeSurface.GpuRack );
+		EnterRackTarget( RackSelectorForSlot( slot ) );
+	}
+
+	private static UpgradeRackSelector RackSelectorForSlot( OverviewMinerSlot slot )
+	{
+		if ( slot.TerminalToken == LpBitcoinIdent.AdvancedRackTerminalToken )
+			return UpgradeRackSelector.Advanced;
+
+		return slot.TerminalToken == "gpurack-2" ? UpgradeRackSelector.Rack2 : UpgradeRackSelector.Rack1;
 	}
 
 	private void BackToRackTargets()
@@ -2105,8 +2195,10 @@
 		if ( !HasNearbyUnlinkedTerminal() )
 			return "lp-ui-btn-ghost overview-intro-terminal-disabled";
 
+		// Ghost base like the unlink/disabled variants — btn-primary's orange fill fought
+		// the green ready tint (orange slab with a green ring). Tinted ghost, green lane.
 		if ( HubIsPowered() )
-			return "lp-ui-btn-primary overview-intro-link-ready";
+			return "lp-ui-btn-ghost overview-intro-link-ready";
 
 		return "lp-ui-btn-ghost overview-intro-link-waiting";
 	}
@@ -2413,10 +2505,10 @@
 		}
 
 		TickTransientNotices();
+		MaintainLogsScrollAnchor();
 
 		if ( _sinceTelemetryRefresh < TelemetryRefreshInterval )
 		{
-			TickHubLogs();
 			TickLogTimeLabels();
 			return;
 		}
@@ -2425,14 +2517,8 @@
 		var previous = _telemetryHash;
 		RecomputeTelemetryHash();
 		if ( _telemetryHash != previous )
-		{
-			if ( _active == OpsTab.Logs )
-				SyncHubLogs( force: true );
-			else
-				StateHasChanged();
-		}
+			StateHasChanged();
 
-		TickHubLogs();
 		TickLogTimeLabels();
 	}
 
@@ -2454,239 +2540,6 @@
 		StateHasChanged();
 	}
 
-	private void TickHubLogs()
-	{
-		if ( _active != OpsTab.Logs )
-			return;
-
-		SyncHubLogs();
-	}
-
-	private void SyncHubLogs( bool force = false )
-	{
-		if ( _active != OpsTab.Logs )
-			return;
-
-		var alerts = GetHubAlerts();
-		var count = alerts.Count;
-
-		if ( count == 0 )
-		{
-			if ( _lastHubLogsRenderCount != 0 )
-			{
-				_lastHubLogsRenderCount = 0;
-				_lastHubAlertsContentHash = 0;
-				_hubLogsScrollReady = false;
-				_hubLogsBootstrapRetries = 0;
-				StateHasChanged();
-			}
-
-			return;
-		}
-
-		if ( !FindLogsScrollShell().IsValid() )
-		{
-			if ( _lastHubLogsRenderCount != count )
-			{
-				_lastHubLogsRenderCount = count;
-				StateHasChanged();
-			}
-
-			return;
-		}
-
-		if ( !EnsureHubLogsScroll() )
-			return;
-
-		var contentHash = ComputeHubAlertsContentHash( alerts );
-		var list = GetHubLogsNotifList();
-		var needsRebuild = force
-		                   || contentHash != _lastHubAlertsContentHash
-		                   || !list.IsValid()
-		                   || PanelChildCount( list ) != count;
-
-		if ( !needsRebuild )
-			return;
-
-		_lastHubLogsRenderCount = count;
-		_lastHubAlertsContentHash = contentHash;
-		RebuildHubLogRows( alerts );
-	}
-
-	private Panel FindLogsScrollShell()
-	{
-		if ( Panel is null || !Panel.IsValid )
-			return null;
-
-		foreach ( var panel in Panel.Descendants )
-		{
-			if ( panel.IsValid() && panel.HasClass( "logs-scroll" ) )
-				return panel;
-		}
-
-		return null;
-	}
-
-	private bool EnsureHubLogsScroll()
-	{
-		if ( _hubLogsScrollReady && GetHubLogsScroll().IsValid() )
-			return true;
-
-		if ( _hubLogsBootstrapRetries >= 12 )
-			return GetHubLogsScroll().IsValid();
-
-		LifePunchScrollRegionBootstrap.UpgradeScrollRegionsFromHost( this );
-		_hubLogsBootstrapRetries++;
-
-		var scroll = GetHubLogsScroll();
-		_hubLogsScrollReady = scroll.IsValid();
-		return _hubLogsScrollReady;
-	}
-
-	private LifePunchScrollRegionPanel GetHubLogsScroll()
-		=> LifePunchScrollRegionBootstrap.FindFirstFromHost( this, "logs-scroll" );
-
-	private Panel GetHubLogsScrollHost()
-	{
-		var scroll = GetHubLogsScroll();
-		return scroll.IsValid() ? scroll : FindLogsScrollShell();
-	}
-
-	private Panel GetHubLogsNotifList()
-	{
-		var scroll = GetHubLogsScrollHost();
-		if ( !scroll.IsValid() )
-			return null;
-
-		return scroll.Children.FirstOrDefault( child => child.HasClass( "notif-list" ) );
-	}
-
-	private void EnsureHubLogsNotifList()
-	{
-		if ( GetHubLogsNotifList().IsValid() )
-			return;
-
-		var scroll = GetHubLogsScrollHost();
-		if ( !scroll.IsValid() )
-			return;
-
-		var list = new Panel();
-		list.AddClass( "notif-list" );
-		list.Parent = scroll;
-	}
-
-	private void RebuildHubLogRows( IReadOnlyList<LpBitcoinHubAlert> alerts )
-	{
-		EnsureHubLogsNotifList();
-		var list = GetHubLogsNotifList();
-		if ( !list.IsValid() )
-			return;
-
-		foreach ( var child in list.Children.ToList() )
-			child.Delete();
-
-		foreach ( var alert in alerts )
-			AddHubLogRow( list, alert );
-	}
-
-	private void AddHubLogRow( Panel list, LpBitcoinHubAlert alert )
-	{
-		var row = new Panel();
-		row.AddClass( "notif-row" );
-		row.Parent = list;
-
-		var icon = new Label
-		{
-			Text = AlertIcon( alert.Kind ),
-			Parent = row
-		};
-		icon.AddClass( "material-icons" );
-
-		var copy = new Panel();
-		copy.AddClass( "notif-copy" );
-		copy.Parent = row;
-
-		var kind = new Label
-		{
-			Text = AlertKindLabel( alert.Kind ),
-			Parent = copy
-		};
-		kind.AddClass( "notif-kind" );
-
-		var message = new Label
-		{
-			Text = alert.Message,
-			Parent = copy
-		};
-		message.AddClass( "notif-message" );
-
-		var time = new Label
-		{
-			Text = AlertTimeLabel( alert.Timestamp ),
-			Parent = copy
-		};
-		time.AddClass( "notif-time" );
-	}
-
-	private static int ComputeHubAlertsContentHash( IReadOnlyList<LpBitcoinHubAlert> alerts )
-	{
-		var hash = new HashCode();
-		hash.Add( alerts.Count );
-		foreach ( var alert in alerts )
-		{
-			hash.Add( (int)alert.Kind );
-			hash.Add( alert.Message );
-			hash.Add( alert.Timestamp );
-		}
-
-		return hash.ToHashCode();
-	}
-
-	private void SyncHubLogTimeLabels( IReadOnlyList<LpBitcoinHubAlert> alerts )
-	{
-		var list = GetHubLogsNotifList();
-		if ( !list.IsValid() || PanelChildCount( list ) != alerts.Count )
-			return;
-
-		var rows = list.Children.ToList();
-		for ( var i = 0; i < alerts.Count; i++ )
-		{
-			if ( i >= rows.Count )
-				break;
-
-			var row = rows[i];
-			if ( !row.IsValid() )
-				continue;
-
-			var timeLabel = FindDescendantLabel( row, "notif-time" );
-			if ( timeLabel is null )
-				continue;
-
-			timeLabel.Text = AlertTimeLabel( alerts[i].Timestamp );
-		}
-	}
-
-	private static int PanelChildCount( Panel panel )
-		=> panel.IsValid() ? panel.Children.Count() : 0;
-
-	private static Label FindDescendantLabel( Panel root, string className )
-	{
-		foreach ( var child in root.Children )
-		{
-			if ( !child.IsValid() )
-				continue;
-
-			if ( child is Label label && label.HasClass( className ) )
-				return label;
-
-			var nested = FindDescendantLabel( child, className );
-			if ( nested is not null )
-				return nested;
-		}
-
-		return null;
-	}
-
 	private void TickLogTimeLabels()
 	{
 		if ( _active != OpsTab.Logs )
@@ -2702,11 +2555,70 @@
 
 		_logTimeBucket = bucket;
 
+		// Feed rows are razor-owned; a bucket change re-renders so "just now" ages to
+		// "Nm ago" (the bucket is also in BuildHash).
+		if ( GetHubAlerts().Count > 0 )
+			StateHasChanged();
+	}
+
+	// Scroll-anchor law for the razor-owned feed: when entries prepend while the user is
+	// scrolled down, push ScrollOffset by the new rows' laid-out height so the content
+	// under their eyes stays put. Never moves the view in any other case.
+	private void MaintainLogsScrollAnchor()
+	{
+		if ( _active != OpsTab.Logs || !_logsScroll.IsValid() )
+		{
+			_logsAnchorKey = null;
+			return;
+		}
+
 		var alerts = GetHubAlerts();
 		if ( alerts.Count == 0 )
+		{
+			_logsAnchorKey = null;
+			return;
+		}
+
+		var headKey = AlertKey( alerts[0] );
+		if ( _logsAnchorKey == headKey )
 			return;
 
-		SyncHubLogTimeLabels( alerts );
+		if ( _logsAnchorKey is not null && _logsScroll.ScrollOffset.y > 4f )
+		{
+			// Prepended-row count = the previous head's index in the new list. Not found
+			// (feed cleared or fully rotated past the cap) → re-key without compensating.
+			var prepended = 0;
+			for ( var i = 0; i < alerts.Count; i++ )
+			{
+				if ( AlertKey( alerts[i] ) != _logsAnchorKey )
+					continue;
+
+				prepended = i;
+				break;
+			}
+
+			var list = _logsScroll.GetChild( 0 );
+			if ( prepended > 0 && list.IsValid() )
+			{
+				var added = 0f;
+				var index = 0;
+				foreach ( var row in list.Children )
+				{
+					if ( index++ >= prepended )
+						break;
+
+					added += row.Box.Rect.Height;
+				}
+
+				// New rows render one frame before layout sizes them — retry next frame.
+				if ( added <= 0f )
+					return;
+
+				_logsScroll.ScrollOffset += new Vector2( 0f, added * _logsScroll.ScaleFromScreen );
+			}
+		}
+
+		_logsAnchorKey = headKey;
 	}
 
 	private void RecomputeTelemetryHash()
@@ -2785,6 +2697,7 @@
 		hash.Add( LpBitcoinEconomy.PortalEconomyRevision );
 		hash.Add( Hub?.UnreadAlertCount ?? 0 );
 		hash.Add( Hub?.AlertFeed ?? string.Empty );
+		hash.Add( _logTimeBucket );
 		return hash.ToHashCode();
 	}
 }

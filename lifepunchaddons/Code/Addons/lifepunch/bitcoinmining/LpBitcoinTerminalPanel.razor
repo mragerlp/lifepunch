@@ -20,8 +20,8 @@
 				<span class="crt-header-title hashd-prompt-accent">LIFEPUNCH HASHD TERMINAL</span>
 				<div class="crt-status-row">
 					<span class="@StatusPowerClass()">@StatusPowerLabel()</span>
-					<span>@LinkedRackCount() racks</span>
-					<span>sel @SelectedRackSlotLabel()</span>
+					<span>@($"{LinkedRackCount()} racks")</span>
+					<span>@($"sel {SelectedRackSlotLabel()}")</span>
 				</div>
 				<div class="lp-ui-chrome-actions">
 					<div class="lp-terminal-settings-menu">
@@ -50,7 +50,7 @@
 													<span class="lp-terminal-settings-rack-name">@RackSlotDisplayLabel( rack, linkedRacks )</span>
 													<span class="lp-terminal-settings-rack-state @RackStateClass( rack )">@RackStateLabel( rack )</span>
 												</div>
-												<div class="lp-terminal-settings-rack-sub">@RackSlotTerminalToken( rack, linkedRacks ) · @RackSettingsSubline( rack )</div>
+												<div class="lp-terminal-settings-rack-sub">@($"{RackSlotTerminalToken( rack, linkedRacks )} · {RackSettingsSubline( rack )}")</div>
 											</div>
 										}
 									</div>
