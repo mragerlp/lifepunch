@@ -6579,11 +6579,13 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	color: $hashd-muted;
 }
 
-.lp-bitcoin-ops .overview-snapshot-note {
+.lp-bitcoin-ops .overview-snapshot-note,
+.lp-bitcoin-ops .overview-checklist-note {
 	font-size: 11px;
 	line-height: 1.45;
 	color: $hashd-muted;
 	width: 100%;
+	flex-shrink: 0;
 	// Bare text inside a panel is a flex child — justify-content centers it;
 	// text-align only handles wrapped lines within the label itself.
 	display: flex;

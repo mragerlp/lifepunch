@@ -182,7 +182,7 @@
 														</div>
 														<div class="overview-checklist-copy">
 															<div class="overview-checklist-title">Power on hub</div>
-															<div class="overview-checklist-sub">Turn the machine on before linking terminal and racks.</div>
+															<div class="overview-checklist-sub">Turn the hub on first.</div>
 														</div>
 														@* Same lane language as link/unlink terminal: green tinted ghost invites the
 														   positive action (Power on), red tinted ghost for the teardown (Power off). *@
@@ -221,13 +221,18 @@
 														</div>
 														<div class="overview-checklist-copy">
 															<div class="overview-checklist-title">Link GPU racks</div>
-															<div class="overview-checklist-sub">Use Servers to verify slots and rig0 link workflow.</div>
+															<div class="overview-checklist-sub">Verify slots, then link at rig0.</div>
 														</div>
 														<button class="lp-ui-btn-primary overview-checklist-action" onclick="@SelectRacksTab">
 															<i class="material-icons">dns</i>
 															<span>Servers</span>
 														</button>
 													</div>
+												</div>
+												@* Footer note lane — mirrors the snapshot's note so both card stacks share
+												 the same shape (3 boxes + note) and the lanes stay pairwise parallel. *@
+												<div class="overview-checklist-note">
+											Complete all three steps to start mining.
 												</div>
 											</div>
 											<div class="lp-ui-panel overview-snapshot-panel">
