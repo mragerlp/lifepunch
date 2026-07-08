@@ -1228,6 +1228,34 @@
 		SelectTab( OpsTab.Upgrades );
 	}
 
+	/// <summary>Dev sweep — enter an Upgrades surface by name: Hub, Terminal, or GpuRack.</summary>
+	public void DevEnterUpgradeSurface( string surface )
+	{
+		SelectTab( OpsTab.Upgrades );
+		EnterUpgradeSurface( surface?.ToLowerInvariant() switch
+		{
+			"terminal" => UpgradeSurface.Terminal,
+			"gpurack" => UpgradeSurface.GpuRack,
+			_ => UpgradeSurface.Hub
+		} );
+	}
+
+	/// <summary>Dev sweep — jump to a GPU rack target's track list: Rack1, Rack2, or Advanced.</summary>
+	public void DevEnterUpgradeRackSlot( string slot )
+	{
+		SelectTab( OpsTab.Upgrades );
+		EnterUpgradeSurface( UpgradeSurface.GpuRack );
+		EnterRackTarget( slot?.ToLowerInvariant() switch
+		{
+			"rack2" => UpgradeRackSelector.Rack2,
+			"advanced" => UpgradeRackSelector.Advanced,
+			_ => UpgradeRackSelector.Rack1
+		} );
+	}
+
+	/// <summary>Dev sweep — open a track's tier detail by exact name on the current surface.</summary>
+	public void DevOpenUpgradeTrack( string name ) => OpenUpgradePath( name );
+
 	protected override void OnEnabled()
 	{
 		LifePunchMenuInputBlock.NotifyMenuOpened();
@@ -1467,7 +1495,7 @@
 			if ( rack.IsMining )
 				return $"{rack.MiningRatePerMinute * 18.5f:F1} TH/s · {rack.BitcoinAmount:F4} BTC";
 
-			return $"{rack.ClockGhz:F2} GHz · {rack.CoreCount} cores · {rack.BitcoinAmount:F4} BTC";
+			return $"{rack.ClockGhz:F2} GHz · {rack.CoreCount} {( rack.CoreCount == 1 ? "core" : "cores" )} · {rack.BitcoinAmount:F4} BTC";
 		}
 
 		return HasAnyPlayerRacksNearbyOrLinked()
@@ -1542,7 +1570,7 @@
 	}
 
 	private static string RackHardwareLine( LpBitcoinRackEntity rack )
-		=> $"{rack.ClockGhz:F2} GHz · {rack.CoreCount} cores";
+		=> $"{rack.ClockGhz:F2} GHz · {rack.CoreCount} {( rack.CoreCount == 1 ? "core" : "cores" )}";
 
 	private static string RackHashRateStatus( LpBitcoinRackEntity rack )
 		=> rack.IsMining ? $"{rack.MiningRatePerMinute * 18.5f:F1} TH/s" : "Idle — not hashing";
@@ -2531,13 +2559,18 @@
 
 	private bool EnsureHubLogsScroll()
 	{
+		// Sweep EVERY call, even when already ready: each razor rebuild re-emits an empty
+		// .logs-scroll shell into the feed, and without the sweep that stale div (flex 1 1 0)
+		// splits the feed with the real upgraded panel — rows pinned to the bottom half with
+		// a dead zone above and the last row clipped. The sweep deletes empty dupes cheaply.
+		LifePunchScrollRegionBootstrap.UpgradeScrollRegionsFromHost( this );
+
 		if ( _hubLogsScrollReady && GetHubLogsScroll().IsValid() )
 			return true;
 
 		if ( _hubLogsBootstrapRetries >= 12 )
 			return GetHubLogsScroll().IsValid();
 
-		LifePunchScrollRegionBootstrap.UpgradeScrollRegionsFromHost( this );
 		_hubLogsBootstrapRetries++;
 
 		var scroll = GetHubLogsScroll();
@@ -2589,6 +2622,16 @@
 
 		foreach ( var alert in alerts )
 			AddHubLogRow( list, alert );
+
+		// Newest-first feed anchors to the TOP — the scroll panel's stick-to-bottom
+		// default is terminal-log semantics and left this feed pinned low with a dead
+		// zone above (and the last row clipped).
+		var scroll = GetHubLogsScroll();
+		if ( scroll.IsValid() )
+		{
+			scroll.PreferScrollToBottom = false;
+			scroll.ScrollToTop();
+		}
 	}
 
 	private void AddHubLogRow( Panel list, LpBitcoinHubAlert alert )

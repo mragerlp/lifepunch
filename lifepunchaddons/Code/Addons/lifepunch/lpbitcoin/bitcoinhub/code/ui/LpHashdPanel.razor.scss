@@ -4103,6 +4103,12 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	width: 100%;
 	overflow-x: hidden;
 	overflow-y: scroll;
+	// Top-anchored feed — same recipe as the terminal CRT log (LpUiMenuLayout
+	// .terminal-log-scroll), which is the proven top-aligned scroll stack. Without
+	// it the notif rows floated to the bottom with a dead zone above.
+	justify-content: flex-start;
+	align-items: stretch;
+	align-content: flex-start;
 }
 
 .lp-bitcoin-ops .racks-scroll,
@@ -4448,6 +4454,10 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 }
 
 .lp-bitcoin-ops .notif-list {
+	// Terminal log-stack law: the stack keeps natural height at the top of the scroll.
+	flex: 0 0 auto;
+	align-self: flex-start;
+	width: 100%;
 	padding-bottom: 12px;
 }
 
@@ -6234,6 +6244,10 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 .lp-bitcoin-ops .server-detail-status {
 	display: flex;
 	flex-direction: column;
+	// Never flex-compress: the info lists hold min-height rows that overflow onto the
+	// legacy section below when this column gets squeezed (LINK/CONTROL overlapping
+	// "Current active hardware levels") — the detail pane scrolls instead.
+	flex-shrink: 0;
 	gap: 12px;
 	margin-top: 12px;
 	padding-top: 12px;
@@ -6245,6 +6259,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 .lp-bitcoin-ops .server-detail-legacy-info {
 	display: flex;
 	flex-direction: column;
+	flex-shrink: 0;
 	gap: 8px;
 }
 
@@ -6268,6 +6283,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	flex-wrap: nowrap;
 	align-items: center;
 	justify-content: space-between;
+	flex-shrink: 0;
 	gap: 12px;
 	min-height: 28px;
 }
