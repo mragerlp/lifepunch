@@ -1437,6 +1437,8 @@ $shell-radius: 22px;
 
 	// Lower-emphasis sibling of .confirm-btn (e.g. the profile's "View audit log" shortcut).
 	.confirm-btn.secondary {
+		// Sit closer to the primary "Actions for this player" button above (tighten the card gap).
+		margin-top: -6px;
 		background-color: $bg-row;
 		color: $text;
 

@@ -42,7 +42,7 @@ lifepunchaddons/
 ├── config/                 # addons.json, portfolio.json (registry)
 ├── lpbitcoin/              # lifepunch.bitcoin package
 ├── lphacker/               # (future / quarantine promote)
-├── lifepunchulx/           # adminmenu publish lane
+├── lifepunchulx/           # adminmenu publish lane — staff console; mounts in EVERY LIFEPUNCH-lane editor session (never in DXRP-official)
 └── …
 ```
 

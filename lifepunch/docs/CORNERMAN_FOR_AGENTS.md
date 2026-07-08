@@ -119,6 +119,10 @@ transport failures on their own.
   (including via `requiredDocs` — enforced in code). Never mix.
 - The universal test for anything near the lane boundary: **"Would this survive a
   clean vanilla DXRP pull?"** (see `LIFEPUNCH_MISSION.md`).
+- **`lifepunchulx` (the staff console) mounts in EVERY LIFEPUNCH-lane editor
+  session.** It is excluded only from DXRP-official lane work, where it never
+  appears. The default editor sync (`lpbitcoin,adminmenu`) carries it; verify it is
+  present before treating any LIFEPUNCH-lane editor as correctly mounted.
 
 ## Session bootstrap (Bloodwave's two-minute startup)
 
