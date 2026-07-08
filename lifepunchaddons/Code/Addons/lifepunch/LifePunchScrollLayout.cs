@@ -16,8 +16,14 @@ namespace LifePunch.DXRP.Addons;
 /// </summary>
 internal static class LifePunchScrollLayout
 {
+	// lp-ui-manual-scroll: razor-owned scrollers (rows rendered by razor, wheel by the engine)
+	// opt into the box-measured clamp WITHOUT the lp-ui-scroll-region marker — that marker also
+	// summons LifePunchScrollRegionBootstrap, which deletes razor-emitted children on upgrade.
+	// The generic ScrollSize-based clamp mixes units with Box at non-1 UI scale and over-clamps.
 	public static bool IsManualScrollShell( Panel panel )
-		=> panel is LifePunchScrollRegionPanel || panel.HasClass( "lp-ui-scroll-region" );
+		=> panel is LifePunchScrollRegionPanel
+			|| panel.HasClass( "lp-ui-scroll-region" )
+			|| panel.HasClass( "lp-ui-manual-scroll" );
 
 	/// <summary>
 	/// Slot id for <see cref="LifePunchScrollRegionBootstrap"/> — first class on the panel besides <c>lp-ui-scroll-region</c>.

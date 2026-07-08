@@ -17,6 +17,7 @@ $hashd-muted: #8a909c;
 $hashd-text: #e6e8ee;
 $hashd-title: #f4f6fa;
 $hashd-green: #5fd38d;
+$hashd-red: #ff6b6b;
 
 // Squared industrial — no soft app rounding. 0 for hard plates, 2px max for micro-insets.
 $shell-radius: 0;
@@ -2818,7 +2819,6 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 		border-color: rgba(95, 211, 141, 0.55);
 		background-color: rgba(95, 211, 141, 0.18);
 		color: #b8f5d0;
-		box-shadow: 0 0 12px rgba(95, 211, 141, 0.25);
 	}
 
 	.lp-ui-status-dot.warn {
@@ -3958,12 +3958,26 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	cursor: default;
 }
 
+// Unlink hover stays in its red lane — without this flat rule the base ghost hover
+// (hashd orange accent) painted it orange. Defined flat + late so it wins.
+.lp-bitcoin-ops .overview-intro-unlink-btn:hover {
+	border-color: rgba(239, 68, 68, 0.75);
+	background-color: rgba(239, 68, 68, 0.32);
+	color: #ffe8e8;
+}
+
+// Flat tinted ghost — same anatomy as .overview-intro-unlink-btn (red lane), green lane.
 .lp-bitcoin-ops .overview-intro-link-ready {
 	border: 1px solid rgba(95, 211, 141, 0.55);
 	border-color: rgba(95, 211, 141, 0.55);
 	background-color: rgba(95, 211, 141, 0.18);
 	color: #b8f5d0;
-	box-shadow: 0 0 12px rgba(95, 211, 141, 0.25);
+
+	&:hover {
+		border-color: rgba(95, 211, 141, 0.75);
+		background-color: rgba(95, 211, 141, 0.32);
+		color: #e6fff0;
+	}
 }
 
 // lp-ui-accent-hashd paints .lp-ui-btn-primary orange — keep link CTA green on hover too.
@@ -4109,6 +4123,19 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	justify-content: flex-start;
 	align-items: stretch;
 	align-content: flex-start;
+}
+
+// Feed containment. The older .pane.logs-pane > … rules use compound .class.class
+// selectors, which s&box applies unreliably — without this flat rule .logs-feed sizes
+// to its content, the panel clips it, and .logs-scroll never gets a height to scroll in.
+.lp-bitcoin-ops .logs-feed {
+	display: flex;
+	flex-direction: column;
+	flex: 1 1 0;
+	min-height: 0;
+	width: 100%;
+	position: relative;
+	overflow: hidden;
 }
 
 .lp-bitcoin-ops .racks-scroll,
@@ -4462,7 +4489,16 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 }
 
 .lp-bitcoin-ops .notif-row {
+	// Natural height, never flex-compressed — the scroll list law (see .job-option).
+	flex-shrink: 0;
 	min-height: 56px;
+}
+
+// Scroll slack so the last alert clears the pane bottom (tail-spacer law).
+.lp-bitcoin-ops .notif-list-tail {
+	flex-shrink: 0;
+	height: 12px;
+	width: 100%;
 }
 
 // Flat — upgrades pane padding (nested .upgrade-* rules often do not compile in s&box).
@@ -6379,6 +6415,9 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	display: flex;
 	flex-direction: row;
 	align-items: center;
+	// Uniform row height — every action-slot variant (button, hint text, unlink, none)
+	// renders at the same height so no content can drag the card taller.
+	min-height: 66px;
 	gap: 12px;
 	padding: 10px 12px;
 	border: 1px solid rgba(255, 255, 255, 0.12);
@@ -6438,13 +6477,37 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	min-width: 156px;
+	align-self: center;
+	// Fixed slot width (fits "No terminal in range" nowrap) — the action column reads
+	// as one aligned rail across every row/variant, never content-sized and ragged.
+	width: 156px;
+}
+
+.lp-bitcoin-ops .overview-checklist-action {
+	width: 156px;
 }
 
 .lp-bitcoin-ops .overview-checklist-action,
 .lp-bitcoin-ops .overview-checklist-action-group .lp-ui-btn-ghost,
 .lp-bitcoin-ops .overview-checklist-action-group .lp-ui-btn-primary {
+	// flex 0 0 auto kills the base .lp-ui-btn-ghost "flex: 1 1 100%" — inside the
+	// column action group that stretched hint/button variants and dragged the row.
+	flex: 0 0 auto;
+	min-height: 34px;
 	white-space: nowrap;
+}
+
+.lp-bitcoin-ops .overview-checklist-action-group .lp-ui-btn-ghost,
+.lp-bitcoin-ops .overview-checklist-action-group .lp-ui-btn-primary {
+	// Inner buttons/hints fill the fixed slot so every variant presents identically,
+	// with content centered like the direct action buttons.
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	text-align: center;
 }
 
 .lp-bitcoin-ops .overview-checklist-action,
@@ -6515,6 +6578,17 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	min-height: 36px;
 	padding: 8px 12px;
 	font-size: 11px;
+}
+
+// Shared icon+label button anatomy for overview actions — one centering/gap rule,
+// never per-button padding tweaks.
+.lp-bitcoin-ops .overview-command-action,
+.lp-bitcoin-ops .overview-checklist-action {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
 }
 
 .lp-bitcoin-ops .overview-command-action .material-icons {
@@ -7087,9 +7161,13 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 		pointer-events: none;
 		cursor: default;
 
-		.upgrade-tier-cell-icon {
+		// Numeral in the old icon slot — same footprint so the card rhythm doesn't shift.
+		.upgrade-tier-cell-numeral {
 			color: $hashd-muted;
-			font-size: 24px;
+			font-size: 20px;
+			font-weight: 900;
+			letter-spacing: 0.04em;
+			line-height: 24px;
 		}
 
 		.upgrade-tier-cell-roman {
@@ -7119,7 +7197,10 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 			border-color: $hashd-amber;
 			background-color: rgba(232, 125, 62, 0.18);
 
-			.upgrade-tier-cell-icon,
+			.upgrade-tier-cell-numeral {
+				color: $hashd-amber;
+			}
+
 			.upgrade-tier-cell-roman {
 				color: $hashd-title;
 			}
@@ -7135,7 +7216,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 			border-color: rgba(255, 255, 255, 0.04);
 			background-color: rgba(0, 0, 0, 0.25);
 
-			.upgrade-tier-cell-icon,
+			.upgrade-tier-cell-numeral,
 			.upgrade-tier-cell-roman,
 			.upgrade-tier-cell-label,
 			.upgrade-tier-cell-state {
@@ -7167,4 +7248,26 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 			color: $hashd-amber-glow;
 		}
 	}
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Hub Logs severity lanes — icon + kind label only; row layout untouched.
+// Defined late so they win over the base .notif-kind color (the red-hover lesson).
+// Warn uses amber-glow, not brand orange: the chrome is already orange everywhere,
+// so a warning in brand orange wouldn't jump.
+// ─────────────────────────────────────────────────────────────────────────────
+
+.lp-bitcoin-ops .notif-sev-security .material-icons,
+.lp-bitcoin-ops .notif-sev-security .notif-kind {
+	color: $hashd-red;
+}
+
+.lp-bitcoin-ops .notif-sev-warn .material-icons,
+.lp-bitcoin-ops .notif-sev-warn .notif-kind {
+	color: $hashd-amber-glow;
+}
+
+.lp-bitcoin-ops .notif-sev-money .material-icons,
+.lp-bitcoin-ops .notif-sev-money .notif-kind {
+	color: $hashd-green;
 }
