@@ -1081,7 +1081,9 @@ function Build-CdwModelRequest {
     $usr.Add($PackedInputs)
 
     $temperature = 0.2
-    $maxTokens = 4096
+    # 8192 (was 4096): with parallel 1 there is context headroom, and even partial
+    # reasoning leakage can no longer zero the visible output.
+    $maxTokens = 8192
     if ($Config.request.PSObject.Properties.Name -contains 'temperature' -and $null -ne $Config.request.temperature) {
         $temperature = [double]$Config.request.temperature
     }
@@ -1100,9 +1102,13 @@ function Build-CdwModelRequest {
         temperature = $temperature
         max_tokens  = $maxTokens
         stream      = $false
-        # Disable Qwen3 thinking via the API (the LM Studio UI toggle does not
-        # govern API requests; the /no_think soft switch is rejected by newer
-        # Qwen chat templates). All current lanes want thinking off.
+        # Disable reasoning. LM Studio 0.4.19 + Qwen3.6 honors ONLY the OpenAI-style
+        # reasoning_effort param — verified empirically 2026-07-08: the enable_thinking
+        # kwarg, /no_think (system and user), and reasoning.enabled=false are ALL
+        # ignored (thinking burns max_tokens, content stays empty, finish_reason=
+        # length). reasoning_effort 'none' yields finish=stop with zero reasoning
+        # tokens. Keep the legacy kwarg too — harmless here, honored on older stacks.
+        reasoning_effort     = 'none'
         chat_template_kwargs = @{ enable_thinking = $false }
     }
     return @{ Body = $body; SystemPrompt = $systemPrompt; UserPrompt = $userPrompt }
