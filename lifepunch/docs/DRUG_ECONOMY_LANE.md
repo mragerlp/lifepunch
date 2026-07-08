@@ -40,6 +40,22 @@ Limitation acknowledged: vanilla config covers weed only — coke/meth
 pricing requires our own addon/server config layer. That layer is the
 main build cost of this lane.
 
+## Chemist Production Track (future, house pattern)
+
+Drug Chemist gets 5-tier upgrade track(s) for cocaine/meth production
+(unified vs per-drug split: undecided). Follows the house pattern — ledger
+tenant, OnPurchase, cosmetic option (`ECONOMY_DOCTRINE.md` House Pattern).
+
+DESIGN CONSTRAINT: value fits against WINDOW-GATED throughput, not
+continuous rate — pure speed tiers saturate the sale window (the
+buffer-overshoot analog). Candidate effect axes: cook speed (early
+tiers), brick value/purity (monetizes via price config, scales with
+volatility), batch/carry capacity (value per window trip).
+
+Hack-immunity unchanged; higher tiers deepen physical float exposure
+between windows by design. Numbers wait on the lane build + the
+Packet D window-gated math.
+
 ## Deferred Decisions (settle when lane is scheduled)
 
 - Stagger pattern vs synchronized openings (income density + server rhythm)
