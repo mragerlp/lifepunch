@@ -6567,6 +6567,13 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	font-size: 11px;
 	line-height: 1.45;
 	color: $hashd-muted;
+	width: 100%;
+	// Bare text inside a panel is a flex child — justify-content centers it;
+	// text-align only handles wrapped lines within the label itself.
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	text-align: center;
 }
 
 .lp-bitcoin-ops .overview-command-actions {
