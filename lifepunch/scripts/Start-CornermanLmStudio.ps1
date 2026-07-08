@@ -337,6 +337,9 @@ if ($WarmModel -eq 'none') {
 }
 elseif ($WarmModel -in 'daily', 'all' -and (Test-Tier3ServeReady -BindHost $BindHost)) {
     Write-Lms "Tier-3 serve ready (distill + embed loaded on :$Port)"
+    # Ready-path still dedupes: a duplicate ":2" instance from an earlier boot race
+    # otherwise survives every subsequent boot (this early return used to skip it).
+    Remove-DuplicateLmsLoads
     if (-not $Quiet) { Write-LmsServeStatus -BindHost $BindHost }
     return
 }
@@ -370,8 +373,16 @@ foreach ($modelId in $targets) {
         continue
     }
     $gpuFlag = if ($modelId -like '*embed*') { '0.05' } else { 'max' }
+    # Big models: pin context + parallel explicitly. Relying on app defaults let a runtime
+    # update flip parallel to 4, splitting the 32000 context into ~8k slots — Daily-route
+    # packets then died at finish_reason:length with empty content (2026-07-08 triage).
+    $loadArgs = @('load', $modelId, '--gpu', $gpuFlag)
+    if ($modelId -notlike '*embed*') {
+        $loadArgs += @('--context-length', '32000', '--parallel', '1')
+    }
+    $loadArgs += '-y'
     Write-Lms "Loading $modelId (gpu $gpuFlag)..."
-    $loadCode = Invoke-Lms -LmsArgs @('load', $modelId, '--gpu', $gpuFlag, '-y')
+    $loadCode = Invoke-Lms -LmsArgs $loadArgs
     if ($loadCode -ne 0 -and -not (Test-LmsAlreadyLoaded -Text $script:LastLmsOutput)) {
         throw "lms load failed for $modelId (exit $loadCode)"
     }
@@ -379,6 +390,10 @@ foreach ($modelId in $targets) {
         Write-Lms "Already loaded in LM Studio: $modelId"
     }
 }
+
+# The load loop can race LM Studio's own last-session restore (fresh boot, CLI briefly busy)
+# and end up with a duplicate ":2" instance — sweep once more now that loads have settled.
+Remove-DuplicateLmsLoads
 
 if ($WarmModel -ne 'none') {
     if ($WarmModel -in 'daily', 'all') {
