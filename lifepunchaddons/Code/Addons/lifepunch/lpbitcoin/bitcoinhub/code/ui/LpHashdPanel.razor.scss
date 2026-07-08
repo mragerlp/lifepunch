@@ -6405,10 +6405,16 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	min-height: 0;
 }
 
+// Equal-partner law: the two Overview cards stretch to the row (1:1 ratio via
+// flex 1 1 0 on both panels), and each card's three items distribute across the
+// same content span — checklist rows and snapshot tiles read as lanes.
 .lp-bitcoin-ops .overview-checklist {
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
+	// Grow only (basis auto) — basis 0 collapses the stack because the panel's
+	// height is content-driven (circular), and rows overlap their neighbors.
+	flex: 1 1 auto;
 }
 
 .lp-bitcoin-ops .overview-checklist-item {
@@ -6418,6 +6424,8 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	// Uniform row height — every action-slot variant (button, hint text, unlink, none)
 	// renders at the same height so no content can drag the card taller.
 	min-height: 66px;
+	// Rows share the card's span equally (lane law) — growth only, floor above.
+	flex: 1 1 auto;
 	gap: 12px;
 	padding: 10px 12px;
 	border: 1px solid rgba(255, 255, 255, 0.12);
@@ -6522,11 +6530,19 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
+	// Grow to fill the card (basis auto — see checklist note) so the footer hint
+	// pins to the remaining space at the bottom.
+	flex: 1 1 auto;
 }
 
 .lp-bitcoin-ops .overview-snapshot-card {
 	display: flex;
 	flex-direction: column;
+	// Same lane law as the checklist rows: 66px floor, tiles share the span
+	// equally, content vertically centered to match the rows' align-items.
+	min-height: 66px;
+	flex: 1 1 auto;
+	justify-content: center;
 	gap: 3px;
 	padding: 10px 12px;
 	border: 1px solid rgba(255, 255, 255, 0.11);
