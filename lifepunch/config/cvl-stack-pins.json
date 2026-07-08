@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "lastVerified": "2026-06-19",
+  "lastVerified": "2026-07-08",
   "notes": "Known-good stack pins + where to update. Re-verify after any bump. Full runbook: lifepunch/docs/CVL_FULL_CAPACITY_UPDATES.md",
   "components": [
     {
@@ -28,7 +28,7 @@
       "id": "claudebridge",
       "role": "runtime MCP — play, console_run, screenshots",
       "library": "sboxskinsgg.claudebridge",
-      "verifiedVersion": "1.15.0",
+      "verifiedVersion": "1.18.0",
       "updateVia": "s&box Library Manager → update; restart editor; get_bridge_status versionsAligned"
     },
     {
@@ -106,6 +106,40 @@
       "guardScript": "lifepunch/scripts/Fix-SboxEditorMcpCursorToolNames.ps1"
     }
   ],
+  "libraryTree": {
+    "path": "D:/Steam/steamapps/common/sbox/dxrp/game/Libraries",
+    "law": "lifepunch/docs/SBOX_LIBRARY_PLAYBOOK.md (LAW 1 tree of truth; stack changes update this manifest)",
+    "sweep": "2026-07-08",
+    "libraries": {
+      "ali3nsystems.lib-shader_graph_extras": "1.0.276588",
+      "brax.unrealimporter": "1.0.303950",
+      "bugge.meshsplitter": "1.0.203835",
+      "dicta.panelrendertarget": "1.0.299487",
+      "dreams.ultimatelightmanager": "1.0.293684",
+      "evilinc.modeliconeditor": "1.0.134363",
+      "fish.scc": "1.0.301969",
+      "fish.shrimple_ragdolls": "1.0.306729",
+      "gamah.skafinity": "1.0.306536",
+      "igor.reactivity": "1.0.302096",
+      "isotope.gitversioncontrol": "1.0.306347",
+      "kamishell.blender_bridge": "1.0.224309",
+      "kikozl.sbox_ui_designer": "no-.version-file",
+      "lilboi.ui-pro": "no-.version-file",
+      "notpointless.chomnr_humanoid_retargeter": "1.0.307486",
+      "notpointless.chomnr_mcp": "1.0.306146",
+      "resync.sbtween": "1.0.283981",
+      "saico.easysplashscreen": "1.0.301117",
+      "sboxcool.network-storage": "1.0.307314",
+      "sboxshare.sboxshare": "no-.version-file",
+      "sboxskinsgg.claudebridge": "1.0.307899",
+      "sklmr.razordesigner": "1.0.306734",
+      "subzerostudios.supershot": "1.0.301923",
+      "tristan.tailwand": "1.0.253284",
+      "xaz.goo": "1.0.306537",
+      "xaz.hit_shapes": "1.0.276866",
+      "xenthio.xmovement": "no-.version-file"
+    }
+  },
   "fullCapacityProbe": "lifepunch/scripts/Get-CvlConnectivityStatus.ps1 -Pretty",
   "fullCapacityRefresh": "lifepunch/scripts/Invoke-CvlFullCapacityRefresh.ps1"
 }
