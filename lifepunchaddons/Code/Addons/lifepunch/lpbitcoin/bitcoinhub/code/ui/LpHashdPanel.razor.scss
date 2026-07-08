@@ -6347,8 +6347,26 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	text-align: right;
 }
 
+// Bottom action row — content-left/action-right, same idiom as the checklist rows.
+.lp-bitcoin-ops .server-detail-action-row {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	width: 100%;
+	flex-shrink: 0;
+	margin-top: 10px;
+}
+
+.lp-bitcoin-ops .server-detail-action-lead {
+	// Reserved seat for the inline upgrade stepper (I→V) — empty tonight by design.
+	// min-height holds the row's height so the stepper arrives with zero relayout.
+	flex: 1 1 auto;
+	min-height: 36px;
+}
+
 .lp-bitcoin-ops .server-detail-upgrade-btn {
-	align-self: flex-start;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
@@ -6358,7 +6376,6 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	flex: 0 0 auto;
 	height: 36px;
 	padding: 0 16px;
-	margin-top: 10px;
 
 	.material-icons {
 		font-size: 16px;

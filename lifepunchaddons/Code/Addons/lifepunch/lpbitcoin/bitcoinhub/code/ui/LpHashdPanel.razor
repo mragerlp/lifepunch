@@ -413,12 +413,17 @@
 																		</div>
 																	</div>
 																	@* Legacy hardware-levels section removed — purchases live on Universal Upgrades.
-																	   Rack CoreCount/ClockGhz data untouched; the economy still reads it.
-																	   The space below stays clean for the inline upgrade stepper (later arc). *@
-																	<button class="lp-ui-btn-primary server-detail-upgrade-btn" onclick="@(() => OpenUpgradesForRackSlot( slot ))">
-																		<span>Upgrade this rack</span>
-																		<i class="material-icons">arrow_forward</i>
-																	</button>
+																	   Rack CoreCount/ClockGhz data untouched; the economy still reads it. *@
+																	@* Bottom action row — content-left/action-right (checklist idiom). The lead slot
+																	   is the reserved seat for the inline upgrade stepper (this rack's I→V
+																	   progression); it drops in with zero relayout. *@
+																	<div class="server-detail-action-row">
+																		<div class="server-detail-action-lead"></div>
+																		<button class="lp-ui-btn-primary server-detail-upgrade-btn" onclick="@(() => OpenUpgradesForRackSlot( slot ))">
+																			<span>Upgrade this rack</span>
+																			<i class="material-icons">arrow_forward</i>
+																		</button>
+																	</div>
 																</div>
 															}
 														</div>
