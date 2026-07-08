@@ -9,6 +9,9 @@ Status: CANON — ratified 2026-07-08. Systems must comply or amend this page fi
    crackable pre-deposit, Bank and City Funds are hack targets.
 2. **LABOR INCOME IS SAFE.** Drug entities are explicitly hack-immune.
    Drug Chemist is the top earner BECAUSE of labor. This is by design.
+   No NPC vendors, ever — all selling routes through map-placed drops,
+   the labor lane's exposure point (amendment 2026-07-08,
+   `DRUG_ECONOMY_LANE.md`).
 3. **DEFENSE IS THE CITIZEN'S PROBLEM.** FBI defends government assets
    (City Funds, Data Center, Bank premiums). Citizens and criminals
    protect themselves — primarily via HASHD Terminal security tiers.
