@@ -16,7 +16,7 @@ param(
 $ErrorActionPreference = 'Stop'
 $Here = if ($PSScriptRoot) { $PSScriptRoot } else { Split-Path -Parent $MyInvocation.MyCommand.Path }
 $repoRoot = Split-Path $Here -Parent
-$placeScript = Join-Path $repoRoot 'addons\scripts\Place-LifepunchModelDocAssets.ps1'
+$placeScript = Join-Path (Resolve-Path (Join-Path $Here '..\..\lifepunchaddons')).Path 'scripts\Place-LifepunchModelDocAssets.ps1'
 
 foreach ($pkg in $Package) {
     if ($Entity) {

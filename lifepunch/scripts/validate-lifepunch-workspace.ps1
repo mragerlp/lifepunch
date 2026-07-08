@@ -849,7 +849,7 @@ if ($Errors.Count -gt 0) {
     exit 1
 }
 
-& (Join-Path $Root 'addons\scripts\validate-layout.ps1')
+& (Join-Path (Resolve-Path (Join-Path $PSScriptRoot '..\..\lifepunchaddons')).Path 'scripts\validate-layout.ps1')
 if (-not $?) { exit 1 }
 
 & (Join-Path $Root 'gamemode\scripts\validate-gamemode-workspace.ps1')

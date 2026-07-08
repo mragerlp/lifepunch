@@ -25,7 +25,7 @@ param(
 $ErrorActionPreference = 'Stop'
 $Here = if ($PSScriptRoot) { $PSScriptRoot } else { Split-Path -Parent $MyInvocation.MyCommand.Path }
 $RepoRoot = (Resolve-Path (Join-Path $Here '..')).Path
-$AddonsRoot = Join-Path $RepoRoot 'addons'
+$AddonsRoot = (Resolve-Path (Join-Path $Here '..\..\lifepunchaddons')).Path
 $PrepareScript = Join-Path $AddonsRoot 'scripts\prepare-publish.ps1'
 $ManifestPath = Join-Path $AddonsRoot 'config\addons.json'
 $PortfolioPath = Join-Path $AddonsRoot 'config\portfolio.json'

@@ -1,7 +1,7 @@
 # Build Desktop UPLOAD READY ADDONS inventory for Cornerman handoff.
 $ErrorActionPreference = 'Stop'
 $Here = $PSScriptRoot
-. (Join-Path (Split-Path $Here -Parent) 'addons\scripts\LifePunch-AddonDropPaths.ps1')
+. (Join-Path (Resolve-Path (Join-Path $Here '..\..\lifepunchaddons')).Path 'scripts\LifePunch-AddonDropPaths.ps1')
 
 $desktopAddonsRoot = Join-Path (Get-LifePunchUploadReadyRoot) 'addons'
 $lifepunchRoot = Join-Path $desktopAddonsRoot 'lifepunch'
