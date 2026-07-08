@@ -212,8 +212,8 @@ publish page assets, marketing. UNTESTED: agent-drivable vs human-only.
 - [ ] glow: install to live tree vs gate-3 replan — Bloodwave's call before
       gate 3 opens
 - [x] jtc + oz_mcp trim — DONE 2026-07-08 (uninstalled + debris cleaned)
-- [ ] Red pass: pin all 27 `.version` values into the manifest
-      (cvl-stack-pins.json)
+- [x] Red pass: pin all 27 `.version` values — DONE 2026-07-08
+      (cvl-stack-pins.json `libraryTree` section, sweep-dated)
 - [ ] Red pass: enumerate claudebridge's 197 handlers + chomnr tool schemas
       into an appendix (the VERIFIED backbone)
 - [ ] Red pass: panelrendertarget first-exercise (trivial panel on a cube)
