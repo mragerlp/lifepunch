@@ -137,7 +137,7 @@
 								        tooltip="BTC Wallet"
 								        onclick="@SelectWalletTab">
 									<i class="material-icons">account_balance_wallet</i>
-									<span>@HeaderWalletBtc() BTC</span>
+									<span>@($"{HeaderWalletBtc()} BTC")</span>
 								</button>
 								<button class="header-chip cashout-all-chip @GetCashOutAllButtonClass()"
 								        tooltip="Cash out all hub wallet BTC to bank"
@@ -243,12 +243,13 @@
 													</div>
 													<div class="overview-snapshot-card">
 														<div class="overview-snapshot-label">Hub wallet</div>
-														<div class="overview-snapshot-value">@HeaderWalletBtc() BTC</div>
-														<div class="overview-snapshot-sub">$@CombinedUsd().ToString("N2") estimated value</div>
+														<div class="overview-snapshot-value">@($"{HeaderWalletBtc()} BTC")</div>
+														<div class="overview-snapshot-sub">@($"${CombinedUsd():N2} estimated value")</div>
 													</div>
 												</div>
 												<div class="overview-snapshot-note">
-													Need deeper details? Use <strong>Servers</strong> for rack stats and <strong>Upgrades</strong> for track tiers.
+													@* Plain text run — s&box eats the spaces around inline tags ("UseServersfor rack stats"). *@
+											Need deeper details? Use the Servers tab for rack stats and the Upgrades tab for track tiers.
 												</div>
 											</div>
 										</div>
@@ -409,7 +410,8 @@
 																		</div>
 																		<div class="lp-ui-info-row">
 																			<span class="lp-ui-info-label">Link</span>
-																			<span class="lp-ui-info-value on">Linked · rig0 <span class="hashd-prompt-accent">@slot.TerminalToken</span></span>
+																			@* Single text run — the space before the nested accent span gets eaten ("rig0token"). Accent styling can return in Phase C. *@
+																		<span class="lp-ui-info-value on">@($"Linked · rig0 {slot.TerminalToken}")</span>
 																		</div>
 																		<div class="lp-ui-info-row">
 																			<span class="lp-ui-info-label">Control</span>
@@ -432,7 +434,7 @@
 																			</div>
 																		</div>
 																	</div>
-																	<div class="server-detail-footnote">Status only — purchase hardware on <strong>Upgrades</strong> → GPU Rack.</div>
+																	<div class="server-detail-footnote">Status only — purchase hardware on Upgrades → GPU Rack.</div>
 																</div>
 															}
 														</div>
@@ -592,7 +594,7 @@
 																<i class="material-icons">@openTrack.Icon</i>
 																<div class="upgrade-path-detail-headtext">
 																	<span class="upgrade-path-detail-name">@openTrack.Name</span>
-																	<span class="upgrade-path-detail-sub">@CurrentTierLabel( openTrack ) · @( openCosmetic ? "NOT ENABLED" : "PLANNED" )</span>
+																	<span class="upgrade-path-detail-sub">@($"{CurrentTierLabel( openTrack )} · {( openCosmetic ? "NOT ENABLED" : "PLANNED" )}")</span>
 																</div>
 															</div>
 															<div class="upgrade-tier-line">
@@ -601,7 +603,7 @@
 																	<div class="upgrade-tier-cell @TierLineState( _tier ) @( _tier == 5 ? "cap" : "" )"
 																	     tooltip="@TierTooltip( openTrack, _tier )">
 																		<i class="material-icons upgrade-tier-cell-icon">@openTrack.Icon</i>
-																		<span class="upgrade-tier-cell-roman">Tier @TierRoman( _tier )</span>
+																		<span class="upgrade-tier-cell-roman">@($"Tier {TierRoman( _tier )}")</span>
 																		<span class="upgrade-tier-cell-label">@TierLineLabel( openTrack, _tier )</span>
 																		<span class="upgrade-tier-cell-state">@( _tier == 1 ? "BASE" : "PLANNED" )</span>
 																	</div>
@@ -634,11 +636,11 @@
 											<div class="lp-ui-info">
 												<div class="lp-ui-info-row">
 													<span class="lp-ui-info-label">Hub wallet</span>
-													<span class="lp-ui-info-value accent">@HubWalletBtc().ToString("F6") BTC</span>
+													<span class="lp-ui-info-value accent">@($"{HubWalletBtc():F6} BTC")</span>
 												</div>
 												<div class="lp-ui-info-row">
 													<span class="lp-ui-info-label">Still on racks</span>
-													<span class="lp-ui-info-value">@RackPendingBtc().ToString("F6") BTC</span>
+													<span class="lp-ui-info-value">@($"{RackPendingBtc():F6} BTC")</span>
 												</div>
 												<div class="lp-ui-info-row">
 													<span class="lp-ui-info-label">Terminal linked</span>
@@ -646,7 +648,7 @@
 												</div>
 												<div class="lp-ui-info-row">
 													<span class="lp-ui-info-label">USD value (hub)</span>
-													<span class="lp-ui-info-value">$@HubWalletCashUsd().ToString("N2")</span>
+													<span class="lp-ui-info-value">@($"${HubWalletCashUsd():N2}")</span>
 												</div>
 												<div class="lp-ui-info-row">
 													<span class="lp-ui-info-label">Exchange rate</span>
@@ -654,7 +656,7 @@
 												</div>
 												<div class="lp-ui-info-row">
 													<span class="lp-ui-info-label">Your cash</span>
-													<span class="lp-ui-info-value">$@LpHashdUiHost.GetLocalWalletCash()</span>
+													<span class="lp-ui-info-value">@($"${LpHashdUiHost.GetLocalWalletCash()}")</span>
 												</div>
 											</div>
 
@@ -727,7 +729,7 @@
 															<div class="transfer-subsection transfer-subsection-detail">
 																<div class="transfer-subsection-row">
 																	<span class="transfer-subsection-label">Hub wallet</span>
-																	<span class="transfer-subsection-value accent">@HubWalletBtc().ToString("F6") BTC</span>
+																	<span class="transfer-subsection-value accent">@($"{HubWalletBtc():F6} BTC")</span>
 																</div>
 															</div>
 														</div>
@@ -788,7 +790,7 @@
 													@foreach ( var amount in TransferReferenceBtcAmounts )
 													{
 														<div class="transfers-rate-cell">
-															<span class="transfers-rate-cell-btc">@amount.ToString( "F2" ) BTC</span>
+															<span class="transfers-rate-cell-btc">@($"{amount:F2} BTC")</span>
 															<span class="transfers-rate-cell-usd">@TransferReferenceUsd( amount )</span>
 														</div>
 													}

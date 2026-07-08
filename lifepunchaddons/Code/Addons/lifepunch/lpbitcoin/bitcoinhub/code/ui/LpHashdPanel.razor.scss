@@ -4982,7 +4982,9 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 }
 
 .lp-bitcoin-ops .wallet-cashout-stack > .wallet-cashout-card {
-	flex-grow: 1;
+	// Hug the tiles + button — flex-grow:1 stretched the bordered card to the whole
+	// remaining pane height, leaving a huge empty box under Cash Out All.
+	flex-grow: 0;
 	flex-shrink: 1;
 	min-height: 0;
 	display: flex;
@@ -6308,25 +6310,26 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	width: 100%;
 }
 
-// Hub scale — XL = canonical 1100×700; smaller steps trim shell only (StaffMenu law).
+// Hub scale — match the lifepunchulx window steps exactly (S 1040×640 → XL 1160×700).
+// Base .shell (1100×700, max 94%/92%) is the fallback; these only trim the shell per step.
 .lp-bitcoin-ops.lp-ui-size-s .shell {
-	width: 1240px;
-	height: 760px;
+	width: 1040px;
+	height: 640px;
 }
 
 .lp-bitcoin-ops.lp-ui-size-m .shell {
-	width: 1400px;
-	height: 860px;
+	width: 1100px;
+	height: 670px;
 }
 
 .lp-bitcoin-ops.lp-ui-size-l .shell {
-	width: 1560px;
-	height: 960px;
+	width: 1140px;
+	height: 690px;
 }
 
 .lp-bitcoin-ops.lp-ui-size-xl .shell {
-	width: 1720px;
-	height: 1040px;
+	width: 1160px;
+	height: 700px;
 }
 
 // Overview simplification — command-center layout with progressive detail.
@@ -6358,6 +6361,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 
 .lp-bitcoin-ops .overview-checklist-item {
 	display: flex;
+	flex-direction: row;
 	align-items: center;
 	gap: 12px;
 	padding: 10px 12px;
@@ -6368,7 +6372,13 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 
 .lp-bitcoin-ops .overview-checklist-status {
 	display: flex;
+	flex-direction: row;
 	align-items: center;
+	// Fixed column that never squeezes — stops "REQUIRED" wrapping to "REQUIRE D"
+	// and keeps the three rows' copy columns aligned.
+	flex: 0 0 auto;
+	white-space: nowrap;
+	min-width: 84px;
 	gap: 6px;
 	font-size: 11px;
 	font-weight: 800;
@@ -6380,6 +6390,9 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 .lp-bitcoin-ops .overview-checklist-copy {
 	display: flex;
 	flex-direction: column;
+	// Middle column owns the row's leftover space — without this the title/sub jam
+	// into the status and action columns (overlap + clipped sub text).
+	flex: 1 1 0;
 	gap: 3px;
 	min-width: 0;
 }
@@ -6400,6 +6413,22 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 .lp-bitcoin-ops .overview-checklist-action-group,
 .lp-bitcoin-ops .overview-checklist-action {
 	flex: 0 0 auto;
+}
+
+// Real structure for the action column: its buttons carry width:100%, so without a
+// min-width the group collapses to ~0 and button labels stack one letter per line
+// ("l-i-n-k-t-e-r-m-i-n-a-l").
+.lp-bitcoin-ops .overview-checklist-action-group {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	min-width: 156px;
+}
+
+.lp-bitcoin-ops .overview-checklist-action,
+.lp-bitcoin-ops .overview-checklist-action-group .lp-ui-btn-ghost,
+.lp-bitcoin-ops .overview-checklist-action-group .lp-ui-btn-primary {
+	white-space: nowrap;
 }
 
 .lp-bitcoin-ops .overview-checklist-action,
