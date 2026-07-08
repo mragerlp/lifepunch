@@ -77,7 +77,8 @@ while undefended is a feature — it pressures protective slots to fill.
 ## Appendix: Faucet/Sink Registry (maintain with every system)
 
 - **FAUCETS:** rack mining · printers · Data Center (gov mining) · Bank Master
-  Miner · drug NPC sales · FBI premiums (recycled, net-neutral if Funds-paid)
+  Miner · drug drop sales (map-placed drops only — No-NPC Law,
+  `DRUG_ECONOMY_LANE.md`) · FBI premiums (recycled, net-neutral if Funds-paid)
 - **SINKS:** entity spawn costs · upgrade purchases (all tracks) · taxes (loop,
   Mayor-spent) · Hacker attempt costs · casino house edge (future)
 - **TRANSFERS (net-zero):** gun/black-market margins · player drug sales ·
