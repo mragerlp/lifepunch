@@ -435,7 +435,7 @@
 			</div>
 
 			<div class="main">
-			<div class="lp-ui-scroll-region actions">
+			<div class="actions">
 				@{
 					var selected = _players.FirstOrDefault( p => p.SteamId == _selectedSteamId );
 					var hasTarget = selected.SteamId != 0;
@@ -611,7 +611,7 @@
 										</button>
 										@if ( _jobDropdownOpen )
 										{
-											<div class="job-dropdown-list">
+											<div class="lp-ui-scroll-region job-dropdown-list">
 												<TextEntry class="arg-input job-filter" Placeholder="Filter jobs" Value:bind="@_jobFilter"/>
 												@foreach ( var job in FilteredJobOptions() )
 												{
@@ -620,6 +620,13 @@
 														<span class="job-swatch" style="background-color: @job.ColorHex"></span>
 														<span>@job.Label</span>
 													</button>
+												}
+												@* Scroll slack so the last job row clears the list's bottom border (same
+												   tail pattern as .player-scroll-tail). Only when the list is long enough
+												   to overflow — on short filtered lists it reads as trailing dead space. *@
+												@if ( FilteredJobOptions().Count() >= 8 )
+												{
+													<div class="job-list-tail"></div>
 												}
 											</div>
 										}
@@ -642,6 +649,11 @@
 					</div>
 				}
 
+				@* While an arg-form (Set Job, Ban…) is open it owns the pane — the grid would overflow the
+				   window frame below it (s&box can't scroll the wrapped grid), so hide it until the form
+				   closes (Confirm or X) instead of letting buttons spill past the border. *@
+				@if ( _pendingAction is null )
+				{
 				<div class="action-grid">
 					@foreach ( var action in GetVisibleTabActions() )
 					{
@@ -665,6 +677,7 @@
 				@if ( GetVisibleTabActions().Count == 0 )
 				{
 					<div class="empty">No @_activeTab.ToLower() actions available to your rank.</div>
+				}
 				}
 				}
 			</div>
@@ -796,6 +809,9 @@
 	protected override void OnUpdate()
 	{
 		// Wheel-only scroll: disable drag-scroll and clamp offsets every frame (sidebar roster, audit, etc.).
+		// NOTE: do NOT call LifePunchScrollRegionBootstrap.UpgradeScrollRegionsFromHost here — StaffMenu's
+		// scroll regions hold razor-managed lists, and the upgrade reparents them out from under razor's
+		// render tree (continuous "Fixing parent" + BuildRenderTree asserts = visible flicker).
 		LifePunchUiScrollPolicy.Apply( Panel );
 
 		// Throttle: re-sampling every frame churned BuildHash and rebuilt the whole menu (sidebar/cog

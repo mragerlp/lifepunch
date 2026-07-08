@@ -974,6 +974,7 @@ $shell-radius: 22px;
 	.target-banner {
 		flex-direction: row;
 		align-items: center;
+		flex-shrink: 0;
 		gap: 8px;
 		margin: 12px 16px;
 		padding: 13px 14px;
@@ -1143,7 +1144,9 @@ $shell-radius: 22px;
 		flex-direction: column;
 		flex-shrink: 0;
 		margin-top: 4px;
-		max-height: 260px;
+		// Low enough that the open list + Confirm always stay inside the window frame at every
+		// UI scale — the list scrolls for the rest.
+		max-height: 200px;
 		overflow-y: auto;
 		border: 1px solid $border;
 		border-radius: 8px;
@@ -1153,7 +1156,16 @@ $shell-radius: 22px;
 
 	.job-filter {
 		width: 100%;
+		flex-shrink: 0;
 		margin-bottom: 4px;
+	}
+
+	// Scroll slack: lets the last job row scroll fully inside the list's bottom border
+	// (s&box under-measures the scroll max; same fix as .player-scroll-tail).
+	.job-list-tail {
+		flex-shrink: 0;
+		height: 12px;
+		width: 100%;
 	}
 
 	.job-option {
@@ -1161,6 +1173,9 @@ $shell-radius: 22px;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
+		// Keep natural row height so the list overflows and scrolls — without this the flex column
+		// compresses every row to cram the whole list in view (same law as .wp-row / .player-row).
+		flex-shrink: 0;
 		gap: 8px;
 		padding: 6px 8px;
 		border-radius: 6px;
