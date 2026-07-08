@@ -17,7 +17,7 @@ $ErrorActionPreference = 'Stop'
 $Here = if ($PSScriptRoot) { $PSScriptRoot } else { Split-Path -Parent $MyInvocation.MyCommand.Path }
 if (-not $ConfigPath) { $ConfigPath = Join-Path $Here 'dxrp-editor.local.json' }
 
-$syncDesktop = Join-Path (Split-Path $Here -Parent) 'addons\scripts\Sync-LifepunchDesktopToStaging.ps1'
+$syncDesktop = Join-Path (Resolve-Path (Join-Path $Here '..\..\lifepunchaddons')).Path 'scripts\Sync-LifepunchDesktopToStaging.ps1'
 $laneScript = Join-Path $Here 'Set-DxrpLifepunchModelDocLane.ps1'
 $sweepExec = Join-Path $Here 'Sweep-SboxExecSnippets.ps1'
 $launchScript = Join-Path $Here 'Start-SboxDxrpEditor.ps1'
@@ -48,7 +48,7 @@ if ($LASTEXITCODE -ne 0) { throw 'ModelDoc lane setup failed' }
 
 $cfg = Get-Content -LiteralPath $ConfigPath -Raw | ConvertFrom-Json
 $dxrpGame = Split-Path -Parent ([string]$cfg.projectPath)
-$sceneSrc = Join-Path (Split-Path $Here -Parent) 'addons\Assets\addons\lifepunch\_dev\scenes\lifepunch-modeldoc.scene'
+$sceneSrc = Join-Path (Resolve-Path (Join-Path $Here '..\..\lifepunchaddons')).Path 'Assets\addons\lifepunch\_dev\scenes\lifepunch-modeldoc.scene'
 $sceneDst = Join-Path $dxrpGame 'Assets\addons\lifepunch\_dev\scenes\lifepunch-modeldoc.scene'
 New-Item -ItemType Directory -Force -Path (Split-Path $sceneDst -Parent) | Out-Null
 Copy-Item -LiteralPath $sceneSrc -Destination $sceneDst -Force

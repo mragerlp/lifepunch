@@ -32,7 +32,7 @@ param(
 $ErrorActionPreference = 'Stop'
 $Here = if ($PSScriptRoot) { $PSScriptRoot } else { Split-Path -Parent $MyInvocation.MyCommand.Path }
 $RepoRoot = Split-Path -Parent $Here
-$AddonsRoot = Join-Path $RepoRoot 'addons'
+$AddonsRoot = (Resolve-Path (Join-Path $Here '..\..\lifepunchaddons')).Path
 $PreparePublish = Join-Path $AddonsRoot 'scripts\prepare-publish.ps1'
 $PullCompiled = Join-Path $Here 'Pull-DxrpCompiledAssetsToRepo.ps1'
 

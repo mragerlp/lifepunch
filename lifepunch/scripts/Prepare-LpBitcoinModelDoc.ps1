@@ -19,7 +19,7 @@ param(
 $ErrorActionPreference = 'Stop'
 $Here = if ($PSScriptRoot) { $PSScriptRoot } else { Split-Path -Parent $MyInvocation.MyCommand.Path }
 . (Join-Path $Here 'Dxrp-LifepunchPaths.ps1')
-$pathsScript = Join-Path (Split-Path $Here -Parent) 'addons\scripts\LifePunch-AddonDropPaths.ps1'
+$pathsScript = Join-Path (Resolve-Path (Join-Path $Here '..\..\lifepunchaddons')).Path 'scripts\LifePunch-AddonDropPaths.ps1'
 . $pathsScript
 
 $src = Get-LifePunchLpBitcoinArtDrop

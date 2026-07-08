@@ -25,7 +25,7 @@ $Here = if ($PSScriptRoot) { $PSScriptRoot } else { Split-Path -Parent $MyInvoca
 $RepoRoot = Split-Path -Parent (Split-Path -Parent $Here)
 $Lifepunch = Join-Path $RepoRoot 'lifepunch'
 $Docs = Join-Path $Lifepunch 'docs'
-$AddonsDocs = Join-Path $Lifepunch 'addons\docs'
+$AddonsDocs = Join-Path $RepoRoot 'lifepunchaddons\docs'
 $Handoff = Join-Path $Docs 'handoff'
 $Decisions = Join-Path $Docs 'DECISIONS'
 
