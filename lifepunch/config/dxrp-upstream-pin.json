@@ -1,4 +1,4 @@
-{
+﻿{
     "schemaVersion":  1,
     "fork":  {
                  "remote":  "https://github.com/mragerlp/dxrp-public.git",
@@ -9,10 +9,10 @@
                      "branch":  "develop"
                  },
     "pinned":  {
-                   "sha":  "a9b14c5162c69f2813f64d32256d230aa126a9e8",
-                   "shortSha":  "a9b14c5",
-                   "subject":  "fix(ci): harden Discord commit log workflow",
-                   "syncedAt":  "2026-07-02T21:33:27Z"
+                   "sha":  "0ee91dd2a97f90c79e2d5c66ef6ede18ce47f23d",
+                   "shortSha":  "0ee91dd",
+                   "subject":  "Fix tool list items getting squashed instead of scrolling in build menu",
+                   "syncedAt":  "2026-07-08T15:32:44Z"
                },
     "localPaths":  {
                        "forkCheckout":  "C:/Users/jared/Projects/dxrp-public",

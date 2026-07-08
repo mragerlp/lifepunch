@@ -24,7 +24,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File C:\Users\jared\Projects\life
 
 | Key label | Action | Command |
 |---|---|---|
-| MCP Health | Checks `sbox-editor`, `sbox-jtc`, `cornerman-lm` via CVL probe + jtc listener | `... -Action McpHealth` |
+| MCP Health | Checks `sbox-editor`, `cornerman-lm` via CVL probe | `... -Action McpHealth` |
 
 ## Portal quick access
 

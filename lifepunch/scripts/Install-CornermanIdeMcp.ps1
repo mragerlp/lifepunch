@@ -78,7 +78,6 @@ function Get-CornermanModeLayout {
         ChomnrPort             = $port
         ChomnrUrl              = "http://127.0.0.1:$port/sbox-mcp"
         AllowRedReverseTunnel  = [bool]$modeCfg.allowRedReverseTunnel
-        JtcPort                = $modeCfg.jtcPort
     }
 }
 

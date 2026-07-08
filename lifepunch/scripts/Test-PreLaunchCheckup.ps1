@@ -9,7 +9,7 @@
     - VENGEANCE RAM / bloat (Discord, Spotify, LM Studio GUI on Red, duplicate s&box)
     - Cornerman RAM / bloat (LM Studio GUI, browsers, etc.)
     - Tier-3 serve lane (distill+embed in VRAM via lms CLI - no GUI required)
-    - VENGEANCE MCP (sbox bridge IPC + sbox-editor + sbox-jtc HTTP + cornerman-lm + mcp.json)
+    - VENGEANCE MCP (sbox bridge IPC + sbox-editor + cornerman-lm + mcp.json)
     - Cornerman triple MCP only when Green still runs Cursor (OFF_CURSOR_ACTIVE.txt = skip)
 
   Use -Fix to stop wrong-node apps on VENGEANCE, warm Green LM, refresh bridge wiring.
@@ -30,8 +30,7 @@ param(
     [switch] $SkipGreenFix,
     [switch] $SyncGreenScripts,
     [string] $SshTarget = '',
-    [int] $EditorPort = 0,
-    [int] $JtcPort = 0
+    [int] $EditorPort = 0
 )
 
 $ErrorActionPreference = 'Stop'
@@ -41,8 +40,6 @@ $Here = if ($PSScriptRoot) { $PSScriptRoot } else { Split-Path -Parent $MyInvoca
 
 $portCfg = Get-SboxMcpPortConfig
 if ($EditorPort -le 0) { $EditorPort = $portCfg.ChomnrPort }
-if ($JtcPort -le 0) { $JtcPort = $portCfg.JtcPort }
-$jtcPath = $portCfg.JtcPath
 
 if (-not $SshTarget) { $SshTarget = Get-CornermanSshTarget }
 
@@ -171,7 +168,7 @@ function Test-VengeanceMcpStack {
         $mj = Get-Content -LiteralPath $mcpPath -Raw | ConvertFrom-Json
         if ($mj.mcpServers) { $keys = @($mj.mcpServers.PSObject.Properties.Name) }
     }
-    $stackOk = ('sbox' -in $keys) -and ('sbox-editor' -in $keys) -and ('sbox-jtc' -in $keys) -and ('cornerman-lm' -in $keys)
+    $stackOk = ('sbox' -in $keys) -and ('sbox-editor' -in $keys) -and ('cornerman-lm' -in $keys)
     Write-Check 'VENGEANCE mcp.json stack' $stackOk ($keys -join ', ')
 
     $editorUrl = "http://127.0.0.1:$EditorPort/sbox-mcp"
@@ -188,23 +185,6 @@ function Test-VengeanceMcpStack {
     }
     else {
         Write-Check 'VENGEANCE sbox-editor MCP (chomnr)' $editorOk $editorUrl -Warning:(-not $editorOk)
-    }
-
-    $jtcUrl = $portCfg.JtcUrl
-    $jtcOk = $false
-    try {
-        $null = Invoke-WebRequest -Uri $jtcUrl -Method Post -ContentType 'application/json' `
-            -Body '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-06-18","capabilities":{},"clientInfo":{"name":"preflight","version":"1"}}}' `
-            -TimeoutSec 4 -UseBasicParsing
-        $jtcOk = $true
-    }
-    catch { }
-    if ($RequireEditor) {
-        Write-Check 'VENGEANCE sbox-jtc MCP (jtc)' $jtcOk $jtcUrl
-    }
-    else {
-        $jtcHint = if (-not $jtcOk) { ' — open Editor dock MCP Server (jtc has no autostart)' } else { '' }
-        Write-Check 'VENGEANCE sbox-jtc MCP (jtc)' $jtcOk ($jtcUrl + $jtcHint) -Warning:(-not $jtcOk)
     }
 
     $lmOk = $false

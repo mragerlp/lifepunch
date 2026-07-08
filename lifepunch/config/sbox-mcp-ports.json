@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "lastVerified": "2026-06-10",
-  "notes": "Canonical s&box MCP transports on VENGEANCE. Claude Bridge uses file IPC — it does NOT bind HTTP :29015. jtc owns HTTP :29015/mcp. chomnr owns HTTP :9090/sbox-mcp.",
+  "notes": "Canonical s&box MCP transports on VENGEANCE. Claude Bridge uses file IPC — it does NOT bind an HTTP port. chomnr owns HTTP :9090/sbox-mcp.",
   "claudeBridge": {
     "transport": "file-ipc",
     "ipcDirEnv": "SBOX_BRIDGE_IPC_DIR",
@@ -19,15 +19,6 @@
     "library": "notpointless.chomnr_mcp",
     "sboxGameUrl": "https://sbox.game/notpointless/chomnr_mcp/"
   },
-  "jtc": {
-    "host": "localhost",
-    "port": 29015,
-    "path": "/mcp",
-    "cursorServerKey": "sbox-jtc",
-    "library": "jtc.mcp-server",
-    "sboxGameUrl": "https://sbox.game/jtc/mcp-server",
-    "hostnameNote": "jtc HttpListener binds localhost only — Cursor must use localhost, not 127.0.0.1 (HTTP 400 Invalid Hostname)"
-  },
   "cornermanLm": {
     "cursorServerKey": "cornerman-lm"
   },
@@ -41,9 +32,7 @@
     "notes": "Editor > Blender Bridge panel. Saved ConVar bridge_autostart (default 1). Blender addon Connect on N-panel s&box tab."
   },
   "portConflictPolicy": {
-    "claudeBridgeVsJtc": "No HTTP conflict — Bridge is file IPC only. get_bridge_status may mention :29015 as npm metadata; ignore for bind checks.",
     "changeChomnrPort": "chomnr MCP dock Settings → new port → Install-VengeanceSboxEditorMcp.ps1 -Port N",
-    "changeJtcPort": "jtc MCP Server dock → edit Port field → Stop/Start → Install-VengeanceSboxEditorMcp.ps1 -JtcPort N",
     "cornermanLocalVsTunnel": "Never run Red reverse tunnel (-R 9090) while Green uses local chomnr on the same port. Use cornerman.modes or Set-CornermanMcpMode.ps1."
   },
   "cornerman": {
@@ -54,27 +43,23 @@
         "description": "Green Cursor drives Red editor via tunnel; sbox IPC via SMB to VENGEANCE",
         "bridgeIpc": "unc://VENGEANCE/SboxBridgeIpc",
         "chomnrPort": 9090,
-        "jtcPort": null,
         "allowRedReverseTunnel": true
       },
       "LocalEditor": {
         "description": "Green local s&box editor; fully local MCP — no Red tunnel",
         "bridgeIpc": "local",
         "chomnrPort": 9091,
-        "jtcPort": null,
         "allowRedReverseTunnel": false
       },
       "DualEditor": {
         "description": "Red and Green editors both live; Green uses isolated ports",
         "bridgeIpc": "local",
         "chomnrPort": 9091,
-        "jtcPort": 29016,
         "allowRedReverseTunnel": false
       }
     },
     "red": {
-      "chomnrPort": 9090,
-      "jtcPort": 29015
+      "chomnrPort": 9090
     }
   }
 }

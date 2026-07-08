@@ -31,6 +31,10 @@ Inputs: Green packets A1/A2/B/C · `handoff/UPGRADE_ARC_DESIGN_INPUTS_2026-07-08
    Commit-then-raise: the event announces a fact.
 9. **Ledger wins on rehydrate**; component tier state is the snapshot
    projection (`[Property, ReadOnly]` + `[Sync]`, per the Owner-proven combo).
+   **Storage medium (governance addendum 2026-07-08):** the ledger's store is a
+   host-local file (`FileSystem.Data`, flushed at commit) — the lean default.
+   The network-storage lane is a NAMED alternative only, never a silent
+   dependency; switching mediums is an explicit decision on this page.
 10. **stackRule: DEFERRED** — `rack_compute` is sole owner of the mining-rate
     hook. Default candidate when forced: multiplicative across tracks.
 11. **Track #2 = `terminal_security`** (hack-resistance hook; fitting rule is

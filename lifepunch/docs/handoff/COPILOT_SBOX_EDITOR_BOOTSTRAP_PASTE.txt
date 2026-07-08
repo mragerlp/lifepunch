@@ -85,8 +85,7 @@ After Host Play (owner manual):
 
 Editor MCP (use the EDITOR UI — not Cursor MCP chat tools):
   • chomnr: editor pill bottom-right → green + "MCP · ≥1" (compile lane :9090)
-  • jtc: open dock "MCP Server" each session (:29015 — no autostart)
-  • Blender Bridge: :8099 auto-start if mesh work
+    • Blender Bridge: :8099 auto-start if mesh work
 
 Connectivity check:
   powershell -File lifepunch\scripts\Get-CvlConnectivityStatus.ps1 -Pretty

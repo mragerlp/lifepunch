@@ -141,7 +141,6 @@ $slnx = @'
     <Project Path="D:/Steam/steamapps/common/sbox/addons/base/code/Base Library.csproj" />
   </Folder>
   <Folder Name="/Libraries/">
-    <Project Path="Libraries/jtc.mcp-server/Editor/mcp-server.editor.csproj" />
     <Project Path="Libraries/notpointless.chomnr_mcp/Editor/chomnr_mcp.editor.csproj" />
     <Project Path="Libraries/sboxskinsgg.claudebridge/Code/claudebridge.csproj" />
     <Project Path="Libraries/sboxskinsgg.claudebridge/Editor/claudebridge.editor.csproj" />

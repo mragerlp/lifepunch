@@ -45,8 +45,7 @@ TIERS (LifePunch naming — do not invert):
 MCP KEYS (exact spelling on VENGEANCE):
   sbox          = Claude Bridge runtime (play, spawn, screenshots) — TOOL not LLM
   sbox-editor   = chomnr HTTP :9090 — ModelDoc/vmat/prefab compile — NOT "Chromr", NOT web research
-  sbox-jtc      = editor automation + docs :29015
-  cornerman-lm  = client to Green LM Studio :1234 — NO LM Studio on Vengeance
+    cornerman-lm  = client to Green LM Studio :1234 — NO LM Studio on Vengeance
 
 NEVER:
   - Treat Claude Bridge as a reasoning model

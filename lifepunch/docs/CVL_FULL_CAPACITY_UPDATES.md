@@ -11,12 +11,12 @@ Use this when anything in the stack updates — s&box SDK, DXRP, Claude Bridge, 
 
 | Node | Must pass |
 |------|-----------|
-| **VENGEANCE** | `vengeance.sboxBridge` + `vengeance.sboxEditor` + `vengeance.sboxJtc` + `vengeance.mcpStack` |
+| **VENGEANCE** | `vengeance.sboxBridge` + `vengeance.sboxEditor` + `vengeance.mcpStack` |
 | **Cornerman Tier-3** | `cornerman.tier3Serve` + `cornerman.tier3Api` + `cornerman.lmWatchdog` |
 | **Green dual-stack** (when Green runs Cursor) | `cornerman.mcpTriple` + SMB + editor tunnel |
 
 **Editor pill:** green dot + `MCP · ≥1` (client count, not server count).  
-**Cursor MCP:** 4 green on VENGEANCE — `sbox`, `sbox-editor`, `sbox-jtc`, `cornerman-lm`.
+**Cursor MCP:** 3 green on VENGEANCE — `sbox`, `sbox-editor`, `cornerman-lm`.
 
 One command after updates:
 
@@ -54,8 +54,7 @@ Canonical version pins: `lifepunch/config/cvl-stack-pins.json` — bump `lastVer
 4. **Libraries** — s&box Library Manager:
    - `sboxskinsgg.claudebridge` (runtime)
    - `notpointless.chomnr_mcp` (editor compile)
-   - `jtc.mcp-server` (editor automation + docs)
-   - `xenthio.xmovement` (**required** — DXRP `rp.csproj` reference; see `TECH_DEBT.md` STACK-01)
+      - `xenthio.xmovement` (**required** — DXRP `rp.csproj` reference; see `TECH_DEBT.md` STACK-01)
    - optional: `notpointless.chomnr_humanoid_retargeter`
    - optional (client-local save hardening only): `quality.simpleantitamper` — see `TECH_DEBT.md` SEC-01
    - optional (dev utils only, not ship dep): `wizards.wackylib` — see `TECH_DEBT.md` STACK-02

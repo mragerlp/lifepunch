@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "notes": "Green B MCP modes: RedEditor (tunnel+SMB) | LocalEditor/DualEditor (local IPC + chomnr :9091). Install: Set-CornermanMcpMode.ps1. No sbox-jtc on Green.",
+  "notes": "Green B MCP modes: RedEditor (tunnel+SMB) | LocalEditor/DualEditor (local IPC + chomnr :9091). Install: Set-CornermanMcpMode.ps1.",
   "mcpServers": {
     "sbox": {
       "command": "cmd",

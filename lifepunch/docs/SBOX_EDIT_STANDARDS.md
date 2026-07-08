@@ -49,7 +49,7 @@ Legacy full repo sync: `-RepoSync`. Full Red+Green boot: `../docs/RED_FULL_CAPAC
 
 | Surface | Pass |
 |---------|------|
-| **Cursor → MCP** | 4 green: `sbox`, `sbox-editor`, `sbox-jtc`, `cornerman-lm` |
+| **Cursor → MCP** | 3 green: `sbox`, `sbox-editor`, `cornerman-lm` |
 | **Editor pill** | Green dot + `MCP · ≥1` (chomnr clients) |
 | **Claude Bridge** | `get_bridge_status` → connected, heartbeat &lt; 30s |
 | **Blender Bridge** | `http://127.0.0.1:8099/status` → `running: true`; **Auto-start Bridge on editor load** ON (saved `bridge_autostart 1`) |

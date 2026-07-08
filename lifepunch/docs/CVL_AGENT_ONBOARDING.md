@@ -203,23 +203,27 @@ routing: **`MCP_AGENT_ROUTING.md`**.
 
 | Cursor key | Marketplace package | Transport | Owns |
 |------------|--------------------|-----------|------|
-| **`sbox`** | `sboxskinsgg.claudebridge` ([claudebridge](https://sbox.game/sboxskinsgg/claudebridge/)) | **file IPC** (`%TEMP%\sbox-bridge-ipc`) | **After Play:** runtime C#, logs, in-game screenshots, `lp_spawn_*` / `lp_map_flatgrass` ConCmds — **the eyes** |
+| **`sbox`** | `sboxskinsgg.claudebridge` ([claudebridge](https://sbox.game/sboxskinsgg/claudebridge/)) | **file IPC** (`%TEMP%\sbox-bridge-ipc`) | **After Play:** runtime C#, logs, in-game screenshots, `lp_spawn_*` / `lp_map_flatgrass` ConCmds — **the eyes.** Also editor automation + reference: scene graph, components, file inspect, docs/API search |
 | **`sbox-editor`** | `notpointless.chomnr_mcp` ([chomnr_mcp](https://sbox.game/notpointless/chomnr_mcp)) | HTTP `:9090/sbox-mcp` | **Authoring compile:** ModelDoc, ShaderGraph, prefab, vmat, undo. Optional [chomnr_humanoid_retargeter](https://sbox.game/notpointless/chomnr_humanoid_retargeter) imported as chomnr tools |
-| **`sbox-jtc`** | `jtc.mcp-server` ([jtc/mcp-server](https://sbox.game/jtc/mcp-server/)) | HTTP `:29015/mcp` | **Editor automation + reference:** scene graph, components, file inspect, `sbox_search_docs`/`sbox_search_api`. **Red-only; no autostart — open the dock each session** |
 | **`cornerman-lm`** | `local-llm-mcp-server` (node) → LM Studio | `:1234` (Green localhost; Red uses LAN URL) | Tier-3 distill / prep on Cornerman |
 
-**Copilot (VS Code) equivalents:** `claudebridge` · `chromr-mcp` · `jct-server` (via `.vscode/mcp.json`).
+**Curated stack (2026-07-08):** `jtc.mcp-server` and `ozmium.oz_mcp` **uninstalled** — claudebridge
+absorbed jtc's surface. Situational lane: `sboxcool.network-storage` mounts only when a task explicitly
+names it — never a silent dependency. **Boot-order law:** editor first, THEN the agent session (or `/mcp`
+reconnect) — HTTP editor MCP servers live in-editor and do not retry like the file-IPC bridge.
 
-**Full-capacity bar (Red, every session):** Cursor MCP **4/4 green** (`sbox` + `sbox-editor` + `sbox-jtc`
-+ `cornerman-lm`) · editor pill green + `MCP · ≥1` (chomnr) · jtc dock listening `:29015` · Claude Bridge
-`connected` heartbeat <30s. Probe: `Get-CvlConnectivityStatus.ps1 -Pretty`. Refresh after any stack
-change: `Invoke-CvlFullCapacityRefresh.ps1`.
+**Copilot (VS Code) equivalents:** `claudebridge` · `chromr-mcp` (via `.vscode/mcp.json`).
+
+**Full-capacity bar (Red, every session):** Cursor MCP **3/3 green** (`sbox` + `sbox-editor` +
+`cornerman-lm`) · editor pill green + `MCP · ≥1` (chomnr) · Claude Bridge `connected` heartbeat <30s.
+Probe: `Get-CvlConnectivityStatus.ps1 -Pretty`. Refresh after any stack change:
+`Invoke-CvlFullCapacityRefresh.ps1`.
 
 **Cornerman bridge (Green triple stack):** `sbox` via SMB `\\VENGEANCE\SboxBridgeIpc`, `sbox-editor` via
 SSH tunnel `localhost:9090`, `cornerman-lm` local. Preflight (Red editor up first):
-**Map → Tunnel → `Test-Path \\VENGEANCE\SboxBridgeIpc\status.json`**. jtc has no Green tunnel yet.
+**Map → Tunnel → `Test-Path \\VENGEANCE\SboxBridgeIpc\status.json`**.
 
-**MCP law:** playtest/screenshots → `sbox` · compile/ModelDoc/vmat → `sbox-editor` · scene/docs → `sbox-jtc`.
+**MCP law:** playtest/screenshots → `sbox` · compile/ModelDoc/vmat → `sbox-editor` · scene/docs → `sbox`.
 Never claim visual verification without the right server connected. After `execute_csharp`, always sweep
 `Editor/__Exec_*.cs`.
 

@@ -101,8 +101,7 @@ Expected THREE servers:
 
 WRONG if you see:
   • SBOX_BRIDGE_IPC_DIR pointing at sbox-bridge-ipc-mirror
-  • sbox-jtc or :29015 (Green should not have this)
-  • Missing sbox-editor
+    • Missing sbox-editor
 
 Fix: tell Red to re-run Install-CornermanSboxBridgeMcp.ps1, then Reload Window here.
 

@@ -8,7 +8,7 @@ ChatGPT Plus/Pro on the desk is **Architect** (design brain) — paste `handoff/
 distill/prep — cheap, untrusted, not final authority); Red compiles, proves in s&box, and owns ship.
 See `CORNERMAN_MODEL_ROUTING.md` for the four Green profiles (Code / Deep / Daily / Fast).
 
-**MCP config:** `.vscode/mcp.json` in repo root — all 4 servers (`sbox`, `sbox-editor`, `cornerman-lm`, `sbox-jtc`). Cursor `~/.cursor/mcp.json` remains as fallback reference only.
+**MCP config:** `.vscode/mcp.json` in repo root — curated stack (`sbox`, `sbox-editor`, `cornerman-lm`; jtc + oz_mcp uninstalled 2026-07-08 per `SBOX_EDITOR_MCP.md`). Cursor `~/.cursor/mcp.json` remains as fallback reference only. **Boot-order law:** editor first, then the agent session (or `/mcp` reconnect) — HTTP editor MCP servers live in-editor.
 
 **Stack updates / full capacity:** `CVL_FULL_CAPACITY_UPDATES.md` · `Invoke-CvlFullCapacityRefresh.ps1`
 
@@ -38,7 +38,7 @@ routing · migration · power/link state machines · final major-slice review. *
 
 | Node | IP | Owns |
 |------|-----|------|
-| **VENGEANCE (R)** | 192.168.1.236 | s&box editor, git, integrate, `sbox` + `sbox-editor` + `sbox-jtc` + `cornerman-lm` |
+| **VENGEANCE (R)** | 192.168.1.236 | s&box editor, git, integrate, `sbox` + `sbox-editor` + `cornerman-lm` |
 | **Cornerman (G)** | 192.168.1.229 | LM Studio `:1234`, same 3 MCP keys (SMB + tunnel + local LM) |
 | **lifepunchnet (B)** | hosted | Hub/logs — out of scope for MCP routing |
 
@@ -61,10 +61,10 @@ routing · migration · power/link state machines · final major-slice review. *
 | GPU rack vmdl / fan shader | `sbox-editor` | Tier-2 | Tier-3 draft as ship | Authoring is editor-bound |
 | Pull `_c` after editor compile | Tier-2 script | Tier-2 | chomnr for publish folder | Repo sync is Red shell |
 | Edit bitcoin miner prefab in editor | `sbox-editor` | Tier-2 | Raw file write w/o compile | Prefab needs editor graph |
-| Scene hierarchy / transform audit (no compile) | `sbox-jtc` | Tier-2 | Code-only guess | `scene_*` tools |
-| s&box API / docs lookup | `sbox-jtc` | Tier-2 | Training-data guess | `sbox_search_docs` / `sbox_search_api` |
-| Project file read / glob inspect | `sbox-jtc` | Tier-2 | Blind repo read when editor truth needed | `file_list` / `project_info` |
-| Editor console / compile log readback | `sbox-jtc` or `sbox-editor` | Tier-2 | — | jtc for quick console; chomnr for compile panel |
+| Scene hierarchy / transform audit (no compile) | `sbox` | Tier-2 | Code-only guess | `get_scene_hierarchy` / `find_objects` |
+| s&box API / docs lookup | `sbox` | Tier-2 | Training-data guess | `search_docs` / `search_types` / `describe_type` |
+| Project file read / glob inspect | `sbox` | Tier-2 | Blind repo read when editor truth needed | `list_project_files` / `get_project_info` |
+| Editor console / compile log readback | `sbox` or `sbox-editor` | Tier-2 | — | `read_log` / `get_compile_errors` for quick readback; chomnr for compile panel |
 | Razor terminal UI markup | Tier-2 (files) | Tier-2 | `sbox-editor` for .razor | Code lane; build in editor after |
 | Multi-file C# hub ↔ rack wallet | Opus | Tier-1 | Tier-3 | Economy + integration stakes |
 | IPressable / permission paths | Opus | Tier-1 | Tier-3 | DXRP integration |
@@ -92,8 +92,8 @@ routing · migration · power/link state machines · final major-slice review. *
 1. `git pull --rebase` (clean tree)
 2. `powershell -File lifepunch\scripts\Test-PreLaunchCheckup.ps1 -Fix`
 3. `powershell -File lifepunch\scripts\Start-SboxDxrpEditor.ps1 -PreflightFix`
-4. GitHub Copilot → open workspace `lifepunchaddons` → MCP **4/4 green** (`sbox`, `sbox-editor`, `sbox-jtc`, `cornerman-lm`)
-5. Editor pill → green + **MCP · ≥1** (chomnr); jtc dock → **listening on :29015/mcp**
+4. GitHub Copilot → open workspace `lifepunchaddons` → MCP **3/3 green** (`sbox`, `sbox-editor`, `cornerman-lm`)
+5. Editor pill → green + **MCP · ≥1** (chomnr)
 
 **CORNERMAN (Green) — second** (requires Red editor up for tunnel + bridge heartbeat)
 
@@ -248,8 +248,8 @@ write (contained Razor/SCSS/C# cleanup, read-only view models, patch-ready diffs
 
 ## Cursor plugins (pruned July 2026 — 23 → 9)
 
-Rule: `.cursor/rules/lifepunch-cursor-plugins.mdc`. Plugins are **separate from the four s&box MCP
-servers** above — game work always routes through `sbox` / `sbox-editor` / `sbox-jtc` / `cornerman-lm`.
+Rule: `.cursor/rules/lifepunch-cursor-plugins.mdc`. Plugins are **separate from the curated s&box MCP
+stack** above — game work always routes through `sbox` / `sbox-editor` / `cornerman-lm`.
 
 | Plugin | Route to it for |
 |---|---|

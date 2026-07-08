@@ -10,8 +10,7 @@
 param(
     [switch] $Pretty,
     [string] $SshTarget = '',
-    [int] $EditorPort = 0,
-    [int] $JtcPort = 0
+    [int] $EditorPort = 0
 )
 
 $ErrorActionPreference = 'SilentlyContinue'
@@ -21,8 +20,6 @@ $Here = if ($PSScriptRoot) { $PSScriptRoot } else { Split-Path -Parent $MyInvoca
 
 $portCfg = Get-SboxMcpPortConfig
 if ($EditorPort -le 0) { $EditorPort = $portCfg.ChomnrPort }
-if ($JtcPort -le 0) { $JtcPort = $portCfg.JtcPort }
-$jtcPath = $portCfg.JtcPath
 
 if (-not $SshTarget) { $SshTarget = Get-CornermanSshTarget }
 
@@ -45,10 +42,6 @@ function Test-HttpEditorMcp([string]$Url) {
 
 function Test-EditorMcp([int]$Port) {
     return (Test-HttpEditorMcp "http://127.0.0.1:$Port/sbox-mcp")
-}
-
-function Test-JtcMcp([string]$Url) {
-    return (Test-HttpEditorMcp $Url)
 }
 
 function Test-BridgeIpc {
@@ -103,10 +96,10 @@ $checks = [ordered]@{}
 
 $checks['vengeance.sboxBridge'] = Test-BridgeIpc
 $checks['vengeance.sboxEditor'] = Test-EditorMcp -Port $EditorPort
-$checks['vengeance.sboxJtc'] = Test-JtcMcp -Url $portCfg.JtcUrl
 $checks['vengeance.blenderBridge'] = Test-BlenderBridgeStatus -StatusUrl $portCfg.BlenderBridgeStatusUrl
-$checks['vengeance.mcpStack'] = ('sbox' -in $mcpKeys) -and ('sbox-editor' -in $mcpKeys) -and ('sbox-jtc' -in $mcpKeys) -and ('cornerman-lm' -in $mcpKeys)
-# Legacy alias — chomnr + bridge keys only (pre-jtc probes)
+# Curated stack (2026-07-08 trim): sbox + sbox-editor + cornerman-lm. jtc uninstalled.
+$checks['vengeance.mcpStack'] = ('sbox' -in $mcpKeys) -and ('sbox-editor' -in $mcpKeys) -and ('cornerman-lm' -in $mcpKeys)
+# Legacy alias — chomnr + bridge keys only
 $checks['vengeance.mcpDual'] = ('sbox' -in $mcpKeys) -and ('sbox-editor' -in $mcpKeys)
 
 $checks['cornerman.ssh'] = $sshOk
@@ -120,9 +113,8 @@ $checks['cornerman.mcpTriple'] = [bool]($green -and $green.mcpTripleOk)
 $labels = @{
     'vengeance.sboxBridge'    = 'VENGEANCE sbox (Claude Bridge)'
     'vengeance.sboxEditor'    = 'VENGEANCE sbox-editor (chomnr :9090)'
-    'vengeance.sboxJtc'       = 'VENGEANCE sbox-jtc (jtc :29015/mcp)'
     'vengeance.blenderBridge' = 'VENGEANCE Blender Bridge (:8099, auto-start on load)'
-    'vengeance.mcpStack'      = 'VENGEANCE mcp.json stack (4 keys)'
+    'vengeance.mcpStack'      = 'VENGEANCE mcp.json stack (3 keys)'
     'vengeance.mcpDual'       = 'VENGEANCE mcp.json bridge+chomnr keys'
     'cornerman.ssh'           = 'Cornerman SSH'
     'cornerman.tier3Api'      = 'Cornerman Tier-3 API :1234'

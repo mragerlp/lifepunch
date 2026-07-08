@@ -100,7 +100,6 @@ Bitcoin operators (amber/HASHD) mine BTC → Hackers (green/red) steal wallets
 |--------|-----------|---------|
 | `sbox` | File IPC / `npx sbox-mcp-server` | Runtime · play proof · spawn · screenshots |
 | `sbox-editor` | HTTP `127.0.0.1:9090/sbox-mcp` | Authoring · compile · ModelDoc · prefabs |
-| `sbox-jtc` | HTTP `localhost:29015/mcp` | Scene graph · API/docs lookup · editor automation |
 | `cornerman-lm` | Node `local-llm-mcp-server` | Cornerman distill/prep tasks |
 
 **Verify connectivity:** `Get-CvlConnectivityStatus.ps1 -Pretty` → `allOk: true`
@@ -200,7 +199,7 @@ powershell -File lifepunch\scripts\Start-SboxDxrpEditor.ps1 -FullCapacity -Prefl
 powershell -File lifepunch\scripts\Get-CvlConnectivityStatus.ps1 -Pretty
 ```
 
-Target: `allOk: true` · MCP: `sbox` · `sbox-editor` · `cornerman-lm` · `sbox-jtc`
+Target: `allOk: true` · MCP: `sbox` · `sbox-editor` · `cornerman-lm`
 
 ---
 

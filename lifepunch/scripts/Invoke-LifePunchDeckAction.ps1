@@ -139,7 +139,6 @@ switch ($Action) {
     'McpHealth' {
         $checks = @(
             @{ Name = 'sbox-editor'; Url = 'http://127.0.0.1:9090/sbox-mcp'; OpenAi = $false }
-            @{ Name = 'jtc'; Url = 'http://localhost:29015/mcp'; OpenAi = $false }
             @{ Name = 'cornerman-lm'; Url = 'http://192.168.1.229:1234/v1/models'; OpenAi = $true }
         )
 
