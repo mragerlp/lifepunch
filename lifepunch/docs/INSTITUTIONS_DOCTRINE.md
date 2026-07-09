@@ -53,6 +53,33 @@ shelters capital from extraction. Two poles. A political system, not a job list.
 **Bank Guards are the depositors' answer to a public-only FBI.** The state
 protects the state's money; depositors hire their own defense.
 
+### The Bank building is a shared workspace
+
+Like the PD and the Hospital, the **Bank building is a class commons** — the
+Banker and the Bank Guards work it by rule; no basing, no locking out the
+public lobby. But the **FUND remains the Banker's charge**: vote-required
+owner, personal props as the deductible, reputation at stake. **Obligation
+binds the space; accountability binds the person** — the same split as the
+Hospital, one layer up in what's at risk.
+
+### The Bank Guard charter — loyalty is structural
+
+Bank Guards may **not freelance, contract, crew, or base with any player.**
+They live in the Bank. This is the deliberate **inverse of the Medic's
+freedom**: jobs holding other people's money do not get to have other people.
+The Medic's associations are his own because he holds no capital; the Guard's
+are forbidden because he holds everyone's.
+
+### Incorruptibility — the one absolute
+
+**Bankers and Bank Guards may NEVER assist a Bank Raid, in any way.** This is
+the **only incorruptibility rule in the canon.** Everything else is corruptible
+by design — the Mayor may be a villain, the FBI may be starved, the Dealer may
+be bribed. The Bank alone is protected from its own operators, **because
+everything else in the economy depends on it being boring.** A bank you cannot
+trust is not a bank; the whole stock-market fiction collapses the moment its
+keepers can be turned.
+
 ## THE FUND, NOT THE BANK
 
 **The Banker's vaults are not a bank. They are the server's only stock market.**
@@ -160,6 +187,29 @@ the Data Center is the treasury's **growth engine, not its only engine**. A
 hacker crew that takes the Data Center down cripples the FBI's premiums
 without instantly abolishing the police. The vulnerability is real; it is not
 total.
+
+### The Hierarchy of Protection
+
+Law-enforcement response has a **fixed priority order** — the first priority
+ordering in the canon. **State first, capital second, citizens last:**
+
+```
+1. PD Raid    → protect the Mayor    (the state)
+2. Bank Raid  → protect the Vault    (capital)
+3. Hospital   → protect the People   (citizens)
+```
+
+The consequences are intended, not accidents to be patched:
+
+- **Every tier can be pulled off by attacking the tier above it.** Hit the PD
+  and nobody comes anywhere — the Bank and the Hospital both go undefended
+  while the state saves itself. **Diversion is a legitimate tactic**, and it is
+  *exactly why depositors fund Bank Guards*: state protection is conditional,
+  so capital buys its own.
+- **The Hospital sitting last is a standing political grievance.** Medics will
+  say so, loudly, and they will be right. That the people come last is a
+  designed injustice the server is meant to argue about — a live election
+  issue, not a bug.
 
 ## THE MAYOR'S TAX IS A BEHAVIOURAL LEVER
 
