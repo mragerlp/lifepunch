@@ -11,7 +11,6 @@ using Sandbox;
 using LifePunch.DXRP.Addons;
 #if !LIFEPUNCH_LOCAL
 using Dxura.RP.Game;
-using Dxura.RP.Game.Equipments;
 using DamageInfo = Dxura.RP.Game.DamageInfo;
 #endif
 
@@ -23,7 +22,7 @@ namespace LifePunch.DXRP.Addons.Bitcoin;
 #if LIFEPUNCH_LOCAL
 public sealed class LpBitcoinHubEntity : Component, Component.IPressable
 #else
-public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IAreaDamageReceiver, IHandEvents
+public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IAreaDamageReceiver
 #endif
 {
 #if !LIFEPUNCH_LOCAL
@@ -85,9 +84,12 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 						HealthComponent.Health = HealthComponent.MaxHealth;
 				}
 
-				LifePunchPropPhysics.SetupWorldMachine( GameObject, alignGround: true );
+				// Holdable-hub law (3.5 item E): the hub is a NORMAL HANDS ENTITY — never a
+				// world machine, regardless of power or claim state.
+				LifePunchGroundContact.AlignMeshBottom( GameObject );
+				LifePunchPropPhysics.BeginGrabbablePrinterDrop( GameObject, syncColliderFromModel: true );
 				_colliderSyncedFromModel = true;
-				Log.Info( $"HUB_SPAWN_PHYSICS pos={GameObject.WorldPosition} mode=dev-world-machine" );
+				Log.Info( $"HUB_SPAWN_PHYSICS pos={GameObject.WorldPosition} mode=dev-grabbable" );
 			}
 			else
 			{
@@ -167,8 +169,10 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 			ReconcileLinkedRacksHost();
 		}
 
-		// Once initial spawn settle finishes, force world-machine tags/physics so USE opens the hub.
-		LifePunchPropPhysics.EnforceWorldMachine( GameObject );
+		// Holdable-hub law (3.5 item E): NO per-tick world-machine enforcement — the hub is
+		// a normal hands entity like the racks (hands_interact stays, RB stays live, vanilla
+		// manages grabbed/no_collide during carry). HOLDABLE, NEVER POCKETABLE: pocket_item
+		// is stripped at spawn by BeginGrabbablePrinterDrop and nothing re-adds it.
 #endif
 	}
 
@@ -217,7 +221,11 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 	}
 #endif
 
-	public bool CanPress( IPressable.Event e ) => LifePunchMenuInteractGate.CanPressHubMenu( GameObject );
+	// ROTATION SACRED (holdable-hub law clause 3): rotate is USE-while-holding in DXRP
+	// hands — a grabbed hub must never answer Press, or rotation opens the menu.
+	public bool CanPress( IPressable.Event e )
+		=> !GameObject.Tags.Has( LifePunchPropPhysics.GrabbedTag )
+		   && LifePunchMenuInteractGate.CanPressHubMenu( GameObject );
 
 	public bool Press( IPressable.Event e )
 	{
@@ -457,21 +465,6 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 
 	public void RequestUnlinkRack( string rackToken ) => UnlinkRackByTokenHost( rackToken );
 
-#if !LIFEPUNCH_LOCAL
-	// Anchored-hub grab attempt speaks (R2 ruling — silent denials are bug reports waiting
-	// to happen). Vanilla hands falls through to IHandEvents when the grab tag is absent;
-	// wording anticipates the power-gated portability spec (3.5).
-	private TimeSince _sinceAnchoredNotice = 9999f;
-
-	void IHandEvents.OnHandLmb( Player player )
-	{
-		if ( _sinceAnchoredNotice < 2f )
-			return;
-
-		_sinceAnchoredNotice = 0;
-		Notify.Warn( "HUB is anchored — power off to move it." );
-	}
-#endif
 
 	// Deliberate release verb (rig0 `unlink <rack>`): frees the slot binding and fires the
 	// membership sweep. The slot's LEDGER RECORDS PERSIST — a rack later bound into this

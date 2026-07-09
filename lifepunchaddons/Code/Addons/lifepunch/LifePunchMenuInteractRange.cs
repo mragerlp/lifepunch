@@ -28,11 +28,14 @@ public static class LifePunchMenuInteractRange
 	/// <summary>~0.75 m vertical slack while opening.</summary>
 	public const float OpenVerticalMeters = 0.75f;
 
-	/// <summary>~1.15 m — floor-standing Bitcoin hub; slightly beyond console menu reach.</summary>
-	public const float HubOpenHorizontalMeters = 1.15f;
+	/// <summary>~4.25 m — HOLDABLE-HUB LAW clause 2: menu-USE must reach FURTHER than
+	/// DXRP hands-grab (Config ReachDistance 150u ≈ 3.81 m) so a step back opens the
+	/// menu while close range belongs to physical handling. Rotation is additionally
+	/// guarded at CanPress (grabbed hub never presses).</summary>
+	public const float HubOpenHorizontalMeters = 4.25f;
 
-	/// <summary>~1.0 m vertical slack for hub USE.</summary>
-	public const float HubOpenVerticalMeters = 1.0f;
+	/// <summary>~1.5 m vertical slack for hub USE.</summary>
+	public const float HubOpenVerticalMeters = 1.5f;
 
 	/// <summary>~2.0 m — auto-close UI if the player walks away.</summary>
 	public const float UiCloseHorizontalMeters = 2.0f;

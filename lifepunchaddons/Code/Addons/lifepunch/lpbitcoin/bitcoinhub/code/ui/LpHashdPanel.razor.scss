@@ -6283,28 +6283,189 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	color: $hashd-muted;
 }
 
-// ── Rack-detail hero (hierarchy inversion): identity leads, telemetry is the
-// footnote. Layout is provisional pending the FINAL rack-info-page image —
-// concepts (readout strip / delta / receipt / compressed details) are ruled.
-.lp-bitcoin-ops .server-hero {
+// ── 3.5 purchase surface: the track cards TRANSACT on the Upgrades page ──
+// (solo-I / pair / solo-MAX states; chip anchors to the card's Purchase button).
+.lp-bitcoin-ops .upgrade-purchase-section {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 10px;
+	flex-shrink: 0;
+	padding: 4px 0 12px 0;
+}
+
+.lp-bitcoin-ops .server-track-card.purchase {
+	min-width: 300px;
+}
+
+.lp-bitcoin-ops .server-track-panel.solo {
+	padding: 2px 0;
+}
+
+// Purchase seat — the chip's anchor (position context for its absolute above).
+.lp-bitcoin-ops .server-track-purchase-seat {
+	position: relative;
+	display: flex;
+	justify-content: center;
+	margin-top: 4px;
+}
+
+.lp-bitcoin-ops .server-track-purchase-btn {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	height: 34px;
+	min-width: 170px;
+	padding: 0 18px;
+	// Blocker-c fix: never wrap the label ("PURCHAS/E") or orphan the ₿ price.
+	white-space: nowrap;
+
+	span {
+		white-space: nowrap;
+		flex-shrink: 0;
+	}
+
+	// Solid-fill button: label color wins — Law 13 governs money VALUES on
+	// surfaces, not button labels.
+	.lp-money-btc {
+		color: inherit;
+		font-weight: 900;
+	}
+}
+
+// Row rework (3.5): centered circuit DISPLAY + right-slot action button.
+.lp-bitcoin-ops .lp-stepper.centered {
+	flex: 1 1 auto;
+	justify-content: center;
+}
+
+.lp-bitcoin-ops .upgrade-row-btn {
+	flex: 0 0 auto;
+	height: 30px;
+	padding: 0 14px;
+	font-size: 11px;
+	font-weight: 900;
+	letter-spacing: 0.05em;
+	white-space: nowrap;
+}
+
+// Transact-view circuit context — the card's centered linkage (blocker-a).
+.lp-bitcoin-ops .lp-stepper.centered.context {
+	flex: 0 0 auto;
+	justify-content: center;
+	padding: 4px 0 2px 0;
+}
+
+// Rack-detail stat plate (3.5 revert — standard dark plate, grey slab dead).
+.lp-bitcoin-ops .server-stat-plate {
 	display: flex;
 	flex-direction: column;
 	flex-shrink: 0;
+	gap: 7px;
+	margin-top: 12px;
+	padding: 12px 14px;
+	border-radius: 2px;
+	border: 1px solid $hashd-border;
+	background-color: $hashd-inset-bg;
+}
+
+.lp-bitcoin-ops .server-stat-row {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
 	gap: 12px;
+}
+
+.lp-bitcoin-ops .server-stat-label {
+	font-size: 11px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	color: $hashd-muted;
+}
+
+.lp-bitcoin-ops .server-stat-value {
+	font-size: 13px;
+	font-weight: 600;
+	color: $hashd-text;
+	text-align: right;
+}
+
+// ── Entity Detail Contract: TIER PROGRESS (hero of the detail's lower half) ──
+// One line per registry track, circuit display-only; PLANNED = all-grey truth.
+.lp-bitcoin-ops .entity-tier-progress {
+	display: flex;
+	flex-direction: column;
+	flex-shrink: 0;
+	gap: 6px;
 	margin-top: 12px;
 	padding-top: 12px;
 	border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-// Card grid — responsive, one card per LIVE registry track (grows per track
-// registration). Strip-level click deep-links; cards themselves carry no
-// click/hover states (display, not control).
-.lp-bitcoin-ops .server-track-cards {
+.lp-bitcoin-ops .entity-track-line {
 	display: flex;
 	flex-direction: row;
-	flex-wrap: wrap;
+	align-items: center;
 	gap: 10px;
-	cursor: pointer;
+	min-height: 40px;
+	flex-shrink: 0;
+
+	.material-icons {
+		font-size: 15px;
+		color: $hashd-amber;
+		flex-shrink: 0;
+	}
+
+	&.planned {
+		.material-icons {
+			color: $hashd-muted;
+		}
+	}
+}
+
+.lp-bitcoin-ops .entity-track-name {
+	flex: 0 0 auto;
+	min-width: 140px;
+	font-size: 11px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	color: $hashd-text;
+	white-space: nowrap;
+
+	.entity-track-line.planned & {
+		color: $hashd-muted;
+	}
+}
+
+.lp-bitcoin-ops .entity-track-planned {
+	flex: 0 0 auto;
+	font-size: 10px;
+	font-weight: 900;
+	letter-spacing: 0.05em;
+	color: $hashd-muted;
+	white-space: nowrap;
+}
+
+// Law-13 chip states on the detail header badges.
+.lp-bitcoin-ops .rack-badge.green {
+	color: $hashd-green;
+	border-color: rgba(95, 211, 141, 0.4);
+}
+
+.lp-bitcoin-ops .rack-badge.gold {
+	color: $hashd-amber-glow;
+	border-color: rgba(240, 165, 0, 0.4);
+}
+
+.lp-bitcoin-ops .rack-badge.red {
+	color: $hashd-red;
+	border-color: rgba(228, 75, 42, 0.4);
 }
 
 .lp-bitcoin-ops .server-track-card {
@@ -6477,29 +6638,14 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	align-items: center;
 	justify-content: space-between;
 	gap: 12px;
+	margin-top: 12px;
+	flex-shrink: 0;
 }
 
 .lp-bitcoin-ops .server-hero-receipt {
 	font-size: 12px;
 	font-weight: 700;
 	color: $hashd-amber;
-}
-
-// Telemetry footnote: status line + buffer fill-bar + fine print.
-.lp-bitcoin-ops .server-detail-compact {
-	display: flex;
-	flex-direction: column;
-	flex-shrink: 0;
-	gap: 6px;
-	margin-top: 12px;
-	padding-top: 12px;
-	border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.lp-bitcoin-ops .server-detail-status-line {
-	font-size: 12px;
-	font-weight: 600;
-	color: $hashd-text;
 }
 
 .lp-bitcoin-ops .server-buffer-bar {
@@ -6514,11 +6660,6 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 .lp-bitcoin-ops .server-buffer-bar-fill {
 	height: 100%;
 	background-color: $hashd-amber;
-}
-
-.lp-bitcoin-ops .server-detail-fineprint {
-	font-size: 11px;
-	color: $hashd-muted;
 }
 
 .lp-bitcoin-ops .server-detail-upgrade-btn {
@@ -7213,14 +7354,16 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	.upgrade-section-fill {
 		flex: 1 1 auto;
 
+		// Blocker-b fix (3.5): rows NEVER flex-grow/shrink — `1 1 0` let rows
+		// compress below content height and overlap (Cosmetics header over
+		// Cooling System). Natural-height stack; the scroll region scrolls.
 		.upgrade-path-list {
-			flex: 1 1 auto;
+			flex: 0 0 auto;
 		}
 
 		.upgrade-track-row {
-			flex: 1 1 0;
+			flex: 0 0 auto;
 			min-height: 52px;
-			max-height: 104px;
 		}
 	}
 
