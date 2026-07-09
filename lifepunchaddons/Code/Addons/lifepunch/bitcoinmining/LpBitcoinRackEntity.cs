@@ -26,7 +26,7 @@ public sealed class LpBitcoinRackEntity : Component, Component.IPressable
 public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable, IAreaDamageReceiver
 #endif
 {
-	/// <summary>GPU rack farm — stacked mesh; per-rack CPU/core upgrades drive mining rate.</summary>
+	/// <summary>GPU rack farm — stacked mesh; the COMPUTE tier (rack_compute) drives mining rate.</summary>
 	[Property] public bool AdvancedRack { get; set; } = true;
 
 	/// <summary>Dev spawn (<see cref="LpBitcoinDevSpawn"/>) — feet on ground, frozen collider (no printer drop).</summary>
@@ -39,18 +39,17 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable, IAre
 	[Property, ReadOnly] [Sync( SyncFlags.FromHost )] public float BitcoinAmount { get; set; }
 	[Property, ReadOnly] [Sync( SyncFlags.FromHost )] public float ClockGhz { get; set; } = LpBitcoinEconomy.StartClockGhz;
 	[Property, ReadOnly] [Sync( SyncFlags.FromHost )] public int CoreCount { get; set; } = LpBitcoinEconomy.StartCores;
-	// Legacy pair: deliberately [Sync]-only (GO ruling R2) — replaced by rack_compute,
-	// deleted slice 2; persisting them would manufacture migration debt.
-	[Sync( SyncFlags.FromHost )] public int CpuUpgradeLevel { get; set; }
-	[Sync( SyncFlags.FromHost )] public int CoreUpgradeLevel { get; set; }
 	[Property, ReadOnly] [Sync( SyncFlags.FromHost )] public float MiningProgress { get; set; }
 
 	/// <summary>rack_compute tier projection (0 = stock, I–V purchased). The ledger is
-	/// ownership truth; this reconciles ledger-wins on host start and relink — dormant
-	/// (no rate effect) until the effects slice.</summary>
+	/// ownership truth; this reconciles ledger-wins on host start and relink, and the
+	/// reconcile re-derives the rate (Apply is absolute — decision 2).</summary>
 	[Property, ReadOnly] [Sync( SyncFlags.FromHost )] public int ComputeTier { get; set; }
 
-	public float YieldMultiplier => LpBitcoinIdent.BaseRackYieldMultiplier;
+	/// <summary>Advanced racks yield 2× per slot for 2× capital (decision 5).</summary>
+	public float YieldMultiplier => AdvancedRack
+		? LpBitcoinEconomy.AdvancedRackYieldMultiplier
+		: LpBitcoinIdent.BaseRackYieldMultiplier;
 	public float MiningRatePerMinute => LpBitcoinEconomy.MiningRatePerMinute( ClockGhz, CoreCount, YieldMultiplier );
 	public int UsdValue => (int)LpBitcoinEconomy.BtcToCashUsd( BitcoinAmount );
 
@@ -192,7 +191,7 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable, IAre
 
 	private void TryHandleCapacityHost()
 	{
-		var capacity = LpBitcoinEconomy.RackBtcCapacity;
+		var capacity = LpBitcoinEconomy.RackBtcCapacityFor( this );
 		if ( BitcoinAmount < capacity )
 		{
 			_capacityAlertSent = false;
@@ -261,6 +260,10 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable, IAre
 
 		ComputeTier = LifePunchUpgradeLedger.ReconcileTier(
 			ComputeTier, ledgerTier, $"{LpBitcoinComputeTrack.TrackId} rack={GameObject?.Name}" );
+
+		// Effects are absolute — a rehydrated/relinked rack re-derives its rate from
+		// tier alone, never from persisted floats (decision 2).
+		LpBitcoinComputeTrack.Apply( this, ComputeTier );
 	}
 
 	public LpBitcoinHubEntity GetLinkedHub()
@@ -280,7 +283,7 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable, IAre
 			return;
 		}
 
-		if ( on && BitcoinAmount >= LpBitcoinEconomy.RackBtcCapacity )
+		if ( on && BitcoinAmount >= LpBitcoinEconomy.RackBtcCapacityFor( this ) )
 			on = false;
 
 		IsMining = on;
@@ -327,49 +330,14 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable, IAre
 		RefreshLinkedTerminalScreens();
 	}
 
-	public void RequestUpgradeCpu() => UpgradeCpuHost();
+	/// <summary>Purchase the next COMPUTE tier for this rack — funnels to the ONE
+	/// purchase path (LpBitcoinPurchaseFlow; slice 2, replaces the legacy CPU/core
+	/// upgrade RPCs and the dual-entry problem with them).</summary>
+	public void RequestPurchaseComputeTier() => PurchaseComputeTierHost();
 
 	[Rpc.Host]
-	private void UpgradeCpuHost() => ApplyUpgradeCpu( Rpc.CallerId );
-
-	internal async void ApplyUpgradeCpu( Guid callerId )
-	{
-		if ( CpuUpgradeLevel >= LpBitcoinEconomy.CpuUpgradeCosts.Length )
-			return;
-
-		var hub = GetLinkedHub();
-		if ( hub is null || !hub.CanManageHub( callerId ) )
-			return;
-
-		var cost = (uint)LpBitcoinEconomy.CpuUpgradeCosts[CpuUpgradeLevel];
-		if ( !await LpBitcoinWallet.TryCharge( callerId, cost, "LIFEPUNCH CPU upgrade" ) )
-			return;
-
-		CpuUpgradeLevel++;
-		ClockGhz += LpBitcoinEconomy.CpuGhzPerLevel;
-	}
-
-	public void RequestUpgradeCores() => UpgradeCoresHost();
-
-	[Rpc.Host]
-	private void UpgradeCoresHost() => ApplyUpgradeCores( Rpc.CallerId );
-
-	internal async void ApplyUpgradeCores( Guid callerId )
-	{
-		if ( CoreUpgradeLevel >= LpBitcoinEconomy.CoreUpgradeCosts.Length )
-			return;
-
-		var hub = GetLinkedHub();
-		if ( hub is null || !hub.CanManageHub( callerId ) )
-			return;
-
-		var cost = (uint)LpBitcoinEconomy.CoreUpgradeCosts[CoreUpgradeLevel];
-		if ( !await LpBitcoinWallet.TryCharge( callerId, cost, "LIFEPUNCH core upgrade" ) )
-			return;
-
-		CoreUpgradeLevel++;
-		CoreCount += LpBitcoinEconomy.CoresPerLevel;
-	}
+	private void PurchaseComputeTierHost()
+		=> LpBitcoinPurchaseFlow.PurchaseComputeTierHost( GetLinkedHub(), this, Rpc.CallerId );
 
 	private void ApplyRackMiningVisual( bool mining )
 	{

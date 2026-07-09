@@ -135,6 +135,10 @@ public static class LpBitcoinIdent
 		return $"{RackDisplayName} {slot}";
 	}
 
+	/// <summary>Upgrade tier numeral for player-facing copy (0 = STOCK, 1..5 = I..V).</summary>
+	public static string RomanTier( int tier )
+		=> tier switch { 1 => "I", 2 => "II", 3 => "III", 4 => "IV", 5 => "V", _ => "STOCK" };
+
 	/// <summary>rig0 / CRT copy token — gpurack-1 … gpurack-2 or advancedgpurack.</summary>
 	public static string FormatRackSlotTerminalToken( LpBitcoinRackEntity rack, IReadOnlyList<LpBitcoinRackEntity> linkedRacks )
 	{

@@ -22,9 +22,10 @@ namespace LifePunch.DXRP.Addons.Bitcoin;
 /// </summary>
 internal static class LpBitcoinLedgerDevSpawn
 {
-	/// <summary>Buy a rack_compute tier for a linked rack (host only). Default: next
-	/// sequential tier. An explicit tier is submitted to the ledger AS-IS so the
-	/// sequential precondition can be exercised (gate-1 rejection asserts).
+	/// <summary>Buy a rack_compute tier through the REAL purchase flow (slice 2: real
+	/// charging — fund the hub wallet first). Default: next sequential tier. An
+	/// explicit tier is submitted AS-IS so gate proofs can exercise the sequential
+	/// rejection AFTER a real debit (the debit-restore leg).
 	/// Usage: lp_bitcoin_dev_buy_tier [gpurack-1|gpurack-2|advancedgpurack] [tier]</summary>
 	[ConCmd( "lp_bitcoin_dev_buy_tier" )]
 	public static void BuyTier( string slotToken = "", int tier = 0 )
@@ -39,27 +40,39 @@ internal static class LpBitcoinLedgerDevSpawn
 			return;
 
 		EnsureDebugListener();
-		LpBitcoinComputeTrack.EnsureRegistered();
 
-		var subjectClass = LpBitcoinComputeTrack.ClassOf( rack );
-		var current = LifePunchUpgradeLedger.MaxTier(
-			hub.Owner, LpBitcoinComputeTrack.TrackId, slot, subjectClass );
+		var before = hub.HubWalletBtc;
+		var result = LpBitcoinPurchaseFlow.PurchaseComputeTierHost( hub, rack, Connection.Local.Id, tier );
+		Log.Info( $"LP_DEV_BUY slot={slot} wallet {before:F8} -> {hub.HubWalletBtc:F8} tierNow={rack.ComputeTier}" );
+		Log.Info( result.Code == LpBitcoinPurchaseResultCode.Ok
+			? $"LP_DEV_ENVELOPE Ok newTier={result.NewTier} newClockGhz={result.NewClockGhz:F2} costPaidSats={result.CostPaidSats} newBufferCap={result.NewBufferCap:F8}"
+			: $"LP_DEV_ENVELOPE {result.Code} shortfallSats={result.ShortfallSats} error='{result.Error}'" );
+	}
 
-		var requested = tier > 0 ? tier : current + 1;
-
-		var committed = LifePunchUpgradeLedger.TryCommitPurchase(
-			hub.Owner, LpBitcoinComputeTrack.TrackId, slot, subjectClass,
-			requested, Connection.Local.Id, out var error );
-
-		if ( !committed )
+	/// <summary>Fund the hub wallet with dev BTC so gate proofs exercise the REAL
+	/// debit path end-to-end (GO ruling: fund command, no charge-bypass flag).
+	/// Usage: lp_bitcoin_dev_fund_wallet [btc=25]</summary>
+	[ConCmd( "lp_bitcoin_dev_fund_wallet" )]
+	public static void FundWallet( float btc = 25f )
+	{
+		if ( !Networking.IsHost )
 		{
-			Log.Warning( $"LP_DEV_BUY rejected: {error}" );
+			Log.Warning( "lp_bitcoin_dev_fund_wallet: host only" );
 			return;
 		}
 
-		// Projection applied only after the ledger commit succeeded (commit-then-project).
-		rack.ComputeTier = requested;
-		Log.Info( $"LP_DEV_BUY ok owner={hub.Owner} slot={slot} class={subjectClass} tier={requested}" );
+		if ( !TryResolveRack( string.Empty, out var hub, out _, out _ ) )
+			return;
+
+		if ( btc <= 0f )
+		{
+			Log.Warning( "LP_DEV_FUND: amount must be positive" );
+			return;
+		}
+
+		hub.HubWalletBtc += btc;
+		Log.Info( $"LP_DEV_FUND +{btc:F8} BTC — hub wallet now {hub.HubWalletBtc:F8}" );
+		hub.RefreshLinkedTerminalScreens();
 	}
 
 	/// <summary>Deliberately corrupt the tier projection (proof case c — restart or

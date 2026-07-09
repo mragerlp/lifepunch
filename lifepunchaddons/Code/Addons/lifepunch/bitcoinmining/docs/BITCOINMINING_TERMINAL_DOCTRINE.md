@@ -46,7 +46,7 @@ The hub is the operator's **wallet and control plane**:
 - **Hub wallet** — `LpBitcoinHubEntity.HubWalletBtc`; filled by terminal deposit RPCs.
 - **Cash out** — hub admin Wallet tab or `RequestCashOutHub` / `RequestCashOutAllHub`; credits player **bank** via `LpBitcoinWallet.TryPayBank` (`PayHost` with `inBank: true`).
 - **No rack USE → sell** — `sell` at CRT returns an error directing operators to hub wallet cashout.
-- **Hardware upgrades** — hub RPCs (`RequestUpgradeCpu` / `RequestUpgradeCores`); cash from player wallet.
+- **Hardware upgrades** — COMPUTE track purchase (`RequestPurchaseComputeTier` → `LpBitcoinPurchaseFlow`); BTC debited from the hub wallet, ledger-committed (slice 2).
 - **Hub authority** — `IsPowered`, `CanOperateTerminal`, owner/PIN (`LpBitcoinHubEntity`).
 
 Populate exact payout constants in `BITCOIN_REFERENCE_IMPLEMENTATION.md` on sign-off.

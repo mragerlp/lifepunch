@@ -11,10 +11,11 @@ namespace LifePunch.DXRP.Addons.Bitcoin;
 /// <summary>
 /// rack_compute — tenant #1 of the purchase ledger and the House Pattern reference
 /// implementation (ECONOMY_DOCTRINE · UPGRADE_ARC_DESIGN decision 1). Unified COMPUTE
-/// track, tiers I–V; replaces legacy CpuUpgradeLevel/CoreUpgradeLevel (deleted slice 2).
-/// Base price ladder 0.25/0.75/2/6/16 BTC (decision 4); Advanced pays ladder × yield
-/// multiplier at quote time — slice 2 (decision 5). Effects (Apply(tier) → ClockGhz +
-/// CoreCount, ×2..×32) land in the effects slice (decision 2).
+/// track, tiers I–V; the legacy CpuUpgradeLevel/CoreUpgradeLevel pair is deleted
+/// (slice 2, GO ruling R2). Base price ladder 0.25/0.75/2/6/16 BTC (decision 4);
+/// Advanced pays ladder × yield multiplier read at quote time (decision 5). Effects
+/// are ABSOLUTE: Apply(tier) sets ClockGhz + CoreCount from tier alone, rate vector
+/// ×2/4/8/16/32 (decision 2).
 /// </summary>
 internal static class LpBitcoinComputeTrack
 {
@@ -50,4 +51,30 @@ internal static class LpBitcoinComputeTrack
 
 	public static string ClassOf( LpBitcoinRackEntity rack )
 		=> rack.AdvancedRack ? ClassAdvanced : ClassStandard;
+
+	/// <summary>Rate multiplier vs stock for a tier: ×1 at T0, ×2/4/8/16/32 at I–V.</summary>
+	public static int EffectMultiplierFor( int tier )
+		=> 1 << System.Math.Clamp( tier, 0, 5 );
+
+	/// <summary>Absolute effect apply — ClockGhz + CoreCount derive from tier ALONE
+	/// (decision 2). One knob: the clock carries the whole vector; cores stay stock.
+	/// Idempotent; also runs at reconcile so a rehydrated rack re-derives its rate.</summary>
+	public static void Apply( LpBitcoinRackEntity rack, int tier )
+	{
+		rack.ClockGhz = LpBitcoinEconomy.StartClockGhz * EffectMultiplierFor( tier );
+		rack.CoreCount = LpBitcoinEconomy.StartCores;
+	}
+
+	/// <summary>Quote for a tier on THIS rack — base ladder × the rack's yield
+	/// multiplier, read at quote time (decision 5: Advanced pays 2× for 2× throughput).
+	/// Returns -1 when the tier has no price.</summary>
+	public static long QuoteSats( LpBitcoinRackEntity rack, int tier )
+	{
+		EnsureRegistered();
+		var baseSats = LifePunchUpgradeTracks.Get( TrackId )?.PriceSatsForTier( tier ) ?? -1;
+		if ( baseSats < 0 )
+			return -1;
+
+		return (long)System.Math.Round( baseSats * (double)rack.YieldMultiplier );
+	}
 }
