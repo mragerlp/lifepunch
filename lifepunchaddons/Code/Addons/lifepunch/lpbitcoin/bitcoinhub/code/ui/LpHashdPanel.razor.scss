@@ -6468,6 +6468,179 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	border-color: rgba(228, 75, 42, 0.4);
 }
 
+// ── Servers-eats-Upgrades (3.5 consolidation): the Entity Detail Contract ──
+// Header ident = title + click-to-copy token, one element, copy flash.
+.lp-bitcoin-ops .entity-detail-ident {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 8px;
+	padding: 4px 10px;
+	border-radius: $hashd-surface-radius;
+	border: 1px solid transparent;
+	background-color: transparent;
+	cursor: pointer;
+
+	.material-icons { font-size: 18px; color: $hashd-amber; }
+
+	&:hover { border-color: $hashd-border; }
+}
+
+.lp-bitcoin-ops .entity-detail-title {
+	font-size: 15px;
+	font-weight: 900;
+	color: $hashd-text;
+}
+
+.lp-bitcoin-ops .entity-detail-token {
+	font-size: 11px;
+	font-weight: 700;
+	color: $hashd-muted;
+}
+
+.lp-bitcoin-ops .entity-detail-copyicon { font-size: 13px; }
+
+.lp-bitcoin-ops .entity-detail-copyflash {
+	font-size: 10px;
+	font-weight: 900;
+	letter-spacing: 0.05em;
+	color: $hashd-green;
+}
+
+// Chip row — Law-13 chips (identity moved to the ident; STATUS row retired).
+.lp-bitcoin-ops .entity-chip-row {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	gap: 6px;
+	flex-shrink: 0;
+}
+
+.lp-bitcoin-ops .entity-chip {
+	padding: 2px 9px;
+	border-radius: 2px;
+	border: 1px solid $hashd-border;
+	font-size: 10px;
+	font-weight: 900;
+	letter-spacing: 0.05em;
+	color: $hashd-muted;
+
+	&.green { color: $hashd-green; border-color: rgba(95, 211, 141, 0.4); }
+	&.gold { color: $hashd-amber-glow; border-color: rgba(240, 165, 0, 0.4); }
+	&.red { color: $hashd-red; border-color: rgba(228, 75, 42, 0.4); }
+}
+
+// Transact track-row law: [icon] name/why · centered tree · price/delta · UPGRADE.
+.lp-bitcoin-ops .entity-tier-progress.transact {
+	gap: 4px;
+}
+
+.lp-bitcoin-ops .entity-track-row {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 12px;
+	min-height: 52px;
+	flex-shrink: 0;
+	padding: 6px 10px;
+	border-radius: $hashd-surface-radius;
+	border: 1px solid $hashd-border;
+	background-color: $hashd-inset-bg;
+
+	&.planned { opacity: 0.7; }
+}
+
+.lp-bitcoin-ops .entity-track-lead {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 10px;
+	flex: 1 1 auto;
+	min-width: 0;
+
+	.material-icons {
+		font-size: 18px;
+		flex-shrink: 0;
+
+		&.lit { color: $hashd-amber; }
+		&.unlit { color: $hashd-muted; }
+	}
+}
+
+.lp-bitcoin-ops .entity-track-copy {
+	display: flex;
+	flex-direction: column;
+	gap: 1px;
+	min-width: 0;
+}
+
+.lp-bitcoin-ops .entity-track-why {
+	font-size: 10px;
+	color: $hashd-muted;
+}
+
+.lp-bitcoin-ops .entity-track-transact {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	gap: 1px;
+	flex: 0 0 auto;
+	white-space: nowrap;
+}
+
+.lp-bitcoin-ops .entity-track-price {
+	font-size: 13px;
+	font-weight: 900;
+
+	.lp-money-parens { color: $hashd-text; }
+}
+
+.lp-bitcoin-ops .entity-track-delta {
+	font-size: 10px;
+	color: $hashd-amber-glow;
+	white-space: nowrap;
+}
+
+// The UPGRADE button + its anchor-aware chip (the one new mechanic).
+.lp-bitcoin-ops .entity-track-action {
+	position: relative;
+	flex: 0 0 auto;
+}
+
+.lp-bitcoin-ops .entity-track-upgrade {
+	height: 32px;
+	padding: 0 16px;
+	font-size: 11px;
+	font-weight: 900;
+	letter-spacing: 0.05em;
+	white-space: nowrap;
+}
+
+// Row-anchored chip: flips above/below the button so it is never clipped at a
+// scroll edge. flip-down anchors below (top rows), flip-up above (lower rows).
+.lp-bitcoin-ops .lp-stepper-chip.row-anchored {
+	position: absolute;
+	right: 0;
+	left: auto;
+	min-width: 300px;
+
+	&.flip-down { top: 38px; bottom: auto; }
+	&.flip-up { bottom: 38px; top: auto; }
+}
+
+.lp-bitcoin-ops .entity-track-planned.maxed {
+	color: $hashd-amber-glow;
+}
+
+.lp-bitcoin-ops .entity-detail-foot {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: flex-start;
+	margin-top: 8px;
+	flex-shrink: 0;
+}
+
 .lp-bitcoin-ops .server-track-card {
 	display: flex;
 	flex-direction: column;
