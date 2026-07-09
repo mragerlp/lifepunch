@@ -1589,18 +1589,18 @@
 		return multLabel;
 	}
 
-	private static string RackLegacyCpuClockLabel( LpBitcoinRackEntity rack )
-		=> $"{rack.CpuUpgradeLevel}/{LpBitcoinEconomy.CpuUpgradeCosts.Length}";
+	private static string RackComputeTierLabel( LpBitcoinRackEntity rack )
+		=> $"{LpBitcoinIdent.RomanTier( rack.ComputeTier )}/V";
 
-	private static string RackLegacyCoreCountLabel( LpBitcoinRackEntity rack )
-		=> $"{rack.CoreUpgradeLevel}/{LpBitcoinEconomy.CoreUpgradeCosts.Length}";
+	private static string RackComputeRateLabel( LpBitcoinRackEntity rack )
+		=> $"×{LpBitcoinComputeTrack.EffectMultiplierFor( rack.ComputeTier )}";
 
 	private static string RackOverviewSubline( LpBitcoinRackEntity rack )
 	{
 		if ( !rack.IsValid() )
 			return "—";
 
-		var cap = LpBitcoinEconomy.RackBtcCapacity;
+		var cap = LpBitcoinEconomy.RackBtcCapacityFor( rack );
 		var fill = cap > 0f ? (int)Math.Round( 100f * rack.BitcoinAmount / cap ) : 0;
 		var rate = rack.IsMining ? $"{rack.MiningRatePerMinute * 18.5f:F1} TH/s" : "idle";
 		return $"{rate} · {rack.BitcoinAmount:F4}/{cap:F4} BTC ({fill}%)";
@@ -1608,7 +1608,7 @@
 
 	private static string RackBtcLine( LpBitcoinRackEntity rack )
 	{
-		var cap = LpBitcoinEconomy.RackBtcCapacity;
+		var cap = LpBitcoinEconomy.RackBtcCapacityFor( rack );
 		var state = rack.BitcoinAmount >= cap ? "full" : rack.IsMining ? "mining" : "idle";
 		return $"{rack.BitcoinAmount:F6} / {cap:F6} BTC · ${rack.UsdValue:N0} · {state}";
 	}
@@ -1621,7 +1621,7 @@
 
 	private static string RackCapacityStatus( LpBitcoinRackEntity rack )
 	{
-		var cap = LpBitcoinEconomy.RackBtcCapacity;
+		var cap = LpBitcoinEconomy.RackBtcCapacityFor( rack );
 		var pct = cap > 0f ? (int)Math.Round( 100f * rack.BitcoinAmount / cap ) : 0;
 		return $"{rack.BitcoinAmount:F4} / {cap:F4} BTC ({pct}%)";
 	}
@@ -1631,7 +1631,7 @@
 
 	private static string RackBtcTileSubline( LpBitcoinRackEntity rack )
 	{
-		var cap = LpBitcoinEconomy.RackBtcCapacity;
+		var cap = LpBitcoinEconomy.RackBtcCapacityFor( rack );
 		var state = rack.BitcoinAmount >= cap ? "full" : rack.IsMining ? "mining" : "idle";
 		return $"${rack.UsdValue:N0} · {state}";
 	}
@@ -1640,7 +1640,7 @@
 		=> $"{rack.ClockGhz:F2} GHz";
 
 	private static string RackHardwareTileSubline( LpBitcoinRackEntity rack )
-		=> $"CPU {RackLegacyCpuClockLabel( rack )} · Core {RackLegacyCoreCountLabel( rack )}";
+		=> $"COMPUTE {RackComputeTierLabel( rack )} · rate {RackComputeRateLabel( rack )}";
 
 	private static string RackMiningTileSubline( LpBitcoinRackEntity rack )
 		=> rack.IsMining
@@ -2644,8 +2644,7 @@
 			hash.Add( rack.GameObject.Id );
 			hash.Add( rack.AdvancedRack );
 			hash.Add( rack.IsMining );
-			hash.Add( rack.CpuUpgradeLevel );
-			hash.Add( rack.CoreUpgradeLevel );
+			hash.Add( rack.ComputeTier );
 		}
 
 		if ( Hub.IsValid() )

@@ -271,7 +271,7 @@
 
 	private static string RackStateLabel( LpBitcoinRackEntity rack )
 	{
-		var cap = LpBitcoinEconomy.RackBtcCapacity;
+		var cap = LpBitcoinEconomy.RackBtcCapacityFor( rack );
 		if ( rack.BitcoinAmount >= cap )
 			return "FULL";
 
@@ -280,7 +280,7 @@
 
 	private static string RackStateClass( LpBitcoinRackEntity rack )
 	{
-		var cap = LpBitcoinEconomy.RackBtcCapacity;
+		var cap = LpBitcoinEconomy.RackBtcCapacityFor( rack );
 		if ( rack.BitcoinAmount >= cap )
 			return "status-warn";
 
@@ -289,7 +289,7 @@
 
 	private static string RackSettingsSubline( LpBitcoinRackEntity rack )
 	{
-		var cap = LpBitcoinEconomy.RackBtcCapacity;
+		var cap = LpBitcoinEconomy.RackBtcCapacityFor( rack );
 		return $"{rack.BitcoinAmount:F4}/{cap:F4} BTC";
 	}
 

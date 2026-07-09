@@ -97,20 +97,9 @@ public static class LpBitcoinEconomy
 	public const float StartClockGhz = 2.44f;
 	public const int StartCores = 1;
 
-	public const float CpuGhzPerLevel = 1.5f;
-	public const int CoresPerLevel = 2;
-
-	/// <summary>Four purchasable CPU clock tiers per rack (hub upgrades panel shows one at a time).</summary>
-	public static readonly int[] CpuUpgradeCosts =
-	{
-		2000, 4000, 8000, 16000
-	};
-
-	/// <summary>Four purchasable core-count tiers per rack (hub upgrades panel shows one at a time).</summary>
-	public static readonly int[] CoreUpgradeCosts =
-	{
-		50000, 100000, 175000, 350000
-	};
+	/// <summary>Advanced rack yield — double throughput per slot for double capital,
+	/// priced at ladder × yield for identical payback (UPGRADE_ARC_DESIGN decision 5).</summary>
+	public const float AdvancedRackYieldMultiplier = 2f;
 
 	public static float MiningRatePerMinute( float clockGhz, int cores, float rackYield = 1f )
 	{
@@ -121,9 +110,11 @@ public static class LpBitcoinEconomy
 	public static float TickPayout( float clockGhz, int cores, float rackYield = 1f )
 		=> clockGhz * BaseSpeed * cores * rackYield;
 
-	/// <summary>Undeposited BTC cap per rack before mining stops and hub alerts fire.</summary>
-	public const float RackBtcCapacity = 0.15f;
+	/// <summary>Buffer Option A — undeposited cap scales with the rack's own tick yield
+	/// (~6 min headroom at every tier; UPGRADE_ARC_DESIGN decision 3). Derived world
+	/// property: only the hook is purchased, the cap follows the rate.</summary>
+	public const int BufferCapTicks = 4;
 
 	public static float RackBtcCapacityFor( LpBitcoinRackEntity rack )
-		=> RackBtcCapacity;
+		=> TickPayout( rack.ClockGhz, rack.CoreCount, rack.YieldMultiplier ) * BufferCapTicks;
 }

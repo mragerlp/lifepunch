@@ -6,6 +6,31 @@ and machine facts that are not derivable from code.
 
 ---
 
+## 2026-07-09 — Gate-2 run: two bugs caught in-gate + parent-game collision
+
+Slice-2 proof surfaced and fixed two defects before the money path shipped:
+1. **Ledger priced instead of recording** — `TryCommitPurchase` computed cost
+   from the base ladder internally, so Advanced purchases (ladder × 2.0 yield)
+   were UNDER-recorded by half (paid 0.5 BTC, ledger wrote 0.25). Fix: the
+   ledger records what the caller PAID (`costSats` is now a parameter); pricing
+   is the tenant's job. The ledger prices nothing — landlord stays clean.
+2. **Debit-restore sequencing** — verified the atomic segment: funds pass →
+   debit → ledger rejects on precondition → debit restored to the sat. (Design
+   was correct; the gate proved the untested branch.)
+
+**Parent-game targeting collision (see the design-pass doc):** setting Parent
+Game = DXRP double-defined every `Dxura.RP.Game.*` type (parent package +
+our in-project DXRP fork), 765 cast-failure log lines = one error, scene
+wouldn't load. Reverted. Adoption is a banked design pass, not a mid-slice flip.
+
+**Org-keyed resolution (discovered same session):** both `FileSystem.Data`
+(ledger store) AND the portal snapshot namespace are keyed by Organization
+Ident. Changing org (`dxura`→`lifepunch`) repoints both — a fresh org loads an
+empty ledger and empty snapshots until migrated. The on-disk ledger is
+migratable (copy the store to the new `data\<org>\<ident>#local`); the portal
+snapshot store is server-side and starts fresh. Org is now `lifepunch`
+(owner ruling); the design pass owns the full identity mapping.
+
 ## 2026-07-08 — Gate-1 run: three bugs caught in-gate (all fixed same night)
 
 The slice-1 proof run surfaced and fixed, before any of it could reach slice 2:

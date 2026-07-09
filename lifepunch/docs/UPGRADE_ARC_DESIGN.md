@@ -70,3 +70,26 @@ authorized second player for multiplayer checks (per its canon test-client
 exception) — use for slice-2's multi-operator purchase/permission cases
 (non-owner buy rejection, concurrent purchase race, cross-operator ledger
 isolation).
+
+**Slice-3 design notes (filed 2026-07-09, no build yet):**
+- **Animation pipeline PROOF (pre-slice-3 side quest):** one asset, one
+  authored animation — hub power-on — pulled Blender→FBX→ModelDoc→playable.
+  The historical blocker was IDE tooling, now replaced (Blender MCP on the
+  Fable seat, kamishell bridge, chomnr ModelDoc lane). Prove the pipe once
+  before slice 3 leans on it; the needed assets already carry their animations.
+- **Audio doctrine:** interaction sounds are SUBTLE — low intensity, easy on
+  ears (one-liner also owed to LIFEPUNCH_UI_STANDARD next docs pass).
+  Restorations owed: PIN click + terminal typing sounds (both existed, both
+  regressed — find the break). Replacement owed: hub power-on sound (too loud,
+  replace not adjust). SFX set is a small remake: clicks, ticks, power states,
+  purchase confirm. Skafinity is music only — never SFX.
+- **Gate-3 reframe (stands as filed):** tier lights = world-visible purchase
+  confirmation, OnPurchase subscriber #1, T5 hue shift, optional purchase
+  flare + sound tick. Lights carry the Visible-Status Law
+  (`ECONOMY_DOCTRINE.md` amendment 2026-07-09): tier state is proof of
+  operation, never proof of wealth — unfakeable because mining tiers are
+  BTC-only purchases.
+- **Purchase result envelope (landed in slice 2, feedback amendment):** the
+  flow returns {newTier, newClockGhz, costPaidSats, newBufferCap} on success /
+  typed reasons (InsufficientFunds{shortfallSats}, PreconditionTier, HubGuard)
+  on failure — the socket the slice-3 stepper plugs into.

@@ -97,8 +97,11 @@ public static class LifePunchUpgradeLedger
 	/// <summary>
 	/// Validate → append+flush → raise OnPurchase (commit-then-raise; the event announces
 	/// a fact). Idempotency = the sequential-tier precondition: only currentMax+1 commits;
-	/// re-fired requests and tier-skips both reject. Charging is NOT done here (slice 2);
-	/// the spine records the committed cost.
+	/// re-fired requests and tier-skips both reject. Charging is NOT done here — and
+	/// neither is PRICING: <paramref name="costSats"/> is the cost the caller actually
+	/// charged (quote-time yield multipliers included). The ledger records and announces
+	/// what was PAID (gate-2 finding 2026-07-09: internal base-ladder pricing under-
+	/// recorded Advanced purchases by half).
 	/// </summary>
 	public static bool TryCommitPurchase(
 		long ownerSteamId,
@@ -106,6 +109,7 @@ public static class LifePunchUpgradeLedger
 		string subjectId,
 		string subjectClass,
 		int tier,
+		long costSats,
 		Guid purchaserConnectionId,
 		out string error )
 	{
@@ -149,10 +153,9 @@ public static class LifePunchUpgradeLedger
 			return false;
 		}
 
-		var costSats = track.PriceSatsForTier( tier );
 		if ( costSats < 0 )
 		{
-			error = $"no price for tier {tier}";
+			error = $"invalid cost {costSats}";
 			return false;
 		}
 

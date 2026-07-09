@@ -191,7 +191,7 @@ internal static class LpBitcoinTerminalCommands
 		if ( rack is null )
 			return new LpBitcoinCommandResult( false, "ERR no rack selected — type racks / select <n>" );
 
-		var cap = LpBitcoinEconomy.RackBtcCapacity;
+		var cap = LpBitcoinEconomy.RackBtcCapacityFor( rack );
 		var fill = cap > 0f ? (int)Math.Round( 100f * rack.BitcoinAmount / cap ) : 0;
 		var state = rack.IsMining ? "MINING" : "IDLE";
 		if ( rack.IsMining && rack.BitcoinAmount >= cap )
@@ -210,10 +210,10 @@ internal static class LpBitcoinTerminalCommands
 		if ( rack is null )
 			return new LpBitcoinCommandResult( false, "ERR no rack selected — type racks / select <n>" );
 
-		var cap = LpBitcoinEconomy.RackBtcCapacity;
+		var cap = LpBitcoinEconomy.RackBtcCapacityFor( rack );
 		return new LpBitcoinCommandResult( true,
 			$"{LpBitcoinIdent.FormatRackSlotTerminalToken( rack, racks )}\n" +
-			$"CPU {rack.ClockGhz:F2} GHz (Lv {rack.CpuUpgradeLevel}) | cores x{rack.CoreCount} (Lv {rack.CoreUpgradeLevel})\n" +
+			$"CPU {rack.ClockGhz:F2} GHz | cores x{rack.CoreCount} | COMPUTE {LpBitcoinIdent.RomanTier( rack.ComputeTier )} (×{LpBitcoinComputeTrack.EffectMultiplierFor( rack.ComputeTier )})\n" +
 			$"{rack.ClockGhz:F2} GHz · {rack.CoreCount} core(s) | cap {cap:F6} BTC | ${rack.UsdValue} rack value" );
 	}
 
@@ -301,7 +301,7 @@ internal static class LpBitcoinTerminalCommands
 			return new LpBitcoinCommandResult( false, "ERR no rack selected — type select <n>" );
 
 		var slotId = LpBitcoinIdent.FormatRackSlotTerminalToken( rack, racks );
-		var cap = LpBitcoinEconomy.RackBtcCapacity;
+		var cap = LpBitcoinEconomy.RackBtcCapacityFor( rack );
 		if ( rack.BitcoinAmount >= cap )
 			return new LpBitcoinCommandResult( false, $"ERR {slotId} at capacity — deposit before mining" );
 
@@ -342,7 +342,7 @@ internal static class LpBitcoinTerminalCommands
 
 			if ( on )
 			{
-				var cap = LpBitcoinEconomy.RackBtcCapacity;
+				var cap = LpBitcoinEconomy.RackBtcCapacityFor( rack );
 				if ( rack.BitcoinAmount >= cap || rack.IsMining )
 				{
 					skipped++;
@@ -411,7 +411,7 @@ internal static class LpBitcoinTerminalCommands
 
 	private static string FormatRackLine( LpBitcoinRackEntity rack, IReadOnlyList<LpBitcoinRackEntity> racks )
 	{
-		var cap = LpBitcoinEconomy.RackBtcCapacity;
+		var cap = LpBitcoinEconomy.RackBtcCapacityFor( rack );
 		var state = rack.IsMining ? "MINING" : "IDLE";
 		if ( rack.BitcoinAmount >= cap )
 			state = "FULL";

@@ -294,9 +294,9 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 		return index >= 0 && index < racks.Count ? racks[index] : null;
 	}
 
-	public void RequestUpgradeCpu( Guid rackId ) => UpgradeCpuHost( rackId );
-
-	public void RequestUpgradeCores( Guid rackId ) => UpgradeCoresHost( rackId );
+	/// <summary>Purchase the next COMPUTE tier for a linked rack (Guid.Empty = first).
+	/// Funnels to the ONE purchase path — slice 2 replaces the legacy CPU/core RPCs.</summary>
+	public void RequestPurchaseComputeTier( Guid rackId ) => PurchaseComputeTierHost( rackId );
 
 	public void RequestSetAccessPin( string pin, string confirm ) => SetAccessPinHost( pin, confirm );
 
@@ -485,6 +485,9 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 			return;
 		}
 
+		if ( RefuseIfOwnerHasAnotherActiveHub() )
+			return;
+
 		var rack = LpBitcoinRackEntity.FindNearestUnlinked( this, RackLinkRange );
 		if ( !rack.IsValid() )
 		{
@@ -554,6 +557,9 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 				"Claim this hub first (secure boot / PIN), then link your racks." );
 			return;
 		}
+
+		if ( RefuseIfOwnerHasAnotherActiveHub() )
+			return;
 
 		var rack = LpBitcoinRackEntity.FindNearestUnlinked( this, RackLinkRange, advancedOnly: advanced );
 		if ( !rack.IsValid() )
@@ -1038,22 +1044,8 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 	}
 
 	[Rpc.Host]
-	private void UpgradeCpuHost( Guid rackId )
-	{
-		if ( !CanManageHub( Rpc.CallerId ) )
-			return;
-
-		ResolveRack( rackId )?.ApplyUpgradeCpu( Rpc.CallerId );
-	}
-
-	[Rpc.Host]
-	private void UpgradeCoresHost( Guid rackId )
-	{
-		if ( !CanManageHub( Rpc.CallerId ) )
-			return;
-
-		ResolveRack( rackId )?.ApplyUpgradeCores( Rpc.CallerId );
-	}
+	private void PurchaseComputeTierHost( Guid rackId )
+		=> LpBitcoinPurchaseFlow.PurchaseComputeTierHost( this, ResolveRack( rackId ), Rpc.CallerId );
 
 	private LpBitcoinRackEntity ResolveRack( Guid rackId )
 	{
@@ -1061,6 +1053,23 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 			return GetLinkedRacks().FirstOrDefault();
 
 		return GetLinkedRacks().FirstOrDefault( r => r.GameObject.Id == rackId );
+	}
+
+	/// <summary>GO ruling C (slice 2): ONE active HASHD hub per operator, enforced at
+	/// rack-link time — keeps the ledger's owner+slot subject key unambiguous. Scoped
+	/// to lpbitcoin hubs only (future Banker HUB / data center are separate systems).</summary>
+	private bool RefuseIfOwnerHasAnotherActiveHub()
+	{
+		if ( Owner == 0 )
+			return false;
+
+		var other = FindHubByOwnerSteamId( Owner, exclude: this );
+		if ( other is null )
+			return false;
+
+		PushAlertHost( LpBitcoinHubAlertKind.TerminalCommand,
+			"One active HASHD hub per operator — unlink or remove your other hub before registering racks here." );
+		return true;
 	}
 
 	public bool CanManageHub( Guid callerId )
