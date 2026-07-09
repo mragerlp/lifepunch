@@ -32,14 +32,18 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 
 	bool _isExploding;
 #endif
-	[Sync( SyncFlags.FromHost )] public bool IsPowered { get; set; }
-	[Sync( SyncFlags.FromHost )] public bool AccessPinIsSet { get; set; }
-	[Sync( SyncFlags.FromHost )] public int AccessPinHash { get; set; }
+	// [Property, ReadOnly] + [Sync] = snapshot persistence (BaseEntity.Owner-proven combo;
+	// UPGRADE_ARC_DESIGN decision 9). Power / security / wallet are snapshot-sole-truth.
+	[Property, ReadOnly] [Sync( SyncFlags.FromHost )] public bool IsPowered { get; set; }
+	[Property, ReadOnly] [Sync( SyncFlags.FromHost )] public bool AccessPinIsSet { get; set; }
+	[Property, ReadOnly] [Sync( SyncFlags.FromHost )] public int AccessPinHash { get; set; }
 #if LIFEPUNCH_LOCAL
 	[Sync( SyncFlags.FromHost )] public long Owner { get; set; }
 #endif
 	/// <summary>PIN-gated hub wallet — rack BTC deposits here via terminal; cash out from hub admin.</summary>
-	[Sync( SyncFlags.FromHost )] public float HubWalletBtc { get; set; }
+	[Property, ReadOnly] [Sync( SyncFlags.FromHost )] public float HubWalletBtc { get; set; }
+	// Alerts deliberately NOT persisted — audit_retention's base tier is "Volatile Logs";
+	// survival beyond restart becomes a purchased effect (ECONOMY_DOCTRINE house pattern).
 	[Sync( SyncFlags.FromHost )] public string AlertFeed { get; private set; } = string.Empty;
 	[Sync( SyncFlags.FromHost )] public int UnreadAlertCount { get; private set; }
 

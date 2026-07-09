@@ -6,6 +6,44 @@ and machine facts that are not derivable from code.
 
 ---
 
+## 2026-07-08 — Gate-1 run: three bugs caught in-gate (all fixed same night)
+
+The slice-1 proof run surfaced and fixed, before any of it could reach slice 2:
+1. **Harness tier-arg dropped** — `lp_bitcoin_dev_buy_tier` had no tier param;
+   extra console args were silently discarded, so the "rejection asserts"
+   bought tiers instead of testing rejection.
+2. **Ledger cache latched across FS contexts** — a pre-play read in the editor
+   menu context cached an empty ledger into the play session (silent data-loss
+   vector: the next commit would have rewritten the store). Fix: scene-keyed
+   cache in `LifePunchUpgradeLedger.EnsureLoaded`.
+3. **Fake-JSONL serialization** — `Json.Serialize` pretty-prints (no compact
+   mode); records spanned multiple lines and the line-splitting loader could
+   never parse the file. Every prior "survived restart" was in-memory
+   continuity; the first TRUE disk reload failed until the store became a
+   single JSON array document.
+
+Watch-item filed (not ours): the portal snapshot fetch returns a STALE/empty
+snapshot on the FIRST play session of each new editor process; a second
+session in the same process fetches correctly. Candidate upstream report.
+
+## 2026-07-08 — Hotload is not for signature changes (restart-class rule)
+
+Editing a static method's signature (or adding static fields) while the editor
+runs makes hotload substitution fail — `NotImplementedException: Unable to find
+matching substitution for a static method` spamming every frame from timed
+callbacks, session wedged until restart. Rule: **dev-harness/static-shape edits
+mid-session are restart-class, never hotload-class.** Sync the change, cycle
+the editor, recompile fresh. (Also: copy `sbox-dev.log` BEFORE the cycle — the
+log rotates per editor run and takes your proof evidence with it.)
+
+## 2026-07-08 — Portal auth semantics (owner-verified)
+
+The `lp_authorize` token persists across Host Play stop/start — it resets only
+on full editor restart. Owner flow: `api production` → `authorize <key>` ONCE at
+session top; verified by stop/replay + portal match (money, server time).
+Consequence for proof runs: restart legs that stop/start Host Play need NO
+re-auth cues; re-auth only after the editor process itself restarts.
+
 ## 2026-07-08 — One-model law: first violation precedent (no harm)
 
 The morning packet runs' meta showed THREE big models resident in LM Studio VRAM
