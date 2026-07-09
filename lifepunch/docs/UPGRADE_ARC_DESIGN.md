@@ -59,3 +59,9 @@ future asset work). Both post-arc, Bloodwave's call.
 spawn-cost grep (closes the comparables capital leg; rate leg validated
 2026-07-08) · legacy Advanced rack gains the yield scalar in slice 1–2
 (purchase flow reads it at quote time).
+
+**Slice-2 test infrastructure (filed 2026-07-08):** Cornerman may join as an
+authorized second player for multiplayer checks (per its canon test-client
+exception) — use for slice-2's multi-operator purchase/permission cases
+(non-owner buy rejection, concurrent purchase race, cross-operator ledger
+isolation).

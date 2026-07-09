@@ -6,6 +6,14 @@ and machine facts that are not derivable from code.
 
 ---
 
+## 2026-07-08 — Portal auth semantics (owner-verified)
+
+The `lp_authorize` token persists across Host Play stop/start — it resets only
+on full editor restart. Owner flow: `api production` → `authorize <key>` ONCE at
+session top; verified by stop/replay + portal match (money, server time).
+Consequence for proof runs: restart legs that stop/start Host Play need NO
+re-auth cues; re-auth only after the editor process itself restarts.
+
 ## 2026-07-08 — One-model law: first violation precedent (no harm)
 
 The morning packet runs' meta showed THREE big models resident in LM Studio VRAM
