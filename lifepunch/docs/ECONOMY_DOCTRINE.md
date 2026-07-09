@@ -46,6 +46,12 @@ coverage (analog money — may need its own answer).
 **Pairing rule:** Hacker gear ladder and Terminal security ladder are ONE
 design — never tune numbers for one in isolation.
 
+**Defender's status surface (2026-07-09):** the HASHD Terminal sidebar is the
+defender's status surface — `SECURITY .... OK` (green) today, the BREACH
+surface (red) when the Hacker lane ships; counter-commands live at that CRT,
+and `terminal_security`'s tier renders there too (`TERMINAL_POLISH_BRIEF.md`
+item 3).
+
 ## Role Charters (summary)
 
 - **Banker (1 slot):** map-persistent Vault + Master BTC Miner. Yield is

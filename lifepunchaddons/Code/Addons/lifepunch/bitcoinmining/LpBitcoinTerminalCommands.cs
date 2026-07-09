@@ -49,8 +49,8 @@ internal static class LpBitcoinTerminalCommands
 				     || !LpBitcoinIdent.TryResolveLinkedRackIndex( parts[1], racks, out var pick ) )
 				{
 					var usage = racks.Count == 0
-						? "usage: select <n|gpurack-n|advancedgpurack> — no linked racks"
-						: "usage: select 1|2|gpurack-1|gpurack-2|advancedgpurack";
+						? "usage: select <rackId> — no linked racks"
+						: "usage: select <rackId> — copy it from the hub Servers page";
 					return new LpBitcoinCommandResult( false, usage );
 				}
 
@@ -79,7 +79,7 @@ internal static class LpBitcoinTerminalCommands
 					if ( !LpBitcoinIdent.TryResolveLinkedRackIndex( parts[1], hub.GetLinkedRacks(), out var depositPick ) )
 					{
 						return new LpBitcoinCommandResult( false,
-							"ERR rack slot not found — use deposit 1|2|gpurack-1|gpurack-2|advancedgpurack or deposit all" );
+							"ERR rack slot not found — use deposit <rackId> or deposit all" );
 					}
 
 					return DepositRack( hub, depositPick );
@@ -105,10 +105,10 @@ internal static class LpBitcoinTerminalCommands
 					return new LpBitcoinCommandResult( false, "ERR link terminal at hub admin first (hub must be powered on)" );
 
 				if ( parts.Length < 2 )
-					return new LpBitcoinCommandResult( false, "usage: link gpurack-1|gpurack-2|advancedgpurack" );
+					return new LpBitcoinCommandResult( false, "usage: link <rackId> — copy it from the hub Servers page" );
 
 				if ( !LpBitcoinIdent.TryParseLinkRackSlotToken( parts[1], out var linkAdvanced, out var linkStandardSlot ) )
-					return new LpBitcoinCommandResult( false, "usage: link gpurack-1|gpurack-2|advancedgpurack" );
+					return new LpBitcoinCommandResult( false, "usage: link <rackId> — copy it from the hub Servers page" );
 
 				if ( !LpBitcoinIdent.CanLinkToDeclaredSlot( linkAdvanced, linkStandardSlot, racks, out var declaredSlotError ) )
 					return new LpBitcoinCommandResult( false, declaredSlotError );
@@ -120,6 +120,20 @@ internal static class LpBitcoinTerminalCommands
 				var slotToken = LpBitcoinIdent.FormatDeclaredLinkSlotToken( linkAdvanced, linkStandardSlot );
 				hub.RequestLinkRack( parts[1] );
 				return new LpBitcoinCommandResult( true, $"linking {slotToken} — hub confirms when rack in range" );
+
+			case "unlink":
+				if ( parts.Length < 2 )
+					return new LpBitcoinCommandResult( false, "usage: unlink <rackId>" );
+
+				if ( !LpBitcoinIdent.TryResolveLinkedRackIndex( parts[1], racks, out var unlinkPick ) )
+					return new LpBitcoinCommandResult( false,
+						racks.Count == 0
+							? "ERR no linked racks to unlink"
+							: "usage: unlink <rackId> — type racks to see what's linked" );
+
+				var unlinkToken = LpBitcoinIdent.FormatRackSlotTerminalToken( racks[unlinkPick], racks );
+				hub.RequestUnlinkRack( parts[1] );
+				return new LpBitcoinCommandResult( true, $"unlinking {unlinkToken} — slot freed, ledger history kept" );
 
 			case "about":
 				return new LpBitcoinCommandResult( true,
@@ -213,7 +227,8 @@ internal static class LpBitcoinTerminalCommands
 		var cap = LpBitcoinEconomy.RackBtcCapacityFor( rack );
 		return new LpBitcoinCommandResult( true,
 			$"{LpBitcoinIdent.FormatRackSlotTerminalToken( rack, racks )}\n" +
-			$"CPU {rack.ClockGhz:F2} GHz | cores x{rack.CoreCount} | COMPUTE {LpBitcoinIdent.RomanTier( rack.ComputeTier )} (×{LpBitcoinComputeTrack.EffectMultiplierFor( rack.ComputeTier )})\n" +
+			// "cores x1 (locked)" is CRT lore, kept by ruling R2 — fiction surface, not stats surface.
+			$"CPU {rack.ClockGhz:F2} GHz | cores x{rack.CoreCount} (locked) | COMPUTE {LpBitcoinIdent.RomanTier( rack.ComputeTier )} (×{LpBitcoinComputeTrack.EffectMultiplierFor( rack.ComputeTier )})\n" +
 			$"{rack.ClockGhz:F2} GHz · {rack.CoreCount} core(s) | cap {cap:F6} BTC | ${rack.UsdValue} rack value" );
 	}
 
@@ -419,11 +434,14 @@ internal static class LpBitcoinTerminalCommands
 		return $"{LpBitcoinIdent.FormatRackSlotTerminalToken( rack, racks )} | {rack.BitcoinAmount:F6}/{cap:F6} BTC | {state}";
 	}
 
+	// Command list is GRAMMAR, never instances (reference-not-shortcuts law): verbs take
+	// <rackId>, players fetch rackIds from the hub Servers page (COPY) and TYPE them here —
+	// deliberate retro friction. Numeric index parses as a silent legacy alias, undocumented.
 	private static string HelpText() =>
 		"── HASHD rig0 commands (space-separated) ──\n" +
-		"help · clear (or header CLEAR) · link gpurack-1|gpurack-2|advancedgpurack · racks · select 1|2|gpurack-1|gpurack-2|advancedgpurack · status · info · wallet\n" +
+		"help · clear (or header CLEAR) · link <rackId> · unlink <rackId> · racks · select <rackId> · status · info · wallet\n" +
 		"mining start|stop · mining start all|stop all · mining all-start|all-stop\n" +
-		"deposit · deposit all · deposit 1|2|advancedgpurack\n" +
+		"deposit · deposit all · deposit <rackId>\n" +
 		"send <steamid> <amount|all> — transfer hub wallet BTC to another operator's hub\n" +
-		"cash out to bank at hub admin wallet tab (not on this CRT)";
+		"rackIds: copy from the hub Servers page — cash out to bank at hub admin wallet tab (not on this CRT)";
 }
