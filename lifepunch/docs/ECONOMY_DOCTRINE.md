@@ -1,6 +1,8 @@
 # LIFEPUNCH Economy Doctrine
 
 Status: CANON — ratified 2026-07-08. Systems must comply or amend this page first.
+Companions (ratified 2026-07-09): `UPGRADE_ECONOMY_DOCTRINE.md` (what things
+cost and why) · `INSTITUTIONS_DOCTRINE.md` (who owns what, who can take it).
 
 ## The Three Laws
 
@@ -46,6 +48,11 @@ coverage (analog money — may need its own answer).
 **Pairing rule:** Hacker gear ladder and Terminal security ladder are ONE
 design — never tune numbers for one in isolation.
 
+**Track specs:** the Terminal's five defense tracks (Endpoint Firewall ·
+Command Authentication · Intrusion Detection · Audit Retention · Monitoring
+Suite) are specced in `UPGRADE_ECONOMY_DOCTRINE.md` (HASHD Terminal table),
+fitted on losses-prevented and paired with the Hacker ladder per this rule.
+
 **Defender's status surface (2026-07-09):** the HASHD Terminal sidebar is the
 defender's status surface — `SECURITY .... OK` (green) today, the BREACH
 surface (red) when the Hacker lane ships; counter-commands live at that CRT,
@@ -57,6 +64,10 @@ item 3).
 - **Banker (1 slot):** map-persistent Vault + Master BTC Miner. Yield is
   BACKED — paid pro-rata from actual vault production (miner output +
   fees), never minted on schedule. HUB upgrades raise real capacity.
+  Full charter: `INSTITUTIONS_DOCTRINE.md` **The Fund, Not the Bank** —
+  vaults are voluntarily at-risk capital (portal bank balance is always
+  safe), vote-required office with Bank Guard slots, and the Banker's own
+  props are the deductible (he bleeds first in any raid).
 - **Hacker:** skims capital economy (wallets, printer balances, rack leak,
   Funds/Bank/black market/casino). Tuned as a tax, not a jackpot:
   % caps per hit, cost-to-attempt, leaves evidence for FBI gameplay.
@@ -87,6 +98,12 @@ system's visible prestige is purchasable only with that system's own
 earned output. Cash→BTC exchange, if ever built, is a Banker-toolkit
 valve — governed conversion, never a second payment path in any
 purchase flow.
+
+Generalized across every entity (ratified 2026-07-09):
+`UPGRADE_ECONOMY_DOCTRINE.md` **Visible-Status, Generalized** — every
+installation's tiers are BTC-paid and BTC has no faucet, so a glowing rack,
+a hardened terminal, or a fat vault each proves its owner ran the operation
+(or traded with someone who did). Cosmetics are the sole exception.
 
 ## Role-Vacancy Law
 

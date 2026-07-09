@@ -65,6 +65,25 @@ spawn-cost grep (closes the comparables capital leg; rate leg validated
 2026-07-08) · legacy Advanced rack gains the yield scalar in slice 1–2
 (purchase flow reads it at quote time).
 
+**PayoutTarget (code finding, 2026-07-09 — first new-canon slice, queued
+behind 3.5):** today's cash-out path pays the owner's bank directly with no
+routing seam. `UPGRADE_ECONOMY_DOCTRINE.md` defines
+`LpBitcoinHubEntity.PayoutTarget` (PlayerBank | FundPile | CityFunds) — one
+field, three institutions; the Banker's Master Miner and the government Data
+Center are configurations of the mining system, not new systems. Build shape
+(STOP-GO first): the enum + route the cash-out path through one switch;
+PlayerBank = current behavior; FundPile/CityFunds refuse with a clear log
+line until their institutions exist. Additive, zero-risk, the seam the
+Banker and Data Center plug into.
+Riders (ruled 2026-07-09): **R1 — PayoutTarget is world-state:**
+`[Property, ReadOnly] + [Sync(FromHost)]` from birth per the persistence
+law — a Data Center must NEVER reboot into PlayerBank (that's a
+silent-misdirection exploit, not a default); gate case: configure → restart →
+target survives (the gate-1 proof shape). **R2 — refusals NAME the missing
+institution:** "FundPile refused — no Banker institution exists yet" /
+"CityFunds refused — no Data Center institution exists yet" — the seam
+documents itself in the logs, per the house rule that every deny speaks.
+
 **Slice-2 test infrastructure (filed 2026-07-08):** Cornerman may join as an
 authorized second player for multiplayer checks (per its canon test-client
 exception) — use for slice-2's multi-operator purchase/permission cases
