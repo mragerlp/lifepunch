@@ -13,7 +13,7 @@
 
 @attribute [StyleSheet]
 
-<root class="@GetRootClass()">
+<root class="@GetRootClass()" onmousedown="@OnRootMouseDown">
 	<div class="shell">
 		<div class="shell-body">
 		@if ( ShowPinGate() )
@@ -380,50 +380,72 @@
 															}
 															@if ( slot.Rack.IsValid() )
 															{
-																<div class="server-detail-status">
-																	<div class="lp-ui-info server-detail-info">
-																		<div class="lp-ui-info-row">
-																			<span class="lp-ui-info-label">Hash rate</span>
-																			<span class="lp-ui-info-value">@RackHashRateStatus( slot.Rack )</span>
-																		</div>
-																		<div class="lp-ui-info-row">
-																			<span class="lp-ui-info-label">BTC buffer</span>
-																			<span class="lp-ui-info-value">@RackCapacityStatus( slot.Rack )</span>
-																		</div>
-																		<div class="lp-ui-info-row">
-																			<span class="lp-ui-info-label">Compute</span>
-																			<span class="lp-ui-info-value">@RackHardwareLine( slot.Rack )</span>
-																		</div>
-																		<div class="lp-ui-info-row">
-																			<span class="lp-ui-info-label">Yield</span>
-																			<span class="lp-ui-info-value">@RackYieldStatus( slot.Rack )</span>
-																		</div>
-																		<div class="lp-ui-info-row">
-																			<span class="lp-ui-info-label">Power</span>
-																			<span class="lp-ui-info-value">@( Hub?.IsPowered == true ? "Online" : "Offline" )</span>
-																		</div>
-																		<div class="lp-ui-info-row">
-																			<span class="lp-ui-info-label">Link</span>
-																			@* Single text run — the space before the nested accent span gets eaten ("rig0token"). Accent styling can return in Phase C. *@
-																		<span class="lp-ui-info-value on">@($"Linked · rig0 {slot.TerminalToken}")</span>
-																		</div>
-																		<div class="lp-ui-info-row">
-																			<span class="lp-ui-info-label">Control</span>
-																			<span class="lp-ui-info-value dim">Mining start/stop on CRT</span>
-																		</div>
+																@* Identity is the hero (hierarchy-inversion ruling): per-track delta cards
+																   bound to the track registry (live tracks only — the grid grows per track
+																   registration), invested receipt, upgrade CTA. Cards are DISPLAY, NOT
+																   CONTROL: read-only, no per-card click states; the strip-level click and
+																   the button deep-link to this rack's Upgrades view (two-screen contract:
+																   detail = EVALUATE, upgrades = TRANSACT). *@
+																<div class="server-hero">
+																	<div class="server-track-cards" onclick="@(() => OpenUpgradesForRackSlot( slot ))">
+																		@foreach ( var heroTrack in GpuRackUpgradeTracks )
+																		{
+																			if ( !IsTrackLive( heroTrack ) )
+																				continue;
+
+																			<div class="server-track-card">
+																				<div class="server-track-card-head">
+																					<i class="material-icons">@heroTrack.Icon</i>
+																					<span>@heroTrack.Name</span>
+																				</div>
+																				@if ( slot.Rack.ComputeTier >= 5 )
+																				{
+																					@* MAX ruling: the pair collapses to ONE centered panel — crown badge
+																					   (square treatment matching the stepper), tier bubble, current stats. *@
+																					<div class="server-track-panel maxed">
+																						<span class="server-track-max-badge"><i class="material-icons">military_tech</i>MAX</span>
+																						<span class="server-track-tier-bubble max">V</span>
+																						<span class="server-track-stat flavor">@CardGhz( slot.Rack.ComputeTier )</span>
+																						<span class="server-track-stat">@CardRateLine( slot.Rack, slot.Rack.ComputeTier )</span>
+																					</div>
+																				}
+																				else
+																				{
+																					<div class="server-track-compare">
+																						<div class="server-track-panel current">
+																							<span class="server-track-tier-bubble @( slot.Rack.ComputeTier > 0 ? "lit" : "" )">@( slot.Rack.ComputeTier > 0 ? TierRoman( slot.Rack.ComputeTier ) : "STOCK" )</span>
+																							<span class="server-track-stat flavor">@CardGhz( slot.Rack.ComputeTier )</span>
+																							<span class="server-track-stat">@CardRateLine( slot.Rack, slot.Rack.ComputeTier )</span>
+																						</div>
+																						<i class="material-icons server-track-arrow">arrow_forward</i>
+																						<div class="server-track-panel next">
+																							<span class="server-track-cost">@CardCostBtc( slot.Rack ) <span class="usd">(<span class="lp-money-cash">@CardCostUsd( slot.Rack )</span>)</span></span>
+																							<span class="server-track-tier-bubble next">@TierRoman( slot.Rack.ComputeTier + 1 )</span>
+																							<span class="server-track-stat flavor">@CardGhz( slot.Rack.ComputeTier + 1 )</span>
+																							<span class="server-track-stat delta">@CardDeltaLine( slot.Rack )</span>
+																							<span class="server-track-stat payback">@CardPaybackLine( slot.Rack )</span>
+																						</div>
+																					</div>
+																				}
+																			</div>
+																		}
 																	</div>
-																	@* Legacy hardware-levels section removed — purchases live on Universal Upgrades.
-																	   Rack CoreCount/ClockGhz data untouched; the economy still reads it. *@
-																	@* Bottom action row — content-left/action-right (checklist idiom). The lead slot
-																	   is the reserved seat for the inline upgrade stepper (this rack's I→V
-																	   progression); it drops in with zero relayout. *@
-																	<div class="server-detail-action-row">
-																		<div class="server-detail-action-lead"></div>
+																	<div class="server-hero-foot">
+																		<span class="server-hero-receipt">@HeroInvestedReceipt( slot.Rack )</span>
 																		<button class="lp-ui-btn-primary server-detail-upgrade-btn" onclick="@(() => OpenUpgradesForRackSlot( slot ))">
 																			<span>Upgrade this rack</span>
 																			<i class="material-icons">arrow_forward</i>
 																		</button>
 																	</div>
+																</div>
+																@* Telemetry is the footnote: one status line (Control ruling — the start/stop
+																   hint is its tooltip), compact buffer fill-bar (numbers on hover), fine print. *@
+																<div class="server-detail-compact">
+																	<div class="server-detail-status-line" tooltip="Mining start/stop on CRT">@HeroStatusLine( slot.Rack, slot.TerminalToken )</div>
+																	<div class="server-buffer-bar" tooltip="@RackCapacityStatus( slot.Rack )">
+																		<div class="server-buffer-bar-fill" style="width: @( HeroBufferPercent( slot.Rack ) )%;"></div>
+																	</div>
+																	<div class="server-detail-fineprint">@HeroFinePrint( slot.Rack )</div>
 																</div>
 															}
 														</div>
@@ -535,74 +557,86 @@
 												}
 												else
 												{
-													@if ( _openPath is null )
-													{
-														<button class="lp-ui-btn-ghost upgrades-back-btn" onclick="@BackFromPathList">
-															<i class="material-icons">arrow_back</i>
-															<span>@PathListBackLabel()</span>
-														</button>
-													}
+													<button class="lp-ui-btn-ghost upgrades-back-btn" onclick="@BackFromPathList">
+														<i class="material-icons">arrow_back</i>
+														<span>@PathListBackLabel()</span>
+													</button>
 
 													<div class="lp-ui-scroll-region upgrades-scroll universal-upgrades-scroll">
-													@if ( _openPath is null )
-													{
-														@foreach ( var section in CurrentUpgradeSections() )
-														{
-															<div class="upgrade-section @( section.Cosmetic ? "upgrade-section-cosmetic" : "upgrade-section-fill" )">
-																<div class="upgrade-section-head @( section.Cosmetic ? "cosmetic" : "" )">
-																	<i class="material-icons">@section.Icon</i>
-																	<span>@section.Title</span>
-																</div>
-																<div class="upgrade-path-list">
-																	@foreach ( var track in section.Tracks )
-																	{
-																		<button class="upgrade-path-btn @( section.Cosmetic ? "cosmetic" : "" )" onclick="@(() => OpenUpgradePath( track.Name ))">
-																			<i class="material-icons upgrade-path-btn-icon">@track.Icon</i>
-																			<div class="upgrade-path-btn-body">
-																				<span class="upgrade-path-btn-name">@track.Name</span>
-																				<span class="upgrade-path-btn-tier">@CurrentTierLabel( track )</span>
-																			</div>
-																			<span class="upgrade-path-btn-status">@( section.Cosmetic ? "NOT ENABLED" : "PLANNED" )</span>
-																			<i class="material-icons upgrade-path-btn-chevron">chevron_right</i>
-																		</button>
-																	}
-																</div>
-															</div>
-														}
+													@{
+														// One-page law (sketch spec): every track is a ROW — the live track
+														// carries the inline stepper; future tracks stay PLANNED rows; no
+														// sub-menus, ever. The tier-card sub-page is dead.
+														var stepperRack = _upgradeSurface == UpgradeSurface.GpuRack ? RackForSelector() : null;
 													}
-													else
+													@foreach ( var section in CurrentUpgradeSections() )
 													{
-														var openTrack = ResolveOpenPath();
-														var openCosmetic = IsCosmetic( openTrack.Name );
-														<div class="upgrade-path-detail">
-															<button class="lp-ui-btn-ghost upgrades-back-btn upgrade-path-back" onclick="@CloseUpgradePath">
-																<i class="material-icons">arrow_back</i>
-																<span>All paths</span>
-															</button>
-															<div class="upgrade-path-detail-head">
-																<i class="material-icons">@openTrack.Icon</i>
-																<div class="upgrade-path-detail-headtext">
-																	<span class="upgrade-path-detail-name">@openTrack.Name</span>
-																	<span class="upgrade-path-detail-sub">@($"{CurrentTierLabel( openTrack )} · {( openCosmetic ? "NOT ENABLED" : "PLANNED" )}")</span>
-																</div>
+														<div class="upgrade-section @( section.Cosmetic ? "upgrade-section-cosmetic" : "upgrade-section-fill" )">
+															<div class="upgrade-section-head @( section.Cosmetic ? "cosmetic" : "" )">
+																<i class="material-icons">@section.Icon</i>
+																<span>@section.Title</span>
 															</div>
-															<div class="upgrade-tier-line">
-																@for ( int _tier = 1; _tier <= 5; _tier++ )
+															<div class="upgrade-path-list">
+																@foreach ( var track in section.Tracks )
 																{
-																	<div class="upgrade-tier-cell @TierLineState( _tier ) @( _tier == 5 ? "cap" : "" )"
-																	     tooltip="@TierTooltip( openTrack, _tier )">
-																		@* Tier numeral, not the track icon — the icon repeated identically on all five
-																		   cards (decoration); the numeral is information. Track icon lives in the header. *@
-																		<span class="upgrade-tier-cell-numeral">@TierRoman( _tier )</span>
-																		<span class="upgrade-tier-cell-roman">@($"Tier {TierRoman( _tier )}")</span>
-																		<span class="upgrade-tier-cell-label">@TierLineLabel( openTrack, _tier )</span>
-																		<span class="upgrade-tier-cell-state">@( _tier == 1 ? "BASE" : "PLANNED" )</span>
+																	var live = !section.Cosmetic && IsComputeTrack( track ) && stepperRack.IsValid();
+																	<div class="upgrade-track-row @( section.Cosmetic ? "cosmetic" : "" ) @( live ? "live" : "" )">
+																		<i class="material-icons upgrade-path-btn-icon">@track.Icon</i>
+																		<div class="upgrade-path-btn-body">
+																			<span class="upgrade-path-btn-name">@track.Name</span>
+																			<span class="upgrade-path-btn-tier">@RowTierLabel( track, live ? stepperRack : null )</span>
+																		</div>
+																		@if ( live )
+																		{
+																			@* Inline stepper — keep this block in sync with the compact seat
+																			   mount in the rack-detail action row (same classes, same states). *@
+																			<div class="lp-stepper">
+																				@for ( int _tier = 1; _tier <= 5; _tier++ )
+																				{
+																					if ( _tier > 1 )
+																					{
+																						<div class="lp-stepper-link @StepperLinkClass( stepperRack, _tier - 1 )"></div>
+																					}
+																					var cellTier = _tier;
+																					<div class="lp-stepper-cell @StepperCellClass( stepperRack, _tier )"
+																					     tooltip="@StepperTooltip( stepperRack, _tier )"
+																					     onclick="@(() => ToggleConfirm( stepperRack, cellTier ))">
+																						<span>@TierRoman( _tier )</span>
+																					</div>
+																				}
+																				@if ( ConfirmOpenFor( stepperRack ) )
+																				{
+																					<div class="lp-stepper-chip @( _purchaseResultCode > 0 && _sincePurchaseResult < 0.5f ? "shake" : "" )">
+																						@if ( StepperWorking( stepperRack ) )
+																						{
+																							<div class="lp-stepper-chip-row">
+																								<span class="lp-stepper-chip-line working">WORKING…</span>
+																							</div>
+																						}
+																						else
+																						{
+																							<div class="lp-stepper-chip-row">
+																								@* Semantic money colors (ruling): ₿ gold · $ green · ✓ green · ✕ red. *@
+																							<span class="lp-stepper-chip-line">TIER @TierRoman( stepperRack.ComputeTier + 1 ) · <span class="lp-money-btc">@CardCostBtc( stepperRack )</span> <span class="lp-money-parens">(<span class="lp-money-cash">@CardCostUsd( stepperRack )</span>)</span></span>
+																								<button class="lp-stepper-chip-yes" onclick="@(() => ConfirmPurchase( stepperRack ))"><i class="material-icons">check</i></button>
+																								<button class="lp-stepper-chip-no" onclick="@DismissConfirm"><i class="material-icons">close</i></button>
+																							</div>
+																							@if ( _purchaseResultCode == 1 )
+																							{
+																								<div class="lp-stepper-chip-row reject">SHORT ₿ @( ( _purchaseResultShortfallSats / 100_000_000f ).ToString( "0.####" ) )</div>
+																							}
+																							else if ( _purchaseResultCode > 1 )
+																							{
+																								<div class="lp-stepper-chip-row reject">REJECTED · TIER ORDER / HUB ACCESS</div>
+																							}
+																						}
+																					</div>
+																				}
+																			</div>
+																		}
+																		<span class="upgrade-path-btn-status">@TrackRowStatus( track, section.Cosmetic, live ? stepperRack : null )</span>
 																	</div>
 																}
-															</div>
-															<div class="upgrades-not-enabled-banner">
-																<i class="material-icons">lock</i>
-																<span>PURCHASES NOT YET ENABLED</span>
 															</div>
 														</div>
 													}
@@ -1016,46 +1050,8 @@
 		}
 	};
 
-	// Open path on the Upgrades home (null = path list). Stored by track Name; resolved within the
-	// active surface, so switching surface/rack clears it (see SelectUpgradeSurface/SelectUpgradeRackSlot).
-	private string _openPath;
-
-	private void OpenUpgradePath( string name )
-	{
-		_openPath = name;
-		LifePunchUiScrollPolicy.ResetOffsets( Panel );
-	}
-
-	private void CloseUpgradePath()
-	{
-		_openPath = null;
-		LifePunchUiScrollPolicy.ResetOffsets( Panel );
-	}
-
-	private UpgradeTrackShell ResolveOpenPath()
-	{
-		foreach ( var section in CurrentUpgradeSections() )
-			foreach ( var track in section.Tracks )
-				if ( track.Name == _openPath )
-					return track;
-
-		return HubUpgradeTracks[0];
-	}
-
-	// Per-tier label for the detail line: Tier I shows the baseline label, II–V show each rung's name.
-	private string TierLineLabel( UpgradeTrackShell track, int tier )
-		=> tier == 1 ? track.TierOneLabel : TierAt( track, tier ).Label;
-
-	// Static UI shell — no economy, no purchase state, no mutation. Tier I is the included
-	// baseline; Tiers II–V are planned and not yet enabled. Swap point: when the economy lands,
-	// a real owned-tier source + purchase RPC replace these static helpers.
-	private static bool IsCosmetic( string name )
-		=> name == HubSoundPackCosmetic.Name
-		|| name == TerminalSkinCosmetic.Name
-		|| name == RackFanRgbCosmetic.Name;
-
-	// Visual state for a static tier cell: Tier I = included baseline, Tiers II–V = planned.
-	private static string TierLineState( int tier ) => tier == 1 ? "base" : "planned";
+	// One-page law (slice 3): the tier-card sub-page is dead — every track is a row; the live
+	// track carries the inline stepper. _openPath / OpenUpgradePath / TierLine* removed.
 
 	private static string TierRoman( int n ) => n switch
 	{
@@ -1067,35 +1063,25 @@
 		_ => n.ToString()
 	};
 
-	// Safe tier accessor — tier 2..5 maps to Tiers[0..3]. Guards against hotload-transient null
-	// or out-of-range so a partial reload can never crash the render tree (NRE in build tree).
-	private static UpgradeTierShell TierAt( UpgradeTrackShell track, int tier )
-	{
-		var tiers = track.Tiers;
-		var idx = tier - 2;
-		if ( tiers is null || idx < 0 || idx >= tiers.Length )
-			return new UpgradeTierShell( track.TierOneLabel ?? "—", "" );
-
-		return tiers[idx];
-	}
-
-	private string TierTooltip( UpgradeTrackShell track, int tier )
-	{
-		if ( tier == 1 )
-			return $"Tier I · {track.TierOneLabel}\nBaseline — included";
-
-		var t = TierAt( track, tier );
-		return $"Tier {TierRoman( tier )} · {t.Label}\n{t.Detail}\nPlanned — purchases not yet enabled";
-	}
-
-	// Static baseline label — always Tier I (the included baseline) on this UI-only shell.
+	// Static baseline label — planned rows show their Tier I baseline until their track ships.
 	private string CurrentTierLabel( UpgradeTrackShell track )
 		=> $"Tier I · {track.TierOneLabel}";
 
-	// Overview hub-status column — one line per functional track (no Tier I–V ladder here).
-	// Swap point: read owned tier from upgrade profile when economy lands.
-	private static string OverviewTrackCurrentTier( UpgradeTrackShell track )
-		=> "Base";
+	// Overview hub-status column — one line per functional track. Compute is live: shows the
+	// highest owned tier across linked racks; other tracks stay Base until they ship.
+	private string OverviewTrackCurrentTier( UpgradeTrackShell track )
+	{
+		if ( !IsComputeTrack( track ) || !Hub.IsValid() )
+			return "Base";
+
+		var racks = Hub.GetLinkedRacks();
+		var max = 0;
+		foreach ( var r in racks )
+			if ( r.IsValid() && r.ComputeTier > max )
+				max = r.ComputeTier;
+
+		return max == 0 ? "Base" : $"Tier {TierRoman( max )}";
+	}
 
 	private static readonly OpsTab[] _tabs = { OpsTab.Overview, OpsTab.Upgrades, OpsTab.Racks, OpsTab.Wallet, OpsTab.Transfers, OpsTab.Logs, OpsTab.Settings };
 	private static readonly PerfRange[] _perfRanges = { PerfRange.Day, PerfRange.Week, PerfRange.Month };
@@ -1131,6 +1117,231 @@
 	private string _partialCashOutFeedbackText = "";
 	private WalletCashOutFeedback _allCashOutFeedback;
 	private string _allCashOutFeedbackText = "";
+
+	// Slice-3 stepper state — set ONLY by the OnPurchaseResult broadcast (envelope-driven,
+	// never optimistic). _purchasePendingRackId is the "working" gate: set when a purchase
+	// RPC is fired, cleared when the result lands; if the broadcast never arrives the stepper
+	// stays working and never falsely advances (the kill-the-broadcast-mid-test case).
+	// resultCode: 0=Ok · 1=InsufficientFunds · 2=PreconditionTier · 3=HubGuard · -1=none.
+	private Guid _purchasePendingRackId = Guid.Empty;
+	private int _purchaseResultCode = -1;
+	private int _purchaseResultTier;
+	private long _purchaseResultCostSats;
+	private long _purchaseResultShortfallSats;
+	private TimeSince _sincePurchaseResult;
+
+	// Stepper interaction (sketch spec): _confirmRackId = which rack's anchored popover is
+	// open. The popover doubles as the rejection surface — a failure envelope re-renders it
+	// with the reason instead of the YES/NO body.
+	private Guid _confirmRackId = Guid.Empty;
+
+	private static string SelectorToken( UpgradeRackSelector sel ) => sel switch
+	{
+		UpgradeRackSelector.Rack2 => "gpurack-2",
+		UpgradeRackSelector.Advanced => LpBitcoinIdent.AdvancedRackTerminalToken,
+		_ => "gpurack-1",
+	};
+
+	private LpBitcoinRackEntity RackForToken( string token )
+	{
+		if ( !Hub.IsValid() || string.IsNullOrEmpty( token ) )
+			return null;
+
+		var racks = Hub.GetLinkedRacks();
+		return racks.FirstOrDefault( r =>
+			LpBitcoinIdent.FormatRackSlotTerminalToken( r, racks ) == token );
+	}
+
+	private LpBitcoinRackEntity RackForSelector() => RackForToken( SelectorToken( _upgradeRackSlot ) );
+
+	private static bool IsComputeTrack( UpgradeTrackShell track ) => track.Name == "Compute Profile";
+
+	private bool StepperWorking( LpBitcoinRackEntity rack )
+		=> rack.IsValid() && _purchasePendingRackId == rack.GameObject.Id;
+
+	private long StepperNextQuoteSats( LpBitcoinRackEntity rack )
+		=> rack.ComputeTier >= 5 ? -1L : LpBitcoinComputeTrack.QuoteSats( rack, rack.ComputeTier + 1 );
+
+	private bool StepperAffordable( LpBitcoinRackEntity rack )
+	{
+		var quote = StepperNextQuoteSats( rack );
+		return quote >= 0 && Hub.IsValid() && Hub.HubWalletBtc >= quote / 100_000_000f;
+	}
+
+	// Circuit ruling: owned bubbles + their links are one energized accent segment ending at
+	// the owned frontier · purchase frontier is GREY with the click affordance, tint = can
+	// afford · beyond is uniform grey inert. Tier V is the square terminal node (MAX).
+	private string StepperCellClass( LpBitcoinRackEntity rack, int tier )
+	{
+		var max = tier == 5 ? " max" : "";
+
+		if ( tier <= rack.ComputeTier )
+			return "owned" + max + ( _purchaseResultCode == 0 && _purchaseResultTier == tier && _sincePurchaseResult < 1.2f ? " just-bought" : "" );
+
+		if ( tier == rack.ComputeTier + 1 )
+			return "actionable" + max
+				+ ( StepperAffordable( rack ) ? " affordable" : " unaffordable" )
+				+ ( StepperWorking( rack ) ? " working" : "" );
+
+		return "locked" + max;
+	}
+
+	// Wire between bubble N and N+1: lit only inside the owned segment; everything past the
+	// owned frontier is grey.
+	private string StepperLinkClass( LpBitcoinRackEntity rack, int afterTier )
+	{
+		return afterTier < rack.ComputeTier ? "solid" : "dark";
+	}
+
+	// Tooltip informs, never asks: "COMPUTE II · ×4 rate · ₿ 0.75" (QuoteSats, yield-aware).
+	private string StepperTooltip( LpBitcoinRackEntity rack, int tier )
+	{
+		if ( tier > rack.ComputeTier + 1 )
+			return $"Requires Tier {TierRoman( tier - 1 )}";
+
+		if ( tier <= rack.ComputeTier )
+			return $"COMPUTE {TierRoman( tier )} · ×{LpBitcoinComputeTrack.EffectMultiplierFor( tier )} rate · owned";
+
+		var quote = LpBitcoinComputeTrack.QuoteSats( rack, tier );
+		return $"COMPUTE {TierRoman( tier )} · ×{LpBitcoinComputeTrack.EffectMultiplierFor( tier )} rate · ₿ {quote / 100_000_000f:0.##}";
+	}
+
+	// Row's right status slot per sketch 4: PLANNED (future tracks) → next-price or blank
+	// (active track) → MAX TIER (ladder complete). Cosmetics keep NOT ENABLED.
+	private string TrackRowStatus( UpgradeTrackShell track, bool cosmetic, LpBitcoinRackEntity rack )
+	{
+		if ( cosmetic ) return "NOT ENABLED";
+		if ( !IsComputeTrack( track ) || !rack.IsValid() ) return "PLANNED";
+		if ( rack.ComputeTier >= 5 ) return "MAX TIER";
+
+		var quote = StepperNextQuoteSats( rack );
+		return quote >= 0 ? $"₿ {quote / 100_000_000f:0.##}" : "";
+	}
+
+	// Row tier sub-label: real tier for the live Compute track, static baseline for planned rows.
+	private string RowTierLabel( UpgradeTrackShell track, LpBitcoinRackEntity rack )
+	{
+		if ( IsComputeTrack( track ) && rack.IsValid() )
+			return rack.ComputeTier == 0
+				? $"Tier — · Stock Clocks"
+				: $"Tier {TierRoman( rack.ComputeTier )} · ×{LpBitcoinComputeTrack.EffectMultiplierFor( rack.ComputeTier )} rate";
+
+		return CurrentTierLabel( track );
+	}
+
+	private bool ConfirmOpenFor( LpBitcoinRackEntity rack )
+		=> rack.IsValid() && _confirmRackId == rack.GameObject.Id;
+
+	private void ToggleConfirm( LpBitcoinRackEntity rack, int tier )
+	{
+		// Only the actionable bubble opens the popover; owned/locked cells are inert clicks.
+		if ( !rack.IsValid() || tier != rack.ComputeTier + 1 || tier > 5 || StepperWorking( rack ) )
+			return;
+
+		_confirmRackId = ConfirmOpenFor( rack ) ? Guid.Empty : rack.GameObject.Id;
+		_purchaseResultCode = -1;
+	}
+
+	private void DismissConfirm()
+	{
+		_confirmRackId = Guid.Empty;
+		_purchaseResultCode = -1;
+	}
+
+	private void ConfirmPurchase( LpBitcoinRackEntity rack )
+	{
+		if ( !rack.IsValid() || StepperWorking( rack ) )
+			return;
+
+		_purchasePendingRackId = rack.GameObject.Id;
+		_purchaseResultCode = -1;
+		rack.RequestPurchaseComputeTier();
+	}
+
+	// ── Rack-detail hero (hierarchy inversion): per-track delta cards ──
+	// Cards bind to the track registry; live tracks render real data (Compute today),
+	// the grid grows per track registration with zero card code.
+
+	private static bool IsTrackLive( UpgradeTrackShell track ) => IsComputeTrack( track );
+
+	private static float ProjectedClockGhz( int tier )
+		=> LpBitcoinEconomy.StartClockGhz * LpBitcoinComputeTrack.EffectMultiplierFor( tier );
+
+	private static string CardGhz( int tier )
+		=> $"{ProjectedClockGhz( tier ):F2} GHz";
+
+	// BTC/min at a given tier — while-hashing implicit (delta ruling). Same Apply-math
+	// the host uses, so the gate can assert card values against QuoteSats/reconcile.
+	private static float CardRatePerMin( LpBitcoinRackEntity rack, int tier )
+		=> LpBitcoinEconomy.MiningRatePerMinute( ProjectedClockGhz( tier ), rack.CoreCount, rack.YieldMultiplier );
+
+	private static string CardRateLine( LpBitcoinRackEntity rack, int tier )
+		=> $"{CardRatePerMin( rack, tier ):0.####} BTC/min";
+
+	private static float CardDeltaPerMin( LpBitcoinRackEntity rack )
+		=> CardRatePerMin( rack, rack.ComputeTier + 1 ) - CardRatePerMin( rack, rack.ComputeTier );
+
+	private static string CardDeltaLine( LpBitcoinRackEntity rack )
+		=> $"+{CardDeltaPerMin( rack ):0.####} BTC/min";
+
+	// Advanced parity is structural: yield scales quote and delta alike, so payback is
+	// identical to same-tier standard — gate asserts it to the minute.
+	private string CardPaybackLine( LpBitcoinRackEntity rack )
+	{
+		var quoteBtc = StepperNextQuoteSats( rack ) / 100_000_000f;
+		var delta = CardDeltaPerMin( rack );
+		return delta > 0f ? $"pays back ~{quoteBtc / delta:N0} min" : "";
+	}
+
+	private string CardCostBtc( LpBitcoinRackEntity rack )
+		=> $"₿ {StepperNextQuoteSats( rack ) / 100_000_000f:0.##}";
+
+	// Bare value — semantic color binds to the VALUE only; parens are typography,
+	// rendered neutral at the call sites (Law 13 precision).
+	private string CardCostUsd( LpBitcoinRackEntity rack )
+		=> $"${LpBitcoinEconomy.BtcToCashUsd( StepperNextQuoteSats( rack ) / 100_000_000f ):N0}";
+
+	// Receipt is a re-derived ledger projection: quotes are deterministic per rack class,
+	// so SUM(QuoteSats 1..tier) equals the ledger's SUM(costSats) — gate-3 asserts it to
+	// the sat. Client-derived; MUST become host-synced if pricing ever goes dynamic (R3).
+	private static string HeroInvestedReceipt( LpBitcoinRackEntity rack )
+	{
+		long sats = 0;
+		for ( var t = 1; t <= rack.ComputeTier; t++ )
+			sats += LpBitcoinComputeTrack.QuoteSats( rack, t );
+
+		return $"₿ {sats / 100_000_000f:0.##} invested";
+	}
+
+	// One status line (ruling 1): power · link · hashing state.
+	private string HeroStatusLine( LpBitcoinRackEntity rack, string token )
+		=> $"{( Hub?.IsPowered == true ? "Online" : "Offline" )} · Linked rig0 {token} · {( rack.IsMining ? "Hashing" : "Idle" )}";
+
+	private static int HeroBufferPercent( LpBitcoinRackEntity rack )
+	{
+		var cap = LpBitcoinEconomy.RackBtcCapacityFor( rack );
+		return cap > 0f ? (int)Math.Round( 100f * Math.Clamp( rack.BitcoinAmount / cap, 0f, 1f ) ) : 0;
+	}
+
+	// Fine print (ruling 1): GHz + yield — the compressed remainder of the old info list.
+	private static string HeroFinePrint( LpBitcoinRackEntity rack )
+		=> $"{rack.ClockGhz:F2} GHz · {RackYieldBadge( rack )}";
+
+	// Outside-click dismisses the confirm chip; clicks inside the chip or on stepper
+	// cells are theirs (cells run their own toggle logic on the later click event).
+	private void OnRootMouseDown( PanelEvent e )
+	{
+		if ( _confirmRackId == Guid.Empty )
+			return;
+
+		for ( var p = e.Target; p is not null; p = p.Parent )
+		{
+			if ( p.HasClass( "lp-stepper-chip" ) || p.HasClass( "lp-stepper-cell" ) )
+				return;
+		}
+
+		DismissConfirm();
+	}
 
 	// Structure hash (racks linked, power, alerts, wallet display) — never hash TextEntry bind values.
 	private TimeSince _sinceTelemetryRefresh;
@@ -1288,9 +1499,6 @@
 			_ => UpgradeRackSelector.Rack1
 		} );
 	}
-
-	/// <summary>Dev sweep — open a track's tier detail by exact name on the current surface.</summary>
-	public void DevOpenUpgradeTrack( string name ) => OpenUpgradePath( name );
 
 	protected override void OnEnabled()
 	{
@@ -1539,7 +1747,10 @@
 			if ( rack.IsMining )
 				return $"{rack.MiningRatePerMinute * 18.5f:F1} TH/s · {rack.BitcoinAmount:F4} BTC";
 
-			return $"{rack.ClockGhz:F2} GHz · {rack.CoreCount} {( rack.CoreCount == 1 ? "core" : "cores" )} · {rack.BitcoinAmount:F4} BTC";
+			// Tier + live re-derived clock; cores never vary post-R2 and buffer BTC already
+			// sits in the row meta — neither earns a slot here.
+			var tierLabel = rack.ComputeTier > 0 ? $"TIER {TierRoman( rack.ComputeTier )}" : "STOCK";
+			return $"{tierLabel} · {rack.ClockGhz:F2} GHz";
 		}
 
 		return HasAnyPlayerRacksNearbyOrLinked()
@@ -1576,25 +1787,6 @@
 		return rack.IsMining ? $"{multLabel} · active" : multLabel;
 	}
 
-	private static string RackYieldStatus( LpBitcoinRackEntity rack )
-	{
-		if ( !rack.IsValid() )
-			return "—";
-
-		var mult = rack.YieldMultiplier;
-		var multLabel = mult > 1.001f ? $"{mult:0.#}× yield multiplier" : "1.0× base yield";
-		if ( rack.IsMining )
-			return $"{rack.MiningRatePerMinute:F6} BTC/min · {multLabel}";
-
-		return multLabel;
-	}
-
-	private static string RackComputeTierLabel( LpBitcoinRackEntity rack )
-		=> $"{LpBitcoinIdent.RomanTier( rack.ComputeTier )}/V";
-
-	private static string RackComputeRateLabel( LpBitcoinRackEntity rack )
-		=> $"×{LpBitcoinComputeTrack.EffectMultiplierFor( rack.ComputeTier )}";
-
 	private static string RackOverviewSubline( LpBitcoinRackEntity rack )
 	{
 		if ( !rack.IsValid() )
@@ -1606,19 +1798,6 @@
 		return $"{rate} · {rack.BitcoinAmount:F4}/{cap:F4} BTC ({fill}%)";
 	}
 
-	private static string RackBtcLine( LpBitcoinRackEntity rack )
-	{
-		var cap = LpBitcoinEconomy.RackBtcCapacityFor( rack );
-		var state = rack.BitcoinAmount >= cap ? "full" : rack.IsMining ? "mining" : "idle";
-		return $"{rack.BitcoinAmount:F6} / {cap:F6} BTC · ${rack.UsdValue:N0} · {state}";
-	}
-
-	private static string RackHardwareLine( LpBitcoinRackEntity rack )
-		=> $"{rack.ClockGhz:F2} GHz · {rack.CoreCount} {( rack.CoreCount == 1 ? "core" : "cores" )}";
-
-	private static string RackHashRateStatus( LpBitcoinRackEntity rack )
-		=> rack.IsMining ? $"{rack.MiningRatePerMinute * 18.5f:F1} TH/s" : "Idle — not hashing";
-
 	private static string RackCapacityStatus( LpBitcoinRackEntity rack )
 	{
 		var cap = LpBitcoinEconomy.RackBtcCapacityFor( rack );
@@ -1629,18 +1808,6 @@
 	private static string RackBtcTileValue( LpBitcoinRackEntity rack )
 		=> $"{rack.BitcoinAmount:F4} BTC";
 
-	private static string RackBtcTileSubline( LpBitcoinRackEntity rack )
-	{
-		var cap = LpBitcoinEconomy.RackBtcCapacityFor( rack );
-		var state = rack.BitcoinAmount >= cap ? "full" : rack.IsMining ? "mining" : "idle";
-		return $"${rack.UsdValue:N0} · {state}";
-	}
-
-	private static string RackHardwareTileValue( LpBitcoinRackEntity rack )
-		=> $"{rack.ClockGhz:F2} GHz";
-
-	private static string RackHardwareTileSubline( LpBitcoinRackEntity rack )
-		=> $"COMPUTE {RackComputeTierLabel( rack )} · rate {RackComputeRateLabel( rack )}";
 
 	private static string RackMiningTileSubline( LpBitcoinRackEntity rack )
 		=> rack.IsMining
@@ -1741,8 +1908,7 @@
 			// Always enter the universal Upgrades at the 3-box home (one decision per screen).
 			_inUpgradeSurface = false;
 			_rackTargetSelected = false;
-			_openPath = null;
-		}
+			}
 
 		// Servers always opens at its home grid (one decision per screen).
 		_serverDetailToken = null;
@@ -1759,7 +1925,6 @@
 		_upgradeSurface = surface;
 		_inUpgradeSurface = true;
 		_rackTargetSelected = false;
-		_openPath = null;
 		LifePunchUiScrollPolicy.ResetOffsets( Panel );
 	}
 
@@ -1767,7 +1932,6 @@
 	{
 		_inUpgradeSurface = false;
 		_rackTargetSelected = false;
-		_openPath = null;
 		LifePunchUiScrollPolicy.ResetOffsets( Panel );
 	}
 
@@ -1776,7 +1940,6 @@
 	{
 		_upgradeRackSlot = slot;
 		_rackTargetSelected = true;
-		_openPath = null;
 		LifePunchUiScrollPolicy.ResetOffsets( Panel );
 	}
 
@@ -1799,7 +1962,6 @@
 	private void BackToRackTargets()
 	{
 		_rackTargetSelected = false;
-		_openPath = null;
 		LifePunchUiScrollPolicy.ResetOffsets( Panel );
 	}
 
@@ -2217,19 +2379,10 @@
 		return "Not linked";
 	}
 
+	// Badge tracks LINKED-state only (Bloodwave ruling): readiness (in-range terminal)
+	// is the button's business, never the badge's — green means the link landed.
 	private string OverviewTerminalStatusDotClass()
-	{
-		if ( HasLinkedTerminal() )
-			return "on";
-
-		if ( !HubIsPowered() )
-			return "off";
-
-		if ( HasNearbyUnlinkedTerminal() )
-			return "on";
-
-		return "off";
-	}
+		=> HasLinkedTerminal() ? "on" : "off";
 
 	private string SettingsSecurityHint()
 	{
@@ -2310,6 +2463,26 @@
 			ShowAllCashOutFeedback( WalletCashOutFeedback.Success, "Cash out completed" );
 		else
 			ShowPartialCashOutFeedback( WalletCashOutFeedback.Success, "Cashed out!" );
+	}
+
+	/// <summary>Purchase-envelope receiver (slice 3) — the host broadcasts the result of a
+	/// COMPUTE-tier purchase here (mirror of <see cref="OnCashOutSuccess"/>). Clears the
+	/// "working" gate and latches the outcome; the stepper (sketch-driven build) renders
+	/// success/rejection from these. Envelope-driven only — the panel never advances a tier
+	/// optimistically. code: 0=Ok · 1=InsufficientFunds · 2=PreconditionTier · 3=HubGuard.</summary>
+	public void OnPurchaseResult( int code, int newTier, long costSats, float newClockGhz, float newBufferCap, long shortfallSats )
+	{
+		_purchasePendingRackId = Guid.Empty;
+		_purchaseResultCode = code;
+		_purchaseResultTier = newTier;
+		_purchaseResultCostSats = costSats;
+		_purchaseResultShortfallSats = shortfallSats;
+		_sincePurchaseResult = 0;
+
+		// Success closes the popover (the bubble's just-bought motion is the confirmation);
+		// failures keep it open as the rejection surface (shortfall/reason + shake).
+		if ( code == 0 )
+			_confirmRackId = Guid.Empty;
 	}
 
 	private void ClearPartialCashOutFeedback()
@@ -2666,7 +2839,7 @@
 		hash.Add( _inUpgradeSurface );
 		hash.Add( _rackTargetSelected );
 		hash.Add( _serverDetailToken ?? string.Empty );
-		hash.Add( _openPath ?? string.Empty );
+		hash.Add( _confirmRackId );
 		hash.Add( _receiveCopyAck );
 		hash.Add( _sendExampleCopyAck );
 		hash.Add( _rackSlotCopyAckId );
@@ -2691,6 +2864,9 @@
 		hash.Add( _partialCashOutFeedbackText );
 		hash.Add( (int)_allCashOutFeedback );
 		hash.Add( _allCashOutFeedbackText );
+		hash.Add( _purchasePendingRackId );
+		hash.Add( _purchaseResultCode );
+		hash.Add( _purchaseResultTier );
 		hash.Add( LpBitcoinEconomy.PortalBaseCashUsdPerBtc );
 		hash.Add( LpBitcoinEconomy.CashUsdPerBtc );
 		hash.Add( LpBitcoinEconomy.PortalEconomyRevision );

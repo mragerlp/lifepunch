@@ -6283,12 +6283,12 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	color: $hashd-muted;
 }
 
-.lp-bitcoin-ops .server-detail-status {
+// ── Rack-detail hero (hierarchy inversion): identity leads, telemetry is the
+// footnote. Layout is provisional pending the FINAL rack-info-page image —
+// concepts (readout strip / delta / receipt / compressed details) are ruled.
+.lp-bitcoin-ops .server-hero {
 	display: flex;
 	flex-direction: column;
-	// Never flex-compress: the info lists hold min-height rows that overflow onto the
-	// legacy section below when this column gets squeezed (LINK/CONTROL overlapping
-	// "Current active hardware levels") — the detail pane scrolls instead.
 	flex-shrink: 0;
 	gap: 12px;
 	margin-top: 12px;
@@ -6296,74 +6296,229 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.lp-bitcoin-ops .server-detail-info,
-.lp-bitcoin-ops .server-detail-legacy,
-.lp-bitcoin-ops .server-detail-legacy-info {
+// Card grid — responsive, one card per LIVE registry track (grows per track
+// registration). Strip-level click deep-links; cards themselves carry no
+// click/hover states (display, not control).
+.lp-bitcoin-ops .server-track-cards {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	gap: 10px;
+	cursor: pointer;
+}
+
+.lp-bitcoin-ops .server-track-card {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 8px;
+	min-width: 260px;
+	padding: 10px 14px;
+	border-radius: $hashd-surface-radius;
+	border: 1px solid $hashd-border;
+	background-color: $hashd-inset-bg;
+}
+
+// Header: icon + TRACK NAME stacked, centered (acceptance-sketch shape).
+.lp-bitcoin-ops .server-track-card-head {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 2px;
+
+	.material-icons {
+		font-size: 18px;
+		color: $hashd-amber;
+	}
+
+	span {
+		font-size: 11px;
+		font-weight: 900;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		color: $hashd-text;
+	}
+}
+
+// Two-panel comparison: current (dominant) → arrow → next (cost leads).
+.lp-bitcoin-ops .server-track-compare {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 10px;
+}
+
+.lp-bitcoin-ops .server-track-arrow {
+	font-size: 18px;
+	color: $hashd-muted;
+	flex-shrink: 0;
+}
+
+.lp-bitcoin-ops .server-track-panel {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 3px;
+
+	&.next {
+		opacity: 0.92;
+	}
+
+	// MAX ruling: the pair collapses to one centered panel.
+	&.maxed {
+		align-items: center;
+	}
+}
+
+.lp-bitcoin-ops .server-track-tier-bubble {
+	min-width: 28px;
+	height: 28px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0 7px;
+	border-radius: 50%;
+	border: 1px solid $hashd-border;
+	font-size: 11px;
+	font-weight: 900;
+	color: $hashd-muted;
+
+	&.lit {
+		border-color: $hashd-amber;
+		background-color: rgba(232, 125, 62, 0.85);
+		color: #0a0d12;
+	}
+
+	&.next {
+		border-color: $hashd-muted;
+		color: $hashd-text;
+	}
+
+	// Square terminal-node treatment, matching the stepper MAX cell.
+	&.max {
+		border-radius: 2px;
+		border-color: $hashd-amber-glow;
+		background-color: rgba(232, 125, 62, 0.85);
+		color: #0a0d12;
+	}
+}
+
+// Semantic money colors (Law 13): gold = BTC · green = DXRP cash · red = denial.
+// Color binds to the VALUE only — delimiters/parens are typography, neutral.
+.lp-bitcoin-ops .lp-money-btc {
+	color: $hashd-amber-glow;
+}
+
+.lp-bitcoin-ops .lp-money-cash {
+	color: $hashd-green;
+}
+
+.lp-bitcoin-ops .lp-money-parens {
+	color: $hashd-text;
+}
+
+// COST LEADS the next panel — ₿ dominant (gold), $ value green inside
+// neutral parens (Law 13 value-only binding).
+.lp-bitcoin-ops .server-track-cost {
+	font-size: 14px;
+	font-weight: 900;
+	color: $hashd-amber-glow;
+
+	.usd {
+		font-size: 11px;
+		font-weight: 700;
+		color: $hashd-text;
+	}
+}
+
+.lp-bitcoin-ops .server-track-stat {
+	font-size: 12px;
+	font-weight: 700;
+	color: $hashd-text;
+
+	// GHz is the flavor line (money-first ruling).
+	&.flavor {
+		font-size: 10px;
+		font-weight: 600;
+		color: $hashd-muted;
+	}
+
+	&.delta {
+		color: $hashd-amber;
+	}
+
+	&.payback {
+		font-size: 11px;
+		color: $hashd-amber-glow;
+	}
+}
+
+.lp-bitcoin-ops .server-track-max-badge {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 4px;
+	padding: 2px 8px;
+	border-radius: 2px;
+	border: 1px solid $hashd-amber-glow;
+	font-size: 10px;
+	font-weight: 900;
+	letter-spacing: 0.08em;
+	color: $hashd-amber-glow;
+
+	.material-icons {
+		font-size: 13px;
+	}
+}
+
+.lp-bitcoin-ops .server-hero-foot {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+}
+
+.lp-bitcoin-ops .server-hero-receipt {
+	font-size: 12px;
+	font-weight: 700;
+	color: $hashd-amber;
+}
+
+// Telemetry footnote: status line + buffer fill-bar + fine print.
+.lp-bitcoin-ops .server-detail-compact {
 	display: flex;
 	flex-direction: column;
 	flex-shrink: 0;
-	gap: 8px;
+	gap: 6px;
+	margin-top: 12px;
+	padding-top: 12px;
+	border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.lp-bitcoin-ops .server-detail-legacy-intro {
-	font-size: 11px;
-	line-height: 1.45;
-	color: $hashd-muted;
-}
-
-.lp-bitcoin-ops .server-detail-tracks-head {
-	font-size: 11px;
-	font-weight: 900;
-	text-transform: uppercase;
-	letter-spacing: 0.06em;
-	color: $hashd-muted;
-}
-
-.lp-bitcoin-ops .server-detail-info .lp-ui-info-row,
-.lp-bitcoin-ops .server-detail-legacy-info .lp-ui-info-row {
-	flex-direction: row;
-	flex-wrap: nowrap;
-	align-items: center;
-	justify-content: space-between;
-	flex-shrink: 0;
-	gap: 12px;
-	min-height: 28px;
-}
-
-.lp-bitcoin-ops .server-detail-info .lp-ui-info-label,
-.lp-bitcoin-ops .server-detail-legacy-info .lp-ui-info-label {
-	flex: 1 1 auto;
-	font-size: 13px;
-	font-weight: 700;
-	text-transform: uppercase;
-	letter-spacing: 0.04em;
-}
-
-.lp-bitcoin-ops .server-detail-info .lp-ui-info-value,
-.lp-bitcoin-ops .server-detail-legacy-info .lp-ui-info-value {
-	flex: 0 0 auto;
-	font-size: 15px;
+.lp-bitcoin-ops .server-detail-status-line {
+	font-size: 12px;
 	font-weight: 600;
-	text-align: right;
+	color: $hashd-text;
 }
 
-// Bottom action row — content-left/action-right, same idiom as the checklist rows.
-.lp-bitcoin-ops .server-detail-action-row {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: space-between;
-	gap: 12px;
+.lp-bitcoin-ops .server-buffer-bar {
+	height: 6px;
 	width: 100%;
-	flex-shrink: 0;
-	margin-top: 10px;
+	border-radius: 2px;
+	background-color: $hashd-inset-bg;
+	border: 1px solid $hashd-border;
+	overflow: hidden;
 }
 
-.lp-bitcoin-ops .server-detail-action-lead {
-	// Reserved seat for the inline upgrade stepper (I→V) — empty tonight by design.
-	// min-height holds the row's height so the stepper arrives with zero relayout.
-	flex: 1 1 auto;
-	min-height: 36px;
+.lp-bitcoin-ops .server-buffer-bar-fill {
+	height: 100%;
+	background-color: $hashd-amber;
+}
+
+.lp-bitcoin-ops .server-detail-fineprint {
+	font-size: 11px;
+	color: $hashd-muted;
 }
 
 .lp-bitcoin-ops .server-detail-upgrade-btn {
@@ -7062,7 +7217,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 			flex: 1 1 auto;
 		}
 
-		.upgrade-path-btn {
+		.upgrade-track-row {
 			flex: 1 1 0;
 			min-height: 52px;
 			max-height: 104px;
@@ -7073,7 +7228,8 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 		flex: 0 0 auto;
 	}
 
-	// Path list — one compact button per track; opens the five-tier detail.
+	// One-page law (slice 3): tracks are ROWS, never sub-pages. The live track carries the
+	// inline stepper; future tracks stay PLANNED rows and inherit this exact component.
 	.upgrade-path-list {
 		display: flex;
 		flex-direction: column;
@@ -7081,7 +7237,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 		width: 100%;
 	}
 
-	.upgrade-path-btn {
+	.upgrade-track-row {
 		display: flex;
 		flex-direction: row;
 		align-items: center;
@@ -7091,16 +7247,13 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 		border-radius: $hashd-surface-radius;
 		border: 1px solid $hashd-surface-border;
 		background-color: $hashd-surface-bg;
-		cursor: pointer;
-		transition: background-color 0.12s ease-out, border-color 0.12s ease-out;
-
-		&:hover {
-			border-color: $hashd-amber;
-			background-color: rgba(232, 125, 62, 0.1);
-		}
 
 		&.cosmetic {
 			border-color: rgba(232, 125, 62, 0.28);
+		}
+
+		&.live {
+			border-color: rgba(232, 125, 62, 0.45);
 		}
 	}
 
@@ -7141,173 +7294,230 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 		letter-spacing: 0.05em;
 	}
 
-	.upgrade-path-btn-chevron {
-		color: $hashd-muted;
-		font-size: 22px;
-		flex-shrink: 0;
-	}
-
-	// Path detail — back action, path header, then the full five tiers laid out in one line.
-	.upgrade-path-detail {
-		display: flex;
-		flex-direction: column;
-		gap: 14px;
-		width: 100%;
-	}
-
-	.upgrade-path-back {
-		align-self: flex-start;
-	}
-
-	.upgrade-path-detail-head {
+	// ── Slice-3 stepper (sketch spec): roman-numeral bubbles, chain links, anchored popover. ──
+	// Bubbles are true circles (the UI standard's one sanctioned round shape). States:
+	// owned = filled · actionable = accent-lit, only clickable (affordability tint vs wallet) ·
+	// locked = dimmed inert. Links: solid = owned pair · open = before the actionable tier ·
+	// dark = beyond. Progression rendered as state.
+	.lp-stepper {
+		position: relative;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
-		gap: 12px;
-		width: 100%;
-
-		.material-icons {
-			color: $hashd-amber;
-			font-size: 30px;
-			flex-shrink: 0;
-		}
-	}
-
-	.upgrade-path-detail-headtext {
-		display: flex;
-		flex-direction: column;
-		gap: 3px;
-		min-width: 0;
-	}
-
-	.upgrade-path-detail-name {
-		color: $hashd-title;
-		font-size: 18px;
-		font-weight: 900;
-		text-transform: uppercase;
-		letter-spacing: 0.03em;
-	}
-
-	.upgrade-path-detail-sub {
-		color: $hashd-muted;
-		font-size: 11px;
-		font-weight: 600;
-		text-transform: uppercase;
-		letter-spacing: 0.04em;
-	}
-
-	// Five tiers in a row — each a tall, non-interactive cell (icon + tier + label + state).
-	// Static UI shell: Tier I = included baseline, Tiers II–V = planned (not enabled).
-	.upgrade-tier-line {
-		display: flex;
-		flex-direction: row;
-		gap: 8px;
-		width: 100%;
-	}
-
-	.upgrade-tier-cell {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 6px;
-		flex-grow: 1;
 		flex-shrink: 0;
-		flex-basis: 0;
-		min-width: 0;
-		padding: 14px 8px;
-		border-radius: 10px;
-		border: 1px solid $hashd-inset-border;
-		background-color: $hashd-inset-bg;
-		pointer-events: none;
-		cursor: default;
-
-		// Numeral in the old icon slot — same footprint so the card rhythm doesn't shift.
-		.upgrade-tier-cell-numeral {
-			color: $hashd-muted;
-			font-size: 20px;
-			font-weight: 900;
-			letter-spacing: 0.04em;
-			line-height: 24px;
-		}
-
-		.upgrade-tier-cell-roman {
-			color: $hashd-text;
-			font-size: 13px;
-			font-weight: 800;
-			letter-spacing: 0.04em;
-		}
-
-		.upgrade-tier-cell-label {
-			color: $hashd-muted;
-			font-size: 11px;
-			font-weight: 600;
-			text-align: center;
-		}
-
-		.upgrade-tier-cell-state {
-			color: $hashd-muted;
-			font-size: 10px;
-			font-weight: 800;
-			text-transform: uppercase;
-			letter-spacing: 0.05em;
-		}
-
-		// Tier I — the included baseline (amber, present today).
-		&.base {
-			border-color: $hashd-amber;
-			background-color: rgba(232, 125, 62, 0.18);
-
-			.upgrade-tier-cell-numeral {
-				color: $hashd-amber;
-			}
-
-			.upgrade-tier-cell-roman {
-				color: $hashd-title;
-			}
-
-			.upgrade-tier-cell-state {
-				color: $hashd-amber;
-			}
-		}
-
-		// Tiers II–V — planned, not enabled (dimmed, clearly not purchasable).
-		&.planned {
-			opacity: 0.5;
-			border-color: rgba(255, 255, 255, 0.04);
-			background-color: rgba(0, 0, 0, 0.25);
-
-			.upgrade-tier-cell-numeral,
-			.upgrade-tier-cell-roman,
-			.upgrade-tier-cell-label,
-			.upgrade-tier-cell-state {
-				color: $hashd-muted;
-			}
-		}
+		padding: 0 4px;
 	}
 
-	// Honest "no live purchase" banner under the tier ladder.
-	.upgrades-not-enabled-banner {
+	.lp-stepper-cell {
 		display: flex;
-		flex-direction: row;
 		align-items: center;
 		justify-content: center;
-		gap: 8px;
-		width: 100%;
-		padding: 10px 12px;
-		border-radius: 0;
-		border: 1px solid rgba(232, 125, 62, 0.25);
-		background-color: rgba(232, 125, 62, 0.06);
-		color: $hashd-amber-glow;
-		font-size: 11px;
-		font-weight: 900;
-		text-transform: uppercase;
-		letter-spacing: 0.06em;
+		width: 30px;
+		height: 30px;
+		border-radius: 50%;
+		border: 1px solid $hashd-border;
+		background-color: $hashd-inset-bg;
+		flex-shrink: 0;
 
-		.material-icons {
-			font-size: 16px;
+		span {
+			font-size: 12px;
+			font-weight: 900;
+			color: $hashd-muted;
+		}
+
+		&.owned {
+			border-color: $hashd-amber;
+			background-color: rgba(232, 125, 62, 0.85);
+
+			span {
+				color: #0a0d12;
+			}
+
+			&.just-bought {
+				animation: lp-stepper-pop-in 0.6s ease-out;
+				border-color: $hashd-amber-glow;
+			}
+		}
+
+		// Purchase frontier: GREY node with the click affordance — the tint IS the
+		// affordability signal (circuit ruling), not the base look.
+		&.actionable {
+			cursor: pointer;
+			border-color: $hashd-muted;
+
+			span {
+				color: $hashd-text;
+			}
+
+			&.affordable {
+				border-color: $hashd-amber-glow;
+				background-color: rgba(232, 125, 62, 0.22);
+				box-shadow: 0 0 8px rgba(240, 165, 0, 0.35);
+
+				span {
+					color: $hashd-amber-glow;
+				}
+			}
+
+			&.working {
+				animation: lp-stepper-working 1s linear infinite;
+			}
+
+			&:hover {
+				background-color: rgba(232, 125, 62, 0.15);
+			}
+		}
+
+		// Dimmed inert — clicks are code-guarded; hover stays live for the "requires" tooltip.
+		&.locked {
+			opacity: 0.35;
+			cursor: default;
+		}
+
+		// Tier V is the terminal node of the circuit — square, per MAX ruling.
+		&.max {
+			border-radius: 2px;
+		}
+	}
+
+	.lp-stepper-link {
+		width: 14px;
+		height: 2px;
+		flex-shrink: 0;
+
+		&.solid {
+			background-color: $hashd-amber;
+		}
+
+		&.dark {
+			background-color: $hashd-border;
+		}
+	}
+
+	// Anchored confirm CHIP above the frontier bubble (geometry ruling: one line,
+	// content-sized, no dim, no title — the anchor bubble IS the context; ✓ works,
+	// ✕/outside-click dismisses; rejection grows the chip one line + shake).
+	.lp-stepper-chip {
+		position: absolute;
+		bottom: 38px;
+		left: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+		padding: 6px 10px;
+		border-radius: $hashd-surface-radius;
+		border: 1px solid rgba(232, 125, 62, 0.45);
+		background-color: #0a0d12;
+		z-index: 20;
+
+		&.shake {
+			animation: lp-stepper-shake 0.4s ease-in-out;
+		}
+	}
+
+	.lp-stepper-chip-row {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: 8px;
+		white-space: nowrap;
+
+		&.reject {
+			color: $hashd-red;
+			font-size: 11px;
+			font-weight: 700;
+		}
+	}
+
+	.lp-stepper-chip-line {
+		color: $hashd-text;
+		font-size: 12px;
+		font-weight: 700;
+		white-space: nowrap;
+
+		&.working {
 			color: $hashd-amber-glow;
 		}
 	}
+
+
+	.lp-stepper-chip-yes,
+	.lp-stepper-chip-no {
+		width: 20px;
+		height: 20px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: $hashd-surface-radius;
+		border: 1px solid transparent;
+		cursor: pointer;
+		flex-shrink: 0;
+
+		.material-icons {
+			font-size: 14px;
+		}
+	}
+
+	// ✓ = purchase-affirmative (green family) · ✕ = denial family (red).
+	.lp-stepper-chip-yes {
+		background-color: $hashd-green;
+		color: #0a0d12;
+
+		&:hover {
+			background-color: #7ce2a6;
+		}
+	}
+
+	.lp-stepper-chip-no {
+		background-color: transparent;
+		border-color: $hashd-border;
+		color: $hashd-red;
+
+		&:hover {
+			color: $hashd-red;
+			border-color: $hashd-red;
+		}
+	}
+
+	// Compact variant — the rack-detail action-row seat.
+	.lp-stepper.compact {
+		.lp-stepper-cell {
+			width: 24px;
+			height: 24px;
+
+			span {
+				font-size: 10px;
+			}
+		}
+
+		.lp-stepper-link {
+			width: 8px;
+		}
+
+		.lp-stepper-chip {
+			bottom: 32px;
+		}
+	}
+}
+
+@keyframes lp-stepper-shake {
+	0% { transform: translateX(0); }
+	20% { transform: translateX(-6px); }
+	40% { transform: translateX(5px); }
+	60% { transform: translateX(-4px); }
+	80% { transform: translateX(3px); }
+	100% { transform: translateX(0); }
+}
+
+@keyframes lp-stepper-pop-in {
+	0% { transform: scale(1.35); }
+	100% { transform: scale(1); }
+}
+
+@keyframes lp-stepper-working {
+	0% { opacity: 0.4; }
+	50% { opacity: 1; }
+	100% { opacity: 0.4; }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

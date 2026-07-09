@@ -51,6 +51,43 @@ $radius-shell:  4px;                     // the one large container
 8. **No branding chrome in-HUD.** No footer/watermark/™/signature/glow, no
    window drop-shadow. Scrim `rgba(black, 0.5–0.55)` (optional `blur(5px)`).
    Branding belongs on the portal listing, not the live HUD.
+9. **Two-screen contract for tracked entities.** Detail screen = EVALUATE
+   (identity + this-entity next-step delta) · upgrades screen = TRANSACT
+   (full circuit + confirm chip). Every future tracked entity inherits the
+   pair — no purchase surfaces on detail screens, no telemetry heroes on
+   upgrade screens.
+10. **Hierarchy principle.** Detail screens lead with identity/progression
+    (what this entity IS and what it becomes next); stats condense to
+    supporting lines beneath. Nothing hidden, everything re-ranked.
+11. **One-page law.** Tracked-entity surfaces never grow sub-pages. The
+    density escape is progressive disclosure on the same page — never
+    navigation.
+12. **Interactive visual passes carry hover inspection.** Every element of a
+    visual pass (stepper bubbles, tier cells, status glyphs) answers on hover
+    with state-adaptive detail. Polish is load-bearing — the "we cared" layer.
+13. **Semantic money colors.** Gold/amber = BTC amounts (₿ — chips, rows,
+    receipts) AND active earning states (MINING — BTC in motion). Green =
+    DXRP cash amounts (the decorative $ figures), the purchase-affirmative ✓,
+    and connected-healthy states (LINKED). Red = the denial family
+    (shortfalls, ✕, rejection flashes, OFF/UNLINKED). Token-level grammar —
+    inherits to every money surface: purchase cards, black market, Banker HUB.
+    Semantic color binds to the VALUE only — parentheses, delimiters, and
+    separators around money figures are typography, not currency; they stay
+    neutral ("₿ 0.25" gold · "(" neutral · "$1,250" green · ")" neutral).
+    **The grammar governs world-space displays** (prop readouts, LCD glass) —
+    one language everywhere. World-text refinements: the ₿ ICON is orange
+    (brand mark) while the AMOUNT is white (data) — the icon/amount split
+    supersedes all-gold for world text; $ figures green, whole-dollar
+    formatted; count-style states color by completion (0/3 red · partial
+    gold/in-progress · full green), parens neutral per the delimiter rule.
+    No branding chrome on prop readouts (the chrome diet reaches the world).
+14. **Confirm-deny primitive.** A two-choice money moment is a bonded glyph
+    pair — **affirm LEFT, deny RIGHT, always adjacent** (`[ + | - ]`). MEANING
+    is fixed: YES | NO, one decision with two exits. COLOR is fixed: affirm
+    green, deny red (per law 13; any ₿ amount stays gold beside them). The
+    glyphs are costume (✓/✕ on the stepper chip today; may vary by surface) —
+    **pair, order, and colors are the invariant.** Every future two-choice
+    money moment reuses it: purchase cards, contracts, Banker, black market.
 
 ## Anti-patterns (the "too Claudey" list — reject on sight)
 

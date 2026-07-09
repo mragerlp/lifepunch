@@ -115,3 +115,34 @@ quoting hits remote PowerShell parse errors, and nested-paren expressions get
 mangled. Simple single commands pass. Root cause is on-box (DefaultShell reads
 empty; the real config was not located over the poisoned channel). The shared
 inbox (`PACKET_TRANSPORT_LAW.md`) exists so this never matters for delivery.
+
+## 2026-07-09 — Gate evidence review caught a ledger-truth leak (screenshots are assertions)
+
+During slice-3 gate evidence, the Servers screenshot showed RACK 2 · TIER V
+with **zero purchases behind it** — the on-disk ledger holds records for
+`gpurack-1` and `advancedgpurack` only. Traced: `SubjectId` is a positional
+slot token (link-order-dependent) and rack reconcile is a one-shot latch, so a
+standard rack can read another slot's ladder and keep it — a dupe-class
+exploit (free tiers by linking fresh racks). Ruling: BLOCKS the slice-3
+commit; fix shape goes through STOP-GO (preserve slot-token survival
+properties, no raw entity-GUID identity). Law from the catch: **screenshots
+are assertions — treat every number in gate evidence as one and check it
+against the source of truth.** The leak predates slice 3; the slice's visible
+readout is what exposed it.
+
+Same evening, tooling fact worth keeping: the s&box editor watches the DXRP
+game tree (`D:\...\dxrp\game\Code`), NOT the repo — repo edits require
+`Sync-LifePunchAddonsToDxrp.ps1` before any hotload. "Watcher never fired"
+symptoms mean the sync step was skipped.
+
+## 2026-07-09 — Editor-cycle ritual gains a step: recompile lpbitcoin vmdls before entering play
+
+Twice tonight the snapshot restore raced the editor's boot-time asset scan and
+spawned hub/terminal props as orange ERROR meshes (models fine on disk —
+`bitcoinhub.vmdl_c` / `hashdterminal.vmdl_c` present; the resource system just
+hadn't registered them yet). In-place fix, no restart, no state risk:
+`recompile_asset` on `bitcoinhub.vmdl` + `hashdterminal.vmdl` over the bridge,
+models hot-swap within frames. RITUAL: after every editor cycle, run those two
+recompiles BEFORE Host Play entry. If ERROR props already spawned, recompile
+then exit/re-enter play — snapshot rebuilds with resolved models; nothing is
+lost (world in snapshot, ledger on disk).

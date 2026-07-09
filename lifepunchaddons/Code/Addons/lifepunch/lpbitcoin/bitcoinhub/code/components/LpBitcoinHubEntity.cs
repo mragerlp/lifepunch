@@ -11,6 +11,7 @@ using Sandbox;
 using LifePunch.DXRP.Addons;
 #if !LIFEPUNCH_LOCAL
 using Dxura.RP.Game;
+using Dxura.RP.Game.Equipments;
 using DamageInfo = Dxura.RP.Game.DamageInfo;
 #endif
 
@@ -22,7 +23,7 @@ namespace LifePunch.DXRP.Addons.Bitcoin;
 #if LIFEPUNCH_LOCAL
 public sealed class LpBitcoinHubEntity : Component, Component.IPressable
 #else
-public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IAreaDamageReceiver
+public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IAreaDamageReceiver, IHandEvents
 #endif
 {
 #if !LIFEPUNCH_LOCAL
@@ -158,10 +159,20 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 			_colliderSyncedFromModel = true;
 		}
 
+		// One-shot rehydrate sweep: pre-fix snapshots carry racks with no slot binding —
+		// bind + reconcile once on first settled host tick (leak fix migration path).
+		if ( !_slotSweepDone )
+		{
+			_slotSweepDone = true;
+			ReconcileLinkedRacksHost();
+		}
+
 		// Once initial spawn settle finishes, force world-machine tags/physics so USE opens the hub.
 		LifePunchPropPhysics.EnforceWorldMachine( GameObject );
 #endif
 	}
+
+	private bool _slotSweepDone;
 
 	protected override void OnUpdate()
 	{
@@ -294,6 +305,58 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 		return index >= 0 && index < racks.Count ? racks[index] : null;
 	}
 
+	/// <summary>Membership-change sweep (leak fix, GO 2026-07-09): (re)binds slot tokens —
+	/// first-come keeps a valid unique token, blanks/dupes get the lowest free slot — then
+	/// re-reconciles EVERY linked rack so none keeps a tier from a slot it no longer holds.
+	/// Idempotent. Runs on link, rack death, the first host tick (pre-fix snapshot
+	/// migration), and any future move/unclaim transition.</summary>
+	internal void ReconcileLinkedRacksHost()
+	{
+		if ( !Networking.IsHost )
+			return;
+
+		var linked = GetLinkedRacks();
+		var takenStandard = new HashSet<string>( StringComparer.Ordinal );
+
+		// Pass 1 — first-come keeps: a valid, unique standard token survives; blanks,
+		// duplicates, and garbage get cleared for reassignment. (OrderLinkedRacks is a
+		// stable sort, so "first-come" is deterministic.)
+		foreach ( var rack in linked )
+		{
+			if ( rack.AdvancedRack )
+			{
+				rack.AssignedSlotToken = LpBitcoinIdent.AdvancedRackTerminalToken;
+				continue;
+			}
+
+			var token = rack.AssignedSlotToken ?? string.Empty;
+			var valid = LpBitcoinIdent.TryParseLinkRackSlotToken( token, out var advanced, out _ ) && !advanced;
+			if ( !valid || !takenStandard.Add( token ) )
+				rack.AssignedSlotToken = string.Empty;
+		}
+
+		// Pass 2 — bind blanks to the lowest free slot.
+		foreach ( var rack in linked )
+		{
+			if ( rack.AdvancedRack || !string.IsNullOrEmpty( rack.AssignedSlotToken ) )
+				continue;
+
+			for ( var n = 1; n <= LpBitcoinIdent.PortalMaxStandardRacksPerHub; n++ )
+			{
+				var candidate = LpBitcoinIdent.FormatDeclaredLinkSlotToken( false, n );
+				if ( takenStandard.Add( candidate ) )
+				{
+					rack.AssignedSlotToken = candidate;
+					break;
+				}
+			}
+		}
+
+		// Pass 3 — ledger-wins reconcile against each rack's OWN binding.
+		foreach ( var rack in linked )
+			rack.ReconcileComputeTierHost();
+	}
+
 	/// <summary>Purchase the next COMPUTE tier for a linked rack (Guid.Empty = first).
 	/// Funnels to the ONE purchase path — slice 2 replaces the legacy CPU/core RPCs.</summary>
 	public void RequestPurchaseComputeTier( Guid rackId ) => PurchaseComputeTierHost( rackId );
@@ -391,6 +454,49 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 	public void RequestLinkNearbyRack() => LinkNearbyRackHost();
 
 	public void RequestLinkRack( string slotToken ) => LinkRackByTokenHost( slotToken );
+
+	public void RequestUnlinkRack( string rackToken ) => UnlinkRackByTokenHost( rackToken );
+
+#if !LIFEPUNCH_LOCAL
+	// Anchored-hub grab attempt speaks (R2 ruling — silent denials are bug reports waiting
+	// to happen). Vanilla hands falls through to IHandEvents when the grab tag is absent;
+	// wording anticipates the power-gated portability spec (3.5).
+	private TimeSince _sinceAnchoredNotice = 9999f;
+
+	void IHandEvents.OnHandLmb( Player player )
+	{
+		if ( _sinceAnchoredNotice < 2f )
+			return;
+
+		_sinceAnchoredNotice = 0;
+		Notify.Warn( "HUB is anchored — power off to move it." );
+	}
+#endif
+
+	// Deliberate release verb (rig0 `unlink <rack>`): frees the slot binding and fires the
+	// membership sweep. The slot's LEDGER RECORDS PERSIST — a rack later bound into this
+	// freed slot inherits its ladder (R1 survival property).
+	[Rpc.Host]
+	private void UnlinkRackByTokenHost( string rackToken )
+	{
+		if ( !CanOperateTerminal( Rpc.CallerId ) )
+			return;
+
+		var racks = GetLinkedRacks();
+		if ( !LpBitcoinIdent.TryResolveLinkedRackIndex( rackToken, racks, out var idx ) )
+		{
+			PushAlertHost( LpBitcoinHubAlertKind.TerminalCommand,
+				"usage: unlink <rackId>" );
+			return;
+		}
+
+		var rack = racks[idx];
+		var label = LpBitcoinIdent.FormatRackSlotDisplayName( rack, racks );
+		rack.ReleaseFromHubHost();
+		PushAlertHost( LpBitcoinHubAlertKind.TerminalCommand,
+			$"{label} unlinked — slot freed, ledger history kept." );
+		RefreshLinkedTerminalScreens();
+	}
 
 	public void RequestLinkNearbyTerminal() => LinkNearbyTerminalHost();
 
@@ -1045,7 +1151,30 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 
 	[Rpc.Host]
 	private void PurchaseComputeTierHost( Guid rackId )
-		=> LpBitcoinPurchaseFlow.PurchaseComputeTierHost( this, ResolveRack( rackId ), Rpc.CallerId );
+	{
+		var result = LpBitcoinPurchaseFlow.PurchaseComputeTierHost( this, ResolveRack( rackId ), Rpc.CallerId );
+		NotifyPurchaseResultToCaller( Rpc.CallerId, result );
+	}
+
+	/// <summary>Mirror the purchase envelope back to the caller client (slice 3) — the
+	/// stepper renders its states (working → success / rejection) from this, never
+	/// optimistically. Same idiom as <see cref="NotifyCashOutSuccess"/>.</summary>
+	internal void NotifyPurchaseResultToCaller( Guid callerId, LpBitcoinPurchaseResult result )
+		=> NotifyPurchaseResult( callerId, (int)result.Code, result.NewTier, result.CostPaidSats,
+			result.NewClockGhz, result.NewBufferCap, result.ShortfallSats );
+
+	[Rpc.Broadcast]
+	private void NotifyPurchaseResult(
+		Guid callerId, int code, int newTier, long costSats, float newClockGhz, float newBufferCap, long shortfallSats )
+	{
+		if ( Connection.Local.Id != callerId )
+			return;
+
+		var panel = Game.ActiveScene?.GetAllComponents<LpHashdPanel>().FirstOrDefault( p => p.IsValid() && p.Hub == this )
+			?? Game.ActiveScene?.GetAllComponents<LpHashdPanel>().FirstOrDefault( p => p.IsValid() );
+		if ( panel.IsValid() )
+			panel.OnPurchaseResult( code, newTier, costSats, newClockGhz, newBufferCap, shortfallSats );
+	}
 
 	private LpBitcoinRackEntity ResolveRack( Guid rackId )
 	{

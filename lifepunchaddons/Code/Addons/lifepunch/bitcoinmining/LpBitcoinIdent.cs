@@ -230,7 +230,25 @@ public static class LpBitcoinIdent
 		return true;
 	}
 
-	/// <summary>Declared slot must fill in order — gpurack-1 before gpurack-2.</summary>
+	/// <summary>Lowest standard slot number with no linked rack BOUND to its token (leak
+	/// fix — occupancy is token-based, not count-based, so a freed slot 1 refills before
+	/// slot 2 even while slot 2's rack survives). 0 = no free standard slot.</summary>
+	public static int LowestFreeStandardSlot( IReadOnlyList<LpBitcoinRackEntity> linkedRacks )
+	{
+		for ( var n = 1; n <= PortalMaxStandardRacksPerHub; n++ )
+		{
+			var token = FormatDeclaredLinkSlotToken( false, n );
+			if ( !linkedRacks.Any( r =>
+				     r.IsValid() && !r.AdvancedRack
+				     && string.Equals( r.AssignedSlotToken, token, StringComparison.Ordinal ) ) )
+				return n;
+		}
+
+		return 0;
+	}
+
+	/// <summary>Declared slot must be the lowest FREE slot (token-based occupancy —
+	/// leak fix; formerly count-based fill-in-order).</summary>
 	public static bool CanLinkToDeclaredSlot(
 		bool advanced,
 		int standardSlotNumber,
@@ -249,24 +267,23 @@ public static class LpBitcoinIdent
 			return true;
 		}
 
-		var linkedStandard = CountLinkedStandardRacks( linkedRacks );
-		var nextSlot = linkedStandard + 1;
-		if ( standardSlotNumber == nextSlot )
-			return true;
-
-		if ( linkedStandard == 0 )
+		var nextSlot = LowestFreeStandardSlot( linkedRacks );
+		if ( nextSlot == 0 )
 		{
-			error = "ERR link gpurack-1 first";
+			error = "ERR GPU rack slots full (2 max) — unlink a GPU Rack first";
 			return false;
 		}
 
-		if ( standardSlotNumber <= linkedStandard )
+		if ( standardSlotNumber == nextSlot )
+			return true;
+
+		if ( standardSlotNumber < nextSlot )
 		{
 			error = $"ERR gpurack-{standardSlotNumber} already linked — unlink that slot first";
 			return false;
 		}
 
-		error = $"ERR link gpurack-{nextSlot} next (slots fill in order)";
+		error = $"ERR link gpurack-{nextSlot} next (lowest free slot first)";
 		return false;
 	}
 
@@ -281,6 +298,15 @@ public static class LpBitcoinIdent
 		slot = 0;
 		if ( !rack.IsValid() || rack.AdvancedRack )
 			return false;
+
+		// Bound racks answer from their OWN persisted token (leak fix) — position in the
+		// linked list is display-fallback only (unlinked/pre-bind racks).
+		if ( TryParseLinkRackSlotToken( rack.AssignedSlotToken, out var advanced, out var bound )
+		     && !advanced )
+		{
+			slot = bound;
+			return true;
+		}
 
 		foreach ( var candidate in OrderLinkedRacks( linkedRacks ) )
 		{
@@ -351,24 +377,19 @@ public static class LpBitcoinIdent
 		out int zeroBasedIndex )
 	{
 		zeroBasedIndex = -1;
-		var slotIndex = 0;
 
-		foreach ( var candidate in OrderLinkedRacks( linkedRacks ) )
+		// The address IS the binding (leak fix): a slot resolves to the rack BOUND to its
+		// token, never to a list position — `gpurack-1` on a survivor-holds-gpurack-2 board
+		// correctly resolves to nothing.
+		var token = FormatDeclaredLinkSlotToken( false, slot );
+		for ( var i = 0; i < linkedRacks.Count; i++ )
 		{
-			if ( candidate.AdvancedRack )
-				continue;
-
-			slotIndex++;
-			if ( slotIndex != slot )
-				continue;
-
-			for ( var i = 0; i < linkedRacks.Count; i++ )
+			var rack = linkedRacks[i];
+			if ( rack.IsValid() && !rack.AdvancedRack
+			     && string.Equals( rack.AssignedSlotToken, token, StringComparison.Ordinal ) )
 			{
-				if ( linkedRacks[i].GameObject.Id == candidate.GameObject.Id )
-				{
-					zeroBasedIndex = i;
-					return true;
-				}
+				zeroBasedIndex = i;
+				return true;
 			}
 		}
 

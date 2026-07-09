@@ -35,6 +35,12 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable, IAre
 	// [Property, ReadOnly] + [Sync] = snapshot persistence (BaseEntity.Owner-proven combo;
 	// UPGRADE_ARC_DESIGN decision 9). World-only state below is snapshot-sole-truth.
 	[Property, ReadOnly] [Sync( SyncFlags.FromHost )] public Guid LinkedHubId { get; set; }
+
+	/// <summary>Ledger subject binding (leak fix, GO 2026-07-09): the slot token this rack
+	/// OWNS while linked — assigned by the hub sweep at link time (lowest unoccupied),
+	/// persisted + synced like <see cref="LinkedHubId"/>, cleared on unlink/destroy.
+	/// Reconcile reads ONLY this; slot identity is never re-derived from link order.</summary>
+	[Property, ReadOnly] [Sync( SyncFlags.FromHost )] public string AssignedSlotToken { get; set; } = "";
 	[Property, ReadOnly] [Sync( SyncFlags.FromHost )] public bool IsMining { get; set; }
 	[Property, ReadOnly] [Sync( SyncFlags.FromHost )] public float BitcoinAmount { get; set; }
 	[Property, ReadOnly] [Sync( SyncFlags.FromHost )] public float ClockGhz { get; set; } = LpBitcoinEconomy.StartClockGhz;
@@ -232,16 +238,41 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable, IAre
 		if ( Networking.IsHost )
 			StopMiningHost();
 #endif
+		// Link is a membership-change event: the hub sweep binds this rack's slot token
+		// (lowest unoccupied) and re-reconciles EVERY linked rack (leak fix, GO 2026-07-09).
 		if ( Networking.IsHost )
-			ReconcileComputeTierHost();
+			hub.ReconcileLinkedRacksHost();
 
 		hub.RefreshLinkedTerminalScreens();
 	}
 
+	/// <summary>Deliberate release (rig0 <c>unlink</c>): clear the hub link + slot binding,
+	/// drop to stock, and sweep the hub. The slot's ledger records persist — this rack (or
+	/// a replacement) re-binding the slot re-reads its ladder. Host-only; no explosion.</summary>
+	internal void ReleaseFromHubHost()
+	{
+		if ( !Networking.IsHost )
+			return;
+
+		var hub = GetLinkedHub();
+		StopMiningHost();
+		LinkedHubId = Guid.Empty;
+		AssignedSlotToken = "";
+
+		// Unbound rack reads stock immediately (the hub sweep below only touches racks still
+		// linked to it — this one just left that set, so reset its projection here).
+		ComputeTier = 0;
+		LpBitcoinComputeTrack.Apply( this, 0 );
+
+		hub?.ReconcileLinkedRacksHost();
+		hub?.RefreshLinkedTerminalScreens();
+	}
+
 	/// <summary>Ledger-wins rehydrate for the rack_compute projection (UPGRADE_ARC_DESIGN
-	/// decision 9). Subject = slot token, guarded by subject class (GO ruling R1) — a
-	/// class-mismatched or unlinked occupant reads tier 0. Runs once on first host tick
-	/// after rehydrate and again on relink.</summary>
+	/// decision 9). Subject = the rack's OWN persisted <see cref="AssignedSlotToken"/>,
+	/// guarded by subject class (GO ruling R1) — an unbound, class-mismatched, or unlinked
+	/// occupant reads tier 0. Runs on first host tick after rehydrate and on every
+	/// membership sweep; never derives the slot positionally (leak fix).</summary>
 	internal void ReconcileComputeTierHost()
 	{
 		if ( !Networking.IsHost )
@@ -251,11 +282,10 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable, IAre
 
 		var ledgerTier = 0;
 		var hub = GetLinkedHub();
-		if ( hub is not null && hub.Owner != 0 )
+		if ( hub is not null && hub.Owner != 0 && !string.IsNullOrEmpty( AssignedSlotToken ) )
 		{
-			var slot = LpBitcoinIdent.FormatRackSlotTerminalToken( this, hub.GetLinkedRacks() );
 			ledgerTier = LifePunchUpgradeLedger.MaxTier(
-				hub.Owner, LpBitcoinComputeTrack.TrackId, slot, LpBitcoinComputeTrack.ClassOf( this ) );
+				hub.Owner, LpBitcoinComputeTrack.TrackId, AssignedSlotToken, LpBitcoinComputeTrack.ClassOf( this ) );
 		}
 
 		ComputeTier = LifePunchUpgradeLedger.ReconcileTier(
@@ -337,7 +367,11 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable, IAre
 
 	[Rpc.Host]
 	private void PurchaseComputeTierHost()
-		=> LpBitcoinPurchaseFlow.PurchaseComputeTierHost( GetLinkedHub(), this, Rpc.CallerId );
+	{
+		var hub = GetLinkedHub();
+		var result = LpBitcoinPurchaseFlow.PurchaseComputeTierHost( hub, this, Rpc.CallerId );
+		hub?.NotifyPurchaseResultToCaller( Rpc.CallerId, result );
+	}
 
 	private void ApplyRackMiningVisual( bool mining )
 	{
@@ -463,6 +497,17 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable, IAre
 			StopMiningHost();
 			BitcoinAmount = 0f;
 			LifePunchMachineDestroyFx.SpawnPrinterStyleExplosion( this, Explosion, WorldPosition );
+		}
+
+		// Death frees the slot (membership-change event): the slot's ledger records
+		// survive — a replacement rack bound into the freed slot inherits its ladder
+		// (R1 survival property). Clear the binding FIRST so the sweep's scan excludes us.
+		if ( Networking.IsHost && LinkedHubId != Guid.Empty )
+		{
+			var hub = GetLinkedHub();
+			LinkedHubId = Guid.Empty;
+			AssignedSlotToken = "";
+			hub?.ReconcileLinkedRacksHost();
 		}
 
 		base.OnDestroyed();

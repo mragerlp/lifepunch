@@ -56,7 +56,7 @@ commit) → effects → stepper (inline I–V, hover name·effect·price, confir
 "Upgrade X to Tier N? COST: $X | X BTC — YES/NO", kills tier-card
 sub-pages, seats in `.server-detail-action-lead`).
 
-**Gates:** 2 = Terminal polish (brief drafted) · 3 = rack lights (pure code
+**Gates:** 2 = Terminal polish (brief: `TERMINAL_POLISH_BRIEF.md`) · 3 = rack lights (pure code
 per packet C: emissive tint/intensity; T5 = hue shift; patterned RGB =
 future asset work). Both post-arc, Bloodwave's call.
 
@@ -93,3 +93,32 @@ isolation).
   flow returns {newTier, newClockGhz, costPaidSats, newBufferCap} on success /
   typed reasons (InsufficientFunds{shortfallSats}, PreconditionTier, HubGuard)
   on failure — the socket the slice-3 stepper plugs into.
+
+**Slice-3.5 (queued, opens on the slice-3 merge — sequencing ruling option a):**
+- Scope per the amendment relay: rack-detail reverts to stat rows (restyled,
+  grey slab → standard dark plate) · Upgrades rows get centered stepper +
+  UPGRADE/MAX TIER buttons · the track card section becomes the purchase
+  surface (solo-I / pair / solo-MAX states per Bloodwave's sketches) · chip
+  re-anchors to the card's Purchase button · Law 9 amended in the same slice.
+  The built MAX card is the acceptance standard — the move re-homes it, never
+  rebuilds it.
+- **Tooltip preservation (ruling 2026-07-09):** the per-bubble hover tooltip
+  ("COMPUTE V · ×32 rate · owned" — state-adaptive third clause: owned /
+  ₿ price on frontier / requires Tier N beyond) is KEPT permanently and MUST
+  survive the re-home — it rides the circuit stepper in every location it
+  renders. Gate-3.5 case: hover any bubble in every stepper location →
+  correct state-adaptive tooltip. (UI standard law 12 filed same day.)
+- **Power-gated hub portability (R2 amendment 2026-07-09, supersedes the
+  pack-up verb):** hub powered ON = anchored (machine law holds,
+  hands_interact stripped) · powered OFF = carryable, **CLAIM SURVIVES** the
+  move (PIN/owner/wallet ride — relocating, not abandoning) · racks HOLD
+  their slot bindings while the hub travels; the membership sweep reconciles
+  on re-place + power-on. The anchored-grab Notify ("HUB is anchored — power
+  off to move it.") shipped in slice 3; the gate itself builds here. Gate-3.5
+  case: power off → carry → re-place → power on → racks intact per bindings.
+- **Terminal collision triage (queued 2026-07-09):** the HASHD terminal's world
+  collision feels oversized — players clip space the model doesn't occupy. Two
+  suspects: bounding-box hull (ModelDoc pass) vs the machine law's
+  static-collider treatment (`LifePunchPropPhysics.SyncBoxColliderFromModel` —
+  same law as the hub). Verdict + fix-class to the owner; rides 3.5 or later.
+- Gate-3.5 case list rides the 3.5 proposal per house rule.

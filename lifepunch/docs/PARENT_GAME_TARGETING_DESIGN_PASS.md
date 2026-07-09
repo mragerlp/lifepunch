@@ -78,6 +78,18 @@ standalone addon-project identity vs the parent-child endgame identities, and
 which one the ledger data root / portal snapshot namespace / publish lane each
 bind to. `lifepunch` is the working identity until this pass rules formally.
 
+## Motivating observation — the middle state has a felt cost (owner, 2026-07-09)
+
+Since the gate-2 revert, the editor presents the project as **standalone** — no
+parented-DXRP presentation in the header/session. Functionally identical
+(fork-embedded DXRP runs; the gates prove it), but the owner flags the
+ambiguity as a felt cost of the middle state: the project reads as if DXRP
+weren't underneath it, when DXRP is the entire foundation.
+
+**Reaffirmed:** DXRP remains the foundation — this pass is **PRO-parent, never
+removal**. Its end state restores TRUE DXRP parentage at the engine level, so
+the presentation matches the architecture again.
+
 ## Adoption gate (when scheduled)
 
 A clean parent-game project must: boot the game scene with ZERO duplicate-type
