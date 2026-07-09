@@ -184,6 +184,41 @@ actually exercise: he can read the ratio.
 The Banker's premium is honest: he is paid to be the bridge, and the bridge
 sits exactly on the tax boundary.
 
+## THE HOSPITAL — THE THIRD INSTITUTION
+
+*(filed 2026-07-09; STATUS: all PLANNED — no build, no numbers. The medic
+class and armor assets exist; systems arrive through their lane in the
+sequencing map.)*
+
+**The three-layer shape, third instance:**
+
+```
+PATIENT TABLET    job-issued, mobile — response work moves
+   |  controls, remotely operates
+MED STATIONS      installation-class · upgradeable (tiers per Law B = BTC;
+   |              the consumables they dispense = cash)
+THE HOSPITAL      permanent map entity
+```
+
+**RULE: the Hospital is SHARED, like the PD** — a class commons, no elected
+owner. Medics work there by rule.
+
+**Commons-ownership ruling:** shared station tiers are **per-station, funded
+by whoever pays, owned by no one** — public goods, privately funded. The
+free-rider tension is intended roleplay. Role-vacancy: stations persist,
+heal nobody without a Medic.
+
+**Armor:** the med station gains armor-dispensing tiers — the **STATION is
+the entity** (BTC tiers); armor remains cash-class equipment it produces.
+Law B intact; armor itself never carries persistent tiers.
+
+**The Stim War:** the Black Market Dealer sells stimulants — cheap,
+effective, carrying health risks and status effects that **only Medic items
+cure**. The black market creates the ailment; the Hospital sells the cure.
+The Medic class gains a villain and a persuasion role; the Dealer gains a
+second chemical economy (the Chemist's drugs are sold to others; stims are
+taken yourself).
+
 ## THE BLACK MARKET DEALER: CAPABILITY KEYSTONE
 
 He sells the machinery of every heist and takes no risk at any of them.
@@ -196,6 +231,10 @@ He sells the machinery of every heist and takes no risk at any of them.
   the Chemist's BTC-locked purity tiers are gated the same way.
 - **Either**: the Chemist's process accelerators (labor — cash) sit beside
   purity (mastery — BTC) in the same shop, and the split is Law B, not policy.
+- **Stimulants** (the Stim War — see THE HOSPITAL): cheap, effective,
+  carrying health risks only Medic items cure. He creates the ailment; the
+  Hospital sells the cure. His second chemical economy — taken yourself,
+  where the Chemist's product is sold to others.
 
 **Because his goods are machines and unlocks, they cost BTC.** His two best
 customers — Hacker and Chemist — do not mine by default. So they mine, steal,

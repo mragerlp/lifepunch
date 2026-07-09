@@ -75,6 +75,14 @@ Center are configurations of the mining system, not new systems. Build shape
 PlayerBank = current behavior; FundPile/CityFunds refuse with a clear log
 line until their institutions exist. Additive, zero-risk, the seam the
 Banker and Data Center plug into.
+Riders (ruled 2026-07-09): **R1 — PayoutTarget is world-state:**
+`[Property, ReadOnly] + [Sync(FromHost)]` from birth per the persistence
+law — a Data Center must NEVER reboot into PlayerBank (that's a
+silent-misdirection exploit, not a default); gate case: configure → restart →
+target survives (the gate-1 proof shape). **R2 — refusals NAME the missing
+institution:** "FundPile refused — no Banker institution exists yet" /
+"CityFunds refused — no Data Center institution exists yet" — the seam
+documents itself in the logs, per the house rule that every deny speaks.
 
 **Slice-2 test infrastructure (filed 2026-07-08):** Cornerman may join as an
 authorized second player for multiplayer checks (per its canon test-client
