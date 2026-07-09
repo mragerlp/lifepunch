@@ -53,6 +53,11 @@ faction terminals re-skin (see item 5).
   surface — `terminal_security`'s tier renders here too (track #2, per the
   original item: the terminal detail surface EVALUATES, the Upgrades page
   TRANSACTS — two-screen contract, second entity).
+- **Monitoring Suite is this sidebar as a purchasable tier**
+  (`UPGRADE_ECONOMY_DOCTRINE.md`, HASHD Terminal table, ratified 2026-07-09):
+  STATUS block (T1) → per-rack tenant lines → retro tier readout → remote
+  alerts. Gate 2 builds the surface; the track's tiers literally unlock its
+  rows when `terminal_security` ships.
 - **Layout order top→bottom (sketch):** COMMANDS (existing) → STATUS summary →
   per-rack tenant lines → terminal upgrades readout → SECURITY line →
   *(space permitting)* a **dim contextual hint line** of 2–3 common verbs

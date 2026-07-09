@@ -62,6 +62,14 @@ Hack-immunity unchanged; higher tiers deepen physical float exposure
 between windows by design. Numbers wait on the lane build + the
 Packet D window-gated math.
 
+**Currency split (Law B, `UPGRADE_ECONOMY_DOCTRINE.md`, ratified
+2026-07-09):** process **accelerators** (faster cook/grow — labor) cost
+**cash**; **purity** tiers (pure coke/meth — mastery is a machine) cost
+**BTC**, sold through the Black Market Dealer beside the accelerators.
+The split is Law B, not policy — the nature of the thing decides, never
+the job that holds it. Mastery costs exposure: the Chemist's ceiling is
+gated on entering the wider (BTC) economy.
+
 ## Deferred Decisions (settle when lane is scheduled)
 
 - Stagger pattern vs synchronized openings (income density + server rhythm)
