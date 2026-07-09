@@ -127,7 +127,10 @@ VERIFIED (2026-07-08): live all session, survives editor restarts (file-IPC);
 addon updated to v1.20.0 same day — 219 handlers, versionsAligned true.
 VERIFIED (2026-07-08): first boot after an engine update blocks the frame loop
 (asset recompile) — heartbeat stale + high sbox-dev CPU = busy, NOT crashed;
-heartbeat recovers when the recompile finishes. Check CPU before relaunching. UNTESTED: screenshot fidelity vs supershot; NpcBrain surface.
+heartbeat recovers when the recompile finishes. Check CPU before relaunching.
+VERIFIED (2026-07-08, gate-1): static signature/field changes are RESTART-CLASS —
+hotload substitution fails (NotImplementedException every frame, session wedged).
+Sync + cycle the editor for those; preserve sbox-dev.log first (rotates per run). UNTESTED: screenshot fidelity vs supershot; NpcBrain surface.
 NOTE (resolved 2026-07-08): the old `port: 29015` status-JSON oddity is gone
 after the v1.20.0 update; status is clean.
 

@@ -39,6 +39,11 @@ Inputs: Green packets A1/A2/B/C · `handoff/UPGRADE_ARC_DESIGN_INPUTS_2026-07-08
    host-local file (`FileSystem.Data`, flushed at commit) — the lean default.
    The network-storage lane is a NAMED alternative only, never a silent
    dependency; switching mediums is an explicit decision on this page.
+   **Format (gate-1 corrected, 2026-07-08):** one JSON array document
+   (`lifepunch-upgrade-ledger.json`), rewritten whole and flushed at every
+   commit — NOT line-per-record JSONL (s&box `Json.Serialize` pretty-prints
+   with no compact mode; gate-1's first true disk reload caught it). Load is
+   scene-keyed: a read in one FileSystem context never serves another.
 10. **stackRule: DEFERRED** — `rack_compute` is sole owner of the mining-rate
     hook. Default candidate when forced: multiplicative across tracks.
 11. **Track #2 = `terminal_security`** (hack-resistance hook; fitting rule is
