@@ -10,12 +10,23 @@ Companions: `OPS_LOG.md` (the pattern in practice) · `UPGRADE_ARC_DESIGN.md`
 
 **Development and proof run in the cheapest scene that can host the claim.**
 
-### Fast scene (the default)
+### Fast scene (the default) — `scenes/blank.scene`
 
-DXRP gamemode + a **minimal map** — no hammer terrain, clean sightlines,
-negligible geometry. **Editor performance is a first-class working
-condition:** a wedged or grinding editor has cost this project hours, and the
-fast scene is the cheapest boot that still runs the gamemode.
+**The canonical fast scene is `scenes/blank.scene`** (ruled 2026-07-09):
+DXRP core prefab + a dev plane (`models/dev/plane.vmdl`, 100×100), **no hammer
+map, no `MapInstance`.** It is the default for **all map-independent proof.**
+Flatgrass is demoted to the **"needs hammer terrain" case only.**
+
+**Editor performance is a first-class working condition:** a wedged or grinding
+editor has cost this project hours, and blank.scene is the cheapest boot that
+still runs the gamemode — no map load at all.
+
+**No `MapInstance` = the clean bypass of the portal's default-map override.**
+The server/portal default flows through a scene's `MapInstance.MapName` and the
+Fitter; blank.scene carries no `MapInstance`, so there is nothing to override
+and no api-key wrangling. `LifePunchDevPlaytest.cs` already recommended this
+scene (`lp_dev_scene`) — **the pattern predated its naming**, same as the
+flatgrass note in `OPS_LOG.md`.
 
 Everything the map **cannot influence** is proven here:
 
@@ -67,33 +78,24 @@ behavior (crowding, pathing, targets to shoot) — **never economic behavior.**
 two-identity claim discovered mid-gate is a stall; declared up front it is a
 scheduling line.
 
+**Ops rider (gate design, 3.5 onward):** every gate case list carries a header
+naming its **SCENE** (fast/`blank.scene` or world) and its **IDENTITY**
+requirement (one portal identity, or two = Cornerman as Splash God). Both are
+declared before the first case, never discovered inside it.
+
 ---
 
-## Investigation — Dimmer's dev-scene pattern (report, 2026-07-09)
+## Provenance (resolved 2026-07-09)
 
-**Finding: we already have the fast scene, and it is more minimal than
-flatgrass.** `Code/Addons/lifepunch/_dev/LifePunchDevPlaytest.cs` defines it:
-
-- **`scenes/blank.scene`** — DXRP core prefab + a dev plane
-  (`models/dev/plane.vmdl`, 100×100), **no hammer map, no `MapInstance`**.
-  Faster boot than flatgrass, clean scale shots. `lp_dev_scene` prints the
-  runbook (open blank.scene → Host Play).
-- **`lp_map_flatgrass`** (legacy) swaps a live scene's `MapInstance.MapName`
-  to `facepunch.flatgrass` — kept only for when hammer terrain is actually
-  needed.
-
-**Mechanism of the portal default-map override:** the map is a `MapInstance`
-component carrying a `MapName`; the server/portal default flows through the
-Fitter (`MapFitter.cs`) which fits landmark prefabs by that name. **Host Play
-from `blank.scene` has no `MapInstance`**, so nothing to override — the portal
-default never engages. That is the clean bypass; no api-key wrangling needed.
-
-**Proposal (owner GO):** adopt **`scenes/blank.scene` as the canonical fast
-scene**, retire flatgrass to the "need hammer terrain" case. It is cheaper than
-flatgrass, already committed, and already the recommended path in
-`lp_dev_scene`. Open question worth asking Dimmer: whether his saved dev scene
-adds anything blank.scene lacks (pre-placed rigs? a landmark stub?) — if not,
-we are already on the pattern.
+The fast scene was not built for this doctrine — it already existed.
+`Code/Addons/lifepunch/_dev/LifePunchDevPlaytest.cs` defines
+`scenes/blank.scene` (via `lp_dev_scene`) and keeps `lp_map_flatgrass` as the
+legacy `MapInstance.MapName` → `facepunch.flatgrass` swap for hammer-terrain
+cases. The portal default-map override runs through `MapInstance` + the Fitter
+(`MapFitter.cs`, `FittedMapPrefabs` keyed on map name; `Api/ServerApiLink.cs`
+is the portal side); blank.scene's absence of a `MapInstance` is why the
+default never engages. Bloodwave is asking Dimmer directly whether his saved
+dev scene adds anything ours lacks — no draft owed.
 
 ---
 

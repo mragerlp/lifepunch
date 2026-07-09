@@ -99,7 +99,9 @@ front — one portal identity (single-player Bloodwave) proves any claim about
 *a* player; TWO portal identities (Cornerman as Splash God) are mandatory for
 gate-2b's three cases, Trust Policy, Fund pro-rata, the Banker's ATM, Guard
 pay, and every adversarial/hacking case. Bots populate; they never prove
-economic behavior.
+economic behavior. **Ops rider (3.5 onward):** every gate case-list header
+names its SCENE (fast `blank.scene` / world) and its IDENTITY requirement
+(one, or two = Cornerman as Splash God) before the first case.
 
 **Slice-3 design notes (filed 2026-07-09, no build yet):**
 - **Animation pipeline PROOF (pre-slice-3 side quest):** one asset, one
