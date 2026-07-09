@@ -30,7 +30,10 @@
 #>
 [CmdletBinding()]
 param(
-    [string[]] $Addon = @('lpbitcoin'),
+    # Default set MUST match the launch lane (Start-SboxDxrpEditor syncs adminmenu too) —
+    # a narrower default purges lifepunchulx mid-session and strands its static callbacks
+    # (NoMatchStatic spam, restart-class). Aligned 2026-07-09 after it bit twice.
+    [string[]] $Addon = @('lpbitcoin', 'adminmenu'),
     [switch] $All,
     [string] $ConfigPath = '',
     [switch] $WhatIf,

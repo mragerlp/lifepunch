@@ -62,6 +62,17 @@ Hack-immunity unchanged; higher tiers deepen physical float exposure
 between windows by design. Numbers wait on the lane build + the
 Packet D window-gated math.
 
+**OPEN RECALCULATION — pallets (upstream finding 2026-07-09):** Dimmer
+shipped **pallets** to DXRP — multiple bricks stack per pallet, and drops
+show per-drop price labels (~$300–320/drop observed). The window-drop
+throughput math was priced **per-brick**; pallets raise the **per-window
+ceiling**, so the Chemist production track's window-gated throughput
+inherits a **new upper bound**. Flagged as an open recalculation, NOT a
+change — numbers revisit when the lane builds and after we pull the pallet
+commit (not yet in our local DXRP tree; see `ENGINE_UPDATES.md`). If pallets
+are generic brick containers, coke/meth bricks stack free — Packet E asks
+Green to confirm.
+
 **Currency split (Law B, `UPGRADE_ECONOMY_DOCTRINE.md`, ratified
 2026-07-09):** process **accelerators** (faster cook/grow — labor) cost
 **cash**; **purity** tiers (pure coke/meth — mastery is a machine) cost

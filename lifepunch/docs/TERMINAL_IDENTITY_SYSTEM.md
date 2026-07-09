@@ -62,7 +62,9 @@ is proof of operating at the advanced tier, never of wealth.
 
 - **HASHD** (bitcoin orange CRT, `$hashd-amber` family per DECISION-0010) is
   the **fourth dialect** of this same grammar — it predates this filing and
-  stays as-is.
+  stays as-is. The Terminal's cosmetic track (*HASHD donor skins*,
+  `UPGRADE_ECONOMY_DOCTRINE.md`) purchases these dialect re-skins — cosmetics
+  claim no capability and prove nothing, per the Visible-Status exception.
 - **Future surfaces** (black-market, chemist tablet, banker vault console…)
   **choose or extend from this system, never invent parallel ones** — a new
   faction = a new folder + a new hue on the same grammar.
@@ -94,9 +96,13 @@ mirrors Green's actual SSH banner). Bloodwave-approved as lore: banner text is
 a non-secret greeting and an OS build number is public information. Noted so
 future audits don't re-litigate it.
 
-**Cosmetic flag (not a rule hit, owner to amend or bless):** the shared
-`universalicon.png` vengeance pane's final prompt reads `vengeance@vegerance`
-— "vegerance" typo; every other pane in the set is spelled correctly.
+**KNOWN ASSET DEFECT (ruled 2026-07-09 — fix on paper, pixels later):** the
+canonical text of the universal icon's vengeance pane final prompt IS
+`vengeance@vengeance`. The staged `shared/universalicon.png` carries a known
+typo (`vengeance@vegerance`) — logged as an asset defect, NOT canon.
+**Regenerate the pane on the next branding touch**; nothing blocks on it, and
+this doc tells the truth in the meantime. Every other pane in the set is
+spelled correctly.
 
 ## Publish-exclusion (proposal — owner gates)
 

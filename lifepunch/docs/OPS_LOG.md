@@ -146,3 +146,38 @@ models hot-swap within frames. RITUAL: after every editor cycle, run those two
 recompiles BEFORE Host Play entry. If ERROR props already spawned, recompile
 then exit/re-enter play — snapshot rebuilds with resolved models; nothing is
 lost (world in snapshot, ledger on disk).
+
+## 2026-07-09 — Upstream finding: Dimmer shipped PALLETS to DXRP (pull deferred)
+
+Dimmer added **pallets** to DXRP — multiple bricks stack per pallet; drops show
+per-drop price labels (~$300–320/drop in his clip). The per-drop LABEL itself
+is not new — it's the existing `DrugDrop.PaymentPerDrop` (config-driven
+Min/Max, surfaced via `drugdrop.context.per_drop`). The PALLET stacking IS new
+and is **not in our local DXRP tree** (local head `0ee91dd`; we're behind
+upstream — the banked DXRP-upstream-sync task, see
+`dxrp-upstream-sync-banked`).
+
+Consequences filed:
+- `DRUG_ECONOMY_LANE.md` — open recalculation: pallets raise the per-window
+  throughput ceiling; the Chemist production track's window-gated throughput
+  inherits a new upper bound. Not a change; numbers revisit after the pull.
+- Packet E (`PACKET_E_CHEMIST_GROUNDING`, pin `987ac89`) gains **E2b** — read
+  the pallet entity IF present at Green's pin (generic brick container vs
+  weed-specific), else one-line skip; it pre-answers E3's inherit-vs-fork.
+
+**Pull deferred deliberately:** the DXRP game tree currently holds the synced
+but UNGRADED slice-3.5 rebuild. A DXRP upstream sync (95-behind, stale-pin,
+GO-gated) would churn that tree before Bloodwave grades it. Sequence: grade +
+commit 3.5 → pull upstream (`Ensure-DxrpUpstreamCurrent.ps1 -Sync -UpdatePin`)
+→ cite the exact pallet commit SHA back into this line and the lane doc.
+
+## 2026-07-09 — Named: the Two-Scene Law (pattern discovered before it was named)
+
+All three lpbitcoin gates (1/2/3) proved on flatgrass — a minimal scene, no
+world map — because the claims (ledgers, money paths, tier effects, persistence,
+entity contracts, UI, PayoutTarget) are things the map cannot influence. That
+was the fast-scene pattern in practice before it had a name. Now canon:
+`PROOF_ENVIRONMENT_DOCTRINE.md` (the Two-Scene Law + the Identity Rider: bots
+populate, only portal identities prove). Note for future gates: our fast scene
+`scenes/blank.scene` (blank + dev plane, no MapInstance) is cheaper than
+flatgrass and already the `lp_dev_scene` recommendation.

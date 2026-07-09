@@ -51,11 +51,15 @@ $radius-shell:  4px;                     // the one large container
 8. **No branding chrome in-HUD.** No footer/watermark/™/signature/glow, no
    window drop-shadow. Scrim `rgba(black, 0.5–0.55)` (optional `blur(5px)`).
    Branding belongs on the portal listing, not the live HUD.
-9. **Two-screen contract for tracked entities.** Detail screen = EVALUATE
-   (identity + this-entity next-step delta) · upgrades screen = TRANSACT
-   (full circuit + confirm chip). Every future tracked entity inherits the
-   pair — no purchase surfaces on detail screens, no telemetry heroes on
-   upgrade screens.
+9. **Two-screen contract for tracked entities** *(amended slice 3.5)*. Detail
+   screen = EVALUATE: identity, stat rows on the standard dark plate, invested
+   receipt, deep-link CTA. Upgrades screen = TRANSACT: the per-track purchase
+   cards (solo-I / pair / solo-MAX states) with the confirm chip anchored to
+   the card's Purchase button; the circuit steppers on the track rows are
+   DISPLAY, never control. Every future tracked entity inherits the pair —
+   no purchase surfaces on detail screens. Doctrinal grounding:
+   `UPGRADE_ECONOMY_DOCTRINE.md`, THE ENTITY DETAIL CONTRACT (the landlord
+   pattern reaching the presentation layer).
 10. **Hierarchy principle.** Detail screens lead with identity/progression
     (what this entity IS and what it becomes next); stats condense to
     supporting lines beneath. Nothing hidden, everything re-ranked.
