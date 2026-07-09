@@ -71,6 +71,17 @@ One ledger serves all systems (trackId-scoped); OnPurchase is the
 universal purchase event. `rack_compute` is tenant #1 and the reference
 implementation; `terminal_security` is track #2.
 
+## Visible-Status Law (amendment 2026-07-09)
+
+Tier-visible status must remain UNFAKEABLE. Upgrade tracks are paid in
+the currency their own operation generates (BTC-only for mining tiers),
+so world-visible tier state (rack lights, the T5 hue) is **proof of
+operation, never proof of wealth**. Future tracks inherit this: a
+system's visible prestige is purchasable only with that system's own
+earned output. Cash→BTC exchange, if ever built, is a Banker-toolkit
+valve — governed conversion, never a second payment path in any
+purchase flow.
+
 ## Role-Vacancy Law
 
 State persists; INTERACTION gates on the role. Vault holds but pays no
