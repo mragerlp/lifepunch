@@ -203,6 +203,13 @@ THE HOSPITAL      permanent map entity
 **RULE: the Hospital is SHARED, like the PD** — a class commons, no elected
 owner. Medics work there by rule.
 
+The commons rule binds the **building, not the Medic.** A Medic may freelance
+with any raiders, base with anyone, and run his own affiliations freely — the
+one thing he may not do is **close the Hospital off from other Medics.** The
+building is open to every Medic by rule; no Medic may lock it, wall it, or
+claim exclusive use. Shared access is the invariant; the Medic's associations
+are his own.
+
 **Commons-ownership ruling:** shared station tiers are **per-station, funded
 by whoever pays, owned by no one** — public goods, privately funded. The
 free-rider tension is intended roleplay. Role-vacancy: stations persist,
