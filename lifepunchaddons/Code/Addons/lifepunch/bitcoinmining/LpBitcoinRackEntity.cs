@@ -32,14 +32,23 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable, IAre
 	/// <summary>Dev spawn (<see cref="LpBitcoinDevSpawn"/>) — feet on ground, frozen collider (no printer drop).</summary>
 	internal bool DevSpawnAsWorldMachine { get; set; }
 
-	[Sync( SyncFlags.FromHost )] public Guid LinkedHubId { get; set; }
-	[Sync( SyncFlags.FromHost )] public bool IsMining { get; set; }
-	[Sync( SyncFlags.FromHost )] public float BitcoinAmount { get; set; }
-	[Sync( SyncFlags.FromHost )] public float ClockGhz { get; set; } = LpBitcoinEconomy.StartClockGhz;
-	[Sync( SyncFlags.FromHost )] public int CoreCount { get; set; } = LpBitcoinEconomy.StartCores;
+	// [Property, ReadOnly] + [Sync] = snapshot persistence (BaseEntity.Owner-proven combo;
+	// UPGRADE_ARC_DESIGN decision 9). World-only state below is snapshot-sole-truth.
+	[Property, ReadOnly] [Sync( SyncFlags.FromHost )] public Guid LinkedHubId { get; set; }
+	[Property, ReadOnly] [Sync( SyncFlags.FromHost )] public bool IsMining { get; set; }
+	[Property, ReadOnly] [Sync( SyncFlags.FromHost )] public float BitcoinAmount { get; set; }
+	[Property, ReadOnly] [Sync( SyncFlags.FromHost )] public float ClockGhz { get; set; } = LpBitcoinEconomy.StartClockGhz;
+	[Property, ReadOnly] [Sync( SyncFlags.FromHost )] public int CoreCount { get; set; } = LpBitcoinEconomy.StartCores;
+	// Legacy pair: deliberately [Sync]-only (GO ruling R2) — replaced by rack_compute,
+	// deleted slice 2; persisting them would manufacture migration debt.
 	[Sync( SyncFlags.FromHost )] public int CpuUpgradeLevel { get; set; }
 	[Sync( SyncFlags.FromHost )] public int CoreUpgradeLevel { get; set; }
-	[Sync( SyncFlags.FromHost )] public float MiningProgress { get; set; }
+	[Property, ReadOnly] [Sync( SyncFlags.FromHost )] public float MiningProgress { get; set; }
+
+	/// <summary>rack_compute tier projection (0 = stock, I–V purchased). The ledger is
+	/// ownership truth; this reconciles ledger-wins on host start and relink — dormant
+	/// (no rate effect) until the effects slice.</summary>
+	[Property, ReadOnly] [Sync( SyncFlags.FromHost )] public int ComputeTier { get; set; }
 
 	public float YieldMultiplier => LpBitcoinIdent.BaseRackYieldMultiplier;
 	public float MiningRatePerMinute => LpBitcoinEconomy.MiningRatePerMinute( ClockGhz, CoreCount, YieldMultiplier );
@@ -56,6 +65,7 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable, IAre
 	private LpBitcoinRackVisuals _visuals;
 	private bool _lastMiningVisual;
 	private bool _capacityAlertSent;
+	private bool _computeTierReconciled;
 #if !LIFEPUNCH_LOCAL
 	[Property]
 	[Group( "Effects" )]
@@ -159,6 +169,12 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable, IAre
 		if ( !Networking.IsHost )
 			return;
 
+		if ( !_computeTierReconciled )
+		{
+			_computeTierReconciled = true;
+			ReconcileComputeTierHost();
+		}
+
 		var hub = GetLinkedHub();
 		if ( hub is null || !hub.IsPowered || !IsMining )
 			return;
@@ -217,7 +233,34 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable, IAre
 		if ( Networking.IsHost )
 			StopMiningHost();
 #endif
+		if ( Networking.IsHost )
+			ReconcileComputeTierHost();
+
 		hub.RefreshLinkedTerminalScreens();
+	}
+
+	/// <summary>Ledger-wins rehydrate for the rack_compute projection (UPGRADE_ARC_DESIGN
+	/// decision 9). Subject = slot token, guarded by subject class (GO ruling R1) — a
+	/// class-mismatched or unlinked occupant reads tier 0. Runs once on first host tick
+	/// after rehydrate and again on relink.</summary>
+	internal void ReconcileComputeTierHost()
+	{
+		if ( !Networking.IsHost )
+			return;
+
+		LpBitcoinComputeTrack.EnsureRegistered();
+
+		var ledgerTier = 0;
+		var hub = GetLinkedHub();
+		if ( hub is not null && hub.Owner != 0 )
+		{
+			var slot = LpBitcoinIdent.FormatRackSlotTerminalToken( this, hub.GetLinkedRacks() );
+			ledgerTier = LifePunchUpgradeLedger.MaxTier(
+				hub.Owner, LpBitcoinComputeTrack.TrackId, slot, LpBitcoinComputeTrack.ClassOf( this ) );
+		}
+
+		ComputeTier = LifePunchUpgradeLedger.ReconcileTier(
+			ComputeTier, ledgerTier, $"{LpBitcoinComputeTrack.TrackId} rack={GameObject?.Name}" );
 	}
 
 	public LpBitcoinHubEntity GetLinkedHub()

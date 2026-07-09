@@ -36,8 +36,9 @@ public sealed class LpBitcoinTerminalEntity : BaseEntity, Component.IPressable, 
 	/// <summary>Dev spawn (<see cref="LpBitcoinDevSpawn"/>) — feet on ground, frozen collider (no printer drop).</summary>
 	internal bool DevSpawnAsWorldMachine { get; set; }
 
-	/// <summary>Hub that registered this terminal via admin Settings — not proximity auto-link.</summary>
-	[Sync( SyncFlags.FromHost )] public Guid LinkedHubId { get; set; }
+	/// <summary>Hub that registered this terminal via admin Settings — not proximity auto-link.
+	/// [Property, ReadOnly] + [Sync] = snapshot persistence (link state; UPGRADE_ARC_DESIGN decision 9).</summary>
+	[Property, ReadOnly] [Sync( SyncFlags.FromHost )] public Guid LinkedHubId { get; set; }
 
 #if !LIFEPUNCH_LOCAL
 	[Property]
