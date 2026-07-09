@@ -50,6 +50,23 @@ computed and paid). **Cooldowns** (per-drop, per-player, global). And the
 **config-vs-hardcoded split** — which numbers live in a GameConfig/`Governance`
 partial vs baked into the entity.
 
+**Anchor (Red pre-read):** the per-drop price label Dimmer's clip shows
+(~$300–320/drop) is the EXISTING `DrugDrop.PaymentPerDrop`, randomized between
+`Config.Current.Game.DrugDropMinPrice`/`DrugDropMaxPrice` at spawn, surfaced
+via `DisplayText` → `drugdrop.context.per_drop`. Confirm that read and report
+whether the price is fixed-at-spawn or re-rolls over the drop's life.
+
+### E2b — PALLETS (upstream, GATED on the pull)
+
+Dimmer shipped **pallets** to DXRP — multiple bricks stack per pallet.
+**This code is NOT in the pinned tree** (our local head `0ee91dd` predates it).
+**IF a pallet entity exists in your tree, read it and report:** is it a
+**generic brick container** (any drug brick stacks) or weed-specific? capacity,
+per-pallet vs per-brick pricing, and how it feeds the drop payout. **IF it is
+NOT present at your pin, say so in one line and skip** — do not hunt a
+non-existent entity. This target answers E3's inherit-vs-fork question early:
+generic containers mean coke/meth bricks stack free.
+
 ### E3 — Coke/meth extension map
 
 Report the **inherit-vs-fork** decision surface: does `DrugDrop` (and the
@@ -58,7 +75,9 @@ what a **WINDOW-GATED drop** needs that vanilla `DrugDrop` LACKS (timed open
 windows, scheduled spawn, a moving vehicle host). NOTE for context (do not
 build): traindrop/truckdrop MODELS are staged in Bloodwave's warehouse (Fable
 manifesting) — the question is purely what code seam a window-gated variant
-plugs into.
+plugs into. **If E2b finds a generic pallet container, note it here** — it may
+pre-answer the stacking half of inherit-vs-fork (coke/meth bricks ride the same
+container free).
 
 ### E4 — Hack-immunity ground truth
 
