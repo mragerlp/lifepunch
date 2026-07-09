@@ -286,17 +286,88 @@
 									var serverDetail = GetServerDetailSlot();
 									<div class="pane racks">
 										<div class="lp-ui-panel racks-panel">
-										@if ( serverDetail is null )
+										@if ( _hubDetailOpen )
+										{
+											<div class="upgrades-toolbar">
+												<button class="lp-ui-btn-ghost upgrades-back-btn" onclick="@BackToServersHome">
+													<i class="material-icons">arrow_back</i>
+													<span>Servers</span>
+												</button>
+												<button class="entity-detail-ident">
+													<i class="material-icons">dns</i>
+													<span class="entity-detail-title">Bitcoin Hub</span>
+													<span class="entity-detail-token">hub</span>
+												</button>
+											</div>
+											<div class="racks-scroll">
+												<div class="rack-grid">
+													<div class="rack-card entity-detail">
+														<div class="entity-chip-row">
+															<span class="entity-chip @( Hub?.IsPowered == true ? "gold" : "red" )">@( Hub?.IsPowered == true ? "POWERED" : "OFF" )</span>
+															<span class="entity-chip @( Hub.IsValid() && Hub.Owner != 0 ? "green" : "red" )">@( Hub.IsValid() && Hub.Owner != 0 ? "CLAIMED" : "UNCLAIMED" )</span>
+															<span class="entity-chip @HubRacksChipState()">@HubRackCount()/@LpBitcoinIdent.PortalMaxRacksPerHub RACKS</span>
+														</div>
+														<div class="server-stat-plate">
+															<div class="server-stat-row"><span class="server-stat-label">Wallet</span><span class="server-stat-value"><span class="lp-money-btc">₿ @( ( Hub?.HubWalletBtc ?? 0f ).ToString( "0.########" ) )</span></span></div>
+															<div class="server-stat-row"><span class="server-stat-label">Racks</span><span class="server-stat-value">@HubRackCount() / @LpBitcoinIdent.PortalMaxRacksPerHub linked</span></div>
+															<div class="server-stat-row"><span class="server-stat-label">Power</span><span class="server-stat-value">@( Hub?.IsPowered == true ? "Online" : "Offline" )</span></div>
+														</div>
+														@{ var hubTracks = HubUpgradeTracks.Append( HubSoundPackCosmetic ).ToList(); }
+														<div class="entity-tier-progress transact">
+															@foreach ( var track in hubTracks )
+															{
+																var cosmetic = track.Name == HubSoundPackCosmetic.Name;
+																<div class="entity-track-row planned">
+																	<div class="entity-track-lead">
+																		<i class="material-icons unlit">@track.Icon</i>
+																		<div class="entity-track-copy">
+																			<span class="entity-track-name">@track.Name</span>
+																			<span class="entity-track-why">@TrackWhyLine( track.Name )</span>
+																		</div>
+																	</div>
+																	<div class="lp-stepper centered">
+																		@for ( int _tier = 1; _tier <= 5; _tier++ )
+																		{
+																			if ( _tier > 1 )
+																			{
+																				<div class="lp-stepper-link dark"></div>
+																			}
+																			<div class="lp-stepper-cell @( _tier == 5 ? "locked max" : "locked" )" tooltip="@( cosmetic ? $"{track.Name} — cosmetic, NOT ENABLED" : $"{track.Name} — PLANNED, no effects yet" )">
+																				<span>@TierRoman( _tier )</span>
+																			</div>
+																		}
+																	</div>
+																	<span class="entity-track-planned">@( cosmetic ? "NOT ENABLED" : "PLANNED" )</span>
+																</div>
+															}
+														</div>
+													</div>
+												</div>
+											</div>
+										}
+										else if ( serverDetail is null )
 										{
 											<div class="lp-ui-panel-title">
 												<i class="material-icons">dns</i>
 												<span>Servers</span>
 											</div>
 
-											<div class="lp-ui-intro racks-intro">Pick a server for balance, hardware, and mining status. Upgrades are on the Upgrades tab.</div>
+											<div class="lp-ui-intro racks-intro">Pick a server — or the Hub — for status and upgrades.</div>
 
 											<div class="racks-scroll">
 												<div class="upgrade-home-grid servers-home-grid">
+													<button class="upgrade-home-box server-home-box hub-card" onclick="@OpenHubDetail">
+														<i class="material-icons upgrade-home-box-icon">dns</i>
+														<div class="upgrade-home-box-body">
+															<span class="upgrade-home-box-title">Bitcoin Hub</span>
+															<span class="upgrade-home-box-sub">@( Hub?.IsPowered == true ? "Powered" : "Off" ) · @HubRackCount()/@LpBitcoinIdent.PortalMaxRacksPerHub racks</span>
+															<span class="upgrade-home-box-desc">Controller &amp; farm operations — upgrades planned.</span>
+														</div>
+														<div class="upgrade-home-box-foot">
+															<span class="upgrade-home-box-meta">hub</span>
+															<i class="material-icons upgrade-home-box-chevron">chevron_right</i>
+														</div>
+													</button>
 													@foreach ( var slot in GetServersRackSlots() )
 													{
 														<button class="upgrade-home-box server-home-box @( slot.Rack.IsValid() ? "" : "empty" )" onclick="@(() => EnterServerDetail( slot ))">
@@ -323,79 +394,67 @@
 													<i class="material-icons">arrow_back</i>
 													<span>Servers</span>
 												</button>
-												<div class="lp-ui-panel-title upgrades-title">
+												@* Header consolidation: title + click-to-copy ident are ONE element
+												   (copy flash, no separate COPY chip). *@
+												<button class="entity-detail-ident" onclick="@(() => CopyOverviewMinerToken( slot ))">
 													<i class="material-icons">@ServerSlotIcon( slot )</i>
-													<span>@slot.DisplayLabel</span>
-												</div>
+													<span class="entity-detail-title">@slot.DisplayLabel</span>
+													<span class="entity-detail-token">@slot.TerminalToken</span>
+													<i class="material-icons entity-detail-copyicon">@( _overviewSlotCopyAck == slot.TerminalToken ? "check" : "content_copy" )</i>
+													@if ( _overviewSlotCopyAck == slot.TerminalToken )
+													{
+														<span class="entity-detail-copyflash">Copied</span>
+													}
+												</button>
 											</div>
 
 											<div class="racks-scroll">
 												<div class="rack-grid">
-														<div class="rack-card @( slot.Rack.IsValid() ? "" : "empty" )">
-															<div class="rack-card-head">
-																<div class="rack-card-head-main">
-																	<div class="rack-card-title">@slot.DisplayLabel</div>
-																</div>
-																<div class="rack-card-badges">
-																	<button class="rack-slot-id-copy"
-																	        onclick="@(() => CopyOverviewMinerToken( slot ))">
-																		<span class="rack-slot-id-token">@slot.TerminalToken</span>
-																		<i class="material-icons">content_copy</i>
-																		<span class="rack-slot-id-hint">@OverviewMinerCopyHint( slot )</span>
-																	</button>
-																	@if ( slot.Rack.IsValid() )
-																	{
-																		@* Entity Detail Contract — status chips in Law-13 colors:
-																		   MINING gold (earning) · LINKED green (connected-healthy) ·
-																		   FULL red (buffer capped) · yield neutral. *@
-																		<span class="rack-badge green">LINKED</span>
-																		<span class="rack-badge @( slot.Rack.IsMining ? "gold" : "" )">@( slot.Rack.IsMining ? "MINING" : "IDLE" )</span>
-																		@if ( slot.Rack.BitcoinAmount >= LpBitcoinEconomy.RackBtcCapacityFor( slot.Rack ) )
-																		{
-																			<span class="rack-badge red">FULL</span>
-																		}
-																		<span class="rack-badge dim">@RackYieldBadge( slot.Rack )</span>
-																	}
-																	else
-																	{
-																		<span class="rack-badge red">@( HasAnyPlayerRacksNearbyOrLinked() ? "UNLINKED" : "AVAILABLE" )</span>
-																	}
-																</div>
-															</div>
-															@* Header tile strip removed — Balance/Status duplicated the info list below and
-															   Hardware showed legacy levels. The key-value list IS the page; hint tiles remain
-															   for slots without a linked rack (no info list exists there). *@
-															@if ( !slot.Rack.IsValid() )
-															{
-															<div class="rack-card-body">
-																@if ( !HasAnyPlayerRacksNearbyOrLinked() )
+														<div class="rack-card entity-detail @( slot.Rack.IsValid() ? "" : "empty" )">
+															@* Chip row — Law-13 states (Hashing dedupes into MINING). Identity + copy
+															   live in the toolbar ident; the STATUS stat-row is retired. *@
+															<div class="entity-chip-row">
+																@if ( slot.Rack.IsValid() )
 																{
-																	<div class="rack-stat-tiles empty">
-																		<div class="rack-stat-tile rack-stat-tile-wide">
-																			<div class="rack-stat-tile-value empty market-hint">Purchase racks from the Market.</div>
-																		</div>
-																	</div>
+																	<span class="entity-chip green">LINKED</span>
+																	<span class="entity-chip @( slot.Rack.IsMining ? "gold" : "" )">@( slot.Rack.IsMining ? "MINING" : "IDLE" )</span>
+																	@if ( slot.Rack.BitcoinAmount >= LpBitcoinEconomy.RackBtcCapacityFor( slot.Rack ) )
+																	{
+																		<span class="entity-chip red">FULL</span>
+																	}
+																	<span class="entity-chip dim">@RackYieldBadge( slot.Rack )</span>
 																}
 																else
 																{
-																	<div class="rack-stat-tiles empty">
-																		<div class="rack-stat-tile rack-stat-tile-wide">
-																			<div class="rack-stat-tile-value empty">Place rack near hub, then link at rig0 on the terminal — <span class="hashd-prompt-accent">link @slot.TerminalToken</span></div>
-																		</div>
-																	</div>
+																	<span class="entity-chip red">@( HasAnyPlayerRacksNearbyOrLinked() ? "UNLINKED" : "AVAILABLE" )</span>
 																}
 															</div>
-															}
-															@if ( slot.Rack.IsValid() )
+
+															@if ( !slot.Rack.IsValid() )
 															{
-																@* 3.5 revert: rack-detail EVALUATES with stat rows on the standard dark
-																   plate (grey slab dead); purchase cards live on the Upgrades page.
-																   Receipt + deep-link CTA stay — the identity summary survives. *@
+																<div class="rack-card-body">
+																	@if ( !HasAnyPlayerRacksNearbyOrLinked() )
+																	{
+																		<div class="rack-stat-tiles empty">
+																			<div class="rack-stat-tile rack-stat-tile-wide">
+																				<div class="rack-stat-tile-value empty market-hint">Purchase racks from the Market.</div>
+																			</div>
+																		</div>
+																	}
+																	else
+																	{
+																		<div class="rack-stat-tiles empty">
+																			<div class="rack-stat-tile rack-stat-tile-wide">
+																				<div class="rack-stat-tile-value empty">Place rack near hub, then link at rig0 on the terminal — <span class="hashd-prompt-accent">link @slot.TerminalToken</span></div>
+																			</div>
+																		</div>
+																	}
+																</div>
+															}
+															else
+															{
+																@* Vitals — Compute / Rate / Buffer+bar / Yield (Status row retired). *@
 																<div class="server-stat-plate">
-																	<div class="server-stat-row" tooltip="Mining start/stop on CRT">
-																		<span class="server-stat-label">Status</span>
-																		<span class="server-stat-value">@HeroStatusLine( slot.Rack, slot.TerminalToken )</span>
-																	</div>
 																	<div class="server-stat-row">
 																		<span class="server-stat-label">Compute</span>
 																		<span class="server-stat-value">@( slot.Rack.ComputeTier > 0 ? $"TIER {TierRoman( slot.Rack.ComputeTier )}" : "STOCK" ) · @CardGhz( slot.Rack.ComputeTier )</span>
@@ -416,17 +475,29 @@
 																		<span class="server-stat-value">@RackYieldBadge( slot.Rack )</span>
 																	</div>
 																</div>
-																@* ENTITY DETAIL CONTRACT — TIER PROGRESS, the hero of the lower half:
-																   every registry track renders its circuit DISPLAY-ONLY; tracks with no
-																   effect binding are all-grey + PLANNED (a true state, not a
-																   placeholder). Cosmetics last. Tracks arrive into this page. *@
-																<div class="entity-tier-progress">
-																	@foreach ( var track in GpuRackUpgradeTracks )
+
+																@* TIER PROGRESS = the transact surface (track-row law). Each row: icon
+																   lit≥T1, name+why, centered display tree, price + visible delta subtext,
+																   UPGRADE + the anchor-aware chip. PLANNED rows: badge only. *@
+																@{ var rackTracks = GpuRackUpgradeTracks.Append( RackFanRgbCosmetic ).ToList(); }
+																<div class="entity-tier-progress transact">
+																	@for ( int _row = 0; _row < rackTracks.Count; _row++ )
 																	{
-																		var trackLive = IsTrackLive( track );
-																		<div class="entity-track-line @( trackLive ? "live" : "planned" )">
-																			<i class="material-icons">@track.Icon</i>
-																			<span class="entity-track-name">@track.Name</span>
+																		var track = rackTracks[_row];
+																		var rowIndex = _row;
+																		var cosmetic = track.Name == RackFanRgbCosmetic.Name;
+																		var trackLive = !cosmetic && IsTrackLive( track );
+																		var atMax = trackLive && slot.Rack.ComputeTier >= 5;
+																		var iconLit = trackLive && slot.Rack.ComputeTier >= 1;
+
+																		<div class="entity-track-row @( trackLive ? "live" : "planned" )">
+																			<div class="entity-track-lead">
+																				<i class="material-icons @( iconLit ? "lit" : "unlit" )">@track.Icon</i>
+																				<div class="entity-track-copy">
+																					<span class="entity-track-name">@track.Name</span>
+																					<span class="entity-track-why">@TrackWhyLine( track.Name )</span>
+																				</div>
+																			</div>
 																			<div class="lp-stepper centered">
 																				@for ( int _tier = 1; _tier <= 5; _tier++ )
 																				{
@@ -435,42 +506,60 @@
 																						<div class="lp-stepper-link @( trackLive ? StepperLinkClass( slot.Rack, _tier - 1 ) : "dark" )"></div>
 																					}
 																					<div class="lp-stepper-cell @( trackLive ? StepperCellClass( slot.Rack, _tier ) : ( _tier == 5 ? "locked max" : "locked" ) )"
-																					     tooltip="@( trackLive ? StepperTooltip( slot.Rack, _tier ) : $"{track.Name} — PLANNED, no effects yet" )">
+																					     tooltip="@( trackLive ? StepperTooltip( slot.Rack, _tier ) : ( cosmetic ? $"{track.Name} — cosmetic, NOT ENABLED" : $"{track.Name} — PLANNED, no effects yet" ) )">
 																						<span>@TierRoman( _tier )</span>
 																					</div>
 																				}
 																			</div>
-																			@if ( !trackLive )
+																			@if ( trackLive && !atMax )
 																			{
-																				<span class="entity-track-planned">PLANNED</span>
+																				<div class="entity-track-transact">
+																					<div class="entity-track-price"><span class="lp-money-btc">@CardCostBtc( slot.Rack )</span> <span class="lp-money-parens">(<span class="lp-money-cash">@CardCostUsd( slot.Rack )</span>)</span></div>
+																					<div class="entity-track-delta">@TrackDeltaSubtext( slot.Rack )</div>
+																				</div>
+																				<div class="entity-track-action">
+																					<button class="lp-ui-btn-primary entity-track-upgrade" onclick="@(() => ToggleConfirm( slot.Rack, slot.Rack.ComputeTier + 1 ))">UPGRADE</button>
+																					@if ( ConfirmOpenFor( slot.Rack ) )
+																					{
+																						<div class="lp-stepper-chip row-anchored @ChipFlipClass( rowIndex, rackTracks.Count ) @( _purchaseResultCode > 0 && _sincePurchaseResult < 0.5f ? "shake" : "" )">
+																							@if ( StepperWorking( slot.Rack ) )
+																							{
+																								<div class="lp-stepper-chip-row"><span class="lp-stepper-chip-line working">WORKING…</span></div>
+																							}
+																							else
+																							{
+																								<div class="lp-stepper-chip-row">
+																									<span class="lp-stepper-chip-line">TIER @TierRoman( slot.Rack.ComputeTier + 1 ) · <span class="lp-money-btc">@CardCostBtc( slot.Rack )</span> <span class="lp-money-parens">(<span class="lp-money-cash">@CardCostUsd( slot.Rack )</span>)</span></span>
+																									<button class="lp-stepper-chip-yes" onclick="@(() => ConfirmPurchase( slot.Rack ))"><i class="material-icons">check</i></button>
+																									<button class="lp-stepper-chip-no" onclick="@DismissConfirm"><i class="material-icons">close</i></button>
+																								</div>
+																								@if ( _purchaseResultCode == 1 )
+																								{
+																									<div class="lp-stepper-chip-row reject">SHORT ₿ @( ( _purchaseResultShortfallSats / 100_000_000f ).ToString( "0.####" ) )</div>
+																								}
+																								else if ( _purchaseResultCode > 1 )
+																								{
+																									<div class="lp-stepper-chip-row reject">REJECTED · TIER ORDER / HUB ACCESS</div>
+																								}
+																							}
+																						</div>
+																					}
+																				</div>
+																			}
+																			else if ( trackLive && atMax )
+																			{
+																				<span class="entity-track-planned maxed">MAX TIER</span>
+																			}
+																			else
+																			{
+																				<span class="entity-track-planned">@( cosmetic ? "NOT ENABLED" : "PLANNED" )</span>
 																			}
 																		</div>
 																	}
-																	<div class="entity-track-line planned">
-																		<i class="material-icons">@RackFanRgbCosmetic.Icon</i>
-																		<span class="entity-track-name">@RackFanRgbCosmetic.Name</span>
-																		<div class="lp-stepper centered">
-																			@for ( int _tier = 1; _tier <= 5; _tier++ )
-																			{
-																				if ( _tier > 1 )
-																				{
-																					<div class="lp-stepper-link dark"></div>
-																				}
-																				<div class="lp-stepper-cell @( _tier == 5 ? "locked max" : "locked" )"
-																				     tooltip="@($"{RackFanRgbCosmetic.Name} — cosmetic, NOT ENABLED")">
-																					<span>@TierRoman( _tier )</span>
-																				</div>
-																			}
-																		</div>
-																		<span class="entity-track-planned">NOT ENABLED</span>
-																	</div>
 																</div>
-																<div class="server-hero-foot">
+
+																<div class="entity-detail-foot">
 																	<span class="server-hero-receipt">@HeroInvestedReceipt( slot.Rack )</span>
-																	<button class="lp-ui-btn-primary server-detail-upgrade-btn" onclick="@(() => OpenUpgradesForRackSlot( slot ))">
-																		<span>Upgrade this rack</span>
-																		<i class="material-icons">arrow_forward</i>
-																	</button>
 																</div>
 															}
 														</div>
@@ -478,292 +567,6 @@
 											</div>
 										}
 										</div>
-									</div>
-								}
-								else if ( _active == OpsTab.Upgrades )
-								{
-									<div class="pane upgrades">
-										<div class="lp-ui-panel upgrades-home">
-												<div class="lp-ui-panel-title upgrades-home-title">
-													<i class="material-icons">upgrade</i>
-													<span>Universal Upgrades</span>
-												</div>
-
-												@if ( !_inUpgradeSurface )
-												{
-													<div class="lp-ui-intro upgrades-home-intro">
-														Choose what to upgrade. Each surface opens its own upgrade paths.
-													</div>
-
-													<div class="upgrade-home-grid">
-														<button class="upgrade-home-box" onclick="@(() => EnterUpgradeSurface( UpgradeSurface.Hub ))">
-															<i class="material-icons upgrade-home-box-icon">dns</i>
-															<div class="upgrade-home-box-body">
-																<span class="upgrade-home-box-title">HUB</span>
-																<span class="upgrade-home-box-sub">Controller &amp; Farm Operations</span>
-																<span class="upgrade-home-box-desc">Scheduler, share flow, pool client, firmware, and trust policy.</span>
-															</div>
-															<div class="upgrade-home-box-foot">
-																<span class="upgrade-home-box-meta">5 tracks · PLANNED</span>
-																<i class="material-icons upgrade-home-box-chevron">chevron_right</i>
-															</div>
-														</button>
-														<button class="upgrade-home-box" onclick="@(() => EnterUpgradeSurface( UpgradeSurface.Terminal ))">
-															<i class="material-icons upgrade-home-box-icon">security</i>
-															<div class="upgrade-home-box-body">
-																<span class="upgrade-home-box-title">TERMINAL</span>
-																<span class="upgrade-home-box-sub">Defense &amp; Monitoring</span>
-																<span class="upgrade-home-box-desc">Firewall, command security, intrusion detection, audit logs, and monitoring.</span>
-															</div>
-															<div class="upgrade-home-box-foot">
-																<span class="upgrade-home-box-meta">5 tracks · PLANNED</span>
-																<i class="material-icons upgrade-home-box-chevron">chevron_right</i>
-															</div>
-														</button>
-														<button class="upgrade-home-box" onclick="@(() => EnterUpgradeSurface( UpgradeSurface.GpuRack ))">
-															<i class="material-icons upgrade-home-box-icon">memory</i>
-															<div class="upgrade-home-box-body">
-																<span class="upgrade-home-box-title">GPU RACK</span>
-																<span class="upgrade-home-box-sub">Hardware &amp; Output</span>
-																<span class="upgrade-home-box-desc">Choose a rack, then upgrade its hardware profile.</span>
-															</div>
-															<div class="upgrade-home-box-foot">
-																<span class="upgrade-home-box-meta">3 racks · 5 tracks · PLANNED</span>
-																<i class="material-icons upgrade-home-box-chevron">chevron_right</i>
-															</div>
-														</button>
-													</div>
-												}
-												else if ( _upgradeSurface == UpgradeSurface.GpuRack && !_rackTargetSelected )
-												{
-													<button class="lp-ui-btn-ghost upgrades-back-btn" onclick="@BackToUpgradesHome">
-														<i class="material-icons">arrow_back</i>
-														<span>Upgrades Home</span>
-													</button>
-
-													<div class="upgrade-home-grid">
-														<button class="upgrade-home-box" onclick="@(() => EnterRackTarget( UpgradeRackSelector.Rack1 ))">
-															<i class="material-icons upgrade-home-box-icon">memory</i>
-															<div class="upgrade-home-box-body">
-																<span class="upgrade-home-box-title">GPU RACK 1</span>
-																<span class="upgrade-home-box-sub">Standard worker node</span>
-																<span class="upgrade-home-box-desc">Hardware upgrades apply only to Rack 1.</span>
-															</div>
-															<div class="upgrade-home-box-foot">
-																<span class="upgrade-home-box-meta">5 tracks · PLANNED</span>
-																<i class="material-icons upgrade-home-box-chevron">chevron_right</i>
-															</div>
-														</button>
-														<button class="upgrade-home-box" onclick="@(() => EnterRackTarget( UpgradeRackSelector.Rack2 ))">
-															<i class="material-icons upgrade-home-box-icon">memory</i>
-															<div class="upgrade-home-box-body">
-																<span class="upgrade-home-box-title">GPU RACK 2</span>
-																<span class="upgrade-home-box-sub">Standard worker node</span>
-																<span class="upgrade-home-box-desc">Hardware upgrades apply only to Rack 2.</span>
-															</div>
-															<div class="upgrade-home-box-foot">
-																<span class="upgrade-home-box-meta">5 tracks · PLANNED</span>
-																<i class="material-icons upgrade-home-box-chevron">chevron_right</i>
-															</div>
-														</button>
-														<button class="upgrade-home-box" onclick="@(() => EnterRackTarget( UpgradeRackSelector.Advanced ))">
-															<i class="material-icons upgrade-home-box-icon">developer_board</i>
-															<div class="upgrade-home-box-body">
-																<span class="upgrade-home-box-title">ADVANCED GPU RACK</span>
-																<span class="upgrade-home-box-sub">Advanced worker node</span>
-																<span class="upgrade-home-box-desc">Higher baseline rack; same upgrade structure.</span>
-															</div>
-															<div class="upgrade-home-box-foot">
-																<span class="upgrade-home-box-meta">5 tracks · PLANNED</span>
-																<i class="material-icons upgrade-home-box-chevron">chevron_right</i>
-															</div>
-														</button>
-													</div>
-												}
-												else
-												{
-													<button class="lp-ui-btn-ghost upgrades-back-btn" onclick="@BackFromPathList">
-														<i class="material-icons">arrow_back</i>
-														<span>@PathListBackLabel()</span>
-													</button>
-
-													<div class="lp-ui-scroll-region upgrades-scroll universal-upgrades-scroll">
-													@{
-														// One-page law: every track is a ROW (circuit display); the track CARD
-														// section below is the PURCHASE SURFACE (3.5 re-home) — solo-I / pair /
-														// solo-MAX states, chip anchored to the card's Purchase button.
-														var stepperRack = _upgradeSurface == UpgradeSurface.GpuRack ? RackForSelector() : null;
-													}
-													@if ( stepperRack.IsValid() && _transactTrackName is not null )
-													{
-														@* TRANSACT VIEW (blocker-a fix): rows step aside — one track, one card,
-														   one page; the circuit renders centered as context; Back returns. *@
-														<button class="lp-ui-btn-ghost upgrades-back-btn" onclick="@CloseTransact">
-															<i class="material-icons">arrow_back</i>
-															<span>Tracks</span>
-														</button>
-														<div class="upgrade-purchase-section">
-															@foreach ( var heroTrack in GpuRackUpgradeTracks )
-															{
-																if ( !IsTrackLive( heroTrack ) || heroTrack.Name != _transactTrackName )
-																	continue;
-
-																<div class="server-track-card purchase">
-																	<div class="server-track-card-head">
-																		<i class="material-icons">@heroTrack.Icon</i>
-																		<span>@heroTrack.Name</span>
-																	</div>
-																	<div class="lp-stepper centered context">
-																		@for ( int _tier = 1; _tier <= 5; _tier++ )
-																		{
-																			if ( _tier > 1 )
-																			{
-																				<div class="lp-stepper-link @StepperLinkClass( stepperRack, _tier - 1 )"></div>
-																			}
-																			<div class="lp-stepper-cell @StepperCellClass( stepperRack, _tier )"
-																			     tooltip="@StepperTooltip( stepperRack, _tier )">
-																				<span>@TierRoman( _tier )</span>
-																			</div>
-																		}
-																	</div>
-																	@if ( stepperRack.ComputeTier >= 5 )
-																	{
-																		@* solo-MAX — the acceptance-standard card, re-homed never rebuilt. *@
-																		<div class="server-track-panel maxed">
-																			<span class="server-track-max-badge"><i class="material-icons">military_tech</i>MAX</span>
-																			<span class="server-track-tier-bubble max">V</span>
-																			<span class="server-track-stat flavor">@CardGhz( stepperRack.ComputeTier )</span>
-																			<span class="server-track-stat">@CardRateLine( stepperRack, stepperRack.ComputeTier )</span>
-																		</div>
-																	}
-																	else if ( stepperRack.ComputeTier == 0 )
-																	{
-																		@* solo-I — the first offer stands alone on a virgin rack. *@
-																		<div class="server-track-panel next solo">
-																			<span class="server-track-cost">@CardCostBtc( stepperRack ) <span class="usd">(<span class="lp-money-cash">@CardCostUsd( stepperRack )</span>)</span></span>
-																			<span class="server-track-tier-bubble next">I</span>
-																			<span class="server-track-stat flavor">@CardGhz( 1 )</span>
-																			<span class="server-track-stat delta">@CardDeltaLine( stepperRack )</span>
-																			<span class="server-track-stat payback">@CardPaybackLine( stepperRack )</span>
-																		</div>
-																	}
-																	else
-																	{
-																		<div class="server-track-compare">
-																			<div class="server-track-panel current">
-																				<span class="server-track-tier-bubble lit">@TierRoman( stepperRack.ComputeTier )</span>
-																				<span class="server-track-stat flavor">@CardGhz( stepperRack.ComputeTier )</span>
-																				<span class="server-track-stat">@CardRateLine( stepperRack, stepperRack.ComputeTier )</span>
-																			</div>
-																			<i class="material-icons server-track-arrow">arrow_forward</i>
-																			<div class="server-track-panel next">
-																				<span class="server-track-cost">@CardCostBtc( stepperRack ) <span class="usd">(<span class="lp-money-cash">@CardCostUsd( stepperRack )</span>)</span></span>
-																				<span class="server-track-tier-bubble next">@TierRoman( stepperRack.ComputeTier + 1 )</span>
-																				<span class="server-track-stat flavor">@CardGhz( stepperRack.ComputeTier + 1 )</span>
-																				<span class="server-track-stat delta">@CardDeltaLine( stepperRack )</span>
-																				<span class="server-track-stat payback">@CardPaybackLine( stepperRack )</span>
-																			</div>
-																		</div>
-																	}
-																	@if ( stepperRack.ComputeTier < 5 )
-																	{
-																		@* Purchase seat — the chip's anchor (3.5 re-anchor ruling). *@
-																		<div class="server-track-purchase-seat">
-																			@if ( ConfirmOpenFor( stepperRack ) )
-																			{
-																				<div class="lp-stepper-chip @( _purchaseResultCode > 0 && _sincePurchaseResult < 0.5f ? "shake" : "" )">
-																					@if ( StepperWorking( stepperRack ) )
-																					{
-																						<div class="lp-stepper-chip-row">
-																							<span class="lp-stepper-chip-line working">WORKING…</span>
-																						</div>
-																					}
-																					else
-																					{
-																						<div class="lp-stepper-chip-row">
-																							<span class="lp-stepper-chip-line">TIER @TierRoman( stepperRack.ComputeTier + 1 ) · <span class="lp-money-btc">@CardCostBtc( stepperRack )</span> <span class="lp-money-parens">(<span class="lp-money-cash">@CardCostUsd( stepperRack )</span>)</span></span>
-																							<button class="lp-stepper-chip-yes" onclick="@(() => ConfirmPurchase( stepperRack ))"><i class="material-icons">check</i></button>
-																							<button class="lp-stepper-chip-no" onclick="@DismissConfirm"><i class="material-icons">close</i></button>
-																						</div>
-																						@if ( _purchaseResultCode == 1 )
-																						{
-																							<div class="lp-stepper-chip-row reject">SHORT ₿ @( ( _purchaseResultShortfallSats / 100_000_000f ).ToString( "0.####" ) )</div>
-																						}
-																						else if ( _purchaseResultCode > 1 )
-																						{
-																							<div class="lp-stepper-chip-row reject">REJECTED · TIER ORDER / HUB ACCESS</div>
-																						}
-																					}
-																				</div>
-																			}
-																			<button class="lp-ui-btn-primary server-track-purchase-btn" onclick="@(() => ToggleConfirm( stepperRack, stepperRack.ComputeTier + 1 ))">
-																				<span>Purchase</span>
-																				<span class="lp-money-btc">@CardCostBtc( stepperRack )</span>
-																			</button>
-																		</div>
-																	}
-																</div>
-															}
-														</div>
-													}
-													else
-													{
-													@foreach ( var section in CurrentUpgradeSections() )
-													{
-														<div class="upgrade-section @( section.Cosmetic ? "upgrade-section-cosmetic" : "upgrade-section-fill" )">
-															<div class="upgrade-section-head @( section.Cosmetic ? "cosmetic" : "" )">
-																<i class="material-icons">@section.Icon</i>
-																<span>@section.Title</span>
-															</div>
-															<div class="upgrade-path-list">
-																@foreach ( var track in section.Tracks )
-																{
-																	var live = !section.Cosmetic && IsComputeTrack( track ) && stepperRack.IsValid();
-																	<div class="upgrade-track-row @( section.Cosmetic ? "cosmetic" : "" ) @( live ? "live" : "" )">
-																		<i class="material-icons upgrade-path-btn-icon">@track.Icon</i>
-																		<div class="upgrade-path-btn-body">
-																			<span class="upgrade-path-btn-name">@track.Name</span>
-																			<span class="upgrade-path-btn-tier">@RowTierLabel( track, live ? stepperRack : null )</span>
-																		</div>
-																		@if ( live )
-																		{
-																			@* Centered circuit stepper (3.5) — DISPLAY, not control: bubbles are
-																			   inert-but-tooltipped; purchases live on the card above. *@
-																			<div class="lp-stepper centered">
-																				@for ( int _tier = 1; _tier <= 5; _tier++ )
-																				{
-																					if ( _tier > 1 )
-																					{
-																						<div class="lp-stepper-link @StepperLinkClass( stepperRack, _tier - 1 )"></div>
-																					}
-																					<div class="lp-stepper-cell @StepperCellClass( stepperRack, _tier )"
-																					     tooltip="@StepperTooltip( stepperRack, _tier )">
-																						<span>@TierRoman( _tier )</span>
-																					</div>
-																				}
-																			</div>
-																			@if ( stepperRack.ComputeTier >= 5 )
-																			{
-																				<span class="upgrade-path-btn-status">MAX TIER</span>
-																			}
-																			else
-																			{
-																				<button class="lp-ui-btn-primary upgrade-row-btn" onclick="@(() => OpenTransact( track.Name ))">UPGRADE</button>
-																			}
-																		}
-																		else
-																		{
-																			<span class="upgrade-path-btn-status">@TrackRowStatus( track, section.Cosmetic, null )</span>
-																		}
-																	</div>
-																}
-															</div>
-														</div>
-													}
-													}
-													</div>
-												}
-											</div>
 									</div>
 								}
 								else if ( _active == OpsTab.Wallet )
@@ -1204,7 +1007,9 @@
 		return max == 0 ? "Base" : $"Tier {TierRoman( max )}";
 	}
 
-	private static readonly OpsTab[] _tabs = { OpsTab.Overview, OpsTab.Upgrades, OpsTab.Racks, OpsTab.Wallet, OpsTab.Transfers, OpsTab.Logs, OpsTab.Settings };
+	// Upgrades tab retired (3.5 consolidation): Servers is the sole upgrade surface.
+	// The enum value survives for the switch arms; nothing routes to it anymore.
+	private static readonly OpsTab[] _tabs = { OpsTab.Overview, OpsTab.Racks, OpsTab.Wallet, OpsTab.Transfers, OpsTab.Logs, OpsTab.Settings };
 	private static readonly PerfRange[] _perfRanges = { PerfRange.Day, PerfRange.Week, PerfRange.Month };
 
 	private OpsTab _active = OpsTab.Overview;
@@ -1213,6 +1018,7 @@
 	private bool _inUpgradeSurface;     // false = Upgrades home (3 surface boxes)
 	private bool _rackTargetSelected;   // GPU only: false = rack target home (3 rack boxes)
 	private string _serverDetailToken;  // null = Servers home grid; token = that slot's drill-in detail
+	private bool _hubDetailOpen;        // hub tenant #0 detail (3.5 consolidation) — takes precedence over the grid
 	private Guid _rackSlotCopyAckId = Guid.Empty;
 	private bool _receiveCopyAck;
 	private bool _sendExampleCopyAck;
@@ -1430,6 +1236,54 @@
 		return delta > 0f ? $"pays back ~{quoteBtc / delta:N0} min" : "";
 	}
 
+	// Payback auto-scaled (ruling: the "6d" sketch value is illustrative) — the unit grows
+	// with magnitude so early tiers (days) and high-rate racks (minutes) both read naturally.
+	private string CardPaybackAuto( LpBitcoinRackEntity rack )
+	{
+		var quoteBtc = StepperNextQuoteSats( rack ) / 100_000_000f;
+		var delta = CardDeltaPerMin( rack );
+		if ( delta <= 0f )
+			return "";
+
+		var minutes = quoteBtc / delta;
+		if ( minutes < 90f )
+			return $"~{minutes:N0} min payback";
+
+		var hours = minutes / 60f;
+		return hours < 48f ? $"~{hours:0.#} hr payback" : $"~{hours / 24f:0.#} d payback";
+	}
+
+	// Clock delta for the row subtext ("+12.5 GHz").
+	private static string CardDeltaGhz( LpBitcoinRackEntity rack )
+		=> $"+{ProjectedClockGhz( rack.ComputeTier + 1 ) - ProjectedClockGhz( rack.ComputeTier ):0.#} GHz";
+
+	// The VISIBLE delta subtext (ruling: not tooltip-only) — "+X GHz · ~N payback".
+	private string TrackDeltaSubtext( LpBitcoinRackEntity rack )
+		=> $"{CardDeltaGhz( rack )} · {CardPaybackAuto( rack )}";
+
+	// One-line what/why per track — sourced from UPGRADE_ECONOMY_DOCTRINE's effect axes.
+	private static string TrackWhyLine( string name ) => name switch
+	{
+		"Compute Profile" => "Raw hash rate — doubles clocks each tier.",
+		"Cooling System" => "Sustains high clocks — cuts thermal throttle.",
+		"Power Delivery" => "Efficiency — trims the draw cooling must cover.",
+		"Efficiency Tuning" => "More yield per watt, without touching the rate ladder.",
+		"Payout Buffer" => "Bigger undeposited buffer — more headroom before full.",
+		"Fan RGB" => "Cosmetic lighting — no performance change.",
+		"Job Scheduler" => "Staggers rack ticks so none sits full while another idles.",
+		"Share Pipeline" => "Shortens the gauntlet — auto-deposits buffers to the hub.",
+		"Pool Client" => "Smooths payout variance; higher tiers host pools.",
+		"Farm Firmware" => "Farm scale + QoL — gates how many racks a hub addresses.",
+		"Trust Policy" => "Access control — co-owners, whitelist, guest windows.",
+		"Sound Pack" => "Cosmetic audio — no performance change.",
+		_ => "",
+	};
+
+	// Anchor-aware chip flip (the one new mechanic): top-portion rows anchor the chip BELOW
+	// the button (room below); lower rows anchor ABOVE — never clipped at either scroll edge.
+	private static string ChipFlipClass( int rowIndex, int totalRows )
+		=> rowIndex < ( totalRows + 1 ) / 2 ? "flip-down" : "flip-up";
+
 	private string CardCostBtc( LpBitcoinRackEntity rack )
 		=> $"₿ {StepperNextQuoteSats( rack ) / 100_000_000f:0.##}";
 
@@ -1544,11 +1398,14 @@
 		StateHasChanged();
 	}
 
-	/// <summary>Dev preview — jump to GPU Rack target home on Universal Upgrades (no legacy buy panel).</summary>
+	/// <summary>Dev preview — Servers is the upgrade surface now; drill into the first linked rack.</summary>
 	public void DevOpenUpgradesForFirstLinkedRack()
 	{
-		SelectTab( OpsTab.Upgrades );
-		EnterUpgradeSurface( UpgradeSurface.GpuRack );
+		_hubDetailOpen = false;
+		SelectTab( OpsTab.Racks );
+		var slots = GetServersRackSlots().Where( s => s.Rack.IsValid() ).ToList();
+		if ( slots.Count > 0 )
+			EnterServerDetail( slots[0] );
 	}
 
 	/// <summary>Dev preview — jump straight to the wallet tab (cash-out tiles).</summary>
@@ -1602,35 +1459,41 @@
 			EnterServerDetail( slots[0] );
 	}
 
-	/// <summary>Dev preview — Universal Upgrades home (tier tile grid), not a per-rack view.</summary>
+	/// <summary>Dev preview — Servers home (the sole upgrade surface post-consolidation).</summary>
 	public void DevOpenUpgradesHome()
 	{
-		SelectTab( OpsTab.Upgrades );
+		_hubDetailOpen = false;
+		_serverDetailToken = null;
+		SelectTab( OpsTab.Racks );
 	}
 
-	/// <summary>Dev sweep — enter an Upgrades surface by name: Hub, Terminal, or GpuRack.</summary>
+	/// <summary>Dev sweep — hub opens its detail (tenant #0); anything else lands on Servers home.</summary>
 	public void DevEnterUpgradeSurface( string surface )
 	{
-		SelectTab( OpsTab.Upgrades );
-		EnterUpgradeSurface( surface?.ToLowerInvariant() switch
+		SelectTab( OpsTab.Racks );
+		if ( surface?.ToLowerInvariant() == "hub" )
+			OpenHubDetail();
+		else
 		{
-			"terminal" => UpgradeSurface.Terminal,
-			"gpurack" => UpgradeSurface.GpuRack,
-			_ => UpgradeSurface.Hub
-		} );
+			_hubDetailOpen = false;
+			_serverDetailToken = null;
+		}
 	}
 
-	/// <summary>Dev sweep — jump to a GPU rack target's track list: Rack1, Rack2, or Advanced.</summary>
+	/// <summary>Dev sweep — drill into a rack's detail (the upgrade surface): Rack1, Rack2, or Advanced.</summary>
 	public void DevEnterUpgradeRackSlot( string slot )
 	{
-		SelectTab( OpsTab.Upgrades );
-		EnterUpgradeSurface( UpgradeSurface.GpuRack );
-		EnterRackTarget( slot?.ToLowerInvariant() switch
+		_hubDetailOpen = false;
+		SelectTab( OpsTab.Racks );
+		var want = slot?.ToLowerInvariant() switch
 		{
-			"rack2" => UpgradeRackSelector.Rack2,
-			"advanced" => UpgradeRackSelector.Advanced,
-			_ => UpgradeRackSelector.Rack1
-		} );
+			"rack2" => "gpurack-2",
+			"advanced" => LpBitcoinIdent.AdvancedRackTerminalToken,
+			_ => "gpurack-1"
+		};
+		var target = GetServersRackSlots().FirstOrDefault( s => s.TerminalToken == want );
+		if ( target.TerminalToken is not null )
+			EnterServerDetail( target );
 	}
 
 	protected override void OnEnabled()
@@ -1858,7 +1721,25 @@
 	private void BackToServersHome()
 	{
 		_serverDetailToken = null;
+		_hubDetailOpen = false;
 		LifePunchUiScrollPolicy.ResetOffsets( Panel );
+	}
+
+	// Hub tenant #0 (3.5 consolidation) — the hub gets the same detail component,
+	// fed by this adapter. No live tracks yet; its TIER PROGRESS is all-PLANNED.
+	private void OpenHubDetail()
+	{
+		_hubDetailOpen = true;
+		_serverDetailToken = null;
+		LifePunchUiScrollPolicy.ResetOffsets( Panel );
+	}
+
+	private int HubRackCount() => Hub.IsValid() ? Hub.GetLinkedRacks().Count( r => r.IsValid() ) : 0;
+
+	private string HubRacksChipState()
+	{
+		var n = HubRackCount();
+		return n == 0 ? "red" : ( n >= LpBitcoinIdent.PortalMaxRacksPerHub ? "green" : "gold" );
 	}
 
 	private static string ServerSlotIcon( OverviewMinerSlot slot )
@@ -2077,11 +1958,12 @@
 	}
 
 	// Server-detail deep link: Upgrades pre-selected on this rack's track.
+	// Deep-link redirect (3.5): the rack's detail page IS the upgrade surface now.
 	private void OpenUpgradesForRackSlot( OverviewMinerSlot slot )
 	{
-		SelectTab( OpsTab.Upgrades );
-		EnterUpgradeSurface( UpgradeSurface.GpuRack );
-		EnterRackTarget( RackSelectorForSlot( slot ) );
+		_hubDetailOpen = false;
+		SelectTab( OpsTab.Racks );
+		EnterServerDetail( slot );
 	}
 
 	private static UpgradeRackSelector RackSelectorForSlot( OverviewMinerSlot slot )
@@ -2221,7 +2103,8 @@
 	private void SelectWalletTab() => SelectTab( OpsTab.Wallet );
 	private void SelectTransfersTab() => SelectTab( OpsTab.Transfers );
 	private void SelectRacksTab() => SelectTab( OpsTab.Racks );
-	private void SelectUpgradesTab() => SelectTab( OpsTab.Upgrades );
+	// Retired tab redirect: Overview's upgrade entry now lands on Servers.
+	private void SelectUpgradesTab() => SelectTab( OpsTab.Racks );
 	private void OpenSettings() => SelectTab( OpsTab.Settings );
 	private string GetRootClass() => $"lp-bitcoin-ops lp-ui-accent-hashd {LpUiScale.CssClass( LpUiScale.Default )}";
 
@@ -2973,6 +2856,8 @@
 		hash.Add( _inUpgradeSurface );
 		hash.Add( _rackTargetSelected );
 		hash.Add( _serverDetailToken ?? string.Empty );
+		hash.Add( _hubDetailOpen );
+		hash.Add( HubRackCount() );
 		hash.Add( _confirmRackId );
 		hash.Add( _transactTrackName ?? string.Empty );
 		hash.Add( _receiveCopyAck );
