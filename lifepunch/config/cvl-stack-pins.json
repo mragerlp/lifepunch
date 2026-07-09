@@ -109,7 +109,7 @@
   "libraryTree": {
     "path": "D:/Steam/steamapps/common/sbox/dxrp/game/Libraries",
     "law": "lifepunch/docs/SBOX_LIBRARY_PLAYBOOK.md (LAW 1 tree of truth; stack changes update this manifest)",
-    "sweep": "2026-07-08",
+    "sweep": "2026-07-08 (re-pin post library-tools update: fish.shrimple_ragdolls 306729->308028; 26/27 unchanged)",
     "libraries": {
       "ali3nsystems.lib-shader_graph_extras": "1.0.276588",
       "brax.unrealimporter": "1.0.303950",
@@ -118,7 +118,7 @@
       "dreams.ultimatelightmanager": "1.0.293684",
       "evilinc.modeliconeditor": "1.0.134363",
       "fish.scc": "1.0.301969",
-      "fish.shrimple_ragdolls": "1.0.306729",
+      "fish.shrimple_ragdolls": "1.0.308028",
       "gamah.skafinity": "1.0.306536",
       "igor.reactivity": "1.0.302096",
       "isotope.gitversioncontrol": "1.0.306347",

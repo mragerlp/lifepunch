@@ -24,8 +24,12 @@ Inputs: Green packets A1/A2/B/C · `handoff/UPGRADE_ARC_DESIGN_INPUTS_2026-07-08
 7. **Ledger money is integer: `long costSats`** in the record; BTC display +
    `float costBtc` in the OnPurchase payload only. Purchases charge BTC;
    $ display is decorative (rate: $5,000/BTC launch, FIXED; it is the
-   coupling knob between mining and the wider economy — pending the
-   printer/weed comparables grep).
+   coupling knob between mining and the wider economy).
+   **Rate VALIDATED (rate leg) — Packet D comparables, 2026-07-08:** stock
+   mining $40.7/min vs vanilla printer $25/min = 1.63×, inside the 1.5–2.5×
+   target band; risk-ladder ordering preserved (attended weed ≤ $92.6/min >
+   mining > printer). Capital leg pending the printer spawn-cost grep
+   (cost constant lives in market/config files outside the D payload).
 8. **`OnPurchase(Player, string trackId, int tier, float costBtc)`** raised at
    ledger-commit, never RPC entry (hub AND rack RPCs funnel to one path).
    Commit-then-raise: the event announces a fact.
@@ -51,6 +55,7 @@ sub-pages, seats in `.server-detail-action-lead`).
 per packet C: emissive tint/intensity; T5 = hue shift; patterned RGB =
 future asset work). Both post-arc, Bloodwave's call.
 
-**Open (non-blocking):** confirm-modal primitive (Red grep) · printer/weed
-comparables (validates $5k rate) · legacy Advanced rack gains the yield
-scalar in slice 1–2 (purchase flow reads it at quote time).
+**Open (non-blocking):** confirm-modal primitive (Red grep) · printer
+spawn-cost grep (closes the comparables capital leg; rate leg validated
+2026-07-08) · legacy Advanced rack gains the yield scalar in slice 1–2
+(purchase flow reads it at quote time).

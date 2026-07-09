@@ -40,6 +40,12 @@ Limitation acknowledged: vanilla config covers weed only — coke/meth
 pricing requires our own addon/server config layer. That layer is the
 main build cost of this lane.
 
+**Config template reference (vanilla weed, extracted Packet D 2026-07-08):**
+drop price band 175–350 (`DrugDropMinPrice`/`DrugDropMaxPrice`), price change
+cycle 1800s (`DrugDropPriceChangeCycle`), sell time 10s (`DrugDropSellTime`) —
+the fluctuation shape the coke/meth configs mirror, with wider band / higher
+ceiling per market (meth widest, per Three Markets above).
+
 ## Chemist Production Track (future, house pattern)
 
 Drug Chemist gets 5-tier upgrade track(s) for cocaine/meth production
