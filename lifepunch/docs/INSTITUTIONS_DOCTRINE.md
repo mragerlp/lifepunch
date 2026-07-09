@@ -62,13 +62,23 @@ owner, personal props as the deductible, reputation at stake. **Obligation
 binds the space; accountability binds the person** — the same split as the
 Hospital, one layer up in what's at risk.
 
-### The Bank Guard charter — loyalty is structural
+### The Bank Guard charter — allegiance monopoly, economic freedom
 
-Bank Guards may **not freelance, contract, crew, or base with any player.**
-They live in the Bank. This is the deliberate **inverse of the Medic's
-freedom**: jobs holding other people's money do not get to have other people.
-The Medic's associations are his own because he holds no capital; the Guard's
-are forbidden because he holds everyone's.
+The Guard's **allegiance** is monopolized, not his economy. He may **not crew
+with raiders, base with gangs, or take contracts outside the Bank** — he lives
+in the Bank. But he is a **full economic citizen**: he may run his own printers
+and mining rigs inside it, invest in the fund like any depositor, and receive
+whatever wage the Banker chooses to pay.
+
+**Guard pay is voluntary, which makes it a reputation surface.** A stingy
+Banker gets guards who quit; a generous one gets a standing army. And a Guard
+who invests his wage back into the fund he defends is **guarding his own
+money** — loyalty made literal.
+
+Contrast with the Medic's freedom: jobs holding other people's money don't get
+other *people* — but they still get their **own**. The Medic's associations are
+his because he holds no capital; the Guard's allegiance is bound because he
+holds everyone's, yet his purse stays his.
 
 ### Incorruptibility — the one absolute
 
@@ -78,7 +88,8 @@ by design — the Mayor may be a villain, the FBI may be starved, the Dealer may
 be bribed. The Bank alone is protected from its own operators, **because
 everything else in the economy depends on it being boring.** A bank you cannot
 trust is not a bank; the whole stock-market fiction collapses the moment its
-keepers can be turned.
+keepers can be turned. **This is why the allegiance monopoly exists** — the
+Guard's loyalty is walled off precisely so it can never be sold.
 
 ## THE FUND, NOT THE BANK
 
