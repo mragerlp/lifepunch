@@ -31,7 +31,7 @@ The agent-capable MCP stack is the COMPLEMENTARY SET, not every server present:
 
 | Server | Library | Transport | Role |
 |---|---|---|---|
-| `sbox` | sboxskinsgg.claudebridge | stdio / file-IPC (survives editor restarts) | TEST & MANIPULATE lane — playtest, simulated input, debug draw/viz, asset ops, method invocation, scaffolding. 197 handlers. Proven live. |
+| `sbox` | sboxskinsgg.claudebridge | stdio / file-IPC (survives editor restarts) | TEST & MANIPULATE lane — playtest, simulated input, debug draw/viz, asset ops, method invocation, scaffolding. 219 handlers (v1.20.0, 2026-07-08 — was 197 pre-update). Proven live. |
 | `sbox-editor` | notpointless.chomnr_mcp | HTTP :9090 (lives INSIDE editor) | AUTHOR lane — ModelDoc, ShaderGraph, prefabs, scenes, components, code, project, cloud/marketplace, retargeter. |
 | (situational) | sboxcool.network-storage MCP | bun, per-repo | Storage-work sessions only — scaffold/validate collections, endpoints, workflows. |
 | (this seat) | Blender MCP | Claude Desktop connector | Asset prep — Blender scene ops, screenshots, renders, API docs. Fable-seat lane, not Red. |
@@ -123,9 +123,13 @@ REACH FOR: any "does it actually work" question; driving gameplay; seeing state.
 ENTRY: Editor handlers — Playtest, PlayInput, DebugDraw, DebugViz, AssetTool,
 InvokeMethod (the escape hatch: call arbitrary editor/game methods),
 InputAction, Scaffold, NpcBrain.
-VERIFIED (2026-07-08): live all session, 197 handlers, survives editor restarts
-(file-IPC). UNTESTED: screenshot fidelity vs supershot; NpcBrain surface.
-NOTE: status JSON reports `port: 29015` — cosmetic (it is file-IPC).
+VERIFIED (2026-07-08): live all session, survives editor restarts (file-IPC);
+addon updated to v1.20.0 same day — 219 handlers, versionsAligned true.
+VERIFIED (2026-07-08): first boot after an engine update blocks the frame loop
+(asset recompile) — heartbeat stale + high sbox-dev CPU = busy, NOT crashed;
+heartbeat recovers when the recompile finishes. Check CPU before relaunching. UNTESTED: screenshot fidelity vs supershot; NpcBrain surface.
+NOTE (resolved 2026-07-08): the old `port: 29015` status-JSON oddity is gone
+after the v1.20.0 update; status is clean.
 
 ### notpointless.chomnr_mcp — the authoring lane
 REACH FOR: creating/editing assets, prefabs, scenes, shader graphs; marketplace
@@ -214,10 +218,15 @@ publish page assets, marketing. UNTESTED: agent-drivable vs human-only.
 - [x] jtc + oz_mcp trim — DONE 2026-07-08 (uninstalled + debris cleaned)
 - [x] Red pass: pin all 27 `.version` values — DONE 2026-07-08
       (cvl-stack-pins.json `libraryTree` section, sweep-dated)
-- [ ] Red pass: enumerate claudebridge's 197 handlers + chomnr tool schemas
+- [ ] Red pass: enumerate claudebridge's 219 handlers + chomnr tool schemas
       into an appendix (the VERIFIED backbone)
 - [ ] Red pass: panelrendertarget first-exercise (trivial panel on a cube)
 - [ ] xmovement vs fish.scc: document why two movement controllers, or trim
 - [ ] Probe sboxshare.sboxshare before first use
+- [ ] LIVE: official s&box editor MCP server audit (shipped in engine update
+      26.07.08 — see ENGINE_UPDATES.md): locate endpoint/config, enumerate the
+      tool surface, three-way comparison vs claudebridge (test/manipulate) and
+      chomnr (author), playbook entry + keep/trim recommendation. NO stack
+      change without Bloodwave GO
 
 ---
