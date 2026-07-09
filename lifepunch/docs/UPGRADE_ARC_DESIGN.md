@@ -90,6 +90,17 @@ exception) — use for slice-2's multi-operator purchase/permission cases
 (non-owner buy rejection, concurrent purchase race, cross-operator ledger
 isolation).
 
+**Proof environment (Two-Scene Law, `PROOF_ENVIRONMENT_DOCTRINE.md`):** gate
+cases prove in the FAST scene by default (ledgers, effects, persistence,
+contracts, UI, PayoutTarget — all map-independent); only map-behavioral claims
+ship to the world scene, and a case that needs the world scene names that map
+dependency here. **Identity Rider:** state each case's identity requirement up
+front — one portal identity (single-player Bloodwave) proves any claim about
+*a* player; TWO portal identities (Cornerman as Splash God) are mandatory for
+gate-2b's three cases, Trust Policy, Fund pro-rata, the Banker's ATM, Guard
+pay, and every adversarial/hacking case. Bots populate; they never prove
+economic behavior.
+
 **Slice-3 design notes (filed 2026-07-09, no build yet):**
 - **Animation pipeline PROOF (pre-slice-3 side quest):** one asset, one
   authored animation — hub power-on — pulled Blender→FBX→ModelDoc→playable.
