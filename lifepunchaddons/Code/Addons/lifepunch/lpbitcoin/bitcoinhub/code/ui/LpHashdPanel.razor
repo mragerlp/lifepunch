@@ -1492,6 +1492,11 @@
 	/// <summary>Dev preview — jump straight to the wallet tab (cash-out tiles).</summary>
 	public void DevOpenWalletTab() => SelectTab( OpsTab.Wallet );
 
+	/// <summary>Dev preview — jump straight to the transfers tab (send + rate table). Fills the
+	/// gap the recon flagged: the transfers pane had no dev entry point, so it could not be
+	/// screenshotted or gated.</summary>
+	public void DevOpenTransfersTab() => SelectTab( OpsTab.Transfers );
+
 	/// <summary>Dev preview — jump straight to the settings tab (toggle list).</summary>
 	public void DevOpenSettingsTab() => SelectTab( OpsTab.Settings );
 
@@ -1563,6 +1568,42 @@
 	/// <summary>Dev proof — which Servers view is on screen (Home/HubDetail/TerminalDetail/RackChooser/RackDetail).</summary>
 	public string DevServersViewProbe()
 		=> $"{_serversView}:{_serverDetailToken ?? "-"}";
+
+	/// <summary>Dev proof — inject a known balance then fire two hub cash-outs in ONE tick, to
+	/// exercise the cash-out race. Both calls read the wallet and both reach the TryPayBank await
+	/// before either resolves, so the sensor lines (LP_CASHOUT_SENSOR) show whether the second
+	/// debit drives the wallet negative. Gate reads: wallet never negative, one bank credit.</summary>
+	public void DevRaceCashOut( float injectBtc )
+	{
+		if ( !Hub.IsValid() )
+			return;
+
+		Hub.HubWalletBtc = injectBtc;
+		Log.Info( $"LP_CASHOUT_RACE begin inject={injectBtc:F8} wallet={Hub.HubWalletBtc:F8}" );
+		Hub.RequestCashOutAllHub();
+		Hub.RequestCashOutAllHub();
+		Log.Info( $"LP_CASHOUT_RACE fired-two wallet-sync-after={Hub.HubWalletBtc:F8}" );
+	}
+
+	/// <summary>Dev proof — inject a rack balance then fire two rack sells in ONE tick, the second
+	/// racy site (LpBitcoinRackEntity.SellForCallerHost). Gate reads LP_SELL_SENSOR: the rack must
+	/// be paid out once, its balance land at zero, and never restore to a doubled value.</summary>
+	public void DevRaceRackSell( float injectBtc )
+	{
+		if ( !Hub.IsValid() )
+			return;
+
+		var rack = Hub.GetLinkedRacks().FirstOrDefault( r => r.IsValid() );
+		if ( rack is null || !rack.IsValid() )
+			return;
+
+		var caller = Connection.Local.Id;
+		rack.BitcoinAmount = injectBtc;
+		Log.Info( $"LP_SELL_RACE begin inject={injectBtc:F8} rackBalance={rack.BitcoinAmount:F8}" );
+		_ = rack.SellForCallerHost( caller );
+		_ = rack.SellForCallerHost( caller );
+		Log.Info( $"LP_SELL_RACE fired-two rackBalance-sync-after={rack.BitcoinAmount:F8}" );
+	}
 
 	/// <summary>Dev proof — measure the track row's columns. Overlap is a fact, not a look:
 	/// a high-res capture rasterises text and boxes separately, so eyeballing a PNG cannot
@@ -2934,7 +2975,11 @@
 		hash.Add( HasLinkedTerminal() );
 		hash.Add( HasNearbyUnlinkedTerminal() );
 		hash.Add( Hub?.UnreadAlertCount ?? 0 );
-		hash.Add( (int)(HubWalletBtc() * 10000f) );
+		// Sat resolution, not 4dp: the wallet is rendered at 6dp (wallet/transfers panes) and 8dp
+		// (Hub detail vital), so a 4dp hash left sub-0.0001 BTC movement invisible until something
+		// else moved the hash. Same shape as the rack-buffer line below. Recompute stays throttled
+		// to TelemetryRefreshInterval (0.5s), so this costs at most one redraw per half-second.
+		hash.Add( (long)( HubWalletBtc() * 100_000_000f ) );
 
 		var alerts = GetHubAlerts();
 		hash.Add( alerts.Count );

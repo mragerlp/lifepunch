@@ -340,11 +340,23 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable, IAre
 		if ( hub is null || !hub.CanOperateTerminal( callerId ) )
 			return;
 
-		var value = LpBitcoinEconomy.BtcToCashPayout( BitcoinAmount );
-		if ( !await LpBitcoinWallet.TryPayBank( callerId, value, "LIFEPUNCH bitcoin sell" ) )
+		var soldBtc = BitcoinAmount;
+		var value = LpBitcoinEconomy.BtcToCashPayout( soldBtc );
+		if ( value == 0 )
 			return;
 
+		// Zero the rack balance BEFORE the TryPayBank await, so a second sell in the same window
+		// sees nothing to sell — the same debit-before-await fix as CashOutHubHost. Restore
+		// ADDITIVELY on payment failure: mining may have added to the buffer during the await.
 		BitcoinAmount = 0f;
+		if ( !await LpBitcoinWallet.TryPayBank( callerId, value, "LIFEPUNCH bitcoin sell" ) )
+		{
+			BitcoinAmount += soldBtc;
+			Log.Info( $"LP_SELL_SENSOR restore caller={callerId} soldBtc={soldBtc:F8} — payment failed, rack balance now {BitcoinAmount:F8}" );
+			return;
+		}
+
+		Log.Info( $"LP_SELL_SENSOR ok caller={callerId} soldBtc={soldBtc:F8} value={value} rackBalance={BitcoinAmount:F8}" );
 	}
 
 	internal void StopMiningHost()
