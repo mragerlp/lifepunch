@@ -145,6 +145,22 @@ Worked examples (each named the technique):
   them on ITS node before reading a byte — refusing by name, never substituting.
   Prose in `contextNotes` is a human record; only a machine-checked field is a sensor.
 
+- **A comparison with one side missing reports agreement, not truth** — the s&box bridge's
+  `get_bridge_status` returns `versionsAligned: true` when `bridgeVersion` is `null`. With the
+  editor down there is nothing to compare against, so the field asserts alignment between a known
+  value and an **absence**. Read as a green, it would have closed the open `1.20.0 → 2.0.0`
+  republish question without ever measuring it. A sensor that lies by omission is still a false
+  green: **before trusting a comparison, confirm both operands were read.**
+
+- **A sensor pointed at the wrong world reports confidently** — `claude mcp list` reads the **CLI's**
+  MCP approval surface; Red's session runs in the **desktop** app, which tracks approval separately.
+  The list printed `sbox: Pending approval` in the same minute `sbox` was live and answering tool
+  calls. The reading was precise; the world was wrong. Same family as *the clone is a sensor*
+  (Packet E) — *Red validated the input paths against Red's tree; the worker reads Green's.*
+  Consequence for connectors: **"it appears in the list" proves neither connection nor
+  authentication.** Before trusting a sensor, name the world it reads, and check that it is the
+  world under test.
+
 - **Anchor the pattern to STRUCTURE, never to a word** — *a sensor that reports what it did not
   measure is a broken sensor, even when its conclusion happens to be right.* Two cases, one
   session, identical shape: an over-permissive regex matched **prose** where it should have

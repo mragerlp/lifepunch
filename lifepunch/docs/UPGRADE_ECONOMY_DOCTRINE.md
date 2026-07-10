@@ -131,7 +131,7 @@ protection.
 | **Pool Client** | variance: solo (T1) → smoother payouts; higher tiers may permit player-hosted pools with a host fee | Social hook; expected value unchanged, variance reduced |
 | **Farm Firmware** | scale + QoL: per-rack power (T1) → mining-start-all → auto-restart after power loss; **gates how many racks a hub can address** | Farm size is a hub-tier property. This is the Hub's real scaling knob |
 | **Trust Policy** | access: owner-only (T1) → named co-owners → party/faction whitelist → timed guest access. **Also governs who may pick up the hub** | The anti-grief layer for a carryable hub; counterpart to the Terminal PIN |
-| *Sound Pack* | cosmetic | The stock power-on sound is T1. Ship the joke. |
+| ~~*Sound Pack*~~ | **moved — not a track** | Cosmetics are a COLLECTION, not tracks: tracks buy capability, the collection holds identity. Now a Customize slot. Ruled in `handoff/STOPGO_CUSTOMIZE_COSMETICS_DESIGN_2026-07-10.md` |
 
 ### HASHD TERMINAL — Defense & Monitoring (protection)
 
