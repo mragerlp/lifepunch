@@ -48,10 +48,14 @@ coverage (analog money — may need its own answer).
 **Pairing rule:** Hacker gear ladder and Terminal security ladder are ONE
 design — never tune numbers for one in isolation.
 
-**Track specs:** the Terminal's five defense tracks (Endpoint Firewall ·
-Command Authentication · Intrusion Detection · Audit Retention · Monitoring
-Suite) are specced in `UPGRADE_ECONOMY_DOCTRINE.md` (HASHD Terminal table),
-fitted on losses-prevented and paired with the Hacker ladder per this rule.
+**Track specs:** the Terminal renders **SIX track rows** — the five defense
+tracks (Endpoint Firewall · Command Authentication · Intrusion Detection ·
+Audit Retention · Monitoring Suite) plus **HASHD donor skins** (cosmetic, no
+performance change), mirroring the Hub's five + Sound Pack. The five defense
+tracks are specced in `UPGRADE_ECONOMY_DOCTRINE.md` (HASHD Terminal table),
+fitted on losses-prevented and paired with the Hacker ladder per this rule; the
+cosmetic sixth is a NOT-ENABLED true state until skins ship. (Terminal is a live
+Entity Detail Contract tenant as of Slice 3.5 — its detail page is all-PLANNED.)
 
 **Defender's status surface (2026-07-09):** the HASHD Terminal sidebar is the
 defender's status surface — `SECURITY .... OK` (green) today, the BREACH

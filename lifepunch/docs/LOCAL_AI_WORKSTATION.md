@@ -180,7 +180,7 @@ Principles: **LAN-only by default, encrypted in transit, one source of truth, se
    - **Red ↔ Green direct link (2026-07-09).** A second 2.5GbE adapter per box, patch cable, no switch.
      Red `Ethernet 2` (Realtek USB 2.5GbE) = `10.10.10.1/24`; Green `Ethernet 4` = `10.10.10.2/24`.
      **No gateway, no DNS on either** — the unrouted link IS the isolation. Firewall: inbound **TCP 1234**
-     (LM Studio) + **TCP 445** (SMB) + **ICMPv4**, each scoped to the peer address only, `-Profile Any`
+     (LM Studio) + **TCP 445** (SMB) + **TCP 3389** (RDP) + **ICMPv4**, each scoped to the peer address only, `-Profile Any`
      (a gateway-less link lands in the Public profile, so Private-only rules never apply). LAN adapters
      (`.236` / `.229`) retained as the documented fallback. Link 0.36–0.54 ms (Stopwatch), TTL 128, single
      hop. Carries LM Studio (per the locality rule in `CORNERMAN_MODEL_ROUTING.md`) + the `G:` packet lane.
