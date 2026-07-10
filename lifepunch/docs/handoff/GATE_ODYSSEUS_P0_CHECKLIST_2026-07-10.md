@@ -1,6 +1,8 @@
 # GATE — Odysseus P1: the parity gate (one packet, end to end, whisperless)
 
-- **Status:** **INSTRUMENT. Unexecuted.** Editable until its verdict lands.
+- **Status:** **FROZEN — 2026-07-10.** P1's verdict landed, so this script and its result freeze
+  together as one record: `GATE_ODYSSEUS_P1_VERDICT_2026-07-10.md`. **A re-run needs a new gate
+  script citing that verdict.** Nothing below is edited again.
 - **Driven from:** **Green's keyboard**, on Bloodwave's GO. Red authors the packet; Red never
   executes on Green.
 - **Split provenance:** this file was the P0 checklist. When P0's verdict landed on 2026-07-10 it
