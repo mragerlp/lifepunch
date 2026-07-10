@@ -2970,7 +2970,11 @@
 		hash.Add( HasLinkedTerminal() );
 		hash.Add( HasNearbyUnlinkedTerminal() );
 		hash.Add( Hub?.UnreadAlertCount ?? 0 );
-		hash.Add( (int)(HubWalletBtc() * 10000f) );
+		// Sat resolution, not 4dp: the wallet is rendered at 6dp (wallet/transfers panes) and 8dp
+		// (Hub detail vital), so a 4dp hash left sub-0.0001 BTC movement invisible until something
+		// else moved the hash. Same shape as the rack-buffer line below. Recompute stays throttled
+		// to TelemetryRefreshInterval (0.5s), so this costs at most one redraw per half-second.
+		hash.Add( (long)( HubWalletBtc() * 100_000_000f ) );
 
 		var alerts = GetHubAlerts();
 		hash.Add( alerts.Count );
