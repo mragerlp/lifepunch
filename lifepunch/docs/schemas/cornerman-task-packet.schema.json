@@ -168,6 +168,17 @@
         { "required": ["readGlobs"] }
       ]
     },
+    "expectedClones": {
+      "type": "object",
+      "minProperties": 1,
+      "description": "Clone-freshness declaration, asserted by the worker BEFORE any input is read. Keys are clone roots relative to the profile clone ('.' = the profile clone itself; 'lifepunchdxrp' = the nested dxrp-public clone). Values are the commit sha the inputs were validated against on the authoring node. For each entry the worker asserts, in order: (a) the path exists AND has .git -- a snapshot is not a clone, and nested repos do not travel with the parent's pull; (b) the clone's HEAD contains (or equals) the declared commit. Any failure refuses the packet at pre-model-validation, naming the clone, the expected commit and the actual state. The worker never fetches, checks out, or substitutes a commit. Omitting this field is permitted for back-compat, but leaves freshness UNVERIFIED and the worker warns.",
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{7,40}$",
+        "description": "Commit sha (7-40 hex) the inputs were validated against."
+      },
+      "examples": [{ ".": "987ac89", "lifepunchdxrp": "b9d6068" }]
+    },
     "instruction": {
       "type": "string",
       "minLength": 10,

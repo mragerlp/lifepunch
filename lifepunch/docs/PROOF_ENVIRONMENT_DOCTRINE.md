@@ -134,6 +134,29 @@ Worked examples (each named the technique):
   failing geometry (`oldPivotPass=False` across tall/short/big hubs) BEFORE
   showing `newBoundsPass=True`; the probe reproduces the bug, then proves the fix,
   without a live hub.
+- **The clone is a sensor** — Packet E: *Red validated the input paths against
+  Red's tree; the worker reads Green's.* The clone was reading an old world. Two
+  compounding traps: a nested repo (`lifepunchdxrp/`) does not travel with the
+  parent's `git pull` — it is `.gitignore`d and separately cloned, so a hand-copied
+  folder sits frozen indefinitely; and a **git-less snapshot is not a clone**, so
+  nothing on it can be verified at all. The fix is the law applied to itself: when
+  no sensor reads the thing under test, build one. `expectedClones` makes the
+  authoring node *declare* the commits it validated against, and the worker asserts
+  them on ITS node before reading a byte — refusing by name, never substituting.
+  Prose in `contextNotes` is a human record; only a machine-checked field is a sensor.
+
+  Two riders the gate pinned:
+  - `.gitignore` patterns are **anchored to the exact name**: `/lifepunchdxrp/`
+    ignores that directory and nothing else, so a clone-swap that leaves a
+    `lifepunchdxrp_stale` sibling behind is *untracked debris* and trips the
+    dirty-tree gate. **A clone-swap procedure must leave zero untracked debris**, or
+    the freshness check and the clean-check fight each other.
+  - Under `$ErrorActionPreference='Stop'`, PowerShell 5.1 turns any native-command
+    stderr into a terminating `NativeCommandError`. A failing `git cat-file -e
+    <missing-sha>` writes to stderr — so the naive precondition *crashes* on the
+    exact case it exists to catch. Read-only git goes through `Invoke-CdwGit`, which
+    returns an exit code and never throws. A fail-closed check that dies loudly
+    instead of refusing cleanly is still a broken sensor.
 
 ### Harness code is not exempt from invariants
 

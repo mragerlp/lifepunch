@@ -182,12 +182,62 @@ to history as `fail` when any of these hold:
 - Green clone path missing / not a git repo
 - git remotes do not match the registry's `expectedRemotes`
 - resolved clone is dirty (**untracked files count as dirty in v1**)
+- a clone declared in `expectedClones` is missing, is a **git-less snapshot**, lacks the
+  declared commit, or has a HEAD that does not contain it (see below)
 - `focus` does not agree with `repoProfile` (`LifePunch` ↔ `lifepunch-private`, `DXRP` ↔ `dxrp-official`)
 - `baseRemote`/`baseBranch` violates profile branch law
 - input path is absolute, contains `..`, or (dxrp-official) references `lifepunch/**`
 - task text touches a `forbiddenScope` token
 - `mode: candidate-patch` (not available in Slice 1)
 - no-IP / AI-trailer scan hit (dxrp-official)
+
+---
+
+## Clone freshness — `expectedClones`
+
+**The clone the worker reads is a sensor.** The authoring node (Red) validates input paths
+against *its* tree; the worker reads *Green's*. Nothing else in the pipeline notices when
+those two disagree — the worker simply reads whatever the clone happened to contain.
+
+`expectedClones` closes that gap. The authoring node declares the commit each clone was
+validated against, and the worker asserts it **before reading a single input**:
+
+```json
+"expectedClones": { ".": "987ac89", "lifepunchdxrp": "b9d6068" }
+```
+
+Keys are clone roots relative to the profile clone (`.` = the profile clone itself). Values
+are 7–40 hex commit shas. For each entry the worker asserts, in order:
+
+| # | Assertion | Refusal |
+|---|-----------|---------|
+| a | the path exists | `clone-path-missing` |
+| a | it has `.git` — **a snapshot is not a clone** | `snapshot-not-a-clone` |
+| b | the clone has the declared commit | `declared-commit-absent` |
+| b | HEAD **contains** (or equals) it | `head-does-not-contain-commit` |
+
+Every refusal names the clone, the expected commit, and the **actual** state (HEAD + branch),
+lands at `failureStage: pre-model-validation`, and therefore never reaches the model. The
+worker **never fetches, pulls, checks out, or substitutes a commit** — Green fast-fail: the
+worker reports what is wrong, a human fixes the clone and re-fires.
+
+Author it with `New-CornermanTaskPacket.ps1 -ExpectedClones @{ '.' = '<sha>'; 'lifepunchdxrp' = '<sha>' }`.
+Omitting the field is permitted for back-compat, but freshness is then **UNVERIFIED** and
+both the author script and the worker say so out loud.
+
+**Why nested clones need their own entry.** `lifepunchdxrp/` is a *separate clone of
+dxrp-public* living inside the monorepo and `.gitignore`d by it. A `git pull` on the monorepo
+never updates it. A hand-copied snapshot of it will sit frozen indefinitely, and — having no
+`.git` — cannot be verified at all. That is exactly how Packet E failed closed on 2026-07-10.
+
+**Clone-swap hygiene (the two gates must not fight).** `.gitignore` patterns are anchored to
+the exact name: `/lifepunchdxrp/` ignores that directory and *nothing else*. Renaming a stale
+clone to `lifepunchdxrp_stale` leaves **untracked debris**, which the dirty-tree gate counts
+as dirty and refuses. **Any clone-swap procedure must leave zero untracked debris** — move the
+old clone outside the repo, don't park it alongside.
+
+Gate: `Test-CdwExpectedClones.ps1` (reproduce-then-fix — a packet naming an absent commit must
+refuse by name before any model call; the corrected packet must run).
 
 ---
 
