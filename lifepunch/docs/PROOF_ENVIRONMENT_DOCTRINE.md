@@ -99,6 +99,64 @@ dev scene adds anything ours lacks — no draft owed.
 
 ---
 
+## THE SENSOR LAW (companion law) — every claim carries its sensor
+
+**A gate does not assert; it observes.** Before claiming anything, name the
+sensor and prove it reads the thing under test. A green result off the wrong
+sensor is worse than a red — it is a *false* green, and false greens are what
+this section exists to prevent.
+
+**FRESH is two facts, not one.** A compile "looks clean" only proves *recent*
+bytes compiled. To prove the compiler read **YOUR** bytes:
+1. the compile/parser log timestamp POSTDATES the file write, AND
+2. a **positive code-string ID** — a string that exists nowhere except your
+   edit appears in the log or the tool result.
+
+**When no sensor reads the thing under test, BUILD one.** This is the law
+applied to itself.
+
+Worked examples (each named the technique):
+- **Build-the-sensor** — a `.cs` change emits no free log line, so plant one: the
+  preview harness logs `rig0 mix linked — 2 standard + 1 advanced`; observing it
+  proves the running assembly is yours.
+- **EOL-aware compare** — Red repo is LF, the editor tree is CRLF, so drift checks
+  compare content ignoring line endings (`diff <(tr -d '\r' A) <(tr -d '\r' B)`);
+  a raw hash reports every file as drift and is wrong.
+- **Parser-error-as-sensor** — a `.razor.scss` change has no code string, but the
+  stylesheet's malformed `@media` rule logs its line number; the number shifting
+  `7126 → 7135` (exactly the lines added) proves the parser read the new bytes.
+- **Behavioral-repaint-as-positive-ID** — the wallet-hash fix: injecting 1,234
+  sats repainted the pane `0.000000 → 0.000012` with no navigation; the old 4dp
+  hash mapped 1,234 sats to zero, so only the new code could produce that repaint
+   — the behavior IS the ID.
+- **Synthetic-bounds probe (reproduce-then-fix in a probe)** — the hub-reach fix:
+  `HubReachProbe()` runs the reach math on synthetic bounds reproducing the
+  failing geometry (`oldPivotPass=False` across tall/short/big hubs) BEFORE
+  showing `newBoundsPass=True`; the probe reproduces the bug, then proves the fix,
+  without a live hub.
+
+### Harness code is not exempt from invariants
+
+A dev/preview/test harness that manufactures a state the shipped code declares
+impossible is a bug, not a convenience. *Case:* the preview harness left
+`AdvancedRack` at its `= true` default and built three advanced racks, so the
+hub's reconcile stamped all three with the single `advancedgpurack` slot token —
+a positional slot-token collision, the exact class the free-tier-leak fix
+hardened against. The harness was producing an impossible state. Gate harness
+code against the same invariants as ship code.
+
+### Regression law — a constant cannot satisfy a scaling requirement
+
+When a requirement is "X must exceed Y for ANY size," a hand-tuned constant is a
+fix for one size, not the requirement — and it fails silently when the size
+changes. *Case (Item E):* commit `30d4686` fixed the hub's menu reach to exceed
+grab-reach by widening it to a fixed 4.25 m horizontal — but left the vertical a
+fixed 1.5 m measured from the pivot. For a ground-aligned hub (pivot at z≈0) a
+standing player's ~1.63 m eye failed the vertical check, so Hands+E opened
+nothing while the Build tool worked. The constant satisfied the horizontal case
+and silently failed the vertical. The fix measures to the model bounds, so reach
+scales with the model — the requirement, not a size.
+
 ## Cross-references
 
 - `OPS_LOG.md` — the three lpbitcoin gates ran on flatgrass; **the pattern was

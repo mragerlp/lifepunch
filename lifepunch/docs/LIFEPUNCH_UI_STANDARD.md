@@ -92,6 +92,28 @@ $radius-shell:  4px;                     // the one large container
     glyphs are costume (✓/✕ on the stepper chip today; may vary by surface) —
     **pair, order, and colors are the invariant.** Every future two-choice
     money moment reuses it: purchase cards, contracts, Banker, black market.
+15. **Separator Law.** A composite display string is assembled C#-side and
+    interpolated as ONE Razor node. A separator (`·` `/` `—`) NEVER sits as a
+    bare literal in markup between two `@`-expressions — Razor splits it into
+    its own text node and collapses the surrounding whitespace, which renders
+    run-ons and stray leading marks. *Worked example (the bug that named this):*
+    the Hub card's chip line rendered `·POWERED0/3 RACKS` — a stray dot and a
+    run-on — because ` · ` was a literal between `@`-expressions; the rack cards
+    were correct only because they happened to build their separator inside one
+    interpolated string. Fix: build the whole string in C# (`$"{a} · {b}"`), or
+    make each separator a discrete element with its own spacing
+    (`<span class="lp-chip-sep">·</span>`). This is the *structural* companion
+    to Law 13's rule that separators are neutral typography — Law 13 governs
+    their COLOR, Law 15 governs their MARKUP.
+16. **A card must not contradict the page it leads to.** An aggregate/summary
+    card states the same truth as the surface it opens. Source its meta from the
+    SAME data the destination renders — never a parallel query that can diverge.
+    *Worked example:* the GPU RACKS category card sourced its count from
+    `GetLinkedRacks()` while the chooser it opened rendered fixed slots; a hub
+    holding three advanced racks (a bug) made the card read `3/3 · 3 MINING`
+    over a page showing one rack. Fixed by reading the card off the same slots
+    the chooser renders. Applies to every glance-value tile: it is a promise the
+    next click must keep.
 
 ## Anti-patterns (the "too Claudey" list — reject on sight)
 
