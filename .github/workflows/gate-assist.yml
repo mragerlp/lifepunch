@@ -37,7 +37,7 @@ jobs:
     name: no AI attribution (commits + PR body)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1 — SHA-pinned: a tag is a movable pointer
         with:
           fetch-depth: 0
 
@@ -91,7 +91,7 @@ jobs:
     name: secret scan (added lines only)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1 — SHA-pinned: a tag is a movable pointer
         with:
           fetch-depth: 0
 
@@ -145,7 +145,7 @@ jobs:
     name: repo guards
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1 — SHA-pinned: a tag is a movable pointer
         with:
           fetch-depth: 0
 
