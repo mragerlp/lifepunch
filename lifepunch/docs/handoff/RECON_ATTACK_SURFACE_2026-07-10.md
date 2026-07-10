@@ -44,6 +44,21 @@ the worker config. Queued fix: DPAPI/Get-Credential storage inside
 the post-P1 worker code pass (worker reads protected credential,
 plaintext deleted). Interim: LAN-local file, owner-accepted risk.
 
+**RULED 2026-07-10: DPAPI is REPAIR #5 of the post-P1 worker pass —
+five repairs, one PR, through the merge gate.**
+`GATE_ODYSSEUS_P1_VERDICT_2026-07-10.md` records four; it froze
+before this ruling landed and is not annotated. The five, in one
+worker pass: (1) per-packet clone-override · (2) worker EMITS
+git-derived attestation, gate verifies values not headings ·
+(3) successful re-fire removes stale `error.md`/`.fail.json` ·
+(4) CITATION GATE — machine-verify every `file:line` against the
+pin before the report is written · (5) **this item.**
+The pass queues BEHIND the chair session: Red is the editor seat
+and cannot run both.
+`**/vengeance-smb.password` is already `.gitignore`d, so the
+plaintext credential cannot reach git; the exposure is at rest on
+Green, not in history.
+
 ### S5 — Share ACL posture (Green, standing)
 Ref: P0 verdict — read-only guaranteed by the SHARE ACL; NTFS grants
 Authenticated Users Modify via inheritance. Check (someday):
