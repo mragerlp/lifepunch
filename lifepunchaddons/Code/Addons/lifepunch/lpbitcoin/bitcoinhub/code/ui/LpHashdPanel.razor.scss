@@ -7234,6 +7234,11 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 		min-width: 0;
 	}
 
+	// The index cards state status as chips, not as a text run with "·" separators.
+	.upgrade-home-box-body .entity-chip-row {
+		margin: 2px 0 1px;
+	}
+
 	.upgrade-home-box-title {
 		color: $hashd-title;
 		font-size: 18px;
@@ -7270,6 +7275,16 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 		font-weight: 800;
 		text-transform: uppercase;
 		letter-spacing: 0.06em;
+	}
+
+	// Category aggregate (GPU RACKS): discrete spans on the standard chip gap. No separator
+	// glyphs — a literal "·" between @-expressions is what produced the run-on chip row.
+	.upgrade-home-box-meta-row {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: 6px;
+		flex-shrink: 0;
 	}
 
 	.upgrade-home-box-chevron {
@@ -7754,6 +7769,13 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 		&.working {
 			color: $hashd-amber-glow;
 		}
+	}
+
+	// Separator Law: a "·" between two value nodes is a discrete element carrying its own
+	// spacing — never a bare text node, which Razor would split off and collapse.
+	.lp-chip-sep {
+		color: $hashd-muted;
+		margin: 0 5px;
 	}
 
 
