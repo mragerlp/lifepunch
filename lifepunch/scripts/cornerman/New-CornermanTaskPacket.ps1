@@ -72,6 +72,14 @@ param(
     # Optional exact model id (must agree with the routeTag's configured model).
     [string] $RequiredModel = '',
 
+    # Clone-freshness declaration (packet.expectedClones). Maps a clone root -> the commit
+    # the inputs were validated against. '.' is the profile clone itself; a nested clone
+    # such as 'lifepunchdxrp' gets its own entry. The worker asserts each of these on ITS
+    # node before reading a single input, and refuses on any mismatch. Prose in
+    # -ContextNotes is a human record; only this field is machine-checked.
+    #   -ExpectedClones @{ '.' = '987ac89'; 'lifepunchdxrp' = 'b9d6068' }
+    [hashtable] $ExpectedClones = @{},
+
     [string] $OutboxName = '',
     [string[]] $ExpectedSections = @(),
     [ValidateLength(0, 8000)]
@@ -233,6 +241,23 @@ $packet = [ordered]@{
     constraints   = $constraints
 }
 if ($Title) { $packet.title = $Title }
+if ($ExpectedClones.Count -gt 0) {
+    $ec = [ordered]@{}
+    foreach ($k in ($ExpectedClones.Keys | Sort-Object)) {
+        $key = ([string]$k -replace '\\', '/')
+        $sha = ([string]$ExpectedClones[$k]).Trim()
+        if ($key -ne '.' -and ([IO.Path]::IsPathRooted($key) -or $key -match '\.\.')) {
+            Write-Output "ERROR: -ExpectedClones key must be repo-relative with no '..' traversal (got '$key'). Use '.' for the profile clone root."
+            exit 1
+        }
+        if ($sha -notmatch '^[0-9a-fA-F]{7,40}$') {
+            Write-Output "ERROR: -ExpectedClones['$key'] must be a 7-40 char hex commit sha (got '$sha')."
+            exit 1
+        }
+        $ec[$key] = $sha.ToLowerInvariant()
+    }
+    $packet.expectedClones = $ec
+}
 if ($RequestModelCall) {
     $mc = [ordered]@{ enabled = $true }
     if ($RequiredModel) { $mc.requiredModel = $RequiredModel }
@@ -260,6 +285,10 @@ if ((Test-Path -LiteralPath $outFile) -and -not $Force) {
     exit 1
 }
 Write-CdwUtf8NoBom -Path $outFile -Text $asJson
+
+if ($ExpectedClones.Count -eq 0) {
+    Write-Output 'WARNING: no -ExpectedClones declared. The node that reads these inputs is NOT this node, and the worker will have no way to verify it holds the commits you validated against -- freshness will be UNVERIFIED. Declare it: -ExpectedClones @{ "." = "<sha>" } (add nested clones, e.g. lifepunchdxrp, when inputs cite them).'
+}
 
 $modelNote = if ($RequestModelCall) { 'MODEL CALL REQUESTED (worker must also run with -EnableModelCall)' } else { 'dry-run only (constraints.noModelCall=true)' }
 Write-Output "OK: packet written: $outFile"

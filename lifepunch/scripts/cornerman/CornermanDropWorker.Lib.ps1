@@ -291,6 +291,33 @@ function Test-CdwPacketSchema {
         }
     }
 
+    # expectedClones (optional). Machine-checkable freshness declaration, NOT prose in
+    # contextNotes. Keys are clone roots relative to the profile clone ('.' = the clone
+    # itself); values are the commit the inputs were validated against.
+    if ($Packet.PSObject.Properties.Name -contains 'expectedClones' -and $null -ne $Packet.expectedClones) {
+        $declared = @($Packet.expectedClones.PSObject.Properties)
+        if ($declared.Count -lt 1) {
+            $errors.Add('expectedClones must declare at least one clone when present')
+        }
+        foreach ($p in $declared) {
+            $k = [string]$p.Name
+            $v = [string]$p.Value
+            if ([string]::IsNullOrWhiteSpace($k)) {
+                $errors.Add('expectedClones key must be a non-empty clone path (use "." for the profile clone root)')
+                continue
+            }
+            if ($k -ne '.') {
+                $kn = $k -replace '/', '\'
+                if ([IO.Path]::IsPathRooted($kn) -or $kn -match '\.\.') {
+                    $errors.Add("expectedClones key must be repo-relative with no '..' traversal (got '$k')")
+                }
+            }
+            if ($v -notmatch '^[0-9a-fA-F]{7,40}$') {
+                $errors.Add("expectedClones['$k'] must be a 7-40 char hex commit sha (got '$v')")
+            }
+        }
+    }
+
     return @{ Ok = ($errors.Count -eq 0); Errors = @($errors) }
 }
 
@@ -367,6 +394,112 @@ function Test-CdwCloneDirty {
         return @{ Ok = $false; Dirty = $true; Error = "clone dirty ($($lines.Count) entr$(if($lines.Count -eq 1){'y'}else{'ies'}), untracked counts as dirty in v1): $sample" }
     }
     return @{ Ok = $true; Dirty = $false; Error = $null }
+}
+
+function Invoke-CdwGit {
+    <#
+    .SYNOPSIS
+      Read-only git call that cannot throw. Under $ErrorActionPreference='Stop' (which the
+      worker sets), PowerShell 5.1 turns ANY native-command stderr into a terminating
+      NativeCommandError -- so a failing `git cat-file -e <missing-sha>` would crash the
+      worker instead of returning a clean refusal. Returns @{Code; Out} and never throws.
+    #>
+    param(
+        [Parameter(Mandatory)][string] $ClonePath,
+        [Parameter(Mandatory)][string[]] $GitArgs
+    )
+    $prev = $ErrorActionPreference
+    $ErrorActionPreference = 'Continue'
+    try {
+        $out = & git -C $ClonePath @GitArgs 2>$null
+        return @{ Code = $LASTEXITCODE; Out = ([string]($out -join "`n")).Trim() }
+    }
+    finally { $ErrorActionPreference = $prev }
+}
+
+function Test-CdwExpectedClones {
+    <#
+    .SYNOPSIS
+      Clone-freshness precondition. The clone the worker reads IS a sensor: the authoring
+      node validated input paths against ITS tree, and this node reads a different one.
+      For every clone the packet declares in expectedClones, assert IN ORDER:
+        (a) the path exists AND has .git -- a snapshot is not a clone. Nested repos do not
+            travel with the parent's pull, so a hand-copied folder can sit frozen for weeks.
+        (b) the clone's HEAD contains (or equals) the declared commit.
+      Any failure refuses the packet, naming the clone, the expected commit, and the ACTUAL
+      state. Read-only (rev-parse / cat-file / merge-base): never fetches, pulls, checks out,
+      or substitutes a commit. Green fast-fail -- the worker reports; a human fixes the clone.
+
+      A packet with no expectedClones is NOT an error (back-compat), but freshness is then
+      UNVERIFIED and the caller warns loudly.
+    #>
+    param(
+        [Parameter(Mandatory)] $Packet,
+        [Parameter(Mandatory)] $Profile
+    )
+
+    $errors = New-Object System.Collections.Generic.List[string]
+
+    if (-not ($Packet.PSObject.Properties.Name -contains 'expectedClones') -or $null -eq $Packet.expectedClones) {
+        return @{ Ok = $true; Declared = $false; Checked = 0; Errors = @() }
+    }
+
+    $root = ([string]$Profile.cloneWindows).TrimEnd('\')
+    $checked = 0
+
+    foreach ($prop in $Packet.expectedClones.PSObject.Properties) {
+        $key = [string]$prop.Name
+        $want = ([string]$prop.Value).Trim().ToLowerInvariant()
+
+        # path safety (mirrors Test-CdwInputPaths): repo-relative, no traversal, no absolute.
+        if ($key -ne '.') {
+            $rel = $key -replace '/', '\'
+            if ([IO.Path]::IsPathRooted($rel) -or $rel -match '\.\.') {
+                $errors.Add("expectedClones['$key']: clone key must be repo-relative with no '..' traversal")
+                continue
+            }
+        }
+        $clonePath = if ($key -eq '.') { $root } else { Join-Path $root ($key -replace '/', '\') }
+        $checked++
+
+        # ---- (a) exists AND is a real clone. A snapshot is not a clone.
+        if (-not (Test-Path -LiteralPath $clonePath)) {
+            $errors.Add("expectedClones['$key']: clone-path-missing -- expected a git clone at '$clonePath' (declared commit $want). The worker never creates or fetches clones; fix the clone on this node and re-fire.")
+            continue
+        }
+        if (-not (Test-Path -LiteralPath (Join-Path $clonePath '.git'))) {
+            $errors.Add("expectedClones['$key']: snapshot-not-a-clone -- '$clonePath' exists but has no .git, so it is a frozen copy, not a checkout. Its contents cannot be verified against declared commit $want, and a parent-repo pull never updates it. Replace it with a real clone and re-fire.")
+            continue
+        }
+
+        # ---- actual state, named in every failure below
+        $head = Invoke-CdwGit -ClonePath $clonePath -GitArgs @('rev-parse', 'HEAD')
+        if ($head.Code -ne 0 -or -not $head.Out) {
+            $errors.Add("expectedClones['$key']: head-unreadable -- 'git rev-parse HEAD' failed in '$clonePath' (declared commit $want)")
+            continue
+        }
+        $headSha = ([string]$head.Out).Trim().ToLowerInvariant()
+        $branch = Invoke-CdwGit -ClonePath $clonePath -GitArgs @('rev-parse', '--abbrev-ref', 'HEAD')
+        $headBranch = if ($branch.Code -eq 0 -and $branch.Out) { $branch.Out } else { '(detached)' }
+        $shortHead = $headSha.Substring(0, [Math]::Min(12, $headSha.Length))
+        $actual = "actual HEAD $shortHead on '$headBranch'"
+
+        # ---- (b) HEAD contains (or equals) the declared commit
+        $has = Invoke-CdwGit -ClonePath $clonePath -GitArgs @('cat-file', '-e', "$want^{commit}")
+        if ($has.Code -ne 0) {
+            $errors.Add("expectedClones['$key']: declared-commit-absent -- clone '$clonePath' has no commit $want ($actual). The clone is stale, or it is a different repository. The worker never fetches; sync the clone out-of-band and re-fire.")
+            continue
+        }
+        if ($headSha -ne $want -and -not $headSha.StartsWith($want)) {
+            $anc = Invoke-CdwGit -ClonePath $clonePath -GitArgs @('merge-base', '--is-ancestor', $want, 'HEAD')
+            if ($anc.Code -ne 0) {
+                $errors.Add("expectedClones['$key']: head-does-not-contain-commit -- clone '$clonePath' has commit $want but HEAD does not contain it ($actual). Check out a ref that contains $want and re-fire. The worker never checks out.")
+                continue
+            }
+        }
+    }
+
+    return @{ Ok = ($errors.Count -eq 0); Declared = $true; Checked = $checked; Errors = @($errors) }
 }
 
 function Test-CdwBaseRefReadable {

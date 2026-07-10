@@ -176,6 +176,17 @@ try {
             $dirty = Test-CdwCloneDirty -ClonePath ([string]$profile.cloneWindows)
             if (-not $dirty.Ok) { $failures.Add($dirty.Error) }
 
+            # ---- gate 9b: clone-freshness precondition (expectedClones)
+            # Runs BEFORE any input is read and before the model-call policy, so a stale or
+            # snapshot clone refuses at pre-model-validation and never reaches the model.
+            $fresh = Test-CdwExpectedClones -Packet $packet -Profile $profile
+            if (-not $fresh.Ok) {
+                foreach ($e in $fresh.Errors) { $failures.Add("clone freshness: $e") }
+            }
+            elseif (-not $fresh.Declared) {
+                $warnings.Add('packet declares no expectedClones -- clone freshness is UNVERIFIED (the worker read whatever this node happened to have checked out)')
+            }
+
             $baseRef = Test-CdwBaseRefReadable -Packet $packet -Profile $profile
             if ($baseRef.Warning) { $warnings.Add($baseRef.Warning) }
 

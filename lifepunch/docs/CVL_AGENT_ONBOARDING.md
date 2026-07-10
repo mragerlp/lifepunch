@@ -171,6 +171,22 @@ approves it. **Grok / Cursor are retired from the standard loop** — an optiona
 request only, originating no deliverables (legacy dual-IDE detail: `DUAL_IDE_CURSOR_VSCODE.md`, kept for
 reference only).
 
+### THE CVL SYNC LAW — no actor issues instructions against a state it has not observed
+
+The Sensor Law says every *claim* carries its sensor. The Sync Law says every *instruction* does too.
+An instruction written against an unobserved state is a false green wearing a work order's clothes.
+
+- **Chat does not craft relays for Code while Code is mid-work.** Code's response *is* the sensor;
+  a relay authored before it arrives stale, and rules on a state that no longer exists.
+- **Code does not validate against its own tree what another machine executes.** The *executing*
+  machine's state is the sensor. (Packet E: Red verified the input paths against Red's tree; the
+  worker read Green's. The clone was reading an old world.)
+- **Green's clones are asserted fresh before any run, never assumed** — `expectedClones`
+  (`CORNERMAN_HEADLESS_DROP_WORKER.md`).
+- **One relay per state change; no relay before the state is reported.**
+- **Live exception:** Bloodwave-keyboard debugging proceeds in real time — the human at the keyboard
+  is the sensor, so the observe-then-instruct cycle collapses to immediate.
+
 ---
 
 ## 7. The LLM / model-routing stack — route by layer (supersedes the old tier tables)

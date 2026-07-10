@@ -47,5 +47,11 @@ CLAUDE.md → lifepunch/docs/START_HERE_AGENTS.md → lifepunch/docs/CVL_AGENT_O
 - **Lane:** `develop → main`, PRs only, Bloodwave merges. Protected branches.
 - **Propose-and-STOP** for architecture/canon changes and any propose-gated brief: report the diff, wait for GO. Do not commit or push without a passing gate + GO.
 - **Sensor Law:** every claim carries its sensor. A FRESH assertion needs the compile/parser log to POSTDATE the file write, plus a positive code-string ID proving the compiler read the new bytes. When no sensor reads the thing under test, build one. A behavioral change only the new code could produce is itself a positive ID.
+- **CVL Sync Law:** *no actor issues instructions against a state it has not observed.*
+  - Chat does not craft relays for Code while Code is mid-work — Code's response **is** the sensor; instructions authored before it arrive stale.
+  - Code does not validate against its own tree what another machine executes — the **executing** machine's state is the sensor (Packet E: paths verified on Red, worker read Green).
+  - Green's clones are asserted fresh before any run, never assumed (`expectedClones`).
+  - One relay per state change; **no relay before the state is reported.**
+  - *Live exception:* Bloodwave-keyboard debugging proceeds in real time — the human at the keyboard is the sensor.
 - **Editor sync:** the s&box editor compiles a hand-synced copy under `D:\Steam\steamapps\common\sbox\dxrp\game\...`, not this repo. Sync via `lifepunch/scripts/Sync-LifePunchAddonsToDxrp.ps1` — `-WhatIf` first every time (the dry run is the authorization: only your session's files → run for real; anything else → STOP and report). Editing the repo and hotloading without syncing gives a FALSE all-clear.
 - **Green fast-fail:** no retries, no detach, no polling loops, no CIM/WMI, no schtasks; any error/hang past ~20s → abort, report raw error, stop.
