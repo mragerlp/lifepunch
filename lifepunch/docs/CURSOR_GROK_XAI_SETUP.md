@@ -1,5 +1,9 @@
 # Cursor + xAI Grok (manual setup)
 
+> **SECONDARY (2026-07-09) per `CLAUDE.md`.** Cursor + Grok are an optional outside second opinion on
+> request only — not in the standard loop (which is Claude Code build / Claude Chat plan / Codex review).
+> This setup guide applies only when Bloodwave explicitly invokes the Grok/Cursor path.
+
 **Updated:** July 2026  
 **Key file:** `lifepunch/secure/xai.local.env` (gitignored)  
 **Bootstrap:** `lifepunch/scripts/Install-CursorGrokXai.ps1`

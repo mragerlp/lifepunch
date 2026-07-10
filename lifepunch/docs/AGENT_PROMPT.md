@@ -1,5 +1,10 @@
 # LIFEPUNCH™ — Agent Copy/Paste Prompts (GitLab era)
 
+> **SUPERSEDED (2026-07-09) by `CLAUDE.md` + the handoff-file pattern.** These GitLab-era Cursor/Composer
+> paste prompts are historical. Claude Code grounds by READING `CLAUDE.md` → `START_HERE_AGENTS.md` →
+> `CVL_AGENT_ONBOARDING.md` → the active handoff brief; briefs are repo files, not long pastes
+> (Transport Law). Kept for historical reference only.
+
 > Hand the correct block to a **fresh Cursor chat** on **Auto/Composer** (Tier-2 default).
 > Escalate to Opus only for genuinely hard work. Full foundation: `AGENT_ONBOARDING.md`.
 >

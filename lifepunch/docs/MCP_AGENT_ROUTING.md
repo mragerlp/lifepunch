@@ -1,5 +1,9 @@
 # LifePunch — MCP agent routing (CVL canon)
 
+> **Workflow routing authority is `CLAUDE.md` (2026-07-09).** This doc's MCP-server routing (which tool
+> for which task) still applies; where it names the old agent loop (Cursor/Copilot/Grok tiers) read
+> `CLAUDE.md`: build is Claude Code (Opus), plan is Claude Chat, review is Codex.
+
 **Status:** Updated July 2026 · **Source:** CVL topology handoff + Red/Green ops  
 **Companion:** `SBOX_EDITOR_MCP.md` (install/wiring) · `CORNERMAN_MODEL_ROUTING.md` (Tier-3 models)
 

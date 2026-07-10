@@ -5,7 +5,10 @@ API pool and keeps long agent sessions off cloud frontier. Default prep: warm Ti
 run `Start-ClaudeBridge.ps1` on VENGEANCE, then `claude --model …` (or persistent
 `claudeCode.environmentVariables`). Escalate to Cursor Opus only when Bridge + Auto are insufficient.
 
-Tier-3 on **Cornerman** (`192.168.1.229:1234`). VENGEANCE reaches the endpoint over LAN; no tunnel unless the server is bound to loopback only.
+Tier-3 on **Cornerman**. **Endpoint locality rule (2026-07-09, canon in `CORNERMAN_MODEL_ROUTING.md`):**
+LM Studio binds `0.0.0.0:1234`; Green-local consumers use loopback `127.0.0.1:1234`, and Red (cross-box)
+uses the **direct link `10.10.10.2:1234`** with LAN `192.168.1.229:1234` as the documented fallback. The
+`192.168.1.229` addresses in the examples below are the LAN-fallback form.
 
 ## The three models
 

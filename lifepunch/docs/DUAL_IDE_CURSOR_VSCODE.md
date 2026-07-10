@@ -1,5 +1,9 @@
 # Primary IDE: GitHub Copilot (Integration Architect — VENGEANCE)
 
+> **SUPERSEDED (2026-07-09) by `CLAUDE.md`.** The primary build surface is now **Claude Code (Opus)**, not
+> Copilot or Cursor. Both are retired to optional outside second opinion, on request only. This dual-IDE
+> guidance is historical reference (MCP config detail may still apply when a legacy IDE is used).
+
 **Status:** Copilot primary — VENGEANCE (June 2026).  
 **Why:** Dimmer ships in **VS Code + GitHub Copilot**. Copilot does **not** run inside Cursor. Copilot is the **primary in-editor writer** on the full monorepo; **Cursor** remains peer for MCP bridge, flatgrass proof, sync scripts, and heavy plumbing.
 

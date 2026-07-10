@@ -1,8 +1,9 @@
 # START HERE — LIFEPUNCH™ agents
 
-> **Read this first, after every `git` sync.** This page **routes to the law** — it is not the law.
-> You are **not grounded** until you finish this page **and** your lane's mandatory reads
-> (`CVL_AGENT_ONBOARDING.md` §12). If anything here disagrees with `.cursor/rules`, the **rules win**.
+> **Claude Code reads `CLAUDE.md` (repo root) FIRST, then this page** (doctrine 2026-07-09). This page
+> **routes to the law** — it is not the law. You are **not grounded** until you finish this page **and**
+> your lane's mandatory reads (`CVL_AGENT_ONBOARDING.md` §12). Authority order: **`CLAUDE.md`** (workflow
+> doctrine) → `.cursor/rules` → this page. If they disagree, the higher one wins.
 
 ## 0. Sync first (every session)
 
@@ -21,8 +22,9 @@ git status -sb
 
 **First, the *why*:** `lifepunch/docs/LIFEPUNCH_MISSION.md` — the goal, the two-lane logic, and quality-as-moat. Read it before the *how* below.
 
-1. `lifepunch/docs/CVL_AGENT_ONBOARDING.md` — the one paste (who / lanes / laws / state).
-2. `lifepunch/docs/handoff/AGENT_GROUNDING_INDEX.md` — pick your machine + IDE paste.
+0. **`CLAUDE.md`** (repo root) — workflow doctrine: plan in Chat · build in Code · review with Codex · ship with GO. Claude Code's first read.
+1. `lifepunch/docs/CVL_AGENT_ONBOARDING.md` — the full grounding doc (who / lanes / laws / state).
+2. `lifepunch/docs/handoff/AGENT_GROUNDING_INDEX.md` — grounding index + the handoff-file pattern (Cursor/Copilot pastes are legacy).
 3. `lifepunch/docs/BRANCH_MODEL.md` · `lifepunch/docs/LIFEPUNCH_REPO_LAYOUT.md` · `lifepunch/docs/MACHINE_CAST.md`.
 4. `.cursor/rules/` (alwaysApply) — **repo law; wins over this page**.
 5. **Development sessions:** `lifepunch/docs/CORNERMAN_FOR_AGENTS.md` — how to use the Cornerman work queue (offload pattern, model policy, fast-fail).
