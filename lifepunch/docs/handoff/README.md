@@ -21,14 +21,57 @@
 If you are unsure: ask whether a session that never saw this conversation would have to
 redo the work without it. If yes, it is canon.
 
-## Handoff files are WRITE-ONCE
+## Handoff files are WRITE-ONCE — records, that is
 
-Once a brief is committed, it is a historical record. **Do not edit it, do not annotate it,
-do not add status banners to it.** Write-once means write-once — annotating history is still
-editing it. Supersede a record with a *new* record that cites the old one by filename.
+**The write-once law protects HISTORY, not INTENTIONS.** That distinction is the whole rule.
 
-(The one exception, and it is narrow: a document still in its own authoring session, before
-it has been committed, is still being written. After that, never.)
+> **The test:** *does this document describe something that already happened?*
+> **Yes → it is a record. Write-once.**  **No → it is an instrument. Editable.**
+
+- A **RECORD** — a STOP-GO, a diagnosis, a recon brief, a ruling, a decision record — describes
+  what was found, decided, or done. It is history. **Write-once, always.** Do not edit it, do not
+  annotate it, do not add status banners. Supersede it with a *new* record that cites the old one
+  by filename. Annotating history is still editing it.
+- A **GATE SCRIPT** is an **instrument**: a plan for a measurement not yet taken. It has no
+  history to protect. It is **editable until its verdict lands** — improving an instrument before
+  it is used is maintenance, not revisionism.
+- **The moment a gate is executed and its verdict recorded, the script and its result freeze
+  together as one record.** From that point: write-once. A re-run needs a *new* gate script,
+  citing the old.
+
+### Worked example — 2026-07-10
+
+Bloodwave instructed Red to add a cross-reference line inside
+`GATE_ADVANCEDRACK_SYNC_TWO_CLIENT.md`, a file committed to canon minutes earlier — in the same
+relay that ratified *supersede, don't annotate*. **Red refused and asked for a ruling rather than
+assuming an exception.** The pointer went into the README index and the new record instead. The
+ruling that came back is the law above: the gate was unexecuted, so it was an instrument, so the
+line was always allowed — but nobody knew that until the law was sharpened.
+
+**That is the behavior the law exists to produce.** An agent that quietly "makes an exception"
+for a plausible-sounding instruction produces a codebase where nobody can tell which rules are
+real. Refusing and asking costs one relay. Assuming costs the law.
+
+### Hybrid documents SPLIT (ruled 2026-07-10)
+
+**A document is one document only if the test returns ONE answer.**
+
+When a gate's **first** verdict lands, **split it**:
+
+- the proven section becomes a **RECORD** — frozen, in its own file;
+- the un-run section remains an **INSTRUMENT** — editable, in its own file;
+- each cites the other **by filename**. Neither annotates the other.
+
+*Rationale:* a hybrid **will** be annotated eventually — someone improves the instrument half and
+touches the record half in the same pass. The split makes the mistake **impossible rather than
+forbidden.** A rule you can violate by accident is a rule you will violate.
+
+Worked example, the same day the rule was made: `GATE_HUB_INTERACT_ADRIVE_2026-07-10.md` carried a
+landed e/f verdict (`oldPivotPass=False newBoundsPass=True`, three measured hubs) *and* an
+unexecuted a–d driver. It split into `GATE_HUB_INTERACT_EF_VERDICT_2026-07-10.md` (record, frozen)
+and the a–d driver, which keeps the original filename because that name is what the a–d sitting
+reaches for. The verdict was carried over **verbatim** — a split that reworded the record would be
+the very annotation the law forbids, wearing a tidier hat.
 
 ## Why this rule exists — the hazard, 2026-07-10
 
@@ -79,7 +122,8 @@ history: read it to avoid re-deriving, never to re-litigate.
 | `STOPGO_CORNERMAN_CLONE_FRESHNESS_2026-07-10.md` | Clone-freshness precondition (**built**, merged) + the env-vs-content packet-disposition ruling (**GO, unbuilt**) and an outbox stale-artifact verification item. |
 | `NONOWNER_CLIENT_READ_SURFACE_2026-07-10.md` | **Truth vs authority.** Ownership is DXRP's; the client-read surface is ours. The `AccessPinHash` raider-reader question, and the PIN-as-tradeoff-surface design frame that feeds the Terminal-defense pass. |
 | `GATE_ADVANCEDRACK_SYNC_TWO_CLIENT.md` | The two-client `[Sync]` gate. C3 measures the truth bug from the **non-owner's** screen. See `NONOWNER_CLIENT_READ_SURFACE` for the truth-vs-authority framing and the `AccessPinHash` reader question. |
-| `GATE_HUB_INTERACT_ADRIVE_2026-07-10.md` | a–d driver for the held hub-interact fix. Nothing commits until Bloodwave drives a–d. |
+| `GATE_HUB_INTERACT_ADRIVE_2026-07-10.md` | **Instrument.** a–d driver for the held hub-interact fix. Nothing commits until Bloodwave drives a–d. Editable until it runs. |
+| `GATE_HUB_INTERACT_EF_VERDICT_2026-07-10.md` | **Record, frozen.** The e/f verdict that already landed: the synthetic-bounds probe, `oldPivotPass=False newBoundsPass=True` across three hub sizes. |
 
 ## Related
 
