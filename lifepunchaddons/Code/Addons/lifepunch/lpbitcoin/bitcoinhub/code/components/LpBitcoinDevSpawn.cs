@@ -656,15 +656,21 @@ public static class LpBitcoinDevSpawn
 			Log.Info( $"lp_bitcoin_spawn_five_prefabs_for: full set placed for {FormatPlayerLabel( owner )}." );
 	}
 
-	/// <summary>Legacy alias — same as <see cref="SpawnRack"/> (advanced tier merged into GPU Rack).</summary>
+	/// <summary>The advanced rack — stacked prefab, 2× yield. The name is what people reach
+	/// for when gating advanced behaviour, so it must spawn what it says. It previously
+	/// aliased <see cref="SpawnRack"/> and handed back a STANDARD rack.</summary>
 	[ConCmd( "lp_spawn_advanced_gpu_rack" )]
-	public static void SpawnAdvancedRack() => SpawnRack();
+	public static void SpawnAdvancedRack()
+	{
+		Log.Info( "lp_spawn_advanced_gpu_rack: routing to the stacked rack — advanced, 2x yield." );
+		SpawnStackedRack();
+	}
 
-	/// <summary>Legacy alias — docs/playtest still reference v1 command name.</summary>
+	/// <summary>Legacy alias — docs/playtest still reference v1 command name. Standard rack.</summary>
 	[ConCmd( "lp_spawn_gpu_rack" )]
 	public static void SpawnGpuRackLegacy() => SpawnRack();
 
-	/// <summary>Legacy alias — stacked rack spawn.</summary>
+	/// <summary>Legacy alias — the advanced (stacked) rack, under its v1 name.</summary>
 	[ConCmd( "lp_spawn_large_gpu_rack" )]
 	public static void SpawnLargeGpuRackLegacy() => SpawnStackedRack();
 
