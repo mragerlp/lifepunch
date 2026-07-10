@@ -21,14 +21,48 @@
 If you are unsure: ask whether a session that never saw this conversation would have to
 redo the work without it. If yes, it is canon.
 
-## Handoff files are WRITE-ONCE
+## Handoff files are WRITE-ONCE — records, that is
 
-Once a brief is committed, it is a historical record. **Do not edit it, do not annotate it,
-do not add status banners to it.** Write-once means write-once — annotating history is still
-editing it. Supersede a record with a *new* record that cites the old one by filename.
+**The write-once law protects HISTORY, not INTENTIONS.** That distinction is the whole rule.
 
-(The one exception, and it is narrow: a document still in its own authoring session, before
-it has been committed, is still being written. After that, never.)
+> **The test:** *does this document describe something that already happened?*
+> **Yes → it is a record. Write-once.**  **No → it is an instrument. Editable.**
+
+- A **RECORD** — a STOP-GO, a diagnosis, a recon brief, a ruling, a decision record — describes
+  what was found, decided, or done. It is history. **Write-once, always.** Do not edit it, do not
+  annotate it, do not add status banners. Supersede it with a *new* record that cites the old one
+  by filename. Annotating history is still editing it.
+- A **GATE SCRIPT** is an **instrument**: a plan for a measurement not yet taken. It has no
+  history to protect. It is **editable until its verdict lands** — improving an instrument before
+  it is used is maintenance, not revisionism.
+- **The moment a gate is executed and its verdict recorded, the script and its result freeze
+  together as one record.** From that point: write-once. A re-run needs a *new* gate script,
+  citing the old.
+
+### Worked example — 2026-07-10
+
+Bloodwave instructed Red to add a cross-reference line inside
+`GATE_ADVANCEDRACK_SYNC_TWO_CLIENT.md`, a file committed to canon minutes earlier — in the same
+relay that ratified *supersede, don't annotate*. **Red refused and asked for a ruling rather than
+assuming an exception.** The pointer went into the README index and the new record instead. The
+ruling that came back is the law above: the gate was unexecuted, so it was an instrument, so the
+line was always allowed — but nobody knew that until the law was sharpened.
+
+**That is the behavior the law exists to produce.** An agent that quietly "makes an exception"
+for a plausible-sounding instruction produces a codebase where nobody can tell which rules are
+real. Refusing and asking costs one relay. Assuming costs the law.
+
+### Open edge case — hybrid documents (awaiting ruling)
+
+`GATE_HUB_INTERACT_ADRIVE_2026-07-10.md` is **both**. Its e/f section records a verdict that
+already landed (`oldPivotPass=False newBoundsPass=True`, three measured hubs, probe output
+transcribed). Its a–d section is an unexecuted driver awaiting Bloodwave at the keyboard. Applying
+the test per-document returns "yes" and "no" at once.
+
+Red's working treatment, pending a ruling: **the test applies per-section.** A recorded verdict is
+frozen the instant it is recorded; the un-run cases remain an editable instrument. Do not touch
+the e/f block. The cleaner long-term shape is probably to split a hybrid the moment its first
+verdict lands — the frozen result becomes a record, the remainder stays an instrument.
 
 ## Why this rule exists — the hazard, 2026-07-10
 

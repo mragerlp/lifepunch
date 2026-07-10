@@ -33,6 +33,8 @@ Long pasted handoffs between Chat and Code are a known hazard (empty-response bu
 - **PASTE** for state changes that fit ~one screen (CVL RELAY format — rulings, GOs, verdicts).
 - **FILE** for anything longer or re-read later: a repo-tracked `lifepunch/docs/handoff/CLAUDE_CODE_BRIEF_<TASK>_<DATE>.md` (write-once). Screenshots and attachments remain valid transport.
 
+**Write-once protects history, not intentions.** Test: *does this document describe something that already happened?* **Yes → record** (STOP-GO, diagnosis, recon brief, ruling): never edit, never annotate — supersede with a new record citing the old by filename. **No → instrument** (an unexecuted gate script): editable until its verdict lands. The moment a gate is executed and its verdict recorded, script and result **freeze together** as one record; a re-run needs a new script. When an instruction would annotate a record, **refuse and ask for a ruling** — do not assume an exception.
+
 On receiving a handoff brief, before editing report: branch · HEAD · clean/dirty · intended files · forbidden files — then wait for GO.
 
 ## Grounding order

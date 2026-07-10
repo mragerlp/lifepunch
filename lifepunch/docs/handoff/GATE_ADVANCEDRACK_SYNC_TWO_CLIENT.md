@@ -6,6 +6,9 @@
 `GATE HEADER: SCENE: fast (blank.scene) · IDENTITY: two`
 Red drives the host. Bloodwave is the second client.
 
+See `NONOWNER_CLIENT_READ_SURFACE_2026-07-10.md` for the truth-vs-authority framing and the
+`AccessPinHash` reader question.
+
 ---
 
 ## The bug being gated
