@@ -26,8 +26,10 @@ public sealed class LpBitcoinRackEntity : Component, Component.IPressable
 public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable, IAreaDamageReceiver
 #endif
 {
-	/// <summary>GPU rack farm — stacked mesh; the COMPUTE tier (rack_compute) drives mining rate.</summary>
-	[Property] public bool AdvancedRack { get; set; } = true;
+	/// <summary>GPU rack farm — stacked mesh; the COMPUTE tier (rack_compute) drives mining rate.
+	/// Standard by default: every construction site sets this explicitly and both prefabs
+	/// serialize it, so a bare AddComponent must never silently mint a 2× yield rack.</summary>
+	[Property] public bool AdvancedRack { get; set; }
 
 	/// <summary>Dev spawn (<see cref="LpBitcoinDevSpawn"/>) — feet on ground, frozen collider (no printer drop).</summary>
 	internal bool DevSpawnAsWorldMachine { get; set; }
