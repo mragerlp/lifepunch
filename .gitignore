@@ -61,3 +61,7 @@ desktop.ini
 # Fab Blender sources — often >100MB; canonical mesh intake is FBX/OBJ under assets/source/.
 # Keep .blend on Desktop/OneDrive UPLOAD READY ADDONS; repo tracks FBX + textures only.
 **/assets/source/blend/*.blend
+
+# Claude Code — track skills, never local session state
+.claude/settings.local.json
+.claude/worktrees/

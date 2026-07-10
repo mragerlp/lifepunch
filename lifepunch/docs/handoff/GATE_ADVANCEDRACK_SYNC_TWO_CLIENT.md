@@ -13,27 +13,33 @@ See `NONOWNER_CLIENT_READ_SURFACE_2026-07-10.md` for the truth-vs-authority fram
 
 ## The bug being gated
 
-`LpBitcoinRackEntity.cs:29`
+`LpBitcoinRackEntity.cs:32`
 
 ```csharp
 [Property] public bool AdvancedRack { get; set; }        // no [Sync]
 ```
 
 Every sibling carries `[Property, ReadOnly] [Sync( SyncFlags.FromHost )]`:
-`LinkedHubId`, `AssignedSlotToken`, `IsMining`, `BitcoinAmount`, `ClockGhz`, `CoreCount`,
-`ComputeTier`.
+`LinkedHubId` (`:39`), `AssignedSlotToken` (`:45`), `IsMining` (`:46`), `BitcoinAmount` (`:47`),
+`ClockGhz` (`:48`), `CoreCount` (`:49`), `MiningProgress` (`:50`), `ComputeTier` (`:55`).
 
 `YieldMultiplier` and `DisplayName` are **derived** from `AdvancedRack`
-(`LpBitcoinRackEntity.cs:56`, `:63`). So a client that does not receive `AdvancedRack`
+(`LpBitcoinRackEntity.cs:58`, `:65`). So a client that does not receive `AdvancedRack`
 computes the wrong yield and the wrong name.
+
+> **Citations corrected 2026-07-10** against the source, before the gate ran. They were
+> `:29`, `:56`, `:63`, `~:1622`, and the sibling list omitted `MiningProgress`. The frozen
+> record `NONOWNER_CLIENT_READ_SURFACE_2026-07-10.md` already had `:32` right. A gate that
+> points at the wrong line is a sensor pointed at the wrong world.
 
 **Prefab-spawned racks may be fine** — `gpurack.prefab` serialises `AdvancedRack: false`,
 `advancedgpurack.prefab` serialises `true`, and prefab data ships with the network spawn.
 **Runtime host-assigned racks are the suspect path:**
 
-- `LpBitcoinDevSpawn.SpawnRackPrefabInternal` — `rack.AdvancedRack = stacked;` (~:1622),
-  set *after* `ClonePrefabAt` and *before* `NetworkSpawnIfNeeded`.
-- `LpBitcoinUi.CreatePreviewRack` — host-local only, so invisible in preview.
+- `LpBitcoinDevSpawn.SpawnRackPrefabInternal` — `rack.AdvancedRack = stacked;`
+  (`LpBitcoinDevSpawn.cs:1628`), set *after* `ClonePrefabAt` and *before* `NetworkSpawnIfNeeded`.
+- `LpBitcoinUi.CreatePreviewRack` — `rack.AdvancedRack = advanced;` (`LpBitcoinUi.cs:93`),
+  host-local only, so invisible in preview.
 
 **That distinction is the whole gate.** Do not assume the prefab path is safe; measure it.
 
@@ -63,8 +69,15 @@ The fix must be **proven to be needed** before it is applied, or the gate proves
 
    Sensor on the host: `get_runtime_property` on the rack GameObject.
    Sensor on the client: the world nameplate renders `DisplayName`; read it from the
-   client's screen. If a client-side probe is needed, add `DevRackReplicaProbe` to the
-   dev-hook surface (same pattern as `DevTrackRowProbe`) and read it on the client.
+   client's screen.
+
+   **`DevRackReplicaProbe` is CONDITIONAL, not pre-built (ruled 2026-07-10).** Phase A runs on
+   the nameplate as-is. **No speculative code before Phase A says it is needed.** If observation
+   shows the nameplate cannot carry C3/C4, **STOP in-sitting** and propose the probe; Bloodwave
+   GOs it live from the keyboard (the CVL Sync Law's live exception applies — the human at the
+   keyboard is the sensor). It builds as **clearly-marked dev scaffolding**, on the
+   `DevTrackRowProbe` pattern, and its retain-or-remove is ruled **after** the gate, never
+   during it.
 
 5. Now the suspect path — a rack whose flag is assigned at runtime, not by prefab:
    ```

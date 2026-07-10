@@ -1,0 +1,193 @@
+name: gate-assist
+
+# ADVISORY ROBOT, UNDER THE MERGE GATE.
+#
+# It never merges, never approves, never writes to the repository, and never
+# blocks a merge on its own authority. A red check is a signal to a human.
+# Bloodwave merges. This only tells him where to look.
+#
+# Design notes that are load-bearing, not decoration:
+#
+#  * `permissions: contents: read` and nothing else. No PR comments, because a
+#    comment needs write. Findings surface as workflow annotations instead.
+#  * `pull_request` (never `pull_request_target`): the token is read-only and
+#    no secrets are exposed to code from a fork.
+#  * Nothing from `github.event.*` is interpolated into a `run:` block. A PR
+#    title or body is attacker-controlled text; inlining it is a script
+#    injection sink. It travels through `env:` and is read as a shell variable.
+#  * Patterns are ANCHORED TO STRUCTURE, never to a word. `claude` matches the
+#    filename CLAUDE.md; `^Co-authored-by:` matches a trailer. The difference
+#    has cost this repo real time.
+#  * Every secret pattern is written so it CANNOT MATCH ITSELF in this file.
+#    `.*` is avoided for exactly that reason, so this workflow is scanned by
+#    its own rules like any other file. No self-exclusion, no blind spot.
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gate-assist-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  attribution:
+    name: no AI attribution (commits + PR body)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1 — SHA-pinned: a tag is a movable pointer
+        with:
+          fetch-depth: 0
+
+      - name: Trailer scan over the PR's commits
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+          HEAD: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -uo pipefail
+          MB=$(git merge-base "$BASE" "$HEAD")
+          # Anchored to the trailer's line start. A bare 'claude' is a filename.
+          AI='(\[bot\]|claude|anthropic|copilot|cursor|openai|codex|\bAI\b|agent)'
+          bad=0
+          for c in $(git rev-list "$MB".."$HEAD"); do
+            msg=$(git log -1 --format='%B' "$c")
+            if printf '%s\n' "$msg" | grep -qiE "^[[:space:]]*Co-authored-by:.*${AI}"; then
+              echo "::error::commit ${c}: AI co-author trailer"; bad=1
+            fi
+            if printf '%s\n' "$msg" | grep -qiE '^[[:space:]]*(Generated-by|Assisted-by|AI-authored-by):'; then
+              echo "::error::commit ${c}: attribution trailer"; bad=1
+            fi
+            if printf '%s\n' "$msg" | grep -qiE 'Generated with .*(Claude|Copilot|Cursor)'; then
+              echo "::error::commit ${c}: harness footer"; bad=1
+            fi
+          done
+          [ "$bad" -eq 0 ] && echo "commits clean"
+          exit "$bad"
+
+      - name: Trailer scan over the PR body and title
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          set -uo pipefail
+          # $PR_BODY is attacker-controlled. It is a shell VARIABLE, never
+          # interpolated into this script.
+          bad=0
+          for field in PR_TITLE PR_BODY; do
+            text="${!field-}"
+            if printf '%s\n' "$text" | grep -qiE '^[[:space:]]*(Co-authored-by|Generated-by|Assisted-by|AI-authored-by):'; then
+              echo "::error::${field}: attribution trailer"; bad=1
+            fi
+            if printf '%s\n' "$text" | grep -qiE 'Generated with .*(Claude|Copilot|Cursor)|Co-authored-by: Claude'; then
+              echo "::error::${field}: harness footer"; bad=1
+            fi
+          done
+          [ "$bad" -eq 0 ] && echo "PR title and body clean"
+          exit "$bad"
+
+  secrets:
+    name: secret scan (added lines only)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1 — SHA-pinned: a tag is a movable pointer
+        with:
+          fetch-depth: 0
+
+      - name: Scan added lines for credential shapes
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+          HEAD: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -uo pipefail
+          MB=$(git merge-base "$BASE" "$HEAD")
+          # Added lines only. A removed secret is already in history; that is a
+          # rotation problem, not a merge problem.
+          added=$(git diff --merge-base "$BASE" "$HEAD" | grep -E '^\+' || true)
+
+          # Every pattern carries a LENGTH ANCHOR. An unanchored matcher hits
+          # prose: 'Bearer token?' in a sentence is not a credential.
+          PATTERNS='
+          Bearer +[A-Za-z0-9._-]{8,}
+          BEGIN [A-Z ]*PRIVATE KEY
+          AKIA[0-9A-Z]{16}
+          gh[pousr]_[A-Za-z0-9]{36}
+          github_pat_[A-Za-z0-9_]{22,}
+          sk-[A-Za-z0-9]{20,}
+          xox[baprs]-[A-Za-z0-9-]{10,}
+          '
+          # NOTE: an explicit OpenSSH private-key header literal was removed. It
+          # is already covered by the generic private-key pattern above, and
+          # spelling it out made this file match its own scanner. So did the
+          # comment that first explained the removal. A rule that trips on its
+          # own source is how a blind spot gets introduced — describe the
+          # literal, never write it.
+          # Placeholders are not secrets. ${VAR} indirection, <API_KEY>,
+          # __TOKEN__ templates. An alarm that cries wolf on a template is an
+          # alarm people learn to ignore.
+          EXCLUDE='\$\{|<[A-Z_]+>|__[A-Z_]+__|placeholder|EXAMPLE|xxxxx'
+
+          bad=0
+          while IFS= read -r p; do
+            [ -z "$p" ] && continue
+            hits=$(printf '%s\n' "$added" | grep -E "$p" | grep -vE "$EXCLUDE" || true)
+            if [ -n "$hits" ]; then
+              echo "::error::added line matches credential shape: ${p}"
+              printf '%s\n' "$hits" | head -5
+              bad=1
+            fi
+          done <<< "$PATTERNS"
+          [ "$bad" -eq 0 ] && echo "no credential shapes in added lines"
+          exit "$bad"
+
+  guards:
+    name: repo guards
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1 — SHA-pinned: a tag is a movable pointer
+        with:
+          fetch-depth: 0
+
+      - name: Seat-local state must never be committed
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+          HEAD: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -uo pipefail
+          files=$(git diff --merge-base --name-only "$BASE" "$HEAD")
+          bad=0
+          # Approvals are a decision, and decisions do not replicate.
+          if printf '%s\n' "$files" | grep -qE '^\.claude/settings\.local\.json$'; then
+            echo "::error::.claude/settings.local.json is seat-local and must not be tracked"; bad=1
+          fi
+          if printf '%s\n' "$files" | grep -qE '^\.claude/worktrees/'; then
+            echo "::error::.claude/worktrees/ must not be tracked"; bad=1
+          fi
+          [ "$bad" -eq 0 ] && echo "no seat-local state in the diff"
+          exit "$bad"
+
+      - name: Advisory — code in a docs/chore PR
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+          HEAD: ${{ github.event.pull_request.head.sha }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          set -uo pipefail
+          # ADVISORY ONLY. This step never fails the check. A docs PR may
+          # legitimately carry code; the point is that a human sees it said so.
+          title="${PR_TITLE-}"
+          case "$title" in
+            docs\(*|chore\(*)
+              code=$(git diff --merge-base --name-only "$BASE" "$HEAD" \
+                     | grep -E '\.(cs|razor|scss|ps1|csproj|sbproj)$' || true)
+              if [ -n "$code" ]; then
+                echo "::warning::PR is titled '${title}' but carries code files:"
+                printf '%s\n' "$code" | while read -r f; do echo "::warning file=${f}::code file in a docs/chore PR"; done
+              else
+                echo "docs/chore PR carries no code files"
+              fi
+              ;;
+            *) echo "not a docs/chore PR — advisory skipped" ;;
+          esac
+          exit 0
