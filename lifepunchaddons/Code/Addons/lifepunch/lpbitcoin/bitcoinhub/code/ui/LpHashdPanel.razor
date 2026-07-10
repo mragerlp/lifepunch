@@ -1564,6 +1564,35 @@
 	public string DevServersViewProbe()
 		=> $"{_serversView}:{_serverDetailToken ?? "-"}";
 
+	/// <summary>Dev proof — measure the track row's columns. Overlap is a fact, not a look:
+	/// a high-res capture rasterises text and boxes separately, so eyeballing a PNG cannot
+	/// distinguish a real layout collision from a screenshot artefact.</summary>
+	public string DevTrackRowProbe()
+	{
+		if ( !Panel.IsValid() )
+			return "no panel";
+
+		var lines = "";
+		foreach ( var p in Panel.Descendants )
+		{
+			if ( !p.IsValid() )
+				continue;
+
+			var interesting = p.HasClass( "entity-track-row" ) || p.HasClass( "entity-track-lead" )
+				|| p.HasClass( "lp-stepper" ) || p.HasClass( "entity-track-transact" )
+				|| p.HasClass( "entity-track-price" ) || p.HasClass( "entity-track-action" )
+				|| p.HasClass( "entity-track-upgrade" );
+
+			if ( !interesting )
+				continue;
+
+			var r = p.Box.Rect;
+			lines += $"{p.Classes} :: L={r.Left:F0} R={r.Right:F0} W={r.Width:F0}\n";
+		}
+
+		return lines.Length == 0 ? "no track rows on screen" : lines;
+	}
+
 	/// <summary>Dev proof — open the row-anchored confirm chip on a rack's live Compute track.</summary>
 	public void DevOpenConfirmChip( string slot )
 	{
