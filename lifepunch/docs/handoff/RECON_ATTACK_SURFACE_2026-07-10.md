@@ -32,6 +32,13 @@ tailnet devices and key expiry. Pass: Bloodwave names its purpose in
 one line (it becomes the sanctioned remote-admin path). Fail action:
 uninstall — an unowned overlay is standing remote reachability.
 
+**RULED 2026-07-10: BLESSED — the sanctioned remote-admin path.**
+The fail action does not apply. Rollout, device list and key expiry
+are `H2` of `STOPGO_AUTOMATION_HARDENING_2026-07-10.md`. Order is
+load-bearing: install Red + Blue, verify tailnet reachability, and
+only THEN let `S1` close Blue's admin ports off the WAN — closing
+first locks the operator out of the box he is hardening.
+
 ### S3 — LM Studio bind scope (Green)
 Check: which address :1234 listens on. Pass: localhost-only unless a
 ruled consumer needs LAN reach (packet transport is SMB; Odysseus
