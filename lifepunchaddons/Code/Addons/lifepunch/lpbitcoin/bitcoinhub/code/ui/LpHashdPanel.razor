@@ -1564,6 +1564,42 @@
 	public string DevServersViewProbe()
 		=> $"{_serversView}:{_serverDetailToken ?? "-"}";
 
+	/// <summary>Dev proof — inject a known balance then fire two hub cash-outs in ONE tick, to
+	/// exercise the cash-out race. Both calls read the wallet and both reach the TryPayBank await
+	/// before either resolves, so the sensor lines (LP_CASHOUT_SENSOR) show whether the second
+	/// debit drives the wallet negative. Gate reads: wallet never negative, one bank credit.</summary>
+	public void DevRaceCashOut( float injectBtc )
+	{
+		if ( !Hub.IsValid() )
+			return;
+
+		Hub.HubWalletBtc = injectBtc;
+		Log.Info( $"LP_CASHOUT_RACE begin inject={injectBtc:F8} wallet={Hub.HubWalletBtc:F8}" );
+		Hub.RequestCashOutAllHub();
+		Hub.RequestCashOutAllHub();
+		Log.Info( $"LP_CASHOUT_RACE fired-two wallet-sync-after={Hub.HubWalletBtc:F8}" );
+	}
+
+	/// <summary>Dev proof — inject a rack balance then fire two rack sells in ONE tick, the second
+	/// racy site (LpBitcoinRackEntity.SellForCallerHost). Gate reads LP_SELL_SENSOR: the rack must
+	/// be paid out once, its balance land at zero, and never restore to a doubled value.</summary>
+	public void DevRaceRackSell( float injectBtc )
+	{
+		if ( !Hub.IsValid() )
+			return;
+
+		var rack = Hub.GetLinkedRacks().FirstOrDefault( r => r.IsValid() );
+		if ( rack is null || !rack.IsValid() )
+			return;
+
+		var caller = Connection.Local.Id;
+		rack.BitcoinAmount = injectBtc;
+		Log.Info( $"LP_SELL_RACE begin inject={injectBtc:F8} rackBalance={rack.BitcoinAmount:F8}" );
+		_ = rack.SellForCallerHost( caller );
+		_ = rack.SellForCallerHost( caller );
+		Log.Info( $"LP_SELL_RACE fired-two rackBalance-sync-after={rack.BitcoinAmount:F8}" );
+	}
+
 	/// <summary>Dev proof — measure the track row's columns. Overlap is a fact, not a look:
 	/// a high-res capture rasterises text and boxes separately, so eyeballing a PNG cannot
 	/// distinguish a real layout collision from a screenshot artefact.</summary>

@@ -1045,12 +1045,38 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 		if ( payout == 0 )
 			return;
 
-		if ( !await LpBitcoinWallet.TryPayBank( Rpc.CallerId, payout, "LIFEPUNCH hub BTC cashout" ) )
-			return;
-
+		// Debit BEFORE the TryPayBank await, so the balance itself serialises concurrent cash-outs:
+		// a second call entering during the await reads the already-reduced wallet and its own
+		// `amount > HubWalletBtc` check limits it. This mirrors PurchaseFlow's debit-then-restore
+		// (LpBitcoinPurchaseFlow.cs:106/112). The one difference: our restore straddles the await,
+		// so it must be ADDITIVE (+= amount) — a snapshot restore would clobber a deposit that
+		// landed during the await. Without this, two cash-outs both paid the bank and drove the
+		// wallet negative (repro: handoff/gate-toctou-repro-2026-07-09.log).
 		HubWalletBtc -= amount;
+		ClampWalletNonNegativeHost( Rpc.CallerId, "cashout-debit" );
+		Log.Info( $"LP_CASHOUT_SENSOR caller={Rpc.CallerId} amountReq={amount:F8} walletAfter={HubWalletBtc:F8}" );
+
+		if ( !await LpBitcoinWallet.TryPayBank( Rpc.CallerId, payout, "LIFEPUNCH hub BTC cashout" ) )
+		{
+			HubWalletBtc += amount; // payment failed — give back exactly what we took
+			return;
+		}
+
 		NotifyCashOutSuccess( Rpc.CallerId, amount, payout, soldAll );
 		RefreshLinkedTerminalScreens();
+	}
+
+	/// <summary>Backstop invariant: the hub wallet is host-authoritative money and must never be
+	/// negative. If a debit ever drives it below zero a balance check was raced — clamp to zero and
+	/// log an ERROR naming the caller, so the sentinel is loud in the feed rather than silent
+	/// corruption. In normal flow the pre-debit check keeps this from firing.</summary>
+	private void ClampWalletNonNegativeHost( Guid callerId, string op )
+	{
+		if ( HubWalletBtc >= 0f )
+			return;
+
+		Log.Error( $"LP_CASHOUT_INVARIANT hub wallet went negative ({HubWalletBtc:F8}) after {op} caller={callerId} — clamped to 0; a balance check was raced." );
+		HubWalletBtc = 0f;
 	}
 
 	[Rpc.Host]
