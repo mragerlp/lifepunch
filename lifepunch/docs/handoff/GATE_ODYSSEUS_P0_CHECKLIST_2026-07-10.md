@@ -85,14 +85,34 @@ maps Green's *inbox* and whose reads are **denied in practice** by a server syml
 validation bug (`STOPGO_TRANSPORT_G_READSURFACE_FOLLOWUP_2026-07-10.md`). Do not conflate the
 two surfaces; they fail differently.
 
-**[GREEN ASSERTS]** — elevated PowerShell on Green:
+**ACL principal — RULED 2026-07-10: Bloodwave's user account.** Not `Everyone`, not a machine
+account, not a group.
+
+**[GREEN ASSERTS]** — Green prints its own principal. Red does not compose this string; an
+account name is part of a machine's identity, and the machine asserts its own.
 
 ```powershell
-New-SmbShare -Name 'CornermanOutbox' -Path 'C:\lifepunch\cornerman\OUTBOX' -ReadAccess '<PRINCIPAL>'
+"$env:COMPUTERNAME\$env:USERNAME"      # e.g. CORNERMAN\jared — this exact output is the principal
 ```
 
-> **OWNER DECISION REQUIRED:** `<PRINCIPAL>`. Red proposes the Red machine account or
-> Bloodwave's user, **never `Everyone`**. Bloodwave rules the ACL; Red does not choose it.
+Then, elevated PowerShell on Green, substituting that output verbatim:
+
+```powershell
+New-SmbShare -Name 'CornermanOutbox' -Path 'C:\lifepunch\cornerman\OUTBOX' -ReadAccess '<the line above>'
+```
+
+**Share permission is not the whole permission.** Effective access is the *intersection* of the
+share ACL and the NTFS ACL. Confirm the folder itself grants that account read:
+
+```powershell
+(Get-Acl 'C:\lifepunch\cornerman\OUTBOX').Access | Where-Object { $_.IdentityReference -like "*$env:USERNAME" }
+```
+
+**Cross-machine auth:** Red reaches the share as *its own* logged-in user. If Red's and Green's
+account names or passwords differ, `Test-Path` returns Access Denied — that is an **auth**
+failure, not a network one. Bloodwave supplies credentials by hand
+(`net use \\<GREEN-HOSTNAME>\CornermanOutbox /user:<GREEN-HOSTNAME>\<account>`); **Red never sees
+them and never stores them.**
 
 **Red-side mapping** — the only Red action in this gate, and it runs *after* Green reports the
 share exists:
@@ -174,7 +194,8 @@ Ollama because it is present. Presence is not permission.
 ```
 P0.1   claude on PATH; Green reports 2.1.206 at C:\Users\jared\.local\bin\claude.exe
 P0.2   claude launches on Green, authenticated, no prompt
-P0.3   OUTBOX share exists (ACL ruled by Bloodwave); Red's Test-Path -> True, first try
+P0.3   OUTBOX share exists, ACL = Bloodwave's user account (ruled 2026-07-10), NTFS agrees;
+       Red's Test-Path -> True, first try. Access Denied is an AUTH failure, not a network one.
 P0.4   Green HEAD == expectedClones 831331f; tree clean; nested-clone scope declared
 P0.5   Odysseus grounds cold and names three rulings unaided
 P0.6   Docker/Ollama untouched; LM Studio :1234 is the only muscle
