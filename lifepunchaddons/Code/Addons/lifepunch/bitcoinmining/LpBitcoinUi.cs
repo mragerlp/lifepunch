@@ -67,12 +67,30 @@ internal static class LpBitcoinUi
 		if ( hub.GetLinkedRacks().Count > 0 )
 			return;
 
-		for ( var i = 0; i < LpBitcoinIdent.PortalMaxRacksPerHub; i++ )
-		{
-			var rackGo = scene.CreateObject();
-			rackGo.Name = $"LpBitcoinPreviewRack{i + 1}";
-			var rack = rackGo.AddComponent<LpBitcoinRackEntity>();
-			rack.LinkToHub( hub );
-		}
+		// The canonical rig0 mix, built from the slot caps rather than a count: 2× standard +
+		// 1× advanced. AdvancedRack is set BEFORE LinkToHub because the hub's reconcile sweep
+		// reads it at link time to stamp AssignedSlotToken. Leaving it at its `= true` default
+		// gave three advanced racks, which all claimed the single advanced token and left both
+		// standard slots empty — GPU Rack 1 and 2 were unreachable in preview.
+		for ( var i = 0; i < LpBitcoinIdent.PortalMaxStandardRacksPerHub; i++ )
+			CreatePreviewRack( scene, hub, $"LpBitcoinPreviewRack{i + 1}", advanced: false );
+
+		for ( var i = 0; i < LpBitcoinIdent.PortalMaxAdvancedRacksPerHub; i++ )
+			CreatePreviewRack( scene, hub, $"LpBitcoinPreviewAdvancedRack{i + 1}", advanced: true );
+
+		// Sensor: names the mix it actually built, so a gate can prove the running assembly
+		// carries this harness rather than a stale one that minted three advanced racks.
+		Log.Info(
+			$"lp_bitcoin preview harness: rig0 mix linked — {LpBitcoinIdent.PortalMaxStandardRacksPerHub} standard + " +
+			$"{LpBitcoinIdent.PortalMaxAdvancedRacksPerHub} advanced." );
+	}
+
+	private static void CreatePreviewRack( Scene scene, LpBitcoinHubEntity hub, string name, bool advanced )
+	{
+		var rackGo = scene.CreateObject();
+		rackGo.Name = name;
+		var rack = rackGo.AddComponent<LpBitcoinRackEntity>();
+		rack.AdvancedRack = advanced;
+		rack.LinkToHub( hub );
 	}
 }
