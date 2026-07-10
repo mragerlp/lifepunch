@@ -38,8 +38,15 @@ On receiving a handoff brief, before editing report: branch · HEAD · clean/dir
 ## Grounding order
 
 ```
-CLAUDE.md → lifepunch/docs/START_HERE_AGENTS.md → lifepunch/docs/CVL_AGENT_ONBOARDING.md → the active handoff brief
+CLAUDE.md → lifepunch/docs/START_HERE_AGENTS.md → lifepunch/docs/CVL_AGENT_ONBOARDING.md
+          → lifepunch/docs/handoff/README.md → the active brief in lifepunch/docs/handoff/
 ```
+
+**Two folders are named `handoff`; only one is grounding material.**
+- `lifepunch/docs/handoff/` — **CANON.** Tracked. STOP-GOs, rulings, recon briefs, diagnoses, gate scripts. Write-once. **This is the one you read.**
+- `handoff/` (repo root) — **SCRATCH.** Untracked. Gate logs, screenshots, ledger backups. Proof, not canon. **Not grounding material; nothing reads it.**
+
+Decision records go in canon. *Write-once canon that the grounding order does not read is canon nobody reads.* See `lifepunch/docs/handoff/README.md`.
 
 ## Hard rules
 
