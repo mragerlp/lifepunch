@@ -118,7 +118,8 @@ history: read it to avoid re-deriving, never to re-litigate.
 
 | Record | What it holds |
 |--------|---------------|
-| `STOPGO_EXCALIDRAW_MCP_CONNECTOR_2026-07-10.md` | First connector under the doctrine. Canon, **UNEXECUTED** — propose the config, STOP for GO. Sets the template for every future MCP/connector. |
+| `STOPGO_EXCALIDRAW_MCP_CONNECTOR_2026-07-10.md` | First connector under the doctrine. Sets the template for every future MCP/connector. **Its §2 fail-mode claim is superseded** — read it with `STOPGO_EXCALIDRAW_MCP_CONNECTOR_SUPERSEDE_2026-07-10.md`. |
+| `STOPGO_EXCALIDRAW_MCP_CONNECTOR_SUPERSEDE_2026-07-10.md` | **Supersedes the above in §2 only.** The doc's "unresolved var → fails to parse" is FALSE on `claude-code/2.1.187`; wire capture, the withdrawn `:-unset` default, the fail-loud ruling, and the **observe-auth-before-any-canvas-call** mitigation. Config edit GO'd; connector not yet authenticated. |
 | `STOPGO_CORNERMAN_CLONE_FRESHNESS_2026-07-10.md` | Clone-freshness precondition (**built**, merged) + the env-vs-content packet-disposition ruling (**GO, unbuilt**) and an outbox stale-artifact verification item. |
 | `NONOWNER_CLIENT_READ_SURFACE_2026-07-10.md` | **Truth vs authority.** Ownership is DXRP's; the client-read surface is ours. The `AccessPinHash` raider-reader question, and the PIN-as-tradeoff-surface design frame that feeds the Terminal-defense pass. |
 | `GATE_ADVANCEDRACK_SYNC_TWO_CLIENT.md` | The two-client `[Sync]` gate. C3 measures the truth bug from the **non-owner's** screen. See `NONOWNER_CLIENT_READ_SURFACE` for the truth-vs-authority framing and the `AccessPinHash` reader question. |
