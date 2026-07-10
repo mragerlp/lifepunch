@@ -7,12 +7,30 @@
   clarification. This file is the un-run half.
 
 **Fix APPLIED (uncommitted). a–d need you at the keyboard in a game scene with a pawn. Nothing
-commits until a–d pass with you driving.** `develop` @ `600bebb` + working-tree changes to
-`LifePunchMenuInteractRange.cs` + `LifePunchMenuInteractGate.cs`.
+commits until a–d pass with you driving.** Base: the `develop` **tip at drive time**, plus
+working-tree changes to `LifePunchMenuInteractRange.cs` + `LifePunchMenuInteractGate.cs`.
 
-> **Base updated 2026-07-10**, from `f1355cf`. Both held files are **byte-identical** across
-> `f1355cf..600bebb` — every commit in that range is docs — so the held patch still applies to
-> exactly the same base code. The reference moved; the premise did not.
+> **No base commit is written here, deliberately.** A literal tip goes stale the moment the next
+> commit lands, and this instrument has already outlived three of them (`f1355cf` → `600bebb` →
+> and on). A stale literal invites a false abort over a number that was never the sensor.
+>
+> **The rule instead:** the two held files are **byte-identical across every commit since
+> `f1355cf`** — every one of them is docs or config — so the held patch applies to the same base
+> code whatever the tip reads. Verify it at drive time, in one line:
+>
+> ```bash
+> git diff --quiet f1355cf HEAD -- \
+>   lifepunchaddons/Code/Addons/lifepunch/LifePunchMenuInteractRange.cs \
+>   lifepunchaddons/Code/Addons/lifepunch/LifePunchMenuInteractGate.cs \
+>   && echo "base unchanged" || echo "BASE MOVED — re-check the premise"
+> ```
+>
+> **And the base commit is not the sensor anyway. P0 is.** The editor compiles a hand-synced
+> copy; what matters is whether *that tree* carries the fix, not which commit the repo sits on.
+> A green P0 with a "stale" base is a pass; a red P0 with a fresh base is an abort.
+>
+> *This is the `expectedClones` lesson, applied before it costs a sitting: a document that
+> records a moving tip records a value that is wrong by the time anyone reads it.*
 
 `GATE HEADER: SCENE: game/map (NOT blank.scene preview) · IDENTITY: one, with a real pawn`
 
