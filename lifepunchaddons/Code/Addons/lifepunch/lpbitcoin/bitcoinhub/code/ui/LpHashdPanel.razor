@@ -1492,6 +1492,11 @@
 	/// <summary>Dev preview — jump straight to the wallet tab (cash-out tiles).</summary>
 	public void DevOpenWalletTab() => SelectTab( OpsTab.Wallet );
 
+	/// <summary>Dev preview — jump straight to the transfers tab (send + rate table). Fills the
+	/// gap the recon flagged: the transfers pane had no dev entry point, so it could not be
+	/// screenshotted or gated.</summary>
+	public void DevOpenTransfersTab() => SelectTab( OpsTab.Transfers );
+
 	/// <summary>Dev preview — jump straight to the settings tab (toggle list).</summary>
 	public void DevOpenSettingsTab() => SelectTab( OpsTab.Settings );
 
