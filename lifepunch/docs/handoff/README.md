@@ -52,17 +52,26 @@ line was always allowed — but nobody knew that until the law was sharpened.
 for a plausible-sounding instruction produces a codebase where nobody can tell which rules are
 real. Refusing and asking costs one relay. Assuming costs the law.
 
-### Open edge case — hybrid documents (awaiting ruling)
+### Hybrid documents SPLIT (ruled 2026-07-10)
 
-`GATE_HUB_INTERACT_ADRIVE_2026-07-10.md` is **both**. Its e/f section records a verdict that
-already landed (`oldPivotPass=False newBoundsPass=True`, three measured hubs, probe output
-transcribed). Its a–d section is an unexecuted driver awaiting Bloodwave at the keyboard. Applying
-the test per-document returns "yes" and "no" at once.
+**A document is one document only if the test returns ONE answer.**
 
-Red's working treatment, pending a ruling: **the test applies per-section.** A recorded verdict is
-frozen the instant it is recorded; the un-run cases remain an editable instrument. Do not touch
-the e/f block. The cleaner long-term shape is probably to split a hybrid the moment its first
-verdict lands — the frozen result becomes a record, the remainder stays an instrument.
+When a gate's **first** verdict lands, **split it**:
+
+- the proven section becomes a **RECORD** — frozen, in its own file;
+- the un-run section remains an **INSTRUMENT** — editable, in its own file;
+- each cites the other **by filename**. Neither annotates the other.
+
+*Rationale:* a hybrid **will** be annotated eventually — someone improves the instrument half and
+touches the record half in the same pass. The split makes the mistake **impossible rather than
+forbidden.** A rule you can violate by accident is a rule you will violate.
+
+Worked example, the same day the rule was made: `GATE_HUB_INTERACT_ADRIVE_2026-07-10.md` carried a
+landed e/f verdict (`oldPivotPass=False newBoundsPass=True`, three measured hubs) *and* an
+unexecuted a–d driver. It split into `GATE_HUB_INTERACT_EF_VERDICT_2026-07-10.md` (record, frozen)
+and the a–d driver, which keeps the original filename because that name is what the a–d sitting
+reaches for. The verdict was carried over **verbatim** — a split that reworded the record would be
+the very annotation the law forbids, wearing a tidier hat.
 
 ## Why this rule exists — the hazard, 2026-07-10
 
@@ -113,7 +122,8 @@ history: read it to avoid re-deriving, never to re-litigate.
 | `STOPGO_CORNERMAN_CLONE_FRESHNESS_2026-07-10.md` | Clone-freshness precondition (**built**, merged) + the env-vs-content packet-disposition ruling (**GO, unbuilt**) and an outbox stale-artifact verification item. |
 | `NONOWNER_CLIENT_READ_SURFACE_2026-07-10.md` | **Truth vs authority.** Ownership is DXRP's; the client-read surface is ours. The `AccessPinHash` raider-reader question, and the PIN-as-tradeoff-surface design frame that feeds the Terminal-defense pass. |
 | `GATE_ADVANCEDRACK_SYNC_TWO_CLIENT.md` | The two-client `[Sync]` gate. C3 measures the truth bug from the **non-owner's** screen. See `NONOWNER_CLIENT_READ_SURFACE` for the truth-vs-authority framing and the `AccessPinHash` reader question. |
-| `GATE_HUB_INTERACT_ADRIVE_2026-07-10.md` | a–d driver for the held hub-interact fix. Nothing commits until Bloodwave drives a–d. |
+| `GATE_HUB_INTERACT_ADRIVE_2026-07-10.md` | **Instrument.** a–d driver for the held hub-interact fix. Nothing commits until Bloodwave drives a–d. Editable until it runs. |
+| `GATE_HUB_INTERACT_EF_VERDICT_2026-07-10.md` | **Record, frozen.** The e/f verdict that already landed: the synthetic-bounds probe, `oldPivotPass=False newBoundsPass=True` across three hub sizes. |
 
 ## Related
 

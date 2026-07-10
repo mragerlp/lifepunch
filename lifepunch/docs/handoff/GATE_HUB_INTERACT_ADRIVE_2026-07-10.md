@@ -1,38 +1,25 @@
-# Hub interact fix — gate: e/f PROVEN, a–d driver for Bloodwave
+# GATE SCRIPT — Hub interact fix, cases a–d: Bloodwave drives
 
-**Fix APPLIED (uncommitted), e/f proven. a–d need you at the keyboard in a game scene with a
-pawn. Nothing commits until a–d pass with you driving.** `develop` @ `f1355cf` + working-tree
-changes to `LifePunchMenuInteractRange.cs` + `LifePunchMenuInteractGate.cs`.
+- **Status:** INSTRUMENT. **Unexecuted** — no verdict recorded here yet. Editable until it runs.
+- **Record:** cases e/f already landed. Their verdict is frozen in
+  `GATE_HUB_INTERACT_EF_VERDICT_2026-07-10.md`. Do not restate it here; cite it.
+- **Provenance:** split from the original hybrid gate on 2026-07-10 under the write-once
+  clarification. This file is the un-run half.
 
-## The fix
-Hub menu reach now measures to the model's world **bounding box** (`ModelRenderer.Bounds`,
-`BBox.ClosestPoint`), not the pivot. The old fixed 1.5 m vertical slack was measured from the
-pivot; a ground-aligned hub puts its pivot at z≈0, so a standing player (~1.63 m eye) failed the
-vertical check and Hands+E opened nothing — while the Build tool (which bypasses this gate)
-worked. All three hub gate call sites (`CanPressHubMenu`, `IsCallerAllowedHub` ×2) now route
-through `IsHubTargetInOpenRange`, which resolves the hub's renderer bounds (pivot fallback if no
-renderer).
+**Fix APPLIED (uncommitted). a–d need you at the keyboard in a game scene with a pawn. Nothing
+commits until a–d pass with you driving.** `develop` @ `f1355cf` + working-tree changes to
+`LifePunchMenuInteractRange.cs` + `LifePunchMenuInteractGate.cs`.
 
-## Cases e/f — PROVEN NOW (no live hub needed)
-`LifePunchMenuInteractRange.HubReachProbe()` runs the reach math on synthetic bounds reproducing
-the failing geometry (ground hub, pivot z=0, standing-eye viewer 1u in front). Via the editor
-`code_run_static_method`, FRESH (compile 00:14:35 > write 00:14:29):
+`GATE HEADER: SCENE: game/map (NOT blank.scene preview) · IDENTITY: one, with a real pawn`
 
-```
-tall-hub  h=80  r=20  oldPivotPass=False newBoundsPass=True effHReach=187u grab=150u exceedsGrab=True
-short-hub h=40  r=16  oldPivotPass=False newBoundsPass=True effHReach=183u grab=150u exceedsGrab=True
-big-hub   h=160 r=48  oldPivotPass=False newBoundsPass=True effHReach=215u grab=150u exceedsGrab=True
-```
-- **e (scales with model):** effective horizontal reach grows with model radius (187 → 183 → 215u);
-  the vertical span the player can stand within is the model's own height, not a constant.
-- **f (exceeds grab):** effHReach > 150u (DXRP `Config.Current.Game.ReachDistance`) at every size.
-- **the bug, reproduced:** `oldPivotPass=False` everywhere — the old pivot check denied a standing
-  viewer at handling range across all sizes. `newBoundsPass=True` everywhere — the fix.
+---
 
-## Cases a–d — YOU DRIVE (game scene with a real pawn, not blank.scene preview)
+## Preconditions
 
-Preconditions: a game/map scene, your pawn spawned, a Bitcoin Hub placed and powered
-(`lp_bitcoin_spawn_hub` needs a local viewer — hence a pawn scene, not the editor preview).
+A game/map scene, your pawn spawned, a Bitcoin Hub placed and powered (`lp_bitcoin_spawn_hub`
+needs a local viewer — hence a pawn scene, not the editor preview).
+
+## Cases a–d — YOU DRIVE
 
 **a. Hands+E opens the Hub menu** — the symptom.
   1. Equip Hands. Stand at normal facing distance (where you'd read the hub), NOT nose-to-glass.
@@ -54,12 +41,18 @@ Preconditions: a game/map scene, your pawn spawned, a Bitcoin Hub placed and pow
      that's a separate regression in the hub's pocket-exclusion tags — flag it; the reach fix
      doesn't touch pocketing, but d is on the acceptance list so we verify it here.)
 
-Report a–d pass/fail. On all-pass I sync via the script (standing gate), commit
-`fix(lpbitcoin): hub menu reach scales with model bounds`, and PR. Nothing commits before that.
+## On all-pass
+
+Report a–d pass/fail. On all-pass Red syncs via the script (standing gate), commits
+`fix(lpbitcoin): hub menu reach scales with model bounds`, and PRs. **Nothing commits before that.**
+
+When the a–d verdict lands, this instrument and its result freeze together as one record — a
+re-run needs a new gate script citing this one.
 
 ## Sensor honesty
-e/f are proven on synthetic bounds — the reach MATH is what the fix changes, and the probe drives
-it directly, so this is a real sensor on the thing under test, not a proxy. a–d are the live
-interaction proof that only a human at the keyboard can drive (aim/use/grab/pocket); `simulate_input`
-drives named actions, not "aim at entity X and use." The bridge addon republish (1.20.0 → 2.0.0)
-can ride this same sitting.
+
+a–d are the live interaction proof that only a human at the keyboard can drive (aim/use/grab/
+pocket); `simulate_input` drives named actions, not "aim at entity X and use." That is why this
+half could never be closed from Red's side, and why it is still an instrument.
+
+The bridge addon republish (1.20.0 → 2.0.0) can ride this same sitting.

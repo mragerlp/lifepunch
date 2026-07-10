@@ -145,6 +145,21 @@ Worked examples (each named the technique):
   them on ITS node before reading a byte — refusing by name, never substituting.
   Prose in `contextNotes` is a human record; only a machine-checked field is a sensor.
 
+- **Anchor the pattern to STRUCTURE, never to a word** — *a sensor that reports what it did not
+  measure is a broken sensor, even when its conclusion happens to be right.* Two cases, one
+  session, identical shape: an over-permissive regex matched **prose** where it should have
+  matched **structure**.
+  - An attribution audit for AI trailers matched the literal string `CLAUDE.md` — a *filename*,
+    not a trailer. It should have anchored to a trailer's line-start (`^Co-Authored-By:`).
+  - A verdict detector meant to prove a gate script was unexecuted matched the prose *"proven to
+    be needed"* — an *English phrase*, not a measured value. It should have anchored to the shape
+    of a measurement (`oldPivotPass=`, a `key=value` pair, a line-start `verdict:`).
+
+  Both patterns were unanchored and case-insensitive, so both matched sentences. **Neither reached
+  a conclusion, because the result was verified before it was acted on** — the discipline held; the
+  sensor did not. That is the point: a sensor you have to double-check by hand is not yet a sensor.
+  Anchor to the structure you are detecting.
+
   Two riders the gate pinned:
   - `.gitignore` patterns are **anchored to the exact name**: `/lifepunchdxrp/`
     ignores that directory and nothing else, so a clone-swap that leaves a
