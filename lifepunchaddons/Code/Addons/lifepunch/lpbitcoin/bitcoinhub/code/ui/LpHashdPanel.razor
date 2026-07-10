@@ -248,7 +248,7 @@
 													</div>
 													<div class="overview-snapshot-card">
 														<div class="overview-snapshot-label">Linked racks</div>
-														<div class="overview-snapshot-value">@linkedRackCount / @LpBitcoinIdent.PortalMaxRacksPerHub</div>
+														<div class="overview-snapshot-value">@($"{linkedRackCount} / {LpBitcoinIdent.PortalMaxRacksPerHub}")</div>
 														<div class="overview-snapshot-sub">Standard x2 + Advanced x1 max</div>
 													</div>
 													<div class="overview-snapshot-card">
@@ -286,7 +286,7 @@
 									var serverDetail = GetServerDetailSlot();
 									<div class="pane racks">
 										<div class="lp-ui-panel racks-panel">
-										@if ( _hubDetailOpen )
+										@if ( _serversView == ServersView.HubDetail )
 										{
 											<div class="upgrades-toolbar">
 												<button class="lp-ui-btn-ghost upgrades-back-btn" onclick="@BackToServersHome">
@@ -305,11 +305,11 @@
 														<div class="entity-chip-row">
 															<span class="entity-chip @( Hub?.IsPowered == true ? "gold" : "red" )">@( Hub?.IsPowered == true ? "POWERED" : "OFF" )</span>
 															<span class="entity-chip @( Hub.IsValid() && Hub.Owner != 0 ? "green" : "red" )">@( Hub.IsValid() && Hub.Owner != 0 ? "CLAIMED" : "UNCLAIMED" )</span>
-															<span class="entity-chip @HubRacksChipState()">@HubRackCount()/@LpBitcoinIdent.PortalMaxRacksPerHub RACKS</span>
+															<span class="entity-chip @HubRacksChipState()">@HubRacksChipLabel()</span>
 														</div>
 														<div class="server-stat-plate">
-															<div class="server-stat-row"><span class="server-stat-label">Wallet</span><span class="server-stat-value"><span class="lp-money-btc">₿ @( ( Hub?.HubWalletBtc ?? 0f ).ToString( "0.########" ) )</span></span></div>
-															<div class="server-stat-row"><span class="server-stat-label">Racks</span><span class="server-stat-value">@HubRackCount() / @LpBitcoinIdent.PortalMaxRacksPerHub linked</span></div>
+															<div class="server-stat-row"><span class="server-stat-label">Wallet</span><span class="server-stat-value"><span class="lp-money-btc">@HubWalletVital()</span></span></div>
+															<div class="server-stat-row"><span class="server-stat-label">Racks</span><span class="server-stat-value">@HubRacksLinkedVital()</span></div>
 															<div class="server-stat-row"><span class="server-stat-label">Power</span><span class="server-stat-value">@( Hub?.IsPowered == true ? "Online" : "Offline" )</span></div>
 														</div>
 														@{ var hubTracks = HubUpgradeTracks.Append( HubSoundPackCosmetic ).ToList(); }
@@ -345,29 +345,87 @@
 												</div>
 											</div>
 										}
-										else if ( serverDetail is null )
+										else if ( _serversView == ServersView.TerminalDetail )
 										{
-											<div class="lp-ui-panel-title">
-												<i class="material-icons">dns</i>
-												<span>Servers</span>
+											@* Terminal tenant #2 — its OWN adapter. It never borrows the Hub's page:
+											   own chips, own vitals, own tracks. All-PLANNED is a true state. *@
+											<div class="upgrades-toolbar">
+												<button class="lp-ui-btn-ghost upgrades-back-btn" onclick="@BackToServersHome">
+													<i class="material-icons">arrow_back</i>
+													<span>Servers</span>
+												</button>
+												<button class="entity-detail-ident">
+													<i class="material-icons">dvr</i>
+													<span class="entity-detail-title">Terminal</span>
+													<span class="entity-detail-token">terminal</span>
+												</button>
+											</div>
+											<div class="racks-scroll">
+												<div class="rack-grid">
+													<div class="rack-card entity-detail">
+														<div class="entity-chip-row">
+															<span class="entity-chip @( HasLinkedTerminal() ? "green" : "red" )">@( HasLinkedTerminal() ? "LINKED" : "UNLINKED" )</span>
+															<span class="entity-chip @( TerminalOnline() ? "gold" : "red" )">@( TerminalOnline() ? "ONLINE" : "OFFLINE" )</span>
+															<span class="entity-chip @( TerminalSecured() ? "green" : "red" )">@( TerminalSecured() ? "SECURED" : "OPEN" )</span>
+														</div>
+														<div class="server-stat-plate">
+															<div class="server-stat-row"><span class="server-stat-label">Link</span><span class="server-stat-value">@TerminalLinkVital()</span></div>
+															<div class="server-stat-row"><span class="server-stat-label">Access</span><span class="server-stat-value">@TerminalAccessVital()</span></div>
+															<div class="server-stat-row"><span class="server-stat-label">Power</span><span class="server-stat-value">@TerminalPowerVital()</span></div>
+														</div>
+														@{ var terminalTracks = TerminalUpgradeTracks.Append( TerminalSkinCosmetic ).ToList(); }
+														<div class="entity-tier-progress transact">
+															@foreach ( var track in terminalTracks )
+															{
+																var cosmetic = track.Name == TerminalSkinCosmetic.Name;
+																<div class="entity-track-row planned">
+																	<div class="entity-track-lead">
+																		<i class="material-icons unlit">@track.Icon</i>
+																		<div class="entity-track-copy">
+																			<span class="entity-track-name">@track.Name</span>
+																			<span class="entity-track-why">@TrackWhyLine( track.Name )</span>
+																		</div>
+																	</div>
+																	<div class="lp-stepper centered">
+																		@for ( int _tier = 1; _tier <= 5; _tier++ )
+																		{
+																			if ( _tier > 1 )
+																			{
+																				<div class="lp-stepper-link dark"></div>
+																			}
+																			<div class="lp-stepper-cell @( _tier == 5 ? "locked max" : "locked" )" tooltip="@( cosmetic ? $"{track.Name} — cosmetic, NOT ENABLED" : $"{track.Name} — PLANNED, no effects yet" )">
+																				<span>@TierRoman( _tier )</span>
+																			</div>
+																		}
+																	</div>
+																	<span class="entity-track-planned">@( cosmetic ? "NOT ENABLED" : "PLANNED" )</span>
+																</div>
+															}
+														</div>
+													</div>
+												</div>
+											</div>
+										}
+										else if ( _serversView == ServersView.RackChooser )
+										{
+											@* GPU RACKS category → the 3-rack chooser. Row content is preserved
+											   exactly as it stood on the old Servers home. *@
+											<div class="upgrades-toolbar">
+												<button class="lp-ui-btn-ghost upgrades-back-btn" onclick="@BackToServersHome">
+													<i class="material-icons">arrow_back</i>
+													<span>Servers</span>
+												</button>
+												<button class="entity-detail-ident">
+													<i class="material-icons">memory</i>
+													<span class="entity-detail-title">GPU Racks</span>
+													<span class="entity-detail-token">gpuracks</span>
+												</button>
 											</div>
 
-											<div class="lp-ui-intro racks-intro">Pick a server — or the Hub — for status and upgrades.</div>
+											<div class="lp-ui-intro racks-intro">Pick a rack for status and upgrades.</div>
 
 											<div class="racks-scroll">
 												<div class="upgrade-home-grid servers-home-grid">
-													<button class="upgrade-home-box server-home-box hub-card" onclick="@OpenHubDetail">
-														<i class="material-icons upgrade-home-box-icon">dns</i>
-														<div class="upgrade-home-box-body">
-															<span class="upgrade-home-box-title">Bitcoin Hub</span>
-															<span class="upgrade-home-box-sub">@( Hub?.IsPowered == true ? "Powered" : "Off" ) · @HubRackCount()/@LpBitcoinIdent.PortalMaxRacksPerHub racks</span>
-															<span class="upgrade-home-box-desc">Controller &amp; farm operations — upgrades planned.</span>
-														</div>
-														<div class="upgrade-home-box-foot">
-															<span class="upgrade-home-box-meta">hub</span>
-															<i class="material-icons upgrade-home-box-chevron">chevron_right</i>
-														</div>
-													</button>
 													@foreach ( var slot in GetServersRackSlots() )
 													{
 														<button class="upgrade-home-box server-home-box @( slot.Rack.IsValid() ? "" : "empty" )" onclick="@(() => EnterServerDetail( slot ))">
@@ -386,13 +444,13 @@
 												</div>
 											</div>
 										}
-										else
+										else if ( _serversView == ServersView.RackDetail && serverDetail is not null )
 										{
 											var slot = serverDetail.Value;
 											<div class="upgrades-toolbar">
-												<button class="lp-ui-btn-ghost upgrades-back-btn" onclick="@BackToServersHome">
+												<button class="lp-ui-btn-ghost upgrades-back-btn" onclick="@BackToRackChooser">
 													<i class="material-icons">arrow_back</i>
-													<span>Servers</span>
+													<span>GPU Racks</span>
 												</button>
 												@* Header consolidation: title + click-to-copy ident are ONE element
 												   (copy flash, no separate COPY chip). *@
@@ -457,7 +515,7 @@
 																<div class="server-stat-plate">
 																	<div class="server-stat-row">
 																		<span class="server-stat-label">Compute</span>
-																		<span class="server-stat-value">@( slot.Rack.ComputeTier > 0 ? $"TIER {TierRoman( slot.Rack.ComputeTier )}" : "STOCK" ) · @CardGhz( slot.Rack.ComputeTier )</span>
+																		<span class="server-stat-value">@RackComputeVital( slot.Rack )</span>
 																	</div>
 																	<div class="server-stat-row">
 																		<span class="server-stat-label">Rate</span>
@@ -529,7 +587,7 @@
 																							else
 																							{
 																								<div class="lp-stepper-chip-row">
-																									<span class="lp-stepper-chip-line">TIER @TierRoman( slot.Rack.ComputeTier + 1 ) · <span class="lp-money-btc">@CardCostBtc( slot.Rack )</span> <span class="lp-money-parens">(<span class="lp-money-cash">@CardCostUsd( slot.Rack )</span>)</span></span>
+																									<span class="lp-stepper-chip-line"><span>@StepperChipTierLabel( slot.Rack )</span><span class="lp-chip-sep">·</span><span class="lp-money-btc">@CardCostBtc( slot.Rack )</span> <span class="lp-money-parens">(<span class="lp-money-cash">@CardCostUsd( slot.Rack )</span>)</span></span>
 																									<button class="lp-stepper-chip-yes" onclick="@(() => ConfirmPurchase( slot.Rack ))"><i class="material-icons">check</i></button>
 																									<button class="lp-stepper-chip-no" onclick="@DismissConfirm"><i class="material-icons">close</i></button>
 																								</div>
@@ -563,6 +621,67 @@
 																</div>
 															}
 														</div>
+												</div>
+											</div>
+										}
+										else
+										{
+											<div class="lp-ui-panel-title">
+												<i class="material-icons">dns</i>
+												<span>Servers</span>
+											</div>
+
+											<div class="lp-ui-intro racks-intro">Pick a server — or the Hub — for status and upgrades.</div>
+
+											<div class="racks-scroll">
+												<div class="upgrade-home-grid servers-home-grid">
+													<button class="upgrade-home-box server-home-box hub-card" onclick="@OpenHubDetail">
+														<i class="material-icons upgrade-home-box-icon">dns</i>
+														<div class="upgrade-home-box-body">
+															<span class="upgrade-home-box-title">Bitcoin Hub</span>
+															<div class="entity-chip-row">
+																<span class="entity-chip @( Hub?.IsPowered == true ? "gold" : "red" )">@( Hub?.IsPowered == true ? "POWERED" : "OFF" )</span>
+																<span class="entity-chip @HubRacksChipState()">@HubRacksChipLabel()</span>
+															</div>
+															<span class="upgrade-home-box-desc">Controller &amp; farm operations — upgrades planned.</span>
+														</div>
+														<div class="upgrade-home-box-foot">
+															<span class="upgrade-home-box-meta">hub</span>
+															<i class="material-icons upgrade-home-box-chevron">chevron_right</i>
+														</div>
+													</button>
+													<button class="upgrade-home-box server-home-box terminal-card" onclick="@OpenTerminalDetail">
+														<i class="material-icons upgrade-home-box-icon">dvr</i>
+														<div class="upgrade-home-box-body">
+															<span class="upgrade-home-box-title">Terminal</span>
+															<div class="entity-chip-row">
+																<span class="entity-chip @( HasLinkedTerminal() ? "green" : "red" )">@( HasLinkedTerminal() ? "LINKED" : "UNLINKED" )</span>
+																<span class="entity-chip @( TerminalOnline() ? "gold" : "red" )">@( TerminalOnline() ? "ONLINE" : "OFFLINE" )</span>
+															</div>
+															<span class="upgrade-home-box-desc">Command surface &amp; access control — upgrades planned.</span>
+														</div>
+														<div class="upgrade-home-box-foot">
+															<span class="upgrade-home-box-meta">terminal</span>
+															<i class="material-icons upgrade-home-box-chevron">chevron_right</i>
+														</div>
+													</button>
+													<button class="upgrade-home-box server-home-box racks-card" onclick="@OpenRackChooser">
+														<i class="material-icons upgrade-home-box-icon">memory</i>
+														<div class="upgrade-home-box-body">
+															<span class="upgrade-home-box-title">GPU Racks</span>
+															<span class="upgrade-home-box-desc">Mining hardware — pick a rack for status and upgrades.</span>
+														</div>
+														@* Category aggregate: the glance-value the old flat Servers list carried.
+														   Three discrete spans on the standard gap — no separator text nodes. *@
+														<div class="upgrade-home-box-foot">
+															<div class="upgrade-home-box-meta-row">
+																<span class="upgrade-home-box-meta">@RacksCategoryCountMeta()</span>
+																<span class="upgrade-home-box-meta lp-money-btc">@RacksCategoryBufferMeta()</span>
+																<span class="upgrade-home-box-meta">@RacksCategoryMiningMeta()</span>
+															</div>
+															<i class="material-icons upgrade-home-box-chevron">chevron_right</i>
+														</div>
+													</button>
 												</div>
 											</div>
 										}
@@ -886,11 +1005,14 @@
 
 @code
 {
-	private enum OpsTab { Overview, Wallet, Transfers, Racks, Upgrades, Logs, Settings }
+	private enum OpsTab { Overview, Wallet, Transfers, Racks, Logs, Settings }
 	private enum PerfRange { Day, Week, Month }
 	private enum PinGatePurpose { Unlock, ChangePin }
-	private enum UpgradeSurface { Hub, Terminal, GpuRack }
-	private enum UpgradeRackSelector { Rack1, Rack2, Advanced }
+
+	// Servers nav (3.5 restructure): HUB → TERMINAL → GPU RACKS at the index. Hub and Terminal
+	// are single entities and open their own detail in one click; racks are a category, so they
+	// cost two (chooser → detail). One enum, so the views can never overlap or imply precedence.
+	private enum ServersView { Home, HubDetail, TerminalDetail, RackChooser, RackDetail }
 
 	// UI-only shell descriptor (DECISION-0010). No economy/persistence yet — display copy + preview
 	// progression state only. Tiers carries II..V (index 0 = Tier II). Tier I = TierOneLabel baseline.
@@ -951,31 +1073,10 @@
 	private static readonly UpgradeTrackShell RackFanRgbCosmetic =
 		new( "Fan RGB", "palette", "Stock fan lighting", CosmeticTiers( "Amber Glow", "Spectrum Cycle", "Reactive Sync", "Custom Profile" ) );
 
-	// A section groups path tracks under a header (functional tracks vs cosmetics) for the home list.
-	private readonly record struct UpgradeSectionShell( string Title, string Icon, bool Cosmetic, UpgradeTrackShell[] Tracks );
-
-	// Sections for the currently selected surface — drives the path-button list on the Upgrades home.
-	private UpgradeSectionShell[] CurrentUpgradeSections() => _upgradeSurface switch
-	{
-		UpgradeSurface.Hub => new[]
-		{
-			new UpgradeSectionShell( "Controller tracks", "dns", false, HubUpgradeTracks ),
-			new UpgradeSectionShell( "Cosmetics", "palette", true, new[] { HubSoundPackCosmetic } )
-		},
-		UpgradeSurface.Terminal => new[]
-		{
-			new UpgradeSectionShell( "Defense & capabilities", "shield", false, TerminalUpgradeTracks ),
-			new UpgradeSectionShell( "Appearance", "palette", true, new[] { TerminalSkinCosmetic } )
-		},
-		_ => new[]
-		{
-			new UpgradeSectionShell( UpgradeRackSelectorHeadline(), "memory", false, GpuRackUpgradeTracks ),
-			new UpgradeSectionShell( "Cosmetics", "palette", true, new[] { RackFanRgbCosmetic } )
-		}
-	};
-
 	// One-page law (slice 3): the tier-card sub-page is dead — every track is a row; the live
 	// track carries the inline stepper. _openPath / OpenUpgradePath / TierLine* removed.
+	// Section shells died with the Upgrades home (3.5 restructure): each tenant's detail page
+	// renders its own track list directly, so there is nothing left to group.
 
 	private static string TierRoman( int n ) => n switch
 	{
@@ -991,34 +1092,14 @@
 	private string CurrentTierLabel( UpgradeTrackShell track )
 		=> $"Tier I · {track.TierOneLabel}";
 
-	// Overview hub-status column — one line per functional track. Compute is live: shows the
-	// highest owned tier across linked racks; other tracks stay Base until they ship.
-	private string OverviewTrackCurrentTier( UpgradeTrackShell track )
-	{
-		if ( !IsComputeTrack( track ) || !Hub.IsValid() )
-			return "Base";
-
-		var racks = Hub.GetLinkedRacks();
-		var max = 0;
-		foreach ( var r in racks )
-			if ( r.IsValid() && r.ComputeTier > max )
-				max = r.ComputeTier;
-
-		return max == 0 ? "Base" : $"Tier {TierRoman( max )}";
-	}
-
 	// Upgrades tab retired (3.5 consolidation): Servers is the sole upgrade surface.
 	// The enum value survives for the switch arms; nothing routes to it anymore.
 	private static readonly OpsTab[] _tabs = { OpsTab.Overview, OpsTab.Racks, OpsTab.Wallet, OpsTab.Transfers, OpsTab.Logs, OpsTab.Settings };
 	private static readonly PerfRange[] _perfRanges = { PerfRange.Day, PerfRange.Week, PerfRange.Month };
 
 	private OpsTab _active = OpsTab.Overview;
-	private UpgradeSurface _upgradeSurface = UpgradeSurface.Hub;
-	private UpgradeRackSelector _upgradeRackSlot = UpgradeRackSelector.Rack1;
-	private bool _inUpgradeSurface;     // false = Upgrades home (3 surface boxes)
-	private bool _rackTargetSelected;   // GPU only: false = rack target home (3 rack boxes)
-	private string _serverDetailToken;  // null = Servers home grid; token = that slot's drill-in detail
-	private bool _hubDetailOpen;        // hub tenant #0 detail (3.5 consolidation) — takes precedence over the grid
+	private ServersView _serversView = ServersView.Home;
+	private string _serverDetailToken;  // the rack slot behind ServersView.RackDetail
 	private Guid _rackSlotCopyAckId = Guid.Empty;
 	private bool _receiveCopyAck;
 	private bool _sendExampleCopyAck;
@@ -1061,25 +1142,6 @@
 	// open. The popover doubles as the rejection surface — a failure envelope re-renders it
 	// with the reason instead of the YES/NO body.
 	private Guid _confirmRackId = Guid.Empty;
-
-	private static string SelectorToken( UpgradeRackSelector sel ) => sel switch
-	{
-		UpgradeRackSelector.Rack2 => "gpurack-2",
-		UpgradeRackSelector.Advanced => LpBitcoinIdent.AdvancedRackTerminalToken,
-		_ => "gpurack-1",
-	};
-
-	private LpBitcoinRackEntity RackForToken( string token )
-	{
-		if ( !Hub.IsValid() || string.IsNullOrEmpty( token ) )
-			return null;
-
-		var racks = Hub.GetLinkedRacks();
-		return racks.FirstOrDefault( r =>
-			LpBitcoinIdent.FormatRackSlotTerminalToken( r, racks ) == token );
-	}
-
-	private LpBitcoinRackEntity RackForSelector() => RackForToken( SelectorToken( _upgradeRackSlot ) );
 
 	private static bool IsComputeTrack( UpgradeTrackShell track ) => track.Name == "Compute Profile";
 
@@ -1213,6 +1275,20 @@
 	private static string CardGhz( int tier )
 		=> $"{ProjectedClockGhz( tier ):F2} GHz";
 
+	// Separator Law: the "TIER n · GHz" composite is assembled here and interpolated as ONE
+	// node. Written in markup it would put a bare " · " text node between two @-expressions.
+	private static string RackComputeVital( LpBitcoinRackEntity rack )
+	{
+		var tier = rack.ComputeTier;
+		var head = tier > 0 ? $"TIER {TierRoman( tier )}" : "STOCK";
+		return $"{head} · {CardGhz( tier )}";
+	}
+
+	// Confirm chip: the tier half is one node; the money halves keep their own colour spans
+	// (Law 13), so the separator between them is a discrete element, never a bare literal.
+	private static string StepperChipTierLabel( LpBitcoinRackEntity rack )
+		=> $"TIER {TierRoman( rack.ComputeTier + 1 )}";
+
 	// BTC/min at a given tier — while-hashing implicit (delta ruling). Same Apply-math
 	// the host uses, so the gate can assert card values against QuoteSats/reconcile.
 	private static float CardRatePerMin( LpBitcoinRackEntity rack, int tier )
@@ -1276,6 +1352,12 @@
 		"Farm Firmware" => "Farm scale + QoL — gates how many racks a hub addresses.",
 		"Trust Policy" => "Access control — co-owners, whitelist, guest windows.",
 		"Sound Pack" => "Cosmetic audio — no performance change.",
+		"Endpoint Firewall" => "Attack odds — your firewall tier contests the attacker's gear.",
+		"Command Authentication" => "Loot limit — a cracked terminal still can't cash out or unlink.",
+		"Intrusion Detection" => "Evidence — silent theft becomes a BREACH alert and a traced attacker.",
+		"Audit Retention" => "History — logs survive the restart a hacker triggers to cover tracks.",
+		"Monitoring Suite" => "Visibility — higher tiers unlock more rows of this readout.",
+		"HASHD donor skins" => "Cosmetic re-skins — no performance change.",
 		_ => "",
 	};
 
@@ -1401,7 +1483,6 @@
 	/// <summary>Dev preview — Servers is the upgrade surface now; drill into the first linked rack.</summary>
 	public void DevOpenUpgradesForFirstLinkedRack()
 	{
-		_hubDetailOpen = false;
 		SelectTab( OpsTab.Racks );
 		var slots = GetServersRackSlots().Where( s => s.Rack.IsValid() ).ToList();
 		if ( slots.Count > 0 )
@@ -1459,31 +1540,44 @@
 			EnterServerDetail( slots[0] );
 	}
 
-	/// <summary>Dev preview — Servers home (the sole upgrade surface post-consolidation).</summary>
+	/// <summary>Dev preview — Servers home (HUB / TERMINAL / GPU RACKS).</summary>
 	public void DevOpenUpgradesHome()
 	{
-		_hubDetailOpen = false;
-		_serverDetailToken = null;
 		SelectTab( OpsTab.Racks );
+		BackToServersHome();
 	}
 
-	/// <summary>Dev sweep — hub opens its detail (tenant #0); anything else lands on Servers home.</summary>
+	/// <summary>Dev sweep — hub and terminal open their own detail; gpurack lands on the chooser.</summary>
 	public void DevEnterUpgradeSurface( string surface )
 	{
 		SelectTab( OpsTab.Racks );
-		if ( surface?.ToLowerInvariant() == "hub" )
-			OpenHubDetail();
-		else
+		switch ( surface?.ToLowerInvariant() )
 		{
-			_hubDetailOpen = false;
-			_serverDetailToken = null;
+			case "hub": OpenHubDetail(); break;
+			case "terminal": OpenTerminalDetail(); break;
+			case "gpurack": case "gpuracks": OpenRackChooser(); break;
+			default: BackToServersHome(); break;
 		}
+	}
+
+	/// <summary>Dev proof — which Servers view is on screen (Home/HubDetail/TerminalDetail/RackChooser/RackDetail).</summary>
+	public string DevServersViewProbe()
+		=> $"{_serversView}:{_serverDetailToken ?? "-"}";
+
+	/// <summary>Dev proof — open the row-anchored confirm chip on a rack's live Compute track.</summary>
+	public void DevOpenConfirmChip( string slot )
+	{
+		DevEnterUpgradeRackSlot( slot );
+		var target = GetServerDetailSlot();
+		if ( target is null || !target.Value.Rack.IsValid() )
+			return;
+
+		ToggleConfirm( target.Value.Rack, target.Value.Rack.ComputeTier + 1 );
 	}
 
 	/// <summary>Dev sweep — drill into a rack's detail (the upgrade surface): Rack1, Rack2, or Advanced.</summary>
 	public void DevEnterUpgradeRackSlot( string slot )
 	{
-		_hubDetailOpen = false;
 		SelectTab( OpsTab.Racks );
 		var want = slot?.ToLowerInvariant() switch
 		{
@@ -1712,26 +1806,52 @@
 		return null;
 	}
 
+	private void GoToServersView( ServersView view )
+	{
+		_serversView = view;
+		LifePunchUiScrollPolicy.ResetOffsets( Panel );
+	}
+
 	private void EnterServerDetail( OverviewMinerSlot slot )
 	{
 		_serverDetailToken = slot.TerminalToken;
-		LifePunchUiScrollPolicy.ResetOffsets( Panel );
+		GoToServersView( ServersView.RackDetail );
 	}
 
 	private void BackToServersHome()
 	{
 		_serverDetailToken = null;
-		_hubDetailOpen = false;
-		LifePunchUiScrollPolicy.ResetOffsets( Panel );
+		GoToServersView( ServersView.Home );
+	}
+
+	// Racks are two clicks by design: the detail returns to the chooser, not the index.
+	private void BackToRackChooser()
+	{
+		_serverDetailToken = null;
+		GoToServersView( ServersView.RackChooser );
 	}
 
 	// Hub tenant #0 (3.5 consolidation) — the hub gets the same detail component,
 	// fed by this adapter. No live tracks yet; its TIER PROGRESS is all-PLANNED.
 	private void OpenHubDetail()
 	{
-		_hubDetailOpen = true;
 		_serverDetailToken = null;
-		LifePunchUiScrollPolicy.ResetOffsets( Panel );
+		GoToServersView( ServersView.HubDetail );
+	}
+
+	// Terminal tenant #2 (3.5 restructure) — same component, its own adapter. It appears
+	// here and only here, and never borrows the Hub's page.
+	private void OpenTerminalDetail()
+	{
+		_serverDetailToken = null;
+		GoToServersView( ServersView.TerminalDetail );
+	}
+
+	// GPU RACKS is a category, not an entity — one click reaches the chooser, not a detail.
+	private void OpenRackChooser()
+	{
+		_serverDetailToken = null;
+		GoToServersView( ServersView.RackChooser );
 	}
 
 	private int HubRackCount() => Hub.IsValid() ? Hub.GetLinkedRacks().Count( r => r.IsValid() ) : 0;
@@ -1741,6 +1861,48 @@
 		var n = HubRackCount();
 		return n == 0 ? "red" : ( n >= LpBitcoinIdent.PortalMaxRacksPerHub ? "green" : "gold" );
 	}
+
+	// Composite strings are built here, never spliced in markup: a literal separator sitting
+	// between two @-expressions becomes its own text node and collapses, which is what
+	// rendered "·POWERED0/3 RACKS". One expression per element = one text node.
+	private string HubRacksChipLabel() => $"{HubRackCount()}/{LpBitcoinIdent.PortalMaxRacksPerHub} RACKS";
+
+	private string HubRacksLinkedVital() => $"{HubRackCount()} / {LpBitcoinIdent.PortalMaxRacksPerHub} linked";
+
+	private string HubWalletVital() => $"₿ {( Hub?.HubWalletBtc ?? 0f ).ToString( "0.########" )}";
+
+	// ── Terminal tenant adapter ──────────────────────────────────────────────────
+	// Every claim reads off live entity state, so it holds on any map.
+	private bool TerminalOnline() => HasLinkedTerminal() && Hub?.IsPowered == true;
+
+	private bool TerminalSecured() => Hub?.AccessPinIsSet == true;
+
+	private string TerminalLinkVital() => HasLinkedTerminal() ? "Linked to hub" : "Not linked";
+
+	private string TerminalAccessVital() => TerminalSecured() ? "PIN set" : "No PIN";
+
+	private string TerminalPowerVital() => TerminalOnline() ? "Online" : "Offline";
+
+	// ── GPU RACKS category aggregate ─────────────────────────────────────────────
+	// The glance-value the old flat Servers list carried, summed. Sourced from the SAME fixed
+	// slots the chooser renders — never from GetLinkedRacks(). A hub can hold linked racks that
+	// no slot addresses (three advanced racks collapse onto one Advanced slot), and a category
+	// card must never claim hardware the page behind it cannot show.
+	private List<OverviewMinerSlot> ServersRacksWithHardware()
+		=> GetServersRackSlots().Where( s => s.Rack.IsValid() ).ToList();
+
+	private string RacksCategoryCountMeta()
+		=> $"{ServersRacksWithHardware().Count}/{LpBitcoinIdent.PortalMaxRacksPerHub} RACKS";
+
+	// Buffer = the racks' undeposited BTC, summed over the addressable slots, at sat resolution.
+	private string RacksCategoryBufferMeta()
+	{
+		var sats = ServersRacksWithHardware().Sum( s => s.Rack.BitcoinAmount );
+		return $"₿ {sats.ToString( "0.########" )}";
+	}
+
+	private string RacksCategoryMiningMeta()
+		=> $"{ServersRacksWithHardware().Count( s => s.Rack.IsMining )} MINING";
 
 	private static string ServerSlotIcon( OverviewMinerSlot slot )
 		=> slot.TerminalToken == LpBitcoinIdent.AdvancedRackTerminalToken ? "developer_board" : "memory";
@@ -1886,7 +2048,6 @@
 		OpsTab.Wallet => "account_balance_wallet",
 		OpsTab.Transfers => "swap_horiz",
 		OpsTab.Racks => "dns",
-		OpsTab.Upgrades => "upgrade",
 		OpsTab.Logs => "notifications",
 		OpsTab.Settings => "settings",
 		_ => "home"
@@ -1898,7 +2059,6 @@
 		OpsTab.Wallet => "Wallet",
 		OpsTab.Transfers => "Transfers",
 		OpsTab.Racks => "Manage racks",
-		OpsTab.Upgrades => "Upgrades",
 		OpsTab.Logs => "Logs / Alerts",
 		OpsTab.Settings => "Settings",
 		_ => "Dashboard"
@@ -1917,89 +2077,15 @@
 
 	private void SelectTab( OpsTab tab )
 	{
-		if ( tab == OpsTab.Upgrades )
-		{
-			// Always enter the universal Upgrades at the 3-box home (one decision per screen).
-			_inUpgradeSurface = false;
-			_rackTargetSelected = false;
-			}
-
-		// Servers always opens at its home grid (one decision per screen).
+		// Servers always opens at its home index (one decision per screen).
 		_serverDetailToken = null;
+		_serversView = ServersView.Home;
 
 		_active = tab;
 		LifePunchUiScrollPolicy.ResetOffsets( Panel );
 	}
 
 	private bool IsSidebarTabActive( OpsTab tab ) => _active == tab;
-
-	// Upgrades home → surface submenu. GPU enters its rack target home first (rack not yet chosen).
-	private void EnterUpgradeSurface( UpgradeSurface surface )
-	{
-		_upgradeSurface = surface;
-		_inUpgradeSurface = true;
-		_rackTargetSelected = false;
-		LifePunchUiScrollPolicy.ResetOffsets( Panel );
-	}
-
-	private void BackToUpgradesHome()
-	{
-		_inUpgradeSurface = false;
-		_rackTargetSelected = false;
-		LifePunchUiScrollPolicy.ResetOffsets( Panel );
-	}
-
-	// GPU rack target home → that rack's hardware paths.
-	private void EnterRackTarget( UpgradeRackSelector slot )
-	{
-		_upgradeRackSlot = slot;
-		_rackTargetSelected = true;
-		LifePunchUiScrollPolicy.ResetOffsets( Panel );
-	}
-
-	// Server-detail deep link: Upgrades pre-selected on this rack's track.
-	// Deep-link redirect (3.5): the rack's detail page IS the upgrade surface now.
-	private void OpenUpgradesForRackSlot( OverviewMinerSlot slot )
-	{
-		_hubDetailOpen = false;
-		SelectTab( OpsTab.Racks );
-		EnterServerDetail( slot );
-	}
-
-	private static UpgradeRackSelector RackSelectorForSlot( OverviewMinerSlot slot )
-	{
-		if ( slot.TerminalToken == LpBitcoinIdent.AdvancedRackTerminalToken )
-			return UpgradeRackSelector.Advanced;
-
-		return slot.TerminalToken == "gpurack-2" ? UpgradeRackSelector.Rack2 : UpgradeRackSelector.Rack1;
-	}
-
-	private void BackToRackTargets()
-	{
-		_rackTargetSelected = false;
-		LifePunchUiScrollPolicy.ResetOffsets( Panel );
-	}
-
-	// Path-list back target: GPU returns to the rack target home; Hub/Terminal to the Upgrades home.
-	private void BackFromPathList()
-	{
-		CloseTransact();
-		if ( _upgradeSurface == UpgradeSurface.GpuRack )
-			BackToRackTargets();
-		else
-			BackToUpgradesHome();
-	}
-
-	private string PathListBackLabel()
-		=> _upgradeSurface == UpgradeSurface.GpuRack ? "GPU Rack targets" : "Upgrades Home";
-
-	private string UpgradeRackSelectorHeadline() => _upgradeRackSlot switch
-	{
-		UpgradeRackSelector.Rack1 => "Rack 1 hardware tracks",
-		UpgradeRackSelector.Rack2 => "Rack 2 hardware tracks",
-		UpgradeRackSelector.Advanced => "Advanced rack hardware tracks",
-		_ => "Hardware tracks"
-	};
 
 	private long ReceiveSteamId()
 	{
@@ -2835,6 +2921,10 @@
 			hash.Add( rack.AdvancedRack );
 			hash.Add( rack.IsMining );
 			hash.Add( rack.ComputeTier );
+			// Buffer BTC at sat resolution — the GPU RACKS aggregate quotes this to the sat,
+			// so it has to move the hash or the card renders stale. Recompute is already
+			// throttled to TelemetryRefreshInterval, so this costs at most one redraw per 0.5s.
+			hash.Add( (long)( rack.BitcoinAmount * 100_000_000f ) );
 		}
 
 		if ( Hub.IsValid() )
@@ -2851,12 +2941,8 @@
 		// Do not hash TextEntry bind values (_cashOutAmount).
 		var hash = new HashCode();
 		hash.Add( _active );
-		hash.Add( (int)_upgradeSurface );
-		hash.Add( (int)_upgradeRackSlot );
-		hash.Add( _inUpgradeSurface );
-		hash.Add( _rackTargetSelected );
+		hash.Add( (int)_serversView );
 		hash.Add( _serverDetailToken ?? string.Empty );
-		hash.Add( _hubDetailOpen );
 		hash.Add( HubRackCount() );
 		hash.Add( _confirmRackId );
 		hash.Add( _transactTrackName ?? string.Empty );
