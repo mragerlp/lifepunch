@@ -1,10 +1,18 @@
-# Agent grounding index — Red · Cornerman · Mac (Cursor + Copilot)
+# Agent grounding index — Red · Cornerman · Mac
 
-> **July 2026.** Paste **one file** at session start for your machine + IDE.
-> **New chat (branch + sync first):** `handoff/NEW_CHAT_BRANCH_LAW_PASTE.txt`
-> **First-time / full grounding:** `lifepunch/docs/CVL_AGENT_ONBOARDING.md`
-> Canon workflow: `lifepunch/docs/GREEN_EXECUTION_MODEL.md` · `MACHINE_CAST.md` · `BRANCH_MODEL.md`
-> Branches: **`develop`** = test (Red daily) · **`main`** = truth (Cornerman distill)
+> **Doctrine 2026-07-09 (`CLAUDE.md`).** **Claude Code** grounds by READING files from the repo, in order:
+> `CLAUDE.md` → `lifepunch/docs/START_HERE_AGENTS.md` → `lifepunch/docs/CVL_AGENT_ONBOARDING.md` → the
+> active handoff brief. It does **not** rely on pasting — long pastes are a known hazard (Transport Law).
+>
+> **Handoff-file pattern (replaces paste-based handoffs):** briefs live as write-once repo files at
+> `lifepunch/docs/handoff/CLAUDE_CODE_BRIEF_<TASK>_<DATE>.md`. Claude Code receives only a short paste
+> pointing at the file, then reports branch · HEAD · clean/dirty · intended files · forbidden files and
+> waits for GO. Screenshots and attachments remain valid transport.
+>
+> Canon workflow: `CLAUDE.md` · `GREEN_EXECUTION_MODEL.md` · `MACHINE_CAST.md` · `BRANCH_MODEL.md`.
+> Branches: **`develop`** = test (Red daily) · **`main`** = truth (Cornerman distill).
+>
+> *The Cursor/Copilot paste table below is LEGACY — secondary IDEs, on request only. Kept for reference.*
 
 ---
 

@@ -5,6 +5,11 @@ alwaysApply: true
 
 # LifePunch — Agent Session Discipline
 
+> **Doctrine 2026-07-09:** Cursor is a **secondary** surface — an optional outside second opinion on
+> request only. The **primary** path is **Claude Code**, grounded on **`CLAUDE.md`** at the repo root
+> (`PLAN IN CHAT · BUILD IN CODE · REVIEW WITH CODEX · SHIP ONLY WITH BLOODWAVE GO`). When a Cursor session
+> runs, ground from `.cursor/rules` → `CLAUDE.md` → the same chain as Claude Code.
+
 Complements `lifepunch-operating-context.mdc`, `lifepunch-sbox-mcp-stack.mdc`, and
 `lifepunch-active-workstream-gate.mdc`. Encodes recurring owner corrections so agents
 do not re-derive them from long chats.

@@ -1,13 +1,15 @@
 # CVL AGENT ONBOARDING — the one paste (LIFEPUNCH™ × DXRP)
 
-> **THE single grounding document.** Paste this whole file into any fresh **ChatGPT**, **Cursor**, or
-> **GitHub Copilot** session on **any** machine (Vengeance / Cornerman / Mac). When you finish reading it
-> you are grounded on: who we are, the history, the two work lanes, the hardware, the AI/MCP/LLM stacks,
-> the workflow ("the orchestra"), the laws, and the current state.
+> **THE single grounding document.** Claude Code READS this file from the repo (grounding order:
+> `CLAUDE.md` → `START_HERE_AGENTS.md` → this file → the active handoff brief). Per the Transport Law
+> (2026-07-09, `CLAUDE.md`), do NOT rely on pasting long files between Chat and Code — long pastes are a
+> known hazard; briefs travel as repo-tracked files. When you finish reading you are grounded on: who we
+> are, the history, the two work lanes, the hardware, the AI/MCP/LLM stacks, the workflow, the laws, and
+> the current state.
 >
-> **This file is canonical in `lifepunch/docs/CVL_AGENT_ONBOARDING.md` and mirrored on the Vengeance
-> desktop (`CVL_AGENT_ONBOARDING.txt`).** If it ever disagrees with the always-on `.cursor/rules`, the
-> **rules win** — then update this file in the GitHub monorepo (never patch only a clone).
+> **This file is canonical in `lifepunch/docs/CVL_AGENT_ONBOARDING.md`.** `CLAUDE.md` at the repo root is
+> Claude Code's first grounding read and the authoritative doctrine; if this file ever disagrees with
+> `CLAUDE.md`, **`CLAUDE.md` wins** — then update this file in the GitHub monorepo (never patch only a clone).
 >
 > **Owner:** Bloodwave (legal author **mrragerlp** · mrragerlp@lifepunch.co; git commits **mragerlp**).
 > **Repo:** `github.com/mragerlp/lifepunch`. **Updated:** July 2026.
@@ -21,12 +23,13 @@
 ## 0. IF YOU READ NOTHING ELSE (10-line boot)
 
 1. **`git pull --rebase`** on **`develop`** (Red/Mac WIP) or **`main`** (Cornerman distill) **before** doing anything.
-2. **Name your node** (Red / Green / Blue / Architect) and **your IDE** (Cursor / Copilot / ChatGPT).
-   **CVL** = Cornerman · Vengeance · lifepunchnet (Green · Red · Blue). Architect (Mac) is outside CVL.
+2. **Name your node** (Red / Green / Blue / Architect) and **your surface** (Claude Code = primary build ·
+   Claude Chat = plan · Codex = review). **CVL** = Cornerman · Vengeance · lifepunchnet (Green · Red · Blue).
+   Architect (Mac) is outside CVL.
 3. **Pick your LANE — this is the most important decision:**
    **LIFEPUNCH proprietary** (`mragerlp/lifepunch`) **OR DXRP official** (`mragerlp/dxrp-public` → `dxura/dxrp`). They have **different repos, headers, and rules. Never mix them.**
 4. **Read your lane's MANDATORY READS (§12). You are not grounded until you do. Do not skip the repo.**
-5. **Route by stakes (§7):** Opus = hard/architecture/economy/security · Grok = planning/audits · Composer/Auto = routine · Cornerman = distill/candidates. Honor route tags; never silently substitute.
+5. **Route by layer (§7, per `CLAUDE.md`):** Plan in Chat (Fable → Opus → Sonnet) · Build in Claude Code (Opus) · Review with Codex · Cornerman distills and feeds planning. Grok/Cursor are outside the loop, on request only.
 6. **Editor truth lives on Vengeance (Red)** — all 3 s&box MCPs bind there. Cornerman reaches them over the bridge. **Runtime proof before "done";** use flatgrass / `lp_map_flatgrass` when appropriate as the low-demand proof map (Red Host Play) — not a universal requirement for every change.
 7. **Never commit unprompted.** Propose scope → wait for Bloodwave **GO** → commit as `mragerlp <mragerlp@gmail.com>` with **no AI trailers**.
 8. **Eyes-covered law:** no visual/playtest claim without an `sbox` bridge screenshot from Red.
@@ -142,56 +145,61 @@ planner on Mac · Blue = hosted venue (our servers). Full detail: **`MACHINE_CAS
 |------|------|---------------|-------------|
 | **Bloodwave** | Owner (Red desk) | *"Is this what the player needs to see?"* — ideas, QA, GitHub issues, final GO | Final authority |
 | **Design Architect** | **ChatGPT** — Mac (primary) · Red (at desk) | *"Does this make the game better?"* | **No** — CURSOR BRIEFs + design docs |
-| **Integration Architect** | **Cursor / Copilot** — Red (push) · Cornerman (execute) · Mac (comms) | *"Does this match repo law and ship criteria?"* | **Yes** (owner GO; Cornerman via patch-handoff) |
+| **Integration Architect** | **Claude Code (Opus)** — Red (build + push-prep) · Codex (diff review) · Cornerman (distill only) | *"Does this match repo law and ship criteria?"* | **Yes** (owner GO; Codex reviews the diff) |
 | **Distillation Architect** | **Cornerman LM** (Tier-3, Green) | *"Can this be distilled cheaper for Red?"* | No — outbox candidates only |
 | **Operations Architect** | **RDP agent** on lifepunchnet (Blue) | *"Does hosted ops match Bloodwave intent?"* | Ops scripts under owner authority |
 
-**Opus is not a role — it is a Tier-1 model** the Integration Architect uses for hard slices. **Grok Build 1
-is not a role — it is a Tier-2A model** for planning. Canon: **`ARCHITECT.md`**, **`MACHINE_CAST.md`**.
+**Opus is the primary Claude Code implementer** (2026-07-09 doctrine, `CLAUDE.md`); Codex reviews the diff.
+Grok/Cursor are retired to optional outside second opinion, on request only. Canon: **`CLAUDE.md`**,
+**`ARCHITECT.md`**, **`MACHINE_CAST.md`**.
 
 ---
 
 ## 6. The AI / IDE stack — who does what (and why)
 
-| Tool | Best at | Use it for |
-|------|---------|-----------|
-| **ChatGPT (Design Architect)** | Ideation, game-feel, taxonomy | Step-1 **CURSOR BRIEFs**, design docs, Architect Review. **No git, no repo edits.** |
-| **GitHub Copilot (VS Code)** | **In-editor writing + s&box MCP bridges + Opus with "eyes."** Same IDE Dimmer uses for DXRP. | Primary in-editor implementation, editor tool use, DXRP-official work, heavy Opus slices with editor context. |
-| **Cursor** | AI instruction/orchestration, MCP plumbing, flatgrass proof, commits | Orchestrating the plan, running MCP/flatgrass proof, plumbing, applying candidates, committing when Copilot hands off. Also hosts **Grok** (planning) and **Opus** (hard). |
+> **Doctrine 2026-07-09 (see `CLAUDE.md`):** `PLAN IN CHAT · BUILD IN CODE · REVIEW WITH CODEX · SHIP ONLY WITH BLOODWAVE GO`. Claude Code (Opus) is the primary implementation and editor surface.
 
-**Rule of thumb:** ChatGPT dreams it → Cursor plans/instructs it → Copilot builds it in-editor → Red proves
-it → Bloodwave approves it. Disable **Cursor Tab** when VS Code/Copilot is open on the same repo. Dual-IDE
-law: **`DUAL_IDE_CURSOR_VSCODE.md`**.
+| Layer | Tool | Use it for |
+|------|------|-----------|
+| **Plan** | **Claude Chat** (Fable → Opus → Sonnet) | Scope, edge cases, rulings, STOP-GO, handoff briefs. No repo edits unless asked. |
+| **Build** | **Claude Code (Opus)** — primary | Repo edits, tests, s&box editor work, Sensor-Law gates, diff + proof. Commits only after a passing gate + Bloodwave GO. |
+| **Review** | **Codex** | Reviews the diff post-build, pre-merge: PASS / REVISE / HOLD. Never re-litigates rulings. |
+| **Green** | **Cornerman** (Tier-3, Green) | Distill / prep / audit / draft; feeds the planning layer. Flags, never decides; never ships. |
+
+**Rule of thumb:** Chat plans it → Code builds it → Codex reviews the diff → Red proves it → Bloodwave
+approves it. **Grok / Cursor are retired from the standard loop** — an optional outside second opinion on
+request only, originating no deliverables (legacy dual-IDE detail: `DUAL_IDE_CURSOR_VSCODE.md`, kept for
+reference only).
 
 ---
 
-## 7. The LLM / model-routing stack — route by stakes, not by habit
+## 7. The LLM / model-routing stack — route by layer (supersedes the old tier tables)
 
-We run best-in-class but **every token is real $USD** (Ultra plan, $400 API pool hard-stop). Start low,
-escalate the moment it is genuinely hard; when unsure on a **high-stakes** task, use Opus. Never gamble a
-hard problem on a weak model to save cost.
+We run best-in-class but **every token is real $USD**. The 2026-07-09 doctrine (`CLAUDE.md`) replaces the
+old Tier-1/2A/2B ceiling model with a layer model — plan, build, review, Green:
 
-| Tier | Model | Route tag | Lane |
-|------|-------|-----------|------|
-| **Tier-1** | **Opus** | `OPUS REQUIRED` | Architecture, economy, permissions, persistence, security, multi-file C#, hard runtime debugging, legal/trademark wording |
-| **Tier-2A** | **Grok Build 1** | `GROK REQUIRED` | Repo-grounded **technical planning**, repo audits, ModelDoc/asset maps, bounded implementation slices |
-| **Tier-2B** | **Composer / Auto** | `AUTO OK` | Routine edits, docs, continuity, familiar implementation (~80% of work) |
-| **Tier-3** | **Cornerman** (Qwen via LM Studio) | `GREEN CODE` / `GREEN DEEP` | Green Code (contained code **candidates** — untrusted) · Green Deep (distill/warm) · Green Daily (reports) · Green Fast (triage). **Never final ship authority.** |
+| Layer | Model | Lane |
+|------|-------|------|
+| **Plan** | **Fable** (Chat) → Opus (heavier: architecture, canon, hard bugs) → Sonnet (budget: summaries, cheap docs) | Scope, edge cases, roadmap, briefs, rulings |
+| **Build** | **Opus (Claude Code)** — primary | Repo edits, tests, s&box editor work, hard runtime debugging |
+| **Review** | **Codex** | Diff review only: PASS / REVISE / HOLD |
+| **Green** | **Cornerman** (Qwen Daily via LM Studio) | Distill / prep / audit / draft; feeds planning; never ships |
+| *outside* | *Grok / Cursor* | *optional second opinion, on request only — not in the standard loop* |
 
-**Route tags are law.** Cursor **Auto** is fine for routine work but does **not** prove which model ran —
-honor any explicit route tag; if the required route is not active, switch or **stop and tell Bloodwave** —
-never silently substitute. Auto may **never** substitute for economy, persistence, `[Sync(FromHost)]`,
-RPCs, purchase routing, migration, power/link state machines, or final major-slice review.
+Any task that CAN and SHOULD be done by Claude Code IS done by Claude Code. High-stakes surfaces
+(economy, persistence, `[Sync(FromHost)]`, RPCs, purchase routing, migration, power/link state machines)
+still require a plan first and Bloodwave GO — that discipline is unchanged; only the model names moved.
 
-**Grok Output Law (mandatory for every technical Grok answer):** label claims as
+**Claim-labelling law (applies to any technical answer — Chat, Code, or Green):** label claims as
 `VERIFIED FROM REPO` (file+line) / `INFERRED FROM PATTERNS` / `NEEDS SBOX-EDITOR PROOF` /
-`NEEDS SBOX RUNTIME PROOF` / `OWNER DECISION REQUIRED` / `OUT OF SCOPE`. Escalate Grok→Opus on gameplay
-authority, economy, permissions, security, migration, networked persistence, cross-addon architecture, or
->1 substantial C# subsystem. Canon: **`OPUS_USAGE_LAW.md`**, **`MODEL_ROUTING_AMENDMENT_GROK_BUILD_1.md`**,
-**`MCP_AGENT_ROUTING.md`**, **`CORNERMAN_MODEL_ROUTING.md`**.
+`NEEDS SBOX RUNTIME PROOF` / `OWNER DECISION REQUIRED` / `OUT OF SCOPE`. (Formerly the "Grok Output Law";
+Grok is now on-request-only, so the labelling discipline transfers to whoever answers.) High-stakes
+surfaces — gameplay authority, economy, permissions, security, migration, networked persistence,
+cross-addon architecture, >1 substantial C# subsystem — need a plan first and Bloodwave GO. Canon:
+**`CLAUDE.md`**, **`MCP_AGENT_ROUTING.md`**, **`CORNERMAN_MODEL_ROUTING.md`**.
 
-**Opus four-phase workflow (major tasks):** (1) Opus plan only → (2) Opus implement one slice →
-(3) flatgrass proof (Red) → (4) Opus review. lpbitcoin scope: **Hub → Terminal → GPU Rack** in order.
+**Four-phase workflow (major tasks, per `CLAUDE.md`):** (1) plan in Chat → (2) build one slice in Claude
+Code → (3) flatgrass proof (Red) → (4) Codex diff review. lpbitcoin scope: **Hub → Terminal → GPU Rack** in order.
 
 ---
 
@@ -235,8 +243,10 @@ Never claim visual verification without the right server connected. After `execu
 |----------|-------|---------|
 | **LM Studio** | Cornerman only (`:1234` headless) | Tier-3 local inference — 3 Qwen profiles routed by task (Code / Deep / Daily-Fast). **Never on Red** (competes with editor RAM). |
 | **Ollama** | Cornerman (secondary local) | Alt local model host / embeddings when needed |
-| **Cursor** | Red · Cornerman · Mac | Integration Architect IDE (orchestrate, MCP, commit) |
-| **GitHub Copilot (VS Code)** | Red · Cornerman · Mac | In-editor writer + editor MCP bridges |
+| **Claude Code (Opus)** | Red (primary) | **Primary build surface** — repo edits, tests, s&box editor work, Sensor-Law gates. Grounds on `CLAUDE.md` first. |
+| **Claude Chat** (Fable → Opus → Sonnet) | any | Planning layer — scope, rulings, handoff briefs |
+| **Codex** | Red | Diff review — PASS / REVISE / HOLD, pre-merge |
+| **Cursor / GitHub Copilot** | Red · Cornerman · Mac | Legacy IDEs — optional outside second opinion **on request only** (2026-07-09 doctrine); MCP servers may still be configured here. Not in the standard loop. |
 | **ChatGPT** | Mac (primary) · Red | Design Architect (ideation, briefs) |
 | **Odysseus** | Blue (lifepunchnet) | Voice comms host (Cornerman can use); optional today |
 
@@ -256,14 +266,13 @@ plus a durable baton file so a **fresh chat is instantly grounded on "where we a
 
 ```text
 1. BLOODWAVE      idea / GitHub issue / player-experience intent            (Red desk — the eyes)
-2. DESIGN ARCH    "Does this make the game better?" → CURSOR BRIEF          (ChatGPT · Mac primary · no git)
-3. PLAN (Grok)    brief → repo-grounded technical plan + slices            (Cursor · Tier-2A · Grok Output Law)
-4. DISTILL        warm context + tighten packet (+ optional candidates)    (Cornerman Tier-3 · outbox)
-5. IMPLEMENT      build the slice in-editor                                (Copilot on Red; Opus/Codex if hard)
-                  └─ heavy headless slice may run on Cornerman → patch-handoff to Red
+2. DESIGN ARCH    "Does this make the game better?" → design brief          (ChatGPT · Mac primary · no git)
+3. PLAN           scope + edge cases + rulings + handoff brief             (Claude Chat: Fable → Opus → Sonnet)
+4. DISTILL        warm context + tighten packet (+ optional candidates)    (Cornerman Tier-3 · outbox · feeds PLAN)
+5. BUILD          build the slice, gate with the Sensor Law                (Claude Code / Opus on Red — primary)
 6. PROVE          flatgrass Host Play + lp_spawn + screenshot              (RED ONLY — sbox bridge)
-7. FANTASY CHECK  "Does it still feel like LIFEPUNCH?" (major → Arch Review)(ChatGPT design pass)
-8. FIX LOOP       iterate; Opus on a true roadblock                        (Red)
+7. REVIEW         diff review: PASS / REVISE / HOLD                        (Codex · pre-merge)
+8. FANTASY CHECK  "Does it still feel like LIFEPUNCH?" (major → Arch Review)(ChatGPT design pass)
 9. CHECKPOINT     propose scope → Bloodwave GO → commit/push               (Red push · other nodes pull)
 10. PUBLISH       export lane when portal-ready (owner GO)                  (Red script)
 ```
@@ -277,7 +286,7 @@ Bloodwave.** This removes the Cornerman↔Vengeance ping-pong that was causing t
 
 ```text
 ── CVL HANDOFF ──
-FROM:   <Red|GreenB|GreenA> / <Cursor|Copilot|ChatGPT> / <model or Auto>
+FROM:   <Red|GreenB|GreenA> / <Claude Code|Claude Chat|Codex|Cornerman> / <model>
 LANE:   <LIFEPUNCH lpbitcoin | DXRP dxrp-public#issue>
 DID:    <1–3 lines: what changed / what was decided>
 STATE:  <PROVEN on flatgrass | NEEDS PROOF | PLAN ONLY | BLOCKED:<why>>  · route tag if any
@@ -437,9 +446,9 @@ anything newer than this table. Evergreen alignment paste: `AGENT_SYNC_BROADCAST
 ## 15. Grounded checklist (say yes to all before you work)
 
 - [ ] I pulled (`git pull --rebase`) and the tree is clean.
-- [ ] I know my **node**, **IDE**, and **LANE** (LIFEPUNCH vs DXRP official).
+- [ ] I know my **node**, **surface** (Claude Code build / Claude Chat plan / Codex review), and **LANE** (LIFEPUNCH vs DXRP official).
 - [ ] I read my lane's **mandatory reads** — I did not skip the repo.
-- [ ] I know my **route** (Opus / Grok / Composer-Auto / Cornerman) and will honor route tags.
+- [ ] I know my **layer** (Plan in Chat · Build in Code · Review with Codex · Cornerman distills) per `CLAUDE.md`.
 - [ ] Editor work → I'm on Red (or bridged) with the right **MCP**; proof = flatgrass on Red.
 - [ ] I will **not commit unprompted**; I'll propose scope and wait for **GO**; `mragerlp`, no AI trailers.
 - [ ] I will end my turn with a **HANDOFF BATON**.

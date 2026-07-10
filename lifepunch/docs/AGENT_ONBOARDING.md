@@ -1,14 +1,15 @@
 # LIFEPUNCH™ × DXRP — Agent Foundation
 
-> **START HERE (July 2026): read `lifepunch/docs/START_HERE_AGENTS.md` first (thin router), then the single grounding paste `lifepunch/docs/CVL_AGENT_ONBOARDING.md`**
-> (mirrored on the Vengeance desktop as `CVL_AGENT_ONBOARDING.txt`). Paste that whole file into any
-> ChatGPT / Cursor / Copilot session on any machine. This Foundation doc remains valid **deep reference**;
-> CVL_AGENT_ONBOARDING is the top-level "one paste" that points here.
+> **START HERE (doctrine 2026-07-09): Claude Code reads `CLAUDE.md` (repo root) first, then
+> `lifepunch/docs/START_HERE_AGENTS.md` → `lifepunch/docs/CVL_AGENT_ONBOARDING.md` → the active handoff
+> brief.** Briefs are repo files, not long pastes (Transport Law). This Foundation doc remains valid
+> **deep reference** for history and detail; `CLAUDE.md` is the authoritative workflow doctrine and wins
+> on any workflow/routing disagreement.
 
-> Read this first. Hand it to any agent in any of our repos so it operates inside
-> the established foundation instead of re-deriving (or diverging from) it.
-> This doc **mirrors** the always-on `.cursor/rules` — the rules are the law; if
-> they ever disagree with this doc, the rules win and this doc should be updated.
+> Hand-reference for any agent in any of our repos so it operates inside the established foundation
+> instead of re-deriving (or diverging from) it. On workflow/routing, **`CLAUDE.md` is the law**; the
+> `.cursor/rules` remain law for Cursor sessions; if this doc disagrees with either, they win and this
+> doc should be updated.
 
 ## Who / what
 
@@ -26,9 +27,10 @@ Architect asks **"Does this make the game better?"** Integration asks **"Does th
 
 | Brain | Tool | Ships code? |
 |-------|------|-------------|
-| **Architect** | ChatGPT LIFEPUNCH™ — **Mac (primary)** · Red at desk | No — CURSOR BRIEFs + design docs |
-| **Integrator** | Cursor/Copilot — Red · Cornerman · Mac comms | Yes (Red push; Cornerman patch-handoff) |
-| **Distiller + executor** | Cornerman LM + agents on Green B | Local commits → Red patch-handoff |
+| **Architect** | ChatGPT LIFEPUNCH™ — **Mac (primary)** · Red at desk | No — design briefs + docs |
+| **Planner** | **Claude Chat** (Fable → Opus → Sonnet) | No — scope, rulings, handoff briefs |
+| **Integrator (build)** | **Claude Code (Opus)** — Red; Codex reviews the diff | Yes (Red push after gate + GO). *Cursor/Copilot: secondary, on request only.* |
+| **Distiller + executor** | Cornerman LM + agents on Green B | Local candidates → Red patch-handoff; feeds planning |
 
 Canon: `lifepunch/docs/ARCHITECT.md` · paste: `handoff/ARCHITECT_ONBOARDING_PASTE.txt`
 
@@ -122,7 +124,7 @@ Product canon (`ACTIVE_WORKSTREAM`, quarantine, Bitcoin design) governs — do n
 
 Cursor plugins: **Convex** = optional realtime backend only — not s&box entities or weapons.
 
-## Opus usage law (Tier-1 / API pool)
+## Opus usage law (primary Claude Code implementer / API pool)
 
 **Canonical:** `lifepunch/docs/OPUS_USAGE_LAW.md` · rule: **lifepunch-opus-usage**.
 
@@ -160,7 +162,7 @@ Hub Opus queue (one slice per Phase 2): collision validation → power state →
 **Workflow:**
 
 ```text
-ChatGPT Step 1 brief → Cursor build (core monorepo) → owner portal-ready sign-off
+design brief (Chat plan) → Claude Code build (core monorepo) → Codex diff review → owner portal-ready sign-off
        ↓
 Export-LifepunchPublishLane.ps1  (-Target publish clone; reads publishReadyAddons)
        ↓
@@ -259,7 +261,7 @@ agents work. See **Publish addons** + `PUBLISH_REPO_LANE.md` + `GIT_CHECKPOINTS.
 
 - **lifepunch-operating-context** — business style; **asset ownership default = ours**, do
   NOT raise provenance / "is this ok to ship" concerns (the user flags external work
-  explicitly); git workflow; publish notes; Tier 1/2/3 pools.
+  explicitly); git workflow; publish notes; plan/build/review layer routing (per `CLAUDE.md`).
 - **lifepunch-opus-usage** — Opus/API pool law; four-phase workflow; Hub → Terminal → GPU Rack scope.
   Full detail: `lifepunch/docs/OPUS_USAGE_LAW.md`.
 - **lifepunch-quality-bar** — **NO SPAGHETTI (≠ no hacks).** A simple, honest hack/baseline
@@ -350,11 +352,11 @@ See `MACHINE_CAST.md` § How agents should refer. lifepunchnet RDP may show `adm
 The `lifepunch-operating-context` rule is law here; this is the orientation. We run best-in-class
 (Opus 4.8) but every token is real $USD, so:
 
-- **Route by difficulty:** Tier-1 Opus for architecture / multi-file C# / subtle debugging /
-  security-legal-structural work; Tier-2 Sonnet/auto for the routine ~80% (scoped edits, docs,
-  search, validators); Tier-3 **Cornerman** (local, when live) for bulk summarize / context-prep /
-  drafts at zero Cursor tokens. Start low, escalate to Opus the moment it's genuinely hard; when
-  unsure, use Opus. Never gamble a hard problem on a weak model to save cost.
+- **Route by layer (per `CLAUDE.md`):** build in **Claude Code (Opus)** — the primary implementer for
+  architecture / multi-file C# / subtle debugging / security-legal-structural work; plan in **Claude Chat**
+  (Fable → Opus → Sonnet); review with **Codex**; **Cornerman** (local, when live) distills / preps /
+  drafts and feeds planning. Cost discipline stands — every token is real $USD — but the old
+  Tier-1/2/3 ceiling model is retired.
 - **Session hygiene:** one focused chat per task, start fresh often, continue via a short summary
   into a new chat — long contexts re-bill as cache reads. Attach specific files/ranges, not folders.
 - **Capture once:** decisions/learnings land in the single source of truth so nobody re-derives them.
@@ -460,7 +462,7 @@ Quick rules:
 | **Quarantine** | Active dev: `adminmenu` + `bitcoinmining` only. All other idents **frozen** — concepts/context OK, **no edits, no copy-paste ship paths** — `portfolio.json`, `QUARANTINE_REGISTER.md` |
 | **Publish now** | **`lifepunchulx`** (`adminmenu`) only — in `publishReadyAddons`; export via `Export-LifepunchPublishLane.ps1` |
 | **Bitcoin** | P0 hub = **Steam Machine** static chassis (dev: `bitcoinmining/` · promote to `lpbitcoin/bitcoinhub/`). Folder name = slug (`bitcoinhub`, not `bitcoin-miner`). **Digital machine** stack · `DXRP_ADDON_PUBLISH_DOCTRINE.md` · `LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md` |
-| **Ideation** | **Architect** (ChatGPT Step 1) → paste CURSOR BRIEF → Cursor Integrator on VENGEANCE. Voice = **Cursor mic** (Whisper deferred). `WORKFLOW_IDEATION_FIRST.md` |
+| **Ideation** | **Architect** (ChatGPT design brief) → **Claude Chat** plans the slice → **Claude Code** builds on VENGEANCE → Codex reviews. `WORKFLOW_IDEATION_FIRST.md` |
 | **Architect** | Design brain on Red — `ARCHITECT.md` · `handoff/ARCHITECT_*.txt` |
 | **ChatGPT templates** | Step1 · Visual pass · Edit session · Ship checklist — `handoff/CHATGPT_*.txt` · index: `briefs/BRIEF_INDEX.md` |
 | **Owner alias** | Visible: **Bloodwave** · Proprietary: **mrragerlp** · Contact: Mr. Rager — `BLOODWAVE_ALIAS.md` |
@@ -488,9 +490,9 @@ Quick rules:
 - **Trademark / IP doctrine — finalized + law.** `lifepunch-trademark-ip` rule + the full
   `lifepunch/legal/` tree (`TRADEMARK_AND_IP.md`, marks, specimens, clearance evidence) are in.
 - **Efficiency & cost discipline + Cornerman — merged.** Model-routing tiers (T1 Opus / T2
-  Auto-Composer default / T3 Cornerman), session hygiene, knowledge-capture, and the multi-agent
-  safeguards live in `lifepunch-operating-context`; mirror above. On Ultra, **Auto/Composer
-  don't draw the $400 pool** — default there, reserve the pool for Tier-1 Opus.
+  Cornerman distill), session hygiene, knowledge-capture, and the multi-agent
+  safeguards live in `lifepunch-operating-context`; mirror above. Opus is the primary Claude Code
+  implementer now (per `CLAUDE.md`); manage the API pool by scope, not by a tier ceiling.
 - **GitLab lane organization — LIVE (lanes-synced).** Four projects under `gitlab.com/mragerlp`
   (`lifepunch-foundation`, `-addons`, `-website`, `-rdp-server`) created + pushed + protected `main`.
   GitHub monorepo stays canonical; GitLab is per-lane partner workspaces.

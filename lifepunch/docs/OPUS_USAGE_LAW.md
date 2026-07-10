@@ -1,5 +1,10 @@
 # LIFEPUNCH™ — Opus Usage Law (Cursor + Anthropic API)
 
+> **Routing authority moved to `CLAUDE.md` (2026-07-09).** Opus is now the **primary Claude Code
+> implementer** and the heavier Claude Chat planner — no longer a scarce "Tier-1 ceiling" gated behind
+> Cursor. The cost-discipline and four-phase spirit below still apply (now: plan in Chat → build in Code
+> → prove on Red → Codex diff review); read the tier/Cursor framing as historical.
+
 > **Canonical.** Agents and owner sessions follow this before spending Tier-1 (Opus / API pool).
 > Complements **lifepunch-operating-context** model routing — this doc adds the **four-phase
 > workflow**, **strict subsystem scope**, and **ship order** for cyber entities.

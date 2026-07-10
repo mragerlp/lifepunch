@@ -1,5 +1,10 @@
 # MODEL ROUTING AMENDMENT — GROK BUILD 1 (2026-06-25)
 
+> **SUPERSEDED (2026-07-09) by `CLAUDE.md`.** The tier-ceiling routing this doc amends is retired.
+> New model: `PLAN IN CHAT · BUILD IN CODE · REVIEW WITH CODEX · SHIP ONLY WITH BLOODWAVE GO`. Grok is an
+> optional outside second opinion **on request only** — not in the standard loop. Content below is
+> historical reference for when Grok is explicitly invoked.
+
 **Owner:** Bloodwave  
 **Status:** Approved for commit. Applies to Integration Architect model routing on VENGEANCE.  
 **Source:** Architect evaluation 2026-06-25 (final paste)
