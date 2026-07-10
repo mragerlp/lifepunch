@@ -99,6 +99,84 @@ sweep it.**
 
 ---
 
+## P1 findings — what the v1 refusal bought
+
+The v1 Packet G was refused before it reached the model. **Every refusal class below is a real
+finding and the gate already paid for it.** These are appended to the live instrument because
+P1's *verdict* has not landed — a packet refused at `pre-model-validation` never reached
+acceptance cases A–E. When P1's verdict does land, this instrument freezes with it.
+
+**Each paragraph names its sensor.** Red did not watch Green refuse the packet; where the sensor
+is Green, it says so, and Red does not restate Green's output as if it had seen it.
+
+### 1. Author-node paths do not travel  **[RED-VERIFIED]**
+
+`New-CornermanTaskPacket.ps1` has **no `-RepoPath` parameter.** It stamps `repoPath` from a
+hardcoded `$profileDefaults` map (`:160`, `:166`) holding the **authoring node's** absolute paths.
+The v1 packet therefore carried `repoPath = C:\Users\jared\Projects\dxrp-public` — Red's path.
+Green's clone is `C:\Projects\dxrp-public`.
+
+An absolute path authored on one node and asserted on another is **a Red fact wearing a Green
+label.** A packet should carry the *profile* and let the executing node's registry resolve the
+path. Red verified the value in the packet it wrote; the refusal itself was observed on Green.
+
+### 2. `expectedClones` keys the clone it names  **[GREEN-OBSERVED, relayed]**
+
+The key is resolved **on the executing node, relative to the profile clone that node resolves** —
+not relative to whatever the author had in mind. `.` means *the profile clone*, and which clone
+that is depends on `repoProfile` **as the worker resolves it**, not as the author pictured it.
+Relayed from Green; Red did not measure this and does not claim to have.
+
+### 3. Presence is not containment — a descendant pin is not a containing pin  **[RED-VERIFIED, and Red's own error]**
+
+The gate asserts that HEAD **contains** the declared commit. Red validated the pin with
+`git cat-file -e b9d6068^{commit}` and reported *"b9d6068 present."* **That proves only that the
+object exists in the store** — a fetch is enough to put it there. It says nothing about HEAD.
+
+On Red's own trees, measured with the right sensor:
+
+```
+dxrp-public    HEAD=0ee91dd (develop)   DOES NOT CONTAIN b9d6068   (only origin/develop does)
+lifepunchdxrp  HEAD=e6d3026             DOES NOT CONTAIN b9d6068
+```
+
+`git cat-file -e <sha>` is **presence**. `git merge-base --is-ancestor <sha> HEAD` is
+**containment**. Only the second is the gate's question. Declaring a pin the executing HEAD
+cannot contain refuses by name as `head-does-not-contain-commit` — **correctly**. Packet E's
+identical pin passed on Green earlier, which means the clones have since drifted; the pin did not
+change, the HEADs did.
+
+### 4. A dirty tree refuses, and untracked files count as dirty  **[GREEN-OBSERVED, relayed]**
+
+The worker never runs `reset`, `clean`, `stash`, or `restore`. **A dirty clone is a human
+problem.** Untracked debris is dirt. This interacts with the clone-swap hygiene rule: renaming a
+stale clone to a sibling name leaves untracked debris *inside* the repo, so the freshness gate and
+the dirty-tree gate fight each other.
+
+### 5. The repair — `pin-<sha>` linked worktrees as standing infrastructure  **[RULED 2026-07-10]**
+
+```
+git worktree add ../pin-<sha> <sha>
+```
+
+A linked worktree at a detached pin is **clean by construction**, **contains the pin by
+construction** (HEAD *is* the pin), and lives **outside the clone**, so it leaves **zero untracked
+debris** — satisfying findings 3 and 4 at once, and honouring the clone-swap hygiene rule that
+says a stale tree must move outside the repo rather than park alongside it.
+
+**Ruled standing infrastructure**, not a one-off repair: a packet declaring a pin gets a worktree
+at that pin, and the worker reads a tree whose HEAD is the declared commit by definition. The
+declaration stops being a claim about a branch and becomes a claim about a directory.
+
+### What none of this reached
+
+Per the runbook, every one of these classes refuses at `failureStage: pre-model-validation` with
+**zero HTTP** — not even the `/v1/models` probe. The muscle was never called, no tokens were
+spent, and the outbox carries `error.md` rather than a plausible-looking report. **That is the
+gate working, not the gate failing.**
+
+---
+
 ## Fail-branch — any line red
 
 **Freeze. Capture. Report. Do not improvise a fix from the other seat.**
