@@ -6585,6 +6585,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	align-items: flex-end;
 	gap: 1px;
 	flex: 0 0 auto;
+	flex-shrink: 0;
 	white-space: nowrap;
 }
 
@@ -6605,8 +6606,13 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 .lp-bitcoin-ops .entity-track-action {
 	position: relative;
 	flex: 0 0 auto;
+	flex-shrink: 0;
 }
 
+// .lp-ui-btn-primary ships `flex: 1 1 140px; min-width: 0` for the wrapping button ROW,
+// where shrinking is wanted. In a track row that let the button collapse below its own
+// label — the box measured 56 units against a 151-unit price, so "UPGRADE" painted
+// outside its box and over the price. Pin it to its content instead.
 .lp-bitcoin-ops .entity-track-upgrade {
 	height: 32px;
 	padding: 0 16px;
@@ -6614,6 +6620,9 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	font-weight: 900;
 	letter-spacing: 0.05em;
 	white-space: nowrap;
+	flex-grow: 0;
+	flex-shrink: 0;
+	flex-basis: auto;
 }
 
 // Row-anchored chip: flips above/below the button so it is never clipped at a
