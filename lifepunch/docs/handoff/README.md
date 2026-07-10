@@ -68,6 +68,19 @@ CVL doctrine. It ships as canon, **UNEXECUTED**: it wires nothing and touches no
 A fresh session reads it, proposes the config change, and STOPs for GO. That is the shape:
 the brief is the durable record; the execution is a later, separately-approved act.
 
+## Index — live records (ruled, not yet executed)
+
+These are the records a session picks up *next*. Everything else in this folder is settled
+history: read it to avoid re-deriving, never to re-litigate.
+
+| Record | What it holds |
+|--------|---------------|
+| `STOPGO_EXCALIDRAW_MCP_CONNECTOR_2026-07-10.md` | First connector under the doctrine. Canon, **UNEXECUTED** — propose the config, STOP for GO. Sets the template for every future MCP/connector. |
+| `STOPGO_CORNERMAN_CLONE_FRESHNESS_2026-07-10.md` | Clone-freshness precondition (**built**, merged) + the env-vs-content packet-disposition ruling (**GO, unbuilt**) and an outbox stale-artifact verification item. |
+| `NONOWNER_CLIENT_READ_SURFACE_2026-07-10.md` | **Truth vs authority.** Ownership is DXRP's; the client-read surface is ours. The `AccessPinHash` raider-reader question, and the PIN-as-tradeoff-surface design frame that feeds the Terminal-defense pass. |
+| `GATE_ADVANCEDRACK_SYNC_TWO_CLIENT.md` | The two-client `[Sync]` gate. C3 measures the truth bug from the **non-owner's** screen. See `NONOWNER_CLIENT_READ_SURFACE` for the truth-vs-authority framing and the `AccessPinHash` reader question. |
+| `GATE_HUB_INTERACT_ADRIVE_2026-07-10.md` | a–d driver for the held hub-interact fix. Nothing commits until Bloodwave drives a–d. |
+
 ## Related
 
 - `CLAUDE.md` — grounding order, Transport Law, Sensor Law, CVL Sync Law
