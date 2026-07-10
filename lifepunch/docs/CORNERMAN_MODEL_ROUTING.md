@@ -45,7 +45,7 @@ implement a candidate only **after** that plan.
 
 **Canonical catalog file:** `lifepunch/config/cornerman-tier3-models.json` — edit this when adopting a newer LLM; run `Fix-CornermanLmServe.ps1` + see `CVL_FULL_CAPACITY_UPDATES.md` § Cornerman LLM.
 
-**Loaded vs catalog:** LM Studio `/v1/models` lists every downloaded model even when not in VRAM. Trust `lms ps` (or warm-script output `LOADED in VRAM`) — not the GUI progress bar stalling at ~97%.
+**Single-model law (sharpened 2026-07-09):** the law governs **one loaded GENERATIVE model** (`type=vlm|llm`). Assert exactly one loaded generative via `/api/v0/models` `state=loaded` — NOT `/v1/models`, which lists every *downloaded* model (the catalog roster, correctly 4). `type=embeddings` is **EXEMPT** (nomic-embed, ~84 MB, different weight class, drift-scanner dependency) and may be loaded alongside. Trust `lms ps` for VRAM residency, not the GUI bar stalling at ~97%.
 
 ### GUI vs server (headless)
 
@@ -173,7 +173,7 @@ rollout (LM Studio account; batched access).
 | **Host (GPU)** | Cornerman — distill / coder / embed on Green's Vulkan iGPU |
 | **Client** | VENGEANCE — LM Studio desktop sees Green's models in the loader |
 | **API surface** | Unchanged: `http://localhost:1234/v1` on the client; LM Link routes to remote weights |
-| **LAN today** | Red still uses `Send-CornermanWorkflow.ps1` + SSH to warm models on Green; direct `http://192.168.1.229:1234` also works on subnet |
+| **Endpoint (locality rule, 2026-07-09)** | LM Studio binds `0.0.0.0:1234`. Consumers address **by locality**: Green-local consumers (the drop worker) use **loopback** (`127.0.0.1:1234`, code-enforced); cross-box consumers (Red) use the **direct link** `http://10.10.10.2:1234` — LAN `http://192.168.1.229:1234` is the documented fallback. `Send-CornermanWorkflow.ps1` + SSH warm path unchanged. Sensor: `/api/v0/models` over 10.10.10.2 shows `qwen/qwen3.6-35b-a3b` `state=loaded`; link 0.36–0.54 ms, TTL 128 single hop. |
 
 ### What LM Link could simplify
 

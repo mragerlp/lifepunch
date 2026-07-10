@@ -177,6 +177,24 @@ Principles: **LAN-only by default, encrypted in transit, one source of truth, se
      `localhost:1234`. See §7d. Generic **Tailscale** tailnet remains an option for non–LM Studio
      services (SSH, RDP, file transfer). Not enabled in v1 — Cornerman is home-LAN + owner-present.
      Revisit when off-LAN Tier-3 use is real. **Never** port-forward the LLM server to the public internet.
+   - **Red ↔ Green direct link (2026-07-09).** A second 2.5GbE adapter per box, patch cable, no switch.
+     Red `Ethernet 2` (Realtek USB 2.5GbE) = `10.10.10.1/24`; Green `Ethernet 4` = `10.10.10.2/24`.
+     **No gateway, no DNS on either** — the unrouted link IS the isolation. Firewall: inbound **TCP 1234**
+     (LM Studio) + **TCP 445** (SMB) + **ICMPv4**, each scoped to the peer address only, `-Profile Any`
+     (a gateway-less link lands in the Public profile, so Private-only rules never apply). LAN adapters
+     (`.236` / `.229`) retained as the documented fallback. Link 0.36–0.54 ms (Stopwatch), TTL 128, single
+     hop. Carries LM Studio (per the locality rule in `CORNERMAN_MODEL_ROUTING.md`) + the `G:` packet lane.
+   - **`G:` transport (proven 2026-07-10).** `G:` → `\\10.10.10.2\cornerman-inbox` over the direct link,
+     persistent; SHA256 write-probe matched source and Green-side. Restore/fallback:
+     `net use G: /delete ; net use G: \\192.168.1.229\cornerman-inbox /persistent:yes`. Credential must use
+     an SMB-valid username (`MicrosoftAccount\<account>` or `COMPUTERNAME\<localuser>`), not the bare
+     Microsoft-account email — the email form is rejected with `STATUS_LOGON_FAILURE`.
+   - **DISPLAY (proven).** Green's HDMI dummy plug is seated — a post-headless probe enumerates
+     **AMD Radeon 8050S** alongside the Microsoft Remote Display Adapter (the 32 Hz RDP virtual display).
+     Blank refresh on the Radeon = no-EDID dummy, expected. Do not read the RDP virtual adapter as the dummy.
+   - **EOL-aware compare.** Red repo is LF; the Green / editor trees are CRLF. Transport and drift checks
+     MUST compare content ignoring line endings (`diff <(tr -d '\r' A) <(tr -d '\r' B)`) — a raw hash
+     reports every file as drift and is wrong.
 
 2. **Code / repo sync (this box is a clone, not the master)**
    - Clone the monorepo over **git + SSH**. Treat it like any agent: always `git pull --rebase`,

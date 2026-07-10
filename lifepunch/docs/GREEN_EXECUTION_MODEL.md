@@ -8,6 +8,11 @@ Every agent session: **`git pull --rebase`** on the machine you are on before wo
 
 ---
 
+> **Red ↔ Green transport:** a direct point-to-point 2.5GbE link (Red `10.10.10.1` ↔ Cornerman
+> `10.10.10.2`, unrouted, SHA-proven) carries LM Studio + the `G:` packet lane; LAN `.229` is the
+> documented fallback. Full topology, firewall scope, and the LM Studio locality rule:
+> `LOCAL_AI_WORKSTATION.md` §6 · `CORNERMAN_MODEL_ROUTING.md`.
+
 ## Three agent groups
 
 | Group | Machine | Repo path | Primary job |
