@@ -132,13 +132,27 @@ No retries — a false start here means the ACL is wrong, not that the network i
 *The clone is a sensor.* Packet E's failure was Red validating input paths against **Red's**
 tree while the worker read **Green's**. Never assume; assert.
 
-**Red declares `expectedClones`:** `lifepunch` = **`831331f`** (`origin/develop` tip at the
-time of writing).
+**`expectedClones` is DECLARED BY RED IN THE P0 GO RELAY. It is not hardcoded here.**
+
+*Why not:* a commit cannot contain its own hash — writing the value into this file changes the
+tree, which changes the hash. Any literal recorded here is stale the instant it is committed,
+by exactly one commit, which is the drift this gate exists to catch. The earlier literal
+(`831331f`) was that mistake, and it is removed rather than re-introduced one commit later.
+
+This matches the design in `CORNERMAN_HEADLESS_DROP_WORKER.md`: the **authoring node declares**
+the commits it validated against, in a **machine-checked field** of the packet or relay — never
+in prose, and never in a document that the declaration itself modifies. *Prose in `contextNotes`
+is a human record; only a machine-checked field is a sensor.*
+
+**DOCS FREEZE.** From the commit that lands this text until P0 reports, **Red lands nothing on
+`develop`.** Therefore the tip Green sees when it pulls **is** that commit, and Red states its
+hash in the P0 GO relay. If anything else reaches `develop` before P0 runs, the freeze is
+broken and Red re-declares — it does not "adjust" the old value.
 
 ```powershell
 cd C:\Projects\lifepunch
 git fetch --prune
-git rev-parse HEAD        # must equal the expectedClones value above
+git rev-parse HEAD        # must equal the expectedClones value Red declared in the GO relay
 git status --porcelain    # must be EMPTY
 ```
 
@@ -196,7 +210,8 @@ P0.1   claude on PATH; Green reports 2.1.206 at C:\Users\jared\.local\bin\claude
 P0.2   claude launches on Green, authenticated, no prompt
 P0.3   OUTBOX share exists, ACL = Bloodwave's user account (ruled 2026-07-10), NTFS agrees;
        Red's Test-Path -> True, first try. Access Denied is an AUTH failure, not a network one.
-P0.4   Green HEAD == expectedClones 831331f; tree clean; nested-clone scope declared
+P0.4   Green HEAD == the expectedClones Red declared in the P0 GO relay, matched BY NAME;
+       tree clean; nested-clone scope declared in writing. Refuse on mismatch, never pull to fix.
 P0.5   Odysseus grounds cold and names three rulings unaided
 P0.6   Docker/Ollama untouched; LM Studio :1234 is the only muscle
 MCP    Green's first launch warns on EXCALIDRAW_API_KEY and the other servers still register
