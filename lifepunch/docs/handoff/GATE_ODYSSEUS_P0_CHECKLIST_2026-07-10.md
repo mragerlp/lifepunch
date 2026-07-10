@@ -109,16 +109,37 @@ acceptance cases A–E. When P1's verdict does land, this instrument freezes wit
 **Each paragraph names its sensor.** Red did not watch Green refuse the packet; where the sensor
 is Green, it says so, and Red does not restate Green's output as if it had seen it.
 
-### 1. Author-node paths do not travel  **[RED-VERIFIED]**
+### 1. ~~Author-node paths do not travel~~ — **WITHDRAWN. The claim was mechanically wrong.**
 
-`New-CornermanTaskPacket.ps1` has **no `-RepoPath` parameter.** It stamps `repoPath` from a
-hardcoded `$profileDefaults` map (`:160`, `:166`) holding the **authoring node's** absolute paths.
-The v1 packet therefore carried `repoPath = C:\Users\jared\Projects\dxrp-public` — Red's path.
-Green's clone is `C:\Projects\dxrp-public`.
+**Corrected 2026-07-10. Caught by Green, from library source.**
 
-An absolute path authored on one node and asserted on another is **a Red fact wearing a Green
-label.** A packet should carry the *profile* and let the executing node's registry resolve the
-path. Red verified the value in the packet it wrote; the refusal itself was observed on Green.
+Red asserted that the v1 packet's `repoPath` — `C:\Users\jared\Projects\dxrp-public`, the
+**authoring** node's path — caused the refusal, and labelled the finding `[RED-VERIFIED]`.
+
+**It did not, and it could not.** `repoPath` occurs **exactly once** in
+`CornermanDropWorker.Lib.ps1`, at **`:206`**, inside the required-scalar-fields loop. It is
+**presence-checked and never dereferenced.** The worker resolves the clone from the **profile
+registry** (`config\repo-profiles.json`), never from the packet. Red re-measured this on its own
+tree after Green flagged it: one occurrence, no use.
+
+**What Red actually verified was that the field holds the author's path.** What Red *published*
+was that this mattered. Those are different claims, and only the first had a sensor. A structural
+fact was allowed to read as a cause because the cause was plausible.
+
+**And the review layer ratified it without measuring.** Fable's gate review accepted the finding
+on its plausibility. That is the canvas probe's lesson arriving from the opposite direction:
+*reasonableness is the property a wrong claim forges and a right one already has, so it
+distinguishes nothing.* A finding is not evidence because a reviewer agreed with it.
+
+**What survives, and it is smaller.** `New-CornermanTaskPacket.ps1` really does have no
+`-RepoPath` parameter and really does stamp the authoring node's absolute path from
+`$profileDefaults` (`:160`, `:166`). So `repoPath` is a **required field carrying a value that is
+false on the executing node and read by nothing.** It misleads humans, not the worker. That is a
+documentation hazard, not a refusal cause.
+
+**Disposition.** The clone was re-pointed in Green's registry — the ruled fix, and a stand-in.
+**QUEUED, post-P1, code, merge gate: per-packet clone-override in the drop worker.** That is the
+durable fix the temporary re-point stands in for.
 
 ### 2. `expectedClones` keys the clone it names  **[GREEN-OBSERVED, relayed]**
 
@@ -141,10 +162,15 @@ lifepunchdxrp  HEAD=e6d3026             DOES NOT CONTAIN b9d6068
 ```
 
 `git cat-file -e <sha>` is **presence**. `git merge-base --is-ancestor <sha> HEAD` is
-**containment**. Only the second is the gate's question. Declaring a pin the executing HEAD
-cannot contain refuses by name as `head-does-not-contain-commit` — **correctly**. Packet E's
-identical pin passed on Green earlier, which means the clones have since drifted; the pin did not
-change, the HEADs did.
+**containment**. Only the second is the gate's question. Per the runbook, declaring a pin the
+executing HEAD cannot contain refuses by name as `head-does-not-contain-commit`.
+
+**Scope of this measurement: Red's clones only.** Whether *Green's* clone contained `b9d6068` at
+dispatch is **Green's measurement, and Red has not seen it.** Packet E ran against that pin
+earlier and passed, so something moved — but which HEAD moved, and on which node, is not a claim
+Red is entitled to make. Red states what Red measured: **on Red, neither DXRP clone contains the
+pin it declared.** That alone made the declaration indefensible from the authoring seat, whatever
+Green would have said about it.
 
 ### 4. A dirty tree refuses, and untracked files count as dirty  **[GREEN-OBSERVED, relayed]**
 
