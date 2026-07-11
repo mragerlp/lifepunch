@@ -1,5 +1,9 @@
 # EDITOR LAUNCH LAW — ratified 2026-07-11
 
+> **Class: LIVING DOCTRINE** (ruled 2026-07-11). LAWS are living doctrine —
+> amendable in place at a stable filename, like `CLAUDE.md` / `README.md`;
+> RECORDS (STOP-GO, gate verdicts) freeze write-once.
+
 ## Law
 Editor launch is an OBSERVED PHASE, not an attested precondition.
 Red drives the launch and holds the sensors. Human attestations of
@@ -14,8 +18,10 @@ editor-gated task is live and the sensor shows no healthy editor —
 no per-launch authorization needed. Launch command of record:
   Start-SboxDxrpEditor.ps1 -SkipPreflight -SyncAddon lpbitcoin,adminmenu
 Restart = confirm old process fully exited before relaunch.
-Bloodwave retains the scene: pawn, map, hub placement/power are
-manual and human. Red never claims scene state — only editor state.
+Bloodwave retains IN-SCENE setup only: pawn spawn/possession,
+entity placement, powering (e.g. hub placed and powered) remain
+manual and human unless a task relay states otherwise. Scene
+LOADING is Red's, via bridge.
 
 ## The Launch Report (required, every launch)
 1. PROCESS — sbox-dev present, pid noted.
@@ -36,6 +42,11 @@ manual and human. Red never claims scene state — only editor state.
 7. STABILITY — watch across several heartbeats before declaring
    GREEN. Unexplained exit (ref: 2026-07-10 ~6-minute death) =
    capture log tail, report, debug BEFORE any gated instrument runs.
+8. SCENE — after GREEN on 1-7, Red DRIVES scene load via the
+   bridge: blank.scene for fast proofs (canon proof environment)
+   or the task's stated scene (e.g. game/map). Attest the loaded
+   scene by name from the editor sensor, not assumption. A launch
+   without a driven scene is INCOMPLETE.
 
 GREEN = all seven attested. Only then may an editor-gated
 instrument (chair, drive, probe, sync gate) begin.
@@ -49,3 +60,25 @@ A request without a runnable artifact is malformed.
 ## Scope
 Applies to LIFEPUNCH monorepo work and DXRP upstream work alike —
 any s&box editor session in the CVL.
+
+## Freshness Rule (per-instrument, two axes)
+Item 5 attests freshness at LAUNCH only. Before ANY editor-gated
+instrument runs, and before acting on any new "fix X / add Y"
+instruction against a running editor, Red re-asserts BOTH:
+
+AXIS 1 — COPY: the loaded assembly reflects the current working
+tree (member probe, hotload log postdating the last edit, or
+compile-hash match). Stale/unprovable = report, never drive
+against an unverified copy.
+
+AXIS 2 — BASELINE: the working tree sits on the correct base
+for the task's lane, sensor-verified (git merge-base/ancestry +
+status):
+  · DXRP UPSTREAM (Dimmer) lane: clean tree on dxura/dxrp at
+    the latest fetched upstream tip — ZERO lifepunch additions;
+    framework only. Any LP-layer file present = STOP, report.
+  · LIFEPUNCH lane: tree based on the current OPERATIONAL PIN
+    (per the standing re-pin ruling), LP layer on top. Base
+    behind the pin, or pin stale vs. ruling = report before work.
+Wrong-lane or drifted base = the wrong-copy trap; one cheap
+sensor read replaces the expensive failure of building on it.
