@@ -53,6 +53,8 @@ $crt-text-dim: #9a9a9a;
 	}
 
 	.crt-body {
+		// Positioning context so the PIN/boot overlay spans the full body (sidebar + screen).
+		position: relative;
 		flex: 1 1 0;
 		display: flex;
 		flex-direction: row;
@@ -126,7 +128,7 @@ $crt-text-dim: #9a9a9a;
 	}
 
 	.screen {
-		position: relative;
+		// Positioning context moved up to .crt-body so the boot/PIN overlay covers the sidebar too.
 		background-color: $crt-bg;
 		display: flex;
 		flex-direction: column;
@@ -204,7 +206,8 @@ $crt-text-dim: #9a9a9a;
 	}
 
 	.status-ok {
-		color: #9fd6a8;
+		// Power state is not a currency signal — style-native amber, never green (BTC Currency Standard v1).
+		color: $hashd-amber;
 	}
 
 	.status-warn {
@@ -240,7 +243,9 @@ $crt-text-dim: #9a9a9a;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		background-color: rgba(8, 8, 8, 0.96);
+		// Full-window scrim + blur so the commands/status sidebar sits UNDER the overlay (blurred), not beside it.
+		background-color: rgba(8, 8, 8, 0.8);
+		backdrop-filter: blur(8px);
 		z-index: 2;
 		gap: 10px;
 		cursor: pointer;

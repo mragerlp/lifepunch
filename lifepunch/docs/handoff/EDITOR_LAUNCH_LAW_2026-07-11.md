@@ -18,6 +18,11 @@ editor-gated task is live and the sensor shows no healthy editor —
 no per-launch authorization needed. Launch command of record:
   Start-SboxDxrpEditor.ps1 -SkipPreflight -SyncAddon lpbitcoin,adminmenu
 Restart = confirm old process fully exited before relaunch.
+LAUNCH-SET RULE: sync the full launch set (lpbitcoin,adminmenu),
+never a lone addon — a lone-addon sync purges siblings and orphans
+their static hooks (2026-07-12 flood precedent). Recovery is a
+full-set re-sync PLUS a fresh boot (an orphaned static hook does
+not clear on hotload).
 Bloodwave retains IN-SCENE setup only: pawn spawn/possession,
 entity placement, powering (e.g. hub placed and powered) remain
 manual and human unless a task relay states otherwise. Scene
@@ -50,6 +55,30 @@ LOADING is Red's, via bridge.
 
 GREEN = all seven attested. Only then may an editor-gated
 instrument (chair, drive, probe, sync gate) begin.
+
+## Compile gotchas (s&box razor) — augments Launch Report item 4
+Ratified 2026-07-11 after a full-class-collapse debug on
+LpHashdPanel.razor (batch 4).
+- ADJACENT `@(...)` LAW: never place two `@(...)` expressions
+  back-to-back in ONE razor attribute
+  (`class="x @(A)@(B)"`). s&box's transpiler concatenates them
+  as `(A)(B)` with NO `+`, emitting invalid C# — one syntax
+  error that orphans downstream `else` blocks and collapses the
+  WHOLE generated class to top-level statements. Merge into a
+  single expression: `@( (A) + (B) )`. (Sensor: the true first
+  error was `) expected` at the gen-file line, buried under the
+  cascade.)
+- CASCADE-DEBUG LAW: on a "declared in a top-level statement" /
+  "X does not exist in the current context" cascade, the class
+  wrapper broke — hunt the FIRST error in the `_gen_*.razor.cs`
+  file, not the tail. `get_compile_errors` windows the LAST N
+  lines, which masks the true root; grep the gen-file line
+  numbers ascending and read the earliest error's MESSAGE (it
+  names the real syntax fault). The tail is all downstream noise.
+- `@code` STAYS ASCII: non-ASCII in a `@code` block is a
+  documented transpiler crasher (sensor: `razor_lint`). Escape
+  display glyphs as `\uXXXX` (identical runtime), keep comments
+  ASCII.
 
 ## Manual-launch fallback
 If Red cannot launch (tool failure, permission, environment), Red
