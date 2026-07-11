@@ -85,6 +85,12 @@ Buyer-side proof of the pattern: Monnow's public About page
 advertises 6 upgrade tracks × 3 levels, 3 tiers, "fully
 server-configurable via portal config." Configurability is a
 SELLING POINT — lpbitcoin's future listing advertises the same.
+· CLIENT-SYNC WARNING (third-party confirmed, SGR addon Config
+  docs): gamemode config CAN BE SYNCED TO CLIENTS. Secrets (API
+  keys, tokens) go in SERVER CONVARS, never addon/gamemode config.
+  LP LAW: T2/T3 config carries gameplay numbers ONLY — no keys, no
+  URLs-as-credentials, nothing secret. lpbitcoin's schema is bound
+  by this.
 
 ## 5. Gamemodes
 Create = name+description shell, then BLANK SLATE: no jobs, groups,
@@ -181,6 +187,14 @@ WEBHOOKS are portal-native and ALREADY CONFIGURED: Mod Log
 are CREDENTIALS — never in repos/docs/packets/pastes. The player-
 report loop = Mod Log webhook + sanctions pipeline + (future)
 scoped-key Discord bot.
+Alt Inspector = clustered alt evidence, typed matches (IP Match /
+Hardware Match; same primary may appear once per type), per-row
+rank/balance/last-seen + inspect. Match type is surfaced;
+confidence/recency is not — staff weigh Hardware > IP. Get Age =
+per-row on-demand Steam account-age resolve. Invite = pre-login
+network access grant (Steam64 + rank) via avatar-menu modal.
+Data-hygiene note: two distinct rank entities share the label
+"Super Admin".
 
 ## 11. API & keys
 api.dxrp.net · X-Api-Key + X-Tenant headers · scoped permissions
@@ -227,6 +241,10 @@ Discord webhook announce.
   selector (which network receives the addon) · Coupon Code + Apply
   · Confirm Purchase → Stripe redirect. Coupons exist platform-side
   — note for future promos.
+· Paid addons hide source; free addons expose Code Explorer.
+  Publisher landscape: 12 addons, 6 publishers (PikPak 6 of 12;
+  Official, Monnow, LIFEPUNCH™, DXRP UK, CosmicRP). Marketplace is
+  embryonic — sell-later doctrine reaffirmed.
 
 ## 13. Store (KV persistence)
 Portal Store = hierarchical key-value persistence for server and
@@ -372,3 +390,53 @@ Discord invite, rules URL, radio streams are public).
   restarts, SERVER_CONFIG_T1_2026-07-11.json is stale on one field
   — next re-export lands as a NEW dated file; dated snapshots exist
   for exactly this.
+· GAMEMODE EDIT SURFACE (deep-dived): jobs fully portal-authorable
+  — name/model/clothes chips, group, PREREQUISITE CHAINS,
+  salary/health/max-count, EQUIPMENT LOADOUT (multi-select over
+  installed content equipment), vote/election flags. JSON-only job
+  fields: interaction (code hook, e.g. hit.request), demotable,
+  playTime (playtime-minute unlock gates — hitman=20). JOB TAGS are
+  the permission + code-hook mechanism (pool: Citizen,
+  PoliticalPrisoner, Mayoral, Police, Chief, Medic, Government,
+  Hitman); market entries gate on whitelist/blacklist of job IDs AND
+  tags; blacklists override whitelists; both empty = all jobs. Live
+  Law 2 surface: printers blacklistJobTags ["Government"].
+· GAMEMODE JSON MODEL (2,342 lines harvested): top-level
+  {defaultJobId, startingBalance, defaultEquipmentIds, addons (with
+  per-addon globalConfigOverride — addon-wide config lane),
+  equipments (nameOverride/limit), entities (+healthEnabled/
+  healthAmount/destroyOnDisconnect/destroyOnJobChange/
+  allowOwnershipTransfer — entity HP + lifecycle are portal knobs),
+  marketItems (cost/quantity — qty>1 = shipment/whitelists/
+  blacklists), jobs, jobGroups}. UI|JSON toggle = bulk-edit lane.
+  Export/Import/Reset-to-Vanilla exist on the gamemode (T2
+  backup/restore/nuclear).
+· WEAPON ROADBLOCK — CLOSED: Base Content weapons ship baseConfig
+  "{}" (stats NOT portal-tunable in r6). Kevlar proves the
+  mechanism: ships {ArmorAmount:25, EquipDuration:3}, carries LIVE
+  gamemode configOverride {ArmorAmount:100}. THE PATH: LIFEPUNCH
+  ships its own weapon addon with config'd prefabs (damage/ammo/
+  spread as T3 keys) — then every weapon number is a portal knob.
+  Same pattern as lpbitcoin extraction.
+· EDITOR STAGING LAW: staging is PER-MODAL (Add Job stages on
+  close; Add Market Item doesn't). Invariant ritual: View Changes →
+  verify → page-level Cancel is the only true abort. Every modal
+  open is a staged write until proven otherwise.
+· Minigames: no config surface in view OR edit — placeholder
+  confirmed both modes. General edit = exactly 3 fields (Default
+  Job, Starting Balance stepper, Default Loadout multi-select).
+· Audit enum tail: 25 further entries, SetBalance→Warrant [full
+  list held in scan-seat bank — fold verbatim if couriered]. New
+  audit signatures known: "$1 for Printer Bank Auto-Deposit"
+  (Monnow auto-bank writes the audit lane) and MoneySpawn "$576
+  spawned: Player disconnect" — FLAG: Monnow disconnect decay pays
+  through a faucet-tagged action; Law A accounting review at chair
+  time.
+· Public /servers rows: name, tags (gamemode label shows VANILLA
+  for all rows incl. ours — public label does not reflect custom
+  gamemodes), description, player count, public Rules modal,
+  connect. No IP/config/addon list exposed.
+· Base Content observed installed (r6) while marketplace shows "not
+  claimed" — install and claim are separate ledgers; meaning
+  unverified. Rev 9 published ~19h before capture: review-before-
+  accept gate is LIVE business.
