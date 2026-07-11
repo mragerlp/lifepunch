@@ -308,3 +308,13 @@ reference: docs/reference/SERVER_CONFIG_T1_2026-07-11.json —
 T1 engine config, LIFEPUNCH Official, captured 2026-07-11,
 restart-activated, secret-scanned clean (no tokens/webhooks;
 Discord invite, rules URL, radio streams are public).
+
+## 22. Packet G dispositions & rulings (2026-07-11)
+TAX BAND RULING (2026-07-11): Mayor band 0-30% is design canon
+(Bloodwave). T1 TaxRateMax raised 0.2→0.3, Dev + Official, Parity
+Law, restart-activated. Packet G rows 1-3 dispositioned:
+config-below-intent, corrected; doctrine stands.
+
+MysteryBox = cosmetic lootbox: rewards are inventory item UUIDs;
+WinPercentage is an open-rate, not a gambling edge — inside the
+Cosmetic Firewall.

@@ -119,7 +119,7 @@ protection.
 | Cooling System | sustain: reduces thermal throttle / uptime penalty at high tiers | PLANNED |
 | Power Delivery | efficiency: reduces the power draw that Cooling and Firmware must cover | PLANNED |
 | Efficiency Tuning | yield-per-watt: raises effective output without touching the rate ladder | PLANNED |
-| Payout Buffer | gauntlet: buffer capacity (currently derived `tick × 4`) | PLANNED |
+| Payout Buffer | gauntlet: buffer capacity (tick × 4 = current default; becomes externalized lpbitcoin config key per DXRP doctrine §4) | PLANNED |
 | *Fan RGB* | cosmetic | NOT ENABLED |
 
 ### BITCOIN HUB — Controller & Farm Operations (retention)
