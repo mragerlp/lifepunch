@@ -55,6 +55,8 @@ Decision records go in canon. *Write-once canon that the grounding order does no
 
 **Editor launch: Red drives** — see `lifepunch/docs/handoff/EDITOR_LAUNCH_LAW_2026-07-11.md`. Editor launch is an observed phase Red owns end-to-end (process + heartbeat sensors govern, never a human "editor up" attestation); the 7-item Launch Report gates every launch before any editor-gated instrument runs.
 
+**DXRP platform & publish pipeline:** see `lifepunch/docs/DXRP_PLATFORM_DOCTRINE.md`. The portal is the control plane — CHECK THE PORTAL before declaring a platform gap; addon work ships lane B (portal revision → gamemode install/pin → content/config/market → Sync → test).
+
 ## Hard rules
 
 - **Author** `mragerlp <mragerlp@gmail.com>`. **No AI attribution** on any git surface, including PR bodies (no harness footer).
