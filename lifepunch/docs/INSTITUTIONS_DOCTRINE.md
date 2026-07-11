@@ -292,7 +292,10 @@ taken yourself).
 He sells the machinery of every heist and takes no risk at any of them.
 
 - **Cash** (equipment, dies with you): advanced weaponry · advanced armor
-  (125 armor) · gadgets — pickpocket kit, handcuffs, unarrest baton.
+  (125 armor) [requires T1 MaxArmor raise (currently 100) or per-item
+  override — implementation dependency, resolve at Black Market
+  Dealer build] · gadgets
+  — pickpocket kit, handcuffs, unarrest baton.
 - **BTC** (entities and unlocks, persist): **the Advanced Hacker Terminal
   unlock** — the only key to the Bank Crypto Vault · machine **jailbreaks**
   (skip a tier at a small risk of bricking the rig or flagging the FBI) ·
