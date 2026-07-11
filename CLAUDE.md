@@ -53,6 +53,8 @@ CLAUDE.md → lifepunch/docs/START_HERE_AGENTS.md → lifepunch/docs/CVL_AGENT_O
 
 Decision records go in canon. *Write-once canon that the grounding order does not read is canon nobody reads.* See `lifepunch/docs/handoff/README.md`.
 
+**Editor launch: Red drives** — see `lifepunch/docs/handoff/EDITOR_LAUNCH_LAW_2026-07-11.md`. Editor launch is an observed phase Red owns end-to-end (process + heartbeat sensors govern, never a human "editor up" attestation); the 7-item Launch Report gates every launch before any editor-gated instrument runs.
+
 ## Hard rules
 
 - **Author** `mragerlp <mragerlp@gmail.com>`. **No AI attribution** on any git surface, including PR bodies (no harness footer).
