@@ -1,0 +1,260 @@
+# DXRP PLATFORM DOCTRINE — ratified 2026-07-11
+Sensor: Fable direct read + hands-on creation flows, dxrp.net
+(docs, marketplace, all legal pages, authenticated LIFEPUNCH
+portal: every tab, settings, store, backups), 2026-07-11.
+Living doctrine (amendable in place per write-once law).
+
+## 1. Platform model
+DXRP = portal (control plane) + game code (execution plane). The
+portal is the authoritative backend for network configuration;
+servers pulse to it and pull from it. What canon previously called
+"backend DTO fields" ARE portal data, editable in the portal UI.
+Operating assumption, Bloodwave-ratified: apparent limitations
+seen from the editor are usually already solved portal-side —
+CHECK THE PORTAL before declaring a platform gap.
+
+## 2. Consumption model
+Fork-and-publish is Dimmer's intended model (his explicit fork
+encouragement to contributors; GMod/Workshop lineage formalized).
+Standalone game (lifepunch.rp), Parent Game UNSELECTED — package
+parenting is NOT the model. DXRP consumed at the operational pin,
+LP layer on top. The server launcher (dxrp-server.cs) pulls latest
+game code from GitHub + the network's addons from the DXRP API on
+every boot, verifies build, launches — the Blue lane operates this
+exact loop.
+
+## 3. Publish lanes & addon anatomy
+LANE A — s&box package publish (the game itself).
+LANE B — DXRP portal addon revisions (the LIFEPUNCH content layer;
+this is where our addon work ships).
+Addon = code (→ Code\Addons\<networkId>\<addonId>\, compiled into
+the game project, services auto-register) + assets (→
+Assets\addons\<networkId>\<addonId>\). Identifiers immutable,
+lowercase-hyphen, platform-unique. Caps: code 50MB, assets 300MB.
+Our networkId: lifepunch.
+Addon manage page: Details (visibility · addon identifier ·
+S&BOX IDENTIFIER — the explicit lane-A↔B bridge field) · Content
+entries (UI or JSON) · CONFIG (addon-level JSON defaults that
+gamemodes override) · Revisions (immutable snapshots; only latest
+accepts uploads; SAVE DRAFT exists before Publish; optional s&box
+version pin + changelog) · Listing (price, source visibility,
+media) · OWNERS/Grant Access (per-network access grants — private
+distribution + where buyers appear).
+Public detail page: Claim for Free / price · "N servers using
+this" adoption metric · <network>.<addon> tag · Code Explorer when
+source is visible. lifepunchulx (Public, Rev 13, 5 servers) is the
+reference implementation and the network's sole public addon.
+
+## 4. THE PIPELINE (canonical, Bloodwave-stated, sensor-verified)
+1. PUBLISH the addon revision (lane B; draft → publish).
+2. INSTALL/UPDATE it in the target gamemode's Addons tab —
+   gamemodes PIN a specific revision (installed vs latest, e.g.
+   Base Content Rev 6 installed / Rev 9 available). The gamemode
+   addon set + config IS the LIFEPUNCH layer, portal-controlled.
+3. Code-only addons: done at install. Addons with content/assets:
+   entries appear in the gamemode CONTENT tab, attributed to
+   addon+revision, and get configured per-entry: Primary Reference
+   (asset/prefab path), NAME OVERRIDE (e.g. Monnow's "Tier 1
+   Upgradable Printer" → "Monnowlith Printer T2"), grouping,
+   limit-per-player, health, behavior toggles (disconnect/job
+   cleanup, ownership transfer), and CONFIG JSON with Diff View
+   against the addon's shipped defaults.
+4. MARKET: add/bind market items (Cost + per-job Whitelist/
+   Blacklist) so players can purchase/spawn — the marketItem
+   contract's source of truth and Law 2's enforcement surface.
+5. SAVE the gamemode.
+6. SYNC SERVERS (gamemode action) — pushes to all servers running
+   that gamemode.
+7. TEST on a live server (Dev first, per protection doctrine).
+LP ADDON CONFIG LAW: every LP addon ships tunable variables in its
+config JSON (Monnow's pattern: print speed, tick rates, rate/tick)
+— server owners, including future buyers, tune without code.
+
+## 5. Gamemodes
+Create = name+description shell, then BLANK SLATE: no jobs, groups,
+market, addons, default job/loadout — only platform-default
+Starting Balance ($1,500). Nothing inherits: the 18-job LIFEPUNCH
+config is entirely deliberate state. Tabs: General (default job,
+starting balance, default loadout) · Addons (rev-pinned) · Content
+· Jobs (groups + per-job salary/health/max-slots/loadout; live:
+citizen 12, gundealer 20/3, hitman 8 + Fiber Wire/Pry Bar, mayor
+128/1, hobo 0 + Can/Excrement) · Market · Minigames. Actions:
+Sync Servers, Delete.
+LIFEPUNCH runs 3: LIFEPUNCH™, LIFEPUNCH™ Dev (18 jobs / 4 addons:
+Kevlar, Monnow's Printer Upgrades, Base Content, lifepunchulx),
+Vanilla (clean) — 1:1 official-default mirror, our permanent A/B
+control group. lpbitcoin is NOT yet installed in any gamemode.
+Parallel-gamemode pattern: a future gamemode can be built complete
+beside the live one and servers switched at a Sync (the launch
+lever).
+
+## 6. Server Status Page (per server)
+Status: ACTIVE flag, engine version, last pulse, uptime, MAP,
+RULESET, GAMEMODE — the server↔gamemode/map/ruleset binding lives
+here (Edit to change). Players: current/max, rank-based WHITELIST
+(Dev: Owner+Super Admin, 12 slots). Actions: BROADCAST · RESTART ·
+Delete. Server Token (masked, regenerate; feeds launch command /
+dxrp-server-config.json). SNAPSHOT: auto-saved world state used to
+restore after restart/crash — "contains your permanent props";
+Download / Upload / Clear (Clear = world reset lever). Host stats
+(FPS, bandwidth). CONFIGURATION: per-server engine config as
+before→after diffs vs defaults (Diff View toggle). Live-observed
+knobs: cooldowns (Advert/NoCollide/FadingDoor/HitmanRequest),
+DRUG ECONOMY (DrugDropMaxPrice 350→450, MinPrice 175→200,
+PriceChangeCycle 1800→500 — Packet E's missing fields, found),
+MysteryBoxRewards (references INVENTORY ITEM UUIDs), BreachDuration,
+MaxHitPrice, DroppedMoneyDestroyTime, DropMoneyUsesBankForExcess,
+SentinelTeleportReportingEnabled (SENTINEL = the platform's
+automatic detection system, per-server opt-in), DiscordUrl,
+RulesUrlOverride, TextWordBlacklist.
+
+## 7. Economy spine
+Global Balance is a portal-side network ledger ($60,928,433 at
+study; 4,933 total players; 15s dashboard refresh) — The Gauntlet's
+always-safe terminus, by construction. Per-player balances portal-
+held (top ~$1.0-1.5M; sortable). AUDIT = platform-native Sensor
+Law: every balance mutation is a ModifyBalance event with a reason
+string — live: "$12 for Salary" streams, "$2500 for LIFEPUNCH
+bitcoin sell", "$5000 for LIFEPUNCH hub BTC cashout". lpbitcoin's
+Gauntlet exits already write portal evidence. Economy instruments
+gain a second, portal-side sensor lane (game log + audit row).
+Reason-string namespace law: every LP economy mutation carries
+"LIFEPUNCH <verb>". BACKUPS: automatic hourly when active, 7-day
+retention, manual create, per-snapshot Total Balance, download/
+restore — player balances, levels, inventory, and store data are
+restorable. Restore = destructive-class, Bloodwave's hands only.
+Distinction: server SNAPSHOT = world/props state; portal BACKUP =
+economy/inventory/store state.
+
+## 8. Inventory item engine
+Item Type enum: Weapon Skin, Emote, Currency, Clothing, Accessory,
+Vehicle, Title, Consumable, Other. Rarity: Common/Epic/Legendary.
+Per-item economy flags: Stackable(+max), Tradable, Marketable.
+Create defaults: Common, stackable, tradable, NOT marketable, no
+grant identifier. GRANT IDENTIFIER binds portal item → in-game
+content (emote id, addon content id). Live: $BTC = Legendary
+Currency, stackable max 10 (3 owners/41) — lpbitcoin's coin is
+portal-native; $LP second Legendary Currency; Early Supporter
+Legendary Title × 61 (May-launch cohort). EARNED-ONLY door is
+mechanically enforceable (untradable+unmarketable). BULK INVENTORY:
+Give/Take × items × qty with player filters (rank, online, playtime
+min/max) + Preview — cohort grants in one gated op. Clothing/
+Accessory = Cosmetics slice delivery rail; Consumable = Hospital
+stim-war items; Vehicle = ownable entity class, all backup-covered,
+all subject to the four acquisition doors + Law B.
+
+## 9. Ranks & donor law
+Ranks: order, inheritance, flags (Show On Nameplate/In Chat),
+server restriction, grouped permissions (Portal/Moderation/
+Commands/Ability/Building/Misc). Ladder: Owner, SA×2, Admin, Mod,
+EVIP(OG), EVIP, VIP(OG), VIP, Members (11). DONOR LAW: donor ranks
+grant ONLY social/QoL (nameplate/chat, RP Name, Use Title, Vote
+Bets, Minigame Participate/Manage, Bypass Max Players) — ZERO
+economy/combat advantage. Facepunch compliance AND LIFEPUNCH
+identity: donors buy identity + convenience, never power.
+
+## 10. Moderation & the Discord loop
+Sanctions (2,290 records): manual (issuer-attributed, typed,
+durations incl. Permanent), AUTOMATIC (Sentinel detections, e.g.
+Teleport), AI-issued category ("Show AI" toggle). Flag/revoke/
+history per row. Player profiles: editable balance/level,
+inventory, staff notes (2000 chars), sanctions, full event log
+(Kill/Death/Chat retained; 9,509 records on Owner). DISCORD
+WEBHOOKS are portal-native and ALREADY CONFIGURED: Mod Log
+(sanctions/bans/automated checks), Media, Chat Log. Webhook URLs
+are CREDENTIALS — never in repos/docs/packets/pastes. The player-
+report loop = Mod Log webhook + sanctions pipeline + (future)
+scoped-key Discord bot.
+
+## 11. API & keys
+api.dxrp.net · X-Api-Key + X-Tenant headers · scoped permissions
+(view/edit per domain), keys cannot exceed issuer's access,
+revocable · rate limit 10 req/10s/key (429 + Retry-After).
+Active: one wildcard-ALL key ("LifePunch", never-expires) —
+reserved for the trusted internal integration that holds it.
+KEY LAW: every new integration (Discord bot, donation automation,
+lifepunchnet host link) gets its OWN minimum-scope, purpose-named,
+independently-revocable key. Keys never in repos or client code.
+Terms forbid API access beyond documented surface.
+
+## 12. Monetisation rails
+Payments process through DXRP only (Terms §4 EXCLUSIVITY: no
+external donation links, personal handles, off-platform stores —
+violation risks monetisation loss/server removal; competitor
+violations observed in the public directory change nothing for
+us). Stripe is the processor (card data never touches Dxura).
+"Platform currency" is purchasable at platform level. Platform cut
+15%; earnings accrue to a Payment Recipient ledger (Steam ID;
+LIFEPUNCH unset = not selling yet, deliberate). WHITE LABELING:
+operator's external store site allowed as post-purchase redirect
+host (exact hostnames) — a branded shop.lifepunch.co is possible
+within exclusivity. Refunds: all sales final (exceptions:
+duplicate, non-delivery, fraud, law); chargebacks risk suspension
++ forfeiture; DXRP holds final refund authority over operator-sold
+products — perk fulfillment must tolerate DXRP-initiated refunds.
+Business doctrine: PRIVATE BY DEFAULT · AGNOSTIC BY DISCIPLINE
+(portal-driven config, no LP hardcoding — lifepunchulx is the
+model) · SELL LATER FROM STRENGTH (marketplace nascent: 12 public
+addons, $2-13) · players > addon revenue.
+THE DONATION LOOP (all on rails): DXRP product purchase → perk
+delivery (rank assign / item grant / bulk op / scoped-key API) →
+Discord webhook announce.
+
+## 13. Store (KV persistence)
+Portal Store = hierarchical key-value persistence for server and
+addons, per-entry expiry (live: lifepunchulx/settings,
+staffmenu/settings, commands/waypoint/*). Official cross-restart
+home for addon config/state — candidate target for lpbitcoin
+config.
+
+## 14. Legal corpus (Dimmer/Dxura, all read 2026-07-11)
+TERMS: Facepunch policy precedence; operator responsibilities
+(monetisation exclusivity; player data restricted to server
+administration — portal player data NEVER leaves the portal into
+repos, packets, or Cornerman); developer terms (IP warranty, no
+malicious code, Dxura may inspect addon code anytime, buyers keep
+distributed revisions, addon support is the developer's);
+payouts (accrual, manual, discretionary, reserves, seller owns
+taxes, fees changeable). PRIVACY: Steam identity + activity/audit
++ Stripe billing + technical data; no selling of personal info;
+operator sharing limited to moderation-relevant; retention while
+active + reasonable period; rights via legal@dxura.com. DMCA:
+standard notice/counter-notice via legal@dxura.com; repeat
+infringers risk termination. REFUNDS: as §12.
+
+## 15. Public surfaces
+dxrp.net/servers: all networks — name, network+gamemode tags,
+description (ours carries lifepunch.co), live player count, rules,
+connect. dxrp.net/marketplace/addons: the addon store (Dimmer's
+Workshop/gmodstore successor — no Steam Workshop for DXRP).
+Adoption metrics public.
+
+## 16. Creation idiom & study artifacts
+Portal idiom: CREATE-SHELL-THEN-EDIT (minimal dialog → full detail
+page). Study artifacts pending Bloodwave's delete: addon "Fable
+Test" (fable-test — identifier burned permanently), gamemode
+"Fable Test Mode", items "Fable Test Item" + "Fable Study Title"
+(both Vehicle/Common specimens).
+
+## 17. Workflow integration (CVL)
+· The portal is a first-class work surface beside the repo and the
+  editor. Fable holds portal eyes (read + Bloodwave-authorized
+  test writes); Bloodwave executes all destructive/production
+  portal actions (restore, delete, Sync on live, sanctions).
+· lpbitcoin route to production: lane-B revision (portal addon
+  lpbitcoin, currently 0 revisions) → install into LIFEPUNCH™ Dev
+  gamemode → content/config/market per §4 → Sync → live test —
+  behind the existing code gates (chair → commit → PR → republish
+  ruling decomposes into lane A and/or B at the sitting).
+· Vanilla (clean) gamemode = canonical A/B control for economy
+  disputes.
+· THE LAUNCH PLAY (design-ready, unscheduled, own STOP-GO when
+  real): portal backup (preserve pre-launch economy) → economy
+  reset at final-package launch (mechanism = its own gated ruling;
+  restore-class = Bloodwave's hands) → seed via gamemode Starting
+  Balance + Bulk Inventory loyalty grants (Early Supporter
+  pattern) → webhook announce.
+· Cornerman: distilled, account-data-free doctrine packets only;
+  never raw portal data.
+· QUEUED NEXT: lifepunch.co study + Cloudflare — separate arc,
+  separate record.
