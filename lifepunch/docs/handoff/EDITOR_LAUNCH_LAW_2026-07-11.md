@@ -82,3 +82,26 @@ status):
     behind the pin, or pin stale vs. ruling = report before work.
 Wrong-lane or drifted base = the wrong-copy trap; one cheap
 sensor read replaces the expensive failure of building on it.
+
+Lane declaration is Bloodwave's alone: DXRP UPSTREAM lane
+activates only on an explicit "Dimmer work" declaration in the
+task relay; absent that, the lane is LIFEPUNCH. Seats verify
+the declared lane's base; they never infer the lane.
+
+## Session Start Rule (seat-driven sync)
+At every session bootstrap, BEFORE filing the arrival report,
+each Code seat runs and reports:
+  · lifepunch: git fetch origin; pull current branch if
+    fast-forward clean. Diverged or dirty-tree conflict = report,
+    do not force.
+  · dxrp-public: git fetch origin AND git fetch upstream
+    (dxura/dxrp). Report both tips + behind-counts. FETCH ONLY
+    on the upstream remote — merging upstream is exclusively
+    the gated re-pin lane; never auto-merge, never advise the
+    GitHub web "Sync fork" button.
+Arrival reports carry the resulting heads as sensors. Bloodwave
+performs NO manual fetch/pull as a session precondition; any
+human git action via GitHub Desktop or web UI is optional
+convenience on origin only, and NEVER upstream-facing on
+dxrp-public.
+Odysseus mirrors this rule on Green's clones.
