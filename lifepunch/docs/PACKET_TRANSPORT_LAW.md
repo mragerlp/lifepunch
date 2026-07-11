@@ -31,3 +31,9 @@ entirely and ends the class of failure.
 
 Related: `CORNERMAN_FOR_AGENTS.md` (offload pattern) · `CORNERMAN_HEADLESS_DROP_WORKER.md`
 (worker internals) · `GREEN_EXECUTION_MODEL.md` (sync law).
+
+## Return lane (addendum 2026-07-11)
+
+Return lane = `\\10.10.10.2\CornermanOutbox` (tasks→inbox, results/notes→outbox, by design);
+corner-note filenames use underscores (`CORNER_NOTE_...`); `G:` mapped-drive reads unreliable
+— UNC copy to `C:\` remains the retrieval pattern.

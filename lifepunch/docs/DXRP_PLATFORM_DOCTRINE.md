@@ -44,6 +44,10 @@ Public detail page: Claim for Free / price · "N servers using
 this" adoption metric · <network>.<addon> tag · Code Explorer when
 source is visible. lifepunchulx (Public, Rev 13, 5 servers) is the
 reference implementation and the network's sole public addon.
+Grant Access observed in the wild: Monnow's Printer Upgrades shows
+"Your network LIFEPUNCH™ owns this addon" — entitlement in the
+Transactions view, granted by the developer, no expiry.
+Developer-to-network grants are the private-distribution rail.
 
 ## 4. THE PIPELINE (canonical, Bloodwave-stated, sensor-verified)
 1. PUBLISH the addon revision (lane B; draft → publish).
@@ -77,6 +81,10 @@ Idle Radius+Volume. The complete upgrade economy is externalized
 as config — tune in portal, diff vs shipped defaults, zero
 republish. lpbitcoin's config MUST take this shape: hash rates,
 tick intervals, buffer caps, tier costs, payout percents.
+Buyer-side proof of the pattern: Monnow's public About page
+advertises 6 upgrade tracks × 3 levels, 3 tiers, "fully
+server-configurable via portal config." Configurability is a
+SELLING POINT — lpbitcoin's future listing advertises the same.
 
 ## 5. Gamemodes
 Create = name+description shell, then BLANK SLATE: no jobs, groups,
@@ -207,6 +215,18 @@ addons, $2-13) · players > addon revenue.
 THE DONATION LOOP (all on rails): DXRP product purchase → perk
 delivery (rank assign / item grant / bulk op / scoped-key API) →
 Discord webhook announce.
+· PLATFORM CURRENCY: none exists today. "Currency" is a per-network
+  inventory item TYPE; $BTC and $LP are LIFEPUNCH-defined instances.
+  Privacy policy's "platform currency" language = dormant/planned
+  rail; its arrival will land in the portal Changelog. Only live
+  real-money rail: per-addon Stripe checkout. Marketable flag is
+  0/17 network-wide, buyer-side meaning UNVERIFIED — do not design
+  against it.
+· Checkout anatomy (captured to hard-stop on a $2 addon): price +
+  "small payment processing fee, added at checkout" · network
+  selector (which network receives the addon) · Coupon Code + Apply
+  · Confirm Purchase → Stripe redirect. Coupons exist platform-side
+  — note for future promos.
 
 ## 13. Store (KV persistence)
 Portal Store = hierarchical key-value persistence for server and
@@ -270,7 +290,7 @@ Test" (fable-test — identifier burned permanently), gamemode
 ## 21. THE CONFIG LAYER MODEL (read in full 2026-07-11)
 Three config tiers, each with its own scope and activation:
 T1 SERVER ENGINE CONFIG — per-server, Edit → Editor, one JSON
-  document (~526 lines live on Dev). Activation: NEXT SERVER
+  document (519 lines live on Dev). Activation: NEXT SERVER
   RESTART. Views: Diff rows ↔ override JSON ↔ full editor.
   Contains: all gameplay cooldowns (jobs/votes/arrest/lockdown/
   doors/hitman) · institutional economies (PD upgrades Overheal
@@ -309,12 +329,46 @@ T1 engine config, LIFEPUNCH Official, captured 2026-07-11,
 restart-activated, secret-scanned clean (no tokens/webhooks;
 Discord invite, rules URL, radio streams are public).
 
-## 22. Packet G dispositions & rulings (2026-07-11)
-TAX BAND RULING (2026-07-11): Mayor band 0-30% is design canon
-(Bloodwave). T1 TaxRateMax raised 0.2→0.3, Dev + Official, Parity
-Law, restart-activated. Packet G rows 1-3 dispositioned:
-config-below-intent, corrected; doctrine stands.
-
-MysteryBox = cosmetic lootbox: rewards are inventory item UUIDs;
-WinPercentage is an open-rate, not a gambling edge — inside the
-Cosmetic Firewall.
+## 22. PORTAL SCAN ADDENDA + RULINGS (2026-07-11)
+· CHANGELOG LAW: dxrp.net portal Changelog is the platform drift
+  sensor — dated, versioned, audience-tagged (P/O/D). Practice
+  began 2026-07-08 (v0.1.0 Boiler → v0.1.3 = portal stamp
+  2026.07.10-81e8e1f). LIFEPUNCH reads it WEEKLY; platform-currency
+  arrival and breaking changes land there first.
+· MINIGAMES: portal tab "Coming Soon" while T1 carries
+  MinigamesEnabled + audit type + rank permission. Pattern: T1 runs
+  ahead of portal UI — check T1 before calling a feature absent.
+· RULESETS: Markdown editor (name/description/content, preview).
+  PUBLIC EMBED: dxrp.net/embed/ruleset/<id> — rules embeddable into
+  lifepunch.co (site-arc dependency).
+· MAPS: Parent Map inheritance — prefabs layer from parent maps;
+  children inherit and extend fittings. Per-map prefab upload/
+  Replace/Remove/Download. LIFEPUNCH current: 2 maps, both
+  thieves.rpdowntown3t, no parent set. This is the prefab rail's
+  management surface.
+· AUDIT ACTION-TYPE ENUM (partial, 44 captured, tail pending):
+  AddLaw, Advert, Arrest, ATM, Ban, BulkGiveItems, BulkRevokeItems,
+  CancelDemote, Chat, CoinFlip, Create, CustomJob, Death, Delete,
+  Demote, DispatchAction, DropItem, Expire, ForceSellDoor,
+  ForceRpName, Frame, Freeze, Gag, GenerateToken, GiveItem, Hit,
+  Kick, Kill, MayorAnnounce, MayorTown, Me, Minigame, ModifyBalance,
+  MoneySpawn, MysteryBoxWin, PickupItem, PocketDrop, PocketPickup,
+  PoliticalPrisoner, PrivateMessage, Recycler, RemoveLaw, RpName,
+  Sanction, [tail pending]. Every entry is a sensor lane: economy
+  instruments cite ModifyBalance, moderation cites Sanction/Ban,
+  item flows cite Give/Drop/Pickup.
+· TAX BAND RULING (Bloodwave, 2026-07-11): Mayor band 0-30% is
+  DESIGN CANON. T1 TaxRateMax raised 0.2→0.3, Dev + Official, Parity
+  Law, restart-activated (Bloodwave's portal edit). Packet G rows
+  1-3 dispositioned: config-below-intent, knob corrected; doctrine
+  numbers stand.
+· MYSTERYBOX RULING: cosmetic lootbox — rewards are inventory item
+  UUIDs; WinPercentage is an open-rate, not a gambling edge. Inside
+  the Cosmetic Firewall. (Packet F casino flag = false positive,
+  dismissed with portal sensor.)
+· Repo note: PR #60 merged as 790c43e (+534 −1, checks passed;
+  GitHub sensor 2026-07-11).
+· T1 SNAPSHOT SUPERSESSION: after Bloodwave's TaxRateMax edit +
+  restarts, SERVER_CONFIG_T1_2026-07-11.json is stale on one field
+  — next re-export lands as a NEW dated file; dated snapshots exist
+  for exactly this.

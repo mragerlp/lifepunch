@@ -207,3 +207,24 @@ Publish law: `lifepunchaddons/docs/DXRP_ADDON_PUBLISH_DOCTRINE.md` · active gat
 | `.cursor/rules/lifepunch-active-workstream-gate.mdc` | Single lane gate |
 | `lifepunchaddons/docs/LIFEPUNCH_DIGITAL_MACHINE_STANDARD.md` | Machine stack P0–P4 |
 | `lifepunch/docs/MCP_AGENT_ROUTING.md` | s&box MCP task routing |
+
+---
+
+## CVL seat & workflow laws (2026-07-11)
+
+- **ULTRACODE LAW:** dynamic workflows (multi-agent orchestration) permitted on Red for
+  genuinely parallel multi-target work — recon, sweeps, independent repairs, config
+  extraction. Invocation: **Bloodwave at console ONLY, never via relay.** Never during
+  observed phases (chair, a-d drives) or edits touching <~5 files (Session 2 precedent:
+  ceremony overreach).
+- **ODYSSEUS_SEAT_LAW:** Odysseus plans, audits, scouts — it **never orchestrates other seats
+  and never transports.** Bloodwave is the sole execution authority and sole transport between
+  seats. Results flow via Cornerman outbox (`\\10.10.10.2\CornermanOutbox`); tasks flow via
+  inbox. Corner notes are advice-class, never work orders.
+- **STRUCTURED-HANDOFF SCHEMA (Green):** corner handoffs use fixed `key: value` lines, no free
+  prose in status fields — local-model output garble made flags lossy 2026-07-11 ("125-armor",
+  "Mnic"); schema prevents recurrence.
+- **SCAN-SEAT LAWS:** long Chrome scan seats bank an interim to Bloodwave after EVERY lane
+  (context compaction killed a seat's working memory 2026-07-11; the banked interim was the
+  only survivor — by design). Micro-bootstraps to fresh seats carry target URLs inline: fresh
+  seats hold no domains.
