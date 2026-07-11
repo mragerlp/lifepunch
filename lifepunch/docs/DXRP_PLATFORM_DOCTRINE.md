@@ -69,6 +69,14 @@ reference implementation and the network's sole public addon.
 LP ADDON CONFIG LAW: every LP addon ships tunable variables in its
 config JSON (Monnow's pattern: print speed, tick rates, rate/tick)
 — server owners, including future buyers, tune without code.
+Reference schema (Monnow's Printer Upgrades, content-entry
+Config → Full JSON, ~48 keys): per-level BankCost/BankPercent/
+CoolingCost/PrintAmount/IntervalCost/StorageCost/Silencer
+Cost-Radius-Volume, BaseMaxStorage, HeatDamagePerLevel, Beep/
+Idle Radius+Volume. The complete upgrade economy is externalized
+as config — tune in portal, diff vs shipped defaults, zero
+republish. lpbitcoin's config MUST take this shape: hash rates,
+tick intervals, buffer caps, tier costs, payout percents.
 
 ## 5. Gamemodes
 Create = name+description shell, then BLANK SLATE: no jobs, groups,
@@ -258,3 +266,36 @@ Test" (fable-test — identifier burned permanently), gamemode
   never raw portal data.
 · QUEUED NEXT: lifepunch.co study + Cloudflare — separate arc,
   separate record.
+
+## 21. THE CONFIG LAYER MODEL (read in full 2026-07-11)
+Three config tiers, each with its own scope and activation:
+T1 SERVER ENGINE CONFIG — per-server, Edit → Editor, one JSON
+  document (~526 lines live on Dev). Activation: NEXT SERVER
+  RESTART. Views: Diff rows ↔ override JSON ↔ full editor.
+  Contains: all gameplay cooldowns (jobs/votes/arrest/lockdown/
+  doors/hitman) · institutional economies (PD upgrades Overheal
+  8000→M4 32000 + durations/decay, BankRaidVanishPercent 0.125,
+  TaxResetTreasuryOnMayorDeath/Elect, TownNameCost, hitman price
+  ladder, drug drop min/max/cycle, Recycler drop tables,
+  garbage) · SENTINEL anticheat suite (Teleport/NetSpam/MassKill:
+  reporting, punishment, thresholds, grace, decay — per server)
+  · master switches (SalaryPaymentEnabled, MoneyEnabled,
+  JobsEnabled, MinigamesEnabled, EventsEnabled, AutoUpdateEnabled
+  + 120s check, SnapshotEnabled + 300s interval/600s grace) ·
+  FactionsEnabled:false + FactionCreateCost:500000 (engine-ready,
+  deliberately off; pairs with portal Factions WIP) · anti-
+  exploit (ForcerExcludeTags:["money"], PrinterDestroyAfter
+  DisconnectTime) · build governance (prop/text/frame/door/light
+  limits, ~20 wire component limits, MaterialWhitelist ~55) ·
+  chat (ChatMaxLength 150, distance, TTS, emojis, automessages)
+  · nameplates, RpNameMaxLength, AFK-demote, armor/fall/revive,
+  radio URLs, MysteryBox (win % + inventory-item UUID rewards),
+  weapon spread model, medkit tuning, DupeWorkshopType "dxdupe".
+T2 GAMEMODE CONFIG — per-gamemode: jobs/market/content entries +
+  per-entry config JSON overriding addon defaults (name override,
+  limits, health, behaviors). Activation: Save + SYNC SERVERS.
+T3 ADDON SHIPPED DEFAULTS — the addon's Config tab JSON,
+  inherited by every installing gamemode until overridden.
+Sensor implication: "is X tunable?" is answered by checking T1
+→ T2 → T3 before writing code. Most apparent engine limitations
+are T1 knobs.
