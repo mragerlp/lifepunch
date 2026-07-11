@@ -126,6 +126,58 @@ UI is a panel surface, so it proves in the **fast scene** (`blank.scene`), not t
 No visual claim without an `sbox` bridge screenshot from Red — see the `lifepunch-editor-gate`
 skill. Read the PNG yourself.
 
+## 9. RAZOR TRANSPILER GOTCHAS — the class-collapse class
+
+s&box's Razor transpiler fails in ways that produce a **whole-class collapse**: the generated
+`_gen_*.razor.cs` emits every markup helper and `@code` member as a "top-level statement" and
+the class never forms. Canon (with the sensor trail): **`lifepunch/docs/handoff/EDITOR_LAUNCH_LAW_2026-07-11.md`**,
+"Compile gotchas" section. Three laws, all proven on `LpHashdPanel.razor` (batch 4):
+
+- **Never two adjacent `@(...)` in ONE attribute** — `class="x @(A)@(B)"`. The transpiler emits
+  `(A)(B)` with **no `+`**, invalid C#, and the whole class collapses. Merge: `@( (A) + (B) )`.
+- **`@code` stays ASCII** — a non-ASCII char in a `@code` block crashes the transpiler
+  (sensor: `razor_lint`). Escape display glyphs as `\uXXXX` (identical runtime), keep comments
+  ASCII. This applies to `//` comments too — the SCSS/Razor scanner reads tokens out of them.
+- **Cascade-debug** — on a "declared in a top-level statement" flood, hunt the **FIRST** error
+  in the `_gen_*.razor.cs` file, not the tail. `get_compile_errors` windows the LAST N lines,
+  masking the true root; grep gen-file line numbers ascending, read the earliest error's
+  MESSAGE — it names the real syntax fault. The tail is downstream noise.
+
+**SCSS parser mirror:** the same token-scanning bites SCSS. `display: inline-flex` is dropped
+silently (s&box's flex engine has no inline variant → use `display: flex`); `@media` is an
+unknown rule and the whole block is skipped. A property named inside a `//` comment can still
+trip the "invalid with display" warning — keep comments free of `property: value` tokens.
+
+## 10. CURRENCY IDENTITY & SEPARATOR (Laws 15, 17)
+
+Currency display is governed by **LAW 17 Currency Identity** and **LAW 15 Separator Law** in
+`LIFEPUNCH_UI_STANDARD.md`. Read them; the ones most often broken:
+
+- **Sign carries the color, amount is white by default** (Law 17): `฿`+orange = BTC, `$`+green
+  = cash. Bare "BTC"/cash text without a colored sign is a violation. Units and separators
+  (`/min`, `/`, `(100%)`) and trailing labels (`invested`) stay **white**. Full-colored amounts
+  are permitted only where DXRP-native convention or emphasis warrants (per-surface, Bloodwave's
+  eye). **Green is reserved for cash and success — never power/status/BTC controls.**
+- **Dual-price token** = `฿4 | $20,000` — white divider, tight gaps, each side full-colored.
+  Reference: the HASHD `.entity-track-price` (`display: flex` + `gap`, `.lp-money-divider`).
+- **A composite string is built C#-side and interpolated as ONE node** (Law 15) — a separator
+  (`·` `/` `—`) is never a bare literal between two `@`-expressions (Razor splits it into its
+  own text node and collapses whitespace → run-ons/stray marks). Build `$"{a} · {b}"` in C#, or
+  give the separator its own element (`<span class="lp-chip-sep">·</span>`).
+
+## 11. POPUP / TOOLTIP / MODAL BACKDROP (HASHD conventions)
+
+From the HASHD set (`LpHashdPanel.razor` + `.razor.scss`):
+
+- **A popup that receives clicks needs `pointer-events: all`** on the popup itself — the row
+  beneath bleeds clicks through otherwise (the ✓/✗ confirm defect; the tell was the underlying
+  tooltip showing through).
+- **Modal-confirm backdrop** = a full-body inert `confirm-scrim` (`@if (_confirm…) { <div … onclick=Dismiss> }`)
+  at a z-index below the open row (`entity-track-row.confirm-open` lifts), so an outside click
+  dismisses and the row reads as focused.
+- **Confirm chips** are 24px with an `:active { transform: scale(0.9) }` press affordance and a
+  `tooltip=` on each. Icons sit inline, bare (§3).
+
 Every LIFEPUNCH `.cs` / `.razor` / `.scss` file carries the
 `PROPRIETARY & CONFIDENTIAL — © 2026 lifepunch.co` header before any `using`, `namespace`, or
 style. **Never** in the DXRP fork.

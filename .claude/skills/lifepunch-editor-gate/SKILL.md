@@ -46,14 +46,23 @@ diff <(tr -d '\r' < "lifepunchaddons/Code/Addons/lifepunch/$f") \
 running gate invalidates every case already driven, because the assembly under test is no
 longer the assembly the earlier cases passed on. Sync, then restart from P0.
 
-### Syncing — `-WhatIf` first, every time
+### Syncing — `-WhatIf` first, every time; the FULL launch set, never a lone addon
 
 ```
-lifepunch/scripts/Sync-LifePunchAddonsToDxrp.ps1 -Addon lpbitcoin -WhatIf
+lifepunch/scripts/Sync-LifePunchAddonsToDxrp.ps1 -Addon lpbitcoin,adminmenu -WhatIf
 ```
 
 **The dry run is the authorization.** Only your session's files listed → run for real.
 Anything else appears → **STOP and report.**
+
+**LAUNCH-SET RULE (`EDITOR_LAUNCH_LAW_2026-07-11.md`):** sync the full launch set
+(`lpbitcoin,adminmenu`), **never a lone addon.** A lone-addon sync purges the siblings and
+orphans their static hooks — the 2026-07-12 flood precedent: syncing `lpbitcoin` alone purged
+`adminmenu`, orphaning `StaffMenuTestBotsAutoSpawn`'s static hook into a per-frame
+`NotImplementedException` / `Chat.TickCommands` NRE flood. Recovery is a full-set re-sync **plus
+a fresh editor boot** (a modified-but-orphaned static hook does not clear on hotload).
+The artifact-lock IOException on `bitcoinhub-fan.vmdl` is benign (editor holds it) — one retry
+clears it; `Sync OK` in the body with a trailing exit-1 is a completed sync.
 
 ## 4. SCENE LAW
 
@@ -87,6 +96,29 @@ number shifting by exactly the lines you added is itself a sensor.
 code provably could not do X, observing X identifies the new assembly.
 
 After `execute_csharp`, always sweep `Editor/__Exec_*.cs`.
+
+### Hotload limits — what hotload CANNOT refresh
+
+Hotload is not a full boot. It reliably swaps method bodies, but it does **not** reliably re-run:
+
+- **NEW razor event handlers / `@ref` bindings** — a newly-added `onclick`/`@ref` may not bind
+  until a fresh boot; the old handler table lingers.
+- **MODIFIED existing SCSS rules** — a NEW selector hotloads, but editing an EXISTING rule can
+  stay stale (the old computed value caches) until a fresh-boot recompile. A power toggle that
+  reads the "wrong" color after a correct SCSS edit is usually this, not a code bug.
+- **Static hooks / static ctors** — an orphaned or changed `static` hook does not re-arm on
+  hotload (see the launch-set flood). Fresh boot re-arms.
+- **During play, code hotload can be deferred entirely** — `trigger_hotload` is blocked while
+  playing; the file-watcher may not fire on a synced change. When it won't, Bloodwave fires the
+  hotload from the keyboard, or stop play. A successful reload shows a snapshot-restore + fresh
+  spawns in the log.
+
+### The fresh-boot-before-commit gate
+
+Any claim about a MODIFIED-existing-rule (toggle colors, restyled selectors) or a new handler
+binding (button clicks) gets its **definitive** proof at a **fresh editor boot**, not a
+hotload — do the boot before the commit that ships it. Batch-4 `✓/✗` click + power-toggle color
+are exactly this class.
 
 ## 6. SCREENSHOTS ARE ASSERTIONS
 
