@@ -1,0 +1,4 @@
+# Verbatim external config captures — preserve exact source bytes.
+# -text disables EOL/text normalization so the committed blob equals the
+# captured file byte-for-byte (these are reference snapshots, not source we edit).
+SERVER_CONFIG_T1_*.json -text

@@ -299,3 +299,12 @@ T3 ADDON SHIPPED DEFAULTS — the addon's Config tab JSON,
 Sensor implication: "is X tunable?" is answered by checking T1
 → T2 → T3 before writing code. Most apparent engine limitations
 are T1 knobs.
+PARITY LAW: Dev and Official T1 configs are kept identical
+except where a test explicitly requires divergence; any
+divergence is temporary, named, and reverted when the test
+closes. Verified identical by full-text diff 2026-07-11
+(sensor: Fable, chat paste vs official.txt). Verbatim
+reference: docs/reference/SERVER_CONFIG_T1_2026-07-11.json —
+T1 engine config, LIFEPUNCH Official, captured 2026-07-11,
+restart-activated, secret-scanned clean (no tokens/webhooks;
+Discord invite, rules URL, radio streams are public).
