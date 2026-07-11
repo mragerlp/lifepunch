@@ -56,6 +56,23 @@ public static class LifePunchMenuInteractRange
 	public static bool IsHubInOpenRange( Vector3 viewerPos, Vector3 targetPos )
 		=> IsWithin( viewerPos, targetPos, HubOpenHorizontalUnits, HubOpenVerticalUnits, out _ );
 
+	/// <summary>Bounds-derived hub reach (2026-07-10): measure to the model's world bounding BOX,
+	/// not the pivot. A ground-aligned hub puts its pivot at z≈0, so the old fixed 1.5 m vertical
+	/// slack measured from the pivot failed for a standing player (~1.63 m eye) — Hands+E opened
+	/// nothing while the Build tool (which bypasses this gate) worked. Measuring to the box makes
+	/// the effective reach scale with model size: the vertical span the player can stand within is
+	/// the model's own height, plus a small edge slack — never a pivot-relative constant. The
+	/// horizontal slack beyond the footprint still exceeds DXRP hands-grab reach so a step back
+	/// opens the menu for ANY model.</summary>
+	public static bool IsHubInOpenRange( Vector3 viewerPos, BBox worldBounds )
+	{
+		var closest = worldBounds.ClosestPoint( viewerPos );
+		var delta = closest - viewerPos;
+		var horizontal = new Vector3( delta.x, delta.y, 0f ).Length;
+		var vertical = MathF.Abs( delta.z );
+		return horizontal <= HubOpenHorizontalUnits && vertical <= HubOpenVerticalUnits;
+	}
+
 	public static bool IsInOpenRange( Vector3 viewerPos, Vector3 targetPos, out float horizontalDistance )
 		=> IsWithin( viewerPos, targetPos, OpenHorizontalUnits, OpenVerticalUnits, out horizontalDistance );
 
@@ -73,5 +90,47 @@ public static class LifePunchMenuInteractRange
 		horizontalDistance = new Vector3( delta.x, delta.y, 0f ).Length;
 		var vertical = MathF.Abs( delta.z );
 		return horizontalDistance <= horizontalUnits && vertical <= verticalUnits;
+	}
+
+	/// <summary>Dev proof (cases e/f) — runs the hub reach math on SYNTHETIC bounds so the fix is
+	/// provable without a live hub-with-model. Reproduces the failing geometry (ground-aligned hub,
+	/// pivot at z=0) and shows the pivot check FAILS a standing-eye viewer while the bounds check
+	/// PASSES, scales across model sizes, and keeps horizontal reach above DXRP grab-reach (~150u).
+	/// Emits LP_HUBREACH_PROBE lines. Call via the bridge (invoke_static).</summary>
+	public static string HubReachProbe()
+	{
+		const float grabReachUnits = 150f; // Config.Current.Game.ReachDistance ≈ 3.81 m (comment ref)
+		const float eyeZ = 64f;            // standing DXRP player eye ≈ 1.63 m
+
+		string Run( string label, float modelHeight, float modelRadius )
+		{
+			// Ground-aligned hub at origin: pivot at z=0, box from z=0..modelHeight.
+			var pivot = Vector3.Zero;
+			var bounds = BBox.FromPositionAndSize(
+				new Vector3( 0f, 0f, modelHeight * 0.5f ),
+				new Vector3( modelRadius * 2f, modelRadius * 2f, modelHeight ) );
+
+			// Viewer at physical-handling range: 1 unit in front, standing eye height.
+			var viewer = new Vector3( modelRadius + 1f, 0f, eyeZ );
+
+			var oldPivotPass = IsHubInOpenRange( viewer, pivot );      // the bug: fixed 1.5 m from pivot
+			var newBoundsPass = IsHubInOpenRange( viewer, bounds );    // the fix: measured to the box
+
+			// Effective horizontal reach from pivot = footprint radius + horizontal slack.
+			var effectiveHorizontalReach = modelRadius + HubOpenHorizontalUnits;
+			var exceedsGrab = effectiveHorizontalReach > grabReachUnits;
+
+			return $"LP_HUBREACH_PROBE {label} h={modelHeight:F0} r={modelRadius:F0} " +
+				$"oldPivotPass={oldPivotPass} newBoundsPass={newBoundsPass} " +
+				$"effHReach={effectiveHorizontalReach:F0}u grab={grabReachUnits:F0}u exceedsGrab={exceedsGrab}";
+		}
+
+		var tall = Run( "tall-hub", 80f, 20f );
+		var short0 = Run( "short-hub", 40f, 16f );
+		var big = Run( "big-hub", 160f, 48f );
+		Log.Info( tall );
+		Log.Info( short0 );
+		Log.Info( big );
+		return tall + "\n" + short0 + "\n" + big;
 	}
 }

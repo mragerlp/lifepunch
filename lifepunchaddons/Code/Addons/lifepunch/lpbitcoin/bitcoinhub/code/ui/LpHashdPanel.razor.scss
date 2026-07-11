@@ -6337,8 +6337,11 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 }
 
 // Row rework (3.5): centered circuit DISPLAY + right-slot action button.
+// Pips sit in a fixed-width column (not flex-grow) so the I–V row aligns identically across
+// every track row — the growing lead absorbs name-width variance, the right transact column is
+// pinned, and the stepper's x stays constant. (upgrade-page polish 3b, 2026-07-12)
 .lp-bitcoin-ops .lp-stepper.centered {
-	flex: 1 1 auto;
+	flex: 0 0 auto;
 	justify-content: center;
 }
 
@@ -6587,6 +6590,9 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	flex: 0 0 auto;
 	flex-shrink: 0;
 	white-space: nowrap;
+	// Pinned right column so the fixed-width pip stepper lands at a constant x across rows (3b).
+	// Sized to seat the ฿ + ($cash) + payback hint (3a keeps cash here) — playthrough-tunable.
+	min-width: 120px;
 }
 
 .lp-bitcoin-ops .entity-track-price {
@@ -6613,12 +6619,14 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 // where shrinking is wanted. In a track row that let the button collapse below its own
 // label — the box measured 56 units against a 151-unit price, so "UPGRADE" painted
 // outside its box and over the price. Pin it to its content instead.
+// Reworked (3c, 2026-07-12): flatter, sentence-case "Upgrade", bold-not-black, 2px interactive
+// radius, height matched to the 30px pip cells — LIFEPUNCH_UI_STANDARD button grammar.
 .lp-bitcoin-ops .entity-track-upgrade {
-	height: 32px;
-	padding: 0 16px;
-	font-size: 11px;
-	font-weight: 900;
-	letter-spacing: 0.05em;
+	height: 30px;
+	padding: 0 14px;
+	font-size: 12px;
+	font-weight: 700;
+	border-radius: 2px;
 	white-space: nowrap;
 	flex-grow: 0;
 	flex-shrink: 0;
@@ -6631,10 +6639,11 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	position: absolute;
 	right: 0;
 	left: auto;
-	min-width: 300px;
+	// Briefer BTC-only popup (3a refined) + larger offset so it clears / doesn't crowd the row (2026-07-12).
+	min-width: 240px;
 
-	&.flip-down { top: 38px; bottom: auto; }
-	&.flip-up { bottom: 38px; top: auto; }
+	&.flip-down { top: 44px; bottom: auto; }
+	&.flip-up { bottom: 44px; top: auto; }
 }
 
 .lp-bitcoin-ops .entity-track-planned.maxed {

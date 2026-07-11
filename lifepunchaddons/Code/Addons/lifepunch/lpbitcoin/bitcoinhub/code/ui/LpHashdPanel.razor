@@ -576,7 +576,7 @@
 																					<div class="entity-track-delta">@TrackDeltaSubtext( slot.Rack )</div>
 																				</div>
 																				<div class="entity-track-action">
-																					<button class="lp-ui-btn-primary entity-track-upgrade" onclick="@(() => ToggleConfirm( slot.Rack, slot.Rack.ComputeTier + 1 ))">UPGRADE</button>
+																					<button class="lp-ui-btn-primary entity-track-upgrade" onclick="@(() => ToggleConfirm( slot.Rack, slot.Rack.ComputeTier + 1 ))">Upgrade</button>
 																					@if ( ConfirmOpenFor( slot.Rack ) )
 																					{
 																						<div class="lp-stepper-chip row-anchored @ChipFlipClass( rowIndex, rackTracks.Count ) @( _purchaseResultCode > 0 && _sincePurchaseResult < 0.5f ? "shake" : "" )">
@@ -587,7 +587,7 @@
 																							else
 																							{
 																								<div class="lp-stepper-chip-row">
-																									<span class="lp-stepper-chip-line"><span>@StepperChipTierLabel( slot.Rack )</span><span class="lp-chip-sep">·</span><span class="lp-money-btc">@CardCostBtc( slot.Rack )</span> <span class="lp-money-parens">(<span class="lp-money-cash">@CardCostUsd( slot.Rack )</span>)</span></span>
+																									<span class="lp-stepper-chip-line"><span>@StepperChipTierLabel( slot.Rack )</span><span class="lp-chip-sep">·</span><span class="lp-money-btc">@CardCostBtc( slot.Rack )</span></span>
 																									<button class="lp-stepper-chip-yes" onclick="@(() => ConfirmPurchase( slot.Rack ))"><i class="material-icons">check</i></button>
 																									<button class="lp-stepper-chip-no" onclick="@DismissConfirm"><i class="material-icons">close</i></button>
 																								</div>

@@ -51,13 +51,24 @@ public static class LifePunchMenuInteractGate
 		if ( !viewerPos.HasValue )
 			return false;
 
-		if ( !LifePunchMenuInteractRange.IsHubInOpenRange( viewerPos.Value, target.WorldPosition ) )
+		if ( !IsHubTargetInOpenRange( viewerPos.Value, target ) )
 			return false;
 
 		if ( WouldHandsManipulationTakePriority( viewerPos.Value, target ) )
 			return false;
 
 		return !WouldHandsPickupTakePriority( viewerPos.Value, target );
+	}
+
+	/// <summary>Hub reach measured to the model's world bounding box so it scales with model size
+	/// (2026-07-10 fix). Falls back to the pivot-based check only if the hub has no renderer.</summary>
+	private static bool IsHubTargetInOpenRange( Vector3 viewerPos, GameObject target )
+	{
+		var renderer = target.Components.Get<ModelRenderer>( FindMode.EverythingInSelfAndDescendants );
+		if ( renderer.IsValid() )
+			return LifePunchMenuInteractRange.IsHubInOpenRange( viewerPos, renderer.Bounds );
+
+		return LifePunchMenuInteractRange.IsHubInOpenRange( viewerPos, target.WorldPosition );
 	}
 
 #if !LIFEPUNCH_LOCAL
@@ -94,7 +105,7 @@ public static class LifePunchMenuInteractGate
 		if ( !player.IsValid() )
 			return false;
 
-		if ( !LifePunchMenuInteractRange.IsHubInOpenRange( player.WorldPosition, target.WorldPosition ) )
+		if ( !IsHubTargetInOpenRange( player.WorldPosition, target ) )
 			return false;
 
 		if ( WouldHandsManipulationTakePriority( player, target ) )
@@ -124,7 +135,7 @@ public static class LifePunchMenuInteractGate
 		if ( !viewerPos.HasValue )
 			return false;
 
-		return LifePunchMenuInteractRange.IsHubInOpenRange( viewerPos.Value, target.WorldPosition );
+		return IsHubTargetInOpenRange( viewerPos.Value, target );
 	}
 #endif
 

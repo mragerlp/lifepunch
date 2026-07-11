@@ -169,14 +169,55 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 			ReconcileLinkedRacksHost();
 		}
 
-		// Holdable-hub law (3.5 item E): NO per-tick world-machine enforcement — the hub is
-		// a normal hands entity like the racks (hands_interact stays, RB stays live, vanilla
-		// manages grabbed/no_collide during carry). HOLDABLE, NEVER POCKETABLE: pocket_item
-		// is stripped at spawn by BeginGrabbablePrinterDrop and nothing re-adds it.
+		// Amended Holdable-Hub Law (3.5 item E, amended 2026-07-12): the hub is a HANDS
+		// ENTITY only while UNPLACED — the spawn drop, still in motion. Once it settles at
+		// rest (or is powered) it converts to a FIXED MACHINE: hands_interact dropped + RB
+		// frozen, so USE opens the hub menu at natural console distance and the DXRP Hands
+		// grab no longer wins the E key. Racks are unchanged (no menu, stay fully holdable).
+		// HOLDABLE-WHILE-UNPLACED, NEVER POCKETABLE: pocket_item is stripped at spawn by
+		// BeginGrabbablePrinterDrop and nothing re-adds it. The held-diff reach band still
+		// governs the brief pre-placement window.
+		if ( !_placedAsWorldMachine )
+			MaybePlaceAsWorldMachineHost();
 #endif
 	}
 
 	private bool _slotSweepDone;
+#if !LIFEPUNCH_LOCAL
+	// Amended Holdable-Hub Law placement state (2026-07-12): grabbable while unplaced, fixed once settled.
+	private const float WorldMachineRestSpeed = 4f;
+	private const int WorldMachineRestConfirmTicks = 12;
+	private const int WorldMachineSettleCapTicks = 300;
+	private bool _placedAsWorldMachine;
+	private int _settleRestTicks;
+	private int _settleElapsedTicks;
+
+	/// <summary>Once the spawn-dropped hub settles at rest (or is powered) it converts to an
+	/// immovable world machine — hands_interact dropped so USE opens the menu at natural distance
+	/// instead of the DXRP Hands grab winning the E key. One-shot per placement (host only).</summary>
+	private void MaybePlaceAsWorldMachineHost()
+	{
+		var rb = Components.Get<Rigidbody>( FindMode.EverythingInSelf );
+		var atRest = !rb.IsValid() || rb.Velocity.Length <= WorldMachineRestSpeed;
+		_settleRestTicks = atRest ? _settleRestTicks + 1 : 0;
+		_settleElapsedTicks++;
+
+		// Wait for a short at-rest confirm window, unless powered (fix now) or the hard cap hits
+		// (a hub that never fully rests still converts rather than staying grabbable forever).
+		if ( !IsPowered
+		     && _settleRestTicks < WorldMachineRestConfirmTicks
+		     && _settleElapsedTicks < WorldMachineSettleCapTicks )
+			return;
+
+		if ( !LifePunchPropPhysics.EnforceWorldMachine( GameObject ) )
+			return; // collider bounds not live yet — retry next host tick
+
+		_placedAsWorldMachine = true;
+		Log.Info(
+			$"LP_HUB_PLACE placed=world-machine powered={IsPowered} rest={_settleRestTicks} " +
+			$"elapsed={_settleElapsedTicks} hands_interact={GameObject.Tags.Has( "hands_interact" )} pos={GameObject.WorldPosition}" );
+	}
+#endif
 
 	protected override void OnUpdate()
 	{
