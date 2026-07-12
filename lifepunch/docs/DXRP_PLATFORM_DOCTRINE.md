@@ -48,6 +48,10 @@ Grant Access observed in the wild: Monnow's Printer Upgrades shows
 "Your network LIFEPUNCH™ owns this addon" — entitlement in the
 Transactions view, granted by the developer, no expiry.
 Developer-to-network grants are the private-distribution rail.
+REVISION UPLOAD (studied 2026-07-12): the upload selects the
+<addonIdentifier> folder ITSELF, not its parent — wrong level
+silently fails compile. Caps 50MB code / 300MB assets; only the
+latest revision accepts uploads.
 
 ## 4. THE PIPELINE (canonical, Bloodwave-stated, sensor-verified)
 1. PUBLISH the addon revision (lane B; draft → publish).
@@ -246,12 +250,18 @@ Discord webhook announce.
   Official, Monnow, LIFEPUNCH™, DXRP UK, CosmicRP). Marketplace is
   embryonic — sell-later doctrine reaffirmed.
 
-## 13. Store (KV persistence)
-Portal Store = hierarchical key-value persistence for server and
-addons, per-entry expiry (live: lifepunchulx/settings,
-staffmenu/settings, commands/waypoint/*). Official cross-restart
-home for addon config/state — candidate target for lpbitcoin
-config.
+## 13. PORTAL STORE (studied 2026-07-12, Fable browser session)
+Per-network persistent KV at dxrp.net/portal/store. Colon-
+delimited keys namespace:sub:key; values JSON or bare string;
+optional per-key expiry (native TTL); portal CRUD incl. namespace-
+node bulk delete (hazard: one click deletes a whole namespace).
+API-scriptable via store.manage key scope (rate limit 10/10s).
+Game-side writes proven by DXRP's own commands:waypoint:* keys;
+the in-game C# access API is UNSTUDIED — locate in dxrp-public
+before any design commitment. Candidate backend for: tablet
+cross-job persistence (Medic upgrades), locked-transaction state,
+hub/rack tier state, G2 persistence question. Secrets law applies:
+Store is portal-visible — no credentials in values.
 
 ## 14. Legal corpus (Dimmer/Dxura, all read 2026-07-11)
 TERMS: Facepunch policy precedence; operator responsibilities

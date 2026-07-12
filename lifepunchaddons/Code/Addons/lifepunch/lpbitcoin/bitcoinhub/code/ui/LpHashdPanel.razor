@@ -137,7 +137,7 @@
 								        tooltip="BTC Wallet"
 								        onclick="@SelectWalletTab">
 									<i class="material-icons">account_balance_wallet</i>
-									<span>@($"{HeaderWalletBtc()} BTC")</span>
+									<span class="lp-money-btc">₿</span> <span class="lp-money-amt">@HeaderWalletBtc()</span>
 								</button>
 								<button class="header-chip cashout-all-chip @GetCashOutAllButtonClass()"
 								        tooltip="Cash out all hub wallet BTC to bank"
@@ -152,6 +152,11 @@
 						</header>
 
 						<div class="workspace-body">
+							@* #6b modal backdrop: full-body scrim, inert-dismiss, while a confirm popup is open. *@
+							@if ( _confirmRackId != Guid.Empty )
+							{
+								<div class="confirm-scrim" onclick="@DismissConfirm"></div>
+							}
 							<div class="main-panel">
 								@if ( _active == OpsTab.Overview )
 								{
@@ -253,7 +258,7 @@
 													</div>
 													<div class="overview-snapshot-card">
 														<div class="overview-snapshot-label">Hub wallet</div>
-														<div class="overview-snapshot-value">@($"{HeaderWalletBtc()} BTC")</div>
+														<div class="overview-snapshot-value lp-money-btc">@($"₿ {HeaderWalletBtc()}")</div>
 														<div class="overview-snapshot-sub">@($"${CombinedUsd():N2} estimated value")</div>
 													</div>
 												</div>
@@ -432,7 +437,22 @@
 															<i class="material-icons upgrade-home-box-icon">@ServerSlotIcon( slot )</i>
 															<div class="upgrade-home-box-body">
 																<span class="upgrade-home-box-title">@slot.DisplayLabel</span>
-																<span class="upgrade-home-box-sub">@ServerSlotStatusLabel( slot )</span>
+																<div class="entity-chip-row">
+																	@if ( slot.Rack.IsValid() )
+																	{
+																		<span class="entity-chip green">LINKED</span>
+																		<span class="entity-chip @( slot.Rack.IsMining ? "gold" : "" )">@( slot.Rack.IsMining ? "MINING" : "IDLE" )</span>
+																		@if ( slot.Rack.BitcoinAmount >= LpBitcoinEconomy.RackBtcCapacityFor( slot.Rack ) )
+																		{
+																			<span class="entity-chip red">FULL</span>
+																		}
+																	}
+																	else
+																	{
+																		<span class="entity-chip red">@( HasAnyPlayerRacksNearbyOrLinked() ? "UNLINKED" : "AVAILABLE" )</span>
+																	}
+																</div>
+																@* #1a: status carried by the chip row above — redundant text dropped. *@
 																<span class="upgrade-home-box-desc">@ServerSlotHomeDesc( slot )</span>
 															</div>
 															<div class="upgrade-home-box-foot">
@@ -481,6 +501,7 @@
 																		<span class="entity-chip red">FULL</span>
 																	}
 																	<span class="entity-chip dim">@RackYieldBadge( slot.Rack )</span>
+																	<span class="entity-invested-token"><span class="lp-money-btc">@HeroInvestedReceipt( slot.Rack )</span><span class="lp-money-unit"> invested</span></span>
 																}
 																else
 																{
@@ -519,11 +540,11 @@
 																	</div>
 																	<div class="server-stat-row">
 																		<span class="server-stat-label">Rate</span>
-																		<span class="server-stat-value">@CardRateLine( slot.Rack, slot.Rack.ComputeTier )</span>
+																		<span class="server-stat-value"><span class="lp-money-btc">@CardRateLine( slot.Rack, slot.Rack.ComputeTier )</span><span class="lp-money-unit">/min</span></span>
 																	</div>
 																	<div class="server-stat-row">
 																		<span class="server-stat-label">Buffer</span>
-																		<span class="server-stat-value">@RackCapacityStatus( slot.Rack )</span>
+																		<span class="server-stat-value"><span class="lp-money-btc">₿ @($"{slot.Rack.BitcoinAmount:F4}")</span><span class="lp-money-unit"> / </span><span class="lp-money-btc">@($"{LpBitcoinEconomy.RackBtcCapacityFor( slot.Rack ):F4}")</span><span class="lp-money-unit"> (@(HeroBufferPercent( slot.Rack ))%)</span></span>
 																	</div>
 																	<div class="server-buffer-bar">
 																		<div class="server-buffer-bar-fill" style="width: @( HeroBufferPercent( slot.Rack ) )%;"></div>
@@ -548,7 +569,7 @@
 																		var atMax = trackLive && slot.Rack.ComputeTier >= 5;
 																		var iconLit = trackLive && slot.Rack.ComputeTier >= 1;
 
-																		<div class="entity-track-row @( trackLive ? "live" : "planned" )">
+																		<div class="entity-track-row @( (trackLive ? "live" : "planned") + (ConfirmOpenFor( slot.Rack ) ? " confirm-open" : "") )">
 																			<div class="entity-track-lead">
 																				<i class="material-icons @( iconLit ? "lit" : "unlit" )">@track.Icon</i>
 																				<div class="entity-track-copy">
@@ -572,7 +593,7 @@
 																			@if ( trackLive && !atMax )
 																			{
 																				<div class="entity-track-transact">
-																					<div class="entity-track-price"><span class="lp-money-btc">@CardCostBtc( slot.Rack )</span> <span class="lp-money-parens">(<span class="lp-money-cash">@CardCostUsd( slot.Rack )</span>)</span></div>
+																					<div class="entity-track-price"><span class="lp-money-btc">@CardCostBtc( slot.Rack )</span><span class="lp-money-divider">|</span><span class="lp-money-cash">@CardCostUsd( slot.Rack )</span></div>
 																					<div class="entity-track-delta">@TrackDeltaSubtext( slot.Rack )</div>
 																				</div>
 																				<div class="entity-track-action">
@@ -588,8 +609,8 @@
 																							{
 																								<div class="lp-stepper-chip-row">
 																									<span class="lp-stepper-chip-line"><span>@StepperChipTierLabel( slot.Rack )</span><span class="lp-chip-sep">·</span><span class="lp-money-btc">@CardCostBtc( slot.Rack )</span></span>
-																									<button class="lp-stepper-chip-yes" onclick="@(() => ConfirmPurchase( slot.Rack ))"><i class="material-icons">check</i></button>
-																									<button class="lp-stepper-chip-no" onclick="@DismissConfirm"><i class="material-icons">close</i></button>
+																									<button class="lp-stepper-chip-yes" tooltip="Confirm purchase" onclick="@(() => ConfirmPurchase( slot.Rack ))"><i class="material-icons">check</i></button>
+																									<button class="lp-stepper-chip-no" tooltip="Cancel" onclick="@DismissConfirm"><i class="material-icons">close</i></button>
 																								</div>
 																								@if ( _purchaseResultCode == 1 )
 																								{
@@ -617,7 +638,7 @@
 																</div>
 
 																<div class="entity-detail-foot">
-																	<span class="server-hero-receipt">@HeroInvestedReceipt( slot.Rack )</span>
+																	@* invested token moved to the header chip row (batch 4 C). *@
 																</div>
 															}
 														</div>
@@ -669,6 +690,25 @@
 														<i class="material-icons upgrade-home-box-icon">memory</i>
 														<div class="upgrade-home-box-body">
 															<span class="upgrade-home-box-title">GPU Racks</span>
+															@{
+																var _rackSlots = GetServersRackSlots();
+																var _linkedRacks = _rackSlots.Where( s => s.Rack.IsValid() ).Select( s => s.Rack ).ToList();
+																var _miningN = _linkedRacks.Count( r => r.IsMining );
+																var _fullN = _linkedRacks.Count( r => r.BitcoinAmount >= LpBitcoinEconomy.RackBtcCapacityFor( r ) );
+																var _unlinkedN = _rackSlots.Count( s => !s.Rack.IsValid() );
+																var _totalN = _rackSlots.Count;
+															}
+															<div class="entity-chip-row">
+																<span class="entity-chip @( _miningN > 0 ? "gold" : "dim" )">MINING @_miningN/@_totalN</span>
+																@if ( _fullN > 0 )
+																{
+																	<span class="entity-chip red">FULL @_fullN/@_totalN</span>
+																}
+																@if ( _unlinkedN > 0 )
+																{
+																	<span class="entity-chip red">UNLINKED @_unlinkedN/@_totalN</span>
+																}
+															</div>
 															<span class="upgrade-home-box-desc">Mining hardware — pick a rack for status and upgrades.</span>
 														</div>
 														@* Category aggregate: the glance-value the old flat Servers list carried.
@@ -704,11 +744,11 @@
 											<div class="lp-ui-info">
 												<div class="lp-ui-info-row">
 													<span class="lp-ui-info-label">Hub wallet</span>
-													<span class="lp-ui-info-value accent">@($"{HubWalletBtc():F6} BTC")</span>
+													<span class="lp-ui-info-value lp-money-btc">@($"₿ {HubWalletBtc():F6}")</span>
 												</div>
 												<div class="lp-ui-info-row">
 													<span class="lp-ui-info-label">Still on racks</span>
-													<span class="lp-ui-info-value">@($"{RackPendingBtc():F6} BTC")</span>
+													<span class="lp-ui-info-value lp-money-btc">@($"₿ {RackPendingBtc():F6}")</span>
 												</div>
 												<div class="lp-ui-info-row">
 													<span class="lp-ui-info-label">Terminal linked</span>
@@ -797,7 +837,7 @@
 															<div class="transfer-subsection transfer-subsection-detail">
 																<div class="transfer-subsection-row">
 																	<span class="transfer-subsection-label">Hub wallet</span>
-																	<span class="transfer-subsection-value accent">@($"{HubWalletBtc():F6} BTC")</span>
+																	<span class="transfer-subsection-value lp-money-btc">@($"₿ {HubWalletBtc():F6}")</span>
 																</div>
 															</div>
 														</div>
@@ -909,7 +949,12 @@
 																	<i class="material-icons">@AlertIcon( alert.Kind )</i>
 																	<div class="notif-copy">
 																		<div class="notif-kind">@AlertKindLabel( alert.Kind )</div>
-																		<div class="notif-message">@alert.Message</div>
+																		<div class="notif-message">
+																			@foreach ( var _seg in AlertMessageSegments( alert.Message ) )
+																			{
+																				<span class="@_seg.Cls">@_seg.Text</span>
+																			}
+																		</div>
 																		<div class="notif-time">@AlertTimeLabel( alert.Timestamp )</div>
 																	</div>
 																</div>
@@ -1009,32 +1054,32 @@
 	private enum PerfRange { Day, Week, Month }
 	private enum PinGatePurpose { Unlock, ChangePin }
 
-	// Servers nav (3.5 restructure): HUB → TERMINAL → GPU RACKS at the index. Hub and Terminal
+	// Servers nav (3.5 restructure): HUB -> TERMINAL -> GPU RACKS at the index. Hub and Terminal
 	// are single entities and open their own detail in one click; racks are a category, so they
-	// cost two (chooser → detail). One enum, so the views can never overlap or imply precedence.
+	// cost two (chooser -> detail). One enum, so the views can never overlap or imply precedence.
 	private enum ServersView { Home, HubDetail, TerminalDetail, RackChooser, RackDetail }
 
-	// UI-only shell descriptor (DECISION-0010). No economy/persistence yet — display copy + preview
+	// UI-only shell descriptor (DECISION-0010). No economy/persistence yet -- display copy + preview
 	// progression state only. Tiers carries II..V (index 0 = Tier II). Tier I = TierOneLabel baseline.
 	private readonly record struct UpgradeTierShell( string Label, string Detail );
 	private readonly record struct UpgradeTrackShell( string Name, string Icon, string TierOneLabel, UpgradeTierShell[] Tiers );
 
-	// Static UI shell — Tier II–V rung names + a plain-language description (G1). No prices:
-	// purchases are not yet enabled (DECISION-0010 — economy/cost curves staged, on HOLD).
+	// Static UI shell -- Tier II-V rung names + a plain-language description (G1). No prices:
+	// purchases are not yet enabled (DECISION-0010 -- economy/cost curves staged, on HOLD).
 	private static UpgradeTierShell[] HwTiers( string two, string three, string four, string five ) => new[]
 	{
 		new UpgradeTierShell( two, "Early efficiency gain over the baseline." ),
 		new UpgradeTierShell( three, "Meaningful throughput and reliability step." ),
 		new UpgradeTierShell( four, "High-end capability for serious operators." ),
-		new UpgradeTierShell( five, "Best-in-class capstone — the top of this track." )
+		new UpgradeTierShell( five, "Best-in-class capstone \u2014 the top of this track." )
 	};
 
 	private static UpgradeTierShell[] CosmeticTiers( string two, string three, string four, string five ) => new[]
 	{
-		new UpgradeTierShell( two, "Cosmetic only — no performance change." ),
-		new UpgradeTierShell( three, "Cosmetic only — no performance change." ),
-		new UpgradeTierShell( four, "Cosmetic only — no performance change." ),
-		new UpgradeTierShell( five, "Cosmetic only — no performance change." )
+		new UpgradeTierShell( two, "Cosmetic only \u2014 no performance change." ),
+		new UpgradeTierShell( three, "Cosmetic only \u2014 no performance change." ),
+		new UpgradeTierShell( four, "Cosmetic only \u2014 no performance change." ),
+		new UpgradeTierShell( five, "Cosmetic only \u2014 no performance change." )
 	};
 
 	private static readonly UpgradeTrackShell[] HubUpgradeTracks =
@@ -1073,7 +1118,7 @@
 	private static readonly UpgradeTrackShell RackFanRgbCosmetic =
 		new( "Fan RGB", "palette", "Stock fan lighting", CosmeticTiers( "Amber Glow", "Spectrum Cycle", "Reactive Sync", "Custom Profile" ) );
 
-	// One-page law (slice 3): the tier-card sub-page is dead — every track is a row; the live
+	// One-page law (slice 3): the tier-card sub-page is dead -- every track is a row; the live
 	// track carries the inline stepper. _openPath / OpenUpgradePath / TierLine* removed.
 	// Section shells died with the Upgrades home (3.5 restructure): each tenant's detail page
 	// renders its own track list directly, so there is nothing left to group.
@@ -1088,9 +1133,9 @@
 		_ => n.ToString()
 	};
 
-	// Static baseline label — planned rows show their Tier I baseline until their track ships.
+	// Static baseline label -- planned rows show their Tier I baseline until their track ships.
 	private string CurrentTierLabel( UpgradeTrackShell track )
-		=> $"Tier I · {track.TierOneLabel}";
+		=> $"Tier I \u00B7 {track.TierOneLabel}";
 
 	// Upgrades tab retired (3.5 consolidation): Servers is the sole upgrade surface.
 	// The enum value survives for the switch arms; nothing routes to it anymore.
@@ -1126,11 +1171,11 @@
 	private WalletCashOutFeedback _allCashOutFeedback;
 	private string _allCashOutFeedbackText = "";
 
-	// Slice-3 stepper state — set ONLY by the OnPurchaseResult broadcast (envelope-driven,
+	// Slice-3 stepper state -- set ONLY by the OnPurchaseResult broadcast (envelope-driven,
 	// never optimistic). _purchasePendingRackId is the "working" gate: set when a purchase
 	// RPC is fired, cleared when the result lands; if the broadcast never arrives the stepper
 	// stays working and never falsely advances (the kill-the-broadcast-mid-test case).
-	// resultCode: 0=Ok · 1=InsufficientFunds · 2=PreconditionTier · 3=HubGuard · -1=none.
+	// resultCode: 0=Ok - 1=InsufficientFunds - 2=PreconditionTier - 3=HubGuard - -1=none.
 	private Guid _purchasePendingRackId = Guid.Empty;
 	private int _purchaseResultCode = -1;
 	private int _purchaseResultTier;
@@ -1139,7 +1184,7 @@
 	private TimeSince _sincePurchaseResult;
 
 	// Stepper interaction (sketch spec): _confirmRackId = which rack's anchored popover is
-	// open. The popover doubles as the rejection surface — a failure envelope re-renders it
+	// open. The popover doubles as the rejection surface -- a failure envelope re-renders it
 	// with the reason instead of the YES/NO body.
 	private Guid _confirmRackId = Guid.Empty;
 
@@ -1158,8 +1203,8 @@
 	}
 
 	// Circuit ruling: owned bubbles + their links are one energized accent segment ending at
-	// the owned frontier · purchase frontier is GREY with the click affordance, tint = can
-	// afford · beyond is uniform grey inert. Tier V is the square terminal node (MAX).
+	// the owned frontier - purchase frontier is GREY with the click affordance, tint = can
+	// afford - beyond is uniform grey inert. Tier V is the square terminal node (MAX).
 	private string StepperCellClass( LpBitcoinRackEntity rack, int tier )
 	{
 		var max = tier == 5 ? " max" : "";
@@ -1182,21 +1227,21 @@
 		return afterTier < rack.ComputeTier ? "solid" : "dark";
 	}
 
-	// Tooltip informs, never asks: "COMPUTE II · ×4 rate · ₿ 0.75" (QuoteSats, yield-aware).
+	// Tooltip informs, never asks: "COMPUTE II - x4 rate - BTC 0.75" (QuoteSats, yield-aware).
 	private string StepperTooltip( LpBitcoinRackEntity rack, int tier )
 	{
 		if ( tier > rack.ComputeTier + 1 )
 			return $"Requires Tier {TierRoman( tier - 1 )}";
 
 		if ( tier <= rack.ComputeTier )
-			return $"COMPUTE {TierRoman( tier )} · ×{LpBitcoinComputeTrack.EffectMultiplierFor( tier )} rate · owned";
+			return $"COMPUTE {TierRoman( tier )} \u00B7 \u00D7{LpBitcoinComputeTrack.EffectMultiplierFor( tier )} rate \u00B7 owned";
 
 		var quote = LpBitcoinComputeTrack.QuoteSats( rack, tier );
-		return $"COMPUTE {TierRoman( tier )} · ×{LpBitcoinComputeTrack.EffectMultiplierFor( tier )} rate · ₿ {quote / 100_000_000f:0.##}";
+		return $"COMPUTE {TierRoman( tier )} \u00B7 \u00D7{LpBitcoinComputeTrack.EffectMultiplierFor( tier )} rate \u00B7 \u20BF {quote / 100_000_000f:0.##}";
 	}
 
-	// Row's right status slot per sketch 4: PLANNED (future tracks) → next-price or blank
-	// (active track) → MAX TIER (ladder complete). Cosmetics keep NOT ENABLED.
+	// Row's right status slot per sketch 4: PLANNED (future tracks) -> next-price or blank
+	// (active track) -> MAX TIER (ladder complete). Cosmetics keep NOT ENABLED.
 	private string TrackRowStatus( UpgradeTrackShell track, bool cosmetic, LpBitcoinRackEntity rack )
 	{
 		if ( cosmetic ) return "NOT ENABLED";
@@ -1204,7 +1249,7 @@
 		if ( rack.ComputeTier >= 5 ) return "MAX TIER";
 
 		var quote = StepperNextQuoteSats( rack );
-		return quote >= 0 ? $"₿ {quote / 100_000_000f:0.##}" : "";
+		return quote >= 0 ? $"\u20BF {quote / 100_000_000f:0.##}" : "";
 	}
 
 	// Row tier sub-label: real tier for the live Compute track, static baseline for planned rows.
@@ -1212,8 +1257,8 @@
 	{
 		if ( IsComputeTrack( track ) && rack.IsValid() )
 			return rack.ComputeTier == 0
-				? $"Tier — · Stock Clocks"
-				: $"Tier {TierRoman( rack.ComputeTier )} · ×{LpBitcoinComputeTrack.EffectMultiplierFor( rack.ComputeTier )} rate";
+				? $"Tier \u2014 \u00B7 Stock Clocks"
+				: $"Tier {TierRoman( rack.ComputeTier )} \u00B7 \u00D7{LpBitcoinComputeTrack.EffectMultiplierFor( rack.ComputeTier )} rate";
 
 		return CurrentTierLabel( track );
 	}
@@ -1263,7 +1308,7 @@
 		rack.RequestPurchaseComputeTier();
 	}
 
-	// ── Rack-detail hero (hierarchy inversion): per-track delta cards ──
+	// -- Rack-detail hero (hierarchy inversion): per-track delta cards --
 	// Cards bind to the track registry; live tracks render real data (Compute today),
 	// the grid grows per track registration with zero card code.
 
@@ -1275,13 +1320,13 @@
 	private static string CardGhz( int tier )
 		=> $"{ProjectedClockGhz( tier ):F2} GHz";
 
-	// Separator Law: the "TIER n · GHz" composite is assembled here and interpolated as ONE
-	// node. Written in markup it would put a bare " · " text node between two @-expressions.
+	// Separator Law: the "TIER n - GHz" composite is assembled here and interpolated as ONE
+	// node. Written in markup it would put a bare " - " text node between two @-expressions.
 	private static string RackComputeVital( LpBitcoinRackEntity rack )
 	{
 		var tier = rack.ComputeTier;
 		var head = tier > 0 ? $"TIER {TierRoman( tier )}" : "STOCK";
-		return $"{head} · {CardGhz( tier )}";
+		return $"{head} \u00B7 {CardGhz( tier )}";
 	}
 
 	// Confirm chip: the tier half is one node; the money halves keep their own colour spans
@@ -1289,13 +1334,13 @@
 	private static string StepperChipTierLabel( LpBitcoinRackEntity rack )
 		=> $"TIER {TierRoman( rack.ComputeTier + 1 )}";
 
-	// BTC/min at a given tier — while-hashing implicit (delta ruling). Same Apply-math
+	// BTC/min at a given tier -- while-hashing implicit (delta ruling). Same Apply-math
 	// the host uses, so the gate can assert card values against QuoteSats/reconcile.
 	private static float CardRatePerMin( LpBitcoinRackEntity rack, int tier )
 		=> LpBitcoinEconomy.MiningRatePerMinute( ProjectedClockGhz( tier ), rack.CoreCount, rack.YieldMultiplier );
 
 	private static string CardRateLine( LpBitcoinRackEntity rack, int tier )
-		=> $"{CardRatePerMin( rack, tier ):0.####} BTC/min";
+		=> $"\u20BF {CardRatePerMin( rack, tier ):0.####}";
 
 	private static float CardDeltaPerMin( LpBitcoinRackEntity rack )
 		=> CardRatePerMin( rack, rack.ComputeTier + 1 ) - CardRatePerMin( rack, rack.ComputeTier );
@@ -1304,7 +1349,7 @@
 		=> $"+{CardDeltaPerMin( rack ):0.####} BTC/min";
 
 	// Advanced parity is structural: yield scales quote and delta alike, so payback is
-	// identical to same-tier standard — gate asserts it to the minute.
+	// identical to same-tier standard -- gate asserts it to the minute.
 	private string CardPaybackLine( LpBitcoinRackEntity rack )
 	{
 		var quoteBtc = StepperNextQuoteSats( rack ) / 100_000_000f;
@@ -1312,7 +1357,7 @@
 		return delta > 0f ? $"pays back ~{quoteBtc / delta:N0} min" : "";
 	}
 
-	// Payback auto-scaled (ruling: the "6d" sketch value is illustrative) — the unit grows
+	// Payback auto-scaled (ruling: the "6d" sketch value is illustrative) -- the unit grows
 	// with magnitude so early tiers (days) and high-rate racks (minutes) both read naturally.
 	private string CardPaybackAuto( LpBitcoinRackEntity rack )
 	{
@@ -1333,49 +1378,49 @@
 	private static string CardDeltaGhz( LpBitcoinRackEntity rack )
 		=> $"+{ProjectedClockGhz( rack.ComputeTier + 1 ) - ProjectedClockGhz( rack.ComputeTier ):0.#} GHz";
 
-	// The VISIBLE delta subtext (ruling: not tooltip-only) — "+X GHz · ~N payback".
+	// The VISIBLE delta subtext (ruling: not tooltip-only) -- "+X GHz - ~N payback".
 	private string TrackDeltaSubtext( LpBitcoinRackEntity rack )
-		=> $"{CardDeltaGhz( rack )} · {CardPaybackAuto( rack )}";
+		=> $"{CardDeltaGhz( rack )} \u00B7 {CardPaybackAuto( rack )}";
 
-	// One-line what/why per track — sourced from UPGRADE_ECONOMY_DOCTRINE's effect axes.
+	// One-line what/why per track -- sourced from UPGRADE_ECONOMY_DOCTRINE's effect axes.
 	private static string TrackWhyLine( string name ) => name switch
 	{
-		"Compute Profile" => "Raw hash rate — doubles clocks each tier.",
-		"Cooling System" => "Sustains high clocks — cuts thermal throttle.",
-		"Power Delivery" => "Efficiency — trims the draw cooling must cover.",
+		"Compute Profile" => "Raw hash rate \u2014 doubles clocks each tier.",
+		"Cooling System" => "Sustains high clocks \u2014 cuts thermal throttle.",
+		"Power Delivery" => "Efficiency \u2014 trims the draw cooling must cover.",
 		"Efficiency Tuning" => "More yield per watt, without touching the rate ladder.",
-		"Payout Buffer" => "Bigger undeposited buffer — more headroom before full.",
-		"Fan RGB" => "Cosmetic lighting — no performance change.",
+		"Payout Buffer" => "Bigger undeposited buffer \u2014 more headroom before full.",
+		"Fan RGB" => "Cosmetic lighting \u2014 no performance change.",
 		"Job Scheduler" => "Staggers rack ticks so none sits full while another idles.",
-		"Share Pipeline" => "Shortens the gauntlet — auto-deposits buffers to the hub.",
+		"Share Pipeline" => "Shortens the gauntlet \u2014 auto-deposits buffers to the hub.",
 		"Pool Client" => "Smooths payout variance; higher tiers host pools.",
-		"Farm Firmware" => "Farm scale + QoL — gates how many racks a hub addresses.",
-		"Trust Policy" => "Access control — co-owners, whitelist, guest windows.",
-		"Sound Pack" => "Cosmetic audio — no performance change.",
-		"Endpoint Firewall" => "Attack odds — your firewall tier contests the attacker's gear.",
-		"Command Authentication" => "Loot limit — a cracked terminal still can't cash out or unlink.",
-		"Intrusion Detection" => "Evidence — silent theft becomes a BREACH alert and a traced attacker.",
-		"Audit Retention" => "History — logs survive the restart a hacker triggers to cover tracks.",
-		"Monitoring Suite" => "Visibility — higher tiers unlock more rows of this readout.",
-		"HASHD donor skins" => "Cosmetic re-skins — no performance change.",
+		"Farm Firmware" => "Farm scale + QoL \u2014 gates how many racks a hub addresses.",
+		"Trust Policy" => "Access control \u2014 co-owners, whitelist, guest windows.",
+		"Sound Pack" => "Cosmetic audio \u2014 no performance change.",
+		"Endpoint Firewall" => "Attack odds \u2014 your firewall tier contests the attacker's gear.",
+		"Command Authentication" => "Loot limit \u2014 a cracked terminal still can't cash out or unlink.",
+		"Intrusion Detection" => "Evidence \u2014 silent theft becomes a BREACH alert and a traced attacker.",
+		"Audit Retention" => "History \u2014 logs survive the restart a hacker triggers to cover tracks.",
+		"Monitoring Suite" => "Visibility \u2014 higher tiers unlock more rows of this readout.",
+		"HASHD donor skins" => "Cosmetic re-skins \u2014 no performance change.",
 		_ => "",
 	};
 
 	// Anchor-aware chip flip (the one new mechanic): top-portion rows anchor the chip BELOW
-	// the button (room below); lower rows anchor ABOVE — never clipped at either scroll edge.
+	// the button (room below); lower rows anchor ABOVE -- never clipped at either scroll edge.
 	private static string ChipFlipClass( int rowIndex, int totalRows )
 		=> rowIndex < ( totalRows + 1 ) / 2 ? "flip-down" : "flip-up";
 
 	private string CardCostBtc( LpBitcoinRackEntity rack )
-		=> $"₿ {StepperNextQuoteSats( rack ) / 100_000_000f:0.##}";
+		=> $"\u20BF {StepperNextQuoteSats( rack ) / 100_000_000f:0.##}";
 
-	// Bare value — semantic color binds to the VALUE only; parens are typography,
+	// Bare value -- semantic color binds to the VALUE only; parens are typography,
 	// rendered neutral at the call sites (Law 13 precision).
 	private string CardCostUsd( LpBitcoinRackEntity rack )
 		=> $"${LpBitcoinEconomy.BtcToCashUsd( StepperNextQuoteSats( rack ) / 100_000_000f ):N0}";
 
 	// Receipt is a re-derived ledger projection: quotes are deterministic per rack class,
-	// so SUM(QuoteSats 1..tier) equals the ledger's SUM(costSats) — gate-3 asserts it to
+	// so SUM(QuoteSats 1..tier) equals the ledger's SUM(costSats) -- gate-3 asserts it to
 	// the sat. Client-derived; MUST become host-synced if pricing ever goes dynamic (R3).
 	private static string HeroInvestedReceipt( LpBitcoinRackEntity rack )
 	{
@@ -1383,12 +1428,12 @@
 		for ( var t = 1; t <= rack.ComputeTier; t++ )
 			sats += LpBitcoinComputeTrack.QuoteSats( rack, t );
 
-		return $"₿ {sats / 100_000_000f:0.##} invested";
+		return $"\u20BF {sats / 100_000_000f:0.##}";
 	}
 
-	// One status line (ruling 1): power · link · hashing state.
+	// One status line (ruling 1): power - link - hashing state.
 	private string HeroStatusLine( LpBitcoinRackEntity rack, string token )
-		=> $"{( Hub?.IsPowered == true ? "Online" : "Offline" )} · Linked rig0 {token} · {( rack.IsMining ? "Hashing" : "Idle" )}";
+		=> $"{( Hub?.IsPowered == true ? "Online" : "Offline" )} \u00B7 Linked rig0 {token} \u00B7 {( rack.IsMining ? "Hashing" : "Idle" )}";
 
 	private static int HeroBufferPercent( LpBitcoinRackEntity rack )
 	{
@@ -1412,18 +1457,18 @@
 		DismissConfirm();
 	}
 
-	// Structure hash (racks linked, power, alerts, wallet display) — never hash TextEntry bind values.
+	// Structure hash (racks linked, power, alerts, wallet display) -- never hash TextEntry bind values.
 	private TimeSince _sinceTelemetryRefresh;
 	private TimeSince _sinceLogTimeRefresh;
 	private int _telemetryHash;
 	private int _logTimeBucket;
-	// (hub-logs feed is razor-owned — no imperative scroll/rebuild state)
+	// (hub-logs feed is razor-owned -- no imperative scroll/rebuild state)
 	// Scroll-anchor state: the head alert's key + the scroll panel ref (razor @ref).
 	private Panel _logsScroll;
 	private string _logsAnchorKey;
 
-	// Transient settings confirmations — rendered inside their own button (PIN updated → Change PIN,
-	// Cleared flash → Clear) and auto-dismissed instead of lingering in the settings hint text.
+	// Transient settings confirmations -- rendered inside their own button (PIN updated -> Change PIN,
+	// Cleared flash -> Clear) and auto-dismissed instead of lingering in the settings hint text.
 	private TimeSince _sincePinUpdatedNotice = 9999f;
 	private TimeSince _sinceLogsClearedNotice = 9999f;
 	private bool _pinNoticeWasActive;
@@ -1480,7 +1525,7 @@
 		StateHasChanged();
 	}
 
-	/// <summary>Dev preview — Servers is the upgrade surface now; drill into the first linked rack.</summary>
+	/// <summary>Dev preview -- Servers is the upgrade surface now; drill into the first linked rack.</summary>
 	public void DevOpenUpgradesForFirstLinkedRack()
 	{
 		SelectTab( OpsTab.Racks );
@@ -1489,28 +1534,28 @@
 			EnterServerDetail( slots[0] );
 	}
 
-	/// <summary>Dev preview — jump straight to the wallet tab (cash-out tiles).</summary>
+	/// <summary>Dev preview -- jump straight to the wallet tab (cash-out tiles).</summary>
 	public void DevOpenWalletTab() => SelectTab( OpsTab.Wallet );
 
-	/// <summary>Dev preview — jump straight to the transfers tab (send + rate table). Fills the
+	/// <summary>Dev preview -- jump straight to the transfers tab (send + rate table). Fills the
 	/// gap the recon flagged: the transfers pane had no dev entry point, so it could not be
 	/// screenshotted or gated.</summary>
 	public void DevOpenTransfersTab() => SelectTab( OpsTab.Transfers );
 
-	/// <summary>Dev preview — jump straight to the settings tab (toggle list).</summary>
+	/// <summary>Dev preview -- jump straight to the settings tab (toggle list).</summary>
 	public void DevOpenSettingsTab() => SelectTab( OpsTab.Settings );
 
-	/// <summary>Dev preview — jump straight to the Hub logs/alerts tab.</summary>
+	/// <summary>Dev preview -- jump straight to the Hub logs/alerts tab.</summary>
 	public void DevOpenLogsTab() => SelectTab( OpsTab.Logs );
 
-	/// <summary>Dev proof — set the logs feed scroll offset (scroll-contract verification).</summary>
+	/// <summary>Dev proof -- set the logs feed scroll offset (scroll-contract verification).</summary>
 	public void DevScrollLogs( float y )
 	{
 		if ( _logsScroll.IsValid() )
 			_logsScroll.ScrollOffset = new Vector2( 0f, y );
 	}
 
-	/// <summary>Dev proof — report the logs feed scroll state (offset/viewport/content/rows).</summary>
+	/// <summary>Dev proof -- report the logs feed scroll state (offset/viewport/content/rows).</summary>
 	public string DevLogsProbe()
 	{
 		if ( !_logsScroll.IsValid() )
@@ -1523,10 +1568,10 @@
 			$"scrollSize={_logsScroll.ScrollSize.y:F1}";
 	}
 
-	/// <summary>Dev preview — Servers tab at its low-clutter home grid (one box per slot).</summary>
+	/// <summary>Dev preview -- Servers tab at its low-clutter home grid (one box per slot).</summary>
 	public void DevOpenServersTab() => SelectTab( OpsTab.Racks );
 
-	/// <summary>Dev preview — Servers tab drilled into the first populated slot's detail.</summary>
+	/// <summary>Dev preview -- Servers tab drilled into the first populated slot's detail.</summary>
 	public void DevOpenServerDetail()
 	{
 		SelectTab( OpsTab.Racks );
@@ -1545,14 +1590,14 @@
 			EnterServerDetail( slots[0] );
 	}
 
-	/// <summary>Dev preview — Servers home (HUB / TERMINAL / GPU RACKS).</summary>
+	/// <summary>Dev preview -- Servers home (HUB / TERMINAL / GPU RACKS).</summary>
 	public void DevOpenUpgradesHome()
 	{
 		SelectTab( OpsTab.Racks );
 		BackToServersHome();
 	}
 
-	/// <summary>Dev sweep — hub and terminal open their own detail; gpurack lands on the chooser.</summary>
+	/// <summary>Dev sweep -- hub and terminal open their own detail; gpurack lands on the chooser.</summary>
 	public void DevEnterUpgradeSurface( string surface )
 	{
 		SelectTab( OpsTab.Racks );
@@ -1565,11 +1610,11 @@
 		}
 	}
 
-	/// <summary>Dev proof — which Servers view is on screen (Home/HubDetail/TerminalDetail/RackChooser/RackDetail).</summary>
+	/// <summary>Dev proof -- which Servers view is on screen (Home/HubDetail/TerminalDetail/RackChooser/RackDetail).</summary>
 	public string DevServersViewProbe()
 		=> $"{_serversView}:{_serverDetailToken ?? "-"}";
 
-	/// <summary>Dev proof — inject a known balance then fire two hub cash-outs in ONE tick, to
+	/// <summary>Dev proof -- inject a known balance then fire two hub cash-outs in ONE tick, to
 	/// exercise the cash-out race. Both calls read the wallet and both reach the TryPayBank await
 	/// before either resolves, so the sensor lines (LP_CASHOUT_SENSOR) show whether the second
 	/// debit drives the wallet negative. Gate reads: wallet never negative, one bank credit.</summary>
@@ -1585,7 +1630,7 @@
 		Log.Info( $"LP_CASHOUT_RACE fired-two wallet-sync-after={Hub.HubWalletBtc:F8}" );
 	}
 
-	/// <summary>Dev proof — inject a rack balance then fire two rack sells in ONE tick, the second
+	/// <summary>Dev proof -- inject a rack balance then fire two rack sells in ONE tick, the second
 	/// racy site (LpBitcoinRackEntity.SellForCallerHost). Gate reads LP_SELL_SENSOR: the rack must
 	/// be paid out once, its balance land at zero, and never restore to a doubled value.</summary>
 	public void DevRaceRackSell( float injectBtc )
@@ -1605,7 +1650,7 @@
 		Log.Info( $"LP_SELL_RACE fired-two rackBalance-sync-after={rack.BitcoinAmount:F8}" );
 	}
 
-	/// <summary>Dev proof — measure the track row's columns. Overlap is a fact, not a look:
+	/// <summary>Dev proof -- measure the track row's columns. Overlap is a fact, not a look:
 	/// a high-res capture rasterises text and boxes separately, so eyeballing a PNG cannot
 	/// distinguish a real layout collision from a screenshot artefact.</summary>
 	public string DevTrackRowProbe()
@@ -1634,7 +1679,7 @@
 		return lines.Length == 0 ? "no track rows on screen" : lines;
 	}
 
-	/// <summary>Dev proof — open the row-anchored confirm chip on a rack's live Compute track.</summary>
+	/// <summary>Dev proof -- open the row-anchored confirm chip on a rack's live Compute track.</summary>
 	public void DevOpenConfirmChip( string slot )
 	{
 		DevEnterUpgradeRackSlot( slot );
@@ -1645,7 +1690,7 @@
 		ToggleConfirm( target.Value.Rack, target.Value.Rack.ComputeTier + 1 );
 	}
 
-	/// <summary>Dev sweep — drill into a rack's detail (the upgrade surface): Rack1, Rack2, or Advanced.</summary>
+	/// <summary>Dev sweep -- drill into a rack's detail (the upgrade surface): Rack1, Rack2, or Advanced.</summary>
 	public void DevEnterUpgradeRackSlot( string slot )
 	{
 		SelectTab( OpsTab.Racks );
@@ -1696,6 +1741,75 @@
 
 	private IReadOnlyList<LpBitcoinHubAlert> GetHubAlerts() => Hub?.GetAlerts() ?? Array.Empty<LpBitcoinHubAlert>();
 
+	// #6a LAW 17 in logs: split a message into colored currency tokens ($ green, BTC orange, "N BTC" -> BTC orange)
+	// with everything else (labels, words) white. Amounts colored, labels white -- same rule as the invested token.
+	private static System.Collections.Generic.List<(string Text, string Cls)> AlertMessageSegments( string msg )
+	{
+		var segs = new System.Collections.Generic.List<(string, string)>();
+		if ( string.IsNullOrEmpty( msg ) )
+			return segs;
+
+		var buf = new System.Text.StringBuilder();
+		void FlushPlain()
+		{
+			if ( buf.Length > 0 )
+			{
+				segs.Add( (buf.ToString(), "lp-money-unit") );
+				buf.Clear();
+			}
+		}
+
+		var i = 0;
+		while ( i < msg.Length )
+		{
+			var c = msg[i];
+			if ( c == '$' || c == '\u20BF' )
+			{
+				FlushPlain();
+				var cls = c == '$' ? "lp-money-cash" : "lp-money-btc";
+				var cur = new System.Text.StringBuilder();
+				cur.Append( c );
+				var j = i + 1;
+				if ( j < msg.Length && msg[j] == ' ' )
+				{
+					cur.Append( ' ' );
+					j++;
+				}
+
+				while ( j < msg.Length && (char.IsDigit( msg[j] ) || msg[j] == '.' || msg[j] == ',') )
+				{
+					cur.Append( msg[j] );
+					j++;
+				}
+
+				segs.Add( (cur.ToString(), cls) );
+				i = j;
+				continue;
+			}
+
+			if ( char.IsDigit( c ) )
+			{
+				var j = i;
+				while ( j < msg.Length && (char.IsDigit( msg[j] ) || msg[j] == '.' || msg[j] == ',') )
+					j++;
+
+				if ( j + 4 <= msg.Length && msg.Substring( j, 4 ) == " BTC" )
+				{
+					FlushPlain();
+					segs.Add( ("\u20BF " + msg.Substring( i, j - i ), "lp-money-btc") );
+					i = j + 4;
+					continue;
+				}
+			}
+
+			buf.Append( c );
+			i++;
+		}
+
+		FlushPlain();
+		return segs;
+	}
+
 	private void SelectLogsTab()
 	{
 		SelectTab( OpsTab.Logs );
@@ -1724,7 +1838,7 @@
 		_ => "Alert"
 	};
 
-	// Severity lane per alert kind — new kinds declare a lane here, never styled ad hoc.
+	// Severity lane per alert kind -- new kinds declare a lane here, never styled ad hoc.
 	// Lanes color the icon + kind label only (accent for state, not decoration).
 	private static string AlertLaneClass( LpBitcoinHubAlertKind kind ) => kind switch
 	{
@@ -1815,11 +1929,11 @@
 		=> _rackSlotCopyAckId == rack.GameObject.Id ? "Copied!" : "Copy";
 
 	private static string OverviewIntroCopyLine()
-		=> "DXRP Market → place hub → set PIN → power on → link terminal → register 2 GPU racks + 1 Advanced rack at rig0.";
+		=> "DXRP Market \u2192 place hub \u2192 set PIN \u2192 power on \u2192 link terminal \u2192 register 2 GPU racks + 1 Advanced rack at rig0.";
 
 	private readonly record struct OverviewMinerSlot( string DisplayLabel, string TerminalToken, LpBitcoinRackEntity Rack );
 
-	/// <summary>Fixed rig0 slots (2× GPU + 1× Advanced) — Overview + Servers.</summary>
+	/// <summary>Fixed rig0 slots (2x GPU + 1x Advanced) -- Overview + Servers.</summary>
 	private IReadOnlyList<OverviewMinerSlot> GetServersRackSlots()
 	{
 		var racks = GetLinkedRacks();
@@ -1861,7 +1975,7 @@
 		};
 	}
 
-	// Servers low-clutter nav: home grid (one box per slot) → drill into one server's detail → back.
+	// Servers low-clutter nav: home grid (one box per slot) -> drill into one server's detail -> back.
 	private OverviewMinerSlot? GetServerDetailSlot()
 	{
 		if ( string.IsNullOrEmpty( _serverDetailToken ) )
@@ -1901,7 +2015,7 @@
 		GoToServersView( ServersView.RackChooser );
 	}
 
-	// Hub tenant #0 (3.5 consolidation) — the hub gets the same detail component,
+	// Hub tenant #0 (3.5 consolidation) -- the hub gets the same detail component,
 	// fed by this adapter. No live tracks yet; its TIER PROGRESS is all-PLANNED.
 	private void OpenHubDetail()
 	{
@@ -1909,7 +2023,7 @@
 		GoToServersView( ServersView.HubDetail );
 	}
 
-	// Terminal tenant #2 (3.5 restructure) — same component, its own adapter. It appears
+	// Terminal tenant #2 (3.5 restructure) -- same component, its own adapter. It appears
 	// here and only here, and never borrows the Hub's page.
 	private void OpenTerminalDetail()
 	{
@@ -1917,7 +2031,7 @@
 		GoToServersView( ServersView.TerminalDetail );
 	}
 
-	// GPU RACKS is a category, not an entity — one click reaches the chooser, not a detail.
+	// GPU RACKS is a category, not an entity -- one click reaches the chooser, not a detail.
 	private void OpenRackChooser()
 	{
 		_serverDetailToken = null;
@@ -1934,14 +2048,14 @@
 
 	// Composite strings are built here, never spliced in markup: a literal separator sitting
 	// between two @-expressions becomes its own text node and collapses, which is what
-	// rendered "·POWERED0/3 RACKS". One expression per element = one text node.
+	// rendered "-POWERED0/3 RACKS". One expression per element = one text node.
 	private string HubRacksChipLabel() => $"{HubRackCount()}/{LpBitcoinIdent.PortalMaxRacksPerHub} RACKS";
 
 	private string HubRacksLinkedVital() => $"{HubRackCount()} / {LpBitcoinIdent.PortalMaxRacksPerHub} linked";
 
-	private string HubWalletVital() => $"₿ {( Hub?.HubWalletBtc ?? 0f ).ToString( "0.########" )}";
+	private string HubWalletVital() => $"\u20BF {( Hub?.HubWalletBtc ?? 0f ).ToString( "0.########" )}";
 
-	// ── Terminal tenant adapter ──────────────────────────────────────────────────
+	// -- Terminal tenant adapter --------------------------------------------------
 	// Every claim reads off live entity state, so it holds on any map.
 	private bool TerminalOnline() => HasLinkedTerminal() && Hub?.IsPowered == true;
 
@@ -1953,9 +2067,9 @@
 
 	private string TerminalPowerVital() => TerminalOnline() ? "Online" : "Offline";
 
-	// ── GPU RACKS category aggregate ─────────────────────────────────────────────
+	// -- GPU RACKS category aggregate ---------------------------------------------
 	// The glance-value the old flat Servers list carried, summed. Sourced from the SAME fixed
-	// slots the chooser renders — never from GetLinkedRacks(). A hub can hold linked racks that
+	// slots the chooser renders -- never from GetLinkedRacks(). A hub can hold linked racks that
 	// no slot addresses (three advanced racks collapse onto one Advanced slot), and a category
 	// card must never claim hardware the page behind it cannot show.
 	private List<OverviewMinerSlot> ServersRacksWithHardware()
@@ -1968,7 +2082,7 @@
 	private string RacksCategoryBufferMeta()
 	{
 		var sats = ServersRacksWithHardware().Sum( s => s.Rack.BitcoinAmount );
-		return $"₿ {sats.ToString( "0.########" )}";
+		return $"\u20BF {sats.ToString( "0.########" )}";
 	}
 
 	private string RacksCategoryMiningMeta()
@@ -1991,12 +2105,12 @@
 		{
 			var rack = slot.Rack;
 			if ( rack.IsMining )
-				return $"{rack.MiningRatePerMinute * 18.5f:F1} TH/s · {rack.BitcoinAmount:F4} BTC";
+				return $"{rack.MiningRatePerMinute * 18.5f:F1} TH/s \u00B7 {rack.BitcoinAmount:F4} BTC";
 
 			// Tier + live re-derived clock; cores never vary post-R2 and buffer BTC already
-			// sits in the row meta — neither earns a slot here.
+			// sits in the row meta -- neither earns a slot here.
 			var tierLabel = rack.ComputeTier > 0 ? $"TIER {TierRoman( rack.ComputeTier )}" : "STOCK";
-			return $"{tierLabel} · {rack.ClockGhz:F2} GHz";
+			return $"{tierLabel} \u00B7 {rack.ClockGhz:F2} GHz";
 		}
 
 		return HasAnyPlayerRacksNearbyOrLinked()
@@ -2026,29 +2140,29 @@
 	private static string RackYieldBadge( LpBitcoinRackEntity rack )
 	{
 		if ( !rack.IsValid() )
-			return "—";
+			return "\u2014";
 
 		var mult = rack.YieldMultiplier;
-		var multLabel = mult > 1.001f ? $"{mult:0.#}× yield" : "1.0× yield";
-		return rack.IsMining ? $"{multLabel} · active" : multLabel;
+		var multLabel = mult > 1.001f ? $"{mult:0.#}\u00D7 yield" : "1.0\u00D7 yield";
+		return rack.IsMining ? $"{multLabel} \u00B7 active" : multLabel;
 	}
 
 	private static string RackOverviewSubline( LpBitcoinRackEntity rack )
 	{
 		if ( !rack.IsValid() )
-			return "—";
+			return "\u2014";
 
 		var cap = LpBitcoinEconomy.RackBtcCapacityFor( rack );
 		var fill = cap > 0f ? (int)Math.Round( 100f * rack.BitcoinAmount / cap ) : 0;
 		var rate = rack.IsMining ? $"{rack.MiningRatePerMinute * 18.5f:F1} TH/s" : "idle";
-		return $"{rate} · {rack.BitcoinAmount:F4}/{cap:F4} BTC ({fill}%)";
+		return $"{rate} \u00B7 {rack.BitcoinAmount:F4}/{cap:F4} BTC ({fill}%)";
 	}
 
 	private static string RackCapacityStatus( LpBitcoinRackEntity rack )
 	{
 		var cap = LpBitcoinEconomy.RackBtcCapacityFor( rack );
 		var pct = cap > 0f ? (int)Math.Round( 100f * rack.BitcoinAmount / cap ) : 0;
-		return $"{rack.BitcoinAmount:F4} / {cap:F4} BTC ({pct}%)";
+		return $"\u20BF {rack.BitcoinAmount:F4} / {cap:F4} ({pct}%)";
 	}
 
 	private static string RackBtcTileValue( LpBitcoinRackEntity rack )
@@ -2081,25 +2195,25 @@
 	private string HubPowerStatusLabel()
 	{
 		var powered = Hub?.IsPowered == true;
-		return $"{(powered ? "On" : "Off")} · {HubTempLabel()}";
+		return $"{(powered ? "On" : "Off")} \u00B7 {HubTempLabel()}";
 	}
 
-	private string LoadDrawLabel() => $"{MiningLoadPercent()}% · {HubPowerDrawLabel()}";
+	private string LoadDrawLabel() => $"{MiningLoadPercent()}% \u00B7 {HubPowerDrawLabel()}";
 
 	private string HubTempLabel()
 	{
 		if ( Hub?.IsPowered != true )
-			return "--°C";
+			return "--\u00B0C";
 
-		return $"{56 + MiningLoadPercent() / 4}°C";
+		return $"{56 + MiningLoadPercent() / 4}\u00B0C";
 	}
 
 	private string HubPeakTempLabel()
 	{
 		if ( Hub?.IsPowered != true )
-			return "--°C";
+			return "--\u00B0C";
 
-		return $"{62 + MiningLoadPercent() / 5}°C";
+		return $"{62 + MiningLoadPercent() / 5}\u00B0C";
 	}
 
 	private string HubPowerDrawLabel()
@@ -2168,19 +2282,19 @@
 	private string ReceiveSteamIdLabel()
 	{
 		var steamId = ReceiveSteamId();
-		return steamId > 0 ? steamId.ToString() : "Unavailable — bind hub owner first";
+		return steamId > 0 ? steamId.ToString() : "Unavailable \u2014 bind hub owner first";
 	}
 
 	private static readonly float[] TransferReferenceBtcAmounts = { 0.01f, 0.05f, 0.10f, 0.25f };
 
 	private string TransferReferenceUsd( float btc )
-		=> $"≈ ${LpBitcoinEconomy.BtcToCashUsd( btc ):N2} bank";
+		=> $"\u2248 ${LpBitcoinEconomy.BtcToCashUsd( btc ):N2} bank";
 
 	private string TransferRackBalanceReference()
 	{
 		var btc = RackPendingBtc();
 		if ( btc <= 0f )
-			return "0 BTC — pull at terminal to deposit";
+			return "0 BTC \u2014 pull at terminal to deposit";
 
 		return $"{btc.ToString( "F6" )} BTC on racks";
 	}
@@ -2273,7 +2387,7 @@
 			Hub?.SetPowered( true );
 	}
 
-	// Settings terminal switch: linked → unlink, unlinked → attempt link (link guards on
+	// Settings terminal switch: linked -> unlink, unlinked -> attempt link (link guards on
 	// power + nearby terminal inside LinkNearbyTerminal; the switch is disabled when neither
 	// path is available).
 	private void ToggleTerminalLink()
@@ -2530,7 +2644,7 @@
 		if ( !HasNearbyUnlinkedTerminal() )
 			return "lp-ui-btn-ghost overview-intro-terminal-disabled";
 
-		// Ghost base like the unlink/disabled variants — btn-primary's orange fill fought
+		// Ghost base like the unlink/disabled variants -- btn-primary's orange fill fought
 		// the green ready tint (orange slab with a green ring). Tinted ghost, green lane.
 		if ( HubIsPowered() )
 			return "lp-ui-btn-ghost overview-intro-link-ready";
@@ -2541,19 +2655,19 @@
 	private string TerminalLinkStatusLabel()
 	{
 		if ( !HubIsPowered() && !HasLinkedTerminal() )
-			return "Hub power off — turn on first";
+			return "Hub power off \u2014 turn on first";
 
 		if ( HasLinkedTerminal() )
-			return "Linked — rig0 ready";
+			return "Linked \u2014 rig0 ready";
 
 		if ( HasNearbyUnlinkedTerminal() )
-			return "In range — ready to link";
+			return "In range \u2014 ready to link";
 
 		return "Not linked";
 	}
 
 	// Badge tracks LINKED-state only (Bloodwave ruling): readiness (in-range terminal)
-	// is the button's business, never the badge's — green means the link landed.
+	// is the button's business, never the badge's -- green means the link landed.
 	private string OverviewTerminalStatusDotClass()
 		=> HasLinkedTerminal() ? "on" : "off";
 
@@ -2568,13 +2682,13 @@
 	private string SettingsTerminalHint()
 	{
 		if ( HasLinkedTerminal() )
-			return "Linked — rig0 ready when hub power is on.";
+			return "Linked \u2014 rig0 ready when hub power is on.";
 
 		if ( !HubIsPowered() )
 			return "Power on hub first, then link terminal.";
 
 		if ( HasNearbyUnlinkedTerminal() )
-			return "Terminal in range — tap Link below.";
+			return "Terminal in range \u2014 tap Link below.";
 
 		return "Place terminal in range, then link.";
 	}
@@ -2607,10 +2721,10 @@
 	private string TerminalLinkPerkLabel()
 	{
 		if ( HasLinkedTerminal() )
-			return "Terminal linked — USE opens rig@hub>";
+			return "Terminal linked \u2014 USE opens rig@hub>";
 
 		if ( HasNearbyUnlinkedTerminal() )
-			return "Terminal nearby — link above to enable rig0";
+			return "Terminal nearby \u2014 link above to enable rig0";
 
 		return "No terminal linked";
 	}
@@ -2638,11 +2752,11 @@
 			ShowPartialCashOutFeedback( WalletCashOutFeedback.Success, "Cashed out!" );
 	}
 
-	/// <summary>Purchase-envelope receiver (slice 3) — the host broadcasts the result of a
+	/// <summary>Purchase-envelope receiver (slice 3) -- the host broadcasts the result of a
 	/// COMPUTE-tier purchase here (mirror of <see cref="OnCashOutSuccess"/>). Clears the
 	/// "working" gate and latches the outcome; the stepper (sketch-driven build) renders
-	/// success/rejection from these. Envelope-driven only — the panel never advances a tier
-	/// optimistically. code: 0=Ok · 1=InsufficientFunds · 2=PreconditionTier · 3=HubGuard.</summary>
+	/// success/rejection from these. Envelope-driven only -- the panel never advances a tier
+	/// optimistically. code: 0=Ok - 1=InsufficientFunds - 2=PreconditionTier - 3=HubGuard.</summary>
 	public void OnPurchaseResult( int code, int newTier, long costSats, float newClockGhz, float newBufferCap, long shortfallSats )
 	{
 		_purchasePendingRackId = Guid.Empty;
@@ -2717,7 +2831,7 @@
 	private string PartialCashOutUsdPreview()
 	{
 		if ( !TryParseCashOutAmount( out var amount ) || amount <= 0f )
-			return "—";
+			return "\u2014";
 
 		return LpBitcoinEconomy.FormatBtcToCash( amount );
 	}
@@ -2869,7 +2983,7 @@
 	}
 
 	// Expire the in-button confirmations (PIN updated / Cleared) and re-render only on the
-	// active→inactive (or inactive→active) edge — no per-frame markup thrash.
+	// active->inactive (or inactive->active) edge -- no per-frame markup thrash.
 	private void TickTransientNotices()
 	{
 		if ( PinJustUpdated() && _sincePinUpdatedNotice >= PinNoticeHoldSeconds )
@@ -2932,7 +3046,7 @@
 		if ( _logsAnchorKey is not null && _logsScroll.ScrollOffset.y > 4f )
 		{
 			// Prepended-row count = the previous head's index in the new list. Not found
-			// (feed cleared or fully rotated past the cap) → re-key without compensating.
+			// (feed cleared or fully rotated past the cap) -> re-key without compensating.
 			var prepended = 0;
 			for ( var i = 0; i < alerts.Count; i++ )
 			{
@@ -2956,7 +3070,7 @@
 					added += row.Box.Rect.Height;
 				}
 
-				// New rows render one frame before layout sizes them — retry next frame.
+				// New rows render one frame before layout sizes them -- retry next frame.
 				if ( added <= 0f )
 					return;
 
@@ -2995,7 +3109,7 @@
 			hash.Add( rack.AdvancedRack );
 			hash.Add( rack.IsMining );
 			hash.Add( rack.ComputeTier );
-			// Buffer BTC at sat resolution — the GPU RACKS aggregate quotes this to the sat,
+			// Buffer BTC at sat resolution -- the GPU RACKS aggregate quotes this to the sat,
 			// so it has to move the hash or the card renders stale. Recompute is already
 			// throttled to TelemetryRefreshInterval, so this costs at most one redraw per 0.5s.
 			hash.Add( (long)( rack.BitcoinAmount * 100_000_000f ) );
@@ -3011,7 +3125,7 @@
 
 	protected override int BuildHash()
 	{
-		// _telemetryHash includes wallet (4dp) + rack structure — no per-frame display tick.
+		// _telemetryHash includes wallet (4dp) + rack structure -- no per-frame display tick.
 		// Do not hash TextEntry bind values (_cashOutAmount).
 		var hash = new HashCode();
 		hash.Add( _active );

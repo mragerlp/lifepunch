@@ -148,6 +148,13 @@ names its SCENE (fast `blank.scene` / world) and its IDENTITY requirement
   on re-place + power-on. The anchored-grab Notify ("HUB is anchored — power
   off to move it.") shipped in slice 3; the gate itself builds here. Gate-3.5
   case: power off → carry → re-place → power on → racks intact per bindings.
+  - **State-conditional form (2026-07-12 ratification, supersedes the pure
+    power gate above):** the hub is `hands_interact` **only while unplaced**;
+    on settle/power it converts to a fixed world machine and **drops
+    `hands_interact`**. Racks are unchanged — no menu, fully holdable.
+    **Trigger form UNDER REVIEW — code currently fires on settle-OR-power**
+    (`LpBitcoinHubEntity.MaybePlaceAsWorldMachineHost`; finding **A** verdict
+    pending: whether the OR-trigger or a power-only trigger is canonical).
 - **Terminal collision triage (queued 2026-07-09):** the HASHD terminal's world
   collision feels oversized — players clip space the model doesn't occupy. Two
   suspects: bounding-box hull (ModelDoc pass) vs the machine law's
