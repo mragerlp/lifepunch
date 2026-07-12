@@ -280,7 +280,14 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable, IAre
 		if ( !Networking.IsHost )
 			return;
 
-		LpBitcoinComputeTrack.EnsureRegistered();
+		// T3 latch (Packet O FLAG 2): feed this rack's content-config into the global one-shot
+		// ladder latch. GetConfig is a BaseEntity read (absent on the LOCAL Component stub), so
+		// under LIFEPUNCH_LOCAL we pass null and the latch uses shipped defaults.
+		LpBitcoinRackConfig rackConfig = null;
+#if !LIFEPUNCH_LOCAL
+		rackConfig = GetConfig( new LpBitcoinRackConfig() );
+#endif
+		LpBitcoinComputeTrack.EnsureRegistered( rackConfig );
 
 		var ledgerTier = 0;
 		var hub = GetLinkedHub();
