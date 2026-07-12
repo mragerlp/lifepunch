@@ -47,6 +47,10 @@ public sealed class LpBitcoinTerminalEntity : BaseEntity, Component.IPressable, 
 
 	bool _isExploding;
 	int _spawnDropGraceTicks;
+
+	/// <summary>Last grab-gate edge (R1). Nullable so the FIRST host tick always applies the gate
+	/// rather than inheriting a default that happens to match.</summary>
+	bool? _grabGateMenuGoverns;
 	bool _colliderSyncedFromModel;
 #endif
 
@@ -128,15 +132,52 @@ public sealed class LpBitcoinTerminalEntity : BaseEntity, Component.IPressable, 
 			return;
 		}
 
-		if ( !_colliderSyncedFromModel )
-		{
-			LifePunchPropPhysics.SyncBoxColliderFromModel( GameObject );
-			_colliderSyncedFromModel = true;
-		}
+		// COLLIDER: prefab-authored box is the source of truth (defect 2, r3). The terminal's
+		// prefab previously carried an IDENTITY STUB (1,1,1) and relied entirely on the runtime
+		// sync; its measured box is now baked in, so the sync is gone. See LpBitcoinRackEntity.
+
+		ApplyGrabGateHost();
 #endif
 	}
 
 #if !LIFEPUNCH_LOCAL
+	/// <summary>
+	/// UNPOWERED-ONLY GRAB (R1/R2, ratified 2026-07-12). USE and the DXRP Hands grab both bind E, and
+	/// on a menu-bearing machine the menu wins — which is why the terminal kept <c>hands_interact</c>
+	/// and still could not be picked up (r3 runtime confirm: tag PRESENT, grab refused).
+	///
+	/// The gate is the exact complement of the menu's own precondition: OpenTerminalHost refuses
+	/// unless the terminal is LINKED and the linked hub IS POWERED. So the menu can only govern E in
+	/// that same state, and grab is allowed precisely when it cannot:
+	///
+	///   unlinked ................................ grabbable (no menu to lose E to)
+	///   linked + hub UNPOWERED .................. grabbable (power-down-to-move, the intended flow)
+	///   linked + hub POWERED .................... menu wins E, grab denied
+	///
+	/// Governing power source for the terminal is the LINKED HUB's IsPowered (R1) — the terminal has
+	/// no power state of its own. Both tag calls host-broadcast, so clients see the change.
+	/// </summary>
+	private void ApplyGrabGateHost()
+	{
+		var hub = FindLinkedHub();
+		var menuGoverns = hub.IsValid() && hub.IsPowered;
+
+		if ( _grabGateMenuGoverns == menuGoverns )
+			return; // no edge — do not re-broadcast tags every tick
+
+		_grabGateMenuGoverns = menuGoverns;
+
+		if ( menuGoverns )
+			LifePunchPropPhysics.DenyHandsGrabTags( GameObject );
+		else
+			LifePunchPropPhysics.AllowHandsGrabTags( GameObject );
+
+		Log.Info(
+			$"LP_TERMINAL_GRAB_GATE menuGoverns={menuGoverns} linked={hub.IsValid()} " +
+			$"hubPowered={( hub.IsValid() ? hub.IsPowered.ToString() : "n/a" )} " +
+			$"hands_interact={GameObject.Tags.Has( "hands_interact" )}" );
+	}
+
 	public void ApplyAreaDamage( AreaDamage component )
 	{
 		var dmg = new DamageInfo(

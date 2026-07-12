@@ -1,0 +1,8 @@
+# VERBATIM SENSORS — byte-exact portal/server exports (SERVER_SETUP_DOCTRINE.md §6).
+# These files are SHA256-verified against the OneDrive drop zone at landing. Git's EOL
+# normalization would silently rewrite their bytes on checkout and break the verbatim claim,
+# so text conversion is DISABLED for the export payloads. The doctrine .md is normal text.
+config/*.json      -text
+motd/*.md          -text
+motd/*.txt         -text
+snapshots/*.json   -text

@@ -399,6 +399,15 @@ Discord invite, rules URL, radio streams are public).
   Law, restart-activated (Bloodwave's portal edit). Packet G rows
   1-3 dispositioned: config-below-intent, knob corrected; doctrine
   numbers stand.
+· TAXRATEMAX SUPERSESSION (Bloodwave, RULED 2026-07-12): canonical
+  TaxRateMax is 0.25. This SUPERSEDES the 0.3 above. Portal edit is
+  DONE; activation is restart-gated (T1 activates next restart).
+  SENSOR (Red, machine-verified against the landed export bytes):
+  server-setup/config/SERVER_CONFIG_T1_2026-07-12.json:182 reads
+  "TaxRateMax": 0.25. The 07-11 reference file reads 0.2 at the SAME
+  line number — a proposal that cited "0.2 in the fresh export" was
+  reading the OLD file; the bytes win. Do not edit a dated export to
+  make it look compliant: it is a verbatim sensor of exported state.
 · MYSTERYBOX RULING: cosmetic lootbox — rewards are inventory item
   UUIDs; WinPercentage is an open-rate, not a gambling edge. Inside
   the Cosmetic Firewall. (Packet F casino flag = false positive,

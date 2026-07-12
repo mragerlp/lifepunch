@@ -125,6 +125,37 @@ public static class LpBitcoinDevSpawn
 		Log.Info( $"lp_bitcoin_clear_spawns: removed {destroyed} object(s)." );
 	}
 
+	/// <summary>
+	/// MARKET-PARITY BENCH (r3, 2026-07-12). Every dev spawn path sets
+	/// <c>DevSpawnAsWorldMachine = true</c>, but a PORTAL/market spawn leaves it FALSE (the flag is a
+	/// plain internal bool, not a [Property], so the content system never sets it). The two branches
+	/// install different physics: the dev branch takes SetupWorldMachine (terminal/rack) while the
+	/// market branch takes BeginGrabbablePrinterDrop. So the dev kit is the photographic NEGATIVE of
+	/// live — its racks are ungrabbable while Official's grab — and any grab/collider claim driven off
+	/// it tests a branch Official never runs.
+	///
+	/// When this is true the three spawn helpers leave the flag FALSE, reproducing the portal path.
+	/// Bench-only: this file is excluded from the publish set (prepare-publish.ps1 filter matches
+	/// "DevSpawn"), so it cannot reach a bundle.
+	/// </summary>
+	private static bool MarketParitySpawn;
+
+	/// <summary>Spawn the kit exactly as the PORTAL does — the branch Official executes.</summary>
+	[ConCmd( "lp_bitcoin_spawn_kit_market" )]
+	public static void SpawnKitMarketParity()
+	{
+		MarketParitySpawn = true;
+		try
+		{
+			Log.Info( "LP_MARKET_PARITY_SPAWN begin — DevSpawnAsWorldMachine=false (portal path)" );
+			SpawnKit();
+		}
+		finally
+		{
+			MarketParitySpawn = false;
+		}
+	}
+
 	[ConCmd( "lp_bitcoin_spawn_kit" )]
 	public static void SpawnKit()
 	{
@@ -1626,7 +1657,7 @@ public static class LpBitcoinDevSpawn
 		if ( rack.IsValid() )
 		{
 			rack.AdvancedRack = stacked;
-			rack.DevSpawnAsWorldMachine = true;
+			rack.DevSpawnAsWorldMachine = !MarketParitySpawn;
 		}
 
 		NetworkSpawnIfNeeded( go, ownerPlayer );
@@ -1670,7 +1701,7 @@ public static class LpBitcoinDevSpawn
 		if ( visuals.IsValid() && !visuals.Hub.IsValid() )
 			visuals.Hub = hub;
 
-		hub.DevSpawnAsWorldMachine = true;
+		hub.DevSpawnAsWorldMachine = !MarketParitySpawn;
 #if !LIFEPUNCH_LOCAL
 		if ( ownerPlayer.IsValid() )
 			BindHubOwnerHost( hub, ownerPlayer );
@@ -1697,7 +1728,7 @@ public static class LpBitcoinDevSpawn
 			terminal = go.AddComponent<LpBitcoinTerminalEntity>();
 
 		if ( terminal.IsValid() )
-			terminal.DevSpawnAsWorldMachine = true;
+			terminal.DevSpawnAsWorldMachine = !MarketParitySpawn;
 
 		NetworkSpawnIfNeeded( go, ownerPlayer );
 

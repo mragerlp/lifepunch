@@ -155,11 +155,9 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 			return;
 		}
 
-		if ( !_colliderSyncedFromModel )
-		{
-			LifePunchPropPhysics.SyncBoxColliderFromModel( GameObject );
-			_colliderSyncedFromModel = true;
-		}
+		// COLLIDER: prefab-authored box is the source of truth (defect 2, r3). The hub's authored
+		// box already MATCHED its mesh AABB (verified by eye), so removing the sync is a no-op for
+		// the hub — but it removes the mechanism that was masking the rack/terminal errors.
 
 		// One-shot rehydrate sweep: pre-fix snapshots carry racks with no slot binding —
 		// bind + reconcile once on first settled host tick (leak fix migration path).
