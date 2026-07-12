@@ -38,10 +38,34 @@ confirmed). Therefore: **secrets (API keys, tokens, webhook URLs) go in SERVER C
 addon/gamemode config.** T2/T3 carry **gameplay numbers only** — no keys, no URLs-as-credentials,
 nothing secret. Store values are portal-visible too (§13) — derived values, never keys.
 
-## 4. BLOCK-0 — LP reads config ZERO times today
+## 4. BLOCK-0 — SUPERSEDED (config-extraction v1 shipped, #70)
 
-**Flag before any config-extraction implementation:** LP code currently reads the addon config
-surface **zero times** (Odysseus L2 finding). The extraction work (moving hardcoded tunables to
-T3 keys the game reads) **re-scopes at the next regroup** before any implementation — do not
-start wiring a config read on this skill's authority. This skill teaches the model and the
-check-order; the build is gated.
+**BLOCK-0 was "LP reads the addon config surface ZERO times" (Odysseus L2 finding). That is no
+longer true.** Config-extraction v1 landed on `develop` in **#70** under the ruled spec
+**`lifepunch/docs/handoff/LPBITCOIN_HYBRID_CONFIG_PROPOSAL_2026-07-12.md`** (v1.2). Read the
+spec before touching this surface; the shipped state is:
+
+- **ONE T3 read exists** — `GetConfig( new LpBitcoinRackConfig() )` at
+  `lifepunchaddons/Code/Addons/lifepunch/bitcoinmining/LpBitcoinRackEntity.cs:288`, feeding
+  `LpBitcoinComputeTrack.EnsureRegistered` (`LpBitcoinComputeTrack.cs:39`).
+- **What T3 tunes today: the COMPUTE ladder only — 11 keys** on `LpBitcoinRackConfig`:
+  `MaxTier`, `Tier1–5EffectMultiplier` (×2/4/8/16/32), `Tier1–5CostSats`
+  (0.25/0.75/2/6/16 BTC). Portal Config Override JSON on a rack content entry;
+  edit → Save → **Sync** → restart (not live).
+- **The ladder is GLOBAL-ONCE, not per-entity** (spec **v1.2-B**). It is one process-wide
+  registry entry (`rack_compute`) behind a one-shot latch: the **first** rack to reconcile
+  latches cost + effect from its config; a later rack whose config diverges is **ignored and
+  logged once** (`Log.Warning`). A separately-tuned `advancedgpurack` does **not** get its own
+  ladder. Set the ladder on **one** rack entry.
+- **STILL NOT T3-tunable — deferred to v1.2-C's own PR and its own GO:** tick intervals, buffer
+  caps, base hash rates, yields. These remain `const` canon in `LpBitcoinEconomy`
+  (`StartClockGhz`, `BaseSpeed`, `PayoutIntervalSeconds`, `BufferCapTicks`) — converting them to
+  T3 overrides means mutable statics in the economy core, which is **propose-and-STOP class**.
+- **Live economy dials are Store, not T3** — one atomic key `lifepunch:bitcoin:config:settings`
+  (spec v1.1-a), reloaded by `/lpbitcoinreloadconfig`, gated on `ManageEconomy || EditServer`
+  (spec **v1.2-A**; the permission already existed at `Permission.cs:148-149` — none was minted).
+
+**So §2's Monnow-shaped ~48-key target is an OPEN DEBT, not a shipped fact** — 11 keys of it
+exist, by ruling. Do not advertise buffer caps, intervals, hash rates, or yields as configurable.
+Do not wire a new config read on this skill's authority: extending the T3 surface past the
+compute ladder is still gated on a ruling.
