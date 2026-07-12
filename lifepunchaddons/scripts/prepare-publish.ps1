@@ -357,41 +357,290 @@ function Clear-SensitiveBinaryStrings {
     [System.IO.File]::WriteAllBytes($Path, $Encoding.GetBytes($Text))
 }
 
-# lifepunchulx shares LifePunch UI helpers from Code/Addons/lifepunch/ in the editor sync,
-# but the portal ships only Code/Addons/lifepunch/lifepunchulx/ — bundle deps for dedicated-server compile.
-$Script:AdminMenuSharedShipFiles = @(
-    'LifePunchUiScale.cs',
-    'LifePunchUiScrollPolicy.cs',
-    'LifePunchScrollRegionPanel.cs',
-    'LifePunchScrollLayout.cs',
-    'LifePunchSourceMark.cs',
-    'LifePunchUiFooter.razor',
-    'LifePunchUiFooter.razor.scss'
-)
+# ── SHARED-INFRA OWNERSHIP MAP ───────────────────────────────────────────────────────────
+# The LifePunch shared infra lives FLAT at Code/Addons/lifepunch/*.cs — deliberately, because
+# the editor compiles the repo as one tree and StaffMenu.razor.scss imports LifePunchUiFooter
+# by relative path ("../"). The portal, however, ships only Code/Addons/lifepunch/<ident>/, so
+# a flat file reaches a dedicated server ONLY if some addon's bundle carries it.
+#
+# All addon code compiles into dxura.rp TOGETHER, so a class carried by two published addons is
+# a duplicate-definition error (CS0101). Therefore each shared file has EXACTLY ONE owner here,
+# and every other addon consumes it as a cross-addon dependency — which requires the owner addon
+# to be INSTALLED in the gamemode.
+#
+# Ownership is a stager-level map, NOT a repo layout. Moving a file's owner is a one-line edit
+# here plus a republish of the two addons; the repo tree never moves.
+#
+# adminmenu (portal ident: lifepunchulx) is the carrier. It already shipped the UI helpers; the
+# gameplay/economy infra below was owned by NOBODY, which husked dxura.rp on the lpbitcoin r1
+# boot (every consumer referenced classes no addon published). See the closure gate at the end
+# of Copy-AddonCode — that failure class now dies at stage time, not on a live server.
+$Script:SharedInfraOwner = [ordered]@{
+    # UI helpers — shipped in lifepunchulx since r14 (the one set that resolved on r1).
+    'LifePunchUiScale.cs'            = 'adminmenu'
+    'LifePunchUiScrollPolicy.cs'     = 'adminmenu'
+    'LifePunchScrollRegionPanel.cs'  = 'adminmenu'   # also carries LifePunchScrollRegionBootstrap
+    'LifePunchScrollLayout.cs'       = 'adminmenu'
+    'LifePunchSourceMark.cs'         = 'adminmenu'
+    'LifePunchUiFooter.razor'        = 'adminmenu'
+    'LifePunchUiFooter.razor.scss'   = 'adminmenu'
 
-function Add-AdminMenuSharedShipDeps {
+    # Gameplay / economy infra — previously unowned. Consumers span lpbitcoin, hackerjob,
+    # visiblepocket and advanceddrugprocessing, so they must live in exactly one carrier.
+    'LifePunchUpgradeTracks.cs'      = 'adminmenu'   # + LifePunchTrackDef, LifePunchTrackSubjectKind
+    'LifePunchUpgradeLedger.cs'      = 'adminmenu'
+    'LifePunchEntityOwnership.cs'    = 'adminmenu'   # + TryBindSpawnOwnerHost extension
+    'LifePunchPropPhysics.cs'        = 'adminmenu'
+    'LifePunchMenuInteractGate.cs'   = 'adminmenu'
+    'LifePunchMenuInputBlock.cs'     = 'adminmenu'
+    'LifePunchMachineDestroyFx.cs'   = 'adminmenu'
+    'LifePunchGroundContact.cs'      = 'adminmenu'
+    'LifePunchTerminalLcd.cs'        = 'adminmenu'
+
+    # TRANSITIVE deps of the block above -- the shared files reference each other. Derived from
+    # the closure gate, not by hand: LifePunchUpgradeLedger -> ILifePunchPurchaseEvent, and
+    # LifePunchMenuInteractGate -> LifePunchInteractTags + LifePunchMenuInteractRange. Omitting
+    # these ships a carrier that is itself unresolvable, which husks the server exactly as before.
+    'ILifePunchPurchaseEvent.cs'     = 'adminmenu'
+    'LifePunchInteractTags.cs'       = 'adminmenu'
+    'LifePunchMenuInteractRange.cs'  = 'adminmenu'
+}
+
+function Get-SharedInfraFilesOwnedBy {
     param(
+        [string]$Ident
+    )
+
+    @($Script:SharedInfraOwner.Keys | Where-Object { $Script:SharedInfraOwner[$_] -eq $Ident })
+}
+
+function Add-SharedInfraShipDeps {
+    param(
+        [string]$Ident,
         [string]$SharedCodeRoot,
         [string]$CodeStage
     )
 
-    foreach ($Name in $Script:AdminMenuSharedShipFiles) {
+    $Owned = Get-SharedInfraFilesOwnedBy -Ident $Ident
+    if ($Owned.Count -eq 0) {
+        return
+    }
+
+    foreach ($Name in $Owned) {
         $Source = Join-Path $SharedCodeRoot $Name
         if (-not (Test-Path -LiteralPath $Source -PathType Leaf)) {
-            throw "Missing lifepunchulx shared ship dependency: $Name (expected under $SharedCodeRoot)"
+            throw "Missing shared-infra ship dependency for '$Ident': $Name (expected under $SharedCodeRoot)"
         }
 
         Copy-Item -LiteralPath $Source -Destination (Join-Path $CodeStage $Name) -Force
     }
 
-    $StaffScss = Join-Path $CodeStage 'StaffMenu.razor.scss'
-    if (-not (Test-Path -LiteralPath $StaffScss -PathType Leaf)) {
-        throw "Missing staged StaffMenu.razor.scss for publish SCSS patch"
+    Write-Host "  + shared infra ($Ident owns $($Owned.Count) file(s) from Code\Addons\$Org\)" -ForegroundColor DarkGray
+}
+
+# ── SHARED SCSS RESOLVER ─────────────────────────────────────────────────────────────────
+# Stylesheets are NOT types. A shared .scss is a preprocessor include, so copying it into every
+# consuming bundle is harmless -- unlike a shared .cs/.razor TYPE, where a second copy is CS0101.
+# They therefore get the opposite treatment to $Script:SharedInfraOwner: duplicate freely.
+#
+# In the repo, panel SCSS reaches the shared sheets by RELATIVE path ("../LifePunchUiShell.scss",
+# "../../../../LifePunchUiFooter.razor.scss") because the editor compiles one tree. Those paths
+# escape the bundle, so on a dedicated server they resolve to nothing. This generalizes the old
+# adminmenu-only StaffMenu patch: for every staged .scss that imports a flat shared sheet, drop a
+# copy NEXT TO IT and rewrite the import to a bare sibling.
+#
+# The copy is renamed to "_shared_<Name>.scss" deliberately: a file still called "X.razor.scss"
+# would sit in a bundle with no "X.razor" beside it, and s&box associates a component's stylesheet
+# by exactly that name. The underscore partial carries no ".razor." fragment, so it can only ever
+# be an @import target. The OWNER addon still ships the true "X.razor.scss" via the map above, so
+# its component keeps its own styles.
+function Resolve-SharedScssImports {
+    param(
+        [string]$Ident,
+        [string]$SharedCodeRoot,
+        [string]$CodeStage
+    )
+
+    $SharedSheets = @{}
+    foreach ($Sheet in @(Get-ChildItem -LiteralPath $SharedCodeRoot -File -Filter '*.scss' -ErrorAction SilentlyContinue)) {
+        $SharedSheets[$Sheet.Name] = $Sheet
     }
 
-    $ScssText = [System.IO.File]::ReadAllText($StaffScss)
-    $ScssText = $ScssText -replace '@import "\.\./LifePunchUiFooter\.razor\.scss";', '@import "LifePunchUiFooter.razor.scss";'
-    [System.IO.File]::WriteAllText($StaffScss, $ScssText)
+    if ($SharedSheets.Count -eq 0) {
+        return
+    }
+
+    $Rewritten = 0
+    foreach ($Staged in @(Get-ChildItem -LiteralPath $CodeStage -Recurse -File -Filter '*.scss' -ErrorAction SilentlyContinue)) {
+        $Text = [System.IO.File]::ReadAllText($Staged.FullName)
+        $Original = $Text
+
+        foreach ($Match in [regex]::Matches($Original, '@import\s+"([^"]+)"\s*;')) {
+            $ImportPath = $Match.Groups[1].Value
+            if ($ImportPath -notmatch '\.\./') {
+                continue
+            }
+
+            $Leaf = ($ImportPath -split '/')[-1]
+            if (-not $SharedSheets.ContainsKey($Leaf)) {
+                continue
+            }
+
+            # "LifePunchUiFooter.razor.scss" -> "_shared_LifePunchUiFooter.scss"
+            $Base = $Leaf -replace '\.razor\.scss$', '' -replace '\.scss$', ''
+            $PartialName = "_shared_$Base.scss"
+            $PartialPath = Join-Path $Staged.DirectoryName $PartialName
+
+            if (-not (Test-Path -LiteralPath $PartialPath -PathType Leaf)) {
+                Copy-Item -LiteralPath $SharedSheets[$Leaf].FullName -Destination $PartialPath -Force
+            }
+
+            $Text = $Text.Replace($Match.Value, "@import `"$PartialName`";")
+            $Rewritten++
+        }
+
+        if ($Text -ne $Original) {
+            [System.IO.File]::WriteAllText($Staged.FullName, $Text)
+        }
+    }
+
+    if ($Rewritten -gt 0) {
+        Write-Host "  + shared scss: $Rewritten import(s) vendored as _shared_*.scss partials" -ForegroundColor DarkGray
+    }
+}
+
+# ── STAGE-TIME DEPENDENCY-CLOSURE GATE ───────────────────────────────────────────────────
+# The editor compiles repo-wide, so it can NEVER catch an unshipped shared dependency; the
+# first sensor was a husked gamemode on a live server. This gate reads the staged bytes in
+# isolation and asserts every LifePunch* / ILifePunch* type the bundle references is reachable
+# on a dedicated server: defined in this bundle, or owned by another addon that is published.
+# Anything else throws — same spirit as the ship-dependency throw above, but computed rather
+# than hand-listed, so a NEW shared class cannot silently escape the map.
+#
+# Scope: type-level (class/interface/enum/struct/record). An extension method rides its
+# declaring type's file, so covering the type covers the method.
+function Assert-StagedCodeClosure {
+    param(
+        [string]$Ident,
+        [string]$SharedCodeRoot,
+        [string]$CodeStage
+    )
+
+    $TypeDefPattern = '(?:class|interface|enum|struct|record)\s+(I?LifePunch\w+)'
+    $RefPattern     = '\bI?LifePunch\w+\b'
+
+    $StagedFiles = @(Get-ChildItem -LiteralPath $CodeStage -Recurse -File -Force -Include *.cs, *.razor -ErrorAction SilentlyContinue)
+
+    # A .razor component is FILENAME-typed -- "LifePunchUiFooter.razor" declares the type
+    # LifePunchUiFooter via @namespace/@inherits, with no "class X" to match. Scanning only for
+    # type declarations misses it and reports a real, correctly-owned dependency as unresolvable.
+    function Get-DefinedTypes {
+        param([System.IO.FileInfo[]]$Files)
+
+        $Map = @{}
+        foreach ($File in $Files) {
+            if ($File.Name -like '*.razor') {
+                $Map[[System.IO.Path]::GetFileNameWithoutExtension($File.Name)] = $File
+            }
+
+            $Text = [System.IO.File]::ReadAllText($File.FullName)
+            foreach ($M in [regex]::Matches($Text, $TypeDefPattern)) {
+                $Map[$M.Groups[1].Value] = $File
+            }
+        }
+
+        $Map
+    }
+
+    # Types this bundle defines itself.
+    $DefinedHere = (Get-DefinedTypes -Files $StagedFiles).Keys
+
+    # Every LifePunch* type this bundle references -- from CODE only. Comments and string literals
+    # must be stripped first, or a name that is merely mentioned reads as a dependency: adminmenu's
+    # StaffMenuHost has `MenuObjectName = "LifePunchUlx"`, a GameObject name, not a type.
+    # A .razor tag (<LifePunchUiFooter />) is not quoted, so it survives the strip, as it must.
+    function Remove-CodeNoise {
+        param([string]$Text)
+
+        $Text = [regex]::Replace($Text, '@\*[\s\S]*?\*@', ' ')          # razor comments
+        $Text = [regex]::Replace($Text, '/\*[\s\S]*?\*/', ' ')          # block comments
+        $Text = [regex]::Replace($Text, '(?m)//.*$', ' ')               # line comments
+        $Text = [regex]::Replace($Text, '@"(?:[^"]|"")*"', '""')        # verbatim strings
+        $Text = [regex]::Replace($Text, '"(?:\\.|[^"\\])*"', '""')      # string literals
+        $Text
+    }
+
+    $Referenced = New-Object System.Collections.Generic.HashSet[string]
+    foreach ($File in $StagedFiles) {
+        $Text = Remove-CodeNoise ([System.IO.File]::ReadAllText($File.FullName))
+        foreach ($M in [regex]::Matches($Text, $RefPattern)) {
+            [void]$Referenced.Add($M.Value)
+        }
+    }
+
+    # Where each shared type is DEFINED in the repo, and therefore which addon publishes it.
+    $DefiningFile = Get-DefinedTypes -Files @(Get-ChildItem -LiteralPath $SharedCodeRoot -Recurse -File -Force -Include *.cs, *.razor -ErrorAction SilentlyContinue)
+
+    # Stylesheet basenames are NOT types (e.g. "LifePunchUiShell" exists only as LifePunchUiShell.scss).
+    # They are vendored per-bundle by Resolve-SharedScssImports, so they must not be closure-checked
+    # as C# symbols -- but a shared sheet with NO .scss on disk would still be a real miss, so this
+    # exemption is keyed to a file that actually exists.
+    $SharedSheetNames = New-Object System.Collections.Generic.HashSet[string]
+    foreach ($Sheet in @(Get-ChildItem -LiteralPath $SharedCodeRoot -File -Filter '*.scss' -ErrorAction SilentlyContinue)) {
+        [void]$SharedSheetNames.Add(($Sheet.Name -replace '\.razor\.scss$', '' -replace '\.scss$', ''))
+    }
+
+    $SharedRootFull = (Resolve-Path -LiteralPath $SharedCodeRoot).Path
+    $Unresolved = @()
+    $CrossAddon = @{}
+
+    foreach ($Symbol in $Referenced) {
+        if ($DefinedHere -contains $Symbol) {
+            continue
+        }
+
+        if ($SharedSheetNames.Contains($Symbol)) {
+            continue   # a stylesheet, vendored by Resolve-SharedScssImports -- not a C# type
+        }
+
+        if (-not $DefiningFile.ContainsKey($Symbol)) {
+            $Unresolved += "$Symbol - referenced by the bundle, DEFINED NOWHERE under Code\Addons\$Org\"
+            continue
+        }
+
+        $File = $DefiningFile[$Symbol]
+        $Relative = $File.FullName.Substring($SharedRootFull.Length).TrimStart('\', '/')
+        $Parts = $Relative -split '[\\/]'
+
+        if ($Parts.Count -eq 1) {
+            # A FLAT shared file. It reaches a dedicated server only if the map gives it an owner.
+            $Owner = $Script:SharedInfraOwner[$Parts[0]]
+            if (-not $Owner) {
+                $Unresolved += "$Symbol ($($Parts[0])) - flat shared infra with NO OWNER in `$Script:SharedInfraOwner; no addon publishes it"
+            } elseif ($Owner -eq $Ident) {
+                $Unresolved += "$Symbol ($($Parts[0])) - owned by '$Ident' but NOT STAGED (Add-SharedInfraShipDeps did not copy it)"
+            } else {
+                $CrossAddon[$Owner] = $true
+            }
+        } else {
+            # Defined inside another addon's folder — a cross-addon dependency on that addon.
+            if ($Parts[0] -ne $Ident) {
+                $CrossAddon[$Parts[0]] = $true
+            }
+        }
+    }
+
+    if ($Unresolved.Count -gt 0) {
+        $Detail = ($Unresolved | Sort-Object | ForEach-Object { "  - $_" }) -join "`n"
+        throw "DEPENDENCY CLOSURE FAILED for '$Ident': the staged bundle references types no published addon carries. A dedicated server will fail to compile dxura.rp (gamemode husk).`n$Detail`nFix: give each file an owner in `$Script:SharedInfraOwner, then republish the owner addon."
+    }
+
+    if ($CrossAddon.Keys.Count -gt 0) {
+        $Owners = ($CrossAddon.Keys | Sort-Object) -join ', '
+        Write-Host "  closure gate: PASS (cross-addon deps: $Owners - these MUST be installed in the gamemode)" -ForegroundColor Yellow
+    } else {
+        Write-Host "  closure gate: PASS (bundle is self-contained)" -ForegroundColor Green
+    }
 }
 
 & (Join-Path $PSScriptRoot 'validate-layout.ps1')
@@ -482,15 +731,17 @@ if ($Package.hasCode) {
         Copy-PublishItems -Source $HubCodeSource -Destination $CodeStage
     }
 
-    if ($Package.ident -eq 'adminmenu') {
-        if ($FromDxrpGame) {
-            $SharedCodeRoot = Join-Path $dxrpGame "Code\Addons\$Org"
-        } else {
-            $SharedCodeRoot = Join-Path $Root "Code\Addons\$Org"
-        }
-
-        Add-AdminMenuSharedShipDeps -SharedCodeRoot $SharedCodeRoot -CodeStage $CodeStage
+    if ($FromDxrpGame) {
+        $SharedCodeRoot = Join-Path $dxrpGame "Code\Addons\$Org"
+    } else {
+        $SharedCodeRoot = Join-Path $Root "Code\Addons\$Org"
     }
+
+    # Any addon that OWNS shared infra carries it in its bundle (adminmenu today, per the map).
+    Add-SharedInfraShipDeps -Ident $Package.ident -SharedCodeRoot $SharedCodeRoot -CodeStage $CodeStage
+
+    # Shared stylesheets are vendored into whichever bundle imports them (duplication is safe).
+    Resolve-SharedScssImports -Ident $Package.ident -SharedCodeRoot $SharedCodeRoot -CodeStage $CodeStage
 
     $codeFiles = @(Get-ChildItem -LiteralPath $CodeStage -Recurse -File -Force -ErrorAction SilentlyContinue)
     Write-Host "Code source: $Script:CodeSourceKind -> $Script:CodeSourcePath" -ForegroundColor Cyan
@@ -498,6 +749,9 @@ if ($Package.hasCode) {
         Write-Host "  + hub code: $Script:HubCodeSourcePath" -ForegroundColor DarkGray
     }
     Write-Host "  staged code files: $($codeFiles.Count)" -ForegroundColor Green
+
+    # Every bundle is asserted closed against a dedicated-server compile before it can ship.
+    Assert-StagedCodeClosure -Ident $Package.ident -SharedCodeRoot $SharedCodeRoot -CodeStage $CodeStage
 }
 
 if ($Package.ident -eq 'bitcoinmining') {
