@@ -28,6 +28,13 @@ Grok/Cursor         optional second opinion, outside the loop, on request only
 Cornerman (Green)   Tier-3: distill/prep/audit/draft; feeds planning; never ships
 ```
 
+## CVL SEAT FLOW (ratified 2026-07-12, Bloodwave)
+The standard loop: (1) Bloodwave → Fable: intent issued, Fable drafts. (2) Fable → Claude Code Opus (Red): plan to implementer. (3) Opus → Fable: results or blockers. (4) CONDITIONAL — on a blocker, or when Fable judges work polish-worthy before it touches the tree again: (4a) Fable → Codex for a refinement pass; (4b) Codex → Fable as a DIFF PROPOSAL — leads-grade, never applied; (4c) Fable → Opus to implement with Codex fixes pre-mapped, each machine-verified against the live tree before acting.
+INVARIANTS: Bloodwave is the transport on EVERY arrow — no seat messages another directly; the diagram is logical flow, physical flow is always Bloodwave copy-paste in the middle (Transport Law survives the Codex addition). Codex is proposal-only even inside the loop — one seat per tree, Opus is sole implementer. Every seat message carries its FROM tag. Signature convention: Bloodwave-authority relays open "── BLOODWAVE · ──" and close "FROM: Fable (relay author)"; seat handoffs close "FROM: <seat>".
+
+## CODEX SEAT CHARTER + RELIEF CLAUSE (ratified 2026-07-12, Bloodwave)
+Codex = review + proposal seat. Reads real code, produces diagnoses/reviews with citations, drafts patches as diffs. Never commits, pushes, opens/merges PRs, or runs mutating git in the shared tree. RELIEF CLAUSE: if Claude usage is exhausted, Codex may take the implementer chair ONLY on an explicit Red-dark handoff (Red at clean known SHA, zero uncommitted diff, handoff note stating HEAD + open work); Codex ACKs and holds alone; Red ACKs on return to reclaim. Never both live. In the chair Codex inherits all implementer laws (attribution-clean incl. its own footers, proof-gated commits, sensors, Bloodwave merge gate, MIRROR).
+
 ## Transport Law
 
 Long pasted handoffs between Chat and Code are a known hazard (empty-response bug). Do not rely on them.
