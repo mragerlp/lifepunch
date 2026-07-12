@@ -101,6 +101,7 @@ git push origin develop
 
 ## Pre-merge checklist (`develop` → `main`)
 
+- [ ] **Base assertion** — the PR's ACTUAL base equals its intended destination (`gh pr view --json baseRefName`) before merge. For **stacked PRs**: record the intended final base in the PR body; merge the parent **WITH branch deletion** or explicitly **retarget the child**; **re-inspect the diff after retarget.** (Root cause of the #65 stranding — the checklist checked proof/deletions/GO but never the base.)
 - [ ] Lane proof done (compile / flatgrass / owner test)
 - [ ] No accidental asset deletes
 - [ ] Docs/handoff updated if canon changed
