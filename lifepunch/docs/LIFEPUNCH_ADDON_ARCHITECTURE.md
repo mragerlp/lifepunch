@@ -5,6 +5,11 @@ Owner of the *addon architecture law* layer. The mission doc owns the why
 (`LIFEPUNCH_MISSION.md`); this page owns cross-addon structural rules that every
 LIFEPUNCH addon must satisfy. Amend this page before shipping a violation.
 
+## ADDON BUILD LADDER (ratified 2026-07-12, Bloodwave)
+1. **lpbitcoin** — pathfinder; finish first. Solves on-ledger/off-ledger discipline, faucet audit, and the config-read path (BLOCK-0) that every later addon inherits.
+2. **Chemist lane** — via the EXISTING Drug Dealer job as stepping-stone/test vehicle (layer + production steps + assets exist; cocaine = model swap on the same grow system). Fast on content/UI; its economy hookup is GATED behind lpbitcoin's ledger discipline — the drug lane is a net faucet that launders (costs on-ledger, revenue off-ledger wallet) and gets fixed as part of this pass. Chemist may later spin off as its own higher-risk-higher-reward job; Drug Dealer stays the lower-risk stepping stone.
+3. **Tablet** — last. Its marquee locked-transaction exchange is CONFIRMED BLOCKED at the base engine (portal interaction verb renders a do-nothing prompt; addon cannot add one without a gamemode edit). Ships scoped to non-blocked functions (remote cash-out, upgrade purchase, attack alerts) or waits on an upstream path.
+
 ## Rule 1 — Event-stream architecture
 
 > Every LIFEPUNCH addon emits player events for its notable actions from v1

@@ -35,6 +35,9 @@ INVARIANTS: Bloodwave is the transport on EVERY arrow — no seat messages anoth
 ## CODEX SEAT CHARTER + RELIEF CLAUSE (ratified 2026-07-12, Bloodwave)
 Codex = review + proposal seat. Reads real code, produces diagnoses/reviews with citations, drafts patches as diffs. Never commits, pushes, opens/merges PRs, or runs mutating git in the shared tree. RELIEF CLAUSE: if Claude usage is exhausted, Codex may take the implementer chair ONLY on an explicit Red-dark handoff (Red at clean known SHA, zero uncommitted diff, handoff note stating HEAD + open work); Codex ACKs and holds alone; Red ACKs on return to reclaim. Never both live. In the chair Codex inherits all implementer laws (attribution-clean incl. its own footers, proof-gated commits, sensors, Bloodwave merge gate, MIRROR).
 
+## SEAT MODEL (ratified 2026-07-12, Bloodwave)
+Fable = home base: plans, conducts, drafts relays. Codex = FRONTLINE: high-volume work — study, diagnose, draft, review (cheap seat, runs ahead). Red (Claude Code Opus) = BACKLINE: implements + machine-verifies on the canonical tree; sole live editor bridge, s&box playtest, runtime truth. Codex and Red carry the SAME responsibilities — cost decides who takes a job: Codex first; Red for anything touching the canonical tree or needing the live bridge. Green (Odysseus) = overnight bulk audit. Invariants unchanged: one seat per tree, Codex proposal-only on the canonical tree, Bloodwave is transport on every pass and sole merge gate. Governor: routing holds while Codex flags its own unverified edges; if it asserts instead of flagging, route the job back to Red.
+
 ## Transport Law
 
 Long pasted handoffs between Chat and Code are a known hazard (empty-response bug). Do not rely on them.
