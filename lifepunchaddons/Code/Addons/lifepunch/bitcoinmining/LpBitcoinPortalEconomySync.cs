@@ -38,6 +38,12 @@ public sealed class LpBitcoinPortalEconomySync : SingletonComponent<LpBitcoinPor
 	/// <summary>Portal store — $ paid when player Uses one portal $BTC inventory stack.</summary>
 	public const string StorePortalRedeemCashUsdKey = "lifepunch:bitcoin:portal_redeem_cash_usd";
 
+	/// <summary>Portal store — atomic config bundle (BLOCK-0 v1.1). Present + valid fields WIN per-field
+	/// over the three legacy scalar keys above; absent → fall back to them + a one-line migration audit.
+	/// Read as raw JSON via GetStore (never GetStoreJson — it swallows malformed JSON to default(T), a
+	/// silent $0 economy; Packet O FLAG 3).</summary>
+	public const string StoreConfigSettingsKey = "lifepunch:bitcoin:config:settings";
+
 	private const float RefreshIntervalSeconds = 300f;
 
 	private RealTimeSince _sinceRefresh;
@@ -115,6 +121,39 @@ public sealed class LpBitcoinPortalEconomySync : SingletonComponent<LpBitcoinPor
 
 		sync._sinceRefresh = RefreshIntervalSeconds;
 		sync.TryScheduleRefresh( reason );
+	}
+
+	/// <summary>Reload the economy from the portal store WITHOUT writing (BLOCK-0 v1.1) — re-reads the
+	/// atomic config bundle + legacy keys and re-applies + broadcasts. The live-tune path: no portal
+	/// restart, no store write. Host/server-console only. Packet O note: a [ConCmd] executes host-side
+	/// only from the server console (operator trust ≥ economy.manage). The ruled ManageEconomy ||
+	/// EditServer RankSystem gate binds a FUTURE in-game /-chat dispatch (which carries a caller
+	/// SteamId); the verified command mechanism here is ConCmd — no addon ICommand discovery exists.</summary>
+	[ConCmd( "lpbitcoinreloadconfig" )]
+	public static void ReloadConfig()
+	{
+		if ( !Networking.IsHost )
+		{
+			Log.Warning( "lpbitcoinreloadconfig: host only (run from the server console)." );
+			return;
+		}
+
+		if ( !ServerApiLink.HasAuthorizationKey )
+		{
+			Log.Warning( "lpbitcoinreloadconfig: portal not authorized (run lp_authorize first)." );
+			return;
+		}
+
+		var sync = Instance;
+		if ( !sync.IsValid() )
+		{
+			Log.Warning( "lpbitcoinreloadconfig: no sync service instance." );
+			return;
+		}
+
+		sync._sinceRefresh = RefreshIntervalSeconds;
+		sync.TryScheduleRefresh( "reload command" );
+		Log.Info( "lpbitcoinreloadconfig: re-reading portal store (atomic config + legacy) and re-applying — no write." );
 	}
 
 	/// <summary>Dev override — sets economy locally and broadcasts (does not write portal store).</summary>
@@ -210,17 +249,55 @@ public sealed class LpBitcoinPortalEconomySync : SingletonComponent<LpBitcoinPor
 	{
 		try
 		{
-			var hubBaseUsd = LpBitcoinEconomy.DefaultBitcoinCashUsd;
-			var hubMultiplier = 1f;
-			var redeemUsd = LpBitcoinEconomy.DefaultPortalRedeemCashUsd;
+			// Start from last-known-good, not hard defaults, so a failed/malformed store read holds
+			// the last applied economy rather than resetting it (Packet O FLAG 3). On the first
+			// refresh these equal the shipped defaults (field initializers).
+			var hubBaseUsd = _lastAppliedHubBaseUsd;
+			var hubMultiplier = _lastAppliedHubMultiplier;
+			var redeemUsd = _lastAppliedRedeemUsd;
 			var hubBaseFromStore = false;
 			var hubMultiplierFromStore = false;
 			var redeemFromStore = false;
+			var bundlePresent = false;
+
+			// Atomic config bundle (BLOCK-0 v1.1) — wins per-field over the legacy scalar keys. Raw
+			// GetStore + JsonDocument; each field positive-validated (a zero/negative/missing field is
+			// NOT adopted and falls through to the legacy path). Packet O FLAG 3.
+			try
+			{
+				var storeBundle = await ServerApiClient.GetStore( StoreConfigSettingsKey );
+				if ( TryParseConfigBundle( storeBundle, out var bCash, out var bCashOk,
+					     out var bMult, out var bMultOk, out var bRedeem, out var bRedeemOk ) )
+				{
+					bundlePresent = true;
+					if ( bCashOk )
+					{
+						hubBaseUsd = bCash;
+						hubBaseFromStore = true;
+					}
+
+					if ( bMultOk )
+					{
+						hubMultiplier = bMult;
+						hubMultiplierFromStore = true;
+					}
+
+					if ( bRedeemOk )
+					{
+						redeemUsd = bRedeem;
+						redeemFromStore = true;
+					}
+				}
+			}
+			catch ( Exception ex )
+			{
+				Log.Warning( $"[lifepunch.bitcoin] portal store read failed ({StoreConfigSettingsKey}): {ex.Message}" );
+			}
 
 			try
 			{
 				var storeBase = await ServerApiClient.GetStore( StoreCashUsdPerBtcKey );
-				if ( TryParsePositiveInt( storeBase, out var parsedBase ) )
+				if ( !hubBaseFromStore && TryParsePositiveInt( storeBase, out var parsedBase ) )
 				{
 					hubBaseUsd = parsedBase;
 					hubBaseFromStore = true;
@@ -234,7 +311,7 @@ public sealed class LpBitcoinPortalEconomySync : SingletonComponent<LpBitcoinPor
 			try
 			{
 				var storeMult = await ServerApiClient.GetStore( StoreCashRateMultiplierKey );
-				if ( TryParsePositiveFloat( storeMult, out var parsedMult ) )
+				if ( !hubMultiplierFromStore && TryParsePositiveFloat( storeMult, out var parsedMult ) )
 				{
 					hubMultiplier = parsedMult;
 					hubMultiplierFromStore = true;
@@ -248,7 +325,7 @@ public sealed class LpBitcoinPortalEconomySync : SingletonComponent<LpBitcoinPor
 			try
 			{
 				var storeRedeem = await ServerApiClient.GetStore( StorePortalRedeemCashUsdKey );
-				if ( TryParsePositiveInt( storeRedeem, out var parsedRedeem ) )
+				if ( !redeemFromStore && TryParsePositiveInt( storeRedeem, out var parsedRedeem ) )
 				{
 					redeemUsd = parsedRedeem;
 					redeemFromStore = true;
@@ -257,6 +334,14 @@ public sealed class LpBitcoinPortalEconomySync : SingletonComponent<LpBitcoinPor
 			catch ( Exception ex )
 			{
 				Log.Warning( $"[lifepunch.bitcoin] portal store read failed ({StorePortalRedeemCashUsdKey}): {ex.Message}" );
+			}
+
+			if ( !bundlePresent && ( hubBaseFromStore || hubMultiplierFromStore || redeemFromStore ) )
+			{
+				Log.Info(
+					$"[lifepunch.bitcoin] MIGRATION — using legacy scalar store keys; atomic " +
+					$"'{StoreConfigSettingsKey}' absent. Set it (then lpbitcoinreloadconfig) to consolidate; " +
+					$"legacy keys retire in a follow-up." );
 			}
 
 			ItemDefinitionDto? item = null;
@@ -527,6 +612,74 @@ public sealed class LpBitcoinPortalEconomySync : SingletonComponent<LpBitcoinPor
 		}
 
 		return false;
+	}
+
+	/// <summary>Parse the atomic config bundle (BLOCK-0 v1.1). Returns false when absent/blank/not a
+	/// JSON object (→ caller falls back to legacy keys). Each field's found-flag is true ONLY when
+	/// present AND valid (int &gt; 0 for cash/redeem; finite float &gt; 0 for the multiplier) — a
+	/// zero/negative/NaN/missing field is REJECTED, never adopted as a silent default (Packet O
+	/// FLAG 3). Accepts camelCase or snake_case field names.</summary>
+	private static bool TryParseConfigBundle(
+		string? raw,
+		out int cashUsdPerBtc, out bool cashFound,
+		out float cashRateMultiplier, out bool multFound,
+		out int portalRedeemCashUsd, out bool redeemFound )
+	{
+		cashUsdPerBtc = 0;
+		cashFound = false;
+		cashRateMultiplier = 1f;
+		multFound = false;
+		portalRedeemCashUsd = 0;
+		redeemFound = false;
+
+		if ( string.IsNullOrWhiteSpace( raw ) )
+		{
+			return false;
+		}
+
+		var trimmed = raw.Trim();
+		if ( !trimmed.StartsWith( "{", StringComparison.Ordinal ) )
+		{
+			return false;
+		}
+
+		try
+		{
+			using var doc = JsonDocument.Parse( trimmed );
+			var root = doc.RootElement;
+			if ( root.ValueKind != JsonValueKind.Object )
+			{
+				return false;
+			}
+
+			if ( ( TryReadIntProperty( root, "cashUsdPerBtc", out var cash ) ||
+			       TryReadIntProperty( root, "cash_usd_per_btc", out cash ) ) && cash > 0 )
+			{
+				cashUsdPerBtc = cash;
+				cashFound = true;
+			}
+
+			if ( ( TryReadFloatProperty( root, "cashRateMultiplier", out var mult ) ||
+			       TryReadFloatProperty( root, "cash_rate_multiplier", out mult ) ) &&
+			     mult > 0f && !float.IsNaN( mult ) && !float.IsInfinity( mult ) )
+			{
+				cashRateMultiplier = mult;
+				multFound = true;
+			}
+
+			if ( ( TryReadIntProperty( root, "portalRedeemCashUsd", out var redeem ) ||
+			       TryReadIntProperty( root, "portal_redeem_cash_usd", out redeem ) ) && redeem > 0 )
+			{
+				portalRedeemCashUsd = redeem;
+				redeemFound = true;
+			}
+
+			return true;
+		}
+		catch
+		{
+			return false;
+		}
 	}
 
 	private static bool TryParsePositiveInt( string? raw, out int value )

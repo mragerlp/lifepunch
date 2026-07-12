@@ -26,35 +26,113 @@ internal static class LpBitcoinComputeTrack
 	public const string ClassAdvanced = "advancedgpurack";
 
 	private static bool _registered;
+	private static bool _mismatchWarned;
+	private static int[] _effectLadder;   // [0..5], index 0 = T0 (×1). Latched global-once (Packet O FLAG 2).
+	private static long[] _priceLadder;   // [0..4] = tiers I..V. Latched global-once (Packet O FLAG 2).
 
-	public static void EnsureRegistered()
+	/// <summary>Latch the process-wide rack_compute ladder from a rack's T3 config. ONE-SHOT (Packet O
+	/// FLAG 2): the ladder is a single global registry entry, so the FIRST rack to reconcile wins and
+	/// a later rack whose config would latch DIFFERENT values is ignored — and logged once as a
+	/// mismatch (e.g. a separately-tuned advancedgpurack content type). Passing no config latches the
+	/// shipped defaults; the reconcile call site (LpBitcoinRackEntity.ReconcileComputeTierHost) is the
+	/// canonical latch point and always precedes any QuoteSats.</summary>
+	public static void EnsureRegistered( LpBitcoinRackConfig config = null )
 	{
 		if ( _registered )
+		{
+			if ( config is not null )
+				WarnOnLadderMismatch( config );
 			return;
+		}
 
+		config ??= new LpBitcoinRackConfig();
+		_effectLadder = BuildEffectLadder( config );
+		_priceLadder = BuildPriceLadder( config );
 		_registered = true;
+
 		LifePunchUpgradeTracks.Register( new LifePunchTrackDef
 		{
 			Id = TrackId,
-			MaxTier = 5,
-			PriceLadderSats = new long[]
-			{
-				25_000_000,    // I   — 0.25 BTC
-				75_000_000,    // II  — 0.75 BTC
-				200_000_000,   // III — 2 BTC
-				600_000_000,   // IV  — 6 BTC
-				1_600_000_000, // V   — 16 BTC
-			},
+			MaxTier = System.Math.Clamp( config.MaxTier, 1, 5 ),
+			PriceLadderSats = _priceLadder,
 			SubjectKind = LifePunchTrackSubjectKind.Slot,
 		} );
+	}
+
+	private static int[] BuildEffectLadder( LpBitcoinRackConfig c ) => new[]
+	{
+		1,                        // T0 — stock
+		c.Tier1EffectMultiplier,  // I
+		c.Tier2EffectMultiplier,  // II
+		c.Tier3EffectMultiplier,  // III
+		c.Tier4EffectMultiplier,  // IV
+		c.Tier5EffectMultiplier,  // V
+	};
+
+	private static long[] BuildPriceLadder( LpBitcoinRackConfig c ) => new[]
+	{
+		c.Tier1CostSats, // I
+		c.Tier2CostSats, // II
+		c.Tier3CostSats, // III
+		c.Tier4CostSats, // IV
+		c.Tier5CostSats, // V
+	};
+
+	/// <summary>Surface a divergent later config that the one-shot latch discards (Packet O FLAG 2).
+	/// Warns once — ReconcileComputeTierHost re-runs every membership sweep.</summary>
+	private static void WarnOnLadderMismatch( LpBitcoinRackConfig config )
+	{
+		if ( _mismatchWarned )
+			return;
+
+		var candidateEffect = BuildEffectLadder( config );
+		var candidatePrice = BuildPriceLadder( config );
+		if ( LaddersEqual( candidateEffect, _effectLadder ) && LaddersEqual( candidatePrice, _priceLadder ) )
+			return;
+
+		_mismatchWarned = true;
+#if !LIFEPUNCH_LOCAL
+		Log.Warning(
+			$"[lifepunch.bitcoin] rack_compute ladder already latched; a later rack config diverges and is " +
+			$"IGNORED (one global ladder). latched effect=[{string.Join( ",", _effectLadder )}] config effect=" +
+			$"[{string.Join( ",", candidateEffect )}] latched price=[{string.Join( ",", _priceLadder )}] config " +
+			$"price=[{string.Join( ",", candidatePrice )}]." );
+#endif
+	}
+
+	private static bool LaddersEqual( int[] a, int[] b )
+	{
+		if ( a is null || b is null || a.Length != b.Length )
+			return false;
+		for ( var i = 0; i < a.Length; i++ )
+			if ( a[i] != b[i] )
+				return false;
+		return true;
+	}
+
+	private static bool LaddersEqual( long[] a, long[] b )
+	{
+		if ( a is null || b is null || a.Length != b.Length )
+			return false;
+		for ( var i = 0; i < a.Length; i++ )
+			if ( a[i] != b[i] )
+				return false;
+		return true;
 	}
 
 	public static string ClassOf( LpBitcoinRackEntity rack )
 		=> rack.AdvancedRack ? ClassAdvanced : ClassStandard;
 
-	/// <summary>Rate multiplier vs stock for a tier: ×1 at T0, ×2/4/8/16/32 at I–V.</summary>
+	/// <summary>Rate multiplier vs stock for a tier: ×1 at T0, config ladder at I–V (shipped
+	/// ×2/4/8/16/32). Reads the global latched ladder; falls back to the stock 1&lt;&lt;tier shape
+	/// before the latch or out of range.</summary>
 	public static int EffectMultiplierFor( int tier )
-		=> 1 << System.Math.Clamp( tier, 0, 5 );
+	{
+		var t = System.Math.Clamp( tier, 0, 5 );
+		if ( _effectLadder is not null && t < _effectLadder.Length )
+			return _effectLadder[t];
+		return 1 << t;
+	}
 
 	/// <summary>Absolute effect apply — ClockGhz + CoreCount derive from tier ALONE
 	/// (decision 2). One knob: the clock carries the whole vector; cores stay stock.
