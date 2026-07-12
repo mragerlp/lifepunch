@@ -108,6 +108,9 @@ git push origin develop
 - [ ] Bloodwave **GO** (`merge to main` / open PR)
 - [ ] After merge: **`main` → `develop`** sync on Red
 
+## Waivers (scoped, logged)
+- **2026-07-12: validator debt waiver, PR #66 scope only** — two named pre-existing failures (top-level `lifepunchaddons/` layout; `addons.json` manifest debt). Waiver does NOT extend to new failures. **Migration owed: layout + manifest, regroup bucket.**
+
 ---
 
 ## Quick agent paste

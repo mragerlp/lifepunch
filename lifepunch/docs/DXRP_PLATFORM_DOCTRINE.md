@@ -95,6 +95,15 @@ SELLING POINT — lpbitcoin's future listing advertises the same.
   LP LAW: T2/T3 config carries gameplay numbers ONLY — no keys, no
   URLs-as-credentials, nothing secret. lpbitcoin's schema is bound
   by this.
+· MARKET PRICING MODEL (ratified 2026-07-12): market-item Cost is
+  PORTAL-SET (cash), server-owner customizable; an addon may ship a
+  default the portal overrides (Kevlar configOverride pattern) but
+  portal Cost is the authority. Law B's "entities cost BTC" governs
+  the IN-GAME acquisition flow (tablet-mediated, future rung), NOT
+  the portal market binding. lpbitcoin launch placeholders: Bitcoin
+  Hub $2500 · HASHD Terminal $1500 · GPU Rack $5000 · Advanced GPU
+  Rack $10000 (DESIGN-PENDING: Advanced must out-earn 2x standard
+  racks at playtest or reprice).
 
 ## 5. Gamemodes
 Create = name+description shell, then BLANK SLATE: no jobs, groups,
