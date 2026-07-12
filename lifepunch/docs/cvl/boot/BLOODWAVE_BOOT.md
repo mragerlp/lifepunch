@@ -49,6 +49,8 @@
 - [ ] Authorize DXRP upstream sync or re-pin.
 - [ ] Authorize anything spending real money.
 
+- [ ] Confirm installed plugins conform to `CONSOLE_PLUGINS_DOCTRINE`; report any plugin not classified there. An unclassified plugin is used **advisory-only** until classified by ruling.
+
 ## If something feels off
 
 - [ ] Weird seat: say `STOP. Report state. No mutations.`

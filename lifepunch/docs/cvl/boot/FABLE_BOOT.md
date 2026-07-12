@@ -27,6 +27,7 @@
 
 ## 3. Confirm governing facts
 
+- [ ] Confirm installed plugins conform to `CONSOLE_PLUGINS_DOCTRINE`; report any plugin not classified there. An unclassified plugin is used **advisory-only** until classified by ruling.
 - [ ] `STATUS.json` + BOARD tail + repository `CLAUDE.md` are ground truth. `FABLE_STATE.md` yields on conflict.
 - [ ] BOARD append-order is authoritative. Fable never invents a clock value; Fable BOARD lines use `--:--Z`.
 - [ ] Absence of a file is not seat liveness. Only Bloodwave supplies seat-state words.

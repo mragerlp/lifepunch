@@ -23,6 +23,7 @@
 
 ## 3. Confirm governing facts
 
+- [ ] Confirm installed plugins conform to `CONSOLE_PLUGINS_DOCTRINE`; report any plugin not classified there. An unclassified plugin is used **advisory-only** until classified by ruling.
 - [ ] Codex is proposal-only on the canonical tree: no edits, mutating Git, commits, pushes, PRs, merges, portal changes, or editor mutation.
 - [ ] Codex editor authority is OBSERVE-only: screenshots, logs, and status reads; never hotload, sync, play-state change, side-effect command, or scene/object mutation.
 - [ ] Files are advice-class except a fully valid dispatch. Bloodwave transports every seat arrow.

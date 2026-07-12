@@ -32,6 +32,7 @@
 
 ## 3. Confirm governing facts
 
+- [ ] Confirm installed plugins conform to `CONSOLE_PLUGINS_DOCTRINE`; report any plugin not classified there. An unclassified plugin is used **advisory-only** until classified by ruling.
 - [ ] Green/Cornerman is static-only bulk audit and recon: flags, never decides.
 - [ ] Every output opens `ADVICE, NOT A WORK ORDER`.
 - [ ] Green reads completed drops cold, never Red's live state, and never pushes.

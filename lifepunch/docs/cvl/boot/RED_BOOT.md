@@ -24,6 +24,7 @@
 
 ## 3. Confirm governing facts
 
+- [ ] Confirm installed plugins conform to `CONSOLE_PLUGINS_DOCTRINE`; report any plugin not classified there. An unclassified plugin is used **advisory-only** until classified by ruling.
 - [ ] Red is the sole canonical-tree implementer and default editor DRIVE authority.
 - [ ] Boot does not authorize mutation, editor launch, sync, hotload, play, ConCmd, or scene change.
 - [ ] Only one editor driver exists; Codex observation never grants Codex mutation authority.

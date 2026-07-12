@@ -63,7 +63,12 @@ and the report it owes. **A booting seat reports `BOOT-CLEAN` or `BOOT-FAULT`, t
 no task and performs no mutation until Bloodwave accepts the boot. Supporting canon:
 `lifepunch/docs/cvl/STACK_ARCHITECTURE.md` (topology) · `lifepunch/docs/cvl/COMMS_LANE.md` (the lane)
 · `lifepunch/docs/cvl/STATUS_JSON_SCHEMA.md` (the checkpoint contract) ·
-`lifepunch/docs/cvl/CVL_AMENDMENT_2026-07-12.md` (rulings R1–R7, D–Q).
+`lifepunch/docs/cvl/CVL_AMENDMENT_2026-07-12.md` (rulings R1–R7, D–Q) ·
+**`lifepunch/docs/cvl/CONSOLE_PLUGINS_DOCTRINE.md`** — **plugins are CAPABILITY, NOT AUTHORITY.** No
+plugin grants a seat any permission beyond its CVL charter; where a plugin's default behavior fights
+CVL law, **CVL law wins and the feature goes unused.** *Installed is not invoked.* Classes A–F govern
+the installed set; hooks and autonomous loops are **Bloodwave-GO-only**, browser plugins are barred
+from credentialed surfaces, and the two-key gates are unreachable through any plugin affordance.
 
 ## COMMS LANE (ratified 2026-07-12; canon: `lifepunch/docs/cvl/COMMS_LANE.md`)
 
