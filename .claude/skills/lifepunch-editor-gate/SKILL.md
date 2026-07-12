@@ -5,6 +5,24 @@ description: The s&box editor and Claude Bridge session ritual for this repo. Us
 
 # The editor gate — the ritual before any claim
 
+## 0. DRIVER SEAT — one bridge driver at a time
+
+**ONE bridge driver at any moment.** Red (Claude Code Opus) is the **default driver**. Codex may
+take the driver seat for editor-gated work (launch, sync, screenshot loops) **only on an explicit
+Bloodwave handoff** — same shape as the CODEX relief clause (clean SHA, ACK, hold alone,
+ACK-on-return; **never both live**). **Concurrent read-only eyes are fine; concurrent mutating
+control never.** Whoever drives is bound by this whole skill + `EDITOR_LAUNCH_LAW` (Launch Report)
++ the launch-set rule.
+
+**Tool risk classes** — full census `lifepunch/docs/reports/BRIDGE_TOOL_CENSUS_2026-07-12.md`:
+- **READ-ONLY** (`get_*`, `list_*`, `*_status`, screenshots, `read_log`, `get_compile_errors`,
+  `*_lint`) — **concurrent-eyes-safe;** a non-driver may call these while Red drives.
+- **SCENE-MUTATING** (`create_*`, `set_*`, `spawn_*`, `delete_*`, `save_scene`, `drive_player`) —
+  **driver seat only.**
+- **COMPILE/SYNC-TRIGGERING** (`trigger_hotload`, `execute_csharp`, `write_file`,
+  `start_play`/`stop_play`, editor-tree Sync) — **driver seat only, heaviest.**
+Classify any handler by its verb prefix; when in doubt, treat as driver-only.
+
 ## 1. BOOT ORDER — editor first, agent second
 
 The HTTP editor MCP servers live **in the editor** and do not retry like the file-IPC
