@@ -16,7 +16,8 @@ control never.** Whoever drives is bound by this whole skill + `EDITOR_LAUNCH_LA
 
 **Tool risk classes** — full census `lifepunch/docs/reports/BRIDGE_TOOL_CENSUS_2026-07-12.md`:
 - **READ-ONLY** (`get_*`, `list_*`, `*_status`, screenshots, `read_log`, `get_compile_errors`,
-  `*_lint`) — **concurrent-eyes-safe;** a non-driver may call these while Red drives.
+  `*_lint`) — **concurrent-eyes-safe;** a non-driver may call these while the DRIVE holder drives.
+  (DRIVE is board-named per `EDITOR_ACCESS_LAW_V2_2026-07-13.md` — it is not fixed to Red.)
 - **SCENE-MUTATING** (`create_*`, `set_*`, `spawn_*`, `delete_*`, `save_scene`, `drive_player`) —
   **driver seat only.**
 - **COMPILE/SYNC-TRIGGERING** (`trigger_hotload`, `execute_csharp`, `write_file`,

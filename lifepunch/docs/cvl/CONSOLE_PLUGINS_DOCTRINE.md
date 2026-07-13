@@ -14,6 +14,34 @@ through a plugin affordance is still two-key. When a plugin's default
 behavior conflicts with CVL law, CVL law wins and the plugin feature
 goes unused. Installed is not invoked.
 
+## 0b. SCOPE — this doctrine's installed set is CLAUDE-CONSOLE-SHAPED
+
+The census in §1 is the **Claude console** installed set (Red on VENGEANCE,
+Odysseus on CORNERMAN). **The Codex harness exposes its own, different plugin
+families** — browser, chrome, computer-use, documents, GitHub, PDF,
+presentations, sites, spreadsheets, template-creator, visualize
+(census: `comms\codex\0021_CODEX_BOOT_2026-07-13.md`, boot-time harness
+manifest). They are **not classified here yet.**
+
+**Rule §3.7 governs them exactly as written: an unclassified plugin is
+ADVISORY-ONLY until classified by ruling.** Capability is not authority — an
+unclassified plugin that offers a two-key path still gets the click withheld
+(§3.2), and the cloud-egress rule (§3.8) binds it whether or not it is named
+below. Classification of the Codex families is **BANKED** for a future ruling;
+until then Codex reports them at boot and uses none of them for authority.
+
+The same rule catches new **MCP surfaces** on the Claude console that no §1 entry
+names. Treat any unnamed surface as advisory-only and report it at boot.
+
+## 0c. SUPERPOWERS — governed by its own doctrine
+
+The `superpowers` entry in §2 Class A is a **summary**. The governing canon is
+`lifepunch/docs/cvl/SUPERPOWERS_DOCTRINE.md` (v1, ratified 2026-07-13): the
+14-skill map to CVL moments, the per-harness activation rules, the boot addendum,
+and subordination clauses S-1..S-6. **On any conflict between the §2 summary and
+SUPERPOWERS_DOCTRINE, the doctrine wins.** The one law that does not move:
+selection grants no authority (§0).
+
 ## 1. Installed set (2026-07-13, Bloodwave-installed on Claude consoles)
 
 feature-dev · claude-code-setup · commit-commands · security-guidance
