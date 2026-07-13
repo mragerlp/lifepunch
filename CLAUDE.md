@@ -69,6 +69,11 @@ plugin grants a seat any permission beyond its CVL charter; where a plugin's def
 CVL law, **CVL law wins and the feature goes unused.** *Installed is not invoked.* Classes A–F govern
 the installed set; hooks and autonomous loops are **Bloodwave-GO-only**, browser plugins are barred
 from credentialed surfaces, and the two-key gates are unreachable through any plugin affordance.
+· **`lifepunch/docs/cvl/KEY_LEDGER.md`** — the census of every key the CVL holds, its scope, and its
+storage. **A key not in the ledger is an incident.** Rule **C-1: no seat reads a credential file** —
+`.env` is off-limits to every seat for every purpose, *including debugging*; verification is always
+indirect (`git check-ignore`, `claude mcp list`, a live API test). Tokens never enter chat, relays,
+commits, BOARD lines, or lane records (C-2), and MCP wiring never uses `--scope project` (C-3).
 
 ## COMMS LANE (ratified 2026-07-12; canon: `lifepunch/docs/cvl/COMMS_LANE.md`)
 
