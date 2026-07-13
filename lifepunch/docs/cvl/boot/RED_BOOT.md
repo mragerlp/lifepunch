@@ -29,10 +29,14 @@
 - [ ] SUPERPOWERS CHECK (`SUPERPOWERS_DOCTRINE.md` §3): (a) confirm the meta-skill is active — hook-injected on a Claude harness, exposed in the manifest on Codex; (b) report the count of available superpowers skills (expect 14); (c) state `skill-check discipline in force`. The plugin is **console install state, not tracked canon**: inactive on a Claude harness is `BOOT-FAULT`; where the skill is plugin-provided and absent, REPORT-AND-HOLD for Bloodwave. A boot never hard-faults a harness for a plugin Bloodwave has not installed there, and never self-installs.
 - [ ] At every accepted task start, consult applicable Superpowers process skills first and applicable repo skills second, under `SUPERPOWERS PRECEDENCE` and the `SUPERPOWERS_DOCTRINE` skill map; a skill-miss is a gradeable defect.
 - [ ] HOOK HEALTH: run one no-op tool call and report whether any `PreToolUse` / `PostToolUse` hook errored. Report a failing hook by `file:line` and owning plugin; **never patch a plugin's files** — hooks are Class C standing rules and repair needs a Bloodwave GO naming the hook.
-- [ ] Red is the sole canonical-tree implementer and default editor DRIVE authority.
+- [ ] EDITOR ACCESS LAW v2 (`EDITOR_ACCESS_LAW_V2_2026-07-13.md`) — **read the BOARD, not this line, for who drives.** DRIVE is exclusive and **board-named by Bloodwave's grant**; it is fixed to no seat and **there is no default driver.**
+  - [ ] **WHEN RED HOLDS A BOARD-NAMED DRIVE GRANT:** Red is THE implementer seat for that slice. DRIVE = tree hands, under the discipline that binds any implementer: proof gates, Sensor Law, attribution-clean commits, observed/chair phase rules, and the two-key list. Swaps happen at slice boundaries, never mid-slice.
+  - [ ] **WHEN CODEX HOLDS THE GRANT:** Codex is the implementer for that slice and its proposal-only clause is **SUSPENDED**. Red does not mutate the canonical tree or the editor behind it, and reverts to review/observe until swap-back. **Neither implementer is senior.**
+  - [ ] Absence of a grant is **not** a grant. If the BOARD is ambiguous about who holds DRIVE, that is a `BOOT-FAULT` — never an inference.
 - [ ] Boot does not authorize mutation, editor launch, sync, hotload, play, ConCmd, or scene change.
-- [ ] Only one editor driver exists; Codex observation never grants Codex mutation authority.
+- [ ] Only one editor driver exists at a time. Concurrent read-only eyes are fine; concurrent mutating control never.
 - [ ] Repository edits require an accepted dispatch or Bloodwave paste; commits, pushes, PRs, merges, and ship actions require their stated gates.
+- [ ] BRANCH ASSERTION AT THE COMMIT: before **every** commit, assert `git branch --show-current` is not `develop` / `main`. A mid-slice checkout silently disarms task-time branch checks, so the assertion lives **at the commit, not at the task**. Defect note: `lifepunch/docs/handoff/DEFECT_COMMIT_ON_DEVELOP_2026-07-13.md`.
 - [ ] Static reads do not prove runtime, visual, replication, portal, or deployed behavior.
 - [ ] Every factual claim carries a sensor; runtime/editor claims require the executing surface's proof.
 - [ ] Red alone generates `C:\lifepunch\comms\STATUS.json` at every arc close and before every handoff.
