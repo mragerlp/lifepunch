@@ -148,6 +148,32 @@ names its SCENE (fast `blank.scene` / world) and its IDENTITY requirement
   on re-place + power-on. The anchored-grab Notify ("HUB is anchored — power
   off to move it.") shipped in slice 3; the gate itself builds here. Gate-3.5
   case: power off → carry → re-place → power on → racks intact per bindings.
+  - **State-conditional form (2026-07-12 ratification, supersedes the pure
+    power gate above):** the hub is `hands_interact` **only while unplaced**;
+    on settle/power it converts to a fixed world machine and **drops
+    `hands_interact`**. Racks are unchanged — no menu, fully holdable.
+  - **Finding A — RESOLVED (2026-07-12): SETTLE STANDS.** The OR-trigger is
+    canonical; the hub converts on settle *or* power. Machine-proven at the r3
+    chair from the code's own log line:
+    `LP_HUB_PLACE placed=world-machine powered=False rest=12 elapsed=12
+    hands_interact=False` — it settled at 12 rest ticks (≈0.95 s: 45 grace + 12
+    confirm at 60 Hz) with power OFF, and stripped the tag. A hub you walk up to
+    is already a fixed machine. **This is the law working, not a defect.**
+  - **UNPOWERED-ONLY-GRAB COMPANION CLAUSE (R1/R2, ratified 2026-07-12):** Hands
+    wins E **only while the governing power source is off.** For the **Hub** the
+    governing source is its own `IsPowered`; for the **Terminal** it is the
+    **linked hub's** `IsPowered` — the terminal has no power state of its own
+    (R1). Unlinked terminal = always grabbable. **Power-down-to-move is the
+    intended flow.**
+    **Why the clause exists:** USE and the DXRP Hands grab both bind **E**, and on
+    a menu-bearing machine the **menu wins**. That is why the terminal kept
+    `hands_interact` and *still* could not be picked up — the tag was never the
+    blocker. The gate is the exact complement of the menu's own precondition
+    (`OpenTerminalHost` refuses unless linked AND hub powered), so grab is allowed
+    precisely when the menu cannot govern.
+    *Proven at the r3 chair — three live transitions, positive ID
+    `LP_TERMINAL_GRAB_GATE`:* unlinked → `hands_interact=True`; linked+powered →
+    `False`; linked+unpowered → `True`.
 - **Terminal collision triage (queued 2026-07-09):** the HASHD terminal's world
   collision feels oversized — players clip space the model doesn't occupy. Two
   suspects: bounding-box hull (ModelDoc pass) vs the machine law's

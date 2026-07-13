@@ -17,7 +17,7 @@
 	<div class="shell">
 		<div class="crt-frame">
 			<div class="crt-header">
-				<span class="crt-header-title hashd-prompt-accent">LIFEPUNCH HASHD TERMINAL</span>
+				<span class="crt-header-title hashd-prompt-accent">HASHD TERMINAL</span>
 				<div class="crt-status-row">
 					<span class="@StatusPowerClass()">@StatusPowerLabel()</span>
 					<span>@($"{LinkedRackCount()} racks")</span>
@@ -98,7 +98,7 @@
 					{
 						<div class="boot-splash term-pin-gate">
 							<div class="boot-mark"></div>
-							<div class="boot-title">LIFEPUNCH HASHD</div>
+							<div class="boot-title">HASHD</div>
 							<div class="term-pin-sub">secure rig — enter hub PIN</div>
 							<div class="term-pin-dots">
 								@for ( var i = 0; i < LpBitcoinHubPin.MaxDigits; i++ )
@@ -136,7 +136,7 @@
 					{
 						<div class="boot-splash" onclick="@SkipBoot">
 							<div class="boot-mark"></div>
-							<div class="boot-title">LIFEPUNCH HASHD</div>
+							<div class="boot-title">HASHD</div>
 							<div class="boot-status">@_bootStatus</div>
 							<div class="boot-hint">click to skip boot</div>
 						</div>
@@ -228,7 +228,7 @@
 
 	private static readonly string[] BootLines =
 	{
-		"LIFEPUNCH HASHD rig — boot sequence",
+		"HASHD rig — boot sequence",
 		"loading hashd kernel ............... OK",
 		"probe hashd hub bus ................ OK",
 		"sync gpu-rack telemetry ............ OK",
@@ -290,7 +290,7 @@
 	private static string RackSettingsSubline( LpBitcoinRackEntity rack )
 	{
 		var cap = LpBitcoinEconomy.RackBtcCapacityFor( rack );
-		return $"{rack.BitcoinAmount:F4}/{cap:F4} BTC";
+		return $"₿ {rack.BitcoinAmount:F4}/{cap:F4}";
 	}
 
 	private void ClearTerminalLog()

@@ -35,3 +35,4 @@ Gun Dealer = the gun job, larger selection later, NO tablet/hub. Vanilla stock 5
 - Persistence-across-jobs vs Law B test.
 - Medic vs Black Market stim-war boundary (INSTITUTIONS_DOCTRINE).
 - Cosmetic Firewall untouched.
+- DXRP portal Store (dxrp.net/portal/store): persistent namespace:key JSON storage per server, discovered 2026-07-12 post-scan. Study lane owed before tablet persistence design — candidate backend for cross-job persistence (Medic upgrades) and locked-transaction state. UNSTUDIED — no design commitments against it until scanned.

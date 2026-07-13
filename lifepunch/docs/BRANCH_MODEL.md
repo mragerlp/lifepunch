@@ -101,11 +101,15 @@ git push origin develop
 
 ## Pre-merge checklist (`develop` → `main`)
 
+- [ ] **Base assertion** — the PR's ACTUAL base equals its intended destination (`gh pr view --json baseRefName`) before merge. For **stacked PRs**: record the intended final base in the PR body; merge the parent **WITH branch deletion** or explicitly **retarget the child**; **re-inspect the diff after retarget.** (Root cause of the #65 stranding — the checklist checked proof/deletions/GO but never the base.)
 - [ ] Lane proof done (compile / flatgrass / owner test)
 - [ ] No accidental asset deletes
 - [ ] Docs/handoff updated if canon changed
 - [ ] Bloodwave **GO** (`merge to main` / open PR)
 - [ ] After merge: **`main` → `develop`** sync on Red
+
+## Waivers (scoped, logged)
+- **2026-07-12: validator debt waiver, PR #66 scope only** — two named pre-existing failures (top-level `lifepunchaddons/` layout; `addons.json` manifest debt). Waiver does NOT extend to new failures. **Migration owed: layout + manifest, regroup bucket.**
 
 ---
 

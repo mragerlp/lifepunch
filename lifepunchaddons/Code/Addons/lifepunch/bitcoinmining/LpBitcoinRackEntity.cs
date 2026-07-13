@@ -160,11 +160,10 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable, IAre
 			return;
 		}
 
-		if ( !_colliderSyncedFromModel )
-		{
-			LifePunchPropPhysics.SyncBoxColliderFromModel( GameObject );
-			_colliderSyncedFromModel = true;
-		}
+		// COLLIDER: the prefab's authored BoxCollider is now the source of truth (defect 2, r3).
+		// The runtime SyncBoxColliderFromModel call that used to live here overwrote it with the
+		// model's render-bounds AABB every spawn. The measured boxes are baked into the prefabs,
+		// so the sync is redundant — and keeping it would silently mask any future authoring error.
 #endif
 	}
 
@@ -280,7 +279,14 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable, IAre
 		if ( !Networking.IsHost )
 			return;
 
-		LpBitcoinComputeTrack.EnsureRegistered();
+		// T3 latch (Packet O FLAG 2): feed this rack's content-config into the global one-shot
+		// ladder latch. GetConfig is a BaseEntity read (absent on the LOCAL Component stub), so
+		// under LIFEPUNCH_LOCAL we pass null and the latch uses shipped defaults.
+		LpBitcoinRackConfig rackConfig = null;
+#if !LIFEPUNCH_LOCAL
+		rackConfig = GetConfig( new LpBitcoinRackConfig() );
+#endif
+		LpBitcoinComputeTrack.EnsureRegistered( rackConfig );
 
 		var ledgerTier = 0;
 		var hub = GetLinkedHub();

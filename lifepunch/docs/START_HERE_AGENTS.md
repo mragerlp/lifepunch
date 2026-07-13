@@ -48,6 +48,12 @@ git status -sb
 
 - lpbitcoin only. Route through `.cursor/rules/lifepunch-active-workstream-gate.mdc` → `lifepunchaddons/docs/ACTIVE_WORKSTREAM.md`.
 - Use the **current unchecked ID** from `ACTIVE_WORKSTREAM` + `OWNER_PROGRESS_TRACKER` + current baton — do not assume a stale `H*` / `T*` / `R*` slice.
+- **Today's canon (2026-07-12) — a fresh session's current state, from the tree:**
+  - **Repo skills** (`.claude/skills/`: grounding · economy · config · editor-gate · razor-ui · sbox-engine-truth · cornerman-packets) auto-load at grounding (`CLAUDE.md` "Repo skills are canon-grade").
+  - **Seat model + CVL seat flow + Codex charter:** `CLAUDE.md` (SEAT MODEL / CVL SEAT FLOW / CODEX SEAT CHARTER).
+  - **Addon build ladder** (lpbitcoin → chemist → tablet): `LIFEPUNCH_ADDON_ARCHITECTURE.md` (ADDON BUILD LADDER).
+  - **lpbitcoin config spec** (BLOCK-0, APPROVED — the queued finish line): `lifepunch/docs/handoff/LPBITCOIN_HYBRID_CONFIG_PROPOSAL_2026-07-12.md`.
+  - **Lane B deploy checklist** (bitcoinmining fresh gamemode install): `lifepunch/docs/handoff/LANE_B_LPBITCOIN_INSTALL_CHECKLIST_2026-07-12.md`.
 
 ## 5. Proof law
 

@@ -651,11 +651,12 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 			}
 
 			&.is-ready {
-				border-color: rgba(95, 211, 141, 0.45);
-				background-color: rgba(95, 211, 141, 0.08);
+				// De-greened: cash-out moves BTC, not cash — amber-native, not green (BTC Currency Standard v1).
+				border-color: rgba(232, 125, 62, 0.45);
+				background-color: rgba(232, 125, 62, 0.08);
 
 				.material-icons {
-					color: #5fd38d;
+					color: $hashd-amber;
 				}
 			}
 
@@ -670,12 +671,12 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 			}
 
 			&.is-success {
-				border-color: rgba(95, 211, 141, 0.55);
-				background-color: rgba(95, 211, 141, 0.12);
-				color: #b8f5d0;
+				border-color: rgba(232, 125, 62, 0.55);
+				background-color: rgba(232, 125, 62, 0.12);
+				color: $hashd-amber-glow;
 
 				.material-icons {
-					color: #5fd38d;
+					color: $hashd-amber;
 				}
 			}
 
@@ -742,6 +743,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 		}
 
 		&.on {
+			// Power = pure STATE (batch 4): green ONLY as the on-state track/outline; knob + label WHITE; no theme/currency color.
 			border-color: rgba(95, 211, 141, 0.45);
 			background-color: rgba(95, 211, 141, 0.08);
 
@@ -752,11 +754,11 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 
 			.power-switch-knob {
 				left: 18px;
-				background-color: $hashd-green;
+				background-color: #ffffff;
 			}
 
 			.power-switch-label {
-				color: $hashd-green;
+				color: #ffffff;
 			}
 		}
 
@@ -945,6 +947,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	}
 
 	.workspace-body {
+		position: relative;
 		flex: 1 1 auto;
 		min-height: 0;
 		display: flex;
@@ -6341,7 +6344,8 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 // every track row — the growing lead absorbs name-width variance, the right transact column is
 // pinned, and the stepper's x stays constant. (upgrade-page polish 3b, 2026-07-12)
 .lp-bitcoin-ops .lp-stepper.centered {
-	flex: 0 0 auto;
+	// Center the pips in the available space between description and price block (live punch #3).
+	flex: 1 1 auto;
 	justify-content: center;
 }
 
@@ -6515,8 +6519,17 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
+	align-items: center;
 	gap: 6px;
 	flex-shrink: 0;
+}
+
+// Batch 4 C: rack-level invested token, pushed to the header row's right edge; amount orange, label white.
+.lp-bitcoin-ops .entity-invested-token {
+	margin-left: auto;
+	font-size: 12px;
+	font-weight: 900;
+	white-space: nowrap;
 }
 
 .lp-bitcoin-ops .entity-chip {
@@ -6536,6 +6549,26 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 // Transact track-row law: [icon] name/why · centered tree · price/delta · UPGRADE.
 .lp-bitcoin-ops .entity-tier-progress.transact {
 	gap: 4px;
+	// #4: cards scroll via the parent .racks-scroll (flex:1 1 0 + overflow-y:scroll) — no nested scroll here.
+	flex-shrink: 0;
+}
+
+// #6b modal backdrop: full-body scrim while a confirm popup is open; the open row rises above it.
+.lp-bitcoin-ops .confirm-scrim {
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(6, 8, 12, 0.5);
+	z-index: 30;
+	pointer-events: all;
+	cursor: default;
+}
+
+.lp-bitcoin-ops .entity-track-row.confirm-open {
+	position: relative;
+	z-index: 40;
 }
 
 .lp-bitcoin-ops .entity-track-row {
@@ -6596,6 +6629,12 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 }
 
 .lp-bitcoin-ops .entity-track-price {
+	// Separate the BTC and cash tokens so the two currency identities never touch (live punch #1).
+	// Must be flex (the inline variant is unsupported and silently dropped, killing the gap). The
+	// parent track-transact column right-aligns this to content width, so flex reads the same here.
+	display: flex;
+	align-items: baseline;
+	gap: 8px;
 	font-size: 13px;
 	font-weight: 900;
 
@@ -6613,6 +6652,11 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	position: relative;
 	flex: 0 0 auto;
 	flex-shrink: 0;
+	// #2: centre the UPGRADE button in its column, with fixed-gap breathing room from the price block.
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-left: 16px;
 }
 
 // .lp-ui-btn-primary ships `flex: 1 1 140px; min-width: 0` for the wrapping button ROW,
@@ -6641,9 +6685,11 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	left: auto;
 	// Briefer BTC-only popup (3a refined) + larger offset so it clears / doesn't crowd the row (2026-07-12).
 	min-width: 240px;
+	z-index: 20;
 
-	&.flip-down { top: 44px; bottom: auto; }
-	&.flip-up { bottom: 44px; top: auto; }
+	// More clearance so the Tier confirm doesn't overlap the row below (live punch #2).
+	&.flip-down { top: 56px; bottom: auto; }
+	&.flip-up { bottom: 56px; top: auto; }
 }
 
 .lp-bitcoin-ops .entity-track-planned.maxed {
@@ -6759,6 +6805,22 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 // Color binds to the VALUE only — delimiters/parens are typography, neutral.
 .lp-bitcoin-ops .lp-money-btc {
 	color: $hashd-amber-glow;
+}
+
+// LAW 17: amount text is white by default on LP surfaces; the SIGN (฿/$) carries the currency color.
+.lp-bitcoin-ops .lp-money-amt {
+	color: #ffffff;
+}
+
+// LAW 17: units + separators (/min, the "/", "(100%)", labels like "invested") stay white — never currency-colored.
+.lp-bitcoin-ops .lp-money-unit {
+	color: #ffffff;
+}
+
+// LAW 17 dual-price token: white divider bar between ฿ and $ (each side full-colored), tight gaps.
+.lp-bitcoin-ops .lp-money-divider {
+	color: #ffffff;
+	margin: 0 2px;
 }
 
 .lp-bitcoin-ops .lp-money-cash {
@@ -7747,6 +7809,9 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	// content-sized, no dim, no title — the anchor bubble IS the context; ✓ works,
 	// ✕/outside-click dismisses; rejection grows the chip one line + shake).
 	.lp-stepper-chip {
+		// DEFECT FIX: capture pointer events so ✓/✗ are clickable and hover no longer bleeds through
+		// to the row underneath the open popup (diagnosed cause c — pointer-events click-through).
+		pointer-events: all;
 		position: absolute;
 		bottom: 38px;
 		left: 0;
@@ -7799,8 +7864,9 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 
 	.lp-stepper-chip-yes,
 	.lp-stepper-chip-no {
-		width: 20px;
-		height: 20px;
+		// #3: larger hit target + pressed-active life; smooth hover/active transitions.
+		width: 24px;
+		height: 24px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -7808,9 +7874,14 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 		border: 1px solid transparent;
 		cursor: pointer;
 		flex-shrink: 0;
+		transition: background-color 0.12s ease, border-color 0.12s ease, transform 0.08s ease;
+
+		&:active {
+			transform: scale(0.9);
+		}
 
 		.material-icons {
-			font-size: 14px;
+			font-size: 15px;
 		}
 	}
 

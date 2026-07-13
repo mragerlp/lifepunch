@@ -48,6 +48,10 @@ Grant Access observed in the wild: Monnow's Printer Upgrades shows
 "Your network LIFEPUNCH™ owns this addon" — entitlement in the
 Transactions view, granted by the developer, no expiry.
 Developer-to-network grants are the private-distribution rail.
+REVISION UPLOAD (studied 2026-07-12): the upload selects the
+<addonIdentifier> folder ITSELF, not its parent — wrong level
+silently fails compile. Caps 50MB code / 300MB assets; only the
+latest revision accepts uploads.
 
 ## 4. THE PIPELINE (canonical, Bloodwave-stated, sensor-verified)
 1. PUBLISH the addon revision (lane B; draft → publish).
@@ -91,6 +95,15 @@ SELLING POINT — lpbitcoin's future listing advertises the same.
   LP LAW: T2/T3 config carries gameplay numbers ONLY — no keys, no
   URLs-as-credentials, nothing secret. lpbitcoin's schema is bound
   by this.
+· MARKET PRICING MODEL (ratified 2026-07-12): market-item Cost is
+  PORTAL-SET (cash), server-owner customizable; an addon may ship a
+  default the portal overrides (Kevlar configOverride pattern) but
+  portal Cost is the authority. Law B's "entities cost BTC" governs
+  the IN-GAME acquisition flow (tablet-mediated, future rung), NOT
+  the portal market binding. lpbitcoin launch placeholders: Bitcoin
+  Hub $2500 · HASHD Terminal $1500 · GPU Rack $5000 · Advanced GPU
+  Rack $10000 (DESIGN-PENDING: Advanced must out-earn 2x standard
+  racks at playtest or reprice).
 
 ## 5. Gamemodes
 Create = name+description shell, then BLANK SLATE: no jobs, groups,
@@ -246,12 +259,18 @@ Discord webhook announce.
   Official, Monnow, LIFEPUNCH™, DXRP UK, CosmicRP). Marketplace is
   embryonic — sell-later doctrine reaffirmed.
 
-## 13. Store (KV persistence)
-Portal Store = hierarchical key-value persistence for server and
-addons, per-entry expiry (live: lifepunchulx/settings,
-staffmenu/settings, commands/waypoint/*). Official cross-restart
-home for addon config/state — candidate target for lpbitcoin
-config.
+## 13. PORTAL STORE (studied 2026-07-12, Fable browser session)
+Per-network persistent KV at dxrp.net/portal/store. Colon-
+delimited keys namespace:sub:key; values JSON or bare string;
+optional per-key expiry (native TTL); portal CRUD incl. namespace-
+node bulk delete (hazard: one click deletes a whole namespace).
+API-scriptable via store.manage key scope (rate limit 10/10s).
+Game-side writes proven by DXRP's own commands:waypoint:* keys;
+the in-game C# access API is UNSTUDIED — locate in dxrp-public
+before any design commitment. Candidate backend for: tablet
+cross-job persistence (Medic upgrades), locked-transaction state,
+hub/rack tier state, G2 persistence question. Secrets law applies:
+Store is portal-visible — no credentials in values.
 
 ## 14. Legal corpus (Dimmer/Dxura, all read 2026-07-11)
 TERMS: Facepunch policy precedence; operator responsibilities
@@ -380,6 +399,15 @@ Discord invite, rules URL, radio streams are public).
   Law, restart-activated (Bloodwave's portal edit). Packet G rows
   1-3 dispositioned: config-below-intent, knob corrected; doctrine
   numbers stand.
+· TAXRATEMAX SUPERSESSION (Bloodwave, RULED 2026-07-12): canonical
+  TaxRateMax is 0.25. This SUPERSEDES the 0.3 above. Portal edit is
+  DONE; activation is restart-gated (T1 activates next restart).
+  SENSOR (Red, machine-verified against the landed export bytes):
+  server-setup/config/SERVER_CONFIG_T1_2026-07-12.json:182 reads
+  "TaxRateMax": 0.25. The 07-11 reference file reads 0.2 at the SAME
+  line number — a proposal that cited "0.2 in the fresh export" was
+  reading the OLD file; the bytes win. Do not edit a dated export to
+  make it look compliant: it is a verbatim sensor of exported state.
 · MYSTERYBOX RULING: cosmetic lootbox — rewards are inventory item
   UUIDs; WinPercentage is an open-rate, not a gambling edge. Inside
   the Cosmetic Firewall. (Packet F casino flag = false positive,

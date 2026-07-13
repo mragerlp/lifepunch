@@ -115,6 +115,25 @@ $radius-shell:  4px;                     // the one large container
     the chooser renders. Applies to every glance-value tile: it is a promise the
     next click must keep.
 
+## LAW 17 — CURRENCY IDENTITY (ratified 2026-07-12, Bloodwave)
+Every menu, panel, readout, or log line that displays currency displays its
+identity through the SIGN: ฿ + gold/bitcoin-orange = BTC · $ + green = cash.
+The colored sign is the invariant; bare "BTC"/cash text without sign+color
+is a violation. Amount text is white by default on LP-authored surfaces;
+full-colored amounts are PERMITTED where they match DXRP-native convention
+(ULX, upstream menus) or where emphasis warrants — per-surface style
+latitude at Bloodwave's eye, not a violation. Icon and container furniture
+use theme colors and are not currency signals. Units and separators around
+amounts are white ("/min", "/", "(100%)"). Labels following amounts are
+white ("invested"). The two identities never share a color and never touch
+without a separator (min 8px gap or divider — see Law 15 Separator Law).
+DUAL-PRICE TOKEN: where both prices show, format is ฿4 | $20,000 — white
+divider bar, tight gaps, each currency full-colored (sign AND amount;
+dual-price warrants emphasis). Green is reserved for cash and success states
+— never power, status, or BTC-adjacent controls. Applies to all current and
+future LP surfaces that hold, move, or price currency. Reference
+implementation: lpbitcoin HASHD set, Currency Standard v1.
+
 ## Anti-patterns (the "too Claudey" list — reject on sight)
 
 Icon tiles behind glyphs · pill buttons/chips · accent borders and glows ·
