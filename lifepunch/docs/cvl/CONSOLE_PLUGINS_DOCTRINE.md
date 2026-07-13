@@ -1,6 +1,7 @@
 # CONSOLE PLUGINS DOCTRINE — Claude Code seats (Red, Green console, any future CVL console)
 Canon home: lifepunch/docs/cvl/CONSOLE_PLUGINS_DOCTRINE.md
-v1 · 2026-07-13 · Ratified by Bloodwave · Drafted by Fable, landed by Red
+v1.1 · 2026-07-13 · Ratified by Bloodwave · Drafted by Fable, landed by Red
+(v1 = fable\0019; v1.1 folds fable\0020 — 11 additional plugins + cross-cutting rule 8)
 
 ## 0. The one law that governs all of it
 
@@ -19,13 +20,31 @@ chrome-devtools-mcp · playwright · explanatory-output-style · hookify
 frontend-design · superpowers · code-review · skill-creator · context7
 code-simplifier · claude-md-management
 
+v1.1 additions (installed after v1 landed):
+
+remember · greptile · csharp-lsp · gitlab · cloudflare
+Desktop Commander · stripe · coderabbit · learning-output-style
+discord · qodo-skills
+
 ## 2. Classification and rules per plugin
 
 ### CLASS A — Advisory/capability enhancers (use freely, Sensor Law applies)
+- csharp-lsp (v1.1): THE relevant LSP for this tree — SUPERSEDES the
+  typescript-lsp/pyright-lsp note below that LSPs only cover tooling
+  scripts. Its diagnostics on entity/UI code are FIRST-CLASS STATIC
+  SENSORS: use before every compile claim. Still static — never a
+  substitute for compile or runtime proof.
 - typescript-lsp, pyright-lsp: static diagnostics. NOTE: the LIFEPUNCH
   tree is C#/.razor/SCSS — these fire on tooling scripts only. An LSP
   diagnostic is a STATIC sensor; it never substitutes for compile or
   runtime proof.
+- learning-output-style (v1.1): output style, use freely.
+- remember (v1.1): seat-local memory/context persistence. Its recalled
+  content is a SEAT-LOCAL CLAIM, never canon — on any conflict with
+  BOARD/STATUS/repo doctrine, the lane wins and the memory is stale.
+  Never store credentials or portal player data in it.
+- qodo-skills (v1.1): skill pack; skills are subordinate to this
+  doctrine (Class E rule applies — tracked promotion = PR).
 - context7: live library docs lookup. Citations from it name the
   source. Never outranks the s&box/DXRP truth in-tree; engine-truth
   skills and machine-verified reads win on conflict.
@@ -51,6 +70,15 @@ code-simplifier · claude-md-management
   injects trailers or co-author lines, strip them — attribution
   cleanliness is a standing law and this plugin is the likeliest
   place it silently breaks.
+- greptile, coderabbit (v1.1) — REVIEW TOOLCHAIN WITH AN IP GATE:
+  cloud code-review services. REPO CODE LEAVES THE MACHINE to be
+  indexed/reviewed by a third party. For a private repo under an IP
+  doctrine this is a BLOODWAVE DECISION, NOT A DEFAULT: DO NOT
+  connect or authenticate either against the LIFEPUNCH repo without
+  explicit Bloodwave GO. If GO'd: own minimum-scope key each (Key
+  Law), private-repo access scoped to mragerlp/lifepunch only, and
+  their output is leads-grade SENSOR INPUT to the existing gates —
+  never a gate verdict (same rule as the code-review plugin).
 
 ### CLASS C — Automation with standing effects (Bloodwave GO required)
 - hookify: hooks are STANDING RULES (persistent config class). No
@@ -64,6 +92,22 @@ code-simplifier · claude-md-management
   canonical tree without a scoped GO, never self-invoked by a seat.
   Loop output lands as a normal seat report and gets graded — the
   loop does not self-certify.
+- Desktop Commander (v1.1): terminal + filesystem + process control
+  BEYOND the repo. Red already holds terminal hands, so the capability
+  overlap is fine, but SCOPE DISCIPLINE IS LAW: operations stay within
+  the repo, the comms lane, and task-named paths. No system settings,
+  no installs, no process kills outside task scope. Destructive ops
+  remain TWO-KEY regardless of how easy the tool makes them.
+- discord (v1.1): DORMANT until the Discord-bot slice opens (ratified
+  ladder item). WEBHOOK URLS ARE CREDENTIALS (existing law) — never in
+  chat, relays, or commits. Connect only on that slice's GO.
+- cloudflare (v1.1): DORMANT until the lifepunch.co/Cloudflare slice
+  opens (ratified ladder item). Own API token at minimum scope on that
+  slice's GO; ZONE-LEVEL ONLY, never account-level.
+- gitlab (v1.1): an active lane exists (lifepunch-rdp-server, Blue
+  ops). Wire per the ratified pattern: PROJECT access token (not
+  personal), Reporter role, read_api + read_repository only,
+  .env/glab-config storage. READ-ONLY until a ruling says otherwise.
 
 ### CLASS D — Browser automation (surface-scoped)
 - chrome-devtools-mcp, playwright: permitted on LOCAL and dev
@@ -89,6 +133,13 @@ code-simplifier · claude-md-management
 - vercel: no deployment target exists in this project. Unused until a
   ruling creates a lane (e.g., lifepunch.co work). Do not connect it
   to any account meanwhile.
+- stripe (v1.1): REAL MONEY. Monetisation exclusivity law: all
+  LIFEPUNCH payments flow through DXRP rails ONLY. This plugin
+  connects to NO account, holds NO key, and executes NOTHING without
+  Bloodwave's word. Real-money actions are TWO-KEY FOREVER and NO
+  FUTURE RULING DELEGATES THEM TO A SEAT. It exists only for a
+  possible white-label shop.lifepunch.co future, which would be its
+  own ratified arc.
 
 ## 3. Cross-cutting rules
 
@@ -118,6 +169,12 @@ code-simplifier · claude-md-management
    CONSOLE_PLUGINS_DOCTRINE; report any plugin not classified there."
    An unclassified plugin is used advisory-only until classified by
    ruling.
+8. CLOUD-EGRESS RULE (v1.1): any plugin that transmits repo content to
+   an external service (greptile, coderabbit, context7 queries
+   containing code, Desktop Commander remote features) falls under the
+   IP DOCTRINE: NO LIFEPUNCH SOURCE LEAVES THE MACHINE to a new third
+   party without Bloodwave GO NAMING THE SERVICE. LSPs and local-only
+   plugins are exempt (no egress).
 
 ## 4. Why this exists
 
