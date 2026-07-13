@@ -114,14 +114,48 @@ wording: **no instrument, gate, or CI in this repo compiles through
 is a statement about our *instruments*, not about the *artifacts* —
 and the two were conflated.
 
-**OPEN QUESTION, WORTH ONE EXPERIMENT (not yet run, NOT authorized
-here):** whether `dotnet build lifepunchaddons/Code/addons.csproj`
-compiles LP addon code and surfaces real C# errors. If it does, this
-project gains a STATIC COMPILE SENSOR — the thing every static seat
-has lacked, and the reason every C# claim currently waits on an editor
-session. If it does not, the failure mode gets recorded here and the
-editor-only law is finally *proven* rather than assumed. Until someone
-runs it and shows a positive code-string ID, **claim neither.**
+**THE EXPERIMENT WAS RUN (2026-07-13, Bloodwave-authorized). ANSWER:
+`dotnet build` IS NOT A COMPILE SENSOR — AND ITS OUTPUT IS A TRAP.**
+The editor-only law is now PROVEN, with a named mechanism, rather than
+assumed.
+
+    dotnet build lifepunchaddons/Code/addons.csproj   (SDK 10.0.300, clean tree)
+    -> exit 1 · 42 errors first pass, 82 on --no-incremental · 7 warnings
+    -> EVERY error is CS0246 "type or namespace not found". ZERO are real defects.
+       Unresolved: IReadOnlyList<> (24) · Player (22) · Obsolete/ObsoleteAttribute (24)
+                   · Func<,> (4) · IEnumerable<>, List<>, HealthComponent (2 each)
+
+**READ THAT LIST BEFORE TRUSTING THE OUTPUT.** `IReadOnlyList`, `List`,
+`Func`, and `ObsoleteAttribute` are **BCL types**. A compiler that cannot
+find `ObsoleteAttribute` is not judging our code — it is missing its
+reference set. Two gaps, both machine-confirmed:
+
+1. **NO IMPLICIT/GLOBAL USINGS.** `addons.csproj` declares
+   `<Using Include="Sandbox.Internal.GlobalGameNamespace" Static="true" />`
+   but **no `<ImplicitUsings>`**, and LP source files declare **zero
+   `using` directives of their own** (verified: `LpBitcoinIdent.cs` has
+   none). The s&box compiler injects that global set; `dotnet` does not.
+   So every `System` / `System.Collections.Generic` type vanishes.
+2. **NO GAMEMODE REFERENCE.** `Player` and `HealthComponent` are DXRP
+   gamemode types (`lifepunchdxrp/game/Code/Player/Player.*.cs`, built by
+   `rp.csproj`). `addons.csproj` references the Sandbox engine DLLs and
+   `Base Library.csproj`, but **never the gamemode assembly** — which the
+   editor has in scope when it compiles an addon.
+
+**THE DANGER IS THE FALSE POSITIVE, NOT THE FAILURE.** This build reports
+**82 errors against shipped, working, in-production code.** A seat that
+runs it and reads the output naively files 82 phantom defects and sends
+someone hunting ghosts. **If you run `dotnet build` here, its errors are
+NOT evidence.** Do not cite them, do not "fix" them.
+
+**THE LEAD (open, unclaimed).** The gap is narrow and now named: implicit
+usings + a gamemode reference. Closing it would hand this project the
+static compile sensor every static seat lacks. But `addons.csproj` is
+**editor-GENERATED** (its `OutputPath` points into
+`D:/Steam/.../sbox/.vs/output/`), so a hand-edit is overwritten on the
+next editor regeneration — any real fix must survive that, which makes it
+a slice, not a one-liner. **Until that slice lands and shows a positive
+code-string ID, the EDITOR remains the only compile sensor.**
 
 - Editor sessions are governed by EDITOR_LAUNCH_LAW (launch-set
   rule: never sync a lone addon) and the editor gate skill. One
