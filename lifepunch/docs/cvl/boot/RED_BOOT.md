@@ -25,6 +25,9 @@
 ## 3. Confirm governing facts
 
 - [ ] Confirm installed plugins conform to `CONSOLE_PLUGINS_DOCTRINE`; report any plugin not classified there. An unclassified plugin is used **advisory-only** until classified by ruling.
+- [ ] Confirm `using-superpowers` plus the seat-applicable repo `lifepunch-*` skills are exposed and readable in this harness. Missing or inaccessible applicable skills are `BOOT-FAULT` and are reported loudly; never self-install.
+- [ ] At every accepted task start, consult applicable Superpowers process skills first and applicable repo skills second, under `SUPERPOWERS PRECEDENCE`; a skill-miss is a gradeable defect.
+- [ ] HOOK HEALTH: run one no-op tool call and report whether any `PreToolUse` / `PostToolUse` hook errored. Report a failing hook by `file:line` and owning plugin; **never patch a plugin's files** — hooks are Class C standing rules and repair needs a Bloodwave GO naming the hook.
 - [ ] Red is the sole canonical-tree implementer and default editor DRIVE authority.
 - [ ] Boot does not authorize mutation, editor launch, sync, hotload, play, ConCmd, or scene change.
 - [ ] Only one editor driver exists; Codex observation never grants Codex mutation authority.

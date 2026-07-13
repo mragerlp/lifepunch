@@ -24,6 +24,8 @@
 ## 3. Confirm governing facts
 
 - [ ] Confirm installed plugins conform to `CONSOLE_PLUGINS_DOCTRINE`; report any plugin not classified there. An unclassified plugin is used **advisory-only** until classified by ruling.
+- [ ] Confirm `using-superpowers` plus the seat-applicable repo `lifepunch-*` skills are exposed and readable in this harness (`.agents/skills/` is the non-Claude root). Missing or inaccessible applicable skills are `BOOT-FAULT` and are reported loudly; never self-install.
+- [ ] At every accepted task start, consult applicable Superpowers process skills first and applicable repo skills second, under `SUPERPOWERS PRECEDENCE`; a skill-miss is a gradeable defect.
 - [ ] Codex is proposal-only on the canonical tree: no edits, mutating Git, commits, pushes, PRs, merges, portal changes, or editor mutation.
 - [ ] Codex editor authority is OBSERVE-only: screenshots, logs, and status reads; never hotload, sync, play-state change, side-effect command, or scene/object mutation.
 - [ ] Files are advice-class except a fully valid dispatch. Bloodwave transports every seat arrow.

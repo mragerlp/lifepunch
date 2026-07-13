@@ -1,7 +1,9 @@
 # CONSOLE PLUGINS DOCTRINE — Claude Code seats (Red, Green console, any future CVL console)
 Canon home: lifepunch/docs/cvl/CONSOLE_PLUGINS_DOCTRINE.md
-v1.1 · 2026-07-13 · Ratified by Bloodwave · Drafted by Fable, landed by Red
-(v1 = fable\0019; v1.1 folds fable\0020 — 11 additional plugins + cross-cutting rule 8)
+v1.2 · 2026-07-13 · Ratified by Bloodwave · Drafted by Fable, landed by Red
+(v1 = fable\0019; v1.1 folds fable\0020 — 11 additional plugins + cross-cutting rule 8;
+ v1.2 folds fable\0037-0038 + codex\0010 + green\0004 — superpowers expanded to a full
+ Class A entry with the lawful skill map, and the Class E tracked-skill-layout ruling)
 
 ## 0. The one law that governs all of it
 
@@ -52,11 +54,68 @@ discord · qodo-skills
   Its flags are leads-grade; route real findings into the normal
   defect/ruling flow, not silent self-repair.
 - explanatory-output-style, code-simplifier, frontend-design,
-  feature-dev, superpowers: workflow/skill enhancers. frontend-design
+  feature-dev: workflow/skill enhancers. frontend-design
   guidance yields to LIFEPUNCH_UI_STANDARD and Law 17 wherever they
   conflict — LIFEPUNCH visual canon outranks generic design advice.
 - claude-code-setup: environment bootstrap only; never modifies the
   canonical tree.
+- superpowers (entry expanded 2026-07-13, ratifying the SKILLS-FIRST
+  rule in CLAUDE.md/AGENTS.md): CLASS A PROCESS ROUTER WITH INHERITED
+  ACTION RISK. Checking and selecting an applicable skill is the
+  DEFAULT METHOD across seats — a skill-miss on applicable work is a
+  gradeable defect — but selection grants NO authority. Every operation
+  a selected skill proposes keeps its native CVL class, seat gate,
+  Sensor Law burden, and Bloodwave authorization. Per-harness
+  install/enable/update is a Bloodwave console act; settings, caches,
+  hooks, and install state stay seat-local and untracked. The two-key
+  list is immutable and unreachable through EVERY superpowers skill,
+  branch-finishing choices included.
+
+  LAWFUL SKILL MAP:
+  - using-superpowers — ALL seats: task-start applicability router
+    only, under SUPERPOWERS PRECEDENCE. It cannot reinterpret a relay
+    or create authority.
+  - brainstorming — Fable slice briefs and Bloodwave design sessions.
+    Codex may use its question/alternatives grammar inside a tasked
+    proposal. It authorizes no Red implementation and no Green
+    direction.
+  - writing-plans — Fable briefs and Codex leads-grade proposals; Red
+    may turn an accepted dispatch into an execution checklist without
+    changing scope.
+  - executing-plans — Red only, inside an authorized task. Its
+    checkpoints do not replace proof gates or Bloodwave words.
+  - test-driven-development — Red implementation method inside an
+    authorized task. Codex may propose tests; Fable/Green may audit
+    coverage; neither gains tree hands.
+  - systematic-debugging — Red for executing/runtime diagnosis inside
+    an authorized task; Codex for proposal-only static diagnosis;
+    Green for cold static findings. Static seats never claim runtime
+    proof.
+  - verification-before-completion — ALL seats, within their own
+    sensors. The CVL Sensor Law is the stronger terminus: no static
+    proof becomes runtime or visual proof by passing through a skill.
+  - subagent-driven-development — Red only, inside an authorized task,
+    only where the harness permits it. Subagents inherit Red's exact
+    scope and gain no independent tree, editor, transport, commit, or
+    two-key authority.
+  - dispatching-parallel-agents — local subtask concurrency inside an
+    already-authorized seat task. It never dispatches another CVL
+    seat, never bypasses Bloodwave transport, and never races the
+    one-writable-seat or one-driver boundary.
+  - requesting-code-review / receiving-code-review — the Codex review
+    lane. Requests and results travel through Bloodwave; review is
+    advice until a valid relay; Red machine-verifies before acting.
+  - using-git-worktrees — Red only, under explicit repo branch/lane
+    authority. Codex/Fable/Green create no writable canonical
+    worktrees. One seat per tree.
+  - finishing-a-development-branch — Red may verify and report the
+    options. Merge, PR/push, ship, discard, cleanup, and every
+    destructive option remain Bloodwave's explicit word. The skill
+    NEVER selects or executes one.
+  - writing-skills / skill-creator — any seat may draft inside its
+    proposal/advice charter; Red alone promotes a skill to the tracked
+    tree, through the canon PR gate; Bloodwave alone approves console
+    installation. A skill cannot amend its own precedence.
 
 ### CLASS B — Review toolchain (complements the loop, replaces no seat)
 - code-review, pr-review-toolkit: Red may self-review pre-commit and
@@ -124,10 +183,31 @@ discord · qodo-skills
   DRAFT and PROPOSE CLAUDE.md changes; it never auto-applies them.
   Every CLAUDE.md change rides a PR through the normal gate review.
   Auto-maintenance features stay off.
-- skill-creator: seat-local skill creation (.agents/skills, untracked)
-  is free. PROMOTING a skill to the tracked tree is a canon act — PR
-  + gate review. Skills must not encode instructions that conflict
-  with CVL law; a skill is subordinate to this doctrine.
+- skill-creator: seat-local skill DRAFTING is free. PROMOTING a skill
+  to the tracked tree is a canon act — PR + gate review. Skills must
+  not encode instructions that conflict with CVL law; a skill is
+  subordinate to this doctrine.
+
+  TRACKED SKILL LAYOUT (2026-07-13 ruling — SUPERSEDES the v1.1
+  wording of this entry, which called `.agents/skills` seat-local and
+  untracked; Green `0004` correctly flagged the contradiction).
+  Promoted skills live in BOTH harness-native roots and BOTH are
+  tracked canon:
+    .claude/skills/   loaded by Claude Code seats (Red, Odysseus)
+    .agents/skills/   loaded by non-Claude harnesses (Codex)
+  They are PAIRED CANON SURFACES, NOT ASSUMED BYTE MIRRORS: a shared
+  doctrine change updates both in the SAME PR, while harness-specific
+  wording and tool mappings may legitimately differ. Neither root is a
+  second source of law — both point back to CLAUDE.md, the canon of
+  record. Per-seat settings (`.codex/`, `settings.local.json`, plugin
+  caches, install state) remain UNTRACKED.
+
+  A MECHANICAL FIND-REPLACE IS NOT A HARNESS ADAPTATION. Seat names
+  are proper nouns: Red is Claude Code; the s&box bridge is the Claude
+  Bridge. The 2026-07-13 `.agents` candidate had swapped them
+  wholesale — it renamed the bridge, inverted the implementer seat,
+  and pointed at a `.Codex/skills/` path that does not exist. Pairing
+  is reviewed line-by-line, never sed'd.
 
 ### CLASS F — Dormant (no LIFEPUNCH lane)
 - vercel: no deployment target exists in this project. Unused until a

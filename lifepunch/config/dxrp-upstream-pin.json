@@ -1,5 +1,9 @@
 ﻿{
-    "schemaVersion":  1,
+    "schemaVersion":  2,
+    "ancestryGuard":  {
+                          "requiredAncestorSha":  "b9d6068f8d003ec625f8b9563e6772ff7e93a6a3",
+                          "rule":  "Every operational pin must retain this commit in ancestry. Ruled by STOPGO_DXRP_REPIN_2026-07-11 (MERGE, not rebase): Packet E, Packet G and the P1 verdict cite it by hash."
+                      },
     "fork":  {
                  "remote":  "https://github.com/mragerlp/dxrp-public.git",
                  "branch":  "develop"
@@ -9,15 +13,15 @@
                      "branch":  "develop"
                  },
     "pinned":  {
-                   "sha":  "0ee91dd2a97f90c79e2d5c66ef6ede18ce47f23d",
-                   "shortSha":  "0ee91dd",
-                   "subject":  "Fix tool list items getting squashed instead of scrolling in build menu",
-                   "syncedAt":  "2026-07-08T15:32:44Z"
+                   "sha":  "396d19607b718f3a9b474600583aaa791c21af6b",
+                   "shortSha":  "396d196",
+                   "subject":  "Merge upstream dxura/dxrp develop (56875a9) into fork develop",
+                   "syncedAt":  "2026-07-13T02:17:53Z"
                },
-    "localPaths":  {
-                       "forkCheckout":  "C:/Users/jared/Projects/dxrp-public",
-                       "steamCheckout":  "D:/Steam/steamapps/common/sbox/dxrp"
-                   },
+    "lastSyncedFrom":  {
+                           "forkCheckout":  "C:/Users/jared/Projects/dxrp-public",
+                           "steamCheckout":  "D:/Steam/steamapps/common/sbox/dxrp"
+                       },
     "gateScript":  "lifepunch/scripts/Ensure-DxrpUpstreamCurrent.ps1",
-    "notes":  "Run Ensure-DxrpUpstreamCurrent.ps1 -Sync before addon/editor work. Monorepo records the verified develop tip here after each upstream sync."
+    "notes":  "Operational pin is the VERIFIED FORK develop HEAD, not the upstream parent. lastSyncedFrom is a descriptive stamp of the machine that last wrote this file - it is never an input path; the gate script derives its own checkout. Use -Repin for a guarded FF sync+pin; after an authored merge use -UpdatePin alone."
 }

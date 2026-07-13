@@ -67,5 +67,8 @@ desktop.ini
 .claude/settings.json
 .claude/worktrees/
 
+# Codex / non-Claude harnesses — track skills (.agents/skills), never local seat settings
+.codex/
+
 # GitHub MCP token — machine-local, never committed
 .env

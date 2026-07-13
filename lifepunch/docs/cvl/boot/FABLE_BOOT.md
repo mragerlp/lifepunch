@@ -28,6 +28,8 @@
 ## 3. Confirm governing facts
 
 - [ ] Confirm installed plugins conform to `CONSOLE_PLUGINS_DOCTRINE`; report any plugin not classified there. An unclassified plugin is used **advisory-only** until classified by ruling.
+- [ ] Confirm `using-superpowers` plus the seat-applicable repo `lifepunch-*` skills are exposed and readable in this harness. Missing or inaccessible applicable skills are `BOOT-FAULT` and are reported loudly; never self-install.
+- [ ] At every accepted task start, consult applicable Superpowers process skills first and applicable repo skills second, under `SUPERPOWERS PRECEDENCE`; a skill-miss is a gradeable defect.
 - [ ] `STATUS.json` + BOARD tail + repository `CLAUDE.md` are ground truth. `FABLE_STATE.md` yields on conflict.
 - [ ] BOARD append-order is authoritative. Fable never invents a clock value; Fable BOARD lines use `--:--Z`.
 - [ ] Absence of a file is not seat liveness. Only Bloodwave supplies seat-state words.
