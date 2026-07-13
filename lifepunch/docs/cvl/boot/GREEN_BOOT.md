@@ -23,10 +23,12 @@
         validates the third dispatch key from the packet alone, with no cross-machine read.
   - [ ] **(P-ii) Read-only BOARD copy.** The lane-sync push additionally delivers a **read-only copy
         of `BOARD.md`** to Green's inbox, so Green can independently verify the packaged line against
-        the board. *(Red flag, machine-verified 2026-07-12: no `sync-lanes` script exists in the repo
-        at `6c9e86a`. P-ii has no target yet — the push mechanism must be authored before P-ii is
-        operational. Until then P-i alone carries the key, and that is stated here rather than
-        assumed.)*
+        the board. *(SUPERSEDES the 2026-07-12 red flag, which read "no `sync-lanes` script exists in
+        the repo at `6c9e86a`." It exists now: **`lifepunch/scripts/sync-lanes.cmd`**, landed by
+        `b51c5a2`. The push mechanism therefore HAS a target. P-ii is only operational once the task
+        is actually installed and the BOARD copy is observed in the inbox — **verify the copy is
+        present at boot; do not assume it from the script's existence.** Where the copy is absent,
+        P-i alone carries the key, and Green says so rather than inferring.)*
   - [ ] If neither proof is present, report `BOOT-FAULT`. **Never infer authorization.**
 - [ ] Confirm OUTBOX write access without modifying the repo clone.
 
