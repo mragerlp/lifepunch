@@ -224,6 +224,17 @@ paste. The lane degrades loudly, never silently.
     sync-lanes transport is unversioned (Green C3 finding, zero
     tree hits @ 2c0de17) — banked: sync-lanes.cmd graduates into
     the repo via the docs/scripts repair slice.
+    (f) FOLDER MTIME IS NOT A RECENCY SIGNAL (addendum ratified
+    2026-07-13; source `comms\fable\0046`). Explorer/OS-level "Date
+    modified" on `comms\green\` only updates on DIRECT children, and
+    Green's records nest one level deeper at `comms\green\green\`
+    (rule 18a) — so a current Green never bubbles its timestamp up to
+    the parent folder. Trust the nested folder's own file timestamps,
+    or the record headers' STATE BASIS lines; NEVER the parent
+    folder's Date Modified column. (Origin: a stale parent-folder
+    mtime was read as Green falling behind three other seats. Green
+    was current. The folder view was stale metadata, not a stale
+    seat — no seat defect.)
 
 ## Access facts (live-tested 2026-07-12, Fable Filesystem MCP)
 

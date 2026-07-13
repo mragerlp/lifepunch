@@ -23,18 +23,21 @@
         validates the third dispatch key from the packet alone, with no cross-machine read.
   - [ ] **(P-ii) Read-only BOARD copy.** The lane-sync push additionally delivers a **read-only copy
         of `BOARD.md`** to Green's inbox, so Green can independently verify the packaged line against
-        the board. *(Red flag, machine-verified 2026-07-12: no `sync-lanes` script exists in the repo
-        at `6c9e86a`. P-ii has no target yet — the push mechanism must be authored before P-ii is
-        operational. Until then P-i alone carries the key, and that is stated here rather than
-        assumed.)*
+        the board. *(SUPERSEDES the 2026-07-12 red flag, which read "no `sync-lanes` script exists in
+        the repo at `6c9e86a`." It exists now: **`lifepunch/scripts/sync-lanes.cmd`**, landed by
+        `b51c5a2`. The push mechanism therefore HAS a target. P-ii is only operational once the task
+        is actually installed and the BOARD copy is observed in the inbox — **verify the copy is
+        present at boot; do not assume it from the script's existence.** Where the copy is absent,
+        P-i alone carries the key, and Green says so rather than inferring.)*
   - [ ] If neither proof is present, report `BOOT-FAULT`. **Never infer authorization.**
 - [ ] Confirm OUTBOX write access without modifying the repo clone.
 
 ## 3. Confirm governing facts
 
 - [ ] Confirm installed plugins conform to `CONSOLE_PLUGINS_DOCTRINE`; report any plugin not classified there. An unclassified plugin is used **advisory-only** until classified by ruling.
-- [ ] Confirm `using-superpowers` plus the seat-applicable repo `lifepunch-*` skills are exposed and readable in the **Odysseus console**. Missing or inaccessible applicable skills are `BOOT-FAULT` and are reported loudly; never self-install.
-- [ ] At every accepted task start, consult applicable Superpowers process skills first and applicable repo skills second, under `SUPERPOWERS PRECEDENCE`; a skill-miss is a gradeable defect.
+- [ ] TRACKED SKILLS: confirm the seat-applicable repo `lifepunch-*` skills are exposed and readable in the **Odysseus console**. These are **tracked canon** — missing or inaccessible is `BOOT-FAULT`, reported loudly. Never self-install.
+- [ ] SUPERPOWERS CHECK (`SUPERPOWERS_DOCTRINE.md` §3): (a) confirm the meta-skill is active — hook-injected on the Odysseus Claude console; (b) report the count of available superpowers skills (expect 14); (c) state `skill-check discipline in force`. The plugin is **console install state, not tracked canon**: inactive on a Claude harness is `BOOT-FAULT`; where the skill is plugin-provided and absent, REPORT-AND-HOLD for Bloodwave. Never self-install. **This check binds the Odysseus CONSOLE only** — the Cornerman LM behind LM Studio has no skill loader at all (see the console/muscle split below) and is never reported as if it did.
+- [ ] At every accepted task start, consult applicable Superpowers process skills first and applicable repo skills second, under `SUPERPOWERS PRECEDENCE` and the `SUPERPOWERS_DOCTRINE` skill map; a skill-miss is a gradeable defect.
 - [ ] CONSOLE/MUSCLE SPLIT (Green `0004`, machine-verified): the skills-first gate binds **Odysseus** — a Claude console, which has a skill loader. The **Cornerman LM** behind LM Studio `:1234` is an OpenAI-compatible chat endpoint with **no skill loader at all**; a `SKILL.md` is an inert file it never reads. Skill content reaches the muscle only when Odysseus reads the skill and writes the relevant text into the prompt it constructs. **Never scaffold or report Green as if the muscle had console parity.**
 - [ ] Green/Cornerman is static-only bulk audit and recon: flags, never decides.
 - [ ] Every output opens `ADVICE, NOT A WORK ORDER`.

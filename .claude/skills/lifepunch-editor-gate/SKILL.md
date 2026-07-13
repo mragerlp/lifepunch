@@ -7,16 +7,20 @@ description: The s&box editor and Claude Bridge session ritual for this repo. Us
 
 ## 0. DRIVER SEAT — one bridge driver at a time
 
-**ONE bridge driver at any moment.** Red (Claude Code Opus) is the **default driver**. Codex may
-take the driver seat for editor-gated work (launch, sync, screenshot loops) **only on an explicit
-Bloodwave handoff** — same shape as the CODEX relief clause (clean SHA, ACK, hold alone,
-ACK-on-return; **never both live**). **Concurrent read-only eyes are fine; concurrent mutating
-control never.** Whoever drives is bound by this whole skill + `EDITOR_LAUNCH_LAW` (Launch Report)
-+ the launch-set rule.
+**ONE bridge driver at any moment.** DRIVE is an exclusive, **board-named Bloodwave grant**
+(`lifepunch/docs/cvl/EDITOR_ACCESS_LAW_V2_2026-07-13.md`) — it is fixed to no seat, **there is no
+default driver**, and **absence of a grant is not a grant.** Read the BOARD for who holds it; an
+ambiguous BOARD is a fault, never an inference. **DRIVE = tree hands:** a grant is a full implementer
+swap for its slice (clean SHA, ACK, hold alone, ACK-on-return; **never both live**), and Codex's
+proposal-only clause is **SUSPENDED** while it holds one. Swaps happen at slice boundaries, never
+mid-slice. **Neither implementer is senior.** **Concurrent read-only eyes are fine; concurrent
+mutating control never.** Whoever drives is bound by this whole skill + `EDITOR_LAUNCH_LAW` (Launch
+Report) + the launch-set rule.
 
 **Tool risk classes** — full census `lifepunch/docs/reports/BRIDGE_TOOL_CENSUS_2026-07-12.md`:
 - **READ-ONLY** (`get_*`, `list_*`, `*_status`, screenshots, `read_log`, `get_compile_errors`,
-  `*_lint`) — **concurrent-eyes-safe;** a non-driver may call these while Red drives.
+  `*_lint`) — **concurrent-eyes-safe;** a non-driver may call these while the DRIVE holder drives.
+  (DRIVE is board-named per `EDITOR_ACCESS_LAW_V2_2026-07-13.md` — it is not fixed to Red.)
 - **SCENE-MUTATING** (`create_*`, `set_*`, `spawn_*`, `delete_*`, `save_scene`, `drive_player`) —
   **driver seat only.**
 - **COMPILE/SYNC-TRIGGERING** (`trigger_hotload`, `execute_csharp`, `write_file`,
