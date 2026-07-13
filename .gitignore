@@ -64,4 +64,8 @@ desktop.ini
 
 # Claude Code — track skills, never local session state
 .claude/settings.local.json
+.claude/settings.json
 .claude/worktrees/
+
+# GitHub MCP token — machine-local, never committed
+.env

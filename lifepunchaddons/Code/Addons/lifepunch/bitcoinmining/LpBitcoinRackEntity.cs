@@ -160,11 +160,10 @@ public sealed class LpBitcoinRackEntity : BaseEntity, Component.IPressable, IAre
 			return;
 		}
 
-		if ( !_colliderSyncedFromModel )
-		{
-			LifePunchPropPhysics.SyncBoxColliderFromModel( GameObject );
-			_colliderSyncedFromModel = true;
-		}
+		// COLLIDER: the prefab's authored BoxCollider is now the source of truth (defect 2, r3).
+		// The runtime SyncBoxColliderFromModel call that used to live here overwrote it with the
+		// model's render-bounds AABB every spawn. The measured boxes are baked into the prefabs,
+		// so the sync is redundant — and keeping it would silently mask any future authoring error.
 #endif
 	}
 
