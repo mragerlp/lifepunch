@@ -172,7 +172,7 @@ Decision records go in canon. *Write-once canon that the grounding order does no
 ## Hard rules
 
 - **Author** `mragerlp <mragerlp@gmail.com>`. **No AI attribution** on any git surface, including PR bodies (no harness footer).
-- **Lane:** `develop → main`, PRs only, Bloodwave merges. Protected branches.
+- **Lane:** `develop → main`, PRs only, Bloodwave merges. Protected branches. **BRANCH ASSERTION AT THE COMMIT:** before *every* commit, assert `git branch --show-current` is not `develop`/`main`. A mid-slice checkout silently disarms task-time branch checks, so the assertion lives **at the commit, not at the task** — record: `lifepunch/docs/handoff/DEFECT_COMMIT_ON_DEVELOP_2026-07-13.md`.
 - **Propose-and-STOP** for architecture/canon changes and any propose-gated brief: report the diff, wait for GO. Do not commit or push without a passing gate + GO.
 - **Sensor Law:** every claim carries its sensor. A FRESH assertion needs the compile/parser log to POSTDATE the file write, plus a positive code-string ID proving the compiler read the new bytes. When no sensor reads the thing under test, build one. A behavioral change only the new code could produce is itself a positive ID.
 - **CVL Sync Law:** *no actor issues instructions against a state it has not observed.*
