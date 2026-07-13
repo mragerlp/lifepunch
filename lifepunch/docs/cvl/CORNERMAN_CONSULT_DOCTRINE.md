@@ -47,7 +47,7 @@ chat call.
 
 ## 3. The consult lane (twins -> coder, during implementation)
 
-- Helper: scripts/ask-cornerman.ps1 (in-repo tooling). Takes a
+- Helper: lifepunch/scripts/ask-cornerman.ps1 (in-repo tooling). Takes a
   prompt, optional file paths whose contents are inlined, and an
   optional -Model override (default: coder). Posts to the endpoint,
   prints the reply. Any seat with a shell may call it mid-task.
@@ -83,7 +83,7 @@ Green/CORNERMAN now serves three duties, coexisting:
       chosen by packet focus per §2.
   (b) CONSULT DUTY (new): standing availability of the coder model
       to the implementer twins during active work, via §3.
-  (c) REVIEW DUTY (per Editor Access Law v2 §5): third-sense
+  (c) REVIEW DUTY (per Editor Access Law v2 §3, "Cornerman's place"): third-sense
       back-checks on code past Opus/Codex when Fable routes one.
 Packet discipline (STEP 0, R7 freshness, OUTBOX returns, ADVICE
 headers, rule 18 lane paths) is UNCHANGED for (a) and (c). Duty (b)

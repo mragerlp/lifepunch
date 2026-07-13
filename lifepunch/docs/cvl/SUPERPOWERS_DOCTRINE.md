@@ -78,7 +78,7 @@ fixed / passing ......... ZERO EXCEPTIONS. This is Sensor Law's
 Work complete ........... requesting-code-review, routed the CVL
                           way: twin cross-review via the diff-export
                           lane, plus optional Cornerman coder
-                          consult (scripts/ask-cornerman.ps1, cite-
+                          consult (lifepunch/scripts/ask-cornerman.ps1, cite-
                           verification law C-B applies).
 Review feedback arrives . receiving-code-review: verify technically
                           before implementing; no performative

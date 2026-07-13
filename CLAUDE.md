@@ -1,14 +1,14 @@
 # CLAUDE.md — LIFEPUNCH agent grounding (Claude Code first read)
 
 > **Workflow doctrine (2026-07-09):** `PLAN IN CHAT · BUILD IN CODE · REVIEW WITH CODEX · SHIP ONLY WITH BLOODWAVE GO`.
-> Claude Code (Opus) is the primary implementation and editor surface. This file is the first grounding read.
+> Claude Code (Opus) and Codex are the two implementer seats; **neither is senior**, and the editor surface goes to whoever holds a board-named DRIVE grant (`lifepunch/docs/cvl/EDITOR_ACCESS_LAW_V2_2026-07-13.md`). This file is the first grounding read.
 
 ## Roles
 
 | Layer | Who | Does |
 |-------|-----|------|
 | **Plan** | Claude Chat — Fable (preferred) → Opus (heavier: architecture, canon, hard bugs) → Sonnet (budget: summaries, cheap docs) | Scope, edge cases, rulings, STOP-GO, handoff briefs. Does not implement unless asked. |
-| **Build** | **Claude Code — Opus (primary)** | Reads the repo, edits files, runs tests, drives s&box editor work, gates with the Sensor Law, reports diff + proof. Commits only after a passing gate **and** Bloodwave GO. |
+| **Build** | **Claude Code — Opus** (implementer; drives the editor **when board-named**) | Reads the repo, edits files, runs tests, drives s&box editor work under a DRIVE grant, gates with the Sensor Law, reports diff + proof. Commits only after a passing gate **and** Bloodwave GO. |
 | **Review** | Codex | Reviews the DIFF, post-build, pre-merge. PASS / REVISE / HOLD on scope-match, proof quality, lane discipline. Never re-litigates rulings — a HOLD means "build ≠ ruling," not "I disagree." |
 | **Corner** | **Odysseus** — Claude Code on Green (CORNERMAN) | The CORNER, not the fighter. Reads Red's completed round reports **cold**, returns **corner notes** (risks, checks worth running, exemplars worth opening), audits round reports for sensor completeness, and scouts Green's clone between dispatches. Drives qwen (LM Studio `:1234`) as local bulk muscle. **Flags, never decides. Never pushes.** Eyes covered. Charter: `lifepunch/docs/handoff/STOPGO_ODYSSEUS_CORNER_LOOP_CHARTER_2026-07-10.md`. |
 | **Green** | Cornerman LM (Tier-3 local muscle, `qwen/qwen3.6-35b-a3b` Daily via LM Studio `:1234`) | The **muscle Odysseus drives**, not a seat. Distill / prep / audit / draft; feeds the planning layer (Packet E/F class). Flags, never decides. Never in the implement or review path. Never claims scale/materials/collider/animation verified from code alone — its eyes are covered. |
@@ -30,7 +30,7 @@ Cornerman (Green)   Tier-3: distill/prep/audit/draft; feeds planning; never ship
 
 ## CVL SEAT FLOW (ratified 2026-07-12, Bloodwave)
 The standard loop: (1) Bloodwave → Fable: intent issued, Fable drafts. (2) Fable → Claude Code Opus (Red): plan to implementer. (3) Opus → Fable: results or blockers. (4) CONDITIONAL — on a blocker, or when Fable judges work polish-worthy before it touches the tree again: (4a) Fable → Codex for a refinement pass; (4b) Codex → Fable as a DIFF PROPOSAL — leads-grade, never applied; (4c) Fable → Opus to implement with Codex fixes pre-mapped, each machine-verified against the live tree before acting.
-INVARIANTS: Bloodwave is the transport on EVERY arrow — no seat messages another directly; the diagram is logical flow, physical flow is always Bloodwave copy-paste in the middle (Transport Law survives the Codex addition). Codex is proposal-only even inside the loop — one seat per tree, Opus is sole implementer. Every seat message carries its FROM tag. Signature convention: Bloodwave-authority relays open "── BLOODWAVE · ──" and close "FROM: Fable (relay author)"; seat handoffs close "FROM: <seat>".
+INVARIANTS: Bloodwave is the transport on EVERY arrow — no seat messages another directly; the diagram is logical flow, physical flow is always Bloodwave copy-paste in the middle (Transport Law survives the Codex addition). Codex is proposal-only inside the loop **unless it holds a board-named DRIVE grant** (`EDITOR_ACCESS_LAW_V2_2026-07-13.md` §1.2 suspends the clause for that slice) — one seat per tree, one pair of tree hands, **neither implementer senior**. Every seat message carries its FROM tag. Signature convention: Bloodwave-authority relays open "── BLOODWAVE · ──" and close "FROM: Fable (relay author)"; seat handoffs close "FROM: <seat>".
 
 ## CODEX SEAT CHARTER + RELIEF CLAUSE (ratified 2026-07-12, Bloodwave)
 Codex = review + proposal seat. Reads real code, produces diagnoses/reviews with citations, drafts patches as diffs. Never commits, pushes, opens/merges PRs, or runs mutating git in the shared tree. RELIEF CLAUSE: if Claude usage is exhausted, Codex may take the implementer chair ONLY on an explicit Red-dark handoff (Red at clean known SHA, zero uncommitted diff, handoff note stating HEAD + open work); Codex ACKs and holds alone; Red ACKs on return to reclaim. Never both live. In the chair Codex inherits all implementer laws (attribution-clean incl. its own footers, proof-gated commits, sensors, Bloodwave merge gate, MIRROR).
@@ -165,7 +165,7 @@ CLAUDE.md → lifepunch/docs/cvl/boot/<SEAT>_BOOT.md → lifepunch/docs/START_HE
 
 Decision records go in canon. *Write-once canon that the grounding order does not read is canon nobody reads.* See `lifepunch/docs/handoff/README.md`.
 
-**Editor launch: Red drives** — see `lifepunch/docs/handoff/EDITOR_LAUNCH_LAW_2026-07-11.md`. Editor launch is an observed phase Red owns end-to-end (process + heartbeat sensors govern, never a human "editor up" attestation); the 7-item Launch Report gates every launch before any editor-gated instrument runs.
+**Editor launch: the DRIVE holder drives** — see `lifepunch/docs/handoff/EDITOR_LAUNCH_LAW_2026-07-11.md` (that record predates v2; read its "Red" as **"the board-named DRIVE holder"**, per `EDITOR_ACCESS_LAW_V2_2026-07-13.md` — the record itself is never edited). Editor launch is an observed phase the driver owns end-to-end (process + heartbeat sensors govern, never a human "editor up" attestation); the 7-item Launch Report gates every launch before any editor-gated instrument runs.
 
 **DXRP platform & publish pipeline:** see `lifepunch/docs/DXRP_PLATFORM_DOCTRINE.md`. The portal is the control plane — CHECK THE PORTAL before declaring a platform gap; addon work ships lane B (portal revision → gamemode install/pin → content/config/market → Sync → test).
 

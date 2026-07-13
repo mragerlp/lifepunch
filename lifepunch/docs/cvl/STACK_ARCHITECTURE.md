@@ -51,7 +51,7 @@ Everything else routes down:
   Fable ratifies in one line)
 - Drafting of specs/diffs/docs -> CODEX
 - Bulk reads/census -> GREEN
-- Anything touching tree or editor-drive -> RED
+- Anything touching tree or editor-drive -> **the board-named DRIVE holder** (§2 / `EDITOR_ACCESS_LAW_V2_2026-07-13.md`) — not a fixed seat
 Fable replies stay terse; detail lives in lane files. Receipt
 manifests, grades, and rulings are FILED, then summarized in chat.
 
@@ -79,7 +79,7 @@ manifests, grades, and rulings are FILED, then summarized in chat.
 ## 6. ESCALATION LADDER (cheapest capable seat wins)
 Question about code-as-written -> GREEN (free) or CODEX (fast)
 Draft/spec/diff/review -> CODEX
-Runtime truth / tree mutation / editor drive -> RED
+Runtime truth / tree mutation / editor drive -> the DRIVE holder named on the BOARD
 Judgment call / plan / ruling -> FABLE
 Approval -> BLOODWAVE
 A job routed upward without exhausting the cheaper seat is a
