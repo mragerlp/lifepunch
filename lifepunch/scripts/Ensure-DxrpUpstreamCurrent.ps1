@@ -216,6 +216,14 @@ if ($SyncSteam -and $syncBehind -eq 0) {
             Write-Host ''
             Write-Host 'Syncing Steam DXRP checkout...' -ForegroundColor Yellow
             & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $steamScript -TargetSha $forkSha -SteamDxrpPath $SteamDxrpPath
+            # PATCH 4 (2026-07-13) - ASK THE CHILD HOW IT DIED. The Steam script runs in its own
+            # process, so a terminating error inside it CANNOT stop this one. Without this check the
+            # child could die mid-fetch while this script sailed on to print "OK" and exit 0 - which
+            # is exactly what happened on 2026-07-13 (codex\0015): a false green over an unaligned
+            # Steam checkout. An unchecked $LASTEXITCODE is a sensor you declined to read.
+            if ($LASTEXITCODE -ne 0) {
+                throw "Steam sync FAILED (exit $LASTEXITCODE). The Steam checkout is NOT aligned to $forkSha."
+            }
         }
     }
 }

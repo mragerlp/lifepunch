@@ -26,6 +26,28 @@ param(
 $ErrorActionPreference = 'Stop'
 $Here = if ($PSScriptRoot) { $PSScriptRoot } else { Split-Path -Parent $MyInvocation.MyCommand.Path }
 
+# PATCH 1 (2026-07-13) - NEVER pipe native git through `2>&1` under $ErrorActionPreference='Stop'.
+# git writes normal fetch progress to STDERR; PowerShell 5.1 wraps redirected native stderr in a
+# NativeCommandError, which under EAP=Stop is TERMINATING. That killed this script mid-fetch on
+# every run that had real work to do (a no-op fetch is silent, so it "passed" for months).
+# Here stderr is DATA and the EXIT CODE is the verdict. Same discipline as Invoke-CdwGit in
+# lifepunch/scripts/cornerman/CornermanDropWorker.Lib.ps1.
+function Invoke-SteamGit {
+    param([string[]] $GitArgs, [switch] $AllowFail)
+    $prev = $ErrorActionPreference
+    $ErrorActionPreference = 'Continue'
+    try {
+        $out  = @(& git @GitArgs 2>&1 | ForEach-Object { "$_" })
+        $code = $LASTEXITCODE
+    }
+    finally { $ErrorActionPreference = $prev }
+    foreach ($line in $out) { Write-Host "    git| $line" -ForegroundColor DarkGray }
+    if ($code -ne 0 -and -not $AllowFail) {
+        throw "git $($GitArgs -join ' ') failed with exit $code"
+    }
+    return [pscustomobject]@{ Output = $out; ExitCode = $code }
+}
+
 if (-not $DxrpForkPath) {
     $repoRoot = (Resolve-Path (Join-Path $Here '..\..')).Path
     $DxrpForkPath = Join-Path (Split-Path $repoRoot -Parent) 'dxrp-public'
@@ -59,35 +81,44 @@ $overlayPaths = @(
 )
 
 Write-Host "Steam DXRP -> $TargetSha" -ForegroundColor Cyan
-& git -C $SteamDxrpPath fetch origin "develop:refs/remotes/origin/develop" 2>&1 | Out-Host
-$resolved = (& git -C $SteamDxrpPath rev-parse $TargetSha).Trim()
+Invoke-SteamGit @('-C', $SteamDxrpPath, 'fetch', 'origin', 'develop:refs/remotes/origin/develop') | Out-Null
+
+# PATCH 2 (2026-07-13) - resolve STRICTLY. A bare `git rev-parse <40-hex>` ECHOES the string back
+# and exits 0 even when the object is absent, which would feed a phantom SHA straight into
+# `reset --hard`. `--verify <sha>^{commit}` fails loudly instead.
+$resolved = (Invoke-SteamGit @('-C', $SteamDxrpPath, 'rev-parse', '--verify', "$TargetSha^{commit}")).Output[0].Trim()
 
 $dirtyOverlay = @()
 foreach ($rel in $overlayPaths) {
     $full = Join-Path $SteamDxrpPath $rel
     if (-not (Test-Path -LiteralPath $full)) { continue }
-    $status = (& git -C $SteamDxrpPath status --porcelain -- $rel 2>$null)
+    $status = (Invoke-SteamGit @('-C', $SteamDxrpPath, 'status', '--porcelain', '--', $rel) -AllowFail).Output
     if ($status) { $dirtyOverlay += $rel }
 }
 
 $stashName = 'lifepunch-steam-overlay-sync'
 if ($dirtyOverlay.Count -gt 0) {
     Write-Host "Stashing $($dirtyOverlay.Count) LifePunch overlay file(s)..." -ForegroundColor DarkGray
-    & git -C $SteamDxrpPath stash push -m $stashName -- @dirtyOverlay 2>&1 | Out-Host
+    Invoke-SteamGit (@('-C', $SteamDxrpPath, 'stash', 'push', '-m', $stashName, '--') + $dirtyOverlay) | Out-Null
 }
 
-& git -C $SteamDxrpPath reset --hard $resolved 2>&1 | Out-Host
-$head = (& git -C $SteamDxrpPath rev-parse --short HEAD).Trim()
-Write-Host "Steam HEAD: $head" -ForegroundColor Green
+Invoke-SteamGit @('-C', $SteamDxrpPath, 'reset', '--hard', $resolved) | Out-Null
+
+# PATCH 3 (2026-07-13) - THE MISSING SENSOR. This script used to print "Steam HEAD: <x>" and declare
+# alignment without ever comparing it to the target. Read HEAD back and REFUSE to claim success.
+$head = (Invoke-SteamGit @('-C', $SteamDxrpPath, 'rev-parse', 'HEAD')).Output[0].Trim()
+if ($head -ne $resolved) {
+    throw "STEAM ALIGNMENT FAILED: HEAD is $head, expected $resolved. The Steam checkout is NOT aligned."
+}
+Write-Host "Steam HEAD: $head  (VERIFIED == target)" -ForegroundColor Green
 
 if ($dirtyOverlay.Count -gt 0) {
-    $pop = & git -C $SteamDxrpPath stash pop 2>&1
-    $pop | Out-Host
-    if ($LASTEXITCODE -ne 0) {
-        if ($pop -match 'drunk\.shader_c') {
+    $pop = Invoke-SteamGit @('-C', $SteamDxrpPath, 'stash', 'pop') -AllowFail
+    if ($pop.ExitCode -ne 0) {
+        if ($pop.Output -match 'drunk\.shader_c') {
             Write-Host 'Resolving drunk.shader_c with upstream develop copy.' -ForegroundColor Yellow
-            & git -C $SteamDxrpPath checkout HEAD -- 'game/Assets/shaders/drunk.shader_c' 2>&1 | Out-Host
-            & git -C $SteamDxrpPath stash drop 2>&1 | Out-Null
+            Invoke-SteamGit @('-C', $SteamDxrpPath, 'checkout', 'HEAD', '--', 'game/Assets/shaders/drunk.shader_c') | Out-Null
+            Invoke-SteamGit @('-C', $SteamDxrpPath, 'stash', 'drop') | Out-Null
         }
         else {
             Write-Host 'WARN stash pop had conflicts - resolve manually in Steam DXRP tree.' -ForegroundColor Yellow
