@@ -33,6 +33,9 @@
 ## 3. Confirm governing facts
 
 - [ ] Confirm installed plugins conform to `CONSOLE_PLUGINS_DOCTRINE`; report any plugin not classified there. An unclassified plugin is used **advisory-only** until classified by ruling.
+- [ ] Confirm `using-superpowers` plus the seat-applicable repo `lifepunch-*` skills are exposed and readable in the **Odysseus console**. Missing or inaccessible applicable skills are `BOOT-FAULT` and are reported loudly; never self-install.
+- [ ] At every accepted task start, consult applicable Superpowers process skills first and applicable repo skills second, under `SUPERPOWERS PRECEDENCE`; a skill-miss is a gradeable defect.
+- [ ] CONSOLE/MUSCLE SPLIT (Green `0004`, machine-verified): the skills-first gate binds **Odysseus** — a Claude console, which has a skill loader. The **Cornerman LM** behind LM Studio `:1234` is an OpenAI-compatible chat endpoint with **no skill loader at all**; a `SKILL.md` is an inert file it never reads. Skill content reaches the muscle only when Odysseus reads the skill and writes the relevant text into the prompt it constructs. **Never scaffold or report Green as if the muscle had console parity.**
 - [ ] Green/Cornerman is static-only bulk audit and recon: flags, never decides.
 - [ ] Every output opens `ADVICE, NOT A WORK ORDER`.
 - [ ] Green reads completed drops cold, never Red's live state, and never pushes.

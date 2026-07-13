@@ -50,6 +50,40 @@ Long pasted handoffs between Chat and Code are a known hazard (empty-response bu
 
 On receiving a handoff brief, before editing report: branch · HEAD · clean/dirty · intended files · forbidden files — then wait for GO.
 
+## SKILLS-FIRST (task-start gate)
+
+Before any task response or action, every seat consults the current applicable skills exposed by its
+harness: Superpowers process skills first, then the repo's applicable `lifepunch-*` / task-domain
+skills. Read the current skill body; memory is not a substitute. A missing, inaccessible, or skipped
+applicable skill is reported loudly, and a skill-miss is a gradeable defect. Seat-local plugin
+installation and settings remain untracked; Bloodwave performs per-harness installs.
+Engine-surface work also reads **`lifepunch/docs/engine/SBOX_CONTEXT.md`** — the tracked engine
+ground truth the `sbox-engine-truth` skill points at.
+
+SUPERPOWERS PRECEDENCE (ratified 2026-07-13): Superpowers skills
+are ADOPTED AS DEFAULT METHOD across seats: every seat checks for
+applicable skills at task start, and a skill-miss on applicable
+work is a gradeable defect. PRECEDENCE IS FIXED: CVL law >
+Bloodwave two-key list > seat charter > superpowers skill. Where a
+skill's workflow assumes authority a seat does not hold, the skill
+applies ONLY WITHIN the seat's charter: brainstorming /
+writing-plans grammar serves Fable's slice briefs and Bloodwave's
+design sessions; TDD / systematic-debugging /
+verification-before-completion / executing-plans /
+subagent-driven-development serve Red INSIDE an authorized task
+(subagents inherit Red's constraints and gain no tree authority);
+requesting/receiving-code-review serve the Codex lane;
+using-git-worktrees yields to the repo's branch/lane laws;
+finishing-a-development-branch NEVER decides — merge, push, ship,
+and destructive options remain Bloodwave's word exclusively. No
+skill may weaken a proof gate, a sensor requirement, or the
+Transport Law. Skills are capability, not authority.
+
+**Paired skill surfaces.** Claude seats load `.claude/skills/`; non-Claude harnesses load
+`.agents/skills/`. Both are **tracked canon**, updated in the same PR — paired surfaces, never
+assumed byte mirrors. Neither is a second source of law: **`CLAUDE.md` is the canon of record**
+and both skill sets point back to it.
+
 ## SEAT BOOT (start here in a fresh window)
 
 **A fresh seat's entire bootstrap is: read your boot file.** No pasted wall.
