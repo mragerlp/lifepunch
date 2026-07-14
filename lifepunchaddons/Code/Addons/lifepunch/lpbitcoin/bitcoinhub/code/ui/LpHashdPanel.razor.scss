@@ -7968,3 +7968,196 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 .lp-bitcoin-ops .notif-sev-money .notif-kind {
 	color: $hashd-green;
 }
+
+// BITCOIN OPS rail and card tokens.
+$ops-orange: #f7931a;
+$ops-orange-hover: #ffad42;
+$ops-orange-soft: rgba(247, 147, 26, 0.10);
+$ops-orange-soft-hover: rgba(247, 147, 26, 0.16);
+$ops-orange-border: rgba(247, 147, 26, 0.48);
+$ops-bg: #000000;
+$ops-surface: #1a1d23;
+$ops-surface-inset: #12151a;
+$ops-card-header: #22262e;
+$ops-border: #374151;
+$ops-text: #ffffff;
+$ops-text-dim: #9ca3af;
+$ops-danger: #ef6b5f;
+$ops-cash: #5fd38d;
+$ops-radius: 6px;
+$ops-card-radius: 12px;
+$ops-hit: 44px;
+
+// BITCOIN OPS terminal-crypto menu skin.
+.lp-bitcoin-ops {
+	font-family: Poppins, Arial, sans-serif;
+	color: $ops-text;
+}
+
+.lp-bitcoin-ops .shell {
+	width: 1160px;
+	max-width: 96%;
+	max-height: 96%;
+	background-color: $ops-bg;
+	border-color: $ops-border;
+	border-radius: $ops-card-radius;
+	box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+}
+
+.lp-bitcoin-ops .shell-body,
+.lp-bitcoin-ops .hub-body,
+.lp-bitcoin-ops .hub-main {
+	background-color: $ops-bg;
+}
+
+.lp-bitcoin-ops .sidebar {
+	width: 78px;
+	padding: 12px;
+	background-color: $ops-surface-inset;
+	border-right-color: $ops-border;
+}
+
+.lp-bitcoin-ops .sidebar-brand.hex-mark {
+	border: 0;
+	border-radius: $ops-radius;
+	background-color: transparent;
+	box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+}
+
+.lp-bitcoin-ops .sidebar-btn {
+	width: $ops-hit;
+	height: $ops-hit;
+	border-radius: $ops-radius;
+	color: $ops-text-dim;
+	opacity: 0.72;
+}
+
+.lp-bitcoin-ops .sidebar-btn:hover {
+	color: $ops-text;
+	background-color: $ops-orange-soft-hover;
+	opacity: 1;
+}
+
+.lp-bitcoin-ops .sidebar-btn.sidebar-btn-sel {
+	color: $ops-text;
+	background-color: $ops-orange-soft;
+	border: 0;
+	border-left: 3px solid $ops-orange;
+	box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+	opacity: 1;
+}
+
+.lp-bitcoin-ops .workspace,
+.lp-bitcoin-ops .workspace-body,
+.lp-bitcoin-ops .main-panel > .pane:not(.overview),
+.lp-bitcoin-ops .overview {
+	background-color: $ops-bg;
+}
+
+.lp-bitcoin-ops .hub-header {
+	min-height: 64px;
+	padding: 10px 12px 10px 20px;
+	background-color: $ops-surface;
+	border-bottom-color: $ops-border;
+}
+
+.lp-bitcoin-ops .hub-title,
+.lp-bitcoin-ops .lp-ui-panel-title,
+.lp-bitcoin-ops .lp-hashd-section-head {
+	font-family: Poppins, Arial, sans-serif;
+	color: $ops-text;
+}
+
+.lp-bitcoin-ops .header-chip,
+.lp-bitcoin-ops .header-power-switch {
+	min-height: $ops-hit;
+	border-radius: $ops-radius;
+	background-color: $ops-card-header;
+	border-color: $ops-border;
+}
+
+.lp-bitcoin-ops .lp-hashd-surface,
+.lp-bitcoin-ops .overview .lp-ui-split > .lp-ui-panel,
+.lp-bitcoin-ops .transfer-column,
+.lp-bitcoin-ops .wallet-cashout-card,
+.lp-bitcoin-ops .rack-card,
+.lp-bitcoin-ops .upgrade-home-box {
+	background-color: $ops-surface;
+	border: 0;
+	border-radius: $ops-card-radius;
+}
+
+.lp-bitcoin-ops .lp-hashd-inset,
+.lp-bitcoin-ops .settings-row,
+.lp-bitcoin-ops .transfer-subsection,
+.lp-bitcoin-ops .wallet-cashout-tile,
+.lp-bitcoin-ops .entity-track-row,
+.lp-bitcoin-ops .overview-miner-card,
+.lp-bitcoin-ops .overview-status-upgrade-surface {
+	background-color: $ops-surface-inset;
+	border: 0;
+	border-radius: $ops-radius;
+}
+
+.lp-bitcoin-ops .lp-ui-info-value,
+.lp-bitcoin-ops .transfer-subsection-value,
+.lp-bitcoin-ops .transfer-command-text,
+.lp-bitcoin-ops .wallet-cashout-tile-value,
+.lp-bitcoin-ops .rack-stat-tile-value,
+.lp-bitcoin-ops .entity-track-price {
+	font-family: "Roboto Mono", monospace;
+}
+
+.lp-bitcoin-ops .header-power-switch.on .power-switch-track,
+.lp-bitcoin-ops .settings-switch.on .power-switch-track {
+	background-color: $ops-orange-soft-hover;
+	border-color: $ops-orange-border;
+}
+
+.lp-bitcoin-ops .lp-ui-status-dot.on {
+	background-color: $ops-orange;
+}
+
+.lp-bitcoin-ops .pane.racks .rack-stat-tile-value.on,
+.lp-bitcoin-ops .overview-miner-status.on,
+.lp-bitcoin-ops .overview-snapshot-value.on,
+.lp-bitcoin-ops .settings-pill.on,
+.lp-bitcoin-ops .rack-badge.green,
+.lp-bitcoin-ops .entity-chip.green {
+	color: $ops-orange;
+	border-color: $ops-orange-border;
+}
+
+.lp-bitcoin-ops .overview-intro-link-ready,
+.lp-bitcoin-ops .overview-intro-terminal-actions .lp-ui-btn-primary.overview-intro-link-ready {
+	color: $ops-text;
+	background-color: $ops-orange-soft;
+	border-color: $ops-orange-border;
+	box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+}
+
+.lp-bitcoin-ops .overview-intro-link-ready:hover,
+.lp-bitcoin-ops .overview-intro-terminal-actions .lp-ui-btn-primary.overview-intro-link-ready:hover {
+	color: $ops-text;
+	background-color: $ops-orange-soft-hover;
+	border-color: $ops-orange;
+	box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+}
+
+.lp-bitcoin-ops .header-chip.cashout-all-chip.is-ready,
+.lp-bitcoin-ops .header-chip.cashout-all-chip.is-success,
+.lp-bitcoin-ops .wallet-cashout-tile-btn.is-ready,
+.lp-bitcoin-ops .wallet-cashout-tile-btn.is-success,
+.lp-bitcoin-ops .wallet-cashout-all.is-ready,
+.lp-bitcoin-ops .wallet-cashout-all.is-success {
+	color: $ops-text;
+	background-color: $ops-orange-soft;
+	border-color: $ops-orange-border;
+}
+
+.lp-bitcoin-ops .header-chip.cashout-all-chip.is-ready .material-icons,
+.lp-bitcoin-ops .header-chip.cashout-all-chip.is-success .material-icons,
+.lp-bitcoin-ops .wallet-cashout-all.is-ready > .material-icons,
+.lp-bitcoin-ops .wallet-cashout-all.is-success > .material-icons {
+	color: $ops-orange;
+}
