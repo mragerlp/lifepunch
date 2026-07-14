@@ -1,0 +1,343 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// PROPRIETARY & CONFIDENTIAL — © 2026 lifepunch.co. All rights reserved.
+//
+// "LIFEPUNCH Player Hub for DXRP" (s&box ident: lifepunch.playerhub · addon ident: playerhub)
+//
+// SLICE 1 — SHELL.
+//
+// s&box SCSS constraints observed here, all of them silent failures if broken:
+//   flex only, never grid. No inline-flex. No block/none/inline/inline-block.
+//   No media queries. No gradients. Selectors kept shallow.
+// Comments avoid name-colon-value shapes on purpose: the parser scans words inside comments
+// and will raise invalid-property warnings from a comment that merely looks like a rule.
+// ─────────────────────────────────────────────────────────────────────────────
+
+// ── TOKENS — locked. Mirrors LIFEPUNCH_UI_STANDARD and the lifepunch.co :root.
+// No raw hex below this block; a hex literal in a component is a defect.
+$lp-blue: #017AEF;
+$lp-blue-hover: #33A0FF;
+$accent-soft: rgba(1, 122, 239, 0.10);
+$accent-soft-hover: rgba(1, 122, 239, 0.06);
+
+$bg: #000000;
+$surface: #1a1d23;
+$surface-inset: #12151a;
+$card-header: #22262e;
+$border: #374151;
+
+$text-main: #ffffff;
+$text-dim: #9ca3af;
+
+$radius: 6px;
+$radius-card: 12px;
+
+$hit: 44px;
+$gap-control: 8px;
+$gap-content: 12px;
+
+$sidebar-w: 190px;
+$header-h: 64px;
+
+.lp-playerhub {
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 100%;
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 0.18s ease-out;
+}
+
+.lp-playerhub.is-open {
+	opacity: 1;
+	pointer-events: all;
+}
+
+.hub-shell {
+	flex-direction: column;
+	width: 1160px;
+	height: 700px;
+	max-width: 96%;
+	max-height: 96%;
+	background-color: $bg;
+	border: 1px solid $border;
+	border-radius: $radius-card;
+	overflow: hidden;
+	font-family: Inter;
+}
+
+// ── HEADER ───────────────────────────────────────────────────────────────────
+.hub-header {
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	height: $header-h;
+	padding-left: 20px;
+	padding-right: 12px;
+	background-color: $surface;
+	border-bottom: 1px solid $border;
+	flex-shrink: 0;
+}
+
+.hub-brand {
+	font-family: Montserrat;
+	font-size: 16px;
+	font-weight: 600;
+	letter-spacing: 1px;
+	color: $text-main;
+}
+
+.hub-header-right {
+	flex-direction: row;
+	align-items: center;
+	gap: 16px;
+}
+
+.hub-preview-tag {
+	flex-direction: row;
+	align-items: center;
+	height: 22px;
+	padding-left: 8px;
+	padding-right: 8px;
+	border: 1px solid $border;
+	border-radius: 2px;
+	font-size: 10px;
+	font-weight: 600;
+	letter-spacing: 1px;
+	color: $text-dim;
+}
+
+.hub-stat {
+	flex-direction: row;
+	align-items: center;
+	gap: 6px;
+}
+
+.hub-stat-label {
+	font-size: 12px;
+	letter-spacing: 1px;
+	color: $text-dim;
+}
+
+// LAW 17 — the SIGN carries the colour, the AMOUNT stays white.
+.hub-stat-value {
+	font-size: 14px;
+	font-weight: 600;
+	color: $text-main;
+}
+
+.lp-mark {
+	font-size: 14px;
+	font-weight: 700;
+	color: $lp-blue;
+}
+
+.hub-close {
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	width: $hit;
+	height: $hit;
+	border-radius: $radius;
+	color: $text-dim;
+	opacity: 0.7;
+	transition: opacity 0.12s ease-out;
+}
+
+.hub-close:hover {
+	opacity: 1;
+	color: $text-main;
+	background-color: $accent-soft-hover;
+}
+
+// ── BODY ─────────────────────────────────────────────────────────────────────
+.hub-body {
+	flex-direction: row;
+	flex-grow: 1;
+	min-height: 0;
+}
+
+.hub-sidebar {
+	flex-direction: column;
+	width: $sidebar-w;
+	flex-shrink: 0;
+	padding: $gap-content;
+	gap: 20px;
+	background-color: $surface-inset;
+	border-right: 1px solid $border;
+}
+
+.hub-identity {
+	flex-direction: row;
+	align-items: center;
+	gap: 10px;
+}
+
+// A true circle is the one place a full radius is allowed.
+.hub-avatar {
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	width: 36px;
+	height: 36px;
+	flex-shrink: 0;
+	border-radius: 50%;
+	background-color: $card-header;
+	color: $text-dim;
+	font-size: 20px;
+}
+
+.hub-identity-copy {
+	flex-direction: column;
+}
+
+.hub-player-name {
+	font-size: 14px;
+	font-weight: 600;
+	color: $text-main;
+}
+
+.hub-player-rank {
+	font-size: 12px;
+	color: $text-dim;
+}
+
+.hub-nav {
+	flex-direction: column;
+	gap: $gap-control;
+}
+
+.hub-nav-item {
+	flex-direction: row;
+	align-items: center;
+	gap: 10px;
+	height: $hit;
+	padding-right: 10px;
+	border-radius: $radius;
+	color: $text-dim;
+	opacity: 0.7;
+	transition: opacity 0.12s ease-out;
+}
+
+.hub-nav-item:hover {
+	opacity: 1;
+	background-color: $accent-soft-hover;
+}
+
+// Accent is a WASH, never chrome: a low-alpha selected background plus a left indicator.
+.hub-nav-item.is-active {
+	opacity: 1;
+	background-color: $accent-soft;
+	color: $text-main;
+}
+
+.hub-nav-indicator {
+	width: 3px;
+	height: 20px;
+	flex-shrink: 0;
+	border-radius: 2px;
+	background-color: transparent;
+}
+
+.hub-nav-item.is-active .hub-nav-indicator {
+	background-color: $lp-blue;
+}
+
+// Icons stay neutral. The active state is carried by opacity and the wash, not by tinting glyphs.
+.hub-nav-icon {
+	font-size: 18px;
+	flex-shrink: 0;
+}
+
+.hub-nav-label {
+	font-size: 14px;
+	flex-grow: 1;
+}
+
+.hub-nav-badge {
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	min-width: 18px;
+	height: 18px;
+	padding-left: 5px;
+	padding-right: 5px;
+	border-radius: 2px;
+	background-color: $lp-blue;
+	color: $text-main;
+	font-size: 11px;
+	font-weight: 700;
+}
+
+// ── CONTENT ──────────────────────────────────────────────────────────────────
+.hub-content {
+	flex-direction: column;
+	flex-grow: 1;
+	min-width: 0;
+	padding: 24px;
+	gap: 20px;
+}
+
+.hub-page-head {
+	flex-direction: column;
+	gap: 4px;
+	flex-shrink: 0;
+}
+
+.hub-eyebrow {
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 1.5px;
+	color: $lp-blue;
+}
+
+.hub-title {
+	font-family: Montserrat;
+	font-size: 22px;
+	font-weight: 600;
+	color: $text-main;
+}
+
+.hub-blurb {
+	font-size: 14px;
+	color: $text-dim;
+}
+
+// One vertical scroll region per tab.
+.hub-tabhost {
+	flex-direction: column;
+	flex-grow: 1;
+	min-height: 0;
+	overflow-y: scroll;
+	background-color: $surface;
+	border-radius: $radius-card;
+}
+
+.hub-placeholder {
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	flex-grow: 1;
+	gap: $gap-content;
+	padding: 32px;
+}
+
+.hub-placeholder-icon {
+	font-size: 40px;
+	color: $text-dim;
+	opacity: 0.4;
+}
+
+.hub-placeholder-title {
+	font-family: Montserrat;
+	font-size: 16px;
+	font-weight: 600;
+	color: $text-main;
+}
+
+.hub-placeholder-body {
+	font-size: 13px;
+	color: $text-dim;
+	text-align: center;
+}
