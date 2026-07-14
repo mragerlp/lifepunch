@@ -25,7 +25,7 @@ You are now in **planning mode** for **LIFEPUNCH**.
 
 Before creating any plan, you MUST read ALL THE LINES of:
 
-1. @docs/ARCHI.md - Understand current system architecture
+1. @ARCHI.md - Understand current system architecture
 
 ## Your Task
 
@@ -102,12 +102,13 @@ Depending on the feature (major, minor, patch), propose a new version using SemV
 
 ## Technical Considerations
 
-[ADAPT_TO_PROJECT: Replace with project-specific technical concerns during Init]
-
-- **Pattern Usage**: Which existing patterns to follow (from ARCHI.md)
-- **[Concern 1]**: [Description]
-- **[Concern 2]**: [Description]
-- **Edge Cases**: [Relevant edge cases for this feature]
+- **Pattern Usage**: Follow ARCHI.md + the matching `lifepunch-*` skill (economy / config / razor-ui / editor-gate / grounding).
+- **CVL authority**: Bloodwave GO for merge/push/tag; DRIVE is board-named; skills are capability not authority.
+- **Editor sync**: Repo edits are not playable until `Sync-LifePunchAddonsToDxrp.ps1` (`-WhatIf` first) when the slice needs runtime proof.
+- **Economy / donor rails**: Law A/B, Donor Law exceptions only when signed; never multiply portal `$BTC` redeem without an explicit ruling.
+- **Attribution**: author `mragerlp <mragerlp@gmail.com>` only; zero AI trailers on any git surface.
+- **Sensor Law**: every behavioral claim needs a sensor (compile log postdates write, test pass count, screenshot, etc.).
+- **Edge Cases**: host vs caller identity, TOCTOU on debit/restore, play-mode vs edit-mode MCP mutators.
 
 ## Files to Modify/Create
 
@@ -232,26 +233,22 @@ But NOT:
 
 Keep it architectural and descriptive. Code comes in the `TRIP-2-implement` phase.
 
-## [ADAPT_TO_PROJECT: Guidance Sections]
+## For Bitcoin / cyber entity slices
 
-<!--
-During Init, replace this section with project-specific guidance.
-Examples:
+- Hub → Terminal → GPU Rack order unless a Bloodwave ruling opens another lane.
+- Prefer reuse (Law 1) over new systems; park unrelated ideas in BACKLOG.
 
-For Web Frontend:
-## For New UI Components
-## For Service Layer Additions
-## For Custom Hooks
+## For Razor / SCSS UI
 
-For Embedded:
-## For New Peripheral Drivers
-## For New Communication Protocols
+- Class root on `<root class="...">`; run `Validate-SboxRazorScss.ps1` before playtest.
+- `BuildHash` must include every private UI flag that changes markup.
 
-For CLI:
-## For New Commands
-## For Configuration Changes
+## For economy / persistence
 
-For Backend:
-## For New API Endpoints
-## For Database Changes
--->
+- Read `lifepunch-economy` before editing payout, purchase, ledger, or Audit paths.
+- Portal token absence = outbound Audit/rank feed **unverified**, not assumed green.
+
+## For editor / MCP work
+
+- One DRIVE holder; Launch Report before editor-gated instruments.
+- Sync repo → DXRP game tree before claiming hotload proof.

@@ -29,7 +29,7 @@ Review: $ARGUMENTS
 ## Prerequisites
 
 Read before reviewing:
-1. @docs/ARCHI.md  -  verify architectural compliance
+1. @ARCHI.md  -  verify architectural compliance
 2. Related plan in `docs/1-plans/`
 3. Related changelog in `docs/2-changelog/`
 4. @.claude/skills/TRIP-review/checklist.md  -  **single source of truth** for review criteria, severity classification, and approval gate

@@ -37,7 +37,7 @@ Research: $ARGUMENTS
 
 ---
 
-## Step 0: Read fully @docs/ARCHI.md
+## Step 0: Read fully @ARCHI.md
 
 ## Step 1: Define Scope
 
@@ -163,9 +163,9 @@ Conduct the research:
 For **decision-grade findings**  -  architecture recommendations, technology choices, anything the user will build on (typically compute level `think hard` and above)  -  red-team the draft conclusion with the `codex-ask` skill before presenting. Skip for quick lookups.
 
 ```bash
-export STATE_DIR=".claude/skills/codex-ask/state"
-bash .claude/skills/codex-plan-review/scripts/start.sh \
-    --prompt-file .claude/skills/codex-ask/prompts/ask.tpl \
+export STATE_DIR=".agents/skills/codex-ask/state"
+bash .agents/skills/codex-plan-review/scripts/start.sh \
+    --prompt-file .agents/skills/codex-ask/prompts/ask.tpl \
     <topic-label> "Here is my draft recommendation: <summary + key rationale>. Red-team it: what am I missing, what would you choose instead, and why?"
 ```
 

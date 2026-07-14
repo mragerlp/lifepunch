@@ -29,10 +29,10 @@ Review: $ARGUMENTS
 ## Prerequisites
 
 Read before reviewing:
-1. @docs/ARCHI.md  -  verify architectural compliance
+1. @ARCHI.md  -  verify architectural compliance
 2. Related plan in `docs/1-plans/`
 3. Related changelog in `docs/2-changelog/`
-4. @.claude/skills/TRIP-review/checklist.md  -  **single source of truth** for review criteria, severity classification, and approval gate
+4. @.agents/skills/TRIP-review/checklist.md  -  **single source of truth** for review criteria, severity classification, and approval gate
 
 ---
 
@@ -48,7 +48,7 @@ Do not copy the checklist into output  -  link to it.
 
 Save to `docs/3-code-review/CR_wa_vx.y.z.md` (a=project week, x.y.z=version).
 
-Render the skeleton from `@.claude/skills/TRIP-review/cr-template.md`:
+Render the skeleton from `@.agents/skills/TRIP-review/cr-template.md`:
 1. Copy the markdown block from that file.
 2. Replace every `<angle-bracket placeholder>` with concrete content.
 3. Tick `[x]` for passing checklist items; leave unchecked with a one-line caveat otherwise.

@@ -37,7 +37,7 @@ Research: $ARGUMENTS
 
 ---
 
-## Step 0: Read fully @docs/ARCHI.md
+## Step 0: Read fully @ARCHI.md
 
 ## Step 1: Define Scope
 

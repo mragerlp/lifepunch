@@ -1,6 +1,6 @@
 # Code Review Checklist
 
-This file is the **single source of truth** for code-review criteria. Both human-driven reviews via `.claude/skills/TRIP-review` and Codex-driven reviews via `.claude/skills/codex-code-review` apply the criteria below — referenced, not copied — so the two review surfaces cannot drift.
+This file is the **single source of truth** for code-review criteria. Both human-driven reviews via `.agents/skills/TRIP-review` and Codex-driven reviews via `.agents/skills/codex-code-review` apply the criteria below — referenced, not copied — so the two review surfaces cannot drift.
 
 ## Systematic Review Checklist
 
@@ -28,33 +28,29 @@ This file is the **single source of truth** for code-review criteria. Both human
 - [ ] Appropriate abstractions used
 - [ ] Consistent with existing codebase style
 
-<!-- [ADAPT_TO_PROJECT: Add project-specific checklist sections during Init.
-Examples:
+### 4. LIFEPUNCH / CVL compliance
 
-### 4. [Framework/Domain] Best Practices
-- [ ] [Specific check 1]
-- [ ] [Specific check 2]
+- [ ] Economy/donor/config changes cite the matching skill and do not invent exceptions
+- [ ] No AI attribution on any git surface; author identity respected in the change set
+- [ ] Sensor Law: behavioral claims in the CR cite a real sensor (test count, compile, screenshot)
+- [ ] Editor sync acknowledged when runtime proof was required
+- [ ] Proprietary header present on new LifePunch-authored source files
 
-### 5. [Domain-Specific Concerns]
-- [ ] [Specific check 1]
-- [ ] [Specific check 2]
--->
-
-### 4. Error Handling
+### 5. Error Handling
 
 - [ ] Errors are properly caught and handled
 - [ ] Error messages are clear and actionable
 - [ ] Failure modes are graceful
 - [ ] Logging is appropriate (not too verbose, not silent)
 
-### 5. Security (if applicable)
+### 6. Security (if applicable)
 
 - [ ] Input validation implemented
 - [ ] No sensitive data exposed
 - [ ] Authentication/authorization respected
 - [ ] No obvious vulnerabilities
 
-### 6. Performance
+### 7. Performance
 
 - [ ] No obvious performance issues
 - [ ] Resource cleanup implemented (no leaks)

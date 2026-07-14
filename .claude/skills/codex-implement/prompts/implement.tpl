@@ -9,7 +9,7 @@ instruction block at the bottom of this prompt.
 
 ## Read first
 
-1. `docs/ARCHI.md` — architecture single source of truth
+1. `ARCHI.md` — architecture single source of truth
 2. The project's agent instructions (`AGENTS.md` or `CLAUDE.md`) — conventions and commands
 3. The plan `{{TARGET}}` (if a path)
 

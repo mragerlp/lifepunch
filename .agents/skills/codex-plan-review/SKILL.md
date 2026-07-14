@@ -19,7 +19,7 @@ argument-hint: "<plan-path> [extra context] | reset <plan-path> | show <plan-pat
 
 # Codex Plan Review
 
-Iterative review of a planning document via Codex CLI. State (thread ID, review text, event log) persisted under `.claude/skills/codex-plan-review/state/<sanitized-path>.{thread,review.txt,events.ndjson}`.
+Iterative review of a planning document via Codex CLI. State (thread ID, review text, event log) persisted under `.agents/skills/codex-plan-review/state/<sanitized-path>.{thread,review.txt,events.ndjson}`.
 
 The companion `codex-code-review` skill shares the same scripts with its own prompt templates and `STATE_DIR`.
 
@@ -34,12 +34,12 @@ The companion `codex-code-review` skill shares the same scripts with its own pro
 1. **Parse `$ARGUMENTS`**: extract action (`reset`/`show`/auto) and plan path.
 
 2. **Auto**  -  try `start.sh` first (exit code 2 = thread exists -> use `resume.sh`):
-   - **Start**: `bash .claude/skills/codex-plan-review/scripts/start.sh --prompt-file .claude/skills/codex-plan-review/prompts/start.tpl <plan-path> [extra]`
-   - **Resume**: `bash .claude/skills/codex-plan-review/scripts/resume.sh --prompt-file .claude/skills/codex-plan-review/prompts/resume.tpl <plan-path> [extra]`
+   - **Start**: `bash .agents/skills/codex-plan-review/scripts/start.sh --prompt-file .agents/skills/codex-plan-review/prompts/start.tpl <plan-path> [extra]`
+   - **Resume**: `bash .agents/skills/codex-plan-review/scripts/resume.sh --prompt-file .agents/skills/codex-plan-review/prompts/resume.tpl <plan-path> [extra]`
 
-3. **Reset**: `bash .claude/skills/codex-plan-review/scripts/reset.sh <plan-path>`
+3. **Reset**: `bash .agents/skills/codex-plan-review/scripts/reset.sh <plan-path>`
 
-4. **Show**: `bash .claude/skills/codex-plan-review/scripts/show.sh <plan-path>`
+4. **Show**: `bash .agents/skills/codex-plan-review/scripts/show.sh <plan-path>`
 
 5. **Parse trailing tag**:
    - `APPROVED`  -  tell user, done.

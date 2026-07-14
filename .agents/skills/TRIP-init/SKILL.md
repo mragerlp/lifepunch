@@ -141,7 +141,7 @@ After classification, note:
 
 ## Phase 4: Generate ARCHI.md
 
-Based on the project type, generate `docs/ARCHI.md` using the appropriate sections.
+Based on the project type, generate `ARCHI.md` using the appropriate sections.
 
 ### Universal Sections (ALL projects)
 
@@ -924,7 +924,7 @@ This file has two sections:
 - **vX.Y.Z+1 (TRIP Initialization - Week 1, DD-MM-YYYY)**:
   - **Setup**: Initialized TRIP workflow with docs structure
   - **Documentation**: Generated ARCHI.md with [project type] architecture
-  - **Files Added**: docs/ARCHI.md, docs/ARCHI-rules.md, docs/2-changelog/changelog_table.md, docs/4-unit-tests/TESTING.md
+  - **Files Added**: ARCHI.md, CLAUDE.md + ARCHI.md subordination header (no separate ARCHI-rules.md), docs/2-changelog/changelog_table.md, docs/4-unit-tests/TESTING.md
 ```
 
 The summary provides context that the table cannot capture: rationale, impact, technical decisions, and file-level details. New entries are added at the **top** of each section.
@@ -963,7 +963,7 @@ The summary provides context that the table cannot capture: rationale, impact, t
 
 ---
 
-### 3. `docs/ARCHI-rules.md` - Architecture Maintenance Rules
+### 3. `CLAUDE.md + ARCHI.md subordination header (no separate ARCHI-rules.md)` - Architecture Maintenance Rules
 
 **Adapt based on the validated ARCHI.md** - reference the actual sections and terminology used:
 

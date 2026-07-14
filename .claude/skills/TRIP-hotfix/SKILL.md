@@ -56,7 +56,7 @@ git checkout -b hotfix/[short-description]
 
 ## Step 3: Minimal Investigation
 
-First, you MUST read ALL THE LINES of @docs/ARCHI.md then explore the codebase and read the files relevant to the issue.
+First, you MUST read ALL THE LINES of @ARCHI.md then explore the codebase and read the files relevant to the issue.
 
 Quickly identify:
 

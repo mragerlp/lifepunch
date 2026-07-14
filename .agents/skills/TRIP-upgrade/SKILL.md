@@ -32,9 +32,9 @@ A naive copy would destroy layer 2. This skill separates both layers, applies th
 
 ## Prerequisites
 
-The user must have copied the new generic TRIP skills into a staging folder before running this skill. Default location: `.claude/skills/new-TRIP/`
+The user must have copied the new generic TRIP skills into a staging folder before running this skill. Default location: `.agents/skills/new-TRIP/`
 
-If `$ARGUMENTS` is provided, treat it as the path to the staging folder. Otherwise use `.claude/skills/new-TRIP/`.
+If `$ARGUMENTS` is provided, treat it as the path to the staging folder. Otherwise use `.agents/skills/new-TRIP/`.
 
 ---
 
@@ -57,7 +57,7 @@ List all skill folders in both locations:
 
 ```bash
 # Currently installed
-ls -d .claude/skills/*/
+ls -d .agents/skills/*/
 
 # New (staging)
 ls -d <staging-path>/*/
@@ -93,7 +93,7 @@ Categorize each skill into one of:
 For each skill, diff the installed vs new version to confirm whether it actually changed:
 
 ```bash
-diff -rq .claude/skills/<skill>/ <staging-path>/<skill>/
+diff -rq .agents/skills/<skill>/ <staging-path>/<skill>/
 ```
 
 ### 1.3 Present Inventory
@@ -217,7 +217,7 @@ For each skill, apply the appropriate action from the Phase 1 inventory.
 ### 4.1 New Skills  -  Copy Directly
 
 ```bash
-cp -r <staging-path>/<skill>/ .claude/skills/<skill>/
+cp -r <staging-path>/<skill>/ .agents/skills/<skill>/
 ```
 
 For skills with `state/` directories, ensure `.gitignore` is in place.
@@ -225,8 +225,8 @@ For skills with `state/` directories, ensure `.gitignore` is in place.
 ### 4.2 Pure Workflow Skills  -  Replace Directly
 
 ```bash
-rm -rf .claude/skills/<skill>/
-cp -r <staging-path>/<skill>/ .claude/skills/<skill>/
+rm -rf .agents/skills/<skill>/
+cp -r <staging-path>/<skill>/ .agents/skills/<skill>/
 ```
 
 ### 4.3 Customized Skills  -  Extract + Merge
@@ -294,7 +294,7 @@ After writing all files, run a validation pass.
 Scan all upgraded skill files for leftover placeholders:
 
 ```bash
-grep -rn '\[ADAPT_TO_PROJECT\|\[PROJECT_NAME\]\|\[VERSION_FILE\]\|\[WEEK_ANCHOR_DATE\]\|\[TEST_COMMAND\]\|\[LINT_COMMAND\]\|\[TYPECHECK_COMMAND\]\|\[TUTORIAL_STEP\]\|\[MAIN_BRANCH\]' .claude/skills/TRIP-*/
+grep -rn '\[ADAPT_TO_PROJECT\|\[PROJECT_NAME\]\|\[VERSION_FILE\]\|\[WEEK_ANCHOR_DATE\]\|\[TEST_COMMAND\]\|\[LINT_COMMAND\]\|\[TYPECHECK_COMMAND\]\|\[TUTORIAL_STEP\]\|\[MAIN_BRANCH\]' .agents/skills/TRIP-*/
 ```
 
 If any are found, fill them from context or ask the user.
@@ -302,8 +302,8 @@ If any are found, fill them from context or ask the user.
 ### 5.2 Cross-Reference Check
 
 - `checklist.md` section names must match `cr-template.md` checklist section names
-- `codex-code-review/prompts/start.tpl` and `resume.tpl` reference `.claude/skills/TRIP-review/checklist.md`  -  confirm it exists, and that no template still points at the old `TRIP-3-review/` path
-- `codex-code-review/prompts/synthesize.tpl` and `codex-code-review/SKILL.md` reference `.claude/skills/TRIP-review/cr-template.md`  -  confirm it exists
+- `codex-code-review/prompts/start.tpl` and `resume.tpl` reference `.agents/skills/TRIP-review/checklist.md`  -  confirm it exists, and that no template still points at the old `TRIP-3-review/` path
+- `codex-code-review/prompts/synthesize.tpl` and `codex-code-review/SKILL.md` reference `.agents/skills/TRIP-review/cr-template.md`  -  confirm it exists
 - `TRIP-1-plan` and `TRIP-2-implement` reference `codex-plan-review/scripts/start.sh` and `resume.sh`; `TRIP-2-implement` also references `codex-implement/scripts/start.sh`  -  confirm they exist
 
 ### 5.3 Present Summary
@@ -321,8 +321,8 @@ Upgrade complete:
 `AskUserQuestion`: "Upgrade applied. Review the changes?"
 Options: "Looks good" / "Show me the diffs" / "Revert everything"
 
-If "Show me the diffs": run `git diff .claude/skills/` and present.
-If "Revert everything": `git checkout -- .claude/skills/`
+If "Show me the diffs": run `git diff .agents/skills/` and present.
+If "Revert everything": `git checkout -- .agents/skills/`
 
 ---
 
@@ -336,7 +336,7 @@ After user confirms:
    ```
 
 2. Report completion:
-   > "TRIP workflow upgraded. The staging folder has been removed. You can `git diff .claude/skills/` to review all changes before committing."
+   > "TRIP workflow upgraded. The staging folder has been removed. You can `git diff .agents/skills/` to review all changes before committing."
 
 ---
 
