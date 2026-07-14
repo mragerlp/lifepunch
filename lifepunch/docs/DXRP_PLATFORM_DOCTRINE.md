@@ -188,14 +188,27 @@ Bets, Minigame Participate/Manage, Bypass Max Players) — ZERO
 economy/combat advantage. Facepunch compliance AND LIFEPUNCH
 identity: donors buy identity + convenience, never power.
 
-> **DONOR LAW AMENDMENT — PENDING, NOT LANDED (2026-07-13).** A ruling was issued to amend the
-> line above with a named VIP/EVIP mined-BTC payout-multiplier exception (1.5× / 2×). **Red's
-> read-only grep found no such multiplier anywhere in the tree** — not in the LP addon, not in the
-> 975 `.cs` files of `lifepunchdxrp/`, not in the portal rank baselines, not in the store config.
-> The amendment is therefore **HELD pending a Bloodwave ruling on the finding**, rather than landing
-> a mechanism claim the code does not support. **The Donor Law above stands unamended and is, as far
-> as every reachable sensor shows, ACCURATE.** Finding record:
-> `lifepunch/docs/handoff/FINDING_VIP_EVIP_PAYOUT_MULTIPLIER_2026-07-13.md`.
+> **DONOR LAW AMENDMENT — RATIFIED AND IMPLEMENTED (ruled 2026-07-13, Bloodwave;
+> `comms\fable\0068`; implementation ruling `comms\copilot\0006`).** The Donor Law above gains ONE
+> NAMED EXCEPTION: VIP and EVIP tiers additionally grant a payout-RATE MULTIPLIER on mined-BTC
+> cashout (**VIP = 1.5x, EVIP = 2x**). It is a **per-player mechanism keyed to the terminal caller's
+> live rank — never the global `CashRateMultiplier`**. The donor rate composes multiplicatively with
+> the global event rate, with one floor after both rates. The two mined-BTC bank rails carry both an
+> enriched ledger reason and a `LifePunchBtcPayout` Audit event. Portal `$BTC` item redemption and
+> every other economy rail are outside this exception. Terminal donor-rate display is deferred.
+>
+> VIP(OG)/EVIP(OG) are PERMANENT grants to early supporters; current-generation VIP/EVIP are
+> monthly-recurring donation tiers via the website. ALL OTHER donor perks (cosmetics, titles, QoL
+> conveniences) remain strictly zero-power — the exception is narrow and named, not a general
+> license for pay-for-power. No future donor tier gains economic power without its own explicit
+> ruling amending this list.
+>
+> **SUPERSEDED HISTORY (resolved by `comms\fable\0068`).** The prior block recorded that no
+> multiplier existed in the LP addon, the 975 `.cs` files of `lifepunchdxrp/`, portal rank baselines,
+> or store config, and therefore held the amendment pending Bloodwave's ruling. That finding was
+> accurate for its state basis and is preserved at
+> `lifepunch/docs/handoff/FINDING_VIP_EVIP_PAYOUT_MULTIPLIER_2026-07-13.md`; Bloodwave then ruled the
+> corrected premise: the multiplier was a design to build, not shipped reality.
 
 ## 9b. $LP CURRENCY LAW (ratified 2026-07-13, Bloodwave)
 
