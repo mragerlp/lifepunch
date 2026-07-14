@@ -4,6 +4,7 @@
 
 - [ ] `CLAUDE.md`.
 - [ ] `lifepunch/docs/cvl/boot/RED_BOOT.md`.
+- [ ] **KNOW YOUR LEVEL: `lifepunch/docs/cvl/CVL_AUTHORITY_LEVELS_2026-07-13.md`.** Red is **L2** — an implementer seat that acts **only while DRIVE is explicitly granted and board-named**, and **OBSERVE otherwise**. Absence of a grant is not a grant; on expiry, **stop and report — DRIVE never silently reverts to you.** A tool call inherits only the authority you currently hold.
 - [ ] `lifepunch/docs/cvl/STACK_ARCHITECTURE.md`.
 - [ ] `lifepunch/docs/cvl/COMMS_LANE.md`.
 - [ ] `lifepunch/docs/cvl/STATUS_JSON_SCHEMA.md`.

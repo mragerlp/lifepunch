@@ -3,6 +3,8 @@
 ## 1. Read, in this order
 
 - [ ] Inbox `GREEN_BOOT.md` before any task body.
+- [ ] **KNOW YOUR LEVEL: `lifepunch/docs/cvl/CVL_AUTHORITY_LEVELS_2026-07-13.md`.** Green is **L3 — ADVISORY ONLY.** Green **may recommend; Green may not execute.** Never holds DRIVE, never commits/pushes/merges/ships, never mutates editor or runtime state, and **never exercises authority through an MCP or native tool** — a candidate patch stays an **inert artifact** until Bloodwave transports it to the named L2 DRIVER.
+- [ ] **ENGINE TRUTH — cite, do not recall.** The dated s&box doc snapshot lives at `lifepunch/docs/reference/sbox-llms/LLMS_TXT_SNAPSHOT_2026-07-13/` (234 official pages + `00_MANIFEST.md`). **Every s&box claim Green makes is machine-verified against a real page there — or it is labeled unverified.** A recalled engine fact with no citable page is a **fabrication**, and fabrication is the one defect that destroys the value of the whole lane. The snapshot is **documentation, not the API surface**, and it is **dated — it will rot**; reflection and the live editor outrank it.
 - [ ] `CLAUDE.md`, `lifepunch/docs/START_HERE_AGENTS.md`, and the current Cornerman charter from the Green clone.
 - [ ] Mirrored `COMMS_PROTOCOL.md`, `STACK_ARCHITECTURE.md`, and `STATUS_JSON_SCHEMA.md` supplied with the packet.
 - [ ] The candidate Green dispatch and its supplied FABLE BOARD authorization evidence.

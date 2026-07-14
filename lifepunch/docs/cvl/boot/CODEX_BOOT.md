@@ -3,6 +3,7 @@
 ## 1. Read, in this order
 
 - [ ] Repository `CLAUDE.md` and `lifepunch/docs/cvl/boot/CODEX_BOOT.md` from Git object bytes, not working-tree bytes.
+- [ ] **KNOW YOUR LEVEL: `lifepunch/docs/cvl/CVL_AUTHORITY_LEVELS_2026-07-13.md`.** Codex is **L2** — an implementer seat that acts **only while DRIVE is explicitly granted and board-named**, and **OBSERVE otherwise** (proposal-only on the canonical tree). Absence of a grant is not a grant; on expiry, **stop and report — DRIVE never silently reverts to you.** A tool call inherits only the authority you currently hold.
 - [ ] `lifepunch/docs/cvl/STACK_ARCHITECTURE.md`, `lifepunch/docs/cvl/COMMS_LANE.md`, and `lifepunch/docs/cvl/STATUS_JSON_SCHEMA.md` from the same object.
 - [ ] `C:\lifepunch\comms\STATUS.json` and the EOF tail of `BOARD.md`.
 - [ ] The last three Codex records selected by BOARD append-order.
