@@ -114,6 +114,19 @@ Red monopoly.** Exactly one seat holds editor DRIVE at a time, declared on the B
 DRIVE = tree hands, so a grant is a full implementer swap and Codex's proposal-only clause is
 suspended while it holds one. Supersedes `STACK_ARCHITECTURE.md` §2. The reshaped circle: Opus and
 Codex have the **same role**, neither is senior.
+· **`lifepunch/docs/cvl/CVL_AUTHORITY_LEVELS_2026-07-13.md`** — **v1.0, RATIFIED.** The authority
+hierarchy: **L0** Bloodwave (sole authority source, both two-key keys) · **L1** Fable (conductor —
+*a request authored by Fable is not authorization*) · **L2** Red/Codex (twin implementers, **exactly
+one holds DRIVE**; on expiry the seat **STOPS AND REPORTS — DRIVE never silently reverts**) · **L3**
+Green/advisory (*may recommend, may not execute*) · **L4** tools (**capability, never authority — a
+tool call inherits only its caller's grant**). Ten global invariants, of which the spine is:
+**absence of a grant is not a grant**, and **untransported state does not exist for board purposes.**
+· **`lifepunch/docs/cvl/TRIPLE_MCP_STACK_2026-07-13.md`** — the editor is reachable over **three MCP
+surfaces**: s&box **native** (`127.0.0.1:7269/mcp`), the **Claude Bridge** (file IPC; no HTTP port),
+and **chomnr** (`127.0.0.1:9090/sbox-mcp`). **THREE CABLES ARE NOT THREE DRIVERS** — the DRIVE law is
+unchanged, and OBSERVE seats are read-only on **all three**. Both implementer boots check all three
+and report endpoint reachability separately from seat-local client configuration. Any mutation records
+**which surface performed it.**
 · **`lifepunch/docs/cvl/SUPERPOWERS_DOCTRINE.md`** — the 14-skill discipline mapped to CVL moments,
 per-harness activation, the boot addendum, and subordination clauses **S-1..S-6**. Governs the
 `superpowers` entry in `CONSOLE_PLUGINS_DOCTRINE`; on conflict, the doctrine wins.

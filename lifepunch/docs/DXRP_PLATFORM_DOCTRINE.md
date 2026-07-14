@@ -188,6 +188,36 @@ Bets, Minigame Participate/Manage, Bypass Max Players) — ZERO
 economy/combat advantage. Facepunch compliance AND LIFEPUNCH
 identity: donors buy identity + convenience, never power.
 
+> **DONOR LAW AMENDMENT — PENDING, NOT LANDED (2026-07-13).** A ruling was issued to amend the
+> line above with a named VIP/EVIP mined-BTC payout-multiplier exception (1.5× / 2×). **Red's
+> read-only grep found no such multiplier anywhere in the tree** — not in the LP addon, not in the
+> 975 `.cs` files of `lifepunchdxrp/`, not in the portal rank baselines, not in the store config.
+> The amendment is therefore **HELD pending a Bloodwave ruling on the finding**, rather than landing
+> a mechanism claim the code does not support. **The Donor Law above stands unamended and is, as far
+> as every reachable sensor shows, ACCURATE.** Finding record:
+> `lifepunch/docs/handoff/FINDING_VIP_EVIP_PAYOUT_MULTIPLIER_2026-07-13.md`.
+
+## 9b. $LP CURRENCY LAW (ratified 2026-07-13, Bloodwave)
+
+**Design canon ahead of implementation.** No $LP store exists yet; nothing here is built. This law
+is landed now so that the eventual $LP-store builder **inherits the line already drawn instead of
+guessing it** (Canon Persistence Law).
+
+> **$LP Currency Law:** $LP is earned through play; direct purchase is optional and secondary. A
+> future in-game $LP store lets players spend earned $LP on perks. Most perks are COSMETIC. Some
+> perks MAY affect gameplay (temporary yield boosts, anti-grief windows, similar QoL/economy
+> effects) — EXAMPLES: "prevent hacking for 30 minutes," "2x bitcoin yield for 15 minutes."
+> **$LP perks may NEVER grant a COMBAT advantage** — no damage, health, weapon, armor,
+> movement-in-combat, or PvP-relevant edge, ever, regardless of price or rarity. This is a NARROWER
+> prohibition than Donor Law's zero-power (which bars ALL economic power) — $LP being **earned**
+> rather than bought justifies a wider ceiling, capped precisely at the combat line. Any future $LP
+> perk proposal is checked against this single question: **"does it affect combat?"** Yes = rejected
+> outright, regardless of how minor. No = permitted, subject to normal design review.
+
+**Why the ceiling differs from Donor Law:** donor rank is *bought*, so its power ceiling is zero.
+$LP is *earned*, so it may reach further — but never into combat. The two laws are deliberately
+asymmetric, and the asymmetry is the point.
+
 ## 10. Moderation & the Discord loop
 Sanctions (2,290 records): manual (issuer-attributed, typed,
 durations incl. Permanent), AUTOMATIC (Sentinel detections, e.g.
