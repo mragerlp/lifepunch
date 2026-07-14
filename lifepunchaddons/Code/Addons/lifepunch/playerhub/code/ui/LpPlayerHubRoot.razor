@@ -120,9 +120,12 @@
 		"Slice 1 shell. Every value shown is fixture data, not live player state.";
 
 	// LAW 17 / currency identity: the $LP SIGN carries the colour, the AMOUNT stays white.
-	// $LP blue is PENDING-RATIFICATION and labelled temporary until the currency ruling lands.
+	// The word TEMPORARY is load-bearing and must stay in the USER-VISIBLE string: the
+	// lifepunch-design-tokens skill requires $LP to be "labelled temporary in UI copy", and a
+	// comment saying so does not label anything a player can see. (cursor\0023 caught this: the
+	// code said "labelled temporary" while the tooltip said neither.)
 	private const string LpTooltip =
-		"$LP is a placeholder currency. Its final sign and colour are pending ruling.";
+		"$LP is TEMPORARY placeholder currency. Its final sign and colour are pending ruling.";
 
 	private string LpAmount => Vm.LpBalance.ToString( "N0" );
 
