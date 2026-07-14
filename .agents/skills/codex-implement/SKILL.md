@@ -27,6 +27,12 @@ State persisted under `.agents/skills/codex-implement/state/<sanitized-target>.{
 export STATE_DIR=".agents/skills/codex-implement/state"
 ```
 
+On Windows PowerShell, use the paired `.ps1` scripts and set the same state directory with:
+
+```powershell
+$env:STATE_DIR = ".agents/skills/codex-implement/state"
+```
+
 ## Arguments
 
 - `<target>`  -  auto: start if no thread, resume if one exists. Usually a plan path (`docs/1-plans/F_*.plan.md`); a free-form label for unplanned work.
@@ -38,13 +44,19 @@ export STATE_DIR=".agents/skills/codex-implement/state"
 
 1. **Parse `$ARGUMENTS`**: extract action (`reset`/`show`/auto) and target.
 
-2. **Auto**  -  try `start.sh` first (exit code 2 = thread exists → use `resume.sh`):
-   - **Start**: `bash .agents/skills/codex-implement/scripts/start.sh --prompt-file .agents/skills/codex-implement/prompts/implement.tpl <target> [instructions]`
-   - **Resume** (next phase / additional scope): `bash .agents/skills/codex-plan-review/scripts/resume.sh --prompt-file .agents/skills/codex-implement/prompts/continue.tpl <target> [instructions]`
+2. **Auto**  -  try the platform's `start` script first (exit code 2 = thread exists → use `resume`):
+   - **Windows start**: `powershell.exe -NoProfile -ExecutionPolicy Bypass -File .agents/skills/codex-implement/scripts/start.ps1 --prompt-file .agents/skills/codex-implement/prompts/implement.tpl <target> [instructions]`
+   - **Windows resume** (next phase / additional scope): `powershell.exe -NoProfile -ExecutionPolicy Bypass -File .agents/skills/codex-plan-review/scripts/resume.ps1 --prompt-file .agents/skills/codex-implement/prompts/continue.tpl <target> [instructions]`
+   - **macOS/Linux start**: `bash .agents/skills/codex-implement/scripts/start.sh --prompt-file .agents/skills/codex-implement/prompts/implement.tpl <target> [instructions]`
+   - **macOS/Linux resume** (next phase / additional scope): `bash .agents/skills/codex-plan-review/scripts/resume.sh --prompt-file .agents/skills/codex-implement/prompts/continue.tpl <target> [instructions]`
 
-3. **Reset**: `bash .agents/skills/codex-plan-review/scripts/reset.sh <target>`
+3. **Reset**:
+   - **Windows**: `powershell.exe -NoProfile -ExecutionPolicy Bypass -File .agents/skills/codex-plan-review/scripts/reset.ps1 <target>`
+   - **macOS/Linux**: `bash .agents/skills/codex-plan-review/scripts/reset.sh <target>`
 
-4. **Show**: `bash .agents/skills/codex-plan-review/scripts/show.sh <target>`
+4. **Show**:
+   - **Windows**: `powershell.exe -NoProfile -ExecutionPolicy Bypass -File .agents/skills/codex-plan-review/scripts/show.ps1 <target>`
+   - **macOS/Linux**: `bash .agents/skills/codex-plan-review/scripts/show.sh <target>`
 
 5. **Parse trailing tag** of the report:
    - `IMPLEMENTATION_COMPLETE`  -  hand control back to the requester's self-review (TRIP-2).
@@ -57,4 +69,4 @@ export STATE_DIR=".agents/skills/codex-implement/state"
 - Separate `STATE_DIR` from the review skills  -  the same plan path can hold an implementation thread and a review thread without collision.
 - Codex is instructed not to write tests (testing gate owns that) and not to touch release ceremony.
 - Network is blocked in the sandbox: if the plan requires installing a new dependency, Codex will report it as a leftover  -  install it yourself during self-review.
-- Model/effort defaults live in `codex-plan-review/scripts/_common.sh` (implementation → gpt-5.6-luna, reviews → gpt-5.6-sol, effort xhigh; derived from `STATE_DIR`). Adjust that one file to your preferred models, or override per run via `CODEX_MODEL` / `CODEX_EFFORT` env vars; the scripts echo the effective values.
+- Model/effort defaults live in the paired `codex-plan-review/scripts/_common.sh` and `_common.ps1` helpers (implementation → gpt-5.6-luna, reviews → gpt-5.6-sol, effort xhigh; derived from `STATE_DIR`). Keep both helpers aligned when changing defaults, or override per run via `CODEX_MODEL` / `CODEX_EFFORT` env vars; the scripts echo the effective values.
