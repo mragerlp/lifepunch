@@ -21,7 +21,7 @@
 			<div class="pin-gate">
 				<header class="pin-header">
 					<div class="pin-brand">
-						<div class="brand-mark"></div>
+						<img class="brand-mark" src="addons/lifepunch/lpbitcoin/bitcoinhub/assets/ui/hashd/lifepunch-logo.png" />
 						<div class="pin-brand-copy">
 							<div class="pin-title">@PinGateTitle()</div>
 							<div class="pin-sub">@PinGateSubtitle()</div>
@@ -85,7 +85,7 @@
 				<div class="hub-main">
 					<aside class="sidebar">
 						<div class="sidebar-brand hex-mark" title="@LpBitcoinIdent.OpsTitle">
-							<div class="brand-mark"></div>
+							<img class="brand-mark" src="addons/lifepunch/lpbitcoin/bitcoinhub/assets/ui/hashd/lifepunch-logo.png" />
 						</div>
 
 						<nav class="sidebar-nav">
@@ -95,6 +95,7 @@
 								        tooltip="@TabLabel(tab)"
 								        onclick="@(() => SelectSidebarTab( tab ))">
 									<i class="material-icons">@TabIcon(tab)</i>
+									<span class="sidebar-btn-label">@TabLabel(tab)</span>
 									@if ( ShowSidebarAlertBadge( tab ) )
 									{
 										<span class="sidebar-alert-dot"></span>
@@ -120,7 +121,7 @@
 					<div class="workspace">
 						<header class="page-header hub-header">
 							<div class="lp-ui-panel-title hub-title">
-								<i class="material-icons">memory</i>
+								<img class="hub-title-mark" src="addons/lifepunch/lpbitcoin/bitcoinhub/assets/ui/hashd/lifepunch-logo.png" />
 								<span>@LpBitcoinIdent.OpsTitle</span>
 							</div>
 
@@ -258,8 +259,8 @@
 													</div>
 													<div class="overview-snapshot-card">
 														<div class="overview-snapshot-label">Hub wallet</div>
-														<div class="overview-snapshot-value lp-money-btc">@($"₿ {HeaderWalletBtc()}")</div>
-														<div class="overview-snapshot-sub">@($"${CombinedUsd():N2} estimated value")</div>
+														<div class="overview-snapshot-value"><span class="lp-money-btc">₿</span> <span class="lp-money-amt">@HeaderWalletBtc()</span></div>
+														<div class="overview-snapshot-sub"><span class="lp-money-cash">$</span><span class="lp-money-amt">@CombinedUsd().ToString( "N2" )</span> estimated value</div>
 													</div>
 												</div>
 												<div class="overview-snapshot-note">
@@ -544,7 +545,7 @@
 																	</div>
 																	<div class="server-stat-row">
 																		<span class="server-stat-label">Buffer</span>
-																		<span class="server-stat-value"><span class="lp-money-btc">₿ @($"{slot.Rack.BitcoinAmount:F4}")</span><span class="lp-money-unit"> / </span><span class="lp-money-btc">@($"{LpBitcoinEconomy.RackBtcCapacityFor( slot.Rack ):F4}")</span><span class="lp-money-unit"> (@(HeroBufferPercent( slot.Rack ))%)</span></span>
+																		<span class="server-stat-value"><span class="lp-money-btc">₿</span> <span class="lp-money-amt">@($"{slot.Rack.BitcoinAmount:F4}")</span><span class="lp-money-unit"> / </span><span class="lp-money-btc">₿</span> <span class="lp-money-amt">@($"{LpBitcoinEconomy.RackBtcCapacityFor( slot.Rack ):F4}")</span><span class="lp-money-unit"> (@(HeroBufferPercent( slot.Rack ))%)</span></span>
 																	</div>
 																	<div class="server-buffer-bar">
 																		<div class="server-buffer-bar-fill" style="width: @( HeroBufferPercent( slot.Rack ) )%;"></div>
@@ -744,11 +745,11 @@
 											<div class="lp-ui-info">
 												<div class="lp-ui-info-row">
 													<span class="lp-ui-info-label">Hub wallet</span>
-													<span class="lp-ui-info-value lp-money-btc">@($"₿ {HubWalletBtc():F6}")</span>
+													<span class="lp-ui-info-value"><span class="lp-money-btc">₿</span> <span class="lp-money-amt">@HubWalletBtc().ToString( "F6" )</span></span>
 												</div>
 												<div class="lp-ui-info-row">
 													<span class="lp-ui-info-label">Still on racks</span>
-													<span class="lp-ui-info-value lp-money-btc">@($"₿ {RackPendingBtc():F6}")</span>
+													<span class="lp-ui-info-value"><span class="lp-money-btc">₿</span> <span class="lp-money-amt">@RackPendingBtc().ToString( "F6" )</span></span>
 												</div>
 												<div class="lp-ui-info-row">
 													<span class="lp-ui-info-label">Terminal linked</span>
@@ -756,7 +757,7 @@
 												</div>
 												<div class="lp-ui-info-row">
 													<span class="lp-ui-info-label">USD value (hub)</span>
-													<span class="lp-ui-info-value">@($"${HubWalletCashUsd():N2}")</span>
+													<span class="lp-ui-info-value"><span class="lp-money-cash">$</span><span class="lp-money-amt">@HubWalletCashUsd().ToString( "N2" )</span></span>
 												</div>
 												<div class="lp-ui-info-row">
 													<span class="lp-ui-info-label">Exchange rate</span>
@@ -764,7 +765,7 @@
 												</div>
 												<div class="lp-ui-info-row">
 													<span class="lp-ui-info-label">Your cash</span>
-													<span class="lp-ui-info-value">@($"${LpHashdUiHost.GetLocalWalletCash()}")</span>
+													<span class="lp-ui-info-value"><span class="lp-money-cash">$</span><span class="lp-money-amt">@LpHashdUiHost.GetLocalWalletCash()</span></span>
 												</div>
 											</div>
 
@@ -837,7 +838,7 @@
 															<div class="transfer-subsection transfer-subsection-detail">
 																<div class="transfer-subsection-row">
 																	<span class="transfer-subsection-label">Hub wallet</span>
-																	<span class="transfer-subsection-value lp-money-btc">@($"₿ {HubWalletBtc():F6}")</span>
+																	<span class="transfer-subsection-value"><span class="lp-money-btc">₿</span> <span class="lp-money-amt">@HubWalletBtc().ToString( "F6" )</span></span>
 																</div>
 															</div>
 														</div>
@@ -1042,9 +1043,6 @@
 
 		</div>
 
-		<div class="lp-window-watermark lp-window-watermark--rounded">
-			<LifePunchUiFooter />
-		</div>
 	</div>
 </root>
 
@@ -2239,13 +2237,13 @@
 
 	private static string TabLabel( OpsTab tab ) => tab switch
 	{
-		OpsTab.Overview => "Dashboard",
-		OpsTab.Wallet => "Wallet",
-		OpsTab.Transfers => "Transfers",
-		OpsTab.Racks => "Manage racks",
-		OpsTab.Logs => "Logs / Alerts",
-		OpsTab.Settings => "Settings",
-		_ => "Dashboard"
+		OpsTab.Overview => "DASHBOARD",
+		OpsTab.Wallet => "WALLET",
+		OpsTab.Transfers => "TRANSFERS",
+		OpsTab.Racks => "SERVERS",
+		OpsTab.Logs => "SYSTEM / LOGS",
+		OpsTab.Settings => "SETTINGS",
+		_ => "DASHBOARD"
 	};
 
 	private void SelectSidebarTab( OpsTab tab )
