@@ -314,7 +314,7 @@
 															<span class="entity-chip @HubRacksChipState()">@HubRacksChipLabel()</span>
 														</div>
 														<div class="server-stat-plate">
-															<div class="server-stat-row"><span class="server-stat-label">Wallet</span><span class="server-stat-value"><span class="lp-money-btc">@HubWalletVital()</span></span></div>
+															<div class="server-stat-row"><span class="server-stat-label">Wallet</span><span class="server-stat-value"><span class="lp-money-btc">₿</span> <span class="lp-money-amt">@HubWalletVital()</span></span></div>
 															<div class="server-stat-row"><span class="server-stat-label">Racks</span><span class="server-stat-value">@HubRacksLinkedVital()</span></div>
 															<div class="server-stat-row"><span class="server-stat-label">Power</span><span class="server-stat-value">@( Hub?.IsPowered == true ? "Online" : "Offline" )</span></div>
 														</div>
@@ -502,7 +502,7 @@
 																		<span class="entity-chip red">FULL</span>
 																	}
 																	<span class="entity-chip dim">@RackYieldBadge( slot.Rack )</span>
-																	<span class="entity-invested-token"><span class="lp-money-btc">@HeroInvestedReceipt( slot.Rack )</span><span class="lp-money-unit"> invested</span></span>
+																	<span class="entity-invested-token"><span class="lp-money-btc">₿</span> <span class="lp-money-amt">@HeroInvestedReceipt( slot.Rack )</span><span class="lp-money-unit"> invested</span></span>
 																}
 																else
 																{
@@ -541,7 +541,7 @@
 																	</div>
 																	<div class="server-stat-row">
 																		<span class="server-stat-label">Rate</span>
-																		<span class="server-stat-value"><span class="lp-money-btc">@CardRateLine( slot.Rack, slot.Rack.ComputeTier )</span><span class="lp-money-unit">/min</span></span>
+																		<span class="server-stat-value"><span class="lp-money-btc">₿</span> <span class="lp-money-amt">@CardRateLine( slot.Rack, slot.Rack.ComputeTier )</span><span class="lp-money-unit">/min</span></span>
 																	</div>
 																	<div class="server-stat-row">
 																		<span class="server-stat-label">Buffer</span>
@@ -594,7 +594,7 @@
 																			@if ( trackLive && !atMax )
 																			{
 																				<div class="entity-track-transact">
-																					<div class="entity-track-price"><span class="lp-money-btc">@CardCostBtc( slot.Rack )</span><span class="lp-money-divider">|</span><span class="lp-money-cash">@CardCostUsd( slot.Rack )</span></div>
+																					<div class="entity-track-price"><span class="lp-money-btc">₿</span> <span class="lp-money-amt">@CardCostBtc( slot.Rack )</span><span class="lp-money-divider">|</span><span class="lp-money-cash">$</span><span class="lp-money-amt">@CardCostUsd( slot.Rack )</span></div>
 																					<div class="entity-track-delta">@TrackDeltaSubtext( slot.Rack )</div>
 																				</div>
 																				<div class="entity-track-action">
@@ -609,7 +609,7 @@
 																							else
 																							{
 																								<div class="lp-stepper-chip-row">
-																									<span class="lp-stepper-chip-line"><span>@StepperChipTierLabel( slot.Rack )</span><span class="lp-chip-sep">·</span><span class="lp-money-btc">@CardCostBtc( slot.Rack )</span></span>
+																									<span class="lp-stepper-chip-line"><span>@StepperChipTierLabel( slot.Rack )</span><span class="lp-chip-sep">·</span><span class="lp-money-btc">₿</span> <span class="lp-money-amt">@CardCostBtc( slot.Rack )</span></span>
 																									<button class="lp-stepper-chip-yes" tooltip="Confirm purchase" onclick="@(() => ConfirmPurchase( slot.Rack ))"><i class="material-icons">check</i></button>
 																									<button class="lp-stepper-chip-no" tooltip="Cancel" onclick="@DismissConfirm"><i class="material-icons">close</i></button>
 																								</div>
@@ -717,7 +717,7 @@
 														<div class="upgrade-home-box-foot">
 															<div class="upgrade-home-box-meta-row">
 																<span class="upgrade-home-box-meta">@RacksCategoryCountMeta()</span>
-																<span class="upgrade-home-box-meta lp-money-btc">@RacksCategoryBufferMeta()</span>
+																<span class="upgrade-home-box-meta"><span class="lp-money-btc">₿</span> <span class="lp-money-amt">@RacksCategoryBufferMeta()</span></span>
 																<span class="upgrade-home-box-meta">@RacksCategoryMiningMeta()</span>
 															</div>
 															<i class="material-icons upgrade-home-box-chevron">chevron_right</i>
@@ -899,8 +899,8 @@
 													@foreach ( var amount in TransferReferenceBtcAmounts )
 													{
 														<div class="transfers-rate-cell">
-															<span class="transfers-rate-cell-btc">@($"{amount:F2} BTC")</span>
-															<span class="transfers-rate-cell-usd">@TransferReferenceUsd( amount )</span>
+															<span class="transfers-rate-cell-btc"><span class="lp-money-btc">₿</span> <span class="lp-money-amt">@($"{amount:F2}")</span></span>
+															<span class="transfers-rate-cell-usd"><span class="lp-money-unit">≈ </span><span class="lp-money-cash">$</span><span class="lp-money-amt">@TransferReferenceUsd( amount )</span><span class="lp-money-unit"> bank</span></span>
 														</div>
 													}
 												</div>
@@ -1337,8 +1337,9 @@
 	private static float CardRatePerMin( LpBitcoinRackEntity rack, int tier )
 		=> LpBitcoinEconomy.MiningRatePerMinute( ProjectedClockGhz( tier ), rack.CoreCount, rack.YieldMultiplier );
 
+	// Amount only — call sites emit ₿ + .lp-money-amt (Law 17).
 	private static string CardRateLine( LpBitcoinRackEntity rack, int tier )
-		=> $"\u20BF {CardRatePerMin( rack, tier ):0.####}";
+		=> $"{CardRatePerMin( rack, tier ):0.####}";
 
 	private static float CardDeltaPerMin( LpBitcoinRackEntity rack )
 		=> CardRatePerMin( rack, rack.ComputeTier + 1 ) - CardRatePerMin( rack, rack.ComputeTier );
@@ -1409,24 +1410,24 @@
 	private static string ChipFlipClass( int rowIndex, int totalRows )
 		=> rowIndex < ( totalRows + 1 ) / 2 ? "flip-down" : "flip-up";
 
+	// Amount only — call sites emit ₿/$ + .lp-money-amt (Law 17).
 	private string CardCostBtc( LpBitcoinRackEntity rack )
-		=> $"\u20BF {StepperNextQuoteSats( rack ) / 100_000_000f:0.##}";
+		=> $"{StepperNextQuoteSats( rack ) / 100_000_000f:0.##}";
 
-	// Bare value -- semantic color binds to the VALUE only; parens are typography,
-	// rendered neutral at the call sites (Law 13 precision).
 	private string CardCostUsd( LpBitcoinRackEntity rack )
-		=> $"${LpBitcoinEconomy.BtcToCashUsd( StepperNextQuoteSats( rack ) / 100_000_000f ):N0}";
+		=> $"{LpBitcoinEconomy.BtcToCashUsd( StepperNextQuoteSats( rack ) / 100_000_000f ):N0}";
 
 	// Receipt is a re-derived ledger projection: quotes are deterministic per rack class,
 	// so SUM(QuoteSats 1..tier) equals the ledger's SUM(costSats) -- gate-3 asserts it to
 	// the sat. Client-derived; MUST become host-synced if pricing ever goes dynamic (R3).
+	// Amount only — call sites emit ₿ + .lp-money-amt (Law 17).
 	private static string HeroInvestedReceipt( LpBitcoinRackEntity rack )
 	{
 		long sats = 0;
 		for ( var t = 1; t <= rack.ComputeTier; t++ )
 			sats += LpBitcoinComputeTrack.QuoteSats( rack, t );
 
-		return $"\u20BF {sats / 100_000_000f:0.##}";
+		return $"{sats / 100_000_000f:0.##}";
 	}
 
 	// One status line (ruling 1): power - link - hashing state.
@@ -1739,8 +1740,8 @@
 
 	private IReadOnlyList<LpBitcoinHubAlert> GetHubAlerts() => Hub?.GetAlerts() ?? Array.Empty<LpBitcoinHubAlert>();
 
-	// #6a LAW 17 in logs: split a message into colored currency tokens ($ green, BTC orange, "N BTC" -> BTC orange)
-	// with everything else (labels, words) white. Amounts colored, labels white -- same rule as the invested token.
+	// LAW 17 in logs: sign gets its own colored span; digits get .lp-money-amt (white);
+	// labels/units stay .lp-money-unit. Never pack sign+digits in one colored segment.
 	private static System.Collections.Generic.List<(string Text, string Cls)> AlertMessageSegments( string msg )
 	{
 		var segs = new System.Collections.Generic.List<(string, string)>();
@@ -1764,23 +1765,19 @@
 			if ( c == '$' || c == '\u20BF' )
 			{
 				FlushPlain();
-				var cls = c == '$' ? "lp-money-cash" : "lp-money-btc";
-				var cur = new System.Text.StringBuilder();
-				cur.Append( c );
+				var signCls = c == '$' ? "lp-money-cash" : "lp-money-btc";
+				segs.Add( (c.ToString(), signCls) );
 				var j = i + 1;
 				if ( j < msg.Length && msg[j] == ' ' )
-				{
-					cur.Append( ' ' );
 					j++;
-				}
 
+				var amtStart = j;
 				while ( j < msg.Length && (char.IsDigit( msg[j] ) || msg[j] == '.' || msg[j] == ',') )
-				{
-					cur.Append( msg[j] );
 					j++;
-				}
 
-				segs.Add( (cur.ToString(), cls) );
+				if ( j > amtStart )
+					segs.Add( (msg.Substring( amtStart, j - amtStart ), "lp-money-amt") );
+
 				i = j;
 				continue;
 			}
@@ -1794,7 +1791,8 @@
 				if ( j + 4 <= msg.Length && msg.Substring( j, 4 ) == " BTC" )
 				{
 					FlushPlain();
-					segs.Add( ("\u20BF " + msg.Substring( i, j - i ), "lp-money-btc") );
+					segs.Add( ("\u20BF", "lp-money-btc") );
+					segs.Add( (msg.Substring( i, j - i ), "lp-money-amt") );
 					i = j + 4;
 					continue;
 				}
@@ -2051,7 +2049,8 @@
 
 	private string HubRacksLinkedVital() => $"{HubRackCount()} / {LpBitcoinIdent.PortalMaxRacksPerHub} linked";
 
-	private string HubWalletVital() => $"\u20BF {( Hub?.HubWalletBtc ?? 0f ).ToString( "0.########" )}";
+	// Amount only — call sites emit ₿ + .lp-money-amt (Law 17).
+	private string HubWalletVital() => ( Hub?.HubWalletBtc ?? 0f ).ToString( "0.########" );
 
 	// -- Terminal tenant adapter --------------------------------------------------
 	// Every claim reads off live entity state, so it holds on any map.
@@ -2076,11 +2075,11 @@
 	private string RacksCategoryCountMeta()
 		=> $"{ServersRacksWithHardware().Count}/{LpBitcoinIdent.PortalMaxRacksPerHub} RACKS";
 
-	// Buffer = the racks' undeposited BTC, summed over the addressable slots, at sat resolution.
+	// Buffer amount only — call sites emit ₿ + .lp-money-amt (Law 17).
 	private string RacksCategoryBufferMeta()
 	{
 		var sats = ServersRacksWithHardware().Sum( s => s.Rack.BitcoinAmount );
-		return $"\u20BF {sats.ToString( "0.########" )}";
+		return sats.ToString( "0.########" );
 	}
 
 	private string RacksCategoryMiningMeta()
@@ -2285,8 +2284,9 @@
 
 	private static readonly float[] TransferReferenceBtcAmounts = { 0.01f, 0.05f, 0.10f, 0.25f };
 
+	// USD amount only — call sites emit ≈ $ + .lp-money-amt + bank (Law 17).
 	private string TransferReferenceUsd( float btc )
-		=> $"\u2248 ${LpBitcoinEconomy.BtcToCashUsd( btc ):N2} bank";
+		=> $"{LpBitcoinEconomy.BtcToCashUsd( btc ):N2}";
 
 	private string TransferRackBalanceReference()
 	{

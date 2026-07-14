@@ -7960,9 +7960,10 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	color: $hashd-amber-glow;
 }
 
+// HubTransfer / BTC-adjacent status — Law 17: green NEVER on BTC. Use hub amber.
 .lp-bitcoin-ops .notif-sev-money .material-icons,
 .lp-bitcoin-ops .notif-sev-money .notif-kind {
-	color: $hashd-green;
+	color: $hashd-amber;
 }
 
 // BITCOIN OPS rail and card tokens.
