@@ -6,7 +6,39 @@
 
 ---
 
-## 1. Single active lane
+## 1. Active lanes — **TWO, as of 2026-07-14**
+
+> **THE "SINGLE ACTIVE LANE" / BITCOIN-ONLY DEFER CLAUSE IS RETIRED.** Ruled 2026-07-14, Bloodwave
+> (record: `comms\fable\0073`, canon: `lifepunch/docs/cvl/PLAYERHUB_GATES_RULING_2026-07-14.md`).
+> **`playerhub` is OPENED as an active workstream ALONGSIDE `lpbitcoin`.** Player Hub work is **on-lane**
+> and no longer deferred behind bitcoin.
+>
+> *Related kill:* the same bitcoin-only restriction survived in `START_HERE_AGENTS.md:49` after the Cursor
+> rule that carried it was deleted — **removed in PR #98** (`comms\red\0031`, `red\0034`).
+
+### LANE 2 — `playerhub` (OPENED 2026-07-14)
+
+```text
+REPO IDENT:        playerhub
+PACKAGE SLUG:      lifepunchplayerhub
+S&BOX IDENTIFIER:  lifepunch.playerhub
+COMMAND:           lifepunchhub
+CODE ROOT:         lifepunchaddons/Code/Addons/lifepunch/playerhub/
+DXRP KIND:         code-only  ** SUBJECT TO THE INTER FONT PROOF **
+                   -> if Inter must ship as an ASSET, the manifest kind
+                      gets its OWN follow-up ruling (kepler\0001 Gate 1).
+                      Do NOT assume code-only survives that proof.
+
+STATUS:  Slices 1-5 UNBLOCKED (fixture-backed, read-only).
+         Slice 6 = atomicity/idempotency design under economy law - own slice, own ruling, AFTER 1-5.
+         Slices 7-8 GATED on progression contracts.
+         Plan: comms\kepler\0001 + lifepunch/docs/superpowers/specs/2026-07-14-lp-player-hub-*.md
+         Pre-verified seams: lifepunch/docs/handoff/GREEN_0017_PLAYERHUB_3LANE_SCAN_2026-07-14.md
+         Slice 1 DRIVE: KEPLER orchestrator builds; RED runs the editor proof gate.
+         EDITOR TRUTH STAYS RED'S regardless of who builds.
+```
+
+### LANE 1 — `lpbitcoin`
 
 ```text
 PUBLISH DOCTRINE (read every session):
