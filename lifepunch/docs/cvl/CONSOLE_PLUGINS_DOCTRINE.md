@@ -146,6 +146,17 @@ discord · qodo-skills
     installation. A skill cannot amend its own precedence.
 
 ### CLASS B — Review toolchain (complements the loop, replaces no seat)
+- ui-ux-pro-max (+ paired local companions banner-design, brand,
+  slides, ui-styling) (2026-07-14, Bloodwave GO): MIT design-intelligence
+  skill pack from nextlevelbuilder/ui-ux-pro-max-skill. Tracked under
+  `.claude/skills/` and mirrored `.agents/skills/` (Class E paired
+  surfaces). **Read-only local reference** (CSV/search scripts; no hooks,
+  no credentials in-tree). Yields to LIFEPUNCH visual canon
+  (`LIFEPUNCH_UI_STANDARD`, Law 17, `SBOX_RAZOR_SCSS_RULES`,
+  `TERMINAL_BRAND_MATRIX`) on conflict — especially s&box Razor/HASHD.
+  Website/menu UX advisory only. Sibling CLI folders `design/` and
+  `design-system/` (Gemini / network generators) were **not promoted** —
+  cloud egress; require a separate Class C ruling before any install.
 - code-review, pr-review-toolkit: Red may self-review pre-commit and
   SHOULD before every PR — this raises floor quality. It does NOT
   replace Codex's review seat in the CVL loop or Fable's gate review.
