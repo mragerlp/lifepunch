@@ -82,24 +82,36 @@ panel renders subtly wrong, with no error.
 | **No two adjacent `@()` in one attribute** | Transpiler emits `(A)(B)` with no `+` → **the whole class collapses** | Merge: `@( (A) + (B) )` | razor-ui SKILL.md:136-137 |
 | **Class root** | A type selector on `PanelComponent` is skipped | `<root class="...">` | `SBOX_RAZOR_SCSS_RULES.md` + `razor_lint` |
 
-### ⚠ **[ATTESTED-UNPROVEN — editor-proof owed]** — deep nesting
+### ✅ **[DISPROVEN — 2026-07-14, editor-proven]** — deep nesting is **NOT** an engine limit
 
-> **CLAIM:** *"s&box silently drops SCSS selectors nested 4+ levels deep."*
+> ## **THE CLAIM WAS FALSE. IT IS NOW DEAD.**
 >
-> **THIS CLAIM HAS NO SENSOR.** It is carried from an L3 draft (`comms\cursor\0020`) and from
-> `.cursor/rules/lifepunch-ui-scale.mdc`. A repo-wide grep of `SBOX_RAZOR_SCSS_RULES.md` and
-> `lifepunch-razor-ui/SKILL.md` finds **no file:line establishing it, and no depth threshold** (verified
-> 2026-07-14, `comms\red\0034`).
+> **THE CLAIM (retired):** *"s&box silently drops SCSS selectors nested 4+ levels deep."*
 >
-> **STATUS: attested by practice, UNPROVEN by sensor. The threshold (4? 3? 5?) is UNKNOWN.**
-> **Treat flattening as prudent style, NOT as engine law — and do not cite this as canon.**
+> **THE EXPERIMENT** (`comms\red\0039`, Bloodwave GO): a probe panel nested six boxes, each painted a
+> distinct background by a selector **one level deeper than the last** — `.depth-probe` (L1) → `.d1` (L2)
+> → `.d2` (L3) → `.d3` (L4) → `.d4` (L5) → `.d5` (L6) → `.d6` (**L7**). Synced, cold-compiled, rendered,
+> screenshot read back.
 >
-> **PROOF OWED:** a DRIVE holder with a live editor nests a probe selector to depth 2/3/4/5, compiles,
-> and observes which depth stops applying. **That is a ten-minute experiment and it ends the ambiguity.**
-> Until it is run, **say "unverified" — do not round it up to law.**
+> ## **RESULT: ALL SEVEN LEVELS APPLIED. ZERO SELECTORS DROPPED.**
+> **Every box painted its own colour — including L4, L5, L6 and L7, the exact depths the claim said would
+> silently fail.** Sensor: `03_SCSS_DEPTH_PROBE_ALL_7_LEVELS_APPLIED.png`.
 >
-> *Prudent practice meanwhile:* flatten to shallow class trees; prefer single-depth BEM-ish classes under
-> the root. This costs nothing and is good style regardless of what the real threshold turns out to be.
+> **CONSEQUENCE — say this correctly from now on:**
+> - **Deep nesting is NOT an engine constraint.** It does not belong in the constraint table above, and
+>   **it must never again be cited as a reason a panel "silently renders wrong."**
+> - **Flattening remains good STYLE** — shallow class trees are readable and easy to override. **Keep doing
+>   it because it is good style, not because the engine forces it.** *That distinction matters: a style
+>   preference dressed as an engine law sends the next debugger hunting a phantom.*
+>
+> ### WHY THIS ENTRY STAYS INSTEAD OF BEING DELETED
+> The claim reached a **canon-grade skill** from an **L3 draft** (`comms\cursor\0020`) and a
+> `.cursor/rules` file — **two advisory sources, neither of which is law** — and it sat here shaping how
+> every seat wrote SCSS. **It was never true.** Deleting the entry would erase the lesson with the error.
+>
+> ## **AN UNPROVEN CLAIM IN A CANON SKILL IS INSTRUCTION, NOT A NOTE.** *Seats obey it whether or not it
+> carries a hedge — and the hedge is what let it survive nine months of being wrong.* **Label it, sensor
+> it, or cut it.**
 
 **Validate every panel:** `lifepunchaddons/scripts/Validate-SboxRazorScss.ps1`
 
