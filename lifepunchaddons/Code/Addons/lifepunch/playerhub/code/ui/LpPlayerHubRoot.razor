@@ -108,8 +108,17 @@
 		LpPlayerHubTab.Stats,
 	};
 
+	// THERE IS NO _open FLAG, AND THAT IS THE FIX.
+	//
+	// Slice 1 carried `private bool _open = true` as an in-component visibility flag. Nothing ever set it
+	// back to true, so the hub could never reopen -- and nothing created the panel in the first place, so
+	// it never opened at all. BOTH DEFECTS WERE THE SAME MISSING PIECE: a mount host.
+	//
+	// LpPlayerHubHost now CREATES this component on open and DESTROYS it on close (the StaffMenuHost
+	// pattern). Re-openability is therefore BY CONSTRUCTION: every open builds a fresh component with
+	// fresh state. A flag you must remember to reset is a flag someone will forget to reset -- so the
+	// flag is gone, not fixed.
 	private LpPlayerHubTab _activeTab = LpPlayerHubTab.Overview;
-	private bool _open = true;
 
 	private LpPlayerHubTab ActiveTab => _activeTab;
 
@@ -134,11 +143,9 @@
 	private const string PlaceholderBody =
 		"Slice 1 ships the shell only: header, navigation and this empty content region.";
 
-	private string RootClass()
-	{
-		var open = _open ? " is-open" : string.Empty;
-		return "lp-playerhub" + open;
-	}
+	// A live instance is, by definition, an open one -- the host destroys it to close it. `is-open`
+	// carries the visible/clickable state in SCSS, so it is unconditional here.
+	private string RootClass() => "lp-playerhub is-open";
 
 	private string NavClass( LpPlayerHubTab tab )
 	{
@@ -160,22 +167,28 @@
 		StateHasChanged();
 	}
 
-	private void Close()
-	{
-		_open = false;
-		StateHasChanged();
-	}
+	/// <summary>
+	/// Closing is the HOST's job -- it tears the component down. The panel does not hide itself, because a
+	/// panel that hides itself is still mounted, still eating input, and still unable to be reopened by
+	/// anything that does not know it exists. That was the Slice 1 bug.
+	/// </summary>
+	private void Close() => LpPlayerHubHost.RequestClose();
 
 	/// <summary>
-	/// Every private flag that changes markup is hashed. _activeTab drives the nav selection, the
-	/// page head and the tab host; _open drives the root class. Omitting either would freeze the
-	/// panel against its own state.
+	/// Every private flag that changes markup is hashed. Today that is `_activeTab` alone -- it drives the
+	/// nav selection, the page head and the tab host.
 	/// </summary>
+	/// <remarks>
+	/// THIS HASH MUST GROW WITH THE PANEL. The moment a slice adds tab-local state (a selected node, a
+	/// filter chip, a confirm-open flag) or `Vm` becomes live rather than a pure function of `_activeTab`
+	/// over a static fixture, that state goes in here IN THE SAME COMMIT. Omitting it does not error --
+	/// the panel simply stops re-rendering, and a frozen readout is invisible until someone notices a
+	/// number that never moves.
+	/// </remarks>
 	protected override int BuildHash()
 	{
 		var hash = new HashCode();
 		hash.Add( (int)_activeTab );
-		hash.Add( _open );
 		return hash.ToHashCode();
 	}
 }
