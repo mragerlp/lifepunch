@@ -9,6 +9,8 @@
 // Presence in this repository or on the DXRP portal grants no rights to anyone else.
 // ─────────────────────────────────────────────────────────────────────────────
 
+using System;
+
 namespace LifePunch.DXRP.Addons.Bitcoin;
 
 /// <summary>Server-authoritative economy tuning — canon from BITCOINMINING_UX_SPEC.md.</summary>
@@ -74,14 +76,13 @@ public static class LpBitcoinEconomy
 
 	public static float BtcToCashUsd( float btc ) => btc * CashUsdPerBtc;
 
-	public static uint BtcToCashPayout( float btc )
-	{
-		var usd = BtcToCashUsd( btc );
-		if ( usd <= 0f )
-			return 0;
-
-		return (uint)MathF.Floor( usd );
-	}
+	/// <summary>Per-caller mined-BTC payout. Event and donor rates compose before one final floor.</summary>
+	public static LpBitcoinPayoutQuote BtcToCashPayout( float btc, Guid callerId ) =>
+		LpBitcoinPayoutMath.CreateQuote(
+			btc,
+			PortalBaseCashUsdPerBtc,
+			CashRateMultiplier,
+			LpBitcoinDonorPolicy.ResolveCaller( callerId ) );
 
 	public static string FormatExchangeRateLabel()
 	{

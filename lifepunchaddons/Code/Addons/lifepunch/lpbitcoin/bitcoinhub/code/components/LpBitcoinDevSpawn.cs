@@ -315,6 +315,116 @@ public static class LpBitcoinDevSpawn
 #endif
 	}
 
+	/// <summary>
+	/// Editor-only two-account proof at the ruled Seam C. The staff-menu bots deliberately have no
+	/// network connections, so this verifies their live RankSystem identities against one actual
+	/// rack's BTC input without attempting an RPC or writing either account's bank balance.
+	/// </summary>
+	[ConCmd( "lp_bitcoin_test_donor_multiplier" )]
+	public static void TestDonorMultiplier()
+	{
+#if LIFEPUNCH_LOCAL
+		Log.Warning( "lp_bitcoin_test_donor_multiplier: DXRP project only." );
+#else
+		if ( !Application.IsEditor || !Networking.IsHost )
+		{
+			Log.Warning( "lp_bitcoin_test_donor_multiplier: editor host-only." );
+			return;
+		}
+
+		var ranks = RankSystem.Instance;
+		if ( !ranks.IsValid() )
+		{
+			Log.Warning( "lp_bitcoin_test_donor_multiplier: RankSystem unavailable." );
+			return;
+		}
+
+		var scene = Game.ActiveScene;
+		var rack = scene?.GetAllComponents<LpBitcoinRackEntity>().FirstOrDefault( r => r.IsValid() );
+		if ( !rack.IsValid() )
+		{
+			Log.Warning( "lp_bitcoin_test_donor_multiplier: no rack — spawn a kit first." );
+			return;
+		}
+
+		var players = GameUtils.Players.Where( p => p.IsValid() ).ToArray();
+		var unranked = players.FirstOrDefault( p => ranks.GetPlayerRankIds( p.SteamId ).Count == 0 );
+		var donor = players.FirstOrDefault( p =>
+		{
+			var rate = LpBitcoinDonorPolicy.ResolveSteamId( p.SteamId );
+			return rate.Multiplier > 1f;
+		} );
+		var rankSource = "live-rank-cache";
+		System.Collections.Generic.List<Guid>? fixtureOriginalRanks = null;
+
+		// An editor without a local portal token still needs a deterministic gate. Use the canon-recorded
+		// EVIP identity on the existing EVIP debug account, then restore its assignment in the finally.
+		if ( !donor.IsValid() )
+		{
+			donor = players.FirstOrDefault( p =>
+				p.SteamId != unranked?.SteamId &&
+				p.DisplayName.Contains( "EVIP", StringComparison.OrdinalIgnoreCase ) );
+			if ( donor.IsValid() )
+			{
+				fixtureOriginalRanks = ranks.GetPlayerRankIds( donor.SteamId ).ToList();
+				ranks.SetPlayerRanks( donor.SteamId,
+					new System.Collections.Generic.List<Guid> { LpBitcoinDonorPolicy.EvipRankId } );
+				rankSource = "fixture-known-rank-id";
+			}
+		}
+
+		if ( !unranked.IsValid() || !donor.IsValid() || unranked.SteamId == donor.SteamId )
+		{
+			Log.Warning( "lp_bitcoin_test_donor_multiplier: need distinct unranked + VIP/EVIP accounts; run lifepunch_spawn_rankbots false after portal ranks load." );
+			return;
+		}
+
+		var originalBtc = rack.BitcoinAmount;
+		const float sameRackBtc = 1f;
+		try
+		{
+			rack.BitcoinAmount = sameRackBtc;
+
+			var unrankedRate = LpBitcoinDonorPolicy.ResolveSteamId( unranked.SteamId );
+			var donorRate = LpBitcoinDonorPolicy.ResolveSteamId( donor.SteamId );
+			var unrankedQuote = LpBitcoinPayoutMath.CreateQuote(
+				rack.BitcoinAmount,
+				LpBitcoinEconomy.PortalBaseCashUsdPerBtc,
+				LpBitcoinEconomy.CashRateMultiplier,
+				unrankedRate );
+			var donorQuote = LpBitcoinPayoutMath.CreateQuote(
+				rack.BitcoinAmount,
+				LpBitcoinEconomy.PortalBaseCashUsdPerBtc,
+				LpBitcoinEconomy.CashRateMultiplier,
+				donorRate );
+
+			var unroundedRatio = unrankedQuote.UnroundedUsd > 0f
+				? donorQuote.UnroundedUsd / unrankedQuote.UnroundedUsd
+				: 0f;
+			var finalRatio = unrankedQuote.FinalUsd > 0
+				? donorQuote.FinalUsd / (float)unrankedQuote.FinalUsd
+				: 0f;
+			var expectedDonorFinal = (uint)MathF.Floor(
+				unrankedQuote.UnroundedUsd * donorQuote.DonorMultiplier );
+			var passed = unrankedRate.Multiplier == 1f &&
+				MathF.Abs( unroundedRatio - donorRate.Multiplier ) < 0.0001f &&
+				donorQuote.FinalUsd == expectedDonorFinal;
+
+			Log.Info( $"LP_DONOR_RATIO_SENSOR result={(passed ? "PASS" : "FAIL")} rankSource={rankSource} " +
+				$"rack={rack.GameObject.Id} btc={sameRackBtc:F8} " +
+				$"unrankedSteamId={unranked.SteamId} unrankedRank='{ranks.GetRankName( unranked.SteamId )}' unrankedUsd={unrankedQuote.FinalUsd} " +
+				$"donorSteamId={donor.SteamId} donorRank='{ranks.GetRankName( donor.SteamId )}' donorTier={donorQuote.DonorTier} donorUsd={donorQuote.FinalUsd} " +
+				$"eventMultiplier={donorQuote.EventMultiplier:0.####} unroundedRatio={unroundedRatio:0.####} finalRatio={finalRatio:0.####}" );
+		}
+		finally
+		{
+			rack.BitcoinAmount = originalBtc;
+			if ( fixtureOriginalRanks != null && donor.IsValid() )
+				ranks.SetPlayerRanks( donor.SteamId, fixtureOriginalRanks );
+		}
+#endif
+	}
+
 	/// <summary>Dev shortcut — link nearest terminal + all unlinked racks in range (skips player setup).</summary>
 	[ConCmd( "lp_bitcoin_dev_link_all" )]
 	public static void DevLinkAll()
