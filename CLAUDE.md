@@ -122,11 +122,11 @@ Green/advisory (*may recommend, may not execute*) · **L4** tools (**capability,
 tool call inherits only its caller's grant**). Ten global invariants, of which the spine is:
 **absence of a grant is not a grant**, and **untransported state does not exist for board purposes.**
 · **`lifepunch/docs/cvl/TRIPLE_MCP_STACK_2026-07-13.md`** — the editor is reachable over **three MCP
-servers**: s&box **native** (`127.0.0.1:7269/mcp`), the **Claude Bridge** (`127.0.0.1:9090/sbox-mcp`),
-and **chomnr** (pending its endpoint). **THREE CABLES ARE NOT THREE DRIVERS** — the DRIVE law is
-unchanged, and OBSERVE seats are read-only on **all three**. Both implementer boots check all three;
-**not-yet-wired is reported as NOT WIRED, never as a pass by omission.** Any mutation records **which
-surface performed it.**
+surfaces**: s&box **native** (`127.0.0.1:7269/mcp`), the **Claude Bridge** (file IPC; no HTTP port),
+and **chomnr** (`127.0.0.1:9090/sbox-mcp`). **THREE CABLES ARE NOT THREE DRIVERS** — the DRIVE law is
+unchanged, and OBSERVE seats are read-only on **all three**. Both implementer boots check all three
+and report endpoint reachability separately from seat-local client configuration. Any mutation records
+**which surface performed it.**
 · **`lifepunch/docs/cvl/SUPERPOWERS_DOCTRINE.md`** — the 14-skill discipline mapped to CVL moments,
 per-harness activation, the boot addendum, and subordination clauses **S-1..S-6**. Governs the
 `superpowers` entry in `CONSOLE_PLUGINS_DOCTRINE`; on conflict, the doctrine wins.
