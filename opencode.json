@@ -17,8 +17,11 @@
         "qwen2.5-coder-32b-instruct": {
           "name": "CORNERMAN - Qwen Coder 32B (daytime)"
         },
-        "qwen3.6-35b-a3b": {
+        "qwen/qwen3.6-35b-a3b": {
           "name": "CORNERMAN - Qwen 35B A3B (overnight)"
+        },
+        "qwen/qwen3.6-27b": {
+          "name": "CORNERMAN - Qwen 27B Deep"
         }
       }
     }
