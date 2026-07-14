@@ -15,7 +15,7 @@ separately. **Reachable endpoint** and **configured client alias** are two facts
 
 | # | Surface | Endpoint | Origin |
 |---|---|---|---|
-| 1 | **s&box NATIVE MCP** | `http://127.0.0.1:7269/mcp` | **First-party — ships with the editor.** Live server identified itself as `sbox-editor` v26.07.08e. Dynamic tool discovery via `search_tools` / `call_tool`. |
+| 1 | **s&box NATIVE MCP** | `http://127.0.0.1:7269/mcp` | **First-party — ships with the editor.** Live server identified itself as `sbox-editor` v26.07.08e (**serverInfo.name only - not the `.mcp.json` client alias of the same string, which points at chomnr**). Dynamic tool discovery via `search_tools` / `call_tool`. |
 | 2 | **Claude Bridge** | **File IPC** at `%TEMP%\sbox-bridge-ipc` — **no HTTP endpoint** | `sboxskinsgg.claudebridge` addon + standalone `sbox-mcp-server`; the established gate/proof surface. |
 | 3 | **chomnr** | `http://127.0.0.1:9090/sbox-mcp` | Pre-existing `notpointless.chomnr_mcp` editor library; authoring/compile surface. |
 
@@ -25,6 +25,17 @@ Bridge 2.1.0 and chomnr. At the correcting boot, native MCP was endpoint-reachab
 initialize probe but no `sbox-native` client alias appeared in the Codex harness manifest; adding that
 seat-local stanza remains a Bloodwave console act. That client gap does not rename or erase the live
 native surface.
+
+> **ALIAS TRAP - READ BEFORE WIRING ANYTHING.** The `.mcp.json` alias **`sbox-editor` is NOT the
+> s&box editor's native server and NOT Claude Bridge - it is chomnr (9090).** The name is a
+> historical artifact of the Cursor key layout (`lifepunch/docs/SBOX_EDITOR_MCP.md` calls it the
+> "Cursor key"). Compounding it: the NATIVE server at 7269 self-reports
+> `serverInfo.name=sbox-editor` - the same string, a different
+> surface, an unrelated namespace (MCP serverInfo vs client alias keys). **Never resolve a surface
+> by its name; resolve it by its endpoint** (native = 7269/mcp - Bridge = file IPC, no port -
+> chomnr = 9090/sbox-mcp). This exact confusion produced the 2026-07-13 topology defect corrected
+> pre-merge (`comms\red\0030` Sec2-3, `comms\codex\0031`). A rename of the alias is banked for a
+> Bloodwave ruling at a slice boundary; until then, the name lies.
 
 > **CODEX WIRING IS A BLOODWAVE CONSOLE ACT.** If Codex's MCP config lives in `~/.codex/config.toml`
 > rather than `.mcp.json`, the equivalent stanza is:
