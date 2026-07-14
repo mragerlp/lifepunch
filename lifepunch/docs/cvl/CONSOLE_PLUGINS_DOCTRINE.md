@@ -195,6 +195,69 @@ discord · qodo-skills
   their output is leads-grade SENSOR INPUT to the existing gates —
   never a gate verdict (same rule as the code-review plugin).
 
+- gitkraken / gitlens MCP (v1.2, 2026-07-14) — CONSOLE GIT TOOL AND
+  SESSION LAUNCHER. Classified on first use: a Red seat was LAUNCHED
+  from GitKraken on 2026-07-14 (record: red\0037).
+
+  ## THE LAUNCHER IS NOT A SEAT.
+  GitKraken launching a window does not create, name, or empower a
+  seat, and it grants nothing. AUTHORITY FOLLOWS THE MODEL, NOT THE
+  HARNESS (CLAUDE.md) — the same clause that governs OpenCode governs
+  this. A GitKraken-launched Red is Red: same L2 grant, same laws,
+  same DRIVE requirement. A GitKraken-launched anything-else is
+  whatever its model already was.
+
+  ## A LAUNCHER THAT DESCRIBES THE TREE IS NOT A SENSOR.
+  Scar, red\0037: the GitKraken dispatch declared "~46 uncommitted
+  files from a prior session, diff-audit them." The count was exactly
+  right and the attribution was exactly wrong — they were the standing
+  untracked handoff/ SCRATCH folder, which CLAUDE.md declares "not
+  grounding material; nothing reads it." Had Red trusted the launcher's
+  description of the tree, it would have "audited" and "kept" 46
+  scratch files as though they were Slice 1 work product. ALWAYS
+  RE-DERIVE TREE STATE WITH git status. THE LAUNCHER'S STORY ABOUT THE
+  TREE IS A CLAIM, NOT A SENSOR.
+  Second scar, same record: worktrees named for a branch are not the
+  seat's tree. Two worktrees named red__playerhub-slice1-* existed and
+  were BOTH clean and idle while the real work sat in the primary tree.
+  A harness pointed at one believing it is "the slice worktree" is a
+  ONE-SEAT-PER-TREE RACE.
+
+  USE FREELY (read-only, Sensor Law applies): git_status, git_log_or_diff,
+  git_blame, git_graph, git_branch (list), git_fetch, repository_get_file_content,
+  issues_* (read), pull_request_get_* — leads-grade input to the gates,
+  never a gate verdict.
+
+  ## FOUR AFFORDANCES HELD — pending the console-installs ruling.
+  Installed is not invoked. These are CAPABILITY, NOT AUTHORITY; a tool
+  call inherits only its caller's grant (CVL_AUTHORITY_LEVELS L4), and
+  NO GITKRAKEN AFFORDANCE REACHES A TWO-KEY GATE:
+
+  1. git_push — DENIED to every seat. Push is Bloodwave's key. The MCP
+     exposing a push button does not confer the right to press it.
+  2. git_commit_composer / gitlens_commit_composer — HELD: ATTRIBUTION
+     HAZARD. These AUTHOR COMMIT MESSAGES with a model. The no-AI-
+     attribution rule is absolute and covers every git surface. If ever
+     GO'd, every composed message is inspected for trailers/co-author
+     lines BEFORE the commit lands — and the house convention (no
+     harness footer, mragerlp authorship) still binds. Same standing
+     risk as the code-review plugin's footer injection.
+  3. gitlens_launchpad + gitkraken_workspace_list — HELD: IP GATE.
+     Cloud-side aggregation of a PRIVATE repo under an IP doctrine.
+     Same class as greptile/coderabbit: BLOODWAVE DECISION, NOT A
+     DEFAULT. Do not authenticate against the LIFEPUNCH repo without
+     explicit GO.
+  4. git_worktree, git_checkout, git_stash, git_reset, app_update_user_preferences
+     — HELD: STANDING-EFFECT / TREE-STATE class. Worktree and branch
+     mutation collide with the one-seat-per-tree invariant and the
+     branch/lane laws; preference writes are persistent config (Class C
+     shape). Bloodwave GO, named per act.
+
+  pull_request_create is permitted to an implementer ONLY under its
+  normal gates (passing proof gate, branch assertion, attribution-clean
+  BODY — no harness footer). MERGE IS NOT IN THIS PLUGIN'S SURFACE AND
+  MUST NEVER BE ADDED TO IT.
+
 ### CLASS C — Automation with standing effects (Bloodwave GO required)
 - hookify: hooks are STANDING RULES (persistent config class). No
   hook is created, modified, or removed without explicit Bloodwave GO

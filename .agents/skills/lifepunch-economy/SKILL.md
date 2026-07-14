@@ -1,68 +1,137 @@
 ---
 name: lifepunch-economy
-description: LIFEPUNCH economy law for any code or design that holds, moves, prices, mints, or destroys value. Use for wallets, cash-out, purchases, market items, payouts, ledgers, faucets, tier costs, balance mutations, or any "does this create/leak money" question. Enforces Law A/B, the Gauntlet's always-safe terminus, the PayoutTarget routing, the debit-before-await (TOCTOU) hazard and its debit-restore fix, the audit reason-string namespace, and the faucet-audit checklist. This skill points at canon; it does not restate it.
+description: "LIFEPUNCH value-flow law as a priority-ranked rule table. Use for wallets, cash-out, purchases, market items, payouts, ledgers, faucets, tier costs, balance mutations, $LP spend, or any does-this-create-or-leak-money question. Priority-ranked must-have checks, the two-restores rule, and machine-verified anti-pattern scars. Points at canon; does not restate it."
 ---
 
-# LIFEPUNCH economy — the value-flow law
+# LIFEPUNCH economy — value-flow intelligence
 
-**This skill points at canon. Read the cited file before building or ruling.**
+Rule table for the money rails. **Priority decides review order.** This skill **points at canon** — read
+the cited file before building or ruling.
 
-## 1. LAW A / LAW B — the two tests every economy touch faces
+> **EVERY file:line HERE WAS MACHINE-VERIFIED AGAINST THE TREE ON 2026-07-14** (record: `comms\red\0034`).
+> **A cite is a claim and it needs a sensor.** Cites drift — **re-grep before you trust one.** If you find
+> a scar has been fixed, **move it to the exemplar column; never leave a seat hunting a bug that no longer
+> exists.**
 
-Canon: **`lifepunch/docs/UPGRADE_ECONOMY_DOCTRINE.md`** (Law A worked example `:26`) and
-**`lifepunch/docs/ECONOMY_DOCTRINE.md`**. Apply both before writing:
+## When to apply
 
-- **Currency-of-the-act / purchase test** — an act pays in the currency of the act
-  (`UPGRADE_ECONOMY_DOCTRINE.md:26`). Ask what currency the mechanic actually charges/pays and
-  whether that matches design intent.
-- **"Does it exist after I die?"** — the persistence-vs-Law-B test. Value that survives death
-  is a different economic object than value that does not; run this test on any new persistent
-  state (armor, upgrades, tablet holdings). See also `INSTITUTIONS_DOCTRINE.md`,
-  `TABLET_DOCTRINE.md` open flags.
+Any task that **holds, moves, prices, mints, or destroys value** — including UI that displays or triggers
+spend. Skip pure cosmetics with the Cosmetic Firewall intact (no economy refs).
 
-## 2. THE GAUNTLET — always-safe terminus
+## ⚠ TWO TREES. KNOW WHICH ONE YOU ARE IN.
 
-Global Balance is a portal-side network ledger — **the Gauntlet's always-safe terminus, by
-construction** (`DXRP_PLATFORM_DOCTRINE.md` §7, `:133-149`). Map any new value edge onto the
-Gauntlet: every mutation must reach a safe terminus and write portal evidence. LP economy
-exits already write audit rows.
+| Tree | Path | Ours? |
+|---|---|---|
+| **LIFEPUNCH addon** | `lifepunchaddons/Code/Addons/lifepunch/` | **YES** — edit under gate |
+| **DXRP upstream fork** | `lifepunchdxrp/game/Code/` | **NO** — upstream. A "fix" here is an **upstream-touching decision** (`DXRP_CONTRIBUTOR_LANE.md`), not an addon edit. |
 
-**Reason-string namespace law:** every LP economy mutation carries `"LIFEPUNCH <verb>"`
-(`DXRP_PLATFORM_DOCTRINE.md:143`). The audit row is a second, portal-side sensor lane — use it.
+**Half the known money scars live UPSTREAM.** Marked **`[UPSTREAM]`**. Do not silently patch them.
 
-## 3. PAYOUT ROUTING
+---
 
-`LpBitcoinHubEntity.PayoutTarget` decides where cashed-out BTC lands
-(`UPGRADE_ECONOMY_DOCTRINE.md:79`). Cash-out/transfer code routes through it; do not
-hardcode a destination.
+## Rule table by priority
 
-## 4. THE TOCTOU HAZARD — debit before await
+| P | Category | Impact | Must have | Anti-pattern |
+|---|---|---|---|---|
+| 1 | **Debit ordering / TOCTOU** | CRITICAL | **Debit BEFORE await.** No await between funds check and debit. If an await must follow the debit, restore **additively** on failure. | `check-then-await-then-debit`. **Both known scars are now FIXED — see Exemplars.** Record: `STOPGO_CASHOUT_TOCTOU_2026-07-09.md`. |
+| 2 | **Price must debit** | CRITICAL | Every computed price path calls a debit (`ChargeHost` / wallet / bank) **before** the grant. | `price-computed-never-debited` — **3 live sites, ONE pattern.** |
+| 3 | **Ledger terminus** | CRITICAL | Gauntlet always-safe terminus; bank-rail mutations write portal evidence; reason `"LIFEPUNCH <verb>"`. | `off-ledger-wallet-credit` — the wallet branch is memory + Audit **only**. |
+| 4 | **Authority / oracle** | CRITICAL | Host-resolved identity via `Rpc.Caller` / `Rpc.CallerId`. Outcomes from **house** systems, never client DTOs. | `caller-supplied-settlement-outcome` (VoteBet, ruling E/F). **Never trust a client SteamId or a client price.** |
+| 5 | **Persistence mint** | CRITICAL | Crash-gated restore; repeated-restore proof. | `snapshot-mints-money` — restore has **no crash gate**. `[UPSTREAM]` |
+| 6 | **Quantity clamp** | HIGH | Upper clamp on spawn/admin grants; balance floor ≥ 0 after debit. | `no-upper-quantity-clamp` `[UPSTREAM]` |
+| 7 | **Config parse safety** | HIGH | Reject malformed Store JSON **loudly**. Never let `default(T)` become a priced zero. | `silent-swallow-to-default` `[UPSTREAM]` |
+| 8 | **Law A / Law B** | HIGH | Currency-of-the-act purchase test; *"does it exist after I die?"* persistence test. | Wrong currency for the act; persistent value with no Law B pass. (`ECONOMY_DOCTRINE.md`, `UPGRADE_ECONOMY_DOCTRINE.md`) |
+| 9 | **$LP / Donor ceilings** | HIGH | $LP Currency Law combat ban. Donor Law = **narrow VIP/EVIP payout-rate exception only**. | $LP combat perk; silent expansion of donor economic power. (`DXRP_PLATFORM_DOCTRINE.md` §9b) |
+| 10 | **Audit / idempotency** | MEDIUM | Structured `Audit` on the bank rail; idempotent request/operation IDs; **additive** restore on failure. | Missing audit on a mutation; **recomputed** restore; replay with no idempotency key. |
 
-The canonical failure (record): **`lifepunch/docs/handoff/STOPGO_CASHOUT_TOCTOU_2026-07-09.md`**.
-A check→**await**→mutate window lets a second call double-act across the yield
-(`CashOutHubHost`, window `:1041→1051`); with no clamp on the balance, a double-debit drives
-it negative.
+---
 
-**The safe shape (reference implementation):**
-`lifepunchaddons/Code/Addons/lifepunch/bitcoinmining/LpBitcoinPurchaseFlow.cs`:
-- Commit-order invariant `:40-43` — funds check → debit → ledger append+flush, **no awaits
-  between debit and append**.
-- Atomic money segment `:104-115` — debit, then on rejection `hub.HubWalletBtc = walletBefore`
-  **restores the debit exactly** (additive restore, not a recomputed value).
+## THE RULE PEOPLE GET WRONG — there are TWO restores, and they are not interchangeable
 
-Rule: **never `await` between the funds check and the debit.** If an await is unavoidable,
-debit first and restore-on-failure additively.
+| Restore | Shape | Valid ONLY when | Why |
+|---|---|---|---|
+| **Snapshot** | `hub.HubWalletBtc = walletBefore;` | the money segment has **NO await in it** | It clobbers anything that changed meanwhile — safe only if nothing *could* have. |
+| **Additive** | `hub.HubWalletBtc += amount;` | the restore **straddles an await** | A concurrent deposit may have landed during the await. A snapshot restore would **erase it**. |
 
-## 5. FAUCET-AUDIT CHECKLIST
+**Verified exemplars:**
+- **Snapshot** (await-free segment): `LpBitcoinPurchaseFlow.cs:104-117` — the code says so itself,
+  *"No awaits in here"* (`:104`); capture `:105`, restore `= walletBefore` at `:112`.
+- **Additive** (straddles await): `LpBitcoinHubEntity.cs:1104` (`HubWalletBtc += amount;`) and
+  `LpBitcoinRackEntity.cs:363` (`BitcoinAmount += soldBtc;`). **`LpBitcoinHubEntity.cs:1091-1093` spells
+  out why:** a snapshot restore there would clobber a concurrent deposit.
 
-Before shipping any value source, verify: (a) it has a cap/clamp; (b) its reason-string is
-`"LIFEPUNCH <verb>"`; (c) it survives the Law A / death test; (d) it appears in the Gauntlet
-map with a safe terminus. Faucet signatures worth flagging live in the portal audit enum
-(`DXRP_PLATFORM_DOCTRINE.md` §22 — e.g. a disconnect-decay `MoneySpawn` faucet).
+> **If you take one line from this skill: A SNAPSHOT RESTORE ACROSS AN AWAIT *IS* THE BUG.**
+> *(Caught 2026-07-14 — an L3 draft fused the two idioms and mislabeled the snapshot as "additive." Taken
+> literally it would have re-created the exact TOCTOU the rails were repaired to close.)*
 
-## FLAG — the `marketItem?.Cost ?? 0` contract has NO repo home
+---
 
-Cited in planning as a contract, it is **defined nowhere in the tree** (no `MarketItem.Cost`
-field, no `?? 0` cost-resolve in `lifepunchaddons/Code`). Do not cite it as code law. The real,
-in-tree purchase contract is `LpBitcoinPurchaseFlow.cs:40-43`. If a market-cost null-default is
-wanted, it is a design question, not an existing invariant.
+## Exemplars — the FIXED cash-out rails. Copy these shapes.
+
+| Rail | Where | Shape |
+|---|---|---|
+| **`CashOutHubHost`** | `LpBitcoinHubEntity.cs:1075-1111` | `HubWalletBtc -= amount;` (`:1095`) **precedes** `await LpBitcoinWallet.TryPayBank(...)` (`:1099`); additive restore (`:1104`). |
+| **`SellForCallerHost`** | `LpBitcoinRackEntity.cs:340-370` | `BitcoinAmount = 0f;` (`:357`) **precedes** the `await` (`:358`); additive restore (`:363`). Its comment names it *"the same debit-before-await fix as CashOutHubHost."* |
+
+> **HISTORY, NOT A LIVE SCAR:** the old TOCTOU cite `LpBitcoinHubEntity.cs:1041-1051` is **DEAD.** That
+> range is now **`DepositRackHost` — unrelated, correct, await-free code. DO NOT "FIX" IT.**
+
+---
+
+## Live anti-pattern scars (machine-verified 2026-07-14)
+
+### `price-computed-never-debited` — ONE pattern, three sites. Sweep it as a family, not three patches.
+
+| # | Site | What breaks |
+|---|---|---|
+| 1 | **`HackerServerRackEntity.cs:412-421`** *(ADDON — ours)* | Cost computed (`:412`), balance **checked** (`:417`), tier **granted** (`:420`) — **no debit call.** Free tier upgrades. **And `:413-414` `#if LIFEPUNCH_LOCAL` grants the tier with NO check at all.** |
+| 2 | **`GameManager.cs:294`** `[UPSTREAM]` | `marketItem?.Cost ?? 0` → an unlisted item spawns at **$0**. |
+| 3 | **`GameManager.cs:271-333`** `[UPSTREAM]` | `PurchaseEntityHost`: `basePrice` (`:294`) and `taxAmount` (`:295`) are **dead locals, never read again.** Entity spawns free at `:331`. |
+
+### The rest
+
+| Scar | Site | What breaks |
+|---|---|---|
+| `off-ledger-wallet-credit` | **`Player.Roleplay.cs:213`** `[UPSTREAM]` | `WalletBalance += amount;` — portal blind. The `Audit(...)` at `:216` is a **log line, not a ledger write.** |
+| **`inBank`-omission** *(the sharp one)* | **`Atm.cs:71`** `[UPSTREAM]` | `await player.PayHost( amount, "ATM Deposit Fail" );` — **omits `inBank`, which defaults false** → wallet branch → **no ledger call.** The *refund* path launders. **`Atm.cs:67` is the LEDGERED path (`inBank: true`) and is CORRECT — do not "fix" it.** |
+| `snapshot-mints-money` | **`SnapshotSystem.cs:30, 38-42`** `[UPSTREAM]` | Restore gated **only by `Time.Now > 5f`** — a wall-clock delay, **no crash predicate.** Worse: the restore sits **above** the `SnapshotEnabled` check (`:45`), so **it runs even when snapshots are disabled.** |
+| `no-upper-quantity-clamp` | **`SpawnItemCommand.cs:27-47`** `[UPSTREAM]` | Lower bound only (`:35`). Its sibling `SpawnEntityCommand.cs:8,41` **has `MaxQuantity = 100`.** Unbounded admin mint. |
+| `silent-swallow-to-default` | **`ServerApiClient.Store.cs:141-142`** `[UPSTREAM]` | `catch { return default; }` → broken Store JSON becomes a **silent $0 economy.** |
+
+---
+
+## Safe purchase shape
+
+1. Resolve the caller from **`Rpc.CallerId`** — never a client-supplied SteamId.
+2. Resolve the price **on the host** — never a client-submitted price.
+3. Funds check → **debit** → ledger append. **No await inside the money segment.**
+4. If an await is unavoidable after the debit: **additive restore** on failure. Never a partial grant.
+5. Emit a structured `Audit` + the `"LIFEPUNCH <verb>"` reason string.
+6. **Idempotent `operationId`** — a replay returns the prior result; it does **not** mint again.
+
+## Donor multiplier — Seam C
+
+- **Hook:** `LpBitcoinEconomy.BtcToCashPayout` — **`LpBitcoinEconomy.cs:80`**.
+- **Quote math:** `LpBitcoinPayoutMath.CreateQuote` — **⚠ that class lives at `LpBitcoinDonorPayout.cs:141`,
+  NOT in a file of its own name. There is no `LpBitcoinPayoutMath.cs`.**
+- **Composition (ruled 2026-07-14, `copilot\0006`):** event × donor, **multiplicative, ONE floor at the
+  end** (2× event + 2× EVIP = **4×**). The **caller's** rank multiplies, not the hub owner's.
+  **Audit base AND multiplied** — see `BITCOINMINING_DONOR_PERKS.md`'s 2026-07-14 supersession.
+
+## FLAGS
+
+**`LpBitcoinHubEntity.PayoutTarget` DOES NOT EXIST.** Repo-wide grep: **zero hits in code** — every hit is
+markdown. It is **planned and unbuilt** (`UPGRADE_ARC_DESIGN.md:68` queues it;
+`RECON_WALLET_TRANSFERS_2026-07-09.md:199` places it **after** the `[Sync]` slice). **A previous version of
+this very skill asserted it as present-tense fact.** Payout routing does not go through it today.
+**Do not build against it — and do not let a document convince you a symbol exists. Grep first.**
+
+**`marketItem?.Cost ?? 0` is an upstream INTENTIONAL contract** (unlisted = unpriced) per
+`STOPGO_MARKET_LISTING_DISCIPLINE_2026-07-10.md`. **Not "fix DXRP"** — but a LIFEPUNCH entity shipping a
+purchase path **must assert market listing at gate time, or it spawns free.**
+
+## Canon
+
+`ECONOMY_DOCTRINE.md` · `UPGRADE_ECONOMY_DOCTRINE.md` · `DXRP_PLATFORM_DOCTRINE.md` §7, §9b ·
+`STOPGO_CASHOUT_TOCTOU_2026-07-09.md` · `STOPGO_MARKET_LISTING_DISCIPLINE_2026-07-10.md` ·
+`BITCOINMINING_DONOR_PERKS.md` · `DXRP_CONTRIBUTOR_LANE.md`

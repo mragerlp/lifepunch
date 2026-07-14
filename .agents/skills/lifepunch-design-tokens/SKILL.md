@@ -144,5 +144,5 @@ CTA · state clarity · **semantic money colors (Law 13 / Law 17)**.
 ## Canon
 
 `lifepunch/docs/LIFEPUNCH_UI_STANDARD.md` (tokens, Law 17) · `lifepunch/docs/SBOX_RAZOR_SCSS_RULES.md` ·
-`.claude/skills/lifepunch-razor-ui/SKILL.md` (**build law — wins on conflict**) ·
+`.agents/skills/lifepunch-razor-ui/SKILL.md` (**build law — wins on conflict**) ·
 `lifepunch/docs/superpowers/specs/2026-07-14-lp-player-hub-design.md`

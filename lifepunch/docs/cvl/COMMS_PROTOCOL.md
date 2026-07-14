@@ -299,3 +299,67 @@ Invariant 6) — **and a paste that failed to transport is untransported state t
 
 This does not change **who** transports: **Bloodwave remains the transport authority on every logical
 arrow.** It changes only the **medium** of the payload — file, not wall.
+
+---
+
+## v1.6 AMENDMENT (2026-07-14 — PRE-FIRE TOKEN ASSERTION; records: `green\0013`, `green\0018`, `red\0037`)
+
+### RULE 19 — **NO UNFILLED PLACEHOLDER TOKEN SURVIVES INTO A FIRED PACKET.**
+
+**Before any packet, dispatch, or relay is handed to Bloodwave for transport, its author asserts that it
+contains no unresolved placeholder** — no `<SHA>`, `<DEVELOP-TIP-SHA40>`, `<SEQ>`, `<seat>`, `<date>`,
+`<filename>`, or any other `<...>` slot left for a human to fill by hand.
+
+**The assertion is the author's, and it is owed at authoring time — not at fire time.** A packet handed
+over with a manual-fill token is a **defective packet**, and the defect belongs to the seat that wrote
+it, not the seat that stopped on it.
+
+### THE RECEIVING SEAT'S DUTY (already correct — now written down)
+
+**A seat that receives a packet containing an unfilled token STOPS AND REPORTS. It does not guess, derive,
+or self-fill the value — even when it knows the right answer.**
+
+> **Green did exactly this, twice, and was right both times.** In `green\0018` it went further: it
+> **derived `origin/develop`'s tip itself, realized that a self-authored pin defeats R7 regardless of
+> whether the value is correct, self-reverted to its boot SHA, and reported.** *That is the rule working.*
+
+**Why self-filling is a defect even when the value is right:** the pin exists so that the **dispatching
+authority** chooses the state the work runs against (**CVL Sync Law:** *no actor issues instructions
+against a state it has not observed*). A seat that fills its own pin has **silently promoted itself from
+executor to authority** — and the work may be perfectly correct while the *chain of authority is broken*.
+**A correct answer obtained through a broken gate is a broken gate.**
+
+### WHY THIS IS A LAW AND NOT A CHECKLIST ITEM
+
+**It has now failed twice, in the same template class, one day apart** — `green\0013` (2026-07-13) and
+`green\0018` (2026-07-14). Both times the packet was well-formed, well-reasoned, and **unfireable.** Both
+times a lane sat idle waiting on a value that a `printf`-level check would have caught at authoring.
+
+**The cost is asymmetric and that is the whole argument:** the check costs one grep. The miss costs a
+round trip through Bloodwave, an idle Green, and a re-fire — **and the second occurrence proves that
+"remember to fill it in" is not a control.**
+
+> ## A TEMPLATE THAT CAN FIRE WITH ITS SLOTS EMPTY IS A LOADED FOOTGUN, AND THE FIX BELONGS IN THE RENDERER, NOT IN THE DISCIPLINE OF WHOEVER HOLDS IT LAST.
+
+### THE ONE FALSE POSITIVE — DO NOT "FIX" IT
+
+**`--:--Z` in a BOARD line is NOT an unfilled token.** It is the board's **real, ratified proxy-append
+timestamp format** (rule 18b). A pre-fire check that flags it is a **broken check**.
+
+**That it *reads* like a template slot is itself a hygiene finding** (`green\0018`), banked: the format is
+correct and the format is confusable. **Any automated assertion must whitelist it explicitly** — and the
+day it is replaced, it is replaced by ruling, not by a linter.
+
+### ⚠ HOUSEKEEPING DEFECT NOTED, NOT SILENTLY FIXED
+
+**This document contains TWO sections headed `## v1.5 AMENDMENT`** — one dated 2026-07-13 (Green lane
+normalization) and one dated 2026-07-14 (`fable\0070` / `fable\0071` lanes). **Two different amendments
+share one version number.** This amendment is **v1.6** and does not renumber them: **renumbering a ratified
+amendment rewrites history to look tidy.** Flagged for the pending **COMMS reconciliation ruling** —
+which already owes an answer on the *three* disagreeing copies of this protocol
+(`COMMS_LANE.md` = v1.3 · this file = v1.4/v1.5 · `C:\lifepunch\comms\COMMS_PROTOCOL.md` = **still `v1`**).
+
+> **THE OPERATIONAL COPY THE SEATS ACTUALLY READ IS THE MOST STALE OF THE THREE.** Rule 19 is written
+> here, in tracked canon — **it is not yet in the copy that sits in the lane.** That gap is named, not
+> papered over: **syncing it silently would hide the drift instead of fixing it**, and the reconciliation
+> is a Bloodwave ruling (owed since `red\0034`).

@@ -1,10 +1,26 @@
 {
   "$schema": "https://opencode.ai/config.json",
   // Canon: lifepunch/docs/cvl/OPENCODE_HARNESS_ADOPTION_2026-07-14.md
-  // Authority follows the model — cloud frontier implementer-eligible under relief;
-  // CORNERMAN local = advisory-only. push/merge/tag denied; Bloodwave merge key.
-  // external_directory: "ask" per Bloodwave 2026-07-14 — comms\ filings approved
-  // per fable\0071; every out-of-repo access prompts, Bloodwave clicks the gate.
+  //      + lifepunch/docs/cvl/ORCHESTRATOR_SEAT_RULING_2026-07-14.md
+  //      + lifepunch/docs/cvl/WINDOW_TOPOLOGY_2026-07-14.md
+  // Config of record per fable\0074 (v2 body). Landed by Red, red\0037.
+  //
+  // AUTHORITY FOLLOWS THE MODEL, NOT THE HARNESS. Cloud frontier =
+  // relief-clause implementer-eligible; CORNERMAN local = advisory-only.
+  // ONE WINDOW = ONE SEAT. Subagents below are TOOLS, not seats: they
+  // inherit the orchestrator's constraints and hold ZERO authority.
+  // Their output is LEADS-GRADE until the orchestrator machine-verifies
+  // it against real files (red\0034: two L3 seats filed bad cites in one
+  // night, and one would have re-created a fixed money bug).
+  //
+  // NO EDITOR MCP BLOCK, BY RULING (fable\0072 / fable\0073):
+  // RED KEEPS THE EDITOR BRIDGES. Orchestrator editor-eyes is BANKED,
+  // not granted — read-only at most, and never Ozmium/8098, which does
+  // not exist on this stack.
+  //
+  // push/merge/tag/reset DENIED — Bloodwave holds the merge key.
+  // external_directory "ask" per fable\0071 (comms\ filings approved);
+  // every out-of-repo access prompts and Bloodwave clicks the gate.
   "instructions": [
     "CLAUDE.md",
     "ARCHI.md",
@@ -32,6 +48,51 @@
       }
     }
   },
+  // SUBAGENTS = TOOLS. Hard deny-walls: no edit, no out-of-repo reads,
+  // no mutating git, no editor skills. They flag; they never decide.
+  "agent": {
+    "corner-review": {
+      "description": "Green-class advisory code reviewer (qwen coder).",
+      "mode": "subagent",
+      "model": "cornerman/qwen2.5-coder-32b-instruct",
+      "prompt": "L3 advisory reviewer. Cite file:line. Flag, never decide. Your output is leads-grade until the orchestrator machine-verifies it.",
+      "permission": {
+        "edit": "deny",
+        "external_directory": "deny",
+        "bash": {
+          "*": "deny",
+          "git diff*": "allow",
+          "git show*": "allow",
+          "git log*": "allow"
+        },
+        "skill": {
+          "*": "deny",
+          "lifepunch-grounding": "allow",
+          "codex-code-review": "allow"
+        }
+      }
+    },
+    "deep-scan": {
+      "description": "Green-class bulk read-only repository scanner (qwen 27b).",
+      "mode": "subagent",
+      "model": "cornerman/qwen/qwen3.6-27b",
+      "prompt": "Bulk read-only scanner. Every citation is a claim until the orchestrator verifies it against real files.",
+      "permission": {
+        "edit": "deny",
+        "external_directory": "deny",
+        "bash": {
+          "*": "deny",
+          "git grep*": "allow",
+          "git show*": "allow",
+          "git log*": "allow"
+        },
+        "skill": {
+          "*": "deny",
+          "lifepunch-grounding": "allow"
+        }
+      }
+    }
+  },
   "permission": {
     "edit": "ask",
     "bash": {
@@ -51,6 +112,22 @@
       "git stash*": "deny",
       "git checkout*": "deny",
       "git switch*": "deny"
+    },
+    // "*": "ask" (not deny) at the SEAT level — an unknown or newly
+    // added skill PROMPTS Bloodwave rather than silently disappearing.
+    // Subagents above get hard deny-walls instead.
+    // lifepunch-editor-gate DENIED: editor launches are Red's surface.
+    // cornerman-packets DENIED: packet authoring is the Fable/Bloodwave lane.
+    "skill": {
+      "*": "ask",
+      "lifepunch-grounding": "allow",
+      "lifepunch-economy": "allow",
+      "lifepunch-config": "allow",
+      "lifepunch-razor-ui": "allow",
+      "sbox-engine-truth": "allow",
+      "TRIP-*": "allow",
+      "lifepunch-editor-gate": "deny",
+      "cornerman-packets": "deny"
     },
     "external_directory": "ask"
   }
