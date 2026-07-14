@@ -341,6 +341,12 @@ public static class LpBitcoinDevSpawn
 
 		hub.BindOwnerFromLocalViewer();
 
+		if ( !hub.IsPowered )
+		{
+			Log.Warning( "lp_bitcoin_dev_link_all: hub power off — run lp_bitcoin_hub_power_toggle or use header switch first." );
+			return;
+		}
+
 		if ( !hub.HasLinkedTerminal() )
 		{
 			var terminal = LpBitcoinTerminalEntity.FindNearestUnlinked( hub );
@@ -349,14 +355,15 @@ public static class LpBitcoinDevSpawn
 		}
 
 		var linked = 0;
-		while ( true )
+		var candidates = LpBitcoinRackEntity.FindAllUnlinked( hub, hub.RackLinkRange );
+		foreach ( var rack in candidates )
 		{
-			var rack = LpBitcoinRackEntity.FindNearestUnlinked( hub, hub.RackLinkRange );
 			if ( !rack.IsValid() )
-				break;
+				continue;
 
 			rack.LinkToHub( hub );
-			linked++;
+			if ( rack.LinkedHubId == hub.GameObject.Id )
+				linked++;
 		}
 
 		Log.Info( $"lp_bitcoin_dev_link_all: terminal={( hub.HasLinkedTerminal() ? "linked" : "none" )}, racks={linked}." );
