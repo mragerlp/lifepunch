@@ -38,6 +38,11 @@ Capability, not authority. All CVL constraints survive:
 | Claude Code | Red (when available) | TRIP-2-implement | Code slices (Claude usage) |
 | Copilot CLI | Fable / orchestrator | TRIP-1-plan | Planning, orchestration |
 | Cursor | Reviewer + PR maker | codex-code-review | Cold review, PR creation |
+| OpenCode | Flexible harness (any provider incl. local CORNERMAN) | TRIP-2 (Build) / OBSERVE (Plan) | Model-agnostic slices; governed by repo-root `opencode.json` |
+
+OpenCode's Plan/Build modes map to OBSERVE/DRIVE: **Plan = OBSERVE** (read-only),
+**Build = DRIVE** (only on an explicit board-named grant + GO). Its repo-root
+`opencode.json` grounds every session in CLAUDE.md and hard-denies push/merge/tag.
 
 ## Kepler settings for LIFEPUNCH
 
@@ -55,6 +60,25 @@ Settings -> Agents:
 Settings -> Provider Integrations:
   GitHub:       Connect -> mragerlp/lifepunch
 ```
+
+## Classification: CONTROL PLANE, not authority seat
+
+Kepler is the **CVL control plane** — it hosts and supervises L2 agent sessions
+(task control, worktree isolation, session visibility, diffs). It is NOT an L2 seat
+itself: it issues no GO words and decides nothing about what becomes canon. Authority
+levels (`CVL_AUTHORITY_LEVELS_2026-07-13.md`) are unchanged; a Kepler task inherits
+only the grant of the seat driving it (L4 tool law).
+
+## MANDATORY: experimental features OFF
+
+Kepler ships two experimental features that directly conflict with CVL law:
+
+- **AI Sync** — lets agents perform branch rebases and merges. **OFF.**
+- **Compose** — lets agents reorganize changes into commits. **OFF.**
+
+`Settings -> Features -> AI Sync: OFF, Compose: OFF`. Both stay off until explicit
+CVL law rules otherwise. Agents must never merge, rebase, or manufacture commit
+history — those are Bloodwave key actions.
 
 ## Task creation pattern
 
