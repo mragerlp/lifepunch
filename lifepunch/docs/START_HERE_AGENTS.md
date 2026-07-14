@@ -46,7 +46,12 @@ git status -sb
 
 ## 4. Active lane
 
-- lpbitcoin only. Route through `.cursor/rules/lifepunch-active-workstream-gate.mdc` → `lifepunchaddons/docs/ACTIVE_WORKSTREAM.md`.
+- **The "lpbitcoin only" gate is DEAD (killed 2026-07-14).** It routed through
+  `.cursor/rules/lifepunch-active-workstream-gate.mdc`, **a file deleted in `6d306081`** — so the rule
+  died while the restriction it carried survived here, in canon, in the doc the grounding order routes
+  every seat into. Read as law, it placed essentially **all current work** (the CVL slices, the drug
+  lane, the DXRP re-pin) off-lane. **There is no active-workstream gate.** Scope comes from the active
+  brief in `lifepunch/docs/handoff/` and Bloodwave's relay — nowhere else. Finding: `comms\red\0031`.
 - Use the **current unchecked ID** from `ACTIVE_WORKSTREAM` + `OWNER_PROGRESS_TRACKER` + current baton — do not assume a stale `H*` / `T*` / `R*` slice.
 - **Today's canon (2026-07-12) — a fresh session's current state, from the tree:**
   - **Repo skills** (`.claude/skills/`: grounding · economy · config · editor-gate · razor-ui · sbox-engine-truth · cornerman-packets) auto-load at grounding (`CLAUDE.md` "Repo skills are canon-grade").

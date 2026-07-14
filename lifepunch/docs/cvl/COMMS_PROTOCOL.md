@@ -247,3 +247,55 @@ paste. The lane degrades loudly, never silently.
 - ORPHAN NOTE: G:\comms\ (= share comms\) was created during testing
   before the subpath bug reproduced. It is abandoned; the live root is
   C:\lifepunch\comms\. Seats may delete the share-side comms\ folder.
+
+## v1.5 AMENDMENT (2026-07-14 — RATIFIED Bloodwave; records: `fable\0070`, `fable\0071`)
+
+### 18. THREE ADVISORY LANES — SEVEN FOLDERS, FOUR RATIFIED SEATS
+
+The seat table (`FROM: RED | GREEN | CODEX | FABLE`, rule 5) is **extended, not replaced**:
+
+| Folder | FROM tag | Class | Ratified by |
+|---|---|---|---|
+| `red\` `codex\` `fable\` `green\` | RED / CODEX / FABLE / GREEN | the **four ratified seats** | v1 |
+| `copilot\` | COPILOT | **L3 advisory** | `fable\0070` |
+| `cursor\` | CURSOR | **L3 advisory** | `fable\0070` |
+| `kepler\` | KEPLER | **L3 advisory** (OpenCode orchestrator window) | `fable\0071` |
+
+**A COMMS FOLDER IS A TRANSPORT PRIVILEGE, NOT AN AUTHORITY GRANT.** Filing to an advisory lane confers
+no DRIVE, commit, push, merge, or canon right. Bindings, identical across all three:
+
+- **SEQ/header conventions unchanged** — `<SEQ>_<FROM>_<SUBJECT>_<DATE>.md`, per-seat monotonic from `0001`.
+- **BOARD append: ONE line per filing.** State words **`FILED` / `PROPOSED` / `HELD` ONLY** — never `DONE`,
+  `DRIVE-ACCEPTED`, or any word implying execution. **`RULED` / `WORD` / `OVERRIDE-RULED` remain
+  Bloodwave-only.**
+- **Full `comms\` read access** (BOARD + every seat folder) — already true in practice, now explicit.
+- **Write-once, advice-class** (rule 1). **No seat, including L2, treats an advisory filing as a work
+  order.** If code is proposed, the implementer **machine-verifies every cite against the live tree
+  before use.**
+- **NO `dispatch\copilot\`, `dispatch\cursor\`, or `dispatch\kepler\`.** The **dispatch class (rule 8)
+  stays reserved to the four ratified seats.** These lanes **never receive a work order** — they receive
+  Bloodwave's direct paste.
+- **ABSENCE IS NOT STATUS** (rule 9) applies identically. An empty advisory folder is evidence of nothing.
+
+**KEPLER SCOPE (`fable\0071`).** The lane is transport for the seat's **advisory/design output** and is
+**independent of, and narrower than, implementer eligibility.** `copilot\0010` makes OpenCode-with-a-
+frontier-model implementer-*eligible* under the relief clause; **this lane grant does not seat it.** When
+Kepler is actually seated as implementer under an explicit relief handoff, it files as an implementer
+does; **outside that, its lane states remain FILED / PROPOSED / HELD.**
+See also `ORCHESTRATOR_SEAT_RULING_2026-07-14.md`: **one window = one seat; its subagents are tools.**
+
+### 19. FILE-FIRST TRANSPORT (board-proposed, Bloodwave adopted 2026-07-14)
+
+**Output longer than roughly one screen is BORN AS A COMMS FILING. Chat carries a five-line receipt.**
+
+The receipt states: **what was done · where it landed (filename) · the one fact that changes a decision ·
+what is blocked · what is owed.** Everything else lives in the file.
+
+**Why this is a law and not a style note:** the empty-response hazard (`CLAUDE.md` → Transport Law) eats
+long pastes, and a paste that dies in transit **leaves no record that it existed** — the seat believes it
+reported, the board never heard it. A filing is durable, addressable, and re-readable; a wall of chat is
+none of those. *Untransported state does not exist for board purposes* (`CVL_AUTHORITY_LEVELS`,
+Invariant 6) — **and a paste that failed to transport is untransported state that FEELS delivered.**
+
+This does not change **who** transports: **Bloodwave remains the transport authority on every logical
+arrow.** It changes only the **medium** of the payload — file, not wall.

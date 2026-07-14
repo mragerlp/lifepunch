@@ -3,6 +3,8 @@
   // Canon: lifepunch/docs/cvl/OPENCODE_HARNESS_ADOPTION_2026-07-14.md
   // Authority follows the model — cloud frontier implementer-eligible under relief;
   // CORNERMAN local = advisory-only. push/merge/tag denied; Bloodwave merge key.
+  // external_directory: "ask" per Bloodwave 2026-07-14 — comms\ filings approved
+  // per fable\0071; every out-of-repo access prompts, Bloodwave clicks the gate.
   "instructions": [
     "CLAUDE.md",
     "ARCHI.md",
@@ -50,6 +52,6 @@
       "git checkout*": "deny",
       "git switch*": "deny"
     },
-    "external_directory": "deny"
+    "external_directory": "ask"
   }
 }
