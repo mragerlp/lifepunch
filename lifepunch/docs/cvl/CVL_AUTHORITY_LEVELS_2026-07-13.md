@@ -151,3 +151,52 @@ requires transport to the named L2 DRIVER with an explicit Bloodwave grant.**
 governs **how authorized work must be performed.** When an agent instruction conflicts with repository
 law: **repo law wins.** When repository law appears to conflict with an explicit Bloodwave ruling, the
 seat must **stop and surface the conflict** rather than resolving it independently.
+
+---
+
+## AMENDMENT — COST-TIER ROUTING (RATIFIED 2026-07-14, Bloodwave; BOARD: `BLOODWAVE | RULED | COST-TIER ROUTING`)
+
+**Refines the SEAT MODEL cost clause. It does not touch a single line of the authority hierarchy above.**
+
+### The ruling, verbatim
+
+> **Expense order: Fable > Opus > Grok > GPT.**
+>
+> **Claude API limits OPEN THURSDAY** — implementer volume **returns to Red at zero marginal cost** then.
+>
+> **Until then:**
+> - **GPT tier** = bulk recon / drafts
+> - **Grok tier** = reviews / specs / editor-eyes
+> - **Opus** = judgment-heavy only
+>
+> **AUTHORITY UNCHANGED — it follows the model, not the price.** One DRIVE, one pair of tree hands,
+> Bloodwave transport + merge gate.
+
+### ## THE INVARIANT THIS AMENDMENT EXISTS TO PROTECT
+
+## **AUTHORITY FOLLOWS THE MODEL, NOT THE PRICE.**
+
+**Cost decides WHO TAKES A JOB. It never decides WHAT A SEAT MAY DO.**
+
+A cheap seat that draws a lot of work does **not** accumulate authority by volume, and an expensive seat
+held in reserve does **not** lose any by idleness. **Routing is an economics decision layered on top of an
+unchanged authority hierarchy** — and the moment those two are confused, the cheapest seat in the stack
+becomes the most powerful one **purely because it is used most.**
+
+> **That is the failure this clause forecloses.** *Budget pressure is the most natural force in the world
+> for quietly promoting a seat. It gets asked to do more, so it starts deciding more.* **L0–L4 above are
+> unchanged, and no routing rule may amend them.**
+
+### THE THURSDAY CLAUSE IS A COST EVENT, NOT AN AUTHORITY EVENT
+
+**When limits open and Red returns at zero marginal cost, Red does not gain authority — it gains
+VOLUME.** It was always the L2 implementer; it was simply expensive. **Nothing about the Thursday
+transition promotes, demotes, or re-seats anybody.**
+
+**Corollary — the reverse also holds:** while Red is expensive and Grok is carrying reviews and specs,
+**Grok has not become an implementer.** It is an **L3 advisory seat doing more advisory work.**
+*Doing an implementer's volume is not holding an implementer's grant.*
+
+**Governor (unchanged, from the SEAT MODEL):** routing holds while a seat flags its own unverified edges.
+**If a seat asserts instead of flagging, route the job back — regardless of what it costs.** *A cheap
+answer you cannot trust is not cheap.*
