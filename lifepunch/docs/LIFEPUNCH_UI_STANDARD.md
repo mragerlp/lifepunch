@@ -1,47 +1,63 @@
-# LIFEPUNCH UI Standard — DXRP-native sibling style
+# LIFEPUNCH UI Standard — brand-aligned panel chrome
 
-Status: CANON — ratified 2026-07-08. Source: the 2026-07-07 parity extraction
-against DXRP-native menus (`lifepunchdxrp/game/Code/UI/styles.scss`, Party Menu,
-Dimmer's TabMenu — the documented `dxura/dxrp#73` parity style), driven by
-Dimmer's feedback that over-decorated menus read "too Claudey".
+> **Changelog 2026-07-14:** Token section reconciled to live `lifepunch.co` `:root`
+> (`lifepunch/website/deployments/cloudflare-worker.mjs`) and the approved LP Player Hub
+> design spec (`lifepunch/docs/superpowers/specs/2026-07-14-lp-player-hub-design.md`).
+> Supersedes the prior DXRP-native purple `#7170e6` / `#191919` token block for LIFEPUNCH
+> panel/menu UI. Restraint laws below still apply; HASHD CRT exemption unchanged.
 
-**The bar:** every LIFEPUNCH menu reads as a **sibling of DXRP's native UI** —
-same tokens, same restraint. Chrome reduction is a feature.
+Status: CANON — ratified 2026-07-08; tokens reconciled 2026-07-14.
+Original bar (chrome reduction, no "too Claudey" decoration) stands. Brand identity for
+LIFEPUNCH-authored panels now tracks the website source mark, not DXRP purple-sibling
+chrome.
 
 **Scope exemption:** the HASHD Terminal in-world screen keeps its gray CRT +
 amber identity per `DECISION-0010` / `OPS_CRT_TERMINAL_THEMES` — this standard
 governs panel/menu UI, not in-world themed screens.
 
-## Token set (mirrors native `styles.scss`)
+## Token set (mirrors lifepunch.co `:root`)
+
+Source: `cloudflare-worker.mjs` live CSS variables + Player Hub wireframe radii/type.
 
 ```scss
-$bg:            #191919;                 // native $color-primary (window surface)
-$bg-sidebar:    #111111;                 // native $color-secondary (recessed)
-$bg-raised:     #1f1f23;                 // neutralized raised elevation
-$bg-row:        #26262b;                 // neutralized row elevation
-$accent:        #7170e6;                 // native $color-accent — wash/data only
-$accent-soft:   rgba(113,112,230,0.08);  // active wash — the ONLY accent bg
-$good:          #199c3b;                 // solid affirmative button fill
-$bad:           #931010;                 // solid destructive button fill
-$text:          #F6F9FF;                 // native $color-tertiary
-$text-dim:      #888b91;                 // native $color-gray-400
-$border:        rgba(255,255,255,0.04);  // hairline divider (0.5px structural)
-$radius:        2px;                     // ALL interactive elements
-$radius-shell:  4px;                     // the one large container
-// spacing 4/8/12/16/20/24 px · type 12/14/16/18/22 px (native scales)
+// Brand / surfaces (website :root)
+$lp-blue:         #017AEF;                 // --lp-blue — primary action / selected wash
+$lp-blue-hover:   #33A0FF;                 // --lp-blue-hover
+$lp-blue-rgb:     1, 122, 239;             // --lp-blue-rgb — wash / focus alpha
+$bg:              #000000;                 // --bg — shell root
+$surface:         #1a1d23;                 // --surface — header, cards
+$surface-inset:   #12151a;                 // --surface-inset — sidebar, insets
+$card-header:     #22262e;                 // --card-header — raised card header
+$border:          #374151;                 // --border — structural borders
+$text-main:       #ffffff;                 // --text-main
+$text-dim:        #9ca3af;                 // --text-dim
+
+// Semantic fills (unchanged grammar — Law 13 / confirm-deny)
+$good:            #199c3b;                 // solid affirmative button fill
+$bad:             #931010;                 // solid destructive button fill
+$accent-soft:     rgba(1, 122, 239, 0.08); // active/selected wash — ONLY accent bg
+
+// Radii / type (Player Hub + website interactive scale)
+$radius:          6px;                     // primary buttons / controls
+$radius-card:     12px;                    // cards
+// Type: Montserrat (headings) + Inter (labels/body/values)
+// Spacing rhythm: 12px content · 8px control · 44px min hit (hub)
+// Legacy DXRP-native tight radii (2px/4px) are retired for LP-authored panels
 ```
 
 ## Laws
 
-1. **Radius is tiny and uniform.** 2px interactive, 4px shell. **Nothing is a
-   pill** except true circles (avatars, color dots → `border-radius: 50%`).
-2. **Accent is a wash, never chrome.** Purple appears ONLY as active/selected
-   background at 4–8% opacity and as text color on live data. Never a fill,
-   never a border ring, never behind an icon.
+1. **Radius is uniform and restrained.** 6px interactive controls, 12px cards.
+   **Nothing is a pill** except true circles (avatars, color dots →
+   `border-radius: 50%`).
+2. **Accent is a wash, never chrome.** `$lp-blue` (`#017AEF`) appears ONLY as
+   active/selected background at 4–8% opacity, primary solid actions, and live
+   data tint. Never a decorative border ring, never behind an icon tile.
 3. **Active state is carried by opacity, not color.** Nav rest ≈ 0.7 opacity →
    1 on hover/active, plus the barely-there accent wash. Icons stay neutral.
-4. **Buttons are flat, solid, semantic.** Solid `$good`/`$bad` fills, small
-   bold label, 2px radius. **No icon tiles** — glyphs sit inline, bare.
+4. **Buttons are flat, solid, semantic.** Solid `$good`/`$bad` (or `$lp-blue`
+   primary) fills, small bold label, 6px radius. **No icon tiles** — glyphs sit
+   inline, bare.
 5. **Rows are flat.** `rgba(white, 0.05)` fill or transparent. A card carries
    a fill OR a hairline divider — never both.
 6. **Borders are hairline and rare.** Structural dividers only
@@ -137,8 +153,9 @@ implementation: lpbitcoin HASHD set, Currency Standard v1.
 ## Anti-patterns (the "too Claudey" list — reject on sight)
 
 Icon tiles behind glyphs · pill buttons/chips · accent borders and glows ·
-fill+border doubling · big radii (8–22px) · drop-shadowed windows ·
-tracked-uppercase section headers · in-game watermarks/footers.
+fill+border doubling · oversized radii (>12px cards / decorative shells) ·
+drop-shadowed windows · tracked-uppercase section headers · in-game
+watermarks/footers.
 
 Full divergence work-list for the StaffMenu restyle (line-level): session
 artifact `handoff/ULX_STYLE_TOKENS_2026-07-07.md` (untracked; Part 1 of it is
