@@ -71,7 +71,7 @@ Target geometry: `1160 x 700`, centered, scaling down within the viewport. Sideb
 | Card | `#1a1d23`, 12px radius |
 | Card header/inset | `#22262e` or `#12151a` |
 | Primary action | `#017AEF`, hover `#33A0FF`, 6px radius |
-| Selected navigation | Blue 10â€“14% wash, blue left indicator, white label |
+| Selected navigation | Blue 10–14% wash, blue left indicator, white label |
 | Typography | Montserrat headings; Inter labels, body, and values |
 | `$LP` placeholder | `$LP` token in blue; amount white |
 | Controls | Minimum 44px interaction height, 8px separation |
@@ -123,8 +123,8 @@ No branding footer, atmospheric glow, glass, gradients, or decorative animation.
 - XP always shows level, exact values, percentage, and remaining XP.
 - `$LP`, skill points, and stats remain secondary supporting cards.
 - Recent progress consumes namespaced stat-ledger events; unsupported events are not synthesized.
-- Every summary card links directly to the source tab and must match that tabâ€™s value.
-- â€œHow to earn `$LP`â€ explains earning routes; it is not a real-money purchase CTA.
+- Every summary card links directly to the source tab and must match that tab's value.
+- "How to earn `$LP`" explains earning routes; it is not a real-money purchase CTA.
 
 ## Skills
 
@@ -165,11 +165,11 @@ Skill taxonomy is data-driven and remains unnamed until progression design defin
 
 | State | Visual treatment |
 |---|---|
-| Unlocked | Blue fill, check glyph, â€œUnlockedâ€ tooltip |
+| Unlocked | Blue fill, check glyph, "Unlocked" tooltip |
 | Available | Blue border, white content, plus glyph |
 | Selected | Blue focus wash plus persistent detail pane |
 | Locked | Muted fill, lock glyph, unmet requirement shown |
-| Maxed | Strong blue fill, â€œMax rankâ€ text |
+| Maxed | Strong blue fill, "Max rank" text |
 
 **Interaction**
 
@@ -316,7 +316,7 @@ Catalog cards only select a perk. Spending occurs from the detail pane.
 | Store unavailable | Catalog becomes read-only; spending controls disappear |
 | Session refresh | Preserve tab, filters, selection, and scroll position |
 
-Navigation, buttons, nodes, and cards receive visible keyboard focus. Hover and pressed states use color/opacity without changing dimensions. Tab transitions use a short 150â€“200ms crossfade; no decorative movement.
+Navigation, buttons, nodes, and cards receive visible keyboard focus. Hover and pressed states use color/opacity without changing dimensions. Tab transitions use a short 150–200ms crossfade; no decorative movement.
 
 ## Pending Inputs
 
