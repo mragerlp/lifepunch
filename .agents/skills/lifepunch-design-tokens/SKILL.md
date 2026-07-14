@@ -38,7 +38,7 @@ Source: `lifepunch/docs/LIFEPUNCH_UI_STANDARD.md` (reconciled 2026-07-14) · `cl
 | `$good` / `$bad` | `#199c3b` / `#931010` | Affirm / deny |
 | `$accent-soft` | `rgba(1,122,239,0.08)` | Selected wash **only** |
 | `$radius` / `$radius-card` | `6px` / `12px` | Controls / cards |
-| Type | **Montserrat** (headings, buttons) + **Inter** (labels, body, values) | Brand pairing |
+| Type | **Poppins** (headings, buttons) + **Inter** (labels, body, values) | Brand pairing |
 | Rhythm | **44px min hit** · 8px control gap · 12px content gap | Hub spacing |
 
 **No raw hex in components.** Token vars only — a hex literal in a panel is a defect.
@@ -129,7 +129,7 @@ panel renders subtly wrong, with no error.
 | **3 Performance** (HIGH) | **TRANSLATES-AS / VOID** | WebP/AVIF, `srcset`, CLS tricks are **VOID**. Keep panels light; avoid layout thrash; reserve space with flex stubs. |
 | **4 Style Selection** (HIGH) | **TRANSLATES-AS** | Match the locked tokens. **No emoji icons.** "Platform-adaptive" → DXRP sibling restraint + brand blue. |
 | **5 Layout & Responsive** (HIGH) | **TRANSLATES-AS** | Mobile-first breakpoints and viewport meta are **VOID** (no `@media`). Use flex-only shell-size classes; **one scroll region per tab.** |
-| **6 Typography & Color** (MEDIUM) | **APPLIES** | Montserrat + Inter; semantic tokens; **no raw hex in components.** |
+| **6 Typography & Color** (MEDIUM) | **APPLIES** | Poppins + Inter; semantic tokens; **no raw hex in components.** |
 | **7 Animation** (MEDIUM) | **TRANSLATES-AS** | 150–300ms crossfade if the engine accepts it; prefer `opacity`. Reduced-motion is mostly **VOID**. **No decorative motion.** |
 | **8 Forms & Feedback** (MEDIUM) | **APPLIES** | Visible labels; errors near the field; **confirm/deny per Law 14.** |
 | **9 Navigation** (HIGH) | **TRANSLATES-AS** | Sidebar tab rail. Deep links → in-hub tab switches. Bottom-nav mobile patterns are **VOID**. |

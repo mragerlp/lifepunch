@@ -18,7 +18,7 @@ Parity source: `lifepunchdxrp/game/Code/UI/styles.scss`, Party Menu, Dimmer's Ta
 
 ## 2. TOKENS ARE NEVER HARDCODED
 
-The token set lives at **`LIFEPUNCH_UI_STANDARD.md:15-32`** and mirrors native `styles.scss`.
+The token set lives at **`LIFEPUNCH_UI_STANDARD.md:18-46`** and mirrors native `styles.scss`.
 They are SCSS `$vars` — `$bg`, `$bg-sidebar`, `$bg-raised`, `$bg-row`, `$accent`,
 `$accent-soft`, `$good`, `$bad`, `$text`, `$text-dim`, `$border`, `$radius`, `$radius-shell`.
 
@@ -29,7 +29,7 @@ Spacing is `4/8/12/16/20/24 px`. Type is `12/14/16/18/22 px`. Both are the nativ
 
 ## 3. THE LAWS — read them, do not paraphrase them
 
-`LIFEPUNCH_UI_STANDARD.md:34-117`. The ones most often broken:
+`LIFEPUNCH_UI_STANDARD.md:48-132`, **plus LAW 17 (Currency Identity) at `:134-151`**. The ones most often broken:
 
 - **Radius is tiny and uniform** — 2px interactive, 4px shell. **Nothing is a pill** except
   true circles (avatars, colour dots → `border-radius: 50%`).
@@ -42,7 +42,7 @@ Spacing is `4/8/12/16/20/24 px`. Type is `12/14/16/18/22 px`. Both are the nativ
 - **A card carries a fill OR a hairline divider — never both.**
 - **Typography is sentence-case.** Uppercase only for tiny tracked eyebrow labels.
 
-**Anti-patterns — reject on sight:** `LIFEPUNCH_UI_STANDARD.md:118+`. Check your work against
+**Anti-patterns — reject on sight:** `LIFEPUNCH_UI_STANDARD.md:153+`. Check your work against
 that list *before* reporting, not after review.
 
 **Scope exemption:** the HASHD Terminal in-world screen keeps its gray CRT + amber identity

@@ -46,7 +46,7 @@ longer true.** Config-extraction v1 landed on `develop` in **#70** under the rul
 spec before touching this surface; the shipped state is:
 
 - **ONE T3 read exists** — `GetConfig( new LpBitcoinRackConfig() )` at
-  `lifepunchaddons/Code/Addons/lifepunch/bitcoinmining/LpBitcoinRackEntity.cs:288`, feeding
+  `lifepunchaddons/Code/Addons/lifepunch/bitcoinmining/LpBitcoinRackEntity.cs:287`, feeding
   `LpBitcoinComputeTrack.EnsureRegistered` (`LpBitcoinComputeTrack.cs:39`).
 - **What T3 tunes today: the COMPUTE ladder only — 11 keys** on `LpBitcoinRackConfig`:
   `MaxTier`, `Tier1–5EffectMultiplier` (×2/4/8/16/32), `Tier1–5CostSats`

@@ -133,7 +133,7 @@ External s&box skill packs assert both. Both were tested and both fail here. **I
 confirmation overrides any vendor claim.**
 
 - **"`MathF` is not available in the sandbox."** FALSE — **98 call sites** across both trees,
-  e.g. `…/bitcoinmining/LpBitcoinEconomy.cs:45` (`MathF.Max`), `…/GameManager.cs:294`
+  e.g. `…/bitcoinmining/LpBitcoinEconomy.cs:47` (`MathF.Max`), `…/GameManager.cs:294`
   (`MathF.Ceiling`). `Math.` and `System.Math.` are also used.
 - **"`GetComponent<T>()` is a Unity pattern — don't use it."** FALSE as stated — it is used
   in **69 files**, always with a receiver (`go.GetComponent<T>()`). What does not exist is

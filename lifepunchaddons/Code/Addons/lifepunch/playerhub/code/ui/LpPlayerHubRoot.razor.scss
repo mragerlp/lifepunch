@@ -38,12 +38,20 @@ $gap-content: 12px;
 $sidebar-w: 190px;
 $header-h: 64px;
 
+// HUD-root mount (StaffMenu / Bitcoin Ops house pattern): absolute fill of the shared
+// DXRP HUD panel, then flex-center the 1160x700 shell. width/height 100% alone is not
+// enough when the parent is the real HUD root — without absolute the shell shrinks and
+// sits flush-right (~920px). Slice 1 proof looked centered only because it sat on a
+// hand-built full-screen ScreenPanel that no longer exists.
 .lp-playerhub {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	width: 100%;
-	height: 100%;
 	opacity: 0;
 	pointer-events: none;
 	transition: opacity 0.18s ease-out;
@@ -55,11 +63,13 @@ $header-h: 64px;
 }
 
 .hub-shell {
+	position: relative;
 	flex-direction: column;
+	flex-shrink: 0;
 	width: 1160px;
 	height: 700px;
-	max-width: 96%;
-	max-height: 96%;
+	max-width: 94%;
+	max-height: 92%;
 	background-color: $bg;
 	border: 1px solid $border;
 	border-radius: $radius-card;
@@ -81,7 +91,7 @@ $header-h: 64px;
 }
 
 .hub-brand {
-	font-family: Montserrat;
+	font-family: Poppins;
 	font-size: 16px;
 	font-weight: 600;
 	letter-spacing: 1px;
@@ -293,7 +303,7 @@ $header-h: 64px;
 }
 
 .hub-title {
-	font-family: Montserrat;
+	font-family: Poppins;
 	font-size: 22px;
 	font-weight: 600;
 	color: $text-main;
@@ -330,7 +340,7 @@ $header-h: 64px;
 }
 
 .hub-placeholder-title {
-	font-family: Montserrat;
+	font-family: Poppins;
 	font-size: 16px;
 	font-weight: 600;
 	color: $text-main;
