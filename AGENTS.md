@@ -66,6 +66,18 @@ Transport Law. Skills are capability, not authority.
   The bodies point at `CLAUDE.md` because that is where the law is; follow the pointer.
 - **Seat-local settings stay untracked.** `.codex/`, `.claude/settings.local.json`, plugin caches,
   and install state are never committed. Per-harness plugin installs are Bloodwave console acts.
-- **The Codex seat is proposal-only on the canonical tree** (CLAUDE.md → CODEX SEAT CHARTER). No
-  skill, plugin, or harness affordance changes that. The relief clause is the only door, and it
-  needs an explicit Bloodwave handoff.
+- **The Codex seat is proposal-only on the canonical tree BY DEFAULT** (CLAUDE.md → CODEX SEAT CHARTER).
+  No skill, plugin, or harness affordance changes that. **But there are TWO doors, not one:**
+  1. **A board-named DRIVE grant** (`lifepunch/docs/cvl/EDITOR_ACCESS_LAW_V2_2026-07-13.md` §1.2) —
+     **DRIVE = tree hands. While Codex holds one, the proposal-only clause is SUSPENDED** and Codex is
+     THE implementer for that slice. **Neither implementer is senior.**
+  2. **The relief clause** — an explicit Bloodwave Red-dark handoff.
+
+  **A Codex seat that reads only the old sentence would REFUSE A LAWFUL DRIVE GRANT.** Absence of a
+  grant is not a grant — but neither is a default a prohibition. **Read the BOARD for who drives.**
+- **There is exactly ONE Codex seat.** If Kepler or OpenCode drives the Codex API, **that IS the Codex
+  seat**, not a second one. A second harness on the same model is a **race for the same chair**, not a
+  new implementer.
+- **OpenCode** loads this file then `CLAUDE.md`; skills from `.agents/skills/`. Authority follows
+  the model (cloud frontier = implementer-eligible under relief; CORNERMAN = advisory) per
+  `lifepunch/docs/cvl/OPENCODE_HARNESS_ADOPTION_2026-07-14.md`.

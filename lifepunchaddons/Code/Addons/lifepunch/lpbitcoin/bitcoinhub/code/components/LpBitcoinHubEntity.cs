@@ -1074,14 +1074,15 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 	[Rpc.Host]
 	private async void CashOutHubHost( float amount, bool soldAll )
 	{
-		if ( !CanManageHub( Rpc.CallerId ) )
+		var callerId = Rpc.CallerId;
+		if ( !CanManageHub( callerId ) )
 			return;
 
 		if ( amount <= 0f || amount > HubWalletBtc )
 			return;
 
-		var payout = LpBitcoinEconomy.BtcToCashPayout( amount );
-		if ( payout == 0 )
+		var payout = LpBitcoinEconomy.BtcToCashPayout( amount, callerId );
+		if ( payout.FinalUsd == 0 )
 			return;
 
 		// Debit BEFORE the TryPayBank await, so the balance itself serialises concurrent cash-outs:
@@ -1092,16 +1093,20 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 		// landed during the await. Without this, two cash-outs both paid the bank and drove the
 		// wallet negative (repro: handoff/gate-toctou-repro-2026-07-09.log).
 		HubWalletBtc -= amount;
-		ClampWalletNonNegativeHost( Rpc.CallerId, "cashout-debit" );
-		Log.Info( $"LP_CASHOUT_SENSOR caller={Rpc.CallerId} amountReq={amount:F8} walletAfter={HubWalletBtc:F8}" );
+		ClampWalletNonNegativeHost( callerId, "cashout-debit" );
+		Log.Info( $"LP_CASHOUT_SENSOR caller={callerId} amountReq={amount:F8} walletAfter={HubWalletBtc:F8}" );
 
-		if ( !await LpBitcoinWallet.TryPayBank( Rpc.CallerId, payout, "LIFEPUNCH hub BTC cashout" ) )
+		if ( !await LpBitcoinWallet.TryPayBank(
+			callerId,
+			payout.FinalUsd,
+			payout.BuildLedgerReason( "LIFEPUNCH hub BTC cashout" ) ) )
 		{
 			HubWalletBtc += amount; // payment failed — give back exactly what we took
 			return;
 		}
 
-		NotifyCashOutSuccess( Rpc.CallerId, amount, payout, soldAll );
+		LpBitcoinPayoutAudit.RecordSuccessful( callerId, "hub-cashout", payout );
+		NotifyCashOutSuccess( callerId, amount, payout.FinalUsd, soldAll );
 		RefreshLinkedTerminalScreens();
 	}
 

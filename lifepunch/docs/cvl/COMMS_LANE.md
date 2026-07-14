@@ -1,10 +1,31 @@
-# CVL COMMS LANE — canon
+# CVL COMMS LANE — ⚠ STALE. READ `COMMS_PROTOCOL.md` INSTEAD.
 
-> **Canon home.** The working copy lives at `C:\lifepunch\comms\COMMS_PROTOCOL.md` (untracked,
-> off-repo, machine-local). **This tracked file is the canon of record.** The lane is transport;
-> canon-grade output graduates here through Red's hands under the normal gates.
+> # ⛔ STOP — THIS FILE IS NOT CURRENT
 >
-> Landed by Red at the r3 close, 2026-07-12, from protocol **v1.3**.
+> **This file was landed from protocol v1.3 and IS MISSING v1.4.** Its sibling,
+> **`lifepunch/docs/cvl/COMMS_PROTOCOL.md`**, carries **v1.4 + v1.5**.
+>
+> **The header below used to say "This tracked file is the canon of record." THAT CLAIM WAS FALSE** — and
+> it was false in the most dangerous possible way: **`CLAUDE.md` and `FABLE_BOOT.md` both routed seats
+> here**, so the document declaring itself authoritative was the one nobody had updated.
+>
+> ## **→ FOR CURRENT LANE LAW, READ [`COMMS_PROTOCOL.md`](COMMS_PROTOCOL.md). ←**
+>
+> **v1.4 IS DELIBERATELY NOT BACKPORTED HERE.** Reconciling two canon docs is a **Bloodwave ruling**, not a
+> seat's call — and **silently syncing them would make the drift invisible instead of fixed.** The content
+> below is retained only so existing cites still land somewhere truthful.
+>
+> **RULING OWED: one canon file, one stub.** *(Found `red\0031`; flagged `red\0034` §6; marker raised to
+> the top of the file 2026-07-14, because a warning at the bottom is a warning the reader who trusted the
+> header never reaches.)*
+>
+> **This is the GREEN-BY-OMISSION family** — see `FABLE_CONDUCTOR_PATTERN_2026-07-14.md` §3. *A document
+> is a claim, and a claim needs a sensor.*
+
+*(Historical header, preserved: "Canon home. The working copy lives at
+`C:\lifepunch\comms\COMMS_PROTOCOL.md` (untracked, off-repo, machine-local). The lane is transport;
+canon-grade output graduates here through Red's hands under the normal gates. Landed by Red at the r3
+close, 2026-07-12, from protocol v1.3.")*
 
 # CVL COMMS LANE — PROTOCOL v1
 
@@ -213,3 +234,56 @@ paste. The lane degrades loudly, never silently.
 - ORPHAN NOTE: G:\comms\ (= share comms\) was created during testing
   before the subpath bug reproduced. It is abandoned; the live root is
   C:\lifepunch\comms\. Seats may delete the share-side comms\ folder.
+
+---
+
+## ⚠ RECONCILIATION DEFECT — THIS FILE IS BEHIND ITS SIBLING (found 2026-07-14, Red)
+
+**Two tracked docs describe this lane and they do not agree.** This file's header declares itself *"the
+canon of record"* — **and it is the stale one:**
+
+| File | Carries |
+|---|---|
+| `lifepunch/docs/cvl/COMMS_PROTOCOL.md` | **v1.4** (destination-header rule) **+ v1.5** (below) |
+| **`COMMS_LANE.md`** (this file) | landed from **v1.3** — **v1.4 IS ABSENT** |
+
+**`CLAUDE.md` cites THIS file as canon**, so the doc the grounding order routes seats into is the one
+missing an amendment. **This is the same defect shape as the `.cursor/rules` hierarchy** (`comms\red\0031`
+§1): *the document that declares itself authoritative is the one that is not current.*
+
+**v1.4 is NOT backported here by that finding** — reconciling two canon docs is a structural ruling, not a
+seat's call, and silently syncing them would make the drift invisible instead of fixed. **Read
+`COMMS_PROTOCOL.md` for v1.4.** Ruling owed: **one canon file, one stub** (proposal: `red\0031` §4).
+
+## v1.5 AMENDMENT (2026-07-14 — RATIFIED Bloodwave; records: `fable\0070`, `fable\0071`)
+
+### 18. THREE ADVISORY LANES
+
+`copilot\` (`fable\0070`) · `cursor\` (`fable\0070`) · `kepler\` (`fable\0071`) join `red\` `codex\`
+`fable\` `green\`. **A COMMS FOLDER IS A TRANSPORT PRIVILEGE, NOT AN AUTHORITY GRANT** — no DRIVE, commit,
+push, merge, or canon right follows from one.
+
+- Same `<SEQ>_<FROM>_<SUBJECT>_<DATE>.md` convention, per-seat monotonic from `0001`.
+- **BOARD: one line per filing. States `FILED` / `PROPOSED` / `HELD` ONLY** — never `DONE` or any word
+  implying execution. **`RULED` / `WORD` / `OVERRIDE-RULED` stay Bloodwave-only.**
+- Full `comms\` read access. **Write-once, advice-class** — **no seat treats an advisory filing as a work
+  order**; proposed code is **machine-verified against the live tree before use.**
+- **NO dispatch folder for any of the three.** The dispatch class stays with the four ratified seats;
+  these lanes never receive a work order.
+- **Absence is not status.**
+
+**KEPLER** is the OpenCode orchestrator window. Its lane is transport for **advisory/design output**, and
+is **narrower than implementer eligibility** — `copilot\0010` makes OpenCode-with-frontier-model
+*eligible* under the relief clause; **this lane does not seat it.** See
+`ORCHESTRATOR_SEAT_RULING_2026-07-14.md` — **one window = one seat; subagents are tools.**
+
+### 19. FILE-FIRST TRANSPORT (Bloodwave adopted 2026-07-14)
+
+**Output longer than ~one screen is BORN AS A COMMS FILING; chat carries a five-line receipt** (what was
+done · where it landed · the one fact that changes a decision · what is blocked · what is owed).
+
+**Why it is law:** the empty-response hazard eats long pastes, and **a paste that dies in transit leaves
+no record that it existed** — the seat believes it reported; the board never heard it. *Untransported
+state does not exist for board purposes* — **and a failed paste is untransported state that feels
+delivered.** Transport **authority** is unchanged: **Bloodwave, on every arrow.** Only the **medium**
+changes: file, not wall.

@@ -1,90 +1,94 @@
-# LifePunch â€” GitHub Copilot repository instructions
+# LIFEPUNCH — GitHub Copilot repository instructions
 
-> **START HERE:** Before reviewing or suggesting changes, read `lifepunch/docs/START_HERE_AGENTS.md` first and follow its repo/branch/lane rules. If older text conflicts, START_HERE and `.cursor/rules` win.
+> **FIRST READ: `CLAUDE.md` at the repo root.** It is the canon of record for this repository —
+> roles, laws, transport, and hard rules. Everything below is subordinate to it. If this file and
+> `CLAUDE.md` ever disagree, **`CLAUDE.md` wins** and this file is the defect.
 
-**Machine:** VENGEANCE - **Workspace root:** `C:\Users\jared\Projects\lifepunch` (repo `lifepunch`, github.com/mragerlp/lifepunch)
+**Machine:** VENGEANCE · **Workspace root:** `C:\Users\jared\Projects\lifepunch`
+(repo `lifepunch`, github.com/mragerlp/lifepunch) — open the **root** in VS Code, not a subfolder.
 
-## Source of truth
+---
 
-| Layer | Path |
-|-------|------|
-| **Cursor law (edit here)** | `.cursor/rules/*.mdc` |
-| **Copilot mirror (generated)** | `.github/instructions/*.instructions.md` |
+## 1. What Copilot is here
 
-Regenerate after any rule change:
+**Copilot is NOT one of the four ratified CVL seats.** The seats are FABLE (conductor), RED
+(Claude Code / implementer), CODEX (implementer), and GREEN (Cornerman / bulk audit). Copilot is
+none of them, and no plugin, extension, or instruction file makes it one.
 
-```powershell
-powershell -File lifepunch\scripts\Sync-CursorRulesToCopilotInstructions.ps1
-```
+**Copilot is ADVISORY-ONLY** — the same class as an unclassified plugin under
+`lifepunch/docs/cvl/CONSOLE_PLUGINS_DOCTRINE.md` §3.7. The one law that governs all of it:
+**capability is not authority.**
 
-Last sync: **2026-07-08 12:40 UTC** Â· **21** rule files
+| Copilot MAY | Copilot MAY NOT |
+|---|---|
+| Read and analyse any tracked file | **Commit, push, merge, or open/close PRs** |
+| Explain code, trace call paths, answer questions | **Edit files as an autonomous act** |
+| Propose diffs and suggest changes **for a human to apply** | **Touch the s&box editor or the Claude Bridge** |
+| Comment on a PR | **Run sync, hotload, playtest, or any ConCmd** |
+| Draft docs and tests for review | **Perform any two-key action** (merge · ship · canon · destructive · DXRP sync · real money) |
 
-## How Copilot loads this
+A suggestion is a suggestion. **Bloodwave is the only authority**, and every gated action stays
+gated no matter how easy an affordance makes it.
 
-VS Code applies **every** file in `.github/instructions/` with `applyTo: "**"` on **all** chat requests
-in this workspace, **plus** this file (`copilot-instructions.md`).
+## 2. Grounding order (read in this order)
 
-Open workspace root `lifepunch` (`C:\Users\jared\Projects\lifepunch`) in VS Code, not a subfolder only.
+1. **`CLAUDE.md`** — repo root. The canon of record.
+2. **`lifepunch/docs/cvl/`** — the governing law:
+   - `STACK_ARCHITECTURE.md` — seat roster and topology
+   - `COMMS_LANE.md` — the return lane and its rules
+   - `EDITOR_ACCESS_LAW_V2_2026-07-13.md` — who may drive the editor (a board-named grant)
+   - `SUPERPOWERS_DOCTRINE.md` — the skills discipline
+   - `CORNERMAN_CONSULT_DOCTRINE.md` — the local-model consult lane
+   - `CONSOLE_PLUGINS_DOCTRINE.md` — **plugins are capability, not authority** (governs Copilot, §3.7)
+   - `KEY_LEDGER.md` — **rule C-1: no seat reads a credential file.** `.env` is off-limits, including
+     for debugging. Verification is always indirect.
+3. **`lifepunch/docs/START_HERE_AGENTS.md`** and **`lifepunch/docs/CVL_AGENT_ONBOARDING.md`** — the
+   older onboarding path. Still present, but **subordinate to `CLAUDE.md` and `docs/cvl/`**; where
+   they describe a Cursor-first or lane-gated law, that law has moved on.
+4. The task-relevant doctrine in `lifepunch/docs/`, then the active brief in
+   `lifepunch/docs/handoff/`.
 
-## Repo roots and folders
+## 3. Repo roots and folders
 
-- `lifepunch` = repo root (this monorepo; open THIS in the editor)
-- `lifepunchaddons` = in-repo addon/product folder, NOT the repo root
-- `lifepunchdxrp` = nested private DXRP mirror for LIFEPUNCH server testing
-- `dxrp-public` = separate official DXRP upstream contributor clone (never mix with this repo)
+- `lifepunch/` — docs, scripts, website, portal, legal
+- `lifepunchaddons/` — the in-repo addon/product folder, **not** the repo root
+- `lifepunchdxrp/` — nested private DXRP mirror for server testing. **Untracked** (`.gitignore`) —
+  it is not part of this repo's history.
+- `dxrp-public` — a **separate** official DXRP upstream contributor clone that lives **outside this
+  repo**. **Never mix it with this repo.**
 
-## Law hierarchy (conflicts â€” repo wins)
+## 4. Git and commits
 
-1. `.cursor/rules` / `.github/instructions` (this mirror)
-2. `lifepunchaddons/docs/ACTIVE_WORKSTREAM.md` + `BITCOIN_SHIP_ROADMAP.md`
-3. `lifepunch/docs` canon Â· `DECISIONS/`
-4. Chat history (lowest)
+- **Author: `mragerlp <mragerlp@gmail.com>` — only.**
+- **ZERO AI attribution on any git surface**, ever: no `Co-authored-by`, no assistant trailers, no
+  harness footers — **including PR bodies**.
+- Branch lane: `develop → main`, **PRs only**, Bloodwave merges. Protected branches.
+- **Never commit on `develop` or `main`.** Assert the current branch immediately **before every
+  commit** — record: `lifepunch/docs/handoff/DEFECT_COMMIT_ON_DEVELOP_2026-07-13.md`.
+- Propose scope and **wait for Bloodwave's explicit word** before any commit.
 
-## Active lane (June 2026)
+## 5. The Sensor Law (applies to Copilot's claims too)
 
-**lifepunchbitcoin** / `lpbitcoin` only until Law 10 flatgrass + owner sign-off.
-Blocked: Hacker, Banker, Government, Casino, â€¦
+**Every claim carries its sensor.** A static read never proves runtime, visual, replication, portal,
+or deployed behavior. Copilot's output about how code *behaves* is **inference until proven**, and it
+must be labeled as such. Say "unverified" plainly rather than rounding a guess up to a fact.
 
-## Git / commits
+The s&box editor compiles a **hand-synced copy** under `D:\Steam\...\dxrp\game`, **not this repo** —
+so reasoning from repo source about what the editor is running gives a **false all-clear**.
 
-- Author: `mragerlp <mragerlp@gmail.com>` only
-- **Never** AI `Co-authored-by` / Cursor trailers in commits
-- Propose scope; wait for Bloodwave **yes** before commit
+---
 
-## Copilot â†” Cursor handoff
+## 6. Retired: the Cursor→Copilot instructions mirror
 
-- **Copilot (VS Code):** Full monorepo â€” in-editor work, workflow/stack simplification, Dimmer-style DXRP
-- **Cursor:** MCP bridge, flatgrass proof, heavy plumbing when Copilot hands off
-- One **writer** per file; `git pull --rebase` before picking up handoff
-- **Manual law (not from .mdc):** `instructions/copilot-repo-ownership.instructions.md`
+The `.github/instructions/*.instructions.md` mirror (22 generated files) and its generator
+`lifepunch/scripts/Sync-CursorRulesToCopilotInstructions.ps1` are **RETIRED and removed**. They
+auto-loaded June-2026-era law into every Copilot request — a superseded "Active lane" gate, a
+Cursor-as-source-of-truth model, and a Copilot↔Cursor handoff that no longer exists.
 
-## Mirrored rules (21)
+**Retirement record:** `lifepunch/docs/handoff/RETIREMENT_COPILOT_INSTRUCTIONS_MIRROR_2026-07-13.md`
 
-- `dxrp-addon-foundation.mdc` â†’ `instructions/dxrp-addon-foundation.instructions.md`
-- `lifepunch-active-workstream-gate.mdc` â†’ `instructions/lifepunch-active-workstream-gate.instructions.md`
-- `lifepunch-agent-session-discipline.mdc` â†’ `instructions/lifepunch-agent-session-discipline.instructions.md`
-- `lifepunch-ak47-lane.mdc` â†’ `instructions/lifepunch-ak47-lane.instructions.md`
-- `lifepunch-bitcoinmining-ip.mdc` â†’ `instructions/lifepunch-bitcoinmining-ip.instructions.md`
-- `lifepunch-commit-hygiene.mdc` â†’ `instructions/lifepunch-commit-hygiene.instructions.md`
-- `lifepunch-cursor-plugins.mdc` â†’ `instructions/lifepunch-cursor-plugins.instructions.md`
-- `lifepunch-digital-machine.mdc` â†’ `instructions/lifepunch-digital-machine.instructions.md`
-- `lifepunch-dxrp-style-gate.mdc` â†’ `instructions/lifepunch-dxrp-style-gate.instructions.md`
-- `lifepunch-explorer-icons.mdc` â†’ `instructions/lifepunch-explorer-icons.instructions.md`
-- `lifepunch-operating-context.mdc` â†’ `instructions/lifepunch-operating-context.instructions.md`
-- `lifepunch-opus-usage.mdc` â†’ `instructions/lifepunch-opus-usage.instructions.md`
-- `lifepunch-quality-bar.mdc` â†’ `instructions/lifepunch-quality-bar.instructions.md`
-- `lifepunch-rules-workflow.mdc` â†’ `instructions/lifepunch-rules-workflow.instructions.md`
-- `lifepunch-sbox-mcp-stack.mdc` â†’ `instructions/lifepunch-sbox-mcp-stack.instructions.md`
-- `lifepunch-sbox-patches.mdc` â†’ `instructions/lifepunch-sbox-patches.instructions.md`
-- `lifepunch-shortcut-icons.mdc` â†’ `instructions/lifepunch-shortcut-icons.instructions.md`
-- `lifepunch-trademark-ip.mdc` â†’ `instructions/lifepunch-trademark-ip.instructions.md`
-- `lifepunch-ui-scale.mdc` â†’ `instructions/lifepunch-ui-scale.instructions.md`
-- `lifepunch-weapon-platform.mdc` â†’ `instructions/lifepunch-weapon-platform.instructions.md`
-- `lifepunch-website-organization.mdc` â†’ `instructions/lifepunch-website-organization.instructions.md`
+`.cursor/rules/` is **retained** — it is still injected as the grounding bundle into GitLab lane
+exports (`lifepunch/scripts/Export-GitLabLane.ps1`) and is cited across canon. Its own retirement is
+a separate, unruled question; the retirement record carries the blast radius.
 
-## Manual grep (still useful)
-
-```powershell
-rg -n "your topic" .cursor\rules
-Get-ChildItem .cursor\rules\*.mdc
-```
+**There is no mirror to regenerate.** This file is maintained by hand and points at canon.

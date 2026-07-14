@@ -188,6 +188,49 @@ Bets, Minigame Participate/Manage, Bypass Max Players) — ZERO
 economy/combat advantage. Facepunch compliance AND LIFEPUNCH
 identity: donors buy identity + convenience, never power.
 
+> **DONOR LAW AMENDMENT — RATIFIED AND IMPLEMENTED (ruled 2026-07-13, Bloodwave;
+> `comms\fable\0068`; implementation ruling `comms\copilot\0006`).** The Donor Law above gains ONE
+> NAMED EXCEPTION: VIP and EVIP tiers additionally grant a payout-RATE MULTIPLIER on mined-BTC
+> cashout (**VIP = 1.5x, EVIP = 2x**). It is a **per-player mechanism keyed to the terminal caller's
+> live rank — never the global `CashRateMultiplier`**. The donor rate composes multiplicatively with
+> the global event rate, with one floor after both rates. The two mined-BTC bank rails carry both an
+> enriched ledger reason and a `LifePunchBtcPayout` Audit event. Portal `$BTC` item redemption and
+> every other economy rail are outside this exception. Terminal donor-rate display is deferred.
+>
+> VIP(OG)/EVIP(OG) are PERMANENT grants to early supporters; current-generation VIP/EVIP are
+> monthly-recurring donation tiers via the website. ALL OTHER donor perks (cosmetics, titles, QoL
+> conveniences) remain strictly zero-power — the exception is narrow and named, not a general
+> license for pay-for-power. No future donor tier gains economic power without its own explicit
+> ruling amending this list.
+>
+> **SUPERSEDED HISTORY (resolved by `comms\fable\0068`).** The prior block recorded that no
+> multiplier existed in the LP addon, the 975 `.cs` files of `lifepunchdxrp/`, portal rank baselines,
+> or store config, and therefore held the amendment pending Bloodwave's ruling. That finding was
+> accurate for its state basis and is preserved at
+> `lifepunch/docs/handoff/FINDING_VIP_EVIP_PAYOUT_MULTIPLIER_2026-07-13.md`; Bloodwave then ruled the
+> corrected premise: the multiplier was a design to build, not shipped reality.
+
+## 9b. $LP CURRENCY LAW (ratified 2026-07-13, Bloodwave)
+
+**Design canon ahead of implementation.** No $LP store exists yet; nothing here is built. This law
+is landed now so that the eventual $LP-store builder **inherits the line already drawn instead of
+guessing it** (Canon Persistence Law).
+
+> **$LP Currency Law:** $LP is earned through play; direct purchase is optional and secondary. A
+> future in-game $LP store lets players spend earned $LP on perks. Most perks are COSMETIC. Some
+> perks MAY affect gameplay (temporary yield boosts, anti-grief windows, similar QoL/economy
+> effects) — EXAMPLES: "prevent hacking for 30 minutes," "2x bitcoin yield for 15 minutes."
+> **$LP perks may NEVER grant a COMBAT advantage** — no damage, health, weapon, armor,
+> movement-in-combat, or PvP-relevant edge, ever, regardless of price or rarity. This is a NARROWER
+> prohibition than Donor Law's zero-power (which bars ALL economic power) — $LP being **earned**
+> rather than bought justifies a wider ceiling, capped precisely at the combat line. Any future $LP
+> perk proposal is checked against this single question: **"does it affect combat?"** Yes = rejected
+> outright, regardless of how minor. No = permitted, subject to normal design review.
+
+**Why the ceiling differs from Donor Law:** donor rank is *bought*, so its power ceiling is zero.
+$LP is *earned*, so it may reach further — but never into combat. The two laws are deliberately
+asymmetric, and the asymmetry is the point.
+
 ## 10. Moderation & the Discord loop
 Sanctions (2,290 records): manual (issuer-attributed, typed,
 durations incl. Permanent), AUTOMATIC (Sentinel detections, e.g.

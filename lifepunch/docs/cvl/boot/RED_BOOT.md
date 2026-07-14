@@ -4,6 +4,7 @@
 
 - [ ] `CLAUDE.md`.
 - [ ] `lifepunch/docs/cvl/boot/RED_BOOT.md`.
+- [ ] **KNOW YOUR LEVEL: `lifepunch/docs/cvl/CVL_AUTHORITY_LEVELS_2026-07-13.md`.** Red is **L2** — an implementer seat that acts **only while DRIVE is explicitly granted and board-named**, and **OBSERVE otherwise**. Absence of a grant is not a grant; on expiry, **stop and report — DRIVE never silently reverts to you.** A tool call inherits only the authority you currently hold.
 - [ ] `lifepunch/docs/cvl/STACK_ARCHITECTURE.md`.
 - [ ] `lifepunch/docs/cvl/COMMS_LANE.md`.
 - [ ] `lifepunch/docs/cvl/STATUS_JSON_SCHEMA.md`.
@@ -29,6 +30,7 @@
 - [ ] SUPERPOWERS CHECK (`SUPERPOWERS_DOCTRINE.md` §3): (a) confirm the meta-skill is active — hook-injected on a Claude harness, exposed in the manifest on Codex; (b) report the count of available superpowers skills (expect 14); (c) state `skill-check discipline in force`. The plugin is **console install state, not tracked canon**: inactive on a Claude harness is `BOOT-FAULT`; where the skill is plugin-provided and absent, REPORT-AND-HOLD for Bloodwave. A boot never hard-faults a harness for a plugin Bloodwave has not installed there, and never self-installs.
 - [ ] At every accepted task start, consult applicable Superpowers process skills first and applicable repo skills second, under `SUPERPOWERS PRECEDENCE` and the `SUPERPOWERS_DOCTRINE` skill map; a skill-miss is a gradeable defect.
 - [ ] HOOK HEALTH: run one no-op tool call and report whether any `PreToolUse` / `PostToolUse` hook errored. Report a failing hook by `file:line` and owning plugin; **never patch a plugin's files** — hooks are Class C standing rules and repair needs a Bloodwave GO naming the hook.
+- [ ] MCP STACK (`TRIPLE_MCP_STACK_2026-07-13.md`): confirm all three live surfaces — s&box native (`127.0.0.1:7269/mcp`, MCP initialize), Claude Bridge (**file IPC**, with non-null addon/server versions and `versionsAligned=true`), and chomnr (`127.0.0.1:9090/sbox-mcp`, `server_get_config`). An unreachable or version-skewed surface is **REPORTED, never silently skipped**; endpoint reachability and seat-local client configuration are separate facts, and a missing alias is reported as `CLIENT NOT CONFIGURED`. **Three cables are not three drivers** — OBSERVE seats are read-only on all three.
 - [ ] EDITOR ACCESS LAW v2 (`EDITOR_ACCESS_LAW_V2_2026-07-13.md`) — **read the BOARD, not this line, for who drives.** DRIVE is exclusive and **board-named by Bloodwave's grant**; it is fixed to no seat and **there is no default driver.**
   - [ ] **WHEN RED HOLDS A BOARD-NAMED DRIVE GRANT:** Red is THE implementer seat for that slice. DRIVE = tree hands, under the discipline that binds any implementer: proof gates, Sensor Law, attribution-clean commits, observed/chair phase rules, and the two-key list. Swaps happen at slice boundaries, never mid-slice.
   - [ ] **WHEN CODEX HOLDS THE GRANT:** Codex is the implementer for that slice and its proposal-only clause is **SUSPENDED**. Red does not mutate the canonical tree or the editor behind it, and reverts to review/observe until swap-back. **Neither implementer is senior.**

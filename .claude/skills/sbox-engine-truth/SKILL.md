@@ -11,6 +11,17 @@ description: s&box / Facepunch Source 2 C# engine discipline for this repo. Use 
 > and the discipline; that document is the facts. On conflict, **the pinned fork wins over
 > both**, and the disagreement earns a correction PR.
 
+> **OFFICIAL DOCS, LOCAL AND CITABLE: `lifepunch/docs/reference/sbox-llms/LLMS_TXT_SNAPSHOT_2026-07-13/`**
+> — Facepunch's own `llms.txt` index plus **all 234 official `sbox.game/dev/doc` pages**, fetched
+> verbatim (`00_MANIFEST.md` carries source URLs, fetch date, and byte counts).
+> **This exists so an engine claim can be CITED instead of RECALLED.** If you are about to state an
+> s&box fact, **open the page and cite it** — a claim with no citable page and no in-tree exemplar is
+> a **fabrication**, not a recollection, and it is a gradeable defect.
+> **Its limits are hard:** it is **documentation, NOT the API surface** (reflection and the live
+> editor win — `describe_type`/`search_types` are the API sensor), it is a **dated snapshot that will
+> rot**, and it is **static** — it proves nothing about what the editor is running. **The in-tree
+> exemplar still outranks it** (LAW 0). Refresh = a **new dated directory**, never an edit.
+
 ## LAW 0 — DERIVATION
 
 **Before writing any component, panel, entity or system: open the nearest in-tree

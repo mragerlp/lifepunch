@@ -13,10 +13,10 @@
                      "branch":  "develop"
                  },
     "pinned":  {
-                   "sha":  "396d19607b718f3a9b474600583aaa791c21af6b",
-                   "shortSha":  "396d196",
-                   "subject":  "Merge upstream dxura/dxrp develop (56875a9) into fork develop",
-                   "syncedAt":  "2026-07-13T02:17:53Z"
+                   "sha":  "6e744a6632b4d6bc366e54e63b01b7910ab60f7e",
+                   "shortSha":  "6e744a6",
+                   "subject":  "Merge upstream dxura/dxrp develop (2357845) into fork develop",
+                   "syncedAt":  "2026-07-13T22:57:33Z"
                },
     "lastSyncedFrom":  {
                            "forkCheckout":  "C:/Users/jared/Projects/dxrp-public",
