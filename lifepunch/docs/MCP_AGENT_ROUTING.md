@@ -12,7 +12,7 @@ ChatGPT Plus/Pro on the desk is **Architect** (design brain) — paste `handoff/
 distill/prep — cheap, untrusted, not final authority); Red compiles, proves in s&box, and owns ship.
 See `CORNERMAN_MODEL_ROUTING.md` for the four Green profiles (Code / Deep / Daily / Fast).
 
-**MCP config:** `.vscode/mcp.json` in repo root — curated stack (`sbox`, `sbox-editor`, `cornerman-lm`; jtc + oz_mcp uninstalled 2026-07-08 per `SBOX_EDITOR_MCP.md`). Cursor `~/.cursor/mcp.json` remains as fallback reference only. **Boot-order law:** editor first, then the agent session (or `/mcp` reconnect) — HTTP editor MCP servers live in-editor.
+**MCP config:** `.mcp.json` at repo root — curated stack (`sbox`, `sbox-editor`, `sbox-native`; jtc + oz_mcp uninstalled 2026-07-08 per `SBOX_EDITOR_MCP.md`). `cornerman-lm` is seat-local Tier-3 (not that file). Cursor `~/.cursor/mcp.json` remains as fallback reference only. **Boot-order law:** editor first, then the agent session (or `/mcp` reconnect) — HTTP editor MCP servers live in-editor.
 
 **Stack updates / full capacity:** `CVL_FULL_CAPACITY_UPDATES.md` · `Invoke-CvlFullCapacityRefresh.ps1`
 
