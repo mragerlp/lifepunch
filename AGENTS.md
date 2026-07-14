@@ -69,3 +69,6 @@ Transport Law. Skills are capability, not authority.
 - **The Codex seat is proposal-only on the canonical tree** (CLAUDE.md → CODEX SEAT CHARTER). No
   skill, plugin, or harness affordance changes that. The relief clause is the only door, and it
   needs an explicit Bloodwave handoff.
+- **OpenCode** loads this file then `CLAUDE.md`; skills from `.agents/skills/`. Authority follows
+  the model (cloud frontier = implementer-eligible under relief; CORNERMAN = advisory) per
+  `lifepunch/docs/cvl/OPENCODE_HARNESS_ADOPTION_2026-07-14.md`.
