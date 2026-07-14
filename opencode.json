@@ -1,0 +1,30 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "instructions": [
+    "CLAUDE.md",
+    "ARCHI.md",
+    "lifepunch/docs/cvl/TRIP_ADOPTION_2026-07-14.md"
+  ],
+  "permission": {
+    "edit": "ask",
+    "bash": {
+      "*": "ask",
+      "git status*": "allow",
+      "git diff*": "allow",
+      "git log*": "allow",
+      "git branch*": "allow",
+      "git show*": "allow",
+      "git rev-parse*": "allow",
+      "git commit*": "ask",
+      "git push*": "deny",
+      "git merge*": "deny",
+      "git tag*": "deny",
+      "git reset*": "deny",
+      "git clean*": "deny",
+      "git stash*": "deny",
+      "git checkout*": "deny",
+      "git switch*": "deny"
+    },
+    "external_directory": "deny"
+  }
+}
