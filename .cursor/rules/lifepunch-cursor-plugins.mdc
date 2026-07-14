@@ -1,7 +1,9 @@
 # LifePunch — Cursor Plugin Stack (July 2026)
 
 Curated after the July 2026 prune (23 → 9). Detail + routing: `lifepunch/docs/MCP_AGENT_ROUTING.md` § Cursor plugins.
-These are **Cursor plugins** — separate from the four s&box MCP servers (`sbox`, `sbox-editor`, `sbox-jtc`, `cornerman-lm`), which are user-level and always take priority for game work.
+These are **Cursor plugins** — separate from the curated s&box MCP stack in repo-root `.mcp.json`
+(`sbox`, `sbox-editor`, `sbox-native`). Game work always routes through those surfaces first.
+`jtc.mcp-server` and `ozmium.oz_mcp` were uninstalled 2026-07-08 — do not assume they are present.
 
 ## Installed plugins — reach for them, don't re-derive
 
