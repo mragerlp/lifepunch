@@ -1,10 +1,31 @@
-# CVL COMMS LANE — canon
+# CVL COMMS LANE — ⚠ STALE. READ `COMMS_PROTOCOL.md` INSTEAD.
 
-> **Canon home.** The working copy lives at `C:\lifepunch\comms\COMMS_PROTOCOL.md` (untracked,
-> off-repo, machine-local). **This tracked file is the canon of record.** The lane is transport;
-> canon-grade output graduates here through Red's hands under the normal gates.
+> # ⛔ STOP — THIS FILE IS NOT CURRENT
 >
-> Landed by Red at the r3 close, 2026-07-12, from protocol **v1.3**.
+> **This file was landed from protocol v1.3 and IS MISSING v1.4.** Its sibling,
+> **`lifepunch/docs/cvl/COMMS_PROTOCOL.md`**, carries **v1.4 + v1.5**.
+>
+> **The header below used to say "This tracked file is the canon of record." THAT CLAIM WAS FALSE** — and
+> it was false in the most dangerous possible way: **`CLAUDE.md` and `FABLE_BOOT.md` both routed seats
+> here**, so the document declaring itself authoritative was the one nobody had updated.
+>
+> ## **→ FOR CURRENT LANE LAW, READ [`COMMS_PROTOCOL.md`](COMMS_PROTOCOL.md). ←**
+>
+> **v1.4 IS DELIBERATELY NOT BACKPORTED HERE.** Reconciling two canon docs is a **Bloodwave ruling**, not a
+> seat's call — and **silently syncing them would make the drift invisible instead of fixed.** The content
+> below is retained only so existing cites still land somewhere truthful.
+>
+> **RULING OWED: one canon file, one stub.** *(Found `red\0031`; flagged `red\0034` §6; marker raised to
+> the top of the file 2026-07-14, because a warning at the bottom is a warning the reader who trusted the
+> header never reaches.)*
+>
+> **This is the GREEN-BY-OMISSION family** — see `FABLE_CONDUCTOR_PATTERN_2026-07-14.md` §3. *A document
+> is a claim, and a claim needs a sensor.*
+
+*(Historical header, preserved: "Canon home. The working copy lives at
+`C:\lifepunch\comms\COMMS_PROTOCOL.md` (untracked, off-repo, machine-local). The lane is transport;
+canon-grade output graduates here through Red's hands under the normal gates. Landed by Red at the r3
+close, 2026-07-12, from protocol v1.3.")*
 
 # CVL COMMS LANE — PROTOCOL v1
 

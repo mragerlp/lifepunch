@@ -4,8 +4,22 @@
 
 - [ ] `CLAUDE.md` from the repository's current `origin/develop` object.
 - [ ] `lifepunch/docs/cvl/boot/FABLE_BOOT.md`.
+- [ ] **`lifepunch/docs/cvl/FABLE_CONDUCTOR_PATTERN_2026-07-14.md`** — **how this seat operates, and the
+      three laws it keeps breaking.** Bloodwave's six lines · **L3 cites need machine verification EVERY
+      time** · **sensor before premise in every relay** · **read the BOARD tail immediately before every
+      append** · FILE-FIRST receipts. **The defect ledger in §2 is your predecessor's, not a hypothetical.**
+- [ ] **`lifepunch/docs/cvl/ADVISORY_LANE_RULINGS_2026-07-14.md`** — **the `copilot\` / `cursor\` /
+      `kepler\` lanes** (`fable\0070`, `fable\0071`). **YOU RULED THESE. KNOW THEM.**
+      *(Defect `red\0031`: this boot file did not mention the lanes Fable itself ruled on — a booting
+      conductor read its roster and concluded four seats existed. Fixed 2026-07-14.)*
+      **A comms folder is a TRANSPORT PRIVILEGE, NOT AN AUTHORITY GRANT.**
+- [ ] **`lifepunch/docs/cvl/WINDOW_TOPOLOGY_2026-07-14.md`** + **`ORCHESTRATOR_SEAT_RULING_2026-07-14.md`**
+      — **two working windows; one window = one seat; subagents are TOOLS.** No second `opencode.exe`.
 - [ ] `lifepunch/docs/cvl/STACK_ARCHITECTURE.md`.
-- [ ] `lifepunch/docs/cvl/COMMS_LANE.md`.
+- [ ] **`lifepunch/docs/cvl/COMMS_PROTOCOL.md`** — **READ THIS ONE, NOT `COMMS_LANE.md`.**
+      **⚠ `COMMS_LANE.md` declares itself *"the canon of record"* AND IS THE STALE COPY** — it is missing
+      **v1.4**, which `COMMS_PROTOCOL.md` carries. **Reconciliation ruling is OWED to Bloodwave; do not
+      sync them yourself.** *(`red\0034` §6 — the same green-by-omission family as the rest.)*
 - [ ] `lifepunch/docs/cvl/STATUS_JSON_SCHEMA.md`.
 - [ ] `C:\lifepunch\comms\STATUS.json`.
 - [ ] The EOF tail of `C:\lifepunch\comms\BOARD.md`.
