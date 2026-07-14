@@ -38,11 +38,11 @@ This skill runs after `TRIP-2-implement` has converged (implementation done, tes
 
 If this skill was NOT chained from a TRIP-2 session in the current conversation, verify before any release step:
 
-```bash
-# [ADAPT_TO_PROJECT: Replace with actual lint/type-check/test commands during Init]
-[LINT_COMMAND]
-[TYPECHECK_COMMAND]
-[TEST_COMMAND] <pattern-from-the-plan's-Test-Impact-section>
+```powershell
+powershell -NoProfile -File lifepunchaddons\scripts\Validate-SboxRazorScss.ps1
+# validate-layout.ps1 only when package layout touched (scope failures to this slice)
+# TYPECHECK: editor MCP get_compile_errors / code_get_compile_errors = 0 (or n/a if docs-only)
+# TEST: focused harness from the plan's Test Impact section
 ```
 
 All must be green. Also verify the Codex state file exists for the given plan path/label (see Step 3 below); if absent, treat as the skipped-Codex fallback (manual CR) and say so explicitly in the CR.
@@ -55,8 +55,11 @@ Any failure blocks the release  -  fix or return to `TRIP-2-implement` first.
 
 Run this command to get date and project week:
 
-```bash
-date '+%d-%m-%Y %H:%M' && echo "Project week: $(( ( $(date +%s) - $(date -d '[WEEK_ANCHOR_DATE]' +%s) ) / 604800 + 1 ))"
+```powershell
+# Project week anchor = LIFEPUNCH Class 41 first-use date (2026-04-26)
+$anchor = Get-Date '2026-04-26'
+$week = [int][math]::Floor(((Get-Date) - $anchor).TotalDays / 7) + 1
+Get-Date -Format 'dd-MM-yyyy HH:mm'; "Project week: $week"
 ```
 
 Use the project week in all subsequent steps.
@@ -64,8 +67,8 @@ Use the project week in all subsequent steps.
 ## Step 2: Version Update
 
 - If not already done in the plan phase, propose new SemVer version (x.y.z)
-- Update version in `[VERSION_FILE]`
-- Do not modify anything else in this file
+- LIFEPUNCH has **no single monorepo version file**. Skip a global bump unless the touched package already carries its own version field; record the version in the changelog / CR filename only.
+- Do not invent a root `package.json` version just for TRIP.
 
 ## Step 3: Promote Code Review
 
@@ -74,19 +77,19 @@ Now that week (`a`) and version (`x.y.z`) are known:
 1. Compute state file path:
    ```bash
    STATE_KEY="$(realpath <plan-path> | sed 's|^/||; s|/|__|g')"
-   STATE_FILE=".claude/skills/codex-code-review/state/${STATE_KEY}.review.txt"
+   STATE_FILE=".agents/skills/codex-code-review/state/${STATE_KEY}.review.txt"
    ```
 
 2. Content source:
    - **Multi-round loop**: state file has synthesized review + `PROMOTION_READY`. Strip sentinel.
    - **Turn 1 convergence**: state file has full review already.
-   - **Skipped Codex**: write CR from `.claude/skills/TRIP-review/cr-template.md` with body "Code review skipped  -  trivial change." Verdict: `APPROVED with observations`.
+   - **Skipped Codex**: write CR from `.agents/skills/TRIP-review/cr-template.md` with body "Code review skipped  -  trivial change." Verdict: `APPROVED with observations`.
 
 3. Replace `<x.y.z>` with actual version. Fill any remaining `<...>` placeholders.
 
-4. Save to `docs/3-code-review/CR_wa_vx.y.z.md`.
+4. Save to `docs/3-code-review/CR_wa_vx.y.z.md` (create the folder if missing; scratch-ok until promoted under Bloodwave GO).
 
-5. Verify: no `<...>` placeholders, no `PROMOTION_READY`, version matches version file.
+5. Verify: no `<...>` placeholders, no `PROMOTION_READY`, version matches the changelog entry.
 
 ## Step 4: Commit Message
 
@@ -121,9 +124,9 @@ Also add a summary entry in the Changelog Summary section.
 
 ## Step 7: Architecture Update
 
-1. Read fully @docs/ARCHI-rules.md
-2. Update @docs/ARCHI.md following the rules
-3. Run `bash .claude/skills/TRIP-compact/count-tokens.sh docs/ARCHI.md` to check token count
+1. Read fully `CLAUDE.md` (canon) + `ARCHI.md` subordination header (no separate ARCHI-rules.md in this repo)
+2. Update @ARCHI.md following the rules
+3. Run `bash .agents/skills/TRIP-compact/count-tokens.sh ARCHI.md` to check token count
 
 **Warning: If ARCHI.md exceeds ~20,000 tokens**, warn the user:
 
@@ -169,27 +172,22 @@ git add -A && git commit -m "<commit message from Step 4>"
 git tag vx.y.z
 ```
 
-## Step 11: Merge (fast-forward)
+## Step 11: Merge (PR to develop — Bloodwave only)
 
-Merge the feature branch back into the main branch, keeping a single clean linear history:
+LIFEPUNCH does **not** ff-merge locally onto a protected branch. Open a PR with base **`develop`** (never commit on `develop`/`main`). **Merge stays Bloodwave's word** (CVL subordination banner). Propose the PR URL and HOLD.
 
-```bash
-git checkout [MAIN_BRANCH]
-git merge --ff-only <feature-branch>
-git branch -d <feature-branch>
+```powershell
+# After review+tests: push feature branch, open PR against develop, do not merge.
+gh pr create --base develop --head <feature-branch> --title "<title>" --body-file <body.md>
 ```
 
-If `--ff-only` fails, the main branch moved during implementation  -  rebase the feature branch onto it, then retry. **Never create a merge commit.**
+## Step 12: Push / tag
 
-## Step 12: Push
+Push the **feature branch** when opening the PR. Tags and any push to `main`/`develop` require Bloodwave GO.
 
 **Use the `AskUserQuestion` tool** to ask:
 
-- **Question**: "Release vx.y.z is committed, tagged, and merged. Push to remote?"
-- **Options**: "Yes, push now" (push branch and tags), "Not yet" (push manually later)
+- **Question**: "Release prep for vx.y.z is committed on the feature branch. Open/update the PR against develop (merge HELD)?"
+- **Options**: "Yes, open/update PR" / "Not yet"
 
-**If "Yes"**:
-
-```bash
-git push && git push --tags
-```
+**If "Yes"**: push `-u` if needed and ensure the PR exists. Do **not** merge, force-push protected branches, or push tags without Bloodwave GO.

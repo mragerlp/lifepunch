@@ -21,10 +21,10 @@ argument-hint: "<plan-path> [instructions] | reset <plan-path> | show <plan-path
 
 Non-interactive implementation via Codex CLI in a **workspace-write** sandbox: Codex reads the plan, edits the working tree directly, runs the project's lint/build on its own work, and reports back. One persistent thread per target, so multi-phase plans can be delegated phase by phase with full context retained.
 
-State persisted under `.claude/skills/codex-implement/state/<sanitized-target>.{thread,review.txt,events.ndjson}` (the `.review.txt` file holds Codex's implementation **report**  -  the naming comes from the shared helpers). `resume`/`reset`/`show` reuse the shared scripts from `codex-plan-review`; always export before invoking them:
+State persisted under `.agents/skills/codex-implement/state/<sanitized-target>.{thread,review.txt,events.ndjson}` (the `.review.txt` file holds Codex's implementation **report**  -  the naming comes from the shared helpers). `resume`/`reset`/`show` reuse the shared scripts from `codex-plan-review`; always export before invoking them:
 
 ```bash
-export STATE_DIR=".claude/skills/codex-implement/state"
+export STATE_DIR=".agents/skills/codex-implement/state"
 ```
 
 ## Arguments
@@ -39,12 +39,12 @@ export STATE_DIR=".claude/skills/codex-implement/state"
 1. **Parse `$ARGUMENTS`**: extract action (`reset`/`show`/auto) and target.
 
 2. **Auto**  -  try `start.sh` first (exit code 2 = thread exists → use `resume.sh`):
-   - **Start**: `bash .claude/skills/codex-implement/scripts/start.sh --prompt-file .claude/skills/codex-implement/prompts/implement.tpl <target> [instructions]`
-   - **Resume** (next phase / additional scope): `bash .claude/skills/codex-plan-review/scripts/resume.sh --prompt-file .claude/skills/codex-implement/prompts/continue.tpl <target> [instructions]`
+   - **Start**: `bash .agents/skills/codex-implement/scripts/start.sh --prompt-file .agents/skills/codex-implement/prompts/implement.tpl <target> [instructions]`
+   - **Resume** (next phase / additional scope): `bash .agents/skills/codex-plan-review/scripts/resume.sh --prompt-file .agents/skills/codex-implement/prompts/continue.tpl <target> [instructions]`
 
-3. **Reset**: `bash .claude/skills/codex-plan-review/scripts/reset.sh <target>`
+3. **Reset**: `bash .agents/skills/codex-plan-review/scripts/reset.sh <target>`
 
-4. **Show**: `bash .claude/skills/codex-plan-review/scripts/show.sh <target>`
+4. **Show**: `bash .agents/skills/codex-plan-review/scripts/show.sh <target>`
 
 5. **Parse trailing tag** of the report:
    - `IMPLEMENTATION_COMPLETE`  -  hand control back to the requester's self-review (TRIP-2).

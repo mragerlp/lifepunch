@@ -25,7 +25,7 @@ You are now in **implementation mode** for **LIFEPUNCH**.
 
 Before implementing, you MUST read ALL THE LINES of:
 
-1. @docs/ARCHI.md - Understand current system architecture
+1. @ARCHI.md - Understand current system architecture
 
 ## Your Task
 
@@ -94,25 +94,35 @@ After implementation, before the Codex review loop. Any failure here blocks the 
 
 ### 1. Lint, type-check & build
 
-```bash
-# [ADAPT_TO_PROJECT: Replace with actual lint/type-check/build commands during Init]
-[LINT_COMMAND] 2>&1 | tee /tmp/_trip2-lint.txt
-[TYPECHECK_COMMAND] 2>&1 | tee /tmp/_trip2-typecheck.txt
+LIFEPUNCH has no offline `tsc`/`dotnet build` for addon C#. Use these floors (PowerShell from repo root). Bash `tee` paths below are optional; on Windows prefer `Tee-Object`.
+
+```powershell
+# LINT — Razor/SCSS static (always when UI touched; cheap enough to run otherwise)
+powershell -NoProfile -File lifepunchaddons\scripts\Validate-SboxRazorScss.ps1 2>&1 | Tee-Object -FilePath $env:TEMP\_trip2-lint.txt
+
+# LINT (layout) — only when addons.json / package layout / Assets|Code paths change.
+# Known pre-existing reds elsewhere do NOT block an unrelated slice; scope the failure to touched packages.
+powershell -NoProfile -File lifepunchaddons\scripts\validate-layout.ps1 2>&1 | Tee-Object -FilePath $env:TEMP\_trip2-layout.txt
+
+# TYPECHECK — s&box editor compile sensor (DRIVE holder). Mandatory for any .cs/.razor change.
+# MCP: get_compile_errors / code_get_compile_errors → 0 CS / 0 RZ / 0 failed compiles.
+# Docs-only or skill-only diffs may record: typecheck: n/a (no code compile surface).
 ```
 
 ### 2. Run affected unit tests
 
-```bash
-[TEST_COMMAND] <pattern-for-affected-files>
+```powershell
+# Run the focused harness named in the plan's Test Impact section (never the whole monorepo by default).
+# Examples: slice-local Pester/PowerShell proof scripts under lifepunch/scripts or handoff scratch;
+# economy/donor: the focused suite recorded in the round report (pass count is the sensor).
+# If the plan names no harness: write the minimal behavioral check now (see TRIP-test), then run it.
 ```
 
 Only the files/areas the change touched  -  never the full suite by default.
 
 ### 3. Integration impact check
 
-<!-- [ADAPT_TO_PROJECT: During Init, replace with the project's integration/E2E impact rules  -  e.g. "if selectors changed, run the E2E suite" or "if an API contract changed, exercise it against the local server/emulator". Docs-only changes skip this.] -->
-
-If the change modifies an externally observable contract (API shape, UI selectors, auth behavior), exercise it with the project's integration/E2E tooling. Docs-only changes skip this.
+If the change touches gameplay/UI/economy rails: flatgrass or `lp_map_flatgrass` play proof via the board-named DRIVE holder (Sensor Law). Editor-only preview is not sign-off for those surfaces. Docs-only / skill-doc calibration skips this. Portal/economy outbound calls without a token stay **unverified**, never silently claimed.
 
 ### 4. Author missing tests
 

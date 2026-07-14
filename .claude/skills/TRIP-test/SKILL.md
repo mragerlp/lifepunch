@@ -28,8 +28,8 @@ This skill is the **deep test-authoring reference**: the `TRIP-2-implement` test
 
 Before testing, you MUST read:
 
-1. @docs/ARCHI.md - Understand system architecture
-2. @docs/4-unit-tests/TESTING.md - Testing guidelines
+1. @ARCHI.md - Understand system architecture
+2. `CLAUDE.md` Sensor Law + the lane's `lifepunch-*` skill (no separate `docs/4-unit-tests/TESTING.md` in this repo)
 
 ## Your Task
 
@@ -46,38 +46,38 @@ Test: $ARGUMENTS
 
 ### Commands
 
-```bash
-# [ADAPT_TO_PROJECT: Replace with actual test commands during Init]
+```powershell
+# Focused harness named by the plan / round report (preferred)
+# Example pattern: a slice-local script under lifepunch\scripts or an in-editor fixture ConCmd.
 
-# Run all tests
-[TEST_COMMAND_ALL]
+# Layout / Razor floors (not a substitute for behavioral tests)
+powershell -NoProfile -File lifepunchaddons\scripts\Validate-SboxRazorScss.ps1
 
-# Run specific test
-[TEST_COMMAND_SPECIFIC]
-
-# With coverage
-[TEST_COMMAND_COVERAGE]
+# Compile sensor (code changes): editor MCP get_compile_errors / code_get_compile_errors
 ```
 
 ### Test Structure
 
-[ADAPT_TO_PROJECT: Describe where tests are located and naming conventions during Init]
+- **In-editor / fixture proof**: ConCmds and play fixtures under `lifepunchaddons/Code/...` (e.g. bitcoinmining donor/devspawn helpers) — preferred for s&box behavior.
+- **Scripted floors**: `lifepunchaddons/scripts/Validate-*.ps1`, `validate-layout.ps1` (scoped).
+- **Round-report sensors**: pass counts (e.g. 24/24) and P0 checklists filed in `comms/` or `lifepunch/docs/handoff/` are valid sensors when they postdate the change.
+- Naming: prefer `Test-*.ps1` / `*Proof*.ps1` for new offline harnesses under `lifepunch/scripts/`.
 
 ### Testing Priorities
 
-<!-- [ADAPT_TO_PROJECT: Replace with project-specific testing priorities during Init] -->
+**Unit / pure-helper tests**:
 
-**Unit Tests**:
+- Economy math, rank resolution, pure policy helpers (no engine required when extractable)
 
-- Core logic functions
-- Utility functions
-- Individual modules/components
+**Integration / play proof**:
 
-**Integration Tests**:
+- Flatgrass / `lp_map_flatgrass` for Hub/Terminal/Rack gameplay and UI
+- Two-account fixtures when rank/ownership is load-bearing
 
-- Module interactions
-- External service integration
-- End-to-end flows
+**Sensor floors (always for code)**:
+
+- Compile clean + focused harness pass count before claiming DONE
+- No silent "looks fine from code" visual claims without bridge/screenshot- End-to-end flows
 
 **What to Test**:
 

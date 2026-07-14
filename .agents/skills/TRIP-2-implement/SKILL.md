@@ -25,7 +25,7 @@ You are now in **implementation mode** for **LIFEPUNCH**.
 
 Before implementing, you MUST read ALL THE LINES of:
 
-1. @docs/ARCHI.md - Understand current system architecture
+1. @ARCHI.md - Understand current system architecture
 
 ## Your Task
 
@@ -54,17 +54,17 @@ You do NOT write the implementation yourself  -  delegate it to Codex via the `c
 2. **Start** the implementation session (state dir is handled by the script):
 
    ```bash
-   bash .claude/skills/codex-implement/scripts/start.sh \
-       --prompt-file .claude/skills/codex-implement/prompts/implement.tpl \
+   bash .agents/skills/codex-implement/scripts/start.sh \
+       --prompt-file .agents/skills/codex-implement/prompts/implement.tpl \
        <plan-path> "Implement Phase 1 only"   # instructions optional  -  omit to implement the whole plan
    ```
 
    Follow-up phases resume the same thread (context retained):
 
    ```bash
-   export STATE_DIR=".claude/skills/codex-implement/state"
-   bash .claude/skills/codex-plan-review/scripts/resume.sh \
-       --prompt-file .claude/skills/codex-implement/prompts/continue.tpl \
+   export STATE_DIR=".agents/skills/codex-implement/state"
+   bash .agents/skills/codex-plan-review/scripts/resume.sh \
+       --prompt-file .agents/skills/codex-implement/prompts/continue.tpl \
        <plan-path> "Now implement Phase 2"
    ```
 
@@ -94,25 +94,35 @@ After implementation, before the Codex review loop. Any failure here blocks the 
 
 ### 1. Lint, type-check & build
 
-```bash
-# [ADAPT_TO_PROJECT: Replace with actual lint/type-check/build commands during Init]
-[LINT_COMMAND] 2>&1 | tee /tmp/_trip2-lint.txt
-[TYPECHECK_COMMAND] 2>&1 | tee /tmp/_trip2-typecheck.txt
+LIFEPUNCH has no offline `tsc`/`dotnet build` for addon C#. Use these floors (PowerShell from repo root). Bash `tee` paths below are optional; on Windows prefer `Tee-Object`.
+
+```powershell
+# LINT — Razor/SCSS static (always when UI touched; cheap enough to run otherwise)
+powershell -NoProfile -File lifepunchaddons\scripts\Validate-SboxRazorScss.ps1 2>&1 | Tee-Object -FilePath $env:TEMP\_trip2-lint.txt
+
+# LINT (layout) — only when addons.json / package layout / Assets|Code paths change.
+# Known pre-existing reds elsewhere do NOT block an unrelated slice; scope the failure to touched packages.
+powershell -NoProfile -File lifepunchaddons\scripts\validate-layout.ps1 2>&1 | Tee-Object -FilePath $env:TEMP\_trip2-layout.txt
+
+# TYPECHECK — s&box editor compile sensor (DRIVE holder). Mandatory for any .cs/.razor change.
+# MCP: get_compile_errors / code_get_compile_errors → 0 CS / 0 RZ / 0 failed compiles.
+# Docs-only or skill-only diffs may record: typecheck: n/a (no code compile surface).
 ```
 
 ### 2. Run affected unit tests
 
-```bash
-[TEST_COMMAND] <pattern-for-affected-files>
+```powershell
+# Run the focused harness named in the plan's Test Impact section (never the whole monorepo by default).
+# Examples: slice-local Pester/PowerShell proof scripts under lifepunch/scripts or handoff scratch;
+# economy/donor: the focused suite recorded in the round report (pass count is the sensor).
+# If the plan names no harness: write the minimal behavioral check now (see TRIP-test), then run it.
 ```
 
 Only the files/areas the change touched  -  never the full suite by default.
 
 ### 3. Integration impact check
 
-<!-- [ADAPT_TO_PROJECT: During Init, replace with the project's integration/E2E impact rules  -  e.g. "if selectors changed, run the E2E suite" or "if an API contract changed, exercise it against the local server/emulator". Docs-only changes skip this.] -->
-
-If the change modifies an externally observable contract (API shape, UI selectors, auth behavior), exercise it with the project's integration/E2E tooling. Docs-only changes skip this.
+If the change touches gameplay/UI/economy rails: flatgrass or `lp_map_flatgrass` play proof via the board-named DRIVE holder (Sensor Law). Editor-only preview is not sign-off for those surfaces. Docs-only / skill-doc calibration skips this. Portal/economy outbound calls without a token stay **unverified**, never silently claimed.
 
 ### 4. Author missing tests
 
@@ -142,13 +152,13 @@ Always run the Codex code review after the testing gate passes  -  no confirmati
 Always export before invoking shared scripts:
 
 ```bash
-export STATE_DIR=".claude/skills/codex-code-review/state"
+export STATE_DIR=".agents/skills/codex-code-review/state"
 ```
 
 1. **Start**:
    ```bash
-   bash .claude/skills/codex-plan-review/scripts/start.sh \
-       --prompt-file .claude/skills/codex-code-review/prompts/start.tpl \
+   bash .agents/skills/codex-plan-review/scripts/start.sh \
+       --prompt-file .agents/skills/codex-code-review/prompts/start.tpl \
        <plan-path> "$GATE_SUMMARY"
    ```
    `$GATE_SUMMARY` is the testing-gate summary (`lint | typecheck | tests`). For unplanned work (no `F_*.plan.md`), pass a free-form label instead of a plan path.
@@ -161,8 +171,8 @@ export STATE_DIR=".claude/skills/codex-code-review/state"
 
 5. **Resume** (re-run the testing gate first  -  lint, typecheck, affected tests  -  and build a fresh summary):
    ```bash
-   bash .claude/skills/codex-plan-review/scripts/resume.sh \
-       --prompt-file .claude/skills/codex-code-review/prompts/resume.tpl \
+   bash .agents/skills/codex-plan-review/scripts/resume.sh \
+       --prompt-file .agents/skills/codex-code-review/prompts/resume.tpl \
        --notes "Fixed X. Pushed back on Y because Z." \
        <plan-path> "$GATE_SUMMARY"
    ```
@@ -177,8 +187,8 @@ Skip if loop converged on Turn 1 (state file already holds full review).
 Turn-N state files hold only that turn's delta. After multi-round convergence, produce a consolidated review:
 
 ```bash
-bash .claude/skills/codex-plan-review/scripts/resume.sh \
-    --prompt-file .claude/skills/codex-code-review/prompts/synthesize.tpl \
+bash .agents/skills/codex-plan-review/scripts/resume.sh \
+    --prompt-file .agents/skills/codex-code-review/prompts/synthesize.tpl \
     <plan-path> "Today's date is YYYY-MM-DD"
 ```
 
@@ -203,6 +213,6 @@ After Codex converges (or is skipped):
   - **Question**: "Is the implementation complete?"
   - **Options**: "Yes, everything is complete" (proceed to release), "No, there are remaining items" (continue working)
 
-**If "Yes"**: proceed directly into the release  -  read `.claude/skills/TRIP-3-release/SKILL.md` and follow it in this session, passing the same plan path (or feature label). The release skill owns everything from version bump to the fast-forward merge and push.
+**If "Yes"**: proceed directly into the release  -  read `.agents/skills/TRIP-3-release/SKILL.md` and follow it in this session, passing the same plan path (or feature label). The release skill owns everything from version bump to the fast-forward merge and push.
 
 **If "No"**: continue working, then repeat the sequence: testing gate → Codex review → this question.

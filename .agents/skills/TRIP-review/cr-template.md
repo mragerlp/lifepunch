@@ -55,7 +55,7 @@ Angle-bracket placeholders (`<like this>`) are filling-in instructions for the r
 
 ## Checklist
 
-State each section's outcome (passed / passed with caveats / not applicable). One line per section, no expanded prose unless a caveat needs explanation. The section names match the criteria headings in `.claude/skills/TRIP-review/checklist.md` so a reader can cross-reference what was checked.
+State each section's outcome (passed / passed with caveats / not applicable). One line per section, no expanded prose unless a caveat needs explanation. The section names match the criteria headings in `.agents/skills/TRIP-review/checklist.md` so a reader can cross-reference what was checked.
 
 - [ ] 1. Functional Requirements — <outcome>
 - [ ] 2. Code Quality — <outcome>

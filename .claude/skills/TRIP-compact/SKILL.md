@@ -32,7 +32,7 @@ ARCHI.md should not exceed _~20k tokens_. A bloated ARCHI:
 
 ## Your Task
 
-Compact: @docs/ARCHI.md
+Compact: @ARCHI.md
 
 ---
 
@@ -41,7 +41,7 @@ Compact: @docs/ARCHI.md
 First, measure the actual token count using the bundled script:
 
 ```bash
-bash .claude/skills/TRIP-compact/count-tokens.sh docs/ARCHI.md
+bash .claude/skills/TRIP-compact/count-tokens.sh ARCHI.md
 ```
 
 Then read the full ARCHI.md and evaluate:
@@ -196,7 +196,7 @@ After compaction, verify:
 Run the script again on the compacted file:
 
 ```bash
-bash .claude/skills/TRIP-compact/count-tokens.sh docs/ARCHI.md
+bash .claude/skills/TRIP-compact/count-tokens.sh ARCHI.md
 ```
 
 Present the compaction results to the user, then **use the `AskUserQuestion` tool**:

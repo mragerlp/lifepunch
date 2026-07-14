@@ -23,10 +23,10 @@ Iterative code review via Codex CLI on uncommitted changes. Codex reads the plan
 
 Review output stays in `state/<key>.review.txt`  -  not `docs/3-code-review/`. Promotion to `docs/3-code-review/CR_wa_vx.y.z.md` happens after convergence, not per-turn.
 
-State persisted under `.claude/skills/codex-code-review/state/<sanitized-target>.{thread,review.txt,events.ndjson}`. Shared scripts live under `.claude/skills/codex-plan-review/scripts/`; always export before invoking:
+State persisted under `.agents/skills/codex-code-review/state/<sanitized-target>.{thread,review.txt,events.ndjson}`. Shared scripts live under `.agents/skills/codex-plan-review/scripts/`; always export before invoking:
 
 ```bash
-export STATE_DIR=".claude/skills/codex-code-review/state"
+export STATE_DIR=".agents/skills/codex-code-review/state"
 ```
 
 ## Arguments
@@ -40,12 +40,12 @@ export STATE_DIR=".claude/skills/codex-code-review/state"
 1. **Parse `$ARGUMENTS`**: extract action (`reset`/`show`/auto) and target.
 
 2. **Auto**  -  try `start.sh` first (exit code 2 = thread exists -> use `resume.sh`):
-   - **Start**: `bash .claude/skills/codex-plan-review/scripts/start.sh --prompt-file .claude/skills/codex-code-review/prompts/start.tpl <target> [extra]`
-   - **Resume**: `bash .claude/skills/codex-plan-review/scripts/resume.sh --prompt-file .claude/skills/codex-code-review/prompts/resume.tpl <target> [extra]`
+   - **Start**: `bash .agents/skills/codex-plan-review/scripts/start.sh --prompt-file .agents/skills/codex-code-review/prompts/start.tpl <target> [extra]`
+   - **Resume**: `bash .agents/skills/codex-plan-review/scripts/resume.sh --prompt-file .agents/skills/codex-code-review/prompts/resume.tpl <target> [extra]`
 
-3. **Reset**: `bash .claude/skills/codex-plan-review/scripts/reset.sh <target>`
+3. **Reset**: `bash .agents/skills/codex-plan-review/scripts/reset.sh <target>`
 
-4. **Show**: `bash .claude/skills/codex-plan-review/scripts/show.sh <target>`
+4. **Show**: `bash .agents/skills/codex-plan-review/scripts/show.sh <target>`
 
 5. **Parse trailing tag**:
    - `APPROVED`  -  propose post-convergence steps.
@@ -60,7 +60,7 @@ Codex uses `git status -s` / `git diff HEAD` in read-only sandbox. If those fail
 
 ## After Convergence
 
-1. Promote `state/<key>.review.txt` to `docs/3-code-review/CR_wa_vx.y.z.md` using `.claude/skills/TRIP-review/cr-template.md`.
+1. Promote `state/<key>.review.txt` to `docs/3-code-review/CR_wa_vx.y.z.md` using `.agents/skills/TRIP-review/cr-template.md`.
 2. Continue with `TRIP-3-release`.
 
 ## Notes

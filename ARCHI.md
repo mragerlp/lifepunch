@@ -46,3 +46,19 @@ plus its website, portal, legal, docs, and multi-agent development law (CVL).
 
 `develop -> main`, PRs only, Bloodwave merges. Never commit on `develop`/`main`.
 Author `mragerlp <mragerlp@gmail.com>`, zero AI attribution anywhere.
+
+## TRIP testing gate (calibrated 2026-07-14)
+
+From repo root (PowerShell). Automation via `codex exec` / bash scripts remains
+follow-up; these commands are the manual gate floors:
+
+| Gate | Command / sensor |
+|------|------------------|
+| Lint (UI) | `powershell -NoProfile -File lifepunchaddons\scripts\Validate-SboxRazorScss.ps1` |
+| Lint (layout) | `validate-layout.ps1` only when package layout touched; scope failures to this slice |
+| Typecheck | Editor MCP `get_compile_errors` / `code_get_compile_errors` = 0 CS/RZ/failed (or n/a if docs-only) |
+| Test | Focused harness named in the plan Test Impact / round report (pass count is the sensor) |
+| Play proof | Flatgrass / `lp_map_flatgrass` when Hub/Terminal/Rack gameplay or UI changed |
+
+Skill path roots: Claude Code uses `.claude/skills/`; Codex / non-Claude harnesses use
+`.agents/skills/` (paired surfaces, same PR). `ARCHI.md` lives at **repo root**, not `docs/`.

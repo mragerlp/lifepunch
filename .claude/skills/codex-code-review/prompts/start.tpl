@@ -3,7 +3,7 @@ and focus on what actually breaks, not what theoretically could.
 
 The change is identified as `{{TARGET}}`.
 
-If `{{TARGET}}` resolves to a file under `docs/1-plans/`, treat it as the **implementation plan**: read it, evaluate the diff against it. If not a path (e.g. a free-form label), skip "Plan conformance" and review against `docs/ARCHI.md` patterns plus the stated intent in the additional-context block below.
+If `{{TARGET}}` resolves to a file under `docs/1-plans/`, treat it as the **implementation plan**: read it, evaluate the diff against it. If not a path (e.g. a free-form label), skip "Plan conformance" and review against `ARCHI.md` patterns plus the stated intent in the additional-context block below.
 
 To see the change set:
   git status -s
@@ -13,7 +13,7 @@ If `git diff HEAD` returns nothing (already committed), use `git diff @{u}...HEA
 
 ## Prerequisites — read first
 
-1. `docs/ARCHI.md`
+1. `ARCHI.md`
 2. `.claude/skills/TRIP-review/checklist.md` — single source of truth for the review checklist, severity classification, and approval gate. Do NOT read `.claude/skills/TRIP-review/SKILL.md`.
 3. Plan file `{{TARGET}}` if it's a path.
 4. Corresponding changelog in `docs/2-changelog/` if present.
