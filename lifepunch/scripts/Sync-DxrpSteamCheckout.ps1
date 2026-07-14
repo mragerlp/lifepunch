@@ -126,4 +126,9 @@ if ($dirtyOverlay.Count -gt 0) {
     }
 }
 
-Write-Host 'Steam DXRP aligned. Run Sync-LifePunchAddonsToDxrp.ps1 next.' -ForegroundColor Green
+# Re-apply the dxrp-overlays/ mechanism's files. The stash list above is hand-maintained and does
+# NOT know about lifepunch/dxrp-overlays/ (green\0008); this script is the authoritative restore for
+# anything that lives there, and it derives its file list dynamically.
+& (Join-Path $Here 'Sync-DxrpEditorOverlays.ps1')
+
+Write-Host 'Steam DXRP aligned + editor overlays re-applied. Run Sync-LifePunchAddonsToDxrp.ps1 next.' -ForegroundColor Green
