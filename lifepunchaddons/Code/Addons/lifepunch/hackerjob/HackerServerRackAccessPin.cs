@@ -18,8 +18,8 @@ namespace LifePunch.DXRP.Addons.HackerJob;
 /// </summary>
 internal static class HackerServerRackAccessPin
 {
-	public const int PinLength = 4;
-	public const float SessionSeconds = 900f;
+	public static int PinLength => HackerJobConfigRuntime.Current.PinLength;
+	public static float SessionSeconds => HackerJobConfigRuntime.Current.PinSessionSeconds;
 
 	public static bool IsValidFormat( string pin )
 	{

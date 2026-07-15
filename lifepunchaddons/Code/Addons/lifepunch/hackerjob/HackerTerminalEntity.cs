@@ -53,6 +53,12 @@ public sealed class HackerTerminalEntity : BaseEntity, Component.IPressable
 	protected override void OnStart()
 	{
 		base.OnStart();
+		HackerJobConfig config = null;
+#if !LIFEPUNCH_LOCAL
+		config = GetConfig( new HackerJobConfig() );
+#endif
+		HackerJobConfigRuntime.Apply( config );
+
 		RefreshScreenIdle();
 #if !LIFEPUNCH_LOCAL
 		this.TryBindSpawnOwnerHost();

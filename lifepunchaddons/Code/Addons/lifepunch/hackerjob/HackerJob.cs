@@ -56,7 +56,7 @@ public static class HackerJob
 	public const string KeyboardSoundPath = "addons/lifepunch/bitcoinmining/sounds/bitcoinminer/keyboard.sound";
 
 	/// <summary>Seconds allowed to complete an active puzzle before auto-fail.</summary>
-	public const float DefaultPuzzleTimeLimitSeconds = 45f;
+	public static float DefaultPuzzleTimeLimitSeconds => HackerJobConfigRuntime.Current.BasePuzzleSeconds;
 
 	/// <summary>Hard rule: only on-hand wallet cash — bank is never touched.</summary>
 	public const bool BankUntouchable = true;
