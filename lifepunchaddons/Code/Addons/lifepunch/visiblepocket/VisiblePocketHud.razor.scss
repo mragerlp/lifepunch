@@ -26,6 +26,7 @@ VisiblePocketHud {
     font-family: $main-font;
 
     .pocket-bar {
+        pointer-events: all;
         background-color: $bg;
         border: 1px solid $border;
         box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
@@ -97,6 +98,32 @@ VisiblePocketHud {
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+        }
+    }
+
+    .lp-source-footer {
+        margin-top: 4px;
+        border-top-color: $border;
+        background-color: rgba(8, 12, 16, 0.72);
+        font-family: $main-font;
+
+        .lp-mark {
+            color: $accent;
+        }
+
+        .lp-product,
+        .lp-legal,
+        .lp-footer-separator {
+            color: $body-dim;
+        }
+
+        .lp-url-copy {
+            color: $body-dim;
+        }
+
+        .lp-url-copy:hover,
+        .lp-url-copy.copied {
+            color: $accent;
         }
     }
 

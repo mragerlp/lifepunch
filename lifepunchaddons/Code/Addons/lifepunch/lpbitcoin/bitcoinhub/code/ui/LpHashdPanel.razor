@@ -132,13 +132,13 @@
 									<span class="power-switch-track">
 										<span class="power-switch-knob"></span>
 									</span>
-									<span class="power-switch-label">@(Hub?.IsPowered == true ? "POWER ON" : "POWER OFF")</span>
+									<span class="power-switch-label">@HubPowerStateLabel()</span>
 								</button>
 								<button class="header-chip wallet-chip"
 								        tooltip="BTC Wallet"
 								        onclick="@SelectWalletTab">
 									<i class="material-icons">account_balance_wallet</i>
-									<span class="lp-money-btc">₿</span> <span class="lp-money-amt">@HeaderWalletBtc()</span>
+									<LifePunchCurrencyToken Sign="₿" Amount="@HeaderWalletBtc()" TokenClass="header-wallet-token" />
 								</button>
 								<button class="header-chip cashout-all-chip @GetCashOutAllButtonClass()"
 								        tooltip="Cash out all hub wallet BTC to bank"
@@ -164,7 +164,7 @@
 									<div class="pane overview">
 										<div class="lp-ui-panel-title overview-dash-title">
 											<i class="material-icons">home</i>
-											<span>Overview</span>
+											<span>Dashboard</span>
 										</div>
 										<div class="lp-ui-intro overview-command-center-intro">
 											This home page is your setup and status checkpoint. Detailed management lives in Servers, Wallet, Transfers, and Upgrades.
@@ -260,7 +260,7 @@
 													<div class="overview-snapshot-card">
 														<div class="overview-snapshot-label">Hub wallet</div>
 														<div class="overview-snapshot-value"><span class="lp-money-btc">₿</span> <span class="lp-money-amt">@HeaderWalletBtc()</span></div>
-														<div class="overview-snapshot-sub"><span class="lp-money-cash">$</span><span class="lp-money-amt">@CombinedUsd().ToString( "N2" )</span> estimated value</div>
+														<div class="overview-snapshot-sub"><LifePunchCurrencyToken Sign="$" Amount="@(CombinedUsd().ToString( "N2" ))" Label="estimated value" SignClass="lp-money-cash" TokenClass="overview-wallet-value" /></div>
 													</div>
 												</div>
 												<div class="overview-snapshot-note">
@@ -502,7 +502,7 @@
 																		<span class="entity-chip red">FULL</span>
 																	}
 																	<span class="entity-chip dim">@RackYieldBadge( slot.Rack )</span>
-																	<span class="entity-invested-token"><span class="lp-money-btc">₿</span> <span class="lp-money-amt">@HeroInvestedReceipt( slot.Rack )</span><span class="lp-money-unit"> invested</span></span>
+																	<LifePunchCurrencyToken Sign="₿" Amount="@HeroInvestedReceipt( slot.Rack )" Label="invested" TokenClass="entity-invested-token" />
 																}
 																else
 																{
@@ -545,7 +545,11 @@
 																	</div>
 																	<div class="server-stat-row">
 																		<span class="server-stat-label">Buffer</span>
-																		<span class="server-stat-value"><span class="lp-money-btc">₿</span> <span class="lp-money-amt">@($"{slot.Rack.BitcoinAmount:F4}")</span><span class="lp-money-unit"> / </span><span class="lp-money-btc">₿</span> <span class="lp-money-amt">@($"{LpBitcoinEconomy.RackBtcCapacityFor( slot.Rack ):F4}")</span><span class="lp-money-unit"> (@(HeroBufferPercent( slot.Rack ))%)</span></span>
+																		<span class="server-stat-value server-buffer-value">
+																			<LifePunchCurrencyToken Sign="₿" Amount="@HeroBufferAmount( slot.Rack )" TokenClass="server-buffer-current" />
+																			<span class="lp-money-unit server-buffer-separator">/</span>
+																			<LifePunchCurrencyToken Sign="₿" Amount="@HeroBufferCapacityAmount( slot.Rack )" Label="@HeroBufferPercentLabel( slot.Rack )" TokenClass="server-buffer-capacity" />
+																		</span>
 																	</div>
 																	<div class="server-buffer-bar">
 																		<div class="server-buffer-bar-fill" style="width: @( HeroBufferPercent( slot.Rack ) )%;"></div>
@@ -559,7 +563,7 @@
 																@* TIER PROGRESS = the transact surface (track-row law). Each row: icon
 																   lit≥T1, name+why, centered display tree, price + visible delta subtext,
 																   UPGRADE + the anchor-aware chip. PLANNED rows: badge only. *@
-																@{ var rackTracks = GpuRackUpgradeTracks.Append( RackFanRgbCosmetic ).ToList(); }
+																var rackTracks = GpuRackUpgradeTracks.Append( RackFanRgbCosmetic ).ToList();
 																<div class="entity-tier-progress transact">
 																	@for ( int _row = 0; _row < rackTracks.Count; _row++ )
 																	{
@@ -753,7 +757,7 @@
 												</div>
 												<div class="lp-ui-info-row">
 													<span class="lp-ui-info-label">Terminal linked</span>
-													<span class="lp-ui-info-value">@(HasLinkedTerminal() ? "Yes" : "No — link on Overview")</span>
+													<span class="lp-ui-info-value">@(HasLinkedTerminal() ? "Yes" : "No — link on Dashboard")</span>
 												</div>
 												<div class="lp-ui-info-row">
 													<span class="lp-ui-info-label">USD value (hub)</span>
@@ -862,7 +866,7 @@
 															<div class="transfer-subsection transfer-subsection-stat">
 																<div class="transfer-subsection-row">
 																	<span class="transfer-subsection-label">Terminal linked</span>
-																	<span class="transfer-subsection-value">@(HasLinkedTerminal() ? "Yes — ready to send" : "No — link on Overview")</span>
+																	<span class="transfer-subsection-value">@(HasLinkedTerminal() ? "Yes — ready to send" : "No — link on Dashboard")</span>
 																</div>
 															</div>
 															<div class="transfer-subsection transfer-subsection-detail transfer-subsection-command">
@@ -900,13 +904,13 @@
 													{
 														<div class="transfers-rate-cell">
 															<span class="transfers-rate-cell-btc"><span class="lp-money-btc">₿</span> <span class="lp-money-amt">@($"{amount:F2}")</span></span>
-															<span class="transfers-rate-cell-usd"><span class="lp-money-unit">≈ </span><span class="lp-money-cash">$</span><span class="lp-money-amt">@TransferReferenceUsd( amount )</span><span class="lp-money-unit"> bank</span></span>
+															<span class="transfers-rate-cell-usd"><span class="lp-money-unit">≈</span><LifePunchCurrencyToken Sign="$" Amount="@TransferReferenceUsd( amount )" Label="bank" SignClass="lp-money-cash" TokenClass="transfers-rate-bank" /></span>
 														</div>
 													}
 												</div>
 												<div class="transfers-rate-wallet">
 													<span class="transfers-rate-wallet-label">Still on racks</span>
-													<span class="transfers-rate-wallet-value @TransferRackBalanceValueClass()">@TransferRackBalanceReference()</span>
+													<span class="transfers-rate-wallet-value @TransferRackBalanceValueClass()"><LifePunchCurrencyToken Sign="₿" Amount="@TransferRackBalanceAmount()" Label="@TransferRackBalanceLabel()" TokenClass="transfers-rack-balance" /></span>
 												</div>
 											</div>
 										</div>
@@ -986,6 +990,7 @@
 														</div>
 														<button class="settings-switch @(Hub?.IsPowered == true ? "on" : "off")" tooltip="@(Hub?.IsPowered == true ? "Power off hub" : "Power on hub")" onclick="@ToggleHubPower">
 															<span class="power-switch-track"><span class="power-switch-knob"></span></span>
+															<span class="power-switch-label">@HubPowerStateLabel()</span>
 														</button>
 													</div>
 
@@ -1028,7 +1033,6 @@
 												<div class="settings-footnote lp-hashd-surface">
 													<div class="settings-footnote-title">Getting started</div>
 													<div class="settings-footnote-text">@OverviewIntroCopyLine()</div>
-													<div class="settings-footnote-credit">LIFEPUNCH™ Bitcoin Ops · proprietary IP · lifepunch.co</div>
 												</div>
 											</div>
 										</div>
@@ -1043,6 +1047,9 @@
 
 		</div>
 
+		<div class="lp-window-watermark">
+			<LifePunchUiFooter Product="Bitcoin Ops" />
+		</div>
 	</div>
 </root>
 
@@ -1440,6 +1447,15 @@
 		return cap > 0f ? (int)Math.Round( 100f * Math.Clamp( rack.BitcoinAmount / cap, 0f, 1f ) ) : 0;
 	}
 
+	private static string HeroBufferAmount( LpBitcoinRackEntity rack )
+		=> $"{rack.BitcoinAmount:F4}";
+
+	private static string HeroBufferCapacityAmount( LpBitcoinRackEntity rack )
+		=> $"{LpBitcoinEconomy.RackBtcCapacityFor( rack ):F4}";
+
+	private static string HeroBufferPercentLabel( LpBitcoinRackEntity rack )
+		=> $"({HeroBufferPercent( rack )}%)";
+
 	// Outside-click dismisses the confirm chip; clicks inside the chip or on stepper
 	// cells are theirs (cells run their own toggle logic on the later click event).
 	private void OnRootMouseDown( PanelEvent e )
@@ -1723,7 +1739,7 @@
 		LpBitcoinHudBridge.SetMenuCursorMode( false );
 	}
 
-	private string StatusLabel() => Hub?.IsPowered == true ? "POWER ON" : "POWER OFF";
+	private string HubPowerStateLabel() => Hub?.IsPowered == true ? "ON" : "OFF";
 
 	private string AvatarInitial()
 	{
@@ -2288,14 +2304,14 @@
 	private string TransferReferenceUsd( float btc )
 		=> $"{LpBitcoinEconomy.BtcToCashUsd( btc ):N2}";
 
-	private string TransferRackBalanceReference()
+	private string TransferRackBalanceAmount()
 	{
 		var btc = RackPendingBtc();
-		if ( btc <= 0f )
-			return "0 BTC \u2014 pull at terminal to deposit";
-
-		return $"{btc.ToString( "F6" )} BTC on racks";
+		return btc <= 0f ? "0" : btc.ToString( "F6" );
 	}
+
+	private string TransferRackBalanceLabel()
+		=> RackPendingBtc() <= 0f ? "\u2014 pull at terminal to deposit" : "on racks";
 
 	private string TransferRackBalanceValueClass()
 		=> RackPendingBtc() > 0f ? "accent" : string.Empty;

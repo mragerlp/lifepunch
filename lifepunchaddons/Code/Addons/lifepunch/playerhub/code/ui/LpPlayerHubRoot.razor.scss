@@ -137,9 +137,13 @@ $header-h: 64px;
 	color: $text-main;
 }
 
-.lp-mark {
+.hub-lp-mark {
 	font-size: 14px;
 	font-weight: 700;
+	color: $lp-blue;
+}
+
+.hub-shell .lp-source-footer .lp-mark {
 	color: $lp-blue;
 }
 

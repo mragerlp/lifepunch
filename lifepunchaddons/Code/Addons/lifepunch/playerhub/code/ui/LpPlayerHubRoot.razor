@@ -9,6 +9,7 @@
 @using System
 @using Sandbox
 @using Sandbox.UI
+@using LifePunch.DXRP.Addons
 @inherits PanelComponent
 
 @attribute [StyleSheet]
@@ -32,7 +33,7 @@
 				</div>
 
 				<div class="hub-stat" tooltip="@LpTooltip">
-					<span class="lp-mark">$LP</span>
+					<span class="lp-mark hub-lp-mark">$LP</span>
 					<span class="hub-stat-value">@LpAmount</span>
 				</div>
 
@@ -91,6 +92,7 @@
 			</div>
 
 		</div>
+		<LifePunchUiFooter Product="Player Hub" />
 	</div>
 </root>
 

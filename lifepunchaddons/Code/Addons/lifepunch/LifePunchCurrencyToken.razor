@@ -9,43 +9,27 @@
    Presence in this repository or on the DXRP portal grants no rights to anyone else.
    ───────────────────────────────────────────────────────────────────────────── *@
 @namespace LifePunch.DXRP.Addons
-@using Sandbox
+@using System
 @using Sandbox.UI
 @inherits Panel
 @attribute [StyleSheet]
 
-<root class="lp-source-footer">
-	<div class="lp-footer-identity">
-		<span class="lp-mark">@LifePunchSourceMark.UiFooterMark</span>
-		<span class="lp-product">@Product</span>
-		<span class="lp-footer-separator">·</span>
-		<span class="lp-legal">proprietary IP</span>
-		<span class="lp-footer-separator">·</span>
-	</div>
-    <button class="lp-url-copy @(_urlCopied ? "copied" : "")"
-            tooltip="@($"Copy {LifePunchSourceMark.UiFooterUrl}")"
-            onclick="@CopySourceUrl">
-        @( _urlCopied ? "Link copied!" : LifePunchSourceMark.PublisherUrl )
-    </button>
+<root class="lp-currency-token @TokenClass">
+	<span class="@SignClass">@Sign</span>
+	<span class="lp-money-amt">@Amount</span>
+	@if ( !string.IsNullOrWhiteSpace( Label ) )
+	{
+		<span class="lp-money-unit lp-currency-label">@Label</span>
+	}
 </root>
 
 @code {
-	public string Product { get; set; } = string.Empty;
+	public string Sign { get; set; } = string.Empty;
+	public string Amount { get; set; } = string.Empty;
+	public string Label { get; set; } = string.Empty;
+	public string SignClass { get; set; } = "lp-money-btc";
+	public string TokenClass { get; set; } = string.Empty;
 
-    private bool _urlCopied;
-
-    private void CopySourceUrl()
-    {
-        Clipboard.SetText( LifePunchSourceMark.UiFooterUrl );
-        _urlCopied = true;
-        StateHasChanged();
-        _ = RevertCopyLabel();
-    }
-
-    private async System.Threading.Tasks.Task RevertCopyLabel()
-    {
-        await GameTask.DelayRealtimeSeconds( 1.8f );
-        _urlCopied = false;
-        StateHasChanged();
-    }
+	protected override int BuildHash()
+		=> HashCode.Combine( Sign, Amount, Label, SignClass, TokenClass );
 }

@@ -31,6 +31,17 @@
 	letter-spacing: 0.5px;
 	overflow: hidden;
 
+	.lp-footer-identity {
+		flex: 1 1 auto;
+		min-width: 0;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: 4px;
+		overflow: hidden;
+		white-space: nowrap;
+	}
+
 	.lp-mark {
 		display: flex;
 		align-items: center;
@@ -38,6 +49,22 @@
 		font-weight: bold;
 		flex-shrink: 0;
 		line-height: 1;
+		white-space: nowrap;
+	}
+
+	.lp-product {
+		color: rgba(255, 255, 255, 0.72);
+		font-weight: bold;
+		white-space: nowrap;
+	}
+
+	.lp-legal {
+		color: rgba(255, 255, 255, 0.5);
+		white-space: nowrap;
+	}
+
+	.lp-footer-separator {
+		color: rgba(255, 255, 255, 0.28);
 		white-space: nowrap;
 	}
 
