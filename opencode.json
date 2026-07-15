@@ -1,16 +1,47 @@
 {
   "$schema": "https://opencode.ai/config.json",
   // Canon: lifepunch/docs/cvl/OPENCODE_HARNESS_ADOPTION_2026-07-14.md
-  // Authority follows the model — cloud frontier implementer-eligible under relief;
-  // CORNERMAN local = advisory-only. push/merge/tag denied; Bloodwave merge key.
-  // external_directory: "ask" per Bloodwave 2026-07-14 — comms\ filings approved
-  // per fable\0071; every out-of-repo access prompts, Bloodwave clicks the gate.
+  //      + lifepunch/docs/cvl/ORCHESTRATOR_SEAT_RULING_2026-07-14.md
+  //      + lifepunch/docs/cvl/WINDOW_TOPOLOGY_2026-07-14.md
+  // Config of record per fable\0074 (v2 body). Landed by Red, red\0037.
+  //
+  // AUTHORITY FOLLOWS THE MODEL, NOT THE HARNESS. Cloud frontier =
+  // relief-clause implementer-eligible; CORNERMAN local = advisory-only.
+  // ONE WINDOW = ONE SEAT. Subagents below are TOOLS, not seats: they
+  // inherit the orchestrator's constraints and hold ZERO authority.
+  // Their output is LEADS-GRADE until the orchestrator machine-verifies
+  // it against real files (red\0034: two L3 seats filed bad cites in one
+  // night, and one would have re-created a fixed money bug).
+  //
+  // EDITOR MCP BLOCK (native 7269 + chomnr 9090) WIRED BY RULING:
+  // BOARD "BLOODWAVE | RULED | OPENCODE EDITOR TRIAL" 2026-07-15 +
+  // dispatch\opencode\0001 — SUPERSEDES the fable\0074 no-editor-MCP
+  // clause and the WINDOW_TOPOLOGY sentence. Supersession record rides
+  // Red's canon PR (riders 4-5). TRIPLE_MCP law unchanged: three cables
+  // are not three drivers — one board-named DRIVE holder, any surface,
+  // every mutation records WHICH surface performed it. Claude Bridge
+  // (file IPC) remains Red's surface, not wirable here by design.
+  // Never Ozmium/8098, which does not exist on this stack.
+  //
+  // push/merge/tag/reset DENIED — Bloodwave holds the merge key.
+  // external_directory "ask" per fable\0071 (comms\ filings approved);
+  // every out-of-repo access prompts and Bloodwave clicks the gate.
   "instructions": [
     "CLAUDE.md",
     "ARCHI.md",
     "lifepunch/docs/cvl/TRIP_ADOPTION_2026-07-14.md",
     "lifepunch/docs/cvl/OPENCODE_HARNESS_ADOPTION_2026-07-14.md"
   ],
+  "mcp": {
+    "sbox-native": {
+      "type": "remote",
+      "url": "http://127.0.0.1:7269/mcp"
+    },
+    "chomnr": {
+      "type": "remote",
+      "url": "http://127.0.0.1:9090/sbox-mcp"
+    }
+  },
   "provider": {
     "cornerman": {
       "npm": "@ai-sdk/openai-compatible",
@@ -32,7 +63,60 @@
       }
     }
   },
+  // SUBAGENTS = TOOLS. Hard deny-walls: no edit, no out-of-repo reads,
+  // no mutating git, no editor skills. They flag; they never decide.
+  "agent": {
+    "corner-review": {
+      "description": "Green-class advisory code reviewer (qwen coder).",
+      "mode": "subagent",
+      "model": "cornerman/qwen2.5-coder-32b-instruct",
+      "prompt": "L3 advisory reviewer. Cite file:line. Flag, never decide. Your output is leads-grade until the orchestrator machine-verifies it.",
+      "permission": {
+        "edit": "deny",
+        "external_directory": "deny",
+        "bash": {
+          "*": "deny",
+          "git diff*": "allow",
+          "git show*": "allow",
+          "git log*": "allow"
+        },
+        "skill": {
+          "*": "deny",
+          "lifepunch-grounding": "allow",
+          "codex-code-review": "allow"
+        }
+      }
+    },
+    "deep-scan": {
+      "description": "Green-class bulk read-only repository scanner (qwen 27b).",
+      "mode": "subagent",
+      "model": "cornerman/qwen/qwen3.6-27b",
+      "prompt": "Bulk read-only scanner. Every citation is a claim until the orchestrator verifies it against real files.",
+      "permission": {
+        "edit": "deny",
+        "external_directory": "deny",
+        "bash": {
+          "*": "deny",
+          "git grep*": "allow",
+          "git show*": "allow",
+          "git log*": "allow"
+        },
+        "skill": {
+          "*": "deny",
+          "lifepunch-grounding": "allow"
+        }
+      }
+    }
+  },
+  // PERMISSIONS per OPENCODE_HARNESS_ADOPTION_2026-07-14 gates
+  // (edit=ask, commit=ask, push/merge/tag=deny), reaffirmed by the
+  // T0-ACCEPTED ruling 2026-07-15 (Fable relay, Bloodwave-accepted):
+  // seat MIRROR upheld — earlier drafted allow/deny variants were
+  // informational, not overrides; the adoption-doc gates stand.
+  // checkout/switch/reset/clean/stash denies kept (trial + worktree
+  // law). Startup-only loading: takes effect at next restart.
   "permission": {
+    "*": "ask",
     "edit": "ask",
     "bash": {
       "*": "ask",
@@ -51,6 +135,22 @@
       "git stash*": "deny",
       "git checkout*": "deny",
       "git switch*": "deny"
+    },
+    // "*": "ask" (not deny) at the SEAT level — an unknown or newly
+    // added skill PROMPTS Bloodwave rather than silently disappearing.
+    // Subagents above get hard deny-walls instead.
+    // lifepunch-editor-gate DENIED: editor launches are Red's surface.
+    // cornerman-packets DENIED: packet authoring is the Fable/Bloodwave lane.
+    "skill": {
+      "*": "ask",
+      "lifepunch-grounding": "allow",
+      "lifepunch-economy": "allow",
+      "lifepunch-config": "allow",
+      "lifepunch-razor-ui": "allow",
+      "sbox-engine-truth": "allow",
+      "TRIP-*": "allow",
+      "lifepunch-editor-gate": "deny",
+      "cornerman-packets": "deny"
     },
     "external_directory": "ask"
   }

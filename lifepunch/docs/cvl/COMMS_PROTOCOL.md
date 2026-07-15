@@ -299,3 +299,232 @@ Invariant 6) — **and a paste that failed to transport is untransported state t
 
 This does not change **who** transports: **Bloodwave remains the transport authority on every logical
 arrow.** It changes only the **medium** of the payload — file, not wall.
+
+---
+
+## v1.6 AMENDMENT (2026-07-14 — PRE-FIRE TOKEN ASSERTION; records: `green\0013`, `green\0018`, `red\0037`)
+
+### RULE 19 — **NO UNFILLED PLACEHOLDER TOKEN SURVIVES INTO A FIRED PACKET.**
+
+**Before any packet, dispatch, or relay is handed to Bloodwave for transport, its author asserts that it
+contains no unresolved placeholder** — no `<SHA>`, `<DEVELOP-TIP-SHA40>`, `<SEQ>`, `<seat>`, `<date>`,
+`<filename>`, or any other `<...>` slot left for a human to fill by hand.
+
+**The assertion is the author's, and it is owed at authoring time — not at fire time.** A packet handed
+over with a manual-fill token is a **defective packet**, and the defect belongs to the seat that wrote
+it, not the seat that stopped on it.
+
+### THE RECEIVING SEAT'S DUTY (already correct — now written down)
+
+**A seat that receives a packet containing an unfilled token STOPS AND REPORTS. It does not guess, derive,
+or self-fill the value — even when it knows the right answer.**
+
+> **Green did exactly this, twice, and was right both times.** In `green\0018` it went further: it
+> **derived `origin/develop`'s tip itself, realized that a self-authored pin defeats R7 regardless of
+> whether the value is correct, self-reverted to its boot SHA, and reported.** *That is the rule working.*
+
+**Why self-filling is a defect even when the value is right:** the pin exists so that the **dispatching
+authority** chooses the state the work runs against (**CVL Sync Law:** *no actor issues instructions
+against a state it has not observed*). A seat that fills its own pin has **silently promoted itself from
+executor to authority** — and the work may be perfectly correct while the *chain of authority is broken*.
+**A correct answer obtained through a broken gate is a broken gate.**
+
+### WHY THIS IS A LAW AND NOT A CHECKLIST ITEM
+
+**It has now failed twice, in the same template class, one day apart** — `green\0013` (2026-07-13) and
+`green\0018` (2026-07-14). Both times the packet was well-formed, well-reasoned, and **unfireable.** Both
+times a lane sat idle waiting on a value that a `printf`-level check would have caught at authoring.
+
+**The cost is asymmetric and that is the whole argument:** the check costs one grep. The miss costs a
+round trip through Bloodwave, an idle Green, and a re-fire — **and the second occurrence proves that
+"remember to fill it in" is not a control.**
+
+> ## A TEMPLATE THAT CAN FIRE WITH ITS SLOTS EMPTY IS A LOADED FOOTGUN, AND THE FIX BELONGS IN THE RENDERER, NOT IN THE DISCIPLINE OF WHOEVER HOLDS IT LAST.
+
+### THE ONE FALSE POSITIVE — DO NOT "FIX" IT
+
+**`--:--Z` in a BOARD line is NOT an unfilled token.** It is the board's **real, ratified proxy-append
+timestamp format** (rule 18b). A pre-fire check that flags it is a **broken check**.
+
+**That it *reads* like a template slot is itself a hygiene finding** (`green\0018`), banked: the format is
+correct and the format is confusable. **Any automated assertion must whitelist it explicitly** — and the
+day it is replaced, it is replaced by ruling, not by a linter.
+
+### ⚠ HOUSEKEEPING DEFECT NOTED, NOT SILENTLY FIXED
+
+**This document contains TWO sections headed `## v1.5 AMENDMENT`** — one dated 2026-07-13 (Green lane
+normalization) and one dated 2026-07-14 (`fable\0070` / `fable\0071` lanes). **Two different amendments
+share one version number.** This amendment is **v1.6** and does not renumber them: **renumbering a ratified
+amendment rewrites history to look tidy.** Flagged for the pending **COMMS reconciliation ruling** —
+which already owes an answer on the *three* disagreeing copies of this protocol
+(`COMMS_LANE.md` = v1.3 · this file = v1.4/v1.5 · `C:\lifepunch\comms\COMMS_PROTOCOL.md` = **still `v1`**).
+
+> **THE OPERATIONAL COPY THE SEATS ACTUALLY READ IS THE MOST STALE OF THE THREE.** Rule 19 is written
+> here, in tracked canon — **it is not yet in the copy that sits in the lane.** That gap is named, not
+> papered over: **syncing it silently would hide the drift instead of fixing it**, and the reconciliation
+> is a Bloodwave ruling (owed since `red\0034`).
+
+---
+
+## v1.7 AMENDMENT (2026-07-14 — DISPATCH-CLASS EXPANSION + PIPELINE LAW; dispatch: canon-sweep3, Fable relay author, Bloodwave GO)
+
+> **DRIFT NOTE (unchanged, widened):** RULES 20–21 and the PIPELINE LAW land **here, in tracked canon,
+> and NOT in the lane copy** (`C:\lifepunch\comms\COMMS_PROTOCOL.md`, still `v1`). This is the same
+> named gap Rule 19 carries: syncing it silently would hide the drift, and the three-copy reconciliation
+> remains a Bloodwave ruling (owed since `red\0034`). This amendment does not reconcile it.
+
+### RULE 20 — **GITHUB-ISSUE DISPATCH CLASS.**
+
+A dispatch may be carried as a **GitHub issue** on the **private repo only**, under these binding forms:
+
+- **Title:** `[LANE-X] task @ SHA` — the lane tag and the pin are in the title.
+- **Body:** the **full relay**, carrying **all three dispatch keys** from `COMMS_LANE` doctrine:
+  1. **Fable-authored**,
+  2. **`AUTHORIZED: Bloodwave GO <UTC>`**,
+  3. a **matching FABLE BOARD line**.
+- **An issue missing any one of the three keys is NOT a work order** — identical to a lane dispatch. The
+  medium changes; the three-key gate does not.
+- **No credentials, tokens, or portal data in issue bodies** (rule C-2 / KEY_LEDGER — a GitHub issue is a
+  network-published surface even on a private repo).
+- **Private repo only.** A dispatch issue never touches a public repo.
+
+This is a **transport medium**, not an authority grant: the issue is the payload, Bloodwave is still the
+transport authority on every logical arrow, and the dispatch class stays reserved to the four ratified
+seats (no `[LANE-COPILOT]` / `[LANE-CURSOR]` dispatch issue exists).
+
+### RULE 21 — **DOC-OF-TRUTH MULTI-AGENT RELAY (>2 agents).**
+
+When a relay coordinates **more than two agents**, the pastes live in **one Fable-lane doc** (the
+doc-of-truth), and **Bloodwave receives a pointer** to it rather than N separate walls.
+
+- **Fired sections freeze.** Once a section of the doc-of-truth has been dispatched (fired) to a seat,
+  that section is **write-once** — corrections are new sections citing the old, never edits. A doc-of-truth
+  is a running record, and a fired section describes something that already happened.
+- The doc-of-truth is a **Fable-lane** artifact. It never becomes a work order on its own — the pointer +
+  Bloodwave's transport is still the execution authority (Transport Law unchanged).
+
+### PIPELINE LAW — **NOTHING CODEX-AUTHORED REACHES THE CANONICAL TREE OR THE EDITOR WITHOUT THE GREEN+FABLE PASS.**
+
+The multi-agent build pipeline runs in one fixed order:
+
+```
+Kepler / Codex lane output
+        │
+        ▼
+Green bulk review (Deep model)        ← first gate: bulk consistency / census / first-pass review
+        │
+        ▼
+Fable grade                           ← second gate: scope-match, proof quality, lane discipline
+        │
+        ▼
+Implementing seat with LIVE editor    ← Red OR Cursor, per the board-named DRIVE grant
+bridges  (Red or Cursor)              ← the ONLY hands that touch the canonical tree + editor
+        │
+        ▼
+Bloodwave merge                       ← sole merge gate, unchanged
+```
+
+- **Codex may implement in worktrees.** That is inside its charter under a DRIVE grant, in isolation.
+- **But nothing Codex-authored reaches the canonical tree or the editor without the Green+Fable pass**
+  first. Codex worktree output is **lane output**, not tree state, until Green has bulk-reviewed it and
+  Fable has graded it — *then* an implementing seat with live editor bridges (Red or Cursor per DRIVE)
+  lands it, and Bloodwave merges.
+- **Rationale:** the editor bridges are localhost and the canonical tree is the runtime truth surface.
+  Codex has no live bridge; its worktree output is unproven against the running engine until a bridged
+  seat drives it. The two-gate pass (Green bulk, Fable grade) is what converts lane output into
+  tree-eligible work — it never skips because "Codex already reviewed it."
+
+---
+
+## v1.8 AMENDMENT (2026-07-15 — OPENCODE SEAT LANE + PULL-DISPATCH FOLDER RECONCILIATION + PER-LANE CODEX PREFIX; dispatch: `dispatch\red\0002` Rider 4b, Fable relay author, Bloodwave GO)
+
+> **DRIFT NOTE (unchanged):** these rules land **here, in tracked canon, NOT in the lane copy**
+> (`C:\lifepunch\comms\COMMS_PROTOCOL.md`, still `v1`). Same named gap Rules 19–21 carry; the
+> three-copy reconciliation remains a Bloodwave ruling (owed since `red\0034`). Not reconciled here.
+
+### RULE 22 — **OPENCODE IS AN L2 IMPLEMENTER SEAT LANE.**
+
+`comms\opencode\` (filings) + `dispatch\opencode\` (orders) are **LIVE**, ratified by the BOARD
+`"BLOODWAVE | RULED | OPENCODE EDITOR TRIAL"` 2026-07-15 + `OPENCODE_HARNESS_ADOPTION_2026-07-14.md`.
+
+- **Class: L2 implementer-eligible seat.** **Authority follows the model** — a frontier cloud model
+  is L2 implementer-eligible (relief clause); a CORNERMAN local model is advisory-only and the seat
+  is Green-class for that session. The seat **states its model in every boot report**; the lane
+  state words it may use track that authority.
+- **It RECEIVES dispatches.** Unlike the L3 advisory lanes (Rule 18), an implementer seat lane is a
+  work-order destination — `dispatch\opencode\` carries three-key dispatches.
+- **Standard bindings:** `<SEQ>_OPENCODE_<SUBJECT>_<DATE>.md`, per-seat monotonic from `0001`,
+  write-once, own-folder-only, `FROM: OpenCode` on every filing.
+- **Relationship to the `kepler\` lane (Rule 18).** `kepler\` is the **L3 advisory** orchestrator-
+  window lane; `opencode\` is that same window's **L2 seat** lane when it runs a frontier model.
+  **One window = one seat** (`ORCHESTRATOR_SEAT_RULING`); which lane it files to reflects the
+  authority its model currently carries. A CORNERMAN-model session files advisory; a frontier-model
+  session under a relief handoff files as an implementer.
+
+### RULE 23 — **PULL-DISPATCH FOLDER RECONCILIATION** (supersedes §18's "NO `dispatch\...`" bullet and Rule 20's "four ratified seats" clause, for cursor / kepler / opencode).
+
+`fable\0082` **PULL-DISPATCH FLOW V2** (BOARD `"BLOODWAVE | RULED | PULL-DISPATCH FLOW V2"`
+2026-07-15) legitimized `dispatch\cursor\` + `dispatch\kepler\`, superseding the `fable\0070`
+exclusion; `dispatch\opencode\` is live per Rule 22. Therefore:
+
+- **Live dispatch folders:** `dispatch\red\` · `dispatch\codex\` · `dispatch\fable\`(reserved) ·
+  `dispatch\green\` · `dispatch\cursor\` · `dispatch\kepler\` · `dispatch\opencode\`.
+- **STILL NO `dispatch\copilot\`.** Copilot remains advisory-receive-only (direct Bloodwave paste).
+- **Receiving a dispatch is not authority.** A dispatch folder is a *destination*; the **three keys**
+  (Fable-authored · `AUTHORIZED: Bloodwave GO <UTC>` · matching FABLE BOARD line) plus the seat's
+  **current grant** govern what the recipient may do. Cursor receiving `dispatch\cursor\0001` is L3
+  advisory **unless** board-named for a DRIVE slice in that dispatch (as Grok was). The medium
+  expanded; the authority gate did not move.
+- **Rule 20's GitHub-issue dispatch class** now admits `[LANE-<seat>]` for any seat with a live
+  dispatch folder, under the same three-key body; the "reserved to four seats / no `[LANE-CURSOR]`"
+  sentence of Rule 20 is superseded by this rule.
+
+### RULE 24 — **PER-LANE CODEX FILING PREFIX** (Rider 4b addition; born from the `0053` SEQ collision).
+
+Kepler-run Codex agents working parallel lanes file as:
+
+```
+<SEQ>_CODEX-<LANE>_<TITLE>_<DATE>.md      e.g. 0055_CODEX-HUB_slice2-prework_2026-07-15.md
+```
+
+- **ONE shared Codex SEQ counter** across all Codex-lane agents (monotonic ordering preserved).
+- **The lane tag lives IN THE NAME** (`CODEX-HUB`, `CODEX-BITCOIN`, `CODEX-CHEMIST`) so two agents
+  filing near-simultaneously produce **distinct filenames** even at the same instant.
+- **Rationale:** `0053` collided — two different filings, one number, two Kepler-Codex agents — and
+  `fable\0081` recorded literal duplicate prefixes (`0047`×2 / `0049`×2). A shared plain-`CODEX`
+  counter with no lane discriminator is a collision waiting to fire whenever agents run in parallel.
+  The lane tag disambiguates the *name*; the single counter keeps the *order*. **A counter that two
+  parallel writers can both claim is a footgun; the discriminator belongs in the renderer, not in
+  the hope that they file one-at-a-time** (same principle as Rule 19).
+
+---
+
+## v1.9 AMENDMENT (2026-07-15 — IMPLEMENTER WORKTREE LAW; dispatch: `dispatch\red\0002` guardrail + Cursor 0046 REVISE fix 3, Bloodwave INCIDENT+RULED)
+
+### RULE 25 — **IMPLEMENTER WORKTREE LAW.**
+
+**Body verbatim from the BOARD `BLOODWAVE | INCIDENT+RULED` line (2026-07-15):**
+
+> **PRIMARY-TREE SWING (`cursor\0041` MIRROR):** a Red session checked out `red/canon-sweep3` on the
+> primary tree while GROK held editor DRIVE — **the editor compiles the tree**, Grok's edits were
+> wiped once (recovered). **RULED: IMPLEMENTER WORKTREE LAW —** while a DRIVE grant is open **the
+> primary tree belongs to the DRIVE holder exclusively; every other implementer works in worktrees
+> only; a non-DRIVE checkout on the primary tree is a DRIVE violation regardless of editor tool
+> usage.** Rides Red's canon PR.
+
+**Operative form (from the `dispatch\red\0002` guardrail):**
+
+- While **any** editor DRIVE grant is open, the **PRIMARY tree belongs to the DRIVE holder
+  exclusively.** Every other implementer works in **git worktrees only.**
+- A checkout on the primary tree by a **non-DRIVE seat is a DRIVE violation even with ZERO editor
+  tool calls** — because **the editor compiles the tree, not the seat's intent.** The violation is the
+  checkout, not the tool call.
+- **Swaps happen at slice boundaries**, in this order: the holder **files its round + pushes** →
+  **Bloodwave closes the editor** → the new holder does a **fresh boot + Launch Report** → a **BOARD
+  line names the new holder.** No mid-slice swaps; no silent reversion (`EDITOR_ACCESS_LAW_V2`,
+  `CVL_AUTHORITY_LEVELS` L2: DRIVE never silently reverts — the expiring holder stops and reports).
+
+**Cross-reference:** this Rule is the COMMS/CVL home of the law; `OPENCODE_BOOT.md` and the other boot
+checklists carry it as a boot-time reminder, but the **binding statement lives here** (per Cursor
+0046: "land as COMMS/CVL amendment, not boot-file-only").
+

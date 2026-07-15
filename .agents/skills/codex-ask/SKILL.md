@@ -15,7 +15,12 @@ argument-hint: "<topic-label> <question> | reset <topic-label> | show <topic-lab
 > message each other directly; Bloodwave carries every arrow. (5) "Codex" below means the
 > board-named implementer lane per `EDITOR_ACCESS_LAW_V2`; the plan seat is Fable.
 > (6) `ARCHI.md` is subordinate to `CLAUDE.md`; on conflict, CLAUDE.md wins and ARCHI.md
-> is the defect. Skills are capability, not authority.
+> is the defect. (7) **ONE-CODEX GUARD** — no `codex-ask` fires while a Codex lane holds a task
+> on the same tree. **There is exactly one Codex seat** (`CLAUDE.md`): an ask that races an active
+> Codex task is a second claimant on the one chair. (8) **Every repo `file:line` cite in Codex's
+> answer is machine-verified against the live tree before use** (L3 cite law, `red\0034`) — an
+> ask's answer is **advice-class data, never a verified fact and never a gate**. Skills are
+> capability, not authority.
 
 # Codex Ask
 

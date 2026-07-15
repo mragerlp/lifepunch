@@ -67,14 +67,32 @@ its own ruling, AFTER 1–5.** It must satisfy `lifepunch-economy`:
 
 ## WHO BUILDS
 
-**Slice 1 DRIVE: the KEPLER orchestrator** — its plan, seams pre-verified by Green `0017`, subagent
-reviewers inline (`fable\0072`).
+## **Slice 1 DRIVE: RED — build AND editor proof, one seat.**
+
+**REASSIGNED 2026-07-14, Bloodwave.** Canon:
+[`lifepunch/docs/cvl/PLAYERHUB_SLICE1_DRIVE_REASSIGNMENT_2026-07-14.md`](../../cvl/PLAYERHUB_SLICE1_DRIVE_REASSIGNMENT_2026-07-14.md).
+
+> **This line previously read "the KEPLER orchestrator builds."** That clause of `fable\0073` /
+> `PLAYERHUB_GATES_RULING` is **SUPERSEDED** by the companion record above. *The ruled file itself is
+> **not** edited — it is `CLASS: RULED`. This is a status note, so it is corrected.*
+
+**Kepler / OpenCode is a NON-BLOCKING BACKGROUND ERRAND** — it **gates nothing**: the `fable\0074` config
+paste, the first-session **skill-ROOTS report** (the `.agents/skills` consumer test held since `red\0033`),
+and the `opencode models` provider id for `codex-review`.
 
 > ## **RED RUNS THE EDITOR PROOF GATE. EDITOR TRUTH STAYS RED'S REGARDLESS OF WHO BUILDS.**
+> That sentence is now simply **unremarkable** — the builder and the prover are the same seat. **Splitting
+> build from proof buys nothing once the prover can build, and it costs a handoff.** *A handoff is where
+> state goes stale.*
 
-**All three MCP surfaces were DOWN at Red's last boot.** **No visual, runtime, or replication claim is
-provable until they recover** — and **`versionsAligned: true` is a FALSE PASS on `null == null`**
-(`red\0032`). **Assert the non-null `bridgeVersion`, never the boolean.**
+**MCP STACK: ALL THREE SURFACES LIVE** (re-verified `red\0037`, 2026-07-14 12:15Z — native `7269` HTTP 200
++ `editor_status`; chomnr `9090` `running:true`; Bridge **`bridgeVersion:"2.1.0"` NON-NULL**, 171 ms
+heartbeat; corroborated outside the endpoints by `tasklist` PID 25948 and `netstat` listeners).
+**They were DOWN at the boot before it** (`red\0036`) — *so the recovery is a sensor reading, never an
+assumption, and it is re-taken every boot.*
+
+> **`versionsAligned: true` is a FALSE PASS on `null == null`** (`red\0032`, **still unfixed — it fired
+> falsely twice on 2026-07-14**). **Assert the non-null `bridgeVersion`. Never read the boolean.**
 
 ## ⚠ BEFORE BUILDING FROM THE SEAM TABLE
 

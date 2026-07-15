@@ -46,3 +46,26 @@
 - [ ] Include fetch exit, all three SHAs, pinned object-read sensor, STATUS/BOARD comparison, lane/SEQ result, and every bridge failure.
 - [ ] State recovered non-blocking errors loudly with raw error and workaround; Codex `0001_CODEX_SEAT-UP_2026-07-12.md` is the reference behavior.
 - [ ] Take no task until `BOOT-CLEAN` is accepted.
+
+## BRIDGE VERSION GATE (amended 2026-07-14 — `red\0032` closed at the only place we own it)
+
+**Run `lifepunch/scripts/Assert-BridgeVersion.ps1` on the bridge status. Exit 0 is the pass. Nothing else is.**
+
+### ## ABSENCE OF A VERSION IS A **FAILURE**, NOT A PASS.
+
+`versionsAligned` is computed as `bridgeVersion == mcpServerVersion`. **When the editor is dead, BOTH are
+`null`, and `null == null` is TRUE.** The boolean reads **GREEN over a corpse.** It fired falsely **twice
+on 2026-07-14**, and on the second occasion it would have carried a seat into an editor-gated task
+believing it held proof.
+
+**WE DO NOT OWN THE BRIDGE.** `versionsAligned` lives in a third-party plugin and has **zero hits in this
+repo** — *it cannot be patched from here.* **So the fix lives at the only place the lie can reach us: the
+seat that reads it.** The gate asserts **positive presence** of both versions, then equality, then
+liveness — **in that order, because comparing two absences is how the original defect passed.**
+
+> ## **ASSERT THE NON-NULL `bridgeVersion`. NEVER READ THE BOOLEAN.**
+> A `versionsAligned: true` accompanied by a gate FAIL is **the defect firing**, and the gate says so out
+> loud rather than shrugging.
+
+**This is the GREEN-BY-OMISSION family stated as a gate:** *a check that cannot distinguish "I verified it
+and it is fine" from "I could not verify it" **is not a check.***
