@@ -52,6 +52,16 @@ them. A key not in this ledger is an incident.
   manager. Until both are done, GH-2 is dual-stored against C-4/one-key
   discipline; this ledger tracks the debt, not the token.
 
+
+### GX-1 — xAI image generation key
+- Purpose: image generation bridge (`lifepunch/scripts/ask-grok-image.ps1`) for the Brand Agent seat (Grok Imagine / xAI API Tier-2).
+- Scope: **minimum / image-gen only** (no chat, no account-admin). One integration = one key (Key Law).
+- Mint date: **PENDING** — Bloodwave mints at `console.x.ai`; seats do not mint or handle the secret (C-1).
+- Storage: environment variable **`XAI_API_KEY`** only (user/machine env). Never repo `.env` unless a later ruling says so; never transcribed into chat, relays, commits, BOARD, or lane filings (C-2).
+- Status: **PREFLIGHT PENDING** — after mint, Bloodwave runs `ask-grok-image.ps1 -Preflight` and appends the result (PASS / key-valid-no-image-model / FAIL) to this entry and the script `.STATUS` block.
+- Records: `dispatch\cursor\0009`; script sibling of `ask-cornerman.ps1`.
+- **Never the key value.** This ledger is metadata only.
+
 ## Credential rules (standing, all seats, all keys)
 
 C-1 — NO SEAT READS A CREDENTIAL FILE. .env and any file holding a
