@@ -10,6 +10,13 @@
   runs -Preflight. Result (PASS / key-valid-no-image-model / FAIL)
   is appended here by Bloodwave; seats do NOT run -Preflight without
   that mint (rule C-1: no credential handling on this seat).
+  RE-SYNC 2026-07-15 (pre-merge #128): verified against
+  C:\lifepunch\scripts\ask-grok-image.ps1 (Fable). Sidecar is
+  $sidecarLines = @(...) + Set-Content (... -join NewLine) — no
+  here-string. Fable scratch still chokes PS 5.1 on expandable
+  "SAVED: $pngPath (+...)" and UTF-8 em-dash inside Write-Host;
+  graduated body keeps parse-safe concat / ASCII in executable
+  lines (PS 5.1 Parser PASS).
 
 .CANON
   BRAND AGENT SEAT ruling 2026-07-15 (rides Red canon slice, dispatch
