@@ -74,6 +74,8 @@ function Assert-Count {
 }
 
 $hashd = Read-Source 'lpbitcoin\bitcoinhub\code\ui\LpHashdPanel.razor'
+$menuShell = Read-Source 'LpMenuShell.razor'
+$bitcoinOpsMarkup = $hashd + [Environment]::NewLine + $menuShell
 $hashdScss = Read-Source 'lpbitcoin\bitcoinhub\code\ui\LpHashdPanel.razor.scss'
 $shellScss = Read-Source 'LifePunchUiShell.scss'
 $token = Read-Source 'LifePunchCurrencyToken.razor'
@@ -92,11 +94,11 @@ Assert-Match 'A shared token API' $token 'public\s+string\s+Sign\s*\{\s*get;\s*s
 Assert-Match 'A token sign and amount spans' $token '<span\s+class="@SignClass">@Sign</span>\s*<span\s+class="lp-money-amt">@Amount</span>'
 Assert-Match 'A optional label spacing' $tokenScss '\.lp-currency-label\s*\{[^}]*margin-left:\s*4px;'
 Assert-Match 'A dynamic token rebuild hash' $token 'protected\s+override\s+int\s+BuildHash\(\)\s*=>\s*HashCode\.Combine\(\s*Sign,\s*Amount,\s*Label,\s*SignClass,\s*TokenClass\s*\);'
-Assert-Count 'A all seven ruled token instances' $hashd '<LifePunchCurrencyToken\b' 7
+Assert-Count 'A all seven ruled token instances' $bitcoinOpsMarkup '<LifePunchCurrencyToken\b' 7
 Assert-Match 'A1 invested token' $hashd 'TokenClass="entity-invested-token"'
 Assert-Match 'A2 buffer current token' $hashd 'TokenClass="server-buffer-current"'
 Assert-Match 'A2 buffer capacity token' $hashd 'TokenClass="server-buffer-capacity"'
-Assert-Match 'A3 estimated value token' $hashd 'TokenClass="overview-wallet-value"'
+Assert-Match 'A3 estimated value token' $menuShell 'TokenClass="overview-wallet-value"'
 Assert-Match 'A4 bank rate token' $hashd 'TokenClass="transfers-rate-bank"'
 Assert-Match 'A5 rack balance token' $hashd 'TokenClass="transfers-rack-balance"'
 Assert-Match 'A6 tight header token' $hashd 'TokenClass="header-wallet-token"'
@@ -110,7 +112,7 @@ Assert-NoMatch 'B3 panel callout text overrides do not center' $hashdScss '\.lp-
 Assert-NoMatch 'B3 flex callout overrides do not center content' $hashdScss '\.lp-bitcoin-ops[^\{]*\.lp-ui-intro[^\{]*\{[^}]*justify-content:\s*center;'
 Assert-NoMatch 'Razor rack-track declaration stays in code context' $hashd '@\{\s*var\s+rackTracks\s*='
 
-Assert-Match 'C1 pane title says Dashboard' $hashd '<span>Dashboard</span>'
+Assert-Match 'C1 pane title says Dashboard' $bitcoinOpsMarkup 'PageTitle\s*=\s*tab\s*==\s*OpsTab\.Overview\s*\?\s*"Dashboard".*<span>@activeItem\.PageTitle</span>'
 Assert-Match 'C1 missing-link copy says Dashboard' $hashd 'link on Dashboard'
 Assert-NoMatch 'C1 visible Overview title removed' $hashd '<span>Overview</span>'
 Assert-NoMatch 'C1 visible Overview link copy removed' $hashd 'link on Overview'

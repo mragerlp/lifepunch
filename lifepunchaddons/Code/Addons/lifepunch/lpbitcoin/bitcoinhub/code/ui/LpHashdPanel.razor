@@ -14,11 +14,11 @@
 @attribute [StyleSheet]
 
 <root class="@GetRootClass()" onmousedown="@OnRootMouseDown">
-	<div class="shell">
-		<div class="shell-body">
-		@if ( ShowPinGate() )
-		{
-			<div class="pin-gate">
+	@if ( ShowPinGate() )
+	{
+		<div class="shell">
+			<div class="shell-body">
+				<div class="pin-gate">
 				<header class="pin-header">
 					<div class="pin-brand">
 						@* BRANDING_SCOPE_RULING_2026-07-15: the LP roundel is OUT of job surfaces.
@@ -78,230 +78,62 @@
 							</button>
 						}
 					</div>
+					</div>
 				</div>
 			</div>
+			<div class="lp-window-watermark">
+				<LifePunchUiFooter Product="Bitcoin Ops" />
+			</div>
+		</div>
 		}
 		else
 		{
-			<div class="hub-body">
-				<div class="hub-main">
-					<aside class="sidebar">
-						@* SIDEBAR DESIGN CANON v1 (a): IDENTITY BLOCK at the top. The job-mark slot is
-						   EMPTY on purpose — the HASHD mark does not exist yet, and canon (d) rules no
-						   mark beats the wrong mark (the LP roundel is OUT of job surfaces per
-						   BRANDING_SCOPE_RULING_2026-07-15). The operator avatar carries identity. *@
-						<div class="sidebar-identity" title="@GreetingName()">
-							<div class="sidebar-avatar">
-								@if ( LocalSteamId() > 0 )
-								{
-									<img class="sidebar-avatar-img" src="avatar:@LocalSteamId()"/>
-								}
-								else
-								{
-									<span class="sidebar-avatar-fallback">@AvatarInitial()</span>
-								}
-							</div>
-						</div>
-
-						<nav class="sidebar-nav">
-							@foreach ( var tab in _tabs )
-							{
-								<button class="sidebar-btn @(IsSidebarTabActive( tab ) ? "sidebar-btn-sel" : "") @(ShowSidebarAlertBadge( tab ) ? "sidebar-btn-has-alert" : "")"
-								        tooltip="@TabLabel(tab)"
-								        onclick="@(() => SelectSidebarTab( tab ))">
-									<i class="material-icons">@TabIcon(tab)</i>
-									<span class="sidebar-btn-label">@TabLabel(tab)</span>
-									@if ( ShowSidebarAlertBadge( tab ) )
-									{
-										<span class="sidebar-alert-dot"></span>
-									}
-								</button>
-							}
-						</nav>
-
-						@* SIDEBAR DESIGN CANON v1 (a): SETTINGS PINNED AT THE BOTTOM. *@
-						<div class="sidebar-foot">
-							<button class="sidebar-btn @(IsSidebarTabActive( OpsTab.Settings ) ? "sidebar-btn-sel" : "")"
-							        tooltip="@TabLabel(OpsTab.Settings)"
-							        onclick="@(() => SelectSidebarTab( OpsTab.Settings ))">
-								<i class="material-icons">@TabIcon(OpsTab.Settings)</i>
-								<span class="sidebar-btn-label">@TabLabel(OpsTab.Settings)</span>
-							</button>
-						</div>
-					</aside>
-
-					<div class="workspace">
-						<header class="page-header hub-header">
-							@* Header mark slot: HASHD mark pending — empty beats the LP roundel
-							   (BRANDING_SCOPE_RULING_2026-07-15; SIDEBAR DESIGN CANON v1 d). *@
-							<div class="lp-ui-panel-title hub-title">
-								<span>@LpBitcoinIdent.OpsTitle</span>
-							</div>
-
-							<div class="header-widgets">
-								<button class="header-power-switch @(Hub?.IsPowered == true ? "on" : "off")"
-								        tooltip="@(Hub?.IsPowered == true ? "Power off hub" : "Power on hub")"
-								        onclick="@ToggleHubPower">
-									<span class="power-switch-track">
-										<span class="power-switch-knob"></span>
-									</span>
-									<span class="power-switch-label">@HubPowerStateLabel()</span>
-								</button>
-								<button class="header-chip wallet-chip"
-								        tooltip="BTC Wallet"
-								        onclick="@SelectWalletTab">
-									<i class="material-icons">account_balance_wallet</i>
-									<LifePunchCurrencyToken Sign="₿" Amount="@HeaderWalletBtc()" TokenClass="header-wallet-token" />
-								</button>
-								<button class="header-chip cashout-all-chip @GetCashOutAllButtonClass()"
-								        tooltip="Cash out all hub wallet BTC to bank"
-								        onclick="@CashOutAll">
-									<i class="material-icons">savings</i>
-									<span>@CashOutAllLabel()</span>
-								</button>
-								<button class="lp-ui-chrome-btn close" tooltip="Close" onclick="@Close">
-									<i class="material-icons">close</i>
-								</button>
-							</div>
-						</header>
-
-						<div class="workspace-body">
+			<LpMenuShell Wordmark="@LpBitcoinIdent.OpsTitle"
+			             AccentColor="#e87d3e"
+			             NavItems="@ShellNavItems()"
+			             DoorCards="@ShellDoorCards()"
+			             SnapshotStats="@ShellSnapshotStats()"
+			             QuickButtons="@ShellQuickButtons()">
+				<Mark>
+					@* HASHD mark is pending; the operator avatar remains the shipped interim identity. *@
+					<div class="sidebar-avatar" title="@GreetingName()">
+						@if ( LocalSteamId() > 0 )
+						{
+							<img class="sidebar-avatar-img" src="avatar:@LocalSteamId()"/>
+						}
+						else
+						{
+							<span class="sidebar-avatar-fallback">@AvatarInitial()</span>
+						}
+					</div>
+				</Mark>
+				<TopBarControls>
+					<button class="header-power-switch @(Hub?.IsPowered == true ? "on" : "off")"
+					        tooltip="@(Hub?.IsPowered == true ? "Power off hub" : "Power on hub")"
+					        onclick="@ToggleHubPower">
+						<span class="power-switch-track"><span class="power-switch-knob"></span></span>
+						<span class="power-switch-label">@HubPowerStateLabel()</span>
+					</button>
+					<button class="header-chip wallet-chip" tooltip="BTC Wallet" onclick="@SelectWalletTab">
+						<i class="material-icons">account_balance_wallet</i>
+						<LifePunchCurrencyToken Sign="₿" Amount="@HeaderWalletBtc()" TokenClass="header-wallet-token" />
+					</button>
+					<button class="header-chip cashout-all-chip @GetCashOutAllButtonClass()" tooltip="Cash out all hub wallet BTC to bank" onclick="@CashOutAll">
+						<i class="material-icons">savings</i>
+						<span>@CashOutAllLabel()</span>
+					</button>
+					<button class="lp-ui-chrome-btn close" tooltip="Close" onclick="@Close">
+						<i class="material-icons">close</i>
+					</button>
+				</TopBarControls>
+				<ChildContent>
 							@* #6b modal backdrop: full-body scrim, inert-dismiss, while a confirm popup is open. *@
 							@if ( _confirmRackId != Guid.Empty )
 							{
 								<div class="confirm-scrim" onclick="@DismissConfirm"></div>
 							}
 							<div class="main-panel">
-								@if ( _active == OpsTab.Overview )
-								{
-									<div class="pane overview">
-										<div class="ops-eyebrow">@OpsEyebrow</div>
-										<div class="lp-ui-panel-title overview-dash-title">
-											<i class="material-icons">home</i>
-											<span>Dashboard</span>
-										</div>
-										<div class="lp-ui-intro overview-command-center-intro">
-											This home page is your setup and status checkpoint. Detailed management lives in Servers, Wallet, Transfers, and Upgrades.
-										</div>
-										@{
-											var linkedRacks = GetLinkedRacks();
-											var linkedRackCount = linkedRacks.Count;
-											var setupComplete = HubIsPowered() && HasLinkedTerminal() && linkedRackCount > 0;
-										}
-										<div class="overview-command-center">
-											<div class="lp-ui-panel overview-checklist-panel">
-												<div class="lp-ui-panel-title">
-													<i class="material-icons">checklist</i>
-													<span>Getting started</span>
-												</div>
-												<div class="overview-checklist">
-													<div class="overview-checklist-item">
-														<div class="overview-checklist-status">
-															<span class="lp-ui-status-dot @(HubIsPowered() ? "on" : "off")"></span>
-															<span>@(HubIsPowered() ? "Done" : "Required")</span>
-														</div>
-														<div class="overview-checklist-copy">
-															<div class="overview-checklist-title">Power on hub</div>
-															<div class="overview-checklist-sub">Turn the hub on first.</div>
-														</div>
-														@* Same lane language as link/unlink terminal: green tinted ghost invites the
-														   positive action (Power on), red tinted ghost for the teardown (Power off). *@
-														<button class="lp-ui-btn-ghost overview-checklist-action @( HubIsPowered() ? "overview-intro-unlink-btn" : "overview-intro-link-ready" )" onclick="@ToggleHubPower">
-															@(HubIsPowered() ? "Power off" : "Power on")
-														</button>
-													</div>
-													<div class="overview-checklist-item">
-														<div class="overview-checklist-status">
-															<span class="lp-ui-status-dot @OverviewTerminalStatusDotClass()"></span>
-															<span>@(HasLinkedTerminal() ? "Done" : "Required")</span>
-														</div>
-														<div class="overview-checklist-copy">
-															<div class="overview-checklist-title">Link terminal</div>
-															<div class="overview-checklist-sub">@TerminalLinkStatusLabel()</div>
-														</div>
-														<div class="overview-checklist-action-group">
-														@if ( HasLinkedTerminal() )
-														{
-															<button class="lp-ui-btn-ghost overview-intro-unlink-btn" onclick="@UnlinkTerminal">Unlink terminal</button>
-														}
-														else if ( HasNearbyUnlinkedTerminal() )
-														{
-															<button class="@LinkTerminalButtonClass()" disabled="@(!HubIsPowered())" onclick="@LinkNearbyTerminal">Link terminal</button>
-														}
-														else
-														{
-															<button class="lp-ui-btn-ghost overview-intro-terminal-disabled" disabled>No terminal in range</button>
-														}
-														</div>
-													</div>
-													<div class="overview-checklist-item">
-														<div class="overview-checklist-status">
-															<span class="lp-ui-status-dot @(linkedRackCount > 0 ? "on" : "off")"></span>
-															<span>@(linkedRackCount > 0 ? "Done" : "Required")</span>
-														</div>
-														<div class="overview-checklist-copy">
-															<div class="overview-checklist-title">Link GPU racks</div>
-															<div class="overview-checklist-sub">Verify slots, then link at rig0.</div>
-														</div>
-														<button class="lp-ui-btn-primary overview-checklist-action" onclick="@SelectRacksTab">
-															<i class="material-icons">dns</i>
-															<span>Servers</span>
-														</button>
-													</div>
-												</div>
-												@* Footer note lane — mirrors the snapshot's note so both card stacks share
-												 the same shape (3 boxes + note) and the lanes stay pairwise parallel. *@
-												<div class="overview-checklist-note">
-											Complete all three steps to start mining.
-												</div>
-											</div>
-											<div class="lp-ui-panel overview-snapshot-panel">
-												<div class="lp-ui-panel-title">
-													<i class="material-icons">insights</i>
-													<span>Snapshot</span>
-												</div>
-												<div class="overview-snapshot-grid">
-													<div class="overview-snapshot-card">
-														<div class="overview-snapshot-label">Setup</div>
-														<div class="overview-snapshot-value @(setupComplete ? "on" : "off")">@(setupComplete ? "Ready" : "In progress")</div>
-														<div class="overview-snapshot-sub">Power + terminal + at least one linked rack</div>
-													</div>
-													<div class="overview-snapshot-card">
-														<div class="overview-snapshot-label">Linked racks</div>
-														<div class="overview-snapshot-value">@($"{linkedRackCount} / {LpBitcoinIdent.PortalMaxRacksPerHub}")</div>
-														<div class="overview-snapshot-sub">Standard x2 + Advanced x1 max</div>
-													</div>
-													<div class="overview-snapshot-card">
-														<div class="overview-snapshot-label">Hub wallet</div>
-														<div class="overview-snapshot-value"><span class="lp-money-btc">₿</span> <span class="lp-money-amt">@HeaderWalletBtc()</span></div>
-														<div class="overview-snapshot-sub"><LifePunchCurrencyToken Sign="$" Amount="@(CombinedUsd().ToString( "N2" ))" Label="estimated value" SignClass="lp-money-cash" TokenClass="overview-wallet-value" /></div>
-													</div>
-												</div>
-												<div class="overview-snapshot-note">
-													@* Plain text run — s&box eats the spaces around inline tags ("UseServersfor rack stats"). *@
-											Deeper details: Servers tab for rack stats, Upgrades tab for track tiers.
-												</div>
-											</div>
-										</div>
-										@* Upgrades leads (new primary system); Servers removed — the checklist's
-										"Link GPU racks" row is its single entry point. *@
-										<div class="lp-ui-btn-row overview-command-actions">
-											<button class="lp-ui-btn-primary overview-command-action" onclick="@SelectUpgradesTab">
-												<i class="material-icons">upgrade</i>
-												<span>Upgrades</span>
-											</button>
-											<button class="lp-ui-btn-ghost overview-command-action" onclick="@SelectWalletTab">
-												<i class="material-icons">account_balance_wallet</i>
-												<span>Wallet</span>
-											</button>
-											<button class="lp-ui-btn-ghost overview-command-action" onclick="@SelectTransfersTab">
-												<i class="material-icons">swap_horiz</i>
-												<span>Transfers</span>
-											</button>
-										</div>
-									</div>
-								}
-								else if ( _active == OpsTab.Racks )
+							@if ( _active == OpsTab.Racks )
 								{
 									var serverDetail = GetServerDetailSlot();
 									<div class="pane racks">
@@ -1098,18 +930,9 @@
 									</div>
 								}
 							</div>
-						</div>
-					</div>
-				</div>
-			</div>
+				</ChildContent>
+			</LpMenuShell>
 		}
-
-		</div>
-
-		<div class="lp-window-watermark">
-			<LifePunchUiFooter Product="Bitcoin Ops" />
-		</div>
-	</div>
 </root>
 
 @code
@@ -1210,6 +1033,149 @@
 	// MENU SHELL LAW eyebrow-over-title grammar: the accent eyebrow names the menu context
 	// above each pane's section title (hub exemplar roles .hub-eyebrow / .hub-title).
 	private static string OpsEyebrow => "BITCOIN OPS";
+
+	private List<LpMenuShell.NavItem> ShellNavItems()
+	{
+		var items = new List<LpMenuShell.NavItem>();
+		foreach ( var tab in _tabs )
+			items.Add( ShellNavItem( tab ) );
+		items.Add( ShellNavItem( OpsTab.Settings, isSettings: true ) );
+		return items;
+	}
+
+	private LpMenuShell.NavItem ShellNavItem( OpsTab tab, bool isSettings = false )
+	{
+		return new LpMenuShell.NavItem
+		{
+			Route = tab.ToString().ToLowerInvariant(),
+			Label = TabLabel( tab ),
+			Icon = TabIcon( tab ),
+			Tooltip = TabLabel( tab ),
+			PageIcon = TabIcon( tab ),
+			PageTitle = tab == OpsTab.Overview ? "Dashboard" : TabLabel( tab ),
+			Callout = tab == OpsTab.Overview
+				? "This home page is your setup and status checkpoint. Detailed management lives in Servers, Wallet, Transfers, and Upgrades."
+				: string.Empty,
+			IsActive = IsSidebarTabActive( tab ),
+			IsSettings = isSettings,
+			IsDashboard = tab == OpsTab.Overview,
+			HasAlert = ShowSidebarAlertBadge( tab ),
+			OnSelected = () => SelectSidebarTab( tab )
+		};
+	}
+
+	private List<LpMenuShell.DoorCard> ShellDoorCards()
+	{
+		var hubPowered = HubIsPowered();
+		var terminalLinked = HasLinkedTerminal();
+		var terminalNearby = HasNearbyUnlinkedTerminal();
+		var linkedRackCount = GetLinkedRacks().Count;
+
+		return new List<LpMenuShell.DoorCard>
+		{
+			new()
+			{
+				Title = "Power on hub",
+				Chips = ShellStatus( hubPowered, "Done", "Required" ),
+				Description = "Turn the hub on first.",
+				Label = hubPowered ? "Power off" : "Power on",
+				Route = "power",
+				StatusClass = hubPowered ? "on" : "off",
+				ActionClass = $"lp-ui-btn-ghost overview-checklist-action {(hubPowered ? "overview-intro-unlink-btn" : "overview-intro-link-ready")}",
+				OnSelected = ToggleHubPower
+			},
+			new()
+			{
+				Title = "Link terminal",
+				Chips = ShellStatus( terminalLinked, "Done", "Required" ),
+				Description = TerminalLinkStatusLabel(),
+				Label = terminalLinked ? "Unlink terminal" : terminalNearby ? "Link terminal" : "No terminal in range",
+				Route = "terminal",
+				Enabled = terminalLinked || terminalNearby && hubPowered,
+				StatusClass = OverviewTerminalStatusDotClass(),
+				ActionClass = LinkTerminalButtonClass(),
+				UseActionGroup = true,
+				OnSelected = () =>
+				{
+					if ( terminalLinked )
+						UnlinkTerminal();
+					else
+						LinkNearbyTerminal();
+				}
+			},
+			new()
+			{
+				Title = "Link GPU racks",
+				Chips = ShellStatus( linkedRackCount > 0, "Done", "Required", count: true ),
+				Description = "Verify slots, then link at rig0.",
+				Label = "Servers",
+				Route = "servers",
+				StatusClass = linkedRackCount > 0 ? "on" : "off",
+				ActionClass = "lp-ui-btn-primary overview-checklist-action",
+				ActionIcon = "dns",
+				FooterNote = "Complete all three steps to start mining.",
+				OnSelected = SelectRacksTab
+			}
+		};
+	}
+
+	private static List<LpMenuShell.StatusChip> ShellStatus( bool complete, string completeText, string pendingText, bool count = false )
+	{
+		return new List<LpMenuShell.StatusChip>
+		{
+			new()
+			{
+				Text = complete ? completeText : pendingText,
+				Variant = complete
+					? count ? LpMenuShell.StatusChipVariant.Count : LpMenuShell.StatusChipVariant.Success
+					: LpMenuShell.StatusChipVariant.Info
+			}
+		};
+	}
+
+	private List<LpMenuShell.StatRow> ShellSnapshotStats()
+	{
+		var linkedRackCount = GetLinkedRacks().Count;
+		var setupComplete = HubIsPowered() && HasLinkedTerminal() && linkedRackCount > 0;
+
+		return new List<LpMenuShell.StatRow>
+		{
+			new()
+			{
+				Label = "Setup",
+				Value = setupComplete ? "Ready" : "In progress",
+				ValueClass = setupComplete ? "on" : "off",
+				Description = "Power + terminal + at least one linked rack"
+			},
+			new()
+			{
+				Label = "Linked racks",
+				Value = $"{linkedRackCount} / {LpBitcoinIdent.PortalMaxRacksPerHub}",
+				Description = "Standard x2 + Advanced x1 max"
+			},
+			new()
+			{
+				Label = "Hub wallet",
+				Sign = "₿",
+				Amount = HeaderWalletBtc(),
+				Description = "estimated value",
+				DetailSign = "$",
+				DetailAmount = CombinedUsd().ToString( "N2" ),
+				FooterNote = "Deeper details: Servers tab for rack stats, Upgrades tab for track tiers."
+			}
+		};
+	}
+
+	private List<LpMenuShell.QuickButton> ShellQuickButtons()
+	{
+		return new List<LpMenuShell.QuickButton>
+		{
+			new() { Label = "Upgrades", Icon = "upgrade", Route = "servers", CssClass = "lp-ui-btn-primary overview-command-action", OnSelected = SelectUpgradesTab },
+			new() { Label = "Wallet", Icon = "account_balance_wallet", Route = "wallet", OnSelected = SelectWalletTab },
+			new() { Label = "Transfers", Icon = "swap_horiz", Route = "transfers", OnSelected = SelectTransfersTab }
+		};
+	}
+
 	private static readonly PerfRange[] _perfRanges = { PerfRange.Day, PerfRange.Week, PerfRange.Month };
 
 	private OpsTab _active = OpsTab.Overview;
