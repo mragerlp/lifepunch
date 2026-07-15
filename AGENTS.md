@@ -75,9 +75,11 @@ Transport Law. Skills are capability, not authority.
 
   **A Codex seat that reads only the old sentence would REFUSE A LAWFUL DRIVE GRANT.** Absence of a
   grant is not a grant — but neither is a default a prohibition. **Read the BOARD for who drives.**
-- **There is exactly ONE Codex seat.** If Kepler or OpenCode drives the Codex API, **that IS the Codex
-  seat**, not a second one. A second harness on the same model is a **race for the same chair**, not a
-  new implementer.
-- **OpenCode** loads this file then `CLAUDE.md`; skills from `.agents/skills/`. Authority follows
-  the model (cloud frontier = implementer-eligible under relief; CORNERMAN = advisory) per
-  `lifepunch/docs/cvl/OPENCODE_HARNESS_ADOPTION_2026-07-14.md`.
+- **There is exactly ONE Codex seat.** A Kepler-routed direct Codex API session is the Codex seat;
+  a model selected inside OpenCode remains the OPENCODE seat. A second process claiming the same seat
+  is a **race for the same chair**, not a new implementer.
+- **OpenCode** loads this file then `CLAUDE.md`; skills come from `.agents/skills/`. **The harness
+  defines the OPENCODE seat; the model defines its authority** (cloud frontier = implementer-eligible
+  under relief; CORNERMAN = advisory). `opencode.json` is startup-only; Bloodwave keys restarts.
+  Pull-dispatch v2 (`COMMS_PROTOCOL.md` Rules 22–23) and Implementer Worktree Law (Rule 25) bind every
+  session. Canon: `lifepunch/docs/cvl/OPENCODE_SEAT_IDENTITY_AND_HARNESS_OPS_RULING_2026-07-15.md`.
