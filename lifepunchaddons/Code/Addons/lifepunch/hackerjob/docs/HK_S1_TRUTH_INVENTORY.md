@@ -1,6 +1,6 @@
 # HK-S1 — Hacker Job brownfield truth inventory
 
-**Issue:** #151 · **Verified:** 2026-07-15 against the assigned worktree at `1e6bd4da` before edits  
+**Issue:** #151 · **Verified:** 2026-07-15 against the assigned worktree at `1e6bd4da` before edits
 **Scope:** Existing `hackerjob` code and docs only. No runtime, visual, or portal-deployment claim is made.
 
 ## Executive truth
