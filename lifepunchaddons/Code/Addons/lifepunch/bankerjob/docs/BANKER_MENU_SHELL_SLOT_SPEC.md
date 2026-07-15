@@ -1,7 +1,9 @@
 # Banker menu — LpMenuShell slot specification
 
-**Phase:** BANKER-S5 Phase A · documentation only  
-**Issue:** #142 · **Build gate:** Phase B remains gated on #135  
+**Phase:** BANKER-S5 Phase A · documentation only
+
+**Issue:** #142 · **Build gate:** Phase B remains gated on #135
+
 **Contract source:** PR #143 (`LpMenuShell` seven-slot extraction)
 
 This document specifies the Banker's menu as a consumer of the shared `LpMenuShell`. It does not
