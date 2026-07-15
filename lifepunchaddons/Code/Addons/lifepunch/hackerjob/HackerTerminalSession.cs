@@ -58,7 +58,7 @@ internal static class HackerTerminalSession
 		return true;
 	}
 
-	/// <summary>DXRP job gate — Phase 2 wires real job id; playtest may bypass until job ships.</summary>
+	/// <summary>DXRP job gate — deny until Bloodwave rules and T2 defines the Hacker job row.</summary>
 	private static bool IsHackerJob( HackerTerminalTier terminalTier, out string denyReason )
 	{
 #if LIFEPUNCH_LOCAL
@@ -72,10 +72,9 @@ internal static class HackerTerminalSession
 			return false;
 		}
 
-		// TODO Phase 2 (Opus): Player.Local job id must be Hacker; advanced ops require elevated tier.
 		_ = terminalTier;
-		denyReason = null;
-		return true;
+		denyReason = "hacker job unavailable — T2 job row not configured";
+		return false;
 #endif
 	}
 }
