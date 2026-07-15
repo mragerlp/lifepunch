@@ -77,7 +77,8 @@ $shell = Read-Source 'LpMenuShell.razor'
 $shellScss = Read-Source 'LpMenuShell.razor.scss'
 $hashd = Read-Source 'lpbitcoin\bitcoinhub\code\ui\LpHashdPanel.razor'
 
-Assert-Count 'exactly seven explicit shell slots' $shell '\[Property\]\s*public\s+' 7
+Assert-Count 'exactly seven named shell slots' $shell '\[Property\]\s*public\s+(?:RenderFragment\?\s+(?:Mark|TopBarControls)|string\s+Wordmark|List<(?:NavItem|DoorCard|StatRow|QuickButton)>\s+(?:NavItems|DoorCards|SnapshotStats|QuickButtons))\s*\{' 7
+Assert-Count 'exactly eight component parameters including accent' $shell '\[Property\]\s*public\s+' 8
 Assert-Match 'slot 1 Mark fragment' $shell '\[Property\]\s*public\s+RenderFragment\?\s+Mark\s*\{\s*get;\s*set;\s*\}'
 Assert-Match 'slot 2 Wordmark string' $shell '\[Property\]\s*public\s+string\s+Wordmark\s*\{\s*get;\s*set;\s*\}'
 Assert-Match 'slot 3 TopBarControls fragment' $shell '\[Property\]\s*public\s+RenderFragment\?\s+TopBarControls\s*\{\s*get;\s*set;\s*\}'
@@ -85,8 +86,9 @@ Assert-Match 'slot 4 NavItems list' $shell '\[Property\]\s*public\s+List<NavItem
 Assert-Match 'slot 5 DoorCards list' $shell '\[Property\]\s*public\s+List<DoorCard>\s+DoorCards\s*\{\s*get;\s*set;\s*\}'
 Assert-Match 'slot 6 SnapshotStats list' $shell '\[Property\]\s*public\s+List<StatRow>\s+SnapshotStats\s*\{\s*get;\s*set;\s*\}'
 Assert-Match 'slot 7 QuickButtons list' $shell '\[Property\]\s*public\s+List<QuickButton>\s+QuickButtons\s*\{\s*get;\s*set;\s*\}'
-Assert-Match 'implicit pane content aperture' $shell 'public\s+RenderFragment\?\s+ChildContent\s*\{\s*get;\s*set;\s*\}'
-Assert-NoMatch 'pane content is not an eighth explicit slot' $shell '\[Property\]\s*public\s+RenderFragment\?\s+ChildContent'
+Assert-Match 'accent color parameter is separate from seven slots' $shell '\[Property\]\s*public\s+string\s+AccentColor\s*\{\s*get;\s*set;\s*\}'
+Assert-Match 'inherited pane content aperture is rendered' $shell '@ChildContent'
+Assert-NoMatch 'shell does not hide Panel ChildContent' $shell 'public\s+RenderFragment\?\s+ChildContent\s*\{'
 
 Assert-Match 'shared shell owns sidebar header workspace footer' $shell '<aside\s+class="sidebar">.*<header\s+class="page-header hub-header">.*<div\s+class="workspace-body">.*<LifePunchUiFooter\s+Product="@Wordmark"'
 Assert-Match 'settings render in pinned footer rail' $shell '<div\s+class="sidebar-foot">.*Where\(\s*item\s*=>\s*item\.IsSettings\s*\)'
@@ -96,13 +98,17 @@ Assert-Match 'dashboard renders quick buttons' $shell '@foreach\s*\(\s*var\s+qui
 Assert-Match 'status variants are exact' $shell 'enum\s+StatusChipVariant\s*\{\s*Info,\s*Success,\s*Locked,\s*Count\s*\}'
 Assert-Match 'door card doctrine fields' $shell 'class\s+DoorCard.*RenderFragment\?\s+Icon.*string\s+Title.*List<StatusChip>\s+Chips.*string\s+Description.*string\s+Label.*string\s+Route.*bool\s+Enabled'
 Assert-Match 'shell hash covers all explicit slots' $shell 'BuildHash\(\).*Wordmark.*NavItems.*DoorCards.*SnapshotStats.*QuickButtons'
+Assert-Match 'shell hash combines accent token' $shell 'var\s+hash\s*=\s*HashCode\.Combine\([^;]*AccentColor'
 
 Assert-Match 'one shell root owns radius and clipping' $shellScss '\.lp-menu-shell\s*\{(?=[^}]*border-radius:\s*12px;)(?=[^}]*overflow:\s*hidden;)[^}]*\}'
 Assert-Match 'shared edge children have zero radius' $shellScss '\.lp-menu-shell\s+\.shell-body,.*\.lp-menu-shell\s+\.lp-window-watermark.*\{[^}]*border-radius:\s*0;'
 Assert-NoMatch 'shared nav keeps no-left-strip ruling' $shellScss 'border-left\s*:'
+Assert-Match 'shared chrome consumes accent token with parser-safe inline color' $shell 'class="lp-ui-panel-title hub-title"\s+style="color: @AccentColor".*class="ops-eyebrow"\s+style="color: @AccentColor"'
+Assert-NoMatch 'accent token avoids unsupported CSS variables' ($shell + $shellScss) '(?:var\(--|--[a-zA-Z][a-zA-Z0-9-]*\s*:)'
 
 Assert-Match 'Bitcoin Ops consumes shared shell' $hashd '<LpMenuShell\b'
 Assert-Match 'Bitcoin Ops passes all list slots' $hashd 'NavItems="@ShellNavItems\(\)".*DoorCards="@ShellDoorCards\(\)".*SnapshotStats="@ShellSnapshotStats\(\)".*QuickButtons="@ShellQuickButtons\(\)"'
+Assert-Match 'Bitcoin Ops passes its accent token' $hashd 'AccentColor="#e87d3e"'
 Assert-Count 'Bitcoin Ops supplies Mark once' $hashd '<Mark>' 1
 Assert-Count 'Bitcoin Ops supplies TopBarControls once' $hashd '<TopBarControls>' 1
 Assert-NoMatch 'Bitcoin Ops no longer constructs sidebar chrome' $hashd '<aside\s+class="sidebar">'

@@ -63,7 +63,7 @@
 
 				<div class="workspace">
 					<header class="page-header hub-header">
-						<div class="lp-ui-panel-title hub-title">
+						<div class="lp-ui-panel-title hub-title" style="color: @AccentColor">
 							<span>@Wordmark</span>
 						</div>
 						<div class="header-widgets">
@@ -76,7 +76,7 @@
 						{
 							<div class="main-panel">
 								<div class="pane overview">
-									<div class="ops-eyebrow">@Wordmark.ToUpperInvariant()</div>
+									<div class="ops-eyebrow" style="color: @AccentColor">@Wordmark.ToUpperInvariant()</div>
 									<div class="lp-ui-panel-title overview-dash-title">
 										<i class="material-icons">@activeItem.PageIcon</i>
 										<span>@activeItem.PageTitle</span>
@@ -102,7 +102,7 @@
 															<div class="lp-menu-shell-door-icon">@card.Icon</div>
 														}
 														<div class="overview-checklist-status">
-															<span class="lp-ui-status-dot @DoorStatusClass( card, status )"></span>
+													<span class="lp-ui-status-dot @DoorStatusClass( card, status )"></span>
 															<span>@(status?.Text ?? string.Empty)</span>
 														</div>
 														<div class="overview-checklist-copy">
@@ -219,17 +219,17 @@
 
 @code
 {
+	// s&box Razor binds component parameters through [Property] (the engine equivalent of Blazor's [Parameter]).
 	[Property] public RenderFragment? Mark { get; set; }
 	[Property] public string Wordmark { get; set; } = string.Empty;
+	[Property] public string AccentColor { get; set; } = "#e87d3e";
 	[Property] public RenderFragment? TopBarControls { get; set; }
 	[Property] public List<NavItem> NavItems { get; set; } = new();
 	[Property] public List<DoorCard> DoorCards { get; set; } = new();
 	[Property] public List<StatRow> SnapshotStats { get; set; } = new();
 	[Property] public List<QuickButton> QuickButtons { get; set; } = new();
 
-	// Razor's implicit composition aperture carries non-dashboard pane bodies. It is not a
-	// product skin slot: every explicit skin point remains one of the seven properties above.
-	public RenderFragment? ChildContent { get; set; }
+	// Non-dashboard pane bodies use ChildContent inherited from Sandbox.UI.Panel.
 
 	public enum StatusChipVariant { Info, Success, Locked, Count }
 
@@ -322,7 +322,7 @@
 
 	protected override int BuildHash()
 	{
-		var hash = HashCode.Combine( Wordmark, Mark is not null, TopBarControls is not null, NavItems.Count );
+		var hash = HashCode.Combine( Wordmark, AccentColor, Mark is not null, TopBarControls is not null, NavItems.Count );
 		foreach ( var item in NavItems )
 			hash = HashCode.Combine( hash, item.Route, item.Label, item.Icon, item.IsActive, item.IsSettings, item.HasAlert, item.Enabled );
 		foreach ( var card in DoorCards )
