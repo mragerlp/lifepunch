@@ -195,6 +195,7 @@ if (Test-Path -LiteralPath $workflowPath) {
     Assert-True $citeJobMatch.Success 'workflow must contain the cite-census job'
     if ($citeJobMatch.Success) {
         $citeJob = $citeJobMatch.Value
+        Assert-True ($citeJob -match '(?ms)- name: Reclaim runner disk for corpus checkouts.*?shell: bash.*?sudo rm -rf -- /usr/local/lib/android.*?- name: Check out PR merge candidate') 'cite job must reclaim the unused hosted-runner Android SDK before large corpus checkouts'
         foreach ($checkoutShape in @(
             '(?ms)- name: Check out PR merge candidate.*?ref: \$\{\{ github\.sha \}\}.*?path: repo',
             '(?ms)- name: Check out PR base.*?ref: \$\{\{ github\.event\.pull_request\.base\.sha \}\}.*?path: repo',

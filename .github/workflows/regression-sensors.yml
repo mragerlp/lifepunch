@@ -17,6 +17,13 @@ jobs:
     name: cite census (no new unresolved identity)
     runs-on: ubuntu-latest
     steps:
+      - name: Reclaim runner disk for corpus checkouts
+        shell: bash
+        run: |
+          df -h /
+          sudo rm -rf -- /usr/local/lib/android
+          df -h /
+
       - name: Check out PR merge candidate
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
         with:
