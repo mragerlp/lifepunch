@@ -190,7 +190,9 @@ not as bespoke windows.
 - **Universal header + footer** per `BRANDING_SCOPE_RULING_2026-07-15.md`: the proprietary
   header/footer **structure is identical across every menu; only the accent recolors per menu**
   (the hub's `$lp-blue`; Bitcoin Ops' HASHD amber; the next job's own accent). **The structure
-  never changes.**
+  never changes.** The **footer is a standardized shell BASE ELEMENT** (a partial that adapts to the
+  menu's accent) and **carries a working copy function — click/copy pulls `lifepunch.co`**
+  (ruling D1, `lifepunch/docs/cvl/POLISH_RULINGS_2026-07-15.md`; R7 superseded for this element).
 
 **Marks are scoped** (`BRANDING_SCOPE_RULING_2026-07-15.md`): the **LP roundel appears on the
 Player Hub only**; job/system UIs (Bitcoin Ops/HASHD, future Chemist, all job work) carry **their

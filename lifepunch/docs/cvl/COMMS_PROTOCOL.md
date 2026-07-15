@@ -528,3 +528,45 @@ Kepler-run Codex agents working parallel lanes file as:
 checklists carry it as a boot-time reminder, but the **binding statement lives here** (per Cursor
 0046: "land as COMMS/CVL amendment, not boot-file-only").
 
+---
+
+## v1.10 AMENDMENT (2026-07-15 — ISSUE-CENTRIC LANE WORKFLOW; source: `fable\0091` verbatim substance, `dispatch\red\0003` item 1, Bloodwave GO)
+
+### RULE 26 — **LANE WORK IS ISSUE-CENTRIC. THE GITHUB ISSUE IS THE SINGLE SOURCE OF TRUTH PER LANE.**
+
+For **lane work** (an implementer executing a dispatched lane task), the round-close pattern moves off
+`comms\` filings and onto the issue:
+
+1. **Body** = the dispatch (the work order — already landed this way, Rule 20).
+2. **Branch** = the work — the agent **pushes its worktree branch to origin** (no longer held local +
+   diff-exported).
+3. **Issue comment** = the round report — posted via `gh issue comment #N` (the report that previously
+   went to `comms\<seat>\`).
+4. **Review** = happens **on the issue** — Fable/Cursor/any agent reads via `gh issue view #N
+   --comments`; Bloodwave reviews the branch diff on GitHub or via `gh pr view`.
+5. **Merge** = **Bloodwave's button** — a PR from the work branch → `develop`; **branch protection
+   enforces** (agents physically cannot merge a protected branch).
+
+**WHAT MOVES** onto the issue: lane round reports (→ issue comments), work branches (→ pushed to
+origin), cross-agent visibility (→ `gh issue view`).
+
+**WHAT STAYS in `comms\`** (unchanged): **CVL-level coordination** — boots, dispatches, rulings,
+grades. **`BOARD.md`** stays the conductor's view (one line per event), not the lane's record. The
+**merge gate** stays Bloodwave's button on PRs to `develop`/`main`. **Protected branches** stay
+PR-required, no direct push. The **deny wall** — `merge` / `tag` / `reset` / `clean` / `stash` /
+`checkout` / `switch` — stays denied in harness config.
+
+**CONFIG (`opencode.json` v4.2):** `"git push*": "allow"` **SUPERSEDES the deny.** **Branch
+protection on `develop` + `main` is the authority gate** — agents push work branches freely but
+physically cannot merge a protected branch without Bloodwave's PR approval. **Same graduation logic as
+`edit`/`commit`: the real gate was always merge, not push.** (Permission graduation record:
+`OPENCODE_PERMISSION_V4_SUPERSESSION_2026-07-15.md`.)
+
+> **SUPERSESSION NOTE — the push-denied + diff-export round-close pattern is retired for LANE work.**
+> The prior pattern (implementer holds the branch local, exports `gh pr diff` to the lane, files the
+> round to `comms\<seat>\`, appends a BOARD line) was built around **push being denied**. With push
+> allowed and branch protection as the gate, **lane rounds close as: push branch → `gh issue comment`
+> the round → open the PR → one BOARD line.** The diff-export/`comms\`-filing pattern is **not wrong,
+> just superseded for lane work** — it remains correct for **CVL coordination** filings (boots,
+> rulings, grades), which never became issues. *The medium changed; the merge gate did not.*
+
