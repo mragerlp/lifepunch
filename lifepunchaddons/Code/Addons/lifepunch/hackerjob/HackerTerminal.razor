@@ -155,7 +155,14 @@
                             @if ( _puzzle == null )
                             {
                                 <div class="cyber-decrypt-stack">
-                                    <div class="cyber-line dim">Password cracker initialized. Run NETWORK scan, select a target, then START HACK or START INFIL.</div>
+                                    @if ( _awaitingBegin )
+                                    {
+                                        <div class="cyber-line warn">Requesting host uplink ...</div>
+                                    }
+                                    else
+                                    {
+                                        <div class="cyber-line dim">Password cracker initialized. Run NETWORK scan, select a target, then START HACK or START INFIL.</div>
+                                    }
                                 </div>
                             }
                             else if ( _puzzle.IsExpired )
@@ -170,6 +177,11 @@
                                     <div class="cyber-line warn">@GetTargetBanner()</div>
                                     <div class="cyber-line">@_puzzle.Prompt</div>
                                     <div class="cyber-line dim">Type answer at TERMINAL prompt — @MathF.Ceiling(_puzzle.SecondsRemaining)s remaining</div>
+                                    <div class="cyber-line @(_heat >= 75 ? "err" : "warn")">TRACE HEAT: @_heat% — countermeasures at @HackerIntrusionService.TraceHeatThreshold%</div>
+                                    @if ( _awaitingVerdict )
+                                    {
+                                        <div class="cyber-line dim">VALIDATING — awaiting host verdict ...</div>
+                                    }
                                 </div>
                             }
                         </div>
@@ -259,7 +271,13 @@
     private string _selectedTargetId;
     private string _selectedGovNodeId;
     private string _selectedHashdId;
-    private HackerPuzzleSession _puzzle;
+
+    // ── HK-S2 host-issued intrusion session (client view state only — host owns truth) ──
+    private HackerPuzzleSession _puzzle;   // display model rebuilt from host data; never judged locally
+    private string _sessionId;
+    private int _heat;
+    private bool _awaitingBegin;
+    private bool _awaitingVerdict;
 
     private HackerTerminalTier Tier =>
         Terminal.IsValid() && Terminal.IsAdvanced
@@ -411,17 +429,6 @@
         panel.TrimLines();
     }
 
-    private float GetRackPuzzleSeconds()
-    {
-        if ( !Terminal.IsValid() )
-            return HackerJob.DefaultPuzzleTimeLimitSeconds;
-
-        var rack = Terminal.ActiveRack;
-        return rack.IsValid()
-            ? rack.PuzzleTimeLimitSeconds
-            : HackerJob.DefaultPuzzleTimeLimitSeconds;
-    }
-
     private void CloseTerminal() => HackerTerminalHost.Close( this );
 
     private void SwitchModule( OpsModule module )
@@ -447,10 +454,7 @@
         _scanResults = Array.Empty<HackerScanService.ScanTarget>();
         _govdbResults = Array.Empty<HackerScanService.GovDbTarget>();
         _hashdResults = Array.Empty<HackerScanService.HashdTarget>();
-        _selectedTargetId = null;
-        _selectedGovNodeId = null;
-        _selectedHashdId = null;
-        _puzzle = null;
+        ClearIntrusionState();
         _activeModule = OpsModule.Log;
         _screen = LifePunchCyberScreen.Home;
 
@@ -519,15 +523,12 @@
             }
         }
 
-        if ( _puzzle != null && _puzzle.IsExpired )
+        if ( _puzzle != null && _puzzle.IsExpired && !_awaitingVerdict && !string.IsNullOrEmpty( _sessionId ) )
         {
+            // Host owns the consequence — report expiry once and wait for the verdict broadcast.
             _lines.Add( "ERROR: puzzle window expired — trace risk increased." );
-            Terminal?.RequestReportHackFailure();
-            _puzzle = null;
-            _selectedTargetId = null;
-            _selectedGovNodeId = null;
-            _activeModule = OpsModule.Log;
-            _screen = LifePunchCyberScreen.Decrypt;
+            _awaitingVerdict = true;
+            Terminal?.RequestAbandonIntrusion( _sessionId, expired: true );
         }
     }
 
@@ -569,6 +570,14 @@
             }
         }
     }
+
+    /// <summary>Every private flag that changes markup — SBOX_RAZOR_SCSS_RULES BuildHash law.</summary>
+    protected override int BuildHash() => System.HashCode.Combine(
+        System.HashCode.Combine( (int)_screen, _lines.Count, _footerLog.Count, _scanResults.Count, _govdbResults.Count, _hashdResults.Count ),
+        System.HashCode.Combine( _selectedTargetId, _selectedGovNodeId, _selectedHashdId, _sessionId ),
+        System.HashCode.Combine( _heat, _awaitingBegin, _awaitingVerdict ),
+        System.HashCode.Combine( _puzzle?.Kind ?? default, _puzzle != null && _puzzle.IsExpired, _puzzle != null ? (int)MathF.Ceiling( _puzzle.SecondsRemaining ) : -1 ),
+        Terminal.IsValid() && Terminal.IsPowered );
 
     public void FocusInput()
     {
@@ -652,55 +661,128 @@
         TrimLines();
     }
 
+    /// <summary>
+    /// HK-S2: submissions go to the host session and the verdict comes back via
+    /// <see cref="OnIntrusionVerdict"/> — the client never judges its own answer (HACKER-01/02 closed).
+    /// </summary>
     private void HandlePuzzleInput( string input )
     {
-        if ( _puzzle == null )
+        if ( _puzzle == null || string.IsNullOrEmpty( _sessionId ) )
             return;
 
-        var elapsed = _puzzle.TimeLimitSeconds - _puzzle.SecondsRemaining;
-        var kind = (int)_puzzle.Kind;
-
-        if ( !string.IsNullOrEmpty( _selectedGovNodeId ) && Terminal.IsValid() )
-            Terminal.RequestSubmitGovdbInfil( _selectedGovNodeId, kind, input, elapsed, _puzzle.TimeLimitSeconds );
-        else if ( !string.IsNullOrEmpty( _selectedTargetId ) && Terminal.IsValid() )
-            Terminal.RequestSubmitWalletHack( _selectedTargetId, kind, input, elapsed, _puzzle.TimeLimitSeconds );
-
-        if ( _puzzle.TrySubmit( input ) )
+        if ( _awaitingVerdict )
         {
-            if ( !string.IsNullOrEmpty( _selectedGovNodeId ) )
-            {
-                _lines.Add( "BYPASS OK — host validated (Phase 1 stub; no records exfiltrated)." );
-                _lines.Add( $"Node {_selectedGovNodeId} logged. Govdb economy = Phase 2 (Opus)." );
-            }
-            else
-            {
-                _lines.Add( "BYPASS OK — host validated (Phase 1 stub; no funds moved)." );
-                _lines.Add( $"Target {_selectedTargetId} logged. Wallet transfer = Phase 2 (Opus)." );
-            }
-
-            _puzzle = null;
-            _selectedTargetId = null;
-            _selectedGovNodeId = null;
-            _activeModule = OpsModule.Log;
-            _screen = LifePunchCyberScreen.Terminal;
+            _lines.Add( "WARNING: verdict pending — hold." );
             return;
         }
 
-        if ( _puzzle.IsExpired )
+        if ( string.Equals( input?.Trim(), "abort", StringComparison.OrdinalIgnoreCase ) )
         {
-            _lines.Add( "ERROR: too slow — connection dropped." );
-            Terminal?.RequestReportHackFailure();
-            _puzzle = null;
-            _selectedTargetId = null;
-            _selectedGovNodeId = null;
-            _activeModule = OpsModule.Log;
-            _screen = LifePunchCyberScreen.Decrypt;
+            if ( Terminal.IsValid() )
+            {
+                _awaitingVerdict = true;
+                Terminal.RequestAbandonIntrusion( _sessionId, expired: false );
+            }
             return;
         }
 
-        _lines.Add( $"DENIED — {MathF.Ceiling( _puzzle.SecondsRemaining )}s remaining." );
-        _activeModule = OpsModule.Target;
-        _screen = LifePunchCyberScreen.Decrypt;
+        if ( !Terminal.IsValid() )
+        {
+            _lines.Add( "ERROR: terminal link lost." );
+            ClearIntrusionState();
+            return;
+        }
+
+        _awaitingVerdict = true;
+        _lines.Add( "Submitting bypass payload — awaiting host verdict ..." );
+        Terminal.RequestSubmitIntrusion( _sessionId, input );
+    }
+
+    private void ClearIntrusionState()
+    {
+        _puzzle = null;
+        _sessionId = null;
+        _heat = 0;
+        _awaitingBegin = false;
+        _awaitingVerdict = false;
+        _selectedTargetId = null;
+        _selectedGovNodeId = null;
+        _selectedHashdId = null;
+    }
+
+    /// <summary>Host confirmed (or denied) an intrusion begin request for the local operator.</summary>
+    public static void OnIntrusionBegin( bool ok, string sessionId, int puzzleKind, string prompt, float timeLimitSeconds, int heat, string message )
+    {
+        var panel = Sandbox.Game.ActiveScene?.GetAllComponents<HackerTerminal>().FirstOrDefault();
+        if ( !panel.IsValid() )
+            return;
+
+        panel._awaitingBegin = false;
+
+        if ( !ok )
+        {
+            panel._lines.Add( $"ERROR: {message}" );
+            panel.ClearIntrusionState();
+            panel._activeModule = OpsModule.Scan;
+            panel._screen = LifePunchCyberScreen.Network;
+            panel.TrimLines();
+            return;
+        }
+
+        panel._sessionId = sessionId;
+        panel._heat = heat;
+        panel._awaitingVerdict = false;
+        panel._puzzle = new HackerPuzzleSession(
+            (HackerPuzzleSession.PuzzleKind)puzzleKind, prompt, answer: "", timeLimitSeconds );
+
+        panel._lines.Add( panel.GetTargetBanner() );
+        panel._lines.Add( prompt );
+        panel._lines.Add( $"TIME LIMIT: {MathF.Ceiling( timeLimitSeconds )}s — type answer at prompt. ABORT to bail." );
+        panel._activeModule = OpsModule.Target;
+        panel._screen = LifePunchCyberScreen.Decrypt;
+        panel.AppendFooterLog( $"Uplink established — session {sessionId[..8]}." );
+        panel.TrimLines();
+    }
+
+    /// <summary>Host verdict on a submit/abandon for the local operator's session.</summary>
+    public static void OnIntrusionVerdict( bool success, bool terminated, int heat, bool traced, string message )
+    {
+        var panel = Sandbox.Game.ActiveScene?.GetAllComponents<HackerTerminal>().FirstOrDefault();
+        if ( !panel.IsValid() )
+            return;
+
+        panel._awaitingVerdict = false;
+        panel._heat = heat;
+
+        if ( success )
+        {
+            panel._lines.Add( "BYPASS OK — host validated." );
+            panel._lines.Add( message );
+            panel.AppendFooterLog( "Intrusion complete — placeholder event logged." );
+        }
+        else if ( traced )
+        {
+            panel._lines.Add( $"ERROR: {message}" );
+            panel.AppendFooterLog( "TRACED — session terminated." );
+        }
+        else if ( terminated )
+        {
+            panel._lines.Add( $"ERROR: {message}" );
+            panel.AppendFooterLog( "Session terminated." );
+        }
+        else
+        {
+            panel._lines.Add( $"DENIED — {message}" );
+            panel._activeModule = OpsModule.Target;
+            panel._screen = LifePunchCyberScreen.Decrypt;
+            panel.TrimLines();
+            return;
+        }
+
+        panel.ClearIntrusionState();
+        panel._activeModule = OpsModule.Log;
+        panel._screen = LifePunchCyberScreen.Terminal;
+        panel.TrimLines();
     }
 
     private void HandleCommand( string input )
@@ -728,6 +810,7 @@
                     _lines.Add( "  INFIL    - Breach a govdb node (advanced)." );
                 }
                 _lines.Add( "  HACK     - Start wallet bypass on a SteamID." );
+                _lines.Add( "  ABORT    - Bail out of the active intrusion." );
                 _lines.Add( "  INFO     - Terminal tier + session info." );
                 _lines.Add( "  STATUS   - Session + target state." );
                 _lines.Add( "  CLEAR    - Wipe scrollback." );
@@ -743,6 +826,12 @@
 
             case "clear":
                 _lines.Clear();
+                break;
+
+            case "abort":
+                // With a live puzzle, OnSubmit routes input through HandlePuzzleInput instead;
+                // reaching here means there is no active intrusion to bail from.
+                _lines.Add( "ERROR: no active intrusion to abort." );
                 break;
 
             case "about":
@@ -774,9 +863,12 @@
                 _lines.Add( $"  Wallet scan: {_scanResults.Count} target(s)" );
                 if ( Tier == HackerTerminalTier.Advanced )
                     _lines.Add( $"  Govdb scan:  {_govdbResults.Count} node(s)" );
-                _lines.Add( $"  Active op:   {( _puzzle != null ? (_selectedGovNodeId ?? _selectedTargetId) : "none" )}" );
+                _lines.Add( $"  Active op:   {( _puzzle != null ? (_selectedGovNodeId ?? _selectedHashdId ?? _selectedTargetId) : "none" )}" );
                 if ( _puzzle != null )
+                {
                     _lines.Add( $"  Puzzle TTL:  {MathF.Ceiling( _puzzle.SecondsRemaining )}s" );
+                    _lines.Add( $"  Trace heat:  {_heat}% (trace at {HackerIntrusionService.TraceHeatThreshold}%)" );
+                }
                 _lines.Add( "--------------------------------------------" );
                 break;
 
@@ -834,13 +926,11 @@
 
                 _selectedGovNodeId = nodeMatch.NodeId;
                 _selectedTargetId = null;
-                _puzzle = HackerPuzzleSession.CreateRandom( advancedTerminal: true, timeLimitSeconds: GetRackPuzzleSeconds() );
-                _lines.Add( $"INFILTRATING {nodeMatch.Label} [{nodeMatch.SecurityTier}]" );
-                _lines.Add( _puzzle.Prompt );
-                _lines.Add( $"TIME LIMIT: {MathF.Ceiling( _puzzle.TimeLimitSeconds )}s — type answer at prompt." );
-                _activeModule = OpsModule.Target;
-                _screen = LifePunchCyberScreen.Decrypt;
-                AppendFooterLog( $"Infiltration started on {nodeMatch.NodeId}." );
+                _selectedHashdId = null;
+                _awaitingBegin = true;
+                _lines.Add( $"INFILTRATING {nodeMatch.Label} [{nodeMatch.SecurityTier}] — requesting host uplink ..." );
+                Terminal.RequestBeginIntrusion( nodeMatch.NodeId, (int)HackerIntrusionTargetClass.GovDb );
+                AppendFooterLog( $"Infiltration requested on {nodeMatch.NodeId}." );
                 break;
 
             case "scan":
@@ -910,13 +1000,10 @@
                     if ( hub.IsValid() )
                         LpBitcoinHubAlertBridge.NotifyHubUnderAttack( hub, attacker );
 
-                    _puzzle = HackerPuzzleSession.CreateRandom( advancedTerminal: true, timeLimitSeconds: GetRackPuzzleSeconds() );
-                    _lines.Add( $"INFILTRATING {hashdMatch.Label} — hub wallet {hashdMatch.HubWalletBtc:F4} BTC" );
-                    _lines.Add( _puzzle.Prompt );
-                    _lines.Add( $"TIME LIMIT: {MathF.Ceiling( _puzzle.TimeLimitSeconds )}s — type answer at prompt." );
-                    _activeModule = OpsModule.Target;
-                    _screen = LifePunchCyberScreen.Decrypt;
-                    AppendFooterLog( $"HASHD bypass started on {hashdMatch.ScanId}." );
+                    _awaitingBegin = true;
+                    _lines.Add( $"INFILTRATING {hashdMatch.Label} — hub wallet {hashdMatch.HubWalletBtc:F4} BTC — requesting host uplink ..." );
+                    Terminal.RequestBeginIntrusion( hashdMatch.ScanId, (int)HackerIntrusionTargetClass.Hashd );
+                    AppendFooterLog( $"HASHD bypass requested on {hashdMatch.ScanId}." );
                     break;
                 }
 
@@ -938,13 +1025,10 @@
                 _selectedTargetId = match.SteamId;
                 _selectedGovNodeId = null;
                 _selectedHashdId = null;
-                _puzzle = HackerPuzzleSession.CreateRandom( advancedTerminal: false, timeLimitSeconds: GetRackPuzzleSeconds() );
-                _lines.Add( $"INFILTRATING {match.DisplayName} — wallet ${match.WalletCash}" );
-                _lines.Add( _puzzle.Prompt );
-                _lines.Add( $"TIME LIMIT: {MathF.Ceiling( _puzzle.TimeLimitSeconds )}s — type answer at prompt." );
-                _activeModule = OpsModule.Target;
-                _screen = LifePunchCyberScreen.Decrypt;
-                AppendFooterLog( $"Bypass started on wallet {match.SteamId}." );
+                _awaitingBegin = true;
+                _lines.Add( $"INFILTRATING {match.DisplayName} — wallet ${match.WalletCash} — requesting host uplink ..." );
+                Terminal.RequestBeginIntrusion( match.SteamId, (int)HackerIntrusionTargetClass.Wallet );
+                AppendFooterLog( $"Bypass requested on wallet {match.SteamId}." );
                 break;
 
             default:

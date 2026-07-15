@@ -106,6 +106,121 @@ public sealed class HackerTerminalEntity : BaseEntity, Component.IPressable
 		HackerTerminal.Open( this );
 	}
 
+	// ── HK-S2 host-issued intrusion loop (money disabled — see HackerIntrusionService) ──
+
+	public void RequestBeginIntrusion( string targetId, int targetClass ) => BeginIntrusionHost( targetId, targetClass );
+
+	public void RequestSubmitIntrusion( string sessionId, string answer ) => SubmitIntrusionHost( sessionId, answer );
+
+	public void RequestAbandonIntrusion( string sessionId, bool expired ) => AbandonIntrusionHost( sessionId, expired );
+
+	[Rpc.Host]
+	private void BeginIntrusionHost( string targetId, int targetClass )
+	{
+#if !LIFEPUNCH_LOCAL
+		if ( !GameUtils.HasPermission( Rpc.Caller, GameObject ) )
+			return;
+#endif
+		if ( !IsPowered )
+		{
+			NotifyIntrusionBegin( Rpc.CallerId, false, "", 0, "", 0f, 0, "terminal offline — power ON the Server Rack first" );
+			return;
+		}
+
+		var klass = (HackerIntrusionTargetClass)targetClass;
+		var policyTarget = klass switch
+		{
+			HackerIntrusionTargetClass.Hashd => HackerHackTarget.BitcoinMiner,
+			HackerIntrusionTargetClass.GovDb => HackerHackTarget.GovernmentDataCenter,
+			_ => HackerHackTarget.Wallet
+		};
+
+		if ( !HackerHackTargetPolicy.CanHack( Tier, policyTarget ) )
+		{
+			NotifyIntrusionBegin( Rpc.CallerId, false, "", 0, "", 0f, 0, "target class not authorized for this terminal tier" );
+			return;
+		}
+
+		var rack = ActiveRack;
+		var timeLimit = rack.IsValid() ? rack.PuzzleTimeLimitSeconds : HackerJob.DefaultPuzzleTimeLimitSeconds;
+		var cooldown = rack.IsValid() ? rack.HackCooldownSeconds : HackerUpgradeCatalog.BaseHackCooldownSeconds;
+
+		var advanced = klass != HackerIntrusionTargetClass.Wallet;
+		var result = HackerIntrusionService.Begin( Rpc.CallerId, targetId, klass, advanced, timeLimit, cooldown );
+		NotifyIntrusionBegin(
+			Rpc.CallerId, result.Ok, result.SessionId.ToString(), result.PuzzleKind,
+			result.Prompt, result.TimeLimitSeconds, result.Heat, result.Message );
+	}
+
+	[Rpc.Host]
+	private void SubmitIntrusionHost( string sessionId, string answer )
+	{
+#if !LIFEPUNCH_LOCAL
+		if ( !GameUtils.HasPermission( Rpc.Caller, GameObject ) )
+			return;
+#endif
+		if ( !Guid.TryParse( sessionId, out var id ) )
+			return;
+
+		var result = HackerIntrusionService.Submit( id, Rpc.CallerId, answer );
+		if ( result.Traced )
+			TriggerTraceCounterplay();
+
+		NotifyIntrusionVerdict( Rpc.CallerId, result.Success, result.Terminated, result.Heat, result.Traced, result.Message );
+	}
+
+	[Rpc.Host]
+	private void AbandonIntrusionHost( string sessionId, bool expired )
+	{
+#if !LIFEPUNCH_LOCAL
+		if ( !GameUtils.HasPermission( Rpc.Caller, GameObject ) )
+			return;
+#endif
+		if ( !Guid.TryParse( sessionId, out var id ) )
+			return;
+
+		var result = HackerIntrusionService.Abandon( id, Rpc.CallerId, expired );
+		if ( expired )
+			TriggerTraceCounterplay();
+
+		NotifyIntrusionVerdict( Rpc.CallerId, false, result.Terminated, result.Heat, expired, result.Message );
+	}
+
+	/// <summary>Host-side trace consequence — reuses the existing counterplay roll + 911 broadcast.</summary>
+	private void TriggerTraceCounterplay()
+	{
+#if !LIFEPUNCH_LOCAL
+		var hacker = GameUtils.GetPlayerByConnectionId( Rpc.CallerId );
+		var position = hacker.IsValid() ? hacker.WorldPosition : WorldPosition;
+#else
+		var position = WorldPosition;
+#endif
+		var alertLine = HackerCounterplayService.TryTriggerFailedHackAlert( ActiveRack, position );
+		NotifyHackFailure( Rpc.CallerId, alertLine );
+	}
+
+	[Rpc.Broadcast]
+	private void NotifyIntrusionBegin( Guid callerId, bool ok, string sessionId, int puzzleKind, string prompt, float timeLimitSeconds, int heat, string message )
+	{
+		if ( Connection.Local.Id != callerId )
+			return;
+
+		HackerTerminal.OnIntrusionBegin( ok, sessionId, puzzleKind, prompt, timeLimitSeconds, heat, message );
+	}
+
+	[Rpc.Broadcast]
+	private void NotifyIntrusionVerdict( Guid callerId, bool success, bool terminated, int heat, bool traced, string message )
+	{
+		if ( Connection.Local.Id != callerId )
+			return;
+
+		HackerTerminal.OnIntrusionVerdict( success, terminated, heat, traced, message );
+	}
+
+	// ── Legacy Phase-1 submit path (superseded by the HK-S2 session loop above for gameplay).
+	// Kept because HackerEconomySecurity.Process*Host is the documented HK-S4 economy swap point
+	// (docs/SECURITY.md, HACKER_PHASE2_ECONOMY_PREP.md) — #154 replaces or retires it, not S2. ──
+
 	public void RequestSubmitWalletHack( string targetSteamId, int puzzleKind, string answer, float secondsElapsed, float timeLimitSeconds )
 		=> SubmitWalletHackHost( targetSteamId, puzzleKind, answer, secondsElapsed, timeLimitSeconds );
 
