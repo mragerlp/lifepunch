@@ -1,6 +1,6 @@
 # LIFEPUNCH™ Banker S1 — job registration proposal
 
-**Issue:** #138 · **Status:** proposal-only · **Surface:** portal T2 `jobs[]` plus addon-manifest draft  
+**Issue:** #138 · **Status:** proposal-only · **Surface:** portal T2 `jobs[]` plus addon-manifest draft
 **Activation:** none. These rows are not portal-ready until Bloodwave rules the open choices and the
 portal generates real identifiers. This slice adds no gameplay, economy, Razor, or SCSS code.
 
