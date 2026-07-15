@@ -38,6 +38,14 @@ STATUS:  Slices 1-5 UNBLOCKED (fixture-backed, read-only).
          EDITOR TRUTH STAYS RED'S regardless of who builds.
 ```
 
+> **TABLET WORK DEFERRED — HUB-FIRST (2026-07-15, `dispatch\red\0002` Rider 6; rulings:
+> `lifepunch/docs/cvl/PLAYER_HUB_BTC_STORE_RULING_2026-07-15.md`,
+> `lifepunch/docs/LIFEPUNCH_UI_STANDARD.md` MENU SHELL LAW).** HUB-system menus + working-entity
+> controller UIs are the foundation and come **first**; **tablets build on them later**, not before.
+> The **Player Hub absorbs the tablet's player-facing commerce** (BTC store/exchange, upgrade
+> purchases, cash-out) as hub tabs, so `TABLET_DOCTRINE` shrinks further and stays deferred. A tablet
+> is a later delivery of these same shells, not a parallel track.
+
 ### LANE 1 — `lpbitcoin`
 
 ```text
