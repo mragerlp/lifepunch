@@ -12,6 +12,11 @@
 > the notes scope it. Token comment corrected: **in-game headings are Poppins, not Montserrat**
 > (`BRAND_DOCTRINE.md §2` — Montserrat is web-only and falls back silently in s&box SCSS).
 > Companion ruling: `lifepunch/docs/cvl/BRANDING_SCOPE_RULING_2026-07-15.md`.
+>
+> **Changelog 2026-07-15b (`dispatch\red\0002` Rider 6 full delta, Cursor 0046 REVISE):** Added
+> **SIDEBAR DESIGN CANON v1** (a–d), **UI CORE PRINCIPLE**, and **TIER GRAMMAR CANON**. Companion
+> ruling `lifepunch/docs/cvl/PLAYER_HUB_BTC_STORE_RULING_2026-07-15.md` (hub absorbs tablet commerce);
+> `TABLET_DOCTRINE.md` + `lifepunchaddons/docs/ACTIVE_WORKSTREAM.md` carry the tablet-defer notes.
 
 Status: CANON — ratified 2026-07-08; tokens reconciled 2026-07-14.
 Original bar (chrome reduction, no "too Claudey" decoration) stands. Brand identity for
@@ -202,6 +207,37 @@ container, not a license to break the money grammar or the chrome diet.
 **PRIORITY — TABLET WORK DEFERRED.** HUB-system menus and working-entity controller UIs are the
 foundation and come first; **tablet surfaces build on them later**, not before (see
 `ACTIVE_WORKSTREAM.md`). A tablet is a later delivery of these same shells, not a parallel track.
+
+## SIDEBAR DESIGN CANON v1 (ratified 2026-07-15, Bloodwave screenshot-ruled; `dispatch\red\0002` Rider 6)
+
+**The Bitcoin Ops sidebar earned the base design.** Its treatment is the canon sidebar for the shell
+family and **ports to the Player Hub and all future menus**:
+
+- **(a) Structure, top → bottom:** an **IDENTITY BLOCK at the top** (player avatar + name on the
+  Player Hub; the menu's **own job mark** on job menus), then the **nav items**, with **SETTINGS
+  PINNED AT THE BOTTOM.**
+- **(b) Font treatment:** the Bitcoin Ops sidebar treatment — **Poppins, uppercase, letterspaced nav
+  labels** — is canon and ports to every menu sidebar.
+- **(c) Selected state:** a **filled rounded block in the menu's own accent** (base highlight). The
+  **no-left-strip ruling stands** (no left-edge vertical accent bar — BOARD `SIDEBAR HIGHLIGHT`
+  ruling).
+- **(d) Branding:** per `BRANDING_SCOPE_RULING_2026-07-15` — the **LP roundel comes OFF** the Bitcoin
+  Ops sidebar (job menus carry their own mark). The **HASHD mark is pending**; **until it exists, no
+  mark beats the wrong mark** — leave the slot empty rather than borrow the LP roundel.
+
+## UI CORE PRINCIPLE — maintain functionality, polish the core (ratified 2026-07-15, Bloodwave)
+
+**ONE light UI core, with style + functions LAYERED over the base per surface purpose.** The Player
+Hub stays light with its working parts; the Bitcoin Hub stays light with its own working parts.
+**Composition over construction** — a surface reuses the core and layers only what its purpose needs;
+**no surface grows heavier than its purpose requires.**
+
+## TIER GRAMMAR CANON — one progression visual across skills + upgrades (ratified 2026-07-15, Bloodwave)
+
+**Skills adopt the SAME recognizable I–V tier system and upgrade-purchase visual style already
+shipped in the upgrade UI** — linked icons/bubbles chaining up to the **Tier V square**. **One tier
+grammar** across skills, upgrades, and future progression surfaces; **never a second visual system.**
+A new progression surface skins this grammar; it does not invent its own.
 
 ## Anti-patterns (the "too Claudey" list — reject on sight)
 
