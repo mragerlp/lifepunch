@@ -434,3 +434,66 @@ Bloodwave merge                       ← sole merge gate, unchanged
   seat drives it. The two-gate pass (Green bulk, Fable grade) is what converts lane output into
   tree-eligible work — it never skips because "Codex already reviewed it."
 
+---
+
+## v1.8 AMENDMENT (2026-07-15 — OPENCODE SEAT LANE + PULL-DISPATCH FOLDER RECONCILIATION + PER-LANE CODEX PREFIX; dispatch: `dispatch\red\0002` Rider 4b, Fable relay author, Bloodwave GO)
+
+> **DRIFT NOTE (unchanged):** these rules land **here, in tracked canon, NOT in the lane copy**
+> (`C:\lifepunch\comms\COMMS_PROTOCOL.md`, still `v1`). Same named gap Rules 19–21 carry; the
+> three-copy reconciliation remains a Bloodwave ruling (owed since `red\0034`). Not reconciled here.
+
+### RULE 22 — **OPENCODE IS AN L2 IMPLEMENTER SEAT LANE.**
+
+`comms\opencode\` (filings) + `dispatch\opencode\` (orders) are **LIVE**, ratified by the BOARD
+`"BLOODWAVE | RULED | OPENCODE EDITOR TRIAL"` 2026-07-15 + `OPENCODE_HARNESS_ADOPTION_2026-07-14.md`.
+
+- **Class: L2 implementer-eligible seat.** **Authority follows the model** — a frontier cloud model
+  is L2 implementer-eligible (relief clause); a CORNERMAN local model is advisory-only and the seat
+  is Green-class for that session. The seat **states its model in every boot report**; the lane
+  state words it may use track that authority.
+- **It RECEIVES dispatches.** Unlike the L3 advisory lanes (Rule 18), an implementer seat lane is a
+  work-order destination — `dispatch\opencode\` carries three-key dispatches.
+- **Standard bindings:** `<SEQ>_OPENCODE_<SUBJECT>_<DATE>.md`, per-seat monotonic from `0001`,
+  write-once, own-folder-only, `FROM: OpenCode` on every filing.
+- **Relationship to the `kepler\` lane (Rule 18).** `kepler\` is the **L3 advisory** orchestrator-
+  window lane; `opencode\` is that same window's **L2 seat** lane when it runs a frontier model.
+  **One window = one seat** (`ORCHESTRATOR_SEAT_RULING`); which lane it files to reflects the
+  authority its model currently carries. A CORNERMAN-model session files advisory; a frontier-model
+  session under a relief handoff files as an implementer.
+
+### RULE 23 — **PULL-DISPATCH FOLDER RECONCILIATION** (supersedes §18's "NO `dispatch\...`" bullet and Rule 20's "four ratified seats" clause, for cursor / kepler / opencode).
+
+`fable\0082` **PULL-DISPATCH FLOW V2** (BOARD `"BLOODWAVE | RULED | PULL-DISPATCH FLOW V2"`
+2026-07-15) legitimized `dispatch\cursor\` + `dispatch\kepler\`, superseding the `fable\0070`
+exclusion; `dispatch\opencode\` is live per Rule 22. Therefore:
+
+- **Live dispatch folders:** `dispatch\red\` · `dispatch\codex\` · `dispatch\fable\`(reserved) ·
+  `dispatch\green\` · `dispatch\cursor\` · `dispatch\kepler\` · `dispatch\opencode\`.
+- **STILL NO `dispatch\copilot\`.** Copilot remains advisory-receive-only (direct Bloodwave paste).
+- **Receiving a dispatch is not authority.** A dispatch folder is a *destination*; the **three keys**
+  (Fable-authored · `AUTHORIZED: Bloodwave GO <UTC>` · matching FABLE BOARD line) plus the seat's
+  **current grant** govern what the recipient may do. Cursor receiving `dispatch\cursor\0001` is L3
+  advisory **unless** board-named for a DRIVE slice in that dispatch (as Grok was). The medium
+  expanded; the authority gate did not move.
+- **Rule 20's GitHub-issue dispatch class** now admits `[LANE-<seat>]` for any seat with a live
+  dispatch folder, under the same three-key body; the "reserved to four seats / no `[LANE-CURSOR]`"
+  sentence of Rule 20 is superseded by this rule.
+
+### RULE 24 — **PER-LANE CODEX FILING PREFIX** (Rider 4b addition; born from the `0053` SEQ collision).
+
+Kepler-run Codex agents working parallel lanes file as:
+
+```
+<SEQ>_CODEX-<LANE>_<TITLE>_<DATE>.md      e.g. 0055_CODEX-HUB_slice2-prework_2026-07-15.md
+```
+
+- **ONE shared Codex SEQ counter** across all Codex-lane agents (monotonic ordering preserved).
+- **The lane tag lives IN THE NAME** (`CODEX-HUB`, `CODEX-BITCOIN`, `CODEX-CHEMIST`) so two agents
+  filing near-simultaneously produce **distinct filenames** even at the same instant.
+- **Rationale:** `0053` collided — two different filings, one number, two Kepler-Codex agents — and
+  `fable\0081` recorded literal duplicate prefixes (`0047`×2 / `0049`×2). A shared plain-`CODEX`
+  counter with no lane discriminator is a collision waiting to fire whenever agents run in parallel.
+  The lane tag disambiguates the *name*; the single counter keeps the *order*. **A counter that two
+  parallel writers can both claim is a footgun; the discriminator belongs in the renderer, not in
+  the hope that they file one-at-a-time** (same principle as Rule 19).
+
