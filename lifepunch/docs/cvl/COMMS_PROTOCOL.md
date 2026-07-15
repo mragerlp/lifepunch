@@ -497,3 +497,34 @@ Kepler-run Codex agents working parallel lanes file as:
   parallel writers can both claim is a footgun; the discriminator belongs in the renderer, not in
   the hope that they file one-at-a-time** (same principle as Rule 19).
 
+---
+
+## v1.9 AMENDMENT (2026-07-15 — IMPLEMENTER WORKTREE LAW; dispatch: `dispatch\red\0002` guardrail + Cursor 0046 REVISE fix 3, Bloodwave INCIDENT+RULED)
+
+### RULE 25 — **IMPLEMENTER WORKTREE LAW.**
+
+**Body verbatim from the BOARD `BLOODWAVE | INCIDENT+RULED` line (2026-07-15):**
+
+> **PRIMARY-TREE SWING (`cursor\0041` MIRROR):** a Red session checked out `red/canon-sweep3` on the
+> primary tree while GROK held editor DRIVE — **the editor compiles the tree**, Grok's edits were
+> wiped once (recovered). **RULED: IMPLEMENTER WORKTREE LAW —** while a DRIVE grant is open **the
+> primary tree belongs to the DRIVE holder exclusively; every other implementer works in worktrees
+> only; a non-DRIVE checkout on the primary tree is a DRIVE violation regardless of editor tool
+> usage.** Rides Red's canon PR.
+
+**Operative form (from the `dispatch\red\0002` guardrail):**
+
+- While **any** editor DRIVE grant is open, the **PRIMARY tree belongs to the DRIVE holder
+  exclusively.** Every other implementer works in **git worktrees only.**
+- A checkout on the primary tree by a **non-DRIVE seat is a DRIVE violation even with ZERO editor
+  tool calls** — because **the editor compiles the tree, not the seat's intent.** The violation is the
+  checkout, not the tool call.
+- **Swaps happen at slice boundaries**, in this order: the holder **files its round + pushes** →
+  **Bloodwave closes the editor** → the new holder does a **fresh boot + Launch Report** → a **BOARD
+  line names the new holder.** No mid-slice swaps; no silent reversion (`EDITOR_ACCESS_LAW_V2`,
+  `CVL_AUTHORITY_LEVELS` L2: DRIVE never silently reverts — the expiring holder stops and reports).
+
+**Cross-reference:** this Rule is the COMMS/CVL home of the law; `OPENCODE_BOOT.md` and the other boot
+checklists carry it as a boot-time reminder, but the **binding statement lives here** (per Cursor
+0046: "land as COMMS/CVL amendment, not boot-file-only").
+
