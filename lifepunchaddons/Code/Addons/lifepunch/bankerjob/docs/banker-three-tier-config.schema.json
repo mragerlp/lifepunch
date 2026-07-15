@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lifepunch.co/schemas/banker-three-tier-config.schema.json",
+  "title": "LIFEPUNCH Banker three-tier config contract",
+  "description": "PROPOSED documentation stub for Issue #140. This groups tier-owned values; it is not one runtime payload.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "t1ServerEngine",
+    "t2Gamemode",
+    "t3AddonDefaults"
+  ],
+  "properties": {
+    "t1ServerEngine": {
+      "type": "object",
+      "description": "Per-server engine config; changes activate on the next restart.",
+      "additionalProperties": false,
+      "required": [
+        "MoneyCooldown"
+      ],
+      "properties": {
+        "MoneyCooldown": {
+          "type": "number",
+          "minimum": 0,
+          "default": 2,
+          "description": "PROPOSED seconds between Banker deposit or withdrawal money operations. Existing DXRP T1 key."
+        }
+      }
+    },
+    "t2Gamemode": {
+      "type": "object",
+      "description": "Per-gamemode values; changes activate after Save + Sync Servers.",
+      "additionalProperties": false,
+      "required": [
+        "dailyTransferVolumeCap",
+        "bankerJobSalary"
+      ],
+      "properties": {
+        "dailyTransferVolumeCap": {
+          "type": "integer",
+          "minimum": 0,
+          "default": 500000,
+          "description": "PROPOSED maximum cash transferred by one player per day."
+        },
+        "bankerJobSalary": {
+          "type": "integer",
+          "minimum": 0,
+          "default": 32,
+          "description": "PROPOSED value for the existing jobs[].salary field. Issue #138 owns the job row."
+        },
+        "configOverride": {
+          "$ref": "#/$defs/addonBalanceShape",
+          "description": "Optional T2 per-entry override using the same field names as the T3 defaults."
+        }
+      }
+    },
+    "t3AddonDefaults": {
+      "$ref": "#/$defs/addonBalanceShape",
+      "description": "Shipped Banker defaults inherited until overridden by T2."
+    }
+  },
+  "$defs": {
+    "addonBalanceShape": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "transferFacilitationFeePercent": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "default": 2,
+          "description": "PROPOSED percentage fee. Fee destination remains unruled."
+        },
+        "minDepositAmount": {
+          "type": "integer",
+          "minimum": 0,
+          "default": 100,
+          "description": "PROPOSED minimum cash deposit per transaction."
+        },
+        "maxDepositAmount": {
+          "type": "integer",
+          "minimum": 0,
+          "default": 100000,
+          "description": "PROPOSED maximum cash deposit per transaction."
+        },
+        "vaultBalanceCapPerPlayer": {
+          "type": "integer",
+          "minimum": 0,
+          "default": 1000000,
+          "description": "PROPOSED maximum cash held for one player."
+        }
+      }
+    }
+  }
+}
