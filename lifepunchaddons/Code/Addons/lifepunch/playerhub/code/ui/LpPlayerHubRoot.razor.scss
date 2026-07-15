@@ -235,23 +235,25 @@ $header-h: 64px;
 	background-color: $accent-soft-hover;
 }
 
-// Accent is a WASH, never chrome: a low-alpha selected background plus a left indicator.
+// Accent is a WASH only (sidebar ruling / cursor\0038): no left chrome strip.
 .hub-nav-item.is-active {
 	opacity: 1;
 	background-color: $accent-soft;
 	color: $text-main;
 }
 
+// Keep the marker node for layout stability, but never paint chrome.
 .hub-nav-indicator {
-	width: 3px;
-	height: 20px;
+	width: 0;
+	height: 0;
 	flex-shrink: 0;
-	border-radius: 2px;
 	background-color: transparent;
 }
 
 .hub-nav-item.is-active .hub-nav-indicator {
-	background-color: $lp-blue;
+	width: 0;
+	height: 0;
+	background-color: transparent;
 }
 
 // Icons stay neutral. The active state is carried by opacity and the wash, not by tinting glyphs.
