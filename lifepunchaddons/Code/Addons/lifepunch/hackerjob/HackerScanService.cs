@@ -54,7 +54,10 @@ public static class HackerScanService
 	}
 
 	/// <summary>Advanced terminal only — nearby LIFEPUNCH HASHD bitcoin hubs (vengeance miner intrusion).</summary>
-	public static IReadOnlyList<HashdTarget> RequestHashdScan( HackerTerminalEntity terminal, float maxDistance = 2500f )
+	public static IReadOnlyList<HashdTarget> RequestHashdScan( HackerTerminalEntity terminal ) =>
+		RequestHashdScan( terminal, HackerJobConfigRuntime.Current.HashdScanDistance );
+
+	public static IReadOnlyList<HashdTarget> RequestHashdScan( HackerTerminalEntity terminal, float maxDistance )
 	{
 #if LIFEPUNCH_LOCAL
 		_ = terminal;

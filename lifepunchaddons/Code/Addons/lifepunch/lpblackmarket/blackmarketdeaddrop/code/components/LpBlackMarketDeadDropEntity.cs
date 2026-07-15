@@ -1,7 +1,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // PROPRIETARY & CONFIDENTIAL — © 2026 lifepunch.co. All rights reserved.
 //
-// "Hacker Job" (s&box ident: lifepunch.hackerjob · addon ident: hackerjob) is the sole-owned
+// "LIFEPUNCH™ Black Market Dealer for DXRP" (s&box ident: lifepunch.blackmarket · addon ident: blackmarketdealer) is the sole-owned
 // intellectual property of lifepunch.co. It is NOT licensed for resale, redistribution,
 // sublicensing, copying, or reuse by ANY person or entity — including DXRP and
 // LifePunch staff, contributors, or community — EXCEPT the owner (lifepunch.co).
@@ -9,39 +9,27 @@
 // Presence in this repository or on the DXRP portal grants no rights to anyone else.
 // ─────────────────────────────────────────────────────────────────────────────
 
-using System;
+using System.Collections.Generic;
+using Sandbox;
 
-namespace LifePunch.DXRP.Addons.HackerJob;
+namespace LifePunch.DXRP.Addons.BlackMarket;
 
 /// <summary>
-/// Server rack access PIN — 4-digit operator lock. Hash stays host-only; never sync plaintext.
+/// Dead-drop machine (BM-S2, issue #147). Content-only: a stash point whose location
+/// is knowledge, not a map ping. State machine + USE + one display-only placeholder
+/// compartment. No item hand-off, no collection loop, no cash/BTC — the drop loop
+/// itself is ladder slice 5; money is S4 (#149, gated).
 /// </summary>
-internal static class HackerServerRackAccessPin
+[Title( "LIFEPUNCH Black Market Dead-Drop" )]
+[Category( "LifePunch/BlackMarket" )]
+public sealed class LpBlackMarketDeadDropEntity : LpBlackMarketMachine
 {
-	public static int PinLength => HackerJobConfigRuntime.Current.PinLength;
-	public static float SessionSeconds => HackerJobConfigRuntime.Current.PinSessionSeconds;
+	protected override string EntitySlug => "blackmarketdeaddrop";
 
-	public static bool IsValidFormat( string pin )
+	private static readonly IReadOnlyList<string> Compartment = new[]
 	{
-		if ( string.IsNullOrEmpty( pin ) || pin.Length != PinLength )
-			return false;
+		"[PLACEHOLDER] Dead-drop compartment (empty)"
+	};
 
-		foreach ( var c in pin )
-		{
-			if ( c < '0' || c > '9' )
-				return false;
-		}
-
-		return true;
-	}
-
-	public static ushort Hash( string pin, Guid rackId )
-	{
-		var h = 2166136261u;
-		foreach ( var c in pin )
-			h = ( h ^ c ) * 16777619u;
-
-		h ^= (uint)rackId.GetHashCode();
-		return (ushort)( h & 0xFFFF );
-	}
+	protected override IReadOnlyList<string> PlaceholderInventory => Compartment;
 }

@@ -413,11 +413,10 @@ public class HackerServerRackEntity : BaseEntity, Component.IPressable
 #if LIFEPUNCH_LOCAL
 		SetTier( kind, current + 1 );
 #else
-		var player = GameUtils.GetPlayerByConnectionId( Rpc.CallerId );
-		if ( !player.IsValid() || player.WalletBalance < cost )
-			return;
-
-		SetTier( kind, current + 1 );
+		_ = cost;
+		// HK-S1 fail-close: no host debit exists yet, so every paid INSTALL request is unpaid.
+		// HK-S4 owns the atomic wallet debit and may advance the tier only after payment succeeds.
+		return;
 #endif
 	}
 

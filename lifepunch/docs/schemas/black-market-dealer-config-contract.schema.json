@@ -1,0 +1,217 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://lifepunch.co/schemas/black-market-dealer-config-contract.schema.json",
+  "title": "LIFEPUNCH Black Market Dealer proposed config contract",
+  "description": "Design-time BM-S3 aggregate stub. It documents three separate runtime surfaces and is not itself a portal payload. All defaults are PROPOSED and have no gameplay consumer in BM-S3.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "t2CatalogEntry",
+    "t3ShippedDefaults",
+    "storeLiveSettings"
+  ],
+  "properties": {
+    "t2CatalogEntry": {
+      "$ref": "#/definitions/t2CatalogEntry"
+    },
+    "t3ShippedDefaults": {
+      "$ref": "#/definitions/t3ShippedDefaults"
+    },
+    "storeLiveSettings": {
+      "$ref": "#/definitions/storeLiveSettings"
+    }
+  },
+  "definitions": {
+    "t2CatalogEntry": {
+      "description": "Portal MARKET and per-content override fields. MarketSpawnCostWallet maps to marketItems[].cost; the remaining fields override the T3 fallback for one catalog entry.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "MarketSpawnCostWallet",
+        "PaymentRail",
+        "BaseSalePriceSats",
+        "BaseSalePriceWallet"
+      ],
+      "properties": {
+        "MarketSpawnCostWallet": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 2500,
+          "description": "PROPOSED F1 stock acquisition sink in DXRP wallet units. Portal MARKET owns the runtime value."
+        },
+        "PaymentRail": {
+          "type": "string",
+          "enum": [
+            "btc",
+            "wallet"
+          ],
+          "default": "btc",
+          "description": "PROPOSED per-entry sale rail. No other currency is accepted."
+        },
+        "BaseSalePriceSats": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 500000,
+          "description": "PROPOSED host-resolved BTC base quote in integer satoshis."
+        },
+        "BaseSalePriceWallet": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 3000,
+          "description": "PROPOSED host-resolved wallet base quote."
+        }
+      }
+    },
+    "t3ShippedDefaults": {
+      "description": "Flat restart-gated addon defaults, overridable per T2 content entry. Whole-object validation is required.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "PaymentRail",
+        "BaseSalePriceSats",
+        "BaseSalePriceWallet",
+        "StockCooldownSeconds",
+        "MaxStockQuantity",
+        "HeatGainPerSale",
+        "HeatDecayPerMinute",
+        "MaxHeat",
+        "HighRiskHeatThreshold",
+        "CriticalRiskHeatThreshold"
+      ],
+      "properties": {
+        "PaymentRail": {
+          "type": "string",
+          "enum": [
+            "btc",
+            "wallet"
+          ],
+          "default": "btc"
+        },
+        "BaseSalePriceSats": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 500000
+        },
+        "BaseSalePriceWallet": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 3000
+        },
+        "StockCooldownSeconds": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 86400,
+          "default": 60
+        },
+        "MaxStockQuantity": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100,
+          "default": 10
+        },
+        "HeatGainPerSale": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100,
+          "default": 8
+        },
+        "HeatDecayPerMinute": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "default": 2
+        },
+        "MaxHeat": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000,
+          "default": 100
+        },
+        "HighRiskHeatThreshold": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 999,
+          "default": 70
+        },
+        "CriticalRiskHeatThreshold": {
+          "type": "integer",
+          "minimum": 2,
+          "maximum": 1000,
+          "default": 90
+        }
+      }
+    },
+    "storeLiveSettings": {
+      "description": "Atomic Store document proposed for lifepunch:blackmarket:config:settings. Invalid documents retain last-known-good.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schemaVersion",
+        "revision",
+        "dealerMarginBps",
+        "shipmentFeeWallet",
+        "riskFeeBps"
+      ],
+      "properties": {
+        "schemaVersion": {
+          "const": 1,
+          "default": 1
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 1
+        },
+        "dealerMarginBps": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10000,
+          "default": 1500,
+          "description": "PROPOSED 15% spread. The full spread is debited from the buyer and credited to the dealer; it is never separately minted."
+        },
+        "shipmentFeeWallet": {
+          "type": "integer",
+          "minimum": 0,
+          "default": 250,
+          "description": "PROPOSED F5 system sink in DXRP wallet units."
+        },
+        "riskFeeBps": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10000,
+          "default": 500,
+          "description": "PROPOSED 5% high-heat system sink, denominated in the active sale rail."
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "t2CatalogEntry": {
+        "MarketSpawnCostWallet": 2500,
+        "PaymentRail": "btc",
+        "BaseSalePriceSats": 500000,
+        "BaseSalePriceWallet": 3000
+      },
+      "t3ShippedDefaults": {
+        "PaymentRail": "btc",
+        "BaseSalePriceSats": 500000,
+        "BaseSalePriceWallet": 3000,
+        "StockCooldownSeconds": 60,
+        "MaxStockQuantity": 10,
+        "HeatGainPerSale": 8,
+        "HeatDecayPerMinute": 2,
+        "MaxHeat": 100,
+        "HighRiskHeatThreshold": 70,
+        "CriticalRiskHeatThreshold": 90
+      },
+      "storeLiveSettings": {
+        "schemaVersion": 1,
+        "revision": 1,
+        "dealerMarginBps": 1500,
+        "shipmentFeeWallet": 250,
+        "riskFeeBps": 500
+      }
+    }
+  ]
+}

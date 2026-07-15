@@ -18,15 +18,15 @@ namespace LifePunch.DXRP.Addons.HackerJob;
 /// </summary>
 public static class HackerUpgradeCatalog
 {
-	public const int MaxDetectionTier = 4;
-	public const int MaxPuzzleTimeTier = 4;
-	public const int MaxRewardTier = 3;
-	public const int MaxCooldownTier = 3;
+	public static int MaxDetectionTier => HackerJobConfigRuntime.Current.MaxDetectionTier;
+	public static int MaxPuzzleTimeTier => HackerJobConfigRuntime.Current.MaxPuzzleTimeTier;
+	public static int MaxRewardTier => HackerJobConfigRuntime.Current.MaxRewardTier;
+	public static int MaxCooldownTier => HackerJobConfigRuntime.Current.MaxCooldownTier;
 
-	public const int AdvancedMaxDetectionTier = 5;
-	public const int AdvancedMaxPuzzleTimeTier = 5;
-	public const int AdvancedMaxRewardTier = 3;
-	public const int AdvancedMaxCooldownTier = 3;
+	public static int AdvancedMaxDetectionTier => HackerJobConfigRuntime.Current.AdvancedMaxDetectionTier;
+	public static int AdvancedMaxPuzzleTimeTier => HackerJobConfigRuntime.Current.AdvancedMaxPuzzleTimeTier;
+	public static int AdvancedMaxRewardTier => HackerJobConfigRuntime.Current.AdvancedMaxRewardTier;
+	public static int AdvancedMaxCooldownTier => HackerJobConfigRuntime.Current.AdvancedMaxCooldownTier;
 
 	public static int GetMaxTier( HackerRackTier rackTier, HackerUpgradeKind kind ) => rackTier switch
 	{
@@ -48,9 +48,9 @@ public static class HackerUpgradeCatalog
 		}
 	};
 
-	public const float BasePuzzleSeconds = 45f;
-	public const float BaseHackCooldownSeconds = 120f;
-	public const float BaseRewardMultiplier = 1f;
+	public static float BasePuzzleSeconds => HackerJobConfigRuntime.Current.BasePuzzleSeconds;
+	public static float BaseHackCooldownSeconds => HackerJobConfigRuntime.Current.BaseHackCooldownSeconds;
+	public static float BaseRewardMultiplier => HackerJobConfigRuntime.Current.BaseRewardMultiplier;
 
 	/// <summary>Chance police counterplay fires on failed hack (wanted and/or panic).</summary>
 	public static float GetDetectionAlertChance( int detectionTier )
@@ -58,19 +58,19 @@ public static class HackerUpgradeCatalog
 		var tier = Math.Clamp( detectionTier, 0, MaxDetectionTier );
 		return tier switch
 		{
-			0 => 1.00f,
-			1 => 0.75f,
-			2 => 0.50f,
-			3 => 0.25f,
-			4 => 0.10f,
-			_ => 1f
+			0 => HackerJobConfigRuntime.Current.DetectionAlertChanceTier0,
+			1 => HackerJobConfigRuntime.Current.DetectionAlertChanceTier1,
+			2 => HackerJobConfigRuntime.Current.DetectionAlertChanceTier2,
+			3 => HackerJobConfigRuntime.Current.DetectionAlertChanceTier3,
+			4 => HackerJobConfigRuntime.Current.DetectionAlertChanceTier4,
+			_ => HackerJobConfigRuntime.Current.DetectionAlertChanceTier0
 		};
 	}
 
 	public static float GetPuzzleTimeLimitSeconds( int puzzleTimeTier )
 	{
 		var tier = Math.Clamp( puzzleTimeTier, 0, MaxPuzzleTimeTier );
-		return BasePuzzleSeconds + tier * 8f;
+		return BasePuzzleSeconds + tier * HackerJobConfigRuntime.Current.PuzzleSecondsPerTier;
 	}
 
 	public static float GetRewardMultiplier( int rewardTier )
@@ -78,28 +78,56 @@ public static class HackerUpgradeCatalog
 		var tier = Math.Clamp( rewardTier, 0, MaxRewardTier );
 		return tier switch
 		{
-			0 => 1.00f,
-			1 => 1.25f,
-			2 => 1.55f,
-			3 => 2.00f,
-			_ => 1f
+			0 => HackerJobConfigRuntime.Current.RewardMultiplierTier0,
+			1 => HackerJobConfigRuntime.Current.RewardMultiplierTier1,
+			2 => HackerJobConfigRuntime.Current.RewardMultiplierTier2,
+			3 => HackerJobConfigRuntime.Current.RewardMultiplierTier3,
+			_ => BaseRewardMultiplier
 		};
 	}
 
 	public static float GetHackCooldownSeconds( int cooldownTier )
 	{
 		var tier = Math.Clamp( cooldownTier, 0, MaxCooldownTier );
-		return Math.Max( 30f, BaseHackCooldownSeconds - tier * 25f );
+		return Math.Max(
+			HackerJobConfigRuntime.Current.MinimumHackCooldownSeconds,
+			BaseHackCooldownSeconds - tier * HackerJobConfigRuntime.Current.HackCooldownSecondsPerTier );
 	}
 
 	public static int GetUpgradeCost( HackerUpgradeKind kind, int nextTier )
 	{
 		return kind switch
 		{
-			HackerUpgradeKind.Detection => nextTier switch { 1 => 2500, 2 => 6000, 3 => 12000, 4 => 22000, _ => 0 },
-			HackerUpgradeKind.PuzzleTime => nextTier switch { 1 => 2000, 2 => 5000, 3 => 10000, 4 => 18000, _ => 0 },
-			HackerUpgradeKind.Reward => nextTier switch { 1 => 3500, 2 => 9000, 3 => 18000, _ => 0 },
-			HackerUpgradeKind.Cooldown => nextTier switch { 1 => 3000, 2 => 8000, 3 => 15000, _ => 0 },
+			HackerUpgradeKind.Detection => nextTier switch
+			{
+				1 => HackerJobConfigRuntime.Current.DetectionCostTier1,
+				2 => HackerJobConfigRuntime.Current.DetectionCostTier2,
+				3 => HackerJobConfigRuntime.Current.DetectionCostTier3,
+				4 => HackerJobConfigRuntime.Current.DetectionCostTier4,
+				_ => 0
+			},
+			HackerUpgradeKind.PuzzleTime => nextTier switch
+			{
+				1 => HackerJobConfigRuntime.Current.PuzzleTimeCostTier1,
+				2 => HackerJobConfigRuntime.Current.PuzzleTimeCostTier2,
+				3 => HackerJobConfigRuntime.Current.PuzzleTimeCostTier3,
+				4 => HackerJobConfigRuntime.Current.PuzzleTimeCostTier4,
+				_ => 0
+			},
+			HackerUpgradeKind.Reward => nextTier switch
+			{
+				1 => HackerJobConfigRuntime.Current.RewardCostTier1,
+				2 => HackerJobConfigRuntime.Current.RewardCostTier2,
+				3 => HackerJobConfigRuntime.Current.RewardCostTier3,
+				_ => 0
+			},
+			HackerUpgradeKind.Cooldown => nextTier switch
+			{
+				1 => HackerJobConfigRuntime.Current.CooldownCostTier1,
+				2 => HackerJobConfigRuntime.Current.CooldownCostTier2,
+				3 => HackerJobConfigRuntime.Current.CooldownCostTier3,
+				_ => 0
+			},
 			_ => 0
 		};
 	}
