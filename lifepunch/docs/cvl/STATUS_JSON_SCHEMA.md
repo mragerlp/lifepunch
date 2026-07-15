@@ -1,7 +1,7 @@
 # `comms/STATUS.json` SCHEMA AND CHECKPOINT CONTRACT
 
-**Contract version: v1.1 (2026-07-15).** v1.1 adds `OPENCODE` and `CURSOR` to the
-`inFlightSeats` enum; producer ownership and every other field contract remain unchanged.
+**Contract version: v1.1 (2026-07-15).** v1.1 adds `OPENCODE` and `CURSOR` to the representable
+`inFlightSeats` values; producer ownership and the rest of the contract remain unchanged.
 
 ## Producer checklist
 

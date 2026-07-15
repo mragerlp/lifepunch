@@ -40,7 +40,7 @@ This narrows the phrase *“authority follows the model, not the harness”* in
   edit requires a Bloodwave-keyed harness restart. No boot or dispatch may ask the seat to hot-reload
   this file.
 
-Sensors: `comms\fable\0083_FABLE_OPENCODE-UPSTREAM-VERSION-CANON_2026-07-15.md` records the
+Sensors: lane record `fable\0083` (OpenCode upstream/version canon, 2026-07-15) records the
 machine-read upstream and version facts; `comms\opencode\0001` and `0005` record the startup-only
 config behavior across the trial restart.
 
@@ -58,7 +58,7 @@ config behavior across the trial restart.
   branch push, and skills are allowed; merge/tag/reset/clean/stash/checkout/switch remain denied;
   external-directory access remains ask-gated. Protected-branch merge remains Bloodwave's PR button.
 
-The authorized dispatch named `comms\opencode\AGENTS.delta.md` as an input. That file was absent at
+The authorized dispatch named an `AGENTS.delta` file in the opencode lane as an input. That file was absent at
 packaging time. No missing prose is inferred: the four named effects above are carried literally by
 `dispatch\red\0002` and are independently present in tracked `COMMS_PROTOCOL.md` Rules 22–25.
 
@@ -69,7 +69,7 @@ The native s&box HTTP MCP endpoint is live, but its `editor_status` response can
 OpenCode therefore rejects that result during null-scene states. This is a **tool output-schema
 compatibility defect**, not proof of a dead endpoint and not permission to infer editor state.
 
-Sensors: `comms\opencode\0002_OPENCODE_T0-LIVE-EDITOR-PROBE_2026-07-15.md` records the rejected null
+Sensors: lane record `opencode\0002` (T0 live editor probe, 2026-07-15) records the rejected null
 payload and a clean `list_toolsets` call on the same endpoint; `opencode\0005` records the anomaly
 persisting after restart.
 

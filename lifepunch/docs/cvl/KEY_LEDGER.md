@@ -65,8 +65,8 @@ them. A key not in this ledger is an incident.
 - Status: SSH authentication and host access were proven; Kepler remote-task
   execution remained blocked because the shipped remote probe does not support
   a Windows SSH target. That application limitation is not a credential fault.
-- Records: `fable\0080_FABLE_KEPLER-REMOTE-EXECUTION-DOCTRINE-V1_2026-07-14.md` and
-  `cursor\0032_CURSOR_KEPLER-REMOTE-ADD-SMOKE_2026-07-14.md`.
+- Records: lane records `fable\0080` (Kepler remote-execution doctrine v1) and
+  `cursor\0032` (Kepler remote add + smoke), both 2026-07-14.
 
 
 ### GX-1 — xAI image generation key
