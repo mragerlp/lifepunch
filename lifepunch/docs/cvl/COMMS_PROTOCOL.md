@@ -363,3 +363,74 @@ which already owes an answer on the *three* disagreeing copies of this protocol
 > here, in tracked canon — **it is not yet in the copy that sits in the lane.** That gap is named, not
 > papered over: **syncing it silently would hide the drift instead of fixing it**, and the reconciliation
 > is a Bloodwave ruling (owed since `red\0034`).
+
+---
+
+## v1.7 AMENDMENT (2026-07-14 — DISPATCH-CLASS EXPANSION + PIPELINE LAW; dispatch: canon-sweep3, Fable relay author, Bloodwave GO)
+
+> **DRIFT NOTE (unchanged, widened):** RULES 20–21 and the PIPELINE LAW land **here, in tracked canon,
+> and NOT in the lane copy** (`C:\lifepunch\comms\COMMS_PROTOCOL.md`, still `v1`). This is the same
+> named gap Rule 19 carries: syncing it silently would hide the drift, and the three-copy reconciliation
+> remains a Bloodwave ruling (owed since `red\0034`). This amendment does not reconcile it.
+
+### RULE 20 — **GITHUB-ISSUE DISPATCH CLASS.**
+
+A dispatch may be carried as a **GitHub issue** on the **private repo only**, under these binding forms:
+
+- **Title:** `[LANE-X] task @ SHA` — the lane tag and the pin are in the title.
+- **Body:** the **full relay**, carrying **all three dispatch keys** from `COMMS_LANE` doctrine:
+  1. **Fable-authored**,
+  2. **`AUTHORIZED: Bloodwave GO <UTC>`**,
+  3. a **matching FABLE BOARD line**.
+- **An issue missing any one of the three keys is NOT a work order** — identical to a lane dispatch. The
+  medium changes; the three-key gate does not.
+- **No credentials, tokens, or portal data in issue bodies** (rule C-2 / KEY_LEDGER — a GitHub issue is a
+  network-published surface even on a private repo).
+- **Private repo only.** A dispatch issue never touches a public repo.
+
+This is a **transport medium**, not an authority grant: the issue is the payload, Bloodwave is still the
+transport authority on every logical arrow, and the dispatch class stays reserved to the four ratified
+seats (no `[LANE-COPILOT]` / `[LANE-CURSOR]` dispatch issue exists).
+
+### RULE 21 — **DOC-OF-TRUTH MULTI-AGENT RELAY (>2 agents).**
+
+When a relay coordinates **more than two agents**, the pastes live in **one Fable-lane doc** (the
+doc-of-truth), and **Bloodwave receives a pointer** to it rather than N separate walls.
+
+- **Fired sections freeze.** Once a section of the doc-of-truth has been dispatched (fired) to a seat,
+  that section is **write-once** — corrections are new sections citing the old, never edits. A doc-of-truth
+  is a running record, and a fired section describes something that already happened.
+- The doc-of-truth is a **Fable-lane** artifact. It never becomes a work order on its own — the pointer +
+  Bloodwave's transport is still the execution authority (Transport Law unchanged).
+
+### PIPELINE LAW — **NOTHING CODEX-AUTHORED REACHES THE CANONICAL TREE OR THE EDITOR WITHOUT THE GREEN+FABLE PASS.**
+
+The multi-agent build pipeline runs in one fixed order:
+
+```
+Kepler / Codex lane output
+        │
+        ▼
+Green bulk review (Deep model)        ← first gate: bulk consistency / census / first-pass review
+        │
+        ▼
+Fable grade                           ← second gate: scope-match, proof quality, lane discipline
+        │
+        ▼
+Implementing seat with LIVE editor    ← Red OR Cursor, per the board-named DRIVE grant
+bridges  (Red or Cursor)              ← the ONLY hands that touch the canonical tree + editor
+        │
+        ▼
+Bloodwave merge                       ← sole merge gate, unchanged
+```
+
+- **Codex may implement in worktrees.** That is inside its charter under a DRIVE grant, in isolation.
+- **But nothing Codex-authored reaches the canonical tree or the editor without the Green+Fable pass**
+  first. Codex worktree output is **lane output**, not tree state, until Green has bulk-reviewed it and
+  Fable has graded it — *then* an implementing seat with live editor bridges (Red or Cursor per DRIVE)
+  lands it, and Bloodwave merges.
+- **Rationale:** the editor bridges are localhost and the canonical tree is the runtime truth surface.
+  Codex has no live bridge; its worktree output is unproven against the running engine until a bridged
+  seat drives it. The two-gate pass (Green bulk, Fable grade) is what converts lane output into
+  tree-eligible work — it never skips because "Codex already reviewed it."
+
