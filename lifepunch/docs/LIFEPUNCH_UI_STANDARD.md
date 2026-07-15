@@ -5,6 +5,18 @@
 > design spec (`lifepunch/docs/superpowers/specs/2026-07-14-lp-player-hub-design.md`).
 > Supersedes the prior DXRP-native purple `#7170e6` / `#191919` token block for LIFEPUNCH
 > panel/menu UI. Restraint laws below still apply; HASHD CRT exemption unchanged.
+>
+> **Changelog 2026-07-15 (`dispatch\red\0002` Riders 3+6):** Added **MENU SHELL LAW** — the Player
+> Hub shell is the standard container for every LIFEPUNCH menu. Supersession notes added to Law 1
+> (nav pills) and Law 8 (universal proprietary frame) — the original clause text is **unchanged**;
+> the notes scope it. Token comment corrected: **in-game headings are Poppins, not Montserrat**
+> (`BRAND_DOCTRINE.md §2` — Montserrat is web-only and falls back silently in s&box SCSS).
+> Companion ruling: `lifepunch/docs/cvl/BRANDING_SCOPE_RULING_2026-07-15.md`.
+>
+> **Changelog 2026-07-15b (`dispatch\red\0002` Rider 6 full delta, Cursor 0046 REVISE):** Added
+> **SIDEBAR DESIGN CANON v1** (a–d), **UI CORE PRINCIPLE**, and **TIER GRAMMAR CANON**. Companion
+> ruling `lifepunch/docs/cvl/PLAYER_HUB_BTC_STORE_RULING_2026-07-15.md` (hub absorbs tablet commerce);
+> `TABLET_DOCTRINE.md` + `lifepunchaddons/docs/ACTIVE_WORKSTREAM.md` carry the tablet-defer notes.
 
 Status: CANON — ratified 2026-07-08; tokens reconciled 2026-07-14.
 Original bar (chrome reduction, no "too Claudey" decoration) stands. Brand identity for
@@ -40,7 +52,9 @@ $accent-soft:     rgba(1, 122, 239, 0.08); // active/selected wash — ONLY acce
 // Radii / type (Player Hub + website interactive scale)
 $radius:          6px;                     // primary buttons / controls
 $radius-card:     12px;                    // cards
-// Type: Montserrat (headings) + Inter (labels/body/values)
+// Type: Poppins (headings — in-game brand-equivalent) + Inter (labels/body/values).
+//   Montserrat is WEB-ONLY brand identity; it does NOT exist on the s&box stack and falls
+//   back silently in game SCSS — NEVER declare it here (BRAND_DOCTRINE.md §2).
 // Spacing rhythm: 12px content · 8px control · 44px min hit (hub)
 // Legacy DXRP-native tight radii (2px/4px) are retired for LP-authored panels
 ```
@@ -50,6 +64,11 @@ $radius-card:     12px;                    // cards
 1. **Radius is uniform and restrained.** 6px interactive controls, 12px cards.
    **Nothing is a pill** except true circles (avatars, color dots →
    `border-radius: 50%`).
+   > **Supersession note (2026-07-15, MENU SHELL LAW + `BRANDING_SCOPE_RULING_2026-07-15`).** The
+   > Player Hub shell's **primary NAV pills** are the ratified website grammar and are the **one
+   > scoped exception** to "nothing is a pill." The exception is the *shell nav row only*; content
+   > buttons, chips, and controls elsewhere still obey this law and the anti-pattern list. The
+   > original clause is unchanged — this note scopes it.
 2. **Accent is a wash, never chrome.** `$lp-blue` (`#017AEF`) appears ONLY as
    active/selected background at 4–8% opacity, primary solid actions, and live
    data tint. Never a decorative border ring, never behind an icon tile.
@@ -67,6 +86,12 @@ $radius-card:     12px;                    // cards
 8. **No branding chrome in-HUD.** No footer/watermark/™/signature/glow, no
    window drop-shadow. Scrim `rgba(black, 0.5–0.55)` (optional `blur(5px)`).
    Branding belongs on the portal listing, not the live HUD.
+   > **Supersession note (2026-07-15, MENU SHELL LAW + `BRANDING_SCOPE_RULING_2026-07-15`).** This
+   > clause banned **inherited DXRP chrome** — the borrowed footer/watermark R7 struck. It does NOT
+   > ban the **LIFEPUNCH proprietary header/footer frame**, which is now the *universal structure*
+   > across every menu (per-menu accent, structure never changes). The `™`/glow/drop-shadow/DXRP-
+   > watermark bans stand; the proprietary frame is ours and is required. The original clause is
+   > unchanged — this note scopes it.
 9. **Two-screen contract for tracked entities** *(amended slice 3.5)*. Detail
    screen = EVALUATE: identity, stat rows on the standard dark plate, invested
    receipt, deep-link CTA. Upgrades screen = TRANSACT: the per-track purchase
@@ -150,12 +175,82 @@ dual-price warrants emphasis). Green is reserved for cash and success states
 future LP surfaces that hold, move, or price currency. Reference
 implementation: lpbitcoin HASHD set, Currency Standard v1.
 
+## MENU SHELL LAW — THE PLAYER HUB SHELL IS THE STANDARD CONTAINER (ratified 2026-07-15, Bloodwave; `dispatch\red\0002` Rider 6)
+
+**The Player Hub menu shell is the standard container for ALL LIFEPUNCH menus.** It is simple,
+functional, lighter, and high-capacity. It **replaces prior menu-law containers as the standard** —
+the Bitcoin miner setup/upgrade menus and every future job menu build **inside this shell grammar**,
+not as bespoke windows.
+
+**Shell grammar (the constant frame):**
+- **Rail + card** layout — a nav rail and a content card region.
+- **Nav pills** for primary navigation (the website grammar; the scoped exception to Law 1).
+- **Eyebrow-over-title** headings (blue/accent eyebrow above the section title).
+- **Card panels on near-black.**
+- **Universal header + footer** per `BRANDING_SCOPE_RULING_2026-07-15.md`: the proprietary
+  header/footer **structure is identical across every menu; only the accent recolors per menu**
+  (the hub's `$lp-blue`; Bitcoin Ops' HASHD amber; the next job's own accent). **The structure
+  never changes.**
+
+**Marks are scoped** (`BRANDING_SCOPE_RULING_2026-07-15.md`): the **LP roundel appears on the
+Player Hub only**; job/system UIs (Bitcoin Ops/HASHD, future Chemist, all job work) carry **their
+own** purpose-built mark in the header, never the LP mark.
+
+**Law 17 and every restraint law above apply unchanged inside the shell** — the shell is the
+container, not a license to break the money grammar or the chrome diet.
+
+> **Supersession scope.** This law supersedes prior *menu-container* clauses that assumed bespoke
+> per-menu windows; those clauses get supersession notes, never edits (see Laws 1 and 8 above).
+> **Superseded menu-law records elsewhere in the tree carry their own supersession notes citing
+> this section — never in-place edits.**
+
+**PRIORITY — TABLET WORK DEFERRED.** HUB-system menus and working-entity controller UIs are the
+foundation and come first; **tablet surfaces build on them later**, not before (see
+`ACTIVE_WORKSTREAM.md`). A tablet is a later delivery of these same shells, not a parallel track.
+
+## SIDEBAR DESIGN CANON v1 (ratified 2026-07-15, Bloodwave screenshot-ruled; `dispatch\red\0002` Rider 6)
+
+**The Bitcoin Ops sidebar earned the base design.** Its treatment is the canon sidebar for the shell
+family and **ports to the Player Hub and all future menus**:
+
+- **(a) Structure, top → bottom:** an **IDENTITY BLOCK at the top** (player avatar + name on the
+  Player Hub; the menu's **own job mark** on job menus), then the **nav items**, with **SETTINGS
+  PINNED AT THE BOTTOM.**
+- **(b) Font treatment:** the Bitcoin Ops sidebar treatment — **Poppins, uppercase, letterspaced nav
+  labels** — is canon and ports to every menu sidebar.
+- **(c) Selected state:** a **filled rounded block in the menu's own accent** (base highlight). The
+  **no-left-strip ruling stands** (no left-edge vertical accent bar — BOARD `SIDEBAR HIGHLIGHT`
+  ruling).
+- **(d) Branding:** per `BRANDING_SCOPE_RULING_2026-07-15` — the **LP roundel comes OFF** the Bitcoin
+  Ops sidebar (job menus carry their own mark). The **HASHD mark is pending**; **until it exists, no
+  mark beats the wrong mark** — leave the slot empty rather than borrow the LP roundel.
+
+## UI CORE PRINCIPLE — maintain functionality, polish the core (ratified 2026-07-15, Bloodwave)
+
+**ONE light UI core, with style + functions LAYERED over the base per surface purpose.** The Player
+Hub stays light with its working parts; the Bitcoin Hub stays light with its own working parts.
+**Composition over construction** — a surface reuses the core and layers only what its purpose needs;
+**no surface grows heavier than its purpose requires.**
+
+## TIER GRAMMAR CANON — one progression visual across skills + upgrades (ratified 2026-07-15, Bloodwave)
+
+**Skills adopt the SAME recognizable I–V tier system and upgrade-purchase visual style already
+shipped in the upgrade UI** — linked icons/bubbles chaining up to the **Tier V square**. **One tier
+grammar** across skills, upgrades, and future progression surfaces; **never a second visual system.**
+A new progression surface skins this grammar; it does not invent its own.
+
 ## Anti-patterns (the "too Claudey" list — reject on sight)
 
 Icon tiles behind glyphs · pill buttons/chips · accent borders and glows ·
 fill+border doubling · oversized radii (>12px cards / decorative shells) ·
 drop-shadowed windows · tracked-uppercase section headers · in-game
 watermarks/footers.
+
+> **Two scoped exceptions (2026-07-15, MENU SHELL LAW):** the shell's **primary NAV pills** and the
+> **LIFEPUNCH proprietary header/footer frame** are ratified shell grammar and are NOT "too Claudey"
+> anti-patterns — "pill buttons/chips" still rejects *content* pills, and "watermarks/footers" still
+> rejects the *inherited DXRP* chrome. The exceptions are the shell nav row and the proprietary
+> frame only.
 
 Full divergence work-list for the StaffMenu restyle (line-level): session
 artifact `handoff/ULX_STYLE_TOKENS_2026-07-07.md` (untracked; Part 1 of it is

@@ -33,6 +33,25 @@ them. A key not in this ledger is an incident.
 - Status: minted and stored; WIRING PENDING — glab CLI slice,
   post-merge. Unused until that slice's GO.
 
+### GH-2 — CORNERMAN GitHub access, SSH key `github-class`
+- Purpose: git transport (fetch/pull) for the CORNERMAN private clone
+  at `C:\Kepler\Repositories\lifepunch` (Green/Odysseus muscle lane).
+- Type: **SSH keypair** (`github-class`), resident on CORNERMAN. Origin
+  is `git@github.com:mragerlp/lifepunch.git` — SSH, not HTTPS.
+- Auth: PROVEN — `ssh -T git@github.com` returned the GitHub identity
+  banner ("Hi mragerlp"); a subsequent `git fetch` was quiet (exit 0).
+  Records: `cursor\0041`/`cursor\0042` (repo wiring), Rider 2 of
+  `dispatch\red\0002`.
+- Storage: CORNERMAN-local (`~/.ssh`). The private key never leaves the
+  machine and never enters chat, relays, commits, or lane records (C-2).
+- **REVOKE-OWED — redundant PAT.** An earlier GitHub PAT was persisted
+  in CORNERMAN's Git Credential Manager (GCM + dpapi) during the HTTPS
+  attempt. With SSH now the transport, that PAT is **redundant**. Key
+  Law is one credential per integration → the PAT is **revoke-owed**:
+  Bloodwave revokes it on GitHub AND erases it from the credential
+  manager. Until both are done, GH-2 is dual-stored against C-4/one-key
+  discipline; this ledger tracks the debt, not the token.
+
 ## Credential rules (standing, all seats, all keys)
 
 C-1 — NO SEAT READS A CREDENTIAL FILE. .env and any file holding a

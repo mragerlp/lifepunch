@@ -2,6 +2,15 @@
 
 STATUS: Design canon. Implementation queues behind the build ladder. No code in this arc.
 
+> **SUPERSESSION NOTE (2026-07-15 — `lifepunch/docs/cvl/PLAYER_HUB_BTC_STORE_RULING_2026-07-15.md`).**
+> The tablet's **player-facing commerce functions — BTC store/exchange, upgrade purchases, cash-out —
+> MIGRATE to the Player Hub** as hub tabs (*"this player hub can be a store for player bitcoin so
+> there's no need for all these tablets"* — Bloodwave). **Tablets remain DEFERRED and shrink further
+> in scope**: what is left of the tablet after the hub takes commerce is a later, narrower question.
+> The base-tablet *locked-transaction crypto exchange* verb below is the confirmed portal block — the
+> hub-tab store is our own UI + server and never needed it. The sections below stand as the seed
+> record; this note scopes them, it does not edit them.
+
 ## The Tablet
 
 Not a gadget: the job-side BTC terminal + remote link to hub-based infrastructure, for jobs that must send/receive crypto without owning a mining setup.
