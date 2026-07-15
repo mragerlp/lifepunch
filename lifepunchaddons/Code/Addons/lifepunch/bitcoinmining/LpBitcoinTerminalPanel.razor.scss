@@ -22,7 +22,7 @@ $crt-text-dim: #9a9a9a;
 @import "../LifePunchUiFooter.razor.scss";
 @import "../LifePunchUiShell.scss";
 
-// Flat selectors only — s&box drops nested theme rules from LpOpsCrtTerminal.scss imports.
+// Top-level theme selector keeps terminal palette overrides easy to audit.
 .lp-ops-crt {
 	z-index: 100;
 }
@@ -375,7 +375,7 @@ $crt-text-dim: #9a9a9a;
 	}
 }
 
-// Footer — flat selectors only (nested .lp-mark / .lp-url-copy rules are dropped by s&box).
+// Footer overrides stay flat so the terminal palette remains explicit.
 .lp-ops-crt.lp-ops-crt--gray .lp-window-watermark {
 	flex: 0 0 32px;
 	flex-shrink: 0;
@@ -423,6 +423,7 @@ $crt-text-dim: #9a9a9a;
 	line-height: 1;
 	white-space: nowrap;
 	letter-spacing: 0.06em;
+	color: $hashd-amber;
 }
 
 .lp-ops-crt.lp-ops-crt--gray .lp-window-watermark .lp-url-copy {
