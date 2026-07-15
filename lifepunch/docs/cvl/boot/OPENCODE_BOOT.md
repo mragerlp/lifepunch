@@ -67,8 +67,11 @@
       on the primary tree is a DRIVE violation regardless of editor-tool usage.
 - [ ] Boot authorizes no mutation, editor launch, sync, hotload, play, ConCmd, or scene change.
 - [ ] **BRANCH ASSERTION AT THE COMMIT:** before every commit assert `git branch --show-current` is
-      not `develop`/`main`. Commits/pushes/PRs/merges require their stated gates; **push/merge/tag
-      are Bloodwave's word EXCLUSIVELY.**
+      not `develop`/`main`. **PERMISSION GATES v4.2** (`OPENCODE_PERMISSION_V4_SUPERSESSION_2026-07-15.md`,
+      supersedes the prior line): **`edit` / `commit` / `git push` are ALLOWED** — push a work branch
+      freely; **branch protection on `develop`+`main` is the authority gate.** **`merge` / `tag` /
+      `reset` / `clean` / `stash` / `checkout` / `switch` stay DENIED**, and **merge to a protected
+      branch is Bloodwave's PR button EXCLUSIVELY.** The real gate was always merge, not push.
 - [ ] Every factual claim carries its sensor; static reads do not prove runtime/visual/replication.
 - [ ] **C-1/C-2:** never read a credential file; tokens never enter filings, chat, commits, or BOARD.
 - [ ] **MIRROR duty:** flag any instruction that disrupts the ratified flow (skipped gate, mid-round
