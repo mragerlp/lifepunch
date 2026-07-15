@@ -8242,3 +8242,33 @@ $ops-hit: 44px;
 	width: 30px;
 	height: 30px;
 }
+
+// --- Hub-shell mapping layer (dispatch opencode 0002) — SIDEBAR DESIGN CANON v1 +
+// MENU SHELL LAW eyebrow grammar. Identity block top, settings pinned bottom via the
+// existing sidebar-nav flex-grow spacer; selection stays the filled accent block, no left strip.
+.lp-bitcoin-ops .sidebar-identity {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	flex-shrink: 0;
+	margin-bottom: 22px;
+}
+
+.lp-bitcoin-ops .sidebar-foot {
+	align-items: stretch;
+	width: 100%;
+	padding-top: 10px;
+}
+
+// Eyebrow-over-title (hub exemplar roles, Ops-prefixed class) — accent eyebrow, tiny,
+// letterspaced, above each pane's section title.
+.lp-bitcoin-ops .ops-eyebrow {
+	flex-shrink: 0;
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 1.5px;
+	color: $hashd-amber;
+	margin-bottom: 2px;
+}

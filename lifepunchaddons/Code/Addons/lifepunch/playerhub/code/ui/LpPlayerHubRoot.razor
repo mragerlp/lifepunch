@@ -176,6 +176,26 @@
 	/// </summary>
 	private void Close() => LpPlayerHubHost.RequestClose();
 
+	// F2 FIX (opencode\0004, dispatch\opencode\0002 D1): the hub was INVISIBLE to
+	// LifePunchMenuInputBlock -- combat/use suppression never armed for the hub alone, and
+	// closing the bitcoin panel under an open hub dropped the camera lock (the block's depth
+	// hit 0 with the hub still up, so ReleasePlayerCombatLock fired). Registering the hub
+	// keeps depth > 0 while it lives; the per-frame guard then reasserts Player.LockCamera,
+	// which makes the previously ACCIDENTAL hub-close survival deliberate in both directions.
+	//
+	// MINIMAL BY RULING: this is registration with the EXISTING input-block writer, not a
+	// sixth LockCamera writer. The refcount/stack arbiter over LockCamera's five writers is
+	// an OPEN RULING (comms STATUS.json, LockCamera item) -- do not build it here.
+	protected override void OnEnabled()
+	{
+		LifePunchMenuInputBlock.NotifyMenuOpened();
+	}
+
+	protected override void OnDisabled()
+	{
+		LifePunchMenuInputBlock.NotifyMenuClosed();
+	}
+
 	/// <summary>
 	/// Every private flag that changes markup is hashed. Today that is `_activeTab` alone -- it drives the
 	/// nav selection, the page head and the tab host.
