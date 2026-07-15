@@ -82,7 +82,7 @@
 				</div>
 			</div>
 			<div class="lp-window-watermark">
-				<LifePunchUiFooter Product="Bitcoin Ops" />
+				<LifePunchUiFooter Product="Bitcoin Ops" AccentColor="#e87d3e" />
 			</div>
 		</div>
 		}
@@ -1081,7 +1081,7 @@
 				Label = hubPowered ? "Power off" : "Power on",
 				Route = "power",
 				StatusClass = hubPowered ? "on" : "off",
-				ActionClass = $"lp-ui-btn-ghost overview-checklist-action {(hubPowered ? "overview-intro-unlink-btn" : "overview-intro-link-ready")}",
+				ActionClass = $"lp-ui-btn-ghost {(hubPowered ? "overview-intro-unlink-btn" : "overview-intro-link-ready")}",
 				OnSelected = ToggleHubPower
 			},
 			new()
@@ -1111,7 +1111,7 @@
 				Label = "Servers",
 				Route = "servers",
 				StatusClass = linkedRackCount > 0 ? "on" : "off",
-				ActionClass = "lp-ui-btn-primary overview-checklist-action",
+				ActionClass = "lp-ui-btn-primary",
 				ActionIcon = "dns",
 				FooterNote = "Complete all three steps to start mining.",
 				OnSelected = SelectRacksTab

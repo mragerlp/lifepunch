@@ -112,7 +112,7 @@
 														@if ( card.UseActionGroup )
 														{
 															<div class="overview-checklist-action-group">
-																<button class="@card.ActionClass" disabled="@(!card.Enabled)" onclick="@card.OnSelected">
+																<button class="@($"{card.ActionClass} overview-checklist-action")" disabled="@(!card.Enabled)" onclick="@card.OnSelected">
 																	@if ( !string.IsNullOrWhiteSpace( card.ActionIcon ) )
 																	{
 																		<i class="material-icons">@card.ActionIcon</i>
@@ -127,7 +127,7 @@
 														}
 														else
 														{
-															<button class="@card.ActionClass" disabled="@(!card.Enabled)" onclick="@card.OnSelected">
+															<button class="@($"{card.ActionClass} overview-checklist-action")" disabled="@(!card.Enabled)" onclick="@card.OnSelected">
 																@if ( !string.IsNullOrWhiteSpace( card.ActionIcon ) )
 																{
 																	<i class="material-icons">@card.ActionIcon</i>
@@ -213,7 +213,7 @@
 	</div>
 
 	<div class="lp-window-watermark">
-		<LifePunchUiFooter Product="@Wordmark" />
+		<LifePunchUiFooter Product="@Wordmark" AccentColor="@AccentColor" />
 	</div>
 </root>
 
