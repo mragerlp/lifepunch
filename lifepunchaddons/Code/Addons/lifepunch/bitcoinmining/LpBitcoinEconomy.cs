@@ -84,12 +84,15 @@ public static class LpBitcoinEconomy
 			CashRateMultiplier,
 			LpBitcoinDonorPolicy.ResolveCaller( callerId ) );
 
+	// LAW 17 (codex\0051 sites 5+10): identity through the SIGN — bare "BTC" text was the
+	// violation. The ₿ sign form lets call sites split this string into colored-sign /
+	// white-amount spans (AlertMessageSegments); "(N×)" stays neutral per the parens rule.
 	public static string FormatExchangeRateLabel()
 	{
 		if ( MathF.Abs( CashRateMultiplier - 1f ) < 0.001f )
-			return $"${PortalBaseCashUsdPerBtc:N0} / BTC";
+			return $"${PortalBaseCashUsdPerBtc:N0} / \u20BF";
 
-		return $"${CashUsdPerBtc:N0} / BTC ({CashRateMultiplier:0.##}×)";
+		return $"${CashUsdPerBtc:N0} / \u20BF ({CashRateMultiplier:0.##}×)";
 	}
 
 	public static string FormatBtcToCash( float btc, string btcFormat = "F6" )

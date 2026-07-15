@@ -21,7 +21,9 @@
 			<div class="pin-gate">
 				<header class="pin-header">
 					<div class="pin-brand">
-						<img class="brand-mark" src="addons/lifepunch/lpbitcoin/bitcoinhub/assets/ui/hashd/lifepunch-logo.png" />
+						@* BRANDING_SCOPE_RULING_2026-07-15: the LP roundel is OUT of job surfaces.
+						   The HASHD mark does not exist yet — the slot stays empty (no mark beats
+						   the wrong mark, SIDEBAR DESIGN CANON v1 d). *@
 						<div class="pin-brand-copy">
 							<div class="pin-title">@PinGateTitle()</div>
 							<div class="pin-sub">@PinGateSubtitle()</div>
@@ -84,8 +86,21 @@
 			<div class="hub-body">
 				<div class="hub-main">
 					<aside class="sidebar">
-						<div class="sidebar-brand hex-mark" title="@LpBitcoinIdent.OpsTitle">
-							<img class="brand-mark" src="addons/lifepunch/lpbitcoin/bitcoinhub/assets/ui/hashd/lifepunch-logo.png" />
+						@* SIDEBAR DESIGN CANON v1 (a): IDENTITY BLOCK at the top. The job-mark slot is
+						   EMPTY on purpose — the HASHD mark does not exist yet, and canon (d) rules no
+						   mark beats the wrong mark (the LP roundel is OUT of job surfaces per
+						   BRANDING_SCOPE_RULING_2026-07-15). The operator avatar carries identity. *@
+						<div class="sidebar-identity" title="@GreetingName()">
+							<div class="sidebar-avatar">
+								@if ( LocalSteamId() > 0 )
+								{
+									<img class="sidebar-avatar-img" src="avatar:@LocalSteamId()"/>
+								}
+								else
+								{
+									<span class="sidebar-avatar-fallback">@AvatarInitial()</span>
+								}
+							</div>
 						</div>
 
 						<nav class="sidebar-nav">
@@ -104,24 +119,22 @@
 							}
 						</nav>
 
+						@* SIDEBAR DESIGN CANON v1 (a): SETTINGS PINNED AT THE BOTTOM. *@
 						<div class="sidebar-foot">
-							<div class="sidebar-avatar" title="@GreetingName()">
-								@if ( LocalSteamId() > 0 )
-								{
-									<img class="sidebar-avatar-img" src="avatar:@LocalSteamId()"/>
-								}
-								else
-								{
-									<span class="sidebar-avatar-fallback">@AvatarInitial()</span>
-								}
-							</div>
+							<button class="sidebar-btn @(IsSidebarTabActive( OpsTab.Settings ) ? "sidebar-btn-sel" : "")"
+							        tooltip="@TabLabel(OpsTab.Settings)"
+							        onclick="@(() => SelectSidebarTab( OpsTab.Settings ))">
+								<i class="material-icons">@TabIcon(OpsTab.Settings)</i>
+								<span class="sidebar-btn-label">@TabLabel(OpsTab.Settings)</span>
+							</button>
 						</div>
 					</aside>
 
 					<div class="workspace">
 						<header class="page-header hub-header">
+							@* Header mark slot: HASHD mark pending — empty beats the LP roundel
+							   (BRANDING_SCOPE_RULING_2026-07-15; SIDEBAR DESIGN CANON v1 d). *@
 							<div class="lp-ui-panel-title hub-title">
-								<img class="hub-title-mark" src="addons/lifepunch/lpbitcoin/bitcoinhub/assets/ui/hashd/lifepunch-logo.png" />
 								<span>@LpBitcoinIdent.OpsTitle</span>
 							</div>
 
@@ -162,6 +175,7 @@
 								@if ( _active == OpsTab.Overview )
 								{
 									<div class="pane overview">
+										<div class="ops-eyebrow">@OpsEyebrow</div>
 										<div class="lp-ui-panel-title overview-dash-title">
 											<i class="material-icons">home</i>
 											<span>Dashboard</span>
@@ -454,10 +468,21 @@
 																	}
 																</div>
 																@* #1a: status carried by the chip row above — redundant text dropped. *@
-																<span class="upgrade-home-box-desc">@ServerSlotHomeDesc( slot )</span>
+																@* LAW 17 (0051 sites 1+2): ₿ sign colored, digits white, prose inherits. *@
+																<span class="upgrade-home-box-desc">
+																	@foreach ( var _seg in AlertMessageSegments( ServerSlotHomeDesc( slot ), "" ) )
+																	{
+																		<span class="@_seg.Cls">@_seg.Text</span>
+																	}
+																</span>
 															</div>
 															<div class="upgrade-home-box-foot">
-																<span class="upgrade-home-box-meta">@ServerSlotHomeMeta( slot )</span>
+																<span class="upgrade-home-box-meta">
+																	@foreach ( var _seg in AlertMessageSegments( ServerSlotHomeMeta( slot ), "" ) )
+																	{
+																		<span class="@_seg.Cls">@_seg.Text</span>
+																	}
+																</span>
 																<i class="material-icons upgrade-home-box-chevron">chevron_right</i>
 															</div>
 														</button>
@@ -619,7 +644,8 @@
 																								</div>
 																								@if ( _purchaseResultCode == 1 )
 																								{
-																									<div class="lp-stepper-chip-row reject">SHORT ₿ @( ( _purchaseResultShortfallSats / 100_000_000f ).ToString( "0.####" ) )</div>
+																									@* LAW 17 (0051 site 4): .reject reds the word only — sign stays amber, amount white. *@
+																									<div class="lp-stepper-chip-row reject"><span>SHORT</span><span class="lp-money-btc">₿</span> <span class="lp-money-amt">@( ( _purchaseResultShortfallSats / 100_000_000f ).ToString( "0.####" ) )</span></div>
 																								}
 																								else if ( _purchaseResultCode > 1 )
 																								{
@@ -652,6 +678,7 @@
 										}
 										else
 										{
+											<div class="ops-eyebrow">@OpsEyebrow</div>
 											<div class="lp-ui-panel-title">
 												<i class="material-icons">dns</i>
 												<span>Servers</span>
@@ -737,6 +764,7 @@
 								{
 									<div class="pane wallet">
 										<div class="lp-ui-panel wallet-panel">
+											<div class="ops-eyebrow">@OpsEyebrow</div>
 											<div class="lp-ui-panel-title">
 												<i class="material-icons">account_balance_wallet</i>
 												<span>Hub wallet</span>
@@ -765,7 +793,13 @@
 												</div>
 												<div class="lp-ui-info-row">
 													<span class="lp-ui-info-label">Exchange rate</span>
-													<span class="lp-ui-info-value">@LpBitcoinEconomy.FormatExchangeRateLabel()</span>
+													@* LAW 17 (0051 site 5): $ green sign + white amount / ₿ amber sign. *@
+													<span class="lp-ui-info-value">
+														@foreach ( var _seg in AlertMessageSegments( LpBitcoinEconomy.FormatExchangeRateLabel(), "" ) )
+														{
+															<span class="@_seg.Cls">@_seg.Text</span>
+														}
+													</span>
 												</div>
 												<div class="lp-ui-info-row">
 													<span class="lp-ui-info-label">Your cash</span>
@@ -781,10 +815,13 @@
 															<div class="wallet-cashout-tile-body wallet-cashout-tile-input" onclick="@FocusCashOutInput">
 																<i class="material-icons wallet-cashout-input-icon">payments</i>
 																<div class="wallet-cashout-input-field">
-																	<TextEntry @ref="_cashOutInput" class="wallet-cashout-input" Placeholder="ex. 0.0025 BTC" Value:bind="@CashOutAmount"/>
+																	@* LAW 17 (0051 sites 6+7): a plain placeholder cannot color a currency
+																   sign, so the bare BTC identity is OMITTED — the tile label above
+																   ("BTC amount") carries the context. *@
+																<TextEntry @ref="_cashOutInput" class="wallet-cashout-input" Placeholder="ex. 0.0025" Value:bind="@CashOutAmount"/>
 																	@if ( string.IsNullOrWhiteSpace( _cashOutAmount ) )
 																	{
-																		<span class="wallet-cashout-input-hint">ex. 0.0025 BTC</span>
+																		<span class="wallet-cashout-input-hint">ex. 0.0025</span>
 																	}
 																</div>
 															</div>
@@ -792,13 +829,26 @@
 														<div class="wallet-cashout-tile">
 															<div class="wallet-cashout-tile-label">Bank deposit</div>
 															<div class="wallet-cashout-tile-body">
-																<span class="wallet-cashout-tile-value">@PartialCashOutUsdPreview()</span>
+																@* LAW 17 (0051 site 8): "{amt} BTC → ${usd}" splits into ₿+amt / →(neutral) / $+amt. *@
+																<span class="wallet-cashout-tile-value">
+																	@foreach ( var _seg in AlertMessageSegments( PartialCashOutUsdPreview(), "" ) )
+																	{
+																		<span class="@_seg.Cls">@_seg.Text</span>
+																	}
+																</span>
 															</div>
 														</div>
 														<div class="wallet-cashout-tile wallet-cashout-tile-action">
 															<div class="wallet-cashout-tile-label">Cash out amount</div>
 															<div class="wallet-cashout-tile-body wallet-cashout-tile-body-btn">
-																<button class="wallet-cashout-tile-btn @GetPartialCashOutButtonClass()" onclick="@CashOutPartial">@PartialCashOutButtonLabel()</button>
+																@* LAW 17 (0051 site 9): the BTC-adjacent control shows the ₿ sign; segments
+																   keep the sign amber and digits white while feedback prose inherits state color. *@
+																<button class="wallet-cashout-tile-btn @GetPartialCashOutButtonClass()" onclick="@CashOutPartial">
+																	@foreach ( var _seg in AlertMessageSegments( PartialCashOutButtonLabel(), "" ) )
+																	{
+																		<span class="@_seg.Cls">@_seg.Text</span>
+																	}
+																</button>
 															</div>
 														</div>
 													</div>
@@ -815,6 +865,7 @@
 								{
 									<div class="pane transfers">
 										<div class="lp-ui-panel transfers-panel">
+											<div class="ops-eyebrow">@OpsEyebrow</div>
 											<div class="lp-ui-panel-title">
 												<i class="material-icons">swap_horiz</i>
 												<span>Hub transfers</span>
@@ -897,7 +948,13 @@
 														<span>Live hub rate</span>
 													</div>
 													<div class="transfers-rate-tip">Terminal send uses BTC amounts. Hub bank cashout uses the live rate.</div>
-													<span class="transfers-rate-badge">@LpBitcoinEconomy.FormatExchangeRateLabel()</span>
+													@* LAW 17 (0051 site 10): same split as the wallet exchange-rate row. *@
+													<span class="transfers-rate-badge">
+														@foreach ( var _seg in AlertMessageSegments( LpBitcoinEconomy.FormatExchangeRateLabel(), "" ) )
+														{
+															<span class="@_seg.Cls">@_seg.Text</span>
+														}
+													</span>
 												</div>
 												<div class="transfers-rate-grid">
 													@foreach ( var amount in TransferReferenceBtcAmounts )
@@ -920,6 +977,7 @@
 								{
 									<div class="pane logs-pane">
 										<div class="lp-ui-panel logs-panel">
+											<div class="ops-eyebrow">@OpsEyebrow</div>
 											<div class="lp-ui-panel-title">
 												<i class="material-icons">notifications</i>
 												<span>Hub logs</span>
@@ -976,6 +1034,7 @@
 								{
 									<div class="pane settings-pane">
 										<div class="lp-ui-panel settings-panel">
+											<div class="ops-eyebrow">@OpsEyebrow</div>
 											<div class="lp-ui-panel-title">
 												<i class="material-icons">settings</i>
 												<span>Settings</span>
@@ -1144,7 +1203,13 @@
 
 	// Upgrades tab retired (3.5 consolidation): Servers is the sole upgrade surface.
 	// The enum value survives for the switch arms; nothing routes to it anymore.
-	private static readonly OpsTab[] _tabs = { OpsTab.Overview, OpsTab.Racks, OpsTab.Wallet, OpsTab.Transfers, OpsTab.Logs, OpsTab.Settings };
+	// Settings is NOT in the rail loop — SIDEBAR DESIGN CANON v1 (a) pins it at the
+	// sidebar bottom; it renders as the dedicated foot button.
+	private static readonly OpsTab[] _tabs = { OpsTab.Overview, OpsTab.Racks, OpsTab.Wallet, OpsTab.Transfers, OpsTab.Logs };
+
+	// MENU SHELL LAW eyebrow-over-title grammar: the accent eyebrow names the menu context
+	// above each pane's section title (hub exemplar roles .hub-eyebrow / .hub-title).
+	private static string OpsEyebrow => "BITCOIN OPS";
 	private static readonly PerfRange[] _perfRanges = { PerfRange.Day, PerfRange.Week, PerfRange.Month };
 
 	private OpsTab _active = OpsTab.Overview;
@@ -1232,7 +1297,9 @@
 		return afterTier < rack.ComputeTier ? "solid" : "dark";
 	}
 
-	// Tooltip informs, never asks: "COMPUTE II - x4 rate - BTC 0.75" (QuoteSats, yield-aware).
+	// Tooltip informs, never asks: "COMPUTE II - x4 rate". LAW 17 (0051 site 3): a plain
+	// tooltip attribute cannot color a currency sign, so the monetary value is OMITTED
+	// here — the price renders Law-17-split in the styled .entity-track-price element.
 	private string StepperTooltip( LpBitcoinRackEntity rack, int tier )
 	{
 		if ( tier > rack.ComputeTier + 1 )
@@ -1241,8 +1308,7 @@
 		if ( tier <= rack.ComputeTier )
 			return $"COMPUTE {TierRoman( tier )} \u00B7 \u00D7{LpBitcoinComputeTrack.EffectMultiplierFor( tier )} rate \u00B7 owned";
 
-		var quote = LpBitcoinComputeTrack.QuoteSats( rack, tier );
-		return $"COMPUTE {TierRoman( tier )} \u00B7 \u00D7{LpBitcoinComputeTrack.EffectMultiplierFor( tier )} rate \u00B7 \u20BF {quote / 100_000_000f:0.##}";
+		return $"COMPUTE {TierRoman( tier )} \u00B7 \u00D7{LpBitcoinComputeTrack.EffectMultiplierFor( tier )} rate \u00B7 see price below";
 	}
 
 	// Row's right status slot per sketch 4: PLANNED (future tracks) -> next-price or blank
@@ -1756,9 +1822,11 @@
 
 	private IReadOnlyList<LpBitcoinHubAlert> GetHubAlerts() => Hub?.GetAlerts() ?? Array.Empty<LpBitcoinHubAlert>();
 
-	// LAW 17 in logs: sign gets its own colored span; digits get .lp-money-amt (white);
-	// labels/units stay .lp-money-unit. Never pack sign+digits in one colored segment.
-	private static System.Collections.Generic.List<(string Text, string Cls)> AlertMessageSegments( string msg )
+	// LAW 17 in logs AND helper strings: sign gets its own colored span; digits get
+	// .lp-money-amt (white); labels/units stay plainCls (default .lp-money-unit for logs;
+	// pass "" at sites whose prose must inherit the parent's own text style). Never pack
+	// sign+digits in one colored segment. Codex 0051 manifest sites render through this.
+	private static System.Collections.Generic.List<(string Text, string Cls)> AlertMessageSegments( string msg, string plainCls = "lp-money-unit" )
 	{
 		var segs = new System.Collections.Generic.List<(string, string)>();
 		if ( string.IsNullOrEmpty( msg ) )
@@ -1769,7 +1837,7 @@
 		{
 			if ( buf.Length > 0 )
 			{
-				segs.Add( (buf.ToString(), "lp-money-unit") );
+				segs.Add( (buf.ToString(), plainCls) );
 				buf.Clear();
 			}
 		}
@@ -2839,7 +2907,9 @@
 		if ( !TryParseCashOutAmount( out var amount ) || amount <= 0f )
 			return "Enter amount";
 
-		return $"Cash out {amount:F4}";
+		// LAW 17 (0051 site 9): the amount carries its ₿ identity; the call site
+		// segment-splits so the sign is amber and the digits stay white.
+		return $"Cash out \u20BF {amount:F4}";
 	}
 
 	private string PartialCashOutUsdPreview()
