@@ -3,10 +3,12 @@
   // Canon: lifepunch/docs/cvl/OPENCODE_HARNESS_ADOPTION_2026-07-14.md
   //      + lifepunch/docs/cvl/ORCHESTRATOR_SEAT_RULING_2026-07-14.md
   //      + lifepunch/docs/cvl/WINDOW_TOPOLOGY_2026-07-14.md
+  //      + lifepunch/docs/cvl/OPENCODE_SEAT_IDENTITY_AND_HARNESS_OPS_RULING_2026-07-15.md
   // Config of record per fable\0074 (v2 body). Landed by Red, red\0037.
   //
-  // AUTHORITY FOLLOWS THE MODEL, NOT THE HARNESS. Cloud frontier =
-  // relief-clause implementer-eligible; CORNERMAN local = advisory-only.
+  // HARNESS DEFINES THE SEAT; MODEL DEFINES AUTHORITY. This process is the
+  // OPENCODE seat regardless of provider/model. Cloud frontier = relief-clause
+  // implementer-eligible; CORNERMAN local = advisory-only.
   // ONE WINDOW = ONE SEAT. Subagents below are TOOLS, not seats: they
   // inherit the orchestrator's constraints and hold ZERO authority.
   // Their output is LEADS-GRADE until the orchestrator machine-verifies
@@ -22,15 +24,20 @@
   // every mutation records WHICH surface performed it. Claude Bridge
   // (file IPC) remains Red's surface, not wirable here by design.
   // Never Ozmium/8098, which does not exist on this stack.
+  // Native editor_status compatibility flag: null ActiveScene / ActiveScenePath
+  // values violate the advertised string schema (opencode\0002). A schema
+  // rejection is not a dead-endpoint sensor; pair it with a separate read.
   //
-  // push/merge/tag/reset DENIED — Bloodwave holds the merge key.
+  // Work-branch push is allowed by v4.2. merge/tag/reset/clean/stash/checkout/
+  // switch remain DENIED — Bloodwave holds the protected-branch merge key.
   // external_directory "ask" per fable\0071 (comms\ filings approved);
   // every out-of-repo access prompts and Bloodwave clicks the gate.
   "instructions": [
     "CLAUDE.md",
     "ARCHI.md",
     "lifepunch/docs/cvl/TRIP_ADOPTION_2026-07-14.md",
-    "lifepunch/docs/cvl/OPENCODE_HARNESS_ADOPTION_2026-07-14.md"
+    "lifepunch/docs/cvl/OPENCODE_HARNESS_ADOPTION_2026-07-14.md",
+    "lifepunch/docs/cvl/OPENCODE_SEAT_IDENTITY_AND_HARNESS_OPS_RULING_2026-07-15.md"
   ],
   "mcp": {
     "sbox-native": {
@@ -108,16 +115,13 @@
       }
     }
   },
-  // PERMISSIONS per OPENCODE_HARNESS_ADOPTION_2026-07-14 gates
-  // (edit=ask, commit=ask, push/merge/tag=deny), reaffirmed by the
-  // T0-ACCEPTED ruling 2026-07-15 (Fable relay, Bloodwave-accepted):
-  // seat MIRROR upheld — earlier drafted allow/deny variants were
-  // informational, not overrides; the adoption-doc gates stand.
-  // checkout/switch/reset/clean/stash denies kept (trial + worktree
-  // law). Startup-only loading: takes effect at next restart.
+  // PERMISSIONS v4.2 per OPENCODE_PERMISSION_V4_SUPERSESSION_2026-07-15:
+  // edit/commit/work-branch push + read/build/skills graduated to allow.
+  // merge/tag/reset/clean/stash/checkout/switch remain denied. Startup-only
+  // loading: changes take effect at the next Bloodwave-keyed restart.
   "permission": {
     "*": "ask",
-    "edit": "ask",
+    "edit": "allow",
     "bash": {
       "*": "ask",
       "git status*": "allow",
@@ -126,23 +130,25 @@
       "git branch*": "allow",
       "git show*": "allow",
       "git rev-parse*": "allow",
-      "git commit*": "ask",
-      "git push*": "deny",
+      "git add*": "allow",
+      "git commit*": "allow",
+      "git push*": "allow",
       "git merge*": "deny",
       "git tag*": "deny",
       "git reset*": "deny",
       "git clean*": "deny",
       "git stash*": "deny",
       "git checkout*": "deny",
-      "git switch*": "deny"
+      "git switch*": "deny",
+      "dotnet build*": "allow"
     },
-    // "*": "ask" (not deny) at the SEAT level — an unknown or newly
-    // added skill PROMPTS Bloodwave rather than silently disappearing.
+    // Skills are read-only reference material, so v4.1 graduates the default
+    // to allow. The two wrong-surface / wrong-lane skills stay denied.
     // Subagents above get hard deny-walls instead.
     // lifepunch-editor-gate DENIED: editor launches are Red's surface.
     // cornerman-packets DENIED: packet authoring is the Fable/Bloodwave lane.
     "skill": {
-      "*": "ask",
+      "*": "allow",
       "lifepunch-grounding": "allow",
       "lifepunch-economy": "allow",
       "lifepunch-config": "allow",

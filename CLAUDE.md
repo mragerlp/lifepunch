@@ -17,12 +17,13 @@
 
 Any task that CAN and SHOULD be done by Claude Code IS done by Claude Code — but Claude is not the only harness, and **a harness is not an authority.** See Harnesses below.
 
-## AUTHORITY FOLLOWS THE MODEL, NOT THE HARNESS (ratified 2026-07-14, Bloodwave — record: `copilot\0010`, canon: `lifepunch/docs/cvl/OPENCODE_HARNESS_ADOPTION_2026-07-14.md`)
+## SEAT IDENTITY FOLLOWS THE HARNESS; AUTHORITY FOLLOWS THE MODEL (ratified 2026-07-15, Bloodwave — canon: `lifepunch/docs/cvl/OPENCODE_SEAT_IDENTITY_AND_HARNESS_OPS_RULING_2026-07-15.md`)
 
-The seat table above assigns authority to **roles**. Harnesses are the **tools those roles drive**, and
-a tool inherits only its caller's grant (`CVL_AUTHORITY_LEVELS` L4). The same harness carries different
-authority depending on the model behind it: **OpenCode + a frontier cloud model is implementer-eligible
-under the relief clause; OpenCode + a CORNERMAN local model is advisory-only (Green-class).**
+The harness names the seat; the model determines what authority that seat can carry. **An OpenCode
+session is the OPENCODE seat regardless of its model or provider — including an Anthropic-family
+frontier model. Red is Claude Code, exclusively.** Within the OPENCODE seat, a frontier cloud model is
+implementer-eligible under the relief clause while a CORNERMAN local model is advisory-only
+(Green-class). Identity never supplies authority, and model choice never renames the seat.
 
 ```
 HARNESS              AUTHORITY IT CAN CARRY
@@ -43,10 +44,11 @@ Cursor/Grok          L3 advisory. Lane: comms\cursor\. RATIFIED BACKUP/ON-THE-SP
 Cornerman (Green)    L3 advisory local muscle: distill/prep/audit/draft. Never ships.
 ```
 
-**THERE IS EXACTLY ONE CODEX** (ratified 2026-07-14). Codex is a **seat**, not a process count: **if
-Kepler or OpenCode drives the Codex API, that IS the Codex seat** — not a second one. The one-seat-per-tree
-and one-DRIVE invariants bind the **seat**, so a second harness pointed at the same model does not create a
-second implementer; **it creates a race for the same chair.** Before any harness runs Codex, the BOARD must
+**THERE IS EXACTLY ONE CODEX** (ratified 2026-07-14). Codex is a **seat**, not a process count: a
+Kepler-routed direct Codex API session is the Codex seat, while a model selected inside OpenCode remains
+the OPENCODE seat under the 2026-07-15 identity ruling. The one-seat-per-tree and one-DRIVE invariants
+bind the **seat**, so a second process or harness claiming the same seat does not create a second
+implementer; **it creates a race for the same chair.** Before any Codex session starts, the BOARD must
 say whose chair it is.
 
 **Editor DRIVE is a separate, board-named grant** (`EDITOR_ACCESS_LAW_V2`) and is grantable to any
@@ -286,7 +288,7 @@ Decision records go in canon. *Write-once canon that the grounding order does no
 - **Green fast-fail:** no retries, no detach, no polling loops, no CIM/WMI, no schtasks; any error/hang past ~20s → abort, report raw error, stop.
 - **Repo skills are canon-grade.** Repo skills in `.claude/skills/` are canon-grade; sessions load relevant skills at grounding; any ratified rule updates its skill in the same PR that lands the doctrine. The TRIP-workflow skill set (`TRIP-*`, `codex-*`) is adopted under `lifepunch/docs/cvl/TRIP_ADOPTION_2026-07-14.md` — each carries a CVL subordination banner; `ARCHI.md` (repo root) is its architecture memory, subordinate to this file.
 - **Kepler ADE adoption.** GitKraken Kepler is adopted as the task orchestration surface per `lifepunch/docs/cvl/KEPLER_ADE_ADOPTION_2026-07-14.md` - replaces paste-relay workflow with agent routing + per-task worktrees. Class B plugin; CVL constraints unchanged.
-- **OpenCode harness adoption.** OpenCode is an implementer harness (authority follows the model) per `lifepunch/docs/cvl/OPENCODE_HARNESS_ADOPTION_2026-07-14.md` — cloud frontier = relief-clause implementer-eligible; CORNERMAN local = advisory-only; editor DRIVE separate.
+- **OpenCode harness adoption.** OpenCode is the OPENCODE seat regardless of its selected model; authority follows the model per `lifepunch/docs/cvl/OPENCODE_SEAT_IDENTITY_AND_HARNESS_OPS_RULING_2026-07-15.md` + `OPENCODE_HARNESS_ADOPTION_2026-07-14.md` — cloud frontier = relief-clause implementer-eligible; CORNERMAN local = advisory-only; editor DRIVE separate.
 - **ui-ux-pro-max skill.** Class B design-intelligence pack (local CSV/search; paired `.claude`/`.agents` skills) — website/menu UI advisory; yields to LIFEPUNCH visual + Razor canon. See `CONSOLE_PLUGINS_DOCTRINE.md` Class B entry.
 - **Deep-Research skills.** Class B structured research workflow (`research*` paired skills) — doctrine/architecture questions; web-search agents not tracked (optional seat-local).
 - **opencode-skills (cherry-pick).** Class B: `architecture-designer`, `code-reviewer`, `debugging-wizard`, `code-documenter` only — not the full 66.
@@ -298,7 +300,7 @@ Decision records go in canon. *Write-once canon that the grounding order does no
 - **Commit authorship — mis-authored history STANDS.** `lifepunch/docs/cvl/COMMIT_AUTHORSHIP_LEAVE_HISTORY_RULING_2026-07-14.md` — **no rewrite, no force-push**; the live `git config` is clean, so the leak is closed going forward. **`mrragerlp` is RATIFIED CANON in FILES** (the legal/IP layer, `BLOODWAVE_ALIAS.md`) and **wrong only in the AUTHOR FIELD** — opposite defects that look identical to a grep. **Never run a repo-wide `mrragerlp` → `mragerlp` replacement.**
 - **Editor EYES for Codex/OpenCode.** `lifepunch/docs/cvl/EDITOR_EYES_CODEX_RULING_2026-07-14.md` — **read-only OBSERVE on all three MCP surfaces, config-level allowlist, ZERO mutation tools, EXPLICITLY NOT DRIVE.** This is the "eyes" half of `EDITOR_ACCESS_LAW_V2`'s *"concurrent read-only eyes fine, concurrent mutating control never"* — the "control" half is untouched. **A mutation attempt is an INCIDENT, not a denied call**: the attempt is the finding, and a config that silently denies is a green-by-omission check.
 - **The advisory lanes.** `lifepunch/docs/cvl/ADVISORY_LANE_RULINGS_2026-07-14.md` — `copilot\` · `cursor\` · `kepler\` (`fable\0070`, `fable\0071`). **A comms folder is a TRANSPORT PRIVILEGE, NOT AN AUTHORITY GRANT.** States FILED/PROPOSED/HELD only; no dispatch folder; **L3 cites require machine verification EVERY time** (`red\0034`).
-- **Window topology.** `lifepunch/docs/cvl/WINDOW_TOPOLOGY_2026-07-14.md` (companion to `ORCHESTRATOR_SEAT_RULING_2026-07-14.md`) — **exactly two working windows; no second `opencode.exe`; subagents are TOOLS** with zero authority. `opencode.json` per `fable\0074` is the **config of record** — **no editor MCP block: Red keeps the bridges.** Editor-eyes-for-the-orchestrator is **BANKED, not granted** — read-only at most, and **never Ozmium/8098, which does not exist on this stack.**
+- **Window topology.** `lifepunch/docs/cvl/WINDOW_TOPOLOGY_2026-07-14.md` (companion to `ORCHESTRATOR_SEAT_RULING_2026-07-14.md`) — **exactly two working windows; no second `opencode.exe`; subagents are TOOLS** with zero authority. `opencode.json` is the **config of record** and now wires the native `7269` + chomnr `9090` HTTP MCP surfaces per `lifepunch/docs/cvl/OPENCODE_EDITOR_MCP_SUPERSESSION_2026-07-15.md`; **a cable is not DRIVE**, the Claude Bridge file-IPC surface remains Red-only, and Ozmium/8098 does not exist on this stack.
 - **Fable's operating pattern.** `lifepunch/docs/cvl/FABLE_CONDUCTOR_PATTERN_2026-07-14.md` — the conductor's six lines and the three laws it keeps breaking: **L3 cites need machine verification** · **sensor before premise in every relay** · **read the BOARD tail immediately before every append.** §3 names the **GREEN-BY-OMISSION** defect family: *a check that cannot distinguish "I verified it and it's fine" from "I could not verify it" is not a check.*
 - **Drug-lane doctrine:** `lifepunch/docs/COCAINE_PROCESSING_DOCTRINE.md` — seed→leaf→brick chain, economy boundary, hybrid config shape. **U1/U2 RATIFIED; U3–U5 PROPOSED and not ruled** — do not build U3–U5 without a ruling.
 - **DXRP re-pin:** `lifepunch/docs/handoff/STOPGO_DXRP_REPIN_UPSTREAMWARD_RULING_2026-07-13.md` — the UPSTREAM-WARD ruling on party conflicts (merge `M = 396d196`), superseding one sentence of the rail-3 relay. `STOPGO_DXRP_REPIN_2026-07-11.md` stands untouched.
