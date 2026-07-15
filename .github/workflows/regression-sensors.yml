@@ -17,20 +17,25 @@ jobs:
     name: cite census (no new unresolved identity)
     runs-on: ubuntu-latest
     steps:
-      - name: Check out PR head
+      - name: Check out PR merge candidate
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
         with:
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
-          ref: ${{ github.event.pull_request.head.sha }}
-          path: head
+          ref: ${{ github.sha }}
+          path: repo
           fetch-depth: 1
           persist-credentials: false
+
+      - name: Preserve merge candidate as a linked worktree
+        shell: pwsh
+        env:
+          CANDIDATE_SHA: ${{ github.sha }}
+        run: git -C "$env:GITHUB_WORKSPACE/repo" worktree add --detach "$env:GITHUB_WORKSPACE/head" $env:CANDIDATE_SHA
 
       - name: Check out PR base
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
         with:
           ref: ${{ github.event.pull_request.base.sha }}
-          path: base
+          path: repo
           fetch-depth: 1
           persist-credentials: false
 
@@ -50,11 +55,11 @@ jobs:
       - name: Select trusted enforcement scripts
         shell: pwsh
         run: |
-          $baseComparator = Join-Path $env:GITHUB_WORKSPACE 'base/lifepunch/scripts/Assert-CiteCensusRegression.ps1'
-          $baseDetector = Join-Path $env:GITHUB_WORKSPACE 'base/lifepunch/scripts/Invoke-CiteCensus.ps1'
+          $baseComparator = Join-Path $env:GITHUB_WORKSPACE 'repo/lifepunch/scripts/Assert-CiteCensusRegression.ps1'
+          $baseDetector = Join-Path $env:GITHUB_WORKSPACE 'repo/lifepunch/scripts/Invoke-CiteCensus.ps1'
           if ((Test-Path -LiteralPath $baseComparator -PathType Leaf) -and (Test-Path -LiteralPath $baseDetector -PathType Leaf)) {
             Write-Output 'ENFORCEMENT: using the PR base Assert-CiteCensusRegression and detector.'
-            "ENFORCEMENT_ROOT=$env:GITHUB_WORKSPACE/base" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+            "ENFORCEMENT_ROOT=$env:GITHUB_WORKSPACE/repo" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
           }
           else {
             Write-Warning 'BOOTSTRAP FALLBACK: PR base lacks the enforcement scripts; using head for this first landing only.'
@@ -65,13 +70,13 @@ jobs:
         shell: pwsh
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
-          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          HEAD_SHA: ${{ github.sha }}
           DXRP_SHA: e6d3026a52a42045a56db44aa9db9b75ab93d2cc
         run: |
           $comparator = Join-Path $env:ENFORCEMENT_ROOT 'lifepunch/scripts/Assert-CiteCensusRegression.ps1'
           $detector = Join-Path $env:ENFORCEMENT_ROOT 'lifepunch/scripts/Invoke-CiteCensus.ps1'
           & pwsh -NoLogo -NoProfile -File $comparator `
-            -BaseRepoRoot "$env:GITHUB_WORKSPACE/base" `
+            -BaseRepoRoot "$env:GITHUB_WORKSPACE/repo" `
             -HeadRepoRoot "$env:GITHUB_WORKSPACE/head" `
             -BaseSha $env:BASE_SHA `
             -HeadSha $env:HEAD_SHA `
@@ -84,16 +89,7 @@ jobs:
     name: bridge version assertion (positive presence)
     runs-on: ubuntu-latest
     steps:
-      - name: Check out PR head
-        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
-        with:
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
-          ref: ${{ github.event.pull_request.head.sha }}
-          path: head
-          fetch-depth: 1
-          persist-credentials: false
-
-      - name: Check out PR base
+      - name: Check out trusted PR base
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
         with:
           ref: ${{ github.event.pull_request.base.sha }}
@@ -101,23 +97,10 @@ jobs:
           fetch-depth: 1
           persist-credentials: false
 
-      - name: Select trusted bridge assertion
-        shell: pwsh
-        run: |
-          $baseAssertion = Join-Path $env:GITHUB_WORKSPACE 'base/lifepunch/scripts/Assert-BridgeVersion.ps1'
-          if (Test-Path -LiteralPath $baseAssertion -PathType Leaf) {
-            Write-Output 'BRIDGE ENFORCEMENT: using the PR base Assert-BridgeVersion.'
-            "BRIDGE_ASSERTION_ROOT=$env:GITHUB_WORKSPACE/base" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-          }
-          else {
-            Write-Warning 'BOOTSTRAP FALLBACK: PR base lacks Assert-BridgeVersion; using head for this first landing only.'
-            "BRIDGE_ASSERTION_ROOT=$env:GITHUB_WORKSPACE/head" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-          }
-
       - name: Assert live fixture passes and null/null false-green fails
         shell: pwsh
         run: |
-          $assertion = Join-Path $env:BRIDGE_ASSERTION_ROOT 'lifepunch/scripts/Assert-BridgeVersion.ps1'
+          $assertion = Join-Path $env:GITHUB_WORKSPACE 'base/lifepunch/scripts/Assert-BridgeVersion.ps1'
           $good = @{
             bridgeVersion = '1.2.3'
             mcpServerVersion = '1.2.3'
@@ -142,3 +125,4 @@ jobs:
             throw 'Assert-BridgeVersion accepted the null/null disconnected false-green fixture.'
           }
           Write-Output "BRIDGE-CONTRACT: PASS - live fixture accepted; false-green fixture rejected with exit $LASTEXITCODE."
+          exit 0

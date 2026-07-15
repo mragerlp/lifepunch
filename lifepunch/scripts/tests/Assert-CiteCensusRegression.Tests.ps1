@@ -191,8 +191,25 @@ if (Test-Path -LiteralPath $workflowPath) {
     Assert-True ($workflowText -match 'mragerlp/dxrp-public') 'workflow must check out the public DXRP corpus'
     Assert-True ($workflowText -match 'e6d3026a52a42045a56db44aa9db9b75ab93d2cc') 'workflow must pin the ruled DXRP corpus SHA'
     Assert-True ($workflowText -match 'Assert-CiteCensusRegression\.ps1') 'workflow must invoke the cite-census regression gate'
-    foreach ($selectionShape in @('\$baseComparator\s*=', '\$baseDetector\s*=', 'Test-Path -LiteralPath \$baseComparator', 'Test-Path -LiteralPath \$baseDetector', 'ENFORCEMENT_ROOT=\$env:GITHUB_WORKSPACE/base', 'BOOTSTRAP FALLBACK:.+using head', 'ENFORCEMENT_ROOT=\$env:GITHUB_WORKSPACE/head')) {
-        Assert-True ($workflowText -match $selectionShape) "workflow base-first enforcement selection is missing shape: $selectionShape"
+    $citeJobMatch = [regex]::Match($workflowText, '(?ms)^  cite-census:\s*\r?\n(.*?)(?=^  bridge-version-contract:)')
+    Assert-True $citeJobMatch.Success 'workflow must contain the cite-census job'
+    if ($citeJobMatch.Success) {
+        $citeJob = $citeJobMatch.Value
+        foreach ($checkoutShape in @(
+            '(?ms)- name: Check out PR merge candidate.*?ref: \$\{\{ github\.sha \}\}.*?path: repo',
+            '(?ms)- name: Check out PR base.*?ref: \$\{\{ github\.event\.pull_request\.base\.sha \}\}.*?path: repo',
+            '(?ms)- name: Check out pinned public DXRP corpus.*?path: dxrp'
+        )) {
+            Assert-True ($citeJob -match $checkoutShape) "cite job is missing storage-bounded checkout shape: $checkoutShape"
+        }
+        Assert-True ($citeJob -match 'git -C "\$env:GITHUB_WORKSPACE/repo" worktree add --detach "\$env:GITHUB_WORKSPACE/head" \$env:CANDIDATE_SHA') 'cite job must preserve the merge candidate as a linked worktree before switching the shared checkout to base'
+        Assert-True ([regex]::Matches($citeJob, '(?m)^\s+path: repo\s*$').Count -eq 2) 'cite job must reuse one LifePunch checkout path/object store for candidate and base'
+        foreach ($selectionShape in @('\$baseComparator\s*=', '\$baseDetector\s*=', 'Test-Path -LiteralPath \$baseComparator', 'Test-Path -LiteralPath \$baseDetector', 'ENFORCEMENT_ROOT=\$env:GITHUB_WORKSPACE/repo', 'BOOTSTRAP FALLBACK:.+using head', 'ENFORCEMENT_ROOT=\$env:GITHUB_WORKSPACE/head')) {
+            Assert-True ($citeJob -match $selectionShape) "workflow base-first enforcement selection is missing shape: $selectionShape"
+        }
+        Assert-True ($citeJob -match 'HEAD_SHA: \$\{\{ github\.sha \}\}') 'cite job must label and compare the tested PR merge candidate SHA'
+        Assert-True ($citeJob -match '-BaseRepoRoot "\$env:GITHUB_WORKSPACE/repo"') 'cite comparator must use the shared checkout after it is switched to base'
+        Assert-True ($citeJob -match '-HeadRepoRoot "\$env:GITHUB_WORKSPACE/head"') 'cite comparator must use the preserved candidate worktree as head'
     }
     Assert-True ($workflowText -match 'Assert-BridgeVersion\.ps1') 'workflow must invoke the bridge version assertion'
     foreach ($fixtureShape in @('bridgeVersion\s*=\s*\$null', 'mcpServerVersion\s*=\s*\$null', 'connected\s*=\s*\$false', 'roundTripOk\s*=\s*\$false', 'versionsAligned\s*=\s*\$true')) {
@@ -202,16 +219,10 @@ if (Test-Path -LiteralPath $workflowPath) {
     Assert-True $bridgeJobMatch.Success 'workflow must contain the bridge-version-contract job'
     if ($bridgeJobMatch.Success) {
         $bridgeJob = $bridgeJobMatch.Value
-        foreach ($checkoutShape in @(
-            '(?ms)- name: Check out PR head.*?repository: \$\{\{ github\.event\.pull_request\.head\.repo\.full_name \}\}.*?ref: \$\{\{ github\.event\.pull_request\.head\.sha \}\}.*?path: head',
-            '(?ms)- name: Check out PR base.*?ref: \$\{\{ github\.event\.pull_request\.base\.sha \}\}.*?path: base'
-        )) {
-            Assert-True ($bridgeJob -match $checkoutShape) "bridge job is missing exact base/head checkout shape: $checkoutShape"
-        }
-        foreach ($selectionShape in @('\$baseAssertion\s*=', 'Test-Path -LiteralPath \$baseAssertion', 'BRIDGE_ASSERTION_ROOT=\$env:GITHUB_WORKSPACE/base', 'BOOTSTRAP FALLBACK:.+using head', 'BRIDGE_ASSERTION_ROOT=\$env:GITHUB_WORKSPACE/head')) {
-            Assert-True ($bridgeJob -match $selectionShape) "bridge job base-first assertion selection is missing shape: $selectionShape"
-        }
-        Assert-True ($bridgeJob -notmatch '(?m)^\s*- uses:') 'bridge job must not use an unnamed default merge checkout'
+        Assert-True ([regex]::Matches($bridgeJob, '(?m)^\s+(?:-\s+)?uses:\s+actions/checkout@').Count -eq 1) 'bridge job must use exactly one checkout'
+        Assert-True ($bridgeJob -match '(?ms)- name: Check out trusted PR base.*?ref: \$\{\{ github\.event\.pull_request\.base\.sha \}\}.*?path: base') 'bridge job must check out only the exact trusted base'
+        Assert-True ($bridgeJob -notmatch 'PR head|BOOTSTRAP FALLBACK|BRIDGE_ASSERTION_ROOT') 'bridge job must not execute a candidate-controlled assertion fallback'
+        Assert-True ($bridgeJob -match "(?ms)BRIDGE-CONTRACT: PASS.+?^\s+exit 0\s*$") 'bridge job must explicitly clear the expected negative fixture exit code after success'
     }
 }
 
