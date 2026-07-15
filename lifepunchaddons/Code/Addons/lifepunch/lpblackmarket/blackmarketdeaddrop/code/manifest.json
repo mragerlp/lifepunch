@@ -1,0 +1,14 @@
+{
+    "entitySlot": "blackmarketdeaddrop",
+    "legacyRepoIdent": "blackmarketdealer",
+    "packageFolder": "lpblackmarket",
+    "shipEntitySlug": "black-market-dead-drop",
+    "role": "Dead-drop stash machine (BM-S2 content-only; zero economy)",
+    "entityFiles": [
+        "components/LpBlackMarketDeadDropEntity.cs"
+    ],
+    "sharedPackageFiles": [
+        "../_shared/code/components/LpBlackMarketMachine.cs"
+    ],
+    "gameplayStatus": "content-only skeleton — state machine + USE + placeholder compartment; drop/collect loop is ladder slice 5, money is #149 S4"
+}
