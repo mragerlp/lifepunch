@@ -223,60 +223,6 @@ public sealed class HackerTerminalEntity : BaseEntity, Component.IPressable
 		HackerTerminal.OnIntrusionVerdict( success, terminated, heat, traced, message );
 	}
 
-	// ── Legacy Phase-1 submit path (superseded by the HK-S2 session loop above for gameplay).
-	// Kept because HackerEconomySecurity.Process*Host is the documented HK-S4 economy swap point
-	// (docs/SECURITY.md, HACKER_PHASE2_ECONOMY_PREP.md) — #154 replaces or retires it, not S2. ──
-
-	public void RequestSubmitWalletHack( string targetSteamId, int puzzleKind, string answer, float secondsElapsed, float timeLimitSeconds )
-		=> SubmitWalletHackHost( targetSteamId, puzzleKind, answer, secondsElapsed, timeLimitSeconds );
-
-	public void RequestSubmitGovdbInfil( string nodeId, int puzzleKind, string answer, float secondsElapsed, float timeLimitSeconds )
-		=> SubmitGovdbInfilHost( nodeId, puzzleKind, answer, secondsElapsed, timeLimitSeconds );
-
-	[Rpc.Host]
-	private void SubmitWalletHackHost( string targetSteamId, int puzzleKind, string answer, float secondsElapsed, float timeLimitSeconds )
-	{
-#if !LIFEPUNCH_LOCAL
-		if ( !GameUtils.HasPermission( Rpc.Caller, GameObject ) )
-			return;
-
-		var hacker = GameUtils.GetPlayerByConnectionId( Rpc.CallerId );
-		if ( !hacker.IsValid() )
-			return;
-
-		if ( !long.TryParse( targetSteamId, out var targetId ) )
-			return;
-
-		var kind = (HackerPuzzleSession.PuzzleKind)puzzleKind;
-		_ = HackerEconomySecurity.ProcessWalletHackHost( this, hacker, targetId, kind, answer, secondsElapsed, timeLimitSeconds );
-#else
-		if ( !long.TryParse( targetSteamId, out var targetId ) )
-			return;
-
-		var kind = (HackerPuzzleSession.PuzzleKind)puzzleKind;
-		_ = HackerEconomySecurity.ProcessWalletHackHost( this, targetId, kind, answer, secondsElapsed, timeLimitSeconds );
-#endif
-	}
-
-	[Rpc.Host]
-	private void SubmitGovdbInfilHost( string nodeId, int puzzleKind, string answer, float secondsElapsed, float timeLimitSeconds )
-	{
-#if !LIFEPUNCH_LOCAL
-		if ( !GameUtils.HasPermission( Rpc.Caller, GameObject ) )
-			return;
-
-		var hacker = GameUtils.GetPlayerByConnectionId( Rpc.CallerId );
-		if ( !hacker.IsValid() )
-			return;
-
-		var kind = (HackerPuzzleSession.PuzzleKind)puzzleKind;
-		_ = HackerEconomySecurity.ProcessGovdbInfilHost( this, hacker, nodeId, kind, answer, secondsElapsed, timeLimitSeconds );
-#else
-		var kind = (HackerPuzzleSession.PuzzleKind)puzzleKind;
-		_ = HackerEconomySecurity.ProcessGovdbInfilHost( this, nodeId, kind, answer, secondsElapsed, timeLimitSeconds );
-#endif
-	}
-
 	public void RequestReportHackFailure() => ReportHackFailureHost();
 
 	[Rpc.Host]
