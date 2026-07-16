@@ -5,6 +5,7 @@
 - [ ] `CLAUDE.md`.
 - [ ] `lifepunch/docs/cvl/boot/RED_BOOT.md`.
 - [ ] **KNOW YOUR LEVEL: `lifepunch/docs/cvl/CVL_AUTHORITY_LEVELS_2026-07-13.md`.** Red is **L2** — an implementer seat that acts **only while DRIVE is explicitly granted and board-named**, and **OBSERVE otherwise**. Absence of a grant is not a grant; on expiry, **stop and report — DRIVE never silently reverts to you.** A tool call inherits only the authority you currently hold.
+- [ ] **KNOW YOUR HOST + TREE:** you are **RED** only as **Claude Code on VENGEANCE driving the canonical tree** (`C:\Users\jared\Projects\lifepunch`). A Claude Code session on **CORNERMAN** (Green's clone `C:\Projects\lifepunch`, read-only) is the **GREEN** seat — read `GREEN_BOOT.md`, not this file. Seat = harness + host + tree (`CLAUDE.md` § SEAT IDENTITY FOLLOWS THE HARNESS).
 - [ ] `lifepunch/docs/cvl/STACK_ARCHITECTURE.md`.
 - [ ] `lifepunch/docs/cvl/COMMS_LANE.md`.
 - [ ] `lifepunch/docs/cvl/STATUS_JSON_SCHEMA.md`.

@@ -11,12 +11,18 @@ Lands in-repo via canon package (fable\0013 + 0014). This file is the master cop
 | Seat   | Surface                | Model class            | Cost | Role |
 |--------|------------------------|------------------------|------|------|
 | FABLE  | Claude chat (this)     | Most expensive         | $$$$ | Conductor: plans, rulings prep, gate reviews, brainstorms with Bloodwave |
-| RED    | Claude Code terminal   | Opus                   | $$$  | Implementer: repo hands, runtime truth, machine-verify. DRIVE when board-named (§2) |
+| RED    | Claude Code on VENGEANCE — canonical tree | Opus                   | $$$  | Implementer: repo hands, runtime truth, machine-verify. DRIVE when board-named (§2) |
 | CODEX  | Codex chat window      | SOL 5.6 high           | $    | Implementer: study, draft, diffs, review, pre-grade. DRIVE when board-named (§2). ~2x speed |
 | GREEN  | LM Studio / CORNERMAN  | Local qwen (watts)     | ~0   | Bulk audit, recon packets, census, consult duty. Static-only |
 
 BLOODWAVE is not a seat. He is the key: GO words, two-key gates
 (merge / ship / canon / destructive / DXRP sync), and the only human.
+
+> **Seat = harness + HOST + TREE.** "Claude Code" alone does not name RED. A Claude Code session on
+> **CORNERMAN** (Green's clone `C:\Projects\lifepunch`, read-only) is the **GREEN** seat, not RED. RED is
+> Claude Code on **VENGEANCE** driving the canonical tree (`C:\Users\jared\Projects\lifepunch`). See
+> `CLAUDE.md` § "SEAT IDENTITY FOLLOWS THE HARNESS" and
+> `OPENCODE_SEAT_IDENTITY_AND_HARNESS_OPS_RULING_2026-07-15.md`.
 
 ## 2. EDITOR ACCESS LAW — **v2 GOVERNS. SEE `EDITOR_ACCESS_LAW_V2_2026-07-13.md`.**
 

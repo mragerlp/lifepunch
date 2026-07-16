@@ -10,7 +10,7 @@
 | **Plan** | Claude Chat — Fable (preferred) → Opus (heavier: architecture, canon, hard bugs) → Sonnet (budget: summaries, cheap docs) | Scope, edge cases, rulings, STOP-GO, handoff briefs. Does not implement unless asked. |
 | **Build** | **Claude Code — Opus** (implementer; drives the editor **when board-named**) | Reads the repo, edits files, runs tests, drives s&box editor work under a DRIVE grant, gates with the Sensor Law, reports diff + proof. Commits only after a passing gate **and** Bloodwave GO. |
 | **Review** | Codex | Reviews the DIFF, post-build, pre-merge. PASS / REVISE / HOLD on scope-match, proof quality, lane discipline. Never re-litigates rulings — a HOLD means "build ≠ ruling," not "I disagree." |
-| **Corner** | **Odysseus** — Claude Code on Green (CORNERMAN) | The CORNER, not the fighter. Reads Red's completed round reports **cold**, returns **corner notes** (risks, checks worth running, exemplars worth opening), audits round reports for sensor completeness, and scouts Green's clone between dispatches. Drives qwen (LM Studio `:1234`) as local bulk muscle. **Flags, never decides. Never pushes.** Eyes covered. Charter: `lifepunch/docs/handoff/STOPGO_ODYSSEUS_CORNER_LOOP_CHARTER_2026-07-10.md`. |
+| **Corner** | **Odysseus** — Claude Code (or local qwen) on Green (CORNERMAN), on the clone `C:\Projects\lifepunch` — **not** the canonical VENGEANCE tree, which is Red's | The CORNER, not the fighter. Reads Red's completed round reports **cold**, returns **corner notes** (risks, checks worth running, exemplars worth opening), audits round reports for sensor completeness, and scouts Green's clone between dispatches. Drives qwen (LM Studio `:1234`) as local bulk muscle. **Flags, never decides. Never pushes.** Eyes covered. Charter: `lifepunch/docs/handoff/STOPGO_ODYSSEUS_CORNER_LOOP_CHARTER_2026-07-10.md`. |
 | **Green** | Cornerman LM (Tier-3 local muscle, `qwen/qwen3.6-35b-a3b` Daily via LM Studio `:1234`) | The **muscle Odysseus drives**, not a seat. Distill / prep / audit / draft; feeds the planning layer (Packet E/F class). Flags, never decides. Never in the implement or review path. Never claims scale/materials/collider/animation verified from code alone — its eyes are covered. |
 | **Lane (L3)** | **Copilot** · **Cursor/Grok** | Advisory seats with **write-enabled comms lanes** (`comms\copilot\`, `comms\cursor\`) per `fable\0070`. Ground, study, draft, run verification queues, file findings. **A comms folder is a TRANSPORT privilege, not an authority grant** — no DRIVE, commit, push, merge, or canon rights. State words: FILED / PROPOSED / HELD only. Never receive a dispatch; they receive Bloodwave's direct paste. |
 | **Authority** | Bloodwave | Sole commit / push / merge authority. Final GO on every slice. |
@@ -21,9 +21,14 @@ Any task that CAN and SHOULD be done by Claude Code IS done by Claude Code — b
 
 The harness names the seat; the model determines what authority that seat can carry. **An OpenCode
 session is the OPENCODE seat regardless of its model or provider — including an Anthropic-family
-frontier model. Red is Claude Code, exclusively.** Within the OPENCODE seat, a frontier cloud model is
-implementer-eligible under the relief clause while a CORNERMAN local model is advisory-only
-(Green-class). Identity never supplies authority, and model choice never renames the seat.
+frontier model. The Red seat is only ever driven by Claude Code (never OpenCode) — but NOT every Claude
+Code session is Red.** Seat identity follows **harness + HOST + TREE together**: **Red** is the Claude
+Code seat **on VENGEANCE driving the canonical tree** (`C:\Users\jared\Projects\lifepunch`); a Claude
+Code session **on CORNERMAN**, operating read-only on Green's **clone** (`C:\Projects\lifepunch`), is the
+**Green/Odysseus** seat (role table, line 13) — the same harness, distinguished by host and tree. Within
+the OPENCODE seat, a frontier cloud model is implementer-eligible under the relief clause while a
+CORNERMAN local model is advisory-only (Green-class). Identity never supplies authority, and model choice
+never renames the seat.
 
 ```
 HARNESS              AUTHORITY IT CAN CARRY
@@ -75,7 +80,7 @@ INVARIANTS: Bloodwave is the transport on EVERY arrow — no seat messages anoth
 Codex = review + proposal seat. Reads real code, produces diagnoses/reviews with citations, drafts patches as diffs. Never commits, pushes, opens/merges PRs, or runs mutating git in the shared tree. RELIEF CLAUSE: if Claude usage is exhausted, Codex may take the implementer chair ONLY on an explicit Red-dark handoff (Red at clean known SHA, zero uncommitted diff, handoff note stating HEAD + open work); Codex ACKs and holds alone; Red ACKs on return to reclaim. Never both live. In the chair Codex inherits all implementer laws (attribution-clean incl. its own footers, proof-gated commits, sensors, Bloodwave merge gate, MIRROR).
 
 ## SEAT MODEL (ratified 2026-07-12, Bloodwave — **AMENDED by EDITOR ACCESS LAW v2, 2026-07-13**)
-Fable = home base: plans, conducts, drafts relays. Codex = FRONTLINE: high-volume work — study, diagnose, draft, review (cheap seat, runs ahead). Red (Claude Code Opus) = BACKLINE: implements + machine-verifies on the canonical tree; s&box playtest, runtime truth. Codex and Red carry the SAME responsibilities — cost decides who takes a job: Codex first; Red for anything touching the canonical tree or needing the live bridge. Green (Odysseus) = bulk audit **plus consult duty** (`CORNERMAN_CONSULT_DOCTRINE.md`). Invariants unchanged: one seat per tree, Bloodwave is transport on every pass and sole merge gate. Governor: routing holds while Codex flags its own unverified edges; if it asserts instead of flagging, route the job back to Red.
+Fable = home base: plans, conducts, drafts relays. Codex = FRONTLINE: high-volume work — study, diagnose, draft, review (cheap seat, runs ahead). Red (Claude Code Opus) = BACKLINE: implements + machine-verifies on the canonical tree (the VENGEANCE canonical tree specifically — a Claude Code seat on CORNERMAN is Green on a clone, not Red); s&box playtest, runtime truth. Codex and Red carry the SAME responsibilities — cost decides who takes a job: Codex first; Red for anything touching the canonical tree or needing the live bridge. Green (Odysseus) = bulk audit **plus consult duty** (`CORNERMAN_CONSULT_DOCTRINE.md`). Invariants unchanged: one seat per tree, Bloodwave is transport on every pass and sole merge gate. Governor: routing holds while Codex flags its own unverified edges; if it asserts instead of flagging, route the job back to Red.
 > **v2 AMENDS TWO CLAUSES OF THE ABOVE** (`lifepunch/docs/cvl/EDITOR_ACCESS_LAW_V2_2026-07-13.md`): Red is **no longer the "sole live editor bridge"** — editor DRIVE is an **exclusive, board-named Bloodwave grant** that either implementer may hold. And **"Codex proposal-only on the canonical tree" is SUSPENDED while Codex holds DRIVE**, resuming on swap-back. **Neither implementer is senior.** Everything else in this section stands.
 
 ## Transport Law
