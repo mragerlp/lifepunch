@@ -60,7 +60,7 @@ refusing an unlawful instruction from the conductor is the Mirror working.*
 | Surface | Reads authoritative because… | Truth |
 |---|---|---|
 | `versionsAligned: true` | `null == null` | **bridge dead** (`red\0032`) |
-| `START_HERE_AGENTS.md:51` | the rule it gated on was deleted | **the restriction survived in canon** |
+| `START_HERE_AGENTS.md:49` | the rule it gated on was deleted | **the restriction survived in canon** |
 | `COMMS_LANE.md` | it **declares itself** *"the canon of record"* | **missing v1.4** |
 | the `lifepunch-economy` skill | it is **tracked, canon-grade** | **named a symbol that was never built** |
 
