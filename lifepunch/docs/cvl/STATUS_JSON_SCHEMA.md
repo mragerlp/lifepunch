@@ -1,5 +1,8 @@
 # `comms/STATUS.json` SCHEMA AND CHECKPOINT CONTRACT
 
+**Contract version: v1.1 (2026-07-15).** v1.1 adds `OPENCODE` and `CURSOR` to the representable
+`inFlightSeats` values; producer ownership and the rest of the contract remain unchanged.
+
 ## Producer checklist
 
 - [ ] Red writes `C:\lifepunch\comms\STATUS.json` at every arc close and before every handoff.
@@ -17,8 +20,8 @@
 ```json
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "lifepunch/docs/cvl/STATUS_JSON_SCHEMA.md#status-json-v1",
-  "title": "LIFEPUNCH CVL machine-state checkpoint v1",
+  "$id": "lifepunch/docs/cvl/STATUS_JSON_SCHEMA.md#status-json-v1.1",
+  "title": "LIFEPUNCH CVL machine-state checkpoint v1.1",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -55,7 +58,7 @@
       "uniqueItems": true,
       "items": {
         "type": "string",
-        "enum": ["FABLE", "RED", "CODEX", "GREEN"]
+        "enum": ["FABLE", "RED", "CODEX", "GREEN", "OPENCODE", "CURSOR"]
       }
     },
     "lastBoardSeqPerSeat": {
@@ -87,7 +90,7 @@
 - [ ] `branch`: exact checked-out branch name; detached HEAD is a generation fault unless Bloodwave explicitly ruled it.
 - [ ] `dirtyFiles`: exact sorted, unique lines from `git status --porcelain=v1 --untracked-files=all`, preserving the two status columns and repo-relative path; `/` is the path separator.
 - [ ] `openRulings`: stable record identifier/path plus short title for each explicitly unresolved ruling. An empty list means Red was given an explicit no-open-rulings state; it is not guessed.
-- [ ] `inFlightSeats`: seats Bloodwave explicitly declared active at generation. Bloodwave is not a seat. Empty means an explicit none-active state, not silence.
+- [ ] `inFlightSeats`: seats Bloodwave explicitly declared active at generation. Representable values are `FABLE`, `RED`, `CODEX`, `GREEN`, `OPENCODE`, and `CURSOR`. Bloodwave is not a seat. Empty means an explicit none-active state, not silence.
 - [ ] `lastBoardSeqPerSeat`: greatest integrity-clean filed SEQ observed for each seat; `0` means no valid sequence observed. A collision or unresolved gap blocks generation.
 - [ ] `generatedAtUtc`: Red's system UTC in RFC 3339 form ending in `Z`.
 - [ ] `generatedBy`: literal `RED`.

@@ -3591,6 +3591,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	display: flex;
 	flex-direction: row;
 	align-items: center;
+	gap: 8px;
 	padding: 0;
 	border: 0;
 	background-color: transparent;
@@ -3688,13 +3689,6 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	color: #9ca3af;
 	font-size: 11px;
 	line-height: 1.45;
-	white-space: normal;
-}
-
-.lp-bitcoin-ops .settings-footnote-credit {
-	color: #6b7280;
-	font-size: 10px;
-	line-height: 1.3;
 	white-space: normal;
 }
 
@@ -3913,28 +3907,11 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 }
 
 .lp-bitcoin-ops .overview-intro-unlink-btn {
-	flex: 1 1 auto;
-	width: 100%;
-	max-width: 100%;
-	min-height: 38px;
-	height: auto;
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: center;
-	padding-top: 8px;
-	padding-right: 10px;
-	padding-bottom: 8px;
-	padding-left: 10px;
 	border-radius: 6px;
 	border: 1px solid rgba(239, 68, 68, 0.55);
 	background-color: rgba(239, 68, 68, 0.18);
 	color: #fca5a5;
-	font-size: 10px;
 	font-weight: 800;
-	line-height: 1.2;
-	text-align: center;
-	white-space: nowrap;
 	cursor: pointer;
 	box-shadow: 0 0 12px rgba(239, 68, 68, 0.25);
 }
@@ -4724,14 +4701,14 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	justify-content: center;
+	justify-content: flex-start;
 	padding-top: 7px;
 	padding-right: 12px;
 	padding-bottom: 7px;
 	padding-left: 12px;
 	font-size: 11px;
 	line-height: 1.35;
-	text-align: center;
+	text-align: left;
 }
 
 .lp-bitcoin-ops .pane.logs-pane > .logs-panel {
@@ -4764,7 +4741,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	padding-left: 12px;
 	font-size: 11px;
 	line-height: 1.45;
-	text-align: center;
+	text-align: left;
 }
 
 .lp-bitcoin-ops .pane.transfers .transfer-columns {
@@ -4889,6 +4866,11 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 }
 
 .lp-bitcoin-ops .transfers-rate-cell-usd {
+	display: flex;
+	flex-direction: row;
+	align-items: baseline;
+	justify-content: flex-end;
+	gap: 3px;
 	color: #e87d3e;
 	font-size: 10px;
 	font-weight: 800;
@@ -4924,6 +4906,10 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 }
 
 .lp-bitcoin-ops .transfers-rate-wallet-value {
+	display: flex;
+	flex-direction: row;
+	align-items: baseline;
+	justify-content: flex-end;
 	color: #f8f9fc;
 	font-size: 10px;
 	font-weight: 800;
@@ -4972,7 +4958,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 .lp-bitcoin-ops .pane.upgrades .lp-ui-intro {
 	flex-shrink: 0;
 	margin-bottom: 12px;
-	text-align: center;
+	text-align: left;
 }
 
 .lp-bitcoin-ops .pane.wallet .lp-ui-info {
@@ -5984,7 +5970,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	justify-content: center;
+	justify-content: flex-start;
 	margin-bottom: 4px;
 	padding-top: 8px;
 	padding-right: 10px;
@@ -5992,7 +5978,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	padding-left: 10px;
 	font-size: 11px;
 	line-height: 1.35;
-	text-align: center;
+	text-align: left;
 }
 
 .lp-bitcoin-ops .pane.racks .rack-grid {
@@ -6396,6 +6382,14 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	font-weight: 600;
 	color: $hashd-text;
 	text-align: right;
+}
+
+.lp-bitcoin-ops .server-buffer-value {
+	display: flex;
+	flex-direction: row;
+	align-items: baseline;
+	justify-content: flex-end;
+	gap: 4px;
 }
 
 // ── Entity Detail Contract: TIER PROGRESS (hero of the detail's lower half) ──
@@ -7030,16 +7024,6 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	color: $hashd-muted;
 }
 
-.lp-bitcoin-ops .overview-checklist-copy {
-	display: flex;
-	flex-direction: column;
-	// Middle column owns the row's leftover space — without this the title/sub jam
-	// into the status and action columns (overlap + clipped sub text).
-	flex: 1 1 0;
-	gap: 3px;
-	min-width: 0;
-}
-
 .lp-bitcoin-ops .overview-checklist-title {
 	font-size: 13px;
 	font-weight: 800;
@@ -7051,59 +7035,6 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	font-size: 11px;
 	line-height: 1.35;
 	color: $hashd-muted;
-}
-
-.lp-bitcoin-ops .overview-checklist-action-group,
-.lp-bitcoin-ops .overview-checklist-action {
-	flex: 0 0 auto;
-}
-
-// Real structure for the action column: its buttons carry width:100%, so without a
-// min-width the group collapses to ~0 and button labels stack one letter per line
-// ("l-i-n-k-t-e-r-m-i-n-a-l").
-.lp-bitcoin-ops .overview-checklist-action-group {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-self: center;
-	// Fixed slot width (fits "No terminal in range" nowrap) — the action column reads
-	// as one aligned rail across every row/variant, never content-sized and ragged.
-	width: 156px;
-}
-
-.lp-bitcoin-ops .overview-checklist-action {
-	width: 156px;
-}
-
-.lp-bitcoin-ops .overview-checklist-action,
-.lp-bitcoin-ops .overview-checklist-action-group .lp-ui-btn-ghost,
-.lp-bitcoin-ops .overview-checklist-action-group .lp-ui-btn-primary {
-	// flex 0 0 auto kills the base .lp-ui-btn-ghost "flex: 1 1 100%" — inside the
-	// column action group that stretched hint/button variants and dragged the row.
-	flex: 0 0 auto;
-	min-height: 34px;
-	white-space: nowrap;
-}
-
-.lp-bitcoin-ops .overview-checklist-action-group .lp-ui-btn-ghost,
-.lp-bitcoin-ops .overview-checklist-action-group .lp-ui-btn-primary {
-	// Inner buttons/hints fill the fixed slot so every variant presents identically,
-	// with content centered like the direct action buttons.
-	width: 100%;
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: center;
-	gap: 8px;
-	text-align: center;
-}
-
-.lp-bitcoin-ops .overview-checklist-action,
-.lp-bitcoin-ops .overview-checklist-action-group .lp-ui-btn-primary,
-.lp-bitcoin-ops .overview-checklist-action-group .lp-ui-btn-ghost {
-	min-height: 34px;
-	padding: 8px 12px;
-	font-size: 11px;
 }
 
 .lp-bitcoin-ops .overview-snapshot-grid {
@@ -7185,10 +7116,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	font-size: 11px;
 }
 
-// Shared icon+label button anatomy for overview actions — one centering/gap rule,
-// never per-button padding tweaks.
-.lp-bitcoin-ops .overview-command-action,
-.lp-bitcoin-ops .overview-checklist-action {
+.lp-bitcoin-ops .overview-command-action {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
@@ -7198,17 +7126,6 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 
 .lp-bitcoin-ops .overview-command-action .material-icons {
 	font-size: 14px;
-}
-
-@media (max-width: 1040px) {
-	.lp-bitcoin-ops .overview-command-center {
-		flex-direction: column;
-	}
-
-	.lp-bitcoin-ops .overview-checklist-item {
-		flex-direction: column;
-		align-items: flex-start;
-	}
 }
 
 // Universal Upgrades home (three-surface shell — DECISION-0010, HASHD amber only)
@@ -7998,7 +7915,21 @@ $ops-hit: 44px;
 	background-color: $ops-bg;
 	border-color: $ops-border;
 	border-radius: $ops-card-radius;
+	overflow: hidden;
 	box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+}
+
+.lp-bitcoin-ops .shell-body,
+.lp-bitcoin-ops .pin-gate,
+.lp-bitcoin-ops .pin-header,
+.lp-bitcoin-ops .hub-body,
+.lp-bitcoin-ops .hub-main,
+.lp-bitcoin-ops .sidebar,
+.lp-bitcoin-ops .workspace,
+.lp-bitcoin-ops .hub-header,
+.lp-bitcoin-ops .lp-window-watermark,
+.lp-bitcoin-ops .lp-window-watermark .lp-source-footer {
+	border-radius: 0;
 }
 
 .lp-bitcoin-ops .shell-body,
@@ -8216,4 +8147,34 @@ $ops-hit: 44px;
 .lp-bitcoin-ops .sidebar-brand.hex-mark .brand-mark {
 	width: 30px;
 	height: 30px;
+}
+
+// --- Hub-shell mapping layer (dispatch opencode 0002) — SIDEBAR DESIGN CANON v1 +
+// MENU SHELL LAW eyebrow grammar. Identity block top, settings pinned bottom via the
+// existing sidebar-nav flex-grow spacer; selection stays the filled accent block, no left strip.
+.lp-bitcoin-ops .sidebar-identity {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	flex-shrink: 0;
+	margin-bottom: 22px;
+}
+
+.lp-bitcoin-ops .sidebar-foot {
+	align-items: stretch;
+	width: 100%;
+	padding-top: 10px;
+}
+
+// Eyebrow-over-title (hub exemplar roles, Ops-prefixed class) — accent eyebrow, tiny,
+// letterspaced, above each pane's section title.
+.lp-bitcoin-ops .ops-eyebrow {
+	flex-shrink: 0;
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 1.5px;
+	color: $hashd-amber;
+	margin-bottom: 2px;
 }

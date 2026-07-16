@@ -52,6 +52,32 @@ them. A key not in this ledger is an incident.
   manager. Until both are done, GH-2 is dual-stored against C-4/one-key
   discipline; this ledger tracks the debt, not the token.
 
+### KC-1 — Kepler-to-CORNERMAN SSH key `kepler_cornerman`
+- Key name: `kepler_cornerman` (Ed25519 keypair).
+- Purpose / scope: host login from Kepler on VENGEANCE to the single CORNERMAN
+  endpoint `jared@10.10.10.2:22`; no GitHub, API, or other-host scope.
+- Mint date: **2026-07-14**.
+- Storage: private key on VENGEANCE at
+  `C:\Users\jared\.ssh\kepler_cornerman`. Kepler selected the local
+  `C:\Users\jared\.ssh\id_ed25519` hard-link alias to the same key. The public
+  half is authorized on CORNERMAN in the administrators' OpenSSH authorized-
+  keys store. No key material is recorded here (C-1/C-2).
+- Status: SSH authentication and host access were proven; Kepler remote-task
+  execution remained blocked because the shipped remote probe does not support
+  a Windows SSH target. That application limitation is not a credential fault.
+- Records: lane records `fable\0080` (Kepler remote-execution doctrine v1) and
+  `cursor\0032` (Kepler remote add + smoke), both 2026-07-14.
+
+
+### GX-1 — xAI image generation key
+- Purpose: image generation bridge (`lifepunch/scripts/ask-grok-image.ps1`) for the Brand Agent seat (Grok Imagine / xAI API Tier-2).
+- Scope: **minimum / image-gen only** (no chat, no account-admin). One integration = one key (Key Law).
+- Mint date: **PENDING** — Bloodwave mints at `console.x.ai`; seats do not mint or handle the secret (C-1).
+- Storage: environment variable **`XAI_API_KEY`** only (user/machine env). Never repo `.env` unless a later ruling says so; never transcribed into chat, relays, commits, BOARD, or lane filings (C-2).
+- Status: **PREFLIGHT PENDING** — after mint, Bloodwave runs `ask-grok-image.ps1 -Preflight` and appends the result (PASS / key-valid-no-image-model / FAIL) to this entry and the script `.STATUS` block.
+- Records: `dispatch\cursor\0009`; script sibling of `ask-cornerman.ps1`.
+- **Never the key value.** This ledger is metadata only.
+
 ## Credential rules (standing, all seats, all keys)
 
 C-1 — NO SEAT READS A CREDENTIAL FILE. .env and any file holding a

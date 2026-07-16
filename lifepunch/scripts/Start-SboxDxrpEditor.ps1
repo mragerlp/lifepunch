@@ -257,6 +257,33 @@ else {
         Write-Host ('ForceNew - launching another editor ({0} already running).' -f $existing.Count) -ForegroundColor Yellow
     }
 
+    # -- Editor-library quarantine sweep (Compile-Clean Law v1.1 class d; dispatch red\0009 Slice H) --
+    # Move any listed broken third-party editor package OUT of Libraries BEFORE launch, so the editor
+    # never compiles it. The s&box package store auto-restores several each cold boot, so this re-arms
+    # the fix every launch. List: editor-quarantine-packages.txt (delete a line when the author fixes it).
+    $quarantineList = Join-Path $Here 'editor-quarantine-packages.txt'
+    if (Test-Path -LiteralPath $quarantineList) {
+        $gameRoot = Split-Path -Parent $project
+        $libDir = Join-Path $gameRoot 'Libraries'
+        $stamp = Get-Date -Format 'yyyy-MM-dd'
+        $qDir = Join-Path $gameRoot ("_quarantine\{0}" -f $stamp)
+        $pkgs = Get-Content -LiteralPath $quarantineList | ForEach-Object { $_.Trim() } | Where-Object { $_ -and -not $_.StartsWith('#') }
+        $moved = 0
+        foreach ($pkg in $pkgs) {
+            $src = Join-Path $libDir $pkg
+            if (Test-Path -LiteralPath $src) {
+                if (-not (Test-Path -LiteralPath $qDir)) { New-Item -ItemType Directory -Path $qDir -Force | Out-Null }
+                $dst = Join-Path $qDir $pkg
+                if (Test-Path -LiteralPath $dst) { Remove-Item -LiteralPath $dst -Recurse -Force }
+                Move-Item -LiteralPath $src -Destination $dst -Force
+                Write-Host ("  QUARANTINED broken editor lib: {0} -> _quarantine\{1}" -f $pkg, $stamp) -ForegroundColor Yellow
+                $moved++
+            }
+        }
+        if ($moved -gt 0) { Write-Host ("  Editor-lib quarantine: {0} package(s) moved before launch (compile-clean law v1.1 class d)." -f $moved) -ForegroundColor Yellow }
+        else { Write-Host '  Editor-lib quarantine: Libraries already clean (nothing listed was present).' -ForegroundColor DarkGray }
+    }
+
     Start-Process -FilePath $sbox -ArgumentList $args -WorkingDirectory (Split-Path -Parent $sbox)
     if ($WithAuthorize) {
         Write-Host 'Editor started with +authorize. Wait for compile, then host play.' -ForegroundColor Cyan

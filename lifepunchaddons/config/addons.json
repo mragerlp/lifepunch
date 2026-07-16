@@ -144,6 +144,21 @@
       ]
     },
     {
+      "ident": "bankerjob",
+      "packageSlug": "lifepunchbanker",
+      "title": "LIFEPUNCH™ Banker Job for DXRP",
+      "description": "Registration draft for the LIFEPUNCH™ Banker and Bank Guard job package for DXRP. Portal T2 job rows and every gameplay behavior remain proposal-only.",
+      "kind": "simple-entity",
+      "hasAssets": true,
+      "hasCode": false,
+      "sboxIdentifier": "lifepunch.banker",
+      "dxrpAddonId": "",
+      "status": "registration-draft",
+      "spec": "docs/BANKER_S1_JOB_REGISTRATION_PROPOSAL.md",
+      "notes": "Proposed naming map: lifepunchbanker package slug, lpbanker target package folder, bankerjob legacy repo/publish ident. Current lpbanker asset intake is not publish-ready and contents stay empty until the path migration and portal identifiers are ruled.",
+      "contents": []
+    },
+    {
       "ident": "governmentdatacenter",
       "title": "Government Datacenter",
       "description": "City treasury tax miners (always-on BTC, blue lifepunchnet console) and police terminals. Hourly tax drip 0-30% of BTC balance to city funds; $30K BTC cap; no player withdraw. Mirrors BitcoinMiningAddon math.",

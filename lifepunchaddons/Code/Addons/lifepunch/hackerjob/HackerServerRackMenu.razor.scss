@@ -589,7 +589,9 @@ $text-sm: 14px;
             font-weight: bold;
         }
 
-        .lp-legal {
+        .lp-product,
+        .lp-legal,
+        .lp-footer-separator {
             color: $body-dim;
             text-align: right;
         }
