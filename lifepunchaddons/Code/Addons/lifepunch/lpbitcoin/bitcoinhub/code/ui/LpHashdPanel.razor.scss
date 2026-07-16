@@ -3907,28 +3907,11 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 }
 
 .lp-bitcoin-ops .overview-intro-unlink-btn {
-	flex: 1 1 auto;
-	width: 100%;
-	max-width: 100%;
-	min-height: 38px;
-	height: auto;
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: center;
-	padding-top: 8px;
-	padding-right: 10px;
-	padding-bottom: 8px;
-	padding-left: 10px;
 	border-radius: 6px;
 	border: 1px solid rgba(239, 68, 68, 0.55);
 	background-color: rgba(239, 68, 68, 0.18);
 	color: #fca5a5;
-	font-size: 10px;
 	font-weight: 800;
-	line-height: 1.2;
-	text-align: center;
-	white-space: nowrap;
 	cursor: pointer;
 	box-shadow: 0 0 12px rgba(239, 68, 68, 0.25);
 }
@@ -7041,16 +7024,6 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	color: $hashd-muted;
 }
 
-.lp-bitcoin-ops .overview-checklist-copy {
-	display: flex;
-	flex-direction: column;
-	// Middle column owns the row's leftover space — without this the title/sub jam
-	// into the status and action columns (overlap + clipped sub text).
-	flex: 1 1 0;
-	gap: 3px;
-	min-width: 0;
-}
-
 .lp-bitcoin-ops .overview-checklist-title {
 	font-size: 13px;
 	font-weight: 800;
@@ -7062,59 +7035,6 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	font-size: 11px;
 	line-height: 1.35;
 	color: $hashd-muted;
-}
-
-.lp-bitcoin-ops .overview-checklist-action-group,
-.lp-bitcoin-ops .overview-checklist-action {
-	flex: 0 0 auto;
-}
-
-// Real structure for the action column: its buttons carry width:100%, so without a
-// min-width the group collapses to ~0 and button labels stack one letter per line
-// ("l-i-n-k-t-e-r-m-i-n-a-l").
-.lp-bitcoin-ops .overview-checklist-action-group {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-self: center;
-	// Fixed slot width (fits "No terminal in range" nowrap) — the action column reads
-	// as one aligned rail across every row/variant, never content-sized and ragged.
-	width: 156px;
-}
-
-.lp-bitcoin-ops .overview-checklist-action {
-	width: 156px;
-}
-
-.lp-bitcoin-ops .overview-checklist-action,
-.lp-bitcoin-ops .overview-checklist-action-group .lp-ui-btn-ghost,
-.lp-bitcoin-ops .overview-checklist-action-group .lp-ui-btn-primary {
-	// flex 0 0 auto kills the base .lp-ui-btn-ghost "flex: 1 1 100%" — inside the
-	// column action group that stretched hint/button variants and dragged the row.
-	flex: 0 0 auto;
-	min-height: 34px;
-	white-space: nowrap;
-}
-
-.lp-bitcoin-ops .overview-checklist-action-group .lp-ui-btn-ghost,
-.lp-bitcoin-ops .overview-checklist-action-group .lp-ui-btn-primary {
-	// Inner buttons/hints fill the fixed slot so every variant presents identically,
-	// with content centered like the direct action buttons.
-	width: 100%;
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: center;
-	gap: 8px;
-	text-align: center;
-}
-
-.lp-bitcoin-ops .overview-checklist-action,
-.lp-bitcoin-ops .overview-checklist-action-group .lp-ui-btn-primary,
-.lp-bitcoin-ops .overview-checklist-action-group .lp-ui-btn-ghost {
-	min-height: 34px;
-	padding: 8px 12px;
-	font-size: 11px;
 }
 
 .lp-bitcoin-ops .overview-snapshot-grid {
@@ -7196,10 +7116,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	font-size: 11px;
 }
 
-// Shared icon+label button anatomy for overview actions — one centering/gap rule,
-// never per-button padding tweaks.
-.lp-bitcoin-ops .overview-command-action,
-.lp-bitcoin-ops .overview-checklist-action {
+.lp-bitcoin-ops .overview-command-action {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
@@ -7209,17 +7126,6 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 
 .lp-bitcoin-ops .overview-command-action .material-icons {
 	font-size: 14px;
-}
-
-@media (max-width: 1040px) {
-	.lp-bitcoin-ops .overview-command-center {
-		flex-direction: column;
-	}
-
-	.lp-bitcoin-ops .overview-checklist-item {
-		flex-direction: column;
-		align-items: flex-start;
-	}
 }
 
 // Universal Upgrades home (three-surface shell — DECISION-0010, HASHD amber only)

@@ -196,3 +196,60 @@ $lp-shell-text-dim: #9ca3af;
 	overflow: hidden;
 	background-color: $lp-shell-inset;
 }
+
+// Shared Getting Started geometry: copy owns the fluid middle, actions own one fixed rail.
+.lp-menu-shell .overview-checklist-copy {
+	display: flex;
+	flex-direction: column;
+	flex: 1 1 0;
+	gap: 3px;
+	min-width: 0;
+}
+
+.lp-menu-shell .overview-checklist-action-group,
+.lp-menu-shell .overview-checklist-action {
+	flex: 0 0 auto;
+	min-height: 44px;
+	white-space: nowrap;
+}
+
+.lp-menu-shell .overview-checklist-action-group {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-self: center;
+	width: 156px;
+}
+
+.lp-menu-shell .overview-checklist-action {
+	width: 156px;
+}
+
+.lp-menu-shell .overview-checklist-action-group .lp-ui-btn-ghost,
+.lp-menu-shell .overview-checklist-action-group .lp-ui-btn-primary {
+	flex: 0 0 auto;
+	width: 100%;
+	min-height: 44px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	text-align: center;
+	white-space: nowrap;
+}
+
+.lp-menu-shell .overview-checklist-action,
+.lp-menu-shell .overview-checklist-action-group .lp-ui-btn-primary,
+.lp-menu-shell .overview-checklist-action-group .lp-ui-btn-ghost {
+	padding: 8px 12px;
+	font-size: 11px;
+}
+
+.lp-menu-shell .overview-checklist-action {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+}

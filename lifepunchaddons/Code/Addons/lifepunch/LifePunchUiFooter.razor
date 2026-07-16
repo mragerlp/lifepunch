@@ -9,6 +9,7 @@
    Presence in this repository or on the DXRP portal grants no rights to anyone else.
    ───────────────────────────────────────────────────────────────────────────── *@
 @namespace LifePunch.DXRP.Addons
+@using System
 @using Sandbox
 @using Sandbox.UI
 @inherits Panel
@@ -16,7 +17,7 @@
 
 <root class="lp-source-footer">
 	<div class="lp-footer-identity">
-		<span class="lp-mark">@LifePunchSourceMark.UiFooterMark</span>
+		<span class="lp-mark" style="@AccentStyle()">@LifePunchSourceMark.UiFooterMark</span>
 		<span class="lp-product">@Product</span>
 		<span class="lp-footer-separator">·</span>
 		<span class="lp-legal">proprietary IP</span>
@@ -31,8 +32,9 @@
 
 @code {
 	public string Product { get; set; } = string.Empty;
+	public string AccentColor { get; set; } = string.Empty;
 
-    private bool _urlCopied;
+	private bool _urlCopied;
 
     private void CopySourceUrl()
     {
@@ -48,4 +50,10 @@
         _urlCopied = false;
         StateHasChanged();
     }
+
+	private string AccentStyle()
+		=> string.IsNullOrWhiteSpace( AccentColor ) ? string.Empty : $"color: {AccentColor};";
+
+	protected override int BuildHash()
+		=> HashCode.Combine( Product, AccentColor, _urlCopied );
 }
