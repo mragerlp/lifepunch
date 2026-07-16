@@ -41,7 +41,7 @@ Bricks are DISPENSED from the Drug Lab, ARE pocketable, and are
 sold at a DROP LOCATION (existing lpdrugdrops train/truck drop
 surfaces are the natural sale points).
 
-## 2. TABLET UPGRADE PATHS (2 ratified, 3 PROPOSED)
+## 2. TABLET UPGRADE PATHS (2 ratified · A10 RULED: U3 conditional / U4 held / U5 excluded v1)
 
 The Drug Lab is a tablet-upgradeable entity. Five upgrade paths
 total. No cosmetic-upgrade lane exists for Drug Dealer entities
@@ -51,9 +51,9 @@ RATIFIED:
   U1 PROCESSING SPEED — reduces the 120s/leaf rate.
   U2 LEAF CAPACITY — raises the 3-leaf simultaneous load cap.
 
-PROPOSED (Fable, mirroring the Monnow printer ~48-key schema
-grammar: intervals/storage/silencer/cooling — awaiting Bloodwave
-ratification, individually strikeable):
+U3–U5 grammar (Fable, mirroring the Monnow printer ~48-key schema:
+intervals/storage/silencer/cooling) — RULED A10 (fable\0102):
+U3 CONDITIONALLY RATIFIED · U4 HELD · U5 EXCLUDED FROM v1:
   U3 OUTPUT BUFFER — finished bricks accumulate inside the lab up
      to a buffer cap instead of requiring immediate dispense;
      reduces babysitting, raises the raid-loss stake (risk/reward
@@ -101,7 +101,7 @@ costs.
 ## 5. OPEN ITEMS
 
   - Upgrade currency rail ruling (§3).
-  - U3-U5 ratification (individually).
+  - (U3-U5 tier states RULED by A10 — CHEMIST_RULINGS_A1-A15; U4 detection mechanic + U5 conditions remain.)
   - Detection mechanic selection for U4 (depends on what the lane
     ships for police interaction).
   - Config-layer check for the native grow-duration knob (§1).
