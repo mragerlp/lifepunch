@@ -31,4 +31,7 @@ if (-not (Test-Path -LiteralPath $startBat)) {
 }
 
 Write-Host 'Starting Official in visible CMD (server1_start.bat)...' -ForegroundColor Green
-Start-Process -FilePath 'cmd.exe' -ArgumentList @('/k', 'server1_start.bat') -WorkingDirectory $InstallRoot
+# Launch the bat by ABSOLUTE path ($startBat), not the relative name: in a PS 5.1 spawn chain the child
+# cmd did not resolve the relative 'server1_start.bat' despite -WorkingDirectory, zombie-ing an idle cmd
+# ('... is not recognized as an internal or external command'). Sensor: Blue outbox 0002 trap 2.
+Start-Process -FilePath 'cmd.exe' -ArgumentList @('/k', $startBat) -WorkingDirectory $InstallRoot
