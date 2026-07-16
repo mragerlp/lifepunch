@@ -5,6 +5,14 @@ verbatim-in-substance by Fable #4; PROPOSED sections marked and awaiting
 Bloodwave ratification. Lands in-tree via Red at the next docs-carrying PR
 (Canon Persistence Law).
 
+> **A1–A15 RULED (2026-07-16) — see `lifepunch/docs/CHEMIST_RULINGS_A1-A15_2026-07-16.md`.** That record
+> graduates the full chemist ruling set and carries three things that bind this doc: **A3** package ident
+> `advanceddrugprocessing` (final); **A10** — **U3 conditionally ratified · U4 held · U5 excluded from
+> v1** (updates §2 below, where U3–U5 were PROPOSED); and **A6 under the PHYSICAL-PAYOUT LAW**
+> (`DESIGN_LAWS.md`): payout fires at a **physical drop entity** on delivery, **no payout UI surface** in
+> the lane (the money wiring stays gated behind the lpbitcoin ledger pass, §3). Read that record before
+> building.
+
 ## 1. THE CHAIN (ratified — Bloodwave's sketch)
 
 COCO SEED -> COCO LEAF -> COCAINE BRICK
