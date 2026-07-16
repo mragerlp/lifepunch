@@ -46,7 +46,7 @@ Every addon menu ships this identical structure:
 
 ### Shared chrome (NOT parameterized — the shell owns these)
 - Sidebar frame (identity block top, nav middle, SETTINGS bottom)
-- **Active nav treatment (filled rounded block + left accent strip)** — ⚠ **see §6 CONTRADICTION FLAG**
+- **Active nav treatment (filled rounded accent block only, NO left-edge strip)** — `SIDEBAR_DESIGN_CANON v1(c)`, reaffirmed Bloodwave 2026-07-15 (§6 flag #1 RULED)
 - Eyebrow (repeats Wordmark in accent color, auto-generated)
 - Page title area (icon + route name, driven by active NavItem)
 - Callout banner component (amber/brown, per-page string content)
@@ -108,20 +108,26 @@ Marks scoped per `BRANDING_SCOPE_RULING_2026-07-15` (LP roundel = Player Hub onl
 (`dispatch\opencode\0004`). **The shell extraction gets its own issue + lead agent** per
 `LANE_LEAD_DOCTRINE_2026-07-15`.
 
-## 7. ⚠ CONTRADICTION FLAGS — held for Bloodwave's word (I landed the substance verbatim; I did not silently reconcile)
+## 7. CONTRADICTION FLAGS — flag #1 RULED (Bloodwave 2026-07-15, NO STRIP EVER); flag #2 still held for Bloodwave's word
 
-Two clauses of this doctrine **reverse prior Bloodwave rulings.** Landed as written per the dispatch,
-flagged here rather than smuggled:
+Two clauses of this doctrine were flagged as **apparent reversals of prior Bloodwave rulings** — landed
+as written per the dispatch, flagged here rather than smuggled. **Flag #1 is now RULED** (see below);
+flag #2 remains open:
 
-1. **Active nav = "filled rounded block + LEFT ACCENT STRIP."** This **reverses** the **SIDEBAR
-   HIGHLIGHT ruling** (Bloodwave, BOARD 2026-07-14: *"the left-aligned vertical blue accent bar … is
-   NOT the LIFEPUNCH style. Use the BASE HIGHLIGHT only … no left-edge strip"*) **and**
-   `SIDEBAR_DESIGN_CANON v1(c)` in `LIFEPUNCH_UI_STANDARD` (*"filled rounded block … the no-left-strip
-   ruling stands"*). The Bloodwave-approved skeleton render shows the strip, so this **appears to be an
-   intentional reversal** — **but the prior ruling was explicit, so it needs an explicit word.** If
-   confirmed, `SIDEBAR_DESIGN_CANON v1(c)` + the SIDEBAR HIGHLIGHT ruling get a supersession note.
-2. **Identity block at TOP.** `POLISH_RULINGS_2026-07-15` records sidebar identity position as **OPEN**
-   (TOP as-shipped vs an earlier Bloodwave BOTTOM note — strike-one owed). This doctrine asserts
-   **TOP**; if that is the resolving word, POLISH_RULINGS' OPEN item closes on TOP — **confirm.**
+1. **RULED — NO STRIP EVER (Bloodwave 2026-07-15, chat-carried, confirmed at `fable\0095`).** Active
+   nav = **filled rounded accent block only, NO left-edge strip** (`SIDEBAR_DESIGN_CANON v1(c)`,
+   reaffirmed Bloodwave 2026-07-15). The prior **SIDEBAR HIGHLIGHT ruling** (Bloodwave, BOARD
+   2026-07-14: *"the left-aligned vertical blue accent bar … is NOT the LIFEPUNCH style. Use the BASE
+   HIGHLIGHT only … no left-edge strip"*) and `SIDEBAR_DESIGN_CANON v1(c)` (*"the no-left-strip ruling
+   stands"*) **STAND PERMANENTLY — not superseded.** The Bloodwave-approved skeleton render's strip was
+   artistic license, not a design reversal. Code agrees: the shipped `LpMenuShell` renders
+   `.sidebar-btn-sel` as fill/background only — no `border-left`, no `::before` — in the shared shell
+   and all three Bitcoin skin rules (machine-verified at develop tip, `red\0049` / `red\0051`).
+2. **Identity block at TOP — STILL OPEN, not ruled.** `POLISH_RULINGS_2026-07-15` records sidebar
+   identity position as **OPEN** (TOP as-shipped vs an earlier Bloodwave BOTTOM note — strike-one owed).
+   This doctrine asserts **TOP**; if that is the resolving word, POLISH_RULINGS' OPEN item closes on TOP
+   — **confirm.** U6 SENSOR (Red, 2026-07-16): the shipped `LpMenuShell` renders the identity block at
+   **TOP**. This annotation records the shipped state only; the ruling remains Bloodwave's and the flag
+   stays OPEN.
 
 FROM: Red
