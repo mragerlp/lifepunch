@@ -22,6 +22,8 @@ git status -sb
 
 **First, the *why*:** `lifepunch/docs/LIFEPUNCH_MISSION.md` — the goal, the two-lane logic, and quality-as-moat. Read it before the *how* below.
 
+**Then, the *laws*:** `lifepunch/docs/DESIGN_LAWS.md` — the cross-lane design laws every job must obey: **Job-Depth** (depth over breadth), **Physical-Payout** (product is carried to a drop entity, no payout UI, any job), and **Bitcoin Session-Power** (bitcoin is a session power; hacker is the sanctioned counterplay). Read before proposing or building any job, payout, or currency surface.
+
 0. **`CLAUDE.md`** (repo root) — workflow doctrine: plan in Chat · build in Code · review with Codex · ship with GO. Claude Code's first read.
 1. `lifepunch/docs/CVL_AGENT_ONBOARDING.md` — the full grounding doc (who / lanes / laws / state).
 2. `lifepunch/docs/handoff/AGENT_GROUNDING_INDEX.md` — grounding index + the handoff-file pattern (Cursor/Copilot pastes are legacy).
