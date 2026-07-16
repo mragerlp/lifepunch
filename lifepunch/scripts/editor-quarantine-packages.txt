@@ -1,0 +1,21 @@
+# EDITOR-LIBRARY QUARANTINE LIST — Compile-Clean Law v1.1 class (d) — dispatch red\0009 Slice H
+#
+# One s&box editor package ident per line. Start-SboxDxrpEditor.ps1 reads this file and, BEFORE it
+# launches the editor, moves any listed package that is present in <editor tree>\Libraries\ out to
+# <editor tree>\_quarantine\<date>\ — so the editor never compiles a broken third-party editor lib.
+#
+# WHY: s&box (2026-07-15) replaced its editor docking with Qt Advanced Docking. DockManager
+# .RegisterDockType/.DockProperty/.Create and DockArea.Inside/.Floating/.RightOuter were removed, and
+# [Dock] windows now require a (Widget parent) constructor. Stale third-party editor libraries no longer
+# compile / instantiate, which poisons the whole editor compile group and blocks the Claude Bridge.
+# The s&box package store AUTO-RESTORES several of these ~2 min after each compile, re-arming the NEXT
+# cold boot — so the quarantine must re-run before every launch. Full record: comms\red\0050.
+#
+# SELF-DOCUMENTING: delete a line when that package's author ships a Qt-Advanced-Docking port. When the
+# list is empty, the sweep is a no-op. Blank lines and #-comments are ignored.
+
+ali3nsystems.lib-shader_graph_extras
+notpointless.chomnr_humanoid_retargeter
+notpointless.chomnr_mcp
+subzerostudios.supershot
+sboxcool.network-storage
