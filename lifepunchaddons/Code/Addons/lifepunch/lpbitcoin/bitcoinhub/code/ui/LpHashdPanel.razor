@@ -2452,7 +2452,9 @@
 	private bool HubIsPowered() => Hub?.IsPowered == true;
 
 	private bool ShowPinGate() => Hub is not null && !_pinUnlocked;
-	private bool PinSetupMode() => !PinChangeGateMode() && Hub is not null && !Hub.AccessPinIsSet;
+	// H2: a legacy hub (AccessPinIsSet but its digest could not be read after the update) routes into
+	// the setup flow so the owner can re-enroll a new PIN; the host still gates the actual set to the owner.
+	private bool PinSetupMode() => !PinChangeGateMode() && Hub is not null && ( !Hub.AccessPinIsSet || Hub.AccessPinNeedsReEnrollment );
 	private bool PinChangeGateMode() => _pinGatePurpose == PinGatePurpose.ChangePin;
 	private int PinTargetLength() => LpBitcoinHubPin.MaxDigits;
 
