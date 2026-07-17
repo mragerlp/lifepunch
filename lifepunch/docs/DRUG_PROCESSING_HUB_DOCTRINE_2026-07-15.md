@@ -3,7 +3,7 @@
 **Design canon (SEED), 2026-07-15, Bloodwave** (chat-carried; source `fable\0092`, `dispatch\red\0003`
 item 6). Extends/reshapes the chemist lane (`codex\0056`) into the full three-lane vision. **Supersedes
 nothing ratified** — `codex\0056`'s cocaine-first build order still holds; this is the **destination**
-the slices build toward. Grounding: `COCAINE_PROCESSING_DOCTRINE.md` (U1/U2 ratified; U3–U5 not ruled).
+the slices build toward. Grounding: `COCAINE_PROCESSING_DOCTRINE.md` (U1/U2 ratified; U3 conditional · U4 held · U5 excluded v1 — A10, `CHEMIST_RULINGS_A1-A15_2026-07-16.md`).
 
 > **CLASS: DESIGN CANON — SEED v1.** Build is post-current-ladder. Amend with a changelog entry.
 

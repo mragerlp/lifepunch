@@ -73,3 +73,9 @@ git status -sb
 ---
 
 **Repo self-map for agents:** `lifepunch/docs/handoff/REPO_ONBOARDING_AUDIT_2026-07-03.md`
+
+---
+
+## Design laws — read before any job / economy work
+
+`lifepunch/docs/DESIGN_LAWS.md` — the cross-lane design laws every job must obey: **Job-Depth** (depth over breadth), **Physical-Payout** (product is carried to a drop entity, no payout UI, any job), and **Bitcoin Session-Power** (bitcoin is a session power; hacker is the sanctioned counterplay). Applies to every lane (bitcoin, chemist, banker, blackmarket, hacker) — read before proposing or building any job, payout, or currency surface.
