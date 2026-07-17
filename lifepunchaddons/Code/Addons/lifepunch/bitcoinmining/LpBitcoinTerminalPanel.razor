@@ -173,7 +173,7 @@
 	private bool _showSettingsMenu;
 	private LpBitcoinTerminalCommandInput InputBox { get; set; }
 
-	// Terminal PIN gate — reuses the linked Hub's AccessPinHash exactly.
+	// Terminal PIN gate — submits the attempt to the linked Hub via its host verify RPC (digest is host-only).
 	// Visual keypad overlay (HASHD CRT art) gates the rig before the boot loading screen runs.
 	private bool _terminalUnlocked = true;
 	private bool _showTerminalPinGate;

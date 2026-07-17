@@ -36,7 +36,12 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 	// UPGRADE_ARC_DESIGN decision 9). Power / security / wallet are snapshot-sole-truth.
 	[Property, ReadOnly] [Sync( SyncFlags.FromHost )] public bool IsPowered { get; set; }
 	[Property, ReadOnly] [Sync( SyncFlags.FromHost )] public bool AccessPinIsSet { get; set; }
-	[Property, ReadOnly] [Sync( SyncFlags.FromHost )] public int AccessPinHash { get; set; }
+	// HOST-ONLY persisted: [Property] serializes into the snapshot (GameObject.Serialize, empirically
+	// proven, red\0082); NO [Sync] = the PIN-derived value never replicates to clients — closes the P2
+	// keyspace leak. Splits persistence from replication (Green AE2). Salted SHA256 digest (LpBitcoinHubPin)
+	// is stable across process restarts — fixes P1 (GetHashCode was randomized per process).
+	[Property, ReadOnly] public string AccessPinDigest { get; set; } = string.Empty;
+	[Property, ReadOnly] public string AccessPinSalt { get; set; } = string.Empty;
 #if LIFEPUNCH_LOCAL
 	[Sync( SyncFlags.FromHost )] public long Owner { get; set; }
 #endif
@@ -928,7 +933,8 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 			return;
 		}
 
-		AccessPinHash = LpBitcoinHubPin.Hash( pin );
+		AccessPinSalt = LpBitcoinHubPin.NewSalt();
+		AccessPinDigest = LpBitcoinHubPin.Hash( pin, AccessPinSalt );
 		AccessPinIsSet = true;
 		SendPinResultToCaller( true, "Secure boot enabled." );
 	}
@@ -948,7 +954,7 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 			return;
 		}
 
-		if ( !LpBitcoinHubPin.Matches( pin, AccessPinHash ) )
+		if ( !LpBitcoinHubPin.Matches( pin, AccessPinSalt, AccessPinDigest ) )
 		{
 			SendPinResultToCaller( false, "Incorrect PIN." );
 			return;
@@ -969,7 +975,7 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 			return;
 		}
 
-		if ( !LpBitcoinHubPin.Matches( pin, AccessPinHash ) )
+		if ( !LpBitcoinHubPin.Matches( pin, AccessPinSalt, AccessPinDigest ) )
 		{
 			SendTerminalUnlockResultToCaller( false );
 			return;
@@ -1010,7 +1016,7 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 			return;
 		}
 
-		if ( !LpBitcoinHubPin.Matches( currentPin, AccessPinHash ) )
+		if ( !LpBitcoinHubPin.Matches( currentPin, AccessPinSalt, AccessPinDigest ) )
 		{
 			SendPinChangeResultToCaller( false, "Current PIN is incorrect." );
 			return;
@@ -1028,7 +1034,8 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 			return;
 		}
 
-		AccessPinHash = LpBitcoinHubPin.Hash( newPin );
+		AccessPinSalt = LpBitcoinHubPin.NewSalt();
+		AccessPinDigest = LpBitcoinHubPin.Hash( newPin, AccessPinSalt );
 		SendPinChangeResultToCaller( true, "Hub PIN updated." );
 	}
 
