@@ -996,15 +996,20 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 		}
 
 		var caller = Rpc.CallerId;
-		if ( !CallerIsOwner( caller ) )
-		{
-			SendPinResultToCaller( false, "Access denied — hub belongs to another operator." );
-			return;
-		}
-
+		// Locked-out callers are rejected silently: the lockout was already audited at onset (below), so
+		// re-alerting on every rejected RPC while locked would only spam the feed. Checked first so a
+		// locked-out prober cannot generate fresh audit lines.
 		if ( PinAttemptLockedOut( caller ) )
 		{
 			SendPinResultToCaller( false, "Too many failed attempts — locked out briefly." );
+			return;
+		}
+
+		// #184 REVISE (codex\0082): an unauthorized attempt is a COUNTED, AUDITED failure (was silent).
+		if ( !CallerIsOwner( caller ) )
+		{
+			RegisterFailedPinAttempt( caller, "Hub admin (unauthorized)" );
+			SendPinResultToCaller( false, "Access denied — hub belongs to another operator." );
 			return;
 		}
 
@@ -1032,16 +1037,19 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 		}
 
 		var caller = Rpc.CallerId;
-		// H3 (codex\0080): was an ungated 10k online oracle — any client could brute-force. Gate to the
-		// terminal-operate authority (owner/manager) so a non-authorized caller never reaches the compare.
-		if ( !CanOperateTerminal( caller ) )
+		// Locked-out callers rejected silently (the lockout was already audited at onset).
+		if ( PinAttemptLockedOut( caller ) )
 		{
 			SendTerminalUnlockResultToCaller( false );
 			return;
 		}
 
-		if ( PinAttemptLockedOut( caller ) )
+		// H3 (codex\0080): was an ungated 10k online oracle — any client could brute-force. Gate to the
+		// terminal-operate authority so a non-authorized caller never reaches the compare, AND (codex\0082
+		// #184 revise) audit that unauthorized attempt as a counted failure (was silent).
+		if ( !CanOperateTerminal( caller ) )
 		{
+			RegisterFailedPinAttempt( caller, "Terminal (unauthorized)" );
 			SendTerminalUnlockResultToCaller( false );
 			return;
 		}
