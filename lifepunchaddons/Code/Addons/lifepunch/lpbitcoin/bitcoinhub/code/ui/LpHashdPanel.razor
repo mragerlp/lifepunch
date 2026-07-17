@@ -2463,6 +2463,9 @@
 		if ( PinChangeGateMode() )
 			return "CHANGE HUB PIN";
 
+		if ( PinSetupMode() && Hub?.AccessPinNeedsReEnrollment == true )
+			return "HUB PIN RE-ENROLLMENT";
+
 		return PinSetupMode() ? "SECURE BOOT SETUP" : "SECURE BOOT";
 	}
 
@@ -2470,6 +2473,9 @@
 	{
 		if ( PinChangeGateMode() )
 			return "Verify current PIN, then enter a new 4-digit PIN twice.";
+
+		if ( PinSetupMode() && Hub?.AccessPinNeedsReEnrollment == true )
+			return "This update retired the old hub PIN — set a new one. Your hub balance is untouched.";
 
 		return PinSetupMode() ? "Create a 4-digit hub PIN" : "Enter your 4-digit hub PIN";
 	}
@@ -3196,6 +3202,7 @@
 		hash.Add( LogsJustCleared() );
 		hash.Add( _hub?.IsPowered );
 		hash.Add( _hub?.AccessPinIsSet );
+		hash.Add( _hub?.AccessPinNeedsReEnrollment );
 		hash.Add( _perfRange );
 		hash.Add( _profitRange );
 		hash.Add( LinkedRackCount() );
