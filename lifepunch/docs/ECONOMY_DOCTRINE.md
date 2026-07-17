@@ -74,7 +74,7 @@ item 3).
   Full charter: `INSTITUTIONS_DOCTRINE.md` **The Fund, Not the Bank** —
   vaults are voluntarily at-risk capital (portal bank balance is always
   safe), vote-required office with Bank Guard slots, and the Banker's own
-  props are the deductible (he bleeds first in any raid).
+  entities are the deductible (he bleeds first in any raid).
 - **Hacker:** skims capital economy (wallets, printer balances, rack leak,
   Funds/Bank/black market/casino). Tuned as a tax, not a jackpot:
   % caps per hit, cost-to-attempt, leaves evidence for FBI gameplay.
