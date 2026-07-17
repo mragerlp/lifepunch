@@ -56,7 +56,7 @@ spend. Skip pure cosmetics with the Cosmetic Firewall intact (no economy refs).
 **Verified exemplars:**
 - **Snapshot** (await-free segment): `LpBitcoinPurchaseFlow.cs:104-117` — the code says so itself,
   *"No awaits in here"* (`:104`); capture `:105`, restore `= walletBefore` at `:112`.
-- **Additive** (straddles await): `LpBitcoinHubEntity.cs:1104` (`HubWalletBtc += amount;`) and
+- **Additive** (straddles await): `LpBitcoinHubEntity.cs:1192` (`HubWalletBtc += amount;`) and
   `LpBitcoinRackEntity.cs:363` (`BitcoinAmount += soldBtc;`). **`LpBitcoinHubEntity.cs:1091-1093` spells
   out why:** a snapshot restore there would clobber a concurrent deposit.
 
@@ -70,10 +70,10 @@ spend. Skip pure cosmetics with the Cosmetic Firewall intact (no economy refs).
 
 | Rail | Where | Shape |
 |---|---|---|
-| **`CashOutHubHost`** | `LpBitcoinHubEntity.cs:1075-1111` | `HubWalletBtc -= amount;` (`:1095`) **precedes** `await LpBitcoinWallet.TryPayBank(...)` (`:1099`); additive restore (`:1104`). |
+| **`CashOutHubHost`** | `LpBitcoinHubEntity.cs:1163-1199` | `HubWalletBtc -= amount;` (`:1183`) **precedes** `await LpBitcoinWallet.TryPayBank(...)` (`:1187`); additive restore (`:1192`). |
 | **`SellForCallerHost`** | `LpBitcoinRackEntity.cs:340-370` | `BitcoinAmount = 0f;` (`:357`) **precedes** the `await` (`:358`); additive restore (`:363`). Its comment names it *"the same debit-before-await fix as CashOutHubHost."* |
 
-> **HISTORY, NOT A LIVE SCAR:** the old TOCTOU cite `LpBitcoinHubEntity.cs:1041-1051` is **DEAD.** That
+> **HISTORY, NOT A LIVE SCAR:** the old TOCTOU cite `LpBitcoinHubEntity.cs:1124-1139` is **DEAD.** That
 > range is now **`DepositRackHost` — unrelated, correct, await-free code. DO NOT "FIX" IT.**
 
 ---
