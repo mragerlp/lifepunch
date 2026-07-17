@@ -13,10 +13,10 @@
                      "branch":  "develop"
                  },
     "pinned":  {
-                   "sha":  "6e744a6632b4d6bc366e54e63b01b7910ab60f7e",
-                   "shortSha":  "6e744a6",
-                   "subject":  "Merge upstream dxura/dxrp develop (2357845) into fork develop",
-                   "syncedAt":  "2026-07-13T22:57:33Z"
+                   "sha":  "0579e2c1338d6e5a6d9b3aa149c06b7baf3b0fc6",
+                   "shortSha":  "0579e2c",
+                   "subject":  "Merge pull request #3 from mragerlp/fix/111-restart-fence",
+                   "syncedAt":  "2026-07-17T15:47:26Z"
                },
     "lastSyncedFrom":  {
                            "forkCheckout":  "C:/Users/jared/Projects/dxrp-public",
