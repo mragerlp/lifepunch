@@ -42,6 +42,11 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 	// is stable across process restarts — fixes P1 (GetHashCode was randomized per process).
 	[Property, ReadOnly] public string AccessPinDigest { get; set; } = string.Empty;
 	[Property, ReadOnly] public string AccessPinSalt { get; set; } = string.Empty;
+	// H2 (codex\0080): a pre-#182 hub restores with AccessPinIsSet=true but an empty digest (the old
+	// int-hash key is orphaned). It must FAIL CLOSED (no PIN unlocks) yet let the OWNER re-enroll a new
+	// PIN once, wallet untouched. This synced flag is safe (reveals only "legacy, needs re-enroll", no
+	// PIN material); it is re-derived on the first host tick after restore, not persisted.
+	[Sync( SyncFlags.FromHost )] public bool AccessPinNeedsReEnrollment { get; set; }
 #if LIFEPUNCH_LOCAL
 	[Sync( SyncFlags.FromHost )] public long Owner { get; set; }
 #endif
@@ -170,6 +175,14 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 		{
 			_slotSweepDone = true;
 			ReconcileLinkedRacksHost();
+
+			// H2 legacy-PIN migration: a pre-#182 hub restores AccessPinIsSet with no digest -> fail
+			// closed and flag the owner for a one-time re-enrollment (wallet state untouched).
+			if ( AccessPinIsSet && string.IsNullOrEmpty( AccessPinDigest ) )
+			{
+				AccessPinNeedsReEnrollment = true;
+				PushAlertHost( LpBitcoinHubAlertKind.HackAttack, "Legacy PIN unreadable after update — owner must re-enroll a new PIN." );
+			}
 		}
 
 		// Amended Holdable-Hub Law (3.5 item E, amended 2026-07-12): the hub is a HANDS
@@ -909,7 +922,9 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 	[Rpc.Host]
 	private void SetAccessPinHost( string pin, string confirm )
 	{
-		if ( AccessPinIsSet )
+		// H2: a legacy hub (AccessPinIsSet, no digest -> AccessPinNeedsReEnrollment) is allowed a
+		// one-time owner re-enrollment; a normally-configured hub still rejects a re-set.
+		if ( AccessPinIsSet && !AccessPinNeedsReEnrollment )
 		{
 			SendPinResultToCaller( false, "PIN already configured." );
 			return;
@@ -936,8 +951,40 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 		AccessPinSalt = LpBitcoinHubPin.NewSalt();
 		AccessPinDigest = LpBitcoinHubPin.Hash( pin, AccessPinSalt );
 		AccessPinIsSet = true;
+		AccessPinNeedsReEnrollment = false;
 		SendPinResultToCaller( true, "Secure boot enabled." );
 	}
+
+	// --- PIN brute-force throttle (H3, codex\0080): host-only, transient (never persisted, never synced).
+	// A 4-digit PIN is a 10,000-choice ONLINE oracle even with the digest host-only, so every failed
+	// attempt is tracked per caller with a temporary lockout and an auditable HackAttack alert. ---
+	private const int PinMaxFailsBeforeLockout = 5;
+	private const float PinLockoutSeconds = 30f;
+	private struct PinAttemptState { public int Fails; public float LockedUntil; }
+	private readonly System.Collections.Generic.Dictionary<Guid, PinAttemptState> _pinAttempts = new();
+
+	private bool PinAttemptLockedOut( Guid caller )
+		=> _pinAttempts.TryGetValue( caller, out var s ) && Time.Now < s.LockedUntil;
+
+	private bool RegisterFailedPinAttempt( Guid caller, string surface )
+	{
+		var s = _pinAttempts.TryGetValue( caller, out var cur ) ? cur : new PinAttemptState();
+		s.Fails++;
+		if ( s.Fails >= PinMaxFailsBeforeLockout )
+		{
+			s.LockedUntil = Time.Now + PinLockoutSeconds;
+			s.Fails = 0;
+			_pinAttempts[caller] = s;
+			PushAlertHost( LpBitcoinHubAlertKind.HackAttack, $"{surface} PIN lockout — too many failed attempts" );
+			return true;
+		}
+
+		_pinAttempts[caller] = s;
+		PushAlertHost( LpBitcoinHubAlertKind.HackAttack, $"{surface} PIN failed attempt {s.Fails}/{PinMaxFailsBeforeLockout}" );
+		return false;
+	}
+
+	private void ClearPinAttempts( Guid caller ) => _pinAttempts.Remove( caller );
 
 	[Rpc.Host]
 	private void UnlockAccessPinHost( string pin )
@@ -948,18 +995,32 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 			return;
 		}
 
-		if ( !CallerIsOwner( Rpc.CallerId ) )
+		var caller = Rpc.CallerId;
+		// Locked-out callers are rejected silently: the lockout was already audited at onset (below), so
+		// re-alerting on every rejected RPC while locked would only spam the feed. Checked first so a
+		// locked-out prober cannot generate fresh audit lines.
+		if ( PinAttemptLockedOut( caller ) )
 		{
+			SendPinResultToCaller( false, "Too many failed attempts — locked out briefly." );
+			return;
+		}
+
+		// #184 REVISE (codex\0082): an unauthorized attempt is a COUNTED, AUDITED failure (was silent).
+		if ( !CallerIsOwner( caller ) )
+		{
+			RegisterFailedPinAttempt( caller, "Hub admin (unauthorized)" );
 			SendPinResultToCaller( false, "Access denied — hub belongs to another operator." );
 			return;
 		}
 
 		if ( !LpBitcoinHubPin.Matches( pin, AccessPinSalt, AccessPinDigest ) )
 		{
+			RegisterFailedPinAttempt( caller, "Hub admin" );
 			SendPinResultToCaller( false, "Incorrect PIN." );
 			return;
 		}
 
+		ClearPinAttempts( caller );
 		SendPinResultToCaller( true, string.Empty );
 	}
 
@@ -975,12 +1036,32 @@ public sealed class LpBitcoinHubEntity : BaseEntity, Component.IPressable, IArea
 			return;
 		}
 
-		if ( !LpBitcoinHubPin.Matches( pin, AccessPinSalt, AccessPinDigest ) )
+		var caller = Rpc.CallerId;
+		// Locked-out callers rejected silently (the lockout was already audited at onset).
+		if ( PinAttemptLockedOut( caller ) )
 		{
 			SendTerminalUnlockResultToCaller( false );
 			return;
 		}
 
+		// H3 (codex\0080): was an ungated 10k online oracle — any client could brute-force. Gate to the
+		// terminal-operate authority so a non-authorized caller never reaches the compare, AND (codex\0082
+		// #184 revise) audit that unauthorized attempt as a counted failure (was silent).
+		if ( !CanOperateTerminal( caller ) )
+		{
+			RegisterFailedPinAttempt( caller, "Terminal (unauthorized)" );
+			SendTerminalUnlockResultToCaller( false );
+			return;
+		}
+
+		if ( !LpBitcoinHubPin.Matches( pin, AccessPinSalt, AccessPinDigest ) )
+		{
+			RegisterFailedPinAttempt( caller, "Terminal" );
+			SendTerminalUnlockResultToCaller( false );
+			return;
+		}
+
+		ClearPinAttempts( caller );
 		SendTerminalUnlockResultToCaller( true );
 	}
 

@@ -24,8 +24,11 @@ internal static class LpBitcoinHubPin
 		return pin.Length is >= MinDigits and <= MaxDigits && pin.All( char.IsDigit );
 	}
 
-	/// <summary>Per-hub random salt (host-side, never replicated). Defeats cross-hub hash equality
-	/// and precomputed-table attacks if the digest ever leaks by another path (log / snapshot export).</summary>
+	/// <summary>Per-hub random salt (host-side, never replicated). It stops cross-hub digest equality
+	/// and precomputed (rainbow) tables — it does NOT make a 4-digit PIN brute-force-resistant if the
+	/// digest leaks (10,000 salted SHA-256 hashes sweep in milliseconds). The security boundary is that
+	/// the digest is HOST-ONLY — never transported to or stored on a client. The salt is defense-in-depth
+	/// for an accidental digest disclosure (log / snapshot export), not the fence itself (M1, codex\0080).</summary>
 	public static string NewSalt() => System.Guid.NewGuid().ToString( "N" );
 
 	/// <summary>Stable, deterministic-across-processes salted digest. Replaces String.GetHashCode(),
