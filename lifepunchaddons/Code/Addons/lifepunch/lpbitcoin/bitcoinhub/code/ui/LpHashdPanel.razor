@@ -2527,13 +2527,9 @@
 			{
 				if ( _pinChangePass == 0 )
 				{
-					if ( !LpBitcoinHubPin.Matches( _pinBuffer, Hub.AccessPinHash ) )
-					{
-						_pinBuffer = "";
-						_pinError = "Current PIN incorrect.";
-						return;
-					}
-
+					// Current-PIN verification is HOST-ONLY now — the digest never reaches the client
+					// (P2 fix). Capture the attempt; RequestChangeAccessPin re-verifies it host-side and
+					// SendPinChangeResultToCaller surfaces "Current PIN is incorrect." on mismatch.
 					_pinChangeCurrent = _pinBuffer;
 					_pinBuffer = "";
 					_pinChangePass = 1;

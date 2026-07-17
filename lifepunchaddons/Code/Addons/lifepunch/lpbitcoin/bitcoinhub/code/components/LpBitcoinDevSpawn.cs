@@ -1078,13 +1078,15 @@ public static class LpBitcoinDevSpawn
 			case "unlock":
 				hub.BindOwnerFromLocalViewer();
 				hub.AccessPinIsSet = true;
-				hub.AccessPinHash = LpBitcoinHubPin.Hash( "4242" );
+				hub.AccessPinSalt = LpBitcoinHubPin.NewSalt();
+				hub.AccessPinDigest = LpBitcoinHubPin.Hash( "4242", hub.AccessPinSalt );
 				Log.Info( "lp_hashd_pin_preview unlock: enter PIN 4242 to open hub admin." );
 				break;
 
 			case "blocked":
 				hub.AccessPinIsSet = true;
-				hub.AccessPinHash = LpBitcoinHubPin.Hash( "4242" );
+				hub.AccessPinSalt = LpBitcoinHubPin.NewSalt();
+				hub.AccessPinDigest = LpBitcoinHubPin.Hash( "4242", hub.AccessPinSalt );
 				hub.Owner = 1;
 				Log.Info( "lp_hashd_pin_preview blocked: hub owned by another operator — expect access denied." );
 				break;
@@ -1092,7 +1094,8 @@ public static class LpBitcoinDevSpawn
 			default:
 				hub.BindOwnerFromLocalViewer();
 				hub.AccessPinIsSet = false;
-				hub.AccessPinHash = 0;
+				hub.AccessPinDigest = string.Empty;
+				hub.AccessPinSalt = string.Empty;
 				Log.Info( "lp_hashd_pin_preview setup: secure boot — create a 4-digit PIN." );
 				break;
 		}
@@ -1130,7 +1133,8 @@ public static class LpBitcoinDevSpawn
 
 		hub.BindOwnerFromLocalViewer();
 		hub.AccessPinIsSet = true;
-		hub.AccessPinHash = LpBitcoinHubPin.Hash( "4242" );
+		hub.AccessPinSalt = LpBitcoinHubPin.NewSalt();
+		hub.AccessPinDigest = LpBitcoinHubPin.Hash( "4242", hub.AccessPinSalt );
 
 		LpBitcoinTerminalUiHost.Open( hub );
 		Log.Info( "lp_bitcoin_terminal_pin_preview: PIN gate open — enter 4242, expect boot splash after unlock." );
