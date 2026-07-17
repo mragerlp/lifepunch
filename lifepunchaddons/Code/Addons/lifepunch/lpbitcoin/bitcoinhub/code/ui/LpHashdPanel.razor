@@ -2452,7 +2452,9 @@
 	private bool HubIsPowered() => Hub?.IsPowered == true;
 
 	private bool ShowPinGate() => Hub is not null && !_pinUnlocked;
-	private bool PinSetupMode() => !PinChangeGateMode() && Hub is not null && !Hub.AccessPinIsSet;
+	// H2: a legacy hub (AccessPinIsSet but its digest could not be read after the update) routes into
+	// the setup flow so the owner can re-enroll a new PIN; the host still gates the actual set to the owner.
+	private bool PinSetupMode() => !PinChangeGateMode() && Hub is not null && ( !Hub.AccessPinIsSet || Hub.AccessPinNeedsReEnrollment );
 	private bool PinChangeGateMode() => _pinGatePurpose == PinGatePurpose.ChangePin;
 	private int PinTargetLength() => LpBitcoinHubPin.MaxDigits;
 
@@ -2461,6 +2463,9 @@
 		if ( PinChangeGateMode() )
 			return "CHANGE HUB PIN";
 
+		if ( PinSetupMode() && Hub?.AccessPinNeedsReEnrollment == true )
+			return "HUB PIN RE-ENROLLMENT";
+
 		return PinSetupMode() ? "SECURE BOOT SETUP" : "SECURE BOOT";
 	}
 
@@ -2468,6 +2473,9 @@
 	{
 		if ( PinChangeGateMode() )
 			return "Verify current PIN, then enter a new 4-digit PIN twice.";
+
+		if ( PinSetupMode() && Hub?.AccessPinNeedsReEnrollment == true )
+			return "This update retired the old hub PIN — set a new one. Your hub balance is untouched.";
 
 		return PinSetupMode() ? "Create a 4-digit hub PIN" : "Enter your 4-digit hub PIN";
 	}
@@ -2527,13 +2535,9 @@
 			{
 				if ( _pinChangePass == 0 )
 				{
-					if ( !LpBitcoinHubPin.Matches( _pinBuffer, Hub.AccessPinHash ) )
-					{
-						_pinBuffer = "";
-						_pinError = "Current PIN incorrect.";
-						return;
-					}
-
+					// Current-PIN verification is HOST-ONLY now — the digest never reaches the client
+					// (P2 fix). Capture the attempt; RequestChangeAccessPin re-verifies it host-side and
+					// SendPinChangeResultToCaller surfaces "Current PIN is incorrect." on mismatch.
 					_pinChangeCurrent = _pinBuffer;
 					_pinBuffer = "";
 					_pinChangePass = 1;
@@ -3198,6 +3202,7 @@
 		hash.Add( LogsJustCleared() );
 		hash.Add( _hub?.IsPowered );
 		hash.Add( _hub?.AccessPinIsSet );
+		hash.Add( _hub?.AccessPinNeedsReEnrollment );
 		hash.Add( _perfRange );
 		hash.Add( _profitRange );
 		hash.Add( LinkedRackCount() );

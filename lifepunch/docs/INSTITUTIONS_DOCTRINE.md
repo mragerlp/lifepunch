@@ -58,7 +58,7 @@ protects the state's money; depositors hire their own defense.
 Like the PD and the Hospital, the **Bank building is a class commons** — the
 Banker and the Bank Guards work it by rule; no basing, no locking out the
 public lobby. But the **FUND remains the Banker's charge**: vote-required
-owner, personal props as the deductible, reputation at stake. **Obligation
+owner, personal entities as the deductible, reputation at stake. **Obligation
 binds the space; accountability binds the person** — the same split as the
 Hospital, one layer up in what's at risk.
 
@@ -128,7 +128,7 @@ A fat pile advertises trust — which attracts both investors and robbers.
 
 ### The Banker bleeds first
 
-**The Banker's personal props are the deductible.** A successful raid takes
+**The Banker's personal entities are the deductible.** A successful raid takes
 his weapon shipments, his money printers, his personal mining rig — *before*
 depositors take their percentage haircut.
 
