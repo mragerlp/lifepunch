@@ -58,25 +58,95 @@ $lp-shell-text-dim: #9ca3af;
 }
 
 .lp-menu-shell .sidebar {
-	width: 190px;
+	width: 210px;
 	flex-shrink: 0;
 	display: flex;
 	flex-direction: column;
 	align-items: stretch;
+	gap: 16px;
 	padding: 12px;
 	background-color: $lp-shell-inset;
 	border-right: 1px solid $lp-shell-border;
 	overflow: hidden;
 }
 
-.lp-menu-shell .sidebar-identity {
+// House grammar (Player Hub exemplar): brand + close share the sidebar head row.
+.lp-menu-shell .sidebar-head {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	flex-shrink: 0;
+	padding-left: 6px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid $lp-shell-border;
+}
+
+.lp-menu-shell .sidebar-brand-word {
+	font-family: Poppins, Arial, sans-serif;
+	font-size: 15px;
+	font-weight: 700;
+	letter-spacing: 1.5px;
+	text-transform: uppercase;
+	color: $lp-shell-text;
+	white-space: nowrap;
+}
+
+.lp-menu-shell .sidebar-close {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
 	justify-content: center;
+	width: 32px;
+	height: 32px;
+	flex-shrink: 0;
+	border: 0;
+	border-radius: 6px;
+	background-color: transparent;
+	color: $lp-shell-text-dim;
+	opacity: 0.7;
+	cursor: pointer;
+	transition: opacity 0.12s ease-out;
+}
+
+.lp-menu-shell .sidebar-close:hover {
+	opacity: 1;
+	color: $lp-shell-text;
+}
+
+// Identity pinned at the sidebar floor, like the reference's faction row.
+.lp-menu-shell .sidebar-identity {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 10px;
 	width: 100%;
 	flex-shrink: 0;
-	margin-bottom: 22px;
+	margin-top: 10px;
+	padding-top: 10px;
+	padding-left: 6px;
+	border-top: 1px solid $lp-shell-border;
+}
+
+.lp-menu-shell .sidebar-identity-copy {
+	display: flex;
+	flex-direction: column;
+	min-width: 0;
+}
+
+.lp-menu-shell .sidebar-identity-name {
+	font-size: 14px;
+	font-weight: 600;
+	color: $lp-shell-text;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.lp-menu-shell .sidebar-identity-sub {
+	font-size: 12px;
+	color: $lp-shell-text-dim;
+	white-space: nowrap;
+	overflow: hidden;
 }
 
 .lp-menu-shell .sidebar-nav {
@@ -139,34 +209,35 @@ $lp-shell-text-dim: #9ca3af;
 	overflow: hidden;
 }
 
+// Top strip (house grammar): small-caps destination left, product controls right.
+// The wordmark brands from the sidebar head now, so this bar stays quiet.
 .lp-menu-shell .hub-header {
 	display: flex;
 	flex-direction: row;
-	flex-wrap: wrap;
 	align-items: center;
 	justify-content: space-between;
 	gap: 12px 16px;
-	min-height: 64px;
-	padding: 10px 12px 10px 20px;
+	min-height: 56px;
+	padding: 8px 16px 8px 24px;
 	flex-shrink: 0;
-	background-color: $lp-shell-surface;
+	background-color: transparent;
 	border-bottom: 1px solid $lp-shell-border;
 }
 
-.lp-menu-shell .hub-title {
+.lp-menu-shell .hub-strip-lead {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	justify-content: flex-start;
 	flex: 1 1 auto;
 	min-width: 0;
-	margin-bottom: 0;
-	font-family: Poppins, Arial, sans-serif;
-	font-size: 22px;
-	font-weight: 900;
+}
+
+.lp-menu-shell .hub-strip-title {
+	font-size: 13px;
+	font-weight: 700;
+	letter-spacing: 1.5px;
 	text-transform: uppercase;
-	letter-spacing: 0.07em;
-	line-height: 1;
+	color: $lp-shell-text-dim;
 	white-space: nowrap;
 }
 

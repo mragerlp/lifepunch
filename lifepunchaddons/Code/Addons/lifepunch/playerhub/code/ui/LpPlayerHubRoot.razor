@@ -2,8 +2,10 @@
    PROPRIETARY & CONFIDENTIAL — © 2026 lifepunch.co. All rights reserved.
    "LIFEPUNCH Player Hub for DXRP" (s&box ident: lifepunch.playerhub · addon ident: playerhub)
 
-   SLICE 1 — SHELL. Header, sidebar nav, close, tab host, empty content region.
-   Fixture-backed and display-only. No spend path exists in this slice.
+   SLICE 2 — Factions-menu grammar shell + Overview tab body (owner reference 2026-07-18).
+   Sidebar: brand head, filled accent nav pill, identity footer. Content: small-caps top
+   strip, rounded cards, XP track, play-earn routes. Fixture-backed and display-only.
+   No spend path exists in this slice.
    ───────────────────────────────────────────────────────────────────────────── *@
 @namespace LifePunch.DXRP.Addons.PlayerHub
 @using System
@@ -16,43 +18,15 @@
 
 <root class="@RootClass()">
 	<div class="hub-shell">
-
-		@* ── HEADER ───────────────────────────────────────────────────────── *@
-		<div class="hub-header">
-			<div class="hub-brand">LIFEPUNCH PLAYER HUB</div>
-
-			<div class="hub-header-right">
-				@if ( Vm.IsFixture )
-				{
-					<div class="hub-preview-tag" tooltip="@PreviewTooltip">PREVIEW &#183; FIXTURE DATA</div>
-				}
-
-				<div class="hub-stat">
-					<span class="hub-stat-label">LEVEL</span>
-					<span class="hub-stat-value">@Vm.Level</span>
-				</div>
-
-				<div class="hub-stat" tooltip="@LpTooltip">
-					<span class="lp-mark hub-lp-mark">$LP</span>
-					<span class="hub-stat-value">@LpAmount</span>
-				</div>
-
-				<button class="hub-close" tooltip="Close" onclick="@Close">
-					<i class="material-icons">close</i>
-				</button>
-			</div>
-		</div>
-
 		<div class="hub-body">
 
-			@* ── SIDEBAR ──────────────────────────────────────────────────── *@
+			@* ── SIDEBAR — Factions grammar: brand + close on top, nav pills, identity footer. *@
 			<div class="hub-sidebar">
-				<div class="hub-identity">
-					<div class="hub-avatar"><i class="material-icons">person</i></div>
-					<div class="hub-identity-copy">
-						<div class="hub-player-name">@Vm.PlayerName</div>
-						<div class="hub-player-rank">@Vm.RankLabel</div>
-					</div>
+				<div class="hub-side-head">
+					<div class="hub-brand">PLAYER HUB</div>
+					<button class="hub-close" tooltip="Close" onclick="@Close">
+						<i class="material-icons">close</i>
+					</button>
 				</div>
 
 				<div class="hub-nav">
@@ -69,25 +43,86 @@
 						</button>
 					}
 				</div>
+
+				<div class="hub-side-spacer"></div>
+
+				<div class="hub-identity">
+					<div class="hub-avatar"><i class="material-icons">person</i></div>
+					<div class="hub-identity-copy">
+						<div class="hub-player-name">@Vm.PlayerName</div>
+						<div class="hub-player-rank">@Vm.RankLabel</div>
+					</div>
+				</div>
 			</div>
 
-			@* ── CONTENT ──────────────────────────────────────────────────── *@
+			@* ── MAIN — small-caps top strip, then the tab body. *@
 			<div class="hub-content">
-				<div class="hub-page-head">
-					<div class="hub-eyebrow">@LpPlayerHubTabInfo.Eyebrow( ActiveTab )</div>
-					<div class="hub-title">@LpPlayerHubTabInfo.Label( ActiveTab )</div>
-					<div class="hub-blurb">@LpPlayerHubTabInfo.Blurb( ActiveTab )</div>
+				<div class="hub-topstrip">
+					<div class="hub-topstrip-title">@LpPlayerHubTabInfo.Eyebrow( ActiveTab )</div>
+					<div class="hub-topstrip-right">
+						@if ( Vm.IsFixture )
+						{
+							<div class="hub-preview-tag" tooltip="@PreviewTooltip">PREVIEW &#183; FIXTURE DATA</div>
+						}
+						<div class="hub-stat">
+							<span class="hub-stat-label">LEVEL</span>
+							<span class="hub-stat-value">@Vm.Level</span>
+						</div>
+						<div class="hub-stat" tooltip="@LpTooltip">
+							<span class="lp-mark hub-lp-mark">$LP</span>
+							<span class="hub-stat-value">@LpAmount</span>
+						</div>
+					</div>
 				</div>
 
-				@* TAB HOST. Slice 1 ships the empty content region deliberately -- each tab's
-				   body lands in its own slice (2-5). An empty region that says so is honest;
-				   a region filled with invented content is not. *@
 				<div class="hub-tabhost">
-					<div class="hub-placeholder">
-						<i class="material-icons hub-placeholder-icon">@LpPlayerHubTabInfo.Icon( ActiveTab )</i>
-						<div class="hub-placeholder-title">@PlaceholderTitle</div>
-						<div class="hub-placeholder-body">@PlaceholderBody</div>
-					</div>
+					@if ( ActiveTab == LpPlayerHubTab.Overview )
+					{
+						var ov = LpPlayerHubFixture.Overview();
+						<div class="hub-tab-body">
+							<div class="hub-card-row">
+								<div class="hub-card hub-progress-card">
+									<div class="hub-card-label">PROGRESSION</div>
+									<div class="hub-card-hero">Level @ov.Level</div>
+									<div class="hub-xp-track">
+										<div class="hub-xp-fill" style="width: @XpPercent( ov )%"></div>
+									</div>
+									<div class="hub-card-sub">@ov.XpIntoLevel.ToString( "N0" ) / @ov.XpForNextLevel.ToString( "N0" ) XP &#183; @XpRemaining( ov ) to next level</div>
+								</div>
+								<div class="hub-card">
+									<div class="hub-card-label">BALANCE</div>
+									<div class="hub-card-hero"><span class="lp-mark hub-lp-mark">$LP</span> <span class="hub-card-hero-amt">@ov.LpBalance.ToString( "N0" )</span></div>
+									<div class="hub-card-sub">Earned through play &#183; $LP is a temporary label</div>
+									<button class="hub-cta" onclick="@( () => SetTab( LpPlayerHubTab.Store ) )">Open $LP Store</button>
+								</div>
+								<div class="hub-card">
+									<div class="hub-card-label">SKILL POINTS</div>
+									<div class="hub-card-hero">@ov.SkillPointsAvailable available</div>
+									<div class="hub-card-sub">@ov.SkillsUnlocked skills unlocked so far</div>
+									<button class="hub-cta" onclick="@( () => SetTab( LpPlayerHubTab.Skills ) )">Spend points</button>
+								</div>
+							</div>
+
+							<div class="hub-card hub-earn-card">
+								<div class="hub-card-label">HOW TO EARN</div>
+								@foreach ( var route in ov.EarnRoutes )
+								{
+									<div class="hub-earn-row">
+										<div class="hub-earn-title">@route.Title</div>
+										<div class="hub-earn-body">@route.Body</div>
+									</div>
+								}
+							</div>
+						</div>
+					}
+					else
+					{
+						<div class="hub-placeholder">
+							<i class="material-icons hub-placeholder-icon">@LpPlayerHubTabInfo.Icon( ActiveTab )</i>
+							<div class="hub-placeholder-title">@PlaceholderTitle</div>
+							<div class="hub-placeholder-body">@PlaceholderBody</div>
+						</div>
+					}
 				</div>
 			</div>
 
@@ -100,7 +135,7 @@
 {
 	// SLICE 1 SENSOR -- positive code-string ID. This literal exists nowhere else in the tree,
 	// so seeing it in the editor log proves the compiler read THESE bytes, not a stale copy.
-	public const string SliceMark = "LP_PLAYERHUB_SLICE1_SHELL_20260714";
+	public const string SliceMark = "LP_PLAYERHUB_SLICE2_OVERVIEW_20260718";
 
 	private static readonly LpPlayerHubTab[] Tabs = new[]
 	{
@@ -141,6 +176,13 @@
 	private string LpAmount => Vm.LpBalance.ToString( "N0" );
 
 	private string PlaceholderTitle => LpPlayerHubTabInfo.Label( _activeTab ) + " lands in a later slice";
+
+	// Overview XP bar math — display only, from the fixture VM.
+	private static int XpPercent( LpOverviewVm ov )
+		=> ov.XpForNextLevel <= 0 ? 0 : (int)Math.Clamp( 100f * ov.XpIntoLevel / ov.XpForNextLevel, 0f, 100f );
+
+	private static string XpRemaining( LpOverviewVm ov )
+		=> Math.Max( 0, ov.XpForNextLevel - ov.XpIntoLevel ).ToString( "N0" ) + " XP";
 
 	private const string PlaceholderBody =
 		"Slice 1 ships the shell only: header, navigation and this empty content region.";

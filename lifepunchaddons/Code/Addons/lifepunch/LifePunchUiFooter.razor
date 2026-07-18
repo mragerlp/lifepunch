@@ -15,19 +15,22 @@
 @inherits Panel
 @attribute [StyleSheet]
 
+@* Three-zone footer: identity left, legal dead-center, source URL right. *@
 <root class="lp-source-footer">
 	<div class="lp-footer-identity">
 		<span class="lp-mark" style="@AccentStyle()">@LifePunchSourceMark.UiFooterMark</span>
 		<span class="lp-product">@Product</span>
-		<span class="lp-footer-separator">·</span>
-		<span class="lp-legal">proprietary IP</span>
-		<span class="lp-footer-separator">·</span>
 	</div>
-    <button class="lp-url-copy @(_urlCopied ? "copied" : "")"
-            tooltip="@($"Copy {LifePunchSourceMark.UiFooterUrl}")"
-            onclick="@CopySourceUrl">
-        @( _urlCopied ? "Link copied!" : LifePunchSourceMark.PublisherUrl )
-    </button>
+	<div class="lp-footer-legal">
+		<span class="lp-legal">proprietary IP</span>
+	</div>
+	<div class="lp-footer-link">
+		<button class="lp-url-copy @(_urlCopied ? "copied" : "")"
+		        tooltip="@($"Copy {LifePunchSourceMark.UiFooterUrl}")"
+		        onclick="@CopySourceUrl">
+			@( _urlCopied ? "Link copied!" : LifePunchSourceMark.PublisherUrl )
+		</button>
+	</div>
 </root>
 
 @code {

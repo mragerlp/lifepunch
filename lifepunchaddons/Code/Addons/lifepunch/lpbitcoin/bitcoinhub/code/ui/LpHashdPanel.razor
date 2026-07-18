@@ -21,9 +21,10 @@
 				<div class="pin-gate">
 				<header class="pin-header">
 					<div class="pin-brand">
-						@* BRANDING_SCOPE_RULING_2026-07-15: the LP roundel is OUT of job surfaces.
-						   The HASHD mark does not exist yet — the slot stays empty (no mark beats
-						   the wrong mark, SIDEBAR DESIGN CANON v1 d). *@
+						@* BRANDING_SCOPE_RULING_2026-07-15: the LP roundel stays OUT of job surfaces.
+						   dispatch\red\0033 (Bloodwave GO 2026-07-18) supersedes the empty-slot clause
+						   for this overlay: block ₿ mark, Law 17 bitcoin-orange. *@
+						<div class="brand-mark">₿</div>
 						<div class="pin-brand-copy">
 							<div class="pin-title">@PinGateTitle()</div>
 							<div class="pin-sub">@PinGateSubtitle()</div>
@@ -61,7 +62,7 @@
 					<div class="pin-pad">
 						@foreach ( var key in _pinKeys )
 						{
-							<button class="pin-key @(key == "ok" ? "ok" : "") @(key == "clr" ? "clr" : "")"
+							<button class="@PinKeyClass( key )"
 							        onclick="@(() => PressPinKey(key))">
 								@if ( key == "clr" )
 								{
@@ -90,6 +91,9 @@
 		{
 			<LpMenuShell Wordmark="@LpBitcoinIdent.OpsTitle"
 			             AccentColor="#e87d3e"
+			             OnClose="@Close"
+			             IdentityName="@GreetingName()"
+			             IdentitySub="Hub operator"
 			             NavItems="@ShellNavItems()"
 			             DoorCards="@ShellDoorCards()"
 			             SnapshotStats="@ShellSnapshotStats()"
@@ -122,9 +126,7 @@
 						<i class="material-icons">savings</i>
 						<span>@CashOutAllLabel()</span>
 					</button>
-					<button class="lp-ui-chrome-btn close" tooltip="Close" onclick="@Close">
-						<i class="material-icons">close</i>
-					</button>
+					@* Close moved to the sidebar head (house menu grammar). *@
 				</TopBarControls>
 				<ChildContent>
 							@* #6b modal backdrop: full-body scrim, inert-dismiss, while a confirm popup is open. *@
@@ -510,12 +512,7 @@
 										}
 										else
 										{
-											<div class="ops-eyebrow">@OpsEyebrow</div>
-											<div class="lp-ui-panel-title">
-												<i class="material-icons">dns</i>
-												<span>Servers</span>
-											</div>
-
+											@* Strip names the destination (house grammar) — pane opens with the intro. *@
 											<div class="lp-ui-intro racks-intro">Pick a server — or the Hub — for status and upgrades.</div>
 
 											<div class="racks-scroll">
@@ -596,32 +593,33 @@
 								{
 									<div class="pane wallet">
 										<div class="lp-ui-panel wallet-panel">
-											<div class="ops-eyebrow">@OpsEyebrow</div>
-											<div class="lp-ui-panel-title">
-												<i class="material-icons">account_balance_wallet</i>
-												<span>Hub wallet</span>
-											</div>
-
 											<div class="lp-ui-intro">
 												Your secured hub balance. Deposit rack earnings at the linked terminal, then cash out to your in-game bank here.
 											</div>
 
-											<div class="lp-ui-info">
-												<div class="lp-ui-info-row">
-													<span class="lp-ui-info-label">Hub wallet</span>
-													<span class="lp-ui-info-value"><span class="lp-money-btc">₿</span> <span class="lp-money-amt">@HubWalletBtc().ToString( "F6" )</span></span>
+											@* Hero stat cards — same dashboard grammar (overview-stat-*), wallet numbers lead. *@
+											<div class="overview-stat-row wallet-stat-row">
+												<div class="overview-stat-card">
+													<div class="overview-stat-label">Hub wallet</div>
+													<div class="overview-stat-value"><span class="lp-money-btc">₿</span> <span class="lp-money-amt">@HubWalletBtc().ToString( "F6" )</span></div>
+													<div class="overview-stat-sub"><span class="lp-money-cash">$</span><span class="lp-money-amt">@HubWalletCashUsd().ToString( "N2" )</span> estimated value</div>
 												</div>
-												<div class="lp-ui-info-row">
-													<span class="lp-ui-info-label">Still on racks</span>
-													<span class="lp-ui-info-value"><span class="lp-money-btc">₿</span> <span class="lp-money-amt">@RackPendingBtc().ToString( "F6" )</span></span>
+												<div class="overview-stat-card">
+													<div class="overview-stat-label">Still on racks</div>
+													<div class="overview-stat-value"><span class="lp-money-btc">₿</span> <span class="lp-money-amt">@RackPendingBtc().ToString( "F6" )</span></div>
+													<div class="overview-stat-sub">Deposit at the linked terminal</div>
 												</div>
+												<div class="overview-stat-card">
+													<div class="overview-stat-label">Your cash</div>
+													<div class="overview-stat-value"><span class="lp-money-cash">$</span><span class="lp-money-amt">@LpHashdUiHost.GetLocalWalletCash()</span></div>
+													<div class="overview-stat-sub">In-game bank balance</div>
+												</div>
+											</div>
+
+											<div class="lp-ui-info wallet-detail-info">
 												<div class="lp-ui-info-row">
 													<span class="lp-ui-info-label">Terminal linked</span>
 													<span class="lp-ui-info-value">@(HasLinkedTerminal() ? "Yes" : "No — link on Dashboard")</span>
-												</div>
-												<div class="lp-ui-info-row">
-													<span class="lp-ui-info-label">USD value (hub)</span>
-													<span class="lp-ui-info-value"><span class="lp-money-cash">$</span><span class="lp-money-amt">@HubWalletCashUsd().ToString( "N2" )</span></span>
 												</div>
 												<div class="lp-ui-info-row">
 													<span class="lp-ui-info-label">Exchange rate</span>
@@ -632,10 +630,6 @@
 															<span class="@_seg.Cls">@_seg.Text</span>
 														}
 													</span>
-												</div>
-												<div class="lp-ui-info-row">
-													<span class="lp-ui-info-label">Your cash</span>
-													<span class="lp-ui-info-value"><span class="lp-money-cash">$</span><span class="lp-money-amt">@LpHashdUiHost.GetLocalWalletCash()</span></span>
 												</div>
 											</div>
 
@@ -697,12 +691,6 @@
 								{
 									<div class="pane transfers">
 										<div class="lp-ui-panel transfers-panel">
-											<div class="ops-eyebrow">@OpsEyebrow</div>
-											<div class="lp-ui-panel-title">
-												<i class="material-icons">swap_horiz</i>
-												<span>Hub transfers</span>
-											</div>
-
 											<div class="lp-ui-intro transfers-intro">
 												Move BTC between operators. Share your Steam ID to receive; send from the linked terminal with the send command.
 											</div>
@@ -809,12 +797,6 @@
 								{
 									<div class="pane logs-pane">
 										<div class="lp-ui-panel logs-panel">
-											<div class="ops-eyebrow">@OpsEyebrow</div>
-											<div class="lp-ui-panel-title">
-												<i class="material-icons">notifications</i>
-												<span>Hub logs</span>
-											</div>
-
 											<div class="lp-ui-intro logs-intro">
 												Terminal commands, rack capacity warnings, intrusion attempts, and hub transfers appear here.
 											</div>
@@ -866,12 +848,6 @@
 								{
 									<div class="pane settings-pane">
 										<div class="lp-ui-panel settings-panel">
-											<div class="ops-eyebrow">@OpsEyebrow</div>
-											<div class="lp-ui-panel-title">
-												<i class="material-icons">settings</i>
-												<span>Settings</span>
-											</div>
-
 											<div class="settings-body">
 												<div class="settings-list lp-hashd-surface">
 													<div class="settings-row">
@@ -1030,9 +1006,8 @@
 	// sidebar bottom; it renders as the dedicated foot button.
 	private static readonly OpsTab[] _tabs = { OpsTab.Overview, OpsTab.Racks, OpsTab.Wallet, OpsTab.Transfers, OpsTab.Logs };
 
-	// MENU SHELL LAW eyebrow-over-title grammar: the accent eyebrow names the menu context
-	// above each pane's section title (hub exemplar roles .hub-eyebrow / .hub-title).
-	private static string OpsEyebrow => "BITCOIN OPS";
+	// House grammar (2026-07-18): the shell's top strip names the destination; per-pane
+	// eyebrows retired with it. The wordmark brands from the sidebar head.
 
 	private List<LpMenuShell.NavItem> ShellNavItems()
 	{
@@ -1054,7 +1029,7 @@
 			PageIcon = TabIcon( tab ),
 			PageTitle = tab == OpsTab.Overview ? "Dashboard" : TabLabel( tab ),
 			Callout = tab == OpsTab.Overview
-				? "This home page is your setup and status checkpoint. Detailed management lives in Servers, Wallet, Transfers, and Upgrades."
+				? "This home page is your setup and status checkpoint. Detailed management lives in Servers, Wallet, and Transfers."
 				: string.Empty,
 			IsActive = IsSidebarTabActive( tab ),
 			IsSettings = isSettings,
@@ -1111,7 +1086,7 @@
 				Label = "Servers",
 				Route = "servers",
 				StatusClass = linkedRackCount > 0 ? "on" : "off",
-				ActionClass = "lp-ui-btn-primary",
+				ActionClass = "lp-ui-btn-ghost",
 				ActionIcon = "dns",
 				FooterNote = "Complete all three steps to start mining.",
 				OnSelected = SelectRacksTab
@@ -1161,7 +1136,7 @@
 				Description = "estimated value",
 				DetailSign = "$",
 				DetailAmount = CombinedUsd().ToString( "N2" ),
-				FooterNote = "Deeper details: Servers tab for rack stats, Upgrades tab for track tiers."
+				FooterNote = "Deeper details: Servers tab for rack stats and rack tiers."
 			}
 		};
 	}
@@ -1580,6 +1555,9 @@
 		if ( slots.Count > 0 )
 			EnterServerDetail( slots[0] );
 	}
+
+	/// <summary>Dev preview -- jump straight to the dashboard (Overview) tab.</summary>
+	public void DevOpenDashboardTab() => SelectTab( OpsTab.Overview );
 
 	/// <summary>Dev preview -- jump straight to the wallet tab (cash-out tiles).</summary>
 	public void DevOpenWalletTab() => SelectTab( OpsTab.Wallet );
@@ -2491,6 +2469,16 @@
 		return "PIN";
 	}
 
+	// Visual twin of the PressPinKey "ok" guard (MinDigits) -- the check key reads
+	// disabled exactly when the click would no-op.
+	private string PinKeyClass( string key )
+	{
+		if ( key == "ok" )
+			return _pinBuffer.Length < LpBitcoinHubPin.MinDigits ? "pin-key ok disabled" : "pin-key ok";
+
+		return key == "clr" ? "pin-key clr" : "pin-key";
+	}
+
 	private void PressPinKey( string key )
 	{
 		if ( Hub is null )
@@ -2707,15 +2695,15 @@
 	private string TerminalLinkStatusLabel()
 	{
 		if ( !HubIsPowered() && !HasLinkedTerminal() )
-			return "Hub power off \u2014 turn on first";
+			return "Hub power off \u2014 turn it on first.";
 
 		if ( HasLinkedTerminal() )
-			return "Linked \u2014 rig0 ready";
+			return "Linked \u2014 rig0 ready.";
 
 		if ( HasNearbyUnlinkedTerminal() )
-			return "In range \u2014 ready to link";
+			return "In range \u2014 ready to link.";
 
-		return "Not linked";
+		return "Not linked.";
 	}
 
 	// Badge tracks LINKED-state only (Bloodwave ruling): readiness (in-range terminal)

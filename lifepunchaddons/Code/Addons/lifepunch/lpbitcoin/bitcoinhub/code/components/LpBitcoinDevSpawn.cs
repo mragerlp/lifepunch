@@ -994,6 +994,25 @@ public static class LpBitcoinDevSpawn
 		Log.Info( "lp_bitcoin_preview_server_detail: Servers drill-in open — stat tiles + Upgrade + back link." );
 	}
 
+	/// <summary>Hub admin on the Dashboard (Overview) tab — stat row + checklist + shortcuts (PIN bypassed).</summary>
+	[ConCmd( "lp_bitcoin_preview_dashboard" )]
+	public static void PreviewHubDashboardUi()
+	{
+		WarnIfWrongPlayScene();
+		LpBitcoinUi.CloseAll();
+		var hub = LpBitcoinUi.GetOrCreatePreviewHub( withSampleRacks: true );
+		if ( !hub.IsValid() )
+		{
+			Log.Warning( "lp_bitcoin_preview_dashboard: no active scene." );
+			return;
+		}
+
+		var panel = LpHashdUiHost.Open( hub );
+		panel?.DevBypassPinGate();
+		panel?.DevOpenDashboardTab();
+		Log.Info( "lp_bitcoin_preview_dashboard: dashboard open — stat row + checklist + shortcuts." );
+	}
+
 	/// <summary>Hub admin on the wallet tab — cash-out tiles + bank deposit preview (PIN bypassed).</summary>
 	[ConCmd( "lp_bitcoin_preview_hub_wallet" )]
 	public static void PreviewHubWalletUi()
@@ -1011,6 +1030,25 @@ public static class LpBitcoinDevSpawn
 		panel?.DevBypassPinGate();
 		panel?.DevOpenWalletTab();
 		Log.Info( "lp_bitcoin_preview_hub_wallet: wallet tab open — check cash-out tile layout." );
+	}
+
+	/// <summary>Hub admin on the transfers tab — receive/send columns + live rate strip (PIN bypassed).</summary>
+	[ConCmd( "lp_bitcoin_preview_transfers" )]
+	public static void PreviewHubTransfersUi()
+	{
+		WarnIfWrongPlayScene();
+		LpBitcoinUi.CloseAll();
+		var hub = LpBitcoinUi.GetOrCreatePreviewHub( withSampleRacks: true );
+		if ( !hub.IsValid() )
+		{
+			Log.Warning( "lp_bitcoin_preview_transfers: no active scene." );
+			return;
+		}
+
+		var panel = LpHashdUiHost.Open( hub );
+		panel?.DevBypassPinGate();
+		panel?.DevOpenTransfersTab();
+		Log.Info( "lp_bitcoin_preview_transfers: transfers tab open — receive/send columns + rate strip." );
 	}
 
 	/// <summary>Hub admin on the settings tab — left-aligned toggle list + iOS switches (PIN bypassed).</summary>

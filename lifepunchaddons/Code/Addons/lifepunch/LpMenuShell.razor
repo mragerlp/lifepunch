@@ -26,8 +26,16 @@
 		<div class="hub-body">
 			<div class="hub-main">
 				<aside class="sidebar">
-					<div class="sidebar-identity">
-						@Mark
+					@* House menu grammar (Player Hub exemplar): brand + close live in the
+					   sidebar head; identity is pinned at the sidebar floor. *@
+					<div class="sidebar-head">
+						<div class="sidebar-brand-word">@Wordmark</div>
+						@if ( OnClose is not null )
+						{
+							<button class="sidebar-close" tooltip="Close" onclick="@OnClose">
+								<i class="material-icons">close</i>
+							</button>
+						}
 					</div>
 
 					<nav class="sidebar-nav">
@@ -58,13 +66,32 @@
 								<span class="sidebar-btn-label">@item.Label</span>
 							</button>
 						}
+
+						@if ( Mark is not null || !string.IsNullOrWhiteSpace( IdentityName ) )
+						{
+							<div class="sidebar-identity">
+								@Mark
+								@if ( !string.IsNullOrWhiteSpace( IdentityName ) )
+								{
+									<div class="sidebar-identity-copy">
+										<div class="sidebar-identity-name">@IdentityName</div>
+										@if ( !string.IsNullOrWhiteSpace( IdentitySub ) )
+										{
+											<div class="sidebar-identity-sub">@IdentitySub</div>
+										}
+									</div>
+								}
+							</div>
+						}
 					</div>
 				</aside>
 
 				<div class="workspace">
+					@* Top strip: small-caps active destination left, product controls right —
+					   the wordmark now brands from the sidebar head, not this bar. *@
 					<header class="page-header hub-header">
-						<div class="lp-ui-panel-title hub-title" style="color: @AccentColor">
-							<span>@Wordmark</span>
+						<div class="hub-strip-lead">
+							<div class="hub-strip-title">@(activeItem?.PageTitle ?? Wordmark)</div>
 						</div>
 						<div class="header-widgets">
 							@TopBarControls
@@ -76,15 +103,43 @@
 						{
 							<div class="main-panel">
 								<div class="pane overview">
-									<div class="ops-eyebrow" style="color: @AccentColor">@Wordmark.ToUpperInvariant()</div>
-									<div class="lp-ui-panel-title overview-dash-title">
-										<i class="material-icons">@activeItem.PageIcon</i>
-										<span>@activeItem.PageTitle</span>
-									</div>
+									@* The top strip names the destination; the body opens straight
+									   into cards (house grammar). Callout survives when present. *@
 									@if ( !string.IsNullOrWhiteSpace( activeItem.Callout ) )
 									{
-										<div class="lp-ui-intro overview-command-center-intro">@activeItem.Callout</div>
+										<div class="overview-head">
+											<div class="overview-callout">@activeItem.Callout</div>
+										</div>
 									}
+
+									<div class="overview-stat-row">
+										@foreach ( var stat in SnapshotStats )
+										{
+											<div class="overview-stat-card">
+												<div class="overview-stat-label">@stat.Label</div>
+												<div class="overview-stat-value @stat.ValueClass">
+													@if ( !string.IsNullOrWhiteSpace( stat.Sign ) )
+													{
+														<span class="@stat.SignClass">@stat.Sign</span> <span class="lp-money-amt">@stat.Amount</span>
+													}
+													else
+													{
+														@stat.Value
+													}
+												</div>
+												<div class="overview-stat-sub">
+													@if ( !string.IsNullOrWhiteSpace( stat.DetailSign ) )
+													{
+														<LifePunchCurrencyToken Sign="@stat.DetailSign" Amount="@stat.DetailAmount" Label="@stat.Description" SignClass="@stat.DetailSignClass" TokenClass="overview-wallet-value" />
+													}
+													else
+													{
+														@stat.Description
+													}
+												</div>
+											</div>
+										}
+									</div>
 
 									<div class="overview-command-center">
 										<div class="lp-ui-panel overview-checklist-panel">
@@ -150,35 +205,19 @@
 
 										<div class="lp-ui-panel overview-snapshot-panel">
 											<div class="lp-ui-panel-title">
-												<i class="material-icons">insights</i>
-												<span>Snapshot</span>
+												<i class="material-icons">bolt</i>
+												<span>Shortcuts</span>
 											</div>
-											<div class="overview-snapshot-grid">
-												@foreach ( var stat in SnapshotStats )
+											<div class="overview-shortcut-list">
+												@foreach ( var quickButton in QuickButtons )
 												{
-													<div class="overview-snapshot-card">
-														<div class="overview-snapshot-label">@stat.Label</div>
-														<div class="overview-snapshot-value @stat.ValueClass">
-															@if ( !string.IsNullOrWhiteSpace( stat.Sign ) )
-															{
-																<span class="@stat.SignClass">@stat.Sign</span> <span class="lp-money-amt">@stat.Amount</span>
-															}
-															else
-															{
-																@stat.Value
-															}
-														</div>
-														<div class="overview-snapshot-sub">
-															@if ( !string.IsNullOrWhiteSpace( stat.DetailSign ) )
-															{
-														<LifePunchCurrencyToken Sign="@stat.DetailSign" Amount="@stat.DetailAmount" Label="@stat.Description" SignClass="@stat.DetailSignClass" TokenClass="overview-wallet-value" />
-															}
-															else
-															{
-																@stat.Description
-															}
-														</div>
-													</div>
+													<button class="overview-shortcut @(quickButton.CssClass.Contains("lp-ui-btn-primary") ? "primary" : "")"
+													        disabled="@(!quickButton.Enabled)"
+													        onclick="@quickButton.OnSelected">
+														<i class="material-icons">@quickButton.Icon</i>
+														<span class="overview-shortcut-label">@quickButton.Label</span>
+														<i class="material-icons overview-shortcut-chev">chevron_right</i>
+													</button>
 												}
 											</div>
 											@if ( !string.IsNullOrWhiteSpace( SnapshotFooterNote() ) )
@@ -186,18 +225,6 @@
 												<div class="overview-snapshot-note">@SnapshotFooterNote()</div>
 											}
 										</div>
-									</div>
-
-									<div class="lp-ui-btn-row overview-command-actions">
-										@foreach ( var quickButton in QuickButtons )
-										{
-											<button class="@quickButton.CssClass"
-											        disabled="@(!quickButton.Enabled)"
-											        onclick="@quickButton.OnSelected">
-												<i class="material-icons">@quickButton.Icon</i>
-												<span>@quickButton.Label</span>
-											</button>
-										}
 									</div>
 								</div>
 							</div>
@@ -224,6 +251,10 @@
 	[Property] public string Wordmark { get; set; } = string.Empty;
 	[Property] public string AccentColor { get; set; } = "#e87d3e";
 	[Property] public RenderFragment? TopBarControls { get; set; }
+	// House grammar: close button in the sidebar head; identity pinned at the sidebar floor.
+	[Property] public Action? OnClose { get; set; }
+	[Property] public string IdentityName { get; set; } = string.Empty;
+	[Property] public string IdentitySub { get; set; } = string.Empty;
 	[Property] public List<NavItem> NavItems { get; set; } = new();
 	[Property] public List<DoorCard> DoorCards { get; set; } = new();
 	[Property] public List<StatRow> SnapshotStats { get; set; } = new();
@@ -323,6 +354,7 @@
 	protected override int BuildHash()
 	{
 		var hash = HashCode.Combine( Wordmark, AccentColor, Mark is not null, TopBarControls is not null, NavItems.Count );
+		hash = HashCode.Combine( hash, OnClose is not null, IdentityName, IdentitySub );
 		foreach ( var item in NavItems )
 			hash = HashCode.Combine( hash, item.Route, item.Label, item.Icon, item.IsActive, item.IsSettings, item.HasAlert, item.Enabled );
 		foreach ( var card in DoorCards )

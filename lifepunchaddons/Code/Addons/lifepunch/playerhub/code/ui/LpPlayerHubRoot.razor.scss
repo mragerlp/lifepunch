@@ -3,7 +3,9 @@
 //
 // "LIFEPUNCH Player Hub for DXRP" (s&box ident: lifepunch.playerhub · addon ident: playerhub)
 //
-// SLICE 1 — SHELL.
+// SLICE 2 — Factions-menu grammar (owner reference 2026-07-18): sidebar with brand
+// head + filled accent nav pill + identity footer; content region with a small-caps
+// top strip and rounded charcoal cards. LIFEPUNCH blue plays the accent role.
 //
 // s&box SCSS constraints observed here, all of them silent failures if broken:
 //   flex only, never grid. No inline-flex. No block/none/inline/inline-block.
@@ -35,14 +37,11 @@ $hit: 44px;
 $gap-control: 8px;
 $gap-content: 12px;
 
-$sidebar-w: 190px;
-$header-h: 64px;
+$sidebar-w: 210px;
+$strip-h: 56px;
 
 // HUD-root mount (StaffMenu / Bitcoin Ops house pattern): absolute fill of the shared
-// DXRP HUD panel, then flex-center the 1160x700 shell. width/height 100% alone is not
-// enough when the parent is the real HUD root — without absolute the shell shrinks and
-// sits flush-right (~920px). Slice 1 proof looked centered only because it sat on a
-// hand-built full-screen ScreenPanel that no longer exists.
+// DXRP HUD panel, then flex-center the 1160x700 shell.
 .lp-playerhub {
 	position: absolute;
 	top: 0;
@@ -77,28 +76,204 @@ $header-h: 64px;
 	font-family: Inter;
 }
 
-// ── HEADER ───────────────────────────────────────────────────────────────────
-.hub-header {
+.hub-body {
+	flex-direction: row;
+	flex-grow: 1;
+	min-height: 0;
+}
+
+// ── SIDEBAR ──────────────────────────────────────────────────────────────────
+.hub-sidebar {
+	flex-direction: column;
+	width: $sidebar-w;
+	flex-shrink: 0;
+	padding: $gap-content;
+	gap: 16px;
+	background-color: $surface-inset;
+	border-right: 1px solid $border;
+}
+
+// Brand + close live in the sidebar head, like the reference menu's title row.
+.hub-side-head {
 	flex-direction: row;
 	align-items: center;
 	justify-content: space-between;
-	height: $header-h;
-	padding-left: 20px;
-	padding-right: 12px;
-	background-color: $surface;
-	border-bottom: 1px solid $border;
 	flex-shrink: 0;
+	padding-left: 6px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid $border;
 }
 
 .hub-brand {
 	font-family: Poppins;
-	font-size: 16px;
-	font-weight: 600;
-	letter-spacing: 1px;
+	font-size: 15px;
+	font-weight: 700;
+	letter-spacing: 1.5px;
 	color: $text-main;
 }
 
-.hub-header-right {
+.hub-close {
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	width: 32px;
+	height: 32px;
+	border-radius: $radius;
+	color: $text-dim;
+	opacity: 0.7;
+	transition: opacity 0.12s ease-out;
+}
+
+.hub-close:hover {
+	opacity: 1;
+	color: $text-main;
+	background-color: $accent-soft-hover;
+}
+
+.hub-nav {
+	flex-direction: column;
+	gap: $gap-control;
+}
+
+.hub-nav-item {
+	flex-direction: row;
+	align-items: center;
+	gap: 10px;
+	height: $hit;
+	padding-left: 12px;
+	padding-right: 10px;
+	border-radius: 8px;
+	color: $text-dim;
+	opacity: 0.75;
+	transition: opacity 0.12s ease-out, background-color 0.12s ease-out;
+}
+
+.hub-nav-item:hover {
+	opacity: 1;
+	background-color: $accent-soft-hover;
+}
+
+// Reference grammar: the active destination is a FILLED accent pill, white ink.
+.hub-nav-item.is-active {
+	opacity: 1;
+	background-color: $lp-blue;
+	color: $text-main;
+}
+
+.hub-nav-item.is-active .hub-nav-icon,
+.hub-nav-item.is-active .hub-nav-label {
+	color: $text-main;
+}
+
+// Keep the marker node for layout stability, but never paint chrome.
+.hub-nav-indicator {
+	width: 0;
+	height: 0;
+	flex-shrink: 0;
+	background-color: transparent;
+}
+
+.hub-nav-icon {
+	font-size: 18px;
+	flex-shrink: 0;
+}
+
+.hub-nav-label {
+	font-size: 14px;
+	flex-grow: 1;
+}
+
+.hub-nav-badge {
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	min-width: 18px;
+	height: 18px;
+	padding-left: 5px;
+	padding-right: 5px;
+	border-radius: 9px;
+	background-color: $lp-blue;
+	color: $text-main;
+	font-size: 11px;
+	font-weight: 700;
+}
+
+.hub-nav-item.is-active .hub-nav-badge {
+	background-color: $text-main;
+	color: $lp-blue;
+}
+
+.hub-side-spacer {
+	flex-grow: 1;
+}
+
+// Identity footer — the reference menu pins "[GOON] Goon Squad" at the sidebar floor.
+.hub-identity {
+	flex-direction: row;
+	align-items: center;
+	gap: 10px;
+	flex-shrink: 0;
+	padding-top: 10px;
+	padding-left: 6px;
+	border-top: 1px solid $border;
+}
+
+// A true circle is the one place a full radius is allowed.
+.hub-avatar {
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	width: 36px;
+	height: 36px;
+	flex-shrink: 0;
+	border-radius: 50%;
+	background-color: $card-header;
+	color: $text-dim;
+	font-size: 20px;
+}
+
+.hub-identity-copy {
+	flex-direction: column;
+}
+
+.hub-player-name {
+	font-size: 14px;
+	font-weight: 600;
+	color: $text-main;
+}
+
+.hub-player-rank {
+	font-size: 12px;
+	color: $text-dim;
+}
+
+// ── CONTENT ──────────────────────────────────────────────────────────────────
+.hub-content {
+	flex-direction: column;
+	flex-grow: 1;
+	min-width: 0;
+}
+
+// Small-caps strip like the reference's "CREATE A FACTION" header row.
+.hub-topstrip {
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	height: $strip-h;
+	flex-shrink: 0;
+	padding-left: 24px;
+	padding-right: 16px;
+	border-bottom: 1px solid $border;
+}
+
+.hub-topstrip-title {
+	font-size: 13px;
+	font-weight: 700;
+	letter-spacing: 1.5px;
+	color: $text-dim;
+}
+
+.hub-topstrip-right {
 	flex-direction: row;
 	align-items: center;
 	gap: 16px;
@@ -111,7 +286,7 @@ $header-h: 64px;
 	padding-left: 8px;
 	padding-right: 8px;
 	border: 1px solid $border;
-	border-radius: 2px;
+	border-radius: $radius;
 	font-size: 10px;
 	font-weight: 600;
 	letter-spacing: 1px;
@@ -147,189 +322,127 @@ $header-h: 64px;
 	color: $lp-blue;
 }
 
-.hub-close {
-	flex-direction: row;
-	align-items: center;
-	justify-content: center;
-	width: $hit;
-	height: $hit;
-	border-radius: $radius;
-	color: $text-dim;
-	opacity: 0.7;
-	transition: opacity 0.12s ease-out;
-}
-
-.hub-close:hover {
-	opacity: 1;
-	color: $text-main;
-	background-color: $accent-soft-hover;
-}
-
-// ── BODY ─────────────────────────────────────────────────────────────────────
-.hub-body {
-	flex-direction: row;
-	flex-grow: 1;
-	min-height: 0;
-}
-
-.hub-sidebar {
-	flex-direction: column;
-	width: $sidebar-w;
-	flex-shrink: 0;
-	padding: $gap-content;
-	gap: 20px;
-	background-color: $surface-inset;
-	border-right: 1px solid $border;
-}
-
-.hub-identity {
-	flex-direction: row;
-	align-items: center;
-	gap: 10px;
-}
-
-// A true circle is the one place a full radius is allowed.
-.hub-avatar {
-	flex-direction: row;
-	align-items: center;
-	justify-content: center;
-	width: 36px;
-	height: 36px;
-	flex-shrink: 0;
-	border-radius: 50%;
-	background-color: $card-header;
-	color: $text-dim;
-	font-size: 20px;
-}
-
-.hub-identity-copy {
-	flex-direction: column;
-}
-
-.hub-player-name {
-	font-size: 14px;
-	font-weight: 600;
-	color: $text-main;
-}
-
-.hub-player-rank {
-	font-size: 12px;
-	color: $text-dim;
-}
-
-.hub-nav {
-	flex-direction: column;
-	gap: $gap-control;
-}
-
-.hub-nav-item {
-	flex-direction: row;
-	align-items: center;
-	gap: 10px;
-	height: $hit;
-	padding-right: 10px;
-	border-radius: $radius;
-	color: $text-dim;
-	opacity: 0.7;
-	transition: opacity 0.12s ease-out;
-}
-
-.hub-nav-item:hover {
-	opacity: 1;
-	background-color: $accent-soft-hover;
-}
-
-// Accent is a WASH only (sidebar ruling / cursor\0038): no left chrome strip.
-.hub-nav-item.is-active {
-	opacity: 1;
-	background-color: $accent-soft;
-	color: $text-main;
-}
-
-// Keep the marker node for layout stability, but never paint chrome.
-.hub-nav-indicator {
-	width: 0;
-	height: 0;
-	flex-shrink: 0;
-	background-color: transparent;
-}
-
-.hub-nav-item.is-active .hub-nav-indicator {
-	width: 0;
-	height: 0;
-	background-color: transparent;
-}
-
-// Icons stay neutral. The active state is carried by opacity and the wash, not by tinting glyphs.
-.hub-nav-icon {
-	font-size: 18px;
-	flex-shrink: 0;
-}
-
-.hub-nav-label {
-	font-size: 14px;
-	flex-grow: 1;
-}
-
-.hub-nav-badge {
-	flex-direction: row;
-	align-items: center;
-	justify-content: center;
-	min-width: 18px;
-	height: 18px;
-	padding-left: 5px;
-	padding-right: 5px;
-	border-radius: 2px;
-	background-color: $lp-blue;
-	color: $text-main;
-	font-size: 11px;
-	font-weight: 700;
-}
-
-// ── CONTENT ──────────────────────────────────────────────────────────────────
-.hub-content {
-	flex-direction: column;
-	flex-grow: 1;
-	min-width: 0;
-	padding: 24px;
-	gap: 20px;
-}
-
-.hub-page-head {
-	flex-direction: column;
-	gap: 4px;
-	flex-shrink: 0;
-}
-
-.hub-eyebrow {
-	font-size: 11px;
-	font-weight: 600;
-	letter-spacing: 1.5px;
-	color: $lp-blue;
-}
-
-.hub-title {
-	font-family: Poppins;
-	font-size: 22px;
-	font-weight: 600;
-	color: $text-main;
-}
-
-.hub-blurb {
-	font-size: 14px;
-	color: $text-dim;
-}
-
 // One vertical scroll region per tab.
 .hub-tabhost {
 	flex-direction: column;
 	flex-grow: 1;
 	min-height: 0;
 	overflow-y: scroll;
-	background-color: $surface;
-	border-radius: $radius-card;
+	padding: 20px 24px;
 }
 
+.hub-tab-body {
+	flex-direction: column;
+	gap: $gap-content;
+}
+
+// ── CARDS — rounded charcoal surfaces per the reference boards. ───────────────
+.hub-card-row {
+	flex-direction: row;
+	gap: $gap-content;
+}
+
+.hub-card {
+	flex-direction: column;
+	flex: 1 1 0;
+	min-width: 0;
+	gap: 8px;
+	padding: 16px 18px;
+	border-radius: $radius-card;
+	background-color: $surface;
+}
+
+.hub-card-label {
+	font-size: 10px;
+	font-weight: 700;
+	letter-spacing: 1.2px;
+	color: $text-dim;
+}
+
+.hub-card-hero {
+	flex-direction: row;
+	align-items: center;
+	gap: 6px;
+	font-family: Poppins;
+	font-size: 22px;
+	font-weight: 600;
+	color: $text-main;
+}
+
+.hub-card-hero-amt {
+	color: $text-main;
+}
+
+.hub-card-hero .hub-lp-mark {
+	font-size: 18px;
+}
+
+.hub-card-sub {
+	font-size: 12px;
+	line-height: 1.4;
+	color: $text-dim;
+}
+
+// XP progress — inset track, accent fill. Width is set inline from the VM.
+.hub-xp-track {
+	flex-direction: row;
+	height: 8px;
+	width: 100%;
+	border-radius: 4px;
+	background-color: $surface-inset;
+	overflow: hidden;
+}
+
+.hub-xp-fill {
+	height: 100%;
+	border-radius: 4px;
+	background-color: $lp-blue;
+}
+
+// CTA — filled accent, full width, like the reference's primary buttons.
+.hub-cta {
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	height: 36px;
+	margin-top: 4px;
+	border-radius: 8px;
+	background-color: $lp-blue;
+	color: $text-main;
+	font-size: 13px;
+	font-weight: 700;
+	cursor: pointer;
+	transition: background-color 0.12s ease-out;
+}
+
+.hub-cta:hover {
+	background-color: $lp-blue-hover;
+}
+
+.hub-earn-card {
+	flex: 0 0 auto;
+}
+
+.hub-earn-row {
+	flex-direction: column;
+	gap: 2px;
+	padding: 10px 12px;
+	border-radius: 8px;
+	background-color: $surface-inset;
+}
+
+.hub-earn-title {
+	font-size: 13px;
+	font-weight: 600;
+	color: $text-main;
+}
+
+.hub-earn-body {
+	font-size: 12px;
+	color: $text-dim;
+}
+
+// ── PLACEHOLDER (tabs whose slices have not landed) ──────────────────────────
 .hub-placeholder {
 	flex-direction: column;
 	align-items: center;

@@ -5,6 +5,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 using System;
+using System.Collections.Generic;
 
 namespace LifePunch.DXRP.Addons.PlayerHub;
 
@@ -65,7 +66,40 @@ public static class LpPlayerHubFixture
 		ActiveTab: activeTab,
 		SkillsBadgeCount: 2,
 		IsFixture: true );
+
+	/// <summary>
+	/// Slice 2 Overview fixture. Values MUST agree with <see cref="Shell"/> where both are visible
+	/// (Law 16 deep-link consistency): Level 24, LP 1280, 2 skill points = the sidebar badge.
+	/// </summary>
+	public static LpOverviewVm Overview() => new(
+		Level: 24,
+		XpIntoLevel: 3400,
+		XpForNextLevel: 5000,
+		LpBalance: 1280,
+		SkillPointsAvailable: 2,
+		SkillsUnlocked: 7,
+		EarnRoutes: new List<LpEarnRouteVm>
+		{
+			new( "Play sessions", "Time on LIFEPUNCH servers earns XP and $LP as you play." ),
+			new( "Server events", "Join scheduled community events for bonus payouts." ),
+			new( "Milestones", "Levelling up grants skill points automatically." ),
+		},
+		IsFixture: true );
 }
+
+/// <summary>Slice 2 Overview view-model. Display-only fixture until Slice 8 live swap.</summary>
+public sealed record LpOverviewVm(
+	int Level,
+	int XpIntoLevel,
+	int XpForNextLevel,
+	long LpBalance,
+	int SkillPointsAvailable,
+	int SkillsUnlocked,
+	IReadOnlyList<LpEarnRouteVm> EarnRoutes,
+	bool IsFixture );
+
+/// <summary>One play-earn route row on the Overview tab. Never an IAP callout.</summary>
+public sealed record LpEarnRouteVm( string Title, string Body );
 
 /// <summary>
 /// Tab presentation metadata. Kept beside the enum so a new tab cannot be added without giving it a

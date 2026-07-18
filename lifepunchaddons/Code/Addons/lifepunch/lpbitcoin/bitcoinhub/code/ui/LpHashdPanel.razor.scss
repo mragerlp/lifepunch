@@ -3046,6 +3046,16 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	width: 42px;
 	height: 42px;
 	flex-shrink: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 8px;
+	border: 1px solid rgba(247, 147, 26, 0.45);
+	background-color: rgba(247, 147, 26, 0.12);
+	color: #f7931a;
+	font-family: Poppins, Arial, sans-serif;
+	font-size: 22px;
+	font-weight: 900;
 }
 
 .lp-bitcoin-ops .pin-brand-copy {
@@ -3107,7 +3117,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 .lp-bitcoin-ops .pin-dot {
 	width: 14px;
 	height: 14px;
-	border-radius: 0;
+	border-radius: 999px;
 	border: 2px solid rgba(240, 165, 0, 0.35);
 	background-color: transparent;
 }
@@ -3174,6 +3184,29 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	color: #12100c;
 	border-color: #f3ae0a;
 	background-color: #f3ae0a;
+}
+
+.lp-bitcoin-ops .pin-key:active {
+	border-color: #f0a500;
+	background-color: rgba(240, 165, 0, 0.16);
+}
+
+.lp-bitcoin-ops .pin-key.ok:active {
+	color: #12100c;
+	border-color: #d99503;
+	background-color: #d99503;
+}
+
+.lp-bitcoin-ops .pin-key.ok.disabled {
+	opacity: 0.4;
+	cursor: default;
+}
+
+.lp-bitcoin-ops .pin-key.ok.disabled:hover,
+.lp-bitcoin-ops .pin-key.ok.disabled:active {
+	color: #12100c;
+	border-color: #f0a500;
+	background-color: #f0a500;
 }
 
 .lp-bitcoin-ops .pin-key.clr {
@@ -3467,8 +3500,8 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	min-width: 0;
 	display: flex;
 	flex-direction: column;
-	gap: 10px;
-	padding-top: 14px;
+	gap: 8px;
+	padding-top: 10px;
 	padding-right: 16px;
 	padding-bottom: 16px;
 	padding-left: 16px;
@@ -6958,16 +6991,93 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	height: 700px;
 }
 
-// Overview simplification — command-center layout with progressive detail.
-.lp-bitcoin-ops .overview-command-center-intro {
-	margin-top: 6px;
+// Overview — dashboard layout: head, hero stat row, checklist + shortcuts.
+.lp-bitcoin-ops .overview-head {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	flex-shrink: 0;
+}
+
+// Callout is quiet copy under the title — never a filled banner bar.
+.lp-bitcoin-ops .overview-callout {
+	font-size: 12px;
+	line-height: 1.5;
+	color: $hashd-muted;
+}
+
+// Page-title block: tighter than the tab cards' titles; eyebrow already names
+// the product, so the title reads as a section head, not a second wordmark.
+.lp-bitcoin-ops .overview-dash-title {
+	font-size: 18px;
+	margin-bottom: 0;
+}
+
+// Hero stat row — three equal cards, dashboard-grade numbers.
+.lp-bitcoin-ops .overview-stat-row {
+	display: flex;
+	flex-direction: row;
+	gap: 12px;
+	flex-shrink: 0;
+}
+
+.lp-bitcoin-ops .overview-stat-card {
+	display: flex;
+	flex-direction: column;
+	flex: 1 1 0;
+	min-width: 0;
+	gap: 3px;
+	padding: 11px 14px;
+	border: 1px solid rgba(255, 255, 255, 0.09);
+	border-radius: 10px;
+	background: rgba(8, 12, 18, 0.72);
+}
+
+.lp-bitcoin-ops .overview-stat-label {
+	font-size: 10px;
+	font-weight: 900;
+	letter-spacing: 0.09em;
+	text-transform: uppercase;
+	color: $hashd-muted;
+}
+
+.lp-bitcoin-ops .overview-stat-value {
+	font-size: 26px;
+	font-weight: 800;
+	letter-spacing: 0.01em;
+	color: $hashd-title;
+}
+
+.lp-bitcoin-ops .overview-stat-value.on {
+	color: #8cf8b3;
+}
+
+.lp-bitcoin-ops .overview-stat-value.off {
+	color: #ffd089;
+}
+
+.lp-bitcoin-ops .overview-stat-value .lp-money-btc {
+	font-size: 22px;
+}
+
+.lp-bitcoin-ops .overview-stat-sub {
+	font-size: 11px;
+	line-height: 1.35;
+	color: $hashd-muted;
+}
+
+.lp-bitcoin-ops .overview-checklist-panel .lp-ui-panel-title,
+.lp-bitcoin-ops .overview-snapshot-panel .lp-ui-panel-title {
+	margin-bottom: 10px;
 }
 
 .lp-bitcoin-ops .overview-command-center {
 	display: flex;
-	align-items: stretch;
+	align-items: flex-start;
 	gap: 14px;
-	min-height: 0;
+	// No min-height:0 — the row must never shrink under its own cards (round-1
+	// overlap defect: CTA row drew over the card bottoms).
+	flex-shrink: 0;
 }
 
 .lp-bitcoin-ops .overview-checklist-panel,
@@ -6977,6 +7087,7 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	flex: 1 1 0;
 	gap: 12px;
 	min-height: 0;
+	padding: 16px;
 }
 
 // Equal-partner law: the two Overview cards stretch to the row (1:1 ratio via
@@ -6986,9 +7097,9 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
-	// Grow only (basis auto) — basis 0 collapses the stack because the panel's
-	// height is content-driven (circular), and rows overlap their neighbors.
-	flex: 1 1 auto;
+	// Content-driven stack — rows keep their floor and never inflate to fill the
+	// pane; leftover air lives at the pane bottom, not inside the rows.
+	flex: 0 0 auto;
 }
 
 .lp-bitcoin-ops .overview-checklist-item {
@@ -6997,13 +7108,12 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	align-items: center;
 	// Uniform row height — every action-slot variant (button, hint text, unlink, none)
 	// renders at the same height so no content can drag the card taller.
-	min-height: 66px;
-	// Rows share the card's span equally (lane law) — growth only, floor above.
-	flex: 1 1 auto;
+	min-height: 50px;
+	flex: 0 0 auto;
 	gap: 12px;
-	padding: 10px 12px;
+	padding: 8px 12px;
 	border: 1px solid rgba(255, 255, 255, 0.12);
-	border-radius: 0;
+	border-radius: 6px;
 	background: rgba(8, 12, 18, 0.55);
 }
 
@@ -7037,57 +7147,62 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	color: $hashd-muted;
 }
 
-.lp-bitcoin-ops .overview-snapshot-grid {
+// Shortcuts panel — vertical destination list, replaces the old bottom CTA row
+// (which clipped against the pane floor at fixed shell heights).
+.lp-bitcoin-ops .overview-shortcut-list {
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
-	// Grow to fill the card (basis auto — see checklist note) so the footer hint
-	// pins to the remaining space at the bottom.
-	flex: 1 1 auto;
+	flex: 0 0 auto;
 }
 
-.lp-bitcoin-ops .overview-snapshot-card {
+.lp-bitcoin-ops .overview-shortcut {
 	display: flex;
-	flex-direction: column;
-	// Same lane law as the checklist rows: 66px floor, tiles share the span
-	// equally, content vertically centered to match the rows' align-items.
-	min-height: 66px;
-	flex: 1 1 auto;
-	justify-content: center;
-	gap: 3px;
-	padding: 10px 12px;
-	border: 1px solid rgba(255, 255, 255, 0.11);
-	border-radius: 0;
+	flex-direction: row;
+	align-items: center;
+	min-height: 50px;
+	flex: 0 0 auto;
+	gap: 12px;
+	padding: 10px 14px;
+	border: 1px solid rgba(255, 255, 255, 0.12);
+	border-radius: 6px;
 	background: rgba(8, 12, 18, 0.55);
-}
-
-.lp-bitcoin-ops .overview-snapshot-label {
-	font-size: 10px;
-	font-weight: 900;
-	letter-spacing: 0.08em;
-	text-transform: uppercase;
-	color: $hashd-muted;
-}
-
-.lp-bitcoin-ops .overview-snapshot-value {
-	font-size: 16px;
+	color: $hashd-text;
+	font-size: 13px;
 	font-weight: 800;
-	letter-spacing: 0.01em;
-	color: #e8edf7;
+	letter-spacing: 0.02em;
+	cursor: pointer;
+	opacity: 0.85;
+	transition: opacity 0.12s ease, background-color 0.12s ease;
 }
 
-.lp-bitcoin-ops .overview-snapshot-value.on {
-	color: #8cf8b3;
+.lp-bitcoin-ops .overview-shortcut:hover {
+	opacity: 1;
+	background: rgba(232, 125, 62, 0.08);
 }
 
-.lp-bitcoin-ops .overview-snapshot-value.off {
-	color: #ffd089;
+.lp-bitcoin-ops .overview-shortcut.primary {
+	border-color: rgba(232, 125, 62, 0.48);
+	color: $hashd-amber;
 }
 
-.lp-bitcoin-ops .overview-snapshot-sub {
-	font-size: 11px;
-	line-height: 1.35;
+.lp-bitcoin-ops .overview-shortcut .material-icons {
+	font-size: 18px;
 	color: $hashd-muted;
+}
+
+.lp-bitcoin-ops .overview-shortcut.primary .material-icons {
+	color: $hashd-amber;
+}
+
+.lp-bitcoin-ops .overview-shortcut-label {
+	flex: 1 1 auto;
+	text-align: left;
+}
+
+.lp-bitcoin-ops .overview-shortcut-chev {
+	flex: 0 0 auto;
+	opacity: 0.5;
 }
 
 .lp-bitcoin-ops .overview-snapshot-note,
@@ -7103,29 +7218,6 @@ $hashd-inset-bg: rgba(0, 0, 0, 0.55);
 	flex-direction: row;
 	justify-content: center;
 	text-align: center;
-}
-
-.lp-bitcoin-ops .overview-command-actions {
-	margin-top: 12px;
-	gap: 10px;
-}
-
-.lp-bitcoin-ops .overview-command-action {
-	min-height: 36px;
-	padding: 8px 12px;
-	font-size: 11px;
-}
-
-.lp-bitcoin-ops .overview-command-action {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: center;
-	gap: 8px;
-}
-
-.lp-bitcoin-ops .overview-command-action .material-icons {
-	font-size: 14px;
 }
 
 // Universal Upgrades home (three-surface shell — DECISION-0010, HASHD amber only)
@@ -7981,11 +8073,16 @@ $ops-hit: 44px;
 	background-color: $ops-bg;
 }
 
+// House grammar strip — quiet bar, destination named small-caps by the shell.
 .lp-bitcoin-ops .hub-header {
-	min-height: 64px;
-	padding: 10px 12px 10px 20px;
-	background-color: $ops-surface;
+	min-height: 56px;
+	padding: 8px 16px 8px 24px;
+	background-color: transparent;
 	border-bottom-color: $ops-border;
+}
+
+.lp-bitcoin-ops .hub-strip-title {
+	color: $ops-text-dim;
 }
 
 .lp-bitcoin-ops .hub-title,
@@ -8047,7 +8144,7 @@ $ops-hit: 44px;
 
 .lp-bitcoin-ops .pane.racks .rack-stat-tile-value.on,
 .lp-bitcoin-ops .overview-miner-status.on,
-.lp-bitcoin-ops .overview-snapshot-value.on,
+.lp-bitcoin-ops .overview-stat-value.on,
 .lp-bitcoin-ops .settings-pill.on,
 .lp-bitcoin-ops .rack-badge.green,
 .lp-bitcoin-ops .entity-chip.green {
@@ -8090,8 +8187,9 @@ $ops-hit: 44px;
 }
 
 // --- R1/R2 land overrides (after Codex 0047 skin) — labeled rail + LP Image marks ---
+// Width matches the house grammar sidebar (Player Hub exemplar).
 .lp-bitcoin-ops .sidebar {
-	width: 190px;
+	width: 210px;
 	align-items: stretch;
 	padding-left: 12px;
 	padding-right: 12px;
@@ -8149,17 +8247,48 @@ $ops-hit: 44px;
 	height: 30px;
 }
 
-// --- Hub-shell mapping layer (dispatch opencode 0002) — SIDEBAR DESIGN CANON v1 +
-// MENU SHELL LAW eyebrow grammar. Identity block top, settings pinned bottom via the
-// existing sidebar-nav flex-grow spacer; selection stays the filled accent block, no left strip.
+// --- Hub-shell mapping layer (dispatch opencode 0002) — SIDEBAR DESIGN CANON v1,
+// updated to the house grammar (Player Hub exemplar 2026-07-18): brand + close in the
+// sidebar head, identity pinned at the sidebar floor, settings above it.
+.lp-bitcoin-ops .sidebar-head {
+	border-bottom-color: $ops-border;
+}
+
+.lp-bitcoin-ops .sidebar-brand-word {
+	color: $ops-text;
+}
+
+.lp-bitcoin-ops .sidebar-close {
+	color: $ops-text-dim;
+}
+
+.lp-bitcoin-ops .sidebar-close:hover {
+	color: $ops-text;
+	background-color: $ops-orange-soft-hover;
+}
+
 .lp-bitcoin-ops .sidebar-identity {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: center;
-	width: 100%;
-	flex-shrink: 0;
-	margin-bottom: 22px;
+	border-top-color: $ops-border;
+}
+
+// Identity avatar is a true circle at the sidebar floor (house grammar).
+.lp-bitcoin-ops .sidebar-identity .sidebar-avatar {
+	width: 36px;
+	height: 36px;
+	border: 0;
+	border-radius: 50%;
+}
+
+.lp-bitcoin-ops .sidebar-identity .sidebar-avatar .sidebar-avatar-img {
+	border-radius: 50%;
+}
+
+.lp-bitcoin-ops .sidebar-identity-name {
+	color: $ops-text;
+}
+
+.lp-bitcoin-ops .sidebar-identity-sub {
+	color: $ops-text-dim;
 }
 
 .lp-bitcoin-ops .sidebar-foot {
@@ -8177,4 +8306,125 @@ $ops-hit: 44px;
 	letter-spacing: 1.5px;
 	color: $hashd-amber;
 	margin-bottom: 2px;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// REFERENCE DESIGN PASS (2026-07-18) — owner reference boards: rounded charcoal
+// cards, icon tiles, filled pill rail selection, dashboard-grade numerals.
+// Pure re-theme layer over existing class names; zero markup coupling.
+// ─────────────────────────────────────────────────────────────────────────────
+
+// Rail — selected item is a solid brand-orange pill with dark ink, like the
+// reference boards' active nav state. Hover is the soft tint.
+.lp-bitcoin-ops .sidebar-btn {
+	border-radius: 8px;
+	transition: background-color 0.12s ease, color 0.12s ease;
+}
+
+.lp-bitcoin-ops .sidebar-btn.sidebar-btn-sel {
+	background-color: $ops-orange;
+	color: #14100a;
+}
+
+.lp-bitcoin-ops .sidebar-btn.sidebar-btn-sel .material-icons,
+.lp-bitcoin-ops .sidebar-btn.sidebar-btn-sel .sidebar-btn-label {
+	color: #14100a;
+}
+
+// Dashboard hero stat cards join the card family — same charcoal surface,
+// same 12px radius, no hairline border on black.
+.lp-bitcoin-ops .overview-stat-card {
+	background-color: $ops-surface;
+	border: 0;
+	border-radius: $ops-card-radius;
+	padding: 14px 16px;
+}
+
+.lp-bitcoin-ops .overview-checklist-panel,
+.lp-bitcoin-ops .overview-snapshot-panel {
+	background-color: $ops-surface;
+	border: 0;
+	border-radius: $ops-card-radius;
+}
+
+// Rows inside dashboard cards sit on the darker inset, rounded, borderless.
+.lp-bitcoin-ops .overview-checklist-item,
+.lp-bitcoin-ops .overview-shortcut {
+	background-color: $ops-surface-inset;
+	border: 0;
+	border-radius: 8px;
+}
+
+.lp-bitcoin-ops .overview-shortcut:hover {
+	background-color: $ops-orange-soft;
+}
+
+.lp-bitcoin-ops .overview-shortcut.primary {
+	background-color: $ops-orange-soft;
+	color: $ops-orange;
+}
+
+.lp-bitcoin-ops .overview-shortcut.primary .material-icons {
+	color: $ops-orange;
+}
+
+// Launcher cards (Servers home / Upgrades home) — the bare 40px glyph becomes
+// a rounded icon tile on the soft-orange wash, per the reference boards.
+// Padding centers the glyph deterministically: (50 − 26) / 2 = 12.
+.lp-bitcoin-ops .upgrade-home-box-icon {
+	width: 50px;
+	height: 50px;
+	flex-shrink: 0;
+	border-radius: 12px;
+	background-color: $ops-orange-soft;
+	color: $ops-orange;
+	font-size: 26px;
+	padding-top: 12px;
+	text-align: center;
+}
+
+.lp-bitcoin-ops .upgrade-home-box:hover {
+	background-color: $ops-card-header;
+}
+
+// Status chips — soft tinted pills instead of hairline boxes.
+.lp-bitcoin-ops .entity-chip {
+	border: 0;
+	border-radius: 9px;
+	padding: 3px 10px;
+	background-color: rgba(255, 255, 255, 0.06);
+}
+
+.lp-bitcoin-ops .entity-chip.green { background-color: rgba(95, 211, 141, 0.12); }
+.lp-bitcoin-ops .entity-chip.gold { background-color: rgba(247, 147, 26, 0.14); }
+.lp-bitcoin-ops .entity-chip.red { background-color: rgba(239, 107, 95, 0.14); }
+
+// Wallet hero stat row reuses the dashboard stat-card grammar; needs its own
+// stack spacing because the wallet panel has no pane-level gap.
+.lp-bitcoin-ops .wallet-stat-row {
+	margin-bottom: 12px;
+}
+
+// Intros read as quiet copy under the title — never a filled banner bar
+// (same ruling as the dashboard callout; shell's accent-soft fill is off-brand here).
+.lp-bitcoin-ops .lp-ui-intro {
+	border: 0;
+	border-radius: 0;
+	background-color: transparent;
+	padding: 0 0 4px 0;
+	font-size: 12px;
+	color: $ops-text-dim;
+}
+
+// Numerals get dashboard weight on Wallet and Transfers.
+.lp-bitcoin-ops .wallet-cashout-tile-value {
+	font-size: 13px;
+}
+
+.lp-bitcoin-ops .transfer-subsection-value {
+	font-size: 15px;
+}
+
+.lp-bitcoin-ops .transfer-subsection-value-mono {
+	font-size: 16px;
 }
