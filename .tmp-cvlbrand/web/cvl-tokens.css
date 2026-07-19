@@ -1,0 +1,25 @@
+/* CVL design tokens — voxel-neon identity v1.1 (2026-07-17, Addendum A)
+   Sampled from ruled masters + mock-v1.1 neutrals. Import site-wide.
+   Single source of truth: no color literals outside this file. */
+:root {
+  --cvl-bg: #000000;
+  --cvl-surface: #0A0C07;
+  --cvl-ink: #FFFFFF;
+  --cvl-ink-dim: #B9BDB4;
+  --cvl-muted: #737984;       /* AA mute floor: 4.8:1 on black */
+  --cvl-border: #1C2018;
+  --cvl-border-control: #555C68;
+  --cvl-lime: #92FA11;        /* canonical accent (sampled core) */
+  --cvl-lime-dim: #375E16;    /* DECORATIVE ONLY: 2.78:1 — never text/borders */
+  --cvl-lime-glow: 0 0 24px rgba(146, 250, 17, 0.35);
+  --cvl-voxel-1: #F0F0F0;     /* voxel light face */
+  --cvl-voxel-2: #D0D0D0;     /* voxel mid face */
+  --cvl-voxel-3: #B0B0B0;     /* voxel shade face */
+  --cvl-font-display: "Pixelify Sans", monospace;   /* PROPOSED, unratified */
+  --cvl-font-body: "Inter", system-ui, sans-serif;  /* PROPOSED */
+  --cvl-font-mono: "JetBrains Mono", monospace;     /* PROPOSED */
+  --cvl-radius: 0px;          /* pixel aesthetic: square corners */
+  --cvl-px: 4px;              /* base pixel unit for borders/steps */
+}
+/* Accent budget: lime on <=10% of any viewport. Glitch: micro-interactions
+   only, <=300ms, honor prefers-reduced-motion. Body text never lime. */

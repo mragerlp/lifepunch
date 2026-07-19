@@ -1,0 +1,5191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>About — Cavelux · v3.58</title>
+  <meta name="robots" content="noindex, nofollow, noarchive" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive" />
+  <meta name="description" content="Most businesses don't have an AI problem — they have an AI-fluency barrier. Cavelux installs the system around the tools." />
+  <link rel="canonical" href="https://cavelux.ai/about/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Cavelux" />
+  <meta property="og:url" content="https://cavelux.ai/about/" />
+  <meta property="og:title" content="Cavelux About" />
+  <meta property="og:description" content="Most businesses don't have an AI problem — they have an AI-fluency barrier. Cavelux installs the system around the tools." />
+  <meta property="og:image" content="https://cavelux.ai/social/CAVELUX_og_1200x630.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Cavelux About" />
+  <meta name="twitter:description" content="Most businesses don't have an AI problem — they have an AI-fluency barrier. Cavelux installs the system around the tools." />
+  <meta name="twitter:image" content="https://cavelux.ai/social/CAVELUX_og_1200x630.png" />
+  <link rel="icon" type="image/png" href="/favicon/favicon-32.png?v=mark3" sizes="32x32" />
+  <link rel="icon" type="image/png" href="/favicon/favicon-48.png?v=mark3" sizes="48x48" />
+  <link rel="icon" href="/favicon/favicon.ico?v=mark3" sizes="any" />
+  <link rel="apple-touch-icon" href="/favicon/apple-touch-icon.png?v=mark3" />
+  <link rel="stylesheet" href="/web/cvl-tokens.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+
+    :root {
+      --cvl-border: #1c2018;
+      --cvl-border-control: #555c68;
+      --cvl-muted: #737984;
+      /* Centered composition — intentional negative space, no dead ultrawide gaps */
+      --cvl-max: 1600px;
+      --cvl-gutter: clamp(2.5rem, 4vw, 4.5rem);
+      --cvl-section-pad-y: clamp(4.5rem, 6.5vw, 6.5rem);
+      --cvl-col-gap: clamp(3.5rem, 5vw, 6rem);
+      --cvl-font: Inter, system-ui, sans-serif;
+      --cvl-mono: "IBM Plex Mono", ui-monospace, monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      * { animation: none !important; transition: none !important; }
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--cvl-font);
+      font-size: 1rem;
+      line-height: 1.55;
+      color: var(--cvl-ink);
+      background: var(--cvl-bg);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; height: auto; display: block; }
+    /* Preserve voxel/stair-step outlines — never soft-filter the mark itself */
+    img.pixel {
+      image-rendering: -moz-crisp-edges;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+      -ms-interpolation-mode: nearest-neighbor;
+    }
+
+    .skip {
+      position: absolute;
+      left: -9999px;
+      top: 0;
+      background: var(--cvl-lime);
+      color: #000;
+      padding: 0.5rem 1rem;
+      z-index: 100;
+    }
+    .skip:focus { left: 1rem; top: 1rem; }
+
+    .wrap {
+      width: min(calc(100% - (var(--cvl-gutter) * 2)), var(--cvl-max));
+      max-width: var(--cvl-max);
+      padding-inline: 0;
+      margin-inline: auto;
+      box-sizing: border-box;
+    }
+    .section-inner {
+      display: grid;
+      grid-template-columns: minmax(420px, 0.85fr) minmax(640px, 1.3fr);
+      gap: var(--cvl-col-gap);
+      align-items: center;
+    }
+    .section-inner.ratio-55-45 {
+      grid-template-columns: minmax(420px, 1.1fr) minmax(380px, 0.9fr);
+    }
+    .section-inner.ratio-40-60 {
+      grid-template-columns: minmax(420px, 0.72fr) minmax(640px, 1.28fr);
+    }
+
+    /* —— Nav —— */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      border-bottom: 1px solid var(--cvl-border);
+      background: rgba(0, 0, 0, 0.92);
+      backdrop-filter: blur(8px);
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      gap: clamp(1rem, 2.5vw, 2.5rem);
+      min-height: 4rem;
+      padding-block: 0.65rem;
+    }
+    .nav-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7rem;
+      flex-shrink: 0;
+    }
+    .nav-brand img.nav-mark {
+      width: 2.35rem;
+      height: 2.35rem;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+    .nav-brand-text {
+      display: flex;
+      flex-direction: column;
+      gap: 0.12rem;
+      line-height: 1;
+    }
+    .nav-brand-word {
+      font-family: var(--cvl-mono);
+      font-weight: 700;
+      font-size: 1.4rem;
+      letter-spacing: 0.08em;
+      color: var(--cvl-ink);
+      line-height: 1;
+    }
+    .nav-brand-sub {
+      font-family: var(--cvl-mono);
+      font-size: 0.62rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      color: var(--cvl-lime);
+      line-height: 1.2;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 1 1 auto;
+      min-width: 0;
+      gap: clamp(1.85rem, 2.8vw, 3rem);
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      font-family: var(--cvl-mono);
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      color: var(--cvl-lime);
+    }
+    .nav-links a:hover,
+    .nav-links a:focus-visible {
+      color: #c8ff6a;
+      text-shadow: 0 0 14px rgba(146, 250, 17, 0.45);
+    }
+    .nav-links a:focus-visible {
+      outline: 2px solid var(--cvl-lime);
+      outline-offset: 3px;
+    }
+    .nav-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      padding: 0.6rem 1.15rem;
+      border-radius: 0;
+      border: 1px solid var(--cvl-lime);
+      background: rgba(146, 250, 17, 0.08);
+      color: var(--cvl-lime);
+      font-family: var(--cvl-mono);
+      font-weight: 600;
+      font-size: 0.8125rem;
+      letter-spacing: 0.03em;
+      box-shadow: 0 0 18px rgba(146, 250, 17, 0.12);
+      transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+    }
+    .nav-cta:hover {
+      background: var(--cvl-lime);
+      color: #000;
+      box-shadow: 0 0 24px rgba(146, 250, 17, 0.35);
+      filter: none;
+    }
+    .nav-cta:focus-visible {
+      outline: 2px solid var(--cvl-ink);
+      outline-offset: 3px;
+    }
+    .nav-toggle {
+      display: none;
+      background: transparent;
+      border: 1px solid var(--cvl-border-control);
+      color: var(--cvl-ink);
+      border-radius: var(--cvl-radius);
+      padding: 0.4rem 0.65rem;
+      font-family: var(--cvl-mono);
+      font-size: 0.75rem;
+      cursor: pointer;
+    }
+    .nav-toggle:focus-visible {
+      outline: 2px solid var(--cvl-lime);
+      outline-offset: 2px;
+    }
+
+    /* —— Hero —— */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: clamp(2.5rem, 4vw, 3.5rem) 0 clamp(2.25rem, 3.5vw, 3rem);
+      border-bottom: 1px solid var(--cvl-border);
+      background:
+        linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+        var(--cvl-bg);
+      background-size: 40px 40px, 40px 40px, auto;
+    }
+    /* Scan spans full hero — not just the map */
+    .hero-scan {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .hero-scan::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 28%;
+      background: linear-gradient(
+        180deg,
+        transparent 0%,
+        rgba(146, 250, 17, 0.03) 35%,
+        rgba(146, 250, 17, 0.12) 50%,
+        rgba(146, 250, 17, 0.03) 65%,
+        transparent 100%
+      );
+      box-shadow: 0 0 40px rgba(146, 250, 17, 0.08);
+      animation: heroScanSweep 5.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    }
+    @keyframes heroScanSweep {
+      0%   { top: -30%; opacity: 0; }
+      12%  { opacity: 1; }
+      88%  { opacity: 1; }
+      100% { top: 102%; opacity: 0; }
+    }
+    .hero-grid {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: minmax(16rem, 0.62fr) minmax(0, 1.38fr);
+      gap: var(--cvl-col-gap);
+      align-items: center;
+      min-height: min(72vh, 42rem);
+    }
+    .hero-copy {
+      max-width: 36rem;
+    }
+    .eyebrow {
+      font-family: var(--cvl-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--cvl-lime);
+      margin: 0 0 1rem;
+    }
+    .hero h1 {
+      margin: 0 0 1.1rem;
+      font-family: var(--cvl-mono);
+      font-size: clamp(2.25rem, 4.5vw, 3.6rem);
+      line-height: 1.1;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      max-width: 15ch;
+    }
+    .hero-lead {
+      margin: 0 0 1.85rem;
+      color: var(--cvl-ink-dim);
+      font-family: var(--cvl-font);
+      font-size: 1.0625rem;
+      max-width: 34rem;
+    }
+    /* Uniform type on graphic-adjacent labels — colors stay lime/ink */
+    .arch-node span,
+    .loop-stage,
+    .uap-title,
+    .code-path,
+    .code-tab {
+      font-family: var(--cvl-mono);
+    }
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 2.75rem;
+      padding: 0.7rem 1.25rem;
+      border-radius: 0;
+      font-family: var(--cvl-mono);
+      font-weight: 600;
+      font-size: 0.8125rem;
+      letter-spacing: 0.03em;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+    .btn:focus-visible {
+      outline: 2px solid var(--cvl-lime);
+      outline-offset: 3px;
+    }
+    .btn-primary {
+      background: rgba(146, 250, 17, 0.1);
+      border-color: var(--cvl-lime);
+      color: var(--cvl-lime);
+      box-shadow: 0 0 18px rgba(146, 250, 17, 0.12);
+    }
+    .btn-primary:hover {
+      background: var(--cvl-lime);
+      color: #000;
+      box-shadow: 0 0 24px rgba(146, 250, 17, 0.35);
+      filter: none;
+    }
+    .btn-secondary {
+      background: transparent;
+      color: var(--cvl-ink-dim);
+      border-color: rgba(146, 250, 17, 0.35);
+    }
+    .btn-secondary:hover {
+      border-color: var(--cvl-lime);
+      color: var(--cvl-lime);
+      background: rgba(146, 250, 17, 0.06);
+    }
+
+    /* Hero network — procedural topology around central mark */
+    .arch-map {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      min-height: min(58vw, 42rem);
+      aspect-ratio: 1 / 1;
+      max-height: 48rem;
+      margin-inline: 0;
+      margin-left: clamp(0.5rem, 2.5vw, 2.5rem); /* absorb right-side space */
+      display: grid;
+      place-items: center;
+      justify-self: stretch;
+      overflow: visible;
+      isolation: isolate;
+    }
+    .arch-scan { display: none; } /* superseded by .hero-scan */
+
+    /* Orbits = canvas strokes only — no fill plate / no tint wash over the site grid */
+    .arch-radar { display: none !important; }
+    .arch-map::after { display: none !important; }
+
+    .arch-plexus {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+      pointer-events: none;
+    }
+    /* No glow plate behind the mark — orbits stay open over the site grid */
+    .arch-hub-wrap {
+      position: relative;
+      z-index: 3;
+      width: min(48%, 19.5rem); /* heart — fills the map with the orbit system */
+      display: grid;
+      place-items: center;
+      animation: archHubIn 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .arch-hub-wrap::before { display: none !important; }
+    .arch-hub {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      height: auto;
+      filter: none;
+    }
+    /* Pillar chips — idle / receiving / settled-active */
+    .arch-node {
+      position: absolute;
+      z-index: 4;
+      display: inline-flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 0.58rem;
+      width: max-content;
+      max-width: min(21rem, 96%);
+      min-height: 0;
+      height: auto;
+      padding: 0.88rem 1.35rem;
+      box-sizing: border-box;
+      background: rgba(146, 250, 17, 0.02);
+      border: 1.5px solid rgba(146, 250, 17, 0.72);
+      border-radius: 2px;
+      font-family: var(--cvl-mono);
+      font-size: clamp(1.06rem, 1.6vw, 1.24rem);
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--cvl-lime);
+      white-space: nowrap;
+      text-decoration: none;
+      cursor: pointer;
+      box-shadow: 0 0 18px rgba(146, 250, 17, 0.12);
+      animation: archNodeIn 0.75s cubic-bezier(0.22, 1, 0.36, 1) both;
+      transition:
+        background 0.22s ease,
+        color 0.22s ease,
+        border-color 0.22s ease,
+        box-shadow 0.22s ease,
+        transform 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: transform;
+    }
+    .arch-node span {
+      line-height: 1;
+      display: block;
+      flex: 0 1 auto;
+    }
+    /* Hover / selected / linked share ONE full highlight — no post-arrival dim */
+    .arch-node:hover,
+    .arch-node:focus-visible,
+    .arch-node.is-active,
+    .arch-node.is-lit,
+    .arch-node.is-linked {
+      background: rgba(146, 250, 17, 0.18);
+      color: rgb(190, 255, 90);
+      border-color: var(--cvl-lime);
+      box-shadow:
+        0 0 0 1px rgba(146, 250, 17, 0.45),
+        0 0 28px rgba(146, 250, 17, 0.4);
+      outline: none;
+    }
+    .arch-node:hover .arch-ico,
+    .arch-node:focus-visible .arch-ico,
+    .arch-node.is-active .arch-ico,
+    .arch-node.is-lit .arch-ico,
+    .arch-node.is-linked .arch-ico {
+      stroke: rgb(190, 255, 90);
+      transform: scale(1.04);
+    }
+    /* Arrival flash only — then stays on the same full highlight above */
+    .arch-node.is-receiving {
+      background: rgba(146, 250, 17, 0.95);
+      color: #000;
+      border-color: #fff;
+      box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.55),
+        0 0 28px rgba(146, 250, 17, 0.65),
+        0 0 60px rgba(146, 250, 17, 0.28);
+    }
+    .arch-node.is-receiving .arch-ico { stroke: #000; }
+    /* Positions come from JS (orbit hang-off). Corner classes only set stagger. */
+    .arch-node.tl,
+    .arch-node.tr,
+    .arch-node.br,
+    .arch-node.bl {
+      top: 50%;
+      left: 50%;
+      right: auto;
+      bottom: auto;
+      transform: translate(-50%, -50%);
+    }
+    .arch-node.tl { animation-delay: 0.4s; }
+    .arch-node.tr { animation-delay: 0.52s; }
+    .arch-node.bl { animation-delay: 0.64s; }
+    .arch-node.br { animation-delay: 0.76s; }
+    .arch-node.tl:hover,
+    .arch-node.tl:focus-visible,
+    .arch-node.tl.is-active,
+    .arch-node.tl.is-lit,
+    .arch-node.tl.is-linked,
+    .arch-node.tl.is-receiving,
+    .arch-node.tr:hover,
+    .arch-node.tr:focus-visible,
+    .arch-node.tr.is-active,
+    .arch-node.tr.is-lit,
+    .arch-node.tr.is-linked,
+    .arch-node.tr.is-receiving,
+    .arch-node.br:hover,
+    .arch-node.br:focus-visible,
+    .arch-node.br.is-active,
+    .arch-node.br.is-lit,
+    .arch-node.br.is-linked,
+    .arch-node.br.is-receiving,
+    .arch-node.bl:hover,
+    .arch-node.bl:focus-visible,
+    .arch-node.bl.is-active,
+    .arch-node.bl.is-lit,
+    .arch-node.bl.is-linked,
+    .arch-node.bl.is-receiving {
+      transform: translate(-50%, -50%) translateY(-2px) scale(1.03);
+    }
+    .arch-node .arch-ico {
+      width: 2.05em;
+      height: 2.05em;
+      flex-shrink: 0;
+      stroke: var(--cvl-lime);
+      fill: none;
+      stroke-width: 1.45;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: transform 0.22s ease, stroke 0.2s ease;
+    }
+
+    @keyframes archHubIn {
+      from { opacity: 0; transform: scale(0.86); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    @keyframes archNodeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .arch-hub-wrap,
+      .arch-hub,
+      .arch-node,
+      .arch-scan,
+      .hero-scan::before {
+        animation: none !important;
+        opacity: 1 !important;
+        transition-duration: 100ms !important;
+      }
+      .arch-hub-wrap { transform: none !important; }
+      .arch-scan,
+      .hero-scan { display: none; }
+      .arch-map[data-reduce-motion="1"] .arch-plexus { opacity: 0.9; }
+    }
+
+    /* —— Interactive stack console —— */
+    .stack-deck {
+      position: relative;
+      padding: clamp(3rem, 5vw, 4.25rem) 0;
+      border-bottom: 1px solid var(--cvl-border);
+      background: var(--cvl-bg);
+      scroll-margin-top: 4.5rem;
+    }
+    .stack-split {
+      display: grid;
+      grid-template-columns: minmax(280px, 0.42fr) minmax(0, 0.58fr);
+      gap: clamp(1.75rem, 3vw, 2.75rem);
+      align-items: start;
+      position: relative;
+    }
+    /* Animated note → terminal bridge (positioned in JS to the hot row) */
+    .stack-bridge {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: visible;
+    }
+    .stack-bridge-path {
+      fill: none;
+      stroke: rgba(146, 250, 17, 0.7);
+      stroke-width: 1.5;
+      stroke-linecap: butt;
+      stroke-linejoin: round;
+      opacity: 0;
+      stroke-dasharray: 6 5;
+      filter: drop-shadow(0 0 5px rgba(146, 250, 17, 0.4));
+    }
+    .stack-split.is-linked .stack-bridge-path {
+      opacity: 1;
+      animation: stackBridgeDraw 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    @keyframes stackBridgeDraw {
+      from { stroke-dashoffset: 220; opacity: 0; }
+      to { stroke-dashoffset: 0; opacity: 1; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .stack-split.is-linked .stack-bridge-path { animation: none; }
+    }
+    .stack-copy,
+    .code-shell { position: relative; z-index: 1; }
+    .stack-copy .section-label { margin-bottom: 0.55rem; }
+    .stack-copy h2 {
+      font-family: var(--cvl-mono);
+      font-size: clamp(1.45rem, 2.4vw, 2rem);
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      margin: 0 0 0.7rem;
+      max-width: 22ch;
+      line-height: 1.2;
+    }
+    .stack-copy .lede {
+      margin: 0 0 1rem;
+      color: var(--cvl-ink-dim);
+      max-width: 36rem;
+      font-family: var(--cvl-font);
+      font-size: 0.975rem;
+    }
+    .stack-notes {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      width: 100%;
+      max-width: 36rem;
+    }
+    .stack-notes li {
+      display: grid;
+      grid-template-columns: 0.9rem minmax(0, 1fr);
+      gap: 0.5rem;
+      align-items: start;
+      box-sizing: border-box;
+      width: 100%;
+      font-family: var(--cvl-font);
+      font-size: 0.95rem;
+      line-height: 1.45;
+      color: var(--cvl-ink-dim);
+      padding: 0.5rem 0.6rem;
+      margin: 0;
+      border: 1px solid rgba(146, 250, 17, 0.16);
+      border-radius: 2px;
+      cursor: pointer;
+      transition: border-color 0.12s ease, background 0.12s ease, color 0.12s ease;
+    }
+    .stack-notes li::before {
+      content: "›";
+      color: var(--cvl-lime);
+      font-family: var(--cvl-mono);
+      font-weight: 600;
+      line-height: 1.4;
+    }
+    .stack-notes li:hover {
+      color: var(--cvl-ink);
+      border-color: rgba(146, 250, 17, 0.22);
+      background: rgba(146, 250, 17, 0.04);
+    }
+    .stack-notes li.is-hot {
+      color: var(--cvl-ink);
+      border-color: rgba(146, 250, 17, 0.4);
+      background: rgba(146, 250, 17, 0.08);
+    }
+    .stack-notes li.is-hot strong { color: var(--cvl-lime); }
+    .stack-notes strong {
+      color: var(--cvl-ink);
+      font-weight: 600;
+      font-family: var(--cvl-mono);
+      font-size: 0.9em;
+      letter-spacing: 0.02em;
+    }
+    .stack-anchors {
+      position: relative;
+      height: 0;
+    }
+    .stack-anchors span {
+      position: absolute;
+      top: -5rem;
+    }
+    .code-shell {
+      border: 1px solid rgba(146, 250, 17, 0.28);
+      background: #050705;
+      box-shadow: 0 0 40px rgba(146, 250, 17, 0.06);
+      overflow: hidden;
+      width: 100%;
+      max-width: none;
+      justify-self: stretch;
+      min-height: 0;
+    }
+    .code-chrome {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding: 0 0 0 1rem;
+      border-bottom: 1px solid rgba(146, 250, 17, 0.2);
+      background: rgba(146, 250, 17, 0.04);
+      font-family: var(--cvl-mono);
+      font-size: 0.75rem;
+      color: var(--cvl-muted);
+      min-height: 2.35rem;
+    }
+    .code-path {
+      color: var(--cvl-lime);
+      letter-spacing: 0.02em;
+      min-width: 0;
+    }
+    .code-path .dim { color: var(--cvl-muted); }
+    /* Windows-style window controls — right-aligned; only close uses red */
+    .code-win {
+      display: flex;
+      align-items: stretch;
+      flex-shrink: 0;
+      margin-left: auto;
+      height: 2.35rem;
+    }
+    .code-win button {
+      appearance: none;
+      border: none;
+      background: transparent;
+      color: var(--cvl-muted);
+      width: 2.85rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      cursor: default;
+      pointer-events: none;
+    }
+    .code-win button svg {
+      width: 12px;
+      height: 12px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.5;
+    }
+    .code-win .win-close {
+      color: #fff;
+      background: #c42b1c;
+    }
+    .code-win .win-close svg {
+      stroke: #fff;
+      stroke-width: 1.75;
+    }
+    .code-tabs {
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 0;
+      width: 100%;
+      border-bottom: 1px solid rgba(146, 250, 17, 0.18);
+      background: #070a06;
+    }
+    .code-tab {
+      appearance: none;
+      flex: 1 1 0;
+      border: none;
+      background: transparent;
+      color: var(--cvl-muted);
+      font-family: var(--cvl-mono);
+      font-size: 0.86rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: lowercase;
+      text-align: center;
+      padding: 0.95rem 1.35rem;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+    .code-tab:hover {
+      color: var(--cvl-lime);
+      background: rgba(146, 250, 17, 0.06);
+    }
+    .code-tab.is-active {
+      color: #000;
+      background: var(--cvl-lime);
+      border-bottom-color: var(--cvl-lime);
+      box-shadow: 0 0 22px rgba(146, 250, 17, 0.35);
+    }
+    .code-tab:focus-visible {
+      outline: 2px solid var(--cvl-lime);
+      outline-offset: -2px;
+    }
+    .code-body {
+      /* Lock to 14 mono lines so Knowledge can't stretch the shell */
+      --code-lines: 14;
+      --code-lh: 1.55;
+      min-height: calc(var(--code-lines) * 0.875rem * var(--code-lh) + 2.45rem);
+      max-height: calc(var(--code-lines) * 0.875rem * var(--code-lh) + 2.45rem);
+      overflow: hidden;
+      padding: 1.1rem 1.2rem 1.35rem;
+      font-family: var(--cvl-mono);
+      font-size: 0.875rem;
+      line-height: var(--code-lh);
+      color: var(--cvl-ink-dim);
+      position: relative;
+    }
+    .code-body.is-swap {
+      animation: codeFade 0.18s ease;
+    }
+    @keyframes codeFade {
+      from { opacity: 0.55; }
+      to { opacity: 1; }
+    }
+    .code-line {
+      display: grid;
+      grid-template-columns: 2.75rem 1fr;
+      gap: 0.85rem;
+      opacity: 1;
+      transform: none;
+    }
+    .code-line.is-pending {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    .code-line.is-in {
+      animation: lineIn 0.22s ease forwards;
+    }
+    @keyframes lineIn {
+      to { opacity: 1; transform: none; }
+    }
+    .code-ln {
+      color: #375E16;
+      text-align: right;
+      user-select: none;
+    }
+    .code-tx.kw { color: var(--cvl-lime); }
+    .code-tx.cm { color: var(--cvl-muted); }
+    .code-tx.str { color: #c8ff6a; }
+    .code-tx.hdr {
+      color: var(--cvl-ink);
+      font-weight: 600;
+      font-size: 1.05rem;
+    }
+    .code-caret {
+      display: inline-block;
+      width: 0.55ch;
+      height: 1.1em;
+      margin-left: 2px;
+      background: var(--cvl-lime);
+      vertical-align: text-bottom;
+      animation: caretBlink 1s steps(1) infinite;
+    }
+    @keyframes caretBlink {
+      50% { opacity: 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .code-line { opacity: 1; transform: none; }
+      .code-line.is-in { animation: none; }
+      .code-body.is-swap { animation: none; }
+      .code-caret { animation: none; }
+    }
+
+    /* —— Proof bar —— */
+    .proof {
+      border-bottom: 1px solid var(--cvl-border);
+      background: var(--cvl-surface);
+    }
+    .proof-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: clamp(1.5rem, 3vw, 3rem);
+      padding-block: 2rem;
+    }
+    .proof-card {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 1.1rem 1.25rem;
+      align-items: start;
+      padding: 0.35rem 0;
+      border: none;
+    }
+    .proof-icon {
+      width: 2.75rem;
+      height: 2.75rem;
+      margin: 0.15rem 0 0;
+      stroke: var(--cvl-lime);
+      fill: none;
+      stroke-width: 1.35;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+    }
+    .proof-icon .fill-soft {
+      fill: rgba(146, 250, 17, 0.12);
+      stroke: none;
+    }
+    .proof-copy {
+      min-width: 0;
+    }
+    .proof-label {
+      font-family: var(--cvl-mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--cvl-lime);
+      margin: 0 0 0.45rem;
+      font-weight: 600;
+    }
+    .proof-card p {
+      margin: 0;
+      color: var(--cvl-ink-dim);
+      font-size: 0.975rem;
+      line-height: 1.5;
+    }
+
+    /* —— Process —— */
+    .process {
+      padding: 4rem 0;
+      border-bottom: 1px solid var(--cvl-border);
+    }
+    .process h2 {
+      margin: 0 0 2rem;
+      font-family: var(--cvl-mono);
+      font-size: clamp(1.7rem, 2.8vw, 2.35rem);
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      max-width: 28ch;
+      line-height: 1.2;
+    }
+    .process-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+    .process-card {
+      padding: 1.5rem 1.35rem;
+      border: 1px solid var(--cvl-border);
+      border-radius: var(--cvl-radius);
+      background: var(--cvl-surface);
+    }
+    .process-card svg {
+      width: 1.5rem;
+      height: 1.5rem;
+      margin-bottom: 1rem;
+      stroke: var(--cvl-lime);
+      fill: none;
+      stroke-width: 1.5;
+    }
+    .process-card h3 {
+      margin: 0 0 0.5rem;
+      font-family: var(--cvl-mono);
+      font-size: 1.15rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+    .process-card p {
+      margin: 0;
+      color: var(--cvl-muted);
+      font-size: 0.9375rem;
+    }
+
+    /* —— Depth sections (Cursor) —— */
+    section.block {
+      padding: var(--cvl-section-pad-y) 0;
+      border-bottom: 1px solid var(--cvl-border);
+    }
+    .section-label {
+      font-family: var(--cvl-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--cvl-muted);
+      margin: 0 0 0.75rem;
+    }
+    .block h2 {
+      margin: 0 0 0.75rem;
+      font-family: var(--cvl-mono);
+      font-size: clamp(1.55rem, 2.5vw, 2.1rem);
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      max-width: 28ch;
+      line-height: 1.2;
+    }
+    .block > .wrap > .lede {
+      margin: 0 0 2rem;
+      color: var(--cvl-ink-dim);
+      max-width: 52rem;
+    }
+
+    .cap-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.85rem;
+    }
+    .cap {
+      padding: 1.15rem 1.25rem;
+      border: 1px solid var(--cvl-border);
+      background: var(--cvl-surface);
+    }
+    .cap-num {
+      font-family: var(--cvl-mono);
+      font-size: 0.75rem;
+      color: var(--cvl-lime);
+      margin-bottom: 0.4rem;
+    }
+    .cap h3 {
+      margin: 0 0 0.35rem;
+      font-family: var(--cvl-mono);
+      font-size: 1.05rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+    .cap p {
+      margin: 0;
+      color: var(--cvl-muted);
+      font-size: 0.9375rem;
+    }
+
+    /* System — diagram left (wide showcase), copy right */
+    .system-split {
+      display: grid;
+      grid-template-columns: minmax(380px, 1.15fr) minmax(300px, 0.95fr);
+      gap: clamp(1.75rem, 3.5vw, 3rem);
+      align-items: start;
+      margin-top: 0;
+    }
+    .system-split .loop-diagram {
+      justify-self: stretch;
+      margin-inline: 0;
+      width: 100%;
+      max-width: none;
+      margin-top: 0;
+    }
+    .system-intro {
+      margin: 0 0 1rem;
+      width: 100%;
+      max-width: 36rem;
+      text-align: left;
+    }
+    .system-intro .section-label { margin-bottom: 0.55rem; }
+    .system-intro h2 {
+      margin: 0 0 0.7rem;
+      font-family: var(--cvl-mono);
+      font-size: clamp(1.45rem, 2.4vw, 2rem);
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      max-width: 22ch;
+      line-height: 1.2;
+    }
+    .system-intro .lede {
+      margin: 0;
+      font-family: var(--cvl-font);
+      color: var(--cvl-ink-dim);
+      max-width: 36rem;
+      font-size: 0.975rem;
+      line-height: 1.5;
+      text-wrap: pretty;
+    }
+    .system-copy {
+      min-width: 0;
+      padding-top: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      width: 100%;
+      max-width: 36rem;
+    }
+    .system-copy h3 {
+      margin: 0 0 0.65rem;
+      font-family: var(--cvl-mono);
+      font-size: clamp(1.15rem, 1.8vw, 1.35rem);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--cvl-ink);
+      line-height: 1.25;
+    }
+    .system-copy .system-body {
+      margin: 0 0 1.15rem;
+      color: var(--cvl-ink-dim);
+      font-family: var(--cvl-font);
+      font-size: 1rem;
+      line-height: 1.55;
+      max-width: none;
+    }
+    .artifact-list {
+      margin: 0 0 1.35rem;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      align-self: stretch;
+      gap: 0.3rem;
+      font-family: var(--cvl-font);
+      font-size: 0.95rem;
+      line-height: 1.45;
+      color: var(--cvl-ink-dim);
+      width: 100%;
+      max-width: none;
+    }
+    .artifact-list li {
+      display: grid;
+      grid-template-columns: 0.9rem minmax(0, 1fr);
+      gap: 0.5rem;
+      align-items: start;
+      box-sizing: border-box;
+      width: 100%;
+      padding: 0.5rem 0.6rem;
+      margin: 0;
+      border: 1px solid rgba(146, 250, 17, 0.16);
+      border-radius: 2px;
+      cursor: pointer;
+      transition: border-color 0.18s ease, background 0.18s ease, color 0.18s ease;
+    }
+    .artifact-list li::before {
+      content: "›";
+      color: var(--cvl-lime);
+      font-family: var(--cvl-mono);
+      font-weight: 600;
+      line-height: 1.4;
+    }
+    .artifact-list li:hover {
+      color: var(--cvl-ink);
+      border-color: rgba(146, 250, 17, 0.22);
+      background: rgba(146, 250, 17, 0.04);
+    }
+    .artifact-list li.is-hot {
+      color: var(--cvl-ink);
+      border-color: rgba(146, 250, 17, 0.4);
+      background: rgba(146, 250, 17, 0.08);
+    }
+    .artifact-list li.is-hot strong { color: var(--cvl-lime); }
+    .artifact-list strong {
+      color: var(--cvl-ink);
+      font-weight: 600;
+      font-family: var(--cvl-mono);
+      font-size: 0.9em;
+      letter-spacing: 0.02em;
+    }
+    .system-cta {
+      margin: 0;
+      width: 100%;
+    }
+    .system-cta .btn {
+      width: auto;
+      max-width: 100%;
+      white-space: nowrap;
+    }
+    #system .artifact-list { margin-bottom: 1.1rem; }
+
+    #system.block {
+      padding: clamp(2.25rem, 3.5vw, 3.25rem) 0;
+      scroll-margin-top: 4.5rem;
+    }
+
+    /* Engagement loop — large left showcase, AI chip hub */
+    .loop-diagram {
+      position: relative;
+      width: 100%;
+      max-width: min(42rem, 100%);
+      aspect-ratio: 1 / 1;
+      max-height: min(40rem, 62vw);
+      margin-inline: 0;
+      min-height: 0;
+      border: none;
+      background: transparent;
+    }
+    .loop-diagram canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .loop-hub-wrap {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: min(64%, 17.5rem);
+      z-index: 3;
+      display: grid;
+      place-items: center;
+    }
+    .loop-hub-wrap::before { display: none !important; }
+    .loop-brain-btn {
+      position: relative;
+      z-index: 1;
+      appearance: none;
+      border: none;
+      background: transparent;
+      padding: 0;
+      margin: 0;
+      width: 100%;
+      cursor: pointer;
+      border-radius: 10px;
+    }
+    .loop-brain-btn:focus-visible {
+      outline: 2px solid var(--cvl-lime);
+      outline-offset: 6px;
+    }
+    .loop-brain {
+      display: block;
+      width: 100%;
+      height: auto;
+      overflow: visible;
+    }
+    .loop-brain .lb-chip-outer,
+    .loop-brain .lb-chip-inner {
+      fill: #050705;
+      stroke: var(--cvl-lime);
+      transition: fill 0.22s ease, stroke 0.22s ease, filter 0.22s ease;
+    }
+    .loop-brain .lb-chip-outer {
+      stroke-width: 2.6;
+      fill: rgba(5, 7, 5, 0.96);
+    }
+    .loop-brain .lb-chip-inner {
+      stroke-width: 1.4;
+      fill: #000;
+      stroke: rgba(146, 250, 17, 0.55);
+    }
+    .loop-brain .lb-brain-img {
+      pointer-events: none;
+      opacity: 0.96;
+      transition: opacity 0.22s ease, filter 0.22s ease;
+    }
+    /* AI chip lights only after linkage completes while hovered */
+    .loop-hub-wrap.is-hot .loop-brain .lb-chip-outer,
+    .loop-brain.is-lit .lb-chip-outer {
+      stroke: rgb(200, 255, 100);
+      filter: drop-shadow(0 0 14px rgba(146, 250, 17, 0.7));
+    }
+    .loop-hub-wrap.is-hot .loop-brain .lb-chip-inner,
+    .loop-brain.is-lit .lb-chip-inner {
+      stroke: rgb(190, 255, 90);
+    }
+    .loop-hub-wrap.is-hot .loop-brain .lb-brain-img,
+    .loop-brain.is-lit .lb-brain-img {
+      opacity: 1;
+      filter: drop-shadow(0 0 10px rgba(146, 250, 17, 0.45));
+    }
+    .loop-brain .lb-trace {
+      fill: none;
+      stroke: rgba(146, 250, 17, 0.32);
+      stroke-width: 1.7;
+      stroke-linecap: square;
+      stroke-linejoin: miter;
+      transition: stroke 0.18s ease, opacity 0.18s ease;
+    }
+    .loop-brain.is-lit .lb-trace[data-active="1"],
+    .loop-hub-wrap.is-hot .lb-trace[data-active="1"] {
+      stroke: rgb(190, 255, 90);
+      stroke-width: 2.2;
+      opacity: 1;
+    }
+    .loop-brain .lb-dock {
+      fill: transparent;
+      stroke: none;
+      pointer-events: none;
+    }
+    .loop-stage {
+      position: absolute;
+      z-index: 4;
+      font-family: var(--cvl-mono);
+      font-size: clamp(0.82rem, 1.3vw, 0.98rem);
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--cvl-lime);
+      background: rgba(5, 8, 4, 0.94);
+      border: 1.5px solid rgba(146, 250, 17, 0.55);
+      padding: 0.62rem 0.95rem;
+      cursor: pointer;
+      transition: box-shadow 0.18s ease, background 0.18s ease, border-color 0.18s ease, filter 0.18s ease;
+      white-space: nowrap;
+    }
+    .loop-stage:hover,
+    .loop-stage.is-hot {
+      background: rgba(146, 250, 17, 0.16);
+      border-color: var(--cvl-lime);
+      box-shadow: 0 0 28px rgba(146, 250, 17, 0.4);
+      filter: brightness(1.08);
+    }
+    /* Clockwise: N → E → S → W — nest against the port ring */
+    .loop-stage.s-obs { top: 0; left: 50%; transform: translate(-50%, 10%); }
+    .loop-stage.s-arch { top: 50%; right: 0; transform: translate(-8%, -50%); }
+    .loop-stage.s-impl { bottom: 0; left: 50%; transform: translate(-50%, -10%); }
+    .loop-stage.s-rev { top: 50%; left: 0; transform: translate(8%, -50%); }
+
+    /* Case — proving ground: one claim + terminal proof log (not feature cards) */
+    .case {
+      display: block;
+    }
+    .case-box {
+      display: grid;
+      grid-template-columns: minmax(260px, 0.42fr) minmax(0, 0.58fr);
+      gap: clamp(1.5rem, 3vw, 2.5rem);
+      align-items: start;
+      width: 100%;
+      padding: clamp(1.35rem, 2.4vw, 1.85rem);
+      border: 1px solid rgba(146, 250, 17, 0.28);
+      background: #050705;
+      box-shadow: 0 0 32px rgba(146, 250, 17, 0.05);
+    }
+    .case-head {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.75rem;
+      min-width: 0;
+    }
+    .case-note {
+      font-family: var(--cvl-mono);
+      font-size: 0.75rem;
+      color: var(--cvl-lime);
+      margin: 0;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .case-head h2 {
+      font-family: var(--cvl-mono);
+      margin: 0;
+      font-size: clamp(1.45rem, 2.4vw, 2rem);
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+    }
+    .case-lede {
+      margin: 0;
+      color: var(--cvl-ink-dim);
+      font-family: var(--cvl-font);
+      font-size: 0.975rem;
+      line-height: 1.5;
+      max-width: 34rem;
+      text-wrap: pretty;
+    }
+    .case-head-cta {
+      width: fit-content;
+      white-space: nowrap;
+      margin-top: 0.35rem;
+    }
+    .case-proof {
+      min-width: 0;
+      border: 1px solid rgba(146, 250, 17, 0.22);
+      background: #030503;
+      overflow: hidden;
+    }
+    .case-proof-chrome {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.55rem 0.85rem;
+      border-bottom: 1px solid rgba(146, 250, 17, 0.16);
+      font-family: var(--cvl-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.04em;
+      color: rgba(146, 250, 17, 0.7);
+    }
+    .case-proof-chrome .dim { color: rgba(180, 190, 180, 0.45); }
+    .case-proof-body {
+      margin: 0;
+      padding: 0.9rem 1rem 1.05rem;
+      font-family: var(--cvl-mono);
+      font-size: clamp(0.78rem, 1.05vw, 0.88rem);
+      line-height: 1.55;
+      color: rgba(180, 200, 180, 0.78);
+      white-space: pre-wrap;
+      text-wrap: pretty;
+    }
+    .case-proof-body .ok { color: var(--cvl-lime); }
+    .case-proof-body .mute { color: var(--cvl-muted); }
+
+    /* About — short brief above contact */
+    #about.block {
+      scroll-margin-top: 4.5rem;
+    }
+    .about-brief {
+      max-width: 48rem;
+    }
+    .about-brief .section-label { margin-bottom: 0.55rem; }
+    .about-brief h2 {
+      margin: 0 0 0.75rem;
+      font-family: var(--cvl-mono);
+      font-size: clamp(1.45rem, 2.4vw, 2rem);
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      max-width: 28ch;
+    }
+    .about-brief .lede {
+      margin: 0 0 1rem;
+      color: var(--cvl-ink-dim);
+      font-family: var(--cvl-font);
+      font-size: clamp(1rem, 1.3vw, 1.1rem);
+      line-height: 1.55;
+      max-width: 42rem;
+      text-wrap: pretty;
+    }
+    .about-brief .about-body {
+      margin: 0;
+      color: var(--cvl-ink-dim);
+      font-family: var(--cvl-font);
+      font-size: 0.975rem;
+      line-height: 1.55;
+      max-width: 42rem;
+      text-wrap: pretty;
+    }
+
+    .final-cta {
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+      padding: var(--cvl-section-pad-y) 0;
+      border-top: 1px solid var(--cvl-border);
+      background:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        var(--cvl-bg);
+      background-size: 40px 40px, 40px 40px, auto;
+    }
+    .final-cta .final-panel {
+      width: min(100%, 1040px);
+      min-height: 390px;
+      margin-inline: auto;
+      padding: clamp(2.75rem, 4.5vw, 3.75rem) clamp(2rem, 4vw, 3.25rem);
+      /* Match terminal / surface panels — solid fill, no cloudy green wash */
+      border: 1px solid rgba(146, 250, 17, 0.28);
+      background: #050705;
+      box-shadow: 0 0 40px rgba(146, 250, 17, 0.06);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: clamp(1.1rem, 2.2vw, 1.65rem);
+      position: relative;
+    }
+    .final-cta .final-panel::before { display: none; }
+    .final-cta h2 {
+      margin: 0 auto;
+      max-width: 28ch;
+      font-family: var(--cvl-mono);
+      font-size: clamp(1.65rem, 2.8vw, 2.35rem);
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.25;
+      position: relative;
+    }
+    .final-cta p {
+      margin: 0 auto;
+      color: var(--cvl-ink-dim);
+      max-width: 38rem;
+      font-size: 1.05rem;
+      line-height: 1.55;
+      font-family: var(--cvl-font);
+      position: relative;
+    }
+    .final-cta .cta-row {
+      justify-content: center;
+      gap: 0.85rem;
+      margin-top: 0.35rem;
+      position: relative;
+    }
+
+    footer {
+      border-top: 1px solid var(--cvl-border);
+      padding: 2rem 0 2.5rem;
+      color: var(--cvl-muted);
+      font-size: 0.875rem;
+      font-family: var(--cvl-mono);
+    }
+    /* Left brand · centered URL · right copyright — proprietary flanks align */
+    .footer-inner {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 1.25rem;
+      align-items: center;
+    }
+    .footer-brand-block {
+      justify-self: start;
+    }
+    .footer-url {
+      justify-self: center;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--cvl-muted);
+    }
+    .footer-copy {
+      justify-self: end;
+      text-align: right;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      color: var(--cvl-lime);
+    }
+    @media (max-width: 720px) {
+      .footer-inner {
+        grid-template-columns: 1fr;
+        justify-items: center;
+        text-align: center;
+        gap: 1rem;
+      }
+      .footer-brand-block,
+      .footer-url,
+      .footer-copy {
+        justify-self: center;
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 1100px) {
+      .section-inner,
+      .section-inner.ratio-40-60,
+      .section-inner.ratio-55-45,
+      .stack-split,
+      .system-split {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      .stack-bridge { display: none; }
+      .loop-diagram { max-width: 32rem; min-height: 0; width: min(100%, 32rem); margin-inline: auto; }
+      .loop-hub-wrap { width: min(68%, 15.5rem); }
+    }
+    @media (max-width: 900px) {
+      .hero-grid,
+      .process-grid,
+      .stack-split,
+      .system-split { grid-template-columns: 1fr; }
+      .code-shell {
+        justify-self: stretch;
+        max-width: none;
+        min-height: 0;
+      }
+      .code-body {
+        min-height: calc(var(--code-lines) * 0.875rem * var(--code-lh) + 2.45rem);
+        max-height: calc(var(--code-lines) * 0.875rem * var(--code-lh) + 2.45rem);
+      }
+      .final-cta .final-panel { min-height: 320px; }
+      .proof-grid { grid-template-columns: 1fr; }
+      .proof-card {
+        border-right: none;
+        border-bottom: none;
+      }
+      .case-box { grid-template-columns: 1fr; }
+      .cap-grid { grid-template-columns: 1fr; }
+      .nav-links,
+      .nav-cta { display: none; }
+      .nav-brand img.nav-mark {
+        width: 2rem;
+        height: 2rem;
+      }
+      .nav-brand-word { font-size: 1.15rem; }
+      .nav-brand-sub { font-size: 0.55rem; }
+      .nav-links.is-open {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 100%;
+        background: var(--cvl-bg);
+        border-bottom: 1px solid var(--cvl-border);
+        padding: 1rem 1.25rem 1.25rem;
+        gap: 0.85rem;
+      }
+      .nav-cta.is-open {
+        display: inline-flex;
+        margin: 0.25rem 1.25rem 1rem;
+      }
+      .nav-toggle { display: inline-flex; }
+      .nav-inner { flex-wrap: wrap; }
+      .arch-map {
+        width: 100%;
+        min-height: 20rem;
+        max-height: none;
+        aspect-ratio: 1;
+        margin-top: 0.5rem;
+      }
+      .hero-grid {
+        grid-template-columns: 1fr;
+        min-height: 0;
+      }
+      .arch-hub-wrap { width: min(52%, 14.5rem); }
+      .arch-node {
+        width: max-content;
+        max-width: min(13.5rem, 50%);
+        font-size: 0.9rem;
+        padding: 0.72rem 0.88rem;
+        gap: 0.5rem;
+      }
+      .arch-node .arch-ico {
+        width: 1.55em;
+        height: 1.55em;
+      }
+      .arch-node.tl { top: 14%; left: 20%; right: auto; transform: translateX(-50%); }
+      .arch-node.tr { top: 40%; right: 1%; left: auto; transform: translateY(-50%); }
+      .arch-node.bl { top: 56%; left: 1%; right: auto; transform: translateY(-50%); }
+      .arch-node.br { bottom: 12%; top: auto; left: 74%; right: auto; transform: translateX(-50%); }
+    }
+  
+
+    /* COPY_SIMPLIFICATION_V1 — landing punchline + subpage space */
+    body[data-page="home"] .stack-deck,
+    body[data-page="home"] #system,
+    body[data-page="home"] #work,
+    body[data-page="home"] #about { display: none !important; }
+
+    .proof-trio {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(1.25rem, 2.5vw, 2rem);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .proof-trio li {
+      margin: 0;
+      padding: 1.15rem 1.2rem 1.25rem;
+      border: 1px solid rgba(146, 250, 17, 0.22);
+      background: rgba(10, 12, 7, 0.72);
+      font-family: var(--cvl-mono);
+      font-size: clamp(0.92rem, 1.2vw, 1.05rem);
+      line-height: 1.45;
+      color: var(--cvl-ink);
+    }
+    .proof-trio strong {
+      display: block;
+      margin-bottom: 0.35rem;
+      color: var(--cvl-lime);
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+    .proof-trio span { color: var(--cvl-ink-dim); }
+    .case-teaser-wrap .wrap {
+      display: flex;
+      justify-content: center;
+      text-align: center;
+    }
+    .case-teaser {
+      margin: 0 auto;
+      max-width: 44rem;
+      text-align: center;
+      font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+      line-height: 1.45;
+    }
+    .case-teaser a {
+      color: var(--cvl-lime);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(146, 250, 17, 0.45);
+    }
+    .case-teaser a:hover { border-bottom-color: var(--cvl-lime); }
+    .block.punch { padding-block: clamp(3.5rem, 6vw, 5.5rem); }
+
+    /* Nav: mark + green name; desktop tabs truly centered in the bar */
+    .nav {
+      padding-top: env(safe-area-inset-top, 0px);
+    }
+    .nav-brand {
+      align-items: center;
+      min-width: 0;
+      flex: 0 1 auto;
+    }
+    .nav-brand-text {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      min-width: 0;
+    }
+    .nav-brand-word {
+      display: none !important;
+    }
+    .nav-brand-sub {
+      font-family: "IBM Plex Mono", ui-monospace, monospace !important;
+      font-weight: 500 !important;
+      font-size: 0.72rem !important;
+      letter-spacing: 0.05em !important;
+      line-height: 1.2;
+      color: var(--cvl-lime);
+      text-align: left;
+      white-space: normal;
+      overflow: visible;
+      text-overflow: clip;
+      max-width: none;
+    }
+    /* Desktop: brand | centered tabs | CTA — equal side columns keep tabs on true center */
+    @media (min-width: 901px) {
+      .nav-inner {
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+        align-items: center;
+        gap: 1rem;
+      }
+      .nav-brand {
+        grid-column: 1;
+        justify-self: start;
+        flex: none !important;
+      }
+      .nav-links {
+        grid-column: 2;
+        justify-self: center;
+        flex: none !important;
+        width: auto;
+        gap: clamp(1.5rem, 2.2vw, 2.5rem);
+      }
+      .nav-cta-bar {
+        grid-column: 3;
+        justify-self: end;
+      }
+      .nav-toggle {
+        display: none !important;
+      }
+    }
+
+    /*
+     * Home hero — compact first viewport.
+     * Desktop: tight 2-col (copy | orbit). Mobile: short stack. No empty valley.
+     */
+    body[data-page="home"] .hero {
+      padding-block: 1.25rem 1.75rem !important;
+      overflow: visible !important;
+    }
+    body[data-page="home"] .hero-grid {
+      display: grid !important;
+      grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.3fr) !important;
+      gap: 2rem !important;
+      align-items: center !important;
+      min-height: 0 !important;
+      width: 100%;
+      max-width: 1220px;
+      margin-inline: auto;
+      overflow: visible !important;
+    }
+    body[data-page="home"] .hero-copy {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      text-align: left;
+      width: 100%;
+      max-width: 28rem;
+      margin: 0;
+      order: 0;
+    }
+    body[data-page="home"] .arch-map {
+      order: 0;
+      width: 100% !important;
+      max-width: 36rem !important;
+      margin: 0 auto !important;
+      min-height: 0 !important;
+      aspect-ratio: 1;
+      justify-self: center;
+      overflow: visible;
+      --arch-r: 33%;
+    }
+    .hero-brand-stack {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      width: fit-content;
+      max-width: 100%;
+      margin: 0 0 0.85rem;
+    }
+    .hero-glitch {
+      display: block;
+      margin: 0;
+      width: min(100%, 12.5rem);
+      height: auto;
+      transform: none;
+      image-rendering: auto;
+      filter: drop-shadow(0 0 10px rgba(146, 250, 17, 0.22));
+    }
+    body[data-page="home"] .hero h1 {
+      margin: 0 0 0.85rem;
+      text-align: left;
+      max-width: 14ch;
+      width: auto;
+      font-size: clamp(1.85rem, 3.4vw, 2.85rem);
+      text-wrap: balance;
+    }
+    body[data-page="home"] .hero-lead {
+      margin: 0 0 1.25rem;
+      text-align: left;
+      max-width: 32rem;
+      width: 100%;
+      text-wrap: balance;
+    }
+    body[data-page="home"] .hero .cta-row {
+      justify-content: flex-start;
+      width: 100%;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+    }
+    /* Landing entrance — slow rise for brand, headline, and CTAs */
+    @keyframes cvlRiseIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    body[data-page="home"] .hero-brand-stack {
+      animation: cvlRiseIn 1.3s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both;
+    }
+    body[data-page="home"] .hero h1 {
+      animation: cvlRiseIn 1.3s cubic-bezier(0.22, 1, 0.36, 1) 0.45s both;
+    }
+    body[data-page="home"] .hero-lead {
+      animation: cvlRiseIn 1.3s cubic-bezier(0.22, 1, 0.36, 1) 0.7s both;
+    }
+    body[data-page="home"] .hero .cta-row {
+      animation: cvlRiseIn 1.3s cubic-bezier(0.22, 1, 0.36, 1) 0.95s both;
+    }
+    /* Orbit system assembles after the copy lands */
+    body[data-page="home"] .arch-hub-wrap {
+      animation-duration: 1.7s !important;
+      animation-delay: 0.5s !important;
+    }
+    /* Chips arrive last — after the veins have grown out to meet them */
+    body[data-page="home"] .arch-node.tl { animation-duration: 1.3s !important; animation-delay: 4.6s !important; }
+    body[data-page="home"] .arch-node.tr { animation-duration: 1.3s !important; animation-delay: 4.9s !important; }
+    body[data-page="home"] .arch-node.bl { animation-duration: 1.3s !important; animation-delay: 5.2s !important; }
+    body[data-page="home"] .arch-node.br { animation-duration: 1.3s !important; animation-delay: 5.5s !important; }
+    @media (prefers-reduced-motion: reduce) {
+      body[data-page="home"] .hero-brand-stack,
+      body[data-page="home"] .hero h1,
+      body[data-page="home"] .hero-lead,
+      body[data-page="home"] .hero .cta-row {
+        animation: none !important;
+      }
+    }
+    /* CSS orbit seats — desktop + mobile (override JS hang-off) */
+    body[data-page="home"] .arch-node.tl,
+    body[data-page="home"] .arch-node.tr,
+    body[data-page="home"] .arch-node.bl,
+    body[data-page="home"] .arch-node.br {
+      right: auto !important;
+      bottom: auto !important;
+      transform: translate(-50%, -50%) !important;
+    }
+    body[data-page="home"] .arch-node.tl {
+      top: calc(50% - var(--arch-r, 32%)) !important;
+      left: calc(50% - var(--arch-r, 32%)) !important;
+    }
+    body[data-page="home"] .arch-node.tr {
+      top: calc(50% - var(--arch-r, 32%)) !important;
+      left: calc(50% + var(--arch-r, 32%)) !important;
+    }
+    body[data-page="home"] .arch-node.bl {
+      top: calc(50% + var(--arch-r, 32%)) !important;
+      left: calc(50% - var(--arch-r, 32%)) !important;
+    }
+    body[data-page="home"] .arch-node.br {
+      top: calc(50% + var(--arch-r, 32%)) !important;
+      left: calc(50% + var(--arch-r, 32%)) !important;
+    }
+    body[data-page="home"] .arch-hub-wrap {
+      width: min(46%, 16rem) !important;
+    }
+    /* Hub portal launch — one-shot swirl: the tube layer spins in like a
+       portal opening, the eye materializes inside it, then everything rests.
+       transform + opacity only (composited), so it costs nothing after load. */
+    body[data-page="home"] .arch-hub-wrap > img {
+      grid-area: 1 / 1;
+      width: 100%;
+      height: auto;
+    }
+    @keyframes hubPortalIn {
+      0% { opacity: 0; transform: rotate(540deg) scale(0.1); }
+      55% { opacity: 1; }
+      100% { opacity: 1; transform: rotate(0deg) scale(1); }
+    }
+    @keyframes hubEyeIn {
+      from { opacity: 0; transform: scale(0.35); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    body[data-page="home"] .arch-hub-swirl {
+      animation: hubPortalIn 2.6s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
+      will-change: transform;
+    }
+    /* Eye entrance is JS tile-assembly on the canvas; the DOM img is the
+       resting state (and the no-JS / reduced-motion fallback) */
+    body[data-page="home"] .arch-hub-eye {
+      position: relative;
+      z-index: 2;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      body[data-page="home"] .arch-hub-swirl,
+      body[data-page="home"] .arch-hub-eye {
+        animation: none !important;
+      }
+    }
+    body[data-page="home"] .arch-node.tl:hover,
+    body[data-page="home"] .arch-node.tl:focus-visible,
+    body[data-page="home"] .arch-node.tl.is-active,
+    body[data-page="home"] .arch-node.tl.is-lit,
+    body[data-page="home"] .arch-node.tl.is-linked,
+    body[data-page="home"] .arch-node.tl.is-receiving,
+    body[data-page="home"] .arch-node.tr:hover,
+    body[data-page="home"] .arch-node.tr:focus-visible,
+    body[data-page="home"] .arch-node.tr.is-active,
+    body[data-page="home"] .arch-node.tr.is-lit,
+    body[data-page="home"] .arch-node.tr.is-linked,
+    body[data-page="home"] .arch-node.tr.is-receiving,
+    body[data-page="home"] .arch-node.br:hover,
+    body[data-page="home"] .arch-node.br:focus-visible,
+    body[data-page="home"] .arch-node.br.is-active,
+    body[data-page="home"] .arch-node.br.is-lit,
+    body[data-page="home"] .arch-node.br.is-linked,
+    body[data-page="home"] .arch-node.br.is-receiving,
+    body[data-page="home"] .arch-node.bl:hover,
+    body[data-page="home"] .arch-node.bl:focus-visible,
+    body[data-page="home"] .arch-node.bl.is-active,
+    body[data-page="home"] .arch-node.bl.is-lit,
+    body[data-page="home"] .arch-node.bl.is-linked,
+    body[data-page="home"] .arch-node.bl.is-receiving {
+      transform: translate(-50%, -50%) translateY(-1px) scale(1.03) !important;
+    }
+    /* Mobile: compact stack, still one screen */
+    @media (max-width: 900px) {
+      body[data-page="home"] .hero {
+        padding-block: 0.85rem 1.25rem !important;
+      }
+      body[data-page="home"] .hero-grid {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 1.1rem !important;
+        max-width: 100%;
+      }
+      body[data-page="home"] .hero-copy {
+        align-items: center;
+        text-align: center;
+        max-width: 100%;
+      }
+      body[data-page="home"] .hero-brand-stack {
+        margin-inline: auto;
+        align-items: center;
+      }
+      body[data-page="home"] .hero h1,
+      body[data-page="home"] .hero-lead {
+        text-align: center;
+        margin-inline: auto;
+      }
+      body[data-page="home"] .hero .cta-row {
+        justify-content: center;
+      }
+      body[data-page="home"] .arch-map {
+        width: min(100%, 20rem) !important;
+        max-width: 20rem !important;
+        --arch-r: 29%;
+        overflow: hidden;
+      }
+    }
+
+    /* Footer desktop: logo+URL center · glitch left · © right */
+    footer .footer-inner {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 1.25rem;
+      align-items: center;
+    }
+    footer .footer-center {
+      grid-column: 2;
+      justify-self: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.55rem;
+      text-align: center;
+    }
+    footer .footer-brand-block {
+      grid-column: 1;
+      grid-row: 1;
+      justify-self: start;
+      text-align: left;
+    }
+    footer .footer-copy {
+      grid-column: 3;
+      grid-row: 1;
+      justify-self: end;
+      text-align: right;
+    }
+    footer .footer-glitch-link {
+      display: inline-block;
+      line-height: 0;
+    }
+    footer .footer-glitch-word {
+      display: block;
+      width: min(11.5rem, 46vw);
+      height: auto;
+      margin: 0;
+      image-rendering: auto;
+      filter: drop-shadow(0 0 8px rgba(146, 250, 17, 0.2));
+    }
+    footer .footer-logo-link {
+      display: inline-block;
+      line-height: 0;
+    }
+    footer .footer-mark {
+      width: 3.25rem;
+      height: 3.25rem;
+      object-fit: contain;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+    }
+    footer .footer-url {
+      margin: 0;
+    }
+
+    body[data-page="system"] .hero,
+    body[data-page="system"] .proof-trio-wrap,
+    body[data-page="system"] .case-teaser-wrap,
+    body[data-page="system"] #work,
+    body[data-page="system"] #about { display: none !important; }
+
+    body[data-page="work"] .hero,
+    body[data-page="work"] .stack-deck,
+    body[data-page="work"] #system,
+    body[data-page="work"] .proof-trio-wrap,
+    body[data-page="work"] .case-teaser-wrap,
+    body[data-page="work"] #about { display: none !important; }
+
+    body[data-page="about"] .hero,
+    body[data-page="about"] .stack-deck,
+    body[data-page="about"] #system,
+    body[data-page="about"] #work,
+    body[data-page="about"] .proof-trio-wrap,
+    body[data-page="about"] .case-teaser-wrap { display: none !important; }
+
+    body[data-page="work"] .block,
+    body[data-page="about"] .block {
+      padding-block: calc(var(--cvl-section-pad-y) * 1.15);
+    }
+    /* System: no dead air under sticky nav — drop the page kicker pad */
+    body[data-page="system"] #top.block {
+      display: none !important;
+    }
+    body[data-page="system"] .stack-deck {
+      padding-block: clamp(1.35rem, 3vw, 2.25rem) clamp(3.5rem, 5.5vw, 5.5rem);
+    }
+    body[data-page="system"] #system.block {
+      padding-block: clamp(2.5rem, 4.5vw, 4.5rem) clamp(3.5rem, 5.5vw, 5.5rem);
+    }
+    body[data-page="system"] .stack-copy,
+    body[data-page="system"] .system-copy,
+    body[data-page="about"] .about-brief {
+      max-width: 44rem;
+    }
+    /* /work = wide proof showcase — do NOT cap .case-box (breaks 2-col layout) */
+    body[data-page="work"] .case {
+      width: 100%;
+      max-width: none;
+    }
+    body[data-page="work"] .case-box {
+      max-width: none;
+      width: 100%;
+      grid-template-columns: minmax(280px, 0.4fr) minmax(0, 0.6fr);
+    }
+    body[data-page="work"] .case-head {
+      max-width: 44rem;
+    }
+    body[data-page="work"] .case-proof {
+      width: 100%;
+      min-height: 16rem;
+    }
+    body[data-page="system"] .stack-copy h1,
+    body[data-page="system"] .system-copy h2,
+    body[data-page="work"] .case-head h1,
+    body[data-page="about"] .about-brief h1 {
+      font-size: clamp(1.7rem, 2.8vw, 2.35rem);
+    }
+    /* Subpage lead headings are h1 for document structure; match prior h2 look */
+    body[data-page="system"] .stack-copy h1 {
+      font-family: var(--cvl-mono);
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      margin: 0 0 0.7rem;
+      max-width: 24ch;
+      line-height: 1.2;
+      text-wrap: balance;
+    }
+    body[data-page="work"] .case-head h1 {
+      font-family: var(--cvl-mono);
+      margin: 0;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+    }
+    @media (max-width: 900px) {
+      body[data-page="work"] .case-box {
+        grid-template-columns: 1fr;
+      }
+      body[data-page="work"] .case-head-cta {
+        white-space: normal;
+      }
+    }
+    /* About — site color-scheme form / panel */
+    body[data-page="about"] .about-brief {
+      max-width: min(100%, 52rem);
+    }
+    body[data-page="about"] .about-panel {
+      border: 1px solid rgba(146, 250, 17, 0.28);
+      background: #050705;
+      box-shadow: 0 0 32px rgba(146, 250, 17, 0.05);
+      overflow: hidden;
+    }
+    body[data-page="about"] .about-chrome {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding: 0.55rem 0.95rem;
+      border-bottom: 1px solid rgba(146, 250, 17, 0.16);
+      background: rgba(146, 250, 17, 0.04);
+      font-family: var(--cvl-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.04em;
+      color: rgba(146, 250, 17, 0.75);
+    }
+    body[data-page="about"] .about-chrome .dim {
+      color: var(--cvl-muted);
+    }
+    body[data-page="about"] .about-panel-body {
+      padding: clamp(1.35rem, 2.6vw, 2rem) clamp(1.25rem, 2.4vw, 1.85rem) clamp(1.5rem, 2.8vw, 2.15rem);
+    }
+    body[data-page="about"] .about-brief .section-label {
+      margin: 0 0 0.65rem;
+      font-family: var(--cvl-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--cvl-lime);
+    }
+    body[data-page="about"] .about-brief h1 {
+      margin: 0 0 1rem;
+      max-width: 22ch;
+      font-family: var(--cvl-mono);
+      font-size: clamp(1.7rem, 2.8vw, 2.35rem);
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      color: var(--cvl-ink);
+    }
+    body[data-page="about"] .about-brief .lede {
+      margin: 0 0 1.35rem;
+      max-width: 44rem;
+      font-family: var(--cvl-mono);
+      font-size: clamp(0.92rem, 1.25vw, 1.05rem);
+      line-height: 1.65;
+      color: var(--cvl-ink-dim);
+      text-wrap: pretty;
+    }
+    body[data-page="about"] .about-brief .lede .hl {
+      color: var(--cvl-lime);
+      font-weight: 500;
+    }
+    body[data-page="about"] .about-brief .about-body {
+      display: grid;
+      grid-template-columns: auto auto 1fr;
+      gap: 0.65rem 0.85rem;
+      align-items: baseline;
+      margin: 0;
+      padding: 0.85rem 0.95rem;
+      border: 1px solid rgba(146, 250, 17, 0.18);
+      background: #030503;
+      font-family: var(--cvl-mono);
+      font-size: clamp(0.82rem, 1.1vw, 0.92rem);
+      line-height: 1.5;
+      color: var(--cvl-ink-dim);
+    }
+    body[data-page="about"] .about-brief .about-body .ok {
+      color: var(--cvl-lime);
+      font-weight: 600;
+    }
+    body[data-page="about"] .about-brief .about-body .about-key {
+      color: var(--cvl-muted);
+    }
+    body[data-page="about"] .about-brief .about-body .about-val {
+      color: var(--cvl-ink);
+    }
+    @media (max-width: 640px) {
+      body[data-page="about"] .about-brief .about-body {
+        grid-template-columns: auto 1fr;
+      }
+      body[data-page="about"] .about-brief .about-body .about-key {
+        grid-column: 2;
+      }
+      body[data-page="about"] .about-brief .about-body .about-val {
+        grid-column: 1 / -1;
+      }
+    }
+    @media (max-width: 900px) {
+      .proof-trio { grid-template-columns: 1fr; }
+    }
+    /* Creator block — avatar on --cvl-surface tile only (baked black RGB) */
+    body[data-page="about"] .about-creator {
+      display: flex;
+      align-items: center;
+      gap: 1.15rem;
+      margin: 0 0 1.15rem;
+      padding: 0.95rem;
+      border: 1px solid var(--cvl-border);
+      background: var(--cvl-surface);
+      border-radius: 0;
+    }
+    body[data-page="about"] .about-creator-frame {
+      position: relative;
+      flex: 0 0 auto;
+      width: clamp(6.5rem, 12vw, 8.5rem);
+      border: 1px solid var(--cvl-border);
+      border-radius: 0;
+      background: var(--cvl-bg);
+      overflow: hidden;
+    }
+    body[data-page="about"] .about-creator-avatar {
+      width: 100%;
+      height: auto;
+      border-radius: 0;
+      display: block;
+    }
+    /* Subtle matrix rain over the persona tile — screen blend, black canvas adds nothing */
+    body[data-page="about"] .about-creator-rain {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      mix-blend-mode: screen;
+      opacity: 0.34;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      body[data-page="about"] .about-creator-rain { display: none; }
+    }
+    body[data-page="about"] .about-creator-text { min-width: 0; }
+    body[data-page="about"] .about-creator-text .section-label { margin-bottom: 0.4rem; }
+    body[data-page="about"] .about-creator-name {
+      margin: 0 0 0.2rem;
+      font-family: var(--cvl-mono);
+      font-size: clamp(1.15rem, 1.9vw, 1.45rem);
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      color: var(--cvl-ink);
+    }
+    body[data-page="about"] .about-creator-real {
+      margin: 0 0 0.6rem;
+      font-family: var(--cvl-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--cvl-lime);
+    }
+    body[data-page="about"] .about-creator-real .muted {
+      color: var(--cvl-muted);
+      text-transform: none;
+      letter-spacing: 0.03em;
+    }
+    body[data-page="about"] .about-creator-copy {
+      margin: 0;
+      font-size: clamp(0.92rem, 1.15vw, 1rem);
+      line-height: 1.65;
+      color: var(--cvl-ink-dim);
+      text-wrap: pretty;
+    }
+    @media (max-width: 640px) {
+      body[data-page="about"] .about-creator {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+    /* About body — kept brief paragraphs (bulk trimmed 2026-07-19, creator block closes the panel) */
+    body[data-page="about"] .about-brief .about-p {
+      margin: 0 0 1rem;
+      max-width: 44rem;
+      font-size: clamp(0.95rem, 1.2vw, 1.02rem);
+      line-height: 1.7;
+      color: var(--cvl-ink-dim);
+      text-wrap: pretty;
+    }
+    body[data-page="about"] .about-brief .about-p strong {
+      color: var(--cvl-ink);
+      font-weight: 600;
+    }
+    body[data-page="about"] .about-creator-copy strong {
+      color: var(--cvl-ink);
+      font-weight: 600;
+    }
+    /* Legal page */
+    body[data-page="legal"] .legal-wrap {
+      max-width: 52rem;
+      margin: 0 auto;
+      padding: var(--cvl-section-pad-y) var(--cvl-gutter);
+    }
+    body[data-page="legal"] .legal-wrap h1 {
+      font-family: var(--cvl-mono);
+      font-size: clamp(1.7rem, 2.8vw, 2.35rem);
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      margin: 0 0 0.5rem;
+    }
+    body[data-page="legal"] .legal-wrap .legal-updated {
+      font-family: var(--cvl-mono);
+      font-size: 0.78rem;
+      color: var(--cvl-muted);
+      margin: 0 0 2.5rem;
+    }
+    body[data-page="legal"] .legal-wrap h2 {
+      font-family: var(--cvl-mono);
+      font-size: clamp(1.15rem, 1.8vw, 1.45rem);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin: 2.5rem 0 0.75rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--cvl-border);
+    }
+    body[data-page="legal"] .legal-wrap h2:first-of-type {
+      margin-top: 0;
+      padding-top: 0;
+      border-top: none;
+    }
+    body[data-page="legal"] .legal-wrap p,
+    body[data-page="legal"] .legal-wrap li {
+      font-family: var(--cvl-font);
+      font-size: clamp(0.92rem, 1.15vw, 1rem);
+      line-height: 1.7;
+      color: var(--cvl-ink-dim);
+      margin: 0 0 0.85rem;
+    }
+    body[data-page="legal"] .legal-wrap ul {
+      padding-left: 1.5rem;
+      margin: 0 0 1rem;
+    }
+    body[data-page="legal"] .legal-wrap li {
+      margin-bottom: 0.4rem;
+    }
+    body[data-page="legal"] .legal-wrap a {
+      color: var(--cvl-lime);
+    }
+    body[data-page="legal"] .legal-wrap strong {
+      color: var(--cvl-ink);
+      font-weight: 600;
+    }
+    body[data-page="legal"] .legal-toc {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 2.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 1.5rem;
+    }
+    body[data-page="legal"] .legal-toc a {
+      font-family: var(--cvl-mono);
+      font-size: 0.85rem;
+      letter-spacing: 0.02em;
+    }
+    /* Mobile drawer CTA lives inside the open menu; bar CTA is desktop-only */
+    .nav-drawer-cta {
+      display: none;
+      list-style: none;
+    }
+    @media (max-width: 900px) {
+      :root {
+        --cvl-nav-h: 4.35rem;
+      }
+      .nav {
+        z-index: 200;
+        background: #000;
+      }
+      .nav-inner {
+        position: relative;
+        flex-wrap: nowrap;
+        z-index: 210;
+      }
+      .nav-brand,
+      .nav-toggle {
+        position: relative;
+        z-index: 220;
+      }
+      /* Scrim hides page; menu itself is a short dropdown (no scroll) */
+      body.nav-menu-open::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        top: var(--cvl-nav-h);
+        z-index: 180;
+        background: #000;
+      }
+      .nav-links.is-open {
+        display: flex !important;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        text-align: center;
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: var(--cvl-nav-h);
+        bottom: auto;
+        width: 100%;
+        height: auto;
+        min-height: 0;
+        max-height: none;
+        z-index: 195;
+        margin: 0;
+        padding: 0.85rem 1.25rem 1.05rem;
+        gap: 0.55rem;
+        background: #000;
+        border: none;
+        border-bottom: 1px solid rgba(146, 250, 17, 0.22);
+        box-sizing: border-box;
+        overflow: visible;
+      }
+      .nav-links.is-open > li {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+      }
+      .nav-links.is-open > li > a {
+        font-size: 1.15rem;
+        letter-spacing: 0.05em;
+        line-height: 1.25;
+        padding: 0.2rem 0;
+      }
+      .nav-links.is-open .nav-drawer-cta {
+        display: flex;
+        justify-content: center;
+        margin-top: 0.35rem;
+        padding-top: 0.65rem;
+        border-top: 1px solid rgba(146, 250, 17, 0.18);
+        width: min(100%, 17rem);
+      }
+      .nav-links.is-open .nav-drawer-cta .nav-cta {
+        display: inline-flex;
+        width: 100%;
+        justify-content: center;
+        white-space: nowrap;
+        padding: 0.7rem 1rem;
+      }
+      .nav-cta-bar.is-open {
+        display: none !important;
+      }
+      body.nav-menu-open {
+        overflow: hidden;
+        touch-action: none;
+      }
+      body.nav-menu-open .nav {
+        background: #000;
+        border-bottom-color: rgba(146, 250, 17, 0.22);
+      }
+    }
+    footer .footer-legal {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.65rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--cvl-border);
+      margin-top: 1.25rem;
+      font-family: var(--cvl-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.04em;
+    }
+    footer .footer-legal a {
+      color: var(--cvl-muted);
+      text-decoration: none;
+    }
+    footer .footer-legal a:hover {
+      color: var(--cvl-lime);
+    }
+    footer .footer-legal-sep {
+      color: var(--cvl-muted);
+      opacity: 0.4;
+    }
+    /* Mobile footer — one centered column, no grid placement leftovers */
+    @media (max-width: 900px) {
+      footer {
+        padding-bottom: calc(1.75rem + env(safe-area-inset-bottom, 0px));
+      }
+      footer .footer-inner {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        gap: 0.85rem !important;
+        width: 100% !important;
+        text-align: center !important;
+        grid-template-columns: none !important;
+        grid-template-rows: none !important;
+      }
+      footer .footer-center,
+      footer .footer-brand-block,
+      footer .footer-copy {
+        grid-column: auto !important;
+        grid-row: auto !important;
+        justify-self: center !important;
+        align-self: center !important;
+        width: 100% !important;
+        max-width: 22rem !important;
+        margin-inline: auto !important;
+        text-align: center !important;
+      }
+      footer .footer-center {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 0.45rem !important;
+      }
+      footer .footer-brand-block {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+      }
+      footer .footer-logo-link,
+      footer .footer-glitch-link {
+        display: flex !important;
+        justify-content: center !important;
+        width: 100% !important;
+        margin: 0 !important;
+      }
+      footer .footer-mark {
+        margin: 0 auto !important;
+      }
+      footer .footer-glitch-word {
+        width: min(9.75rem, 62vw) !important;
+        margin: 0 auto !important;
+        /* white letterforms sit slightly left of the glitch glow */
+        transform: translateX(0.2rem);
+      }
+      footer .footer-url,
+      footer .footer-copy {
+        text-align: center !important;
+      }
+    }
+    /* Mobile orbit chip scale + seats (layout set above) */
+    @media (max-width: 900px) {
+      body[data-page="home"] .arch-map {
+        --arch-chip-scale: 0.92;
+        overflow: hidden !important;
+      }
+      body[data-page="home"] .arch-hub-wrap {
+        width: min(42%, 8.75rem) !important;
+      }
+      body[data-page="home"] .arch-node {
+        font-size: 0.64rem !important;
+        letter-spacing: 0.02em !important;
+        padding: 0.4rem 0.48rem !important;
+        gap: 0.28rem !important;
+        max-width: min(8.5rem, 42%) !important;
+        white-space: nowrap;
+      }
+      body[data-page="home"] .arch-node .arch-ico {
+        width: 1em !important;
+        height: 1em !important;
+        flex-shrink: 0;
+      }
+      /* Corner seats on a tight diamond — override JS hang-off */
+      body[data-page="home"] .arch-node.tl,
+      body[data-page="home"] .arch-node.tr,
+      body[data-page="home"] .arch-node.bl,
+      body[data-page="home"] .arch-node.br {
+        right: auto !important;
+        bottom: auto !important;
+        transform: translate(-50%, -50%) scale(var(--arch-chip-scale)) !important;
+      }
+      body[data-page="home"] .arch-node.tl {
+        top: calc(50% - var(--arch-r)) !important;
+        left: calc(50% - var(--arch-r)) !important;
+      }
+      body[data-page="home"] .arch-node.tr {
+        top: calc(50% - var(--arch-r)) !important;
+        left: calc(50% + var(--arch-r)) !important;
+      }
+      body[data-page="home"] .arch-node.bl {
+        top: calc(50% + var(--arch-r)) !important;
+        left: calc(50% - var(--arch-r)) !important;
+      }
+      body[data-page="home"] .arch-node.br {
+        top: calc(50% + var(--arch-r)) !important;
+        left: calc(50% + var(--arch-r)) !important;
+      }
+      body[data-page="home"] .arch-node.tl:hover,
+      body[data-page="home"] .arch-node.tl:focus-visible,
+      body[data-page="home"] .arch-node.tl.is-active,
+      body[data-page="home"] .arch-node.tl.is-lit,
+      body[data-page="home"] .arch-node.tl.is-linked,
+      body[data-page="home"] .arch-node.tl.is-receiving,
+      body[data-page="home"] .arch-node.tr:hover,
+      body[data-page="home"] .arch-node.tr:focus-visible,
+      body[data-page="home"] .arch-node.tr.is-active,
+      body[data-page="home"] .arch-node.tr.is-lit,
+      body[data-page="home"] .arch-node.tr.is-linked,
+      body[data-page="home"] .arch-node.tr.is-receiving,
+      body[data-page="home"] .arch-node.br:hover,
+      body[data-page="home"] .arch-node.br:focus-visible,
+      body[data-page="home"] .arch-node.br.is-active,
+      body[data-page="home"] .arch-node.br.is-lit,
+      body[data-page="home"] .arch-node.br.is-linked,
+      body[data-page="home"] .arch-node.br.is-receiving,
+      body[data-page="home"] .arch-node.bl:hover,
+      body[data-page="home"] .arch-node.bl:focus-visible,
+      body[data-page="home"] .arch-node.bl.is-active,
+      body[data-page="home"] .arch-node.bl.is-lit,
+      body[data-page="home"] .arch-node.bl.is-linked,
+      body[data-page="home"] .arch-node.bl.is-receiving {
+        transform: translate(-50%, -50%) scale(calc(var(--arch-chip-scale) * 1.04)) translateY(-1px) !important;
+      }
+    }
+    @media (max-width: 420px) {
+      body[data-page="home"] .arch-map {
+        --arch-r: 31%;
+        --arch-chip-scale: 0.88;
+        width: min(100%, 18.5rem) !important;
+        max-width: 18.5rem !important;
+      }
+      body[data-page="home"] .arch-node {
+        font-size: 0.58rem !important;
+        padding: 0.36rem 0.4rem !important;
+        max-width: min(7.75rem, 44%) !important;
+      }
+      body[data-page="home"] .arch-hub-wrap {
+        width: min(44%, 7.75rem) !important;
+      }
+    }
+    @media (min-width: 1280px) {
+      body[data-page="system"] .stack-split,
+      body[data-page="system"] .system-split {
+        align-items: start;
+      }
+    }
+    @media (max-width: 1279px) {
+      body[data-page="system"] .stack-split,
+      body[data-page="system"] .system-split {
+        grid-template-columns: 1fr;
+      }
+      body[data-page="system"] .code-shell,
+      body[data-page="system"] .loop-diagram {
+        width: min(100%, 48rem);
+        margin-inline: auto;
+      }
+    }
+    /* —— Mobile polish pass (phone viewports) —— */
+    @media (max-width: 900px) {
+      html, body {
+        overflow-x: hidden;
+      }
+      .wrap {
+        padding-inline: 1.1rem;
+      }
+      /* Home hero: center punchline + CTAs */
+      body[data-page="home"] .hero-copy {
+        max-width: none;
+        text-align: center;
+        margin-inline: auto;
+      }
+      body[data-page="home"] .hero-glitch {
+        width: min(100%, 12rem);
+        margin-inline: auto;
+      }
+      body[data-page="home"] .hero h1 {
+        max-width: none;
+        margin-inline: auto;
+        font-size: clamp(1.85rem, 8.5vw, 2.6rem);
+      }
+      body[data-page="home"] .hero-lead {
+        max-width: 34rem;
+        margin-inline: auto;
+        margin-bottom: 1.5rem;
+      }
+      body[data-page="home"] .hero .cta-row {
+        justify-content: center;
+      }
+      body[data-page="home"] .hero .cta-row .btn {
+        width: min(100%, 20rem);
+      }
+      /* Header: brand left, Menu pinned right */
+      .nav-inner {
+        gap: 0.65rem;
+        padding-inline: 0;
+        display: flex !important;
+        justify-content: space-between !important;
+      }
+      .nav-brand {
+        margin-right: auto;
+      }
+      .nav-toggle {
+        margin-left: auto;
+      }
+      .nav-brand-sub {
+        max-width: none !important;
+        overflow: visible !important;
+        text-overflow: clip !important;
+        white-space: normal !important;
+        font-size: 0.58rem !important;
+        letter-spacing: 0.03em !important;
+        line-height: 1.15;
+      }
+      .nav-toggle {
+        flex-shrink: 0;
+      }
+      /* System: center copy columns */
+      body[data-page="system"] .stack-copy,
+      body[data-page="system"] .system-copy,
+      body[data-page="system"] .system-intro {
+        max-width: none;
+        text-align: center;
+        margin-inline: auto;
+      }
+      body[data-page="system"] .stack-copy h1,
+      body[data-page="system"] .system-copy h2 {
+        max-width: 24ch;
+        margin-inline: auto;
+      }
+      body[data-page="system"] .stack-notes,
+      body[data-page="system"] .artifact-list {
+        max-width: none;
+        margin-inline: auto;
+        text-align: left;
+      }
+      body[data-page="system"] .system-cta {
+        display: flex;
+        justify-content: center;
+      }
+      body[data-page="system"] #top .section-label {
+        text-align: center;
+      }
+      /* Loop diagram: stages clear of hub */
+      body[data-page="system"] .loop-diagram {
+        width: min(100%, 22rem) !important;
+        max-width: 100%;
+        max-height: none;
+        margin-inline: auto;
+        aspect-ratio: 1;
+      }
+      body[data-page="system"] .loop-hub-wrap {
+        width: min(40%, 8.5rem) !important;
+      }
+      body[data-page="system"] .loop-stage {
+        font-size: 0.58rem !important;
+        letter-spacing: 0.04em;
+        padding: 0.38rem 0.45rem !important;
+      }
+      body[data-page="system"] .loop-stage.s-obs {
+        top: 1% !important;
+        left: 50% !important;
+        right: auto !important;
+        bottom: auto !important;
+        transform: translate(-50%, 0) !important;
+      }
+      body[data-page="system"] .loop-stage.s-arch {
+        top: 50% !important;
+        left: 93% !important;
+        right: auto !important;
+        bottom: auto !important;
+        transform: translate(-50%, -50%) !important;
+      }
+      body[data-page="system"] .loop-stage.s-impl {
+        top: auto !important;
+        bottom: 1% !important;
+        left: 50% !important;
+        right: auto !important;
+        transform: translate(-50%, 0) !important;
+      }
+      body[data-page="system"] .loop-stage.s-rev {
+        top: 50% !important;
+        left: 7% !important;
+        right: auto !important;
+        bottom: auto !important;
+        transform: translate(-50%, -50%) !important;
+      }
+      /* Terminal tabs: no clip */
+      .code-tabs {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+      }
+      .code-tabs::-webkit-scrollbar { display: none; }
+      .code-tab {
+        flex: 1 1 auto;
+        min-width: 0;
+        font-size: 0.68rem !important;
+        letter-spacing: 0.02em;
+        padding: 0.7rem 0.35rem !important;
+      }
+      .code-chrome {
+        padding-right: 0.25rem;
+      }
+      .code-path {
+        font-size: 0.68rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      /* Mobile console: grow with content — fixed max-height was clipping closers */
+      .code-body {
+        --code-lines: 14;
+        font-size: 0.78rem;
+        line-height: var(--code-lh);
+        min-height: calc(var(--code-lines) * 1em * var(--code-lh) + 2.75rem);
+        max-height: none !important;
+        overflow: visible;
+        padding: 1rem 0.95rem 1.5rem;
+      }
+      .code-line {
+        gap: 0.55rem;
+      }
+      /* Work case: stack, full width, wrap CTA */
+      body[data-page="work"] .case-box {
+        grid-template-columns: 1fr !important;
+        gap: 1.25rem;
+        padding: 1.1rem !important;
+      }
+      body[data-page="work"] .case-head {
+        max-width: none;
+      }
+      body[data-page="work"] .case-head-cta {
+        white-space: normal !important;
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+      }
+      body[data-page="work"] .case-proof-body {
+        font-size: 0.74rem;
+        overflow-x: auto;
+      }
+      /* Final CTA + titles: balanced wraps, centered stack */
+      .final-cta {
+        padding-block: 2.5rem;
+      }
+      .final-cta .cta-row {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        gap: 0.7rem;
+      }
+      .final-cta .cta-row .btn {
+        width: min(100%, 18.5rem);
+      }
+      .final-cta .final-panel {
+        min-height: 0 !important;
+        padding: 1.75rem 1.1rem !important;
+        width: 100%;
+        gap: 1rem !important;
+      }
+      .final-cta h2 {
+        font-size: clamp(1.2rem, 5.8vw, 1.65rem) !important;
+        max-width: 16ch !important;
+        line-height: 1.3 !important;
+        letter-spacing: -0.02em;
+        text-wrap: balance;
+      }
+      .final-cta p {
+        font-size: 0.95rem !important;
+        max-width: 28ch;
+        text-wrap: balance;
+      }
+      body[data-page="home"] .hero h1,
+      body[data-page="system"] .stack-copy h1,
+      body[data-page="system"] .system-copy h2,
+      body[data-page="work"] .case-head h1,
+      body[data-page="about"] .about-brief h1 {
+        text-wrap: balance;
+        margin-inline: auto;
+        text-align: center;
+      }
+      body[data-page="system"] .stack-copy h1,
+      body[data-page="system"] .system-copy h2 {
+        max-width: 24ch;
+        font-size: clamp(1.35rem, 6.5vw, 1.85rem);
+      }
+    }
+    @media (max-width: 420px) {
+      body[data-page="system"] .loop-stage {
+        font-size: 0.52rem !important;
+        padding: 0.32rem 0.38rem !important;
+      }
+      .code-tab {
+        font-size: 0.62rem !important;
+        padding: 0.65rem 0.2rem !important;
+      }
+    }
+
+  
+    .nav-links a.is-active { color: var(--cvl-lime); }
+  </style>
+</head>
+<body data-page="about">
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="nav">
+    <div class="wrap nav-inner">
+      <a class="nav-brand" href="/" aria-label="Cavelux home">
+        <img class="pixel nav-mark" src="/cutouts/CVL_mark_voxel_transparent.png" alt="" width="64" height="64" />
+        <span class="nav-brand-text">
+          <span class="nav-brand-word">CAVELUX</span>
+          <span class="nav-brand-sub">CAVELUX</span>
+        </span>
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" id="nav-toggle">Menu</button>
+      <ul class="nav-links" id="nav-menu">
+        <li><a href="/">Home</a></li>
+        <li><a href="/system/">System</a></li>
+        <li><a href="/work/">Work</a></li>
+        <li><a href="/about/" class="is-active">About</a></li>
+        <li class="nav-drawer-cta">
+          <a class="nav-cta" href="mailto:hello@cavelux.ai?subject=Discuss%20a%20Project">Discuss a Project</a>
+        </li>
+      </ul>
+      <a class="nav-cta nav-cta-bar" id="nav-cta" href="mailto:hello@cavelux.ai?subject=Discuss%20a%20Project">Discuss a Project</a>
+    </div>
+  </header>
+  <main id="main">
+<section class="block" id="about">
+      <div class="wrap about-brief">
+        <article class="about-panel" aria-label="About Cavelux">
+          <div class="about-chrome">
+            <span><span class="dim">cvl://</span>about.brief</span>
+            <span class="dim">live</span>
+          </div>
+          <div class="about-panel-body">
+            <p class="section-label">About</p>
+            <h1>One integrator. Your architecture.</h1>
+            <p class="lede">
+              Most businesses don&rsquo;t have an <span class="hl">AI problem</span> —
+              they have an <span class="hl">AI-fluency barrier</span>.
+            </p>
+            <p class="about-p">
+              We build AI systems that mold to how a business already works —
+              <strong>governed, wired in, and handed over</strong> so the owner turns the keys.
+            </p>
+            <p class="about-p">
+              The tools exist; the system around them doesn&rsquo;t. That system is what we
+              build. <strong>You should run the system; the system shouldn&rsquo;t run you.</strong>
+            </p>
+            <div class="about-creator">
+              <div class="about-creator-frame">
+                <img class="about-creator-avatar" src="/media/CAVELUX_creator_avatar_512.png" srcset="/media/CAVELUX_creator_avatar_512.png 1x, /media/CAVELUX_creator_avatar_1024.png 2x" alt="Bloodwave — creator of the Collaborative Value Loop" width="512" height="512" decoding="async" />
+                <canvas class="about-creator-rain" id="creator-rain" width="256" height="256" aria-hidden="true"></canvas>
+              </div>
+              <div class="about-creator-text">
+                <p class="section-label">The creator</p>
+                <p class="about-creator-name">BLOODWAVE</p>
+                <p class="about-creator-real">Jared Zerillo <span class="muted">— Founder &amp; Operator</span></p>
+                <p class="about-creator-copy">Every business benefits from better systems. Bring scattered ideas; leave with something organized, usable, and yours to run. <strong>Create and control the orbit.</strong></p>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+    <section class="final-cta" id="discuss"><div class="wrap"><div class="final-panel"><h2>Tell me your goals. I'll map the build.</h2><p>Secure your vision — and your time — from the black hole.</p><div class="cta-row"><a class="btn btn-primary" href="mailto:hello@cavelux.ai?subject=Discuss%20a%20Project">Discuss a Project</a><a class="btn btn-secondary" href="/system/">See how it works</a></div></div></div></section>
+  </main>
+  <footer>
+    <div class="wrap footer-inner">
+      <div class="footer-center">
+        <a class="footer-logo-link" href="/" aria-label="Cavelux home">
+          <img class="pixel footer-mark" src="/cutouts/CVL_mark_voxel_transparent.png" alt="" width="64" height="64" decoding="async" />
+        </a>
+        <div class="footer-url">cavelux.ai</div>
+      </div>
+      <div class="footer-brand-block">
+        <a class="footer-glitch-link" href="/" aria-label="CVL home">
+          <img class="pixel footer-glitch-word" src="/cutouts/CVL_wordmark_glitch.png" alt="CVL" width="771" height="238" decoding="async" />
+        </a>
+      </div>
+      <div class="footer-copy">&copy; 2026 Cavelux</div>
+    </div>
+    <div class="wrap footer-legal">
+      <a href="/legal/#privacy">Privacy</a>
+      <span class="footer-legal-sep" aria-hidden="true">·</span>
+      <a href="/legal/#terms">Terms</a>
+    </div>
+  </footer>
+  <script>
+
+    (function () {
+      var toggle = document.getElementById("nav-toggle");
+      var menu = document.getElementById("nav-menu");
+      var cta = document.getElementById("nav-cta");
+      if (toggle && menu) {
+        var navEl = document.querySelector(".nav");
+        function syncNavHeight() {
+          if (!navEl) return;
+          document.documentElement.style.setProperty(
+            "--cvl-nav-h",
+            navEl.getBoundingClientRect().height + "px"
+          );
+        }
+        syncNavHeight();
+        window.addEventListener("resize", syncNavHeight);
+        toggle.addEventListener("click", function () {
+          syncNavHeight();
+          var open = menu.classList.toggle("is-open");
+          if (cta) cta.classList.toggle("is-open", open);
+          toggle.setAttribute("aria-expanded", open ? "true" : "false");
+          toggle.textContent = open ? "Close" : "Menu";
+          document.body.classList.toggle("nav-menu-open", open);
+        });
+      }
+      if (toggle && menu) {
+        menu.querySelectorAll("a").forEach(function (a) {
+          a.addEventListener("click", function () {
+            menu.classList.remove("is-open");
+            if (cta) cta.classList.remove("is-open");
+            toggle.setAttribute("aria-expanded", "false");
+            toggle.textContent = "Menu";
+            document.body.classList.remove("nav-menu-open");
+          });
+        });
+      }
+
+
+      var OVERVIEW = {
+        file: "overview",
+        lines: [
+          { cls: "cm", t: "// cvl — orchestration" },
+          { cls: "hdr", t: "Seamless Orchestration & Workflow" },
+          { cls: "", t: "" },
+          { cls: "cm", t: "// open a pillar" },
+          { cls: "", t: "Open a pillar." },
+          { cls: "", t: "" },
+          { cls: "kw", t: "lanes:" },
+          { cls: "str", t: "  > Workflows" },
+          { cls: "str", t: "  > Knowledge" },
+          { cls: "str", t: "  > Governance" },
+          { cls: "str", t: "  > Outcomes" }
+        ]
+      };
+
+      var PILLARS = {
+        workflows: {
+          file: "workflows",
+          lines: [
+            { cls: "cm", t: "// 01 · WORKFLOWS" },
+            { cls: "hdr", t: "How your work already moves" },
+            { cls: "", t: "" },
+            { cls: "cm", t: "// intent" },
+            { cls: "", t: "I map how your work actually moves — decisions," },
+            { cls: "", t: "handoffs, exceptions — then fit AI into those paths." },
+            { cls: "", t: "" },
+            { cls: "kw", t: "deliverables:" },
+            { cls: "str", t: "  > Workflow map with leverage + risk" },
+            { cls: "str", t: "  > Human decision points kept as gates" },
+            { cls: "str", t: "  > Agents matched to real job lanes" },
+            { cls: "", t: "" },
+            { cls: "cm", t: "// status: you approve scope before anything runs" }
+          ]
+        },
+        knowledge: {
+          file: "knowledge",
+          lines: [
+            { cls: "cm", t: "// 02 · KNOWLEDGE" },
+            { cls: "hdr", t: "Knowledge wired for grounded answers" },
+            { cls: "", t: "" },
+            { cls: "cm", t: "// intent" },
+            { cls: "", t: "Your company knowledge, wired for grounded answers —" },
+            { cls: "", t: "models, machines, and storage picked for risk and speed." },
+            { cls: "", t: "" },
+            { cls: "kw", t: "deliverables:" },
+            { cls: "str", t: "  > Retrieval from your docs, tickets, code" },
+            { cls: "str", t: "  > Model + platform choices that fit" },
+            { cls: "str", t: "  > Clear rules for what is stored, where, how long" },
+            { cls: "", t: "" },
+            { cls: "cm", t: "// policy: include / exclude / retain — explicit" }
+          ]
+        },
+        governance: {
+          file: "governance",
+          lines: [
+            { cls: "cm", t: "// 03 · GOVERNANCE" },
+            { cls: "hdr", t: "Agents propose; you authorize" },
+            { cls: "", t: "" },
+            { cls: "cm", t: "// intent" },
+            { cls: "", t: "Guardrails that hold under pressure." },
+            { cls: "", t: "" },
+            { cls: "kw", t: "deliverables:" },
+            { cls: "str", t: "  > Role + permission boundaries" },
+            { cls: "str", t: "  > Your explicit GO on ship, spend, and risk" },
+            { cls: "str", t: "  > Monitoring + audit trails" },
+            { cls: "", t: "" },
+            { cls: "cm", t: "// keep: absence of a grant is not a grant" }
+          ]
+        },
+        outcomes: {
+          file: "outcomes",
+          lines: [
+            { cls: "cm", t: "// 04 · OUTCOMES" },
+            { cls: "hdr", t: "Judged by business results" },
+            { cls: "", t: "" },
+            { cls: "cm", t: "// intent" },
+            { cls: "", t: "Adoption that sticks, evidence that audits," },
+            { cls: "", t: "a stack your team owns." },
+            { cls: "", t: "" },
+            { cls: "kw", t: "deliverables:" },
+            { cls: "str", t: "  > Metrics tied to your workflows" },
+            { cls: "str", t: "  > Handoff: monitors, owners, playbooks" },
+            { cls: "str", t: "  > Roadmap for the next loop" },
+            { cls: "", t: "" },
+            { cls: "cm", t: "// handoff: your operators keep the wheel" }
+          ]
+        }
+      };
+
+      var body = document.getElementById("code-body");
+      if (!body) return;
+      var fileEl = document.getElementById("code-file");
+      var tabs = Array.prototype.slice.call(document.querySelectorAll(".code-tab"));
+      var nodes = Array.prototype.slice.call(document.querySelectorAll(".arch-node"));
+      var noteEls = Array.prototype.slice.call(document.querySelectorAll(".stack-notes [data-pillar]"));
+      var stackSplit = document.getElementById("stack-split");
+      var bridgeSvg = stackSplit ? stackSplit.querySelector(".stack-bridge") : null;
+      var bridgePath = bridgeSvg ? bridgeSvg.querySelector(".stack-bridge-path") : null;
+      var codeShell = stackSplit ? stackSplit.querySelector(".code-shell") : null;
+      var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      var renderGen = 0;
+      var active = null;
+      var showing = undefined; /* last rendered pillar id, or null for overview */
+      var CODE_LINE_CAP = 14;
+
+      function updateStackBridge(pillarId) {
+        if (!stackSplit || !bridgeSvg || !bridgePath || !codeShell) return;
+        if (!pillarId) {
+          bridgePath.setAttribute("d", "");
+          return;
+        }
+        var note = stackSplit.querySelector('.stack-notes [data-pillar="' + pillarId + '"]');
+        if (!note) {
+          bridgePath.setAttribute("d", "");
+          return;
+        }
+        var splitR = stackSplit.getBoundingClientRect();
+        var noteR = note.getBoundingClientRect();
+        var shellR = codeShell.getBoundingClientRect();
+        var w = Math.max(1, splitR.width);
+        var h = Math.max(1, splitR.height);
+        bridgeSvg.setAttribute("viewBox", "0 0 " + w + " " + h);
+        bridgeSvg.setAttribute("width", String(w));
+        bridgeSvg.setAttribute("height", String(h));
+        /* Row hugs its copy — bridge runs from the hot chip into the terminal rim */
+        var x1 = noteR.right - splitR.left + 6;
+        var y1 = noteR.top + noteR.height * 0.5 - splitR.top;
+        var x2 = shellR.left - splitR.left;
+        var y2 = y1;
+        if (x2 <= x1 + 16) {
+          bridgePath.setAttribute("d", "");
+          return;
+        }
+        var mid = x1 + (x2 - x1) * 0.62;
+        bridgePath.setAttribute(
+          "d",
+          "M " + x1.toFixed(1) + " " + y1.toFixed(1) +
+          " L " + mid.toFixed(1) + " " + y1.toFixed(1) +
+          " L " + x2.toFixed(1) + " " + y2.toFixed(1)
+        );
+        /* Retrigger draw animation */
+        bridgePath.style.animation = "none";
+        void bridgePath.getBoundingClientRect();
+        bridgePath.style.animation = "";
+      }
+
+      function syncChrome(pillarId) {
+        tabs.forEach(function (tab) {
+          var on = !!pillarId && tab.getAttribute("data-pillar") === pillarId;
+          tab.classList.toggle("is-active", on);
+          tab.setAttribute("aria-selected", on ? "true" : "false");
+        });
+        noteEls.forEach(function (el) {
+          el.classList.toggle("is-hot", !!pillarId && el.getAttribute("data-pillar") === pillarId);
+        });
+        if (stackSplit) stackSplit.classList.toggle("is-linked", !!pillarId);
+        updateStackBridge(pillarId);
+        nodes.forEach(function (node) {
+          var href = node.getAttribute("href") || "";
+          var on = !!pillarId && href.indexOf("#" + pillarId) !== -1;
+          node.classList.toggle("is-active", on);
+          node.classList.toggle("is-lit", on); /* legacy alias */
+        });
+      }
+
+      /* Click-locked terminal — no hover preview */
+      function renderContent(pillarId, opts) {
+        opts = opts || {};
+        var animate = !!opts.animate && !reduce;
+        var data = pillarId && PILLARS[pillarId] ? PILLARS[pillarId] : OVERVIEW;
+        var key = pillarId && PILLARS[pillarId] ? pillarId : null;
+        if (showing === key && !opts.force) return;
+        showing = key;
+
+        var gen = ++renderGen;
+        body.innerHTML = "";
+        if (animate) {
+          body.classList.remove("is-swap");
+          void body.offsetWidth;
+          body.classList.add("is-swap");
+        } else {
+          body.classList.remove("is-swap");
+        }
+        if (fileEl) fileEl.textContent = data.file;
+
+        var rows = data.lines.slice(0, CODE_LINE_CAP);
+        rows.forEach(function (row, i) {
+          var line = document.createElement("div");
+          line.className = "code-line" + (animate ? " is-pending" : "");
+          var ln = document.createElement("span");
+          ln.className = "code-ln";
+          ln.textContent = String(i + 1).padStart(2, "0");
+          var tx = document.createElement("span");
+          tx.className = "code-tx" + (row.cls ? " " + row.cls : "");
+          tx.textContent = row.t || " ";
+          line.appendChild(ln);
+          line.appendChild(tx);
+          body.appendChild(line);
+
+          if (animate) {
+            setTimeout(function () {
+              if (gen !== renderGen) return;
+              line.classList.remove("is-pending");
+              line.classList.add("is-in");
+              if (i === rows.length - 1) {
+                var caret = document.createElement("span");
+                caret.className = "code-caret";
+                caret.setAttribute("aria-hidden", "true");
+                tx.appendChild(caret);
+              }
+            }, 12 + i * 16);
+          } else if (i === rows.length - 1) {
+            var caretNow = document.createElement("span");
+            caretNow.className = "code-caret";
+            caretNow.setAttribute("aria-hidden", "true");
+            tx.appendChild(caretNow);
+          }
+        });
+        requestAnimationFrame(function () { updateStackBridge(active); });
+      }
+
+      function setActive(pillarId, scroll) {
+        var isIdle = !pillarId || pillarId === "overview" || pillarId === "stack" || !PILLARS[pillarId];
+        active = isIdle ? null : pillarId;
+        syncChrome(active);
+        renderContent(active, { animate: true, force: true });
+        if (scroll) {
+          var stack = document.getElementById("stack");
+          if (stack) stack.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+        }
+      }
+
+      function selectPillar(id, scroll) {
+        /* Re-click active tab/node → return to neutral overview */
+        if (id && active === id) {
+          if (history.replaceState) history.replaceState(null, "", "#stack");
+          else location.hash = "stack";
+          setActive(null, !!scroll);
+          return;
+        }
+        if (id && PILLARS[id]) {
+          if (history.replaceState) history.replaceState(null, "", "#" + id);
+          else location.hash = id;
+          setActive(id, !!scroll);
+          return;
+        }
+        if (history.replaceState) history.replaceState(null, "", "#stack");
+        else location.hash = "stack";
+        setActive(null, !!scroll);
+      }
+
+      tabs.forEach(function (tab) {
+        tab.addEventListener("click", function () {
+          selectPillar(tab.getAttribute("data-pillar"), false);
+        });
+      });
+
+      noteEls.forEach(function (el) {
+        var id = el.getAttribute("data-pillar");
+        el.addEventListener("click", function () { selectPillar(id, false); });
+        el.addEventListener("keydown", function (e) {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            selectPillar(id, false);
+          }
+        });
+      });
+
+      nodes.forEach(function (node) {
+        node.addEventListener("click", function (e) {
+          var href = node.getAttribute("href") || "";
+          var id = href.replace("#", "");
+          if (!PILLARS[id]) return;
+          e.preventDefault();
+          selectPillar(id, true);
+        });
+      });
+
+      document.querySelectorAll('.nav-links a[href^="#"]').forEach(function (a) {
+        a.addEventListener("click", function (e) {
+          var id = (a.getAttribute("href") || "").replace("#", "");
+          if (!PILLARS[id]) return;
+          e.preventDefault();
+          if (history.replaceState) history.replaceState(null, "", "#" + id);
+          setActive(id, true);
+          if (menu) menu.classList.remove("is-open");
+          if (cta) cta.classList.remove("is-open");
+          if (toggle) {
+            toggle.setAttribute("aria-expanded", "false");
+            toggle.textContent = "Menu";
+          }
+          document.body.classList.remove("nav-menu-open");
+        });
+      });
+
+      var explore = document.querySelectorAll('a[href="#workflows"], a[href="#knowledge"], a[href="#governance"], a[href="#outcomes"]');
+      // already handled for nav + nodes; hero secondary uses #workflows — covered by query above if in nav-links only
+      document.querySelectorAll('a.btn[href="/system/"]').forEach(function (a) {
+        a.addEventListener("click", function (e) {
+          e.preventDefault();
+          if (history.replaceState) history.replaceState(null, "", "#stack");
+          setActive(null, true);
+        });
+      });
+
+      window.addEventListener("hashchange", function () {
+        var id = (location.hash || "").replace("#", "");
+        if (PILLARS[id]) setActive(id, false);
+        else if (!id || id === "stack" || id === "overview") setActive(null, false);
+      });
+
+      var initial = (location.hash || "").replace("#", "");
+      setActive(PILLARS[initial] ? initial : null, false);
+      window.addEventListener("resize", function () {
+        updateStackBridge(active);
+      });
+    })();
+
+    /* Hero network v2 — seeded irregular graph + signal routes */
+    (function () {
+      var map = document.querySelector(".arch-map");
+      var canvas = document.querySelector(".arch-plexus");
+      if (!map || !canvas) return;
+      var ctx = canvas.getContext("2d");
+      var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (reduce) map.setAttribute("data-reduce-motion", "1");
+
+      var LIME = [146, 250, 17];
+      var HOT = [155, 255, 50];
+      var SEED = "cvl-hero-network-v59";
+      var CFG = {
+        /* Ambient scaffolding off — orbits + pillar routes only (no radar-like node spam) */
+        nodeCount: 0,
+        minNodeDistance: 78,
+        maxNodeDistance: 280,
+        maxNodeDegree: 2,
+        crossLinkRatio: 0,
+        deadEndRatio: 0
+      };
+
+      var w = 0, h = 0, dpr = 1, cx = 0, cy = 0, hubR = 0, logoR = 0;
+      var gNodes = [];
+      var gEdges = [];
+      var arcs = [];
+      var atoms = [];
+      var routes = {};
+      var keepouts = [];
+      var pillarEls = {};
+      var terminals = {};
+      var placedRadii = {};
+      var placedLanes = {};
+      var placedAngles = {};
+      var veinTrees = {};
+      var veinMesh = [];
+      var veinFillers = [];
+
+      var hoverPillar = null;
+      var focusPillar = null;
+      var selectedPillar = null;
+      var activePillar = null;
+      var prevPillar = null;
+      var routeProg = 0;
+      var fadeProg = 1;
+      var fadingPillar = null;
+      var arrived = false;
+      var hubPulse = 0;
+      var ambientT = 0;
+      var ambientNext = 8 + Math.random() * 3;
+      var ambientPillar = null;
+      var ambientProg = 0;
+      var lastT = 0;
+      var t0 = performance.now();
+      var raf = 0;
+      var receiveTimer = null;
+      var introT0 = performance.now();
+
+      /* Split offscreen vein layers: cosmetic + one per pillar */
+      var veinLayers = null;
+      var veinLayerKey = "";
+
+      function renderVeinLayerInto(part, pid) {
+        var clearR = logoClearR();
+        var outerR = outerOrbitR();
+        ctx.save();
+        ctx.beginPath();
+        ctx.ellipse(cx, cy, outerR - 8, (outerR - 8) * ORBIT_ASPECT, 0, 0, Math.PI * 2);
+        ctx.clip();
+        ctx.beginPath();
+        ctx.rect(0, 0, w, h);
+        ctx.arc(cx, cy, clearR, 0, Math.PI * 2, true);
+        ctx.clip("evenodd");
+        if (part === "cosmetic") {
+          for (var m = 0; m < veinMesh.length; m++) {
+            strokeVeinPath(veinMesh[m], 0.5, 0.24, false);
+          }
+          for (var fv = 0; fv < veinFillers.length; fv++) {
+            var fill = veinFillers[fv];
+            strokeVeinPath(fill.main, 0.85, 0.3, true);
+            for (var fc = 0; fc < fill.caps.length; fc++) {
+              strokeVeinPath(fill.caps[fc], (fill.caps[fc].w || 0.55) * 0.85, 0.26 * (fill.caps[fc].a || 1), true);
+            }
+          }
+        } else {
+          var tree = veinTrees[pid];
+          if (tree) {
+            for (var c = 0; c < tree.caps.length; c++) {
+              var v = 0.92 + 0.08 * Math.sin(c + pid.length);
+              strokeVeinPath(tree.caps[c], tree.caps[c].w || 0.55, 0.34 * v * (tree.caps[c].a || 1), true);
+            }
+          }
+        }
+        ctx.restore();
+        if (part !== "cosmetic") {
+          var tree2 = veinTrees[pid];
+          if (tree2) {
+            ctx.save();
+            ctx.beginPath();
+            ctx.rect(0, 0, w, h);
+            ctx.arc(cx, cy, clearR, 0, Math.PI * 2, true);
+            ctx.clip("evenodd");
+            strokeVeinPath(tree2.main, 1.3, 0.5, true);
+            ctx.restore();
+          }
+        }
+        /* Fence — no vein pixel survives inside a chip button */
+        ctx.save();
+        ctx.globalCompositeOperation = "destination-out";
+        for (var kf = 0; kf < keepouts.length; kf++) {
+          var kb = keepouts[kf];
+          ctx.beginPath();
+          ctx.rect(kb.l - 4, kb.t - 4, (kb.r - kb.l) + 8, (kb.b - kb.t) + 8);
+          ctx.fill();
+        }
+        ctx.restore();
+      }
+
+      function ensureVeinLayers() {
+        if (!w || !h) return false;
+        var scale = dpr || 1;
+        var key = w + "x" + h + "@" + scale;
+        if (veinLayers && veinLayerKey === key) return true;
+        var mainCtx = ctx;
+        function mk(part, pid) {
+          var cv = document.createElement("canvas");
+          cv.width = Math.max(1, Math.round(w * scale));
+          cv.height = Math.max(1, Math.round(h * scale));
+          ctx = cv.getContext("2d");
+          ctx.setTransform(scale, 0, 0, scale, 0, 0);
+          renderVeinLayerInto(part, pid);
+          return cv;
+        }
+        veinLayers = { cosmetic: mk("cosmetic", null), pillars: {} };
+        PILLAR_KEYS.forEach(function (pid) {
+          veinLayers.pillars[pid] = mk("pillar", pid);
+        });
+        ctx = mainCtx;
+        veinLayerKey = key;
+        return true;
+      }
+
+      /* Pre-warm in the quiet gap so no entrance frame pays the render cost */
+      setTimeout(function () { try { ensureVeinLayers(); } catch (e) {} }, 1700);
+
+      /* Each pillar's veins start growing ahead of its chip's arrival
+         (chips land at 4.6 / 4.9 / 5.2 / 5.5s) */
+      var CHIP_VEIN_START = { tl: 3.0, tr: 3.3, bl: 3.6, br: 3.9 };
+
+      function pillarVeinStart(pid) {
+        var el = pillarEls[pid];
+        if (el) {
+          for (var k in CHIP_VEIN_START) {
+            if (el.classList.contains(k)) return CHIP_VEIN_START[k];
+          }
+        }
+        return 3.0;
+      }
+
+      function stampRadial(layer, alpha, intro) {
+        if (intro <= 0 || alpha <= 0) return;
+        if (intro >= 1) {
+          ctx.save();
+          ctx.globalAlpha = Math.min(1, alpha);
+          ctx.drawImage(layer, 0, 0, w, h);
+          ctx.restore();
+          return;
+        }
+        /* Radial growth from the heart with a feathered frontier */
+        var r0 = logoClearR() * 0.9;
+        var rMax = outerOrbitR() * 1.2;
+        var eased = 1 - Math.pow(1 - intro, 1.8);
+        var rNow = r0 + (rMax - r0) * eased;
+        var aBase = Math.min(1, alpha * Math.min(1, intro * 1.6));
+        var bands = [
+          { r: rNow, a: 1 },
+          { r: rNow + 34, a: 0.45 },
+          { r: rNow + 70, a: 0.18 }
+        ];
+        var prevR = 0;
+        for (var bi = 0; bi < bands.length; bi++) {
+          ctx.save();
+          ctx.beginPath();
+          ctx.ellipse(cx, cy, bands[bi].r, bands[bi].r * ORBIT_ASPECT, 0, 0, Math.PI * 2);
+          if (prevR > 0) {
+            ctx.ellipse(cx, cy, prevR, prevR * ORBIT_ASPECT, 0, 0, Math.PI * 2, true);
+          }
+          ctx.clip("evenodd");
+          ctx.globalAlpha = aBase * bands[bi].a;
+          ctx.drawImage(layer, 0, 0, w, h);
+          ctx.restore();
+          prevR = bands[bi].r;
+        }
+      }
+
+      function blitVeinLayers(alpha, t, ramp) {
+        if (alpha <= 0) return;
+        if (!ensureVeinLayers()) return;
+        var breath = reduce ? 1 : 0.95 + 0.05 * Math.sin(t * 0.4);
+        var base = alpha * breath;
+        /* Cosmetic web — quiet fade, never reacts to hover */
+        var cosIntro = ramp(3.4, 2.4);
+        if (cosIntro > 0) {
+          ctx.save();
+          ctx.globalAlpha = Math.min(1, base * 0.9 * cosIntro);
+          ctx.drawImage(veinLayers.cosmetic, 0, 0, w, h);
+          ctx.restore();
+        }
+        /* Button veins — each grows out to meet its arriving chip; hover
+           emphasis is per-layer stamp alpha, cosmetic layer untouched */
+        for (var i = 0; i < PILLAR_KEYS.length; i++) {
+          var pid = PILLAR_KEYS[i];
+          var layer = veinLayers.pillars[pid];
+          if (!layer) continue;
+          var opScale = 1;
+          if (activePillar) {
+            opScale = activePillar === pid ? 1.05 : 0.55;
+          } else if (fadingPillar === pid) {
+            opScale = 0.65;
+          }
+          stampRadial(layer, base * opScale, ramp(pillarVeinStart(pid), 1.8));
+        }
+      }
+
+      /* Eye assembly — the eye pieces itself in, voxel tiles in random order */
+      var eyeEl = map.querySelector(".arch-hub-eye");
+      var eyeImg = new Image();
+      eyeImg.src = "/cutouts/CVL_mark_voxel_eye.png";
+      var eyeCanvas = null, eyeCtx = null, eyeOrder = null, eyeShown = 0, eyeDone = false;
+      var EYE_T0 = 2.6, EYE_DUR = 1.3, EYE_N = 12;
+      if (eyeEl && !reduce) eyeEl.style.visibility = "hidden";
+
+      function drawEyeAssembly(ti) {
+        if (eyeDone || reduce || !eyeEl) return;
+        if (ti < EYE_T0) return;
+        if (!eyeImg.complete || !eyeImg.naturalWidth) return;
+        var mr = map.getBoundingClientRect();
+        var er = eyeEl.getBoundingClientRect();
+        if (er.width < 2) return;
+        var scale = dpr || 1;
+        if (!eyeCanvas) {
+          eyeCanvas = document.createElement("canvas");
+          eyeCanvas.width = Math.max(1, Math.round(er.width * scale));
+          eyeCanvas.height = Math.max(1, Math.round(er.height * scale));
+          eyeCtx = eyeCanvas.getContext("2d");
+          eyeOrder = [];
+          for (var i = 0; i < EYE_N * EYE_N; i++) eyeOrder.push(i);
+          for (var j = eyeOrder.length - 1; j > 0; j--) {
+            var r = Math.floor(Math.random() * (j + 1));
+            var tmp = eyeOrder[j];
+            eyeOrder[j] = eyeOrder[r];
+            eyeOrder[r] = tmp;
+          }
+          eyeShown = 0;
+        }
+        var total = EYE_N * EYE_N;
+        var want = Math.min(total, Math.floor(((ti - EYE_T0) / EYE_DUR) * total));
+        var sw = eyeImg.naturalWidth / EYE_N;
+        var sh = eyeImg.naturalHeight / EYE_N;
+        var dw = eyeCanvas.width / EYE_N;
+        var dh = eyeCanvas.height / EYE_N;
+        while (eyeShown < want) {
+          var idx = eyeOrder[eyeShown];
+          var gx = idx % EYE_N;
+          var gy = Math.floor(idx / EYE_N);
+          eyeCtx.drawImage(eyeImg, gx * sw, gy * sh, sw, sh, gx * dw, gy * dh, dw, dh);
+          eyeShown++;
+        }
+        ctx.drawImage(eyeCanvas, er.left - mr.left, er.top - mr.top, er.width, er.height);
+        if (eyeShown >= total) {
+          eyeEl.style.visibility = "visible";
+          eyeDone = true;
+        }
+      }
+
+      var PILLAR_KEYS = ["workflows", "knowledge", "governance", "outcomes"];
+      var CORNER_TO_PILLAR = { tl: "workflows", tr: "knowledge", bl: "governance", br: "outcomes" };
+      var ROUTE_DUR = 1200;
+      var FADE_DUR = 300;
+
+      function rgba(c, a) {
+        return "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + a + ")";
+      }
+
+      function hashSeed(s) {
+        var h = 2166136261;
+        for (var i = 0; i < s.length; i++) {
+          h ^= s.charCodeAt(i);
+          h = Math.imul(h, 16777619);
+        }
+        return h >>> 0;
+      }
+
+      function mulberry32(a) {
+        return function () {
+          a |= 0; a = a + 0x6D2B79F5 | 0;
+          var t = Math.imul(a ^ a >>> 15, 1 | a);
+          t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+          return ((t ^ t >>> 14) >>> 0) / 4294967296;
+        };
+      }
+
+      function lerp(a, b, t) { return a + (b - a) * t; }
+      function easeOut(t) { return 1 - Math.pow(1 - t, 1.55); }
+      function dist(ax, ay, bx, by) {
+        var dx = ax - bx, dy = ay - by;
+        return Math.sqrt(dx * dx + dy * dy);
+      }
+
+      function pillarFromEl(el) {
+        if (!el) return null;
+        for (var k in CORNER_TO_PILLAR) {
+          if (el.classList.contains(k)) return CORNER_TO_PILLAR[k];
+        }
+        var href = el.getAttribute("href") || "";
+        for (var i = 0; i < PILLAR_KEYS.length; i++) {
+          if (href.indexOf("#" + PILLAR_KEYS[i]) !== -1) return PILLAR_KEYS[i];
+        }
+        return null;
+      }
+
+      function resolveIntent() {
+        /* Hover/focus drive the signal — selected (click) is fallback only */
+        return hoverPillar || focusPillar || selectedPillar || null;
+      }
+
+      function syncSelectedFromDom() {
+        var sel = null;
+        map.querySelectorAll(".arch-node").forEach(function (el) {
+          if (el.classList.contains("is-active") || el.classList.contains("is-lit")) {
+            sel = pillarFromEl(el);
+          }
+        });
+        selectedPillar = sel;
+      }
+
+      function inKeepout(x, y, pad) {
+        pad = pad || 0;
+        for (var i = 0; i < keepouts.length; i++) {
+          var k = keepouts[i];
+          if (x >= k.l - pad && x <= k.r + pad && y >= k.t - pad && y <= k.b + pad) return true;
+        }
+        return false;
+      }
+
+      function logoClearR() {
+        /* Tight to the visible mark — oversized clear was eating half the vein length */
+        return Math.max(logoR * 0.9, hubR * 1.08, Math.min(w, h) * 0.11);
+      }
+
+      function hubAtten(x, y) {
+        var d = dist(x, y, cx, cy);
+        var inner = logoClearR();
+        var outer = Math.max(inner + 80, hubR * 2.1);
+        if (d <= inner) return 0;
+        if (d >= outer) return 1;
+        return lerp(0, 1, (d - inner) / (outer - inner));
+      }
+
+      /* Clip a segment so nothing is stroked inside the brand logo circle */
+      function clipSegOutsideLogo(x1, y1, x2, y2) {
+        var r = logoClearR();
+        var d1 = dist(x1, y1, cx, cy);
+        var d2 = dist(x2, y2, cx, cy);
+        if (d1 < r && d2 < r) return null;
+        if (d1 >= r && d2 >= r) {
+          var mx = (x1 + x2) * 0.5, my = (y1 + y2) * 0.5;
+          if (dist(mx, my, cx, cy) >= r) {
+            return { x1: x1, y1: y1, x2: x2, y2: y2 };
+          }
+          /* Chord through logo — keep the outer-most half toward chip */
+          if (d1 >= d2) return { x1: x1, y1: y1, x2: cx + (mx - cx) / (dist(mx, my, cx, cy) || 1) * r, y2: cy + (my - cy) / (dist(mx, my, cx, cy) || 1) * r };
+          return { x1: cx + (mx - cx) / (dist(mx, my, cx, cy) || 1) * r, y1: cy + (my - cy) / (dist(mx, my, cx, cy) || 1) * r, x2: x2, y2: y2 };
+        }
+        var tLo = 0, tHi = 1;
+        for (var i = 0; i < 14; i++) {
+          var tm = (tLo + tHi) * 0.5;
+          var xm = lerp(x1, x2, tm), ym = lerp(y1, y2, tm);
+          var inside = dist(xm, ym, cx, cy) < r;
+          if (d1 < r) {
+            if (inside) tLo = tm; else tHi = tm;
+          } else {
+            if (inside) tHi = tm; else tLo = tm;
+          }
+        }
+        var t = (tLo + tHi) * 0.5;
+        if (d1 < r) {
+          return { x1: lerp(x1, x2, t), y1: lerp(y1, y2, t), x2: x2, y2: y2 };
+        }
+        return { x1: x1, y1: y1, x2: lerp(x1, x2, t), y2: lerp(y1, y2, t) };
+      }
+
+      function measureHub() {
+        var mapRect = map.getBoundingClientRect();
+        cx = w * 0.5;
+        cy = h * 0.5;
+        hubR = Math.min(w, h) * 0.18;
+        logoR = hubR * 1.45;
+        var hubImg = map.querySelector(".arch-hub");
+        var hubWrap = map.querySelector(".arch-hub-wrap");
+        var hubEl = hubImg || hubWrap;
+        if (hubEl) {
+          var hr = hubEl.getBoundingClientRect();
+          hubR = Math.min(hr.width, hr.height) * 0.48;
+          cx = (hr.left + hr.right) * 0.5 - mapRect.left;
+          cy = (hr.top + hr.bottom) * 0.5 - mapRect.top;
+        }
+        if (hubWrap) {
+          var wr = hubWrap.getBoundingClientRect();
+          logoR = Math.max(wr.width, wr.height) * 0.56;
+        } else if (hubEl) {
+          var hb = hubEl.getBoundingClientRect();
+          logoR = Math.max(hb.width, hb.height) * 0.56;
+        }
+      }
+
+      /*
+       * True polar hang — one pillar per quadrant, one ring each.
+       * Angles in canvas atan2 space (0 = east, + = clockwise/down).
+       * NO column hacks. NO governance Y shove. Buttons sit on the oval.
+       */
+      function pillarOrbits() {
+        /*
+         * One primary orbit · four equal quadrants.
+         * Decorative inner rings are separate (orbitRingRadii) — buttons share the outer seat
+         * so nothing looks "thrown" into empty space (Governance was the casualty of ringI:3).
+         */
+        return {
+          workflows:  { ang: -Math.PI * 0.75 }, /* NW  135° */
+          knowledge:  { ang: -Math.PI * 0.25 }, /* NE   45° */
+          outcomes:   { ang:  Math.PI * 0.25 }, /* SE   45° */
+          governance: { ang:  Math.PI * 0.75 }  /* SW 135° */
+        };
+      }
+
+      /* Capillary branch bias — which side fine vessels peel toward */
+      var VEIN_SIDE = {
+        workflows:  -1,
+        governance:  1,
+        knowledge:   1,
+        outcomes:   -1
+      };
+
+      /* Oval foreshortening — leave rings as-is (user signed off) */
+      var ORBIT_ASPECT = 0.74;
+
+      function orbitXY(ang, r) {
+        return {
+          x: cx + Math.cos(ang) * r,
+          y: cy + Math.sin(ang) * r * ORBIT_ASPECT
+        };
+      }
+
+      function orbitRingRadii() {
+        /*
+         * Decorative craft rings — fill logo → near button INNER faces (wide).
+         * Chip interiors still cleared by destination-out punch in drawArcFragments.
+         */
+        var clear = logoClearR();
+        var pad = 28;
+        var maxC = Math.min(cx - pad, (cy - pad) / ORBIT_ASPECT, w - cx - pad, (h - cy - pad) / ORBIT_ASPECT);
+        var rimMin = Infinity;
+        PILLAR_KEYS.forEach(function (k) {
+          var term = terminals[k];
+          if (!term) return;
+          var dx = term.x - cx;
+          var dy = (term.y - cy) / ORBIT_ASPECT;
+          var r = Math.hypot(dx, dy);
+          if (r > clear && r < rimMin) rimMin = r;
+        });
+        /* Small gap — outer ring reaches out to the chips; punch keeps dashes out of text */
+        /* Portal tunnel — rings reach past the chip inner faces; punch keeps text clean */
+        var hi = rimMin < Infinity ? rimMin + 14 : maxC * 0.95;
+        hi = Math.max(clear + 64, Math.min(hi, maxC * 0.99));
+        var lo = Math.max(clear + 22, hi * 0.3);
+        return [0, 1, 2, 3, 4].map(function (i) { return lo + (hi - lo) * (i / 4); });
+      }
+
+      function outerOrbitR() {
+        var rings = orbitRingRadii();
+        return rings[rings.length - 1];
+      }
+
+      /* Keep a point inside the outermost orbit oval */
+      function clampToOuterOrbit(p, r) {
+        r = r == null ? outerOrbitR() : r;
+        var dx = p.x - cx;
+        var dy = (p.y - cy) / ORBIT_ASPECT;
+        var d = Math.hypot(dx, dy) || 1;
+        if (d <= r * 0.985) return p;
+        var s = (r * 0.985) / d;
+        return { x: cx + dx * s, y: cy + dy * s * ORBIT_ASPECT };
+      }
+
+      function placePillarsOnOrbit() {
+        measureHub();
+        placedRadii = {};
+        placedLanes = {};
+        placedAngles = {};
+        var orbits = pillarOrbits();
+        var clear = logoClearR();
+        var meta = {};
+        map.querySelectorAll(".arch-node").forEach(function (el) {
+          var id = pillarFromEl(el);
+          if (!id || !orbits[id]) return;
+          var halfW = Math.max(80, (el.offsetWidth || 200) * 0.5);
+          var halfH = Math.max(20, (el.offsetHeight || 56) * 0.5);
+          meta[id] = {
+            el: el,
+            ang: orbits[id].ang,
+            halfW: halfW,
+            halfH: halfH,
+            padX: halfW + 10,
+            padY: halfH + 10
+          };
+        });
+        var edgePad = 14;
+        var maxR = Math.min(
+          cx - edgePad,
+          (cy - edgePad) / ORBIT_ASPECT,
+          w - cx - edgePad,
+          (h - cy - edgePad) / ORBIT_ASPECT
+        );
+        /* Shared outer orbit — all four connectors sit on the same ring */
+        var chipBudget = 48;
+        var seatR = Math.max(clear + 100, maxR - chipBudget);
+
+        PILLAR_KEYS.forEach(function (id) {
+          if (!meta[id]) return;
+          var m = meta[id];
+          placedRadii[id] = seatR;
+          placedAngles[id] = m.ang;
+          /* Orbit through the inner edge of the chip */
+          var inward = Math.min(m.halfW, m.halfH) * 0.32 + 6;
+          var hangR = seatR + inward;
+          var pt = orbitXY(m.ang, hangR);
+          var guard = 0;
+          while (
+            guard < 10 &&
+            (pt.x < m.padX || pt.x > w - m.padX || pt.y < m.padY || pt.y > h - m.padY)
+          ) {
+            hangR *= 0.94;
+            pt = orbitXY(m.ang, hangR);
+            guard++;
+          }
+          pt.x = Math.max(m.padX, Math.min(w - m.padX, pt.x));
+          pt.y = Math.max(m.padY, Math.min(h - m.padY, pt.y));
+          placedLanes[id] = (VEIN_SIDE[id] || 1) * 30;
+          m.el.style.left = pt.x + "px";
+          m.el.style.top = pt.y + "px";
+          m.el.style.right = "auto";
+          m.el.style.bottom = "auto";
+          m.el.style.transform = "translate(-50%, -50%)";
+        });
+      }
+
+      /*
+       * Organic capillary veins — logo is the heart, buttons are connectors.
+       * Soft Catmull-Rom vessels (eyelid-vein reference): branch, taper, diffuse.
+       */
+      function catmullRom(p0, p1, p2, p3, t) {
+        var t2 = t * t;
+        var t3 = t2 * t;
+        return {
+          x: 0.5 * ((2 * p1.x) + (-p0.x + p2.x) * t + (2 * p0.x - 5 * p1.x + 4 * p2.x - p3.x) * t2 + (-p0.x + 3 * p1.x - 3 * p2.x + p3.x) * t3),
+          y: 0.5 * ((2 * p1.y) + (-p0.y + p2.y) * t + (2 * p0.y - 5 * p1.y + 4 * p2.y - p3.y) * t2 + (-p0.y + 3 * p1.y - 3 * p2.y + p3.y) * t3)
+        };
+      }
+
+      function densifyVein(pts, segments) {
+        if (!pts || pts.length < 2) return pts || [];
+        if (pts.length === 2) {
+          var out2 = [pts[0]];
+          for (var s = 1; s < segments; s++) {
+            out2.push({ x: lerp(pts[0].x, pts[1].x, s / segments), y: lerp(pts[0].y, pts[1].y, s / segments) });
+          }
+          out2.push(pts[1]);
+          return out2;
+        }
+        segments = segments || 8;
+        var p = [pts[0]].concat(pts, [pts[pts.length - 1]]);
+        var out = [];
+        for (var i = 0; i < p.length - 3; i++) {
+          for (var s = 0; s < segments; s++) {
+            out.push(catmullRom(p[i], p[i + 1], p[i + 2], p[i + 3], s / segments));
+          }
+        }
+        out.push({ x: pts[pts.length - 1].x, y: pts[pts.length - 1].y });
+        return out;
+      }
+
+      function organicVeinMain(from, to, pillar) {
+        var rand = mulberry32(hashSeed(SEED + "-vein-" + pillar));
+        var side = VEIN_SIDE[pillar] || (rand() < 0.5 ? -1 : 1);
+        var dx = to.x - from.x;
+        var dy = to.y - from.y;
+        var len = Math.hypot(dx, dy) || 1;
+        var lenAmp = Math.min(1.2, Math.max(0.4, len / 200));
+        /* More keys = softer retinal tortuosity (flowing zig-zag, not lightning) */
+        var steps = len > 200 ? 8 : 7;
+        var keys = [{ x: from.x, y: from.y }];
+        var nx = (-dy / len) * side;
+        var ny = (dx / len) * side;
+        var arc = (7 + rand() * 9) * lenAmp * side;
+        var wave1 = (4 + rand() * 5) * lenAmp;
+        var wave2 = (2 + rand() * 3) * lenAmp;
+        var ph1 = rand() * Math.PI * 2;
+        var ph2 = rand() * Math.PI * 2;
+        /* Slow meander that flips gently — natural vessel wander */
+        var meander = (rand() - 0.5) * 6 * lenAmp;
+        for (var i = 1; i < steps; i++) {
+          var t = i / steps;
+          var envelope = Math.sin(t * Math.PI);
+          meander += (rand() - 0.5) * 3.2 * lenAmp;
+          meander *= 0.78;
+          var off =
+            arc * envelope +
+            meander * envelope +
+            Math.sin(t * Math.PI * 1.55 + ph1) * wave1 * envelope +
+            Math.sin(t * Math.PI * 2.85 + ph2) * wave2 * envelope * 0.55;
+          keys.push({
+            x: from.x + dx * t + nx * off,
+            y: from.y + dy * t + ny * off
+          });
+        }
+        keys.push({ x: to.x, y: to.y });
+        var smooth = densifyVein(keys, 16);
+        /* Soft dock only at the tip — keep mid-run zig-zag alive */
+        for (var d = 0; d < smooth.length; d++) {
+          var tt = d / (smooth.length - 1);
+          if (tt < 0.82) continue;
+          var u = (tt - 0.82) / 0.18;
+          var lx = lerp(from.x, to.x, tt);
+          var ly = lerp(from.y, to.y, tt);
+          smooth[d].x = lerp(smooth[d].x, lx, u * u);
+          smooth[d].y = lerp(smooth[d].y, ly, u * u);
+        }
+        smooth[smooth.length - 1] = { x: to.x, y: to.y };
+        return smooth;
+      }
+
+      function buildCapillaries(main, pillar) {
+        var rand = mulberry32(hashSeed(SEED + "-cap-" + pillar));
+        var side = VEIN_SIDE[pillar] || 1;
+        var caps = [];
+        if (!main || main.length < 8) return caps;
+
+        function tangentAt(pts, idx) {
+          var a = pts[Math.max(0, idx - 1)];
+          var b = pts[Math.min(pts.length - 1, idx + 1)];
+          var dx = b.x - a.x, dy = b.y - a.y;
+          var l = Math.hypot(dx, dy) || 1;
+          return { x: dx / l, y: dy / l };
+        }
+
+        /* Grow one tapering, gently curving vessel; recurse into finer twigs */
+        function grow(start, dir, len, width, alphaScale, depth) {
+          var keys = [{ x: start.x, y: start.y }];
+          var steps = 6;
+          var x = start.x, y = start.y;
+          var ang = Math.atan2(dir.y, dir.x);
+          var bend = (rand() - 0.5) * 0.95;
+          var drift = 0;
+          for (var s = 1; s <= steps; s++) {
+            drift = drift * 0.7 + (rand() - 0.5) * 0.22;
+            ang += bend / steps + drift * 0.5;
+            var segLen = (len / steps) * (0.8 + rand() * 0.4);
+            x += Math.cos(ang) * segLen;
+            y += Math.sin(ang) * segLen;
+            var cl = clampToOuterOrbit({ x: x, y: y });
+            x = cl.x;
+            y = cl.y;
+            keys.push({ x: x, y: y });
+          }
+          var path = densifyVein(keys, 6);
+          path.w = width;
+          path.a = alphaScale;
+          caps.push(path);
+          if (depth > 0 && len > 12) {
+            var forks = rand() > 0.4 ? 2 : 1;
+            for (var f = 0; f < forks; f++) {
+              var at = 0.4 + rand() * 0.4;
+              var idx = Math.max(1, Math.floor(path.length * at));
+              var tg = tangentAt(path, idx);
+              var sgn = f % 2 === 0 ? 1 : -1;
+              var a2 = Math.atan2(tg.y, tg.x) + sgn * (0.45 + rand() * 0.5);
+              grow(
+                path[idx],
+                { x: Math.cos(a2), y: Math.sin(a2) },
+                len * (0.45 + rand() * 0.25),
+                width * 0.6,
+                alphaScale * 0.78,
+                depth - 1
+              );
+            }
+          }
+        }
+
+        /* Primary vessels peel off the trunk at shallow forward angles and
+           cascade into secondary + tertiary twigs — dendritic, not gills */
+        var count = 6;
+        for (var c = 0; c < count; c++) {
+          var frac = 0.12 + c * (0.72 / count) + rand() * 0.07;
+          var idx0 = Math.max(2, Math.min(main.length - 4, Math.floor(main.length * frac)));
+          var tg0 = tangentAt(main, idx0);
+          /* Mostly alternate sides, sometimes double up — nature is not a metronome */
+          var sgn0 = (c % 2 === 0 ? 1 : -1) * side * (rand() < 0.25 ? -1 : 1);
+          var a0 = Math.atan2(tg0.y, tg0.x) + sgn0 * (0.3 + rand() * 0.55);
+          var len0 = (32 + rand() * 42) * (1 - frac * 0.3);
+          grow(main[idx0], { x: Math.cos(a0), y: Math.sin(a0) }, len0, 0.75, 1, 2);
+        }
+        return caps;
+      }
+
+      function buildVeinAnastomoses() {
+        veinMesh = [];
+        var rand = mulberry32(hashSeed(SEED + "-mesh"));
+        var mains = PILLAR_KEYS.map(function (pid) {
+          return { pid: pid, pts: veinTrees[pid] && veinTrees[pid].main };
+        }).filter(function (m) { return m.pts && m.pts.length; });
+
+        for (var i = 0; i < mains.length; i++) {
+          for (var j = i + 1; j < mains.length; j++) {
+            var a = mains[i].pts;
+            var b = mains[j].pts;
+            [0.16, 0.28, 0.42, 0.56].forEach(function (frac) {
+              var pa = a[Math.floor(a.length * frac)];
+              var pb = b[Math.floor(b.length * frac)];
+              if (!pa || !pb) return;
+              if (dist(pa.x, pa.y, pb.x, pb.y) > 150) return;
+              var mid = clampToOuterOrbit({
+                x: (pa.x + pb.x) * 0.5 + (rand() - 0.5) * 12,
+                y: (pa.y + pb.y) * 0.5 + (rand() - 0.5) * 12
+              });
+              veinMesh.push(densifyVein([
+                clampToOuterOrbit(pa),
+                mid,
+                clampToOuterOrbit(pb)
+              ], 6));
+            });
+          }
+        }
+      }
+
+      /*
+       * Faint retinal vessels — opacity rises heart → connector (fills outward).
+       * Thin hairlines; no fat neon limbs.
+       */
+      function strokeVeinPath(pts, baseW, alpha, outwardFill) {
+        if (!pts || pts.length < 2) return;
+        ctx.save();
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
+        for (var i = 0; i < pts.length - 1; i++) {
+          var t = i / (pts.length - 1);
+          /* Slight anatomical taper — still thin overall */
+          var w = outwardFill
+            ? baseW * (1.2 - t * 0.45)
+            : baseW * (0.85 + 0.2 * Math.sin(t * Math.PI));
+          /* Faint at heart, fills in toward the button */
+          var a = outwardFill
+            ? alpha * (0.22 + t * 0.78)
+            : alpha * (0.3 + 0.6 * Math.sin(t * Math.PI));
+          ctx.beginPath();
+          ctx.moveTo(pts[i].x, pts[i].y);
+          ctx.lineTo(pts[i + 1].x, pts[i + 1].y);
+          ctx.strokeStyle = rgba(LIME, a);
+          ctx.lineWidth = Math.max(0.3, w);
+          ctx.stroke();
+        }
+        ctx.restore();
+      }
+
+      function measure() {
+        var mapRect = map.getBoundingClientRect();
+        keepouts = [];
+        pillarEls = {};
+        terminals = {};
+        placePillarsOnOrbit();
+        map.querySelectorAll(".arch-node").forEach(function (el) {
+          var id = pillarFromEl(el);
+          if (!id) return;
+          pillarEls[id] = el;
+          var r = el.getBoundingClientRect();
+          var l = r.left - mapRect.left;
+          var t = r.top - mapRect.top;
+          var rr = r.right - mapRect.left;
+          var bb = r.bottom - mapRect.top;
+          keepouts.push({ id: id, l: l, t: t, r: rr, b: bb });
+          var bx = (l + rr) * 0.5;
+          var by = (t + bb) * 0.5;
+          var dx = cx - bx, dy = cy - by;
+          var d = Math.sqrt(dx * dx + dy * dy) || 1;
+          var ux = dx / d, uy = dy / d;
+          var halfW = r.width * 0.5, halfH = r.height * 0.5;
+          /* Land flush on the chip rim — line merges into the border */
+          var edge = Math.min(
+            Math.abs(ux) > 1e-4 ? halfW / Math.abs(ux) : 1e9,
+            Math.abs(uy) > 1e-4 ? halfH / Math.abs(uy) : 1e9
+          );
+          terminals[id] = { x: bx + ux * edge, y: by + uy * edge, bx: bx, by: by };
+        });
+      }
+
+      function addNode(x, y, tags) {
+        var id = "n" + gNodes.length;
+        var n = { id: id, x: x, y: y, ox: x, oy: y, tags: tags || {}, deg: 0, phase: 0 };
+        gNodes.push(n);
+        return n;
+      }
+
+      function edgeKey(a, b) {
+        return a < b ? a + "|" + b : b + "|" + a;
+      }
+
+      function addEdge(a, b, meta) {
+        if (a.id === b.id) return null;
+        var key = edgeKey(a.id, b.id);
+        for (var i = 0; i < gEdges.length; i++) {
+          if (gEdges[i].key === key) return gEdges[i];
+        }
+        if (a.deg >= CFG.maxNodeDegree + 1 || b.deg >= CFG.maxNodeDegree + 1) {
+          if (!(meta && meta.force)) return null;
+        }
+        var e = {
+          id: "e" + gEdges.length,
+          key: key,
+          a: a.id,
+          b: b.id,
+          len: dist(a.x, a.y, b.x, b.y),
+          route: meta && meta.route ? 1 : 0
+        };
+        gEdges.push(e);
+        a.deg++;
+        b.deg++;
+        return e;
+      }
+
+      function nodeById(id) {
+        for (var i = 0; i < gNodes.length; i++) if (gNodes[i].id === id) return gNodes[i];
+        return null;
+      }
+
+      function buildPolylineRoute(pillar, pts) {
+        var chain = [];
+        for (var p = 0; p < pts.length; p++) {
+          var isHubEnd = p === 0;
+          var isChipEnd = p === pts.length - 1;
+          var n = addNode(pts[p].x, pts[p].y, {
+            route: pillar,
+            waypoint: 1,
+            hubEnd: isHubEnd ? 1 : 0,
+            chipEnd: isChipEnd ? 1 : 0,
+            /* No discs on routes — elbows are line-only; chip merge has no end circle */
+            showDisc: 0
+          });
+          n.phase = p * 0.7;
+          chain.push(n);
+        }
+        var edgeIds = [];
+        for (var e = 0; e < chain.length - 1; e++) {
+          var ed = addEdge(chain[e], chain[e + 1], { force: 1, route: 1 });
+          if (ed) edgeIds.push(ed.id);
+        }
+        var total = 0;
+        for (var j = 0; j < edgeIds.length; j++) {
+          for (var k = 0; k < gEdges.length; k++) {
+            if (gEdges[k].id === edgeIds[j]) total += gEdges[k].len;
+          }
+        }
+        routes[pillar] = {
+          pillar: pillar,
+          nodeIds: chain.map(function (n) { return n.id; }),
+          edgeIds: edgeIds,
+          totalLength: total || 1
+        };
+        return chain;
+      }
+
+      function buildRouteChain(pillar, from, to, bends, rand, mSafe) {
+        mSafe = mSafe || Math.min(w, h);
+        var pts = [from];
+        for (var i = 1; i <= bends; i++) {
+          var t = 0.38 + (i - 1) * 0.22;
+          var px = lerp(from.x, to.x, t);
+          var py = lerp(from.y, to.y, t);
+          var nx = -(to.y - from.y);
+          var ny = to.x - from.x;
+          var nl = Math.sqrt(nx * nx + ny * ny) || 1;
+          var span = dist(from.x, from.y, to.x, to.y);
+          var amp = Math.max(mSafe * 0.055, 0.11 * span);
+          var sign = 1;
+          if (i > 1) sign *= -0.55;
+          px += (nx / nl) * amp * sign;
+          py += (ny / nl) * amp * sign;
+          var dHub = dist(px, py, cx, cy);
+          if (dHub < hubR * 1.35) {
+            var s = (hubR * 1.4) / dHub;
+            px = cx + (px - cx) * s;
+            py = cy + (py - cy) * s;
+          }
+          if (inKeepout(px, py, 48)) {
+            px = lerp(from.x, to.x, t) + (nx / nl) * amp * 0.35 * sign;
+            py = lerp(from.y, to.y, t) + (ny / nl) * amp * 0.35 * sign;
+          }
+          pts.push({ x: px, y: py });
+        }
+        pts.push(to);
+        return buildPolylineRoute(pillar, pts);
+      }
+
+      function seedAtoms(rand) {
+        /* Subtle atom / particle field — free motion + soft collisions, logo-cleared */
+        atoms = [];
+        var clear = logoClearR() * 1.18;
+        var m = Math.min(w, h);
+        var want = 72;
+        var tries = 0;
+        while (atoms.length < want && tries < 1800) {
+          tries++;
+          var fx = 12 + rand() * (w - 24);
+          var fy = 12 + rand() * (h - 24);
+          var dC = dist(fx, fy, cx, cy);
+          if (dC < clear) continue;
+          if (dC > m * 0.8) continue;
+          if (inKeepout(fx, fy, 40)) continue;
+          var spd = 16 + rand() * 34;
+          var ang = rand() * Math.PI * 2;
+          atoms.push({
+            x: fx,
+            y: fy,
+            r: 0.7 + rand() * 1.55,
+            vx: Math.cos(ang) * spd,
+            vy: Math.sin(ang) * spd,
+            op: 0.16 + rand() * 0.22,
+            flash: 0
+          });
+        }
+      }
+
+      function stepAtoms(dt) {
+        if (!atoms.length) return;
+        var clear = logoClearR() * 1.12;
+        var i, j, a, b, dx, dy, d, nx, ny, overlap, dvx, dvy, impact;
+        var margin = 10;
+        /* Integrate */
+        for (i = 0; i < atoms.length; i++) {
+          a = atoms[i];
+          a.x += a.vx * dt;
+          a.y += a.vy * dt;
+          if (a.flash > 0) a.flash = Math.max(0, a.flash - dt * 2.4);
+          /* Soft wall bounce */
+          if (a.x < margin) { a.x = margin; a.vx = Math.abs(a.vx); }
+          if (a.x > w - margin) { a.x = w - margin; a.vx = -Math.abs(a.vx); }
+          if (a.y < margin) { a.y = margin; a.vy = Math.abs(a.vy); }
+          if (a.y > h - margin) { a.y = h - margin; a.vy = -Math.abs(a.vy); }
+          /* Bounce off logo clear */
+          d = dist(a.x, a.y, cx, cy);
+          var minD = clear + a.r + 2;
+          if (d < minD && d > 0.001) {
+            nx = (a.x - cx) / d;
+            ny = (a.y - cy) / d;
+            a.x = cx + nx * minD;
+            a.y = cy + ny * minD;
+            var vn = a.vx * nx + a.vy * ny;
+            if (vn < 0) {
+              a.vx -= 1.85 * vn * nx;
+              a.vy -= 1.85 * vn * ny;
+            }
+          }
+          /* Light drag + speed floor so the field stays alive */
+          a.vx *= 0.999;
+          a.vy *= 0.999;
+          var sp = Math.sqrt(a.vx * a.vx + a.vy * a.vy);
+          if (sp < 8) {
+            a.vx = (a.vx || 0.01) * (10 / (sp || 1));
+            a.vy = (a.vy || 0.01) * (10 / (sp || 1));
+          } else if (sp > 48) {
+            a.vx *= 48 / sp;
+            a.vy *= 48 / sp;
+          }
+        }
+        /* Pairwise soft collisions — the atom / particle feel */
+        for (i = 0; i < atoms.length; i++) {
+          a = atoms[i];
+          for (j = i + 1; j < atoms.length; j++) {
+            b = atoms[j];
+            dx = b.x - a.x;
+            dy = b.y - a.y;
+            d = Math.sqrt(dx * dx + dy * dy) || 0.001;
+            var minSep = a.r + b.r + 1.6;
+            if (d >= minSep) continue;
+            nx = dx / d;
+            ny = dy / d;
+            overlap = (minSep - d) * 0.5;
+            a.x -= nx * overlap;
+            a.y -= ny * overlap;
+            b.x += nx * overlap;
+            b.y += ny * overlap;
+            dvx = a.vx - b.vx;
+            dvy = a.vy - b.vy;
+            impact = dvx * nx + dvy * ny;
+            if (impact > 0) continue;
+            var impulse = impact * 0.92;
+            a.vx -= impulse * nx;
+            a.vy -= impulse * ny;
+            b.vx += impulse * nx;
+            b.vy += impulse * ny;
+            a.flash = Math.min(1, a.flash + 0.45);
+            b.flash = Math.min(1, b.flash + 0.45);
+          }
+        }
+      }
+
+      function seedGraph() {
+        gNodes = [];
+        gEdges = [];
+        arcs = [];
+        routes = {};
+        veinTrees = {};
+        veinMesh = [];
+        veinFillers = [];
+        var rand = mulberry32(hashSeed(SEED) ^ (Math.floor(w) * 131 + Math.floor(h) * 17));
+        /* Capillary vein network — heart (logo) → connectors (buttons) along each orbit ray */
+        PILLAR_KEYS.forEach(function (pid) {
+          var term = terminals[pid];
+          if (!term) return;
+          var ang = placedAngles[pid];
+          if (ang == null) {
+            ang = Math.atan2((term.by - cy) / ORBIT_ASPECT, term.bx - cx);
+          }
+          /* Start at logo rim, end flush on chip — full-length trunk along the orbit ray */
+          var core = orbitXY(ang, logoClearR() + 1);
+          var main = organicVeinMain(core, { x: term.x, y: term.y }, pid);
+          var caps = buildCapillaries(main, pid);
+          veinTrees[pid] = { main: main, caps: caps };
+          buildPolylineRoute(pid, main);
+        });
+        buildVeinAnastomoses();
+        /* Filler vessels — reach into the empty sectors between the chips */
+        var gapAngles = [0, Math.PI / 2, Math.PI, -Math.PI / 2];
+        for (var g = 0; g < gapAngles.length; g++) {
+          var ga = gapAngles[g] + (rand() - 0.5) * 0.35;
+          var gStart = orbitXY(ga, logoClearR() + 1);
+          var gEnd = orbitXY(ga, outerOrbitR() * (0.7 + rand() * 0.18));
+          var gMain = organicVeinMain(gStart, gEnd, "filler-" + g);
+          veinFillers.push({ main: gMain, caps: buildCapillaries(gMain, "filler-" + g) });
+        }
+        veinLayerKey = "";
+        seedAtoms(rand);
+      }
+
+      function routePolyline(pillar) {
+        var r = routes[pillar];
+        if (!r) return null;
+        var pts = [];
+        for (var i = 0; i < r.nodeIds.length; i++) {
+          var n = nodeById(r.nodeIds[i]);
+          if (n) pts.push({ x: n.x, y: n.y, id: n.id });
+        }
+        return pts.length >= 2 ? pts : null;
+      }
+
+      function pointAlong(pts, t) {
+        if (!pts || pts.length < 2) return null;
+        var total = 0;
+        var segs = [];
+        for (var i = 0; i < pts.length - 1; i++) {
+          var len = dist(pts[i].x, pts[i].y, pts[i + 1].x, pts[i + 1].y);
+          segs.push(len);
+          total += len;
+        }
+        if (total < 1e-4) return { x: pts[0].x, y: pts[0].y, seg: 0 };
+        var target = Math.max(0, Math.min(1, t)) * total;
+        var acc = 0;
+        for (var s = 0; s < segs.length; s++) {
+          if (acc + segs[s] >= target) {
+            var u = (target - acc) / (segs[s] || 1);
+            return {
+              x: lerp(pts[s].x, pts[s + 1].x, u),
+              y: lerp(pts[s].y, pts[s + 1].y, u),
+              seg: s,
+              u: u
+            };
+          }
+          acc += segs[s];
+        }
+        var last = pts[pts.length - 1];
+        return { x: last.x, y: last.y, seg: segs.length - 1, u: 1 };
+      }
+
+      function syncLinkedClass(pillar) {
+        PILLAR_KEYS.forEach(function (id) {
+          var el = pillarEls[id];
+          if (!el) return;
+          el.classList.toggle("is-linked", !!pillar && id === pillar);
+        });
+      }
+
+      function pulseDestination(pillar) {
+        var el = pillarEls[pillar];
+        if (!el) return;
+        el.classList.add("is-receiving");
+        if (receiveTimer) clearTimeout(receiveTimer);
+        receiveTimer = setTimeout(function () {
+          el.classList.remove("is-receiving");
+          /* Stay on full highlight via is-linked / is-active — do not dim */
+          syncLinkedClass(activePillar);
+        }, 420);
+      }
+
+      function setActiveRoute(next) {
+        if (next === activePillar) return;
+        if (activePillar && next !== activePillar) {
+          fadingPillar = activePillar;
+          fadeProg = 1;
+        }
+        prevPillar = activePillar;
+        activePillar = next;
+        routeProg = 0;
+        arrived = false;
+        hubPulse = 0;
+        syncLinkedClass(next);
+      }
+
+      function drawAtomScatter(alpha) {
+        /* Live particle field — free drift + soft collisions; no edges / no logo paint */
+        if (!atoms.length) return;
+        var clear = logoClearR() * 1.12;
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(0, 0, w, h);
+        ctx.arc(cx, cy, clear, 0, Math.PI * 2, true);
+        ctx.clip("evenodd");
+        for (var i = 0; i < atoms.length; i++) {
+          var a = atoms[i];
+          if (dist(a.x, a.y, cx, cy) < clear) continue;
+          if (inKeepout(a.x, a.y, 20)) continue;
+          var flashBoost = 1 + a.flash * 1.1;
+          var rr = a.r * (1 + a.flash * 0.45);
+          ctx.beginPath();
+          ctx.arc(a.x, a.y, rr, 0, Math.PI * 2);
+          ctx.fillStyle = rgba(LIME, Math.min(0.5, a.op * alpha * flashBoost));
+          ctx.fill();
+          /* Soft collision spark — reads as atom interaction, stays subtle */
+          if (a.flash > 0.2) {
+            ctx.beginPath();
+            ctx.arc(a.x, a.y, rr * 2.2, 0, Math.PI * 2);
+            ctx.fillStyle = rgba(LIME, 0.06 * a.flash * alpha);
+            ctx.fill();
+          }
+        }
+        ctx.restore();
+      }
+
+      function drawArcFragments(alpha, swirlT, intro) {
+        /* Portal tunnel — dashed rings swirl in on launch, then drift slowly */
+        if (swirlT == null) swirlT = 0;
+        if (intro == null) intro = 1;
+        var rings = orbitRingRadii();
+        var ops = [0.14, 0.24, 0.34, 0.46, 0.6];
+        var spin = reduce ? 0 : swirlT * 22 + (1 - intro) * (1 - intro) * 480;
+        var grow = reduce ? 1 : 0.35 + 0.65 * intro;
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(0, 0, w, h);
+        ctx.ellipse(cx, cy, logoClearR(), logoClearR() * ORBIT_ASPECT, 0, 0, Math.PI * 2, true);
+        ctx.clip("evenodd");
+        for (var i = 0; i < rings.length; i++) {
+          var rr = rings[i] * grow;
+          var dir = i % 2 === 0 ? 1 : -1;
+          ctx.beginPath();
+          ctx.ellipse(cx, cy, rr, rr * ORBIT_ASPECT, 0, 0, Math.PI * 2);
+          ctx.strokeStyle = rgba(LIME, (ops[i] || 0.3) * alpha);
+          ctx.lineWidth = 1.35;
+          ctx.setLineDash([5, 9]);
+          ctx.lineDashOffset = dir * spin * (0.6 + i * 0.28);
+          ctx.stroke();
+        }
+        ctx.lineDashOffset = 0;
+        ctx.setLineDash([]);
+        /* Hard punch — erase any dash that still landed inside a chip */
+        ctx.globalCompositeOperation = "destination-out";
+        for (var k = 0; k < keepouts.length; k++) {
+          var box = keepouts[k];
+          var kp = 10;
+          ctx.beginPath();
+          ctx.rect(box.l - kp, box.t - kp, (box.r - box.l) + kp * 2, (box.b - box.t) + kp * 2);
+          ctx.fill();
+        }
+        ctx.restore();
+      }
+
+      function punchLogoHole() {
+        /* Final mask — wipe every canvas stroke under the brand mark */
+        ctx.save();
+        ctx.globalCompositeOperation = "destination-out";
+        ctx.beginPath();
+        ctx.arc(cx, cy, logoClearR(), 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+
+      function drawBase(alpha, t) {
+        var clearR = logoClearR();
+        var outerR = outerOrbitR();
+
+        /* Cosmetic veinage — hard-clipped inside the outermost orbit ring */
+        ctx.save();
+        ctx.beginPath();
+        ctx.ellipse(cx, cy, outerR - 8, (outerR - 8) * ORBIT_ASPECT, 0, 0, Math.PI * 2);
+        ctx.clip();
+        ctx.beginPath();
+        ctx.rect(0, 0, w, h);
+        ctx.arc(cx, cy, clearR, 0, Math.PI * 2, true);
+        ctx.clip("evenodd");
+
+        for (var m = 0; m < veinMesh.length; m++) {
+          strokeVeinPath(veinMesh[m], 0.5, 0.24 * alpha, false);
+        }
+
+        /* Filler vessels — quieter than the chip trunks, same anatomy */
+        for (var fv = 0; fv < veinFillers.length; fv++) {
+          var fill = veinFillers[fv];
+          strokeVeinPath(fill.main, 0.85, 0.3 * alpha, true);
+          for (var fc = 0; fc < fill.caps.length; fc++) {
+            var fBreath = reduce ? 1 : 0.92 + 0.08 * Math.sin(t * 0.35 + fc + fv * 2);
+            strokeVeinPath(fill.caps[fc], (fill.caps[fc].w || 0.55) * 0.85, 0.26 * alpha * (fill.caps[fc].a || 1) * fBreath, true);
+          }
+        }
+
+        PILLAR_KEYS.forEach(function (pid) {
+          var tree = veinTrees[pid];
+          if (!tree) return;
+          var opScale = 1;
+          if (activePillar) {
+            opScale = activePillar === pid ? 1.05 : 0.55;
+          } else if (fadingPillar === pid) {
+            opScale = 0.65;
+          }
+          for (var c = 0; c < tree.caps.length; c++) {
+            var breath = reduce ? 1 : 0.92 + 0.08 * Math.sin(t * 0.4 + c + pid.length);
+            strokeVeinPath(tree.caps[c], tree.caps[c].w || 0.55, 0.34 * alpha * opScale * breath * (tree.caps[c].a || 1), true);
+          }
+        });
+        ctx.restore();
+
+        /* Main trunks may dock on chips — logo-cleared only, not orbit-clipped */
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(0, 0, w, h);
+        ctx.arc(cx, cy, clearR, 0, Math.PI * 2, true);
+        ctx.clip("evenodd");
+        PILLAR_KEYS.forEach(function (pid) {
+          var tree = veinTrees[pid];
+          if (!tree) return;
+          var opScale = 1;
+          if (activePillar) {
+            opScale = activePillar === pid ? 1.05 : 0.55;
+          } else if (fadingPillar === pid) {
+            opScale = 0.65;
+          }
+          strokeVeinPath(tree.main, 1.3, 0.5 * alpha * opScale, true);
+        });
+        ctx.restore();
+
+        /* Fence — no vein pixel survives inside a chip button */
+        ctx.save();
+        ctx.globalCompositeOperation = "destination-out";
+        for (var kf = 0; kf < keepouts.length; kf++) {
+          var kb = keepouts[kf];
+          ctx.beginPath();
+          ctx.rect(kb.l - 4, kb.t - 4, (kb.r - kb.l) + 8, (kb.b - kb.t) + 8);
+          ctx.fill();
+        }
+        ctx.restore();
+      }
+
+      function drawRoute(pillar, prog, alpha, withParticle) {
+        var tree = veinTrees[pillar];
+        var pts = (tree && tree.main) || routePolyline(pillar);
+        if (!pts) return;
+        var clearR = logoClearR();
+        var total = 0;
+        for (var i = 0; i < pts.length - 1; i++) {
+          total += dist(pts[i].x, pts[i].y, pts[i + 1].x, pts[i + 1].y);
+        }
+        if (total < 1) return;
+        var drawLen = total * Math.max(0, Math.min(1, prog));
+
+        function strokePartial(widthFn, alphaFn, soft) {
+          ctx.lineJoin = "round";
+          var acc = 0;
+          var maxLen = soft ? Math.max(0, drawLen - 12) : drawLen;
+          for (var s = 0; s < pts.length - 1; s++) {
+            var segLen = dist(pts[s].x, pts[s].y, pts[s + 1].x, pts[s + 1].y);
+            var x2 = pts[s + 1].x, y2 = pts[s + 1].y;
+            var take = segLen;
+            if (acc >= maxLen) break;
+            if (acc + segLen > maxLen) {
+              var u = (maxLen - acc) / (segLen || 1);
+              x2 = lerp(pts[s].x, pts[s + 1].x, u);
+              y2 = lerp(pts[s].y, pts[s + 1].y, u);
+              take = maxLen - acc;
+            }
+            var tAlong = acc / total;
+            var w = typeof widthFn === "function" ? widthFn(tAlong) : widthFn;
+            var aSeg = typeof alphaFn === "function" ? alphaFn(tAlong) : alphaFn;
+            ctx.lineCap = soft || tAlong < 0.92 ? "round" : "butt";
+            var seg = clipSegOutsideLogo(pts[s].x, pts[s].y, x2, y2);
+            if (seg) {
+              ctx.beginPath();
+              ctx.lineWidth = w;
+              ctx.strokeStyle = rgba(HOT, aSeg);
+              ctx.moveTo(seg.x1, seg.y1);
+              ctx.lineTo(seg.x2, seg.y2);
+              ctx.stroke();
+            }
+            acc += take;
+            if (acc >= maxLen) break;
+          }
+        }
+
+        ctx.save();
+        ctx.globalAlpha = alpha;
+        ctx.beginPath();
+        ctx.rect(0, 0, w, h);
+        ctx.arc(cx, cy, clearR, 0, Math.PI * 2, true);
+        ctx.clip("evenodd");
+        /* Active travel — still thin; opacity rises as the signal runs outward */
+        strokePartial(
+          function (t) { return 1.7 * (1.15 - t * 0.35); },
+          function (t) { return 0.08 + t * 0.22; },
+          true
+        );
+        strokePartial(
+          function (t) { return 1.05 * (1.1 - t * 0.3); },
+          function (t) { return 0.2 + t * 0.65; },
+          false
+        );
+
+        if (tree && tree.caps && prog > 0.25) {
+          var capA = alpha * Math.min(1, (prog - 0.25) / 0.45) * 0.55;
+          var outerR = outerOrbitR();
+          ctx.save();
+          ctx.beginPath();
+          ctx.ellipse(cx, cy, outerR - 8, (outerR - 8) * ORBIT_ASPECT, 0, 0, Math.PI * 2);
+          for (var kq = 0; kq < keepouts.length; kq++) {
+            var kbq = keepouts[kq];
+            ctx.rect(kbq.l - 4, kbq.t - 4, (kbq.r - kbq.l) + 8, (kbq.b - kbq.t) + 8);
+          }
+          ctx.clip("evenodd");
+          for (var c = 0; c < tree.caps.length; c++) {
+            strokeVeinPath(tree.caps[c], tree.caps[c].w || 0.55, 0.3 * capA * (tree.caps[c].a || 1), true);
+          }
+          ctx.restore();
+        }
+
+        ctx.restore();
+      }
+
+      function draw(now) {
+        var dt = lastT ? Math.min(0.05, (now - lastT) / 1000) : 0.016;
+        lastT = now;
+        var t = (now - t0) / 1000;
+        ambientT += dt;
+
+        /* Hold the scan until the brand launch sequence has finished */
+        var introDone = reduce || (now - introT0) / 1000 >= 6.2;
+        var intent = introDone ? resolveIntent() : null;
+        if (intent !== activePillar) {
+          if (intent) {
+            setActiveRoute(intent);
+          } else if (activePillar) {
+            fadingPillar = activePillar;
+            fadeProg = 1;
+            activePillar = null;
+            routeProg = 0;
+            arrived = false;
+            syncLinkedClass(null);
+          }
+        }
+
+        if (activePillar) {
+          if (reduce) {
+            routeProg = 1;
+          } else {
+            routeProg = Math.min(1, routeProg + dt * (1000 / ROUTE_DUR));
+          }
+          if (routeProg >= 1 && !arrived) {
+            arrived = true;
+            pulseDestination(activePillar);
+          }
+        }
+
+        if (fadingPillar) {
+          fadeProg = Math.max(0, fadeProg - dt * (1000 / FADE_DUR));
+          if (fadeProg <= 0) fadingPillar = null;
+        }
+
+        /* Ambient pillar routes off — atom scatter is the constant cosmetic */
+        ambientPillar = null;
+
+        ctx.clearRect(0, 0, w, h);
+        var baseAlpha = 0.95;
+        /* Launch build-in: orbits → atoms → vein linkage grow into the logo */
+        var ti = (now - introT0) / 1000;
+        function introRamp(start, dur) {
+          if (reduce) return 1;
+          var p = (ti - start) / dur;
+          if (p <= 0) return 0;
+          if (p >= 1) return 1;
+          return 1 - Math.pow(1 - p, 2.2);
+        }
+        /* Sequenced launch: orbit rings + portal swirl open the scene,
+           the eye and veins follow, the chips land last. */
+        var introArcs = introRamp(0.4, 2.0);
+        var introAtoms = introRamp(3.2, 2.0);
+        /* Collision field → parallel orbits → linkage. No hub pulse ring. */
+        if (introAtoms > 0) {
+          if (!reduce) stepAtoms(Math.min(0.033, dt));
+          drawAtomScatter(baseAlpha * introAtoms);
+        }
+        if (introArcs > 0) drawArcFragments(baseAlpha * introArcs, t, introArcs);
+        blitVeinLayers(baseAlpha, t, introRamp);
+
+        if (fadingPillar && fadeProg > 0) {
+          drawRoute(fadingPillar, 1, 0.55 * fadeProg, false);
+        }
+        if (activePillar) {
+          drawRoute(activePillar, routeProg, 1, true);
+        }
+
+        punchLogoHole();
+        drawEyeAssembly(ti);
+
+        raf = requestAnimationFrame(draw);
+      }
+
+      function resize() {
+        var rect = map.getBoundingClientRect();
+        w = Math.max(1, Math.floor(rect.width));
+        h = Math.max(1, Math.floor(rect.height));
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = Math.floor(w * dpr);
+        canvas.height = Math.floor(h * dpr);
+        canvas.style.width = w + "px";
+        canvas.style.height = h + "px";
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        measure();
+        seedGraph();
+        syncSelectedFromDom();
+        var intent = resolveIntent();
+        if (intent) {
+          activePillar = intent;
+          routeProg = reduce ? 1 : routeProg;
+        }
+      }
+
+      map.querySelectorAll(".arch-node").forEach(function (el) {
+        var id = pillarFromEl(el);
+        el.addEventListener("pointerenter", function () {
+          hoverPillar = id;
+          /* First engagement animates in; re-hover on the same live route stays settled */
+        });
+        el.addEventListener("pointerleave", function () { hoverPillar = null; });
+        el.addEventListener("focus", function () { focusPillar = id; });
+        el.addEventListener("blur", function () { focusPillar = null; });
+      });
+
+      var mo = new MutationObserver(function () {
+        syncSelectedFromDom();
+      });
+      map.querySelectorAll(".arch-node").forEach(function (el) {
+        mo.observe(el, { attributes: true, attributeFilter: ["class"] });
+      });
+
+      resize();
+      requestAnimationFrame(function () { resize(); });
+      setTimeout(function () { resize(); }, 160);
+      window.addEventListener("resize", function () {
+        cancelAnimationFrame(raf);
+        resize();
+        t0 = performance.now();
+        raf = requestAnimationFrame(draw);
+      });
+      raf = requestAnimationFrame(draw);
+    })();
+
+    /* Engagement loop — stage → PCB feeder into AI chip; chip lights on hover + finish */
+    (function () {
+      var root = document.getElementById("loop-diagram");
+      if (!root) return;
+      var canvas = root.querySelector(".loop-plexus");
+      var ctx = canvas.getContext("2d");
+      var brainSvg = document.getElementById("loop-brain");
+      var stages = Array.prototype.slice.call(root.querySelectorAll(".loop-stage"));
+      var artifacts = Array.prototype.slice.call(document.querySelectorAll("#artifact-list [data-stage]"));
+      var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      var LIME = [146, 250, 17];
+      var ORDER = ["obs", "arch", "impl", "rev"];
+      var hotStage = null;
+      var brainHovered = false;
+      var routeProg = 1;
+      var w = 0, h = 0, dpr = 1, raf = 0, lastT = 0;
+      var ROUTE_MS = 720;
+
+      function rgba(c, a) {
+        return "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + a + ")";
+      }
+
+      function primaryArt(stage) {
+        var first = null;
+        for (var i = 0; i < artifacts.length; i++) {
+          var a = artifacts[i];
+          if (a.getAttribute("data-stage") !== stage) continue;
+          if (a.hasAttribute("data-primary")) return a;
+          if (!first) first = a;
+        }
+        return first;
+      }
+
+      function syncChipLit() {
+        /* Light AI chip only while a stage/chip is hovered AND the feeder has finished */
+        var hovered = !!hotStage || brainHovered;
+        var lit = hovered && !!hotStage && (routeProg >= 1 || reduce);
+        var hub = root.querySelector(".loop-hub-wrap");
+        if (hub) hub.classList.toggle("is-hot", lit);
+        if (brainSvg) {
+          brainSvg.classList.toggle("is-lit", lit);
+          var traces = brainSvg.querySelectorAll(".lb-trace");
+          for (var t = 0; t < traces.length; t++) {
+            var st = traces[t].getAttribute("data-stage");
+            traces[t].setAttribute("data-active", hotStage === st && routeProg > 0.2 ? "1" : "0");
+          }
+        }
+      }
+
+      function setHot(stage, artId) {
+        var changed = hotStage !== stage;
+        hotStage = stage;
+        if (changed) routeProg = stage ? (reduce ? 1 : 0) : 1;
+        stages.forEach(function (el) {
+          el.classList.toggle("is-hot", !!stage && el.getAttribute("data-stage") === stage);
+        });
+        artifacts.forEach(function (el) {
+          var on = false;
+          if (stage) {
+            on = artId
+              ? el.getAttribute("data-art") === artId
+              : el === primaryArt(stage);
+          }
+          el.classList.toggle("is-hot", on);
+        });
+        syncChipLit();
+      }
+
+      stages.forEach(function (el) {
+        var id = el.getAttribute("data-stage");
+        el.addEventListener("mouseenter", function () { setHot(id, null); });
+        el.addEventListener("mouseleave", function () { setHot(null, null); });
+        el.addEventListener("focus", function () { setHot(id, null); });
+        el.addEventListener("blur", function () { setHot(null, null); });
+      });
+      artifacts.forEach(function (el) {
+        var id = el.getAttribute("data-stage");
+        var art = el.getAttribute("data-art");
+        el.addEventListener("mouseenter", function () { setHot(id, art); });
+        el.addEventListener("mouseleave", function () { setHot(null, null); });
+      });
+
+      var brainBtn = document.getElementById("loop-brain-btn");
+      if (brainBtn) {
+        brainBtn.addEventListener("mouseenter", function () {
+          brainHovered = true;
+          syncChipLit();
+        });
+        brainBtn.addEventListener("mouseleave", function () {
+          brainHovered = false;
+          syncChipLit();
+        });
+        brainBtn.addEventListener("focus", function () {
+          brainHovered = true;
+          syncChipLit();
+        });
+        brainBtn.addEventListener("blur", function () {
+          brainHovered = false;
+          syncChipLit();
+        });
+        brainBtn.addEventListener("click", function () {
+          var next = ORDER[(ORDER.indexOf(hotStage || "obs") + 1) % ORDER.length];
+          setHot(next, null);
+          var stageEl = root.querySelector('.loop-stage[data-stage="' + next + '"]');
+          if (stageEl) stageEl.focus();
+        });
+      }
+
+      function resize() {
+        var rect = root.getBoundingClientRect();
+        w = Math.max(1, Math.floor(rect.width));
+        h = Math.max(1, Math.floor(rect.height));
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = Math.floor(w * dpr);
+        canvas.height = Math.floor(h * dpr);
+        canvas.style.width = w + "px";
+        canvas.style.height = h + "px";
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+
+      function localRect(el) {
+        var r = el.getBoundingClientRect();
+        var rr = root.getBoundingClientRect();
+        return {
+          x: r.left - rr.left + r.width * 0.5,
+          y: r.top - rr.top + r.height * 0.5,
+          l: r.left - rr.left,
+          t: r.top - rr.top,
+          r: r.right - rr.left,
+          b: r.bottom - rr.top
+        };
+      }
+
+      function stageEdgeToward(id, target) {
+        var el = root.querySelector('.loop-stage[data-stage="' + id + '"]');
+        if (!el) return null;
+        var box = localRect(el);
+        var cx = box.x, cy = box.y;
+        var dx = target.x - cx, dy = target.y - cy;
+        var len = Math.sqrt(dx * dx + dy * dy) || 1;
+        var ux = dx / len, uy = dy / len;
+        var halfW = (box.r - box.l) * 0.5 + 2;
+        var halfH = (box.b - box.t) * 0.5 + 2;
+        var scale = Math.min(
+          Math.abs(ux) > 0.001 ? halfW / Math.abs(ux) : 1e9,
+          Math.abs(uy) > 0.001 ? halfH / Math.abs(uy) : 1e9
+        );
+        return { id: id, x: cx + ux * scale, y: cy + uy * scale, cx: cx, cy: cy };
+      }
+
+      function dockCenter(id) {
+        if (!brainSvg) return null;
+        var el = brainSvg.querySelector('.lb-dock[data-stage="' + id + '"]');
+        if (!el) return null;
+        return localRect(el);
+      }
+
+      function lerp(a, b, t) { return a + (b - a) * t; }
+      function easeOut(t) { return 1 - Math.pow(1 - t, 1.55); }
+
+      function drawArrowHead(ax, ay, bx, by, size) {
+        var ang = Math.atan2(by - ay, bx - ax);
+        ctx.beginPath();
+        ctx.moveTo(bx, by);
+        ctx.lineTo(bx - Math.cos(ang - 0.45) * size, by - Math.sin(ang - 0.45) * size);
+        ctx.lineTo(bx - Math.cos(ang + 0.45) * size, by - Math.sin(ang + 0.45) * size);
+        ctx.closePath();
+        ctx.fill();
+      }
+
+      function edgeInset(from, to, inset) {
+        var dx = to.x - from.x, dy = to.y - from.y;
+        var len = Math.sqrt(dx * dx + dy * dy) || 1;
+        return { x: from.x + (dx / len) * inset, y: from.y + (dy / len) * inset };
+      }
+
+      /* Straight feeders into the chip rim — no L-hooks (avoids rotational symbol) */
+      function pcbPoints(from, dock) {
+        return [from, dock];
+      }
+
+      function pathLen(pts) {
+        var n = 0;
+        for (var i = 0; i < pts.length - 1; i++) {
+          var dx = pts[i + 1].x - pts[i].x, dy = pts[i + 1].y - pts[i].y;
+          n += Math.sqrt(dx * dx + dy * dy);
+        }
+        return n || 1;
+      }
+
+      function strokePartial(pts, frac, width, color) {
+        var total = pathLen(pts);
+        var want = total * Math.max(0, Math.min(1, frac));
+        var acc = 0;
+        ctx.beginPath();
+        ctx.strokeStyle = color;
+        ctx.lineWidth = width;
+        ctx.lineCap = "butt";
+        ctx.lineJoin = "miter";
+        for (var i = 0; i < pts.length - 1; i++) {
+          var a = pts[i], b = pts[i + 1];
+          var dx = b.x - a.x, dy = b.y - a.y;
+          var seg = Math.sqrt(dx * dx + dy * dy) || 1;
+          if (acc >= want) break;
+          var x1 = a.x, y1 = a.y, x2 = b.x, y2 = b.y;
+          if (acc + seg > want) {
+            var u = (want - acc) / seg;
+            x2 = lerp(a.x, b.x, u);
+            y2 = lerp(a.y, b.y, u);
+          }
+          ctx.moveTo(x1, y1);
+          ctx.lineTo(x2, y2);
+          acc += seg;
+        }
+        ctx.stroke();
+      }
+
+      var t0 = performance.now();
+
+      /* Spoke to brain — only when that stage is hovered/focused (never ambient) */
+      function drawFeeder(from, dock, lit, prog) {
+        if (!from || !dock || !lit) return;
+        var pts = pcbPoints(from, dock);
+
+        ctx.beginPath();
+        ctx.moveTo(pts[0].x, pts[0].y);
+        for (var i = 1; i < pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y);
+        ctx.strokeStyle = rgba(LIME, 0.2);
+        ctx.lineWidth = 1.15;
+        ctx.setLineDash([3, 7]);
+        ctx.lineCap = "butt";
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        var p = easeOut(Math.max(0, Math.min(1, prog)));
+        strokePartial(pts, p, 2.15, rgba(LIME, 0.95));
+      }
+
+      function draw(now) {
+        var dt = lastT ? Math.min(0.05, (now - lastT) / 1000) : 0.016;
+        lastT = now;
+        var t = (now - t0) / 1000;
+        if (hotStage && routeProg < 1) {
+          routeProg = Math.min(1, routeProg + dt * (1000 / ROUTE_MS));
+          if (routeProg >= 1) syncChipLit();
+        }
+
+        ctx.clearRect(0, 0, w, h);
+
+        /* Outer diamond — always circles; hover only brightens related edges */
+        var ring = [];
+        for (var i = 0; i < ORDER.length; i++) {
+          var st = stageEdgeToward(ORDER[i], { x: w * 0.5, y: h * 0.5 });
+          if (st) ring.push({ id: ORDER[i], x: st.cx, y: st.cy });
+        }
+        if (ring.length === 4) {
+          for (var r = 0; r < 4; r++) {
+            var a = ring[r];
+            var b = ring[(r + 1) % 4];
+            var related = hotStage && (a.id === hotStage || b.id === hotStage);
+            var a2 = edgeInset(a, b, 36);
+            var b2 = edgeInset(b, a, 36);
+            ctx.beginPath();
+            ctx.moveTo(a2.x, a2.y);
+            ctx.lineTo(b2.x, b2.y);
+            ctx.strokeStyle = rgba(LIME, related ? 0.85 : 0.4);
+            ctx.lineWidth = related ? 2.1 : 1.4;
+            ctx.stroke();
+            ctx.fillStyle = rgba(LIME, related ? 0.95 : 0.55);
+            drawArrowHead(a2.x, a2.y, b2.x, b2.y, related ? 8 : 6);
+            if (!reduce) {
+              var pulse = (t * 0.32 + r * 0.25) % 1;
+              var px0 = a2.x + (b2.x - a2.x) * Math.max(0, pulse - 0.04);
+              var py0 = a2.y + (b2.y - a2.y) * Math.max(0, pulse - 0.04);
+              var px1 = a2.x + (b2.x - a2.x) * pulse;
+              var py1 = a2.y + (b2.y - a2.y) * pulse;
+              ctx.beginPath();
+              ctx.moveTo(px0, py0);
+              ctx.lineTo(px1, py1);
+              ctx.strokeStyle = rgba(LIME, related ? 0.95 : 0.55);
+              ctx.lineWidth = related ? 2.4 : 1.6;
+              ctx.stroke();
+            }
+          }
+        }
+
+        /* Brain spokes — hover/focus only */
+        for (var s = 0; s < ORDER.length; s++) {
+          var id = ORDER[s];
+          if (hotStage !== id) continue;
+          var dock = dockCenter(id);
+          var from = dock ? stageEdgeToward(id, dock) : null;
+          drawFeeder(from, dock, true, routeProg);
+        }
+
+        if (!reduce) raf = requestAnimationFrame(draw);
+      }
+
+      resize();
+      window.addEventListener("resize", function () {
+        cancelAnimationFrame(raf);
+        resize();
+        if (!reduce) raf = requestAnimationFrame(draw);
+      });
+      if (!reduce) raf = requestAnimationFrame(draw);
+      else draw(performance.now());
+    })();
+  
+
+    /* Pre-decode hub imagery so entrance animations never pay decode cost */
+    (function () {
+      document.querySelectorAll(".arch-hub-wrap img").forEach(function (im) {
+        if (im.decode) {
+          try { im.decode().catch(function () {}); } catch (e) {}
+        }
+      });
+    })();
+
+    /* Creator tile — subtle matrix code rain (moderate pace, screen-blended) */
+    (function () {
+      var cv = document.getElementById("creator-rain");
+      if (!cv || !cv.getContext) return;
+      if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+      var ctx = cv.getContext("2d");
+      var W = cv.width, H = cv.height;
+      var FS = 12;
+      var COLS = Math.floor(W / FS);
+      var GLYPHS = "01アイウエオカキクケコサシスセソ<>/\\{}[]#$+=*";
+      var drops = [];
+      for (var i = 0; i < COLS; i++) {
+        drops.push({ y: Math.floor(Math.random() * (H / FS)), skip: Math.random() < 0.25 });
+      }
+
+      var STEP_MS = 95; /* moderate pace */
+      var last = 0;
+      var running = true;
+
+      ctx.font = FS + 'px "IBM Plex Mono", monospace';
+      ctx.textBaseline = "top";
+
+      function step(now) {
+        if (!running) return;
+        requestAnimationFrame(step);
+        if (now - last < STEP_MS) return;
+        last = now;
+
+        /* fade trail */
+        ctx.fillStyle = "rgba(0, 0, 0, 0.22)";
+        ctx.fillRect(0, 0, W, H);
+
+        for (var c = 0; c < COLS; c++) {
+          var d = drops[c];
+          if (d.skip) { if (Math.random() < 0.02) d.skip = false; continue; }
+          var ch = GLYPHS.charAt(Math.floor(Math.random() * GLYPHS.length));
+          var x = c * FS, y = d.y * FS;
+          /* dim body glyph + brighter head */
+          ctx.fillStyle = "rgba(146, 250, 17, 0.55)";
+          ctx.fillText(ch, x, y);
+          d.y++;
+          if (y > H && Math.random() > 0.965) {
+            d.y = 0;
+            if (Math.random() < 0.12) d.skip = true;
+          }
+        }
+      }
+
+      /* only animate while on screen */
+      if ("IntersectionObserver" in window) {
+        new IntersectionObserver(function (entries) {
+          var vis = entries[entries.length - 1].isIntersecting;
+          if (vis && !running) { running = true; requestAnimationFrame(step); }
+          if (!vis) running = false;
+        }).observe(cv);
+      }
+      requestAnimationFrame(step);
+    })();
+
+  </script>
+</body>
+</html>

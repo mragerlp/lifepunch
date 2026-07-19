@@ -1,0 +1,12 @@
+﻿name = "cvl-legacy-redirect"
+main = "worker.js"
+compatibility_date = "2026-07-01"
+workers_dev = false
+
+[[routes]]
+pattern = "collaborativevalueloop.com/*"
+zone_name = "collaborativevalueloop.com"
+
+[[routes]]
+pattern = "www.collaborativevalueloop.com/*"
+zone_name = "collaborativevalueloop.com"
