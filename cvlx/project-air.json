@@ -1,0 +1,13 @@
+{
+  "_comment": "CVLX CHILD project-air — points the parent's GENERIC project-air mechanism at the LIFEPUNCH tree. The parent knows only 'a name maps to a path under a root'; the names below are the domain. Consumed via CAVELUX_PROJECT_AIR_CONFIG.",
+  "_root_note": "Absolute by design: this mount is machine-pinned to VENGEANCE (the editor seat). The parent resolves a relative root against its own mcp/ dir, which would be fragile across repos.",
+  "root": "C:/Users/jared/Projects/lifepunch",
+  "entries": {
+    "claude": "CLAUDE.md",
+    "agents": "AGENTS.md",
+    "archi": "ARCHI.md",
+    "readme": "README.md",
+    "comms-protocol": "lifepunch/docs/cvl/COMMS_PROTOCOL.md",
+    "comms-lane": "lifepunch/docs/cvl/COMMS_LANE.md"
+  }
+}

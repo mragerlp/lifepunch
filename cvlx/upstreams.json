@@ -1,0 +1,33 @@
+{
+  "_comment": "CVLX CHILD MOUNT — the LIFEPUNCH/s&box domain layer. Every s&box-specific name lives HERE, never in the parent (mragerlp/cavelux). The parent ships only the generic upstream-mount mechanism and consumes this file via CAVELUX_UPSTREAM_CONFIG. BOUNDARY LAW: if a name in this file ever appears in the parent repo, the boundary is broken.",
+  "_ruling": "dispatch/red/0015 (Bloodwave GO 2026-07-21T02:33-04:00): native-only. NO chomnr (9090), NO sboxclaude-stdio (redundant with native), NO Ozmium (convar debris, excluded), NO vanilla (dirty tree; canonical is the clean one per red/0014).",
+  "upstreams": {
+    "sbox-native": {
+      "transport": "http",
+      "url": "http://127.0.0.1:7269/mcp",
+      "name": "s&box native MCP (gateway)",
+      "description": "The s&box editor's native MCP endpoint. A 7-tool GATEWAY over a live 284-tool / 35-toolset registry that includes the full 28-toolset sboxclaude bridge family (262 tools, incl. the lpbitcoin-UI 82-subset), published by the sboxskinsgg.claudebridge editor lib. Mounting the gateway costs the tool cap 7 — the rest is reached BY NAME through search_tools/describe_toolset/call_tool. Verified live on canonical dxrp\\game (red/0014). No auth: bare localhost, no credential — nothing secret is tracked here.",
+      "toolset": "upstream:sbox-native",
+      "entry_tools": [
+        { "name": "call_tool", "description": "Invoke ONE registry tool by name. This is how the whole 284-tool registry is reached at 7-tool cap cost." },
+        { "name": "call_tools", "description": "Invoke several registry tools in one round trip." },
+        { "name": "search_tools", "description": "Find registry tools by keyword — the guess-free entry point. Search BEFORE calling; never invent a tool name." },
+        { "name": "list_toolsets", "description": "List all toolsets (35: 28 bridge_* + 7 Facepunch-core)." },
+        { "name": "describe_toolset", "description": "Describe one toolset and its tools — read the real signature before calling." },
+        { "name": "editor_status", "description": "Editor/session status: ProjectRoot, engine version, ToolCount." },
+        { "name": "read_console", "description": "Read the editor console — the compile/runtime sensor." }
+      ],
+      "identity_guard": {
+        "_why": "PROJECT-IDENTITY GUARD (Codex's guard, dispatch/red/0015 step 1). The mount selects a URL, not a tree — which project the :7269 editor has OPEN is what decides what these tools operate on. Refuse rather than silently edit the wrong project.",
+        "tool": "call_tool",
+        "arguments": { "name": "get_project_info", "arguments": {} },
+        "expect": ["lifepunch", "dxrp"]
+      }
+    }
+  },
+  "lanes": {
+    "_comment": "Child-owned lanes, merged over the parent's built-ins. lpbitcoin-ui is LEAN by design: the gateway plus the parent's universal UI intelligence — and ZERO parent eye tools, so the whole lane costs exactly the 7 gateway tools.",
+    "lpbitcoin-ui": ["core", "upstream:sbox-native", "uiux", "project-air", "prompts", "context"],
+    "sbox-native": ["core", "upstream:sbox-native"]
+  }
+}
