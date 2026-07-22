@@ -1,10 +1,9 @@
-@* ─────────────────────────────────────────────────────────────────────────────
-   PROPRIETARY & CONFIDENTIAL — © 2026 lifepunch.co. All rights reserved.
-   "LIFEPUNCH Player Hub for DXRP" (s&box ident: lifepunch.playerhub · addon ident: playerhub)
+@*
+   PROPRIETARY & CONFIDENTIAL - (c) 2026 lifepunch.co. All rights reserved.
 
-   SLICE 1 — SHELL. Header, sidebar nav, close, tab host, empty content region.
-   Fixture-backed and display-only. No spend path exists in this slice.
-   ───────────────────────────────────────────────────────────────────────────── *@
+   LIFEPUNCH Player Hub for DXRP
+   Fixture-backed Slices 1-5. No purchase, unlock, RPC or live-data seam.
+*@
 @namespace LifePunch.DXRP.Addons.PlayerHub
 @using System
 @using Sandbox
@@ -16,13 +15,11 @@
 
 <root class="@RootClass()">
 	<div class="hub-shell">
-
-		@* ── HEADER ───────────────────────────────────────────────────────── *@
 		<div class="hub-header">
 			<div class="hub-brand">LIFEPUNCH PLAYER HUB</div>
 
 			<div class="hub-header-right">
-				@if ( Vm.IsFixture )
+				@if ( VisibleTabIsFixture )
 				{
 					<div class="hub-preview-tag" tooltip="@PreviewTooltip">PREVIEW &#183; FIXTURE DATA</div>
 				}
@@ -37,15 +34,13 @@
 					<span class="hub-stat-value">@LpAmount</span>
 				</div>
 
-				<button class="hub-close" tooltip="Close" onclick="@Close">
+				<button class="hub-close" tooltip="Close Player Hub" onclick="@Close">
 					<i class="material-icons">close</i>
 				</button>
 			</div>
 		</div>
 
 		<div class="hub-body">
-
-			@* ── SIDEBAR ──────────────────────────────────────────────────── *@
 			<div class="hub-sidebar">
 				<div class="hub-identity">
 					<div class="hub-avatar"><i class="material-icons">person</i></div>
@@ -69,40 +64,50 @@
 						</button>
 					}
 				</div>
+
+				<div class="hub-sidebar-note">
+					<div class="hub-sidebar-note-title">FIXTURE SCOPE</div>
+					<div class="hub-sidebar-note-copy">Browse and inspect only. Transactions and live data remain gated.</div>
+				</div>
 			</div>
 
-			@* ── CONTENT ──────────────────────────────────────────────────── *@
 			<div class="hub-content">
 				<div class="hub-page-head">
-					<div class="hub-eyebrow">@LpPlayerHubTabInfo.Eyebrow( ActiveTab )</div>
 					<div class="hub-title">@LpPlayerHubTabInfo.Label( ActiveTab )</div>
 					<div class="hub-blurb">@LpPlayerHubTabInfo.Blurb( ActiveTab )</div>
 				</div>
 
-				@* TAB HOST. Slice 1 ships the empty content region deliberately -- each tab's
-				   body lands in its own slice (2-5). An empty region that says so is honest;
-				   a region filled with invented content is not. *@
 				<div class="hub-tabhost">
-					<div class="hub-placeholder">
-						<i class="material-icons hub-placeholder-icon">@LpPlayerHubTabInfo.Icon( ActiveTab )</i>
-						<div class="hub-placeholder-title">@PlaceholderTitle</div>
-						<div class="hub-placeholder-body">@PlaceholderBody</div>
-					</div>
+					@if ( ActiveTab == LpPlayerHubTab.Overview )
+					{
+						<LpPlayerHubOverview Model="@OverviewModel" />
+					}
+					else if ( ActiveTab == LpPlayerHubTab.Stats )
+					{
+						<LpPlayerHubStats Model="@StatsModel" />
+					}
+					else if ( ActiveTab == LpPlayerHubTab.Skills )
+					{
+						<LpPlayerHubSkills Model="@SkillsModel" />
+					}
+					else if ( ActiveTab == LpPlayerHubTab.Store )
+					{
+						<LpPlayerHubStore Model="@StoreModel" />
+					}
 				</div>
 			</div>
-
 		</div>
+
 		<LifePunchUiFooter Product="Player Hub" />
 	</div>
 </root>
 
 @code
 {
-	// SLICE 1 SENSOR -- positive code-string ID. This literal exists nowhere else in the tree,
-	// so seeing it in the editor log proves the compiler read THESE bytes, not a stale copy.
-	public const string SliceMark = "LP_PLAYERHUB_SLICE1_SHELL_20260714";
+	public const string SliceMark = "LP_PLAYERHUB_SLICES1_5_FIXTURE_20260722";
+	public const string QaMark = "LP_PLAYERHUB_NO_SCROLL_FIXTURE_20260722";
 
-	private static readonly LpPlayerHubTab[] Tabs = new[]
+	private static readonly LpPlayerHubTab[] Tabs =
 	{
 		LpPlayerHubTab.Overview,
 		LpPlayerHubTab.Skills,
@@ -110,43 +115,72 @@
 		LpPlayerHubTab.Stats,
 	};
 
-	// THERE IS NO _open FLAG, AND THAT IS THE FIX.
-	//
-	// Slice 1 carried `private bool _open = true` as an in-component visibility flag. Nothing ever set it
-	// back to true, so the hub could never reopen -- and nothing created the panel in the first place, so
-	// it never opened at all. BOTH DEFECTS WERE THE SAME MISSING PIECE: a mount host.
-	//
-	// LpPlayerHubHost now CREATES this component on open and DESTROYS it on close (the StaffMenuHost
-	// pattern). Re-openability is therefore BY CONSTRUCTION: every open builds a fresh component with
-	// fresh state. A flag you must remember to reset is a flag someone will forget to reset -- so the
-	// flag is gone, not fixed.
 	private LpPlayerHubTab _activeTab = LpPlayerHubTab.Overview;
+	private string _selectedSkillTrackId = "resilience";
+	private string _selectedSkillId = "resilience-slot-1";
+	private string _selectedStoreCategoryId = "all";
+	private string _selectedStoreItemId = "identity-banner";
 
 	private LpPlayerHubTab ActiveTab => _activeTab;
-
-	/// <summary>Slice 1 reads the fixture. Slice 8 swaps this for a live projection.</summary>
 	private LpPlayerHubShellVm Vm => LpPlayerHubFixture.Shell( _activeTab );
 
-	private const string PreviewTooltip =
-		"Slice 1 shell. Every value shown is fixture data, not live player state.";
+	private LpOverviewVm OverviewModel => LpPlayerHubFixture.Overview(
+		new[]
+		{
+			new LpHubActionVm(
+				Id: "skills",
+				Label: "View skills",
+				Icon: "account_tree",
+				Hint: "Browse skill tracks",
+				Enabled: true,
+				OnSelected: () => SetTab( LpPlayerHubTab.Skills )),
+			new LpHubActionVm(
+				Id: "store",
+				Label: "Open store",
+				Icon: "storefront",
+				Hint: "Browse the fixture catalog",
+				Enabled: true,
+				OnSelected: () => SetTab( LpPlayerHubTab.Store )),
+			new LpHubActionVm(
+				Id: "stats",
+				Label: "View stats",
+				Icon: "insights",
+				Hint: "Inspect read-only activity",
+				Enabled: true,
+				OnSelected: () => SetTab( LpPlayerHubTab.Stats )),
+		});
 
-	// LAW 17 / currency identity: the $LP SIGN carries the colour, the AMOUNT stays white.
-	// The word TEMPORARY is load-bearing and must stay in the USER-VISIBLE string: the
-	// lifepunch-design-tokens skill requires $LP to be "labelled temporary in UI copy", and a
-	// comment saying so does not label anything a player can see. (cursor\0023 caught this: the
-	// code said "labelled temporary" while the tooltip said neither.)
+	private LpStatsVm StatsModel => LpPlayerHubFixture.Stats();
+
+	private LpSkillsVm SkillsModel => LpPlayerHubFixture.Skills(
+		_selectedSkillTrackId,
+		_selectedSkillId,
+		SelectSkillTrack,
+		SelectSkill);
+
+	private LpStoreVm StoreModel => LpPlayerHubFixture.Store(
+		_selectedStoreCategoryId,
+		_selectedStoreItemId,
+		SelectStoreCategory,
+		SelectStoreItem);
+
+	private bool VisibleTabIsFixture => _activeTab switch
+	{
+		LpPlayerHubTab.Overview => OverviewModel.IsFixture,
+		LpPlayerHubTab.Skills => SkillsModel.IsFixture,
+		LpPlayerHubTab.Store => StoreModel.IsFixture,
+		LpPlayerHubTab.Stats => StatsModel.IsFixture,
+		_ => Vm.IsFixture,
+	};
+
+	private const string PreviewTooltip =
+		"Slices 1-5 use deterministic preview fixtures. Values are not live player state.";
+
 	private const string LpTooltip =
-		"$LP is TEMPORARY placeholder currency. Its final sign and colour are pending ruling.";
+		"$LP is a TEMPORARY display sign and colour. This fixture does not spend currency.";
 
 	private string LpAmount => Vm.LpBalance.ToString( "N0" );
 
-	private string PlaceholderTitle => LpPlayerHubTabInfo.Label( _activeTab ) + " lands in a later slice";
-
-	private const string PlaceholderBody =
-		"Slice 1 ships the shell only: header, navigation and this empty content region.";
-
-	// A live instance is, by definition, an open one -- the host destroys it to close it. `is-open`
-	// carries the visible/clickable state in SCSS, so it is unconditional here.
 	private string RootClass() => "lp-playerhub is-open";
 
 	private string NavClass( LpPlayerHubTab tab )
@@ -169,23 +203,55 @@
 		StateHasChanged();
 	}
 
-	/// <summary>
-	/// Closing is the HOST's job -- it tears the component down. The panel does not hide itself, because a
-	/// panel that hides itself is still mounted, still eating input, and still unable to be reopened by
-	/// anything that does not know it exists. That was the Slice 1 bug.
-	/// </summary>
+	private void SelectSkillTrack( string trackId )
+	{
+		_selectedSkillTrackId = trackId;
+		_selectedSkillId = trackId + "-slot-1";
+		StateHasChanged();
+	}
+
+	private void SelectSkill( string skillId )
+	{
+		if ( _selectedSkillId == skillId )
+			return;
+
+		_selectedSkillId = skillId;
+		StateHasChanged();
+	}
+
+	private void SelectStoreCategory( string categoryId )
+	{
+		_selectedStoreCategoryId = categoryId;
+		_selectedStoreItemId = categoryId switch
+		{
+			"identity" => "identity-banner",
+			"utility" => "job-route-card",
+			_ => _selectedStoreItemId,
+		};
+		StateHasChanged();
+	}
+
+	private void SelectStoreItem( string itemId )
+	{
+		if ( _selectedStoreItemId == itemId )
+			return;
+
+		_selectedStoreItemId = itemId;
+		StateHasChanged();
+	}
+
 	private void Close() => LpPlayerHubHost.RequestClose();
 
-	// F2 FIX (opencode\0004, dispatch\opencode\0002 D1): the hub was INVISIBLE to
-	// LifePunchMenuInputBlock -- combat/use suppression never armed for the hub alone, and
-	// closing the bitcoin panel under an open hub dropped the camera lock (the block's depth
-	// hit 0 with the hub still up, so ReleasePlayerCombatLock fired). Registering the hub
-	// keeps depth > 0 while it lives; the per-frame guard then reasserts Player.LockCamera,
-	// which makes the previously ACCIDENTAL hub-close survival deliberate in both directions.
-	//
-	// MINIMAL BY RULING: this is registration with the EXISTING input-block writer, not a
-	// sixth LockCamera writer. The refcount/stack arbiter over LockCamera's five writers is
-	// an OPEN RULING (comms STATUS.json, LockCamera item) -- do not build it here.
+	protected override void OnStart()
+	{
+		LifePunchUiScrollPolicy.Apply( Panel );
+	}
+
+	protected override void OnUpdate()
+	{
+		LifePunchUiScrollPolicy.Apply( Panel );
+	}
+
 	protected override void OnEnabled()
 	{
 		LifePunchMenuInputBlock.NotifyMenuOpened();
@@ -196,21 +262,15 @@
 		LifePunchMenuInputBlock.NotifyMenuClosed();
 	}
 
-	/// <summary>
-	/// Every private flag that changes markup is hashed. Today that is `_activeTab` alone -- it drives the
-	/// nav selection, the page head and the tab host.
-	/// </summary>
-	/// <remarks>
-	/// THIS HASH MUST GROW WITH THE PANEL. The moment a slice adds tab-local state (a selected node, a
-	/// filter chip, a confirm-open flag) or `Vm` becomes live rather than a pure function of `_activeTab`
-	/// over a static fixture, that state goes in here IN THE SAME COMMIT. Omitting it does not error --
-	/// the panel simply stops re-rendering, and a frozen readout is invisible until someone notices a
-	/// number that never moves.
-	/// </remarks>
 	protected override int BuildHash()
 	{
 		var hash = new HashCode();
 		hash.Add( (int)_activeTab );
+		hash.Add( _selectedSkillTrackId );
+		hash.Add( _selectedSkillId );
+		hash.Add( _selectedStoreCategoryId );
+		hash.Add( _selectedStoreItemId );
+		hash.Add( VisibleTabIsFixture );
 		return hash.ToHashCode();
 	}
 }
