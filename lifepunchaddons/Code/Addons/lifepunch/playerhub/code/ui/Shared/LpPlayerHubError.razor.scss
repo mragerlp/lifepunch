@@ -3,7 +3,9 @@
 @import "../LpPlayerHubTokens.scss";
 
 .lp-playerhub-error {
-    min-height: 220px;
+	flex-grow: 1;
+	min-height: 0;
+	width: 100%;
     padding: 24px;
     display: flex;
     flex-direction: column;
@@ -55,4 +57,9 @@
 
 .lp-playerhub-error > .hub-state-action:hover {
     background-color: $lp-blue-hover;
+}
+
+.lp-playerhub-error > .hub-state-action:focus,
+.lp-playerhub-error > .hub-state-action:active {
+	background-color: $accent-focus;
 }

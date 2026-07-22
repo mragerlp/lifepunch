@@ -12,7 +12,7 @@
 @attribute [StyleSheet]
 
 <root class="lp-playerhub-overview">
-	<div class="overview-progress-card">
+	<div class="overview-progress-card lp-hub-panel">
 		<div class="overview-progress-copy">
 			<div class="overview-kicker">LEVEL @Model.Level PROGRESS</div>
 			<div class="overview-progress-value">@XpProgressText</div>
@@ -24,14 +24,14 @@
 		<div class="overview-next-unlock">
 			<i class="material-icons">lock_open</i>
 			<div class="overview-next-unlock-copy">
-				<div class="overview-next-unlock-label">NEXT AVAILABLE NODE</div>
+				<div class="overview-next-unlock-label">NEXT SKILL TIER</div>
 				<div class="overview-next-unlock-value">@Model.NextUnlockLabel</div>
 			</div>
 		</div>
 	</div>
 
 	<div class="overview-summary-row">
-		<div class="overview-summary-card">
+		<div class="overview-summary-card lp-hub-panel">
 			<div class="overview-summary-icon lp"><i class="material-icons">savings</i></div>
 			<div class="overview-summary-copy">
 				<div class="overview-summary-label">TEMPORARY $LP SIGN</div>
@@ -39,15 +39,15 @@
 				<div class="overview-summary-hint">Display-only fixture balance</div>
 			</div>
 		</div>
-		<div class="overview-summary-card">
+		<div class="overview-summary-card lp-hub-panel">
 			<div class="overview-summary-icon"><i class="material-icons">account_tree</i></div>
 			<div class="overview-summary-copy">
-				<div class="overview-summary-label">SKILL POINTS</div>
-				<div class="overview-summary-value">@Model.SkillPointsAvailable</div>
-				<div class="overview-summary-hint">@Model.SkillsUnlocked unlocked nodes</div>
+				<div class="overview-summary-label">SKILL RANKS</div>
+				<div class="overview-summary-value">@Model.SkillRanksPurchased</div>
+				<div class="overview-summary-hint">@SkillRankSummary</div>
 			</div>
 		</div>
-		<div class="overview-summary-card">
+		<div class="overview-summary-card lp-hub-panel">
 			<div class="overview-summary-icon"><i class="material-icons">verified</i></div>
 			<div class="overview-summary-copy">
 				<div class="overview-summary-label">DATA MODE</div>
@@ -55,18 +55,32 @@
 				<div class="overview-summary-hint">No live progression source</div>
 			</div>
 		</div>
+		<div class="overview-summary-card overview-quick-card lp-hub-panel">
+			<div class="overview-summary-copy">
+				<div class="overview-summary-label">QUICK LINKS</div>
+				<div class="overview-quick-actions">
+					@foreach ( var action in Model.Actions )
+					{
+						<button class="overview-action lp-hub-button" disabled="@(!action.Enabled)" onclick="@action.OnSelected" tooltip="@action.Hint">
+							<i class="material-icons">@action.Icon</i>
+							<span>@action.Label</span>
+						</button>
+					}
+				</div>
+			</div>
+		</div>
 	</div>
 
-	<div class="overview-two-column">
-		<div class="overview-section">
-			<div class="overview-section-head">
+	<div class="overview-detail-grid">
+		<div class="overview-section lp-hub-panel">
+			<div class="overview-section-head lp-hub-bar">
 				<div class="overview-section-title">RECENT PROGRESS</div>
 				<div class="overview-section-note">Fixture events</div>
 			</div>
 			<div class="overview-event-list">
 				@foreach ( var progress in Model.RecentEvents )
 				{
-					<div class="overview-event-row">
+					<div class="overview-event-row lp-hub-chip-row">
 						<i class="material-icons overview-event-icon">@progress.Icon</i>
 						<div class="overview-event-copy">
 							<div class="overview-event-title">@progress.Title</div>
@@ -78,15 +92,15 @@
 			</div>
 		</div>
 
-		<div class="overview-section">
-			<div class="overview-section-head">
+		<div class="overview-section lp-hub-panel">
+			<div class="overview-section-head lp-hub-bar">
 				<div class="overview-section-title">STAT SNAPSHOT</div>
 				<div class="overview-section-note">Read only</div>
 			</div>
 			<div class="overview-snapshot-list">
 				@foreach ( var stat in Model.StatSnapshot )
 				{
-					<div class="overview-snapshot-row">
+					<div class="overview-snapshot-row lp-hub-chip-row">
 						<div class="overview-snapshot-copy">
 							<div class="overview-snapshot-label">@stat.Label</div>
 							<div class="overview-snapshot-hint">@stat.Hint</div>
@@ -96,36 +110,25 @@
 				}
 			</div>
 		</div>
-	</div>
-
-	<div class="overview-section">
-		<div class="overview-section-head">
-			<div class="overview-section-title">HOW TO EARN $LP</div>
-			<div class="overview-section-note">Play-earned routes only</div>
-		</div>
-		<div class="overview-earn-row">
-			@foreach ( var route in Model.EarnRoutes )
-			{
-				<div class="overview-earn-card">
-					<i class="material-icons overview-earn-icon">@route.Icon</i>
-					<div class="overview-earn-copy">
-						<div class="overview-earn-title">@route.Title</div>
-						<div class="overview-earn-body">@route.Body</div>
+		<div class="overview-section lp-hub-panel">
+			<div class="overview-section-head lp-hub-bar">
+				<div class="overview-section-title">$LP ROUTE READINESS</div>
+				<div class="overview-section-note">No live award route</div>
+			</div>
+			<div class="overview-earn-list">
+				@foreach ( var route in Model.EarnRoutes )
+				{
+					<div class="overview-earn-card lp-hub-chip-row">
+						<i class="material-icons overview-earn-icon">@route.Icon</i>
+						<div class="overview-earn-copy">
+							<div class="overview-earn-title">@route.Title</div>
+							<div class="overview-earn-body">@route.Body</div>
+						</div>
 						<div class="overview-earn-hint">@route.RewardHint</div>
 					</div>
-				</div>
-			}
+				}
+			</div>
 		</div>
-	</div>
-
-	<div class="overview-actions">
-		@foreach ( var action in Model.Actions )
-		{
-			<button class="overview-action" disabled="@(!action.Enabled)" onclick="@action.OnSelected" tooltip="@action.Hint">
-				<i class="material-icons">@action.Icon</i>
-				<span>@action.Label</span>
-			</button>
-		}
 	</div>
 </root>
 
@@ -135,6 +138,7 @@
 
 	private int XpRemaining => Math.Max( 0, Model.XpForNextLevel - Model.XpIntoLevel );
 	private string XpProgressText => $"{Model.XpIntoLevel:N0} / {Model.XpForNextLevel:N0} XP";
+	private string SkillRankSummary => $"{Model.SkillRanksPurchased} purchased / {Model.SkillPointsAvailable} available";
 
 	private string XpFillClass()
 	{
@@ -158,7 +162,7 @@
 		hash.Add( Model.XpIntoLevel );
 		hash.Add( Model.XpForNextLevel );
 		hash.Add( Model.SkillPointsAvailable );
-		hash.Add( Model.SkillsUnlocked );
+		hash.Add( Model.SkillRanksPurchased );
 		hash.Add( Model.NextUnlockLabel );
 
 		foreach ( var route in Model.EarnRoutes )

@@ -25,7 +25,7 @@
 		<div class="stats-plate-row">
 			@foreach ( var plate in model.HeroPlates )
 			{
-				<div class="stats-plate">
+				<div class="stats-plate lp-hub-panel">
 					<i class="material-icons stats-plate-icon">@plate.Icon</i>
 					<div class="stats-plate-copy">
 						<div class="stats-plate-label">@plate.Label</div>
@@ -36,9 +36,9 @@
 			}
 		</div>
 
-		<div class="stats-two-column">
-			<div class="stats-section stats-activity">
-				<div class="stats-section-head">
+		<div class="stats-workspace">
+			<div class="stats-section stats-activity lp-hub-panel">
+				<div class="stats-section-head lp-hub-bar">
 					<div class="stats-section-title">ACTIVITY TREND</div>
 					<div class="stats-section-note">Seven fixture sessions</div>
 				</div>
@@ -57,48 +57,50 @@
 				<div class="stats-activity-summary">@model.ActivitySummary</div>
 			</div>
 
-			<div class="stats-section">
-				<div class="stats-section-head">
-					<div class="stats-section-title">HIGHLIGHTS</div>
-					<div class="stats-section-note">No rankings</div>
-				</div>
-				<div class="stats-highlight-list">
-					@foreach ( var highlight in model.Highlights )
-					{
-						<div class="stats-highlight-row">
-							<div class="stats-highlight-copy">
-								<div class="stats-highlight-label">@highlight.Label</div>
-								<div class="stats-highlight-hint">@highlight.Hint</div>
-							</div>
-							<div class="stats-highlight-value">@highlight.Value</div>
-						</div>
-					}
-				</div>
-			</div>
-		</div>
-
-		<div class="stats-section">
-			<div class="stats-section-head">
-				<div class="stats-section-title">SYSTEM BREAKDOWN</div>
-				<div class="stats-section-note">Unknown values stay --</div>
-			</div>
-			<div class="stats-section-row">
-				@foreach ( var section in model.Sections )
-				{
-					<div class="stats-table">
-						<div class="stats-table-title">@section.Title</div>
-						@foreach ( var row in section.Rows )
+			<div class="stats-right-column">
+				<div class="stats-section stats-highlights lp-hub-panel">
+					<div class="stats-section-head lp-hub-bar">
+						<div class="stats-section-title">HIGHLIGHTS</div>
+						<div class="stats-section-note">No rankings</div>
+					</div>
+					<div class="stats-highlight-list">
+						@foreach ( var highlight in model.Highlights )
 						{
-							<div class="stats-table-row">
-								<div class="stats-table-copy">
-									<div class="stats-table-label">@row.Label</div>
-									<div class="stats-table-hint">@row.Hint</div>
+							<div class="stats-highlight-row lp-hub-chip-row">
+								<div class="stats-highlight-copy">
+									<div class="stats-highlight-label">@highlight.Label</div>
+									<div class="stats-highlight-hint">@highlight.Hint</div>
 								</div>
-								<div class="stats-table-value">@row.Value</div>
+								<div class="stats-highlight-value">@highlight.Value</div>
 							</div>
 						}
 					</div>
-				}
+				</div>
+
+				<div class="stats-section stats-breakdown lp-hub-panel">
+					<div class="stats-section-head lp-hub-bar">
+						<div class="stats-section-title">SYSTEM BREAKDOWN</div>
+						<div class="stats-section-note">Unknown values stay --</div>
+					</div>
+					<div class="stats-section-row">
+						@foreach ( var section in model.Sections )
+						{
+							<div class="stats-table">
+								<div class="stats-table-title">@section.Title</div>
+								@foreach ( var row in section.Rows )
+								{
+									<div class="stats-table-row">
+										<div class="stats-table-copy">
+											<div class="stats-table-label">@row.Label</div>
+											<div class="stats-table-hint">@row.Hint</div>
+										</div>
+										<div class="stats-table-value">@row.Value</div>
+									</div>
+								}
+							</div>
+						}
+					</div>
+				</div>
 			</div>
 		</div>
 	}

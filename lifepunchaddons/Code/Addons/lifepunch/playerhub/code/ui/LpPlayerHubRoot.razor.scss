@@ -136,6 +136,13 @@
 	background-color: $accent-soft;
 }
 
+.hub-close:focus,
+.hub-close:active {
+	opacity: 1;
+	color: $text-main;
+	background-color: $accent-focus;
+}
+
 .hub-body {
 	flex-direction: row;
 	flex-grow: 1;
@@ -209,6 +216,15 @@
 	background-color: $dim-soft;
 }
 
+.hub-nav-item:focus {
+	opacity: 1;
+	background-color: $accent-focus;
+}
+
+.hub-nav-item:active {
+	background-color: $accent-soft-strong;
+}
+
 .hub-nav-item.is-active {
 	opacity: 1;
 	background-color: $accent-soft;
@@ -216,10 +232,15 @@
 }
 
 .hub-nav-indicator {
-	width: 0;
-	height: 0;
+	width: 3px;
+	height: 20px;
 	flex-shrink: 0;
 	background-color: transparent;
+	border-radius: $radius;
+}
+
+.hub-nav-item.is-active .hub-nav-indicator {
+	background-color: $lp-blue;
 }
 
 .hub-nav-icon {
@@ -273,33 +294,31 @@
 .hub-content {
 	flex-direction: column;
 	flex-grow: 1;
+	min-height: 0;
 	min-width: 0;
-	padding: 20px;
-	gap: 16px;
+	padding: 16px;
+	gap: $gap-dense;
 }
 
 .hub-page-head {
-	flex-direction: column;
-	gap: 4px;
+	flex-direction: row;
+	align-items: center;
+	min-height: 34px;
 	flex-shrink: 0;
-}
-
-.hub-eyebrow {
-	font-size: 11px;
-	font-weight: 600;
-	letter-spacing: 1.5px;
-	color: $lp-blue;
 }
 
 .hub-title {
 	font-family: Poppins, Arial, sans-serif;
-	font-size: 22px;
+	font-size: 20px;
 	font-weight: 600;
 	color: $text-main;
 }
 
 .hub-blurb {
-	font-size: 13px;
+	margin-left: 12px;
+	padding-left: 12px;
+	border-left: 1px solid $border;
+	font-size: 11px;
 	color: $text-dim;
 }
 
@@ -307,7 +326,8 @@
 	flex-direction: column;
 	flex-grow: 1;
 	min-height: 0;
-	overflow-y: scroll;
+	min-width: 0;
+	overflow: hidden;
 	background-color: $surface;
 	border: 1px solid $border;
 	border-radius: $radius-card;

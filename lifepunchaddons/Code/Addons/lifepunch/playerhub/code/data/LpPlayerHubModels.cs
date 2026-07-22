@@ -47,7 +47,7 @@ public sealed record LpOverviewVm(
 	int XpIntoLevel,
 	int XpForNextLevel,
 	int SkillPointsAvailable,
-	int SkillsUnlocked,
+	int SkillRanksPurchased,
 	string NextUnlockLabel,
 	IReadOnlyList<LpEarnRouteVm> EarnRoutes,
 	IReadOnlyList<LpRecentProgressVm> RecentEvents,
@@ -104,7 +104,7 @@ public sealed record LpStatRowVm(
 	string Value,
 	string Hint);
 
-public enum LpSkillNodeState
+public enum LpSkillState
 {
 	Locked,
 	Available,
@@ -112,35 +112,57 @@ public enum LpSkillNodeState
 	Maxed,
 }
 
+public enum LpSkillTierState
+{
+	Locked,
+	Next,
+	Earned,
+}
+
 public sealed record LpSkillsVm(
 	bool IsFixture,
 	int SkillPointsAvailable,
+	int TracksMastered,
+	bool GrandMasteryActive,
 	IReadOnlyList<LpSkillTrackVm> Tracks,
-	IReadOnlyList<LpSkillNodeVm> Nodes,
+	IReadOnlyList<LpSkillVm> Skills,
 	string SelectedTrackId,
-	string SelectedNodeId);
+	string SelectedSkillId);
 
 public sealed record LpSkillTrackVm(
 	string Id,
 	string Label,
 	string Description,
 	string Icon,
+	int RanksPurchased,
+	int TotalRanks,
+	int SkillsMastered,
+	string KeystoneTitle,
+	string KeystoneEffect,
+	bool KeystoneActive,
 	Action? OnSelected);
 
-public sealed record LpSkillNodeVm(
+public sealed record LpSkillVm(
 	string Id,
 	string TrackId,
 	string Title,
 	string Description,
-	string Effect,
-	int Tier,
+	string CurrentEffect,
+	string NextTierEffect,
+	IReadOnlyList<LpSkillTierVm> Tiers,
 	int Rank,
 	int MaxRank,
 	int PointCost,
 	bool CanUnlock,
-	LpSkillNodeState State,
+	LpSkillState State,
 	string Requirement,
 	Action? OnSelected);
+
+public sealed record LpSkillTierVm(
+	int Rank,
+	string Label,
+	string Effect,
+	LpSkillTierState State);
 
 public sealed record LpStoreVm(
 	bool IsFixture,
@@ -203,25 +225,25 @@ public static class LpPlayerHubFixture
 		XpIntoLevel: 3750,
 		XpForNextLevel: 5000,
 		SkillPointsAvailable: SkillPointsAvailable,
-		SkillsUnlocked: 2,
-		NextUnlockLabel: "Quick Draw - Tier II",
+		SkillRanksPurchased: 2,
+		NextUnlockLabel: "Resilience slot 1 - Tier III",
 		EarnRoutes: new[]
 		{
 			new LpEarnRouteVm(
-				Icon: "work",
-				Title: "Stay active on a job",
-				Body: "Complete normal job loops and server objectives.",
-				RewardHint: "Play-earned route"),
+				Icon: "route",
+				Title: "Gameplay route",
+				Body: "No approved play-earned $LP source is wired.",
+				RewardHint: "HOOK NEEDED"),
 			new LpEarnRouteVm(
-				Icon: "groups",
-				Title: "Join server events",
-				Body: "Participate in scheduled events and community rounds.",
-				RewardHint: "Event reward preview"),
+				Icon: "event_busy",
+				Title: "Event route",
+				Body: "Eligibility and settlement remain owner decisions.",
+				RewardHint: "OWNER DECISION"),
 			new LpEarnRouteVm(
-				Icon: "verified",
-				Title: "Finish progression goals",
-				Body: "Advance approved tracks without a real-money shortcut.",
-				RewardHint: "Progress reward preview"),
+				Icon: "verified_user",
+				Title: "Progression route",
+				Body: "No authoritative award ledger exists in this slice.",
+				RewardHint: "CONTRACT PENDING"),
 		},
 		RecentEvents: new[]
 		{
@@ -233,7 +255,7 @@ public static class LpPlayerHubFixture
 			new LpRecentProgressVm(
 				Icon: "account_tree",
 				Title: "Skill point available",
-				Detail: "Browse the Skills tab to inspect eligible nodes",
+				Detail: "Browse the Skills tab to inspect tier requirements",
 				When: "Preview"),
 		},
 		StatSnapshot: new[]
@@ -249,9 +271,9 @@ public static class LpPlayerHubFixture
 		HeroPlates: new[]
 		{
 			new LpStatPlateVm( Icon: "schedule", Label: "Play time", Value: "42h 18m", Hint: "Fixture total" ),
-			new LpStatPlateVm( Icon: "work", Label: "Jobs", Value: "46", Hint: "Completed" ),
-			new LpStatPlateVm( Icon: "groups", Label: "Events", Value: "12", Hint: "Joined" ),
-			new LpStatPlateVm( Icon: "bolt", Label: "Current streak", Value: "4", Hint: "Active sessions" ),
+			new LpStatPlateVm( Icon: "trending_up", Label: "Total XP", Value: "58,750", Hint: "Fixture total" ),
+			new LpStatPlateVm( Icon: "account_tree", Label: "Skill ranks", Value: "2", Hint: "Fixture ranks" ),
+			new LpStatPlateVm( Icon: "savings", Label: "$LP earned", Value: "--", Hint: "No award ledger" ),
 		},
 		ActivityTrend: new[]
 		{
@@ -285,7 +307,7 @@ public static class LpPlayerHubFixture
 				Rows: new[]
 				{
 					new LpStatRowVm( Label: "Jobs completed", Value: "46", Hint: "Fixture" ),
-					new LpStatRowVm( Label: "$LP earned", Value: "1,280", Hint: "Preview only" ),
+					new LpStatRowVm( Label: "$LP earned", Value: "--", Hint: "No award ledger" ),
 					new LpStatRowVm( Label: "Store purchases", Value: "--", Hint: "Slice 6 not open" ),
 				}),
 			new LpStatSectionVm(
@@ -293,162 +315,179 @@ public static class LpPlayerHubFixture
 				Rows: new[]
 				{
 					new LpStatRowVm( Label: "Current level", Value: Level.ToString(), Hint: "Fixture" ),
-					new LpStatRowVm( Label: "Skills unlocked", Value: "7", Hint: "Fixture" ),
+					new LpStatRowVm( Label: "Skill ranks", Value: "2", Hint: "Fixture" ),
 					new LpStatRowVm( Label: "Available points", Value: SkillPointsAvailable.ToString(), Hint: "Fixture" ),
 				}),
 		});
 
 	public static LpSkillsVm Skills(
 		string selectedTrackId,
-		string selectedNodeId,
+		string selectedSkillId,
 		Action<string> onTrackSelected,
-		Action<string> onNodeSelected )
+		Action<string> onSkillSelected )
 	{
-		selectedTrackId = string.IsNullOrWhiteSpace( selectedTrackId ) ? "fieldcraft" : selectedTrackId;
-		selectedNodeId = string.IsNullOrWhiteSpace( selectedNodeId ) ? "steady-hands" : selectedNodeId;
+		selectedTrackId = string.IsNullOrWhiteSpace( selectedTrackId ) ? "resilience" : selectedTrackId;
+		selectedSkillId = string.IsNullOrWhiteSpace( selectedSkillId ) ? "resilience-slot-1" : selectedSkillId;
+
+		var skills = new List<LpSkillVm>();
+		AddTrackSkills( skills, "resilience", 2, onSkillSelected );
+		AddTrackSkills( skills, "recovery", 0, onSkillSelected );
+		AddTrackSkills( skills, "enterprise", 0, onSkillSelected );
+		AddTrackSkills( skills, "infiltration", 0, onSkillSelected );
+		AddTrackSkills( skills, "enforcement", 0, onSkillSelected );
 
 		return new LpSkillsVm(
 			IsFixture: true,
 			SkillPointsAvailable: SkillPointsAvailable,
+			TracksMastered: 0,
+			GrandMasteryActive: false,
 			Tracks: new[]
 			{
 				new LpSkillTrackVm(
-					Id: "fieldcraft",
-					Label: "Fieldcraft",
-					Description: "Handling and situational discipline.",
-					Icon: "track_changes",
-					OnSelected: () => onTrackSelected( "fieldcraft" )),
+					Id: "resilience",
+					Label: "Resilience",
+					Description: "Working durability taxonomy.",
+					Icon: "shield",
+					RanksPurchased: 2,
+					TotalRanks: 25,
+					SkillsMastered: 0,
+					KeystoneTitle: "Resilience Keystone",
+					KeystoneEffect: "Category effect pending hook-backed catalogue approval.",
+					KeystoneActive: false,
+					OnSelected: () => onTrackSelected( "resilience" )),
+				new LpSkillTrackVm(
+					Id: "recovery",
+					Label: "Recovery",
+					Description: "Working restoration taxonomy.",
+					Icon: "medical_services",
+					RanksPurchased: 0,
+					TotalRanks: 25,
+					SkillsMastered: 0,
+					KeystoneTitle: "Recovery Keystone",
+					KeystoneEffect: "Category effect pending hook-backed catalogue approval.",
+					KeystoneActive: false,
+					OnSelected: () => onTrackSelected( "recovery" )),
 				new LpSkillTrackVm(
 					Id: "enterprise",
 					Label: "Enterprise",
-					Description: "Earn routes and operational efficiency.",
+					Description: "Working economy taxonomy.",
 					Icon: "business_center",
+					RanksPurchased: 0,
+					TotalRanks: 25,
+					SkillsMastered: 0,
+					KeystoneTitle: "Enterprise Keystone",
+					KeystoneEffect: "Category effect pending hook-backed catalogue approval.",
+					KeystoneActive: false,
 					OnSelected: () => onTrackSelected( "enterprise" )),
 				new LpSkillTrackVm(
-					Id: "support",
-					Label: "Support",
-					Description: "Team utility and recovery awareness.",
-					Icon: "handshake",
-					OnSelected: () => onTrackSelected( "support" )),
+					Id: "infiltration",
+					Label: "Infiltration",
+					Description: "Working interaction taxonomy.",
+					Icon: "key",
+					RanksPurchased: 0,
+					TotalRanks: 25,
+					SkillsMastered: 0,
+					KeystoneTitle: "Infiltration Keystone",
+					KeystoneEffect: "Category effect pending hook-backed catalogue approval.",
+					KeystoneActive: false,
+					OnSelected: () => onTrackSelected( "infiltration" )),
+				new LpSkillTrackVm(
+					Id: "enforcement",
+					Label: "Enforcement",
+					Description: "Working public-safety taxonomy.",
+					Icon: "gavel",
+					RanksPurchased: 0,
+					TotalRanks: 25,
+					SkillsMastered: 0,
+					KeystoneTitle: "Enforcement Keystone",
+					KeystoneEffect: "Category effect pending hook-backed catalogue approval.",
+					KeystoneActive: false,
+					OnSelected: () => onTrackSelected( "enforcement" )),
 			},
-			Nodes: new[]
-			{
-				new LpSkillNodeVm(
-					Id: "steady-hands",
-					TrackId: "fieldcraft",
-					Title: "Steady Hands",
-					Description: "Baseline handling discipline.",
-					Effect: "Preview: reduced handling variance.",
-					Tier: 1,
-					Rank: 1,
-					MaxRank: 1,
-					PointCost: 1,
-					CanUnlock: false,
-					State: LpSkillNodeState.Maxed,
-					Requirement: "Complete",
-					OnSelected: () => onNodeSelected( "steady-hands" )),
-				new LpSkillNodeVm(
-					Id: "quick-draw",
-					TrackId: "fieldcraft",
-					Title: "Quick Draw",
-					Description: "Improves readiness after switching equipment.",
-					Effect: "Preview: faster ready cadence.",
-					Tier: 2,
-					Rank: 0,
-					MaxRank: 1,
-					PointCost: 1,
-					CanUnlock: true,
-					State: LpSkillNodeState.Available,
-					Requirement: "Steady Hands",
-					OnSelected: () => onNodeSelected( "quick-draw" )),
-				new LpSkillNodeVm(
-					Id: "prepared-kit",
-					TrackId: "fieldcraft",
-					Title: "Prepared Kit",
-					Description: "Adds a higher-tier readiness option.",
-					Effect: "Preview contract pending.",
-					Tier: 3,
-					Rank: 0,
-					MaxRank: 1,
-					PointCost: 2,
-					CanUnlock: false,
-					State: LpSkillNodeState.Locked,
-					Requirement: "Quick Draw",
-					OnSelected: () => onNodeSelected( "prepared-kit" )),
-				new LpSkillNodeVm(
-					Id: "route-reading",
-					TrackId: "fieldcraft",
-					Title: "Route Reading",
-					Description: "Higher-tier situational planning.",
-					Effect: "Preview contract pending.",
-					Tier: 4,
-					Rank: 0,
-					MaxRank: 1,
-					PointCost: 2,
-					CanUnlock: false,
-					State: LpSkillNodeState.Locked,
-					Requirement: "Prepared Kit",
-					OnSelected: () => onNodeSelected( "route-reading" )),
-				new LpSkillNodeVm(
-					Id: "field-master",
-					TrackId: "fieldcraft",
-					Title: "Field Master",
-					Description: "Final fixture tier for the fieldcraft track.",
-					Effect: "Preview contract pending.",
-					Tier: 5,
-					Rank: 0,
-					MaxRank: 1,
-					PointCost: 3,
-					CanUnlock: false,
-					State: LpSkillNodeState.Locked,
-					Requirement: "Route Reading",
-					OnSelected: () => onNodeSelected( "field-master" )),
-				new LpSkillNodeVm(
-					Id: "job-rhythm",
-					TrackId: "enterprise",
-					Title: "Job Rhythm",
-					Description: "Recognizes consistent job participation.",
-					Effect: "Preview: progression route visibility.",
-					Tier: 1,
-					Rank: 1,
-					MaxRank: 1,
-					PointCost: 1,
-					CanUnlock: false,
-					State: LpSkillNodeState.Unlocked,
-					Requirement: "Complete",
-					OnSelected: () => onNodeSelected( "job-rhythm" )),
-				new LpSkillNodeVm(
-					Id: "operations",
-					TrackId: "enterprise",
-					Title: "Operations",
-					Description: "Inspects a future efficiency branch.",
-					Effect: "Preview contract pending.",
-					Tier: 2,
-					Rank: 0,
-					MaxRank: 1,
-					PointCost: 1,
-					CanUnlock: false,
-					State: LpSkillNodeState.Locked,
-					Requirement: "Job Rhythm",
-					OnSelected: () => onNodeSelected( "operations" )),
-				new LpSkillNodeVm(
-					Id: "first-response",
-					TrackId: "support",
-					Title: "First Response",
-					Description: "Surfaces the support progression lane.",
-					Effect: "Preview: team utility awareness.",
-					Tier: 1,
-					Rank: 0,
-					MaxRank: 1,
-					PointCost: 1,
-					CanUnlock: true,
-					State: LpSkillNodeState.Available,
-					Requirement: "Level 20",
-					OnSelected: () => onNodeSelected( "first-response" )),
-			},
+			Skills: skills,
 			SelectedTrackId: selectedTrackId,
-			SelectedNodeId: selectedNodeId);
+			SelectedSkillId: selectedSkillId);
 	}
+
+	private static void AddTrackSkills(
+		List<LpSkillVm> skills,
+		string trackId,
+		int firstSkillRank,
+		Action<string> onSkillSelected )
+	{
+		for ( var slot = 1; slot <= 5; slot++ )
+		{
+			var id = trackId + "-slot-" + slot;
+			var rank = slot == 1 ? firstSkillRank : 0;
+			var state = LpSkillState.Locked;
+
+			if ( rank >= 5 )
+				state = LpSkillState.Maxed;
+			else if ( rank > 0 )
+				state = LpSkillState.Unlocked;
+			else if ( slot == 1 || (slot == 2 && firstSkillRank > 0) )
+				state = LpSkillState.Available;
+
+			var currentEffect = rank > 0
+				? "Fixture rank " + rank + ". No live modifier."
+				: "Base behavior unchanged.";
+			var nextEffect = rank >= 5
+				? "Tier V fixture complete."
+				: "Tier " + (rank + 1) + " values pending hook approval.";
+			var requirement = state == LpSkillState.Locked
+				? "Catalogue approval required"
+				: "Progression contract pending";
+			var tiers = BuildSkillTiers( rank, state != LpSkillState.Locked );
+
+			skills.Add( new LpSkillVm(
+				Id: id,
+				TrackId: trackId,
+				Title: "Catalogue Slot " + slot,
+				Description: "Hook-backed skill definition pending owner approval.",
+				CurrentEffect: currentEffect,
+				NextTierEffect: nextEffect,
+				Tiers: tiers,
+				Rank: rank,
+				MaxRank: 5,
+				PointCost: 1,
+				CanUnlock: false,
+				State: state,
+				Requirement: requirement,
+				OnSelected: () => onSkillSelected( id )));
+		}
+	}
+
+	private static IReadOnlyList<LpSkillTierVm> BuildSkillTiers( int purchasedRank, bool showNext )
+	{
+		var tiers = new List<LpSkillTierVm>( 5 );
+
+		for ( var rank = 1; rank <= 5; rank++ )
+		{
+			var state = rank <= purchasedRank
+				? LpSkillTierState.Earned
+				: showNext && rank == purchasedRank + 1
+					? LpSkillTierState.Next
+					: LpSkillTierState.Locked;
+
+			tiers.Add( new LpSkillTierVm(
+				Rank: rank,
+				Label: TierLabel( rank ),
+				Effect: "Hook-backed Tier " + TierLabel( rank ) + " value pending owner approval.",
+				State: state ));
+		}
+
+		return tiers;
+	}
+
+	private static string TierLabel( int rank ) => rank switch
+	{
+		1 => "I",
+		2 => "II",
+		3 => "III",
+		4 => "IV",
+		5 => "V",
+		_ => rank.ToString(),
+	};
 
 	public static LpStoreVm Store(
 		string selectedCategoryId,
@@ -556,19 +595,10 @@ public static class LpPlayerHubTabInfo
 		_ => "circle",
 	};
 
-	public static string Eyebrow( LpPlayerHubTab tab ) => tab switch
-	{
-		LpPlayerHubTab.Overview => "OVERVIEW",
-		LpPlayerHubTab.Skills => "SKILLS",
-		LpPlayerHubTab.Store => "$LP STORE",
-		LpPlayerHubTab.Stats => "PLAYER STATS",
-		_ => string.Empty,
-	};
-
 	public static string Blurb( LpPlayerHubTab tab ) => tab switch
 	{
-		LpPlayerHubTab.Overview => "Fixture-backed progression, currency and play-earned routes.",
-		LpPlayerHubTab.Skills => "Browse tracks and node requirements. Point spending is not open.",
+		LpPlayerHubTab.Overview => "Fixture-backed progression, currency and route-readiness placeholders.",
+		LpPlayerHubTab.Skills => "Browse five tracks, independent skill ranks and mastery status.",
 		LpPlayerHubTab.Store => "Browse the $LP preview catalog. Purchasing is not open.",
 		LpPlayerHubTab.Stats => "Read-only fixture activity. Unknown lifetime data stays unknown.",
 		_ => string.Empty,

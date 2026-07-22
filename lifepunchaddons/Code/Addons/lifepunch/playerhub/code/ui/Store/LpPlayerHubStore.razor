@@ -14,7 +14,7 @@
 @attribute [StyleSheet]
 
 <root class="lp-playerhub-store">
-	<div class="store-balance-strip">
+	<div class="store-balance-strip lp-hub-panel">
 		<div class="store-balance-copy">
 			<div class="store-balance-label">CURRENT BALANCE</div>
 			<div class="store-money"><span class="store-lp-sign">$LP</span><span class="store-money-amount">@Model.LpBalance.ToString( "N0" )</span></div>
@@ -39,8 +39,8 @@
 	</div>
 
 	<div class="store-workspace">
-		<div class="store-catalog">
-			<div class="store-section-head">
+		<div class="store-catalog lp-hub-panel">
+			<div class="store-section-head lp-hub-bar">
 				<div class="store-section-title">CATALOG</div>
 				<div class="store-section-note">@VisibleItemCount() fixture items</div>
 			</div>
@@ -63,7 +63,7 @@
 			</div>
 		</div>
 
-		<div class="store-detail">
+		<div class="store-detail lp-hub-panel">
 			@if ( SelectedItem() is LpStoreItemVm item )
 			{
 				<div class="store-detail-hero">
@@ -73,25 +73,27 @@
 				<div class="store-detail-title">@item.Title</div>
 				<div class="store-detail-description">@item.Description</div>
 
-				<div class="store-detail-block">
-					<div class="store-detail-label">DURATION</div>
-					<div class="store-detail-value">@item.DurationLabel</div>
-				</div>
-				<div class="store-detail-block">
-					<div class="store-detail-label">COMBAT IMPACT</div>
-					<div class="store-detail-value">@item.CombatImpact</div>
+				<div class="store-detail-fields lp-hub-field-row">
+					<div class="lp-hub-field">
+						<div class="store-detail-label">DURATION</div>
+						<div class="store-detail-value">@item.DurationLabel</div>
+					</div>
+					<div class="lp-hub-field">
+						<div class="store-detail-label">COMBAT IMPACT</div>
+						<div class="store-detail-value">@item.CombatImpact</div>
+					</div>
 				</div>
 
-				<div class="store-price-summary">
-					<div class="store-price-row">
+				<div class="store-price-summary lp-hub-field-row">
+					<div class="store-price-row lp-hub-field">
 						<div class="store-price-label">PRICE</div>
 						<div class="store-money compact"><span class="store-lp-sign">$LP</span><span class="store-money-amount">@item.PriceLp.ToString( "N0" )</span></div>
 					</div>
-					<div class="store-price-row">
+					<div class="store-price-row lp-hub-field">
 						<div class="store-price-label">CURRENT</div>
 						<div class="store-money compact"><span class="store-lp-sign">$LP</span><span class="store-money-amount">@Model.LpBalance.ToString( "N0" )</span></div>
 					</div>
-					<div class="store-price-row">
+					<div class="store-price-row lp-hub-field">
 						<div class="store-price-label">AFTER</div>
 						<div class="store-money compact"><span class="store-lp-sign">$LP</span><span class="store-money-amount">@AfterBalance( item ).ToString( "N0" )</span></div>
 					</div>
@@ -101,7 +103,7 @@
 					<i class="material-icons">lock</i>
 					<span>Purchases open in a later slice</span>
 				</button>
-				<div class="store-detail-footnote">Earn $LP through approved play routes. This preview cannot spend it.</div>
+				<div class="store-detail-footnote">No play-earned $LP route or purchase settlement is approved in this fixture slice.</div>
 			}
 		</div>
 	</div>
@@ -133,13 +135,15 @@
 
 	private string CategoryClass( LpStoreCategoryVm category )
 	{
-		return category.Id == Model.SelectedCategoryId ? "store-category is-active" : "store-category";
+		return category.Id == Model.SelectedCategoryId
+			? "store-category lp-hub-button is-active"
+			: "store-category lp-hub-button";
 	}
 
 	private string ItemClass( LpStoreItemVm item )
 	{
 		var selected = item.Id == Model.SelectedItemId ? " is-selected" : string.Empty;
-		return "store-item" + selected;
+		return "store-item lp-hub-button" + selected;
 	}
 
 	private static string OwnershipClass( LpStoreItemVm item )

@@ -73,12 +73,11 @@
 
 			<div class="hub-content">
 				<div class="hub-page-head">
-					<div class="hub-eyebrow">@LpPlayerHubTabInfo.Eyebrow( ActiveTab )</div>
 					<div class="hub-title">@LpPlayerHubTabInfo.Label( ActiveTab )</div>
 					<div class="hub-blurb">@LpPlayerHubTabInfo.Blurb( ActiveTab )</div>
 				</div>
 
-				<div class="hub-tabhost lp-ui-scroll-region">
+				<div class="hub-tabhost">
 					@if ( ActiveTab == LpPlayerHubTab.Overview )
 					{
 						<LpPlayerHubOverview Model="@OverviewModel" />
@@ -106,6 +105,7 @@
 @code
 {
 	public const string SliceMark = "LP_PLAYERHUB_SLICES1_5_FIXTURE_20260722";
+	public const string QaMark = "LP_PLAYERHUB_NO_SCROLL_FIXTURE_20260722";
 
 	private static readonly LpPlayerHubTab[] Tabs =
 	{
@@ -116,8 +116,8 @@
 	};
 
 	private LpPlayerHubTab _activeTab = LpPlayerHubTab.Overview;
-	private string _selectedSkillTrackId = "fieldcraft";
-	private string _selectedSkillNodeId = "steady-hands";
+	private string _selectedSkillTrackId = "resilience";
+	private string _selectedSkillId = "resilience-slot-1";
 	private string _selectedStoreCategoryId = "all";
 	private string _selectedStoreItemId = "identity-banner";
 
@@ -154,9 +154,9 @@
 
 	private LpSkillsVm SkillsModel => LpPlayerHubFixture.Skills(
 		_selectedSkillTrackId,
-		_selectedSkillNodeId,
+		_selectedSkillId,
 		SelectSkillTrack,
-		SelectSkillNode);
+		SelectSkill);
 
 	private LpStoreVm StoreModel => LpPlayerHubFixture.Store(
 		_selectedStoreCategoryId,
@@ -206,21 +206,16 @@
 	private void SelectSkillTrack( string trackId )
 	{
 		_selectedSkillTrackId = trackId;
-		_selectedSkillNodeId = trackId switch
-		{
-			"enterprise" => "job-rhythm",
-			"support" => "first-response",
-			_ => "steady-hands",
-		};
+		_selectedSkillId = trackId + "-slot-1";
 		StateHasChanged();
 	}
 
-	private void SelectSkillNode( string nodeId )
+	private void SelectSkill( string skillId )
 	{
-		if ( _selectedSkillNodeId == nodeId )
+		if ( _selectedSkillId == skillId )
 			return;
 
-		_selectedSkillNodeId = nodeId;
+		_selectedSkillId = skillId;
 		StateHasChanged();
 	}
 
@@ -272,7 +267,7 @@
 		var hash = new HashCode();
 		hash.Add( (int)_activeTab );
 		hash.Add( _selectedSkillTrackId );
-		hash.Add( _selectedSkillNodeId );
+		hash.Add( _selectedSkillId );
 		hash.Add( _selectedStoreCategoryId );
 		hash.Add( _selectedStoreItemId );
 		hash.Add( VisibleTabIsFixture );
