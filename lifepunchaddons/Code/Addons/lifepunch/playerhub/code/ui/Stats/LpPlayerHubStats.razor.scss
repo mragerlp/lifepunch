@@ -1,0 +1,219 @@
+// -----------------------------------------------------------------------------
+// PROPRIETARY & CONFIDENTIAL - (c) 2026 lifepunch.co. All rights reserved.
+// -----------------------------------------------------------------------------
+
+@import "../LpPlayerHubTokens.scss";
+
+.lp-playerhub-stats {
+	flex-direction: column;
+	flex-shrink: 0;
+	gap: $gap-content;
+	padding: 14px;
+	font-family: Inter, Arial, sans-serif;
+	color: $text-main;
+}
+
+.stats-plate-row,
+.stats-two-column,
+.stats-section-row {
+	flex-direction: row;
+	gap: $gap-content;
+}
+
+.stats-plate {
+	flex-direction: row;
+	align-items: center;
+	gap: 10px;
+	flex-grow: 1;
+	min-height: 76px;
+	padding: 11px;
+	background-color: $surface-inset;
+	border: 1px solid $border;
+	border-radius: $radius;
+}
+
+.stats-plate-icon {
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	width: 34px;
+	height: 34px;
+	flex-shrink: 0;
+	color: $lp-blue;
+	background-color: $accent-soft;
+	border-radius: $radius;
+}
+
+.stats-plate-copy,
+.stats-highlight-copy,
+.stats-table-copy {
+	flex-direction: column;
+	gap: 2px;
+}
+
+.stats-plate-label,
+.stats-section-title,
+.stats-highlight-label,
+.stats-table-title,
+.stats-table-label {
+	font-size: 10px;
+	font-weight: 700;
+	letter-spacing: 0.8px;
+	color: $text-dim;
+}
+
+.stats-plate-value {
+	font-family: Poppins, Arial, sans-serif;
+	font-size: 18px;
+	font-weight: 600;
+	color: $text-main;
+}
+
+.stats-plate-hint,
+.stats-section-note,
+.stats-highlight-hint,
+.stats-table-hint,
+.stats-activity-summary {
+	font-size: 11px;
+	color: $text-dim;
+}
+
+.stats-section {
+	flex-direction: column;
+	flex-grow: 1;
+	min-width: 0;
+	background-color: $surface-inset;
+	border: 1px solid $border;
+	border-radius: $radius;
+	overflow: hidden;
+}
+
+.stats-section-head {
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	min-height: 36px;
+	padding-left: 12px;
+	padding-right: 12px;
+	background-color: $card-header;
+	border-bottom: 1px solid $border;
+}
+
+.stats-trend-list,
+.stats-highlight-list {
+	flex-direction: column;
+	padding: 8px 12px;
+}
+
+.stats-trend-row {
+	flex-direction: row;
+	align-items: center;
+	gap: 8px;
+	min-height: 28px;
+}
+
+.stats-trend-label {
+	width: 30px;
+	flex-shrink: 0;
+	font-size: 10px;
+	color: $text-dim;
+}
+
+.stats-trend-meter {
+	flex-grow: 1;
+	height: 6px;
+	background-color: $card-header;
+	border-radius: $radius;
+	overflow: hidden;
+}
+
+.stats-trend-fill {
+	height: 100%;
+	background-color: $lp-blue;
+	border-radius: $radius;
+}
+
+.stats-trend-fill.fill-15 { width: 15%; }
+.stats-trend-fill.fill-30 { width: 30%; }
+.stats-trend-fill.fill-45 { width: 45%; }
+.stats-trend-fill.fill-60 { width: 60%; }
+.stats-trend-fill.fill-75 { width: 75%; }
+.stats-trend-fill.fill-100 { width: 100%; }
+
+.stats-trend-value {
+	width: 48px;
+	flex-shrink: 0;
+	text-align: right;
+	font-size: 10px;
+	color: $text-main;
+}
+
+.stats-activity-summary {
+	padding: 9px 12px;
+	border-top: 1px solid $border;
+	line-height: 15px;
+}
+
+.stats-highlight-row {
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	min-height: 45px;
+	border-bottom: 1px solid $border;
+}
+
+.stats-highlight-row:last-child {
+	border-bottom: 0;
+}
+
+.stats-highlight-value {
+	font-family: Poppins, Arial, sans-serif;
+	font-size: 13px;
+	font-weight: 600;
+	color: $text-main;
+	margin-left: 12px;
+}
+
+.stats-table {
+	flex-direction: column;
+	flex-grow: 1;
+	min-width: 0;
+	border-right: 1px solid $border;
+}
+
+.stats-table:last-child {
+	border-right: 0;
+}
+
+.stats-table-title {
+	min-height: 32px;
+	padding: 10px 11px;
+	color: $lp-blue;
+	border-bottom: 1px solid $border;
+}
+
+.stats-table-row {
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	min-height: 48px;
+	padding: 8px 11px;
+	border-bottom: 1px solid $border;
+}
+
+.stats-table-row:last-child {
+	border-bottom: 0;
+}
+
+.stats-table-label {
+	color: $text-main;
+	letter-spacing: 0;
+}
+
+.stats-table-value {
+	font-family: Poppins, Arial, sans-serif;
+	font-size: 13px;
+	font-weight: 600;
+	color: $text-main;
+	margin-left: 8px;
+}

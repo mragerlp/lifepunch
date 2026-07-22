@@ -1,0 +1,340 @@
+// -----------------------------------------------------------------------------
+// PROPRIETARY & CONFIDENTIAL - (c) 2026 lifepunch.co. All rights reserved.
+// -----------------------------------------------------------------------------
+
+@import "../LpPlayerHubTokens.scss";
+
+.lp-playerhub-store {
+	flex-direction: column;
+	flex-shrink: 0;
+	gap: $gap-content;
+	padding: 14px;
+	font-family: Inter, Arial, sans-serif;
+	color: $text-main;
+}
+
+.store-balance-strip {
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	min-height: 62px;
+	padding: 10px 12px;
+	background-color: $surface-inset;
+	border: 1px solid $border;
+	border-radius: $radius;
+}
+
+.store-balance-copy,
+.store-balance-note > div,
+.store-item-copy,
+.store-detail,
+.store-detail-block {
+	flex-direction: column;
+	gap: 3px;
+}
+
+.store-balance-label,
+.store-balance-note-title,
+.store-section-title,
+.store-detail-label,
+.store-price-label {
+	font-size: 10px;
+	font-weight: 700;
+	letter-spacing: 1px;
+	color: $text-dim;
+}
+
+.store-money {
+	flex-direction: row;
+	align-items: baseline;
+	gap: 6px;
+}
+
+.store-money.compact {
+	gap: 4px;
+}
+
+.store-lp-sign {
+	font-size: 14px;
+	font-weight: 700;
+	color: $lp-blue;
+}
+
+.store-money-amount {
+	font-family: Poppins, Arial, sans-serif;
+	font-size: 20px;
+	font-weight: 600;
+	color: $text-main;
+}
+
+.store-money.compact .store-money-amount {
+	font-size: 13px;
+}
+
+.store-balance-note {
+	flex-direction: row;
+	align-items: center;
+	gap: 8px;
+}
+
+.store-balance-note > .material-icons {
+	font-size: 19px;
+	color: $lp-blue;
+}
+
+.store-balance-note-copy,
+.store-section-note,
+.store-item-description,
+.store-detail-description,
+.store-detail-footnote {
+	font-size: 10px;
+	line-height: 14px;
+	color: $text-dim;
+}
+
+.store-category-row {
+	flex-direction: row;
+	gap: $gap-control;
+}
+
+.store-category {
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	gap: 6px;
+	min-width: 100px;
+	min-height: $hit;
+	padding-left: 12px;
+	padding-right: 12px;
+	border: 1px solid $border;
+	border-radius: $radius;
+	background-color: $surface-inset;
+	color: $text-dim;
+	font-family: Poppins, Arial, sans-serif;
+	font-size: 11px;
+}
+
+.store-category:hover {
+	color: $text-main;
+	background-color: $dim-soft;
+}
+
+.store-category.is-active {
+	background-color: $accent-soft;
+	color: $text-main;
+}
+
+.store-category > .material-icons {
+	font-size: 17px;
+	color: $lp-blue;
+}
+
+.store-workspace {
+	flex-direction: row;
+	gap: $gap-content;
+	align-items: stretch;
+}
+
+.store-catalog {
+	flex-direction: column;
+	flex-grow: 1;
+	min-width: 0;
+	background-color: $surface-inset;
+	border: 1px solid $border;
+	border-radius: $radius;
+	overflow: hidden;
+}
+
+.store-section-head {
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	min-height: 38px;
+	padding-left: 12px;
+	padding-right: 12px;
+	background-color: $card-header;
+	border-bottom: 1px solid $border;
+}
+
+.store-item-list {
+	flex-direction: row;
+	flex-wrap: wrap;
+	gap: $gap-control;
+	padding: 9px;
+}
+
+.store-item {
+	flex-direction: row;
+	gap: 8px;
+	width: 285px;
+	min-height: 96px;
+	padding: 9px;
+	border: 1px solid $border;
+	border-radius: $radius;
+	background-color: $surface;
+	color: $text-dim;
+	text-align: left;
+}
+
+.store-item:hover {
+	background-color: $dim-soft;
+}
+
+.store-item.is-selected {
+	background-color: $accent-soft;
+}
+
+.store-item-icon {
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	width: 44px;
+	height: 44px;
+	flex-shrink: 0;
+	border-radius: $radius;
+	background-color: $card-header;
+	color: $lp-blue;
+}
+
+.store-item-icon > .material-icons {
+	font-size: 22px;
+}
+
+.store-item-copy {
+	flex-grow: 1;
+	min-width: 0;
+}
+
+.store-item-title {
+	font-family: Poppins, Arial, sans-serif;
+	font-size: 12px;
+	font-weight: 600;
+	color: $text-main;
+}
+
+.store-item-meta {
+	flex-direction: row;
+	align-items: center;
+	gap: 5px;
+	margin-top: auto;
+}
+
+.store-item-price {
+	font-size: 12px;
+	font-weight: 600;
+	color: $text-main;
+}
+
+.store-item-status {
+	margin-left: auto;
+	font-size: 8px;
+	letter-spacing: 0.6px;
+	color: $text-dim;
+}
+
+.store-item-status.is-owned {
+	color: $good;
+}
+
+.store-item-status.is-available {
+	color: $lp-blue;
+}
+
+.store-detail {
+	width: 250px;
+	flex-shrink: 0;
+	padding: 12px;
+	background-color: $surface-inset;
+	border: 1px solid $border;
+	border-radius: $radius;
+}
+
+.store-detail-hero {
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 5px;
+}
+
+.store-detail-icon {
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	width: 46px;
+	height: 46px;
+	border-radius: $radius;
+	background-color: $accent-soft;
+	color: $lp-blue;
+}
+
+.store-detail-icon > .material-icons {
+	font-size: 24px;
+}
+
+.store-detail-state {
+	font-size: 9px;
+	font-weight: 700;
+	letter-spacing: 0.8px;
+	color: $lp-blue;
+}
+
+.store-detail-title {
+	font-family: Poppins, Arial, sans-serif;
+	font-size: 17px;
+	font-weight: 600;
+	color: $text-main;
+}
+
+.store-detail-description {
+	margin-bottom: 6px;
+}
+
+.store-detail-block {
+	padding-top: 8px;
+	padding-bottom: 5px;
+	border-top: 1px solid $border;
+}
+
+.store-detail-value {
+	font-size: 11px;
+	color: $text-main;
+}
+
+.store-price-summary {
+	flex-direction: column;
+	margin-top: 4px;
+	border-top: 1px solid $border;
+	border-bottom: 1px solid $border;
+}
+
+.store-price-row {
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	min-height: 32px;
+	border-bottom: 1px solid $border;
+}
+
+.store-price-row:last-child {
+	border-bottom: 0;
+}
+
+.store-review {
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	gap: 6px;
+	min-height: $hit;
+	margin-top: auto;
+	border: 1px solid $border;
+	border-radius: $radius;
+	background-color: $card-header;
+	color: $text-dim;
+	font-family: Poppins, Arial, sans-serif;
+	font-size: 10px;
+	opacity: 0.66;
+}
+
+.store-review > .material-icons {
+	font-size: 16px;
+}

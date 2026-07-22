@@ -1,48 +1,11 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// PROPRIETARY & CONFIDENTIAL — © 2026 lifepunch.co. All rights reserved.
+// -----------------------------------------------------------------------------
+// PROPRIETARY & CONFIDENTIAL - (c) 2026 lifepunch.co. All rights reserved.
 //
-// "LIFEPUNCH Player Hub for DXRP" (s&box ident: lifepunch.playerhub · addon ident: playerhub)
-//
-// SLICE 1 — SHELL.
-//
-// s&box SCSS constraints observed here, all of them silent failures if broken:
-//   flex only, never grid. No inline-flex. No block/none/inline/inline-block.
-//   No media queries. No gradients. Selectors kept shallow.
-// Comments avoid name-colon-value shapes on purpose: the parser scans words inside comments
-// and will raise invalid-property warnings from a comment that merely looks like a rule.
-// ─────────────────────────────────────────────────────────────────────────────
+// Player Hub shell. Flex-only s&box SCSS.
+// -----------------------------------------------------------------------------
 
-// ── TOKENS — locked. Mirrors LIFEPUNCH_UI_STANDARD and the lifepunch.co :root.
-// No raw hex below this block; a hex literal in a component is a defect.
-$lp-blue: #017AEF;
-$lp-blue-hover: #33A0FF;
-$accent-soft: rgba(1, 122, 239, 0.10);
-$accent-soft-hover: rgba(1, 122, 239, 0.06);
+@import "LpPlayerHubTokens.scss";
 
-$bg: #000000;
-$surface: #1a1d23;
-$surface-inset: #12151a;
-$card-header: #22262e;
-$border: #374151;
-
-$text-main: #ffffff;
-$text-dim: #9ca3af;
-
-$radius: 6px;
-$radius-card: 12px;
-
-$hit: 44px;
-$gap-control: 8px;
-$gap-content: 12px;
-
-$sidebar-w: 190px;
-$header-h: 64px;
-
-// HUD-root mount (StaffMenu / Bitcoin Ops house pattern): absolute fill of the shared
-// DXRP HUD panel, then flex-center the 1160x700 shell. width/height 100% alone is not
-// enough when the parent is the real HUD root — without absolute the shell shrinks and
-// sits flush-right (~920px). Slice 1 proof looked centered only because it sat on a
-// hand-built full-screen ScreenPanel that no longer exists.
 .lp-playerhub {
 	position: absolute;
 	top: 0;
@@ -62,6 +25,15 @@ $header-h: 64px;
 	pointer-events: all;
 }
 
+.lp-playerhub .material-icons {
+	font-family: Material Icons;
+	font-weight: normal;
+	font-style: normal;
+	text-transform: none;
+	letter-spacing: normal;
+	white-space: nowrap;
+}
+
 .hub-shell {
 	position: relative;
 	flex-direction: column;
@@ -74,10 +46,9 @@ $header-h: 64px;
 	border: 1px solid $border;
 	border-radius: $radius-card;
 	overflow: hidden;
-	font-family: Inter;
+	font-family: Inter, Arial, sans-serif;
 }
 
-// ── HEADER ───────────────────────────────────────────────────────────────────
 .hub-header {
 	flex-direction: row;
 	align-items: center;
@@ -91,7 +62,7 @@ $header-h: 64px;
 }
 
 .hub-brand {
-	font-family: Poppins;
+	font-family: Poppins, Arial, sans-serif;
 	font-size: 16px;
 	font-weight: 600;
 	letter-spacing: 1px;
@@ -107,15 +78,16 @@ $header-h: 64px;
 .hub-preview-tag {
 	flex-direction: row;
 	align-items: center;
-	height: 22px;
+	height: 24px;
 	padding-left: 8px;
 	padding-right: 8px;
 	border: 1px solid $border;
-	border-radius: 2px;
+	border-radius: $radius;
 	font-size: 10px;
 	font-weight: 600;
 	letter-spacing: 1px;
 	color: $text-dim;
+	background-color: $surface-inset;
 }
 
 .hub-stat {
@@ -125,12 +97,11 @@ $header-h: 64px;
 }
 
 .hub-stat-label {
-	font-size: 12px;
+	font-size: 11px;
 	letter-spacing: 1px;
 	color: $text-dim;
 }
 
-// LAW 17 — the SIGN carries the colour, the AMOUNT stays white.
 .hub-stat-value {
 	font-size: 14px;
 	font-weight: 600;
@@ -155,17 +126,16 @@ $header-h: 64px;
 	height: $hit;
 	border-radius: $radius;
 	color: $text-dim;
-	opacity: 0.7;
+	opacity: 0.76;
 	transition: opacity 0.12s ease-out;
 }
 
 .hub-close:hover {
 	opacity: 1;
 	color: $text-main;
-	background-color: $accent-soft-hover;
+	background-color: $accent-soft;
 }
 
-// ── BODY ─────────────────────────────────────────────────────────────────────
 .hub-body {
 	flex-direction: row;
 	flex-grow: 1;
@@ -188,7 +158,6 @@ $header-h: 64px;
 	gap: 10px;
 }
 
-// A true circle is the one place a full radius is allowed.
 .hub-avatar {
 	flex-direction: row;
 	align-items: center;
@@ -227,26 +196,25 @@ $header-h: 64px;
 	align-items: center;
 	gap: 10px;
 	height: $hit;
+	padding-left: 10px;
 	padding-right: 10px;
 	border-radius: $radius;
 	color: $text-dim;
-	opacity: 0.7;
+	opacity: 0.72;
 	transition: opacity 0.12s ease-out;
 }
 
 .hub-nav-item:hover {
 	opacity: 1;
-	background-color: $accent-soft-hover;
+	background-color: $dim-soft;
 }
 
-// Accent is a WASH only (sidebar ruling / cursor\0038): no left chrome strip.
 .hub-nav-item.is-active {
 	opacity: 1;
 	background-color: $accent-soft;
 	color: $text-main;
 }
 
-// Keep the marker node for layout stability, but never paint chrome.
 .hub-nav-indicator {
 	width: 0;
 	height: 0;
@@ -254,13 +222,6 @@ $header-h: 64px;
 	background-color: transparent;
 }
 
-.hub-nav-item.is-active .hub-nav-indicator {
-	width: 0;
-	height: 0;
-	background-color: transparent;
-}
-
-// Icons stay neutral. The active state is carried by opacity and the wash, not by tinting glyphs.
 .hub-nav-icon {
 	font-size: 18px;
 	flex-shrink: 0;
@@ -279,20 +240,42 @@ $header-h: 64px;
 	height: 18px;
 	padding-left: 5px;
 	padding-right: 5px;
-	border-radius: 2px;
+	border-radius: $radius;
 	background-color: $lp-blue;
 	color: $text-main;
 	font-size: 11px;
 	font-weight: 700;
 }
 
-// ── CONTENT ──────────────────────────────────────────────────────────────────
+.hub-sidebar-note {
+	flex-direction: column;
+	gap: 5px;
+	margin-top: auto;
+	padding: 10px;
+	border: 1px solid $border;
+	border-radius: $radius;
+	background-color: $surface;
+}
+
+.hub-sidebar-note-title {
+	font-size: 10px;
+	font-weight: 700;
+	letter-spacing: 1px;
+	color: $lp-blue;
+}
+
+.hub-sidebar-note-copy {
+	font-size: 11px;
+	line-height: 16px;
+	color: $text-dim;
+}
+
 .hub-content {
 	flex-direction: column;
 	flex-grow: 1;
 	min-width: 0;
-	padding: 24px;
-	gap: 20px;
+	padding: 20px;
+	gap: 16px;
 }
 
 .hub-page-head {
@@ -309,51 +292,23 @@ $header-h: 64px;
 }
 
 .hub-title {
-	font-family: Poppins;
+	font-family: Poppins, Arial, sans-serif;
 	font-size: 22px;
 	font-weight: 600;
 	color: $text-main;
 }
 
 .hub-blurb {
-	font-size: 14px;
+	font-size: 13px;
 	color: $text-dim;
 }
 
-// One vertical scroll region per tab.
 .hub-tabhost {
 	flex-direction: column;
 	flex-grow: 1;
 	min-height: 0;
 	overflow-y: scroll;
 	background-color: $surface;
+	border: 1px solid $border;
 	border-radius: $radius-card;
-}
-
-.hub-placeholder {
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	flex-grow: 1;
-	gap: $gap-content;
-	padding: 32px;
-}
-
-.hub-placeholder-icon {
-	font-size: 40px;
-	color: $text-dim;
-	opacity: 0.4;
-}
-
-.hub-placeholder-title {
-	font-family: Poppins;
-	font-size: 16px;
-	font-weight: 600;
-	color: $text-main;
-}
-
-.hub-placeholder-body {
-	font-size: 13px;
-	color: $text-dim;
-	text-align: center;
 }

@@ -1,0 +1,303 @@
+// -----------------------------------------------------------------------------
+// PROPRIETARY & CONFIDENTIAL - (c) 2026 lifepunch.co. All rights reserved.
+// -----------------------------------------------------------------------------
+
+@import "../LpPlayerHubTokens.scss";
+
+.lp-playerhub-overview {
+	flex-direction: column;
+	flex-shrink: 0;
+	gap: $gap-content;
+	padding: 14px;
+	font-family: Inter, Arial, sans-serif;
+	color: $text-main;
+}
+
+.overview-progress-card {
+	flex-direction: row;
+	align-items: center;
+	gap: 14px;
+	min-height: 92px;
+	padding: 14px;
+	background-color: $surface-inset;
+	border: 1px solid $border;
+	border-radius: $radius;
+}
+
+.overview-progress-copy {
+	flex-direction: column;
+	gap: 3px;
+	width: 220px;
+	flex-shrink: 0;
+}
+
+.overview-kicker,
+.overview-summary-label,
+.overview-section-title,
+.overview-next-unlock-label {
+	font-size: 10px;
+	font-weight: 700;
+	letter-spacing: 1px;
+	color: $text-dim;
+}
+
+.overview-progress-value {
+	font-family: Poppins, Arial, sans-serif;
+	font-size: 19px;
+	font-weight: 600;
+	color: $text-main;
+}
+
+.overview-progress-hint,
+.overview-summary-hint,
+.overview-section-note,
+.overview-next-unlock-value,
+.overview-event-detail,
+.overview-event-when,
+.overview-snapshot-hint,
+.overview-earn-body,
+.overview-earn-hint {
+	font-size: 11px;
+	color: $text-dim;
+}
+
+.overview-progress-track {
+	flex-grow: 1;
+	height: 8px;
+	background-color: $card-header;
+	border-radius: $radius;
+	overflow: hidden;
+}
+
+.overview-progress-fill {
+	height: 100%;
+	background-color: $lp-blue;
+	border-radius: $radius;
+}
+
+.overview-progress-fill.fill-0 { width: 0%; }
+.overview-progress-fill.fill-10 { width: 10%; }
+.overview-progress-fill.fill-25 { width: 25%; }
+.overview-progress-fill.fill-50 { width: 50%; }
+.overview-progress-fill.fill-75 { width: 75%; }
+.overview-progress-fill.fill-100 { width: 100%; }
+
+.overview-next-unlock {
+	flex-direction: row;
+	align-items: center;
+	gap: 9px;
+	width: 190px;
+	flex-shrink: 0;
+	padding-left: 12px;
+	border-left: 1px solid $border;
+}
+
+.overview-next-unlock > .material-icons {
+	font-size: 20px;
+	color: $lp-blue;
+}
+
+.overview-next-unlock-copy {
+	flex-direction: column;
+	gap: 3px;
+}
+
+.overview-summary-row,
+.overview-two-column,
+.overview-earn-row,
+.overview-actions {
+	flex-direction: row;
+	gap: $gap-content;
+}
+
+.overview-summary-card {
+	flex-direction: row;
+	align-items: center;
+	gap: 10px;
+	flex-grow: 1;
+	min-height: 80px;
+	padding: 12px;
+	background-color: $surface-inset;
+	border: 1px solid $border;
+	border-radius: $radius;
+}
+
+.overview-summary-icon {
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	width: 40px;
+	height: 40px;
+	flex-shrink: 0;
+	border-radius: $radius;
+	background-color: $card-header;
+	color: $text-dim;
+}
+
+.overview-summary-icon.lp {
+	background-color: $accent-soft;
+	color: $lp-blue;
+}
+
+.overview-summary-copy {
+	flex-direction: column;
+	gap: 2px;
+}
+
+.overview-summary-value {
+	font-family: Poppins, Arial, sans-serif;
+	font-size: 19px;
+	font-weight: 600;
+	color: $text-main;
+}
+
+.overview-money {
+	flex-direction: row;
+	align-items: baseline;
+	gap: 6px;
+}
+
+.overview-lp-sign {
+	font-size: 15px;
+	font-weight: 700;
+	color: $lp-blue;
+}
+
+.overview-money-amount {
+	font-family: Poppins, Arial, sans-serif;
+	font-size: 19px;
+	font-weight: 600;
+	color: $text-main;
+}
+
+.overview-section {
+	flex-direction: column;
+	flex-grow: 1;
+	min-width: 0;
+	background-color: $surface-inset;
+	border: 1px solid $border;
+	border-radius: $radius;
+	overflow: hidden;
+}
+
+.overview-section-head {
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	min-height: 36px;
+	padding-left: 12px;
+	padding-right: 12px;
+	background-color: $card-header;
+	border-bottom: 1px solid $border;
+}
+
+.overview-event-list,
+.overview-snapshot-list {
+	flex-direction: column;
+}
+
+.overview-event-row,
+.overview-snapshot-row {
+	flex-direction: row;
+	align-items: center;
+	min-height: 52px;
+	padding: 9px 12px;
+	border-bottom: 1px solid $border;
+}
+
+.overview-event-row:last-child,
+.overview-snapshot-row:last-child {
+	border-bottom: 0;
+}
+
+.overview-event-icon {
+	font-size: 18px;
+	color: $lp-blue;
+	margin-right: 9px;
+}
+
+.overview-event-copy,
+.overview-snapshot-copy {
+	flex-direction: column;
+	flex-grow: 1;
+	gap: 2px;
+}
+
+.overview-event-title,
+.overview-snapshot-label,
+.overview-earn-title {
+	font-size: 12px;
+	font-weight: 600;
+	color: $text-main;
+}
+
+.overview-event-when {
+	flex-shrink: 0;
+	margin-left: 10px;
+}
+
+.overview-snapshot-value {
+	font-family: Poppins, Arial, sans-serif;
+	font-size: 17px;
+	font-weight: 600;
+	color: $text-main;
+}
+
+.overview-earn-card {
+	flex-direction: row;
+	gap: 9px;
+	flex-grow: 1;
+	min-height: 82px;
+	padding: 11px;
+}
+
+.overview-earn-icon {
+	font-size: 20px;
+	color: $lp-blue;
+	flex-shrink: 0;
+}
+
+.overview-earn-copy {
+	flex-direction: column;
+	gap: 3px;
+}
+
+.overview-earn-body {
+	line-height: 15px;
+}
+
+.overview-earn-hint {
+	margin-top: auto;
+	color: $lp-blue;
+}
+
+.overview-actions {
+	justify-content: flex-end;
+}
+
+.overview-action {
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	gap: 7px;
+	min-width: 132px;
+	min-height: $hit;
+	padding-left: 14px;
+	padding-right: 14px;
+	border: 1px solid $border;
+	border-radius: $radius;
+	background-color: $surface-inset;
+	color: $text-main;
+	font-family: Poppins, Arial, sans-serif;
+	font-size: 12px;
+}
+
+.overview-action:hover {
+	border-color: $lp-blue;
+	background-color: $accent-soft;
+}
+
+.overview-action > .material-icons {
+	font-size: 17px;
+	color: $lp-blue;
+}

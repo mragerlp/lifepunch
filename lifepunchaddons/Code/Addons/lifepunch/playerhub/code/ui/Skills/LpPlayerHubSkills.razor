@@ -1,0 +1,226 @@
+@*
+   PROPRIETARY & CONFIDENTIAL - (c) 2026 lifepunch.co. All rights reserved.
+
+   Player Hub Slice 4 - fixture-backed Skills browser. No point spend.
+*@
+@namespace LifePunch.DXRP.Addons.PlayerHub
+@using System
+@using System.Collections.Generic
+@using System.Linq
+@using Sandbox
+@using Sandbox.UI
+@inherits Panel
+
+@attribute [StyleSheet]
+
+<root class="lp-playerhub-skills">
+	<div class="skills-balance-strip">
+		<div class="skills-balance-copy">
+			<div class="skills-balance-label">AVAILABLE SKILL POINTS</div>
+			<div class="skills-balance-value">@Model.SkillPointsAvailable</div>
+		</div>
+		<div class="skills-balance-note">
+			<i class="material-icons">visibility</i>
+			<span>Browse-only preview. Spending remains gated.</span>
+		</div>
+	</div>
+
+	<div class="skills-workspace">
+		<div class="skills-track-list">
+			<div class="skills-section-title">TRACKS</div>
+			@foreach ( var track in Model.Tracks )
+			{
+				<button class="@TrackClass( track )" onclick="@track.OnSelected">
+					<i class="material-icons skills-track-icon">@track.Icon</i>
+					<div class="skills-track-copy">
+						<div class="skills-track-label">@track.Label</div>
+						<div class="skills-track-description">@track.Description</div>
+					</div>
+				</button>
+			}
+		</div>
+
+		<div class="skills-tree">
+			<div class="skills-tree-head">
+				<div>
+					<div class="skills-section-title">@SelectedTrackLabel()</div>
+					<div class="skills-tree-subtitle">I-V progression preview</div>
+				</div>
+				<div class="skills-state-legend">
+					<span class="legend-item maxed">Maxed</span>
+					<span class="legend-item unlocked">Unlocked</span>
+					<span class="legend-item available">Available</span>
+					<span class="legend-item locked">Locked</span>
+				</div>
+			</div>
+
+			<div class="skills-tier-list">
+				@foreach ( var tier in Tiers )
+				{
+					<div class="skills-tier-row">
+						<div class="skills-tier-label">
+							<div class="skills-tier-roman">@TierLabel( tier )</div>
+							<div class="skills-tier-word">TIER</div>
+						</div>
+						<div class="skills-tier-nodes">
+							@foreach ( var node in NodesForTier( tier ) )
+							{
+								<button class="@NodeClass( node )" onclick="@node.OnSelected">
+									<i class="material-icons skills-node-icon">@NodeIcon( node )</i>
+									<div class="skills-node-copy">
+										<div class="skills-node-title">@node.Title</div>
+									<div class="skills-node-rank">@NodeRankText( node )</div>
+									</div>
+									<div class="skills-node-cost">@node.PointCost PT</div>
+								</button>
+							}
+						</div>
+					</div>
+				}
+			</div>
+		</div>
+
+		<div class="skills-detail">
+			@if ( SelectedNode() is LpSkillNodeVm node )
+			{
+				<div class="skills-detail-state @StateClass( node )">@StateLabel( node )</div>
+				<div class="skills-detail-icon"><i class="material-icons">@NodeIcon( node )</i></div>
+				<div class="skills-detail-title">@node.Title</div>
+				<div class="skills-detail-description">@node.Description</div>
+
+				<div class="skills-detail-block">
+					<div class="skills-detail-label">EFFECT</div>
+					<div class="skills-detail-value">@node.Effect</div>
+				</div>
+				<div class="skills-detail-block">
+					<div class="skills-detail-label">REQUIREMENT</div>
+					<div class="skills-detail-value">@node.Requirement</div>
+				</div>
+				<div class="skills-detail-row">
+					<div>
+						<div class="skills-detail-label">POINT COST</div>
+						<div class="skills-detail-value">@node.PointCost skill point</div>
+					</div>
+					<div>
+						<div class="skills-detail-label">RANK</div>
+						<div class="skills-detail-value">@RankText( node )</div>
+					</div>
+				</div>
+
+				<button class="skills-unlock" disabled="@(!UnlockEnabled)">
+					<i class="material-icons">lock</i>
+					<span>Progression contract pending</span>
+				</button>
+				<div class="skills-detail-footnote">No point deduction, unlock request or live progression service exists in this slice.</div>
+			}
+		</div>
+	</div>
+</root>
+
+@code
+{
+	[Property] public LpSkillsVm Model { get; set; } = null!;
+
+	private static readonly int[] Tiers = { 1, 2, 3, 4, 5 };
+	private const bool UnlockEnabled = false;
+
+	private IEnumerable<LpSkillNodeVm> NodesForTier( int tier )
+	{
+		return Model.Nodes.Where( node => node.TrackId == Model.SelectedTrackId && node.Tier == tier );
+	}
+
+	private LpSkillNodeVm SelectedNode()
+	{
+		return Model.Nodes.FirstOrDefault( node => node.Id == Model.SelectedNodeId )!;
+	}
+
+	private string SelectedTrackLabel()
+	{
+		return Model.Tracks.FirstOrDefault( track => track.Id == Model.SelectedTrackId )?.Label ?? "Skill track";
+	}
+
+	private string TrackClass( LpSkillTrackVm track )
+	{
+		return track.Id == Model.SelectedTrackId ? "skills-track is-active" : "skills-track";
+	}
+
+	private string NodeClass( LpSkillNodeVm node )
+	{
+		var selected = node.Id == Model.SelectedNodeId ? " is-selected" : string.Empty;
+		return "skills-node " + StateClass( node ) + selected;
+	}
+
+	private static string StateClass( LpSkillNodeVm node ) => node.State switch
+	{
+		LpSkillNodeState.Maxed => "is-maxed",
+		LpSkillNodeState.Unlocked => "is-unlocked",
+		LpSkillNodeState.Available => "is-available",
+		_ => "is-locked",
+	};
+
+	private static string StateLabel( LpSkillNodeVm node ) => node.State switch
+	{
+		LpSkillNodeState.Maxed => "MAXED",
+		LpSkillNodeState.Unlocked => "UNLOCKED",
+		LpSkillNodeState.Available => "AVAILABLE",
+		_ => "LOCKED",
+	};
+
+	private static string NodeIcon( LpSkillNodeVm node ) => node.State switch
+	{
+		LpSkillNodeState.Maxed => "verified",
+		LpSkillNodeState.Unlocked => "check_circle",
+		LpSkillNodeState.Available => "radio_button_checked",
+		_ => "lock",
+	};
+
+	private static string NodeRankText( LpSkillNodeVm node ) => $"RANK {node.Rank} / {node.MaxRank}";
+	private static string RankText( LpSkillNodeVm node ) => $"{node.Rank} / {node.MaxRank}";
+
+	private static string TierLabel( int tier ) => tier switch
+	{
+		1 => "I",
+		2 => "II",
+		3 => "III",
+		4 => "IV",
+		5 => "V",
+		_ => tier.ToString(),
+	};
+
+	protected override int BuildHash()
+	{
+		var hash = new HashCode();
+		hash.Add( Model.IsFixture );
+		hash.Add( Model.SkillPointsAvailable );
+		hash.Add( Model.SelectedTrackId );
+		hash.Add( Model.SelectedNodeId );
+
+		foreach ( var track in Model.Tracks )
+		{
+			hash.Add( track.Id );
+			hash.Add( track.Label );
+			hash.Add( track.Description );
+			hash.Add( track.Icon );
+			hash.Add( track.OnSelected is not null );
+		}
+
+		foreach ( var node in Model.Nodes )
+		{
+			hash.Add( node.Id );
+			hash.Add( node.TrackId );
+			hash.Add( node.Title );
+			hash.Add( node.Description );
+			hash.Add( node.Effect );
+			hash.Add( node.Tier );
+			hash.Add( node.Rank );
+			hash.Add( node.MaxRank );
+			hash.Add( node.PointCost );
+			hash.Add( node.CanUnlock );
+			hash.Add( (int)node.State );
+			hash.Add( node.Requirement );
+			hash.Add( node.OnSelected is not null );
+		}
+
+		return hash.ToHashCode();
+	}
+}

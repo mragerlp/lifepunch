@@ -1,0 +1,401 @@
+// -----------------------------------------------------------------------------
+// PROPRIETARY & CONFIDENTIAL - (c) 2026 lifepunch.co. All rights reserved.
+// -----------------------------------------------------------------------------
+
+@import "../LpPlayerHubTokens.scss";
+
+.lp-playerhub-skills {
+	flex-direction: column;
+	flex-shrink: 0;
+	gap: $gap-content;
+	padding: 14px;
+	font-family: Inter, Arial, sans-serif;
+	color: $text-main;
+}
+
+.skills-balance-strip {
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	min-height: 58px;
+	padding: 10px 12px;
+	background-color: $surface-inset;
+	border: 1px solid $border;
+	border-radius: $radius;
+}
+
+.skills-balance-copy {
+	flex-direction: row;
+	align-items: baseline;
+	gap: 10px;
+}
+
+.skills-balance-label,
+.skills-section-title,
+.skills-detail-label {
+	font-size: 10px;
+	font-weight: 700;
+	letter-spacing: 1px;
+	color: $text-dim;
+}
+
+.skills-balance-value {
+	font-family: Poppins, Arial, sans-serif;
+	font-size: 22px;
+	font-weight: 600;
+	color: $text-main;
+}
+
+.skills-balance-note {
+	flex-direction: row;
+	align-items: center;
+	gap: 7px;
+	font-size: 11px;
+	color: $text-dim;
+}
+
+.skills-balance-note > .material-icons {
+	font-size: 17px;
+	color: $lp-blue;
+}
+
+.skills-workspace {
+	flex-direction: row;
+	gap: $gap-content;
+	align-items: stretch;
+}
+
+.skills-track-list {
+	flex-direction: column;
+	gap: $gap-control;
+	width: 180px;
+	flex-shrink: 0;
+}
+
+.skills-track {
+	flex-direction: row;
+	align-items: center;
+	gap: 8px;
+	min-height: 58px;
+	padding: 8px;
+	border: 1px solid $border;
+	border-radius: $radius;
+	background-color: $surface-inset;
+	color: $text-dim;
+	text-align: left;
+}
+
+.skills-track:hover {
+	background-color: $dim-soft;
+	color: $text-main;
+}
+
+.skills-track.is-active {
+	background-color: $accent-soft;
+	color: $text-main;
+}
+
+.skills-track-icon {
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	width: 32px;
+	height: 32px;
+	flex-shrink: 0;
+	font-size: 18px;
+	color: $lp-blue;
+}
+
+.skills-track-copy {
+	flex-direction: column;
+	gap: 2px;
+	min-width: 0;
+}
+
+.skills-track-label {
+	font-family: Poppins, Arial, sans-serif;
+	font-size: 12px;
+	font-weight: 600;
+	color: $text-main;
+}
+
+.skills-track-description,
+.skills-tree-subtitle,
+.skills-detail-description,
+.skills-detail-footnote {
+	font-size: 10px;
+	line-height: 14px;
+	color: $text-dim;
+}
+
+.skills-tree {
+	flex-direction: column;
+	flex-grow: 1;
+	min-width: 0;
+	background-color: $surface-inset;
+	border: 1px solid $border;
+	border-radius: $radius;
+	overflow: hidden;
+}
+
+.skills-tree-head {
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	min-height: 48px;
+	padding: 8px 10px;
+	background-color: $card-header;
+	border-bottom: 1px solid $border;
+}
+
+.skills-tree-head > div:first-child {
+	flex-direction: column;
+	gap: 2px;
+}
+
+.skills-state-legend {
+	flex-direction: row;
+	gap: 5px;
+}
+
+.legend-item {
+	flex-direction: row;
+	align-items: center;
+	min-height: 22px;
+	padding-left: 6px;
+	padding-right: 6px;
+	border: 1px solid $border;
+	border-radius: $radius;
+	font-size: 9px;
+	color: $text-dim;
+}
+
+.legend-item.maxed,
+.legend-item.available {
+	border-color: $lp-blue;
+	color: $lp-blue;
+}
+
+.legend-item.unlocked {
+	border-color: $good;
+	color: $good;
+}
+
+.skills-tier-list {
+	flex-direction: column;
+}
+
+.skills-tier-row {
+	flex-direction: row;
+	min-height: 66px;
+	border-bottom: 1px solid $border;
+}
+
+.skills-tier-row:last-child {
+	border-bottom: 0;
+}
+
+.skills-tier-label {
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	width: 44px;
+	flex-shrink: 0;
+	background-color: $card-header;
+	border-right: 1px solid $border;
+}
+
+.skills-tier-roman {
+	font-family: Poppins, Arial, sans-serif;
+	font-size: 15px;
+	font-weight: 600;
+	color: $lp-blue;
+}
+
+.skills-tier-word {
+	font-size: 8px;
+	letter-spacing: 1px;
+	color: $text-dim;
+}
+
+.skills-tier-nodes {
+	flex-direction: row;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 7px;
+	flex-grow: 1;
+	padding: 7px;
+}
+
+.skills-node {
+	flex-direction: row;
+	align-items: center;
+	gap: 6px;
+	min-width: 174px;
+	min-height: 50px;
+	padding: 6px 8px;
+	border: 1px solid $border;
+	border-radius: $radius;
+	background-color: $surface;
+	color: $text-dim;
+	text-align: left;
+}
+
+.skills-node:hover {
+	background-color: $dim-soft;
+}
+
+.skills-node.is-selected {
+	background-color: $accent-soft;
+}
+
+.skills-node.is-maxed,
+.skills-node.is-available {
+	color: $text-main;
+}
+
+.skills-node.is-unlocked {
+	border-color: $good;
+	color: $text-main;
+}
+
+.skills-node.is-locked {
+	opacity: 0.58;
+}
+
+.skills-node-icon {
+	font-size: 17px;
+	flex-shrink: 0;
+	color: $text-dim;
+}
+
+.skills-node.is-maxed .skills-node-icon,
+.skills-node.is-available .skills-node-icon {
+	color: $lp-blue;
+}
+
+.skills-node.is-unlocked .skills-node-icon {
+	color: $good;
+}
+
+.skills-node-copy {
+	flex-direction: column;
+	flex-grow: 1;
+	gap: 1px;
+}
+
+.skills-node-title {
+	font-size: 11px;
+	font-weight: 600;
+	color: $text-main;
+}
+
+.skills-node-rank,
+.skills-node-cost {
+	font-size: 9px;
+	color: $text-dim;
+}
+
+.skills-node-cost {
+	flex-shrink: 0;
+}
+
+.skills-detail {
+	flex-direction: column;
+	gap: 10px;
+	width: 230px;
+	flex-shrink: 0;
+	padding: 12px;
+	background-color: $surface-inset;
+	border: 1px solid $border;
+	border-radius: $radius;
+}
+
+.skills-detail-state {
+	align-self: flex-start;
+	min-height: 22px;
+	padding: 5px 7px;
+	border: 1px solid $border;
+	border-radius: $radius;
+	font-size: 9px;
+	font-weight: 700;
+	letter-spacing: 1px;
+	color: $text-dim;
+}
+
+.skills-detail-state.is-maxed,
+.skills-detail-state.is-available {
+	border-color: $lp-blue;
+	color: $lp-blue;
+	background-color: $accent-soft;
+}
+
+.skills-detail-state.is-unlocked {
+	border-color: $good;
+	color: $good;
+	background-color: $good-soft;
+}
+
+.skills-detail-icon {
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	width: 42px;
+	height: 42px;
+	border-radius: $radius;
+	background-color: $accent-soft;
+	color: $lp-blue;
+}
+
+.skills-detail-title {
+	font-family: Poppins, Arial, sans-serif;
+	font-size: 17px;
+	font-weight: 600;
+	color: $text-main;
+}
+
+.skills-detail-block {
+	flex-direction: column;
+	gap: 3px;
+	padding-top: 8px;
+	border-top: 1px solid $border;
+}
+
+.skills-detail-row {
+	flex-direction: row;
+	gap: 12px;
+	padding-top: 8px;
+	border-top: 1px solid $border;
+}
+
+.skills-detail-row > div {
+	flex-direction: column;
+	flex-grow: 1;
+	gap: 3px;
+}
+
+.skills-detail-value {
+	font-size: 11px;
+	line-height: 15px;
+	color: $text-main;
+}
+
+.skills-unlock {
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	gap: 6px;
+	min-height: $hit;
+	margin-top: auto;
+	border: 1px solid $border;
+	border-radius: $radius;
+	background-color: $card-header;
+	color: $text-dim;
+	font-family: Poppins, Arial, sans-serif;
+	font-size: 10px;
+	opacity: 0.66;
+}
+
+.skills-unlock > .material-icons {
+	font-size: 16px;
+}
