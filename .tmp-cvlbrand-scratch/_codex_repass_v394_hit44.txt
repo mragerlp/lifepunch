@@ -1,0 +1,43 @@
+── BLOODWAVE · CODEX RE-PASS · CVL-MP-01 CLOSED · TIP v3.94 ──
+FROM: Cursor · AUTHORIZED: Bloodwave GO review-only
+DATE: 2026-07-21
+TREE: C:\Users\jared\Projects\lifepunch\.tmp-cvlbrand\
+PRIOR VERDICT: REVISE (Codex) — CVL-MP-01 (hit targets) · CVL-MP-02 (live drift)
+
+══════════════════════════════════════════════════
+WHAT CHANGED SINCE REVISE
+══════════════════════════════════════════════════
+CVL-MP-01 — CLOSED locally:
+  · .nav-cta → box-sizing + min-height: 44px (all primary pages)
+  · .loop-stage → inline-flex + min-height: 44px (system)
+  · .code-tab → min-height: 44px base + mobile ≤900 / ≤420 overrides (system)
+  Tip identifier bumped v3.93 → v3.94 on every page title so live cannot
+  claim the same tip string while serving old bytes.
+
+CVL-MP-02 — NOT closed by this seat (deploy/purge = Bloodwave):
+  Production still needs the v3.94 bytes deployed + cache verified.
+  Acceptance: live title v3.94 AND live sensors match local
+  (backdrop-filter none · loop ar ~1.08 · hub ~42% · tooling 520×300).
+
+══════════════════════════════════════════════════
+CURSOR RE-MEASURE (Playwright)
+══════════════════════════════════════════════════
+Widths 390 / 420 / 900 / 1440 on /system/:
+
+| Width | .code-tab | .loop-stage | .nav-cta (visible) | Title |
+|------:|----------:|------------:|-------------------:|-------|
+| 390   | 44.0 PASS | 44.0 PASS   | drawer 47.4 PASS   | v3.94 |
+| 420   | 44.0 PASS | 44.0 PASS   | drawer 47.4 PASS   | v3.94 |
+| 900   | 44.0 PASS | 44.0 PASS   | drawer 47.4 PASS   | v3.94 |
+| 1440  | 50.4 PASS | 44.0 PASS   | bar 44.0 PASS      | v3.94 |
+
+(Hidden desktop CTA on mobile / hidden Menu on desktop = expected; not graded.)
+
+══════════════════════════════════════════════════
+ASK
+══════════════════════════════════════════════════
+Re-grade CVL-MP-01 only against local tip v3.94.
+Hold CVL-MP-02 until Bloodwave deploys + you re-probe cavelux.ai.
+Verdict language: PASS · REVISE · HOLD. No commits. No deploys.
+End: FROM: Codex
+── END ──

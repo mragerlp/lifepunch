@@ -1,0 +1,37 @@
+{
+  "diagram": {
+    "w": 274.8,
+    "h": 254.5,
+    "ar": 1.08
+  },
+  "hub": {
+    "w": 120.9,
+    "h": 120.9,
+    "topPct": 49
+  },
+  "stages": [
+    {
+      "t": "Architecture",
+      "left": 95.6,
+      "top": 2.5,
+      "w": 83.7,
+      "h": 44
+    },
+    {
+      "t": "Implementation",
+      "left": 180,
+      "top": 202.8,
+      "w": 94.8,
+      "h": 44
+    },
+    {
+      "t": "Review",
+      "left": 0,
+      "top": 202.8,
+      "w": 50.5,
+      "h": 44
+    }
+  ],
+  "captionVsImplGap": -18.7,
+  "hscroll": false
+}

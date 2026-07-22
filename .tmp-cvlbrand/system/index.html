@@ -3,9 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>System — Cavelux · v3.58</title>
-  <meta name="robots" content="noindex, nofollow, noarchive" />
-  <meta name="googlebot" content="noindex, nofollow, noarchive" />
+  <title>System — Cavelux · v3.94</title>
+  <meta name="robots" content="index, follow" />
   <meta name="description" content="Seamless orchestration & workflow — agent workflows stood up end to end. Four stages. You approve each one." />
   <link rel="canonical" href="https://cavelux.ai/system/" />
   <meta property="og:type" content="website" />
@@ -181,6 +180,8 @@
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
+      box-sizing: border-box;
+      min-height: 44px;
       padding: 0.6rem 1.15rem;
       border-radius: 0;
       border: 1px solid var(--cvl-lime);
@@ -213,6 +214,11 @@
       font-family: var(--cvl-mono);
       font-size: 0.75rem;
       cursor: pointer;
+      box-sizing: border-box;
+      min-width: 44px;
+      min-height: 44px;
+      align-items: center;
+      justify-content: center;
     }
     .nav-toggle:focus-visible {
       outline: 2px solid var(--cvl-lime);
@@ -754,6 +760,8 @@
     .code-tab {
       appearance: none;
       flex: 1 1 0;
+      box-sizing: border-box;
+      min-height: 44px;
       border: none;
       background: transparent;
       color: var(--cvl-muted);
@@ -1138,23 +1146,193 @@
       max-width: 100%;
       white-space: nowrap;
     }
-    #system .artifact-list { margin-bottom: 1.1rem; }
+    #loop .artifact-list { margin-bottom: 1.1rem; }
 
-    #system.block {
+    #loop.block {
       padding: clamp(2.25rem, 3.5vw, 3.25rem) 0;
       scroll-margin-top: 4.5rem;
     }
 
-    /* V2 strips — tooling layer + black hole (quiet bands under the loop) */
-    .v2-strip {
-      padding: clamp(2rem, 3vw, 2.75rem) 0;
+    /* V2 strips — two parallel lanes: art row | copy row (shared baselines) */
+    .v2-strip-band {
+      position: relative;
+      padding: clamp(2.75rem, 5vw, 4.25rem) 0;
+      /* visible so stack labels are never clipped by the band on narrow phones */
+      overflow: visible;
     }
-    .v2-strip .v2-strip-body {
+    .v2-strip-band-inner {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, 26rem) minmax(0, 26rem);
+      grid-template-rows: auto auto;
+      justify-content: center;
+      column-gap: clamp(1.75rem, 3.5vw, 3rem);
+      row-gap: 1.35rem;
+      align-items: start;
+      isolation: isolate;
+    }
+    /* Flatten wrappers so art/copy become grid siblings → shared row baselines */
+    .v2-strip-tool,
+    .v2-strip-void {
+      display: contents;
+    }
+    .v2-strip-copy {
+      position: relative;
+      z-index: 2;
+      max-width: none;
+      width: 100%;
+      text-align: left;
+    }
+    .v2-strip-copy .v2-strip-body {
       margin: 0;
-      max-width: 46rem;
       font-size: clamp(1rem, 1.4vw, 1.15rem);
       line-height: 1.65;
       color: var(--cvl-ink-dim);
+    }
+    #tooling.v2-strip-copy {
+      grid-column: 1;
+      grid-row: 2;
+    }
+    #blackhole.v2-strip-copy {
+      grid-column: 2;
+      grid-row: 2;
+    }
+    #blackhole.v2-strip-copy .section-label {
+      text-align: left;
+    }
+    .v2-strip-stack {
+      grid-column: 1;
+      grid-row: 1;
+      width: 100%;
+      max-width: 22rem;
+      margin: 0;
+      line-height: 0;
+      align-self: end;
+      justify-self: start;
+    }
+    .v2-strip-stack svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    .v2-strip-stack .stk-slab {
+      fill: rgba(146, 250, 17, 0.07);
+      stroke: rgba(146, 250, 17, 0.42);
+      stroke-width: 1.25;
+    }
+    .v2-strip-stack .stk-slab-hi {
+      fill: rgba(146, 250, 17, 0.14);
+      stroke: rgba(146, 250, 17, 0.72);
+    }
+    .v2-strip-stack .stk-edge {
+      fill: rgba(146, 250, 17, 0.04);
+      stroke: rgba(146, 250, 17, 0.28);
+      stroke-width: 1;
+    }
+    .v2-strip-stack .stk-leader {
+      fill: none;
+      stroke: rgba(200, 220, 190, 0.55);
+      stroke-width: 1;
+      stroke-dasharray: 3 3;
+    }
+    .v2-strip-stack .stk-label {
+      fill: var(--cvl-ink, #e8efe4);
+      font-family: var(--cvl-mono, ui-monospace, monospace);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+    .v2-strip-art {
+      grid-column: 2;
+      grid-row: 1;
+      width: 100%;
+      max-width: 22rem;
+      aspect-ratio: 16 / 9;
+      z-index: 1;
+      pointer-events: none;
+      display: grid;
+      place-items: end start;
+      opacity: 1;
+      margin: 0;
+      align-self: end;
+      justify-self: start;
+    }
+    .v2-strip-art-void {
+      grid-area: 1 / 1;
+      width: 100%;
+      height: auto;
+      margin: 0;
+      display: block;
+      object-fit: contain;
+      opacity: 0.95;
+      mix-blend-mode: screen;
+      filter: drop-shadow(0 0 22px rgba(146, 250, 17, 0.18));
+    }
+    /* Mobile: restore lane wrappers → tooling art/copy, then void art/copy */
+    @media (max-width: 900px) {
+      .v2-strip-band {
+        padding: clamp(2rem, 5vw, 2.75rem) 0;
+      }
+      .v2-strip-band-inner {
+        grid-template-columns: 1fr;
+        grid-template-rows: none;
+        justify-content: stretch;
+        row-gap: 2.25rem;
+        align-items: stretch;
+      }
+      .v2-strip-tool,
+      .v2-strip-void {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+        min-width: 0;
+        width: 100%;
+      }
+      .v2-strip-stack,
+      .v2-strip-art,
+      #tooling.v2-strip-copy,
+      #blackhole.v2-strip-copy {
+        grid-column: auto;
+        grid-row: auto;
+        justify-self: auto;
+        align-self: auto;
+      }
+      .v2-strip-stack {
+        width: min(100%, 22.5rem);
+        max-width: none;
+        margin-inline: auto;
+        overflow: visible;
+      }
+      .v2-strip-stack svg {
+        overflow: visible;
+      }
+      .v2-strip-art {
+        width: min(88%, 20rem);
+        max-width: none;
+        margin-inline: auto;
+        place-items: center;
+      }
+      #tooling.v2-strip-copy,
+      #blackhole.v2-strip-copy {
+        max-width: none;
+        text-align: left;
+      }
+      #blackhole.v2-strip-copy .section-label {
+        text-align: left;
+      }
+    }
+    /* Tooling stack labels — room for Governance / Knowledge on ~390 */
+    @media (max-width: 430px) {
+      .v2-strip-stack {
+        width: 100%;
+      }
+      .v2-strip-stack .stk-label {
+        /* 18px overflowed the old 440 viewBox (Governan… / Knowledg…).
+           Keep readable after the wider viewBox; do not inflate past fit. */
+        font-size: 14px;
+        letter-spacing: 0.02em;
+      }
     }
 
     /* Engagement loop — pyramid geometry, contained-brain hub (V2D) */
@@ -1180,6 +1358,7 @@
     .loop-hub-wrap {
       position: absolute;
       left: 50%;
+      /* Triangle centroid sits below box-center (apex top, base bottom) */
       top: 56%;
       transform: translate(-50%, -50%);
       width: min(46%, 13.5rem);
@@ -1189,6 +1368,7 @@
     }
     .loop-hub-wrap::before { display: none !important; }
     .loop-brain-btn {
+      grid-area: 1 / 1;
       position: relative;
       z-index: 1;
       appearance: none;
@@ -1197,10 +1377,13 @@
       padding: 0;
       margin: 0;
       width: 100%;
+      min-width: 0;
       cursor: pointer;
       border-radius: 0;
       display: grid;
       place-items: center;
+      justify-items: center;
+      align-items: center;
     }
     .loop-brain-btn:focus-visible {
       outline: 2px solid var(--cvl-lime);
@@ -1216,6 +1399,7 @@
       grid-area: 1 / 1;
       width: 100%;
       height: auto;
+      margin: 0 auto;
       opacity: 0.92;
       animation: loopVortexSpin 90s linear infinite;
       will-change: transform;
@@ -1226,6 +1410,7 @@
       display: block;
       width: 100%;
       height: auto;
+      margin: 0 auto;
       overflow: visible;
       filter: drop-shadow(0 0 9px rgba(146, 250, 17, 0.4));
       transition: filter 0.28s ease;
@@ -1245,20 +1430,50 @@
       stroke: none;
       pointer-events: none;
     }
+    /* Labels sit under the mark — out of grid flow so max-content cannot blow the hub track (CVL-381-1) */
+    .loop-hub-labels {
+      position: absolute;
+      inset-block-start: 100%;
+      inset-inline-start: 50%;
+      transform: translateX(-50%);
+      margin-top: 1.15rem;
+      width: max-content;
+      max-width: min(18rem, 90vw);
+      text-align: center;
+      pointer-events: none;
+      z-index: 2;
+    }
+    .loop-observe {
+      margin: 0;
+      font-family: var(--cvl-mono);
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      /* letter-spacing pads the trailing side — balance so the word looks centered */
+      padding-left: 0.2em;
+      text-transform: uppercase;
+      color: var(--cvl-lime);
+      text-align: center;
+    }
     .loop-caption {
-      margin: 0.5rem 0 0;
+      margin: 0.55rem 0 0;
       font-family: var(--cvl-mono);
       font-size: 0.6rem;
       font-weight: 600;
       letter-spacing: 0.16em;
+      padding-left: 0.16em;
       text-transform: uppercase;
       color: var(--cvl-ink-dim);
       text-align: center;
-      pointer-events: none;
     }
     .loop-stage {
       position: absolute;
       z-index: 4;
+      box-sizing: border-box;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
       font-family: var(--cvl-mono);
       font-size: clamp(0.82rem, 1.3vw, 0.98rem);
       font-weight: 600;
@@ -1274,16 +1489,19 @@
     }
     .loop-stage:hover,
     .loop-stage.is-hot {
-      background: rgba(146, 250, 17, 0.16);
+      /* Stay opaque — translucent wash let canvas edges strike through the label */
+      background: #0c1408;
       border-color: var(--cvl-lime);
-      box-shadow: 0 0 28px rgba(146, 250, 17, 0.4);
+      box-shadow:
+        inset 0 0 0 1px rgba(146, 250, 17, 0.35),
+        0 0 28px rgba(146, 250, 17, 0.45);
       filter: brightness(1.08);
+      color: #d8ff6a;
     }
-    /* Pyramid: OBSERVATION apex (the eye watches from above) →
-       ARCHITECTURE base-right → IMPLEMENTATION base-center → REVIEW base-left */
-    .loop-stage.s-obs { top: 2%; left: 50%; transform: translate(-50%, 0); }
-    .loop-stage.s-arch { bottom: 4%; right: 2%; top: auto; left: auto; transform: none; }
-    .loop-stage.s-impl { bottom: 4%; left: 50%; top: auto; transform: translate(-50%, 0); }
+    /* Pyramid: Architecture apex → Implementation base-right → Review base-left.
+       Observation is the center (contained brain), not a corner chip. */
+    .loop-stage.s-arch { top: 2%; left: 50%; right: auto; bottom: auto; transform: translate(-50%, 0); }
+    .loop-stage.s-impl { bottom: 4%; right: 2%; top: auto; left: auto; transform: none; }
     .loop-stage.s-rev { bottom: 4%; left: 2%; top: auto; right: auto; transform: none; }
 
     /* Case — proving ground: one claim + terminal proof log (not feature cards) */
@@ -1549,19 +1767,7 @@
       }
       .nav-brand-word { font-size: 1.15rem; }
       .nav-brand-sub { font-size: 0.55rem; }
-      .nav-links.is-open {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 100%;
-        background: var(--cvl-bg);
-        border-bottom: 1px solid var(--cvl-border);
-        padding: 1rem 1.25rem 1.25rem;
-        gap: 0.85rem;
-      }
+      /* open-state layout owned by the mobile drawer block (viewport-fixed). */
       .nav-cta.is-open {
         display: inline-flex;
         margin: 0.25rem 1.25rem 1rem;
@@ -1982,11 +2188,11 @@
     }
     footer .footer-glitch-word {
       display: block;
-      width: min(11.5rem, 46vw);
+      width: min(14.5rem, 52vw);
       height: auto;
       margin: 0;
       image-rendering: auto;
-      filter: drop-shadow(0 0 8px rgba(146, 250, 17, 0.2));
+      filter: none;
     }
     footer .footer-logo-link {
       display: inline-block;
@@ -2034,7 +2240,7 @@
     body[data-page="system"] .stack-deck {
       padding-block: clamp(1.35rem, 3vw, 2.25rem) clamp(3.5rem, 5.5vw, 5.5rem);
     }
-    body[data-page="system"] #system.block {
+    body[data-page="system"] #loop.block {
       padding-block: clamp(2.5rem, 4.5vw, 4.5rem) clamp(3.5rem, 5.5vw, 5.5rem);
     }
     body[data-page="system"] .stack-copy,
@@ -2269,6 +2475,10 @@
       .nav {
         z-index: 200;
         background: #000;
+        /* backdrop-filter creates a containing block — traps position:fixed
+           menu inside the sticky header. On mobile that + scroll-lock = black void. */
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
       }
       .nav-inner {
         position: relative;
@@ -2280,12 +2490,12 @@
         position: relative;
         z-index: 220;
       }
-      /* Scrim hides page; menu itself is a short dropdown (no scroll) */
+      /* Full-viewport scrim; menu is a real viewport-fixed panel under the bar */
       body.nav-menu-open::before {
         content: "";
         position: fixed;
         inset: 0;
-        top: var(--cvl-nav-h);
+        top: 0;
         z-index: 180;
         background: #000;
       }
@@ -2295,24 +2505,26 @@
         align-items: center;
         justify-content: flex-start;
         text-align: center;
-        position: fixed;
-        left: 0;
-        right: 0;
-        top: var(--cvl-nav-h);
-        bottom: auto;
-        width: 100%;
-        height: auto;
+        position: fixed !important;
+        left: 0 !important;
+        right: 0 !important;
+        top: var(--cvl-nav-h) !important;
+        bottom: 0 !important;
+        width: 100% !important;
+        height: auto !important;
         min-height: 0;
         max-height: none;
-        z-index: 195;
+        z-index: 230 !important;
         margin: 0;
-        padding: 0.85rem 1.25rem 1.05rem;
-        gap: 0.55rem;
+        padding: 1.25rem 1.25rem 2rem;
+        gap: 0.65rem;
         background: #000;
         border: none;
-        border-bottom: 1px solid rgba(146, 250, 17, 0.22);
+        border-bottom: none;
         box-sizing: border-box;
-        overflow: visible;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        color: var(--cvl-lime);
       }
       .nav-links.is-open > li {
         width: 100%;
@@ -2320,6 +2532,12 @@
         justify-content: center;
       }
       .nav-links.is-open > li > a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 44px;
+        min-height: 44px;
+        box-sizing: border-box;
         font-size: 1.15rem;
         letter-spacing: 0.05em;
         line-height: 1.25;
@@ -2344,10 +2562,20 @@
         display: none !important;
       }
       body.nav-menu-open {
+        position: fixed;
+        left: 0;
+        right: 0;
+        width: 100%;
         overflow: hidden;
         touch-action: none;
       }
       body.nav-menu-open .nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        z-index: 240;
         background: #000;
         border-bottom-color: rgba(146, 250, 17, 0.22);
       }
@@ -2425,7 +2653,7 @@
         margin: 0 auto !important;
       }
       footer .footer-glitch-word {
-        width: min(9.75rem, 62vw) !important;
+        width: min(12.5rem, 72vw) !important;
         margin: 0 auto !important;
         /* white letterforms sit slightly left of the glitch glow */
         transform: translateX(0.2rem);
@@ -2544,8 +2772,11 @@
     }
     /* —— Mobile polish pass (phone viewports) —— */
     @media (max-width: 900px) {
-      html, body {
+      html {
         overflow-x: hidden;
+      }
+      body {
+        overflow-x: clip;
       }
       .wrap {
         padding-inline: 1.1rem;
@@ -2627,46 +2858,67 @@
       body[data-page="system"] #top .section-label {
         text-align: center;
       }
-      /* Loop diagram: stages clear of hub */
+      /* Loop diagram: compact pyramid — kill the tall empty triangle on phones */
       body[data-page="system"] .loop-diagram {
-        width: min(100%, 22rem) !important;
+        width: min(100%, 22.5rem) !important;
         max-width: 100%;
         max-height: none;
         margin-inline: auto;
-        aspect-ratio: 1;
+        /* Wider than tall so the three corners hug the hub instead of stretching */
+        aspect-ratio: 1.12 / 1;
+        overflow: visible;
       }
       body[data-page="system"] .loop-hub-wrap {
-        width: min(38%, 8rem) !important;
+        /* Fill the triangle — previous 28% hub left a bald black void */
+        width: min(40%, 7.75rem) !important;
+        top: 46% !important;
+      }
+      body[data-page="system"] .loop-hub-labels {
+        max-width: 11rem;
+        margin-top: 0.28rem;
+        width: max-content;
       }
       body[data-page="system"] .loop-caption {
         font-size: 0.5rem;
+        letter-spacing: 0.07em;
+        padding-left: 0.07em;
+        line-height: 1.3;
+        white-space: normal;
+        max-width: 10.5rem;
+        margin-inline: auto;
+        margin-top: 0.18rem;
+      }
+      body[data-page="system"] .loop-observe {
+        font-size: 0.6rem;
+        letter-spacing: 0.14em;
+        padding-left: 0.14em;
       }
       body[data-page="system"] .loop-stage {
         font-size: 0.58rem !important;
         letter-spacing: 0.04em;
-        padding: 0.38rem 0.45rem !important;
+        padding: 0.48rem 0.58rem !important;
+        min-width: 0;
+        min-height: 44px;
+        box-sizing: border-box;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        max-width: 46%;
       }
-      /* Pyramid scales: apex on top, base row of three */
-      body[data-page="system"] .loop-stage.s-obs {
+      /* Pyramid: apex inset, base corners pulled in — no edge-flush chips */
+      body[data-page="system"] .loop-stage.s-arch {
         top: 1% !important;
         left: 50% !important;
         right: auto !important;
         bottom: auto !important;
         transform: translate(-50%, 0) !important;
       }
-      body[data-page="system"] .loop-stage.s-arch {
+      body[data-page="system"] .loop-stage.s-impl {
         top: auto !important;
         bottom: 1% !important;
         left: auto !important;
         right: 1% !important;
         transform: none !important;
-      }
-      body[data-page="system"] .loop-stage.s-impl {
-        top: auto !important;
-        bottom: 1% !important;
-        left: 50% !important;
-        right: auto !important;
-        transform: translate(-50%, 0) !important;
       }
       body[data-page="system"] .loop-stage.s-rev {
         top: auto !important;
@@ -2685,6 +2937,8 @@
       .code-tab {
         flex: 1 1 auto;
         min-width: 0;
+        min-height: 44px;
+        box-sizing: border-box;
         font-size: 0.68rem !important;
         letter-spacing: 0.02em;
         padding: 0.7rem 0.35rem !important;
@@ -2777,13 +3031,50 @@
       }
     }
     @media (max-width: 420px) {
+      body[data-page="system"] .loop-diagram {
+        width: min(100%, 20.5rem) !important;
+        aspect-ratio: 1.08 / 1;
+      }
+      body[data-page="system"] .loop-hub-wrap {
+        width: min(42%, 7.35rem) !important;
+        top: 45% !important;
+      }
       body[data-page="system"] .loop-stage {
-        font-size: 0.52rem !important;
-        padding: 0.32rem 0.38rem !important;
+        font-size: 0.54rem !important;
+        padding: 0.42rem 0.48rem !important;
+        min-width: 0;
+        min-height: 44px;
+        max-width: 48%;
+      }
+      body[data-page="system"] .loop-hub-labels {
+        margin-top: 0.22rem;
+        max-width: 10rem;
+      }
+      body[data-page="system"] .loop-observe {
+        font-size: 0.56rem;
+        letter-spacing: 0.12em;
+        padding-left: 0.12em;
+      }
+      body[data-page="system"] .loop-caption {
+        font-size: 0.46rem;
+        max-width: 9.75rem;
+        letter-spacing: 0.06em;
+        padding-left: 0.06em;
+        margin-top: 0.14rem;
+      }
+      body[data-page="system"] .loop-stage.s-impl {
+        bottom: 0 !important;
+        right: 0 !important;
+      }
+      body[data-page="system"] .loop-stage.s-rev {
+        bottom: 0 !important;
+        left: 0 !important;
       }
       .code-tab {
         font-size: 0.62rem !important;
         padding: 0.65rem 0.2rem !important;
+        min-height: 44px;
+        box-sizing: border-box;
       }
     }
 
@@ -2806,6 +3097,7 @@
       <ul class="nav-links" id="nav-menu">
         <li><a href="/">Home</a></li>
         <li><a href="/system/" class="is-active">System</a></li>
+        <li><a href="/system/#loop" id="nav-loop">The Loop</a></li>
         <li><a href="/work/">Work</a></li>
         <li><a href="/about/">About</a></li>
         <li class="nav-drawer-cta">
@@ -2871,27 +3163,28 @@
         </div>
       </div>
     </section>
-<section class="block" id="system">
+<section class="block" id="loop">
       <div class="wrap">
         <div class="system-split">
           <div class="loop-diagram" id="loop-diagram" aria-label="Engagement loop diagram">
             <canvas class="loop-plexus" aria-hidden="true"></canvas>
             <div class="loop-hub-wrap">
-              <button type="button" class="loop-brain-btn" id="loop-brain-btn" aria-label="The contained brain — the vortex pulls; the loop keeps it intact">
-                <!-- Contained brain: hero vortex (scaled) wraps the AI chip-brain icon -->
+              <button type="button" class="loop-brain-btn" id="loop-brain-btn" aria-label="Observe — the contained brain at the center of the loop">
+                <!-- Contained brain: Observation lives here; Architecture → Implementation → Review orbit the corners -->
                 <img class="pixel loop-vortex" src="/cutouts/CVL_mark_voxel_swirl.png" alt="" width="512" height="512" decoding="async" />
                 <svg class="loop-brain" id="loop-brain" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                   <image class="lb-icon" href="/media/ai-cognition-brain-alpha.png" x="71" y="71" width="98" height="98" preserveAspectRatio="xMidYMid meet"/>
-                  <!-- Invisible docks on the vortex rim — linkage targets, not drawn nodes -->
-                  <circle class="lb-dock" data-stage="obs" cx="120" cy="30" r="1"/>
-                  <circle class="lb-dock" data-stage="arch" cx="184" cy="184" r="1"/>
-                  <circle class="lb-dock" data-stage="impl" cx="120" cy="210" r="1"/>
+                  <!-- Invisible docks on the vortex rim — linkage targets for the three loop corners -->
+                  <circle class="lb-dock" data-stage="arch" cx="120" cy="30" r="1"/>
+                  <circle class="lb-dock" data-stage="impl" cx="184" cy="184" r="1"/>
                   <circle class="lb-dock" data-stage="rev" cx="56" cy="184" r="1"/>
                 </svg>
               </button>
-              <p class="loop-caption">The loop holds the center.</p>
+              <div class="loop-hub-labels">
+                <p class="loop-observe">Observe</p>
+                <p class="loop-caption">The loop holds the center.</p>
+              </div>
             </div>
-            <button type="button" class="loop-stage s-obs" data-stage="obs">Observation</button>
             <button type="button" class="loop-stage s-arch" data-stage="arch">Architecture</button>
             <button type="button" class="loop-stage s-impl" data-stage="impl">Implementation</button>
             <button type="button" class="loop-stage s-rev" data-stage="rev">Review</button>
@@ -2917,19 +3210,59 @@
         </div>
       </div>
     </section>
-<section class="block v2-strip" id="tooling">
-      <div class="wrap">
-        <p class="section-label">The tooling layer</p>
-        <p class="v2-strip-body">Every agent in your workflow gets extended with a custom-built MCP server, molded to your operation — each agent boots with the exact tools your vision requires, grounded at every step.</p>
+<section class="block v2-strip-band" id="method-void" aria-label="Tooling layer and the black hole">
+      <div class="wrap v2-strip-band-inner">
+        <div class="v2-strip-tool">
+          <div class="v2-strip-stack">
+            <svg viewBox="0 0 520 300" role="img" focusable="false" aria-label="Tooling stack layers" overflow="visible">
+              <!-- isometric slabs (bottom → top drawn last for overlap).
+                   Wide viewBox leaves room for Governance / Knowledge on mobile. -->
+              <g transform="translate(16, 18)">
+                <!-- Workflow (bottom) -->
+                <polygon class="stk-edge" points="40,208 160,178 280,208 160,238"/>
+                <polygon class="stk-slab" points="40,196 160,166 280,196 160,226"/>
+                <line class="stk-leader" x1="280" y1="196" x2="318" y2="196"/>
+                <text class="stk-label" x="324" y="200">Workflow</text>
+                <!-- Knowledge -->
+                <polygon class="stk-edge" points="40,172 160,142 280,172 160,202"/>
+                <polygon class="stk-slab" points="40,160 160,130 280,160 160,190"/>
+                <line class="stk-leader" x1="280" y1="160" x2="318" y2="160"/>
+                <text class="stk-label" x="324" y="164">Knowledge</text>
+                <!-- MCP -->
+                <polygon class="stk-edge" points="40,136 160,106 280,136 160,166"/>
+                <polygon class="stk-slab stk-slab-hi" points="40,124 160,94 280,124 160,154"/>
+                <line class="stk-leader" x1="280" y1="124" x2="318" y2="124"/>
+                <text class="stk-label" x="324" y="128">MCP</text>
+                <!-- Agents -->
+                <polygon class="stk-edge" points="40,100 160,70 280,100 160,130"/>
+                <polygon class="stk-slab" points="40,88 160,58 280,88 160,118"/>
+                <line class="stk-leader" x1="280" y1="88" x2="318" y2="88"/>
+                <text class="stk-label" x="324" y="92">Agents</text>
+                <!-- Governance (top) -->
+                <polygon class="stk-edge" points="40,64 160,34 280,64 160,94"/>
+                <polygon class="stk-slab stk-slab-hi" points="40,52 160,22 280,52 160,82"/>
+                <line class="stk-leader" x1="280" y1="52" x2="318" y2="52"/>
+                <text class="stk-label" x="324" y="56">Governance</text>
+              </g>
+            </svg>
+          </div>
+          <div class="v2-strip-copy" id="tooling">
+            <p class="section-label">The tooling layer</p>
+            <p class="v2-strip-body">Every agent in your workflow gets extended with a custom-built MCP server, molded to your operation — each agent boots with the exact tools your vision requires, grounded at every step.</p>
+          </div>
+        </div>
+        <div class="v2-strip-void">
+          <div class="v2-strip-art" aria-hidden="true">
+            <img class="v2-strip-art-void" src="/media/blackhole-tidal.png?v=2" alt="" width="1024" height="576" decoding="async" />
+          </div>
+          <div class="v2-strip-copy" id="blackhole">
+            <p class="section-label">The black hole</p>
+            <p class="v2-strip-body">The black hole every business hits with modern AI: endless tokens and endless hours burned digging for context before the real building starts. The method exists so you never enter it.</p>
+          </div>
+        </div>
       </div>
     </section>
-    <section class="block v2-strip" id="blackhole">
-      <div class="wrap">
-        <p class="section-label">The black hole</p>
-        <p class="v2-strip-body">The black hole every business hits with modern AI: endless tokens and endless hours burned digging for context before the real building starts. The method exists so you never enter it.</p>
-      </div>
-    </section>
-    <section class="final-cta" id="discuss"><div class="wrap"><div class="final-panel"><h2>Tell me your goals. I'll map the build.</h2><p>Secure your vision — and your time — from the black hole.</p><div class="cta-row"><a class="btn btn-primary" href="mailto:hello@cavelux.ai?subject=Discuss%20a%20Project">Discuss a Project</a><a class="btn btn-secondary" href="/work/">See the proof</a></div></div></div></section>
+    <section class="final-cta" id="discuss"><div class="wrap"><div class="final-panel"><h2>Tell me your goals. I'll map the build.</h2><p>Secure your vision — and your time.</p><div class="cta-row"><a class="btn btn-primary" href="mailto:hello@cavelux.ai?subject=Discuss%20a%20Project">Discuss a Project</a><a class="btn btn-secondary" href="/work/">See the proof</a></div></div></div></section>
   </main>
   <footer>
     <div class="wrap footer-inner">
@@ -2940,8 +3273,8 @@
         <div class="footer-url">cavelux.ai</div>
       </div>
       <div class="footer-brand-block">
-        <a class="footer-glitch-link" href="/" aria-label="CVL home">
-          <img class="pixel footer-glitch-word" src="/cutouts/CVL_wordmark_glitch.png" alt="CVL" width="771" height="238" decoding="async" />
+        <a class="footer-glitch-link" href="/" aria-label="Cavelux home">
+          <img class="pixel footer-glitch-word" src="/cutouts/CAVELUX_wordmark_glitch.png?v=alpha6" alt="CAVELUX" width="1024" height="212" decoding="async" />
         </a>
       </div>
       <div class="footer-copy">&copy; 2026 Cavelux</div>
@@ -2958,34 +3291,45 @@
       var toggle = document.getElementById("nav-toggle");
       var menu = document.getElementById("nav-menu");
       var cta = document.getElementById("nav-cta");
+      var setMenuOpen = null;
       if (toggle && menu) {
         var navEl = document.querySelector(".nav");
+        var lockY = 0;
         function syncNavHeight() {
           if (!navEl) return;
           document.documentElement.style.setProperty(
             "--cvl-nav-h",
-            navEl.getBoundingClientRect().height + "px"
+            Math.ceil(navEl.getBoundingClientRect().height) + "px"
           );
         }
-        syncNavHeight();
-        window.addEventListener("resize", syncNavHeight);
-        toggle.addEventListener("click", function () {
-          syncNavHeight();
-          var open = menu.classList.toggle("is-open");
-          if (cta) cta.classList.toggle("is-open", open);
-          toggle.setAttribute("aria-expanded", open ? "true" : "false");
-          toggle.textContent = open ? "Close" : "Menu";
-          document.body.classList.toggle("nav-menu-open", open);
-        });
-      }
-      if (toggle && menu) {
-        menu.querySelectorAll("a").forEach(function (a) {
-          a.addEventListener("click", function () {
+        setMenuOpen = function (open) {
+          if (open) {
+            lockY = window.scrollY || window.pageYOffset || 0;
+            syncNavHeight();
+            menu.classList.add("is-open");
+            if (cta) cta.classList.add("is-open");
+            toggle.setAttribute("aria-expanded", "true");
+            toggle.textContent = "Close";
+            document.body.classList.add("nav-menu-open");
+            document.body.style.top = "-" + lockY + "px";
+          } else {
             menu.classList.remove("is-open");
             if (cta) cta.classList.remove("is-open");
             toggle.setAttribute("aria-expanded", "false");
             toggle.textContent = "Menu";
             document.body.classList.remove("nav-menu-open");
+            document.body.style.top = "";
+            window.scrollTo(0, lockY);
+          }
+        }
+        syncNavHeight();
+        window.addEventListener("resize", syncNavHeight);
+        toggle.addEventListener("click", function () {
+          setMenuOpen(!menu.classList.contains("is-open"));
+        });
+        menu.querySelectorAll("a").forEach(function (a) {
+          a.addEventListener("click", function () {
+            setMenuOpen(false);
           });
         });
       }
@@ -3279,13 +3623,17 @@
           e.preventDefault();
           if (history.replaceState) history.replaceState(null, "", "#" + id);
           setActive(id, true);
-          if (menu) menu.classList.remove("is-open");
-          if (cta) cta.classList.remove("is-open");
-          if (toggle) {
-            toggle.setAttribute("aria-expanded", "false");
-            toggle.textContent = "Menu";
+          if (typeof setMenuOpen === "function") setMenuOpen(false);
+          else {
+            if (menu) menu.classList.remove("is-open");
+            if (cta) cta.classList.remove("is-open");
+            if (toggle) {
+              toggle.setAttribute("aria-expanded", "false");
+              toggle.textContent = "Menu";
+            }
+            document.body.classList.remove("nav-menu-open");
+            document.body.style.top = "";
           }
-          document.body.classList.remove("nav-menu-open");
         });
       });
 
@@ -3303,10 +3651,21 @@
         var id = (location.hash || "").replace("#", "");
         if (PILLARS[id]) setActive(id, false);
         else if (!id || id === "stack" || id === "overview") setActive(null, false);
+        syncSystemNav(id);
       });
+
+      function syncSystemNav(id) {
+        var navSys = document.querySelector('.nav-links a[href="/system/"]');
+        var navLoop = document.getElementById("nav-loop");
+        if (!navSys || !navLoop) return;
+        var onLoop = id === "loop";
+        navSys.classList.toggle("is-active", !onLoop);
+        navLoop.classList.toggle("is-active", onLoop);
+      }
 
       var initial = (location.hash || "").replace("#", "");
       setActive(PILLARS[initial] ? initial : null, false);
+      syncSystemNav(initial);
       window.addEventListener("resize", function () {
         updateStackBridge(active);
       });
@@ -4812,8 +5171,9 @@
       var artifacts = Array.prototype.slice.call(document.querySelectorAll("#artifact-list [data-stage]"));
       var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       var LIME = [146, 250, 17];
-      var ORDER = ["obs", "arch", "impl", "rev"];
+      var ORDER = ["arch", "impl", "rev"];
       var hotStage = null;
+      var cycleAt = -1; /* survives blur so brain-click advances the loop */
       var brainHovered = false;
       var routeProg = 1;
       var w = 0, h = 0, dpr = 1, raf = 0, lastT = 0;
@@ -4835,10 +5195,10 @@
       }
 
       function syncChipLit() {
-        /* Brighten the contained brain only while a stage/hub is hovered AND the feeder finished.
-           Brighten only — the brain never dims. */
+        /* Brighten the contained brain (Observe) while a stage/hub is hovered AND the feeder finished.
+           Observation (list) also lights the center — no corner chip. Brighten only — never dims. */
         var hovered = !!hotStage || brainHovered;
-        var lit = hovered && !!hotStage && (routeProg >= 1 || reduce);
+        var lit = hovered && (hotStage === "obs" || brainHovered || (!!hotStage && (routeProg >= 1 || reduce)));
         var hub = root.querySelector(".loop-hub-wrap");
         if (hub) hub.classList.toggle("is-hot", lit);
         if (brainSvg) brainSvg.classList.toggle("is-lit", lit);
@@ -4847,6 +5207,10 @@
       function setHot(stage, artId) {
         var changed = hotStage !== stage;
         hotStage = stage;
+        if (stage) {
+          var idx = ORDER.indexOf(stage);
+          if (idx >= 0) cycleAt = idx;
+        }
         if (changed) routeProg = stage ? (reduce ? 1 : 0) : 1;
         stages.forEach(function (el) {
           el.classList.toggle("is-hot", !!stage && el.getAttribute("data-stage") === stage);
@@ -4896,7 +5260,10 @@
           syncChipLit();
         });
         brainBtn.addEventListener("click", function () {
-          var next = ORDER[(ORDER.indexOf(hotStage || "obs") + 1) % ORDER.length];
+          /* Advance from last cycled corner — not hotStage — because focusing a
+             stage then clicking the brain blurs the stage and clears hotStage first. */
+          cycleAt = (cycleAt + 1) % ORDER.length;
+          var next = ORDER[cycleAt];
           setHot(next, null);
           var stageEl = root.querySelector('.loop-stage[data-stage="' + next + '"]');
           if (stageEl) stageEl.focus();
@@ -5016,7 +5383,7 @@
 
       function hubCenter() {
         var hub = root.querySelector(".loop-brain-btn");
-        if (!hub) return { x: w * 0.5, y: h * 0.56, r: Math.min(w, h) * 0.2 };
+        if (!hub) return { x: w * 0.5, y: h * 0.5, r: Math.min(w, h) * 0.2 };
         var b = localRect(hub);
         return { x: b.x, y: b.y, r: Math.max(20, (b.r - b.l) * 0.5) };
       }
@@ -5080,20 +5447,24 @@
 
         drawFragments(t);
 
-        /* Pyramid cycle: apex → right edge → along the base → up the left edge → apex.
-           Hover only brightens related edges. */
-        var ring = [];
+        /* Pyramid cycle: Architecture → Implementation → Review → Architecture.
+           Dock on chip rims (not centers) so edges never strike through labels. */
+        var centers = [];
         for (var i = 0; i < ORDER.length; i++) {
           var st = stageEdgeToward(ORDER[i], { x: w * 0.5, y: h * 0.5 });
-          if (st) ring.push({ id: ORDER[i], x: st.cx, y: st.cy });
+          if (st) centers.push({ id: ORDER[i], x: st.cx, y: st.cy });
         }
-        if (ring.length === 4) {
-          for (var r = 0; r < 4; r++) {
-            var a = ring[r];
-            var b = ring[(r + 1) % 4];
-            var related = hotStage && (a.id === hotStage || b.id === hotStage);
-            var a2 = edgeInset(a, b, 36);
-            var b2 = edgeInset(b, a, 36);
+        if (centers.length === 3) {
+          for (var r = 0; r < 3; r++) {
+            var aId = centers[r].id;
+            var bId = centers[(r + 1) % 3].id;
+            var aEdge = stageEdgeToward(aId, centers[(r + 1) % 3]);
+            var bEdge = stageEdgeToward(bId, centers[r]);
+            if (!aEdge || !bEdge) continue;
+            var related = hotStage && (aId === hotStage || bId === hotStage);
+            /* Small clearance past the rim so the stroke meets the border cleanly */
+            var a2 = edgeInset(aEdge, bEdge, 6);
+            var b2 = edgeInset(bEdge, aEdge, 6);
             ctx.beginPath();
             ctx.moveTo(a2.x, a2.y);
             ctx.lineTo(b2.x, b2.y);
@@ -5102,36 +5473,10 @@
             ctx.stroke();
             ctx.fillStyle = rgba(LIME, related ? 0.95 : 0.55);
             drawArrowHead(a2.x, a2.y, b2.x, b2.y, related ? 8 : 6);
-            /* Gate tick at the stage boundary — closes on your approval */
-            var gx = lerp(a2.x, b2.x, 0.82);
-            var gy = lerp(a2.y, b2.y, 0.82);
-            var evx = b2.x - a2.x, evy = b2.y - a2.y;
-            var elen = Math.sqrt(evx * evx + evy * evy) || 1;
-            var nx = -evy / elen, ny = evx / elen;
-            var tickR = related ? 7 : 5.5;
-            ctx.beginPath();
-            ctx.moveTo(gx - nx * tickR, gy - ny * tickR);
-            ctx.lineTo(gx + nx * tickR, gy + ny * tickR);
-            ctx.strokeStyle = rgba(LIME, related ? 0.95 : 0.6);
-            ctx.lineWidth = related ? 2.2 : 1.6;
-            ctx.stroke();
-            if (!reduce) {
-              var pulse = (t * 0.32 + r * 0.25) % 1;
-              var px0 = a2.x + (b2.x - a2.x) * Math.max(0, pulse - 0.04);
-              var py0 = a2.y + (b2.y - a2.y) * Math.max(0, pulse - 0.04);
-              var px1 = a2.x + (b2.x - a2.x) * pulse;
-              var py1 = a2.y + (b2.y - a2.y) * pulse;
-              ctx.beginPath();
-              ctx.moveTo(px0, py0);
-              ctx.lineTo(px1, py1);
-              ctx.strokeStyle = rgba(LIME, related ? 0.95 : 0.55);
-              ctx.lineWidth = related ? 2.4 : 1.6;
-              ctx.stroke();
-            }
           }
         }
 
-        /* Brain spokes — hover/focus only */
+        /* Brain spokes — hover/focus only (corner stages; Observation is the center) */
         for (var s = 0; s < ORDER.length; s++) {
           var id = ORDER[s];
           if (hotStage !== id) continue;
@@ -5139,6 +5484,17 @@
           var from = dock ? stageEdgeToward(id, dock) : null;
           drawFeeder(from, dock, true, routeProg);
         }
+
+        /* Fence — erase any stroke that still landed inside a stage chip */
+        ctx.save();
+        ctx.globalCompositeOperation = "destination-out";
+        for (var p = 0; p < stages.length; p++) {
+          var box = localRect(stages[p]);
+          var pad = 3;
+          ctx.fillStyle = "#000";
+          ctx.fillRect(box.l - pad, box.t - pad, (box.r - box.l) + pad * 2, (box.b - box.t) + pad * 2);
+        }
+        ctx.restore();
 
         if (!reduce) raf = requestAnimationFrame(draw);
       }

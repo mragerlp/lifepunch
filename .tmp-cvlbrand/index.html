@@ -3,9 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Cavelux — AI Systems Integration · v3.58</title>
-  <meta name="robots" content="noindex, nofollow, noarchive" />
-  <meta name="googlebot" content="noindex, nofollow, noarchive" />
+  <title>Cavelux — AI Systems Integration · v3.94</title>
+  <meta name="robots" content="index, follow" />
   <meta name="description" content="AI Systems Integration — Intelligence that molds to how your business already works." />
   <link rel="canonical" href="https://cavelux.ai/" />
   <meta property="og:type" content="website" />
@@ -181,6 +180,8 @@
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
+      box-sizing: border-box;
+      min-height: 44px;
       padding: 0.6rem 1.15rem;
       border-radius: 0;
       border: 1px solid var(--cvl-lime);
@@ -213,6 +214,11 @@
       font-family: var(--cvl-mono);
       font-size: 0.75rem;
       cursor: pointer;
+      box-sizing: border-box;
+      min-width: 44px;
+      min-height: 44px;
+      align-items: center;
+      justify-content: center;
     }
     .nav-toggle:focus-visible {
       outline: 2px solid var(--cvl-lime);
@@ -1624,19 +1630,7 @@
       }
       .nav-brand-word { font-size: 1.15rem; }
       .nav-brand-sub { font-size: 0.55rem; }
-      .nav-links.is-open {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 100%;
-        background: var(--cvl-bg);
-        border-bottom: 1px solid var(--cvl-border);
-        padding: 1rem 1.25rem 1.25rem;
-        gap: 0.85rem;
-      }
+      /* open-state layout owned by the mobile drawer block (viewport-fixed). */
       .nav-cta.is-open {
         display: inline-flex;
         margin: 0.25rem 1.25rem 1rem;
@@ -1816,7 +1810,7 @@
       aspect-ratio: 1;
       justify-self: center;
       overflow: visible;
-      --arch-r: 37%;
+      --arch-r: 46%;
     }
     .hero-brand-stack {
       display: flex;
@@ -1829,11 +1823,11 @@
     .hero-glitch {
       display: block;
       margin: 0;
-      width: min(100%, 12.5rem);
+      width: min(100%, 18.5rem);
       height: auto;
       transform: none;
       image-rendering: auto;
-      filter: drop-shadow(0 0 10px rgba(146, 250, 17, 0.22));
+      filter: none;
     }
     body[data-page="home"] .hero h1 {
       margin: 0 0 0.85rem;
@@ -1916,7 +1910,7 @@
       left: calc(50% + var(--arch-r, 32%) * 0.866) !important;
     }
     body[data-page="home"] .arch-hub-wrap {
-      width: min(46%, 16rem) !important;
+      width: min(40%, 14rem) !important;
     }
     /* Hub portal launch — one-shot swirl: the tube layer spins in like a
        portal opening, the eye materializes inside it, then everything rests.
@@ -2008,10 +2002,12 @@
         justify-content: center;
       }
       body[data-page="home"] .arch-map {
-        width: min(100%, 20rem) !important;
-        max-width: 20rem !important;
-        --arch-r: 29%;
+        width: min(100%, 22rem) !important;
+        max-width: 22rem !important;
+        --arch-r: 46%;
         overflow: hidden;
+        padding-block: 0.65rem 0.35rem;
+        box-sizing: border-box;
       }
     }
 
@@ -2049,11 +2045,11 @@
     }
     footer .footer-glitch-word {
       display: block;
-      width: min(11.5rem, 46vw);
+      width: min(14.5rem, 52vw);
       height: auto;
       margin: 0;
       image-rendering: auto;
-      filter: drop-shadow(0 0 8px rgba(146, 250, 17, 0.2));
+      filter: none;
     }
     footer .footer-logo-link {
       display: inline-block;
@@ -2336,6 +2332,10 @@
       .nav {
         z-index: 200;
         background: #000;
+        /* backdrop-filter creates a containing block — traps position:fixed
+           menu inside the sticky header. On mobile that + scroll-lock = black void. */
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
       }
       .nav-inner {
         position: relative;
@@ -2347,12 +2347,12 @@
         position: relative;
         z-index: 220;
       }
-      /* Scrim hides page; menu itself is a short dropdown (no scroll) */
+      /* Full-viewport scrim; menu is a real viewport-fixed panel under the bar */
       body.nav-menu-open::before {
         content: "";
         position: fixed;
         inset: 0;
-        top: var(--cvl-nav-h);
+        top: 0;
         z-index: 180;
         background: #000;
       }
@@ -2362,24 +2362,26 @@
         align-items: center;
         justify-content: flex-start;
         text-align: center;
-        position: fixed;
-        left: 0;
-        right: 0;
-        top: var(--cvl-nav-h);
-        bottom: auto;
-        width: 100%;
-        height: auto;
+        position: fixed !important;
+        left: 0 !important;
+        right: 0 !important;
+        top: var(--cvl-nav-h) !important;
+        bottom: 0 !important;
+        width: 100% !important;
+        height: auto !important;
         min-height: 0;
         max-height: none;
-        z-index: 195;
+        z-index: 230 !important;
         margin: 0;
-        padding: 0.85rem 1.25rem 1.05rem;
-        gap: 0.55rem;
+        padding: 1.25rem 1.25rem 2rem;
+        gap: 0.65rem;
         background: #000;
         border: none;
-        border-bottom: 1px solid rgba(146, 250, 17, 0.22);
+        border-bottom: none;
         box-sizing: border-box;
-        overflow: visible;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        color: var(--cvl-lime);
       }
       .nav-links.is-open > li {
         width: 100%;
@@ -2387,6 +2389,12 @@
         justify-content: center;
       }
       .nav-links.is-open > li > a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 44px;
+        min-height: 44px;
+        box-sizing: border-box;
         font-size: 1.15rem;
         letter-spacing: 0.05em;
         line-height: 1.25;
@@ -2411,10 +2419,20 @@
         display: none !important;
       }
       body.nav-menu-open {
+        position: fixed;
+        left: 0;
+        right: 0;
+        width: 100%;
         overflow: hidden;
         touch-action: none;
       }
       body.nav-menu-open .nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        z-index: 240;
         background: #000;
         border-bottom-color: rgba(146, 250, 17, 0.22);
       }
@@ -2492,7 +2510,7 @@
         margin: 0 auto !important;
       }
       footer .footer-glitch-word {
-        width: min(9.75rem, 62vw) !important;
+        width: min(12.5rem, 72vw) !important;
         margin: 0 auto !important;
         /* white letterforms sit slightly left of the glitch glow */
         transform: translateX(0.2rem);
@@ -2509,7 +2527,7 @@
         overflow: hidden !important;
       }
       body[data-page="home"] .arch-hub-wrap {
-        width: min(42%, 8.75rem) !important;
+        width: min(34%, 7.25rem) !important;
       }
       body[data-page="home"] .arch-node {
         font-size: 0.64rem !important;
@@ -2531,6 +2549,10 @@
         right: auto !important;
         bottom: auto !important;
         transform: translate(-50%, -50%) scale(var(--arch-chip-scale)) !important;
+        /* CVL-381-3 — post-scale hit box stays ≥44px on phones */
+        min-width: 48px;
+        min-height: 48px;
+        box-sizing: border-box;
       }
       body[data-page="home"] .arch-node.seat-c {
         top: calc(50% - var(--arch-r) * 0.74) !important;
@@ -2574,18 +2596,26 @@
     }
     @media (max-width: 420px) {
       body[data-page="home"] .arch-map {
-        --arch-r: 31%;
+        --arch-r: 48%;
         --arch-chip-scale: 0.88;
-        width: min(100%, 18.5rem) !important;
-        max-width: 18.5rem !important;
+        width: min(100%, 22rem) !important;
+        max-width: 22rem !important;
+        padding-block: 0.75rem 0.4rem;
       }
       body[data-page="home"] .arch-node {
         font-size: 0.58rem !important;
         padding: 0.36rem 0.4rem !important;
         max-width: min(7.75rem, 44%) !important;
       }
+      body[data-page="home"] .arch-node.seat-c,
+      body[data-page="home"] .arch-node.seat-v,
+      body[data-page="home"] .arch-node.seat-l {
+        /* 50px × 0.88 scale ≈ 44px post-scale hit box */
+        min-width: 50px;
+        min-height: 50px;
+      }
       body[data-page="home"] .arch-hub-wrap {
-        width: min(44%, 7.75rem) !important;
+        width: min(32%, 6.5rem) !important;
       }
     }
     @media (min-width: 1280px) {
@@ -2607,8 +2637,11 @@
     }
     /* —— Mobile polish pass (phone viewports) —— */
     @media (max-width: 900px) {
-      html, body {
+      html {
         overflow-x: hidden;
+      }
+      body {
+        overflow-x: clip;
       }
       .wrap {
         padding-inline: 1.1rem;
@@ -2620,7 +2653,7 @@
         margin-inline: auto;
       }
       body[data-page="home"] .hero-glitch {
-        width: min(100%, 12rem);
+        width: min(100%, 16.5rem);
         margin-inline: auto;
       }
       body[data-page="home"] .hero h1 {
@@ -2865,6 +2898,7 @@
       <ul class="nav-links" id="nav-menu">
         <li><a href="/" class="is-active">Home</a></li>
         <li><a href="/system/">System</a></li>
+        <li><a href="/system/#loop">The Loop</a></li>
         <li><a href="/work/">Work</a></li>
         <li><a href="/about/">About</a></li>
         <li class="nav-drawer-cta">
@@ -2880,7 +2914,7 @@
       <div class="wrap hero-grid">
         <div class="hero-copy">
           <div class="hero-brand-stack">
-            <img class="pixel hero-glitch" src="/cutouts/CVL_wordmark_glitch.png" alt="Collaborative Value Loop" width="771" height="238" decoding="async" />
+            <img class="pixel hero-glitch" src="/cutouts/CAVELUX_wordmark_glitch.png?v=alpha6" alt="CAVELUX" width="1005" height="209" decoding="async" />
           </div>
           <h1>AI Systems Integration</h1>
           <p class="hero-lead">
@@ -2907,8 +2941,8 @@
         </div>
 
         <div class="cvl-cards">
-          <div class="cvl-card" id="cvl-card-c" role="region" aria-label="Collaborative" tabindex="-1" hidden>
-            <p class="cvl-card-kicker">C — Collaborative</p>
+          <div class="cvl-card" id="cvl-card-c" role="region" aria-label="Collaboration" tabindex="-1" hidden>
+            <p class="cvl-card-kicker">C — Collaboration</p>
             <p class="cvl-card-body">Agents and humans in one loop — with one human key. Your agents research, draft, build, and propose. Nothing ships, spends, or escalates without your explicit go. That&rsquo;s not a feature bolted on; it&rsquo;s the architecture.</p>
             <a class="cvl-card-link" href="/system/">How the method works →</a>
           </div>
@@ -2961,8 +2995,8 @@
         <div class="footer-url">cavelux.ai</div>
       </div>
       <div class="footer-brand-block">
-        <a class="footer-glitch-link" href="/" aria-label="CVL home">
-          <img class="pixel footer-glitch-word" src="/cutouts/CVL_wordmark_glitch.png" alt="CVL" width="771" height="238" decoding="async" />
+        <a class="footer-glitch-link" href="/" aria-label="Cavelux home">
+          <img class="pixel footer-glitch-word" src="/cutouts/CAVELUX_wordmark_glitch.png?v=alpha6" alt="CAVELUX" width="1024" height="212" decoding="async" />
         </a>
       </div>
       <div class="footer-copy">&copy; 2026 Cavelux</div>
@@ -2979,34 +3013,45 @@
       var toggle = document.getElementById("nav-toggle");
       var menu = document.getElementById("nav-menu");
       var cta = document.getElementById("nav-cta");
+      var setMenuOpen = null;
       if (toggle && menu) {
         var navEl = document.querySelector(".nav");
+        var lockY = 0;
         function syncNavHeight() {
           if (!navEl) return;
           document.documentElement.style.setProperty(
             "--cvl-nav-h",
-            navEl.getBoundingClientRect().height + "px"
+            Math.ceil(navEl.getBoundingClientRect().height) + "px"
           );
         }
-        syncNavHeight();
-        window.addEventListener("resize", syncNavHeight);
-        toggle.addEventListener("click", function () {
-          syncNavHeight();
-          var open = menu.classList.toggle("is-open");
-          if (cta) cta.classList.toggle("is-open", open);
-          toggle.setAttribute("aria-expanded", open ? "true" : "false");
-          toggle.textContent = open ? "Close" : "Menu";
-          document.body.classList.toggle("nav-menu-open", open);
-        });
-      }
-      if (toggle && menu) {
-        menu.querySelectorAll("a").forEach(function (a) {
-          a.addEventListener("click", function () {
+        setMenuOpen = function (open) {
+          if (open) {
+            lockY = window.scrollY || window.pageYOffset || 0;
+            syncNavHeight();
+            menu.classList.add("is-open");
+            if (cta) cta.classList.add("is-open");
+            toggle.setAttribute("aria-expanded", "true");
+            toggle.textContent = "Close";
+            document.body.classList.add("nav-menu-open");
+            document.body.style.top = "-" + lockY + "px";
+          } else {
             menu.classList.remove("is-open");
             if (cta) cta.classList.remove("is-open");
             toggle.setAttribute("aria-expanded", "false");
             toggle.textContent = "Menu";
             document.body.classList.remove("nav-menu-open");
+            document.body.style.top = "";
+            window.scrollTo(0, lockY);
+          }
+        }
+        syncNavHeight();
+        window.addEventListener("resize", syncNavHeight);
+        toggle.addEventListener("click", function () {
+          setMenuOpen(!menu.classList.contains("is-open"));
+        });
+        menu.querySelectorAll("a").forEach(function (a) {
+          a.addEventListener("click", function () {
+            setMenuOpen(false);
           });
         });
       }
@@ -3299,13 +3344,17 @@
           e.preventDefault();
           if (history.replaceState) history.replaceState(null, "", "#" + id);
           setActive(id, true);
-          if (menu) menu.classList.remove("is-open");
-          if (cta) cta.classList.remove("is-open");
-          if (toggle) {
-            toggle.setAttribute("aria-expanded", "false");
-            toggle.textContent = "Menu";
+          if (typeof setMenuOpen === "function") setMenuOpen(false);
+          else {
+            if (menu) menu.classList.remove("is-open");
+            if (cta) cta.classList.remove("is-open");
+            if (toggle) {
+              toggle.setAttribute("aria-expanded", "false");
+              toggle.textContent = "Menu";
+            }
+            document.body.classList.remove("nav-menu-open");
+            document.body.style.top = "";
           }
-          document.body.classList.remove("nav-menu-open");
         });
       });
 
@@ -3411,9 +3460,10 @@
           }
           for (var fv = 0; fv < veinFillers.length; fv++) {
             var fill = veinFillers[fv];
-            strokeVeinPath(fill.main, 0.85, 0.3, true);
+            var fillBoost = fv >= 2 ? 1.15 : 1;
+            strokeVeinPath(fill.main, 0.9, 0.34 * fillBoost, true);
             for (var fc = 0; fc < fill.caps.length; fc++) {
-              strokeVeinPath(fill.caps[fc], (fill.caps[fc].w || 0.55) * 0.85, 0.26 * (fill.caps[fc].a || 1), true);
+              strokeVeinPath(fill.caps[fc], (fill.caps[fc].w || 0.55) * 0.9, 0.3 * fillBoost * (fill.caps[fc].a || 1), true);
             }
           }
         } else {
@@ -3776,25 +3826,31 @@
 
       function orbitRingRadii() {
         /*
-         * Decorative craft rings — fill logo → near button INNER faces (wide).
-         * Chip interiors still cleared by destination-out punch in drawArcFragments.
+         * Decorative craft rings — fill logo → the seat orbit the pyramid
+         * buttons ACTUALLY occupy. Seat positions are owned by the CSS
+         * !important rules (--arch-r), which override the JS hang-off inline
+         * styles, so the outer ring is derived from the measured button
+         * centers (terminals[k].bx/by from measure()) — never from the
+         * nominal placedRadii. Chip interiors are cleared by the
+         * destination-out punch in drawArcFragments.
          */
         var clear = logoClearR();
         var pad = 28;
         var maxC = Math.min(cx - pad, (cy - pad) / ORBIT_ASPECT, w - cx - pad, (h - cy - pad) / ORBIT_ASPECT);
-        var rimMin = Infinity;
+        var seatR = 0;
         PILLAR_KEYS.forEach(function (k) {
           var term = terminals[k];
           if (!term) return;
-          var dx = term.x - cx;
-          var dy = (term.y - cy) / ORBIT_ASPECT;
-          var r = Math.hypot(dx, dy);
-          if (r > clear && r < rimMin) rimMin = r;
+          var r = Math.hypot(term.bx - cx, (term.by - cy) / ORBIT_ASPECT);
+          if (r > clear) seatR = Math.max(seatR, r);
         });
-        /* Small gap — outer ring reaches out to the chips; punch keeps dashes out of text */
-        /* Portal tunnel — rings reach past the chip inner faces; punch keeps text clean */
-        var hi = rimMin < Infinity ? rimMin + 14 : maxC * 0.95;
-        hi = Math.max(clear + 64, Math.min(hi, maxC * 0.99));
+        var hi;
+        if (seatR > 0) {
+          /* Measured seats win — no fixed floor, or tiny maps push rings past the buttons */
+          hi = Math.max(clear + 24, Math.min(seatR, maxC * 0.99));
+        } else {
+          hi = Math.max(clear + 64, maxC * 0.95);
+        }
         var lo = Math.max(clear + 22, hi * 0.3);
         return [0, 1, 2, 3, 4].map(function (i) { return lo + (hi - lo) * (i / 4); });
       }
@@ -4360,12 +4416,24 @@
           buildPolylineRoute(pid, main);
         });
         buildVeinAnastomoses();
-        /* Filler vessels — reach into the empty sectors between the chips */
-        var gapAngles = [0, Math.PI / 2, Math.PI, -Math.PI / 2];
+        /*
+         * Filler vessels — mid-sectors BETWEEN the pyramid seats.
+         * Cardinals alone left a bald south pocket (VALUE↔LOOP); image-3
+         * density needs a triple fan there, plus the NE/NW diagonals.
+         */
+        var gapAngles = [
+          -Math.PI / 6,           /* NE — COLLABORATION ↔ LOOP */
+          Math.PI * (7 / 6),      /* NW — VALUE ↔ COLLABORATION */
+          Math.PI / 2 - 0.34,     /* SSE fan — image-3 south gap */
+          Math.PI / 2,            /* due south */
+          Math.PI / 2 + 0.34      /* SSW fan */
+        ];
         for (var g = 0; g < gapAngles.length; g++) {
-          var ga = gapAngles[g] + (rand() - 0.5) * 0.35;
+          var ga = gapAngles[g] + (rand() - 0.5) * 0.1;
+          var south = g >= 2;
+          var reach = south ? (0.84 + rand() * 0.1) : (0.74 + rand() * 0.14);
           var gStart = orbitXY(ga, logoClearR() + 1);
-          var gEnd = orbitXY(ga, outerOrbitR() * (0.7 + rand() * 0.18));
+          var gEnd = orbitXY(ga, outerOrbitR() * reach);
           var gMain = organicVeinMain(gStart, gEnd, "filler-" + g);
           veinFillers.push({ main: gMain, caps: buildCapillaries(gMain, "filler-" + g) });
         }
@@ -4545,10 +4613,11 @@
         /* Filler vessels — quieter than the chip trunks, same anatomy */
         for (var fv = 0; fv < veinFillers.length; fv++) {
           var fill = veinFillers[fv];
-          strokeVeinPath(fill.main, 0.85, 0.3 * alpha, true);
+          var fillBoost = fv >= 2 ? 1.15 : 1; /* south fan reads closer to image-3 */
+          strokeVeinPath(fill.main, 0.9, 0.34 * alpha * fillBoost, true);
           for (var fc = 0; fc < fill.caps.length; fc++) {
             var fBreath = reduce ? 1 : 0.92 + 0.08 * Math.sin(t * 0.35 + fc + fv * 2);
-            strokeVeinPath(fill.caps[fc], (fill.caps[fc].w || 0.55) * 0.85, 0.26 * alpha * (fill.caps[fc].a || 1) * fBreath, true);
+            strokeVeinPath(fill.caps[fc], (fill.caps[fc].w || 0.55) * 0.9, 0.3 * alpha * fillBoost * (fill.caps[fc].a || 1) * fBreath, true);
           }
         }
 

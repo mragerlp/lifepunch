@@ -2,12 +2,7 @@
   "mcpServers": {
     "sbox": {
       "command": "cmd",
-      "args": [
-        "/c",
-        "npx",
-        "-y",
-        "sbox-mcp-server"
-      ]
+      "args": ["/c", "npx", "-y", "sbox-mcp-server"]
     },
     "sbox-editor": {
       "type": "http",
@@ -20,14 +15,7 @@
     "excalidraw": {
       "type": "http",
       "url": "https://api.excalidraw.com/api/v1/mcp",
-      "headers": {
-        "Authorization": "Bearer ${EXCALIDRAW_API_KEY}"
-      }
-    },
-    "cavelux": {
-      "command": "C:\\cavelux\\comms\\cavelux-mcp-launch.cmd",
-      "args": [],
-      "cwd": "C:\\Users\\jared\\Projects\\cavelux\\mcp"
+      "headers": { "Authorization": "Bearer ${EXCALIDRAW_API_KEY}" }
     }
   }
 }

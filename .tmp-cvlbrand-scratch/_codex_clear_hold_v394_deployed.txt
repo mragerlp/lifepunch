@@ -1,0 +1,22 @@
+── BLOODWAVE · CODEX · CVL-MP-02 CLEAR REQUEST · LIVE v3.94 ──
+FROM: Cursor · AUTHORIZED: Bloodwave GO review-only
+DATE: 2026-07-21
+DEPLOY: wrangler pages deploy → project cvl-site-preview · branch production
+DEPLOY URL: https://0d86c81f.cvl-site-preview.pages.dev
+CUSTOM: https://cavelux.ai/
+
+Prior HOLD was deployment-only. Local CVL-MP-01 already PASS.
+
+LIVE SENSOR (Playwright 390, cache-bust query on /system/):
+  title                 System — Cavelux · v3.94
+  nav backdrop-filter   none
+  loop aspect-ratio     1.08
+  hub / diagram width   42%
+  tooling viewBox       0 0 520 300
+  SVG / band overflow   visible
+  drawer                open PASS — 6 links visible, viewport-fixed under bar
+
+ASK: Re-probe live. If sensors match, clear HOLD → PASS on the mobile polish slice.
+No commits. No further deploys unless REVISE.
+End: FROM: Codex
+── END ──

@@ -3,22 +3,23 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Legal — Cavelux · v3.94</title>
-  <meta name="robots" content="index, follow" />
-  <meta name="description" content="Privacy policy and terms of service for cavelux.ai." />
-  <link rel="canonical" href="https://cavelux.ai/legal/" />
+  <title>Collaborative Value Loop — AI Systems Integration</title>
+  <meta name="robots" content="noindex, nofollow, noarchive" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive" />
+  <meta name="description" content="AI Systems Integration — Intelligence that molds to how your business already works." />
+  <link rel="canonical" href="https://collaborativevalueloop.com/" />
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Cavelux" />
-  <meta property="og:url" content="https://cavelux.ai/legal/" />
-  <meta property="og:title" content="Cavelux Legal" />
-  <meta property="og:description" content="Privacy policy and terms of service for cavelux.ai." />
-  <meta property="og:image" content="https://cavelux.ai/social/CAVELUX_og_1200x630.png" />
+  <meta property="og:site_name" content="Collaborative Value Loop" />
+  <meta property="og:url" content="https://collaborativevalueloop.com/" />
+  <meta property="og:title" content="AI Systems Integration" />
+  <meta property="og:description" content="AI Systems Integration — Intelligence that molds to how your business already works." />
+  <meta property="og:image" content="https://collaborativevalueloop.com/social/CVL_og_1200x630.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Cavelux Legal" />
-  <meta name="twitter:description" content="Privacy policy and terms of service for cavelux.ai." />
-  <meta name="twitter:image" content="https://cavelux.ai/social/CAVELUX_og_1200x630.png" />
+  <meta name="twitter:title" content="AI Systems Integration" />
+  <meta name="twitter:description" content="AI Systems Integration — Intelligence that molds to how your business already works." />
+  <meta name="twitter:image" content="https://collaborativevalueloop.com/social/CVL_og_1200x630.png" />
   <link rel="icon" type="image/png" href="/favicon/favicon-32.png?v=mark3" sizes="32x32" />
   <link rel="icon" type="image/png" href="/favicon/favicon-48.png?v=mark3" sizes="48x48" />
   <link rel="icon" href="/favicon/favicon.ico?v=mark3" sizes="any" />
@@ -180,8 +181,6 @@
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      box-sizing: border-box;
-      min-height: 44px;
       padding: 0.6rem 1.15rem;
       border-radius: 0;
       border: 1px solid var(--cvl-lime);
@@ -214,11 +213,6 @@
       font-family: var(--cvl-mono);
       font-size: 0.75rem;
       cursor: pointer;
-      box-sizing: border-box;
-      min-width: 44px;
-      min-height: 44px;
-      align-items: center;
-      justify-content: center;
     }
     .nav-toggle:focus-visible {
       outline: 2px solid var(--cvl-lime);
@@ -1550,7 +1544,19 @@
       }
       .nav-brand-word { font-size: 1.15rem; }
       .nav-brand-sub { font-size: 0.55rem; }
-      /* open-state layout owned by the mobile drawer block (viewport-fixed). */
+      .nav-links.is-open {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 100%;
+        background: var(--cvl-bg);
+        border-bottom: 1px solid var(--cvl-border);
+        padding: 1rem 1.25rem 1.25rem;
+        gap: 0.85rem;
+      }
       .nav-cta.is-open {
         display: inline-flex;
         margin: 0.25rem 1.25rem 1rem;
@@ -1971,11 +1977,11 @@
     }
     footer .footer-glitch-word {
       display: block;
-      width: min(14.5rem, 52vw);
+      width: min(11.5rem, 46vw);
       height: auto;
       margin: 0;
       image-rendering: auto;
-      filter: none;
+      filter: drop-shadow(0 0 8px rgba(146, 250, 17, 0.2));
     }
     footer .footer-logo-link {
       display: inline-block;
@@ -2258,10 +2264,6 @@
       .nav {
         z-index: 200;
         background: #000;
-        /* backdrop-filter creates a containing block — traps position:fixed
-           menu inside the sticky header. On mobile that + scroll-lock = black void. */
-        backdrop-filter: none !important;
-        -webkit-backdrop-filter: none !important;
       }
       .nav-inner {
         position: relative;
@@ -2273,12 +2275,12 @@
         position: relative;
         z-index: 220;
       }
-      /* Full-viewport scrim; menu is a real viewport-fixed panel under the bar */
+      /* Scrim hides page; menu itself is a short dropdown (no scroll) */
       body.nav-menu-open::before {
         content: "";
         position: fixed;
         inset: 0;
-        top: 0;
+        top: var(--cvl-nav-h);
         z-index: 180;
         background: #000;
       }
@@ -2288,26 +2290,24 @@
         align-items: center;
         justify-content: flex-start;
         text-align: center;
-        position: fixed !important;
-        left: 0 !important;
-        right: 0 !important;
-        top: var(--cvl-nav-h) !important;
-        bottom: 0 !important;
-        width: 100% !important;
-        height: auto !important;
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: var(--cvl-nav-h);
+        bottom: auto;
+        width: 100%;
+        height: auto;
         min-height: 0;
         max-height: none;
-        z-index: 230 !important;
+        z-index: 195;
         margin: 0;
-        padding: 1.25rem 1.25rem 2rem;
-        gap: 0.65rem;
+        padding: 0.85rem 1.25rem 1.05rem;
+        gap: 0.55rem;
         background: #000;
         border: none;
-        border-bottom: none;
+        border-bottom: 1px solid rgba(146, 250, 17, 0.22);
         box-sizing: border-box;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-        color: var(--cvl-lime);
+        overflow: visible;
       }
       .nav-links.is-open > li {
         width: 100%;
@@ -2315,12 +2315,6 @@
         justify-content: center;
       }
       .nav-links.is-open > li > a {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        min-width: 44px;
-        min-height: 44px;
-        box-sizing: border-box;
         font-size: 1.15rem;
         letter-spacing: 0.05em;
         line-height: 1.25;
@@ -2345,20 +2339,10 @@
         display: none !important;
       }
       body.nav-menu-open {
-        position: fixed;
-        left: 0;
-        right: 0;
-        width: 100%;
         overflow: hidden;
         touch-action: none;
       }
       body.nav-menu-open .nav {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        width: 100%;
-        z-index: 240;
         background: #000;
         border-bottom-color: rgba(146, 250, 17, 0.22);
       }
@@ -2436,7 +2420,7 @@
         margin: 0 auto !important;
       }
       footer .footer-glitch-word {
-        width: min(12.5rem, 72vw) !important;
+        width: min(9.75rem, 62vw) !important;
         margin: 0 auto !important;
         /* white letterforms sit slightly left of the glitch glow */
         transform: translateX(0.2rem);
@@ -2555,11 +2539,8 @@
     }
     /* —— Mobile polish pass (phone viewports) —— */
     @media (max-width: 900px) {
-      html {
+      html, body {
         overflow-x: hidden;
-      }
-      body {
-        overflow-x: clip;
       }
       .wrap {
         padding-inline: 1.1rem;
@@ -2801,145 +2782,102 @@
     .nav-links a.is-active { color: var(--cvl-lime); }
   </style>
 </head>
-<body data-page="legal">
+<body data-page="home">
   <a class="skip" href="#main">Skip to content</a>
   <header class="nav">
     <div class="wrap nav-inner">
-      <a class="nav-brand" href="/" aria-label="Cavelux home">
+      <a class="nav-brand" href="/" aria-label="Collaborative Value Loop home">
         <img class="pixel nav-mark" src="/cutouts/CVL_mark_voxel_transparent.png" alt="" width="64" height="64" />
         <span class="nav-brand-text">
-          <span class="nav-brand-word">CAVELUX</span>
-          <span class="nav-brand-sub">CAVELUX</span>
+          <span class="nav-brand-word">CVL</span>
+          <span class="nav-brand-sub">Collaborative Value Loop</span>
         </span>
       </a>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" id="nav-toggle">Menu</button>
       <ul class="nav-links" id="nav-menu">
-        <li><a href="/">Home</a></li>
+        <li><a href="/" class="is-active">Home</a></li>
         <li><a href="/system/">System</a></li>
-        <li><a href="/system/#loop">The Loop</a></li>
         <li><a href="/work/">Work</a></li>
         <li><a href="/about/">About</a></li>
         <li class="nav-drawer-cta">
-          <a class="nav-cta" href="mailto:hello@cavelux.ai?subject=Discuss%20a%20Project">Discuss a Project</a>
+          <a class="nav-cta" href="mailto:hello@collaborativevalueloop.com?subject=Discuss%20a%20Project">Discuss a Project</a>
         </li>
       </ul>
-      <a class="nav-cta nav-cta-bar" id="nav-cta" href="mailto:hello@cavelux.ai?subject=Discuss%20a%20Project">Discuss a Project</a>
+      <a class="nav-cta nav-cta-bar" id="nav-cta" href="mailto:hello@collaborativevalueloop.com?subject=Discuss%20a%20Project">Discuss a Project</a>
     </div>
   </header>
   <main id="main">
-    <div class="legal-wrap">
-      <h1>Legal</h1>
-      <p class="legal-updated">Effective July 17, 2026</p>
-      <ul class="legal-toc">
-        <li><a href="#privacy">Privacy Policy</a></li>
-        <li><a href="#terms">Terms of Service</a></li>
-      </ul>
+    <section class="hero" id="top">
+      <div class="hero-scan" aria-hidden="true"></div>
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
+          <div class="hero-brand-stack">
+            <img class="pixel hero-glitch" src="/cutouts/CVL_wordmark_glitch.png" alt="Collaborative Value Loop" width="771" height="238" decoding="async" />
+          </div>
+          <h1>AI Systems Integration</h1>
+          <p class="hero-lead">
+            Intelligence that molds to how your business already works — governed and vision-ready. You turn the keys.
+          </p>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="mailto:hello@collaborativevalueloop.com?subject=Discuss%20a%20Project">Discuss a Project</a>
+            <a class="btn btn-secondary" href="/system/">See how it works</a>
+          </div>
+        </div>
 
-      <h2 id="privacy">Privacy Policy</h2>
-
-      <p>Collaborative Value Loop ("CVL," "we," "us") is operated by
-      <strong>Peak Performance Products LLC</strong>, a New Jersey limited liability company.
-      This policy describes how we handle information when you visit
-      <strong>cavelux.ai</strong> (the "Site").</p>
-
-      <p><strong>Information we collect.</strong>
-      We do not use cookies, tracking pixels, or third-party analytics on this Site.
-      When you contact us via the "Discuss a Project" email link, you voluntarily provide
-      your email address and any content you include in that message.
-      Our hosting provider (Cloudflare) may collect standard server logs
-      (IP address, browser type, timestamps) to operate and secure the service.</p>
-
-      <p><strong>How we use information.</strong>
-      Email inquiries are used solely to respond to your request and evaluate
-      potential engagements. Cloudflare server logs are used for security,
-      performance, and abuse prevention. We do not sell, rent, or share personal
-      information with third parties for marketing purposes.</p>
-
-      <p><strong>Data retention.</strong>
-      Email correspondence is retained for as long as reasonably necessary to
-      maintain the business relationship or as required by law. Cloudflare
-      server logs are retained per
-      <a href="https://www.cloudflare.com/privacypolicy/" rel="noopener noreferrer" target="_blank">Cloudflare's privacy policy</a>.</p>
-
-      <p><strong>Your rights.</strong>
-      You may request deletion of any personal information we hold about you by
-      emailing <a href="mailto:hello@cavelux.ai">hello@cavelux.ai</a>.
-      We will respond within 30 days.</p>
-
-      <p><strong>Children.</strong>
-      This Site is not directed at individuals under 16. We do not knowingly
-      collect personal information from children.</p>
-
-      <p><strong>Changes.</strong>
-      We may update this policy. Material changes will be noted by updating the
-      effective date above.</p>
-
-      <h2 id="terms">Terms of Service</h2>
-
-      <p>By accessing <strong>cavelux.ai</strong> (the "Site"),
-      you agree to these terms. If you do not agree, do not use the Site.</p>
-
-      <p><strong>Operator.</strong>
-      The Site is operated by <strong>Peak Performance Products LLC</strong>
-      d/b/a Collaborative Value Loop, a New Jersey LLC.</p>
-
-      <p><strong>Use of the Site.</strong>
-      The Site is provided for informational purposes about CVL's AI systems
-      integration services. You may browse and share links freely. You may not:</p>
-      <ul>
-        <li>Scrape, mirror, or reproduce Site content for commercial use without written permission.</li>
-        <li>Attempt to interfere with the Site's operation or security.</li>
-        <li>Misrepresent any affiliation with CVL or Peak Performance Products LLC.</li>
-      </ul>
-
-      <p><strong>Intellectual property.</strong>
-      All content on this Site — including text, design, graphics, logos, and the
-      CVL mark — is the property of Peak Performance Products LLC or its licensors
-      and is protected by applicable intellectual property laws.
-      "Collaborative Value Loop" and "CVL" are trademarks of
-      Peak Performance Products LLC.</p>
-
-      <p><strong>No professional advice.</strong>
-      Site content is general information about our services, not professional,
-      legal, or technical advice. Engagements are governed by separate agreements.</p>
-
-      <p><strong>Third-party links.</strong>
-      The Site may link to external resources. We do not control or endorse
-      third-party content and are not responsible for it.</p>
-
-      <p><strong>Disclaimer of warranties.</strong>
-      The Site is provided "as is" without warranties of any kind, express or
-      implied, including merchantability, fitness for a particular purpose, and
-      non-infringement.</p>
-
-      <p><strong>Limitation of liability.</strong>
-      To the maximum extent permitted by law, Peak Performance Products LLC
-      shall not be liable for any indirect, incidental, special, consequential,
-      or punitive damages arising from your use of the Site.</p>
-
-      <p><strong>Governing law.</strong>
-      These terms are governed by the laws of the State of New Jersey, without
-      regard to conflict-of-law principles.</p>
-
-      <p><strong>Contact.</strong>
-      Questions about these terms or our privacy practices:
-      <a href="mailto:hello@cavelux.ai">hello@cavelux.ai</a>.</p>
-    </div>
+        <div class="arch-map" role="navigation" aria-label="Architecture map: open System pillars">
+          <canvas class="arch-plexus" aria-hidden="true"></canvas>
+          <a class="arch-node tl" href="/system/#workflows"><svg class="arch-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="5" r="2.4"/><circle cx="6" cy="19" r="2.4"/><circle cx="18" cy="12" r="2.4"/><path d="M6 7.4v9.2"/><path d="M8.4 5h5.2a4.4 4.4 0 0 1 4.4 4.4"/><path d="M8.4 19h5.2a4.4 4.4 0 0 0 4.4-4.4"/></svg><span>Workflows</span></a>
+          <a class="arch-node tr" href="/system/#knowledge"><svg class="arch-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/><path d="M12 5v13"/><path d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4"/></svg><span>Knowledge</span></a>
+          <div class="arch-hub-wrap">
+            <img class="pixel arch-hub arch-hub-swirl" src="/cutouts/CVL_mark_voxel_swirl.png" alt="" width="512" height="512" decoding="async" />
+            <img class="pixel arch-hub-eye" src="/cutouts/CVL_mark_voxel_eye.png" alt="" width="512" height="512" decoding="async" />
+          </div>
+          <a class="arch-node bl" href="/system/#governance"><svg class="arch-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/><circle cx="12" cy="16" r="1.25"/></svg><span>Governance</span></a>
+          <a class="arch-node br" href="/system/#outcomes"><svg class="arch-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="13" r="8.5"/><circle cx="11" cy="13" r="5"/><circle cx="11" cy="13" r="1.8"/><path d="M20.2 3.8L13.2 10.8"/><path d="M13.2 10.8l3.4-.55M13.2 10.8l.55-3.4"/><path d="M18.6 4.2l1.7-1.7M19.8 5.4l1.7-1.7"/></svg><span>Outcomes</span></a>
+        </div>
+      </div>
+    </section>
+    <section class="block punch proof-trio-wrap" aria-label="Proof">
+      <div class="wrap">
+        <ul class="proof-trio">
+          <li><strong>Workflow-first</strong><span>built around how your work already moves.</span></li>
+          <li><strong>Human-governed</strong><span>you approve every stage.</span></li>
+          <li><strong>Evidence-backed</strong><span>proven live, under load.</span></li>
+        </ul>
+      </div>
+    </section>
+    <section class="block punch case-teaser-wrap">
+      <div class="wrap">
+        <p class="case-teaser">LIFEPUNCH — my live proving ground. <a href="/work/">See the proof →</a></p>
+      </div>
+    </section>
+    <section class="final-cta" id="discuss">
+      <div class="wrap">
+        <div class="final-panel">
+          <h2>Tell me your goals. I'll map the build.</h2>
+          <p>One conversation to scope it. No generic pitch.</p>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="mailto:hello@collaborativevalueloop.com?subject=Discuss%20a%20Project">Discuss a Project</a>
+            <a class="btn btn-secondary" href="/system/">See how it works</a>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
   <footer>
     <div class="wrap footer-inner">
       <div class="footer-center">
-        <a class="footer-logo-link" href="/" aria-label="Cavelux home">
+        <a class="footer-logo-link" href="/" aria-label="Collaborative Value Loop home">
           <img class="pixel footer-mark" src="/cutouts/CVL_mark_voxel_transparent.png" alt="" width="64" height="64" decoding="async" />
         </a>
-        <div class="footer-url">cavelux.ai</div>
+        <div class="footer-url">collaborativevalueloop.com</div>
       </div>
       <div class="footer-brand-block">
-        <a class="footer-glitch-link" href="/" aria-label="Cavelux home">
-          <img class="pixel footer-glitch-word" src="/cutouts/CAVELUX_wordmark_glitch.png?v=alpha6" alt="CAVELUX" width="1024" height="212" decoding="async" />
+        <a class="footer-glitch-link" href="/" aria-label="CVL home">
+          <img class="pixel footer-glitch-word" src="/cutouts/CVL_wordmark_glitch.png" alt="CVL" width="771" height="238" decoding="async" />
         </a>
       </div>
-      <div class="footer-copy">&copy; 2026 Cavelux</div>
+      <div class="footer-copy">© 2026 Collaborative Value Loop</div>
     </div>
     <div class="wrap footer-legal">
       <a href="/legal/#privacy">Privacy</a>
@@ -2953,45 +2891,34 @@
       var toggle = document.getElementById("nav-toggle");
       var menu = document.getElementById("nav-menu");
       var cta = document.getElementById("nav-cta");
-      var setMenuOpen = null;
       if (toggle && menu) {
         var navEl = document.querySelector(".nav");
-        var lockY = 0;
         function syncNavHeight() {
           if (!navEl) return;
           document.documentElement.style.setProperty(
             "--cvl-nav-h",
-            Math.ceil(navEl.getBoundingClientRect().height) + "px"
+            navEl.getBoundingClientRect().height + "px"
           );
         }
-        setMenuOpen = function (open) {
-          if (open) {
-            lockY = window.scrollY || window.pageYOffset || 0;
-            syncNavHeight();
-            menu.classList.add("is-open");
-            if (cta) cta.classList.add("is-open");
-            toggle.setAttribute("aria-expanded", "true");
-            toggle.textContent = "Close";
-            document.body.classList.add("nav-menu-open");
-            document.body.style.top = "-" + lockY + "px";
-          } else {
+        syncNavHeight();
+        window.addEventListener("resize", syncNavHeight);
+        toggle.addEventListener("click", function () {
+          syncNavHeight();
+          var open = menu.classList.toggle("is-open");
+          if (cta) cta.classList.toggle("is-open", open);
+          toggle.setAttribute("aria-expanded", open ? "true" : "false");
+          toggle.textContent = open ? "Close" : "Menu";
+          document.body.classList.toggle("nav-menu-open", open);
+        });
+      }
+      if (toggle && menu) {
+        menu.querySelectorAll("a").forEach(function (a) {
+          a.addEventListener("click", function () {
             menu.classList.remove("is-open");
             if (cta) cta.classList.remove("is-open");
             toggle.setAttribute("aria-expanded", "false");
             toggle.textContent = "Menu";
             document.body.classList.remove("nav-menu-open");
-            document.body.style.top = "";
-            window.scrollTo(0, lockY);
-          }
-        }
-        syncNavHeight();
-        window.addEventListener("resize", syncNavHeight);
-        toggle.addEventListener("click", function () {
-          setMenuOpen(!menu.classList.contains("is-open"));
-        });
-        menu.querySelectorAll("a").forEach(function (a) {
-          a.addEventListener("click", function () {
-            setMenuOpen(false);
           });
         });
       }
@@ -3284,17 +3211,13 @@
           e.preventDefault();
           if (history.replaceState) history.replaceState(null, "", "#" + id);
           setActive(id, true);
-          if (typeof setMenuOpen === "function") setMenuOpen(false);
-          else {
-            if (menu) menu.classList.remove("is-open");
-            if (cta) cta.classList.remove("is-open");
-            if (toggle) {
-              toggle.setAttribute("aria-expanded", "false");
-              toggle.textContent = "Menu";
-            }
-            document.body.classList.remove("nav-menu-open");
-            document.body.style.top = "";
+          if (menu) menu.classList.remove("is-open");
+          if (cta) cta.classList.remove("is-open");
+          if (toggle) {
+            toggle.setAttribute("aria-expanded", "false");
+            toggle.textContent = "Menu";
           }
+          document.body.classList.remove("nav-menu-open");
         });
       });
 

@@ -1,0 +1,118 @@
+── BLOODWAVE · CODEX REVIEW · CAVELUX MOBILE POLISH ──
+FROM: Cursor (lane brief) · AUTHORIZED: Bloodwave GO review-only
+DATE: 2026-07-21
+TREE: C:\Users\jared\Projects\lifepunch\.tmp-cvlbrand\
+BRANCH CONTEXT: red/hub-ui-polish-2026-07-18 (working tree; untracked deploy kit)
+LIVE: https://cavelux.ai/  (may lag local until redeploy — grade BOTH if they differ)
+PRIOR: Codex final review brief v3.81 / v3.87 arc still stands as baseline
+
+Verdict language: PASS · REVISE · HOLD
+Cite file paths + selectors. No commits. No deploys. Proposal-only.
+Mobile is a hard gate equal to desktop.
+
+══════════════════════════════════════════════════
+MISSION
+══════════════════════════════════════════════════
+Review the mobile polish delta that closed three owner-reported defects
+on phone viewports (~390). Confirm each is fixed without regressing
+desktop (1440) or the rest of the site chrome.
+
+══════════════════════════════════════════════════
+SCOPE — FILES TOUCHED THIS SLICE
+══════════════════════════════════════════════════
+Primary (geometry + labels):
+  .tmp-cvlbrand/system/index.html
+
+Nav drawer (same pattern applied on all primary pages):
+  .tmp-cvlbrand/index.html
+  .tmp-cvlbrand/system/index.html
+  .tmp-cvlbrand/about/index.html
+  .tmp-cvlbrand/work/index.html
+  .tmp-cvlbrand/legal/index.html
+
+Out of scope unless a defect forces a one-line proposal:
+  Copy rewrites · brand tokens · Cloudflare project settings · DNS
+  Monorepo commit / push · .tmp-cvlbrand-scratch/* (proof only)
+
+══════════════════════════════════════════════════
+DELTA THIS SLICE (owner-reported → fix)
+══════════════════════════════════════════════════
+A) /system #loop — tall empty pyramid on mobile
+   OWNER: "everything looks amazing, except this. on mobile"
+   FIX: compact aspect-ratio (~1.08–1.12), larger hub (~40%), stages
+   inset, Observe/caption sized + cleared of Implementation collision.
+   Selectors: body[data-page="system"] .loop-diagram / .loop-hub-wrap /
+   .loop-stage.s-* / .loop-caption  (@media max-width 900 + 420)
+
+B) Mobile Menu → black void + page content peeking
+   OWNER: screenshot of Architecture/Implementation chips + black void
+   ROOT CAUSE: .nav backdrop-filter created a containing block that
+   trapped position:fixed .nav-links.is-open; scroll-lock left sticky
+   nav off-screen; scrim covered the rest.
+   FIX (all primary pages):
+     · backdrop-filter: none on mobile .nav
+     · viewport-fixed full-height drawer (z-index 230) under fixed bar
+     · body position:fixed scroll lock + restore via setMenuOpen()
+     · hash-link closes call setMenuOpen(false)
+   Selectors: body.nav-menu-open, .nav-links.is-open, #nav-toggle
+
+C) Tooling stack labels clipped (Governan… / Knowledg…)
+   OWNER: two screenshots of right-edge hard clip
+   ROOT CAUSE: CVL-381-2 bumped .stk-label to 18px inside viewBox 440
+   FIX: viewBox 0 0 520 300; mobile label 14px; band/stack overflow visible
+   Selectors: .v2-strip-stack svg / .stk-label  (#method-void)
+
+══════════════════════════════════════════════════
+CURSOR PROOF (re-run / challenge)
+══════════════════════════════════════════════════
+Playwright @ 390 (local serve of .tmp-cvlbrand):
+  · loop: captionVsImplGap > 0; no label↔chip collisions; no hscroll
+    proof: .tmp-cvlbrand-scratch/loop_mobile_390_fix.png
+  · nav open mid-scroll (y=900): Home/System/The Loop/Work/About +
+    Discuss a Project all visible lime; Close restores scroll
+    proof: .tmp-cvlbrand-scratch/nav_mobile_open_390.png
+  · tooling labels: Governance/Agents/MCP/Knowledge/Workflow full;
+    clippedRight=false; no hscroll
+    proof: .tmp-cvlbrand-scratch/tooling_labels_390.png
+
+══════════════════════════════════════════════════
+REQUIRED GATES — GRADE THESE
+══════════════════════════════════════════════════
+Widths: 1440 · 900±1 · 768 · 390–430
+
+1. LOOP (#loop)
+   - Pyramid readable; hub fills triangle (not bald black void)
+   - Observe + "THE LOOP HOLDS THE CENTER." clear of Implementation
+   - Desktop pyramid geometry unchanged in spirit
+   - reduced-motion: canvas/vortex degrade safely
+
+2. MOBILE NAV
+   - Menu → Close: full link list visible (not black void)
+   - Open mid-page scroll: bar stays; links stay; page does not peek
+   - Close restores prior scrollY (no jump to top)
+   - Backdrop-filter must NOT reappear on ≤900 (containing-block trap)
+   - Same on Home / System / Work / About / Legal
+
+3. TOOLING (#method-void)
+   - Full words: Governance · Agents · MCP · Knowledge · Workflow
+   - No right-edge clip; no page hscroll at 390
+   - Desktop strip still two-lane / balanced
+
+4. REGRESSION SWEEP
+   - Hero orbit seats still full-word + in-frame at 390
+   - Footer wordmark alpha OK
+   - Sticky nav brand + Menu/Close hit targets ≥44px
+   - No secret/token leakage in HTML/JS
+
+══════════════════════════════════════════════════
+OUTPUT CONTRACT
+══════════════════════════════════════════════════
+1. Verdict: PASS / REVISE / HOLD
+2. Findings table: ID · Sev(P0/P1/P2) · Surface(desktop/mobile/both) ·
+   Selector/path · Defect · Proposed fix (one-liner)
+3. Explicit MOBILE subsection — even if clean: "mobile gates: PASS"
+4. Call out any live-vs-tree drift if cavelux.ai ≠ local tip
+5. End: FROM: Codex
+
+Do NOT commit, deploy, or edit the tree. Review + proposal only.
+── END ──

@@ -1,0 +1,179 @@
+Paste for Codex:
+
+---
+
+```
+── BLOODWAVE · CODEX FINAL REVIEW · CAVELUX SITE ──
+FROM: Cursor (lane brief) · AUTHORIZED: Bloodwave GO review-only
+DATE: 2026-07-20
+LIVE TIP: v3.81 · https://cavelux.ai/
+PROJECT: Cloudflare Pages `cvl-site-preview` · production branch
+TREE (deploy surface): C:\Users\jared\Projects\lifepunch\.tmp-cvlbrand\
+(untracked deploy kit — not a monorepo product lane)
+
+══════════════════════════════════════════════════
+MISSION
+══════════════════════════════════════════════════
+Final REVISE / PASS review of the live Cavelux marketing site after the
+post-v3.65 geometry + polish arc. Prior Codex REVISE (v3.65) items were
+landed; this pass re-grades the current tip and MUST treat mobile as a
+first-class gate equal to desktop — not a footnote.
+
+Verdict language: PASS · REVISE · HOLD
+Cite file paths + selectors. No commits. No deploys. Proposal-only.
+
+══════════════════════════════════════════════════
+SCOPE — PAGES / FILES
+══════════════════════════════════════════════════
+Pages (live):
+  /           index.html
+  /system/    system/index.html
+  /work/      work/index.html
+  /about/     about/index.html
+  /legal/     legal/index.html
+  404         404.html
+
+Key assets:
+  cutouts/CAVELUX_wordmark_glitch.png          (true alpha; footer + hero)
+  media/blackhole-tidal.png                    (static; /system strip)
+  cutouts/CVL_mark_voxel_*.png                 (nav / hub / footer mark)
+  functions/_middleware.js                     (old-domain 301 only)
+  _headers · robots.txt · social/ · favicon/
+
+Out of scope:
+  Monorepo commit · Pages project settings · DNS · brand/legal filings
+  Copy rewrites unless a defect forces a one-line fix proposal
+
+══════════════════════════════════════════════════
+DELTA SINCE LAST CODEX REVISE (v3.65 → v3.81)
+══════════════════════════════════════════════════
+CLOSED / SHIPPED (verify still true on live):
+1. Hero orbit — full-word seats COLLABORATION / VALUE / LOOP; widened
+   --arch-r so swirl has air.
+2. /system pyramid — 3 corners only (Architecture / Implementation /
+   Review); Observation = center brain + OBSERVE + "THE LOOP HOLDS THE
+   CENTER."; gate-tick slop removed.
+3. Brain cycleAt survives blur (prior P-finding).
+4. Strip band — no art/copy overlap; black-hole phrase count discipline
+   on /system.
+5. 404 — og:image + CAVELUX footer wordmark.
+6. Wordmarks — CVL hero glitch replaced with transparent CAVELUX glitch
+   (same asset as footer); baked black matte knocked out; footer
+   drop-shadow removed (was drawing a rectangular halo).
+7. Hero orbit vein fillers — mid-sector angles + south triple-fan
+   (VALUE↔LOOP gap) to match owner density reference.
+8. /system OBSERVE labels — breathing room under swirl
+   (.loop-hub-labels margin-top 1.15rem; caption gap increased).
+9. /system method-void strip — diagonal dead-zone retired; two equal
+   lanes:
+     LEFT  .v2-strip-tool  = isometric tooling stack SVG + tooling copy
+     RIGHT .v2-strip-void  = static blackhole-tidal art + black-hole copy
+10. Black-hole art is STATIC (no rotate/GIF animation) — intentional.
+
+Tooling stack layers (top→bottom): Governance · Agents · MCP ·
+Knowledge · Workflow (+ "Tooling stack" caption). Lime/black CVL tokens;
+dashed leaders; decorative rings. SVG aria-hidden.
+
+══════════════════════════════════════════════════
+MOBILE COMPATIBILITY — REQUIRED REVIEW AXIS
+══════════════════════════════════════════════════
+Owner rule: working mobile AND desktop styles are equally important.
+Do not PASS if mobile is "mostly fine." Grade ≤900px and a narrow phone
+width (~390) as hard gates.
+
+Check at least:
+  · 1440 / 1024 desktop
+  · 900 breakpoint (exact edge either side of @media max-width: 900px)
+  · 390–430 phone portrait
+  · Prefer also ~768 tablet
+
+Mobile / responsive defects to hunt (P1 if broken, P2 if polish):
+
+A. HOME HERO
+  - Full-word seats (COLLABORATION / VALUE / LOOP) must not clip,
+    collide with swirl, or overflow viewport.
+  - Orbit radius / hang positions remain coherent on narrow widths.
+  - Hero CAVELUX wordmark scales cleanly; no baked matte / drop-shadow box.
+  - CTA row + lane mono row wrap without horizontal scroll.
+  - Cards / focus states usable with touch (hit targets).
+
+B. /SYSTEM LOOP DIAGRAM
+  - 3 stage chips clear of hub; no overlap with OBSERVE labels.
+  - OBSERVE + caption retain breathing room under swirl at mobile hub size.
+  - No horizontal scroll from canvas / absolute seats.
+  - reduced-motion: animations pause / degrade safely.
+
+C. /SYSTEM METHOD-VOID STRIP (tooling | black hole) — HIGH RISK
+  - ≤900px must STACK: tooling stack → tooling copy → blackhole art →
+    blackhole copy (no 2-col squeeze, no overlap).
+  - Tooling SVG labels must remain readable (not clipped, not colliding
+    slabs); if leaders/labels break at ~390, propose a mobile-specific
+    stack treatment (e.g. simplified labels / smaller type / stacked
+    list fallback) — do not ignore.
+  - Black-hole art static; mix-blend-mode must not vanish on mobile Safari.
+  - Black-hole copy left-aligns on mobile (desktop right-align OK).
+  - No art sitting under copy; no giant empty diagonal void returning.
+
+D. GLOBAL
+  - Nav / hamburger-or-inline nav usable; no overflow.
+  - Footer CAVELUX wordmark + mark: transparent, no matte box, scales.
+  - Typography: no crushed mono labels, no clipped letter-spacing words.
+  - Images: correct intrinsic sizing; no layout shift disasters.
+  - Touch: buttons/chips ≥ comfortable tap size where interactive.
+  - prefers-reduced-motion honored on orbit / strip / loop motion.
+  - No horizontal page scroll at 390.
+
+══════════════════════════════════════════════════
+DESKTOP CHECKLIST (still required)
+══════════════════════════════════════════════════
+- Brand: LIFEPUNCH™ nominative elsewhere OK; site is Cavelux — no
+  DXRP/Facepunch affiliation claims.
+- Hero: CAVELUX glitch wordmark transparent on grid.
+- Orbit veins: south gap filled; no bald VALUE↔LOOP pocket.
+- /system: 3-corner pyramid + center Observe; no gate ticks.
+- Strips: balanced two-lane composition; tooling stack + black hole art.
+- "black hole" ≤2 occurrences on /system body (label + body); CTA must
+  not reintroduce a third.
+- Accessibility: one h1/page; focus-visible; aria on interactive seats;
+  decorative art aria-hidden.
+- Performance: no accidental animation on blackhole-tidal; heavy canvases
+  behave under reduce.
+
+══════════════════════════════════════════════════
+PRIOR P-FINDINGS TO RE-VERIFY CLOSED
+══════════════════════════════════════════════════
+(From v3.65 Codex REVISE — confirm not regressed)
+- brain cycleAt survives blur
+- strip art not under black-hole copy
+- black-hole phrase count
+- 404 og + footer wordmark
+Add: wordmark alpha; static tidal art; tooling SVG; OBSERVE spacing;
+strip 2-lane rebalance; vein south fan.
+
+══════════════════════════════════════════════════
+SENSOR / HOW TO REVIEW
+══════════════════════════════════════════════════
+1. Live: https://cavelux.ai/  and  /system/ /work/ /about/ /legal/ + 404
+   Tip string in <title> must read v3.81 (hard-refresh if sticky).
+2. Local mirror if needed: .tmp-cvlbrand\ (same HTML as deployed).
+3. Resize or device emulation at 1440 / 900±1 / 768 / 390.
+4. Screenshot evidence preferred for any REVISE visual finding.
+
+══════════════════════════════════════════════════
+OUTPUT CONTRACT
+══════════════════════════════════════════════════
+1. Verdict: PASS | REVISE | HOLD
+2. Findings table: ID · Sev(P0/P1/P2) · Surface(desktop/mobile/both) ·
+   Page · Selector/file · Defect · Proposed fix (diff-shaped, not essay)
+3. Explicit MOBILE subsection — even if clean, state "mobile gates: PASS"
+   with widths checked.
+4. Explicit DESKTOP subsection — same.
+5. Regressions vs v3.65 findings (closed / reopened).
+6. Do NOT invent scope (no copy rewrite campaign, no rebrand).
+
+END BRIEF
+```
+
+---
+
+That paste is ready to drop into Codex as-is.

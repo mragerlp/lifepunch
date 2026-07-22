@@ -1,0 +1,173 @@
+── BLOODWAVE · CODEX FINAL REVIEW · CAVELUX SITE ──
+FROM: Cursor (lane brief) · AUTHORIZED: Bloodwave GO review-only
+DATE: 2026-07-21
+LIVE TIP: v3.88 · https://cavelux.ai/
+PROJECT: Cloudflare Pages `cvl-site-preview` · production branch
+TREE (deploy surface): C:\Users\jared\Projects\lifepunch\.tmp-cvlbrand\
+(untracked deploy kit — not a monorepo product lane)
+
+══════════════════════════════════════════════════
+MISSION
+══════════════════════════════════════════════════
+Final REVISE / PASS review of the live Cavelux marketing site tip.
+This supersedes the v3.81 final-review brief. Prior Codex REVISE at
+v3.81 (CVL-381-1/2/3) was landed; subsequent polish through v3.87 is
+in scope. Mobile remains a first-class gate equal to desktop.
+
+Verdict language: PASS · REVISE · HOLD
+Cite file paths + selectors (machine-verified). No commits. No deploys.
+Proposal-only.
+
+══════════════════════════════════════════════════
+SCOPE — PAGES / FILES
+══════════════════════════════════════════════════
+Pages (live):
+  /           index.html
+  /system/    system/index.html   (+ #stack · #loop · #method-void · #tooling · #blackhole)
+  /work/      work/index.html
+  /about/     about/index.html
+  /legal/     legal/index.html
+  404         404.html
+
+Key assets:
+  cutouts/CAVELUX_wordmark_glitch.png   (true alpha; hero + footer)
+  media/blackhole-tidal.png             (STATIC — no CSS rotate)
+  media/lifepunch-logo.png              (/work Visit LIFEPUNCH)
+  cutouts/CVL_mark_voxel_*.png
+  functions/_middleware.js              (old-domain 301 only)
+  _headers · robots.txt · social/ · favicon/
+
+Out of scope:
+  Monorepo commit · Pages/DNS settings · brand/legal filings
+  Copy rewrite campaigns (one-line defect fixes OK as proposals)
+
+══════════════════════════════════════════════════
+DELTA SINCE LAST CODEX REVISE (v3.81 → v3.87)
+══════════════════════════════════════════════════
+CLOSED FROM v3.81 REVISE (must re-verify — do not assume):
+  CVL-381-1  .loop-hub-labels out of grid flow (position:absolute) so
+             max-content cannot blow the hub track / overlap Implementation
+  CVL-381-2  tooling SVG labels readable on narrow phones
+  CVL-381-3  touch targets / related a11y polish on interactive seats
+
+SHIPPED AFTER THAT (new since v3.81 brief):
+1. Mobile orbit / loop air pass (v3.86) — home --arch-r ~46%/48%,
+   smaller hubs, wider maps; /system hub top ~46%, narrowed OBSERVE
+   caption to clear Implementation at 390.
+2. Desktop strip lanes pulled closer (centered fixed-width columns).
+3. /work — “Visit LIFEPUNCH” CTA + official LP logo → https://lifepunch.co
+   (nominative; Cavelux remains site brand).
+4. Nav fill (v3.87) — new item **The Loop** after System on all primary
+   pages → `/system/#loop`. Loop section id is now `#loop` (was `#system`).
+   On /system/, `syncSystemNav` toggles is-active between System and
+   The Loop when hash === `loop`.
+5. Tooling SVG cleanup (v3.87) — removed green “Tooling stack” caption
+   and decorative `.stk-ring` background boxes. Keep only isometric
+   slabs + dashed leaders + layer labels
+   (Governance · Agents · MCP · Knowledge · Workflow).
+6. Strip alignment (v3.88) — black-hole lane matches tooling lane:
+   both `align-items: flex-start`, label + body `text-align: left`
+   (no right-rail mirror). Art width still `min(100%, 22rem)` like stack.
+
+LOCKED RULINGS (do not re-litigate; only flag regressions):
+  · Home seats: full words COLLABORATION / VALUE / LOOP; wide --arch-r
+  · /system: 3-corner pyramid; Observation = center; no gate ticks
+  · Strips: tooling LEFT / black hole RIGHT; art not under black-hole copy
+  · Footer + hero: transparent CAVELUX_wordmark_glitch.png
+  · Black-hole tidal PNG: NO CSS rotation / GIF animation
+  · Trademark: LIFEPUNCH™ nominative OK; no DXRP/Facepunch affiliation
+
+══════════════════════════════════════════════════
+MOBILE COMPATIBILITY — REQUIRED REVIEW AXIS
+══════════════════════════════════════════════════
+Owner rule: working mobile AND desktop are equally important.
+Do not PASS if mobile is “mostly fine.” Grade ≤900px and ~390 as hard gates.
+
+Widths: 1440 · 1024 · 900±1 · ~768 · 390–430
+
+A. HOME HERO
+  - Full-word seats must not clip, collide with swirl, or overflow.
+  - CAVELUX wordmark: transparent, no baked matte / drop-shadow box.
+  - No horizontal page scroll at 390.
+  - CTAs / seats usable with touch.
+
+B. /SYSTEM LOOP (#loop)
+  - 3 stage chips clear of hub + OBSERVE labels (re-check CVL-381-1).
+  - Absolute hub labels must not collide Implementation at 390/430.
+  - Nav → The Loop lands on #loop with scroll-margin under sticky nav.
+  - reduced-motion: loop / canvas pause or degrade safely.
+
+C. /SYSTEM METHOD-VOID (tooling | black hole) — HIGH RISK
+  - ≤900px STACKS: tooling SVG → tooling copy → blackhole art →
+    blackhole copy (no 2-col squeeze, no overlap).
+  - SVG = slabs + labels only (no caption, no decorative rings).
+    Labels readable at ~390; propose mobile fallback if clipped.
+  - Black-hole art STATIC; mix-blend must not vanish on mobile Safari.
+  - Black-hole copy left-aligns on mobile (desktop right-align OK).
+
+D. GLOBAL NAV (new surface)
+  - Five primary links: Home · System · The Loop · Work · About
+  - Drawer at ≤900: all five reachable; tap targets comfortable;
+    no overflow / clipped “The Loop”.
+  - /system/#loop: Loop is-active; System not. Other hashes / bare
+    /system/: System is-active.
+  - Deep-link from other pages to /system/#loop works.
+
+E. /WORK
+  - Visit LIFEPUNCH CTA + logo readable / tappable on phone;
+    opens lifepunch.co (noopener).
+
+══════════════════════════════════════════════════
+DESKTOP CHECKLIST
+══════════════════════════════════════════════════
+- Brand: Cavelux site; LIFEPUNCH™ nominative on /work only as intended.
+- Hero: transparent CAVELUX glitch; orbit veins fill VALUE↔LOOP south gap.
+- /system: 3-corner + center Observe; #loop section intact.
+- Strips: two-lane; tooling SVG clean (no rings/caption); tidal static.
+- “black hole” ≤2 on /system body (label + body); CTA must not add a 3rd.
+- A11y: one h1/page; focus-visible; decorative art aria-hidden;
+  tooling SVG has accessible name without redundant on-canvas caption.
+- Perf: no accidental blackhole animation; canvases honor reduce.
+
+══════════════════════════════════════════════════
+PRIOR P-FINDINGS — RE-VERIFY CLOSED
+══════════════════════════════════════════════════
+From v3.65:
+  · brain cycleAt survives blur
+  · strip art not under black-hole copy
+  · black-hole phrase count
+  · 404 og + footer wordmark
+
+From v3.81:
+  · CVL-381-1 hub labels absolute / no Implementation overlap
+  · CVL-381-2 tooling labels on narrow phones
+  · CVL-381-3 touch targets
+
+Post-v3.81 add:
+  · wordmark alpha; static tidal; strip 2-lane; OBSERVE spacing;
+    mobile air (v3.86); Loop nav + #loop id; tooling SVG declutter;
+    /work Visit LIFEPUNCH.
+
+══════════════════════════════════════════════════
+SENSOR / HOW TO REVIEW
+══════════════════════════════════════════════════
+1. Live tip <title> must read **v3.88** (hard-refresh / ?cb=<ts> if sticky).
+2. Local mirror: .tmp-cvlbrand\ (same HTML as deployed).
+3. Emulate 1440 / 900±1 / 768 / 390; screenshot any REVISE visual.
+4. Click-test: nav The Loop → #loop; hash active toggle; brain cycle;
+   strip stack at 390; Visit LIFEPUNCH.
+
+══════════════════════════════════════════════════
+OUTPUT CONTRACT
+══════════════════════════════════════════════════
+1. Verdict: PASS | REVISE | HOLD
+2. Findings table: ID · Sev(P0/P1/P2) · Surface(desktop/mobile/both) ·
+   Page · Selector/file · Defect · Proposed fix (diff-shaped)
+3. Explicit MOBILE subsection — even if clean: “mobile gates: PASS”
+   + widths checked.
+4. Explicit DESKTOP subsection — same.
+5. Regressions vs v3.65 / v3.81 (closed / reopened).
+6. Do NOT invent scope (no copy rewrite campaign, no rebrand,
+   no re-adding tooling caption/rings).
+
+END BRIEF

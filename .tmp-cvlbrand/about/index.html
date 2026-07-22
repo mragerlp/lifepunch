@@ -3,9 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>About — Cavelux · v3.58</title>
-  <meta name="robots" content="noindex, nofollow, noarchive" />
-  <meta name="googlebot" content="noindex, nofollow, noarchive" />
+  <title>About — Cavelux · v3.94</title>
+  <meta name="robots" content="index, follow" />
   <meta name="description" content="Most businesses don't have an AI problem — they have an AI-fluency barrier. Cavelux installs the system around the tools." />
   <link rel="canonical" href="https://cavelux.ai/about/" />
   <meta property="og:type" content="website" />
@@ -181,6 +180,8 @@
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
+      box-sizing: border-box;
+      min-height: 44px;
       padding: 0.6rem 1.15rem;
       border-radius: 0;
       border: 1px solid var(--cvl-lime);
@@ -213,6 +214,11 @@
       font-family: var(--cvl-mono);
       font-size: 0.75rem;
       cursor: pointer;
+      box-sizing: border-box;
+      min-width: 44px;
+      min-height: 44px;
+      align-items: center;
+      justify-content: center;
     }
     .nav-toggle:focus-visible {
       outline: 2px solid var(--cvl-lime);
@@ -1544,19 +1550,7 @@
       }
       .nav-brand-word { font-size: 1.15rem; }
       .nav-brand-sub { font-size: 0.55rem; }
-      .nav-links.is-open {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 100%;
-        background: var(--cvl-bg);
-        border-bottom: 1px solid var(--cvl-border);
-        padding: 1rem 1.25rem 1.25rem;
-        gap: 0.85rem;
-      }
+      /* open-state layout owned by the mobile drawer block (viewport-fixed). */
       .nav-cta.is-open {
         display: inline-flex;
         margin: 0.25rem 1.25rem 1rem;
@@ -1977,11 +1971,11 @@
     }
     footer .footer-glitch-word {
       display: block;
-      width: min(11.5rem, 46vw);
+      width: min(14.5rem, 52vw);
       height: auto;
       margin: 0;
       image-rendering: auto;
-      filter: drop-shadow(0 0 8px rgba(146, 250, 17, 0.2));
+      filter: none;
     }
     footer .footer-logo-link {
       display: inline-block;
@@ -2356,6 +2350,10 @@
       .nav {
         z-index: 200;
         background: #000;
+        /* backdrop-filter creates a containing block — traps position:fixed
+           menu inside the sticky header. On mobile that + scroll-lock = black void. */
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
       }
       .nav-inner {
         position: relative;
@@ -2367,12 +2365,12 @@
         position: relative;
         z-index: 220;
       }
-      /* Scrim hides page; menu itself is a short dropdown (no scroll) */
+      /* Full-viewport scrim; menu is a real viewport-fixed panel under the bar */
       body.nav-menu-open::before {
         content: "";
         position: fixed;
         inset: 0;
-        top: var(--cvl-nav-h);
+        top: 0;
         z-index: 180;
         background: #000;
       }
@@ -2382,24 +2380,26 @@
         align-items: center;
         justify-content: flex-start;
         text-align: center;
-        position: fixed;
-        left: 0;
-        right: 0;
-        top: var(--cvl-nav-h);
-        bottom: auto;
-        width: 100%;
-        height: auto;
+        position: fixed !important;
+        left: 0 !important;
+        right: 0 !important;
+        top: var(--cvl-nav-h) !important;
+        bottom: 0 !important;
+        width: 100% !important;
+        height: auto !important;
         min-height: 0;
         max-height: none;
-        z-index: 195;
+        z-index: 230 !important;
         margin: 0;
-        padding: 0.85rem 1.25rem 1.05rem;
-        gap: 0.55rem;
+        padding: 1.25rem 1.25rem 2rem;
+        gap: 0.65rem;
         background: #000;
         border: none;
-        border-bottom: 1px solid rgba(146, 250, 17, 0.22);
+        border-bottom: none;
         box-sizing: border-box;
-        overflow: visible;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        color: var(--cvl-lime);
       }
       .nav-links.is-open > li {
         width: 100%;
@@ -2407,6 +2407,12 @@
         justify-content: center;
       }
       .nav-links.is-open > li > a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 44px;
+        min-height: 44px;
+        box-sizing: border-box;
         font-size: 1.15rem;
         letter-spacing: 0.05em;
         line-height: 1.25;
@@ -2431,10 +2437,20 @@
         display: none !important;
       }
       body.nav-menu-open {
+        position: fixed;
+        left: 0;
+        right: 0;
+        width: 100%;
         overflow: hidden;
         touch-action: none;
       }
       body.nav-menu-open .nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        z-index: 240;
         background: #000;
         border-bottom-color: rgba(146, 250, 17, 0.22);
       }
@@ -2512,7 +2528,7 @@
         margin: 0 auto !important;
       }
       footer .footer-glitch-word {
-        width: min(9.75rem, 62vw) !important;
+        width: min(12.5rem, 72vw) !important;
         margin: 0 auto !important;
         /* white letterforms sit slightly left of the glitch glow */
         transform: translateX(0.2rem);
@@ -2631,8 +2647,11 @@
     }
     /* —— Mobile polish pass (phone viewports) —— */
     @media (max-width: 900px) {
-      html, body {
+      html {
         overflow-x: hidden;
+      }
+      body {
+        overflow-x: clip;
       }
       .wrap {
         padding-inline: 1.1rem;
@@ -2889,6 +2908,7 @@
       <ul class="nav-links" id="nav-menu">
         <li><a href="/">Home</a></li>
         <li><a href="/system/">System</a></li>
+        <li><a href="/system/#loop">The Loop</a></li>
         <li><a href="/work/">Work</a></li>
         <li><a href="/about/" class="is-active">About</a></li>
         <li class="nav-drawer-cta">
@@ -2948,8 +2968,8 @@
         <div class="footer-url">cavelux.ai</div>
       </div>
       <div class="footer-brand-block">
-        <a class="footer-glitch-link" href="/" aria-label="CVL home">
-          <img class="pixel footer-glitch-word" src="/cutouts/CVL_wordmark_glitch.png" alt="CVL" width="771" height="238" decoding="async" />
+        <a class="footer-glitch-link" href="/" aria-label="Cavelux home">
+          <img class="pixel footer-glitch-word" src="/cutouts/CAVELUX_wordmark_glitch.png?v=alpha6" alt="CAVELUX" width="1024" height="212" decoding="async" />
         </a>
       </div>
       <div class="footer-copy">&copy; 2026 Cavelux</div>
@@ -2966,34 +2986,45 @@
       var toggle = document.getElementById("nav-toggle");
       var menu = document.getElementById("nav-menu");
       var cta = document.getElementById("nav-cta");
+      var setMenuOpen = null;
       if (toggle && menu) {
         var navEl = document.querySelector(".nav");
+        var lockY = 0;
         function syncNavHeight() {
           if (!navEl) return;
           document.documentElement.style.setProperty(
             "--cvl-nav-h",
-            navEl.getBoundingClientRect().height + "px"
+            Math.ceil(navEl.getBoundingClientRect().height) + "px"
           );
         }
-        syncNavHeight();
-        window.addEventListener("resize", syncNavHeight);
-        toggle.addEventListener("click", function () {
-          syncNavHeight();
-          var open = menu.classList.toggle("is-open");
-          if (cta) cta.classList.toggle("is-open", open);
-          toggle.setAttribute("aria-expanded", open ? "true" : "false");
-          toggle.textContent = open ? "Close" : "Menu";
-          document.body.classList.toggle("nav-menu-open", open);
-        });
-      }
-      if (toggle && menu) {
-        menu.querySelectorAll("a").forEach(function (a) {
-          a.addEventListener("click", function () {
+        setMenuOpen = function (open) {
+          if (open) {
+            lockY = window.scrollY || window.pageYOffset || 0;
+            syncNavHeight();
+            menu.classList.add("is-open");
+            if (cta) cta.classList.add("is-open");
+            toggle.setAttribute("aria-expanded", "true");
+            toggle.textContent = "Close";
+            document.body.classList.add("nav-menu-open");
+            document.body.style.top = "-" + lockY + "px";
+          } else {
             menu.classList.remove("is-open");
             if (cta) cta.classList.remove("is-open");
             toggle.setAttribute("aria-expanded", "false");
             toggle.textContent = "Menu";
             document.body.classList.remove("nav-menu-open");
+            document.body.style.top = "";
+            window.scrollTo(0, lockY);
+          }
+        }
+        syncNavHeight();
+        window.addEventListener("resize", syncNavHeight);
+        toggle.addEventListener("click", function () {
+          setMenuOpen(!menu.classList.contains("is-open"));
+        });
+        menu.querySelectorAll("a").forEach(function (a) {
+          a.addEventListener("click", function () {
+            setMenuOpen(false);
           });
         });
       }
@@ -3286,13 +3317,17 @@
           e.preventDefault();
           if (history.replaceState) history.replaceState(null, "", "#" + id);
           setActive(id, true);
-          if (menu) menu.classList.remove("is-open");
-          if (cta) cta.classList.remove("is-open");
-          if (toggle) {
-            toggle.setAttribute("aria-expanded", "false");
-            toggle.textContent = "Menu";
+          if (typeof setMenuOpen === "function") setMenuOpen(false);
+          else {
+            if (menu) menu.classList.remove("is-open");
+            if (cta) cta.classList.remove("is-open");
+            if (toggle) {
+              toggle.setAttribute("aria-expanded", "false");
+              toggle.textContent = "Menu";
+            }
+            document.body.classList.remove("nav-menu-open");
+            document.body.style.top = "";
           }
-          document.body.classList.remove("nav-menu-open");
         });
       });
 
