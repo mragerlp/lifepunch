@@ -1,0 +1,18 @@
+{
+  "scopeName": "sbox.csharp.injection",
+  "injectionSelector": "L:source.cs",
+  "patterns": [
+    {
+      "name": "entity.name.function.attribute.sbox.cs",
+      "match": "(?<=\\[)\\s*(Property|Sync|ConCmd|Event|Title|Description|Category|Icon|Spawnable|RequireComponent|Group|Range|Hide|ShowIf|ReadOnly|Button)(?=\\s*(\\(|\\]|,))"
+    },
+    {
+      "name": "support.type.sbox.cs",
+      "match": "\\b(Component|GameObject|Scene|Transform|Vector2|Vector3|Vector4|Rotation|Angles|Color|Color32|Time|Input|Sound|SoundEvent|Resource|ModelRenderer|SkinnedModelRenderer|CameraComponent|Rigidbody)\\b"
+    },
+    {
+      "name": "support.namespace.sbox.cs",
+      "match": "\\bSandbox(?=\\.)"
+    }
+  ]
+}
