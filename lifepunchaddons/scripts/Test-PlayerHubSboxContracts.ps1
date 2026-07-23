@@ -18,10 +18,20 @@ $here = if ($PSScriptRoot) { $PSScriptRoot } else { Split-Path -Parent $MyInvoca
 $playerHubRoot = (Resolve-Path (Join-Path $here '..\Code\Addons\lifepunch\playerhub')).Path
 $uiRoot = Join-Path $playerHubRoot 'code\ui'
 $modelPath = Join-Path $playerHubRoot 'code\data\LpPlayerHubModels.cs'
+$catalogPath = Join-Path $playerHubRoot 'code\data\LpPlayerHubCatalog.cs'
+$hostPath = Join-Path $uiRoot 'LpPlayerHubHost.cs'
+$statsPath = Join-Path $uiRoot 'Stats\LpPlayerHubStats.razor'
+$statsScssPath = Join-Path $uiRoot 'Stats\LpPlayerHubStats.razor.scss'
+$skillsPath = Join-Path $uiRoot 'Skills\LpPlayerHubSkills.razor'
+$skillsScssPath = Join-Path $uiRoot 'Skills\LpPlayerHubSkills.razor.scss'
 $rootPath = Join-Path $uiRoot 'LpPlayerHubRoot.razor'
 $rootScssPath = Join-Path $uiRoot 'LpPlayerHubRoot.razor.scss'
 $tokenPath = Join-Path $uiRoot 'LpPlayerHubTokens.scss'
 $findings = [System.Collections.Generic.List[string]]::new()
+$contractAssertions = 0
+$catalogTrackCount = 0
+$catalogSkillCount = 0
+$catalogTierCount = 0
 
 function Add-Finding {
     param(
@@ -33,6 +43,20 @@ function Add-Finding {
 
     $relative = $File.Substring($playerHubRoot.Length).TrimStart('\')
     [void] $findings.Add(('{0}:{1} [{2}] {3}' -f $relative, $Line, $Rule, $Text.Trim()))
+}
+
+function Assert-Contract {
+    param(
+        [bool] $Condition,
+        [string] $File,
+        [string] $Rule,
+        [string] $Message
+    )
+
+    $script:contractAssertions++
+    if (-not $Condition) {
+        [void] $findings.Add(('{0}:1 [{1}] {2}' -f $File, $Rule, $Message))
+    }
 }
 
 function Add-TextMatches {
@@ -203,6 +227,289 @@ if ((Test-Path -LiteralPath $confirmPath) -or (Test-Path -LiteralPath $confirmSc
 }
 
 $modelText = Get-Content -Raw -LiteralPath $modelPath
+$hostText = Get-Content -Raw -LiteralPath $hostPath
+$statsText = Get-Content -Raw -LiteralPath $statsPath
+$statsScssText = Get-Content -Raw -LiteralPath $statsScssPath
+$skillsText = Get-Content -Raw -LiteralPath $skillsPath
+$skillsScssText = Get-Content -Raw -LiteralPath $skillsScssPath
+
+$catalogExists = Test-Path -LiteralPath $catalogPath
+Assert-Contract -Condition $catalogExists `
+    -File 'code\data\LpPlayerHubCatalog.cs' `
+    -Rule 'catalog-file' `
+    -Message 'Missing the fixture-v0 Player Hub catalog.'
+
+$catalogText = if ($catalogExists) {
+    Get-Content -Raw -LiteralPath $catalogPath
+}
+else {
+    ''
+}
+
+$expectedTracks = @(
+    [pscustomobject]@{ Id = 'resilience'; Label = 'Resilience' },
+    [pscustomobject]@{ Id = 'recovery'; Label = 'Recovery' },
+    [pscustomobject]@{ Id = 'enterprise'; Label = 'Enterprise' },
+    [pscustomobject]@{ Id = 'infiltration'; Label = 'Infiltration' },
+    [pscustomobject]@{ Id = 'enforcement'; Label = 'Enforcement' }
+)
+
+$expectedSkills = [System.Collections.Generic.List[object]]::new()
+foreach ($track in $expectedTracks) {
+    foreach ($slot in 1..5) {
+        [void] $expectedSkills.Add([pscustomobject]@{
+            Id = ('{0}-slot-{1}' -f $track.Id, $slot)
+            TrackId = $track.Id
+            Title = ('Catalogue Slot {0}' -f $slot)
+        })
+    }
+}
+
+$singleline = [System.Text.RegularExpressions.RegexOptions]::Singleline
+$trackMatches = [regex]::Matches(
+    $catalogText,
+    'CreateTrack\s*\(\s*id:\s*"(?<id>[^"]+)"\s*,\s*label:\s*"(?<label>[^"]+)"',
+    $singleline
+)
+$skillMatches = [regex]::Matches(
+    $catalogText,
+    'CreateSkill\s*\(\s*id:\s*"(?<id>[^"]+)"\s*,\s*trackId:\s*"(?<track>[^"]+)"\s*,\s*title:\s*"(?<title>[^"]+)"',
+    $singleline
+)
+$tierMatches = [regex]::Matches(
+    $catalogText,
+    'new\s+LpPlayerHubCatalogTier\s*\(\s*Rank:\s*(?<rank>[1-5])\s*,\s*Label:\s*"(?<label>I|II|III|IV|V)"\s*,\s*State:\s*TierPendingState\s*,\s*EffectState:\s*OwnerHeldState\s*\)',
+    $singleline
+)
+
+$catalogTrackCount = $trackMatches.Count
+$catalogSkillCount = $skillMatches.Count
+$catalogTierCount = $catalogSkillCount * $tierMatches.Count
+
+Assert-Contract -Condition ($catalogText -match 'public\s+const\s+string\s+Version\s*=\s*"fixture-v0"\s*;') `
+    -File 'code\data\LpPlayerHubCatalog.cs' `
+    -Rule 'catalog-version' `
+    -Message 'Catalog version must be fixture-v0.'
+
+Assert-Contract -Condition ($catalogTrackCount -eq 5) `
+    -File 'code\data\LpPlayerHubCatalog.cs' `
+    -Rule 'catalog-track-count' `
+    -Message ('Expected 5 catalog tracks; found {0}.' -f $catalogTrackCount)
+
+$actualTrackRows = @($trackMatches | ForEach-Object {
+    '{0}|{1}' -f $_.Groups['id'].Value, $_.Groups['label'].Value
+})
+$expectedTrackRows = @($expectedTracks | ForEach-Object { '{0}|{1}' -f $_.Id, $_.Label })
+Assert-Contract -Condition (($actualTrackRows -join "`n") -ceq ($expectedTrackRows -join "`n")) `
+    -File 'code\data\LpPlayerHubCatalog.cs' `
+    -Rule 'catalog-track-order' `
+    -Message 'Catalog tracks must retain the approved IDs, names, and order.'
+
+Assert-Contract -Condition ($catalogSkillCount -eq 25) `
+    -File 'code\data\LpPlayerHubCatalog.cs' `
+    -Rule 'catalog-skill-count' `
+    -Message ('Expected 25 catalog skills; found {0}.' -f $catalogSkillCount)
+
+$actualSkillRows = @($skillMatches | ForEach-Object {
+    '{0}|{1}|{2}' -f $_.Groups['id'].Value, $_.Groups['track'].Value, $_.Groups['title'].Value
+})
+$expectedSkillRows = @($expectedSkills | ForEach-Object { '{0}|{1}|{2}' -f $_.Id, $_.TrackId, $_.Title })
+Assert-Contract -Condition (($actualSkillRows -join "`n") -ceq ($expectedSkillRows -join "`n")) `
+    -File 'code\data\LpPlayerHubCatalog.cs' `
+    -Rule 'catalog-skill-matrix' `
+    -Message 'Catalog skill IDs, track ownership, titles, or ordering drifted from the 25-row fixture matrix.'
+
+$duplicateSkillIds = @(
+    $skillMatches |
+        ForEach-Object { $_.Groups['id'].Value } |
+        Group-Object |
+        Where-Object Count -gt 1
+)
+Assert-Contract -Condition ($duplicateSkillIds.Count -eq 0) `
+    -File 'code\data\LpPlayerHubCatalog.cs' `
+    -Rule 'catalog-stable-id-unique' `
+    -Message 'Catalog stable IDs must be unique.'
+
+$actualTierRows = @($tierMatches | ForEach-Object {
+    '{0}|{1}' -f $_.Groups['rank'].Value, $_.Groups['label'].Value
+})
+$expectedTierRows = @('1|I', '2|II', '3|III', '4|IV', '5|V')
+Assert-Contract -Condition (($actualTierRows -join "`n") -ceq ($expectedTierRows -join "`n")) `
+    -File 'code\data\LpPlayerHubCatalog.cs' `
+    -Rule 'catalog-tier-order' `
+    -Message 'Every skill must receive the ordered I-V pending tier template.'
+
+Assert-Contract -Condition ($catalogTierCount -eq 125) `
+    -File 'code\data\LpPlayerHubCatalog.cs' `
+    -Rule 'catalog-tier-count' `
+    -Message ('Expected 125 ordered catalog tiers; found {0}.' -f $catalogTierCount)
+
+$catalogStatePatterns = @(
+    'public\s+const\s+string\s+TierPendingState\s*=\s*"pending"\s*;',
+    'public\s+const\s+string\s+KeystonePlaceholderState\s*=\s*"placeholder"\s*;',
+    'public\s+const\s+string\s+SeamUnmappedState\s*=\s*"unmapped"\s*;',
+    'public\s+const\s+string\s+OwnerHeldState\s*=\s*"HELD-ruling-7"\s*;',
+    'Tiers:\s*PendingTiers\s*\(\s*\)',
+    'EffectState:\s*OwnerHeldState',
+    'CategoryCapState:\s*OwnerHeldState',
+    'SeamState:\s*SeamUnmappedState',
+    'OwnerState:\s*OwnerHeldState'
+)
+foreach ($pattern in $catalogStatePatterns) {
+    Assert-Contract -Condition ($catalogText -match $pattern) `
+        -File 'code\data\LpPlayerHubCatalog.cs' `
+        -Rule 'catalog-held-state' `
+        -Message ('Missing fixture-held catalog state contract: {0}' -f $pattern)
+}
+
+Assert-Contract -Condition (
+    $catalogText -match 'Title:\s*"Keystone"' -and
+    $catalogText -match 'State:\s*KeystonePlaceholderState' -and
+    $catalogText -match 'EffectState:\s*OwnerHeldState' -and
+    $catalogText -match 'SeamState:\s*SeamUnmappedState' -and
+    $catalogText -match 'OwnerState:\s*OwnerHeldState'
+) `
+    -File 'code\data\LpPlayerHubCatalog.cs' `
+    -Rule 'catalog-keystone-placeholder' `
+    -Message 'Tracks must carry an owner-held keystone placeholder.'
+
+Assert-Contract -Condition (
+    $catalogText -match 'MaxHealthContractNote\s*=\s*"MaxHealth is \[Property\]; no host-sync contract exists\."\s*;'
+) `
+    -File 'code\data\LpPlayerHubCatalog.cs' `
+    -Rule 'max-health-contract' `
+    -Message 'MaxHealth must be documented as a Property with no host-sync assumption.'
+
+Assert-Contract -Condition (
+    $modelText -match '\bLpPlayerHubCatalog\.Tracks\b' -and
+    $modelText -match '\bLpPlayerHubCatalog\.Version\b' -and
+    $modelText -notmatch '\bAddTrackSkills\b|\bBuildSkillTiers\b'
+) `
+    -File 'code\data\LpPlayerHubModels.cs' `
+    -Rule 'catalog-consumer' `
+    -Message 'Fixture models must project the shared catalog rather than regenerate tracks and tiers.'
+
+Assert-Contract -Condition ($skillsText -match '\bModel\.CatalogVersion\b') `
+    -File 'code\ui\Skills\LpPlayerHubSkills.razor' `
+    -Rule 'catalog-consumer' `
+    -Message 'Skills must expose the projected catalog version.'
+
+Assert-Contract -Condition (
+    $skillsText -match 'private\s+const\s+bool\s+UnlockEnabled\s*=\s*false\s*;' -and
+    $skillsText -match '<button\s+class="skills-unlock"\s+disabled="@\(!UnlockEnabled\)"\s*>' -and
+    $skillsText -notmatch '<button\s+class="skills-unlock"[^>]*\bonclick\s*=' -and
+    $modelText -match 'CanUnlock:\s*false'
+) `
+    -File 'code\ui\Skills\LpPlayerHubSkills.razor' `
+    -Rule 'catalog-disabled-state' `
+    -Message 'Fixture unlock controls must remain explicitly disabled and non-mutating.'
+
+Assert-Contract -Condition ($catalogText -notmatch '\bRpc\.|\[\s*Sync\b|\bSpend(?:Skill)?\b|\bPersistence\b') `
+    -File 'code\data\LpPlayerHubCatalog.cs' `
+    -Rule 'catalog-no-live-seam' `
+    -Message 'The fixture catalog cannot introduce RPC, synchronization, spending, or persistence code.'
+
+$batch1WallPaths = @(
+    $modelPath,
+    $catalogPath,
+    $skillsPath,
+    $skillsScssPath,
+    $PSCommandPath
+)
+$batch1WallText = @(
+    $batch1WallPaths |
+        Where-Object { Test-Path -LiteralPath $_ } |
+        ForEach-Object { Get-Content -Raw -LiteralPath $_ }
+) -join "`n"
+
+$deadBreachCooldownToken = ('DoorBreach' + 'UseCooldown')
+Assert-Contract -Condition ($batch1WallText -notmatch [regex]::Escape($deadBreachCooldownToken)) `
+    -File 'code\data\LpPlayerHubCatalog.cs' `
+    -Rule 'dead-breach-cooldown-absent' `
+    -Message 'The dead breach cooldown token must be absent from the complete Batch-1 wall.'
+
+$syncAttributePattern = ('\[' + 'Sync' + '(?:\s*\([^]]*\))?\][^\r\n]*MaxHealth|MaxHealth[^\r\n]*\[' + 'Sync')
+Assert-Contract -Condition ($batch1WallText -notmatch $syncAttributePattern) `
+    -File 'code\data\LpPlayerHubCatalog.cs' `
+    -Rule 'max-health-not-synchronized' `
+    -Message 'No Batch-1 file may describe MaxHealth as synchronized.'
+
+foreach ($commandName in @('lp', 'hub', 'playerhub')) {
+    $conCmdCount = [regex]::Matches(
+        $hostText,
+        ('\[ConCmd\(\s*"' + [regex]::Escape($commandName) + '"\s*\)\]'),
+        [System.Text.RegularExpressions.RegexOptions]::IgnoreCase
+    ).Count
+
+    if ($conCmdCount -ne 1) {
+        [void] $findings.Add(('code\ui\LpPlayerHubHost.cs:1 [command-contract] Expected exactly one ConCmd owner for {0}; found {1}.' -f $commandName, $conCmdCount))
+    }
+}
+
+$thinConCmdPatterns = @(
+    '\[ConCmd\(\s*"lp"\s*\)\]\s*public\s+static\s+void\s+\w+\s*\(\s*\)\s*=>\s*Toggle\s*\(\s*\)\s*;',
+    '\[ConCmd\(\s*"hub"\s*\)\]\s*public\s+static\s+void\s+\w+\s*\(\s*\)\s*=>\s*Toggle\s*\(\s*\)\s*;',
+    '\[ConCmd\(\s*"playerhub"\s*\)\]\s*public\s+static\s+void\s+\w+\s*\(\s*\)\s*=>\s*Toggle\s*\(\s*\)\s*;'
+)
+foreach ($pattern in $thinConCmdPatterns) {
+    if ($hostText -notmatch $pattern) {
+        [void] $findings.Add('code\ui\LpPlayerHubHost.cs:1 [command-contract] Every Player Hub ConCmd wrapper must be a thin Toggle() call.')
+    }
+}
+
+$chatCommandPatterns = @(
+    '#if\s+!LIFEPUNCH_LOCAL[\s\S]*?class\s+PlayerHubChatCommand\s*:\s*ICommand',
+    'Command\s*=>\s*"lp"\s*;',
+    'Aliases\s*=>\s*\[\s*"hub"\s*,\s*"playerhub"\s*\]\s*;',
+    'ExecuteLocal\s*\([^)]*\)\s*\{\s*LpPlayerHubHost\.Toggle\s*\(\s*\)\s*;\s*return\s+true\s*;\s*\}',
+    'ExecuteHost\s*\([^)]*\)\s*=>\s*true\s*;'
+)
+foreach ($pattern in $chatCommandPatterns) {
+    if ($hostText -notmatch $pattern) {
+        [void] $findings.Add(('code\ui\LpPlayerHubHost.cs:1 [chat-command-contract] Missing required PlayerHubChatCommand shape: {0}' -f $pattern))
+    }
+}
+
+foreach ($pattern in @('\bRpc\.', '\bSync\b', '\bExecuteCommandHost\b', '\bbackend\b', '\beconomy\b', '\bpersistence\b')) {
+    if ($hostText -match $pattern) {
+        [void] $findings.Add(('code\ui\LpPlayerHubHost.cs:1 [command-locality] Forbidden command-path seam matched {0}.' -f $pattern))
+    }
+}
+
+$statsRequiredTokens = @(
+    'LpStatsIdentityVm',
+    'LpStatsTrackProgressVm',
+    'PLAYER IDENTITY',
+    'TRACK PROGRESSION',
+    'model.Identity.Tracks',
+    'track.RanksPurchased',
+    'track.TotalRanks',
+    'stats-track-meter',
+    'stats-track-fill'
+)
+foreach ($token in $statsRequiredTokens) {
+    if (($modelText + "`n" + $statsText + "`n" + $statsScssText) -notmatch [regex]::Escape($token)) {
+        [void] $findings.Add(('code\ui\Stats\LpPlayerHubStats:1 [stats-identity-contract] Missing {0}.' -f $token))
+    }
+}
+
+if ($modelText -match '\bActivityTrend\b|\bActivitySummary\b|\bLpActivityBarVm\b' -or $statsText -match 'ACTIVITY TREND|ActivityTrend|ActivitySummary') {
+    [void] $findings.Add('code\ui\Stats\LpPlayerHubStats:1 [stats-identity-contract] Activity Trend contract must be fully replaced.')
+}
+
+Assert-Contract -Condition (
+    $modelText -match 'Tracks:\s*BuildStatsTracks\s*\(\s*\)' -and
+    $modelText -match 'catalogTracks\s*=\s*LpPlayerHubCatalog\.Tracks' -and
+    $modelText -match 'trackIndex\s*<\s*catalogTracks\.Count'
+) `
+    -File 'code\data\LpPlayerHubModels.cs' `
+    -Rule 'stats-track-source' `
+    -Message 'Stats track identity must project all five shared catalog tracks.'
+
+Assert-Contract -Condition ($modelText -match 'totalRanks\s*\+=\s*skill\.Tiers\.Count\s*;') `
+    -File 'code\data\LpPlayerHubModels.cs' `
+    -Rule 'stats-track-denominator' `
+    -Message 'Stats track rank totals must derive from the catalog tier structures.'
 $requiredModelTokens = @(
     'LpOverviewVm',
     'LpEarnRouteVm',
@@ -255,6 +562,8 @@ if (Test-Path -LiteralPath $skillsPath) {
 
 Write-Host "Player Hub s&box contract: $playerHubRoot" -ForegroundColor Cyan
 Write-Host "Razor files: $($razorFiles.Count); SCSS files: $($scssFiles.Count)" -ForegroundColor DarkGray
+Write-Host ("Batch-1 catalog assertions: {0}; tracks: {1}; skills: {2}; ordered tiers: {3}" -f `
+    $contractAssertions, $catalogTrackCount, $catalogSkillCount, $catalogTierCount) -ForegroundColor DarkGray
 
 if ($findings.Count -gt 0) {
     foreach ($finding in $findings) {
