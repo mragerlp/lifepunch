@@ -434,6 +434,174 @@ Assert-Contract -Condition ($batch1WallText -notmatch $syncAttributePattern) `
     -Rule 'max-health-not-synchronized' `
     -Message 'No Batch-1 file may describe MaxHealth as synchronized.'
 
+# Batch 2 additions. The preceding 28 assertions are intentionally retained
+# verbatim; this block only strengthens the existing contract gate.
+$batch2OverlapPreEditSha256 = '359CDBA3E3D2B4ACE444AD8D09E0009D71CD3A6B5A62AC24738642DA57CF13C9'
+$progressionRoot = Join-Path $playerHubRoot 'code\progression'
+$progressionDomainPath = Join-Path $progressionRoot 'LpPlayerHubProgression.cs'
+$progressionStorePath = Join-Path $progressionRoot 'LpPlayerHubProgressionStore.cs'
+$progressionHostPath = Join-Path $progressionRoot 'LpPlayerHubProgressionHost.cs'
+$progressionHarnessPath = Join-Path $here 'Test-PlayerHubProgression.ps1'
+$batch2Paths = @(
+    $progressionDomainPath,
+    $progressionStorePath,
+    $progressionHostPath,
+    $progressionHarnessPath
+)
+
+Assert-Contract -Condition ($batch2OverlapPreEditSha256 -ceq '359CDBA3E3D2B4ACE444AD8D09E0009D71CD3A6B5A62AC24738642DA57CF13C9') `
+    -File '..\..\..\scripts\Test-PlayerHubSboxContracts.ps1' `
+    -Rule 'batch2-overlap-prehash' `
+    -Message 'Batch-2 overlap pre-edit hash evidence drifted.'
+
+Assert-Contract -Condition (@($batch2Paths | Where-Object { -not (Test-Path -LiteralPath $_) }).Count -eq 0) `
+    -File 'code\progression' `
+    -Rule 'batch2-files' `
+    -Message 'One or more approved Batch-2 production/harness files are missing.'
+
+$progressionDomainText = if (Test-Path -LiteralPath $progressionDomainPath) {
+    Get-Content -Raw -LiteralPath $progressionDomainPath
+}
+else {
+    ''
+}
+$progressionStoreText = if (Test-Path -LiteralPath $progressionStorePath) {
+    Get-Content -Raw -LiteralPath $progressionStorePath
+}
+else {
+    ''
+}
+$progressionHostText = if (Test-Path -LiteralPath $progressionHostPath) {
+    Get-Content -Raw -LiteralPath $progressionHostPath
+}
+else {
+    ''
+}
+$progressionHarnessText = if (Test-Path -LiteralPath $progressionHarnessPath) {
+    Get-Content -Raw -LiteralPath $progressionHarnessPath
+}
+else {
+    ''
+}
+$batch2ProductionText = @(
+    $progressionDomainText,
+    $progressionStoreText,
+    $progressionHostText
+) -join "`n"
+
+$catalogSkillConstructors = [regex]::Matches(
+    $catalogText,
+    'new\s+LpPlayerHubCatalogSkill\s*\(',
+    $singleline
+).Count
+$catalogSkillFactoryOwnsTiers = $catalogText -match (
+    'private\s+static\s+LpPlayerHubCatalogSkill\s+CreateSkill\s*\(' +
+    '[\s\S]*?return\s+new\s+LpPlayerHubCatalogSkill\s*\(' +
+    '[\s\S]*?Tiers:\s*PendingTiers\s*\(\s*\)'
+)
+Assert-Contract -Condition (
+    $catalogSkillCount -eq 25 -and
+    $catalogSkillConstructors -eq 1 -and
+    $catalogSkillFactoryOwnsTiers
+) `
+    -File 'code\data\LpPlayerHubCatalog.cs' `
+    -Rule 'catalog-per-skill-tier-structure' `
+    -Message 'Every one of the 25 skills must flow through the sole factory that assigns the ordered I-V tier structure.'
+
+$progressionRpcMatches = [regex]::Matches(
+    $progressionHostText,
+    '\[Rpc\.(?:Host|Broadcast)[^\]]*\]',
+    $singleline
+)
+$pinnedSpendRpcPattern = (
+    '\[Rpc\.Host\]\s*public\s+void\s+RequestSpend\s*\(' +
+    '\s*string\s+operationId\s*,\s*string\s+catalogVersion\s*,' +
+    '\s*string\s+skillId\s*,\s*int\s+tier\s*\)'
+)
+Assert-Contract -Condition (
+    $progressionRpcMatches.Count -eq 1 -and
+    $progressionRpcMatches[0].Value -ceq '[Rpc.Host]' -and
+    $progressionHostText -match $pinnedSpendRpcPattern
+) `
+    -File 'code\progression\LpPlayerHubProgressionHost.cs' `
+    -Rule 'progression-rpc-surface' `
+    -Message 'Batch 2 must expose only the pinned void RequestSpend(string,string,string,int) host RPC.'
+
+Assert-Contract -Condition (
+    $progressionHostText -notmatch '\[Rpc\.(?:Host|Broadcast)[^\]]*\]\s*(?:public|private|internal|protected)\s+\S+\s+(?:Get|Read|State)\w*\s*\(' -and
+    $progressionHostText -notmatch '\bRpc\.Broadcast\b|\bRpc\.Owner\b'
+) `
+    -File 'code\progression\LpPlayerHubProgressionHost.cs' `
+    -Rule 'progression-no-read-response-rpc' `
+    -Message 'Batch 2 cannot add a client read or response RPC.'
+
+Assert-Contract -Condition (
+    $progressionHostText -match 'GameUtils\.GetPlayerByConnectionId\s*\(\s*Rpc\.CallerId\s*\)' -and
+    $progressionHostText -match 'checked\s*\(\s*\(ulong\)player\.SteamId\s*\)' -and
+    $progressionHostText -notmatch 'RequestSpend\s*\([^)]*\bSteamId\b'
+) `
+    -File 'code\progression\LpPlayerHubProgressionHost.cs' `
+    -Rule 'progression-caller-identity' `
+    -Message 'The spend identity must derive solely from Rpc.CallerId and never from request data.'
+
+Assert-Contract -Condition (
+    $progressionHostText -notmatch '\bExecuteEarnFor\b|\bRequestEarn\b|\bGrantPoints\b' -and
+    $progressionDomainText -match 'internal\s+LpPlayerHubSpendResult\s+ExecuteEarnFor\s*\('
+) `
+    -File 'code\progression\LpPlayerHubProgressionHost.cs' `
+    -Rule 'progression-no-client-earn' `
+    -Message 'Trusted harness earn injection must remain internal and have no host/client callsite.'
+
+Assert-Contract -Condition (
+    $progressionHostText -match '\bLpPlayerHubCatalog\.Version\b' -and
+    $progressionHostText -match '\bLpPlayerHubCatalog\.Skills\b' -and
+    $progressionHostText -match '\bLpPlayerHubDenyAllCostPolicy\b'
+) `
+    -File 'code\progression\LpPlayerHubProgressionHost.cs' `
+    -Rule 'progression-shipping-bindings' `
+    -Message 'Shipping must bind the shared fixture catalog and DenyAll cost policy.'
+
+Assert-Contract -Condition (
+    $progressionDomainText -match 'Guid\.TryParseExact\s*\(\s*operationId\s*,\s*"D"' -and
+    $progressionDomainText -match 'ToString\s*\(\s*"D"\s*\)\.ToLowerInvariant\s*\(\s*\)' -and
+    $progressionDomainText -match '\$"spend:\{operationId\}"' -and
+    $progressionStoreText -match [regex]::Escape('6E1FD3A4-4B6C-5A2E-9F0B-8C7D1A2E4B60')
+) `
+    -File 'code\progression\LpPlayerHubProgression.cs' `
+    -Rule 'progression-operation-identity' `
+    -Message 'Canonical D-format IDs, host-derived spend source IDs, and the pinned migration namespace must remain present.'
+
+Assert-Contract -Condition (
+    $progressionHostText -match 'FileSystem\.Data\.FileExists' -and
+    $progressionHostText -match 'FileSystem\.Data\.ReadAllText' -and
+    $progressionHostText -match 'FileSystem\.Data\.WriteAllText' -and
+    $batch2ProductionText -notmatch '\b(?:Move|Rename|Copy|Delete)File\s*\('
+) `
+    -File 'code\progression\LpPlayerHubProgressionHost.cs' `
+    -Rule 'progression-file-primitives' `
+    -Message 'Progression storage must use only the approved direct FileSystem.Data read/write primitives.'
+
+Assert-Contract -Condition (
+    $progressionStoreText -match 'public\s+const\s+int\s+StoreVersion\s*=\s*1\s*;' -and
+    $progressionStoreText -match '\bSHA256\.HashData\b' -and
+    $progressionStoreText -match '\bcommitMarker\b' -and
+    $progressionStoreText -match '\bOperationRecords\b'
+) `
+    -File 'code\progression\LpPlayerHubProgressionStore.cs' `
+    -Rule 'progression-wal-contract' `
+    -Message 'The v1 checksum-covered journal candidate contract is incomplete.'
+
+$forbiddenValueToken = ('$' + 'LP')
+Assert-Contract -Condition (
+    $batch2ProductionText -notmatch [regex]::Escape($forbiddenValueToken) -and
+    $batch2ProductionText -notmatch '\b(?:wallet|sats|BTC|P2P|VIP|EVIP|AK47)\b' -and
+    $batch2ProductionText -notmatch '\[\s*Sync\b' -and
+    $progressionHarnessText -match '10\.0\.300'
+) `
+    -File 'code\progression' `
+    -Rule 'progression-scope-fence' `
+    -Message 'Batch 2 crossed a forbidden value/effect/sync surface or lost its pinned SDK harness.'
+
 foreach ($commandName in @('lp', 'hub', 'playerhub')) {
     $conCmdCount = [regex]::Matches(
         $hostText,
