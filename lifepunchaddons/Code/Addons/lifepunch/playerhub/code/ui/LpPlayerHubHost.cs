@@ -45,9 +45,11 @@ public static class LpPlayerHubHost
 	// --- Entry points ------------------------------------------------------
 
 	/// <summary>
-	/// Console + chat entry point. A player binds any key to <c>playerhub</c> or <c>hub</c>
-	/// (e.g. <c>bind h playerhub</c>). Chat: <c>/playerhub</c>, <c>/hub</c>.
+	/// Console entry points. A player may bind <c>lp</c>, <c>hub</c>, or <c>playerhub</c>.
 	/// </summary>
+	[ConCmd( "lp" )]
+	public static void LpConCmd() => Toggle();
+
 	[ConCmd( "playerhub" )]
 	public static void PlayerHubConCmd() => Toggle();
 
@@ -168,3 +170,24 @@ public static class LpPlayerHubHost
 #endif
 	}
 }
+
+#if !LIFEPUNCH_LOCAL
+/// <summary>
+/// Registers <c>/lp</c>, <c>/hub</c>, and <c>/playerhub</c> as local Player Hub chat commands.
+/// </summary>
+public sealed class PlayerHubChatCommand : ICommand
+{
+	public string Command => "lp";
+	public string[] Aliases => ["hub", "playerhub"];
+	public string Help => "Open the Player Hub.";
+	public bool IsUsableWhileDead => true;
+
+	public bool ExecuteLocal( string[] args, string raw )
+	{
+		LpPlayerHubHost.Toggle();
+		return true;
+	}
+
+	public bool ExecuteHost( Player caller, string[] args, string raw ) => true;
+}
+#endif

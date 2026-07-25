@@ -252,6 +252,7 @@
 	{
 		var hash = new HashCode();
 		hash.Add( Model.IsFixture );
+		hash.Add( Model.CatalogVersion );
 		hash.Add( Model.SkillPointsAvailable );
 		hash.Add( Model.TracksMastered );
 		hash.Add( Model.GrandMasteryActive );

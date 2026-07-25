@@ -37,24 +37,57 @@
 		</div>
 
 		<div class="stats-workspace">
-			<div class="stats-section stats-activity lp-hub-panel">
+			<div class="stats-section stats-identity lp-hub-panel">
 				<div class="stats-section-head lp-hub-bar">
-					<div class="stats-section-title">ACTIVITY TREND</div>
-					<div class="stats-section-note">Seven fixture sessions</div>
+					<div class="stats-section-title">PLAYER IDENTITY</div>
+					<div class="stats-section-note">Fixture profile</div>
 				</div>
-				<div class="stats-trend-list">
-					@foreach ( var bar in model.ActivityTrend )
-					{
-						<div class="stats-trend-row">
-							<div class="stats-trend-label">@bar.Label</div>
-							<div class="stats-trend-meter">
-								<div class="@ActivityFillClass( bar.Percent )"></div>
+
+				<div class="stats-identity-hero">
+					<div class="stats-level-block">
+						<div class="stats-level-label">LEVEL</div>
+						<div class="stats-level-value">@model.Identity.Level</div>
+						<div class="stats-level-hint">Fixture level</div>
+					</div>
+
+					<div class="stats-identity-copy">
+						<div class="stats-identity-label">PLAYTIME TITLE</div>
+						<div class="stats-identity-title">@model.Identity.PlaytimeTitle</div>
+						<div class="stats-identity-hint">@model.Identity.TitleHint</div>
+
+						<div class="stats-status-row">
+							<i class="material-icons stats-status-icon">verified_user</i>
+							<div class="stats-status-copy">
+								<div class="stats-status-label">@model.Identity.StatusLabel</div>
+								<div class="stats-identity-hint">@model.Identity.StatusHint</div>
 							</div>
-							<div class="stats-trend-value">@bar.Value</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="stats-track-head">
+					<div class="stats-identity-label">TRACK PROGRESSION</div>
+					<div class="stats-section-note">Fixture ranks</div>
+				</div>
+
+				<div class="stats-track-list">
+					@foreach ( var track in model.Identity.Tracks )
+					{
+						<div class="stats-track-row">
+							<div class="stats-track-copy">
+								<div class="stats-track-label">@track.Label</div>
+								<div class="stats-track-value">@(track.RanksPurchased + " / " + track.TotalRanks)</div>
+							</div>
+							<div class="stats-track-meter">
+								<div class="@TrackFillClass( track )"></div>
+							</div>
 						</div>
 					}
 				</div>
-				<div class="stats-activity-summary">@model.ActivitySummary</div>
+
+				<div class="stats-identity-footnote">
+					Fixture identity mirror. Portal titles and live progression remain gated.
+				</div>
 			</div>
 
 			<div class="stats-right-column">
@@ -129,19 +162,24 @@
 	private static bool IsEmpty( LpStatsVm model )
 	{
 		return model.HeroPlates.Count == 0
-			&& model.ActivityTrend.Count == 0
+			&& model.Identity.Tracks.Count == 0
 			&& model.Highlights.Count == 0
 			&& model.Sections.Count == 0;
 	}
 
-	private static string ActivityFillClass( int percent )
+	private static string TrackFillClass( LpStatsTrackProgressVm track )
 	{
-		if ( percent >= 90 ) return "stats-trend-fill fill-100";
-		if ( percent >= 75 ) return "stats-trend-fill fill-75";
-		if ( percent >= 60 ) return "stats-trend-fill fill-60";
-		if ( percent >= 45 ) return "stats-trend-fill fill-45";
-		if ( percent >= 30 ) return "stats-trend-fill fill-30";
-		return "stats-trend-fill fill-15";
+		if ( track.TotalRanks <= 0 || track.RanksPurchased <= 0 )
+			return "stats-track-fill fill-0";
+
+		var percent = track.RanksPurchased * 100 / track.TotalRanks;
+		if ( percent >= 100 ) return "stats-track-fill fill-100";
+		if ( percent >= 80 ) return "stats-track-fill fill-80";
+		if ( percent >= 60 ) return "stats-track-fill fill-60";
+		if ( percent >= 40 ) return "stats-track-fill fill-40";
+		if ( percent >= 20 ) return "stats-track-fill fill-20";
+		if ( percent >= 8 ) return "stats-track-fill fill-08";
+		return "stats-track-fill fill-04";
 	}
 
 	protected override int BuildHash()
@@ -151,7 +189,11 @@
 
 		var hash = new HashCode();
 		hash.Add( model.IsFixture );
-		hash.Add( model.ActivitySummary );
+		hash.Add( model.Identity.Level );
+		hash.Add( model.Identity.PlaytimeTitle );
+		hash.Add( model.Identity.TitleHint );
+		hash.Add( model.Identity.StatusLabel );
+		hash.Add( model.Identity.StatusHint );
 
 		foreach ( var plate in model.HeroPlates )
 		{
@@ -161,11 +203,12 @@
 			hash.Add( plate.Hint );
 		}
 
-		foreach ( var bar in model.ActivityTrend )
+		foreach ( var track in model.Identity.Tracks )
 		{
-			hash.Add( bar.Label );
-			hash.Add( bar.Percent );
-			hash.Add( bar.Value );
+			hash.Add( track.Id );
+			hash.Add( track.Label );
+			hash.Add( track.RanksPurchased );
+			hash.Add( track.TotalRanks );
 		}
 
 		foreach ( var highlight in model.Highlights )
