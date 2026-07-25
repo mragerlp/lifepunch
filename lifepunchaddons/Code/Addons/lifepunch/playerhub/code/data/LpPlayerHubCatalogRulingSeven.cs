@@ -285,12 +285,12 @@ public static class LpPlayerHubCatalogRulingSeven
 					Slot: 5,
 					Title: "Reputation",
 					Description: "Nameplate and listing flourish, plus job-queue priority.",
-					PerTier: "cosmetic",
-					AtFive: "cosmetic",
+					PerTier: "cosmetic flourish + job-queue priority",
+					AtFive: MagnitudeParked,
 					HookId: "PENDING",
-					HookState: HookUnverified,
-					IsCosmetic: true,
-					ParkedNote: "MIXED ROW: the flourish is cosmetic, but job-queue priority is a real advantage. Not purely cosmetic. See OQ-10."),
+					HookState: HookPartial,
+					IsCosmetic: false,
+					ParkedNote: "NOT COSMETIC - corrected 2026-07-25 after the hook sweep. This row was briefly flagged IsCosmetic:true while this very note said otherwise; that contradiction is the defect the Cosmetic Firewall exists to catch. THERE IS NO JOB QUEUE: GameModeJobDtoExtensions.cs:204-208 is a synchronous first-come boolean gate (job.MaxCount != 0 && GetPlayersByJob(job).Count() >= job.MaxCount -> hard reject), with no enqueue, no ordering, no reservation and no priority field. So 'priority' can only be implemented as a cap bypass or reserved slot, which takes a scarce, contested, SALARY-BEARING role from a player who arrived first - pay-to-win on a scarcity rail. SPLIT THIS ROW: the nameplate/listing flourish is separately shippable via the host-validated ApplyTitlePreferenceHost precedent; the priority clause needs its own ruling. See OQ-10."),
 			}),
 
 		new LpRulingSevenTrack(
@@ -433,7 +433,115 @@ public static class LpPlayerHubCatalogRulingSeven
 					ParkedNote: "Cosmetic row. Cosmetic Firewall applies."),
 			}),
 	};
+
+	/// <summary>
+	/// HOOK SWEEP VERDICTS - 2026-07-25, six seam domains over the live DXRP tree
+	/// (1016 .cs files) plus the LP addon tree.
+	///
+	/// SENSOR NOTE: the DXRP game tree at lifepunchdxrp/ is GITIGNORED (.gitignore:2),
+	/// so these cites are DISK PATHS, not git refs. They are reproducible on this
+	/// machine and NOT reproducible from a clone of this repo alone. Any future
+	/// re-verification must re-run against a live DXRP checkout.
+	///
+	/// TALLY: 4 FOUND, 17 PARTIAL, 3 MISSING, 1 UNVERIFIED (24 of 25 rows swept -
+	/// resilience-slot-5 fell between the health and healing domain boundaries and
+	/// was never covered; it is recorded UNVERIFIED rather than counted as swept).
+	///
+	/// THE HEADLINE IS NOT THE FOUND COUNT. Most of this catalogue describes
+	/// mechanics DXRP does not have: no stun system, no downed/bleedout state, no
+	/// heal choke point, no fee concept, no job queue, no noise consumer, no
+	/// struggle mechanic, no morale substrate, no passive-income faucet.
+	/// </summary>
+	public static IReadOnlyList<LpRulingSevenHookVerdict> HookVerdicts => new[]
+	{
+		new LpRulingSevenHookVerdict( "resilience-slot-1", "H1", HookPartial,
+			"HealthComponent.MaxHealth",
+			"MaxHealth (HealthComponent.cs:31) is [Property] with NO [Sync], while siblings IsGodMode/Health/State all carry [Sync(SyncFlags.FromHost)]. PlayerInfo.razor:79 reads it CLIENT-side for the health bar, so a host-only bump renders remote bars against a stale 100. Needs a sync contract plus a writer, not just a property set." ),
+		new LpRulingSevenHookVerdict( "resilience-slot-2", "H2", HookPartial,
+			"GameManager.HealHost healAmount expression (GameManager.cs:533)",
+			"One expression, but it is medkit-specific; not a universal heal choke point." ),
+		new LpRulingSevenHookVerdict( "resilience-slot-3", "PENDING", HookMissing,
+			"",
+			"NO STUN SYSTEM EXISTS. Ragdoll is death-only: CreateRagdollHost has exactly one call site, inside OnKillStateHost, and spawns a DeadBody. Living players never ragdoll. Requires designing a knockdown mechanic first." ),
+		new LpRulingSevenHookVerdict( "resilience-slot-4", "PENDING", HookFound,
+			"IDamageEvents.OnModifyDamageTaken (DamageEvent.cs:124)",
+			"CLEANEST ROW IN THE SWEEP. Host-authoritative (HealthComponent.cs:53 Assert.True(Networking.IsHost)); DrunkStatus.cs:136 already ships the exact tier-ladder shape 0.80/0.65/0.50; Health readable at hook time for the sub-25% test." ),
+		new LpRulingSevenHookVerdict( "resilience-slot-5", "PENDING", HookUnverified,
+			"",
+			"NOT SWEPT. Fell between the health and healing domain boundaries in the 2026-07-25 sweep. Owed a pass before any verdict is claimed." ),
+
+		new LpRulingSevenHookVerdict( "recovery-slot-1", "H2-adjacent", HookPartial,
+			"GameManager.HealHost, healer local",
+			"Same expression as resilience-slot-2 but the healer is distinguishable at that point, so H2 and H2-adjacent are TWO seams on ONE expression, not one seam." ),
+		new LpRulingSevenHookVerdict( "recovery-slot-2", "PENDING", HookPartial,
+			"Config.Current.Game.HealCooldown at its two Cooldown.CheckAndStartCooldown sites",
+			"Global config value, not per-player. Two call sites must stay in step." ),
+		new LpRulingSevenHookVerdict( "recovery-slot-3", "H2", HookPartial,
+			"BandageStatus.OnAddedServer",
+			"Heal amount is a hardcoded +50, not a config value." ),
+		new LpRulingSevenHookVerdict( "recovery-slot-4", "PENDING", HookFound,
+			"Player.GetEffectiveRespawnElapsed() (Player.State.cs:154)",
+			"One per-player method feeding all three consumers, so one edit propagates. COUPLING THE OWNER MUST ACCEPT FIRST: it is the SAME timer as the respawn countdown, so a longer bleedout also delays that player's own respawn." ),
+		new LpRulingSevenHookVerdict( "recovery-slot-5", "PENDING", HookPartial,
+			"Player.PlayEmoteHost (Player.Emote.cs:16) + MedKitEquipment.RevivePlayerHost",
+			"Emote rail exists; there is NO morale substrate. Only the emote half is implementable." ),
+
+		new LpRulingSevenHookVerdict( "enterprise-slot-1", "H3", HookFound,
+			"SalaryPaymentSystem.HandlePayouts() baseSalary local, before PayHost(netSalary, \"Salary\", true)",
+			"ECONOMY RAIL. Real seam, but it mutates a payout; economy law review owed before wiring." ),
+		new LpRulingSevenHookVerdict( "enterprise-slot-2", "PENDING", HookPartial,
+			"Player.ChargeHost( uint, string, bool )",
+			"Universal debit choke point exists, but ChargeHost carries NO fee-category parameter, so a fee reduction must be applied at every individual call site. There is no fee concept in the game." ),
+		new LpRulingSevenHookVerdict( "enterprise-slot-3", "PENDING", HookPartial,
+			"IGameEvents.OnSecondlyUpdate()",
+			"The tick rail exists, but no passive-income component and NO 'on duty' predicate exist. Plus the rate itself is an owner blank. This is a FAUCET - it creates money." ),
+		new LpRulingSevenHookVerdict( "enterprise-slot-4", "PENDING", HookFound,
+			"GameManager.PurchaseMarketItemHost price computation (GameManager.cs:364) before ChargeHost (:365)",
+			"ECONOMY RAIL. Single choke point for all market item types." ),
+		new LpRulingSevenHookVerdict( "enterprise-slot-5", "PENDING", HookPartial,
+			"FLOURISH: ApplyTitlePreferenceHost (Player.Inventory.cs:46). PRIORITY: none - GameModeJobDtoExtensions.cs:204 is a boolean gate.",
+			"SPLIT REQUIRED. Flourish half is shippable via a host-validated, inventory-gated precedent (remember PlayerNameplate.razor:181 BuildHash or it will not repaint). Priority half has no substrate and would be pay-to-win on a scarcity rail." ),
+
+		new LpRulingSevenHookVerdict( "infiltration-slot-1", "H4", HookPartial,
+			"Config.Current.Game.PryDuration via PryBarEquipment",
+			"Global config value, not per-player." ),
+		new LpRulingSevenHookVerdict( "infiltration-slot-2", "H5", HookMissing,
+			"",
+			"NAMED HOOK H5 DOES NOT EXIST. No reward is granted on a successful pry or breach; there is nothing to scale." ),
+		new LpRulingSevenHookVerdict( "infiltration-slot-3", "PENDING", HookPartial,
+			"PlayerController.FootstepVolume / EnableFootstepSounds",
+			"The values exist, but nothing CONSUMES noise - there is no hearing or detection system for a quieter footstep to matter to." ),
+		new LpRulingSevenHookVerdict( "infiltration-slot-4", "PENDING", HookMissing,
+			"",
+			"No struggle mechanic exists while restrained." ),
+		new LpRulingSevenHookVerdict( "infiltration-slot-5", "PENDING", HookPartial,
+			"HighlightOutline via GetOrAddComponent, gated on Controller.IsDucking, over IBreachable",
+			"Pattern proven in PermanentTool. NOT COSMETIC: target highlighting is an information advantage." ),
+
+		new LpRulingSevenHookVerdict( "enforcement-slot-1", "H6", HookPartial,
+			"Cooldown.CheckAndStartCooldown( string, float, bool )",
+			"A central cooldown helper exists but is BYPASSED at 12 sites that roll their own timers, so 'qualifying actions' is undefined until those are reconciled." ),
+		new LpRulingSevenHookVerdict( "enforcement-slot-2", "H6", HookPartial,
+			"BatteringRamEquipment.CanSwing() + MeleeWeaponComponent.FireRate/TimeSinceSwing",
+			"The ram does NOT use the central cooldown system, so slots 1 and 2 are TWO different seams despite sharing the H6 label. Needs a stacking rule." ),
+		new LpRulingSevenHookVerdict( "enforcement-slot-3", "PENDING", HookPartial,
+			"Player.OnUpdateEquipmentSpread() / Player.Spread",
+			"DO NOT WIRE - INTEGRITY, NOT BALANCE. Player.Spread (Player.Equipment.cs:42) has NO [Sync] and OnUpdateEquipmentSpread runs only after 'if ( !IsLocalPlayer ) return;', so spread is computed EXCLUSIVELY on the owning client. The host recomputes a trace at ShootWeaponComponent.cs:451 then DISCARDS it (:458 'var shootTrace = clientShootTrace'). A spread modifier here is client-authoritative. Board ruling required." ),
+		new LpRulingSevenHookVerdict( "enforcement-slot-4", "PENDING", HookPartial,
+			"HandCuffsEquipment.OnInputDown() + GameConfig.EquipmentHandCuffUseCooldown / ArrestCooldown",
+			"Global config values, not per-player." ),
+		new LpRulingSevenHookVerdict( "enforcement-slot-5", "PENDING", HookPartial,
+			"ARREST NOTICE: Governance.ArrestHost -> BroadcastGovernanceAnnouncementHost. UNIFORM: Player.ApplyClothing -> BuildClothing.",
+			"Both rails exist. Genuinely cosmetic." ),
+	};
 }
+
+public sealed record LpRulingSevenHookVerdict(
+	string SkillId,
+	string HookId,
+	string Verdict,
+	string Seam,
+	string Gap);
 
 public sealed record LpRulingSevenTier(
 	int Rank,
