@@ -29,9 +29,13 @@ Ground in this order — each narrows the last:
 ## 2. TREE-STATE VERIFICATION (arrival ritual)
 
 Before editing anything, report and hold: **branch · HEAD · clean/dirty · intended files ·
-forbidden files** — then wait for GO (`CLAUDE.md` → Transport Law). At session bootstrap also
-run the Session Start Rule (`EDITOR_LAUNCH_LAW_2026-07-11.md` → "Session Start Rule"):
-`git fetch origin`, report tips + behind-counts; **never** auto-merge upstream on `dxrp-public`.
+forbidden files** — then wait for GO (`CLAUDE.md` → Transport Law). At session bootstrap, the
+Session Start Rule (`EDITOR_LAUNCH_LAW_2026-07-11.md` → "Session Start Rule") fires **ONLY**
+against a tree the dispatch names by path. There is no bootstrap fetch on an unnamed tree and
+none is implied by default. If no dispatch names one, the rule does not fire and that is
+**REPORTED**, never silently skipped. In a dispatch-named tree, run `git fetch origin`, then
+report the tips and behind-counts as evidence. Pull, merge, rebase, and push stay **BARRED**;
+**never** auto-merge upstream on `dxrp-public`.
 
 ## 3. SENSOR DISCIPLINE — the spine of every claim
 
