@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>lifepunch.wallet — LOCAL PREVIEW</title>
+    <link rel="stylesheet" href="tokens.css">
+    <link rel="stylesheet" href="preview.css">
+  </head>
+  <body>
+    <div class="stage">
+      <div class="app-shell" id="background-shell">
+        <aside class="sidebar" aria-label="Wallet navigation">
+          <div class="brand-block">
+            <div class="wordmark" aria-label="lifepunch dot wallet">
+              <span>lifepunch</span><span class="wallet">.wallet</span>
+            </div>
+            <p class="eyebrow">PERSONAL BTC</p>
+          </div>
+
+          <nav class="route-nav" aria-label="Wallet sections">
+            <button class="route-control" type="button" data-route="overview" aria-current="page">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg>
+              <span>OVERVIEW</span>
+            </button>
+            <button class="route-control" type="button" data-route="send">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+              <span>SEND BTC</span>
+            </button>
+            <button class="route-control" type="button" data-route="activity">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.3-5.7L4 8.6M4 4v4.6h4.6M12 8v4l3 2"/></svg>
+              <span>ACTIVITY</span>
+            </button>
+          </nav>
+
+          <div class="identity-block">
+            <span class="identity-role">WALLET HOLDER</span>
+            <strong>Bloodwave</strong>
+            <span>7656••••••••4421</span>
+          </div>
+        </aside>
+
+        <main class="workspace">
+          <header class="app-header">
+            <div>
+              <p class="header-title">PLAYER WALLET</p>
+              <p class="section-label" id="section-label">OVERVIEW</p>
+            </div>
+            <div class="header-actions">
+              <span class="preview-chip">LOCAL PREVIEW</span>
+              <button class="close-control" type="button" aria-label="Close wallet preview">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
+              </button>
+            </div>
+          </header>
+
+          <div class="content-viewport" id="content-viewport">
+            <section class="route-view" data-view="overview" aria-labelledby="overview-heading">
+              <div class="route-heading-row">
+                <div>
+                  <p class="kicker">ACCOUNT SNAPSHOT</p>
+                  <h1 id="overview-heading" tabindex="-1">AVAILABLE BALANCE</h1>
+                </div>
+                <div class="status-badge"><span class="status-dot" aria-hidden="true"></span>WALLET READY</div>
+              </div>
+
+              <section class="balance-panel" aria-label="Available Bitcoin balance">
+                <p class="balance-value"><span>0.18425000</span> <span class="balance-unit">BTC</span></p>
+                <p class="muted-copy">STATIC BALANCE FIXTURE · NO NETWORK CONNECTION</p>
+                <div class="hero-actions">
+                  <button class="primary-action" type="button" data-action="send">SEND BTC</button>
+                  <button class="secondary-action" type="button" data-action="receive">RECEIVE</button>
+                </div>
+              </section>
+
+              <div class="overview-grid">
+                <section class="identity-panel" aria-labelledby="receive-heading">
+                  <div class="section-heading">
+                    <div>
+                      <p class="kicker">RECEIVE IDENTITY</p>
+                      <h2 id="receive-heading">Bloodwave</h2>
+                    </div>
+                    <svg class="section-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>
+                  </div>
+                  <p class="masked-id">7656••••••••4421</p>
+                  <button class="secondary-action compact-action" type="button" data-action="copy-id">COPY ID</button>
+                </section>
+
+                <section class="recent-panel" aria-labelledby="recent-heading">
+                  <div class="section-heading">
+                    <div>
+                      <p class="kicker">LATEST MOVES</p>
+                      <h2 id="recent-heading">RECENT ACTIVITY</h2>
+                    </div>
+                    <button class="text-action" type="button" data-action="view-all">VIEW ALL</button>
+                  </div>
+                  <div class="compact-ledger">
+                    <div class="compact-row"><span>RECEIVED / Nova</span><strong>+0.02500000 BTC</strong><time>2 MIN AGO</time></div>
+                    <div class="compact-row"><span>SENT / Vortex</span><strong>-0.01000000 BTC</strong><time>18 MIN AGO</time></div>
+                    <div class="compact-row"><span>RECEIVED / Echo</span><strong>+0.00425000 BTC</strong><time>1 HR AGO</time></div>
+                  </div>
+                </section>
+              </div>
+            </section>
+
+            <section class="route-view" data-view="send" aria-labelledby="send-heading" hidden>
+              <div class="route-heading-row">
+                <div>
+                  <p class="kicker">LOCAL TRANSFER FLOW</p>
+                  <h1 id="send-heading" tabindex="-1">SEND BTC</h1>
+                </div>
+                <span class="preview-chip subdued-chip">STATIC INPUTS</span>
+              </div>
+
+              <div id="send-form-panel">
+                <form class="send-form" id="send-form">
+                  <div class="field-group">
+                    <label for="recipient">RECIPIENT</label>
+                    <select id="recipient" name="recipient">
+                      <option value="Nova" data-identity="7656••••••••1048" selected>Nova</option>
+                      <option value="Vortex" data-identity="7656••••••••2786">Vortex</option>
+                      <option value="Echo" data-identity="7656••••••••9063">Echo</option>
+                    </select>
+                    <div class="field-meta"><span>SESSION-PRESENT RECIPIENTS ONLY</span><strong id="selected-recipient">SELECTED: NOVA</strong></div>
+                  </div>
+
+                  <div class="field-group">
+                    <label for="amount">AMOUNT</label>
+                    <div class="amount-control">
+                      <input id="amount" name="amount" type="text" inputmode="decimal" value="0.01000000" aria-describedby="amount-guidance">
+                      <span>BTC</span>
+                    </div>
+                    <p class="field-meta" id="amount-guidance">AVAILABLE <span class="btc-copy">0.18425000 BTC</span></p>
+                  </div>
+
+                  <div class="static-notice">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8v5M12 17h.01M4.5 19h15L12 5z"/></svg>
+                    <span>THIS PREVIEW DOES NOT MOVE BTC.</span>
+                  </div>
+
+                  <button class="primary-action review-action" type="submit" id="review-transfer">REVIEW TRANSFER</button>
+                </form>
+              </div>
+
+              <section class="receipt-panel" id="receipt-panel" aria-labelledby="receipt-heading" hidden>
+                <div class="receipt-mark" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>
+                </div>
+                <p class="kicker success-copy">LOCAL RECEIPT</p>
+                <h2 id="receipt-heading" tabindex="-1">TRANSFER PREVIEWED</h2>
+                <dl class="detail-list">
+                  <div><dt>REFERENCE</dt><dd id="receipt-reference">LPW-LOCAL-01000000-NOVA</dd></div>
+                  <div><dt>RECIPIENT</dt><dd id="receipt-recipient">Nova</dd></div>
+                  <div><dt>AMOUNT</dt><dd class="btc-copy" id="receipt-amount">0.01000000 BTC</dd></div>
+                  <div><dt>TIMESTAMP</dt><dd>AUG 04 2026 · 14:30 EDT</dd></div>
+                </dl>
+                <p class="muted-copy">NO BALANCE OR ACCOUNT DATA WAS CHANGED.</p>
+                <button class="primary-action" type="button" data-action="done">DONE</button>
+              </section>
+            </section>
+
+            <section class="route-view" data-view="activity" aria-labelledby="activity-heading" hidden>
+              <div class="route-heading-row">
+                <div>
+                  <p class="kicker">DETERMINISTIC FIXTURE</p>
+                  <h1 id="activity-heading" tabindex="-1">ACTIVITY</h1>
+                </div>
+                <div class="filter-group" role="group" aria-label="Filter local history">
+                  <button type="button" data-filter="all" aria-pressed="true">ALL 6</button>
+                  <button type="button" data-filter="received" aria-pressed="false">RECEIVED 3</button>
+                  <button type="button" data-filter="sent" aria-pressed="false">SENT 3</button>
+                </div>
+              </div>
+
+              <div class="activity-list" id="activity-list">
+                <article class="activity-row" data-direction="received">
+                  <span class="direction-icon received-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v14M6 12l6 6 6-6"/></svg></span>
+                  <div><strong>RECEIVED</strong><span>FROM NOVA</span></div><time>2 MIN AGO</time><strong class="btc-copy">+0.02500000 BTC</strong>
+                </article>
+                <article class="activity-row" data-direction="sent">
+                  <span class="direction-icon sent-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20V6M6 12l6-6 6 6"/></svg></span>
+                  <div><strong>SENT</strong><span>TO VORTEX</span></div><time>18 MIN AGO</time><strong class="btc-copy">-0.01000000 BTC</strong>
+                </article>
+                <article class="activity-row" data-direction="received">
+                  <span class="direction-icon received-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v14M6 12l6 6 6-6"/></svg></span>
+                  <div><strong>RECEIVED</strong><span>FROM ECHO</span></div><time>1 HR AGO</time><strong class="btc-copy">+0.00425000 BTC</strong>
+                </article>
+                <article class="activity-row" data-direction="sent">
+                  <span class="direction-icon sent-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20V6M6 12l6-6 6 6"/></svg></span>
+                  <div><strong>SENT</strong><span>TO CIPHER</span></div><time>YESTERDAY</time><strong class="btc-copy">-0.00650000 BTC</strong>
+                </article>
+                <article class="activity-row" data-direction="received">
+                  <span class="direction-icon received-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v14M6 12l6 6 6-6"/></svg></span>
+                  <div><strong>RECEIVED</strong><span>FROM ROOK</span></div><time>2 DAYS AGO</time><strong class="btc-copy">+0.03500000 BTC</strong>
+                </article>
+                <article class="activity-row" data-direction="sent">
+                  <span class="direction-icon sent-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20V6M6 12l6-6 6 6"/></svg></span>
+                  <div><strong>SENT</strong><span>TO NOVA</span></div><time>4 DAYS AGO</time><strong class="btc-copy">-0.01200000 BTC</strong>
+                </article>
+              </div>
+              <p class="history-end">END OF LOCAL HISTORY</p>
+            </section>
+          </div>
+
+          <footer class="app-footer">
+            <span>Product=lifepunch.wallet</span>
+            <span>Accent=#FFBF00</span>
+            <span>STATIC PROTOTYPE</span>
+          </footer>
+        </main>
+      </div>
+
+      <div class="review-layer" id="review-dialog" role="dialog" aria-modal="true" aria-labelledby="review-heading" hidden>
+          <section class="review-panel">
+            <p class="kicker">CONFIRM LOCAL PREVIEW</p>
+            <h2 id="review-heading">REVIEW TRANSFER</h2>
+            <dl class="detail-list">
+              <div><dt>RECIPIENT</dt><dd><span id="review-recipient">Nova</span> / <span id="review-identity">7656••••••••1048</span></dd></div>
+              <div><dt>AMOUNT</dt><dd class="btc-copy" id="review-amount">0.01000000 BTC</dd></div>
+              <div><dt>PROJECTED BALANCE</dt><dd class="btc-copy" id="review-balance">0.17425000 BTC</dd></div>
+            </dl>
+            <p class="warning-copy">THIS ACTION CANNOT BE UNDONE</p>
+            <p class="muted-copy">PREVIEW ONLY · NO BTC WILL MOVE</p>
+            <div class="dialog-actions">
+              <button class="secondary-action" type="button" id="review-back">BACK</button>
+              <button class="primary-action" type="button" id="confirm-send">CONFIRM SEND</button>
+            </div>
+          </section>
+      </div>
+    </div>
+
+    <div class="feedback-strip" aria-live="polite" aria-atomic="true" id="feedback">LOCAL PREVIEW READY</div>
+    <script src="preview.js"></script>
+  </body>
+</html>

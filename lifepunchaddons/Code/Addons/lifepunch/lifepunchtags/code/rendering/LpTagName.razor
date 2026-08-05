@@ -1,0 +1,53 @@
+@namespace LifePunch.DXRP.Addons.Tags
+@using System
+@using Sandbox
+@using Sandbox.UI
+@inherits Panel
+@attribute [StyleSheet]
+
+<root class="lp-tag-name @(Presenter?.SurfaceClass ?? "lp-tag-name--chat")"
+      aria-label="@(Presenter?.PlainIdentity ?? string.Empty)">
+    @if ( Presenter is not null )
+    {
+        <span class="lp-tag-name__content @Presenter.TranslationClass">
+            @if ( Presenter.HasDecoration )
+            {
+                <span class="lp-tag-name__decoration" aria-hidden="true">
+                    <span class="lp-tag-name__bracket">[</span>
+                    @for ( var index = 0; index < LpTagNamePresenter.DecorationCellCount; index++ )
+                    {
+                        <span class="lp-tag-name__decoration-cell">@Presenter.GetDecorationCell( index )</span>
+                    }
+                    <span class="lp-tag-name__bracket">]</span>
+                </span>
+            }
+
+            <span class="lp-tag-name__identity">
+                @if ( Presenter.UsesGraphemeRuns )
+                {
+                    @for ( var index = 0; index < Presenter.RunCount; index++ )
+                    {
+                        var run = Presenter.GetRun( index );
+                        <span class="lp-tag-name__run @run.RoleClass">@run.Text</span>
+                    }
+                }
+                else
+                {
+                    <span class="lp-tag-name__whole @Presenter.WholeNameClass">@Presenter.PlainIdentity</span>
+                }
+            </span>
+        </span>
+    }
+</root>
+
+@code
+{
+    [Property] public LpTagNamePresenter? Presenter { get; set; }
+
+    protected override int BuildHash()
+    {
+        return Presenter is null
+            ? 0
+            : HashCode.Combine( Presenter, Presenter.RenderRevision );
+    }
+}

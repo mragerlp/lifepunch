@@ -1,0 +1,92 @@
+// PROPRIETARY & CONFIDENTIAL - Copyright 2026 lifepunch.co.
+
+@import "../LpPlayerHubTokens.scss";
+
+.lp-playerhub-error {
+	flex-grow: 1;
+	min-height: 0;
+	width: 100%;
+	padding: 24px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: $gap-content;
+	text-align: center;
+	border: 1px solid $bad;
+	border-radius: $radius-card;
+	background-color: $surface;
+	font-family: "Roboto Mono", "Courier New", monospace;
+}
+
+.lp-playerhub-error > .hub-state-icon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: $hit;
+	height: $hit;
+	border: 1px solid $bad;
+	border-radius: $radius;
+	background-color: $surface-inset;
+	color: $bad;
+}
+
+.lp-playerhub-error > .hub-state-icon > .material-icons {
+	font-size: 24px;
+}
+
+.lp-playerhub-error > .hub-state-title {
+	font-size: 17px;
+	line-height: 20px;
+	font-weight: 700;
+	color: $text-main;
+}
+
+.lp-playerhub-error > .hub-state-message {
+	max-width: 440px;
+	font-size: 12px;
+	line-height: 18px;
+	color: $text-dim;
+}
+
+.lp-playerhub-error > .hub-state-action {
+	min-width: $hit;
+	min-height: $hit;
+	padding: 0 16px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: 1px solid $hub-highlight;
+	border-radius: $radius;
+	background-color: transparent;
+	color: $hub-highlight;
+	font-family: "Roboto Mono", "Courier New", monospace;
+	font-size: 12px;
+	font-weight: 700;
+	transition: background-color 140ms ease-out, border-color 140ms ease-out, color 140ms ease-out, opacity 140ms ease-out;
+}
+
+.lp-playerhub-error > .hub-state-action:hover {
+	background-color: $accent-soft;
+	border-color: $hub-highlight;
+	color: $text-main;
+}
+
+.lp-playerhub-error > .hub-state-action:focus {
+	background-color: $accent-focus;
+	border-color: $hub-highlight;
+	color: $text-main;
+}
+
+.lp-playerhub-error > .hub-state-action:active {
+	background-color: $accent-selected;
+	border-color: $hub-blue;
+	color: $text-main;
+}
+
+.lp-playerhub-error > .hub-state-action.disabled {
+	background-color: $surface;
+	border-color: $border;
+	color: $text-dim;
+	opacity: 0.46;
+}

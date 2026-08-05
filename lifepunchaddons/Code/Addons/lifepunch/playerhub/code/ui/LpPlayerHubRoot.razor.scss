@@ -1,47 +1,11 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// PROPRIETARY & CONFIDENTIAL — © 2026 lifepunch.co. All rights reserved.
+// -----------------------------------------------------------------------------
+// PROPRIETARY & CONFIDENTIAL - (c) 2026 lifepunch.co. All rights reserved.
 //
-// "LIFEPUNCH Player Hub for DXRP" (s&box ident: lifepunch.playerhub · addon ident: playerhub)
-//
-// SLICE 2 — Factions-menu grammar (owner reference 2026-07-18): sidebar with brand
-// head + filled accent nav pill + identity footer; content region with a small-caps
-// top strip and rounded charcoal cards. LIFEPUNCH blue plays the accent role.
-//
-// s&box SCSS constraints observed here, all of them silent failures if broken:
-//   flex only, never grid. No inline-flex. No block/none/inline/inline-block.
-//   No media queries. No gradients. Selectors kept shallow.
-// Comments avoid name-colon-value shapes on purpose: the parser scans words inside comments
-// and will raise invalid-property warnings from a comment that merely looks like a rule.
-// ─────────────────────────────────────────────────────────────────────────────
+// Player Hub shell. Flex-only s&box SCSS.
+// -----------------------------------------------------------------------------
 
-// ── TOKENS — locked. Mirrors LIFEPUNCH_UI_STANDARD and the lifepunch.co :root.
-// No raw hex below this block; a hex literal in a component is a defect.
-$lp-blue: #017AEF;
-$lp-blue-hover: #33A0FF;
-$accent-soft: rgba(1, 122, 239, 0.10);
-$accent-soft-hover: rgba(1, 122, 239, 0.06);
+@import "LpPlayerHubTokens.scss";
 
-$bg: #000000;
-$surface: #1a1d23;
-$surface-inset: #12151a;
-$card-header: #22262e;
-$border: #374151;
-
-$text-main: #ffffff;
-$text-dim: #9ca3af;
-
-$radius: 6px;
-$radius-card: 12px;
-
-$hit: 44px;
-$gap-control: 8px;
-$gap-content: 12px;
-
-$sidebar-w: 210px;
-$strip-h: 56px;
-
-// HUD-root mount (StaffMenu / Bitcoin Ops house pattern): absolute fill of the shared
-// DXRP HUD panel, then flex-center the 1160x700 shell.
 .lp-playerhub {
 	position: absolute;
 	top: 0;
@@ -51,14 +15,24 @@ $strip-h: 56px;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
+	background-color: $overlay;
 	opacity: 0;
 	pointer-events: none;
-	transition: opacity 0.18s ease-out;
+	transition: opacity 180ms ease-out;
 }
 
 .lp-playerhub.is-open {
 	opacity: 1;
 	pointer-events: all;
+}
+
+.lp-playerhub .material-icons {
+	font-family: Material Icons;
+	font-weight: normal;
+	font-style: normal;
+	text-transform: none;
+	letter-spacing: normal;
+	white-space: nowrap;
 }
 
 .hub-shell {
@@ -69,11 +43,146 @@ $strip-h: 56px;
 	height: 700px;
 	max-width: 94%;
 	max-height: 92%;
-	background-color: $bg;
+	background-color: $shell;
 	border: 1px solid $border;
 	border-radius: $radius-card;
+	box-shadow: 0 18px 44px $shell-shadow;
 	overflow: hidden;
-	font-family: Inter;
+}
+
+.hub-header {
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	height: $header-h;
+	padding-left: 20px;
+	padding-right: 12px;
+	background-color: $shell;
+	border-bottom: 1px solid $border;
+	flex-shrink: 0;
+}
+
+.hub-header,
+.hub-body,
+.lp-playerhub-overview,
+.lp-playerhub-stats,
+.lp-playerhub-skills,
+.lp-playerhub-store,
+.lp-playerhub-empty,
+.lp-playerhub-error {
+	font-family: "Roboto Mono", "Courier New", monospace;
+}
+
+.hub-brand {
+	flex-direction: column;
+	justify-content: center;
+}
+
+.hub-brand-wordmark {
+	flex-direction: row;
+	align-items: center;
+	font-size: 24px;
+	font-weight: 700;
+	line-height: 24px;
+}
+
+.hub-brand-name {
+	color: $text-main;
+}
+
+.hub-brand-suffix {
+	color: $hub-blue;
+	text-shadow: 0 0 12px $hub-glow;
+}
+
+.hub-brand-subtitle {
+	margin-top: 2px;
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 1px;
+	color: $text-dim;
+}
+
+.hub-header-right {
+	flex-direction: row;
+	align-items: center;
+	gap: 16px;
+}
+
+.hub-preview-tag {
+	flex-direction: row;
+	align-items: center;
+	height: 24px;
+	padding-left: 8px;
+	padding-right: 8px;
+	border: 1px solid $border;
+	border-radius: $radius;
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 1px;
+	color: $hub-highlight;
+	background-color: $accent-soft;
+}
+
+.hub-stat {
+	flex-direction: row;
+	align-items: center;
+	gap: 6px;
+}
+
+.hub-stat-label {
+	font-size: 11px;
+	letter-spacing: 1px;
+	color: $text-dim;
+}
+
+.hub-stat-value {
+	font-size: 14px;
+	font-weight: 600;
+	color: $text-main;
+}
+
+.hub-lp-mark {
+	font-size: 14px;
+	font-weight: 700;
+	color: $hub-highlight;
+}
+
+.hub-shell .lp-source-footer .lp-mark {
+	color: $hub-blue;
+}
+
+.hub-close {
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	width: $hit;
+	height: $hit;
+	border: 1px solid transparent;
+	border-radius: $radius;
+	color: $text-dim;
+	opacity: 0.76;
+	transition: background-color 140ms ease-out, border-color 140ms ease-out, color 140ms ease-out, opacity 140ms ease-out;
+}
+
+.hub-close:hover {
+	opacity: 1;
+	color: $hub-highlight;
+	background-color: $accent-soft;
+}
+
+.hub-close:focus {
+	opacity: 1;
+	color: $text-main;
+	background-color: $accent-focus;
+	border-color: $hub-highlight;
+}
+
+.hub-close:active {
+	opacity: 1;
+	color: $text-main;
+	background-color: $accent-selected;
+	border-color: $hub-blue;
 }
 
 .hub-body {
@@ -82,143 +191,22 @@ $strip-h: 56px;
 	min-height: 0;
 }
 
-// ── SIDEBAR ──────────────────────────────────────────────────────────────────
 .hub-sidebar {
 	flex-direction: column;
 	width: $sidebar-w;
 	flex-shrink: 0;
 	padding: $gap-content;
-	gap: 16px;
+	gap: 20px;
 	background-color: $surface-inset;
 	border-right: 1px solid $border;
 }
 
-// Brand + close live in the sidebar head, like the reference menu's title row.
-.hub-side-head {
-	flex-direction: row;
-	align-items: center;
-	justify-content: space-between;
-	flex-shrink: 0;
-	padding-left: 6px;
-	padding-bottom: 10px;
-	border-bottom: 1px solid $border;
-}
-
-.hub-brand {
-	font-family: Poppins;
-	font-size: 15px;
-	font-weight: 700;
-	letter-spacing: 1.5px;
-	color: $text-main;
-}
-
-.hub-close {
-	flex-direction: row;
-	align-items: center;
-	justify-content: center;
-	width: 32px;
-	height: 32px;
-	border-radius: $radius;
-	color: $text-dim;
-	opacity: 0.7;
-	transition: opacity 0.12s ease-out;
-}
-
-.hub-close:hover {
-	opacity: 1;
-	color: $text-main;
-	background-color: $accent-soft-hover;
-}
-
-.hub-nav {
-	flex-direction: column;
-	gap: $gap-control;
-}
-
-.hub-nav-item {
-	flex-direction: row;
-	align-items: center;
-	gap: 10px;
-	height: $hit;
-	padding-left: 12px;
-	padding-right: 10px;
-	border-radius: 8px;
-	color: $text-dim;
-	opacity: 0.75;
-	transition: opacity 0.12s ease-out, background-color 0.12s ease-out;
-}
-
-.hub-nav-item:hover {
-	opacity: 1;
-	background-color: $accent-soft-hover;
-}
-
-// Reference grammar: the active destination is a FILLED accent pill, white ink.
-.hub-nav-item.is-active {
-	opacity: 1;
-	background-color: $lp-blue;
-	color: $text-main;
-}
-
-.hub-nav-item.is-active .hub-nav-icon,
-.hub-nav-item.is-active .hub-nav-label {
-	color: $text-main;
-}
-
-// Keep the marker node for layout stability, but never paint chrome.
-.hub-nav-indicator {
-	width: 0;
-	height: 0;
-	flex-shrink: 0;
-	background-color: transparent;
-}
-
-.hub-nav-icon {
-	font-size: 18px;
-	flex-shrink: 0;
-}
-
-.hub-nav-label {
-	font-size: 14px;
-	flex-grow: 1;
-}
-
-.hub-nav-badge {
-	flex-direction: row;
-	align-items: center;
-	justify-content: center;
-	min-width: 18px;
-	height: 18px;
-	padding-left: 5px;
-	padding-right: 5px;
-	border-radius: 9px;
-	background-color: $lp-blue;
-	color: $text-main;
-	font-size: 11px;
-	font-weight: 700;
-}
-
-.hub-nav-item.is-active .hub-nav-badge {
-	background-color: $text-main;
-	color: $lp-blue;
-}
-
-.hub-side-spacer {
-	flex-grow: 1;
-}
-
-// Identity footer — the reference menu pins "[GOON] Goon Squad" at the sidebar floor.
 .hub-identity {
 	flex-direction: row;
 	align-items: center;
 	gap: 10px;
-	flex-shrink: 0;
-	padding-top: 10px;
-	padding-left: 6px;
-	border-top: 1px solid $border;
 }
 
-// A true circle is the one place a full radius is allowed.
 .hub-avatar {
 	flex-direction: row;
 	align-items: center;
@@ -247,226 +235,136 @@ $strip-h: 56px;
 	color: $text-dim;
 }
 
-// ── CONTENT ──────────────────────────────────────────────────────────────────
+.hub-nav {
+	flex-direction: column;
+	gap: $gap-control;
+}
+
+.hub-nav-item {
+	flex-direction: row;
+	align-items: center;
+	gap: 10px;
+	height: $hit;
+	padding-left: 10px;
+	padding-right: 10px;
+	border: 1px solid transparent;
+	border-radius: $radius;
+	color: $text-dim;
+	opacity: 0.72;
+	transition: background-color 140ms ease-out, border-color 140ms ease-out, color 140ms ease-out, opacity 140ms ease-out;
+}
+
+.hub-nav-item:hover {
+	opacity: 1;
+	color: $hub-highlight;
+	background-color: $accent-soft;
+}
+
+.hub-nav-item:focus {
+	opacity: 1;
+	color: $hub-highlight;
+	background-color: $accent-focus;
+	border-color: $hub-highlight;
+}
+
+.hub-nav-item:active {
+	opacity: 1;
+	color: $text-main;
+	background-color: $accent-selected;
+	border-color: $hub-blue;
+}
+
+.hub-nav-item.is-active {
+	opacity: 1;
+	background-color: $accent-selected;
+	border-color: $hub-blue;
+	color: $text-main;
+}
+
+.hub-nav-indicator {
+	width: 3px;
+	height: 20px;
+	flex-shrink: 0;
+	background-color: transparent;
+	border-radius: $radius;
+}
+
+.hub-nav-item.is-active .hub-nav-indicator {
+	background-color: $hub-blue;
+}
+
+.hub-nav-icon {
+	font-size: 18px;
+	flex-shrink: 0;
+}
+
+.hub-nav-item:hover .hub-nav-icon,
+.hub-nav-item:focus .hub-nav-icon,
+.hub-nav-item.is-active .hub-nav-icon {
+	color: $hub-highlight;
+}
+
+.hub-nav-label {
+	font-size: 14px;
+	flex-grow: 1;
+}
+
+.hub-nav-badge {
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	min-width: 18px;
+	height: 18px;
+	padding-left: 5px;
+	padding-right: 5px;
+	border-radius: $radius;
+	background-color: $hub-highlight;
+	color: $shell;
+	font-size: 11px;
+	font-weight: 700;
+}
+
 .hub-content {
 	flex-direction: column;
 	flex-grow: 1;
+	min-height: 0;
 	min-width: 0;
+	padding: 16px;
+	gap: $gap-dense;
 }
 
-// Small-caps strip like the reference's "CREATE A FACTION" header row.
-.hub-topstrip {
+.hub-page-head {
 	flex-direction: row;
 	align-items: center;
-	justify-content: space-between;
-	height: $strip-h;
+	min-height: 34px;
 	flex-shrink: 0;
-	padding-left: 24px;
-	padding-right: 16px;
-	border-bottom: 1px solid $border;
 }
 
-.hub-topstrip-title {
-	font-size: 13px;
-	font-weight: 700;
-	letter-spacing: 1.5px;
-	color: $text-dim;
-}
-
-.hub-topstrip-right {
-	flex-direction: row;
-	align-items: center;
-	gap: 16px;
-}
-
-.hub-preview-tag {
-	flex-direction: row;
-	align-items: center;
-	height: 22px;
-	padding-left: 8px;
-	padding-right: 8px;
-	border: 1px solid $border;
-	border-radius: $radius;
-	font-size: 10px;
-	font-weight: 600;
-	letter-spacing: 1px;
-	color: $text-dim;
-}
-
-.hub-stat {
-	flex-direction: row;
-	align-items: center;
-	gap: 6px;
-}
-
-.hub-stat-label {
-	font-size: 12px;
-	letter-spacing: 1px;
-	color: $text-dim;
-}
-
-// LAW 17 — the SIGN carries the colour, the AMOUNT stays white.
-.hub-stat-value {
-	font-size: 14px;
+.hub-title {
+	font-size: 20px;
 	font-weight: 600;
 	color: $text-main;
 }
 
-.hub-lp-mark {
-	font-size: 14px;
-	font-weight: 700;
-	color: $lp-blue;
+.hub-blurb {
+	margin-left: 12px;
+	padding-left: 12px;
+	border-left: 1px solid $border;
+	font-size: 11px;
+	line-height: 16px;
+	color: $text-dim;
+	white-space: normal;
+	flex-grow: 1;
+	min-width: 0;
 }
 
-.hub-shell .lp-source-footer .lp-mark {
-	color: $lp-blue;
-}
-
-// One vertical scroll region per tab.
 .hub-tabhost {
 	flex-direction: column;
 	flex-grow: 1;
 	min-height: 0;
-	overflow-y: scroll;
-	padding: 20px 24px;
-}
-
-.hub-tab-body {
-	flex-direction: column;
-	gap: $gap-content;
-}
-
-// ── CARDS — rounded charcoal surfaces per the reference boards. ───────────────
-.hub-card-row {
-	flex-direction: row;
-	gap: $gap-content;
-}
-
-.hub-card {
-	flex-direction: column;
-	flex: 1 1 0;
 	min-width: 0;
-	gap: 8px;
-	padding: 16px 18px;
-	border-radius: $radius-card;
-	background-color: $surface;
-}
-
-.hub-card-label {
-	font-size: 10px;
-	font-weight: 700;
-	letter-spacing: 1.2px;
-	color: $text-dim;
-}
-
-.hub-card-hero {
-	flex-direction: row;
-	align-items: center;
-	gap: 6px;
-	font-family: Poppins;
-	font-size: 22px;
-	font-weight: 600;
-	color: $text-main;
-}
-
-.hub-card-hero-amt {
-	color: $text-main;
-}
-
-.hub-card-hero .hub-lp-mark {
-	font-size: 18px;
-}
-
-.hub-card-sub {
-	font-size: 12px;
-	line-height: 1.4;
-	color: $text-dim;
-}
-
-// XP progress — inset track, accent fill. Width is set inline from the VM.
-.hub-xp-track {
-	flex-direction: row;
-	height: 8px;
-	width: 100%;
-	border-radius: 4px;
-	background-color: $surface-inset;
 	overflow: hidden;
-}
-
-.hub-xp-fill {
-	height: 100%;
-	border-radius: 4px;
-	background-color: $lp-blue;
-}
-
-// CTA — filled accent, full width, like the reference's primary buttons.
-.hub-cta {
-	flex-direction: row;
-	align-items: center;
-	justify-content: center;
-	height: 36px;
-	margin-top: 4px;
-	border-radius: 8px;
-	background-color: $lp-blue;
-	color: $text-main;
-	font-size: 13px;
-	font-weight: 700;
-	cursor: pointer;
-	transition: background-color 0.12s ease-out;
-}
-
-.hub-cta:hover {
-	background-color: $lp-blue-hover;
-}
-
-.hub-earn-card {
-	flex: 0 0 auto;
-}
-
-.hub-earn-row {
-	flex-direction: column;
-	gap: 2px;
-	padding: 10px 12px;
-	border-radius: 8px;
-	background-color: $surface-inset;
-}
-
-.hub-earn-title {
-	font-size: 13px;
-	font-weight: 600;
-	color: $text-main;
-}
-
-.hub-earn-body {
-	font-size: 12px;
-	color: $text-dim;
-}
-
-// ── PLACEHOLDER (tabs whose slices have not landed) ──────────────────────────
-.hub-placeholder {
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	flex-grow: 1;
-	gap: $gap-content;
-	padding: 32px;
-}
-
-.hub-placeholder-icon {
-	font-size: 40px;
-	color: $text-dim;
-	opacity: 0.4;
-}
-
-.hub-placeholder-title {
-	font-family: Poppins;
-	font-size: 16px;
-	font-weight: 600;
-	color: $text-main;
-}
-
-.hub-placeholder-body {
-	font-size: 13px;
-	color: $text-dim;
-	text-align: center;
+	background-color: transparent;
+	border: 0;
+	border-radius: 0;
 }

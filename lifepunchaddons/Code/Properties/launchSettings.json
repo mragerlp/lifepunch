@@ -3,7 +3,26 @@
     "Editor": {
       "commandName": "Executable",
       "executablePath": "D:/Steam/steamapps/common/sbox/sbox-dev.exe",
-      "commandLineArgs": "-project \u0022C:\\Users\\jared\\Projects\\lifepunchaddons\\lifepunch\\addons\\addons.sbproj\u0022"
+      "commandLineArgs": "-project \"C:/Users/jared/Projects/lifepunch/lifepunchdxrp/game/rp.sbproj\"",
+      "workingDirectory": "D:/Steam/steamapps/common/sbox"
+    },
+    "DXRP Editor": {
+      "commandName": "Executable",
+      "executablePath": "D:/Steam/steamapps/common/sbox/sbox-dev.exe",
+      "commandLineArgs": "-project \"C:/Users/jared/Projects/lifepunch/lifepunchdxrp/game/rp.sbproj\"",
+      "workingDirectory": "D:/Steam/steamapps/common/sbox"
+    },
+    "Addons Project": {
+      "commandName": "Executable",
+      "executablePath": "D:/Steam/steamapps/common/sbox/sbox-dev.exe",
+      "commandLineArgs": "-project \"C:/Users/jared/Projects/lifepunch/lifepunchaddons/addons.sbproj\"",
+      "workingDirectory": "D:/Steam/steamapps/common/sbox"
+    },
+    "Steam DXRP (runtime mount)": {
+      "commandName": "Executable",
+      "executablePath": "D:/Steam/steamapps/common/sbox/sbox-dev.exe",
+      "commandLineArgs": "-project \"D:/Steam/steamapps/common/sbox/dxrp/game/rp.sbproj\"",
+      "workingDirectory": "D:/Steam/steamapps/common/sbox"
     }
   }
 }
