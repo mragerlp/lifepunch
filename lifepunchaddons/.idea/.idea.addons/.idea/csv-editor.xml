@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CsvFileAttributes">
+    <option name="attributeMap">
+      <map>
+        <entry key="C:\Users\jared\Projects\lifepunch\.agents\skills\design-system\data\slide-layouts.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\Users\jared\Projects\lifepunch\.agents\skills\design\data\logo\industries.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\Users\jared\Projects\lifepunch\.agents\skills\ui-ux-pro-max\data\icons.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\Users\jared\Projects\lifepunch\.agents\skills\ui-ux-pro-max\data\landing.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\Users\jared\Projects\lifepunch\.agents\skills\ui-ux-pro-max\data\products.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\Users\jared\Projects\lifepunch\.agents\skills\ui-ux-pro-max\data\stacks\angular.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\Users\jared\Projects\lifepunch\.agents\skills\ui-ux-pro-max\data\stacks\html-tailwind.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\Users\jared\Projects\lifepunch\.agents\skills\ui-ux-pro-max\data\stacks\javafx.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\Users\jared\Projects\lifepunch\.agents\skills\ui-ux-pro-max\data\stacks\nuxt-ui.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\Users\jared\Projects\lifepunch\.agents\skills\ui-ux-pro-max\data\stacks\swiftui.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\Users\jared\Projects\lifepunch\.agents\skills\ui-ux-pro-max\data\stacks\threejs.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\Users\jared\Projects\lifepunch\.agents\skills\ui-ux-pro-max\data\stacks\uno.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\Users\jared\Projects\lifepunch\.agents\skills\ui-ux-pro-max\data\stacks\winui.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\Users\jared\Projects\lifepunch\.agents\skills\ui-ux-pro-max\data\styles.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\Users\jared\Projects\lifepunch\.agents\skills\ui-ux-pro-max\data\ui-reasoning.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\Users\jared\Projects\lifepunch\.claude\skills\design-system\data\slide-layouts.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\Users\jared\Projects\lifepunch\.claude\skills\design\data\logo\industries.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\Users\jared\Projects\lifepunch\.claude\skills\ui-ux-pro-max\data\icons.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\Users\jared\Projects\lifepunch\.claude\skills\ui-ux-pro-max\data\landing.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\Users\jared\Projects\lifepunch\.claude\skills\ui-ux-pro-max\data\products.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\Users\jared\Projects\lifepunch\.claude\skills\ui-ux-pro-max\data\stacks\angular.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\Users\jared\Projects\lifepunch\.claude\skills\ui-ux-pro-max\data\stacks\html-tailwind.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\Users\jared\Projects\lifepunch\.claude\skills\ui-ux-pro-max\data\stacks\javafx.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\Users\jared\Projects\lifepunch\.claude\skills\ui-ux-pro-max\data\stacks\nuxt-ui.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\Users\jared\Projects\lifepunch\.claude\skills\ui-ux-pro-max\data\stacks\swiftui.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\Users\jared\Projects\lifepunch\.claude\skills\ui-ux-pro-max\data\stacks\threejs.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\Users\jared\Projects\lifepunch\.claude\skills\ui-ux-pro-max\data\stacks\uno.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\Users\jared\Projects\lifepunch\.claude\skills\ui-ux-pro-max\data\stacks\winui.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\Users\jared\Projects\lifepunch\.claude\skills\ui-ux-pro-max\data\styles.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\Users\jared\Projects\lifepunch\.claude\skills\ui-ux-pro-max\data\ui-reasoning.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
