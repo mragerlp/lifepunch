@@ -142,8 +142,9 @@ mask, not a fix, and it must never be set as a first move.**
 
 ## 5. PROPOSED — NOT RULED
 
-**Classification proposed: CLASS C** (`CONSOLE_PLUGINS_DOCTRINE.md:261`, *automation with standing
-effects — Bloodwave GO required*), on three grounds, any one of which is sufficient:
+**Classification proposed: CLASS C** (`CONSOLE_PLUGINS_DOCTRINE.md:261`,
+`Automation with standing effects (Bloodwave GO required)`), on three grounds, any one of which is
+sufficient:
 
 - **Unsandboxed `Shell` tool** including AppleScript mode — exceeds the Desktop Commander
   scope-discipline clause (`:273-278`), which confines operations to the repo, the comms lane, and
