@@ -13,6 +13,7 @@
         var nameplate = SurfacePreferenceFor( _state.Draft, LpTagSurface.Nameplate );
         var selected = SurfacePreferenceFor( _state.Draft, _state.SelectedSurface );
 
+        <div class="shell">
         <header class="lp-tags-menu__header">
             <div class="lp-tags-menu__wordmark" aria-label="lifepunch.tags">
                 <span class="lp-tags-menu__wordmark-base">lifepunch</span><span class="lp-tags-menu__wordmark-dot">.</span><span class="lp-tags-menu__wordmark-t">t</span><span class="lp-tags-menu__wordmark-a">a</span><span class="lp-tags-menu__wordmark-g">g</span><span class="lp-tags-menu__wordmark-s">s</span>
@@ -137,7 +138,7 @@
                                 <div class="lp-tags-menu__section-label">@(SurfaceLabel( _state.SelectedSurface ).ToUpperInvariant())</div>
                                 <h1>@SurfaceLabel( _state.SelectedSurface ) STYLE</h1>
                             </div>
-                            <button class="@OutgoingToggleClass( selected.Enabled )"
+                            <button class="@OutgoingToggleClass( selected.Enabled, _state.CanEditOutgoing )"
                                     aria-label="@($"Turn {SurfaceLabel( _state.SelectedSurface )} appearance {(selected.Enabled ? "off" : "on")}")"
                                     aria-pressed="@selected.Enabled"
                                     disabled="@(!_state.CanEditOutgoing)"
@@ -172,7 +173,7 @@
                                 var definition = CardDefinitions[index];
                                 var cardPresenter = index < _cardPresenters.Length ? _cardPresenters[index] : null;
                                 var isSelected = string.Equals( selected.SelectedEffectKey, definition.Key, StringComparison.Ordinal );
-                                <button class="@EffectCardClass( isSelected )"
+                                <button class="@EffectCardClass( isSelected, _state.CanEditOutgoing )"
                                         aria-label="@($"Select {EffectLabel( definition.Id )} for {SurfaceLabel( _state.SelectedSurface )}")"
                                         aria-pressed="@isSelected"
                                         disabled="@(!_state.CanEditOutgoing)"
@@ -235,6 +236,7 @@
                 <button class="@ScaleButtonClass( MenuScale.ExtraLarge )" aria-label="Extra large menu scale" aria-pressed="@(_menuScale == MenuScale.ExtraLarge)" onclick="@(() => SetScale( MenuScale.ExtraLarge ))">XL</button>
             </div>
         </footer>
+        </div>
     }
 </root>
 
@@ -345,7 +347,7 @@
         return HashCode.Combine( stateHash, state.IsOnline, _showViewing, _menuScale );
     }
 
-    private string RootClass => $"lp-tags-menu lp-tags-menu--scale-{ScaleSuffix( _menuScale )}";
+    private string RootClass => $"lp-tags-menu lp-ui-size-{ScaleSuffix( _menuScale )}";
 
     private string ViewingRowClass => _showViewing
         ? "lp-tags-menu__rail-row lp-tags-menu__rail-row--selected"
@@ -517,11 +519,12 @@
             : "lp-tags-menu__enabled-dot";
     }
 
-    private static string OutgoingToggleClass( bool enabled )
+    private static string OutgoingToggleClass( bool enabled, bool canEdit )
     {
-        return enabled
+        var baseClass = enabled
             ? "lp-tags-menu__outgoing-toggle lp-tags-menu__outgoing-toggle--on"
             : "lp-tags-menu__outgoing-toggle";
+        return canEdit ? baseClass : baseClass + " disabled";
     }
 
     private static string ViewerControlClass( bool enabled )
@@ -531,11 +534,12 @@
             : "lp-tags-menu__viewer-control";
     }
 
-    private static string EffectCardClass( bool selected )
+    private static string EffectCardClass( bool selected, bool canEdit )
     {
-        return selected
+        var baseClass = selected
             ? "lp-tags-menu__effect-card lp-tags-menu__effect-card--selected"
             : "lp-tags-menu__effect-card";
+        return canEdit ? baseClass : baseClass + " disabled";
     }
 
     private string ScaleButtonClass( MenuScale scale )

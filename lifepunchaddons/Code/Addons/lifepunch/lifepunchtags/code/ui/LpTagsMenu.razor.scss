@@ -1,63 +1,96 @@
 @import "LpTagsTokens.scss";
+@import "../../../bitcoinmining/LpUiChrome.scss";
+@import "../../../bitcoinmining/LpUiScale.scss";
+@import "../../../bitcoinmining/LpUiMenuLayout.scss";
+@import "../../../LifePunchUiShell.scss";
 
-LpTagsMenu {
+// ---- HOUSE SHELL ADOPTION - issue #196 R1 ----------------------------------
+// The root selector moves to a CLASS the Razor provably emits (LpTagsMenu.razor:348).
+// PRECISE REASON, since the blunt version is wrong: a type selector matches a panel's
+// ElementName, and it DOES work - the engine's own base sheet uses two, rootpanel.scss:3
+// `RootPanel` and :9 `IconPanel, i`. But LpTagsMenu is a PanelComponent created via
+// AddComponent/ShowUi (LpTagsMenuHost.cs:544, :399), never from a template element, and
+// its root markup element is <root> (LpTagsMenu.razor:8) - so nothing carries the
+// ElementName "LpTagsMenu" and the rule matched nothing, taking the whole block with it:
+// shell size, centring, background and the .material-icons font.
+// Nested type selectors on template-created panels stay legitimate and are untouched here
+// (LpTagName at :411 and :506, both nested, both created via <LpTagName ... />).
+// Sensor: mcp__sbox__razor_lint flags it; nothing in the editor log ever does.
+//
+// Overlay/shell split copied from .lp-bitcoin-ops (LpHashdPanel.razor.scss:46-80):
+// the ROOT is a full-screen flex centring overlay with pointer-events none, and
+// the sized panel is the inner .shell with pointer-events all + overflow hidden.
+// Flex-scroll law: LifePunchUiScale.scss:16-20. Never nest 4+ deep: ibid:10-11.
+.lp-tags-menu {
     position: absolute;
-    left: 50%;
-    top: 50%;
-    width: $lp-tags-shell-width;
-    height: $lp-tags-shell-height;
-    max-width: $lp-tags-shell-max-width;
-    max-height: $lp-tags-shell-max-height;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
     display: flex;
-    flex-direction: column;
-    overflow: visible;
-    pointer-events: all;
-    background-color: $lp-tags-color-shell;
-    border: 1px solid $lp-tags-color-border-strong;
-    border-radius: $lp-tags-radius-shell;
-    box-shadow: 0 18px 48px $lp-tags-color-shell-shadow;
+    align-items: center;
+    justify-content: center;
     color: $lp-tags-color-text;
-    font-family: "Roboto Mono", "Courier New", monospace;
+    font-family: $lp-menu-mono;
     font-size: 13px;
-    transform-origin: 50% 50%;
-    transform: translate(-50%, -50%) scale(1);
+    // BEHAVIOUR CHANGE, DELIBERATE AND FLAGGED: the old root declared pointer-events: all
+    // (LpTagsMenu.razor.scss:14). As a full-screen overlay that would swallow every click
+    // outside the panel. The house overlay form is none on the root + all on the shell
+    // (LpHashdPanel.razor.scss:60, :79). ULX instead keeps all on its root
+    // (StaffMenu.razor.scss:45) because its root IS the window. Reviewer's call.
+    pointer-events: none;
+    z-index: 100;
 
-    &.lp-tags-menu--scale-s {
-        transform: translate(-50%, -50%) scale(0.80);
-
-        button {
-            min-width: $lp-tags-target-minimum-s;
-            min-height: $lp-tags-target-minimum-s;
-        }
+    // lp-ui-size-* changes ONLY the outer shell width/height (LifePunchUiScale.scss:9).
+    // No font-size step: that law is CRT-only (ibid:12-14) and Tags is hub/admin class.
+    // LADDER IS THE HUB/ADMIN ONE, NOT THE CRT ONE. Verified identical in both hub/admin
+    // consumers: StaffMenu.razor.scss:108-126 (.window) and LpHashdPanel.razor.scss:6974-6992
+    // (.shell), the latter commented "match the lifepunchulx window steps exactly
+    // (S 1040x640 -> XL 1160x700)". The 736x448 ladder in LifePunchUiScale.scss:28-52 is
+    // scoped .lp-ops-crt and does NOT apply here.
+    &.lp-ui-size-s .shell {
+        width: 1040px;
+        height: 640px;
     }
 
-    &.lp-tags-menu--scale-m {
-        transform: translate(-50%, -50%) scale(0.90);
-
-        button {
-            min-width: $lp-tags-target-minimum-m;
-            min-height: $lp-tags-target-minimum-m;
-        }
+    &.lp-ui-size-m .shell {
+        width: 1100px;
+        height: 670px;
     }
 
-    &.lp-tags-menu--scale-l {
-        transform: translate(-50%, -50%) scale(1);
-
-        button {
-            min-width: $lp-tags-target-minimum-l;
-            min-height: $lp-tags-target-minimum-l;
-        }
+    &.lp-ui-size-l .shell {
+        width: 1140px;
+        height: 690px;
     }
 
-    &.lp-tags-menu--scale-xl {
-        max-width: $lp-tags-shell-xl-max-width;
-        max-height: $lp-tags-shell-xl-max-height;
-        transform: translate(-50%, -50%) scale(1.10);
+    &.lp-ui-size-xl .shell {
+        width: $lp-tags-shell-width;
+        height: $lp-tags-shell-height;
+    }
 
-        button {
-            min-width: $lp-tags-target-minimum-xl;
-            min-height: $lp-tags-target-minimum-xl;
-        }
+    .shell {
+        position: relative;
+        flex-shrink: 0;
+        display: flex;
+        flex-direction: column;
+        // Tags' own tokens already hold the hub/admin XL step (1160px / 700px):
+        // LpTagsTokens.scss:1-2. Kept live rather than hardcoded past.
+        width: $lp-tags-shell-width;
+        height: $lp-tags-shell-height;
+        // House form is percent, not vw/vh (LpHashdPanel.razor.scss:2984-2985,
+        // StaffMenu.razor.scss:65-66). $lp-tags-shell-max-* are 94vw/92vh; whether s&box
+        // resolves vw/vh is UNVERIFIED, so the house percent form is used deliberately.
+        max-width: 94%;
+        max-height: 92%;
+        min-height: 0;
+        background-color: $lp-tags-color-shell;
+        border: 1px solid $lp-tags-color-border-strong;
+        border-radius: $lp-tags-radius-shell;
+        box-shadow: 0 18px 48px $lp-tags-color-shell-shadow;
+        overflow: hidden;
+        pointer-events: all;
     }
 
     button {
@@ -72,14 +105,14 @@ LpTagsMenu {
         border: 1px solid $lp-tags-color-border;
         border-radius: $lp-tags-radius-control;
         color: $lp-tags-color-text;
-        font-family: "Roboto Mono", "Courier New", monospace;
+        font-family: $lp-menu-mono;
         cursor: pointer;
         transition: background-color $lp-tags-interaction-duration,
             border-color $lp-tags-interaction-duration,
             color $lp-tags-interaction-duration,
             opacity $lp-tags-interaction-duration;
 
-        &:hover:not(:disabled) {
+        &:hover {
             border-color: $lp-tags-color-border-strong;
             background-color: $lp-tags-color-raised;
         }
@@ -90,19 +123,29 @@ LpTagsMenu {
             border-width: 2px;
         }
 
-        &:disabled {
+        // R3 - :disabled does NOT exist in Sandbox.UI.PseudoClass. The engine drops
+        // the rule and says so: Skipping malformed rule ... Unsupported Pseudo Class
+        // "disabled". House precedent is a .disabled CLASS applied from C#:
+        // LifePunchUiShell.scss:334 (.lp-ui-btn-primary) and :361 (.lp-ui-btn-ghost).
+        // The former `&:hover:not(:disabled)` is gone for the same reason - the
+        // unknown pseudo inside :not() took the hover rule down with it. Ordering
+        // does that job now: .disabled follows :hover and wins.
+        &.disabled {
             color: $lp-tags-color-disabled;
             cursor: default;
             opacity: 0.46;
         }
     }
 
+    // R4 - the .material-icons FONT-FAMILY is deliberately NOT redeclared here.
+    // It arrives at root-class level from LpUiChrome.scss:12-19, whose own comment
+    // names this exact symptom: "Poppins on parent panels cascades onto
+    // material-icons and renders ligature names as text". Only the Tags-local
+    // colour/size trim belongs to this file.
     .material-icons {
         flex: 0 0 auto;
         color: $lp-tags-color-muted;
-        font-family: "Material Icons";
         font-size: 20px;
-        font-weight: normal;
         line-height: 1;
     }
 }
