@@ -914,7 +914,6 @@
 @code
 {
 	private enum OpsTab { Overview, Wallet, Transfers, Racks, Logs, Settings }
-	private enum PerfRange { Day, Week, Month }
 	private enum PinGatePurpose { Unlock, ChangePin }
 
 	// Servers nav (3.5 restructure): HUB -> TERMINAL -> GPU RACKS at the index. Hub and Terminal
@@ -1151,16 +1150,12 @@
 		};
 	}
 
-	private static readonly PerfRange[] _perfRanges = { PerfRange.Day, PerfRange.Week, PerfRange.Month };
-
 	private OpsTab _active = OpsTab.Overview;
 	private ServersView _serversView = ServersView.Home;
 	private string _serverDetailToken;  // the rack slot behind ServersView.RackDetail
 	private Guid _rackSlotCopyAckId = Guid.Empty;
 	private bool _receiveCopyAck;
 	private bool _sendExampleCopyAck;
-	private PerfRange _perfRange = PerfRange.Week;
-	private PerfRange _profitRange = PerfRange.Week;
 	private bool _pinUnlocked;
 	private string _pinBuffer = "";
 	private string _pinConfirmDraft = "";
@@ -1887,58 +1882,14 @@
 		return $"{(int)(age / 3600)}h ago";
 	}
 
-	private string HashRateLabel()
-	{
-		var th = TotalMiningRate() * 18.5f;
-		return th <= 0.01f ? "0.0 TH/s" : $"{th:F1} TH/s";
-	}
-
-	private string HashRateDeltaLabel()
-	{
-		if ( MiningRackCount() == 0 )
-			return "Idle";
-
-		var delta = 1.5f + MiningLoadPercent() * 0.02f;
-		return $"+{delta:F1}%";
-	}
-
-	private static string PerfRangeLabel( PerfRange range ) => range switch
-	{
-		PerfRange.Day => "D",
-		PerfRange.Week => "W",
-		PerfRange.Month => "M",
-		_ => "W"
-	};
-
-	private void SetPerfRange( PerfRange range ) => _perfRange = range;
-	private void SetProfitRange( PerfRange range ) => _profitRange = range;
-
-	private static string PerfDayLabel( int index )
-	{
-		var days = new[] { "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun" };
-		return days[Math.Clamp( index, 0, days.Length - 1 )];
-	}
-
-	private int PerfHighlightIndex() => ((int)DateTime.Now.DayOfWeek + 6) % 7;
-
-	private int PerfBarHeight( int index )
-	{
-		var seed = (int)(TotalMiningRate() * 1000f) + index * 17 + MiningLoadPercent() * 3;
-		return 24 + Math.Abs( seed % 62 );
-	}
-
-	private float ProfitEstimate()
-	{
-		var hourlyBtc = TotalMiningRate() * 60f;
-		var multiplier = _profitRange switch
-		{
-			PerfRange.Day => 24f,
-			PerfRange.Month => 24f * 30f,
-			_ => 24f * 7f
-		};
-
-		return hourlyBtc * multiplier * LpBitcoinEconomy.CashUsdPerBtc;
-	}
+	// DATA HONESTY SWEEP 2026-08-08 (issue #208 Q4): the performance-chart and hash-rate
+	// helpers that stood here were SYNTHESIZED, not measured — bar heights from a modulo
+	// (24 + seed % 62), a hash-rate delta from a load formula, a profit projection from a
+	// flat multiplier. None were rendered: the chart pane they belonged to was retired and
+	// the helpers were left orphaned. Deleted rather than kept, because an orphaned helper
+	// that LOOKS like telemetry is a trap — the next seat wires it to a panel believing it
+	// reads hardware. Real hash-rate/profit history needs an accessor that does not exist
+	// yet; when it lands, these come back measured. Gap recorded on issue #208.
 
 	private string RackSlotLabel( LpBitcoinRackEntity rack )
 		=> LpBitcoinIdent.FormatRackSlotId( rack, GetLinkedRacks() );
@@ -2217,39 +2168,13 @@
 
 	private string HubDisplayName() => "HASHD Hub";
 
-	private string HubPowerStatusLabel()
-	{
-		var powered = Hub?.IsPowered == true;
-		return $"{(powered ? "On" : "Off")} \u00B7 {HubTempLabel()}";
-	}
-
-	private string LoadDrawLabel() => $"{MiningLoadPercent()}% \u00B7 {HubPowerDrawLabel()}";
-
-	private string HubTempLabel()
-	{
-		if ( Hub?.IsPowered != true )
-			return "--\u00B0C";
-
-		return $"{56 + MiningLoadPercent() / 4}\u00B0C";
-	}
-
-	private string HubPeakTempLabel()
-	{
-		if ( Hub?.IsPowered != true )
-			return "--\u00B0C";
-
-		return $"{62 + MiningLoadPercent() / 5}\u00B0C";
-	}
-
-	private string HubPowerDrawLabel()
-	{
-		if ( Hub?.IsPowered != true )
-			return "0W";
-
-		var baseDraw = 420;
-		var rackDraw = MiningRackCount() * 260;
-		return $"{baseDraw + rackDraw}W";
-	}
+	// DATA HONESTY SWEEP 2026-08-08 (issue #208 Q4): hub temperature, peak temperature and
+	// power draw stood here as ARITHMETIC ON RACK COUNT, not sensor reads \u2014 temp was
+	// 56 + load/4, peak 62 + load/5, draw 420 + racks*260. A thermometer whose reading is
+	// derived from how many racks are linked is fabricated data wearing a unit. None were
+	// rendered (their vitals pane was retired), so deletion changes nothing on screen and
+	// removes the trap. The hub exposes no thermal or power telemetry today; if that lands
+	// on LpBitcoinHubEntity these return as reads, never as formulas. Gap on issue #208.
 
 	private static string TabIcon( OpsTab tab ) => tab switch
 	{
@@ -3191,8 +3116,6 @@
 		hash.Add( _hub?.IsPowered );
 		hash.Add( _hub?.AccessPinIsSet );
 		hash.Add( _hub?.AccessPinNeedsReEnrollment );
-		hash.Add( _perfRange );
-		hash.Add( _profitRange );
 		hash.Add( LinkedRackCount() );
 		hash.Add( _telemetryHash );
 		hash.Add( Hub?.Owner ?? 0 );
