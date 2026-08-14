@@ -152,7 +152,10 @@ from credentialed surfaces, and the two-key gates are unreachable through any pl
 storage. **A key not in the ledger is an incident.** Rule **C-1: no seat reads a credential file** —
 `.env` is off-limits to every seat for every purpose, *including debugging*; verification is always
 indirect (`git check-ignore`, `claude mcp list`, a live API test). Tokens never enter chat, relays,
-commits, BOARD lines, or lane records (C-2), and MCP wiring never uses `--scope project` (C-3).
+commits, BOARD lines, or lane records (C-2), and **no MCP wiring ever commits a CREDENTIAL to a tracked
+file** (C-3) — the hazard is the secret, not the scope: a project-scoped `.mcp.json` entry is fine when
+it carries no key (a bare-localhost, no-auth endpoint such as the native editor surface on `7269`),
+while any entry needing a token stays user-scoped or `${ENV_VAR}`-indirected, never a literal.
 · **`lifepunch/docs/cvl/EDITOR_ACCESS_LAW_V2_2026-07-13.md`** — **DRIVE is a board-named grant, not a
 Red monopoly.** Exactly one seat holds editor DRIVE at a time, declared on the BOARD by Bloodwave;
 DRIVE = tree hands, so a grant is a full implementer swap and Codex's proposal-only clause is

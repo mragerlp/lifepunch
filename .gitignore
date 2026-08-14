@@ -46,6 +46,9 @@ lifepunch/scripts/vengeance-ptt/__pycache__/
 lifepunch/scripts/vengeance-ptt/outbox/*
 !lifepunch/scripts/vengeance-ptt/outbox/.gitkeep
 
+# CVLX child mount — proof harness bytecode
+cvlx/__pycache__/
+
 # Local sensitive information
 lifepunch/secure/*
 !lifepunch/secure/.gitignore
