@@ -74,8 +74,7 @@ public sealed record LpOverviewStatVm(
 public sealed record LpStatsVm(
 	bool IsFixture,
 	IReadOnlyList<LpStatPlateVm> HeroPlates,
-	IReadOnlyList<LpActivityBarVm> ActivityTrend,
-	string ActivitySummary,
+	LpStatsIdentityVm Identity,
 	IReadOnlyList<LpStatHighlightVm> Highlights,
 	IReadOnlyList<LpStatSectionVm> Sections);
 
@@ -85,10 +84,19 @@ public sealed record LpStatPlateVm(
 	string Value,
 	string Hint);
 
-public sealed record LpActivityBarVm(
+public sealed record LpStatsIdentityVm(
+	int Level,
+	string PlaytimeTitle,
+	string TitleHint,
+	string StatusLabel,
+	string StatusHint,
+	IReadOnlyList<LpStatsTrackProgressVm> Tracks);
+
+public sealed record LpStatsTrackProgressVm(
+	string Id,
 	string Label,
-	int Percent,
-	string Value);
+	int RanksPurchased,
+	int TotalRanks);
 
 public sealed record LpStatHighlightVm(
 	string Label,
@@ -121,6 +129,7 @@ public enum LpSkillTierState
 
 public sealed record LpSkillsVm(
 	bool IsFixture,
+	string CatalogVersion,
 	int SkillPointsAvailable,
 	int TracksMastered,
 	bool GrandMasteryActive,
@@ -208,6 +217,7 @@ public static class LpPlayerHubFixture
 	public const int Level = 24;
 	public const long LpBalance = 1280;
 	public const int SkillPointsAvailable = 2;
+	private const int ResilienceRanksPurchased = 2;
 
 	public static LpPlayerHubShellVm Shell( LpPlayerHubTab activeTab ) => new(
 		PlayerName: "PLAYER",
@@ -275,17 +285,13 @@ public static class LpPlayerHubFixture
 			new LpStatPlateVm( Icon: "account_tree", Label: "Skill ranks", Value: "2", Hint: "Fixture ranks" ),
 			new LpStatPlateVm( Icon: "savings", Label: "$LP earned", Value: "--", Hint: "No award ledger" ),
 		},
-		ActivityTrend: new[]
-		{
-			new LpActivityBarVm( Label: "Mon", Percent: 32, Value: "32m" ),
-			new LpActivityBarVm( Label: "Tue", Percent: 58, Value: "58m" ),
-			new LpActivityBarVm( Label: "Wed", Percent: 44, Value: "44m" ),
-			new LpActivityBarVm( Label: "Thu", Percent: 76, Value: "1h 16m" ),
-			new LpActivityBarVm( Label: "Fri", Percent: 64, Value: "1h 04m" ),
-			new LpActivityBarVm( Label: "Sat", Percent: 92, Value: "1h 32m" ),
-			new LpActivityBarVm( Label: "Sun", Percent: 51, Value: "51m" ),
-		},
-		ActivitySummary: "Fixture activity over the last seven sessions. No lifetime ledger is claimed.",
+		Identity: new LpStatsIdentityVm(
+			Level: Level,
+			PlaytimeTitle: "Fixture Veteran",
+			TitleHint: "Preview title - portal contract pending",
+			StatusLabel: "Clean Player",
+			StatusHint: "Fixture conduct status",
+			Tracks: BuildStatsTracks()),
 		Highlights: new[]
 		{
 			new LpStatHighlightVm( Label: "Most active lane", Value: "Public service", Hint: "Fixture category" ),
@@ -320,174 +326,169 @@ public static class LpPlayerHubFixture
 				}),
 		});
 
+	private static IReadOnlyList<LpStatsTrackProgressVm> BuildStatsTracks()
+	{
+		var catalogTracks = LpPlayerHubCatalog.Tracks;
+		var tracks = new List<LpStatsTrackProgressVm>( catalogTracks.Count );
+
+		for ( var trackIndex = 0; trackIndex < catalogTracks.Count; trackIndex++ )
+		{
+			var catalogTrack = catalogTracks[trackIndex];
+			var totalRanks = 0;
+
+			foreach ( var skill in catalogTrack.Skills )
+			{
+				totalRanks += skill.Tiers.Count;
+			}
+
+			tracks.Add( new LpStatsTrackProgressVm(
+				Id: catalogTrack.Id,
+				Label: catalogTrack.Label,
+				RanksPurchased: trackIndex == 0 ? ResilienceRanksPurchased : 0,
+				TotalRanks: totalRanks ));
+		}
+
+		return tracks;
+	}
+
 	public static LpSkillsVm Skills(
 		string selectedTrackId,
 		string selectedSkillId,
 		Action<string> onTrackSelected,
 		Action<string> onSkillSelected )
 	{
-		selectedTrackId = string.IsNullOrWhiteSpace( selectedTrackId ) ? "resilience" : selectedTrackId;
-		selectedSkillId = string.IsNullOrWhiteSpace( selectedSkillId ) ? "resilience-slot-1" : selectedSkillId;
+		var catalogTracks = LpPlayerHubCatalog.Tracks;
+		var firstCatalogTrack = catalogTracks[0];
+		selectedTrackId = string.IsNullOrWhiteSpace( selectedTrackId )
+			? firstCatalogTrack.Id
+			: selectedTrackId;
+		selectedSkillId = string.IsNullOrWhiteSpace( selectedSkillId )
+			? firstCatalogTrack.Skills[0].Id
+			: selectedSkillId;
 
+		var tracks = new List<LpSkillTrackVm>( catalogTracks.Count );
 		var skills = new List<LpSkillVm>();
-		AddTrackSkills( skills, "resilience", 2, onSkillSelected );
-		AddTrackSkills( skills, "recovery", 0, onSkillSelected );
-		AddTrackSkills( skills, "enterprise", 0, onSkillSelected );
-		AddTrackSkills( skills, "infiltration", 0, onSkillSelected );
-		AddTrackSkills( skills, "enforcement", 0, onSkillSelected );
+
+		for ( var trackIndex = 0; trackIndex < catalogTracks.Count; trackIndex++ )
+		{
+			var catalogTrack = catalogTracks[trackIndex];
+			var trackId = catalogTrack.Id;
+			var firstSkillRank = trackIndex == 0 ? ResilienceRanksPurchased : 0;
+			var totalRanks = 0;
+
+			for ( var skillIndex = 0; skillIndex < catalogTrack.Skills.Count; skillIndex++ )
+			{
+				var catalogSkill = catalogTrack.Skills[skillIndex];
+				var skillId = catalogSkill.Id;
+				var rank = skillIndex == 0 ? firstSkillRank : 0;
+				var state = SkillState( rank, skillIndex, firstSkillRank, catalogSkill.Tiers.Count );
+				var tiers = ProjectSkillTiers(
+					catalogSkill.Tiers,
+					rank,
+					state != LpSkillState.Locked );
+
+				totalRanks += catalogSkill.Tiers.Count;
+				skills.Add( new LpSkillVm(
+					Id: catalogSkill.Id,
+					TrackId: catalogSkill.TrackId,
+					Title: catalogSkill.Title,
+					Description: "Hook-backed skill definition pending owner approval.",
+					CurrentEffect: CurrentEffect( rank ),
+					NextTierEffect: NextTierEffect( catalogSkill, rank ),
+					Tiers: tiers,
+					Rank: rank,
+					MaxRank: catalogSkill.Tiers.Count,
+					PointCost: 1,
+					CanUnlock: false,
+					State: state,
+					Requirement: state == LpSkillState.Locked
+						? "Catalogue approval required"
+						: "Progression contract pending",
+					OnSelected: () => onSkillSelected( skillId )));
+			}
+
+			tracks.Add( new LpSkillTrackVm(
+				Id: catalogTrack.Id,
+				Label: catalogTrack.Label,
+				Description: catalogTrack.Description,
+				Icon: catalogTrack.Icon,
+				RanksPurchased: firstSkillRank,
+				TotalRanks: totalRanks,
+				SkillsMastered: 0,
+				KeystoneTitle: catalogTrack.Label + " " + catalogTrack.Keystone.Title,
+				KeystoneEffect: "Category effect pending hook-backed catalogue approval.",
+				KeystoneActive: false,
+				OnSelected: () => onTrackSelected( trackId )));
+		}
 
 		return new LpSkillsVm(
 			IsFixture: true,
+			CatalogVersion: LpPlayerHubCatalog.Version,
 			SkillPointsAvailable: SkillPointsAvailable,
 			TracksMastered: 0,
 			GrandMasteryActive: false,
-			Tracks: new[]
-			{
-				new LpSkillTrackVm(
-					Id: "resilience",
-					Label: "Resilience",
-					Description: "Working durability taxonomy.",
-					Icon: "shield",
-					RanksPurchased: 2,
-					TotalRanks: 25,
-					SkillsMastered: 0,
-					KeystoneTitle: "Resilience Keystone",
-					KeystoneEffect: "Category effect pending hook-backed catalogue approval.",
-					KeystoneActive: false,
-					OnSelected: () => onTrackSelected( "resilience" )),
-				new LpSkillTrackVm(
-					Id: "recovery",
-					Label: "Recovery",
-					Description: "Working restoration taxonomy.",
-					Icon: "medical_services",
-					RanksPurchased: 0,
-					TotalRanks: 25,
-					SkillsMastered: 0,
-					KeystoneTitle: "Recovery Keystone",
-					KeystoneEffect: "Category effect pending hook-backed catalogue approval.",
-					KeystoneActive: false,
-					OnSelected: () => onTrackSelected( "recovery" )),
-				new LpSkillTrackVm(
-					Id: "enterprise",
-					Label: "Enterprise",
-					Description: "Working economy taxonomy.",
-					Icon: "business_center",
-					RanksPurchased: 0,
-					TotalRanks: 25,
-					SkillsMastered: 0,
-					KeystoneTitle: "Enterprise Keystone",
-					KeystoneEffect: "Category effect pending hook-backed catalogue approval.",
-					KeystoneActive: false,
-					OnSelected: () => onTrackSelected( "enterprise" )),
-				new LpSkillTrackVm(
-					Id: "infiltration",
-					Label: "Infiltration",
-					Description: "Working interaction taxonomy.",
-					Icon: "key",
-					RanksPurchased: 0,
-					TotalRanks: 25,
-					SkillsMastered: 0,
-					KeystoneTitle: "Infiltration Keystone",
-					KeystoneEffect: "Category effect pending hook-backed catalogue approval.",
-					KeystoneActive: false,
-					OnSelected: () => onTrackSelected( "infiltration" )),
-				new LpSkillTrackVm(
-					Id: "enforcement",
-					Label: "Enforcement",
-					Description: "Working public-safety taxonomy.",
-					Icon: "gavel",
-					RanksPurchased: 0,
-					TotalRanks: 25,
-					SkillsMastered: 0,
-					KeystoneTitle: "Enforcement Keystone",
-					KeystoneEffect: "Category effect pending hook-backed catalogue approval.",
-					KeystoneActive: false,
-					OnSelected: () => onTrackSelected( "enforcement" )),
-			},
+			Tracks: tracks,
 			Skills: skills,
 			SelectedTrackId: selectedTrackId,
 			SelectedSkillId: selectedSkillId);
 	}
 
-	private static void AddTrackSkills(
-		List<LpSkillVm> skills,
-		string trackId,
+	private static LpSkillState SkillState(
+		int rank,
+		int skillIndex,
 		int firstSkillRank,
-		Action<string> onSkillSelected )
+		int maxRank )
 	{
-		for ( var slot = 1; slot <= 5; slot++ )
-		{
-			var id = trackId + "-slot-" + slot;
-			var rank = slot == 1 ? firstSkillRank : 0;
-			var state = LpSkillState.Locked;
+		if ( rank >= maxRank )
+			return LpSkillState.Maxed;
 
-			if ( rank >= 5 )
-				state = LpSkillState.Maxed;
-			else if ( rank > 0 )
-				state = LpSkillState.Unlocked;
-			else if ( slot == 1 || (slot == 2 && firstSkillRank > 0) )
-				state = LpSkillState.Available;
+		if ( rank > 0 )
+			return LpSkillState.Unlocked;
 
-			var currentEffect = rank > 0
-				? "Fixture rank " + rank + ". No live modifier."
-				: "Base behavior unchanged.";
-			var nextEffect = rank >= 5
-				? "Tier V fixture complete."
-				: "Tier " + (rank + 1) + " values pending hook approval.";
-			var requirement = state == LpSkillState.Locked
-				? "Catalogue approval required"
-				: "Progression contract pending";
-			var tiers = BuildSkillTiers( rank, state != LpSkillState.Locked );
+		if ( skillIndex == 0 || (skillIndex == 1 && firstSkillRank > 0) )
+			return LpSkillState.Available;
 
-			skills.Add( new LpSkillVm(
-				Id: id,
-				TrackId: trackId,
-				Title: "Catalogue Slot " + slot,
-				Description: "Hook-backed skill definition pending owner approval.",
-				CurrentEffect: currentEffect,
-				NextTierEffect: nextEffect,
-				Tiers: tiers,
-				Rank: rank,
-				MaxRank: 5,
-				PointCost: 1,
-				CanUnlock: false,
-				State: state,
-				Requirement: requirement,
-				OnSelected: () => onSkillSelected( id )));
-		}
+		return LpSkillState.Locked;
 	}
 
-	private static IReadOnlyList<LpSkillTierVm> BuildSkillTiers( int purchasedRank, bool showNext )
+	private static string CurrentEffect( int rank )
 	{
-		var tiers = new List<LpSkillTierVm>( 5 );
+		return rank > 0
+			? "Fixture rank " + rank + ". No live modifier."
+			: "Base behavior unchanged.";
+	}
 
-		for ( var rank = 1; rank <= 5; rank++ )
+	private static string NextTierEffect( LpPlayerHubCatalogSkill skill, int rank )
+	{
+		return rank >= skill.Tiers.Count
+			? "Tier V fixture complete."
+			: "Tier " + skill.Tiers[rank].Rank + " values pending hook approval.";
+	}
+
+	private static IReadOnlyList<LpSkillTierVm> ProjectSkillTiers(
+		IReadOnlyList<LpPlayerHubCatalogTier> catalogTiers,
+		int purchasedRank,
+		bool showNext )
+	{
+		var tiers = new List<LpSkillTierVm>( catalogTiers.Count );
+
+		foreach ( var catalogTier in catalogTiers )
 		{
-			var state = rank <= purchasedRank
+			var state = catalogTier.Rank <= purchasedRank
 				? LpSkillTierState.Earned
-				: showNext && rank == purchasedRank + 1
+				: showNext && catalogTier.Rank == purchasedRank + 1
 					? LpSkillTierState.Next
 					: LpSkillTierState.Locked;
 
 			tiers.Add( new LpSkillTierVm(
-				Rank: rank,
-				Label: TierLabel( rank ),
-				Effect: "Hook-backed Tier " + TierLabel( rank ) + " value pending owner approval.",
+				Rank: catalogTier.Rank,
+				Label: catalogTier.Label,
+				Effect: "Hook-backed Tier " + catalogTier.Label + " value pending owner approval.",
 				State: state ));
 		}
 
 		return tiers;
 	}
-
-	private static string TierLabel( int rank ) => rank switch
-	{
-		1 => "I",
-		2 => "II",
-		3 => "III",
-		4 => "IV",
-		5 => "V",
-		_ => rank.ToString(),
-	};
 
 	public static LpStoreVm Store(
 		string selectedCategoryId,

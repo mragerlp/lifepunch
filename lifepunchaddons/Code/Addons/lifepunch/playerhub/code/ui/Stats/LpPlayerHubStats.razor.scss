@@ -51,6 +51,9 @@
 }
 
 .stats-plate-copy,
+.stats-identity-copy,
+.stats-status-copy,
+.stats-track-copy,
 .stats-highlight-copy,
 .stats-table-copy {
 	flex-direction: column;
@@ -60,6 +63,9 @@
 
 .stats-plate-label,
 .stats-section-title,
+.stats-identity-label,
+.stats-status-label,
+.stats-track-label,
 .stats-highlight-label,
 .stats-table-title,
 .stats-table-label {
@@ -78,9 +84,11 @@
 
 .stats-plate-hint,
 .stats-section-note,
+.stats-level-hint,
+.stats-identity-hint,
 .stats-highlight-hint,
 .stats-table-hint,
-.stats-activity-summary {
+.stats-identity-footnote {
 	font-size: 9px;
 	line-height: 12px;
 	color: $text-dim;
@@ -98,7 +106,7 @@
 	min-width: 0;
 }
 
-.stats-activity {
+.stats-identity {
 	width: 310px;
 	flex-grow: 0;
 	flex-shrink: 0;
@@ -122,63 +130,162 @@
 	flex-grow: 1;
 }
 
-.stats-trend-list,
+.stats-track-list,
 .stats-highlight-list {
 	flex-direction: column;
 	flex-grow: 1;
 	min-height: 0;
 }
 
-.stats-trend-list {
-	padding: 7px 10px;
-}
-
-.stats-trend-row {
+.stats-identity-hero {
 	flex-direction: row;
-	align-items: center;
-	gap: 7px;
-	flex-grow: 1;
-	min-height: 25px;
+	align-items: stretch;
+	gap: 10px;
+	min-height: 116px;
+	flex-shrink: 0;
+	padding: 10px;
+	border-bottom: 1px solid $border;
 }
 
-.stats-trend-label {
-	width: 28px;
+.stats-level-block {
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	width: 92px;
 	flex-shrink: 0;
+	background-color: $accent-soft;
+	border: 1px solid $accent-focus;
+	border-radius: $radius;
+}
+
+.stats-level-label,
+.stats-identity-label {
 	font-size: 9px;
+	font-weight: 700;
+	letter-spacing: 0.7px;
 	color: $text-dim;
 }
 
-.stats-trend-meter {
+.stats-level-value {
+	font-family: Poppins, Arial, sans-serif;
+	font-size: 38px;
+	font-weight: 700;
+	line-height: 42px;
+	color: $lp-blue;
+}
+
+.stats-level-hint {
+	color: $text-dim;
+}
+
+.stats-identity-copy {
 	flex-grow: 1;
-	height: 6px;
+	justify-content: center;
+}
+
+.stats-identity-title {
+	font-family: Poppins, Arial, sans-serif;
+	font-size: 14px;
+	font-weight: 600;
+	line-height: 18px;
+	color: $text-main;
+}
+
+.stats-status-row {
+	flex-direction: row;
+	align-items: center;
+	gap: 7px;
+	margin-top: 8px;
+	padding-top: 8px;
+	border-top: 1px solid $border;
+}
+
+.stats-status-icon {
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	width: 26px;
+	height: 26px;
+	flex-shrink: 0;
+	font-size: 16px;
+	color: $good;
+	background-color: $good-soft;
+	border-radius: $radius;
+}
+
+.stats-status-copy {
+	flex-grow: 1;
+	justify-content: center;
+}
+
+.stats-status-label {
+	color: $text-main;
+}
+
+.stats-track-head {
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	min-height: 30px;
+	flex-shrink: 0;
+	padding: 7px 10px;
+	border-bottom: 1px solid $border;
+}
+
+.stats-track-list {
+	padding: 5px 10px;
+}
+
+.stats-track-row {
+	flex-direction: column;
+	justify-content: center;
+	gap: 4px;
+	flex-grow: 1;
+	min-height: 39px;
+}
+
+.stats-track-copy {
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.stats-track-label {
+	color: $text-main;
+	letter-spacing: 0;
+}
+
+.stats-track-value {
+	font-size: 9px;
+	font-weight: 700;
+	color: $text-dim;
+}
+
+.stats-track-meter {
+	height: 5px;
+	flex-shrink: 0;
 	background-color: $card-header;
 	border-radius: $radius;
 	overflow: hidden;
 }
 
-.stats-trend-fill {
+.stats-track-fill {
 	height: 100%;
 	background-color: $lp-blue;
 	border-radius: $radius;
 }
 
-.stats-trend-fill.fill-15 { width: 15%; }
-.stats-trend-fill.fill-30 { width: 30%; }
-.stats-trend-fill.fill-45 { width: 45%; }
-.stats-trend-fill.fill-60 { width: 60%; }
-.stats-trend-fill.fill-75 { width: 75%; }
-.stats-trend-fill.fill-100 { width: 100%; }
+.stats-track-fill.fill-0 { width: 0; }
+.stats-track-fill.fill-04 { width: 4%; }
+.stats-track-fill.fill-08 { width: 8%; }
+.stats-track-fill.fill-20 { width: 20%; }
+.stats-track-fill.fill-40 { width: 40%; }
+.stats-track-fill.fill-60 { width: 60%; }
+.stats-track-fill.fill-80 { width: 80%; }
+.stats-track-fill.fill-100 { width: 100%; }
 
-.stats-trend-value {
-	width: 45px;
-	flex-shrink: 0;
-	text-align: right;
-	font-size: 9px;
-	color: $text-main;
-}
-
-.stats-activity-summary {
-	min-height: 40px;
+.stats-identity-footnote {
+	min-height: 38px;
 	flex-shrink: 0;
 	padding: 7px 10px;
 	border-top: 1px solid $border;
